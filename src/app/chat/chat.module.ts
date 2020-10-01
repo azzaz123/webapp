@@ -32,6 +32,7 @@ import { InboxItemForSellComponent } from './inbox/inbox-metadata/inbox-item-for
 import { AutosizeModule } from 'ngx-autosize';
 import { MessageModule } from './message/message.module';
 import { ConversationDetailsBarComponent } from './conversation-details-bar';
+import { MaliciousConversationModalComponent } from './modals/malicious-conversation-modal/malicious-conversation-modal.component';
 
 @NgModule({
   imports: [
@@ -70,7 +71,8 @@ import { ConversationDetailsBarComponent } from './conversation-details-bar';
     InboxItemDetailComponent,
     InboxItemForSellComponent,
     ScrollingMessageComponent,
-    ConversationDetailsBarComponent
+    ConversationDetailsBarComponent,
+    MaliciousConversationModalComponent
   ],
   exports: [
     InboxConversationComponent
@@ -82,6 +84,7 @@ import { ConversationDetailsBarComponent } from './conversation-details-bar';
     ReportUserComponent,
     BlockUserComponent,
     UnblockUserComponent,
+    MaliciousConversationModalComponent
   ]
 })
 export class ChatModule {

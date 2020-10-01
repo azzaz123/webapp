@@ -1,48 +1,47 @@
 import { Injectable, OnDestroy } from '@angular/core';
-
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { MetricTypeEnum } from './metric-type.enum';
-import * as Fingerprint2 from 'fingerprintjs2';
 import { toUpper } from 'lodash-es';
-import { FeatureflagService } from '../user/featureflag.service';
+import { UUID } from 'angular2-uuid';
+
+import { MetricTypeEnum } from './metric-type.enum';
 import { APP_VERSION } from '../../../environments/version';
 import { UserService } from '../user/user.service';
 import { RemoteConsoleClientService } from './remote-console-client.service';
 import { User } from '../user/user';
-import { UUID } from 'angular2-uuid';
 import { ChatConnectionMetric } from './chat-connection-metric';
 import { finalize } from 'rxjs/operators';
+import { ConnectionType } from './connection-type';
+import { CookieService } from 'ngx-cookie';
+import { DEVICE_ID_COOKIE_NAME } from '../analytics/analytics.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RemoteConsoleService implements OnDestroy {
 
-  deviceId: string;
-  sessionId: string;
+  private deviceId: string;
+  private sessionId: string;
   private connectionTimeCallNo = 0;
   private sendMessageTime = new Map();
   private sendMessageActTime = new Map();
-  private acceptMessageTime = new Map();
   private presentationMessageTimeout = new Map();
   private chatConnectionMetric: ChatConnectionMetric;
 
-  constructor(private remoteConsoleClientService: RemoteConsoleClientService, private deviceService: DeviceDetectorService,
-              private featureflagService: FeatureflagService, private userService: UserService) {
-    this.deviceId = Fingerprint2.get({}, components => {
-      const values = components.map(component => component.value);
-      this.deviceId = Fingerprint2.x64hash128(values.join(''), 31);
+  constructor(
+    private remoteConsoleClientService: RemoteConsoleClientService,
+    private deviceService: DeviceDetectorService,
+    private userService: UserService,
+    cookiesService: CookieService) {
+      this.deviceId = cookiesService.get(DEVICE_ID_COOKIE_NAME).replace(/-/g, '');
       this.sessionId = UUID.UUID();
-    });
   }
 
   ngOnDestroy(): void {
     this.sendMessageTime = new Map();
-    this.acceptMessageTime = new Map();
     this.presentationMessageTimeout = new Map();
   }
 
-  sendConnectionTimeout(userId: string, connectionTime: number): void {
+  public sendConnectionTimeout(userId: string, connectionTime: number): void {
     this.connectionTimeCallNo += 1;
     this.remoteConsoleClientService.info({
       ...this.getCommonLog(userId),
@@ -53,33 +52,36 @@ export class RemoteConsoleService implements OnDestroy {
     });
   }
 
-  sendConnectionChatTimeout(connectionType: 'inbox' | 'xmpp', success: boolean): void {
-    if (this.chatConnectionMetric === null || this.chatConnectionMetric === undefined) {
-      this.chatConnectionMetric = new ChatConnectionMetric();
-    }
-    if (connectionType === 'inbox') {
-      this.chatConnectionMetric.inboxConnectionSuccess = success;
-      this.chatConnectionMetric.inboxRetryCount += 1;
-    }
-    if (connectionType === 'xmpp') {
-      this.chatConnectionMetric.xmppConnectionSuccess = success;
-      this.chatConnectionMetric.xmppRetryCount += 1;
+  public sendChatConnectionTime(connectionType: ConnectionType, success: boolean): void {
+    if (this.chatConnectionMetric?.alreadySent) {
+      return;
     }
 
-    if (this.chatConnectionMetric.inboxConnectionSuccess && this.chatConnectionMetric.xmppConnectionSuccess) {
-      this.userService.me()
-        .pipe(finalize(() => this.chatConnectionMetric = null))
-        .subscribe((user: User) => this.remoteConsoleClientService.info({
+    if (!this.chatConnectionMetric) {
+      this.chatConnectionMetric = new ChatConnectionMetric();
+    }
+
+    this.chatConnectionMetric.update(connectionType, success);
+
+    if (this.chatConnectionMetric.canBeSent) {
+      this.userService.me().subscribe((user: User) => {
+        this.chatConnectionMetric.sendingToBackend = true;
+        this.remoteConsoleClientService.info$({
           ...this.getCommonLog(user.id),
-          connection_time: Date.now() - this.chatConnectionMetric.connectionChatTimeStart,
+          connection_time: this.chatConnectionMetric.getConnectionTime(),
           xmpp_retry_count: this.chatConnectionMetric.xmppRetryCount,
           inbox_retry_count: this.chatConnectionMetric.inboxRetryCount,
           metric_type: MetricTypeEnum.CHAT_CONNECTION_TIME,
-        }));
+        })
+        .pipe(
+          finalize(() => this.chatConnectionMetric.sendingToBackend = false)
+        )
+        .subscribe(() => this.chatConnectionMetric.alreadySent = true);
+      });
     }
   }
 
-  sendMessageTimeout(messageId: string): void {
+  public sendMessageTimeout(messageId: string): void {
     if (!this.sendMessageTime.has(messageId)) {
       this.sendMessageTime.set(messageId, new Date().getTime());
     } else {
@@ -93,7 +95,7 @@ export class RemoteConsoleService implements OnDestroy {
     }
   }
 
-  sendMessageAckFailed(messageId: string, description: string): void {
+  public sendMessageAckFailed(messageId: string, description: string): void {
     this.remoteConsoleClientService.info({
       ...this.getCommonLog(this.userService.user.id),
       message_id: messageId,
@@ -102,16 +104,16 @@ export class RemoteConsoleService implements OnDestroy {
     });
   }
 
-  sendConnectionChatFailed(message: 'inbox' | 'xmpp'): void {
+  // TODO: Investigate how to send this metric when the browser closes
+  public sendChatFailedConnection(): void {
     this.remoteConsoleClientService.info({
       ...this.getCommonLog(this.userService.user.id),
       metric_type: MetricTypeEnum.CHAT_FAILED_CONNECTION,
-      xmpp_connected: message === 'xmpp',
-      description: message === 'inbox' ? 'Get inbox is failed' : 'Connection xmpp is failed'
+      xmpp_connected: this.chatConnectionMetric ? this.chatConnectionMetric.xmppConnectionSuccess : false
     });
   }
 
-  sendMessageActTimeout(messageId: string): void {
+  public sendMessageActTimeout(messageId: string): void {
     if (!this.sendMessageActTime.has(messageId)) {
       this.sendMessageActTime.set(messageId, new Date().getTime());
     } else {
@@ -125,24 +127,7 @@ export class RemoteConsoleService implements OnDestroy {
     }
   }
 
-  /*
-   * @deprecated Use sendMessageActTimeout instead. Remove after deploy new metrics CHATO-4187, CHATO-4191 and CHATO-4199
-   */
-  sendAcceptTimeout(messageId: string): void {
-    if (!this.acceptMessageTime.has(messageId)) {
-      this.acceptMessageTime.set(messageId, new Date().getTime());
-    } else {
-      this.remoteConsoleClientService.info({
-        ...this.getCommonLog(this.userService.user.id),
-        message_id: messageId,
-        send_message_time: new Date().getTime() - this.acceptMessageTime.get(messageId),
-        metric_type: MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
-      });
-      this.acceptMessageTime.delete(messageId);
-    }
-  }
-
-  sendPresentationMessageTimeout(messageId: string): void {
+  public sendPresentationMessageTimeout(messageId: string): void {
     if (!this.presentationMessageTimeout.has(messageId)) {
       this.presentationMessageTimeout.set(messageId, new Date().getTime());
     } else {
@@ -156,7 +141,7 @@ export class RemoteConsoleService implements OnDestroy {
     }
   }
 
-  sendDuplicateConversations(userId: string, callMethodClient: string, conversationsGroupById: Map<string, number>): void {
+  public sendDuplicateConversations(userId: string, callMethodClient: string, conversationsGroupById: Map<string, number>): void {
     this.remoteConsoleClientService.info({
       ...this.getCommonLog(userId),
       metric_type: MetricTypeEnum.DUPLICATE_CONVERSATION,
@@ -166,7 +151,7 @@ export class RemoteConsoleService implements OnDestroy {
     });
   }
 
-  sendXmppConnectionClosedWithError(): void {
+  public sendXmppConnectionClosedWithError(): void {
     this.userService.me().subscribe((user: User) => this.remoteConsoleClientService.info({
         ...this.getCommonLog(user.id),
         metric_type: MetricTypeEnum.XMPP_CONNECTION_CLOSED_WITH_ERROR,
@@ -175,7 +160,7 @@ export class RemoteConsoleService implements OnDestroy {
     );
   }
 
-  getReleaseVersion(appVersion: string): number {
+  public getReleaseVersion(appVersion: string): number {
     return +appVersion.split('.')
       .map((subVersion: string) => ('00' + subVersion).slice(-3))
       .reduce((a: string, b: string) => a + b);

@@ -1,8 +1,11 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, async } from '@angular/core/testing';
 
 import { CurrentConversationComponent } from './current-conversation.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
+import {
+  CREATE_MOCK_INBOX_CONVERSATION,
+  MOCK_INBOX_CONVERSATION_WITH_MALICIOUS_USER,
+  MOCK_INBOX_CONVERSATION_BASIC
+} from '../../../tests/inbox.fixtures.spec';
 import { InboxMessage, MessageStatus, MessageType } from '../model/inbox-message';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { RealTimeService } from '../../core/message/real-time.service';
@@ -10,24 +13,16 @@ import { EventService } from '../../core/event/event.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { I18nService } from '../../core/i18n/i18n.service';
-import { InboxConversationService } from '../service';
+import { InboxConversationService, MessageService } from '../service';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { ConversationServiceMock, MockRemoteConsoleService } from '../../../tests';
+import { ConversationServiceMock, MockRemoteConsoleService, DeviceDetectorServiceMock } from '../../../tests';
 import { RealTimeServiceMock } from '../../../tests/real-time.fixtures.spec';
 import { DateCalendarPipe } from 'app/shared/pipes';
 import { RemoteConsoleService } from '../../core/remote-console';
-
-class MockConversationService {
-  public loadMoreMessages() {
-  }
-}
-
-class MessageHTMLElementMock {
-  scrollIntoView(arg?: boolean | ScrollIntoViewOptions): void {
-  }
-}
+import { MaliciousConversationModalComponent } from '../modals/malicious-conversation-modal/malicious-conversation-modal.component';
+import { SimpleChange, NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('CurrentConversationComponent', () => {
   let component: CurrentConversationComponent;
@@ -36,24 +31,31 @@ describe('CurrentConversationComponent', () => {
   let eventService: EventService;
   let conversationService: InboxConversationService;
   let remoteConsoleService: RemoteConsoleService;
+  let modalService: NgbModal;
 
-  beforeEach(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        NgbModule,
         NgxPermissionsModule.forRoot()
       ],
-      declarations: [CurrentConversationComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      providers: [EventService,
+      declarations: [
+        CurrentConversationComponent,
+        DateCalendarPipe
+      ],
+      providers: [
+        EventService,
+        NgbModal,
         { provide: RealTimeService, useClass: RealTimeServiceMock },
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: InboxConversationService, useClass: ConversationServiceMock },
-        DateCalendarPipe,
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         I18nService
-      ]
-    });
+      ],
+      schemas: [ NO_ERRORS_SCHEMA ],
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
     fixture = TestBed.createComponent(CurrentConversationComponent);
     component = fixture.componentInstance;
     component.currentConversation = CREATE_MOCK_INBOX_CONVERSATION();
@@ -62,6 +64,9 @@ describe('CurrentConversationComponent', () => {
     eventService = TestBed.inject(EventService);
     conversationService = TestBed.inject(InboxConversationService);
     remoteConsoleService = TestBed.inject(RemoteConsoleService);
+    modalService = TestBed.inject(NgbModal);
+
+    fixture.detectChanges();
   });
 
   describe('ngOnInit', () => {
@@ -254,7 +259,7 @@ describe('CurrentConversationComponent', () => {
     });
 
     it('should scroll to last message', () => {
-      const messageHTMLMock = new MessageHTMLElementMock();
+      const messageHTMLMock = { scrollIntoView: () => {} };
       spyOn(document, 'querySelector').and.returnValues(messageHTMLMock);
       spyOn(component, 'sendReadForLastInboxMessage');
 
@@ -339,6 +344,56 @@ describe('CurrentConversationComponent', () => {
       eventService.emit(EventService.CONNECTION_RESTORED);
 
       expect(remoteConsoleService.sendMessageAckFailed).toHaveBeenCalledWith(MESSAGE_ID, 'pending messages after restored connection');
+    });
+  });
+
+  describe('when opening a different conversation', () => {
+    beforeEach(() => {
+      spyOn(modalService, 'open').and.callThrough();
+      component.currentConversation = null;
+      fixture.detectChanges();
+    });
+
+    describe('and when other user is considered malicious', () => {
+      it('should show malicious modal', () => {
+        // TODO: Investigate more why fixture.detectChanges is not triggering component.ngOnChanges automatically
+        component.currentConversation = MOCK_INBOX_CONVERSATION_WITH_MALICIOUS_USER;
+        component.ngOnChanges({
+          currentConversation: new SimpleChange(null, MOCK_INBOX_CONVERSATION_WITH_MALICIOUS_USER, false)
+        });
+
+        fixture.detectChanges();
+
+        expect(modalService.open).toHaveBeenCalledWith(MaliciousConversationModalComponent, { windowClass: 'warning' });
+      });
+    });
+
+    describe('and when other user is not considered malicious', () => {
+      it('should not show malicious modal', () => {
+        // TODO: Investigate more why fixture.detectChanges is not triggering component.ngOnChanges automatically
+        component.currentConversation = MOCK_INBOX_CONVERSATION_BASIC;
+        component.ngOnChanges({
+          currentConversation: new SimpleChange(null, MOCK_INBOX_CONVERSATION_BASIC, false)
+        });
+        fixture.detectChanges();
+
+        expect(modalService.open).not.toHaveBeenCalled();
+      });
+    });
+  });
+
+  // TODO: TNS-925 - https://wallapop.atlassian.net/browse/TNS-925
+  describe('Analytics', () => {
+    describe('when malicious modal is shown', () => {
+      describe('and when user clicks on CTA', () => {
+        it('should track event to analytics', () => {
+        });
+      });
+
+      describe('and when user dismisses the modal', () => {
+        it('should track event to analytics', () => {
+        });
+      });
     });
   });
 });

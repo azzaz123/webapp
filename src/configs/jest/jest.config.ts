@@ -27,6 +27,9 @@ import '@angular/localize/init';
 // Ads "polyfills"
 import '../../assets/js/adsConfig.js';
 
+// Prototype overrides
+Element.prototype.scrollIntoView = () => {};
+
 // Mock global variables in window manually
 import * as GLOBAL_MOCKS from './global-mocks.fixtures.spec';
 

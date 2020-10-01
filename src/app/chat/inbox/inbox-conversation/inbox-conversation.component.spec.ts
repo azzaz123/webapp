@@ -25,7 +25,7 @@ describe('Component: Conversation', () => {
         CommonModule,
         NgxPermissionsModule.forRoot()
       ],
-      declarations: [InboxConversationComponent],
+      declarations: [InboxConversationComponent, DateCalendarPipe],
       providers: [
         I18nService,
         { provide: InboxConversationService, useClass: InboxConversationServiceMock },

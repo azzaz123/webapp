@@ -1111,6 +1111,9 @@
   <translation id="OrderYourCatalogBy">Ordena tu catálogo por</translation>
   <translation id="OrderBy">Ordenar por</translation>
   <translation id="ManageCatalogSubscription">Gestionar <ph name="INTERPOLATION"><ex>{{subscriptionSlot.category.name}}</ex>{{subscriptionSlot.category.name}}</ph></translation>
+  <translation id="ForgetThisChat"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>Mejor no sigas por aquí<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></translation>
+  <translation id="MaliciousConversationDescription">Esta persona incumplió las normas de convivencia. Te sugerimos que no hagas caso de sus indicaciones ni te comuniques con ella por vías ajenas a wallapop, puede tratarse de un intento de estafa.</translation>
+  <translation id="ExitConversation">Salir de la conversación</translation>
   <translation id="UploadConfirmationModalTitle">¡Genial! Tu producto ya está en wallapop</translation>
   <translation id="UploadConfirmationModalSubtitle">¿Quieres venderlo cuanto antes?</translation>
   <translation id="UploadConfirmationModalDescription">Marca como "urgente" el anuncio de tu producto. Durante 7 días se diferenciará del resto de productos y atraerá la atención de más compradores.</translation>

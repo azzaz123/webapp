@@ -23,7 +23,6 @@ import { AccessTokenService } from '../../core/http/access-token.service';
 import * as moment from 'moment';
 import { RealTimeServiceMock } from '../../../tests/real-time.fixtures.spec';
 import { RemoteConsoleService } from '../../core/remote-console';
-import { RemoteConsoleClientServiceMock } from '../../../tests/remote-console-service-client.fixtures.spec';
 import { I18nService } from 'app/core/i18n/i18n.service';
 import { ToastService } from 'app/layout/toast/toast.service';
 import { Toast } from 'app/layout/toast/toast.interface';
@@ -59,7 +58,7 @@ describe('InboxConversationService', () => {
             }
           }
         },
-        { provide: RemoteConsoleService, useClass: RemoteConsoleClientServiceMock },
+        { provide: RemoteConsoleService, useValue: { sendPresentationMessageTimeout: () => {} }},
         { provide: MessageService, useValue: { totalUnreadMessages: 0 } },
         { provide: UserService, useClass: MockedUserService },
         { provide: ItemService, useClass: MockedItemService },
