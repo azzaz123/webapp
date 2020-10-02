@@ -32,7 +32,8 @@ export class RemoteConsoleService implements OnDestroy {
     private deviceService: DeviceDetectorService,
     private userService: UserService,
     cookiesService: CookieService) {
-      this.deviceId = cookiesService.get(DEVICE_ID_COOKIE_NAME).replace(/-/g, '');
+      const deviceId = cookiesService.get(DEVICE_ID_COOKIE_NAME);
+      this.deviceId = deviceId ? deviceId.replace(/-/g, '') : UUID.UUID().replace(/-/g, '');
       this.sessionId = UUID.UUID();
   }
 
