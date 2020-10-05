@@ -7,13 +7,13 @@ import { InboxService, InboxConversationService } from './service';
 import { InboxConversation, PhoneMethod } from './model';
 import { UserService } from '../core/user/user.service';
 import { EventService } from '../core/event/event.service';
-import { AdService } from '../core/ad/ad.service';
 import { ActivatedRoute, Params } from '@angular/router';
-import { ConversationService } from '../core/conversation/conversation.service';
-import { isEmpty, isNil } from 'lodash-es';
+import { isNil } from 'lodash-es';
 import { TrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safety.service';
 import { SessionProfileDataLocation } from 'app/core/trust-and-safety/trust-and-safety.interface';
 import { SEARCHID_STORAGE_NAME } from '../core/message/real-time.service';
+import { NgbModalOptions, NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SendPhoneComponent } from './modals';
 
 @Component({
   selector: 'tsl-chat',
@@ -28,20 +28,17 @@ export class ChatComponent implements OnInit {
   public connectionError: boolean;
   public firstLoad: boolean;
   public isProfessional: boolean;
-  private archivedInboxReady: boolean;
 
   constructor(public userService: UserService,
               private eventService: EventService,
-              private adService: AdService,
               private route: ActivatedRoute,
-              private conversationService: ConversationService,
               private inboxService: InboxService,
               public inboxConversationService: InboxConversationService,
+              private modalService: NgbModal,
               private trustAndSafetyService: TrustAndSafetyService) {
     this.userService.isProfessional().subscribe((value: boolean) => {
       this.isProfessional = value;
     });
-    this.archivedInboxReady = false;
   }
 
   ngOnInit() {
@@ -68,9 +65,6 @@ export class ChatComponent implements OnInit {
     this.eventService.subscribe(EventService.INBOX_READY, (ready) => {
       this.openConversationIfNeeded();
     });
-    this.eventService.subscribe(EventService.ARCHIVED_INBOX_READY, (ready) => {
-      this.archivedInboxReady = ready;
-    });
   }
 
   public onLoad(event: any) {
@@ -89,6 +83,7 @@ export class ChatComponent implements OnInit {
     if (this.inboxConversationService.currentConversation || !this.inboxService.isInboxReady()) {
       return;
     }
+
 
     this.route.queryParams.subscribe((params: Params) => {
       const searchId = params.searchId;
@@ -131,6 +126,7 @@ export class ChatComponent implements OnInit {
       return;
     }
 
+
     // Try to find the conversation within the downloaded ones
     this.conversationsLoading = true;
     this.inboxConversationService.openConversationByItemId$(itemId).pipe(
@@ -141,17 +137,23 @@ export class ChatComponent implements OnInit {
       } else {
         this.conversationsLoading = false;
       }
-      if (conversation && isEmpty(conversation.messages)) {
-        this.getPhoneInfo(conversation);
+      if (conversation && conversation.hasNoMessages) {
+        this.openSendPhoneModalIfNeeded(conversation);
       }
     });
   }
 
-  private getPhoneInfo(conversation: InboxConversation): void {
+  private openSendPhoneModalIfNeeded(conversation: InboxConversation): void {
     this.userService.getPhoneInfo(conversation.user.id).subscribe(phoneInfo => {
       if (!isNil(phoneInfo) && phoneInfo.phone_method === PhoneMethod.POP_UP) {
-        this.conversationService.openPhonePopup(conversation, true);
+        this.openSendPhoneModal(conversation);
       }
     });
+  }
+
+  private openSendPhoneModal(conversation: InboxConversation) {
+    const modalOptions: NgbModalOptions = { windowClass: 'phone-request', backdrop: 'static', keyboard: false };
+    const modalRef: NgbModalRef = this.modalService.open(SendPhoneComponent, modalOptions);
+    modalRef.componentInstance.conversation = conversation;
   }
 }

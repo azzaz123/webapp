@@ -2,7 +2,7 @@
 import { from, empty, Observable, of } from 'rxjs';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { AdService } from '../core/ad/ad.service';
 import { I18nService } from '../core/i18n/i18n.service';
@@ -20,6 +20,7 @@ import { TrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safet
 import { MockTrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safety.fixtures.spec';
 import { SessionProfileDataLocation } from 'app/core/trust-and-safety/trust-and-safety.interface';
 import { SEARCHID_STORAGE_NAME } from '../core/message/real-time.service';
+import { SendPhoneComponent } from './modals';
 
 class MockUserService {
   public isProfessional() {
@@ -40,6 +41,7 @@ describe('Component: ChatComponent with ItemId', () => {
   let activatedRoute: ActivatedRoute;
   let inboxService: InboxService;
   let inboxConversationService: InboxConversationService;
+  let modalService: NgbModal;
   let trustAndSafetyService: TrustAndSafetyService;
 
   beforeEach(() => {
@@ -66,7 +68,8 @@ describe('Component: ChatComponent with ItemId', () => {
             }
           }
         },
-        { provide: TrustAndSafetyService, useValue: MockTrustAndSafetyService }
+        { provide: TrustAndSafetyService, useValue: MockTrustAndSafetyService },
+        NgbModal
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
@@ -79,6 +82,7 @@ describe('Component: ChatComponent with ItemId', () => {
     inboxService = TestBed.inject(InboxService);
     inboxConversationService = TestBed.inject(InboxConversationService);
     trustAndSafetyService = TestBed.inject(TrustAndSafetyService);
+    modalService = TestBed.inject(NgbModal);
     fixture.autoDetectChanges();
   });
 
@@ -222,6 +226,31 @@ describe('Component: ChatComponent with ItemId', () => {
       expect(inboxConversationService.currentConversation).toBeNull();
     });
   });
+
+  describe('when opening a conversation with no messages', () => {
+    beforeEach(() => {
+      const inboxConversationWithoutMessages = CREATE_MOCK_INBOX_CONVERSATION();
+      inboxConversationWithoutMessages.messages = [];
+      spyOn(inboxService, 'isInboxReady').and.returnValue(true);
+      spyOn(inboxConversationService, 'openConversationByItemId$').and.returnValue(of(inboxConversationWithoutMessages));
+    });
+
+    describe('and when the server notifies that seller is a car dealer', () => {
+      beforeEach(() => {
+        const MOCK_PHONE_INFO = { phone_method: 'qa' };
+        spyOn(userService, 'getPhoneInfo').and.returnValue(of(MOCK_PHONE_INFO));
+      });
+
+      it('should open a modal to send phone in chat', () => {
+        spyOn(modalService, 'open');
+        const expectedModalOptions: NgbModalOptions = { windowClass: 'phone-request', backdrop: 'static', keyboard: false };
+
+        component.ngOnInit();
+
+        expect(modalService.open).toHaveBeenCalledWith(SendPhoneComponent, expectedModalOptions);
+      });
+    });
+  });
 });
 
 describe('Component: ChatWithInboxComponent with ConversationId', () => {
@@ -259,6 +288,7 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
             }
           }
         },
+        NgbModal,
         { provide: TrustAndSafetyService, useValue: MockTrustAndSafetyService }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]

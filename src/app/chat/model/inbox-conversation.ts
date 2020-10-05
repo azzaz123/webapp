@@ -102,6 +102,10 @@ export class InboxConversation {
         return this._user.malicious;
     }
 
+    get hasNoMessages(): boolean {
+        return this.messages.length === 0;
+    }
+
     static errorConversationFromMessage(message: InboxMessage) {
         const user = InboxUserPlaceholder;
         const item = InboxItemPlaceholder;
