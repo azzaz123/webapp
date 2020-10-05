@@ -15,9 +15,9 @@ import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { I18nService } from '../../core/i18n/i18n.service';
-import { InboxConversationService, MessageService } from '../service';
+import { InboxConversationService } from '../service';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { ConversationServiceMock, MockRemoteConsoleService, DeviceDetectorServiceMock } from '../../../tests';
+import { MockRemoteConsoleService, InboxConversationServiceMock } from '../../../tests';
 import { RealTimeServiceMock } from '../../../tests/real-time.fixtures.spec';
 import { DateCalendarPipe } from 'app/shared/pipes';
 import { RemoteConsoleService } from '../../core/remote-console';
@@ -47,7 +47,7 @@ describe('CurrentConversationComponent', () => {
         NgbModal,
         { provide: RealTimeService, useClass: RealTimeServiceMock },
         { provide: TrackingService, useClass: MockTrackingService },
-        { provide: InboxConversationService, useClass: ConversationServiceMock },
+        { provide: InboxConversationService, useClass: InboxConversationServiceMock },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         I18nService
       ],

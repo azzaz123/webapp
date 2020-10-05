@@ -12,8 +12,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../tests/inbox.fixtures.spec';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { InboxConversationService, InboxService } from './service';
-import { ConversationService } from '../core/conversation/conversation.service';
-import { ConversationServiceMock, InboxConversationServiceMock, InboxServiceMock } from '../../tests';
+import { InboxConversationServiceMock, InboxServiceMock } from '../../tests';
 import { PhoneMethodResponse } from '../core/user/phone-method.interface';
 import { InboxConversation, MessageStatus } from './model';
 import { ChatComponent } from './chat.component';
@@ -49,7 +48,6 @@ describe('Component: ChatComponent with ItemId', () => {
       imports: [NgbModule, FormsModule, NgxPermissionsModule],
       providers: [
         ChatComponent,
-        { provide: ConversationService, useClass: ConversationServiceMock },
         { provide: InboxService, useClass: InboxServiceMock },
         { provide: UserService, useClass: MockUserService },
         { provide: InboxConversationService, useClass: InboxConversationServiceMock },
@@ -243,7 +241,6 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
       imports: [NgbModule, FormsModule, NgxPermissionsModule],
       providers: [
         ChatComponent,
-        { provide: ConversationService, useClass: ConversationServiceMock },
         { provide: InboxService, useClass: InboxServiceMock },
         { provide: UserService, useClass: MockUserService },
         { provide: InboxConversationService, useClass: InboxConversationServiceMock },
