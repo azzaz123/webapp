@@ -102,7 +102,7 @@ export class ChatComponent implements OnInit {
       }
 
       if (conversationId || itemId) {
-        this.trustAndSafetyService.submitProfileIfNeeded(SessionProfileDataLocation.OPEN_CHAT);
+        this.trustAndSafetyService.submitProfile(SessionProfileDataLocation.OPEN_CHAT);
       }
 
       if (searchId) {
