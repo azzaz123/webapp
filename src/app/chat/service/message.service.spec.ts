@@ -83,21 +83,4 @@ describe('Service: Message', () => {
       expect(realTime.sendMessage).toHaveBeenCalledWith(conversation, 'text');
     });
   });
-
-  describe('createPhoneNumberMessage', () => {
-    const phone = '+34912345678';
-    const conversation = MOCK_CONVERSATION();
-
-    beforeEach(() => {
-      spyOn(realTime, 'sendMessage');
-    });
-
-    it('should call realTime.sendMessage with the new message', () => {
-      const phoneMsg: any = i18n.getTranslations('phoneMessage') + phone;
-
-      service.createPhoneNumberMessage(conversation, phone);
-
-      expect(realTime.sendMessage).toHaveBeenCalledWith(conversation, phoneMsg);
-    });
-  });
 });
