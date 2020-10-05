@@ -10,6 +10,7 @@ import {
 import { UUID } from 'angular2-uuid';
 import { THREAT_METRIX_EMBED } from './threat-metrix-embed-script';
 import { ThreatMetrixLibrary } from './threat-metrix.interface';
+import { take } from 'rxjs/operators';
 
 export const USER_STARTER_ENDPOINT = `${environment.baseUrl}api/v3/users/me/starter`;
 
@@ -91,12 +92,13 @@ export class TrustAndSafetyService {
       platform: SessionProfileDataPlatform.WEB
     };
 
-    const subscription = this._profileSentToThreatMetrix.subscribe(profileSent => {
-      if (!profileSent) {
-        return;
-      }
-      this.http.post(USER_STARTER_ENDPOINT, profile).subscribe();
-      subscription.unsubscribe();
-    });
+    this._profileSentToThreatMetrix
+      .pipe(take(1))
+      .subscribe(profileSent => {
+        if (!profileSent) {
+          return;
+        }
+        this.http.post(USER_STARTER_ENDPOINT, profile).subscribe();
+      });
   }
 }
