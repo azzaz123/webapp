@@ -5,6 +5,18 @@ export const MOCK_OBJECT_TYPES = [{
     id: '2',
     name: 'object type 2'
   }];
+  export const MOCK_OBJECT_TYPES_WITH_CHILDREN = [{
+    id: '3',
+    name: 'object type 3',
+    has_children: true,
+    hierarchy: [],
+    children: MOCK_OBJECT_TYPES
+  }, {
+    id: '4',
+    name: 'object type 4',
+    has_children: false,
+    hierarchy: []
+  }];
   export const MOCK_OBJECT_TYPES_RESPONSE = [{
     value: '1',
     label: 'object type 1'
@@ -37,7 +49,7 @@ export const MOCK_OBJECT_TYPES = [{
     value: '57',
     label: '48'
   }];
-  
+
   export const MOCK_CONDITIONS = [
     {
       category_id: "16000",
@@ -74,7 +86,7 @@ export const MOCK_OBJECT_TYPES = [{
         }
       ]
     }];
-  
+
   export const MOCK_CONDITIONS_RESPONSE = [
     {
       value: "un_opened",

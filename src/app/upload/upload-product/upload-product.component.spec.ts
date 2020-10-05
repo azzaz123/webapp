@@ -1,5 +1,5 @@
-import { MOCK_CONDITIONS } from './../../../tests/extra-info.fixtures.spec';
-import { MOCK_ITEM_CELLPHONES } from './../../../tests/item.fixtures.spec';
+import { MOCK_CONDITIONS, MOCK_OBJECT_TYPES, MOCK_OBJECT_TYPES_RESPONSE, MOCK_OBJECT_TYPES_WITH_CHILDREN } from './../../../tests/extra-info.fixtures.spec';
+import { MOCK_ITEM_CELLPHONES, MOCK_ITEM_CELLPHONES_NO_SUBCATEGORY } from './../../../tests/item.fixtures.spec';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
@@ -120,7 +120,7 @@ describe('UploadProductComponent', () => {
         {
           provide: GeneralSuggestionsService, useValue: {
             getObjectTypes() {
-              return of({});
+              return of([]);
             },
             getBrands() {
               return of({});
@@ -132,10 +132,8 @@ describe('UploadProductComponent', () => {
               return of([{ brand: 'Apple', model: 'iPhone XSX' }, { brand: 'Samsung', model: 'Galaxy S20' }]);
             },
             getSizes() {
-              return of({
-                male: [{ id: 1, text: 'XXXS / 30 / 2' }],
-                female: [{ id: 18, text: 'XS / 30-32 / 40-42' }]
-              });
+              return of([{ value: "1", label: "XXXS / 30 / 2" },
+              { value: "2", label: "XXS / 32 / 4" }]);
             },
             getConditions() {
               return of({ MOCK_CONDITIONS })
@@ -189,6 +187,110 @@ describe('UploadProductComponent', () => {
         extra_info: {
           condition: null
         }
+      });
+    });
+
+    it('should set item with second subcategory', () => {
+      component.item = MOCK_ITEM_CELLPHONES;
+      spyOn(generalSuggestionsService, 'getObjectTypes').and.returnValue(of(MOCK_OBJECT_TYPES_WITH_CHILDREN));
+
+      component.ngOnInit();
+      component.getObjectTypes();
+      fixture.detectChanges();
+
+      expect(component.uploadForm.value).toEqual({
+        id: MOCK_ITEM_CELLPHONES.id,
+        title: MOCK_ITEM_CELLPHONES.title,
+        sale_price: MOCK_ITEM_CELLPHONES.salePrice,
+        currency_code: MOCK_ITEM_CELLPHONES.currencyCode,
+        description: MOCK_ITEM_CELLPHONES.description,
+        sale_conditions: MOCK_ITEM_CELLPHONES.saleConditions,
+        category_id: MOCK_ITEM_CELLPHONES.categoryId + '',
+        delivery_info: ITEM_DELIVERY_INFO,
+        images: [],
+        location: {
+          address: '',
+          latitude: '',
+          longitude: ''
+        },
+        extra_info: {
+          condition: null,
+          object_type: {
+            id: MOCK_OBJECT_TYPES_WITH_CHILDREN[0].id
+          },
+          brand: MOCK_ITEM_CELLPHONES.extraInfo.brand,
+          model: MOCK_ITEM_CELLPHONES.extraInfo.model,
+          object_type_2: {
+            id: MOCK_OBJECT_TYPES_WITH_CHILDREN[0].children[0].id
+          }
+        },
+      });
+    });
+    it('should not set second subcategory item if there are not category options', () => {
+      component.item = MOCK_ITEM_CELLPHONES;
+      spyOn(generalSuggestionsService, 'getObjectTypes').and.returnValue(of([]));
+
+      component.ngOnInit();
+      component.getObjectTypes();
+      fixture.detectChanges();
+
+      expect(component.uploadForm.value).toEqual({
+        id: MOCK_ITEM_CELLPHONES.id,
+        title: MOCK_ITEM_CELLPHONES.title,
+        sale_price: MOCK_ITEM_CELLPHONES.salePrice,
+        currency_code: MOCK_ITEM_CELLPHONES.currencyCode,
+        description: MOCK_ITEM_CELLPHONES.description,
+        sale_conditions: MOCK_ITEM_CELLPHONES.saleConditions,
+        category_id: MOCK_ITEM_CELLPHONES.categoryId + '',
+        delivery_info: ITEM_DELIVERY_INFO,
+        images: [],
+        location: {
+          address: '',
+          latitude: '',
+          longitude: ''
+        },
+        extra_info: {
+          condition: null,
+          object_type: {
+            id: MOCK_ITEM_CELLPHONES.extraInfo.object_type.id
+          },
+          brand: MOCK_ITEM_CELLPHONES.extraInfo.brand,
+          model: MOCK_ITEM_CELLPHONES.extraInfo.model,
+        },
+      });
+    });
+
+    it('should not set subcategory field if item do not have subcategory', () => {
+      component.item = MOCK_ITEM_CELLPHONES_NO_SUBCATEGORY;
+      spyOn(generalSuggestionsService, 'getObjectTypes').and.returnValue(of(MOCK_OBJECT_TYPES_WITH_CHILDREN));
+
+      component.ngOnInit();
+      component.getObjectTypes();
+      fixture.detectChanges();
+
+      expect(component.uploadForm.value).toEqual({
+        id: MOCK_ITEM_CELLPHONES.id,
+        title: MOCK_ITEM_CELLPHONES.title,
+        sale_price: MOCK_ITEM_CELLPHONES.salePrice,
+        currency_code: MOCK_ITEM_CELLPHONES.currencyCode,
+        description: MOCK_ITEM_CELLPHONES.description,
+        sale_conditions: MOCK_ITEM_CELLPHONES.saleConditions,
+        category_id: MOCK_ITEM_CELLPHONES.categoryId + '',
+        delivery_info: ITEM_DELIVERY_INFO,
+        images: [],
+        location: {
+          address: '',
+          latitude: '',
+          longitude: ''
+        },
+        extra_info: {
+          object_type: {
+            id: null,
+          },
+          condition: null,
+          brand: MOCK_ITEM_CELLPHONES.extraInfo.brand,
+          model: MOCK_ITEM_CELLPHONES.extraInfo.model,
+        },
       });
     });
 
@@ -311,6 +413,9 @@ describe('UploadProductComponent', () => {
       it('should enable the object_type field', () => {
         expect(component.uploadForm.get('extra_info').get('object_type').disabled).toBe(false);
       });
+      it('should require the object_type field', () => {
+        expect(component.uploadForm.get('extra_info').get('object_type').get('id').errors).toEqual({ required: true });
+      });
       it('should enable the brand field', () => {
         expect(component.uploadForm.get('extra_info').get('brand').disabled).toBe(false);
       });
@@ -332,17 +437,43 @@ describe('UploadProductComponent', () => {
       it('should enable the object_type field', () => {
         expect(component.uploadForm.get('extra_info').get('object_type').disabled).toBe(false);
       });
+      it('should require the object_type field', () => {
+        expect(component.uploadForm.get('extra_info').get('object_type').get('id').errors).toEqual({ required: true });
+      });
       it('should enable the brand field', () => {
         expect(component.uploadForm.get('extra_info').get('brand').disabled).toBe(false);
-      });
-      it('should enable the size field', () => {
-        expect(component.uploadForm.get('extra_info').get('size').disabled).toBe(false);
       });
       it('should enable the gender field', () => {
         expect(component.uploadForm.get('extra_info').get('gender').disabled).toBe(false);
       });
       it('should disable the model field', () => {
         expect(component.uploadForm.get('extra_info').get('model').disabled).toBe(true);
+      });
+      it('should enable the size field', () => {
+        component.uploadForm.patchValue({
+          category_id: CATEGORY_IDS.FASHION_ACCESSORIES,
+          extra_info: {
+            object_type: { id: 1 },
+            gender: 'M'
+          }
+        });
+        component.uploadForm.patchValue({
+          category_id: CATEGORY_IDS.FASHION_ACCESSORIES,
+        });
+        fixture.detectChanges();
+        expect(component.uploadForm.get('extra_info').get('size').disabled).toBe(false);
+      });
+      it('should disable the size field', () => {
+        component.uploadForm.patchValue({
+          extra_info: {
+            object_type: { id: null },
+          }
+        });
+        component.uploadForm.patchValue({
+          category_id: CATEGORY_IDS.FASHION_ACCESSORIES,
+        });
+        fixture.detectChanges();
+        expect(component.uploadForm.get('extra_info').get('size').disabled).toBe(true);
       });
     });
 
@@ -353,6 +484,9 @@ describe('UploadProductComponent', () => {
 
       it('should disable the object_type field', () => {
         expect(component.uploadForm.get('extra_info').get('object_type').disabled).toBe(true);
+      });
+      it('should not require the object_type field', () => {
+        expect(component.uploadForm.get('extra_info').get('object_type').get('id').errors).toBeNull;
       });
       it('should disable the brand field', () => {
         expect(component.uploadForm.get('extra_info').get('brand').disabled).toBe(true);
@@ -480,9 +614,105 @@ describe('UploadProductComponent', () => {
 
       expect(component.uploadForm.valid).toBeFalsy();
     });
+
+    it('should save the second level category', () => {
+      component.uploadForm.patchValue({
+        category_id: CATEGORY_IDS.SERVICES,
+        title: 'test',
+        description: 'test',
+        sale_price: 1000000,
+        currency_code: 'EUR',
+        images: [{ 'image': true }],
+        location: {
+          address: USER_LOCATION.full_address,
+          latitude: USER_LOCATION.approximated_latitude,
+          longitude: USER_LOCATION.approximated_longitude
+        },
+        extra_info: {
+          object_type: { id: 1 },
+          object_type_2: { id: 2 },
+        }
+      });
+      component.uploadForm.get('extra_info').get('object_type').enable();
+      component.uploadForm.get('extra_info').get('object_type_2').enable();
+
+      spyOn(component.uploadEvent, 'emit')
+
+      const expected = {
+        "type": "create",
+        "values":
+        {
+          "category_id": CATEGORY_IDS.SERVICES,
+          "currency_code": "EUR",
+          "delivery_info": null,
+          "description": "test",
+          "extra_info": {
+            "condition": null,
+            "object_type": { id: 2 }
+          },
+          "id": "",
+          "images": [{ "image": true }],
+          "location": { "address": "Carrer Sant Pere Mes Baix, Barcelona", "latitude": 41.399132621722174, "longitude": 2.17585484411869 },
+          "sale_conditions": { "exchange_allowed": false, "fix_price": false },
+          "sale_price": 1000000,
+          "title": "test"
+        }
+      }
+
+      component.onSubmit();
+      fixture.detectChanges();
+
+      expect(component.uploadEvent.emit).toHaveBeenCalledWith(expected);
+    });
+
+    it('should save the first level category', () => {
+      component.uploadForm.patchValue({
+        category_id: CATEGORY_IDS.SERVICES,
+        title: 'test',
+        description: 'test',
+        sale_price: 1000000,
+        currency_code: 'EUR',
+        images: [{ 'image': true }],
+        location: {
+          address: USER_LOCATION.full_address,
+          latitude: USER_LOCATION.approximated_latitude,
+          longitude: USER_LOCATION.approximated_longitude
+        },
+        extra_info: {
+          object_type: { id: 1 },
+        }
+      });
+      component.uploadForm.get('extra_info').get('object_type').enable();
+      spyOn(component.uploadEvent, 'emit')
+      const expected = {
+        "type": "create",
+        "values":
+        {
+          "category_id": CATEGORY_IDS.SERVICES,
+          "currency_code": "EUR",
+          "delivery_info": null,
+          "description": "test",
+          "extra_info": {
+            "condition": null,
+            "object_type": { id: 1 }
+          },
+          "id": "",
+          "images": [{ "image": true }],
+          "location": { "address": "Carrer Sant Pere Mes Baix, Barcelona", "latitude": 41.399132621722174, "longitude": 2.17585484411869 },
+          "sale_conditions": { "exchange_allowed": false, "fix_price": false },
+          "sale_price": 1000000,
+          "title": "test"
+        }
+      }
+
+      component.onSubmit();
+      fixture.detectChanges();
+
+      expect(component.uploadEvent.emit).toHaveBeenCalledWith(expected);
+    });
   });
 
-  describe('getObjectTypes', () => {
+  describe('when selecting a category', () => {
     it('should get the object types for the selected category', () => {
       component.uploadForm.patchValue({ category_id: CATEGORY_IDS.CELL_PHONES_ACCESSORIES });
       spyOn(generalSuggestionsService, 'getObjectTypes').and.callThrough();
@@ -490,6 +720,71 @@ describe('UploadProductComponent', () => {
       component.getObjectTypes();
 
       expect(generalSuggestionsService.getObjectTypes).toHaveBeenCalledWith(CATEGORY_IDS.CELL_PHONES_ACCESSORIES);
+    });
+
+    it('should get dropdown options', () => {
+      spyOn(generalSuggestionsService, 'getObjectTypes').and.returnValue(of(MOCK_OBJECT_TYPES));
+
+      component.getObjectTypes();
+      fixture.detectChanges();
+
+      expect(component.objectTypes).toEqual(MOCK_OBJECT_TYPES);
+      expect(component.objectTypesOptions).toEqual(MOCK_OBJECT_TYPES_RESPONSE);
+
+    });
+
+    it('should update form', () => {
+      spyOn(component, 'getExtraInfo').and.returnValue({})
+      spyOn(generalSuggestionsService, 'getObjectTypes').and.returnValue(of(MOCK_OBJECT_TYPES));
+      component.item = MOCK_ITEM;
+      component.uploadForm.patchValue({
+        category_id: CATEGORY_IDS.CELL_PHONES_ACCESSORIES,
+        extra_info: {
+          object_type: {
+            id: '365'
+          }
+        }
+      });
+
+      component.getObjectTypes();
+      fixture.detectChanges();
+
+      expect(component.getExtraInfo).toHaveBeenCalled();
+    });
+
+    it('should not update form', () => {
+      spyOn(component, 'getExtraInfo').and.returnValue({})
+      spyOn(generalSuggestionsService, 'getObjectTypes').and.returnValue(of(MOCK_OBJECT_TYPES));
+      component.uploadForm.patchValue({
+        category_id: CATEGORY_IDS.CELL_PHONES_ACCESSORIES,
+      });
+
+      component.getObjectTypes();
+      fixture.detectChanges();
+
+      expect(component.getExtraInfo).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('when selecting a subcategory', () => {
+    it('should get options for the selected subcategory with second level subcategories', () => {
+      component.objectTypes = MOCK_OBJECT_TYPES_WITH_CHILDREN;
+      const selectedId = 3;
+
+      component.getSecondObjectTypes(selectedId);
+
+      expect(component.objectTypesOptions2).toEqual(MOCK_OBJECT_TYPES_RESPONSE);
+      expect(component.uploadForm.get('extra_info').get('object_type_2').disabled).toBe(false);
+    });
+
+    it('should not get options for the selected subcategory without second level subcategories', () => {
+      component.objectTypes = MOCK_OBJECT_TYPES_WITH_CHILDREN;
+      const selectedId = 4;
+
+      component.getSecondObjectTypes(selectedId);
+
+      expect(component.objectTypesOptions2).toEqual([]);
+      expect(component.uploadForm.get('extra_info').get('object_type_2').disabled).toBe(true);
     });
   });
 
@@ -705,6 +1000,18 @@ describe('UploadProductComponent', () => {
     });
   });
 
+  describe('when categories ', () => {
+    it('should reset selected delivery value if clicked twice', () => {
+      spyOn(component.uploadForm.controls['delivery_info'], 'reset');
+
+      component.onDeliveryChange(ITEM_DELIVERY_INFO);
+      component.onDeliveryChange(ITEM_DELIVERY_INFO);
+
+      expect(component['oldDeliveryValue']).toBeUndefined();
+      expect(component.uploadForm.controls['delivery_info'].reset).toHaveBeenCalled();
+    });
+  });
+
   describe('preview', () => {
     beforeEach(fakeAsync(() => {
       spyOn(modalService, 'open').and.callThrough();
@@ -901,7 +1208,6 @@ describe('UploadProductComponent', () => {
         gender: null,
         condition: null
       };
-
       component.ngOnInit();
       component.resetAllExtraFields();
       fixture.detectChanges();

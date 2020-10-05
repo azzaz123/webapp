@@ -555,40 +555,44 @@
   <msg id="UploadProductCoachmarkPrice"><source>app/upload/upload-product/upload-product.component.html:56,58</source>
           Add a fair price and the category that best suits your item.
         </msg>
-  <msg id="uploadProductSubcategory"><source>app/upload/upload-product/upload-product.component.html:68,70</source>
-            Subcategory
-          </msg>
-  <msg id="uploadProductSubcategoryPlaceholder"><source>app/upload/upload-product/upload-product.component.html:72</source>Select a type</msg>
-  <msg id="uploadProductProductCondition"><source>app/upload/upload-product/upload-product.component.html:79</source>Product condition</msg>
-  <msg id="uploadProductProductConditionPlaceholder"><source>app/upload/upload-product/upload-product.component.html:81</source>Select a condition</msg>
-  <msg id="uploadProductDescription"><source>app/upload/upload-product/upload-product.component.html:94</source>Description</msg>
-  <msg id="uploadProductDescriptionPlaceholder"><source>app/upload/upload-product/upload-product.component.html:96</source>Add relevant information such as condition, model, color...</msg>
-  <msg id="uploadProductCoachmarkDescription"><source>app/upload/upload-product/upload-product.component.html:101</source>Every detail helps: so tell us more!</msg>
-  <msg id="uploadProductBrand"><source>app/upload/upload-product/upload-product.component.html:109</source><source>app/upload/upload-product/upload-product.component.html:119</source>Brand</msg>
-  <msg id="uploadProductModel"><source>app/upload/upload-product/upload-product.component.html:127</source>Model</msg>
-  <msg id="uploadProductSelectGender"><source>app/upload/upload-product/upload-product.component.html:135</source>Gender</msg>
-  <msg id="uploadProductSelectGenderPlaceholder"><source>app/upload/upload-product/upload-product.component.html:137</source>Select a gender</msg>
-  <msg id="uploadProductSelectSize"><source>app/upload/upload-product/upload-product.component.html:142</source>Size</msg>
-  <msg id="uploadProductSelectSizePlaceholder"><source>app/upload/upload-product/upload-product.component.html:145</source>Select a size</msg>
-  <msg id="uploadProductPhotos"><source>app/upload/upload-product/upload-product.component.html:156,158</source>
+  <msg id="uploadProductSubcategory"><source>app/upload/upload-product/upload-product.component.html:69,71</source>
+              Subcategory
+            </msg>
+  <msg id="uploadProductSubcategoryPlaceholder"><source>app/upload/upload-product/upload-product.component.html:73</source>Subcategory</msg>
+  <msg id="uploadProductSubcategory2"><source>app/upload/upload-product/upload-product.component.html:83,85</source>
+              Could you specify?
+            </msg>
+  <msg id="uploadProductSubcategory2Placeholder"><source>app/upload/upload-product/upload-product.component.html:87</source>Could you specify?</msg>
+  <msg id="uploadProductProductCondition"><source>app/upload/upload-product/upload-product.component.html:96</source>Product condition</msg>
+  <msg id="uploadProductProductConditionPlaceholder"><source>app/upload/upload-product/upload-product.component.html:98</source>Select a condition</msg>
+  <msg id="uploadProductDescription"><source>app/upload/upload-product/upload-product.component.html:112</source>Description</msg>
+  <msg id="uploadProductDescriptionPlaceholder"><source>app/upload/upload-product/upload-product.component.html:114</source>Add relevant information such as condition, model, color...</msg>
+  <msg id="uploadProductCoachmarkDescription"><source>app/upload/upload-product/upload-product.component.html:119</source>Every detail helps: so tell us more!</msg>
+  <msg id="uploadProductBrand"><source>app/upload/upload-product/upload-product.component.html:127</source><source>app/upload/upload-product/upload-product.component.html:137</source>Brand</msg>
+  <msg id="uploadProductModel"><source>app/upload/upload-product/upload-product.component.html:145</source>Model</msg>
+  <msg id="uploadProductSelectGender"><source>app/upload/upload-product/upload-product.component.html:153</source>Gender</msg>
+  <msg id="uploadProductSelectGenderPlaceholder"><source>app/upload/upload-product/upload-product.component.html:155</source>Select a gender</msg>
+  <msg id="uploadProductSelectSize"><source>app/upload/upload-product/upload-product.component.html:160</source>Size</msg>
+  <msg id="uploadProductSelectSizePlaceholder"><source>app/upload/upload-product/upload-product.component.html:162</source>Select a size</msg>
+  <msg id="uploadProductPhotos"><source>app/upload/upload-product/upload-product.component.html:173,175</source>
           Photos
         </msg>
-  <msg id="uploadProductCoachmarkPictures"><source>app/upload/upload-product/upload-product.component.html:165,168</source>
+  <msg id="uploadProductCoachmarkPictures"><source>app/upload/upload-product/upload-product.component.html:182,185</source>
         You can drag and drop your photos here. Select and drag to change the
         order. Max 10MB. We accept only .jpg images.
       </msg>
-  <msg id="uploadProductShipping"><source>app/upload/upload-product/upload-product.component.html:179</source>Shipping</msg>
-  <msg id="uploadProductShippingDescription"><source>app/upload/upload-product/upload-product.component.html:184,186</source>
+  <msg id="uploadProductShipping"><source>app/upload/upload-product/upload-product.component.html:196</source>Shipping</msg>
+  <msg id="uploadProductShippingDescription"><source>app/upload/upload-product/upload-product.component.html:201,203</source>
             You can send (almost) anything through wallapop. And it&apos;s free for you!
           </msg>
-  <msg id="uploadProductCoachmarkShipping"><source>app/upload/upload-product/upload-product.component.html:205,208</source>
+  <msg id="uploadProductCoachmarkShipping"><source>app/upload/upload-product/upload-product.component.html:222,225</source>
         Tell us how much your product weighs. Remember that the sum of the
         length, height and width can not exceed 270cm.
       </msg>
-  <msg id="uploadProductSubmitItem"><source>app/upload/upload-product/upload-product.component.html:219</source>Post Ad</msg>
-  <msg id="uploadProductSubmitUpdate"><source>app/upload/upload-product/upload-product.component.html:220</source>Update</msg>
-  <msg id="uploadProductSubmitLoading"><source>app/upload/upload-product/upload-product.component.html:221</source>Uploading... <ph name="INTERPOLATION"><ex>{{ uploadCompletedPercentage }}</ex>{{ uploadCompletedPercentage }}</ph>%</msg>
-  <msg id="uploadProductPreview"><source>app/upload/upload-product/upload-product.component.html:226,228</source>
+  <msg id="uploadProductSubmitItem"><source>app/upload/upload-product/upload-product.component.html:236</source>Post Ad</msg>
+  <msg id="uploadProductSubmitUpdate"><source>app/upload/upload-product/upload-product.component.html:237</source>Update</msg>
+  <msg id="uploadProductSubmitLoading"><source>app/upload/upload-product/upload-product.component.html:238</source>Uploading... <ph name="INTERPOLATION"><ex>{{ uploadCompletedPercentage }}</ex>{{ uploadCompletedPercentage }}</ph>%</msg>
+  <msg id="uploadProductPreview"><source>app/upload/upload-product/upload-product.component.html:243,245</source>
         How does it look?
       </msg>
   <msg id="4601810369894625886"><source>app/upload/upload-realestate/upload-realestate.component.html:6</source>Information about your property</msg>

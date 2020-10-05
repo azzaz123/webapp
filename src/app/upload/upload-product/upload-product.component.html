@@ -59,34 +59,52 @@
       </ng-template>
     </div>
 
-    <div class="row" formGroupName="extra_info">
-      <div class="col-12 col-md-6">
-        <div class="form-group" formGroupName="object_type">
-          <label for="objectType" *ngIf="selectedRawCategory?.fields.type_of_object">
-            {{selectedRawCategory.fields.type_of_object.title}}
-          </label>
-          <label for="objectType" i18n="@@uploadProductSubcategory" *ngIf="!selectedRawCategory?.fields.type_of_object">
-            Subcategory
-          </label>
-          <ng-select class="form-control" [disabled]="!objectTypes?.length" formControlName="id" id="objectType"
-            i18n-placeholder="@@uploadProductSubcategoryPlaceholder" placeholder="Select a type" [options]="objectTypes" noFilter="10"
-            (selected)="resetCommonExtraFields()">
-          </ng-select>
+    <ng-container formGroupName="extra_info">
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <div class="form-group" formGroupName="object_type">
+            <label for="objectType" *ngIf="selectedRawCategory?.fields.type_of_object">
+              {{selectedRawCategory.fields.type_of_object.title}}
+            </label>
+            <label for="objectType" i18n="@@uploadProductSubcategory" *ngIf="!selectedRawCategory?.fields.type_of_object">
+              Subcategory
+            </label>
+            <ng-select class="form-control" [disabled]="!objectTypesOptions?.length" formControlName="id" id="objectType"
+              i18n-placeholder="@@uploadProductSubcategoryPlaceholder" placeholder="Subcategory" [options]="objectTypesOptions" noFilter="10"
+              (selected)="resetCommonExtraFields()">
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="form-group" formGroupName="object_type_2">
+            <label for="objectType2" *ngIf="selectedRawCategory?.fields.type_of_object_level_2">
+              {{selectedRawCategory.fields.type_of_object_level_2.title}}
+            </label>
+            <label for="objectType2" i18n="@@uploadProductSubcategory2" *ngIf="!selectedRawCategory?.fields.type_of_object_level_2">
+              Could you specify?
+            </label>
+            <ng-select class="form-control" formControlName="id" id="objectType2"
+              i18n-placeholder="@@uploadProductSubcategory2Placeholder" placeholder="Could you specify?" [options]="objectTypesOptions2" noFilter="10">
+            </ng-select>
+          </div>
         </div>
       </div>
-      <div class="col-12 col-md-6">
-        <div class="form-group">
-          <label for="conditions" i18n="@@uploadProductProductCondition">Product condition</label>
-          <ng-select class="form-control" [disabled]="!conditions?.length" formControlName="condition" id="conditions"
-            i18n-placeholder="@@uploadProductProductConditionPlaceholder" placeholder="Select a condition" [options]="conditions">
-            <ng-template #optionTemplate let-option="option">
-              {{ option?.label }}
-              <span class="option-description">{{ option?.description }}</span>
-            </ng-template>
-          </ng-select>
+
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+            <label for="conditions" i18n="@@uploadProductProductCondition">Product condition</label>
+            <ng-select class="form-control" [disabled]="!conditions?.length" formControlName="condition" id="conditions"
+              i18n-placeholder="@@uploadProductProductConditionPlaceholder" placeholder="Select a condition" [options]="conditions">
+              <ng-template #optionTemplate let-option="option">
+                {{ option?.label }}
+                <span class="option-description">{{ option?.description }}</span>
+              </ng-template>
+            </ng-select>
+          </div>
         </div>
       </div>
-    </div>
+    </ng-container>
 
     <div class="row" [ngbPopover]="coachmarkDescription" [autoClose]="false" popoverClass="ml-3">
       <div class="col-12">
@@ -141,7 +159,6 @@
         <div class="form-group last" formGroupName="size">
           <label for="size" i18n="@@uploadProductSelectSize">Size</label>
           <ng-select class="form-control"
-            [disabled]="isDisabledSize()"
             formControlName="id" id="fashionSizes" i18n-placeholder="@@uploadProductSelectSizePlaceholder" placeholder="Select a size" [options]="sizes"
             noFilter="10"></ng-select>
         </div>

@@ -1108,6 +1108,7 @@
   <translation id="UploadProductHeadline">¿Qué estás vendiendo?</translation>
   <translation id="uploadProductSelectGenderPlaceholder">Selecciona un género</translation>
   <translation id="uploadProductSubcategory">Subcategoría</translation>
+    <translation id="uploadProductSubcategory2">¿Podrías especificar?</translation>
   <translation id="UploadProductTitle">Información de tu producto</translation>
   <translation id="uploadProductModel">Modelo</translation>
   <translation id="UploadProductCurrency">Moneda</translation>
@@ -1121,7 +1122,8 @@
   <translation id="uploadProductSubmitUpdate">Actualizar</translation>
   <translation id="uploadProductSubmitItem">Subir producto</translation>
   <translation id="uploadProductSelectGender">Sexo</translation>
-  <translation id="uploadProductSubcategoryPlaceholder">Selecciona un tipo</translation>
+  <translation id="uploadProductSubcategoryPlaceholder">Subcategoría</translation>
+    <translation id="uploadProductSubcategory2Placeholder">¿Podrías especificar?</translation>
   <translation id="uploadProductBrand">Marca</translation>
   <translation id="uploadProductSelectSize">Talla</translation>
   <translation id="uploadProductSelectSizePlaceholder">Selecciona una talla</translation>
