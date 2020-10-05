@@ -16,6 +16,7 @@ import {
 } from '../analytics/analytics-constants';
 import { ConnectionService } from '../connection/connection.service';
 import { ConnectionType } from '../remote-console/connection-type';
+import { I18nService } from '../i18n/i18n.service';
 
 export const SEARCHID_STORAGE_NAME = 'searchId';
 
@@ -27,6 +28,7 @@ export class RealTimeService {
               private trackingService: TrackingService,
               private remoteConsoleService: RemoteConsoleService,
               private analyticsService: AnalyticsService,
+              private i18n: I18nService,
               private connectionService: ConnectionService) {
     this.subscribeEventMessageSent();
     this.subscribeConnectionRestored();
@@ -94,6 +96,14 @@ export class RealTimeService {
     this.xmpp.sendConversationStatus(to, thread);
     this.eventService.emit(EventService.CHAT_SIGNAL,
       new ChatSignal(ChatSignalType.READ, thread, new Date().getTime(), null, true));
+  }
+
+  public addPhoneNumberMessageToConversation(conversation: InboxConversation, phone: string) {
+    const message = `${this.i18n.getTranslations('phoneMessage')}${phone}`;
+    if (conversation.hasNoMessages) {
+      this.trackSendFirstMessage(conversation);
+    }
+    this.sendMessage(conversation, message);
   }
 
   private subscribeEventMessageSent() {
