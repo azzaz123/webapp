@@ -436,7 +436,7 @@ describe('RealTimeService', () => {
 
   describe('addPhoneNumberMessageToConversation', () => {
     const phone = '+34912345678';
-    const inboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE();
+    const inboxConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE();
 
     beforeEach(() => {
       spyOn(service, 'sendMessage');
@@ -446,11 +446,14 @@ describe('RealTimeService', () => {
       const phoneMsg = `${i18nService.getTranslations('phoneMessage')}${phone}`;
 
       service.addPhoneNumberMessageToConversation(inboxConversation, phone);
+      eventService.emit(EventService.MESSAGE_SENT, MOCKED_CONVERSATIONS[0], 'newMsgId');
 
       expect(service.sendMessage).toHaveBeenCalledWith(inboxConversation, phoneMsg);
     });
 
     describe('when the conversation has no messages', () => {
+      beforeEach(() => inboxConversation.messages = []);
+
       it('should track first message event to analytics', () => {
         spyOn(analyticsService, 'trackEvent');
         const expectedEvent: AnalyticsEvent<SendFirstMessage> = {
@@ -466,6 +469,10 @@ describe('RealTimeService', () => {
         };
 
         service.addPhoneNumberMessageToConversation(inboxConversation, phone);
+        const inboxMessage = new InboxMessage('newMsgId', inboxConversation.id, phone, USER_ID, true, new Date(),
+          MessageStatus.SENT, MessageType.TEXT);
+        inboxConversation.messages.push(inboxMessage);
+        eventService.emit(EventService.MESSAGE_SENT, inboxConversation, 'newMsgId');
 
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
       });

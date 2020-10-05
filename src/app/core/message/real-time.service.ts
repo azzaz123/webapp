@@ -100,15 +100,11 @@ export class RealTimeService {
 
   public addPhoneNumberMessageToConversation(conversation: InboxConversation, phone: string) {
     const message = `${this.i18n.getTranslations('phoneMessage')}${phone}`;
-    if (conversation.hasNoMessages) {
-      this.trackSendFirstMessage(conversation);
-    }
     this.sendMessage(conversation, message);
   }
 
   private subscribeEventMessageSent() {
     this.eventService.subscribe(EventService.MESSAGE_SENT, (conversation: InboxConversation, messageId: string) => {
-
       if (this.isFirstMessage(conversation)) {
         this.trackConversationCreated(conversation, messageId);
         this.trackSendFirstMessage(conversation);
