@@ -4,7 +4,7 @@ import { map, tap, mergeMap } from 'rxjs/operators';
 import { clone, eq, remove, includes } from 'lodash-es';
 import { Injectable } from '@angular/core';
 import { EventService } from '../event/event.service';
-import { XmppBodyMessage, XMPPClient, JID, XmppError } from './xmpp.interface';
+import { XmppBodyMessage, XMPPClient, JID } from './xmpp.interface';
 import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
 import { ChatSignal, ChatSignalType } from '../../chat/model';
@@ -165,7 +165,6 @@ export class XmppService {
     this.client.on('disconnected', () => {
       this.clientConnected = false;
       this.remoteConsoleService.sendXmppConnectionClosedWithError();
-      this.remoteConsoleService.sendConnectionChatFailed('xmpp');
       console.warn('Client disconnected');
       this.eventService.emit(EventService.CHAT_RT_DISCONNECTED);
     });

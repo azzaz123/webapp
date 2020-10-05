@@ -15,6 +15,7 @@ import {
   SendFirstMessage
 } from '../analytics/analytics-constants';
 import { ConnectionService } from '../connection/connection.service';
+import { ConnectionType } from '../remote-console/connection-type';
 
 export const SEARCHID_STORAGE_NAME = 'searchId';
 
@@ -37,11 +38,11 @@ export class RealTimeService {
     if (this.connectionService.isConnected && !this.xmpp.clientConnected) {
       let startTimestamp = Date.now();
       this.xmpp.connect$(userId, accessToken).subscribe(() => {
-        this.remoteConsoleService.sendConnectionChatTimeout('xmpp', true);
+        this.remoteConsoleService.sendChatConnectionTime(ConnectionType.XMPP, true);
         this.remoteConsoleService.sendConnectionTimeout(userId, Date.now() - startTimestamp);
         startTimestamp = null;
       }, () => {
-        this.remoteConsoleService.sendConnectionChatTimeout('xmpp', false);
+        this.remoteConsoleService.sendChatConnectionTime(ConnectionType.XMPP, false);
       });
     }
   }

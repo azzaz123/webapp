@@ -22,6 +22,8 @@ import { ThirdVoiceDropPriceComponent } from '../message/third-voice-drop-price'
 import { ThirdVoiceReviewComponent } from '../message/third-voice-review';
 import { RemoteConsoleService } from '../../core/remote-console';
 import { delay } from 'rxjs/operators';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { MaliciousConversationModalComponent } from '../modals/malicious-conversation-modal/malicious-conversation-modal.component';
 
 @Component({
   selector: 'tsl-current-conversation',
@@ -53,10 +55,11 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   public isTopBarExpanded = false;
 
   constructor(private eventService: EventService,
-              private i18n: I18nService,
+              i18n: I18nService,
               private realTime: RealTimeService,
               private inboxConversationService: InboxConversationService,
-              private remoteConsoleService: RemoteConsoleService) {
+              private remoteConsoleService: RemoteConsoleService,
+              private modalService: NgbModal) {
     this.momentConfig = i18n.getTranslations('defaultDaysMomentConfig');
   }
 
@@ -91,9 +94,11 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    const { currentConversation } = changes;
     this.scrollHeight = 0;
     this.scrollLocalPosition = 0;
-    if (changes['currentConversation']) {
+    if (currentConversation) {
+      this.openMaliciousConversationModal();
       this.isConversationChanged = true;
       this.isTopBarExpanded = this.currentConversation && isEmpty(this.currentConversation.messages);
     }
@@ -214,8 +219,35 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   }
 
   private sendMetricMessageSendFailed(description: string): void {
+    if (!this.currentConversation) {
+      return;
+    }
+
     this.currentConversation.messages
       .filter(message => message.status === MessageStatus.PENDING)
       .forEach(message => this.remoteConsoleService.sendMessageAckFailed(message.id, description));
+  }
+
+  private openMaliciousConversationModal(): void {
+    if (!this.currentConversation?.isFromMaliciousUser) {
+      return;
+    }
+
+    this.modalService.open(MaliciousConversationModalComponent, { windowClass: 'warning' })
+    .result
+      .then(() => this.handleUserConfirmsMaliciousModal())
+      .catch(() => this.trackDismissMaliciousModal());
+  }
+
+  private handleUserConfirmsMaliciousModal(): void {
+    this.inboxConversationService.currentConversation = null;
+    this.trackClickMaliciousModalCTAButton();
+  }
+
+  // TODO: TNS-925 - https://wallapop.atlassian.net/browse/TNS-925
+  private trackClickMaliciousModalCTAButton() {
+  }
+
+  private trackDismissMaliciousModal() {
   }
 }
