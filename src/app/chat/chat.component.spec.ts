@@ -181,13 +181,13 @@ describe('Component: ChatComponent with ItemId', () => {
     });
 
     it('should delegate profiling to trust and safety team', () => {
-      spyOn(trustAndSafetyService, 'submitProfileIfNeeded');
+      spyOn(trustAndSafetyService, 'submitProfile');
       spyOn(inboxService, 'isInboxReady').and.returnValue(true);
 
       component.ngOnInit();
 
-      expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledTimes(1);
-      expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledWith(SessionProfileDataLocation.OPEN_CHAT);
+      expect(trustAndSafetyService.submitProfile).toHaveBeenCalledTimes(1);
+      expect(trustAndSafetyService.submitProfile).toHaveBeenCalledWith(SessionProfileDataLocation.OPEN_CHAT);
     });
 
     it('should save searchId if link contains searchId', () => {
@@ -294,13 +294,13 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
     });
 
     it('should delegate profiling to trust and safety team', () => {
-      spyOn(trustAndSafetyService, 'submitProfileIfNeeded');
+      spyOn(trustAndSafetyService, 'submitProfile');
       spyOn(inboxService, 'isInboxReady').and.returnValue(true);
 
       component.ngOnInit();
 
-      expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledTimes(1);
-      expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledWith(SessionProfileDataLocation.OPEN_CHAT);
+      expect(trustAndSafetyService.submitProfile).toHaveBeenCalledTimes(1);
+      expect(trustAndSafetyService.submitProfile).toHaveBeenCalledWith(SessionProfileDataLocation.OPEN_CHAT);
     });
   });
 });
