@@ -296,6 +296,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         if (+this.uploadForm.get('category_id').value === CATEGORY_IDS.FASHION_ACCESSORIES) {
           this.getSizes();
         }
+      } else {
+        this.clearSecondObjectTypes();
       }
     });
     this.getUploadExtraInfoControl('gender').valueChanges.subscribe((gender: string) => {
@@ -540,7 +542,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   getSecondObjectTypes(id: number): void {
-    this.objectTypesOptions2 = [];
+    this.clearSecondObjectTypes();
     const secondObjectType: SimpleObjectType[] = this.objectTypes.find(objectType => objectType.id === id.toString() && objectType.has_children)?.children;
     if (secondObjectType) {
       this.objectTypesOptions2 = secondObjectType
@@ -549,9 +551,12 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           label: type.name
         }));
       this.getUploadExtraInfoControl('object_type_2').enable()
-    } else {
-      this.getUploadExtraInfoControl('object_type_2').disable()
     }
+  }
+
+  clearSecondObjectTypes() {
+    this.objectTypesOptions2 = [];
+    this.getUploadExtraInfoControl('object_type_2').disable();
   }
 
   public autoCompleteCellphonesModel(brandModelObj: BrandModel): void {
