@@ -42,13 +42,16 @@ describe('TrustAndSafetyService', () => {
   });
 
   describe('when submitting profile', () => {
-    it('should inject ThreatMetrix with SDK in the DOM', () => {
+    it('should inject ThreatMetrix SDK in the browser', () => {
+      spyOn(document.head, 'appendChild').and.callThrough();
+
       service.submitProfile(SessionProfileDataLocation.OPEN_CHAT);
 
       expect(window['mockThreatMetrixEmbed']).toBe(true);
+      expect(document.head.appendChild).toHaveBeenCalledTimes(1);
     });
 
-    it('should send valid information to wallapop server only once with same identifier', fakeAsync(() => {
+    it('should send valid information to wallapop server with same identifier', fakeAsync(() => {
       const expectedBody: SessionProfileData = {
         id: mockUUID,
         location: SessionProfileDataLocation.OPEN_CHAT,
@@ -65,6 +68,22 @@ describe('TrustAndSafetyService', () => {
       expect(postStarterRequest.request.method).toBe('POST');
       expect(postStarterRequest.request.body).toEqual(expectedBody);
     }));
+
+    describe('and when submitting again the profile', () => {
+      it('should not load the ThreatMetrix SDK again', fakeAsync(() => {
+        spyOn(document.head, 'appendChild').and.callThrough();
+
+        service.submitProfile(SessionProfileDataLocation.OPEN_CHAT);
+        tick(1000);
+        mockThreatMetrixSDKProfileSentCallback();
+        tick(1000);
+        httpMock.expectOne(USER_STARTER_ENDPOINT).flush({});
+        service.submitProfile(SessionProfileDataLocation.OPEN_CHAT);
+        httpMock.expectOne(USER_STARTER_ENDPOINT).flush({});
+
+        expect(document.head.appendChild).toHaveBeenCalledTimes(1);
+      }));
+    });
 
     describe('and when the environment is production', () => {
       beforeEach(() => {
