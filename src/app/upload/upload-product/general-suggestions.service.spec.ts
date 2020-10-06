@@ -8,7 +8,7 @@ import { I18nService } from '../../core/i18n/i18n.service';
 import { CATEGORY_IDS } from '../../core/category/category-ids';
 import { environment } from '../../../environments/environment';
 import { TestRequest, HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
-import { MOCK_OBJECT_TYPES, MOCK_OBJECT_TYPES_RESPONSE, MOCK_BRAND } from '../../../tests/extra-info.fixtures.spec';
+import { MOCK_OBJECT_TYPES, MOCK_BRAND } from '../../../tests/extra-info.fixtures.spec';
 
 describe('GeneralSuggestionsService', () => {
 

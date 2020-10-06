@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { IOption } from 'ng-select';
 import { Brand, BrandModel, Model, SizesResponse, Size, ObjectType } from '../brand-model.interface';
 import { I18nService } from '../../core/i18n/i18n.service';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { ConditionsResponse, Condition } from '../condition.interface';
 

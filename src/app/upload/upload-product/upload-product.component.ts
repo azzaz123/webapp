@@ -245,7 +245,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     });
   }
 
-  getExtraInfo(): any {
+  public getExtraInfo(): any {
     if (!this.item.extraInfo) return {};
     const objectTypeId = this.item.extraInfo.object_type?.id;
     if (objectTypeId) {
@@ -372,7 +372,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     }
   }
 
-  public parseUploadForm() {
+  private parseUploadForm(): any {
     const values = cloneDeep(this.uploadForm.value);
     if (values.extra_info.object_type?.id && values.extra_info.object_type_2?.id) {
       values.extra_info.object_type.id = values.extra_info.object_type_2.id
@@ -537,7 +537,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     });
   }
 
-  getSecondObjectTypes(id: number): void {
+  public getSecondObjectTypes(id: number): void {
     this.clearSecondObjectTypes();
     const secondObjectType: SimpleObjectType[] = this.objectTypes.find(objectType => objectType.id === id.toString() && objectType.has_children)?.children;
     if (secondObjectType) {
@@ -550,7 +550,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     }
   }
 
-  clearSecondObjectTypes() {
+  private clearSecondObjectTypes(): void {
     this.objectTypesOptions2 = [];
     this.getUploadExtraInfoControl('object_type_2').disable();
   }
