@@ -3,17 +3,17 @@
   font-family: Wallie, Helvetica, serif !important;
 
   .ab-message-text {
-    font-size: 16px !important;
+    font-size: $font-size-m !important;
 
     .ab-message-header {
-      font-size: 20px !important;
+      font-size: $font-size-l !important;
     }
 
   }
 
   .ab-message-button {
     border-radius: 6px !important;
-    font-size: 13px !important;
+    font-size: $font-size-xs !important;
   }
 
 }
