@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Lead } from '../../core/conversation/lead';
-import { ConversationService } from '../../core/conversation/conversation.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { Observable } from 'rxjs';
 import { Call } from '../../core/conversation/calls';

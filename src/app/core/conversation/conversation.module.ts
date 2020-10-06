@@ -1,6 +1,5 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { MessageService } from '../../chat/service';
-import { ConversationService } from './conversation.service';
 import { CommonModule } from '@angular/common';
 import { ItemModule } from '../item/item.module';
 import { MatIconModule } from '@angular/material';
@@ -33,7 +32,6 @@ export class ConversationModule {
     return {
       ngModule: ConversationModule,
       providers: [
-        ConversationService,
         MessageService,
         CallsService
       ]

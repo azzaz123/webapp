@@ -32,4 +32,7 @@ export class InboxConversationServiceMock {
   addPhoneNumberToConversation$(inboxConversation: InboxConversation, phoneNumber: string): Observable<any> {
     return empty();
   }
+
+  loadMoreMessages() {
+  }
 }

@@ -27,6 +27,7 @@ import {
   MOCK_INBOX_CONVERSATION
 } from '../../../tests/inbox.fixtures.spec';
 import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '../../chat/model';
+import { I18nService } from '../i18n/i18n.service';
 
 let service: RealTimeService;
 let eventService: EventService;
@@ -35,6 +36,7 @@ let trackingService: TrackingService;
 let remoteConsoleService: RemoteConsoleService;
 let analyticsService: AnalyticsService;
 let connectionService: ConnectionService;
+let i18nService: I18nService;
 
 describe('RealTimeService', () => {
   beforeEach(() => {
@@ -46,7 +48,8 @@ describe('RealTimeService', () => {
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         { provide: AnalyticsService, useClass: MockAnalyticsService },
-        { provide: ConnectionService, useClass: MockConnectionService }
+        { provide: ConnectionService, useClass: MockConnectionService },
+        I18nService
       ]
     });
 
@@ -57,6 +60,7 @@ describe('RealTimeService', () => {
     remoteConsoleService = TestBed.inject(RemoteConsoleService);
     analyticsService = TestBed.inject(AnalyticsService);
     connectionService = TestBed.inject(ConnectionService);
+    i18nService = TestBed.inject(I18nService);
     appboy.initialize(environment.appboy);
   });
 
@@ -426,6 +430,51 @@ describe('RealTimeService', () => {
         eventService.emit(EventService.MESSAGE_SENT, MOCKED_CONVERSATIONS[0], 'newMsgId');
 
         expect(analyticsService.trackEvent).not.toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('addPhoneNumberMessageToConversation', () => {
+    const phone = '+34912345678';
+    const inboxConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE();
+
+    beforeEach(() => {
+      spyOn(service, 'sendMessage');
+    });
+
+    it('should add the phone number as a message to the conversation', () => {
+      const phoneMsg = `${i18nService.getTranslations('phoneMessage')}${phone}`;
+
+      service.addPhoneNumberMessageToConversation(inboxConversation, phone);
+      eventService.emit(EventService.MESSAGE_SENT, MOCKED_CONVERSATIONS[0], 'newMsgId');
+
+      expect(service.sendMessage).toHaveBeenCalledWith(inboxConversation, phoneMsg);
+    });
+
+    describe('when the conversation has no messages', () => {
+      beforeEach(() => inboxConversation.messages = []);
+
+      it('should track first message event to analytics', () => {
+        spyOn(analyticsService, 'trackEvent');
+        const expectedEvent: AnalyticsEvent<SendFirstMessage> = {
+          name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            itemId: inboxConversation.item.id,
+            sellerUserId: inboxConversation.user.id,
+            conversationId: inboxConversation.id,
+            screenId: SCREEN_IDS.Chat,
+            categoryId: inboxConversation.item.categoryId
+          }
+        };
+
+        service.addPhoneNumberMessageToConversation(inboxConversation, phone);
+        const inboxMessage = new InboxMessage('newMsgId', inboxConversation.id, phone, USER_ID, true, new Date(),
+          MessageStatus.SENT, MessageType.TEXT);
+        inboxConversation.messages.push(inboxMessage);
+        eventService.emit(EventService.MESSAGE_SENT, inboxConversation, 'newMsgId');
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
       });
     });
   });

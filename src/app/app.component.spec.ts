@@ -5,7 +5,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HaversineService } from 'ng2-haversine';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { ConversationService } from './core/conversation/conversation.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie';
 import { UUID } from 'angular2-uuid';
@@ -43,7 +42,6 @@ let notificationService: NotificationService;
 let messageService: MessageService;
 let titleService: Title;
 let trackingService: TrackingService;
-let conversationService: ConversationService;
 let callsService: CallsService;
 let cookieService: CookieService;
 let connectionService: ConnectionService;
@@ -136,17 +134,6 @@ describe('App', () => {
         }
         },
         {
-          provide: ConversationService, useValue: {
-          init() {
-            return of();
-          },
-          handleNewMessages() {},
-          resetCache() {},
-          syncItem() {},
-          processChatSignal() {}
-        }
-        },
-        {
           provide: CallsService, useValue: {
             init() {
               return of();
@@ -205,7 +192,6 @@ describe('App', () => {
     messageService = TestBed.inject(MessageService);
     titleService = TestBed.inject(Title);
     trackingService = TestBed.inject(TrackingService);
-    conversationService = TestBed.inject(ConversationService);
     callsService = TestBed.inject(CallsService);
     cookieService = TestBed.inject(CookieService);
     connectionService = TestBed.inject(ConnectionService);
