@@ -1,11 +1,8 @@
-export interface UserStarterResponse {
-  starter: boolean;
-}
-
 export enum SessionProfileDataLocation  {
   OPEN_CHAT = 'OpenChat',
   OPEN_CREATE_LISTING = 'OpenCreateListing'
 }
+
 export enum SessionProfileDataPlatform {
   ANDROID = 'Android',
   IOS = 'IOS',

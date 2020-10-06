@@ -72,12 +72,12 @@ describe('UploadComponent', () => {
     });
 
     it('should delegate profiling to trust and safety team', () => {
-      spyOn(trustAndSafetyService, 'submitProfileIfNeeded');
+      spyOn(trustAndSafetyService, 'submitProfile');
 
       component.ngOnInit();
 
-      expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledTimes(1);
-      expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledWith(SessionProfileDataLocation.OPEN_CREATE_LISTING);
+      expect(trustAndSafetyService.submitProfile).toHaveBeenCalledTimes(1);
+      expect(trustAndSafetyService.submitProfile).toHaveBeenCalledWith(SessionProfileDataLocation.OPEN_CREATE_LISTING);
     });
   });
 
