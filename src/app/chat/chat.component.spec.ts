@@ -14,7 +14,7 @@ import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { InboxConversationService, InboxService } from './service';
 import { InboxConversationServiceMock, InboxServiceMock } from '../../tests';
 import { PhoneMethodResponse } from '../core/user/phone-method.interface';
-import { InboxConversation, MessageStatus } from './model';
+import { InboxConversation, MessageStatus, PhoneMethod } from './model';
 import { ChatComponent } from './chat.component';
 import { TrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safety.service';
 import { MockTrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safety.fixtures.spec';
@@ -237,7 +237,7 @@ describe('Component: ChatComponent with ItemId', () => {
 
     describe('and when the server notifies that seller is a car dealer', () => {
       beforeEach(() => {
-        const MOCK_PHONE_INFO = { phone_method: 'qa' };
+        const MOCK_PHONE_INFO = { phone_method: PhoneMethod.POP_UP };
         spyOn(userService, 'getPhoneInfo').and.returnValue(of(MOCK_PHONE_INFO));
       });
 

@@ -137,7 +137,7 @@ export class ChatComponent implements OnInit {
       } else {
         this.conversationsLoading = false;
       }
-      if (conversation && conversation.hasNoMessages) {
+      if (conversation?.hasNoMessages) {
         this.openSendPhoneModalIfNeeded(conversation);
       }
     });
