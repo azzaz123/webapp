@@ -119,6 +119,9 @@
               ]
             },
             "es": {
+              "i18nFile": "src/locale/es.xtb",
+              "i18nFormat": "xtb",
+              "i18nLocale": "es",
               "budgets": [
                 {
                   "type": "anyComponentStyle",
