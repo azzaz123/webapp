@@ -1,7 +1,6 @@
 import { Component, HostBinding, HostListener, Input } from '@angular/core';
 import { Remove } from '../../shared/archivable/animations';
 import { Call } from '../../core/conversation/calls';
-import { ConversationService } from '../../core/conversation/conversation.service';
 import { CallsService } from '../../core/conversation/calls.service';
 
 @Component({

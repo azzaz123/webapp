@@ -36,6 +36,7 @@ form {
     bottom: 7px;
     right: 0;
     border-radius: 50%;
+    border: 0;
     background: $blue-grey-4;
     @include square($send-icon-size);
     display: flex;

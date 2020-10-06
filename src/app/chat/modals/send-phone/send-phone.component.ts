@@ -1,6 +1,5 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { MessageService } from '../../service/message.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
@@ -8,6 +7,7 @@ import { WindowRef } from '../../../core/window/window.service';
 import { AsYouType, format, getCountryCallingCode, isValidNumber } from 'libphonenumber-js';
 import { InboxConversation } from '../../model';
 import { InboxConversationService } from '../../service';
+import { RealTimeService } from 'app/core/message/real-time.service';
 
 @Component({
   selector: 'tsl-send-phone',
@@ -15,16 +15,13 @@ import { InboxConversationService } from '../../service';
   styleUrls: ['./send-phone.component.scss']
 })
 export class SendPhoneComponent implements OnInit {
-
-  @Input() conversation: InboxConversation;
-  @Input() required: boolean;
-  @Input() phone: string;
-  @ViewChild('phoneInput', { static: true }) phoneField: ElementRef;
+  public conversation: InboxConversation;
   public sendPhoneForm: FormGroup;
+  @ViewChild('phoneInput', { static: true }) phoneField: ElementRef;
 
   constructor(
     private fb: FormBuilder,
-    private messageService: MessageService,
+    private realTimeService: RealTimeService,
     private inboxConversationService: InboxConversationService,
     private errorsService: ErrorsService,
     private trackingService: TrackingService,
@@ -37,33 +34,34 @@ export class SendPhoneComponent implements OnInit {
 
   ngOnInit() {
     this.phoneField.nativeElement.focus();
-    if (this.phone) {
-      this.sendPhoneForm.setValue({
-        phone: this.phone
-      });
-    }
+    this.trackSendPhoneModalOpened();
+  }
+
+  private trackSendPhoneModalOpened() {
+    this.trackingService.track(TrackingService.ITEM_SHAREPHONE_SHOWFORM, { item_id: this.conversation.item.id });
   }
 
   private phoneNumberFormatValidator(control: FormControl) {
     return isValidNumber(control.value, 'ES') ? null : { invalid: true };
   }
 
-  createPhoneNumberMessage() {
+  public handleSubmit() {
     const phoneNumber = this.sendPhoneForm.controls.phone.value;
-    if (this.sendPhoneForm.valid) {
-      if (this.required) {
-        this.trackingService.track(TrackingService.ITEM_SHAREPHONE_SENDPHONE, { item_id: this.conversation.item.id });
-      } else {
-        this.trackingService.track(TrackingService.CHAT_SHAREPHONE_ACCEPTSHARING);
-      }
-      this.inboxConversationService.addPhoneNumberToConversation$(this.conversation, phoneNumber).subscribe();
-      this.messageService.createPhoneNumberMessage(this.conversation, phoneNumber);
-      this.activeModal.close();
-    } else if (!this.sendPhoneForm.controls.phone.valid) {
-      this.trackingService.track(TrackingService.ITEM_SHAREPHONE_WRONGPHONE, { item_id: this.conversation.item.id, phone_number: phoneNumber });
+
+    if (!this.sendPhoneForm.valid) {
+      this.trackingService.track(
+        TrackingService.ITEM_SHAREPHONE_WRONGPHONE,
+        { item_id: this.conversation.item.id, phone_number: phoneNumber }
+      );
       this.sendPhoneForm.controls.phone.markAsDirty();
       this.errorsService.i18nError('formErrors');
+      return;
     }
+
+    this.trackingService.track(TrackingService.ITEM_SHAREPHONE_SENDPHONE, { item_id: this.conversation.item.id });
+    this.inboxConversationService.addPhoneNumberToConversation$(this.conversation, phoneNumber).subscribe();
+    this.realTimeService.addPhoneNumberMessageToConversation(this.conversation, phoneNumber);
+    this.activeModal.close();
   }
 
   formatNumber(event: any) {
@@ -86,12 +84,7 @@ export class SendPhoneComponent implements OnInit {
   }
 
   dismiss() {
-    if (this.required) {
-      this.trackingService.track(TrackingService.ITEM_SHAREPHONE_HIDEFORM, { item_id: this.conversation.item.id });
-      this.windowRef.nativeWindow.location.href = this.conversation.item.itemUrl;
-    } else {
-      this.trackingService.track(TrackingService.CHAT_SHAREPHONE_CANCELSHARING);
-      this.activeModal.dismiss();
-    }
+    this.trackingService.track(TrackingService.ITEM_SHAREPHONE_HIDEFORM, { item_id: this.conversation.item.id });
+    this.windowRef.nativeWindow.location.href = this.conversation.item.itemUrl;
   }
 }
