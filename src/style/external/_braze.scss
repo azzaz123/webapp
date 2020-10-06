@@ -1,19 +1,19 @@
 
 .ab-in-app-message {
-  font-family: Wallie, Helvetica, serif;
+  font-family: Wallie, Helvetica, serif !important;
 
   .ab-message-text {
-    font-size: 16px;
+    font-size: 16px !important;
 
     .ab-message-header {
-      font-size: 20px;
+      font-size: 20px !important;
     }
 
   }
 
   .ab-message-button {
-    border-radius: 6px;
-    font-size: 14px;
+    border-radius: 6px !important;
+    font-size: 14px !important;
   }
 
 }
