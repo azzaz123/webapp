@@ -68,7 +68,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   @Input() urgentPrice: number;
   @Output() onValidationError: EventEmitter<any> = new EventEmitter();
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
-  @Output() onCategorySelect = new EventEmitter<number>();
+  @Output() onCategorySelect = new EventEmitter<string>();
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   @Input() suggestionValue: string;
 
@@ -203,6 +203,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         this.initializeEditForm();
       }
       this.detectFormChanges();
+      this.handleUploadFormExtraFields();
     });
   }
 
@@ -279,8 +280,10 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   private detectCategoryChanges() {
-    this.uploadForm.get('category_id').valueChanges.subscribe((categoryId: number) => {
+    this.uploadForm.get('category_id').valueChanges.subscribe((categoryId: string) => {
       this.handleUploadFormExtraFields();
+      this.resetAllExtraFields()
+      if (categoryId === '' ) { this.getUploadExtraInfoControl('object_type').disable(); }
       this.onCategorySelect.emit(categoryId);
     });
   }
