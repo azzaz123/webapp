@@ -19,14 +19,14 @@ export class GeneralSuggestionsService {
   }
 
   getObjectTypes(category_id: number): Observable<ObjectType[]> {
-    const params = new HttpParams()
-      .set('category_id', `${category_id}`)
-      .set('language', this.i18n.locale);
     const headers = new HttpHeaders()
-      .set('Accept', 'application/vnd.api.v3.suggesters.object-type.v2+json');
+      .set('Accept', 'application/vnd.api.v3.suggesters.object-type.v2+json')
+      .set('Accept-Language', this.i18n.locale);
 
     return this.http.get<ObjectType[]>(`${environment.baseUrl}${SUGGESTERS_API_URL}/object-type`, {
-      params,
+      params: {
+        category_id
+      } as any,
       headers
     })
   }

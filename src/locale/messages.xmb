@@ -560,44 +560,44 @@
   <msg id="UploadProductCoachmarkPrice"><source>app/upload/upload-product/upload-product.component.html:56,58</source>
           Add a fair price and the category that best suits your item.
         </msg>
-  <msg id="uploadProductSubcategory"><source>app/upload/upload-product/upload-product.component.html:69,71</source>
+  <msg id="UploadProductSubcategory"><source>app/upload/upload-product/upload-product.component.html:69,71</source>
               Subcategory
             </msg>
-  <msg id="uploadProductSubcategoryPlaceholder"><source>app/upload/upload-product/upload-product.component.html:73</source>Subcategory</msg>
-  <msg id="uploadProductSubcategory2"><source>app/upload/upload-product/upload-product.component.html:83,85</source>
+  <msg id="UploadProductSubcategoryPlaceholder"><source>app/upload/upload-product/upload-product.component.html:73</source>Subcategory</msg>
+  <msg id="UploadProductSubcategory2"><source>app/upload/upload-product/upload-product.component.html:83,85</source>
               Could you specify?
             </msg>
-  <msg id="uploadProductSubcategory2Placeholder"><source>app/upload/upload-product/upload-product.component.html:87</source>Could you specify?</msg>
-  <msg id="uploadProductProductCondition"><source>app/upload/upload-product/upload-product.component.html:96</source>Product condition</msg>
-  <msg id="uploadProductProductConditionPlaceholder"><source>app/upload/upload-product/upload-product.component.html:98</source>Select a condition</msg>
-  <msg id="uploadProductDescription"><source>app/upload/upload-product/upload-product.component.html:112</source>Description</msg>
-  <msg id="uploadProductDescriptionPlaceholder"><source>app/upload/upload-product/upload-product.component.html:114</source>Add relevant information such as condition, model, color...</msg>
-  <msg id="uploadProductCoachmarkDescription"><source>app/upload/upload-product/upload-product.component.html:119</source>Every detail helps: so tell us more!</msg>
-  <msg id="uploadProductBrand"><source>app/upload/upload-product/upload-product.component.html:127</source><source>app/upload/upload-product/upload-product.component.html:137</source>Brand</msg>
-  <msg id="uploadProductModel"><source>app/upload/upload-product/upload-product.component.html:145</source>Model</msg>
-  <msg id="uploadProductSelectGender"><source>app/upload/upload-product/upload-product.component.html:153</source>Gender</msg>
-  <msg id="uploadProductSelectGenderPlaceholder"><source>app/upload/upload-product/upload-product.component.html:155</source>Select a gender</msg>
-  <msg id="uploadProductSelectSize"><source>app/upload/upload-product/upload-product.component.html:160</source>Size</msg>
-  <msg id="uploadProductSelectSizePlaceholder"><source>app/upload/upload-product/upload-product.component.html:162</source>Select a size</msg>
-  <msg id="uploadProductPhotos"><source>app/upload/upload-product/upload-product.component.html:173,175</source>
+  <msg id="UploadProductSubcategory2Placeholder"><source>app/upload/upload-product/upload-product.component.html:87</source>Could you specify?</msg>
+  <msg id="UploadProductProductCondition"><source>app/upload/upload-product/upload-product.component.html:96</source>Product condition</msg>
+  <msg id="UploadProductProductConditionPlaceholder"><source>app/upload/upload-product/upload-product.component.html:98</source>Select a condition</msg>
+  <msg id="UploadProductDescription"><source>app/upload/upload-product/upload-product.component.html:112</source>Description</msg>
+  <msg id="UploadProductDescriptionPlaceholder"><source>app/upload/upload-product/upload-product.component.html:114</source>Add relevant information such as condition, model, color...</msg>
+  <msg id="UploadProductCoachmarkDescription"><source>app/upload/upload-product/upload-product.component.html:119</source>Every detail helps: so tell us more!</msg>
+  <msg id="UploadProductBrand"><source>app/upload/upload-product/upload-product.component.html:127</source><source>app/upload/upload-product/upload-product.component.html:137</source>Brand</msg>
+  <msg id="UploadProductModel"><source>app/upload/upload-product/upload-product.component.html:145</source>Model</msg>
+  <msg id="UploadProductSelectGender"><source>app/upload/upload-product/upload-product.component.html:153</source>Gender</msg>
+  <msg id="UploadProductSelectGenderPlaceholder"><source>app/upload/upload-product/upload-product.component.html:155</source>Select a gender</msg>
+  <msg id="UploadProductSelectSize"><source>app/upload/upload-product/upload-product.component.html:160</source>Size</msg>
+  <msg id="UploadProductSelectSizePlaceholder"><source>app/upload/upload-product/upload-product.component.html:162</source>Select a size</msg>
+  <msg id="UploadProductPhotos"><source>app/upload/upload-product/upload-product.component.html:173,175</source>
           Photos
         </msg>
-  <msg id="uploadProductCoachmarkPictures"><source>app/upload/upload-product/upload-product.component.html:182,185</source>
+  <msg id="UploadProductCoachmarkPictures"><source>app/upload/upload-product/upload-product.component.html:182,185</source>
         You can drag and drop your photos here. Select and drag to change the
         order. Max 10MB. We accept only .jpg images.
       </msg>
-  <msg id="uploadProductShipping"><source>app/upload/upload-product/upload-product.component.html:196</source>Shipping</msg>
-  <msg id="uploadProductShippingDescription"><source>app/upload/upload-product/upload-product.component.html:201,203</source>
+  <msg id="UploadProductShipping"><source>app/upload/upload-product/upload-product.component.html:196</source>Shipping</msg>
+  <msg id="UploadProductShippingDescription"><source>app/upload/upload-product/upload-product.component.html:201,203</source>
             You can send (almost) anything through wallapop. And it&apos;s free for you!
           </msg>
-  <msg id="uploadProductCoachmarkShipping"><source>app/upload/upload-product/upload-product.component.html:222,225</source>
+  <msg id="UploadProductCoachmarkShipping"><source>app/upload/upload-product/upload-product.component.html:222,225</source>
         Tell us how much your product weighs. Remember that the sum of the
         length, height and width can not exceed 270cm.
       </msg>
-  <msg id="uploadProductSubmitItem"><source>app/upload/upload-product/upload-product.component.html:236</source>Post Ad</msg>
-  <msg id="uploadProductSubmitUpdate"><source>app/upload/upload-product/upload-product.component.html:237</source>Update</msg>
-  <msg id="uploadProductSubmitLoading"><source>app/upload/upload-product/upload-product.component.html:238</source>Uploading... <ph name="INTERPOLATION"><ex>{{ uploadCompletedPercentage }}</ex>{{ uploadCompletedPercentage }}</ph>%</msg>
-  <msg id="uploadProductPreview"><source>app/upload/upload-product/upload-product.component.html:243,245</source>
+  <msg id="UploadProductSubmitItem"><source>app/upload/upload-product/upload-product.component.html:236</source>Post Ad</msg>
+  <msg id="UploadProductSubmitUpdate"><source>app/upload/upload-product/upload-product.component.html:237</source>Update</msg>
+  <msg id="UploadProductSubmitLoading"><source>app/upload/upload-product/upload-product.component.html:238</source>Uploading... <ph name="INTERPOLATION"><ex>{{ uploadCompletedPercentage }}</ex>{{ uploadCompletedPercentage }}</ph>%</msg>
+  <msg id="UploadProductPreview"><source>app/upload/upload-product/upload-product.component.html:243,245</source>
         How does it look?
       </msg>
   <msg id="4601810369894625886"><source>app/upload/upload-realestate/upload-realestate.component.html:6</source>Information about your property</msg>
@@ -640,16 +640,6 @@
   <msg id="2852614655612881023"><source>app/upload/upload-realestate/upload-realestate.component.html:242,244</source>
         How does it look?
       </msg>
-  <msg id="124288245683167765"><source>app/upload/urgent-checkbox/urgent-checkbox.component.html:4</source>Apply the ASAP Feature</msg>
-  <msg id="8167775963255607742"><source>app/upload/urgent-checkbox/urgent-checkbox.component.html:5,14</source>
-      For only
-      <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph><ph name="INTERPOLATION"><ex>{{urgentPrice | customCurrency:&apos;EUR&apos;}}</ex>{{urgentPrice | customCurrency:&apos;EUR&apos;}}</ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph>
-      <ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph><ph name="INTERPOLATION_1"><ex>{{urgentPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ex>{{urgentPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph>
-      <ph name="START_TAG_SPAN_2"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>wallacoins<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph>
-      <ph name="START_TAG_SPAN_3"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>from your credit<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph>
-      mark your product as &quot;Asap&quot; for 7 days to differentiate it in the wall and make it easier to find through the asap
-      filter.
- 	</msg>
   <msg id="UrgentCheckboxTitle"><source>app/upload/urgent-checkbox/urgent-checkbox.component.html:4</source>Mark it as &quot;urgent&quot;!</msg>
   <msg id="UrgentCheckboxDescription"><source>app/upload/urgent-checkbox/urgent-checkbox.component.html:5,7</source>
       Highlight your product ad by marking it as &quot;urgent&quot;. For 7 days it will stand out from other products and attract the attention of more buyers.

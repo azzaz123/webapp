@@ -193,12 +193,7 @@ describe('UploadProductComponent', () => {
     it('should set item with second subcategory', () => {
       component.item = MOCK_ITEM_CELLPHONES;
       spyOn(generalSuggestionsService, 'getObjectTypes').and.returnValue(of(MOCK_OBJECT_TYPES_WITH_CHILDREN));
-
-      component.ngOnInit();
-      component.getObjectTypes();
-      fixture.detectChanges();
-
-      expect(component.uploadForm.value).toEqual({
+      const expectedUploadFormValue = {
         id: MOCK_ITEM_CELLPHONES.id,
         title: MOCK_ITEM_CELLPHONES.title,
         sale_price: MOCK_ITEM_CELLPHONES.salePrice,
@@ -224,17 +219,19 @@ describe('UploadProductComponent', () => {
             id: MOCK_OBJECT_TYPES_WITH_CHILDREN[0].children[0].id
           }
         },
-      });
-    });
-    it('should not set second subcategory item if there are not category options', () => {
-      component.item = MOCK_ITEM_CELLPHONES;
-      spyOn(generalSuggestionsService, 'getObjectTypes').and.returnValue(of([]));
+      };
 
       component.ngOnInit();
       component.getObjectTypes();
       fixture.detectChanges();
 
-      expect(component.uploadForm.value).toEqual({
+      expect(component.uploadForm.value).toEqual(expectedUploadFormValue);
+    });
+
+    it('should not set second subcategory item if there are not category options', () => {
+      component.item = MOCK_ITEM_CELLPHONES;
+      spyOn(generalSuggestionsService, 'getObjectTypes').and.returnValue(of([]));
+      const expectedUploadFormValue = {
         id: MOCK_ITEM_CELLPHONES.id,
         title: MOCK_ITEM_CELLPHONES.title,
         sale_price: MOCK_ITEM_CELLPHONES.salePrice,
@@ -257,18 +254,19 @@ describe('UploadProductComponent', () => {
           brand: MOCK_ITEM_CELLPHONES.extraInfo.brand,
           model: MOCK_ITEM_CELLPHONES.extraInfo.model,
         },
-      });
-    });
-
-    it('should not set subcategory field if item do not have subcategory', () => {
-      component.item = MOCK_ITEM_CELLPHONES_NO_SUBCATEGORY;
-      spyOn(generalSuggestionsService, 'getObjectTypes').and.returnValue(of(MOCK_OBJECT_TYPES_WITH_CHILDREN));
+      }
 
       component.ngOnInit();
       component.getObjectTypes();
       fixture.detectChanges();
 
-      expect(component.uploadForm.value).toEqual({
+      expect(component.uploadForm.value).toEqual(expectedUploadFormValue);
+    });
+
+    it('should not set subcategory field if item do not have subcategory', () => {
+      component.item = MOCK_ITEM_CELLPHONES_NO_SUBCATEGORY;
+      spyOn(generalSuggestionsService, 'getObjectTypes').and.returnValue(of(MOCK_OBJECT_TYPES_WITH_CHILDREN));
+      const expectedUploadFormValue = {
         id: MOCK_ITEM_CELLPHONES.id,
         title: MOCK_ITEM_CELLPHONES.title,
         sale_price: MOCK_ITEM_CELLPHONES.salePrice,
@@ -291,7 +289,13 @@ describe('UploadProductComponent', () => {
           brand: MOCK_ITEM_CELLPHONES.extraInfo.brand,
           model: MOCK_ITEM_CELLPHONES.extraInfo.model,
         },
-      });
+      }
+
+      component.ngOnInit();
+      component.getObjectTypes();
+      fixture.detectChanges();
+
+      expect(component.uploadForm.value).toEqual(expectedUploadFormValue);
     });
 
     it('should get and set categories', () => {
@@ -635,29 +639,27 @@ describe('UploadProductComponent', () => {
       });
       component.uploadForm.get('extra_info').get('object_type').enable();
       component.uploadForm.get('extra_info').get('object_type_2').enable();
-
-      spyOn(component.uploadEvent, 'emit')
-
       const expected = {
-        "type": "create",
-        "values":
+        type: "create",
+        values:
         {
-          "category_id": CATEGORY_IDS.SERVICES,
-          "currency_code": "EUR",
-          "delivery_info": null,
-          "description": "test",
-          "extra_info": {
-            "condition": null,
-            "object_type": { id: 2 }
+          category_id: CATEGORY_IDS.SERVICES,
+          currency_code: "EUR",
+          delivery_info: null,
+          description: "test",
+          extra_info: {
+            condition: null,
+            object_type: { id: 2 }
           },
-          "id": "",
-          "images": [{ "image": true }],
-          "location": { "address": "Carrer Sant Pere Mes Baix, Barcelona", "latitude": 41.399132621722174, "longitude": 2.17585484411869 },
-          "sale_conditions": { "exchange_allowed": false, "fix_price": false },
-          "sale_price": 1000000,
-          "title": "test"
+          id: "",
+          images: [{ "image": true }],
+          location: { "address": "Carrer Sant Pere Mes Baix, Barcelona", "latitude": 41.399132621722174, "longitude": 2.17585484411869 },
+          sale_conditions: { "exchange_allowed": false, "fix_price": false },
+          sale_price: 1000000,
+          title: "test"
         }
       }
+      spyOn(component.uploadEvent, 'emit')
 
       component.onSubmit();
       fixture.detectChanges();

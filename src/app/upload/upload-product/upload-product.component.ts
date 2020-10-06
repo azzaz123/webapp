@@ -15,7 +15,7 @@ import {
 import { Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { IOption } from 'ng-select';
-import { find, omit, isEqual, cloneDeep } from 'lodash-es';
+import { omit, isEqual, cloneDeep } from 'lodash-es';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { CategoryOption } from '../../core/category/category-response.interface';
 import { UploadEvent } from '../upload-event.interface';
@@ -24,7 +24,7 @@ import { PreviewModalComponent } from '../preview-modal/preview-modal.component'
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { Item, ITEM_TYPES } from '../../core/item/item';
-import { DeliveryInfo, ItemContent, ItemExtraInfo } from '../../core/item/item-response.interface';
+import { DeliveryInfo, ItemContent } from '../../core/item/item-response.interface';
 import { GeneralSuggestionsService } from './general-suggestions.service';
 import { KeywordSuggestion } from '../../shared/keyword-suggester/keyword-suggestion.interface';
 import { Subject, Observable } from 'rxjs';
@@ -43,15 +43,11 @@ import {
 import { CATEGORY_IDS } from '../../core/category/category-ids';
 
 function isObjectTypeRequiredValidator(formControl: AbstractControl) {
-
-  const objectTypeControl: FormGroup = formControl.parent as FormGroup;
-
+  const objectTypeControl: FormGroup = formControl?.parent as FormGroup;
+  if (!objectTypeControl) return;
   const extraInfoControl: FormGroup = objectTypeControl.parent as FormGroup;
-
   const uploadFormControl: FormGroup = extraInfoControl.parent as FormGroup;
-
   const categoryIdControl: FormControl = uploadFormControl.get('category_id') as FormControl;
-
   const categoryId = categoryIdControl.value;
 
   if (+categoryId === CATEGORY_IDS.FASHION_ACCESSORIES || +categoryId === CATEGORY_IDS.CELL_PHONES_ACCESSORIES) {
@@ -376,7 +372,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     }
   }
 
-  parseUploadForm() {
+  public parseUploadForm() {
     const values = cloneDeep(this.uploadForm.value);
     if (values.extra_info.object_type?.id && values.extra_info.object_type_2?.id) {
       values.extra_info.object_type.id = values.extra_info.object_type_2.id
@@ -521,9 +517,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   public getObjectTypes(): void {
-    const currentCategorId: number = +this.uploadForm.get('category_id').value;
+    const currentCategoryId: number = +this.uploadForm.get('category_id').value;
     this.objectTypesOptions = [];
-    this.generalSuggestionsService.getObjectTypes(currentCategorId).subscribe((objectTypes: ObjectType[]) => {
+    this.generalSuggestionsService.getObjectTypes(currentCategoryId).subscribe((objectTypes: ObjectType[]) => {
       this.objectTypes = objectTypes;
       this.objectTypesOptions = objectTypes
         .filter((type: ObjectType) => type.id)
@@ -621,11 +617,11 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   private getConditions(): void {
-    const currentCategorId: number = +this.uploadForm.get('category_id').value;
+    const currentCategoryId: number = +this.uploadForm.get('category_id').value;
 
     this.conditions = [];
     this.getUploadExtraInfoControl('condition').reset();
-    this.generalSuggestionsService.getConditions(currentCategorId).subscribe((conditions: IOption[]) => {
+    this.generalSuggestionsService.getConditions(currentCategoryId).subscribe((conditions: IOption[]) => {
       this.conditions = conditions;
     });
   }

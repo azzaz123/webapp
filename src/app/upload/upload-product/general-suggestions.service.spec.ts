@@ -33,7 +33,7 @@ describe('GeneralSuggestionsService', () => {
 
   describe('getObjectTypes', () => {
     it('should call the object-type endpoint and return object types', () => {
-      const expectedUrlParams = `category_id=${CATEGORY_IDS.CELL_PHONES_ACCESSORIES}&language=en`;
+      const expectedUrlParams = `category_id=${CATEGORY_IDS.CELL_PHONES_ACCESSORIES}`;
       const expectedUrl = `${environment.baseUrl}${SUGGESTERS_API_URL}/object-type?${expectedUrlParams}`;
       let response: ObjectType[];
 
@@ -45,6 +45,7 @@ describe('GeneralSuggestionsService', () => {
       expect(response).toEqual(MOCK_OBJECT_TYPES);
       expect(req.request.method).toBe('GET');
       expect(req.request.headers.get('Accept')).toBe('application/vnd.api.v3.suggesters.object-type.v2+json');
+      expect(req.request.headers.get('Accept-Language')).toBe('en');
     });
   });
 

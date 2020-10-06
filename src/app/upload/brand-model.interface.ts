@@ -1,7 +1,7 @@
 export interface ObjectType extends SimpleObjectType {
-  hierarchy: any[],
-  has_children: boolean,
-  children?: SimpleObjectType[]
+  hierarchy: any[];
+  has_children: boolean;
+  children?: SimpleObjectType[];
 }
 
 export interface SimpleObjectType {
