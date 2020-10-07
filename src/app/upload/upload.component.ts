@@ -27,7 +27,7 @@ export class UploadComponent implements OnInit {
       }
     });
 
-    this.trustAndSafetyService.submitProfileIfNeeded(SessionProfileDataLocation.OPEN_CREATE_LISTING);
+    this.trustAndSafetyService.submitProfile(SessionProfileDataLocation.OPEN_CREATE_LISTING);
   }
 
   public setCategory(categoryId: string) {

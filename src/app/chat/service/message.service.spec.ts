@@ -75,98 +75,12 @@ describe('Service: Message', () => {
 
   });
 
-  describe('addUserInfoToArray', () => {
-
-    it('should add user object to each message', () => {
-      let messages: Message[] = createMessagesArray(4);
-      const conversation: Conversation = MOCK_CONVERSATION();
-      messages = service.addUserInfoToArray(conversation, messages);
-      messages.forEach((message: Message) => {
-        expect(message.user).toBeDefined();
-      });
-    });
-
-  });
-
-  describe('addUserInfo', () => {
-
-    const BUYER_ID = 'buyerId';
-    let conversation: Conversation;
-
-    beforeEach(() => {
-      conversation = MOCK_CONVERSATION('1', BUYER_ID);
-    });
-
-    it('should add the user info and set fromSelf to FALSE when the message.user is the same as conversation.user', () => {
-      const message: Message = new Message(
-        MESSAGE_MAIN.id,
-        MESSAGE_MAIN.thread,
-        MESSAGE_MAIN.body,
-        BUYER_ID
-      );
-
-      service.addUserInfo(conversation, message);
-
-      expect(message.user).toEqual(conversation.user);
-      expect(message.fromSelf).toBe(false);
-    });
-
-    it('should add the user info and set fromSelf to TRUE when the message.user is the same as logged in user (userService.user)', () => {
-      let message: Message = new Message(
-        MESSAGE_MAIN.id,
-        MESSAGE_MAIN.thread,
-        MESSAGE_MAIN.body,
-        USER_ID
-      );
-
-      message = service.addUserInfo(conversation, message);
-
-      expect(message.user).toEqual(userService.user);
-      expect(message.fromSelf).toBe(true);
-    });
-
-    it('should add the user info and set fromSelf to FALSE when the message is a third voice (has payload)', () => {
-      let message: Message = new Message(
-        MESSAGE_MAIN.id,
-        MESSAGE_MAIN.thread,
-        MESSAGE_MAIN.body,
-        USER_ID,
-        new Date(),
-        MessageStatus.RECEIVED,
-        { text: 'someText', type: 'someType' }
-      );
-
-      message = service.addUserInfo(conversation, message);
-
-      expect(message.user).toEqual(userService.user);
-      expect(message.fromSelf).toBe(false);
-    });
-
-  });
-
   describe('send', () => {
     it('should call the send message', () => {
       spyOn(realTime, 'sendMessage');
       const conversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION();
       service.send(conversation, 'text');
       expect(realTime.sendMessage).toHaveBeenCalledWith(conversation, 'text');
-    });
-  });
-
-  describe('createPhoneNumberMessage', () => {
-    const phone = '+34912345678';
-    const conversation = MOCK_CONVERSATION();
-
-    beforeEach(() => {
-      spyOn(realTime, 'sendMessage');
-    });
-
-    it('should call realTime.sendMessage with the new message', () => {
-      const phoneMsg: any = i18n.getTranslations('phoneMessage') + phone;
-
-      service.createPhoneNumberMessage(conversation, phone);
-
-      expect(realTime.sendMessage).toHaveBeenCalledWith(conversation, phoneMsg);
     });
   });
 });

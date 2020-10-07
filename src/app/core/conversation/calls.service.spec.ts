@@ -1,6 +1,3 @@
-/* tslint:disable:no-unused-variable */
-
-
 import { of } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { CallsService } from './calls.service';
@@ -28,6 +25,7 @@ import { User } from '../user/user';
 import { Item } from '../item/item';
 import { AnalyticsService } from "../analytics/analytics.service";
 import { MockAnalyticsService } from "../../../tests/analytics.fixtures.spec";
+import { RealTimeServiceMock } from '../../../tests/real-time.fixtures.spec';
 
 let service: CallsService;
 let userService: UserService;
@@ -45,7 +43,7 @@ describe('CallsService', () => {
       providers: [
         CallsService,
         XmppService,
-        RealTimeService,
+        { provide: RealTimeService, useClass: RealTimeServiceMock },
         BlockUserXmppService,
         EventService,
         { provide: UserService, useClass: MockedUserService },
