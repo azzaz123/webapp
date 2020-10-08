@@ -16,7 +16,7 @@ import { InboxConversationApi, InboxMessagesApi } from '../model/api';
 import { RemoteConsoleService } from '../../core/remote-console';
 import { ToastService } from 'app/layout/toast/toast.service';
 import { I18nService } from 'app/core/i18n/i18n.service';
-import { NotificationService } from 'app/core/desktop-notifications/notification.service';
+import { DesktopNotificationsService } from 'app/core/desktop-notifications/desktop-notifications.service';
 
 export const ERROR_CODE_TOO_MANY_NEW_CONVERSATIONS = 100;
 
@@ -47,7 +47,7 @@ export class InboxConversationService {
     private eventService: EventService,
     private toastService: ToastService,
     private i18nService: I18nService,
-    private notificationService: NotificationService,
+    private desktopNotificationsService: DesktopNotificationsService,
     ) {
     this.conversations = [];
     this.archivedConversations = [];
@@ -113,7 +113,7 @@ export class InboxConversationService {
       this.incrementUnreadCounter(conversation);
       this.remoteConsoleService.sendPresentationMessageTimeout(message.id);
       this.realTime.sendDeliveryReceipt(message.from, message.id, message.thread);
-      this.notificationService.sendFromInboxMessage(message, conversation);
+      this.desktopNotificationsService.sendFromInboxMessage(message, conversation);
     }
   }
 
