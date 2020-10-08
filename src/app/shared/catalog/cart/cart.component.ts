@@ -14,7 +14,7 @@ import { PAYMENT_METHOD, PAYMENT_RESPONSE_STATUS } from '../../../core/payments/
 import { BUMP_TYPES, CartBase } from './cart-base';
 import { EventService } from '../../../core/event/event.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
-import { UUID } from 'angular2-uuid/index';
+import { v4 as UUID } from 'uuid';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
@@ -118,10 +118,10 @@ export class CartComponent implements OnInit, OnDestroy {
       }
     }
   }
-  
+
   private buyStripe(orderId: string) {
-    const paymentId: string = UUID.UUID();
-    
+    const paymentId: string = UUID();
+
     if (this.selectedCard || !this.savedCard) {
       this.stripeService.buy(orderId, paymentId, this.hasSavedCard, this.savedCard, this.card);
     } else {

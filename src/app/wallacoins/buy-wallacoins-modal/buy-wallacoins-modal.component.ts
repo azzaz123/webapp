@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit } from '@angular/core';
 import { Pack } from '../../core/payments/pack';
 import { PaymentService, PAYMENT_RESPONSE_STATUS, PAYMENT_METHOD } from '../../core/payments/payment.service';
 import { ErrorsService } from '../../core/errors/errors.service';
-import { UUID } from 'angular2-uuid';
+import { v4 as UUID } from 'uuid';
 import { OrderProExtras, FinancialCardOption } from '../../core/payments/payment.interface';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { StripeService } from '../../core/stripe/stripe.service';
@@ -53,11 +53,11 @@ export class BuyWallacoinsModalComponent implements OnInit {
 
   checkout() {
     const order: OrderProExtras = {
-      id: UUID.UUID(),
+      id: UUID(),
       packs: [this.pack.id],
       origin: 'WEB',
     };
-    const paymentId: string = UUID.UUID();
+    const paymentId: string = UUID();
 
     order.provider = PAYMENT_METHOD.STRIPE;
     this.loading = true;

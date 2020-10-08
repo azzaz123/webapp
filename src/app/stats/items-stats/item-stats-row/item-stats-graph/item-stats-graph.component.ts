@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Inject, Input, LOCALE_ID, OnInit } from '@angular/core';
-import { UUID } from 'angular2-uuid';
+import { v4 as UUID } from 'uuid';
 import { ItemStatisticEntriesResponse, ItemStatisticFullResponse } from './item-stats-response.interface';
 import { Item } from '../../../../core/item/item';
 import { I18nService } from '../../../../core/i18n/i18n.service';
@@ -25,7 +25,7 @@ export class ItemStatsGraphComponent implements OnInit {
   @Input() type: string;
   @Input() item: Item;
   @Input() statsData: ItemStatisticFullResponse;
-  public id: string = 'chart-' + UUID.UUID();
+  public id: string = 'chart-' + UUID();
   public chartOption: EChartOption;
 
   constructor(private i18n: I18nService,

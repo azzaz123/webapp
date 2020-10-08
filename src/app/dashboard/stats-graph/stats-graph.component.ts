@@ -3,7 +3,7 @@ import { StatisticsService } from './statistics.service';
 import { StatisticEntriesResponse, StatisticFullResponse } from './statistic-response.interface';
 import { IOption } from 'ng-select';
 import * as moment from 'moment';
-import { UUID } from 'angular2-uuid';
+import { v4 as UUID } from 'uuid';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { EChartOption } from 'echarts';
 import { find } from 'lodash-es';
@@ -16,7 +16,7 @@ import { find } from 'lodash-es';
 export class StatsGraphComponent implements OnInit {
 
   @Input() yearly: boolean = false;
-  public id: string = 'chart-' + UUID.UUID();
+  public id: string = 'chart-' + UUID();
   public duration: string = '30';
   public statsDurations: IOption[] = [];
   isSafari: boolean;

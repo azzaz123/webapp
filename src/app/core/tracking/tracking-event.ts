@@ -1,4 +1,4 @@
-import { UUID } from 'angular2-uuid';
+import { v4 as UUID } from 'uuid';
 import { TrackingEventBase } from './tracking-event-base.interface';
 import { getTimestamp } from './getTimestamp.func';
 import { replace } from 'lodash-es';
@@ -32,7 +32,7 @@ export class TrackingEvent {
       this.sessions[0].events = events;
     } else {
       this.sessions[0].events[0] = event;
-      this.sessions[0].events[0].id = UUID.UUID();
+      this.sessions[0].events[0].id = UUID();
       this.sessions[0].events[0].timestamp = getTimestamp();
     }
     this.sessions[0].userId = userId;

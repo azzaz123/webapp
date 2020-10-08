@@ -10,10 +10,14 @@ import { ErrorsService } from '../../core/errors/errors.service';
 import { PaymentService } from '../../core/payments/payment.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Pack } from '../../core/payments/pack';
-import { UUID } from 'angular2-uuid';
+import * as UUID from 'uuid';
 import { StripeService } from '../../core/stripe/stripe.service';
 import { EventService } from '../../core/event/event.service';
 import { STRIPE_CARD_OPTION } from '../../../tests/stripe.fixtures.spec';
+
+jest.mock('uuid', () => {
+  return { v4: () => null }
+});
 
 describe('BuyWallacoinsModalComponent', () => {
   let component: BuyWallacoinsModalComponent;
@@ -119,7 +123,7 @@ describe('BuyWallacoinsModalComponent', () => {
     describe('already has billing info', () => {
       beforeEach(() => {
         spyOn(paymentService, 'orderExtrasProPack').and.callThrough();
-        spyOn(UUID, 'UUID').and.returnValue('UUID');
+        spyOn(UUID, 'v4').and.returnValue('UUID');
         eventId = null;
       });
 

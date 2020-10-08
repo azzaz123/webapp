@@ -1,7 +1,7 @@
 import { CartItem } from './cart-item.interface';
 import { findIndex, sumBy } from 'lodash-es';
 import { Order } from '../../../core/item/item-response.interface';
-import { UUID } from 'angular2-uuid';
+import { v4 as UUID } from 'uuid';
 import { CartBase, BUMP_TYPES } from './cart-base';
 
 export class Cart extends CartBase {
@@ -42,7 +42,7 @@ export class Cart extends CartBase {
   }
 
   getOrderId() {
-    return UUID.UUID();
+    return UUID();
   }
 
   private calculateTotals() {

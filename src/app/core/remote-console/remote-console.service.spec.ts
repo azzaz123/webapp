@@ -12,8 +12,12 @@ import { MockedUserService, USER_ID } from '../../../tests/user.fixtures.spec';
 import { RemoteConsoleClientService } from './remote-console-client.service';
 import { of } from 'rxjs';
 import { ConnectionType } from './connection-type';
-import { UUID } from 'angular2-uuid';
+import * as UUID from 'uuid';
 import { CookieService } from 'ngx-cookie';
+
+jest.mock('uuid', () => {
+  return { v4: () => null }
+});
 
 describe('RemoteConsoleService', () => {
   const DEVICE_ID = 'DEVICE_ID';
@@ -27,7 +31,7 @@ describe('RemoteConsoleService', () => {
   let commonLog = {};
 
   beforeEach(() => {
-    spyOn(UUID, 'UUID').and.returnValue(SESSION_ID);
+    spyOn(UUID, 'v4').and.returnValue(SESSION_ID);
 
     TestBed.configureTestingModule({
       imports: [

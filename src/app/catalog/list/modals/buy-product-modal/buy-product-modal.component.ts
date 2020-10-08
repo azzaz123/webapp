@@ -3,7 +3,7 @@ import { OrderEvent } from '../../selected-items/selected-product.interface';
 import { ItemService } from '../../../../core/item/item.service';
 import { Item } from '../../../../core/item/item';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { UUID } from 'angular2-uuid';
+import { v4 as UUID } from 'uuid';
 import { PurchaseProductsWithCreditsResponse } from '../../../../core/item/item-response.interface';
 import { PaymentService, PAYMENT_RESPONSE_STATUS } from '../../../../core/payments/payment.service';
 import { EventService } from '../../../../core/event/event.service';
@@ -87,7 +87,7 @@ export class BuyProductModalComponent implements OnInit {
 
   public checkout() {
     this.loading = true;
-    const orderId: string = UUID.UUID();
+    const orderId: string = UUID();
     const creditsToPay = this.usedCredits(this.orderEvent.total);
     this.itemService.purchaseProductsWithCredits(this.orderEvent.order, orderId).subscribe((response: PurchaseProductsWithCreditsResponse) => {
       if (response.items_failed && response.items_failed.length) {
@@ -116,7 +116,7 @@ export class BuyProductModalComponent implements OnInit {
   }
 
   private buyStripe(orderId: string) {
-    const paymentId: string = UUID.UUID();
+    const paymentId: string = UUID();
 
     if (this.selectedCard || !this.savedCard) {
       this.stripeService.buy(orderId, paymentId, this.hasSavedCard, this.savedCard, this.card);

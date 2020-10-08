@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UUID } from 'angular2-uuid';
+import { v4 as UUID } from 'uuid';
 import * as CryptoJS from 'crypto-js';
 import { TrackingEvent } from './tracking-event';
 import { TrackingEventBase, TrackingEventData } from './tracking-event-base.interface';
@@ -965,7 +965,7 @@ export class TrackingService {
     if (sessionCookie) {
       this.sessionId = sessionCookie;
     } else {
-      this.sessionId = UUID.UUID();
+      this.sessionId = UUID();
       this.setCookie(this.sessionId, 900000, cookieName);
     }
   }
@@ -975,7 +975,7 @@ export class TrackingService {
     if (deviceAccessTokenCookie) {
       this.deviceAccessTokenId = deviceAccessTokenCookie;
     } else {
-      this.deviceAccessTokenId = UUID.UUID();
+      this.deviceAccessTokenId = UUID();
       this.setCookie(this.deviceAccessTokenId, 31557000, cookieName);
     }
   }

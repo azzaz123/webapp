@@ -6,7 +6,7 @@ import { environment } from '../../../environments/environment';
 import { User } from '../user/user';
 import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
 import { CookieService } from "ngx-cookie";
-import { UUID } from "angular2-uuid";
+import { v4 as UUID } from 'uuid';;
 
 export const DEVICE_ID_COOKIE_NAME = 'device_id';
 
@@ -34,7 +34,7 @@ export class AnalyticsService {
         identityCallback: result => {
           let deviceId = this.cookieService.get(DEVICE_ID_COOKIE_NAME);
           if (!deviceId) {
-            deviceId = UUID.UUID();
+            deviceId = UUID();
             this.cookieService.put(DEVICE_ID_COOKIE_NAME, deviceId, {
               expires: new Date('2038-01-19')
             });

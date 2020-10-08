@@ -3,7 +3,7 @@ import {takeWhile} from 'rxjs/operators';
 import { Component, OnInit, EventEmitter, ViewChild } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { findIndex } from 'lodash-es';
-import { UUID } from 'angular2-uuid';
+import { v4 as UUID } from 'uuid';
 import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
 import { ProUrgentConfirmationModalComponent } from './modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component';
 import { ProBumpConfirmationModalComponent } from './modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component';
@@ -254,7 +254,7 @@ export class CatalogProListComponent implements OnInit {
   }
 
   public feature(orderEvent: OrderEvent) {
-    const orderId: string = UUID.UUID();
+    const orderId: string = UUID();
     this.itemService.purchaseProducts(orderEvent.order, orderId).subscribe((failedProducts: string[]) => {
       if (failedProducts && failedProducts.length) {
         this.errorService.i18nError('bumpError');

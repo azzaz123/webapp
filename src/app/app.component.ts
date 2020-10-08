@@ -7,7 +7,7 @@ import { MatIconRegistry } from '@angular/material';
 import { ActivatedRoute, NavigationEnd, NavigationStart, RouteConfigLoadEnd, RouteConfigLoadStart, Router } from '@angular/router';
 import { environment } from '../environments/environment';
 import { CookieOptions, CookieService } from 'ngx-cookie';
-import { UUID } from 'angular2-uuid';
+import { v4 as UUID } from 'uuid';
 import { TrackingService } from './core/tracking/tracking.service';
 import { EventService } from './core/event/event.service';
 import { UserService } from './core/user/user.service';
@@ -155,7 +155,7 @@ export class AppComponent implements OnInit {
 
   private updateSessionCookie() {
     const name = 'app_session_id';
-    const token = UUID.UUID();
+    const token = UUID();
     const expiration = 900000;
     const expirationDate: Date = new Date();
     expirationDate.setTime(expirationDate.getTime() + expiration);

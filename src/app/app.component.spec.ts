@@ -7,7 +7,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie';
-import { UUID } from 'angular2-uuid';
+import * as UUID from 'uuid';
 import { TrackingService } from './core/tracking/tracking.service';
 import { MatIconRegistry } from '@angular/material';
 import { MessageService } from './chat/service/message.service';
@@ -51,6 +51,10 @@ let analyticsService: AnalyticsService;
 let didomiService: DidomiService;
 
 const ACCESS_TOKEN = 'accesstoken';
+
+jest.mock('uuid', () => {
+  return { v4: () => null }
+});
 
 describe('App', () => {
   beforeEach(() => {
@@ -211,7 +215,7 @@ describe('App', () => {
 
   describe('set cookie', () => {
     it('should create a cookie', () => {
-      spyOn(UUID, 'UUID').and.returnValue('1-2-3');
+      spyOn(UUID, 'v4').and.returnValue('1-2-3');
       spyOn(cookieService, 'put');
       spyOn(Date.prototype, 'getTime').and.returnValue(123456789);
       const currentDate = new Date();
@@ -220,7 +224,7 @@ describe('App', () => {
 
       component.updateSessionCookie();
 
-      expect(cookieService.put).toHaveBeenCalledWith('app_session_id', UUID.UUID() , cookieOptions);
+      expect(cookieService.put).toHaveBeenCalledWith('app_session_id', UUID.v4() , cookieOptions);
     });
   });
 

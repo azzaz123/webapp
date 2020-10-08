@@ -12,7 +12,11 @@ import { ErrorsService } from '../../../../core/errors/errors.service';
 import { ToastService } from '../../../../layout/toast/toast.service';
 import { Router } from '@angular/router';
 import { I18nService } from '../../../../core/i18n/i18n.service';
-import { UUID } from 'angular2-uuid/index';
+import * as UUID from 'uuid';
+
+jest.mock('uuid', () => {
+  return { v4: () => null }
+});
 
 describe('CreditCardModalComponent', () => {
   let component: CreditCardModalComponent;
@@ -125,7 +129,7 @@ describe('CreditCardModalComponent', () => {
       spyOn(stripeService, 'buy').and.callThrough();
       const orderId = 'UUID';
       const paymentId = '1-2-3';
-      spyOn(UUID, 'UUID').and.returnValue('1-2-3');
+      spyOn(UUID, 'v4').and.returnValue('1-2-3');
       component.savedCard = false;
 
       component.checkout(orderId);

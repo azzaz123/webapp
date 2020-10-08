@@ -38,7 +38,7 @@ import { EventService } from '../event/event.service';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { Car } from './car';
 import { ITEM_BAN_REASONS } from './ban-reasons';
-import { UUID } from 'angular2-uuid';
+import { v4 as UUID } from 'uuid';
 import { ItemLocation } from '../geolocation/address-response.interface';
 import { Realestate } from './realestate';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
@@ -263,7 +263,7 @@ export class ItemService {
       null,
       content.sale_conditions,
       content.images ? content.images[0] : {
-        id: UUID.UUID(),
+        id: UUID(),
         original_width: content.image ? content.image.original_width : null,
         original_height: content.image ? content.image.original_height : null,
         average_hex_color: '',
@@ -307,7 +307,7 @@ export class ItemService {
       null,
       null,
       {
-        id: UUID.UUID(),
+        id: UUID(),
         original_width: content.image ? content.image.original_width : null,
         original_height: content.image ? content.image.original_height : null,
         average_hex_color: '',

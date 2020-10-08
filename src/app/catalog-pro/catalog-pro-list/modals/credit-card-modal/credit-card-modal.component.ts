@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FinancialCard, FinancialCardOption } from '../../../../core/payments/payment.interface';
-import { UUID } from 'angular2-uuid/index';
+import { v4 as UUID } from 'uuid';
 import { StripeService } from '../../../../core/stripe/stripe.service';
 import { ErrorsService } from '../../../../core/errors/errors.service';
 import { EventService } from '../../../../core/event/event.service';
@@ -37,7 +37,7 @@ export class CreditCardModalComponent implements OnInit {
   }
 
   public checkout (orderId: string) {
-    const paymentId: string = UUID.UUID();
+    const paymentId: string = UUID();
 
     if (this.selectedCard || !this.savedCard) {
       this.stripeService.buy(orderId, paymentId, this.hasSavedCard, this.savedCard, this.card);

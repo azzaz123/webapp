@@ -8,7 +8,7 @@ import {
 import { of } from 'rxjs';
 import { UserService } from '../user/user.service';
 import { FeatureflagService } from '../user/featureflag.service';
-import { UUID } from 'angular2-uuid';
+import * as UUID from 'uuid';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { HttpModuleNew } from '../http/http.module.new';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
@@ -32,6 +32,10 @@ import { CategoryService } from '../category/category.service';
 import { AccessTokenService } from '../http/access-token.service';
 import { HttpClient } from '@angular/common/http';
 import { I18nService } from '../i18n/i18n.service';
+
+jest.mock('uuid', () => {
+  return { v4: () => null }
+});
 
 describe('SubscriptionsService', () => {
 
@@ -88,7 +92,7 @@ describe('SubscriptionsService', () => {
     featureflagService = TestBed.inject(FeatureflagService);
     categoryService = TestBed.inject(CategoryService);
     service.uuid = '1-2-3';
-    spyOn(UUID, 'UUID').and.returnValue('1-2-3');
+    spyOn(UUID, 'v4').and.returnValue('1-2-3');
     spyOn(categoryService, 'getCategories').and.returnValue(of(CATEGORY_DATA_WEB));
   });
 
@@ -293,7 +297,7 @@ describe('SubscriptionsService', () => {
       expect(service.isStripeSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_GOOGLE_PLAY_MAPPED)).toBe(false);
       expect(service.isStripeSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_APPLE_STORE_MAPPED)).toBe(false);
     });
-    
+
     it('should be true when subscription is from Stripe', () => {
       expect(service.isStripeSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED)).toBe(true);
     });
@@ -303,7 +307,7 @@ describe('SubscriptionsService', () => {
     it('should be false when all subscriptions are not subscribed', () => {
       expect(service.hasOneStripeSubscription(SUBSCRIPTIONS_NOT_SUB)).toBe(false);
     });
-    
+
     it('should be false when some subscription were bought in Android or iOS', () => {
       expect(service.hasOneStripeSubscription(MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY)).toBe(false);
       expect(service.hasOneStripeSubscription(MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE)).toBe(false);
@@ -405,7 +409,7 @@ describe('SubscriptionsService', () => {
             discounted_price: 0
           }
         }
-        
+
         const result = service.getTierDiscountPercentatge(freeTier);
 
         expect(result).toBe(100);
@@ -421,7 +425,7 @@ describe('SubscriptionsService', () => {
           currency: '€',
           discount_available: null
         }
-        
+
         const result = service.getTierDiscountPercentatge(tierWithoutDiscount);
 
         expect(result).toBe(0);

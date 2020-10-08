@@ -34,7 +34,7 @@ import {
 } from './item-response.interface';
 import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
 import { I18nService } from '../i18n/i18n.service';
-import { UUID } from 'angular2-uuid';
+import * as UUID from 'uuid';
 import { TrackingService } from '../tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { EventService } from '../event/event.service';
@@ -51,6 +51,10 @@ import {
 } from '../../../tests/realestate.fixtures.spec';
 import { Realestate } from './realestate';
 import { TestRequest, HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
+
+jest.mock('uuid', () => {
+  return { v4: () => null }
+});
 
 describe('ItemService', () => {
   const FAKE_ITEM_TITLE = 'No disponible';
@@ -76,7 +80,7 @@ describe('ItemService', () => {
     service = TestBed.inject(ItemService);
     httpMock = TestBed.inject(HttpTestingController);
     eventService = TestBed.inject(EventService);
-    spyOn(UUID, 'UUID').and.returnValues('1', '2');
+    spyOn(UUID, 'v4').and.returnValues('1', '2');
   });
 
   afterEach(() => {

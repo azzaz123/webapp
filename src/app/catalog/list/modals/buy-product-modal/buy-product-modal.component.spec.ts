@@ -12,12 +12,16 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentService } from '../../../../core/payments/payment.service';
 import { EventService } from '../../../../core/event/event.service';
 import { CreditInfo } from '../../../../core/payments/payment.interface';
-import { UUID } from 'angular2-uuid';
+import * as UUID from 'uuid';
 import { OrderEvent } from '../../selected-items/selected-product.interface';
 import { StripeService } from '../../../../core/stripe/stripe.service';
 import { Router } from '@angular/router';
 import { STRIPE_CARD_OPTION } from '../../../../../tests/stripe.fixtures.spec';
 import { ErrorsService } from '../../../../core/errors/errors.service';
+
+jest.mock('uuid', () => {
+  return { v4: () => null }
+});
 
 describe('BuyProductModalComponent', () => {
   let component: BuyProductModalComponent;
@@ -260,7 +264,7 @@ describe('BuyProductModalComponent', () => {
       beforeEach(() => {
         spyOn(localStorage, 'setItem');
         spyOn(eventService, 'emit');
-        spyOn(UUID, 'UUID').and.returnValue('UUID');
+        spyOn(UUID, 'v4').and.returnValue('UUID');
         spyOn(activeModal, 'close');
         eventId = null;
         component.creditInfo = {

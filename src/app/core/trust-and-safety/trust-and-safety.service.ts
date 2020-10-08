@@ -7,7 +7,7 @@ import {
   SessionProfileDataLocation,
   SessionProfileDataPlatform
 } from './trust-and-safety.interface';
-import { UUID } from 'angular2-uuid';
+import { v4 as UUID } from 'uuid';
 import { THREAT_METRIX_EMBED } from './threat-metrix-embed-script';
 import { ThreatMetrixLibrary } from './threat-metrix.interface';
 import { take } from 'rxjs/operators';
@@ -28,7 +28,7 @@ export class TrustAndSafetyService {
     if (this._sessionId) {
       return;
     }
-    this._sessionId = UUID.UUID();
+    this._sessionId = UUID();
   }
 
   private _initializeLibrary() {

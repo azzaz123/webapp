@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 import { SubscriptionSlot, SubscriptionSlotResponse, SubscriptionSlotGeneralResponse, SUBSCRIPTION_MARKETS, SubscriptionBenefit } from './subscriptions.interface';
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
-import { UUID } from 'angular2-uuid';
+import { v4 as UUID } from 'uuid';
 import { FeatureflagService } from '../user/featureflag.service';
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from './subscriptions.interface';
 import { CategoryResponse } from '../category/category-response.interface';
@@ -113,7 +113,7 @@ export class SubscriptionsService {
   }
 
   public newSubscription(subscriptionId: string, paymentId: string, billing: boolean = false): Observable<any> {
-    this.uuid = UUID.UUID();
+    this.uuid = UUID();
     return this.http.post(`${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}/${this.uuid}`, {
         payment_method_id: paymentId,
         product_subscription_id: subscriptionId,
@@ -136,7 +136,7 @@ export class SubscriptionsService {
   }
 
   public retrySubscription(invoiceId: string, paymentId: string): Observable<any> {
-    this.uuid = UUID.UUID();
+    this.uuid = UUID();
     return this.http.put(`${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}/payment_attempt/${this.uuid}`, {
       invoice_id: invoiceId,
       payment_method_id: paymentId,
