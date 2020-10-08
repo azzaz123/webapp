@@ -1,44 +1,83 @@
 import { Injectable } from '@angular/core';
 import { TrackingService } from '../tracking/tracking.service';
 import { I18nService } from '../i18n/i18n.service';
-import { Message } from '../message/message';
 import { PLACEHOLDER_AVATAR } from '../user/user';
-import { PushNotificationsService } from 'ng-push';
+import { InboxMessage, InboxConversation } from 'app/chat/model';
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
-export const NOTIFICATION_DURATION = 4000;
+export const ASK_PERMISSIONS_TIMEOUT_MS = 5000;
 
 @Injectable()
 export class NotificationService {
 
-  private hidden = false;
+  private showNotifications = false;
 
-  constructor(private notificationService: PushNotificationsService,
-              private trackingService: TrackingService,
-              private i18n: I18nService) {
+  constructor(
+    private trackingService: TrackingService,
+    private i18n: I18nService) {
   }
 
-  public init() {
-    this.notificationService.requestPermission();
-    Visibility.change(() => {
-      this.hidden = Visibility.hidden();
+  public init(): void {
+    if (this.canShowNotifications()) {
+      return;
+    }
+    this.askForPermissions();
+  }
+
+  public sendFromInboxMessage(message: InboxMessage, conversation: InboxConversation) {
+    if (!this.canShowNotifications()) {
+      return;
+    }
+    const notification = this.createFromInboxMessage(message, conversation);
+    notification.addEventListener('close', () => this.trackNotificationRecieved(message));
+  }
+
+  // Delaying the request due to browsers recommendation
+  private askForPermissions(): void {
+    of({}).pipe(delay(ASK_PERMISSIONS_TIMEOUT_MS)).subscribe(() => {
+      Notification.requestPermission().then(permission => {
+        this.showNotifications = permission === 'granted';
+      });
     });
   }
 
-  public sendBrowserNotification(message: Message, itemId: string) {
-    if (this.hidden) {
-      this.notificationService.create(this.i18n.getTranslations('newMessageNotification') + message.user.microName, {
-        body: message.message,
-        icon: message.user.image ? message.user.image.urls_by_size.medium : PLACEHOLDER_AVATAR
-      }).subscribe((event: any) => {
-        this.trackingService.track(TrackingService.NOTIFICATION_RECEIVED, {
-          thread_id: message.thread,
-          message_id: message.id
-        });
-        setTimeout(() => {
-          event.notification.close();
-        }, NOTIFICATION_DURATION);
-      });
-    }
+  private browserSupportsNotifications(): boolean {
+    return !!Notification;
+  }
+
+  private canShowNotifications(): boolean {
+    return this.showNotifications && this.browserSupportsNotifications();
+  }
+
+  private createFromInboxMessage(message: InboxMessage, conversation: InboxConversation): Notification {
+    return new Notification(
+      this.buildTitleFromConversation(conversation),
+      this.buildOptionsFromConversation(message, conversation)
+    );
+  }
+
+  private buildTitleFromConversation(conversation: InboxConversation): string {
+    return `${this.i18n.getTranslations('newMessageNotification')}${conversation.user.microName}`;
+  }
+
+  private buildOptionsFromConversation(message: InboxMessage, conversation: InboxConversation): NotificationOptions {
+    const image = conversation.user.avatarUrl || PLACEHOLDER_AVATAR;
+
+    return {
+      body: message.text,
+      icon: image,
+      image,
+      badge: image,
+      timestamp: message.date.getTime()
+    };
+  }
+
+  private trackNotificationRecieved(message: InboxMessage) {
+    this.trackingService.track(TrackingService.NOTIFICATION_RECEIVED, {
+      thread_id: message.thread,
+      message_id: message.id
+    });
   }
 
 }
