@@ -9,7 +9,7 @@ import { delay } from 'rxjs/operators';
 export const ASK_PERMISSIONS_TIMEOUT_MS = 5000;
 
 @Injectable()
-export class NotificationService {
+export class DesktopNotificationsService {
 
   private showNotifications = false;
 

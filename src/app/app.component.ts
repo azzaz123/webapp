@@ -11,7 +11,7 @@ import { UUID } from 'angular2-uuid';
 import { TrackingService } from './core/tracking/tracking.service';
 import { EventService } from './core/event/event.service';
 import { UserService } from './core/user/user.service';
-import { NotificationService } from './core/notification/notification.service';
+import { NotificationService } from './core/desktop-notifications/notification.service';
 import { MessageService } from './chat/service/message.service';
 import { I18nService } from './core/i18n/i18n.service';
 import { User } from './core/user/user';

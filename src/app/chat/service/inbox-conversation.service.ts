@@ -16,7 +16,7 @@ import { InboxConversationApi, InboxMessagesApi } from '../model/api';
 import { RemoteConsoleService } from '../../core/remote-console';
 import { ToastService } from 'app/layout/toast/toast.service';
 import { I18nService } from 'app/core/i18n/i18n.service';
-import { NotificationService } from 'app/core/notification/notification.service';
+import { NotificationService } from 'app/core/desktop-notifications/notification.service';
 
 export const ERROR_CODE_TOO_MANY_NEW_CONVERSATIONS = 100;
 
