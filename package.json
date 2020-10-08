@@ -56,7 +56,6 @@
     "libphonenumber-js": "^1.6.8",
     "lodash-es": "^4.17.15",
     "moment": "^2.26.0",
-    "ng-push": "0.2.2",
     "ng-select": "1.0.0",
     "ng2-dnd": "^5.0.2",
     "ng2-haversine": "^0.1.1",
