@@ -129,3 +129,9 @@ export const MOCK_THREAT_METRIX: ThreatMetrixLibrary = {
 export const MOCK_LOCATION: Location = {
   ...window.location
 };
+
+export class MockNotificationClass {
+  public static requestPermission() {
+    return Promise.resolve('granted');
+  }
+};

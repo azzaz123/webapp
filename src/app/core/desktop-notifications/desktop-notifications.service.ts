@@ -19,7 +19,7 @@ export class DesktopNotificationsService {
   }
 
   public init(): void {
-    if (this.canShowNotifications()) {
+    if (!this.browserSupportsNotifications() || this.showNotifications) {
       return;
     }
     this.askForPermissions();
@@ -33,6 +33,10 @@ export class DesktopNotificationsService {
     notification.addEventListener('close', () => this.trackNotificationRecieved(message));
   }
 
+  public browserSupportsNotifications(): boolean {
+    return !!Notification;
+  }
+
   // Delaying the request due to browsers recommendation
   private askForPermissions(): void {
     of({}).pipe(delay(ASK_PERMISSIONS_TIMEOUT_MS)).subscribe(() => {
@@ -40,10 +44,6 @@ export class DesktopNotificationsService {
         this.showNotifications = permission === 'granted';
       });
     });
-  }
-
-  private browserSupportsNotifications(): boolean {
-    return !!Notification;
   }
 
   private canShowNotifications(): boolean {
@@ -73,7 +73,7 @@ export class DesktopNotificationsService {
     };
   }
 
-  private trackNotificationRecieved(message: InboxMessage) {
+  private trackNotificationRecieved(message: InboxMessage): void {
     this.trackingService.track(TrackingService.NOTIFICATION_RECEIVED, {
       thread_id: message.thread,
       message_id: message.id
