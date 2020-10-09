@@ -79,4 +79,20 @@ describe('Service: DesktopNotifications', () => {
       }));
     });
   });
+
+  describe('when checking if browser supports notifications', () => {
+    describe('and when browser supports them', () => {
+      it('should notify compatibility', () => {
+        expect(service.browserSupportsNotifications()).toBe(true);
+      });
+    });
+
+    describe('and when browser does not support them', () => {
+      beforeEach(() => Notification = null);
+
+      it('should notify no compatibility', () => {
+        expect(service.browserSupportsNotifications()).toBe(false);
+      });
+    });
+  });
 });
