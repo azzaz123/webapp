@@ -89,8 +89,9 @@ export class AppComponent implements OnInit {
   // TODO: This should be encapsualted in a service (e.g.: BrazeService)
   private initializeBraze() {
     appboy.initialize(environment.appboy, { enableHtmlInAppMessages: true });
-    appboy.display.automaticallyShowNewInAppMessages();
-    appboy.registerAppboyPushMessages();
+    // In app messages have been disabled until CLM fixes a problem with web communications
+    // appboy.display.automaticallyShowNewInAppMessages();
+    // appboy.registerAppboyPushMessages();
   }
 
   private initializeEventListeners() {
