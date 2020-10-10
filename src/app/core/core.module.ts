@@ -15,7 +15,6 @@ import { ConversationModule } from './conversation/conversation.module';
 import { MessageService } from '../chat/service/message.service';
 import { NotificationService } from './notification/notification.service';
 import { PaymentService } from './payments/payment.service';
-import { WindowRef } from './window/window.service';
 import { XmppService } from './xmpp/xmpp.service';
 import { PushNotificationsModule } from 'ng-push';
 import { ReviewService } from './review/review.service';
@@ -68,7 +67,6 @@ export class CoreModule {
         MessageService,
         NotificationService,
         PaymentService,
-        WindowRef,
         XmppService,
         RealTimeService,
         InboxService,

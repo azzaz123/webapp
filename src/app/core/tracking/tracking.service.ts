@@ -8,7 +8,6 @@ import { environment } from '../../../environments/environment';
 import { getTimestamp } from './getTimestamp.func';
 import { CookieService } from 'ngx-cookie';
 import { NavigatorService } from './navigator.service';
-import { WindowRef } from '../window/window.service';
 import { EventService } from '../event/event.service';
 import { Subject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -917,7 +916,6 @@ export class TrackingService {
   constructor(private navigatorService: NavigatorService,
     private http: HttpClient,
     private userService: UserService,
-    private winRef: WindowRef,
     private eventService: EventService,
     private cookieService: CookieService) {
     this.setSessionStartTime();
@@ -939,7 +937,7 @@ export class TrackingService {
 
   private createNewEvent(event: TrackingEventBase, attributes?: any): TrackingEvent {
     const newEvent: TrackingEvent = new TrackingEvent(
-      this.winRef.nativeWindow,
+      window,
       this.userService.user.id,
       this.sessionStartTime,
       event);

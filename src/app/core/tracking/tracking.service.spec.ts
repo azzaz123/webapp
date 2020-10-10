@@ -2,7 +2,6 @@ import { TestBed, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/te
 import { CookieService } from 'ngx-cookie';
 
 import { environment } from '../../../environments/environment';
-import { WindowRef } from '../window/window.service';
 import { UserService } from '../user/user.service';
 import { MockedUserService } from '../../../tests/user.fixtures.spec';
 import { EventService } from '../event/event.service';
@@ -40,7 +39,6 @@ describe('Service: Tracking', () => {
   let userService: UserService;
   let navigatorService: NavigatorService;
   let cookieService: CookieService;
-  let window: any;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
@@ -50,17 +48,6 @@ describe('Service: Tracking', () => {
       providers: [
         {
           provide: UserService, useClass: MockedUserService
-        },
-        {
-          provide: WindowRef, useValue: {
-            nativeWindow: {
-              screen: {
-                width: 1366,
-                height: 768
-              },
-              locale: 'es'
-            }
-          }
         },
         {
           provide: CookieService, useValue: {
@@ -81,8 +68,14 @@ describe('Service: Tracking', () => {
     service = TestBed.inject(TrackingService);
     userService = TestBed.inject(UserService);
     httpMock = TestBed.inject(HttpTestingController);
-    window = TestBed.inject(WindowRef).nativeWindow;
     navigatorService = TestBed.inject(NavigatorService);
+    window = {
+      screen: {
+        width: 1366,
+        height: 768
+      },
+      locale: 'es'
+    } as any
   });
 
   afterEach(() => {

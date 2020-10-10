@@ -11,7 +11,6 @@ import { environment } from '../../../environments/environment';
 import { SUGGESTER_DATA_WEB } from '../../../tests/suggester.fixtures.spec';
 import { User } from '../../core/user/user';
 import { USER_DATA } from '../../../tests/user.fixtures.spec';
-import { WindowRef } from '../../core/window/window.service';
 import { MessageService } from '../../chat/service/message.service';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { PaymentService } from '../../core/payments/payment.service';
@@ -41,7 +40,6 @@ describe('TopbarComponent', () => {
   let userService: UserService;
   let fixture: ComponentFixture<TopbarComponent>;
   let eventService: EventService;
-  let windowRef: WindowRef;
   const CURRENCY = 'wallacoins';
   const CREDITS = 1000;
   let paymentService: PaymentService;
@@ -73,15 +71,6 @@ describe('TopbarComponent', () => {
           }
         },
         {
-          provide: WindowRef, useValue: {
-            nativeWindow: {
-              location: {
-                href: environment.siteUrl
-              }
-            }
-          }
-        },
-        {
           provide: MessageService, useValue: {
             totalUnreadMessages$: of(1)
           }
@@ -108,9 +97,9 @@ describe('TopbarComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     eventService = TestBed.inject(EventService);
-    windowRef = TestBed.inject(WindowRef);
     paymentService = TestBed.inject(PaymentService);
     cookieService = TestBed.inject(CookieService);
+    window.location.href = environment.siteUrl;
   });
 
   it('should be created', () => {
@@ -220,7 +209,7 @@ describe('TopbarComponent', () => {
 
       component.submitForm();
 
-      expect(windowRef.nativeWindow.location.href)
+      expect(window.location.href)
         .toEqual(environment.siteUrl.replace('es', 'www') + 'search?category_ids=15000' + '&keywords=');
     });
 
@@ -229,7 +218,7 @@ describe('TopbarComponent', () => {
 
       component.submitForm();
 
-      expect(windowRef.nativeWindow.location.href)
+      expect(window.location.href)
         .toEqual(environment.siteUrl.replace('es', 'www') + 'search?category_ids=100' + '&keywords=');
     });
   });

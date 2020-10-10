@@ -5,7 +5,6 @@ import { Coordinate } from '../../core/geolocation/address-response.interface';
 import { CategoryResponse } from '../../core/category/category-response.interface';
 import { SuggesterResponse } from './suggester/suggester-response.interface';
 import { User } from '../../core/user/user';
-import { WindowRef } from '../../core/window/window.service';
 import { MessageService } from '../../chat/service/message.service';
 import { PaymentService } from '../../core/payments/payment.service';
 import { CreditInfo } from '../../core/payments/payment.interface';
@@ -35,7 +34,6 @@ export class TopbarComponent implements OnInit {
   public currencyName: string;
 
   constructor(public userService: UserService,
-    private windowRef: WindowRef,
     public messageService: MessageService,
     private paymentService: PaymentService,
     private eventService: EventService,
@@ -78,7 +76,7 @@ export class TopbarComponent implements OnInit {
   public submitForm() {
     const categoryId = (this.category) ? this.category : '';
     const kws = (this.kws) ? this.kws : '';
-    this.windowRef.nativeWindow.location.href = `${this.homeUrl}search?category_ids=${categoryId}&keywords=${kws}`;
+    window.location.href = `${this.homeUrl}search?category_ids=${categoryId}&keywords=${kws}`;
   }
 
   public onSearchSubmit(newSearchSubmit: string) {
