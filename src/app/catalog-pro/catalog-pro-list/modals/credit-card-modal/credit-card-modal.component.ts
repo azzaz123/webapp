@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FinancialCard, FinancialCardOption } from '../../../../core/payments/payment.interface';
-import { v4 as UUID } from 'uuid';
 import { StripeService } from '../../../../core/stripe/stripe.service';
 import { ErrorsService } from '../../../../core/errors/errors.service';
 import { EventService } from '../../../../core/event/event.service';
 import { PAYMENT_RESPONSE_STATUS } from '../../../../core/payments/payment.service';
+import { UuidService } from '../../../../core/uuid/uuid.service';
 
 @Component({
   selector: 'tsl-credit-card-modal',
@@ -28,6 +28,7 @@ export class CreditCardModalComponent implements OnInit {
   constructor(public activeModal: NgbActiveModal,
               private stripeService: StripeService,
               private errorService: ErrorsService,
+              private uuidService: UuidService,
               private eventService: EventService) { }
 
   ngOnInit() {
@@ -37,7 +38,7 @@ export class CreditCardModalComponent implements OnInit {
   }
 
   public checkout (orderId: string) {
-    const paymentId: string = UUID();
+    const paymentId: string = this.uuidService.getUUID();
 
     if (this.selectedCard || !this.savedCard) {
       this.stripeService.buy(orderId, paymentId, this.hasSavedCard, this.savedCard, this.card);

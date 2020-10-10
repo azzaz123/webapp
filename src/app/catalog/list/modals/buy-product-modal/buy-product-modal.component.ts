@@ -3,13 +3,13 @@ import { OrderEvent } from '../../selected-items/selected-product.interface';
 import { ItemService } from '../../../../core/item/item.service';
 import { Item } from '../../../../core/item/item';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { v4 as UUID } from 'uuid';
 import { PurchaseProductsWithCreditsResponse } from '../../../../core/item/item-response.interface';
 import { PaymentService, PAYMENT_RESPONSE_STATUS } from '../../../../core/payments/payment.service';
 import { EventService } from '../../../../core/event/event.service';
 import { CreditInfo, FinancialCardOption } from '../../../../core/payments/payment.interface';
 import { StripeService } from '../../../../core/stripe/stripe.service';
 import { ErrorsService } from '../../../../core/errors/errors.service';
+import { UuidService } from '../../../../core/uuid/uuid.service';
 
 @Component({
   selector: 'tsl-buy-product-modal',
@@ -35,6 +35,7 @@ export class BuyProductModalComponent implements OnInit {
               private paymentService: PaymentService,
               private eventService: EventService,
               private stripeService: StripeService,
+              private uuidService: UuidService,
               private errorService: ErrorsService) { }
 
   ngOnInit() {
@@ -87,7 +88,7 @@ export class BuyProductModalComponent implements OnInit {
 
   public checkout() {
     this.loading = true;
-    const orderId: string = UUID();
+    const orderId: string = this.uuidService.getUUID();
     const creditsToPay = this.usedCredits(this.orderEvent.total);
     this.itemService.purchaseProductsWithCredits(this.orderEvent.order, orderId).subscribe((response: PurchaseProductsWithCreditsResponse) => {
       if (response.items_failed && response.items_failed.length) {
@@ -116,7 +117,7 @@ export class BuyProductModalComponent implements OnInit {
   }
 
   private buyStripe(orderId: string) {
-    const paymentId: string = UUID();
+    const paymentId: string = this.uuidService.getUUID();
 
     if (this.selectedCard || !this.savedCard) {
       this.stripeService.buy(orderId, paymentId, this.hasSavedCard, this.savedCard, this.card);

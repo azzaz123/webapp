@@ -2,12 +2,12 @@ import { Component, EventEmitter, OnInit } from '@angular/core';
 import { Pack } from '../../core/payments/pack';
 import { PaymentService, PAYMENT_RESPONSE_STATUS, PAYMENT_METHOD } from '../../core/payments/payment.service';
 import { ErrorsService } from '../../core/errors/errors.service';
-import { v4 as UUID } from 'uuid';
 import { OrderProExtras, FinancialCardOption } from '../../core/payments/payment.interface';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { StripeService } from '../../core/stripe/stripe.service';
 import { EventService } from '../../core/event/event.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { UuidService } from '../../core/uuid/uuid.service';
 
 @Component({
   selector: 'tsl-buy-wallacoins-modal',
@@ -30,6 +30,7 @@ export class BuyWallacoinsModalComponent implements OnInit {
               private paymentService: PaymentService,
               public activeModal: NgbActiveModal,
               private stripeService: StripeService,
+              private uuidService: UuidService,
               private eventService: EventService) {
   }
 
@@ -53,11 +54,11 @@ export class BuyWallacoinsModalComponent implements OnInit {
 
   checkout() {
     const order: OrderProExtras = {
-      id: UUID(),
+      id: this.uuidService.getUUID(),
       packs: [this.pack.id],
       origin: 'WEB',
     };
-    const paymentId: string = UUID();
+    const paymentId: string = this.uuidService.getUUID();
 
     order.provider = PAYMENT_METHOD.STRIPE;
     this.loading = true;

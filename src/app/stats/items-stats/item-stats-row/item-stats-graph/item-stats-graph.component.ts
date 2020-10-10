@@ -1,10 +1,10 @@
 import { AfterViewInit, Component, Inject, Input, LOCALE_ID, OnInit } from '@angular/core';
-import { v4 as UUID } from 'uuid';
 import { ItemStatisticEntriesResponse, ItemStatisticFullResponse } from './item-stats-response.interface';
 import { Item } from '../../../../core/item/item';
 import { I18nService } from '../../../../core/i18n/i18n.service';
 import { EChartOption } from 'echarts';
 import * as moment from 'moment';
+import { UuidService } from '../../../../core/uuid/uuid.service';
 
 const GRAPH_COLORS = {
   CHAT: '#EEAA42',
@@ -25,12 +25,13 @@ export class ItemStatsGraphComponent implements OnInit {
   @Input() type: string;
   @Input() item: Item;
   @Input() statsData: ItemStatisticFullResponse;
-  public id: string = 'chart-' + UUID();
+  public id: string = 'chart-' + this.uuidService.getUUID();
   public chartOption: EChartOption;
 
   constructor(private i18n: I18nService,
-              @Inject(LOCALE_ID) private locale: string) {
-              }
+    private uuidService: UuidService,
+    @Inject(LOCALE_ID) private locale: string) {
+  }
 
   ngOnInit() {
     this.loadStats();
@@ -46,17 +47,17 @@ export class ItemStatsGraphComponent implements OnInit {
     let colorViews = '';
 
     entries.map(entry => {
-        const unixDate = moment.unix(entry.date/1000).utcOffset(0, true);
-        xAxisData.push(moment(unixDate, 'DD').format('DD MMM'));
-        if (this.type === 'favs') {
-          data1.push(entry.favs);
-        } else {
-          data2.push(entry.views);
-          data3.push(entry.chats);
-        }
-        colorFavs = entry.bumped ? GRAPH_COLORS.FAVS_BUMPED : GRAPH_COLORS.FAVS;
-        colorChats = entry.bumped ? GRAPH_COLORS.CHAT_BUMPED : GRAPH_COLORS.CHAT;
-        colorViews = entry.bumped ? GRAPH_COLORS.VIEWS_BUMPED : GRAPH_COLORS.VIEWS;
+      const unixDate = moment.unix(entry.date / 1000).utcOffset(0, true);
+      xAxisData.push(moment(unixDate, 'DD').format('DD MMM'));
+      if (this.type === 'favs') {
+        data1.push(entry.favs);
+      } else {
+        data2.push(entry.views);
+        data3.push(entry.chats);
+      }
+      colorFavs = entry.bumped ? GRAPH_COLORS.FAVS_BUMPED : GRAPH_COLORS.FAVS;
+      colorChats = entry.bumped ? GRAPH_COLORS.CHAT_BUMPED : GRAPH_COLORS.CHAT;
+      colorViews = entry.bumped ? GRAPH_COLORS.VIEWS_BUMPED : GRAPH_COLORS.VIEWS;
     });
     this.chartOption = {
       tooltip: {
@@ -64,8 +65,8 @@ export class ItemStatsGraphComponent implements OnInit {
         trigger: 'axis',
         backgroundColor: 'rgba(250, 250, 250, 0.9)',
         textStyle: {
-            fontSize: 12,
-            color: '#000000'
+          fontSize: 12,
+          color: '#000000'
         },
       },
       toolbox: {
@@ -79,7 +80,7 @@ export class ItemStatsGraphComponent implements OnInit {
           'Mensajes': this.type !== 'favs'
         }
       },
-      grid:{
+      grid: {
         left: 50,
         right: 50,
         top: 20,
@@ -96,7 +97,7 @@ export class ItemStatsGraphComponent implements OnInit {
         },
         axisLine: {
           lineStyle: {
-              color: '#90A4AE'
+            color: '#90A4AE'
           }
         }
       },
@@ -110,7 +111,7 @@ export class ItemStatsGraphComponent implements OnInit {
           smooth: true,
           sampling: 'average',
           itemStyle: {
-              color: colorFavs
+            color: colorFavs
           },
           hoverAnimation: true,
           data: data1,

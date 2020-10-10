@@ -1,7 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ViewChild, Output, EventEmitter, Input, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
-import { v4 as UUID } from 'uuid';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeleteInfoConfirmationModalComponent } from './delete-info-confirmation-modal/delete-info-confirmation-modal.component';
 import { PaymentService } from '../../core/payments/payment.service';
@@ -12,6 +11,7 @@ import { finalize } from 'rxjs/operators';
 import { CanComponentDeactivate } from '../../shared/guards/can-component-deactivate.interface';
 import { EventService } from 'app/core/event/event.service';
 import { validDNI, validNIE, validCIF } from 'spain-id';
+import { UuidService } from '../../core/uuid/uuid.service';
 
 export enum BILLING_TYPE {
   NATURAL = 'natural',
@@ -39,6 +39,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
               private paymentService: PaymentService,
               private errorsService: ErrorsService,
               private modalService: NgbModal,
+              private uuidService: UuidService,
               private eventService: EventService) {
     this.buildForm();
     this.eventService.subscribe('formSubmited', () => {
@@ -75,7 +76,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
       postal_code: ['', [Validators.required, this.cpValidator]],
       street: ['', [Validators.required]],
       surname: ['', [Validators.required]],
-      id: UUID()
+      id: this.uuidService.getUUID()
     });
   }
 

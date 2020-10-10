@@ -7,7 +7,6 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie';
-import * as UUID from 'uuid';
 import { TrackingService } from './core/tracking/tracking.service';
 import { MatIconRegistry } from '@angular/material';
 import { MessageService } from './chat/service/message.service';
@@ -30,6 +29,7 @@ import { AnalyticsService } from './core/analytics/analytics.service';
 import { MockAnalyticsService } from '../tests/analytics.fixtures.spec';
 import { DidomiService } from './core/didomi/didomi.service';
 import { MockDidomiService } from './core/didomi/didomi.service.spec';
+import { UuidService } from './core/uuid/uuid.service';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -49,12 +49,9 @@ let paymentService: PaymentService;
 let stripeService: StripeService;
 let analyticsService: AnalyticsService;
 let didomiService: DidomiService;
+let uuidService: UuidService;
 
 const ACCESS_TOKEN = 'accesstoken';
-
-jest.mock('uuid', () => {
-  return { v4: () => null }
-});
 
 describe('App', () => {
   beforeEach(() => {
@@ -203,6 +200,7 @@ describe('App', () => {
     stripeService = TestBed.inject(StripeService);
     analyticsService = TestBed.inject(AnalyticsService);
     didomiService = TestBed.inject(DidomiService);
+    uuidService = TestBed.inject(UuidService);
 
     spyOn(notificationService, 'init');
     spyOn(window.location, 'reload');
@@ -215,7 +213,7 @@ describe('App', () => {
 
   describe('set cookie', () => {
     it('should create a cookie', () => {
-      spyOn(UUID, 'v4').and.returnValue('1-2-3');
+      spyOn(uuidService, 'getUUID').and.returnValue('1-2-3');
       spyOn(cookieService, 'put');
       spyOn(Date.prototype, 'getTime').and.returnValue(123456789);
       const currentDate = new Date();
@@ -224,7 +222,7 @@ describe('App', () => {
 
       component.updateSessionCookie();
 
-      expect(cookieService.put).toHaveBeenCalledWith('app_session_id', UUID.v4() , cookieOptions);
+      expect(cookieService.put).toHaveBeenCalledWith('app_session_id', uuidService.getUUID() , cookieOptions);
     });
   });
 

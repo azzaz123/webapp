@@ -8,7 +8,7 @@ import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
 import mParticle from '@mparticle/web-sdk';
 import appboyKit from '@mparticle/web-appboy-kit';
 import { CookieService } from "ngx-cookie";
-import * as UUID from 'uuid';
+import { UuidService } from '../uuid/uuid.service';
 
 const user = {
   setUserAttribute: () => {}
@@ -39,13 +39,10 @@ jest.mock('@mparticle/web-appboy-kit', () => ({
   namedExport: 'appboyKit'
 }));
 
-jest.mock('uuid', () => {
-  return { v4: () => null }
-});
-
 describe('AnalyticsService', () => {
   let service: AnalyticsService;
   let deviceIdValue: string;
+  let uuidService: UuidService;
 
   beforeEach(() => {
     deviceIdValue = 'deviceId';
@@ -70,7 +67,7 @@ describe('AnalyticsService', () => {
         }
       ]
     });
-
+    uuidService = TestBed.inject(UuidService);
     service = TestBed.inject(AnalyticsService);
   });
 
@@ -96,7 +93,7 @@ describe('AnalyticsService', () => {
         spyOn(mParticle, 'init').and.callThrough();
         spyOn(mParticle.Identity.getCurrentUser(), 'setUserAttribute');
         spyOn(appboyKit, 'register');
-        spyOn(UUID, 'v4').and.returnValue('newDeviceId')
+        spyOn(uuidService, 'getUUID').and.returnValue('newDeviceId')
 
         service.initialize();
 

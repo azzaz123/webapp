@@ -10,14 +10,10 @@ import { ErrorsService } from '../../core/errors/errors.service';
 import { PaymentService } from '../../core/payments/payment.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Pack } from '../../core/payments/pack';
-import * as UUID from 'uuid';
 import { StripeService } from '../../core/stripe/stripe.service';
 import { EventService } from '../../core/event/event.service';
 import { STRIPE_CARD_OPTION } from '../../../tests/stripe.fixtures.spec';
-
-jest.mock('uuid', () => {
-  return { v4: () => null }
-});
+import { UuidService } from '../../core/uuid/uuid.service';
 
 describe('BuyWallacoinsModalComponent', () => {
   let component: BuyWallacoinsModalComponent;
@@ -27,6 +23,7 @@ describe('BuyWallacoinsModalComponent', () => {
   let errorService: ErrorsService;
   let stripeService: StripeService;
   let eventService: EventService;
+  let uuidService: UuidService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -85,6 +82,7 @@ describe('BuyWallacoinsModalComponent', () => {
     errorService = TestBed.inject(ErrorsService);
     stripeService = TestBed.inject(StripeService);
     eventService = TestBed.inject(EventService);
+    uuidService = TestBed.inject(UuidService);
   });
 
   describe('addNewCard', () => {
@@ -123,7 +121,7 @@ describe('BuyWallacoinsModalComponent', () => {
     describe('already has billing info', () => {
       beforeEach(() => {
         spyOn(paymentService, 'orderExtrasProPack').and.callThrough();
-        spyOn(UUID, 'v4').and.returnValue('UUID');
+        spyOn(uuidService, 'getUUID').and.returnValue('UUID');
         eventId = null;
       });
 

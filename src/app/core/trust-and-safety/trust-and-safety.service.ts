@@ -7,10 +7,10 @@ import {
   SessionProfileDataLocation,
   SessionProfileDataPlatform
 } from './trust-and-safety.interface';
-import { v4 as UUID } from 'uuid';
 import { THREAT_METRIX_EMBED } from './threat-metrix-embed-script';
 import { ThreatMetrixLibrary } from './threat-metrix.interface';
 import { take } from 'rxjs/operators';
+import { UuidService } from '../uuid/uuid.service';
 
 export const USER_STARTER_ENDPOINT = `${environment.baseUrl}api/v3/users/me/starter`;
 
@@ -22,13 +22,15 @@ export class TrustAndSafetyService {
   private _sessionId: string;
   private _profileSentToThreatMetrix: ReplaySubject<boolean> = new ReplaySubject();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,
+    private uuidService: UuidService,
+    ) {}
 
   private _initializeSessionId(): void {
     if (this._sessionId) {
       return;
     }
-    this._sessionId = UUID();
+    this._sessionId = this.uuidService.getUUID();
   }
 
   private _initializeLibrary() {

@@ -7,7 +7,6 @@ import { MatIconRegistry } from '@angular/material';
 import { ActivatedRoute, NavigationEnd, NavigationStart, RouteConfigLoadEnd, RouteConfigLoadStart, Router } from '@angular/router';
 import { environment } from '../environments/environment';
 import { CookieOptions, CookieService } from 'ngx-cookie';
-import { v4 as UUID } from 'uuid';
 import { TrackingService } from './core/tracking/tracking.service';
 import { EventService } from './core/event/event.service';
 import { UserService } from './core/user/user.service';
@@ -24,6 +23,7 @@ import { InboxService } from './chat/service';
 import { StripeService } from './core/stripe/stripe.service';
 import { AnalyticsService } from './core/analytics/analytics.service';
 import { DidomiService } from './core/didomi/didomi.service';
+import { UuidService } from './core/uuid/uuid.service';
 
 @Component({
   selector: 'tsl-root',
@@ -61,6 +61,7 @@ export class AppComponent implements OnInit {
     private callService: CallsService,
     private stripeService: StripeService,
     private analyticsService: AnalyticsService,
+    private uuidService: UuidService,
     private didomiService: DidomiService) {
   }
 
@@ -155,7 +156,7 @@ export class AppComponent implements OnInit {
 
   private updateSessionCookie() {
     const name = 'app_session_id';
-    const token = UUID();
+    const token = this.uuidService.getUUID();
     const expiration = 900000;
     const expirationDate: Date = new Date();
     expirationDate.setTime(expirationDate.getTime() + expiration);

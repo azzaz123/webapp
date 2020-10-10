@@ -12,11 +12,7 @@ import { ErrorsService } from '../../../../core/errors/errors.service';
 import { ToastService } from '../../../../layout/toast/toast.service';
 import { Router } from '@angular/router';
 import { I18nService } from '../../../../core/i18n/i18n.service';
-import * as UUID from 'uuid';
-
-jest.mock('uuid', () => {
-  return { v4: () => null }
-});
+import { UuidService } from '../../../../core/uuid/uuid.service';
 
 describe('CreditCardModalComponent', () => {
   let component: CreditCardModalComponent;
@@ -26,6 +22,7 @@ describe('CreditCardModalComponent', () => {
   let errorService: ErrorsService;
   let toastService: ToastService;
   let router: Router;
+  let uuidService: UuidService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -64,6 +61,7 @@ describe('CreditCardModalComponent', () => {
     eventService = TestBed.inject(EventService);
     errorService = TestBed.inject(ErrorsService);
     toastService = TestBed.inject(ToastService);
+    uuidService = TestBed.inject(UuidService);
     router = TestBed.inject(Router);
     component = fixture.componentInstance;
     component.financialCard = FINANCIAL_CARD;
@@ -129,7 +127,7 @@ describe('CreditCardModalComponent', () => {
       spyOn(stripeService, 'buy').and.callThrough();
       const orderId = 'UUID';
       const paymentId = '1-2-3';
-      spyOn(UUID, 'v4').and.returnValue('1-2-3');
+      spyOn(uuidService, 'getUUID').and.returnValue('1-2-3');
       component.savedCard = false;
 
       component.checkout(orderId);

@@ -8,7 +8,6 @@ import {
 import { of } from 'rxjs';
 import { UserService } from '../user/user.service';
 import { FeatureflagService } from '../user/featureflag.service';
-import * as UUID from 'uuid';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { HttpModuleNew } from '../http/http.module.new';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
@@ -32,10 +31,7 @@ import { CategoryService } from '../category/category.service';
 import { AccessTokenService } from '../http/access-token.service';
 import { HttpClient } from '@angular/common/http';
 import { I18nService } from '../i18n/i18n.service';
-
-jest.mock('uuid', () => {
-  return { v4: () => null }
-});
+import { UuidService } from '../uuid/uuid.service';
 
 describe('SubscriptionsService', () => {
 
@@ -45,6 +41,7 @@ describe('SubscriptionsService', () => {
   let userService: UserService;
   let featureflagService: FeatureflagService;
   let categoryService: CategoryService;
+  let uuidService: UuidService;
   const API_URL = 'api/v3/payments';
   const STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
 
@@ -91,8 +88,9 @@ describe('SubscriptionsService', () => {
     userService = TestBed.inject(UserService);
     featureflagService = TestBed.inject(FeatureflagService);
     categoryService = TestBed.inject(CategoryService);
+    uuidService = TestBed.inject(UuidService);
     service.uuid = '1-2-3';
-    spyOn(UUID, 'v4').and.returnValue('1-2-3');
+    spyOn(uuidService, 'getUUID').and.returnValue('1-2-3');
     spyOn(categoryService, 'getCategories').and.returnValue(of(CATEGORY_DATA_WEB));
   });
 

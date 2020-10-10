@@ -15,7 +15,7 @@ import { Pack } from '../../../core/payments/pack';
 import { OrderProExtras, FinancialCardOption } from '../../../core/payments/payment.interface';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { EventService } from '../../../core/event/event.service';
-import { v4 as UUID } from 'uuid';
+import { UuidService } from '../../../core/uuid/uuid.service';
 
 @Component({
   selector: 'tsl-cart-extras-pro',
@@ -46,6 +46,7 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
     private router: Router,
     private errorsService: ErrorsService,
     private stripeService: StripeService,
+    private uuidService: UuidService,
     private eventService: EventService) { }
 
   ngOnInit() {
@@ -96,7 +97,7 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
 
   private processCheckout() {
     const order: OrderProExtras = this.cart.prepareOrder();
-    const paymentId: string = UUID();
+    const paymentId: string = this.uuidService.getUUID();
     order.provider = PAYMENT_METHOD.STRIPE;
     this.paymentService.orderExtrasProPack(order).subscribe(() => {
       this.track(order);
