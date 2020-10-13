@@ -241,6 +241,11 @@ export const ITEM_CELLPHONES_EXTRA_INFO: ItemExtraInfo = {
   model: 'iPhone 11 Pro'
 }
 
+export const ITEM_CELLPHONES_EXTRA_INFO_NO_OBJECT_TYPE: ItemExtraInfo = {
+  brand: 'Apple',
+  model: 'iPhone 11 Pro'
+}
+
 export const MOCK_ITEM: Item = new Item(
   ITEM_DATA.id,
   ITEM_DATA.legacy_id,
@@ -331,6 +336,30 @@ export const MOCK_ITEM_CELLPHONES: Item = new Item(
   ITEM_DATA.delivery_info,
   ITEM_TYPES.CONSUMER_GOODS,
   ITEM_CELLPHONES_EXTRA_INFO
+);
+
+export const MOCK_ITEM_CELLPHONES_NO_SUBCATEGORY: Item = new Item(
+  ITEM_DATA.id,
+  ITEM_DATA.legacy_id,
+  ITEM_DATA.owner,
+  ITEM_DATA.title,
+  ITEM_DATA.description,
+  CATEGORY_IDS.CELL_PHONES_ACCESSORIES,
+  ITEM_DATA.location,
+  ITEM_DATA.sale_price,
+  ITEM_DATA.currency_code,
+  ITEM_DATA.modified_date,
+  ITEM_DATA.url,
+  ITEM_DATA.flags,
+  ITEM_DATA.actions_allowed,
+  ITEM_DATA.sale_conditions,
+  ITEM_DATA.main_image,
+  ITEM_DATA.images,
+  ITEM_DATA.web_slug,
+  ITEM_DATA.published_date,
+  ITEM_DATA.delivery_info,
+  ITEM_TYPES.CONSUMER_GOODS,
+  ITEM_CELLPHONES_EXTRA_INFO_NO_OBJECT_TYPE
 );
 
 export function getMockItem(id: string, legacyId: number) {
