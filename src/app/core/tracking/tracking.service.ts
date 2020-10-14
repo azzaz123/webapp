@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { UUID } from 'angular2-uuid';
 import * as CryptoJS from 'crypto-js';
 import { TrackingEvent } from './tracking-event';
 import { TrackingEventBase, TrackingEventData } from './tracking-event-base.interface';
@@ -12,6 +11,7 @@ import { WindowRef } from '../window/window.service';
 import { EventService } from '../event/event.service';
 import { Subject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { UuidService } from '../uuid/uuid.service';
 
 const maxBatchSize = 1000;
 const sendInterval = 10000;
@@ -919,6 +919,7 @@ export class TrackingService {
     private userService: UserService,
     private winRef: WindowRef,
     private eventService: EventService,
+    private uuidService: UuidService,
     private cookieService: CookieService) {
     this.setSessionStartTime();
     this.setSessionId(this.sessionIdCookieName);
@@ -965,7 +966,7 @@ export class TrackingService {
     if (sessionCookie) {
       this.sessionId = sessionCookie;
     } else {
-      this.sessionId = UUID.UUID();
+      this.sessionId = this.uuidService.getUUID();
       this.setCookie(this.sessionId, 900000, cookieName);
     }
   }
@@ -975,7 +976,7 @@ export class TrackingService {
     if (deviceAccessTokenCookie) {
       this.deviceAccessTokenId = deviceAccessTokenCookie;
     } else {
-      this.deviceAccessTokenId = UUID.UUID();
+      this.deviceAccessTokenId = this.uuidService.getUUID();
       this.setCookie(this.deviceAccessTokenId, 31557000, cookieName);
     }
   }

@@ -6,7 +6,6 @@ import { Injectable } from '@angular/core';
 import { SubscriptionSlot, SubscriptionSlotResponse, SubscriptionSlotGeneralResponse, SUBSCRIPTION_MARKETS, SubscriptionBenefit } from './subscriptions.interface';
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
-import { UUID } from 'angular2-uuid';
 import { FeatureflagService } from '../user/featureflag.service';
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from './subscriptions.interface';
 import { CategoryResponse } from '../category/category-response.interface';
@@ -15,6 +14,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { I18nService } from '../i18n/i18n.service';
 import { CURRENCY_SYMBOLS } from '../constants';
+import { UuidService } from '../uuid/uuid.service';
 
 export const API_URL = 'api/v3/payments';
 export const STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
@@ -49,6 +49,7 @@ export class SubscriptionsService {
               private featureflagService: FeatureflagService,
               private http: HttpClient,
               private categoryService: CategoryService,
+              private uuidService: UuidService,
               private i18nService: I18nService) {
     this.userService.me().subscribe((user: User) => {
       this.fullName = user ? `${user.firstName} ${user.lastName}` : '';
@@ -113,7 +114,7 @@ export class SubscriptionsService {
   }
 
   public newSubscription(subscriptionId: string, paymentId: string, billing: boolean = false): Observable<any> {
-    this.uuid = UUID.UUID();
+    this.uuid = this.uuidService.getUUID();
     return this.http.post(`${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}/${this.uuid}`, {
         payment_method_id: paymentId,
         product_subscription_id: subscriptionId,
@@ -136,7 +137,7 @@ export class SubscriptionsService {
   }
 
   public retrySubscription(invoiceId: string, paymentId: string): Observable<any> {
-    this.uuid = UUID.UUID();
+    this.uuid = this.uuidService.getUUID();
     return this.http.put(`${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}/payment_attempt/${this.uuid}`, {
       invoice_id: invoiceId,
       payment_method_id: paymentId,
