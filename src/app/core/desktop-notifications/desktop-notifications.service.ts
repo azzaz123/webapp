@@ -25,7 +25,7 @@ export class DesktopNotificationsService {
     this.askForPermissions();
   }
 
-  public sendFromInboxMessage(message: InboxMessage, conversation: InboxConversation) {
+  public sendFromInboxMessage(message: InboxMessage, conversation: InboxConversation): void {
     if (!this.canShowNotifications()) {
       return;
     }

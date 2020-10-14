@@ -7,6 +7,22 @@ import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
 import { InboxConversation, InboxMessage, MessageType, MessageStatus } from '../../../app/chat/model';
 
+export class MockDesktopNotifications {
+  public init(): void {
+  }
+
+  public sendFromInboxMessage(_message: InboxMessage, _conversation: InboxConversation): void {
+  }
+
+  public browserSupportsNotifications(): boolean {
+    return true;
+  }
+
+  public canShowNotifications(): boolean {
+    return true;
+  }
+}
+
 describe('Service: DesktopNotifications', () => {
   let service: DesktopNotificationsService;
   let i18nService: I18nService;
