@@ -142,13 +142,14 @@ describe('Service: DesktopNotifications', () => {
     });
 
     describe('and when user accepted notifications', () => {
+      const mockNotification = {
+        _mockEventListeners: {},
+        addEventListener: (key: string, value: Function) => mockNotification._mockEventListeners[key] = value
+      };
+
       beforeEach(fakeAsync(() => {
         spyOn(service, 'canShowNotifications').and.returnValue(true);
-        spyOn(window, 'Notification').and.callFake(() => {
-          return {
-            addEventListener: () => {}
-          };
-        });
+        spyOn(window, 'Notification').and.callFake(() => mockNotification);
       }));
 
       it('should send notification', () => {
@@ -165,6 +166,24 @@ describe('Service: DesktopNotifications', () => {
         service.sendFromInboxMessage(message, conversation);
 
         expect(Notification).toHaveBeenCalledWith(expectedTitle, expectedNotificationOptions);
+      });
+
+      describe('and when user closes notification', () => {
+        it('should track the event', () => {
+          service.sendFromInboxMessage(message, conversation);
+          spyOn(trackingService, 'track');
+          const expectedEvent = [
+            TrackingService.NOTIFICATION_RECEIVED,
+            {
+              thread_id: message.thread,
+              message_id: message.id
+            }
+          ];
+
+          mockNotification._mockEventListeners['close']();
+
+          expect(trackingService.track).toHaveBeenCalledWith(...expectedEvent);
+        });
       });
     });
   });
