@@ -13,7 +13,7 @@
           <label for="headline" i18n="@@UploadProductHeadline">What are you selling?</label>
           <span class="chars-counter">{{ uploadForm.value?.title?.length }}/{{MAX_TITLE_LENGTH}}</span>
           <input i18n-placeholder placeholder="In some words..." type="text" class="form-control"
-            formControlName="title" #title id="headline"  (focusout)="onSearchSuggestedCategories()" [maxlength]="MAX_TITLE_LENGTH" />
+            formControlName="title" #title id="headline" [maxlength]="MAX_TITLE_LENGTH" (keyup)="onKeyUpTitle()" />
         </div>
       </div>
       <ng-template #coachmarkTitle>

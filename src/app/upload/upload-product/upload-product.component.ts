@@ -143,6 +143,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public cellPhonesCategoryId = CATEGORY_IDS.CELL_PHONES_ACCESSORIES;
   public fashionCategoryId = CATEGORY_IDS.FASHION_ACCESSORIES;
   private lastSuggestedCategoryText: string;
+  private suggesterCategoryTimer: any;
 
   constructor(private fb: FormBuilder,
     private router: Router,
@@ -289,7 +290,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         if (categoryId === '') {
           this.getUploadExtraInfoControl('object_type').disable();
           this.lastSuggestedCategoryText = '';
-          this.onSearchSuggestedCategories();
+          this.searchSuggestedCategories();
         }
         this.onCategorySelect.emit(categoryId);
       });
@@ -696,31 +697,41 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     return field ? this.uploadForm.get('extra_info').get(field) : this.uploadForm.get('extra_info');
   }
 
-  onSearchSuggestedCategories() {
+  searchSuggestedCategories(): void {
     const text: string = this.uploadForm.get('title').value
-    if (text === '' || this.lastSuggestedCategoryText === text) return;
-    const categoryId = this.uploadForm.get('category_id').value;
-    if (categoryId !== '' && this.isHeroCategory(+categoryId)) return;
-    this.categoryService.getSuggestedCategory(text).subscribe(
-      (category: SuggestedCategory) => {
-        this.lastSuggestedCategoryText = text;
-        if (category) {
-          this.updateCategory(category)
+    if (!text.length || this.lastSuggestedCategoryText === text) return;
+    const categoryId: string = this.uploadForm.get('category_id').value;
+    if (categoryId.length && this.isHeroCategory(+categoryId)) return;
+    this.categoryService.getSuggestedCategory(text)
+      .subscribe(
+        (category: SuggestedCategory) => {
+          this.lastSuggestedCategoryText = text;
+          if (category) {
+            this.updateCategory(category)
+          }
         }
-      }
-    )
+      )
   }
 
-  updateCategory(suggestedCategory: SuggestedCategory) {
+  onKeyUpTitle(): void {
+    clearTimeout(this.suggesterCategoryTimer);
+    this.suggesterCategoryTimer = setTimeout(() => {
+      this.searchSuggestedCategories();
+    }, 750)
+  }
+
+  updateCategory(suggestedCategory: SuggestedCategory): void {
     const suggestedId: string = suggestedCategory.category_id.toString();
-    if (this.categories.find(category => category.value === suggestedId)) {
-      if (this.uploadForm.get('category_id').value !== '') {
-        this.errorsService.i18nSuccess('suggestedCategory');
+    const formCategoryValue: string = this.uploadForm.get('category_id').value;
+    if (formCategoryValue !== suggestedId) {
+      if (this.categories.find(category => category.value === suggestedId)) {
+        if (formCategoryValue.length) {
+          this.errorsService.i18nSuccess('suggestedCategory');
+        }
+        this.uploadForm.patchValue({
+          category_id: suggestedId
+        })
       }
-      this.uploadForm.patchValue({
-        category_id: suggestedId
-      })
     }
   }
-
 }
