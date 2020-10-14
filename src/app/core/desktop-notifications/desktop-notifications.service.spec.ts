@@ -4,9 +4,12 @@ import { DesktopNotificationsService, ASK_PERMISSIONS_TIMEOUT_MS } from './deskt
 import { TrackingService } from '../tracking/tracking.service';
 import { I18nService } from '../i18n/i18n.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
+import { createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
+import { InboxConversation, InboxMessage, MessageType, MessageStatus } from '../../../app/chat/model';
 
 describe('Service: DesktopNotifications', () => {
   let service: DesktopNotificationsService;
+  let i18nService: I18nService;
   let trackingService: TrackingService;
 
   beforeEach(() => {
@@ -18,6 +21,7 @@ describe('Service: DesktopNotifications', () => {
       ]
     });
     service = TestBed.inject(DesktopNotificationsService);
+    i18nService = TestBed.inject(I18nService);
     trackingService = TestBed.inject(TrackingService);
   });
 
@@ -88,10 +92,79 @@ describe('Service: DesktopNotifications', () => {
     });
 
     describe('and when browser does not support them', () => {
-      beforeEach(() => Notification = null);
+      beforeEach(() => spyOn(window, 'Notification').and.callFake(() => null));
 
       it('should notify no compatibility', () => {
         expect(service.browserSupportsNotifications()).toBe(false);
+      });
+    });
+  });
+
+  describe('when sending a notification from an inbox message', () => {
+    let conversation: InboxConversation;
+    let message: InboxMessage;
+
+    beforeEach(() => {
+      conversation = createInboxConversationsArray(1)[0];
+      conversation.user.avatarUrl = 'avatarUrl';
+      message = new InboxMessage('mockId', conversation.id, 'hola!', 'mockUserId', false, new Date(),
+      MessageStatus.SENT, MessageType.TEXT);
+    });
+
+    describe('and when browser does not support notifications', () => {
+      beforeEach(() => spyOn(service, 'browserSupportsNotifications').and.returnValue(false));
+
+      it('should not send notification', fakeAsync(() => {
+        spyOn(window, 'Notification').and.callFake(() => null);
+
+        service.init();
+        tick(ASK_PERMISSIONS_TIMEOUT_MS);
+        service.sendFromInboxMessage(message, conversation);
+
+        expect(Notification).not.toHaveBeenCalled();
+      }));
+    });
+
+    describe('and when user did not accept notifications', () => {
+      beforeEach(() => {
+        spyOn(Notification, 'requestPermission').and.returnValue(Promise.resolve('denied'));
+      });
+
+      it('should not send notification', fakeAsync(() => {
+        spyOn(window, 'Notification').and.callFake(() => null);
+
+        service.init();
+        tick(ASK_PERMISSIONS_TIMEOUT_MS);
+        service.sendFromInboxMessage(message, conversation);
+
+        expect(Notification).not.toHaveBeenCalled();
+      }));
+    });
+
+    describe('and when user accepted notifications', () => {
+      beforeEach(fakeAsync(() => {
+        spyOn(service, 'canShowNotifications').and.returnValue(true);
+        spyOn(window, 'Notification').and.callFake(() => {
+          return {
+            addEventListener: () => {}
+          };
+        });
+      }));
+
+      it('should send notification', () => {
+        const expectedTitle = `${i18nService.getTranslations('newMessageNotification')}${conversation.user.microName}`;
+        const image = conversation.user.avatarUrl;
+        const expectedNotificationOptions = {
+          body: message.text,
+          icon: image,
+          image,
+          badge: image,
+          timestamp: message.date.getTime()
+        };
+
+        service.sendFromInboxMessage(message, conversation);
+
+        expect(Notification).toHaveBeenCalledWith(expectedTitle, expectedNotificationOptions);
       });
     });
   });

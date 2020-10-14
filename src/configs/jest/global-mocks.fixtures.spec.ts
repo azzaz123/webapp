@@ -134,4 +134,7 @@ export class MockNotificationClass {
   public static requestPermission() {
     return Promise.resolve('granted');
   }
-};
+
+  public addEventListener(_eventName) {
+  }
+}

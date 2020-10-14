@@ -34,7 +34,11 @@ export class DesktopNotificationsService {
   }
 
   public browserSupportsNotifications(): boolean {
-    return !!Notification;
+    return !!Notification && !!Notification.requestPermission;
+  }
+
+  public canShowNotifications(): boolean {
+    return this.showNotifications && this.browserSupportsNotifications();
   }
 
   // Delaying the request due to browsers recommendation
@@ -44,10 +48,6 @@ export class DesktopNotificationsService {
         this.showNotifications = permission === 'granted';
       });
     });
-  }
-
-  private canShowNotifications(): boolean {
-    return this.showNotifications && this.browserSupportsNotifications();
   }
 
   private createFromInboxMessage(message: InboxMessage, conversation: InboxConversation): Notification {
