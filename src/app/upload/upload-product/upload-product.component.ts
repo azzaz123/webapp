@@ -1,4 +1,4 @@
-import { CategoryResponse } from './../../core/category/category-response.interface';
+import { CategoryResponse, SuggestedCategory } from './../../core/category/category-response.interface';
 import { AnalyticsService } from './../../core/analytics/analytics.service';
 import {
   Component,
@@ -142,6 +142,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public isUrgent = false;
   public cellPhonesCategoryId = CATEGORY_IDS.CELL_PHONES_ACCESSORIES;
   public fashionCategoryId = CATEGORY_IDS.FASHION_ACCESSORIES;
+  private lastSuggestedCategoryText: string;
 
   constructor(private fb: FormBuilder,
     private router: Router,
@@ -280,12 +281,18 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   private detectCategoryChanges() {
-    this.uploadForm.get('category_id').valueChanges.subscribe((categoryId: string) => {
-      this.handleUploadFormExtraFields();
-      this.resetAllExtraFields()
-      if (categoryId === '' ) { this.getUploadExtraInfoControl('object_type').disable(); }
-      this.onCategorySelect.emit(categoryId);
-    });
+    this.uploadForm.get('category_id').valueChanges
+      .subscribe((categoryId: string) => {
+        this.handleUploadFormExtraFields();
+        this.resetAllExtraFields()
+
+        if (categoryId === '') {
+          this.getUploadExtraInfoControl('object_type').disable();
+          this.lastSuggestedCategoryText = '';
+          this.onSearchSuggestedCategories();
+        }
+        this.onCategorySelect.emit(categoryId);
+      });
   }
 
   private detectObjectTypeChanges() {
@@ -689,5 +696,31 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     return field ? this.uploadForm.get('extra_info').get(field) : this.uploadForm.get('extra_info');
   }
 
-}
+  onSearchSuggestedCategories() {
+    const text: string = this.uploadForm.get('title').value
+    if (text === '' || this.lastSuggestedCategoryText === text) return;
+    const categoryId = this.uploadForm.get('category_id').value;
+    if (categoryId !== '' && this.isHeroCategory(+categoryId)) return;
+    this.categoryService.getSuggestedCategory(text).subscribe(
+      (category: SuggestedCategory) => {
+        this.lastSuggestedCategoryText = text;
+        if (category) {
+          this.updateCategory(category)
+        }
+      }
+    )
+  }
 
+  updateCategory(suggestedCategory: SuggestedCategory) {
+    const suggestedId: string = suggestedCategory.category_id.toString();
+    if (this.categories.find(category => category.value === suggestedId)) {
+      if (this.uploadForm.get('category_id').value !== '') {
+        this.errorsService.i18nSuccess('suggestedCategory');
+      }
+      this.uploadForm.patchValue({
+        category_id: suggestedId
+      })
+    }
+  }
+
+}

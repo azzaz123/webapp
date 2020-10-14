@@ -26,3 +26,7 @@ export interface CategoryField {
 export interface CategoryOption extends IOption {
   icon_id: string;
 }
+
+export interface SuggestedCategory {
+  category_id : number;
+}

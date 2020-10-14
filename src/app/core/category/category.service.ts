@@ -3,12 +3,13 @@ import { map, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { CategoryResponse } from './category-response.interface';
+import { CategoryResponse, SuggestedCategory } from './category-response.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { environment } from '../../../environments/environment';
 
 export const CATEGORIES_ENDPOINT = 'api/v3/categories/keys/';
 export const CONSUMER_GOODS_ENDPOINT = `${CATEGORIES_ENDPOINT}consumer_goods`;
+export const SUGGESTED_CATEGORIES_ENDPOINT = 'api/v3/classifier/upload-blackbox';
 
 @Injectable()
 export class CategoryService {
@@ -41,5 +42,14 @@ export class CategoryService {
       vertical_id: 'consumer_goods',
       fields: {}
     }
+  }
+
+  getSuggestedCategory(text: string): Observable<SuggestedCategory> {
+    return this.http.get<SuggestedCategory[]>(`${environment.baseUrl}${SUGGESTED_CATEGORIES_ENDPOINT}`, {
+      params: { text }
+    })
+    .pipe(
+      map(r => r.length > 0 ? r[0] : null),
+    )
   }
 }
