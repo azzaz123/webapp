@@ -6,6 +6,10 @@ import { v4 } from 'uuid';
 })
 export class UuidService {
 
+  static getUUID(): string {
+    return new UuidService().getUUID();
+  }
+
   getUUID(): string {
     return v4();
   }

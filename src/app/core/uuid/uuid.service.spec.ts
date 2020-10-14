@@ -19,4 +19,10 @@ describe('UuidService', () => {
 
     expect(service.getUUID()).toEqual('1-2-3');
   });
+
+  it('should return uuid singleton', () => {
+    spyOn(UUID, 'v4').and.returnValue('1-2-3');
+
+    expect(UuidService.getUUID()).toEqual('1-2-3');
+  });
 });
