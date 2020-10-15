@@ -937,7 +937,6 @@ export class TrackingService {
 
   private createNewEvent(event: TrackingEventBase, attributes?: any): TrackingEvent {
     const newEvent: TrackingEvent = new TrackingEvent(
-      window,
       this.userService.user.id,
       this.sessionStartTime,
       event);

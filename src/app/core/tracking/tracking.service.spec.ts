@@ -69,13 +69,6 @@ describe('Service: Tracking', () => {
     userService = TestBed.inject(UserService);
     httpMock = TestBed.inject(HttpTestingController);
     navigatorService = TestBed.inject(NavigatorService);
-    window = {
-      screen: {
-        width: 1366,
-        height: 768
-      },
-      locale: 'es'
-    } as any
   });
 
   afterEach(() => {
