@@ -87,8 +87,6 @@ describe('InboxConversationService', () => {
     service.subscribeChatEvents();
     service.conversations = [];
     service.archivedConversations = [];
-
-    spyOn(desktopNotificationsService, 'sendFromInboxMessage');
   });
 
   describe('subscribe chat events', () => {
@@ -260,8 +258,10 @@ describe('InboxConversationService', () => {
         let messageFromUser: InboxMessage;
 
         beforeEach(() => {
-          messageFromUser = new InboxMessage('mockId', conversations[0].id, 'hola!', 'mockUserId', false, new Date(),
-          MessageStatus.SENT, MessageType.TEXT);
+          messageFromUser = new InboxMessage('mockId', conversations[0].id, 'hola!', 'mockUserId',
+            false, new Date(), MessageStatus.SENT, MessageType.TEXT
+          );
+          spyOn(desktopNotificationsService, 'sendFromInboxMessage');
         });
 
         it('should delegate the desktop notification to be opened or not', () => {
