@@ -1,4 +1,4 @@
-import { TestBed, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { CookieService } from 'ngx-cookie';
 
 import { environment } from '../../../environments/environment';
@@ -7,18 +7,10 @@ import { MockedUserService } from '../../../tests/user.fixtures.spec';
 import { EventService } from '../event/event.service';
 
 import { TrackingService } from './tracking.service';
-import { TRACKING_EVENT } from '../../../tests/tracking.fixtures.spec';
 import { NavigatorService } from './navigator.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { TrackingEvent } from './tracking-event';
 
 class MockedNavigatorService {
-  private parseVersionInfo() {
-  }
-
-  private setOperativeSystem() {
-  }
-
   get browserName() {
     return 'Chrome';
   }

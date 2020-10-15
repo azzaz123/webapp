@@ -99,7 +99,6 @@ describe('TopbarComponent', () => {
     eventService = TestBed.inject(EventService);
     paymentService = TestBed.inject(PaymentService);
     cookieService = TestBed.inject(CookieService);
-    window.location.href = environment.siteUrl;
   });
 
   it('should be created', () => {
