@@ -142,7 +142,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public isUrgent = false;
   public cellPhonesCategoryId = CATEGORY_IDS.CELL_PHONES_ACCESSORIES;
   public fashionCategoryId = CATEGORY_IDS.FASHION_ACCESSORIES;
-  private lastSuggestedCategoryText: string;
+  public lastSuggestedCategoryText: string;
   private suggesterCategoryTimer: any;
 
   constructor(private fb: FormBuilder,

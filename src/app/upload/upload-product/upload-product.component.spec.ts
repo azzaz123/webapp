@@ -9,18 +9,16 @@ import { of } from 'rxjs';
 import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { UploadProductComponent } from './upload-product.component';
 import { CategoryService } from '../../core/category/category.service';
-import { CATEGORIES_OPTIONS_CONSUMER_GOODS, CATEGORIES_DATA_CONSUMER_GOODS, CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
+import { CATEGORIES_OPTIONS_CONSUMER_GOODS, CATEGORIES_DATA_CONSUMER_GOODS, CATEGORY_DATA_WEB, SUGGESTED_CATEGORY_TV_AUDIO_CAMERAS, SUGGESTED_CATEGORY_COMPUTERS_ELECTRONICS } from '../../../tests/category.fixtures.spec';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { User } from '../../core/user/user';
 import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
-import { ITEM_CATEGORY_ID, ITEM_DATA, ITEM_DELIVERY_INFO, MOCK_ITEM, MOCK_ITEM_FASHION } from '../../../tests/item.fixtures.spec';
-import { Item } from '../../core/item/item';
+import { ITEM_CATEGORY_ID, ITEM_DELIVERY_INFO, MOCK_ITEM, MOCK_ITEM_FASHION } from '../../../tests/item.fixtures.spec';
 import { UserLocation } from '../../core/user/user-response.interface';
 import { environment } from '../../../environments/environment';
-import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
 import { GeneralSuggestionsService } from './general-suggestions.service';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
@@ -104,6 +102,9 @@ describe('UploadProductComponent', () => {
           provide: CategoryService, useValue: {
             getCategories() {
               return of(CATEGORIES_DATA_CONSUMER_GOODS);
+            },
+            getSuggestedCategory() {
+              return of(SUGGESTED_CATEGORY_TV_AUDIO_CAMERAS);
             }
           }
         },
@@ -1237,4 +1238,95 @@ describe('UploadProductComponent', () => {
     });
   });
 
+  describe('suggester of category', () => {
+    it('should not call the service when the title is empty', () => {
+      component.uploadForm.patchValue({ title: '' });
+      spyOn(categoryService, 'getSuggestedCategory');
+
+      component.searchSuggestedCategories();
+
+      expect(categoryService.getSuggestedCategory).not.toBeCalled();
+    });
+
+    it('should not call the service when the title is the same that the last suggestion', () => {
+      component.uploadForm.patchValue({ title: 'car' });
+      component.lastSuggestedCategoryText = 'car';
+      spyOn(categoryService, 'getSuggestedCategory');
+
+      component.searchSuggestedCategories();
+
+      expect(categoryService.getSuggestedCategory).not.toBeCalled();
+    });
+
+    it('should not call the service when there is a previous here category selected', () => {
+      component.uploadForm.patchValue({ title: 'car', category_id: CATEGORY_IDS.JOBS.toString() });
+      spyOn(categoryService, 'getSuggestedCategory');
+
+      component.searchSuggestedCategories();
+
+      expect(categoryService.getSuggestedCategory).not.toBeCalled();
+    });
+
+    it('should call the service with the title and save last text search', () => {
+      component.uploadForm.patchValue({ title: 'car' });
+      spyOn(categoryService, 'getSuggestedCategory').and.returnValue(of(null));
+
+      component.searchSuggestedCategories();
+
+      expect(categoryService.getSuggestedCategory).toBeCalledWith('car');
+      expect(component.lastSuggestedCategoryText).toBe('car')
+    });
+
+    it('should not update the category if there is not suggestion', () => {
+      component.uploadForm.patchValue({ title: 'car' });
+      spyOn(categoryService, 'getSuggestedCategory').and.returnValue(of(null));
+      spyOn(component, 'updateCategory');
+
+      component.searchSuggestedCategories();
+
+      expect(component.lastSuggestedCategoryText).toBe('car')
+      expect(component.updateCategory).not.toBeCalled();
+    });
+
+    it('should not update the category if suggestion and selected category are the same', () => {
+      component.uploadForm.patchValue({ title: 'bike', category_id: CATEGORY_IDS.TV_AUDIO_CAMERAS.toString() });
+      spyOn(categoryService, 'getSuggestedCategory').and.returnValue(of(SUGGESTED_CATEGORY_TV_AUDIO_CAMERAS));
+      spyOn(component.uploadForm, 'patchValue')
+
+      component.searchSuggestedCategories();
+
+      expect(component.uploadForm.patchValue).not.toBeCalled();
+    });
+
+
+    it('should not update the category if suggestion is not in the category options', () => {
+      component.uploadForm.patchValue({ title: 'bike' });
+      spyOn(categoryService, 'getSuggestedCategory').and.returnValue(of(SUGGESTED_CATEGORY_COMPUTERS_ELECTRONICS));
+      spyOn(component.uploadForm, 'patchValue')
+
+      component.searchSuggestedCategories();
+
+      expect(component.uploadForm.patchValue).not.toBeCalled();
+    });
+
+    it('should update the category if the suggested category is valid', () => {
+      component.uploadForm.patchValue({ title: 'tv' });
+      spyOn(categoryService, 'getSuggestedCategory').and.returnValue(of(SUGGESTED_CATEGORY_TV_AUDIO_CAMERAS));
+
+      component.searchSuggestedCategories();
+
+      expect(component.uploadForm.get('category_id').value).toBe(CATEGORY_IDS.TV_AUDIO_CAMERAS.toString())
+    });
+
+    it('should show an 18n success message if a previously selected category was changed', () => {
+      component.uploadForm.patchValue({ title: 'tv', category_id: CATEGORY_IDS.GAMES_CONSOLES.toString() });
+      spyOn(errorService, 'i18nSuccess');
+      spyOn(categoryService, 'getSuggestedCategory').and.returnValue(of(SUGGESTED_CATEGORY_TV_AUDIO_CAMERAS));
+
+      component.searchSuggestedCategories();
+
+      expect(component.uploadForm.get('category_id').value).toBe(CATEGORY_IDS.TV_AUDIO_CAMERAS.toString())
+      expect(errorService.i18nSuccess).toHaveBeenCalledWith('suggestedCategory');
+    });
+  });
 });

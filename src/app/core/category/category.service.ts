@@ -1,6 +1,6 @@
 
 import { map, tap } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { CategoryResponse, SuggestedCategory } from './category-response.interface';
@@ -45,11 +45,11 @@ export class CategoryService {
   }
 
   getSuggestedCategory(text: string): Observable<SuggestedCategory> {
-    return this.http.get<SuggestedCategory[]>(`${environment.baseUrl}${SUGGESTED_CATEGORIES_ENDPOINT}`, {
-      params: { text }
-    })
-    .pipe(
-      map(r => r.length > 0 ? r[0] : null),
-    )
+    const params = new HttpParams()
+      .set('text', text);
+    return this.http.get<SuggestedCategory[]>(`${environment.baseUrl}${SUGGESTED_CATEGORIES_ENDPOINT}`, { params })
+      .pipe(
+        map(response => response.length > 0 ? response[0] : null),
+      )
   }
 }
