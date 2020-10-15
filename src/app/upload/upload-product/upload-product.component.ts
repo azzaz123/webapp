@@ -13,9 +13,9 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { IOption } from 'ng-select';
-import { find, omit, isEqual } from 'lodash-es';
+import { omit, isEqual, cloneDeep } from 'lodash-es';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { CategoryOption } from '../../core/category/category-response.interface';
 import { UploadEvent } from '../upload-event.interface';
@@ -28,7 +28,7 @@ import { DeliveryInfo, ItemContent } from '../../core/item/item-response.interfa
 import { GeneralSuggestionsService } from './general-suggestions.service';
 import { KeywordSuggestion } from '../../shared/keyword-suggester/keyword-suggestion.interface';
 import { Subject, Observable } from 'rxjs';
-import { Brand, BrandModel, Model } from '../brand-model.interface';
+import { Brand, BrandModel, Model, ObjectType, SimpleObjectType } from '../brand-model.interface';
 import { UserService } from '../../core/user/user.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { tap, map } from 'rxjs/operators';
@@ -42,6 +42,20 @@ import {
 } from '../../core/analytics/analytics-constants';
 import { CATEGORY_IDS } from '../../core/category/category-ids';
 
+function isObjectTypeRequiredValidator(formControl: AbstractControl) {
+  const objectTypeControl: FormGroup = formControl?.parent as FormGroup;
+  if (!objectTypeControl) return;
+  const extraInfoControl: FormGroup = objectTypeControl.parent as FormGroup;
+  const uploadFormControl: FormGroup = extraInfoControl.parent as FormGroup;
+  const categoryIdControl: FormControl = uploadFormControl.get('category_id') as FormControl;
+  const categoryId = categoryIdControl.value;
+
+  if (+categoryId === CATEGORY_IDS.FASHION_ACCESSORIES || +categoryId === CATEGORY_IDS.CELL_PHONES_ACCESSORIES) {
+    return Validators.required(formControl);
+  }
+  return null;
+}
+
 @Component({
   selector: 'tsl-upload-product',
   templateUrl: './upload-product.component.html',
@@ -54,17 +68,27 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   @Input() urgentPrice: number;
   @Output() onValidationError: EventEmitter<any> = new EventEmitter();
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
-  @Output() onCategorySelect = new EventEmitter<number>();
+  @Output() onCategorySelect = new EventEmitter<string>();
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   @Input() suggestionValue: string;
 
+  MAX_DESCRIPTION_LENGTH = 640;
+  MAX_TITLE_LENGTH = 50;
+
   public itemTypes: any = ITEM_TYPES;
   public currentCategory: CategoryOption;
-  public objectTypes: IOption[];
-  public conditions: IOption[];
-  public brands: IOption[];
-  public models: IOption[];
-  public sizes: IOption[];
+  public currentSelectType: IOption;
+  public objectTypesOptions: IOption[] = [];
+  public objectTypesOptions2: IOption[] = [];
+  public objectTypes: ObjectType[] = [];
+  public conditions: IOption[] = [];
+  public brands: IOption[] = [];
+  public models: IOption[] = [];
+  public sizes: IOption[] = [];
+  public gender: IOption[] = [
+    { value: 'male', label: 'Male' },
+    { value: 'female', label: 'Female' }
+  ];
   public brandSuggestions: Subject<KeywordSuggestion[]> = new Subject();
   public modelSuggestions: Subject<KeywordSuggestion[]> = new Subject();
   public uploadCompletedPercentage = 0;
@@ -113,6 +137,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   private focused: boolean;
   private oldFormValue: any;
   private oldDeliveryValue: any;
+  private rawCategories: CategoryResponse[];
+  public selectedRawCategory: CategoryResponse;
   public isUrgent = false;
   public cellPhonesCategoryId = CATEGORY_IDS.CELL_PHONES_ACCESSORIES;
   public fashionCategoryId = CATEGORY_IDS.FASHION_ACCESSORIES;
@@ -148,14 +174,17 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       }),
       extra_info: this.fb.group({
         object_type: this.fb.group({
-          id: [null, [Validators.required]]
+          id: [{ value: null, disabled: true }, [isObjectTypeRequiredValidator]]
         }),
-        brand: [null, [Validators.required]],
-        model: [null, [Validators.required]],
+        object_type_2: this.fb.group({
+          id: [{ value: null, disabled: true }]
+        }),
+        brand: [{ value: null, disabled: true }, [Validators.required]],
+        model: [{ value: null, disabled: true }, [Validators.required]],
         size: this.fb.group({
-          id: [null, [Validators.required]]
+          id: [{ value: null, disabled: true }, [Validators.required]]
         }),
-        gender: [null, [Validators.required]],
+        gender: [{ value: null, disabled: true }, [Validators.required]],
         condition: [null]
       })
     });
@@ -169,21 +198,21 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       this.categories = categories;
 
       this.detectCategoryChanges();
+      this.detectObjectTypeChanges();
       if (this.item) {
         this.initializeEditForm();
       }
       this.detectFormChanges();
+      this.handleUploadFormExtraFields();
     });
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.categoryId) {
       if (changes.categoryId.currentValue === '-1') {
-        this.uploadForm.patchValue({ category_id: ''});
-      } else {
-        this.uploadForm.patchValue({ category_id: changes.categoryId.currentValue });
-        this.disableExtraFields();
+        return this.uploadForm.patchValue({ category_id: '' });
       }
+      return this.uploadForm.patchValue({ category_id: changes.categoryId.currentValue });
     }
   }
 
@@ -197,14 +226,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       sale_conditions: this.item.saleConditions ? this.item.saleConditions : {},
       category_id: this.item.categoryId.toString(),
       delivery_info: this.getDeliveryInfo(),
-      extra_info: this.item.extraInfo || {}
+      extra_info: this.getExtraInfo()
     });
     this.oldDeliveryValue = this.getDeliveryInfo();
-    if (+this.item.categoryId === this.fashionCategoryId) {
-      this.getSizes();
-    }
-    this.getObjectTypes();
-    this.getConditions();
   }
 
   private detectFormChanges() {
@@ -222,23 +246,93 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     });
   }
 
+  public getExtraInfo(): any {
+    if (!this.item.extraInfo) return {};
+    const objectTypeId = this.item.extraInfo.object_type?.id;
+    if (objectTypeId) {
+      if (!this.objectTypes.find(objectType => objectType.id === objectTypeId)) {
+        const objectTypeTree = this.findChildrenObjectTypeById(objectTypeId)
+        if (objectTypeTree) {
+          return {
+            ...this.item.extraInfo,
+            object_type: { id: objectTypeTree.parentId },
+            object_type_2: { id: objectTypeTree.childrenId }
+          }
+        }
+      }
+    }
+    return this.item.extraInfo
+  }
+
+  private findChildrenObjectTypeById(id: string): { parentId: string, childrenId: string } {
+    if (!this.objectTypes.length) { return null; }
+    for (const item of this.objectTypes) {
+      if (item.has_children) {
+        const selectedChildren = item.children.find(children => children.id === id)
+        if (selectedChildren) {
+          return {
+            parentId: item.id,
+            childrenId: selectedChildren.id
+          }
+        }
+      }
+    }
+  }
+
   private detectCategoryChanges() {
-    this.uploadForm.get('category_id').valueChanges.subscribe((categoryId: number) => {
-      this.getUploadExtraInfoControl().reset();
-
-      if (+categoryId === CATEGORY_IDS.CELL_PHONES_ACCESSORIES) {
-        this.enableCellphonesExtraFields();
-      }
-      if (+categoryId === CATEGORY_IDS.FASHION_ACCESSORIES) {
-        this.enableFashionExtraFields();
-      }
-      if (+categoryId !== CATEGORY_IDS.FASHION_ACCESSORIES && +categoryId !== CATEGORY_IDS.CELL_PHONES_ACCESSORIES) {
-        this.disableExtraFields();
-      }
-
-      this.getConditions();
+    this.uploadForm.get('category_id').valueChanges.subscribe((categoryId: string) => {
+      this.handleUploadFormExtraFields();
+      this.resetAllExtraFields()
+      if (categoryId === '' ) { this.getUploadExtraInfoControl('object_type').disable(); }
       this.onCategorySelect.emit(categoryId);
     });
+  }
+
+  private detectObjectTypeChanges() {
+    this.getUploadExtraInfoControl('object_type').get('id').valueChanges.subscribe((typeOfbOjectId: number) => {
+      if (!!typeOfbOjectId) {
+        this.getSecondObjectTypes(typeOfbOjectId);
+        if (+this.uploadForm.get('category_id').value === CATEGORY_IDS.FASHION_ACCESSORIES) {
+          this.getSizes();
+        }
+      } else {
+        this.clearSecondObjectTypes();
+      }
+    });
+    this.getUploadExtraInfoControl('gender').valueChanges.subscribe((gender: string) => {
+      if (!!gender && +this.uploadForm.get('category_id').value === CATEGORY_IDS.FASHION_ACCESSORIES) {
+        this.getSizes();
+      }
+    });
+  }
+
+  private handleUploadFormExtraFields(): void {
+    const formCategoryId = this.uploadForm.get('category_id').value;
+    const rawCategory = this.rawCategories.find(category => category.category_id === +formCategoryId);
+    const EXTRA_FIELDS_KEYS = ['type_of_object', 'brand', 'model', 'gender', 'size'];
+
+    if (!!rawCategory) {
+      this.selectedRawCategory = rawCategory;
+      this.getObjectTypes();
+      this.getConditions();
+
+      EXTRA_FIELDS_KEYS.map(field => {
+        const formFieldName = field === 'type_of_object' ? 'object_type' : field;
+
+        if (!!rawCategory.fields[field]) {
+          if (formFieldName !== 'size') {
+            return this.getUploadExtraInfoControl(formFieldName).enable();
+          }
+
+          const objectTypeId = this.getUploadExtraInfoControl('object_type').get('id').value;
+          const gender = this.getUploadExtraInfoControl('gender').value;
+          if (formFieldName === 'size' && objectTypeId && gender) {
+            return this.getUploadExtraInfoControl(formFieldName).enable();
+          }
+        }
+        return this.getUploadExtraInfoControl(formFieldName).disable();
+      });
+    }
   }
 
   private getDeliveryInfo(): DeliveryInfo {
@@ -265,7 +359,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       }
       this.uploadEvent.emit({
         type: this.item ? 'update' : 'create',
-        values: this.uploadForm.value
+        values: this.parseUploadForm()
       });
     } else {
       this.uploadForm.markAsPending();
@@ -279,6 +373,15 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         this.onValidationError.emit();
       }
     }
+  }
+
+  private parseUploadForm(): any {
+    const values = cloneDeep(this.uploadForm.value);
+    if (values.extra_info.object_type?.id && values.extra_info.object_type_2?.id) {
+      values.extra_info.object_type.id = values.extra_info.object_type_2.id
+      delete values.extra_info.object_type_2
+    }
+    return values;
   }
 
   onUploaded(uploadEvent: any) {
@@ -354,9 +457,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   public getBrands(brandKeyword: string): void {
     const suggestions: KeywordSuggestion[] = [];
-    let objectTypeId: number;
-
-    objectTypeId = this.uploadExtraInfoValue.object_type.id;
+    let objectTypeId: number = this.getUploadExtraInfoControl('object_type').get('id').value;
 
     this.generalSuggestionsService.
       getBrands(brandKeyword, this.uploadForm.value.category_id, objectTypeId)
@@ -387,9 +488,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     this.generalSuggestionsService.
       getModels(
         modelKeyword,
-        this.uploadForm.value.category_id,
-        this.uploadExtraInfoValue.brand,
-        this.uploadExtraInfoValue.object_type.id)
+        this.uploadForm.get('category_id').value,
+        this.getUploadExtraInfoControl('brand').value,
+        this.getUploadExtraInfoControl('object_type').get('id').value)
       .subscribe((models: Model[]) => {
         const suggestions: KeywordSuggestion[] = [];
 
@@ -401,25 +502,60 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   public getSizes(): void {
-    const objectTypeId = this.uploadExtraInfoValue.object_type.id;
-    const gender = this.uploadExtraInfoValue.gender;
+    const objectTypeId = this.getUploadExtraInfoControl('object_type').get('id').value;
+    const gender = this.getUploadExtraInfoControl('gender').value;
+    this.sizes = [];
 
     if (objectTypeId && gender) {
-      this.generalSuggestionsService.getSizes(objectTypeId, gender).subscribe((sizes: IOption[]) => {
-        this.getUploadExtraInfoControl('size').enable();
-        this.sizes = sizes;
-      }, () => {
-        this.getUploadExtraInfoControl('size').disable();
-        this.sizes = [];
-      });
+      this.generalSuggestionsService.getSizes(objectTypeId, gender).subscribe(
+        (sizes: IOption[]) => {
+          if (sizes.length) this.getUploadExtraInfoControl('size').enable();
+          this.sizes = sizes;
+        },
+        () => {
+          this.getUploadExtraInfoControl('size').disable();
+          this.sizes = [];
+        });
     }
   }
 
   public getObjectTypes(): void {
-    const currentCategorId: number = +this.uploadForm.get('category_id').value;
-    this.generalSuggestionsService.getObjectTypes(currentCategorId).subscribe((objectTypes: IOption[]) => {
+    const currentCategoryId: number = +this.uploadForm.get('category_id').value;
+    this.objectTypesOptions = [];
+    this.generalSuggestionsService.getObjectTypes(currentCategoryId).subscribe((objectTypes: ObjectType[]) => {
       this.objectTypes = objectTypes;
+      this.objectTypesOptions = objectTypes
+        .filter((type: ObjectType) => type.id)
+        .map((type: ObjectType) => ({
+          value: type.id,
+          label: type.name
+        })
+        );
+
+      if (this.item && this.uploadForm.value.extra_info?.object_type?.id) {
+        this.uploadForm.patchValue({
+          extra_info: this.getExtraInfo()
+        });
+      }
     });
+  }
+
+  public getSecondObjectTypes(id: number): void {
+    this.clearSecondObjectTypes();
+    const secondObjectType: SimpleObjectType[] = this.objectTypes.find(objectType => objectType.id === id.toString() && objectType.has_children)?.children;
+    if (secondObjectType) {
+      this.objectTypesOptions2 = secondObjectType
+        .map((type: SimpleObjectType) => ({
+          value: type.id,
+          label: type.name
+        }));
+      this.getUploadExtraInfoControl('object_type_2').enable()
+    }
+  }
+
+  private clearSecondObjectTypes(): void {
+    this.objectTypesOptions2 = [];
+    this.getUploadExtraInfoControl('object_type_2').disable();
   }
 
   public autoCompleteCellphonesModel(brandModelObj: BrandModel): void {
@@ -431,22 +567,21 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     }
   }
 
-  public resetCellphonesExtraFields(): void {
-    this.getUploadExtraInfoControl().patchValue({
-      brand: null,
-      model: null
-    });
+  public resetAllExtraFields(): void {
+    this.getUploadExtraInfoControl().reset();
   }
 
-  public resetFashionExtraFields(): void {
+  public resetCommonExtraFields(): void {
     this.getUploadExtraInfoControl().patchValue({
       brand: null,
+      model: null,
       size: {
         id: null
       },
+      object_type_2: {
+        id: null
+      }
     });
-
-    this.getSizes();
   }
 
   public updateUploadPercentage(percentage: number) {
@@ -455,6 +590,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   private getUploadCategories(): Observable<CategoryOption[]> {
     return this.categoryService.getCategories().pipe(
+      tap(categories => this.rawCategories = categories),
       map(categories => this.getConsumerGoodCategories(categories)),
       map(categories => this.getNgSelectOptions(categories)));
   }
@@ -484,9 +620,11 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   private getConditions(): void {
-    const currentCategorId: number = +this.uploadForm.get('category_id').value;
+    const currentCategoryId: number = +this.uploadForm.get('category_id').value;
+
     this.conditions = [];
-    this.generalSuggestionsService.getConditions(currentCategorId).subscribe((conditions: IOption[]) => {
+    this.getUploadExtraInfoControl('condition').reset();
+    this.generalSuggestionsService.getConditions(currentCategoryId).subscribe((conditions: IOption[]) => {
       this.conditions = conditions;
     });
   }
@@ -547,36 +685,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       }));
   }
 
-  private disableExtraFields(): void {
-    this.getUploadExtraInfoControl('object_type').disable();
-    this.getUploadExtraInfoControl('brand').disable();
-    this.getUploadExtraInfoControl('model').disable();
-    this.getUploadExtraInfoControl('size').disable();
-    this.getUploadExtraInfoControl('gender').disable();
-  }
-
-  private enableFashionExtraFields(): void {
-    this.getUploadExtraInfoControl('object_type').enable();
-    this.getUploadExtraInfoControl('brand').enable();
-    this.getUploadExtraInfoControl('size').enable();
-    this.getUploadExtraInfoControl('gender').enable();
-    this.getUploadExtraInfoControl('model').disable();
-  }
-
-  private enableCellphonesExtraFields(): void {
-    this.getUploadExtraInfoControl('object_type').enable();
-    this.getUploadExtraInfoControl('brand').enable();
-    this.getUploadExtraInfoControl('model').enable();
-    this.getUploadExtraInfoControl('size').disable();
-    this.getUploadExtraInfoControl('gender').disable();
-  }
-
   private getUploadExtraInfoControl(field?: string): AbstractControl {
     return field ? this.uploadForm.get('extra_info').get(field) : this.uploadForm.get('extra_info');
   }
 
-  get uploadExtraInfoValue(): any {
-    return this.uploadForm.value['extra_info'];
-  }
 }
 

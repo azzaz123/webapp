@@ -1,7 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { toUpper } from 'lodash-es';
-import { UUID } from 'angular2-uuid';
 
 import { MetricTypeEnum } from './metric-type.enum';
 import { APP_VERSION } from '../../../environments/version';
@@ -13,6 +12,7 @@ import { finalize } from 'rxjs/operators';
 import { ConnectionType } from './connection-type';
 import { CookieService } from 'ngx-cookie';
 import { DEVICE_ID_COOKIE_NAME } from '../analytics/analytics.service';
+import { UuidService } from '../uuid/uuid.service';
 
 @Injectable({
   providedIn: 'root'
@@ -31,10 +31,11 @@ export class RemoteConsoleService implements OnDestroy {
     private remoteConsoleClientService: RemoteConsoleClientService,
     private deviceService: DeviceDetectorService,
     private userService: UserService,
+    private uuidService: UuidService,
     cookiesService: CookieService) {
       const deviceId = cookiesService.get(DEVICE_ID_COOKIE_NAME);
-      this.deviceId = deviceId ? deviceId.replace(/-/g, '') : UUID.UUID().replace(/-/g, '');
-      this.sessionId = UUID.UUID();
+      this.deviceId = deviceId ? deviceId.replace(/-/g, '') : this.uuidService.getUUID().replace(/-/g, '');
+      this.sessionId = this.uuidService.getUUID();
   }
 
   ngOnDestroy(): void {

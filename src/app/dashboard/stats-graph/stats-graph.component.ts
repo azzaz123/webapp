@@ -3,10 +3,10 @@ import { StatisticsService } from './statistics.service';
 import { StatisticEntriesResponse, StatisticFullResponse } from './statistic-response.interface';
 import { IOption } from 'ng-select';
 import * as moment from 'moment';
-import { UUID } from 'angular2-uuid';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { EChartOption } from 'echarts';
 import { find } from 'lodash-es';
+import { UuidService } from '../../core/uuid/uuid.service';
 
 @Component({
   selector: 'tsl-stats-graph',
@@ -16,7 +16,7 @@ import { find } from 'lodash-es';
 export class StatsGraphComponent implements OnInit {
 
   @Input() yearly: boolean = false;
-  public id: string = 'chart-' + UUID.UUID();
+  public id: string = 'chart-' + this.uuidService.getUUID();
   public duration: string = '30';
   public statsDurations: IOption[] = [];
   isSafari: boolean;
@@ -25,8 +25,9 @@ export class StatsGraphComponent implements OnInit {
   public yearData = [];
 
   constructor(private statisticsService: StatisticsService,
-              private i18n: I18nService,
-              @Inject(LOCALE_ID) private locale: string) {
+    private uuidService: UuidService,
+    private i18n: I18nService,
+    @Inject(LOCALE_ID) private locale: string) {
     this.isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
   }
 
@@ -48,7 +49,7 @@ export class StatsGraphComponent implements OnInit {
 
     entries.map(entry => {
       if (!this.yearly) {
-        const unixDate = moment.unix(entry.date/1000).utcOffset(0, true);
+        const unixDate = moment.unix(entry.date / 1000).utcOffset(0, true);
         xAxisData.push(moment(unixDate, axisDateFormat).format('DD MMM'));
         data1.push(entry.values.phone_numbers);
         data2.push(entry.values.city_bump);
@@ -69,8 +70,8 @@ export class StatsGraphComponent implements OnInit {
       title: {
         show: xAxisData.length === 0,
         textStyle: {
-            color: "grey",
-            fontSize: 20
+          color: "grey",
+          fontSize: 20
         },
         text: this.i18n.getTranslations('nodata'),
         left: "center",
@@ -89,8 +90,8 @@ export class StatsGraphComponent implements OnInit {
         trigger: 'axis',
         backgroundColor: 'rgba(250, 250, 250, 0.9)',
         textStyle: {
-            fontSize: 12,
-            color: '#000000'
+          fontSize: 12,
+          color: '#000000'
         },
       },
       toolbox: {
@@ -107,7 +108,7 @@ export class StatsGraphComponent implements OnInit {
         },
         axisLine: {
           lineStyle: {
-              color: '#90A4AE'
+            color: '#90A4AE'
           }
         }
       },
@@ -117,12 +118,12 @@ export class StatsGraphComponent implements OnInit {
         },
         axisLine: {
           lineStyle: {
-              color: '#90A4AE'
+            color: '#90A4AE'
           }
         },
         splitLine: {
           lineStyle: {
-              color: 'rgba(232, 232, 232, 0.5)'
+            color: 'rgba(232, 232, 232, 0.5)'
           }
         }
       },
@@ -133,7 +134,7 @@ export class StatsGraphComponent implements OnInit {
           smooth: true,
           sampling: 'average',
           itemStyle: {
-              color: `rgba(19, 193, 172, ${transparency})`
+            color: `rgba(19, 193, 172, ${transparency})`
           },
           areaStyle: {
             color: 'rgba(19, 193, 172, 0.2)'
@@ -221,9 +222,9 @@ export class StatsGraphComponent implements OnInit {
       if (this.yearly) {
         this.yearData = [];
         response.entries.forEach((entry: StatisticEntriesResponse) => {
-          const unixDate = moment.unix(+entry.date/1000).utcOffset(0, true);
+          const unixDate = moment.unix(+entry.date / 1000).utcOffset(0, true);
           const validDate = moment(unixDate).format('YYYY-MM-01');
-          const yearlyEntries = find(this.yearData, {date: validDate});
+          const yearlyEntries = find(this.yearData, { date: validDate });
           if (yearlyEntries) {
             yearlyEntries.phone_numbers += entry.values.phone_numbers || 0;
             yearlyEntries.views += entry.values.views || 0;

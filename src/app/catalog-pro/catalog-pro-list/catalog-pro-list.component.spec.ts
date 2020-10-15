@@ -6,7 +6,6 @@ import { CatalogProListComponent } from './catalog-pro-list.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from '../../layout/toast/toast.service';
 import { Router, ActivatedRoute,NavigationEnd } from '@angular/router';
-import { UUID } from 'angular2-uuid';
 import { ProUrgentConfirmationModalComponent } from './modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component';
 import { ProBumpConfirmationModalComponent } from './modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component';
 import { ItemService, ITEM_STATUS } from '../../core/item/item.service';
@@ -25,6 +24,7 @@ import {
 import { MOCK_USER_STATS } from '../../../tests/user.fixtures.spec';
 import { FINANCIAL_CARD } from '../../../tests/payments.fixtures.spec';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
+import { UuidService } from '../../core/uuid/uuid.service';
 
 describe('CatalogProListComponent', () => {
   let component: CatalogProListComponent;
@@ -41,6 +41,7 @@ describe('CatalogProListComponent', () => {
   let eventService: EventService;
   let errorService: ErrorsService;
   let modalSpy: jasmine.Spy;
+  let uuidService: UuidService;
   const routerEvents: Subject<any> = new Subject();
   const mockCounters = {
     sold: 0,
@@ -144,6 +145,7 @@ describe('CatalogProListComponent', () => {
     itemServiceSpy = spyOn(itemService, 'mines').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
     eventService = TestBed.inject(EventService);
+    uuidService = TestBed.inject(UuidService);
     fixture.detectChanges();
   });
 
@@ -399,7 +401,7 @@ describe('CatalogProListComponent', () => {
   describe('feature', () => {
     let eventId: string;
     beforeEach(() => {
-      spyOn(UUID, 'UUID').and.returnValue('UUID');
+      spyOn(uuidService, 'getUUID').and.returnValue('UUID');
     });
     describe('success', () => {
       beforeEach(() => {

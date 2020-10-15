@@ -1,5 +1,5 @@
+import { UuidService } from 'app/core/uuid/uuid.service';
 import { BumpGroup, CartItem, CartProItem, CartProExtrasPack } from './cart-item.interface';
-import { UUID } from 'angular2-uuid';
 
 export const BUMP_TYPES = ['zonebump', 'citybump', 'countrybump'];
 export const BUMP_PROVINCIAL_TYPES = ['zonebump', 'countrybump'];
@@ -38,8 +38,8 @@ export abstract class CartBase {
 
   abstract prepareOrder();
 
-  public getOrderId() {
-    return UUID.UUID();
+  public getOrderId(): string {
+    return UuidService.getUUID();
   }
 
   protected removeCartItemFromAnyBump(itemId: string) {
