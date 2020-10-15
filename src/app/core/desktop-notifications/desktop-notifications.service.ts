@@ -30,7 +30,7 @@ export class DesktopNotificationsService {
       return;
     }
     const notification = this.createFromInboxMessage(message, conversation);
-    notification.addEventListener('close', () => this.trackNotificationRecieved(message));
+    notification.addEventListener('close', () => this.trackNotificationReceived(message));
   }
 
   public browserSupportsNotifications(): boolean {
@@ -73,7 +73,7 @@ export class DesktopNotificationsService {
     };
   }
 
-  private trackNotificationRecieved(message: InboxMessage): void {
+  private trackNotificationReceived(message: InboxMessage): void {
     this.trackingService.track(TrackingService.NOTIFICATION_RECEIVED, {
       thread_id: message.thread,
       message_id: message.id
