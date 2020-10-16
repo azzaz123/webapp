@@ -7,7 +7,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TrackingService } from '../../../../core/tracking/tracking.service';
 import { ItemService } from '../../../../core/item/item.service';
 import { PRODUCT_RESPONSE, ORDER_EVENT, PRODUCT_DURATION_ID, MOCK_ITEM } from '../../../../../tests/item.fixtures.spec';
-import { WindowRef } from '../../../../core/window/window.service';
 import { MockTrackingService } from '../../../../../tests/tracking.fixtures.spec';
 import { DecimalPipe } from '@angular/common';
 import { CustomCurrencyPipe } from '../../../../shared/pipes';
@@ -27,7 +26,6 @@ describe('UploadConfirmationModalComponent', () => {
       declarations: [UploadConfirmationModalComponent, CustomCurrencyPipe],
       providers: [
         NgbActiveModal,
-        WindowRef,
         DecimalPipe,
         {provide: TrackingService, useClass: MockTrackingService},
         {

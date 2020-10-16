@@ -15,7 +15,6 @@ import { ConfirmationModalComponent } from '../../shared/confirmation-modal/conf
 import { ProfileService } from '../../core/profile/profile.service';
 import { MOCK_PROFILE } from '../../../tests/profile.fixtures.spec';
 import { environment } from '../../../environments/environment';
-import { WindowRef } from '../../core/window/window.service';
 
 describe('ProfileCardFavoriteComponent', () => {
   let component: ProfileCardFavoriteComponent;
@@ -23,7 +22,6 @@ describe('ProfileCardFavoriteComponent', () => {
   let element: HTMLElement;
   let modalService: NgbModal;
   let profileService: ProfileService;
-  let windowRef: WindowRef;
   let subdomain: string;
 
   const modalRef: any = {
@@ -41,7 +39,6 @@ describe('ProfileCardFavoriteComponent', () => {
       declarations: [ ProfileCardFavoriteComponent, CustomCurrencyPipe ],
       providers: [
         DecimalPipe,
-        WindowRef,
         { provide: NgbModal, useValue: {
             open() {
               return modalRef;
@@ -68,7 +65,6 @@ describe('ProfileCardFavoriteComponent', () => {
     component.profile = MOCK_PROFILE;
     profileService = TestBed.inject(ProfileService);
     element = fixture.nativeElement;
-    windowRef = TestBed.inject(WindowRef);
     modalService = TestBed.inject(NgbModal);
     subdomain = TestBed.inject(<any>'SUBDOMAIN');
 

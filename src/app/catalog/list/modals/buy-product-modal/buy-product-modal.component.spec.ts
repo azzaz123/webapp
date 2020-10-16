@@ -12,12 +12,12 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentService } from '../../../../core/payments/payment.service';
 import { EventService } from '../../../../core/event/event.service';
 import { CreditInfo } from '../../../../core/payments/payment.interface';
-import { UUID } from 'angular2-uuid';
 import { OrderEvent } from '../../selected-items/selected-product.interface';
 import { StripeService } from '../../../../core/stripe/stripe.service';
 import { Router } from '@angular/router';
 import { STRIPE_CARD_OPTION } from '../../../../../tests/stripe.fixtures.spec';
 import { ErrorsService } from '../../../../core/errors/errors.service';
+import { UuidService } from '../../../../core/uuid/uuid.service';
 
 describe('BuyProductModalComponent', () => {
   let component: BuyProductModalComponent;
@@ -29,6 +29,7 @@ describe('BuyProductModalComponent', () => {
   let stripeService: StripeService;
   let errorService: ErrorsService;
   let router: Router;
+  let uuidService: UuidService;
   const routerEvents: Subject<any> = new Subject();
 
   beforeEach(async(() => {
@@ -105,6 +106,7 @@ describe('BuyProductModalComponent', () => {
     stripeService = TestBed.inject(StripeService);
     errorService = TestBed.inject(ErrorsService);
     router = TestBed.inject(Router);
+    uuidService = TestBed.inject(UuidService);
   });
 
   describe('ngOnInit', () => {
@@ -260,7 +262,7 @@ describe('BuyProductModalComponent', () => {
       beforeEach(() => {
         spyOn(localStorage, 'setItem');
         spyOn(eventService, 'emit');
-        spyOn(UUID, 'UUID').and.returnValue('UUID');
+        spyOn(uuidService, 'getUUID').and.returnValue('UUID');
         spyOn(activeModal, 'close');
         eventId = null;
         component.creditInfo = {

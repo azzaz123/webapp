@@ -11,7 +11,6 @@ import { environment } from '../../../environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {ConfirmationModalComponent} from '../../shared/confirmation-modal/confirmation-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
-import { WindowRef } from '../../core/window/window.service';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { MOCK_ITEM } from '../../../tests/item.fixtures.spec';
@@ -22,7 +21,6 @@ describe('ItemCartFavoriteComponent', () => {
   let element: HTMLElement;
 
   let itemService: ItemService;
-  let windowRef: WindowRef;
   let subdomain: string;
   let modalService: NgbModal;
 
@@ -41,7 +39,6 @@ describe('ItemCartFavoriteComponent', () => {
       declarations: [ ItemCartFavoriteComponent, CustomCurrencyPipe ],
       providers: [
         DecimalPipe,
-        WindowRef,
         { provide: ItemService, useValue: {
             favoriteItem () {
               return of({});
@@ -68,7 +65,6 @@ describe('ItemCartFavoriteComponent', () => {
     element = fixture.nativeElement;
     component.item = MOCK_ITEM;
     itemService = TestBed.inject(ItemService);
-    windowRef = TestBed.inject(WindowRef);
     modalService = TestBed.inject(NgbModal);
     subdomain = TestBed.inject(<any>'SUBDOMAIN');
 

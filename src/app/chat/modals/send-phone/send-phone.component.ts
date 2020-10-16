@@ -3,7 +3,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
-import { WindowRef } from '../../../core/window/window.service';
 import { AsYouType, format, getCountryCallingCode, isValidNumber } from 'libphonenumber-js';
 import { InboxConversation } from '../../model';
 import { InboxConversationService } from '../../service';
@@ -25,7 +24,6 @@ export class SendPhoneComponent implements OnInit {
     private inboxConversationService: InboxConversationService,
     private errorsService: ErrorsService,
     private trackingService: TrackingService,
-    private windowRef: WindowRef,
     public activeModal: NgbActiveModal) {
     this.sendPhoneForm = this.fb.group({
       phone: ['', [Validators.required, this.phoneNumberFormatValidator]]
@@ -85,6 +83,6 @@ export class SendPhoneComponent implements OnInit {
 
   dismiss() {
     this.trackingService.track(TrackingService.ITEM_SHAREPHONE_HIDEFORM, { item_id: this.conversation.item.id });
-    this.windowRef.nativeWindow.location.href = this.conversation.item.itemUrl;
+    window.location.href = this.conversation.item.itemUrl;
   }
 }

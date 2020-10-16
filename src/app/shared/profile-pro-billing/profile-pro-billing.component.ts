@@ -1,7 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ViewChild, Output, EventEmitter, Input, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
-import { UUID } from 'angular2-uuid';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeleteInfoConfirmationModalComponent } from './delete-info-confirmation-modal/delete-info-confirmation-modal.component';
 import { PaymentService } from '../../core/payments/payment.service';
@@ -12,6 +11,7 @@ import { finalize } from 'rxjs/operators';
 import { CanComponentDeactivate } from '../../shared/guards/can-component-deactivate.interface';
 import { EventService } from 'app/core/event/event.service';
 import { validDNI, validNIE, validCIF } from 'spain-id';
+import { UuidService } from '../../core/uuid/uuid.service';
 
 export enum BILLING_TYPE {
   NATURAL = 'natural',
@@ -34,11 +34,12 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
   @Output() billingInfoFormChange: EventEmitter<FormGroup> = new EventEmitter();
   @Output() billingInfoFormSaved: EventEmitter<FormGroup> = new EventEmitter();
   @Input() containerType: string;
-  
+
   constructor(private fb: FormBuilder,
               private paymentService: PaymentService,
               private errorsService: ErrorsService,
               private modalService: NgbModal,
+              private uuidService: UuidService,
               private eventService: EventService) {
     this.buildForm();
     this.eventService.subscribe('formSubmited', () => {
@@ -75,7 +76,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
       postal_code: ['', [Validators.required, this.cpValidator]],
       street: ['', [Validators.required]],
       surname: ['', [Validators.required]],
-      id: UUID.UUID()
+      id: this.uuidService.getUUID()
     });
   }
 
@@ -98,7 +99,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
         this.formComponent.initFormControl();
         this.isNewBillingInfoForm = true;
         this.billingForm.controls['cif'].enable();
-        this.billingForm.controls['type'].enable(); 
+        this.billingForm.controls['type'].enable();
         this.buildForm();
       }
     )
@@ -217,10 +218,10 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
 
     return (validDNI(nif) ||  validNIE(nif)) ? null : { 'cif': true };
   }
-  
+
   private cifValidator(control: FormControl) {
     const cif = control.value.toUpperCase().replace(/[_\W\s]+/g, '');
-    
+
     return (validCIF(cif)) ? null : { 'cif': true };
   }
 
@@ -229,20 +230,20 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
       return null;
     }
     const pattern: RegExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-    
+
     return pattern.test(control.value) ? null : { 'email': true };
   }
 
   get containerTypeIsModal(): boolean {
     return this.containerType === 'modal';
   }
-  
+
   private cpValidator(control: AbstractControl): { [key: string]: boolean } {
     if (Validators.required(control)) {
       return null;
     }
     const pattern: RegExp = /^[0-9]*$/;
-    
+
     return pattern.test(control.value) ? null : { 'postal_code': true };
   }
 

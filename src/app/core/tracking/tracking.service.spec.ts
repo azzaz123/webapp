@@ -1,25 +1,16 @@
-import { TestBed, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { CookieService } from 'ngx-cookie';
 
 import { environment } from '../../../environments/environment';
-import { WindowRef } from '../window/window.service';
 import { UserService } from '../user/user.service';
 import { MockedUserService } from '../../../tests/user.fixtures.spec';
 import { EventService } from '../event/event.service';
 
 import { TrackingService } from './tracking.service';
-import { TRACKING_EVENT } from '../../../tests/tracking.fixtures.spec';
 import { NavigatorService } from './navigator.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { TrackingEvent } from './tracking-event';
 
 class MockedNavigatorService {
-  private parseVersionInfo() {
-  }
-
-  private setOperativeSystem() {
-  }
-
   get browserName() {
     return 'Chrome';
   }
@@ -40,7 +31,6 @@ describe('Service: Tracking', () => {
   let userService: UserService;
   let navigatorService: NavigatorService;
   let cookieService: CookieService;
-  let window: any;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
@@ -50,17 +40,6 @@ describe('Service: Tracking', () => {
       providers: [
         {
           provide: UserService, useClass: MockedUserService
-        },
-        {
-          provide: WindowRef, useValue: {
-            nativeWindow: {
-              screen: {
-                width: 1366,
-                height: 768
-              },
-              locale: 'es'
-            }
-          }
         },
         {
           provide: CookieService, useValue: {
@@ -81,7 +60,6 @@ describe('Service: Tracking', () => {
     service = TestBed.inject(TrackingService);
     userService = TestBed.inject(UserService);
     httpMock = TestBed.inject(HttpTestingController);
-    window = TestBed.inject(WindowRef).nativeWindow;
     navigatorService = TestBed.inject(NavigatorService);
   });
 

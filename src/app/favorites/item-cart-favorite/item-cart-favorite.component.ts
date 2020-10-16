@@ -4,7 +4,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { Item } from '../../core/item/item';
-import { WindowRef } from '../../core/window/window.service';
 
 @Component({
   selector: 'tsl-item-cart-favorite',
@@ -18,7 +17,6 @@ export class ItemCartFavoriteComponent implements OnInit {
 
   constructor(private itemService: ItemService,
               private modalService: NgbModal,
-              private windowRef: WindowRef,
               private trackingService: TrackingService,
               @Inject('SUBDOMAIN') private subdomain: string
   ) {
@@ -29,7 +27,7 @@ export class ItemCartFavoriteComponent implements OnInit {
 
   goToItemDetail() {
     const url = this.item.getUrl(this.subdomain);
-    this.windowRef.nativeWindow.open(url);
+    window.open(url);
   }
 
   removeFavoriteModal(e: Event) {
