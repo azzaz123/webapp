@@ -1328,5 +1328,16 @@ describe('UploadProductComponent', () => {
       expect(component.uploadForm.get('category_id').value).toBe(CATEGORY_IDS.TV_AUDIO_CAMERAS.toString())
       expect(errorService.i18nSuccess).toHaveBeenCalledWith('suggestedCategory');
     });
+    it('should search categories after the user stop tipyng', fakeAsync(() => {
+      spyOn(component, 'searchSuggestedCategories');
+
+      component.onKeyUpTitle();
+      tick(750)
+      fixture.detectChanges()
+
+      fixture.whenStable().then(() => {
+        expect(component.searchSuggestedCategories).toBeCalled();
+      })
+    }));
   });
 });
