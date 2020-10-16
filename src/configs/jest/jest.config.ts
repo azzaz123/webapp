@@ -36,6 +36,7 @@ import * as GLOBAL_MOCKS from './global-mocks.fixtures.spec';
 Object.defineProperty(window, 'appboy', { value: GLOBAL_MOCKS.MOCK_APPBOY });
 Object.defineProperty(window, 'apstag', { value: GLOBAL_MOCKS.MOCK_APSTAG });
 Object.defineProperty(window, 'Criteo', { value: GLOBAL_MOCKS.MOCK_CRITEO });
+Object.defineProperty(window, 'document', { value: GLOBAL_MOCKS.MOCK_DOCUMENT, writable: true });
 Object.defineProperty(window, 'Didomi', { value: GLOBAL_MOCKS.MOCK_DIDOMI });
 Object.defineProperty(window, 'fbq', { value: GLOBAL_MOCKS.MOCK_FBQ, writable: true });
 Object.defineProperty(window, 'ga', { value: GLOBAL_MOCKS.MOCK_GA });

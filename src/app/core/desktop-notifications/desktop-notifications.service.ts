@@ -38,7 +38,11 @@ export class DesktopNotificationsService {
   }
 
   public canShowNotifications(): boolean {
-    return this.showNotifications && this.browserSupportsNotifications();
+    return this.showNotifications && this.browserSupportsNotifications() && this.documentIsHidden();
+  }
+
+  private documentIsHidden(): boolean {
+    return document.visibilityState === 'hidden';
   }
 
   // Delaying the request due to browsers recommendation

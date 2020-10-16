@@ -128,11 +128,31 @@ describe('Service: DesktopNotifications', () => {
     });
 
     describe('and when browser does not support notifications', () => {
-      beforeEach(() => spyOn(service, 'browserSupportsNotifications').and.returnValue(false));
+      beforeEach(() => spyOn(window, 'Notification').and.callFake(() => null));
 
       it('should not send notification', fakeAsync(() => {
-        spyOn(window, 'Notification').and.callFake(() => null);
+        service.init();
+        tick(ASK_PERMISSIONS_TIMEOUT_MS);
+        service.sendFromInboxMessage(message, conversation);
 
+        expect(Notification).not.toHaveBeenCalled();
+      }));
+    });
+
+    describe('and when user is currently seeing the webpage', () => {
+      beforeEach(() => {
+        const documentSpy = spyOn(window, 'document').and.returnValue({ visibilityState: 'visible' });
+        documentSpy['visibilityState'] = 'visible';
+        const notificationSpy = spyOn(window, 'Notification').and.callFake(() => {
+          return {
+            addEventListener: () => {}
+          };
+        });
+        notificationSpy['requestPermission'] = () => Promise.resolve('granted');
+        notificationSpy['addEventListener'] = () => {};
+      });
+
+      it('should not send notification', fakeAsync(() => {
         service.init();
         tick(ASK_PERMISSIONS_TIMEOUT_MS);
         service.sendFromInboxMessage(message, conversation);
@@ -142,15 +162,15 @@ describe('Service: DesktopNotifications', () => {
     });
 
     describe('and when user did not accept notifications', () => {
-      beforeEach(() => {
+      beforeEach(fakeAsync(() => {
         spyOn(Notification, 'requestPermission').and.returnValue(Promise.resolve('denied'));
-      });
-
-      it('should not send notification', fakeAsync(() => {
-        spyOn(window, 'Notification').and.callFake(() => null);
-
         service.init();
         tick(ASK_PERMISSIONS_TIMEOUT_MS);
+
+        spyOn(window, 'Notification').and.callFake(() => null);
+      }));
+
+      it('should not send notification', fakeAsync(() => {
         service.sendFromInboxMessage(message, conversation);
 
         expect(Notification).not.toHaveBeenCalled();
