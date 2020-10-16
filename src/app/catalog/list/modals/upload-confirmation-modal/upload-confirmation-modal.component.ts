@@ -8,7 +8,6 @@ import { OrderEvent } from '../../selected-items/selected-product.interface';
 import { Observable } from 'rxjs';
 import { ItemService } from '../../../../core/item/item.service';
 import { Item } from '../../../../core/item/item';
-import { WindowRef } from '../../../../core/window/window.service';
 import { PaymentService } from '../../../../core/payments/payment.service';
 import { CreditInfo } from '../../../../core/payments/payment.interface';
 
@@ -28,7 +27,6 @@ export class UploadConfirmationModalComponent implements OnInit {
 
 
   constructor(public activeModal: NgbActiveModal,
-              private window: WindowRef,
               private trackingService: TrackingService,
               private paymentService: PaymentService,
               public itemService: ItemService) {
@@ -51,7 +49,7 @@ export class UploadConfirmationModalComponent implements OnInit {
 
   public facebookShare() {
     const url = 'https://www.facebook.com/dialog/share?app_id=258778180928082&display=popup&href=' + encodeURIComponent(this.item.webLink);
-    this.window.nativeWindow.open(url, 'fbShareWindow', 'height=450, width=550, toolbar=0, location=0, menubar=0, directories=0, scrollbars=0');
+    window.open(url, 'fbShareWindow', 'height=450, width=550, toolbar=0, location=0, menubar=0, directories=0, scrollbars=0');
   }
 
   public twitterShare() {
@@ -59,7 +57,7 @@ export class UploadConfirmationModalComponent implements OnInit {
     const url = 'https://twitter.com/intent/tweet?' +
       'text=' + encodeURIComponent(text) +
       '&url=' + encodeURIComponent(this.item.webLink);
-    this.window.nativeWindow.open(url, 'twShareWindow', 'height=269,width=550, toolbar=0, location=0, menubar=0, directories=0, scrollbars=0');
+    window.open(url, 'twShareWindow', 'height=269,width=550, toolbar=0, location=0, menubar=0, directories=0, scrollbars=0');
   }
 
   public featureUrgentItem(): void {

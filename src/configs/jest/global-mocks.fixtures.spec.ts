@@ -129,3 +129,8 @@ export const MOCK_THREAT_METRIX: ThreatMetrixLibrary = {
 export const MOCK_LOCATION: Location = {
   ...window.location
 };
+
+export const MOCK_SCREEN: { width: number, height: number } = {
+  width: 1366,
+  height: 768
+};
