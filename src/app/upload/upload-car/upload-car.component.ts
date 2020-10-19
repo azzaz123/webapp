@@ -322,8 +322,17 @@ export class UploadCarComponent implements OnInit {
     const brand = this.uploadForm.get('brand').value;
     const model = this.uploadForm.get('model').value;
     const year = this.uploadForm.get('year').value;
-    const title = `${brand} ${model} ${year}`;
+    let title = '';
 
+    if (!!brand) {
+      title += `${brand} `;
+    }
+    if (!!model) {
+      title += `${model} `;
+    }
+    if (!!year) {
+      title += year;
+    }
     this.uploadForm.get('title').patchValue(title);
   }
 
@@ -464,7 +473,7 @@ export class UploadCarComponent implements OnInit {
     this.uploadCompletedPercentage = Math.round(percentage);
   }
 
-  get modelFieldDisabled(): boolean {    
+  get modelFieldDisabled(): boolean {
     return this.uploadForm.get('brand').invalid && !this.customMake;
   }
 
