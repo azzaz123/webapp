@@ -10,7 +10,7 @@ import { CookieOptions, CookieService } from 'ngx-cookie';
 import { TrackingService } from './core/tracking/tracking.service';
 import { EventService } from './core/event/event.service';
 import { UserService } from './core/user/user.service';
-import { NotificationService } from './core/notification/notification.service';
+import { DesktopNotificationsService } from './core/desktop-notifications/desktop-notifications.service';
 import { MessageService } from './chat/service/message.service';
 import { I18nService } from './core/i18n/i18n.service';
 import { User } from './core/user/user';
@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
     private realTime: RealTimeService,
     private inboxService: InboxService,
     public userService: UserService,
-    private notificationService: NotificationService,
+    private desktopNotificationsService: DesktopNotificationsService,
     private messageService: MessageService,
     private titleService: Title,
     private sanitizer: DomSanitizer,
@@ -83,7 +83,7 @@ export class AppComponent implements OnInit {
     this.analyticsService.initialize();
     this.initializeBraze();
     this.userService.checkUserStatus();
-    this.notificationService.init();
+    this.desktopNotificationsService.init();
     this.connectionService.checkConnection();
   }
 

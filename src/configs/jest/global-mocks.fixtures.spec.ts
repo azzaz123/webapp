@@ -130,6 +130,15 @@ export const MOCK_LOCATION: Location = {
   ...window.location
 };
 
+export class MockNotificationClass {
+  public static requestPermission() {
+    return Promise.resolve('granted');
+  }
+
+  public addEventListener(_eventName) {
+  }
+}
+
 export const MOCK_SCREEN: { width: number, height: number } = {
   width: 1366,
   height: 768

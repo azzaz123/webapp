@@ -10,7 +10,7 @@ import { CookieService } from 'ngx-cookie';
 import { TrackingService } from './core/tracking/tracking.service';
 import { MatIconRegistry } from '@angular/material';
 import { MessageService } from './chat/service/message.service';
-import { NotificationService } from './core/notification/notification.service';
+import { DesktopNotificationsService } from './core/desktop-notifications/desktop-notifications.service';
 import { EventService } from './core/event/event.service';
 import { ErrorsService } from './core/errors/errors.service';
 import { UserService } from './core/user/user.service';
@@ -38,7 +38,7 @@ let errorsService: ErrorsService;
 let eventService: EventService;
 let realTime: RealTimeService;
 let inboxService: InboxService;
-let notificationService: NotificationService;
+let desktopNotificationsService: DesktopNotificationsService;
 let messageService: MessageService;
 let titleService: Title;
 let trackingService: TrackingService;
@@ -128,12 +128,7 @@ describe('App', () => {
         }
         },
         {provide: TrackingService, useClass: MockTrackingService},
-        {
-          provide: NotificationService, useValue: {
-          init() {
-          }
-        }
-        },
+        DesktopNotificationsService,
         {
           provide: CallsService, useValue: {
             init() {
@@ -189,7 +184,7 @@ describe('App', () => {
     eventService = TestBed.inject(EventService);
     realTime = TestBed.inject(RealTimeService);
     inboxService = TestBed.inject(InboxService);
-    notificationService = TestBed.inject(NotificationService);
+    desktopNotificationsService = TestBed.inject(DesktopNotificationsService);
     messageService = TestBed.inject(MessageService);
     titleService = TestBed.inject(Title);
     trackingService = TestBed.inject(TrackingService);
@@ -202,7 +197,7 @@ describe('App', () => {
     didomiService = TestBed.inject(DidomiService);
     uuidService = TestBed.inject(UuidService);
 
-    spyOn(notificationService, 'init');
+    spyOn(desktopNotificationsService, 'init');
     spyOn(window.location, 'reload');
   });
 
@@ -358,7 +353,7 @@ describe('App', () => {
     it('should init notifications', () => {
       component.ngOnInit();
 
-      expect(notificationService.init).toHaveBeenCalled();
+      expect(desktopNotificationsService.init).toHaveBeenCalled();
     });
 
     it('should call realTime.disconnect on logout', () => {
