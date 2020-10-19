@@ -141,8 +141,6 @@ describe('Service: DesktopNotifications', () => {
 
     describe('and when user is currently seeing the webpage', () => {
       beforeEach(() => {
-        const documentSpy = spyOn(window, 'document').and.returnValue({ visibilityState: 'visible' });
-        documentSpy['visibilityState'] = 'visible';
         const notificationSpy = spyOn(window, 'Notification').and.callFake(() => {
           return {
             addEventListener: () => {}

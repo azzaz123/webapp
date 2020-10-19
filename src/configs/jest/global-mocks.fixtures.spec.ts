@@ -138,7 +138,3 @@ export class MockNotificationClass {
   public addEventListener(_eventName) {
   }
 }
-
-export const MOCK_DOCUMENT: Document = {
-  ...window.document
-};
