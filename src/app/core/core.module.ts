@@ -15,7 +15,6 @@ import { ConversationModule } from './conversation/conversation.module';
 import { MessageService } from '../chat/service/message.service';
 import { DesktopNotificationsService } from './desktop-notifications/desktop-notifications.service';
 import { PaymentService } from './payments/payment.service';
-import { WindowRef } from './window/window.service';
 import { XmppService } from './xmpp/xmpp.service';
 import { ReviewService } from './review/review.service';
 import { ConnectionService } from './connection/connection.service';
@@ -66,7 +65,6 @@ export class CoreModule {
         MessageService,
         DesktopNotificationsService,
         PaymentService,
-        WindowRef,
         XmppService,
         RealTimeService,
         InboxService,

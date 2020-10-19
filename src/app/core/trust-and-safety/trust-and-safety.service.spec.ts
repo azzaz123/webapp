@@ -3,9 +3,9 @@ import { HttpTestingController, HttpClientTestingModule } from '@angular/common/
 
 import { TrustAndSafetyService, USER_STARTER_ENDPOINT } from './trust-and-safety.service';
 import { SessionProfileData, SessionProfileDataLocation, SessionProfileDataPlatform } from './trust-and-safety.interface';
-import { UUID } from 'angular2-uuid';
 import { environment } from 'environments/environment';
 import { environment as prodEnv } from 'environments/environment.prod';
+import { UuidService } from '../uuid/uuid.service';
 
 jest.mock('./threat-metrix-embed-script', () => ({
   __esModule: true,
@@ -15,6 +15,7 @@ jest.mock('./threat-metrix-embed-script', () => ({
 describe('TrustAndSafetyService', () => {
   let service: TrustAndSafetyService;
   let httpMock: HttpTestingController;
+  let uuidService: UuidService;
   const mockUUID = 'very-cool-uuid-bruh';
 
   const mockThreatMetrixSDKProfileSentCallback = () => {
@@ -28,8 +29,9 @@ describe('TrustAndSafetyService', () => {
     });
     service = TestBed.inject(TrustAndSafetyService);
     httpMock = TestBed.inject(HttpTestingController);
+    uuidService = TestBed.inject(UuidService);
 
-    spyOn(UUID, 'UUID').and.returnValue(mockUUID);
+    spyOn(uuidService, 'getUUID').and.returnValue(mockUUID);
   });
 
   afterEach(() => {

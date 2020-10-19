@@ -138,3 +138,8 @@ export class MockNotificationClass {
   public addEventListener(_eventName) {
   }
 }
+
+export const MOCK_SCREEN: { width: number, height: number } = {
+  width: 1366,
+  height: 768
+};

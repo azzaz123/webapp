@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { IOption } from 'ng-select';
 import { Brand, BrandModel, Model, SizesResponse, Size, ObjectType } from '../brand-model.interface';
 import { I18nService } from '../../core/i18n/i18n.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { ConditionsResponse, Condition } from '../condition.interface';
 
@@ -18,20 +18,17 @@ export class GeneralSuggestionsService {
   constructor(private http: HttpClient, private i18n: I18nService) {
   }
 
-  getObjectTypes(category_id: number): Observable<IOption[]> {
-    return this.http.get(`${environment.baseUrl}${SUGGESTERS_API_URL}/object-type`, {
+  getObjectTypes(category_id: number): Observable<ObjectType[]> {
+    const headers = new HttpHeaders()
+      .set('Accept', 'application/vnd.api.v3.suggesters.object-type.v2+json')
+      .set('Accept-Language', this.i18n.locale);
+
+    return this.http.get<ObjectType[]>(`${environment.baseUrl}${SUGGESTERS_API_URL}/object-type`, {
       params: {
-        category_id: category_id,
-        language: this.i18n.locale
-      } as any
-    }).pipe(map((types: ObjectType[]) => {
-      return types
-        .filter((type: ObjectType) => type.id)
-        .map((type: ObjectType) => ({
-          value: type.id,
-          label: type.name
-        }));
-    }));
+        category_id
+      } as any,
+      headers
+    })
   }
 
   getBrandsAndModels(suggestion: string, categoryId: number, objectTypeId: number): Observable<BrandModel[]> {

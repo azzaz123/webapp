@@ -49,6 +49,7 @@ Object.defineProperty(window, 'googletag', { value: GLOBAL_MOCKS.MOCK_GOOGLE_TAG
 Object.defineProperty(window, 'localStorage', { value: GLOBAL_MOCKS.MOCK_LOCALSTORAGE });
 Object.defineProperty(window, 'location', { value: GLOBAL_MOCKS.MOCK_LOCATION });
 Object.defineProperty(window, 'Notification', { value: GLOBAL_MOCKS.MockNotificationClass, writable: true });
+Object.defineProperty(window, 'screen', { value: GLOBAL_MOCKS.MOCK_SCREEN });
 Object.defineProperty(window, 'sessionStorage', { value: GLOBAL_MOCKS.MOCK_SESSIONSTORAGE });
 Object.defineProperty(window, 'pintrk', { value: GLOBAL_MOCKS.MOCK_PINTRK, writable: true });
 Object.defineProperty(window, 'twq', { value: GLOBAL_MOCKS.MOCK_TWQ });

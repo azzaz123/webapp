@@ -38,12 +38,12 @@ import { EventService } from '../event/event.service';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { Car } from './car';
 import { ITEM_BAN_REASONS } from './ban-reasons';
-import { UUID } from 'angular2-uuid';
 import { ItemLocation } from '../geolocation/address-response.interface';
 import { Realestate } from './realestate';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import * as mapRx from 'rxjs/operators';
+import { UuidService } from '../uuid/uuid.service';
 
 export const PUBLISHED_ID = 0;
 export const ONHOLD_ID = 90;
@@ -89,6 +89,7 @@ export class ItemService {
     private http: HttpClient,
     private i18n: I18nService,
     private trackingService: TrackingService,
+    private uuidService: UuidService,
     private eventService: EventService) {
   }
 
@@ -263,7 +264,7 @@ export class ItemService {
       null,
       content.sale_conditions,
       content.images ? content.images[0] : {
-        id: UUID.UUID(),
+        id: this.uuidService.getUUID(),
         original_width: content.image ? content.image.original_width : null,
         original_height: content.image ? content.image.original_height : null,
         average_hex_color: '',
@@ -307,7 +308,7 @@ export class ItemService {
       null,
       null,
       {
-        id: UUID.UUID(),
+        id: this.uuidService.getUUID(),
         original_width: content.image ? content.image.original_width : null,
         original_height: content.image ? content.image.original_height : null,
         average_hex_color: '',

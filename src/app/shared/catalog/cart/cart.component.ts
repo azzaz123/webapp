@@ -14,8 +14,8 @@ import { PAYMENT_METHOD, PAYMENT_RESPONSE_STATUS } from '../../../core/payments/
 import { BUMP_TYPES, CartBase } from './cart-base';
 import { EventService } from '../../../core/event/event.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
-import { UUID } from 'angular2-uuid/index';
 import { HttpErrorResponse } from '@angular/common/http';
+import { UuidService } from '../../../core/uuid/uuid.service';
 
 @Component({
   selector: 'tsl-cart',
@@ -43,6 +43,7 @@ export class CartComponent implements OnInit, OnDestroy {
               private trackingService: TrackingService,
               private eventService: EventService,
               private router: Router,
+              private uuidService: UuidService,
               private stripeService: StripeService) {
       this.cartService.cart$.pipe(takeWhile(() => this.active)).subscribe((cartChange: CartChange) => {
         this.cart = cartChange.cart;
@@ -118,10 +119,10 @@ export class CartComponent implements OnInit, OnDestroy {
       }
     }
   }
-  
+
   private buyStripe(orderId: string) {
-    const paymentId: string = UUID.UUID();
-    
+    const paymentId: string = this.uuidService.getUUID();
+
     if (this.selectedCard || !this.savedCard) {
       this.stripeService.buy(orderId, paymentId, this.hasSavedCard, this.savedCard, this.card);
     } else {

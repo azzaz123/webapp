@@ -5,7 +5,11 @@ import {
 } from '../../../../tests/item.fixtures.spec';
 import { CartItem } from './cart-item.interface';
 import { Order } from '../../../core/item/item-response.interface';
-import { UUID } from 'angular2-uuid';
+import * as UUID from 'uuid';
+
+jest.mock('uuid', () => {
+  return { v4: () => null }
+});
 
 describe('Cart', () => {
 
@@ -88,7 +92,7 @@ describe('Cart', () => {
   describe('getOrderId', () => {
     it('should return uuid', () => {
       const ID = 'UUID';
-      spyOn(UUID, 'UUID').and.returnValue(ID);
+      spyOn(UUID, 'v4').and.returnValue(ID);
 
       const uuid = cart.getOrderId();
 

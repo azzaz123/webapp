@@ -10,7 +10,6 @@ import { environment } from '../../../../environments/environment';
 import { SendPhoneComponent } from './send-phone.component';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
-import { WindowRef } from '../../../core/window/window.service';
 
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { MOCK_CONVERSATION } from '../../../../tests/conversation.fixtures.spec';
@@ -30,7 +29,6 @@ describe('SendPhoneComponent', () => {
   let trackingService: TrackingService;
   let errorsService: ErrorsService;
   let httpMock: HttpTestingController;
-  let windowRef: WindowRef;
   let element: DebugElement;
 
   const MOCK_PARSED_PHONE_NUMBER = format('+34912345678', 'ES', 'International');
@@ -50,15 +48,6 @@ describe('SendPhoneComponent', () => {
             }
           }
         },
-        {
-          provide: WindowRef, useValue: {
-            nativeWindow: {
-              location: {
-                href: environment.siteUrl
-              }
-            }
-          }
-        }
       ],
       declarations: [SendPhoneComponent],
       schemas: [NO_ERRORS_SCHEMA]
@@ -76,7 +65,7 @@ describe('SendPhoneComponent', () => {
     trackingService = TestBed.inject(TrackingService);
     errorsService = TestBed.inject(ErrorsService);
     httpMock = TestBed.inject(HttpTestingController);
-    windowRef = TestBed.inject(WindowRef);
+    window.location.href = environment.siteUrl;
     fixture.detectChanges();
   });
 
@@ -270,7 +259,7 @@ describe('SendPhoneComponent', () => {
     it('should redirect to the item detail page', () => {
       closeButtonRef.click();
 
-      expect(windowRef.nativeWindow.location.href).toEqual(`${component.conversation.item.itemUrl}`);
+      expect(window.location.href).toEqual(`${component.conversation.item.itemUrl}`);
     });
   });
 });

@@ -3,12 +3,12 @@ import { TestBed } from '@angular/core/testing';
 
 import { GeneralSuggestionsService, SUGGESTERS_API_URL, FASHION_KEYS_API_URL, CONDITION_KEYS_API_URL } from './general-suggestions.service';
 import { IOption } from 'ng-select';
-import { BrandModel, Brand, Model } from '../brand-model.interface';
+import { BrandModel, Brand, Model, ObjectType } from '../brand-model.interface';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { CATEGORY_IDS } from '../../core/category/category-ids';
 import { environment } from '../../../environments/environment';
 import { TestRequest, HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
-import { MOCK_OBJECT_TYPES, MOCK_OBJECT_TYPES_RESPONSE, MOCK_BRAND } from '../../../tests/extra-info.fixtures.spec';
+import { MOCK_OBJECT_TYPES, MOCK_BRAND } from '../../../tests/extra-info.fixtures.spec';
 
 describe('GeneralSuggestionsService', () => {
 
@@ -33,17 +33,19 @@ describe('GeneralSuggestionsService', () => {
 
   describe('getObjectTypes', () => {
     it('should call the object-type endpoint and return object types', () => {
-      const expectedUrlParams = `category_id=${CATEGORY_IDS.CELL_PHONES_ACCESSORIES}&language=en`;
+      const expectedUrlParams = `category_id=${CATEGORY_IDS.CELL_PHONES_ACCESSORIES}`;
       const expectedUrl = `${environment.baseUrl}${SUGGESTERS_API_URL}/object-type?${expectedUrlParams}`;
-      let response: IOption[];
+      let response: ObjectType[];
 
       service.getObjectTypes(CATEGORY_IDS.CELL_PHONES_ACCESSORIES).subscribe(r => response = r);
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(MOCK_OBJECT_TYPES);
 
       expect(req.request.urlWithParams).toEqual(expectedUrl);
-      expect(response).toEqual(MOCK_OBJECT_TYPES_RESPONSE);
+      expect(response).toEqual(MOCK_OBJECT_TYPES);
       expect(req.request.method).toBe('GET');
+      expect(req.request.headers.get('Accept')).toBe('application/vnd.api.v3.suggesters.object-type.v2+json');
+      expect(req.request.headers.get('Accept-Language')).toBe('en');
     });
   });
 
