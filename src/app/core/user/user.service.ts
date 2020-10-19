@@ -105,7 +105,7 @@ export class UserService {
   }
 
   public get isLogged(): boolean {
-    return this.accessTokenService.accessToken ? true : false;
+    return !!this.accessTokenService.accessToken;
   }
 
   private sendUserPresence() {
@@ -345,6 +345,18 @@ export class UserService {
       data.email,
       data.featured,
       data.extra_info
+    );
+  }
+
+  public checkUserPermissions(): Observable<boolean> {
+    if (!this.isLogged) {
+      return of(true);
+    }
+
+    return this.me().pipe(
+      tap(user => this.setPermission(user)),
+      map(() => true),
+      catchError(() => of(true))
     );
   }
 
