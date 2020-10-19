@@ -13,7 +13,9 @@ import { TrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safet
 import { SessionProfileDataLocation } from 'app/core/trust-and-safety/trust-and-safety.interface';
 import { SEARCHID_STORAGE_NAME } from '../core/message/real-time.service';
 import { NgbModalOptions, NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { SendPhoneComponent } from './modals';
+import { ArchiveInboxConversationComponent, BlockUserComponent, ReportListingComponent, ReportUserComponent, SendPhoneComponent, UnblockUserComponent } from './modals';
+import { MaliciousConversationModalComponent } from './modals/malicious-conversation-modal/malicious-conversation-modal.component';
+import { PersonalDataInformationModal } from './modals/personal-data-information-modal/personal-data-information-modal.component';
 
 @Component({
   selector: 'tsl-chat',
@@ -28,6 +30,7 @@ export class ChatComponent implements OnInit {
   public connectionError: boolean;
   public firstLoad: boolean;
   public isProfessional: boolean;
+  public USERS_WARNING_MODAL = ['y436exx78zdg']
 
   constructor(public userService: UserService,
               private eventService: EventService,
@@ -139,6 +142,7 @@ export class ChatComponent implements OnInit {
       }
       if (conversation?.hasNoMessages) {
         this.openSendPhoneModalIfNeeded(conversation);
+        this.openPersonalDataWarningModalIfNeeded(conversation);
       }
     });
   }
@@ -155,5 +159,18 @@ export class ChatComponent implements OnInit {
     const modalOptions: NgbModalOptions = { windowClass: 'phone-request', backdrop: 'static', keyboard: false };
     const modalRef: NgbModalRef = this.modalService.open(SendPhoneComponent, modalOptions);
     modalRef.componentInstance.conversation = conversation;
+  }
+
+  private openPersonalDataWarningModalIfNeeded(conversation: InboxConversation): void {
+    if (this.USERS_WARNING_MODAL.includes(conversation.user.id)) {
+      this.openPersonalDataWarningModal(conversation)
+    }
+  }
+
+  private openPersonalDataWarningModal(conversation: InboxConversation) {
+    this.modalService.open(PersonalDataInformationModal, { windowClass: 'warning' })
+    .result
+      .then(() => this.inboxConversationService.currentConversation = null)
+      .catch(() => null);
   }
 }

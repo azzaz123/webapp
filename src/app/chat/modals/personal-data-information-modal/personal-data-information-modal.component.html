@@ -1,0 +1,58 @@
+<div class="PersonalDataInformationModal">
+  <div class="PersonalDataInformationModal__body">
+
+    <div class="close" (click)="activeModal.close(true)">
+      <mat-icon svgIcon="cross"></mat-icon>
+    </div>
+
+    <div class="content d-flex flex-column justify-content-between justify-content-md-center">
+      <div class="title">
+        <span i18n="@@PersonalDataInformationModalTitle"><b>¡Vas a contactar un Profesional!</b></span>
+      </div>
+
+      <div class="description">
+        <span i18n="@@PersonalDataInformationModalDesc">
+          Para ofrecerte un servicio más personalizado te pedirán numero y correo.
+        </span>
+      </div>
+
+      <div class="actions">
+        <div class="d-flex justify-content-center">
+          <tsl-button (click)="activeModal.dismiss()" i18n="@@PersonalDataInformationModalButton">Continue</tsl-button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="PersonalDataInformationModal__footer">
+    <div>
+      <span i18n="@@PersonalDataInformationModalFooterBold"><b>What you need to know:</b>
+      </span>
+      <span i18n="@@PersonalDataInformationModalFooter">
+        The fact of providing your data through this process implies that you accept the treatment of said data in the
+        terms that are detailed below.
+      </span>
+      <br><br>
+    </div>
+    <div class="legal">
+      <span i18n="@@PersonalDataInformationModalLegal">
+        Wallapop, SL, (hereinafter, Wallapop), as responsible for the treatment, will treat the data provided in order
+        to communicate it to a professional user outside the Wallapop platform (a real estate agency), who, later, will
+        contact you in order to inform you about their products/services.<br><br>
+        The legal basis for the treatment of the aforementioned data is the consent that you have given linked to the
+        fact of having freely provided personal data through this process. The personal data will be kept as long as you
+        do not request its deletion. Once the deletion is requested, the data will
+        be kept blocked preventing its treatment, except for making the data available to the judges and courts, the
+        Public Prosecutor’s Office or the competent Public Administrations, for the demand of possible responsibilities
+        derived from the treatment and only for the statute of limitations thereof (5 years).
+        Once the indicated period of time has elapsed, the data will be deleted.<br><br>
+        You can exercise your rights of access, rectification, deletion, opposition, limitation of the treatment, and
+        portability of your data, as well as the revocation, at any time, of the consent given, before Wallapop, CIF No.
+        B-66.04.9057, in Avda. Meridiana 89 6th Floor, 08026, Barcelona (Spain), attaching a photocopy of your ID or
+        equivalent valid identification document. You can also exercise your rights by a communication addressed to:
+        privacy@wallapop.com. Finally, we remind you that you can file a claim with the Spanish Data Protection Agency,
+        if you consider that Wallapop has violated your rights in terms of data protection.”
+      </span>
+    </div>
+  </div>
+</div>
