@@ -109,7 +109,6 @@ export class AppComponent implements OnInit {
   }
 
   private handleUserLoggedIn(user: User, accessToken: string) {
-    this.userService.setPermission(user);
     this.userService.sendUserPresenceInterval(this.sendPresenceInterval);
     this.initRealTimeChat(user, accessToken);
     appboy.changeUser(user.id);
