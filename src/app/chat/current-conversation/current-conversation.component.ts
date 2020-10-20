@@ -246,14 +246,14 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     // if (!this.currentConversation?.isFromMaliciousUser) {
     //   return;
     // }
+    console.log('IN OPEN MALICIOUS CONVERSATION !!!!!!!!!!!!!!!!!!');
     this.fillChatContext();
-    console.log('=====> ', this.inboxConversationService.currentConversation);
-    const modalRef: NgbModalRef = this.modalService.open(MaliciousConversationModalComponent, { windowClass: 'warning' });
-    modalRef.componentInstance.chatContext = this.chatContext;
+    // const modalRef: NgbModalRef = this.modalService.open(MaliciousConversationModalComponent, { windowClass: 'warning' });
+    // modalRef.componentInstance.chatContext = this.chatContext;
 
-    modalRef.result
-      .then(() => this.handleUserConfirmsMaliciousModal())
-      .catch(() => this.trackDismissMaliciousModal());
+    // modalRef.result
+    //   .then(() => this.handleUserConfirmsMaliciousModal())
+    //   .catch(() => this.trackDismissMaliciousModal());
   }
 
   private handleUserConfirmsMaliciousModal(): void {
