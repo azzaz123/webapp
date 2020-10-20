@@ -1,5 +1,5 @@
 // MAILS
-export const SUPPORT_MAIL = 'support.es@wallapop.com';
+export const SUPPORT_MAIL = 'supportteam@wallapop.com';
 export const CARDEALER_COMMERCIAL_CONTACT_MAIL = 'ventas.motor@wallapop.com';
 
 // PHONES
