@@ -26,6 +26,8 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { MaliciousConversationModalComponent } from '../modals/malicious-conversation-modal/malicious-conversation-modal.component';
 import { AnalyticsEvent, ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES, ClickBannedUserChatPopUpCloseButton, ClickBannedUserChatPopUpExitButton, SCREEN_IDS } from 'app/core/analytics/analytics-constants';
 import { AnalyticsService } from 'app/core/analytics/analytics.service';
+import { UserService } from 'app/core/user/user.service';
+import { User } from 'app/core/user/user';
 
 @Component({
   selector: 'tsl-current-conversation',
@@ -47,6 +49,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
 
   // TODO: change for other interface		Date: 2020/10/20
   private chatContext: ClickBannedUserChatPopUpExitButton;
+  private myUserId: string;
   public momentConfig: any;
   private newMessageSubscription: Subscription;
   public isLoadingMoreMessages = false;
@@ -59,13 +62,15 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   public isTopBarExpanded = false;
 
   constructor(private eventService: EventService,
-              i18n: I18nService,
-              private realTime: RealTimeService,
-              private inboxConversationService: InboxConversationService,
-              private remoteConsoleService: RemoteConsoleService,
-              private modalService: NgbModal,
-              private analyticsService: AnalyticsService) {
+    i18n: I18nService,
+    private realTime: RealTimeService,
+    private inboxConversationService: InboxConversationService,
+    private remoteConsoleService: RemoteConsoleService,
+    private modalService: NgbModal,
+    private userService: UserService,
+    private analyticsService: AnalyticsService) {
     this.momentConfig = i18n.getTranslations('defaultDaysMomentConfig');
+    this.setMyUserId();
   }
 
   get emptyInbox(): boolean {
@@ -134,6 +139,13 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     } else {
       this.isEndOfConversation = false;
     }
+  }
+
+  setMyUserId(): void {
+    this.userService.me().subscribe(
+      (user: User) => {
+        this.myUserId = user.id;
+      });
   }
 
   public showDate(currentMessage: InboxMessage, nextMessage: InboxMessage): boolean {
@@ -235,9 +247,9 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
 
   private fillChatContext(): void {
     this.chatContext = {
-      userId: null,
-      bannedUserId: null,
-      conversationId: null,
+      userId: this.myUserId,
+      bannedUserId: this.inboxConversationService.currentConversation?.user?.id,
+      conversationId: this.inboxConversationService.currentConversation?.id,
       screenId: SCREEN_IDS.BannedUserChatPopUp
     }
   }
@@ -246,14 +258,13 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     // if (!this.currentConversation?.isFromMaliciousUser) {
     //   return;
     // }
-    console.log('IN OPEN MALICIOUS CONVERSATION !!!!!!!!!!!!!!!!!!');
     this.fillChatContext();
-    // const modalRef: NgbModalRef = this.modalService.open(MaliciousConversationModalComponent, { windowClass: 'warning' });
-    // modalRef.componentInstance.chatContext = this.chatContext;
+    const modalRef: NgbModalRef = this.modalService.open(MaliciousConversationModalComponent, { windowClass: 'warning' });
+    modalRef.componentInstance.chatContext = this.chatContext;
 
-    // modalRef.result
-    //   .then(() => this.handleUserConfirmsMaliciousModal())
-    //   .catch(() => this.trackDismissMaliciousModal());
+    modalRef.result
+      .then(() => this.handleUserConfirmsMaliciousModal())
+      .catch(() => this.trackDismissMaliciousModal());
   }
 
   private handleUserConfirmsMaliciousModal(): void {
