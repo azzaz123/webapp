@@ -7,7 +7,7 @@ import {
   MOCK_INBOX_CONVERSATION_BASIC
 } from '../../../tests/inbox.fixtures.spec';
 import { InboxMessage, MessageStatus, MessageType } from '../model/inbox-message';
-import { USER_ID } from '../../../tests/user.fixtures.spec';
+import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
 import { RealTimeService } from '../../core/message/real-time.service';
 import { EventService } from '../../core/event/event.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
@@ -23,9 +23,11 @@ import { DateCalendarPipe } from 'app/shared/pipes';
 import { RemoteConsoleService } from '../../core/remote-console';
 import { MaliciousConversationModalComponent } from '../modals/malicious-conversation-modal/malicious-conversation-modal.component';
 import { SimpleChange, NO_ERRORS_SCHEMA } from '@angular/core';
-import { AnalyticsEvent, ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES, ClickBannedUserChatPopUpExitButton, SCREEN_IDS } from 'app/core/analytics/analytics-constants';
-import { AnalyticsService } from 'app/core/analytics/analytics.service';
-import { MockAnalyticsService } from 'tests/analytics.fixtures.spec';
+import { AnalyticsEvent, ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES, ClickBannedUserChatPopUpExitButton, SCREEN_IDS, ViewBannedUserChatPopUp } from 'app/core/analytics/analytics-constants';
+import { AnalyticsService } from '../../core/analytics/analytics.service';
+import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
+import { UserService } from 'app/core/user/user.service';
+import { of } from 'rxjs';
 
 describe('CurrentConversationComponent', () => {
   let component: CurrentConversationComponent;
@@ -36,6 +38,7 @@ describe('CurrentConversationComponent', () => {
   let remoteConsoleService: RemoteConsoleService;
   let analyticsService: AnalyticsService;
   let modalService: NgbModal;
+  let userService: UserService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -54,6 +57,13 @@ describe('CurrentConversationComponent', () => {
         { provide: InboxConversationService, useClass: InboxConversationServiceMock },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         { provide: AnalyticsService, useClass: MockAnalyticsService },
+        {
+          provide: UserService, useValue: {
+            me() {
+              return of(MOCK_USER);
+            }
+          }
+        },
         I18nService
       ],
       schemas: [ NO_ERRORS_SCHEMA ],
@@ -70,6 +80,8 @@ describe('CurrentConversationComponent', () => {
     conversationService = TestBed.inject(InboxConversationService);
     remoteConsoleService = TestBed.inject(RemoteConsoleService);
     modalService = TestBed.inject(NgbModal);
+    analyticsService = TestBed.inject(AnalyticsService);
+    userService = TestBed.inject(UserService);
 
     fixture.detectChanges();
   });
@@ -277,7 +289,6 @@ describe('CurrentConversationComponent', () => {
   });
 
   describe('sendReadSignal', () => {
-
     it('should not scroll to last message', () => {
       component['lastInboxMessage'] = null;
       spyOn(realTime, 'sendRead');
@@ -315,7 +326,6 @@ describe('CurrentConversationComponent', () => {
   });
 
   describe('clickSendMessage', () => {
-
     beforeEach(() => spyOn(remoteConsoleService, 'sendMessageAckFailed'));
 
     it('should send message is not send for pending messages', fakeAsync(() => {
@@ -334,7 +344,6 @@ describe('CurrentConversationComponent', () => {
   });
 
   describe('restoreConnection', () => {
-
     beforeEach(() => {
       spyOn(remoteConsoleService, 'sendMessageAckFailed');
       component.ngOnInit();
@@ -387,31 +396,49 @@ describe('CurrentConversationComponent', () => {
     });
   });
 
-  // TODO: TNS-925 - https://wallapop.atlassian.net/browse/TNS-925
   describe('Analytics', () => {
     describe('when malicious modal is shown', () => {
-      component.currentConversation = MOCK_INBOX_CONVERSATION_WITH_MALICIOUS_USER;
+      let mockedAtr: ViewBannedUserChatPopUp;
+
+      beforeEach(() => {
+        component.currentConversation = MOCK_INBOX_CONVERSATION_WITH_MALICIOUS_USER;
+        mockedAtr = {
+          userId: '121',
+          bannedUserId: component.currentConversation?.user?.id,
+          conversationId: component.currentConversation?.id,
+          screenId: SCREEN_IDS.BannedUserChatPopUp
+        }
+        component.ngOnChanges({
+          currentConversation: new SimpleChange(null, MOCK_INBOX_CONVERSATION_WITH_MALICIOUS_USER, false)
+        });
+
+        fixture.detectChanges();
+      });
 
       describe('and when user clicks on CTA', () => {
         it('should track event to analytics', () => {
+          spyOn(modalService, 'open').and.callThrough();
+
           const expectedEvent: AnalyticsEvent<ClickBannedUserChatPopUpExitButton> = {
             name: ANALYTICS_EVENT_NAMES.ClickBannedUserChatPopUpExitButton,
             eventType: ANALYTIC_EVENT_TYPES.Other,
-            attributes: {
-              userId: null,
-              bannedUserId: null,
-              conversationId: null,
-              screenId: SCREEN_IDS.BannedUserChatPopUp
-            }
+            attributes: mockedAtr
           };
           spyOn(analyticsService, 'trackEvent');
-    
           expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
         });
       });
 
       describe('and when user dismisses the modal', () => {
         it('should track event to analytics', () => {
+          const expectedEvent: AnalyticsEvent<ClickBannedUserChatPopUpExitButton> = {
+            name: ANALYTICS_EVENT_NAMES.ClickBannedUserChatPopUpExitButton,
+            eventType: ANALYTIC_EVENT_TYPES.Other,
+            attributes: mockedAtr
+          };
+          // AQUÍ TENEMOS QUE LANZAR EL CATCH
+          spyOn(analyticsService, 'trackEvent');
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
         });
       });
     });

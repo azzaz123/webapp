@@ -55,7 +55,6 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   @ViewChild('scrollElement') private scrollElement: ElementRef;
   @ViewChild('userWarringNotification') private userWarringNotification: ElementRef;
 
-  // TODO: change for other interface		Date: 2020/10/20
   private chatContext: ViewBannedUserChatPopUp;
   private myUserId: string;
   public momentConfig: any;
