@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnalyticsPageView, ANALYTICS_EVENT_NAMES, SCREEN_IDS, ViewBannedUserChatPopUp } from 'app/core/analytics/analytics-constants';
 import { AnalyticsService } from 'app/core/analytics/analytics.service';
@@ -9,19 +9,19 @@ import { AnalyticsService } from 'app/core/analytics/analytics.service';
   styleUrls: ['./malicious-conversation-modal.component.scss']
 })
 export class MaliciousConversationModalComponent implements OnInit {
+  @Input() chatContext: ViewBannedUserChatPopUp;
 
   constructor(public activeModal: NgbActiveModal,
               private analyticsService: AnalyticsService) { }
 
   ngOnInit(): void {
-    // this.trackViewMaliciousModal();
+    this.trackViewMaliciousModal();
   }
 
-  private trackViewMaliciousModal(chatContext: ViewBannedUserChatPopUp): void {
-    // TODO: changes atr for chatContext object 		Date: 2020/10/20
+  private trackViewMaliciousModal(): void {
     const event: AnalyticsPageView<ViewBannedUserChatPopUp> = {
       name: ANALYTICS_EVENT_NAMES.ViewBannedUserChatPopUp,
-      attributes: chatContext
+      attributes: this.chatContext
     };
     this.analyticsService.trackPageView(event);
   }

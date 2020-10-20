@@ -10,6 +10,15 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
+import {
+  AnalyticsEvent,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  ClickBannedUserChatPopUpCloseButton,
+  ClickBannedUserChatPopUpExitButton,
+  SCREEN_IDS,
+  ViewBannedUserChatPopUp 
+} from 'app/core/analytics/analytics-constants';
 import { EventService } from '../../core/event/event.service';
 import { RealTimeService } from '../../core/message/real-time.service';
 import { of, Subscription } from 'rxjs';
@@ -24,7 +33,6 @@ import { RemoteConsoleService } from '../../core/remote-console';
 import { delay } from 'rxjs/operators';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { MaliciousConversationModalComponent } from '../modals/malicious-conversation-modal/malicious-conversation-modal.component';
-import { AnalyticsEvent, ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES, ClickBannedUserChatPopUpCloseButton, ClickBannedUserChatPopUpExitButton, SCREEN_IDS } from 'app/core/analytics/analytics-constants';
 import { AnalyticsService } from 'app/core/analytics/analytics.service';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user';
@@ -48,7 +56,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   @ViewChild('userWarringNotification') private userWarringNotification: ElementRef;
 
   // TODO: change for other interface		Date: 2020/10/20
-  private chatContext: ClickBannedUserChatPopUpExitButton;
+  private chatContext: ViewBannedUserChatPopUp;
   private myUserId: string;
   public momentConfig: any;
   private newMessageSubscription: Subscription;
@@ -248,16 +256,16 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   private fillChatContext(): void {
     this.chatContext = {
       userId: this.myUserId,
-      bannedUserId: this.inboxConversationService.currentConversation?.user?.id,
-      conversationId: this.inboxConversationService.currentConversation?.id,
+      bannedUserId: this.currentConversation?.user?.id,
+      conversationId: this.currentConversation?.id,
       screenId: SCREEN_IDS.BannedUserChatPopUp
     }
   }
 
   private openMaliciousConversationModal(): void {
-    // if (!this.currentConversation?.isFromMaliciousUser) {
-    //   return;
-    // }
+    if (!this.currentConversation?.isFromMaliciousUser) {
+      return;
+    }
     this.fillChatContext();
     const modalRef: NgbModalRef = this.modalService.open(MaliciousConversationModalComponent, { windowClass: 'warning' });
     modalRef.componentInstance.chatContext = this.chatContext;
