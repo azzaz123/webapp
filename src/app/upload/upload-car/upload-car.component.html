@@ -30,7 +30,7 @@
             formControlName="model" id="model" [options]="models" [disableControl]="modelFieldDisabled">
           </ng-select>
           <input *ngIf="customMake" type="text" i18n-placeholder placeholder="E.g. Ibiza" class="form-control"
-            formControlName="model" id="model" />
+            formControlName="model" id="model" [disableControl]="modelFieldDisabled" />
         </div>
       </div>
       <ng-template #coachmarkMake>
@@ -70,7 +70,7 @@
           <ng-select *ngIf="!customMake" i18n-placeholder placeholder="Number plate" class="form-control"
             formControlName="year" id="year" [options]="years" [disableControl]="yearFieldDisabled"></ng-select>
           <input *ngIf="customMake" type="text" i18n-placeholder placeholder="Number plate" class="form-control"
-            formControlName="year" id="year" />
+            formControlName="year" id="year" [disableControl]="yearFieldDisabled" />
         </div>
       </div>
       <div class="col-12 col-md-8">
@@ -93,7 +93,7 @@
         <div class="form-group">
           <label for="version" i18n>Version</label>
           <div class="pull-right">
-            <a class="other-make" (click)="toggleCustomVersionSelection()">
+            <a class="other-make" *ngIf="!customMake" (click)="toggleCustomVersionSelection()">
               <span *ngIf="!customVersion" i18n>Select another version</span>
               <span *ngIf="customVersion" i18n>Select a predefined version</span>
             </a>
@@ -103,7 +103,7 @@
             for="version" [options]="versions" [disableControl]="versionFieldDisabled"></ng-select>
           <input *ngIf="customMake || customVersion" type="text" i18n-placeholder
             placeholder="Is is a particular model or series?" class="form-control" formControlName="version"
-            id="version" />
+            id="version" [disableControl]="versionFieldDisabled"/>
         </div>
       </div>
       <div class="col-12 col-md-6">
