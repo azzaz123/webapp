@@ -13,9 +13,9 @@ import { TrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safet
 import { SessionProfileDataLocation } from 'app/core/trust-and-safety/trust-and-safety.interface';
 import { SEARCHID_STORAGE_NAME } from '../core/message/real-time.service';
 import { NgbModalOptions, NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ArchiveInboxConversationComponent, BlockUserComponent, ReportListingComponent, ReportUserComponent, SendPhoneComponent, UnblockUserComponent } from './modals';
-import { MaliciousConversationModalComponent } from './modals/malicious-conversation-modal/malicious-conversation-modal.component';
+import { SendPhoneComponent } from './modals';
 import { PersonalDataInformationModal } from './modals/personal-data-information-modal/personal-data-information-modal.component';
+import { STRING_ID } from './model/string-ids.enum';
 
 @Component({
   selector: 'tsl-chat',
@@ -30,7 +30,7 @@ export class ChatComponent implements OnInit {
   public connectionError: boolean;
   public firstLoad: boolean;
   public isProfessional: boolean;
-  public USERS_WARNING_MODAL = ['y436exx78zdg']
+  public USERS_SHOW_INFORMATIONAL_MODAL = [STRING_ID.YA_ENCONTRE];
 
   constructor(public userService: UserService,
               private eventService: EventService,
@@ -162,12 +162,13 @@ export class ChatComponent implements OnInit {
   }
 
   private openPersonalDataWarningModalIfNeeded(conversation: InboxConversation): void {
-    if (this.USERS_WARNING_MODAL.includes(conversation.user.id)) {
-      this.openPersonalDataWarningModal(conversation)
+    const stringId = conversation.user.id as any;
+    if (this.USERS_SHOW_INFORMATIONAL_MODAL.includes(stringId)) {
+      this.openPersonalDataWarningModal();
     }
   }
 
-  private openPersonalDataWarningModal(conversation: InboxConversation) {
+  private openPersonalDataWarningModal(): void {
     this.modalService.open(PersonalDataInformationModal, { windowClass: 'warning' })
     .result
       .then(() => this.inboxConversationService.currentConversation = null)

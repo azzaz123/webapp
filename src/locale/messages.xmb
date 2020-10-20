@@ -323,21 +323,18 @@
         ignore their messages and do not communicate with them through any means other than wallapop, as this may be
         an attempt to defraud you. </msg>
   <msg id="ExitConversation"><source>app/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component.html:23</source>Exit the conversation</msg>
-  <msg id="PersonalDataInformationModalTitle"><source>app/chat/modals/personal-data-information-modal/personal-data-information-modal.component.html:10</source><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>¡Vas a contactar un Profesional!<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></msg>
+  <msg id="PersonalDataInformationModalTitle"><source>app/chat/modals/personal-data-information-modal/personal-data-information-modal.component.html:10</source><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>They want to help you ;-)<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></msg>
   <msg id="PersonalDataInformationModalDesc"><source>app/chat/modals/personal-data-information-modal/personal-data-information-modal.component.html:14,16</source>
-          Para ofrecerte un servicio más personalizado te pedirán numero y correo.
+          A real estate agent wants to address you in person. If you are interested, click on &quot;Continue&quot; to share your e-mail and telephone number.
         </msg>
   <msg id="PersonalDataInformationModalButton"><source>app/chat/modals/personal-data-information-modal/personal-data-information-modal.component.html:21</source>Continue</msg>
-  <msg id="PersonalDataInformationModalFooterBold"><source>app/chat/modals/personal-data-information-modal/personal-data-information-modal.component.html:29,33</source>
-        <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>
-          What you need to know:
-        <ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph>
+  <msg id="PersonalDataInformationModalFooterBold"><source>app/chat/modals/personal-data-information-modal/personal-data-information-modal.component.html:29,30</source><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>What you need to know:<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph>
       </msg>
-  <msg id="PersonalDataInformationModalFooter"><source>app/chat/modals/personal-data-information-modal/personal-data-information-modal.component.html:34,37</source>
+  <msg id="PersonalDataInformationModalFooter"><source>app/chat/modals/personal-data-information-modal/personal-data-information-modal.component.html:31,34</source>
         The fact of providing your data through this process implies that you accept the treatment of said data in the
-        terms that are detailed below.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph><ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>
+        terms that are detailed below.
       </msg>
-  <msg id="PersonalDataInformationModalLegal"><source>app/chat/modals/personal-data-information-modal/personal-data-information-modal.component.html:40,57</source>
+  <msg id="PersonalDataInformationModalLegal"><source>app/chat/modals/personal-data-information-modal/personal-data-information-modal.component.html:38,55</source>
         Wallapop, SL, (hereinafter, Wallapop), as responsible for the treatment, will treat the data provided in order
         to communicate it to a professional user outside the Wallapop platform (a real estate agency), who, later, will
         contact you in order to inform you about their products/services.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph><ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>
