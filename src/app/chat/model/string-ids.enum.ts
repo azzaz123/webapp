@@ -1,3 +1,3 @@
 export enum STRING_ID {
-  YA_ENCONTRE = 'y436exx78zdg'
+  YA_ENCONTRE = 'ke6529g7006o'
 };
