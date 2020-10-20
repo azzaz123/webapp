@@ -22,8 +22,10 @@ import { ThirdVoiceDropPriceComponent } from '../message/third-voice-drop-price'
 import { ThirdVoiceReviewComponent } from '../message/third-voice-review';
 import { RemoteConsoleService } from '../../core/remote-console';
 import { delay } from 'rxjs/operators';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { MaliciousConversationModalComponent } from '../modals/malicious-conversation-modal/malicious-conversation-modal.component';
+import { AnalyticsEvent, ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES, ClickBannedUserChatPopUpCloseButton, ClickBannedUserChatPopUpExitButton, SCREEN_IDS } from 'app/core/analytics/analytics-constants';
+import { AnalyticsService } from 'app/core/analytics/analytics.service';
 
 @Component({
   selector: 'tsl-current-conversation',
@@ -43,6 +45,8 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   @ViewChild('scrollElement') private scrollElement: ElementRef;
   @ViewChild('userWarringNotification') private userWarringNotification: ElementRef;
 
+  // TODO: change for other interface		Date: 2020/10/20
+  private chatContext: ClickBannedUserChatPopUpExitButton;
   public momentConfig: any;
   private newMessageSubscription: Subscription;
   public isLoadingMoreMessages = false;
@@ -59,7 +63,8 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
               private realTime: RealTimeService,
               private inboxConversationService: InboxConversationService,
               private remoteConsoleService: RemoteConsoleService,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private analyticsService: AnalyticsService) {
     this.momentConfig = i18n.getTranslations('defaultDaysMomentConfig');
   }
 
@@ -228,13 +233,25 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
       .forEach(message => this.remoteConsoleService.sendMessageAckFailed(message.id, description));
   }
 
-  private openMaliciousConversationModal(): void {
-    if (!this.currentConversation?.isFromMaliciousUser) {
-      return;
+  private fillChatContext(): void {
+    this.chatContext = {
+      userId: null,
+      bannedUserId: null,
+      conversationId: null,
+      screenId: SCREEN_IDS.BannedUserChatPopUp
     }
+  }
 
-    this.modalService.open(MaliciousConversationModalComponent, { windowClass: 'warning' })
-    .result
+  private openMaliciousConversationModal(): void {
+    // if (!this.currentConversation?.isFromMaliciousUser) {
+    //   return;
+    // }
+    this.fillChatContext();
+    console.log('=====> ', this.inboxConversationService.currentConversation);
+    const modalRef: NgbModalRef = this.modalService.open(MaliciousConversationModalComponent, { windowClass: 'warning' });
+    modalRef.componentInstance.chatContext = this.chatContext;
+
+    modalRef.result
       .then(() => this.handleUserConfirmsMaliciousModal())
       .catch(() => this.trackDismissMaliciousModal());
   }
@@ -244,10 +261,21 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     this.trackClickMaliciousModalCTAButton();
   }
 
-  // TODO: TNS-925 - https://wallapop.atlassian.net/browse/TNS-925
-  private trackClickMaliciousModalCTAButton() {
+  private trackClickMaliciousModalCTAButton(): void {
+    const event: AnalyticsEvent<ClickBannedUserChatPopUpExitButton> = {
+      name: ANALYTICS_EVENT_NAMES.ClickBannedUserChatPopUpExitButton,
+      eventType: ANALYTIC_EVENT_TYPES.Other,
+      attributes: this.chatContext
+    };
+    this.analyticsService.trackEvent(event);
   }
 
-  private trackDismissMaliciousModal() {
+  private trackDismissMaliciousModal(): void {
+    const event: AnalyticsEvent<ClickBannedUserChatPopUpCloseButton> = {
+      name: ANALYTICS_EVENT_NAMES.ClickBannedUserChatPopUpCloseButton,
+      eventType: ANALYTIC_EVENT_TYPES.Other,
+      attributes: this.chatContext
+    };
+    this.analyticsService.trackEvent(event);
   }
 }
