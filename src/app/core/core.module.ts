@@ -13,11 +13,9 @@ import { TutorialService } from './tutorial/tutorial.service';
 import { AccessTokenService } from './http/access-token.service';
 import { ConversationModule } from './conversation/conversation.module';
 import { MessageService } from '../chat/service/message.service';
-import { NotificationService } from './notification/notification.service';
+import { DesktopNotificationsService } from './desktop-notifications/desktop-notifications.service';
 import { PaymentService } from './payments/payment.service';
-import { WindowRef } from './window/window.service';
 import { XmppService } from './xmpp/xmpp.service';
-import { PushNotificationsModule } from 'ng-push';
 import { ReviewService } from './review/review.service';
 import { ConnectionService } from './connection/connection.service';
 import { RealTimeService } from './message/real-time.service';
@@ -39,7 +37,6 @@ import { TrustAndSafetyService } from './trust-and-safety/trust-and-safety.servi
     ItemModule,
     TrackingModule,
     ConversationModule.forRoot(),
-    PushNotificationsModule,
     ProfileModule,
     MobileBlockerModule
   ],
@@ -66,9 +63,8 @@ export class CoreModule {
         TutorialService,
         AccessTokenService,
         MessageService,
-        NotificationService,
+        DesktopNotificationsService,
         PaymentService,
-        WindowRef,
         XmppService,
         RealTimeService,
         InboxService,

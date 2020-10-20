@@ -26,6 +26,9 @@ import { RemoteConsoleService } from '../../core/remote-console';
 import { I18nService } from 'app/core/i18n/i18n.service';
 import { ToastService } from 'app/layout/toast/toast.service';
 import { Toast } from 'app/layout/toast/toast.interface';
+import { DesktopNotificationsService } from 'app/core/desktop-notifications/desktop-notifications.service';
+import { TrackingService } from 'app/core/tracking/tracking.service';
+import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 
 describe('InboxConversationService', () => {
 
@@ -38,6 +41,7 @@ describe('InboxConversationService', () => {
   let itemService: ItemService;
   let toastService: ToastService;
   let i18nService: I18nService;
+  let desktopNotificationsService: DesktopNotificationsService;
   let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
@@ -63,7 +67,9 @@ describe('InboxConversationService', () => {
         { provide: UserService, useClass: MockedUserService },
         { provide: ItemService, useClass: MockedItemService },
         ToastService,
-        I18nService
+        I18nService,
+        DesktopNotificationsService,
+        { provide: TrackingService, useClass: MockTrackingService }
       ]
     });
     service = TestBed.inject(InboxConversationService);
@@ -75,6 +81,7 @@ describe('InboxConversationService', () => {
     itemService = TestBed.inject(ItemService);
     toastService = TestBed.inject(ToastService);
     i18nService = TestBed.inject(I18nService);
+    desktopNotificationsService = TestBed.inject(DesktopNotificationsService);
     httpTestingController = TestBed.inject(HttpTestingController);
     jest.spyOn(userService, 'user', 'get').mockReturnValue(MOCK_USER);
     service.subscribeChatEvents();
@@ -246,6 +253,25 @@ describe('InboxConversationService', () => {
         expect(service.conversations[0].unreadCounter).toEqual(unreadCounterBefore);
         expect(messageService.totalUnreadMessages).toEqual(unreadCounterBefore);
       });
+
+      describe('and when the message is not from self', () => {
+        let messageFromUser: InboxMessage;
+
+        beforeEach(() => {
+          messageFromUser = new InboxMessage('mockId', conversations[0].id, 'hola!', 'mockUserId',
+            false, new Date(), MessageStatus.SENT, MessageType.TEXT
+          );
+          spyOn(desktopNotificationsService, 'sendFromInboxMessage');
+        });
+
+        it('should delegate the desktop notification to be opened or not', () => {
+          service.processNewMessage(messageFromUser);
+
+          expect(desktopNotificationsService.sendFromInboxMessage).toHaveBeenCalledTimes(1);
+          expect(desktopNotificationsService.sendFromInboxMessage).toHaveBeenCalledWith(messageFromUser, conversations[0]);
+        });
+      });
+
     });
 
     describe('when add conversation to set', () => {

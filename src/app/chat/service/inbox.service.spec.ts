@@ -22,6 +22,8 @@ import { HttpClient } from '@angular/common/http';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { RemoteConsoleService } from '../../core/remote-console';
 import { I18nService } from 'app/core/i18n/i18n.service';
+import { DesktopNotificationsService } from 'app/core/desktop-notifications/desktop-notifications.service';
+import { MockDesktopNotifications } from 'app/core/desktop-notifications/desktop-notifications.service.spec';
 
 describe('InboxService', () => {
 
@@ -55,7 +57,8 @@ describe('InboxService', () => {
             accessToken: 'ACCESS_TOKEN'
           }
         },
-        { provide: InboxConversationService, useClass: InboxConversationService },
+        InboxConversationService,
+        { provide: DesktopNotificationsService, useClass: MockDesktopNotifications },
         {
           provide: RealTimeService, useValue: {
             sendDeliveryReceipt(to: string, id: string, thread: string) {

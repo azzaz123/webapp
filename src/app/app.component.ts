@@ -7,11 +7,10 @@ import { MatIconRegistry } from '@angular/material';
 import { ActivatedRoute, NavigationEnd, NavigationStart, RouteConfigLoadEnd, RouteConfigLoadStart, Router } from '@angular/router';
 import { environment } from '../environments/environment';
 import { CookieOptions, CookieService } from 'ngx-cookie';
-import { UUID } from 'angular2-uuid';
 import { TrackingService } from './core/tracking/tracking.service';
 import { EventService } from './core/event/event.service';
 import { UserService } from './core/user/user.service';
-import { NotificationService } from './core/notification/notification.service';
+import { DesktopNotificationsService } from './core/desktop-notifications/desktop-notifications.service';
 import { MessageService } from './chat/service/message.service';
 import { I18nService } from './core/i18n/i18n.service';
 import { User } from './core/user/user';
@@ -24,6 +23,7 @@ import { InboxService } from './chat/service';
 import { StripeService } from './core/stripe/stripe.service';
 import { AnalyticsService } from './core/analytics/analytics.service';
 import { DidomiService } from './core/didomi/didomi.service';
+import { UuidService } from './core/uuid/uuid.service';
 
 @Component({
   selector: 'tsl-root',
@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
     private realTime: RealTimeService,
     private inboxService: InboxService,
     public userService: UserService,
-    private notificationService: NotificationService,
+    private desktopNotificationsService: DesktopNotificationsService,
     private messageService: MessageService,
     private titleService: Title,
     private sanitizer: DomSanitizer,
@@ -61,6 +61,7 @@ export class AppComponent implements OnInit {
     private callService: CallsService,
     private stripeService: StripeService,
     private analyticsService: AnalyticsService,
+    private uuidService: UuidService,
     private didomiService: DidomiService) {
   }
 
@@ -82,7 +83,7 @@ export class AppComponent implements OnInit {
     this.analyticsService.initialize();
     this.initializeBraze();
     this.userService.checkUserStatus();
-    this.notificationService.init();
+    this.desktopNotificationsService.init();
     this.connectionService.checkConnection();
   }
 
@@ -108,7 +109,6 @@ export class AppComponent implements OnInit {
   }
 
   private handleUserLoggedIn(user: User, accessToken: string) {
-    this.userService.setPermission(user);
     this.userService.sendUserPresenceInterval(this.sendPresenceInterval);
     this.initRealTimeChat(user, accessToken);
     appboy.changeUser(user.id);
@@ -156,7 +156,7 @@ export class AppComponent implements OnInit {
 
   private updateSessionCookie() {
     const name = 'app_session_id';
-    const token = UUID.UUID();
+    const token = this.uuidService.getUUID();
     const expiration = 900000;
     const expirationDate: Date = new Date();
     expirationDate.setTime(expirationDate.getTime() + expiration);

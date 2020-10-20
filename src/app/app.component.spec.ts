@@ -7,11 +7,10 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie';
-import { UUID } from 'angular2-uuid';
 import { TrackingService } from './core/tracking/tracking.service';
 import { MatIconRegistry } from '@angular/material';
 import { MessageService } from './chat/service/message.service';
-import { NotificationService } from './core/notification/notification.service';
+import { DesktopNotificationsService } from './core/desktop-notifications/desktop-notifications.service';
 import { EventService } from './core/event/event.service';
 import { ErrorsService } from './core/errors/errors.service';
 import { UserService } from './core/user/user.service';
@@ -30,6 +29,7 @@ import { AnalyticsService } from './core/analytics/analytics.service';
 import { MockAnalyticsService } from '../tests/analytics.fixtures.spec';
 import { DidomiService } from './core/didomi/didomi.service';
 import { MockDidomiService } from './core/didomi/didomi.service.spec';
+import { UuidService } from './core/uuid/uuid.service';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -38,7 +38,7 @@ let errorsService: ErrorsService;
 let eventService: EventService;
 let realTime: RealTimeService;
 let inboxService: InboxService;
-let notificationService: NotificationService;
+let desktopNotificationsService: DesktopNotificationsService;
 let messageService: MessageService;
 let titleService: Title;
 let trackingService: TrackingService;
@@ -49,6 +49,7 @@ let paymentService: PaymentService;
 let stripeService: StripeService;
 let analyticsService: AnalyticsService;
 let didomiService: DidomiService;
+let uuidService: UuidService;
 
 const ACCESS_TOKEN = 'accesstoken';
 
@@ -127,12 +128,7 @@ describe('App', () => {
         }
         },
         {provide: TrackingService, useClass: MockTrackingService},
-        {
-          provide: NotificationService, useValue: {
-          init() {
-          }
-        }
-        },
+        DesktopNotificationsService,
         {
           provide: CallsService, useValue: {
             init() {
@@ -188,7 +184,7 @@ describe('App', () => {
     eventService = TestBed.inject(EventService);
     realTime = TestBed.inject(RealTimeService);
     inboxService = TestBed.inject(InboxService);
-    notificationService = TestBed.inject(NotificationService);
+    desktopNotificationsService = TestBed.inject(DesktopNotificationsService);
     messageService = TestBed.inject(MessageService);
     titleService = TestBed.inject(Title);
     trackingService = TestBed.inject(TrackingService);
@@ -199,8 +195,9 @@ describe('App', () => {
     stripeService = TestBed.inject(StripeService);
     analyticsService = TestBed.inject(AnalyticsService);
     didomiService = TestBed.inject(DidomiService);
+    uuidService = TestBed.inject(UuidService);
 
-    spyOn(notificationService, 'init');
+    spyOn(desktopNotificationsService, 'init');
     spyOn(window.location, 'reload');
   });
 
@@ -211,7 +208,7 @@ describe('App', () => {
 
   describe('set cookie', () => {
     it('should create a cookie', () => {
-      spyOn(UUID, 'UUID').and.returnValue('1-2-3');
+      spyOn(uuidService, 'getUUID').and.returnValue('1-2-3');
       spyOn(cookieService, 'put');
       spyOn(Date.prototype, 'getTime').and.returnValue(123456789);
       const currentDate = new Date();
@@ -220,7 +217,7 @@ describe('App', () => {
 
       component.updateSessionCookie();
 
-      expect(cookieService.put).toHaveBeenCalledWith('app_session_id', UUID.UUID() , cookieOptions);
+      expect(cookieService.put).toHaveBeenCalledWith('app_session_id', uuidService.getUUID() , cookieOptions);
     });
   });
 
@@ -356,7 +353,7 @@ describe('App', () => {
     it('should init notifications', () => {
       component.ngOnInit();
 
-      expect(notificationService.init).toHaveBeenCalled();
+      expect(desktopNotificationsService.init).toHaveBeenCalled();
     });
 
     it('should call realTime.disconnect on logout', () => {

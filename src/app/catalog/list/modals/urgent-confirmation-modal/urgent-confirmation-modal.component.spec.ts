@@ -4,7 +4,6 @@ import { async, fakeAsync, ComponentFixture, TestBed, tick } from '@angular/core
 import { UrgentConfirmationModalComponent } from './urgent-confirmation-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { WindowRef } from '../../../../core/window/window.service';
 import { TrackingService } from '../../../../core/tracking/tracking.service';
 import { UserService } from '../../../../core/user/user.service';
 import { MOCK_USER } from '../../../../../tests/user.fixtures.spec';
@@ -28,7 +27,6 @@ describe('UrgentConfirmationModalComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ UrgentConfirmationModalComponent, CustomCurrencyPipe],
       providers: [
-        WindowRef,
         NgbActiveModal,
         DecimalPipe,
         EventService,

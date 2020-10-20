@@ -22,7 +22,7 @@ const loggedRoutes = [
   { path: '', pathMatch: 'full', redirectTo: 'chat' },
   {
     path: 'pro',
-    canLoad: [LoggedGuard],
+    canActivate: [LoggedGuard],
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
       {
@@ -92,7 +92,7 @@ const loggedRoutes = [
   },
   {
     path: 'catalog',
-    canLoad: [LoggedGuard],
+    canActivate: [LoggedGuard],
     children: [
       {
         path: '',

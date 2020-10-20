@@ -322,7 +322,7 @@ export class UploadCarComponent implements OnInit {
     const brand = this.uploadForm.get('brand').value;
     const model = this.uploadForm.get('model').value;
     const year = this.uploadForm.get('year').value;
-    const title = `${brand} ${model} ${year}`;
+    const title = [brand, model, year].filter(t => t).join(' ').trim();
 
     this.uploadForm.get('title').patchValue(title);
   }
@@ -451,10 +451,12 @@ export class UploadCarComponent implements OnInit {
   }
 
   public toggleCustomMakeSelection() {
+    this.resetFormFields(['brand', 'model', 'year']);
     this.customMake = !this.customMake;
   }
 
   public toggleCustomVersionSelection() {
+    this.resetFormFields(['version']);
     this.customVersion = !this.customVersion;
   }
 
@@ -463,19 +465,19 @@ export class UploadCarComponent implements OnInit {
   }
 
   get modelFieldDisabled(): boolean {
-    return this.uploadForm.get('brand').invalid;
+    return this.uploadForm.get('brand').invalid && !this.customMake;
   }
 
   get yearFieldDisabled(): boolean {
     const modelField = this.uploadForm.get('model');
 
-    return modelField.disabled || modelField.invalid;
+    return (modelField.disabled || modelField.invalid) && !this.customMake;
   }
 
   get versionFieldDisabled(): boolean {
     const yearField = this.uploadForm.get('year');
 
-    return yearField.disabled || yearField.invalid;
+    return (yearField.disabled || yearField.invalid) && !this.customMake && !this.customVersion;
   }
 
   private trackEditOrUpload(isEdit: boolean, item: CarContent) {
