@@ -22,6 +22,6 @@ export function subdomainFactory(cookieService: CookieService) {
   return subdomain ? subdomain : 'www';
 }
 
-export function userPermissionsFactory(userService: UserService) {
+export function userPermissionsFactory(userService: UserService): () => Promise<boolean> {
   return () => userService.checkUserPermissions().toPromise();
 }
