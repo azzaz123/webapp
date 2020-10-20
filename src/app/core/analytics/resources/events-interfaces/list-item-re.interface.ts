@@ -57,4 +57,8 @@ export interface ListItemRE {
    * Identifier of the screen that the item was uploaded from
    */
   screenId: number;
+  /**
+   * Hashtags uploaded by the user
+   */
+  hashtags?: string;
 }

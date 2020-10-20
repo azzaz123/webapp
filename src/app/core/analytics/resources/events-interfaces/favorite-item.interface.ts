@@ -28,7 +28,7 @@ export interface FavoriteItem {
   /**
    * If the item favorited is from a professional user
    */
-  isPro: boolean;
+  isPro?: boolean;
   /**
    * Item price
    */

@@ -21,4 +21,8 @@ export interface ViewEditItem {
    * Name of the experiment or A/B testing applied to the user who is editing the item. The default value would be 'baseline'
    */
   experiment?: string;
+  /**
+   * If the item has to add extra info
+   */
+  mandatoryAdditionalFields?: boolean;
 }
