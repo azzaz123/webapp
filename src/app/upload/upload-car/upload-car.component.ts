@@ -322,7 +322,7 @@ export class UploadCarComponent implements OnInit {
     const brand = this.uploadForm.get('brand').value;
     const model = this.uploadForm.get('model').value;
     const year = this.uploadForm.get('year').value;
-    const title = [brand, model, year].join(' ').trim();
+    const title = [brand, model, year].filter(t => t).join(' ').trim();
 
     this.uploadForm.get('title').patchValue(title);
   }
