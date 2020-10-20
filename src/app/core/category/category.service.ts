@@ -8,7 +8,6 @@ import { I18nService } from '../i18n/i18n.service';
 import { environment } from '../../../environments/environment';
 
 export const CATEGORIES_ENDPOINT = 'api/v3/categories/keys/';
-export const CONSUMER_GOODS_ENDPOINT = `${CATEGORIES_ENDPOINT}consumer_goods`;
 export const SUGGESTED_CATEGORIES_ENDPOINT = 'api/v3/classifier/upload-blackbox';
 
 @Injectable()

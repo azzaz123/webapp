@@ -1274,7 +1274,7 @@ describe('UploadProductComponent', () => {
       component.searchSuggestedCategories();
 
       expect(categoryService.getSuggestedCategory).toBeCalledWith('car');
-      expect(component.lastSuggestedCategoryText).toBe('car')
+      expect(component.lastSuggestedCategoryText).toBe('car');
     });
 
     it('should not update the category if there is not suggestion', () => {
@@ -1284,14 +1284,14 @@ describe('UploadProductComponent', () => {
 
       component.searchSuggestedCategories();
 
-      expect(component.lastSuggestedCategoryText).toBe('car')
+      expect(component.lastSuggestedCategoryText).toBe('car');
       expect(component.updateCategory).not.toBeCalled();
     });
 
     it('should not update the category if suggestion and selected category are the same', () => {
       component.uploadForm.patchValue({ title: 'bike', category_id: CATEGORY_IDS.TV_AUDIO_CAMERAS.toString() });
       spyOn(categoryService, 'getSuggestedCategory').and.returnValue(of(SUGGESTED_CATEGORY_TV_AUDIO_CAMERAS));
-      spyOn(component.uploadForm, 'patchValue')
+      spyOn(component.uploadForm, 'patchValue');
 
       component.searchSuggestedCategories();
 
@@ -1302,7 +1302,7 @@ describe('UploadProductComponent', () => {
     it('should not update the category if suggestion is not in the category options', () => {
       component.uploadForm.patchValue({ title: 'bike' });
       spyOn(categoryService, 'getSuggestedCategory').and.returnValue(of(SUGGESTED_CATEGORY_COMPUTERS_ELECTRONICS));
-      spyOn(component.uploadForm, 'patchValue')
+      spyOn(component.uploadForm, 'patchValue');
 
       component.searchSuggestedCategories();
 
@@ -1330,10 +1330,14 @@ describe('UploadProductComponent', () => {
     });
     it('should search categories after the user stop tipyng', fakeAsync(() => {
       spyOn(component, 'searchSuggestedCategories');
+      const event = new KeyboardEvent('keyup', {
+        bubbles: true, cancelable: true, shiftKey: false
+      });
+      component.titleField.nativeElement.value = 'bike'
+      component.titleField.nativeElement.dispatchEvent(event);
 
-      component.onKeyUpTitle();
-      tick(750)
-      fixture.detectChanges()
+      tick(750);
+      fixture.detectChanges();
 
       fixture.whenStable().then(() => {
         expect(component.searchSuggestedCategories).toBeCalled();
