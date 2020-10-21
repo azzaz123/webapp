@@ -22,14 +22,21 @@ import { RealTimeServiceMock } from '../../../tests/real-time.fixtures.spec';
 import { DateCalendarPipe } from 'app/shared/pipes';
 import { RemoteConsoleService } from '../../core/remote-console';
 import { MaliciousConversationModalComponent } from '../modals/malicious-conversation-modal/malicious-conversation-modal.component';
-import { SimpleChange, NO_ERRORS_SCHEMA, ChangeDetectionStrategy } from '@angular/core';
-import { AnalyticsEvent, ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES, ClickBannedUserChatPopUpCloseButton, ClickBannedUserChatPopUpExitButton, SCREEN_IDS, ViewBannedUserChatPopUp } from 'app/core/analytics/analytics-constants';
+import { SimpleChange, NO_ERRORS_SCHEMA } from '@angular/core';
+import {
+  AnalyticsEvent,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  ClickBannedUserChatPopUpCloseButton,
+  ClickBannedUserChatPopUpExitButton, SCREEN_IDS,
+  ViewBannedUserChatPopUp
+} from 'app/core/analytics/analytics-constants';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
 import { UserService } from 'app/core/user/user.service';
 import { of } from 'rxjs';
 
-fdescribe('CurrentConversationComponent', () => {
+describe('CurrentConversationComponent', () => {
   let component: CurrentConversationComponent;
   let fixture: ComponentFixture<CurrentConversationComponent>;
   let realTime: RealTimeService;
@@ -39,7 +46,7 @@ fdescribe('CurrentConversationComponent', () => {
   let analyticsService: AnalyticsService;
   let modalService: NgbModal;
   let userService: UserService;
-  let modalSpy: jasmine.Spy;
+  let modalMockResult: Promise<{}>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -65,18 +72,35 @@ fdescribe('CurrentConversationComponent', () => {
             }
           }
         },
+        {
+          provide: NgbModal, useValue: {
+            open() {
+              return {
+                result: modalMockResult,
+                componentInstance: {
+                  chatContext: {
+                    userId: '121',
+                    bannedUserId: component.currentConversation?.user?.id,
+                    conversationId: component.currentConversation?.id,
+                    screenId: SCREEN_IDS.BannedUserChatPopUp
+                  }
+                }
+              }
+            }
+          }
+        },
         I18nService
       ],
-      schemas: [ NO_ERRORS_SCHEMA ],
-    }).overrideComponent(CurrentConversationComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default }
-    }).compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    })
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CurrentConversationComponent);
     component = fixture.componentInstance;
     component.currentConversation = CREATE_MOCK_INBOX_CONVERSATION();
+    modalMockResult =  Promise.resolve({});
 
     realTime = TestBed.inject(RealTimeService);
     eventService = TestBed.inject(EventService);
@@ -400,54 +424,57 @@ fdescribe('CurrentConversationComponent', () => {
   });
 
   describe('Analytics', () => {
-    fdescribe('when malicious modal is shown', () => {
+    describe('when malicious modal is shown', () => {
       let mockedAtr: ViewBannedUserChatPopUp;
 
-      beforeEach(() => {
-        component.currentConversation = null;
+      beforeEach(fakeAsync(() => {
+        component.currentConversation = MOCK_INBOX_CONVERSATION_WITH_MALICIOUS_USER;
         mockedAtr = {
-          userId: '121',
+          userId: component.myUserId,
           bannedUserId: component.currentConversation?.user?.id,
           conversationId: component.currentConversation?.id,
           screenId: SCREEN_IDS.BannedUserChatPopUp
         }
-
-        // spyOn(modalService, 'open').and.callThrough();
         spyOn(analyticsService, 'trackEvent').and.callThrough();
-
-        fixture.detectChanges();
-      });
+      }));
 
       describe('and when user clicks on CTA', () => {
-        it('should track event to analytics', (() => {
-          component.currentConversation = MOCK_INBOX_CONVERSATION_WITH_MALICIOUS_USER;
+        it('should track event to analytics', fakeAsync(() => {
           const expectedEvent: AnalyticsEvent<ClickBannedUserChatPopUpExitButton> = {
             name: ANALYTICS_EVENT_NAMES.ClickBannedUserChatPopUpExitButton,
             eventType: ANALYTIC_EVENT_TYPES.Other,
             attributes: mockedAtr
           };
+          spyOn(modalService, 'open').and.callThrough();
 
-          // modalSpy.and.returnValue({
-          //   result: Promise.resolve()
-          // });
           fixture.detectChanges();
-          fixture.detectChanges();
+          component.ngOnChanges({
+            currentConversation: new SimpleChange(null, MOCK_INBOX_CONVERSATION_BASIC, false)
+          });
+          tick();
+
           expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
         }));
       });
 
-      xdescribe('and when user dismisses the modal', () => {
-        it('should track event to analytics', () => {
-          spyOn(modalService, 'open').and.throwError('');
-          spyOn(analyticsService, 'trackEvent');
+      describe('and when user dismisses the modal', () => {
+        it('should track event to analytics', fakeAsync(() => {
+          modalMockResult =  Promise.reject({});
           const expectedEvent: AnalyticsEvent<ClickBannedUserChatPopUpCloseButton> = {
             name: ANALYTICS_EVENT_NAMES.ClickBannedUserChatPopUpCloseButton,
             eventType: ANALYTIC_EVENT_TYPES.Other,
             attributes: mockedAtr
           };
+          spyOn(modalService, 'open').and.callThrough();
+
+          fixture.detectChanges();
+          component.ngOnChanges({
+            currentConversation: new SimpleChange(null, MOCK_INBOX_CONVERSATION_BASIC, false)
+          });
+          tick();
 
           expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
-        });
+        }));
       });
     });
   });

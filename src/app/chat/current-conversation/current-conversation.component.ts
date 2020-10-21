@@ -56,7 +56,6 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   @ViewChild('userWarringNotification') private userWarringNotification: ElementRef;
 
   private chatContext: ViewBannedUserChatPopUp;
-  private myUserId: string;
   public momentConfig: any;
   private newMessageSubscription: Subscription;
   public isLoadingMoreMessages = false;
@@ -67,6 +66,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   public noMessages = 0;
   public isConversationChanged: boolean;
   public isTopBarExpanded = false;
+  myUserId: string;
 
   constructor(private eventService: EventService,
     i18n: I18nService,
