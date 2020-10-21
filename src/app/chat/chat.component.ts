@@ -164,14 +164,14 @@ export class ChatComponent implements OnInit {
   private openPersonalDataWarningModalIfNeeded(conversation: InboxConversation): void {
     const stringId = conversation.user.id as any;
     if (this.USERS_SHOW_INFORMATIONAL_MODAL.includes(stringId)) {
-      this.openPersonalDataWarningModal();
+      this.openPersonalDataWarningModal(conversation);
     }
   }
 
-  private openPersonalDataWarningModal(): void {
+  private openPersonalDataWarningModal(conversation: InboxConversation): void {
     this.modalService.open(PersonalDataInformationModal, { windowClass: 'warning' })
     .result
-      .then(() => this.inboxConversationService.currentConversation = null)
+      .then(() => window.location.href = conversation.item.itemUrl)
       .catch(() => null);
   }
 }
