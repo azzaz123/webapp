@@ -22,7 +22,7 @@ import { SessionProfileDataLocation } from 'app/core/trust-and-safety/trust-and-
 import { SEARCHID_STORAGE_NAME } from '../core/message/real-time.service';
 import { SendPhoneComponent } from './modals';
 import { PersonalDataInformationModal } from './modals/personal-data-information-modal/personal-data-information-modal.component';
-import { STRING_ID } from './model/string-ids.enum';
+import { USER_STRING_ID } from '../core/constants/string-ids.enum';
 
 class MockUserService {
   public isProfessional() {
@@ -255,7 +255,7 @@ describe('Component: ChatComponent with ItemId', () => {
 
     describe('and the seller could request you the mail or cellphone' , () => {
       it('should open a modal to notify the request information if the seller is YaEncontre', () => {
-        const inboxConversationWithoutMessages = CREATE_MOCK_INBOX_CONVERSATION('123', STRING_ID.YA_ENCONTRE);
+        const inboxConversationWithoutMessages = CREATE_MOCK_INBOX_CONVERSATION('123', USER_STRING_ID.YA_ENCONTRE);
         inboxConversationWithoutMessages.messages = [];
         const expectedModalOptions: NgbModalOptions = { windowClass: 'warning' };
         spyOn(inboxConversationService, 'openConversationByItemId$').and.returnValue(of(inboxConversationWithoutMessages));

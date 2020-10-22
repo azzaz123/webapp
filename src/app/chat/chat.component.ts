@@ -15,7 +15,7 @@ import { SEARCHID_STORAGE_NAME } from '../core/message/real-time.service';
 import { NgbModalOptions, NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SendPhoneComponent } from './modals';
 import { PersonalDataInformationModal } from './modals/personal-data-information-modal/personal-data-information-modal.component';
-import { STRING_ID } from './model/string-ids.enum';
+import { USER_STRING_ID } from '../core/constants/string-ids.enum';
 
 @Component({
   selector: 'tsl-chat',
@@ -30,7 +30,7 @@ export class ChatComponent implements OnInit {
   public connectionError: boolean;
   public firstLoad: boolean;
   public isProfessional: boolean;
-  public USERS_SHOW_INFORMATIONAL_MODAL = [STRING_ID.YA_ENCONTRE];
+  public USERS_SHOW_INFORMATIONAL_MODAL = [USER_STRING_ID.YA_ENCONTRE];
 
   constructor(public userService: UserService,
               private eventService: EventService,
