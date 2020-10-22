@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { AnalyticsPageView, ANALYTICS_EVENT_NAMES, SCREEN_IDS, ViewBannedUserChatPopUp } from 'app/core/analytics/analytics-constants';
+import { AnalyticsPageView, ANALYTICS_EVENT_NAMES, ViewBannedUserChatPopUp } from 'app/core/analytics/analytics-constants';
 import { AnalyticsService } from 'app/core/analytics/analytics.service';
 
 @Component({
