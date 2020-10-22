@@ -73,7 +73,7 @@ tsl-process-all-button {
 
 #loader {
   padding-top: $spacing-ml;
-  mat-icon {
+  .loader-size {
     width: 340px;
     height: 403px;
   }
@@ -116,14 +116,14 @@ tsl-process-all-button {
 
 #inbox-empty {
   padding-top: $spacing-ml;
-  mat-icon {
+  .inbox-size {
     width: $inbox-width;
     height: $inbox-height;
   }
 }
 
 #header-empty {
-  mat-icon {
+  .header-size {
     width: $inbox-width;
     height: $inbox-header-height;
   }
