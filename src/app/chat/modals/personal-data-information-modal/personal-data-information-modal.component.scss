@@ -54,12 +54,10 @@
 
     }
 
-
     @include media-breakpoint-down(sm) {
       padding: $spacing-ml;
     }
   }
-
 
   &__footer {
     height: 100%;
@@ -74,7 +72,6 @@
     .legal {
       font-size: $font-size-xxs;
     }
-
 
     @include media-breakpoint-down(sm) {
       margin: $spacing-ml;

@@ -1,6 +1,6 @@
 
 import { from, empty, Observable, of } from 'rxjs';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgbModule, NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
@@ -276,6 +276,22 @@ describe('Component: ChatComponent with ItemId', () => {
 
         expect(modalService.open).not.toBeCalled();
       });
+
+      it('should redirect to the item if the modal is closed', fakeAsync(() => {
+        const expectedUrl = 'item-123';
+        const inboxConversationWithoutMessages = CREATE_MOCK_INBOX_CONVERSATION('123', USER_STRING_ID.YA_ENCONTRE);
+        inboxConversationWithoutMessages.messages = [];
+        inboxConversationWithoutMessages.item.itemUrl = expectedUrl;
+        spyOn(inboxConversationService, 'openConversationByItemId$').and.returnValue(of(inboxConversationWithoutMessages));
+        spyOn(modalService, 'open').and.returnValue({
+          result: Promise.resolve()
+        });
+
+        component.ngOnInit();
+        tick();
+
+        expect(window.location.href).toBe(expectedUrl);
+      }));
     });
   });
 });
