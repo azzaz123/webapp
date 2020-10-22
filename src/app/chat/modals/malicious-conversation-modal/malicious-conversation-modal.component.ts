@@ -9,7 +9,7 @@ import { AnalyticsService } from 'app/core/analytics/analytics.service';
   styleUrls: ['./malicious-conversation-modal.component.scss']
 })
 export class MaliciousConversationModalComponent implements OnInit {
-  @Input() chatContext: ViewBannedUserChatPopUp;
+  public chatContext: ViewBannedUserChatPopUp;
 
   constructor(public activeModal: NgbActiveModal,
               private analyticsService: AnalyticsService) { }

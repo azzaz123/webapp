@@ -14,7 +14,7 @@ describe('MaliciousConversationModalComponent', () => {
   let activeModal: NgbActiveModal;
   let fixture: ComponentFixture<MaliciousConversationModalComponent>;
   let analyticsService: AnalyticsService;
-  const ChatContext: ViewBannedUserChatPopUp = {
+  const chatContext: ViewBannedUserChatPopUp = {
     userId: '121',
     bannedUserId: '2332',
     conversationId: '2332',
@@ -38,7 +38,7 @@ describe('MaliciousConversationModalComponent', () => {
     component = fixture.componentInstance;
     activeModal = TestBed.inject(NgbActiveModal);
     analyticsService = TestBed.inject(AnalyticsService);
-    component.chatContext = ChatContext;
+    component.chatContext = chatContext;
 
     fixture.detectChanges();
   });

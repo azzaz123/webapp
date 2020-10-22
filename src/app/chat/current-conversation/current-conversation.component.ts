@@ -66,7 +66,6 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   public noMessages = 0;
   public isConversationChanged: boolean;
   public isTopBarExpanded = false;
-  myUserId: string;
 
   constructor(private eventService: EventService,
     i18n: I18nService,
@@ -77,7 +76,6 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     private userService: UserService,
     private analyticsService: AnalyticsService) {
     this.momentConfig = i18n.getTranslations('defaultDaysMomentConfig');
-    this.setMyUserId();
   }
 
   get emptyInbox(): boolean {
@@ -146,13 +144,6 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     } else {
       this.isEndOfConversation = false;
     }
-  }
-
-  setMyUserId(): void {
-    this.userService.me().subscribe(
-      (user: User) => {
-        this.myUserId = user.id;
-      });
   }
 
   public showDate(currentMessage: InboxMessage, nextMessage: InboxMessage): boolean {
@@ -254,7 +245,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
 
   private fillChatContext(): void {
     this.chatContext = {
-      userId: this.myUserId,
+      userId: this.userService.user.id,
       bannedUserId: this.currentConversation?.user?.id,
       conversationId: this.currentConversation?.id,
       screenId: SCREEN_IDS.BannedUserChatPopUp

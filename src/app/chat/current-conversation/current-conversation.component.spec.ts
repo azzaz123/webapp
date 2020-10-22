@@ -34,7 +34,6 @@ import {
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
 import { UserService } from 'app/core/user/user.service';
-import { of } from 'rxjs';
 
 describe('CurrentConversationComponent', () => {
   let component: CurrentConversationComponent;
@@ -67,9 +66,7 @@ describe('CurrentConversationComponent', () => {
         { provide: AnalyticsService, useClass: MockAnalyticsService },
         {
           provide: UserService, useValue: {
-            me() {
-              return of(MOCK_USER);
-            }
+            user: MOCK_USER
           }
         },
         {
@@ -79,7 +76,7 @@ describe('CurrentConversationComponent', () => {
                 result: modalMockResult,
                 componentInstance: {
                   chatContext: {
-                    userId: '121',
+                    userId: userService.user.id,
                     bannedUserId: component.currentConversation?.user?.id,
                     conversationId: component.currentConversation?.id,
                     screenId: SCREEN_IDS.BannedUserChatPopUp
@@ -430,7 +427,7 @@ describe('CurrentConversationComponent', () => {
       beforeEach(fakeAsync(() => {
         component.currentConversation = MOCK_INBOX_CONVERSATION_WITH_MALICIOUS_USER;
         mockedAtr = {
-          userId: component.myUserId,
+          userId: userService.user.id,
           bannedUserId: component.currentConversation?.user?.id,
           conversationId: component.currentConversation?.id,
           screenId: SCREEN_IDS.BannedUserChatPopUp
