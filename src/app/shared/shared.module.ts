@@ -77,6 +77,8 @@ import { ProfileProBillingComponent } from './profile-pro-billing/profile-pro-bi
 import { FullScreenModalComponent } from './modals/full-screen-menu/full-screen-modal.component';
 import { DisableControlDirective } from './forms/disable-control.directive';
 import { RouterLinkDirectiveStub } from './router-link-directive-stub';
+import { DropdownComponent } from './dropdown/dropdown.component';
+import { SelectDropdownComponent } from './dropdown/select-dropdown/select-dropdown.component';
 
 @NgModule({
   imports: [
@@ -159,7 +161,8 @@ import { RouterLinkDirectiveStub } from './router-link-directive-stub';
     CountdownPipe,
     ProfileProBillingComponent,
     FullScreenModalComponent,
-    DisableControlDirective
+    DisableControlDirective,
+    DropdownComponent
   ],
   declarations: [
     AdComponent,
@@ -226,7 +229,9 @@ import { RouterLinkDirectiveStub } from './router-link-directive-stub';
     ProfileProBillingComponent,
     FullScreenModalComponent,
     DisableControlDirective,
-    RouterLinkDirectiveStub
+    RouterLinkDirectiveStub,
+    DropdownComponent,
+    SelectDropdownComponent
   ],
   providers: [
     DecimalPipe,
