@@ -1,7 +1,5 @@
-import {
-  CategoryResponse,
-  CategoryOption,
-} from '../app/core/category/category-response.interface';
+import { CATEGORY_IDS } from 'app/core/category/category-ids';
+import { CategoryResponse, CategoryOption, SuggestedCategory } from '../app/core/category/category-response.interface';
 
 export const CATEGORY_DATA_WEB: Array<CategoryResponse> = [
   {
@@ -118,3 +116,17 @@ export const CATEGORIES_OPTIONS_CONSUMER_GOODS: CategoryOption[] = [{
   label: 'Real Estate',
   icon_id: 'house',
 }];
+
+export const SUGGESTED_CATEGORIES: SuggestedCategory[] = [
+  { category_id: CATEGORY_IDS.TV_AUDIO_CAMERAS },
+  { category_id: CATEGORY_IDS.COMPUTERS_ELECTRONICS }
+];
+
+export const SUGGESTED_CATEGORY_TV_AUDIO_CAMERAS: SuggestedCategory = {
+  category_id: CATEGORY_IDS.TV_AUDIO_CAMERAS
+};
+
+export const SUGGESTED_CATEGORY_COMPUTERS_ELECTRONICS: SuggestedCategory = {
+  category_id: CATEGORY_IDS.COMPUTERS_ELECTRONICS
+};
+
