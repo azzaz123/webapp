@@ -1035,8 +1035,8 @@
   <translation id="ProfileProBillingFormType">Estoy registrado/a como</translation>
   <translation id="ProfileProBillingFormNatural">Persona física</translation>
   <translation id="ProfileProBillingFormLegal">Persona jurídica</translation>
-  <translation id="ProfileProBillingSubtitle">Por servicios ajenos a las suscripciones no recibirás facturas.</translation>
-  <translation id="AddNewSubscriptionModalStep3Subtitle">Por servicios ajenos a las suscripciones no recibirás facturas.</translation>
+  <translation id="ProfileProBillingSubtitle">Por servicios que no sean suscripciones (por ejemplo, packs de visibilidad) no recibirás facturas.</translation>
+  <translation id="AddNewSubscriptionModalStep3Subtitle">Por servicios que no sean suscripciones (por ejemplo, packs de visibilidad) no recibirás facturas.</translation>
   <translation id="FirstName">Nombre</translation>
   <translation id="LastName">Apellidos</translation>
   <translation id="CompanyName">Nombre de la empresa</translation>

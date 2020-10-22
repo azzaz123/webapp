@@ -260,7 +260,7 @@
   <msg id="OrderBy"><source>app/shared/nav-links/nav-links.component.html:41</source>Order by</msg>
   <msg id="8458658926966860767"><source>app/shared/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:2</source>Are you sure you want to delete billing information?</msg>
   <msg id="InvoiceInformation"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:7</source>Invoice information</msg>
-  <msg id="ProfileProBillingSubtitle"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:10</source>For services other than subscriptions you won&apos;t receive invoices.</msg>
+  <msg id="ProfileProBillingSubtitle"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:10</source>For services other than subscriptions (e.g. visibility packs) you won&apos;t receive invoices.</msg>
   <msg id="ProfileProBillingFormType"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:16</source>Type of registration</msg>
   <msg id="ProfileProBillingFormNatural"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:25</source>Natural person</msg>
   <msg id="ProfileProBillingFormLegal"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:33</source>Legal person</msg>
@@ -738,7 +738,7 @@
   <msg id="step3of4"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:107,108</source>
               Step <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>3<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> of <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></msg>
   <msg id="Invoice"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:109</source>Invoice</msg>
-  <msg id="AddNewSubscriptionModalStep3Subtitle"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:110</source>For services other than subscriptions you won&apos;t receive invoices.</msg>
+  <msg id="AddNewSubscriptionModalStep3Subtitle"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:110</source>For services other than subscriptions (e.g. visibility packs) you won&apos;t receive invoices.</msg>
   <msg id="BackToInvoice"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:128,130</source>
               Back to invoice
             </msg>
