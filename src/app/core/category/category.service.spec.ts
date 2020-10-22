@@ -1,8 +1,8 @@
 
 import { TestBed, getTestBed } from '@angular/core/testing';
-import { CategoryService } from './category.service';
-import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
-import { CategoryResponse } from './category-response.interface';
+import { CategoryService, SUGGESTED_CATEGORIES_ENDPOINT } from './category.service';
+import { CATEGORY_DATA_WEB, SUGGESTED_CATEGORIES, SUGGESTED_CATEGORY_TV_AUDIO_CAMERAS } from '../../../tests/category.fixtures.spec';
+import { CategoryResponse, SuggestedCategory } from './category-response.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { HttpParams } from '@angular/common/http';
 import { LOCALE_ID } from '@angular/core';
@@ -87,6 +87,48 @@ describe('CategoryService', () => {
       expect(consumerGoodsCategory.category_id).toBe(0);
       expect(consumerGoodsCategory.name).toBe(i18nService.getTranslations('consumerGoodsGeneralCategoryTitle'));
       expect(consumerGoodsCategory.icon_id).toBe('All');
+    });
+  })
+
+  describe('getSuggestedCategory', () => {
+    it('should return the first category if the response has categories', () => {
+      const paramKey = 'text';
+      const paramValue = 'car';
+      const expectedParams = new HttpParams().set(paramKey, paramValue);
+      const expectedUrl = `${environment.baseUrl}${SUGGESTED_CATEGORIES_ENDPOINT}`;
+      let response: SuggestedCategory;
+
+      service.getSuggestedCategory(paramValue).subscribe((data: SuggestedCategory) => {
+        response = data;
+      });
+      const req: TestRequest = httpMock.expectOne(`${expectedUrl}?${expectedParams.toString()}`);
+      req.flush(SUGGESTED_CATEGORIES);
+
+      const languageParam = req.request.params.get(paramKey)
+      expect(req.request.url).toEqual(expectedUrl);
+      expect(req.request.method).toBe('GET');
+      expect(languageParam).toEqual(paramValue);
+      expect(response).toEqual(SUGGESTED_CATEGORY_TV_AUDIO_CAMERAS);
+    });
+
+    it('should return null if the response has no categories', () => {
+      const paramKey = 'text';
+      const paramValue = 'car';
+      const expectedParams = new HttpParams().set(paramKey, paramValue);
+      const expectedUrl = `${environment.baseUrl}${SUGGESTED_CATEGORIES_ENDPOINT}`;
+      let response: SuggestedCategory;
+
+      service.getSuggestedCategory(paramValue).subscribe((data: SuggestedCategory) => {
+        response = data;
+      });
+      const req: TestRequest = httpMock.expectOne(`${expectedUrl}?${expectedParams.toString()}`);
+      req.flush([]);
+
+      const languageParam = req.request.params.get(paramKey)
+      expect(req.request.url).toEqual(expectedUrl);
+      expect(req.request.method).toBe('GET');
+      expect(languageParam).toEqual(paramValue);
+      expect(response).toEqual(null);
     });
   })
 
