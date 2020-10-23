@@ -77,7 +77,7 @@ import { ProfileProBillingComponent } from './profile-pro-billing/profile-pro-bi
 import { FullScreenModalComponent } from './modals/full-screen-menu/full-screen-modal.component';
 import { DisableControlDirective } from './forms/disable-control.directive';
 import { RouterLinkDirectiveStub } from './router-link-directive-stub';
-import { SvgIconComponent } from 'app/core/svg-icon/svg-icon/svg-icon.component';
+import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
 
 @NgModule({
   imports: [
@@ -95,7 +95,8 @@ import { SvgIconComponent } from 'app/core/svg-icon/svg-icon/svg-icon.component'
     UploaderModule,
     SelectModule,
     DeviceDetectorModule.forRoot(),
-    ProBadgeModule
+    ProBadgeModule,
+    SvgIconModule
   ],
   exports: [
     CardModule,
@@ -161,7 +162,7 @@ import { SvgIconComponent } from 'app/core/svg-icon/svg-icon/svg-icon.component'
     ProfileProBillingComponent,
     FullScreenModalComponent,
     DisableControlDirective,
-    SvgIconComponent
+    SvgIconModule
   ],
   declarations: [
     AdComponent,
@@ -228,8 +229,7 @@ import { SvgIconComponent } from 'app/core/svg-icon/svg-icon/svg-icon.component'
     ProfileProBillingComponent,
     FullScreenModalComponent,
     DisableControlDirective,
-    RouterLinkDirectiveStub,
-    SvgIconComponent
+    RouterLinkDirectiveStub
   ],
   providers: [
     DecimalPipe,

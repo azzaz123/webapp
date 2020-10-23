@@ -1,20 +1,20 @@
-import { Component, ElementRef, Input, OnInit, SecurityContext, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { take } from 'rxjs/operators';
 import { SvgService } from '../svg.service';
 
 @Component({
   selector: 'tsl-svg-icon',
-  templateUrl: './svg-icon.component.html',
+  template: '',
   styleUrls: ['./svg-icon.component.scss']
 })
 export class SvgIconComponent implements OnInit {
-  @ViewChild('innerSvg') element: ElementRef;
   @Input() src: string;
 
   constructor(
     private svgService: SvgService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private element: ElementRef
   ) { }
 
   ngOnInit(): void {
