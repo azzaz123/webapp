@@ -1,0 +1,81 @@
+@import "~style/common";
+
+:host {
+  height: 100%;
+}
+
+.PersonalDataInformationModal {
+
+  &__body {
+    width: 100%;
+    height: 100%;
+    padding: $spacing-xxl;
+    background-color: $blue-grey-5;
+    color: $blue-grey-1;
+    text-align: center;
+    border-top-left-radius: $border-radius;
+    border-top-right-radius: $border-radius;
+
+    .close {
+      @include square($spacing-ms);
+      cursor: pointer;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      mat-icon {
+        @include square($spacing-ms);
+        line-height: initial;
+
+        svg {
+          path {
+            fill: $blue-grey-3 !important;
+          }
+        }
+      }
+    }
+
+    .title {
+      font-size: $font-size-l;
+      margin-bottom: $spacing-ms;
+    }
+
+    .description {
+      margin-bottom: $spacing-xl;
+    }
+
+    tsl-button {
+      width: 100%;
+
+      &::ng-deep {
+        button {
+          width: 100%;
+        }
+      }
+
+    }
+
+    @include media-breakpoint-down(sm) {
+      padding: $spacing-ml;
+    }
+  }
+
+  &__footer {
+    height: 100%;
+    margin: $spacing-l $spacing-xxxl $spacing-xxl $spacing-xxxl;
+    overflow: auto;
+    max-height: 110px;
+    text-align: center;
+    background-color: $white;
+    font-size: $font-size-xs;
+    color: $blue-grey-2;
+
+    .legal {
+      font-size: $font-size-xxs;
+    }
+
+    @include media-breakpoint-down(sm) {
+      margin: $spacing-ml;
+      max-height: 190px;
+    }
+  }
+}

@@ -319,6 +319,40 @@
   <msg id="7913053333994057167"><source>app/chat/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:2</source>Unarchive conversation</msg>
   <msg id="3205414127595653303"><source>app/chat/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:3</source>This will unarchive the conversation.</msg>
   <msg id="1121513541518618634"><source>app/chat/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:7</source>Unarchive</msg>
+  <msg id="ForgetThisChat"><source>app/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component.html:12</source><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>You better forget this chat<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></msg>
+  <msg id="MaliciousConversationDescription"><source>app/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component.html:16,18</source>This person violated our coexistence rules. We suggest that you
+        ignore their messages and do not communicate with them through any means other than wallapop, as this may be
+        an attempt to defraud you. </msg>
+  <msg id="ExitConversation"><source>app/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component.html:23</source>Exit the conversation</msg>
+  <msg id="PersonalDataInformationModalTitle"><source>app/chat/modals/personal-data-information-modal/personal-data-information-modal.component.html:10</source><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>They want to help you ;-)<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></msg>
+  <msg id="PersonalDataInformationModalDesc"><source>app/chat/modals/personal-data-information-modal/personal-data-information-modal.component.html:14,16</source>
+          A real estate agent wants to address you in person. If you are interested, click on &quot;Continue&quot; to share your e-mail and telephone number.
+        </msg>
+  <msg id="PersonalDataInformationModalButton"><source>app/chat/modals/personal-data-information-modal/personal-data-information-modal.component.html:21</source>Continue</msg>
+  <msg id="PersonalDataInformationModalFooterBold"><source>app/chat/modals/personal-data-information-modal/personal-data-information-modal.component.html:29,30</source><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>What you need to know:<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph>
+      </msg>
+  <msg id="PersonalDataInformationModalFooter"><source>app/chat/modals/personal-data-information-modal/personal-data-information-modal.component.html:31,34</source>
+        The fact of providing your data through this process implies that you accept the treatment of said data in the
+        terms that are detailed below.
+      </msg>
+  <msg id="PersonalDataInformationModalLegal"><source>app/chat/modals/personal-data-information-modal/personal-data-information-modal.component.html:38,55</source>
+        Wallapop, SL, (hereinafter, Wallapop), as responsible for the treatment, will treat the data provided in order
+        to communicate it to a professional user outside the Wallapop platform (a real estate agency), who, later, will
+        contact you in order to inform you about their products/services.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph><ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>
+        The legal basis for the treatment of the aforementioned data is the consent that you have given linked to the
+        fact of having freely provided personal data through this process. The personal data will be kept as long as you
+        do not request its deletion. Once the deletion is requested, the data will
+        be kept blocked preventing its treatment, except for making the data available to the judges and courts, the
+        Public Prosecutor’s Office or the competent Public Administrations, for the demand of possible responsibilities
+        derived from the treatment and only for the statute of limitations thereof (5 years).
+        Once the indicated period of time has elapsed, the data will be deleted.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph><ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>
+        You can exercise your rights of access, rectification, deletion, opposition, limitation of the treatment, and
+        portability of your data, as well as the revocation, at any time, of the consent given, before Wallapop, CIF No.
+        B-66.04.9057, in Avda. Meridiana 89 6th Floor, 08026, Barcelona (Spain), attaching a photocopy of your ID or
+        equivalent valid identification document. You can also exercise your rights by a communication addressed to:
+        privacy@wallapop.com. Finally, we remind you that you can file a claim with the Spanish Data Protection Agency,
+        if you consider that Wallapop has violated your rights in terms of data protection.”
+      </msg>
   <msg id="3093507871243266697"><source>app/chat/connection-alert/connection-alert.component.html:2</source>Waiting for network...</msg>
   <msg id="3208980041287937682"><source>app/chat/connection-alert/connection-alert.component.html:3</source>Connected</msg>
   <msg id="8016649850785953911"><source>app/chat/item/item.component.html:18</source><source>app/chat/inbox/inbox-metadata/inbox-item-component/inbox-item-detail.component.html:21</source>Unreserve</msg>
@@ -349,11 +383,6 @@
   <msg id="updateArchivedMessagesWarning"><source>app/chat/inbox/inbox.component.html:76,77</source>We found some problems updating your archived messages. Try again later.
     </msg>
   <msg id="8721026914522212662"><source>app/chat/inbox/archived-inbox-conversation/archived-inbox-conversation.component.html:42</source>Archived </msg>
-  <msg id="ForgetThisChat"><source>app/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component.html:12</source><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>You better forget this chat<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></msg>
-  <msg id="MaliciousConversationDescription"><source>app/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component.html:16,18</source>This person violated our coexistence rules. We suggest that you
-        ignore their messages and do not communicate with them through any means other than wallapop, as this may be
-        an attempt to defraud you. </msg>
-  <msg id="ExitConversation"><source>app/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component.html:23</source>Exit the conversation</msg>
   <msg id="682982254050004818"><source>app/chat/current-conversation/current-conversation.component.html:9,10</source>Choose a conversation<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>
       from the list on the left</msg>
   <msg id="3325766019344626759"><source>app/chat/current-conversation/current-conversation.component.html:11</source>There are no messages</msg>
