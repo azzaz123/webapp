@@ -1,13 +1,13 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CUSTOM_ELEMENTS_SCHEMA, ElementRef } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, ElementRef, SecurityContext } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { SvgService } from '../svg.service';
-
 import { SvgIconComponent } from './svg-icon.component';
 
 describe('SvgIconComponent', () => {
+  const svgTag: string = '<svg></svg>'
   let component: SvgIconComponent;
   let fixture: ComponentFixture<SvgIconComponent>;
   let svgService: SvgService;
@@ -45,34 +45,34 @@ describe('SvgIconComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('ngOnInit()', () => {
-    describe('should do calls', () => {
-      beforeEach(() => {
+  describe('ngOnInit() - initializing the component', () => {
+    describe('if the src is a svg', () => {
+      it('svg must be shown in the HTML', () => {
+        spyOn(svgService, 'getIconByPath').and.returnValue(of(svgTag));
         component.src = 'mySvg.svg';
+
         fixture.detectChanges();
-        spyOn(svgService, 'getIconByPath').and.returnValue(of(component.src));
-
-      });
-
-      it('should call svgService', () => {
         component.ngOnInit();
 
-        expect(svgService.getIconByPath).toHaveBeenCalled();
-      });
+        const secureSvg: SafeHtml = domSanitizer.bypassSecurityTrustHtml(svgTag);
+        const sanitizedSvg: string = domSanitizer.sanitize(SecurityContext.HTML, secureSvg);
+        const innerHTML: HTMLElement = fixture.elementRef.nativeElement.innerHTML;
 
-      it('should call Sanitizer', () => {
-        spyOn(domSanitizer, 'bypassSecurityTrustHtml').and.returnValue('svgElement');
-        spyOn(domSanitizer, 'sanitize').and.returnValue('safeSvg');
+        spyOn(domSanitizer, 'bypassSecurityTrustHtml').and.callThrough();
+        spyOn(domSanitizer, 'sanitize');
 
         component.ngOnInit();
 
-        expect(domSanitizer.bypassSecurityTrustHtml).toHaveBeenCalledWith(component.src);
-        expect(domSanitizer.sanitize).toHaveBeenCalled();
+        expect(svgService.getIconByPath).toHaveBeenCalledWith(component.src);
+        expect(domSanitizer.bypassSecurityTrustHtml).toHaveBeenCalledWith(svgTag);
+        expect(domSanitizer.sanitize).toHaveBeenCalledWith(SecurityContext.HTML, secureSvg);
+        expect(innerHTML).toBe(sanitizedSvg);
       });
     });
 
-    describe('shouldnt make calls', () => {
-      it('shouldnt call svgService', () => {
+    describe('if the src is not a svg', () => {
+      it('nothing should be displayed in the HTML', () => {
+        const innerHTML: HTMLElement = fixture.elementRef.nativeElement.innerHTML;
         component.src = 'myPhoto.png';
         spyOn(svgService, 'getIconByPath');
 
@@ -80,6 +80,7 @@ describe('SvgIconComponent', () => {
         component.ngOnInit();
 
         expect(svgService.getIconByPath).not.toHaveBeenCalled();
+        expect(innerHTML).toBe("");
       });
     });
   });
