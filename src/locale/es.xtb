@@ -1133,5 +1133,17 @@
   <translation id="UploadConfirmationModalDescription">Marca como "urgente" el anuncio de tu producto. Durante 7 días se diferenciará del resto de productos y atraerá la atención de más compradores.</translation>
   <translation id="UploadConfirmationModalButton">Marcar como "Urgente" por <ph name="INTERPOLATION"><ex>{{productPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ex></ph>
       <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>wallacoins<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="PersonalDataInformationModalTitle"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>Quieren ayudarte ;-)<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></translation>
+  <translation id="PersonalDataInformationModalDesc">Un/a agente inmobiliario quiere atenderte en persona. Si te interesa, pulsa "Continuar" para compartir tu e-mail y tu número de teléfono.</translation>
+  <translation id="PersonalDataInformationModalButton">Continuar</translation>
+  <translation id="PersonalDataInformationModalFooterBold"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>Lo que debes saber:
+      <ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></translation>
+  <translation id="PersonalDataInformationModalFooter">El hecho de facilitar tus datos a través de este proceso implica que aceptas el tratamiento de dichos datos en los términos que a continuación se detallan.</translation>
+  <translation id="PersonalDataInformationModalLegal"> Wallapop, S.L, (en adelante, Wallapop), en condición de responsable del tratamiento, tratará los datos proporcionados con el fin de comunicarlo a un usuario profesional ajeno a la plataforma wallapop (una inmobiliaria), quien posteriormente, contactará contigo a efectos de informarte sobre sus productos/servicios que te has interesado..
+      <ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph><ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>
+       La base legal para el tratamiento de los mencionados datos es el consentimiento que has prestado vinculado al hecho de haber proporcionado, libremente, los mismos a través de este proceso. Los datos personales se conservarán mientras no solicites su supresión. Una vez solicitada la supresión, los datos se conservarán bloqueados impidiendo su tratamiento, excepto para la puesta a disposición de los datos a los jueces y tribunales, el Ministerio Fiscal o las Administraciones Públicas competentes, para la exigencia de posibles responsabilidades derivadas del tratamiento y solo por el plazo de prescripción de las mismas (5 años). Una vez transcurrido el indicado periodo de tiempo, el dato se eliminará.
+      <ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph><ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>
+      Podrás ejercer tus derechos de acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad de tus datos, así como la revocación, en cualquier momento, del consentimiento prestado, ante Wallapop, CIF nº B-66.04.9057, en la Calle Meridiana 89 Planta 6º, 08026, Barcelona (España), adjuntando fotocopia de tu DNI o documento identificativo válido equivalente. Podrás también ejercer tus derechos mediante comunicación dirigida a: privacidad@wallapop.com. Finalmente, te recordamos que puedes dirigir una reclamación ante la Agencia Española de Protección de Datos, si consideras que Wallapop ha vulnerado tus derechos en materia de protección de datos.”
+  </translation>
 
 </translationbundle>
