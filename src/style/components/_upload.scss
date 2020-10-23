@@ -250,7 +250,7 @@ form {
         border: 1px solid $negative-main !important;
       }
     }
-    ng-select.ng-invalid > div {
+    .Dropdown.ng-invalid > div {
       border: 1px solid $negative-main !important;
     }
     .photo-wrapper:first-of-type .product-photo {

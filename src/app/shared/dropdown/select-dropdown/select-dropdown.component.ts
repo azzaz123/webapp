@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { OptionList } from '../option-list';
 import {Option} from '../option';
 
@@ -6,7 +6,8 @@ import {Option} from '../option';
 @Component({
   selector: 'tsl-select-dropdown',
   templateUrl: './select-dropdown.component.html',
-  styleUrls: ['./select-dropdown.component.scss']
+  styleUrls: ['./select-dropdown.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class SelectDropdownComponent implements AfterViewInit, OnChanges, OnInit {
 

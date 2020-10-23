@@ -1,32 +1,36 @@
-ng-select {
+@import "~style/common";
+
+$form-control-height: 50px;
+
+
+.Dropdown {
   display: inline-block;
   margin: 0;
   position: relative;
   vertical-align: middle;
   width: 100%;
 
+  &[aria-describedby] {
+    border-color: $walla-main;
+  }
+
   * {
       box-sizing: border-box;
   }
 
   // Container.
-  >div {
-      border: 1px solid #ddd;
+  > div {
+      border: 1px solid $blue-grey-5;
+      border-radius: 6px;
+      margin-left: -$spacing-xxs;
       box-sizing: border-box;
       cursor: pointer;
       user-select: none;
       width: 100%;
-
-      &.open {
-
-      }
+      height: $form-control-height;
 
       &.focus {
-
-      }
-
-      &.below {
-
+        border-color: $walla-main;
       }
 
       &.disabled {
@@ -38,90 +42,53 @@ ng-select {
 
       >div.single {
           display: flex;
-          height: 30px;
+          height: 50px;
           width: 100%;
 
-          >div.value,
+          >div.value {
+            flex: 1;
+            overflow: hidden;
+            white-space: nowrap;
+            height: $form-control-height;
+            padding-left: $spacing-ms;
+            line-height: $line-height-xxl;
+            mat-icon {
+              display: none;
+            }
+          }
+
+
           >div.placeholder {
               flex: 1;
-              line-height: 30px;
               overflow: hidden;
-              padding: 0 10px;
               white-space: nowrap;
-          }
+              color: $blue-grey-3;
+              height: $form-control-height;
+              line-height: $line-height-xxl;
+              padding-left: $spacing-ms;
 
-          >div.placeholder {
-              color: #757575;
           }
-
-          >div.clear,
+          >div.clear {
+            font-size:18px;
+          }
           >div.toggle {
               color: #aaa;
               line-height: 30px;
               text-align: center;
-              width: 30px;
-
-              &:hover {
-                  background-color: #ececec;
-              }
-          }
-
-          >div.clear {
-              font-size:18px;
-          }
-
-          >div.toggle {
               font-size:14px;
+              text-indent: -1000000px;
+              background: url("data:image/svg+xml;utf8,<svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='30' height='30' viewBox='0 0 30 30'><path fill='%2313C1AC' d='M16.323 16.682a.56.56 0 0 0-.825 0 .649.649 0 0 0 0 .878L19 21.285a.56.56 0 0 0 .826 0l3.503-3.725a.649.649 0 0 0 0-.878.56.56 0 0 0-.826 0l-3.09 3.286-3.09-3.286z'/></svg>");
+              background-repeat: no-repeat;
+              background-position: 7px 6px;
+              height: 50px;
+              width: 50px;
+              &:hover {
+                background-color: transparent;
+              }
+
           }
       }
 
-      >div.multiple {
-          display: flex;
-          flex-flow: row wrap;
-          height: 100%;
-          min-height: 30px;
-          padding: 0 10px;
-          width: 100%;
-
-          >div.option {
-              background-color: #eee;
-              border: 1px solid #aaa;
-              border-radius: 4px;
-              color: #333;
-              cursor: default;
-              display: inline-block;
-              flex-shrink: 0;
-              font-size: 14px;
-              line-height: 22px;
-              margin: 3px 5px 3px 0;
-              padding: 0 4px;
-
-              span.deselect-option {
-                  color: #aaa;
-                  cursor: pointer;
-                  font-size: 14px;
-                  height: 20px;
-                  line-height: 20px;
-
-                  &:hover {
-                      color: #555;
-                  }
-              }
-          }
-
-          input {
-              background-color: transparent;
-              border: none;
-              cursor: pointer;
-              height: 30px;
-              line-height: 30px;
-              padding: 0;
-
-              &:focus {
-                  outline: none;
-              }
-          }
-      }
   }
 
   // Label.

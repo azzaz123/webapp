@@ -1,4 +1,4 @@
-import { Component, ContentChild, ElementRef, EventEmitter, ExistingProvider, forwardRef, HostListener, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ContentChild, ElementRef, EventEmitter, ExistingProvider, forwardRef, HostListener, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { OptionList } from './option-list';
 import { IOption } from './option.interface';
@@ -16,6 +16,7 @@ export const SELECT_VALUE_ACCESSOR: ExistingProvider = {
   templateUrl: './dropdown.component.html',
   styleUrls: ['./dropdown.component.scss'],
   providers: [SELECT_VALUE_ACCESSOR],
+  encapsulation: ViewEncapsulation.None
 })
 export class DropdownComponent implements OnInit {
 
