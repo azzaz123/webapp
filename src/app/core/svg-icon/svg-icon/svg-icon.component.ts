@@ -22,7 +22,7 @@ export class SvgIconComponent implements OnInit {
   }
 
   private getIcon(): void {
-    if (this.handleExtension()) {
+    if (this.hasSvgExtension) {
       this.svgService.getIconByPath(this.src)
         .pipe(take(1))
         .subscribe((svg: string) => {
@@ -32,7 +32,7 @@ export class SvgIconComponent implements OnInit {
     }
   }
 
-  private handleExtension(): boolean {
+  get hasSvgExtension(): boolean {
     return (/\.(svg)$/i).test(this.src);
   }
 }
