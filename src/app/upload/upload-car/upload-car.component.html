@@ -16,9 +16,10 @@
               <span *ngIf="customMake" i18n>Select a predefined make</span>
             </a>
           </div>
-          <ng-select *ngIf="!customMake" i18n-placeholder placeholder="E.g. Seat" class="form-control"
-            formControlName="brand" id="brand" [options]="brands">
-          </ng-select>
+          <tsl-dropdown *ngIf="!customMake" i18n-placeholder placeholder="E.g. Seat" class="form-control"
+            [options]="brands"
+            formControlName="brand" id="brand">
+          </tsl-dropdown>
           <input *ngIf="customMake" type="text" placeholder="E.g. Seat" class="form-control" formControlName="brand"
             id="brand" />
         </div>
@@ -26,9 +27,9 @@
       <div class="col-12 col-md-6">
         <div class="form-group">
           <label for="model" i18n>Model</label>
-          <ng-select *ngIf="!customMake" i18n-placeholder placeholder="E.g. Ibiza" class="form-control"
+          <tsl-dropdown *ngIf="!customMake" i18n-placeholder placeholder="E.g. Ibiza" class="form-control" [isLoading]="isLoadingModels" (opened)="onIsModelsNeeded()"
             formControlName="model" id="model" [options]="models" [disableControl]="modelFieldDisabled">
-          </ng-select>
+          </tsl-dropdown>
           <input *ngIf="customMake" type="text" i18n-placeholder placeholder="E.g. Ibiza" class="form-control"
             formControlName="model" id="model" [disableControl]="modelFieldDisabled" />
         </div>
@@ -55,8 +56,8 @@
       <div class="col-12 col-md-2">
         <div class="form-group">
           <label for="currency" i18n>Currency</label>
-          <ng-select class="form-control" formControlName="currency_code" id="currency" [options]="currencies"
-            noFilter="10"></ng-select>
+          <tsl-dropdown class="form-control" formControlName="currency_code" id="currency" [options]="currencies"
+            noFilter="10"></tsl-dropdown>
         </div>
       </div>
       <ng-template #coachmarkPrice>
@@ -67,8 +68,9 @@
       <div class="col-12 col-md-4">
         <div class="form-group">
           <label for="year" i18n>Year</label>
-          <ng-select *ngIf="!customMake" i18n-placeholder placeholder="Number plate" class="form-control"
-            formControlName="year" id="year" [options]="years" [disableControl]="yearFieldDisabled"></ng-select>
+          <tsl-dropdown *ngIf="!customMake" i18n-placeholder placeholder="Number plate" class="form-control"
+            formControlName="year" id="year" [options]="years" [disableControl]="yearFieldDisabled" [isLoading]="isLoadingYears" (opened)="onIsYearsNeeded()">
+          </tsl-dropdown>
           <input *ngIf="customMake" type="text" i18n-placeholder placeholder="Number plate" class="form-control"
             formControlName="year" id="year" [disableControl]="yearFieldDisabled" />
         </div>
@@ -98,9 +100,9 @@
               <span *ngIf="customVersion" i18n>Select a predefined version</span>
             </a>
           </div>
-          <ng-select *ngIf="!customMake && !customVersion" i18n-placeholder
+          <tsl-dropdown *ngIf="!customMake && !customVersion" i18n-placeholder
             placeholder="Is is a particular model or series?" class="form-control" formControlName="version"
-            for="version" [options]="versions" [disableControl]="versionFieldDisabled"></ng-select>
+            for="version" [options]="versions" [disableControl]="versionFieldDisabled"></tsl-dropdown>
           <input *ngIf="customMake || customVersion" type="text" i18n-placeholder
             placeholder="Is is a particular model or series?" class="form-control" formControlName="version"
             id="version" [disableControl]="versionFieldDisabled"/>
@@ -137,8 +139,8 @@
       <div class="col-12 col-md-6">
         <div class="form-group">
           <label for="carType" i18n>Type of car</label>
-          <ng-select i18n-placeholder placeholder="Small, coupé, sedan, family, van..." class="form-control"
-            formControlName="body_type" id="carType" [options]="carTypes" noFilter="20"></ng-select>
+          <tsl-dropdown i18n-placeholder placeholder="Small, coupé, sedan, family, van..." class="form-control"
+            formControlName="body_type" id="carType" [options]="carTypes" noFilter="20"></tsl-dropdown>
         </div>
       </div>
       <div class="col-12 col-md-6">

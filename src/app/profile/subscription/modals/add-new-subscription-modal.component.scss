@@ -89,7 +89,7 @@ $add-subscription-modal-content-default-height: 382px;
 .AddNewSubscription__listing-limit-more {
   margin-top: $spacing-m;
   font-size: $font-size-s;
-  
+
   a {
     text-decoration: underline;
   }
@@ -124,7 +124,7 @@ $add-subscription-modal-content-default-height: 382px;
   position: relative;
   display: flex;
   justify-content: space-between;
-  
+
   &--line-top {
     padding: $spacing-m 0;
     &:before {
@@ -341,7 +341,7 @@ tsl-button ::ng-deep .simple.light  {
   flex-direction: column;
 }
 
-select-dropdown > div .options ul li {
+tsl-dropdown-list > div .options ul li {
   text-align: left;
 }
 

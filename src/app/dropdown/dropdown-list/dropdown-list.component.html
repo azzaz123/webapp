@@ -1,0 +1,28 @@
+<div class="Dropdown-list" [ngClass]="{'below': isBelow, 'above': !isBelow}"
+  [ngStyle]="{'top.px': top, 'left.px': left, 'width.px': width}">
+  <ng-container *ngIf="!isLoading; else loading">
+
+    <div class="filter" *ngIf="!multiple && filterEnabled">
+      <input #filterInput autocomplete="off" [placeholder]="placeholder" (click)="onSingleFilterClick()"
+        (input)="onSingleFilterInput($event)" (keydown)="onSingleFilterKeydown($event)" (focus)="onSingleFilterFocus()">
+    </div>
+
+    <div class="options" (click)="onOptionsListClick()" #optionsList>
+      <ul (wheel)="onOptionsWheel($event)">
+        <li *ngFor="let option of optionList.filtered"
+          [ngClass]="{'highlighted': option.highlighted, 'selected': option.selected, 'disabled': option.disabled}"
+          (click)="onOptionClick(option)" (mouseover)="onOptionMouseover(option)">
+          <span>{{option.label}}</span>
+        </li>
+        <li *ngIf="!optionList.hasShown" class="message">
+          {{notFoundMsg}}
+        </li>
+      </ul>
+    </div>
+  </ng-container>
+  <ng-template #loading>
+    <div class="Loading">
+      <mat-icon svgIcon="spinner" class="spinner corporate"></mat-icon>
+    </div>
+    </ng-template>
+</div>

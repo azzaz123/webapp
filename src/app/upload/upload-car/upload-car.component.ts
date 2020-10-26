@@ -59,6 +59,9 @@ export class UploadCarComponent implements OnInit {
   public customVersion = false;
   public uploadCompletedPercentage = 0;
 
+  isLoadingModels: boolean;
+  isLoadingYears: boolean;
+
   constructor(private fb: FormBuilder,
     private carSuggestionsService: CarSuggestionsService,
     private carKeysService: CarKeysService,
@@ -155,10 +158,8 @@ export class UploadCarComponent implements OnInit {
 
     forkJoin([
       this.getBrands(),
-      this.getCarTypes(),
-      this.getModels(this.item.brand),
-      this.getYears(this.item.model),
-      this.getVersions(`${this.item.year}`)
+      this.getVersions(`${this.item.year}`),
+      this.getCarTypes()
     ]
     ).pipe(
       finalize(() => {
@@ -166,12 +167,10 @@ export class UploadCarComponent implements OnInit {
         this.customMake = !this.brands.find(brand => this.item.brand === brand.value);
         this.subscribeToFieldsChanges();
       })
-    ).subscribe(([brands, carTypes, models, years, versions]) => {
+    ).subscribe(([brands, versions, carTypes]) => {
       this.brands = brands;
-      this.carTypes = carTypes;
-      this.models = models;
-      this.years = years;
       this.versions = versions;
+      this.carTypes = carTypes;
     });
   }
 
@@ -204,9 +203,7 @@ export class UploadCarComponent implements OnInit {
         'gearbox',
         'horsepower'
       ]);
-      this.getModels(brand).subscribe((models: IOption[]) => {
-        this.models = models;
-      });
+      this.getModels();
     });
   }
 
@@ -224,9 +221,7 @@ export class UploadCarComponent implements OnInit {
         'gearbox',
         'horsepower'
       ]);
-      this.getYears(model).subscribe((years: IOption[]) => {
-        this.years = years;
-      });
+      this.getYears()
     });
   }
 
@@ -291,15 +286,25 @@ export class UploadCarComponent implements OnInit {
     return this.carKeysService.getTypes();
   }
 
-  private getModels(brand: string): Observable<IOption[]> {
-    return this.carSuggestionsService.getModels(brand);
+  private getModels(): void {
+    this.isLoadingModels = true;
+    this.carSuggestionsService.getModels(
+      this.uploadForm.get('brand').value)
+      .pipe(finalize(() => this.isLoadingModels = false))
+      .subscribe((models: IOption[]) => {
+        this.models = models;
+      });;
   }
 
-  private getYears(model: string): Observable<IOption[]> {
-    return this.carSuggestionsService.getYears(
+  private getYears(): void {
+    this.isLoadingYears = true;
+    this.carSuggestionsService.getYears(
       this.uploadForm.get('brand').value,
-      model
-    );
+      this.uploadForm.get('model').value)
+      .pipe(finalize(() => this.isLoadingYears = false))
+      .subscribe((years: IOption[]) => {
+        this.years = years;
+      });
   }
 
   private getVersions(year: string): Observable<IOption[]> {
@@ -525,6 +530,17 @@ export class UploadCarComponent implements OnInit {
         this.analyticsService.trackEvent(listItemCarEvent);
       }
     }));
+  }
+  onIsModelsNeeded(): void {
+    if (!this.models) {
+      this.getModels();
+    }
+  }
+
+  onIsYearsNeeded() :void {
+    if (!this.years) {
+      this.getYears();
+    }
   }
 
 }

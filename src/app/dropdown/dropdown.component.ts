@@ -1,9 +1,10 @@
-import { Component, ContentChild, ElementRef, EventEmitter, ExistingProvider, forwardRef, HostListener, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, EventEmitter, ExistingProvider, forwardRef, HostListener, Input, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { OptionList } from './option-list';
-import { IOption } from './option.interface';
-import {Option} from './option';
-import { SelectDropdownComponent } from './select-dropdown/select-dropdown.component';
+import { DropdownListComponent } from './dropdown-list/dropdown-list.component';
+import { OptionList } from './utils/option-list';
+import { IOption } from './utils/option.interface';
+import { Option } from './utils/option';
+
 
 export const SELECT_VALUE_ACCESSOR: ExistingProvider = {
   provide: NG_VALUE_ACCESSOR,
@@ -21,22 +22,17 @@ export const SELECT_VALUE_ACCESSOR: ExistingProvider = {
 export class DropdownComponent implements OnInit {
 
   @Input() options: Array<IOption> = [];
+  @Input() isLoading: boolean;
 
   // Functionality settings.
-  @Input() allowClear: boolean = false;
   @Input() disabled: boolean = false;
   @Input() multiple: boolean = false;
   @Input() noFilter: number = 0;
-
-  // Style settings.
-  @Input() highlightColor: string;
-  @Input() highlightTextColor: string;
 
   // Text settings.
   @Input() notFoundMsg: string = 'No results found';
   @Input() placeholder: string = '';
   @Input() filterPlaceholder: string = '';
-  @Input() label: string = '';
 
   // Output events.
   @Output() opened = new EventEmitter<null>();
@@ -49,10 +45,8 @@ export class DropdownComponent implements OnInit {
   @Output() filterInputChanged = new EventEmitter<string>();
 
   @ViewChild('selection', { static: true }) selectionSpan: ElementRef;
-  @ViewChild('dropdown', { static: false }) dropdown: SelectDropdownComponent;
+  @ViewChild('dropdown', { static: false }) dropdown: DropdownListComponent;
   @ViewChild('filterInput', { static: false }) filterInput: ElementRef;
-
-  @ContentChild('optionTemplate', { static: false }) optionTemplate: TemplateRef<any>;
 
   private _value: Array<any> = [];
   optionList: OptionList = new OptionList([]);
