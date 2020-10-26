@@ -77,6 +77,7 @@ import { ProfileProBillingComponent } from './profile-pro-billing/profile-pro-bi
 import { FullScreenModalComponent } from './modals/full-screen-menu/full-screen-modal.component';
 import { DisableControlDirective } from './forms/disable-control.directive';
 import { RouterLinkDirectiveStub } from './router-link-directive-stub';
+import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
 
 @NgModule({
   imports: [
@@ -94,7 +95,8 @@ import { RouterLinkDirectiveStub } from './router-link-directive-stub';
     UploaderModule,
     SelectModule,
     DeviceDetectorModule.forRoot(),
-    ProBadgeModule
+    ProBadgeModule,
+    SvgIconModule
   ],
   exports: [
     CardModule,
@@ -159,7 +161,8 @@ import { RouterLinkDirectiveStub } from './router-link-directive-stub';
     CountdownPipe,
     ProfileProBillingComponent,
     FullScreenModalComponent,
-    DisableControlDirective
+    DisableControlDirective,
+    SvgIconModule
   ],
   declarations: [
     AdComponent,
