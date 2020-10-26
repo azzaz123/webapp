@@ -12,7 +12,7 @@ fi
 
 docknumPath="src/environments/"
 docknumFileName="docknum.ts";
-docknumContent="export const dockNum = '${docknum}';";
+docknumContent="export const dockNum: string | 'beta' = '${docknum}';";
 
 echo $docknumContent > ${docknumPath}${docknumFileName}
 echo "Using docker ${docknum}"
