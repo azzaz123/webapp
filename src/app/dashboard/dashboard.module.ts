@@ -8,7 +8,7 @@ import { ConversationModule } from '../core/conversation/conversation.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { StatsGraphComponent } from './stats-graph/stats-graph.component';
 import { StatisticsService } from './stats-graph/statistics.service';
-import { SelectModule } from 'ng-select';
+import { DropdownModule } from 'app/dropdown/dropdown.module';
 import { FormsModule } from '@angular/forms';
 import { ChatModule } from '../chat/chat.module';
 import { NgxEchartsModule } from 'ngx-echarts';
@@ -22,9 +22,9 @@ import { NgxEchartsModule } from 'ngx-echarts';
     ConversationModule,
     NgbTooltipModule,
     NgxEchartsModule,
-    SelectModule,
     FormsModule,
-    ChatModule
+    ChatModule,
+    DropdownModule
   ],
   declarations: [dashboardRoutedComponents, CallComponent, StatsGraphComponent],
   providers: [

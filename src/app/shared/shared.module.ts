@@ -63,7 +63,7 @@ import { StripeCardsComponent } from './profile/stripe-cards/stripe-cards.compon
 import { NewCardModalComponent } from './modals/new-card-modal/new-card-modal.component';
 import { NoCardModalComponent } from './modals/no-card-modal/no-card-modal.component';
 import { StripeCardSelectionComponent } from './payments/stripe-card-selection/stripe-card-selection.component';
-import { SelectModule } from 'ng-select';
+import { DropdownModule } from 'app/dropdown/dropdown.module';
 import { LinkTransformPipe } from './pipes';
 import { NavLinksComponent } from './nav-links/nav-links.component';
 import { SubscriptionsService } from '../core/subscriptions/subscriptions.service';
@@ -92,9 +92,9 @@ import { RouterLinkDirectiveStub } from './router-link-directive-stub';
     TrackingModule,
     RouterModule,
     UploaderModule,
-    SelectModule,
     DeviceDetectorModule.forRoot(),
-    ProBadgeModule
+    ProBadgeModule,
+    DropdownModule
   ],
   exports: [
     CardModule,
@@ -149,7 +149,6 @@ import { RouterLinkDirectiveStub } from './router-link-directive-stub';
     ConfirmCardModalComponent,
     ChangeCardModalComponent,
     StripeCardSelectionComponent,
-    SelectModule,
     NavLinksComponent,
     LinkTransformPipe,
     PreventDoubleClickDirective,

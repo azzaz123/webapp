@@ -2,7 +2,7 @@ import { forkJoin, Observable } from 'rxjs';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { CarSuggestionsService } from './car-suggestions.service';
-import { IOption } from 'ng-select';
+import { IOption } from 'app/dropdown/utils/option.interface';
 import { CarKeysService } from './car-keys.service';
 import { Router } from '@angular/router';
 import { UploadEvent } from '../upload-event.interface';

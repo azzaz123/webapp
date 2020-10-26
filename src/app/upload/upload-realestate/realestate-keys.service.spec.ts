@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { TestRequest, HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
-import { IOption } from 'ng-select';
+import { IOption } from 'app/dropdown/utils/option.interface';
 
 import { environment } from '../../../environments/environment';
 

@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IOption } from 'ng-select';
 import { RealestateKeysService } from './realestate-keys.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Key } from './key.interface';
@@ -7,8 +6,8 @@ import { UploadEvent } from '../upload-event.interface';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { Router } from '@angular/router';
 import { ErrorsService } from '../../core/errors/errors.service';
-import { Coordinate, ItemLocation } from '../../core/geolocation/address-response.interface';
-import { Item } from '../../core/item/item';
+import { ItemLocation } from '../../core/geolocation/address-response.interface';
+import { IOption } from 'app/dropdown/utils/option.interface';
 import { omit, isEqual } from 'lodash-es';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';

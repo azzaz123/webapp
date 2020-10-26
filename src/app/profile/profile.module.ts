@@ -21,6 +21,7 @@ import { UnsubscribeInAppFirstModal } from './subscription/modals/unsubscribe-in
 import { SubscriptionBenefitsComponent } from './subscription/subscription-benefits/subscription-benefits.component';
 import { DiscountAvailableUnsubscribeInAppModalComponent } from './subscription/modals/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component';
 import { SubscriptionPriceDiscountComponent } from './subscription/subscription-price-discount/subscription-price-discount.component';
+import { DropdownModule } from 'app/dropdown/dropdown.module';
 
 @NgModule({
   imports: [
@@ -31,7 +32,8 @@ import { SubscriptionPriceDiscountComponent } from './subscription/subscription-
     MatIconModule,
     NgbButtonsModule,
     GeolocationModule,
-    NgbCarouselModule
+    NgbCarouselModule,
+    DropdownModule
   ],
   declarations: [
     profileRoutedComponents,
@@ -50,7 +52,7 @@ import { SubscriptionPriceDiscountComponent } from './subscription/subscription-
     UnsubscribeInAppFirstModal,
     DiscountAvailableUnsubscribeInAppModalComponent,
     SubscriptionPriceDiscountComponent
-    
+
   ],
   entryComponents: [
     UnsubscribeModalComponent,
