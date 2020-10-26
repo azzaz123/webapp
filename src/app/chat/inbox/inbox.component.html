@@ -10,7 +10,7 @@
     <div ngbDropdownToggle class="dropdown-header">
       <div *ngIf="isInbox" class="header-title" i18n="@@inboxBox">Inbox</div>
       <div *ngIf="isArchived" class="header-title" i18n="@@inboxArchivedBox">Archived Messages</div>
-      <mat-icon class="header-icon" svgIcon="arrow-waterfall"></mat-icon>
+      <tsl-svg-icon class="header-icon" src="/assets/icons/arrow-waterfall.svg"></tsl-svg-icon>
     </div>
     <ul ngbDropdownMenu class="dropdown-menu">
       <li class="dropdown-item" [ngClass]="{'active': isInbox}" (click)="showInbox()">
@@ -43,7 +43,7 @@
      (scroll)="showNewMessagesToast ? handleScroll() : null">
   <button class="btn btn-primary new-messages-toast" *ngIf="showNewMessagesToast" (click)="scrollToTop()"
           [@appearInOut]>
-    <mat-icon svgIcon="up-arrow-white"></mat-icon>
+    <tsl-svg-icon src="/assets/icons/up-arrow-white.svg"></tsl-svg-icon>
     <span i18n="@@newMessages">New messages</span>
   </button>
   <div id="conversations" [hidden]="loading">
@@ -65,7 +65,7 @@
   </div>
   <div class="load-more-container" *ngIf="showLoadMore()">
     <a class="load-more">
-      <mat-icon svgIcon="spinner" [hidden]="!loadingMore" class="spinner"></mat-icon>
+      <tsl-svg-icon src="/assets/icons/spinner.svg" [hidden]="!loadingMore" class="spinner"></tsl-svg-icon>
       <span [hidden]="loadingMore" (click)="loadMore()" i18n="@@loadMoreButton">Load more</span>
     </a>
   </div>
@@ -91,7 +91,7 @@
   </div>
   <div class="load-more-container" *ngIf="showLoadMoreArchived()">
     <a class="load-more">
-      <mat-icon svgIcon="spinner" [hidden]="!loadingMore" class="spinner"></mat-icon>
+      <tsl-svg-icon src="/assets/icons/spinner.svg" [hidden]="!loadingMore" class="spinner"></tsl-svg-icon>
       <span [hidden]="loadingMore" (click)="loadMoreArchived()" i18n="@@loadMoreButton">Load more</span>
     </a>
   </div>

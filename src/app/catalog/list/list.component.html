@@ -33,7 +33,7 @@
         </div>
       </div>
       <div class="col info d-none d-md-flex">
-        <mat-icon svgIcon="feature"></mat-icon>
+        <tsl-svg-icon src="/assets/icons/feature.svg"></tsl-svg-icon>
         <a (click)="bumpTutorial.show()" i18n>What can features do for you?</a>
       </div>
       <div class="col-4 col-md-1 header-numbers">
@@ -75,7 +75,7 @@
 
     <div class="items">
       <div id="catalog-empty-state" *ngIf="!items.length && !loading && selectedStatus !== 'reviews'">
-        <mat-icon svgIcon="items-empty-state" class="image"></mat-icon>
+        <tsl-svg-icon src="/assets/icons/items-empty-state.svg" class="image"></tsl-svg-icon>
       </div>
 
       <tsl-catalog-item 

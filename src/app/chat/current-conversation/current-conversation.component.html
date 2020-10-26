@@ -85,7 +85,7 @@
             <a class="load-more">
                             <span *ngIf="!isLoadingMoreMessages" (click)="loadMoreMessages(scrollElement.scrollHeight)"
                                   i18n="@@loadMoreButton">Load more</span>
-              <mat-icon *ngIf="isLoadingMoreMessages" svgIcon="spinner" class="spinner"></mat-icon>
+              <tsl-svg-icon *ngIf="isLoadingMoreMessages" src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
             </a>
           </div>
         </div>

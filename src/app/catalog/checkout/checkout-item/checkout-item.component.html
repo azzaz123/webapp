@@ -5,7 +5,7 @@
     <div ngbRadioGroup name="duration" [(ngModel)]="duration">
       <label ngbButtonLabel class="custom-radio" *ngFor="let duration of durations">
         <input ngbButton type="radio" [value]="duration" id="qa-bump-{{duration / 24}}-days">
-        <mat-icon svgIcon="radio-button"></mat-icon> {{duration / 24}} <span i18n>days</span>
+        <tsl-svg-icon src="/assets/icons/radio-button.svg"></tsl-svg-icon> {{duration / 24}} <span i18n>days</span>
       </label>
     </div>
   </form>
