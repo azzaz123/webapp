@@ -1,6 +1,6 @@
 
 import { from, empty, Observable, of } from 'rxjs';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgbModule, NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
@@ -21,6 +21,8 @@ import { MockTrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-s
 import { SessionProfileDataLocation } from 'app/core/trust-and-safety/trust-and-safety.interface';
 import { SEARCHID_STORAGE_NAME } from '../core/message/real-time.service';
 import { SendPhoneComponent } from './modals';
+import { PersonalDataInformationModal } from './modals/personal-data-information-modal/personal-data-information-modal.component';
+import { USER_STRING_ID } from '../core/constants/string-ids.enum';
 
 class MockUserService {
   public isProfessional() {
@@ -229,14 +231,14 @@ describe('Component: ChatComponent with ItemId', () => {
 
   describe('when opening a conversation with no messages', () => {
     beforeEach(() => {
-      const inboxConversationWithoutMessages = CREATE_MOCK_INBOX_CONVERSATION();
-      inboxConversationWithoutMessages.messages = [];
       spyOn(inboxService, 'isInboxReady').and.returnValue(true);
-      spyOn(inboxConversationService, 'openConversationByItemId$').and.returnValue(of(inboxConversationWithoutMessages));
     });
 
     describe('and when the server notifies that seller is a car dealer', () => {
       beforeEach(() => {
+        const inboxConversationWithoutMessages = CREATE_MOCK_INBOX_CONVERSATION();
+        inboxConversationWithoutMessages.messages = [];
+        spyOn(inboxConversationService, 'openConversationByItemId$').and.returnValue(of(inboxConversationWithoutMessages));
         const MOCK_PHONE_INFO = { phone_method: PhoneMethod.POP_UP };
         spyOn(userService, 'getPhoneInfo').and.returnValue(of(MOCK_PHONE_INFO));
       });
@@ -249,6 +251,47 @@ describe('Component: ChatComponent with ItemId', () => {
 
         expect(modalService.open).toHaveBeenCalledWith(SendPhoneComponent, expectedModalOptions);
       });
+    });
+
+    describe('and the seller could request you the mail or cellphone' , () => {
+      it('should open a modal to notify the request information if the seller is YaEncontre', () => {
+        const inboxConversationWithoutMessages = CREATE_MOCK_INBOX_CONVERSATION('123', USER_STRING_ID.YA_ENCONTRE);
+        inboxConversationWithoutMessages.messages = [];
+        const expectedModalOptions: NgbModalOptions = { windowClass: 'warning' };
+        spyOn(inboxConversationService, 'openConversationByItemId$').and.returnValue(of(inboxConversationWithoutMessages));
+        spyOn(modalService, 'open');
+
+        component.ngOnInit();
+
+        expect(modalService.open).toHaveBeenCalledWith(PersonalDataInformationModal, expectedModalOptions);
+      });
+
+      it('should not open a modal if the seller is not YaEncontre', () => {
+        const inboxConversationWithoutMessages = CREATE_MOCK_INBOX_CONVERSATION('123', 'AAAAAAA');
+        inboxConversationWithoutMessages.messages = [];
+        spyOn(inboxConversationService, 'openConversationByItemId$').and.returnValue(of(inboxConversationWithoutMessages));
+        spyOn(modalService, 'open');
+
+        component.ngOnInit();
+
+        expect(modalService.open).not.toBeCalled();
+      });
+
+      it('should redirect to the item if the modal is closed', fakeAsync(() => {
+        const expectedUrl = 'item-123';
+        const inboxConversationWithoutMessages = CREATE_MOCK_INBOX_CONVERSATION('123', USER_STRING_ID.YA_ENCONTRE);
+        inboxConversationWithoutMessages.messages = [];
+        inboxConversationWithoutMessages.item.itemUrl = expectedUrl;
+        spyOn(inboxConversationService, 'openConversationByItemId$').and.returnValue(of(inboxConversationWithoutMessages));
+        spyOn(modalService, 'open').and.returnValue({
+          result: Promise.resolve()
+        });
+
+        component.ngOnInit();
+        tick();
+
+        expect(window.location.href).toBe(expectedUrl);
+      }));
     });
   });
 });
