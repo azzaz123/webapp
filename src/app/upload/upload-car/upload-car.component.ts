@@ -531,13 +531,13 @@ export class UploadCarComponent implements OnInit {
       }
     }));
   }
-  onIsModelsNeeded(): void {
+  public onIsModelsNeeded(): void {
     if (!this.models) {
       this.getModels();
     }
   }
 
-  onIsYearsNeeded() :void {
+  public onIsYearsNeeded() :void {
     if (!this.years) {
       this.getYears();
     }

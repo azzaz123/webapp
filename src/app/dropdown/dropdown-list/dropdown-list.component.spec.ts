@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { OptionList } from '../utils/option-list';
 
 import { DropdownListComponent } from './dropdown-list.component';
 
@@ -16,10 +17,11 @@ describe('SelectDropdownComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DropdownListComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
+    component.optionList = new OptionList(null);
+    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 });

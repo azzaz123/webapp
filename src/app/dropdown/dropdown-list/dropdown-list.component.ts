@@ -42,11 +42,10 @@ export class DropdownListComponent implements AfterViewInit, OnChanges, OnInit {
   /** Event handlers. **/
 
   ngOnInit() {
-    this.optionsReset();
   }
 
   ngOnChanges(changes: any) {
-    if (changes.hasOwnProperty('optionList')) {
+    if (changes.optionsList) {
       this.optionsReset();
     }
     if (changes.isLoading && !this.isLoading) {
@@ -55,6 +54,7 @@ export class DropdownListComponent implements AfterViewInit, OnChanges, OnInit {
   }
 
   ngAfterViewInit() {
+    this.optionsReset();
     this.setView();
   }
 
