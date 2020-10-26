@@ -47,17 +47,14 @@ describe('SvgIconComponent', () => {
 
   describe('ngOnInit() - initializing the component', () => {
     describe('if the src is a svg', () => {
-      it('svg must be shown in the HTML', () => {
+      it('should display the icon in the HTML', () => {
         spyOn(svgService, 'getIconByPath').and.returnValue(of(svgTag));
         component.src = 'mySvg.svg';
-
         fixture.detectChanges();
         component.ngOnInit();
-
         const secureSvg: SafeHtml = domSanitizer.bypassSecurityTrustHtml(svgTag);
         const sanitizedSvg: string = domSanitizer.sanitize(SecurityContext.HTML, secureSvg);
         const innerHTML: HTMLElement = fixture.elementRef.nativeElement.innerHTML;
-
         spyOn(domSanitizer, 'bypassSecurityTrustHtml').and.callThrough();
         spyOn(domSanitizer, 'sanitize');
 
@@ -71,7 +68,7 @@ describe('SvgIconComponent', () => {
     });
 
     describe('if the src is not a svg', () => {
-      it('nothing should be displayed in the HTML', () => {
+      it('should not display the icon in the HTML', () => {
         const innerHTML: HTMLElement = fixture.elementRef.nativeElement.innerHTML;
         component.src = 'myPhoto.png';
         spyOn(svgService, 'getIconByPath');
