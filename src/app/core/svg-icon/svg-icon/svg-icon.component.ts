@@ -5,8 +5,7 @@ import { SvgService } from '../svg.service';
 
 @Component({
   selector: 'tsl-svg-icon',
-  template: '',
-  styleUrls: ['./svg-icon.component.scss']
+  template: ''
 })
 export class SvgIconComponent implements OnInit {
   @Input() src: string;
