@@ -5,7 +5,7 @@
     </div>
 </ng-template>
 <div class="header-location" #headerLocation>
-    <mat-icon svgIcon="geo" class="topbar-icon" [class.active]="focus"></mat-icon>
+    <tsl-svg-icon src="/assets/icons/geo.svg" class="topbar-icon" [class.active]="focus"></tsl-svg-icon>
     <input id="pac-input-header" #pacInputHeader class="controls" type="text" placeholder="Where?"
            i18n-placeholder [(ngModel)]="model" [ngbTypeahead]="search"
            [inputFormatter]="formatter" [resultTemplate]="locations" (selectItem)="selectItem($event)" (focus)="focus=true"

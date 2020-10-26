@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material';
 import { NgbPopoverModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { HereMapsComponent } from './here-maps/here-maps.component';
 import { LocationBoxComponent } from './location-box/location-box.component';
+import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { LocationBoxComponent } from './location-box/location-box.component';
     FormsModule,
     MatIconModule,
     NgbTypeaheadModule,
-    NgbPopoverModule
+    NgbPopoverModule,
+    SvgIconModule
   ],
   exports: [
     CommonModule,

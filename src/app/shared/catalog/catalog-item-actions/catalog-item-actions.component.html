@@ -12,7 +12,7 @@
     <span i18n>Select All</span>
   </button>
   <button class="btn-delete dark" (click)="delete(deleteItemsModal)" [disabled]="!itemService.selectedItems.length">
-    <mat-icon svgIcon="delete"></mat-icon>
+    <tsl-svg-icon src="/assets/icons/delete.svg"></tsl-svg-icon>
     <span i18n>Delete</span>
   </button>
   <button class="btn-delete dark" (click)="deactivate()" *ngIf="selectedStatus === 'active'
