@@ -61,7 +61,7 @@ h1 {
     text-align: center;
     width: 75px;
     margin: 0 $spacing-ml;
-    mat-icon {
+    tsl-svg-icon {
       @include square(32px);
       display: block;
       margin: 0 auto;

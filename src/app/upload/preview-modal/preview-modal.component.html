@@ -1,6 +1,6 @@
 <div class="modal-body">
   <div class="modal-close" (click)="activeModal.dismiss()">
-    <mat-icon svgIcon="cross"></mat-icon>
+    <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
   </div>
   <button class="btn btn-primary" (click)="activeModal.close()" tslTrackEvent="UPLOADFORM_UPLOADFROMPREVIEW">
     <span *ngIf="!itemPreview.id" i18n>Post Ad</span>
@@ -22,22 +22,23 @@
   </p>
   <div class="extras car-extras" *ngIf="hasCarExtras" [ngClass]="{last: !hasExtras}">
     <div *ngIf="itemPreview.gearbox">
-      <mat-icon [svgIcon]="itemPreview.gearbox"></mat-icon>
+      <tsl-svg-icon src="/assets/icons/{{itemPreview.gearbox}}.svg"></tsl-svg-icon>
       <span [ngSwitch]="itemPreview.gearbox">
         <ng-container *ngSwitchCase="'manual'" i18n>Manual</ng-container>
         <ng-container *ngSwitchCase="'automatic'" i18n>Automatic</ng-container>
       </span>
     </div>
     <div *ngIf="itemPreview.body_type && bodyType">
-      <mat-icon [svgIcon]="'car-type-' + itemPreview.body_type"></mat-icon>
+      <tsl-svg-icon src="/assets/icons/{{itemPreview.body_type}}.svg"></tsl-svg-icon>
       <span>{{bodyType}}</span>
     </div>
     <div *ngIf="itemPreview.num_seats">
-      <mat-icon svgIcon="cm-seats"></mat-icon>
+      <!-- TODO: mirarlo, con el mat tampoco se ve tampoco bien -->
+      <tsl-svg-icon src="/assets/icons/cm-seats.svg"></tsl-svg-icon>
       <span>{{itemPreview.num_seats}}</span>
     </div>
     <div *ngIf="itemPreview.engine">
-      <mat-icon [svgIcon]="itemPreview.engine"></mat-icon>
+      <tsl-svg-icon src="/assets/icons/{{itemPreview.engine}}.svg"></tsl-svg-icon>
       <span [ngSwitch]="itemPreview.engine">
         <ng-container *ngSwitchCase="'gasoline'" i18n>Petrol</ng-container>
         <ng-container *ngSwitchCase="'gasoil'" i18n>Diesel</ng-container>
@@ -48,15 +49,15 @@
   </div>
   <div class="extras" *ngIf="hasExtras">
     <div *ngIf="itemPreview.sale_conditions?.fix_price">
-      <mat-icon svgIcon="firm-price"></mat-icon>
+      <tsl-svg-icon src="/assets/icons/firm-price.svg"></tsl-svg-icon>
       <span i18n>Firm Price</span>
     </div>
     <div *ngIf="itemPreview.sale_conditions?.shipping_allowed">
-      <mat-icon svgIcon="shipping-available"></mat-icon>
+      <tsl-svg-icon src="/assets/icons/shipping-available.svg"></tsl-svg-icon>
       <span i18n>Shipping available</span>
     </div>
     <div *ngIf="itemPreview.sale_conditions?.exchange_allowed">
-      <mat-icon svgIcon="accept-trades"></mat-icon>
+      <tsl-svg-icon src="/assets/icons/accept-trades.svg"></tsl-svg-icon>
       <span i18n>Accept trades</span>
     </div>
   </div>
