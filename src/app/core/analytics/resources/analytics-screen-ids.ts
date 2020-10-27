@@ -55,4 +55,5 @@ export enum SCREEN_IDS {
 	Banner = 226,
 	OfficeToOfficeMap = 227,
 	Messages = 228,
+	BannedUserChatPopUp = 229,
 }

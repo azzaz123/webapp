@@ -10,6 +10,15 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
+import {
+  AnalyticsEvent,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  ClickBannedUserChatPopUpCloseButton,
+  ClickBannedUserChatPopUpExitButton,
+  SCREEN_IDS,
+  ViewBannedUserChatPopUp 
+} from 'app/core/analytics/analytics-constants';
 import { EventService } from '../../core/event/event.service';
 import { RealTimeService } from '../../core/message/real-time.service';
 import { of, Subscription } from 'rxjs';
@@ -22,8 +31,10 @@ import { ThirdVoiceDropPriceComponent } from '../message/third-voice-drop-price'
 import { ThirdVoiceReviewComponent } from '../message/third-voice-review';
 import { RemoteConsoleService } from '../../core/remote-console';
 import { delay } from 'rxjs/operators';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { MaliciousConversationModalComponent } from '../modals/malicious-conversation-modal/malicious-conversation-modal.component';
+import { AnalyticsService } from 'app/core/analytics/analytics.service';
+import { UserService } from 'app/core/user/user.service';
 
 @Component({
   selector: 'tsl-current-conversation',
@@ -43,6 +54,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   @ViewChild('scrollElement') private scrollElement: ElementRef;
   @ViewChild('userWarringNotification') private userWarringNotification: ElementRef;
 
+  private chatContext: ViewBannedUserChatPopUp;
   public momentConfig: any;
   private newMessageSubscription: Subscription;
   public isLoadingMoreMessages = false;
@@ -55,11 +67,13 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   public isTopBarExpanded = false;
 
   constructor(private eventService: EventService,
-              i18n: I18nService,
-              private realTime: RealTimeService,
-              private inboxConversationService: InboxConversationService,
-              private remoteConsoleService: RemoteConsoleService,
-              private modalService: NgbModal) {
+    i18n: I18nService,
+    private realTime: RealTimeService,
+    private inboxConversationService: InboxConversationService,
+    private remoteConsoleService: RemoteConsoleService,
+    private modalService: NgbModal,
+    private userService: UserService,
+    private analyticsService: AnalyticsService) {
     this.momentConfig = i18n.getTranslations('defaultDaysMomentConfig');
   }
 
@@ -228,13 +242,24 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
       .forEach(message => this.remoteConsoleService.sendMessageAckFailed(message.id, description));
   }
 
+  private fillChatContext(): void {
+    this.chatContext = {
+      userId: this.userService.user.id,
+      bannedUserId: this.currentConversation?.user?.id,
+      conversationId: this.currentConversation?.id,
+      screenId: SCREEN_IDS.BannedUserChatPopUp
+    }
+  }
+
   private openMaliciousConversationModal(): void {
     if (!this.currentConversation?.isFromMaliciousUser) {
       return;
     }
+    this.fillChatContext();
+    const modalRef: NgbModalRef = this.modalService.open(MaliciousConversationModalComponent, { windowClass: 'warning' });
+    modalRef.componentInstance.chatContext = this.chatContext;
 
-    this.modalService.open(MaliciousConversationModalComponent, { windowClass: 'warning' })
-    .result
+    modalRef.result
       .then(() => this.handleUserConfirmsMaliciousModal())
       .catch(() => this.trackDismissMaliciousModal());
   }
@@ -244,10 +269,21 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     this.trackClickMaliciousModalCTAButton();
   }
 
-  // TODO: TNS-925 - https://wallapop.atlassian.net/browse/TNS-925
-  private trackClickMaliciousModalCTAButton() {
+  private trackClickMaliciousModalCTAButton(): void {
+    const event: AnalyticsEvent<ClickBannedUserChatPopUpExitButton> = {
+      name: ANALYTICS_EVENT_NAMES.ClickBannedUserChatPopUpExitButton,
+      eventType: ANALYTIC_EVENT_TYPES.Other,
+      attributes: this.chatContext
+    };
+    this.analyticsService.trackEvent(event);
   }
 
-  private trackDismissMaliciousModal() {
+  private trackDismissMaliciousModal(): void {
+    const event: AnalyticsEvent<ClickBannedUserChatPopUpCloseButton> = {
+      name: ANALYTICS_EVENT_NAMES.ClickBannedUserChatPopUpCloseButton,
+      eventType: ANALYTIC_EVENT_TYPES.Other,
+      attributes: this.chatContext
+    };
+    this.analyticsService.trackEvent(event);
   }
 }

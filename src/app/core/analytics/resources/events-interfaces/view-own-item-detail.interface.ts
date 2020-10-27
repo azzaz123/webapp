@@ -6,9 +6,9 @@
  */
 
 /**
- * User uploads a ConsumerGoods product
+ * User views own item detail screen
  */
-export interface ListItemCG {
+export interface ViewOwnItemDetail {
   /**
    * The unique identifier for an item
    */
@@ -18,10 +18,6 @@ export interface ListItemCG {
    */
   categoryId: number;
   /**
-   * Identifier of the subcategory that the item belongs to
-   */
-  subcategoryId?: number;
-  /**
    * Item price
    */
   salePrice?: number;
@@ -30,27 +26,15 @@ export interface ListItemCG {
    */
   title: string;
   /**
-   * CG Brand
-   */
-  brand?: string;
-  /**
-   * CG Model
-   */
-  model?: string;
-  /**
-   * CG Object type name
-   */
-  objectType?: string;
-  /**
-   * If the item clicked is from a professional user
+   * If the seller of the item viewed is a professional user
    */
   isPro: boolean;
   /**
-   * Identifier of the screen that the item was uploaded from
+   * Identifier of the screen that the item was viewed from
    */
   screenId: number;
   /**
-   * Hashtags uploaded by the user
+   * Identifier of the state of the view
    */
-  hashtags?: string;
+  state?: string;
 }
