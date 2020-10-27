@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { SubscriptionsSlotItemComponent } from './subscriptions-slot-item.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MOCK_SUBSCRIPTION_SLOT_CARS } from '../../../../../tests/subscriptions.fixtures.spec';
@@ -23,7 +24,8 @@ describe('SubscriptionsSlotItemComponent', () => {
     TestBed.configureTestingModule({
       imports: [ MatIconModule ],
       declarations: [ SubscriptionsSlotItemComponent ],
-      providers: [ { provide: AnalyticsService, useClass: MockAnalyticsService }]
+      providers: [ { provide: AnalyticsService, useClass: MockAnalyticsService }],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   }));

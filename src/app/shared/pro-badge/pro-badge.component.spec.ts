@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ProBadgeComponent } from './pro-badge.component';
 import { MatIconModule } from '@angular/material';
 import { UserService } from '../../core/user/user.service';
@@ -19,7 +20,8 @@ describe('ProBadgeComponent', () => {
           isPro: false
         } 
       }],
-      declarations: [ ProBadgeComponent ]
+      declarations: [ ProBadgeComponent ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   }));

@@ -3,6 +3,7 @@ import { MatIconModule } from '@angular/material';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TooManyItemsModalComponent } from './too-many-items-modal.component';
 import { ButtonComponent } from '../../../button/button.component';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -11,7 +12,6 @@ import { SubscriptionsService } from '../../../../core/subscriptions/subscriptio
 import { MOCK_ITEM_V3_2, MOCK_ITEM_V3_3 } from '../../../../../tests/item.fixtures.spec';
 import { MockSubscriptionService, MAPPED_SUBSCRIPTIONS_ADDED } from '../../../../../tests/subscriptions.fixtures.spec';
 import { SUBSCRIPTION_TYPES } from '../../../../core/subscriptions/subscriptions.service';
-import { By } from '@angular/platform-browser';
 import { AnalyticsService } from '../../../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../../../tests/analytics.fixtures.spec';
 import {
@@ -52,7 +52,8 @@ describe('TooManyItemsModalComponent', () => {
         {
           provide: AnalyticsService, useClass: MockAnalyticsService
         }
-      ]
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   });

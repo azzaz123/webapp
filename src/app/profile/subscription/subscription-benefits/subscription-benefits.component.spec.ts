@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { SubscriptionBenefitsComponent } from './subscription-benefits.component';
 import { MatIconModule } from '@angular/material';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
@@ -16,7 +17,8 @@ describe('SubscriptionBenefitsComponent', () => {
       declarations: [ SubscriptionBenefitsComponent ],
       providers: [
         { provide: SubscriptionsService, useClass: MockSubscriptionService }
-      ]
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   }));

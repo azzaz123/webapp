@@ -1,5 +1,5 @@
 import { async, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
-import { DebugElement } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 
 import { CheckboxComponent } from './checkbox.component';
 import { MatIconModule } from '@angular/material';
@@ -13,7 +13,8 @@ describe('CheckboxComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ MatIconModule ],
-      declarations: [ CheckboxComponent ]
+      declarations: [ CheckboxComponent ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   }));
