@@ -46,7 +46,7 @@ $inbox-header-height: 66px;
       padding: $spacing-s $spacing-ml;
 	    box-shadow: 0 1px 3px 0 rgba($black, 0.16);
 
-	     mat-icon {
+	     tsl-svg-icon {
 	      width: 9px;
 	      height: 100%;
 	      margin-right: $spacing-s;
@@ -146,7 +146,7 @@ tsl-process-all-button {
       display: flex;
       font-size: 16px;
     }
-    mat-icon {
+    tsl-svg-icon {
       height: 24px;
       width: 24px;
       display: flex;

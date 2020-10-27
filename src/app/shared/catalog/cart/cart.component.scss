@@ -257,7 +257,7 @@ tsl-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  mat-icon {
+  tsl-svg-icon {
     width: 21px;
     height: 15.5px;
   }
@@ -273,7 +273,7 @@ tsl-button {
   align-items: center;
   justify-content: center;
   position: relative;
-  mat-icon {
+  tsl-svg-icon {
     height: 14px;
     width: 11px;
     position: absolute;
@@ -289,7 +289,7 @@ tsl-button {
 .stripe-payment {
   text-align: center;
   margin: $spacing-xs 0 0 0;
-  mat-icon {
+  tsl-svg-icon {
     width: 100px;
     height: 25px;
   }
