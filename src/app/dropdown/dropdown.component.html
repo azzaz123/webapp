@@ -8,7 +8,7 @@
       <ng-container *ngIf="value; else noValue">
         <div class="value">
           <ng-container *ngIf="optionList?.hasSelected; else showValue">
-            <span> {{optionList.selection[0].label}}</span>
+            <span>{{optionList.selection[0].label}}</span>
           </ng-container>
           <ng-template #showValue>
             <span>{{value}}</span>
@@ -16,9 +16,7 @@
         </div>
       </ng-container>
       <ng-template #noValue>
-        <div class="placeholder">
-          {{placeholderView}}
-        </div>
+        <div class="placeholder">{{placeholderView}}</div>
       </ng-template>
 
       <div class="toggle"></div>
@@ -42,10 +40,10 @@
   </div>
   <tsl-dropdown-list *ngIf="isOpen" #dropdown [multiple]="multiple" [optionList]="optionList" [isLoading]="isLoading"
     [notFoundMsg]="notFoundMsg" [filterEnabled]="filterEnabled" [placeholder]="filterPlaceholder" [isBelow]="isBelow"
-    [width]="width" [top]="top" [left]="left" (optionClicked)="onDropdownOptionClicked($event)"
-    (optionsListClick)="onOptionsListClick()" (singleFilterClick)="onSingleFilterClick()"
-    (singleFilterFocus)="onSingleFilterFocus()" (singleFilterInput)="onFilterInput($event)"
-    (singleFilterKeydown)="onSingleFilterKeydown($event)">
+    [optionTemplate]="optionTemplate" [width]="width" [top]="top" [left]="left"
+    (optionClicked)="onDropdownOptionClicked($event)" (optionsListClick)="onOptionsListClick()"
+    (singleFilterClick)="onSingleFilterClick()" (singleFilterFocus)="onSingleFilterFocus()"
+    (singleFilterInput)="onFilterInput($event)" (singleFilterKeydown)="onSingleFilterKeydown($event)">
   </tsl-dropdown-list>
 
 </div>

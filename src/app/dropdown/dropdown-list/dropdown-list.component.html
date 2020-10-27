@@ -12,7 +12,8 @@
         <li *ngFor="let option of optionList.filtered"
           [ngClass]="{'highlighted': option.highlighted, 'selected': option.selected, 'disabled': option.disabled}"
           (click)="onOptionClick(option)" (mouseover)="onOptionMouseover(option)">
-          <span>{{option.label}}</span>
+          <ng-container *ngTemplateOutlet="optionTemplate; context:{option: option.wrappedOption}"></ng-container>
+          <span *ngIf="!optionTemplate">{{option.label}}</span>
         </li>
         <li *ngIf="!optionList.hasShown" class="message">
           {{notFoundMsg}}

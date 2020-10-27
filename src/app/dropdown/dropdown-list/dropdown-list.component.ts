@@ -21,6 +21,7 @@ export class DropdownListComponent implements AfterViewInit, OnChanges, OnInit {
   @Input() width: number;
   @Input() placeholder: string;
   @Input() isLoading: boolean;
+  @Input() optionTemplate: TemplateRef<any>;
 
   @Output() optionClicked = new EventEmitter<Option>();
   @Output() optionsListClick = new EventEmitter<null>();

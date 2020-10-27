@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, ExistingProvider, forwardRef, HostListener, Input, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ContentChild, ElementRef, EventEmitter, ExistingProvider, forwardRef, HostListener, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DropdownListComponent } from './dropdown-list/dropdown-list.component';
 import { OptionList } from './utils/option-list';
@@ -48,6 +48,8 @@ export class DropdownComponent implements OnInit {
   @ViewChild('dropdown', { static: false }) dropdown: DropdownListComponent;
   @ViewChild('filterInput', { static: false }) filterInput: ElementRef;
 
+  @ContentChild('optionTemplate', { static: false }) optionTemplate: TemplateRef<any>;
+
   private _value: Array<any> = [];
   optionList: OptionList = new OptionList([]);
 
@@ -82,10 +84,14 @@ export class DropdownComponent implements OnInit {
 
   ngOnInit() {
     this.placeholderView = this.placeholder;
+
+
   }
 
   ngOnChanges(changes: SimpleChanges) {
     this.handleInputChanges(changes);
+    console.log('AAAA', this.options)
+    console.log('BBBBBB', this.value)
   }
 
   ngAfterViewInit() {
@@ -513,22 +519,22 @@ export class DropdownComponent implements OnInit {
   }
 
   private updatePosition() {
-    if (typeof this.dropdown !== 'undefined') {
+    if (this.dropdown) {
       const hostRect = this.hostElement.nativeElement.getBoundingClientRect();
       const spanRect = this.selectionSpan.nativeElement.getBoundingClientRect();
-      const dropRect = this.dropdown.hostElement.nativeElement.firstElementChild.getBoundingClientRect();
+      const dropRect = this.dropdown.hostElement?.nativeElement.firstElementChild.getBoundingClientRect();
       const windowHeight = window.innerHeight;
       const top = spanRect.top - hostRect.top;
-      const bottom = hostRect.bottom + dropRect.height;
+      const bottom = hostRect.bottom + dropRect?.height;
 
       this.isBelow = bottom < windowHeight;
       this.left = spanRect.left - hostRect.left;
-      this.top = this.isBelow ? top + spanRect.height : top - dropRect.height;
+      this.top = this.isBelow ? top + spanRect.height : top - dropRect?.height;
     }
   }
 
   private updateFilterWidth() {
-    if (typeof this.filterInput !== 'undefined') {
+    if (!!this.filterInput) {
       let value: string = this.filterInput.nativeElement.value;
       this.filterInputWidth = value.length === 0 ?
         1 + this.placeholderView.length * 10 : 1 + value.length * 10;
