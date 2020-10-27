@@ -19,6 +19,7 @@ export class AccessTokenService {
     const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
     this.cookieService.put(cookieName, accessToken, cookieOptions);
     this._accessToken = accessToken;
+    this.storeAccessTokenLocalhost(accessToken);
   }
 
   public deleteAccessToken() {
@@ -28,6 +29,7 @@ export class AccessTokenService {
     this.cookieService.remove('device' + cookieName.charAt(0).toUpperCase() + cookieName.slice(1), cookieOptions);
     this.cookieService.remove('subdomain');
     this._accessToken = null;
+    this.deleteAccessTokenLocalhost();
   }
 
   public getTokenSignature = (url: string, method: string, timestamp: number) => {
@@ -49,4 +51,28 @@ export class AccessTokenService {
     return environment.production ? cookieName : cookieName + environment.cookieSuffix;
   }
 
+  private storeAccessTokenLocalhost(accessToken: string): void {
+    if (!this.isLocalhostServer()) {
+      return;
+    }
+
+    const cookieName = this.getCookieName();
+    const cookieOptions = { domain: 'localhost' };
+    this.cookieService.put(cookieName, accessToken, cookieOptions);
+  }
+
+  private deleteAccessTokenLocalhost(): void {
+    if (!this.isLocalhostServer()) {
+      return;
+    }
+
+    const cookieName = this.getCookieName();
+    const cookieOptions = { domain: 'localhost' };
+    this.cookieService.remove(cookieName, cookieOptions);
+    this.cookieService.remove('device' + cookieName.charAt(0).toUpperCase() + cookieName.slice(1), cookieOptions);
+  }
+
+  private isLocalhostServer(): boolean {
+    return document.location.href.startsWith('http://localhost:4200');
+  }
 }
