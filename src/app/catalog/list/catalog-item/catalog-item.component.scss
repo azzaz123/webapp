@@ -17,7 +17,7 @@ $feature-button-width: 170px;
   justify-content: center;
   flex-shrink: 0;
   cursor: pointer;
-  mat-icon {
+  tsl-svg-icon {
     display: none;
     height: 9px;
     width: 12px;
@@ -30,7 +30,7 @@ $feature-button-width: 170px;
   &--selected {
     background: $walla-main;
     border-color: transparent;
-    mat-icon {
+    tsl-svg-icon {
       display: flex;
       ::ng-deep svg g g {
         fill: $white;
@@ -211,7 +211,7 @@ $feature-button-width: 170px;
     width: 100%;
     max-width: 200px;
     height: 40px;
-    mat-icon {
+    tsl-svg-icon {
       margin-right: $spacing-s;
     }
   }
@@ -275,7 +275,7 @@ $feature-button-width: 170px;
       padding: 0 $spacing-ml;
       padding-left: $spacing-ms;
       font-size: $font-size-s;
-      mat-icon {
+      tsl-svg-icon {
         width: 19px;
         height: 21px;
         margin-right: $spacing-s;
@@ -283,7 +283,7 @@ $feature-button-width: 170px;
       @include media-breakpoint-down(md) {
         width: $feature-button-width / 2;
         padding: 0;
-        mat-icon {
+        tsl-svg-icon {
           margin: 0;
         }
         span {

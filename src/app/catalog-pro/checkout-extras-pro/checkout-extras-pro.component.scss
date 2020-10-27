@@ -7,7 +7,7 @@ $offset: 7px;
   position: absolute;
   z-index: 1000;
   cursor: pointer;
-  mat-icon {
+  tsl-svg-icon {
     vertical-align: middle;
     margin-right: $spacing-ms;
     width: 17px;
@@ -15,7 +15,7 @@ $offset: 7px;
   }
   &:hover {
     text-decoration: none;
-    &, mat-icon {
+    &, tsl-svg-icon {
       opacity: .8;
     }
   }
@@ -34,7 +34,7 @@ $offset: 7px;
     align-items: center;
     justify-content: flex-start;
     font-size: $font-size-s;
-    mat-icon {
+    tsl-svg-icon {
       ::ng-deep svg path {
         fill: $walla-main;
       }
@@ -72,7 +72,7 @@ $offset: 7px;
       background-image: linear-gradient(206deg, #2be2d6, #2be2d6, #2ae1d5, #2ae0d4 1%, $walla-main);
       z-index: 3;
       height: 100px + $offset;
-      mat-icon {
+      tsl-svg-icon {
         width: 62px;
         height: 44px;
       }
@@ -82,7 +82,7 @@ $offset: 7px;
       box-shadow: none;
       z-index: 1;
       height: 120px + $offset;
-      mat-icon {
+      tsl-svg-icon {
         width: 100px;
         height: 65px;
       }

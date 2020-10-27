@@ -16,7 +16,7 @@ $feature-button-width: 170px;
     top: 20px;
     right: 20px;
     @include square(13px);
-    mat-icon {
+    tsl-svg-icon {
       @include square(13px);
       line-height: unset;
     }
@@ -63,7 +63,7 @@ $feature-button-width: 170px;
     @include square(34px);
     margin: 6px;
     cursor: pointer;
-    mat-icon {
+    tsl-svg-icon {
       @include square(18px);
     }
     &:hover {

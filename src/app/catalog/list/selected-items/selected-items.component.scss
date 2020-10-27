@@ -107,7 +107,7 @@
     
     &.btn-delete, &.btn-deactivate {
       padding: 0 $spacing-ms;
-      mat-icon {
+      tsl-svg-icon {
         height: 16px;
         width: 14px;
         vertical-align: sub;
