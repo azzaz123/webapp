@@ -6,11 +6,11 @@
  */
 
 /**
- * Click on back button on wallapop register screen after register presentation page
+ * Users click to see the register help center after viewing the verification screen
  */
-export interface ClickRegisterEmailBack {
+export interface ClickRegisterHelpCenter {
   /**
-   * Identifier of the screen that the user arrives to the register page
+   * Identifier of the screen of the register help center
    */
-  screenId: number;
+  screenId: 223;
 }

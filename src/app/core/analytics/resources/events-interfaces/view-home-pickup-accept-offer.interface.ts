@@ -6,9 +6,9 @@
  */
 
 /**
- * User views transactional timeline screen
+ * Seller views Accept Offer screen with or without the home pickup option available
  */
-export interface ViewTransactionalTimeline {
+export interface ViewHomePickupAcceptOffer {
   /**
    * The unique identifier for an item
    */
@@ -18,23 +18,15 @@ export interface ViewTransactionalTimeline {
    */
   buyerUserId: string;
   /**
-   * Identifier of the user that the item belongs to
-   */
-  sellerUserId: string;
-  /**
    * Identifier of the transaction request
    */
   requestId: string;
   /**
-   * Identifier of the category that the transaction item belongs to
+   * If the user is in the experiment Shipping Home Pickup, the value is shipping_home_pickup_experiment or baseline. If it's not, the value is empty string
    */
-  categoryId: number;
+  experiment: string;
   /**
-   * Status of the transaction
+   * Identifier of the Accept Offer screen
    */
-  status: string;
-  /**
-   * Identifier of the transaction timeline screen
-   */
-  screenId: 205;
+  screenId: 210;
 }

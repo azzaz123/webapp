@@ -24,6 +24,8 @@ To do a clean installation after downloading the repo, follow this steps:
 In order to instantiate a local sever, run one of the following commands:
 
 - Run `yarn start XXX` where `XXX` is the docker you are using. If not specified, will be `111`. Example: `yarn start 123`. **(recommended)**
+- Run `yarn start beta` to use beta environment file with localhost build configuration. 
+- Run `yarn start-beta` to use beta environment file with beta build configuration. Slower than the previous command.
 - Run `yarn serve` for a complete dev server build. (using AOT, i18n with Spanish translations, etc, but much slower)
 
 Now you can navigate to `http://localhost:4200/login`.You should see the app running. If you change any of the source files, the app will automatically build again and reload the page.
