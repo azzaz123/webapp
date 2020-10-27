@@ -32,6 +32,13 @@ $add-subscription-modal-content-default-height: 382px;
   font-weight: bold;
 }
 
+.AddNewSubscription__listing-limit-subtitle {
+  color: $blue-grey-2;
+  font-size: $font-size-s;
+  margin-top: $spacing-s;
+  padding: 0 $spacing-xxxl;
+}
+
 .AddNewSubscription__listing-limit-price {
   color: $blue-grey-1;
   font-size: $font-size-lll;
