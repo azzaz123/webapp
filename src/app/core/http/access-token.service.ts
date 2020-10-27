@@ -51,7 +51,7 @@ export class AccessTokenService {
     return environment.production ? cookieName : cookieName + environment.cookieSuffix;
   }
 
-  private storeAccessTokenLocalhost(accessToken: string) {
+  private storeAccessTokenLocalhost(accessToken: string): void {
     if (!this.isLocalhostServer()) {
       return;
     }
@@ -61,7 +61,7 @@ export class AccessTokenService {
     this.cookieService.put(cookieName, accessToken, cookieOptions);
   }
 
-  private deleteAccessTokenLocalhost() {
+  private deleteAccessTokenLocalhost(): void {
     if (!this.isLocalhostServer()) {
       return;
     }
@@ -72,7 +72,7 @@ export class AccessTokenService {
     this.cookieService.remove('device' + cookieName.charAt(0).toUpperCase() + cookieName.slice(1), cookieOptions);
   }
 
-  private isLocalhostServer() {
+  private isLocalhostServer(): boolean {
     return document.location.href.startsWith('http://localhost:4200');
   }
 }
