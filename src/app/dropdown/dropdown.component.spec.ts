@@ -1,9 +1,8 @@
 import { SimpleChange } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { CATEGORIES_OPTIONS_CONSUMER_GOODS } from '../../tests/category.fixtures.spec';
-
 import { DropdownComponent } from './dropdown.component';
+import { OPTIONS } from './utils/options.fixtures.spec';
 
 describe('DropdownComponent', () => {
   let component: DropdownComponent;
@@ -47,27 +46,27 @@ describe('DropdownComponent', () => {
 
   describe('Show value', () => {
     it('should show label if options was loaded', () => {
-      component.value = CATEGORIES_OPTIONS_CONSUMER_GOODS[0].value;
+      component.value = OPTIONS[0].value;
       component.ngOnChanges({
-        options: new SimpleChange(null, CATEGORIES_OPTIONS_CONSUMER_GOODS, false)
+        options: new SimpleChange(null, OPTIONS, false)
       });
       fixture.detectChanges();
 
       const value = fixture.debugElement.query(By.css('.value'));
       const v: HTMLElement = value.nativeElement;
 
-      expect(v.textContent).toEqual(CATEGORIES_OPTIONS_CONSUMER_GOODS[0].label);
+      expect(v.textContent).toEqual(OPTIONS[0].label);
     });
 
     it('should show value if options was not loaded', () => {
-      component.value = CATEGORIES_OPTIONS_CONSUMER_GOODS[0].value;
+      component.value = OPTIONS[0].value;
       component.options = [];
 
       fixture.detectChanges();
       const value = fixture.debugElement.query(By.css('.value'));
       const v: HTMLElement = value.nativeElement;
 
-      expect(v.textContent).toEqual(CATEGORIES_OPTIONS_CONSUMER_GOODS[0].value);
+      expect(v.textContent).toEqual(OPTIONS[0].value);
     });
   })
 

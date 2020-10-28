@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { CAR_BRANDS } from '../../../tests/car.fixtures.spec';
 import { OptionList } from '../utils/option-list';
+import { OPTIONS } from '../utils/options.fixtures.spec';
 
 import { DropdownListComponent } from './dropdown-list.component';
 
@@ -77,15 +77,30 @@ describe('SelectDropdownComponent', () => {
     });
 
     it('should show all options', () => {
-      component.optionList = new OptionList(CAR_BRANDS);
+      component.optionList = new OptionList(OPTIONS);
 
       fixture.detectChanges();
 
-      CAR_BRANDS.forEach(
-        (car) => {
-          expect(component.optionsList.nativeElement.textContent).toContain(car.label)
+      OPTIONS.forEach(
+        (option) => {
+          expect(component.optionsList.nativeElement.textContent).toContain(option.label)
         }
       )
+    });
+
+
+    it('should click a option', () => {
+      component.optionList = new OptionList(OPTIONS);
+      spyOn(component.optionClicked, 'emit')
+
+      fixture.detectChanges();
+      const expected = component.optionList.filtered[0];
+      const element: HTMLElement = component.optionsList.nativeElement
+      const option = element.querySelectorAll('li')[0]
+      option.click();
+
+      expect(component.optionClicked.emit).toHaveBeenCalledWith(expected)
+
     });
   });
 });
