@@ -63,6 +63,10 @@ $sold-width: 32px;
   tsl-svg-icon {
     margin: auto auto;
     @include square(21px);
+    ::ng-deep svg {
+      height: 100%;
+      width: 100%;
+    }
   }
   .small & {
     display: none;

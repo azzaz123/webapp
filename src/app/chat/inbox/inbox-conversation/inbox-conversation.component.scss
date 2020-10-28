@@ -152,7 +152,7 @@ $menu-width-and-spacing: 10px;
 
     tsl-svg-icon.blocked, tsl-svg-icon.not-available {
       @include square(10px);
-      position: relative;
+      position: none;
       bottom: 4px;
       margin-right: $spacing-xs;
     }

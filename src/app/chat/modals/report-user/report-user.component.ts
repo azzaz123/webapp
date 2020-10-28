@@ -34,4 +34,17 @@ export class ReportUserComponent implements OnInit {
     });
   }
 
+  private getSvgPath(reasonId: string): string {
+    let path: string = '/assets/icons/';
+    const pathCases: object = {
+      '0': 'ghost.svg',
+      '3': 'scam.svg',
+      '4': 'suspicious.svg',
+      '5': 'behaviour.svg',
+      '6': 'no-show.svg',
+      '7': 'defective.svg'
+    };
+
+    return path + pathCases[reasonId];
+  }
 }

@@ -9,7 +9,7 @@
          (click)="selectReportUserReason(reason.id)" *ngFor="let reason of userBanReasons">
       <div class="col-3 d-flex justify-content-center">
         <div class="ban-reason-icon-container">
-          <tsl-svg-icon src="/assets/icons/report-user-{{reason.id}}.svg"></tsl-svg-icon>
+          <tsl-svg-icon [src]="getSvgPath(reason.id)" class="report-icon"></tsl-svg-icon>
         </div>
       </div>
       <div class="col-9">
