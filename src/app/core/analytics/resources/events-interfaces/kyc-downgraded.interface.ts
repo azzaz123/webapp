@@ -6,11 +6,6 @@
  */
 
 /**
- * Tap on login button
+ * User is downgraded in KYC
  */
-export interface TapRegisterPresentationLogin {
-  /**
-   * Identifier of the screen that the user tap to the login
-   */
-  screenId: number;
-}
+export interface KYCDowngraded {}

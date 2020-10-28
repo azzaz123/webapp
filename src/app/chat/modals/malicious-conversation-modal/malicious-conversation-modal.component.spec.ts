@@ -5,16 +5,29 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ButtonComponent } from 'app/shared/button/button.component';
 import { By } from '@angular/platform-browser';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { AnalyticsService } from 'app/core/analytics/analytics.service';
+import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
+import { AnalyticsPageView, ANALYTICS_EVENT_NAMES, SCREEN_IDS, ViewBannedUserChatPopUp } from 'app/core/analytics/analytics-constants';
 
 describe('MaliciousConversationModalComponent', () => {
   let component: MaliciousConversationModalComponent;
   let activeModal: NgbActiveModal;
   let fixture: ComponentFixture<MaliciousConversationModalComponent>;
+  let analyticsService: AnalyticsService;
+  const chatContext: ViewBannedUserChatPopUp = {
+    userId: '121',
+    bannedUserId: '2332',
+    conversationId: '2332',
+    screenId: SCREEN_IDS.BannedUserChatPopUp
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ButtonComponent, MaliciousConversationModalComponent ],
-      providers: [ NgbActiveModal ],
+      providers: [ 
+        NgbActiveModal,
+        { provide: AnalyticsService, useClass: MockAnalyticsService },
+      ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })
     .compileComponents();
@@ -24,6 +37,9 @@ describe('MaliciousConversationModalComponent', () => {
     fixture = TestBed.createComponent(MaliciousConversationModalComponent);
     component = fixture.componentInstance;
     activeModal = TestBed.inject(NgbActiveModal);
+    analyticsService = TestBed.inject(AnalyticsService);
+    component.chatContext = chatContext;
+
     fixture.detectChanges();
   });
 
@@ -53,10 +69,19 @@ describe('MaliciousConversationModalComponent', () => {
     });
   });
 
-  // TODO: TNS-925 - https://wallapop.atlassian.net/browse/TNS-925
   describe('Analytics', () => {
     describe('when displaying modal', () => {
-      it('should track modal was viewed', () => {});
+      it('should track modal was viewed', () => {
+        const expectedEvent: AnalyticsPageView<ViewBannedUserChatPopUp> = {
+          name: ANALYTICS_EVENT_NAMES.ViewBannedUserChatPopUp,
+          attributes: component.chatContext
+        };
+
+        spyOn(analyticsService, 'trackPageView');
+        component.ngOnInit();
+
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+      });
     });
   });
 });
