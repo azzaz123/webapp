@@ -51,7 +51,7 @@ tsl-dropdown {
   border: 0 !important;
 
   // REMOVE THIS LOGIC
-  &.categories-select .Dropdown-list {
+  &.categories-select tsl-dropdown-list {
     & > div .options ul li {
       padding: 0 !important;
       border: 0;

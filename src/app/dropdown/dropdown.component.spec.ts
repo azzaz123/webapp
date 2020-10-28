@@ -64,7 +64,6 @@ describe('DropdownComponent', () => {
       component.options = [];
 
       fixture.detectChanges();
-
       const value = fixture.debugElement.query(By.css('.value'));
       const v: HTMLElement = value.nativeElement;
 

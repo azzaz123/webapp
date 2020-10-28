@@ -31,7 +31,7 @@
   }
 }
 
-#condition ::ng-deep Dropdown-list > div {
+#condition ::ng-deep tsl-dropdown-list > div {
   .options ul li {
     background-repeat: no-repeat;
     background-position: $spacing-s;

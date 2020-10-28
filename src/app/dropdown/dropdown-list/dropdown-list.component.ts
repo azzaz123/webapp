@@ -33,9 +33,6 @@ export class DropdownListComponent implements AfterViewInit, OnChanges, OnInit {
   @ViewChild('filterInput') filterInput: any;
   @ViewChild('optionsList') optionsList: any;
 
-  disabledColor: string = '#fff';
-  disabledTextColor: string = '9e9e9e';
-
   constructor(
     public hostElement: ElementRef
   ) { }
@@ -46,11 +43,11 @@ export class DropdownListComponent implements AfterViewInit, OnChanges, OnInit {
   }
 
   ngOnChanges(changes: any) {
-    if (changes.optionsList) {
+    if (!this.isLoading && changes.optionList) {
       this.optionsReset();
     }
     if (changes.isLoading && !this.isLoading) {
-      this.setView();
+      setTimeout(() => this.setView(), 1);
     }
   }
 
@@ -101,6 +98,7 @@ export class DropdownListComponent implements AfterViewInit, OnChanges, OnInit {
   /** Initialization. **/
 
   private optionsReset() {
+    if (!this.optionList) { return; }
     this.optionList.filter('');
     this.optionList.highlight();
   }

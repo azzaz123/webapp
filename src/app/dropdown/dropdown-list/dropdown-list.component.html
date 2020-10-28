@@ -15,15 +15,13 @@
           <ng-container *ngTemplateOutlet="optionTemplate; context:{option: option.wrappedOption}"></ng-container>
           <span *ngIf="!optionTemplate">{{option.label}}</span>
         </li>
-        <li *ngIf="!optionList.hasShown" class="message">
-          {{notFoundMsg}}
-        </li>
+        <li *ngIf="!optionList.hasShown" class="message">{{notFoundMsg}}</li>
       </ul>
     </div>
   </ng-container>
   <ng-template #loading>
-    <div class="Loading">
+    <div class="loading">
       <mat-icon svgIcon="spinner" class="spinner corporate"></mat-icon>
     </div>
-    </ng-template>
+  </ng-template>
 </div>

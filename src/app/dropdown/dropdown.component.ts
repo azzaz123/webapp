@@ -90,8 +90,6 @@ export class DropdownComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     this.handleInputChanges(changes);
-    console.log('AAAA', this.options)
-    console.log('BBBBBB', this.value)
   }
 
   ngAfterViewInit() {
