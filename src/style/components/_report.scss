@@ -49,7 +49,7 @@
         color: $walla-main;
         font-weight: $font-weight-chunky;
       }
-      mat-icon ::ng-deep {
+      tsl-svg-icon ::ng-deep {
         g g, path {
           fill: $walla-main;
         }

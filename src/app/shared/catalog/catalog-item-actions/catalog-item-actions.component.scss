@@ -43,14 +43,14 @@ $height: 40px;
         background: $negative-main;
         border-color: transparent;
         color: $white;
-        mat-icon ::ng-deep {
+        tsl-svg-icon ::ng-deep {
           svg g g, svg path {
             fill: $white;
           }
         }
       }
       &:disabled {
-        mat-icon ::ng-deep {
+        tsl-svg-icon ::ng-deep {
           svg g g, svg path {
             fill: $blue-grey-2;
           }

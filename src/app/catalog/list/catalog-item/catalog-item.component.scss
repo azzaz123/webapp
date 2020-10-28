@@ -135,7 +135,7 @@ $feature-button-width: 170px;
       background-color: $white;
       margin-right: $spacing-s;
       padding: 0;
-      mat-icon ::ng-deep {
+      tsl-svg-icon ::ng-deep {
         svg g g,
         svg path {
           fill: $blue-grey-2;
@@ -143,7 +143,7 @@ $feature-button-width: 170px;
       }
       &:hover,
       &.active {
-        mat-icon ::ng-deep {
+        tsl-svg-icon ::ng-deep {
           svg g g,
           svg path {
             fill: $white;
@@ -226,7 +226,7 @@ $feature-button-width: 170px;
     font-weight: $font-weight-chunky;
     border-radius: 20px;
     color: $white;
-    mat-icon ::ng-deep {
+    tsl-svg-icon ::ng-deep {
       svg g g,
       svg path {
         fill: $white;
@@ -237,7 +237,7 @@ $feature-button-width: 170px;
       border-color: $blue-grey-1;
       color: $blue-grey-1;
       border: solid 1px rgba(207, 216, 220, 0.5);
-      mat-icon ::ng-deep {
+      tsl-svg-icon ::ng-deep {
         svg g g,
         svg path {
           fill: $blue-grey-1;

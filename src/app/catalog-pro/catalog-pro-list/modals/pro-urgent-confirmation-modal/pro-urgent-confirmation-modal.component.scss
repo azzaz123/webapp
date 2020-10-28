@@ -68,7 +68,7 @@ $feature-button-width: 170px;
     }
     &:hover {
       background-color: $color-social-background;
-      mat-icon ::ng-deep path {
+      tsl-svg-icon ::ng-deep path {
         fill: $color-social-fill;
       }
     }
