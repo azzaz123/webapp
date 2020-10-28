@@ -135,6 +135,14 @@ $feature-button-width: 170px;
       background-color: $white;
       margin-right: $spacing-s;
       padding: 0;
+      tsl-svg-icon {
+        width: 24px;
+        height: 24px;
+        ::ng-deep svg {
+          height: 100%;
+          width: 100%;
+        }
+      }
       tsl-svg-icon ::ng-deep {
         svg g g,
         svg path {

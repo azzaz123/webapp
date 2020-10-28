@@ -66,6 +66,10 @@ h1 {
       display: block;
       margin: 0 auto;
       margin-bottom: $spacing-ms;
+      ::ng-deep svg {
+        height: 100%;
+        width: 100%;
+      }
       & ::ng-deep path {
         fill: $blue-grey-1;
       }

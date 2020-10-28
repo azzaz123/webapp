@@ -9,4 +9,8 @@ tsl-svg-icon {
   width: 15px;
   margin-right: $spacing-s;
   display: inline-flex;
+  ::ng-deep svg {
+    height: 100%;
+    width: 100%;
+  }
 }

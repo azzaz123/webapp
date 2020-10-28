@@ -91,6 +91,10 @@ $subscription-mobile-card-height: $subscription-card-height + $spacing-ms;
     tsl-svg-icon {
       height: 40px;
       width: 40px;
+      ::ng-deep svg {
+        height: 100%;
+        width: 100%;
+      }
     }
   }
   &--subscribed {
