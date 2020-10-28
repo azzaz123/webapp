@@ -25,4 +25,8 @@ export class Option {
   get label(): string {
     return this.wrappedOption.label;
   }
+
+  get icon_id(): string {
+    return this.wrappedOption.icon_id;
+  }
 }

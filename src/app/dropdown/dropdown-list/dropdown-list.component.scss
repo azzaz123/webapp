@@ -55,10 +55,17 @@
 
       li {
         cursor: pointer;
+        display: flex;
+        align-items: center;
         user-select: none;
         padding: $spacing-ms;
         border-top: 1px solid $blue-grey-5;
         line-height: $line-height-l;
+
+        .icon{
+          margin-right: $spacing-ms;
+        }
+
         mat-icon {
           @include square(38px);
           vertical-align: middle !important;

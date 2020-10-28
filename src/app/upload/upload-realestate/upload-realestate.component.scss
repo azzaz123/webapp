@@ -33,17 +33,6 @@
 
 #condition ::ng-deep tsl-dropdown-list > div {
   .options ul li {
-    background-repeat: no-repeat;
-    background-position: $spacing-s;
-    padding-left: $spacing-xxxl !important;
-    &:nth-child(1) {
-      background-image: url(/assets/icons/new_construction.svg);
-    }
-    &:nth-child(2) {
-      background-image: url(/assets/icons/to_reform.svg);
-    }
-    &:nth-child(3) {
-      background-image: url(/assets/icons/mint.svg);
-    }
+    padding: $spacing-s !important;
   }
 }

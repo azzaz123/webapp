@@ -38,7 +38,8 @@ export class RealestateKeysService {
       .pipe(map((keys: Key[]) => {
         return keys.map((item: Key) => ({
           value: item.id,
-          label: item.text
+          label: item.text,
+          icon_id: `assets/icons/${item.icon_id}.svg`
         }));
       }));
   }

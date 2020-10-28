@@ -46,8 +46,8 @@ export class CarKeysService {
   private toSelectOptions(values: any[]): IOption[] {
     return values.map(item => ({
       value: item.id,
-      label: item.text
+      label: item.text,
+      icon_id: `assets/icons/${item.icon_id}.svg`
     }));
   }
-
 }

@@ -13,6 +13,7 @@
           [ngClass]="{'highlighted': option.highlighted, 'selected': option.selected, 'disabled': option.disabled}"
           (click)="onOptionClick(option)" (mouseover)="onOptionMouseover(option)">
           <ng-container *ngTemplateOutlet="optionTemplate; context:{option: option.wrappedOption}"></ng-container>
+          <img *ngIf="!optionTemplate && option.icon_id" class="icon" [src]="option.icon_id">
           <span *ngIf="!optionTemplate">{{option.label}}</span>
         </li>
         <li *ngIf="!optionList.hasShown" class="message">{{notFoundMsg}}</li>
