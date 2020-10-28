@@ -2,7 +2,6 @@ import { mergeMap, map, filter, distinctUntilChanged, finalize } from 'rxjs/oper
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { DomSanitizer, Title } from '@angular/platform-browser';
 import { configMoment } from './config/moment.config';
-import { configIcons } from './config/icons.config';
 import { MatIconRegistry } from '@angular/material';
 import { ActivatedRoute, NavigationEnd, NavigationStart, RouteConfigLoadEnd, RouteConfigLoadStart, Router } from '@angular/router';
 import { environment } from '../environments/environment';
@@ -72,12 +71,11 @@ export class AppComponent implements OnInit {
     this.initializeRouterEventListeners();
   }
 
-  private initializeConfigs() {
+  private initializeConfigs(): void {
     configMoment(this.i18n.locale);
-    configIcons(this.matIconRegistry, this.sanitizer);
   }
 
-  private initializeServices() {
+  private initializeServices(): void {
     this.didomiService.initialize();
     this.stripeService.init();
     this.analyticsService.initialize();
@@ -88,27 +86,27 @@ export class AppComponent implements OnInit {
   }
 
   // TODO: This should be encapsualted in a service (e.g.: BrazeService)
-  private initializeBraze() {
+  private initializeBraze(): void {
     appboy.initialize(environment.appboy, { enableHtmlInAppMessages: true });
     // In app messages have been disabled until CLM fixes a problem with web communications
     // appboy.display.automaticallyShowNewInAppMessages();
     // appboy.registerAppboyPushMessages();
   }
 
-  private initializeEventListeners() {
+  private initializeEventListeners(): void {
     this.subscribeEventUserLogin();
     this.subscribeEventUserLogout();
     this.subscribeChatEvents();
     this.subscribeEventItemUpdated();
   }
 
-  private initializeRouterEventListeners() {
+  private initializeRouterEventListeners(): void {
     this.updateUrlAndSendAnalytics();
     this.setTitle();
     this.setBodyClass();
   }
 
-  private handleUserLoggedIn(user: User, accessToken: string) {
+  private handleUserLoggedIn(user: User, accessToken: string): void {
     this.userService.sendUserPresenceInterval(this.sendPresenceInterval);
     this.initRealTimeChat(user, accessToken);
     appboy.changeUser(user.id);
@@ -119,7 +117,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  private handleUserLoggedOut(redirectUrl: string) {
+  private handleUserLoggedOut(redirectUrl: string): string | void {
     this.trackingService.track(TrackingService.MY_PROFILE_LOGGED_OUT);
     this.paymentService.deleteCache();
 
@@ -140,7 +138,7 @@ export class AppComponent implements OnInit {
     this.renderer.addClass(document.body.parentElement, 'blocked-page');
   }
 
-  private updateUrlAndSendAnalytics() {
+  private updateUrlAndSendAnalytics(): void {
     this.router.events.pipe(distinctUntilChanged((previous: any, current: any) => {
       if (current instanceof NavigationEnd) {
         this.previousUrl = previous.url;
@@ -154,7 +152,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  private updateSessionCookie() {
+  private updateSessionCookie(): void {
     const name = 'app_session_id';
     const token = this.uuidService.getUUID();
     const expiration = 900000;
@@ -167,11 +165,11 @@ export class AppComponent implements OnInit {
     this.cookieService.put(name, token, options);
   }
 
-  private trackAppOpen() {
+  private trackAppOpen(): void {
     this.trackingService.track(TrackingService.APP_OPEN, { referer_url: this.previousUrl, current_url: this.currentUrl });
   }
 
-  private subscribeEventUserLogin() {
+  private subscribeEventUserLogin(): void {
     this.event.subscribe(EventService.USER_LOGIN, (accessToken: string) => {
       this.setLoading(true);
       this.userService.me()
@@ -180,7 +178,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  private initRealTimeChat(user: User, accessToken: string) {
+  private initRealTimeChat(user: User, accessToken: string): void {
     this.event.subscribe(EventService.CHAT_RT_CONNECTED, () => {
       this.initCalls();
       this.inboxService.init();
@@ -188,7 +186,7 @@ export class AppComponent implements OnInit {
     this.realTime.connect(user.id, accessToken);
   }
 
-  private initCalls() {
+  private initCalls(): void {
     this.userService.isProfessional().subscribe((isProfessional: boolean) => {
       if (isProfessional) {
         this.callService.init().subscribe(() => this.callService.init(true).subscribe());
@@ -196,11 +194,11 @@ export class AppComponent implements OnInit {
     });
   }
 
-  private subscribeEventUserLogout() {
+  private subscribeEventUserLogout(): void {
     this.event.subscribe(EventService.USER_LOGOUT, (redirectUrl: string) => this.handleUserLoggedOut(redirectUrl));
   }
 
-  private subscribeChatEvents() {
+  private subscribeChatEvents(): void {
     this.event.subscribe(EventService.CHAT_RT_DISCONNECTED, () => {
       if (this.userService.isLogged && this.connectionService.isConnected) {
         this.realTime.reconnect();
@@ -210,7 +208,7 @@ export class AppComponent implements OnInit {
     this.subscribeUnreadMessages();
   }
 
-  private subscribeUnreadMessages() {
+  private subscribeUnreadMessages(): void {
     this.messageService.totalUnreadMessages$.subscribe((unreadMessages: number) => {
       let title: string = this.titleService.getTitle().split(') ')[1];
       title = title ? title : this.titleService.getTitle();
@@ -221,7 +219,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  private subscribeEventItemUpdated() {
+  private subscribeEventItemUpdated(): void {
     const syncItem = (item: Item) => {
       this.callService.syncItem(item);
     };
@@ -230,7 +228,7 @@ export class AppComponent implements OnInit {
     this.event.subscribe(EventService.ITEM_RESERVED, syncItem);
   }
 
-  private setTitle() {
+  private setTitle(): void {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
       map(() => this.activatedRoute),
@@ -257,7 +255,7 @@ export class AppComponent implements OnInit {
       });
   }
 
-  private setBodyClass() {
+  private setBodyClass(): void {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         if (this.previousSlug) {
