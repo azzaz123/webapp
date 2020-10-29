@@ -1,6 +1,6 @@
 <div class="Dropdown-list" [ngClass]="{'below': isBelow, 'above': !isBelow}"
   [ngStyle]="{'top.px': top, 'left.px': left, 'width.px': width}">
-  <ng-container *ngIf="!isLoading; else loading">
+  <ng-container *ngIf="!isLoading && optionList.hasValues; else loading">
 
     <div class="filter" *ngIf="!multiple && filterEnabled">
       <input #filterInput autocomplete="off" [placeholder]="placeholder" (click)="onSingleFilterClick()"

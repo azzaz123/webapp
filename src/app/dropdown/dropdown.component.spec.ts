@@ -2,6 +2,7 @@ import { SimpleChange } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DropdownComponent } from './dropdown.component';
+import { OptionList } from './utils/option-list';
 import { OPTIONS } from './utils/options.fixtures.spec';
 
 describe('DropdownComponent', () => {
@@ -18,6 +19,7 @@ describe('DropdownComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DropdownComponent);
     component = fixture.componentInstance;
+    component.optionList = new OptionList([]);
   });
 
   describe('Placeholder', () => {

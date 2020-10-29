@@ -51,7 +51,7 @@ export class DropdownComponent implements OnInit {
   @ContentChild('optionTemplate', { static: false }) optionTemplate: TemplateRef<any>;
 
   private _value: Array<any> = [];
-  optionList: OptionList = new OptionList([]);
+  optionList: OptionList;
 
   // View state variables.
   hasFocus: boolean = false;

@@ -14,6 +14,7 @@ export class OptionList {
   private _highlightedOption: Option = null;
   private _hasShown: boolean;
   private _hasSelected: boolean;
+  private _hasValues: boolean;
 
   get hasShown(): boolean {
     return this._hasShown;
@@ -21,12 +22,15 @@ export class OptionList {
   get hasSelected(): boolean {
     return this._hasSelected;
   }
+  get hasValues(): boolean {
+    return this._hasValues;
+  }
 
   constructor(options: Array<IOption>) {
 
-    if (typeof options === 'undefined' || options === null) {
-      options = [];
-    }
+    this._hasValues = options != null;
+
+    if (!this.hasValues) { options = []; }
 
     this._options = options.map((option) => {
       let o: Option = new Option(option);
