@@ -146,7 +146,6 @@ export class CartComponent implements OnInit, OnDestroy {
     this.trackingService.track(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, attributes);
 
     ga('send', 'event', 'Item', 'bump-cart');
-    gtag('event', 'conversion', { 'send_to': 'AW-829909973/oGcOCL7803sQ1dfdiwM' });
     fbq('track', 'Purchase', {
           value: this.cart.total,
           currency: 'EUR',

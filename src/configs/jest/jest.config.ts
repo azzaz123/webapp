@@ -44,7 +44,6 @@ Object.defineProperty(window, 'Criteo', { value: GLOBAL_MOCKS.MOCK_CRITEO });
 Object.defineProperty(window, 'Didomi', { value: GLOBAL_MOCKS.MOCK_DIDOMI });
 Object.defineProperty(window, 'fbq', { value: GLOBAL_MOCKS.MOCK_FBQ, writable: true });
 Object.defineProperty(window, 'ga', { value: GLOBAL_MOCKS.MOCK_GA });
-Object.defineProperty(window, 'gtag', { value: GLOBAL_MOCKS.MOCK_GTAG });
 Object.defineProperty(window, 'googletag', { value: GLOBAL_MOCKS.MOCK_GOOGLE_TAG });
 Object.defineProperty(window, 'localStorage', { value: GLOBAL_MOCKS.MOCK_LOCALSTORAGE });
 Object.defineProperty(window, 'location', { value: GLOBAL_MOCKS.MOCK_LOCATION });
