@@ -25,8 +25,6 @@
   <translation id="cancelButton">Cancelar</translation>
   <translation id="deleteButton">Borrar</translation>
   <translation id="7022070615528435141">Borrar</translation>
-  <translation id="7008439939460403347">Reportar</translation>
-  <translation id="568597304214607466">Estoy reportando a este usuario porque...</translation>
   <translation id="20327443157350316">Bloquear usuario</translation>
   <translation id="5871136368461493241">No podrás enviar o recibir mensajes de este usuario. ¿Deseas continuar?</translation>
   <translation id="420763834450076269">Bloquear</translation>
@@ -44,8 +42,6 @@
   <translation id="newMessages">Nuevos mensajes</translation>
   <translation id="7443033219479243959">Servicio no disponible temporalmente.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Inténtelo de nuevo más tarde.</translation>
   <translation id="4896863464728200563">Escribe un mensaje...</translation>
-  <translation id="3093507871243266697">Esperando red...</translation>
-  <translation id="3208980041287937682">Conectado</translation>
   <translation id="4095254644079775415" desc="The distance between the user and the item">A <ph name="DISTANCE"><ex>DISTANCE</ex></ph>km de ti</translation>
   <translation id="9119757647796405986">Sin localización</translation>
   <translation id="1166265010439249641">Responde en menos de 1 hora</translation>
@@ -58,7 +54,6 @@
   <translation id="8998211649643752990">Estamos cargando todos tus mensajes por primera vez. Estarán disponibles antes de que acaben las obras de la Sagrada Família, un abrazo.</translation>
   <translation id="4814285799071780083">Eliminar</translation>
   <translation id="4338022632676445411">Vendido</translation>
-  <translation id="6543433128416987560">Reservado</translation>
   <translation id="8212177249756365917">Eliminar</translation>
   <translation id="6452372740127749380">Mensajes</translation>
   <translation id="1064116145041965896">Cita</translation>
@@ -202,7 +197,6 @@
   <translation id="3870006899502072841">Borrar producto de favoritos</translation>
   <translation id="3870268043917301466">¿Quieres eliminar definitivamente?</translation>
   <translation id="2874924373232293084">Reservar</translation>
-  <translation id="8016649850785953911">Anular reserva</translation>
   <translation id="596181013964941327">Reactivar</translation>
   <translation id="3762527362373672599">¡Enhorabuena!</translation>
   <translation id="8914444864521670589">Has vendido <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></translation>
@@ -426,7 +420,7 @@
   <translation id="7239750919884229270">Actualizado</translation>
   <translation id="6140925356015461504"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph></translation>
   <translation id="708449889891136724"><ph name="TOTAL_SELECTED"><ex>TOTAL_SELECTED</ex></ph> productos seleccionados</translation>
-  <translation id="6923676368903866016"><ph name="START_TAG_MAT_ICON"><ex>&lt;mat-icon&gt;</ex></ph><ph name="CLOSE_TAG_MAT_ICON"><ex>&lt;/mat-icon&gt;</ex></ph>Delete</translation>
+  <translation id="6923676368903866016"><ph name="START_TAG_TSL_SVG_ICON"><ex>&lt;tsl-svg-icon&gt;</ex></ph><ph name="CLOSE_TAG_TSL_SVG_ICON"><ex>&lt;/tsl-svg-icon&gt;</ex></ph>Delete</translation>
   <translation id="5322473252816589112">Desactivar</translation>
   <translation id="4759723562137600498">Activar</translation>
   <translation id="13886945388572438">Destácalo</translation>
@@ -606,9 +600,6 @@
   <translation id="8421470283413526010">¡<ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{pack.forFree | number}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph><ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>{{pack.forFree | customCurrency}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph> de regalo!</translation>
   <translation id="6181907632373133266">Chats</translation>
   <translation id="2123659921722214537">Visualizaciones</translation>
-  <translation id="3537961834218859224">Te lo aseguramos</translation>
-  <translation id="5984580705945066559">Calcula el seguro gratis </translation>
-  <translation id="5856234352867328880">Financia esta compra</translation>
   <translation id="6174997588475722860">Recuerda que tu saldo y los packs de ahorro solo están (por el momento) disponibles en web.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Una vez cargado tu saldo, tiene un año de vigencia.</translation>
   <translation id="7356703231883565314">El uso de los wallacoins es exclusivo para la compra de Destacados. Recuerda que solo están (por el momento) disponibles en web.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>No se puede intercambiar por Euros y tienen un año de vigencia.</translation>
   <translation id="2767524293310239820">Los wallacoins te ayudarán a comprar Destacados. Aquí podrás conseguirlos y ver tu saldo disponible.</translation>
@@ -737,7 +728,7 @@
   <translation id="5342432350421167093">Nombre</translation>
   <translation id="3586674587150281199">Apellidos</translation>
   <translation id="4644971093370005279">Web:</translation>
-  <translation id="2322741539330475902">Catálogo <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="START_TAG_MAT_ICON"><ex>&lt;mat-icon&gt;</ex></ph><ph name="CLOSE_TAG_MAT_ICON"><ex>&lt;/mat-icon&gt;</ex></ph>Pro<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="1061832772714507183">Catálogo <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="START_TAG_TSL_SVG_ICON"><ex>&lt;tsl-svg-icon&gt;</ex></ph><ph name="CLOSE_TAG_TSL_SVG_ICON"><ex>&lt;/tsl-svg-icon&gt;</ex></ph>Pro<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="792930787826735850">Tu perfil</translation>
   <translation id="4086606389696938932">Cuenta</translation>
   <translation id="5722353260643724736">Método de pago</translation>
@@ -746,13 +737,10 @@
   <translation id="5298644184637702922">Esto archivará la conversación.</translation>
   <translation id="archiveButton">Archivar</translation>
   <translation id="6288847433566396172">Desarchivar conversación</translation>
-  <translation id="3205414127595653303">Esto desarchivará la cconversación.</translation>
-  <translation id="1121513541518618634">Desarchivar</translation>
   <translation id="3094139520905825563">Elija una conversación<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
             de la lista de la izquierda</translation>
   <translation id="6105231501608810838">Servicio no disponible por el momento.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
             Inténtelo de nuevo más tarde.</translation>
-  <translation id="7913053333994057167">Desarchivar conversación</translation>
   <translation id="inboxBox">Bandeja de Entrada</translation>
   <translation id="inboxArchivedBox">Mensajes Archivados</translation>
   <translation id="8721026914522212662">Archivado</translation>
@@ -983,6 +971,18 @@
   <translation id="3575157423161267350">Debes actualizar tu suscripción si quieres publicar más <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph></translation>
   <translation id="2475529887887098318"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>Ya has llegado al límite de <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph> que puedes publicar con una cuenta gratuita.<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></translation>
   <translation id="5156014220156743328">Siguiente paso</translation>
+  <translation id="7008439939460403347">Reportar</translation>
+  <translation id="568597304214607466">Estoy reportando a este usuario porque..</translation>
+  <translation id="7913053333994057167">Desarchivar conversación</translation>
+  <translation id="3205414127595653303">Esto desarchivará la conversación.</translation>
+  <translation id="1121513541518618634">Desarchivar</translation>
+  <translation id="3093507871243266697">Esperando red...</translation>
+  <translation id="3208980041287937682">Conectado</translation>
+  <translation id="8016649850785953911">Anular reserva</translation>
+  <translation id="3537961834218859224">Te lo aseguramos</translation>
+  <translation id="5984580705945066559">Calcula el seguro gratis</translation>
+  <translation id="5856234352867328880">Financia esta compra</translation>
+  <translation id="6543433128416987560">Reservado</translation>
 
   <!--Translations using keys-->
   <translation id="cardealerUpgradePlanContact">Para actualizar tu plan, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>{{email}}<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
