@@ -74,7 +74,8 @@ describe('RealestateKeysService', () => {
 
       expect(response).toEqual([{
         value: 'test',
-        label: 'test'
+        label: 'test',
+        icon_id: "assets/icons/test.svg"
       }]);
       expect(req.request.urlWithParams).toBe(expectedUrl);
       expect(req.request.method).toBe('GET');
