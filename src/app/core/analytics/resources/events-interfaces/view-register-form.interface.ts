@@ -6,11 +6,11 @@
  */
 
 /**
- * Close Register presentation screen
+ * Users view the register form to write their information in order to proceed with the registration process
  */
-export interface TapRegisterPresentationClose {
+export interface ViewRegisterForm {
   /**
-   * Identifier of the screen that the user tap to close the register
+   * Identifier of the screen of the register form
    */
-  screenId: number;
+  screenId: 221;
 }
