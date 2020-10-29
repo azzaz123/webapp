@@ -1,5 +1,4 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { MatIconModule } from '@angular/material';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 
@@ -32,7 +31,6 @@ describe('TooManyItemsModalComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        MatIconModule,
         RouterTestingModule
       ],
       declarations: [

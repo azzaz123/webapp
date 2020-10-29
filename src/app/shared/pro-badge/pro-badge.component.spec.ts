@@ -2,7 +2,6 @@ import { async, ComponentFixture, TestBed, getTestBed } from '@angular/core/test
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ProBadgeComponent } from './pro-badge.component';
-import { MatIconModule } from '@angular/material';
 import { UserService } from '../../core/user/user.service';
 import { By } from '@angular/platform-browser';
 
@@ -14,7 +13,7 @@ describe('ProBadgeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ MatIconModule ],
+      imports: [ ],
       providers: [{
         provide: UserService, useValue: {
           isPro: false

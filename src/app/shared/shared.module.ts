@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SpinnerComponent } from './spinner/spinner.component';
-import { MatIconModule } from '@angular/material';
 import { AdComponent } from './ad/ad.component';
 import { CustomCurrencyPipe, DateUntilDayPipe, DateCalendarPipe, CountdownPipe } from './pipes';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
@@ -83,7 +82,6 @@ import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
   imports: [
     CardModule,
     CommonModule,
-    MatIconModule,
     NgbModule,
     ReactiveFormsModule,
     FormsModule,

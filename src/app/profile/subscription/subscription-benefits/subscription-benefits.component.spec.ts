@@ -2,7 +2,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { SubscriptionBenefitsComponent } from './subscription-benefits.component';
-import { MatIconModule } from '@angular/material';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
 import { MockSubscriptionService, MOCK_SUBSCRIPTION_BENEFITS } from '../../../../tests/subscriptions.fixtures.spec';
 import { By } from '@angular/platform-browser';
@@ -13,7 +12,7 @@ describe('SubscriptionBenefitsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ MatIconModule ],
+      imports: [ ],
       declarations: [ SubscriptionBenefitsComponent ],
       providers: [
         { provide: SubscriptionsService, useClass: MockSubscriptionService }
