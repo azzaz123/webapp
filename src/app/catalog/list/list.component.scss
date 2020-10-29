@@ -28,7 +28,7 @@ tsl-spinner {
   align-items: center;
   justify-content: center;
   font-size: $font-size-s;
-  mat-icon {
+  tsl-svg-icon {
     ::ng-deep svg path {
       fill: $walla-main;
     }
@@ -59,7 +59,7 @@ tsl-selected-items {
 #catalog-empty-state {
   padding: 0 $spacing-ms;
   width: 100%;
-  mat-icon {
+  tsl-svg-icon {
     width: 100%;
     height: auto;
   }
@@ -67,4 +67,9 @@ tsl-selected-items {
 
 .List__title {
   margin-right: $spacing-ms;
+}
+
+.wing-size {
+  width: fit-content;
+  height: fit-content;
 }

@@ -7,11 +7,11 @@ import { Pack } from '../../core/payments/pack';
 export class SubscriptionIconPipe implements PipeTransform {
 
   transform(bump: Pack, selected?: any): any {
-    let iconName = 'plan-' + (bump.quantity <= 200 ? bump.quantity : bump.quantity <= 0 ? 10 : 'personal');
+    let iconName = '/assets/icons/plans/plan' + (bump.quantity <= 200 ? bump.quantity : bump.quantity <= 0 ? 10 : 'personal');
     if (selected) {
-      iconName += '-selected';
+      iconName += '_selected';
     }
-    return iconName;
+    return iconName + '.svg';
   }
 
 }

@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
 
 import { StatusIconComponent } from './status-icon.component';
-import { MatIconModule } from '@angular/material';
 
 describe('StatusIconComponent', () => {
   let component: StatusIconComponent;
@@ -9,7 +9,7 @@ describe('StatusIconComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [MatIconModule],
+      imports: [SvgIconModule],
       declarations: [StatusIconComponent]
     })
     .compileComponents();

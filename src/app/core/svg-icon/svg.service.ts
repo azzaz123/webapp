@@ -11,7 +11,8 @@ export class SvgService {
 
   public getIconByPath(path: string): Observable<string> {
     return this.httpClient.get(path, {
-      responseType: 'text'
+      responseType: 'text',
+      headers: { 'Content-Type': 'image/svg+xml'}
     });
   }
 }

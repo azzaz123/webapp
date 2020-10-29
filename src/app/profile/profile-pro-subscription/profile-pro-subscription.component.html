@@ -14,14 +14,14 @@
         <div class="packs">
           <div class="pack" *ngFor="let bump of getListings(perks?.subscription.listing.quantity)"
                [ngClass]="{'selected': perks?.subscription.listing.quantity === bump.quantity}">
-            <mat-icon [svgIcon]="bump | subscriptionIcon:(perks?.subscription.listing.quantity === bump.quantity)"></mat-icon>
+            <tsl-svg-icon [src]="bump | subscriptionIcon:(perks?.subscription.listing.quantity === bump.quantity)"></tsl-svg-icon>
             <div class="name">Plan {{bump.quantity}}</div>
             <div class="desc" i18n>Publish a maximum of {{bump.quantity}} cars</div>
             <a href="mailto:{{email}}" class="btn btn-block" i18n>Subscribe</a>
             <div class="expire"><span i18n>Subscribed since</span><br />{{perks?.subscription.listing.createDate | date:'mediumDate'}}</div>
           </div>
           <div class="pack personal" *ngIf="getListings(perks?.subscription.listing.quantity).length <= 2">
-            <mat-icon svgIcon="plan-personal-plus"></mat-icon>
+            <tsl-svg-icon src="/assets/icons/plans/personal2.svg"></tsl-svg-icon>
             <div class="name" i18n>Personal Plan</div>
             <div class="desc" i18n>We can work out the best plan for you</div>
             <a href="mailto:{{email}}" class="btn btn-block" i18n>Subscribe</a>
@@ -37,7 +37,7 @@
       <div class="row city-bumps">
         <div class="col">
           <h2>
-            <mat-icon svgIcon="bump-city-small"></mat-icon>
+            <tsl-svg-icon src="/assets/icons/bump-city-small.svg"></tsl-svg-icon>
             <span [hidden]="perks?.subscription.bump.total > 0" i18n>City visibility</span>
             <span [hidden]="perks?.subscription.bump.total === 0" i18n>City {{perks?.subscription.bump.total}} plan</span>
           </h2>
@@ -65,7 +65,7 @@
       <div class="row country-bumps">
         <div class="col">
           <h2>
-            <mat-icon svgIcon="bump-country-small"></mat-icon>
+            <tsl-svg-icon src="/assets/icons/bump-country-small.svg"></tsl-svg-icon>
             <span [hidden]="perks?.subscription.national.total > 0" i18n>Country visibility</span>
             <span [hidden]="perks?.subscription.national.total === 0" i18n>Country {{perks?.subscription.national.total}} plan</span>
           </h2>

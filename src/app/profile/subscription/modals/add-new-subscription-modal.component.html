@@ -1,7 +1,7 @@
 <div class="AddNewSubscription__box">
   <div class="AddNewSubscription__box-header">
     <div class="modal-close" (click)="activeModal.close()">
-      <mat-icon svgIcon="cross"></mat-icon>
+      <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
     </div>
     <h4 class="AddNewSubscription__box--title" i18n="@@SubscribeToPro">Subscribe to PRO</h4>
     <p class="AddNewSubscription__box--subtitle" i18n="@@ChooseSubscription">Choose a subscription and take your sales up to the next level.
@@ -77,7 +77,7 @@
           </div>
           <div>
             <div class="form-group">
-              <ng-select class="form-control" i18n-placeholder placeholder="Do you need an invoice?" (selected)="onInvoiceOptionSelect($event)" 
+              <ng-select class="form-control" i18n-placeholder placeholder="Do you need an invoice?" (selected)="onInvoiceOptionSelect($event)"
               id="invoiceOptions" [options]="invoiceOptions" [ngModel]="selectedInvoiceOption" noFilter="10">
               </ng-select>
             </div>
@@ -107,6 +107,7 @@
             <p class="AddNewSubscription__listing-limit-steps" i18n="@@step3of4">
               Step <span class="bold">3</span> of <span class="bold">4</span></p>
             <div class="AddNewSubscription__listing-limit-title" i18n="@@Invoice">Invoice</div>
+            <div class="AddNewSubscription__listing-limit-subtitle" i18n="@@AddNewSubscriptionModalStep3Subtitle">For services other than subscriptions (e.g. visibility packs) you won't receive invoices.</div>
           </div>
           <div>
             <tsl-profile-pro-billing [containerType]="'modal'" (billingInfoFormSaved)="onBillingInfoFormSaved()">

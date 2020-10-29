@@ -39,8 +39,8 @@
             <div *nguCarouselDef="let pack; let i = index" class="item">
               <tsl-pack-wallacoins [pack]="pack" [packIndex]="i + 1" (onBuy)="openBuyModal(pack, i + 1)"></tsl-pack-wallacoins>
             </div>
-            <mat-icon [hidden]="packsCarousel.isFirst" NguCarouselPrev svgIcon="slider-arrow" class="left-arrow"></mat-icon>
-            <mat-icon [hidden]="packsCarousel.isLast" NguCarouselNext svgIcon="slider-arrow" class="right-arrow"></mat-icon>
+            <tsl-svg-icon [hidden]="packsCarousel.isFirst" NguCarouselPrev src="/assets/icons/slider-arrow.svg" class="left-arrow"></tsl-svg-icon>
+            <tsl-svg-icon [hidden]="packsCarousel.isLast" NguCarouselNext src="/assets/icons/slider-arrow.svg" class="right-arrow"></tsl-svg-icon>
           </ngu-carousel>
 
           <h3 [hidden]="!withCoins" i18n>Why get Wallacoins?</h3>

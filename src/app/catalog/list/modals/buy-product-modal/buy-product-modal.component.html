@@ -1,8 +1,8 @@
 <div class="modal-close" (click)="activeModal.dismiss()">
-  <mat-icon svgIcon="cross"></mat-icon>
+  <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
 </div>
 <div class="spinner-wrapper" [hidden]="!mainLoading" >
-  <mat-icon svgIcon="spinner" class="spinner"></mat-icon>
+  <tsl-svg-icon src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
 </div>
 <div class="buy-modal" [hidden]="mainLoading" [class.with-credits]="withCredits">
   <div class="left image-col">

@@ -193,7 +193,7 @@
           opacity: 0.6;
           font-size: $font-size-m;
         }
-        mat-icon {
+        tsl-svg-icon {
           ::ng-deep path {
             fill: $white
           }

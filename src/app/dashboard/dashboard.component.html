@@ -47,7 +47,7 @@
         </div>
       </div>
       <div class="scroll-panel" [hidden]="!loading">
-        <mat-icon svgIcon="spinner" class="spinner" [hidden]="!loading"></mat-icon>
+        <tsl-svg-icon src="/assets/icons/spinner.svg" class="spinner" [hidden]="!loading"></tsl-svg-icon>
       </div>
       <div [hidden]="loading || hasConversations() || hasCalls()" class="stats-sidebar-completed">
         <div>

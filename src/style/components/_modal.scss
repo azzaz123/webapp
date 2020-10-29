@@ -30,24 +30,24 @@ $modal-border-radius: 0.3rem;
     top: 10px;
     z-index: 99;
     text-align: left;
-    mat-icon {
+    tsl-svg-icon {
       height: 15px;
       line-height: $line-height-xl;
       ::ng-deep path {
         fill: $blue-grey-4;
       }
     }
-    &:hover mat-icon ::ng-deep path {
+    &:hover tsl-svg-icon ::ng-deep path {
       fill: $blue-grey-1;
     }
     &.light {
-      mat-icon ::ng-deep path {
+      tsl-svg-icon ::ng-deep path {
         fill: $white;
         opacity: .5;
       }
     }
     &.grey {
-      mat-icon ::ng-deep path {
+      tsl-svg-icon ::ng-deep path {
         fill: $blue-grey-4;
       }
     }
@@ -263,7 +263,7 @@ $modal-border-radius: 0.3rem;
   .modal-close {
     left: 18px;
     top: 18px;
-    mat-icon {
+    tsl-svg-icon {
       @include square(18px);
     }
   }
@@ -360,7 +360,7 @@ $modal-border-radius: 0.3rem;
       top: 20px;
       right: 20px;
       @include square(13px);
-      mat-icon {
+      tsl-svg-icon {
         @include square(13px);
         line-height: unset;
       }
@@ -380,7 +380,7 @@ $modal-border-radius: 0.3rem;
     width: $modal-standard-width !important;
     max-width: unset;
     .modal-close:not(.light) {
-      mat-icon ::ng-deep path {
+      tsl-svg-icon ::ng-deep path {
         fill: $blue-grey-3;
       }
     }
@@ -436,7 +436,7 @@ $modal-border-radius: 0.3rem;
           @include square(34px);
           margin: 6px;
           cursor: pointer;
-          mat-icon {
+          tsl-svg-icon {
             @include square(18px);
             ::ng-deep path {
               fill: $blue-grey-3;
@@ -444,7 +444,7 @@ $modal-border-radius: 0.3rem;
           }
           &:hover {
             background-color: $color-social-background;
-            mat-icon ::ng-deep path {
+            tsl-svg-icon ::ng-deep path {
               fill: $color-social-fill;
             }
           }

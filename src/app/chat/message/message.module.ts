@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { MatIconModule } from '@angular/material';
 import { CommonModule } from '@angular/common';
 import { ThirdVoiceMessageComponent } from './third-voice-message';
 import { TextMessageComponent } from './text-message';
@@ -11,7 +10,6 @@ import { ThirdVoiceReviewComponent } from './third-voice-review';
 @NgModule({
   imports: [
     CommonModule,
-    MatIconModule,
     SharedModule
   ],
   declarations: [

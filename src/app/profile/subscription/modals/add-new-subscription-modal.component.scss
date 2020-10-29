@@ -32,6 +32,13 @@ $add-subscription-modal-content-default-height: 382px;
   font-weight: bold;
 }
 
+.AddNewSubscription__listing-limit-subtitle {
+  color: $blue-grey-2;
+  font-size: $font-size-s;
+  margin-top: $spacing-s;
+  padding: 0 $spacing-xxxl;
+}
+
 .AddNewSubscription__listing-limit-price {
   color: $blue-grey-1;
   font-size: $font-size-lll;
@@ -89,7 +96,7 @@ $add-subscription-modal-content-default-height: 382px;
 .AddNewSubscription__listing-limit-more {
   margin-top: $spacing-m;
   font-size: $font-size-s;
-  
+
   a {
     text-decoration: underline;
   }
@@ -124,7 +131,7 @@ $add-subscription-modal-content-default-height: 382px;
   position: relative;
   display: flex;
   justify-content: space-between;
-  
+
   &--line-top {
     padding: $spacing-m 0;
     &:before {
@@ -301,7 +308,7 @@ tsl-button ::ng-deep .simple.light  {
 .modal-close {
   width: $spacing-ms;
   height: $spacing-ms;
-  mat-icon {
+  tsl-svg-icon {
     width: $spacing-ms;
     height: $spacing-ms;
     line-height: $spacing-ms;

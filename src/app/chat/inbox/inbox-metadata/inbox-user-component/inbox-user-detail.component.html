@@ -6,11 +6,11 @@
     <h5 class="card-title text-truncate">{{user.microName}}</h5>
     <tsl-stars *ngIf="user.score > -1" [stars]="user.score" [normalized]="false"></tsl-stars>
     <div *ngIf="phoneNumber && !!item.isMine" class="call-wrapper">
-      <span class="call-shared"><mat-icon svgIcon="call-shared"></mat-icon></span>
+      <span class="call-shared"><tsl-svg-icon src="/assets/icons/call-shared.svg"></tsl-svg-icon></span>
       <span class="phone-number">{{phoneNumber}}</span>
     </div>
     <div class="user-location-distance text-truncate">
-      <mat-icon *ngIf="isDeviceSmall()" svgIcon="location" class="d-lg-none"></mat-icon>
+      <tsl-svg-icon *ngIf="isDeviceSmall()" src="/assets/icons/location.svg" class="d-lg-none"></tsl-svg-icon>
       <div [hidden]="!user.distanceInKm" class="text-truncate" i18n="The distance between the user and the item">
         {{user.distanceInKm | number:'1.0-1' // i18n(ph="DISTANCE")}}km from you
       </div>
@@ -18,7 +18,7 @@
     </div>
 
     <div class="user-response-rate text-truncate">
-      <mat-icon *ngIf="isDeviceSmall()" svgIcon="ico-message" class="d-lg-none"></mat-icon>
+      <tsl-svg-icon *ngIf="isDeviceSmall()" src="/assets/icons/ico-message.svg" class="d-lg-none"></tsl-svg-icon>
       <tsl-user-response-rate [responseRate]="user.responseRate" [showIcon]="false"
                               [ngClass]="{'font-weight-normal': isDeviceSmall(), 'font-weight-light': !isDeviceSmall()}"></tsl-user-response-rate>
     </div>

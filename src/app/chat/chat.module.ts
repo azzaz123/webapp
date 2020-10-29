@@ -4,7 +4,6 @@ import { InputComponent } from './input/input.component';
 import { ConnectionAlertComponent } from './connection-alert/connection-alert.component';
 import { NgbDropdownModule, NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
-import { MatIconModule } from '@angular/material';
 import { ItemComponent } from './item/item.component';
 import { SharedModule } from '../shared/shared.module';
 import { CommonModule } from '@angular/common';
@@ -33,12 +32,12 @@ import { AutosizeModule } from 'ngx-autosize';
 import { MessageModule } from './message/message.module';
 import { ConversationDetailsBarComponent } from './conversation-details-bar';
 import { MaliciousConversationModalComponent } from './modals/malicious-conversation-modal/malicious-conversation-modal.component';
+import { PersonalDataInformationModal } from './modals/personal-data-information-modal/personal-data-information-modal.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    MatIconModule,
     NgbTooltipModule,
     NgbDropdownModule,
     NgbModalModule,
@@ -72,7 +71,8 @@ import { MaliciousConversationModalComponent } from './modals/malicious-conversa
     InboxItemForSellComponent,
     ScrollingMessageComponent,
     ConversationDetailsBarComponent,
-    MaliciousConversationModalComponent
+    MaliciousConversationModalComponent,
+    PersonalDataInformationModal
   ],
   exports: [
     InboxConversationComponent
@@ -84,7 +84,8 @@ import { MaliciousConversationModalComponent } from './modals/malicious-conversa
     ReportUserComponent,
     BlockUserComponent,
     UnblockUserComponent,
-    MaliciousConversationModalComponent
+    MaliciousConversationModalComponent,
+    PersonalDataInformationModal
   ]
 })
 export class ChatModule {

@@ -13,10 +13,8 @@ export const MOCK_APPBOY = {
 };
 
 export const MOCK_GA = () => {};
-export const MOCK_GTAG = () => {};
 export const MOCK_FBQ = () => {};
 export const MOCK_PINTRK = () => {};
-export const MOCK_TWQ = () => {};
 
 export const MOCK_GOOGLE_TAG = {
   cmd: {

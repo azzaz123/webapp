@@ -2,7 +2,7 @@
   <ul class="list-group list-group-flush">
     <li class="list-group-item">
       <div>
-        <mat-icon svgIcon="location"></mat-icon>
+        <tsl-svg-icon src="/assets/icons/location.svg"></tsl-svg-icon>
         <span [hidden]="!user.itemDistance" i18n="The distance between the user and the item">{{user.itemDistance | number:'1.0-1' // i18n(ph="DISTANCE")}}km from you</span>
         <span [hidden]="user.itemDistance" i18n>No location</span>
       </div>

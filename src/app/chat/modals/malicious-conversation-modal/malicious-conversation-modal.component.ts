@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { AnalyticsPageView, ANALYTICS_EVENT_NAMES, ViewBannedUserChatPopUp } from 'app/core/analytics/analytics-constants';
+import { AnalyticsService } from 'app/core/analytics/analytics.service';
 
 @Component({
   selector: 'tsl-malicious-conversation-modal',
@@ -7,14 +9,20 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./malicious-conversation-modal.component.scss']
 })
 export class MaliciousConversationModalComponent implements OnInit {
+  public chatContext: ViewBannedUserChatPopUp;
 
-  constructor(public activeModal: NgbActiveModal) { }
+  constructor(public activeModal: NgbActiveModal,
+              private analyticsService: AnalyticsService) { }
 
   ngOnInit(): void {
     this.trackViewMaliciousModal();
   }
 
-  // TODO: TNS-925 - https://wallapop.atlassian.net/browse/TNS-925
   private trackViewMaliciousModal(): void {
+    const event: AnalyticsPageView<ViewBannedUserChatPopUp> = {
+      name: ANALYTICS_EVENT_NAMES.ViewBannedUserChatPopUp,
+      attributes: this.chatContext
+    };
+    this.analyticsService.trackPageView(event);
   }
 }
