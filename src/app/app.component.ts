@@ -2,7 +2,6 @@ import { mergeMap, map, filter, distinctUntilChanged, finalize } from 'rxjs/oper
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { DomSanitizer, Title } from '@angular/platform-browser';
 import { configMoment } from './config/moment.config';
-import { MatIconRegistry } from '@angular/material';
 import { ActivatedRoute, NavigationEnd, NavigationStart, RouteConfigLoadEnd, RouteConfigLoadStart, Router } from '@angular/router';
 import { environment } from '../environments/environment';
 import { CookieOptions, CookieService } from 'ngx-cookie';
@@ -48,7 +47,6 @@ export class AppComponent implements OnInit {
     private messageService: MessageService,
     private titleService: Title,
     private sanitizer: DomSanitizer,
-    private matIconRegistry: MatIconRegistry,
     private trackingService: TrackingService,
     private i18n: I18nService,
     private router: Router,

@@ -14,6 +14,8 @@ import { SessionProfileDataLocation } from 'app/core/trust-and-safety/trust-and-
 import { SEARCHID_STORAGE_NAME } from '../core/message/real-time.service';
 import { NgbModalOptions, NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SendPhoneComponent } from './modals';
+import { PersonalDataInformationModal } from './modals/personal-data-information-modal/personal-data-information-modal.component';
+import { USER_STRING_ID } from '../core/constants/string-ids.enum';
 
 @Component({
   selector: 'tsl-chat',
@@ -28,6 +30,7 @@ export class ChatComponent implements OnInit {
   public connectionError: boolean;
   public firstLoad: boolean;
   public isProfessional: boolean;
+  public USERS_SHOW_INFORMATIONAL_MODAL = [USER_STRING_ID.YA_ENCONTRE];
 
   constructor(public userService: UserService,
               private eventService: EventService,
@@ -139,6 +142,7 @@ export class ChatComponent implements OnInit {
       }
       if (conversation?.hasNoMessages) {
         this.openSendPhoneModalIfNeeded(conversation);
+        this.openPersonalDataWarningModalIfNeeded(conversation);
       }
     });
   }
@@ -155,5 +159,19 @@ export class ChatComponent implements OnInit {
     const modalOptions: NgbModalOptions = { windowClass: 'phone-request', backdrop: 'static', keyboard: false };
     const modalRef: NgbModalRef = this.modalService.open(SendPhoneComponent, modalOptions);
     modalRef.componentInstance.conversation = conversation;
+  }
+
+  private openPersonalDataWarningModalIfNeeded(conversation: InboxConversation): void {
+    const stringId = conversation.user.id as any;
+    if (this.USERS_SHOW_INFORMATIONAL_MODAL.includes(stringId)) {
+      this.openPersonalDataWarningModal(conversation);
+    }
+  }
+
+  private openPersonalDataWarningModal(conversation: InboxConversation): void {
+    this.modalService.open(PersonalDataInformationModal, { windowClass: 'warning' })
+    .result
+      .then(() => window.location.href = conversation.item.itemUrl)
+      .catch(() => null);
   }
 }

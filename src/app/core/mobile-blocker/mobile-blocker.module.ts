@@ -1,14 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MobileBlockerComponent } from './mobile-blocker.component';
-import { MatIconModule } from '@angular/material';
-import { SharedModule } from 'app/shared/shared.module';
+import { SvgIconModule } from '../svg-icon/svg-icon.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    MatIconModule,
-    SharedModule
+    SvgIconModule
   ],
   declarations: [
     MobileBlockerComponent

@@ -34,7 +34,7 @@ describe('CatalogCardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CatalogCardComponent, CustomCurrencyPipe ],
+      declarations: [ CatalogCardComponent, CustomCurrencyPipe, CountdownPipe ],
       providers: [
         DecimalPipe,
         I18nService,

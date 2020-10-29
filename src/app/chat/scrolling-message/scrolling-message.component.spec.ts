@@ -2,7 +2,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ScrollingMessageComponent } from './scrolling-message.component';
-import { MatIconModule } from '@angular/material';
 
 describe('ScrollingMessageComponent', () => {
   let component: ScrollingMessageComponent;
@@ -11,7 +10,6 @@ describe('ScrollingMessageComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        MatIconModule
       ],
       declarations: [
         ScrollingMessageComponent

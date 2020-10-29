@@ -1,7 +1,8 @@
 import { Environment } from './environment.interface';
+import { environment as environmentBeta } from './environment.beta';
 import { dockNum } from './docknum';
 
-export const environment: Environment = {
+const environmentLocal: Environment = {
   production: false,
   name: 'local',
   baseUrl: `https://apigw.dock${dockNum}.wallapop.com/`,
@@ -18,3 +19,5 @@ export const environment: Environment = {
   threatMetrixOrgId: '6ldgf22r',
   threatMetrixProfilingDomain: 'clear.wallapop.com'
 };
+
+export const environment = dockNum === 'beta' ? environmentBeta : environmentLocal;

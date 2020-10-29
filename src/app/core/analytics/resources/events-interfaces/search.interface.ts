@@ -109,7 +109,7 @@ export interface Search {
   garden?: boolean;
   garage?: boolean;
   condition?: "to_reform" | "new_construction" | "mint";
-  objectTypeId?: number;
+  objectTypeId?: string;
   brandModel?: string;
   size?: string;
   gender?: "female" | "male";
