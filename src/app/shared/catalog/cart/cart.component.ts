@@ -153,14 +153,6 @@ export class CartComponent implements OnInit, OnDestroy {
           content_ids: itemsIds,
           content_type: 'product',
     });
-    twq('track', 'Purchase', {
-      value: this.cart.total,
-      currency: 'EUR',
-      num_items: order.length,
-      content_ids: itemsIds,
-      content_type: 'product',
-      content_name: 'Bumps purchase'
-    });
   }
 
   public hasCard(hasCard: boolean) {
