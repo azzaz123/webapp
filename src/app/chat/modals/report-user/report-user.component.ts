@@ -35,7 +35,7 @@ export class ReportUserComponent implements OnInit {
   }
 
   private getSvgPath(reasonId: string): string {
-    let path: string = '/assets/icons/';
+    const path = '/assets/icons/';
     const pathCases: object = {
       '0': 'ghost.svg',
       '3': 'scam.svg',
@@ -45,6 +45,6 @@ export class ReportUserComponent implements OnInit {
       '7': 'defective.svg'
     };
 
-    return path + pathCases[reasonId];
+    return `${path}${pathCases[reasonId]}`;
   }
 }
