@@ -212,7 +212,8 @@ export class CartComponent implements OnInit, OnDestroy {
     this.setCardInfo(selectedCard);
   }
 
-  private handleIconPath(type: string): string {
-    return `/assets/icons/wing-${type.split('bump')[0]}.svg`;
+  public handleIconPath(type: string): string {
+    const iconBump = type.replace('bump', '');
+    return `/assets/icons/wing-${iconBump}.svg`;
   }
 }

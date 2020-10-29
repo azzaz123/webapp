@@ -136,8 +136,7 @@ $feature-button-width: 170px;
       margin-right: $spacing-s;
       padding: 0;
       tsl-svg-icon {
-        width: 24px;
-        height: 24px;
+        @include square(24px);
         ::ng-deep svg {
           height: 100%;
           width: 100%;
