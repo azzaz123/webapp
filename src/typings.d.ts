@@ -9,7 +9,6 @@ declare let Visibility: any;
 declare let analytics: any;
 declare let appboy: any;
 declare let ga: Function;
-declare let gtag: Function;
 declare let fbq: Function;
 declare let pintrk: Function;
 declare let googletag: any;
