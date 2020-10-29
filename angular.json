@@ -41,8 +41,7 @@
             ],
             "scripts": [
               "node_modules/stanza.io/build/stanzaio.bundle.js",
-              "node_modules/visibilityjs/lib/visibility.core.js",
-              "src/assets/js/adsConfig.js"
+              "node_modules/visibilityjs/lib/visibility.core.js"
             ]
           },
           "configurations": {
