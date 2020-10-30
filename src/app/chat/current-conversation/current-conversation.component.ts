@@ -36,6 +36,8 @@ import { MaliciousConversationModalComponent } from '../modals/malicious-convers
 import { AnalyticsService } from 'app/core/analytics/analytics.service';
 import { UserService } from 'app/core/user/user.service';
 
+import * as Visibility from 'visibilityjs';
+
 @Component({
   selector: 'tsl-current-conversation',
   templateUrl: './current-conversation.component.html',
