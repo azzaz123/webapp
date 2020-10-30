@@ -24,9 +24,6 @@ Object.defineProperty(window, 'getComputedStyle', {
 // More info about the issue: https://github.com/thymikee/jest-preset-angular/issues/347
 import '@angular/localize/init';
 
-// Ads "polyfills"
-import '../../assets/js/adsConfig.js';
-
 // Prototype overrides
 Element.prototype.scrollIntoView = () => {};
 
