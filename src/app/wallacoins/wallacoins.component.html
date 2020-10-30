@@ -34,35 +34,55 @@
           <h3 [hidden]="withCoins" i18n>Saving packs</h3>
           <p [hidden]="!withCoins" i18n>We've definitely got a pack for you that will save you money.</p>
           <p [hidden]="withCoins" i18n>These are our ready to go packs; use them to save money when buying features.</p>
+          <div *ngIf="packs?.length" class="carousel-container">
+            <mat-icon *ngIf="ngbCarrousel" svgIcon="slider-arrow" class="left-arrow" (click)="ngbCarrousel.prev()"
+              [ngClass]="{'disabled': ngbCarrousel.activeId === ngbCarrousel.slides.first.id}"></mat-icon>
+            <ngb-carousel interval="0" [showNavigationIndicators]="false" [wrap]="false" [showNavigationArrows]="false">
+              <ng-container *ngFor="let pack of packs; let i = index">
+                <ng-template ngbSlide *ngIf="i < packs.length - 2">
+                  <div class="carousel-slider">
+                    <tsl-pack-wallacoins [pack]="packs[i]" [packIndex]="i + 1" (onBuy)="openBuyModal(packs[i], i + 1)">
+                    </tsl-pack-wallacoins>
+                    <tsl-pack-wallacoins [pack]="packs[i + 1]" [packIndex]="i + 2"
+                      (onBuy)="openBuyModal(packs[i + 1], i + 2)">
+                    </tsl-pack-wallacoins>
+                    <tsl-pack-wallacoins [pack]="packs[i + 2]" [packIndex]="i + 3"
+                      (onBuy)="openBuyModal(packs[i + 2], i + 3)">
+                    </tsl-pack-wallacoins>
+                  </div>
+                </ng-template>
+              </ng-container>
+            </ngb-carousel>
+            <mat-icon *ngIf="ngbCarrousel" svgIcon="slider-arrow" class="right-arrow"
+              [ngClass]="{'disabled': ngbCarrousel.activeId === ngbCarrousel.slides.last.id}"
+              (click)="ngbCarrousel.next()"></mat-icon>
+          </div>
 
-          <ngu-carousel #packsCarousel [inputs]="carouselOptions" [dataSource]="packs" *ngIf="packs?.length">
-            <div *nguCarouselDef="let pack; let i = index" class="item">
-              <tsl-pack-wallacoins [pack]="pack" [packIndex]="i + 1" (onBuy)="openBuyModal(pack, i + 1)"></tsl-pack-wallacoins>
-            </div>
-            <mat-icon [hidden]="packsCarousel.isFirst" NguCarouselPrev svgIcon="slider-arrow" class="left-arrow"></mat-icon>
-            <mat-icon [hidden]="packsCarousel.isLast" NguCarouselNext svgIcon="slider-arrow" class="right-arrow"></mat-icon>
-          </ngu-carousel>
 
           <h3 [hidden]="!withCoins" i18n>Why get Wallacoins?</h3>
           <h3 [hidden]="withCoins" i18n>Why buy a pack of features?</h3>
           <div class="info" [hidden]="!withCoins">
             <div class="info-1">
               <h4 i18n>One coin for everyone</h4>
-              <p i18n>Our visibility options can now be unlocked with a new key: Wallacoins. Our new currency for your features with unique benefits.</p>
+              <p i18n>Our visibility options can now be unlocked with a new key: Wallacoins. Our new currency for your
+                features with unique benefits.</p>
             </div>
             <div class="info-2">
               <h4 i18n>Now, save</h4>
-              <p i18n>You can save money with Wallacoins. When you buy one our our packs, we will give you more wallacoins and that means you can feature more of your listings for less!</p>
+              <p i18n>You can save money with Wallacoins. When you buy one our our packs, we will give you more
+                wallacoins and that means you can feature more of your listings for less!</p>
             </div>
             <div class="info-3">
               <h4 i18n>Quick! Quick!</h4>
-              <p i18n>Buying with Wallacoins is even faster. Add them to your wallet and pay with them directly when you want to feature a listing.</p>
+              <p i18n>Buying with Wallacoins is even faster. Add them to your wallet and pay with them directly when you
+                want to feature a listing.</p>
             </div>
           </div>
           <div class="info" [hidden]="withCoins">
             <div class="info-1">
               <h4 i18n>Pay once and forget about it</h4>
-              <p i18n>Rather than paying every time you want to feature a listing; do it just once and use your features whenever you want. It's faster and easier.</p>
+              <p i18n>Rather than paying every time you want to feature a listing; do it just once and use your features
+                whenever you want. It's faster and easier.</p>
             </div>
             <div class="info-2">
               <h4 i18n>Now, save</h4>
@@ -70,13 +90,17 @@
             </div>
             <div class="info-3">
               <h4 i18n>Quick! Quick!</h4>
-              <p i18n>Buying with credit is even faster. Add them to your wallet and pay with them directly when you want to feature a listing.</p>
+              <p i18n>Buying with credit is even faster. Add them to your wallet and pay with them directly when you
+                want to feature a listing.</p>
             </div>
           </div>
         </div>
       </div>
-      <p class="disclaimer" i18n [hidden]="!withCoins">Wallacoins are only available in website.<br />You can use them to feature your items. Wallacoins that are purchased will expire 12 months after they are added to your Credit. Wallacoins are non-refundable, and can't be converted back into money once purchased.</p>
-      <p class="disclaimer" i18n [hidden]="withCoins">Your Credit and our Saving Packs are only available (for now) on the website.<br />Once your Credit is purchased will expire 12 months after.</p>
+      <p class="disclaimer" i18n [hidden]="!withCoins">Wallacoins are only available in website.<br />You can use them
+        to feature your items. Wallacoins that are purchased will expire 12 months after they are added to your Credit.
+        Wallacoins are non-refundable, and can't be converted back into money once purchased.</p>
+      <p class="disclaimer" i18n [hidden]="withCoins">Your Credit and our Saving Packs are only available (for now) on
+        the website.<br />Once your Credit is purchased will expire 12 months after.</p>
     </div>
   </div>
 </div>

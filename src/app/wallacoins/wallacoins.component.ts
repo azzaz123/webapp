@@ -1,13 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { PaymentService } from '../core/payments/payment.service';
 import { Pack } from '../core/payments/pack';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCarousel, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { BuyWallacoinsModalComponent } from './buy-wallacoins-modal/buy-wallacoins-modal.component';
 import { PerksModel } from '../core/payments/payment.model';
 import { WallacoinsConfirmModalComponent } from './wallacoins-confirm-modal/wallacoins-confirm-modal.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from '../core/event/event.service';
-import { NguCarousel, NguCarouselConfig } from '@ngu/carousel';
 import { TrackingService } from '../core/tracking/tracking.service';
 import { UserService } from '../core/user/user.service';
 import { WallacoinsTutorialComponent } from './wallacoins-tutorial/wallacoins-tutorial.component';
@@ -24,11 +23,11 @@ export class WallacoinsComponent implements OnInit {
 
   public packs: Pack[];
   public wallacoins: number = 0;
-  public carouselOptions: NguCarouselConfig;
   public currencyName: string;
   public factor: number;
   public loading = true;
   private localStorageName = '-wallacoins-tutorial';
+  @ViewChild(NgbCarousel) ngbCarrousel: NgbCarousel;
 
   constructor(private paymentService: PaymentService,
     private modalService: NgbModal,
@@ -36,7 +35,8 @@ export class WallacoinsComponent implements OnInit {
     private route: ActivatedRoute,
     private trackingService: TrackingService,
     private router: Router,
-    private userService: UserService) {
+    private userService: UserService,
+    private cd: ChangeDetectorRef) {
 
     this.userService.isProfessional().subscribe((value: boolean) => {
       if (value) {
@@ -47,16 +47,6 @@ export class WallacoinsComponent implements OnInit {
 
   ngOnInit() {
     this.openTutorialModal();
-    this.carouselOptions = {
-      grid: { xs: 3, sm: 3, md: 3, lg: 3, all: 0 },
-      slide: 1,
-      speed: 400,
-      point: {
-        visible: false
-      },
-      loop: false,
-      custom: 'banner'
-    };
     this.paymentService.getCreditsPacks().subscribe((packs: Pack[]) => {
       this.packs = packs;
       this.currencyName = this.packs[0].name;
@@ -75,6 +65,10 @@ export class WallacoinsComponent implements OnInit {
         }
       }
     });
+  }
+
+  ngAfterContentChecked() {
+    this.cd.detectChanges();
   }
 
   get withCoins(): boolean {

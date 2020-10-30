@@ -9,7 +9,6 @@ import { MatIconModule } from '@angular/material';
 import { WallacoinsConfirmModalComponent } from './wallacoins-confirm-modal/wallacoins-confirm-modal.component';
 import { TrackingModule } from '../core/tracking/tracking.module';
 import { PackWallacoinsComponent } from './pack-wallacoins/pack-wallacoins.component';
-import { NguCarouselModule } from '@ngu/carousel';
 import { WallacoinsTutorialComponent } from './wallacoins-tutorial/wallacoins-tutorial.component';
 
 @NgModule({
@@ -20,7 +19,6 @@ import { WallacoinsTutorialComponent } from './wallacoins-tutorial/wallacoins-tu
     NgbCarouselModule,
     FormsModule,
     MatIconModule,
-    NguCarouselModule,
     TrackingModule,
     NgbCarouselModule
   ],
