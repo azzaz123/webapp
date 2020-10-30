@@ -5,7 +5,7 @@ import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ITEM_ID } from '../../../tests/item.fixtures.spec';
 import { Observable, of, throwError } from 'rxjs';
-import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { EventService } from '../../core/event/event.service';
@@ -78,7 +78,6 @@ describe('ConversationDetailsBarComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         SharedModule,
-        NgbModule,
         NgxPermissionsModule.forRoot()
       ],
       declarations: [ConversationDetailsBarComponent],
