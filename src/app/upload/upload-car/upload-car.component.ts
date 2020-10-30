@@ -293,7 +293,7 @@ export class UploadCarComponent implements OnInit {
       .pipe(finalize(() => this.isLoadingModels = false))
       .subscribe((models: IOption[]) => {
         this.models = models;
-      });;
+      });
   }
 
   private getYears(): void {
