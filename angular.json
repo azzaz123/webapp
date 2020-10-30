@@ -34,7 +34,8 @@
               "src/doubleclick",
               "src/eyeblaster",
               "src/flashtalking",
-              "src/ftlocal"
+              "src/ftlocal",
+              "src/manifest.webmanifest"
             ],
             "styles": [
               "src/style/styles.scss"
@@ -116,7 +117,9 @@
                   "maximumWarning": "6kb",
                   "maximumError": "10kb"
                 }
-              ]
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "ngsw-config.json"
             },
             "es": {
               "i18nFile": "src/locale/es.xtb",

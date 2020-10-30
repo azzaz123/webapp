@@ -12,6 +12,8 @@ import { DndModule } from 'ng2-dnd';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { HttpModuleNew } from './core/http/http.module.new';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,8 @@ import { HttpModuleNew } from './core/http/http.module.new';
     HttpClientModule,
     AppRoutingModule,
     LayoutModule,
-    NgxPermissionsModule.forRoot()
+    NgxPermissionsModule.forRoot(),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [PROVIDERS],
   bootstrap: [AppComponent]
