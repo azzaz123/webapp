@@ -107,7 +107,7 @@
     
     &.btn-delete, &.btn-deactivate {
       padding: 0 $spacing-ms;
-      mat-icon {
+      tsl-svg-icon {
         height: 16px;
         width: 14px;
         vertical-align: sub;
@@ -117,7 +117,7 @@
         background: $negative-main;
         border-color: transparent;
         color: $white;
-        mat-icon ::ng-deep {
+        tsl-svg-icon ::ng-deep {
           svg g g, svg path {
             fill: $white;
           }
@@ -129,7 +129,7 @@
           border-color: rgba($blue-grey-4, 0.5);
           color: $blue-grey-2;
         }
-        mat-icon ::ng-deep {
+        tsl-svg-icon ::ng-deep {
           svg g g, svg path {
             fill: $blue-grey-2;
           }

@@ -18,7 +18,7 @@
     position: fixed;
     top: 20px;
     right: 20px;
-    mat-icon {
+    tsl-svg-icon {
       @include square($spacing-ms);
       line-height: initial; 
   

@@ -31,7 +31,7 @@
             noFilter="10" (selected)="resetAllExtraFields()">
             <ng-template #optionTemplate let-option="option">
               <div [ngClass]="'cat_' + option?.value">
-                <mat-icon svgIcon="cat_{{ option?.icon_id }}"></mat-icon>
+                <tsl-svg-icon src="/assets/icons/categories/stroke/{{option?.icon_id}}.svg"></tsl-svg-icon>
                 {{ option?.label }}
               </div>
             </ng-template>
@@ -210,7 +210,7 @@
             <label ngbButtonLabel class="selector" *ngFor="let delivery of deliveryInfo">
               <div class="selector-icon btn">
                 <input ngbButton type="radio" [value]="delivery.value" (click)="onDeliveryChange(delivery.value)" />
-                <mat-icon svgIcon="shipping-{{ delivery.value.max_weight_kg }}"></mat-icon>
+                <tsl-svg-icon src="/assets/icons/shipping-{{ delivery.value.max_weight_kg }}.svg"></tsl-svg-icon>
               </div>
               <span class="selector-text">{{ delivery.value.max_weight_kg }}kg max</span>
             </label>

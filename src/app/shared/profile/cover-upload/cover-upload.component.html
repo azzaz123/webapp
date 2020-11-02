@@ -12,7 +12,7 @@
           [uploadCoverInput]="uploadCoverInput" [options]="options"
           [disabled]="file?.progress?.status === 0 || file?.progress?.status === 1" />
         <span class="loader" *ngIf="file?.progress?.status === 0 || file?.progress?.status === 1">
-          <mat-icon svgIcon="spinner" class="spinner"></mat-icon>
+          <tsl-svg-icon src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
         </span>
         <span i18n *ngIf="user?.coverImage" class="d-none d-md-block">Update picture</span>
         <span i18n *ngIf="!user?.coverImage" class="d-none d-md-block">Upload picture</span>

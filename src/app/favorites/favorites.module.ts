@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatIconModule } from '@angular/material';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { favoritesRoutedComponents, FavoritesRoutingModule } from './favorites.routes';
 import { SharedModule } from '../shared/shared.module';
@@ -12,7 +11,6 @@ import { ProfileImagesComponent } from '../shared/profile-images/profile-images.
   imports: [
     CommonModule,
     FavoritesRoutingModule,
-    MatIconModule,
     InfiniteScrollModule,
     SharedModule
   ],

@@ -193,7 +193,7 @@ describe('StripeCardsComponent', () => {
       tick(backendResponseTimeMs + 1);
       fixture.detectChanges();
 
-      const loadingComponent: HTMLElement = fixture.nativeElement.querySelector('tsl-button > button > mat-icon');
+      const loadingComponent: HTMLElement = fixture.nativeElement.querySelector('tsl-button > button > tsl-svg-icon');
       expect(loadingComponent).toBeFalsy();
       expect(modalService.open).toHaveBeenCalledWith(NewCardModalComponent, {
         windowClass: 'review'

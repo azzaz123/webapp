@@ -22,12 +22,6 @@ export const SUBSCRIPTIONS_URL = 'bff/subscriptions';
 
 export const SUBSCRIPTIONS_SLOTS_ENDPOINT = 'api/v3/users/me/slots-info';
 
-export const SUBSCRIPTIONS_CATEGORY_ICON_MAP = {
-  'car': 'cat_car',
-  'helmet': 'cat_motoraccessories',
-  'motorbike': 'cat_motorbike'
-};
-
 export enum SUBSCRIPTION_TYPES {
   notSubscribed = 1,
   carDealer = 2,
@@ -69,7 +63,6 @@ export class SubscriptionsService {
     return this.categoryService.getCategoryById(slot.category_id)
       .pipe(
         map(category => {
-          category.icon_id = SUBSCRIPTIONS_CATEGORY_ICON_MAP[category.icon_id];
           const mappedSlot: SubscriptionSlot = {
             category,
             available: slot.available,

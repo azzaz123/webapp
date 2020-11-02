@@ -1,6 +1,6 @@
 <div class="top-bar"
      [ngClass]="{'faded-user': !currentConversation.user.available, 'faded-item': currentConversation.item.notAvailable, 'expanded': isExpanded}">
-  <mat-icon svgIcon="back-arrow" class="d-xl-none back-arrow" (click)="navigationBack()"></mat-icon>
+  <tsl-svg-icon src="/assets/icons/back-arrow.svg" class="d-xl-none back-arrow" (click)="navigationBack()"></tsl-svg-icon>
 
   <div class="lg-device-container d-none d-xl-inline-flex">
     <a *ngIf="currentConversation?.user.profileUrl" href="{{ currentConversation?.user.profileUrl }}"
@@ -61,7 +61,7 @@
       </a>
     </div>
 
-    <mat-icon class="menu-icon" svgIcon="menu" ngbDropdownToggle></mat-icon>
+    <tsl-svg-icon class="menu-icon" src="/assets/icons/menu.svg" ngbDropdownToggle></tsl-svg-icon>
     <div ngbDropdownMenu>
       <button *ngxPermissionsOnly="['isNormal']" class="dropdown-item" (click)="archiveConversation()"
               i18n="@@deleteConversation" [hidden]="currentConversationIsArchived()">Delete conversation

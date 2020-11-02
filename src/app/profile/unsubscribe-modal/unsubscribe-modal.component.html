@@ -1,6 +1,6 @@
 <div class="header" [hidden]="step === 2">
   <div class="modal-close light" (click)="activeModal.dismiss()">
-    <mat-icon svgIcon="cross"></mat-icon>
+    <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
   </div>
 </div>
 
@@ -24,7 +24,7 @@
 
 <div class="modal-body" [hidden]="step === 1">
   <div class="modal-close" (click)="activeModal.dismiss()">
-    <mat-icon svgIcon="cross"></mat-icon>
+    <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
   </div>
   <h1 class="title" i18n>Can you tell us why you want to close your account? We won't tell anyone.</h1>
   <button class="btn btn-secondary btn-block btn-reason"

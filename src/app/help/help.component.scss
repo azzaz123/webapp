@@ -37,7 +37,7 @@ a {
 
 .features {
   margin-bottom: $spacing-xxl;
-  mat-icon {
+  tsl-svg-icon {
     width: 60px;
     height: 40px;
   }
@@ -123,7 +123,7 @@ a {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  mat-icon {
+  tsl-svg-icon {
     width: 17px;
     height: 12px;
     transform: rotate(-90deg);
