@@ -50,7 +50,7 @@ tsl-dropdown {
   padding: 0 !important;
   border: 0 !important;
 
-  // REMOVE THIS LOGIC
+  // TODO REMOVE THIS LOGIC
   &.categories-select tsl-dropdown-list {
     & > div .options ul li {
       padding: 0 !important;
@@ -58,6 +58,9 @@ tsl-dropdown {
       div {
         padding: $spacing-ms !important;
         border-top: 1px solid $blue-grey-5;
+        width: 100%;
+        display: flex;
+        align-items: center;
         &.cat_13200,
         &.cat_21000 {
           display: none;

@@ -13,7 +13,7 @@
           [ngClass]="{'highlighted': option.highlighted, 'selected': option.selected, 'disabled': option.disabled}"
           (click)="onOptionClick(option)" (mouseover)="onOptionMouseover(option)">
           <ng-container *ngTemplateOutlet="optionTemplate; context:{option: option.wrappedOption}"></ng-container>
-          <img *ngIf="!optionTemplate && option.icon_id" class="icon" [src]="option.icon_id">
+          <tsl-svg-icon *ngIf="!optionTemplate && option.icon_id" class="icon" [src]="option.icon_id"></tsl-svg-icon>
           <span *ngIf="!optionTemplate">{{option.label}}</span>
         </li>
         <li *ngIf="!optionList.hasShown" class="message">{{notFoundMsg}}</li>
@@ -22,7 +22,7 @@
   </ng-container>
   <ng-template #loading>
     <div class="loading">
-      <mat-icon svgIcon="spinner" class="spinner corporate"></mat-icon>
+      <tsl-svg-icon src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
     </div>
   </ng-template>
 </div>

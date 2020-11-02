@@ -62,29 +62,30 @@
         border-top: 1px solid $blue-grey-5;
         line-height: $line-height-l;
 
-        .icon{
-          margin-right: $spacing-ms;
+        .icon {
+          display: flex;
+          align-items: center;
         }
 
-        mat-icon {
+        tsl-svg-icon {
           @include square(38px);
           vertical-align: middle !important;
           margin-right: $spacing-xs;
           margin-top: -$spacing-s;
           margin-bottom: -$spacing-s;
-          g g {
+          svg {
             fill: $blue-grey-1;
           }
         }
         &.selected {
-          mat-icon {
-            g g {
+          tsl-svg-icon {
+            svg {
               fill: $walla-main;
             }
           }
           &.highlighted {
-            mat-icon {
-              g g {
+            tsl-svg-icon {
+              svg {
                 fill: $blue-grey-1;
               }
             }

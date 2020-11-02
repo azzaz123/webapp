@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DropdownComponent } from './dropdown.component';
 import { DropdownListComponent } from './dropdown-list/dropdown-list.component';
-import { MatIconModule } from '@angular/material';
+import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
 
 @NgModule({
   declarations: [
@@ -11,7 +11,7 @@ import { MatIconModule } from '@angular/material';
   ],
   imports: [
     CommonModule,
-    MatIconModule,
+    SvgIconModule
   ],
   exports: [
     DropdownComponent
