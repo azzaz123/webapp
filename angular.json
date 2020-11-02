@@ -63,7 +63,7 @@
                 }
               ],
               "serviceWorker": true,
-              "ngswConfigPath": "ngsw-config.json"
+              "ngswConfigPath": "./ngsw-config.json"
             },
             "beta": {
               "fileReplacements": [
@@ -93,7 +93,7 @@
                 }
               ],
               "serviceWorker": true,
-              "ngswConfigPath": "ngsw-config.json"
+              "ngswConfigPath": "./ngsw-config.json"
             },
             "production": {
               "fileReplacements": [
@@ -123,7 +123,7 @@
                 }
               ],
               "serviceWorker": true,
-              "ngswConfigPath": "ngsw-config.json"
+              "ngswConfigPath": "./ngsw-config.json"
             },
             "es": {
               "i18nFile": "src/locale/es.xtb",
@@ -136,7 +136,7 @@
                 }
               ],
               "serviceWorker": true,
-              "ngswConfigPath": "ngsw-config.json"
+              "ngswConfigPath": "./ngsw-config.json"
             }
           }
         },
