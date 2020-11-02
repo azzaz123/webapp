@@ -88,17 +88,17 @@ $menu-width-and-spacing: 10px;
       top: 4px;
       left: 4px;
 
-      mat-icon {
+      tsl-svg-icon {
         height: 100% !important;
       }
     }
 
-    .sold mat-icon {
+    .sold tsl-svg-icon {
       width: 17px !important;
     }
 
     .not-available, .reserved {
-      mat-icon {
+      tsl-svg-icon {
         width: 10px !important;
       }
     }
@@ -142,17 +142,17 @@ $menu-width-and-spacing: 10px;
       flex: none;
     }
 
-    mat-icon, span {
+    tsl-svg-icon, span {
       vertical-align: middle;
     }
 
-    mat-icon {
+    tsl-svg-icon {
       @include square($phone-icon-adjusted-size);
     }
 
-    mat-icon.blocked, mat-icon.not-available {
+    tsl-svg-icon.blocked, tsl-svg-icon.not-available {
       @include square(10px);
-      position: relative;
+      position: none;
       bottom: 4px;
       margin-right: $spacing-xs;
     }
@@ -213,7 +213,7 @@ $menu-width-and-spacing: 10px;
         color: $blue-grey-3;
       }
 
-      mat-icon {
+      tsl-svg-icon {
         height: 15px;
         width: 15px;
         vertical-align: bottom;
@@ -323,7 +323,7 @@ a {
     line-height: 0;
     cursor: pointer;
 
-    mat-icon {
+    tsl-svg-icon {
       height: 10px;
       width: $spacing-l;
 
@@ -336,7 +336,7 @@ a {
       background-color: $walla-main;
       border-color: $walla-main;
 
-      mat-icon {
+      tsl-svg-icon {
         ::ng-deep g g {
           fill: $white;
         }

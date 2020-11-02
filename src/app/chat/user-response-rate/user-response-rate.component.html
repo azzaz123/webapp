@@ -1,4 +1,4 @@
-<mat-icon *ngIf="showIcon" svgIcon="time" class="user-response-rate"></mat-icon>
+<tsl-svg-icon *ngIf="showIcon" src="/assets/icons/time.svg" class="user-response-rate"></tsl-svg-icon>
 <span *ngIf="isNullOrUndefined()" i18n>Unknown</span>
 <span [ngSwitch]="responseRate" class="response-rate">
   <ng-container *ngSwitchCase="'unknown'" i18n>Unknown</ng-container>

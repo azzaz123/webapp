@@ -2,7 +2,7 @@
 
 .modal-close {
   @include square(13px);
-  mat-icon {
+  tsl-svg-icon {
     @include square(13px);
     line-height: initial;
   }

@@ -25,7 +25,7 @@
           display: flex;
           align-items: center;
         }
-        mat-icon {
+        tsl-svg-icon {
           @include square(16px);
           margin-right: $spacing-xs;
         }

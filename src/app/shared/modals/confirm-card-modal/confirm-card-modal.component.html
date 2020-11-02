@@ -1,11 +1,11 @@
 <div class="ConfirmCardModal">
     <div class="modal-close" (click)="activeModal.dismiss()">
-        <mat-icon svgIcon="cross"></mat-icon>
+      <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>  
     </div>
     <h4 class="ConfirmCardModal--title" i18n="@@ConfirmPaymentMethod">Confirm payment method</h4>
     <p class="" i18n="@@ChargeThisCard">The card linked to your subscriptions will be</p>
     <div class="ConfirmCardModal--cardDetails">
-      <mat-icon svgIcon="{{financialCard?.brand}}"></mat-icon>
+      <tsl-svg-icon src="/assets/icons/card-{{financialCard?.brand}}.svg"></tsl-svg-icon>
       <span class="ConfirmCardModal--cardNumber">****-****-****-{{financialCard?.last4}}</span>
     </div>
     <div class="ConfirmCardModal--buttons">

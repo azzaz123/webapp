@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { TopbarComponent } from './topbar/topbar.component';
-import { MatIconModule } from '@angular/material';
 import { NgbDropdownModule, NgbToastModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -21,7 +20,6 @@ import { ToastComponent } from './toast/toast.component';
     RouterModule,
     SharedModule,
     NgbDropdownModule,
-    MatIconModule,
     FormsModule,
     UserModule,
     GeolocationModule,

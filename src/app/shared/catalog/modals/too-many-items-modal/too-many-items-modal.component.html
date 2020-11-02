@@ -1,7 +1,7 @@
 <div class="TooManyItemsModal">
 
   <div class="TooManyItemsModal__close" (click)="activeModal.close()">
-    <mat-icon svgIcon="cross"></mat-icon>
+    <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
   </div>
 
   <div class="TooManyItemsModal__content">
@@ -31,7 +31,7 @@
 
   <div class="TooManyItemsModal__actions">
     <tsl-button *ngIf="type === inAppType || type === carDealerType" (click)="activeModal.close()" i18n>Understood</tsl-button>
-    <tsl-button *ngIf="type === notSubscribedType || type === stripeType" (click)="activeModal.close(); this.trackClickGoToSubscriptions();"
+    <tsl-button *ngIf="type === notSubscribedType || type === stripeType" (click)="activeModal.close()"
     [routerLink]="'/profile/subscriptions'">
       <span [hidden]="isFreeTrial" i18n="@@TooManyItemsModalButtonGoToSubscriptions">Go to subscriptions</span>
       <span *ngIf="isFreeTrial" i18n="@@TooManyItemsModalButtonGoToTrial">Start free trial</span>

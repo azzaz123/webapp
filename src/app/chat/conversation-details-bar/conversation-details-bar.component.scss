@@ -80,7 +80,7 @@
       right: $spacing-xl;
     }
 
-    mat-icon {
+    tsl-svg-icon {
       position: absolute;
       right: -$spacing-s;
       cursor: pointer;
@@ -212,7 +212,7 @@
       color: $blue-grey-2;
       line-height: $line-height-l;
 
-      mat-icon {
+      tsl-svg-icon {
         height: 14px;
         width: 17px;
         margin: 0 $spacing-xxs 0 $spacing-s;

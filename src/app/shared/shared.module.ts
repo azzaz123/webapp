@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { SpinnerComponent } from './spinner/spinner.component';
-import { MatIconModule } from '@angular/material';
 import { AdComponent } from './ad/ad.component';
 import { CustomCurrencyPipe, DateUntilDayPipe, DateCalendarPipe, CountdownPipe } from './pipes';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
@@ -28,7 +27,7 @@ import { SwitchComponent } from './switch/switch.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { ItemAvatarComponent } from './item-avatar/item-avatar.component';
 import { SearchInputComponent } from './search-input/search-input.component';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SelectComponent } from './select/select.component';
 import { TooManyItemsModalComponent } from './catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { AlreadyFeaturedModalComponent } from './catalog/modals/already-featured-modal/already-featured-modal.component';
@@ -76,12 +75,13 @@ import { ProfileProBillingComponent } from './profile-pro-billing/profile-pro-bi
 import { FullScreenModalComponent } from './modals/full-screen-menu/full-screen-modal.component';
 import { DisableControlDirective } from './forms/disable-control.directive';
 import { RouterLinkDirectiveStub } from './router-link-directive-stub';
+import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
 
 @NgModule({
   imports: [
     CardModule,
     CommonModule,
-    MatIconModule,
+    NgbModule,
     ReactiveFormsModule,
     FormsModule,
     GeolocationModule,
@@ -92,7 +92,8 @@ import { RouterLinkDirectiveStub } from './router-link-directive-stub';
     UploaderModule,
     SelectModule,
     DeviceDetectorModule.forRoot(),
-    ProBadgeModule
+    ProBadgeModule,
+    SvgIconModule
   ],
   exports: [
     CardModule,
@@ -157,7 +158,8 @@ import { RouterLinkDirectiveStub } from './router-link-directive-stub';
     CountdownPipe,
     ProfileProBillingComponent,
     FullScreenModalComponent,
-    DisableControlDirective
+    DisableControlDirective,
+    SvgIconModule
   ],
   declarations: [
     AdComponent,

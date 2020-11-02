@@ -36,7 +36,7 @@ $feature-button-width: 170px;
       display: flex;
       justify-content: center;
       flex: none;
-      mat-icon {
+      tsl-svg-icon {
         display: none;
         height: 9px;
         width: 12px;
@@ -44,7 +44,7 @@ $feature-button-width: 170px;
       &.selected {
         background: $walla-main;
         border-color: transparent;
-        mat-icon {
+        tsl-svg-icon {
           display: flex;
           ::ng-deep path {
             fill: $white;

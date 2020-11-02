@@ -8,14 +8,14 @@
 <div class="main-header-login d-none d-lg-flex" [class.professional]="isProfessional">
   <a [hidden]="!currencyName" *ngxPermissionsExcept="['isProfessional']" tslTrackEvent="MYZONE_NAVBAR_WALLACOINS"
     class="main-header-credits menu-link" [routerLink]="['/wallacoins']" [routerLinkActive]="['active']">
-    <mat-icon svgIcon="wallacoins-nav" class="topbar-icon"></mat-icon>
+    <tsl-svg-icon src="/assets/icons/wallacoins-nav.svg" class="topbar-icon"></tsl-svg-icon>
     <span *ngIf="currencyName === 'wallacoins'"><b>{{wallacoins | number}}</b> {{currencyName}}</span>
     <span *ngIf="currencyName !== 'wallacoins'"><b>{{wallacoins | customCurrency}}</b> <span i18n>credit</span></span>
     <div class="horizontal-line"></div>
   </a>
   <a class="main-header-chat menu-link" [routerLink]="['/chat']" [routerLinkActive]="['active']">
     <div class="news-badge" *ngIf="(messageService.totalUnreadMessages$ | async) > 0"></div>
-    <mat-icon svgIcon="messages" class="topbar-icon"></mat-icon>
+    <tsl-svg-icon src="/assets/icons/messages.svg" class="topbar-icon"></tsl-svg-icon>
     <span i18n>Messages</span>
     <div class="horizontal-line"></div>
   </a>
@@ -28,7 +28,7 @@
     <div class="horizontal-line"></div>
   </a>
   <tsl-button [routerLink]="['/catalog/upload']" tslTrackEvent="MYZONE_UPLOAD">
-    <mat-icon svgIcon="upload"></mat-icon>
+    <tsl-svg-icon src="/assets/icons/upload.svg"></tsl-svg-icon>
     <span *ngxPermissionsExcept="['isProfessional']" i18n>List a product</span>
     <span *ngxPermissionsOnly="['isProfessional']" i18n>List a car</span>
   </tsl-button>

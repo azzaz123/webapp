@@ -2,11 +2,11 @@ import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core
 
 import { NavLinksComponent } from './nav-links.component';
 import { SearchInputComponent } from '../search-input/search-input.component';
-import { MatIconModule } from '@angular/material/icon';
 import { SelectComponent } from '../select/select.component';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FullScreenModalComponent } from '../modals/full-screen-menu/full-screen-modal.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('NavLinksComponent', () => {
   let component: NavLinksComponent;
@@ -21,7 +21,7 @@ describe('NavLinksComponent', () => {
   
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ MatIconModule ],
+      imports: [ ],
       declarations: [ NavLinksComponent, SearchInputComponent, SelectComponent ],
       providers: [
         { provide: DeviceDetectorService, useClass: DeviceDetectorService },
@@ -35,7 +35,8 @@ describe('NavLinksComponent', () => {
             }
           }
         }
-      ]
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   }));
