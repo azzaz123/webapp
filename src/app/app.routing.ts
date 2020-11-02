@@ -8,10 +8,12 @@ import { LoggedGuard } from './core/user/logged.guard';
 const publicRoutes = [
   {
     path: 'login',
+    canLoad: [DevelopmentGuard],
     loadChildren: () => import('app/login/login.module').then(m => m.LoginModule)
   },
   {
     path: 'register',
+    canLoad: [DevelopmentGuard],
     loadChildren: () => import('app/register/register.module').then(m => m.RegisterModule)
   }
 ];
