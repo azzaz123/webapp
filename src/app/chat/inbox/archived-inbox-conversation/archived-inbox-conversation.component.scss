@@ -75,15 +75,15 @@ $menu-width-and-spacing: 10px;
       position: absolute;
       top: 4px;
       left: 4px;
-      mat-icon {
+      tsl-svg-icon {
         height: 100% !important;
       }
     }
-    .sold mat-icon {
+    .sold tsl-svg-icon {
       width: 17px !important;
     }
     .not-available, .reserved {
-      mat-icon {
+      tsl-svg-icon {
         width: 10px !important;
       }
     }
@@ -121,14 +121,14 @@ $menu-width-and-spacing: 10px;
     .user-name-row-right {
       flex: none;
     }
-    mat-icon, span {
+    tsl-svg-icon, span {
       vertical-align: middle;
     }
-    mat-icon {
+    tsl-svg-icon {
       @include square($phone-icon-adjusted-size);
     }
 
-    mat-icon.blocked, mat-icon.not-available {
+    tsl-svg-icon.blocked, tsl-svg-icon.not-available {
       @include square(10px);
       position: relative;
       bottom: 4px;
@@ -178,7 +178,7 @@ $menu-width-and-spacing: 10px;
         font-size: $font-size-s;
         color: $blue-grey-3;
       }
-      mat-icon {
+      tsl-svg-icon {
         height: 15px;
         width: 15px;
         vertical-align: bottom;

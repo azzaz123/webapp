@@ -5,7 +5,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import { ItemCartFavoriteComponent } from './item-cart-favorite.component';
-import { MatIconModule } from '@angular/material';
 import { ItemService } from '../../core/item/item.service';
 import { environment } from '../../../environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -35,7 +34,7 @@ describe('ItemCartFavoriteComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ MatIconModule ],
+      imports: [ ],
       declarations: [ ItemCartFavoriteComponent, CustomCurrencyPipe ],
       providers: [
         DecimalPipe,

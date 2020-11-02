@@ -18,7 +18,6 @@ import { UrgentCheckboxComponent } from './urgent-checkbox/urgent-checkbox.compo
 import { UploadComponent } from './upload.component';
 import { ItemResolverService } from './item-resolver.service';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { MatIconModule } from '@angular/material';
 import { NgbButtonsModule, NgbCarouselModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TrackingModule } from '../core/tracking/tracking.module';
 import { DndModule } from 'ng2-dnd';
@@ -37,7 +36,6 @@ import { DropdownModule } from 'app/dropdown/dropdown.module';
     ReactiveFormsModule,
     UploadRoutingModule,
     NgxPermissionsModule.forChild(),
-    MatIconModule,
     NgbPopoverModule,
     TrackingModule,
     DndModule,

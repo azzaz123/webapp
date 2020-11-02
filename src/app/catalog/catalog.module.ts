@@ -3,7 +3,6 @@ import { catalogRoutedComponents, CatalogRoutingModule } from './catalog.routes'
 import { SharedModule } from '../shared/shared.module';
 import { CatalogItemComponent } from './list/catalog-item/catalog-item.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { MatIconModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectedItemsComponent } from './list/selected-items/selected-items.component';
 import { BumpConfirmationModalComponent } from './list/modals/bump-confirmation-modal/bump-confirmation-modal.component';
@@ -27,7 +26,6 @@ import { ReviewsModule } from '../reviews/reviews.module';
     SharedModule,
     FormsModule,
     CatalogRoutingModule,
-    MatIconModule,
     InfiniteScrollModule,
     ReactiveFormsModule,
     TrackingModule,

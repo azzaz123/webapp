@@ -8,7 +8,6 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie';
 import { TrackingService } from './core/tracking/tracking.service';
-import { MatIconRegistry } from '@angular/material';
 import { MessageService } from './chat/service/message.service';
 import { DesktopNotificationsService } from './core/desktop-notifications/desktop-notifications.service';
 import { EventService } from './core/event/event.service';
@@ -117,16 +116,6 @@ describe('App', () => {
         }
         },
         I18nService,
-        {
-          provide: MatIconRegistry, useValue: {
-          addSvgIcon() {
-          },
-          addSvgIconInNamespace() {
-          },
-          addSvgIconSetInNamespace() {
-          }
-        }
-        },
         {provide: TrackingService, useClass: MockTrackingService},
         DesktopNotificationsService,
         {

@@ -15,7 +15,7 @@ h2 {
   font-weight: $font-weight-chunky;
   display: flex;
   align-items: center;
-  mat-icon {
+  tsl-svg-icon {
     height: 38px;
     margin-left: -7px;
   }
@@ -48,7 +48,7 @@ h2, .description {
   flex:1;
   margin: $spacing-ms;
   max-width: 186px;
-  mat-icon {
+  tsl-svg-icon {
     height: 46px;
     width: 94px;
     margin-bottom: $spacing-m;
@@ -120,7 +120,7 @@ h2, .description {
 .city-bumps {
   h2 {
     color: $walla-main;
-    mat-icon {
+    tsl-svg-icon {
       width: 51px;
     }
   }
@@ -150,7 +150,7 @@ h2, .description {
 .country-bumps {
   h2 {
     color: $country-bump;
-    mat-icon {
+    tsl-svg-icon {
       width: 67px;
     }
   }

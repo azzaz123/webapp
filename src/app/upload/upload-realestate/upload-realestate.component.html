@@ -21,7 +21,7 @@
                 <label ngbButtonLabel class="btn selector" *ngFor="let operation of operations">
                   <div class="selector-icon">
                     <input ngbButton type="radio" name="operation" [value]="operation.id" />
-                    <mat-icon [svgIcon]="operation.icon_id"></mat-icon>
+                    <tsl-svg-icon src="/assets/icons/{{operation.icon_id}}.svg"></tsl-svg-icon>
                   </div>
                   <span class="selector-text">{{ operation.text }}</span>
                 </label>
@@ -49,7 +49,7 @@
                 <label ngbButtonLabel class="selector" *ngFor="let type of types">
                   <div class="selector-icon">
                     <input ngbButton type="radio" name="type" [value]="type.id" />
-                    <mat-icon [svgIcon]="type.icon_id"></mat-icon>
+                    <tsl-svg-icon src="/assets/icons/{{type.icon_id}}.svg"></tsl-svg-icon>
                   </div>
                   <span class="selector-text">{{ type.text }}</span>
                 </label>
@@ -135,7 +135,7 @@
                 <label class="selector" [class.active]="uploadForm.value[extra.id]" *ngFor="let extra of extras">
                   <div class="selector-icon">
                     <input type="checkbox" [formControlName]="extra.id" />
-                    <mat-icon [svgIcon]="extra.icon_id"></mat-icon>
+                    <tsl-svg-icon src="/assets/icons/{{extra.icon_id}}.svg"></tsl-svg-icon>
                   </div>
                   <span class="selector-text">{{ extra.text }}</span>
                 </label>
@@ -198,7 +198,7 @@
             <div class="select" [ngClass]="{
                 selected: uploadForm.value.location.approximated_location
               }">
-              <mat-icon svgIcon="check"></mat-icon>
+              <tsl-svg-icon src="/assets/icons/check.svg"></tsl-svg-icon>
               <input type="checkbox" formControlName="approximated_location" (change)="emitLocation()" />
             </div>
             <span i18n>Show the property's approximate location</span>

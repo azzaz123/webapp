@@ -80,7 +80,7 @@
           text-transform: uppercase;
         }
       }
-      mat-icon {
+      tsl-svg-icon {
         height: 48px;
         width: 48px;
         @include in-the-middle;
@@ -92,7 +92,7 @@
         }
       }
       &--cars {
-        mat-icon {
+        tsl-svg-icon {
           height: 26px;
           width: 26px;
         }
@@ -100,7 +100,7 @@
       &.active {
         .selector-icon {
           background-color: $walla-main;
-          mat-icon {
+          tsl-svg-icon {
             svg g,
             svg path {
               fill: $white !important;
@@ -116,7 +116,7 @@
         span {
           color: $blue-grey-2;
         }
-        mat-icon {
+        tsl-svg-icon {
           ::ng-deep {
             svg g,
             svg path {
@@ -142,7 +142,7 @@
           &.active {
             .selector-icon {
               background-color: $white;
-              mat-icon {
+              tsl-svg-icon {
                 ::ng-deep {
                   svg g,
                   svg path {
@@ -202,7 +202,7 @@
       cursor: pointer;
       display: flex;
       justify-content: center;
-      mat-icon {
+      tsl-svg-icon {
         display: none;
         height: 9px;
         width: 12px;
@@ -210,7 +210,7 @@
       &.selected {
         background: $yellow-dark;
         border-color: transparent;
-        mat-icon {
+        tsl-svg-icon {
           display: flex;
           ::ng-deep path {
             fill: $white;
@@ -225,7 +225,7 @@
       .select {
         &.selected {
           background: $walla-main;
-          mat-icon {
+          tsl-svg-icon {
             display: block;
           }
         }

@@ -122,12 +122,6 @@
   resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-9.1.2.tgz#01bb52d5a8813701bfacbba99338d88cfc0da9b4"
   integrity sha512-5UJ8SzCtFj4vZChVsni4K9oa4qE9tQ67bwnP6DKxkLEJKQWWyasYp+2siAi/7zD2ro2XA0qRMYhgQz5Vj6eBoQ==
 
-"@angular/cdk@6.4.1":
-  version "6.4.1"
-  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-6.4.1.tgz#f03e4f628c019410b310a8a5238a655e2e134e82"
-  dependencies:
-    tslib "^1.7.1"
-
 "@angular/cli@9.1.1":
   version "9.1.1"
   resolved "https://registry.yarnpkg.com/@angular/cli/-/cli-9.1.1.tgz#5b713318446f1315cc289fed28e8080891be771d"
@@ -205,14 +199,6 @@
     "@babel/core" "7.8.3"
     glob "7.1.2"
     yargs "15.3.0"
-
-"@angular/material@6.4.1":
-  version "6.4.1"
-  resolved "https://registry.yarnpkg.com/@angular/material/-/material-6.4.1.tgz#f9849e19bf2e339c5fbd78b6e72287b770268423"
-  dependencies:
-    tslib "^1.7.1"
-  optionalDependencies:
-    parse5 "^5.0.0"
 
 "@angular/platform-browser-dynamic@^9.1.2":
   version "9.1.2"
@@ -2784,10 +2770,6 @@ class-utils@^0.3.5:
     define-property "^0.2.5"
     isobject "^3.0.0"
     static-extend "^0.1.1"
-
-classlist.js@^1.1.20150312:
-  version "1.1.20150312"
-  resolved "https://registry.yarnpkg.com/classlist.js/-/classlist.js-1.1.20150312.tgz#1d70842f7022f08d9ac086ce69e5b250f2c57789"
 
 clean-stack@^2.0.0:
   version "2.2.0"
@@ -7561,7 +7543,7 @@ parse5@4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/parse5/-/parse5-4.0.0.tgz#6d78656e3da8d78b4ec0b906f7c08ef1dfe3f608"
 
-parse5@5.1.0, parse5@^5.0.0:
+parse5@5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/parse5/-/parse5-5.1.0.tgz#c59341c9723f414c452975564c7c00a68d58acd2"
 
@@ -9951,7 +9933,7 @@ tslib@1.11.1, tslib@^1.10.0:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.11.1.tgz#eb15d128827fbee2841549e171f45ed338ac7e35"
   integrity sha512-aZW88SY8kQbU7gpV19lN24LtXh/yD4ZZg6qieAJDDg+YBsJcSmLGK9QpnUjAKVG/xefmvJGd1WUmfpT/g6AJGA==
 
-tslib@^1.7.1, tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0:
+tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.3.tgz#d7e4dd79245d85428c4d7e4822a79917954ca286"
 

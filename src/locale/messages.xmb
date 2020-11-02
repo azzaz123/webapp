@@ -222,7 +222,7 @@
   <msg id="1186759635333538896"><source>app/shared/catalog/cart/cart.component.html:43</source>Provincial</msg>
   <msg id="2314075913167237221"><source>app/shared/catalog/cart/cart.component.html:45</source><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:16</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:31</source>City</msg>
   <msg id="516176798986294299"><source>app/shared/catalog/cart/cart.component.html:46</source><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:27</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:32</source>Country</msg>
-  <msg id="7036284206110282007"><source>app/shared/catalog/cart/cart.component.html:48</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:34</source><source>app/catalog/checkout/checkout-item/checkout-item.component.html:8</source>days</msg>
+  <msg id="7036284206110282007"><source>app/shared/catalog/cart/cart.component.html:48</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:34</source><source>app/catalog/checkout/checkout-item/checkout-item.component.html:11</source>days</msg>
   <msg id="3448462145758383019"><source>app/shared/catalog/cart/cart.component.html:62</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:45</source>Total</msg>
   <msg id="5269877616047992907"><source>app/shared/catalog/cart/cart.component.html:75</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:37</source>spending</msg>
   <msg id="7484614059925376312"><source>app/shared/catalog/cart/cart.component.html:86</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:48</source>missing</msg>
@@ -440,8 +440,8 @@
   <msg id="UploadConfirmationModalButton"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.html:15,16</source>Mark as &quot;Urgent&quot; for <ph name="INTERPOLATION"><ex>{{productPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ex>{{productPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ph>
     <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>wallacoins<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></msg>
   <msg id="4699023020194351074"><source>app/catalog-pro/catalog-pro-list/modals/credit-card-modal/credit-card-modal.component.html:5</source><source>app/catalog-pro/catalog-pro-list/modals/credit-card-modal/credit-card-modal.component.html:22</source>Feature for <ph name="INTERPOLATION"><ex>{{total | number:&apos;1.2-2&apos;}}</ex>{{total | number:&apos;1.2-2&apos;}}</ph> Euros</msg>
-  <msg id="2322741539330475902"><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.html:7</source>Catalog <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>
-            <ph name="START_TAG_MAT_ICON"><ex>&lt;mat-icon&gt;</ex>&lt;mat-icon&gt;</ph><ph name="CLOSE_TAG_MAT_ICON"><ex>&lt;/mat-icon&gt;</ex>&lt;/mat-icon&gt;</ph>Pro
+  <msg id="1061832772714507183"><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.html:7</source>Catalog <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>
+          <ph name="START_TAG_TSL_SVG_ICON"><ex>&lt;tsl-svg-icon&gt;</ex>&lt;tsl-svg-icon&gt;</ph><ph name="CLOSE_TAG_TSL_SVG_ICON"><ex>&lt;/tsl-svg-icon&gt;</ex>&lt;/tsl-svg-icon&gt;</ph>Pro
           <ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></msg>
   <msg id="6850144876798655647"><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.html:10</source>Big packages with all your items and stuff</msg>
   <msg id="2246851749264196483"><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.html:13</source>Manage my subscription</msg>
@@ -1035,7 +1035,7 @@
                 </msg>
   <msg id="ManageCatalogSubscription"><source>app/catalog/list/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component.html:15</source>Manage <ph name="INTERPOLATION"><ex>{{subscriptionSlot.category.name}}</ex>{{subscriptionSlot.category.name}}</ph></msg>
   <msg id="SubscriptionsSlotItemPublishMore"><source>app/catalog/list/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component.html:17</source>You can list <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph><ph name="INTERPOLATION"><ex>{{subscriptionSlot.available}}</ex>{{subscriptionSlot.available}}</ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph> more <ph name="INTERPOLATION_1"><ex>{{subscriptionSlot.category.name}}</ex>{{subscriptionSlot.category.name}}</ph></msg>
-  <msg id="8423596927659875793"><source>app/catalog/checkout/checkout-item/checkout-item.component.html:23</source>Not Available</msg>
+  <msg id="8423596927659875793"><source>app/catalog/checkout/checkout-item/checkout-item.component.html:26</source>Not Available</msg>
   <msg id="605166699517966750"><source>app/stats/stats.component.html:15</source>Control the progress of your listings and improve your sales.</msg>
   <msg id="7616770651914901276"><source>app/stats/items-stats/items-stats.component.html:4</source>Product</msg>
   <msg id="2868602391152223921"><source>app/stats/items-stats/items-stats.component.html:7</source>Listed on</msg>

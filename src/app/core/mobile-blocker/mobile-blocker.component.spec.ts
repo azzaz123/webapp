@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MobileBlockerComponent } from './mobile-blocker.component';
 import { DeviceDetectorServiceMock } from '../../../tests';
 import { UserService } from '../user/user.service';
@@ -20,7 +21,8 @@ describe('MobileBlockerComponent', () => {
       providers: [
         { provide: UserService, useValue: { isProfessional: () => of(false) }},
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock }
-      ]
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   }));

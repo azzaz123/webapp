@@ -37,7 +37,7 @@
     display: flex;
     flex-basis: 3em;
     align-items: center;
-    mat-icon {
+    tsl-svg-icon {
       height: 17px;
       width: 19px;
       margin-right: $spacing-s;
@@ -47,7 +47,7 @@
 
 .col-arrow {
   justify-content: space-around;
-  mat-icon {
+  tsl-svg-icon {
     width: 10px;
     transition: all .5s ease;
     .active & {

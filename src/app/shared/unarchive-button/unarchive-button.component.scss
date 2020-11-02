@@ -10,7 +10,7 @@ button {
   background-color: $blue-grey-4;
   line-height: 0;
   cursor: pointer;
-  mat-icon {
+  tsl-svg-icon {
     height: 14px;
     width: 15px;
     ::ng-deep g g {
@@ -20,7 +20,7 @@ button {
   &:hover {
     background-color: $walla-main;
     border-color: $walla-main;
-    mat-icon {
+    tsl-svg-icon {
       ::ng-deep g g {
         fill: $white;
       }

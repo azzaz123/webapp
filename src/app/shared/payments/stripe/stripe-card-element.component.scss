@@ -53,7 +53,7 @@ tsl-button {
 .secure-payment {
   position: relative;
   font-size: $font-size-s;
-  mat-icon {
+  tsl-svg-icon {
     height: 14px;
     width: 11px;
     position: absolute;

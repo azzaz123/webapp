@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { profileRoutedComponents, ProfileRoutingModule } from './profile.routes';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatIconModule } from '@angular/material';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { GeolocationModule } from '../shared/geolocation/geolocation.module';
 import { SharedModule } from '../shared/shared.module';
@@ -29,7 +28,6 @@ import { DropdownModule } from 'app/dropdown/dropdown.module';
     ProfileRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    MatIconModule,
     NgbButtonsModule,
     GeolocationModule,
     NgbCarouselModule,

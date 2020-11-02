@@ -1,16 +1,16 @@
 <div class="page-content">
   <div class="container">
-    <a class="back" [routerLink]="['/catalog/list']"><mat-icon svgIcon="back-arrow"></mat-icon> <span i18n>Back</span></a>
+    <a class="back" [routerLink]="['/catalog/list']"><tsl-svg-icon src="/assets/icons/back-arrow.svg"></tsl-svg-icon> <span i18n>Back</span></a>
     <div class="row" [hidden]="!itemsWithProducts">
       <div class="col-xl col-lg-8">
         <div class="table-header">
           <div class="info">
-            <mat-icon svgIcon="feature"></mat-icon>
+            <tsl-svg-icon src="/assets/icons/feature.svg"></tsl-svg-icon>
             <a (click)="bumpTutorial.show()" i18n>What can features do for you?</a>
           </div>
           <div class="type zone">
             <div>
-              <mat-icon svgIcon="bump-zone"></mat-icon>
+              <tsl-svg-icon src="/assets/icons/bump-zone.svg"></tsl-svg-icon>
               <div [hidden]="provincialBump" i18n>Feature it locally</div>
               <div [hidden]="!provincialBump" i18n>Feature it provincially</div>
             </div>
@@ -18,7 +18,7 @@
           <div class="type city" [hidden]="provincialBump">
             <div>
               <div>
-                <mat-icon svgIcon="bump-city"></mat-icon>
+                <tsl-svg-icon src="/assets/icons/bump-city.svg"></tsl-svg-icon>
               </div>
               <div i18n>Feature it your city</div>
             </div>
@@ -26,7 +26,7 @@
           <div class="type country">
             <div>
               <div>
-                <mat-icon svgIcon="bump-country"></mat-icon>
+                <tsl-svg-icon src="/assets/icons/bump-country.svg"></tsl-svg-icon>
               </div>
               <div i18n>Feature it nationally</div>
             </div>

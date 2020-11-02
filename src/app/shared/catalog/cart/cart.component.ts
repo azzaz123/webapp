@@ -146,20 +146,11 @@ export class CartComponent implements OnInit, OnDestroy {
     this.trackingService.track(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, attributes);
 
     ga('send', 'event', 'Item', 'bump-cart');
-    gtag('event', 'conversion', { 'send_to': 'AW-829909973/oGcOCL7803sQ1dfdiwM' });
     fbq('track', 'Purchase', {
           value: this.cart.total,
           currency: 'EUR',
           content_ids: itemsIds,
           content_type: 'product',
-    });
-    twq('track', 'Purchase', {
-      value: this.cart.total,
-      currency: 'EUR',
-      num_items: order.length,
-      content_ids: itemsIds,
-      content_type: 'product',
-      content_name: 'Bumps purchase'
     });
   }
 
@@ -212,4 +203,8 @@ export class CartComponent implements OnInit, OnDestroy {
     this.setCardInfo(selectedCard);
   }
 
+  public handleIconPath(type: string): string {
+    const iconBump = type.replace('bump', '');
+    return `/assets/icons/wing-${iconBump}.svg`;
+  }
 }

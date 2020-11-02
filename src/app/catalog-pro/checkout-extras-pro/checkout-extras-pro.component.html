@@ -1,18 +1,18 @@
 <div class="page-content">
   <div class="container">
-    <a class="back" *ngIf="!billingInfoFormEnabled" [routerLink]="['/pro/catalog/list']"><mat-icon svgIcon="back-arrow"></mat-icon> <span i18n>Back</span></a>
-    <a class="back" *ngIf="billingInfoFormEnabled" (click)="billingInfoFormEnabled = false"><mat-icon svgIcon="back-arrow"></mat-icon> <span i18n>Back</span></a>
+    <a class="back" *ngIf="!billingInfoFormEnabled" [routerLink]="['/pro/catalog/list']"><tsl-svg-icon src="/assets/icons/back-arrow.svg"></tsl-svg-icon> <span i18n>Back</span></a>
+    <a class="back" *ngIf="billingInfoFormEnabled" (click)="billingInfoFormEnabled = false"><tsl-svg-icon src="/assets/icons/back-arrow.svg"></tsl-svg-icon> <span i18n>Back</span></a>
     <div class="row" *ngIf="packs">
         <div class="col-xl col-lg-8" *ngIf="!billingInfoFormEnabled">
           <div class="table-header">
             <div class="info">
-              <mat-icon [hidden]="true" svgIcon="feature"></mat-icon>
+              <tsl-svg-icon [hidden]="true" src="/assets/icons/feature.svg"></tsl-svg-icon>
               <a i18n [hidden]="true">What are the extras?</a>
             </div>
             <div class="type city" [hidden]="provincialBump">
               <div>
                 <div>
-                  <mat-icon svgIcon="bump-city"></mat-icon>
+                  <tsl-svg-icon src="/assets/icons/bump-city.svg"></tsl-svg-icon>
                 </div>
                 <div i18n>City feauture</div>
               </div>
@@ -20,7 +20,7 @@
             <div class="type country">
               <div>
                 <div>
-                  <mat-icon svgIcon="bump-country"></mat-icon>
+                  <tsl-svg-icon src="/assets/icons/bump-country.svg"></tsl-svg-icon>
                 </div>
                 <div i18n>Country feature</div>
               </div>

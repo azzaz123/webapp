@@ -37,7 +37,7 @@
           <!-- Delete -->
           <button class="btn-delete dark" (click)="onClickAction('delete')"
             [hidden]="itemService.selectedAction === 'feature'" [disabled]="!itemService.selectedItems.length">
-            <mat-icon svgIcon="delete"></mat-icon>
+            <tsl-svg-icon src="/assets/icons/delete.svg"></tsl-svg-icon>
             <span i18n>Delete</span>
           </button>
 
