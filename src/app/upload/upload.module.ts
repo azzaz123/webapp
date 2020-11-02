@@ -40,7 +40,7 @@ import { GeneralSuggestionsService } from './upload-product/general-suggestions.
     MatIconModule,
     NgbPopoverModule,
     TrackingModule,
-    DndModule,
+    DndModule.forRoot(),
     NgbCarouselModule,
     SelectModule,
     GeolocationModule,
