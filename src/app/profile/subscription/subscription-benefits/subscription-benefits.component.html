@@ -8,7 +8,7 @@
       <div *ngFor="let benefit of benefits"
         class="SubscriptionBenefitCard text-center text-md-left col-12 col-md-6 d-flex flex-column align-items-center align-items-md-baseline">
         <div class="SubscriptionBenefitCard-icon">
-          <mat-icon svgIcon="{{benefit.iconId}}" class="image"></mat-icon>
+          <tsl-svg-icon src="/assets/icons/{{benefit.iconId}}.svg" class="image"></tsl-svg-icon>
         </div>
         <div class="SubscriptionBenefitCard-title">{{benefit.title}}</div>
         <div>{{benefit.description}}</div>

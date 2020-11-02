@@ -2,12 +2,12 @@
   (uploadOutput)="onUploadOutput($event)" [uploadInput]="uploadService.uploadInput" [options]="options">
   <div class="drag-area">
     <ng-container *ngIf="files.length < options.maxUploads; else maxUploadsReached">
-      <mat-icon svgIcon="upload-dnd"></mat-icon>
+      <tsl-svg-icon src="/assets/icons/upload-dnd.svg"></tsl-svg-icon>
       <p i18n>Drop here your files to upload as a product photo</p>
     </ng-container>
     <ng-template #maxUploadsReached>
       <div class="denied-icon">
-        <mat-icon svgIcon="cross"></mat-icon>
+        <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
       </div>
       <p i18n>You have reached the limit of {{maxUploads}} photos per product.<br />Remove one first if you want to add
         more.</p>
@@ -20,12 +20,12 @@
           [ngClass]="{'placeholder': !files[i], 'one-image': (files.length === 1 && itemId !== null)}" dnd-sortable
           [sortableIndex]="i" [dragEnabled]="files[i]" (onDropSuccess)="updateOrder()">
           <a (click)="remove(files[i], $event)">
-            <mat-icon svgIcon="cross"></mat-icon>
+            <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
           </a>
           <img [src]="files[i]?.preview" *ngIf="files[i] && files[i]?.preview" />
           <div class="loader"
             *ngIf="images?.length > 0 && (files[i]?.progress?.status === 0 || files[i]?.progress?.status === 1)">
-            <mat-icon svgIcon="spinner" class="spinner corporate"></mat-icon>
+            <tsl-svg-icon src="/assets/icons/spinner.svg" class="spinner corporate"></tsl-svg-icon>
           </div>
           <input *ngIf="!files[i]" type="file" tslFileSelect [options]="options" multiple="true" />
         </label>

@@ -35,8 +35,8 @@
           <p [hidden]="!withCoins" i18n>We've definitely got a pack for you that will save you money.</p>
           <p [hidden]="withCoins" i18n>These are our ready to go packs; use them to save money when buying features.</p>
           <div *ngIf="packs?.length" class="carousel-container">
-            <mat-icon *ngIf="ngbCarrousel" svgIcon="slider-arrow" class="left-arrow" (click)="ngbCarrousel.prev()"
-              [ngClass]="{'disabled': ngbCarrousel.activeId === ngbCarrousel.slides.first.id}"></mat-icon>
+            <tsl-svg-icon *ngIf="ngbCarrousel" svgIcon="slider-arrow" class="left-arrow" (click)="ngbCarrousel.prev()"
+              [ngClass]="{'disabled': ngbCarrousel.activeId === ngbCarrousel.slides.first.id}"></tsl-svg-icon>
             <ngb-carousel interval="0" [showNavigationIndicators]="false" [wrap]="false" [showNavigationArrows]="false">
               <ng-container *ngFor="let pack of packs; let i = index">
                 <ng-template ngbSlide *ngIf="i < packs.length - 2">
@@ -53,9 +53,9 @@
                 </ng-template>
               </ng-container>
             </ngb-carousel>
-            <mat-icon *ngIf="ngbCarrousel" svgIcon="slider-arrow" class="right-arrow"
+            <tsl-svg-icon *ngIf="ngbCarrousel" svgIcon="slider-arrow" class="right-arrow"
               [ngClass]="{'disabled': ngbCarrousel.activeId === ngbCarrousel.slides.last.id}"
-              (click)="ngbCarrousel.next()"></mat-icon>
+              (click)="ngbCarrousel.next()"></tsl-svg-icon>
           </div>
 
 

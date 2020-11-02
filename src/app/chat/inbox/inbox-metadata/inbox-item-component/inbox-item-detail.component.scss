@@ -44,7 +44,7 @@
       background-color: white;
       padding: $spacing-xxs $spacing-s $spacing-xxs;
 
-      mat-icon ::ng-deep {
+      tsl-svg-icon ::ng-deep {
         float: left;
 
         svg g g, svg path {
@@ -56,7 +56,7 @@
         background: $blue-grey-2;
         border-color: transparent;
 
-        mat-icon ::ng-deep {
+        tsl-svg-icon ::ng-deep {
           svg g g, svg path {
             fill: $white;
           }
@@ -138,7 +138,7 @@
         line-height: $line-height-l;
         flex-grow: 0;
 
-        mat-icon {
+        tsl-svg-icon {
           height: 14px;
           width: 17px;
           margin: 0 $spacing-s;

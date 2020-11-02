@@ -34,7 +34,7 @@
           @include square(50px);
           top: 55px;
           left: 55px;
-          mat-icon {
+          tsl-svg-icon {
             @include square(50px);
           }
         }
@@ -173,7 +173,7 @@ tsl-stripe-card-selection {
 .stripe-payment {
   text-align: center;
   margin: $spacing-xs 0 0 0;
-  mat-icon {
+  tsl-svg-icon {
     width: 100px;
     height: 25px;
   }
@@ -184,7 +184,7 @@ tsl-stripe-card-selection {
   align-items: center;
   justify-content: center;
   position: relative;
-  mat-icon {
+  tsl-svg-icon {
     height: 14px;
     width: 11px;
     position: absolute;

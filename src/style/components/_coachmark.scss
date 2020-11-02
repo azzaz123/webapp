@@ -19,7 +19,7 @@ $coachmark-left-margin: $spacing-xl;
     display: flex;
     padding: $spacing-m;
     color: $blue-grey-2;
-    mat-icon {
+    tsl-svg-icon {
       @include square(26px);
       margin-right: $spacing-ms;
       display: inline-table;

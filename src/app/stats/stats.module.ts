@@ -6,7 +6,6 @@ import { ItemsStatsComponent } from './items-stats/items-stats.component';
 import { SharedModule } from '../shared/shared.module';
 import { ItemStatsRowComponent } from './items-stats/item-stats-row/item-stats-row.component';
 import { TrackingModule } from '../core/tracking/tracking.module';
-import { MatIconModule } from '@angular/material';
 import { ItemStatsGraphComponent } from './items-stats/item-stats-row/item-stats-graph/item-stats-graph.component';
 import { ItemStatsService } from './items-stats/item-stats-row/item-stats-graph/item-stats.service';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
@@ -18,7 +17,6 @@ import { NgxEchartsModule } from 'ngx-echarts';
     StatsRoutingModule,
     SharedModule,
     TrackingModule,
-    MatIconModule,
     InfiniteScrollModule,
     NgxEchartsModule
   ],

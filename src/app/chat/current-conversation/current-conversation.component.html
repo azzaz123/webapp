@@ -1,11 +1,11 @@
 <div id="empty-state" *ngIf="!currentConversation || loadingError">
   <div class="empty" *ngIf="emptyInbox && !loadingError">
     <div>
-      <mat-icon svgIcon="empty-inbox-conversation"></mat-icon>
+      <img class="inbox-size" src="/assets/images/empty-inbox-conversation.svg"/>
     </div>
   </div>
   <div class="content" *ngIf="!emptyInbox || loadingError">
-    <mat-icon svgIcon="empty-state" class="image"></mat-icon>
+    <img class="image" src="/assets/images/empty-state.svg"/>
     <p *ngIf="!emptyInbox && !connectionError && !loadingError" i18n>Choose a conversation<br/>
       from the list on the left</p>
     <p *ngIf="emptyInbox && !connectionError && !loadingError" i18n>There are no messages</p>
@@ -85,7 +85,7 @@
             <a class="load-more">
                             <span *ngIf="!isLoadingMoreMessages" (click)="loadMoreMessages(scrollElement.scrollHeight)"
                                   i18n="@@loadMoreButton">Load more</span>
-              <mat-icon *ngIf="isLoadingMoreMessages" svgIcon="spinner" class="spinner"></mat-icon>
+              <tsl-svg-icon *ngIf="isLoadingMoreMessages" src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
             </a>
           </div>
         </div>

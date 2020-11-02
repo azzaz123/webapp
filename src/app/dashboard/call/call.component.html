@@ -7,9 +7,9 @@
     </div>
     <div class="call-data-row" [ngSwitch]="call.callStatus">
         <span placement="top" [ngbTooltip]="call.callStatus | callStatusLabel">
-          <mat-icon *ngSwitchCase="'ANSWERED'" svgIcon="call-received"></mat-icon>
-          <mat-icon *ngSwitchCase="'MISSED'" svgIcon="call-missed" class="call-missed"></mat-icon>
-          <mat-icon *ngSwitchDefault svgIcon="call-shared"></mat-icon>
+          <tsl-svg-icon *ngSwitchCase="'ANSWERED'" src="/assets/icons/call-received.svg"></tsl-svg-icon>
+          <tsl-svg-icon *ngSwitchCase="'MISSED'" src="/assets/icons/call-missed.svg" class="call-missed"></tsl-svg-icon>
+          <tsl-svg-icon *ngSwitchDefault src="/assets/icons/call-shared.svg"></tsl-svg-icon>
         </span>
         <div class="phone-info">
           <span>{{call.phone}}</span>

@@ -99,10 +99,10 @@ tsl-user-avatar {
     .call-item-row-right {
       flex: none;
     }
-    mat-icon, span {
+    tsl-svg-icon, span {
       vertical-align: middle;
     }
-    mat-icon {
+    tsl-svg-icon {
       @include square($phone-icon-adjusted-size);
     }
     .call-item-title {
@@ -133,7 +133,7 @@ tsl-user-avatar {
         margin-bottom: 0;
       }
     }
-    mat-icon {
+    tsl-svg-icon {
       height: 15px;
       width: 15px;
       vertical-align: bottom;

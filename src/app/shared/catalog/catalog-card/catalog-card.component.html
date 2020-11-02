@@ -1,7 +1,7 @@
 <div [ngClass]="{resized: itemService.selectedItems.length}">
   <div class="checkbox">
     <button class="select" (click)="select(item)" [ngClass]="{selected: item.selected}">
-      <mat-icon svgIcon="check"></mat-icon>
+      <tsl-svg-icon src="/assets/icons/check.svg"></tsl-svg-icon>
     </button>
   </div>
   <div class="item" [ngClass]="{expired: item.flags.expired, selected: item.selected, pending: item.flags.pending, onhold: item.flags.onhold, itemSold: item.sold}">
@@ -46,34 +46,34 @@
     </div>
     <div class="visibility">
       <div class="counters" ngbTooltip="Views" i18n-ngbTooltip placement="top">
-        <mat-icon svgIcon="views"></mat-icon>
+        <tsl-svg-icon src="/assets/icons/views.svg"></tsl-svg-icon>
         <span>{{item.views}}</span>
       </div>
       <div class="counters" ngbTooltip="Favorites" i18n-ngbTooltip placement="top">
-        <mat-icon svgIcon="heart"></mat-icon>
+        <tsl-svg-icon src="/assets/icons/heart.svg"></tsl-svg-icon>
         <span>{{item.favorites}}</span>
       </div>
       <div class="counters" ngbTooltip="Chats" i18n-ngbTooltip placement="top">
-        <mat-icon svgIcon="ico-message"></mat-icon>
+        <tsl-svg-icon src="/assets/icons/ico-message.svg"></tsl-svg-icon>
         <span>{{item.conversations}}</span>
       </div>
     </div>
     <div class="actions" *ngIf="!item.flags.pending">
       <span *ngIf="!item.flags.expired">
         <button ngbTooltip="Mark as sold" i18n-ngbTooltip placement="top" class="btn-sold" [hidden]="item.sold" tslItemSold (callback)="setSold(item)" [item]="item" *ngIf="!item.flags.onhold">
-          <mat-icon svgIcon="btn-sold"></mat-icon>
+          <tsl-svg-icon src="/assets/icons/btn-sold.svg"></tsl-svg-icon>
         </button>
         <button ngbTooltip="Mark as reserved" i18n-ngbTooltip placement="top" class="btn-reserve" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold && !item.flags.onhold">
-          <mat-icon svgIcon="btn-reserved"></mat-icon>
+          <tsl-svg-icon src="/assets/icons/btn-reserved.svg"></tsl-svg-icon>
         </button>
         <button ngbTooltip="Edit" i18n-ngbTooltip placement="top" class="btn-edit" [routerLink]="['/catalog/edit/' + item.id]" tslTrackEvent="MYCATALOG_PRO_EDIT_CARD"
                 [params]="{category: item.categoryId}" *ngIf="!item.sold">
-          <mat-icon svgIcon="btn-edit"></mat-icon>
+          <tsl-svg-icon src="/assets/icons/btn-edit.svg"></tsl-svg-icon>
         </button>
       </span>
     </div>
     <button class="btn-pending" *ngIf="item.flags.pending">
-      <mat-icon svgIcon="spinner" class="spinner grey"></mat-icon>
+      <tsl-svg-icon src="/assets/icons/spinner.svg" class="spinner grey"></tsl-svg-icon>
       <span i18n>Pending</span>
     </button>
   </div>

@@ -10,7 +10,7 @@
       <li *ngFor="let type of types" [hidden]="!cart[type].cartItems.length" [ngClass]="type">
         <div class="type-total cart-box" [ngClass]="{collapsed: cart[type].collapsed}"
              (click)="cart[type].collapsed = !cart[type].collapsed">
-          <mat-icon class="wing-icon" svgIcon="wing-{{type}}"></mat-icon>
+          <tsl-svg-icon class="wing-icon" src="/assets/icons/wing-{{type}}.svg"></tsl-svg-icon>
           <div class="type">
             <span [ngSwitch]="type" class="bump-type">
               <ng-container *ngSwitchCase="'citybump'" i18n>City bump</ng-container>
@@ -19,11 +19,11 @@
             <strong>x {{cart[type].cartItems.length}}</strong><br />
             <span class="price">{{cart[type].total | customCurrency}}</span>
           </div>
-          <mat-icon class="arrow-icon" svgIcon="arrow-right"></mat-icon>
+          <tsl-svg-icon class="arrow-icon" src="/assets/icons/arrow-right.svg"></tsl-svg-icon>
         </div>
         <ul [hidden]="cart[type].collapsed">
           <li *ngFor="let cartItem of cart[type].cartItems; let i = index" class="cart-item">
-            <mat-icon svgIcon="remove" class="close-icon" (click)="remove(cartItem.pack, i)"></mat-icon>
+            <tsl-svg-icon src="/assets/icons/remove.svg" class="close-icon" (click)="remove(cartItem.pack, i)"></tsl-svg-icon>
             <div class="cart-box">
               <div class="quantity">{{cartItem.pack.quantity}}</div>
               <div class="type">

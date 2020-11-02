@@ -17,7 +17,7 @@
             <div class="features row">
               <div class="col" *ngFor="let featured of features">
                 <a (click)="scrollToElement(featured.link)" class="featured">
-                  <mat-icon [svgIcon]="featured.icon"></mat-icon>
+                  <tsl-svg-icon src="/assets/icons/{{featured.icon}}.svg"></tsl-svg-icon>
                   <div class="title">{{featured.title}}</div>
                   <div class="desc">{{featured.desc}}</div>
                 </a>
@@ -74,4 +74,4 @@
   </div>
 </div>
 
-<a class="arrow-scroll-top" [hidden]="!showScrollTop"><mat-icon svgIcon="arrow-right" (click)="scrollToTop()"></mat-icon></a>
+<a class="arrow-scroll-top" [hidden]="!showScrollTop"><tsl-svg-icon src="/assets/icons/arrow-right.svg" (click)="scrollToTop()"></tsl-svg-icon></a>
