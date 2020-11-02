@@ -1,8 +1,8 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { MatIconModule } from '@angular/material';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TooManyItemsModalComponent } from './too-many-items-modal.component';
 import { ButtonComponent } from '../../../button/button.component';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -21,7 +21,6 @@ describe('TooManyItemsModalComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        MatIconModule,
         RouterTestingModule
       ],
       declarations: [
@@ -38,7 +37,8 @@ describe('TooManyItemsModalComponent', () => {
             }
           }
         }
-      ]
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   });

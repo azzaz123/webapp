@@ -4,7 +4,7 @@
         [(ngModel)]="model" [ngbTypeahead]="suggest" (keyup)="updateKeyword()" (keyup.enter)="searchSubmit()"
         [inputFormatter]="formatter" [resultTemplate]="suggester" (selectItem)="selectSuggestion($event.item)"
         autocomplete="off" />
-        <mat-icon svgIcon="glass_icon" width="16" height="16"></mat-icon>
+        <tsl-svg-icon src="/assets/icons/glass_icon.svg" width="16" height="16"></tsl-svg-icon>
 </div>
 
 <ng-template #suggester let-r="result">

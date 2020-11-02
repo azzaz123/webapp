@@ -52,11 +52,6 @@
     width: 100%;
     display: flex;
     align-items: center;
-    & .mat-icon {
-      width: 100%;
-      height: unset;
-      opacity: 0.5;
-    }
     & .message {
       width: 45%;
       color: $blue-grey-2;

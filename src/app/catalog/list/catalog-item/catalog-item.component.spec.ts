@@ -2,7 +2,7 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 
 import { CatalogItemComponent } from './catalog-item.component';
 import { ItemChangeEvent } from './item-change.interface';
-import { Observable, of, ReplaySubject } from 'rxjs';
+import { of, ReplaySubject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
@@ -15,7 +15,6 @@ import {
   MOCK_ITEM, ORDER_EVENT, PRODUCT_DURATION_MARKET_CODE,
   PRODUCT_RESPONSE, ITEM_WEB_SLUG
 } from '../../../../tests/item.fixtures.spec';
-import { ToastService } from '../../../layout/toast/toast.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { Item } from '../../../core/item/item';
@@ -42,7 +41,7 @@ describe('CatalogItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CatalogItemComponent, CustomCurrencyPipe, ThousandSuffixesPipe],
+      declarations: [CatalogItemComponent, CustomCurrencyPipe, ThousandSuffixesPipe, CountdownPipe],
       providers: [
         DecimalPipe,
         EventService,

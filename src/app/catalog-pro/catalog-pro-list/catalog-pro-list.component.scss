@@ -78,7 +78,7 @@ tsl-spinner {
   align-items: center;
   justify-content: center;
   font-size: $font-size-s;
-  mat-icon {
+  tsl-svg-icon {
     ::ng-deep svg path {
       fill: $walla-main;
     }

@@ -112,4 +112,8 @@ export interface SaveSearch {
    * Item condition set as a filter in the search
    */
   itemCondition?: string;
+  /**
+   * Name of the experiment or A/B testing applied to the user who saved the search.
+   */
+  experiment?: string;
 }

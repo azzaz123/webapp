@@ -10,7 +10,7 @@
     <div ngbDropdownToggle class="dropdown-header">
       <div *ngIf="isInbox" class="header-title" i18n="@@inboxBox">Inbox</div>
       <div *ngIf="isArchived" class="header-title" i18n="@@inboxArchivedBox">Archived Messages</div>
-      <mat-icon class="header-icon" svgIcon="arrow-waterfall"></mat-icon>
+      <tsl-svg-icon class="header-icon" src="/assets/icons/arrow-waterfall.svg"></tsl-svg-icon>
     </div>
     <ul ngbDropdownMenu class="dropdown-menu">
       <li class="dropdown-item" [ngClass]="{'active': isInbox}" (click)="showInbox()">
@@ -36,14 +36,14 @@
 </div>
 
 <div *ngIf="!shouldDisplayHeader()" id="header-empty" [class]="loading ? 'isLoading' : ''">
-  <mat-icon svgIcon="empty-header-inbox-placeholder"></mat-icon>
+  <img class="header-size" src="/assets/images/empty-header-inbox-placeholder.svg"/>
 </div>
 
 <div *ngIf="isInbox" class="scroll-panel" #scrollPanel [ngClass]="{professional: isProfessional}"
      (scroll)="showNewMessagesToast ? handleScroll() : null">
   <button class="btn btn-primary new-messages-toast" *ngIf="showNewMessagesToast" (click)="scrollToTop()"
           [@appearInOut]>
-    <mat-icon svgIcon="up-arrow-white"></mat-icon>
+    <tsl-svg-icon src="/assets/icons/up-arrow-white.svg"></tsl-svg-icon>
     <span i18n="@@newMessages">New messages</span>
   </button>
   <div id="conversations" [hidden]="loading">
@@ -57,15 +57,15 @@
       </tsl-inbox-conversation>
     </div>
     <div *ngIf="!hasConversations()" id="inbox-empty">
-      <mat-icon svgIcon="empty-inbox-placeholder"></mat-icon>
+      <img class="inbox-size" src="/assets/images/empty-inbox-placeholder.svg"/>
     </div>
   </div>
   <div id="loader" [hidden]="!loading" class="isLoading">
-    <mat-icon svgIcon="inbox-loader"></mat-icon>
+    <img class="loader-size" src="/assets/images/inbox-loader.svg"/>
   </div>
   <div class="load-more-container" *ngIf="showLoadMore()">
     <a class="load-more">
-      <mat-icon svgIcon="spinner" [hidden]="!loadingMore" class="spinner"></mat-icon>
+      <tsl-svg-icon src="/assets/icons/spinner.svg" [hidden]="!loadingMore" class="spinner"></tsl-svg-icon>
       <span [hidden]="loadingMore" (click)="loadMore()" i18n="@@loadMoreButton">Load more</span>
     </a>
   </div>
@@ -83,15 +83,15 @@
       </tsl-archived-inbox-conversation>
     </div>
     <div *ngIf="!hasArchivedConversations()" id="inbox-empty">
-      <mat-icon svgIcon="empty-inbox-placeholder"></mat-icon>
+      <img class="inbox-size" src="/assets/images/empty-inbox-placeholder.svg"/>
     </div>
   </div>
   <div id="loader" [hidden]="!loading" class="isLoading">
-    <mat-icon svgIcon="inbox-loader"></mat-icon>
+    <img class="loader-size" src="/assets/images/inbox-loader.svg"/>
   </div>
   <div class="load-more-container" *ngIf="showLoadMoreArchived()">
     <a class="load-more">
-      <mat-icon svgIcon="spinner" [hidden]="!loadingMore" class="spinner"></mat-icon>
+      <tsl-svg-icon src="/assets/icons/spinner.svg" [hidden]="!loadingMore" class="spinner"></tsl-svg-icon>
       <span [hidden]="loadingMore" (click)="loadMoreArchived()" i18n="@@loadMoreButton">Load more</span>
     </a>
   </div>

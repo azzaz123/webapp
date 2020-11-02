@@ -74,14 +74,14 @@
     background-color: $blue-grey-5;
     transition: background-color 0.2s ease-in-out;
     cursor: pointer;
-    mat-icon {
+    tsl-svg-icon {
       transition: fill 0.2s ease-in-out;
       height: 17px;
     }
     &.citybump {
       &:hover, &.selected {
         background-color: $walla-main;
-        mat-icon {
+        tsl-svg-icon {
           ::ng-deep svg path {
             fill: $white;
           }        
@@ -89,12 +89,12 @@
       }
     }
     &.countrybump {
-      mat-icon {
+      tsl-svg-icon {
         width: 32px;
       }
       &:hover, &.selected {
         background-color: $country-bump;
-        mat-icon {
+        tsl-svg-icon {
           ::ng-deep svg path {
             fill: $white;
           }        

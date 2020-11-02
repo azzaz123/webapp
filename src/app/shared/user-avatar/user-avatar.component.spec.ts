@@ -6,7 +6,7 @@ import { SanitizedBackgroundDirective } from '../sanitized-background/sanitized-
 import { PLACEHOLDER_AVATAR, User } from '../../core/user/user';
 import { IMAGE, MICRO_NAME, USER_ID } from '../../../tests/user.fixtures.spec';
 import { StatusIconComponent } from '../status-icon';
-import { MatIconModule } from '@angular/material';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('Component: UserAvatar', () => {
 
@@ -15,12 +15,12 @@ describe('Component: UserAvatar', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        MatIconModule
       ],
       declarations: [UserAvatarComponent, SanitizedBackgroundDirective, StatusIconComponent],
       providers: [
         UserAvatarComponent
-      ]
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
     component = TestBed.createComponent(UserAvatarComponent).componentInstance;
   });

@@ -1,8 +1,8 @@
 
 import { of } from 'rxjs';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { MatIconModule } from '@angular/material';
 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ThirdVoiceReviewButtonComponent } from './third-voice-review-button.component';
 import { ButtonComponent } from '../../../shared/button/button.component';
@@ -48,7 +48,6 @@ describe('ThirdVoiceReviewComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        MatIconModule
       ],
       declarations: [
         ThirdVoiceReviewButtonComponent,
@@ -57,7 +56,8 @@ describe('ThirdVoiceReviewComponent', () => {
       providers: [
         { provide: ReviewService, useClass: ReviewServiceMock },
         { provide: NgbModal, useClass: NgbModalMock }
-      ]
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   }));

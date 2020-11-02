@@ -60,9 +60,13 @@ $sold-width: 32px;
   background-color: $white;
   margin: auto;
   z-index: 2;
-  mat-icon {
+  tsl-svg-icon {
     margin: auto auto;
     @include square(21px);
+    ::ng-deep svg {
+      height: 100%;
+      width: 100%;
+    }
   }
   .small & {
     display: none;
@@ -70,7 +74,7 @@ $sold-width: 32px;
 }
 
 .reserved {
-  mat-icon {
+  tsl-svg-icon {
     height: 17px;
     width: 12px;
     vertical-align: sub;
@@ -79,7 +83,7 @@ $sold-width: 32px;
 
 .featured {
   background-color: $walla-main;
-  mat-icon {
+  tsl-svg-icon {
     @include square(25px);
   }
   &.zonebump {
@@ -98,7 +102,7 @@ $sold-width: 32px;
 
 .urgent {
   background-color: $urgent;
-  mat-icon {
+  tsl-svg-icon {
     @include square(30px);
   }
 }

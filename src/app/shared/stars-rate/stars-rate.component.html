@@ -1,5 +1,5 @@
 <span (mouseleave)="resetHovered()">
   <span *ngFor="let star of starsArray" (mouseenter)="onHover(star.score)" (click)="setScore(star.score)">
-    <mat-icon svgIcon="star:{{star.type}}"></mat-icon>
+    <tsl-svg-icon [src]="getSvgPath(star.type)"></tsl-svg-icon>
   </span>
 </span>

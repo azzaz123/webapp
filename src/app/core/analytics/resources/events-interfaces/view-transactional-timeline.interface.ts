@@ -32,24 +32,7 @@ export interface ViewTransactionalTimeline {
   /**
    * Status of the transaction
    */
-  status:
-    | "request_created"
-    | "request_rejected"
-    | "transaction_created"
-    | "request_expired"
-    | "item_delivered"
-    | "transaction_payment_failed"
-    | "request_failed"
-    | "tag_created"
-    | "item_in_transit"
-    | "item_delivered_to_carrier"
-    | "money_transferred"
-    | "shipping_failed"
-    | "transaction_expired"
-    | "transaction_cancelled"
-    | "transaction_cancelled_by_seller"
-    | "item_available_for_the_recipient"
-    | "dispute_updated";
+  status: string;
   /**
    * Identifier of the transaction timeline screen
    */

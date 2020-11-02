@@ -11,8 +11,8 @@
       (click)="openSubscriptionModal(subscription)" *ngFor="let subscription of subscriptions">
         <div class="Subscriptions__category-base">
           <div class="Subscriptions__category-icon">
-            <mat-icon *ngIf="subscription.subscribed_from" svgIcon="cat_{{subscription.category_icon}}"class="image"></mat-icon>
-            <mat-icon [hidden]="subscription.subscribed_from" svgIcon="cat_{{subscription.category_icon}}-disabled" class="image"></mat-icon>
+            <tsl-svg-icon *ngIf="subscription.subscribed_from" src="/assets/icons/categories/normal/{{subscription.category_icon}}.svg" class="image"></tsl-svg-icon>
+            <tsl-svg-icon [hidden]="subscription.subscribed_from" src="/assets/icons/categories/disabled/{{subscription.category_icon}}.svg" class="image"></tsl-svg-icon>
           </div>
           <div class="Subscriptions__category-title">{{subscription.category_name}}</div>
           <hr />

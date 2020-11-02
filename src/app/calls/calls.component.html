@@ -8,7 +8,7 @@
     <tsl-header>
       <div class="col-12">
         <div class="header-row">
-          <h1 class="header-title"><span i18n>Calls</span> <span class="badge badge-pro"><mat-icon svgIcon="pro-seal"></mat-icon>Pro</span></h1>
+          <h1 class="header-title"><span i18n>Calls</span> <span class="badge badge-pro"><tsl-svg-icon src="/assets/icons/pro-seal.svg"></tsl-svg-icon>Pro</span></h1>
         </div>
         <div class="header-row header-row--margin">
           <h4 class="header-subtitle" i18n>Here you can manage and see the information related with your calls</h4>
@@ -56,7 +56,7 @@
       </div>
     </div>
     <div class="empty-state-phones" [hidden]="calls.length || loading">
-      <mat-icon svgIcon="empty-state-phones" class="image"></mat-icon>
+      <tsl-svg-icon src="/assets/icons/empty-state-phones.svg" class="image"></tsl-svg-icon>
       <div class="message" i18n>You have no phone calls yet</div>
     </div>
     <div class="row loading-center">

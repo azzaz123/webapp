@@ -33,10 +33,6 @@
   width: 100%;
   display: flex;
   align-items: center;
-  & .mat-icon {
-    width: 50%;
-    height: unset;
-  }
   & .message {
     width: 45%;
     color: $blue-grey-2;
@@ -50,7 +46,7 @@
 }
 
 :host ::ng-deep .header-rating {
-  mat-icon {
+  tsl-svg-icon {
     width: 22px;
     height: 21px;
   }

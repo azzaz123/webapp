@@ -34,14 +34,6 @@ export class UploadConfirmationModalComponent implements OnInit {
 
   ngOnInit() {
     ga('send', 'event', 'Item', 'upload');
-    gtag('event', 'conversion', {'send_to': 'AW-829909973/7aOVCJvxvHsQ1dfdiwM'});
-    twq('track', 'Purchase', {
-      value: '0',
-      currency: 'EUR',
-      num_items: '0',
-      content_type: 'product',
-      content_name: 'Upload product from form'
-    });
     this.paymentService.getCreditInfo().subscribe((creditInfo: CreditInfo) => {
       this.creditInfo = creditInfo;
     });

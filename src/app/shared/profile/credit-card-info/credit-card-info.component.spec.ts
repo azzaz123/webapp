@@ -122,9 +122,9 @@ describe('CreditCardInfoComponent', () => {
       tick();
       fixture.detectChanges();
 
-      const loadingComponent: HTMLElement = fixture.nativeElement.querySelector('.CreditCard__info--loading > mat-icon');
+      const loadingComponent: HTMLElement = fixture.nativeElement.querySelector('.CreditCard__info--loading > tsl-svg-icon');
       expect(loadingComponent).toBeTruthy();
-      expect(loadingComponent.getAttribute('svgicon')).toBe('spinner');
+      expect(loadingComponent.getAttribute('src')).toContain('spinner');
       tick(backendResponseTimeMs);
     }));
 
