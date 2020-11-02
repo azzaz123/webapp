@@ -72,6 +72,7 @@ export class AppComponent implements OnInit {
     this.initializeEventListeners();
     this.initializeServices();
     this.initializeRouterEventListeners();
+    console.log('TEST', this.serviceWorker)
     this.serviceWorker.available.subscribe(event => {
       console.log('current version is', event.current);
       console.log('available version is', event.available);
