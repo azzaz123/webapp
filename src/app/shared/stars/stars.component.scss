@@ -4,9 +4,13 @@
   display: block;
 }
 
-mat-icon {
+tsl-svg-icon {
   height: 14px;
   width: 15px;
   margin-right: $spacing-s;
   display: inline-flex;
+  ::ng-deep svg {
+    height: 100%;
+    width: 100%;
+  }
 }

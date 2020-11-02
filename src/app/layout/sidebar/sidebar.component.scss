@@ -43,7 +43,7 @@ $sidebar-section-circle-size-small: 32px;
 }
 
 .sidebar-section {
-  mat-icon {
+  tsl-svg-icon {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -58,7 +58,7 @@ $sidebar-section-circle-size-small: 32px;
     fill: rgba($white, .5);
   }
   &.active, &:hover {
-    mat-icon {
+    tsl-svg-icon {
       & ::ng-deep path {
         fill: $white;
       }
@@ -115,7 +115,7 @@ h2 {
     margin: 0 auto $spacing-s auto;
   }
   .sidebar-section {
-    mat-icon {
+    tsl-svg-icon {
       @include square(24px);
     }
     &.profile-item {

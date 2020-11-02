@@ -12,7 +12,6 @@ import { CheckoutProItemComponent } from './checkout-pro/checkout-pro-item/check
 import { RangeDatepickerComponent } from './checkout-pro/range-datepicker/range-datepicker.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { SharedModule } from '../shared/shared.module';
-import { MatIconModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { CreditCardModalComponent } from './catalog-pro-list/modals/credit-card-modal/credit-card-modal.component';
@@ -23,7 +22,6 @@ import { CreditCardModalComponent } from './catalog-pro-list/modals/credit-card-
     SharedModule,
     CatalogProRoutingModule,
     InfiniteScrollModule,
-    MatIconModule,
     FormsModule,
     ReactiveFormsModule,
     NgbDatepickerModule

@@ -2,7 +2,7 @@
 
 .modal-close {
   cursor: pointer;
-  mat-icon {
+  tsl-svg-icon {
     @include square(24px);
     ::ng-deep path {
       fill: $white

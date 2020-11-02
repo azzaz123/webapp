@@ -88,9 +88,13 @@ $subscription-mobile-card-height: $subscription-card-height + $spacing-ms;
     width: 68px;
     height: 68px;
     background-color: $blue-grey-5;
-    mat-icon {
+    tsl-svg-icon {
       height: 40px;
       width: 40px;
+      ::ng-deep svg {
+        height: 100%;
+        width: 100%;
+      }
     }
   }
   &--subscribed {

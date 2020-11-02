@@ -27,7 +27,7 @@
     .SubscriptionsSlotItem__info {
       display: flex;
 
-      mat-icon {
+      tsl-svg-icon {
         opacity: 1;
       }
 
@@ -42,7 +42,7 @@
 .SubscriptionsSlotItem__icon {
   @include square(48px);
 
-  mat-icon {
+  tsl-svg-icon {
     @include square(48px);
     opacity: 0.3;
   }
@@ -66,7 +66,7 @@
   top: 0;
   right: 0;
 
-  mat-icon {
+  tsl-svg-icon {
     @include square($spacing-ms);
 
     ::ng-deep svg path {
@@ -80,7 +80,7 @@
   border: solid 1px $walla-main;
 
   .SubscriptionsSlotItem__icon {
-    mat-icon {
+    tsl-svg-icon {
       opacity: 1;
     }
   }

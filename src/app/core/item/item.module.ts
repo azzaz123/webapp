@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatIconModule } from '@angular/material';
 import { SharedModule } from '../../shared/shared.module';
 import { TrackingModule } from '../tracking/tracking.module';
 import { ItemService } from './item.service';
@@ -9,7 +8,6 @@ import { ItemService } from './item.service';
   imports: [
     TrackingModule,
     SharedModule,
-    MatIconModule,
     CommonModule,
     TrackingModule
   ],

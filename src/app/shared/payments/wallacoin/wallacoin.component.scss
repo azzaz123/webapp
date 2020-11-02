@@ -13,7 +13,7 @@
   }
 }
 
-mat-icon {
+tsl-svg-icon {
   @include square(10px);
   margin-left: $spacing-xxs;
   ::ng-deep svg path {

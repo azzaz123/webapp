@@ -5,7 +5,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import { ProfileCardFavoriteComponent } from './profile-card-favorite.component';
-import { MatIconModule } from '@angular/material';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
@@ -35,7 +34,7 @@ describe('ProfileCardFavoriteComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ MatIconModule ],
+      imports: [ ],
       declarations: [ ProfileCardFavoriteComponent, CustomCurrencyPipe ],
       providers: [
         DecimalPipe,

@@ -4,7 +4,7 @@
   @include square(12px);
   top: 10px;
   right: 10px;
-  mat-icon {
+  tsl-svg-icon {
     @include square(12px);
     line-height: initial;
   }

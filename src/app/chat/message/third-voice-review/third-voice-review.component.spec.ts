@@ -1,11 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ThirdVoiceReviewComponent } from './third-voice-review.component';
 import { ThirdVoiceMessageComponent } from '../third-voice-message';
-import { MatIconModule } from '@angular/material';
 import { SharedModule } from '../../../shared/shared.module';
 import { CommonModule } from '@angular/common';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
 import { InboxMessage, MessageStatus, MessageType } from '../../model';
 
@@ -15,11 +14,11 @@ describe('ThirdVoiceReviewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, MatIconModule, CommonModule],
+      imports: [SharedModule, CommonModule],
       declarations: [
         ThirdVoiceReviewComponent,
         ThirdVoiceMessageComponent],
-      schemas: [NO_ERRORS_SCHEMA],
+      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   }));

@@ -2,7 +2,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProfileImagesComponent } from './profile-images.component';
-import { MatIconModule } from '@angular/material';
 import { SanitizedBackgroundDirective } from '../sanitized-background/sanitized-background.directive';
 import { PROFILE_IMAGE } from '../../../tests/profile.fixtures.spec';
 import { FAKE_ITEM_IMAGE_SMALL_BASE_PATH, FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH } from '../../core/item/item';
@@ -16,7 +15,6 @@ describe('ItemAvatarComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        MatIconModule
       ],
       declarations: [
         ProfileImagesComponent,

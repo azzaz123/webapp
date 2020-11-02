@@ -4,7 +4,6 @@ import { InputComponent } from './input/input.component';
 import { ConnectionAlertComponent } from './connection-alert/connection-alert.component';
 import { NgbDropdownModule, NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
-import { MatIconModule } from '@angular/material';
 import { ItemComponent } from './item/item.component';
 import { SharedModule } from '../shared/shared.module';
 import { CommonModule } from '@angular/common';
@@ -39,7 +38,6 @@ import { PersonalDataInformationModal } from './modals/personal-data-information
   imports: [
     CommonModule,
     FormsModule,
-    MatIconModule,
     NgbTooltipModule,
     NgbDropdownModule,
     NgbModalModule,
