@@ -14,7 +14,15 @@ export interface ClickSubscriptionPlanDone {
    */
   screenId: 191;
   /**
+   * Subscription category type
+   */
+  subscription: 0 | 100 | 14000 | 12800;
+  /**
    * Identifier of the subscription tier
    */
-  tier?: number;
+  previousTier: number;
+  /**
+   * Identifier of the subscription tier
+   */
+  newTier: number;
 }

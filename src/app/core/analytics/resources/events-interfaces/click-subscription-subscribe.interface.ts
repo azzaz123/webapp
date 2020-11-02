@@ -10,9 +10,17 @@
  */
 export interface ClickSubscriptionSubscribe {
   /**
-   * Identifier of the subscription plan chosen by user
+   * Subscription category type that reached the limit
    */
-  planId: string;
+  subscription: 0 | 100 | 14000 | 12800;
+  /**
+   * Identifier of the tier choosen
+   */
+  tier?: string;
+  /**
+   * Price of the subscription and tier choosen (if tier N/A, price of the plan)
+   */
+  price: number;
   /**
    * Identifier of the Subscription screen
    */

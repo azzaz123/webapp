@@ -6,15 +6,19 @@
  */
 
 /**
- * User clicks on the PRO subscription button in his profile page or in the top sellers slider on the Wall
+ * Users views of pro subscription popup when limit reached
  */
-export interface ClickProSubscription {
+export interface ViewProSubscriptionPopup {
+  /**
+   * Identifier of the pro subscription limit popup screen
+   */
+  screenId: 230;
   /**
    * If the view offers free trial or not
    */
   freeTrial?: boolean;
   /**
-   * Identifier of the screen in which the user has clicked
+   * Subscription category type that reached the limit
    */
-  screenId: 111 | 112;
+  subscription: 0 | 100 | 14000 | 12800;
 }
