@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatIconModule } from '@angular/material';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../shared/shared.module';
 import { CallsComponent } from './calls.component';
@@ -13,7 +12,6 @@ import { TrackingModule } from '../core/tracking/tracking.module';
 @NgModule({
   imports: [
     CommonModule,
-    MatIconModule,
     TrackingModule,
     NgbTooltipModule,
     SharedModule,

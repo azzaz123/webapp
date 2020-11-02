@@ -308,7 +308,7 @@ tsl-button ::ng-deep .simple.light  {
 .modal-close {
   width: $spacing-ms;
   height: $spacing-ms;
-  mat-icon {
+  tsl-svg-icon {
     width: $spacing-ms;
     height: $spacing-ms;
     line-height: $spacing-ms;

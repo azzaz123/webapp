@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SpinnerComponent } from './spinner/spinner.component';
-import { MatIconModule } from '@angular/material';
 import { AdComponent } from './ad/ad.component';
 import { CustomCurrencyPipe, DateUntilDayPipe, DateCalendarPipe, CountdownPipe } from './pipes';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
@@ -77,12 +76,12 @@ import { ProfileProBillingComponent } from './profile-pro-billing/profile-pro-bi
 import { FullScreenModalComponent } from './modals/full-screen-menu/full-screen-modal.component';
 import { DisableControlDirective } from './forms/disable-control.directive';
 import { RouterLinkDirectiveStub } from './router-link-directive-stub';
+import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
 
 @NgModule({
   imports: [
     CardModule,
     CommonModule,
-    MatIconModule,
     NgbModule,
     ReactiveFormsModule,
     FormsModule,
@@ -94,7 +93,8 @@ import { RouterLinkDirectiveStub } from './router-link-directive-stub';
     UploaderModule,
     SelectModule,
     DeviceDetectorModule.forRoot(),
-    ProBadgeModule
+    ProBadgeModule,
+    SvgIconModule
   ],
   exports: [
     CardModule,
@@ -159,7 +159,8 @@ import { RouterLinkDirectiveStub } from './router-link-directive-stub';
     CountdownPipe,
     ProfileProBillingComponent,
     FullScreenModalComponent,
-    DisableControlDirective
+    DisableControlDirective,
+    SvgIconModule
   ],
   declarations: [
     AdComponent,

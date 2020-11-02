@@ -19,6 +19,7 @@ import { I18nService } from '../../core/i18n/i18n.service';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
 import { User } from '../../core/user/user';
 import { SharedModule } from '../../shared/shared.module';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 class MockUserService {
 
@@ -77,6 +78,7 @@ describe('ConversationDetailsBarComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
+        HttpClientTestingModule,
         SharedModule,
         NgbModule,
         NgxPermissionsModule.forRoot()

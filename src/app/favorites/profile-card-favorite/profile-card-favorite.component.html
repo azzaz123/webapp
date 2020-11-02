@@ -4,7 +4,7 @@
       [profileImage]="profile?.item_images && profile?.item_images[number]" size="profile" fallbackLight="true">
     </tsl-profile-images>
     <span *ngIf="profile?.is_professional" class="badge badge-pro featured">
-      <mat-icon svgIcon="pro-seal"></mat-icon>Pro
+      <tsl-svg-icon src="/assets/icons/pro-seal.svg"></tsl-svg-icon>Pro
     </span>
   </tsl-card-image>
   <tsl-card-content>
@@ -15,7 +15,7 @@
     <tsl-user-avatar [imageUrl]="profile?.user_image?.small" size="40"></tsl-user-avatar>
   </tsl-card-content>
   <tsl-card-footer (click)="removeFavoriteModal($event)">
-    <mat-icon svgIcon="heart-full" class="cart-footer-icon" [ngClass]="{active: profile.favorited}"></mat-icon>
+    <tsl-svg-icon src="/assets/icons/heart-full.svg" class="cart-footer-icon" [ngClass]="{active: profile.favorited}"></tsl-svg-icon>
     <div class="cart-footer-text" i18n> Remove </div>
   </tsl-card-footer>
 </tsl-card>

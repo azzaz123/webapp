@@ -1,9 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SubscriptionsSlotsListComponent } from './subscriptions-slots-list.component';
-import { MatIconModule } from '@angular/material/icon';
 import { SubscriptionsSlotItemComponent } from '../subscriptions-slot-item/subscriptions-slot-item.component';
 import { MOCK_SUBSCRIPTION_SLOT_CARS } from '../../../../../tests/subscriptions.fixtures.spec';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('SubscriptionsSlotsListComponent', () => {
   let component: SubscriptionsSlotsListComponent;
@@ -11,8 +11,9 @@ describe('SubscriptionsSlotsListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [MatIconModule],
-      declarations: [ SubscriptionsSlotsListComponent, SubscriptionsSlotItemComponent ]
+      imports: [],
+      declarations: [ SubscriptionsSlotsListComponent, SubscriptionsSlotItemComponent ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   }));

@@ -5,7 +5,7 @@
       'CatalogItem__checkbox--selected': item.selected,
       'CatalogItem__checkbox--disabled': item.flags.pending || (!item.flags.onhold && item.listingFeeExpiringDate)
     }" [disabled]="item.flags.pending || (!item.flags.onhold && item.listingFeeExpiringDate)">
-      <mat-icon svgIcon="check"></mat-icon>
+      <tsl-svg-icon src="/assets/icons/check.svg"></tsl-svg-icon>
     </button>
   </div>
 
@@ -63,7 +63,7 @@
             <div class="feature-action" [hidden]="item.sold || item.flags.onhold || item.flags.urgent">
               <tsl-button className="btn-feature" (click)="featureItem(item)" *ngIf="!item.bumpExpiringDate"
                 [hidden]="selectMode">
-                <mat-icon svgIcon="feature"></mat-icon>
+                <tsl-svg-icon src="/assets/icons/feature.svg"></tsl-svg-icon>
                 <span i18n>Feature</span>
               </tsl-button>
               <button class="btn-featured" *ngIf="item.bumpExpiringDate" [hidden]="selectMode">
@@ -76,30 +76,30 @@
             *ngIf="!item.flags.pending && !item.flags.expired && !item.flags.onhold" [hidden]="selectMode">
             <button class="btn-sold" [hidden]="item.sold || item.flags.onhold" tslItemSold (callback)="setSold(item)"
               [item]="item" ngbTooltip="Mark as sold" i18n-ngbTooltip placement="top">
-              <mat-icon svgIcon="btn-sold"></mat-icon>
+              <tsl-svg-icon src="/assets/icons/btn-sold.svg"></tsl-svg-icon>
             </button>
             <button class="btn-reserve" [hidden]="item.flags.onhold" [ngClass]="{active: item.reserved}"
               (click)="reserve(item)" *ngIf="!item.sold" ngbTooltip="Mark as reserved" i18n-ngbTooltip placement="top">
-              <mat-icon svgIcon="btn-reserved"></mat-icon>
+              <tsl-svg-icon src="/assets/icons/btn-reserved.svg"></tsl-svg-icon>
             </button>
             <button class="btn-edit" [hidden]="item.flags.onhold" [routerLink]="['/catalog/edit/' + item.id]"
               tslTrackEvent="MYCATALOG_EDITITEM" [params]="{category: item.categoryId}" *ngIf="!item.sold"
               ngbTooltip="Edit" i18n-ngbTooltip placement="top">
-              <mat-icon svgIcon="btn-edit"></mat-icon>
+              <tsl-svg-icon src="/assets/icons/btn-edit.svg"></tsl-svg-icon>
             </button>
           </div>
 
           <div class="col ml-auto d-flex align-items-center justify-content-center" *ngIf="item.flags.expired">
             <button class="btn-reactivate" (click)="reactivate(item)" tslTrackEvent="MYCATALOG_REACTIVATE_FROMCATALOG"
               [params]="{category: item.categoryId}" [hidden]="selectMode">
-              <mat-icon svgIcon="clock"></mat-icon>
+              <tsl-svg-icon src="/assets/icons/clock.svg"></tsl-svg-icon>
               <span i18n>Reactivate</span>
             </button>
           </div>
 
           <div class="col ml-auto d-flex align-items-center justify-content-center" *ngIf="item.flags.pending">
             <button class="btn-pending">
-              <mat-icon svgIcon="spinner" class="spinner grey"></mat-icon>
+              <tsl-svg-icon src="/assets/icons/spinner.svg" class="spinner grey"></tsl-svg-icon>
               <span i18n>Pending</span>
             </button>
           </div>

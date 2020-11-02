@@ -2,11 +2,11 @@
   <div class="images-container">
     <div class="review-image">
       <ng-container *ngIf="review.item?.image; else categoryIcon">
-        <a href="{{ itemWebLink }}" target="_blank" tslsanitizedBackground="{{ review.item?.image.small }}" [fallback]="fallback" class="image" [ngClass]="size"></a>
+        <a href="{{ itemWebLink }}" target="_blank" tslsanitizedBackground="{{ review.item?.image.small }}" [fallback]="fallback" class="image"></a>
       </ng-container>
       <ng-template #categoryIcon>
-        <ng-container *ngIf="category?.iconName; else defaultImage">
-          <mat-icon [svgIcon]="category.iconName"></mat-icon>
+        <ng-container *ngIf="category?.icon_id; else defaultImage">
+          <tsl-svg-icon src="/assets/icons/categories/normal/{{category.icon_id}}.svg"></tsl-svg-icon>
         </ng-container>
       </ng-template>
       <ng-template #defaultImage>
