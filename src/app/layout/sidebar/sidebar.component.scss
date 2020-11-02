@@ -129,3 +129,10 @@ h2 {
     }
   }
 }
+
+.svg-icon-size {
+  ::ng-deep svg {
+    height: 100%;
+    width: 100%;
+  }
+}
