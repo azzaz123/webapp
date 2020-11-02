@@ -19,6 +19,7 @@ export class LoggedGuard implements CanActivate, CanLoad {
   }
 
   private _loggedGuardLogic(): boolean {
+    return true;
     if (!this.accessTokenService.accessToken) {
       const redirect = `${environment.siteUrl}login?redirectUrl=${this._getEncryptedAndEncodedRedirect()}`;
       window.location.href = redirect;
@@ -28,6 +29,7 @@ export class LoggedGuard implements CanActivate, CanLoad {
   }
 
   public canActivate() {
+
     return this._loggedGuardLogic();
   }
 

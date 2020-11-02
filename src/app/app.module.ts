@@ -30,7 +30,10 @@ import { environment } from '../environments/environment';
     AppRoutingModule,
     LayoutModule,
     NgxPermissionsModule.forRoot(),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: true })
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: true,
+      registrationStrategy: "registerImmediately"
+    })
   ],
   providers: [PROVIDERS],
   bootstrap: [AppComponent]
