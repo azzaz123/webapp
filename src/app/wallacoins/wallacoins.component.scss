@@ -64,6 +64,11 @@ p {
   .left-arrow,
   .right-arrow {
     cursor: pointer;
+    ::ng-deep {
+      svg {
+        @include square(24px);
+      }
+    }
     &:hover {
       ::ng-deep {
         path {
@@ -77,7 +82,7 @@ p {
       pointer-events: none;
     }
   }
-  .right-arrow {
+  .left-arrow {
     transform: rotate(180deg);
   }
 
