@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { TopbarComponent } from './topbar/topbar.component';
-import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbToastModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { UserModule } from '../core/user/user.module';
@@ -21,10 +21,11 @@ import { ToastComponent } from './toast/toast.component';
     SharedModule,
     NgbDropdownModule,
     FormsModule,
-    NgbModule,
     UserModule,
     GeolocationModule,
-    TrackingModule
+    TrackingModule,
+    NgbTypeaheadModule,
+    NgbToastModule
   ],
   exports: [
     TopbarComponent,

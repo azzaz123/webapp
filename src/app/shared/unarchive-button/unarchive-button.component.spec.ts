@@ -2,7 +2,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { UnarchiveButtonComponent } from './unarchive-button.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 import { Lead } from '../../core/conversation/lead';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
@@ -18,9 +17,7 @@ describe('UnarchiveButtonComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        NgbModule
-      ],
+      imports: [],
       providers: [
         { provide: TrackingService, useClass: MockTrackingService },
         {
