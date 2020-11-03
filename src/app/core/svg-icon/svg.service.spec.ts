@@ -24,7 +24,7 @@ describe('SvgService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('when requesting svg icon', () => {
+  describe('when requesting svg icon...', () => {
     it('should get svg icon', () => {
       const expectedUrl = '/assets/icons/home.svg';
       const svg = '<svg></svg>';
@@ -37,22 +37,6 @@ describe('SvgService', () => {
       expect(req.request.url).toEqual(expectedUrl);
       expect(response).toEqual(svg);
       expect(req.request.method).toBe('GET');
-    });
-
-    describe('and when the response is not an SVG', () => {
-      it('should return an empty SVG', () => {
-        const expectedUrl = '/assets/icons/badsvg.svg';
-        const badSVG = '<html><body></body></html>';
-        let response: string;
-
-        service.getIconByPath(expectedUrl).subscribe(r => response = r);
-        const req: TestRequest = httpMock.expectOne(expectedUrl);
-        req.flush(badSVG);
-
-        expect(req.request.url).toEqual(expectedUrl);
-        expect(response).toEqual('<svg></svg>');
-        expect(req.request.method).toBe('GET');
-      });
     });
   });
 });
