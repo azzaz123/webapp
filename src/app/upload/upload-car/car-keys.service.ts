@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { IOption } from 'ng-select';
+import { IOption } from 'app/dropdown/utils/option.interface';
 import { filter } from 'lodash-es';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { environment } from '../../../environments/environment';
@@ -46,8 +46,8 @@ export class CarKeysService {
   private toSelectOptions(values: any[]): IOption[] {
     return values.map(item => ({
       value: item.id,
-      label: item.text
+      label: item.text,
+      icon_id: `assets/icons/${item.icon_id}.svg`
     }));
   }
-
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { Observable, of } from 'rxjs';
 import { Key } from './key.interface';
-import { IOption } from 'ng-select';
+import { IOption } from 'app/dropdown/utils/option.interface';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
@@ -38,7 +38,8 @@ export class RealestateKeysService {
       .pipe(map((keys: Key[]) => {
         return keys.map((item: Key) => ({
           value: item.id,
-          label: item.text
+          label: item.text,
+          icon_id: `assets/icons/${item.icon_id}.svg`
         }));
       }));
   }

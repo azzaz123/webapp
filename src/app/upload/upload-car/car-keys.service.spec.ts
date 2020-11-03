@@ -4,7 +4,7 @@ import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@an
 import { environment } from '../../../environments/environment';
 
 import { CarKeysService, CARS_KEYS_ENDPOINT } from './car-keys.service';
-import { IOption } from 'ng-select';
+import { IOption } from 'app/dropdown/utils/option.interface';
 import { CAR_BODY_TYPES, CAR_BODY_TYPES_RESPONSE } from '../../../tests/car.fixtures.spec';
 import { I18nService } from '../../core/i18n/i18n.service';
 

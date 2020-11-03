@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { TestRequest, HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
-import { IOption } from 'ng-select';
+import { IOption } from 'app/dropdown/utils/option.interface';
 
 import { environment } from '../../../environments/environment';
 
@@ -74,7 +74,8 @@ describe('RealestateKeysService', () => {
 
       expect(response).toEqual([{
         value: 'test',
-        label: 'test'
+        label: 'test',
+        icon_id: "assets/icons/test.svg"
       }]);
       expect(req.request.urlWithParams).toBe(expectedUrl);
       expect(req.request.method).toBe('GET');

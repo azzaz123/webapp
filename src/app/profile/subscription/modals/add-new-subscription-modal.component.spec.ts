@@ -152,7 +152,7 @@ describe('AddNewSubscriptionModalComponent', () => {
     component.isNewSubscriber = false;
     fixture.detectChanges();
     spyOn(component, 'reloadPage').and.returnValue(() => {});
-    
+
   });
 
   describe('ngOnInit', () => {
@@ -226,7 +226,7 @@ describe('AddNewSubscriptionModalComponent', () => {
     it('should requestNewPayment if card is not attached', fakeAsync(() => {
       spyOn(stripeService, 'addNewCard').and.returnValue(throwError('bad credit card'));
       spyOn(errorsService, 'i18nError');
-      
+
       component.addSubscription(PAYMENT_METHOD_DATA);
 
       expect(component.loading).toBe(false);
@@ -242,7 +242,7 @@ describe('AddNewSubscriptionModalComponent', () => {
       spyOn(component, 'addSubscriptionFromSavedCard').and.callThrough();
 
       component.addSubscription(PAYMENT_METHOD_DATA);
-      
+
       expect(component.addSubscriptionFromSavedCard).toHaveBeenCalled();
     }));
   });
@@ -250,7 +250,7 @@ describe('AddNewSubscriptionModalComponent', () => {
   describe('addSubscriptionFromSavedCard', () => {
     beforeEach(fakeAsync(() => {
       spyOn(subscriptionsService, 'newSubscription').and.returnValue(of({status: 202}));
-      
+
       component.isRetryInvoice = false;
     }));
 
@@ -275,7 +275,7 @@ describe('AddNewSubscriptionModalComponent', () => {
 
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
       tick();
-      
+
       expect(subscriptionsService.checkNewSubscriptionStatus).toHaveBeenCalled();
     }));
 
@@ -307,14 +307,14 @@ describe('AddNewSubscriptionModalComponent', () => {
 
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
       tick();
-      
+
       expect(stripeService.actionPayment).toHaveBeenCalledWith(SUBSCRIPTION_REQUIRES_ACTION.payment_secret_key);
     }));
 
     it('should call requestNewPayment if response status is requires_payment_method', fakeAsync(() => {
       spyOn(errorsService, 'i18nError');
       spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(of(SUBSCRIPTION_REQUIRES_PAYMENT));
-      
+
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
       tick();
 
@@ -464,7 +464,7 @@ describe('AddNewSubscriptionModalComponent', () => {
       fixture.detectChanges();
 
       const carousel: HTMLElement = fixture.elementRef.nativeElement.querySelector('ngb-carousel');
-      
+
       expect(carousel.className.includes('single')).toBe(true);
     });
 
@@ -476,7 +476,7 @@ describe('AddNewSubscriptionModalComponent', () => {
       const carouselIndicatorsElement: HTMLElement = fixture.elementRef.nativeElement.querySelector('.carousel-indicators');
       const carouselIndicatorsElementStyle = getComputedStyle(carouselIndicatorsElement);
       const changeButton: HTMLElement = fixture.elementRef.nativeElement.querySelector('.AddNewSubscription__listing-limit-payment-edit');
-      
+
       expect(firstStepElement).toBeNull();
       expect(carouselIndicatorsElementStyle.display).toBe('none');
       expect(changeButton).toBeNull();
@@ -509,7 +509,7 @@ describe('AddNewSubscriptionModalComponent', () => {
 
   describe('User selects invoice option', () => {
     it('should set the selected invoice option', () => {
-      const removeFavoriteButton = fixture.debugElement.nativeElement.querySelector('ng-select');
+      const removeFavoriteButton = fixture.debugElement.nativeElement.querySelector('tsl-dropdown');
 
       removeFavoriteButton.click();
 
@@ -528,7 +528,7 @@ describe('AddNewSubscriptionModalComponent', () => {
   describe('Getting the billing info', () => {
     it('should call the billing info service', () => {
       spyOn(paymentService, 'getBillingInfo').and.callThrough();
-      
+
       component.getBillingInfo();
 
       expect(paymentService.getBillingInfo).toHaveBeenCalledTimes(1);

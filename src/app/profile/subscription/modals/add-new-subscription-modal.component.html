@@ -77,9 +77,9 @@
           </div>
           <div>
             <div class="form-group">
-              <ng-select class="form-control" i18n-placeholder placeholder="Do you need an invoice?" (selected)="onInvoiceOptionSelect($event)"
+              <tsl-dropdown class="form-control" i18n-placeholder placeholder="Do you need an invoice?" (selected)="onInvoiceOptionSelect($event)"
               id="invoiceOptions" [options]="invoiceOptions" [ngModel]="selectedInvoiceOption" noFilter="10">
-              </ng-select>
+              </tsl-dropdown>
             </div>
           </div>
           <div class="AddNewSubscription__ButtonActions">

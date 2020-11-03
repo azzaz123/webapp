@@ -1,5 +1,5 @@
 <div class="select-card" *ngIf="financialCards">
-  <ng-select placeholder="Select saved card" [notFoundMsg]="notFoundMsg" class="form-control" i18n-placeholder placeholder="Select saved card"
+  <tsl-dropdown placeholder="Select saved card" [notFoundMsg]="notFoundMsg" class="form-control" i18n-placeholder placeholder="Select saved card"
              [options]="financialCards" [(ngModel)]="selectedFinancialCard" bindLabel="number" bindValue="number"
              (selected)="setFinancialCard($event)" name="financialCard" ngDefaultControl>
     <ng-template #optionTemplate let-option="option" let-index="index">
@@ -16,5 +16,5 @@
           <span class="card-date">{{option.expire_date}}</span>
         </div>
     </ng-template>
-  </ng-select>
+  </tsl-dropdown>
 </div>
