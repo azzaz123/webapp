@@ -34,8 +34,7 @@
               "src/doubleclick",
               "src/eyeblaster",
               "src/flashtalking",
-              "src/ftlocal",
-              "src/manifest.webmanifest"
+              "src/ftlocal"
             ],
             "styles": [
               "src/style/styles.scss"
