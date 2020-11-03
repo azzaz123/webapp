@@ -145,6 +145,11 @@
           margin-right: $spacing-xxs;
           display: inline-flex;
           vertical-align: sub;
+
+          &::ng-deep svg {
+            width: 100%;
+            height: 100%;
+          }
         }
       }
     }

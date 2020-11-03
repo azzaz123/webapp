@@ -30,9 +30,3 @@
     user-select: none;
   }
 }
-
-#condition ::ng-deep tsl-dropdown-list > div {
-  .options ul li {
-    padding: $spacing-s !important;
-  }
-}
