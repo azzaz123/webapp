@@ -1,5 +1,5 @@
+import { IOption } from 'app/dropdown/utils/option.interface';
 import { Pack } from './pack';
-import { IOption } from 'ng-select/option.interface';
 export interface PerkResponse {
   expire_date: number;
   create_date: number;

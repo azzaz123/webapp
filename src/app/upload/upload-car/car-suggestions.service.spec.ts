@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { CarSuggestionsService, CARS_SUGGESTER_API_URL } from './car-suggestions.service';
-import { IOption } from 'ng-select';
+import { IOption } from 'app/dropdown/utils/option.interface';
 import {
   CAR_BRANDS, CAR_BRANDS_RESPONSE, CAR_MODELS, CAR_MODELS_RESPONSE, CAR_VERSIONS, CAR_VERSIONS_RESPONSE, CAR_YEARS,
   CAR_YEARS_RESPONSE
@@ -82,11 +82,11 @@ describe('CarSuggestionsService', () => {
       const expectedUrlParams = `brand=${MOCK_BRAND}&model=${MOCK_MODEL}&year=${MOCK_YEAR}`;
       const expectedUrl = `${environment.baseUrl}${CARS_SUGGESTER_API_URL}/versions?${expectedUrlParams}`;
       let response: IOption[];
-  
+
       service.getVersions(MOCK_BRAND, MOCK_MODEL, MOCK_YEAR).subscribe(r => response = r);
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(CAR_VERSIONS_RESPONSE);
-  
+
       expect(req.request.urlWithParams).toEqual(expectedUrl);
       expect(response).toEqual(CAR_VERSIONS);
       expect(req.request.method).toBe('GET');

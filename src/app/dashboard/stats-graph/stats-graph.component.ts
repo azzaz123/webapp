@@ -1,7 +1,7 @@
 import { Component, Inject, Input, LOCALE_ID, OnInit } from '@angular/core';
 import { StatisticsService } from './statistics.service';
 import { StatisticEntriesResponse, StatisticFullResponse } from './statistic-response.interface';
-import { IOption } from 'ng-select';
+import { IOption } from 'app/dropdown/utils/option.interface';
 import * as moment from 'moment';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { EChartOption } from 'echarts';

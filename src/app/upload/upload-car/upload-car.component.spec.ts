@@ -240,11 +240,15 @@ describe('UploadCarComponent', () => {
       });
 
       it('should get models belonging to the saved car brand', () => {
+        component.onIsModelsNeeded();
+
         expect(carSuggestionsService.getModels).toHaveBeenCalledWith(MOCK_CAR.brand);
         expect(component.models).toEqual(CAR_MODELS);
       });
 
       it('should get years belonging to the saved car model', () => {
+        component.onIsYearsNeeded();
+
         expect(carSuggestionsService.getYears).toHaveBeenCalledWith(MOCK_CAR.brand, MOCK_CAR.model);
         expect(component.years).toEqual(CAR_YEARS);
       });
@@ -784,7 +788,7 @@ describe('UploadCarComponent', () => {
 
     it('should enable model, year and version fields', () => {
       component.ngOnInit();
-    
+
       component.toggleCustomMakeSelection();
       fixture.detectChanges();
       const modelField = HTMLElement.query(By.css('#model')).nativeNode;

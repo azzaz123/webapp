@@ -10,7 +10,7 @@ import { of } from 'rxjs';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { Router } from '@angular/router';
 import { Key } from './key.interface';
-import { IOption } from 'ng-select';
+import { IOption } from 'app/dropdown/utils/option.interface';
 import { IMAGE, USER_LOCATION } from '../../../tests/user.fixtures.spec';
 import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';

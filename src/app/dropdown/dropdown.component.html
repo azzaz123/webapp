@@ -1,0 +1,49 @@
+<div class=Dropdown>
+  <div #selection [attr.tabindex]="disabled ? null : 0"
+    [ngClass]="{'open': isOpen, 'focus': hasFocus, 'below': isBelow, 'above': !isBelow, 'disabled': disabled}"
+    (click)="onSelectContainerClick($event)" (focus)="onSelectContainerFocus()"
+    (keydown)="onSelectContainerKeydown($event)">
+
+    <div class="single" *ngIf="!multiple">
+      <ng-container *ngIf="value; else noValue">
+        <div class="value">
+          <ng-container *ngIf="optionList?.hasSelected; else showValue">
+            <span>{{optionList.selection[0].label}}</span>
+          </ng-container>
+          <ng-template #showValue>
+            <span>{{value}}</span>
+          </ng-template>
+        </div>
+      </ng-container>
+      <ng-template #noValue>
+        <div class="placeholder">{{placeholderView}}</div>
+      </ng-template>
+
+      <div class="toggle"></div>
+    </div>
+
+    <div class="multiple" *ngIf="multiple">
+      <div class="option" *ngFor="let option of optionList.selection">
+        <span class="deselect-option" (click)=onDeselectOptionClick(option)>
+          &#x2715;
+        </span>
+        {{option.label}}
+      </div>
+      <div class="placeholder" *ngIf="!filterEnabled && !optionList.hasSelected">
+        {{placeholderView}}
+      </div>
+      <input *ngIf="filterEnabled" #filterInput autocomplete="off" tabindex="-1" [placeholder]="placeholderView"
+        [ngStyle]="{'width.px': filterInputWidth}" (input)="onFilterInput($event.target.value)"
+        (keydown)="onMultipleFilterKeydown($event)" (focus)="onMultipleFilterFocus()" />
+    </div>
+
+  </div>
+  <tsl-dropdown-list *ngIf="isOpen" #dropdown [multiple]="multiple" [optionList]="optionList" [isLoading]="isLoading"
+    [notFoundMsg]="notFoundMsg" [filterEnabled]="filterEnabled" [placeholder]="filterPlaceholder" [isBelow]="isBelow"
+    [optionTemplate]="optionTemplate" [width]="width" [top]="top" [left]="left"
+    (optionClicked)="onDropdownOptionClicked($event)" (optionsListClick)="onOptionsListClick()"
+    (singleFilterClick)="onSingleFilterClick()" (singleFilterFocus)="onSingleFilterFocus()"
+    (singleFilterInput)="onFilterInput($event)" (singleFilterKeydown)="onSingleFilterKeydown($event)">
+  </tsl-dropdown-list>
+
+</div>
