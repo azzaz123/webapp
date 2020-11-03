@@ -8,7 +8,6 @@ import { CookieModule } from 'ngx-cookie';
 import { PROVIDERS } from './providers';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from './layout/layout.module';
-import { DndModule } from 'ng2-dnd';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { HttpModuleNew } from './core/http/http.module.new';
@@ -21,7 +20,6 @@ import { HttpModuleNew } from './core/http/http.module.new';
     BrowserAnimationsModule,
     CookieModule.forRoot(),
     CoreModule.forRoot(),
-    DndModule.forRoot(),
     BrowserModule,
     HttpModuleNew,
     HttpClientModule,
