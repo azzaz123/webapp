@@ -3,7 +3,8 @@ import { LoggedGuard, REDIRECT_SECRET } from './logged.guard';
 import { environment } from '../../../environments/environment';
 import { AccessTokenService } from '../http/access-token.service';
 import { CookieService } from 'ngx-cookie';
-import * as CryptoJS from 'crypto-js';
+import * as CryptoEUTF8 from 'crypto-js/enc-utf8';
+import * as CryptoJSAES from 'crypto-js/aes';
 
 describe('LoggedGuard', (): void => {
   let loggedGuard: LoggedGuard;
@@ -40,7 +41,7 @@ describe('LoggedGuard', (): void => {
     describe('when the user is logged out', () => {
       it('should deny access and redirect to SEO web with pending redirect', () => {
         const decriptAux =
-          (toDecrypt: string) => CryptoJS.AES.decrypt(decodeURIComponent(toDecrypt), REDIRECT_SECRET).toString(CryptoJS.enc.Utf8);
+          (toDecrypt: string) => CryptoJSAES.decrypt(decodeURIComponent(toDecrypt), REDIRECT_SECRET).toString(CryptoEUTF8);
         const expectedUrl = `${environment.siteUrl}login?redirectUrl=`;
         const expectedRedirectQueryParam = window.location.href;
 
@@ -72,7 +73,7 @@ describe('LoggedGuard', (): void => {
     describe('when the user is logged out', () => {
       it('should deny access and redirect to SEO web with pending redirect', () => {
         const decriptAux =
-          (toDecrypt: string) => CryptoJS.AES.decrypt(decodeURIComponent(toDecrypt), REDIRECT_SECRET).toString(CryptoJS.enc.Utf8);
+          (toDecrypt: string) => CryptoJSAES.decrypt(decodeURIComponent(toDecrypt), REDIRECT_SECRET).toString(CryptoEUTF8);
         const expectedUrl = `${environment.siteUrl}login?redirectUrl=`;
         const expectedRedirectQueryParam = window.location.href;
 

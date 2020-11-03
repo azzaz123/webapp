@@ -3,7 +3,7 @@ import { CanActivate, CanLoad } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { AccessTokenService } from '../http/access-token.service';
-import * as CryptoJS from 'crypto-js';
+import * as CryptoJS from 'crypto-js/aes';
 
 export const REDIRECT_SECRET = 'redirectSecretBRUH';
 
@@ -13,7 +13,7 @@ export class LoggedGuard implements CanActivate, CanLoad {
   constructor(private accessTokenService: AccessTokenService) { }
 
   private _getEncryptedAndEncodedRedirect(): string {
-    const encryptedCurrentUrl = CryptoJS.AES.encrypt(window.location.href, REDIRECT_SECRET).toString();
+    const encryptedCurrentUrl = CryptoJS.encrypt(window.location.href, REDIRECT_SECRET).toString();
     const encryptedAndEncoded = encodeURIComponent(encryptedCurrentUrl);
     return encryptedAndEncoded;
   }
