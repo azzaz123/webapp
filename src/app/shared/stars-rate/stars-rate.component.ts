@@ -48,10 +48,4 @@ export class StarsRateComponent implements OnInit {
     this.score = score;
     this.onChange.emit(score);
   }
-
-  public getSvgPath(starType: string): string {
-    const path = '/assets/icons/';
-    const svg = starType === 'full' ? 'star' : 'half_star';
-    return `${path}${svg}.svg`;
-  }
 }

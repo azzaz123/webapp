@@ -130,24 +130,20 @@
         clip: rect(0, 0, 0, 0);
         pointer-events: none;
       }
-    }
-
-    &.shipping-selector {
       @include media-breakpoint-down(sm) {
-        .selector {
+        &.shipping-selector {
+          width: calc(100% / 5);
+          padding: 0;
           .selector-icon {
-            width: calc(100% / 5);
             background-color: $white;
           }
           &.active {
             .selector-icon {
               background-color: $white;
               tsl-svg-icon {
-                ::ng-deep {
-                  svg g,
-                  svg path {
-                    fill: $walla-main;
-                  }
+                svg g,
+                svg path {
+                  fill: $walla-main !important;
                 }
               }
             }
@@ -155,6 +151,7 @@
         }
       }
     }
+
   }
 
   .btn-primary,
