@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie';
 import { environment } from '../../../environments/environment';
-import * as CryptoJS from 'crypto-js';
+import * as CryptoJSHSha256 from 'crypto-js/hmac-sha256';
+import * as CryptoJSBase64 from 'crypto-js/enc-base64';
 
 export const SECRET =
   'UTI5dVozSmhkSE1zSUhsdmRTZDJaU0JtYjNWdVpDQnBkQ0VnUVhKbElIbHZkU0J5WldGa2VTQjBieUJxYjJsdUlIVnpQeUJxYjJKelFIZGhiR3hoY0c5d0xtTnZiUT09';
@@ -35,7 +36,7 @@ export class AccessTokenService {
   public getTokenSignature = (url: string, method: string, timestamp: number) => {
     const separator = '+#+';
     const signature = ['/' + url.split('?')[0], method, timestamp].join(separator) + separator;
-    return CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA256(signature, CryptoJS.enc.Base64.parse(SECRET)));
+    return CryptoJSBase64.stringify(CryptoJSHSha256(signature, CryptoJSBase64.parse(SECRET)));
   }
 
   get accessToken(): string {
