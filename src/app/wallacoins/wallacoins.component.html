@@ -35,8 +35,8 @@
           <p [hidden]="!withCoins" i18n>We've definitely got a pack for you that will save you money.</p>
           <p [hidden]="withCoins" i18n>These are our ready to go packs; use them to save money when buying features.</p>
           <div *ngIf="packs?.length" class="carousel-container">
-            <tsl-svg-icon *ngIf="ngbCarrousel" src="/assets/icons/arrow-right.svg" class="left-arrow" (click)="ngbCarrousel.prev()"
-              [ngClass]="{'disabled': ngbCarrousel.activeId === ngbCarrousel.slides.first.id}"></tsl-svg-icon>
+            <tsl-svg-icon *ngIf="ngbCarousel" src="/assets/icons/arrow-right.svg" class="left-arrow" (click)="ngbCarousel.prev()"
+              [ngClass]="{'disabled': ngbCarousel.activeId === ngbCarousel.slides.first.id}"></tsl-svg-icon>
             <ngb-carousel interval="0" [showNavigationIndicators]="false" [wrap]="false" [showNavigationArrows]="false">
               <ng-container *ngFor="let pack of packs; let i = index">
                 <ng-template ngbSlide *ngIf="i < packs.length - 2">
@@ -53,9 +53,9 @@
                 </ng-template>
               </ng-container>
             </ngb-carousel>
-            <tsl-svg-icon *ngIf="ngbCarrousel" src="/assets/icons/arrow-right.svg" class="right-arrow"
-              [ngClass]="{'disabled': ngbCarrousel.activeId === ngbCarrousel.slides.last.id}"
-              (click)="ngbCarrousel.next()"></tsl-svg-icon>
+            <tsl-svg-icon *ngIf="ngbCarousel" src="/assets/icons/arrow-right.svg" class="right-arrow"
+              [ngClass]="{'disabled': ngbCarousel.activeId === ngbCarousel.slides.last.id}"
+              (click)="ngbCarousel.next()"></tsl-svg-icon>
           </div>
 
 

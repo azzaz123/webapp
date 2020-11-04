@@ -27,7 +27,7 @@ export class WallacoinsComponent implements OnInit {
   public factor: number;
   public loading = true;
   private localStorageName = '-wallacoins-tutorial';
-  @ViewChild(NgbCarousel) ngbCarrousel: NgbCarousel;
+  @ViewChild(NgbCarousel) ngbCarousel: NgbCarousel;
 
   constructor(private paymentService: PaymentService,
     private modalService: NgbModal,
