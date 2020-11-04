@@ -27,6 +27,11 @@
     "mparticle": "yarn install && yarn upgrade mparticle_json_validation && node scripts/mparticle.js",
     "analyze-bundle": "yarn buildprod --statsJson=true && yarn webpack-bundle-analyzer dist/stats-es2015.json"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "^9.1.2",
@@ -85,10 +90,12 @@
     "canvas": "^2.6.1",
     "codelyzer": "^5.1.2",
     "glob": "^7.1.4",
+    "husky": "^4.3.0",
     "jest": "^25.5.4",
     "jest-preset-angular": "^8.1.3",
     "mparticle_json_validation": "git+ssh://git@github.com:Wallapop/mparticle_json_validation#0.41.0",
     "prettier": "2.1.2",
+    "pretty-quick": "^3.1.0",
     "retry": "^0.12.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
