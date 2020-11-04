@@ -12,10 +12,12 @@ describe('SubscriptionsSlotsListComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [],
-      declarations: [ SubscriptionsSlotsListComponent, SubscriptionsSlotItemComponent ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+      declarations: [
+        SubscriptionsSlotsListComponent,
+        SubscriptionsSlotItemComponent,
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -35,7 +37,9 @@ describe('SubscriptionsSlotsListComponent', () => {
       component.onSelectSubscriptionSlot(MOCK_SUBSCRIPTION_SLOT_CARS);
 
       expect(component.subscriptionSlotSelected.emit).toHaveBeenCalledTimes(1);
-      expect(component.subscriptionSlotSelected.emit).toHaveBeenCalledWith(MOCK_SUBSCRIPTION_SLOT_CARS);
+      expect(component.subscriptionSlotSelected.emit).toHaveBeenCalledWith(
+        MOCK_SUBSCRIPTION_SLOT_CARS
+      );
     });
   });
 });
