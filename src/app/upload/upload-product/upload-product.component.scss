@@ -1,7 +1,9 @@
 @import "~style/common";
 
-tsl-svg-icon {
-    ::ng-deep svg {
-        @include square(38px);
+.categories-select {
+    tsl-svg-icon {
+        ::ng-deep svg {
+            @include square(38px);
+        }
     }
 }
