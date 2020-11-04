@@ -7,7 +7,12 @@ import { By } from '@angular/platform-browser';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { AnalyticsService } from 'app/core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
-import { AnalyticsPageView, ANALYTICS_EVENT_NAMES, SCREEN_IDS, ViewBannedUserChatPopUp } from 'app/core/analytics/analytics-constants';
+import {
+  AnalyticsPageView,
+  ANALYTICS_EVENT_NAMES,
+  SCREEN_IDS,
+  ViewBannedUserChatPopUp,
+} from 'app/core/analytics/analytics-constants';
 
 describe('MaliciousConversationModalComponent', () => {
   let component: MaliciousConversationModalComponent;
@@ -18,19 +23,18 @@ describe('MaliciousConversationModalComponent', () => {
     userId: '121',
     bannedUserId: '2332',
     conversationId: '2332',
-    screenId: SCREEN_IDS.BannedUserChatPopUp
+    screenId: SCREEN_IDS.BannedUserChatPopUp,
   };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ButtonComponent, MaliciousConversationModalComponent ],
-      providers: [ 
+      declarations: [ButtonComponent, MaliciousConversationModalComponent],
+      providers: [
         NgbActiveModal,
         { provide: AnalyticsService, useClass: MockAnalyticsService },
       ],
-      schemas: [ NO_ERRORS_SCHEMA ]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -50,7 +54,9 @@ describe('MaliciousConversationModalComponent', () => {
   describe('when clicking on main button', () => {
     it('should close the modal', () => {
       spyOn(activeModal, 'close');
-      const CTAButtonElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
+      const CTAButtonElement = fixture.debugElement.query(
+        By.directive(ButtonComponent)
+      ).nativeElement;
 
       CTAButtonElement.click();
 
@@ -61,7 +67,9 @@ describe('MaliciousConversationModalComponent', () => {
   describe('when clicking on cross button', () => {
     it('should dismiss the modal', () => {
       spyOn(activeModal, 'dismiss');
-      const closeButtonElement = fixture.debugElement.query(By.css('.MaliciousConversationModal__close')).nativeElement;
+      const closeButtonElement = fixture.debugElement.query(
+        By.css('.MaliciousConversationModal__close')
+      ).nativeElement;
 
       closeButtonElement.click();
 
@@ -74,13 +82,15 @@ describe('MaliciousConversationModalComponent', () => {
       it('should track modal was viewed', () => {
         const expectedEvent: AnalyticsPageView<ViewBannedUserChatPopUp> = {
           name: ANALYTICS_EVENT_NAMES.ViewBannedUserChatPopUp,
-          attributes: component.chatContext
+          attributes: component.chatContext,
         };
 
         spyOn(analyticsService, 'trackPageView');
         component.ngOnInit();
 
-        expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(
+          expectedEvent
+        );
       });
     });
   });

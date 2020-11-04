@@ -17,10 +17,10 @@ describe('ThirdVoiceDropPriceComponent', () => {
       declarations: [
         ThirdVoiceDropPriceComponent,
         ThirdVoiceMessageComponent,
-        ThirdVoiceReviewButtonComponent],
+        ThirdVoiceReviewButtonComponent,
+      ],
       schemas: [NO_ERRORS_SCHEMA],
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

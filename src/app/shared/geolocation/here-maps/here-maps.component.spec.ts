@@ -2,7 +2,11 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HereMapsComponent, MAP_ZOOM_GENERAL, MAP_ZOOM_MARKER } from './here-maps.component';
+import {
+  HereMapsComponent,
+  MAP_ZOOM_GENERAL,
+  MAP_ZOOM_MARKER,
+} from './here-maps.component';
 import { USER_LOCATION_COORDINATES } from '../../../../tests/user.fixtures.spec';
 
 const ICON = { url: 'icon' };
@@ -10,20 +14,20 @@ const MARKER = { marker: 'marker' };
 const CIRCLE = { circle: 'circle' };
 
 const MockedMap = {
-  setZoom: () => { },
-  setCenter: () => { },
-  addObject: () => { },
-  removeObject: () => { }
+  setZoom: () => {},
+  setCenter: () => {},
+  addObject: () => {},
+  removeObject: () => {},
 };
 
 const MOCKED_PLATFORM = {
   createDefaultLayers() {
     return {
       normal: {
-        map: 'map'
-      }
+        map: 'map',
+      },
     };
-  }
+  },
 };
 
 describe('HereMapsComponent', () => {
@@ -32,7 +36,7 @@ describe('HereMapsComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [HereMapsComponent]
+      declarations: [HereMapsComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HereMapsComponent);
@@ -50,7 +54,7 @@ describe('HereMapsComponent', () => {
     spyOn(MockedMap, 'removeObject').and.callThrough();
 
     component.mapEl = {
-      nativeElement: {}
+      nativeElement: {},
     };
     fixture.detectChanges();
   });
@@ -69,7 +73,7 @@ describe('HereMapsComponent', () => {
       expect(MockedMap.setZoom).toHaveBeenCalledWith(MAP_ZOOM_GENERAL);
       expect(MockedMap.setCenter).toHaveBeenCalledWith({
         lat: USER_LOCATION_COORDINATES.latitude,
-        lng: USER_LOCATION_COORDINATES.longitude
+        lng: USER_LOCATION_COORDINATES.longitude,
       });
     });
 
@@ -91,7 +95,7 @@ describe('HereMapsComponent', () => {
       expect(component.createCircle).toHaveBeenCalledTimes(1);
       expect(MockedMap.addObject).toHaveBeenCalledWith(CIRCLE);
     });
-  })
+  });
 
   describe('ngOnChanges', () => {
     beforeEach(() => {
@@ -139,12 +143,10 @@ describe('HereMapsComponent', () => {
           expect(MockedMap.setZoom).toHaveBeenCalledWith(MAP_ZOOM_MARKER);
           expect(MockedMap.setCenter).toHaveBeenCalledWith({
             lat: USER_LOCATION_COORDINATES.latitude,
-            lng: USER_LOCATION_COORDINATES.longitude
+            lng: USER_LOCATION_COORDINATES.longitude,
           });
         });
       });
     });
-
   });
 });
-
