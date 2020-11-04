@@ -151,8 +151,6 @@ describe('AddNewSubscriptionModalComponent', () => {
     component.subscription = MAPPED_SUBSCRIPTIONS[2];
     component.isNewSubscriber = false;
     fixture.detectChanges();
-    spyOn(component, 'reloadPage').and.returnValue(() => {});
-    
   });
 
   describe('ngOnInit', () => {

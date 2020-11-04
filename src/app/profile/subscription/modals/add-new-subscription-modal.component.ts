@@ -306,11 +306,6 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, Afte
     this.analyticsService.trackEvent(event);
   }
 
-  // TODO: This must be refactored
-  public reloadPage() {
-    window.location.reload();
-  }
-
   public isDiscountedTier(tier: Tier): boolean {
     return this.subscriptionsService.isDiscountedTier(tier);
   }
