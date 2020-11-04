@@ -34,3 +34,5 @@ export const environment: Environment = {
   threatMetrixOrgId: '6ldgf22r',
   threatMetrixProfilingDomain: 'clear.wallapop.com'
 };
+
+export const isSWEnabled = true;

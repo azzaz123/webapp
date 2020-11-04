@@ -13,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { HttpModuleNew } from './core/http/http.module.new';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { isSWEnabled } from 'environments/environment';
 
 @NgModule({
   declarations: [
@@ -30,10 +31,9 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     LayoutModule,
     NgxPermissionsModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: true,
-      registrationStrategy: 'registerImmediately'
+      enabled: isSWEnabled,
+      registrationStrategy: 'registerWhenStable:5000'
     })
-
   ],
   providers: [PROVIDERS],
   bootstrap: [AppComponent]

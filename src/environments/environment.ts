@@ -21,3 +21,5 @@ const environmentLocal: Environment = {
 };
 
 export const environment = dockNum === 'beta' ? environmentBeta : environmentLocal;
+
+export const isSWEnabled = false;
