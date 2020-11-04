@@ -41,7 +41,7 @@ export class TooManyItemsModalComponent implements OnInit {
     });
   }
 
-  private trackPageView() {
+  private trackPageView(): void {
     const event: AnalyticsPageView<ViewProSubscriptionPopup> = {
       name: ANALYTICS_EVENT_NAMES.ViewProSubscriptionPopup,
       attributes: {
