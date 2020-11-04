@@ -406,7 +406,7 @@ describe('AddNewSubscriptionModalComponent', () => {
     });
   });
 
-  fdescribe('trackClickPay', () => {
+  describe('trackClickPay', () => {
     beforeEach(() => spyOn(analyticsService, 'trackEvent'));
 
     describe('when user created a new card', () => {

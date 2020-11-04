@@ -87,6 +87,10 @@ export class MockSubscriptionService {
   public hasTrial(subscription: SubscriptionsResponse): boolean {
     return subscription.trial_available;
   }
+
+  public hasOneTrialSubscription(_subscriptions: SubscriptionsResponse[]): boolean {
+    return false;
+  }
 }
 
 export const MOCK_SUBSCRIPTION_BENEFITS: SubscriptionBenefit[] = [

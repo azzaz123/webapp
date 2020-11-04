@@ -264,6 +264,10 @@ export class SubscriptionsService {
     return subscription.trial_available;
   }
 
+  public hasOneTrialSubscription(subscriptions: SubscriptionsResponse[]): boolean {
+    return subscriptions.some(subscription => this.hasTrial(subscription));
+  }
+
   public getSubscriptionBenefits(useCache = true): Observable<SubscriptionBenefit[]>{
     if (useCache && this._subscriptionBenefits) {
       return of(this._subscriptionBenefits);

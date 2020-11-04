@@ -31,7 +31,7 @@
           <a class="nav-link d-inline-block d-md-none" [routerLink]="['billing']" routerLinkActive="active" 
            i18n>Billing</a>
           <a class="nav-link" [routerLink]="['subscriptions']" routerLinkActive="active"
-            *ngxPermissionsExcept="['isProfessional']" i18n>Subscriptions</a>
+            *ngxPermissionsExcept="['isProfessional']" i18n (click)="trackClickSubscriptionTab()">Subscriptions</a>
           <a class="nav-link" [routerLink]="['subscription-pro']" routerLinkActive="active"
             *ngxPermissionsOnly="['isProfessional']" i18n>Subscription</a>
         </nav>
