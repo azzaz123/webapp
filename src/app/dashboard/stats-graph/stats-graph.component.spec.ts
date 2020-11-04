@@ -1,4 +1,3 @@
-
 import { of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
@@ -18,21 +17,22 @@ describe('StatsGraphComponent', () => {
       declarations: [StatsGraphComponent],
       providers: [
         {
-          provide: StatisticsService, useValue: {
-          getStatistics() {
-            return of(STATISTICS_RESPONSE);
-          }
-        }
+          provide: StatisticsService,
+          useValue: {
+            getStatistics() {
+              return of(STATISTICS_RESPONSE);
+            },
+          },
         },
         {
-          provide: I18nService, useValue: {
-          getTranslations() {
-          }
-        }
-        }],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+          provide: I18nService,
+          useValue: {
+            getTranslations() {},
+          },
+        },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -50,7 +50,9 @@ describe('StatsGraphComponent', () => {
       component.ngOnInit();
 
       expect(statisticsService.getStatistics).toHaveBeenCalledWith('30');
-      expect(component.chartOption.series[1].data[0]).toBe(STATISTICS_RESPONSE.entries[0].values.country_bump);
+      expect(component.chartOption.series[1].data[0]).toBe(
+        STATISTICS_RESPONSE.entries[0].values.country_bump
+      );
     });
   });
 
@@ -63,5 +65,4 @@ describe('StatsGraphComponent', () => {
       expect(component['loadStats']).toHaveBeenCalled();
     });
   });
-
 });

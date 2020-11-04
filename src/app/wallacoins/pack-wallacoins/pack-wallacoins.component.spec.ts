@@ -12,23 +12,16 @@ describe('PackWallacoinsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PackWallacoinsComponent, CustomCurrencyPipe ],
+      declarations: [PackWallacoinsComponent, CustomCurrencyPipe],
       providers: [DecimalPipe],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PackWallacoinsComponent);
     component = fixture.componentInstance;
-    component.pack = new Pack(
-      'id',
-      100,
-      100,
-      'EUR',
-      'wallacoins'
-    );
+    component.pack = new Pack('id', 100, 100, 'EUR', 'wallacoins');
     fixture.detectChanges();
   });
 

@@ -1,5 +1,11 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { SelectComponent } from './select.component';
@@ -11,20 +17,19 @@ describe('SelectComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-        declarations: [ SelectComponent ],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA]
-      })
-      .compileComponents();
+      declarations: [SelectComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   const VALUE: string = 'value';
   const ITEM: SelectOption = {
     label: 'Label',
-    value: VALUE
+    value: VALUE,
   };
   const ITEM2: SelectOption = {
     label: 'Label',
-    value: 'value2'
+    value: 'value2',
   };
 
   beforeEach(() => {
@@ -61,4 +66,3 @@ describe('SelectComponent', () => {
     expect(component.selected).toBe(ITEM);
   }));
 });
-

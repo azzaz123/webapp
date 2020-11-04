@@ -1,7 +1,10 @@
 import { getTestBed, TestBed } from '@angular/core/testing';
 
 import { RemoteConsoleClientService } from './remote-console-client.service';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import { environment } from '../../../environments/environment';
 
 describe('RemoteConsoleClientService', () => {
@@ -10,12 +13,8 @@ describe('RemoteConsoleClientService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule
-      ],
-      providers: [
-        RemoteConsoleClientService
-      ]
+      imports: [HttpClientTestingModule],
+      providers: [RemoteConsoleClientService],
     });
 
     service = TestBed.inject(RemoteConsoleClientService);

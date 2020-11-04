@@ -1,22 +1,51 @@
-import { MOCK_CONDITIONS, MOCK_OBJECT_TYPES, MOCK_OBJECT_TYPES_RESPONSE, MOCK_OBJECT_TYPES_WITH_CHILDREN } from './../../../tests/extra-info.fixtures.spec';
-import { MOCK_ITEM_CELLPHONES, MOCK_ITEM_CELLPHONES_NO_SUBCATEGORY } from './../../../tests/item.fixtures.spec';
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  MOCK_CONDITIONS,
+  MOCK_OBJECT_TYPES,
+  MOCK_OBJECT_TYPES_RESPONSE,
+  MOCK_OBJECT_TYPES_WITH_CHILDREN,
+} from './../../../tests/extra-info.fixtures.spec';
+import {
+  MOCK_ITEM_CELLPHONES,
+  MOCK_ITEM_CELLPHONES_NO_SUBCATEGORY,
+} from './../../../tests/item.fixtures.spec';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
-import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbModal,
+  NgbPopoverConfig,
+  NgbPopoverModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { UploadProductComponent } from './upload-product.component';
 import { CategoryService } from '../../core/category/category.service';
-import { CATEGORIES_OPTIONS_CONSUMER_GOODS, CATEGORIES_DATA_CONSUMER_GOODS, CATEGORY_DATA_WEB, SUGGESTED_CATEGORY_TV_AUDIO_CAMERAS, SUGGESTED_CATEGORY_COMPUTERS_ELECTRONICS } from '../../../tests/category.fixtures.spec';
+import {
+  CATEGORIES_OPTIONS_CONSUMER_GOODS,
+  CATEGORIES_DATA_CONSUMER_GOODS,
+  CATEGORY_DATA_WEB,
+  SUGGESTED_CATEGORY_TV_AUDIO_CAMERAS,
+  SUGGESTED_CATEGORY_COMPUTERS_ELECTRONICS,
+} from '../../../tests/category.fixtures.spec';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { User } from '../../core/user/user';
 import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
-import { ITEM_CATEGORY_ID, ITEM_DELIVERY_INFO, MOCK_ITEM, MOCK_ITEM_FASHION } from '../../../tests/item.fixtures.spec';
+import {
+  ITEM_CATEGORY_ID,
+  ITEM_DELIVERY_INFO,
+  MOCK_ITEM,
+  MOCK_ITEM_FASHION,
+} from '../../../tests/item.fixtures.spec';
 import { UserLocation } from '../../core/user/user-response.interface';
 import { environment } from '../../../environments/environment';
 import { GeneralSuggestionsService } from './general-suggestions.service';
@@ -33,7 +62,7 @@ import {
   SCREEN_IDS,
   AnalyticsEvent,
   EditItemCG,
-  ListItemCG
+  ListItemCG,
 } from '../../core/analytics/analytics-constants';
 import { BrandModel } from '../brand-model.interface';
 import { CATEGORY_IDS } from '../../core/category/category-ids';
@@ -41,14 +70,14 @@ import { CategoryOption } from 'app/core/category/category-response.interface';
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
 export const USER_LOCATION: UserLocation = {
-  'id': 101,
-  'approximated_latitude': 41.399132621722174,
-  'approximated_longitude': 2.17585484411869,
-  'city': 'Barcelona',
-  'zip': '08009',
-  'approxRadius': 0,
-  'title': '08009, Barcelona',
-  'full_address': 'Carrer Sant Pere Mes Baix, Barcelona'
+  id: 101,
+  approximated_latitude: 41.399132621722174,
+  approximated_longitude: 2.17585484411869,
+  city: 'Barcelona',
+  zip: '08009',
+  approxRadius: 0,
+  title: '08009, Barcelona',
+  full_address: 'Carrer Sant Pere Mes Baix, Barcelona',
 };
 
 MOCK_USER.location = USER_LOCATION;
@@ -77,49 +106,52 @@ describe('UploadProductComponent', () => {
         { provide: AnalyticsService, useClass: MockAnalyticsService },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         {
-          provide: UserService, useValue: {
+          provide: UserService,
+          useValue: {
             isProUser() {
               return of(false);
             },
-            isPro: false
-          }
+            isPro: false,
+          },
         },
         {
-          provide: Router, useValue: {
-            navigate() {
-            }
-          }
+          provide: Router,
+          useValue: {
+            navigate() {},
+          },
         },
         {
-          provide: ErrorsService, useValue: {
-            i18nSuccess() {
-            },
-            i18nError() {
-            }
-          }
+          provide: ErrorsService,
+          useValue: {
+            i18nSuccess() {},
+            i18nError() {},
+          },
         },
         {
-          provide: CategoryService, useValue: {
+          provide: CategoryService,
+          useValue: {
             getCategories() {
               return of(CATEGORIES_DATA_CONSUMER_GOODS);
             },
             getSuggestedCategory() {
               return of(SUGGESTED_CATEGORY_TV_AUDIO_CAMERAS);
-            }
-          }
+            },
+          },
         },
         {
-          provide: NgbModal, useValue: {
+          provide: NgbModal,
+          useValue: {
             open() {
               return {
                 result: Promise.resolve(),
-                componentInstance: componentInstance
+                componentInstance: componentInstance,
               };
-            }
-          }
+            },
+          },
         },
         {
-          provide: GeneralSuggestionsService, useValue: {
+          provide: GeneralSuggestionsService,
+          useValue: {
             getObjectTypes() {
               return of([]);
             },
@@ -130,22 +162,26 @@ describe('UploadProductComponent', () => {
               return of(['iPhone 2G', 'iPhone 3G', 'iPhone 4']);
             },
             getBrandsAndModels() {
-              return of([{ brand: 'Apple', model: 'iPhone XSX' }, { brand: 'Samsung', model: 'Galaxy S20' }]);
+              return of([
+                { brand: 'Apple', model: 'iPhone XSX' },
+                { brand: 'Samsung', model: 'Galaxy S20' },
+              ]);
             },
             getSizes() {
-              return of([{ value: "1", label: "XXXS / 30 / 2" },
-              { value: "2", label: "XXS / 32 / 4" }]);
+              return of([
+                { value: '1', label: 'XXXS / 30 / 2' },
+                { value: '2', label: 'XXS / 32 / 4' },
+              ]);
             },
             getConditions() {
-              return of({ MOCK_CONDITIONS })
-            }
-          }
-        }
+              return of({ MOCK_CONDITIONS });
+            },
+          },
+        },
       ],
       declarations: [UploadProductComponent],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -183,17 +219,19 @@ describe('UploadProductComponent', () => {
         location: {
           address: '',
           latitude: '',
-          longitude: ''
+          longitude: '',
         },
         extra_info: {
-          condition: null
-        }
+          condition: null,
+        },
       });
     });
 
     it('should set item with second subcategory', () => {
       component.item = MOCK_ITEM_CELLPHONES;
-      spyOn(generalSuggestionsService, 'getObjectTypes').and.returnValue(of(MOCK_OBJECT_TYPES_WITH_CHILDREN));
+      spyOn(generalSuggestionsService, 'getObjectTypes').and.returnValue(
+        of(MOCK_OBJECT_TYPES_WITH_CHILDREN)
+      );
       const expectedUploadFormValue = {
         id: MOCK_ITEM_CELLPHONES.id,
         title: MOCK_ITEM_CELLPHONES.title,
@@ -207,18 +245,18 @@ describe('UploadProductComponent', () => {
         location: {
           address: '',
           latitude: '',
-          longitude: ''
+          longitude: '',
         },
         extra_info: {
           condition: null,
           object_type: {
-            id: MOCK_OBJECT_TYPES_WITH_CHILDREN[0].id
+            id: MOCK_OBJECT_TYPES_WITH_CHILDREN[0].id,
           },
           brand: MOCK_ITEM_CELLPHONES.extraInfo.brand,
           model: MOCK_ITEM_CELLPHONES.extraInfo.model,
           object_type_2: {
-            id: MOCK_OBJECT_TYPES_WITH_CHILDREN[0].children[0].id
-          }
+            id: MOCK_OBJECT_TYPES_WITH_CHILDREN[0].children[0].id,
+          },
         },
       };
 
@@ -231,7 +269,9 @@ describe('UploadProductComponent', () => {
 
     it('should not set second subcategory item if there are not category options', () => {
       component.item = MOCK_ITEM_CELLPHONES;
-      spyOn(generalSuggestionsService, 'getObjectTypes').and.returnValue(of([]));
+      spyOn(generalSuggestionsService, 'getObjectTypes').and.returnValue(
+        of([])
+      );
       const expectedUploadFormValue = {
         id: MOCK_ITEM_CELLPHONES.id,
         title: MOCK_ITEM_CELLPHONES.title,
@@ -245,17 +285,17 @@ describe('UploadProductComponent', () => {
         location: {
           address: '',
           latitude: '',
-          longitude: ''
+          longitude: '',
         },
         extra_info: {
           condition: null,
           object_type: {
-            id: MOCK_ITEM_CELLPHONES.extraInfo.object_type.id
+            id: MOCK_ITEM_CELLPHONES.extraInfo.object_type.id,
           },
           brand: MOCK_ITEM_CELLPHONES.extraInfo.brand,
           model: MOCK_ITEM_CELLPHONES.extraInfo.model,
         },
-      }
+      };
 
       component.ngOnInit();
       component.getObjectTypes();
@@ -266,7 +306,9 @@ describe('UploadProductComponent', () => {
 
     it('should not set subcategory field if item do not have subcategory', () => {
       component.item = MOCK_ITEM_CELLPHONES_NO_SUBCATEGORY;
-      spyOn(generalSuggestionsService, 'getObjectTypes').and.returnValue(of(MOCK_OBJECT_TYPES_WITH_CHILDREN));
+      spyOn(generalSuggestionsService, 'getObjectTypes').and.returnValue(
+        of(MOCK_OBJECT_TYPES_WITH_CHILDREN)
+      );
       const expectedUploadFormValue = {
         id: MOCK_ITEM_CELLPHONES.id,
         title: MOCK_ITEM_CELLPHONES.title,
@@ -280,7 +322,7 @@ describe('UploadProductComponent', () => {
         location: {
           address: '',
           latitude: '',
-          longitude: ''
+          longitude: '',
         },
         extra_info: {
           object_type: {
@@ -290,7 +332,7 @@ describe('UploadProductComponent', () => {
           brand: MOCK_ITEM_CELLPHONES.extraInfo.brand,
           model: MOCK_ITEM_CELLPHONES.extraInfo.model,
         },
-      }
+      };
 
       component.ngOnInit();
       component.getObjectTypes();
@@ -325,7 +367,7 @@ describe('UploadProductComponent', () => {
             location: {
               address: '',
               latitude: '',
-              longitude: ''
+              longitude: '',
             },
             extra_info: {
               object_type: {
@@ -336,8 +378,8 @@ describe('UploadProductComponent', () => {
                 id: MOCK_ITEM_FASHION.extraInfo.size.id,
               },
               gender: MOCK_ITEM_FASHION.extraInfo.gender,
-              condition: null
-            }
+              condition: null,
+            },
           });
         });
 
@@ -358,7 +400,6 @@ describe('UploadProductComponent', () => {
 
           expect(component.getSizes).toHaveBeenCalled();
         });
-
       });
 
       describe('if it`s a cellphones item', () => {
@@ -380,7 +421,7 @@ describe('UploadProductComponent', () => {
             location: {
               address: '',
               latitude: '',
-              longitude: ''
+              longitude: '',
             },
             extra_info: {
               object_type: {
@@ -388,8 +429,8 @@ describe('UploadProductComponent', () => {
               },
               brand: MOCK_ITEM_CELLPHONES.extraInfo.brand,
               model: MOCK_ITEM_CELLPHONES.extraInfo.model,
-              condition: null
-            }
+              condition: null,
+            },
           });
         });
       });
@@ -412,73 +453,105 @@ describe('UploadProductComponent', () => {
   describe('when changing between categories', () => {
     describe('if the selected category is cellphones', () => {
       beforeEach(() => {
-        component.uploadForm.patchValue({ category_id: CATEGORY_IDS.CELL_PHONES_ACCESSORIES });
+        component.uploadForm.patchValue({
+          category_id: CATEGORY_IDS.CELL_PHONES_ACCESSORIES,
+        });
       });
 
       it('should enable the object_type field', () => {
-        expect(component.uploadForm.get('extra_info').get('object_type').disabled).toBe(false);
+        expect(
+          component.uploadForm.get('extra_info').get('object_type').disabled
+        ).toBe(false);
       });
       it('should require the object_type field', () => {
-        expect(component.uploadForm.get('extra_info').get('object_type').get('id').errors).toEqual({ required: true });
+        expect(
+          component.uploadForm.get('extra_info').get('object_type').get('id')
+            .errors
+        ).toEqual({ required: true });
       });
       it('should enable the brand field', () => {
-        expect(component.uploadForm.get('extra_info').get('brand').disabled).toBe(false);
+        expect(
+          component.uploadForm.get('extra_info').get('brand').disabled
+        ).toBe(false);
       });
       it('should enable the model field', () => {
-        expect(component.uploadForm.get('extra_info').get('model').disabled).toBe(false);
+        expect(
+          component.uploadForm.get('extra_info').get('model').disabled
+        ).toBe(false);
       });
       it('should disable the size field', () => {
-        expect(component.uploadForm.get('extra_info').get('size').disabled).toBe(true);
+        expect(
+          component.uploadForm.get('extra_info').get('size').disabled
+        ).toBe(true);
       });
       it('should disable the gender field', () => {
-        expect(component.uploadForm.get('extra_info').get('gender').disabled).toBe(true);
+        expect(
+          component.uploadForm.get('extra_info').get('gender').disabled
+        ).toBe(true);
       });
     });
     describe('if the selected category is fashion', () => {
       beforeEach(() => {
-        component.uploadForm.patchValue({ category_id: CATEGORY_IDS.FASHION_ACCESSORIES });
+        component.uploadForm.patchValue({
+          category_id: CATEGORY_IDS.FASHION_ACCESSORIES,
+        });
       });
 
       it('should enable the object_type field', () => {
-        expect(component.uploadForm.get('extra_info').get('object_type').disabled).toBe(false);
+        expect(
+          component.uploadForm.get('extra_info').get('object_type').disabled
+        ).toBe(false);
       });
       it('should require the object_type field', () => {
-        expect(component.uploadForm.get('extra_info').get('object_type').get('id').errors).toEqual({ required: true });
+        expect(
+          component.uploadForm.get('extra_info').get('object_type').get('id')
+            .errors
+        ).toEqual({ required: true });
       });
       it('should enable the brand field', () => {
-        expect(component.uploadForm.get('extra_info').get('brand').disabled).toBe(false);
+        expect(
+          component.uploadForm.get('extra_info').get('brand').disabled
+        ).toBe(false);
       });
       it('should enable the gender field', () => {
-        expect(component.uploadForm.get('extra_info').get('gender').disabled).toBe(false);
+        expect(
+          component.uploadForm.get('extra_info').get('gender').disabled
+        ).toBe(false);
       });
       it('should disable the model field', () => {
-        expect(component.uploadForm.get('extra_info').get('model').disabled).toBe(true);
+        expect(
+          component.uploadForm.get('extra_info').get('model').disabled
+        ).toBe(true);
       });
       it('should enable the size field', () => {
         component.uploadForm.patchValue({
           category_id: CATEGORY_IDS.FASHION_ACCESSORIES,
           extra_info: {
             object_type: { id: 1 },
-            gender: 'M'
-          }
+            gender: 'M',
+          },
         });
         component.uploadForm.patchValue({
           category_id: CATEGORY_IDS.FASHION_ACCESSORIES,
         });
         fixture.detectChanges();
-        expect(component.uploadForm.get('extra_info').get('size').disabled).toBe(false);
+        expect(
+          component.uploadForm.get('extra_info').get('size').disabled
+        ).toBe(false);
       });
       it('should disable the size field', () => {
         component.uploadForm.patchValue({
           extra_info: {
             object_type: { id: null },
-          }
+          },
         });
         component.uploadForm.patchValue({
           category_id: CATEGORY_IDS.FASHION_ACCESSORIES,
         });
         fixture.detectChanges();
-        expect(component.uploadForm.get('extra_info').get('size').disabled).toBe(true);
+        expect(
+          component.uploadForm.get('extra_info').get('size').disabled
+        ).toBe(true);
       });
     });
 
@@ -488,22 +561,35 @@ describe('UploadProductComponent', () => {
       });
 
       it('should disable the object_type field', () => {
-        expect(component.uploadForm.get('extra_info').get('object_type').disabled).toBe(true);
+        expect(
+          component.uploadForm.get('extra_info').get('object_type').disabled
+        ).toBe(true);
       });
       it('should not require the object_type field', () => {
-        expect(component.uploadForm.get('extra_info').get('object_type').get('id').errors).toBeNull;
+        expect(
+          component.uploadForm.get('extra_info').get('object_type').get('id')
+            .errors
+        ).toBeNull;
       });
       it('should disable the brand field', () => {
-        expect(component.uploadForm.get('extra_info').get('brand').disabled).toBe(true);
+        expect(
+          component.uploadForm.get('extra_info').get('brand').disabled
+        ).toBe(true);
       });
       it('should disable the size field', () => {
-        expect(component.uploadForm.get('extra_info').get('size').disabled).toBe(true);
+        expect(
+          component.uploadForm.get('extra_info').get('size').disabled
+        ).toBe(true);
       });
       it('should disable the gender field', () => {
-        expect(component.uploadForm.get('extra_info').get('gender').disabled).toBe(true);
+        expect(
+          component.uploadForm.get('extra_info').get('gender').disabled
+        ).toBe(true);
       });
       it('should disable the model field', () => {
-        expect(component.uploadForm.get('extra_info').get('model').disabled).toBe(true);
+        expect(
+          component.uploadForm.get('extra_info').get('model').disabled
+        ).toBe(true);
       });
     });
   });
@@ -534,9 +620,8 @@ describe('UploadProductComponent', () => {
       component['focused'] = false;
       component.titleField = {
         nativeElement: {
-          focus() {
-          }
-        }
+          focus() {},
+        },
       };
       spyOn(component.titleField.nativeElement, 'focus');
     });
@@ -575,11 +660,11 @@ describe('UploadProductComponent', () => {
       component.uploadForm.get('description').patchValue('test');
       component.uploadForm.get('sale_price').patchValue(1000000);
       component.uploadForm.get('currency_code').patchValue('EUR');
-      component.uploadForm.get('images').patchValue([{ 'image': true }]);
+      component.uploadForm.get('images').patchValue([{ image: true }]);
       component.uploadForm.get('location').patchValue({
         address: USER_LOCATION.full_address,
         latitude: USER_LOCATION.approximated_latitude,
-        longitude: USER_LOCATION.approximated_longitude
+        longitude: USER_LOCATION.approximated_longitude,
       });
 
       component.uploadEvent.subscribe((i: any) => {
@@ -588,7 +673,7 @@ describe('UploadProductComponent', () => {
       component.onSubmit();
       expect(input).toEqual({
         type: 'create',
-        values: component.uploadForm.value
+        values: component.uploadForm.value,
       });
       expect(component.uploadForm.valid).toBe(true);
       expect(component.loading).toBe(true);
@@ -627,40 +712,43 @@ describe('UploadProductComponent', () => {
         description: 'test',
         sale_price: 1000000,
         currency_code: 'EUR',
-        images: [{ 'image': true }],
+        images: [{ image: true }],
         location: {
           address: USER_LOCATION.full_address,
           latitude: USER_LOCATION.approximated_latitude,
-          longitude: USER_LOCATION.approximated_longitude
+          longitude: USER_LOCATION.approximated_longitude,
         },
         extra_info: {
           object_type: { id: 1 },
           object_type_2: { id: 2 },
-        }
+        },
       });
       component.uploadForm.get('extra_info').get('object_type').enable();
       component.uploadForm.get('extra_info').get('object_type_2').enable();
       const expected = {
-        type: "create",
-        values:
-        {
+        type: 'create',
+        values: {
           category_id: CATEGORY_IDS.SERVICES,
-          currency_code: "EUR",
+          currency_code: 'EUR',
           delivery_info: null,
-          description: "test",
+          description: 'test',
           extra_info: {
             condition: null,
-            object_type: { id: 2 }
+            object_type: { id: 2 },
           },
-          id: "",
-          images: [{ "image": true }],
-          location: { "address": "Carrer Sant Pere Mes Baix, Barcelona", "latitude": 41.399132621722174, "longitude": 2.17585484411869 },
-          sale_conditions: { "exchange_allowed": false, "fix_price": false },
+          id: '',
+          images: [{ image: true }],
+          location: {
+            address: 'Carrer Sant Pere Mes Baix, Barcelona',
+            latitude: 41.399132621722174,
+            longitude: 2.17585484411869,
+          },
+          sale_conditions: { exchange_allowed: false, fix_price: false },
           sale_price: 1000000,
-          title: "test"
-        }
-      }
-      spyOn(component.uploadEvent, 'emit')
+          title: 'test',
+        },
+      };
+      spyOn(component.uploadEvent, 'emit');
 
       component.onSubmit();
       fixture.detectChanges();
@@ -675,38 +763,41 @@ describe('UploadProductComponent', () => {
         description: 'test',
         sale_price: 1000000,
         currency_code: 'EUR',
-        images: [{ 'image': true }],
+        images: [{ image: true }],
         location: {
           address: USER_LOCATION.full_address,
           latitude: USER_LOCATION.approximated_latitude,
-          longitude: USER_LOCATION.approximated_longitude
+          longitude: USER_LOCATION.approximated_longitude,
         },
         extra_info: {
           object_type: { id: 1 },
-        }
+        },
       });
       component.uploadForm.get('extra_info').get('object_type').enable();
-      spyOn(component.uploadEvent, 'emit')
+      spyOn(component.uploadEvent, 'emit');
       const expected = {
-        "type": "create",
-        "values":
-        {
-          "category_id": CATEGORY_IDS.SERVICES,
-          "currency_code": "EUR",
-          "delivery_info": null,
-          "description": "test",
-          "extra_info": {
-            "condition": null,
-            "object_type": { id: 1 }
+        type: 'create',
+        values: {
+          category_id: CATEGORY_IDS.SERVICES,
+          currency_code: 'EUR',
+          delivery_info: null,
+          description: 'test',
+          extra_info: {
+            condition: null,
+            object_type: { id: 1 },
           },
-          "id": "",
-          "images": [{ "image": true }],
-          "location": { "address": "Carrer Sant Pere Mes Baix, Barcelona", "latitude": 41.399132621722174, "longitude": 2.17585484411869 },
-          "sale_conditions": { "exchange_allowed": false, "fix_price": false },
-          "sale_price": 1000000,
-          "title": "test"
-        }
-      }
+          id: '',
+          images: [{ image: true }],
+          location: {
+            address: 'Carrer Sant Pere Mes Baix, Barcelona',
+            latitude: 41.399132621722174,
+            longitude: 2.17585484411869,
+          },
+          sale_conditions: { exchange_allowed: false, fix_price: false },
+          sale_price: 1000000,
+          title: 'test',
+        },
+      };
 
       component.onSubmit();
       fixture.detectChanges();
@@ -717,36 +808,43 @@ describe('UploadProductComponent', () => {
 
   describe('when selecting a category', () => {
     it('should get the object types for the selected category', () => {
-      component.uploadForm.patchValue({ category_id: CATEGORY_IDS.CELL_PHONES_ACCESSORIES });
+      component.uploadForm.patchValue({
+        category_id: CATEGORY_IDS.CELL_PHONES_ACCESSORIES,
+      });
       spyOn(generalSuggestionsService, 'getObjectTypes').and.callThrough();
 
       component.getObjectTypes();
 
-      expect(generalSuggestionsService.getObjectTypes).toHaveBeenCalledWith(CATEGORY_IDS.CELL_PHONES_ACCESSORIES);
+      expect(generalSuggestionsService.getObjectTypes).toHaveBeenCalledWith(
+        CATEGORY_IDS.CELL_PHONES_ACCESSORIES
+      );
     });
 
     it('should get dropdown options', () => {
-      spyOn(generalSuggestionsService, 'getObjectTypes').and.returnValue(of(MOCK_OBJECT_TYPES));
+      spyOn(generalSuggestionsService, 'getObjectTypes').and.returnValue(
+        of(MOCK_OBJECT_TYPES)
+      );
 
       component.getObjectTypes();
       fixture.detectChanges();
 
       expect(component.objectTypes).toEqual(MOCK_OBJECT_TYPES);
       expect(component.objectTypesOptions).toEqual(MOCK_OBJECT_TYPES_RESPONSE);
-
     });
 
     it('should update form', () => {
-      spyOn(component, 'getExtraInfo').and.returnValue({})
-      spyOn(generalSuggestionsService, 'getObjectTypes').and.returnValue(of(MOCK_OBJECT_TYPES));
+      spyOn(component, 'getExtraInfo').and.returnValue({});
+      spyOn(generalSuggestionsService, 'getObjectTypes').and.returnValue(
+        of(MOCK_OBJECT_TYPES)
+      );
       component.item = MOCK_ITEM;
       component.uploadForm.patchValue({
         category_id: CATEGORY_IDS.CELL_PHONES_ACCESSORIES,
         extra_info: {
           object_type: {
-            id: '365'
-          }
-        }
+            id: '365',
+          },
+        },
       });
 
       component.getObjectTypes();
@@ -756,8 +854,10 @@ describe('UploadProductComponent', () => {
     });
 
     it('should not update form', () => {
-      spyOn(component, 'getExtraInfo').and.returnValue({})
-      spyOn(generalSuggestionsService, 'getObjectTypes').and.returnValue(of(MOCK_OBJECT_TYPES));
+      spyOn(component, 'getExtraInfo').and.returnValue({});
+      spyOn(generalSuggestionsService, 'getObjectTypes').and.returnValue(
+        of(MOCK_OBJECT_TYPES)
+      );
       component.uploadForm.patchValue({
         category_id: CATEGORY_IDS.CELL_PHONES_ACCESSORIES,
       });
@@ -777,7 +877,9 @@ describe('UploadProductComponent', () => {
       component.getSecondObjectTypes(selectedId);
 
       expect(component.objectTypesOptions2).toEqual(MOCK_OBJECT_TYPES_RESPONSE);
-      expect(component.uploadForm.get('extra_info').get('object_type_2').disabled).toBe(false);
+      expect(
+        component.uploadForm.get('extra_info').get('object_type_2').disabled
+      ).toBe(false);
     });
 
     it('should not get options for the selected subcategory without second level subcategories', () => {
@@ -787,7 +889,9 @@ describe('UploadProductComponent', () => {
       component.getSecondObjectTypes(selectedId);
 
       expect(component.objectTypesOptions2).toEqual([]);
-      expect(component.uploadForm.get('extra_info').get('object_type_2').disabled).toBe(true);
+      expect(
+        component.uploadForm.get('extra_info').get('object_type_2').disabled
+      ).toBe(true);
     });
   });
 
@@ -797,9 +901,9 @@ describe('UploadProductComponent', () => {
         category_id: CATEGORY_IDS.CELL_PHONES_ACCESSORIES,
         extra_info: {
           object_type: {
-            id: '365'
-          }
-        }
+            id: '365',
+          },
+        },
       });
     });
 
@@ -808,7 +912,11 @@ describe('UploadProductComponent', () => {
 
       component.getBrands('Apple');
 
-      expect(generalSuggestionsService.getBrands).toHaveBeenCalledWith('Apple', CATEGORY_IDS.CELL_PHONES_ACCESSORIES, '365');
+      expect(generalSuggestionsService.getBrands).toHaveBeenCalledWith(
+        'Apple',
+        CATEGORY_IDS.CELL_PHONES_ACCESSORIES,
+        '365'
+      );
     });
 
     it('should get brands and models if the brand endpoint doesn`t return any result', () => {
@@ -817,7 +925,11 @@ describe('UploadProductComponent', () => {
 
       component.getBrands('iPhone');
 
-      expect(generalSuggestionsService.getBrandsAndModels).toHaveBeenCalledWith('iPhone', CATEGORY_IDS.CELL_PHONES_ACCESSORIES, '365');
+      expect(generalSuggestionsService.getBrandsAndModels).toHaveBeenCalledWith(
+        'iPhone',
+        CATEGORY_IDS.CELL_PHONES_ACCESSORIES,
+        '365'
+      );
     });
   });
 
@@ -827,16 +939,21 @@ describe('UploadProductComponent', () => {
         category_id: CATEGORY_IDS.CELL_PHONES_ACCESSORIES,
         extra_info: {
           object_type: {
-            id: '365'
+            id: '365',
           },
-          brand: 'Apple'
-        }
+          brand: 'Apple',
+        },
       });
       spyOn(generalSuggestionsService, 'getModels').and.callThrough();
 
       component.getModels('iPhone');
 
-      expect(generalSuggestionsService.getModels).toHaveBeenCalledWith('iPhone', CATEGORY_IDS.CELL_PHONES_ACCESSORIES, 'Apple', '365');
+      expect(generalSuggestionsService.getModels).toHaveBeenCalledWith(
+        'iPhone',
+        CATEGORY_IDS.CELL_PHONES_ACCESSORIES,
+        'Apple',
+        '365'
+      );
     });
   });
 
@@ -844,15 +961,18 @@ describe('UploadProductComponent', () => {
     it('should get the sizes for the current object type and gender', () => {
       component.uploadForm.get('extra_info').patchValue({
         object_type: {
-          id: '365'
+          id: '365',
         },
-        gender: 'male'
+        gender: 'male',
       });
       spyOn(generalSuggestionsService, 'getSizes').and.callThrough();
 
       component.getSizes();
 
-      expect(generalSuggestionsService.getSizes).toHaveBeenCalledWith('365', 'male');
+      expect(generalSuggestionsService.getSizes).toHaveBeenCalledWith(
+        '365',
+        'male'
+      );
     });
   });
 
@@ -866,14 +986,14 @@ describe('UploadProductComponent', () => {
       modified_date: MOCK_ITEM.modifiedDate,
       flags: MOCK_ITEM.flags,
       seller_id: 'ukd73df',
-      web_slug: MOCK_ITEM.webSlug
-    }
+      web_slug: MOCK_ITEM.webSlug,
+    };
     const uploadedEvent = {
       action: 'updated',
       response: {
         id: '1',
-        content: MOCK_RESPONSE_CONTENT
-      }
+        content: MOCK_RESPONSE_CONTENT,
+      },
     };
 
     it('should emit form changed event', () => {
@@ -892,7 +1012,10 @@ describe('UploadProductComponent', () => {
 
       component.onUploaded(uploadedEvent);
 
-      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', { [uploadedEvent.action]: true, itemId: uploadedEvent.response.id }]);
+      expect(router.navigate).toHaveBeenCalledWith([
+        '/catalog/list',
+        { [uploadedEvent.action]: true, itemId: uploadedEvent.response.id },
+      ]);
     });
 
     it('should send appboy Edit event if item is selected', () => {
@@ -901,7 +1024,9 @@ describe('UploadProductComponent', () => {
       component.item = MOCK_ITEM;
       component.onUploaded(uploadedEvent);
 
-      expect(appboy.logCustomEvent).toHaveBeenCalledWith('Edit', { platform: 'web' });
+      expect(appboy.logCustomEvent).toHaveBeenCalledWith('Edit', {
+        platform: 'web',
+      });
     });
 
     it('should send appboy List event if any item is selected', () => {
@@ -909,7 +1034,9 @@ describe('UploadProductComponent', () => {
 
       component.onUploaded(uploadedEvent);
 
-      expect(appboy.logCustomEvent).toHaveBeenCalledWith('List', { platform: 'web' });
+      expect(appboy.logCustomEvent).toHaveBeenCalledWith('List', {
+        platform: 'web',
+      });
     });
 
     describe('if it`s a item modification', () => {
@@ -919,9 +1046,9 @@ describe('UploadProductComponent', () => {
           action: 'update',
           response: {
             id: MOCK_ITEM.id,
-            type: 'edit'
-          }
-        }
+            type: 'edit',
+          },
+        };
         const editResponse: ItemContent = MOCK_RESPONSE_CONTENT;
         const expectedEvent: AnalyticsEvent<EditItemCG> = {
           name: ANALYTICS_EVENT_NAMES.EditItemCG,
@@ -932,8 +1059,8 @@ describe('UploadProductComponent', () => {
             salePrice: editResponse.sale_price,
             title: editResponse.title,
             isPro: false,
-            screenId: SCREEN_IDS.EditItem
-          }
+            screenId: SCREEN_IDS.EditItem,
+          },
         };
         editEvent.response = editResponse;
         spyOn(analyticsService, 'trackEvent');
@@ -951,9 +1078,9 @@ describe('UploadProductComponent', () => {
           action: 'create',
           response: {
             id: MOCK_ITEM.id,
-            type: 'upload'
-          }
-        }
+            type: 'upload',
+          },
+        };
         const uploadResponse: ItemContent = MOCK_RESPONSE_CONTENT;
         const expectedEvent: AnalyticsEvent<ListItemCG> = {
           name: ANALYTICS_EVENT_NAMES.ListItemCG,
@@ -964,8 +1091,8 @@ describe('UploadProductComponent', () => {
             salePrice: uploadResponse.sale_price,
             title: uploadResponse.title,
             isPro: false,
-            screenId: SCREEN_IDS.Upload
-          }
+            screenId: SCREEN_IDS.Upload,
+          },
         };
         uploadEvent.response = uploadResponse;
         spyOn(analyticsService, 'trackEvent');
@@ -976,7 +1103,6 @@ describe('UploadProductComponent', () => {
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
       });
     });
-
   });
 
   describe('onError', () => {
@@ -987,7 +1113,9 @@ describe('UploadProductComponent', () => {
       component.onError('response');
 
       expect(component.loading).toBeFalsy();
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.UPLOADFORM_ERROR);
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.UPLOADFORM_ERROR
+      );
     });
   });
 
@@ -999,7 +1127,9 @@ describe('UploadProductComponent', () => {
       component.onDeliveryChange(ITEM_DELIVERY_INFO);
 
       expect(component['oldDeliveryValue']).toBeUndefined();
-      expect(component.uploadForm.controls['delivery_info'].reset).toHaveBeenCalled();
+      expect(
+        component.uploadForm.controls['delivery_info'].reset
+      ).toHaveBeenCalled();
     });
   });
 
@@ -1011,7 +1141,9 @@ describe('UploadProductComponent', () => {
       component.onDeliveryChange(ITEM_DELIVERY_INFO);
 
       expect(component['oldDeliveryValue']).toBeUndefined();
-      expect(component.uploadForm.controls['delivery_info'].reset).toHaveBeenCalled();
+      expect(
+        component.uploadForm.controls['delivery_info'].reset
+      ).toHaveBeenCalled();
     });
   });
 
@@ -1025,11 +1157,11 @@ describe('UploadProductComponent', () => {
       component.uploadForm.get('description').patchValue('test');
       component.uploadForm.get('sale_price').patchValue(1000000);
       component.uploadForm.get('currency_code').patchValue('EUR');
-      component.uploadForm.get('images').patchValue([{ 'image': true }]);
+      component.uploadForm.get('images').patchValue([{ image: true }]);
       component.uploadForm.get('location').patchValue({
         address: USER_LOCATION.full_address,
         latitude: USER_LOCATION.approximated_latitude,
-        longitude: USER_LOCATION.approximated_longitude
+        longitude: USER_LOCATION.approximated_longitude,
       });
 
       component.preview();
@@ -1039,7 +1171,7 @@ describe('UploadProductComponent', () => {
 
     it('should open modal', () => {
       expect(modalService.open).toHaveBeenCalledWith(PreviewModalComponent, {
-        windowClass: 'preview'
+        windowClass: 'preview',
       });
     });
 
@@ -1049,22 +1181,22 @@ describe('UploadProductComponent', () => {
         category_id: CATEGORY_IDS.SERVICES,
         title: 'test',
         description: 'test',
-        'sale_price': 1000000,
+        sale_price: 1000000,
         currency_code: 'EUR',
-        images: [{ 'image': true }],
+        images: [{ image: true }],
         sale_conditions: {
           fix_price: false,
-          exchange_allowed: false
+          exchange_allowed: false,
         },
         delivery_info: null,
         location: {
           address: USER_LOCATION.full_address,
           latitude: USER_LOCATION.approximated_latitude,
-          longitude: USER_LOCATION.approximated_longitude
+          longitude: USER_LOCATION.approximated_longitude,
         },
         extra_info: {
-          condition: null
-        }
+          condition: null,
+        },
       });
     });
 
@@ -1085,7 +1217,6 @@ describe('UploadProductComponent', () => {
       expect(component.isUrgent).toBeFalsy();
     });
   });
-
 
   describe('when changing the upload category', () => {
     let categoryId: number;
@@ -1121,20 +1252,29 @@ describe('UploadProductComponent', () => {
   describe('autoCompleteCellphonesModel', () => {
     describe('when selecting a model in the brand field', () => {
       it('should patch brand and model values', () => {
-        const brandModelObj: BrandModel = { brand: 'Apple', model: 'iPhone 11 Pro' };
+        const brandModelObj: BrandModel = {
+          brand: 'Apple',
+          model: 'iPhone 11 Pro',
+        };
 
-        component.uploadForm.patchValue({ category_id: CATEGORY_IDS.CELL_PHONES_ACCESSORIES });
+        component.uploadForm.patchValue({
+          category_id: CATEGORY_IDS.CELL_PHONES_ACCESSORIES,
+        });
         component.autoCompleteCellphonesModel(brandModelObj);
 
         expect(component.uploadForm.value.extra_info.brand).toEqual('Apple');
-        expect(component.uploadForm.value.extra_info.model).toEqual('iPhone 11 Pro');
+        expect(component.uploadForm.value.extra_info.model).toEqual(
+          'iPhone 11 Pro'
+        );
       });
     });
   });
 
   describe('when getting the upload categories from the server', () => {
     it('should get value, label and icon from consumer goods categories', () => {
-      spyOn(categoryService, 'getCategories').and.returnValue(of(CATEGORY_DATA_WEB));
+      spyOn(categoryService, 'getCategories').and.returnValue(
+        of(CATEGORY_DATA_WEB)
+      );
       const expected: CategoryOption[] = [
         {
           value: '15000',
@@ -1155,7 +1295,7 @@ describe('UploadProductComponent', () => {
           value: '12800',
           icon_id: 'helmet',
           label: 'Motor parts',
-        }
+        },
       ];
 
       component.ngOnInit();
@@ -1169,7 +1309,7 @@ describe('UploadProductComponent', () => {
       component.categoryId = '-1';
 
       component.ngOnChanges({
-        categoryId: new SimpleChange(null, component.categoryId, true)
+        categoryId: new SimpleChange(null, component.categoryId, true),
       });
       fixture.detectChanges();
 
@@ -1180,11 +1320,13 @@ describe('UploadProductComponent', () => {
       component.categoryId = `${CATEGORY_IDS.GAMES_CONSOLES}`;
 
       component.ngOnChanges({
-        categoryId: new SimpleChange(null, component.categoryId, true)
+        categoryId: new SimpleChange(null, component.categoryId, true),
       });
       fixture.detectChanges();
 
-      expect(component.uploadForm.value.category_id).toEqual(`${CATEGORY_IDS.GAMES_CONSOLES}`);
+      expect(component.uploadForm.value.category_id).toEqual(
+        `${CATEGORY_IDS.GAMES_CONSOLES}`
+      );
     });
   });
 
@@ -1200,7 +1342,6 @@ describe('UploadProductComponent', () => {
     });
   });
 
-
   describe('when the category drop-down change', () => {
     it('should clear all extra fields ', () => {
       component.item = MOCK_ITEM_FASHION;
@@ -1209,7 +1350,7 @@ describe('UploadProductComponent', () => {
         brand: null,
         size: { id: null },
         gender: null,
-        condition: null
+        condition: null,
       };
       component.ngOnInit();
       component.resetAllExtraFields();
@@ -1227,7 +1368,7 @@ describe('UploadProductComponent', () => {
         brand: null,
         size: { id: null },
         gender: 'male',
-        condition: null
+        condition: null,
       };
 
       component.ngOnInit();
@@ -1259,7 +1400,10 @@ describe('UploadProductComponent', () => {
     });
 
     it('should not call the service when there is a previous here category selected', () => {
-      component.uploadForm.patchValue({ title: 'car', category_id: CATEGORY_IDS.JOBS.toString() });
+      component.uploadForm.patchValue({
+        title: 'car',
+        category_id: CATEGORY_IDS.JOBS.toString(),
+      });
       spyOn(categoryService, 'getSuggestedCategory');
 
       component.searchSuggestedCategories();
@@ -1289,8 +1433,13 @@ describe('UploadProductComponent', () => {
     });
 
     it('should not update the category if suggestion and selected category are the same', () => {
-      component.uploadForm.patchValue({ title: 'bike', category_id: CATEGORY_IDS.TV_AUDIO_CAMERAS.toString() });
-      spyOn(categoryService, 'getSuggestedCategory').and.returnValue(of(SUGGESTED_CATEGORY_TV_AUDIO_CAMERAS));
+      component.uploadForm.patchValue({
+        title: 'bike',
+        category_id: CATEGORY_IDS.TV_AUDIO_CAMERAS.toString(),
+      });
+      spyOn(categoryService, 'getSuggestedCategory').and.returnValue(
+        of(SUGGESTED_CATEGORY_TV_AUDIO_CAMERAS)
+      );
       spyOn(component.uploadForm, 'patchValue');
 
       component.searchSuggestedCategories();
@@ -1298,10 +1447,11 @@ describe('UploadProductComponent', () => {
       expect(component.uploadForm.patchValue).not.toBeCalled();
     });
 
-
     it('should not update the category if suggestion is not in the category options', () => {
       component.uploadForm.patchValue({ title: 'bike' });
-      spyOn(categoryService, 'getSuggestedCategory').and.returnValue(of(SUGGESTED_CATEGORY_COMPUTERS_ELECTRONICS));
+      spyOn(categoryService, 'getSuggestedCategory').and.returnValue(
+        of(SUGGESTED_CATEGORY_COMPUTERS_ELECTRONICS)
+      );
       spyOn(component.uploadForm, 'patchValue');
 
       component.searchSuggestedCategories();
@@ -1311,29 +1461,44 @@ describe('UploadProductComponent', () => {
 
     it('should update the category if the suggested category is valid', () => {
       component.uploadForm.patchValue({ title: 'tv' });
-      spyOn(categoryService, 'getSuggestedCategory').and.returnValue(of(SUGGESTED_CATEGORY_TV_AUDIO_CAMERAS));
+      spyOn(categoryService, 'getSuggestedCategory').and.returnValue(
+        of(SUGGESTED_CATEGORY_TV_AUDIO_CAMERAS)
+      );
 
       component.searchSuggestedCategories();
 
-      expect(component.uploadForm.get('category_id').value).toBe(CATEGORY_IDS.TV_AUDIO_CAMERAS.toString())
+      expect(component.uploadForm.get('category_id').value).toBe(
+        CATEGORY_IDS.TV_AUDIO_CAMERAS.toString()
+      );
     });
 
     it('should show an 18n success message if a previously selected category was changed', () => {
-      component.uploadForm.patchValue({ title: 'tv', category_id: CATEGORY_IDS.GAMES_CONSOLES.toString() });
+      component.uploadForm.patchValue({
+        title: 'tv',
+        category_id: CATEGORY_IDS.GAMES_CONSOLES.toString(),
+      });
       spyOn(errorService, 'i18nSuccess');
-      spyOn(categoryService, 'getSuggestedCategory').and.returnValue(of(SUGGESTED_CATEGORY_TV_AUDIO_CAMERAS));
+      spyOn(categoryService, 'getSuggestedCategory').and.returnValue(
+        of(SUGGESTED_CATEGORY_TV_AUDIO_CAMERAS)
+      );
 
       component.searchSuggestedCategories();
 
-      expect(component.uploadForm.get('category_id').value).toBe(CATEGORY_IDS.TV_AUDIO_CAMERAS.toString())
-      expect(errorService.i18nSuccess).toHaveBeenCalledWith('suggestedCategory');
+      expect(component.uploadForm.get('category_id').value).toBe(
+        CATEGORY_IDS.TV_AUDIO_CAMERAS.toString()
+      );
+      expect(errorService.i18nSuccess).toHaveBeenCalledWith(
+        'suggestedCategory'
+      );
     });
     it('should search categories after the user stop tipyng', fakeAsync(() => {
       spyOn(component, 'searchSuggestedCategories');
       const event = new KeyboardEvent('keyup', {
-        bubbles: true, cancelable: true, shiftKey: false
+        bubbles: true,
+        cancelable: true,
+        shiftKey: false,
       });
-      component.titleField.nativeElement.value = 'bike'
+      component.titleField.nativeElement.value = 'bike';
       component.titleField.nativeElement.dispatchEvent(event);
 
       tick(750);
@@ -1341,7 +1506,7 @@ describe('UploadProductComponent', () => {
 
       fixture.whenStable().then(() => {
         expect(component.searchSuggestedCategories).toBeCalled();
-      })
+      });
     }));
   });
 });

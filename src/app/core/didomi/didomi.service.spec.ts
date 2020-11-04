@@ -5,7 +5,7 @@ import { DIDOMI_EMBED } from './didomi-embed-script';
 export const MockDidomiService = {
   isReady: true,
   initialize: () => {},
-  userAllowedSegmentationInAds: () => true
+  userAllowedSegmentationInAds: () => true,
 };
 
 describe('Service: Didomi', () => {
@@ -15,7 +15,7 @@ describe('Service: Didomi', () => {
   beforeEach(() => {
     injector = getTestBed();
     injector.configureTestingModule({
-      providers: [ DidomiService ]
+      providers: [DidomiService],
     });
     service = injector.inject(DidomiService);
 
@@ -33,7 +33,9 @@ describe('Service: Didomi', () => {
   describe('when initializing the service', () => {
     it('should add Didomi SDK to app', () => {
       spyOn(document.head, 'appendChild');
-      const expectedScript: HTMLScriptElement = document.createElement('script');
+      const expectedScript: HTMLScriptElement = document.createElement(
+        'script'
+      );
       expectedScript.setAttribute('type', 'text/javascript');
       expectedScript.setAttribute('charset', 'utf-8');
       expectedScript.text = DIDOMI_EMBED;
@@ -63,16 +65,16 @@ describe('Service: Didomi', () => {
   describe('when user accepts all purposes', () => {
     beforeEach(() => {
       spyOn(Didomi, 'getUserConsentStatusForAll').and.returnValue({
-          purposes: {
-            enabled: ['purpose1', 'purpose2', 'purpose3'],
-            disabled: []
-          }
+        purposes: {
+          enabled: ['purpose1', 'purpose2', 'purpose3'],
+          disabled: [],
+        },
       });
     });
 
     describe('and when user also accepts Google vendor', () => {
       beforeEach(() => {
-        spyOn(Didomi, 'getUserConsentStatusForVendor').and.callFake(key => {
+        spyOn(Didomi, 'getUserConsentStatusForVendor').and.callFake((key) => {
           if (key === 'google') {
             return true;
           }
@@ -84,10 +86,9 @@ describe('Service: Didomi', () => {
       });
     });
 
-
     describe('and when user rejects Google vendor', () => {
       beforeEach(() => {
-        spyOn(Didomi, 'getUserConsentStatusForVendor').and.callFake(key => {
+        spyOn(Didomi, 'getUserConsentStatusForVendor').and.callFake((key) => {
           if (key === 'google') {
             return false;
           }
@@ -98,7 +99,6 @@ describe('Service: Didomi', () => {
         expect(service.userAllowedSegmentationInAds()).toBe(false);
       });
     });
-
   });
 
   describe('when user does not accept at least 1 purpose', () => {
@@ -106,8 +106,8 @@ describe('Service: Didomi', () => {
       spyOn(Didomi, 'getUserConsentStatusForAll').and.returnValue({
         purposes: {
           enabled: ['purpose1', 'purpose3'],
-          disabled: ['purpose2']
-        }
+          disabled: ['purpose2'],
+        },
       });
     });
 

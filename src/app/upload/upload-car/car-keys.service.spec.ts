@@ -1,11 +1,18 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+  TestRequest,
+} from '@angular/common/http/testing';
 
 import { environment } from '../../../environments/environment';
 
 import { CarKeysService, CARS_KEYS_ENDPOINT } from './car-keys.service';
 import { IOption } from 'app/dropdown/utils/option.interface';
-import { CAR_BODY_TYPES, CAR_BODY_TYPES_RESPONSE } from '../../../tests/car.fixtures.spec';
+import {
+  CAR_BODY_TYPES,
+  CAR_BODY_TYPES_RESPONSE,
+} from '../../../tests/car.fixtures.spec';
 import { I18nService } from '../../core/i18n/i18n.service';
 
 describe('CarKeysService', () => {
@@ -14,11 +21,8 @@ describe('CarKeysService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        CarKeysService,
-        I18nService
-      ],
-      imports: [HttpClientTestingModule]
+      providers: [CarKeysService, I18nService],
+      imports: [HttpClientTestingModule],
     });
     service = TestBed.inject(CarKeysService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -34,7 +38,7 @@ describe('CarKeysService', () => {
       const expectedUrlParams = `language=en`;
       const expectedUrl = `${environment.baseUrl}${CARS_KEYS_ENDPOINT}/bodytype?${expectedUrlParams}`;
 
-      service.getTypes().subscribe(r => response = r);
+      service.getTypes().subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(CAR_BODY_TYPES_RESPONSE);
 
@@ -50,7 +54,7 @@ describe('CarKeysService', () => {
       const expectedUrlParams = `language=en`;
       const expectedUrl = `${environment.baseUrl}${CARS_KEYS_ENDPOINT}/bodytype?${expectedUrlParams}`;
 
-      service.getTypeName('small_car').subscribe(r => response = r);
+      service.getTypeName('small_car').subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(CAR_BODY_TYPES_RESPONSE);
 

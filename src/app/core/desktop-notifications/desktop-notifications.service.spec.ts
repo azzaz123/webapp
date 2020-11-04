@@ -1,18 +1,27 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 
-import { DesktopNotificationsService, ASK_PERMISSIONS_TIMEOUT_MS } from './desktop-notifications.service';
+import {
+  DesktopNotificationsService,
+  ASK_PERMISSIONS_TIMEOUT_MS,
+} from './desktop-notifications.service';
 import { TrackingService } from '../tracking/tracking.service';
 import { I18nService } from '../i18n/i18n.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
-import { InboxConversation, InboxMessage, MessageType, MessageStatus } from '../../../app/chat/model';
+import {
+  InboxConversation,
+  InboxMessage,
+  MessageType,
+  MessageStatus,
+} from '../../../app/chat/model';
 
 export class MockDesktopNotifications {
-  public init(): void {
-  }
+  public init(): void {}
 
-  public sendFromInboxMessage(_message: InboxMessage, _conversation: InboxConversation): void {
-  }
+  public sendFromInboxMessage(
+    _message: InboxMessage,
+    _conversation: InboxConversation
+  ): void {}
 
   public browserSupportsNotifications(): boolean {
     return true;
@@ -34,7 +43,7 @@ describe('Service: DesktopNotifications', () => {
         DesktopNotificationsService,
         I18nService,
         { provide: TrackingService, useClass: MockTrackingService },
-      ]
+      ],
     });
     service = TestBed.inject(DesktopNotificationsService);
     i18nService = TestBed.inject(I18nService);
@@ -57,7 +66,9 @@ describe('Service: DesktopNotifications', () => {
 
     describe('and when user previously did not allow notifications', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(Notification, 'requestPermission').and.returnValue(Promise.resolve('denied'));
+        spyOn(Notification, 'requestPermission').and.returnValue(
+          Promise.resolve('denied')
+        );
         service.init();
         tick(ASK_PERMISSIONS_TIMEOUT_MS);
       }));
@@ -72,7 +83,9 @@ describe('Service: DesktopNotifications', () => {
 
     describe('and when user previously did allow notifications', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(Notification, 'requestPermission').and.returnValue(Promise.resolve('granted'));
+        spyOn(Notification, 'requestPermission').and.returnValue(
+          Promise.resolve('granted')
+        );
         service.init();
         tick(ASK_PERMISSIONS_TIMEOUT_MS);
       }));
@@ -123,8 +136,16 @@ describe('Service: DesktopNotifications', () => {
     beforeEach(() => {
       conversation = createInboxConversationsArray(1)[0];
       conversation.user.avatarUrl = 'avatarUrl';
-      message = new InboxMessage('mockId', conversation.id, 'hola!', 'mockUserId', false, new Date(),
-      MessageStatus.SENT, MessageType.TEXT);
+      message = new InboxMessage(
+        'mockId',
+        conversation.id,
+        'hola!',
+        'mockUserId',
+        false,
+        new Date(),
+        MessageStatus.SENT,
+        MessageType.TEXT
+      );
     });
 
     describe('and when browser does not support notifications', () => {
@@ -141,11 +162,13 @@ describe('Service: DesktopNotifications', () => {
 
     describe('and when user is currently seeing the webpage', () => {
       beforeEach(() => {
-        const notificationSpy = spyOn(window, 'Notification').and.callFake(() => {
-          return {
-            addEventListener: () => {}
-          };
-        });
+        const notificationSpy = spyOn(window, 'Notification').and.callFake(
+          () => {
+            return {
+              addEventListener: () => {},
+            };
+          }
+        );
         notificationSpy['requestPermission'] = () => Promise.resolve('granted');
         notificationSpy['addEventListener'] = () => {};
       });
@@ -161,7 +184,9 @@ describe('Service: DesktopNotifications', () => {
 
     describe('and when user did not accept notifications', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(Notification, 'requestPermission').and.returnValue(Promise.resolve('denied'));
+        spyOn(Notification, 'requestPermission').and.returnValue(
+          Promise.resolve('denied')
+        );
         service.init();
         tick(ASK_PERMISSIONS_TIMEOUT_MS);
 
@@ -178,7 +203,8 @@ describe('Service: DesktopNotifications', () => {
     describe('and when user accepted notifications', () => {
       const mockNotification = {
         _mockEventListeners: {},
-        addEventListener: (key: string, value: Function) => mockNotification._mockEventListeners[key] = value
+        addEventListener: (key: string, value: Function) =>
+          (mockNotification._mockEventListeners[key] = value),
       };
 
       beforeEach(fakeAsync(() => {
@@ -187,19 +213,24 @@ describe('Service: DesktopNotifications', () => {
       }));
 
       it('should send notification', () => {
-        const expectedTitle = `${i18nService.getTranslations('newMessageNotification')}${conversation.user.microName}`;
+        const expectedTitle = `${i18nService.getTranslations(
+          'newMessageNotification'
+        )}${conversation.user.microName}`;
         const image = conversation.user.avatarUrl;
         const expectedNotificationOptions = {
           body: message.text,
           icon: image,
           image,
           badge: image,
-          timestamp: message.date.getTime()
+          timestamp: message.date.getTime(),
         };
 
         service.sendFromInboxMessage(message, conversation);
 
-        expect(Notification).toHaveBeenCalledWith(expectedTitle, expectedNotificationOptions);
+        expect(Notification).toHaveBeenCalledWith(
+          expectedTitle,
+          expectedNotificationOptions
+        );
       });
 
       describe('and when user closes notification', () => {
@@ -210,8 +241,8 @@ describe('Service: DesktopNotifications', () => {
             TrackingService.NOTIFICATION_RECEIVED,
             {
               thread_id: message.thread,
-              message_id: message.id
-            }
+              message_id: message.id,
+            },
           ];
 
           mockNotification._mockEventListeners['close']();

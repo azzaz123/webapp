@@ -22,33 +22,34 @@ describe('ProfileProSubscriptionComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProfileProSubscriptionComponent, SubscriptionIconPipe ],
+      declarations: [ProfileProSubscriptionComponent, SubscriptionIconPipe],
       providers: [
         {
-          provide: PaymentService, useValue: {
-          getPerks() {
-            return of(perksModel);
+          provide: PaymentService,
+          useValue: {
+            getPerks() {
+              return of(perksModel);
+            },
+            getSubscriptionPacks() {
+              return of(packs);
+            },
           },
-          getSubscriptionPacks() {
-            return of(packs);
-          }
-        }
         },
         {
-          provide: NgbModal, useValue: {
-          open() {}
-        }
+          provide: NgbModal,
+          useValue: {
+            open() {},
+          },
         },
         {
-          provide: Router, useValue: {
-          navigate() {
-          }
-        }
+          provide: Router,
+          useValue: {
+            navigate() {},
+          },
         },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -80,7 +81,10 @@ describe('ProfileProSubscriptionComponent', () => {
 
       component.openFaqs();
 
-      expect(router.navigate).toHaveBeenCalledWith(['pro/help', {section: 'Perfil-6'}]);
+      expect(router.navigate).toHaveBeenCalledWith([
+        'pro/help',
+        { section: 'Perfil-6' },
+      ]);
     });
   });
 });

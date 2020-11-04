@@ -15,12 +15,11 @@ import {
   USER_TYPE,
   USER_WEB_SLUG,
   VALIDATIONS,
-  VERIFICATION_LEVEL
+  VERIFICATION_LEVEL,
 } from '../../../tests/user.fixtures.spec';
 import { MOCK_ITEM } from '../../../tests/item.fixtures.spec';
 
 describe('User', () => {
-
   it('should create an instance', () => {
     expect(new User('testId')).toBeTruthy();
   });
@@ -57,20 +56,19 @@ describe('User', () => {
     expect(user.receivedReports).toBe(RECEIVED_REPORTS);
     expect(user.webLink).toBe(USER_BASE_PATH + USER_WEB_SLUG);
   });
-  it('should set item distance', (() => {
+  it('should set item distance', () => {
     const user: User = new User(USER_ID);
     user.itemDistance = 1;
     expect(user.itemDistance).toBe(1);
-  }));
-  it('should set selling item', (() => {
+  });
+  it('should set selling item', () => {
     const user: User = new User(USER_ID);
     user.sellingItem = MOCK_ITEM;
     expect(user.sellingItem).toBe(MOCK_ITEM);
-  }));
-  it('should set items count', (() => {
+  });
+  it('should set items count', () => {
     const user: User = new User(USER_ID);
     user.itemsCount = 3;
     expect(user.itemsCount).toBe(3);
-  }));
-
+  });
 });

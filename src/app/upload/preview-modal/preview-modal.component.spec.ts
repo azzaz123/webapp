@@ -20,17 +20,17 @@ describe('PreviewModalComponent', () => {
         NgbActiveModal,
         DecimalPipe,
         {
-          provide: CarKeysService, useValue: {
-          getTypeName() {
-            return of({});
-          }
-        }
+          provide: CarKeysService,
+          useValue: {
+            getTypeName() {
+              return of({});
+            },
+          },
         },
       ],
-      declarations: [ PreviewModalComponent, CustomCurrencyPipe ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+      declarations: [PreviewModalComponent, CustomCurrencyPipe],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -54,7 +54,7 @@ describe('PreviewModalComponent', () => {
         gearbox: '',
         body_type: '',
         num_seats: null,
-        engine: ''
+        engine: '',
       };
       expect(component.hasCarExtras).toBeFalsy();
     });
@@ -67,8 +67,8 @@ describe('PreviewModalComponent', () => {
         sale_conditions: {
           fix_price: false,
           shipping_allowed: false,
-          exchange_allowed: false
-        }
+          exchange_allowed: false,
+        },
       };
       expect(component.hasExtras).toBeFalsy();
       component.itemPreview = {
@@ -76,8 +76,8 @@ describe('PreviewModalComponent', () => {
         sale_conditions: {
           fix_price: true,
           shipping_allowed: false,
-          exchange_allowed: false
-        }
+          exchange_allowed: false,
+        },
       };
       expect(component.hasExtras).toBeTruthy();
     });
@@ -88,7 +88,7 @@ describe('PreviewModalComponent', () => {
       spyOn(carKeysService, 'getTypeName').and.returnValue(of('test'));
       component.itemPreview = {
         ...UPLOAD_FORM_CAR_VALUES,
-        body_type: 'body'
+        body_type: 'body',
       };
       component.getBodyType();
       expect(carKeysService.getTypeName).toHaveBeenCalledWith('body');

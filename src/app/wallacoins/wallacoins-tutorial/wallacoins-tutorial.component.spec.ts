@@ -14,15 +14,14 @@ describe('WallacoinsTutorialComponent', () => {
       declarations: [WallacoinsTutorialComponent],
       providers: [
         {
-          provide: NgbActiveModal, useValue: {
-            close() {
-            }
-          }
-        }
+          provide: NgbActiveModal,
+          useValue: {
+            close() {},
+          },
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -34,7 +33,7 @@ describe('WallacoinsTutorialComponent', () => {
   describe('onSlide', () => {
     it('should set isLast when is last slide', () => {
       component.onSlide({
-        current: 'ngb-slide-2'
+        current: 'ngb-slide-2',
       } as NgbSlideEvent);
 
       expect(component.isLast).toBe(true);

@@ -1,4 +1,3 @@
-
 import { throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
@@ -32,50 +31,44 @@ describe('BuyWallacoinsModalComponent', () => {
         EventService,
         DecimalPipe,
         {
-          provide: ErrorsService, useValue: {
-            show() {
-            },
-            i18nError() {
-            }
-         }
+          provide: ErrorsService,
+          useValue: {
+            show() {},
+            i18nError() {},
+          },
         },
         {
-          provide: PaymentService, useValue: {
+          provide: PaymentService,
+          useValue: {
             orderExtrasProPack() {
               return of({});
-            }
-          }
+            },
+          },
         },
         {
-          provide: NgbActiveModal, useValue: {
-            close() {
-            }
-          }
+          provide: NgbActiveModal,
+          useValue: {
+            close() {},
+          },
         },
         {
-          provide: StripeService, useValue: {
+          provide: StripeService,
+          useValue: {
             getCards() {
               return of([]);
             },
-            buy() {}
-          }
+            buy() {},
+          },
         },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BuyWallacoinsModalComponent);
     component = fixture.componentInstance;
-    component.pack = new Pack(
-      'id',
-      100,
-      100,
-      'EUR',
-      'wallacoins'
-    );
+    component.pack = new Pack('id', 100, 100, 'EUR', 'wallacoins');
     fixture.detectChanges();
     paymentService = TestBed.inject(PaymentService);
     activeModal = TestBed.inject(NgbActiveModal);
@@ -132,17 +125,21 @@ describe('BuyWallacoinsModalComponent', () => {
           id: 'UUID',
           packs: ['id'],
           origin: 'WEB',
-          provider: 'STRIPE'
+          provider: 'STRIPE',
         });
       });
 
       describe('error', () => {
         it('should call toastr', () => {
-          paymentService.orderExtrasProPack = jasmine.createSpy().and.returnValue(throwError({
-            text() {
-              return '';
-            }
-          }));
+          paymentService.orderExtrasProPack = jasmine
+            .createSpy()
+            .and.returnValue(
+              throwError({
+                text() {
+                  return '';
+                },
+              })
+            );
           spyOn(errorService, 'i18nError');
 
           component.checkout();
@@ -155,8 +152,9 @@ describe('BuyWallacoinsModalComponent', () => {
 
   describe('getTrackingAttributes', () => {
     it('should return valid object when Stripe', () => {
-      expect(component.getTrackingAttributes()).toEqual({ payment_method: 'STRIPE' });
+      expect(component.getTrackingAttributes()).toEqual({
+        payment_method: 'STRIPE',
+      });
     });
-
   });
 });

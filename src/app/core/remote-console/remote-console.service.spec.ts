@@ -1,9 +1,17 @@
 import { fakeAsync, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 
 import { RemoteConsoleService } from './remote-console.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { BROWSER, BROWSER_VERSION, DeviceDetectorServiceMock, FeatureFlagServiceMock } from '../../../tests';
+import {
+  BROWSER,
+  BROWSER_VERSION,
+  DeviceDetectorServiceMock,
+  FeatureFlagServiceMock,
+} from '../../../tests';
 import { FeatureflagService } from '../user/featureflag.service';
 import { MetricTypeEnum } from './metric-type.enum';
 import { APP_VERSION } from '../../../environments/version';
@@ -29,19 +37,20 @@ describe('RemoteConsoleService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-      ],
+      imports: [HttpClientTestingModule],
       providers: [
         RemoteConsoleService,
         RemoteConsoleClientService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
         { provide: UserService, useClass: MockedUserService },
-        { provide: CookieService, useValue: {
-          get: _name => DEVICE_ID
-        }}
-      ]
+        {
+          provide: CookieService,
+          useValue: {
+            get: (_name) => DEVICE_ID,
+          },
+        },
+      ],
     });
     uuidService = TestBed.inject(UuidService);
     spyOn(uuidService, 'getUUID').and.returnValue(SESSION_ID);
@@ -59,17 +68,17 @@ describe('RemoteConsoleService', () => {
     spyOn(userService, 'me').and.returnValue(of({ id: USER_ID }));
 
     commonLog = {
-      'timestamp': 4000,
-      'client': 'WEB',
-      'device_id': DEVICE_ID,
-      'browser': BROWSER,
-      'browser_version': BROWSER_VERSION,
-      'user_id': USER_ID,
-      'feature_flag': true,
-      'app_version': service.getReleaseVersion(APP_VERSION),
-      'ping_time_ms': navigator['connection']['rtt'],
-      'connection_type': '',
-      'session_id': SESSION_ID,
+      timestamp: 4000,
+      client: 'WEB',
+      device_id: DEVICE_ID,
+      browser: BROWSER,
+      browser_version: BROWSER_VERSION,
+      user_id: USER_ID,
+      feature_flag: true,
+      app_version: service.getReleaseVersion(APP_VERSION),
+      ping_time_ms: navigator['connection']['rtt'],
+      connection_type: '',
+      session_id: SESSION_ID,
     };
   });
 
@@ -90,21 +99,21 @@ describe('RemoteConsoleService', () => {
       service.sendConnectionTimeout(LOCAL_USER_ID, CONNECTION_TIME);
 
       expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
-        'timestamp': 4000,
-        'client': 'WEB',
-        'device_id': DEVICE_ID,
-        'browser': BROWSER,
-        'browser_version': BROWSER_VERSION,
-        'user_id': LOCAL_USER_ID,
-        'feature_flag': true,
-        'app_version': service.getReleaseVersion(APP_VERSION),
-        'metric_type': MetricTypeEnum.XMPP_CONNECTION_TIME,
-        'message': 'xmpp connection time',
-        'connection_time': CONNECTION_TIME,
-        'call_no': 1,
-        'connection_type': '',
-        'ping_time_ms': navigator['connection']['rtt'],
-        'session_id': SESSION_ID
+        timestamp: 4000,
+        client: 'WEB',
+        device_id: DEVICE_ID,
+        browser: BROWSER,
+        browser_version: BROWSER_VERSION,
+        user_id: LOCAL_USER_ID,
+        feature_flag: true,
+        app_version: service.getReleaseVersion(APP_VERSION),
+        metric_type: MetricTypeEnum.XMPP_CONNECTION_TIME,
+        message: 'xmpp connection time',
+        connection_time: CONNECTION_TIME,
+        call_no: 1,
+        connection_type: '',
+        ping_time_ms: navigator['connection']['rtt'],
+        session_id: SESSION_ID,
       });
     });
 
@@ -118,31 +127,31 @@ describe('RemoteConsoleService', () => {
       service.sendConnectionTimeout(LOCAL_USER_ID, CONNECTION_TIME);
 
       expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
-        'timestamp': 4000,
-        'client': 'WEB',
-        'device_id': DEVICE_ID,
-        'browser': BROWSER,
-        'browser_version': BROWSER_VERSION,
-        'user_id': LOCAL_USER_ID,
-        'feature_flag': true,
-        'app_version': service.getReleaseVersion(APP_VERSION),
-        'metric_type': MetricTypeEnum.XMPP_CONNECTION_TIME,
-        'message': 'xmpp connection time',
-        'connection_time': CONNECTION_TIME,
-        'call_no': 3,
-        'connection_type': '',
-        'ping_time_ms': navigator['connection']['rtt'],
-        'session_id': SESSION_ID
+        timestamp: 4000,
+        client: 'WEB',
+        device_id: DEVICE_ID,
+        browser: BROWSER,
+        browser_version: BROWSER_VERSION,
+        user_id: LOCAL_USER_ID,
+        feature_flag: true,
+        app_version: service.getReleaseVersion(APP_VERSION),
+        metric_type: MetricTypeEnum.XMPP_CONNECTION_TIME,
+        message: 'xmpp connection time',
+        connection_time: CONNECTION_TIME,
+        call_no: 3,
+        connection_type: '',
+        ping_time_ms: navigator['connection']['rtt'],
+        session_id: SESSION_ID,
       });
     });
   });
 
   describe('sendChatConnectionTime - [CHAT_CONNECTION_TIME]', () => {
     const commonConnectionChatTimeoutLog = {
-      'metric_type': MetricTypeEnum.CHAT_CONNECTION_TIME,
-      'session_id': SESSION_ID,
-      'connection_type': '',
-      'ping_time_ms': navigator['connection']['rtt'],
+      metric_type: MetricTypeEnum.CHAT_CONNECTION_TIME,
+      session_id: SESSION_ID,
+      connection_type: '',
+      ping_time_ms: navigator['connection']['rtt'],
     };
 
     describe('when the webapp has connected properly to the chat', () => {
@@ -157,9 +166,9 @@ describe('RemoteConsoleService', () => {
         expect(remoteConsoleClientService.info$).toHaveBeenCalledWith({
           ...commonLog,
           ...commonConnectionChatTimeoutLog,
-          'connection_time': 1500,
-          'xmpp_retry_count': 1,
-          'inbox_retry_count': 1,
+          connection_time: 1500,
+          xmpp_retry_count: 1,
+          inbox_retry_count: 1,
         });
       });
 
@@ -176,7 +185,9 @@ describe('RemoteConsoleService', () => {
     });
 
     describe('when the webapp could not connect to the real time chat', () => {
-      beforeEach(() => service.sendChatConnectionTime(ConnectionType.XMPP, false));
+      beforeEach(() =>
+        service.sendChatConnectionTime(ConnectionType.XMPP, false)
+      );
 
       it('should not track the metric', () => {
         expect(remoteConsoleClientService.info$).not.toHaveBeenCalled();
@@ -213,9 +224,9 @@ describe('RemoteConsoleService', () => {
           expect(remoteConsoleClientService.info$).toHaveBeenCalledWith({
             ...commonLog,
             ...commonConnectionChatTimeoutLog,
-            'connection_time': 1800,
-            'inbox_retry_count': 3,
-            'xmpp_retry_count': 3,
+            connection_time: 1800,
+            inbox_retry_count: 3,
+            xmpp_retry_count: 3,
           });
         });
       });
@@ -223,7 +234,6 @@ describe('RemoteConsoleService', () => {
   });
 
   describe('sendMessageAckFailed', () => {
-
     it('should send metric if send message is failed', () => {
       const MESSAGE_ID = 'MESSAGE_ID';
       const DESCRIPTION = 'MESSAGE_ID';
@@ -233,15 +243,14 @@ describe('RemoteConsoleService', () => {
 
       expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
         ...commonLog,
-        'message_id': MESSAGE_ID,
-        'metric_type': MetricTypeEnum.MESSAGE_SENT_ACK_FAILED,
-        'description': DESCRIPTION
+        message_id: MESSAGE_ID,
+        metric_type: MetricTypeEnum.MESSAGE_SENT_ACK_FAILED,
+        description: DESCRIPTION,
       });
     });
   });
 
   describe('sendDuplicateConversations', () => {
-
     it('should call duplicated conversation conection with parameters', () => {
       const CONVERSATIONS_BY_ID = new Map();
       const LOAD_MORE_CONVERSATIONS = 'LOAD_INBOX';
@@ -249,20 +258,23 @@ describe('RemoteConsoleService', () => {
 
       spyOn(Date, 'now').and.returnValues(4000);
 
-      service.sendDuplicateConversations(USER_ID, LOAD_MORE_CONVERSATIONS, CONVERSATIONS_BY_ID);
+      service.sendDuplicateConversations(
+        USER_ID,
+        LOAD_MORE_CONVERSATIONS,
+        CONVERSATIONS_BY_ID
+      );
 
       expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
         ...commonLog,
-        'metric_type': MetricTypeEnum.DUPLICATE_CONVERSATION,
-        'message': 'send log when user see duplicate conversation in inbox',
-        'call_method_client': LOAD_MORE_CONVERSATIONS,
-        'conversations_count_by_id': JSON.stringify({ 'xa4ld642': 2 })
+        metric_type: MetricTypeEnum.DUPLICATE_CONVERSATION,
+        message: 'send log when user see duplicate conversation in inbox',
+        call_method_client: LOAD_MORE_CONVERSATIONS,
+        conversations_count_by_id: JSON.stringify({ xa4ld642: 2 }),
       });
     });
   });
 
   describe('sendConnectionChatFailed - [CHAT_FAILED_CONNECTION]', () => {
-
     describe('when the webapp has connected to the real time chat', () => {
       beforeEach(() => {
         spyOn(Date, 'now').and.returnValues(4000, 4000);
@@ -274,8 +286,8 @@ describe('RemoteConsoleService', () => {
 
         expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
           ...commonLog,
-          'metric_type': MetricTypeEnum.CHAT_FAILED_CONNECTION,
-          'xmpp_connected': true
+          metric_type: MetricTypeEnum.CHAT_FAILED_CONNECTION,
+          xmpp_connected: true,
         });
       });
     });
@@ -291,8 +303,8 @@ describe('RemoteConsoleService', () => {
 
         expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
           ...commonLog,
-          'metric_type': MetricTypeEnum.CHAT_FAILED_CONNECTION,
-          'xmpp_connected': false
+          metric_type: MetricTypeEnum.CHAT_FAILED_CONNECTION,
+          xmpp_connected: false,
         });
       });
     });
@@ -320,9 +332,9 @@ describe('RemoteConsoleService', () => {
       expect(remoteConsoleClientService.info).toHaveBeenCalledTimes(1);
       expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
         ...commonLog,
-        'message_id': 'MESSAGE_ID',
-        'send_message_time': 1000,
-        'metric_type': MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME
+        message_id: 'MESSAGE_ID',
+        send_message_time: 1000,
+        metric_type: MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME,
       });
     }));
 
@@ -335,9 +347,9 @@ describe('RemoteConsoleService', () => {
 
       expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
         ...commonLog,
-        'send_message_time': 3000,
-        'metric_type': MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME,
-        'message_id': 'MESSAGE_ID_1'
+        send_message_time: 3000,
+        metric_type: MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME,
+        message_id: 'MESSAGE_ID_1',
       });
 
       service.sendMessageTimeout('MESSAGE_ID_2');
@@ -345,9 +357,9 @@ describe('RemoteConsoleService', () => {
       expect(remoteConsoleClientService.info).toHaveBeenCalledTimes(2);
       expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
         ...commonLog,
-        'send_message_time': 2000,
-        'metric_type': MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME,
-        'message_id': 'MESSAGE_ID_2'
+        send_message_time: 2000,
+        metric_type: MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME,
+        message_id: 'MESSAGE_ID_2',
       });
     }));
   });
@@ -374,9 +386,9 @@ describe('RemoteConsoleService', () => {
       expect(remoteConsoleClientService.info).toHaveBeenCalledTimes(1);
       expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
         ...commonLog,
-        'message_id': 'MESSAGE_ID',
-        'send_message_time': 1000,
-        'metric_type': MetricTypeEnum.MESSAGE_SENT_ACK_TIME
+        message_id: 'MESSAGE_ID',
+        send_message_time: 1000,
+        metric_type: MetricTypeEnum.MESSAGE_SENT_ACK_TIME,
       });
     }));
 
@@ -389,9 +401,9 @@ describe('RemoteConsoleService', () => {
 
       expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
         ...commonLog,
-        'send_message_time': 3000,
-        'metric_type': MetricTypeEnum.MESSAGE_SENT_ACK_TIME,
-        'message_id': 'MESSAGE_ID_1'
+        send_message_time: 3000,
+        metric_type: MetricTypeEnum.MESSAGE_SENT_ACK_TIME,
+        message_id: 'MESSAGE_ID_1',
       });
 
       service.sendMessageActTimeout('MESSAGE_ID_2');
@@ -399,9 +411,9 @@ describe('RemoteConsoleService', () => {
       expect(remoteConsoleClientService.info).toHaveBeenCalledTimes(2);
       expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
         ...commonLog,
-        'send_message_time': 2000,
-        'metric_type': MetricTypeEnum.MESSAGE_SENT_ACK_TIME,
-        'message_id': 'MESSAGE_ID_2'
+        send_message_time: 2000,
+        metric_type: MetricTypeEnum.MESSAGE_SENT_ACK_TIME,
+        message_id: 'MESSAGE_ID_2',
       });
     }));
   });
@@ -428,10 +440,10 @@ describe('RemoteConsoleService', () => {
       expect(remoteConsoleClientService.info).toHaveBeenCalledTimes(1);
       expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
         ...commonLog,
-        'message_id': 'MESSAGE_ID',
-        'send_message_time': 1000,
-        'metric_type': MetricTypeEnum.CLIENT_PRESENTATION_MESSAGE_TIME,
-        'ping_time_ms': navigator['connection']['rtt']
+        message_id: 'MESSAGE_ID',
+        send_message_time: 1000,
+        metric_type: MetricTypeEnum.CLIENT_PRESENTATION_MESSAGE_TIME,
+        ping_time_ms: navigator['connection']['rtt'],
       });
     }));
 
@@ -444,10 +456,10 @@ describe('RemoteConsoleService', () => {
 
       expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
         ...commonLog,
-        'message_id': 'MESSAGE_ID_1',
-        'send_message_time': 3000,
-        'metric_type': MetricTypeEnum.CLIENT_PRESENTATION_MESSAGE_TIME,
-        'ping_time_ms': navigator['connection']['rtt']
+        message_id: 'MESSAGE_ID_1',
+        send_message_time: 3000,
+        metric_type: MetricTypeEnum.CLIENT_PRESENTATION_MESSAGE_TIME,
+        ping_time_ms: navigator['connection']['rtt'],
       });
 
       service.sendPresentationMessageTimeout('MESSAGE_ID_2');
@@ -455,16 +467,15 @@ describe('RemoteConsoleService', () => {
       expect(remoteConsoleClientService.info).toHaveBeenCalledTimes(2);
       expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
         ...commonLog,
-        'message_id': 'MESSAGE_ID_2',
-        'send_message_time': 2000,
-        'metric_type': MetricTypeEnum.CLIENT_PRESENTATION_MESSAGE_TIME,
-        'ping_time_ms': navigator['connection']['rtt']
+        message_id: 'MESSAGE_ID_2',
+        send_message_time: 2000,
+        metric_type: MetricTypeEnum.CLIENT_PRESENTATION_MESSAGE_TIME,
+        ping_time_ms: navigator['connection']['rtt'],
       });
     }));
   });
 
   describe('sendXmppConnectionClosedWithError', () => {
-
     it('should send call with presentation message time', fakeAsync(() => {
       spyOn(Date, 'now').and.returnValues(4000, 1000);
 
@@ -473,8 +484,8 @@ describe('RemoteConsoleService', () => {
       expect(remoteConsoleClientService.info).toHaveBeenCalledTimes(1);
       expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
         ...commonLog,
-        'metric_type': MetricTypeEnum.XMPP_CONNECTION_CLOSED_WITH_ERROR,
-        'message': '',
+        metric_type: MetricTypeEnum.XMPP_CONNECTION_CLOSED_WITH_ERROR,
+        message: '',
       });
     }));
   });

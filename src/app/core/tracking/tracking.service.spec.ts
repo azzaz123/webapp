@@ -8,7 +8,10 @@ import { EventService } from '../event/event.service';
 
 import { TrackingService } from './tracking.service';
 import { NavigatorService } from './navigator.service';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 
 class MockedNavigatorService {
   get browserName() {
@@ -25,7 +28,6 @@ class MockedNavigatorService {
 }
 
 describe('Service: Tracking', () => {
-
   let service: TrackingService;
   let eventService: EventService;
   let userService: UserService;
@@ -34,26 +36,26 @@ describe('Service: Tracking', () => {
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
-
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
         {
-          provide: UserService, useClass: MockedUserService
+          provide: UserService,
+          useClass: MockedUserService,
         },
         {
-          provide: CookieService, useValue: {
-            put(key, value) {
-            },
+          provide: CookieService,
+          useValue: {
+            put(key, value) {},
             get(key) {
               return 'a-b-c';
             },
-          }
+          },
         },
         { provide: NavigatorService, useClass: MockedNavigatorService },
         TrackingService,
-        EventService
-      ]
+        EventService,
+      ],
     });
     eventService = TestBed.inject(EventService);
     spyOn(eventService, 'subscribe').and.callThrough();
@@ -69,7 +71,9 @@ describe('Service: Tracking', () => {
 
   describe('track', () => {
     it('should send event to server', () => {
-      service.track(TrackingService.NOTIFICATION_RECEIVED, { conversation_id: 'conversation' });
+      service.track(TrackingService.NOTIFICATION_RECEIVED, {
+        conversation_id: 'conversation',
+      });
 
       const req = httpMock.expectOne(environment.clickStreamURL);
       req.flush({});
@@ -79,10 +83,17 @@ describe('Service: Tracking', () => {
     });
 
     it('should send professional flag when user is professional', () => {
-      const expectedAttributes = JSON.stringify({ conversation_id: 'conversation', professional: true });
-      jest.spyOn(userService, 'user', 'get').mockReturnValue({ type: 'professional' } as any);
+      const expectedAttributes = JSON.stringify({
+        conversation_id: 'conversation',
+        professional: true,
+      });
+      jest
+        .spyOn(userService, 'user', 'get')
+        .mockReturnValue({ type: 'professional' } as any);
 
-      service.track(TrackingService.NOTIFICATION_RECEIVED, { conversation_id: 'conversation' });
+      service.track(TrackingService.NOTIFICATION_RECEIVED, {
+        conversation_id: 'conversation',
+      });
       const req = httpMock.expectOne(environment.clickStreamURL);
       req.flush({});
 
@@ -91,10 +102,16 @@ describe('Service: Tracking', () => {
     });
 
     it('should not send professional flag when user is not professional', () => {
-      const expectedAttributes = JSON.stringify({ conversation_id: 'conversation' });
-      jest.spyOn(userService, 'user', 'get').mockReturnValue({ type: 'normal' } as any);
+      const expectedAttributes = JSON.stringify({
+        conversation_id: 'conversation',
+      });
+      jest
+        .spyOn(userService, 'user', 'get')
+        .mockReturnValue({ type: 'normal' } as any);
 
-      service.track(TrackingService.NOTIFICATION_RECEIVED, { conversation_id: 'conversation' });
+      service.track(TrackingService.NOTIFICATION_RECEIVED, {
+        conversation_id: 'conversation',
+      });
       const req = httpMock.expectOne(environment.clickStreamURL);
       req.flush({});
 

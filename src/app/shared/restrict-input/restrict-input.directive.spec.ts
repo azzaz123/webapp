@@ -5,28 +5,27 @@ import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  template: `
-    <form><input type="text" [(ngModel)]="value" name="field" tslRestrictInput></form>`
+  template: ` <form>
+    <input type="text" [(ngModel)]="value" name="field" tslRestrictInput />
+  </form>`,
 })
 class TestComponent {
   value: string;
 }
 
 describe('RestrictInputDirective', () => {
-
   let fixture: ComponentFixture<TestComponent>;
   let element: DebugElement;
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        RestrictInputDirective,
-        TestComponent
-      ],
-      imports: [FormsModule]
+      declarations: [RestrictInputDirective, TestComponent],
+      imports: [FormsModule],
     });
     fixture = TestBed.createComponent(TestComponent);
-    element = fixture.debugElement.queryAll(By.directive(RestrictInputDirective))[0];
+    element = fixture.debugElement.queryAll(
+      By.directive(RestrictInputDirective)
+    )[0];
     fixture.detectChanges();
   }));
 
@@ -37,7 +36,7 @@ describe('RestrictInputDirective', () => {
     element.nativeElement.value = TEXT + VALID;
     element.triggerEventHandler('input', {
       target: element.nativeElement,
-      data: VALID
+      data: VALID,
     });
 
     expect(fixture.componentInstance.value).toBe(TEXT + VALID);
@@ -50,10 +49,9 @@ describe('RestrictInputDirective', () => {
     element.nativeElement.value = TEXT + INVALID;
     element.triggerEventHandler('input', {
       target: element.nativeElement,
-      data: INVALID
+      data: INVALID,
     });
 
     expect(fixture.componentInstance.value).toBe(TEXT);
   });
-
 });
