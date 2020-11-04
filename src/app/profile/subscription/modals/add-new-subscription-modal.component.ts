@@ -11,12 +11,12 @@ import { SubscriptionResponse, SubscriptionsResponse, Tier, SUBSCRIPTION_CATEGOR
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import {
   AnalyticsEvent,
-  ClickSubscriptionContinuePayment,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   SCREEN_IDS,
   SubscriptionPayConfirmation,
-  ClickSubscriptionDirectContact
+  ClickSubscriptionDirectContact,
+  ClickSubscriptionSubscribe
 } from '../../../core/analytics/analytics-constants';
 import { PAYMENT_RESPONSE_STATUS, PaymentService } from '../../../core/payments/payment.service';
 import { CATEGORY_IDS } from '../../../core/category/category-ids';
@@ -274,14 +274,14 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, Afte
   }
 
   public trackClickContinueToPayment() {
-    const event: AnalyticsEvent<ClickSubscriptionContinuePayment> = {
-      name: ANALYTICS_EVENT_NAMES.ClickSubscriptionContinuePayment,
+    const event: AnalyticsEvent<ClickSubscriptionSubscribe> = {
+      name: ANALYTICS_EVENT_NAMES.ClickSubscriptionSubscribe,
       eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
         subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
-        isNewSubscriber: this.isNewSubscriber,
-        screenId: SCREEN_IDS.ProfileSubscription,
-        tier: this.selectedTier.id
+        screenId: SCREEN_IDS.Subscription,
+        tier: this.selectedTier.id,
+        price: this.selectedTier.price
       }
     };
 
@@ -299,16 +299,12 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, Afte
         screenId: SCREEN_IDS.ProfileSubscription,
         isNewCard,
         isNewSubscriber: this.isNewSubscriber,
-        discountPercent
+        discountPercent,
+        invoiceNeeded: this._selectedInvoiceOption === 'true'
       }
     };
 
     this.analyticsService.trackEvent(event);
-  }
-
-  // TODO: This must be refactored
-  public reloadPage() {
-    window.location.reload();
   }
 
   public isDiscountedTier(tier: Tier): boolean {

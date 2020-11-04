@@ -23,18 +23,17 @@ import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
 import {
   AnalyticsEvent,
-  ClickSubscriptionContinuePayment,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   SCREEN_IDS,
   ClickSubscriptionDirectContact,
-  SubscriptionPayConfirmation
+  SubscriptionPayConfirmation,
+  ClickSubscriptionSubscribe
 } from '../../../core/analytics/analytics-constants';
 import { CustomCurrencyPipe, DateUntilDayPipe } from '../../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import { CATEGORY_IDS } from '../../../core/category/category-ids';
 import { SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
-import { By } from '@angular/platform-browser';
 import { PaymentService } from 'app/core/payments/payment.service';
 import { I18nService } from 'app/core/i18n/i18n.service';
 
@@ -69,7 +68,7 @@ describe('AddNewSubscriptionModalComponent', () => {
         },
         {
           provide: ErrorsService, useValue: {
-            i18nError() {}
+            i18nError() { }
           }
         },
         {
@@ -77,7 +76,7 @@ describe('AddNewSubscriptionModalComponent', () => {
             addNewCard() {
               return of(200);
             },
-            actionPayment() {}
+            actionPayment() { }
           }
         },
         {
@@ -132,7 +131,7 @@ describe('AddNewSubscriptionModalComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -151,8 +150,6 @@ describe('AddNewSubscriptionModalComponent', () => {
     component.subscription = MAPPED_SUBSCRIPTIONS[2];
     component.isNewSubscriber = false;
     fixture.detectChanges();
-    spyOn(component, 'reloadPage').and.returnValue(() => {});
-    
   });
 
   describe('ngOnInit', () => {
@@ -226,7 +223,7 @@ describe('AddNewSubscriptionModalComponent', () => {
     it('should requestNewPayment if card is not attached', fakeAsync(() => {
       spyOn(stripeService, 'addNewCard').and.returnValue(throwError('bad credit card'));
       spyOn(errorsService, 'i18nError');
-      
+
       component.addSubscription(PAYMENT_METHOD_DATA);
 
       expect(component.loading).toBe(false);
@@ -242,15 +239,15 @@ describe('AddNewSubscriptionModalComponent', () => {
       spyOn(component, 'addSubscriptionFromSavedCard').and.callThrough();
 
       component.addSubscription(PAYMENT_METHOD_DATA);
-      
+
       expect(component.addSubscriptionFromSavedCard).toHaveBeenCalled();
     }));
   });
 
   describe('addSubscriptionFromSavedCard', () => {
     beforeEach(fakeAsync(() => {
-      spyOn(subscriptionsService, 'newSubscription').and.returnValue(of({status: 202}));
-      
+      spyOn(subscriptionsService, 'newSubscription').and.returnValue(of({ status: 202 }));
+
       component.isRetryInvoice = false;
     }));
 
@@ -275,7 +272,7 @@ describe('AddNewSubscriptionModalComponent', () => {
 
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
       tick();
-      
+
       expect(subscriptionsService.checkNewSubscriptionStatus).toHaveBeenCalled();
     }));
 
@@ -298,7 +295,7 @@ describe('AddNewSubscriptionModalComponent', () => {
       tick();
 
       expect(component.isRetryInvoice).toBe(false);
-      expect(modalService.open).toHaveBeenCalledWith(PaymentSuccessModalComponent, {windowClass: 'success'});
+      expect(modalService.open).toHaveBeenCalledWith(PaymentSuccessModalComponent, { windowClass: 'success' });
     }));
 
     it('should call actionPayment if response status is requires_action', fakeAsync(() => {
@@ -307,14 +304,14 @@ describe('AddNewSubscriptionModalComponent', () => {
 
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
       tick();
-      
+
       expect(stripeService.actionPayment).toHaveBeenCalledWith(SUBSCRIPTION_REQUIRES_ACTION.payment_secret_key);
     }));
 
     it('should call requestNewPayment if response status is requires_payment_method', fakeAsync(() => {
       spyOn(errorsService, 'i18nError');
       spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(of(SUBSCRIPTION_REQUIRES_PAYMENT));
-      
+
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
       tick();
 
@@ -327,7 +324,7 @@ describe('AddNewSubscriptionModalComponent', () => {
   });
 
   describe('setCardInfo', () => {
-    it('should set the card info', ()=> {
+    it('should set the card info', () => {
       component.setCardInfo(STRIPE_CARD);
 
       expect(component.card).toEqual(STRIPE_CARD);
@@ -351,7 +348,7 @@ describe('AddNewSubscriptionModalComponent', () => {
   });
 
   describe('addNewCard', () => {
-    it('should show the new card element', ()=> {
+    it('should show the new card element', () => {
       component.addNewCard();
 
       expect(component.showCard).toBe(true);
@@ -360,7 +357,7 @@ describe('AddNewSubscriptionModalComponent', () => {
   });
 
   describe('removeNewCard', () => {
-    it('should show the saved card element', ()=> {
+    it('should show the saved card element', () => {
       component.removeNewCard();
 
       expect(component.showCard).toBe(false);
@@ -391,14 +388,14 @@ describe('AddNewSubscriptionModalComponent', () => {
   describe('trackClickContinueToPayment', () => {
     it('should send event to analytics', () => {
       spyOn(analyticsService, 'trackEvent');
-      const expectedEvent: AnalyticsEvent<ClickSubscriptionContinuePayment> = {
-        name: ANALYTICS_EVENT_NAMES.ClickSubscriptionContinuePayment,
+      const expectedEvent: AnalyticsEvent<ClickSubscriptionSubscribe> = {
+        name: ANALYTICS_EVENT_NAMES.ClickSubscriptionSubscribe,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
           subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
-          isNewSubscriber: component.isNewSubscriber,
-          screenId: SCREEN_IDS.ProfileSubscription,
-          tier: component.selectedTier.id
+          screenId: SCREEN_IDS.Subscription,
+          tier: component.selectedTier.id,
+          price: component.selectedTier.price
         }
       };
 
@@ -409,52 +406,116 @@ describe('AddNewSubscriptionModalComponent', () => {
     });
   });
 
-  describe('trackClickPay', () => {
+  fdescribe('trackClickPay', () => {
     beforeEach(() => spyOn(analyticsService, 'trackEvent'));
 
-    describe('when isNewVisa is true', () => {
-      it('should send valid event', () => {
-        const expectedEvent: AnalyticsEvent<SubscriptionPayConfirmation> = {
-          name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
-          eventType: ANALYTIC_EVENT_TYPES.Other,
-          attributes: {
-            subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
-            tier: component.selectedTier.id,
-            screenId: SCREEN_IDS.ProfileSubscription,
-            isNewCard: true,
-            isNewSubscriber: component.isNewSubscriber,
-            discountPercent: 0
-          }
-        };
+    describe('when user created a new card', () => {
+      describe('and when user selected invoice', () => {
+        beforeEach(() => component.onInvoiceOptionSelect({ value: 'true' }));
 
-        component.trackClickPay(true);
+        it('should send valid event', () => {
+          const expectedEvent: AnalyticsEvent<SubscriptionPayConfirmation> = {
+            name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
+            eventType: ANALYTIC_EVENT_TYPES.Other,
+            attributes: {
+              subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+              tier: component.selectedTier.id,
+              screenId: SCREEN_IDS.ProfileSubscription,
+              isNewCard: true,
+              isNewSubscriber: component.isNewSubscriber,
+              discountPercent: 0,
+              invoiceNeeded: true
+            }
+          };
 
-        expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+          component.trackClickPay(true);
+
+          expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+        });
+
+      });
+
+      describe('and when user did not select invoice', () => {
+        beforeEach(() => component.onInvoiceOptionSelect({ value: 'false' }));
+
+        it('should send valid event', () => {
+          const expectedEvent: AnalyticsEvent<SubscriptionPayConfirmation> = {
+            name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
+            eventType: ANALYTIC_EVENT_TYPES.Other,
+            attributes: {
+              subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+              tier: component.selectedTier.id,
+              screenId: SCREEN_IDS.ProfileSubscription,
+              isNewCard: true,
+              isNewSubscriber: component.isNewSubscriber,
+              discountPercent: 0,
+              invoiceNeeded: false
+            }
+          };
+
+          component.trackClickPay(true);
+
+          expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+        });
+
       });
     });
 
-    describe('when isNewVisa is false', () => {
-      it('should send valid event', () => {
-        const expectedEvent: AnalyticsEvent<SubscriptionPayConfirmation> = {
-          name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
-          eventType: ANALYTIC_EVENT_TYPES.Other,
-          attributes: {
-            subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
-            tier: component.selectedTier.id,
-            screenId: SCREEN_IDS.ProfileSubscription,
-            isNewCard: true,
-            isNewSubscriber: component.isNewSubscriber,
-            discountPercent: 0
-          }
-        };
-        expectedEvent.attributes.isNewCard = false;
+    describe('when user did not create new card', () => {
+      describe('and when the user selected invoice', () => {
+        beforeEach(() => component.onInvoiceOptionSelect({ value: 'true' }));
 
-        component.trackClickPay(false);
+        it('should send valid event', () => {
+          const expectedEvent: AnalyticsEvent<SubscriptionPayConfirmation> = {
+            name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
+            eventType: ANALYTIC_EVENT_TYPES.Other,
+            attributes: {
+              subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+              tier: component.selectedTier.id,
+              screenId: SCREEN_IDS.ProfileSubscription,
+              isNewCard: true,
+              isNewSubscriber: component.isNewSubscriber,
+              discountPercent: 0,
+              invoiceNeeded: true
+            }
+          };
+          expectedEvent.attributes.isNewCard = false;
 
-        expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+          component.trackClickPay(false);
+
+          expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+        });
       });
+
+      describe('and when the user did not select invoice', () => {
+        beforeEach(() => component.onInvoiceOptionSelect({ value: 'false' }));
+
+        it('should send valid event', () => {
+          const expectedEvent: AnalyticsEvent<SubscriptionPayConfirmation> = {
+            name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
+            eventType: ANALYTIC_EVENT_TYPES.Other,
+            attributes: {
+              subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+              tier: component.selectedTier.id,
+              screenId: SCREEN_IDS.ProfileSubscription,
+              isNewCard: true,
+              isNewSubscriber: component.isNewSubscriber,
+              discountPercent: 0,
+              invoiceNeeded: false
+            }
+          };
+          expectedEvent.attributes.isNewCard = false;
+
+          component.trackClickPay(false);
+
+          expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+        });
+      })
+
     });
   });
 
@@ -464,7 +525,7 @@ describe('AddNewSubscriptionModalComponent', () => {
       fixture.detectChanges();
 
       const carousel: HTMLElement = fixture.elementRef.nativeElement.querySelector('ngb-carousel');
-      
+
       expect(carousel.className.includes('single')).toBe(true);
     });
 
@@ -476,7 +537,7 @@ describe('AddNewSubscriptionModalComponent', () => {
       const carouselIndicatorsElement: HTMLElement = fixture.elementRef.nativeElement.querySelector('.carousel-indicators');
       const carouselIndicatorsElementStyle = getComputedStyle(carouselIndicatorsElement);
       const changeButton: HTMLElement = fixture.elementRef.nativeElement.querySelector('.AddNewSubscription__listing-limit-payment-edit');
-      
+
       expect(firstStepElement).toBeNull();
       expect(carouselIndicatorsElementStyle.display).toBe('none');
       expect(changeButton).toBeNull();
@@ -528,7 +589,7 @@ describe('AddNewSubscriptionModalComponent', () => {
   describe('Getting the billing info', () => {
     it('should call the billing info service', () => {
       spyOn(paymentService, 'getBillingInfo').and.callThrough();
-      
+
       component.getBillingInfo();
 
       expect(paymentService.getBillingInfo).toHaveBeenCalledTimes(1);
