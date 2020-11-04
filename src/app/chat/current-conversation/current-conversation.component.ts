@@ -35,8 +35,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { MaliciousConversationModalComponent } from '../modals/malicious-conversation-modal/malicious-conversation-modal.component';
 import { AnalyticsService } from 'app/core/analytics/analytics.service';
 import { UserService } from 'app/core/user/user.service';
-
-import * as Visibility from 'visibilityjs';
+import { onVisible } from 'visibilityjs';
 
 @Component({
   selector: 'tsl-current-conversation',
@@ -164,7 +163,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
 
   private sendRead(message: InboxMessage) {
     if (this.currentConversation !== null && eq(this.currentConversation.id, message.thread) && !message.fromSelf) {
-      Visibility.onVisible(() => {
+      onVisible(() => {
         setTimeout(() => {
           this.realTime.sendRead(message.from, message.thread);
         }, 1000);
