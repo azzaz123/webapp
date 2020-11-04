@@ -6,8 +6,12 @@
     display: flex;
     flex-direction: row;
     font-size: $font-size-s;
+    align-items: center;
+    width: 100%;
     tsl-svg-icon {
-      width: 24px;
+      margin-right: 8px;
+      display: flex;
+      align-items: center;
     }
     .card-number {
       flex: 1;

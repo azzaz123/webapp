@@ -1,7 +1,17 @@
 @import "~style/common";
 
-tsl-svg-icon {
-    ::ng-deep svg {
-        @include square(38px);
+.categories-select {
+    tsl-svg-icon {
+        ::ng-deep svg {
+            @include square(38px);
+        }
+    }
+}
+
+.conditions-select {
+    .option-description {
+        font-size: $font-size-xs;
+        color: $blue-grey-3;
+        margin-left: $spacing-xs;
     }
 }
