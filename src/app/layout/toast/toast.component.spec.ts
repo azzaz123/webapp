@@ -3,7 +3,6 @@ import { ToastComponent } from './toast.component';
 import { ToastService } from './toast.service';
 import { By } from '@angular/platform-browser';
 import { Toast } from './toast.interface';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 describe('ToastComponent', () => {
   let injector: TestBed;
@@ -13,7 +12,7 @@ describe('ToastComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NgbModule],
+      imports: [],
       providers: [{
         provide: toastService, useValue: {
           toasts: []

@@ -570,7 +570,7 @@ describe('AddNewSubscriptionModalComponent', () => {
 
   describe('User selects invoice option', () => {
     it('should set the selected invoice option', () => {
-      const removeFavoriteButton = fixture.debugElement.nativeElement.querySelector('ng-select');
+      const removeFavoriteButton = fixture.debugElement.nativeElement.querySelector('tsl-dropdown');
 
       removeFavoriteButton.click();
 

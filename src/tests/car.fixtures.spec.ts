@@ -1,5 +1,5 @@
 import { map } from 'lodash-es';
-import { IOption } from 'ng-select';
+import { IOption } from 'app/dropdown/utils/option.interface';
 import { Car } from '../app/core/item/car';
 import { CAR_ID } from './upload.fixtures.spec';
 import { CARS_CATEGORY } from '../app/core/item/item-categories';
@@ -41,28 +41,36 @@ export const CAR_BODY_TYPES_RESPONSE: any = [{
 
 export const CAR_BODY_TYPES: any = [{
   'value': 'small_car',
-  'label': 'Small'
+  'label': 'Small',
+  'icon_id': 'assets/icons/small_car.svg',
 }, {
   'value': 'coupe_cabrio',
-  'label': 'Coupe'
+  'label': 'Coupe',
+  'icon_id': 'assets/icons/coupe_cabrio.svg'
 }, {
   'value': 'sedan',
-  'label': 'Sedan'
+  'label': 'Sedan',
+  'icon_id': 'assets/icons/sedan.svg'
 }, {
   'value': 'family_car',
-  'label': 'Family'
+  'label': 'Family',
+  'icon_id': 'assets/icons/family_car.svg'
 }, {
   'value': 'mini_van',
-  'label': 'Mini Van'
+  'label': 'Mini Van',
+  'icon_id': 'assets/icons/mini_van.svg'
 }, {
   'value': '4X4',
-  'label': '4X4'
+  'label': '4X4',
+  'icon_id': 'assets/icons/4X4.svg'
 }, {
   'value': 'van',
-  'label': 'Van'
+  'label': 'Van',
+  'icon_id': 'assets/icons/van.svg'
 }, {
   'value': 'others',
-  'label': 'Others'
+  'label': 'Others',
+  'icon_id': 'assets/icons/others.svg'
 }];
 
 export const CAR_BRANDS_RESPONSE: string[] = ['Abarth', 'Alfa Romeo', 'Aston Martin', 'Audi', 'Bentley', 'BMW', 'BYD', 'Cadillac', 'Caterham', 'Chevrolet', 'Chrysler', 'Citroen', 'Corvette', 'Dacia', 'Daewoo', 'Daihatsu', 'Dodge', 'DS', 'Faam', 'Ferrari', 'Fiat', 'Ford', 'Fornasari', 'Galloper', 'Honda', 'Hummer', 'Hyundai', 'Infiniti', 'Isuzu', 'Iveco', 'Jaguar', 'Jeep', 'KIA', 'KTM', 'Lada', 'Lamborghini', 'Lancia', 'Land Rover', 'LDV', 'Lexus', 'Lotus', 'Mahindra', 'Maserati', 'Maybach', 'Mazda', 'McLaren', 'Mercedes-Benz', 'MG', 'Mini', 'Mitsubishi', 'Morgan', 'Nissan', 'Opel', 'Peugeot', 'Piaggio', 'Porsche', 'Renault', 'Renault Trucks', 'Rolls-Royce', 'Rover', 'Saab', 'Santana', 'SEAT', 'Skoda', 'smart', 'SsangYong', 'Subaru', 'Suzuki', 'Tata', 'Tesla', 'TH!NK', 'Toyota', 'VAZ', 'Volkswagen', 'Volvo', 'Wiesmann'];

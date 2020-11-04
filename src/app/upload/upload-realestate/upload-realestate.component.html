@@ -73,8 +73,8 @@
       <div class="col-6 col-md-2">
         <div class="form-group">
           <label for="currency" i18n>Currency</label>
-          <ng-select class="form-control" formControlName="currency_code" id="currency" [options]="currencies"
-            noFilter="10"></ng-select>
+          <tsl-dropdown class="form-control" formControlName="currency_code" id="currency" [options]="currencies"
+            noFilter="10"></tsl-dropdown>
         </div>
       </div>
       <div class="col-6 col-md-3">
@@ -87,8 +87,8 @@
       <div class="col-6 col-md-4">
         <div class="form-group">
           <label for="condition" i18n>Status</label>
-          <ng-select id="condition" class="form-control" formControlName="condition" [options]="conditions"
-            noFilter="10"></ng-select>
+          <tsl-dropdown id="condition" class="form-control" formControlName="condition" [options]="conditions"
+            noFilter="10"></tsl-dropdown>
         </div>
       </div>
       <ng-template #coachmarkPrice>

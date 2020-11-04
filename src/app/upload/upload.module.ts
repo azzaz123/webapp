@@ -23,9 +23,9 @@ import { TrackingModule } from '../core/tracking/tracking.module';
 import { DndModule } from 'ng2-dnd';
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SelectModule } from 'ng-select';
 import { GeolocationModule } from '../shared/geolocation/geolocation.module';
 import { GeneralSuggestionsService } from './upload-product/general-suggestions.service';
+import { DropdownModule } from 'app/dropdown/dropdown.module';
 
 
 @NgModule({
@@ -38,11 +38,11 @@ import { GeneralSuggestionsService } from './upload-product/general-suggestions.
     NgxPermissionsModule.forChild(),
     NgbPopoverModule,
     TrackingModule,
-    DndModule,
+    DndModule.forRoot(),
     NgbCarouselModule,
-    SelectModule,
     GeolocationModule,
-    NgbButtonsModule
+    NgbButtonsModule,
+    DropdownModule
   ],
   declarations: [
     uploadRoutedComponents,

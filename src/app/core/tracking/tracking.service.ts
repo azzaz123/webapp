@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as CryptoJS from 'crypto-js';
+import * as CryptoJSha1 from 'crypto-js/sha1';
 import { TrackingEvent } from './tracking-event';
 import { TrackingEventBase, TrackingEventData } from './tracking-event-base.interface';
 import { UserService } from '../user/user.service';
@@ -928,7 +928,7 @@ export class TrackingService {
     const newEvent = this.createNewEvent(event, attributes);
     delete newEvent.sessions[0].window;
     const stringifiedEvent: string = JSON.stringify(newEvent);
-    const sha1Body: string = CryptoJS.SHA1(stringifiedEvent + this.TRACKING_KEY).toString();
+    const sha1Body: string = CryptoJSha1(stringifiedEvent + this.TRACKING_KEY).toString();
     return this.http.post(`${environment.clickStreamURL}`, stringifiedEvent, { headers: { 'Authorization': sha1Body } }).subscribe();
   }
 

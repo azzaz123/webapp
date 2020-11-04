@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { AdComponent } from './ad/ad.component';
 import { CustomCurrencyPipe, DateUntilDayPipe, DateCalendarPipe, CountdownPipe } from './pipes';
@@ -62,7 +61,7 @@ import { StripeCardsComponent } from './profile/stripe-cards/stripe-cards.compon
 import { NewCardModalComponent } from './modals/new-card-modal/new-card-modal.component';
 import { NoCardModalComponent } from './modals/no-card-modal/no-card-modal.component';
 import { StripeCardSelectionComponent } from './payments/stripe-card-selection/stripe-card-selection.component';
-import { SelectModule } from 'ng-select';
+import { DropdownModule } from 'app/dropdown/dropdown.module';
 import { LinkTransformPipe } from './pipes';
 import { NavLinksComponent } from './nav-links/nav-links.component';
 import { SubscriptionsService } from '../core/subscriptions/subscriptions.service';
@@ -82,7 +81,6 @@ import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
   imports: [
     CardModule,
     CommonModule,
-    NgbModule,
     ReactiveFormsModule,
     FormsModule,
     GeolocationModule,
@@ -91,10 +89,10 @@ import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
     TrackingModule,
     RouterModule,
     UploaderModule,
-    SelectModule,
     DeviceDetectorModule.forRoot(),
     ProBadgeModule,
-    SvgIconModule
+    SvgIconModule,
+    DropdownModule
   ],
   exports: [
     CardModule,
@@ -149,7 +147,6 @@ import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
     ConfirmCardModalComponent,
     ChangeCardModalComponent,
     StripeCardSelectionComponent,
-    SelectModule,
     NavLinksComponent,
     LinkTransformPipe,
     PreventDoubleClickDirective,
@@ -227,7 +224,7 @@ import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
     ProfileProBillingComponent,
     FullScreenModalComponent,
     DisableControlDirective,
-    RouterLinkDirectiveStub
+    RouterLinkDirectiveStub,
   ],
   providers: [
     DecimalPipe,

@@ -17,7 +17,6 @@ import { TrackingModule } from '../core/tracking/tracking.module';
 import { BuyProductModalComponent } from './list/modals/buy-product-modal/buy-product-modal.component';
 import { ReactivateConfirmationModalComponent } from './list/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component';
 import { ListingfeeConfirmationModalComponent } from './list/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
-import { SelectModule } from 'ng-select';
 import { SubscriptionsSlotsListComponent } from './list/subscriptions-slots/subscriptions-slots-list/subscriptions-slots-list.component';
 import { SubscriptionsSlotItemComponent } from './list/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component';
 import { ReviewsModule } from '../reviews/reviews.module';
@@ -32,7 +31,6 @@ import { ReviewsModule } from '../reviews/reviews.module';
     TrackingModule,
     NgbButtonsModule,
     NgbTooltipModule,
-    SelectModule,
     ReviewsModule
   ],
   providers: [

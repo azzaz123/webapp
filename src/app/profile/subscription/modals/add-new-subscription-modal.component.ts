@@ -21,7 +21,7 @@ import {
 import { PAYMENT_RESPONSE_STATUS, PaymentService } from '../../../core/payments/payment.service';
 import { CATEGORY_IDS } from '../../../core/category/category-ids';
 import { CAR_DEALER_TYPEFORM_URL, TERMS_AND_CONDITIONS_URL, PRIVACY_POLICY_URL } from '../../../core/constants';
-import { IOption } from 'ng-select';
+import { IOption } from 'app/dropdown/utils/option.interface';
 import { I18nService } from 'app/core/i18n/i18n.service';
 
 @Component({
@@ -318,7 +318,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, Afte
   public hasTrial(subscription: SubscriptionsResponse): boolean {
     return this.subscriptionsService.hasTrial(subscription);
   }
-  
+
   public trackClickCardealerTypeform() {
     const event: AnalyticsEvent<ClickSubscriptionDirectContact> = {
       name: ANALYTICS_EVENT_NAMES.ClickSubscriptionDirectContact,
