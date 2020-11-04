@@ -72,9 +72,17 @@ export class AppComponent implements OnInit {
     this.initializeEventListeners();
     this.initializeServices();
     this.initializeRouterEventListeners();
+    this.subscribeSWChanges();
+  }
+
+  private subscribeSWChanges() {
     this.serviceWorker.available.subscribe(event => {
-      console.log('current sw version is', event.current);
-      console.log('available sw version is', event.available);
+      console.log('current version is', event.current);
+      console.log('available version is', event.available);
+    });
+    this.serviceWorker.activated.subscribe(event => {
+      console.log('old version was', event.previous);
+      console.log('new version is', event.current);
     });
   }
 

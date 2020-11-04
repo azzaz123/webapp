@@ -32,8 +32,7 @@ import { isSWEnabled } from 'environments/environment';
     NgxPermissionsModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: isSWEnabled,
-      registrationStrategy: 'registerImmediately'
-    })
+      registrationStrategy: 'registerWithDelay:5000'
   ],
   providers: [PROVIDERS],
   bootstrap: [AppComponent]
