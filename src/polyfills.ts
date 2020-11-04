@@ -22,10 +22,6 @@ import '@angular/localize/init';
 * BROWSER POLYFILLS
 */
 
-// A shim/polyfill for supporting IDBObjectStore.getAll, IDBIndex.getAll, IDBObjectStore.getAllKeys and IDBIndex.getAllKeys.
-// For old versions of Edge and Safari 10 or lower. More info at https://github.com/dumbmatter/IndexedDB-getAll-shim
-import 'indexeddb-getall-shim';
-
 /**
  * Required to support Web Animations `@angular/platform-browser/animations`.
  * Needed for: All but Chrome, Firefox and Opera. http://caniuse.com/#feat=web-animation
