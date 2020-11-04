@@ -32,7 +32,7 @@ import { isSWEnabled } from 'environments/environment';
     NgxPermissionsModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: isSWEnabled,
-      registrationStrategy: 'registerWhenStable:5000'
+      registrationStrategy: 'registerImmediately'
     })
   ],
   providers: [PROVIDERS],
