@@ -33,6 +33,7 @@ import { isSWEnabled } from 'environments/environment';
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: isSWEnabled,
       registrationStrategy: 'registerWithDelay:5000'
+    })
   ],
   providers: [PROVIDERS],
   bootstrap: [AppComponent]
