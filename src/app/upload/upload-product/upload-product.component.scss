@@ -7,3 +7,11 @@
         }
     }
 }
+
+.conditions-select {
+    .option-description {
+        font-size: $font-size-xs;
+        color: $blue-grey-3;
+        margin-left: $spacing-xs;
+    }
+}

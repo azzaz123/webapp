@@ -95,7 +95,7 @@
           <div class="form-group">
             <label for="conditions" i18n="@@UploadProductProductCondition">Product condition</label>
             <tsl-dropdown class="form-control" [disabled]="!conditions?.length" formControlName="condition" id="conditions"
-              i18n-placeholder="@@UploadProductProductConditionPlaceholder" placeholder="Select a condition" [options]="conditions">
+              i18n-placeholder="@@UploadProductProductConditionPlaceholder" placeholder="Select a condition" [options]="conditions" class="conditions-select">
               <ng-template #optionTemplate let-option="option">
                 {{ option?.label }}
                 <span class="option-description">{{ option?.description }}</span>
