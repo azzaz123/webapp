@@ -222,7 +222,7 @@
   <msg id="1186759635333538896"><source>app/shared/catalog/cart/cart.component.html:43</source>Provincial</msg>
   <msg id="2314075913167237221"><source>app/shared/catalog/cart/cart.component.html:45</source><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:16</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:31</source>City</msg>
   <msg id="516176798986294299"><source>app/shared/catalog/cart/cart.component.html:46</source><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:27</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:32</source>Country</msg>
-  <msg id="7036284206110282007"><source>app/shared/catalog/cart/cart.component.html:48</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:34</source><source>app/catalog/checkout/checkout-item/checkout-item.component.html:8</source>days</msg>
+  <msg id="7036284206110282007"><source>app/shared/catalog/cart/cart.component.html:48</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:34</source><source>app/catalog/checkout/checkout-item/checkout-item.component.html:11</source>days</msg>
   <msg id="3448462145758383019"><source>app/shared/catalog/cart/cart.component.html:62</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:45</source>Total</msg>
   <msg id="5269877616047992907"><source>app/shared/catalog/cart/cart.component.html:75</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:37</source>spending</msg>
   <msg id="7484614059925376312"><source>app/shared/catalog/cart/cart.component.html:86</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:48</source>missing</msg>
@@ -319,11 +319,6 @@
   <msg id="7913053333994057167"><source>app/chat/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:2</source>Unarchive conversation</msg>
   <msg id="3205414127595653303"><source>app/chat/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:3</source>This will unarchive the conversation.</msg>
   <msg id="1121513541518618634"><source>app/chat/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:7</source>Unarchive</msg>
-  <msg id="ForgetThisChat"><source>app/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component.html:12</source><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>You better forget this chat<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></msg>
-  <msg id="MaliciousConversationDescription"><source>app/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component.html:16,18</source>This person violated our coexistence rules. We suggest that you
-        ignore their messages and do not communicate with them through any means other than wallapop, as this may be
-        an attempt to defraud you. </msg>
-  <msg id="ExitConversation"><source>app/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component.html:23</source>Exit the conversation</msg>
   <msg id="PersonalDataInformationModalTitle"><source>app/chat/modals/personal-data-information-modal/personal-data-information-modal.component.html:10</source><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>They want to help you ;-)<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></msg>
   <msg id="PersonalDataInformationModalDesc"><source>app/chat/modals/personal-data-information-modal/personal-data-information-modal.component.html:14,16</source>
           A real estate agent wants to address you in person. If you are interested, click on &quot;Continue&quot; to share your e-mail and telephone number.
@@ -383,6 +378,11 @@
   <msg id="updateArchivedMessagesWarning"><source>app/chat/inbox/inbox.component.html:76,77</source>We found some problems updating your archived messages. Try again later.
     </msg>
   <msg id="8721026914522212662"><source>app/chat/inbox/archived-inbox-conversation/archived-inbox-conversation.component.html:42</source>Archived </msg>
+  <msg id="ForgetThisChat"><source>app/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component.html:12</source><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>You better forget this chat<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></msg>
+  <msg id="MaliciousConversationDescription"><source>app/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component.html:16,18</source>This person violated our coexistence rules. We suggest that you
+        ignore their messages and do not communicate with them through any means other than wallapop, as this may be
+        an attempt to defraud you. </msg>
+  <msg id="ExitConversation"><source>app/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component.html:23</source>Exit the conversation</msg>
   <msg id="682982254050004818"><source>app/chat/current-conversation/current-conversation.component.html:9,10</source>Choose a conversation<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>
       from the list on the left</msg>
   <msg id="3325766019344626759"><source>app/chat/current-conversation/current-conversation.component.html:11</source>There are no messages</msg>
@@ -440,8 +440,8 @@
   <msg id="UploadConfirmationModalButton"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.html:15,16</source>Mark as &quot;Urgent&quot; for <ph name="INTERPOLATION"><ex>{{productPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ex>{{productPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ph>
     <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>wallacoins<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></msg>
   <msg id="4699023020194351074"><source>app/catalog-pro/catalog-pro-list/modals/credit-card-modal/credit-card-modal.component.html:5</source><source>app/catalog-pro/catalog-pro-list/modals/credit-card-modal/credit-card-modal.component.html:22</source>Feature for <ph name="INTERPOLATION"><ex>{{total | number:&apos;1.2-2&apos;}}</ex>{{total | number:&apos;1.2-2&apos;}}</ph> Euros</msg>
-  <msg id="2322741539330475902"><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.html:7</source>Catalog <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>
-            <ph name="START_TAG_MAT_ICON"><ex>&lt;mat-icon&gt;</ex>&lt;mat-icon&gt;</ph><ph name="CLOSE_TAG_MAT_ICON"><ex>&lt;/mat-icon&gt;</ex>&lt;/mat-icon&gt;</ph>Pro
+  <msg id="1061832772714507183"><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.html:7</source>Catalog <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>
+          <ph name="START_TAG_TSL_SVG_ICON"><ex>&lt;tsl-svg-icon&gt;</ex>&lt;tsl-svg-icon&gt;</ph><ph name="CLOSE_TAG_TSL_SVG_ICON"><ex>&lt;/tsl-svg-icon&gt;</ex>&lt;/tsl-svg-icon&gt;</ph>Pro
           <ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></msg>
   <msg id="6850144876798655647"><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.html:10</source>Big packages with all your items and stuff</msg>
   <msg id="2246851749264196483"><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.html:13</source>Manage my subscription</msg>
@@ -944,20 +944,20 @@
   <msg id="8916480189992774118"><source>app/wallacoins/wallacoins.component.html:34</source>Saving packs</msg>
   <msg id="5949534173199806002"><source>app/wallacoins/wallacoins.component.html:35</source>We&apos;ve definitely got a pack for you that will save you money.</msg>
   <msg id="2730194589257448908"><source>app/wallacoins/wallacoins.component.html:36</source>These are our ready to go packs; use them to save money when buying features.</msg>
-  <msg id="4234848456829249202"><source>app/wallacoins/wallacoins.component.html:46</source>Why get Wallacoins?</msg>
-  <msg id="7463531210360498817"><source>app/wallacoins/wallacoins.component.html:47</source>Why buy a pack of features?</msg>
-  <msg id="8972705651876957680"><source>app/wallacoins/wallacoins.component.html:50</source>One coin for everyone</msg>
-  <msg id="4227038332606900920"><source>app/wallacoins/wallacoins.component.html:51</source>Our visibility options can now be unlocked with a new key: Wallacoins. Our new currency for your features with unique benefits.</msg>
-  <msg id="6476837981311588329"><source>app/wallacoins/wallacoins.component.html:54</source><source>app/wallacoins/wallacoins.component.html:68</source>Now, save</msg>
-  <msg id="821464507642641418"><source>app/wallacoins/wallacoins.component.html:55</source>You can save money with Wallacoins. When you buy one our our packs, we will give you more wallacoins and that means you can feature more of your listings for less!</msg>
-  <msg id="1602017727565399936"><source>app/wallacoins/wallacoins.component.html:58</source><source>app/wallacoins/wallacoins.component.html:72</source>Quick! Quick!</msg>
-  <msg id="8993523603270106124"><source>app/wallacoins/wallacoins.component.html:59</source>Buying with Wallacoins is even faster. Add them to your wallet and pay with them directly when you want to feature a listing.</msg>
-  <msg id="1802698774660252903"><source>app/wallacoins/wallacoins.component.html:64</source>Pay once and forget about it</msg>
-  <msg id="690819193603454333"><source>app/wallacoins/wallacoins.component.html:65</source>Rather than paying every time you want to feature a listing; do it just once and use your features whenever you want. It&apos;s faster and easier.</msg>
-  <msg id="2678815268089639687"><source>app/wallacoins/wallacoins.component.html:69</source>Buying a pack means you can save up to -XX% on your features.</msg>
-  <msg id="5415567930272713889"><source>app/wallacoins/wallacoins.component.html:73</source>Buying with credit is even faster. Add them to your wallet and pay with them directly when you want to feature a listing.</msg>
-  <msg id="7356703231883565314"><source>app/wallacoins/wallacoins.component.html:78</source>Wallacoins are only available in website.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>You can use them to feature your items. Wallacoins that are purchased will expire 12 months after they are added to your Credit. Wallacoins are non-refundable, and can&apos;t be converted back into money once purchased.</msg>
-  <msg id="6174997588475722860"><source>app/wallacoins/wallacoins.component.html:79</source>Your Credit and our Saving Packs are only available (for now) on the website.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>Once your Credit is purchased will expire 12 months after.</msg>
+  <msg id="4234848456829249202"><source>app/wallacoins/wallacoins.component.html:62</source>Why get Wallacoins?</msg>
+  <msg id="7463531210360498817"><source>app/wallacoins/wallacoins.component.html:63</source>Why buy a pack of features?</msg>
+  <msg id="8972705651876957680"><source>app/wallacoins/wallacoins.component.html:66</source>One coin for everyone</msg>
+  <msg id="4227038332606900920"><source>app/wallacoins/wallacoins.component.html:67</source>Our visibility options can now be unlocked with a new key: Wallacoins. Our new currency for your features with unique benefits.</msg>
+  <msg id="6476837981311588329"><source>app/wallacoins/wallacoins.component.html:70</source><source>app/wallacoins/wallacoins.component.html:84</source>Now, save</msg>
+  <msg id="821464507642641418"><source>app/wallacoins/wallacoins.component.html:71</source>You can save money with Wallacoins. When you buy one our our packs, we will give you more wallacoins and that means you can feature more of your listings for less!</msg>
+  <msg id="1602017727565399936"><source>app/wallacoins/wallacoins.component.html:74</source><source>app/wallacoins/wallacoins.component.html:88</source>Quick! Quick!</msg>
+  <msg id="8993523603270106124"><source>app/wallacoins/wallacoins.component.html:75</source>Buying with Wallacoins is even faster. Add them to your wallet and pay with them directly when you want to feature a listing.</msg>
+  <msg id="1802698774660252903"><source>app/wallacoins/wallacoins.component.html:80</source>Pay once and forget about it</msg>
+  <msg id="690819193603454333"><source>app/wallacoins/wallacoins.component.html:81</source>Rather than paying every time you want to feature a listing; do it just once and use your features whenever you want. It&apos;s faster and easier.</msg>
+  <msg id="2678815268089639687"><source>app/wallacoins/wallacoins.component.html:85</source>Buying a pack means you can save up to -XX% on your features.</msg>
+  <msg id="5415567930272713889"><source>app/wallacoins/wallacoins.component.html:89</source>Buying with credit is even faster. Add them to your wallet and pay with them directly when you want to feature a listing.</msg>
+  <msg id="7356703231883565314"><source>app/wallacoins/wallacoins.component.html:94</source>Wallacoins are only available in website.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>You can use them to feature your items. Wallacoins that are purchased will expire 12 months after they are added to your Credit. Wallacoins are non-refundable, and can&apos;t be converted back into money once purchased.</msg>
+  <msg id="6174997588475722860"><source>app/wallacoins/wallacoins.component.html:95</source>Your Credit and our Saving Packs are only available (for now) on the website.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>Once your Credit is purchased will expire 12 months after.</msg>
   <msg id="2028747142234068875"><source>app/wallacoins/pack-wallacoins/pack-wallacoins.component.html:1</source>Recommended for you</msg>
   <msg id="8421470283413526010"><source>app/wallacoins/pack-wallacoins/pack-wallacoins.component.html:12,15</source>
     <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph><ph name="INTERPOLATION"><ex>{{pack.forFree | number}}</ex>{{pack.forFree | number}}</ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph>
@@ -1035,7 +1035,7 @@
                 </msg>
   <msg id="ManageCatalogSubscription"><source>app/catalog/list/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component.html:15</source>Manage <ph name="INTERPOLATION"><ex>{{subscriptionSlot.category.name}}</ex>{{subscriptionSlot.category.name}}</ph></msg>
   <msg id="SubscriptionsSlotItemPublishMore"><source>app/catalog/list/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component.html:17</source>You can list <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph><ph name="INTERPOLATION"><ex>{{subscriptionSlot.available}}</ex>{{subscriptionSlot.available}}</ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph> more <ph name="INTERPOLATION_1"><ex>{{subscriptionSlot.category.name}}</ex>{{subscriptionSlot.category.name}}</ph></msg>
-  <msg id="8423596927659875793"><source>app/catalog/checkout/checkout-item/checkout-item.component.html:23</source>Not Available</msg>
+  <msg id="8423596927659875793"><source>app/catalog/checkout/checkout-item/checkout-item.component.html:26</source>Not Available</msg>
   <msg id="605166699517966750"><source>app/stats/stats.component.html:15</source>Control the progress of your listings and improve your sales.</msg>
   <msg id="7616770651914901276"><source>app/stats/items-stats/items-stats.component.html:4</source>Product</msg>
   <msg id="2868602391152223921"><source>app/stats/items-stats/items-stats.component.html:7</source>Listed on</msg>

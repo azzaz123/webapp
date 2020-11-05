@@ -26,16 +26,16 @@
       <div class="col-12 col-md-6">
         <div class="form-group">
           <label for="category" i18n="@@UploadProductCategory">Category</label>
-          <ng-select [disabled]="isHeroCategory(uploadForm.value?.category_id)" i18n-placeholder="@@UploadProductCategoryPlaceholder" placeholder="Category"
+          <tsl-dropdown [disabled]="isHeroCategory(uploadForm.value?.category_id)" i18n-placeholder="@@UploadProductCategoryPlaceholder" placeholder="Category"
             class="form-control categories-select" formControlName="category_id" id="category" [options]="categories"
             noFilter="10" (selected)="resetAllExtraFields()">
             <ng-template #optionTemplate let-option="option">
               <div [ngClass]="'cat_' + option?.value">
-                <mat-icon svgIcon="cat_{{ option?.icon_id }}"></mat-icon>
+                <tsl-svg-icon src="/assets/icons/categories/stroke/{{option?.icon_id}}.svg"></tsl-svg-icon>
                 {{ option?.label }}
               </div>
             </ng-template>
-          </ng-select>
+          </tsl-dropdown>
         </div>
       </div>
       <div class="col-6 col-md-4">
@@ -48,8 +48,8 @@
       <div class="col-6 col-md-2">
         <div class="form-group">
           <label for="currency" i18n="@@UploadProductCurrency">Currency</label>
-          <ng-select class="form-control" formControlName="currency_code" id="currency" [options]="currencies"
-            noFilter="10"></ng-select>
+          <tsl-dropdown class="form-control" formControlName="currency_code" id="currency" [options]="currencies"
+            noFilter="10"></tsl-dropdown>
         </div>
       </div>
       <ng-template #coachmarkPrice>
@@ -69,10 +69,10 @@
             <label for="objectType" i18n="@@UploadProductSubcategory" *ngIf="!selectedRawCategory?.fields.type_of_object">
               Subcategory
             </label>
-            <ng-select class="form-control" [disabled]="!objectTypesOptions?.length" formControlName="id" id="objectType"
+            <tsl-dropdown class="form-control" [disabled]="!objectTypesOptions?.length" formControlName="id" id="objectType"
               i18n-placeholder="@@UploadProductSubcategoryPlaceholder" placeholder="Subcategory" [options]="objectTypesOptions" noFilter="10"
               (selected)="resetCommonExtraFields()">
-            </ng-select>
+            </tsl-dropdown>
           </div>
         </div>
         <div class="col-12 col-md-6">
@@ -83,9 +83,9 @@
             <label for="objectType2" i18n="@@UploadProductSubcategory2" *ngIf="!selectedRawCategory?.fields.type_of_object_level_2">
               Could you specify?
             </label>
-            <ng-select class="form-control" formControlName="id" id="objectType2"
+            <tsl-dropdown class="form-control" formControlName="id" id="objectType2"
               i18n-placeholder="@@UploadProductSubcategory2Placeholder" placeholder="Could you specify?" [options]="objectTypesOptions2" noFilter="10">
-            </ng-select>
+            </tsl-dropdown>
           </div>
         </div>
       </div>
@@ -94,13 +94,13 @@
         <div class="col-12 col-md-6">
           <div class="form-group">
             <label for="conditions" i18n="@@UploadProductProductCondition">Product condition</label>
-            <ng-select class="form-control" [disabled]="!conditions?.length" formControlName="condition" id="conditions"
-              i18n-placeholder="@@UploadProductProductConditionPlaceholder" placeholder="Select a condition" [options]="conditions">
+            <tsl-dropdown class="form-control" [disabled]="!conditions?.length" formControlName="condition" id="conditions"
+              i18n-placeholder="@@UploadProductProductConditionPlaceholder" placeholder="Select a condition" [options]="conditions" class="conditions-select">
               <ng-template #optionTemplate let-option="option">
                 {{ option?.label }}
                 <span class="option-description">{{ option?.description }}</span>
               </ng-template>
-            </ng-select>
+            </tsl-dropdown>
           </div>
         </div>
       </div>
@@ -151,16 +151,16 @@
       <div class="col-md-3 mt-3" *ngIf="!!selectedRawCategory?.fields.gender">
         <div class="form-group last">
           <label for="gender" i18n="@@UploadProductSelectGender">Gender</label>
-          <ng-select class="form-control" formControlName="gender" id="gender" i18n-placeholder="@@UploadProductSelectGenderPlaceholder"
-            placeholder="Select a gender" [options]="gender"></ng-select>
+          <tsl-dropdown class="form-control" formControlName="gender" id="gender" i18n-placeholder="@@UploadProductSelectGenderPlaceholder"
+            placeholder="Select a gender" [options]="gender"></tsl-dropdown>
         </div>
       </div>
       <div class="col-md-3 mt-3" *ngIf="!!selectedRawCategory?.fields.size">
         <div class="form-group last" formGroupName="size">
           <label for="size" i18n="@@UploadProductSelectSize">Size</label>
-          <ng-select class="form-control"
+          <tsl-dropdown class="form-control"
             formControlName="id" id="fashionSizes" i18n-placeholder="@@UploadProductSelectSizePlaceholder" placeholder="Select a size" [options]="sizes"
-            noFilter="10"></ng-select>
+            noFilter="10"></tsl-dropdown>
         </div>
       </div>
     </div>
@@ -205,12 +205,12 @@
       </div>
       <div class="row">
         <div class="col">
-          <div class="selector-container shipping-selector" ngbRadioGroup name="radioBasic"
+          <div class="selector-container" ngbRadioGroup name="radioBasic"
             formControlName="delivery_info">
-            <label ngbButtonLabel class="selector" *ngFor="let delivery of deliveryInfo">
+            <label ngbButtonLabel class="selector shipping-selector" *ngFor="let delivery of deliveryInfo">
               <div class="selector-icon btn">
                 <input ngbButton type="radio" [value]="delivery.value" (click)="onDeliveryChange(delivery.value)" />
-                <mat-icon svgIcon="shipping-{{ delivery.value.max_weight_kg }}"></mat-icon>
+                <tsl-svg-icon src="/assets/icons/shipping-{{ delivery.value.max_weight_kg }}.svg"></tsl-svg-icon>
               </div>
               <span class="selector-text">{{ delivery.value.max_weight_kg }}kg max</span>
             </label>

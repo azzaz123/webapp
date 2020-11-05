@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 :host {
   height: 100%;
@@ -18,10 +18,10 @@
     position: fixed;
     top: 20px;
     right: 20px;
-    mat-icon {
+    tsl-svg-icon {
       @include square($spacing-ms);
-      line-height: initial; 
-  
+      line-height: initial;
+
       svg {
         path {
           fill: $blue-grey-3;
@@ -67,6 +67,5 @@
         width: 100%;
       }
     }
-
   }
 }

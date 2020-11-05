@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 $right-gutter: 35px;
 
@@ -16,7 +16,7 @@ $right-gutter: 35px;
       font-weight: initial;
     }
     #birth_date {
-      display: flex;;
+      display: flex;
     }
     .box-header {
       h1 {
@@ -66,7 +66,7 @@ $right-gutter: 35px;
         &:first-of-type {
           margin-right: $spacing-m;
         }
-        mat-icon {
+        tsl-svg-icon {
           @include square(42px);
           ::ng-deep path {
             transition: fill 0.2s ease-in-out;
@@ -76,7 +76,7 @@ $right-gutter: 35px;
           background-color: $blue-grey-2;
           border-color: transparent;
           box-shadow: 0 2px 6px 0 rgba($blue-grey-2, 0.2);
-          mat-icon {
+          tsl-svg-icon {
             ::ng-deep path {
               fill: $white;
             }
@@ -88,7 +88,7 @@ $right-gutter: 35px;
         }
         &:hover:not(.active) {
           border-color: $blue-grey-2;
-          mat-icon {
+          tsl-svg-icon {
             ::ng-deep path {
               fill: $blue-grey-2;
             }

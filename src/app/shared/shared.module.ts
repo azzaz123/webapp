@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SpinnerComponent } from './spinner/spinner.component';
-import { MatIconModule } from '@angular/material';
 import { AdComponent } from './ad/ad.component';
-import { CustomCurrencyPipe, DateUntilDayPipe, DateCalendarPipe, CountdownPipe } from './pipes';
+import {
+  CustomCurrencyPipe,
+  DateUntilDayPipe,
+  DateCalendarPipe,
+  CountdownPipe,
+} from './pipes';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
 import { CardModule } from './card/card.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -29,7 +32,7 @@ import { SwitchComponent } from './switch/switch.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { ItemAvatarComponent } from './item-avatar/item-avatar.component';
 import { SearchInputComponent } from './search-input/search-input.component';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SelectComponent } from './select/select.component';
 import { TooManyItemsModalComponent } from './catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { AlreadyFeaturedModalComponent } from './catalog/modals/already-featured-modal/already-featured-modal.component';
@@ -63,7 +66,7 @@ import { StripeCardsComponent } from './profile/stripe-cards/stripe-cards.compon
 import { NewCardModalComponent } from './modals/new-card-modal/new-card-modal.component';
 import { NoCardModalComponent } from './modals/no-card-modal/no-card-modal.component';
 import { StripeCardSelectionComponent } from './payments/stripe-card-selection/stripe-card-selection.component';
-import { SelectModule } from 'ng-select';
+import { DropdownModule } from 'app/dropdown/dropdown.module';
 import { LinkTransformPipe } from './pipes';
 import { NavLinksComponent } from './nav-links/nav-links.component';
 import { SubscriptionsService } from '../core/subscriptions/subscriptions.service';
@@ -77,24 +80,24 @@ import { ProfileProBillingComponent } from './profile-pro-billing/profile-pro-bi
 import { FullScreenModalComponent } from './modals/full-screen-menu/full-screen-modal.component';
 import { DisableControlDirective } from './forms/disable-control.directive';
 import { RouterLinkDirectiveStub } from './router-link-directive-stub';
+import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
 
 @NgModule({
   imports: [
     CardModule,
     CommonModule,
-    MatIconModule,
     NgbModule,
     ReactiveFormsModule,
     FormsModule,
     GeolocationModule,
     NgxPermissionsModule.forChild(),
-    NgbDropdownModule,
     TrackingModule,
     RouterModule,
     UploaderModule,
-    SelectModule,
     DeviceDetectorModule.forRoot(),
-    ProBadgeModule
+    ProBadgeModule,
+    SvgIconModule,
+    DropdownModule,
   ],
   exports: [
     CardModule,
@@ -149,7 +152,6 @@ import { RouterLinkDirectiveStub } from './router-link-directive-stub';
     ConfirmCardModalComponent,
     ChangeCardModalComponent,
     StripeCardSelectionComponent,
-    SelectModule,
     NavLinksComponent,
     LinkTransformPipe,
     PreventDoubleClickDirective,
@@ -159,7 +161,8 @@ import { RouterLinkDirectiveStub } from './router-link-directive-stub';
     CountdownPipe,
     ProfileProBillingComponent,
     FullScreenModalComponent,
-    DisableControlDirective
+    DisableControlDirective,
+    SvgIconModule,
   ],
   declarations: [
     AdComponent,
@@ -226,7 +229,7 @@ import { RouterLinkDirectiveStub } from './router-link-directive-stub';
     ProfileProBillingComponent,
     FullScreenModalComponent,
     DisableControlDirective,
-    RouterLinkDirectiveStub
+    RouterLinkDirectiveStub,
   ],
   providers: [
     DecimalPipe,
@@ -234,7 +237,7 @@ import { RouterLinkDirectiveStub } from './router-link-directive-stub';
     CartService,
     ThousandSuffixesPipe,
     LinkTransformPipe,
-    SubscriptionsService
+    SubscriptionsService,
   ],
   entryComponents: [
     ConfirmationModalComponent,
@@ -251,8 +254,7 @@ import { RouterLinkDirectiveStub } from './router-link-directive-stub';
     NoCardModalComponent,
     ConfirmCardModalComponent,
     ChangeCardModalComponent,
-    FullScreenModalComponent
-  ]
+    FullScreenModalComponent,
+  ],
 })
-export class SharedModule {
-}
+export class SharedModule {}

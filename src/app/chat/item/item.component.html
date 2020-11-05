@@ -5,7 +5,7 @@
          onError="this.src='/assets/images/fake-item.png'"/>
     <a class="btn btn-edit" target='_blank' (click)='$event.stopPropagation()' [routerLink]="['/catalog/edit/', item.id]" tslTrackEvent="CHAT_EDITITEM" [params]="{item_id: item.id}"
       *ngIf='canEdit()'>
-      <mat-icon svgIcon="btn-edit"></mat-icon>
+      <tsl-svg-icon src="/assets/icons/btn-edit.svg"></tsl-svg-icon>
     </a>
     <div class="image-bottom">
       <tsl-item-sold [item]="item"></tsl-item-sold>
@@ -24,9 +24,9 @@
     <div class="card-item-info">
       <div class="price" *ngIf="item.salePrice !== undefined">{{item.salePrice | customCurrency:item.currencyCode}}</div>
       <div class="stats" *ngIf="item.views !== undefined && item.favorites !== undefined">
-        <mat-icon svgIcon="views"></mat-icon>
+        <tsl-svg-icon src="/assets/icons/views.svg"></tsl-svg-icon>
         {{item.views}}
-        <mat-icon svgIcon="heart"></mat-icon>
+        <tsl-svg-icon src="/assets/icons/heart.svg"></tsl-svg-icon>
         {{item.favorites}}
       </div>
     </div>

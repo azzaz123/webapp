@@ -1,8 +1,13 @@
-
 import { of } from 'rxjs';
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { MatIconModule } from '@angular/material';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ThirdVoiceReviewButtonComponent } from './third-voice-review-button.component';
 import { ButtonComponent } from '../../../shared/button/button.component';
@@ -17,9 +22,9 @@ const modalRef: any = {
   result: Promise.resolve({
     score: 4,
     comments: 'comment',
-    userId: USER_ID
+    userId: USER_ID,
   }),
-  componentInstance: {}
+  componentInstance: {},
 };
 
 class NgbModalMock {
@@ -47,19 +52,14 @@ describe('ThirdVoiceReviewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        MatIconModule
-      ],
-      declarations: [
-        ThirdVoiceReviewButtonComponent,
-        ButtonComponent
-      ],
+      imports: [],
+      declarations: [ThirdVoiceReviewButtonComponent, ButtonComponent],
       providers: [
         { provide: ReviewService, useClass: ReviewServiceMock },
-        { provide: NgbModal, useClass: NgbModalMock }
-      ]
-    })
-    .compileComponents();
+        { provide: NgbModal, useClass: NgbModalMock },
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -79,7 +79,6 @@ describe('ThirdVoiceReviewComponent', () => {
   });
 
   describe('ngOnInit', () => {
-
     it('should set initial value', () => {
       component.ngOnInit();
       expect(component.message).toEqual(mockConversation.messages[0]);
@@ -90,7 +89,9 @@ describe('ThirdVoiceReviewComponent', () => {
     it('should get item with storageKey', () => {
       spyOn(localStorage, 'getItem');
       component.ngOnInit();
-      expect(localStorage.getItem).toHaveBeenCalledWith(`${mockConversation.user.id}.item.${mockConversation.item.id}.reviewed`);
+      expect(localStorage.getItem).toHaveBeenCalledWith(
+        `${mockConversation.user.id}.item.${mockConversation.item.id}.reviewed`
+      );
     });
   });
 
@@ -114,9 +115,14 @@ describe('ThirdVoiceReviewComponent', () => {
 
       component.ngOnInit();
 
-      expect(reviewService.check).toHaveBeenCalledWith(mockConversation.item.id);
+      expect(reviewService.check).toHaveBeenCalledWith(
+        mockConversation.item.id
+      );
       expect(component.showButton).toBeFalsy();
-      expect(localStorage.setItem).toHaveBeenCalledWith(`${mockConversation.user.id}.item.${mockConversation.item.id}.reviewed`, 'true');
+      expect(localStorage.setItem).toHaveBeenCalledWith(
+        `${mockConversation.user.id}.item.${mockConversation.item.id}.reviewed`,
+        'true'
+      );
     });
 
     it('should set show button true and call check', () => {
@@ -125,7 +131,9 @@ describe('ThirdVoiceReviewComponent', () => {
 
       component.ngOnInit();
 
-      expect(reviewService.check).toHaveBeenCalledWith(mockConversation.item.id);
+      expect(reviewService.check).toHaveBeenCalledWith(
+        mockConversation.item.id
+      );
       expect(component.showButton).toBeTruthy();
     });
   });
@@ -144,7 +152,9 @@ describe('ThirdVoiceReviewComponent', () => {
       }));
 
       it('should open the ReviewModalComponent', () => {
-        expect(modalService.open).toHaveBeenCalledWith(ReviewModalComponent, { windowClass: 'review' });
+        expect(modalService.open).toHaveBeenCalledWith(ReviewModalComponent, {
+          windowClass: 'review',
+        });
       });
 
       it('should set item in the modal component', () => {
@@ -154,12 +164,14 @@ describe('ThirdVoiceReviewComponent', () => {
       it('should set userToReview in the modal component', () => {
         expect(modalRef.componentInstance.userToReview).toEqual({
           id: mockConversation.user.id,
-          micro_name: mockConversation.user.microName
+          micro_name: mockConversation.user.microName,
         });
       });
 
       it('should set thread in the modal component', () => {
-        expect(modalRef.componentInstance.thread).toEqual(component.message.thread);
+        expect(modalRef.componentInstance.thread).toEqual(
+          component.message.thread
+        );
       });
 
       it('should set showButton false', () => {
@@ -167,7 +179,10 @@ describe('ThirdVoiceReviewComponent', () => {
       });
 
       it('should set local storage', () => {
-        expect(localStorage.setItem).toHaveBeenCalledWith(`${mockConversation.user.id}.item.${mockConversation.item.id}.reviewed`, 'true');
+        expect(localStorage.setItem).toHaveBeenCalledWith(
+          `${mockConversation.user.id}.item.${mockConversation.item.id}.reviewed`,
+          'true'
+        );
       });
     });
 
@@ -179,7 +194,9 @@ describe('ThirdVoiceReviewComponent', () => {
       }));
 
       it('should open the SoldModalComponent', fakeAsync(() => {
-        expect(modalService.open).toHaveBeenCalledWith(SoldModalComponent, { windowClass: 'review' });
+        expect(modalService.open).toHaveBeenCalledWith(SoldModalComponent, {
+          windowClass: 'review',
+        });
       }));
 
       it('should set item in the modal component', () => {
@@ -189,7 +206,7 @@ describe('ThirdVoiceReviewComponent', () => {
       it('should set userToReview in the modal component', () => {
         expect(modalRef.componentInstance.userToReview).toEqual({
           id: mockConversation.user.id,
-          micro_name: mockConversation.user.microName
+          micro_name: mockConversation.user.microName,
         });
       });
 

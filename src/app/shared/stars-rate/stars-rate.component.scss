@@ -1,17 +1,24 @@
-@import "~style/common";
+@import '~style/common';
 
 :host {
   display: block;
 }
 
-mat-icon {
+.stars-rate-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 58px;
+}
+
+tsl-svg-icon {
   height: 23px;
   width: 23px;
   margin-right: $spacing-s;
   display: inline-flex;
   ::ng-deep #images {
     &:not(:root:root) {
-      fill: #FFD300;
+      fill: #ffd300;
     }
   }
 }

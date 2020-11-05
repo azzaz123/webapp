@@ -6,13 +6,13 @@
       <div class="user-name-row-left">
         <p class="user-name">
         <span *ngIf="conversation.phoneNumber && !!conversation.item.isMine" class="call-shared">
-            <mat-icon svgIcon="call-shared"></mat-icon>
+            <tsl-svg-icon src="/assets/icons/call-shared.svg"></tsl-svg-icon>
           </span>
           <span *ngIf="!conversation.user.available && !conversation.user.blocked">
-            <mat-icon svgIcon="not-available" class="not-available"></mat-icon>
+            <tsl-svg-icon src="/assets/icons/warning.svg" class="not-available"></tsl-svg-icon>
           </span>
           <span *ngIf="conversation.user.blocked">
-            <mat-icon svgIcon="blocked" class="blocked"></mat-icon>
+            <tsl-svg-icon src="/assets/icons/blocked.svg" class="blocked"></tsl-svg-icon>
         </span>
           <span>{{conversation.user.microName}}</span>
         </p>
@@ -56,7 +56,7 @@
         </div>
         <div class="badge badge-archive" *ngxPermissionsOnly="['isProfessional']">
           <button class="check-corporate" (click)="$event.stopPropagation(); onClickArchiveConversation()">
-            <mat-icon svgIcon="check"></mat-icon>
+            <tsl-svg-icon src="/assets/icons/check.svg"></tsl-svg-icon>
           </button>
         </div>
       </div>

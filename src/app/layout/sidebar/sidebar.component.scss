@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 :host {
   position: fixed;
@@ -31,7 +31,7 @@ $sidebar-section-circle-size-small: 32px;
   margin: 0 auto $spacing-ms auto;
   width: $sidebar-section-circle-size;
   height: $sidebar-section-circle-size;
-  background-color: rgba(lighten($blue-grey-1, 8%), .5);
+  background-color: rgba(lighten($blue-grey-1, 8%), 0.5);
   transition: width 0.75s, height 0.75s;
   .active & {
     background-color: $walla-main !important;
@@ -43,22 +43,23 @@ $sidebar-section-circle-size-small: 32px;
 }
 
 .sidebar-section {
-  mat-icon {
+  tsl-svg-icon {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translateY(-50%) translateX(-50%);
     @include square(34px);
-    transition: .15s background-color ease;
+    transition: 0.15s background-color ease;
     g g {
-      transition: .15s fill ease;
+      transition: 0.15s fill ease;
     }
   }
   & ::ng-deep path {
-    fill: rgba($white, .5);
+    fill: rgba($white, 0.5);
   }
-  &.active, &:hover {
-    mat-icon {
+  &.active,
+  &:hover {
+    tsl-svg-icon {
       & ::ng-deep path {
         fill: $white;
       }
@@ -69,9 +70,9 @@ $sidebar-section-circle-size-small: 32px;
 h2 {
   font-size: $font-size-xxs;
   font-weight: $font-weight-chunky;
-  color: rgba($white, .5);
+  color: rgba($white, 0.5);
   text-transform: uppercase;
-  letter-spacing: .5px;
+  letter-spacing: 0.5px;
   margin-bottom: 0;
   .active & {
     color: $white;
@@ -83,7 +84,8 @@ h2 {
   display: block;
   padding: $spacing-ms 0;
   text-align: center;
-  &:focus, &:hover {
+  &:focus,
+  &:hover {
     text-decoration: none;
   }
   &:hover {
@@ -92,15 +94,16 @@ h2 {
     }
     h2 {
       color: $white;
-      transition: .15s color ease;
+      transition: 0.15s color ease;
     }
   }
   &.profile-item {
     tsl-user-avatar {
-      opacity: .5;
-      transition: .15s opacity ease;
+      opacity: 0.5;
+      transition: 0.15s opacity ease;
     }
-    &:hover, &.active {
+    &:hover,
+    &.active {
       tsl-user-avatar {
         opacity: 1;
       }
@@ -115,17 +118,28 @@ h2 {
     margin: 0 auto $spacing-s auto;
   }
   .sidebar-section {
-    mat-icon {
+    tsl-svg-icon {
       @include square(24px);
+      &::ng-deep svg {
+        width: 100%;
+        height: 100%;
+      }
     }
     &.profile-item {
       tsl-user-avatar {
         ::ng-deep .avatar-rounded {
-          transition: width .75s, height 0.75s;
+          transition: width 0.75s, height 0.75s;
           width: $sidebar-section-circle-size-small;
           height: $sidebar-section-circle-size-small;
         }
       }
     }
+  }
+}
+
+.svg-icon-size {
+  ::ng-deep svg {
+    height: 100%;
+    width: 100%;
   }
 }

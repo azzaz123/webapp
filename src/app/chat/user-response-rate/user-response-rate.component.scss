@@ -1,11 +1,11 @@
-@import "~style/common";
+@import '~style/common';
 
 :host {
   display: flex;
   align-items: center;
 }
 
-mat-icon.user-response-rate {
+tsl-svg-icon.user-response-rate {
   @include square(16px);
   margin-right: $spacing-ms;
 }

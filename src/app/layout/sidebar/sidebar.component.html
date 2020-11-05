@@ -9,7 +9,7 @@
 
 <a *ngxPermissionsOnly="['isProfessional']" id="qa-sidebar-dashboard" class="sidebar-section" [routerLink]="['/pro/dashboard']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_DASHBOARD">
   <div class="sidebar-section-circle">
-    <mat-icon svgIcon="navigation_dashboard"></mat-icon>
+    <tsl-svg-icon src="/assets/icons/navigation_dashboard.svg"></tsl-svg-icon>
   </div>
   <h2 i18n>Dashboard</h2>
 </a>
@@ -17,7 +17,7 @@
 <a class="sidebar-section" id="qa-sidebar-catalog" [routerLink]="['/catalog/list']" tslTrackEvent="MYZONE_MENU_CATALOG"
   [ngClass]="{active: isProducts}">
   <div class="sidebar-section-circle">
-    <mat-icon svgIcon="navigation_catalog"></mat-icon>
+    <tsl-svg-icon src="/assets/icons/navigation_catalog.svg"></tsl-svg-icon>
   </div>
   <h2 *ngxPermissionsExcept="['isProfessional']" i18n>Products</h2>
   <h2 *ngxPermissionsOnly="['isProfessional']" i18n>Catalog</h2>
@@ -26,49 +26,49 @@
 <a class="sidebar-section" id="qa-sidebar-messages" [routerLink]="['/chat']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_CHAT">
   <div class="chat-notification-pending" *ngIf="(messageService.totalUnreadMessages$ | async) > 0"></div>
   <div class="sidebar-section-circle">
-    <mat-icon svgIcon="navigation_messages"></mat-icon>
+    <tsl-svg-icon src="/assets/icons/navigation_messages.svg"></tsl-svg-icon>
   </div>
   <h2 i18n>Messages</h2>
 </a>
 
 <a *ngxPermissionsExcept="['isProfessional']" id="qa-sidebar-credit" class="sidebar-section" [routerLink]="['/wallacoins']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_WALLACOINS">
   <div class="sidebar-section-circle">
-    <mat-icon svgIcon="navigation_wallacoins"></mat-icon>
+    <tsl-svg-icon src="/assets/icons/navigation_wallacoins.svg"></tsl-svg-icon>
   </div>
   <h2 i18n>credit</h2>
 </a>
 
 <a *ngxPermissionsExcept="['isProfessional']" id="qa-sidebar-favorites" class="sidebar-section" [routerLink]="['/favorites']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_FAVOURITES">
   <div class="sidebar-section-circle">
-    <mat-icon svgIcon="navigation_favorites"></mat-icon>
+    <tsl-svg-icon src="/assets/icons/navigation_favorites.svg"></tsl-svg-icon>
   </div>
   <h2 i18n>Favorites</h2>
 </a>
 
 <a *ngxPermissionsExcept="['isProfessional']" id="qa-sidebar-reviews" class="sidebar-section" [routerLink]="['/reviews']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_REVIEWS">
   <div class="sidebar-section-circle">
-    <mat-icon svgIcon="navigation_reviews"></mat-icon>
+    <tsl-svg-icon src="/assets/icons/navigation_reviews.svg"></tsl-svg-icon>
   </div>
   <h2 i18n>Reviews</h2>
 </a>
 
 <a *ngxPermissionsOnly="['isProfessional']" id="qa-sidebar-phones" class="sidebar-section" [routerLink]="['/pro/calls']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_CALLS">
   <div class="sidebar-section-circle">
-    <mat-icon svgIcon="navigation_phones"></mat-icon>
+    <tsl-svg-icon src="/assets/icons/navigation_phones.svg" class="svg-icon-size"></tsl-svg-icon>
   </div>
   <h2 i18n>Phones</h2>
 </a>
 
 <a *ngxPermissionsOnly="['isProfessional']" id="qa-sidebar-help" class="sidebar-section" [routerLink]="['/pro/help']" routerLinkActive="active">
   <div class="sidebar-section-circle">
-    <mat-icon svgIcon="navigation_help"></mat-icon>
+    <tsl-svg-icon src="/assets/icons/navigation_help.svg"></tsl-svg-icon>
   </div>
   <h2 i18n>Help</h2>
 </a>
 
 <a *ngxPermissionsExcept="['isProfessional']" id="qa-sidebar-stats" class="sidebar-section" [routerLink]="['/stats']" routerLinkActive="active">
   <div class="sidebar-section-circle">
-    <mat-icon svgIcon="navigation_dashboard"></mat-icon>
+    <tsl-svg-icon src="/assets/icons/navigation_dashboard.svg"></tsl-svg-icon>
   </div>
   <h2 i18n>Stats</h2>
 </a>

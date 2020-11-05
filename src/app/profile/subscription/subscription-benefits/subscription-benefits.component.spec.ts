@@ -1,9 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { SubscriptionBenefitsComponent } from './subscription-benefits.component';
-import { MatIconModule } from '@angular/material';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
-import { MockSubscriptionService, MOCK_SUBSCRIPTION_BENEFITS } from '../../../../tests/subscriptions.fixtures.spec';
+import {
+  MockSubscriptionService,
+  MOCK_SUBSCRIPTION_BENEFITS,
+} from '../../../../tests/subscriptions.fixtures.spec';
 import { By } from '@angular/platform-browser';
 
 describe('SubscriptionBenefitsComponent', () => {
@@ -12,13 +15,13 @@ describe('SubscriptionBenefitsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ MatIconModule ],
-      declarations: [ SubscriptionBenefitsComponent ],
+      imports: [],
+      declarations: [SubscriptionBenefitsComponent],
       providers: [
-        { provide: SubscriptionsService, useClass: MockSubscriptionService }
-      ]
-    })
-    .compileComponents();
+        { provide: SubscriptionsService, useClass: MockSubscriptionService },
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -41,7 +44,9 @@ describe('SubscriptionBenefitsComponent', () => {
     component.ngOnInit();
     fixture.detectChanges();
 
-    const benefitsHTML = fixture.debugElement.queryAll(By.css('.SubscriptionBenefitCard'));
+    const benefitsHTML = fixture.debugElement.queryAll(
+      By.css('.SubscriptionBenefitCard')
+    );
     expect(benefitsHTML.length).toEqual(MOCK_SUBSCRIPTION_BENEFITS.length);
-  })
+  });
 });

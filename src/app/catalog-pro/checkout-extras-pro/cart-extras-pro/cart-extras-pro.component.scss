@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 $cart-height: calc(100vh - #{$topbar-height + $spacing-xl * 2});
 $title-height: 50px;
@@ -62,7 +62,8 @@ h1 {
   }
 }
 
-ul, li {
+ul,
+li {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -90,13 +91,13 @@ ul, li {
       margin-right: $spacing-s;
     }
     .arrow-icon {
-      transform: rotate(-90deg) scale(.8);
+      transform: rotate(-90deg) scale(0.8);
       width: 9px;
       height: 13px;
     }
     &.collapsed {
       .arrow-icon {
-        transform: rotate(90deg) scale(.8);
+        transform: rotate(90deg) scale(0.8);
       }
     }
     .bump-type {
@@ -179,7 +180,7 @@ tsl-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  mat-icon {
+  tsl-svg-icon {
     width: 21px;
     height: 15.5px;
   }
@@ -195,7 +196,7 @@ tsl-button {
   align-items: center;
   justify-content: center;
   position: relative;
-  mat-icon {
+  tsl-svg-icon {
     height: 14px;
     width: 11px;
     position: absolute;
@@ -211,14 +212,15 @@ tsl-button {
 .stripe-payment {
   text-align: center;
   margin: $spacing-xs 0 0 0;
-  mat-icon {
+  tsl-svg-icon {
     width: 100px;
     height: 25px;
   }
 }
 
 .Cart__NewCard {
-  &--add, &--used {
+  &--add,
+  &--used {
     margin-bottom: $spacing-s;
     font-size: $font-size-s;
     color: $walla-main;

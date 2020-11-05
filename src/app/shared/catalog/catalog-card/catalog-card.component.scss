@@ -1,7 +1,7 @@
-@import "~style/common";
+@import '~style/common';
 
 $checkbox-width: 24px;
-$transition: all .5s ease;
+$transition: all 0.5s ease;
 $feature-button-width: 170px;
 
 :host ::ng-deep ngb-tooltip-window {
@@ -41,7 +41,7 @@ $feature-button-width: 170px;
     margin-right: $spacing-ml;
     margin-top: $spacing-xxl;
     cursor: pointer;
-    mat-icon {
+    tsl-svg-icon {
       display: none;
       height: 9px;
       width: 12px;
@@ -49,7 +49,7 @@ $feature-button-width: 170px;
     &.selected {
       background: $walla-main;
       border-color: transparent;
-      mat-icon {
+      tsl-svg-icon {
         display: flex;
         ::ng-deep svg g g {
           fill: $white;
@@ -74,9 +74,10 @@ $feature-button-width: 170px;
   transition: $transition;
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 2px 10px 0 rgba(37,50,56,.1);
+    box-shadow: 0 2px 10px 0 rgba(37, 50, 56, 0.1);
   }
-  &.expired, &.pending {
+  &.expired,
+  &.pending {
     &::after {
       content: '';
       position: absolute;
@@ -85,7 +86,7 @@ $feature-button-width: 170px;
       bottom: 0;
       left: 0;
       background-color: $white;
-      opacity: .5;
+      opacity: 0.5;
       z-index: 1;
       border-radius: $border-radius;
     }
@@ -129,12 +130,14 @@ $feature-button-width: 170px;
     padding-right: $spacing-m;
     display: block;
   }
-  .title, .price {
+  .title,
+  .price {
     &:focus {
       text-decoration: none;
     }
   }
-  button, tsl-button ::ng-deep .btn-feature  {
+  button,
+  tsl-button ::ng-deep .btn-feature {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -161,7 +164,10 @@ $feature-button-width: 170px;
   .title {
     @include text-truncate();
   }
-  .published, .updated, .sold, .bumped {
+  .published,
+  .updated,
+  .sold,
+  .bumped {
     & {
       font-size: $font-size-s;
       display: flex;
@@ -175,7 +181,8 @@ $feature-button-width: 170px;
       color: $blue-grey-3;
     }
   }
-  .sold, .bumped {
+  .sold,
+  .bumped {
     flex-basis: 24em;
   }
   .bumped {
@@ -191,14 +198,14 @@ $feature-button-width: 170px;
       font-weight: $font-weight-chunky;
     }
   }
-  .zonebump{
+  .zonebump {
     color: $zone-bump;
   }
   .countrybump {
     color: $country-bump;
   }
   .citybump {
-    color: $walla-main
+    color: $walla-main;
   }
   .visibility {
     display: flex;
@@ -212,7 +219,7 @@ $feature-button-width: 170px;
       flex-basis: 3em;
       align-items: center;
     }
-    mat-icon {
+    tsl-svg-icon {
       height: 17px;
       width: 19px;
       vertical-align: top;
@@ -223,7 +230,8 @@ $feature-button-width: 170px;
     .resized & {
       display: none;
     }
-    button, tsl-button {
+    button,
+    tsl-button {
       margin-left: $spacing-ms;
       float: left;
       background-color: transparent;
@@ -231,15 +239,18 @@ $feature-button-width: 170px;
     button {
       @include square(40px);
       border-radius: 8px;
-      transition: all .2s ease;
-      mat-icon ::ng-deep {
-        svg g g, svg path {
+      transition: all 0.2s ease;
+      tsl-svg-icon ::ng-deep {
+        svg g g,
+        svg path {
           fill: $blue-grey-2;
         }
       }
-      &:hover, &.active {
-        mat-icon ::ng-deep {
-          svg g g, svg path {
+      &:hover,
+      &.active {
+        tsl-svg-icon ::ng-deep {
+          svg g g,
+          svg path {
             fill: $white;
           }
         }
@@ -253,7 +264,8 @@ $feature-button-width: 170px;
         font-weight: $font-weight-chunky;
       }
       &.btn-sold {
-        &:hover, &.active {
+        &:hover,
+        &.active {
           background: $magenta-main;
           border-color: transparent;
         }
@@ -265,7 +277,8 @@ $feature-button-width: 170px;
         }
       }
       &.btn-reserve {
-        &:hover, &.active {
+        &:hover,
+        &.active {
           background: $skyblue-dark;
           border-color: transparent;
         }
@@ -278,7 +291,7 @@ $feature-button-width: 170px;
         padding: 0 $spacing-ml;
         padding-left: $spacing-ms;
         font-size: $font-size-s;
-        mat-icon {
+        tsl-svg-icon {
           width: 19px;
           height: 21px;
           margin-right: $spacing-s;
@@ -301,7 +314,7 @@ $feature-button-width: 170px;
     color: $blue-grey-1;
     height: 40px;
     cursor: default;
-    mat-icon {
+    tsl-svg-icon {
       margin-right: $spacing-xl;
       margin-left: $spacing-xs;
     }

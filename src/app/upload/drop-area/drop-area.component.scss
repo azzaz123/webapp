@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 :host {
   width: 100%;
@@ -31,7 +31,7 @@
   .drag-area {
     display: block;
     text-align: center;
-    mat-icon {
+    tsl-svg-icon {
       @include square(32px);
     }
     p {
@@ -46,7 +46,7 @@
       border-radius: 50%;
       line-height: $line-height-xl;
       margin-bottom: $spacing-s;
-      mat-icon {
+      tsl-svg-icon {
         @include square(11px);
       }
     }
@@ -106,7 +106,7 @@
     border-radius: 50%;
     text-align: center;
     line-height: $line-height-ml;
-    mat-icon {
+    tsl-svg-icon {
       width: 7px;
       height: 9px;
     }

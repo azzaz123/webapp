@@ -1,9 +1,9 @@
 <div class="modal-body center-heading">
   <div class="modal-back" (click)="backPress.emit(null)" *ngIf="isSeller && canChooseBuyer">
-    <mat-icon svgIcon="back-arrow"></mat-icon>
+    <tsl-svg-icon src="/assets/icons/back-arrow.svg"></tsl-svg-icon>
   </div>
   <div class="modal-close" (click)="activeModal.dismiss()">
-    <mat-icon svgIcon="cross"></mat-icon>
+    <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
   </div>
   <h2 i18n>Rate your experience with <strong>{{userName}}</strong></h2>
   <p i18n>Click on the stars to leave your review. The more stars, the better your experience.</p>

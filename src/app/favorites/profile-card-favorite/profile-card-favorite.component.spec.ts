@@ -1,11 +1,15 @@
-
 import { of } from 'rxjs';
-import {async, ComponentFixture, TestBed, fakeAsync, tick} from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import { ProfileCardFavoriteComponent } from './profile-card-favorite.component';
-import { MatIconModule } from '@angular/material';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
@@ -28,35 +32,38 @@ describe('ProfileCardFavoriteComponent', () => {
     result: Promise.resolve({
       score: 4,
       comments: 'comment',
-      userId: USER_ID
+      userId: USER_ID,
     }),
-    componentInstance: {}
+    componentInstance: {},
   };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ MatIconModule ],
-      declarations: [ ProfileCardFavoriteComponent, CustomCurrencyPipe ],
+      imports: [],
+      declarations: [ProfileCardFavoriteComponent, CustomCurrencyPipe],
       providers: [
         DecimalPipe,
-        { provide: NgbModal, useValue: {
+        {
+          provide: NgbModal,
+          useValue: {
             open() {
               return modalRef;
-            }
-          }
+            },
+          },
         },
-        { provide: ProfileService, useValue: {
-            favoriteItem () {
+        {
+          provide: ProfileService,
+          useValue: {
+            favoriteItem() {
               return of({});
-            }
-          }
+            },
+          },
         },
-        {provide: TrackingService, useClass: MockTrackingService},
-        { provide: 'SUBDOMAIN', useValue: 'www'}
+        { provide: TrackingService, useClass: MockTrackingService },
+        { provide: 'SUBDOMAIN', useValue: 'www' },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -82,7 +89,9 @@ describe('ProfileCardFavoriteComponent', () => {
     });
     it('should call onFavoriteChange emit method', () => {
       component.removeFavorite();
-      expect(component.onFavoriteProfileChange.emit).toHaveBeenCalledWith(MOCK_PROFILE);
+      expect(component.onFavoriteProfileChange.emit).toHaveBeenCalledWith(
+        MOCK_PROFILE
+      );
     });
   });
 
@@ -92,7 +101,9 @@ describe('ProfileCardFavoriteComponent', () => {
       spyOn(component, 'removeFavoriteModal').and.callThrough();
       spyOn(modalService, 'open').and.callThrough();
       spyOn(component, 'removeFavorite').and.callThrough();
-      removeFavoriteButton = fixture.debugElement.nativeElement.querySelector('tsl-card-footer');
+      removeFavoriteButton = fixture.debugElement.nativeElement.querySelector(
+        'tsl-card-footer'
+      );
       removeFavoriteButton.click();
     }));
 
@@ -101,7 +112,10 @@ describe('ProfileCardFavoriteComponent', () => {
     });
 
     it('should open accept modal', () => {
-      expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, { windowClass: 'modal-prompt' });
+      expect(modalService.open).toHaveBeenCalledWith(
+        ConfirmationModalComponent,
+        { windowClass: 'modal-prompt' }
+      );
     });
 
     it('should set modal type "5" if profile is featured', () => {
@@ -117,10 +131,12 @@ describe('ProfileCardFavoriteComponent', () => {
   describe('goToProfileDetail', () => {
     it('should change window url', () => {
       spyOn(window, 'open');
-      const MOCK_PROFILE_URL: string = environment.siteUrl.replace('es', subdomain) + 'user/' + MOCK_PROFILE.screen_name;
+      const MOCK_PROFILE_URL: string =
+        environment.siteUrl.replace('es', subdomain) +
+        'user/' +
+        MOCK_PROFILE.screen_name;
       component.goToProfileDetail();
       expect(window.open).toHaveBeenCalledWith(MOCK_PROFILE_URL);
     });
   });
-
 });

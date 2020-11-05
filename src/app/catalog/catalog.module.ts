@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
-import { catalogRoutedComponents, CatalogRoutingModule } from './catalog.routes';
+import {
+  catalogRoutedComponents,
+  CatalogRoutingModule,
+} from './catalog.routes';
 import { SharedModule } from '../shared/shared.module';
 import { CatalogItemComponent } from './list/catalog-item/catalog-item.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { MatIconModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectedItemsComponent } from './list/selected-items/selected-items.component';
 import { BumpConfirmationModalComponent } from './list/modals/bump-confirmation-modal/bump-confirmation-modal.component';
@@ -18,7 +20,6 @@ import { TrackingModule } from '../core/tracking/tracking.module';
 import { BuyProductModalComponent } from './list/modals/buy-product-modal/buy-product-modal.component';
 import { ReactivateConfirmationModalComponent } from './list/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component';
 import { ListingfeeConfirmationModalComponent } from './list/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
-import { SelectModule } from 'ng-select';
 import { SubscriptionsSlotsListComponent } from './list/subscriptions-slots/subscriptions-slots-list/subscriptions-slots-list.component';
 import { SubscriptionsSlotItemComponent } from './list/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component';
 import { ReviewsModule } from '../reviews/reviews.module';
@@ -28,18 +29,14 @@ import { ReviewsModule } from '../reviews/reviews.module';
     SharedModule,
     FormsModule,
     CatalogRoutingModule,
-    MatIconModule,
     InfiniteScrollModule,
     ReactiveFormsModule,
     TrackingModule,
     NgbButtonsModule,
     NgbTooltipModule,
-    SelectModule,
-    ReviewsModule
+    ReviewsModule,
   ],
-  providers: [
-    BumpTutorialService,
-  ],
+  providers: [BumpTutorialService],
   declarations: [
     catalogRoutedComponents,
     CatalogItemComponent,
@@ -54,7 +51,7 @@ import { ReviewsModule } from '../reviews/reviews.module';
     UrgentConfirmationModalComponent,
     BuyProductModalComponent,
     ReactivateConfirmationModalComponent,
-    ListingfeeConfirmationModalComponent
+    ListingfeeConfirmationModalComponent,
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
@@ -63,8 +60,7 @@ import { ReviewsModule } from '../reviews/reviews.module';
     UrgentConfirmationModalComponent,
     BuyProductModalComponent,
     ReactivateConfirmationModalComponent,
-    ListingfeeConfirmationModalComponent
-  ]
+    ListingfeeConfirmationModalComponent,
+  ],
 })
-export class CatalogModule {
-}
+export class CatalogModule {}

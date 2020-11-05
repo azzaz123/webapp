@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 .ProBadge {
   width: $spacing-xxxl;
@@ -21,7 +21,7 @@
 
   margin-right: $spacing-xs;
 
-  mat-icon {
+  tsl-svg-icon {
     @include square(14px);
     margin-right: $spacing-xs;
   }

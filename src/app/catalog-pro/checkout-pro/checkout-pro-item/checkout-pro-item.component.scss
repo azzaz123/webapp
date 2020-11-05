@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 .item {
   background: $white;
@@ -12,7 +12,8 @@
   &:first-child {
     border-top-right-radius: 0;
   }
-  .item-first-section, .item-second-section {
+  .item-first-section,
+  .item-second-section {
     display: flex;
   }
   .item-first-section {
@@ -62,7 +63,7 @@
     -webkit-line-clamp: 2;
     overflow: hidden;
     max-height: 41px;
-    -webkit-box-orient: vertical
+    -webkit-box-orient: vertical;
   }
   .btn-bumps {
     display: flex;
@@ -74,30 +75,32 @@
     background-color: $blue-grey-5;
     transition: background-color 0.2s ease-in-out;
     cursor: pointer;
-    mat-icon {
+    tsl-svg-icon {
       transition: fill 0.2s ease-in-out;
       height: 17px;
     }
     &.citybump {
-      &:hover, &.selected {
+      &:hover,
+      &.selected {
         background-color: $walla-main;
-        mat-icon {
+        tsl-svg-icon {
           ::ng-deep svg path {
             fill: $white;
-          }        
+          }
         }
       }
     }
     &.countrybump {
-      mat-icon {
+      tsl-svg-icon {
         width: 32px;
       }
-      &:hover, &.selected {
+      &:hover,
+      &.selected {
         background-color: $country-bump;
-        mat-icon {
+        tsl-svg-icon {
           ::ng-deep svg path {
             fill: $white;
-          }        
+          }
         }
       }
     }
@@ -117,18 +120,20 @@
       font-weight: $font-weight-chunky;
     }
     &.citybump {
-      &:hover, &:focus {
+      &:hover,
+      &:focus {
         border-color: $walla-main;
       }
     }
     &.countrybump {
-      &:hover, &:focus {
+      &:hover,
+      &:focus {
         border-color: $country-bump;
       }
     }
     &:disabled {
       background-color: $white;
-      border-color: $blue-grey-5;  
+      border-color: $blue-grey-5;
       color: $blue-grey-5;
       &::placeholder {
         color: $blue-grey-5;

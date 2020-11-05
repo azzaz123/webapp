@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 .messaging-container {
   height: 100%;
@@ -129,7 +129,7 @@
     color: $magenta-dark;
     background-color: $negative-soft;
 
-    mat-icon {
+    tsl-svg-icon {
       width: 14px;
       height: 10px;
     }
@@ -156,7 +156,7 @@
   }
 
   .emoticon-padlock {
-    content: "\01F512";
+    content: '\01F512';
   }
 }
 
@@ -207,7 +207,7 @@
   background: $color-inbox-background;
   display: flex;
 
-  mat-icon {
+  .inbox-size {
     width: 100vh;
     height: 100vh;
   }

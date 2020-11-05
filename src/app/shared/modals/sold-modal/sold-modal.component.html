@@ -1,12 +1,12 @@
 <div id="first-step" [hidden]="userToReview">
   <div class="modal-body">
     <div class="modal-close" (click)="activeModal.dismiss()">
-      <mat-icon svgIcon="cross"></mat-icon>
+      <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
     </div>
     <h1 i18n>Congratulations!</h1>
     <p class="text" i18n>You sold <strong>{{item.title}}</strong>
     </p>
-    <mat-icon class="congrats" svgIcon="commons-congrats"></mat-icon>
+    <tsl-svg-icon class="congrats" src="/assets/icons/commons-congrats.svg"></tsl-svg-icon>
     <p class="text" [hidden]="!conversationUsers.length" i18n>Who bought this from you?</p>
     <ul [hidden]="!conversationUsers.length">
       <li class="conv-user" *ngFor="let convUser of conversationUsers">
@@ -16,7 +16,7 @@
             <p class="name">{{convUser.micro_name}}</p>
             <p class="message">{{convUser.last_message}}</p>
           </div>
-          <mat-icon svgIcon="arrow-waterfall" class="arrow-icon"></mat-icon>
+          <tsl-svg-icon src="/assets/icons/arrow-waterfall.svg" class="arrow-icon"></tsl-svg-icon>
         </a>
       </li>
     </ul>
@@ -31,9 +31,9 @@
 <div id="thanks" [hidden]="!thanks">
   <div class="modal-body center-heading">
     <div class="modal-close" (click)="activeModal.dismiss()">
-      <mat-icon svgIcon="cross"></mat-icon>
+      <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
     </div>
-    <mat-icon class="congrats-icon" svgIcon="congrats"></mat-icon>
+    <tsl-svg-icon class="congrats-icon" src="/assets/icons/congrats.svg"></tsl-svg-icon>
     <h1 i18n>Thanks</h1>
     <p class="text" i18n>Your feedback is important for the<br />Wallapop community.</p>
     <tsl-button (click)="activeModal.close()" i18n>Continue</tsl-button>

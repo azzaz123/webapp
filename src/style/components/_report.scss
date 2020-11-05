@@ -24,7 +24,7 @@
       flex-shrink: 0;
       cursor: pointer;
     }
-    mat-icon {
+    tsl-svg-icon {
       @include square(28px);
       position: absolute;
       left: 50%;
@@ -49,8 +49,9 @@
         color: $walla-main;
         font-weight: $font-weight-chunky;
       }
-      mat-icon ::ng-deep {
-        g g, path {
+      tsl-svg-icon ::ng-deep {
+        g g,
+        path {
           fill: $walla-main;
         }
       }
@@ -71,5 +72,12 @@
 
   tsl-button {
     margin-top: $spacing-ml;
+  }
+}
+
+.report-icon {
+  svg {
+    height: 100%;
+    width: 100%;
   }
 }

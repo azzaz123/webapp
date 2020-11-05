@@ -1,7 +1,7 @@
 <div class="ChangeCardModal">
     <div class="ChangeCardModal__header">
       <div class="modal-close" (click)="activeModal.dismiss()">
-        <mat-icon svgIcon="cross"></mat-icon>
+        <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
       </div>
       <h4 *ngIf="hasSavedCard && savedCard" class="ChangeCardModal__title" i18n="@@ChangeSelectSubscriptionCardTitle">Select a credit card</h4>
       <h4 *ngIf="!hasSavedCard || !savedCard" class="ChangeCardModal__title" i18n="@@ChangeAddSubscriptionCardTitle">Add a credit card</h4>
