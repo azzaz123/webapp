@@ -39,16 +39,12 @@
               [ngClass]="{'disabled': ngbCarousel.activeId === ngbCarousel.slides.first.id}"></tsl-svg-icon>
             <ngb-carousel interval="0" [showNavigationIndicators]="false" [wrap]="false" [showNavigationArrows]="false">
               <ng-container *ngFor="let pack of packs; let i = index">
-                <ng-template ngbSlide *ngIf="i < packs.length - 2">
+                <ng-template ngbSlide *ngIf="i < packs.length - ( itemsPerSlide.length - 1 )">
                   <div class="carousel-slider">
-                    <tsl-pack-wallacoins [pack]="packs[i]" [packIndex]="i + 1" (onBuy)="openBuyModal(packs[i], i + 1)">
-                    </tsl-pack-wallacoins>
-                    <tsl-pack-wallacoins [pack]="packs[i + 1]" [packIndex]="i + 2"
-                      (onBuy)="openBuyModal(packs[i + 1], i + 2)">
-                    </tsl-pack-wallacoins>
-                    <tsl-pack-wallacoins [pack]="packs[i + 2]" [packIndex]="i + 3"
-                      (onBuy)="openBuyModal(packs[i + 2], i + 3)">
-                    </tsl-pack-wallacoins>
+                    <ng-container *ngFor="let card of itemsPerSlide; let j = index">
+                      <tsl-pack-wallacoins [pack]="packs[i + j]" [packIndex]="i + j + 1" (onBuy)="openBuyModal(packs[i + j], i + j + 1)">
+                      </tsl-pack-wallacoins>
+                    </ng-container>
                   </div>
                 </ng-template>
               </ng-container>

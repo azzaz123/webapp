@@ -27,6 +27,7 @@ export class WallacoinsComponent implements OnInit {
   public factor: number;
   public loading = true;
   private localStorageName = '-wallacoins-tutorial';
+  public itemsPerSlide = [0, 1, 2]; // = 3. Has to be an array to be able to used in the ngFor
   @ViewChild(NgbCarousel) ngbCarousel: NgbCarousel;
 
   constructor(private paymentService: PaymentService,
