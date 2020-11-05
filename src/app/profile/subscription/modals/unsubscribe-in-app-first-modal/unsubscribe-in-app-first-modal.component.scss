@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 .UnsubscribeInAppFirstModal {
   height: 335px;
@@ -14,7 +14,7 @@
   right: $spacing-ml;
   tsl-svg-icon {
     @include square($spacing-ms);
-    line-height: initial; 
+    line-height: initial;
 
     svg {
       path {

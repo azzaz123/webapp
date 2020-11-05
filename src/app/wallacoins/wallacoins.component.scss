@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 $pack-width: 234px;
 
@@ -39,7 +39,8 @@ h3 {
   font-size: $font-size-ll;
 }
 
-h2, h3 {
+h2,
+h3 {
   color: $blue-grey-1;
   font-weight: $font-weight-chunky;
 }
@@ -59,7 +60,8 @@ ngu-carousel {
     .item {
       width: $pack-width;
     }
-    .left-arrow, .right-arrow {
+    .left-arrow,
+    .right-arrow {
       position: absolute;
       top: 50%;
       cursor: pointer;

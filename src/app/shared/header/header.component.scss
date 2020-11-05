@@ -1,60 +1,60 @@
-@import "~style/common";
+@import '~style/common';
 
 ::ng-deep {
-    .header-title {
-        font-size: $font-size-ll;
-        color: $blue-grey-1;
-        font-weight: $font-weight-chunky;
-        display: flex;
-        align-items: center;
-        .badge {
-          margin-left: $spacing-ms;
-        }
+  .header-title {
+    font-size: $font-size-ll;
+    color: $blue-grey-1;
+    font-weight: $font-weight-chunky;
+    display: flex;
+    align-items: center;
+    .badge {
+      margin-left: $spacing-ms;
     }
+  }
 
-    .header-row {
-        display: flex;
-        align-items: center;
-    }
+  .header-row {
+    display: flex;
+    align-items: center;
+  }
 
-    .header-row-margin {
-        margin-bottom: $spacing-ml;
-    }
+  .header-row-margin {
+    margin-bottom: $spacing-ml;
+  }
 
-    .header-subtitle {
-        font-size: $font-size-s;
-        color: $blue-grey-2;
-        margin-bottom: 0;
-        line-height: $line-height-ml;
-        font-weight: normal;
-    }
+  .header-subtitle {
+    font-size: $font-size-s;
+    color: $blue-grey-2;
+    margin-bottom: 0;
+    line-height: $line-height-ml;
+    font-weight: normal;
+  }
 
-    .header-separator {
-        color: $blue-grey-2;
-        margin: 0 $spacing-m;
-    }
+  .header-separator {
+    color: $blue-grey-2;
+    margin: 0 $spacing-m;
+  }
 
-    .header-link {
-        font-size: $font-size-s;
-    }
+  .header-link {
+    font-size: $font-size-s;
+  }
 
-    .header-numbers {
-        color: $blue-grey-3;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        .header-numbers-top {
-            font-size: $font-size-l;
-            font-weight: 700;
-            line-height: $line-height-ml;
-            margin-bottom: 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .header-numbers-bottom {
-            font-size: $font-size-s;
-            margin-bottom: 0;
-        }
+  .header-numbers {
+    color: $blue-grey-3;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .header-numbers-top {
+      font-size: $font-size-l;
+      font-weight: 700;
+      line-height: $line-height-ml;
+      margin-bottom: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
+    .header-numbers-bottom {
+      font-size: $font-size-s;
+      margin-bottom: 0;
+    }
+  }
 }

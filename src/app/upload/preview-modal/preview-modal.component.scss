@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 .modal-body {
   color: $blue-grey-1;
@@ -14,7 +14,8 @@ p {
   margin: 0;
 }
 
-.price, h1 {
+.price,
+h1 {
   font-size: $font-size-xl;
 }
 
@@ -31,10 +32,11 @@ h1 {
   margin-top: $spacing-ml;
 }
 
-.description, .car-info {
+.description,
+.car-info {
   font-size: $font-size-m;
   padding: $spacing-ml 0;
-  &:not(.last){
+  &:not(.last) {
     border-bottom: 1px solid $blue-grey-6;
     margin-bottom: $spacing-ml;
   }

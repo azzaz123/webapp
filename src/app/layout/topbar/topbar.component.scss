@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 :host {
   height: $topbar-height;
@@ -13,7 +13,7 @@
   display: -ms-flexbox;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 4px 0 rgba(37,50,56,0.03);
+  box-shadow: 0 2px 4px 0 rgba(37, 50, 56, 0.03);
   z-index: 100;
   & a {
     color: $blue-grey-1;
@@ -242,7 +242,6 @@
   }
 }
 
-
 .main-header-login {
   &.professional {
     .main-header-my-zone {
@@ -280,6 +279,6 @@
 
 .topbar-logo-icon {
   @include media-breakpoint-down(md) {
-		padding-left: $spacing-m;
-	}
+    padding-left: $spacing-m;
+  }
 }

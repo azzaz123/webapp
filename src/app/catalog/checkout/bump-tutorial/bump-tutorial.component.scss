@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 .tutorial {
   &.main-veil {
@@ -21,7 +21,7 @@
         margin-left: $sidebar-width;
         color: $blue-grey-5;
         font-size: $font-size-l;
-        background-color: rgba(37,50,56,0.95);
+        background-color: rgba(37, 50, 56, 0.95);
         justify-content: center;
         overflow-y: scroll;
       }
@@ -35,7 +35,8 @@
         h1 {
           font-weight: $font-weight-skinny;
         }
-        p, span {
+        p,
+        span {
           font-size: $font-size-m;
         }
         &.step-1 {
@@ -195,7 +196,7 @@
         }
         tsl-svg-icon {
           ::ng-deep path {
-            fill: $white
+            fill: $white;
           }
         }
         &:hover {

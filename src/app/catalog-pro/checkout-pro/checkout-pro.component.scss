@@ -1,7 +1,7 @@
-@import "~style/common";
+@import '~style/common';
 
 $checkbox-width: $spacing-ms;
-$transition: all .5s ease;
+$transition: all 0.5s ease;
 $feature-button-width: 170px;
 
 .back {
@@ -18,8 +18,9 @@ $feature-button-width: 170px;
   }
   &:hover {
     text-decoration: none;
-    &, tsl-svg-icon {
-      opacity: .8;
+    &,
+    tsl-svg-icon {
+      opacity: 0.8;
     }
   }
 }
@@ -64,15 +65,15 @@ $feature-button-width: 170px;
     width: 48%;
   }
   .bump-types {
-    display: flex; 
+    display: flex;
     width: 100%;
     border-top-left-radius: 18px;
     border-top-right-radius: 18px;
     border-top: 1px solid $blue-grey-5;
     border-right: 1px solid $blue-grey-5;
     border-left: 1px solid $blue-grey-5;
-  }∫
-  .info {
+  }
+  ∫ .info {
     font-size: $font-size-s;
     text-decoration: underline;
     cursor: pointer;
