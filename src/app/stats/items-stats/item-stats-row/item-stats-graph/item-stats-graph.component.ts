@@ -1,5 +1,15 @@
-import { AfterViewInit, Component, Inject, Input, LOCALE_ID, OnInit } from '@angular/core';
-import { ItemStatisticEntriesResponse, ItemStatisticFullResponse } from './item-stats-response.interface';
+import {
+  AfterViewInit,
+  Component,
+  Inject,
+  Input,
+  LOCALE_ID,
+  OnInit,
+} from '@angular/core';
+import {
+  ItemStatisticEntriesResponse,
+  ItemStatisticFullResponse,
+} from './item-stats-response.interface';
 import { Item } from '../../../../core/item/item';
 import { I18nService } from '../../../../core/i18n/i18n.service';
 import { EChartOption } from 'echarts';
@@ -12,26 +22,26 @@ const GRAPH_COLORS = {
   FAVS: '#f99bb5',
   CHAT_BUMPED: '#3CCFBD',
   VIEWS_BUMPED: '#E5FBF5',
-  FAVS_BUMPED: '#8FE3D8'
+  FAVS_BUMPED: '#8FE3D8',
 };
 
 @Component({
   selector: 'tsl-item-stats-graph',
   templateUrl: './item-stats-graph.component.html',
-  styleUrls: ['./item-stats-graph.component.scss']
+  styleUrls: ['./item-stats-graph.component.scss'],
 })
 export class ItemStatsGraphComponent implements OnInit {
-
   @Input() type: string;
   @Input() item: Item;
   @Input() statsData: ItemStatisticFullResponse;
   public id: string = 'chart-' + this.uuidService.getUUID();
   public chartOption: EChartOption;
 
-  constructor(private i18n: I18nService,
+  constructor(
+    private i18n: I18nService,
     private uuidService: UuidService,
-    @Inject(LOCALE_ID) private locale: string) {
-  }
+    @Inject(LOCALE_ID) private locale: string
+  ) {}
 
   ngOnInit() {
     this.loadStats();
@@ -46,7 +56,7 @@ export class ItemStatsGraphComponent implements OnInit {
     let colorChats = '';
     let colorViews = '';
 
-    entries.map(entry => {
+    entries.map((entry) => {
       const unixDate = moment.unix(entry.date / 1000).utcOffset(0, true);
       xAxisData.push(moment(unixDate, 'DD').format('DD MMM'));
       if (this.type === 'favs') {
@@ -57,7 +67,9 @@ export class ItemStatsGraphComponent implements OnInit {
       }
       colorFavs = entry.bumped ? GRAPH_COLORS.FAVS_BUMPED : GRAPH_COLORS.FAVS;
       colorChats = entry.bumped ? GRAPH_COLORS.CHAT_BUMPED : GRAPH_COLORS.CHAT;
-      colorViews = entry.bumped ? GRAPH_COLORS.VIEWS_BUMPED : GRAPH_COLORS.VIEWS;
+      colorViews = entry.bumped
+        ? GRAPH_COLORS.VIEWS_BUMPED
+        : GRAPH_COLORS.VIEWS;
     });
     this.chartOption = {
       tooltip: {
@@ -66,43 +78,43 @@ export class ItemStatsGraphComponent implements OnInit {
         backgroundColor: 'rgba(250, 250, 250, 0.9)',
         textStyle: {
           fontSize: 12,
-          color: '#000000'
+          color: '#000000',
         },
       },
       toolbox: {
-        show: false
+        show: false,
       },
       legend: {
         show: false,
         selected: {
-          'Favoritos': this.type === 'favs',
-          'Visualizaciones': this.type !== 'favs',
-          'Mensajes': this.type !== 'favs'
-        }
+          Favoritos: this.type === 'favs',
+          Visualizaciones: this.type !== 'favs',
+          Mensajes: this.type !== 'favs',
+        },
       },
       grid: {
         left: 50,
         right: 50,
         top: 20,
-        height: '50%'
+        height: '50%',
       },
       xAxis: {
         data: xAxisData,
         silent: false,
         splitLine: {
-          show: false
+          show: false,
         },
         nameTextStyle: {
-          color: 'rgba(19, 193, 172, 1.0)'
+          color: 'rgba(19, 193, 172, 1.0)',
         },
         axisLine: {
           lineStyle: {
-            color: '#90A4AE'
-          }
-        }
+            color: '#90A4AE',
+          },
+        },
       },
       yAxis: {
-        show: false
+        show: false,
       },
       series: [
         {
@@ -111,13 +123,13 @@ export class ItemStatsGraphComponent implements OnInit {
           smooth: true,
           sampling: 'average',
           itemStyle: {
-            color: colorFavs
+            color: colorFavs,
           },
           hoverAnimation: true,
           data: data1,
           animationDelay: function (idx) {
             return idx * 100;
-          }
+          },
         },
         {
           name: this.i18n.getTranslations('views'),
@@ -125,29 +137,29 @@ export class ItemStatsGraphComponent implements OnInit {
           smooth: true,
           sampling: 'average',
           itemStyle: {
-            color: colorViews
+            color: colorViews,
           },
           data: data2,
           animationDelay: function (idx) {
             return idx * 170;
-          }
+          },
         },
         {
           name: this.i18n.getTranslations('chats'),
           type: 'bar',
           itemStyle: {
-            color: colorChats
+            color: colorChats,
           },
           data: data3,
           animationDelay: function (idx) {
             return idx * 10 + 250;
-          }
-        }
+          },
+        },
       ],
       animationEasing: 'elasticOut',
       animationDelayUpdate: function (idx) {
         return idx * 5;
-      }
+      },
     };
   }
 
@@ -156,13 +168,12 @@ export class ItemStatsGraphComponent implements OnInit {
     this.statsData.entries.forEach((entry: ItemStatisticEntriesResponse) => {
       entries.push({
         date: +entry.date,
-        favs: entry.values && entry.values.favs || 0,
-        views: entry.values && entry.values.views || 0,
-        chats: entry.values && entry.values.chats || 0,
-        bumped: entry.bumped
+        favs: (entry.values && entry.values.favs) || 0,
+        views: (entry.values && entry.values.views) || 0,
+        chats: (entry.values && entry.values.chats) || 0,
+        bumped: entry.bumped,
       });
     });
     this.setUpChart(entries);
   }
-
 }

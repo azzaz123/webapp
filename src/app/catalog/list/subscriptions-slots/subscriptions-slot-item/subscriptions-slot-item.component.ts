@@ -6,34 +6,39 @@ import {
   ClickCatalogManagement,
   SCREEN_IDS,
   ANALYTICS_EVENT_NAMES,
-  ANALYTIC_EVENT_TYPES} from '../../../../core/analytics/analytics-constants';
+  ANALYTIC_EVENT_TYPES,
+} from '../../../../core/analytics/analytics-constants';
 
 @Component({
   selector: 'tsl-subscriptions-slot-item',
   templateUrl: './subscriptions-slot-item.component.html',
-  styleUrls: ['./subscriptions-slot-item.component.scss']
+  styleUrls: ['./subscriptions-slot-item.component.scss'],
 })
 export class SubscriptionsSlotItemComponent implements OnInit {
-
   @Input() subscriptionSlot: SubscriptionSlot;
   @Input() subscriptionSlotsLength = 1;
   @Input() selectedSubscriptionSlot: SubscriptionSlot = null;
   @Output() selected: EventEmitter<SubscriptionSlot> = new EventEmitter();
 
-  constructor(private analyticsService: AnalyticsService) { }
+  constructor(private analyticsService: AnalyticsService) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   isSelected() {
     if (!this.selectedSubscriptionSlot) {
       return false;
     }
-    return this.subscriptionSlot.category.category_id === this.selectedSubscriptionSlot.category.category_id;
+    return (
+      this.subscriptionSlot.category.category_id ===
+      this.selectedSubscriptionSlot.category.category_id
+    );
   }
 
   onClick(subscriptionSlot: SubscriptionSlot, e: any) {
-    if (!subscriptionSlot || subscriptionSlot === this.selectedSubscriptionSlot) {
+    if (
+      !subscriptionSlot ||
+      subscriptionSlot === this.selectedSubscriptionSlot
+    ) {
       e.stopPropagation();
       this.selected.emit(null);
     } else {
@@ -43,12 +48,11 @@ export class SubscriptionsSlotItemComponent implements OnInit {
         name: ANALYTICS_EVENT_NAMES.ClickCatalogManagement,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
-          screenId: SCREEN_IDS.MyCatalog
-        }
+          screenId: SCREEN_IDS.MyCatalog,
+        },
       };
 
       this.analyticsService.trackEvent(event);
     }
   }
-
 }

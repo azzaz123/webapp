@@ -16,7 +16,12 @@ export interface ClickKYCBanner {
   /**
    * KYC status of the user viewing the banner
    */
-  status: "pending" | "pending_verification" | "verified" | "rejected" | "unneeded";
+  status:
+    | 'pending'
+    | 'pending_verification'
+    | 'verified'
+    | 'rejected'
+    | 'unneeded';
   /**
    * Identifier of the screen where the KYC banner is clicked
    */
