@@ -6,11 +6,9 @@ import { Item } from '../core/item/item';
 
 @Injectable()
 export class ItemResolverService implements Resolve<Item> {
-
   constructor(private itemService: ItemService) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<Item> {
     return this.itemService.get(route.paramMap.get('id'));
   }
-
 }

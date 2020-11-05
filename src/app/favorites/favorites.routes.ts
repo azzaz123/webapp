@@ -14,18 +14,16 @@ const routes: Routes = [
       isMyZone: true,
       permissions: {
         except: PERMISSIONS.professional,
-        redirectTo: '/pro/profile'
-      }
-    }
-  }
+        redirectTo: '/pro/profile',
+      },
+    },
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class FavoritesRoutingModule { }
+export class FavoritesRoutingModule {}
 
-export const favoritesRoutedComponents = [
-  FavoritesComponent
-];
+export const favoritesRoutedComponents = [FavoritesComponent];

@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { dashboardRoutedComponents, DashboardRoutingModule } from './dashboard.routes';
+import {
+  dashboardRoutedComponents,
+  DashboardRoutingModule,
+} from './dashboard.routes';
 import { CallComponent } from './call/call.component';
 import { SharedModule } from '../shared/shared.module';
 import { ConversationModule } from '../core/conversation/conversation.module';
@@ -22,12 +25,9 @@ import { NgxEchartsModule } from 'ngx-echarts';
     NgxEchartsModule,
     FormsModule,
     ChatModule,
-    DropdownModule
+    DropdownModule,
   ],
   declarations: [dashboardRoutedComponents, CallComponent, StatsGraphComponent],
-  providers: [
-    StatisticsService
-  ]
+  providers: [StatisticsService],
 })
-export class DashboardModule {
-}
+export class DashboardModule {}

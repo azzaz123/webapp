@@ -12,18 +12,17 @@ const routes: Routes = [
     data: {
       permissions: {
         only: PERMISSIONS.professional,
-        redirectTo: '/catalog/list'
+        redirectTo: '/catalog/list',
       },
-      isMyZone: true
-    }
-  }
+      isMyZone: true,
+    },
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class CallsRoutingModule {
-}
+export class CallsRoutingModule {}
 
 export const callsRoutedComponents = [CallsComponent];

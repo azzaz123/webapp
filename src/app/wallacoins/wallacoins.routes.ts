@@ -8,15 +8,14 @@ const routes: Routes = [
   {
     path: '',
     component: WallacoinsComponent,
-    canActivate: [LoggedGuard, NgxPermissionsGuard]
-  }
+    canActivate: [LoggedGuard, NgxPermissionsGuard],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class WallacoinsRoutingModule {
-}
+export class WallacoinsRoutingModule {}
 
 export const wallacoinsRoutedComponents = [WallacoinsComponent];

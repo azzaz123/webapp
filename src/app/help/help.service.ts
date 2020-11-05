@@ -4,9 +4,7 @@ import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class HelpService {
-
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   public getFaqs(locale: string): Observable<any> {
     return this.http.get(`assets/json/faq.${locale}.json`);
@@ -15,5 +13,4 @@ export class HelpService {
   public getFeatures(locale: string): Observable<any> {
     return this.http.get(`assets/json/faq-features.${locale}.json`);
   }
-
 }
