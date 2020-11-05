@@ -159,6 +159,13 @@ Chat sequence diagrams: https://confluence.wallapop.com/display/ROV/Chat+sequenc
 
 To enable the "format on save" option, follow this steps:
 
+### WebStorm
+
+1. Follow the steps of the next link:
+   [Documentation](https://prettier.io/docs/en/webstorm.html)
+
+### Visual Studio Code:
+
 1. Download `Prettier - Code formatter` from VS code Extensions store.
 2. `ctrl + shift + P` or `cmd + shift + P` → Preferences: Open settings (JSON).
 3. Paste the following code:
