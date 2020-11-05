@@ -1,85 +1,90 @@
 import { TestBed } from '@angular/core/testing';
-import { HereMapsService } from './here-maps.service';
+import { HereMapsService, HERE_MAPS_CORE_URL } from './here-maps.service';
 
 
 describe('HereMapsService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+  let service: HereMapsService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(HereMapsService);
+  });
 
   it('should be created', () => {
-    const service: HereMapsService = TestBed.get(HereMapsService);
+    service.isLibraryReady
+    console.log(document.head)
     expect(service).toBeTruthy();
   });
+
+/*  it('should append valid script to DOM', () => {
+    service.appendHereMapsCoreToDOM();
+
+    const result = document.getElementById(HERE_MAPS_CORE_ID);
+    expect(result).toBeDefined();
+    expect(result.getAttribute('src')).toBe(HERE_MAPS_CORE_URL);
+    expect(result.getAttribute('type')).toBe('text/javascript');
+    expect(result.getAttribute('charset')).toBe('utf-8');
+}); */
 });
 
 
-// import { URL_REGEX } from '@core/constants/index';
+/*  describe('Here-Maps', () => {
+     describe('Core', () => {
+         it('should have URL with valid format', () => {
+             expect(URL_REGEX.test(HERE_MAPS_CORE_URL)).toBeTruthy();
+         });
 
-// import {
-//     HERE_MAPS_CORE_ID,
-//     HERE_MAPS_CORE_URL,
-//     HERE_MAPS_SERVICE_ID,
-//     HERE_MAPS_SERVICE_URL,
-//     appendHereMapsCoreToDOM,
-//     appendHereMapsServiceToDOM
-// } from './';
+         describe('appendHereMapsCoreToDOM', () => {
+             it('should append valid script to DOM', () => {
+                 appendHereMapsCoreToDOM();
 
-// describe('Here-Maps', () => {
-//     describe('Core', () => {
-//         it('should have URL with valid format', () => {
-//             expect(URL_REGEX.test(HERE_MAPS_CORE_URL)).toBeTruthy();
-//         });
+                 const result = document.getElementById(HERE_MAPS_CORE_ID);
+                 expect(result).toBeDefined();
+                 expect(result.getAttribute('src')).toBe(HERE_MAPS_CORE_URL);
+                 expect(result.getAttribute('type')).toBe('text/javascript');
+                 expect(result.getAttribute('charset')).toBe('utf-8');
+             });
 
-//         describe('appendHereMapsCoreToDOM', () => {
-//             it('should append valid script to DOM', () => {
-//                 appendHereMapsCoreToDOM();
+             it('should not append script if already exists', () => {
+                 spyOn(document.head, 'appendChild').and.callThrough();
+                 const coreRef = document.getElementById(HERE_MAPS_CORE_ID);
+                 document.head.removeChild(coreRef);
 
-//                 const result = document.getElementById(HERE_MAPS_CORE_ID);
-//                 expect(result).toBeDefined();
-//                 expect(result.getAttribute('src')).toBe(HERE_MAPS_CORE_URL);
-//                 expect(result.getAttribute('type')).toBe('text/javascript');
-//                 expect(result.getAttribute('charset')).toBe('utf-8');
-//             });
+                 appendHereMapsCoreToDOM();
+                 appendHereMapsCoreToDOM();
 
-//             it('should not append script if already exists', () => {
-//                 spyOn(document.head, 'appendChild').and.callThrough();
-//                 const coreRef = document.getElementById(HERE_MAPS_CORE_ID);
-//                 document.head.removeChild(coreRef);
+                 expect(document.head.appendChild).toHaveBeenCalledTimes(1);
+             });
+         });
 
-//                 appendHereMapsCoreToDOM();
-//                 appendHereMapsCoreToDOM();
+     });
 
-//                 expect(document.head.appendChild).toHaveBeenCalledTimes(1);
-//             });
-//         });
+     describe('Service', () => {
+         it('should have URL with valid format', () => {
+             expect(URL_REGEX.test(HERE_MAPS_SERVICE_URL)).toBeTruthy();
+         });
 
-//     });
+         describe('appendHereMapsServiceToDOM', () => {
+             it('should append valid script to DOM', () => {
+                 appendHereMapsServiceToDOM();
 
-//     describe('Service', () => {
-//         it('should have URL with valid format', () => {
-//             expect(URL_REGEX.test(HERE_MAPS_SERVICE_URL)).toBeTruthy();
-//         });
+                 const result = document.getElementById(HERE_MAPS_SERVICE_ID);
+                 expect(result).toBeDefined();
+                 expect(result.getAttribute('src')).toBe(HERE_MAPS_SERVICE_URL);
+                 expect(result.getAttribute('type')).toBe('text/javascript');
+                 expect(result.getAttribute('charset')).toBe('utf-8');
+             });
 
-//         describe('appendHereMapsServiceToDOM', () => {
-//             it('should append valid script to DOM', () => {
-//                 appendHereMapsServiceToDOM();
+             it('should not append script if already exists', () => {
+                 spyOn(document.head, 'appendChild').and.callThrough();
+                 const serviceRef = document.getElementById(HERE_MAPS_SERVICE_ID);
+                 document.head.removeChild(serviceRef);
 
-//                 const result = document.getElementById(HERE_MAPS_SERVICE_ID);
-//                 expect(result).toBeDefined();
-//                 expect(result.getAttribute('src')).toBe(HERE_MAPS_SERVICE_URL);
-//                 expect(result.getAttribute('type')).toBe('text/javascript');
-//                 expect(result.getAttribute('charset')).toBe('utf-8');
-//             });
+                 appendHereMapsServiceToDOM();
+                 appendHereMapsServiceToDOM();
 
-//             it('should not append script if already exists', () => {
-//                 spyOn(document.head, 'appendChild').and.callThrough();
-//                 const serviceRef = document.getElementById(HERE_MAPS_SERVICE_ID);
-//                 document.head.removeChild(serviceRef);
-
-//                 appendHereMapsServiceToDOM();
-//                 appendHereMapsServiceToDOM();
-
-//                 expect(document.head.appendChild).toHaveBeenCalledTimes(1);
-//             });
-//         });
-//     });
-// });
+                 expect(document.head.appendChild).toHaveBeenCalledTimes(1);
+             });
+         });
+     });
+ }); */

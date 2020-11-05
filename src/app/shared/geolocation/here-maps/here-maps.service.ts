@@ -22,6 +22,10 @@ export const HERE_MAPS_UI_REF_ID = 'src-here-maps-ui';
 export const HERE_MAPS_UI_CSS_REF_ID = 'src-here-maps-ui-css';
 export const HERE_MAPS_EVENTS_REF_ID = 'src-here-maps-events';
 
+export const GEO_APP_ID = 'RgPrXX1bXt123UgUFc7B';
+export const GEO_APP_CODE = 'HtfX0DsqZ2Y0x-44GfujFA';
+
+
 export const CHECK_INTERVAL_MS = 100;
 
 @Injectable({
@@ -88,8 +92,8 @@ export class HereMapsService {
 
   private initializePlatform() {
     this.platform = new H.service.Platform({
-      app_id: 'RgPrXX1bXt123UgUFc7B',
-      app_code: 'HtfX0DsqZ2Y0x-44GfujFA',
+      app_id: GEO_APP_ID,
+      app_code: GEO_APP_CODE,
       useCIT: true,
       useHTTPS: true
     });
@@ -100,6 +104,9 @@ export class HereMapsService {
     if (coreScriptRef) {
       return;
     }
+
+    console.log('test')
+
 
     const coreScript = document.createElement('script');
     coreScript.setAttribute('id', HERE_MAPS_CORE_REF_ID);

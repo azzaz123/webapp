@@ -23,7 +23,6 @@ export class HereMapsComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() size = 'normal';
   @Input() isApproximateLocation = false;
   @ViewChild('map', { static: true }) mapEl: ElementRef;
-  public platform: any;
   private map: any;
   private marker: any;
   private circle: any;

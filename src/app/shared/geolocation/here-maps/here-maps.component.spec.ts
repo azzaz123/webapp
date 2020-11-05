@@ -4,6 +4,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HereMapsComponent, MAP_ZOOM_GENERAL, MAP_ZOOM_MARKER } from './here-maps.component';
 import { USER_LOCATION_COORDINATES } from '../../../../tests/user.fixtures.spec';
+import { HereMapsService } from './here-maps.service';
+import { of } from 'rxjs';
 
 const ICON = { url: 'icon' };
 const MARKER = { marker: 'marker' };
@@ -32,14 +34,19 @@ describe('HereMapsComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [HereMapsComponent]
+      declarations: [HereMapsComponent],
+      providers: [{
+        provide: HereMapsService, useValue: {
+          isLibraryReady: true,
+          isLibraryReady$: of(true),
+          platform: MOCKED_PLATFORM
+        }
+      }]
     }).compileComponents();
 
     fixture = TestBed.createComponent(HereMapsComponent);
     component = fixture.componentInstance;
     component.coordinates = USER_LOCATION_COORDINATES;
-    component.platform = MOCKED_PLATFORM;
-    spyOn(component, 'initializePlatform').and.returnValue({});
     spyOn(component, 'createMap').and.returnValue(MockedMap);
     spyOn(component, 'createIcon').and.returnValue(ICON);
     spyOn(component, 'createCircle').and.returnValue(CIRCLE);
@@ -55,11 +62,6 @@ describe('HereMapsComponent', () => {
     fixture.detectChanges();
   });
 
-  describe('ngOnInit', () => {
-    it('should initiliaze platform from Here Maps', () => {
-      expect(component.initializePlatform).toHaveBeenCalledTimes(1);
-    });
-  });
 
   describe('ngAfterViewInit', () => {
     it('should prepare map', () => {
