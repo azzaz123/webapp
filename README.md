@@ -1,15 +1,19 @@
 # Webapp
+
 The private web app for Wallapop once you do login in the public one.
 
 ## Table of Contents
+
 - [Installation](#installation)
 - [Scripts](#scripts)
 - [How to deploy](#how-to-deploy)
 - [How to deploy - custom branch](#how-to-deploy---custom-branch)
 - [Commentaries](#commentaries)
 - [Documentation](#documentation)
+- [Prettier](#prettier)
 
 ## Installation
+
 To do a clean installation after downloading the repo, follow this steps:
 
 1. Install [nvm](https://github.com/creationix/nvm), a node version manager.
@@ -20,18 +24,22 @@ To do a clean installation after downloading the repo, follow this steps:
 6. Execute `./prepare_repo.sh` in a terminal.
 
 ## Scripts
+
 ### Local development server
+
 In order to instantiate a local sever, run one of the following commands:
 
 - Run `yarn start XXX` where `XXX` is the docker you are using. If not specified, will be `111`. Example: `yarn start 123`. **(recommended)**
-- Run `yarn start beta` to use beta environment file with localhost build configuration. 
+- Run `yarn start beta` to use beta environment file with localhost build configuration.
 - Run `yarn start-beta` to use beta environment file with beta build configuration. Slower than the previous command.
 - Run `yarn serve` for a complete dev server build. (using AOT, i18n with Spanish translations, etc, but much slower)
 
 Now you can navigate to `http://localhost:4200/login`.You should see the app running. If you change any of the source files, the app will automatically build again and reload the page.
 
 ### Tests
+
 Run one of the following commands to test the app:
+
 - Run `yarn test` to execute the unit tests in watch mode. **(recommended)**
 - Run `yarn test-once` to execute them only once.
 - Run `yarn test-coverage` to first run the tests and if everything is ok, it will open an HTML with the coverage report.
@@ -41,10 +49,13 @@ We are using [Jest](https://jestjs.io/) as our tests runner and we use [Jasmine]
 ### Code scaffolding
 
 To generate a new component, you can run the following command:
+
 ```
 ng generate component component-name
 ```
+
 You can also use it to generate directives, pipes, etc:
+
 ```
 ng generate directive|pipe|service|class|module
 ```
@@ -65,60 +76,76 @@ yarn buildprod-en
 ```
 
 ## How to deploy:
+
 Currently this project uses gitflow. To start and finish a release one has to use the ReleaseBot
 
 ### Start release
+
 ```
 release_begin repo=webapp version_update=minor
 ```
 
 ### End release
+
 ```
 release_end repo=webapp
 ```
 
 ### Image Tagging
-| Branch Name   | Tag |
-| :-------------: | :-------------: |
-| master  | stable  |
-| release  | release  |
-| hotfix  | release  |
-| develop  | latest  |
+
+|               Branch Name                |                    Tag                     |
+| :--------------------------------------: | :----------------------------------------: |
+|                  master                  |                   stable                   |
+|                 release                  |                  release                   |
+|                  hotfix                  |                  release                   |
+|                 develop                  |                   latest                   |
 | any other branch (eg: feature/FRON-1234) | name of the branch (eg: feature-FRON-1234) |
 
 ## How to deploy - custom branch
+
 If you want to deploy a custom branch into beta, it is possible by using the Deploybot as it follows:
+
 ```
 deploy env=beta service=webapp tag=<BRANCH-NAME>
 ```
+
 Example with branch `feature/FRON-1234`:
+
 ```
 deploy env=beta service=webapp tag=feature-FRON-1234
 ```
+
 How to revert beta to its previous state (without doing a release), will put what's in develop, there's no workaround yet:
+
 ```
 deploy env=beta service=webapp tag=latest
 ```
 
 ## Commentaries
+
 ### Login
+
 You should be able to log in using one of the users described in this [Google Drive file](https://docs.google.com/spreadsheets/d/1lvo1gaid_Xb1Dw3_eTgBuWZWNmRLAUlIgaAy9KQza0E/edit?ts=5d00b86c#gid=1338714848).
 
 ### Environments
+
 You have the environment variables on `src/environments/environment.ts`, you can change them locally to suit your needs.
 Beware that some request are done to the wallapopBackend API and other are done to the public web API, so you may need to run locally also the web project.
 
 ### Cookies
+
 If you are encountering problems switching branches or dockers, it is recommended that you clean first your cookies
 
 ### Generate interfaces for tracking events (mParticle)
-The analytics team provide us with a series of JSON's files with which we must validate each tracking event that is implemented (check this [repo](https://github.com/Wallapop/mparticle_json_validation) for more info). The following procedure will generate TS interfaces from these JSON files: 
 
-- Run `yarn install` for downloading the latest version of the validation JSONs. 
+The analytics team provide us with a series of JSON's files with which we must validate each tracking event that is implemented (check this [repo](https://github.com/Wallapop/mparticle_json_validation) for more info). The following procedure will generate TS interfaces from these JSON files:
+
+- Run `yarn install` for downloading the latest version of the validation JSONs.
 - Run `yarn mparticle` for generating TS interfaces from the JSON files. New interfaces will be placed in `core/analytics/events-interfaces` directory.
 - Use the generated interfaces when sending tracking events.
 
 ### When opening a PR
+
 - Make sure your branch name has a JIRA associated ticket. E.g.: `feature/PQP-XYZ`
 - Make sure your commits have the JIRA associated ticket. E.g.: `[PQP-XYZ]: Commit message`
 - Make sure you follow the template given in the `PULL_REQUEST_TEMPLATE.md` file. (automatically filled)
@@ -127,3 +154,21 @@ The analytics team provide us with a series of JSON's files with which we must v
 ## Documentation
 
 Chat sequence diagrams: https://confluence.wallapop.com/display/ROV/Chat+sequence+diagrams
+
+## Prettier
+
+To enable the "format on save" option, follow this steps:
+
+1. Download `Prettier - Code formatter` from VS code Extensions store.
+2. `ctrl + shift + P` or `cmd + shift + P` → Preferences: Open settings (JSON).
+3. Paste the following code:
+
+```
+{
+ "editor.formatOnSave": true,
+ "editor.defaultFormatter": "esbenp.prettier-vscode",
+ "[javascript]": {
+ "editor.defaultFormatter": "esbenp.prettier-vscode"
+ }
+}
+```
