@@ -38,7 +38,7 @@ import { DropdownModule } from 'app/dropdown/dropdown.module';
     NgxPermissionsModule.forChild(),
     NgbPopoverModule,
     TrackingModule,
-    DndModule,
+    DndModule.forRoot(),
     NgbCarouselModule,
     GeolocationModule,
     NgbButtonsModule,

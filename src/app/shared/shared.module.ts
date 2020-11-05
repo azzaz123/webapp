@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { AdComponent } from './ad/ad.component';
 import { CustomCurrencyPipe, DateUntilDayPipe, DateCalendarPipe, CountdownPipe } from './pipes';
@@ -82,7 +81,6 @@ import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
   imports: [
     CardModule,
     CommonModule,
-    NgbModule,
     ReactiveFormsModule,
     FormsModule,
     GeolocationModule,
