@@ -22,17 +22,22 @@ describe(`MockInterceptor`, () => {
     injector = getTestBed();
     injector.configureTestingModule({
       imports: [HttpClientTestingModule, HttpModuleNew],
-      providers: [{ provide: FeatureflagService, useClass: FeatureFlagServiceMock }, {
-        provide: AccessTokenService, useValue: {
-          accessToken: 'ACCESS_TOKEN'
-        }
-      }]
+      providers: [
+        { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
+        {
+          provide: AccessTokenService,
+          useValue: {
+            accessToken: 'ACCESS_TOKEN',
+          },
+        },
+      ],
     });
 
     http = injector.get(HttpClient);
     httpMock = injector.get(HttpTestingController);
-    interceptor = injector.get(HTTP_INTERCEPTORS).filter(inter => inter instanceof MockInterceptor)[0];
-
+    interceptor = injector
+      .get(HTTP_INTERCEPTORS)
+      .filter((inter) => inter instanceof MockInterceptor)[0];
   });
 
   afterEach((): void => {
@@ -43,8 +48,8 @@ describe(`MockInterceptor`, () => {
     interceptor.mockUrls = [
       {
         url: environment.baseUrl,
-        data: {}
-      }
+        data: {},
+      },
     ];
 
     http.get(environment.baseUrl).subscribe();
@@ -58,11 +63,13 @@ describe(`MockInterceptor`, () => {
     interceptor.mockUrls = [
       {
         url: environment.baseUrl,
-        data: mockData
-      }
+        data: mockData,
+      },
     ];
 
-    http.get(environment.baseUrl).subscribe(response => dataResponse = response);
+    http
+      .get(environment.baseUrl)
+      .subscribe((response) => (dataResponse = response));
 
     expect(dataResponse).toEqual(mockData);
   });

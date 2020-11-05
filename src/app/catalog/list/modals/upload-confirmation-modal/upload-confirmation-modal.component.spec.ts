@@ -1,4 +1,3 @@
-
 import { of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { UploadConfirmationModalComponent } from './upload-confirmation-modal.component';
@@ -6,7 +5,12 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TrackingService } from '../../../../core/tracking/tracking.service';
 import { ItemService } from '../../../../core/item/item.service';
-import { PRODUCT_RESPONSE, ORDER_EVENT, PRODUCT_DURATION_ID, MOCK_ITEM } from '../../../../../tests/item.fixtures.spec';
+import {
+  PRODUCT_RESPONSE,
+  ORDER_EVENT,
+  PRODUCT_DURATION_ID,
+  MOCK_ITEM,
+} from '../../../../../tests/item.fixtures.spec';
 import { MockTrackingService } from '../../../../../tests/tracking.fixtures.spec';
 import { DecimalPipe } from '@angular/common';
 import { CustomCurrencyPipe } from '../../../../shared/pipes';
@@ -27,29 +31,30 @@ describe('UploadConfirmationModalComponent', () => {
       providers: [
         NgbActiveModal,
         DecimalPipe,
-        {provide: TrackingService, useClass: MockTrackingService},
+        { provide: TrackingService, useClass: MockTrackingService },
         {
-          provide: ItemService, useValue: {
-            getUrgentProducts() {}
-          }
+          provide: ItemService,
+          useValue: {
+            getUrgentProducts() {},
+          },
         },
         {
-          provide: NgbActiveModal, useValue: {
-            close() {
-            }
-          }
+          provide: NgbActiveModal,
+          useValue: {
+            close() {},
+          },
         },
         {
-          provide: PaymentService, useValue: {
-          getCreditInfo() {
-            return of({});
-          }
-        }
-        }
+          provide: PaymentService,
+          useValue: {
+            getCreditInfo() {
+              return of({});
+            },
+          },
+        },
       ],
-        schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -66,7 +71,7 @@ describe('UploadConfirmationModalComponent', () => {
       const creditInfo: CreditInfo = {
         currencyName: 'wallacoins',
         credit: 200,
-        factor: 100
+        factor: 100,
       };
       spyOn(paymentService, 'getCreditInfo').and.returnValue(of(creditInfo));
 
@@ -79,13 +84,17 @@ describe('UploadConfirmationModalComponent', () => {
 
   describe('urgentPrice', () => {
     it('should call urgentPrice', () => {
-      spyOn(itemService, 'getUrgentProducts').and.returnValue(of(PRODUCT_RESPONSE));
+      spyOn(itemService, 'getUrgentProducts').and.returnValue(
+        of(PRODUCT_RESPONSE)
+      );
       component.item = MOCK_ITEM;
 
       component.urgentPrice();
 
       expect(itemService.getUrgentProducts).toHaveBeenCalledWith(MOCK_ITEM.id);
-      expect(component.productPrice).toEqual(+PRODUCT_RESPONSE.durations[0].market_code);
+      expect(component.productPrice).toEqual(
+        +PRODUCT_RESPONSE.durations[0].market_code
+      );
       expect(component.productId).toEqual(PRODUCT_RESPONSE.durations[0].id);
     });
   });
@@ -101,7 +110,10 @@ describe('UploadConfirmationModalComponent', () => {
       component.featureUrgentItem();
 
       expect(activeModal.close).toHaveBeenCalledWith(ORDER_EVENT);
-      expect(localStorage.setItem).toHaveBeenCalledWith('transactionType', 'urgent');
+      expect(localStorage.setItem).toHaveBeenCalledWith(
+        'transactionType',
+        'urgent'
+      );
     });
   });
 
@@ -112,7 +124,12 @@ describe('UploadConfirmationModalComponent', () => {
 
       component.trackUploaded();
 
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.UPLOADFORM_SUCCESS, {categoryId: component.item.categoryId});
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.UPLOADFORM_SUCCESS,
+        {
+          categoryId: component.item.categoryId,
+        }
+      );
     });
 
     it('should send facebook AddToCart tracking', () => {
@@ -140,14 +157,17 @@ describe('UploadConfirmationModalComponent', () => {
           {
             product_category: component.item.categoryId,
             product_id: component.item.id,
-          }
-        ]
+          },
+        ],
       };
 
       component.trackUploaded();
 
-      expect(window['pintrk']).toHaveBeenCalledWith('track', 'addtocart', event);
+      expect(window['pintrk']).toHaveBeenCalledWith(
+        'track',
+        'addtocart',
+        event
+      );
     });
   });
-
 });

@@ -1,4 +1,10 @@
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 
 import { CatalogItemComponent } from './catalog-item.component';
 import { ItemChangeEvent } from './item-change.interface';
@@ -12,8 +18,11 @@ import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ReactivateModalComponent } from '../modals/reactivate-modal/reactivate-modal.component';
 import {
   ITEM_ID,
-  MOCK_ITEM, ORDER_EVENT, PRODUCT_DURATION_MARKET_CODE,
-  PRODUCT_RESPONSE, ITEM_WEB_SLUG
+  MOCK_ITEM,
+  ORDER_EVENT,
+  PRODUCT_DURATION_MARKET_CODE,
+  PRODUCT_RESPONSE,
+  ITEM_WEB_SLUG,
 } from '../../../../tests/item.fixtures.spec';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
@@ -36,25 +45,29 @@ describe('CatalogItemComponent', () => {
   let deviceService: DeviceDetectorService;
   const componentInstance = {
     price: null,
-    item: null
+    item: null,
   };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CatalogItemComponent, CustomCurrencyPipe, ThousandSuffixesPipe, CountdownPipe],
+      declarations: [
+        CatalogItemComponent,
+        CustomCurrencyPipe,
+        ThousandSuffixesPipe,
+        CountdownPipe,
+      ],
       providers: [
         DecimalPipe,
         EventService,
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: DeviceDetectorService, useClass: DeviceDetectorService },
         {
-          provide: ItemService, useValue: {
+          provide: ItemService,
+          useValue: {
             selectedItems: [],
             selectedItems$: new ReplaySubject<SelectedItemsAction>(1),
-            selectItem() {
-            },
-            deselectItem() {
-            },
+            selectItem() {},
+            deselectItem() {},
             deleteItem() {
               return of({});
             },
@@ -64,38 +77,37 @@ describe('CatalogItemComponent', () => {
             reactivateItem() {
               return of({});
             },
-            getAvailableReactivationProducts() {
-            },
+            getAvailableReactivationProducts() {},
             canDoAction() {
               return of(true);
             },
             getListingFeeInfo() {
               return of(PRODUCT_RESPONSE);
-            }
-          }
+            },
+          },
         },
         {
-          provide: NgbModal, useValue: {
+          provide: NgbModal,
+          useValue: {
             open() {
               return {
                 result: Promise.resolve(),
-                componentInstance: componentInstance
+                componentInstance: componentInstance,
               };
-            }
-          }
+            },
+          },
         },
         {
-          provide: ErrorsService, useValue: {
-            i18nError() {
-            }
-          }
+          provide: ErrorsService,
+          useValue: {
+            i18nError() {},
+          },
         },
         { provide: 'SUBDOMAIN', useValue: 'es' },
-        CountdownPipe
+        CountdownPipe,
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -118,7 +130,9 @@ describe('CatalogItemComponent', () => {
 
   describe('ngOnInit', () => {
     it('should set link', () => {
-      expect(component.link).toBe(environment.siteUrl + 'item/' + ITEM_WEB_SLUG);
+      expect(component.link).toBe(
+        environment.siteUrl + 'item/' + ITEM_WEB_SLUG
+      );
     });
 
     describe('selectMode', () => {
@@ -134,12 +148,10 @@ describe('CatalogItemComponent', () => {
 
         expect(component.selectMode).toBeTruthy();
       });
-
     });
   });
 
   describe('featureItem', () => {
-
     let item: Item;
 
     beforeEach(fakeAsync(() => {
@@ -154,11 +166,9 @@ describe('CatalogItemComponent', () => {
     it('should call select', () => {
       expect(component.select).toHaveBeenCalledWith(MOCK_ITEM);
     });
-
   });
 
   describe('reserve', () => {
-
     let item: Item = MOCK_ITEM;
 
     describe('not reserved', () => {
@@ -173,7 +183,10 @@ describe('CatalogItemComponent', () => {
       });
 
       it('should call reserveItem from itemService', () => {
-        expect(itemService.reserveItem).toHaveBeenCalledWith(MOCK_ITEM.id, true);
+        expect(itemService.reserveItem).toHaveBeenCalledWith(
+          MOCK_ITEM.id,
+          true
+        );
         expect(item.reserved).toBeTruthy();
       });
     });
@@ -195,25 +208,36 @@ describe('CatalogItemComponent', () => {
       });
 
       it('should track the ProductUnReserved event', () => {
-        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_UNRESERVED, { product_id: item.id });
+        expect(trackingService.track).toHaveBeenCalledWith(
+          TrackingService.PRODUCT_UNRESERVED,
+          {
+            product_id: item.id,
+          }
+        );
       });
 
       it('should emit ITEM_RESERVED event', () => {
-        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_RESERVED, item);
+        expect(eventService.emit).toHaveBeenCalledWith(
+          EventService.ITEM_RESERVED,
+          item
+        );
       });
     });
   });
 
   describe('reactivate', () => {
-
     beforeEach(() => {
-      spyOn(itemService, 'getAvailableReactivationProducts').and.returnValue(of(PRODUCT_RESPONSE));
+      spyOn(itemService, 'getAvailableReactivationProducts').and.returnValue(
+        of(PRODUCT_RESPONSE)
+      );
     });
 
     it('should call getAvailableReactivationProducts', () => {
       component.reactivate(MOCK_ITEM);
 
-      expect(itemService.getAvailableReactivationProducts).toHaveBeenCalledWith(ITEM_ID);
+      expect(itemService.getAvailableReactivationProducts).toHaveBeenCalledWith(
+        ITEM_ID
+      );
     });
 
     it('should open dialog and set price', () => {
@@ -222,7 +246,7 @@ describe('CatalogItemComponent', () => {
       component.reactivate(MOCK_ITEM);
 
       expect(modalService.open).toHaveBeenCalledWith(ReactivateModalComponent, {
-        windowClass: 'modal-standard'
+        windowClass: 'modal-standard',
       });
       expect(componentInstance.price).toEqual(PRODUCT_DURATION_MARKET_CODE);
       expect(componentInstance.item).toEqual(MOCK_ITEM);
@@ -231,7 +255,7 @@ describe('CatalogItemComponent', () => {
     it('should emit reactivatedWithBump event if result is bump', fakeAsync(() => {
       spyOn(modalService, 'open').and.returnValue({
         result: Promise.resolve('bump'),
-        componentInstance: componentInstance
+        componentInstance: componentInstance,
       });
       let event: ItemChangeEvent;
       component.itemChange.subscribe((e: ItemChangeEvent) => {
@@ -243,14 +267,14 @@ describe('CatalogItemComponent', () => {
 
       expect(event).toEqual({
         orderEvent: ORDER_EVENT,
-        action: 'reactivatedWithBump'
+        action: 'reactivatedWithBump',
       });
     }));
 
     it('should call reactivateItem if result is NOT bump', fakeAsync(() => {
       spyOn(modalService, 'open').and.returnValue({
         result: Promise.resolve('reactivate'),
-        componentInstance: componentInstance
+        componentInstance: componentInstance,
       });
       spyOn(component, 'reactivateItem');
       let event: ItemChangeEvent;
@@ -279,7 +303,6 @@ describe('CatalogItemComponent', () => {
   });
 
   describe('reactivateItem', () => {
-
     let item: Item;
     let event: ItemChangeEvent;
 
@@ -307,7 +330,9 @@ describe('CatalogItemComponent', () => {
     });
 
     it('should send appboy ReactivateItem event', () => {
-      expect(appboy.logCustomEvent).toHaveBeenCalledWith('ReactivateItem', { platform: 'web' });
+      expect(appboy.logCustomEvent).toHaveBeenCalledWith('ReactivateItem', {
+        platform: 'web',
+      });
     });
   });
 
@@ -346,7 +371,6 @@ describe('CatalogItemComponent', () => {
   });
 
   describe('setSold', () => {
-
     let item: Item;
     let event: ItemChangeEvent;
 
@@ -373,30 +397,49 @@ describe('CatalogItemComponent', () => {
       });
 
       it('should track the DeleteItem event', () => {
-        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_SOLD, { product_id: item.id });
+        expect(trackingService.track).toHaveBeenCalledWith(
+          TrackingService.PRODUCT_SOLD,
+          {
+            product_id: item.id,
+          }
+        );
       });
 
       it('should emit ITEM_SOLD event', () => {
-        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_SOLD, item);
+        expect(eventService.emit).toHaveBeenCalledWith(
+          EventService.ITEM_SOLD,
+          item
+        );
       });
 
       it('should emit facebook ITEM_SOLD event', () => {
-        const facebookEvent = { value: MOCK_ITEM.salePrice, currency: MOCK_ITEM.currencyCode };
+        const facebookEvent = {
+          value: MOCK_ITEM.salePrice,
+          currency: MOCK_ITEM.currencyCode,
+        };
 
-        expect(window['fbq']).toHaveBeenCalledWith('track', 'CompleteRegistration', facebookEvent);
+        expect(window['fbq']).toHaveBeenCalledWith(
+          'track',
+          'CompleteRegistration',
+          facebookEvent
+        );
       });
     });
   });
 
   describe('showListingFee', () => {
     it('should return true when listing fee expiration is more than current time', () => {
-      component.item.listingFeeExpiringDate = moment().add(2, 'seconds').valueOf();
+      component.item.listingFeeExpiringDate = moment()
+        .add(2, 'seconds')
+        .valueOf();
 
       expect(component.showListingFee()).toEqual(true);
     });
 
     it('should return false when listing fee expiration is less than current time', () => {
-      component.item.listingFeeExpiringDate = moment().subtract(2, 'seconds').valueOf();
+      component.item.listingFeeExpiringDate = moment()
+        .subtract(2, 'seconds')
+        .valueOf();
 
       expect(component.showListingFee()).toEqual(false);
     });
@@ -420,7 +463,9 @@ describe('CatalogItemComponent', () => {
     const item: Item = MOCK_ITEM;
 
     it('should get the listing fee information related to the item', () => {
-      spyOn(itemService, 'getListingFeeInfo').and.returnValue(of(PRODUCT_RESPONSE));
+      spyOn(itemService, 'getListingFeeInfo').and.returnValue(
+        of(PRODUCT_RESPONSE)
+      );
 
       component.publishItem();
 
@@ -432,11 +477,13 @@ describe('CatalogItemComponent', () => {
 
       component.publishItem();
 
-      expect(trackingService.track)
-        .toHaveBeenCalledWith(TrackingService.PURCHASE_LISTING_FEE_CATALOG, {
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.PURCHASE_LISTING_FEE_CATALOG,
+        {
           item_id: item.id,
-          payment_method: 'STRIPE'
-        });
+          payment_method: 'STRIPE',
+        }
+      );
     });
   });
 
@@ -447,7 +494,12 @@ describe('CatalogItemComponent', () => {
 
       component.openItem();
 
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_VIEWED, { product_id: component.item.id });
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.PRODUCT_VIEWED,
+        {
+          product_id: component.item.id,
+        }
+      );
       expect(window.open).toHaveBeenCalledTimes(1);
       expect(window.open).toHaveBeenCalledWith(component.link);
     });

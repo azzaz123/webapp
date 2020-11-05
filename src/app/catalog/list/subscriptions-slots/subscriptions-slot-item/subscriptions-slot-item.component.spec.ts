@@ -11,7 +11,7 @@ import {
   ClickCatalogManagement,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
-  SCREEN_IDS
+  SCREEN_IDS,
 } from '../../../../core/analytics/analytics-constants';
 
 describe('SubscriptionsSlotItemComponent', () => {
@@ -21,12 +21,13 @@ describe('SubscriptionsSlotItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ ],
-      declarations: [ SubscriptionsSlotItemComponent ],
-      providers: [ { provide: AnalyticsService, useClass: MockAnalyticsService }],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+      imports: [],
+      declarations: [SubscriptionsSlotItemComponent],
+      providers: [
+        { provide: AnalyticsService, useClass: MockAnalyticsService },
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -48,7 +49,11 @@ describe('SubscriptionsSlotItemComponent', () => {
     });
 
     it('should return false when selected slot and own subscription are different', () => {
-      component.selectedSubscriptionSlot = { category: CATEGORY_DATA_WEB[1], available: 2, limit: 2 };
+      component.selectedSubscriptionSlot = {
+        category: CATEGORY_DATA_WEB[1],
+        available: 2,
+        limit: 2,
+      };
 
       expect(component.isSelected()).toBe(false);
     });
@@ -68,7 +73,9 @@ describe('SubscriptionsSlotItemComponent', () => {
       component.onClick(MOCK_SUBSCRIPTION_SLOT_CARS, event);
 
       expect(component.selected.emit).toHaveBeenCalledTimes(1);
-      expect(component.selected.emit).toHaveBeenCalledWith(MOCK_SUBSCRIPTION_SLOT_CARS);
+      expect(component.selected.emit).toHaveBeenCalledWith(
+        MOCK_SUBSCRIPTION_SLOT_CARS
+      );
       expect(event.stopPropagation).toHaveBeenCalledTimes(0);
     });
 
@@ -94,8 +101,8 @@ describe('SubscriptionsSlotItemComponent', () => {
         name: ANALYTICS_EVENT_NAMES.ClickCatalogManagement,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
-          screenId: SCREEN_IDS.MyCatalog
-        }
+          screenId: SCREEN_IDS.MyCatalog,
+        },
       };
       spyOn(analyticsService, 'trackEvent');
 

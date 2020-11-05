@@ -8,14 +8,13 @@ let eventService: EventService;
 describe('ConnectionService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ ConnectionService, EventService ]
+      providers: [ConnectionService, EventService],
     });
     service = TestBed.inject(ConnectionService);
     eventService = TestBed.inject(EventService);
   });
 
-
-   describe('checkConnection', () => {
+  describe('checkConnection', () => {
     it('should create an instance', () => {
       expect(service).toBeTruthy();
     });

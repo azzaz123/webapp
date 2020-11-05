@@ -1,4 +1,9 @@
-import { TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
+import {
+  TestBed,
+  ComponentFixture,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 import { CountdownPipe } from './date-countdown.pipe';
 import { Component } from '@angular/core';
 
@@ -7,7 +12,7 @@ const ONE_DAY_IN_MS = ONE_HOUR_IN_MS * 24;
 const FAKE_TODAY_IN_MS = 1591867791429;
 
 @Component({
-  template: '{{deadlineDateInMs | dateCountdown}}'
+  template: '{{deadlineDateInMs | dateCountdown}}',
 })
 class MockComponent {
   public deadlineDateInMs;
@@ -19,10 +24,7 @@ describe('CountdownPipe', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        MockComponent,
-        CountdownPipe
-      ]
+      declarations: [MockComponent, CountdownPipe],
     });
     fixture = TestBed.createComponent(MockComponent);
     component = fixture.componentInstance;

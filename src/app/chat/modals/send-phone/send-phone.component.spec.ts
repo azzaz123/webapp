@@ -1,8 +1,17 @@
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import { format } from 'libphonenumber-js';
 import { By } from '@angular/platform-browser';
 
@@ -13,7 +22,10 @@ import { ErrorsService } from '../../../core/errors/errors.service';
 
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { MOCK_CONVERSATION } from '../../../../tests/conversation.fixtures.spec';
-import { MOCK_INBOX_CONVERSATION, CREATE_MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
+import {
+  MOCK_INBOX_CONVERSATION,
+  CREATE_MOCK_INBOX_CONVERSATION,
+} from '../../../../tests/inbox.fixtures.spec';
 import { InboxConversationService } from '../../service';
 import { InboxConversationServiceMock } from '../../../../tests';
 import { empty } from 'rxjs';
@@ -31,28 +43,35 @@ describe('SendPhoneComponent', () => {
   let httpMock: HttpTestingController;
   let element: DebugElement;
 
-  const MOCK_PARSED_PHONE_NUMBER = format('+34912345678', 'ES', 'International');
+  const MOCK_PARSED_PHONE_NUMBER = format(
+    '+34912345678',
+    'ES',
+    'International'
+  );
   const MOCK_VALID_SPANISH_PHONES = ['+34 912345678', '+34 612 345 678'];
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule, ReactiveFormsModule, HttpClientTestingModule],
-      providers: [NgbActiveModal,
+      providers: [
+        NgbActiveModal,
         FormBuilder,
-        { provide: InboxConversationService, useClass: InboxConversationServiceMock },
+        {
+          provide: InboxConversationService,
+          useClass: InboxConversationServiceMock,
+        },
         { provide: RealTimeService, useClass: RealTimeServiceMock },
         { provide: TrackingService, useClass: MockTrackingService },
         {
-          provide: ErrorsService, useValue: {
-            i18nError() {
-            }
-          }
+          provide: ErrorsService,
+          useValue: {
+            i18nError() {},
+          },
         },
       ],
       declarations: [SendPhoneComponent],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -73,9 +92,8 @@ describe('SendPhoneComponent', () => {
     it('should set focus after 1 second', fakeAsync(() => {
       component.phoneField = {
         nativeElement: {
-          focus() {
-          }
-        }
+          focus() {},
+        },
       };
       spyOn(component.phoneField.nativeElement, 'focus');
 
@@ -91,7 +109,8 @@ describe('SendPhoneComponent', () => {
 
     beforeEach(() => {
       component.sendPhoneForm.get('phone').setValue(MOCK_PARSED_PHONE_NUMBER);
-      submitButtonRef = fixture.debugElement.query(By.css('#send')).nativeElement;
+      submitButtonRef = fixture.debugElement.query(By.css('#send'))
+        .nativeElement;
     });
 
     describe('and when the form is valid', () => {
@@ -100,18 +119,29 @@ describe('SendPhoneComponent', () => {
 
         submitButtonRef.click();
 
-        expect(trackingService.track)
-          .toHaveBeenCalledWith(TrackingService.ITEM_SHAREPHONE_SENDPHONE, { item_id: component.conversation.item.id });
+        expect(trackingService.track).toHaveBeenCalledWith(
+          TrackingService.ITEM_SHAREPHONE_SENDPHONE,
+          {
+            item_id: component.conversation.item.id,
+          }
+        );
       });
 
       it('should save phone number to server', () => {
-        spyOn(inboxConversationService, 'addPhoneNumberToConversation$').and.returnValue(empty());
+        spyOn(
+          inboxConversationService,
+          'addPhoneNumberToConversation$'
+        ).and.returnValue(empty());
         component.conversation = MOCK_CONVERSATION();
 
         component.handleSubmit();
 
-        expect(inboxConversationService.addPhoneNumberToConversation$)
-          .toHaveBeenCalledWith(component.conversation, MOCK_PARSED_PHONE_NUMBER);
+        expect(
+          inboxConversationService.addPhoneNumberToConversation$
+        ).toHaveBeenCalledWith(
+          component.conversation,
+          MOCK_PARSED_PHONE_NUMBER
+        );
       });
 
       it('should add the phone number to the conversation', () => {
@@ -120,7 +150,12 @@ describe('SendPhoneComponent', () => {
 
         component.handleSubmit();
 
-        expect(realTimeService.addPhoneNumberMessageToConversation).toHaveBeenCalledWith(component.conversation, MOCK_PARSED_PHONE_NUMBER);
+        expect(
+          realTimeService.addPhoneNumberMessageToConversation
+        ).toHaveBeenCalledWith(
+          component.conversation,
+          MOCK_PARSED_PHONE_NUMBER
+        );
       });
 
       it('should close the modal', () => {
@@ -144,10 +179,13 @@ describe('SendPhoneComponent', () => {
 
         component.handleSubmit();
 
-        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.ITEM_SHAREPHONE_WRONGPHONE, {
-          item_id: component.conversation.item.id,
-          phone_number: component.sendPhoneForm.controls.phone.value
-        });
+        expect(trackingService.track).toHaveBeenCalledWith(
+          TrackingService.ITEM_SHAREPHONE_WRONGPHONE,
+          {
+            item_id: component.conversation.item.id,
+            phone_number: component.sendPhoneForm.controls.phone.value,
+          }
+        );
       });
 
       it('should call markAsDirty', () => {
@@ -155,7 +193,9 @@ describe('SendPhoneComponent', () => {
 
         component.handleSubmit();
 
-        expect(component.sendPhoneForm.controls.phone.markAsDirty).toHaveBeenCalled();
+        expect(
+          component.sendPhoneForm.controls.phone.markAsDirty
+        ).toHaveBeenCalled();
       });
 
       it('should call errorsService.i18nError if the phone field is empty', () => {
@@ -173,8 +213,7 @@ describe('SendPhoneComponent', () => {
       });
 
       it('should set controls.phone.valid as TRUE when an invalid input is provided', () => {
-
-        MOCK_VALID_SPANISH_PHONES.map(input => {
+        MOCK_VALID_SPANISH_PHONES.map((input) => {
           component.sendPhoneForm.get('phone').patchValue(input);
 
           component.handleSubmit();
@@ -184,9 +223,15 @@ describe('SendPhoneComponent', () => {
       });
 
       it('should set controls.phone.valid as FALSE when an invalid input is provided', () => {
-        const invalidEntries = ['', '+349-has-letters-223', '(456456)456', '456456456', '123456789'];
+        const invalidEntries = [
+          '',
+          '+349-has-letters-223',
+          '(456456)456',
+          '456456456',
+          '123456789',
+        ];
 
-        invalidEntries.forEach(input => {
+        invalidEntries.forEach((input) => {
           component.sendPhoneForm.get('phone').patchValue(input);
           component.handleSubmit();
           expect(component.sendPhoneForm.controls.phone.valid).toBe(false);
@@ -202,9 +247,13 @@ describe('SendPhoneComponent', () => {
     it('should format the number to Spanish International format when the input has 9 digits, excluding the prefix', () => {
       validInputs.map((phoneValue) => {
         element.nativeElement.value = phoneValue;
-        const expectedFormattedNumber = format(phoneValue, 'ES', 'International'); // e.g.: +34 633 33 33 33
+        const expectedFormattedNumber = format(
+          phoneValue,
+          'ES',
+          'International'
+        ); // e.g.: +34 633 33 33 33
         element.triggerEventHandler('keyup', {
-          target: element.nativeElement
+          target: element.nativeElement,
         });
 
         expect(element.nativeElement.value).toBe(expectedFormattedNumber);
@@ -215,7 +264,7 @@ describe('SendPhoneComponent', () => {
       validInputs.map((phoneValue) => {
         element.nativeElement.value = phoneValue;
         element.triggerEventHandler('keyup', {
-          target: element.nativeElement
+          target: element.nativeElement,
         });
 
         const onkeypressValue = element.nativeElement.onkeypress();
@@ -228,7 +277,7 @@ describe('SendPhoneComponent', () => {
       incompleteInputs.map((phoneValue) => {
         element.nativeElement.value = phoneValue;
         element.triggerEventHandler('keyup', {
-          target: element.nativeElement
+          target: element.nativeElement,
         });
 
         const onkeypressValue = element.nativeElement.onkeypress();
@@ -246,20 +295,27 @@ describe('SendPhoneComponent', () => {
       component.conversation = MOCK_INBOX_CONVERSATION;
       component.conversation.item.itemUrl = `${environment.siteUrl}item/aa-186156806`;
       fixture.detectChanges();
-      closeButtonRef = fixture.debugElement.query(By.css('.modal-close')).nativeElement;
+      closeButtonRef = fixture.debugElement.query(By.css('.modal-close'))
+        .nativeElement;
     });
 
     it('should track event to analytics', () => {
       closeButtonRef.click();
 
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.ITEM_SHAREPHONE_HIDEFORM,
-        { item_id: component.conversation.item.id });
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.ITEM_SHAREPHONE_HIDEFORM,
+        {
+          item_id: component.conversation.item.id,
+        }
+      );
     });
 
     it('should redirect to the item detail page', () => {
       closeButtonRef.click();
 
-      expect(window.location.href).toEqual(`${component.conversation.item.itemUrl}`);
+      expect(window.location.href).toEqual(
+        `${component.conversation.item.itemUrl}`
+      );
     });
   });
 });

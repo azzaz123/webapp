@@ -5,7 +5,10 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { NewCardModalComponent } from './new-card-modal.component';
 import { Observable } from 'rxjs/index';
-import { FINANCIAL_CARD, PAYMENT_METHOD_DATA } from '../../../../tests/payments.fixtures.spec';
+import {
+  FINANCIAL_CARD,
+  PAYMENT_METHOD_DATA,
+} from '../../../../tests/payments.fixtures.spec';
 
 describe('NewCardModalComponent', () => {
   let component: NewCardModalComponent;
@@ -15,27 +18,26 @@ describe('NewCardModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-        declarations: [NewCardModalComponent],
-        providers: [
-          {
-            provide: NgbActiveModal, useValue: {
-            close() {
-            },
-            dismiss() {
-            }
-          }
+      declarations: [NewCardModalComponent],
+      providers: [
+        {
+          provide: NgbActiveModal,
+          useValue: {
+            close() {},
+            dismiss() {},
           },
-          {
-            provide: StripeService, useValue: {
+        },
+        {
+          provide: StripeService,
+          useValue: {
             mapResponse() {
-              return FINANCIAL_CARD
-            }
-          }
+              return FINANCIAL_CARD;
+            },
           },
-        ],
-        schemas: [NO_ERRORS_SCHEMA]
-      })
-      .compileComponents();
+        },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -55,8 +57,5 @@ describe('NewCardModalComponent', () => {
 
       expect(activeModal.close).toHaveBeenCalledWith(FINANCIAL_CARD);
     });
-
   });
-
-
 });

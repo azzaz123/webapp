@@ -17,34 +17,32 @@ describe('PasswordModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule
-      ],
+      imports: [ReactiveFormsModule],
       providers: [
         {
-          provide: UserService, useValue: {
-          updatePassword() {
-            return of({});
-          }
-        }
+          provide: UserService,
+          useValue: {
+            updatePassword() {
+              return of({});
+            },
+          },
         },
         {
-          provide: NgbActiveModal, useValue: {
-          close() {
-          }
-        }
+          provide: NgbActiveModal,
+          useValue: {
+            close() {},
+          },
         },
         {
-          provide: ErrorsService, useValue: {
-          i18nError() {
-          }
-        }
-        }
+          provide: ErrorsService,
+          useValue: {
+            i18nError() {},
+          },
+        },
       ],
-      declarations: [ PasswordModalComponent ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+      declarations: [PasswordModalComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -57,13 +55,11 @@ describe('PasswordModalComponent', () => {
   });
 
   describe('onSubmit', () => {
-
     const OLD_PASSWORD = 'old_password';
     const NEW_PASSWORD = 'password';
     const SHORT_PASSWORD = 'short';
 
     describe('valid form', () => {
-
       beforeEach(() => {
         spyOn(userService, 'updatePassword').and.callThrough();
         spyOn(activeModal, 'close');
@@ -75,17 +71,18 @@ describe('PasswordModalComponent', () => {
       });
 
       it('should update password', () => {
-        expect(userService.updatePassword).toHaveBeenCalledWith(OLD_PASSWORD, NEW_PASSWORD);
+        expect(userService.updatePassword).toHaveBeenCalledWith(
+          OLD_PASSWORD,
+          NEW_PASSWORD
+        );
       });
 
       it('should close modal', () => {
         expect(activeModal.close).toHaveBeenCalled();
       });
-
     });
 
     describe('invalid form', () => {
-
       beforeEach(() => {
         spyOn(errorsService, 'i18nError');
       });
@@ -111,12 +108,16 @@ describe('PasswordModalComponent', () => {
       it('should be invalid if new password is too short (< 8 chars)', () => {
         component.passwordForm.get('old_password').patchValue(OLD_PASSWORD);
         component.passwordForm.get('new_password').patchValue(SHORT_PASSWORD);
-        component.passwordForm.get('repeat_password').patchValue(SHORT_PASSWORD);
+        component.passwordForm
+          .get('repeat_password')
+          .patchValue(SHORT_PASSWORD);
 
         component.onSubmit();
 
         expect(component.passwordForm.valid).toBeFalsy();
-        expect(errorsService.i18nError).toHaveBeenCalledWith('passwordMinLength');
+        expect(errorsService.i18nError).toHaveBeenCalledWith(
+          'passwordMinLength'
+        );
       });
 
       it('should set dirty invalid fields', () => {
@@ -124,10 +125,10 @@ describe('PasswordModalComponent', () => {
 
         expect(component.passwordForm.get('old_password').dirty).toBeTruthy();
         expect(component.passwordForm.get('new_password').dirty).toBeTruthy();
-        expect(component.passwordForm.get('repeat_password').dirty).toBeTruthy();
+        expect(
+          component.passwordForm.get('repeat_password').dirty
+        ).toBeTruthy();
       });
-
     });
-
   });
 });

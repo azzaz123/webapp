@@ -5,13 +5,12 @@ import { StarsComponent } from './stars.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('Component: Stars', () => {
-
   let component: StarsComponent;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [StarsComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     });
     component = TestBed.createComponent(StarsComponent).componentInstance;
   });
@@ -26,5 +25,4 @@ describe('Component: Stars', () => {
     expect(component.starsArray[3].active).toBeFalsy();
     expect(component.starsArray[4].active).toBeFalsy();
   });
-
 });

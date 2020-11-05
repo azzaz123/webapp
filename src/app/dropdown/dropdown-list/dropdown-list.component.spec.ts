@@ -11,9 +11,8 @@ describe('SelectDropdownComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [DropdownListComponent]
-    })
-      .compileComponents();
+      declarations: [DropdownListComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -63,17 +62,19 @@ describe('SelectDropdownComponent', () => {
       fixture.detectChanges();
 
       expect(component.optionsList).toBeTruthy();
-      expect(component.optionsList.nativeElement.textContent).toEqual('')
+      expect(component.optionsList.nativeElement.textContent).toEqual('');
     });
     it('should show not found custom not found messagge', () => {
-      const expectedMsg = "testMsg"
+      const expectedMsg = 'testMsg';
       component.optionList = new OptionList([]);
       component.notFoundMsg = expectedMsg;
 
       fixture.detectChanges();
 
       expect(component.optionsList).toBeTruthy();
-      expect(component.optionsList.nativeElement.textContent).toEqual(expectedMsg)
+      expect(component.optionsList.nativeElement.textContent).toEqual(
+        expectedMsg
+      );
     });
 
     it('should show all options', () => {
@@ -81,26 +82,24 @@ describe('SelectDropdownComponent', () => {
 
       fixture.detectChanges();
 
-      OPTIONS.forEach(
-        (option) => {
-          expect(component.optionsList.nativeElement.textContent).toContain(option.label)
-        }
-      )
+      OPTIONS.forEach((option) => {
+        expect(component.optionsList.nativeElement.textContent).toContain(
+          option.label
+        );
+      });
     });
-
 
     it('should click a option', () => {
       component.optionList = new OptionList(OPTIONS);
-      spyOn(component.optionClicked, 'emit')
+      spyOn(component.optionClicked, 'emit');
 
       fixture.detectChanges();
       const expected = component.optionList.filtered[0];
-      const element: HTMLElement = component.optionsList.nativeElement
-      const option = element.querySelectorAll('li')[0]
+      const element: HTMLElement = component.optionsList.nativeElement;
+      const option = element.querySelectorAll('li')[0];
       option.click();
 
-      expect(component.optionClicked.emit).toHaveBeenCalledWith(expected)
-
+      expect(component.optionClicked.emit).toHaveBeenCalledWith(expected);
     });
   });
 });

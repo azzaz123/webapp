@@ -11,9 +11,8 @@ describe('DropdownComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [DropdownComponent]
-    })
-      .compileComponents();
+      declarations: [DropdownComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -34,7 +33,7 @@ describe('DropdownComponent', () => {
     });
 
     it('should show custom value', () => {
-      const expected = "custom";
+      const expected = 'custom';
       component.value = null;
       component.placeholder = expected;
       fixture.detectChanges();
@@ -44,13 +43,13 @@ describe('DropdownComponent', () => {
 
       expect(p.textContent).toEqual(expected);
     });
-  })
+  });
 
   describe('Show value', () => {
     it('should show label if options was loaded', () => {
       component.value = OPTIONS[0].value;
       component.ngOnChanges({
-        options: new SimpleChange(null, OPTIONS, false)
+        options: new SimpleChange(null, OPTIONS, false),
       });
       fixture.detectChanges();
 
@@ -70,7 +69,7 @@ describe('DropdownComponent', () => {
 
       expect(v.textContent).toEqual(OPTIONS[0].value);
     });
-  })
+  });
 
   describe('Show options', () => {
     it('should open options with click', () => {
@@ -88,5 +87,5 @@ describe('DropdownComponent', () => {
 
       expect(component.dropdown).toBeFalsy();
     });
-  })
+  });
 });

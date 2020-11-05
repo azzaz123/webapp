@@ -1,12 +1,13 @@
-
 import { of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CheckoutExtrasProComponent } from './checkout-extras-pro.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { PaymentService } from '../../core/payments/payment.service';
-import { createPacksFixture, PREPARED_PACKS } from '../../../tests/payments.fixtures.spec';
-
+import {
+  createPacksFixture,
+  PREPARED_PACKS,
+} from '../../../tests/payments.fixtures.spec';
 
 describe('CheckoutExtrasProComponent', () => {
   let component: CheckoutExtrasProComponent;
@@ -15,19 +16,19 @@ describe('CheckoutExtrasProComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CheckoutExtrasProComponent ],
+      declarations: [CheckoutExtrasProComponent],
       providers: [
         {
-          provide: PaymentService, useValue: {
+          provide: PaymentService,
+          useValue: {
             getPacks() {
               return of({});
-            }
-          }
-        }
+            },
+          },
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -39,7 +40,9 @@ describe('CheckoutExtrasProComponent', () => {
 
   describe('ngOnInit', () => {
     beforeEach(() => {
-      spyOn(paymentService, 'getPacks').and.returnValue(of(createPacksFixture()));
+      spyOn(paymentService, 'getPacks').and.returnValue(
+        of(createPacksFixture())
+      );
 
       component.ngOnInit();
     });
@@ -66,7 +69,7 @@ describe('CheckoutExtrasProComponent', () => {
       street: new FormControl(),
       surname: new FormControl(),
       id: new FormControl(),
-      type: new FormControl()
+      type: new FormControl(),
     });
     const billingInfoFormValues = {
       cif: 'cif',
@@ -80,7 +83,7 @@ describe('CheckoutExtrasProComponent', () => {
       street: 'street',
       surname: 'surname',
       id: 'id',
-      type: 'legal'
+      type: 'legal',
     };
 
     it('should receive a form and set billingInfoForm with it', () => {
