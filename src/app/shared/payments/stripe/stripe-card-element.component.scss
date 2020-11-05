@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 .StripeElement {
   margin: $spacing-m 0;
@@ -37,7 +37,8 @@
   width: 100%;
 }
 
-#card-errors, .StripeCard__error {
+#card-errors,
+.StripeCard__error {
   color: $negative-dark;
   font-size: $font-size-s;
 }

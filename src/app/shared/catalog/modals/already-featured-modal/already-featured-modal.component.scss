@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 :host {
   padding: $spacing-xl;
@@ -46,7 +46,7 @@ a {
     text-decoration: underline;
     cursor: pointer;
     &:hover {
-      text-decoration: underline
+      text-decoration: underline;
     }
   }
 }

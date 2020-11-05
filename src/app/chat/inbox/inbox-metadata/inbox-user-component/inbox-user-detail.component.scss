@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 :host {
   display: block;
@@ -8,7 +8,8 @@ a.user-info {
   &.faded {
     pointer-events: none;
 
-    .card-block, .avatar-block {
+    .card-block,
+    .avatar-block {
       opacity: 0.5;
     }
   }
@@ -23,14 +24,15 @@ a.user-info {
       margin-bottom: $spacing-xxs;
     }
 
-    .user-location-distance, .user-response-rate {
+    .user-location-distance,
+    .user-response-rate {
       margin-bottom: $spacing-xs;
       color: $blue-grey-2;
       font-weight: normal;
 
       tsl-svg-icon {
         float: left;
-        fill: #B0BEC5;
+        fill: #b0bec5;
         margin: 1px $spacing-xs 0 0;
         height: $font-size-m;
         width: $font-size-m;
@@ -114,7 +116,8 @@ a.user-info {
 }
 
 a.card.user-info {
-  .card-block, .card-block.expanded {
+  .card-block,
+  .card-block.expanded {
     padding: $spacing-ms 0;
     margin: 0;
   }

@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 $cart-height: calc(100vh - #{$topbar-height + $spacing-xl * 2});
 $title-height: 50px;
@@ -62,7 +62,8 @@ h1 {
   }
 }
 
-ul, li {
+ul,
+li {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -90,13 +91,13 @@ ul, li {
       margin-right: $spacing-s;
     }
     .arrow-icon {
-      transform: rotate(-90deg) scale(.8);
+      transform: rotate(-90deg) scale(0.8);
       width: 9px;
       height: 13px;
     }
     &.collapsed {
       .arrow-icon {
-        transform: rotate(90deg) scale(.8);
+        transform: rotate(90deg) scale(0.8);
       }
     }
     .bump-type {
@@ -218,7 +219,8 @@ tsl-button {
 }
 
 .Cart__NewCard {
-  &--add, &--used {
+  &--add,
+  &--used {
     margin-bottom: $spacing-s;
     font-size: $font-size-s;
     color: $walla-main;

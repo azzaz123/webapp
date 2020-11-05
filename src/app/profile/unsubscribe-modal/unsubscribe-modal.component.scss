@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 $modal-border-radius: 5px;
 
@@ -32,7 +32,8 @@ $modal-border-radius: 5px;
       color: $blue-grey-2;
       margin: 0 $spacing-xs;
       margin-bottom: $spacing-ms;
-      &:hover, &.selected {
+      &:hover,
+      &.selected {
         background-color: $blue-grey-4;
       }
       &.btn-reason {

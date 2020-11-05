@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 .FullScreenModal {
   text-align: left;
@@ -36,7 +36,6 @@
   }
 
   .modal-close {
-      align-self: flex-end;
+    align-self: flex-end;
   }
-
 }
