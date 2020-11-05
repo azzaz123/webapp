@@ -7,13 +7,12 @@ import { CartProExtrasPack } from '../../../shared/catalog/cart/cart-item.interf
 @Component({
   selector: 'tsl-checkout-extras-pro-item',
   templateUrl: './checkout-extras-pro-item.component.html',
-  styleUrls: ['./checkout-extras-pro-item.component.scss']
+  styleUrls: ['./checkout-extras-pro-item.component.scss'],
 })
 export class CheckoutExtrasProItemComponent implements OnInit {
-
   @Input() pack: any;
 
-  constructor(private cartService: CartService) { }
+  constructor(private cartService: CartService) {}
 
   ngOnInit() {
     this.cartService.createInstance(new CartProExtras());
@@ -21,7 +20,7 @@ export class CheckoutExtrasProItemComponent implements OnInit {
 
   select(pack: Pack) {
     const cartProExtrasPack: CartProExtrasPack = {
-      pack: pack
+      pack: pack,
     };
     this.cartService.addProExtras(cartProExtrasPack, pack.name.toLowerCase());
   }

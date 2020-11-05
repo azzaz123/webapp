@@ -5,17 +5,17 @@ import { BanReason } from '../../../core/item/ban-reason.interface';
 
 @Component({
   selector: 'tsl-report-user',
-  templateUrl: './report-user.component.html'
+  templateUrl: './report-user.component.html',
 })
 export class ReportUserComponent implements OnInit {
-
   public userBanReasons: BanReason[];
   public selectedReportUserReason: number = null;
   public reportUserReasonMessage: string;
 
-  constructor(private userService: UserService,
-              public activeModal: NgbActiveModal) {
-  }
+  constructor(
+    private userService: UserService,
+    public activeModal: NgbActiveModal
+  ) {}
 
   ngOnInit() {
     this.userService.getBanReasons().subscribe((data: BanReason[]) => {
@@ -30,7 +30,7 @@ export class ReportUserComponent implements OnInit {
   public close() {
     this.activeModal.close({
       message: this.reportUserReasonMessage,
-      reason: this.selectedReportUserReason
+      reason: this.selectedReportUserReason,
     });
   }
 
@@ -42,7 +42,7 @@ export class ReportUserComponent implements OnInit {
       4: 'suspicious.svg',
       5: 'behaviour.svg',
       6: 'no-show.svg',
-      7: 'defective.svg'
+      7: 'defective.svg',
     };
 
     return `${path}${pathCases[reasonId]}`;

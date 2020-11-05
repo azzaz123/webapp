@@ -5,7 +5,6 @@ import { CartBase, BUMP_TYPES } from './cart-base';
 import { UuidService } from '../../../core/uuid/uuid.service';
 
 export class Cart extends CartBase {
-
   add(cartItem: CartItem, type: string) {
     this.removeCartItemFromAnyBump(cartItem.item.id);
     this[type].cartItems.push(cartItem);
@@ -13,7 +12,10 @@ export class Cart extends CartBase {
   }
 
   removeCartItem(itemId: string, type: string) {
-    const index = findIndex(this[type].cartItems, (c: CartItem) => c.item.id === itemId);
+    const index = findIndex(
+      this[type].cartItems,
+      (c: CartItem) => c.item.id === itemId
+    );
     if (index !== -1) {
       this[type].cartItems.splice(index, 1);
       this.calculateTotals();
@@ -33,7 +35,7 @@ export class Cart extends CartBase {
       const orders: Order[] = this[type].cartItems.map((cartItem: CartItem) => {
         return {
           item_id: cartItem.item.id,
-          product_id: cartItem.duration.id
+          product_id: cartItem.duration.id,
         };
       });
       ordersArray.push(...orders);
@@ -49,11 +51,16 @@ export class Cart extends CartBase {
     this.total = 0;
     this.discountedTotal = 0;
     BUMP_TYPES.forEach((type: string) => {
-      this[type].total = sumBy(this[type].cartItems, (c: CartItem) => +c.duration.market_code);
+      this[type].total = sumBy(
+        this[type].cartItems,
+        (c: CartItem) => +c.duration.market_code
+      );
       this.total += this[type].total;
-      this[type].discountedTotal = sumBy(this[type].cartItems, (c: CartItem) => +c.duration.original_market_code || 0);
+      this[type].discountedTotal = sumBy(
+        this[type].cartItems,
+        (c: CartItem) => +c.duration.original_market_code || 0
+      );
       this.discountedTotal += this[type].discountedTotal;
     });
   }
-
 }

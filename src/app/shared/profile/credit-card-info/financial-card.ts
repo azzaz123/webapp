@@ -2,13 +2,14 @@ import { StripeCard } from '../../../core/payments/payment.interface';
 import { Model } from '../../../core/resource/model.interface';
 
 export class FinancialCard implements Model {
-  constructor(private _expire_date: string,
-              private _id: string,
-              private _number: string,
-              private _invoices_default?: boolean,
-              private _favorite?: boolean,
-              private _stripeCard?: StripeCard) {
-  }
+  constructor(
+    private _expire_date: string,
+    private _id: string,
+    private _number: string,
+    private _invoices_default?: boolean,
+    private _favorite?: boolean,
+    private _stripeCard?: StripeCard
+  ) {}
   get id(): string {
     return this._id;
   }
@@ -57,5 +58,3 @@ export class FinancialCard implements Model {
     this._stripeCard = value;
   }
 }
-
-
