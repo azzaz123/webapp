@@ -1,10 +1,10 @@
-@import "~style/common";
+@import '~style/common';
 
 $form-control-height: 50px;
 
 .form-group {
-  input[type="text"],
-  input[type="number"],
+  input[type='text'],
+  input[type='number'],
   textarea {
     display: block;
     height: $form-control-height;
@@ -51,19 +51,26 @@ tsl-dropdown {
   border: 0 !important;
 
   // TODO REMOVE THIS LOGIC
-  &.categories-select tsl-dropdown-list {
-    & > div .options ul li {
-      padding: 0 !important;
-      border: 0;
-      div {
-        padding: $spacing-ms !important;
-        border-top: 1px solid $blue-grey-5;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        &.cat_13200,
-        &.cat_21000 {
-          display: none;
+  &.categories-select {
+    .single .value {
+      tsl-svg-icon {
+        display: none;
+      }
+    }
+    tsl-dropdown-list {
+      & > div .options ul li {
+        padding: 0 !important;
+        border: 0;
+        div {
+          padding: $spacing-ms !important;
+          border-top: 1px solid $blue-grey-5;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          &.cat_13200,
+          &.cat_21000 {
+            display: none;
+          }
         }
       }
     }
@@ -79,13 +86,13 @@ input::-webkit-calendar-picker-indicator {
   input {
     display: none;
   }
-  [svgIcon="radio-button"] {
+  [svgIcon='radio-button'] {
     @include square(18px);
     vertical-align: text-top;
     margin-right: $spacing-s;
   }
   &:not(.active) {
-    [svgIcon="radio-button"] #bullet {
+    [svgIcon='radio-button'] #bullet {
       display: none;
     }
   }
@@ -114,7 +121,7 @@ input::-webkit-calendar-picker-indicator {
     cursor: pointer;
     &:checked {
       &:after {
-        content: "";
+        content: '';
         position: absolute;
         width: 7px;
         height: 7px;

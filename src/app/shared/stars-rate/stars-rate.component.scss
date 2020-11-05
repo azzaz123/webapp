@@ -1,7 +1,14 @@
-@import "~style/common";
+@import '~style/common';
 
 :host {
   display: block;
+}
+
+.stars-rate-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 58px;
 }
 
 tsl-svg-icon {
@@ -11,7 +18,7 @@ tsl-svg-icon {
   display: inline-flex;
   ::ng-deep #images {
     &:not(:root:root) {
-      fill: #FFD300;
+      fill: #ffd300;
     }
   }
 }

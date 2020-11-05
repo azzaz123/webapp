@@ -125,29 +125,25 @@
           }
         }
       }
-      input[type="checkbox"] {
+      input[type='checkbox'] {
         position: absolute;
         clip: rect(0, 0, 0, 0);
         pointer-events: none;
       }
-    }
-
-    &.shipping-selector {
       @include media-breakpoint-down(sm) {
-        .selector {
+        &.shipping-selector {
+          width: calc(100% / 5);
+          padding: 0;
           .selector-icon {
-            width: calc(100% / 5);
             background-color: $white;
           }
           &.active {
             .selector-icon {
               background-color: $white;
               tsl-svg-icon {
-                ::ng-deep {
-                  svg g,
-                  svg path {
-                    fill: $walla-main;
-                  }
+                svg g,
+                svg path {
+                  fill: $walla-main !important;
                 }
               }
             }
@@ -234,7 +230,7 @@
         }
       }
     }
-    input[type="checkbox"] {
+    input[type='checkbox'] {
       position: absolute;
       clip: rect(0, 0, 0, 0);
       pointer-events: none;
@@ -255,7 +251,7 @@ form {
     }
     .photo-wrapper:first-of-type .product-photo {
       border-color: $negative-main !important;
-      background-image: url("/assets/icons/camera-red.svg") !important;
+      background-image: url('/assets/icons/camera-red.svg') !important;
     }
     .input-radio.ng-invalid input {
       border: 1px solid $negative-main !important;
