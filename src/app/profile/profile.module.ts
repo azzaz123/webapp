@@ -1,7 +1,10 @@
 import { NgModule } from '@angular/core';
-import { profileRoutedComponents, ProfileRoutingModule } from './profile.routes';
+import {
+  profileRoutedComponents,
+  ProfileRoutingModule,
+} from './profile.routes';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbButtonsModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { GeolocationModule } from '../shared/geolocation/geolocation.module';
 import { SharedModule } from '../shared/shared.module';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
@@ -31,7 +34,8 @@ import { DropdownModule } from 'app/dropdown/dropdown.module';
     NgbButtonsModule,
     GeolocationModule,
     NgbCarouselModule,
-    DropdownModule
+    NgbModalModule,
+    DropdownModule,
   ],
   declarations: [
     profileRoutedComponents,
@@ -49,8 +53,7 @@ import { DropdownModule } from 'app/dropdown/dropdown.module';
     CheckSubscriptionInAppModalComponent,
     UnsubscribeInAppFirstModal,
     DiscountAvailableUnsubscribeInAppModalComponent,
-    SubscriptionPriceDiscountComponent
-
+    SubscriptionPriceDiscountComponent,
   ],
   entryComponents: [
     UnsubscribeModalComponent,
@@ -64,7 +67,7 @@ import { DropdownModule } from 'app/dropdown/dropdown.module';
     ContinueSubscriptionModalComponent,
     CheckSubscriptionInAppModalComponent,
     UnsubscribeInAppFirstModal,
-    DiscountAvailableUnsubscribeInAppModalComponent
-  ]
+    DiscountAvailableUnsubscribeInAppModalComponent,
+  ],
 })
-export class ProfileModule { }
+export class ProfileModule {}

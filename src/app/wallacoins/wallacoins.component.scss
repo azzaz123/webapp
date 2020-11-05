@@ -39,7 +39,8 @@ h3 {
   font-size: $font-size-ll;
 }
 
-h2, h3 {
+h2,
+h3 {
   color: $blue-grey-1;
   font-weight: $font-weight-chunky;
 }
@@ -48,35 +49,50 @@ p {
   color: $blue-grey-3;
 }
 
-ngu-carousel {
+.carousel-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin: $spacing-xxxl auto 86px;
-  ::ng-deep {
-    .ngu-touch-container {
-      width: 794px;
-      overflow: hidden;
-      margin: 0 auto;
+  ngb-carousel {
+    ::ng-deep {
+      .carousel-item {
+        height: auto;
+      }
     }
-    .item {
-      width: $pack-width;
+  }
+  .left-arrow,
+  .right-arrow {
+    cursor: pointer;
+    ::ng-deep {
+      svg {
+        @include square(24px);
+      }
     }
-    .left-arrow, .right-arrow {
-      position: absolute;
-      top: 50%;
-      cursor: pointer;
-      &:hover {
-        ::ng-deep {
-          path {
-            fill: $walla-main;
-          }
+    &:hover {
+      ::ng-deep {
+        path {
+          fill: $walla-main;
         }
       }
     }
-    .left-arrow {
-      left: 50px;
+    &.disabled {
+      opacity: 0;
+      cursor: none;
+      pointer-events: none;
     }
-    .right-arrow {
-      right: 50px;
-      transform: rotate(180deg);
+  }
+  .left-arrow {
+    transform: rotate(180deg);
+  }
+
+  .carousel-slider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    & > * {
+      margin-bottom: 10px;
     }
   }
 }
