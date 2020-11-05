@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnChanges, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Coordinate } from '../../../core/geolocation/address-response.interface';
+import { HereMapsService } from './here-maps.service';
 
 export const MAP_ZOOM_GENERAL = 5;
 export const MAP_ZOOM_MARKER = 15;
@@ -28,11 +29,30 @@ export class HereMapsComponent implements OnInit, AfterViewInit, OnChanges {
   private circle: any;
 
   ngOnInit() {
-    this.initializePlatform();
   }
 
+  constructor(public hereMapsService: HereMapsService) { }
+
   ngAfterViewInit() {
-    const defaultLayers = this.platform.createDefaultLayers();
+    if (!this.coordinates) {
+      this.coordinates = DEFAULT_COORDINATES;
+    }
+
+    if (this.hereMapsService.isLibraryReady) {
+      this.initializeMap();
+    } else {
+      this.hereMapsService.isLibraryReady$.subscribe(ready => {
+        if (!ready) {
+          return;
+        }
+        this.initializeMap();
+      });
+    }
+
+  }
+
+  initializeMap() {
+    const defaultLayers = this.hereMapsService.platform.createDefaultLayers();
     this.map = this.createMap(defaultLayers);
     const coordinates = this.getCenter();
     this.map.setCenter(coordinates);
@@ -89,15 +109,6 @@ export class HereMapsComponent implements OnInit, AfterViewInit, OnChanges {
       lat: this.coordinates.latitude,
       lng: this.coordinates.longitude
     };
-  }
-
-  public initializePlatform() {
-    this.platform = new H.service.Platform({
-      app_id: 'RgPrXX1bXt123UgUFc7B',
-      app_code: 'HtfX0DsqZ2Y0x-44GfujFA',
-      useCIT: false,
-      useHTTPS: true
-    });
   }
 
   public createMap(defaultLayers) {
