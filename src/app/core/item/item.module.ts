@@ -5,14 +5,7 @@ import { TrackingModule } from '../tracking/tracking.module';
 import { ItemService } from './item.service';
 
 @NgModule({
-  imports: [
-    TrackingModule,
-    SharedModule,
-    CommonModule,
-    TrackingModule
-  ],
-  providers: [
-    ItemService
-  ]
+  imports: [TrackingModule, SharedModule, CommonModule, TrackingModule],
+  providers: [ItemService],
 })
-export class ItemModule { }
+export class ItemModule {}

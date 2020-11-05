@@ -3,37 +3,38 @@ import { ItemFlags, ItemSaleConditions } from './item-response.interface';
 import { Image } from '../user/user-response.interface';
 
 export class Car extends Item {
-
-  constructor(id: string,
-              sellerId?: string,
-              title?: string,
-              storytelling?: string,
-              salePrice?: number,
-              currencyCode?: string,
-              modifiedDate?: number,
-              url?: string,
-              flags?: ItemFlags,
-              saleConditions?: ItemSaleConditions,
-              images?: Image[],
-              webSlug?: string,
-              private _brand?: string,
-              private _model?: string,
-              private _year?: number,
-              private _gearbox?: string,
-              private _engine?: string,
-              private _color?: string,
-              private _horsepower?: number,
-              private _bodyType?: string,
-              private _numDoors?: number,
-              private _extras?: any[],
-              private _warranty?: boolean,
-              private _numSeats?: number,
-              private _condition?: string,
-              private _version?: string,
-              private _financedPrice?: number,
-              publishedDate?: number,
-              image?: any,
-              km?: number) {
+  constructor(
+    id: string,
+    sellerId?: string,
+    title?: string,
+    storytelling?: string,
+    salePrice?: number,
+    currencyCode?: string,
+    modifiedDate?: number,
+    url?: string,
+    flags?: ItemFlags,
+    saleConditions?: ItemSaleConditions,
+    images?: Image[],
+    webSlug?: string,
+    private _brand?: string,
+    private _model?: string,
+    private _year?: number,
+    private _gearbox?: string,
+    private _engine?: string,
+    private _color?: string,
+    private _horsepower?: number,
+    private _bodyType?: string,
+    private _numDoors?: number,
+    private _extras?: any[],
+    private _warranty?: boolean,
+    private _numSeats?: number,
+    private _condition?: string,
+    private _version?: string,
+    private _financedPrice?: number,
+    publishedDate?: number,
+    image?: any,
+    km?: number
+  ) {
     super(
       id,
       0,
@@ -49,13 +50,17 @@ export class Car extends Item {
       flags,
       null,
       saleConditions,
-      image ? {
-        id: '1',
-        original_width: image ? image.original_width : null,
-        original_height: image ? image.original_height : null,
-        average_hex_color: '',
-        urls_by_size: image
-      } : (images ? images[0] : null),
+      image
+        ? {
+            id: '1',
+            original_width: image ? image.original_width : null,
+            original_height: image ? image.original_height : null,
+            average_hex_color: '',
+            urls_by_size: image,
+          }
+        : images
+        ? images[0]
+        : null,
       images,
       webSlug,
       publishedDate,
@@ -127,4 +132,3 @@ export class Car extends Item {
     return this._financedPrice;
   }
 }
-

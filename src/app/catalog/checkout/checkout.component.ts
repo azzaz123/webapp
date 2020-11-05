@@ -9,20 +9,21 @@ import { PaymentService } from '../../core/payments/payment.service';
 @Component({
   selector: 'tsl-checkout',
   templateUrl: './checkout.component.html',
-  styleUrls: ['./checkout.component.scss']
+  styleUrls: ['./checkout.component.scss'],
 })
 export class CheckoutComponent implements OnInit {
-
   itemsWithProducts: ItemWithProducts[];
   provincialBump: boolean;
   creditInfo: CreditInfo;
-  @ViewChild(BumpTutorialComponent, { static: true }) bumpTutorial: BumpTutorialComponent;
+  @ViewChild(BumpTutorialComponent, { static: true })
+  bumpTutorial: BumpTutorialComponent;
 
-  constructor(private itemService: ItemService,
-              private router: Router,
-              private paymentService: PaymentService,
-              private route: ActivatedRoute) {
-  }
+  constructor(
+    private itemService: ItemService,
+    private router: Router,
+    private paymentService: PaymentService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
     this.route.params.subscribe((params: any) => {
@@ -32,7 +33,7 @@ export class CheckoutComponent implements OnInit {
         this.getProductsFromSelectedItems();
       }
     });
-    appboy.logCustomEvent('FeatureItems', {platform: 'web'});
+    appboy.logCustomEvent('FeatureItems', { platform: 'web' });
   }
 
   private getProductsFromSelectedItems() {
@@ -40,13 +41,19 @@ export class CheckoutComponent implements OnInit {
       this.router.navigate(['catalog/list']);
       return;
     }
-    this.itemService.getItemsWithAvailableProducts(this.itemService.selectedItems)
-      .subscribe((itemsWithProducts: ItemWithProducts[]) => this.setItems(itemsWithProducts));
+    this.itemService
+      .getItemsWithAvailableProducts(this.itemService.selectedItems)
+      .subscribe((itemsWithProducts: ItemWithProducts[]) =>
+        this.setItems(itemsWithProducts)
+      );
   }
 
   private getProductsFromParamsItem(itemId: string) {
-    this.itemService.getItemsWithAvailableProducts([itemId])
-      .subscribe((itemsWithProducts: ItemWithProducts[]) => this.setItems(itemsWithProducts));
+    this.itemService
+      .getItemsWithAvailableProducts([itemId])
+      .subscribe((itemsWithProducts: ItemWithProducts[]) =>
+        this.setItems(itemsWithProducts)
+      );
   }
 
   private setItems(itemsWithProducts: ItemWithProducts[]) {
@@ -54,16 +61,16 @@ export class CheckoutComponent implements OnInit {
       this.itemsWithProducts = itemsWithProducts;
       this.provincialBump = !this.itemsWithProducts[0].products['168'].citybump;
     } else {
-      this.router.navigate(['pro/catalog/list', {alreadyFeatured: true}]);
+      this.router.navigate(['pro/catalog/list', { alreadyFeatured: true }]);
     }
-    this.paymentService.getCreditInfo(false).subscribe((creditInfo: CreditInfo) => {
-      if (creditInfo.credit === 0) {
-        creditInfo.currencyName = 'wallacredits';
-        creditInfo.factor = 1;
-      }
-      this.creditInfo = creditInfo;
-    });
-
+    this.paymentService
+      .getCreditInfo(false)
+      .subscribe((creditInfo: CreditInfo) => {
+        if (creditInfo.credit === 0) {
+          creditInfo.currencyName = 'wallacredits';
+          creditInfo.factor = 1;
+        }
+        this.creditInfo = creditInfo;
+      });
   }
-
 }

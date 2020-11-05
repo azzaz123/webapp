@@ -5,20 +5,17 @@ import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap/carousel/carousel';
 @Component({
   selector: 'tsl-wallacoins-tutorial',
   templateUrl: './wallacoins-tutorial.component.html',
-  styleUrls: ['./wallacoins-tutorial.component.scss']
+  styleUrls: ['./wallacoins-tutorial.component.scss'],
 })
 export class WallacoinsTutorialComponent implements OnInit {
-
   @ViewChild(NgbCarousel, { static: true }) public carousel: NgbCarousel;
   public isLast: boolean;
 
-  constructor(public activeModal: NgbActiveModal) { }
+  constructor(public activeModal: NgbActiveModal) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   public onSlide($event: NgbSlideEvent) {
     this.isLast = $event.current === 'ngb-slide-2';
   }
-
 }

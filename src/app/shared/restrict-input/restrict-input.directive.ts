@@ -2,12 +2,10 @@ import { Directive, ElementRef, HostListener } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
 @Directive({
-  selector: '[tslRestrictInput]'
+  selector: '[tslRestrictInput]',
 })
 export class RestrictInputDirective {
-
-  constructor(private el: ElementRef, private control: NgControl) {
-  }
+  constructor(private el: ElementRef, private control: NgControl) {}
 
   @HostListener('input', ['$event']) onInput($event) {
     if ($event.data) {
@@ -23,5 +21,4 @@ export class RestrictInputDirective {
   @HostListener('paste', ['$event']) onPaste($event) {
     $event.preventDefault();
   }
-
 }

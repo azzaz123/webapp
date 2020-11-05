@@ -4,7 +4,7 @@ export enum UploadStatus {
   Queue,
   Uploading,
   Done,
-  Canceled
+  Canceled,
 }
 
 export interface UploadProgress {
@@ -31,7 +31,20 @@ export interface UploadFile {
 }
 
 export interface UploadOutput {
-  type: 'ready' | 'addedToQueue' | 'allAddedToQueue' | 'uploading' | 'done' | 'removed' | 'start' | 'cancelled' | 'dragOver' | 'dragOut' | 'drop' | 'rejected' | 'orderUpdated';
+  type:
+    | 'ready'
+    | 'addedToQueue'
+    | 'allAddedToQueue'
+    | 'uploading'
+    | 'done'
+    | 'removed'
+    | 'start'
+    | 'cancelled'
+    | 'dragOver'
+    | 'dragOut'
+    | 'drop'
+    | 'rejected'
+    | 'orderUpdated';
   file?: UploadFile;
   reason?: string;
   files?: UploadFile[];
@@ -40,7 +53,14 @@ export interface UploadOutput {
 }
 
 export interface UploadInput {
-  type: 'uploadAll' | 'uploadFile' | 'cancel' | 'cancelAll' | 'remove' | 'updateOrder' | 'initialImages';
+  type:
+    | 'uploadAll'
+    | 'uploadFile'
+    | 'cancel'
+    | 'cancelAll'
+    | 'remove'
+    | 'updateOrder'
+    | 'initialImages';
   url?: string;
   method?: string;
   id?: string;
@@ -57,5 +77,5 @@ export interface UploadInput {
 export interface NgUploaderOptions {
   allowedExtensions?: string[];
   maxUploads?: number;
-  maxSize?: number
+  maxSize?: number;
 }

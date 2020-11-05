@@ -10,7 +10,7 @@ export interface PaymentIntent {
   description: string;
   id: string;
   last_payment_error: number;
-  livemode: boolean
+  livemode: boolean;
   next_action: string;
   object: string;
   payment_method: string;

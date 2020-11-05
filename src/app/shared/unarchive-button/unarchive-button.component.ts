@@ -8,15 +8,15 @@ import { CallsService } from '../../core/conversation/calls.service';
 @Component({
   selector: 'tsl-unarchive-button',
   templateUrl: './unarchive-button.component.html',
-  styleUrls: ['./unarchive-button.component.scss']
+  styleUrls: ['./unarchive-button.component.scss'],
 })
 export class UnarchiveButtonComponent {
-
   @Input() lead: Lead;
 
-  constructor(private trackingService: TrackingService,
-              private callService: CallsService) {
-  }
+  constructor(
+    private trackingService: TrackingService,
+    private callService: CallsService
+  ) {}
 
   unarchive(event: Event) {
     event.stopPropagation();

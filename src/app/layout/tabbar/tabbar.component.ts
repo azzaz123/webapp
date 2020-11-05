@@ -8,26 +8,31 @@ import { MessageService } from '../../chat/service/message.service';
 @Component({
   selector: 'tsl-tabbar',
   templateUrl: './tabbar.component.html',
-  styleUrls: ['./tabbar.component.scss']
+  styleUrls: ['./tabbar.component.scss'],
 })
 export class TabbarComponent implements OnInit {
-
   public user: User;
   public homeUrl: string;
   public hidden = false;
   public hasUnreadMessages = false;
 
-  constructor(private userService: UserService,
+  constructor(
+    private userService: UserService,
     private tabBarService: TabbarService,
     private messageService: MessageService,
-    @Inject('SUBDOMAIN') private subdomain: string) {
+    @Inject('SUBDOMAIN') private subdomain: string
+  ) {
     this.homeUrl = environment.siteUrl.replace('es', this.subdomain);
   }
 
   ngOnInit() {
-    this.userService.me().subscribe(user => this.user = user);
-    this.tabBarService.tabBarHidden$.subscribe(hidden => this.hidden = hidden);
-    this.messageService.totalUnreadMessages$.subscribe(unreadMessages => this.hasUnreadMessages = !!unreadMessages);
+    this.userService.me().subscribe((user) => (this.user = user));
+    this.tabBarService.tabBarHidden$.subscribe(
+      (hidden) => (this.hidden = hidden)
+    );
+    this.messageService.totalUnreadMessages$.subscribe(
+      (unreadMessages) => (this.hasUnreadMessages = !!unreadMessages)
+    );
   }
 
   private isTextInputOrTextarea(elementType: string) {

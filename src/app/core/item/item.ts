@@ -1,21 +1,31 @@
 import { Model } from '../resource/model.interface';
 import { Image, UserLocation } from '../user/user-response.interface';
-import { ItemActions, ItemFlags, ItemSaleConditions, DeliveryInfo, AutorenewPurchase, ItemExtraInfo, KmInfo } from './item-response.interface';
+import {
+  ItemActions,
+  ItemFlags,
+  ItemSaleConditions,
+  DeliveryInfo,
+  AutorenewPurchase,
+  ItemExtraInfo,
+  KmInfo,
+} from './item-response.interface';
 import { environment } from '../../../environments/environment';
 
 export const ITEM_BASE_PATH = 'http://es.wallapop.com/item/';
 export const FAKE_ITEM_IMAGE_BASE_PATH = '../../../assets/images/fake-item.png';
-export const FAKE_ITEM_IMAGE_SMALL_BASE_PATH = '../../../assets/images/fake-item-s.png';
-export const FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH = '../../../assets/images/fake-item-s-l.png';
+export const FAKE_ITEM_IMAGE_SMALL_BASE_PATH =
+  '../../../assets/images/fake-item-s.png';
+export const FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH =
+  '../../../assets/images/fake-item-s-l.png';
 export const ITEM_STATUSES: any = {
-  'active': 'PUBLISHED',
-  'sold': ['SOLD_OUTSIDE', 'BOUGHT']
+  active: 'PUBLISHED',
+  sold: ['SOLD_OUTSIDE', 'BOUGHT'],
 };
 
 export const ITEM_TYPES: any = {
   CONSUMER_GOODS: 'consumer_goods',
   CARS: 'cars',
-  REAL_ESTATE: 'real_estate'
+  REAL_ESTATE: 'real_estate',
 };
 
 export class Item implements Model {
@@ -31,29 +41,31 @@ export class Item implements Model {
   private _listingFeeExpiringDate: number;
   private _bumpLast24h: boolean;
   private _plannedStartsToday: boolean;
-  constructor(private _id: string,
-              private _legacyId: number,
-              private _owner: string,
-              private _title?: string,
-              private _description?: string,
-              private _categoryId?: number,
-              private _location?: UserLocation,
-              private _salePrice?: number,
-              private _currencyCode?: string,
-              private _modifiedDate?: number,
-              private _url?: string,
-              private _flags?: ItemFlags,
-              private _actionsAllowed?: ItemActions,
-              private _saleConditions?: ItemSaleConditions,
-              private _mainImage?: Image,
-              private _images?: Image[],
-              private _webSlug?: string,
-              private _publishedDate?: number,
-              private _deliveryInfo?: DeliveryInfo,
-              private _itemType: string = ITEM_TYPES.CONSUMER_GOODS,
-              private _extraInfo?: ItemExtraInfo,
-              private _car_info?: KmInfo,
-              private _km?: number) {
+  constructor(
+    private _id: string,
+    private _legacyId: number,
+    private _owner: string,
+    private _title?: string,
+    private _description?: string,
+    private _categoryId?: number,
+    private _location?: UserLocation,
+    private _salePrice?: number,
+    private _currencyCode?: string,
+    private _modifiedDate?: number,
+    private _url?: string,
+    private _flags?: ItemFlags,
+    private _actionsAllowed?: ItemActions,
+    private _saleConditions?: ItemSaleConditions,
+    private _mainImage?: Image,
+    private _images?: Image[],
+    private _webSlug?: string,
+    private _publishedDate?: number,
+    private _deliveryInfo?: DeliveryInfo,
+    private _itemType: string = ITEM_TYPES.CONSUMER_GOODS,
+    private _extraInfo?: ItemExtraInfo,
+    private _car_info?: KmInfo,
+    private _km?: number
+  ) {
     this._webLink = ITEM_BASE_PATH + _webSlug;
   }
   get id(): string {
@@ -192,8 +204,8 @@ export class Item implements Model {
         small: '',
         medium: '',
         large: '',
-        xlarge: ''
-      }
+        xlarge: '',
+      },
     };
   }
 
@@ -250,7 +262,10 @@ export class Item implements Model {
   }
 
   get plannedStartsToday() {
-    return this._purchases && (this._purchases.scheduled_start_date - Date.now() < 86400);
+    return (
+      this._purchases &&
+      this._purchases.scheduled_start_date - Date.now() < 86400
+    );
   }
 
   get webSlug(): string {
@@ -258,7 +273,9 @@ export class Item implements Model {
   }
 
   get featured() {
-    return this.flags ? this.flags.bumped || this.flags.highlighted || this.flags.urgent : false;
+    return this.flags
+      ? this.flags.bumped || this.flags.highlighted || this.flags.urgent
+      : false;
   }
 
   get deliveryInfo(): DeliveryInfo {
@@ -266,7 +283,9 @@ export class Item implements Model {
   }
 
   getUrl(subdomain: string) {
-    return environment.siteUrl.replace('es', subdomain) + 'item/' + this.webSlug;
+    return (
+      environment.siteUrl.replace('es', subdomain) + 'item/' + this.webSlug
+    );
   }
 
   get urgent(): boolean {
@@ -288,7 +307,7 @@ export class Item implements Model {
   get car_info(): KmInfo {
     return this._car_info;
   }
-  
+
   get km(): number {
     return this._km;
   }
@@ -296,5 +315,4 @@ export class Item implements Model {
   set km(value: number) {
     this._km = value;
   }
-
 }
