@@ -51,7 +51,7 @@ export class ProfileComponent implements OnInit {
     this.userService.logout();
   }
 
-  public trackClickSubscriptionTab() {
+  public trackClickSubscriptionTab(): void {
     const event: AnalyticsEvent<ClickProSubscription> = {
       name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
       eventType: ANALYTIC_EVENT_TYPES.Other,
