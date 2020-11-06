@@ -1,10 +1,10 @@
-import { forkJoin, from, Observable, of } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 
 import { mergeMap, catchError, tap, map } from 'rxjs/operators';
 import { Inject, Injectable } from '@angular/core';
 import { PERMISSIONS, User } from './user';
 import { EventService } from '../event/event.service';
-import { GeoCoord, HaversineService } from 'ng2-haversine';
+import { HaversineService } from 'ng2-haversine';
 import { Item } from '../item/item';
 import { LoginResponse } from './login-response.interface';
 import { UserLocation, UserResponse, Image } from './user-response.interface';
@@ -29,12 +29,7 @@ import { InboxUser } from '../../chat/model/inbox-user';
 import { InboxItem } from '../../chat/model';
 import { APP_VERSION } from '../../../environments/version';
 import { UserReportApi } from './user-report.interface';
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpParams,
-  HttpResponse,
-} from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 export const LOGIN_ENDPOINT = 'shnm-portlet/api/v1/access.json/login3';
 export const LOGOUT_ENDPOINT = 'rest/logout';
@@ -69,6 +64,10 @@ export enum USER_TYPE {
   PROFESSIONAL = 'professional',
   FEATURED = 'featured',
   NORMAL = 'normal',
+}
+interface GeoCoord {
+  latitude: number;
+  longitude: number;
 }
 
 @Injectable()
@@ -213,10 +212,7 @@ export class UserService {
       longitude:
         user.location.approximated_longitude || user.location.longitude,
     };
-    return this.haversineService.getDistanceInKilometers(
-      currentUserCoord,
-      userCoord
-    );
+    return this.getDistanceInKilometers(currentUserCoord, userCoord);
   }
 
   private storeData(data: LoginResponse): LoginResponse {
@@ -473,5 +469,25 @@ export class UserService {
   // TODO: This logic is correct for now, but should be checked using the subscriptions BFF
   public isProUser(): Observable<boolean> {
     return this.me().pipe(map((user) => user.featured));
+  }
+
+  private getDistanceInKilometers(coord1: GeoCoord, coord2: GeoCoord): number {
+    const distance = this.getDistance(coord1, coord2);
+    return 6371 * distance;
+  }
+
+  private getDistance(coord1: GeoCoord, coord2: GeoCoord): number {
+    const v1 = this.toRadians(coord1.latitude);
+    const v2 = this.toRadians(coord2.latitude);
+    const s1 = this.toRadians(coord2.latitude - coord1.latitude);
+    const s2 = this.toRadians(coord2.longitude - coord1.longitude);
+    const a =
+      Math.pow(Math.sin(s1 / 2), 2) +
+      Math.cos(v1) * Math.cos(v2) * Math.pow(Math.sin(s2 / 2), 2);
+    return 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+
+  private toRadians(value: number): number {
+    return (value * Math.PI) / 180;
   }
 }
