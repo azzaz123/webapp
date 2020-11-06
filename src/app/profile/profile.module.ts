@@ -4,7 +4,7 @@ import {
   ProfileRoutingModule,
 } from './profile.routes';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbButtonsModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { GeolocationModule } from '../shared/geolocation/geolocation.module';
 import { SharedModule } from '../shared/shared.module';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
@@ -34,6 +34,7 @@ import { DropdownModule } from 'app/dropdown/dropdown.module';
     NgbButtonsModule,
     GeolocationModule,
     NgbCarouselModule,
+    NgbModalModule,
     DropdownModule,
   ],
   declarations: [

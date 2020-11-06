@@ -6,7 +6,11 @@ import {
   tick,
 } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbModal,
+  NgbModalOptions,
+  NgbModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { AdService } from '../core/ad/ad.service';
 import { I18nService } from '../core/i18n/i18n.service';
@@ -53,7 +57,7 @@ describe('Component: ChatComponent with ItemId', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ChatComponent],
-      imports: [FormsModule, NgxPermissionsModule],
+      imports: [NgbModule, FormsModule, NgxPermissionsModule],
       providers: [
         ChatComponent,
         { provide: InboxService, useClass: InboxServiceMock },
@@ -384,7 +388,7 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ChatComponent],
-      imports: [FormsModule, NgxPermissionsModule],
+      imports: [NgbModule, FormsModule, NgxPermissionsModule],
       providers: [
         ChatComponent,
         { provide: InboxService, useClass: InboxServiceMock },

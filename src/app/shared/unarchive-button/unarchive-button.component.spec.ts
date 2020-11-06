@@ -8,6 +8,7 @@ import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { CallsService } from '../../core/conversation/calls.service';
 import { CALL_ID, MOCK_CALL } from '../../../tests/call.fixtures';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 describe('UnarchiveButtonComponent', () => {
   let component: UnarchiveButtonComponent;
@@ -17,7 +18,7 @@ describe('UnarchiveButtonComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [],
+      imports: [NgbModule],
       providers: [
         { provide: TrackingService, useClass: MockTrackingService },
         {
