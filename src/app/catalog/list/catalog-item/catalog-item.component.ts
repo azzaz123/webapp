@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from '../../../layout/toast/toast.service';
 
@@ -17,14 +24,17 @@ import { PAYMENT_METHOD } from '../../../core/payments/payment.service';
 @Component({
   selector: 'tsl-catalog-item',
   templateUrl: './catalog-item.component.html',
-  styleUrls: ['./catalog-item.component.scss']
+  styleUrls: ['./catalog-item.component.scss'],
 })
 export class CatalogItemComponent implements OnInit {
-
   @Input() item: Item;
   @Input() showPublishCTA = false;
-  @Output() itemChange: EventEmitter<ItemChangeEvent> = new EventEmitter<ItemChangeEvent>();
-  @Output() purchaseListingFee: EventEmitter<OrderEvent> = new EventEmitter<OrderEvent>();
+  @Output() itemChange: EventEmitter<ItemChangeEvent> = new EventEmitter<
+    ItemChangeEvent
+  >();
+  @Output() purchaseListingFee: EventEmitter<OrderEvent> = new EventEmitter<
+    OrderEvent
+  >();
   public link: string;
   public selectMode = false;
 
@@ -35,8 +45,8 @@ export class CatalogItemComponent implements OnInit {
     private toastService: ToastService,
     private eventService: EventService,
     private deviceService: DeviceDetectorService,
-    @Inject('SUBDOMAIN') private subdomain: string) {
-  }
+    @Inject('SUBDOMAIN') private subdomain: string
+  ) {}
 
   ngOnInit() {
     this.link = this.item.getUrl(this.subdomain);
@@ -54,7 +64,9 @@ export class CatalogItemComponent implements OnInit {
     } else {
       this.itemService.reserveItem(item.id, false).subscribe(() => {
         item.reserved = false;
-        this.trackingService.track(TrackingService.PRODUCT_UNRESERVED, { product_id: item.id });
+        this.trackingService.track(TrackingService.PRODUCT_UNRESERVED, {
+          product_id: item.id,
+        });
         this.eventService.emit(EventService.ITEM_RESERVED, item);
       });
     }
@@ -66,55 +78,69 @@ export class CatalogItemComponent implements OnInit {
   }
 
   public reactivate(item: Item) {
-    this.itemService.getAvailableReactivationProducts(item.id).subscribe((product: Product) => {
-      if (product.durations) {
-        const orderEvent: OrderEvent = this.buildOrderEvent(item, product);
-        if (this.deviceService.isMobile()) {
-          this.reactivateItem(item);
+    this.itemService.getAvailableReactivationProducts(item.id).subscribe(
+      (product: Product) => {
+        if (product.durations) {
+          const orderEvent: OrderEvent = this.buildOrderEvent(item, product);
+          if (this.deviceService.isMobile()) {
+            this.reactivateItem(item);
+          } else {
+            this.openReactivateDialog(item, orderEvent);
+          }
         } else {
-          this.openReactivateDialog(item, orderEvent);
+          this.toastService.show({
+            text: DEFAULT_ERROR_MESSAGE,
+            type: 'error',
+          });
         }
-      } else {
-        this.toastService.show({text:DEFAULT_ERROR_MESSAGE,type:'error'});
-      }
-    }, () => this.toastService.show({text:DEFAULT_ERROR_MESSAGE,type:'error'}));
+      },
+      () =>
+        this.toastService.show({ text: DEFAULT_ERROR_MESSAGE, type: 'error' })
+    );
   }
 
   private buildOrderEvent(item: Item, product: Product): OrderEvent {
-    const order: Order[] = [{
-      item_id: item.id,
-      product_id: product.durations[0].id
-    }];
+    const order: Order[] = [
+      {
+        item_id: item.id,
+        product_id: product.durations[0].id,
+      },
+    ];
     return {
       order: order,
-      total: +product.durations[0].market_code
+      total: +product.durations[0].market_code,
     };
   }
 
   private openReactivateDialog(item: Item, orderEvent: OrderEvent) {
-    const modalRef: NgbModalRef = this.modalService.open(ReactivateModalComponent, {
-      windowClass: 'modal-standard'
-    });
+    const modalRef: NgbModalRef = this.modalService.open(
+      ReactivateModalComponent,
+      {
+        windowClass: 'modal-standard',
+      }
+    );
     modalRef.componentInstance.price = orderEvent.total;
     modalRef.componentInstance.item = item;
-    modalRef.result.then((result: string) => {
-      if (result === 'bump') {
-        this.itemChange.emit({
-          orderEvent: orderEvent,
-          action: 'reactivatedWithBump'
-        });
-      } else {
-        this.reactivateItem(item);
-      }
-    }, () => {
-    });
+    modalRef.result.then(
+      (result: string) => {
+        if (result === 'bump') {
+          this.itemChange.emit({
+            orderEvent: orderEvent,
+            action: 'reactivatedWithBump',
+          });
+        } else {
+          this.reactivateItem(item);
+        }
+      },
+      () => {}
+    );
   }
 
   public reactivateItem(item: Item) {
     this.itemService.reactivateItem(item.id).subscribe(() => {
       this.itemChange.emit({
         item,
-        action: 'reactivated'
+        action: 'reactivated',
       });
     });
     appboy.logCustomEvent('ReactivateItem', { platform: 'web' });
@@ -122,23 +148,33 @@ export class CatalogItemComponent implements OnInit {
 
   public select(item: Item) {
     item.selected = !item.selected;
-    this.itemService.selectedAction = this.itemService.selectedAction === 'feature' ? 'feature' : '';
+    this.itemService.selectedAction =
+      this.itemService.selectedAction === 'feature' ? 'feature' : '';
     if (item.selected) {
       this.itemService.selectItem(item.id);
-      this.trackingService.track(TrackingService.PRODUCT_SELECTED, { product_id: item.id });
+      this.trackingService.track(TrackingService.PRODUCT_SELECTED, {
+        product_id: item.id,
+      });
     } else {
       this.itemService.deselectItem(item.id);
-      this.trackingService.track(TrackingService.PRODUCT_UN_SELECTED, { product_id: item.id });
+      this.trackingService.track(TrackingService.PRODUCT_UN_SELECTED, {
+        product_id: item.id,
+      });
     }
   }
 
   public setSold(item: Item) {
-    this.trackingService.track(TrackingService.PRODUCT_SOLD, { product_id: item.id });
+    this.trackingService.track(TrackingService.PRODUCT_SOLD, {
+      product_id: item.id,
+    });
     appboy.logCustomEvent('Sold', { platform: 'web' });
-    fbq('track', 'CompleteRegistration', { value: item.salePrice, currency: item.currencyCode });
+    fbq('track', 'CompleteRegistration', {
+      value: item.salePrice,
+      currency: item.currencyCode,
+    });
     this.itemChange.emit({
       item: item,
-      action: 'sold'
+      action: 'sold',
     });
     this.eventService.emit(EventService.ITEM_SOLD, item);
   }
@@ -149,36 +185,44 @@ export class CatalogItemComponent implements OnInit {
 
   public listingFeeFewDays(): boolean {
     const threeDaysTime = 3 * 24 * 60 * 60 * 1000;
-    return this.item.listingFeeExpiringDate - new Date().getTime() < threeDaysTime;
+    return (
+      this.item.listingFeeExpiringDate - new Date().getTime() < threeDaysTime
+    );
   }
 
   public publishItem(): void {
-    this.itemService.getListingFeeInfo(this.item.id).subscribe((response: Product) => {
-      const order: Order[] = [{
-        item_id: this.item.id,
-        product_id: response.durations[0].id
-      }];
-      const orderEvent: OrderEvent = {
-        order,
-        total: +response.durations[0].market_code
-      };
-      localStorage.setItem('transactionType', 'purchaseListingFee');
-      this.trackingService.track(TrackingService.PURCHASE_LISTING_FEE_CATALOG, {
-        item_id: this.item.id,
-        payment_method: PAYMENT_METHOD.STRIPE
+    this.itemService
+      .getListingFeeInfo(this.item.id)
+      .subscribe((response: Product) => {
+        const order: Order[] = [
+          {
+            item_id: this.item.id,
+            product_id: response.durations[0].id,
+          },
+        ];
+        const orderEvent: OrderEvent = {
+          order,
+          total: +response.durations[0].market_code,
+        };
+        localStorage.setItem('transactionType', 'purchaseListingFee');
+        this.trackingService.track(
+          TrackingService.PURCHASE_LISTING_FEE_CATALOG,
+          {
+            item_id: this.item.id,
+            payment_method: PAYMENT_METHOD.STRIPE,
+          }
+        );
+        this.purchaseListingFee.next(orderEvent);
       });
-      this.purchaseListingFee.next(orderEvent);
-    });
   }
 
   public openItem() {
     const event = TrackingService.PRODUCT_VIEWED;
     const params = {
-      product_id: this.item.id
+      product_id: this.item.id,
     };
 
     this.trackingService.track(event, params);
     window.open(this.link);
   }
-
 }

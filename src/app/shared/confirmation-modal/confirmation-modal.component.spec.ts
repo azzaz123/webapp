@@ -10,9 +10,8 @@ describe('ConfirmationModalComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       providers: [NgbActiveModal],
-      declarations: [ ConfirmationModalComponent ]
-    })
-    .compileComponents();
+      declarations: [ConfirmationModalComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

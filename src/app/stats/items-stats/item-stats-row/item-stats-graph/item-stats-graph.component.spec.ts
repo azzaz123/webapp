@@ -12,13 +12,10 @@ describe('ItemStatsGraphComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ItemStatsGraphComponent ],
-      providers: [
-        I18nService
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      declarations: [ItemStatsGraphComponent],
+      providers: [I18nService],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -26,7 +23,7 @@ describe('ItemStatsGraphComponent', () => {
     component = fixture.componentInstance;
     component.item = MOCK_ITEM_V3;
     component.statsData = {
-      entries: []
+      entries: [],
     };
     fixture.detectChanges();
   });
@@ -37,8 +34,9 @@ describe('ItemStatsGraphComponent', () => {
 
       component.ngOnInit();
 
-      expect(component.chartOption.series[1].data[0]).toBe(ITEM_STATISTIC_RESPONSE.entries[0].values.views);
+      expect(component.chartOption.series[1].data[0]).toBe(
+        ITEM_STATISTIC_RESPONSE.entries[0].values.views
+      );
     });
   });
-
 });

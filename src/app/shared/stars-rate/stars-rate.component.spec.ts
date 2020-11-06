@@ -5,15 +5,13 @@ import { StarsRateComponent } from './stars-rate.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('Component: Stars Rate', () => {
-
   let component: StarsRateComponent;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [StarsRateComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
     component = TestBed.createComponent(StarsRateComponent).componentInstance;
   });
 
@@ -110,5 +108,4 @@ describe('Component: Stars Rate', () => {
       expect(score).toBe(3);
     }));
   });
-
 });

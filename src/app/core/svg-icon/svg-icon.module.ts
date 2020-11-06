@@ -4,17 +4,9 @@ import { SvgIconComponent } from './svg-icon/svg-icon.component';
 import { SvgService } from './svg.service';
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
-  providers: [
-    SvgService
-  ],
-  declarations: [
-    SvgIconComponent
-  ],
-  exports: [
-    SvgIconComponent
-  ]
+  imports: [CommonModule],
+  providers: [SvgService],
+  declarations: [SvgIconComponent],
+  exports: [SvgIconComponent],
 })
-export class SvgIconModule { }
+export class SvgIconModule {}

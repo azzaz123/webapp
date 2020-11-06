@@ -1325,11 +1325,6 @@
     rxjs "6.5.4"
     webpack-sources "1.4.3"
 
-"@ngu/carousel@^2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@ngu/carousel/-/carousel-2.0.3.tgz#fcc094c8c653f97ec9ba9e77c239b4576e10600b"
-  integrity sha512-wWASwYI8A0ATK3l7FuN77alC0WYTMh21+8rHazEoZd2KuEB4EY175Xnv9inLDUigWOt+hrZifyKwBj4oSeOIJQ==
-
 "@schematics/angular@9.1.1":
   version "9.1.1"
   resolved "https://registry.yarnpkg.com/@schematics/angular/-/angular-9.1.1.tgz#5069f8f214fa2effb68a937cfb808ec612debe96"
@@ -1425,10 +1420,6 @@
   integrity sha512-AiHRaEB50LQg0pZmm659vNBb9f4SJ0qrAnteuzhSeAUcJKxoYgEnprg/83kppCnc2zvtCKbdZry1a5pVY3lOTQ==
   dependencies:
     "@types/node" "*"
-
-"@types/hammerjs@^2.0.35":
-  version "2.0.35"
-  resolved "https://registry.yarnpkg.com/@types/hammerjs/-/hammerjs-2.0.35.tgz#7b7c950c7d54593e23bffc8d2b4feba9866a7277"
 
 "@types/heremaps@3.0.12":
   version "3.0.12"
@@ -4568,11 +4559,6 @@ gzip-size@^5.0.0:
   dependencies:
     duplexer "^0.1.1"
     pify "^4.0.1"
-
-hammerjs@^2.0.8:
-  version "2.0.8"
-  resolved "https://registry.yarnpkg.com/hammerjs/-/hammerjs-2.0.8.tgz#04ef77862cff2bb79d30f7692095930222bf60f1"
-  integrity sha1-BO93hiz/K7edMPdpIJWTAiK/YPE=
 
 handle-thing@^2.0.0:
   version "2.0.1"

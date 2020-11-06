@@ -5,26 +5,37 @@ import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
 import { XmppService } from '../xmpp/xmpp.service';
 import { EventService } from '../event/event.service';
-import { MOCK_USER, MockedUserService, USER_ID, USER_ITEM_DISTANCE } from '../../../tests/user.fixtures.spec';
+import {
+  MOCK_USER,
+  MockedUserService,
+  USER_ID,
+  USER_ITEM_DISTANCE,
+} from '../../../tests/user.fixtures.spec';
 import { ITEM_ID, MockedItemService } from '../../../tests/item.fixtures.spec';
 import { TrackingService } from '../tracking/tracking.service';
 import { Call } from './calls';
 import { CALLS_DATA, createCallsArray } from '../../../tests/call.fixtures';
 import { Conversation } from './conversation';
-import { CONVERSATIONS_DATA, createConversationsArray } from '../../../tests/conversation.fixtures.spec';
+import {
+  CONVERSATIONS_DATA,
+  createConversationsArray,
+} from '../../../tests/conversation.fixtures.spec';
 import { CallTotals } from './totals.interface';
 import { ConnectionService } from '../connection/connection.service';
 import { RealTimeService } from '../message/real-time.service';
 import { RemoteConsoleService } from '../remote-console';
 import { MockRemoteConsoleService } from '../../../tests';
 import { BlockUserXmppService } from '../../chat/service';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import { TestRequest } from '@angular/common/http/testing';
 import { environment } from '../../../environments/environment';
 import { User } from '../user/user';
 import { Item } from '../item/item';
-import { AnalyticsService } from "../analytics/analytics.service";
-import { MockAnalyticsService } from "../../../tests/analytics.fixtures.spec";
+import { AnalyticsService } from '../analytics/analytics.service';
+import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
 import { RealTimeServiceMock } from '../../../tests/real-time.fixtures.spec';
 
 let service: CallsService;
@@ -37,9 +48,7 @@ let httpTestingController: HttpTestingController;
 describe('CallsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule
-      ],
+      imports: [HttpClientTestingModule],
       providers: [
         CallsService,
         XmppService,
@@ -51,10 +60,11 @@ describe('CallsService', () => {
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         { provide: TrackingService, useValue: {} },
         {
-          provide: ConnectionService, useValue: {}
+          provide: ConnectionService,
+          useValue: {},
         },
-        { provide: AnalyticsService, useClass: MockAnalyticsService }
-      ]
+        { provide: AnalyticsService, useClass: MockAnalyticsService },
+      ],
     });
     service = TestBed.inject(CallsService);
     userService = TestBed.inject(UserService);
@@ -133,10 +143,15 @@ describe('CallsService', () => {
       it('should return an observable of null', () => {
         const UNTIL = 12345;
 
-        service.query(UNTIL).subscribe((response: any) => expect(response).toBe(null));
+        service
+          .query(UNTIL)
+          .subscribe((response: any) => expect(response).toBe(null));
 
         const req = httpTestingController.expectOne(
-          `${environment.baseUrl}${service.API_URL}?until=${UNTIL}&hidden=${false}`);
+          `${environment.baseUrl}${
+            service.API_URL
+          }?until=${UNTIL}&hidden=${false}`
+        );
         req.error(new ErrorEvent('connection failed'));
       });
     });
@@ -154,21 +169,28 @@ describe('CallsService', () => {
           spyOn<any>(window, 'Date').and.returnValue({
             getTime: () => {
               return baseTime;
-            }
+            },
           });
         });
         describe('no archive', () => {
           let req: TestRequest;
           beforeEach(() => {
-            service.query().subscribe((response: Call[]) => conversations = response);
+            service
+              .query()
+              .subscribe((response: Call[]) => (conversations = response));
 
             req = httpTestingController.expectOne(
-              `${environment.baseUrl}${service.API_URL}?until=${baseTime}&hidden=${false}`);
+              `${environment.baseUrl}${
+                service.API_URL
+              }?until=${baseTime}&hidden=${false}`
+            );
             req.flush(CONVERSATIONS_DATA);
           });
           it('should call the http.get method with hidden false', () => {
             expect(req.request.method).toEqual('GET');
-            expect(req.request.params.get('until')).toEqual(baseTime.toString());
+            expect(req.request.params.get('until')).toEqual(
+              baseTime.toString()
+            );
             expect(req.request.params.get('hidden')).toEqual('false');
           });
           it('should return a conversations array', () => {
@@ -204,13 +226,18 @@ describe('CallsService', () => {
             });
 
             req = httpTestingController.expectOne(
-              `${environment.baseUrl}${service.ARCHIVE_URL}?until=${baseTime}&hidden=${true}`);
+              `${environment.baseUrl}${
+                service.ARCHIVE_URL
+              }?until=${baseTime}&hidden=${true}`
+            );
             req.flush(CONVERSATIONS_DATA);
           });
 
           it('should call the http.get method with hidden true', () => {
             expect(req.request.method).toEqual('GET');
-            expect(req.request.params.get('until')).toEqual(baseTime.toString());
+            expect(req.request.params.get('until')).toEqual(
+              baseTime.toString()
+            );
             expect(req.request.params.get('hidden')).toEqual('true');
           });
           it('should set archived true', () => {
@@ -225,7 +252,8 @@ describe('CallsService', () => {
         service.query(UNTIL, ARCHIVED).subscribe();
 
         const req = httpTestingController.expectOne(
-          `${environment.baseUrl}${service.ARCHIVE_URL}?until=${UNTIL}&hidden=${ARCHIVED}`);
+          `${environment.baseUrl}${service.ARCHIVE_URL}?until=${UNTIL}&hidden=${ARCHIVED}`
+        );
 
         expect(req.request.method).toEqual('GET');
         expect(req.request.params.get('until')).toEqual(UNTIL.toString());
@@ -243,14 +271,15 @@ describe('CallsService', () => {
       spyOn<any>(window, 'Date').and.returnValue({
         getTime: () => {
           return baseTime;
-        }
+        },
       });
     });
     it('should call http.put with current time', () => {
       service.archiveAll().subscribe();
 
       const req = httpTestingController.expectOne(
-        `${environment.baseUrl}${service.ARCHIVE_URL}/hide?until=${baseTime}`);
+        `${environment.baseUrl}${service.ARCHIVE_URL}/hide?until=${baseTime}`
+      );
       req.flush({});
       expect(req.request.method).toEqual('PUT');
     });
@@ -259,14 +288,18 @@ describe('CallsService', () => {
       service.archiveAll(UNTIL).subscribe();
 
       const req = httpTestingController.expectOne(
-        `${environment.baseUrl}${service.ARCHIVE_URL}/hide?until=${UNTIL.toString()}`);
+        `${environment.baseUrl}${
+          service.ARCHIVE_URL
+        }/hide?until=${UNTIL.toString()}`
+      );
       expect(req.request.method).toEqual('PUT');
       req.flush({});
     });
     it('should call onArchiveAll', () => {
       service.archiveAll().subscribe();
       const req = httpTestingController.expectOne(
-        `${environment.baseUrl}${service.ARCHIVE_URL}/hide?until=${baseTime}`);
+        `${environment.baseUrl}${service.ARCHIVE_URL}/hide?until=${baseTime}`
+      );
       req.flush({});
       expect(service['bulkArchive']).toHaveBeenCalled();
     });
@@ -428,7 +461,10 @@ describe('CallsService', () => {
     let result: Call[];
     const TOTAL_PHONES = 4;
     const TOTAL_CALLS = 3;
-    const MIXED_CONVERSATIONS: Conversation[] = [...createConversationsArray(6), ...createConversationsArray(TOTAL_PHONES, true)];
+    const MIXED_CONVERSATIONS: Conversation[] = [
+      ...createConversationsArray(6),
+      ...createConversationsArray(TOTAL_PHONES, true),
+    ];
 
     describe('filter', () => {
       it('should filter by status', () => {
@@ -436,7 +472,10 @@ describe('CallsService', () => {
           result = r;
         });
         const WITH_SHARED_STATUS = 3;
-        const MIXED_CALLS: any[] = [...createCallsArray(6), ...createConversationsArray(WITH_SHARED_STATUS)];
+        const MIXED_CALLS: any[] = [
+          ...createCallsArray(6),
+          ...createConversationsArray(WITH_SHARED_STATUS),
+        ];
 
         service.stream$.next(MIXED_CALLS);
 
@@ -452,7 +491,7 @@ describe('CallsService', () => {
         const MIXED_CALLS: any[] = [
           ...createConversationsArray(6),
           ...createCallsArray(WITH_ANSWERED_STATUS, 'ANSWERED'),
-          ...createCallsArray(WITH_MISSED_STATUS, 'MISSED')
+          ...createCallsArray(WITH_MISSED_STATUS, 'MISSED'),
         ];
 
         service.stream$.next(MIXED_CALLS);
@@ -571,9 +610,10 @@ describe('CallsService', () => {
       let req: TestRequest;
 
       beforeEach(() => {
-        service.archive(archivedCall.id).subscribe((r: Call) => response = r);
+        service.archive(archivedCall.id).subscribe((r: Call) => (response = r));
         req = httpTestingController.expectOne(
-          `${environment.baseUrl}${service.ARCHIVE_URL}/${archivedCall.id}/hide`);
+          `${environment.baseUrl}${service.ARCHIVE_URL}/${archivedCall.id}/hide`
+        );
         req.flush({});
       });
       it('return an observable with the put call to the delete conversation endpoint', () => {
@@ -592,16 +632,20 @@ describe('CallsService', () => {
         expect(response).toEqual(archivedCall);
       });
       it('should emit event', () => {
-        expect(eventService.emit).toHaveBeenCalledWith(EventService.LEAD_ARCHIVED, archivedCall);
+        expect(eventService.emit).toHaveBeenCalledWith(
+          EventService.LEAD_ARCHIVED,
+          archivedCall
+        );
       });
     });
     describe('conversation NOT found', () => {
       let req: TestRequest;
 
       beforeEach(() => {
-        service.archive('10').subscribe((r: Call) => response = r);
+        service.archive('10').subscribe((r: Call) => (response = r));
         req = httpTestingController.expectOne(
-          `${environment.baseUrl}${service.ARCHIVE_URL}/${10}/hide`);
+          `${environment.baseUrl}${service.ARCHIVE_URL}/${10}/hide`
+        );
         req.flush({});
       });
       it('should NOT remove conversation', () => {
@@ -629,9 +673,12 @@ describe('CallsService', () => {
       let req: TestRequest;
 
       beforeEach(() => {
-        service.unarchive(unarchivedConv.id).subscribe((r: Call) => response = r);
+        service
+          .unarchive(unarchivedConv.id)
+          .subscribe((r: Call) => (response = r));
         req = httpTestingController.expectOne(
-          `${environment.baseUrl}${service.ARCHIVE_URL}/${unarchivedConv.id}/unhide`);
+          `${environment.baseUrl}${service.ARCHIVE_URL}/${unarchivedConv.id}/unhide`
+        );
         req.flush({});
       });
       it('return an observable with the put call to the delete conversation endpoint', () => {
@@ -657,9 +704,10 @@ describe('CallsService', () => {
       let req: TestRequest;
 
       beforeEach(() => {
-        service.unarchive('10').subscribe((r: Call) => response = r);
+        service.unarchive('10').subscribe((r: Call) => (response = r));
         req = httpTestingController.expectOne(
-          `${environment.baseUrl}${service.ARCHIVE_URL}/${10}/unhide`);
+          `${environment.baseUrl}${service.ARCHIVE_URL}/${10}/unhide`
+        );
         req.flush({});
       });
       it('should NOT remove conversation', () => {

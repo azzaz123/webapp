@@ -17,12 +17,8 @@ import { TrackingModule } from '../core/tracking/tracking.module';
     SharedModule,
     CallsRoutingModule,
     InfiniteScrollModule,
-    ConversationModule
+    ConversationModule,
   ],
-  declarations: [
-    CallsComponent,
-    callsRoutedComponents,
-    CallItemComponent
-  ]
+  declarations: [CallsComponent, callsRoutedComponents, CallItemComponent],
 })
-export class CallsModule { }
+export class CallsModule {}

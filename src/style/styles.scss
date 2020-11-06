@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 @import '~bootstrap/scss/reboot';
 @import '~bootstrap/scss/grid';
@@ -16,7 +16,8 @@
 @import './components/components';
 @import '~web-styleguide/scss/fonts';
 
-html, body {
+html,
+body {
   font-size: $font-size-base-walla;
   height: 100%;
   &.blocked-page {
@@ -54,7 +55,8 @@ body {
       height: 100px;
       z-index: 201;
       border-radius: 20px;
-      background: url('/assets/images/spinner.gif') no-repeat center center / 45px;
+      background: url('/assets/images/spinner.gif') no-repeat center center /
+        45px;
       background-color: $white;
     }
   }
@@ -73,7 +75,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: rgba(54, 71, 79, .3);
+  background-color: rgba(54, 71, 79, 0.3);
   outline: 0;
   outline-offset: -2px;
   border: 0;
@@ -81,7 +83,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(54, 71, 79, .5);
+  background-color: rgba(54, 71, 79, 0.5);
 }
 
 .toast {
@@ -103,7 +105,8 @@ body {
   }
 }
 
-button, .btn {
+button,
+.btn {
   cursor: pointer;
   &:focus {
     outline: none;
@@ -117,7 +120,11 @@ button, .btn {
   }
 }
 
-button, input, optgroup, select, textarea {
+button,
+input,
+optgroup,
+select,
+textarea {
   font-family: $wallie, Helvetica;
 }
 

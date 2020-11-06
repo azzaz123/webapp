@@ -4,10 +4,9 @@ import { InboxConversation } from '../../model/inbox-conversation';
 @Component({
   selector: 'tsl-archived-inbox-conversation',
   templateUrl: './archived-inbox-conversation.component.html',
-  styleUrls: ['./archived-inbox-conversation.component.scss']
+  styleUrls: ['./archived-inbox-conversation.component.scss'],
 })
 export class ArchivedInboxConversationComponent {
-
   @Input() conversation: InboxConversation;
 
   public unreadCounterDisplayLimit = 99;
@@ -17,14 +16,17 @@ export class ArchivedInboxConversationComponent {
     nextDay: 'ddd',
     lastWeek: 'D MMM.',
     nextWeek: 'ddd',
-    sameElse: 'D MMM.'
+    sameElse: 'D MMM.',
   };
 
-  constructor() { }
+  constructor() {}
 
   public dateIsThisYear(): boolean {
     if (this.conversation && this.conversation.modifiedDate) {
-      return this.conversation.modifiedDate.getFullYear() === new Date().getFullYear();
+      return (
+        this.conversation.modifiedDate.getFullYear() ===
+        new Date().getFullYear()
+      );
     }
     return false;
   }

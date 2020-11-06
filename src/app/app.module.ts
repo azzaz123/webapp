@@ -1,4 +1,3 @@
-
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
@@ -13,9 +12,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { HttpModuleNew } from './core/http/http.module.new';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserAnimationsModule,
     CookieModule.forRoot(),
@@ -25,10 +22,9 @@ import { HttpModuleNew } from './core/http/http.module.new';
     HttpClientModule,
     AppRoutingModule,
     LayoutModule,
-    NgxPermissionsModule.forRoot()
+    NgxPermissionsModule.forRoot(),
   ],
   providers: [PROVIDERS],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}

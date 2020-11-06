@@ -1,5 +1,16 @@
-import { Component, DebugElement, EventEmitter, NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  Component,
+  DebugElement,
+  EventEmitter,
+  NO_ERRORS_SCHEMA,
+} from '@angular/core';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
@@ -16,7 +27,11 @@ import { MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
 import { SoldModalComponent } from './sold-modal.component';
 
 @Component({
-  template: `<button tslItemSold (callback)="setSold(item)" [item]="item"></button>`
+  template: `<button
+    tslItemSold
+    (callback)="setSold(item)"
+    [item]="item"
+  ></button>`,
 })
 class TestComponent {
   item: Item;
@@ -34,21 +49,20 @@ describe('ItemSoldDirective', () => {
   let errorsService: ErrorsService;
   const modalInstance = {
     item: null,
-    callback: null
+    callback: null,
   };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ItemSoldDirective, TestComponent ],
+      declarations: [ItemSoldDirective, TestComponent],
       providers: [
-        {provide: TrackingService, useClass: MockTrackingService},
+        { provide: TrackingService, useClass: MockTrackingService },
         {
-          provide: ItemService, useValue: {
+          provide: ItemService,
+          useValue: {
             selectedItems: [],
-            selectItem() {
-            },
-            deselectItem() {
-            },
+            selectItem() {},
+            deselectItem() {},
             deleteItem() {
               return of({});
             },
@@ -58,34 +72,33 @@ describe('ItemSoldDirective', () => {
             reactivateItem() {
               return of({});
             },
-            getAvailableReactivationProducts() {
-            },
+            getAvailableReactivationProducts() {},
             canDoAction() {
               return of(true);
-            }
-          }
+            },
+          },
         },
         {
-          provide: NgbModal, useValue: {
+          provide: NgbModal,
+          useValue: {
             open() {
               return {
                 result: Promise.resolve(),
-                componentInstance: modalInstance
+                componentInstance: modalInstance,
               };
-            }
-          }
+            },
+          },
         },
         {
-          provide: ErrorsService, useValue: {
-            i18nError() {
-            }
-          }
+          provide: ErrorsService,
+          useValue: {
+            i18nError() {},
+          },
         },
-        {provide: 'SUBDOMAIN', useValue: 'es'}
+        { provide: 'SUBDOMAIN', useValue: 'es' },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -104,7 +117,6 @@ describe('ItemSoldDirective', () => {
   });
 
   describe('can mark as sold', () => {
-
     let item: Item;
     let callback: EventEmitter<any>;
 
@@ -124,11 +136,16 @@ describe('ItemSoldDirective', () => {
     });
 
     it('should set the item inside the modal to the component item', () => {
-      expect(itemService.canDoAction).toHaveBeenCalledWith('mark_sold', item.id);
+      expect(itemService.canDoAction).toHaveBeenCalledWith(
+        'mark_sold',
+        item.id
+      );
     });
 
     it('should open modal', fakeAsync(() => {
-      expect(modalService.open).toHaveBeenCalledWith(SoldModalComponent, { windowClass: 'sold' });
+      expect(modalService.open).toHaveBeenCalledWith(SoldModalComponent, {
+        windowClass: 'sold',
+      });
     }));
 
     it('should set sold true', () => {
@@ -150,7 +167,10 @@ describe('ItemSoldDirective', () => {
     }));
 
     it('should call canDoAction', () => {
-      expect(itemService.canDoAction).toHaveBeenCalledWith('mark_sold', MOCK_ITEM.id);
+      expect(itemService.canDoAction).toHaveBeenCalledWith(
+        'mark_sold',
+        MOCK_ITEM.id
+      );
     });
 
     it('should throw error', () => {

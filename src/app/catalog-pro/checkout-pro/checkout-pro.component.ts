@@ -8,21 +8,19 @@ import { CartPro } from '../../shared/catalog/cart/cart-pro';
 import { Subject } from 'rxjs';
 import { NgbCalendar, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 
-
 export enum BUMPS {
   CITY = 'citybump',
   COUNTRY = 'countrybump',
-  PLANNING = 'planning'
+  PLANNING = 'planning',
 }
 const CATALOG_PRO_LIST_URL = 'pro/catalog/list';
 
 @Component({
   selector: 'tsl-checkout-pro',
   templateUrl: './checkout-pro.component.html',
-  styleUrls: ['./checkout-pro.component.scss']
+  styleUrls: ['./checkout-pro.component.scss'],
 })
 export class CheckoutProComponent implements OnInit {
-
   itemsWithProducts: ItemWithProducts[];
   calendarHidden = true;
   selectAllEventSubject: Subject<{}> = new Subject<{}>();
@@ -34,15 +32,16 @@ export class CheckoutProComponent implements OnInit {
   allSelected = {
     countrybump: false,
     citybump: false,
-    planning: false
-  }
-  
-  constructor(private itemService: ItemService,
-              private router: Router,
-              private cartService: CartService,
-              private route: ActivatedRoute,
-              private calendar: NgbCalendar) {
-  }
+    planning: false,
+  };
+
+  constructor(
+    private itemService: ItemService,
+    private router: Router,
+    private cartService: CartService,
+    private route: ActivatedRoute,
+    private calendar: NgbCalendar
+  ) {}
 
   ngOnInit() {
     this.cartService.createInstance(new CartPro());
@@ -54,14 +53,17 @@ export class CheckoutProComponent implements OnInit {
       }
     });
   }
-  
+
   public onApplyCalendar(datesFromCalendar: CalendarDates): void {
     this.newSelectedDates = datesFromCalendar;
     this.toggleCalendar();
     if (this.calendarType === BUMPS.PLANNING) {
-      this.selectAllEventSubject.next({type: this.calendarType, allSelected: false, dates: datesFromCalendar});
+      this.selectAllEventSubject.next({
+        type: this.calendarType,
+        allSelected: false,
+        dates: datesFromCalendar,
+      });
       this.allSelected.planning = false;
-      
     }
     this.calendarType = null;
   }
@@ -71,13 +73,16 @@ export class CheckoutProComponent implements OnInit {
 
     if (type !== BUMPS.PLANNING) {
       this.allSelected[type] = !this.allSelected[type];
-      if (type === BUMPS.CITY && this.allSelected.countrybump) {	
-        this.allSelected.countrybump = false;	
-      }	
-      if (type === BUMPS.COUNTRY && this.allSelected.citybump) {	
-        this.allSelected.citybump = false;	
+      if (type === BUMPS.CITY && this.allSelected.countrybump) {
+        this.allSelected.countrybump = false;
       }
-      this.selectAllEventSubject.next({type, allSelected: this.allSelected[type]});
+      if (type === BUMPS.COUNTRY && this.allSelected.citybump) {
+        this.allSelected.citybump = false;
+      }
+      this.selectAllEventSubject.next({
+        type,
+        allSelected: this.allSelected[type],
+      });
     } else {
       this.setDefaultDates();
       this.toggleCalendar();
@@ -88,7 +93,10 @@ export class CheckoutProComponent implements OnInit {
     if (!this.newSelectedDates) {
       this.todayDate = this.calendar.getToday();
       this.tomorrowDate = this.calendar.getNext(this.todayDate);
-      this.newSelectedDates = new CalendarDates(this.todayDate, this.tomorrowDate);
+      this.newSelectedDates = new CalendarDates(
+        this.todayDate,
+        this.tomorrowDate
+      );
     }
   }
 
@@ -101,21 +109,25 @@ export class CheckoutProComponent implements OnInit {
       this.router.navigate([CATALOG_PRO_LIST_URL]);
       return;
     }
-    this.itemService.getItemsWithAvailableProducts(this.itemService.selectedItems)
+    this.itemService
+      .getItemsWithAvailableProducts(this.itemService.selectedItems)
       .subscribe((itemsWithProducts: ItemWithProducts[]) => {
         this.itemsWithProducts = itemsWithProducts;
       });
   }
 
   private getProductsFromParamsItem(itemId: string) {
-    this.itemService.getItemsWithAvailableProducts([itemId])
+    this.itemService
+      .getItemsWithAvailableProducts([itemId])
       .subscribe((itemsWithProducts: ItemWithProducts[]) => {
         if (itemsWithProducts.length) {
           this.itemsWithProducts = itemsWithProducts;
         } else {
-          this.router.navigate([CATALOG_PRO_LIST_URL, {alreadyFeatured: true}]);
+          this.router.navigate([
+            CATALOG_PRO_LIST_URL,
+            { alreadyFeatured: true },
+          ]);
         }
       });
   }
-
 }

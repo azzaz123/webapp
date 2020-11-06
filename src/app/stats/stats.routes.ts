@@ -15,22 +15,22 @@ const routes: Routes = [
       isMyZone: true,
       permissions: {
         except: PERMISSIONS.professional,
-        redirectTo: '/pro/dashboard'
-      }
+        redirectTo: '/pro/dashboard',
+      },
     },
     children: [
       {
         path: '',
-        component: ItemsStatsComponent
-      }
-    ]
-  }
+        component: ItemsStatsComponent,
+      },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class StatsRoutingModule { }
+export class StatsRoutingModule {}
 
 export const statsRoutedComponents = [StatsComponent];

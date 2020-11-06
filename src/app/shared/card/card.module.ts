@@ -3,20 +3,23 @@ import { CommonModule } from '@angular/common';
 import {
   CardImageDirective,
   CardContentDirective,
-  CardFooterDirective
+  CardFooterDirective,
 } from './card.directive';
 import { CardComponent } from './card.component';
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
+  imports: [CommonModule],
   exports: [
     CardImageDirective,
     CardContentDirective,
     CardFooterDirective,
-    CardComponent
+    CardComponent,
   ],
-  declarations: [CardContentDirective, CardImageDirective, CardFooterDirective, CardComponent]
+  declarations: [
+    CardContentDirective,
+    CardImageDirective,
+    CardFooterDirective,
+    CardComponent,
+  ],
 })
-export class CardModule { }
+export class CardModule {}

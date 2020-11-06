@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
-import { catalogRoutedComponents, CatalogRoutingModule } from './catalog.routes';
+import {
+  catalogRoutedComponents,
+  CatalogRoutingModule,
+} from './catalog.routes';
 import { SharedModule } from '../shared/shared.module';
 import { CatalogItemComponent } from './list/catalog-item/catalog-item.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
@@ -31,11 +34,9 @@ import { ReviewsModule } from '../reviews/reviews.module';
     TrackingModule,
     NgbButtonsModule,
     NgbTooltipModule,
-    ReviewsModule
+    ReviewsModule,
   ],
-  providers: [
-    BumpTutorialService,
-  ],
+  providers: [BumpTutorialService],
   declarations: [
     catalogRoutedComponents,
     CatalogItemComponent,
@@ -50,7 +51,7 @@ import { ReviewsModule } from '../reviews/reviews.module';
     UrgentConfirmationModalComponent,
     BuyProductModalComponent,
     ReactivateConfirmationModalComponent,
-    ListingfeeConfirmationModalComponent
+    ListingfeeConfirmationModalComponent,
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
@@ -59,8 +60,7 @@ import { ReviewsModule } from '../reviews/reviews.module';
     UrgentConfirmationModalComponent,
     BuyProductModalComponent,
     ReactivateConfirmationModalComponent,
-    ListingfeeConfirmationModalComponent
-  ]
+    ListingfeeConfirmationModalComponent,
+  ],
 })
-export class CatalogModule {
-}
+export class CatalogModule {}

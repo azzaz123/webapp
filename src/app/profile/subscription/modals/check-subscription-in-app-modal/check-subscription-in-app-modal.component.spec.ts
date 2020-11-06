@@ -10,13 +10,10 @@ describe('CheckSubscriptionInAppModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CheckSubscriptionInAppModalComponent ],
-      providers: [
-        NgbActiveModal
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      declarations: [CheckSubscriptionInAppModalComponent],
+      providers: [NgbActiveModal],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

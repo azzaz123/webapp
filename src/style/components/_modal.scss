@@ -3,10 +3,10 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
 $modal-border-radius: 0.3rem;
 
 .modal-backdrop.in {
-  opacity: .7;
+  opacity: 0.7;
 }
 .modal-backdrop.show {
-  opacity: .85;
+  opacity: 0.85;
 }
 .modal {
   display: flex !important;
@@ -19,7 +19,8 @@ $modal-border-radius: 0.3rem;
   box-shadow: $modal-box-shadow;
   border: 0;
   background-color: $white;
-  h2,p {
+  h2,
+  p {
     color: $blue-grey-1;
   }
   .modal-close {
@@ -43,7 +44,7 @@ $modal-border-radius: 0.3rem;
     &.light {
       tsl-svg-icon ::ng-deep path {
         fill: $white;
-        opacity: .5;
+        opacity: 0.5;
       }
     }
     &.grey {
@@ -66,7 +67,8 @@ $modal-border-radius: 0.3rem;
       color: $blue-grey-1;
     }
   }
-  .modal-body, .modal-footer {
+  .modal-body,
+  .modal-footer {
     padding: $spacing-ml;
   }
   .modal-footer {
@@ -115,7 +117,7 @@ $modal-border-radius: 0.3rem;
     color: $white;
     line-height: $line-height-xxl;
     min-width: 140px;
-    transition: background-color .25s ease;
+    transition: background-color 0.25s ease;
     &:hover {
       background-color: darken($walla-main, 5%);
     }
@@ -154,7 +156,9 @@ $modal-border-radius: 0.3rem;
   }
 }
 
-.modal.review, .modal.sold, .modal.profile {
+.modal.review,
+.modal.sold,
+.modal.profile {
   $modal-width: 600px;
   .modal-dialog {
     max-width: $modal-width;
@@ -180,7 +184,8 @@ $modal-border-radius: 0.3rem;
   }
 }
 
-.modal.preview, .modal.location  {
+.modal.preview,
+.modal.location {
   $modal-width: 700px;
   .modal-dialog {
     max-width: $modal-width;
@@ -225,11 +230,15 @@ $modal-border-radius: 0.3rem;
   .modal-content {
     width: $modal-width !important;
     max-width: unset;
-    background-color: rgba($blue-grey-1, .95);
+    background-color: rgba($blue-grey-1, 0.95);
   }
 }
 
-.modal.buy-wallacoins, .modal.buy-product, .modal.reactivate, .modal.tutorial-wallacoins, .modal.become-pro {
+.modal.buy-wallacoins,
+.modal.buy-product,
+.modal.reactivate,
+.modal.tutorial-wallacoins,
+.modal.become-pro {
   .modal-dialog {
     max-width: unset;
   }
@@ -256,7 +265,8 @@ $modal-border-radius: 0.3rem;
     border-radius: 20px;
     padding: $spacing-ms $spacing-xxl $spacing-l;
   }
-  .modal-dialog, .modal-content {
+  .modal-dialog,
+  .modal-content {
     max-width: $modal-width;
     border-radius: $button-border-radius;
   }
@@ -303,10 +313,10 @@ $modal-border-radius: 0.3rem;
         align-items: center;
         &.btn-warn {
           background-color: $warn !important;
-          color: $white !important;;
+          color: $white !important;
         }
         &:hover {
-          opacity: .8;
+          opacity: 0.8;
         }
       }
     }
@@ -370,7 +380,7 @@ $modal-border-radius: 0.3rem;
       font-weight: $font-weight-chunky;
     }
     p {
-      opacity: .8;
+      opacity: 0.8;
       margin: 0;
       color: $white;
       font-size: $font-size-m;

@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 .spinner-wrapper {
   display: flex;
@@ -100,7 +100,8 @@
     width: 100%;
   }
   .Cart__NewCard {
-    &--add, &--used {
+    &--add,
+    &--used {
       margin-bottom: $spacing-s;
       font-size: $font-size-s;
       color: $walla-main;

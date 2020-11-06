@@ -17,19 +17,19 @@ export interface Perks {
 
 export interface Perk {
   bump: {
-    quantity: number,
-    total?: number,
-    createDate?: number
+    quantity: number;
+    total?: number;
+    createDate?: number;
   };
   national: {
-    quantity: number,
-    total?: number,
-    createDate?: number
+    quantity: number;
+    total?: number;
+    createDate?: number;
   };
   listing?: {
-    quantity: number,
-    total?: number,
-    createDate?: number
+    quantity: number;
+    total?: number;
+    createDate?: number;
   };
 }
 
@@ -114,7 +114,7 @@ export interface StripeCard {
   funding: string;
   generated_from: number;
   last4: string;
-  three_d_secure_usage: { supported : boolean };
+  three_d_secure_usage: { supported: boolean };
   wallet: string;
 }
 

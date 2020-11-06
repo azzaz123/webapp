@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 :host {
   margin-bottom: 2%;
@@ -19,7 +19,8 @@
   }
 }
 
-.car, .visibility {
+.car,
+.visibility {
   background: $white;
   border-radius: $border-radius;
   border: solid 1px $blue-grey-5;
@@ -57,7 +58,8 @@
   }
 }
 
-.number, .text {
+.number,
+.text {
   float: left;
   width: 100%;
 }
@@ -76,7 +78,7 @@
 }
 
 .city {
-  color: $walla-main
+  color: $walla-main;
 }
 
 .country {

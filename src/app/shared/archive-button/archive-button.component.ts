@@ -8,16 +8,16 @@ import { CallsService } from '../../core/conversation/calls.service';
 @Component({
   selector: 'tsl-archive-button',
   templateUrl: './archive-button.component.html',
-  styleUrls: ['./archive-button.component.scss']
+  styleUrls: ['./archive-button.component.scss'],
 })
 export class ArchiveButtonComponent {
-
   @Input() lead: Lead;
   @Output() click: EventEmitter<any> = new EventEmitter();
 
-  constructor(private trackingService: TrackingService,
-              private callService: CallsService) {
-  }
+  constructor(
+    private trackingService: TrackingService,
+    private callService: CallsService
+  ) {}
 
   archive(event: Event) {
     event.stopPropagation();
