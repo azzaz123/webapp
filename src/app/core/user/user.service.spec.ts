@@ -416,7 +416,7 @@ describe('Service: User', () => {
   });
 
   describe('calculateDistanceFromItem', () => {
-    describe('when the distance between item and user is the same...', () => {
+    describe('when the distance between users is the same...', () => {
       it('should return 0 distance', () => {
         const user: User = MOCK_USER;
         const item: Item = MOCK_ITEM;
@@ -429,7 +429,7 @@ describe('Service: User', () => {
       });
     });
 
-    describe('when the distance between item and user is different...', () => {
+    describe('when the distance between users is different...', () => {
       it('should return positive number', () => {
         const CUSTOM_USER_LOCATION: UserLocation = {
           id: 101,
@@ -451,7 +451,7 @@ describe('Service: User', () => {
       });
     });
 
-    describe('when the user service dont have location...', () => {
+    describe('when our own user dont have location...', () => {
       it('should return null distance', () => {
         const user: User = new User(USER_ID);
         const item: Item = MOCK_ITEM;
