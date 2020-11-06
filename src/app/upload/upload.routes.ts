@@ -18,18 +18,15 @@ const routes: Routes = [
     canActivate: [NgxPermissionsGuard],
     canDeactivate: [ExitConfirmGuard],
     resolve: {
-      item: ItemResolverService
+      item: ItemResolverService,
     },
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class UploadRoutingModule { }
+export class UploadRoutingModule {}
 
-export const uploadRoutedComponents = [
-  UploadComponent,
-  EditComponent
-];
+export const uploadRoutedComponents = [UploadComponent, EditComponent];

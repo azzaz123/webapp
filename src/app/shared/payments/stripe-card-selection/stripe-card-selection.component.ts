@@ -7,16 +7,17 @@ import { I18nService } from '../../../core/i18n/i18n.service';
 @Component({
   selector: 'tsl-stripe-card-selection',
   templateUrl: './stripe-card-selection.component.html',
-  styleUrls: ['./stripe-card-selection.component.scss']
+  styleUrls: ['./stripe-card-selection.component.scss'],
 })
 export class StripeCardSelectionComponent implements OnInit {
-
   private _model: boolean = false;
   public financialCards: FinancialCardOption[];
   public card: string = '';
   private notFoundMsg = '';
   @Output() hasCard: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() onSelectExistingCard: EventEmitter<FinancialCardOption> = new EventEmitter<FinancialCardOption>();
+  @Output() onSelectExistingCard: EventEmitter<
+    FinancialCardOption
+  > = new EventEmitter<FinancialCardOption>();
 
   private onModelChange: any = () => {};
   private onTouched: any = () => {};
@@ -24,15 +25,20 @@ export class StripeCardSelectionComponent implements OnInit {
   constructor(
     private stripeService: StripeService,
     private i18nService: I18nService
-  ) { }
+  ) {}
 
   ngOnInit() {
-    this.stripeService.getCards().subscribe((stripeCards: FinancialCard[]) => {
-      this.financialCards = stripeCards.map((financialCard: FinancialCard) => this.toSelectOptions(financialCard));
-      this.hasCard.emit(this.financialCards.length > 0);
-    }, () => {
-      this.hasCard.emit(false);
-    });
+    this.stripeService.getCards().subscribe(
+      (stripeCards: FinancialCard[]) => {
+        this.financialCards = stripeCards.map((financialCard: FinancialCard) =>
+          this.toSelectOptions(financialCard)
+        );
+        this.hasCard.emit(this.financialCards.length > 0);
+      },
+      () => {
+        this.hasCard.emit(false);
+      }
+    );
     this.notFoundMsg = this.i18nService.getTranslations('noResultsFound');
   }
 
@@ -44,7 +50,7 @@ export class StripeCardSelectionComponent implements OnInit {
       id: card.id,
       number: card.number,
       favorite: card.favorite,
-      stripeCard: card.stripeCard
+      stripeCard: card.stripeCard,
     };
   }
 
@@ -73,6 +79,4 @@ export class StripeCardSelectionComponent implements OnInit {
   public setFinancialCard(selectedCard: FinancialCardOption) {
     this.onSelectExistingCard.emit(selectedCard);
   }
-
 }
-

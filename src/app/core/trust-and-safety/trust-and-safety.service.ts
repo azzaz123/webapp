@@ -5,7 +5,7 @@ import { interval, ReplaySubject } from 'rxjs';
 import {
   SessionProfileData,
   SessionProfileDataLocation,
-  SessionProfileDataPlatform
+  SessionProfileDataPlatform,
 } from './trust-and-safety.interface';
 import { THREAT_METRIX_EMBED } from './threat-metrix-embed-script';
 import { ThreatMetrixLibrary } from './threat-metrix.interface';
@@ -15,16 +15,16 @@ import { UuidService } from '../uuid/uuid.service';
 export const USER_STARTER_ENDPOINT = `${environment.baseUrl}api/v3/users/me/starter`;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TrustAndSafetyService {
   private _threatMetrixRef: ThreatMetrixLibrary;
   private _sessionId: string;
-  private _profileSentToThreatMetrix: ReplaySubject<boolean> = new ReplaySubject();
+  private _profileSentToThreatMetrix: ReplaySubject<
+    boolean
+  > = new ReplaySubject();
 
-  constructor(private http: HttpClient,
-    private uuidService: UuidService,
-    ) {}
+  constructor(private http: HttpClient, private uuidService: UuidService) {}
 
   private _initializeSessionId(): void {
     if (this._sessionId) {
@@ -60,14 +60,21 @@ export class TrustAndSafetyService {
   }
 
   private _isThreatMetrixProfilingStarted() {
-    return typeof window['tmx_profiling_started'] !== 'undefined' && window['tmx_profiling_started'];
+    return (
+      typeof window['tmx_profiling_started'] !== 'undefined' &&
+      window['tmx_profiling_started']
+    );
   }
 
   private _startThreatMetrixProfiling() {
     if (!this._sessionId || !this._threatMetrixRef) {
       throw new Error('Session profiling error');
     }
-    this._threatMetrixRef.nfl(environment.threatMetrixProfilingDomain, environment.threatMetrixOrgId, this._sessionId);
+    this._threatMetrixRef.nfl(
+      environment.threatMetrixProfilingDomain,
+      environment.threatMetrixOrgId,
+      this._sessionId
+    );
     this._checkProfileSentToThreatMetrix();
   }
 
@@ -81,7 +88,11 @@ export class TrustAndSafetyService {
   }
 
   private _canSubmitProfile(): boolean {
-    return this._sessionId && this._threatMetrixRef && this._isThreatMetrixProfilingStarted();
+    return (
+      this._sessionId &&
+      this._threatMetrixRef &&
+      this._isThreatMetrixProfilingStarted()
+    );
   }
 
   public submitProfile(location: SessionProfileDataLocation): void {
@@ -91,16 +102,14 @@ export class TrustAndSafetyService {
     const profile: SessionProfileData = {
       id: this._sessionId,
       location,
-      platform: SessionProfileDataPlatform.WEB
+      platform: SessionProfileDataPlatform.WEB,
     };
 
-    this._profileSentToThreatMetrix
-      .pipe(take(1))
-      .subscribe(profileSent => {
-        if (!profileSent) {
-          return;
-        }
-        this.http.post(USER_STARTER_ENDPOINT, profile).subscribe();
-      });
+    this._profileSentToThreatMetrix.pipe(take(1)).subscribe((profileSent) => {
+      if (!profileSent) {
+        return;
+      }
+      this.http.post(USER_STARTER_ENDPOINT, profile).subscribe();
+    });
   }
 }

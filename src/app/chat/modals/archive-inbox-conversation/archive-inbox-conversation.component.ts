@@ -3,11 +3,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'tsl-archive-inbox-conversation',
-  templateUrl: './archive-inbox-conversation.component.html'
+  templateUrl: './archive-inbox-conversation.component.html',
 })
 export class ArchiveInboxConversationComponent {
-
-  constructor(public activeModal: NgbActiveModal) {
-  }
-
+  constructor(public activeModal: NgbActiveModal) {}
 }

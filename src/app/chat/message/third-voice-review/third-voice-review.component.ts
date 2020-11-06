@@ -5,10 +5,9 @@ import { eq } from 'lodash-es';
 @Component({
   selector: 'tsl-third-voice-review',
   templateUrl: './third-voice-review.component.html',
-  styleUrls: ['./third-voice-review.component.scss']
+  styleUrls: ['./third-voice-review.component.scss'],
 })
 export class ThirdVoiceReviewComponent {
-
   public static ALLOW_MESSAGES_TYPES = [MessageType.REVIEW];
 
   @Input() message: InboxMessage;

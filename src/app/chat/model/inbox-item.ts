@@ -7,106 +7,117 @@ export enum InboxItemStatus {
 }
 
 export class InboxItemPrice {
-    amount: number;
-    currency: string;
+  amount: number;
+  currency: string;
 }
 
 export class InboxImage {
-    urls_by_size: {
-        small: string;
-    };
+  urls_by_size: {
+    small: string;
+  };
 }
 
 export class InboxItem {
-    constructor(private _id: string,
-        private _price: InboxItemPrice,
-        private _title: string,
-        private _mainImage: InboxImage,
-        private _itemUrl: string,
-        private _status: InboxItemStatus,
-        private _isMine: boolean,
-        public categoryId: number) {
-        this.mapStatusToFlags(this.status);
-    }
+  constructor(
+    private _id: string,
+    private _price: InboxItemPrice,
+    private _title: string,
+    private _mainImage: InboxImage,
+    private _itemUrl: string,
+    private _status: InboxItemStatus,
+    private _isMine: boolean,
+    public categoryId: number
+  ) {
+    this.mapStatusToFlags(this.status);
+  }
 
-    public sold = false;
-    public reserved = false;
-    public published = false;
-    public unpublished = false;
-    public notAvailable = false;
-    public views: number;
-    public favorites: number;
+  public sold = false;
+  public reserved = false;
+  public published = false;
+  public unpublished = false;
+  public notAvailable = false;
+  public views: number;
+  public favorites: number;
 
-    private mapStatusToFlags(status: string) {
-        switch (status) {
-            case InboxItemStatus.SOLD:
-                this.sold = true;
-                break;
-            case InboxItemStatus.RESERVED:
-                this.reserved = true;
-                break;
-            case InboxItemStatus.NOT_AVAILABLE:
-                this.notAvailable = true;
-                break;
-            case InboxItemStatus.PUBLISHED:
-                this.published = true;
-                break;
-            case InboxItemStatus.UNPUBLISHED:
-                  this.unpublished = true;
-                  break;
-            default:
-                this.published = true;
-                break;
-        }
+  private mapStatusToFlags(status: string) {
+    switch (status) {
+      case InboxItemStatus.SOLD:
+        this.sold = true;
+        break;
+      case InboxItemStatus.RESERVED:
+        this.reserved = true;
+        break;
+      case InboxItemStatus.NOT_AVAILABLE:
+        this.notAvailable = true;
+        break;
+      case InboxItemStatus.PUBLISHED:
+        this.published = true;
+        break;
+      case InboxItemStatus.UNPUBLISHED:
+        this.unpublished = true;
+        break;
+      default:
+        this.published = true;
+        break;
     }
+  }
 
-    get id(): string {
-        return this._id;
-    }
+  get id(): string {
+    return this._id;
+  }
 
-    get price(): InboxItemPrice {
-        return this._price;
-    }
+  get price(): InboxItemPrice {
+    return this._price;
+  }
 
-    get title(): string {
-        return this._title;
-    }
+  get title(): string {
+    return this._title;
+  }
 
-    get status() {
-        return this._status;
-    }
+  get status() {
+    return this._status;
+  }
 
-    set status(value: InboxItemStatus) {
-        this._status = value;
-    }
+  set status(value: InboxItemStatus) {
+    this._status = value;
+  }
 
-    get mainImage(): InboxImage {
-        return this._mainImage;
-    }
+  get mainImage(): InboxImage {
+    return this._mainImage;
+  }
 
-    get isMine(): boolean {
-        return this._isMine;
-    }
+  get isMine(): boolean {
+    return this._isMine;
+  }
 
-    set isMine(value: boolean) {
-        this._isMine = value;
-    }
+  set isMine(value: boolean) {
+    this._isMine = value;
+  }
 
-    get itemUrl(): string {
-        return this._itemUrl;
-    }
+  get itemUrl(): string {
+    return this._itemUrl;
+  }
 
-    set itemUrl(value: string) {
-        this._itemUrl = value;
-    }
+  set itemUrl(value: string) {
+    this._itemUrl = value;
+  }
 
-    public setFakeImage(image: string) {
-        this._mainImage = {
-            urls_by_size: {
-                small: '',
-            }
-        };
-    }
+  public setFakeImage(image: string) {
+    this._mainImage = {
+      urls_by_size: {
+        small: '',
+      },
+    };
+  }
 }
 
-export const InboxItemPlaceholder = new InboxItem(null, null, 'unknown', null, null, InboxItemStatus.NOT_AVAILABLE, false, null);
+export const InboxItemPlaceholder = new InboxItem(
+  null,
+  null,
+  'unknown',
+  null,
+  null,
+  InboxItemStatus.NOT_AVAILABLE,
+  false,
+  null
+);

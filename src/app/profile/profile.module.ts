@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
-import { profileRoutedComponents, ProfileRoutingModule } from './profile.routes';
+import {
+  profileRoutedComponents,
+  ProfileRoutingModule,
+} from './profile.routes';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { GeolocationModule } from '../shared/geolocation/geolocation.module';
@@ -31,7 +34,7 @@ import { DropdownModule } from 'app/dropdown/dropdown.module';
     NgbButtonsModule,
     GeolocationModule,
     NgbCarouselModule,
-    DropdownModule
+    DropdownModule,
   ],
   declarations: [
     profileRoutedComponents,
@@ -49,8 +52,7 @@ import { DropdownModule } from 'app/dropdown/dropdown.module';
     CheckSubscriptionInAppModalComponent,
     UnsubscribeInAppFirstModal,
     DiscountAvailableUnsubscribeInAppModalComponent,
-    SubscriptionPriceDiscountComponent
-
+    SubscriptionPriceDiscountComponent,
   ],
   entryComponents: [
     UnsubscribeModalComponent,
@@ -64,7 +66,7 @@ import { DropdownModule } from 'app/dropdown/dropdown.module';
     ContinueSubscriptionModalComponent,
     CheckSubscriptionInAppModalComponent,
     UnsubscribeInAppFirstModal,
-    DiscountAvailableUnsubscribeInAppModalComponent
-  ]
+    DiscountAvailableUnsubscribeInAppModalComponent,
+  ],
 })
-export class ProfileModule { }
+export class ProfileModule {}

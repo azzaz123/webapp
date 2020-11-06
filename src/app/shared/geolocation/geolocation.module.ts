@@ -4,7 +4,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LocationSelectComponent } from './location-select/location-select.component';
 import { GeolocationComponent } from './geolocation.component';
 import { LocationModalComponent } from './location-select/location-modal/location-modal.component';
-import { NgbPopoverModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbPopoverModule,
+  NgbTypeaheadModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { HereMapsComponent } from './here-maps/here-maps.component';
 import { LocationBoxComponent } from './location-box/location-box.component';
 import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
@@ -16,24 +19,22 @@ import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
     FormsModule,
     NgbTypeaheadModule,
     NgbPopoverModule,
-    SvgIconModule
+    SvgIconModule,
   ],
   exports: [
     CommonModule,
     LocationSelectComponent,
     GeolocationComponent,
     LocationBoxComponent,
-    HereMapsComponent
+    HereMapsComponent,
   ],
   declarations: [
     LocationSelectComponent,
     LocationModalComponent,
     GeolocationComponent,
     HereMapsComponent,
-    LocationBoxComponent
+    LocationBoxComponent,
   ],
-  entryComponents: [
-    LocationModalComponent
-  ]
+  entryComponents: [LocationModalComponent],
 })
-export class GeolocationModule { }
+export class GeolocationModule {}

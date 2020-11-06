@@ -90,4 +90,3 @@ window.gdprAppliesGlobally = true;
     n.parentNode.insertBefore(t, n);
   })("${environment.didomiKey}");
 })();`;
-

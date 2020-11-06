@@ -1,5 +1,4 @@
 export class Diacritics {
-
   static DIACRITICS = {
     '\u24B6': 'A',
     '\uFF21': 'A',
@@ -839,11 +838,10 @@ export class Diacritics {
     '\u03CB': '\u03C5',
     '\u03B0': '\u03C5',
     '\u03C9': '\u03C9',
-    '\u03C2': '\u03C3'
+    '\u03C2': '\u03C3',
   };
 
   static strip(text: string): string {
-
     let match = (a: string): string => {
       return this.DIACRITICS[a] || a;
     };

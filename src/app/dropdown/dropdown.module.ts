@@ -5,16 +5,8 @@ import { DropdownListComponent } from './dropdown-list/dropdown-list.component';
 import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
 
 @NgModule({
-  declarations: [
-    DropdownComponent,
-    DropdownListComponent
-  ],
-  imports: [
-    CommonModule,
-    SvgIconModule
-  ],
-  exports: [
-    DropdownComponent
-  ]
+  declarations: [DropdownComponent, DropdownListComponent],
+  imports: [CommonModule, SvgIconModule],
+  exports: [DropdownComponent],
 })
-export class DropdownModule { }
+export class DropdownModule {}

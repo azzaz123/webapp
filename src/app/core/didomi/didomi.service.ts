@@ -36,13 +36,15 @@ export class DidomiService {
       return false;
     }
 
-    const userConsentedGoogle = this.library.getUserConsentStatusForVendor('google');
+    const userConsentedGoogle = this.library.getUserConsentStatusForVendor(
+      'google'
+    );
     const allConsents = this.library.getUserConsentStatusForAll();
     const { purposes } = allConsents;
     const { disabled: userDisabledPurpouses } = purposes;
 
-    const allowingSegmentation = userDisabledPurpouses.length === 0 && userConsentedGoogle;
+    const allowingSegmentation =
+      userDisabledPurpouses.length === 0 && userConsentedGoogle;
     return allowingSegmentation;
   }
-
 }

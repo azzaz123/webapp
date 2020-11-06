@@ -5,15 +5,13 @@ import { isNil } from 'lodash-es';
   selector: 'tsl-user-response-rate',
   templateUrl: './user-response-rate.component.html',
   styleUrls: ['./user-response-rate.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class UserResponseRateComponent {
-
   @Input() responseRate: string;
   @Input() showIcon = true;
 
   public isNullOrUndefined(): boolean {
     return isNil(this.responseRate);
   }
-
 }

@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 @Component({
   selector: 'tsl-stats',
   templateUrl: './stats.component.html',
-  styleUrls: ['./stats.component.scss']
+  styleUrls: ['./stats.component.scss'],
 })
 export class StatsComponent {
   public scrollTop: number;
@@ -23,5 +23,4 @@ export class StatsComponent {
   public setLoadingStatus(status: boolean) {
     this.loading = status;
   }
-
 }

@@ -6,18 +6,18 @@ import { MessageService } from '../../chat/service/message.service';
 @Component({
   selector: 'tsl-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss']
+  styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent implements OnInit {
-
   public user: User;
   @Input() isProducts: boolean;
   @Input() isProfile: boolean;
   public isProfessional: boolean;
 
-  constructor(private userService: UserService,
-              public messageService: MessageService) {
-  }
+  constructor(
+    private userService: UserService,
+    public messageService: MessageService
+  ) {}
 
   ngOnInit() {
     this.userService.me().subscribe((user) => {
