@@ -208,11 +208,12 @@ describe('CatalogItemComponent', () => {
       });
 
       it('should track the ProductUnReserved event', () => {
-        expect(
-          trackingService.track
-        ).toHaveBeenCalledWith(TrackingService.PRODUCT_UNRESERVED, {
-          product_id: item.id,
-        });
+        expect(trackingService.track).toHaveBeenCalledWith(
+          TrackingService.PRODUCT_UNRESERVED,
+          {
+            product_id: item.id,
+          }
+        );
       });
 
       it('should emit ITEM_RESERVED event', () => {
@@ -396,11 +397,12 @@ describe('CatalogItemComponent', () => {
       });
 
       it('should track the DeleteItem event', () => {
-        expect(
-          trackingService.track
-        ).toHaveBeenCalledWith(TrackingService.PRODUCT_SOLD, {
-          product_id: item.id,
-        });
+        expect(trackingService.track).toHaveBeenCalledWith(
+          TrackingService.PRODUCT_SOLD,
+          {
+            product_id: item.id,
+          }
+        );
       });
 
       it('should emit ITEM_SOLD event', () => {
@@ -492,11 +494,12 @@ describe('CatalogItemComponent', () => {
 
       component.openItem();
 
-      expect(
-        trackingService.track
-      ).toHaveBeenCalledWith(TrackingService.PRODUCT_VIEWED, {
-        product_id: component.item.id,
-      });
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.PRODUCT_VIEWED,
+        {
+          product_id: component.item.id,
+        }
+      );
       expect(window.open).toHaveBeenCalledTimes(1);
       expect(window.open).toHaveBeenCalledWith(component.link);
     });

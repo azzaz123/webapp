@@ -329,11 +329,12 @@ describe('AddNewSubscriptionModalComponent', () => {
       tick();
 
       expect(component.isRetryInvoice).toBe(false);
-      expect(
-        modalService.open
-      ).toHaveBeenCalledWith(PaymentSuccessModalComponent, {
-        windowClass: 'success',
-      });
+      expect(modalService.open).toHaveBeenCalledWith(
+        PaymentSuccessModalComponent,
+        {
+          windowClass: 'success',
+        }
+      );
     }));
 
     it('should call actionPayment if response status is requires_action', fakeAsync(() => {

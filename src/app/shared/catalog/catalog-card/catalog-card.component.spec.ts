@@ -158,11 +158,12 @@ describe('CatalogCardComponent', () => {
       });
 
       it('should track the DeleteItem event', () => {
-        expect(
-          trackingService.track
-        ).toHaveBeenCalledWith(TrackingService.PRODUCT_SOLD, {
-          product_id: item.id,
-        });
+        expect(trackingService.track).toHaveBeenCalledWith(
+          TrackingService.PRODUCT_SOLD,
+          {
+            product_id: item.id,
+          }
+        );
       });
 
       it('should emit ITEM_SOLD event', () => {

@@ -300,12 +300,13 @@ describe('App', () => {
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
 
         expect(cookieService.get).toHaveBeenCalledWith('app_session_id');
-        expect(
-          trackingService.track
-        ).toHaveBeenCalledWith(TrackingService.APP_OPEN, {
-          referer_url: component.previousUrl,
-          current_url: component.currentUrl,
-        });
+        expect(trackingService.track).toHaveBeenCalledWith(
+          TrackingService.APP_OPEN,
+          {
+            referer_url: component.previousUrl,
+            current_url: component.currentUrl,
+          }
+        );
       });
 
       it('should call update session cookie if cookie does not exist', () => {
