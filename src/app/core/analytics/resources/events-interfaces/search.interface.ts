@@ -130,7 +130,7 @@ export interface Search {
    */
   itemCondition?: string;
   /**
-   * Other properties sent by JSON format
+   * Other properties sent by JSON format, ONLY FOR A/B TESTING PURPOSE
    */
   otherProperties?: string;
 }

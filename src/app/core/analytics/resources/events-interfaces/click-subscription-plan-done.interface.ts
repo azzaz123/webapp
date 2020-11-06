@@ -18,11 +18,11 @@ export interface ClickSubscriptionPlanDone {
    */
   subscription: 0 | 100 | 14000 | 12800;
   /**
-   * Identifier of the subscription tier
+   * Identifier of the previous subscription tier purchased
    */
-  previousTier: number;
+  previousTier: string;
   /**
-   * Identifier of the subscription tier
+   * Identifier of the new subscription tier purchased
    */
-  newTier: number;
+  newTier: string;
 }
