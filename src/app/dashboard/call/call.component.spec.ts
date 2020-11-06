@@ -17,22 +17,19 @@ describe('CallComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        NoopAnimationsModule,
-      ],
+      imports: [NoopAnimationsModule],
       providers: [
         I18nService,
         {
-          provide: CallsService, useValue: {
-          stream() {
-          }
-        }
+          provide: CallsService,
+          useValue: {
+            stream() {},
+          },
         },
       ],
-      declarations: [ CallComponent, CallStatusLabelPipe, DateCalendarPipe],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      declarations: [CallComponent, CallStatusLabelPipe, DateCalendarPipe],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -44,7 +41,6 @@ describe('CallComponent', () => {
   });
 
   describe('onAnimationDone', () => {
-
     beforeEach(() => {
       spyOn(callService, 'stream');
     });

@@ -1,4 +1,3 @@
-
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
@@ -8,7 +7,6 @@ import { CookieModule } from 'ngx-cookie';
 import { PROVIDERS } from './providers';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from './layout/layout.module';
-import { DndModule } from 'ng2-dnd';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { HttpModuleNew } from './core/http/http.module.new';
@@ -16,14 +14,11 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { isSWEnabled } from 'environments/environment';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserAnimationsModule,
     CookieModule.forRoot(),
     CoreModule.forRoot(),
-    DndModule.forRoot(),
     BrowserModule,
     HttpModuleNew,
     HttpClientModule,
@@ -36,7 +31,6 @@ import { isSWEnabled } from 'environments/environment';
     })
   ],
   providers: [PROVIDERS],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}

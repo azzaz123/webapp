@@ -5,14 +5,12 @@ import { InboxConversation } from '../model/inbox-conversation';
 
 @Directive()
 export abstract class MessageComponent implements OnInit {
-
   private readonly HTML_REGEX = /<[a-z][\s\S]*>/i;
 
   @Input() message: InboxMessage;
   @Input() currentConversation: InboxConversation;
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   public messageContainsHTMLTag(): boolean {
     return this.containsHTMLTag(this.message.text);

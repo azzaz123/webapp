@@ -1,21 +1,24 @@
 import { CartProExtras } from './cart-pro-extras';
-import { PREPARED_PACKS, ORDER_CART_EXTRAS_PRO } from '../../../../tests/payments.fixtures.spec';
+import {
+  PREPARED_PACKS,
+  ORDER_CART_EXTRAS_PRO,
+} from '../../../../tests/payments.fixtures.spec';
 import { OrderProExtras } from '../../../core/payments/payment.interface';
 import { CartProExtrasPack } from './cart-item.interface';
 
 describe('CartProExtras', () => {
   let cart: CartProExtras;
   const cartProExtrasPack1: CartProExtrasPack = {
-    pack: PREPARED_PACKS[0].packs[0]
+    pack: PREPARED_PACKS[0].packs[0],
   };
   const cartProExtrasPack2: CartProExtrasPack = {
-    pack: PREPARED_PACKS[1].packs[0]
+    pack: PREPARED_PACKS[1].packs[0],
   };
   const cartProExtrasPack3: CartProExtrasPack = {
-    pack: PREPARED_PACKS[0].packs[1]
+    pack: PREPARED_PACKS[0].packs[1],
   };
   const cartProExtrasPack4: CartProExtrasPack = {
-    pack: PREPARED_PACKS[1].packs[1]
+    pack: PREPARED_PACKS[1].packs[1],
   };
 
   beforeEach(() => {

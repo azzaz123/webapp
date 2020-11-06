@@ -1,6 +1,11 @@
-
 import { of } from 'rxjs';
-import { async, fakeAsync, ComponentFixture, TestBed, tick } from '@angular/core/testing';
+import {
+  async,
+  fakeAsync,
+  ComponentFixture,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 import { UrgentConfirmationModalComponent } from './urgent-confirmation-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -25,30 +30,31 @@ describe('UrgentConfirmationModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UrgentConfirmationModalComponent, CustomCurrencyPipe],
+      declarations: [UrgentConfirmationModalComponent, CustomCurrencyPipe],
       providers: [
         NgbActiveModal,
         DecimalPipe,
         EventService,
-        {provide: TrackingService, useClass: MockTrackingService},
+        { provide: TrackingService, useClass: MockTrackingService },
         {
-          provide: UserService, useValue: {
+          provide: UserService,
+          useValue: {
             me() {
               return of(MOCK_USER);
-            }
-          }
+            },
+          },
         },
         {
-          provide: PaymentService, useValue: {
-          getCreditInfo() {
-            return of({});
-          }
-        }
-        }
+          provide: PaymentService,
+          useValue: {
+            getCreditInfo() {
+              return of({});
+            },
+          },
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -71,14 +77,21 @@ describe('UrgentConfirmationModalComponent', () => {
       component.code = '200';
       component.ngOnInit();
 
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.URGENT_PURCHASE_SUCCESS);
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.URGENT_PURCHASE_SUCCESS
+      );
     });
 
     it('should send event featured_purchase_error if code != 200', () => {
       component.code = '-1';
       component.ngOnInit();
 
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.URGENT_PURCHASE_ERROR, { error_code: component.code });
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.URGENT_PURCHASE_ERROR,
+        {
+          error_code: component.code,
+        }
+      );
     });
 
     describe('ngOnInit', () => {
@@ -86,7 +99,7 @@ describe('UrgentConfirmationModalComponent', () => {
         const creditInfo: CreditInfo = {
           currencyName: 'wallacoins',
           credit: 200,
-          factor: 100
+          factor: 100,
         };
         spyOn(paymentService, 'getCreditInfo').and.returnValue(of(creditInfo));
 
@@ -99,13 +112,18 @@ describe('UrgentConfirmationModalComponent', () => {
       }));
 
       it('should send appboy VisibilityPurchaseSuccess event if code == 200', () => {
-      spyOn(appboy, 'logCustomEvent');
-      component.code = '200';
+        spyOn(appboy, 'logCustomEvent');
+        component.code = '200';
 
-      component.ngOnInit();
+        component.ngOnInit();
 
-      expect(appboy.logCustomEvent).toHaveBeenCalledWith('VisibilityPurchaseSuccess', {platform: 'web'});
-    });
+        expect(appboy.logCustomEvent).toHaveBeenCalledWith(
+          'VisibilityPurchaseSuccess',
+          {
+            platform: 'web',
+          }
+        );
+      });
     });
   });
 });

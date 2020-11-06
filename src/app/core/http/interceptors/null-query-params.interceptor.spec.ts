@@ -2,7 +2,7 @@ import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {
   HttpClientTestingModule,
   HttpTestingController,
-  TestRequest
+  TestRequest,
 } from '@angular/common/http/testing';
 import { TestBed, getTestBed } from '@angular/core/testing';
 
@@ -24,8 +24,8 @@ describe(`NullQueryParamsInterceptor`, () => {
           provide: HTTP_INTERCEPTORS,
           useClass: NullQueryParamsInterceptor,
           multi: true,
-        }
-      ]
+        },
+      ],
     });
 
     httpClient = injector.get(HttpClient);
@@ -41,7 +41,16 @@ describe(`NullQueryParamsInterceptor`, () => {
       const expectedParams = 'param1=asap&param2=123&param3=0';
       const expectedUrl = `${environment.baseUrl}?${expectedParams}`;
 
-      httpClient.get(environment.baseUrl, { params: { param1: 'asap', param2: 123, param3: 0, param4: null } as any }).subscribe();
+      httpClient
+        .get(environment.baseUrl, {
+          params: {
+            param1: 'asap',
+            param2: 123,
+            param3: 0,
+            param4: null,
+          } as any,
+        })
+        .subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush({});
 
@@ -57,7 +66,11 @@ describe(`NullQueryParamsInterceptor`, () => {
       const expectedParams = 'param1=asap&param2=123&param3=bruh';
       const expectedUrl = `${environment.baseUrl}?${expectedParams}`;
 
-      httpClient.get(environment.baseUrl, { params: { param1: 'asap', param2: 123, param3: 'bruh' } as any }).subscribe();
+      httpClient
+        .get(environment.baseUrl, {
+          params: { param1: 'asap', param2: 123, param3: 'bruh' } as any,
+        })
+        .subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush({});
 
@@ -66,5 +79,4 @@ describe(`NullQueryParamsInterceptor`, () => {
       expect(req.request.params.has('param3')).toEqual(true);
     });
   });
-
 });

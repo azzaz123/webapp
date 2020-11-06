@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 $icon-size: 12px;
 $height: 40px;
@@ -17,8 +17,11 @@ h2 {
     width: 100%;
     svg {
       width: 100%;
-      .dashed-border, .pic, .button, text {
-        transition: all .2s ease;
+      .dashed-border,
+      .pic,
+      .button,
+      text {
+        transition: all 0.2s ease;
       }
     }
     &:hover {
@@ -28,7 +31,9 @@ h2 {
         .dashed-border {
           stroke: $hover-color;
         }
-        .pic, .button, text {
+        .pic,
+        .button,
+        text {
           fill: $hover-color;
         }
       }
@@ -41,7 +46,7 @@ h2 {
   justify-content: space-between;
 }
 
-tsl-button ::ng-deep .btn-logout  {
+tsl-button ::ng-deep .btn-logout {
   padding: $spacing-ms $spacing-ml;
   background-color: transparent;
   border: solid 1px $blue-grey-4;
@@ -55,7 +60,7 @@ tsl-button ::ng-deep .btn-logout  {
   }
 }
 
-tsl-button ::ng-deep .simple  {
+tsl-button ::ng-deep .simple {
   background-color: transparent;
   color: $walla-main;
   font-size: $font-size-m;
@@ -78,7 +83,7 @@ tsl-spinner {
   align-items: center;
   justify-content: center;
   font-size: $font-size-s;
-  mat-icon {
+  tsl-svg-icon {
     ::ng-deep svg path {
       fill: $walla-main;
     }
@@ -147,7 +152,8 @@ tsl-search-input {
   margin-right: $spacing-ml;
 }
 
-tsl-search-input, .nav {
+tsl-search-input,
+.nav {
   margin-bottom: $spacing-ms;
   height: 38px;
 }

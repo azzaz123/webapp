@@ -1,4 +1,3 @@
-
 import { of } from 'rxjs';
 import { TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 
@@ -21,8 +20,8 @@ describe('BlockUserXmppService', () => {
         XmppService,
         EventService,
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
-        { provide: TrackingService, useValue: {} }
-      ]
+        { provide: TrackingService, useValue: {} },
+      ],
     });
     service = TestBed.inject(BlockUserXmppService);
     xmppService = TestBed.inject(XmppService);

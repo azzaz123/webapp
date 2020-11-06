@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 .review-item {
   background-color: $white;
@@ -26,7 +26,7 @@
     }
   }
   .review-rating {
-    mat-icon {
+    tsl-svg-icon {
       width: 15px;
       height: 14px;
     }
@@ -93,7 +93,7 @@
           opacity: 0.5;
         }
       }
-      mat-icon {
+      tsl-svg-icon {
         @include square(50px);
       }
     }
@@ -116,7 +116,8 @@
       padding: 0;
       width: calc(100% - 60px - #{$spacing-ml});
     }
-    .review-title, .review-comment {
+    .review-title,
+    .review-comment {
       font-size: $font-size-m;
     }
   }

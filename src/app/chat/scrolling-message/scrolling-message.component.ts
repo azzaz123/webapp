@@ -4,16 +4,19 @@ import { eq, gt } from 'lodash-es';
 @Component({
   selector: 'tsl-scrolling-message',
   templateUrl: './scrolling-message.component.html',
-  styleUrls: ['./scrolling-message.component.scss']
+  styleUrls: ['./scrolling-message.component.scss'],
 })
 export class ScrollingMessageComponent {
-
   @Input() noMessages: number;
   @Input() isVisible = true;
   @Output() clickScroll = new EventEmitter();
 
   isNullOrUndefinedOrEmpty(): boolean {
-    return this.noMessages === null || this.noMessages === undefined || eq(this.noMessages, 0);
+    return (
+      this.noMessages === null ||
+      this.noMessages === undefined ||
+      eq(this.noMessages, 0)
+    );
   }
 
   hasEqOneMessage(): boolean {

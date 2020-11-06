@@ -32,27 +32,27 @@ describe('CreditCardModalComponent', () => {
         EventService,
         ErrorsService,
         {
-          provide: StripeService, useValue: {
-            buy() {}
-          }
+          provide: StripeService,
+          useValue: {
+            buy() {},
+          },
         },
         {
-          provide: Router, useValue: {
-            navigate() {
-            }
-          }
+          provide: Router,
+          useValue: {
+            navigate() {},
+          },
         },
         {
-          provide: I18nService, useValue: {
-            getTranslations() {
-            }
-          }
-        }
+          provide: I18nService,
+          useValue: {
+            getTranslations() {},
+          },
+        },
       ],
       declarations: [CreditCardModalComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -132,7 +132,13 @@ describe('CreditCardModalComponent', () => {
 
       component.checkout(orderId);
 
-      expect(stripeService.buy).toHaveBeenCalledWith(orderId, paymentId, component.hasSavedCard, component.savedCard, component.card);
+      expect(stripeService.buy).toHaveBeenCalledWith(
+        orderId,
+        paymentId,
+        component.hasSavedCard,
+        component.savedCard,
+        component.card
+      );
     });
   });
 });

@@ -1,4 +1,4 @@
-<ng-select [hidden]="yearly" class="form-control" [options]="statsDurations" [(ngModel)]="duration" (selected)="onStatsPeriodChange()" [noFilter]="10"></ng-select>
+<tsl-dropdown [hidden]="yearly" class="form-control" [options]="statsDurations" [(ngModel)]="duration" (selected)="onStatsPeriodChange()" [noFilter]="10"></tsl-dropdown>
 <div [hidden]="!yearly" class="title" i18n>Last 12 months</div>
 <div class="chart">
   <div echarts [options]="chartOption" class="pro-stats"></div>

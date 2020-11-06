@@ -1,4 +1,9 @@
-import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+} from '@angular/core/testing';
 
 import { EditEmailComponent } from './edit-email.component';
 import { FormsModule } from '@angular/forms';
@@ -14,23 +19,21 @@ describe('EditEmailComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        FormsModule
-      ],
+      imports: [FormsModule],
       providers: [
         {
-          provide: NgbModal, useValue: {
-          open() {
-            return {
-              componentInstance: componentInstance
-            };
-          }
-        }
-        }
+          provide: NgbModal,
+          useValue: {
+            open() {
+              return {
+                componentInstance: componentInstance,
+              };
+            },
+          },
+        },
       ],
-      declarations: [EditEmailComponent]
-    })
-    .compileComponents();
+      declarations: [EditEmailComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -41,13 +44,11 @@ describe('EditEmailComponent', () => {
   });
 
   describe('openModal', () => {
-
     let element: any;
 
     beforeEach(fakeAsync(() => {
       element = {
-        blur() {
-        }
+        blur() {},
       };
       spyOn(element, 'blur');
       spyOn(modalService, 'open').and.callThrough();
@@ -61,12 +62,13 @@ describe('EditEmailComponent', () => {
     });
 
     it('should open modal', () => {
-      expect(modalService.open).toHaveBeenCalledWith(EmailModalComponent, {windowClass: 'account-details'});
+      expect(modalService.open).toHaveBeenCalledWith(EmailModalComponent, {
+        windowClass: 'account-details',
+      });
     });
 
     it('should set currentEmail', () => {
       expect(componentInstance.currentEmail).toBe(USER_EMAIL);
     });
-
   });
 });

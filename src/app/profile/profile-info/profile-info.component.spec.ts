@@ -1,6 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { competitorLinks, ProfileInfoComponent, BAD_USERNAME_ERROR_CODE } from './profile-info.component';
+import {
+  competitorLinks,
+  ProfileInfoComponent,
+  BAD_USERNAME_ERROR_CODE,
+} from './profile-info.component';
 import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
@@ -9,8 +13,10 @@ import { of, throwError } from 'rxjs';
 import {
   IMAGE,
   MOCK_FULL_USER,
-  USER_DATA, USER_EDIT_DATA, USER_LOCATION_COORDINATES,
-  USER_PRO_DATA
+  USER_DATA,
+  USER_EDIT_DATA,
+  USER_LOCATION_COORDINATES,
+  USER_PRO_DATA,
 } from '../../../tests/user.fixtures.spec';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
 import { SwitchComponent } from '../../shared/switch/switch.component';
@@ -28,81 +34,76 @@ describe('ProfileInfoComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        FormsModule,
-        NgbButtonsModule
-      ],
+      imports: [ReactiveFormsModule, FormsModule, NgbButtonsModule],
       providers: [
         {
-          provide: NgbModal, useValue: {
-          open() {
-          }
-        }
+          provide: NgbModal,
+          useValue: {
+            open() {},
+          },
         },
         {
-          provide: UserService, useValue: {
-          user: MOCK_FULL_USER,
-          me() {
-            return of(MOCK_FULL_USER);
+          provide: UserService,
+          useValue: {
+            user: MOCK_FULL_USER,
+            me() {
+              return of(MOCK_FULL_USER);
+            },
+            isProUser() {
+              return of({});
+            },
+            getProInfo() {
+              return of({});
+            },
+            getUserCover() {
+              return of({});
+            },
+            updateProInfo() {
+              return of({});
+            },
+            edit() {
+              return of({});
+            },
+            updateLocation() {
+              return of({});
+            },
+            updateSearchLocationCookies() {},
           },
-          isProUser() {
-            return of({});
-          },
-          getProInfo() {
-            return of({});
-          },
-          getUserCover() {
-            return of({});
-          },
-          updateProInfo() {
-            return of({});
-          },
-          edit() {
-            return of({});
-          },
-          updateLocation() {
-            return of({});
-          },
-          updateSearchLocationCookies() {
-          }
-        }
         },
         {
-          provide: ErrorsService, useValue: {
-          i18nError() {
+          provide: ErrorsService,
+          useValue: {
+            i18nError() {},
+            i18nSuccess() {},
+            show() {},
           },
-          i18nSuccess() {
-          },
-          show() {
-          }
-        }
         },
         {
-          provide: NgbModal, useValue: {
-          open() {
-            return {
-              componentInstance: modalInstance,
-              result: Promise.resolve(true)
-            };
-          }
-        }
+          provide: NgbModal,
+          useValue: {
+            open() {
+              return {
+                componentInstance: modalInstance,
+                result: Promise.resolve(true),
+              };
+            },
+          },
         },
         {
-          provide: ProfileFormComponent, useValue: {
-            initFormControl() { },
-            canExit() { }
-          }
-        }
+          provide: ProfileFormComponent,
+          useValue: {
+            initFormControl() {},
+            canExit() {},
+          },
+        },
       ],
       declarations: [
         ProfileInfoComponent,
         ProfileFormComponent,
-        SwitchComponent
+        SwitchComponent,
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
   beforeEach(() => {
     fixture = TestBed.createComponent(ProfileInfoComponent);
@@ -118,7 +119,6 @@ describe('ProfileInfoComponent', () => {
   });
 
   describe('initForm', () => {
-
     it('should call userService.me and set user', () => {
       component.initForm();
 
@@ -136,8 +136,12 @@ describe('ProfileInfoComponent', () => {
     it('should set profileForm with user data', () => {
       component.initForm();
 
-      expect(component.profileForm.get('first_name').value).toBe(USER_DATA.first_name);
-      expect(component.profileForm.get('last_name').value).toBe(USER_DATA.last_name);
+      expect(component.profileForm.get('first_name').value).toBe(
+        USER_DATA.first_name
+      );
+      expect(component.profileForm.get('last_name').value).toBe(
+        USER_DATA.last_name
+      );
     });
 
     it('should set profileForm with basic user data if userInfo throws error', () => {
@@ -145,8 +149,12 @@ describe('ProfileInfoComponent', () => {
 
       component.initForm();
 
-      expect(component.profileForm.get('first_name').value).toBe(USER_DATA.first_name);
-      expect(component.profileForm.get('last_name').value).toBe(USER_DATA.last_name);
+      expect(component.profileForm.get('first_name').value).toBe(
+        USER_DATA.first_name
+      );
+      expect(component.profileForm.get('last_name').value).toBe(
+        USER_DATA.last_name
+      );
     });
 
     it('should call userService.getUserCover and set cover', () => {
@@ -169,10 +177,9 @@ describe('ProfileInfoComponent', () => {
 
   describe('onSubmit', () => {
     describe('when the input data is valid', () => {
-
       const BASIC_DATA = {
         first_name: USER_DATA.first_name,
-        last_name: USER_DATA.last_name
+        last_name: USER_DATA.last_name,
       };
 
       const DATA = {
@@ -184,9 +191,15 @@ describe('ProfileInfoComponent', () => {
         component.initForm();
 
         component.profileForm.patchValue(DATA);
-        component.profileForm.get('location.address').patchValue(USER_LOCATION_COORDINATES.name);
-        component.profileForm.get('location.latitude').patchValue(USER_LOCATION_COORDINATES.latitude + 1);
-        component.profileForm.get('location.longitude').patchValue(USER_LOCATION_COORDINATES.longitude + 1);
+        component.profileForm
+          .get('location.address')
+          .patchValue(USER_LOCATION_COORDINATES.name);
+        component.profileForm
+          .get('location.latitude')
+          .patchValue(USER_LOCATION_COORDINATES.latitude + 1);
+        component.profileForm
+          .get('location.longitude')
+          .patchValue(USER_LOCATION_COORDINATES.longitude + 1);
       });
 
       describe('and server validates petition', () => {
@@ -204,7 +217,7 @@ describe('ProfileInfoComponent', () => {
           expect(userService.updateProInfo).toHaveBeenCalledWith(DATA);
           expect(userService.edit).toHaveBeenCalledWith({
             ...USER_EDIT_DATA,
-            gender: USER_EDIT_DATA.gender.toUpperCase().substr(0, 1) 
+            gender: USER_EDIT_DATA.gender.toUpperCase().substr(0, 1),
           });
         });
 
@@ -216,7 +229,7 @@ describe('ProfileInfoComponent', () => {
           expect(userService.updateLocation).toHaveBeenCalledWith({
             latitude: USER_LOCATION_COORDINATES.latitude + 1,
             longitude: USER_LOCATION_COORDINATES.longitude + 1,
-            name: USER_LOCATION_COORDINATES.name
+            name: USER_LOCATION_COORDINATES.name,
           });
         });
 
@@ -224,14 +237,16 @@ describe('ProfileInfoComponent', () => {
           expect(userService.updateSearchLocationCookies).toHaveBeenCalledWith({
             latitude: USER_LOCATION_COORDINATES.latitude + 1,
             longitude: USER_LOCATION_COORDINATES.longitude + 1,
-            name: USER_LOCATION_COORDINATES.name
+            name: USER_LOCATION_COORDINATES.name,
           });
         });
       });
 
       describe('and when the server errors', () => {
         it('should display error to user as a toast', () => {
-          const backendError = { error: { code: 101, message: 'General error' } };
+          const backendError = {
+            error: { code: 101, message: 'General error' },
+          };
           spyOn(userService, 'edit').and.returnValue(throwError(backendError));
           spyOn(errorsService, 'show');
 
@@ -242,20 +257,31 @@ describe('ProfileInfoComponent', () => {
 
         describe('and when the server notifies username is incorrect', () => {
           it('should mark username fields as invalid', () => {
-            const backendError = { error: { code: BAD_USERNAME_ERROR_CODE, message: 'Incorrect username' } };
-            spyOn(userService, 'edit').and.returnValue(throwError(backendError));
+            const backendError = {
+              error: {
+                code: BAD_USERNAME_ERROR_CODE,
+                message: 'Incorrect username',
+              },
+            };
+            spyOn(userService, 'edit').and.returnValue(
+              throwError(backendError)
+            );
             spyOn(errorsService, 'show');
             let firstNameFieldElementRef;
             let lastNameFieldElementRef;
 
             component.onSubmit();
             fixture.detectChanges();
-            firstNameFieldElementRef
-              = fixture.debugElement.query(By.css('input[formControlname="first_name"]'));
-            lastNameFieldElementRef
-              = fixture.debugElement.query(By.css('input[formControlname="last_name"]'));
+            firstNameFieldElementRef = fixture.debugElement.query(
+              By.css('input[formControlname="first_name"]')
+            );
+            lastNameFieldElementRef = fixture.debugElement.query(
+              By.css('input[formControlname="last_name"]')
+            );
 
-            expect(firstNameFieldElementRef.classes['ng-invalid']).toBeDefined();
+            expect(
+              firstNameFieldElementRef.classes['ng-invalid']
+            ).toBeDefined();
             expect(lastNameFieldElementRef.classes['ng-invalid']).toBeDefined();
           });
         });
@@ -263,10 +289,9 @@ describe('ProfileInfoComponent', () => {
     });
 
     describe('valid form with same location in form and user', () => {
-
       const BASIC_DATA = {
         first_name: USER_DATA.first_name,
-        last_name: USER_DATA.last_name
+        last_name: USER_DATA.last_name,
       };
 
       const DATA = {
@@ -280,12 +305,20 @@ describe('ProfileInfoComponent', () => {
         spyOn(userService, 'updateSearchLocationCookies').and.callThrough();
         component.updateLocationWhenSearching = false;
         component.profileForm.patchValue(DATA);
-        component.profileForm.get('location.address').patchValue(USER_LOCATION_COORDINATES.name);
-        component.profileForm.get('location.latitude').patchValue(USER_LOCATION_COORDINATES.latitude);
-        component.profileForm.get('location.longitude').patchValue(USER_LOCATION_COORDINATES.longitude);
+        component.profileForm
+          .get('location.address')
+          .patchValue(USER_LOCATION_COORDINATES.name);
+        component.profileForm
+          .get('location.latitude')
+          .patchValue(USER_LOCATION_COORDINATES.latitude);
+        component.profileForm
+          .get('location.longitude')
+          .patchValue(USER_LOCATION_COORDINATES.longitude);
 
-        component.user.location.approximated_latitude = USER_LOCATION_COORDINATES.latitude;
-        component.user.location.approximated_longitude = USER_LOCATION_COORDINATES.longitude;
+        component.user.location.approximated_latitude =
+          USER_LOCATION_COORDINATES.latitude;
+        component.user.location.approximated_longitude =
+          USER_LOCATION_COORDINATES.longitude;
 
         component.onSubmit();
       });
@@ -295,12 +328,13 @@ describe('ProfileInfoComponent', () => {
       });
 
       it('should not change any cookie value', () => {
-        expect(userService.updateSearchLocationCookies).toHaveBeenCalledTimes(0);
+        expect(userService.updateSearchLocationCookies).toHaveBeenCalledTimes(
+          0
+        );
       });
     });
 
     describe('invalid form', () => {
-
       beforeEach(() => {
         spyOn(errorsService, 'i18nError');
         component.profileForm.get('first_name').patchValue('');
@@ -314,7 +348,9 @@ describe('ProfileInfoComponent', () => {
       });
 
       it('should set dirty invalid fields', () => {
-        expect(component.profileForm.get('location.address').dirty).toBeTruthy();
+        expect(
+          component.profileForm.get('location.address').dirty
+        ).toBeTruthy();
       });
 
       it('should call i18nError if form is invalid', () => {
@@ -323,16 +359,21 @@ describe('ProfileInfoComponent', () => {
     });
 
     describe('invalid link', () => {
-
       beforeEach(() => {
         spyOn(userService, 'updateProInfo').and.callThrough();
-        component.profileForm.get('location.address').patchValue(USER_LOCATION_COORDINATES.name);
-        component.profileForm.get('location.latitude').patchValue(USER_LOCATION_COORDINATES.latitude);
-        component.profileForm.get('location.longitude').patchValue(USER_LOCATION_COORDINATES.longitude);
+        component.profileForm
+          .get('location.address')
+          .patchValue(USER_LOCATION_COORDINATES.name);
+        component.profileForm
+          .get('location.latitude')
+          .patchValue(USER_LOCATION_COORDINATES.latitude);
+        component.profileForm
+          .get('location.longitude')
+          .patchValue(USER_LOCATION_COORDINATES.longitude);
       });
 
       it('should not call updateProInfo  when have competitors link', () => {
-        competitorLinks.forEach(competitorLink => {
+        competitorLinks.forEach((competitorLink) => {
           component.profileForm.get('link').setValue(competitorLink);
           component.onSubmit();
 
@@ -343,7 +384,7 @@ describe('ProfileInfoComponent', () => {
       it('should throw error toast when have competitors link', () => {
         spyOn(errorsService, 'i18nError');
 
-        competitorLinks.forEach(competitorLink => {
+        competitorLinks.forEach((competitorLink) => {
           component.profileForm.get('link').setValue(competitorLink);
           component.onSubmit();
 
@@ -360,7 +401,9 @@ describe('ProfileInfoComponent', () => {
       it('should not call updateProInfo when phone number is not valid', () => {
         spyOn(userService, 'updateProInfo').and.callThrough();
 
-        component.profileForm.get('phone_number').patchValue('invalid_number123');
+        component.profileForm
+          .get('phone_number')
+          .patchValue('invalid_number123');
         component.onSubmit();
 
         expect(userService.updateProInfo).not.toHaveBeenCalled();
@@ -369,10 +412,14 @@ describe('ProfileInfoComponent', () => {
       it('should throw error toast when phone number is not valid', () => {
         spyOn(errorsService, 'i18nError');
 
-        component.profileForm.get('phone_number').patchValue('invalid_number123');
+        component.profileForm
+          .get('phone_number')
+          .patchValue('invalid_number123');
         component.onSubmit();
 
-        expect(errorsService.i18nError).toHaveBeenCalledWith('phoneNumberError');
+        expect(errorsService.i18nError).toHaveBeenCalledWith(
+          'phoneNumberError'
+        );
       });
     });
   });
@@ -384,8 +431,9 @@ describe('ProfileInfoComponent', () => {
 
       component.openBecomeProModal();
 
-      expect(modalService.open).toHaveBeenCalledWith(BecomeProModalComponent, {windowClass: 'become-pro'});
+      expect(modalService.open).toHaveBeenCalledWith(BecomeProModalComponent, {
+        windowClass: 'become-pro',
+      });
     });
   });
-
 });

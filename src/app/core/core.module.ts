@@ -1,4 +1,9 @@
-import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
+import {
+  ModuleWithProviders,
+  NgModule,
+  Optional,
+  SkipSelf,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoggedGuard } from './user/logged.guard';
 import { CookieModule } from 'ngx-cookie';
@@ -21,7 +26,11 @@ import { ConnectionService } from './connection/connection.service';
 import { RealTimeService } from './message/real-time.service';
 import { ProfileModule } from './profile/profile.module';
 import { ProfileService } from './profile/profile.service';
-import { BlockUserService, BlockUserXmppService, InboxService } from '../chat/service';
+import {
+  BlockUserService,
+  BlockUserXmppService,
+  InboxService,
+} from '../chat/service';
 import { StripeService } from './stripe/stripe.service';
 import { SubscriptionsService } from './subscriptions/subscriptions.service';
 import { MobileBlockerModule } from './mobile-blocker/mobile-blocker.module';
@@ -38,7 +47,7 @@ import { TrustAndSafetyService } from './trust-and-safety/trust-and-safety.servi
     TrackingModule,
     ConversationModule.forRoot(),
     ProfileModule,
-    MobileBlockerModule
+    MobileBlockerModule,
   ],
   exports: [
     CommonModule,
@@ -46,11 +55,10 @@ import { TrustAndSafetyService } from './trust-and-safety/trust-and-safety.servi
     ItemModule,
     TrackingModule,
     ProfileModule,
-    MobileBlockerModule
-  ]
+    MobileBlockerModule,
+  ],
 })
 export class CoreModule {
-
   static forRoot(): ModuleWithProviders<CoreModule> {
     return {
       ngModule: CoreModule,
@@ -77,16 +85,16 @@ export class CoreModule {
         StripeService,
         SubscriptionsService,
         DidomiService,
-        TrustAndSafetyService
-      ]
+        TrustAndSafetyService,
+      ],
     };
   }
 
-  constructor (@Optional() @SkipSelf() parentModule: CoreModule) {
+  constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
     if (parentModule) {
       throw new Error(
-        'CoreModule is already loaded. Import it in the AppModule only');
+        'CoreModule is already loaded. Import it in the AppModule only'
+      );
     }
   }
-
 }

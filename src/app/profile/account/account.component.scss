@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 form {
   @include media-breakpoint-down(sm) {
@@ -29,7 +29,7 @@ form {
 
 .gender-form {
   .select {
-    mat-icon {
+    tsl-svg-icon {
       @include square(32px);
       ::ng-deep path {
         transition: fill 0.2s ease-in-out;
@@ -45,4 +45,3 @@ form {
     }
   }
 }
-

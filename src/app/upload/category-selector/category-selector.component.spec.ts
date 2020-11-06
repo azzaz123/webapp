@@ -12,9 +12,8 @@ describe('CategorySelectorComponent', () => {
     TestBed.configureTestingModule({
       providers: [NgbPopoverConfig],
       declarations: [CategorySelectorComponent],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

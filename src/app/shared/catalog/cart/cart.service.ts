@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
-import { CartChange, CartItem, CartProItem, CartProExtrasPack } from './cart-item.interface';
+import {
+  CartChange,
+  CartItem,
+  CartProItem,
+  CartProExtrasPack,
+} from './cart-item.interface';
 import { Subject, Observable } from 'rxjs';
 import { CartBase } from './cart-base';
 
 @Injectable()
 export class CartService {
-
   private cartSource: Subject<CartChange> = new Subject();
   private cart: CartBase;
   public cart$: Observable<CartChange>;
@@ -24,7 +28,7 @@ export class CartService {
       action: 'add',
       cart: this.cart,
       itemId: cartItem.item.id,
-      type: type
+      type: type,
     });
   }
 
@@ -34,7 +38,7 @@ export class CartService {
       action: 'remove',
       cart: this.cart,
       itemId: itemId,
-      type: type
+      type: type,
     });
   }
 
@@ -42,7 +46,7 @@ export class CartService {
     this.cart.clean();
     this.cartSource.next({
       action: 'clean',
-      cart: this.cart
+      cart: this.cart,
     });
   }
 
@@ -52,7 +56,7 @@ export class CartService {
       action: 'add',
       cart: this.cart,
       packId: cartPack.pack.id,
-      type: type
+      type: type,
     });
   }
 
@@ -62,7 +66,7 @@ export class CartService {
       action: 'remove',
       cart: this.cart,
       packId: packId,
-      type: type
+      type: type,
     });
   }
 }

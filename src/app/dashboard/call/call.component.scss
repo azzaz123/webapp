@@ -1,6 +1,6 @@
-@import "../../../style/_common.scss";
+@import '../../../style/_common.scss';
 
-$transition-time: .15s;
+$transition-time: 0.15s;
 $check-width-and-spacing: 50px;
 :host {
   display: flex;
@@ -9,7 +9,7 @@ $check-width-and-spacing: 50px;
   box-sizing: border-box;
   border-left: 2px solid transparent;
   transition: $transition-time ease background-color,
-  $transition-time ease border;
+    $transition-time ease border;
   border-top: 1px solid $blue-grey-5;
   overflow: hidden;
   cursor: pointer;
@@ -18,16 +18,17 @@ $check-width-and-spacing: 50px;
     border-top: 0;
   }
   &.active {
-    background-color: rgba($blue-grey-4, .4);
+    background-color: rgba($blue-grey-4, 0.4);
   }
   tsl-archivable {
     width: 100%;
   }
-  tsl-archive-button, tsl-unarchive-button {
+  tsl-archive-button,
+  tsl-unarchive-button {
     @include hide();
   }
   &:hover {
-    background-color: rgba($blue-grey-2, .1);
+    background-color: rgba($blue-grey-2, 0.1);
     tsl-archive-button {
       opacity: 1;
       visibility: visible;
@@ -99,10 +100,11 @@ tsl-user-avatar {
     .call-item-row-right {
       flex: none;
     }
-    mat-icon, span {
+    tsl-svg-icon,
+    span {
       vertical-align: middle;
     }
-    mat-icon {
+    tsl-svg-icon {
       @include square($phone-icon-adjusted-size);
     }
     .call-item-title {
@@ -127,13 +129,13 @@ tsl-user-avatar {
     flex-direction: row;
     align-items: center;
     width: 60%;
-    p{
+    p {
       color: $blue-grey-2;
       &:last-child {
         margin-bottom: 0;
       }
     }
-    mat-icon {
+    tsl-svg-icon {
       height: 15px;
       width: 15px;
       vertical-align: bottom;
@@ -146,7 +148,7 @@ tsl-user-avatar {
       flex-direction: column;
       margin: 0 $spacing-ms;
       .status {
-        color:  $blue-grey-3;
+        color: $blue-grey-3;
       }
     }
   }

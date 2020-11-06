@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 div {
   @include square-avatar($item-avatar-size);
@@ -6,7 +6,7 @@ div {
   display: flex;
   position: relative;
   &.transition {
-    transition: height 1s, width 1s
+    transition: height 1s, width 1s;
   }
   &.small {
     @include square-avatar($item-avatar-size-small);
@@ -45,7 +45,7 @@ div {
   background-color: $blue-grey-1;
   position: absolute;
   @include square-avatar(100%);
-  opacity: .5;
+  opacity: 0.5;
   z-index: 1;
   .small & {
     display: none;
@@ -53,16 +53,24 @@ div {
 }
 
 $sold-width: 32px;
-.sold, .reserved, .featured, .urgent, .not-available {
+.sold,
+.reserved,
+.featured,
+.urgent,
+.not-available {
   @include square($sold-width);
   border-radius: 50%;
   display: flex;
   background-color: $white;
   margin: auto;
   z-index: 2;
-  mat-icon {
+  tsl-svg-icon {
     margin: auto auto;
     @include square(21px);
+    ::ng-deep svg {
+      height: 100%;
+      width: 100%;
+    }
   }
   .small & {
     display: none;
@@ -70,7 +78,7 @@ $sold-width: 32px;
 }
 
 .reserved {
-  mat-icon {
+  tsl-svg-icon {
     height: 17px;
     width: 12px;
     vertical-align: sub;
@@ -79,7 +87,7 @@ $sold-width: 32px;
 
 .featured {
   background-color: $walla-main;
-  mat-icon {
+  tsl-svg-icon {
     @include square(25px);
   }
   &.zonebump {
@@ -98,7 +106,7 @@ $sold-width: 32px;
 
 .urgent {
   background-color: $urgent;
-  mat-icon {
+  tsl-svg-icon {
     @include square(30px);
   }
 }

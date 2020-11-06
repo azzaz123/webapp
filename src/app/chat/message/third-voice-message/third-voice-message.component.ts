@@ -7,10 +7,14 @@ import { InboxItem, InboxUser, MessageType } from '../../model';
 @Component({
   selector: 'tsl-third-voice-message',
   templateUrl: './third-voice-message.component.html',
-  styleUrls: ['./third-voice-message.component.scss', '../message.component.scss']
+  styleUrls: [
+    './third-voice-message.component.scss',
+    '../message.component.scss',
+  ],
 })
-export class ThirdVoiceMessageComponent extends MessageComponent implements OnInit {
-
+export class ThirdVoiceMessageComponent
+  extends MessageComponent
+  implements OnInit {
   @Input() user: InboxUser;
   @Input() item: InboxItem;
 

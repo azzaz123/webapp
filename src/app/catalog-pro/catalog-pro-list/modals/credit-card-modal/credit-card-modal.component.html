@@ -1,6 +1,6 @@
 <div class="modal-body">
   <div class="modal-close" (click)="activeModal.close()">
-    <mat-icon svgIcon="cross"></mat-icon>
+    <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
   </div>
   <h4 *ngIf="showCard && hasSavedCard" i18n>Feature for {{total | number:'1.2-2'}} Euros</h4>
   <form>

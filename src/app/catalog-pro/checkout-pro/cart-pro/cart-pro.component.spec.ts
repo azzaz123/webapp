@@ -1,4 +1,3 @@
-
 import { throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
@@ -40,13 +39,13 @@ describe('CartProComponent', () => {
     action: 'add',
     cart: CART,
     itemId: ITEM_ID,
-    type: 'citybump'
+    type: 'citybump',
   };
 
   const MOCK_STATUS: ScheduledStatus = {
     active: true,
     autorenew_alert: 0,
-    autorenew_scheduled: { citybump: 16, countrybump: 21 }
+    autorenew_scheduled: { citybump: 16, countrybump: 21 },
   };
 
   beforeEach(async(() => {
@@ -56,53 +55,52 @@ describe('CartProComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         {
-          provide: PaymentService, useValue: {
+          provide: PaymentService,
+          useValue: {
             getPerks() {
               return of(perksModel);
             },
             getStatus() {
               return of(MOCK_STATUS);
-            }
-          }
+            },
+          },
         },
         {
-          provide: TrackingService, useClass: MockTrackingService
+          provide: TrackingService,
+          useClass: MockTrackingService,
         },
         {
-          provide: CartService, useValue: {
+          provide: CartService,
+          useValue: {
             cart$: of(CART_CHANGE),
-            createInstance() {
-            },
-            remove() {
-            },
-            clean() {
-            }
-          }
+            createInstance() {},
+            remove() {},
+            clean() {},
+          },
         },
         {
-          provide: ItemService, useValue: {
+          provide: ItemService,
+          useValue: {
             bumpProItems() {
               return of({});
             },
-            deselectItems() {
-            }
-          }
+            deselectItems() {},
+          },
         },
         {
-          provide: ErrorsService, useValue: {
-            i18nError() {
-            }
-          }
+          provide: ErrorsService,
+          useValue: {
+            i18nError() {},
+          },
         },
         {
-          provide: Router, useValue: {
-            navigate() {
-            }
-          }
-        }
-      ]
-    })
-      .compileComponents();
+          provide: Router,
+          useValue: {
+            navigate() {},
+          },
+        },
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -167,7 +165,10 @@ describe('CartProComponent', () => {
 
       component.remove(MOCK_PROITEM);
 
-      expect(cartService.remove).toHaveBeenCalledWith(MOCK_PROITEM.item.id, MOCK_PROITEM.bumpType);
+      expect(cartService.remove).toHaveBeenCalledWith(
+        MOCK_PROITEM.item.id,
+        MOCK_PROITEM.bumpType
+      );
     });
   });
 
@@ -180,7 +181,6 @@ describe('CartProComponent', () => {
       expect(cartService.clean).toHaveBeenCalled();
     });
   });
-
 
   describe('applyBumps', () => {
     it('should prepare the order', () => {
@@ -212,13 +212,19 @@ describe('CartProComponent', () => {
       it('should track', () => {
         const order: OrderPro[] = component.cart.prepareOrder();
 
-        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.BUMP_PRO_APPLY, {
-          selected_products: order
-        });
+        expect(trackingService.track).toHaveBeenCalledWith(
+          TrackingService.BUMP_PRO_APPLY,
+          {
+            selected_products: order,
+          }
+        );
       });
 
       it('should navigate to pro list', () => {
-        expect(router.navigate).toHaveBeenCalledWith(['/pro/catalog/list', { code: 201 }]);
+        expect(router.navigate).toHaveBeenCalledWith([
+          '/pro/catalog/list',
+          { code: 201 },
+        ]);
         expect(errorService.i18nError).not.toHaveBeenCalled();
       });
     });
@@ -235,7 +241,10 @@ describe('CartProComponent', () => {
 
         component.applyBumps();
 
-        expect(router.navigate).toHaveBeenCalledWith(['/pro/catalog/list', { code: 202 }]);
+        expect(router.navigate).toHaveBeenCalledWith([
+          '/pro/catalog/list',
+          { code: 202 },
+        ]);
         expect(errorService.i18nError).not.toHaveBeenCalled();
       });
 
@@ -245,7 +254,10 @@ describe('CartProComponent', () => {
 
         component.applyBumps();
 
-        expect(router.navigate).toHaveBeenCalledWith(['/pro/catalog/list', { code: 202 }]);
+        expect(router.navigate).toHaveBeenCalledWith([
+          '/pro/catalog/list',
+          { code: 202 },
+        ]);
         expect(errorService.i18nError).not.toHaveBeenCalled();
       });
     });
@@ -267,11 +279,13 @@ describe('CartProComponent', () => {
       });
 
       it('should thrown bumpError if operation not succeed and text have value', () => {
-        spyOn(itemService, 'bumpProItems').and.returnValue(throwError({
-          text() {
-            return '';
-          }
-        }));
+        spyOn(itemService, 'bumpProItems').and.returnValue(
+          throwError({
+            text() {
+              return '';
+            },
+          })
+        );
 
         component.applyBumps();
 

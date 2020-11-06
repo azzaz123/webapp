@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 $background: #f4f6f7;
 
 .SubscriptionsSlotsList {
@@ -44,13 +44,13 @@ $background: #f4f6f7;
       &::before,
       &::after {
         z-index: 2;
-        content: " ";
+        content: ' ';
         position: absolute;
         top: 0;
         bottom: 0;
         width: 26px;
       }
-  
+
       &::before {
         left: 0;
         background-image: linear-gradient(
@@ -61,7 +61,7 @@ $background: #f4f6f7;
           rgba($background, 0) 100%
         );
       }
-  
+
       &::after {
         right: 0;
         background-image: linear-gradient(
@@ -87,9 +87,8 @@ $background: #f4f6f7;
     -ms-overflow-style: none;
     scrollbar-width: none;
     width: 100%;
-    &::-webkit-scrollbar { 
+    &::-webkit-scrollbar {
       display: none;
     }
   }
-
 }

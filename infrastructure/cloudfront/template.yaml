@@ -34,7 +34,7 @@ Resources:
         CustomErrorResponses:
           - ErrorCachingMinTTL: 60
             ErrorCode: 404
-            ResponseCode: 200
+            ResponseCode: 404
             ResponsePagePath: '/'
         DefaultCacheBehavior:
           Compress: true
@@ -72,7 +72,7 @@ Resources:
         CustomErrorResponses:
           - ErrorCachingMinTTL: 60
             ErrorCode: 404
-            ResponseCode: 200
+            ResponseCode: 404
             ResponsePagePath: '/'
         DefaultCacheBehavior:
           ForwardedValues:

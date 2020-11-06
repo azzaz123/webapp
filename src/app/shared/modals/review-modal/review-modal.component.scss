@@ -1,60 +1,61 @@
-@import "~style/common";
+@import '~style/common';
 
 .modal-body {
-    padding: $spacing-xl;
+  padding: $spacing-xl;
 }
 
 .modal-body {
-    padding-top: $spacing-xxxl;
-    padding-left: $spacing-xl;
-    padding-right: $spacing-xl;
+  padding-top: $spacing-xxxl;
+  padding-left: $spacing-xl;
+  padding-right: $spacing-xl;
 }
 
 h1 {
-    font-size: $font-size-ll;
-    color: $walla-main;
-    font-weight: $font-weight-chunky;
-    margin-bottom: $spacing-xl;
+  font-size: $font-size-ll;
+  color: $walla-main;
+  font-weight: $font-weight-chunky;
+  margin-bottom: $spacing-xl;
 }
 
 h2 {
-    font-size: $font-size-l;
-    color: $blue-grey-1;
-    font-weight: normal;
-    strong {
-        font-weight: $font-weight-chunky;
-    }
+  font-size: $font-size-l;
+  color: $blue-grey-1;
+  font-weight: normal;
+  strong {
+    font-weight: $font-weight-chunky;
+  }
 }
 
 p {
-    font-size: $font-size-s;
-    color: $blue-grey-2;
-    margin-top: $spacing-s;
-    &.text {
-        color: $blue-grey-1;
-    }
+  font-size: $font-size-s;
+  color: $blue-grey-2;
+  margin-top: $spacing-s;
+  &.text {
+    color: $blue-grey-1;
+  }
 }
 
 tsl-stars-rate {
-    margin: $spacing-ml 0;
+  margin: $spacing-ml 0;
 }
 
 #price {
-    border: 0;
-    border-bottom: 1px solid $blue-grey-4;
-    border-radius: 0;
-    display: inline;
-    text-align: right;
-    padding: 0;
-    margin-right: $spacing-ms;
+  border: 0;
+  border-bottom: 1px solid $blue-grey-4;
+  border-radius: 0;
+  display: inline;
+  text-align: right;
+  padding: 0;
+  margin-right: $spacing-ms;
 }
 
-#price, .currency {
-    font-size: $font-size-l;
+#price,
+.currency {
+  font-size: $font-size-l;
 }
 
 textarea {
-    height: 230px;
-    margin-top: $spacing-xxxl;
-    margin-bottom: $spacing-ml;
+  height: 230px;
+  margin-top: $spacing-xxxl;
+  margin-bottom: $spacing-ml;
 }

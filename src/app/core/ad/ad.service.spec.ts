@@ -1,6 +1,10 @@
-
 import { of } from 'rxjs';
-import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  discardPeriodicTasks,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 import { AdService } from './ad.service';
 import { UserService } from '../user/user.service';
 import { CookieService } from 'ngx-cookie';
@@ -17,19 +21,19 @@ const cookiesAdKeyWord = {
   content: 'i3',
   category: '100',
   minprice: '1000',
-  maxprice: '20000'
+  maxprice: '20000',
 };
 
 const cookies = {
   ...cookiesAdKeyWord,
-  publisherId: '123456' + Array(31).join('0')
+  publisherId: '123456' + Array(31).join('0'),
 };
 
 const position = {
   coords: {
     latitude: 1,
-    longitude: 2
-  }
+    longitude: 2,
+  },
 };
 
 const AdKeyWords = {
@@ -37,13 +41,13 @@ const AdKeyWords = {
   gender: MOCK_USER.gender,
   userId: MOCK_USER.id,
   latitude: position.coords.latitude.toString(),
-  longitude: position.coords.longitude.toString()
+  longitude: position.coords.longitude.toString(),
 };
 
 const cmd = {
   push(callbacks) {
     callbacks();
-  }
+  },
 };
 
 const pubads = {
@@ -52,16 +56,16 @@ const pubads = {
   disableInitialLoad() {},
   collapseEmptyDivs() {},
   setPublisherProvidedId() {},
-  setTargeting () {},
-  refresh () {},
-  setRequestNonPersonalizedAds() {}
+  setTargeting() {},
+  refresh() {},
+  setRequestNonPersonalizedAds() {},
 };
 
 const defineSlot = {
   addService() {},
   setTargeting() {
     return this;
-  }
+  },
 };
 
 describe('AdService', () => {
@@ -73,9 +77,9 @@ describe('AdService', () => {
           provide: UserService,
           useValue: {
             me() {
-              return of(MOCK_USER)
-            }
-          }
+              return of(MOCK_USER);
+            },
+          },
         },
         {
           provide: CookieService,
@@ -84,22 +88,25 @@ describe('AdService', () => {
             put(key, value) {
               this.cookies[key] = value;
             },
-            get (key) {
+            get(key) {
               return this.cookies[key];
             },
-            remove (key) {
+            remove(key) {
               delete this.cookies[key];
-            }
-          }
+            },
+          },
         },
         {
-          provide: DidomiService, useValue: MockDidomiService
-        }
+          provide: DidomiService,
+          useValue: MockDidomiService,
+        },
       ],
     });
     userService = TestBed.inject(UserService);
     cookieService = TestBed.inject(CookieService);
-    spyOn(navigator.geolocation, 'getCurrentPosition').and.callFake(function(callback) {
+    spyOn(navigator.geolocation, 'getCurrentPosition').and.callFake(function (
+      callback
+    ) {
       callback(position);
     });
     spyOn(googletag, 'pubads').and.returnValue(pubads);
@@ -113,7 +120,7 @@ describe('AdService', () => {
     spyOn(pubads, 'setPublisherProvidedId');
     spyOn(pubads, 'setTargeting');
     spyOn(pubads, 'refresh');
-    Object.keys(cookies).forEach(key => {
+    Object.keys(cookies).forEach((key) => {
       cookieService.put(key, cookies[key]);
     });
     service = TestBed.inject(AdService);
@@ -140,7 +147,9 @@ describe('AdService', () => {
 
   describe('publiser provider id', () => {
     it('should send publisherId of cookie', () => {
-      expect(pubads.setPublisherProvidedId).toHaveBeenCalledWith(cookies.publisherId);
+      expect(pubads.setPublisherProvidedId).toHaveBeenCalledWith(
+        cookies.publisherId
+      );
     });
     it('should send default publisherId of cookie -1*10e30', () => {
       const defaultPublisherId = '-1' + Array(31).join('0');
@@ -148,14 +157,16 @@ describe('AdService', () => {
       cookieService.remove('publisherId');
       service['initGoogletagConfig']();
 
-      expect(pubads.setPublisherProvidedId).toHaveBeenCalledWith(defaultPublisherId);
+      expect(pubads.setPublisherProvidedId).toHaveBeenCalledWith(
+        defaultPublisherId
+      );
     });
   });
 
-  describe ('adsRefresh', () => {
+  describe('adsRefresh', () => {
     it('should send keyWords', fakeAsync(() => {
       service.adsRefresh();
-      Object.keys(AdKeyWords).forEach(key => {
+      Object.keys(AdKeyWords).forEach((key) => {
         expect(pubads.setTargeting).toHaveBeenCalledWith(key, AdKeyWords[key]);
       });
       discardPeriodicTasks();
@@ -169,8 +180,14 @@ describe('AdService', () => {
       service.adsRefresh();
       tick(1);
 
-      expect(pubads.setTargeting).toHaveBeenCalledWith('latitude', MOCK_USER.location.approximated_latitude.toString());
-      expect(pubads.setTargeting).toHaveBeenCalledWith('longitude', MOCK_USER.location.approximated_longitude.toString());
+      expect(pubads.setTargeting).toHaveBeenCalledWith(
+        'latitude',
+        MOCK_USER.location.approximated_latitude.toString()
+      );
+      expect(pubads.setTargeting).toHaveBeenCalledWith(
+        'longitude',
+        MOCK_USER.location.approximated_longitude.toString()
+      );
       discardPeriodicTasks();
     }));
 
@@ -182,7 +199,10 @@ describe('AdService', () => {
       it('should send keyWords allowSegmentation with true value', fakeAsync(() => {
         service.adsRefresh();
 
-        expect(pubads.setTargeting).toHaveBeenCalledWith('allowSegmentation', 'true');
+        expect(pubads.setTargeting).toHaveBeenCalledWith(
+          'allowSegmentation',
+          'true'
+        );
         discardPeriodicTasks();
       }));
 
@@ -240,7 +260,10 @@ describe('AdService', () => {
       it('should send keyWords allowSegmentation with false value', fakeAsync(() => {
         service.adsRefresh();
 
-        expect(pubads.setTargeting).toHaveBeenCalledWith('allowSegmentation', 'false');
+        expect(pubads.setTargeting).toHaveBeenCalledWith(
+          'allowSegmentation',
+          'false'
+        );
         discardPeriodicTasks();
       }));
 

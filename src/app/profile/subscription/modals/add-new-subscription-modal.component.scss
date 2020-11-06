@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 $add-subscription-modal-content-default-height: 382px;
 
@@ -145,7 +145,6 @@ $add-subscription-modal-content-default-height: 382px;
       right: 0;
     }
   }
-
 }
 
 .AddNewSubscription__listing-limit-payment-price {
@@ -155,7 +154,7 @@ $add-subscription-modal-content-default-height: 382px;
 
 .AddNewSubscription__listing-limit-payment-edit {
   color: $blue-grey-2;
-  cursor:  pointer;
+  cursor: pointer;
   font-size: $font-size-s;
 }
 
@@ -167,7 +166,8 @@ $add-subscription-modal-content-default-height: 382px;
   cursor: pointer;
 }
 
-tsl-button, tsl-stripe-card-element ::ng-deep tsl-button {
+tsl-button,
+tsl-stripe-card-element ::ng-deep tsl-button {
   ::ng-deep {
     .btn-text {
       font-size: $spacing-m;
@@ -212,7 +212,8 @@ ngb-carousel {
         max-width: 100%;
       }
     }
-    .carousel-control-prev, .carousel-control-next {
+    .carousel-control-prev,
+    .carousel-control-next {
       display: none;
     }
     .carousel-indicators {
@@ -226,7 +227,8 @@ ngb-carousel {
         max-width: 6px;
         margin: 0 $spacing-xs;
         flex-shrink: 0;
-        &:hover, &.active {
+        &:hover,
+        &.active {
           @include square(6px);
           max-width: 6px;
           background-color: $blue-grey-2;
@@ -255,7 +257,7 @@ ngb-carousel {
   &.extra-info ::ng-deep {
     .carousel-item {
       height: auto;
-    };
+    }
   }
 
   &.single ::ng-deep {
@@ -293,7 +295,7 @@ tsl-profile-pro-billing {
   }
 }
 
-tsl-button ::ng-deep .simple.light  {
+tsl-button ::ng-deep .simple.light {
   background-color: transparent;
   color: $blue-grey-3;
   font-size: $font-size-m;
@@ -308,7 +310,7 @@ tsl-button ::ng-deep .simple.light  {
 .modal-close {
   width: $spacing-ms;
   height: $spacing-ms;
-  mat-icon {
+  tsl-svg-icon {
     width: $spacing-ms;
     height: $spacing-ms;
     line-height: $spacing-ms;
@@ -348,10 +350,6 @@ tsl-button ::ng-deep .simple.light  {
   flex-direction: column;
 }
 
-select-dropdown > div .options ul li {
-  text-align: left;
-}
-
 .form-control {
   text-align: left;
 }
@@ -375,14 +373,15 @@ select-dropdown > div .options ul li {
     font-size: $font-size-xs;
   }
 
-  .AddNewSubscription__listing-limit-quantity, .AddNewSubscription__listing-limit-price {
+  .AddNewSubscription__listing-limit-quantity,
+  .AddNewSubscription__listing-limit-price {
     font-size: $font-size-m;
   }
 
   .AddNewSubscription__box--subtitle {
     width: 80%;
     margin: 0 auto;
-    padding-bottom: $spacing-m
+    padding-bottom: $spacing-m;
   }
 
   tsl-button ::ng-deep {

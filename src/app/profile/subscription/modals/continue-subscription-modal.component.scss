@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 .ContinueSubscription__box {
   text-align: center;
@@ -29,7 +29,7 @@
 .modal-close {
   width: $spacing-ms;
   height: $spacing-ms;
-  mat-icon {
+  tsl-svg-icon {
     width: $spacing-ms;
     height: $spacing-ms;
     line-height: $spacing-ms;

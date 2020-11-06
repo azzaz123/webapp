@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 :host {
   width: 100%;
@@ -10,7 +10,7 @@
   align-content: center;
   justify-content: center;
   position: relative;
-  transition: all .25s ease;
+  transition: all 0.25s ease;
   width: 100%;
   height: 80px;
   padding: $spacing-m;
@@ -27,10 +27,9 @@
     .SubscriptionsSlotItem__info {
       display: flex;
 
-      mat-icon {
+      tsl-svg-icon {
         opacity: 1;
       }
-
     }
   }
 
@@ -42,7 +41,7 @@
 .SubscriptionsSlotItem__icon {
   @include square(48px);
 
-  mat-icon {
+  tsl-svg-icon {
     @include square(48px);
     opacity: 0.3;
   }
@@ -66,7 +65,7 @@
   top: 0;
   right: 0;
 
-  mat-icon {
+  tsl-svg-icon {
     @include square($spacing-ms);
 
     ::ng-deep svg path {
@@ -80,7 +79,7 @@
   border: solid 1px $walla-main;
 
   .SubscriptionsSlotItem__icon {
-    mat-icon {
+    tsl-svg-icon {
       opacity: 1;
     }
   }
@@ -102,7 +101,6 @@
       }
     }
   }
-
 }
 
 .SubscriptionsSlotItem--not-selected {
@@ -113,7 +111,8 @@
   }
 }
 
-.SubscriptionsSlotItem--not-selected, .SubscriptionsSlotItem--single {
+.SubscriptionsSlotItem--not-selected,
+.SubscriptionsSlotItem--single {
   .SubscriptionsSlotItem__info {
     .SubscriptionsSlotItem__info-title {
       color: $blue-grey-2;

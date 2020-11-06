@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 .box-content {
   padding: $spacing-xl 100px;
@@ -15,13 +15,14 @@ h2 {
   font-weight: $font-weight-chunky;
   display: flex;
   align-items: center;
-  mat-icon {
+  tsl-svg-icon {
     height: 38px;
     margin-left: -7px;
   }
 }
 
-.description, .contact {
+.description,
+.contact {
   font-size: $font-size-s;
   line-height: $line-height-ml;
   color: $blue-grey-3;
@@ -32,7 +33,8 @@ h2 {
   color: $blue-grey-2;
 }
 
-h2, .description {
+h2,
+.description {
   margin-right: 80px;
 }
 
@@ -45,10 +47,10 @@ h2, .description {
   flex-direction: column;
   align-items: center;
   line-height: normal;
-  flex:1;
+  flex: 1;
   margin: $spacing-ms;
   max-width: 186px;
-  mat-icon {
+  tsl-svg-icon {
     height: 46px;
     width: 94px;
     margin-bottom: $spacing-m;
@@ -112,7 +114,9 @@ h2, .description {
   }
 }
 
-.city-bumps, .country-bumps, .listings {
+.city-bumps,
+.country-bumps,
+.listings {
   justify-content: space-between;
   align-items: center;
 }
@@ -120,7 +124,7 @@ h2, .description {
 .city-bumps {
   h2 {
     color: $walla-main;
-    mat-icon {
+    tsl-svg-icon {
       width: 51px;
     }
   }
@@ -150,7 +154,7 @@ h2, .description {
 .country-bumps {
   h2 {
     color: $country-bump;
-    mat-icon {
+    tsl-svg-icon {
       width: 67px;
     }
   }
@@ -200,7 +204,7 @@ h2, .description {
   .pack.selected {
     border-color: $yellow-dark;
     .name {
-      border-color: rgba($yellow-dark, .1);
+      border-color: rgba($yellow-dark, 0.1);
     }
   }
   .pack.personal {

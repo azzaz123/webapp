@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 :host {
   width: 100%;
@@ -12,7 +12,7 @@
 .wallapop-search-input {
   position: relative;
   width: 100%;
-  mat-icon {
+  tsl-svg-icon {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -51,7 +51,7 @@
     &:focus {
       border: solid 1px $walla-main;
       background-color: $white;
-      + mat-icon {
+      + tsl-svg-icon {
         position: absolute;
         top: 50%;
         transform: translateY(-50%);

@@ -11,10 +11,9 @@ describe('DeleteInfoConfirmationModalComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       providers: [NgbActiveModal],
-      declarations: [ DeleteInfoConfirmationModalComponent ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+      declarations: [DeleteInfoConfirmationModalComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

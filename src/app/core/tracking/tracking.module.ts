@@ -5,16 +5,8 @@ import { NavigatorService } from './navigator.service';
 
 @NgModule({
   imports: [],
-  exports: [
-    TrackEventDirective
-  ],
-  declarations: [
-    TrackEventDirective
-  ],
-  providers: [
-    TrackingService,
-    NavigatorService
-  ],
+  exports: [TrackEventDirective],
+  declarations: [TrackEventDirective],
+  providers: [TrackingService, NavigatorService],
 })
-export class TrackingModule {
-}
+export class TrackingModule {}

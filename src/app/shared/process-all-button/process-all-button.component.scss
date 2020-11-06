@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 :host {
   a {
@@ -8,7 +8,7 @@
     text-transform: uppercase;
     cursor: pointer;
     &:hover {
-      opacity: .8;
+      opacity: 0.8;
       color: $walla-main;
     }
   }

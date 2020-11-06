@@ -1,4 +1,11 @@
-import { Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { UserService } from '../../core/user/user.service';
 import { environment } from '../../../environments/environment';
 import { Coordinate } from '../../core/geolocation/address-response.interface';
@@ -16,9 +23,7 @@ import { CookieService } from 'ngx-cookie';
   templateUrl: './topbar.component.html',
   styleUrls: ['./topbar.component.scss'],
 })
-
 export class TopbarComponent implements OnInit {
-
   public user: User;
   public coordinates: Coordinate;
   public category: number;
@@ -33,12 +38,14 @@ export class TopbarComponent implements OnInit {
   public wallacoins: number = 0;
   public currencyName: string;
 
-  constructor(public userService: UserService,
+  constructor(
+    public userService: UserService,
     public messageService: MessageService,
     private paymentService: PaymentService,
     private eventService: EventService,
     private cookieService: CookieService,
-    @Inject('SUBDOMAIN') private subdomain: string) {
+    @Inject('SUBDOMAIN') private subdomain: string
+  ) {
     this.homeUrl = environment.siteUrl.replace('es', this.subdomain);
   }
 
@@ -50,32 +57,44 @@ export class TopbarComponent implements OnInit {
       this.isProfessional = value;
     });
     this.updateCreditInfo();
-    this.eventService.subscribe(EventService.TOTAL_CREDITS_UPDATED, (totalCredits: number) => {
-      if (totalCredits) {
-        this.wallacoins = totalCredits;
-      } else {
-        this.updateCreditInfo(false);
+    this.eventService.subscribe(
+      EventService.TOTAL_CREDITS_UPDATED,
+      (totalCredits: number) => {
+        if (totalCredits) {
+          this.wallacoins = totalCredits;
+        } else {
+          this.updateCreditInfo(false);
+        }
       }
-    });
+    );
   }
 
   private updateCreditInfo(cache?: boolean) {
-    this.paymentService.getCreditInfo(cache).subscribe((creditInfo: CreditInfo) => {
-      this.currencyName = creditInfo.currencyName;
-      this.wallacoins = creditInfo.credit;
-      this.setCreditCookie();
-    });
+    this.paymentService
+      .getCreditInfo(cache)
+      .subscribe((creditInfo: CreditInfo) => {
+        this.currencyName = creditInfo.currencyName;
+        this.wallacoins = creditInfo.credit;
+        this.setCreditCookie();
+      });
   }
 
   private setCreditCookie() {
-    const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
+    const cookieOptions =
+      environment.name === 'local'
+        ? { domain: 'localhost' }
+        : { domain: '.wallapop.com' };
     this.cookieService.put('creditName', this.currencyName, cookieOptions);
-    this.cookieService.put('creditQuantity', this.wallacoins.toString(), cookieOptions);
+    this.cookieService.put(
+      'creditQuantity',
+      this.wallacoins.toString(),
+      cookieOptions
+    );
   }
 
   public submitForm() {
-    const categoryId = (this.category) ? this.category : '';
-    const kws = (this.kws) ? this.kws : '';
+    const categoryId = this.category ? this.category : '';
+    const kws = this.kws ? this.kws : '';
     window.location.href = `${this.homeUrl}search?category_ids=${categoryId}&keywords=${kws}`;
   }
 
@@ -93,5 +112,4 @@ export class TopbarComponent implements OnInit {
   public onKeywordUpdate(newKeyword: string) {
     this.kws = newKeyword;
   }
-
 }

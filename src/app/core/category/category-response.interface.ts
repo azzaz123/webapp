@@ -1,4 +1,4 @@
-import { IOption } from 'ng-select';
+import { IOption } from 'app/dropdown/utils/option.interface';
 
 export interface CategoryResponse {
   category_id: number;
@@ -28,5 +28,5 @@ export interface CategoryOption extends IOption {
 }
 
 export interface SuggestedCategory {
-  category_id : number;
+  category_id: number;
 }

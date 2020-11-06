@@ -7,16 +7,13 @@ import { FeatureflagService } from '../user/featureflag.service';
 import { RemoteConsoleClientService } from './remote-console-client.service';
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
+  imports: [CommonModule],
   declarations: [],
   providers: [
     RemoteConsoleService,
     RemoteConsoleClientService,
     DeviceDetectorService,
-    FeatureflagService
-  ]
+    FeatureflagService,
+  ],
 })
-export class RemoteConsoleModule {
-}
+export class RemoteConsoleModule {}
