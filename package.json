@@ -26,7 +26,7 @@
     "svgo": "svgo -f ./src/assets/icons --disable={removeViewBox,cleanupIDs,removeUselessStrokeAndFill}; svgo -f ./src/assets/images --disable={removeViewBox,cleanupIDs,removeUselessStrokeAndFill}",
     "mparticle": "yarn install && yarn upgrade mparticle_json_validation && node scripts/mparticle.js",
     "analyze-bundle": "yarn buildprod --statsJson=true && yarn webpack-bundle-analyzer dist/stats-es2015.json",
-    "libphonenumber-metadata": "./scripts/phonenumber/fill-phonenumber.sh"
+    "libphonenumber-metadata": "./scripts/generate-metadata/generate-metadata.sh"
   },
   "husky": {
     "hooks": {

@@ -155,7 +155,7 @@ The analytics team provide us with a series of JSON's files with which we must v
 
 If you wanna update the value of the libphonenumber-js metadata you should follow the next steps:
 
-- Edit the `fill-phonenumber.sh` file and customize it. You can check the [documentation](https://gitlab.com/catamphetamine/libphonenumber-js#customizing-metadata)
+- Edit the `generate-metadata.sh` file and customize it. You can check the [documentation](https://gitlab.com/catamphetamine/libphonenumber-js#customizing-metadata)
 - Run `yarn libphonenumber-metadata` for update our metadata file.
 
 ## Documentation
