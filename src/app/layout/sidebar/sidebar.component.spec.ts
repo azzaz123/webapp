@@ -1,7 +1,12 @@
-
 import { of, Observable } from 'rxjs';
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { SidebarComponent } from './sidebar.component';
 import { UserService } from '../../core/user/user.service';
@@ -15,9 +20,9 @@ import { RouterLinkDirectiveStub } from 'app/shared/router-link-directive-stub';
 import { By } from '@angular/platform-browser';
 
 @Component({
-  template: ''
+  template: '',
 })
-export class MockComponent { }
+export class MockComponent {}
 
 const routes: Routes = [
   { path: 'profile', component: MockComponent },
@@ -43,30 +48,30 @@ describe('SidebarComponent', () => {
       declarations: [SidebarComponent, RouterLinkDirectiveStub, MockComponent],
       imports: [
         NgxPermissionsModule.forRoot(),
-        RouterTestingModule.withRoutes(routes)
+        RouterTestingModule.withRoutes(routes),
       ],
       providers: [
         {
-          provide: UserService, useValue: {
-            logout() {
-            },
+          provide: UserService,
+          useValue: {
+            logout() {},
             me(): Observable<User> {
               return of(MOCK_USER);
             },
             isProfessional() {
               return of(true);
-            }
+            },
           },
         },
         {
-          provide: MessageService, useValue: {
-            totalUnreadMessages$: of(1)
-          }
-        }
+          provide: MessageService,
+          useValue: {
+            totalUnreadMessages$: of(1),
+          },
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -99,7 +104,9 @@ describe('SidebarComponent', () => {
   describe('Sidebar icons', () => {
     it('should be shown profile icon as "active" when is in a profile section', () => {
       component.isProfile = true;
-      const element: HTMLElement = fixture.nativeElement.querySelector("#qa-sidebar-profile");
+      const element: HTMLElement = fixture.nativeElement.querySelector(
+        '#qa-sidebar-profile'
+      );
 
       component.ngOnInit();
       fixture.detectChanges();
@@ -113,7 +120,14 @@ describe('SidebarComponent', () => {
         router.navigate(['profile']);
 
         tick();
-        var activeLinks = fixture.debugElement.queryAll(By.css('.active')).map(element => element.injector.get(RouterLinkDirectiveStub) as RouterLinkDirectiveStub);
+        var activeLinks = fixture.debugElement
+          .queryAll(By.css('.active'))
+          .map(
+            (element) =>
+              element.injector.get(
+                RouterLinkDirectiveStub
+              ) as RouterLinkDirectiveStub
+          );
 
         expect(activeLinks.length).toBe(1);
         expect(activeLinks[0].linkParams).toEqual(['/profile']);
@@ -122,7 +136,9 @@ describe('SidebarComponent', () => {
 
     it('should be shown catalog icon as "active" when it is in a product section', () => {
       component.isProducts = true;
-      const element: HTMLElement = fixture.nativeElement.querySelector("#qa-sidebar-catalog");
+      const element: HTMLElement = fixture.nativeElement.querySelector(
+        '#qa-sidebar-catalog'
+      );
 
       component.ngOnInit();
       fixture.detectChanges();
@@ -135,12 +151,18 @@ describe('SidebarComponent', () => {
         router.navigate(['chat']);
 
         tick();
-        var activeLinks = fixture.debugElement.queryAll(By.css('.active')).map(element => element.injector.get(RouterLinkDirectiveStub) as RouterLinkDirectiveStub);
+        var activeLinks = fixture.debugElement
+          .queryAll(By.css('.active'))
+          .map(
+            (element) =>
+              element.injector.get(
+                RouterLinkDirectiveStub
+              ) as RouterLinkDirectiveStub
+          );
 
         expect(activeLinks.length).toBe(1);
         expect(activeLinks[0].linkParams).toEqual(['/chat']);
       });
     }));
   });
-
 });

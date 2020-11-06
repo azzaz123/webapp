@@ -18,7 +18,13 @@ describe('TrackingEvent', () => {
   });
   describe('setDeviceInfo', () => {
     it('should set the deviceInfo with the given parameters', () => {
-      TRACKING_EVENT.setDeviceInfo(os, platform, deviceAccessTokenId, manufacturer, model);
+      TRACKING_EVENT.setDeviceInfo(
+        os,
+        platform,
+        deviceAccessTokenId,
+        manufacturer,
+        model
+      );
       expect(TRACKING_EVENT.sessions[0].device).toEqual({
         type: type,
         manufacturer: manufacturer,
@@ -28,17 +34,19 @@ describe('TrackingEvent', () => {
         screenwidth: screenWidth,
         screenheight: screenHeight,
         locale: replace(navigator.language, '-', '_'),
-        deviceAccessTokenId: deviceAccessTokenId
+        deviceAccessTokenId: deviceAccessTokenId,
       });
     });
   });
   describe('setAttributes', () => {
     it('should set the attributes of the event to the given ones', () => {
-      const attributes = {product_id: 5};
+      const attributes = { product_id: 5 };
 
       TRACKING_EVENT.setAttributes(attributes);
 
-      expect(TRACKING_EVENT.sessions[0].events[0].attributes).toEqual(attributes);
+      expect(TRACKING_EVENT.sessions[0].events[0].attributes).toEqual(
+        attributes
+      );
     });
   });
   describe('setSessionId', () => {

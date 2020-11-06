@@ -1,5 +1,8 @@
 import { FinancialCard } from '../app/shared/profile/credit-card-info/financial-card';
-import { FinancialCardOption, StripeCard } from '../app/core/payments/payment.interface';
+import {
+  FinancialCardOption,
+  StripeCard,
+} from '../app/core/payments/payment.interface';
 
 export const STRIPE_CARD: StripeCard = {
   brand: null,
@@ -10,8 +13,8 @@ export const STRIPE_CARD: StripeCard = {
   funding: null,
   generated_from: null,
   last4: '4242',
-  three_d_secure_usage: { supported : null },
-  wallet: null
+  three_d_secure_usage: { supported: null },
+  wallet: null,
 };
 
 export const FINANCIAL_CARD_OPTION: FinancialCardOption[] = [
@@ -22,7 +25,7 @@ export const FINANCIAL_CARD_OPTION: FinancialCardOption[] = [
     id: 'pm_2f2f2f',
     number: '4242',
     favorite: true,
-    stripeCard: STRIPE_CARD
+    stripeCard: STRIPE_CARD,
   },
   {
     value: '2121',
@@ -31,8 +34,8 @@ export const FINANCIAL_CARD_OPTION: FinancialCardOption[] = [
     id: 'pm_6u6u6u',
     number: '2121',
     favorite: false,
-    stripeCard: null
-  }
+    stripeCard: null,
+  },
 ];
 
 export const STRIPE_CARD_OPTION: any = {
@@ -41,7 +44,7 @@ export const STRIPE_CARD_OPTION: any = {
   number: '4242',
   invoices_default: false,
   favorite: true,
-  stripeCard: STRIPE_CARD
+  stripeCard: STRIPE_CARD,
 };
 
 export const STRIPE_CARD_OPTION_SUBSCRIPTION: any = {
@@ -50,11 +53,10 @@ export const STRIPE_CARD_OPTION_SUBSCRIPTION: any = {
   number: '4242',
   invoices_default: true,
   favorite: true,
-  stripeCard: STRIPE_CARD
+  stripeCard: STRIPE_CARD,
 };
 
 export function createFinancialCardFixture(): FinancialCard {
-
   return new FinancialCard(
     '2/2020',
     'pm_a0b1c2',
@@ -65,7 +67,6 @@ export function createFinancialCardFixture(): FinancialCard {
   );
 }
 export function createFavoriteFinancialCardFixture(): FinancialCard {
-
   return new FinancialCard(
     '01/2021',
     'pm_2f2f2f',

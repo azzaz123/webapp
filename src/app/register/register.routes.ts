@@ -13,25 +13,22 @@ const routes: Routes = [
     children: [
       {
         path: '**',
-        component: VerifyComponent
-      }
-    ]
-  }
+        component: VerifyComponent,
+      },
+    ],
+  },
 ];
 
-export const registerRoutedComponents = [
-  RegisterComponent,
-  VerifyComponent,
-];
+export const registerRoutedComponents = [RegisterComponent, VerifyComponent];
 
 export const registerNonroutedComponents = [
   SendVerifyEmailComponent,
   VerifySuccessComponent,
-  VerifyErrorComponent
+  VerifyErrorComponent,
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class RegisterRoutingModule { }
+export class RegisterRoutingModule {}

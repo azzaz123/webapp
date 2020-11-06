@@ -6,14 +6,15 @@ import { InboxUser } from '../model/inbox-user';
 
 @Injectable()
 export class BlockUserXmppService {
+  constructor(private xmpp: XmppService) {}
 
-  constructor(private xmpp: XmppService) { }
-
-  public blockUser(user: User | InboxUser): Observable<any> { // TODO: This maybe will be moved to an EndPoint and not using XMPP
+  public blockUser(user: User | InboxUser): Observable<any> {
+    // TODO: This maybe will be moved to an EndPoint and not using XMPP
     return this.xmpp.blockUser(user);
   }
 
-  public unblockUser(user: User | InboxUser): Observable<any> { // TODO: This maybe will be moved to an EndPoint and not using XMPP
+  public unblockUser(user: User | InboxUser): Observable<any> {
+    // TODO: This maybe will be moved to an EndPoint and not using XMPP
     return this.xmpp.unblockUser(user);
   }
 

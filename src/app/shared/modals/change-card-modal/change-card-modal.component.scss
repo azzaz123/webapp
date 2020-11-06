@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 .ChangeCardModal {
   text-align: center;
@@ -26,7 +26,8 @@
     margin: 0 0 $spacing-l;
   }
   &__NewCard {
-    &--add, &--used {
+    &--add,
+    &--used {
       font-size: $font-size-s;
       color: $walla-main;
       text-align: left;

@@ -1,11 +1,9 @@
-
-import {share} from 'rxjs/operators';
+import { share } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Subject ,  Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 
 @Injectable()
 export class EventService {
-
   public static USER_LOGIN = 'loginEvent';
   public static USER_LOGOUT = 'logoutEvent';
   public static NEW_MESSAGE = 'newMessage';
@@ -58,7 +56,7 @@ export class EventService {
       const subject = new Subject();
       this.subjects[eventName] = {
         observable: subject.asObservable().pipe(share()),
-        subject: subject
+        subject: subject,
       };
     }
   }

@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 :host {
   position: relative;
@@ -22,7 +22,8 @@
     text {
       font-family: $wallie;
     }
-    .amcharts-axis-label, .amcharts-balloon-div-categoryAxis {
+    .amcharts-axis-label,
+    .amcharts-balloon-div-categoryAxis {
       text-transform: uppercase;
       div {
         font-family: $wallie !important;
@@ -34,7 +35,8 @@
   }
 }
 
-.title, ng-select {
+.title,
+ng-select {
   position: absolute;
   margin-left: $spacing-l;
   width: 205px;
@@ -62,6 +64,5 @@ ng-select {
         width: $height !important;
       }
     }
-
   }
 }

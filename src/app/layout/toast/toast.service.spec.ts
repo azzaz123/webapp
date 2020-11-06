@@ -21,18 +21,20 @@ describe('ToastService', () => {
 
       service.show(MOCK_TOAST);
 
-      expect(service.toasts).toContain(MOCK_TOAST)
-    })
+      expect(service.toasts).toContain(MOCK_TOAST);
+    });
 
     describe('remove', () => {
       it('remove toast from toast array', () => {
-        let MOCK_TOAST: Toast = { text: 'mocked toast removed', type: 'success' }
+        let MOCK_TOAST: Toast = {
+          text: 'mocked toast removed',
+          type: 'success',
+        };
 
         service.remove(MOCK_TOAST);
 
-        expect(service.toasts).not.toContain(MOCK_TOAST)
-      })
-    })
-  })
-  
+        expect(service.toasts).not.toContain(MOCK_TOAST);
+      });
+    });
+  });
 });

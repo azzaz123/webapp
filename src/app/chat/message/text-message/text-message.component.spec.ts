@@ -13,8 +13,7 @@ describe('TextMessageComponent', () => {
     TestBed.configureTestingModule({
       declarations: [TextMessageComponent, LinkTransformPipe],
       schemas: [NO_ERRORS_SCHEMA],
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -28,4 +27,3 @@ describe('TextMessageComponent', () => {
     expect(component).toBeTruthy();
   });
 });
-

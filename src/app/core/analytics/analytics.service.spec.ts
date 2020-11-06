@@ -1,4 +1,3 @@
-
 import { of } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { AnalyticsService } from './analytics.service';
@@ -7,11 +6,11 @@ import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
 import mParticle from '@mparticle/web-sdk';
 import appboyKit from '@mparticle/web-appboy-kit';
-import { CookieService } from "ngx-cookie";
+import { CookieService } from 'ngx-cookie';
 import { UuidService } from '../uuid/uuid.service';
 
 const user = {
-  setUserAttribute: () => {}
+  setUserAttribute: () => {},
 };
 
 jest.mock('@mparticle/web-sdk', () => ({
@@ -19,24 +18,24 @@ jest.mock('@mparticle/web-sdk', () => ({
   default: {
     init: (key, config) => {
       config.identityCallback({
-        getUser: () => user
+        getUser: () => user,
       });
     },
     logEvent: (_eventName, _eventType, _eventAttributes) => {},
     logPageView: (_pageName, _pageAttributes, _pageFlags) => {},
     Identity: {
-      getCurrentUser: () => user
-    }
+      getCurrentUser: () => user,
+    },
   },
-  namedExport: 'mParticle'
+  namedExport: 'mParticle',
 }));
 
 jest.mock('@mparticle/web-appboy-kit', () => ({
   __esModule: true,
   default: {
-    register: _config => {}
+    register: (_config) => {},
   },
-  namedExport: 'appboyKit'
+  namedExport: 'appboyKit',
 }));
 
 describe('AnalyticsService', () => {
@@ -56,16 +55,17 @@ describe('AnalyticsService', () => {
               return of(MOCK_USER);
             },
           },
-        }, {
+        },
+        {
           provide: CookieService,
           useValue: {
             get: () => deviceIdValue,
             put: (value) => {
-              deviceIdValue = value
-            }
-          }
-        }
-      ]
+              deviceIdValue = value;
+            },
+          },
+        },
+      ],
     });
     uuidService = TestBed.inject(UuidService);
     service = TestBed.inject(AnalyticsService);
@@ -82,7 +82,10 @@ describe('AnalyticsService', () => {
         service.initialize();
 
         expect(mParticle.init).toHaveBeenCalled();
-        expect(user.setUserAttribute).toHaveBeenCalledWith('deviceId', 'deviceId');
+        expect(user.setUserAttribute).toHaveBeenCalledWith(
+          'deviceId',
+          'deviceId'
+        );
         expect(appboyKit.register).toHaveBeenCalled();
       });
     });
@@ -93,16 +96,17 @@ describe('AnalyticsService', () => {
         spyOn(mParticle, 'init').and.callThrough();
         spyOn(mParticle.Identity.getCurrentUser(), 'setUserAttribute');
         spyOn(appboyKit, 'register');
-        spyOn(uuidService, 'getUUID').and.returnValue('newDeviceId')
+        spyOn(uuidService, 'getUUID').and.returnValue('newDeviceId');
 
         service.initialize();
 
         expect(mParticle.init).toHaveBeenCalled();
-        expect(mParticle.Identity.getCurrentUser().setUserAttribute).toHaveBeenCalledWith('deviceId', 'newDeviceId');
+        expect(
+          mParticle.Identity.getCurrentUser().setUserAttribute
+        ).toHaveBeenCalledWith('deviceId', 'newDeviceId');
         expect(appboyKit.register).toHaveBeenCalled();
       });
     });
-
   });
 
   describe('trackEvent', () => {
@@ -114,14 +118,18 @@ describe('AnalyticsService', () => {
         name: 'AsapEvent' as any,
         eventType: 1 as any,
         attributes: {
-          bruh: 'Thanks!'
-        }
+          bruh: 'Thanks!',
+        },
       };
       spyOn(mParticle, 'logEvent');
 
       service.trackEvent(MOCK_EVENT);
 
-      expect(mParticle.logEvent).toHaveBeenCalledWith(MOCK_EVENT.name, MOCK_EVENT.eventType, MOCK_EVENT.attributes);
+      expect(mParticle.logEvent).toHaveBeenCalledWith(
+        MOCK_EVENT.name,
+        MOCK_EVENT.eventType,
+        MOCK_EVENT.attributes
+      );
     });
   });
 
@@ -133,13 +141,17 @@ describe('AnalyticsService', () => {
       const MOCK_PAGE_VIEW: AnalyticsPageView<AsapPageEvent> = {
         name: 'Chat screen',
         attributes: { name: 'Test page view event' },
-        flags: { trackingFlag: true }
+        flags: { trackingFlag: true },
       };
       spyOn(mParticle, 'logPageView');
 
       service.trackPageView(MOCK_PAGE_VIEW);
 
-      expect(mParticle.logPageView).toHaveBeenCalledWith(MOCK_PAGE_VIEW.name, MOCK_PAGE_VIEW.attributes, MOCK_PAGE_VIEW.flags);
+      expect(mParticle.logPageView).toHaveBeenCalledWith(
+        MOCK_PAGE_VIEW.name,
+        MOCK_PAGE_VIEW.attributes,
+        MOCK_PAGE_VIEW.flags
+      );
     });
   });
 });

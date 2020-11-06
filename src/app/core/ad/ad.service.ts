@@ -1,7 +1,6 @@
-
-import {tap, filter, mergeMap} from 'rxjs/operators';
+import { tap, filter, mergeMap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Observable ,  merge ,  Subscription ,  BehaviorSubject } from 'rxjs';
+import { Observable, merge, Subscription, BehaviorSubject } from 'rxjs';
 import { UserService } from '../user/user.service';
 import { CookieService } from 'ngx-cookie';
 import { AdKeyWords } from './ad.interface';
@@ -13,18 +12,30 @@ import { initAdsConfig } from './ad.config';
 
 @Injectable()
 export class AdService {
-
-  public allowSegmentation$: BehaviorSubject<boolean> = new BehaviorSubject(null);
+  public allowSegmentation$: BehaviorSubject<boolean> = new BehaviorSubject(
+    null
+  );
   public adKeyWords: AdKeyWords = {} as AdKeyWords;
   public adsRefreshSubscription: Subscription;
   private _adSlots = [
-    { name: '/130868815/chat_right', id: 'div-gpt-ad-1508490196308-0', sizes: [[240, 400], [120, 600], [160, 600], [300, 250]], 'zoneid': 978109}
+    {
+      name: '/130868815/chat_right',
+      id: 'div-gpt-ad-1508490196308-0',
+      sizes: [
+        [240, 400],
+        [120, 600],
+        [160, 600],
+        [300, 250],
+      ],
+      zoneid: 978109,
+    },
   ];
   private _bidTimeout = 2000;
 
-  constructor(private userService: UserService,
-              private cookieService: CookieService,
-              private didomiService: DidomiService
+  constructor(
+    private userService: UserService,
+    private cookieService: CookieService,
+    private didomiService: DidomiService
   ) {
     initAdsConfig();
     this.initKeyWordsFromCookies();
@@ -32,10 +43,14 @@ export class AdService {
     this.initGoogletagConfig();
 
     if (this.didomiService.isReady) {
-      this.allowSegmentation$.next(this.didomiService.userAllowedSegmentationInAds());
+      this.allowSegmentation$.next(
+        this.didomiService.userAllowedSegmentationInAds()
+      );
     } else {
       this.didomiService.isReady$.subscribe(() => {
-        this.allowSegmentation$.next(this.didomiService.userAllowedSegmentationInAds())
+        this.allowSegmentation$.next(
+          this.didomiService.userAllowedSegmentationInAds()
+        );
       });
     }
   }
@@ -50,19 +65,20 @@ export class AdService {
 
   private initPositionKeyWords() {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition( (position) => {
+      navigator.geolocation.getCurrentPosition((position) => {
         this.adKeyWords.latitude = position.coords.latitude.toString();
         this.adKeyWords.longitude = position.coords.longitude.toString();
       });
     }
   }
 
-  private initGoogletagConfig () {
+  private initGoogletagConfig() {
     googletag.cmd.push(() => {
       this._adSlots.forEach((slot) => {
-        googletag.defineSlot(slot.name, slot.sizes, slot.id)
+        googletag
+          .defineSlot(slot.name, slot.sizes, slot.id)
           .setTargeting('ad_group', Adomik.randomAdGroup())
-          .setTargeting('ad_h', (new Date).getUTCHours().toString())
+          .setTargeting('ad_h', new Date().getUTCHours().toString())
           .addService(googletag.pubads());
       });
       let publisherId = this.cookieService.get('publisherId');
@@ -76,38 +92,48 @@ export class AdService {
   }
 
   public fetchHeaderBids(allowSegmentation = false) {
-    merge(this.requestBidAps(), this.requestBidCriteo())
-      .subscribe(null, null, () => {
+    merge(this.requestBidAps(), this.requestBidCriteo()).subscribe(
+      null,
+      null,
+      () => {
         this.sendAdServerRequest(allowSegmentation);
-      });
+      }
+    );
   }
 
   public requestBidAps() {
     const apstagSlots = this._adSlots.map((slot) => {
-      return { slotID: slot.id, sizes: slot.sizes, slotName: slot.name};
+      return { slotID: slot.id, sizes: slot.sizes, slotName: slot.name };
     });
     return Observable.create((observer) => {
-      apstag.fetchBids({
-        slots: apstagSlots,
-        timeout: this._bidTimeout
-      }, (bids) => {
-        observer.complete();
-      });
+      apstag.fetchBids(
+        {
+          slots: apstagSlots,
+          timeout: this._bidTimeout,
+        },
+        (bids) => {
+          observer.complete();
+        }
+      );
     });
   }
 
   public requestBidCriteo() {
     const adUnits = {
       placements: this._adSlots.map((slot) => {
-        return { slotid: slot.id, zoneid: slot.zoneid};
-      })
+        return { slotid: slot.id, zoneid: slot.zoneid };
+      }),
     };
     return Observable.create((observer) => {
       Criteo.events.push(() => {
         Criteo.SetLineItemRanges('0..4.5:0.01;4.50..27:0.05;27..72:0.1');
-        Criteo.RequestBids(adUnits, (bids) => {
-          observer.complete();
-        }, this._bidTimeout);
+        Criteo.RequestBids(
+          adUnits,
+          (bids) => {
+            observer.complete();
+          },
+          this._bidTimeout
+        );
       });
     });
   }
@@ -116,38 +142,53 @@ export class AdService {
     googletag.cmd.push(() => {
       apstag.setDisplayBids();
       Criteo.SetDFPKeyValueTargeting();
-      googletag.pubads().setRequestNonPersonalizedAds(allowSegmentation ? 0 : 1);
+      googletag
+        .pubads()
+        .setRequestNonPersonalizedAds(allowSegmentation ? 0 : 1);
       googletag.pubads().refresh();
     });
   }
 
   public adsRefresh(): void {
-    if (this.adsRefreshSubscription && !this.adsRefreshSubscription.closed) { return ; }
-    this.adsRefreshSubscription = this.userService.me().pipe(tap((user: User) => {
-      this.adKeyWords.gender = user.gender;
-      this.adKeyWords.userId = user.id;
-      if (user.birthDate) {
-        this.adKeyWords.age = moment().diff(user.birthDate, 'years').toString();
-      }
-      if (!this.adKeyWords.latitude && user.location) {
-        this.adKeyWords.latitude = user.location.approximated_latitude.toString();
-      }
-      if (!this.adKeyWords.longitude && user.location) {
-        this.adKeyWords.longitude = user.location.approximated_longitude.toString();
-      }
-    }),mergeMap(() => {
-      return this.allowSegmentation$.pipe(filter((value) =>  value !== null));
-    }),).subscribe((allowSegmentation: boolean) => {
-      this.refreshAdWithKeyWords(allowSegmentation);
-    });
+    if (this.adsRefreshSubscription && !this.adsRefreshSubscription.closed) {
+      return;
+    }
+    this.adsRefreshSubscription = this.userService
+      .me()
+      .pipe(
+        tap((user: User) => {
+          this.adKeyWords.gender = user.gender;
+          this.adKeyWords.userId = user.id;
+          if (user.birthDate) {
+            this.adKeyWords.age = moment()
+              .diff(user.birthDate, 'years')
+              .toString();
+          }
+          if (!this.adKeyWords.latitude && user.location) {
+            this.adKeyWords.latitude = user.location.approximated_latitude.toString();
+          }
+          if (!this.adKeyWords.longitude && user.location) {
+            this.adKeyWords.longitude = user.location.approximated_longitude.toString();
+          }
+        }),
+        mergeMap(() => {
+          return this.allowSegmentation$.pipe(
+            filter((value) => value !== null)
+          );
+        })
+      )
+      .subscribe((allowSegmentation: boolean) => {
+        this.refreshAdWithKeyWords(allowSegmentation);
+      });
   }
 
   private refreshAdWithKeyWords(allowSegmentation: boolean): void {
     Object.keys(this.adKeyWords).forEach((key) => {
       googletag.pubads().setTargeting(key, this.adKeyWords[key]);
     });
-    googletag.pubads().setTargeting('allowSegmentation', allowSegmentation ? 'true' : 'false');
+    googletag
+      .pubads()
+      .setTargeting('allowSegmentation', allowSegmentation ? 'true' : 'false');
     this.fetchHeaderBids(allowSegmentation);
   }
-
 }

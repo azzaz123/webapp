@@ -8,12 +8,11 @@ export const ITEM_STATS_ENDPOINT = 'api/v3/statistics/item/';
 
 @Injectable()
 export class ItemStatsService {
-
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   public getStatistics(itemId: string): Observable<ItemStatisticFullResponse> {
-    return this.http.get<ItemStatisticFullResponse>(`${environment.baseUrl}${ITEM_STATS_ENDPOINT}${itemId}`);
+    return this.http.get<ItemStatisticFullResponse>(
+      `${environment.baseUrl}${ITEM_STATS_ENDPOINT}${itemId}`
+    );
   }
-
 }

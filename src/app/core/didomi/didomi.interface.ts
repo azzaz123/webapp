@@ -6,7 +6,7 @@ export interface DidomiLibrary {
 
 export interface DidomiUserConsents {
   purposes: {
-    enabled: string[],
-    disabled: string[]
+    enabled: string[];
+    disabled: string[];
   };
 }

@@ -1,6 +1,15 @@
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { PAYMENT_METHOD_CARD_RESPONSE, SETUP_INTENT_DATA } from '../../../../tests/payments.fixtures.spec';
+import {
+  PAYMENT_METHOD_CARD_RESPONSE,
+  SETUP_INTENT_DATA,
+} from '../../../../tests/payments.fixtures.spec';
 import { StripeCardElementComponent } from './stripe-card-element.component';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -14,44 +23,41 @@ describe('StripeCardElementComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-        declarations: [StripeCardElementComponent],
-        imports:      [
-          ReactiveFormsModule,
-          FormsModule
-        ],
-        providers:    [
-          I18nService,
-          {
-            provide: StripeService, useValue: {
-              createStripeCard() {
-                return Promise.resolve(PAYMENT_METHOD_CARD_RESPONSE[0]);
+      declarations: [StripeCardElementComponent],
+      imports: [ReactiveFormsModule, FormsModule],
+      providers: [
+        I18nService,
+        {
+          provide: StripeService,
+          useValue: {
+            createStripeCard() {
+              return Promise.resolve(PAYMENT_METHOD_CARD_RESPONSE[0]);
+            },
+            createDefaultCard() {
+              return Promise.resolve(SETUP_INTENT_DATA);
+            },
+            getSetupIntent() {
+              return of('abc');
+            },
+            lib: {
+              elements: () => {
+                return {
+                  create: () => {
+                    return {
+                      mount: () => {},
+                      addEventListener: () => {},
+                      removeEventListener: (type: string, listener: any) => {},
+                      destroy: () => {},
+                    };
+                  },
+                };
               },
-              createDefaultCard() {
-                return Promise.resolve(SETUP_INTENT_DATA);
-              },
-              getSetupIntent() {
-                return of('abc');
-              },
-              lib: {
-                elements: () =>  {
-                  return {
-                    create: () => {
-                      return {
-                        mount: () => {},
-                        addEventListener: () => {},
-                        removeEventListener: (type: string, listener: any) => {},
-                        destroy: () => {}
-                      };
-                    }
-                  };
-                }
-              }
-          }
-          }
-        ],
-        schemas: [NO_ERRORS_SCHEMA]
-      })
-      .compileComponents();
+            },
+          },
+        },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -82,7 +88,9 @@ describe('StripeCardElementComponent', () => {
       component.createNewCard();
       tick();
 
-      expect(component.onStripeCardCreate.emit).toHaveBeenCalledWith(PAYMENT_METHOD_CARD_RESPONSE[0]);
+      expect(component.onStripeCardCreate.emit).toHaveBeenCalledWith(
+        PAYMENT_METHOD_CARD_RESPONSE[0]
+      );
     }));
   });
 
@@ -108,7 +116,9 @@ describe('StripeCardElementComponent', () => {
       component.setDefaultCard();
       tick();
 
-      expect(component.onStripeSetDefaultCard.emit).toHaveBeenCalledWith(SETUP_INTENT_DATA.setupIntent);
+      expect(component.onStripeSetDefaultCard.emit).toHaveBeenCalledWith(
+        SETUP_INTENT_DATA.setupIntent
+      );
     }));
   });
 
@@ -118,7 +128,9 @@ describe('StripeCardElementComponent', () => {
       component.showUseSavedCard = true;
       component.type = 'subscription';
       fixture.detectChanges();
-      const useSavedCardButton = fixture.debugElement.nativeElement.querySelector('.card-feedback__action');
+      const useSavedCardButton = fixture.debugElement.nativeElement.querySelector(
+        '.card-feedback__action'
+      );
 
       useSavedCardButton.click();
 
@@ -131,7 +143,9 @@ describe('StripeCardElementComponent', () => {
       component.isPaymentError = true;
       fixture.detectChanges();
 
-      const stripeCardInput: HTMLElement = fixture.elementRef.nativeElement.querySelector('.StripeCard__error');
+      const stripeCardInput: HTMLElement = fixture.elementRef.nativeElement.querySelector(
+        '.StripeCard__error'
+      );
       expect(stripeCardInput).toBeTruthy();
     });
   });

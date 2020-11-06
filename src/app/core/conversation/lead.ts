@@ -4,22 +4,22 @@ import { User } from '../user/user';
 import { SurveyResponse } from './lead-response.interface';
 
 export abstract class Lead {
-
   private _lastMessageRef: string;
   private _oldMessagesLoaded: boolean;
   private _unreadMessages = 0;
   private _active: boolean;
   private _archived = false;
 
-  constructor(private _id: string,
-              private _legacyId: number,
-              private _modifiedDate: number,
-              private _user?: User,
-              private _item?: Item,
-              private _messages: Array<Message> = [],
-              private _phone?: string,
-              private _surveyResponses: SurveyResponse[] = []) {
-  }
+  constructor(
+    private _id: string,
+    private _legacyId: number,
+    private _modifiedDate: number,
+    private _user?: User,
+    private _item?: Item,
+    private _messages: Array<Message> = [],
+    private _phone?: string,
+    private _surveyResponses: SurveyResponse[] = []
+  ) {}
 
   set modifiedDate(value: number) {
     this._modifiedDate = value;

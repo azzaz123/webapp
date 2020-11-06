@@ -40,8 +40,8 @@ export interface XmppBodyMessage extends XmppMessage {
   date?: number;
   carbonSent?: {
     forwarded: {
-      message: XmppBodyMessage
-    }
+      message: XmppBodyMessage;
+    };
   };
   carbon?: boolean;
   payload?: MessagePayload;
@@ -57,8 +57,9 @@ export class JID {
   constructor(
     private _userId: string,
     private _domain: string,
-    private _resource: string) {
-      return new XMPP.JID(this._userId, this._domain, this._resource);
+    private _resource: string
+  ) {
+    return new XMPP.JID(this._userId, this._domain, this._resource);
   }
 
   get bare(): string {

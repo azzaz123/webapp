@@ -1,10 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 import { ReviewService, REVIEWS_API_URL } from './review.service';
-import { REVIEW_DATA_BUYER, REVIEW_DATA_SELLER } from '../../../tests/review.fixtures.spec';
-import { HttpTestingController, HttpClientTestingModule, TestRequest } from '@angular/common/http/testing';
+import {
+  REVIEW_DATA_BUYER,
+  REVIEW_DATA_SELLER,
+} from '../../../tests/review.fixtures.spec';
+import {
+  HttpTestingController,
+  HttpClientTestingModule,
+  TestRequest,
+} from '@angular/common/http/testing';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { environment } from '../../../environments/environment';
-
 
 let service: ReviewService;
 let httpMock: HttpTestingController;
@@ -28,7 +34,7 @@ describe('ReviewService', () => {
       const expectedUrl = `${environment.baseUrl}${REVIEWS_API_URL}/${USER_ID}`;
       let response: boolean;
 
-      service.check(USER_ID).subscribe(r => response = r);
+      service.check(USER_ID).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush({});
 
@@ -39,9 +45,9 @@ describe('ReviewService', () => {
       const expectedUrl = `${environment.baseUrl}${REVIEWS_API_URL}/${USER_ID}`;
       let response: boolean;
 
-      service.check(USER_ID).subscribe(r => response = r);
+      service.check(USER_ID).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
-      req.error(new ErrorEvent('Error when getting reviews'))
+      req.error(new ErrorEvent('Error when getting reviews'));
 
       expect(response).toBe(false);
     });
@@ -74,5 +80,4 @@ describe('ReviewService', () => {
       expect(req.request.method).toBe('POST');
     });
   });
-
 });

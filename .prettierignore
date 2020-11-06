@@ -7,6 +7,10 @@ scripts
 infrastructure
 docker
 githooks
+*.js
+*.yaml
+*.yml
+*.json
 
 # TODO: Remove when changing translations method
 *.html

@@ -2,13 +2,12 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TabbarService {
-
   public tabBarHidden$: Subject<boolean> = new Subject();
 
-  constructor() { }
+  constructor() {}
 
   public hideTabBar() {
     this.tabBarHidden$.next(true);
@@ -17,5 +16,4 @@ export class TabbarService {
   public showTabBar() {
     this.tabBarHidden$.next(false);
   }
-
 }

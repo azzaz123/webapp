@@ -1,13 +1,12 @@
 import { Directive, HostListener } from '@angular/core';
 
 @Directive({
-  selector: '[preventDoubleClick]'
+  selector: '[preventDoubleClick]',
 })
-
 export class PreventDoubleClickDirective {
   private alreadyClicked = false;
-  
-  constructor() { }
+
+  constructor() {}
 
   @HostListener('click', ['$event'])
   clickEvent(event) {
@@ -16,7 +15,7 @@ export class PreventDoubleClickDirective {
       event.stopPropagation();
     } else {
       this.alreadyClicked = true;
-      setTimeout( () => this.alreadyClicked = false, 500);
+      setTimeout(() => (this.alreadyClicked = false), 500);
     }
   }
 }

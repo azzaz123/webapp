@@ -1,11 +1,18 @@
-import { Component, OnInit, OnDestroy, HostListener, EventEmitter, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  HostListener,
+  EventEmitter,
+  Input,
+} from '@angular/core';
 import { range } from 'lodash-es';
 import { BumpTutorialService } from './bump-tutorial.service';
 
 export enum KEY_CODE {
   RIGHT_ARROW = 39,
   LEFT_ARROW = 37,
-  ESC = 27
+  ESC = 27,
 }
 
 export const SLIDES_NUMBER = 2;
@@ -13,10 +20,9 @@ export const SLIDES_NUMBER = 2;
 @Component({
   selector: 'tsl-bump-tutorial',
   templateUrl: './bump-tutorial.component.html',
-  styleUrls: ['./bump-tutorial.component.scss']
+  styleUrls: ['./bump-tutorial.component.scss'],
 })
 export class BumpTutorialComponent implements OnDestroy {
-
   public dots: number;
   public hidden = true;
 
@@ -48,5 +54,4 @@ export class BumpTutorialComponent implements OnDestroy {
       this.hide();
     }
   }
-
 }

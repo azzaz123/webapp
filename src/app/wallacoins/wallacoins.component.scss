@@ -69,10 +69,16 @@ p {
         @include square(24px);
       }
     }
-    &:hover {
-      ::ng-deep {
-        path {
-          fill: $walla-main;
+    .left-arrow,
+    .right-arrow {
+      position: absolute;
+      top: 50%;
+      cursor: pointer;
+      &:hover {
+        ::ng-deep {
+          path {
+            fill: $walla-main;
+          }
         }
       }
     }

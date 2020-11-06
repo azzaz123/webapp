@@ -10,17 +10,16 @@ describe('DiscountAvailableUnsubscribeInAppModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DiscountAvailableUnsubscribeInAppModalComponent ],
-      providers: [
-        NgbActiveModal
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      declarations: [DiscountAvailableUnsubscribeInAppModalComponent],
+      providers: [NgbActiveModal],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DiscountAvailableUnsubscribeInAppModalComponent);
+    fixture = TestBed.createComponent(
+      DiscountAvailableUnsubscribeInAppModalComponent
+    );
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -10,29 +10,31 @@ import { InboxItem, InboxMessage, InboxUser } from '../../model';
 @Component({
   selector: 'tsl-third-voice-button',
   templateUrl: './third-voice-review-button.component.html',
-  styleUrls: ['./third-voice-review-button.component.scss']
+  styleUrls: ['./third-voice-review-button.component.scss'],
 })
 export class ThirdVoiceReviewButtonComponent implements OnInit {
-
   @Input() message: InboxMessage;
   @Input() user: InboxUser;
   @Input() item: InboxItem;
 
   public showButton = true;
 
-  constructor(private reviewService: ReviewService,
-              private modalService: NgbModal) {
-  }
+  constructor(
+    private reviewService: ReviewService,
+    private modalService: NgbModal
+  ) {}
 
   ngOnInit() {
     this.showButton = true;
     const localReview: string = localStorage.getItem(this.getStorageKey());
     if (!localReview) {
-      this.reviewService.check(this.item.id).subscribe((globalReview: boolean) => {
-        if (globalReview) {
-          this.setItemAsReviewed();
-        }
-      });
+      this.reviewService
+        .check(this.item.id)
+        .subscribe((globalReview: boolean) => {
+          if (globalReview) {
+            this.setItemAsReviewed();
+          }
+        });
     } else {
       this.showButton = false;
     }
@@ -45,7 +47,7 @@ export class ThirdVoiceReviewButtonComponent implements OnInit {
   private buildConversationUser(): ConversationUser {
     return {
       id: this.user.id,
-      micro_name: this.user.microName
+      micro_name: this.user.microName,
     } as ConversationUser;
   }
 
@@ -59,21 +61,29 @@ export class ThirdVoiceReviewButtonComponent implements OnInit {
   }
 
   private reviewAsBuyer() {
-    const modalRef: NgbModalRef = this.modalService.open(ReviewModalComponent, { windowClass: 'review' });
+    const modalRef: NgbModalRef = this.modalService.open(ReviewModalComponent, {
+      windowClass: 'review',
+    });
     modalRef.componentInstance.item = this.item;
     modalRef.componentInstance.userToReview = this.buildConversationUser();
     modalRef.componentInstance.thread = this.message.thread;
-    modalRef.result.then(() => this.setItemAsReviewed(), () => {
-    });
+    modalRef.result.then(
+      () => this.setItemAsReviewed(),
+      () => {}
+    );
   }
 
   private reviewAsSeller() {
-    const modalRef: NgbModalRef = this.modalService.open(SoldModalComponent, { windowClass: 'review' });
+    const modalRef: NgbModalRef = this.modalService.open(SoldModalComponent, {
+      windowClass: 'review',
+    });
     modalRef.componentInstance.item = this.item;
     modalRef.componentInstance.userToReview = this.buildConversationUser();
     modalRef.componentInstance.isSeller = this.item.isMine;
     modalRef.componentInstance.canChooseBuyer = false;
-    modalRef.result.then(() => this.showButton = false, () => {
-    });
+    modalRef.result.then(
+      () => (this.showButton = false),
+      () => {}
+    );
   }
 }

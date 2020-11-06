@@ -1,4 +1,9 @@
-import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+} from '@angular/core/testing';
 
 import { EditPasswordComponent } from './edit-password.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -12,20 +17,17 @@ describe('EditPasswordComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        FormsModule
-      ],
+      imports: [FormsModule],
       providers: [
         {
-          provide: NgbModal, useValue: {
-          open() {
-          }
-        }
-        }
+          provide: NgbModal,
+          useValue: {
+            open() {},
+          },
+        },
       ],
-      declarations: [ EditPasswordComponent ]
-    })
-    .compileComponents();
+      declarations: [EditPasswordComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -36,13 +38,11 @@ describe('EditPasswordComponent', () => {
   });
 
   describe('openModal', () => {
-
     let element: any;
 
     beforeEach(fakeAsync(() => {
       element = {
-        blur() {
-        }
+        blur() {},
       };
       spyOn(element, 'blur');
       spyOn(modalService, 'open').and.callThrough();
@@ -55,8 +55,9 @@ describe('EditPasswordComponent', () => {
     });
 
     it('should open modal', () => {
-      expect(modalService.open).toHaveBeenCalledWith(PasswordModalComponent, {windowClass: 'account-details'});
+      expect(modalService.open).toHaveBeenCalledWith(PasswordModalComponent, {
+        windowClass: 'account-details',
+      });
     });
-
   });
 });

@@ -1,10 +1,9 @@
 import { MessageComponent } from './message.component';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
-import { Directive } from "@angular/core";
+import { Directive } from '@angular/core';
 
 @Directive()
-class MessageComponentMock extends MessageComponent {
-}
+class MessageComponentMock extends MessageComponent {}
 
 describe('MessageComponent', () => {
   let component: MessageComponent;
@@ -32,7 +31,11 @@ describe('MessageComponent', () => {
     expect(component.containsHTMLTag('Sample text')).toBeFalsy();
     expect(component.containsHTMLTag('<p> Sample text')).toBeTruthy();
     expect(component.containsHTMLTag('<p> Sample text </p>')).toBeTruthy();
-    expect(component.containsHTMLTag('Sample text www.wallapop.com')).toBeFalsy();
-    expect(component.containsHTMLTag('Sample text <a>www.wallapop.com</a>')).toBeTruthy();
+    expect(
+      component.containsHTMLTag('Sample text www.wallapop.com')
+    ).toBeFalsy();
+    expect(
+      component.containsHTMLTag('Sample text <a>www.wallapop.com</a>')
+    ).toBeTruthy();
   });
 });

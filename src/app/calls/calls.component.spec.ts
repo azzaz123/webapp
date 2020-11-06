@@ -1,7 +1,12 @@
-
 import { of, Subscription } from 'rxjs';
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 import { CallsComponent } from './calls.component';
 import { CallsService } from '../core/conversation/calls.service';
 import { ActivatedRoute } from '@angular/router';
@@ -24,21 +29,22 @@ describe('CallsComponent', () => {
       providers: [
         { provide: TrackingService, useClass: MockTrackingService },
         {
-          provide: CallsService, useValue: {
+          provide: CallsService,
+          useValue: {
             getPage() {
               return of([]);
-            }
-          }
+            },
+          },
         },
         {
-          provide: ActivatedRoute, useValue: {
-            queryParams: of({})
-          }
-        }
+          provide: ActivatedRoute,
+          useValue: {
+            queryParams: of({}),
+          },
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -67,7 +73,7 @@ describe('CallsComponent', () => {
 
     it('should set status', () => {
       route.queryParams = of({
-        status: 'test'
+        status: 'test',
       });
 
       component.ngOnInit();
@@ -123,7 +129,9 @@ describe('CallsComponent', () => {
         });
 
         it('should track the PoneLeadListActiveLoaded', () => {
-          expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PHONE_LEAD_LIST_ACTIVE_LOADED);
+          expect(trackingService.track).toHaveBeenCalledWith(
+            TrackingService.PHONE_LEAD_LIST_ACTIVE_LOADED
+          );
         });
       });
 
@@ -148,7 +156,9 @@ describe('CallsComponent', () => {
         });
 
         it('should track the PoneLeadListProcessedLoaded', () => {
-          expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PHONE_LEAD_LIST_PROCESSED_LOADED);
+          expect(trackingService.track).toHaveBeenCalledWith(
+            TrackingService.PHONE_LEAD_LIST_PROCESSED_LOADED
+          );
         });
       });
     });

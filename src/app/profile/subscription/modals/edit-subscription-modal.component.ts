@@ -1,6 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbActiveModal, NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { SubscriptionsResponse, Tier, SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
+import {
+  NgbActiveModal,
+  NgbModalRef,
+  NgbModal,
+} from '@ng-bootstrap/ng-bootstrap';
+import {
+  SubscriptionsResponse,
+  Tier,
+  SUBSCRIPTION_CATEGORIES,
+} from '../../../core/subscriptions/subscriptions.interface';
 import { ToastService } from '../../../layout/toast/toast.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { CancelSubscriptionModalComponent } from './cancel-subscription-modal.component';
@@ -13,17 +21,15 @@ import {
   SCREEN_IDS,
   AnalyticsEvent,
   ClickConfirmEditCurrentSubscription,
-  ANALYTIC_EVENT_TYPES
+  ANALYTIC_EVENT_TYPES,
 } from '../../../core/analytics/analytics-constants';
 
 @Component({
   selector: 'tsl-edit-subscription-modal',
   templateUrl: './edit-subscription-modal.component.html',
-  styleUrls: ['./edit-subscription-modal.component.scss']
+  styleUrls: ['./edit-subscription-modal.component.scss'],
 })
-
 export class EditSubscriptionModalComponent implements OnInit {
-
   public isLast: boolean;
   public card: any;
   public action: string;
@@ -37,13 +43,14 @@ export class EditSubscriptionModalComponent implements OnInit {
   public isRetryInvoice = false;
   public subscription: SubscriptionsResponse;
 
-  constructor(public activeModal: NgbActiveModal,
-              public subscriptionsService: SubscriptionsService,
-              private toastService: ToastService,
-              private i18n: I18nService,
-              private modalService: NgbModal,
-              private analyticsService: AnalyticsService) {
-  }
+  constructor(
+    public activeModal: NgbActiveModal,
+    public subscriptionsService: SubscriptionsService,
+    private toastService: ToastService,
+    private i18n: I18nService,
+    private modalService: NgbModal,
+    private analyticsService: AnalyticsService
+  ) {}
 
   ngOnInit() {
     this.selectedTier = this.subscription.selected_tier;
@@ -52,8 +59,8 @@ export class EditSubscriptionModalComponent implements OnInit {
     const pageView: AnalyticsPageView<ViewEditSubscriptionPlan> = {
       name: ANALYTICS_EVENT_NAMES.ViewEditSubscriptionPlan,
       attributes: {
-        screenId: SCREEN_IDS.SubscriptionManagement
-      }
+        screenId: SCREEN_IDS.SubscriptionManagement,
+      },
     };
 
     this.analyticsService.trackPageView(pageView);
@@ -66,16 +73,30 @@ export class EditSubscriptionModalComponent implements OnInit {
   public editSubscription() {
     this.trackClickConfirmEdit();
     this.loading = true;
-    this.subscriptionsService.editSubscription(this.subscription, this.selectedTier.id).subscribe((response) => {
-      if (response.status === 202) {
-          this.toastService.show({text:this.i18n.getTranslations('editSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('editSubscriptionSuccessBody'),type:'success'});
+    this.subscriptionsService
+      .editSubscription(this.subscription, this.selectedTier.id)
+      .subscribe((response) => {
+        if (response.status === 202) {
+          this.toastService.show({
+            text:
+              this.i18n.getTranslations('editSubscriptionSuccessTitle') +
+              ' ' +
+              this.i18n.getTranslations('editSubscriptionSuccessBody'),
+            type: 'success',
+          });
           this.loading = false;
-      } else {
-        this.loading = false;
-        this.toastService.show({text:this.i18n.getTranslations('editSubscriptionErrorTitle') + ' ' + this.i18n.getTranslations('editSubscriptionErrorBody'),type:'error'});
-      }
-      this.close();
-    });
+        } else {
+          this.loading = false;
+          this.toastService.show({
+            text:
+              this.i18n.getTranslations('editSubscriptionErrorTitle') +
+              ' ' +
+              this.i18n.getTranslations('editSubscriptionErrorBody'),
+            type: 'error',
+          });
+        }
+        this.close();
+      });
   }
 
   public selectListingLimit(tier: Tier): void {
@@ -83,15 +104,22 @@ export class EditSubscriptionModalComponent implements OnInit {
   }
 
   public isCurrentTier(): boolean {
-    return this.selectedTier && this.currentTier ? this.currentTier === this.selectedTier : false;
+    return this.selectedTier && this.currentTier
+      ? this.currentTier === this.selectedTier
+      : false;
   }
 
   public cancelSubscription() {
     this.close();
-    const modal = CancelSubscriptionModalComponent
-    let modalRef: NgbModalRef = this.modalService.open(modal, {windowClass: 'review'});
+    const modal = CancelSubscriptionModalComponent;
+    let modalRef: NgbModalRef = this.modalService.open(modal, {
+      windowClass: 'review',
+    });
     modalRef.componentInstance.subscription = this.subscription;
-    modalRef.result.then((result: string) => modalRef = null, () => {});
+    modalRef.result.then(
+      (result: string) => (modalRef = null),
+      () => {}
+    );
   }
 
   public hasTrial(subscription: SubscriptionsResponse): boolean {
@@ -106,8 +134,8 @@ export class EditSubscriptionModalComponent implements OnInit {
         subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
         previousTier: this.currentTier.id,
         newTier: this.selectedTier.id,
-        screenId: SCREEN_IDS.ProfileSubscription
-      }
+        screenId: SCREEN_IDS.ProfileSubscription,
+      },
     };
     this.analyticsService.trackEvent(event);
   }

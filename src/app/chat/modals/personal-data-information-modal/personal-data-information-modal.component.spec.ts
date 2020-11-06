@@ -13,11 +13,10 @@ describe('MaliciousConversationModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ButtonComponent, PersonalDataInformationModal ],
-      providers: [ NgbActiveModal ],
-      schemas: [ NO_ERRORS_SCHEMA ]
-    })
-    .compileComponents();
+      declarations: [ButtonComponent, PersonalDataInformationModal],
+      providers: [NgbActiveModal],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -34,7 +33,9 @@ describe('MaliciousConversationModalComponent', () => {
   describe('when clicking on main button', () => {
     it('should dismiss the modal', () => {
       spyOn(activeModal, 'dismiss');
-      const mainButton = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
+      const mainButton = fixture.debugElement.query(
+        By.directive(ButtonComponent)
+      ).nativeElement;
 
       mainButton.click();
 
@@ -45,7 +46,8 @@ describe('MaliciousConversationModalComponent', () => {
   describe('when clicking on cross button', () => {
     it('should close the modal', () => {
       spyOn(activeModal, 'close');
-      const closeButtonElement = fixture.debugElement.query(By.css('.close')).nativeElement;
+      const closeButtonElement = fixture.debugElement.query(By.css('.close'))
+        .nativeElement;
 
       closeButtonElement.click();
 

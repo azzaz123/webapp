@@ -4,16 +4,16 @@ import 'jest-preset-angular';
 Object.defineProperty(window, 'CSS', { value: null });
 
 Object.defineProperty(document, 'doctype', {
-  value: '<!DOCTYPE html>'
+  value: '<!DOCTYPE html>',
 });
 
 Object.defineProperty(window, 'getComputedStyle', {
   value: () => {
     return {
       display: 'none',
-      appearance: ['-webkit-appearance']
+      appearance: ['-webkit-appearance'],
     };
-  }
+  },
 });
 
 /**
@@ -29,7 +29,7 @@ Element.prototype.scrollIntoView = () => {};
 
 // Mock document variables manually
 Object.defineProperty(document, 'visibilityState', {
-  get: () => 'visible'
+  get: () => 'visible',
 });
 
 // Mock global variables in window manually
@@ -39,16 +39,41 @@ Object.defineProperty(window, 'appboy', { value: GLOBAL_MOCKS.MOCK_APPBOY });
 Object.defineProperty(window, 'apstag', { value: GLOBAL_MOCKS.MOCK_APSTAG });
 Object.defineProperty(window, 'Criteo', { value: GLOBAL_MOCKS.MOCK_CRITEO });
 Object.defineProperty(window, 'Didomi', { value: GLOBAL_MOCKS.MOCK_DIDOMI });
-Object.defineProperty(window, 'fbq', { value: GLOBAL_MOCKS.MOCK_FBQ, writable: true });
+Object.defineProperty(window, 'fbq', {
+  value: GLOBAL_MOCKS.MOCK_FBQ,
+  writable: true,
+});
 Object.defineProperty(window, 'ga', { value: GLOBAL_MOCKS.MOCK_GA });
-Object.defineProperty(window, 'googletag', { value: GLOBAL_MOCKS.MOCK_GOOGLE_TAG });
-Object.defineProperty(window, 'localStorage', { value: GLOBAL_MOCKS.MOCK_LOCALSTORAGE });
-Object.defineProperty(window, 'location', { value: GLOBAL_MOCKS.MOCK_LOCATION });
-Object.defineProperty(window, 'Notification', { value: GLOBAL_MOCKS.MockNotificationClass, writable: true });
+Object.defineProperty(window, 'googletag', {
+  value: GLOBAL_MOCKS.MOCK_GOOGLE_TAG,
+});
+Object.defineProperty(window, 'localStorage', {
+  value: GLOBAL_MOCKS.MOCK_LOCALSTORAGE,
+});
+Object.defineProperty(window, 'location', {
+  value: GLOBAL_MOCKS.MOCK_LOCATION,
+});
+Object.defineProperty(window, 'Notification', {
+  value: GLOBAL_MOCKS.MockNotificationClass,
+  writable: true,
+});
 Object.defineProperty(window, 'screen', { value: GLOBAL_MOCKS.MOCK_SCREEN });
-Object.defineProperty(window, 'sessionStorage', { value: GLOBAL_MOCKS.MOCK_SESSIONSTORAGE });
-Object.defineProperty(window, 'pintrk', { value: GLOBAL_MOCKS.MOCK_PINTRK, writable: true });
+Object.defineProperty(window, 'sessionStorage', {
+  value: GLOBAL_MOCKS.MOCK_SESSIONSTORAGE,
+});
+Object.defineProperty(window, 'pintrk', {
+  value: GLOBAL_MOCKS.MOCK_PINTRK,
+  writable: true,
+});
 Object.defineProperty(window, 'XMPP', { value: GLOBAL_MOCKS.MOCK_XMPP });
-Object.defineProperty(window, 'wadgtlft', { value: GLOBAL_MOCKS.MOCK_THREAT_METRIX, writable: true });
-Object.defineProperty(navigator, 'connection', { value: GLOBAL_MOCKS.MOCK_NAVIGATOR_CONNECTION });
-Object.defineProperty(navigator, 'geolocation', { value: GLOBAL_MOCKS.MOCK_NAVIGATOR_GEOLOCATION, writable: true });
+Object.defineProperty(window, 'wadgtlft', {
+  value: GLOBAL_MOCKS.MOCK_THREAT_METRIX,
+  writable: true,
+});
+Object.defineProperty(navigator, 'connection', {
+  value: GLOBAL_MOCKS.MOCK_NAVIGATOR_CONNECTION,
+});
+Object.defineProperty(navigator, 'geolocation', {
+  value: GLOBAL_MOCKS.MOCK_NAVIGATOR_GEOLOCATION,
+  writable: true,
+});

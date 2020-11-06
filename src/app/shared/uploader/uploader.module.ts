@@ -5,11 +5,9 @@ import { FileSelectDirective } from './file-select.directive';
 import { UploaderService } from './uploader.service';
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
+  imports: [CommonModule],
   declarations: [FileDropDirective, FileSelectDirective],
   exports: [FileDropDirective, FileSelectDirective],
-  providers: [UploaderService]
+  providers: [UploaderService],
 })
-export class UploaderModule { }
+export class UploaderModule {}
