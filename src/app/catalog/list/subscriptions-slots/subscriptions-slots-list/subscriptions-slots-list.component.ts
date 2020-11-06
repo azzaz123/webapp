@@ -4,21 +4,20 @@ import { SubscriptionSlot } from '../../../../core/subscriptions/subscriptions.i
 @Component({
   selector: 'tsl-subscriptions-slots-list',
   templateUrl: './subscriptions-slots-list.component.html',
-  styleUrls: ['./subscriptions-slots-list.component.scss']
+  styleUrls: ['./subscriptions-slots-list.component.scss'],
 })
 export class SubscriptionsSlotsListComponent implements OnInit {
-
   @Input() subscriptionsSlots: SubscriptionSlot[] = [];
   @Input() selectedSubscriptionSlot: SubscriptionSlot = null;
-  @Output() subscriptionSlotSelected: EventEmitter<SubscriptionSlot> = new EventEmitter();
+  @Output() subscriptionSlotSelected: EventEmitter<
+    SubscriptionSlot
+  > = new EventEmitter();
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   onSelectSubscriptionSlot(subscriptionSlot: SubscriptionSlot) {
     this.subscriptionSlotSelected.emit(subscriptionSlot);
   }
-
 }

@@ -1,4 +1,11 @@
-import {async, ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick} from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  discardPeriodicTasks,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 
 import { CountdownComponent } from './countdown.component';
 import { interval } from 'rxjs';
@@ -11,10 +18,9 @@ describe('CountdownComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CountdownComponent ],
-      providers: [ I18nService ]
-    })
-    .compileComponents();
+      declarations: [CountdownComponent],
+      providers: [I18nService],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -30,7 +36,7 @@ describe('CountdownComponent', () => {
   it('should accept moment format', () => {
     const lastTime = moment().add({
       hours: 2,
-      seconds: 40
+      seconds: 40,
     });
     const diffTime = lastTime.diff(moment());
     const format = 'DDD HH:mm';

@@ -15,16 +15,14 @@ describe('AccessTokenService', () => {
       providers: [
         AccessTokenService,
         {
-          provide: CookieService, useValue: {
-          put(value) {
+          provide: CookieService,
+          useValue: {
+            put(value) {},
+            remove() {},
+            get() {},
           },
-          remove() {
-          },
-          get () {
-          }
-        }
-        }
-      ]
+        },
+      ],
     });
     service = TestBed.inject(AccessTokenService);
     cookieService = TestBed.inject(CookieService);
@@ -34,23 +32,37 @@ describe('AccessTokenService', () => {
     it('should call setItem and store token with suffix if is not production', () => {
       environment.production = false;
       environment.cookieSuffix = 'Beta';
-      const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
+      const cookieOptions =
+        environment.name === 'local'
+          ? { domain: 'localhost' }
+          : { domain: '.wallapop.com' };
       spyOn(cookieService, 'put');
 
       service.storeAccessToken(aToken);
 
-      expect(cookieService.put).toHaveBeenCalledWith(cookieName + environment.cookieSuffix, aToken, cookieOptions);
+      expect(cookieService.put).toHaveBeenCalledWith(
+        cookieName + environment.cookieSuffix,
+        aToken,
+        cookieOptions
+      );
       expect(service['_accessToken']).toEqual(aToken);
     });
 
     it('should call setItem and store token without suffix if is production', () => {
       environment.production = true;
       spyOn(cookieService, 'put');
-      const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
+      const cookieOptions =
+        environment.name === 'local'
+          ? { domain: 'localhost' }
+          : { domain: '.wallapop.com' };
 
       service.storeAccessToken(aToken);
 
-      expect(cookieService.put).toHaveBeenCalledWith(cookieName, aToken, cookieOptions);
+      expect(cookieService.put).toHaveBeenCalledWith(
+        cookieName,
+        aToken,
+        cookieOptions
+      );
       expect(service['_accessToken']).toEqual(aToken);
     });
   });
@@ -64,7 +76,9 @@ describe('AccessTokenService', () => {
 
       service.deleteAccessToken();
 
-      expect(cookieService.remove['calls'].argsFor(0)[0]).toBe(cookieName + environment.cookieSuffix);
+      expect(cookieService.remove['calls'].argsFor(0)[0]).toBe(
+        cookieName + environment.cookieSuffix
+      );
       expect(service['_accessToken']).toBeNull();
     });
 
@@ -89,7 +103,9 @@ describe('AccessTokenService', () => {
       const token = service.accessToken;
 
       expect(token).toBe(aToken);
-      expect(cookieService.get).toHaveBeenCalledWith(cookieName + environment.cookieSuffix);
+      expect(cookieService.get).toHaveBeenCalledWith(
+        cookieName + environment.cookieSuffix
+      );
     });
 
     it('without suffix if is production and cache it', () => {

@@ -9,10 +9,9 @@ describe('RemoveConfirmModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RemoveConfirmModalComponent ],
-      providers: [NgbActiveModal]
-    })
-    .compileComponents();
+      declarations: [RemoveConfirmModalComponent],
+      providers: [NgbActiveModal],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

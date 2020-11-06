@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 $checkbox-width: 24px;
 $transition: all 0.25s ease;
@@ -60,7 +60,7 @@ $feature-button-width: 170px;
   &--expired,
   &--pending {
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       top: 0;
       right: 0;

@@ -10,20 +10,18 @@ describe('ListingfeeConfirmationModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ListingfeeConfirmationModalComponent ],
+      declarations: [ListingfeeConfirmationModalComponent],
       providers: [
         {
-          provide: NgbActiveModal, useValue: {
-          close() {
+          provide: NgbActiveModal,
+          useValue: {
+            close() {},
+            dismiss() {},
           },
-          dismiss() {
-          }
-        }
         },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

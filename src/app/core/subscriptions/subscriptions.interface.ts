@@ -10,11 +10,11 @@ export interface SubscriptionResponse {
 }
 
 export interface Tier {
-    id: string;
-    limit?: number;
-    price: number;
-    currency: string;
-    discount_available?: TierDiscount
+  id: string;
+  limit?: number;
+  price: number;
+  currency: string;
+  discount_available?: TierDiscount;
 }
 
 export interface TierDiscount {
@@ -31,24 +31,24 @@ export enum SUBSCRIPTION_MARKETS {
 export type SUBSCRIPTION_CATEGORIES = 0 | 100 | 14000 | 12800;
 
 export interface SubscriptionsResponse {
-  id: string,
-  category_id: number,
-  current_limit?: number,
-  subscribed_from: number,
-  selected_tier_id: string,
-  default_tier_id: string,
-  trial_available: boolean,
-  trial_days: number,
-  tiers: Tier[],
-  category_name?: string,
-  category_icon?: string,
-  selected_tier?: Tier,
-  subscribed_until?: number,
-  market?: SUBSCRIPTION_MARKETS
+  id: string;
+  category_id: number;
+  current_limit?: number;
+  subscribed_from: number;
+  selected_tier_id: string;
+  default_tier_id: string;
+  trial_available: boolean;
+  trial_days: number;
+  tiers: Tier[];
+  category_name?: string;
+  category_icon?: string;
+  selected_tier?: Tier;
+  subscribed_until?: number;
+  market?: SUBSCRIPTION_MARKETS;
 }
 
 export interface SubscriptionSlotGeneralResponse {
-  slots: SubscriptionSlotResponse[]
+  slots: SubscriptionSlotResponse[];
 }
 
 export interface SubscriptionSlotResponse {

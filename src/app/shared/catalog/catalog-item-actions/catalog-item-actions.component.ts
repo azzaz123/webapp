@@ -1,5 +1,4 @@
-
-import {takeWhile} from 'rxjs/operators';
+import { takeWhile } from 'rxjs/operators';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
@@ -19,25 +18,25 @@ import { DeactivateItemsModalComponent } from './deactivate-items-modal/deactiva
 import { SUBSCRIPTION_TYPES } from '../../../core/subscriptions/subscriptions.service';
 
 @Component({
-  selector:    'tsl-catalog-item-actions',
+  selector: 'tsl-catalog-item-actions',
   templateUrl: './catalog-item-actions.component.html',
-  styleUrls:   ['./catalog-item-actions.component.scss']
+  styleUrls: ['./catalog-item-actions.component.scss'],
 })
 export class CatalogItemActionsComponent implements OnInit {
-
   @Input() selectedStatus: string;
   @Input() items: Item[];
   @Input() active: boolean;
   @Output() public getCounters: EventEmitter<any> = new EventEmitter();
 
-  constructor(public itemService: ItemService,
-              private trackingService: TrackingService,
-              private modalService: NgbModal,
-              private toastService: ToastService,
-              private i18n: I18nService,
-              private router: Router,
-              private eventService: EventService) {
-  }
+  constructor(
+    public itemService: ItemService,
+    private trackingService: TrackingService,
+    private modalService: NgbModal,
+    private toastService: ToastService,
+    private i18n: I18nService,
+    private router: Router,
+    private eventService: EventService
+  ) {}
 
   ngOnInit() {
     this.resetSelectedItems();
@@ -45,49 +44,74 @@ export class CatalogItemActionsComponent implements OnInit {
 
   public deactivate() {
     this.modalService.open(DeactivateItemsModalComponent).result.then(() => {
-      this.itemService.bulkSetDeactivate().pipe(takeWhile(() => {
-        this.trackingService.track(TrackingService.MYCATALOG_PRO_MODAL_DEACTIVATE);
-        this.eventService.emit('itemChanged');
-        return this.active;
-      })).subscribe(() => this.getCounters.emit());
+      this.itemService
+        .bulkSetDeactivate()
+        .pipe(
+          takeWhile(() => {
+            this.trackingService.track(
+              TrackingService.MYCATALOG_PRO_MODAL_DEACTIVATE
+            );
+            this.eventService.emit('itemChanged');
+            return this.active;
+          })
+        )
+        .subscribe(() => this.getCounters.emit());
     });
   }
 
   public activate() {
     this.modalService.open(ActivateItemsModalComponent).result.then(() => {
-      this.itemService.bulkSetActivate().pipe(takeWhile(() => {
-        return this.active;
-      })).subscribe((resp: any) => {
-        this.getCounters.emit();
-        this.eventService.emit('itemChanged');
-        if (resp.status === 406) {
-          const modalRef: NgbModalRef = this.modalService.open(TooManyItemsModalComponent, {
-            windowClass: 'modal-standard'
-          });
-          modalRef.componentInstance.type = SUBSCRIPTION_TYPES.carDealer;
-          modalRef.result.then(() => {}, () => {
-          });
-        }
-      });
+      this.itemService
+        .bulkSetActivate()
+        .pipe(
+          takeWhile(() => {
+            return this.active;
+          })
+        )
+        .subscribe((resp: any) => {
+          this.getCounters.emit();
+          this.eventService.emit('itemChanged');
+          if (resp.status === 406) {
+            const modalRef: NgbModalRef = this.modalService.open(
+              TooManyItemsModalComponent,
+              {
+                windowClass: 'modal-standard',
+              }
+            );
+            modalRef.componentInstance.type = SUBSCRIPTION_TYPES.carDealer;
+            modalRef.result.then(
+              () => {},
+              () => {}
+            );
+          }
+        });
     });
   }
 
   public delete(deleteItemsModal: any) {
     this.modalService.open(deleteItemsModal).result.then(() => {
-      this.itemService.bulkDelete(this.selectedStatus).pipe(takeWhile(() => {
-        return this.active;
-      })).subscribe((response: ItemBulkResponse) => {
-        this.getCounters.emit();
-        this.eventService.emit('itemChanged');
-        response.updatedIds.forEach((id: string) => {
-          let index: number = findIndex(this.items, {'id': id});
-          this.items.splice(index, 1);
+      this.itemService
+        .bulkDelete(this.selectedStatus)
+        .pipe(
+          takeWhile(() => {
+            return this.active;
+          })
+        )
+        .subscribe((response: ItemBulkResponse) => {
           this.getCounters.emit();
+          this.eventService.emit('itemChanged');
+          response.updatedIds.forEach((id: string) => {
+            let index: number = findIndex(this.items, { id: id });
+            this.items.splice(index, 1);
+            this.getCounters.emit();
+          });
+          if (response.failedIds.length) {
+            this.toastService.show({
+              text: this.i18n.getTranslations('bulkDeleteError'),
+              type: 'error',
+            });
+          }
         });
-        if (response.failedIds.length) {
-          this.toastService.show({text:this.i18n.getTranslations('bulkDeleteError'), type:'error'});
-        }
-      });
     });
   }
 
@@ -99,21 +123,26 @@ export class CatalogItemActionsComponent implements OnInit {
     if (!this.itemIsBumped()) {
       this.router.navigate(['pro/catalog/checkout']);
     } else {
-      let modalRef: NgbModalRef = this.modalService.open(AlreadyFeaturedModalComponent, {
-        windowClass: 'bump',
-      });
-      modalRef.result.then(() => {
-        modalRef = null;
-        this.router.navigate(['pro/catalog/checkout']);
-      }, () => {
-      });
+      let modalRef: NgbModalRef = this.modalService.open(
+        AlreadyFeaturedModalComponent,
+        {
+          windowClass: 'bump',
+        }
+      );
+      modalRef.result.then(
+        () => {
+          modalRef = null;
+          this.router.navigate(['pro/catalog/checkout']);
+        },
+        () => {}
+      );
     }
   }
 
   private itemIsBumped(): boolean {
     let isBumped = false;
     this.itemService.selectedItems.forEach((id: string) => {
-      let selectedItem: Item = find(this.items, {'id': id});
+      let selectedItem: Item = find(this.items, { id: id });
       if (selectedItem && selectedItem.purchases) {
         isBumped = true;
       }
@@ -126,10 +155,9 @@ export class CatalogItemActionsComponent implements OnInit {
   }
 
   public selectAll() {
-    this.items.forEach(item => {
+    this.items.forEach((item) => {
       this.itemService.selectItem(item.id);
       item.selected = true;
     });
   }
-
 }

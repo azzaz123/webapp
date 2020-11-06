@@ -1,8 +1,17 @@
 import { TestBed } from '@angular/core/testing';
-import { GeolocationService, MAPS_PLACES_API, MAPS_PROVIDER, MAPS_PLACE_API } from './geolocation.service';
+import {
+  GeolocationService,
+  MAPS_PLACES_API,
+  MAPS_PROVIDER,
+  MAPS_PLACE_API,
+} from './geolocation.service';
 import { GEOLOCATION_DATA_WEB } from '../../../tests/geolocation.fixtures.spec';
 import { GeolocationResponse } from './geolocation-response.interface';
-import { HttpClientTestingModule, TestRequest, HttpTestingController } from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  TestRequest,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import { environment } from '../../../environments/environment';
 import { Coordinate } from './address-response.interface';
 import { COORDINATE_DATA_WEB } from '../../../tests/address.fixtures.spec';
@@ -14,11 +23,10 @@ const MOCK_CITY = 'Barcelona';
 const MOCK_PLACE_ID = '131';
 
 describe('GeolocationService', () => {
-
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [GeolocationService],
-      imports: [HttpClientTestingModule]
+      imports: [HttpClientTestingModule],
     });
     service = TestBed.inject(GeolocationService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -34,7 +42,7 @@ describe('GeolocationService', () => {
       const expectedUrl = `${environment.siteUrl}${MAPS_PLACES_API}?${expectedUrlParams}`;
       let response: GeolocationResponse[];
 
-      service.search(MOCK_CITY).subscribe(r => response = r);
+      service.search(MOCK_CITY).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(GEOLOCATION_DATA_WEB);
 
@@ -50,7 +58,7 @@ describe('GeolocationService', () => {
       const expectedUrl = `${environment.siteUrl}${MAPS_PLACE_API}?${expectedUrlParams}`;
       let response: Coordinate;
 
-      service.geocode(MOCK_PLACE_ID).subscribe(r => response = r);
+      service.geocode(MOCK_PLACE_ID).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(COORDINATE_DATA_WEB);
 
@@ -59,5 +67,4 @@ describe('GeolocationService', () => {
       expect(req.request.method).toBe('GET');
     });
   });
-
 });

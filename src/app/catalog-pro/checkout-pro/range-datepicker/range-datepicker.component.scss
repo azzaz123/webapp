@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 .datepicker-content {
   display: flex;
@@ -19,7 +19,7 @@
     right: 0;
     width: 100%;
     height: 100%;
-  }  
+  }
   .datepicker-wrapper {
     border-radius: $border-radius;
     padding: $spacing-ml $spacing-xl;
@@ -29,91 +29,22 @@
 }
 
 .datepicker-btn-wrapper {
-    display: flex;
-    justify-content: space-between;
-    border-top: solid 1px $blue-grey-5;
-    padding-top: $spacing-ml;    
-    .datepicker-btn {
-      -webkit-appearance: none;
-      background-color: transparent;
-      border: 0;
-      font-size: $font-size-s;
-      &.cancel {
-        color: $blue-grey-3;
-      }
-      &.apply {
-        font-weight: $font-weight-chunky;
-        color: $walla-main;
-      }
-      &.citybump {
-        color: $walla-main;
-      }
-      &.countrybump {
-        color: $country-bump;
-      }
-      &.planning {
-        color: $blue-grey-3;
-      }
-      &:disabled {
-        cursor: not-allowed;
-        opacity: 0.5;        
-      }
-    }
-  }
-  
-  :host ::ng-deep ngb-datepicker {
+  display: flex;
+  justify-content: space-between;
+  border-top: solid 1px $blue-grey-5;
+  padding-top: $spacing-ml;
+  .datepicker-btn {
+    -webkit-appearance: none;
+    background-color: transparent;
     border: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    .ngb-dp-day {
-      width: 2.5rem;
-    }
-    .ngb-dp-arrow-btn {
-      box-shadow: none;
-      &:disabled {
-        opacity: 0.4;
-      }
-    }
-    .ngb-dp-weekdays {
-      border: 0;
-    }
-    .ngb-dp-weekday {
-      font-weight: $font-weight-chunky;
-      font-style: normal;
-      color: $blue-grey-2;
-      margin: $spacing-ms 0;
-      width: 2.5rem;
-      text-transform: lowercase;
-    }
-    .ngb-dp-navigation-chevron {
-      width: 5px;
-      background-size: contain;
-      height: 10px;
-      float: left;
-      background-repeat: no-repeat;
-      background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2IiBoZWlnaHQ9IjExIj48cGF0aCBmaWxsPSIjOTBBNEFFIiBkPSJNNC43OCAxLjgxMmMuMzMtLjQ2Mi4yODMtMS4xNTctLjEwNi0xLjU1LS4zOS0uMzk0LS45NzQtLjMzNy0xLjMwNS4xMjZMLjIyIDQuNzg4YTEuMjYxIDEuMjYxIDAgMCAwIDAgMS40MjRsMy4xNDkgNC40Yy4zMy40NjMuOTE1LjUyIDEuMzA1LjEyNi4zOS0uMzkzLjQzNy0xLjA4OC4xMDYtMS41NUwyLjE0IDUuNWwyLjY0LTMuNjg4eiIvPjwvc3ZnPg==);
-      outline: none;
-      &:before {
-        display: none;
-      }
-    }
-    .ngb-dp-month-name {
-      font-size: $font-size-m;
-      font-weight: $font-weight-chunky;
-      margin: 0 $spacing-m;
-    }
-    .right {
-      .ngb-dp-navigation-chevron {
-        transform: rotate(180deg);
-      }
-    }
-  }
-
-  .selected-text {
     font-size: $font-size-s;
-    margin: $spacing-ml 0;
+    &.cancel {
+      color: $blue-grey-3;
+    }
+    &.apply {
+      font-weight: $font-weight-chunky;
+      color: $walla-main;
+    }
     &.citybump {
       color: $walla-main;
     }
@@ -123,59 +54,129 @@
     &.planning {
       color: $blue-grey-3;
     }
-    .bold {
-      display: inline-block;
-      font-weight: $font-weight-chunky;
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
     }
   }
-  
-  .custom-day {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    height: 2rem;
-    width: 100%;
-    font-size: $font-size-xs;
-    &.range, &:hover {
-      color: white;
-      font-weight: $font-weight-chunky;
-      &.citybump {
-        background-color: $walla-main;
-      }
-      &.countrybump {
-        background-color: $country-bump;
-      }
-      &.planning {
-        background-color: $blue-grey-5;
-      }
+}
+
+:host ::ng-deep ngb-datepicker {
+  border: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  .ngb-dp-day {
+    width: 2.5rem;
+  }
+  .ngb-dp-arrow-btn {
+    box-shadow: none;
+    &:disabled {
+      opacity: 0.4;
     }
-    &.start {
-      border-top-left-radius: 20px;
-      border-bottom-left-radius: 20px;
+  }
+  .ngb-dp-weekdays {
+    border: 0;
+  }
+  .ngb-dp-weekday {
+    font-weight: $font-weight-chunky;
+    font-style: normal;
+    color: $blue-grey-2;
+    margin: $spacing-ms 0;
+    width: 2.5rem;
+    text-transform: lowercase;
+  }
+  .ngb-dp-navigation-chevron {
+    width: 5px;
+    background-size: contain;
+    height: 10px;
+    float: left;
+    background-repeat: no-repeat;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2IiBoZWlnaHQ9IjExIj48cGF0aCBmaWxsPSIjOTBBNEFFIiBkPSJNNC43OCAxLjgxMmMuMzMtLjQ2Mi4yODMtMS4xNTctLjEwNi0xLjU1LS4zOS0uMzk0LS45NzQtLjMzNy0xLjMwNS4xMjZMLjIyIDQuNzg4YTEuMjYxIDEuMjYxIDAgMCAwIDAgMS40MjRsMy4xNDkgNC40Yy4zMy40NjMuOTE1LjUyIDEuMzA1LjEyNi4zOS0uMzkzLjQzNy0xLjA4OC4xMDYtMS41NUwyLjE0IDUuNWwyLjY0LTMuNjg4eiIvPjwvc3ZnPg==);
+    outline: none;
+    &:before {
+      display: none;
     }
-    &.end {
-      border-top-right-radius: 20px;
-      border-bottom-right-radius: 20px;
+  }
+  .ngb-dp-month-name {
+    font-size: $font-size-m;
+    font-weight: $font-weight-chunky;
+    margin: 0 $spacing-m;
+  }
+  .right {
+    .ngb-dp-navigation-chevron {
+      transform: rotate(180deg);
     }
-    &.disabled {
+  }
+}
+
+.selected-text {
+  font-size: $font-size-s;
+  margin: $spacing-ml 0;
+  &.citybump {
+    color: $walla-main;
+  }
+  &.countrybump {
+    color: $country-bump;
+  }
+  &.planning {
+    color: $blue-grey-3;
+  }
+  .bold {
+    display: inline-block;
+    font-weight: $font-weight-chunky;
+  }
+}
+
+.custom-day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 2rem;
+  width: 100%;
+  font-size: $font-size-xs;
+  &.range,
+  &:hover {
+    color: white;
+    font-weight: $font-weight-chunky;
+    &.citybump {
+      background-color: $walla-main;
+    }
+    &.countrybump {
+      background-color: $country-bump;
+    }
+    &.planning {
+      background-color: $blue-grey-5;
+    }
+  }
+  &.start {
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+  }
+  &.end {
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+  }
+  &.disabled {
+    color: $blue-grey-3;
+    &:hover {
       color: $blue-grey-3;
-      &:hover {
-        color: $blue-grey-3;
-        background-color: transparent;
-        cursor: not-allowed; 
-      }
-    }
-    &.faded {
-      color: white;
-      &.citybump {
-        background-color: rgba($walla-main, 0.7);
-      }
-      &.countrybump {
-        background-color: rgba($country-bump, 0.7);
-      }
-      &.planning {
-        background-color: rgba($blue-grey-3, 0.7);
-      }
+      background-color: transparent;
+      cursor: not-allowed;
     }
   }
+  &.faded {
+    color: white;
+    &.citybump {
+      background-color: rgba($walla-main, 0.7);
+    }
+    &.countrybump {
+      background-color: rgba($country-bump, 0.7);
+    }
+    &.planning {
+      background-color: rgba($blue-grey-3, 0.7);
+    }
+  }
+}

@@ -1,4 +1,10 @@
-import { Component, Output, EventEmitter, Input, OnChanges } from '@angular/core';
+import {
+  Component,
+  Output,
+  EventEmitter,
+  Input,
+  OnChanges,
+} from '@angular/core';
 import { Counters } from '../../../core/user/user-stats.interface';
 import { PurchasesModel } from '../../../core/payments/purchase.model';
 import { PerksModel } from '../../../core/payments/payment.model';
@@ -8,10 +14,9 @@ import { PaymentService } from '../../../core/payments/payment.service';
 @Component({
   selector: 'tsl-plan-data',
   templateUrl: './plan-data.component.html',
-  styleUrls: ['./plan-data.component.scss']
+  styleUrls: ['./plan-data.component.scss'],
 })
 export class PlanDataComponent implements OnChanges {
-
   @Output() subscriptionPlan: EventEmitter<number> = new EventEmitter<number>();
   @Input() counters: Counters;
   public purchases: PurchasesModel = new PurchasesModel();
@@ -19,7 +24,7 @@ export class PlanDataComponent implements OnChanges {
   public status: ScheduledStatus;
   public loading: boolean = true;
 
-  constructor(private paymentService: PaymentService) { }
+  constructor(private paymentService: PaymentService) {}
 
   ngOnChanges() {
     this.getPerks(false);
@@ -28,12 +33,13 @@ export class PlanDataComponent implements OnChanges {
   private getPerks(cache: boolean = true): void {
     this.paymentService.getPerks(cache).subscribe((perks: PerksModel) => {
       this.perks = perks;
-      this.subscriptionPlan.emit(perks.subscription ? perks.subscription.listing.quantity : 0);
+      this.subscriptionPlan.emit(
+        perks.subscription ? perks.subscription.listing.quantity : 0
+      );
       this.paymentService.getStatus().subscribe((status: ScheduledStatus) => {
         this.status = status;
         this.loading = false;
       });
     });
   }
-
 }

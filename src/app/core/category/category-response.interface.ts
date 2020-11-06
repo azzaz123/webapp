@@ -28,5 +28,5 @@ export interface CategoryOption extends IOption {
 }
 
 export interface SuggestedCategory {
-  category_id : number;
+  category_id: number;
 }

@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { wallacoinsRoutedComponents, WallacoinsRoutingModule } from './wallacoins.routes';
+import {
+  wallacoinsRoutedComponents,
+  WallacoinsRoutingModule,
+} from './wallacoins.routes';
 import { SharedModule } from '../shared/shared.module';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { BuyWallacoinsModalComponent } from './buy-wallacoins-modal/buy-wallacoins-modal.component';
@@ -18,15 +21,19 @@ import { WallacoinsTutorialComponent } from './wallacoins-tutorial/wallacoins-tu
     NgbCarouselModule,
     FormsModule,
     TrackingModule,
-    NgbCarouselModule
+    NgbCarouselModule,
   ],
   declarations: [
     wallacoinsRoutedComponents,
     BuyWallacoinsModalComponent,
     WallacoinsConfirmModalComponent,
     PackWallacoinsComponent,
-    WallacoinsTutorialComponent
+    WallacoinsTutorialComponent,
   ],
-  entryComponents: [BuyWallacoinsModalComponent, WallacoinsConfirmModalComponent, WallacoinsTutorialComponent]
+  entryComponents: [
+    BuyWallacoinsModalComponent,
+    WallacoinsConfirmModalComponent,
+    WallacoinsTutorialComponent,
+  ],
 })
-export class WallacoinsModule { }
+export class WallacoinsModule {}

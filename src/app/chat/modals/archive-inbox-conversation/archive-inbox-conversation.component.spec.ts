@@ -10,13 +10,10 @@ describe('ArchiveInboxConversationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        NgxPermissionsModule.forRoot()
-      ],
+      imports: [NgxPermissionsModule.forRoot()],
       providers: [NgbActiveModal],
-      declarations: [ ArchiveInboxConversationComponent ]
-    })
-    .compileComponents();
+      declarations: [ArchiveInboxConversationComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,15 +1,30 @@
-import { TestBed, tick, fakeAsync, discardPeriodicTasks } from '@angular/core/testing';
-import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
+import {
+  TestBed,
+  tick,
+  fakeAsync,
+  discardPeriodicTasks,
+} from '@angular/core/testing';
+import {
+  HttpTestingController,
+  HttpClientTestingModule,
+} from '@angular/common/http/testing';
 
-import { TrustAndSafetyService, USER_STARTER_ENDPOINT } from './trust-and-safety.service';
-import { SessionProfileData, SessionProfileDataLocation, SessionProfileDataPlatform } from './trust-and-safety.interface';
+import {
+  TrustAndSafetyService,
+  USER_STARTER_ENDPOINT,
+} from './trust-and-safety.service';
+import {
+  SessionProfileData,
+  SessionProfileDataLocation,
+  SessionProfileDataPlatform,
+} from './trust-and-safety.interface';
 import { environment } from 'environments/environment';
 import { environment as prodEnv } from 'environments/environment.prod';
 import { UuidService } from '../uuid/uuid.service';
 
 jest.mock('./threat-metrix-embed-script', () => ({
   __esModule: true,
-  THREAT_METRIX_EMBED: `window["mockThreatMetrixEmbed"] = true;`
+  THREAT_METRIX_EMBED: `window["mockThreatMetrixEmbed"] = true;`,
 }));
 
 describe('TrustAndSafetyService', () => {
@@ -25,7 +40,7 @@ describe('TrustAndSafetyService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [TrustAndSafetyService]
+      providers: [TrustAndSafetyService],
     });
     service = TestBed.inject(TrustAndSafetyService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -57,7 +72,7 @@ describe('TrustAndSafetyService', () => {
       const expectedBody: SessionProfileData = {
         id: mockUUID,
         location: SessionProfileDataLocation.OPEN_CHAT,
-        platform: SessionProfileDataPlatform.WEB
+        platform: SessionProfileDataPlatform.WEB,
       };
 
       service.submitProfile(SessionProfileDataLocation.OPEN_CHAT);
@@ -89,7 +104,8 @@ describe('TrustAndSafetyService', () => {
 
     describe('and when the environment is production', () => {
       beforeEach(() => {
-        environment.threatMetrixProfilingDomain = prodEnv.threatMetrixProfilingDomain;
+        environment.threatMetrixProfilingDomain =
+          prodEnv.threatMetrixProfilingDomain;
         environment.threatMetrixOrgId = prodEnv.threatMetrixOrgId;
       });
 
@@ -100,7 +116,11 @@ describe('TrustAndSafetyService', () => {
         tick(2000);
         discardPeriodicTasks();
 
-        expect(wadgtlft.nfl).toHaveBeenCalledWith(prodEnv.threatMetrixProfilingDomain, prodEnv.threatMetrixOrgId, mockUUID);
+        expect(wadgtlft.nfl).toHaveBeenCalledWith(
+          prodEnv.threatMetrixProfilingDomain,
+          prodEnv.threatMetrixOrgId,
+          mockUUID
+        );
       }));
     });
 
@@ -112,7 +132,11 @@ describe('TrustAndSafetyService', () => {
         tick(2000);
         discardPeriodicTasks();
 
-        expect(wadgtlft.nfl).toHaveBeenCalledWith(environment.threatMetrixProfilingDomain, environment.threatMetrixOrgId, mockUUID);
+        expect(wadgtlft.nfl).toHaveBeenCalledWith(
+          environment.threatMetrixProfilingDomain,
+          environment.threatMetrixOrgId,
+          mockUUID
+        );
       }));
     });
   });

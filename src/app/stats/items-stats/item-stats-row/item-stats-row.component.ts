@@ -1,8 +1,25 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { Item } from '../../../core/item/item';
 import { ItemStatsService } from './item-stats-graph/item-stats.service';
-import { ItemStatisticFullResponse, ItemStatisticEntriesResponse } from './item-stats-graph/item-stats-response.interface';
-import { animate, keyframes, state, style, transition, trigger } from '@angular/animations';
+import {
+  ItemStatisticFullResponse,
+  ItemStatisticEntriesResponse,
+} from './item-stats-graph/item-stats-response.interface';
+import {
+  animate,
+  keyframes,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 import { ItemService } from '../../../core/item/item.service';
 import { ItemCounters } from '../../../core/item/item-response.interface';
 import { every, isEmpty } from 'lodash-es';
@@ -34,9 +51,24 @@ import { every, isEmpty } from 'lodash-es';
         animate(
           '.3s ease-in',
           keyframes([
-            style({ overflow: 'visible', height: '*', opacity: '1', offset: 0 }),
-            style({ overflow: 'hidden', height: '*', opacity: '1', offset: 0.01 }),
-            style({ overflow: 'hidden', height: '0px', opacity: '0', offset: 1 }),
+            style({
+              overflow: 'visible',
+              height: '*',
+              opacity: '1',
+              offset: 0,
+            }),
+            style({
+              overflow: 'hidden',
+              height: '*',
+              opacity: '1',
+              offset: 0.01,
+            }),
+            style({
+              overflow: 'hidden',
+              height: '0px',
+              opacity: '0',
+              offset: 1,
+            }),
           ])
         )
       ),
@@ -45,9 +77,24 @@ import { every, isEmpty } from 'lodash-es';
         animate(
           '.3s ease-out',
           keyframes([
-            style({ overflow: 'hidden', height: '0px', opacity: '0', offset: 0 }),
-            style({ overflow: 'hidden', height: '*', opacity: '1', offset: 0.99 }),
-            style({ overflow: 'visible', height: '*', opacity: '1', offset: 1 }),
+            style({
+              overflow: 'hidden',
+              height: '0px',
+              opacity: '0',
+              offset: 0,
+            }),
+            style({
+              overflow: 'hidden',
+              height: '*',
+              opacity: '1',
+              offset: 0.99,
+            }),
+            style({
+              overflow: 'visible',
+              height: '*',
+              opacity: '1',
+              offset: 1,
+            }),
           ])
         )
       ),
@@ -55,7 +102,6 @@ import { every, isEmpty } from 'lodash-es';
   ],
 })
 export class ItemStatsRowComponent implements OnInit {
-
   @Input() item: Item;
   @Output() onOpen: EventEmitter<boolean> = new EventEmitter();
   @Input() open = false;
@@ -65,25 +111,34 @@ export class ItemStatsRowComponent implements OnInit {
   public statsData: ItemStatisticFullResponse;
   public noData: boolean;
 
-  constructor(@Inject('SUBDOMAIN') private subdomain: string,
-              private itemStatsService: ItemStatsService,
-              private itemService: ItemService) {
+  constructor(
+    @Inject('SUBDOMAIN') private subdomain: string,
+    private itemStatsService: ItemStatsService,
+    private itemService: ItemService
+  ) {
     this.momentConfig = 'dd MMM yyyy';
   }
 
   ngOnInit() {
     this.link = this.item.getUrl(this.subdomain);
-    this.itemStatsService.getStatistics(this.item.id).subscribe((response: ItemStatisticFullResponse) => {
-      this.statsData = { entries: [] };
-      this.statsData.entries = this.removeCurrentDay(response);
-      this.noData = every(response.entries, (entry) => !entry.values || isEmpty(entry.values));
-    });
-    if (this.item.views === 0 || this.item.favorites === 0) {
-      this.itemService.getCounters(this.item.id).subscribe((counters: ItemCounters) => {
-        this.item.views = counters.views;
-        this.item.favorites = counters.favorites;
-        this.item.conversations = counters.conversations;
+    this.itemStatsService
+      .getStatistics(this.item.id)
+      .subscribe((response: ItemStatisticFullResponse) => {
+        this.statsData = { entries: [] };
+        this.statsData.entries = this.removeCurrentDay(response);
+        this.noData = every(
+          response.entries,
+          (entry) => !entry.values || isEmpty(entry.values)
+        );
       });
+    if (this.item.views === 0 || this.item.favorites === 0) {
+      this.itemService
+        .getCounters(this.item.id)
+        .subscribe((counters: ItemCounters) => {
+          this.item.views = counters.views;
+          this.item.favorites = counters.favorites;
+          this.item.conversations = counters.conversations;
+        });
     }
   }
 
@@ -94,9 +149,13 @@ export class ItemStatsRowComponent implements OnInit {
     }
   }
 
-  private removeCurrentDay(stats: ItemStatisticFullResponse): ItemStatisticEntriesResponse[] {
+  private removeCurrentDay(
+    stats: ItemStatisticFullResponse
+  ): ItemStatisticEntriesResponse[] {
     let today = new Date();
-    today.setUTCHours(0,0,0,0);
-    return stats.entries.filter(stat => stat.date !== today.getTime().toString());
+    today.setUTCHours(0, 0, 0, 0);
+    return stats.entries.filter(
+      (stat) => stat.date !== today.getTime().toString()
+    );
   }
 }

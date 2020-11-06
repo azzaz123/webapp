@@ -1,6 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbActiveModal, NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FinancialCardOption, FinancialCard, SetupIntent } from '../../../core/payments/payment.interface';
+import {
+  NgbActiveModal,
+  NgbModalRef,
+  NgbModal,
+} from '@ng-bootstrap/ng-bootstrap';
+import {
+  FinancialCardOption,
+  FinancialCard,
+  SetupIntent,
+} from '../../../core/payments/payment.interface';
 import { PAYMENT_RESPONSE_STATUS } from 'app/core/payments/payment.service';
 import { EventService } from 'app/core/event/event.service';
 import { StripeService } from 'app/core/stripe/stripe.service';
@@ -10,10 +18,9 @@ import { ConfirmCardModalComponent } from '../confirm-card-modal/confirm-card-mo
 @Component({
   selector: 'tsl-change-card-modal',
   templateUrl: './change-card-modal.component.html',
-  styleUrls: ['./change-card-modal.component.scss']
+  styleUrls: ['./change-card-modal.component.scss'],
 })
-export class ChangeCardModalComponent implements OnInit  {
-
+export class ChangeCardModalComponent implements OnInit {
   public mainLoading: boolean = true;
   public loading: boolean;
   public card: any;
@@ -24,11 +31,12 @@ export class ChangeCardModalComponent implements OnInit  {
   public newLoading = false;
   errorService: any;
 
-  constructor(public activeModal: NgbActiveModal,
-              private eventService: EventService,
-              private stripeService: StripeService,
-              private modalService: NgbModal) {
-  }
+  constructor(
+    public activeModal: NgbActiveModal,
+    private eventService: EventService,
+    private stripeService: StripeService,
+    private modalService: NgbModal
+  ) {}
 
   ngOnInit() {
     this.eventService.subscribe('paymentResponse', (response) => {
@@ -67,14 +75,15 @@ export class ChangeCardModalComponent implements OnInit  {
 
   public setDefaultCard(paymentMethod: string) {
     if (paymentMethod) {
-      this.stripeService.setDefaultCard(paymentMethod)
-        .pipe(finalize(() => this.loading = false))
+      this.stripeService
+        .setDefaultCard(paymentMethod)
+        .pipe(finalize(() => (this.loading = false)))
         .subscribe(
           () => this.activeModal.close(this.card),
           () => this.errorService.i18nError('setDefaultCardError')
         );
     } else {
-        this.activeModal.close(this.card.id);
+      this.activeModal.close(this.card.id);
     }
   }
 
@@ -84,7 +93,10 @@ export class ChangeCardModalComponent implements OnInit  {
 
   public setExistingDefaultCard() {
     if (!this.selectedCard) return;
-    let modalRef: NgbModalRef = this.modalService.open(ConfirmCardModalComponent, {windowClass: 'review'});
+    let modalRef: NgbModalRef = this.modalService.open(
+      ConfirmCardModalComponent,
+      { windowClass: 'review' }
+    );
     modalRef.componentInstance.financialCard = this.card.stripeCard;
     modalRef.result.then((action: string) => {
       modalRef = null;
@@ -96,20 +108,27 @@ export class ChangeCardModalComponent implements OnInit  {
 
   private confirmCardChange() {
     this.newLoading = true;
-  
+
     this.stripeService.getSetupIntent().subscribe((clientSecret: any) => {
-      this.stripeService.createDefaultCard(clientSecret.setup_intent, this.card.id).then((response: any) => {
-        if (response.setupIntent.status && response.setupIntent.status.toUpperCase() === PAYMENT_RESPONSE_STATUS.SUCCEEDED) {
-          this.setDefaultCard(response.setupIntent.payment_method);
-        } else {
-          this.newLoading = false;
-        }
-      }).catch(() => this.newLoading = false);
+      this.stripeService
+        .createDefaultCard(clientSecret.setup_intent, this.card.id)
+        .then((response: any) => {
+          if (
+            response.setupIntent.status &&
+            response.setupIntent.status.toUpperCase() ===
+              PAYMENT_RESPONSE_STATUS.SUCCEEDED
+          ) {
+            this.setDefaultCard(response.setupIntent.payment_method);
+          } else {
+            this.newLoading = false;
+          }
+        })
+        .catch(() => (this.newLoading = false));
     });
   }
 
   private managePaymentResponse(paymentResponse: string): void {
-    switch(paymentResponse && paymentResponse.toUpperCase()) {
+    switch (paymentResponse && paymentResponse.toUpperCase()) {
       case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
         this.activeModal.close('success');
         break;
@@ -120,5 +139,4 @@ export class ChangeCardModalComponent implements OnInit  {
       }
     }
   }
-  
 }

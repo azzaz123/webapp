@@ -1,4 +1,10 @@
-import { async, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  async,
+  fakeAsync,
+  tick,
+  ComponentFixture,
+  TestBed,
+} from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 
 import { CheckboxComponent } from './checkbox.component';
@@ -11,18 +17,17 @@ describe('CheckboxComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ ],
-      declarations: [ CheckboxComponent ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+      imports: [],
+      declarations: [CheckboxComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckboxComponent);
     component = fixture.componentInstance;
-    de            = fixture.debugElement;
-    el            = de.nativeElement;
+    de = fixture.debugElement;
+    el = de.nativeElement;
     fixture.detectChanges();
   });
 
@@ -54,7 +59,7 @@ describe('CheckboxComponent', () => {
 
   it('should emit checkedChange action, when checkbox is changed', () => {
     let inputValue: boolean;
-    component.checkedChange.subscribe( value => inputValue = value);
+    component.checkedChange.subscribe((value) => (inputValue = value));
 
     const element = el.querySelector('button') as HTMLInputElement;
     element.click();
@@ -64,7 +69,7 @@ describe('CheckboxComponent', () => {
 
   it('should emit onChange action, when checkbox is changed', () => {
     let inputValue: boolean;
-    component.onChange.subscribe( value => inputValue = value);
+    component.onChange.subscribe((value) => (inputValue = value));
 
     const element = el.querySelector('button') as HTMLInputElement;
     element.click();

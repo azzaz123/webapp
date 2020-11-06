@@ -1,4 +1,10 @@
-import { Component, OnChanges, Input, HostBinding, HostListener } from '@angular/core';
+import {
+  Component,
+  OnChanges,
+  Input,
+  HostBinding,
+  HostListener,
+} from '@angular/core';
 import { Remove } from '../../shared/archivable/animations';
 import { Call } from '../../core/conversation/calls';
 import { Message } from '../../core/message/message';
@@ -9,10 +15,9 @@ import { CallsService } from '../../core/conversation/calls.service';
   selector: 'tsl-call-item',
   templateUrl: './call-item.component.html',
   styleUrls: ['./call-item.component.scss'],
-  animations: [Remove('0.5s')]
+  animations: [Remove('0.5s')],
 })
 export class CallItemComponent implements OnChanges {
-
   @Input() call: Call;
 
   @HostBinding('class.archived') @HostBinding('@remove') archived = false;
@@ -24,8 +29,7 @@ export class CallItemComponent implements OnChanges {
   public messages: Message[];
   public momentConfig: any;
 
-  constructor(private i18n: I18nService,
-              private callService: CallsService) {
+  constructor(private i18n: I18nService, private callService: CallsService) {
     this.momentConfig = i18n.getTranslations('daysMomentConfig');
   }
 
@@ -33,7 +37,7 @@ export class CallItemComponent implements OnChanges {
     this.messages = this.call.messages.slice(-4);
     if (this.call instanceof Call) {
       const minutes: number = Math.floor((<Call>this.call).callDuration / 60);
-      const seconds: number = (<Call>this.call).callDuration - (minutes * 60);
+      const seconds: number = (<Call>this.call).callDuration - minutes * 60;
       this.calculateFormattedDuration(minutes, seconds);
     }
   }
@@ -52,7 +56,7 @@ export class CallItemComponent implements OnChanges {
 
   @HostListener('@remove.done') onAnimationDone($event: Event) {
     if (this.archived) {
-        this.callService.stream();
+      this.callService.stream();
     }
   }
 }

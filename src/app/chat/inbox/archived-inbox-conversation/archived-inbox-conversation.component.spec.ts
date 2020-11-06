@@ -7,7 +7,6 @@ import { InboxItemStatus } from '../../model/inbox-item';
 import { ArchivedInboxConversationComponent } from './archived-inbox-conversation.component';
 import { DateCalendarPipe } from 'app/shared/pipes';
 
-
 describe('Component: Conversation', () => {
   let component: ArchivedInboxConversationComponent;
   let fixture: ComponentFixture<ArchivedInboxConversationComponent>;
@@ -16,9 +15,8 @@ describe('Component: Conversation', () => {
     TestBed.configureTestingModule({
       declarations: [ArchivedInboxConversationComponent, DateCalendarPipe],
       providers: [DateCalendarPipe],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -27,7 +25,6 @@ describe('Component: Conversation', () => {
     component.conversation = CREATE_MOCK_INBOX_CONVERSATION();
     fixture.detectChanges();
   });
-
 
   describe('describe dateIsThisYear', () => {
     it('should return TRUE when conversaiton.modifiedDate is in the current calendar year', () => {
@@ -83,4 +80,3 @@ describe('Component: Conversation', () => {
     });
   });
 });
-

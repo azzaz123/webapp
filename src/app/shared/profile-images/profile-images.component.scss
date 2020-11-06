@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 $margin: $spacing-xxs;
 
@@ -38,7 +38,7 @@ div {
   background-color: $blue-grey-1;
   position: absolute;
   @include square-avatar(100%);
-  opacity: .5;
+  opacity: 0.5;
   z-index: 1;
   .small & {
     display: none;

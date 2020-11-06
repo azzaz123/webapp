@@ -1,15 +1,29 @@
-import { Component, ContentChild, ElementRef, EventEmitter, ExistingProvider, forwardRef, HostListener, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  ContentChild,
+  ElementRef,
+  EventEmitter,
+  ExistingProvider,
+  forwardRef,
+  HostListener,
+  Input,
+  OnInit,
+  Output,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild,
+  ViewEncapsulation,
+} from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DropdownListComponent } from './dropdown-list/dropdown-list.component';
 import { OptionList } from './utils/option-list';
 import { IOption } from './utils/option.interface';
 import { Option } from './utils/option';
 
-
 export const SELECT_VALUE_ACCESSOR: ExistingProvider = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => DropdownComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
@@ -17,10 +31,9 @@ export const SELECT_VALUE_ACCESSOR: ExistingProvider = {
   templateUrl: './dropdown.component.html',
   styleUrls: ['./dropdown.component.scss'],
   providers: [SELECT_VALUE_ACCESSOR],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class DropdownComponent implements OnInit {
-
   @Input() options: Array<IOption> = [];
   @Input() isLoading: boolean;
 
@@ -48,7 +61,8 @@ export class DropdownComponent implements OnInit {
   @ViewChild('dropdown', { static: false }) dropdown: DropdownListComponent;
   @ViewChild('filterInput', { static: false }) filterInput: ElementRef;
 
-  @ContentChild('optionTemplate', { static: false }) optionTemplate: TemplateRef<any>;
+  @ContentChild('optionTemplate', { static: false })
+  optionTemplate: TemplateRef<any>;
 
   private _value: Array<any> = [];
   optionList: OptionList;
@@ -73,19 +87,15 @@ export class DropdownComponent implements OnInit {
   top: number;
   left: number;
 
-  private onChange = (_: any) => { };
-  private onTouched = () => { };
+  private onChange = (_: any) => {};
+  private onTouched = () => {};
 
-  constructor(
-    private hostElement: ElementRef
-  ) { }
+  constructor(private hostElement: ElementRef) {}
 
   /** Event handlers. **/
 
   ngOnInit() {
     this.placeholderView = this.placeholder;
-
-
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -103,8 +113,11 @@ export class DropdownComponent implements OnInit {
 
   @HostListener('window:click')
   onWindowClick() {
-    if (!this.selectContainerClicked &&
-      (!this.optionListClicked || (this.optionListClicked && this.optionClicked))) {
+    if (
+      !this.selectContainerClicked &&
+      (!this.optionListClicked ||
+        (this.optionListClicked && this.optionClicked))
+    ) {
       this.closeDropdown(this.optionClicked);
       if (!this.optionClicked) {
         this._blur();
@@ -255,11 +268,9 @@ export class DropdownComponent implements OnInit {
   set value(v: string | string[]) {
     if (typeof v === 'undefined' || v === null || v === '') {
       v = [];
-    }
-    else if (typeof v === 'string') {
+    } else if (typeof v === 'string') {
       v = [v];
-    }
-    else if (!Array.isArray(v)) {
+    } else if (!Array.isArray(v)) {
       throw new TypeError('Value must be a string or an array.');
     }
 
@@ -317,9 +328,8 @@ export class DropdownComponent implements OnInit {
 
       if (selection.length === 1) {
         this.deselected.emit(selection[0].wrappedOption);
-      }
-      else {
-        this.deselected.emit(selection.map(option => option.wrappedOption));
+      } else {
+        this.deselected.emit(selection.map((option) => option.wrappedOption));
       }
     }
   }
@@ -418,7 +428,7 @@ export class DropdownComponent implements OnInit {
     ESC: 27,
     SPACE: 32,
     UP: 38,
-    DOWN: 40
+    DOWN: 40,
   };
 
   private handleSelectContainerKeydown(event: any) {
@@ -427,55 +437,55 @@ export class DropdownComponent implements OnInit {
     if (this.isOpen) {
       if (key === this.KEYS.ESC || (key === this.KEYS.UP && event.altKey)) {
         this.closeDropdown(true);
-      }
-      else if (key === this.KEYS.TAB) {
+      } else if (key === this.KEYS.TAB) {
         this.closeDropdown(event.shiftKey);
         this._blur();
-      }
-      else if (key === this.KEYS.ENTER) {
+      } else if (key === this.KEYS.ENTER) {
         this.selectHighlightedOption();
-      }
-      else if (key === this.KEYS.UP) {
+      } else if (key === this.KEYS.UP) {
         this.optionList.highlightPreviousOption();
         this.dropdown.moveHighlightedIntoView();
         if (!this.filterEnabled) {
           event.preventDefault();
         }
-      }
-      else if (key === this.KEYS.DOWN) {
+      } else if (key === this.KEYS.DOWN) {
         this.optionList.highlightNextOption();
         this.dropdown.moveHighlightedIntoView();
         if (!this.filterEnabled) {
           event.preventDefault();
         }
       }
-    }
-    else {
+    } else {
       // DEPRICATED --> SPACE
-      if (key === this.KEYS.ENTER || key === this.KEYS.SPACE ||
-        (key === this.KEYS.DOWN && event.altKey)) {
-
+      if (
+        key === this.KEYS.ENTER ||
+        key === this.KEYS.SPACE ||
+        (key === this.KEYS.DOWN && event.altKey)
+      ) {
         /* FIREFOX HACK:
          *
          * The setTimeout is added to prevent the enter keydown event
          * to be triggered for the filter input field, which causes
          * the dropdown to be closed again.
          */
-        setTimeout(() => { this.openDropdown(); });
-      }
-      else if (key === this.KEYS.TAB) {
+        setTimeout(() => {
+          this.openDropdown();
+        });
+      } else if (key === this.KEYS.TAB) {
         this._blur();
       }
     }
-
   }
 
   private handleMultipleFilterKeydown(event: any) {
     let key = event.which;
 
     if (key === this.KEYS.BACKSPACE) {
-      if (this.optionList.hasSelected && this.filterEnabled &&
-        this.filterInput.nativeElement.value === '') {
+      if (
+        this.optionList.hasSelected &&
+        this.filterEnabled &&
+        this.filterInput.nativeElement.value === ''
+      ) {
         this.deselectLast();
       }
     }
@@ -484,9 +494,13 @@ export class DropdownComponent implements OnInit {
   private handleSingleFilterKeydown(event: any) {
     let key = event.which;
 
-    if (key === this.KEYS.ESC || key === this.KEYS.TAB
-      || key === this.KEYS.UP || key === this.KEYS.DOWN
-      || key === this.KEYS.ENTER) {
+    if (
+      key === this.KEYS.ESC ||
+      key === this.KEYS.TAB ||
+      key === this.KEYS.UP ||
+      key === this.KEYS.DOWN ||
+      key === this.KEYS.ENTER
+    ) {
       this.handleSelectContainerKeydown(event);
     }
   }
@@ -534,9 +548,10 @@ export class DropdownComponent implements OnInit {
   private updateFilterWidth() {
     if (!!this.filterInput) {
       let value: string = this.filterInput.nativeElement.value;
-      this.filterInputWidth = value.length === 0 ?
-        1 + this.placeholderView.length * 10 : 1 + value.length * 10;
+      this.filterInputWidth =
+        value.length === 0
+          ? 1 + this.placeholderView.length * 10
+          : 1 + value.length * 10;
     }
   }
 }
-

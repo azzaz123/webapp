@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 .item {
   padding: $spacing-s 0 $spacing-s $spacing-xl;
@@ -49,7 +49,7 @@
   justify-content: space-around;
   tsl-svg-icon {
     width: 10px;
-    transition: all .5s ease;
+    transition: all 0.5s ease;
     .active & {
       transform: rotate(180deg);
       ::ng-deep g g {
@@ -69,7 +69,7 @@
   }
   .graphs-container {
     width: 770px;
-    background-color: rgba($blue-grey-5, .5);
+    background-color: rgba($blue-grey-5, 0.5);
     padding: $spacing-ml;
     border-radius: 5px;
     .charts-box {
@@ -134,7 +134,7 @@
         display: flex;
         justify-content: space-between;
         tsl-item-stats-graph {
-          width:355px;
+          width: 355px;
           height: 250px;
         }
         .no-data {
@@ -150,7 +150,8 @@
   .graph-info {
     width: 327px;
     flex-direction: column;
-    background: rgba(236, 239, 241, 0.5) url(/assets/images/destacado.svg) no-repeat center 40px;
+    background: rgba(236, 239, 241, 0.5) url(/assets/images/destacado.svg)
+      no-repeat center 40px;
     padding-top: 190px;
     &.reactivate {
       background-image: url(/assets/images/reactivate-image.svg);
@@ -161,7 +162,8 @@
       font-weight: $font-weight-chunky;
       text-align: center;
     }
-    .note, .bump-note {
+    .note,
+    .bump-note {
       color: $blue-grey-2;
       text-align: center;
       font-size: $font-size-s;

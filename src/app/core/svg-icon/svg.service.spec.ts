@@ -1,6 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { SvgService } from './svg.service';
-import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+  TestRequest,
+} from '@angular/common/http/testing';
 
 describe('SvgService', () => {
   let service: SvgService;
@@ -8,9 +12,7 @@ describe('SvgService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule
-      ]
+      imports: [HttpClientTestingModule],
     });
     httpMock = TestBed.inject(HttpTestingController);
     service = TestBed.inject(SvgService);
@@ -30,7 +32,7 @@ describe('SvgService', () => {
       const svg = '<svg></svg>';
       let response: string;
 
-      service.getIconByPath(expectedUrl).subscribe(r => response = r);
+      service.getIconByPath(expectedUrl).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(svg);
 

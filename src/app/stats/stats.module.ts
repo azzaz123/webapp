@@ -18,16 +18,14 @@ import { NgxEchartsModule } from 'ngx-echarts';
     SharedModule,
     TrackingModule,
     InfiniteScrollModule,
-    NgxEchartsModule
+    NgxEchartsModule,
   ],
-  providers: [
-    ItemStatsService
-  ],
+  providers: [ItemStatsService],
   declarations: [
     statsRoutedComponents,
     ItemsStatsComponent,
     ItemStatsRowComponent,
-    ItemStatsGraphComponent
-  ]
+    ItemStatsGraphComponent,
+  ],
 })
-export class StatsModule { }
+export class StatsModule {}

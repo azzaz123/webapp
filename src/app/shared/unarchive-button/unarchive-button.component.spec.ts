@@ -22,17 +22,17 @@ describe('UnarchiveButtonComponent', () => {
       providers: [
         { provide: TrackingService, useClass: MockTrackingService },
         {
-          provide: CallsService, useValue: {
+          provide: CallsService,
+          useValue: {
             unarchive() {
               return of({});
-            }
-          }
-        }
+            },
+          },
+        },
       ],
       declarations: [UnarchiveButtonComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -55,7 +55,9 @@ describe('UnarchiveButtonComponent', () => {
       component.unarchive(new Event('click'));
 
       expect(callsService.unarchive).toHaveBeenCalledWith(CALL_ID);
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CALLS_MARK_PENDING);
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.CALLS_MARK_PENDING
+      );
     });
   });
 });

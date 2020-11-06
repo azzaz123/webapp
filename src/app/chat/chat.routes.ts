@@ -10,16 +10,15 @@ const routes: Routes = [
     component: ChatComponent,
     canActivate: [LoggedGuard],
     data: {
-      title: 'Chat'
-    }
-  }
+      title: 'Chat',
+    },
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class ChatRoutingModule {
-}
+export class ChatRoutingModule {}
 
 export const chatRoutedComponents = [ChatComponent];

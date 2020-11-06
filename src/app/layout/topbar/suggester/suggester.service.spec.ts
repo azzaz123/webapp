@@ -1,5 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, TestRequest, HttpTestingController } from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  TestRequest,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 
 import { environment } from '../../../../environments/environment';
 
@@ -14,7 +18,7 @@ describe('SuggesterService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [SuggesterService]
+      providers: [SuggesterService],
     });
     service = TestBed.inject(SuggesterService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -22,7 +26,7 @@ describe('SuggesterService', () => {
 
   afterEach(() => {
     httpMock.verify();
-  })
+  });
 
   describe('getSuggestions', () => {
     it('should get search suggestions by keyword from the backend', () => {
@@ -31,7 +35,7 @@ describe('SuggesterService', () => {
       const expectedUrlParams = `keyword=${keyword}`;
       const expectedUrl = `${environment.baseUrl}${SUGGESTER_ENDPOINT}?${expectedUrlParams}`;
 
-      service.getSuggestions(keyword).subscribe(r => response = r);
+      service.getSuggestions(keyword).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(SUGGESTER_DATA_WEB);
 

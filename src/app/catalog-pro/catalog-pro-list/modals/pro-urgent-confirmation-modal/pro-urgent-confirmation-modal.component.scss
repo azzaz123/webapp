@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 $feature-button-width: 170px;
 
@@ -26,7 +26,7 @@ $feature-button-width: 170px;
     font-weight: $font-weight-chunky;
   }
   p {
-    opacity: .8;
+    opacity: 0.8;
     margin: 0;
     margin-bottom: $spacing-xl;
     color: $white;

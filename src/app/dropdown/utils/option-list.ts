@@ -3,7 +3,6 @@ import { IOption } from './option.interface';
 import { Diacritics } from './diacritics';
 
 export class OptionList {
-
   private _options: Array<Option>;
 
   /* Consider using these for performance improvement. */
@@ -27,10 +26,11 @@ export class OptionList {
   }
 
   constructor(options: Array<IOption>) {
-
     this._hasValues = options != null;
 
-    if (!this.hasValues) { options = []; }
+    if (!this.hasValues) {
+      options = [];
+    }
 
     this._options = options.map((option) => {
       let o: Option = new Option(option);
@@ -59,7 +59,7 @@ export class OptionList {
   /** Value. **/
 
   get value(): Array<string> {
-    return this.selection.map(option => option.value);
+    return this.selection.map((option) => option.value);
   }
 
   set value(v: Array<string>) {
@@ -74,7 +74,7 @@ export class OptionList {
   /** Selection. **/
 
   get selection(): Array<Option> {
-    return this.options.filter(option => option.selected);
+    return this.options.filter((option) => option.selected);
   }
 
   select(option: Option, multiple: boolean) {
@@ -98,17 +98,17 @@ export class OptionList {
   }
 
   private updateHasSelected() {
-    this._hasSelected = this.options.some(option => option.selected);
+    this._hasSelected = this.options.some((option) => option.selected);
   }
 
   /** Filter. **/
 
   get filtered(): Array<Option> {
-    return this.options.filter(option => option.shown);
+    return this.options.filter((option) => option.shown);
   }
 
   get filteredEnabled(): Array<Option> {
-    return this.options.filter(option => option.shown && !option.disabled);
+    return this.options.filter((option) => option.shown && !option.disabled);
   }
 
   filter(term: string): boolean {
@@ -117,8 +117,7 @@ export class OptionList {
     if (term.trim() === '') {
       this.resetFilter();
       anyShown = this.options.length > 0;
-    }
-    else {
+    } else {
       this.options.forEach((option) => {
         let l: string = Diacritics.strip(option.label).toUpperCase();
         let t: string = Diacritics.strip(term).toUpperCase();
@@ -128,7 +127,6 @@ export class OptionList {
           anyShown = true;
         }
       });
-
     }
 
     this.highlight();
@@ -150,8 +148,9 @@ export class OptionList {
   }
 
   highlight() {
-    let option: Option = this.hasShownSelected() ?
-      this.getFirstShownSelected() : this.getFirstShown();
+    let option: Option = this.hasShownSelected()
+      ? this.getFirstShownSelected()
+      : this.getFirstShown();
     this.highlightOption(option);
   }
 
@@ -230,7 +229,6 @@ export class OptionList {
 
   // v0 and v1 are assumed not to be undefined or null.
   static equalValues(v0: Array<string>, v1: Array<string>): boolean {
-
     if (v0.length !== v1.length) {
       return false;
     }

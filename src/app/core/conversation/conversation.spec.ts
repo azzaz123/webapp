@@ -5,15 +5,16 @@ import { User } from '../user/user';
 import { Item } from '../item/item';
 import { Message } from '../message/message';
 import {
-  CONVERSATION_DATE, CONVERSATION_ID, CONVERSATION_PHONE,
-  MOCK_CONVERSATION
+  CONVERSATION_DATE,
+  CONVERSATION_ID,
+  CONVERSATION_PHONE,
+  MOCK_CONVERSATION,
 } from '../../../tests/conversation.fixtures.spec';
 import { createMessagesArray } from '../../../tests/message.fixtures.spec';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { ITEM_ID } from '../../../tests/item.fixtures.spec';
 
 describe('Conversation', () => {
-
   let conversation: Conversation;
 
   beforeEach(() => {
@@ -29,7 +30,6 @@ describe('Conversation', () => {
   });
 
   describe('Getter and setters', () => {
-
     it('should set the User object', () => {
       expect(conversation.user).toBeDefined();
       expect(conversation.user instanceof User).toBeTruthy();
@@ -39,7 +39,6 @@ describe('Conversation', () => {
       expect(conversation.item).toBeDefined();
       expect(conversation.item instanceof Item).toBeTruthy();
     });
-
 
     it('should set the modified date', () => {
       conversation.modifiedDate = CONVERSATION_DATE;
@@ -61,7 +60,6 @@ describe('Conversation', () => {
       conversation.oldMessagesLoaded = true;
       expect(conversation.oldMessagesLoaded).toBeTruthy();
     });
-
   });
 
   it('should set messages', () => {
@@ -73,8 +71,8 @@ describe('Conversation', () => {
       false,
       new User(USER_ID),
       new Item(ITEM_ID, 1, USER_ID),
-      messages);
+      messages
+    );
     expect(conv.messages).toEqual(messages);
   });
-
 });

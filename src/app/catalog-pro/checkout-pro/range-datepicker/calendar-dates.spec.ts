@@ -2,7 +2,6 @@ import { CalendarDates } from './calendar-dates';
 import { MOCK_SELECTED_DATES } from '../../../../tests/calendar.fixtures.spec';
 
 describe('CalendarDates', () => {
-
   let dates: CalendarDates;
 
   beforeEach(() => {
@@ -16,5 +15,4 @@ describe('CalendarDates', () => {
     expect(dates.formattedToDate).toBe(MOCK_SELECTED_DATES.formattedToDate);
     expect(dates.numberOfDays).toBe(MOCK_SELECTED_DATES.numberOfDays);
   });
-
 });
