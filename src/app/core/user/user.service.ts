@@ -4,7 +4,6 @@ import { mergeMap, catchError, tap, map } from 'rxjs/operators';
 import { Inject, Injectable } from '@angular/core';
 import { PERMISSIONS, User } from './user';
 import { EventService } from '../event/event.service';
-import { HaversineService } from 'ng2-haversine';
 import { Item } from '../item/item';
 import { LoginResponse } from './login-response.interface';
 import { UserLocation, UserResponse, Image } from './user-response.interface';
@@ -81,7 +80,6 @@ export class UserService {
     private http: HttpClient,
     private event: EventService,
     private i18n: I18nService,
-    private haversineService: HaversineService,
     private accessTokenService: AccessTokenService,
     private cookieService: CookieService,
     private permissionService: NgxPermissionsService,
