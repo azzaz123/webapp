@@ -48,6 +48,7 @@ import {
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
 import { UserService } from 'app/core/user/user.service';
+import * as Visibility from 'visibilityjs';
 
 describe('CurrentConversationComponent', () => {
   let component: CurrentConversationComponent;
