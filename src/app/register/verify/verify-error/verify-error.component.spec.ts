@@ -8,9 +8,8 @@ describe('VerifyErrorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ VerifyErrorComponent ]
-    })
-    .compileComponents();
+      declarations: [VerifyErrorComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

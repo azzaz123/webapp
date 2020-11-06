@@ -3,7 +3,12 @@ import { NgbCalendar, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { RangeDatepickerComponent } from './range-datepicker.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MOCK_DATE, MOCK_DATE2, MOCK_DATE3, MOCK_SELECTED_DATES } from '../../../../tests/calendar.fixtures.spec';
+import {
+  MOCK_DATE,
+  MOCK_DATE2,
+  MOCK_DATE3,
+  MOCK_SELECTED_DATES,
+} from '../../../../tests/calendar.fixtures.spec';
 
 describe('RangeDatepickerComponent', () => {
   let component: RangeDatepickerComponent;
@@ -16,15 +21,16 @@ describe('RangeDatepickerComponent', () => {
       providers: [
         NgbDatepickerConfig,
         {
-          provide: NgbCalendar, useValue: {
+          provide: NgbCalendar,
+          useValue: {
             getToday() {
               return MOCK_DATE;
-            }
-          }
-        }],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-      .compileComponents();
+            },
+          },
+        },
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -35,7 +41,6 @@ describe('RangeDatepickerComponent', () => {
   });
 
   describe('ngOnInit', () => {
-
     it('should set today date and tomorrow date', () => {
       component.ngOnInit();
 
@@ -54,7 +59,6 @@ describe('RangeDatepickerComponent', () => {
   });
 
   describe('onDateSelection', () => {
-
     it('should set init date if any date is selected', () => {
       component.onDateSelection(MOCK_DATE);
 
@@ -81,7 +85,9 @@ describe('RangeDatepickerComponent', () => {
       component.onDateSelection(MOCK_DATE);
       component.onDateSelection(MOCK_DATE2);
 
-      expect(component.selectedDates.numberOfDays).toBe(MOCK_SELECTED_DATES.numberOfDays);
+      expect(component.selectedDates.numberOfDays).toBe(
+        MOCK_SELECTED_DATES.numberOfDays
+      );
     });
   });
 
@@ -111,8 +117,9 @@ describe('RangeDatepickerComponent', () => {
       expect(component.endDate).toBe(MOCK_DATE2);
       expect(component.selectedDates.fromDate).toBe(MOCK_DATE);
       expect(component.selectedDates.toDate).toBe(MOCK_DATE2);
-      expect(component.applyCalendar.emit).toHaveBeenCalledWith(component.selectedDates);
+      expect(component.applyCalendar.emit).toHaveBeenCalledWith(
+        component.selectedDates
+      );
     });
   });
-
 });

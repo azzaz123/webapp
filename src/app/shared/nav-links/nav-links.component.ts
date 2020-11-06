@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  OnChanges,
+} from '@angular/core';
 import { NavLink, SortLink } from './nav-link.interface';
 import { FullScreenModalComponent } from '../modals/full-screen-menu/full-screen-modal.component';
 import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -7,10 +14,9 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 @Component({
   selector: 'tsl-nav-links',
   templateUrl: './nav-links.component.html',
-  styleUrls: ['./nav-links.component.scss']
+  styleUrls: ['./nav-links.component.scss'],
 })
 export class NavLinksComponent implements OnInit, OnChanges {
-
   @Input() navLinks: NavLink[];
   @Input() selectedLinkId: string;
   @Input() showSearchInput = false;
@@ -28,15 +34,19 @@ export class NavLinksComponent implements OnInit, OnChanges {
   public selectedLink: NavLink;
   public selectedSort: NavLink;
   public isMobile = false;
-  
-  constructor(private modalService: NgbModal,
-              private deviceService: DeviceDetectorService) { }
+
+  constructor(
+    private modalService: NgbModal,
+    private deviceService: DeviceDetectorService
+  ) {}
 
   ngOnInit() {
     if (!this.selectedLinkId && this.navLinks && this.navLinks[0]) {
       this.selectedLinkId = this.navLinks[0].id;
     }
-    this.selectedLink = this.navLinks.find(navLink => navLink.id === this.selectedLinkId);
+    this.selectedLink = this.navLinks.find(
+      (navLink) => navLink.id === this.selectedLinkId
+    );
     const sortLinks = this.mapSortToLink(this.sortItems);
     this.selectedSort = sortLinks[0];
     if (this.deviceService.isMobile()) {
@@ -46,12 +56,17 @@ export class NavLinksComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     if (this.navLinks) {
-      this.selectedLink = this.navLinks.find(navLink => navLink.id === this.selectedLinkId);
+      this.selectedLink = this.navLinks.find(
+        (navLink) => navLink.id === this.selectedLinkId
+      );
     }
   }
 
   public selectMenu(): void {
-    let modalRef: NgbModalRef = this.modalService.open(FullScreenModalComponent, {windowClass: 'full-screen'});
+    let modalRef: NgbModalRef = this.modalService.open(
+      FullScreenModalComponent,
+      { windowClass: 'full-screen' }
+    );
     modalRef.componentInstance.items = this.navLinks;
     modalRef.result.then((link: NavLink) => {
       modalRef = null;
@@ -61,7 +76,10 @@ export class NavLinksComponent implements OnInit, OnChanges {
 
   public selectSort(): void {
     const sortLinks = this.mapSortToLink(this.sortItems);
-    let modalRef: NgbModalRef = this.modalService.open(FullScreenModalComponent, {windowClass: 'full-screen'});
+    let modalRef: NgbModalRef = this.modalService.open(
+      FullScreenModalComponent,
+      { windowClass: 'full-screen' }
+    );
     modalRef.componentInstance.items = sortLinks;
     modalRef.result.then((link: NavLink) => {
       modalRef = null;
@@ -73,7 +91,7 @@ export class NavLinksComponent implements OnInit, OnChanges {
     const sortLinks: NavLink[] = [];
     sortItems.map((sortItem: SortLink) => {
       let sortObj = { id: sortItem.value, display: sortItem.label };
-      sortLinks.push(sortObj)
+      sortLinks.push(sortObj);
     });
     return sortLinks;
   }
@@ -109,5 +127,4 @@ export class NavLinksComponent implements OnInit, OnChanges {
     this.closeSearch = true;
     this.onSearchChange('');
   }
-
 }

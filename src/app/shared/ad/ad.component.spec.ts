@@ -12,9 +12,8 @@ describe('AdComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdComponent ]
-    })
-    .compileComponents();
+      declarations: [AdComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

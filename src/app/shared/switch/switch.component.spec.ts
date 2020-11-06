@@ -1,4 +1,10 @@
-import { async, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  async,
+  fakeAsync,
+  tick,
+  ComponentFixture,
+  TestBed,
+} from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -12,17 +18,16 @@ describe('SwitchComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ FormsModule ],
-      declarations: [ SwitchComponent ]
-    })
-    .compileComponents();
+      imports: [FormsModule],
+      declarations: [SwitchComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SwitchComponent);
     component = fixture.componentInstance;
-    de            = fixture.debugElement;
-    el            = de.nativeElement;
+    de = fixture.debugElement;
+    el = de.nativeElement;
   });
 
   afterEach(() => {
@@ -30,14 +35,15 @@ describe('SwitchComponent', () => {
   });
 
   describe('input element', () => {
-
     it('should not be checked when component checked property is false', fakeAsync(() => {
       component.checked = false;
 
       fixture.detectChanges();
       tick();
 
-      const element = el.querySelector('input[type=checkbox]') as HTMLInputElement;
+      const element = el.querySelector(
+        'input[type=checkbox]'
+      ) as HTMLInputElement;
       expect(element.checked).toBeFalsy();
     }));
 
@@ -47,7 +53,9 @@ describe('SwitchComponent', () => {
       fixture.detectChanges();
       tick();
 
-      const element = el.querySelector('input[type=checkbox]') as HTMLInputElement;
+      const element = el.querySelector(
+        'input[type=checkbox]'
+      ) as HTMLInputElement;
       expect(element.checked).toBeTruthy();
     }));
 
@@ -57,7 +65,9 @@ describe('SwitchComponent', () => {
       fixture.detectChanges();
       tick();
 
-      const element = el.querySelector('input[type=checkbox]') as HTMLInputElement;
+      const element = el.querySelector(
+        'input[type=checkbox]'
+      ) as HTMLInputElement;
       expect(element.disabled).toBeFalsy();
     }));
 
@@ -67,20 +77,23 @@ describe('SwitchComponent', () => {
       fixture.detectChanges();
       tick();
 
-      const element = el.querySelector('input[type=checkbox]') as HTMLInputElement;
+      const element = el.querySelector(
+        'input[type=checkbox]'
+      ) as HTMLInputElement;
       expect(element.disabled).toBeTruthy();
     }));
   });
 
   it('should emit change action and set model, when switch is changed', () => {
     let inputValue: boolean;
-    component.onChange.subscribe(value => inputValue = value);
+    component.onChange.subscribe((value) => (inputValue = value));
 
-    const element = el.querySelector('input[type=checkbox]') as HTMLInputElement;
+    const element = el.querySelector(
+      'input[type=checkbox]'
+    ) as HTMLInputElement;
     element.click();
 
     expect(inputValue).toBeTruthy();
     expect(component.model).toBe(true);
-
   });
 });

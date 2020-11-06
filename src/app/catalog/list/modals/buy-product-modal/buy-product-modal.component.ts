@@ -4,9 +4,15 @@ import { ItemService } from '../../../../core/item/item.service';
 import { Item } from '../../../../core/item/item';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { PurchaseProductsWithCreditsResponse } from '../../../../core/item/item-response.interface';
-import { PaymentService, PAYMENT_RESPONSE_STATUS } from '../../../../core/payments/payment.service';
+import {
+  PaymentService,
+  PAYMENT_RESPONSE_STATUS,
+} from '../../../../core/payments/payment.service';
 import { EventService } from '../../../../core/event/event.service';
-import { CreditInfo, FinancialCardOption } from '../../../../core/payments/payment.interface';
+import {
+  CreditInfo,
+  FinancialCardOption,
+} from '../../../../core/payments/payment.interface';
 import { StripeService } from '../../../../core/stripe/stripe.service';
 import { ErrorsService } from '../../../../core/errors/errors.service';
 import { UuidService } from '../../../../core/uuid/uuid.service';
@@ -14,10 +20,9 @@ import { UuidService } from '../../../../core/uuid/uuid.service';
 @Component({
   selector: 'tsl-buy-product-modal',
   templateUrl: './buy-product-modal.component.html',
-  styleUrls: ['./buy-product-modal.component.scss']
+  styleUrls: ['./buy-product-modal.component.scss'],
 })
 export class BuyProductModalComponent implements OnInit {
-
   public type: string;
   public orderEvent: OrderEvent;
   public item: Item;
@@ -30,24 +35,28 @@ export class BuyProductModalComponent implements OnInit {
   public savedCard = true;
   public selectedCard = false;
 
-  constructor(private itemService: ItemService,
-              public activeModal: NgbActiveModal,
-              private paymentService: PaymentService,
-              private eventService: EventService,
-              private stripeService: StripeService,
-              private uuidService: UuidService,
-              private errorService: ErrorsService) { }
+  constructor(
+    private itemService: ItemService,
+    public activeModal: NgbActiveModal,
+    private paymentService: PaymentService,
+    private eventService: EventService,
+    private stripeService: StripeService,
+    private uuidService: UuidService,
+    private errorService: ErrorsService
+  ) {}
 
   ngOnInit() {
     this.eventService.subscribe('paymentResponse', (response) => {
       this.managePaymentResponse(response);
     });
-    this.itemService.get(this.orderEvent.order[0].item_id).subscribe((item: Item) => {
-      this.item = item;
-      if (this.type === 'urgent') {
-        this.item.urgent = true;
-      }
-    });
+    this.itemService
+      .get(this.orderEvent.order[0].item_id)
+      .subscribe((item: Item) => {
+        this.item = item;
+        if (this.type === 'urgent') {
+          this.item.urgent = true;
+        }
+      });
 
     this.paymentService.getCreditInfo().subscribe((creditInfo: CreditInfo) => {
       if (creditInfo.credit === 0) {
@@ -65,17 +74,25 @@ export class BuyProductModalComponent implements OnInit {
   }
 
   get totalToPay(): number {
-    const totalCreditsToPay: number = this.orderEvent.total * this.creditInfo.factor;
+    const totalCreditsToPay: number =
+      this.orderEvent.total * this.creditInfo.factor;
     if (totalCreditsToPay < this.creditInfo.credit) {
       this.mainLoading = false;
       return 0;
     } else {
-      return this.orderEvent.total - this.creditInfo.credit / this.creditInfo.factor;
+      return (
+        this.orderEvent.total - this.creditInfo.credit / this.creditInfo.factor
+      );
     }
   }
 
   get creditSpent(): number {
-    return Math.min(this.creditInfo.credit, this.orderEvent.total * this.creditInfo.factor) * -1;
+    return (
+      Math.min(
+        this.creditInfo.credit,
+        this.orderEvent.total * this.creditInfo.factor
+      ) * -1
+    );
   }
 
   public hasCard(hasCard: boolean) {
@@ -90,37 +107,54 @@ export class BuyProductModalComponent implements OnInit {
     this.loading = true;
     const orderId: string = this.uuidService.getUUID();
     const creditsToPay = this.usedCredits(this.orderEvent.total);
-    this.itemService.purchaseProductsWithCredits(this.orderEvent.order, orderId).subscribe((response: PurchaseProductsWithCreditsResponse) => {
-      if (response.items_failed && response.items_failed.length) {
-        this.activeModal.close('error');
-      } else {
-        localStorage.setItem('transactionSpent', (creditsToPay).toString());
-        if (this.creditInfo.credit > 0) {
-          if (this.type === 'urgent') {
-            localStorage.setItem('transactionType', 'urgentWithCredits');
-          } else if (this.type === 'reactivate') {
-            localStorage.setItem('transactionType', 'reactivateWithCredits');
-          } else if (this.type === 'listing-fee') {
-            localStorage.setItem('transactionType', 'purchaseListingFeeWithCredits');
+    this.itemService
+      .purchaseProductsWithCredits(this.orderEvent.order, orderId)
+      .subscribe(
+        (response: PurchaseProductsWithCreditsResponse) => {
+          if (response.items_failed && response.items_failed.length) {
+            this.activeModal.close('error');
+          } else {
+            localStorage.setItem('transactionSpent', creditsToPay.toString());
+            if (this.creditInfo.credit > 0) {
+              if (this.type === 'urgent') {
+                localStorage.setItem('transactionType', 'urgentWithCredits');
+              } else if (this.type === 'reactivate') {
+                localStorage.setItem(
+                  'transactionType',
+                  'reactivateWithCredits'
+                );
+              } else if (this.type === 'listing-fee') {
+                localStorage.setItem(
+                  'transactionType',
+                  'purchaseListingFeeWithCredits'
+                );
+              }
+            }
+            this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
+            if (response.payment_needed) {
+              this.buyStripe(orderId);
+            } else {
+              this.activeModal.close('success');
+            }
           }
+        },
+        () => {
+          this.activeModal.close('error');
         }
-        this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
-        if (response.payment_needed) {
-          this.buyStripe(orderId);
-        } else {
-          this.activeModal.close('success');
-        }
-      }
-    }, () => {
-      this.activeModal.close('error');
-    });
+      );
   }
 
   private buyStripe(orderId: string) {
     const paymentId: string = this.uuidService.getUUID();
 
     if (this.selectedCard || !this.savedCard) {
-      this.stripeService.buy(orderId, paymentId, this.hasSavedCard, this.savedCard, this.card);
+      this.stripeService.buy(
+        orderId,
+        paymentId,
+        this.hasSavedCard,
+        this.savedCard,
+        this.card
+      );
     } else {
       this.loading = false;
       this.errorService.i18nError('noCardSelectedError');
@@ -128,7 +162,7 @@ export class BuyProductModalComponent implements OnInit {
   }
 
   private managePaymentResponse(paymentResponse) {
-    switch(paymentResponse && paymentResponse.toUpperCase()) {
+    switch (paymentResponse && paymentResponse.toUpperCase()) {
       case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
         this.activeModal.close('success');
         break;
@@ -169,5 +203,4 @@ export class BuyProductModalComponent implements OnInit {
     this.selectedCard = true;
     this.setCardInfo(selectedCard);
   }
-
 }

@@ -7,7 +7,7 @@ import { I18nService } from '../../../core/i18n/i18n.service';
 
 @Component({
   selector: 'tsl-test',
-  template: '{{callStatus | callStatusLabel}}'
+  template: '{{callStatus | callStatusLabel}}',
 })
 class TestComponent {
   callStatus: string;
@@ -19,13 +19,8 @@ let fixture: ComponentFixture<TestComponent>;
 describe('CallStatusLabelPipe', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        I18nService
-      ],
-      declarations: [
-        TestComponent,
-        CallStatusLabelPipe
-      ]
+      providers: [I18nService],
+      declarations: [TestComponent, CallStatusLabelPipe],
     });
     fixture = TestBed.createComponent(TestComponent);
     component = fixture.componentInstance;

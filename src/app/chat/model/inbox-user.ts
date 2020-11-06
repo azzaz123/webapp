@@ -6,20 +6,21 @@ export interface InboxUserLocation {
 }
 
 export class InboxUser {
-  constructor(private _id: string,
-              private _microName: string,
-              private _blocked: boolean,
-              private _available: boolean,
-              private _profileUrl: string,
-              private _avatarUrl: string,
-              private _responseRate: string,
-              private _sellingItem: Item,
-              private _sellingItemCount: number,
-              private _score: number,
-              private _location: any,
-              private _distanceInKm: number,
-              private _malicious: boolean) {
-  }
+  constructor(
+    private _id: string,
+    private _microName: string,
+    private _blocked: boolean,
+    private _available: boolean,
+    private _profileUrl: string,
+    private _avatarUrl: string,
+    private _responseRate: string,
+    private _sellingItem: Item,
+    private _sellingItemCount: number,
+    private _score: number,
+    private _location: any,
+    private _distanceInKm: number,
+    private _malicious: boolean
+  ) {}
 
   get id(): string {
     return this._id;
@@ -122,4 +123,18 @@ export class InboxUser {
   }
 }
 
-export const InboxUserPlaceholder = new InboxUser(null, 'unknown', false, false, null, null, null, null, 0, 0, null, null, false);
+export const InboxUserPlaceholder = new InboxUser(
+  null,
+  'unknown',
+  false,
+  false,
+  null,
+  null,
+  null,
+  null,
+  0,
+  0,
+  null,
+  null,
+  false
+);

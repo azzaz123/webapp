@@ -48,12 +48,17 @@ export interface UnsaveSearch {
   /**
    * Order criteria in which the results of the saved search are shown
    */
-  orderBy: "distance" | "price_low_to_high" | "price_high_to_low" | "newest" | "most_relevant";
+  orderBy:
+    | 'distance'
+    | 'price_low_to_high'
+    | 'price_high_to_low'
+    | 'newest'
+    | 'most_relevant';
   professional?: boolean;
   shipping?: boolean;
   exchange?: boolean;
   urgent?: boolean;
-  timeFilter?: "today" | "lastWeek" | "lastMonth";
+  timeFilter?: 'today' | 'lastWeek' | 'lastMonth';
   minKm?: number;
   maxKm?: number;
   minYear?: number;
@@ -70,8 +75,15 @@ export interface UnsaveSearch {
   gearbox?: string;
   carBrand?: string;
   carModel?: string;
-  operation?: "buy" | "rent";
-  propertyType?: "box_room" | "apartment" | "room" | "garage" | "office" | "house" | "land";
+  operation?: 'buy' | 'rent';
+  propertyType?:
+    | 'box_room'
+    | 'apartment'
+    | 'room'
+    | 'garage'
+    | 'office'
+    | 'house'
+    | 'land';
   minSurface?: number;
   maxSurface?: number;
   rooms?: number;
@@ -81,11 +93,11 @@ export interface UnsaveSearch {
   pool?: boolean;
   garden?: boolean;
   garage?: boolean;
-  condition?: "to_reform" | "new_construction" | "mint";
+  condition?: 'to_reform' | 'new_construction' | 'mint';
   objectTypeId?: number;
   brandModel?: string;
   size?: string;
-  gender?: "female" | "male";
+  gender?: 'female' | 'male';
   /**
    * Item condition set as a filter in the saved search
    */

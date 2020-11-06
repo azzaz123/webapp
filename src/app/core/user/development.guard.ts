@@ -3,11 +3,10 @@ import { CanLoad, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DevelopmentGuard implements CanLoad {
-  constructor(private router: Router) {
-  }
+  constructor(private router: Router) {}
 
   canLoad(): Observable<boolean> | Promise<boolean> | boolean {
     const devEnv = isDevMode();

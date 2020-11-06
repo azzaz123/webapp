@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 form {
   @include media-breakpoint-down(sm) {
@@ -45,4 +45,3 @@ form {
     }
   }
 }
-

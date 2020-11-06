@@ -3,15 +3,17 @@ import { ActivatedRoute } from '@angular/router';
 import { HelpService } from './help.service';
 import { I18nService } from '../core/i18n/i18n.service';
 import { DOCUMENT } from '@angular/common';
-import { SELLBYTEL_PHONE, CARDEALER_COMMERCIAL_CONTACT_MAIL } from '../core/constants';
+import {
+  SELLBYTEL_PHONE,
+  CARDEALER_COMMERCIAL_CONTACT_MAIL,
+} from '../core/constants';
 
 @Component({
   selector: 'tsl-help',
   templateUrl: './help.component.html',
-  styleUrls: ['./help.component.scss']
+  styleUrls: ['./help.component.scss'],
 })
 export class HelpComponent implements OnInit {
-
   public features: any[];
   public faqs: any[];
   public active: string;
@@ -20,19 +22,22 @@ export class HelpComponent implements OnInit {
   public sellbytelPhone = SELLBYTEL_PHONE;
   public cardealerCommercialContactMail = CARDEALER_COMMERCIAL_CONTACT_MAIL;
 
-  constructor(private i18n: I18nService,
-              private helpService: HelpService,
-              private route: ActivatedRoute,
-              @Inject(DOCUMENT) private document: Document) {
-  }
+  constructor(
+    private i18n: I18nService,
+    private helpService: HelpService,
+    private route: ActivatedRoute,
+    @Inject(DOCUMENT) private document: Document
+  ) {}
 
   ngOnInit() {
     this.helpService.getFaqs(this.i18n.locale).subscribe((faqs: any[]) => {
       this.faqs = faqs;
     });
-    this.helpService.getFeatures(this.i18n.locale).subscribe((features: any[]) => {
-      this.features = features;
-    });
+    this.helpService
+      .getFeatures(this.i18n.locale)
+      .subscribe((features: any[]) => {
+        this.features = features;
+      });
     setTimeout(() => {
       this.route.params.subscribe((params: any) => {
         if (params.section) {
@@ -54,7 +59,7 @@ export class HelpComponent implements OnInit {
   }
 
   public onPageScroll($event: Event) {
-    if((<HTMLElement>$event.target).scrollTop >= 350) {
+    if ((<HTMLElement>$event.target).scrollTop >= 350) {
       this.showScrollTop = true;
     } else {
       this.showScrollTop = false;

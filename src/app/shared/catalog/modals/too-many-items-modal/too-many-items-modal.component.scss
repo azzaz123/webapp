@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 .TooManyItemsModal {
   width: 100%;
@@ -19,7 +19,7 @@
   right: 20px;
   tsl-svg-icon {
     @include square($spacing-ms);
-    line-height: initial; 
+    line-height: initial;
 
     svg {
       path {

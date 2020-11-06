@@ -8,10 +8,7 @@ import { ThirdVoiceDropPriceComponent } from './third-voice-drop-price';
 import { ThirdVoiceReviewComponent } from './third-voice-review';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SharedModule
-  ],
+  imports: [CommonModule, SharedModule],
   declarations: [
     TextMessageComponent,
     ThirdVoiceMessageComponent,
@@ -22,8 +19,7 @@ import { ThirdVoiceReviewComponent } from './third-voice-review';
   exports: [
     TextMessageComponent,
     ThirdVoiceReviewComponent,
-    ThirdVoiceDropPriceComponent
-  ]
+    ThirdVoiceDropPriceComponent,
+  ],
 })
-export class MessageModule {
-}
+export class MessageModule {}

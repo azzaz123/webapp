@@ -1,8 +1,21 @@
-import { mergeMap, map, filter, distinctUntilChanged, finalize } from 'rxjs/operators';
+import {
+  mergeMap,
+  map,
+  filter,
+  distinctUntilChanged,
+  finalize,
+} from 'rxjs/operators';
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { DomSanitizer, Title } from '@angular/platform-browser';
 import { configMoment } from './config/moment.config';
-import { ActivatedRoute, NavigationEnd, NavigationStart, RouteConfigLoadEnd, RouteConfigLoadStart, Router } from '@angular/router';
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  NavigationStart,
+  RouteConfigLoadEnd,
+  RouteConfigLoadStart,
+  Router,
+} from '@angular/router';
 import { environment } from '../environments/environment';
 import { CookieOptions, CookieService } from 'ngx-cookie';
 import { TrackingService } from './core/tracking/tracking.service';
@@ -26,10 +39,9 @@ import { UuidService } from './core/uuid/uuid.service';
 @Component({
   selector: 'tsl-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-
   public hideSidebar: boolean;
   public isMyZone: boolean;
   public isProducts: boolean;
@@ -39,7 +51,8 @@ export class AppComponent implements OnInit {
   private previousSlug: string;
   private sendPresenceInterval = 240000;
 
-  constructor(private event: EventService,
+  constructor(
+    private event: EventService,
     private realTime: RealTimeService,
     private inboxService: InboxService,
     public userService: UserService,
@@ -59,8 +72,8 @@ export class AppComponent implements OnInit {
     private stripeService: StripeService,
     private analyticsService: AnalyticsService,
     private uuidService: UuidService,
-    private didomiService: DidomiService) {
-  }
+    private didomiService: DidomiService
+  ) {}
 
   ngOnInit() {
     this.initializeConfigs();
@@ -121,11 +134,10 @@ export class AppComponent implements OnInit {
 
     try {
       this.realTime.disconnect();
-    } catch (err) {
-    }
+    } catch (err) {}
 
     if (redirectUrl) {
-      return window.location.href = redirectUrl;
+      return (window.location.href = redirectUrl);
     }
 
     return window.location.reload();
@@ -137,17 +149,21 @@ export class AppComponent implements OnInit {
   }
 
   private updateUrlAndSendAnalytics(): void {
-    this.router.events.pipe(distinctUntilChanged((previous: any, current: any) => {
-      if (current instanceof NavigationEnd) {
-        this.previousUrl = previous.url;
-        this.currentUrl = current.url;
-        return previous.url === current.url;
-      }
-      return true;
-    })).subscribe((x: any) => {
-      ga('set', 'page', x.url);
-      ga('send', 'pageview');
-    });
+    this.router.events
+      .pipe(
+        distinctUntilChanged((previous: any, current: any) => {
+          if (current instanceof NavigationEnd) {
+            this.previousUrl = previous.url;
+            this.currentUrl = current.url;
+            return previous.url === current.url;
+          }
+          return true;
+        })
+      )
+      .subscribe((x: any) => {
+        ga('set', 'page', x.url);
+        ga('send', 'pageview');
+      });
   }
 
   private updateSessionCookie(): void {
@@ -158,21 +174,25 @@ export class AppComponent implements OnInit {
     expirationDate.setTime(expirationDate.getTime() + expiration);
     const options: CookieOptions = {
       path: '/',
-      expires: expirationDate
+      expires: expirationDate,
     };
     this.cookieService.put(name, token, options);
   }
 
   private trackAppOpen(): void {
-    this.trackingService.track(TrackingService.APP_OPEN, { referer_url: this.previousUrl, current_url: this.currentUrl });
+    this.trackingService.track(TrackingService.APP_OPEN, {
+      referer_url: this.previousUrl,
+      current_url: this.currentUrl,
+    });
   }
 
   private subscribeEventUserLogin(): void {
     this.event.subscribe(EventService.USER_LOGIN, (accessToken: string) => {
       this.setLoading(true);
-      this.userService.me()
+      this.userService
+        .me()
         .pipe(finalize(() => this.setLoading(false)))
-        .subscribe(user => this.handleUserLoggedIn(user, accessToken));
+        .subscribe((user) => this.handleUserLoggedIn(user, accessToken));
     });
   }
 
@@ -187,13 +207,17 @@ export class AppComponent implements OnInit {
   private initCalls(): void {
     this.userService.isProfessional().subscribe((isProfessional: boolean) => {
       if (isProfessional) {
-        this.callService.init().subscribe(() => this.callService.init(true).subscribe());
+        this.callService
+          .init()
+          .subscribe(() => this.callService.init(true).subscribe());
       }
     });
   }
 
   private subscribeEventUserLogout(): void {
-    this.event.subscribe(EventService.USER_LOGOUT, (redirectUrl: string) => this.handleUserLoggedOut(redirectUrl));
+    this.event.subscribe(EventService.USER_LOGOUT, (redirectUrl: string) =>
+      this.handleUserLoggedOut(redirectUrl)
+    );
   }
 
   private subscribeChatEvents(): void {
@@ -207,14 +231,16 @@ export class AppComponent implements OnInit {
   }
 
   private subscribeUnreadMessages(): void {
-    this.messageService.totalUnreadMessages$.subscribe((unreadMessages: number) => {
-      let title: string = this.titleService.getTitle().split(') ')[1];
-      title = title ? title : this.titleService.getTitle();
-      if (unreadMessages > 0) {
-        title = '(' + unreadMessages + ') ' + title;
+    this.messageService.totalUnreadMessages$.subscribe(
+      (unreadMessages: number) => {
+        let title: string = this.titleService.getTitle().split(') ')[1];
+        title = title ? title : this.titleService.getTitle();
+        if (unreadMessages > 0) {
+          title = '(' + unreadMessages + ') ' + title;
+        }
+        this.titleService.setTitle(title);
       }
-      this.titleService.setTitle(title);
-    });
+    );
   }
 
   private subscribeEventItemUpdated(): void {
@@ -227,24 +253,26 @@ export class AppComponent implements OnInit {
   }
 
   private setTitle(): void {
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd),
-      map(() => this.activatedRoute),
-      map(route => {
-        while (route.firstChild) {
-          route = route.firstChild;
-        }
-        return route;
-      }),
-      filter(route => route.outlet === 'primary'),
-      mergeMap(route => route.data))
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        map(() => this.activatedRoute),
+        map((route) => {
+          while (route.firstChild) {
+            route = route.firstChild;
+          }
+          return route;
+        }),
+        filter((route) => route.outlet === 'primary'),
+        mergeMap((route) => route.data)
+      )
       .subscribe((event) => {
         let notifications = '';
         const split: string[] = this.titleService.getTitle().split(' ');
         if (split.length > 1) {
           notifications = split[0].trim() + ' ';
         }
-        const title = !(event['title']) ? 'Wallapop' : event['title'];
+        const title = !event['title'] ? 'Wallapop' : event['title'];
         this.titleService.setTitle(notifications + title);
         this.hideSidebar = event['hideSidebar'];
         this.isMyZone = event['isMyZone'];
@@ -275,6 +303,8 @@ export class AppComponent implements OnInit {
   }
 
   private setLoading(loading: boolean): void {
-    loading ? this.renderer.addClass(document.body, 'route-loading') : this.renderer.removeClass(document.body, 'route-loading');
+    loading
+      ? this.renderer.addClass(document.body, 'route-loading')
+      : this.renderer.removeClass(document.body, 'route-loading');
   }
 }

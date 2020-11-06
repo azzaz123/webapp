@@ -21,7 +21,7 @@ const routes: Routes = [
     canActivateChild: [NgxPermissionsGuard],
     data: {
       isMyZone: true,
-      isProfile: true
+      isProfile: true,
     },
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'info' },
@@ -31,8 +31,8 @@ const routes: Routes = [
         canDeactivate: [ExitConfirmGuard],
         data: {
           isMyZone: true,
-          isProfile: true
-        }
+          isProfile: true,
+        },
       },
       {
         path: 'account',
@@ -40,8 +40,8 @@ const routes: Routes = [
         canDeactivate: [ExitConfirmGuard],
         data: {
           isMyZone: true,
-          isProfile: true
-        }
+          isProfile: true,
+        },
       },
       {
         path: 'subscriptions',
@@ -51,9 +51,9 @@ const routes: Routes = [
           isProfile: true,
           permissions: {
             except: PERMISSIONS.professional,
-            redirectTo: '/profile'
-          }
-        }
+            redirectTo: '/profile',
+          },
+        },
       },
       {
         path: 'billing',
@@ -61,8 +61,8 @@ const routes: Routes = [
         canDeactivate: [ExitConfirmGuard],
         data: {
           isMyZone: true,
-          isProfile: true
-        }
+          isProfile: true,
+        },
       },
       {
         path: 'subscription-pro',
@@ -72,25 +72,24 @@ const routes: Routes = [
           isProfile: true,
           permissions: {
             only: PERMISSIONS.professional,
-            redirectTo: '/profile'
-          }
-        }
-      }
-    ]
+            redirectTo: '/profile',
+          },
+        },
+      },
+    ],
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class ProfileRoutingModule {
-}
+export class ProfileRoutingModule {}
 
 export const profileRoutedComponents = [
   ProfileComponent,
   ProfileInfoComponent,
   AccountComponent,
   SubscriptionsComponent,
-  ProfileProSubscriptionComponent
+  ProfileProSubscriptionComponent,
 ];

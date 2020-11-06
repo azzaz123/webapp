@@ -1,8 +1,21 @@
-
 import { Observable, of } from 'rxjs';
 
-import {debounceTime, switchMap, distinctUntilChanged, catchError} from 'rxjs/operators';
-import { Component, OnInit, Output, EventEmitter, Input, OnChanges, ViewChild, ElementRef } from '@angular/core';
+import {
+  debounceTime,
+  switchMap,
+  distinctUntilChanged,
+  catchError,
+} from 'rxjs/operators';
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  Input,
+  OnChanges,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { Coordinate } from '../../core/geolocation/address-response.interface';
 import { GeolocationService } from '../../core/geolocation/geolocation.service';
 import { GeolocationResponse } from '../../core/geolocation/geolocation-response.interface';
@@ -12,23 +25,23 @@ import { UserService } from '../../core/user/user.service';
 @Component({
   selector: 'tsl-geolocation',
   templateUrl: './geolocation.component.html',
-  styleUrls: ['./geolocation.component.scss']
+  styleUrls: ['./geolocation.component.scss'],
 })
 export class GeolocationComponent implements OnInit, OnChanges {
-
   private MIN_LENGTH = 3;
   public focus: boolean;
   @Output() public newCoordinate = new EventEmitter<Coordinate>();
   @Input() value: string;
   @Input() updateLocation = true;
   @Input() fromCookie = true;
-  public model: any = {description: ''};
+  public model: any = { description: '' };
   @ViewChild('pacInputHeader', { static: true }) searchInputEl: ElementRef;
 
   constructor(
     private geolocationService: GeolocationService,
     private cookieService: CookieService,
-    private userService: UserService) { }
+    private userService: UserService
+  ) {}
 
   ngOnInit() {
     const searchPosName = this.cookieService.get('searchPosName');
@@ -48,27 +61,33 @@ export class GeolocationComponent implements OnInit, OnChanges {
     text$.pipe(
       debounceTime(500),
       distinctUntilChanged(),
-      switchMap(term => term.length < this.MIN_LENGTH ? [] :
-        this.geolocationService.search(term).pipe(
-          catchError(() => {
-            return of([]);
-          }))),)
+      switchMap((term) =>
+        term.length < this.MIN_LENGTH
+          ? []
+          : this.geolocationService.search(term).pipe(
+              catchError(() => {
+                return of([]);
+              })
+            )
+      )
+    );
 
   public formatter = (x: any) => x.description;
 
   public selectItem(address: GeolocationResponse) {
+    this.geolocationService
+      .geocode(address.item.description)
+      .subscribe((data: Coordinate) => {
+        this.newCoordinate.emit(data);
 
-    this.geolocationService.geocode(address.item.description).subscribe((data: Coordinate) => {
-      this.newCoordinate.emit(data);
-
-      if (this.updateLocation) {
-        const newLocation: Coordinate = {
-          latitude: data.latitude,
-          longitude: data.longitude,
-          name: address.item.description
-        };
-        this.userService.updateSearchLocationCookies(newLocation);
-      }
-    });
+        if (this.updateLocation) {
+          const newLocation: Coordinate = {
+            latitude: data.latitude,
+            longitude: data.longitude,
+            name: address.item.description,
+          };
+          this.userService.updateSearchLocationCookies(newLocation);
+        }
+      });
   }
 }

@@ -15,7 +15,7 @@ import {
   ClickConfirmCloseSubscription,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
-  SCREEN_IDS
+  SCREEN_IDS,
 } from '../../../core/analytics/analytics-constants';
 import { SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
 
@@ -29,39 +29,41 @@ describe('CancelSubscriptionModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CancelSubscriptionModalComponent ],
+      declarations: [CancelSubscriptionModalComponent],
       providers: [
         {
-          provide: NgbActiveModal, useValue: {
-            close() {
-            }
-          }
+          provide: NgbActiveModal,
+          useValue: {
+            close() {},
+          },
         },
         {
-          provide: NgbModal, useValue: {
+          provide: NgbModal,
+          useValue: {
             open() {
               return {
                 result: Promise.resolve(),
-                componentInstance: {}
+                componentInstance: {},
               };
-            }
-          }
+            },
+          },
         },
         {
-          provide: SubscriptionsService, useValue: {
+          provide: SubscriptionsService,
+          useValue: {
             cancelSubscription() {
               return of(202);
-            }
-          }
+            },
+          },
         },
         I18nService,
         {
-          provide: AnalyticsService, useClass: MockAnalyticsService
-        }
+          provide: AnalyticsService,
+          useClass: MockAnalyticsService,
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -79,25 +81,32 @@ describe('CancelSubscriptionModalComponent', () => {
     const tier = MAPPED_SUBSCRIPTIONS[2].selected_tier;
 
     it('should call the cancelsubscription service', () => {
-      spyOn(subscriptionsService, 'cancelSubscription').and.returnValue(of({status: 202}));
+      spyOn(subscriptionsService, 'cancelSubscription').and.returnValue(
+        of({ status: 202 })
+      );
 
       component.cancelSubscription();
 
-      expect(component.subscriptionsService.cancelSubscription).toHaveBeenCalledWith(tier.id);
+      expect(
+        component.subscriptionsService.cancelSubscription
+      ).toHaveBeenCalledWith(tier.id);
       expect(component.loading).toBe(false);
     });
 
     it('should send the event', () => {
-      spyOn(subscriptionsService, 'cancelSubscription').and.returnValue(of({status: 202}));
+      spyOn(subscriptionsService, 'cancelSubscription').and.returnValue(
+        of({ status: 202 })
+      );
       spyOn(analyticsService, 'trackEvent');
       const expectedEvent: AnalyticsEvent<ClickConfirmCloseSubscription> = {
         name: ANALYTICS_EVENT_NAMES.ClickConfirmCloseSubscription,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
-          subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+          subscription: component.subscription
+            .category_id as SUBSCRIPTION_CATEGORIES,
           tier: component.subscription.selected_tier_id,
-          screenId: SCREEN_IDS.ProfileSubscription
-        }
+          screenId: SCREEN_IDS.ProfileSubscription,
+        },
       };
 
       component.cancelSubscription();
@@ -106,5 +115,4 @@ describe('CancelSubscriptionModalComponent', () => {
       expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
     });
   });
-
 });

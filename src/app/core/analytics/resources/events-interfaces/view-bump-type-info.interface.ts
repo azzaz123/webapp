@@ -32,7 +32,7 @@ export interface ViewBumpTypeInfo {
   /**
    * Type of bump selected (urgent, local, city, national)
    */
-  bumpType: "urgent" | "local" | "city" | "national";
+  bumpType: 'urgent' | 'local' | 'city' | 'national';
   /**
    * Number of days ofbump duration selected (2, 7, 15 days)
    */

@@ -3,7 +3,7 @@ import { MessageStatus } from './inbox-message';
 export enum ChatSignalType {
   SENT = MessageStatus.SENT,
   RECEIVED = MessageStatus.RECEIVED,
-  READ = MessageStatus.READ
+  READ = MessageStatus.READ,
 }
 
 export class ChatSignal {
@@ -12,8 +12,8 @@ export class ChatSignal {
     private _thread: string,
     private _timestamp: number,
     private _messageId?: string,
-    private _fromSelf?: boolean) {
-  }
+    private _fromSelf?: boolean
+  ) {}
 
   get type(): ChatSignalType {
     return this._type;

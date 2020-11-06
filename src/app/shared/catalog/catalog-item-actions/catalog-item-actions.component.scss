@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 $icon-size: 12px;
 $height: 40px;
@@ -12,7 +12,10 @@ $height: 40px;
     button {
       cursor: auto;
       background-color: $blue-grey-5;
-      &.btn-bump, &.btn-sold, &.btn-reserve, &.btn-delete {
+      &.btn-bump,
+      &.btn-sold,
+      &.btn-reserve,
+      &.btn-delete {
         &:hover {
           background-color: $blue-grey-5;
           border: solid 1px rgba($blue-grey-4, 0.5);
@@ -44,14 +47,16 @@ $height: 40px;
         border-color: transparent;
         color: $white;
         tsl-svg-icon ::ng-deep {
-          svg g g, svg path {
+          svg g g,
+          svg path {
             fill: $white;
           }
         }
       }
       &:disabled {
         tsl-svg-icon ::ng-deep {
-          svg g g, svg path {
+          svg g g,
+          svg path {
             fill: $blue-grey-2;
           }
         }
@@ -70,7 +75,8 @@ $height: 40px;
       }
     }
     &.btn-select-all {
-      &:hover, &:disabled {
+      &:hover,
+      &:disabled {
         background: $walla-main;
         border-color: transparent;
         color: $white;
@@ -79,7 +85,7 @@ $height: 40px;
     }
   }
 
-  tsl-button ::ng-deep .btn-feat  {
+  tsl-button ::ng-deep .btn-feat {
     &:disabled {
       cursor: default;
     }

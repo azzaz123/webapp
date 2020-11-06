@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 $avatar-size: 50px;
 $view-more-height: 49px;
@@ -16,7 +16,8 @@ $expanded-horizontal-padding: $spacing-l;
 .col-1:last-of-type {
   text-align: center;
   padding-right: 0;
-  tsl-archive-button, tsl-unarchive-button {
+  tsl-archive-button,
+  tsl-unarchive-button {
     position: relative;
   }
 }
@@ -123,7 +124,8 @@ tsl-user-avatar {
     overflow: auto;
   }
   .messages-container {
-    max-height: $expanded-height - $expanded-vertical-padding - $view-more-height;
+    max-height: $expanded-height - $expanded-vertical-padding -
+      $view-more-height;
     overflow: auto;
   }
   .call-expanded-user-info {
@@ -152,7 +154,7 @@ tsl-user-avatar {
       font-weight: $font-weight-chunky;
       &:hover {
         text-decoration: none;
-        background: rgba($blue-grey-5, .1);
+        background: rgba($blue-grey-5, 0.1);
       }
     }
     .empty-state-container {
@@ -177,4 +179,3 @@ tsl-archive-button {
   top: auto;
   right: auto;
 }
-

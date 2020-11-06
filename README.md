@@ -10,6 +10,7 @@ The private web app for Wallapop once you do login in the public one.
 - [How to deploy - custom branch](#how-to-deploy---custom-branch)
 - [Commentaries](#commentaries)
 - [Documentation](#documentation)
+- [Prettier](#prettier)
 
 ## Installation
 
@@ -160,3 +161,28 @@ If you wanna update the value of the libphonenumber-js metadata you should follo
 ## Documentation
 
 Chat sequence diagrams: https://confluence.wallapop.com/display/ROV/Chat+sequence+diagrams
+
+## Prettier
+
+To enable the "format on save" option, follow this steps:
+
+### WebStorm
+
+1. Follow the steps of the next link:
+   [Documentation](https://prettier.io/docs/en/webstorm.html)
+
+### Visual Studio Code:
+
+1. Download `Prettier - Code formatter` from VS code Extensions store.
+2. `ctrl + shift + P` or `cmd + shift + P` → Preferences: Open settings (JSON).
+3. Paste the following code:
+
+```
+{
+ "editor.formatOnSave": true,
+ "editor.defaultFormatter": "esbenp.prettier-vscode",
+ "[javascript]": {
+ "editor.defaultFormatter": "esbenp.prettier-vscode"
+ }
+}
+```

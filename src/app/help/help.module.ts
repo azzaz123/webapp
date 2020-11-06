@@ -5,12 +5,8 @@ import { SharedModule } from '../shared/shared.module';
 import { HelpService } from './help.service';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SharedModule,
-    HelpRoutingModule,
-  ],
+  imports: [CommonModule, SharedModule, HelpRoutingModule],
   providers: [HelpService],
-  declarations: [helpsRoutedComponents]
+  declarations: [helpsRoutedComponents],
 })
-export class HelpModule { }
+export class HelpModule {}

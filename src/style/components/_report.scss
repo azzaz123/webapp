@@ -50,7 +50,8 @@
         font-weight: $font-weight-chunky;
       }
       tsl-svg-icon ::ng-deep {
-        g g, path {
+        g g,
+        path {
           fill: $walla-main;
         }
       }

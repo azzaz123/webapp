@@ -4,22 +4,20 @@ import { StarRate } from './star-rate.interface';
 @Component({
   selector: 'tsl-stars-rate',
   templateUrl: './stars-rate.component.html',
-  styleUrls: ['./stars-rate.component.scss']
+  styleUrls: ['./stars-rate.component.scss'],
 })
 export class StarsRateComponent implements OnInit {
-
   @Output() onChange: EventEmitter<number> = new EventEmitter();
   public starsArray: StarRate[] = [];
   private score: number;
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnInit(changes?: any) {
     for (let i = 0; i < 5; i++) {
       this.starsArray.push({
         type: 'empty',
-        score: i + 1
+        score: i + 1,
       });
     }
   }
