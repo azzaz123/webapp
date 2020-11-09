@@ -6,8 +6,6 @@ import {
   PaymentService,
   PAYMENT_RESPONSE_STATUS,
 } from '../payments/payment.service';
-import { User } from '../user/user';
-import { UserService } from '../user/user.service';
 import { Router } from '@angular/router';
 import { EventService } from '../event/event.service';
 import {
@@ -16,7 +14,6 @@ import {
   PaymentMethodCardResponse,
 } from '../payments/payment.interface';
 import { FinancialCard } from '../../shared/profile/credit-card-info/financial-card';
-import { FeatureflagService } from '../user/featureflag.service';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 
@@ -26,29 +23,20 @@ export const STRIPE_PAYMENT_RESPONSE_EVENT_KEY = 'paymentActionResponse';
 
 @Injectable()
 export class StripeService {
-  public lib: any;
-  public elements: any;
-
-  public fullName: string;
+  public lib: stripe.Stripe;
   private financialCards: FinancialCard[];
 
   constructor(
     private paymentService: PaymentService,
-    private userService: UserService,
     private router: Router,
     private eventService: EventService,
     private http: HttpClient
-  ) {
-    this.userService.me().subscribe((user: User) => {
-      this.fullName = user ? `${user.firstName} ${user.lastName}` : '';
-    });
-  }
+  ) {}
 
   public init() {
     this.lib = Stripe(environment.stripeKey, {
       betas: ['payment_intent_beta_3'],
     });
-    this.elements = this.lib.elements();
   }
 
   public buy(
@@ -197,9 +185,6 @@ export class StripeService {
   payment = async (token, card) => {
     return await this.lib.handleCardPayment(token, card, {
       save_payment_method: true,
-      source_data: {
-        owner: { name: this.fullName },
-      },
     });
   };
 

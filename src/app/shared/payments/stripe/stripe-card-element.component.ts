@@ -158,7 +158,7 @@ export class StripeCardElementComponent
     if (error) {
       this.toastService.show({ text: error.message, type: 'error' });
     } else {
-      this.stripeCardToken.emit(token);
+      this.stripeCardToken.emit(token.id);
     }
   }
 
