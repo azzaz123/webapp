@@ -10,7 +10,8 @@ import { UserProInfo } from '../../core/user/user-info.interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BecomeProModalComponent } from '../become-pro-modal/become-pro-modal.component';
 import { Coordinate } from '../../core/geolocation/address-response.interface';
-import { isValidNumber } from 'libphonenumber-js';
+import { isValidNumber } from 'libphonenumber-js/custom';
+import { metadata } from 'assets/js/metadata-phonenumber';
 import { forkJoin } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
@@ -133,7 +134,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
 
     const phoneNumberControl = this.profileForm.get('phone_number');
     if (this.isPro && phoneNumberControl.value) {
-      if (!isValidNumber(phoneNumberControl.value, 'ES')) {
+      if (!isValidNumber(phoneNumberControl.value, 'ES', metadata)) {
         phoneNumberControl.setErrors({ incorrect: true });
         this.errorsService.i18nError('phoneNumberError');
         return;

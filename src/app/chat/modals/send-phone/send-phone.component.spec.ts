@@ -12,7 +12,8 @@ import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
-import { format } from 'libphonenumber-js';
+import { format } from 'libphonenumber-js/custom';
+import { metadata } from 'assets/js/metadata-phonenumber';
 import { By } from '@angular/platform-browser';
 
 import { environment } from '../../../../environments/environment';
@@ -46,7 +47,8 @@ describe('SendPhoneComponent', () => {
   const MOCK_PARSED_PHONE_NUMBER = format(
     '+34912345678',
     'ES',
-    'International'
+    'International',
+    metadata
   );
   const MOCK_VALID_SPANISH_PHONES = ['+34 912345678', '+34 612 345 678'];
 
@@ -250,7 +252,8 @@ describe('SendPhoneComponent', () => {
         const expectedFormattedNumber = format(
           phoneValue,
           'ES',
-          'International'
+          'International',
+          metadata
         ); // e.g.: +34 633 33 33 33
         element.triggerEventHandler('keyup', {
           target: element.nativeElement,

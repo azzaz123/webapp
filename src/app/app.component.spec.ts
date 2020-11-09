@@ -7,7 +7,6 @@ import {
 } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HaversineService } from 'ng2-haversine';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
@@ -118,7 +117,6 @@ describe('App', () => {
             },
           },
         },
-        HaversineService,
         {
           provide: MessageService,
           useValue: {
