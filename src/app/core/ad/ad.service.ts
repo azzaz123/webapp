@@ -8,6 +8,8 @@ import * as moment from 'moment';
 import { User } from '../user/user';
 import { DidomiService } from '../didomi/didomi.service';
 
+import { initAdsConfig } from './ad.config';
+
 @Injectable()
 export class AdService {
   public allowSegmentation$: BehaviorSubject<boolean> = new BehaviorSubject(
@@ -35,6 +37,7 @@ export class AdService {
     private cookieService: CookieService,
     private didomiService: DidomiService
   ) {
+    initAdsConfig();
     this.initKeyWordsFromCookies();
     this.initPositionKeyWords();
     this.initGoogletagConfig();
