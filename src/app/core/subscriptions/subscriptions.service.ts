@@ -50,7 +50,6 @@ export enum SUBSCRIPTION_TYPES {
 export class SubscriptionsService {
   public uuid: string;
   public fullName: string;
-  public PAYMENT_PROVIDER_STRIPE = false;
   public subscriptions: SubscriptionsResponse[];
   private _userSubscriptionType: SUBSCRIPTION_TYPES;
   private _subscriptionBenefits: SubscriptionBenefit[];

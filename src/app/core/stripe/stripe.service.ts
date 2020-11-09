@@ -30,7 +30,6 @@ export class StripeService {
   public elements: any;
 
   public fullName: string;
-  public PAYMENT_PROVIDER_STRIPE = false;
   private financialCards: FinancialCard[];
 
   constructor(
