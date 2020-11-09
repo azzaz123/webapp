@@ -1,7 +1,6 @@
 import { IOption } from './option.interface';
 
 export class Option {
-
   wrappedOption: IOption;
 
   disabled: boolean;

@@ -14,20 +14,20 @@ describe('UrgentCheckboxComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UrgentCheckboxComponent, CustomCurrencyPipe ],
-        providers: [
-          DecimalPipe,
-          {
-            provide: PaymentService, useValue: {
+      declarations: [UrgentCheckboxComponent, CustomCurrencyPipe],
+      providers: [
+        DecimalPipe,
+        {
+          provide: PaymentService,
+          useValue: {
             getCreditInfo() {
               return of({});
-            }
-          }
-          }
-        ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+            },
+          },
+        },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -41,7 +41,7 @@ describe('UrgentCheckboxComponent', () => {
       const creditInfo: CreditInfo = {
         currencyName: 'wallacoins',
         credit: 2000,
-        factor: 100
+        factor: 100,
       };
       spyOn(paymentService, 'getCreditInfo').and.returnValue(of(creditInfo));
 
@@ -56,7 +56,7 @@ describe('UrgentCheckboxComponent', () => {
 
     it('select', () => {
       component.isUrgent = false;
-      component.urgentSelected.subscribe( (b: boolean) => {
+      component.urgentSelected.subscribe((b: boolean) => {
         selected = b;
       });
 
@@ -68,7 +68,7 @@ describe('UrgentCheckboxComponent', () => {
 
     it('unselect', () => {
       component.isUrgent = true;
-      component.urgentSelected.subscribe( (b: boolean) => {
+      component.urgentSelected.subscribe((b: boolean) => {
         selected = b;
       });
 
@@ -78,5 +78,4 @@ describe('UrgentCheckboxComponent', () => {
       expect(selected).toBe(false);
     });
   });
-
 });

@@ -1,5 +1,11 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { SearchInputComponent } from './search-input.component';
 import { I18nService } from '../../core/i18n/i18n.service';
@@ -10,11 +16,10 @@ describe('SearchInputComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-        declarations: [SearchInputComponent],
-        providers: [I18nService],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA]
-      })
-      .compileComponents();
+      declarations: [SearchInputComponent],
+      providers: [I18nService],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -41,8 +46,8 @@ describe('SearchInputComponent', () => {
       spyOn(component.deleteSearch, 'emit');
       component.input = {
         nativeElement: {
-          value: 'mesa'
-        }
+          value: 'mesa',
+        },
       };
 
       component.closeSearch(new Event(''));
@@ -53,8 +58,8 @@ describe('SearchInputComponent', () => {
     it('should set the input field to empty', () => {
       component.input = {
         nativeElement: {
-          value: 'mesa'
-        }
+          value: 'mesa',
+        },
       };
 
       component.closeSearch(new Event(''));

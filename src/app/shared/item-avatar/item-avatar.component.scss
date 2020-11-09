@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 div {
   @include square-avatar($item-avatar-size);
@@ -6,7 +6,7 @@ div {
   display: flex;
   position: relative;
   &.transition {
-    transition: height 1s, width 1s
+    transition: height 1s, width 1s;
   }
   &.small {
     @include square-avatar($item-avatar-size-small);
@@ -45,7 +45,7 @@ div {
   background-color: $blue-grey-1;
   position: absolute;
   @include square-avatar(100%);
-  opacity: .5;
+  opacity: 0.5;
   z-index: 1;
   .small & {
     display: none;
@@ -53,7 +53,11 @@ div {
 }
 
 $sold-width: 32px;
-.sold, .reserved, .featured, .urgent, .not-available {
+.sold,
+.reserved,
+.featured,
+.urgent,
+.not-available {
   @include square($sold-width);
   border-radius: 50%;
   display: flex;

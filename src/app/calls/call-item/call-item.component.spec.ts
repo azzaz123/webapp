@@ -1,4 +1,3 @@
-
 import { of } from 'rxjs';
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -22,28 +21,26 @@ describe('CallItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        NoopAnimationsModule,
-      ],
+      imports: [NoopAnimationsModule],
       declarations: [CallItemComponent, CallStatusLabelPipe, DateCalendarPipe],
       providers: [
         I18nService,
         { provide: TrackingService, useClass: MockTrackingService },
         {
-          provide: ActivatedRoute, useValue: {
-            queryParams: of({})
-          }
+          provide: ActivatedRoute,
+          useValue: {
+            queryParams: of({}),
+          },
         },
         {
-          provide: CallsService, useValue: {
-            stream() {
-            }
-          }
+          provide: CallsService,
+          useValue: {
+            stream() {},
+          },
         },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

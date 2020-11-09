@@ -17,22 +17,22 @@ describe('ItemsStatsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [CommonModule],
-      declarations: [ ItemsStatsComponent ],
+      declarations: [ItemsStatsComponent],
       providers: [
         {
-          provide: ItemService, useValue: {
-          mine() {
-            return of({data: [MOCK_ITEM, MOCK_ITEM], init: 20})
+          provide: ItemService,
+          useValue: {
+            mine() {
+              return of({ data: [MOCK_ITEM, MOCK_ITEM], init: 20 });
+            },
+            getCheapestProductPrice() {
+              return of(PRICES);
+            },
           },
-          getCheapestProductPrice() {
-            return of(PRICES);
-          }
-        }
-        }
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -58,7 +58,10 @@ describe('ItemsStatsComponent', () => {
 
       fixture.detectChanges();
 
-      expect(itemService.getCheapestProductPrice).toHaveBeenCalledWith(['9jd7ryx5odjk', '9jd7ryx5odjk']);
+      expect(itemService.getCheapestProductPrice).toHaveBeenCalledWith([
+        '9jd7ryx5odjk',
+        '9jd7ryx5odjk',
+      ]);
       expect(component.prices).toEqual(PRICES);
     });
   });

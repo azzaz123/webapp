@@ -11,11 +11,10 @@ describe('ExitConfirmationModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ExitConfirmationModalComponent ],
+      declarations: [ExitConfirmationModalComponent],
       providers: [NgbActiveModal],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

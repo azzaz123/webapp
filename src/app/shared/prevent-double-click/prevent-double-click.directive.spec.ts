@@ -1,16 +1,15 @@
-
 import { Component, NO_ERRORS_SCHEMA, HostListener } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { PreventDoubleClickDirective } from './prevent-double-click.directive'
-import { ButtonComponent } from '../button/button.component'
+import { PreventDoubleClickDirective } from './prevent-double-click.directive';
+import { ButtonComponent } from '../button/button.component';
 
 @Component({
-  template: `<button preventDoubleClick></button>`
+  template: `<button preventDoubleClick></button>`,
 })
 class TestComponent {
   alreadyClicked: boolean;
-  
-  constructor() { }
+
+  constructor() {}
 
   @HostListener('click', ['$event'])
   clickEvent(event) {
@@ -19,7 +18,7 @@ class TestComponent {
       event.stopPropagation();
     } else {
       this.alreadyClicked = true;
-      setTimeout( () => this.alreadyClicked = false, 500);
+      setTimeout(() => (this.alreadyClicked = false), 500);
     }
   }
 }
@@ -30,11 +29,14 @@ describe('PreventDoubleClickDirective', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PreventDoubleClickDirective, ButtonComponent, TestComponent ],
+      declarations: [
+        PreventDoubleClickDirective,
+        ButtonComponent,
+        TestComponent,
+      ],
       providers: [],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -55,7 +57,7 @@ describe('PreventDoubleClickDirective', () => {
 
       component.clickEvent(event);
       fixture.detectChanges();
-      
+
       expect(event.preventDefault).toHaveBeenCalled();
       expect(event.stopPropagation).toHaveBeenCalled();
     });

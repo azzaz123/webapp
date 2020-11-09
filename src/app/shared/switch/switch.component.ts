@@ -1,6 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter, forwardRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  forwardRef,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-
 
 @Component({
   selector: 'tsl-switch',
@@ -15,7 +21,6 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ],
 })
 export class SwitchComponent implements ControlValueAccessor {
-
   @Input() disabled = false;
   @Output() onChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   checked = false;
@@ -25,7 +30,7 @@ export class SwitchComponent implements ControlValueAccessor {
   private onModelChange: any = () => {};
   private onTouched: any = () => {};
 
-  constructor() { }
+  constructor() {}
 
   switchOnChange($event) {
     this.model = $event.target.checked;
@@ -54,5 +59,4 @@ export class SwitchComponent implements ControlValueAccessor {
   public registerOnTouched(fn: Function): void {
     this.onTouched = fn;
   }
-
 }

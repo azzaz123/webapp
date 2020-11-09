@@ -4,8 +4,8 @@ export interface UserStats {
 }
 
 export interface UserStatsResponse {
-  ratings: [{ type: string, value: number }],
-  counters: [{ type: string, value: number }]
+  ratings: [{ type: string; value: number }];
+  counters: [{ type: string; value: number }];
 }
 
 export interface Ratings {

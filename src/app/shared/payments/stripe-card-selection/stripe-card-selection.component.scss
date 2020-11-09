@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 .select-card {
   margin-bottom: $spacing-s;
@@ -23,7 +23,7 @@
   .btn {
     width: 100%;
     border-radius: $border-radius;
-    border: 1px solid rgba($blue-grey-5, .5);
+    border: 1px solid rgba($blue-grey-5, 0.5);
     display: flex;
     font-size: $font-size-xs;
     align-items: center;
@@ -36,7 +36,8 @@
     .card-icon {
       flex: 0 0 34px;
       ::ng-deep svg {
-        rect, path {
+        rect,
+        path {
           transition: $transition-base;
         }
       }

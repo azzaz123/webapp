@@ -1,11 +1,10 @@
-@import "~style/common";
+@import '~style/common';
 
 :host {
   display: block;
   margin-bottom: $spacing-xs;
   line-height: $line-height-ml;
   overflow: hidden;
-
 }
 
 h5 {
@@ -52,12 +51,23 @@ h5 {
   width: 20px;
   height: 20px;
   background: center bottom no-repeat;
-  &.pending { background-image: url(/assets/icons/msg-status-pending.svg); }
-  &.sent { background-image: url(/assets/icons/msg-status-sent.svg); }
-  &.received { background-image: url(/assets/icons/msg-status-received.svg); }
-  &.read { background-image: url(/assets/icons/msg-status-read-wallaColor.svg); }
-  &.error { background-image: url(/assets/icons/msg-status-error.svg); }
-  &.received, &.read {
+  &.pending {
+    background-image: url(/assets/icons/msg-status-pending.svg);
+  }
+  &.sent {
+    background-image: url(/assets/icons/msg-status-sent.svg);
+  }
+  &.received {
+    background-image: url(/assets/icons/msg-status-received.svg);
+  }
+  &.read {
+    background-image: url(/assets/icons/msg-status-read-wallaColor.svg);
+  }
+  &.error {
+    background-image: url(/assets/icons/msg-status-error.svg);
+  }
+  &.received,
+  &.read {
     right: 12px;
   }
 }

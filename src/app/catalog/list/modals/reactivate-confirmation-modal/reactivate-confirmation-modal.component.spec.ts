@@ -1,6 +1,11 @@
-
 import { of } from 'rxjs';
-import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  TestBed,
+  tick,
+  fakeAsync,
+} from '@angular/core/testing';
 
 import { ReactivateConfirmationModalComponent } from './reactivate-confirmation-modal.component';
 import { DecimalPipe } from '@angular/common';
@@ -18,20 +23,22 @@ describe('ReactivateConfirmationModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ReactivateConfirmationModalComponent, CustomCurrencyPipe ],
-      providers: [NgbActiveModal, DecimalPipe,
+      declarations: [ReactivateConfirmationModalComponent, CustomCurrencyPipe],
+      providers: [
+        NgbActiveModal,
+        DecimalPipe,
         EventService,
         {
-          provide: PaymentService, useValue: {
-          getCreditInfo() {
-            return of({});
-          }
-        }
-        }
+          provide: PaymentService,
+          useValue: {
+            getCreditInfo() {
+              return of({});
+            },
+          },
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -46,7 +53,7 @@ describe('ReactivateConfirmationModalComponent', () => {
       const creditInfo: CreditInfo = {
         currencyName: 'wallacoins',
         credit: 2000,
-        factor: 100
+        factor: 100,
       };
       spyOn(paymentService, 'getCreditInfo').and.returnValue(of(creditInfo));
 
@@ -60,7 +67,7 @@ describe('ReactivateConfirmationModalComponent', () => {
       const creditInfo: CreditInfo = {
         currencyName: 'wallacoins',
         credit: 0,
-        factor: 100
+        factor: 100,
       };
       spyOn(paymentService, 'getCreditInfo').and.returnValue(of(creditInfo));
 
@@ -70,7 +77,7 @@ describe('ReactivateConfirmationModalComponent', () => {
       expect(component.creditInfo).toEqual({
         currencyName: 'wallacredits',
         credit: 0,
-        factor: 1
+        factor: 1,
       });
     }));
   });

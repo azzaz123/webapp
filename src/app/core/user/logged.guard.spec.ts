@@ -16,16 +16,14 @@ describe('LoggedGuard', (): void => {
         LoggedGuard,
         AccessTokenService,
         {
-          provide: CookieService, useValue: {
-            put(value) {
-            },
-            remove() {
-            },
-            get() {
-            }
-          }
-        }
-      ]
+          provide: CookieService,
+          useValue: {
+            put(value) {},
+            remove() {},
+            get() {},
+          },
+        },
+      ],
     });
     loggedGuard = TestBed.inject(LoggedGuard);
     accessTokenService = TestBed.inject(AccessTokenService);
@@ -40,17 +38,24 @@ describe('LoggedGuard', (): void => {
   describe('canActivate', (): void => {
     describe('when the user is logged out', () => {
       it('should deny access and redirect to SEO web with pending redirect', () => {
-        const decriptAux =
-          (toDecrypt: string) => CryptoJSAES.decrypt(decodeURIComponent(toDecrypt), REDIRECT_SECRET).toString(CryptoEUTF8);
+        const decriptAux = (toDecrypt: string) =>
+          CryptoJSAES.decrypt(
+            decodeURIComponent(toDecrypt),
+            REDIRECT_SECRET
+          ).toString(CryptoEUTF8);
         const expectedUrl = `${environment.siteUrl}login?redirectUrl=`;
         const expectedRedirectQueryParam = window.location.href;
 
         const result = loggedGuard.canActivate();
-        const resultRedirectQueryParam = window.location.href.split('?')[1].replace('redirectUrl=', '');
+        const resultRedirectQueryParam = window.location.href
+          .split('?')[1]
+          .replace('redirectUrl=', '');
 
         expect(result).toEqual(false);
         expect(window.location.href.startsWith(expectedUrl)).toEqual(true);
-        expect(decriptAux(resultRedirectQueryParam)).toEqual(expectedRedirectQueryParam);
+        expect(decriptAux(resultRedirectQueryParam)).toEqual(
+          expectedRedirectQueryParam
+        );
       });
     });
 
@@ -66,23 +71,29 @@ describe('LoggedGuard', (): void => {
         expect(window.location.href.startsWith(notExpectedUrl)).toEqual(false);
       });
     });
-
   });
 
   describe('canLoad', () => {
     describe('when the user is logged out', () => {
       it('should deny access and redirect to SEO web with pending redirect', () => {
-        const decriptAux =
-          (toDecrypt: string) => CryptoJSAES.decrypt(decodeURIComponent(toDecrypt), REDIRECT_SECRET).toString(CryptoEUTF8);
+        const decriptAux = (toDecrypt: string) =>
+          CryptoJSAES.decrypt(
+            decodeURIComponent(toDecrypt),
+            REDIRECT_SECRET
+          ).toString(CryptoEUTF8);
         const expectedUrl = `${environment.siteUrl}login?redirectUrl=`;
         const expectedRedirectQueryParam = window.location.href;
 
         const result = loggedGuard.canActivate();
-        const resultRedirectQueryParam = window.location.href.split('?')[1].replace('redirectUrl=', '');
+        const resultRedirectQueryParam = window.location.href
+          .split('?')[1]
+          .replace('redirectUrl=', '');
 
         expect(result).toEqual(false);
         expect(window.location.href.startsWith(expectedUrl)).toEqual(true);
-        expect(decriptAux(resultRedirectQueryParam)).toEqual(expectedRedirectQueryParam);
+        expect(decriptAux(resultRedirectQueryParam)).toEqual(
+          expectedRedirectQueryParam
+        );
       });
     });
 

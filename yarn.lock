@@ -1325,11 +1325,6 @@
     rxjs "6.5.4"
     webpack-sources "1.4.3"
 
-"@ngu/carousel@^2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@ngu/carousel/-/carousel-2.0.3.tgz#fcc094c8c653f97ec9ba9e77c239b4576e10600b"
-  integrity sha512-wWASwYI8A0ATK3l7FuN77alC0WYTMh21+8rHazEoZd2KuEB4EY175Xnv9inLDUigWOt+hrZifyKwBj4oSeOIJQ==
-
 "@schematics/angular@9.1.1":
   version "9.1.1"
   resolved "https://registry.yarnpkg.com/@schematics/angular/-/angular-9.1.1.tgz#5069f8f214fa2effb68a937cfb808ec612debe96"
@@ -1425,10 +1420,6 @@
   integrity sha512-AiHRaEB50LQg0pZmm659vNBb9f4SJ0qrAnteuzhSeAUcJKxoYgEnprg/83kppCnc2zvtCKbdZry1a5pVY3lOTQ==
   dependencies:
     "@types/node" "*"
-
-"@types/hammerjs@^2.0.35":
-  version "2.0.35"
-  resolved "https://registry.yarnpkg.com/@types/hammerjs/-/hammerjs-2.0.35.tgz#7b7c950c7d54593e23bffc8d2b4feba9866a7277"
 
 "@types/heremaps@3.0.12":
   version "3.0.12"
@@ -3121,7 +3112,7 @@ core-js@^1.0.0:
   version "1.2.7"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-1.2.7.tgz#652294c14651db28fa93bd2d5ff2983a4f08c636"
 
-core-js@^2.4.0, core-js@^2.5.7:
+core-js@^2.4.0:
   version "2.5.7"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.7.tgz#f972608ff0cead68b841a16a932d0b183791814e"
 
@@ -4569,11 +4560,6 @@ gzip-size@^5.0.0:
     duplexer "^0.1.1"
     pify "^4.0.1"
 
-hammerjs@^2.0.8:
-  version "2.0.8"
-  resolved "https://registry.yarnpkg.com/hammerjs/-/hammerjs-2.0.8.tgz#04ef77862cff2bb79d30f7692095930222bf60f1"
-  integrity sha1-BO93hiz/K7edMPdpIJWTAiK/YPE=
-
 handle-thing@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/handle-thing/-/handle-thing-2.0.1.tgz#857f79ce359580c340d43081cc648970d0bb234e"
@@ -4969,10 +4955,6 @@ indent-string@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/indent-string/-/indent-string-4.0.0.tgz#624f8f4497d619b2d9768531d58f4122854d7251"
   integrity sha512-EdDDZu4A2OyIK7Lr/2zG+w5jmbuk1DVBnEwREQvBzspBJkCEbRa8GxU1lghYcaGJCnRWibjDXlq779X1/y5xwg==
-
-indexeddb-getall-shim@^1.3.5:
-  version "1.3.5"
-  resolved "https://registry.yarnpkg.com/indexeddb-getall-shim/-/indexeddb-getall-shim-1.3.5.tgz#cdc8eda69a858d1c2534a288ceccf9ef53e818a7"
 
 indexes-of@^1.0.1:
   version "1.0.1"

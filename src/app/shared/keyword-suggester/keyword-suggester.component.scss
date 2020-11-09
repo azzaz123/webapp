@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 .keyword-suggester {
   width: 100%;
@@ -9,7 +9,8 @@
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   padding: $spacing-s $spacing-ms;
   cursor: pointer;
-  &:active, &:focus {
+  &:active,
+  &:focus {
     border: 1px solid $walla-main;
   }
   &::placeholder {
@@ -38,12 +39,13 @@
     color: $blue-grey-1;
     border-bottom: 1px solid $blue-grey-5;
     padding: 8px 20px;
-    transition: all .15s linear;
+    transition: all 0.15s linear;
     display: flex;
     flex-direction: column;
     justify-content: center;
     min-height: 57px;
-    &:hover, &.active {
+    &:hover,
+    &.active {
       background-color: $blue-grey-5;
     }
   }

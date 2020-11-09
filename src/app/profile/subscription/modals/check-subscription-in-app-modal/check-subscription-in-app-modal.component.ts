@@ -5,11 +5,9 @@ import { SUPPORT_MAIL } from '../../../../core/constants';
 @Component({
   selector: 'tsl-check-subscription-in-app-modal',
   templateUrl: './check-subscription-in-app-modal.component.html',
-  styleUrls: ['./check-subscription-in-app-modal.component.scss']
+  styleUrls: ['./check-subscription-in-app-modal.component.scss'],
 })
 export class CheckSubscriptionInAppModalComponent {
-
   public supportMail = SUPPORT_MAIL;
-  constructor(public activeModal: NgbActiveModal) { }
-
+  constructor(public activeModal: NgbActiveModal) {}
 }

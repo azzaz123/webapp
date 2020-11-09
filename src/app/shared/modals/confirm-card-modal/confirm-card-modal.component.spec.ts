@@ -11,20 +11,18 @@ describe('ConfirmCardModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-        declarations: [ConfirmCardModalComponent],
-        providers: [
-          {
-            provide: NgbActiveModal, useValue: {
-              close() {
-              },
-              dismiss() {
-              }
-            }
+      declarations: [ConfirmCardModalComponent],
+      providers: [
+        {
+          provide: NgbActiveModal,
+          useValue: {
+            close() {},
+            dismiss() {},
           },
-        ],
-        schemas: [NO_ERRORS_SCHEMA]
-      })
-      .compileComponents();
+        },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -42,8 +40,5 @@ describe('ConfirmCardModalComponent', () => {
 
       expect(activeModal.close).toHaveBeenCalledWith('changeCardModal');
     });
-
   });
-
-
 });

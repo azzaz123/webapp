@@ -9,25 +9,25 @@ import { StatusIconComponent } from '../status-icon';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('Component: UserAvatar', () => {
-
   let component: UserAvatarComponent;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
+      imports: [],
+      declarations: [
+        UserAvatarComponent,
+        SanitizedBackgroundDirective,
+        StatusIconComponent,
       ],
-      declarations: [UserAvatarComponent, SanitizedBackgroundDirective, StatusIconComponent],
-      providers: [
-        UserAvatarComponent
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      providers: [UserAvatarComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     });
     component = TestBed.createComponent(UserAvatarComponent).componentInstance;
   });
 
   describe('with user image', () => {
-
-    const IMAGE_URL = 'https://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320';
+    const IMAGE_URL =
+      'https://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320';
 
     beforeEach(() => {
       IMAGE.urls_by_size.medium = IMAGE_URL;
@@ -42,12 +42,12 @@ describe('Component: UserAvatar', () => {
 
     it('should update imageUrl', () => {
       const imageObject = {
-        test: 'test'
+        test: 'test',
       };
       const changes = {
         imageUrl: {
-          currentValue: imageObject
-        }
+          currentValue: imageObject,
+        },
       };
 
       component.ngOnChanges(changes);
@@ -65,5 +65,4 @@ describe('Component: UserAvatar', () => {
       expect(component['avatar']).toBe(PLACEHOLDER_AVATAR);
     });
   });
-
 });

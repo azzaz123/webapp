@@ -6,14 +6,7 @@ import { HaversineService } from 'ng2-haversine';
 import { FeatureflagService } from './featureflag.service';
 
 @NgModule({
-  imports: [
-    SharedModule,
-    ItemModule
-  ],
-  providers: [
-    UserService,
-    HaversineService,
-    FeatureflagService
-  ]
+  imports: [SharedModule, ItemModule],
+  providers: [UserService, HaversineService, FeatureflagService],
 })
-export class UserModule { }
+export class UserModule {}

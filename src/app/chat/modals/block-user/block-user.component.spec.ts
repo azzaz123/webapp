@@ -10,9 +10,8 @@ describe('BlockUserComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       providers: [NgbActiveModal],
-      declarations: [ BlockUserComponent ]
-    })
-    .compileComponents();
+      declarations: [BlockUserComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

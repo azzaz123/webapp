@@ -10,13 +10,12 @@ export const ASK_PERMISSIONS_TIMEOUT_MS = 5000;
 
 @Injectable()
 export class DesktopNotificationsService {
-
   private showNotifications = false;
 
   constructor(
     private trackingService: TrackingService,
-    private i18n: I18nService) {
-  }
+    private i18n: I18nService
+  ) {}
 
   public init(): void {
     if (!this.browserSupportsNotifications() || this.showNotifications) {
@@ -25,12 +24,17 @@ export class DesktopNotificationsService {
     this.askForPermissions();
   }
 
-  public sendFromInboxMessage(message: InboxMessage, conversation: InboxConversation): void {
+  public sendFromInboxMessage(
+    message: InboxMessage,
+    conversation: InboxConversation
+  ): void {
     if (!this.canShowNotifications()) {
       return;
     }
     const notification = this.createFromInboxMessage(message, conversation);
-    notification.addEventListener('close', () => this.trackNotificationReceived(message));
+    notification.addEventListener('close', () =>
+      this.trackNotificationReceived(message)
+    );
   }
 
   public browserSupportsNotifications(): boolean {
@@ -38,7 +42,11 @@ export class DesktopNotificationsService {
   }
 
   public canShowNotifications(): boolean {
-    return this.showNotifications && this.browserSupportsNotifications() && this.documentIsHidden();
+    return (
+      this.showNotifications &&
+      this.browserSupportsNotifications() &&
+      this.documentIsHidden()
+    );
   }
 
   private documentIsHidden(): boolean {
@@ -47,14 +55,19 @@ export class DesktopNotificationsService {
 
   // Delaying the request due to browsers recommendation
   private askForPermissions(): void {
-    of({}).pipe(delay(ASK_PERMISSIONS_TIMEOUT_MS)).subscribe(() => {
-      Notification.requestPermission().then(permission => {
-        this.showNotifications = permission === 'granted';
+    of({})
+      .pipe(delay(ASK_PERMISSIONS_TIMEOUT_MS))
+      .subscribe(() => {
+        Notification.requestPermission().then((permission) => {
+          this.showNotifications = permission === 'granted';
+        });
       });
-    });
   }
 
-  private createFromInboxMessage(message: InboxMessage, conversation: InboxConversation): Notification {
+  private createFromInboxMessage(
+    message: InboxMessage,
+    conversation: InboxConversation
+  ): Notification {
     return new Notification(
       this.buildTitleFromConversation(conversation),
       this.buildOptionsFromConversation(message, conversation)
@@ -62,10 +75,15 @@ export class DesktopNotificationsService {
   }
 
   private buildTitleFromConversation(conversation: InboxConversation): string {
-    return `${this.i18n.getTranslations('newMessageNotification')}${conversation.user.microName}`;
+    return `${this.i18n.getTranslations('newMessageNotification')}${
+      conversation.user.microName
+    }`;
   }
 
-  private buildOptionsFromConversation(message: InboxMessage, conversation: InboxConversation): NotificationOptions {
+  private buildOptionsFromConversation(
+    message: InboxMessage,
+    conversation: InboxConversation
+  ): NotificationOptions {
     const image = conversation.user.avatarUrl || PLACEHOLDER_AVATAR;
 
     return {
@@ -73,15 +91,14 @@ export class DesktopNotificationsService {
       icon: image,
       image,
       badge: image,
-      timestamp: message.date.getTime()
+      timestamp: message.date.getTime(),
     };
   }
 
   private trackNotificationReceived(message: InboxMessage): void {
     this.trackingService.track(TrackingService.NOTIFICATION_RECEIVED, {
       thread_id: message.thread,
-      message_id: message.id
+      message_id: message.id,
     });
   }
-
 }

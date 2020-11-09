@@ -17,19 +17,19 @@ describe('ArchiveButtonComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       providers: [
-        {provide: TrackingService, useClass: MockTrackingService},
+        { provide: TrackingService, useClass: MockTrackingService },
         {
-          provide: CallsService, useValue: {
+          provide: CallsService,
+          useValue: {
             archive() {
               return of({});
-            }
-          }
-        }
+            },
+          },
+        },
       ],
       declarations: [ArchiveButtonComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -57,9 +57,10 @@ describe('ArchiveButtonComponent', () => {
       component.archive(new Event(''));
 
       expect(callsService.archive).toHaveBeenCalledWith(CALL_ID);
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CALLS_PROCESSED);
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.CALLS_PROCESSED
+      );
     });
-
 
     it('should emit click event', () => {
       spyOn(callsService, 'archive').and.callThrough();

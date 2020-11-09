@@ -4,66 +4,88 @@ import { Realestate } from '../app/core/item/realestate';
 import { ITEM_ID } from './item.fixtures.spec';
 
 export const REALESTATE_CONTENT_DATA = {
-  'id': '9g0j2rev6ymw',
-  'sale_price': 10000,
-  'currency_code': 'EUR',
-  'seller_id': 'l1kmzn82zn3p',
-  'modified_date': 1530196347443,
-  'images': [{
-    'id': 'rnpj9geo6e75',
-    'original_width': 1088,
-    'original_height': 734,
-    'average_hex_color': '818d9e',
-    'urls_by_size': {
-      'original': 'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2013.jpg?pictureSize=W1024',
-      'xmall': 'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2013.jpg?pictureSize=W320',
-      'small': 'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2013.jpg?pictureSize=W320',
-      'large': 'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2013.jpg?pictureSize=W800',
-      'medium': 'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2013.jpg?pictureSize=W640',
-      'xlarge': 'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2013.jpg?pictureSize=W1024'
-    }
-  }, {
-    'id': 'y436envq6dgp',
-    'original_width': 2000,
-    'original_height': 1500,
-    'average_hex_color': '7d9284',
-    'urls_by_size': {
-      'original': 'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2015.jpg?pictureSize=W1024',
-      'xmall': 'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2015.jpg?pictureSize=W320',
-      'small': 'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2015.jpg?pictureSize=W320',
-      'large': 'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2015.jpg?pictureSize=W800',
-      'medium': 'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2015.jpg?pictureSize=W640',
-      'xlarge': 'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2015.jpg?pictureSize=W1024'
-    }
-  }],
-  'url': 'http://dock133.wallapop.com/i/2011?_pid=wi&_uid=101',
-  'title': 'title',
-  'storytelling': 'storytelling',
-  'flags': {'pending': false, 'sold': false, 'reserved': false, 'banned': false, 'expired': false, 'onhold': false},
-  'operation': 'buy',
-  'type': 'apartment',
-  'condition': 'new_construction',
-  'surface': 100,
-  'rooms': 4,
-  'bathrooms': 2,
-  'location': {
-    'address': 'España, Barcelona',
-    'approximated_location': true,
-    'latitude': 41.38804,
-    'longitude': 2.17001
+  id: '9g0j2rev6ymw',
+  sale_price: 10000,
+  currency_code: 'EUR',
+  seller_id: 'l1kmzn82zn3p',
+  modified_date: 1530196347443,
+  images: [
+    {
+      id: 'rnpj9geo6e75',
+      original_width: 1088,
+      original_height: 734,
+      average_hex_color: '818d9e',
+      urls_by_size: {
+        original:
+          'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2013.jpg?pictureSize=W1024',
+        xmall:
+          'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2013.jpg?pictureSize=W320',
+        small:
+          'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2013.jpg?pictureSize=W320',
+        large:
+          'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2013.jpg?pictureSize=W800',
+        medium:
+          'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2013.jpg?pictureSize=W640',
+        xlarge:
+          'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2013.jpg?pictureSize=W1024',
+      },
+    },
+    {
+      id: 'y436envq6dgp',
+      original_width: 2000,
+      original_height: 1500,
+      average_hex_color: '7d9284',
+      urls_by_size: {
+        original:
+          'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2015.jpg?pictureSize=W1024',
+        xmall:
+          'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2015.jpg?pictureSize=W320',
+        small:
+          'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2015.jpg?pictureSize=W320',
+        large:
+          'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2015.jpg?pictureSize=W800',
+        medium:
+          'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2015.jpg?pictureSize=W640',
+        xlarge:
+          'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2015.jpg?pictureSize=W1024',
+      },
+    },
+  ],
+  url: 'http://dock133.wallapop.com/i/2011?_pid=wi&_uid=101',
+  title: 'title',
+  storytelling: 'storytelling',
+  flags: {
+    pending: false,
+    sold: false,
+    reserved: false,
+    banned: false,
+    expired: false,
+    onhold: false,
   },
-  'garage': true,
-  'terrace': false,
-  'elevator': false,
-  'pool': true,
-  'garden': false,
-  'web_slug': '32424-2011'
+  operation: 'buy',
+  type: 'apartment',
+  condition: 'new_construction',
+  surface: 100,
+  rooms: 4,
+  bathrooms: 2,
+  location: {
+    address: 'España, Barcelona',
+    approximated_location: true,
+    latitude: 41.38804,
+    longitude: 2.17001,
+  },
+  garage: true,
+  terrace: false,
+  elevator: false,
+  pool: true,
+  garden: false,
+  web_slug: '32424-2011',
 };
 
 export const REALESTATE_DATA = {
-  'id': '9g0j2rev6ymw',
-  'type': 'real_estate',
-  'content': REALESTATE_CONTENT_DATA
+  id: '9g0j2rev6ymw',
+  type: 'real_estate',
+  content: REALESTATE_CONTENT_DATA,
 };
 
 export const UPLOAD_FORM_REALESTATE_VALUES: RealEstateUploadForm = {
@@ -84,13 +106,13 @@ export const UPLOAD_FORM_REALESTATE_VALUES: RealEstateUploadForm = {
   elevator: false,
   pool: false,
   garden: false,
-  images: [{'image': true}],
+  images: [{ image: true }],
   location: {
     address: USER_LOCATION.title,
     latitude: USER_LOCATION.approximated_latitude,
     longitude: USER_LOCATION.approximated_longitude,
-    approximated_location: false
-  }
+    approximated_location: false,
+  },
 };
 
 export const MOCK_REALESTATE: Realestate = new Realestate(

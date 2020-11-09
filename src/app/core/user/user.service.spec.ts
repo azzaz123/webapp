@@ -1,8 +1,37 @@
-
 import { of } from 'rxjs';
-import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { UserService, LOGIN_ENDPOINT, LOGOUT_ENDPOINT, USER_ONLINE_ENDPOINT, PROTOOL_EXTRA_INFO_ENDPOINT, USER_LOCATION_ENDPOINT, USER_STORE_LOCATION_ENDPOINT, USER_STATS_ENDPOINT, USER_STATS_BY_ID_ENDPOINT, USER_ENDPOINT, USER_EMAIL_ENDPOINT, USER_PASSWORD_ENDPOINT, USER_UNSUBSCRIBE_REASONS_ENDPOINT, USER_UNSUBSCRIBE_ENDPOINT, USER_PROFILE_SUBSCRIPTION_INFO_TYPE_ENDPOINT, USER_BY_ID_ENDPOINT, USER_PROFILE_SUBSCRIPTION_INFO_ENDPOINT, USER_REPORT_ENDPOINT, USER_COVER_IMAGE_ENDPOINT, USER_PHONE_INFO_ENDPOINT, USER_EXTRA_INFO_ENDPOINT } from './user.service';
+import {
+  discardPeriodicTasks,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
+import {
+  UserService,
+  LOGIN_ENDPOINT,
+  LOGOUT_ENDPOINT,
+  USER_ONLINE_ENDPOINT,
+  PROTOOL_EXTRA_INFO_ENDPOINT,
+  USER_LOCATION_ENDPOINT,
+  USER_STORE_LOCATION_ENDPOINT,
+  USER_STATS_ENDPOINT,
+  USER_STATS_BY_ID_ENDPOINT,
+  USER_ENDPOINT,
+  USER_EMAIL_ENDPOINT,
+  USER_PASSWORD_ENDPOINT,
+  USER_UNSUBSCRIBE_REASONS_ENDPOINT,
+  USER_UNSUBSCRIBE_ENDPOINT,
+  USER_PROFILE_SUBSCRIPTION_INFO_TYPE_ENDPOINT,
+  USER_BY_ID_ENDPOINT,
+  USER_PROFILE_SUBSCRIPTION_INFO_ENDPOINT,
+  USER_REPORT_ENDPOINT,
+  USER_COVER_IMAGE_ENDPOINT,
+  USER_PHONE_INFO_ENDPOINT,
+  USER_EXTRA_INFO_ENDPOINT,
+} from './user.service';
 import { HaversineService } from 'ng2-haversine';
 import { ITEM_LOCATION, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
 import { Item } from '../item/item';
@@ -25,7 +54,7 @@ import {
   USER_PRO_DATA,
   USER_PRO_INFO_RESPONSE,
   USERS_STATS,
-  MOCK_USER_STATS
+  MOCK_USER_STATS,
 } from '../../../tests/user.fixtures.spec';
 import { UserStats } from './user-stats.interface';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
@@ -43,7 +72,6 @@ import { PhoneMethod } from '../../chat/model';
 import { HttpParams, HttpRequest } from '@angular/common/http';
 
 describe('Service: User', () => {
-
   let service: UserService;
   let haversineService: HaversineService;
   const FAKE_USER_NAME = 'No disponible';
@@ -57,9 +85,7 @@ describe('Service: User', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule
-      ],
+      imports: [HttpClientTestingModule],
       providers: [
         EventService,
         UserService,
@@ -67,7 +93,8 @@ describe('Service: User', () => {
         HaversineService,
         AccessTokenService,
         {
-          provide: 'SUBDOMAIN', useValue: 'www'
+          provide: 'SUBDOMAIN',
+          useValue: 'www',
         },
         {
           provide: CookieService,
@@ -81,28 +108,26 @@ describe('Service: User', () => {
             },
             remove(key) {
               delete this.cookies[key];
-            }
-          }
+            },
+          },
         },
         {
           provide: NgxPermissionsService,
           useValue: {
-            addPermission() {
-            },
-            flushPermissions() {
-            },
-            hasPermission() {
-            }
-          }
+            addPermission() {},
+            flushPermissions() {},
+            hasPermission() {},
+          },
         },
         {
-          provide: FeatureflagService, useValue: {
+          provide: FeatureflagService,
+          useValue: {
             getFlag() {
               return of(true);
-            }
-          }
-        }
-      ]
+            },
+          },
+        },
+      ],
     });
     service = TestBed.inject(UserService);
     haversineService = TestBed.inject(HaversineService);
@@ -131,7 +156,6 @@ describe('Service: User', () => {
   });
 
   describe('isLogged', () => {
-
     it('should not be logged', () => {
       expect(service.isLogged).toBeFalsy();
     });
@@ -147,8 +171,10 @@ describe('Service: User', () => {
       it('should ask backend and return user', () => {
         let response: User;
 
-        service.get(USER_ID).subscribe(r => response = r);
-        const req = httpMock.expectOne(`${environment.baseUrl}${USER_BY_ID_ENDPOINT(USER_ID)}`);
+        service.get(USER_ID).subscribe((r) => (response = r));
+        const req = httpMock.expectOne(
+          `${environment.baseUrl}${USER_BY_ID_ENDPOINT(USER_ID)}`
+        );
         req.flush(USER_DATA);
 
         expect(req.request.method).toBe('GET');
@@ -161,20 +187,25 @@ describe('Service: User', () => {
         let response: User;
 
         service.get(USER_ID).subscribe();
-        httpMock.expectOne(`${environment.baseUrl}${USER_BY_ID_ENDPOINT(USER_ID)}`).flush(USER_DATA);
-        service.get(USER_ID).subscribe(r => response = r);
-        httpMock.expectNone(`${environment.baseUrl}${USER_BY_ID_ENDPOINT(USER_ID)}`);
+        httpMock
+          .expectOne(`${environment.baseUrl}${USER_BY_ID_ENDPOINT(USER_ID)}`)
+          .flush(USER_DATA);
+        service.get(USER_ID).subscribe((r) => (response = r));
+        httpMock.expectNone(
+          `${environment.baseUrl}${USER_BY_ID_ENDPOINT(USER_ID)}`
+        );
 
         expect(response).toEqual(MOCK_FULL_USER);
       });
-    })
+    });
 
     describe('when there is an error from backend', () => {
       it('should return a fake User object', () => {
         let response: User;
 
-        service.get(USER_ID).subscribe(r => response = r);
-        httpMock.expectOne(`${environment.baseUrl}${USER_BY_ID_ENDPOINT(USER_ID)}`)
+        service.get(USER_ID).subscribe((r) => (response = r));
+        httpMock
+          .expectOne(`${environment.baseUrl}${USER_BY_ID_ENDPOINT(USER_ID)}`)
           .flush({}, { status: 500, statusText: 'Server error' });
 
         expect(response.id).toBe(USER_ID);
@@ -188,8 +219,10 @@ describe('Service: User', () => {
       it('should ask backend', () => {
         let response: User;
 
-        service.me().subscribe(r => response = r);
-        const req = httpMock.expectOne(`${environment.baseUrl}${USER_ENDPOINT}`);
+        service.me().subscribe((r) => (response = r));
+        const req = httpMock.expectOne(
+          `${environment.baseUrl}${USER_ENDPOINT}`
+        );
         req.flush(USER_DATA);
 
         expect(req.request.method).toBe('GET');
@@ -203,7 +236,9 @@ describe('Service: User', () => {
             spyOn(service, 'logout');
 
             service.me().subscribe();
-            const req = httpMock.expectOne(`${environment.baseUrl}${USER_ENDPOINT}`);
+            const req = httpMock.expectOne(
+              `${environment.baseUrl}${USER_ENDPOINT}`
+            );
             req.error(null, { status: 0, statusText: 'Unauthorized' });
 
             expect(service.logout).toHaveBeenCalledTimes(1);
@@ -217,8 +252,10 @@ describe('Service: User', () => {
         let response: User;
 
         service.me().subscribe();
-        httpMock.expectOne(`${environment.baseUrl}${USER_ENDPOINT}`).flush(USER_DATA);
-        service.me().subscribe(r => response = r);
+        httpMock
+          .expectOne(`${environment.baseUrl}${USER_ENDPOINT}`)
+          .flush(USER_DATA);
+        service.me().subscribe((r) => (response = r));
         httpMock.expectNone(`${environment.baseUrl}${USER_ENDPOINT}`);
 
         expect(response).toEqual(MOCK_FULL_USER);
@@ -228,20 +265,26 @@ describe('Service: User', () => {
         let response: User;
 
         service.me().subscribe();
-        httpMock.expectOne(`${environment.baseUrl}${USER_ENDPOINT}`).flush(USER_DATA);
-        service.me(false).subscribe(r => response = r);
-        httpMock.expectOne(`${environment.baseUrl}${USER_ENDPOINT}`).flush(USER_DATA);
+        httpMock
+          .expectOne(`${environment.baseUrl}${USER_ENDPOINT}`)
+          .flush(USER_DATA);
+        service.me(false).subscribe((r) => (response = r));
+        httpMock
+          .expectOne(`${environment.baseUrl}${USER_ENDPOINT}`)
+          .flush(USER_DATA);
       });
     });
   });
 
   describe('checkUserStatus', () => {
-
     it('should emit the LOGIN event if the user is logged', fakeAsync(() => {
       accessTokenService.storeAccessToken('abc');
       spyOn(service['event'], 'emit');
       service.checkUserStatus();
-      expect(service['event'].emit).toHaveBeenCalledWith(EventService.USER_LOGIN, 'abc');
+      expect(service['event'].emit).toHaveBeenCalledWith(
+        EventService.USER_LOGIN,
+        'abc'
+      );
     }));
 
     it('should not emit the LOGIN event if the user is not logged', fakeAsync(() => {
@@ -266,7 +309,7 @@ describe('Service: User', () => {
       service.sendUserPresenceInterval(intervalValue);
       tick(intervalValue * callTimes);
       let requests = httpMock.match(onlineUrl);
-      requests.forEach(request => request.flush({}));
+      requests.forEach((request) => request.flush({}));
 
       expect(requests.length).toBe(callTimes + 1);
       discardPeriodicTasks();
@@ -278,7 +321,7 @@ describe('Service: User', () => {
       service.logout();
       tick(intervalValue * 4);
       let requests = httpMock.match(onlineUrl);
-      requests.forEach(request => request.flush({}));
+      requests.forEach((request) => request.flush({}));
 
       expect(requests.length).toBe(callTimes + 1);
       discardPeriodicTasks();
@@ -291,7 +334,6 @@ describe('Service: User', () => {
       expect(user.id).toBe(USER_ID);
       expect(user.microName).toBe(FAKE_USER_NAME);
     });
-
   });
 
   describe('login', () => {
@@ -299,7 +341,7 @@ describe('Service: User', () => {
     const FORM_INPUT = {
       emailAddress: 'test@test.it',
       installationType: 'ANDROID',
-      password: 'test'
+      password: 'test',
     };
 
     it('should send user login request to backend', () => {
@@ -309,7 +351,7 @@ describe('Service: User', () => {
         .set('password', FORM_INPUT.password)
         .toString();
 
-      service.login(FORM_INPUT).subscribe(r => response = r);
+      service.login(FORM_INPUT).subscribe((r) => (response = r));
       const req = httpMock.expectOne(`${environment.baseUrl}${LOGIN_ENDPOINT}`);
       req.flush(MOCK_USER_RESPONSE_BODY);
 
@@ -324,7 +366,9 @@ describe('Service: User', () => {
       const req = httpMock.expectOne(`${environment.baseUrl}${LOGIN_ENDPOINT}`);
       req.flush(MOCK_USER_RESPONSE_BODY);
 
-      expect(accessTokenService.storeAccessToken).toHaveBeenCalledWith(MOCK_USER_RESPONSE_BODY.token);
+      expect(accessTokenService.storeAccessToken).toHaveBeenCalledWith(
+        MOCK_USER_RESPONSE_BODY.token
+      );
     });
 
     it('should emit event when user logged in successfuly', () => {
@@ -334,8 +378,11 @@ describe('Service: User', () => {
       const req = httpMock.expectOne(`${environment.baseUrl}${LOGIN_ENDPOINT}`);
       req.flush(MOCK_USER_RESPONSE_BODY);
 
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.USER_LOGIN, MOCK_USER_RESPONSE_BODY.token);
-    })
+      expect(eventService.emit).toHaveBeenCalledWith(
+        EventService.USER_LOGIN,
+        MOCK_USER_RESPONSE_BODY.token
+      );
+    });
   });
 
   describe('logout', () => {
@@ -346,7 +393,10 @@ describe('Service: User', () => {
       spyOn(accessTokenService, 'deleteAccessToken').and.callThrough();
       accessTokenService.storeAccessToken('token');
 
-      event.subscribe(EventService.USER_LOGOUT, param => redirectUrl = param);
+      event.subscribe(
+        EventService.USER_LOGOUT,
+        (param) => (redirectUrl = param)
+      );
       cookieService.put('publisherId', 'someId');
 
       service.logout('redirect_url');
@@ -370,7 +420,6 @@ describe('Service: User', () => {
   });
 
   describe('calculateDistanceFromItem', () => {
-
     beforeEach(() => {
       spyOn(haversineService, 'getDistanceInKilometers').and.returnValue(1);
     });
@@ -378,21 +427,19 @@ describe('Service: User', () => {
     it('should call the haversineService and return a number', () => {
       const user: User = MOCK_USER;
       const item: Item = MOCK_ITEM;
-      const user2: User = new User(
-        USER_ID,
-        null,
-        null,
-        ITEM_LOCATION
-      );
+      const user2: User = new User(USER_ID, null, null, ITEM_LOCATION);
       service['_user'] = user2;
       const distance: number = service.calculateDistanceFromItem(user, item);
-      expect(haversineService.getDistanceInKilometers).toHaveBeenCalledWith({
-        latitude: ITEM_LOCATION.approximated_latitude,
-        longitude: ITEM_LOCATION.approximated_longitude
-      }, {
-        latitude: USER_LOCATION.approximated_latitude,
-        longitude: USER_LOCATION.approximated_longitude,
-      });
+      expect(haversineService.getDistanceInKilometers).toHaveBeenCalledWith(
+        {
+          latitude: ITEM_LOCATION.approximated_latitude,
+          longitude: ITEM_LOCATION.approximated_longitude,
+        },
+        {
+          latitude: USER_LOCATION.approximated_latitude,
+          longitude: USER_LOCATION.approximated_longitude,
+        }
+      );
       expect(distance).toBe(1);
     });
 
@@ -404,15 +451,18 @@ describe('Service: User', () => {
       expect(haversineService.getDistanceInKilometers).not.toHaveBeenCalled();
       expect(distance).toBeNull();
     });
-
   });
 
   describe('getInfo', () => {
     it('should call endpoint GET info and return response', () => {
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
-      service.getInfo(USER_ID).subscribe(response => expect(response).toEqual(USER_INFO_RESPONSE));
+      service
+        .getInfo(USER_ID)
+        .subscribe((response) => expect(response).toEqual(USER_INFO_RESPONSE));
 
-      const req = httpMock.expectOne(`${environment.baseUrl}${USER_EXTRA_INFO_ENDPOINT(USER_ID)}`);
+      const req = httpMock.expectOne(
+        `${environment.baseUrl}${USER_EXTRA_INFO_ENDPOINT(USER_ID)}`
+      );
 
       expect(req.request.method).toEqual('GET');
       req.flush(USER_INFO_RESPONSE);
@@ -422,9 +472,15 @@ describe('Service: User', () => {
   describe('getProInfo', () => {
     it('should call endpoint GET phone info and return response', () => {
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
-      service.getProInfo().subscribe(response => expect(response).toEqual(USER_PRO_INFO_RESPONSE));
+      service
+        .getProInfo()
+        .subscribe((response) =>
+          expect(response).toEqual(USER_PRO_INFO_RESPONSE)
+        );
 
-      const req = httpMock.expectOne(`${environment.baseUrl}${PROTOOL_EXTRA_INFO_ENDPOINT}`);
+      const req = httpMock.expectOne(
+        `${environment.baseUrl}${PROTOOL_EXTRA_INFO_ENDPOINT}`
+      );
 
       expect(req.request.method).toEqual('GET');
       req.flush(USER_PRO_INFO_RESPONSE);
@@ -434,18 +490,26 @@ describe('Service: User', () => {
   describe('getUserCover', () => {
     it('should call endpoint GET user cover and return response', () => {
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
-      service.getUserCover().subscribe(response => expect(response).toEqual(IMAGE));
+      service
+        .getUserCover()
+        .subscribe((response) => expect(response).toEqual(IMAGE));
 
-      const req = httpMock.expectOne(`${environment.baseUrl}${USER_COVER_IMAGE_ENDPOINT}`);
+      const req = httpMock.expectOne(
+        `${environment.baseUrl}${USER_COVER_IMAGE_ENDPOINT}`
+      );
       expect(req.request.method).toEqual('GET');
       req.flush(IMAGE);
     });
 
     it('should return empty object if endpoint return error', () => {
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
-      service.getUserCover().subscribe(response => expect(response).toEqual({} as Image));
+      service
+        .getUserCover()
+        .subscribe((response) => expect(response).toEqual({} as Image));
 
-      const req = httpMock.expectOne(`${environment.baseUrl}${USER_COVER_IMAGE_ENDPOINT}`);
+      const req = httpMock.expectOne(
+        `${environment.baseUrl}${USER_COVER_IMAGE_ENDPOINT}`
+      );
       expect(req.request.method).toEqual('GET');
       req.error(new ErrorEvent('network error'));
     });
@@ -468,14 +532,18 @@ describe('Service: User', () => {
     it('should call endpoint and return response', () => {
       let response: UserLocation;
 
-      service.updateLocation(USER_LOCATION_COORDINATES).subscribe(r => response = r);
-      const req = httpMock.expectOne(`${environment.baseUrl}${USER_LOCATION_ENDPOINT}`);
+      service
+        .updateLocation(USER_LOCATION_COORDINATES)
+        .subscribe((r) => (response = r));
+      const req = httpMock.expectOne(
+        `${environment.baseUrl}${USER_LOCATION_ENDPOINT}`
+      );
       req.flush(USER_LOCATION);
 
       expect(req.request.method).toBe('PUT');
       expect(req.request.body).toEqual({
         latitude: USER_LOCATION_COORDINATES.latitude,
-        longitude: USER_LOCATION_COORDINATES.longitude
+        longitude: USER_LOCATION_COORDINATES.longitude,
       });
       expect(response).toEqual(USER_LOCATION);
     });
@@ -485,15 +553,19 @@ describe('Service: User', () => {
     it('should call endpoint and return response', () => {
       let response: UserLocation;
 
-      service.updateStoreLocation(USER_LOCATION_COORDINATES).subscribe(r => response = r);
-      const req = httpMock.expectOne(`${environment.baseUrl}${USER_STORE_LOCATION_ENDPOINT}`);
+      service
+        .updateStoreLocation(USER_LOCATION_COORDINATES)
+        .subscribe((r) => (response = r));
+      const req = httpMock.expectOne(
+        `${environment.baseUrl}${USER_STORE_LOCATION_ENDPOINT}`
+      );
       req.flush(USER_LOCATION);
 
-      expect(req.request.method).toBe('POST')
+      expect(req.request.method).toBe('POST');
       expect(req.request.body).toEqual({
         latitude: USER_LOCATION_COORDINATES.latitude,
         longitude: USER_LOCATION_COORDINATES.longitude,
-        address: USER_LOCATION_COORDINATES.name
+        address: USER_LOCATION_COORDINATES.name,
       });
       expect(response).toEqual(USER_LOCATION);
     });
@@ -504,8 +576,10 @@ describe('Service: User', () => {
       const backendResponse = USERS_STATS;
       let response: UserStats;
 
-      service.getStats().subscribe(r => response = r);
-      const req = httpMock.expectOne(`${environment.baseUrl}${USER_STATS_ENDPOINT}`);
+      service.getStats().subscribe((r) => (response = r));
+      const req = httpMock.expectOne(
+        `${environment.baseUrl}${USER_STATS_ENDPOINT}`
+      );
       req.flush(backendResponse);
 
       expect(req.request.method).toBe('GET');
@@ -518,8 +592,10 @@ describe('Service: User', () => {
       const backendResponse = USERS_STATS;
       let response: UserStats;
 
-      service.getUserStats(USER_ID).subscribe(r => response = r);
-      const req = httpMock.expectOne(`${environment.baseUrl}${USER_STATS_BY_ID_ENDPOINT(USER_ID)}`);
+      service.getUserStats(USER_ID).subscribe((r) => (response = r));
+      const req = httpMock.expectOne(
+        `${environment.baseUrl}${USER_STATS_BY_ID_ENDPOINT(USER_ID)}`
+      );
       req.flush(backendResponse);
 
       expect(req.request.method).toBe('GET');
@@ -532,18 +608,28 @@ describe('Service: User', () => {
       const PHONE_METHOD_RESPONSE = { phone_method: PhoneMethod.CHAT_MESSAGE };
 
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
-      service.getPhoneInfo(USER_ID).subscribe(response => expect(response).toEqual(PHONE_METHOD_RESPONSE));
+      service
+        .getPhoneInfo(USER_ID)
+        .subscribe((response) =>
+          expect(response).toEqual(PHONE_METHOD_RESPONSE)
+        );
 
-      const req = httpMock.expectOne(`${environment.baseUrl}${USER_PHONE_INFO_ENDPOINT(USER_ID)}`);
+      const req = httpMock.expectOne(
+        `${environment.baseUrl}${USER_PHONE_INFO_ENDPOINT(USER_ID)}`
+      );
       expect(req.request.method).toEqual('GET');
       req.flush(PHONE_METHOD_RESPONSE);
     });
 
     it('should return null if endpoint GET phone info return error', () => {
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
-      service.getPhoneInfo(USER_ID).subscribe(response => expect(response).toEqual(null));
+      service
+        .getPhoneInfo(USER_ID)
+        .subscribe((response) => expect(response).toEqual(null));
 
-      const req = httpMock.expectOne(`${environment.baseUrl}${USER_PHONE_INFO_ENDPOINT(USER_ID)}`);
+      const req = httpMock.expectOne(
+        `${environment.baseUrl}${USER_PHONE_INFO_ENDPOINT(USER_ID)}`
+      );
       expect(req.request.method).toEqual('GET');
       req.error(new ErrorEvent('network error'));
     });
@@ -554,7 +640,7 @@ describe('Service: User', () => {
       const backendResponse = USER_DATA;
       let response: User;
 
-      service.edit(USER_EDIT_DATA).subscribe(r => response = r);
+      service.edit(USER_EDIT_DATA).subscribe((r) => (response = r));
       const req = httpMock.expectOne(`${environment.baseUrl}${USER_ENDPOINT}`);
       req.flush(backendResponse);
 
@@ -571,7 +657,9 @@ describe('Service: User', () => {
       const expectedBody = { email_address: USER_EMAIL };
 
       service.updateEmail(USER_EMAIL).subscribe();
-      const req = httpMock.expectOne(`${environment.baseUrl}${USER_EMAIL_ENDPOINT}`);
+      const req = httpMock.expectOne(
+        `${environment.baseUrl}${USER_EMAIL_ENDPOINT}`
+      );
       req.flush({});
 
       expect(req.request.method).toBe('POST');
@@ -585,11 +673,13 @@ describe('Service: User', () => {
       const NEW_PASSWORD = 'inwiththenew';
       const expectedBody = {
         old_password: OLD_PASSWORD,
-        new_password: NEW_PASSWORD
-      }
+        new_password: NEW_PASSWORD,
+      };
 
       service.updatePassword(OLD_PASSWORD, NEW_PASSWORD).subscribe();
-      const req = httpMock.expectOne(`${environment.baseUrl}${USER_PASSWORD_ENDPOINT}`)
+      const req = httpMock.expectOne(
+        `${environment.baseUrl}${USER_PASSWORD_ENDPOINT}`
+      );
       req.flush({});
 
       expect(req.request.method).toBe('POST');
@@ -601,15 +691,20 @@ describe('Service: User', () => {
     it('should call endpoint with language as query param and return response', () => {
       const languageParamKey = 'language';
       const languageParamValue = 'en';
-      const expectedParams = new HttpParams().set(languageParamKey, languageParamValue);
-      const expectedUrl = `${environment.baseUrl}${USER_UNSUBSCRIBE_REASONS_ENDPOINT}?${expectedParams.toString()}`;
+      const expectedParams = new HttpParams().set(
+        languageParamKey,
+        languageParamValue
+      );
+      const expectedUrl = `${
+        environment.baseUrl
+      }${USER_UNSUBSCRIBE_REASONS_ENDPOINT}?${expectedParams.toString()}`;
       let response: UnsubscribeReason[];
 
-      service.getUnsubscribeReasons().subscribe(r => response = r);
+      service.getUnsubscribeReasons().subscribe((r) => (response = r));
       const req = httpMock.expectOne(expectedUrl);
       req.flush(MOCK_UNSUBSCRIBE_REASONS);
 
-      const languageParam = req.request.params.get(languageParamKey)
+      const languageParam = req.request.params.get(languageParamKey);
       expect(req.request.method).toBe('GET');
       expect(languageParam).toEqual(languageParamValue);
       expect(response).toEqual(MOCK_UNSUBSCRIBE_REASONS);
@@ -618,10 +713,15 @@ describe('Service: User', () => {
 
   describe('unsubscribe', () => {
     it('should call endpoint', () => {
-      const expectedBody = { reason_id: SELECTED_REASON, other_reason: CUSTOM_REASON };
+      const expectedBody = {
+        reason_id: SELECTED_REASON,
+        other_reason: CUSTOM_REASON,
+      };
 
       service.unsubscribe(SELECTED_REASON, CUSTOM_REASON).subscribe();
-      const req = httpMock.expectOne(`${environment.baseUrl}${USER_UNSUBSCRIBE_ENDPOINT}`)
+      const req = httpMock.expectOne(
+        `${environment.baseUrl}${USER_UNSUBSCRIBE_ENDPOINT}`
+      );
       req.flush({});
 
       expect(req.request.method).toBe('POST');
@@ -635,7 +735,9 @@ describe('Service: User', () => {
 
       service.setPermission(MOCK_USER);
 
-      expect(permissionService.addPermission).toHaveBeenCalledWith(PERMISSIONS['normal']);
+      expect(permissionService.addPermission).toHaveBeenCalledWith(
+        PERMISSIONS['normal']
+      );
     });
   });
 
@@ -644,7 +746,9 @@ describe('Service: User', () => {
 
     beforeEach(() => {
       spyOn(service, 'me').and.returnValue(of({}));
-      spyOn(permissionService, 'hasPermission').and.returnValue(Promise.resolve(true));
+      spyOn(permissionService, 'hasPermission').and.returnValue(
+        Promise.resolve(true)
+      );
 
       service.isProfessional().subscribe((v) => {
         val = v;
@@ -656,7 +760,9 @@ describe('Service: User', () => {
     });
 
     it('should call hasPermission', () => {
-      expect(permissionService.hasPermission).toHaveBeenCalledWith(PERMISSIONS.professional);
+      expect(permissionService.hasPermission).toHaveBeenCalledWith(
+        PERMISSIONS.professional
+      );
     });
 
     it('should return true', () => {
@@ -669,7 +775,7 @@ describe('Service: User', () => {
       spyOn(service, 'me').and.returnValue(of(MOCK_FULL_USER));
 
       let resp: boolean;
-      service.isProUser().subscribe(response => resp = response);
+      service.isProUser().subscribe((response) => (resp = response));
 
       expect(resp).toBe(true);
     });
@@ -678,7 +784,7 @@ describe('Service: User', () => {
       spyOn(service, 'me').and.returnValue(of(MOCK_USER));
 
       let resp: boolean;
-      service.isProUser().subscribe(response => resp = response);
+      service.isProUser().subscribe((response) => (resp = response));
 
       expect(resp).toBe(false);
     });
@@ -691,16 +797,20 @@ describe('Service: User', () => {
       const REASON = 5;
       const COMMENT = 'bla bla bla';
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
-      service.reportUser(USER_ID, ITEM_HASH, CONVERSATIONS_HASH, REASON, COMMENT).subscribe();
+      service
+        .reportUser(USER_ID, ITEM_HASH, CONVERSATIONS_HASH, REASON, COMMENT)
+        .subscribe();
 
-      const req = httpMock.expectOne(`${environment.baseUrl}${USER_REPORT_ENDPOINT(USER_ID)}`);
+      const req = httpMock.expectOne(
+        `${environment.baseUrl}${USER_REPORT_ENDPOINT(USER_ID)}`
+      );
       expect(req.request.method).toEqual('POST');
       expect(req.request.body).toEqual({
         itemHashId: ITEM_HASH,
         conversationHash: CONVERSATIONS_HASH,
         comments: COMMENT,
         reason: REASON,
-        targetCrm: 'zendesk'
+        targetCrm: 'zendesk',
       });
       expect(req.request.headers.get('AppBuild')).toEqual(APP_VERSION);
     });

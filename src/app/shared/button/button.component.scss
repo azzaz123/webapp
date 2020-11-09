@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 $vertical-padding: $spacing-ms;
 
@@ -15,7 +15,8 @@ $vertical-padding: $spacing-ms;
   padding: $vertical-padding $spacing-ml;
   border-radius: $button-border-radius;
   transition: all 0.2s ease-in-out, padding 0s;
-  &:focus, &.focus {
+  &:focus,
+  &.focus {
     box-shadow: none;
   }
   &:not([disabled]) {
@@ -28,10 +29,11 @@ $vertical-padding: $spacing-ms;
     background-color: $negative-main;
   }
   &:not([disabled]):not(.btn-primary):hover {
-    opacity: .8;
+    opacity: 0.8;
   }
   &.btn-primary {
-    &.disabled, &:disabled {
+    &.disabled,
+    &:disabled {
       cursor: inherit;
       &:active {
         background-color: $walla-main;
@@ -93,7 +95,3 @@ $vertical-padding: $spacing-ms;
     padding: 0 $spacing-ml;
   }
 }
-
-
-
-

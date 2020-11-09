@@ -23,16 +23,16 @@ import { ToastComponent } from './toast/toast.component';
     UserModule,
     NgbModule,
     GeolocationModule,
-    TrackingModule
+    TrackingModule,
   ],
-  exports: [
+  exports: [TopbarComponent, SidebarComponent, TabbarComponent, ToastComponent],
+  declarations: [
     TopbarComponent,
+    SuggesterComponent,
     SidebarComponent,
     TabbarComponent,
-    ToastComponent
+    ToastComponent,
   ],
-  declarations: [TopbarComponent, SuggesterComponent, SidebarComponent, TabbarComponent, ToastComponent],
-  providers: [GeolocationService, CategoryService, SuggesterService]
+  providers: [GeolocationService, CategoryService, SuggesterService],
 })
-export class LayoutModule {
-}
+export class LayoutModule {}

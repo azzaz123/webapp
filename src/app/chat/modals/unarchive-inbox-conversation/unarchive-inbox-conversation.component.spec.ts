@@ -10,9 +10,8 @@ describe('UnarchiveInboxConversationComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       providers: [NgbActiveModal],
-      declarations: [ UnarchiveInboxConversationComponent ]
-    })
-    .compileComponents();
+      declarations: [UnarchiveInboxConversationComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

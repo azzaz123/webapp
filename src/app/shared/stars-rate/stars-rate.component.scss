@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 :host {
   display: block;
@@ -18,7 +18,7 @@ tsl-svg-icon {
   display: inline-flex;
   ::ng-deep #images {
     &:not(:root:root) {
-      fill: #FFD300;
+      fill: #ffd300;
     }
   }
 }

@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 .container {
   max-width: $upload-form-width;
@@ -23,7 +23,6 @@
     @include square(12px);
     ::ng-deep path {
       fill: $blue-grey-2;
-
     }
   }
   &:hover {
@@ -34,4 +33,3 @@
     }
   }
 }
-

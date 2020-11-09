@@ -6,7 +6,7 @@ import { NavigatorService } from './navigator.service';
 describe('NavigatorService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [NavigatorService]
+      providers: [NavigatorService],
     });
   });
 

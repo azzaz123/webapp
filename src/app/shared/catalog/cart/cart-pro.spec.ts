@@ -1,9 +1,11 @@
 import { CartPro } from './cart-pro';
-import { MOCK_PROITEM, MOCK_PROITEM2 } from '../../../../tests/pro-item.fixtures.spec';
+import {
+  MOCK_PROITEM,
+  MOCK_PROITEM2,
+} from '../../../../tests/pro-item.fixtures.spec';
 import { CartBase } from './cart-base';
 
 describe('CartPro', () => {
-
   let cart: CartPro;
 
   beforeEach(() => {
@@ -25,15 +27,22 @@ describe('CartPro', () => {
     });
 
     it('should calculate totals', () => {
-      expect(cart.citybump.total).toBe(+MOCK_PROITEM.selectedDates.numberOfDays);
-      expect(cart.countrybump.total).toBe(+MOCK_PROITEM2.selectedDates.numberOfDays);
+      expect(cart.citybump.total).toBe(
+        +MOCK_PROITEM.selectedDates.numberOfDays
+      );
+      expect(cart.countrybump.total).toBe(
+        +MOCK_PROITEM2.selectedDates.numberOfDays
+      );
       expect(cart.total).toBe(cart.citybump.total + cart.countrybump.total);
     });
 
     it('should calculate totals if there is more than one item with same bump', () => {
       cart.add(MOCK_PROITEM2, 'citybump');
 
-      expect(cart.citybump.total).toBe(+MOCK_PROITEM.selectedDates.numberOfDays + MOCK_PROITEM2.selectedDates.numberOfDays);
+      expect(cart.citybump.total).toBe(
+        +MOCK_PROITEM.selectedDates.numberOfDays +
+          MOCK_PROITEM2.selectedDates.numberOfDays
+      );
       expect(cart.total).toBe(cart.citybump.total + cart.countrybump.total);
     });
 
@@ -53,7 +62,9 @@ describe('CartPro', () => {
       expect(cart.citybump.cartItems.length).toBe(0);
       expect(cart.countrybump.cartItems.length).toBe(1);
       expect(cart.countrybump.cartItems[0]).toEqual(MOCK_PROITEM2);
-      expect(cart.countrybump.total).toBe(+MOCK_PROITEM2.selectedDates.numberOfDays);
+      expect(cart.countrybump.total).toBe(
+        +MOCK_PROITEM2.selectedDates.numberOfDays
+      );
       expect(cart.citybump.total).toBe(0);
       expect(cart.total).toBe(cart.citybump.total + cart.countrybump.total);
     });
@@ -77,7 +88,9 @@ describe('CartPro', () => {
 
       result = cart.prepareDate(dates);
 
-      expect(result).toBe(new Date(dates.year, dates.month - 1, dates.day).getTime());
+      expect(result).toBe(
+        new Date(dates.year, dates.month - 1, dates.day).getTime()
+      );
     });
   });
 
@@ -98,5 +111,4 @@ describe('CartPro', () => {
       expect(result).toBe(false);
     });
   });
-
 });

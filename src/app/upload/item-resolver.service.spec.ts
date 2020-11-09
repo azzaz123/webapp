@@ -8,7 +8,6 @@ import { ITEM_ID, MOCK_ITEM } from '../../tests/item.fixtures.spec';
 import { Item } from '../core/item/item';
 
 describe('ItemResolverService', () => {
-
   let service: ItemResolverService;
   let itemService: ItemService;
 
@@ -17,13 +16,14 @@ describe('ItemResolverService', () => {
       providers: [
         ItemResolverService,
         {
-          provide: ItemService, useValue: {
-          get() {
-            return of(MOCK_ITEM);
-          }
-        }
-        }
-      ]
+          provide: ItemService,
+          useValue: {
+            get() {
+              return of(MOCK_ITEM);
+            },
+          },
+        },
+      ],
     });
     service = TestBed.inject(ItemResolverService);
     itemService = TestBed.inject(ItemService);

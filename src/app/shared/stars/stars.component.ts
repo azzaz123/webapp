@@ -7,42 +7,40 @@ const STARS_MAX_VALUE = 5;
 @Component({
   selector: 'tsl-stars',
   templateUrl: './stars.component.html',
-  styleUrls: ['./stars.component.scss']
+  styleUrls: ['./stars.component.scss'],
 })
 export class StarsComponent implements OnChanges {
-
   @Input() stars: number;
   @Input() normalized = true;
   public starsArray: Star[];
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnChanges(changes?: any) {
     this.starsArray = [];
     if (this.normalized) {
       for (let i = 0; i < 5; i++) {
         this.starsArray.push({
-          active: i < this.stars
+          active: i < this.stars,
         });
       }
     } else {
       this.stars = this.normalize(this.stars);
       for (let i = 0; i < Math.floor(this.stars); i++) {
         this.starsArray.push({
-          active: true
+          active: true,
         });
       }
       if (this.stars % 1 === 0.5) {
         this.starsArray.push({
           active: true,
-          half: true
+          half: true,
         });
       }
       const emptyStars = 5 - this.starsArray.length;
       for (let i = 0; i < emptyStars; i++) {
         this.starsArray.push({
-          active: false
+          active: false,
         });
       }
     }
@@ -60,5 +58,4 @@ export class StarsComponent implements OnChanges {
     }
     return intPart + 1;
   }
-
 }

@@ -6,13 +6,10 @@ import { InboxConversation } from '../model';
 
 @Injectable()
 export class MessageService {
-
   public totalUnreadMessages$: Subject<number> = new Subject<number>();
   private _totalUnreadMessages = 0;
 
-  constructor(private realTime: RealTimeService,
-              private i18n: I18nService) {
-  }
+  constructor(private realTime: RealTimeService, private i18n: I18nService) {}
 
   set totalUnreadMessages(value: number) {
     value = Math.max(value, 0);

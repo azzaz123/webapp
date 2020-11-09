@@ -1,23 +1,36 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Subject, of } from 'rxjs';
 import { UserService } from '../user/user.service';
-import { StripeService, PAYMENTS_API_URL, STRIPE_PAYMENT_RESPONSE_EVENT_KEY } from './stripe.service';
+import {
+  StripeService,
+  PAYMENTS_API_URL,
+  STRIPE_PAYMENT_RESPONSE_EVENT_KEY,
+} from './stripe.service';
 import { EventService } from '../event/event.service';
-import { PaymentService, PAYMENT_RESPONSE_STATUS } from '../payments/payment.service';
+import {
+  PaymentService,
+  PAYMENT_RESPONSE_STATUS,
+} from '../payments/payment.service';
 import { PaymentIntents } from '../payments/payment.interface';
 import { Router } from '@angular/router';
 import { USER_DATA } from '../../../tests/user.fixtures.spec';
 import { FinancialCard } from '../../shared/profile/credit-card-info/financial-card';
-import { PAYMENT_METHOD_CARD_RESPONSE, PAYMENT_METHOD_DATA } from '../../../tests/payments.fixtures.spec';
+import {
+  PAYMENT_METHOD_CARD_RESPONSE,
+  PAYMENT_METHOD_DATA,
+} from '../../../tests/payments.fixtures.spec';
 import { createFinancialCardFixture } from '../../../tests/stripe.fixtures.spec';
 import { FeatureflagService } from '../user/featureflag.service';
 import { environment } from '../../../environments/environment';
-import { TestRequest, HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  TestRequest,
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 
 const MOCK_PAYMENT_METHOD_ID = 'a0b1c2';
 
 describe('StripeService', () => {
-
   let service: StripeService;
   let paymentService: PaymentService;
   let userService: UserService;
@@ -31,50 +44,54 @@ describe('StripeService', () => {
         EventService,
         StripeService,
         {
-          provide: UserService, useValue: {
+          provide: UserService,
+          useValue: {
             hasPerm() {
               return of(true);
-            }
-          }
-        },
-        {
-          provide: Router, useValue: {
-            navigate() {
             },
-            events: routerEvents
-          }
+          },
         },
         {
-          provide: UserService, useValue: {
+          provide: Router,
+          useValue: {
+            navigate() {},
+            events: routerEvents,
+          },
+        },
+        {
+          provide: UserService,
+          useValue: {
             me() {
               return of(USER_DATA);
-            }
-          }
+            },
+          },
         },
         {
-          provide: PaymentService, useValue: {
+          provide: PaymentService,
+          useValue: {
             paymentIntents() {
               return of({
-                token: 'a1-b2-c3-d4'
-              })
+                token: 'a1-b2-c3-d4',
+              });
             },
             paymentIntentsConfirm() {
               return of({
                 token: 'a1-b2-c3-d4',
-                status: 'SUCCEEDED'
-              })
-            }
-          }
+                status: 'SUCCEEDED',
+              });
+            },
+          },
         },
         {
-          provide: FeatureflagService, useValue: {
+          provide: FeatureflagService,
+          useValue: {
             getFlag() {
               return of(false);
-            }
-          }
-        }
+            },
+          },
+        },
       ],
-      imports: [HttpClientTestingModule]
+      imports: [HttpClientTestingModule],
     });
     service = TestBed.inject(StripeService);
     paymentService = TestBed.inject(PaymentService);
@@ -94,9 +111,11 @@ describe('StripeService', () => {
       let response: PaymentIntents;
 
       userService.me = jasmine.createSpy().and.returnValue(of(USER_DATA));
-      paymentService.paymentIntents(orderId, paymentId).subscribe((data: PaymentIntents) => {
-        response = data;
-      });
+      paymentService
+        .paymentIntents(orderId, paymentId)
+        .subscribe((data: PaymentIntents) => {
+          response = data;
+        });
 
       expect(response).toEqual(PAYMENT_INTENT_RESPONSE);
     });
@@ -107,7 +126,7 @@ describe('StripeService', () => {
       const expectedUrl = `${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/cards`;
       let response: FinancialCard[];
 
-      service.getCards().subscribe(r => response = r);
+      service.getCards().subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(PAYMENT_METHOD_CARD_RESPONSE);
 
@@ -145,7 +164,9 @@ describe('StripeService', () => {
 
   describe('mapPaymentResponse', () => {
     it('should return a FinancialCard object', () => {
-      const financialCard: FinancialCard = service.mapResponse(PAYMENT_METHOD_DATA);
+      const financialCard: FinancialCard = service.mapResponse(
+        PAYMENT_METHOD_DATA
+      );
 
       expect(financialCard).toEqual(createFinancialCardFixture());
     });
@@ -154,19 +175,26 @@ describe('StripeService', () => {
   describe('when creating a new card with the Stripe SDK', () => {
     it('should emit an error if response from backend has error', fakeAsync(() => {
       spyOn(eventService, 'emit').and.callThrough();
-      spyOn(service, 'createStripePaymentMethod').and.returnValue(Promise.resolve({ error: { message: 'The man in the chair' } }));
+      spyOn(service, 'createStripePaymentMethod').and.returnValue(
+        Promise.resolve({ error: { message: 'The man in the chair' } })
+      );
 
       service.createStripeCard({});
       tick();
 
       expect(eventService.emit).toHaveBeenCalledTimes(1);
-      expect(eventService.emit).toHaveBeenCalledWith(STRIPE_PAYMENT_RESPONSE_EVENT_KEY, PAYMENT_RESPONSE_STATUS.FAILED);
+      expect(eventService.emit).toHaveBeenCalledWith(
+        STRIPE_PAYMENT_RESPONSE_EVENT_KEY,
+        PAYMENT_RESPONSE_STATUS.FAILED
+      );
     }));
   });
 
   describe('createDefaultCard', () => {
     it('should call stripeSetupIntent', fakeAsync(() => {
-      spyOn(service, 'stripeSetupIntent').and.returnValue(Promise.resolve({ error: { message: 'Payment error' } }));
+      spyOn(service, 'stripeSetupIntent').and.returnValue(
+        Promise.resolve({ error: { message: 'Payment error' } })
+      );
 
       service.createDefaultCard('abc', {});
       tick();
@@ -198,7 +226,4 @@ describe('StripeService', () => {
       expect(req.request.method).toBe('GET');
     });
   });
-
 });
-
-

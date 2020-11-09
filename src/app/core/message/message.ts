@@ -3,19 +3,19 @@ import { User } from '../user/user';
 import { MessagePayload, MessageStatus } from '../../chat/model';
 
 export class Message implements Model {
-
   private _user: User;
   private _fromSelf: boolean;
 
-  constructor(private _id: string,
-              private _thread: string,
-              private _message: string,
-              private _from: string,
-              private _date?: Date,
-              private _status?: MessageStatus,
-              private _payload?: MessagePayload,
-              private _phoneRequest?: string) {
-  }
+  constructor(
+    private _id: string,
+    private _thread: string,
+    private _message: string,
+    private _from: string,
+    private _date?: Date,
+    private _status?: MessageStatus,
+    private _payload?: MessagePayload,
+    private _phoneRequest?: string
+  ) {}
 
   get id(): string {
     return this._id;

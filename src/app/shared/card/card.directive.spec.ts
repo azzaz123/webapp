@@ -1,6 +1,8 @@
-import { CardImageDirective,
+import {
+  CardImageDirective,
   CardContentDirective,
-  CardFooterDirective } from './card.directive';
+  CardFooterDirective,
+} from './card.directive';
 
 describe('CardImageDirective', () => {
   it('should create an instance', () => {

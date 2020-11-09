@@ -1,33 +1,57 @@
 import { AccessTokenService } from './../../core/http/access-token.service';
-import { TOKEN_AUTHORIZATION_HEADER_NAME, TOKEN_SIGNATURE_HEADER_NAME, TOKEN_TIMESTAMP_HEADER_NAME } from './../../core/http/interceptors/token.interceptor';
+import {
+  TOKEN_AUTHORIZATION_HEADER_NAME,
+  TOKEN_SIGNATURE_HEADER_NAME,
+  TOKEN_TIMESTAMP_HEADER_NAME,
+} from './../../core/http/interceptors/token.interceptor';
 import { EventEmitter, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
 import { ITEM_TYPES } from '../../core/item/item';
-import { UploadFile, UploadInput } from '../../shared/uploader/upload.interface';
+import {
+  UploadFile,
+  UploadInput,
+} from '../../shared/uploader/upload.interface';
 
 @Injectable()
 export class UploadService {
-
   private API_URL = 'api/v3/items';
   uploadInput: EventEmitter<UploadInput> = new EventEmitter();
 
-  constructor(private accesTokenService: AccessTokenService) {
-  }
+  constructor(private accesTokenService: AccessTokenService) {}
 
-  public createItemWithFirstImage(values: any, file: UploadFile, itemType: string) {
+  public createItemWithFirstImage(
+    values: any,
+    file: UploadFile,
+    itemType: string
+  ) {
     let inputEvent: UploadInput;
     if (itemType === ITEM_TYPES.CARS) {
-      inputEvent = this.buildUploadEvent(values, file, this.API_URL + '/cars', 'item_car');
+      inputEvent = this.buildUploadEvent(
+        values,
+        file,
+        this.API_URL + '/cars',
+        'item_car'
+      );
     } else if (itemType === ITEM_TYPES.REAL_ESTATE) {
-      inputEvent = this.buildUploadEvent(values, file, this.API_URL + '/real_estate', 'item_real_estate');
+      inputEvent = this.buildUploadEvent(
+        values,
+        file,
+        this.API_URL + '/real_estate',
+        'item_real_estate'
+      );
     } else {
       inputEvent = this.buildUploadEvent(values, file, this.API_URL, 'item');
     }
     this.uploadInput.emit(inputEvent);
   }
 
-  private buildUploadEvent(values: any, file: UploadFile, url: string, fieldName: string): UploadInput {
+  private buildUploadEvent(
+    values: any,
+    file: UploadFile,
+    url: string,
+    fieldName: string
+  ): UploadInput {
     if (values.category_id !== REALESTATE_CATEGORY) {
       delete values.location;
     } else {
@@ -42,17 +66,21 @@ export class UploadService {
       fieldName: 'image',
       data: {
         [fieldName]: new Blob([JSON.stringify(values)], {
-          type: 'application/json'
-        })
+          type: 'application/json',
+        }),
       },
       headers: this.getUploadHeaders(url, { 'X-DeviceOS': '0' }),
-      file: file
+      file: file,
     };
   }
 
   public uploadOtherImages(itemId: string, type: string) {
-    const url = this.API_URL + '/' +
-      (type !== 'consumer_goods' ? type + '/' : '') + itemId + '/picture' +
+    const url =
+      this.API_URL +
+      '/' +
+      (type !== 'consumer_goods' ? type + '/' : '') +
+      itemId +
+      '/picture' +
       (type !== 'real_estate' ? '2' : '');
     const inputEvent: UploadInput = {
       type: 'uploadAll',
@@ -60,7 +88,7 @@ export class UploadService {
       method: 'POST',
       fieldName: 'image',
       data: {
-        order: '$order'
+        order: '$order',
       },
       headers: this.getUploadHeaders(url),
     };
@@ -68,8 +96,12 @@ export class UploadService {
   }
 
   public uploadSingleImage(file: UploadFile, itemId: string, type: string) {
-    const url = this.API_URL + '/' +
-      (type !== 'consumer_goods' ? type + '/' : '') + itemId + '/picture' +
+    const url =
+      this.API_URL +
+      '/' +
+      (type !== 'consumer_goods' ? type + '/' : '') +
+      itemId +
+      '/picture' +
       (type !== 'real_estate' ? '2' : '');
     const inputEvent: UploadInput = {
       type: 'uploadFile',
@@ -77,10 +109,10 @@ export class UploadService {
       method: 'POST',
       fieldName: 'image',
       data: {
-        order: '$order'
+        order: '$order',
       },
       headers: this.getUploadHeaders(url),
-      file: file
+      file: file,
     };
     this.uploadInput.emit(inputEvent);
   }
@@ -88,7 +120,7 @@ export class UploadService {
   public removeImage(file: UploadFile) {
     const inputEvent: UploadInput = {
       type: 'remove',
-      id: file.id
+      id: file.id,
     };
     this.uploadInput.emit(inputEvent);
   }
@@ -96,7 +128,7 @@ export class UploadService {
   public updateOrder(files) {
     const inputEvent: UploadInput = {
       type: 'updateOrder',
-      files: files
+      files: files,
     };
     this.uploadInput.emit(inputEvent);
   }
@@ -104,21 +136,24 @@ export class UploadService {
   public setInitialImages(files) {
     const inputEvent: UploadInput = {
       type: 'initialImages',
-      files: [...files]
+      files: [...files],
     };
     this.uploadInput.emit(inputEvent);
   }
 
   private getUploadHeaders(url: string, additionalHeaders?: any): any {
     const timestamp = Date.now();
-    const signature = this.accesTokenService.getTokenSignature(url, 'POST', timestamp);
+    const signature = this.accesTokenService.getTokenSignature(
+      url,
+      'POST',
+      timestamp
+    );
 
     return {
       ...additionalHeaders,
       [TOKEN_AUTHORIZATION_HEADER_NAME]: `Bearer ${this.accesTokenService.accessToken}`,
       [TOKEN_SIGNATURE_HEADER_NAME]: signature,
-      [TOKEN_TIMESTAMP_HEADER_NAME]: timestamp.toString()
+      [TOKEN_TIMESTAMP_HEADER_NAME]: timestamp.toString(),
     };
   }
-
 }

@@ -8,14 +8,14 @@ import { Pack } from '../../core/payments/pack';
 @Component({
   selector: 'tsl-checkout-extras-pro',
   templateUrl: './checkout-extras-pro.component.html',
-  styleUrls: ['./checkout-extras-pro.component.scss']
+  styleUrls: ['./checkout-extras-pro.component.scss'],
 })
 export class CheckoutExtrasProComponent implements OnInit {
   packs: Array<any> = [];
   billingInfoFormEnabled = false;
   billingInfoForm: FormGroup;
 
-  constructor(private paymentService: PaymentService) { }
+  constructor(private paymentService: PaymentService) {}
 
   ngOnInit() {
     this.paymentService.getPacks().subscribe((packs: Packs) => {
@@ -35,7 +35,9 @@ export class CheckoutExtrasProComponent implements OnInit {
     let packObj = null;
     map(packs, (PacksList: Pack[]) => {
       PacksList.map((pack: Pack) => {
-        const quantityExists = this.packs.find((packFinder: Pack) => pack.quantity === packFinder.quantity);
+        const quantityExists = this.packs.find(
+          (packFinder: Pack) => pack.quantity === packFinder.quantity
+        );
         if (quantityExists) {
           packObj = quantityExists;
         } else {
