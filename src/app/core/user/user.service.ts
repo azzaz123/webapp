@@ -1,10 +1,9 @@
-import { forkJoin, from, Observable, of } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 
 import { mergeMap, catchError, tap, map } from 'rxjs/operators';
 import { Inject, Injectable } from '@angular/core';
 import { PERMISSIONS, User } from './user';
 import { EventService } from '../event/event.service';
-import { GeoCoord, HaversineService } from 'ng2-haversine';
 import { Item } from '../item/item';
 import { LoginResponse } from './login-response.interface';
 import { UserLocation, UserResponse, Image } from './user-response.interface';
@@ -29,12 +28,7 @@ import { InboxUser } from '../../chat/model/inbox-user';
 import { InboxItem } from '../../chat/model';
 import { APP_VERSION } from '../../../environments/version';
 import { UserReportApi } from './user-report.interface';
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpParams,
-  HttpResponse,
-} from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 export const LOGIN_ENDPOINT = 'shnm-portlet/api/v1/access.json/login3';
 export const LOGOUT_ENDPOINT = 'rest/logout';
@@ -82,7 +76,6 @@ export class UserService {
     private http: HttpClient,
     private event: EventService,
     private i18n: I18nService,
-    private haversineService: HaversineService,
     private accessTokenService: AccessTokenService,
     private cookieService: CookieService,
     private permissionService: NgxPermissionsService,
@@ -204,19 +197,16 @@ export class UserService {
     if (!user.location || !this.user.location) {
       return null;
     }
-    const currentUserCoord: GeoCoord = {
+    const currentUserCoord: Coordinate = {
       latitude: this.user.location.approximated_latitude,
       longitude: this.user.location.approximated_longitude,
     };
-    const userCoord: GeoCoord = {
+    const userCoord: Coordinate = {
       latitude: user.location.approximated_latitude || user.location.latitude,
       longitude:
         user.location.approximated_longitude || user.location.longitude,
     };
-    return this.haversineService.getDistanceInKilometers(
-      currentUserCoord,
-      userCoord
-    );
+    return this.getDistanceInKilometers(currentUserCoord, userCoord);
   }
 
   private storeData(data: LoginResponse): LoginResponse {
@@ -473,5 +463,28 @@ export class UserService {
   // TODO: This logic is correct for now, but should be checked using the subscriptions BFF
   public isProUser(): Observable<boolean> {
     return this.me().pipe(map((user) => user.featured));
+  }
+
+  private getDistanceInKilometers(
+    coord1: Coordinate,
+    coord2: Coordinate
+  ): number {
+    const distance = this.getDistance(coord1, coord2);
+    return 6371 * distance;
+  }
+
+  private getDistance(coord1: Coordinate, coord2: Coordinate): number {
+    const v1 = this.toRadians(coord1.latitude);
+    const v2 = this.toRadians(coord2.latitude);
+    const s1 = this.toRadians(coord2.latitude - coord1.latitude);
+    const s2 = this.toRadians(coord2.longitude - coord1.longitude);
+    const a =
+      Math.pow(Math.sin(s1 / 2), 2) +
+      Math.cos(v1) * Math.cos(v2) * Math.pow(Math.sin(s2 / 2), 2);
+    return 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+
+  private toRadians(value: number): number {
+    return (value * Math.PI) / 180;
   }
 }
