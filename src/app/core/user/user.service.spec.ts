@@ -32,7 +32,6 @@ import {
   USER_PHONE_INFO_ENDPOINT,
   USER_EXTRA_INFO_ENDPOINT,
 } from './user.service';
-import { HaversineService } from 'ng2-haversine';
 import { ITEM_LOCATION, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
 import { Item } from '../item/item';
 import { I18nService } from '../i18n/i18n.service';
@@ -73,7 +72,6 @@ import { HttpParams, HttpRequest } from '@angular/common/http';
 
 describe('Service: User', () => {
   let service: UserService;
-  let haversineService: HaversineService;
   const FAKE_USER_NAME = 'No disponible';
   let accessTokenService: AccessTokenService;
   let event: EventService;
@@ -90,7 +88,6 @@ describe('Service: User', () => {
         EventService,
         UserService,
         I18nService,
-        HaversineService,
         AccessTokenService,
         {
           provide: 'SUBDOMAIN',
@@ -130,7 +127,6 @@ describe('Service: User', () => {
       ],
     });
     service = TestBed.inject(UserService);
-    haversineService = TestBed.inject(HaversineService);
     accessTokenService = TestBed.inject(AccessTokenService);
     accessTokenService.storeAccessToken(null);
     event = TestBed.inject(EventService);
@@ -420,36 +416,51 @@ describe('Service: User', () => {
   });
 
   describe('calculateDistanceFromItem', () => {
-    beforeEach(() => {
-      spyOn(haversineService, 'getDistanceInKilometers').and.returnValue(1);
+    describe('when the distance between users is the same...', () => {
+      it('should return 0 distance', () => {
+        const user: User = MOCK_USER;
+        const item: Item = MOCK_ITEM;
+        const user2: User = new User(USER_ID, null, null, ITEM_LOCATION);
+        service['_user'] = user2;
+
+        const distance: number = service.calculateDistanceFromItem(user, item);
+
+        expect(distance).toBe(0);
+      });
     });
 
-    it('should call the haversineService and return a number', () => {
-      const user: User = MOCK_USER;
-      const item: Item = MOCK_ITEM;
-      const user2: User = new User(USER_ID, null, null, ITEM_LOCATION);
-      service['_user'] = user2;
-      const distance: number = service.calculateDistanceFromItem(user, item);
-      expect(haversineService.getDistanceInKilometers).toHaveBeenCalledWith(
-        {
-          latitude: ITEM_LOCATION.approximated_latitude,
-          longitude: ITEM_LOCATION.approximated_longitude,
-        },
-        {
-          latitude: USER_LOCATION.approximated_latitude,
-          longitude: USER_LOCATION.approximated_longitude,
-        }
-      );
-      expect(distance).toBe(1);
+    describe('when the distance between users is different...', () => {
+      it('should return positive number', () => {
+        const CUSTOM_USER_LOCATION: UserLocation = {
+          id: 101,
+          approximated_latitude: 40.41340759767221,
+          approximated_longitude: -3.6929970439968804,
+          city: 'Barcelona',
+          zip: '08009',
+          approxRadius: 0,
+          title: '08009, Barcelona',
+        };
+        const user: User = MOCK_USER;
+        const item: Item = MOCK_ITEM;
+        const user2: User = new User(USER_ID, null, null, CUSTOM_USER_LOCATION);
+        service['_user'] = user2;
+
+        const distance: number = service.calculateDistanceFromItem(user, item);
+
+        expect(distance > 0).toBeTruthy();
+      });
     });
 
-    it('should not call the haversineService and return null', () => {
-      const user: User = new User(USER_ID);
-      const item: Item = MOCK_ITEM;
-      service['_user'] = new User(USER_ID);
-      const distance: number = service.calculateDistanceFromItem(user, item);
-      expect(haversineService.getDistanceInKilometers).not.toHaveBeenCalled();
-      expect(distance).toBeNull();
+    describe('when our own user dont have location...', () => {
+      it('should return null distance', () => {
+        const user: User = new User(USER_ID);
+        const item: Item = MOCK_ITEM;
+        service['_user'] = new User(USER_ID);
+
+        const distance: number = service.calculateDistanceFromItem(user, item);
+
+        expect(distance).toBeNull();
+      });
     });
   });
 

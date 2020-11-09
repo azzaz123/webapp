@@ -6936,10 +6936,6 @@ ng2-dnd@^5.0.2:
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/ng2-dnd/-/ng2-dnd-5.0.2.tgz#862278ac7dedfa14f5783bbf34014d5d73dfefb4"
 
-ng2-haversine@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/ng2-haversine/-/ng2-haversine-0.1.1.tgz#17b1a41102bd33012717a40cc00020c2ee4e5292"
-
 ngx-autosize@1.6.4:
   version "1.6.4"
   resolved "https://registry.yarnpkg.com/ngx-autosize/-/ngx-autosize-1.6.4.tgz#2542c2e92927364972d3d63f11d74a559e3be26c"
