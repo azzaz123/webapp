@@ -2,64 +2,64 @@ import { DidomiLibrary } from '../../app/core/didomi/didomi.interface';
 import { ThreatMetrixLibrary } from 'app/core/trust-and-safety/threat-metrix.interface';
 
 export const MOCK_APPBOY = {
-  initialize: () => {},
-  logCustomEvent: () => {},
+  initialize: () => { },
+  logCustomEvent: () => { },
   display: {
-    automaticallyShowNewInAppMessages: () => {}
+    automaticallyShowNewInAppMessages: () => { }
   },
-  registerAppboyPushMessages: () => {},
-  changeUser: _userId => {},
-  openSession: () => {}
+  registerAppboyPushMessages: () => { },
+  changeUser: _userId => { },
+  openSession: () => { }
 };
 
-export const MOCK_GA = () => {};
-export const MOCK_FBQ = () => {};
-export const MOCK_PINTRK = () => {};
+export const MOCK_GA = () => { };
+export const MOCK_FBQ = () => { };
+export const MOCK_PINTRK = () => { };
 
 export const MOCK_GOOGLE_TAG = {
   cmd: {
-    push (callback) { callback(); }
+    push(callback) { callback(); }
   },
-  enableServices() {},
-  defineSlot () {
+  enableServices() { },
+  defineSlot() {
     return {
-      addService () {}
+      addService() { }
     };
   },
-  pubads () {
+  pubads() {
     return {
-      defineSlot() {},
-      enableSingleRequest() {},
-      enableServices() {},
-      disableInitialLoad() {},
-      collapseEmptyDivs() {},
-      setPublisherProvidedId() {},
-      setTargeting () {},
-      refresh () {}
+      defineSlot() { },
+      enableSingleRequest() { },
+      enableServices() { },
+      disableInitialLoad() { },
+      collapseEmptyDivs() { },
+      setPublisherProvidedId() { },
+      setTargeting() { },
+      refresh() { }
     };
   },
-  display: (_slotid: string) => {}
+  display: (_slotid: string) => { }
 };
 
 export const MOCK_VISIBILITY = {
-  change: () => {},
-  hidden: () => {},
-  onVisible: () => {}
+  change: () => { },
+  hidden: () => { },
+  onVisible: () => { }
 };
 
 export const MOCK_APSTAG = {
-  fetchBids ({slots, timeout}, callback) { callback(); },
-  setDisplayBids() {},
-  init() {}
+  fetchBids({ slots, timeout }, callback) { callback(); },
+  setDisplayBids() { },
+  init() { }
 };
 
 export const MOCK_CRITEO = {
   events: {
-    push (callback) { callback(); }
+    push(callback) { callback(); }
   },
-  SetLineItemRanges() {},
+  SetLineItemRanges() { },
   RequestBids(adunit, callback, timeout) { callback(); },
-  SetDFPKeyValueTargeting() {},
+  SetDFPKeyValueTargeting() { },
 };
 
 export const MOCK_XMPP = {
@@ -80,7 +80,7 @@ export const MOCK_XMPP = {
       return this._userId;
     }
   },
-  createClient: () => {}
+  createClient: () => { }
 };
 
 class MockStorage {
@@ -121,7 +121,7 @@ export const MOCK_DIDOMI: DidomiLibrary = {
 };
 
 export const MOCK_THREAT_METRIX: ThreatMetrixLibrary = {
-  nfl: (_domain: string, _orgId: string, _sessionId: string) => {}
+  nfl: (_domain: string, _orgId: string, _sessionId: string) => { }
 };
 
 export const MOCK_LOCATION: Location = {
@@ -141,3 +141,5 @@ export const MOCK_SCREEN: { width: number, height: number } = {
   width: 1366,
   height: 768
 };
+
+export const MOCK_HERE_MAPS: any = { Map: null, clustering: null, data: null, geo: null, map: null, mapevents: null, util: null, math: null, net: null, service: { Platform: (e) => (e) }, ui: null };

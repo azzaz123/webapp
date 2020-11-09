@@ -36,17 +36,12 @@ export class HereMapsComponent implements OnInit, AfterViewInit, OnChanges {
     if (!this.coordinates) {
       this.coordinates = DEFAULT_COORDINATES;
     }
-
-    if (this.hereMapsService.isLibraryReady) {
+    this.hereMapsService.initScript().subscribe(ready => {
+      if (!ready) {
+        return;
+      }
       this.initializeMap();
-    } else {
-      this.hereMapsService.isLibraryReady$.subscribe(ready => {
-        if (!ready) {
-          return;
-        }
-        this.initializeMap();
-      });
-    }
+    });
 
   }
 

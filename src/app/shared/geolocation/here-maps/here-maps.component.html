@@ -1,1 +1,6 @@
-<div id="map" #map [ngClass]="size"></div>
+<div id="map" #map [ngClass]="size">
+  <div *ngIf="(hereMapsService.isLibraryLoading$ | async)" class="loading">
+    <tsl-svg-icon src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
+  </div>
+</div>
+

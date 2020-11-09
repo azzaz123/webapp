@@ -37,8 +37,8 @@ describe('HereMapsComponent', () => {
       declarations: [HereMapsComponent],
       providers: [{
         provide: HereMapsService, useValue: {
-          isLibraryReady: true,
-          isLibraryReady$: of(true),
+          initScript: () => of(true),
+          isLibraryLoading$: of(false),
           platform: MOCKED_PLATFORM
         }
       }]
