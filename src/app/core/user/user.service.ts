@@ -64,10 +64,6 @@ export enum USER_TYPE {
   FEATURED = 'featured',
   NORMAL = 'normal',
 }
-interface GeoCoord {
-  latitude: number;
-  longitude: number;
-}
 
 @Injectable()
 export class UserService {
@@ -201,11 +197,11 @@ export class UserService {
     if (!user.location || !this.user.location) {
       return null;
     }
-    const currentUserCoord: GeoCoord = {
+    const currentUserCoord: Coordinate = {
       latitude: this.user.location.approximated_latitude,
       longitude: this.user.location.approximated_longitude,
     };
-    const userCoord: GeoCoord = {
+    const userCoord: Coordinate = {
       latitude: user.location.approximated_latitude || user.location.latitude,
       longitude:
         user.location.approximated_longitude || user.location.longitude,
@@ -469,12 +465,15 @@ export class UserService {
     return this.me().pipe(map((user) => user.featured));
   }
 
-  private getDistanceInKilometers(coord1: GeoCoord, coord2: GeoCoord): number {
+  private getDistanceInKilometers(
+    coord1: Coordinate,
+    coord2: Coordinate
+  ): number {
     const distance = this.getDistance(coord1, coord2);
     return 6371 * distance;
   }
 
-  private getDistance(coord1: GeoCoord, coord2: GeoCoord): number {
+  private getDistance(coord1: Coordinate, coord2: Coordinate): number {
     const v1 = this.toRadians(coord1.latitude);
     const v2 = this.toRadians(coord2.latitude);
     const s1 = this.toRadians(coord2.latitude - coord1.latitude);
