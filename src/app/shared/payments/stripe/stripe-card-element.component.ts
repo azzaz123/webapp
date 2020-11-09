@@ -44,7 +44,7 @@ export class StripeCardElementComponent
   private _model = false;
   public financialCard: FinancialCard;
   public hasFinancialCard: boolean;
-  public card: any;
+  public card: stripe.elements.Element;
   public termsAndConditionsURL = TERMS_AND_CONDITIONS_URL;
   public policyPrivacyURL = PRIVACY_POLICY_URL;
   @Input() type: string;
@@ -109,7 +109,6 @@ export class StripeCardElementComponent
   }
 
   ngOnDestroy() {
-    this.card.removeEventListener('change', this.cardHandler);
     this.card.destroy();
   }
 
