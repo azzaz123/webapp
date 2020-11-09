@@ -7,7 +7,16 @@
  */
 
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, concat, forkJoin, interval, Observable, of, Subject, throwError } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  concat,
+  interval,
+  Observable,
+  of,
+  Subject,
+  throwError
+} from 'rxjs';
 import { finalize, mergeMap, retry, takeUntil } from 'rxjs/operators';
 
 export const HERE_MAPS_VERSION = '3.0';
@@ -26,16 +35,13 @@ export const HERE_MAPS_EVENTS_REF_ID = 'src-here-maps-events';
 export const GEO_APP_ID = 'RgPrXX1bXt123UgUFc7B';
 export const GEO_APP_CODE = 'HtfX0DsqZ2Y0x-44GfujFA';
 
-
 export const CHECK_INTERVAL_MS = 100;
 export const RETRY_AMOUNT = 12;
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class HereMapsService {
-
   private isLibraryReadySubject = new BehaviorSubject<boolean>(false);
   private isLibraryLoadingSubject = new BehaviorSubject<boolean>(true);
 
@@ -54,7 +60,7 @@ export class HereMapsService {
     concat(
       this.isCoreReady$(),
       combineLatest([
-        this.isServiceReady$(),
+        this.isServiceReady$()
         // UNCOMMENT WHEN NECESSARY
         // this.isUIReady$(),
         // this.isUICSSReady$(),
@@ -69,7 +75,7 @@ export class HereMapsService {
           this.initializePlatform();
           this.isLibraryReadySubject.next(true);
         }
-      )
+      );
   }
 
   private initializePlatform(): void {
@@ -84,23 +90,21 @@ export class HereMapsService {
   private isCoreReady$(): Observable<boolean> {
     const isReady$ = new Subject<boolean>();
     return interval(CHECK_INTERVAL_MS).pipe(
-      mergeMap(
-        () => {
-          const coreScriptRef = document.getElementById(HERE_MAPS_CORE_REF_ID);
-          if (coreScriptRef && window['H']) {
-            isReady$.next(true);
-            return of(true);
-          }
-          this.appendCoreToDOM();
-          if (!window['H']) {
-            return throwError(null)
-          }
-          return of(false)
+      mergeMap(() => {
+        const coreScriptRef = document.getElementById(HERE_MAPS_CORE_REF_ID);
+        if (coreScriptRef && window['H']) {
+          isReady$.next(true);
+          return of(true);
         }
-      ),
+        this.appendCoreToDOM();
+        if (!window['H']) {
+          return throwError(null);
+        }
+        return of(false);
+      }),
       retry(RETRY_AMOUNT),
-      takeUntil(isReady$.asObservable()),
-    )
+      takeUntil(isReady$.asObservable())
+    );
   }
 
   private appendCoreToDOM(): void {
@@ -116,23 +120,23 @@ export class HereMapsService {
   private isServiceReady$(): Observable<boolean> {
     const isReady$ = new Subject<boolean>();
     return interval(CHECK_INTERVAL_MS).pipe(
-      mergeMap(
-        () => {
-          const serviceScriptRef = document.getElementById(HERE_MAPS_SERVICE_REF_ID);
-          if (serviceScriptRef && H.service) {
-            isReady$.next(true);
-            return of(true);
-          }
-          this.appendServiceToDOM();
-          if (!H.service) {
-            return throwError(null)
-          }
-          return of(false)
+      mergeMap(() => {
+        const serviceScriptRef = document.getElementById(
+          HERE_MAPS_SERVICE_REF_ID
+        );
+        if (serviceScriptRef && H.service) {
+          isReady$.next(true);
+          return of(true);
         }
-      ),
+        this.appendServiceToDOM();
+        if (!H.service) {
+          return throwError(null);
+        }
+        return of(false);
+      }),
       retry(RETRY_AMOUNT),
-      takeUntil(isReady$.asObservable()),
-    )
+      takeUntil(isReady$.asObservable())
+    );
   }
 
   private appendServiceToDOM(): void {
@@ -148,23 +152,21 @@ export class HereMapsService {
   private isUIReady$(): Observable<boolean> {
     const isReady$ = new Subject<boolean>();
     return interval(CHECK_INTERVAL_MS).pipe(
-      mergeMap(
-        () => {
-          const uiScriptRef = document.getElementById(HERE_MAPS_UI_REF_ID);
-          if (uiScriptRef && H.ui) {
-            isReady$.next(true);
-            return of(true);
-          }
-          this.appendUIToDOM();
-          if (!H.ui) {
-            return throwError(null)
-          }
-          return of(false);
+      mergeMap(() => {
+        const uiScriptRef = document.getElementById(HERE_MAPS_UI_REF_ID);
+        if (uiScriptRef && H.ui) {
+          isReady$.next(true);
+          return of(true);
         }
-      ),
+        this.appendUIToDOM();
+        if (!H.ui) {
+          return throwError(null);
+        }
+        return of(false);
+      }),
       retry(RETRY_AMOUNT),
-      takeUntil(isReady$.asObservable()),
-    )
+      takeUntil(isReady$.asObservable())
+    );
   }
 
   private appendUIToDOM() {
@@ -180,23 +182,21 @@ export class HereMapsService {
   private isUICSSReady$(): Observable<boolean> {
     const isReady$ = new Subject<boolean>();
     return interval(CHECK_INTERVAL_MS).pipe(
-      mergeMap(
-        () => {
-          const uiCssRef = document.getElementById(HERE_MAPS_UI_CSS_REF_ID);
-          if (uiCssRef) {
-            isReady$.next(true);
-            return of(true);
-          }
-          this.appendUICSStoDOM();
-          if (!uiCssRef) {
-            return throwError(null)
-          }
-          return of(false)
+      mergeMap(() => {
+        const uiCssRef = document.getElementById(HERE_MAPS_UI_CSS_REF_ID);
+        if (uiCssRef) {
+          isReady$.next(true);
+          return of(true);
         }
-      ),
+        this.appendUICSStoDOM();
+        if (!uiCssRef) {
+          return throwError(null);
+        }
+        return of(false);
+      }),
       retry(RETRY_AMOUNT),
-      takeUntil(isReady$.asObservable()),
-    )
+      takeUntil(isReady$.asObservable())
+    );
   }
 
   private appendUICSStoDOM(): void {
@@ -212,23 +212,21 @@ export class HereMapsService {
   private isEventsReady$(): Observable<boolean> {
     const isReady$ = new Subject<boolean>();
     return interval(CHECK_INTERVAL_MS).pipe(
-      mergeMap(
-        () => {
-          const eventsRef = document.getElementById(HERE_MAPS_EVENTS_REF_ID);
-          if (eventsRef && H.mapevents) {
-            isReady$.next(true);
-            return of(true);
-          }
-          this.appendEventsToDOM();
-          if (!H.mapevents) {
-            return throwError(null)
-          }
-          return of(false)
+      mergeMap(() => {
+        const eventsRef = document.getElementById(HERE_MAPS_EVENTS_REF_ID);
+        if (eventsRef && H.mapevents) {
+          isReady$.next(true);
+          return of(true);
         }
-      ),
+        this.appendEventsToDOM();
+        if (!H.mapevents) {
+          return throwError(null);
+        }
+        return of(false);
+      }),
       retry(RETRY_AMOUNT),
-      takeUntil(isReady$.asObservable()),
-    )
+      takeUntil(isReady$.asObservable())
+    );
   }
 
   private appendEventsToDOM(): void {

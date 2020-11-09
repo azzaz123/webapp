@@ -1,7 +1,16 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MOCK_HERE_MAPS } from '../../../../configs/jest/global-mocks.fixtures.spec';
-import { CHECK_INTERVAL_MS, GEO_APP_CODE, GEO_APP_ID, HereMapsService, HERE_MAPS_CORE_REF_ID, HERE_MAPS_CORE_URL, HERE_MAPS_SERVICE_REF_ID, HERE_MAPS_SERVICE_URL, RETRY_AMOUNT } from './here-maps.service';
-
+import {
+  CHECK_INTERVAL_MS,
+  GEO_APP_CODE,
+  GEO_APP_ID,
+  HereMapsService,
+  HERE_MAPS_CORE_REF_ID,
+  HERE_MAPS_CORE_URL,
+  HERE_MAPS_SERVICE_REF_ID,
+  HERE_MAPS_SERVICE_URL,
+  RETRY_AMOUNT
+} from './here-maps.service';
 
 describe('HereMapsService', () => {
   let service: HereMapsService;
@@ -9,14 +18,14 @@ describe('HereMapsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({ providers: [HereMapsService] });
     service = TestBed.inject(HereMapsService);
-    const scriptIDs = [HERE_MAPS_CORE_REF_ID, HERE_MAPS_SERVICE_REF_ID]
+    const scriptIDs = [HERE_MAPS_CORE_REF_ID, HERE_MAPS_SERVICE_REF_ID];
     window['H'] = MOCK_HERE_MAPS;
-    scriptIDs.forEach((id) => {
+    scriptIDs.forEach(id => {
       const ref = document.getElementById(id);
       if (ref) {
         document.head.removeChild(ref);
       }
-    })
+    });
   });
 
   it('should add script', fakeAsync(() => {
@@ -45,30 +54,30 @@ describe('HereMapsService', () => {
     let isReady: boolean;
     let isLoading: boolean;
 
-    const scriptSubscription = service.initScript()
-      .subscribe((value) => {
-        isReady = value;
-      });
+    const scriptSubscription = service.initScript().subscribe(value => {
+      isReady = value;
+    });
 
-    const loadingSubscription = service.isLibraryLoading$
-      .subscribe((value) => {
-        isLoading = value;
-      });
+    const loadingSubscription = service.isLibraryLoading$.subscribe(value => {
+      isLoading = value;
+    });
 
     expect(isLoading).toBeTruthy();
     expect(isReady).toBe(false);
 
     tick(CHECK_INTERVAL_MS);
     expect(document.head.appendChild).toHaveBeenCalledTimes(1);
-    expect(document.head.appendChild).toHaveBeenCalledWith(expectedCoreScript)
+    expect(document.head.appendChild).toHaveBeenCalledWith(expectedCoreScript);
 
     tick(CHECK_INTERVAL_MS * 2);
     expect(document.head.appendChild).toHaveBeenCalledTimes(2);
-    expect(document.head.appendChild).toHaveBeenCalledWith(expectedServiceScript)
+    expect(document.head.appendChild).toHaveBeenCalledWith(
+      expectedServiceScript
+    );
 
     tick(CHECK_INTERVAL_MS);
     expect(window['H'].service.Platform).toHaveBeenCalledTimes(1);
-    expect(window['H'].service.Platform).toHaveBeenCalledWith(expectedParams)
+    expect(window['H'].service.Platform).toHaveBeenCalledWith(expectedParams);
     expect(isReady).toBeTruthy();
     expect(isLoading).toBe(false);
 
@@ -83,19 +92,16 @@ describe('HereMapsService', () => {
     let isReady: boolean;
     let isLoading: boolean;
 
-    let scriptSubscription = service.initScript()
-      .subscribe((value) => {
-        isReady = value;
-      });
+    let scriptSubscription = service.initScript().subscribe(value => {
+      isReady = value;
+    });
 
-    const loadingSubscription = service.isLibraryLoading$
-      .subscribe((value) => {
-        isLoading = value;
-      });
+    const loadingSubscription = service.isLibraryLoading$.subscribe(value => {
+      isLoading = value;
+    });
 
     expect(isLoading).toBeTruthy();
     expect(isReady).toBe(false);
-
 
     tick(CHECK_INTERVAL_MS * 4);
     expect(isReady).toBeTruthy();
@@ -103,17 +109,15 @@ describe('HereMapsService', () => {
 
     loadingSubscription.unsubscribe();
 
-    scriptSubscription = service.initScript()
-      .subscribe((value) => {
-        isReady = value;
-      });
+    scriptSubscription = service.initScript().subscribe(value => {
+      isReady = value;
+    });
 
     tick(800);
     expect(H.service.Platform).toHaveBeenCalledTimes(1);
     expect(document.head.appendChild).toHaveBeenCalledTimes(2);
     expect(isReady).toBeTruthy();
     expect(isLoading).toBe(false);
-
 
     scriptSubscription.unsubscribe();
     loadingSubscription.unsubscribe();
@@ -126,15 +130,13 @@ describe('HereMapsService', () => {
     let isReady: boolean;
     let isLoading: boolean;
 
-    const scriptSubscription = service.initScript()
-      .subscribe((value) => {
-        isReady = value;
-      });
+    const scriptSubscription = service.initScript().subscribe(value => {
+      isReady = value;
+    });
 
-    const loadingSubscription = service.isLibraryLoading$
-      .subscribe((value) => {
-        isLoading = value;
-      });
+    const loadingSubscription = service.isLibraryLoading$.subscribe(value => {
+      isLoading = value;
+    });
 
     expect(isLoading).toBeTruthy();
     expect(isReady).toBe(false);
@@ -155,26 +157,29 @@ describe('HereMapsService', () => {
     let isReady: boolean;
     let isLoading: boolean;
 
-    const scriptSubscription = service.initScript()
-      .subscribe((value) => {
-        isReady = value;
-      });
+    const scriptSubscription = service.initScript().subscribe(value => {
+      isReady = value;
+    });
 
-    const loadingSubscription = service.isLibraryLoading$
-      .subscribe((value) => {
-        isLoading = value;
-      });
+    const loadingSubscription = service.isLibraryLoading$.subscribe(value => {
+      isLoading = value;
+    });
 
     expect(isLoading).toBeTruthy();
     expect(isReady).toBe(false);
 
-    tick(CHECK_INTERVAL_MS * 2 + CHECK_INTERVAL_MS + CHECK_INTERVAL_MS * RETRY_AMOUNT);
+    tick(
+      CHECK_INTERVAL_MS * 2 +
+        CHECK_INTERVAL_MS +
+        CHECK_INTERVAL_MS * RETRY_AMOUNT
+    );
     expect(isReady).toBe(false);
     expect(isLoading).toBe(false);
-    expect(document.head.appendChild).toHaveBeenCalledTimes(1 + 1 + RETRY_AMOUNT);
+    expect(document.head.appendChild).toHaveBeenCalledTimes(
+      1 + 1 + RETRY_AMOUNT
+    );
 
     scriptSubscription.unsubscribe();
     loadingSubscription.unsubscribe();
   }));
-
 });

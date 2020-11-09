@@ -2,7 +2,11 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HereMapsComponent, MAP_ZOOM_GENERAL, MAP_ZOOM_MARKER } from './here-maps.component';
+import {
+  HereMapsComponent,
+  MAP_ZOOM_GENERAL,
+  MAP_ZOOM_MARKER
+} from './here-maps.component';
 import { USER_LOCATION_COORDINATES } from '../../../../tests/user.fixtures.spec';
 import { HereMapsService } from './here-maps.service';
 import { of } from 'rxjs';
@@ -12,10 +16,10 @@ const MARKER = { marker: 'marker' };
 const CIRCLE = { circle: 'circle' };
 
 const MockedMap = {
-  setZoom: () => { },
-  setCenter: () => { },
-  addObject: () => { },
-  removeObject: () => { }
+  setZoom: () => {},
+  setCenter: () => {},
+  addObject: () => {},
+  removeObject: () => {}
 };
 
 const MOCKED_PLATFORM = {
@@ -35,13 +39,16 @@ describe('HereMapsComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [HereMapsComponent],
-      providers: [{
-        provide: HereMapsService, useValue: {
-          initScript: () => of(true),
-          isLibraryLoading$: of(false),
-          platform: MOCKED_PLATFORM
+      providers: [
+        {
+          provide: HereMapsService,
+          useValue: {
+            initScript: () => of(true),
+            isLibraryLoading$: of(false),
+            platform: MOCKED_PLATFORM
+          }
         }
-      }]
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(HereMapsComponent);
@@ -61,7 +68,6 @@ describe('HereMapsComponent', () => {
     };
     fixture.detectChanges();
   });
-
 
   describe('ngAfterViewInit', () => {
     it('should prepare map', () => {
@@ -93,7 +99,7 @@ describe('HereMapsComponent', () => {
       expect(component.createCircle).toHaveBeenCalledTimes(1);
       expect(MockedMap.addObject).toHaveBeenCalledWith(CIRCLE);
     });
-  })
+  });
 
   describe('ngOnChanges', () => {
     beforeEach(() => {
@@ -146,7 +152,5 @@ describe('HereMapsComponent', () => {
         });
       });
     });
-
   });
 });
-

@@ -1,4 +1,12 @@
-import { Component, ElementRef, Input, OnChanges, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnInit,
+  ViewChild,
+  AfterViewInit
+} from '@angular/core';
 import { Coordinate } from '../../../core/geolocation/address-response.interface';
 import { HereMapsService } from './here-maps.service';
 
@@ -17,7 +25,6 @@ export const DEFAULT_COORDINATES: Coordinate = {
   styleUrls: ['./here-maps.component.scss']
 })
 export class HereMapsComponent implements OnInit, AfterViewInit, OnChanges {
-
   @Input() coordinates: Coordinate;
   @Input() zoom = MAP_ZOOM_GENERAL;
   @Input() size = 'normal';
@@ -27,10 +34,9 @@ export class HereMapsComponent implements OnInit, AfterViewInit, OnChanges {
   private marker: any;
   private circle: any;
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
-  constructor(public hereMapsService: HereMapsService) { }
+  constructor(public hereMapsService: HereMapsService) {}
 
   ngAfterViewInit() {
     if (!this.coordinates) {
@@ -42,7 +48,6 @@ export class HereMapsComponent implements OnInit, AfterViewInit, OnChanges {
       }
       this.initializeMap();
     });
-
   }
 
   initializeMap() {
