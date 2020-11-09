@@ -9,10 +9,9 @@ describe('DeactivateItemsModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DeactivateItemsModalComponent ],
-      providers: [NgbActiveModal]
-    })
-    .compileComponents();
+      declarations: [DeactivateItemsModalComponent],
+      providers: [NgbActiveModal],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

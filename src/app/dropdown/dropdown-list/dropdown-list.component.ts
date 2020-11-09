@@ -1,16 +1,26 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  TemplateRef,
+  ViewChild,
+  ViewEncapsulation,
+} from '@angular/core';
 import { OptionList } from '../utils/option-list';
 import { Option } from '../utils/option';
-
 
 @Component({
   selector: 'tsl-dropdown-list',
   templateUrl: './dropdown-list.component.html',
   styleUrls: ['./dropdown-list.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class DropdownListComponent implements AfterViewInit, OnChanges, OnInit {
-
   @Input() filterEnabled: boolean;
   @Input() left: number;
   @Input() multiple: boolean;
@@ -33,14 +43,11 @@ export class DropdownListComponent implements AfterViewInit, OnChanges, OnInit {
   @ViewChild('filterInput') filterInput: any;
   @ViewChild('optionsList') optionsList: any;
 
-  constructor(
-    public hostElement: ElementRef
-  ) { }
+  constructor(public hostElement: ElementRef) {}
 
   /** Event handlers. **/
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngOnChanges(changes: any) {
     if (!this.isLoading && changes.optionList) {
@@ -56,7 +63,7 @@ export class DropdownListComponent implements AfterViewInit, OnChanges, OnInit {
     this.setView();
   }
 
-  private setView():void {
+  private setView(): void {
     this.moveHighlightedIntoView();
     if (!this.multiple && this.filterEnabled) {
       this.filterInput?.nativeElement.focus();
@@ -98,15 +105,18 @@ export class DropdownListComponent implements AfterViewInit, OnChanges, OnInit {
   /** Initialization. **/
 
   private optionsReset() {
-    if (!this.optionList) { return; }
+    if (!this.optionList) {
+      return;
+    }
     this.optionList.filter('');
     this.optionList.highlight();
   }
 
   moveHighlightedIntoView() {
-
     let list = this.optionsList?.nativeElement;
-    if (!list) { return; }
+    if (!list) {
+      return;
+    }
     let listHeight = list.offsetHeight;
 
     let itemIndex = this.optionList.getHighlightedIndex();
@@ -123,8 +133,7 @@ export class DropdownListComponent implements AfterViewInit, OnChanges, OnInit {
 
       if (itemBottom > viewBottom) {
         list.scrollTop = itemBottom - listHeight;
-      }
-      else if (itemTop < viewTop) {
+      } else if (itemTop < viewTop) {
         list.scrollTop = itemTop;
       }
     }
@@ -137,8 +146,7 @@ export class DropdownListComponent implements AfterViewInit, OnChanges, OnInit {
 
     if (atTop && e.deltaY < 0) {
       e.preventDefault();
-    }
-    else if (atBottom && e.deltaY > 0) {
+    } else if (atBottom && e.deltaY > 0) {
       e.preventDefault();
     }
   }

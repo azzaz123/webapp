@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 .item {
   background: $white;
@@ -14,7 +14,6 @@
     padding-right: $spacing-ms;
     flex: 1;
     max-width: 98px;
-
   }
   &.provincial-bump {
     .title {
@@ -75,7 +74,8 @@
         font-weight: normal;
         color: $blue-grey-3;
       }
-      &:hover, &.selected {
+      &:hover,
+      &.selected {
         color: $white;
         tsl-wallacoin {
           ::ng-deep svg path {
@@ -90,7 +90,6 @@
             }
           }
         }
-
       }
       &.selected {
         box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.2);

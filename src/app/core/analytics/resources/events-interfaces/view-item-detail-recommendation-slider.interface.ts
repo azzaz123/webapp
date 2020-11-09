@@ -20,7 +20,7 @@ export interface ViewItemDetailRecommendationSlider {
   /**
    * Recommendation engine that provides the recommendations
    */
-  engine: "collaborative_filter" | "more_like_this_solr";
+  engine: 'collaborative_filter' | 'more_like_this_solr';
   /**
    * recommended itemids separated by comma
    */

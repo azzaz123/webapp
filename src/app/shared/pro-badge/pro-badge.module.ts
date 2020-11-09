@@ -4,15 +4,8 @@ import { ProBadgeComponent } from './pro-badge.component';
 import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SvgIconModule
-  ],
-  declarations: [
-    ProBadgeComponent
-  ],
-  exports: [
-    ProBadgeComponent
-  ]
+  imports: [CommonModule, SvgIconModule],
+  declarations: [ProBadgeComponent],
+  exports: [ProBadgeComponent],
 })
-export class ProBadgeModule { }
+export class ProBadgeModule {}

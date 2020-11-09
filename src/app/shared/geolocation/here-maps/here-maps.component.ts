@@ -5,7 +5,7 @@ import {
   OnChanges,
   OnInit,
   ViewChild,
-  AfterViewInit
+  AfterViewInit,
 } from '@angular/core';
 import { Coordinate } from '../../../core/geolocation/address-response.interface';
 import { HereMapsService } from './here-maps.service';
@@ -16,13 +16,13 @@ export const USER_MARKER = '/assets/icons/user-marker.svg';
 export const USER_MARKER_SMALL = '/assets/icons/user-marker-small.svg';
 export const DEFAULT_COORDINATES: Coordinate = {
   latitude: 40.42028,
-  longitude: -3.70578
+  longitude: -3.70578,
 };
 
 @Component({
   selector: 'tsl-here-maps',
   templateUrl: './here-maps.component.html',
-  styleUrls: ['./here-maps.component.scss']
+  styleUrls: ['./here-maps.component.scss'],
 })
 export class HereMapsComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() coordinates: Coordinate;
@@ -106,7 +106,7 @@ export class HereMapsComponent implements OnInit, AfterViewInit, OnChanges {
   private getCenter() {
     return {
       lat: this.coordinates.latitude,
-      lng: this.coordinates.longitude
+      lng: this.coordinates.longitude,
     };
   }
 
@@ -122,8 +122,8 @@ export class HereMapsComponent implements OnInit, AfterViewInit, OnChanges {
     return new H.map.Circle(coordinates, 650, {
       style: {
         fillColor: 'rgba(51, 51, 51, 0.15)',
-        lineWidth: 0
-      }
+        lineWidth: 0,
+      },
     });
   }
 

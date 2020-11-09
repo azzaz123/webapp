@@ -1,12 +1,12 @@
-@import "~style/common";
+@import '~style/common';
 
 .SubscribedSuccessfully__box {
   padding: $spacing-xxxl $spacing-xxl;
   text-align: center;
   .box-content {
-      p {
-        margin-bottom: $spacing-l;
-      }
+    p {
+      margin-bottom: $spacing-l;
+    }
   }
 }
 

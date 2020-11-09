@@ -10,9 +10,8 @@ describe('StatusIconComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SvgIconModule],
-      declarations: [StatusIconComponent]
-    })
-    .compileComponents();
+      declarations: [StatusIconComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,13 +1,14 @@
 import { Item } from '../core/item/item';
 
 export class ReviewItem extends Item {
-
-  constructor(_id: string,
-              _categoryId?: number,
-              _title?: string,
-              private _image?: ReviewImage,
-              _web_link?: string) {
-    super (
+  constructor(
+    _id: string,
+    _categoryId?: number,
+    _title?: string,
+    private _image?: ReviewImage,
+    _web_link?: string
+  ) {
+    super(
       _id,
       null,
       null,

@@ -1,18 +1,27 @@
-import { Component, Input, OnChanges, OnInit, EventEmitter, Output } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  EventEmitter,
+  Output,
+} from '@angular/core';
 import { User } from '../../../core/user/user';
 import { ConversationUser } from '../../../core/item/item-response.interface';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ReviewDataSeller, ReviewDataBuyer } from '../../../core/review/review.interface';
+import {
+  ReviewDataSeller,
+  ReviewDataBuyer,
+} from '../../../core/review/review.interface';
 import { Item } from '../../../core/item/item';
 import { ReviewService } from '../../../core/review/review.service';
 
 @Component({
   selector: 'tsl-review-modal',
   templateUrl: './review-modal.component.html',
-  styleUrls: ['./review-modal.component.scss']
+  styleUrls: ['./review-modal.component.scss'],
 })
 export class ReviewModalComponent implements OnInit, OnChanges {
-
   @Input() userToReview: ConversationUser;
   @Input() item: Item;
   @Input() isSeller?: boolean;
@@ -28,9 +37,10 @@ export class ReviewModalComponent implements OnInit, OnChanges {
   public price: number;
   public reviewCommentLength = 0;
 
-  constructor(public activeModal: NgbActiveModal,
-              private reviewService: ReviewService) { }
-
+  constructor(
+    public activeModal: NgbActiveModal,
+    private reviewService: ReviewService
+  ) {}
 
   ngOnInit() {
     this.setUsername();
@@ -58,7 +68,7 @@ export class ReviewModalComponent implements OnInit, OnChanges {
         item_id: this.item.id,
         comments: this.comments,
         score: this.score * 20,
-        price: this.price
+        price: this.price,
       };
       this.reviewService.createAsSeller(data).subscribe(() => {
         this.finishedReview.emit(null);
@@ -69,14 +79,15 @@ export class ReviewModalComponent implements OnInit, OnChanges {
         item_id: this.item.id,
         comments: this.comments,
         score: this.score * 20,
-        conversation_id: this.thread
+        conversation_id: this.thread,
       };
-      this.reviewService.createAsBuyer(data).subscribe((r) => this.activeModal.close(r));
+      this.reviewService
+        .createAsBuyer(data)
+        .subscribe((r) => this.activeModal.close(r));
     }
   }
 
   public onRated(score: number) {
     this.score = score;
   }
-
 }

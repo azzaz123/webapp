@@ -18,7 +18,11 @@ import { UrgentCheckboxComponent } from './urgent-checkbox/urgent-checkbox.compo
 import { UploadComponent } from './upload.component';
 import { ItemResolverService } from './item-resolver.service';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { NgbButtonsModule, NgbCarouselModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbButtonsModule,
+  NgbCarouselModule,
+  NgbPopoverModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { TrackingModule } from '../core/tracking/tracking.module';
 import { DndModule } from 'ng2-dnd';
 import { SharedModule } from '../shared/shared.module';
@@ -26,7 +30,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GeolocationModule } from '../shared/geolocation/geolocation.module';
 import { GeneralSuggestionsService } from './upload-product/general-suggestions.service';
 import { DropdownModule } from 'app/dropdown/dropdown.module';
-
 
 @NgModule({
   imports: [
@@ -42,7 +45,7 @@ import { DropdownModule } from 'app/dropdown/dropdown.module';
     NgbCarouselModule,
     GeolocationModule,
     NgbButtonsModule,
-    DropdownModule
+    DropdownModule,
   ],
   declarations: [
     uploadRoutedComponents,
@@ -55,7 +58,7 @@ import { DropdownModule } from 'app/dropdown/dropdown.module';
     UploadProductComponent,
     UploadRealestateComponent,
     UrgentCheckboxComponent,
-    UploadComponent
+    UploadComponent,
   ],
   providers: [
     UploadService,
@@ -63,11 +66,8 @@ import { DropdownModule } from 'app/dropdown/dropdown.module';
     CarSuggestionsService,
     RealestateKeysService,
     ItemResolverService,
-    GeneralSuggestionsService
+    GeneralSuggestionsService,
   ],
-  entryComponents: [
-    RemoveConfirmModalComponent,
-    PreviewModalComponent
-  ]
+  entryComponents: [RemoveConfirmModalComponent, PreviewModalComponent],
 })
-export class UploadModule { }
+export class UploadModule {}

@@ -1,4 +1,11 @@
-import { Component, HostListener, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  Input,
+  OnInit,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { isEqual } from 'lodash-es';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -7,16 +14,15 @@ import { ExitConfirmationModalComponent } from '../../exit-confirmation-modal/ex
 @Component({
   selector: 'tsl-profile-form',
   templateUrl: './profile-form.component.html',
-  styleUrls: ['./profile-form.component.scss']
+  styleUrls: ['./profile-form.component.scss'],
 })
 export class ProfileFormComponent implements OnInit {
-
   @Input() profileForm: FormGroup;
   @Output() onInit = new EventEmitter<boolean>();
   private oldFormValue: any;
   public hasNotSavedChanges: boolean;
 
-  constructor(private modalService: NgbModal) { }
+  constructor(private modalService: NgbModal) {}
 
   ngOnInit() {
     this.detectFormChanges();
@@ -28,7 +34,7 @@ export class ProfileFormComponent implements OnInit {
   }
 
   private detectFormChanges() {
-    this.profileForm.valueChanges.subscribe(value => {
+    this.profileForm.valueChanges.subscribe((value) => {
       if (!this.oldFormValue) {
         this.oldFormValue = value;
       } else {
@@ -48,7 +54,7 @@ export class ProfileFormComponent implements OnInit {
       return true;
     }
     return this.modalService.open(ExitConfirmationModalComponent, {
-      backdrop: 'static'
+      backdrop: 'static',
     }).result;
   }
 

@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 .spinner-wrapper {
   display: flex;
@@ -83,7 +83,9 @@
     width: 100%;
     line-height: $spacing-xl;
   }
-  .credit, .total, .missing {
+  .credit,
+  .total,
+  .missing {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -93,7 +95,8 @@
       text-align: right;
     }
   }
-  .credit, .missing {
+  .credit,
+  .missing {
     .label {
       tsl-wallacoin {
         vertical-align: sub;
@@ -158,7 +161,8 @@ tsl-stripe-card-selection {
 }
 
 .Cart__NewCard {
-  &--add, &--used {
+  &--add,
+  &--used {
     margin-bottom: $spacing-s;
     font-size: $font-size-s;
     color: $walla-main;

@@ -5,10 +5,9 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'tsl-wallacoins-confirm-modal',
   templateUrl: './wallacoins-confirm-modal.component.html',
-  styleUrls: ['./wallacoins-confirm-modal.component.scss']
+  styleUrls: ['./wallacoins-confirm-modal.component.scss'],
 })
 export class WallacoinsConfirmModalComponent {
-
   public pack: Pack;
   public code: string;
   public total: number;
@@ -17,6 +16,5 @@ export class WallacoinsConfirmModalComponent {
     return this.pack.name === 'wallacredits';
   }
 
-  constructor(public activeModal: NgbActiveModal) { }
-
+  constructor(public activeModal: NgbActiveModal) {}
 }

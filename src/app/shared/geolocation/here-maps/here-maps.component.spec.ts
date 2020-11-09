@@ -5,7 +5,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   HereMapsComponent,
   MAP_ZOOM_GENERAL,
-  MAP_ZOOM_MARKER
+  MAP_ZOOM_MARKER,
 } from './here-maps.component';
 import { USER_LOCATION_COORDINATES } from '../../../../tests/user.fixtures.spec';
 import { HereMapsService } from './here-maps.service';
@@ -19,17 +19,17 @@ const MockedMap = {
   setZoom: () => {},
   setCenter: () => {},
   addObject: () => {},
-  removeObject: () => {}
+  removeObject: () => {},
 };
 
 const MOCKED_PLATFORM = {
   createDefaultLayers() {
     return {
       normal: {
-        map: 'map'
-      }
+        map: 'map',
+      },
     };
-  }
+  },
 };
 
 describe('HereMapsComponent', () => {
@@ -64,7 +64,7 @@ describe('HereMapsComponent', () => {
     spyOn(MockedMap, 'removeObject').and.callThrough();
 
     component.mapEl = {
-      nativeElement: {}
+      nativeElement: {},
     };
     fixture.detectChanges();
   });
@@ -77,7 +77,7 @@ describe('HereMapsComponent', () => {
       expect(MockedMap.setZoom).toHaveBeenCalledWith(MAP_ZOOM_GENERAL);
       expect(MockedMap.setCenter).toHaveBeenCalledWith({
         lat: USER_LOCATION_COORDINATES.latitude,
-        lng: USER_LOCATION_COORDINATES.longitude
+        lng: USER_LOCATION_COORDINATES.longitude,
       });
     });
 
@@ -147,7 +147,7 @@ describe('HereMapsComponent', () => {
           expect(MockedMap.setZoom).toHaveBeenCalledWith(MAP_ZOOM_MARKER);
           expect(MockedMap.setCenter).toHaveBeenCalledWith({
             lat: USER_LOCATION_COORDINATES.latitude,
-            lng: USER_LOCATION_COORDINATES.longitude
+            lng: USER_LOCATION_COORDINATES.longitude,
           });
         });
       });

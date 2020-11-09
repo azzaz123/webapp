@@ -85,10 +85,10 @@ export const MOCK_XMPP = {
 
 class MockStorage {
   private store = {};
-  public getItem = key => this.store[key];
-  public setItem = (key, value) => this.store[key] = value.toString();
-  public clear = () => this.store = {};
-  public removeItem = key => delete this.store[key];
+  public getItem = (key) => this.store[key];
+  public setItem = (key, value) => (this.store[key] = value.toString());
+  public clear = () => (this.store = {});
+  public removeItem = (key) => delete this.store[key];
 }
 
 export const MOCK_LOCALSTORAGE = new MockStorage();
@@ -96,16 +96,16 @@ export const MOCK_SESSIONSTORAGE = new MockStorage();
 
 export const MOCK_NAVIGATOR_CONNECTION = {
   rtt: 50,
-  type: ''
+  type: '',
 };
 
 export const MOCK_NAVIGATOR_GEOLOCATION = {
-  getCurrentPosition: () => ''
+  getCurrentPosition: () => '',
 };
 
 export const MOCK_DIDOMI: DidomiLibrary = {
-  getUserConsentStatusForPurpose: key => true,
-  getUserConsentStatusForVendor: key => true,
+  getUserConsentStatusForPurpose: (key) => true,
+  getUserConsentStatusForVendor: (key) => true,
   getUserConsentStatusForAll: () => {
     return {
       purposes: {
@@ -125,7 +125,7 @@ export const MOCK_THREAT_METRIX: ThreatMetrixLibrary = {
 };
 
 export const MOCK_LOCATION: Location = {
-  ...window.location
+  ...window.location,
 };
 
 export class MockNotificationClass {
@@ -133,13 +133,12 @@ export class MockNotificationClass {
     return Promise.resolve('granted');
   }
 
-  public addEventListener(_eventName) {
-  }
+  public addEventListener(_eventName) {}
 }
 
-export const MOCK_SCREEN: { width: number, height: number } = {
+export const MOCK_SCREEN: { width: number; height: number } = {
   width: 1366,
-  height: 768
+  height: 768,
 };
 
 export const MOCK_HERE_MAPS: any = { Map: null, clustering: null, data: null, geo: null, map: null, mapevents: null, util: null, math: null, net: null, service: { Platform: (e) => (e) }, ui: null };

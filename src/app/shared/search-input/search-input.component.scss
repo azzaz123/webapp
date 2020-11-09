@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 :host {
   display: inline-block;
@@ -10,7 +10,7 @@ div {
   width: 38px;
   overflow: hidden;
   border-bottom: 2px solid transparent;
-  transition: all .2s ease;
+  transition: all 0.2s ease;
   position: relative;
   tsl-svg-icon {
     height: 40px;

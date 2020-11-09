@@ -16,5 +16,5 @@ export enum STATUS {
   ACTIVE = 'active',
   INACTIVE = 'inactive',
   SELECTED = 'selected',
-  ONHOLD = 'onhold'
+  ONHOLD = 'onhold',
 }

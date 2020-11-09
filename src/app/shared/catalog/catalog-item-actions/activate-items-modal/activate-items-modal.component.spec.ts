@@ -9,10 +9,9 @@ describe('ActivateItemsModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ActivateItemsModalComponent ],
-      providers: [NgbActiveModal]
-    })
-    .compileComponents();
+      declarations: [ActivateItemsModalComponent],
+      providers: [NgbActiveModal],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -4,16 +4,16 @@ import 'jest-preset-angular';
 Object.defineProperty(window, 'CSS', { value: null });
 
 Object.defineProperty(document, 'doctype', {
-  value: '<!DOCTYPE html>'
+  value: '<!DOCTYPE html>',
 });
 
 Object.defineProperty(window, 'getComputedStyle', {
   value: () => {
     return {
       display: 'none',
-      appearance: ['-webkit-appearance']
+      appearance: ['-webkit-appearance'],
     };
-  }
+  },
 });
 
 /**
@@ -24,15 +24,12 @@ Object.defineProperty(window, 'getComputedStyle', {
 // More info about the issue: https://github.com/thymikee/jest-preset-angular/issues/347
 import '@angular/localize/init';
 
-// Ads "polyfills"
-import '../../assets/js/adsConfig.js';
-
 // Prototype overrides
 Element.prototype.scrollIntoView = () => {};
 
 // Mock document variables manually
 Object.defineProperty(document, 'visibilityState', {
-  get: () => 'visible'
+  get: () => 'visible',
 });
 
 // Mock global variables in window manually

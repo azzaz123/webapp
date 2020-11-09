@@ -7,12 +7,13 @@ import { CallsService } from '../../core/conversation/calls.service';
   selector: 'tsl-call',
   templateUrl: './call.component.html',
   styleUrls: ['./call.component.scss'],
-  animations: [Remove('0.5s 0.5s')]
+  animations: [Remove('0.5s 0.5s')],
 })
 export class CallComponent {
-
   @Input() call: Call;
-  @HostBinding('class.archived') @HostBinding('@remove') archived: boolean = false;
+  @HostBinding('class.archived')
+  @HostBinding('@remove')
+  archived: boolean = false;
 
   public momentConfig: any = {
     lastDay: 'ddd',
@@ -20,11 +21,10 @@ export class CallComponent {
     nextDay: 'ddd',
     lastWeek: 'ddd',
     nextWeek: 'ddd',
-    sameElse: 'D MMM'
+    sameElse: 'D MMM',
   };
 
-  constructor(private callService: CallsService) {
-  }
+  constructor(private callService: CallsService) {}
 
   @HostListener('@remove.done') onAnimationDone($event: Event) {
     if (this.archived) {

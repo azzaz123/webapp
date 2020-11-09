@@ -1,7 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { catalogProRoutedComponents, CatalogProRoutingModule } from './catalog-pro.routes';
+import {
+  catalogProRoutedComponents,
+  CatalogProRoutingModule,
+} from './catalog-pro.routes';
 import { ProBumpConfirmationModalComponent } from './catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component';
 import { ProUrgentConfirmationModalComponent } from './catalog-pro-list/modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component';
 import { PlanDataComponent } from './catalog-pro-list/plan-data/plan-data.component';
@@ -24,7 +27,7 @@ import { CreditCardModalComponent } from './catalog-pro-list/modals/credit-card-
     InfiniteScrollModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbDatepickerModule
+    NgbDatepickerModule,
   ],
   declarations: [
     catalogProRoutedComponents,
@@ -36,12 +39,12 @@ import { CreditCardModalComponent } from './catalog-pro-list/modals/credit-card-
     CartProComponent,
     CheckoutProItemComponent,
     RangeDatepickerComponent,
-    CreditCardModalComponent
+    CreditCardModalComponent,
   ],
   entryComponents: [
     ProBumpConfirmationModalComponent,
     ProUrgentConfirmationModalComponent,
-    CreditCardModalComponent
-  ]
+    CreditCardModalComponent,
+  ],
 })
-export class CatalogProModule { }
+export class CatalogProModule {}

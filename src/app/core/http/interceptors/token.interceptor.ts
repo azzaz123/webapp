@@ -1,5 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
+import {
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+  HttpResponse,
+} from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 
 import { AccessTokenService } from '../access-token.service';
@@ -12,32 +18,49 @@ export const TOKEN_SIGNATURE_HEADER_NAME = 'X-Signature';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
+  constructor(private accessTokenService: AccessTokenService) {}
 
-  constructor(private accessTokenService: AccessTokenService) {
-  }
-
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
     if (request.url.endsWith('.svg')) {
       return next.handle(request);
     }
 
-    if (this.accessTokenService.accessToken || request.url === `${environment.baseUrl}${LOGIN_ENDPOINT}`) {
+    if (
+      this.accessTokenService.accessToken ||
+      request.url === `${environment.baseUrl}${LOGIN_ENDPOINT}`
+    ) {
       const setHeaders: any = {};
 
-      if (!request.headers.has(TOKEN_AUTHORIZATION_HEADER_NAME) && request.url !== `${environment.baseUrl}${LOGIN_ENDPOINT}`) {
-        setHeaders[TOKEN_AUTHORIZATION_HEADER_NAME] = `Bearer ${this.accessTokenService.accessToken}`;
+      if (
+        !request.headers.has(TOKEN_AUTHORIZATION_HEADER_NAME) &&
+        request.url !== `${environment.baseUrl}${LOGIN_ENDPOINT}`
+      ) {
+        setHeaders[
+          TOKEN_AUTHORIZATION_HEADER_NAME
+        ] = `Bearer ${this.accessTokenService.accessToken}`;
       }
 
       if (request.url.indexOf('v3') !== -1) {
         const timestamp = new Date().getTime();
         const endpoint = request.url.replace(environment.baseUrl, '');
         setHeaders[TOKEN_TIMESTAMP_HEADER_NAME] = timestamp.toString();
-        setHeaders[TOKEN_SIGNATURE_HEADER_NAME] = this.accessTokenService.getTokenSignature(endpoint, request.method, timestamp);
+        setHeaders[
+          TOKEN_SIGNATURE_HEADER_NAME
+        ] = this.accessTokenService.getTokenSignature(
+          endpoint,
+          request.method,
+          timestamp
+        );
       }
       request = request.clone({ setHeaders });
       return next.handle(request);
     } else {
-      return of(new HttpResponse({ status: 401, statusText: 'Unauthorized', body: {} }));
+      return of(
+        new HttpResponse({ status: 401, statusText: 'Unauthorized', body: {} })
+      );
     }
   }
 }

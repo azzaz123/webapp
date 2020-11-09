@@ -125,7 +125,7 @@
           }
         }
       }
-      input[type="checkbox"] {
+      input[type='checkbox'] {
         position: absolute;
         clip: rect(0, 0, 0, 0);
         pointer-events: none;
@@ -151,7 +151,6 @@
         }
       }
     }
-
   }
 
   .btn-primary,
@@ -231,7 +230,7 @@
         }
       }
     }
-    input[type="checkbox"] {
+    input[type='checkbox'] {
       position: absolute;
       clip: rect(0, 0, 0, 0);
       pointer-events: none;
@@ -252,7 +251,7 @@ form {
     }
     .photo-wrapper:first-of-type .product-photo {
       border-color: $negative-main !important;
-      background-image: url("/assets/icons/camera-red.svg") !important;
+      background-image: url('/assets/icons/camera-red.svg') !important;
     }
     .input-radio.ng-invalid input {
       border: 1px solid $negative-main !important;

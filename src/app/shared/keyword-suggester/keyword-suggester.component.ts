@@ -1,4 +1,12 @@
-import { Component, OnInit, Input, EventEmitter, Output, OnChanges, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  EventEmitter,
+  Output,
+  OnChanges,
+  ViewEncapsulation,
+} from '@angular/core';
 import { KeywordSuggestion } from './keyword-suggestion.interface';
 import { Subject } from 'rxjs';
 import { I18nService } from '../../core/i18n/i18n.service';
@@ -8,10 +16,9 @@ import { FormGroup, FormControlName } from '@angular/forms';
   selector: 'tsl-keyword-suggester',
   templateUrl: './keyword-suggester.component.html',
   styleUrls: ['./keyword-suggester.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class KeywordSuggesterComponent implements OnInit, OnChanges {
-
   @Input() form: FormGroup;
   @Input() controlName: FormControlName;
   @Input() placeholder: string;
@@ -24,7 +31,7 @@ export class KeywordSuggesterComponent implements OnInit, OnChanges {
   public placeholderValue;
   private suggestionIndexSelected = -1;
 
-  constructor(private i18n: I18nService) { }
+  constructor(private i18n: I18nService) {}
 
   ngOnInit() {
     this.suggestions.subscribe((suggestions: KeywordSuggestion[]) => {
@@ -35,7 +42,9 @@ export class KeywordSuggesterComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes?) {
     if (changes.placeholder) {
-      this.placeholderValue = this.i18n.getTranslations(changes.placeholder.currentValue);
+      this.placeholderValue = this.i18n.getTranslations(
+        changes.placeholder.currentValue
+      );
     }
   }
 
@@ -58,7 +67,10 @@ export class KeywordSuggesterComponent implements OnInit, OnChanges {
 
   onKeydown(event: any) {
     if (this.keywordSuggestions && this.keywordSuggestions.length) {
-      if (event.keyCode === 40 && this.suggestionIndexSelected < (this.keywordSuggestions.length - 1)) {
+      if (
+        event.keyCode === 40 &&
+        this.suggestionIndexSelected < this.keywordSuggestions.length - 1
+      ) {
         event.preventDefault();
         this.suggestionIndexSelected++;
       }
@@ -69,7 +81,9 @@ export class KeywordSuggesterComponent implements OnInit, OnChanges {
       if (event.keyCode === 13) {
         event.preventDefault();
         if (this.suggestionIndexSelected !== -1) {
-          this.selectSuggestion(this.keywordSuggestions[this.suggestionIndexSelected]);
+          this.selectSuggestion(
+            this.keywordSuggestions[this.suggestionIndexSelected]
+          );
         }
       }
       if (event.keyCode === 27 || event.keyCode === 13) {

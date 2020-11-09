@@ -1,58 +1,89 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild,
+  ElementRef,
+  OnDestroy,
+} from '@angular/core';
 import { EventService } from '../../core/event/event.service';
 import { InboxConversation } from '../model';
 import { InboxService, InboxConversationService } from '../service';
-import { trigger, transition, style, animate, keyframes } from '@angular/animations';
+import {
+  trigger,
+  transition,
+  style,
+  animate,
+  keyframes,
+} from '@angular/animations';
 import { UserService } from '../../core/user/user.service';
 import { AdService } from '../../core/ad/ad.service';
 import { RemoteConsoleService } from '../../core/remote-console';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { countBy, map, find } from 'lodash-es';
-import { ANALYTICS_EVENT_NAMES, SCREEN_IDS, AnalyticsPageView, ViewChatScreen } from '../../core/analytics/analytics-constants';
+import {
+  ANALYTICS_EVENT_NAMES,
+  SCREEN_IDS,
+  AnalyticsPageView,
+  ViewChatScreen,
+} from '../../core/analytics/analytics-constants';
 import { InboxMessage } from '../model';
 
-export enum InboxState { Inbox, Archived }
+export enum InboxState {
+  Inbox,
+  Archived,
+}
 
 @Component({
   selector: 'tsl-inbox',
   templateUrl: './inbox.component.html',
   styleUrls: ['./inbox.component.scss'],
-  animations: [trigger('appearInOut', [
-    transition(':enter', [   // :enter is alias to 'void => *'
-      style({
-        transform: 'translateY(-180%)',
-        opacity: 0
-      }),
-      animate('300ms ease-in-out', keyframes([
-        style({
-          transform: 'translateY(20%)',
-          opacity: 1,
-          offset: 0.9
-        }),
-        style({
-          transform: 'translateY(0)',
-          offset: 1
-        })
-      ]))
-    ]),
-    transition(':leave', [   // :leave is alias to '* => void'
-      animate('300ms ease-in-out', keyframes([
-        style({
-          transform: 'translateY(20%)',
-          opacity: 0.4,
-          offset: 0.1
-        }),
+  animations: [
+    trigger('appearInOut', [
+      transition(':enter', [
+        // :enter is alias to 'void => *'
         style({
           transform: 'translateY(-180%)',
           opacity: 0,
-          offset: 1
-        })
-      ]))
-    ])
-  ])]
+        }),
+        animate(
+          '300ms ease-in-out',
+          keyframes([
+            style({
+              transform: 'translateY(20%)',
+              opacity: 1,
+              offset: 0.9,
+            }),
+            style({
+              transform: 'translateY(0)',
+              offset: 1,
+            }),
+          ])
+        ),
+      ]),
+      transition(':leave', [
+        // :leave is alias to '* => void'
+        animate(
+          '300ms ease-in-out',
+          keyframes([
+            style({
+              transform: 'translateY(20%)',
+              opacity: 0.4,
+              offset: 0.1,
+            }),
+            style({
+              transform: 'translateY(-180%)',
+              opacity: 0,
+              offset: 1,
+            }),
+          ])
+        ),
+      ]),
+    ]),
+  ],
 })
 export class InboxComponent implements OnInit, OnDestroy {
-
   @Output() public loadingEvent = new EventEmitter<any>();
   @Output() public loadingError = new EventEmitter<any>();
   @ViewChild('scrollPanel') scrollPanel: ElementRef;
@@ -69,14 +100,15 @@ export class InboxComponent implements OnInit, OnDestroy {
   private conversation: InboxConversation;
   public isProfessional: boolean;
 
-  constructor(private inboxService: InboxService,
-              private eventService: EventService,
-              private inboxConversationService: InboxConversationService,
-              private userService: UserService,
-              private adService: AdService,
-              private remoteConsoleService: RemoteConsoleService,
-              private analyticsService: AnalyticsService) {
-  }
+  constructor(
+    private inboxService: InboxService,
+    private eventService: EventService,
+    private inboxConversationService: InboxConversationService,
+    private userService: UserService,
+    private adService: AdService,
+    private remoteConsoleService: RemoteConsoleService,
+    private analyticsService: AnalyticsService
+  ) {}
 
   set loading(value: boolean) {
     this._loading = value;
@@ -110,7 +142,10 @@ export class InboxComponent implements OnInit, OnDestroy {
     this.componentState = InboxState.Inbox;
     this.bindNewMessageToast();
     if (this.inboxConversationService.conversations) {
-      this.onInboxReady(this.inboxConversationService.conversations, 'INIT_INBOX');
+      this.onInboxReady(
+        this.inboxConversationService.conversations,
+        'INIT_INBOX'
+      );
       this.conversations = this.inboxConversationService.conversations;
       this.archivedConversations = this.inboxConversationService.archivedConversations;
       this.loading = false;
@@ -118,29 +153,41 @@ export class InboxComponent implements OnInit, OnDestroy {
       this.loading = true;
     }
 
-    this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[], callMethodClient: string) => {
-      this.conversations = this.inboxConversationService.conversations;
-      this.onInboxReady(conversations, callMethodClient);
-    });
+    this.eventService.subscribe(
+      EventService.INBOX_LOADED,
+      (conversations: InboxConversation[], callMethodClient: string) => {
+        this.conversations = this.inboxConversationService.conversations;
+        this.onInboxReady(conversations, callMethodClient);
+      }
+    );
 
-    this.eventService.subscribe(EventService.ARCHIVED_INBOX_LOADED, (conversations: InboxConversation[]) => {
-      this.archivedConversations = this.inboxConversationService.archivedConversations;
-      this.setStatusesAfterLoadConversations();
-    });
+    this.eventService.subscribe(
+      EventService.ARCHIVED_INBOX_LOADED,
+      (conversations: InboxConversation[]) => {
+        this.archivedConversations = this.inboxConversationService.archivedConversations;
+        this.setStatusesAfterLoadConversations();
+      }
+    );
 
     this.userService.isProfessional().subscribe((value: boolean) => {
       this.isProfessional = value;
     });
 
-    this.eventService.subscribe(EventService.CURRENT_CONVERSATION_SET, (conversation => {
-      if (this.conversation !== conversation) {
-        this.conversation = conversation;
-        this.trackViewConversation(conversation);
+    this.eventService.subscribe(
+      EventService.CURRENT_CONVERSATION_SET,
+      (conversation) => {
+        if (this.conversation !== conversation) {
+          this.conversation = conversation;
+          this.trackViewConversation(conversation);
+        }
+        if (
+          this.archivedConversations.find((c) => c === conversation) &&
+          this.componentState === InboxState.Inbox
+        ) {
+          this.componentState = InboxState.Archived;
+        }
       }
-      if (this.archivedConversations.find((c) => c === conversation) && this.componentState === InboxState.Inbox) {
-        this.componentState = InboxState.Archived;
-      }
-    }));
+    );
   }
 
   private setStatusesAfterLoadConversations() {
@@ -154,20 +201,31 @@ export class InboxComponent implements OnInit, OnDestroy {
     this.unselectCurrentConversation();
   }
 
-  private onInboxReady(conversations: InboxConversation[], callMethodClient: string) {
+  private onInboxReady(
+    conversations: InboxConversation[],
+    callMethodClient: string
+  ) {
     this.setStatusesAfterLoadConversations();
     this.showInbox();
-    this.sendLogWithNumberOfConversationsByConversationId(conversations, callMethodClient);
+    this.sendLogWithNumberOfConversationsByConversationId(
+      conversations,
+      callMethodClient
+    );
   }
 
   private bindNewMessageToast() {
-    this.eventService.subscribe(EventService.NEW_MESSAGE, (message: InboxMessage) => {
-      if (message.fromSelf && this.conversation.id === message.thread) {
-        this.scrollToTop();
-      } else {
-        this.showNewMessagesToast = this.scrollPanel.nativeElement.scrollTop > this.conversationElementHeight * 0.75;
+    this.eventService.subscribe(
+      EventService.NEW_MESSAGE,
+      (message: InboxMessage) => {
+        if (message.fromSelf && this.conversation.id === message.thread) {
+          this.scrollToTop();
+        } else {
+          this.showNewMessagesToast =
+            this.scrollPanel.nativeElement.scrollTop >
+            this.conversationElementHeight * 0.75;
+        }
       }
-    });
+    );
   }
 
   public showInbox() {
@@ -181,7 +239,9 @@ export class InboxComponent implements OnInit, OnDestroy {
   }
 
   public handleScroll() {
-    this.showNewMessagesToast = this.scrollPanel.nativeElement.scrollTop > this.conversationElementHeight * 0.25;
+    this.showNewMessagesToast =
+      this.scrollPanel.nativeElement.scrollTop >
+      this.conversationElementHeight * 0.25;
   }
 
   public scrollToTop() {
@@ -190,7 +250,11 @@ export class InboxComponent implements OnInit, OnDestroy {
 
   public setCurrentConversation(newCurrentConversation: InboxConversation) {
     if (!newCurrentConversation.user.location) {
-      this.userService.get(newCurrentConversation.user.id).subscribe(user => newCurrentConversation.user.location = user.location);
+      this.userService
+        .get(newCurrentConversation.user.id)
+        .subscribe(
+          (user) => (newCurrentConversation.user.location = user.location)
+        );
     }
     this.inboxConversationService.openConversation(newCurrentConversation);
     this.adService.adsRefresh();
@@ -232,13 +296,28 @@ export class InboxComponent implements OnInit, OnDestroy {
     }
   }
 
-  private sendLogWithNumberOfConversationsByConversationId(conversations: InboxConversation[], callMethodClient: string) {
-    const conversationsIds = countBy(map(conversations, conversation => conversation.id));
-    const hasDuplicated = find(conversationsIds, numberOfConversation => numberOfConversation > 1);
+  private sendLogWithNumberOfConversationsByConversationId(
+    conversations: InboxConversation[],
+    callMethodClient: string
+  ) {
+    const conversationsIds = countBy(
+      map(conversations, (conversation) => conversation.id)
+    );
+    const hasDuplicated = find(
+      conversationsIds,
+      (numberOfConversation) => numberOfConversation > 1
+    );
 
     if (hasDuplicated) {
-      this.userService.me().subscribe(
-        user => this.remoteConsoleService.sendDuplicateConversations(user.id, callMethodClient, conversationsIds));
+      this.userService
+        .me()
+        .subscribe((user) =>
+          this.remoteConsoleService.sendDuplicateConversations(
+            user.id,
+            callMethodClient,
+            conversationsIds
+          )
+        );
     }
   }
 
@@ -248,8 +327,8 @@ export class InboxComponent implements OnInit, OnDestroy {
       attributes: {
         itemId: conversation.item.id,
         conversationId: conversation.id,
-        screenId: SCREEN_IDS.Chat
-      }
+        screenId: SCREEN_IDS.Chat,
+      },
     };
 
     this.analyticsService.trackPageView(event);

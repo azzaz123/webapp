@@ -1,4 +1,3 @@
-
 import { of, throwError, Subject } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
@@ -6,7 +5,10 @@ import { BuyProductModalComponent } from './buy-product-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { CustomCurrencyPipe } from '../../../../shared/pipes';
-import { MOCK_ITEM_V3, ORDER_EVENT } from '../../../../../tests/item.fixtures.spec';
+import {
+  MOCK_ITEM_V3,
+  ORDER_EVENT,
+} from '../../../../../tests/item.fixtures.spec';
 import { ItemService } from '../../../../core/item/item.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentService } from '../../../../core/payments/payment.service';
@@ -39,65 +41,65 @@ describe('BuyProductModalComponent', () => {
         DecimalPipe,
         EventService,
         {
-          provide: ErrorsService, useValue: {
-            i18nError() {
-            },
-            show() {
-            }
-          }
+          provide: ErrorsService,
+          useValue: {
+            i18nError() {},
+            show() {},
+          },
         },
         {
-          provide: Router, useValue: {
-            navigate() {
-            },
-            events: routerEvents
-          }
+          provide: Router,
+          useValue: {
+            navigate() {},
+            events: routerEvents,
+          },
         },
         {
-          provide: ItemService, useValue: {
+          provide: ItemService,
+          useValue: {
             get() {
               return of(MOCK_ITEM_V3);
             },
             purchaseProductsWithCredits() {
               return of({
-                payment_needed: true
+                payment_needed: true,
               });
-            }
-          }
-        },
-        {
-          provide: NgbActiveModal, useValue: {
-            close() {
             },
-            dismiss() {
-            }
-          }
+          },
         },
         {
-          provide: PaymentService, useValue: {
+          provide: NgbActiveModal,
+          useValue: {
+            close() {},
+            dismiss() {},
+          },
+        },
+        {
+          provide: PaymentService,
+          useValue: {
             getCreditInfo() {
               return of({});
-            }
-          }
+            },
+          },
         },
         {
-          provide: StripeService, useValue: {
+          provide: StripeService,
+          useValue: {
             buy() {},
             getCards() {
               return of([]);
-            }
-          }
+            },
+          },
         },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BuyProductModalComponent);
     component = fixture.componentInstance;
-    component.orderEvent = {...ORDER_EVENT} as OrderEvent;
+    component.orderEvent = { ...ORDER_EVENT } as OrderEvent;
     fixture.detectChanges();
     itemService = TestBed.inject(ItemService);
     activeModal = TestBed.inject(NgbActiveModal);
@@ -127,7 +129,7 @@ describe('BuyProductModalComponent', () => {
       const creditInfo: CreditInfo = {
         currencyName: 'wallacoins',
         credit: 2000,
-        factor: 100
+        factor: 100,
       };
       spyOn(paymentService, 'getCreditInfo').and.returnValue(of(creditInfo));
 
@@ -140,7 +142,7 @@ describe('BuyProductModalComponent', () => {
       const creditInfo: CreditInfo = {
         currencyName: 'wallacoins',
         credit: 0,
-        factor: 100
+        factor: 100,
       };
       spyOn(paymentService, 'getCreditInfo').and.returnValue(of(creditInfo));
 
@@ -149,7 +151,7 @@ describe('BuyProductModalComponent', () => {
       expect(component.creditInfo).toEqual({
         currencyName: 'wallacredits',
         credit: 0,
-        factor: 1
+        factor: 1,
       });
     });
   });
@@ -159,7 +161,7 @@ describe('BuyProductModalComponent', () => {
       component.creditInfo = {
         currencyName: 'wallacredits',
         credit: 0,
-        factor: 100
+        factor: 100,
       };
 
       expect(component.withCredits).toBe(true);
@@ -169,7 +171,7 @@ describe('BuyProductModalComponent', () => {
       component.creditInfo = {
         currencyName: 'wallacoins',
         credit: 0,
-        factor: 100
+        factor: 100,
       };
 
       expect(component.withCredits).toBe(false);
@@ -177,14 +179,13 @@ describe('BuyProductModalComponent', () => {
   });
 
   describe('totalToPay', () => {
-
     beforeEach(() => {
       component.creditInfo = {
         currencyName: 'wallacoins',
         credit: 200,
-        factor: 100
+        factor: 100,
       };
-      component.orderEvent = {...ORDER_EVENT} as OrderEvent;
+      component.orderEvent = { ...ORDER_EVENT } as OrderEvent;
     });
 
     it('should return 0 if credits to pay < user credits', () => {
@@ -243,14 +244,14 @@ describe('BuyProductModalComponent', () => {
   });
 
   describe('setSavedCard', () => {
-      it('should set showCard and savedCard and call setCardInfo', () => {
-        spyOn(component, 'setCardInfo').and.callThrough();
-        component.setSavedCard(STRIPE_CARD_OPTION);
+    it('should set showCard and savedCard and call setCardInfo', () => {
+      spyOn(component, 'setCardInfo').and.callThrough();
+      component.setSavedCard(STRIPE_CARD_OPTION);
 
-        expect(component.showCard).toBe(false);
-        expect(component.savedCard).toBe(true);
-        expect(component.selectedCard).toBe(true);
-        expect(component.setCardInfo).toHaveBeenCalledWith(STRIPE_CARD_OPTION);
+      expect(component.showCard).toBe(false);
+      expect(component.savedCard).toBe(true);
+      expect(component.selectedCard).toBe(true);
+      expect(component.setCardInfo).toHaveBeenCalledWith(STRIPE_CARD_OPTION);
     });
   });
 
@@ -258,7 +259,6 @@ describe('BuyProductModalComponent', () => {
     let eventId: string;
 
     describe('success', () => {
-
       beforeEach(() => {
         spyOn(localStorage, 'setItem');
         spyOn(eventService, 'emit');
@@ -268,21 +268,26 @@ describe('BuyProductModalComponent', () => {
         component.creditInfo = {
           currencyName: 'wallacoins',
           credit: 200,
-          factor: 100
+          factor: 100,
         };
-        component.orderEvent = {...ORDER_EVENT} as OrderEvent;
+        component.orderEvent = { ...ORDER_EVENT } as OrderEvent;
       });
 
       it('should set localStorage with transaction amount', () => {
         component.checkout();
 
-        expect(localStorage.setItem).toHaveBeenCalledWith('transactionSpent', '200');
+        expect(localStorage.setItem).toHaveBeenCalledWith(
+          'transactionSpent',
+          '200'
+        );
       });
 
       it('should emit TOTAL_CREDITS_UPDATED event', () => {
         component.checkout();
 
-        expect(eventService.emit).toHaveBeenCalledWith(EventService.TOTAL_CREDITS_UPDATED);
+        expect(eventService.emit).toHaveBeenCalledWith(
+          EventService.TOTAL_CREDITS_UPDATED
+        );
       });
 
       describe('with payment_needed true', () => {
@@ -296,7 +301,13 @@ describe('BuyProductModalComponent', () => {
 
               component.checkout();
 
-              expect(stripeService.buy).toHaveBeenCalledWith(orderId, paymentId, component.hasSavedCard, component.savedCard, component.card);
+              expect(stripeService.buy).toHaveBeenCalledWith(
+                orderId,
+                paymentId,
+                component.hasSavedCard,
+                component.savedCard,
+                component.card
+              );
             });
           });
         });
@@ -304,7 +315,9 @@ describe('BuyProductModalComponent', () => {
 
       describe('error', () => {
         beforeEach(() => {
-          spyOn(itemService, 'purchaseProductsWithCredits').and.returnValue(throwError(''));
+          spyOn(itemService, 'purchaseProductsWithCredits').and.returnValue(
+            throwError('')
+          );
 
           component.checkout();
         });
@@ -312,9 +325,7 @@ describe('BuyProductModalComponent', () => {
         it('should close with error', () => {
           expect(activeModal.close).toHaveBeenCalledWith('error');
         });
-
       });
-
     });
   });
 });

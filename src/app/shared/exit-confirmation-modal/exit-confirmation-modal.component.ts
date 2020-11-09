@@ -4,12 +4,10 @@ import { Item } from '../../core/item/item';
 
 @Component({
   selector: 'tsl-exit-confirmation-modal',
-  templateUrl: './exit-confirmation-modal.component.html'
+  templateUrl: './exit-confirmation-modal.component.html',
 })
 export class ExitConfirmationModalComponent {
-
   public item: Item;
 
-  constructor(public activeModal: NgbActiveModal) { }
-
+  constructor(public activeModal: NgbActiveModal) {}
 }

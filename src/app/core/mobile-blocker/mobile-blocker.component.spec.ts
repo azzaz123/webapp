@@ -1,4 +1,9 @@
-import { async, ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  TestBed,
+  getTestBed,
+} from '@angular/core/testing';
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MobileBlockerComponent } from './mobile-blocker.component';
@@ -17,14 +22,13 @@ describe('MobileBlockerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MobileBlockerComponent ],
+      declarations: [MobileBlockerComponent],
       providers: [
-        { provide: UserService, useValue: { isProfessional: () => of(false) }},
-        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock }
+        { provide: UserService, useValue: { isProfessional: () => of(false) } },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -41,7 +45,6 @@ describe('MobileBlockerComponent', () => {
   });
 
   describe('when the user is using a mobile device', () => {
-
     beforeEach(() => {
       spyOn(deviceDetectorService, 'isMobile').and.returnValue(true);
     });
@@ -52,41 +55,48 @@ describe('MobileBlockerComponent', () => {
 
         component.ngOnInit();
         fixture.detectChanges();
-  
-        const componentHTML = fixture.debugElement.query(By.css('.MobileBlocker'));
+
+        const componentHTML = fixture.debugElement.query(
+          By.css('.MobileBlocker')
+        );
         expect(componentHTML).toBeTruthy();
       });
 
-      it('should emit the blocked content event', () => {	
-        spyOn(userService, 'isProfessional').and.returnValue(of(true));	
-        spyOn(component.viewIsBlocked, 'emit').and.callThrough();	
+      it('should emit the blocked content event', () => {
+        spyOn(userService, 'isProfessional').and.returnValue(of(true));
+        spyOn(component.viewIsBlocked, 'emit').and.callThrough();
 
-        component.ngOnInit();	
-        fixture.detectChanges();	
+        component.ngOnInit();
+        fixture.detectChanges();
 
-        expect(component.viewIsBlocked.emit).toHaveBeenCalledWith({isCardealer: true, isMobile: true});	
+        expect(component.viewIsBlocked.emit).toHaveBeenCalledWith({
+          isCardealer: true,
+          isMobile: true,
+        });
       });
     });
-  
+
     describe('and the user is not a car dealer', () => {
       it('should not show mobile block component', () => {
         spyOn(userService, 'isProfessional').and.returnValue(of(false));
 
         component.ngOnInit();
         fixture.detectChanges();
-  
-        const componentHTML = fixture.debugElement.query(By.css('.MobileBlocker'));
+
+        const componentHTML = fixture.debugElement.query(
+          By.css('.MobileBlocker')
+        );
         expect(componentHTML).toBeFalsy();
       });
 
-      it('should not emit the blocked content event', () => {	
-        spyOn(userService, 'isProfessional').and.returnValue(of(false));	
-        spyOn(component.viewIsBlocked, 'emit').and.callThrough();	
+      it('should not emit the blocked content event', () => {
+        spyOn(userService, 'isProfessional').and.returnValue(of(false));
+        spyOn(component.viewIsBlocked, 'emit').and.callThrough();
 
-        component.ngOnInit();	
-        fixture.detectChanges();	
+        component.ngOnInit();
+        fixture.detectChanges();
 
-        expect(component.viewIsBlocked.emit).not.toHaveBeenCalled();	
+        expect(component.viewIsBlocked.emit).not.toHaveBeenCalled();
       });
     });
   });
@@ -98,9 +108,10 @@ describe('MobileBlockerComponent', () => {
       component.ngOnInit();
       fixture.detectChanges();
 
-      const componentHTML = fixture.debugElement.query(By.css('.MobileBlocker'));
+      const componentHTML = fixture.debugElement.query(
+        By.css('.MobileBlocker')
+      );
       expect(componentHTML).toBeFalsy();
     });
   });
-
 });

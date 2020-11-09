@@ -16,7 +16,7 @@ export interface ViewKYCUploadIdentityVerificationScreen {
   /**
    * Chosen nationality on the KYC identity verification screen (European Community - USA, UK and Canada - Rest of the world)
    */
-  nationality: "european_community" | "usa_uk_and_canada" | "rest_of_the_world";
+  nationality: 'european_community' | 'usa_uk_and_canada' | 'rest_of_the_world';
   /**
    * Identifier of the KYC upload identity verification screen
    */

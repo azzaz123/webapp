@@ -3,7 +3,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ItemAvatarComponent } from './item-avatar.component';
 import { SanitizedBackgroundDirective } from '../sanitized-background/sanitized-background.directive';
-import { FAKE_ITEM_IMAGE_SMALL_BASE_PATH, FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH, Item } from '../../core/item/item';
+import {
+  FAKE_ITEM_IMAGE_SMALL_BASE_PATH,
+  FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH,
+  Item,
+} from '../../core/item/item';
 import { MOCK_ITEM } from '../../../tests/item.fixtures.spec';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
@@ -15,15 +19,10 @@ describe('ItemAvatarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-      ],
-      declarations: [
-        ItemAvatarComponent,
-        SanitizedBackgroundDirective
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+      imports: [],
+      declarations: [ItemAvatarComponent, SanitizedBackgroundDirective],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -3,10 +3,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'tsl-block-user',
-  templateUrl: './block-user.component.html'
+  templateUrl: './block-user.component.html',
 })
 export class BlockUserComponent {
-
-  constructor(public activeModal: NgbActiveModal) { }
-
+  constructor(public activeModal: NgbActiveModal) {}
 }

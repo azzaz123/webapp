@@ -3,7 +3,7 @@ import { UuidService } from './uuid.service';
 import * as UUID from 'uuid';
 
 jest.mock('uuid', () => {
-  return { v4: () => null }
+  return { v4: () => null };
 });
 
 describe('UuidService', () => {

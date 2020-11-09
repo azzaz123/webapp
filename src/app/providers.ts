@@ -7,14 +7,14 @@ export const PROVIDERS: Provider[] = [
   {
     provide: 'SUBDOMAIN',
     useFactory: subdomainFactory,
-    deps: [CookieService]
+    deps: [CookieService],
   },
   {
     provide: APP_INITIALIZER,
     useFactory: userPermissionsFactory,
     deps: [UserService, NgxPermissionsService],
-    multi: true
-  }
+    multi: true,
+  },
 ];
 
 export function subdomainFactory(cookieService: CookieService) {
@@ -22,6 +22,8 @@ export function subdomainFactory(cookieService: CookieService) {
   return subdomain ? subdomain : 'www';
 }
 
-export function userPermissionsFactory(userService: UserService): () => Promise<boolean> {
+export function userPermissionsFactory(
+  userService: UserService
+): () => Promise<boolean> {
   return () => userService.checkUserPermissions().toPromise();
 }

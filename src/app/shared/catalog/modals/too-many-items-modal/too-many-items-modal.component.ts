@@ -12,10 +12,9 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'tsl-too-many-items-modal',
   templateUrl: './too-many-items-modal.component.html',
-  styleUrls: ['./too-many-items-modal.component.scss']
+  styleUrls: ['./too-many-items-modal.component.scss'],
 })
 export class TooManyItemsModalComponent implements OnInit {
-
   public type = SUBSCRIPTION_TYPES.notSubscribed;
   public notSubscribedType = SUBSCRIPTION_TYPES.notSubscribed;
   public inAppType = SUBSCRIPTION_TYPES.inApp;
@@ -28,12 +27,14 @@ export class TooManyItemsModalComponent implements OnInit {
   public categoryName: string;
   public categoryIconName: string;
 
-  constructor(public activeModal: NgbActiveModal,
-              private itemService: ItemService,
-              private subscriptionsService: SubscriptionsService) { }
+  constructor(
+    public activeModal: NgbActiveModal,
+    private itemService: ItemService,
+    private subscriptionsService: SubscriptionsService
+  ) {}
 
   ngOnInit() {
-    this.hasFreeOption(this.itemId).subscribe( result => {
+    this.hasFreeOption(this.itemId).subscribe((result) => {
       this.isFreeTrial = result;
     });
   }
@@ -41,15 +42,16 @@ export class TooManyItemsModalComponent implements OnInit {
   private hasFreeOption(itemId: string): Observable<boolean> {
     return forkJoin([
       this.itemService.get(itemId),
-      this.subscriptionsService.getSubscriptions(false)
-    ])
-    .pipe(
-      map(values => {
+      this.subscriptionsService.getSubscriptions(false),
+    ]).pipe(
+      map((values) => {
         const item: Item = values[0];
         const subscriptions: SubscriptionsResponse[] = values[1];
-        this.categorySubscription = subscriptions.find((subscription) => item.categoryId === subscription.category_id);
+        this.categorySubscription = subscriptions.find(
+          (subscription) => item.categoryId === subscription.category_id
+        );
         if (this.categorySubscription) {
-          return this.hasTrial(this.categorySubscription)
+          return this.hasTrial(this.categorySubscription);
         }
         return false;
       })

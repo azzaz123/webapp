@@ -16,19 +16,19 @@ describe('CheckoutExtrasProItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CheckoutExtrasProItemComponent, CustomCurrencyPipe ],
+      declarations: [CheckoutExtrasProItemComponent, CustomCurrencyPipe],
       providers: [
         DecimalPipe,
         {
-          provide: CartService, useValue: {
-            createInstance() { },
-            addProExtras() { }
-          }
-        }
+          provide: CartService,
+          useValue: {
+            createInstance() {},
+            addProExtras() {},
+          },
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -45,7 +45,9 @@ describe('CheckoutExtrasProItemComponent', () => {
 
       component.ngOnInit();
 
-      expect(cartService.createInstance).toHaveBeenCalledWith(new CartProExtras());
+      expect(cartService.createInstance).toHaveBeenCalledWith(
+        new CartProExtras()
+      );
     });
   });
 
@@ -53,12 +55,15 @@ describe('CheckoutExtrasProItemComponent', () => {
     it('should prepare cartProExtrasPack and call cartService addProExtras with pack selected', () => {
       spyOn(cartService, 'addProExtras').and.callThrough();
       const cartProExtrasPack: CartProExtrasPack = {
-        pack: PREPARED_PACKS[0].packs[0]
+        pack: PREPARED_PACKS[0].packs[0],
       };
 
       component.select(PREPARED_PACKS[0].packs[0]);
 
-      expect(cartService.addProExtras).toHaveBeenCalledWith(cartProExtrasPack, PREPARED_PACKS[0].packs[0].name.toLowerCase());
+      expect(cartService.addProExtras).toHaveBeenCalledWith(
+        cartProExtrasPack,
+        PREPARED_PACKS[0].packs[0].name.toLowerCase()
+      );
     });
   });
 });

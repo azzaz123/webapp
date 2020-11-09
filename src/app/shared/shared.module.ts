@@ -2,7 +2,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { AdComponent } from './ad/ad.component';
-import { CustomCurrencyPipe, DateUntilDayPipe, DateCalendarPipe, CountdownPipe } from './pipes';
+import {
+  CustomCurrencyPipe,
+  DateUntilDayPipe,
+  DateCalendarPipe,
+  CountdownPipe,
+} from './pipes';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
 import { CardModule } from './card/card.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -27,7 +32,7 @@ import { SwitchComponent } from './switch/switch.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { ItemAvatarComponent } from './item-avatar/item-avatar.component';
 import { SearchInputComponent } from './search-input/search-input.component';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SelectComponent } from './select/select.component';
 import { TooManyItemsModalComponent } from './catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { AlreadyFeaturedModalComponent } from './catalog/modals/already-featured-modal/already-featured-modal.component';
@@ -81,18 +86,18 @@ import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
   imports: [
     CardModule,
     CommonModule,
+    NgbModule,
     ReactiveFormsModule,
     FormsModule,
     GeolocationModule,
     NgxPermissionsModule.forChild(),
-    NgbDropdownModule,
     TrackingModule,
     RouterModule,
     UploaderModule,
     DeviceDetectorModule.forRoot(),
     ProBadgeModule,
     SvgIconModule,
-    DropdownModule
+    DropdownModule,
   ],
   exports: [
     CardModule,
@@ -157,7 +162,7 @@ import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
     ProfileProBillingComponent,
     FullScreenModalComponent,
     DisableControlDirective,
-    SvgIconModule
+    SvgIconModule,
   ],
   declarations: [
     AdComponent,
@@ -232,7 +237,7 @@ import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
     CartService,
     ThousandSuffixesPipe,
     LinkTransformPipe,
-    SubscriptionsService
+    SubscriptionsService,
   ],
   entryComponents: [
     ConfirmationModalComponent,
@@ -249,8 +254,7 @@ import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
     NoCardModalComponent,
     ConfirmCardModalComponent,
     ChangeCardModalComponent,
-    FullScreenModalComponent
-  ]
+    FullScreenModalComponent,
+  ],
 })
-export class SharedModule {
-}
+export class SharedModule {}

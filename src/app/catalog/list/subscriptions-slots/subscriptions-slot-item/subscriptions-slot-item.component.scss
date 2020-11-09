@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 :host {
   width: 100%;
@@ -10,7 +10,7 @@
   align-content: center;
   justify-content: center;
   position: relative;
-  transition: all .25s ease;
+  transition: all 0.25s ease;
   width: 100%;
   height: 80px;
   padding: $spacing-m;
@@ -30,7 +30,6 @@
       tsl-svg-icon {
         opacity: 1;
       }
-
     }
   }
 
@@ -102,7 +101,6 @@
       }
     }
   }
-
 }
 
 .SubscriptionsSlotItem--not-selected {
@@ -113,7 +111,8 @@
   }
 }
 
-.SubscriptionsSlotItem--not-selected, .SubscriptionsSlotItem--single {
+.SubscriptionsSlotItem--not-selected,
+.SubscriptionsSlotItem--single {
   .SubscriptionsSlotItem__info {
     .SubscriptionsSlotItem__info-title {
       color: $blue-grey-2;

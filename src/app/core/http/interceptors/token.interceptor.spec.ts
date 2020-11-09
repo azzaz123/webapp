@@ -9,7 +9,10 @@ import { environment } from '../../../../environments/environment';
 import { HttpModuleNew } from '../http.module.new';
 import { AccessTokenService } from '../access-token.service';
 import { TOKEN_AUTHORIZATION_HEADER_NAME } from './index';
-import { TOKEN_TIMESTAMP_HEADER_NAME, TOKEN_SIGNATURE_HEADER_NAME } from './token.interceptor';
+import {
+  TOKEN_TIMESTAMP_HEADER_NAME,
+  TOKEN_SIGNATURE_HEADER_NAME,
+} from './token.interceptor';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { LOGIN_ENDPOINT } from '../../user/user.service';
 
@@ -25,7 +28,7 @@ describe(`TokenInterceptor`, () => {
   beforeEach(() => {
     injector = getTestBed();
     injector.configureTestingModule({
-      imports: [HttpClientTestingModule, HttpModuleNew]
+      imports: [HttpClientTestingModule, HttpModuleNew],
     });
 
     http = injector.get(HttpClient);
@@ -45,16 +48,24 @@ describe(`TokenInterceptor`, () => {
       let result: string;
       let response;
 
-      http.get<HttpResponse<string>>(expectedUrl, { observe: 'response' as 'body' }).subscribe(r => {
-        result = r.body;
-        response = r;
-      });
+      http
+        .get<HttpResponse<string>>(expectedUrl, {
+          observe: 'response' as 'body',
+        })
+        .subscribe((r) => {
+          result = r.body;
+          response = r;
+        });
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(iconContent);
 
       expect(result).toEqual(iconContent);
-      expect(req.request.headers.has(TOKEN_TIMESTAMP_HEADER_NAME)).toEqual(false);
-      expect(req.request.headers.has(TOKEN_SIGNATURE_HEADER_NAME)).toEqual(false);
+      expect(req.request.headers.has(TOKEN_TIMESTAMP_HEADER_NAME)).toEqual(
+        false
+      );
+      expect(req.request.headers.has(TOKEN_SIGNATURE_HEADER_NAME)).toEqual(
+        false
+      );
       expect(response.status).toEqual(200);
       expect(response.statusText).toEqual('OK');
     });
@@ -72,8 +83,12 @@ describe(`TokenInterceptor`, () => {
     it('should return 401 and empty response', () => {
       let response;
 
-      http.get<HttpResponse<Object>>(`${environment.baseUrl}${MOCK_V3_ENDPOINT}`, { observe: 'response' as 'body' })
-        .subscribe(r => response = r);
+      http
+        .get<HttpResponse<Object>>(
+          `${environment.baseUrl}${MOCK_V3_ENDPOINT}`,
+          { observe: 'response' as 'body' }
+        )
+        .subscribe((r) => (response = r));
 
       expect(response.status).toEqual(401);
       expect(response.statusText).toEqual('Unauthorized');
@@ -81,7 +96,6 @@ describe(`TokenInterceptor`, () => {
       httpMock.expectNone(`${environment.baseUrl}${MOCK_V3_ENDPOINT}`);
     });
   });
-
 
   describe('when the user does not have access token but request is to login endpoint', () => {
     it('should not add authorization header', () => {
@@ -92,7 +106,9 @@ describe(`TokenInterceptor`, () => {
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush({});
 
-      const authHeaderValue = req.request.headers.get(TOKEN_AUTHORIZATION_HEADER_NAME);
+      const authHeaderValue = req.request.headers.get(
+        TOKEN_AUTHORIZATION_HEADER_NAME
+      );
       expect(authHeaderValue).toBeFalsy();
     });
   });
@@ -105,7 +121,9 @@ describe(`TokenInterceptor`, () => {
       const req: TestRequest = httpMock.expectOne(environment.baseUrl);
       req.flush({});
 
-      const authHeaderValue = req.request.headers.get(TOKEN_AUTHORIZATION_HEADER_NAME);
+      const authHeaderValue = req.request.headers.get(
+        TOKEN_AUTHORIZATION_HEADER_NAME
+      );
       expect(authHeaderValue).toBeTruthy();
       expect(authHeaderValue).toBe(`Bearer ${MOCK_TOKEN}`);
     });
@@ -114,11 +132,17 @@ describe(`TokenInterceptor`, () => {
       accessTokenService.storeAccessToken(MOCK_TOKEN);
 
       http.get(`${environment.baseUrl}${MOCK_V3_ENDPOINT}`).subscribe();
-      const req: TestRequest = httpMock.expectOne(`${environment.baseUrl}${MOCK_V3_ENDPOINT}`);
+      const req: TestRequest = httpMock.expectOne(
+        `${environment.baseUrl}${MOCK_V3_ENDPOINT}`
+      );
       req.flush({});
 
-      expect(req.request.headers.has(TOKEN_TIMESTAMP_HEADER_NAME)).toEqual(true);
-      expect(req.request.headers.has(TOKEN_SIGNATURE_HEADER_NAME)).toEqual(true);
+      expect(req.request.headers.has(TOKEN_TIMESTAMP_HEADER_NAME)).toEqual(
+        true
+      );
+      expect(req.request.headers.has(TOKEN_SIGNATURE_HEADER_NAME)).toEqual(
+        true
+      );
     });
   });
 });

@@ -4,30 +4,37 @@ import { replace } from 'lodash-es';
 import { UuidService } from '../uuid/uuid.service';
 
 export class TrackingEvent {
-  sessions: any[] = [{
-    id: null,
-    startTimestamp: null,
-    userId: '',
-    device: {
-      platform: null,
-      model: null,
-      screenwidth: null,
-      screenheight: null,
-      locale: null,
-      type: null,
-      os: null,
-      deviceAccessTokenId: null
+  sessions: any[] = [
+    {
+      id: null,
+      startTimestamp: null,
+      userId: '',
+      device: {
+        platform: null,
+        model: null,
+        screenwidth: null,
+        screenheight: null,
+        locale: null,
+        type: null,
+        os: null,
+        deviceAccessTokenId: null,
+      },
+      app: {
+        id: 'web',
+        version: '2.0',
+      },
+      sdkVersion: '1.0',
+      events: [],
+      window: null,
     },
-    app: {
-      id: 'web',
-      version: '2.0',
-    },
-    sdkVersion: '1.0',
-    events: [],
-    window: null
-  }];
+  ];
 
-  constructor(userId: string, sessionStartTime: string, event?: TrackingEventBase, events?: Array<any>) {
+  constructor(
+    userId: string,
+    sessionStartTime: string,
+    event?: TrackingEventBase,
+    events?: Array<any>
+  ) {
     if (events) {
       this.sessions[0].events = events;
     } else {
@@ -40,7 +47,13 @@ export class TrackingEvent {
     this.sessions[0].startTimestamp = sessionStartTime;
   }
 
-  public setDeviceInfo(operativeSystemVersion: string, OSName: string, deviceAccessTokenId: string, browserName: string, browserVersion: string) {
+  public setDeviceInfo(
+    operativeSystemVersion: string,
+    OSName: string,
+    deviceAccessTokenId: string,
+    browserName: string,
+    browserVersion: string
+  ) {
     this.sessions[0].device = {
       type: 'Computer',
       manufacturer: browserName,
@@ -50,7 +63,7 @@ export class TrackingEvent {
       screenwidth: this.sessions[0].window.screen.width.toString(),
       screenheight: this.sessions[0].window.screen.height.toString(),
       locale: replace(navigator.language, '-', '_'),
-      deviceAccessTokenId: deviceAccessTokenId
+      deviceAccessTokenId: deviceAccessTokenId,
     };
   }
 
@@ -59,7 +72,6 @@ export class TrackingEvent {
   }
 
   public setSessionId(sessionId: string) {
-      this.sessions[0].id = sessionId;
+    this.sessions[0].id = sessionId;
   }
-
 }
