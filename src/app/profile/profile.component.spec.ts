@@ -14,7 +14,6 @@ import {
 import { I18nService } from '../core/i18n/i18n.service';
 import { environment } from '../../environments/environment';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { SubscriptionsService } from '../core/subscriptions/subscriptions.service';
 import { FeatureflagService } from '../core/user/featureflag.service';
 import { MockSubscriptionService } from '../../tests/subscriptions.fixtures.spec';
 import { EventService } from '../core/event/event.service';
@@ -22,7 +21,6 @@ import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
-import { HaversineService } from 'ng2-haversine';
 import { AccessTokenService } from '../core/http/access-token.service';
 import { CookieService } from 'ngx-cookie';
 import { SplitTestService } from '../core/tracking/split-test.service';
@@ -56,7 +54,6 @@ describe('ProfileComponent', () => {
       providers: [
         EventService,
         I18nService,
-        HaversineService,
         AccessTokenService,
         {
           provide: CookieService,

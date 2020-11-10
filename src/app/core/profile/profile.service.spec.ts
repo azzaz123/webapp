@@ -2,7 +2,6 @@
 
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { ProfileService } from './profile.service';
-import { HaversineService } from 'ng2-haversine';
 import { I18nService } from '../i18n/i18n.service';
 import { EventService } from '../event/event.service';
 import { Profile } from './profile';
@@ -38,7 +37,6 @@ describe('Service: Profile', () => {
       providers: [
         EventService,
         I18nService,
-        HaversineService,
         ProfileService,
         {
           provide: 'SUBDOMAIN',

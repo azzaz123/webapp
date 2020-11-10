@@ -24,9 +24,6 @@ Object.defineProperty(window, 'getComputedStyle', {
 // More info about the issue: https://github.com/thymikee/jest-preset-angular/issues/347
 import '@angular/localize/init';
 
-// Ads "polyfills"
-import '../../assets/js/adsConfig.js';
-
 // Prototype overrides
 Element.prototype.scrollIntoView = () => {};
 
@@ -67,9 +64,6 @@ Object.defineProperty(window, 'sessionStorage', {
 Object.defineProperty(window, 'pintrk', {
   value: GLOBAL_MOCKS.MOCK_PINTRK,
   writable: true,
-});
-Object.defineProperty(window, 'Visibility', {
-  value: GLOBAL_MOCKS.MOCK_VISIBILITY,
 });
 Object.defineProperty(window, 'XMPP', { value: GLOBAL_MOCKS.MOCK_XMPP });
 Object.defineProperty(window, 'wadgtlft', {

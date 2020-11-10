@@ -13,7 +13,8 @@ import {
   format,
   getCountryCallingCode,
   isValidNumber,
-} from 'libphonenumber-js';
+} from 'libphonenumber-js/custom';
+import { metadata } from 'assets/js/metadata-phonenumber';
 import { InboxConversation } from '../../model';
 import { InboxConversationService } from '../../service';
 import { RealTimeService } from 'app/core/message/real-time.service';
@@ -53,7 +54,9 @@ export class SendPhoneComponent implements OnInit {
   }
 
   private phoneNumberFormatValidator(control: FormControl) {
-    return isValidNumber(control.value, 'ES') ? null : { invalid: true };
+    return isValidNumber(control.value, 'ES', metadata)
+      ? null
+      : { invalid: true };
   }
 
   public handleSubmit() {
@@ -83,12 +86,14 @@ export class SendPhoneComponent implements OnInit {
   }
 
   formatNumber(event: any) {
-    const prefix = '+' + getCountryCallingCode('ES');
+    const prefix = '+' + getCountryCallingCode('ES', metadata);
     const hasPrefix = event.target.value.indexOf(prefix) > -1;
     const numberOfDigits = hasPrefix
       ? event.target.value.split(prefix)[1].split(' ').join('').length
       : event.target.value.split(' ').join('').length;
-    event.target.value = new AsYouType('ES').input(event.target.value);
+    event.target.value = new AsYouType('ES', metadata).input(
+      event.target.value
+    );
     event.target.onkeypress = () => !(numberOfDigits >= 9);
     if (numberOfDigits === 9) {
       if (event.target.value.indexOf(prefix) === -1) {
@@ -97,7 +102,8 @@ export class SendPhoneComponent implements OnInit {
         event.target.value = format(
           event.target.value.toString(),
           'ES',
-          'International'
+          'International',
+          metadata
         );
       }
     }

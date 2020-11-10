@@ -151,6 +151,13 @@ The analytics team provide us with a series of JSON's files with which we must v
 - Make sure you follow the template given in the `PULL_REQUEST_TEMPLATE.md` file. (automatically filled)
 - Make sure the unit tests don't have one of the following Jasmine syntaxes: `fdescribe`, `fit`, `xdescribe`, `xit`.
 
+### Generate new metadata for phone number library
+
+If you wanna update the value of the libphonenumber-js metadata you should follow the next steps:
+
+- Edit the `generate-metadata.sh` file and customize it. You can check the [documentation](https://gitlab.com/catamphetamine/libphonenumber-js#customizing-metadata)
+- Run `yarn libphonenumber-metadata` for update our metadata file.
+
 ## Documentation
 
 Chat sequence diagrams: https://confluence.wallapop.com/display/ROV/Chat+sequence+diagrams
