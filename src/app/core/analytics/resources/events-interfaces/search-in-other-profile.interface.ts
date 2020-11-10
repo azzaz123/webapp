@@ -20,5 +20,25 @@ export interface SearchInOtherProfile {
   /**
    * Keywords applied in the search
    */
-  keywords: string;
+  keywords?: string;
+  /**
+   * Number of items the viewed user has on sale
+   */
+  numberOfItems?: number;
+  /**
+   * Identifier of the category that has been filtered in the search
+   */
+  categoryId?: number;
+  /**
+   * Minimum price set as a filter in the search
+   */
+  minPrice?: number;
+  /**
+   * Maximum price set as a filter in the search
+   */
+  maxPrice?: number;
+  /**
+   * Time of publication of the listing set as filter in the search
+   */
+  timeFilter?: 'today' | 'lastWeek' | 'lastMonth';
 }

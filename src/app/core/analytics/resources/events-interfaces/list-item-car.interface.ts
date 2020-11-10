@@ -82,7 +82,7 @@ export interface ListItemCar {
    */
   screenId: number;
   /**
-   * Hashtags uploaded by the user
+   * Hashtags
    */
   hashtags?: string;
 }

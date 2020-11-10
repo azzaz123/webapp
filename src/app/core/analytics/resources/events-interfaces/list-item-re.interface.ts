@@ -58,7 +58,7 @@ export interface ListItemRE {
    */
   screenId: number;
   /**
-   * Hashtags uploaded by the user
+   * Hashtags
    */
   hashtags?: string;
 }

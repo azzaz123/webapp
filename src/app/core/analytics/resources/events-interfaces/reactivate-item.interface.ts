@@ -49,4 +49,8 @@ export interface ReactivateItem {
    * Identifier of the screen that the item was reactivated from
    */
   screenId: number;
+  /**
+   * Hashtags
+   */
+  hashtags?: string;
 }

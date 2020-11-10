@@ -63,4 +63,8 @@ export interface Browse {
     | 'price_high_to_low'
     | 'newest'
     | 'most_relevant';
+  /**
+   * Other properties sent by JSON format, ONLY FOR A/B TESTING PURPOSE
+   */
+  otherProperties?: string;
 }

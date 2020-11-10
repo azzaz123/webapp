@@ -29,12 +29,12 @@ import {
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import {
   AnalyticsEvent,
-  ClickSubscriptionContinuePayment,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   SCREEN_IDS,
   SubscriptionPayConfirmation,
   ClickSubscriptionDirectContact,
+  ClickSubscriptionSubscribe,
 } from '../../../core/analytics/analytics-constants';
 import {
   PAYMENT_RESPONSE_STATUS,
@@ -352,14 +352,14 @@ export class AddNewSubscriptionModalComponent
   }
 
   public trackClickContinueToPayment() {
-    const event: AnalyticsEvent<ClickSubscriptionContinuePayment> = {
-      name: ANALYTICS_EVENT_NAMES.ClickSubscriptionContinuePayment,
+    const event: AnalyticsEvent<ClickSubscriptionSubscribe> = {
+      name: ANALYTICS_EVENT_NAMES.ClickSubscriptionSubscribe,
       eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
         subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
-        isNewSubscriber: this.isNewSubscriber,
-        screenId: SCREEN_IDS.ProfileSubscription,
+        screenId: SCREEN_IDS.Subscription,
         tier: this.selectedTier.id,
+        price: this.selectedTier.price,
       },
     };
 
@@ -380,15 +380,11 @@ export class AddNewSubscriptionModalComponent
         isNewCard,
         isNewSubscriber: this.isNewSubscriber,
         discountPercent,
+        invoiceNeeded: this._selectedInvoiceOption === 'true',
       },
     };
 
     this.analyticsService.trackEvent(event);
-  }
-
-  // TODO: This must be refactored
-  public reloadPage() {
-    window.location.reload();
   }
 
   public isDiscountedTier(tier: Tier): boolean {

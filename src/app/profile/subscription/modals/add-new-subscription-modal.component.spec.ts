@@ -32,18 +32,17 @@ import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
 import {
   AnalyticsEvent,
-  ClickSubscriptionContinuePayment,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   SCREEN_IDS,
   ClickSubscriptionDirectContact,
   SubscriptionPayConfirmation,
+  ClickSubscriptionSubscribe,
 } from '../../../core/analytics/analytics-constants';
 import { CustomCurrencyPipe, DateUntilDayPipe } from '../../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import { CATEGORY_IDS } from '../../../core/category/category-ids';
 import { SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
-import { By } from '@angular/platform-browser';
 import { PaymentService } from 'app/core/payments/payment.service';
 import { I18nService } from 'app/core/i18n/i18n.service';
 
@@ -169,7 +168,6 @@ describe('AddNewSubscriptionModalComponent', () => {
     component.subscription = MAPPED_SUBSCRIPTIONS[2];
     component.isNewSubscriber = false;
     fixture.detectChanges();
-    spyOn(component, 'reloadPage').and.returnValue(() => {});
   });
 
   describe('ngOnInit', () => {
@@ -329,12 +327,11 @@ describe('AddNewSubscriptionModalComponent', () => {
       tick();
 
       expect(component.isRetryInvoice).toBe(false);
-      expect(modalService.open).toHaveBeenCalledWith(
-        PaymentSuccessModalComponent,
-        {
-          windowClass: 'success',
-        }
-      );
+      expect(
+        modalService.open
+      ).toHaveBeenCalledWith(PaymentSuccessModalComponent, {
+        windowClass: 'success',
+      });
     }));
 
     it('should call actionPayment if response status is requires_action', fakeAsync(() => {
@@ -434,15 +431,15 @@ describe('AddNewSubscriptionModalComponent', () => {
   describe('trackClickContinueToPayment', () => {
     it('should send event to analytics', () => {
       spyOn(analyticsService, 'trackEvent');
-      const expectedEvent: AnalyticsEvent<ClickSubscriptionContinuePayment> = {
-        name: ANALYTICS_EVENT_NAMES.ClickSubscriptionContinuePayment,
+      const expectedEvent: AnalyticsEvent<ClickSubscriptionSubscribe> = {
+        name: ANALYTICS_EVENT_NAMES.ClickSubscriptionSubscribe,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
           subscription: component.subscription
             .category_id as SUBSCRIPTION_CATEGORIES,
-          isNewSubscriber: component.isNewSubscriber,
-          screenId: SCREEN_IDS.ProfileSubscription,
+          screenId: SCREEN_IDS.Subscription,
           tier: component.selectedTier.id,
+          price: component.selectedTier.price,
         },
       };
 
@@ -456,50 +453,121 @@ describe('AddNewSubscriptionModalComponent', () => {
   describe('trackClickPay', () => {
     beforeEach(() => spyOn(analyticsService, 'trackEvent'));
 
-    describe('when isNewVisa is true', () => {
-      it('should send valid event', () => {
-        const expectedEvent: AnalyticsEvent<SubscriptionPayConfirmation> = {
-          name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
-          eventType: ANALYTIC_EVENT_TYPES.Other,
-          attributes: {
-            subscription: component.subscription
-              .category_id as SUBSCRIPTION_CATEGORIES,
-            tier: component.selectedTier.id,
-            screenId: SCREEN_IDS.ProfileSubscription,
-            isNewCard: true,
-            isNewSubscriber: component.isNewSubscriber,
-            discountPercent: 0,
-          },
-        };
+    describe('when user created a new card', () => {
+      describe('and when user selected invoice', () => {
+        beforeEach(() => component.onInvoiceOptionSelect({ value: 'true' }));
 
-        component.trackClickPay(true);
+        it('should send valid event', () => {
+          const expectedEvent: AnalyticsEvent<SubscriptionPayConfirmation> = {
+            name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
+            eventType: ANALYTIC_EVENT_TYPES.Other,
+            attributes: {
+              subscription: component.subscription
+                .category_id as SUBSCRIPTION_CATEGORIES,
+              tier: component.selectedTier.id,
+              screenId: SCREEN_IDS.ProfileSubscription,
+              isNewCard: true,
+              isNewSubscriber: component.isNewSubscriber,
+              discountPercent: 0,
+              invoiceNeeded: true,
+            },
+          };
 
-        expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+          component.trackClickPay(true);
+
+          expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(
+            expectedEvent
+          );
+        });
+      });
+
+      describe('and when user did not select invoice', () => {
+        beforeEach(() => component.onInvoiceOptionSelect({ value: 'false' }));
+
+        it('should send valid event', () => {
+          const expectedEvent: AnalyticsEvent<SubscriptionPayConfirmation> = {
+            name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
+            eventType: ANALYTIC_EVENT_TYPES.Other,
+            attributes: {
+              subscription: component.subscription
+                .category_id as SUBSCRIPTION_CATEGORIES,
+              tier: component.selectedTier.id,
+              screenId: SCREEN_IDS.ProfileSubscription,
+              isNewCard: true,
+              isNewSubscriber: component.isNewSubscriber,
+              discountPercent: 0,
+              invoiceNeeded: false,
+            },
+          };
+
+          component.trackClickPay(true);
+
+          expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(
+            expectedEvent
+          );
+        });
       });
     });
 
-    describe('when isNewVisa is false', () => {
-      it('should send valid event', () => {
-        const expectedEvent: AnalyticsEvent<SubscriptionPayConfirmation> = {
-          name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
-          eventType: ANALYTIC_EVENT_TYPES.Other,
-          attributes: {
-            subscription: component.subscription
-              .category_id as SUBSCRIPTION_CATEGORIES,
-            tier: component.selectedTier.id,
-            screenId: SCREEN_IDS.ProfileSubscription,
-            isNewCard: true,
-            isNewSubscriber: component.isNewSubscriber,
-            discountPercent: 0,
-          },
-        };
-        expectedEvent.attributes.isNewCard = false;
+    describe('when user did not create new card', () => {
+      describe('and when the user selected invoice', () => {
+        beforeEach(() => component.onInvoiceOptionSelect({ value: 'true' }));
 
-        component.trackClickPay(false);
+        it('should send valid event', () => {
+          const expectedEvent: AnalyticsEvent<SubscriptionPayConfirmation> = {
+            name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
+            eventType: ANALYTIC_EVENT_TYPES.Other,
+            attributes: {
+              subscription: component.subscription
+                .category_id as SUBSCRIPTION_CATEGORIES,
+              tier: component.selectedTier.id,
+              screenId: SCREEN_IDS.ProfileSubscription,
+              isNewCard: true,
+              isNewSubscriber: component.isNewSubscriber,
+              discountPercent: 0,
+              invoiceNeeded: true,
+            },
+          };
+          expectedEvent.attributes.isNewCard = false;
 
-        expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+          component.trackClickPay(false);
+
+          expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(
+            expectedEvent
+          );
+        });
+      });
+
+      describe('and when the user did not select invoice', () => {
+        beforeEach(() => component.onInvoiceOptionSelect({ value: 'false' }));
+
+        it('should send valid event', () => {
+          const expectedEvent: AnalyticsEvent<SubscriptionPayConfirmation> = {
+            name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
+            eventType: ANALYTIC_EVENT_TYPES.Other,
+            attributes: {
+              subscription: component.subscription
+                .category_id as SUBSCRIPTION_CATEGORIES,
+              tier: component.selectedTier.id,
+              screenId: SCREEN_IDS.ProfileSubscription,
+              isNewCard: true,
+              isNewSubscriber: component.isNewSubscriber,
+              discountPercent: 0,
+              invoiceNeeded: false,
+            },
+          };
+          expectedEvent.attributes.isNewCard = false;
+
+          component.trackClickPay(false);
+
+          expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(
+            expectedEvent
+          );
+        });
       });
     });
   });
