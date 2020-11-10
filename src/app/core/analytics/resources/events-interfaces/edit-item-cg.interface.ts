@@ -45,4 +45,8 @@ export interface EditItemCG {
    * Identifier of the screen that the item was edited from
    */
   screenId: 162;
+  /**
+   * Hashtags
+   */
+  hashtags?: string;
 }

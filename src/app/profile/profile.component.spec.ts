@@ -1,22 +1,12 @@
-import {
-  async,
-  ComponentFixture,
-  TestBed,
-  fakeAsync,
-  tick,
-} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProfileComponent } from './profile.component';
-import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   UserService,
   USER_ENDPOINT,
   USER_STATS_ENDPOINT,
 } from '../core/user/user.service';
 import {
-  MOCK_USER,
-  USER_WEB_SLUG,
-  MOCK_USER_STATS,
-  MOCK_FULL_USER,
   USER_DATA,
   MOCK_NON_FEATURED_USER_RESPONSE,
   MOCK_USER_STATS_RESPONSE,
@@ -24,30 +14,39 @@ import {
 import { I18nService } from '../core/i18n/i18n.service';
 import { environment } from '../../environments/environment';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { SubscriptionsService } from '../core/subscriptions/subscriptions.service';
 import { FeatureflagService } from '../core/user/featureflag.service';
-import {
-  SUBSCRIPTIONS,
-  SUBSCRIPTIONS_NOT_SUB,
-} from '../../tests/subscriptions.fixtures.spec';
+import { MockSubscriptionService } from '../../tests/subscriptions.fixtures.spec';
 import { EventService } from '../core/event/event.service';
 import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
-import { HaversineService } from 'ng2-haversine';
 import { AccessTokenService } from '../core/http/access-token.service';
-import { CookieService, CookieOptionsProvider } from 'ngx-cookie';
+import { CookieService } from 'ngx-cookie';
 import { SplitTestService } from '../core/tracking/split-test.service';
 import { By } from '@angular/platform-browser';
 import { StarsComponent } from '../shared/stars/stars.component';
 import { ProBadgeComponent } from '../shared/pro-badge/pro-badge.component';
+import {
+  AnalyticsEvent,
+  ClickProSubscription,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  SCREEN_IDS,
+} from 'app/core/analytics/analytics-constants';
+import { AnalyticsService } from 'app/core/analytics/analytics.service';
+import { of } from 'rxjs';
+import { MockAnalyticsService } from '../../tests/analytics.fixtures.spec';
+import { SubscriptionsService } from 'app/core/subscriptions/subscriptions.service';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
   let fixture: ComponentFixture<ProfileComponent>;
   let userService: UserService;
   let httpMock: HttpTestingController;
+  let analyticsService: AnalyticsService;
+  let subscriptionsService: SubscriptionsService;
+  let hasOneTrialSubscription = false;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -56,7 +55,6 @@ describe('ProfileComponent', () => {
       providers: [
         EventService,
         I18nService,
-        HaversineService,
         AccessTokenService,
         {
           provide: CookieService,
@@ -75,6 +73,14 @@ describe('ProfileComponent', () => {
           provide: 'SUBDOMAIN',
           useValue: 'www',
         },
+        {
+          provide: SubscriptionsService,
+          useClass: MockSubscriptionService,
+        },
+        {
+          provide: AnalyticsService,
+          useClass: MockAnalyticsService,
+        },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -82,6 +88,8 @@ describe('ProfileComponent', () => {
     component = fixture.componentInstance;
     userService = TestBed.inject(UserService);
     httpMock = TestBed.inject(HttpTestingController);
+    analyticsService = TestBed.inject(AnalyticsService);
+    subscriptionsService = TestBed.inject(SubscriptionsService);
     fixture.detectChanges();
   }));
 
@@ -131,9 +139,6 @@ describe('ProfileComponent', () => {
       const expectedUserReviewsText = MOCK_USER_STATS_RESPONSE.counters
         .find((r) => r.type === 'reviews')
         .value.toString();
-      const expectedUserStars = userService.toRatingsStats(
-        MOCK_USER_STATS_RESPONSE.ratings
-      ).reviews;
       const userReviewsText: string = fixture.debugElement.query(
         By.css('.reviews-rating-value')
       ).nativeElement.innerHTML;
@@ -182,6 +187,74 @@ describe('ProfileComponent', () => {
       logoutButton.click();
 
       expect(userService.logout).toHaveBeenCalled();
+    });
+  });
+
+  describe('when user is not a cardealer', () => {
+    describe("and when user clicks in 'Subscriptions' tab", () => {
+      let subscriptionTabElement;
+
+      beforeEach(() => {
+        spyOn(analyticsService, 'trackEvent');
+        subscriptionTabElement = fixture.debugElement
+          .queryAll(By.css('a'))
+          .find(
+            (anchors) => anchors.nativeElement.innerHTML === 'Subscriptions'
+          ).nativeElement;
+      });
+
+      describe('and there is no free trial', () => {
+        beforeEach(() =>
+          spyOn(
+            subscriptionsService,
+            'hasOneTrialSubscription'
+          ).and.returnValue(false)
+        );
+
+        it('should track the event', () => {
+          const expectedEvent: AnalyticsEvent<ClickProSubscription> = {
+            name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
+            eventType: ANALYTIC_EVENT_TYPES.Other,
+            attributes: {
+              screenId: SCREEN_IDS.MyProfile,
+              freeTrial: false,
+            },
+          };
+
+          subscriptionTabElement.click();
+
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(
+            expectedEvent
+          );
+        });
+      });
+
+      describe('and there is free trial', () => {
+        beforeEach(() => {
+          spyOn(
+            subscriptionsService,
+            'hasOneTrialSubscription'
+          ).and.returnValue(true);
+          component.ngOnInit();
+        });
+
+        it('should track the event', () => {
+          const expectedEvent: AnalyticsEvent<ClickProSubscription> = {
+            name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
+            eventType: ANALYTIC_EVENT_TYPES.Other,
+            attributes: {
+              screenId: SCREEN_IDS.MyProfile,
+              freeTrial: true,
+            },
+          };
+
+          subscriptionTabElement.click();
+
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(
+            expectedEvent
+          );
+        });
+      });
     });
   });
 });

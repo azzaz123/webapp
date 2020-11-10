@@ -56,4 +56,9 @@ export enum SCREEN_IDS {
   OfficeToOfficeMap = 227,
   Messages = 228,
   BannedUserChatPopUp = 229,
+  ProSubscriptionLimitPopup = 230,
+  HashtagsAllUpload = 231,
+  HashtagsSuggestedUpload = 232,
+  MyProfileMenu = 233,
+  OwnReviewsSection = 234,
 }

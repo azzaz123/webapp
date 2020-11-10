@@ -50,7 +50,7 @@ export interface ListItemCG {
    */
   screenId: number;
   /**
-   * Hashtags uploaded by the user
+   * Hashtags
    */
   hashtags?: string;
 }
