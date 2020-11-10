@@ -198,7 +198,7 @@
             <div class="select" [ngClass]="{
                 selected: uploadForm.value.location.approximated_location
               }">
-              <tsl-svg-icon src="/assets/icons/check.svg"></tsl-svg-icon>
+              <tsl-svg-icon src="/assets/icons/check.svg" class="white-svg"></tsl-svg-icon>
               <input type="checkbox" formControlName="approximated_location" (change)="emitLocation()" />
             </div>
             <span i18n>Show the property's approximate location</span>

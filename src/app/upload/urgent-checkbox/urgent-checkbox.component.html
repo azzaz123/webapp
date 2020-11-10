@@ -7,7 +7,7 @@
     </p>
     <div class="checkbox">
       <button type="button" class="select" [ngClass]="{'selected': isUrgent}" (click)="selectUrgent()">
-        <tsl-svg-icon src="/assets/icons/check.svg"></tsl-svg-icon>
+        <tsl-svg-icon src="/assets/icons/check.svg" class="white-svg"></tsl-svg-icon>
       </button>
       <span i18n="@@UrgentCheckboxDisabled" [hidden]="isUrgent" (click)="selectUrgent()">Mark as "urgent"</span>
       <span i18n="@@UrgentCheckboxEnabled" *ngIf="isUrgent" [ngClass]="{'selected': isUrgent}" (click)="selectUrgent()">Marked as "urgent"</span>

@@ -23,10 +23,8 @@
   background: url(/assets/icons/user-marker-sad.svg) no-repeat center;
 }
 
-.checkbox-corporate {
-  margin-top: $spacing-ml;
-  span {
-    font-size: $font-size-m;
-    user-select: none;
+.white-svg {
+  ::ng-deep svg g g {
+    fill: $white;
   }
 }
