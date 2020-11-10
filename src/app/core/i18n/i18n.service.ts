@@ -6,6 +6,8 @@ export class I18nService {
     en: {
       yes: 'Yes',
       no: 'No',
+      defaultErrorMessage:
+        'Service not available at this moment. Try again later',
       daysMomentConfig: {
         lastDay: '[Yesterday] - HH:mm',
         sameDay: '[Today] - HH:mm',
@@ -200,6 +202,8 @@ export class I18nService {
     es: {
       yes: 'Sí',
       no: 'No',
+      defaultErrorMessage:
+        'Servicio no disponible temporalmente. Inténtelo de nuevo más tarde',
       daysMomentConfig: {
         lastDay: '[Ayer] - HH:mm',
         sameDay: '[Hoy] - HH:mm',

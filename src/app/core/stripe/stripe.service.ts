@@ -16,6 +16,7 @@ import {
 import { FinancialCard } from '../../shared/profile/credit-card-info/financial-card';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { ErrorsService } from '../errors/errors.service';
 
 export const PAYMENTS_API_URL = 'api/v3/payments';
 
@@ -30,6 +31,7 @@ export class StripeService {
     private paymentService: PaymentService,
     private router: Router,
     private eventService: EventService,
+    private errorService: ErrorsService,
     private http: HttpClient
   ) {}
 
@@ -182,17 +184,19 @@ export class StripeService {
     }
   };
 
-  payment = async (token, card) => {
-    return await this.lib.handleCardPayment(token, card, {
+  private async payment(token, card) {
+    return await this.handleCardPayment(token, card, {
       save_payment_method: true,
     });
-  };
+  }
 
-  requiresActionPayment = async (paymentIntentSecret) => {
-    return await this.lib.handleCardPayment(paymentIntentSecret);
-  };
+  private async requiresActionPayment(paymentIntentSecret) {
+    return await this.handleCardPayment(paymentIntentSecret);
+  }
 
-  savedPayment = async (token) => await this.lib.handleCardPayment(token);
+  private async savedPayment(clientSecret) {
+    return await this.handleCardPayment(clientSecret);
+  }
 
   public mapResponse(res: PaymentMethodResponse): FinancialCard {
     return new FinancialCard(
@@ -233,5 +237,27 @@ export class StripeService {
 
   public createToken(param: any) {
     return this.lib.createToken(param);
+  }
+
+  private isBadToken(clientSecret: string): boolean {
+    if (clientSecret === '') {
+      this.errorService.i18nError('defaultErrorMessage');
+      return true;
+    }
+
+    return false;
+  }
+
+  private async handleCardPayment(
+    clientSecret: string,
+    card?: stripe.elements.Element,
+    options?: stripe.HandleCardPaymentOptions
+  ) {
+    if (this.isBadToken(clientSecret)) {
+      return;
+    }
+
+    // TODO: This method from Stripe is deprecated
+    return await this.lib.handleCardPayment(clientSecret, card, options);
   }
 }
