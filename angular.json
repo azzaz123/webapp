@@ -36,7 +36,9 @@
               "src/flashtalking",
               "src/ftlocal"
             ],
-            "styles": ["src/style/styles.scss"],
+            "styles": [
+              "src/style/styles.scss"
+            ],
             "scripts": [
               "node_modules/stanza.io/build/stanzaio.bundle.js"
             ]
@@ -161,7 +163,10 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": ["src/tsconfig.app.json", "src/tsconfig.spec.json"],
+            "tsConfig": [
+              "src/tsconfig.app.json",
+              "src/tsconfig.spec.json"
+            ],
             "exclude": []
           }
         }

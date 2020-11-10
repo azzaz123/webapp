@@ -73,9 +73,9 @@ export class AppComponent implements OnInit {
     private stripeService: StripeService,
     private analyticsService: AnalyticsService,
     private uuidService: UuidService,
-    private serviceWorker : SwUpdate,
-    private didomiService: DidomiService) {
-  }
+    private serviceWorker: SwUpdate,
+    private didomiService: DidomiService
+  ) {}
 
   ngOnInit() {
     this.initializeConfigs();
@@ -86,11 +86,11 @@ export class AppComponent implements OnInit {
   }
 
   private subscribeSWChanges() {
-    this.serviceWorker.available.subscribe(event => {
+    this.serviceWorker.available.subscribe((event) => {
       console.log('current version is', event.current);
       console.log('available version is', event.available);
     });
-    this.serviceWorker.activated.subscribe(event => {
+    this.serviceWorker.activated.subscribe((event) => {
       console.log('old version was', event.previous);
       console.log('new version is', event.current);
     });

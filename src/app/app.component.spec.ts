@@ -76,13 +76,15 @@ describe('App', () => {
           },
         },
         {
-          provide: SwUpdate, useValue: {
-            available:  of(null) ,
-            activated:  of(null)
-          }
+          provide: SwUpdate,
+          useValue: {
+            available: of(null),
+            activated: of(null),
+          },
         },
         {
-          provide: InboxService, useValue: {
+          provide: InboxService,
+          useValue: {
             init() {},
             saveInbox() {},
           },
