@@ -9,7 +9,7 @@ import {
   HERE_MAPS_CORE_URL,
   HERE_MAPS_SERVICE_REF_ID,
   HERE_MAPS_SERVICE_URL,
-  RETRY_AMOUNT
+  RETRY_AMOUNT,
 } from './here-maps.service';
 
 describe('HereMapsService', () => {
@@ -20,7 +20,7 @@ describe('HereMapsService', () => {
     service = TestBed.inject(HereMapsService);
     const scriptIDs = [HERE_MAPS_CORE_REF_ID, HERE_MAPS_SERVICE_REF_ID];
     window['H'] = MOCK_HERE_MAPS;
-    scriptIDs.forEach(id => {
+    scriptIDs.forEach((id) => {
       const ref = document.getElementById(id);
       if (ref) {
         document.head.removeChild(ref);
@@ -48,17 +48,17 @@ describe('HereMapsService', () => {
       app_id: GEO_APP_ID,
       app_code: GEO_APP_CODE,
       useCIT: true,
-      useHTTPS: true
+      useHTTPS: true,
     };
 
     let isReady: boolean;
     let isLoading: boolean;
 
-    const scriptSubscription = service.initScript().subscribe(value => {
+    const scriptSubscription = service.initScript().subscribe((value) => {
       isReady = value;
     });
 
-    const loadingSubscription = service.isLibraryLoading$.subscribe(value => {
+    const loadingSubscription = service.isLibraryLoading$.subscribe((value) => {
       isLoading = value;
     });
 
@@ -92,11 +92,11 @@ describe('HereMapsService', () => {
     let isReady: boolean;
     let isLoading: boolean;
 
-    let scriptSubscription = service.initScript().subscribe(value => {
+    let scriptSubscription = service.initScript().subscribe((value) => {
       isReady = value;
     });
 
-    const loadingSubscription = service.isLibraryLoading$.subscribe(value => {
+    const loadingSubscription = service.isLibraryLoading$.subscribe((value) => {
       isLoading = value;
     });
 
@@ -109,7 +109,7 @@ describe('HereMapsService', () => {
 
     loadingSubscription.unsubscribe();
 
-    scriptSubscription = service.initScript().subscribe(value => {
+    scriptSubscription = service.initScript().subscribe((value) => {
       isReady = value;
     });
 
@@ -130,11 +130,11 @@ describe('HereMapsService', () => {
     let isReady: boolean;
     let isLoading: boolean;
 
-    const scriptSubscription = service.initScript().subscribe(value => {
+    const scriptSubscription = service.initScript().subscribe((value) => {
       isReady = value;
     });
 
-    const loadingSubscription = service.isLibraryLoading$.subscribe(value => {
+    const loadingSubscription = service.isLibraryLoading$.subscribe((value) => {
       isLoading = value;
     });
 
@@ -157,11 +157,11 @@ describe('HereMapsService', () => {
     let isReady: boolean;
     let isLoading: boolean;
 
-    const scriptSubscription = service.initScript().subscribe(value => {
+    const scriptSubscription = service.initScript().subscribe((value) => {
       isReady = value;
     });
 
-    const loadingSubscription = service.isLibraryLoading$.subscribe(value => {
+    const loadingSubscription = service.isLibraryLoading$.subscribe((value) => {
       isLoading = value;
     });
 

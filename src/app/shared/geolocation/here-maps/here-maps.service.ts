@@ -15,7 +15,7 @@ import {
   Observable,
   of,
   Subject,
-  throwError
+  throwError,
 } from 'rxjs';
 import { finalize, mergeMap, retry, takeUntil } from 'rxjs/operators';
 
@@ -39,7 +39,7 @@ export const CHECK_INTERVAL_MS = 100;
 export const RETRY_AMOUNT = 12;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class HereMapsService {
   private isLibraryReadySubject = new BehaviorSubject<boolean>(false);
@@ -60,7 +60,7 @@ export class HereMapsService {
     concat(
       this.isCoreReady$(),
       combineLatest([
-        this.isServiceReady$()
+        this.isServiceReady$(),
         // UNCOMMENT WHEN NECESSARY
         // this.isUIReady$(),
         // this.isUICSSReady$(),
@@ -69,8 +69,8 @@ export class HereMapsService {
     )
       .pipe(finalize(() => this.isLibraryLoadingSubject.next(false)))
       .subscribe(
-        next => next,
-        error => this.isLibraryReadySubject.next(false),
+        (next) => next,
+        (error) => this.isLibraryReadySubject.next(false),
         () => {
           this.initializePlatform();
           this.isLibraryReadySubject.next(true);
@@ -83,7 +83,7 @@ export class HereMapsService {
       app_id: GEO_APP_ID,
       app_code: GEO_APP_CODE,
       useCIT: true,
-      useHTTPS: true
+      useHTTPS: true,
     });
   }
 

@@ -45,10 +45,10 @@ describe('HereMapsComponent', () => {
           useValue: {
             initScript: () => of(true),
             isLibraryLoading$: of(false),
-            platform: MOCKED_PLATFORM
-          }
-        }
-      ]
+            platform: MOCKED_PLATFORM,
+          },
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HereMapsComponent);
