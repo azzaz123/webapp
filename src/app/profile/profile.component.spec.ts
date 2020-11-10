@@ -37,6 +37,7 @@ import {
 import { AnalyticsService } from 'app/core/analytics/analytics.service';
 import { of } from 'rxjs';
 import { MockAnalyticsService } from '../../tests/analytics.fixtures.spec';
+import { SubscriptionsService } from 'app/core/subscriptions/subscriptions.service';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
