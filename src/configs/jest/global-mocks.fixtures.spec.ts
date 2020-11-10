@@ -43,12 +43,6 @@ export const MOCK_GOOGLE_TAG = {
   display: (_slotid: string) => {},
 };
 
-export const MOCK_VISIBILITY = {
-  change: () => {},
-  hidden: () => {},
-  onVisible: () => {},
-};
-
 export const MOCK_APSTAG = {
   fetchBids({ slots, timeout }, callback) {
     callback();
