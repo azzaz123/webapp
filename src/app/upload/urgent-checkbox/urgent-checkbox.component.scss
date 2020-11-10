@@ -1,0 +1,14 @@
+@import '~style/common';
+
+.checkbox {
+  .select {
+    align-items: center;
+    &.selected {
+      tsl-svg-icon {
+        ::ng-deep svg g g {
+          fill: $white;
+        }
+      }
+    }
+  }
+}
