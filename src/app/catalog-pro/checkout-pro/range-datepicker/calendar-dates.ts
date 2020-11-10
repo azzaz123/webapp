@@ -43,6 +43,7 @@ export class CalendarDates {
   }
 
   calculateDateDiff() {
+    let timeZoneDiff = 0;
     const dateFrom = new Date(
       this.fromDate.year,
       this.fromDate.month - 1,
@@ -53,7 +54,13 @@ export class CalendarDates {
       this.toDate.month - 1,
       this.toDate.day
     );
-    const timeDiff = Math.abs(dateTo.getTime() - dateFrom.getTime());
+    if (dateFrom.getTimezoneOffset() !== dateTo.getTimezoneOffset()) {
+      timeZoneDiff =
+        (dateFrom.getTimezoneOffset() - dateTo.getTimezoneOffset()) * 60 * 1000;
+    }
+    const timeDiff = Math.abs(
+      dateTo.getTime() - dateFrom.getTime() + timeZoneDiff
+    );
     const numOfDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
     return numOfDays;
   }
