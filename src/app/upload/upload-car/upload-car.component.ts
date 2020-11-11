@@ -63,6 +63,7 @@ export class UploadCarComponent implements OnInit {
   public loading: boolean;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   private oldFormValue: any;
+  public currentYear = new Date().getFullYear();
   public isUrgent = false;
   public customMake = false;
   public customVersion = false;
@@ -92,7 +93,10 @@ export class UploadCarComponent implements OnInit {
       model: ['', [Validators.required]],
       brand: ['', [Validators.required]],
       title: ['', [Validators.required]],
-      year: ['', [Validators.required]],
+      year: [
+        '',
+        [Validators.required, this.min(1900), this.max(this.currentYear)],
+      ],
       sale_price: ['', [Validators.required, this.min(0), this.max(999999999)]],
       financed_price: ['', [this.min(0), this.max(999999999)]],
       currency_code: ['EUR', [Validators.required]],
@@ -364,6 +368,7 @@ export class UploadCarComponent implements OnInit {
   }
 
   onSubmit() {
+    this.cleanEmptyValues();
     if (this.uploadForm.valid) {
       this.loading = true;
       this.uploadEvent.emit({
@@ -382,6 +387,18 @@ export class UploadCarComponent implements OnInit {
         this.onValidationError.emit();
       }
     }
+  }
+
+  private cleanEmptyValues(): void {
+    Object.keys(this.uploadForm.value).forEach((key) => {
+      if (typeof this.uploadForm.value[key] === 'string') {
+        if (this.uploadForm.value[key].replace(/\s/g, '') === '') {
+          this.uploadForm.controls[key].setValue(null);
+        }
+      }
+    });
+
+    this.uploadForm.clearValidators();
   }
 
   onUploaded(uploadEvent: any) {
