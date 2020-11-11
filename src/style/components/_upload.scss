@@ -207,6 +207,9 @@
         border-color: transparent;
         tsl-svg-icon {
           display: flex;
+          svg g g {
+            fill: $white;
+          }
         }
       }
       &:hover {

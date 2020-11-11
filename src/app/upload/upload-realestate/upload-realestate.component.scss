@@ -22,9 +22,3 @@
   border: solid 1px $blue-grey-5;
   background: url(/assets/icons/user-marker-sad.svg) no-repeat center;
 }
-
-.white-svg {
-  ::ng-deep svg g g {
-    fill: $white;
-  }
-}
