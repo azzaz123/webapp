@@ -24,7 +24,7 @@ export const DEFAULT_COORDINATES: Coordinate = {
   templateUrl: './here-maps.component.html',
   styleUrls: ['./here-maps.component.scss'],
 })
-export class HereMapsComponent implements OnInit, AfterViewInit, OnChanges {
+export class HereMapsComponent implements AfterViewInit, OnChanges {
   @Input() coordinates: Coordinate;
   @Input() zoom = MAP_ZOOM_GENERAL;
   @Input() size = 'normal';
@@ -34,15 +34,13 @@ export class HereMapsComponent implements OnInit, AfterViewInit, OnChanges {
   private marker: any;
   private circle: any;
 
-  ngOnInit() {}
-
   constructor(public hereMapsService: HereMapsService) {}
 
   ngAfterViewInit() {
     if (!this.coordinates) {
       this.coordinates = DEFAULT_COORDINATES;
     }
-    this.hereMapsService.initScript().subscribe(ready => {
+    this.hereMapsService.initScript().subscribe((ready) => {
       if (!ready) {
         return;
       }
@@ -50,7 +48,7 @@ export class HereMapsComponent implements OnInit, AfterViewInit, OnChanges {
     });
   }
 
-  initializeMap() {
+  private initializeMap(): void {
     const defaultLayers = this.hereMapsService.platform.createDefaultLayers();
     this.map = this.createMap(defaultLayers);
     const coordinates = this.getCenter();

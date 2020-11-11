@@ -1,6 +1,5 @@
 <div id="map" #map [ngClass]="size">
-  <div *ngIf="(hereMapsService.isLibraryLoading$ | async)" class="loading">
-    <tsl-svg-icon src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
+  <div *ngIf="(hereMapsService.isLibraryLoading$() | async)" class="loading">
+    <img src="/assets/images/spinner.gif" height="50" width="50">
   </div>
 </div>
-

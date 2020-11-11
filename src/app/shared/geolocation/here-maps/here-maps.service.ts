@@ -46,7 +46,7 @@ export class HereMapsService {
   private isLibraryLoadingSubject = new BehaviorSubject<boolean>(true);
 
   public platform: H.service.Platform;
-  public isLibraryLoading$ = this.isLibraryLoadingSubject.asObservable();
+  public isLibraryLoading$ = () => this.isLibraryLoadingSubject.asObservable();
 
   public initScript(): Observable<boolean> {
     if (!this.isLibraryReadySubject.getValue()) {

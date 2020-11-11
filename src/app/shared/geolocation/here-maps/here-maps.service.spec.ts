@@ -28,158 +28,174 @@ describe('HereMapsService', () => {
     });
   });
 
-  it('should add script', fakeAsync(() => {
-    spyOn(window['H'].service, 'Platform').and.callThrough();
-    spyOn(document.head, 'appendChild').and.callThrough();
+  describe('when Here Maps has not been loaded', () => {
+    it('should add scripts', fakeAsync(() => {
+      spyOn(window['H'].service, 'Platform').and.callThrough();
+      spyOn(document.head, 'appendChild').and.callThrough();
 
-    const expectedCoreScript = document.createElement('script');
-    expectedCoreScript.setAttribute('id', HERE_MAPS_CORE_REF_ID);
-    expectedCoreScript.setAttribute('src', HERE_MAPS_CORE_URL);
-    expectedCoreScript.setAttribute('type', 'text/javascript');
-    expectedCoreScript.setAttribute('charset', 'utf-8');
+      const expectedCoreScript = document.createElement('script');
+      expectedCoreScript.setAttribute('id', HERE_MAPS_CORE_REF_ID);
+      expectedCoreScript.setAttribute('src', HERE_MAPS_CORE_URL);
+      expectedCoreScript.setAttribute('type', 'text/javascript');
+      expectedCoreScript.setAttribute('charset', 'utf-8');
 
-    const expectedServiceScript = document.createElement('script');
-    expectedServiceScript.setAttribute('id', HERE_MAPS_SERVICE_REF_ID);
-    expectedServiceScript.setAttribute('src', HERE_MAPS_SERVICE_URL);
-    expectedServiceScript.setAttribute('type', 'text/javascript');
-    expectedServiceScript.setAttribute('charset', 'utf-8');
+      const expectedServiceScript = document.createElement('script');
+      expectedServiceScript.setAttribute('id', HERE_MAPS_SERVICE_REF_ID);
+      expectedServiceScript.setAttribute('src', HERE_MAPS_SERVICE_URL);
+      expectedServiceScript.setAttribute('type', 'text/javascript');
+      expectedServiceScript.setAttribute('charset', 'utf-8');
 
-    const expectedParams = {
-      app_id: GEO_APP_ID,
-      app_code: GEO_APP_CODE,
-      useCIT: true,
-      useHTTPS: true,
-    };
+      const expectedParams = {
+        app_id: GEO_APP_ID,
+        app_code: GEO_APP_CODE,
+        useCIT: true,
+        useHTTPS: true,
+      };
 
-    let isReady: boolean;
-    let isLoading: boolean;
+      let isReady: boolean;
+      let isLoading: boolean;
 
-    const scriptSubscription = service.initScript().subscribe((value) => {
-      isReady = value;
-    });
+      const scriptSubscription = service.initScript().subscribe((value) => {
+        isReady = value;
+      });
 
-    const loadingSubscription = service.isLibraryLoading$.subscribe((value) => {
-      isLoading = value;
-    });
+      const loadingSubscription = service
+        .isLibraryLoading$()
+        .subscribe((value) => {
+          isLoading = value;
+        });
 
-    expect(isLoading).toBeTruthy();
-    expect(isReady).toBe(false);
+      expect(isLoading).toBeTruthy();
+      expect(isReady).toBe(false);
 
-    tick(CHECK_INTERVAL_MS);
-    expect(document.head.appendChild).toHaveBeenCalledTimes(1);
-    expect(document.head.appendChild).toHaveBeenCalledWith(expectedCoreScript);
+      tick(CHECK_INTERVAL_MS);
+      expect(document.head.appendChild).toHaveBeenCalledTimes(1);
+      expect(document.head.appendChild).toHaveBeenCalledWith(
+        expectedCoreScript
+      );
 
-    tick(CHECK_INTERVAL_MS * 2);
-    expect(document.head.appendChild).toHaveBeenCalledTimes(2);
-    expect(document.head.appendChild).toHaveBeenCalledWith(
-      expectedServiceScript
-    );
+      tick(CHECK_INTERVAL_MS * 2);
+      expect(document.head.appendChild).toHaveBeenCalledTimes(2);
+      expect(document.head.appendChild).toHaveBeenCalledWith(
+        expectedServiceScript
+      );
 
-    tick(CHECK_INTERVAL_MS);
-    expect(window['H'].service.Platform).toHaveBeenCalledTimes(1);
-    expect(window['H'].service.Platform).toHaveBeenCalledWith(expectedParams);
-    expect(isReady).toBeTruthy();
-    expect(isLoading).toBe(false);
+      tick(CHECK_INTERVAL_MS);
+      expect(window['H'].service.Platform).toHaveBeenCalledTimes(1);
+      expect(window['H'].service.Platform).toHaveBeenCalledWith(expectedParams);
+      expect(isReady).toBeTruthy();
+      expect(isLoading).toBe(false);
 
-    scriptSubscription.unsubscribe();
-    loadingSubscription.unsubscribe();
-  }));
+      scriptSubscription.unsubscribe();
+      loadingSubscription.unsubscribe();
+    }));
+  });
 
-  it('should not add script if is loaded', fakeAsync(() => {
-    spyOn(window['H'].service, 'Platform').and.callThrough();
-    spyOn(document.head, 'appendChild').and.callThrough();
+  describe('when Here Maps has been loaded', () => {
+    it('should not add any script again', fakeAsync(() => {
+      spyOn(window['H'].service, 'Platform').and.callThrough();
+      spyOn(document.head, 'appendChild').and.callThrough();
 
-    let isReady: boolean;
-    let isLoading: boolean;
+      let isReady: boolean;
+      let isLoading: boolean;
 
-    let scriptSubscription = service.initScript().subscribe((value) => {
-      isReady = value;
-    });
+      let scriptSubscription = service.initScript().subscribe((value) => {
+        isReady = value;
+      });
 
-    const loadingSubscription = service.isLibraryLoading$.subscribe((value) => {
-      isLoading = value;
-    });
+      const loadingSubscription = service
+        .isLibraryLoading$()
+        .subscribe((value) => {
+          isLoading = value;
+        });
 
-    expect(isLoading).toBeTruthy();
-    expect(isReady).toBe(false);
+      expect(isLoading).toBeTruthy();
+      expect(isReady).toBe(false);
 
-    tick(CHECK_INTERVAL_MS * 4);
-    expect(isReady).toBeTruthy();
-    expect(isLoading).toBe(false);
+      tick(CHECK_INTERVAL_MS * 4);
+      expect(isReady).toBeTruthy();
+      expect(isLoading).toBe(false);
 
-    loadingSubscription.unsubscribe();
+      loadingSubscription.unsubscribe();
 
-    scriptSubscription = service.initScript().subscribe((value) => {
-      isReady = value;
-    });
+      scriptSubscription = service.initScript().subscribe((value) => {
+        isReady = value;
+      });
 
-    tick(800);
-    expect(H.service.Platform).toHaveBeenCalledTimes(1);
-    expect(document.head.appendChild).toHaveBeenCalledTimes(2);
-    expect(isReady).toBeTruthy();
-    expect(isLoading).toBe(false);
+      tick(CHECK_INTERVAL_MS * 8);
+      expect(H.service.Platform).toHaveBeenCalledTimes(1);
+      expect(document.head.appendChild).toHaveBeenCalledTimes(2);
+      expect(isReady).toBeTruthy();
+      expect(isLoading).toBe(false);
 
-    scriptSubscription.unsubscribe();
-    loadingSubscription.unsubscribe();
-  }));
+      scriptSubscription.unsubscribe();
+      loadingSubscription.unsubscribe();
+    }));
+  });
 
-  it('should retry if core fails', fakeAsync(() => {
-    window['H'] = null;
-    spyOn(document.head, 'appendChild').and.callThrough();
+  describe('when here Maps fails loading', () => {
+    it('should retry if core script fails', fakeAsync(() => {
+      window['H'] = null;
+      spyOn(document.head, 'appendChild').and.callThrough();
 
-    let isReady: boolean;
-    let isLoading: boolean;
+      let isReady: boolean;
+      let isLoading: boolean;
 
-    const scriptSubscription = service.initScript().subscribe((value) => {
-      isReady = value;
-    });
+      const scriptSubscription = service.initScript().subscribe((value) => {
+        isReady = value;
+      });
 
-    const loadingSubscription = service.isLibraryLoading$.subscribe((value) => {
-      isLoading = value;
-    });
+      const loadingSubscription = service
+        .isLibraryLoading$()
+        .subscribe((value) => {
+          isLoading = value;
+        });
 
-    expect(isLoading).toBeTruthy();
-    expect(isReady).toBe(false);
+      expect(isLoading).toBeTruthy();
+      expect(isReady).toBe(false);
 
-    tick(CHECK_INTERVAL_MS + CHECK_INTERVAL_MS * RETRY_AMOUNT);
-    expect(isReady).toBe(false);
-    expect(isLoading).toBe(false);
-    expect(document.head.appendChild).toHaveBeenCalledTimes(1 + RETRY_AMOUNT);
+      tick(CHECK_INTERVAL_MS + CHECK_INTERVAL_MS * RETRY_AMOUNT);
+      expect(isReady).toBe(false);
+      expect(isLoading).toBe(false);
+      expect(document.head.appendChild).toHaveBeenCalledTimes(1 + RETRY_AMOUNT);
 
-    scriptSubscription.unsubscribe();
-    loadingSubscription.unsubscribe();
-  }));
+      scriptSubscription.unsubscribe();
+      loadingSubscription.unsubscribe();
+    }));
 
-  it('should retry if service fails', fakeAsync(() => {
-    window['H'].service = null;
-    spyOn(document.head, 'appendChild').and.callThrough();
+    it('should retry if service script fails', fakeAsync(() => {
+      window['H'].service = null;
+      spyOn(document.head, 'appendChild').and.callThrough();
 
-    let isReady: boolean;
-    let isLoading: boolean;
+      let isReady: boolean;
+      let isLoading: boolean;
 
-    const scriptSubscription = service.initScript().subscribe((value) => {
-      isReady = value;
-    });
+      const scriptSubscription = service.initScript().subscribe((value) => {
+        isReady = value;
+      });
 
-    const loadingSubscription = service.isLibraryLoading$.subscribe((value) => {
-      isLoading = value;
-    });
+      const loadingSubscription = service
+        .isLibraryLoading$()
+        .subscribe((value) => {
+          isLoading = value;
+        });
 
-    expect(isLoading).toBeTruthy();
-    expect(isReady).toBe(false);
+      expect(isLoading).toBeTruthy();
+      expect(isReady).toBe(false);
 
-    tick(
-      CHECK_INTERVAL_MS * 2 +
-        CHECK_INTERVAL_MS +
-        CHECK_INTERVAL_MS * RETRY_AMOUNT
-    );
-    expect(isReady).toBe(false);
-    expect(isLoading).toBe(false);
-    expect(document.head.appendChild).toHaveBeenCalledTimes(
-      1 + 1 + RETRY_AMOUNT
-    );
+      tick(
+        CHECK_INTERVAL_MS * 2 +
+          CHECK_INTERVAL_MS +
+          CHECK_INTERVAL_MS * RETRY_AMOUNT
+      );
+      expect(isReady).toBe(false);
+      expect(isLoading).toBe(false);
+      expect(document.head.appendChild).toHaveBeenCalledTimes(
+        1 + 1 + RETRY_AMOUNT
+      );
 
-    scriptSubscription.unsubscribe();
-    loadingSubscription.unsubscribe();
-  }));
+      scriptSubscription.unsubscribe();
+      loadingSubscription.unsubscribe();
+    }));
+  });
 });

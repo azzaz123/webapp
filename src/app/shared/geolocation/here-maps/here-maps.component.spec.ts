@@ -9,7 +9,10 @@ import {
 } from './here-maps.component';
 import { USER_LOCATION_COORDINATES } from '../../../../tests/user.fixtures.spec';
 import { HereMapsService } from './here-maps.service';
+import { HereMapServiceMock } from '../../../../tests/here-maps-service.fixtures.spec';
 import { of } from 'rxjs';
+import { By } from '@angular/platform-browser';
+import { DebugElement } from '@angular/core';
 
 const ICON = { url: 'icon' };
 const MARKER = { marker: 'marker' };
@@ -22,19 +25,10 @@ const MockedMap = {
   removeObject: () => {},
 };
 
-const MOCKED_PLATFORM = {
-  createDefaultLayers() {
-    return {
-      normal: {
-        map: 'map',
-      },
-    };
-  },
-};
-
 describe('HereMapsComponent', () => {
   let component: HereMapsComponent;
   let fixture: ComponentFixture<HereMapsComponent>;
+  let hereMapsService: HereMapsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -42,15 +36,13 @@ describe('HereMapsComponent', () => {
       providers: [
         {
           provide: HereMapsService,
-          useValue: {
-            initScript: () => of(true),
-            isLibraryLoading$: of(false),
-            platform: MOCKED_PLATFORM,
-          },
+          useClass: HereMapServiceMock,
         },
       ],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(HereMapsComponent);
     component = fixture.componentInstance;
     component.coordinates = USER_LOCATION_COORDINATES;
@@ -66,12 +58,12 @@ describe('HereMapsComponent', () => {
     component.mapEl = {
       nativeElement: {},
     };
-    fixture.detectChanges();
+    hereMapsService = TestBed.inject(HereMapsService);
   });
 
   describe('ngAfterViewInit', () => {
     it('should prepare map', () => {
-      component.ngOnInit();
+      component.ngAfterViewInit();
 
       expect(component.createMap).toHaveBeenCalledTimes(1);
       expect(MockedMap.setZoom).toHaveBeenCalledWith(MAP_ZOOM_GENERAL);
@@ -103,7 +95,7 @@ describe('HereMapsComponent', () => {
 
   describe('ngOnChanges', () => {
     beforeEach(() => {
-      component.ngOnInit();
+      component.ngAfterViewInit();
       component.zoom = MAP_ZOOM_MARKER;
     });
 
@@ -150,6 +142,28 @@ describe('HereMapsComponent', () => {
             lng: USER_LOCATION_COORDINATES.longitude,
           });
         });
+      });
+    });
+
+    describe('loading map', () => {
+      it('should show the spinner', () => {
+        spyOn(hereMapsService, 'isLibraryLoading$').and.returnValue(of(true));
+        component.ngAfterViewInit();
+        fixture.detectChanges();
+        const spinner: DebugElement = fixture.debugElement.query(
+          By.css('.loading')
+        );
+        expect(spinner).toBeTruthy();
+      });
+
+      it('should not show the spinner', () => {
+        spyOn(hereMapsService, 'isLibraryLoading$').and.returnValue(of(false));
+        component.ngAfterViewInit();
+        fixture.detectChanges();
+        const spinner: DebugElement = fixture.debugElement.query(
+          By.css('.loading')
+        );
+        expect(spinner).toBeFalsy();
       });
     });
   });
