@@ -87,12 +87,12 @@ export class AppComponent implements OnInit {
 
   private subscribeSWChanges() {
     this.serviceWorker.available.subscribe((event) => {
-      console.log('current version is', event.current);
-      console.log('available version is', event.available);
+      console.warn('current version is', event.current);
+      console.warn('available version is', event.available);
     });
     this.serviceWorker.activated.subscribe((event) => {
-      console.log('old version was', event.previous);
-      console.log('new version is', event.current);
+      console.warn('old version was', event.previous);
+      console.warn('new version is', event.current);
     });
   }
 
