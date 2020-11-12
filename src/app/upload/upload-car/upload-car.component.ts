@@ -20,7 +20,7 @@ import {
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { Car } from '../../core/item/car';
-import { omit, isEqual, cloneDeep } from 'lodash-es';
+import { omit, isEqual } from 'lodash-es';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { CARS_CATEGORY } from '../../core/item/item-categories';
 import { ItemService } from '../../core/item/item.service';
@@ -37,6 +37,7 @@ import {
   EditItemCar,
   ListItemCar,
 } from '../../core/analytics/analytics-constants';
+import { FormValidatorsService } from '../../core/form-validators/form-validators.service';
 
 @Component({
   selector: 'tsl-upload-car',
@@ -84,15 +85,25 @@ export class UploadCarComponent implements OnInit {
     private analyticsService: AnalyticsService,
     private userService: UserService,
     private subscriptionService: SubscriptionsService,
-    private popoverConfig: NgbPopoverConfig
+    private popoverConfig: NgbPopoverConfig,
+    private formValidatorsService: FormValidatorsService
   ) {
     this.uploadForm = fb.group({
       id: '',
       category_id: CARS_CATEGORY,
       images: [[], [Validators.required]],
-      model: ['', [Validators.required]],
-      brand: ['', [Validators.required]],
-      title: ['', [Validators.required]],
+      model: [
+        '',
+        [Validators.required, this.formValidatorsService.whitespaceValidator],
+      ],
+      brand: [
+        '',
+        [Validators.required, this.formValidatorsService.whitespaceValidator],
+      ],
+      title: [
+        '',
+        [Validators.required, this.formValidatorsService.whitespaceValidator],
+      ],
       year: [
         '',
         [Validators.required, this.min(1900), this.max(this.currentYear)],
@@ -100,7 +111,10 @@ export class UploadCarComponent implements OnInit {
       sale_price: ['', [Validators.required, this.min(0), this.max(999999999)]],
       financed_price: ['', [this.min(0), this.max(999999999)]],
       currency_code: ['EUR', [Validators.required]],
-      version: ['', [Validators.required]],
+      version: [
+        '',
+        [Validators.required, this.formValidatorsService.whitespaceValidator],
+      ],
       num_seats: ['', [this.min(0), this.max(99)]],
       num_doors: ['', [this.min(0), this.max(99)]],
       body_type: null,
@@ -115,9 +129,18 @@ export class UploadCarComponent implements OnInit {
         shipping_allowed: false,
       }),
       location: this.fb.group({
-        address: ['', [Validators.required]],
-        latitude: ['', [Validators.required]],
-        longitude: ['', [Validators.required]],
+        address: [
+          '',
+          [Validators.required, this.formValidatorsService.whitespaceValidator],
+        ],
+        latitude: [
+          '',
+          [Validators.required, this.formValidatorsService.whitespaceValidator],
+        ],
+        longitude: [
+          '',
+          [Validators.required, this.formValidatorsService.whitespaceValidator],
+        ],
       }),
     });
     this.initializePopoverConfiguration();
@@ -368,7 +391,6 @@ export class UploadCarComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.cleanEmptyValues();
     if (this.uploadForm.valid) {
       this.loading = true;
       this.uploadEvent.emit({
@@ -387,23 +409,6 @@ export class UploadCarComponent implements OnInit {
         this.onValidationError.emit();
       }
     }
-  }
-
-  private cleanEmptyValues(): void {
-    const duplicatedForm = cloneDeep(this.uploadForm);
-    const currentFormYear: number = duplicatedForm.value['year'];
-
-    Object.keys(duplicatedForm.value).forEach((key: string) => {
-      if (typeof duplicatedForm.value[key] === 'string') {
-        if (duplicatedForm.value[key].replace(/\s+/g, '') === '') {
-          this.uploadForm.controls[key].setValue(null);
-        }
-      }
-    });
-
-    this.uploadForm.controls.year.setValue(currentFormYear.toString());
-    this.uploadForm.clearValidators();
-    this.uploadForm.updateValueAndValidity();
   }
 
   onUploaded(uploadEvent: any) {
