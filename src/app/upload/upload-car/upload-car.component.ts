@@ -20,7 +20,7 @@ import {
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { Car } from '../../core/item/car';
-import { omit, isEqual } from 'lodash-es';
+import { omit, isEqual, cloneDeep } from 'lodash-es';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { CARS_CATEGORY } from '../../core/item/item-categories';
 import { ItemService } from '../../core/item/item.service';
@@ -367,7 +367,7 @@ export class UploadCarComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  onSubmit(): void {
     this.cleanEmptyValues();
     if (this.uploadForm.valid) {
       this.loading = true;
@@ -390,15 +390,20 @@ export class UploadCarComponent implements OnInit {
   }
 
   private cleanEmptyValues(): void {
-    Object.keys(this.uploadForm.value).forEach((key) => {
-      if (typeof this.uploadForm.value[key] === 'string') {
-        if (this.uploadForm.value[key].replace(/\s/g, '') === '') {
+    const duplicatedForm = cloneDeep(this.uploadForm);
+    const currentFormYear: number = duplicatedForm.value['year'];
+
+    Object.keys(duplicatedForm.value).forEach((key: string) => {
+      if (typeof duplicatedForm.value[key] === 'string') {
+        if (duplicatedForm.value[key].replace(/\s+/g, '') === '') {
           this.uploadForm.controls[key].setValue(null);
         }
       }
     });
 
+    this.uploadForm.controls.year.setValue(currentFormYear.toString());
     this.uploadForm.clearValidators();
+    this.uploadForm.updateValueAndValidity();
   }
 
   onUploaded(uploadEvent: any) {
