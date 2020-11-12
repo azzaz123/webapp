@@ -37,7 +37,7 @@ import {
   EditItemCar,
   ListItemCar,
 } from '../../core/analytics/analytics-constants';
-import { FormValidatorsService } from '../../core/form-validators/form-validators.service';
+import { whitespaceValidator } from '../../core/form-validators/formValidators.func';
 
 @Component({
   selector: 'tsl-upload-car',
@@ -85,25 +85,15 @@ export class UploadCarComponent implements OnInit {
     private analyticsService: AnalyticsService,
     private userService: UserService,
     private subscriptionService: SubscriptionsService,
-    private popoverConfig: NgbPopoverConfig,
-    private formValidatorsService: FormValidatorsService
+    private popoverConfig: NgbPopoverConfig
   ) {
     this.uploadForm = fb.group({
       id: '',
       category_id: CARS_CATEGORY,
       images: [[], [Validators.required]],
-      model: [
-        '',
-        [Validators.required, this.formValidatorsService.whitespaceValidator],
-      ],
-      brand: [
-        '',
-        [Validators.required, this.formValidatorsService.whitespaceValidator],
-      ],
-      title: [
-        '',
-        [Validators.required, this.formValidatorsService.whitespaceValidator],
-      ],
+      model: ['', [Validators.required, whitespaceValidator]],
+      brand: ['', [Validators.required, whitespaceValidator]],
+      title: ['', [Validators.required, whitespaceValidator]],
       year: [
         '',
         [Validators.required, this.min(1900), this.max(this.currentYear)],
@@ -111,10 +101,7 @@ export class UploadCarComponent implements OnInit {
       sale_price: ['', [Validators.required, this.min(0), this.max(999999999)]],
       financed_price: ['', [this.min(0), this.max(999999999)]],
       currency_code: ['EUR', [Validators.required]],
-      version: [
-        '',
-        [Validators.required, this.formValidatorsService.whitespaceValidator],
-      ],
+      version: ['', [Validators.required, whitespaceValidator]],
       num_seats: ['', [this.min(0), this.max(99)]],
       num_doors: ['', [this.min(0), this.max(99)]],
       body_type: null,
@@ -129,18 +116,9 @@ export class UploadCarComponent implements OnInit {
         shipping_allowed: false,
       }),
       location: this.fb.group({
-        address: [
-          '',
-          [Validators.required, this.formValidatorsService.whitespaceValidator],
-        ],
-        latitude: [
-          '',
-          [Validators.required, this.formValidatorsService.whitespaceValidator],
-        ],
-        longitude: [
-          '',
-          [Validators.required, this.formValidatorsService.whitespaceValidator],
-        ],
+        address: ['', [Validators.required, whitespaceValidator]],
+        latitude: ['', [Validators.required, whitespaceValidator]],
+        longitude: ['', [Validators.required, whitespaceValidator]],
       }),
     });
     this.initializePopoverConfiguration();
