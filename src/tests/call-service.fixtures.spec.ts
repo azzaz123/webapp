@@ -1,12 +1,11 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 
 export class CallsServiceMock {
   getPage() {
-    return observableOf([]);
+    return of([]);
   }
 
   getTotals() {
-    return observableOf({});
+    return of({});
   }
 }

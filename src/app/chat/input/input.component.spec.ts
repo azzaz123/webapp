@@ -1,6 +1,11 @@
 /* tslint:disable:no-unused-variable */
 
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -14,18 +19,22 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { AutosizeModule } from 'ngx-autosize';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { DeviceDetectorServiceMock, MockRemoteConsoleService } from '../../../tests';
+import {
+  DeviceDetectorServiceMock,
+  MockRemoteConsoleService,
+} from '../../../tests';
 import { RemoteConsoleService } from '../../core/remote-console';
 import { InboxConversation } from '../model';
-import { CREATE_MOCK_INBOX_CONVERSATION, SECOND_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
+import {
+  CREATE_MOCK_INBOX_CONVERSATION,
+  SECOND_MOCK_INBOX_CONVERSATION,
+} from '../../../tests/inbox.fixtures.spec';
 
 class MessageServiceMock {
-  send(c: Conversation, t: string): void {
-  }
+  send(c: Conversation, t: string): void {}
 }
 
 describe('Component: Input', () => {
-
   const MESSAGE_ID = 'MESSAGE_ID';
 
   let component: InputComponent;
@@ -38,10 +47,7 @@ describe('Component: Input', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        FormsModule,
-        AutosizeModule
-      ],
+      imports: [FormsModule, AutosizeModule],
       declarations: [InputComponent],
       providers: [
         I18nService,
@@ -50,14 +56,14 @@ describe('Component: Input', () => {
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         EventService,
         {
-          provide: TrackingService, useValue: {
-            track() {
-            }
-          }
+          provide: TrackingService,
+          useValue: {
+            track() {},
+          },
         },
-        EventService
+        EventService,
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     });
     fixture = TestBed.createComponent(InputComponent);
     component = TestBed.createComponent(InputComponent).componentInstance;
@@ -92,7 +98,6 @@ describe('Component: Input', () => {
   });
 
   describe('sendMessage', () => {
-
     const EVENT = new Event('event');
     const conversation: InboxConversation = MOCK_CONVERSATION();
     const TEXT = 'text';
@@ -102,7 +107,6 @@ describe('Component: Input', () => {
       spyOn(EVENT, 'preventDefault');
       spyOn(trackingService, 'track');
       spyOn(remoteConsoleService, 'sendMessageTimeout');
-      spyOn(remoteConsoleService, 'sendAcceptTimeout');
       spyOn(component.clickSentMessage, 'emit');
       textarea = fixture.debugElement.query(By.css('textarea')).nativeElement;
       component.currentConversation = conversation;
@@ -116,9 +120,12 @@ describe('Component: Input', () => {
       expect(EVENT.preventDefault).toHaveBeenCalled();
       expect(messageService.send).toHaveBeenCalledWith(conversation, TEXT);
       expect(component.message).toBe('');
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.SEND_BUTTON, {
-        thread_id: conversation.id
-      });
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.SEND_BUTTON,
+        {
+          thread_id: conversation.id,
+        }
+      );
       expect(trackingService.track).toHaveBeenCalledTimes(1);
       expect(component.clickSentMessage.emit).toHaveBeenCalledWith(MESSAGE_ID);
     });
@@ -129,11 +136,17 @@ describe('Component: Input', () => {
       component.sendMessage(EVENT);
 
       expect(EVENT.preventDefault).toHaveBeenCalled();
-      expect(messageService.send).toHaveBeenCalledWith(component.currentConversation, TEXT);
+      expect(messageService.send).toHaveBeenCalledWith(
+        component.currentConversation,
+        TEXT
+      );
       expect(component.message).toBe('');
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.SEND_BUTTON, {
-        thread_id: conversation.id
-      });
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.SEND_BUTTON,
+        {
+          thread_id: conversation.id,
+        }
+      );
       expect(trackingService.track).toHaveBeenCalledTimes(1);
       expect(component.clickSentMessage.emit).toHaveBeenCalledWith(MESSAGE_ID);
     });
@@ -148,7 +161,6 @@ describe('Component: Input', () => {
       expect(component.message).toBe('');
       expect(trackingService.track).not.toHaveBeenCalled();
       expect(remoteConsoleService.sendMessageTimeout).not.toHaveBeenCalled();
-      expect(remoteConsoleService.sendAcceptTimeout).not.toHaveBeenCalled();
     });
 
     it('should NOT call the send method and NOT track the SEND_BUTTON event if texts is just spaces', () => {
@@ -161,7 +173,6 @@ describe('Component: Input', () => {
       expect(component.message).toBe('');
       expect(trackingService.track).not.toHaveBeenCalled();
       expect(remoteConsoleService.sendMessageTimeout).not.toHaveBeenCalled();
-      expect(remoteConsoleService.sendAcceptTimeout).not.toHaveBeenCalled();
     });
 
     it('should NOT call the send method and NOT track the SEND_BUTTON event if disabled', () => {
@@ -174,7 +185,6 @@ describe('Component: Input', () => {
       expect(messageService.send).not.toHaveBeenCalled();
       expect(trackingService.track).not.toHaveBeenCalled();
       expect(remoteConsoleService.sendMessageTimeout).not.toHaveBeenCalled();
-      expect(remoteConsoleService.sendAcceptTimeout).not.toHaveBeenCalled();
     });
 
     it('should NOT call the send method and NOT track the SEND_BUTTON event if message contains link', () => {
@@ -188,28 +198,26 @@ describe('Component: Input', () => {
       expect(component.clickSentMessage.emit).toHaveBeenCalledWith(MESSAGE_ID);
     });
 
-    it('should NOT call the send method and NOT track the SEND_BUTTON event if message contains correct and wrong link at the same time',
-      () => {
-        component.isUserBlocked = false;
-        component.message = 'Can U access to my webpage outside https://wallapop.com that is www.notAllowedURL.com';
+    it('should NOT call the send method and NOT track the SEND_BUTTON event if message contains correct and wrong link at the same time', () => {
+      component.isUserBlocked = false;
+      component.message =
+        'Can U access to my webpage outside https://wallapop.com that is www.notAllowedURL.com';
 
-        component.sendMessage(EVENT);
-        expect(EVENT.preventDefault).toHaveBeenCalled();
-        expect(messageService.send).toHaveBeenCalled();
-        expect(trackingService.track).toHaveBeenCalled();
-        expect(component.clickSentMessage.emit).toHaveBeenCalledWith(MESSAGE_ID);
-      });
+      component.sendMessage(EVENT);
+      expect(EVENT.preventDefault).toHaveBeenCalled();
+      expect(messageService.send).toHaveBeenCalled();
+      expect(trackingService.track).toHaveBeenCalled();
+      expect(component.clickSentMessage.emit).toHaveBeenCalledWith(MESSAGE_ID);
+    });
   });
 
   describe('ngOnChanges', () => {
-
     beforeEach(() => {
       component.messageArea = {
         nativeElement: {
-          focus() {
-          },
-          value: ''
-        }
+          focus() {},
+          value: '',
+        },
       };
       spyOn(component.messageArea.nativeElement, 'focus');
       component.currentConversation = MOCK_CONVERSATION();
@@ -240,17 +248,20 @@ describe('Component: Input', () => {
         component.ngOnChanges();
         tick(500);
 
-        expect(component.messageArea.nativeElement.focus).not.toHaveBeenCalled();
+        expect(
+          component.messageArea.nativeElement.focus
+        ).not.toHaveBeenCalled();
       }));
 
       it('should not focus the message area', fakeAsync(() => {
         component.ngAfterViewInit();
         tick(500);
 
-        expect(component.messageArea.nativeElement.focus).not.toHaveBeenCalled();
+        expect(
+          component.messageArea.nativeElement.focus
+        ).not.toHaveBeenCalled();
       }));
     });
-
 
     it('should reset the input value when the conversation is changed', fakeAsync(() => {
       component.messageArea.nativeElement.value = 'I typed some some text...';

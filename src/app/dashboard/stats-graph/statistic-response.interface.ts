@@ -8,7 +8,7 @@ export interface StatisticTotalResponse {
   views: number;
   city_bump: number;
   chats: number;
-  sold: number
+  sold: number;
 }
 export interface StatisticEntriesResponse {
   date: string;

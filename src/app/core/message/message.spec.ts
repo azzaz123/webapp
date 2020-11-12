@@ -1,7 +1,10 @@
 /* tslint:disable:no-unused-variable */
 
 import { Message } from './message';
-import { MESSAGE_MAIN, MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
+import {
+  MESSAGE_MAIN,
+  MOCK_MESSAGE,
+} from '../../../tests/message.fixtures.spec';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { clone } from 'lodash-es';
 

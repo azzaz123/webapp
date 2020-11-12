@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReactivateModalComponent } from './reactivate-modal.component';
@@ -19,18 +18,20 @@ describe('ReactivateModalComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ReactivateModalComponent, CustomCurrencyPipe],
-      providers: [NgbActiveModal, DecimalPipe,
+      providers: [
+        NgbActiveModal,
+        DecimalPipe,
         {
-          provide: PaymentService, useValue: {
-          getCreditInfo() {
-            return observableOf({});
-          }
-        }
-        }
+          provide: PaymentService,
+          useValue: {
+            getCreditInfo() {
+              return of({});
+            },
+          },
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -46,9 +47,9 @@ describe('ReactivateModalComponent', () => {
       const creditInfo: CreditInfo = {
         currencyName: 'wallacoins',
         credit: 2000,
-        factor: 100
+        factor: 100,
       };
-      spyOn(paymentService, 'getCreditInfo').and.returnValue(observableOf(creditInfo));
+      spyOn(paymentService, 'getCreditInfo').and.returnValue(of(creditInfo));
 
       component.ngOnInit();
 
@@ -59,16 +60,16 @@ describe('ReactivateModalComponent', () => {
       const creditInfo: CreditInfo = {
         currencyName: 'wallacoins',
         credit: 0,
-        factor: 100
+        factor: 100,
       };
-      spyOn(paymentService, 'getCreditInfo').and.returnValue(observableOf(creditInfo));
+      spyOn(paymentService, 'getCreditInfo').and.returnValue(of(creditInfo));
 
       component.ngOnInit();
 
       expect(component.creditInfo).toEqual({
         currencyName: 'wallacredits',
         credit: 0,
-        factor: 1
+        factor: 1,
       });
     });
   });

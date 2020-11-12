@@ -1,6 +1,11 @@
-
-import { throwError as observableThrowError, of } from 'rxjs';
-import { async, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { throwError, of } from 'rxjs';
+import {
+  async,
+  fakeAsync,
+  tick,
+  ComponentFixture,
+  TestBed,
+} from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FINANCIAL_STRIPE_CARD } from '../../../../tests/payments.fixtures.spec';
 import { I18nService } from '../../../core/i18n/i18n.service';
@@ -8,9 +13,7 @@ import { StripeCardsComponent } from './stripe-cards.component';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorsService } from '../../../core/errors/errors.service';
-import {
-  createFinancialCardFixture,
-} from '../../../../tests/stripe.fixtures.spec';
+import { createFinancialCardFixture } from '../../../../tests/stripe.fixtures.spec';
 import { delay } from 'rxjs/operators';
 import { ButtonComponent } from '../../button/button.component';
 import { NewCardModalComponent } from 'app/shared/modals/new-card-modal/new-card-modal.component';
@@ -31,55 +34,55 @@ describe('StripeCardsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-        declarations: [StripeCardsComponent, ButtonComponent],
-        providers: [
-          I18nService,
-          {
-            provide: ErrorsService, useValue: {
-            show() {
+      declarations: [StripeCardsComponent, ButtonComponent],
+      providers: [
+        I18nService,
+        {
+          provide: ErrorsService,
+          useValue: {
+            show() {},
+            i18nError() {},
+          },
+        },
+        {
+          provide: StripeService,
+          useValue: {
+            getCards() {
+              return of([FINANCIAL_STRIPE_CARD]);
             },
-            i18nError() {
-            }
-          }
+            addNewCard() {
+              return of({});
+            },
           },
-          {
-            provide: StripeService, useValue: {
-              getCards() {
-                return of([FINANCIAL_STRIPE_CARD]);
-              },
-              addNewCard() {
-                return of({})
-              }
-            }
-          },
-          {
-            provide: NgbModal, useValue: {
+        },
+        {
+          provide: NgbModal,
+          useValue: {
             open() {
               return {
-                result: Promise.resolve(FINANCIAL_STRIPE_CARD)
+                result: Promise.resolve(FINANCIAL_STRIPE_CARD),
               };
-            }
-          }
+            },
           },
-          {
-            provide: SubscriptionsService, useValue: {
-              getSubscriptions() {
-                return of(MAPPED_SUBSCRIPTIONS);
-              }
-            }
+        },
+        {
+          provide: SubscriptionsService,
+          useValue: {
+            getSubscriptions() {
+              return of(MAPPED_SUBSCRIPTIONS);
+            },
           },
-          {
-            provide: NgbActiveModal, useValue: {
-              close() {
-              },
-              dismiss() {
-              }
-            }
+        },
+        {
+          provide: NgbActiveModal,
+          useValue: {
+            close() {},
+            dismiss() {},
           },
-        ],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA]
-      })
-      .compileComponents();
+        },
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -96,7 +99,9 @@ describe('StripeCardsComponent', () => {
 
   describe('ngOnInit', () => {
     it('should get and set financial card', () => {
-      spyOn(stripeService, 'getCards').and.returnValue(of([FINANCIAL_STRIPE_CARD]));
+      spyOn(stripeService, 'getCards').and.returnValue(
+        of([FINANCIAL_STRIPE_CARD])
+      );
 
       component.ngOnInit();
 
@@ -104,24 +109,24 @@ describe('StripeCardsComponent', () => {
     });
 
     it('should show error if getCards returns an error', () => {
-      spyOn(stripeService, 'getCards').and.returnValue(observableThrowError(''));
+      spyOn(stripeService, 'getCards').and.returnValue(throwError(''));
       spyOn(errorService, 'i18nError');
 
       component.ngOnInit();
 
-      expect(errorService.i18nError).toHaveBeenCalledWith('getStripeCardsError');
+      expect(errorService.i18nError).toHaveBeenCalledWith(
+        'getStripeCardsError'
+      );
     });
 
     it('should call getSubscriptions service', () => {
       spyOn(subscriptionsService, 'getSubscriptions').and.callThrough();
-  
 
       component.ngOnInit();
 
       expect(subscriptionsService.getSubscriptions).toHaveBeenCalledWith(false);
     });
   });
-
 
   describe('onDeleteCard', () => {
     it('should call getCards service and set the cards', () => {
@@ -165,7 +170,7 @@ describe('StripeCardsComponent', () => {
       spyOn(component, 'addNewCard').and.callThrough();
       spyOn(stripeService, 'addNewCard').and.callThrough();
       modalSpy.and.returnValue({
-        result: Promise.resolve(FINANCIAL_STRIPE_CARD)
+        result: Promise.resolve(FINANCIAL_STRIPE_CARD),
       });
 
       component.addNewCard();
@@ -187,19 +192,21 @@ describe('StripeCardsComponent', () => {
     it('should remove the loading component in the button content when backend answered', fakeAsync(() => {
       const backendResponseTimeMs = 3000;
       spyOn(component, 'addNewCard').and.callThrough();
-      spyOn(stripeService, 'addNewCard').and.returnValue(of().pipe(delay(backendResponseTimeMs)));
+      spyOn(stripeService, 'addNewCard').and.returnValue(
+        of().pipe(delay(backendResponseTimeMs))
+      );
 
       component.addNewCard();
       tick(backendResponseTimeMs + 1);
       fixture.detectChanges();
 
-      const loadingComponent: HTMLElement = fixture.nativeElement.querySelector('tsl-button > button > mat-icon');
+      const loadingComponent: HTMLElement = fixture.nativeElement.querySelector(
+        'tsl-button > button > tsl-svg-icon'
+      );
       expect(loadingComponent).toBeFalsy();
       expect(modalService.open).toHaveBeenCalledWith(NewCardModalComponent, {
-        windowClass: 'review'
+        windowClass: 'review',
       });
     }));
-
   });
-
 });

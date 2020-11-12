@@ -1,5 +1,10 @@
-import { BumpGroup, CartItem, CartProItem, CartProExtrasPack } from './cart-item.interface';
-import { UUID } from 'angular2-uuid';
+import { UuidService } from 'app/core/uuid/uuid.service';
+import {
+  BumpGroup,
+  CartItem,
+  CartProItem,
+  CartProExtrasPack,
+} from './cart-item.interface';
 
 export const BUMP_TYPES = ['zonebump', 'citybump', 'countrybump'];
 export const BUMP_PROVINCIAL_TYPES = ['zonebump', 'countrybump'];
@@ -13,24 +18,27 @@ export abstract class CartBase {
     total: 0,
     discountedTotal: 0,
     cartItems: [],
-    collapsed: false
+    collapsed: false,
   };
 
   citybump: BumpGroup = {
     total: 0,
     discountedTotal: 0,
     cartItems: [],
-    collapsed: false
+    collapsed: false,
   };
 
   countrybump: BumpGroup = {
     total: 0,
     discountedTotal: 0,
     cartItems: [],
-    collapsed: false
+    collapsed: false,
   };
 
-  abstract add(cartItem: CartItem | CartProItem | CartProExtrasPack, type: string);
+  abstract add(
+    cartItem: CartItem | CartProItem | CartProExtrasPack,
+    type: string
+  );
 
   abstract removeCartItem(type: string, itemId?: string, index?: number);
 
@@ -38,8 +46,8 @@ export abstract class CartBase {
 
   abstract prepareOrder();
 
-  public getOrderId() {
-    return UUID.UUID();
+  public getOrderId(): string {
+    return UuidService.getUUID();
   }
 
   protected removeCartItemFromAnyBump(itemId: string) {

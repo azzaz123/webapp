@@ -5,16 +5,15 @@ import { PasswordModalComponent } from './password-modal/password-modal.componen
 @Component({
   selector: 'tsl-edit-password',
   templateUrl: './edit-password.component.html',
-  styleUrls: ['./edit-password.component.scss']
+  styleUrls: ['./edit-password.component.scss'],
 })
 export class EditPasswordComponent {
-
-  constructor(private modalService: NgbModal) {
-  }
+  constructor(private modalService: NgbModal) {}
 
   openModal(element: HTMLElement) {
     element.blur();
-    this.modalService.open(PasswordModalComponent, {windowClass: 'account-details'});
+    this.modalService.open(PasswordModalComponent, {
+      windowClass: 'account-details',
+    });
   }
-
 }

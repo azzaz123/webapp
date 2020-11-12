@@ -1,5 +1,4 @@
-
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import { throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CartProComponent } from './cart-pro.component';
@@ -40,13 +39,13 @@ describe('CartProComponent', () => {
     action: 'add',
     cart: CART,
     itemId: ITEM_ID,
-    type: 'citybump'
+    type: 'citybump',
   };
 
   const MOCK_STATUS: ScheduledStatus = {
     active: true,
     autorenew_alert: 0,
-    autorenew_scheduled: { citybump: 16, countrybump: 21 }
+    autorenew_scheduled: { citybump: 16, countrybump: 21 },
   };
 
   beforeEach(async(() => {
@@ -56,53 +55,52 @@ describe('CartProComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         {
-          provide: PaymentService, useValue: {
+          provide: PaymentService,
+          useValue: {
             getPerks() {
-              return observableOf(perksModel);
+              return of(perksModel);
             },
             getStatus() {
-              return observableOf(MOCK_STATUS);
-            }
-          }
-        },
-        {
-          provide: TrackingService, useClass: MockTrackingService
-        },
-        {
-          provide: CartService, useValue: {
-            cart$: observableOf(CART_CHANGE),
-            createInstance() {
+              return of(MOCK_STATUS);
             },
-            remove() {
-            },
-            clean() {
-            }
-          }
+          },
         },
         {
-          provide: ItemService, useValue: {
+          provide: TrackingService,
+          useClass: MockTrackingService,
+        },
+        {
+          provide: CartService,
+          useValue: {
+            cart$: of(CART_CHANGE),
+            createInstance() {},
+            remove() {},
+            clean() {},
+          },
+        },
+        {
+          provide: ItemService,
+          useValue: {
             bumpProItems() {
-              return observableOf({});
+              return of({});
             },
-            deselectItems() {
-            }
-          }
+            deselectItems() {},
+          },
         },
         {
-          provide: ErrorsService, useValue: {
-            i18nError() {
-            }
-          }
+          provide: ErrorsService,
+          useValue: {
+            i18nError() {},
+          },
         },
         {
-          provide: Router, useValue: {
-            navigate() {
-            }
-          }
-        }
-      ]
-    })
-      .compileComponents();
+          provide: Router,
+          useValue: {
+            navigate() {},
+          },
+        },
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -167,7 +165,10 @@ describe('CartProComponent', () => {
 
       component.remove(MOCK_PROITEM);
 
-      expect(cartService.remove).toHaveBeenCalledWith(MOCK_PROITEM.item.id, MOCK_PROITEM.bumpType);
+      expect(cartService.remove).toHaveBeenCalledWith(
+        MOCK_PROITEM.item.id,
+        MOCK_PROITEM.bumpType
+      );
     });
   });
 
@@ -181,10 +182,9 @@ describe('CartProComponent', () => {
     });
   });
 
-
   describe('applyBumps', () => {
     it('should prepare the order', () => {
-      spyOn(itemService, 'bumpProItems').and.returnValue(observableOf([]));
+      spyOn(itemService, 'bumpProItems').and.returnValue(of([]));
       const order: OrderPro[] = component.cart.prepareOrder();
 
       component.applyBumps();
@@ -194,7 +194,7 @@ describe('CartProComponent', () => {
 
     describe('success', () => {
       beforeEach(() => {
-        spyOn(itemService, 'bumpProItems').and.returnValue(observableOf([]));
+        spyOn(itemService, 'bumpProItems').and.returnValue(of([]));
         spyOn(itemService, 'deselectItems').and.callThrough();
         spyOn(errorService, 'i18nError');
         spyOn(router, 'navigate');
@@ -212,13 +212,19 @@ describe('CartProComponent', () => {
       it('should track', () => {
         const order: OrderPro[] = component.cart.prepareOrder();
 
-        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.BUMP_PRO_APPLY, {
-          selected_products: order
-        });
+        expect(trackingService.track).toHaveBeenCalledWith(
+          TrackingService.BUMP_PRO_APPLY,
+          {
+            selected_products: order,
+          }
+        );
       });
 
       it('should navigate to pro list', () => {
-        expect(router.navigate).toHaveBeenCalledWith(['/pro/catalog/list', { code: 201 }]);
+        expect(router.navigate).toHaveBeenCalledWith([
+          '/pro/catalog/list',
+          { code: 201 },
+        ]);
         expect(errorService.i18nError).not.toHaveBeenCalled();
       });
     });
@@ -235,7 +241,10 @@ describe('CartProComponent', () => {
 
         component.applyBumps();
 
-        expect(router.navigate).toHaveBeenCalledWith(['/pro/catalog/list', { code: 202 }]);
+        expect(router.navigate).toHaveBeenCalledWith([
+          '/pro/catalog/list',
+          { code: 202 },
+        ]);
         expect(errorService.i18nError).not.toHaveBeenCalled();
       });
 
@@ -245,7 +254,10 @@ describe('CartProComponent', () => {
 
         component.applyBumps();
 
-        expect(router.navigate).toHaveBeenCalledWith(['/pro/catalog/list', { code: 202 }]);
+        expect(router.navigate).toHaveBeenCalledWith([
+          '/pro/catalog/list',
+          { code: 202 },
+        ]);
         expect(errorService.i18nError).not.toHaveBeenCalled();
       });
     });
@@ -258,7 +270,7 @@ describe('CartProComponent', () => {
 
       it('should thrown bumpError if failedProducts', () => {
         const failedProducts: string = MOCK_PROITEM.item.id;
-        spyOn(itemService, 'bumpProItems').and.returnValue(observableOf(failedProducts));
+        spyOn(itemService, 'bumpProItems').and.returnValue(of(failedProducts));
 
         component.applyBumps();
 
@@ -267,11 +279,13 @@ describe('CartProComponent', () => {
       });
 
       it('should thrown bumpError if operation not succeed and text have value', () => {
-        spyOn(itemService, 'bumpProItems').and.returnValue(observableThrowError({
-          text() {
-            return '';
-          }
-        }));
+        spyOn(itemService, 'bumpProItems').and.returnValue(
+          throwError({
+            text() {
+              return '';
+            },
+          })
+        );
 
         component.applyBumps();
 

@@ -13,32 +13,25 @@ describe('WallacoinsConfirmModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WallacoinsConfirmModalComponent, CustomCurrencyPipe ],
+      declarations: [WallacoinsConfirmModalComponent, CustomCurrencyPipe],
       providers: [
         DecimalPipe,
         {
-        provide: NgbActiveModal, useValue: {
-          close() {
+          provide: NgbActiveModal,
+          useValue: {
+            close() {},
+            dismiss() {},
           },
-          dismiss() {
-          }
-        }
-      }],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+        },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(WallacoinsConfirmModalComponent);
     component = fixture.componentInstance;
-    component.pack = new Pack(
-      'id',
-      100,
-      100,
-      'EUR',
-      'wallacoins'
-    );
+    component.pack = new Pack('id', 100, 100, 'EUR', 'wallacoins');
     fixture.detectChanges();
   });
 

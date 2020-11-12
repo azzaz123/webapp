@@ -1,5 +1,4 @@
-
-import {map} from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { UserService } from '../user/user.service';
 import { Observable } from 'rxjs';
@@ -7,7 +6,6 @@ import { User } from '../user/user';
 
 @Injectable()
 export class TutorialService {
-
   private _step = 0;
   public maxSteps;
   localStorageName = '-tutorial';
@@ -40,12 +38,22 @@ export class TutorialService {
 
   public setDisplayed(): void {
     if (this.userService.user) {
-      localStorage.setItem(this.userService.user.id + this.localStorageName, 'true');
+      localStorage.setItem(
+        this.userService.user.id + this.localStorageName,
+        'true'
+      );
     }
   }
 
   public isAlreadyDisplayed(): Observable<boolean> {
-    return this.userService.me().pipe(
-      map((user: User) => user.type === 'professional' ? true : !!localStorage.getItem(user.id + this.localStorageName)));
+    return this.userService
+      .me()
+      .pipe(
+        map((user: User) =>
+          user.type === 'professional'
+            ? true
+            : !!localStorage.getItem(user.id + this.localStorageName)
+        )
+      );
   }
 }

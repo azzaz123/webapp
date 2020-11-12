@@ -1,7 +1,7 @@
-@import "~style/common";
+@import '~style/common';
 
 $checkbox-width: $spacing-ms;
-$transition: all .5s ease;
+$transition: all 0.5s ease;
 $feature-button-width: 170px;
 
 .back {
@@ -11,15 +11,16 @@ $feature-button-width: 170px;
   transform: translateY(-50%);
   color: $blue-grey-1;
   z-index: 1000;
-  mat-icon {
+  tsl-svg-icon {
     vertical-align: middle;
     margin-right: $spacing-ms;
     width: 17px;
   }
   &:hover {
     text-decoration: none;
-    &, mat-icon {
-      opacity: .8;
+    &,
+    tsl-svg-icon {
+      opacity: 0.8;
     }
   }
 }
@@ -64,14 +65,14 @@ $feature-button-width: 170px;
     width: 48%;
   }
   .bump-types {
-    display: flex; 
+    display: flex;
     width: 100%;
     border-top-left-radius: 18px;
     border-top-right-radius: 18px;
     border-top: 1px solid $blue-grey-5;
     border-right: 1px solid $blue-grey-5;
     border-left: 1px solid $blue-grey-5;
-  }∫
+  }
   .info {
     font-size: $font-size-s;
     text-decoration: underline;
@@ -154,14 +155,14 @@ $feature-button-width: 170px;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      mat-icon {
+      tsl-svg-icon {
         display: none;
         height: 9px;
         width: $spacing-ms;
       }
       &.selected {
         border-color: transparent;
-        mat-icon {
+        tsl-svg-icon {
           display: flex;
           ::ng-deep svg g g {
             fill: $white;

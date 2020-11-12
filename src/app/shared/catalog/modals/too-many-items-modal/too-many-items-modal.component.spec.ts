@@ -1,26 +1,34 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { MatIconModule } from '@angular/material';
+import {
+  TestBed,
+  ComponentFixture,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { of as observableOf } from 'rxjs';
+import { of } from 'rxjs';
 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TooManyItemsModalComponent } from './too-many-items-modal.component';
 import { ButtonComponent } from '../../../button/button.component';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ItemService,  } from '../../../../core/item/item.service';
+import { ItemService } from '../../../../core/item/item.service';
 import { SubscriptionsService } from '../../../../core/subscriptions/subscriptions.service';
-import { MOCK_ITEM_V3_2, MOCK_ITEM_V3_3 } from '../../../../../tests/item.fixtures.spec';
-import { MockSubscriptionService, MAPPED_SUBSCRIPTIONS_ADDED } from '../../../../../tests/subscriptions.fixtures.spec';
+import { MOCK_ITEM_V3_3 } from '../../../../../tests/item.fixtures.spec';
+import {
+  MockSubscriptionService,
+  MAPPED_SUBSCRIPTIONS_ADDED,
+} from '../../../../../tests/subscriptions.fixtures.spec';
 import { SUBSCRIPTION_TYPES } from '../../../../core/subscriptions/subscriptions.service';
-import { By } from '@angular/platform-browser';
-import { AnalyticsService } from '../../../../core/analytics/analytics.service';
+import { AnalyticsService } from 'app/core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../../../tests/analytics.fixtures.spec';
 import {
-  AnalyticsEvent,
-  ClickSubscriptionLimitReached,
+  AnalyticsPageView,
+  ViewProSubscriptionPopup,
   ANALYTICS_EVENT_NAMES,
-  ANALYTIC_EVENT_TYPES,
-  SCREEN_IDS
-} from '../../../../core/analytics/analytics-constants';
+  SCREEN_IDS,
+} from 'app/core/analytics/analytics-constants';
+import { SUBSCRIPTION_CATEGORIES } from 'app/core/subscriptions/subscriptions.interface';
+import { MOCK_CAR } from '../../../../../tests/car.fixtures.spec';
 
 describe('TooManyItemsModalComponent', () => {
   let component: TooManyItemsModalComponent;
@@ -31,85 +39,105 @@ describe('TooManyItemsModalComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        MatIconModule,
-        RouterTestingModule
-      ],
-      declarations: [
-        TooManyItemsModalComponent,
-        ButtonComponent
-      ],
+      imports: [RouterTestingModule],
+      declarations: [TooManyItemsModalComponent, ButtonComponent],
       providers: [
         NgbActiveModal,
         { provide: SubscriptionsService, useClass: MockSubscriptionService },
         {
-          provide: ItemService, useValue: {
+          provide: ItemService,
+          useValue: {
             get() {
-              return observableOf(MOCK_ITEM_V3_3);
-            }
-          }
+              return of(MOCK_ITEM_V3_3);
+            },
+          },
         },
         {
-          provide: AnalyticsService, useClass: MockAnalyticsService
-        }
-      ]
-    })
-    .compileComponents();
+          provide: AnalyticsService,
+          useClass: MockAnalyticsService,
+        },
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TooManyItemsModalComponent);
     itemService = TestBed.inject(ItemService);
     subscriptionsService = TestBed.inject(SubscriptionsService);
-    component = fixture.componentInstance;
-    component.type =  SUBSCRIPTION_TYPES.stripe;
-    fixture.detectChanges();
-
     analyticsService = TestBed.inject(AnalyticsService);
-    spyOn(analyticsService, 'trackEvent');
+    component = fixture.componentInstance;
+    component.type = SUBSCRIPTION_TYPES.stripe;
+    fixture.detectChanges();
   });
 
   describe('ngOnInit', () => {
     beforeEach(() => {
-      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(observableOf(MAPPED_SUBSCRIPTIONS_ADDED));
+      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(
+        of(MAPPED_SUBSCRIPTIONS_ADDED)
+      );
+      spyOn(analyticsService, 'trackPageView');
     });
-    describe('subscription has free trial', () => {
-      it('should set isFreeTrial to true', () => {
-        spyOn(itemService, 'get').and.returnValue(observableOf(MOCK_ITEM_V3_3));
 
+    describe('when subscription for item category has free trial', () => {
+      beforeEach(() => {
         component.itemId = MOCK_ITEM_V3_3.id;
+        spyOn(itemService, 'get').and.returnValue(of(MOCK_ITEM_V3_3));
+      });
+
+      it('should set isFreeTrial to true', () => {
         component.ngOnInit();
-        
+
         expect(component.isFreeTrial).toBe(true);
       });
-    });
-    describe('subscription has no free trial', () => {
-      it('should set isFreeTrial to false', () => {
-        spyOn(itemService, 'get').and.returnValue(observableOf(MOCK_ITEM_V3_2));
 
-        component.itemId = MOCK_ITEM_V3_2.id;
+      it('should track the page view event to analytics', () => {
+        const expectedEvent: AnalyticsPageView<ViewProSubscriptionPopup> = {
+          name: ANALYTICS_EVENT_NAMES.ViewProSubscriptionPopup,
+          attributes: {
+            screenId: SCREEN_IDS.ProSubscriptionLimitPopup,
+            subscription: MOCK_ITEM_V3_3.categoryId as SUBSCRIPTION_CATEGORIES,
+            freeTrial: true,
+          },
+        };
+
+        component.ngOnInit();
+
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(
+          expectedEvent
+        );
+      });
+    });
+
+    describe('when subscription for item category does not have free trial', () => {
+      beforeEach(() => {
+        component.itemId = MOCK_CAR.id;
+        spyOn(itemService, 'get').and.returnValue(of(MOCK_CAR));
+      });
+
+      it('should set isFreeTrial to false', () => {
         component.ngOnInit();
 
         expect(component.isFreeTrial).toBe(false);
       });
+
+      it('should track the page view event to analytics', fakeAsync(() => {
+        const expectedEvent: AnalyticsPageView<ViewProSubscriptionPopup> = {
+          name: ANALYTICS_EVENT_NAMES.ViewProSubscriptionPopup,
+          attributes: {
+            screenId: SCREEN_IDS.ProSubscriptionLimitPopup,
+            subscription: MOCK_CAR.categoryId as SUBSCRIPTION_CATEGORIES,
+            freeTrial: false,
+          },
+        };
+
+        component.ngOnInit();
+        tick();
+
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(
+          expectedEvent
+        );
+      }));
     });
   });
-
-  describe('trackClickGoToSubscriptions', () => {
-    it('should send event to analytics', () => {
-      const expectedEvent: AnalyticsEvent<ClickSubscriptionLimitReached> = {
-        name: ANALYTICS_EVENT_NAMES.ClickSubscriptionLimitReached,
-        eventType: ANALYTIC_EVENT_TYPES.Other,
-        attributes: {
-          screenId: SCREEN_IDS.MyCatalog,
-        }
-      };
-
-      component.trackClickGoToSubscriptions();
-
-      expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
-      expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
-    });
-  });
-
 });

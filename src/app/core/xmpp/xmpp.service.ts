@@ -1,19 +1,32 @@
-import { from as observableFrom, of as observableOf, Observable, Observer, ReplaySubject, throwError } from 'rxjs';
+import {
+  from,
+  of,
+  Observable,
+  Observer,
+  ReplaySubject,
+  throwError,
+} from 'rxjs';
 
 import { map, tap, mergeMap } from 'rxjs/operators';
 import { clone, eq, remove, includes } from 'lodash-es';
 import { Injectable } from '@angular/core';
 import { EventService } from '../event/event.service';
-import { XmppBodyMessage, XMPPClient, JID, XmppError } from './xmpp.interface';
+import { XmppBodyMessage, XMPPClient, JID } from './xmpp.interface';
 import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
 import { ChatSignal, ChatSignalType } from '../../chat/model';
-import { InboxConversation, InboxMessage, InboxUser, MESSAGES_WHITE_LIST, MessageStatus, MessageType } from '../../chat/model';
+import {
+  InboxConversation,
+  InboxMessage,
+  InboxUser,
+  MESSAGES_WHITE_LIST,
+  MessageStatus,
+  MessageType,
+} from '../../chat/model';
 import { RemoteConsoleService } from '../remote-console';
 
 @Injectable()
 export class XmppService {
-
   private client: XMPPClient;
   private _clientConnected = false;
   private blockedListAvailable = false;
@@ -26,7 +39,10 @@ export class XmppService {
   private canProcessRealtime = false;
   private xmppError = { message: 'XMPP disconnected' };
 
-  constructor(private eventService: EventService, private remoteConsoleService: RemoteConsoleService) {
+  constructor(
+    private eventService: EventService,
+    private remoteConsoleService: RemoteConsoleService
+  ) {
     this.clientConnected$.next(false);
   }
 
@@ -59,11 +75,19 @@ export class XmppService {
   }
 
   public resendMessage(conversation: InboxConversation, message: InboxMessage) {
-    const xmppBodyMessage: XmppBodyMessage = this.createXmppMessage(conversation, message.id, message.text);
+    const xmppBodyMessage: XmppBodyMessage = this.createXmppMessage(
+      conversation,
+      message.id,
+      message.text
+    );
     this.client.sendMessage(xmppBodyMessage);
   }
 
-  private createXmppMessage(conversation: InboxConversation, id: string, body: string): XmppBodyMessage {
+  private createXmppMessage(
+    conversation: InboxConversation,
+    id: string,
+    body: string
+  ): XmppBodyMessage {
     const message: XmppBodyMessage = {
       id: id,
       to: this.createJid(conversation.user.id),
@@ -73,7 +97,7 @@ export class XmppService {
       request: {
         xmlns: 'urn:xmpp:receipts',
       },
-      body: body
+      body: body,
     };
     return message;
   }
@@ -84,8 +108,8 @@ export class XmppService {
       type: 'chat',
       thread: thread,
       read: {
-        xmlns: 'wallapop:thread:status'
-      }
+        xmlns: 'wallapop:thread:status',
+      },
     });
   }
 
@@ -97,7 +121,7 @@ export class XmppService {
     if (!this.clientConnected) {
       return throwError(this.xmppError);
     }
-    return observableOf(true);
+    return of(true);
   }
 
   get clientConnected(): boolean {
@@ -121,7 +145,7 @@ export class XmppService {
       transport: 'websocket',
       wsURL: environment.wsUrl,
       useStreamManagement: true,
-      sendReceipts: false
+      sendReceipts: false,
     });
     this.client.use(this.receiptsPlugin);
     this.client.use(this.mamPlugin);
@@ -139,18 +163,24 @@ export class XmppService {
     this.eventService.subscribe(EventService.CHAT_CAN_PROCESS_RT, (val) => {
       this.canProcessRealtime = val;
       if (val) {
-        this.realtimeQ.map(m => this.onNewMessage(m));
+        this.realtimeQ.map((m) => this.onNewMessage(m));
       }
     });
 
     this.client.enableKeepAlive({
-      interval: 30
+      interval: 30,
     });
     this.client.on('message', (message: XmppBodyMessage) => {
-      if (!this.isFromSelf(message) && message.sentReceipt && message.sentReceipt.id) {
+      if (
+        !this.isFromSelf(message) &&
+        message.sentReceipt &&
+        message.sentReceipt.id
+      ) {
         this.remoteConsoleService.sendMessageActTimeout(message.sentReceipt.id);
       }
-      this.canProcessRealtime ? this.onNewMessage(message) : this.realtimeQ.push(message);
+      this.canProcessRealtime
+        ? this.onNewMessage(message)
+        : this.realtimeQ.push(message);
     });
     this.client.on('message:sent', (message: XmppBodyMessage) => {
       if (message.received) {
@@ -165,7 +195,6 @@ export class XmppService {
     this.client.on('disconnected', () => {
       this.clientConnected = false;
       this.remoteConsoleService.sendXmppConnectionClosedWithError();
-      this.remoteConsoleService.sendConnectionChatFailed('xmpp');
       console.warn('Client disconnected');
       this.eventService.emit(EventService.CHAT_RT_DISCONNECTED);
     });
@@ -221,13 +250,25 @@ export class XmppService {
 
     if (message.receipt || message.sentReceipt || message.readReceipt) {
       this.buildChatSignal(message);
-    } else if (message.body || (message.payload && this.thirdVoiceEnabled.indexOf(message.payload.type) !== -1)) {
+    } else if (
+      message.body ||
+      (message.payload &&
+        this.thirdVoiceEnabled.indexOf(message.payload.type) !== -1)
+    ) {
       if (!this.isFromSelf(message)) {
         this.remoteConsoleService.sendPresentationMessageTimeout(message.id);
       }
-      const builtMessage: InboxMessage = this.buildMessage(message, markAsPending);
+      const builtMessage: InboxMessage = this.buildMessage(
+        message,
+        markAsPending
+      );
       if (includes(MESSAGES_WHITE_LIST, builtMessage.type)) {
-        this.eventService.emit(EventService.NEW_MESSAGE, builtMessage, replaceTimestamp, message.requestReceipt);
+        this.eventService.emit(
+          EventService.NEW_MESSAGE,
+          builtMessage,
+          replaceTimestamp,
+          message.requestReceipt
+        );
       }
     }
   }
@@ -235,17 +276,43 @@ export class XmppService {
   private isFromSelf(message: XmppBodyMessage): boolean {
     /* The second part of condition is used to exclude 3rd voice messages, where 'from' = the id of the user
     logged in, but they should not be considered messages fromSelf */
-    return this.self && message.from && eq(message.from.local, this.self.local) && !message.payload;
+    return (
+      this.self &&
+      message.from &&
+      eq(message.from.local, this.self.local) &&
+      !message.payload
+    );
   }
 
   private buildChatSignal(message: XmppBodyMessage) {
     let signal: ChatSignal;
-    if (message.timestamp && message.receipt && message.from.bare !== message.to.bare && !message.carbon) {
-      signal = new ChatSignal(ChatSignalType.RECEIVED, message.thread, message.date, message.receipt);
+    if (
+      message.timestamp &&
+      message.receipt &&
+      message.from.bare !== message.to.bare &&
+      !message.carbon
+    ) {
+      signal = new ChatSignal(
+        ChatSignalType.RECEIVED,
+        message.thread,
+        message.date,
+        message.receipt
+      );
     } else if (!message.carbon && message.sentReceipt) {
-      signal = new ChatSignal(ChatSignalType.SENT, message.thread, message.date, message.sentReceipt.id);
+      signal = new ChatSignal(
+        ChatSignalType.SENT,
+        message.thread,
+        message.date,
+        message.sentReceipt.id
+      );
     } else if (message.readReceipt) {
-      signal = new ChatSignal(ChatSignalType.READ, message.thread, message.date, null, this.isFromSelf(message));
+      signal = new ChatSignal(
+        ChatSignalType.READ,
+        message.thread,
+        message.date,
+        null,
+        this.isFromSelf(message)
+      );
     }
 
     if (signal) {
@@ -253,11 +320,25 @@ export class XmppService {
     }
   }
 
-  private buildMessage(message: XmppBodyMessage, markAsPending = false): InboxMessage {
+  private buildMessage(
+    message: XmppBodyMessage,
+    markAsPending = false
+  ): InboxMessage {
     message.status = markAsPending ? MessageStatus.PENDING : MessageStatus.SENT;
-    const messageType = message.payload ? message.payload.type as MessageType : MessageType.TEXT;
-    return new InboxMessage(message.id, message.thread, message.body, message.from.local, this.isFromSelf(message),
-      new Date(message.date), message.status, messageType, message.payload);
+    const messageType = message.payload
+      ? (message.payload.type as MessageType)
+      : MessageType.TEXT;
+    return new InboxMessage(
+      message.id,
+      message.thread,
+      message.body,
+      message.from.local,
+      this.isFromSelf(message),
+      new Date(message.date),
+      message.status,
+      messageType,
+      message.payload
+    );
   }
 
   public sendMessageDeliveryReceipt(toId: string, id: string, thread: string) {
@@ -267,42 +348,49 @@ export class XmppService {
       thread: thread,
       received: {
         xmlns: 'urn:xmpp:receipts',
-        id: id
-      }
+        id: id,
+      },
     });
   }
 
   private setDefaultPrivacyList(): Observable<any> {
-    return observableFrom(this.client.sendIq({
-      type: 'set',
-      privacy: {
-        default: {
-          name: 'public'
-        }
-      }
-    })
-      .catch(() => {
-      }));
+    return from(
+      this.client
+        .sendIq({
+          type: 'set',
+          privacy: {
+            default: {
+              name: 'public',
+            },
+          },
+        })
+        .catch(() => {})
+    );
   }
 
   private getPrivacyList(): Observable<any> {
-    return observableFrom(this.client.sendIq({
-      type: 'get',
-      privacy: {
-        list: {
-          name: 'public'
-        }
-      }
-    })
-      .catch(() => {
-      })).pipe(
+    return from(
+      this.client
+        .sendIq({
+          type: 'get',
+          privacy: {
+            list: {
+              name: 'public',
+            },
+          },
+        })
+        .catch(() => {})
+    ).pipe(
       map((response: any) => {
         const blockedIds = [];
         if (response && response.privacy && response.privacy.jids) {
-          response.privacy.jids.map((jid: string) => blockedIds.push(jid.split('@')[0]));
+          response.privacy.jids.map((jid: string) =>
+            blockedIds.push(jid.split('@')[0])
+          );
         }
         return blockedIds;
-      }));
+      })
+    );
   }
 
   public blockUser(user: User | InboxUser): Observable<any> {
@@ -312,12 +400,16 @@ export class XmppService {
         if (this.blockedUsers.length === 1) {
           return this.setDefaultPrivacyList();
         }
-        return observableOf({});
+        return of({});
       }),
       tap(() => {
         user.blocked = true;
-        this.eventService.emit(EventService.PRIVACY_LIST_UPDATED, this.blockedUsers);
-      }),);
+        this.eventService.emit(
+          EventService.PRIVACY_LIST_UPDATED,
+          this.blockedUsers
+        );
+      })
+    );
   }
 
   public unblockUser(user: User | InboxUser): Observable<any> {
@@ -325,8 +417,12 @@ export class XmppService {
     return this.setPrivacyList(this.blockedUsers).pipe(
       tap(() => {
         user.blocked = false;
-        this.eventService.emit(EventService.PRIVACY_LIST_UPDATED, this.blockedUsers);
-      }));
+        this.eventService.emit(
+          EventService.PRIVACY_LIST_UPDATED,
+          this.blockedUsers
+        );
+      })
+    );
   }
 
   private onPrivacyListChange(iq: any) {
@@ -340,16 +436,18 @@ export class XmppService {
 
   private setPrivacyList(ids: string[]): Observable<any> {
     const jids = [];
-    ids.map(id => jids.push(this.createJid(id).bare));
-    return observableFrom(this.client.sendIq({
-      type: 'set',
-      privacy: {
-        list: {
-          name: 'public',
-          jids: jids
-        }
-      }
-    }));
+    ids.map((id) => jids.push(this.createJid(id).bare));
+    return from(
+      this.client.sendIq({
+        type: 'set',
+        privacy: {
+          list: {
+            name: 'public',
+            jids: jids,
+          },
+        },
+      })
+    );
   }
 
   private receiptsPlugin(client: XMPPClient, stanzas: any) {
@@ -362,31 +460,31 @@ export class XmppService {
         body: {
           get: function getBody() {
             return this.xml.children[0];
-          }
+          },
         },
-      }
+      },
     });
     const read: any = stanzas.define({
       name: 'read',
       element: 'read',
       fields: {
-        xmlns: types.attribute('xmlns')
-      }
+        xmlns: types.attribute('xmlns'),
+      },
     });
     const received: any = stanzas.define({
       name: 'received',
       element: 'received',
       fields: {
         xmlns: types.attribute('xmlns'),
-        id: types.attribute('id')
-      }
+        id: types.attribute('id'),
+      },
     });
     const request: any = stanzas.define({
       name: 'request',
       element: 'request',
       fields: {
-        xmlns: types.attribute('xmlns')
-      }
+        xmlns: types.attribute('xmlns'),
+      },
     });
     const readReceipt = {
       get: function get() {
@@ -394,7 +492,7 @@ export class XmppService {
         if (readSignal) {
           return readSignal.attrs;
         }
-      }
+      },
     };
     const sentReceipt = {
       get: function get() {
@@ -402,7 +500,7 @@ export class XmppService {
         if (sentSignal) {
           return sentSignal.attrs;
         }
-      }
+      },
     };
     stanzas.withMessage(function (message: any) {
       stanzas.extend(message, read);
@@ -438,23 +536,23 @@ export class XmppService {
               }
             });
             return result;
-          }
-        }
-      }
+          },
+        },
+      },
     });
     const Default: any = stanzas.define({
       name: 'default',
       element: 'default',
       fields: {
-        name: types.attribute('name')
-      }
+        name: types.attribute('name'),
+      },
     });
     const Active: any = stanzas.define({
       name: 'active',
       element: 'active',
       fields: {
-        name: types.attribute('name')
-      }
+        name: types.attribute('name'),
+      },
     });
     const List: any = stanzas.define({
       name: 'list',
@@ -465,16 +563,20 @@ export class XmppService {
           set: function set(values) {
             const self = this;
             values.forEach(function (value, index) {
-              const item = types.createElement('jabber:iq:privacy', 'item', 'jabber:iq:privacy');
+              const item = types.createElement(
+                'jabber:iq:privacy',
+                'item',
+                'jabber:iq:privacy'
+              );
               types.setAttribute(item, 'type', 'jid');
               types.setAttribute(item, 'order', index + 1);
               types.setAttribute(item, 'action', 'deny');
               types.setAttribute(item, 'value', value.toString());
               self.xml.appendChild(item);
             });
-          }
-        }
-      }
+          },
+        },
+      },
     });
     stanzas.withIq(function (Iq: any) {
       stanzas.extend(Iq, Privacy);
@@ -497,12 +599,14 @@ export class XmppService {
         start: types.dateSub('urn:xmpp:mam:tmp', 'start'),
         end: types.dateSub('urn:xmpp:mam:tmp', 'end'),
         thread: types.dateSub('urn:xmpp:mam:tmp', 'thread'),
-      }
+      },
     });
     stanzas.withIq(function (Iq: any) {
       stanzas.extend(Iq, MAMQuery);
     });
-    stanzas.withDefinition('set', 'http://jabber.org/protocol/rsm', function (RSM: any) {
+    stanzas.withDefinition('set', 'http://jabber.org/protocol/rsm', function (
+      RSM: any
+    ) {
       stanzas.extend(MAMQuery, RSM);
     });
   }
@@ -515,7 +619,7 @@ export class XmppService {
         if (payload && payload.children[0]) {
           return JSON.parse(payload.children[0]);
         }
-      }
+      },
     };
     stanzas.withMessage(function (message: any) {
       stanzas.add(message, 'payload', PAYLOAD);
@@ -523,6 +627,10 @@ export class XmppService {
   }
 
   private createJid(userId: string, withResource = false): JID {
-    return new JID(userId, environment.xmppDomain, withResource ? this.resource : null);
+    return new JID(
+      userId,
+      environment.xmppDomain,
+      withResource ? this.resource : null
+    );
   }
 }

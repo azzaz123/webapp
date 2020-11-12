@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { PlanDataComponent } from './plan-data.component';
@@ -22,40 +21,41 @@ describe('PlanDataComponent', () => {
     active: true,
     autorenew_alert: 0,
     autorenew_scheduled: { citybump: 16, countrybump: 21 },
-    purchased: { citybump: 1, countrybump: 2 }
+    purchased: { citybump: 1, countrybump: 2 },
   };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PlanDataComponent ],
+      declarations: [PlanDataComponent],
       providers: [
-        {provide: ItemService, useClass: MockedItemService},
+        { provide: ItemService, useClass: MockedItemService },
         {
-          provide: PaymentService, useValue: {
+          provide: PaymentService,
+          useValue: {
             getPerks() {
-              return observableOf({});
+              return of({});
             },
             getStatus() {
-              return observableOf({MOCK_STATUS});
-            }
-          }
+              return of({ MOCK_STATUS });
+            },
+          },
         },
         {
-          provide: NgbModal, useValue: {
-          open() {
-            return {
-              componentInstance: {
-                loadPurchases: loadPurchases
-              },
-              result: Promise.resolve()
-            };
-          }
-        }
-        }
+          provide: NgbModal,
+          useValue: {
+            open() {
+              return {
+                componentInstance: {
+                  loadPurchases: loadPurchases,
+                },
+                result: Promise.resolve(),
+              };
+            },
+          },
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -69,8 +69,10 @@ describe('PlanDataComponent', () => {
   describe('ngChanges', () => {
     beforeEach(() => {
       component.loading = true;
-      spyOn(paymentService, 'getPerks').and.returnValue(observableOf(createPerksModelFixture()));
-      spyOn(paymentService, 'getStatus').and.returnValue(observableOf(MOCK_STATUS));
+      spyOn(paymentService, 'getPerks').and.returnValue(
+        of(createPerksModelFixture())
+      );
+      spyOn(paymentService, 'getStatus').and.returnValue(of(MOCK_STATUS));
       component.ngOnChanges();
     });
 
@@ -87,6 +89,5 @@ describe('PlanDataComponent', () => {
       expect(paymentService.getStatus).toHaveBeenCalled();
       expect(component.status).toEqual(MOCK_STATUS);
     });
-
   });
 });

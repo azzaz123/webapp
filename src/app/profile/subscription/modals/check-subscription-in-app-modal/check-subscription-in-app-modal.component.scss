@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 .CheckSubscriptionInAppModal {
   height: 335px;
@@ -12,9 +12,9 @@
   position: fixed;
   top: $spacing-ml;
   right: $spacing-ml;
-  mat-icon {
+  tsl-svg-icon {
     @include square($spacing-ms);
-    line-height: initial; 
+    line-height: initial;
 
     svg {
       path {
@@ -60,7 +60,7 @@
 
 @include media-breakpoint-down(sm) {
   .CheckSubscriptionInAppModal {
-    height: calc(100% + #{$spacing-xl}/2);
+    height: calc(100% + #{$spacing-xl}/ 2);
     padding: $spacing-xl $spacing-ms 0;
   }
 

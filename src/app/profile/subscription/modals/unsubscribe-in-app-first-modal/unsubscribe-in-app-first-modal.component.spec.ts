@@ -10,13 +10,10 @@ describe('UnsubscribeInAppFirstModal', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UnsubscribeInAppFirstModal ],
-      providers: [
-        NgbActiveModal
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      declarations: [UnsubscribeInAppFirstModal],
+      providers: [NgbActiveModal],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

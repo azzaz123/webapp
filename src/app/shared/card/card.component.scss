@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 :host {
   border-radius: $border-radius;
@@ -9,7 +9,8 @@
   width: 100%;
   overflow: hidden;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     box-shadow: 0 2px 6px 0 rgba(54, 70, 79, 0.07);
     text-decoration: none;
   }

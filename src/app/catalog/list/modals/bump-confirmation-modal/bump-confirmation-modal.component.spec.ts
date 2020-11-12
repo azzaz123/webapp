@@ -1,6 +1,10 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
-import { fakeAsync, ComponentFixture, TestBed, tick } from '@angular/core/testing';
+import { of } from 'rxjs';
+import {
+  fakeAsync,
+  ComponentFixture,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 import { BumpConfirmationModalComponent } from './bump-confirmation-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -26,34 +30,36 @@ const CREDITS = 1000;
 const CREDIT_INFO: CreditInfo = {
   currencyName: CURRENCY,
   credit: CREDITS,
-  factor: 100
+  factor: 100,
 };
 
 describe('BumpConfirmationModalComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-        declarations: [BumpConfirmationModalComponent, CustomCurrencyPipe],
-        providers: [
-          NgbActiveModal,
-          DecimalPipe,
-          EventService,
-          {provide: TrackingService, useClass: MockTrackingService},
-          {
-            provide: UserService, useValue: {
+      declarations: [BumpConfirmationModalComponent, CustomCurrencyPipe],
+      providers: [
+        NgbActiveModal,
+        DecimalPipe,
+        EventService,
+        { provide: TrackingService, useClass: MockTrackingService },
+        {
+          provide: UserService,
+          useValue: {
             me() {
-              return observableOf(MOCK_USER);
-            }
-          }
+              return of(MOCK_USER);
+            },
           },
-          {
-            provide: PaymentService, useValue: {
-              getCreditInfo() {
-                return observableOf(CREDIT_INFO);
-              }
-            }
+        },
+        {
+          provide: PaymentService,
+          useValue: {
+            getCreditInfo() {
+              return of(CREDIT_INFO);
+            },
           },
-        ],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA]
+        },
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     });
     fixture = TestBed.createComponent(BumpConfirmationModalComponent);
     component = fixture.componentInstance;
@@ -79,7 +85,9 @@ describe('BumpConfirmationModalComponent', () => {
 
       component.ngOnInit();
 
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.FEATURED_PURCHASE_SUCCESS);
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.FEATURED_PURCHASE_SUCCESS
+      );
     });
 
     it('should send event featured_purchase_error if code != 200', () => {
@@ -87,10 +95,15 @@ describe('BumpConfirmationModalComponent', () => {
 
       component.ngOnInit();
 
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.FEATURED_PURCHASE_ERROR, { error_code: component.code });
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.FEATURED_PURCHASE_ERROR,
+        {
+          error_code: component.code,
+        }
+      );
     });
 
-    it('should call getCreditInfo and set currency and coins total', fakeAsync (() => {
+    it('should call getCreditInfo and set currency and coins total', fakeAsync(() => {
       spyOn(paymentService, 'getCreditInfo').and.callThrough();
       spyOn(eventService, 'emit');
 
@@ -100,7 +113,10 @@ describe('BumpConfirmationModalComponent', () => {
       expect(paymentService.getCreditInfo).toHaveBeenCalled();
       expect(component.withCoins).toBe(true);
       expect(component.creditInfo).toBe(CREDIT_INFO);
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.TOTAL_CREDITS_UPDATED, CREDITS);
+      expect(eventService.emit).toHaveBeenCalledWith(
+        EventService.TOTAL_CREDITS_UPDATED,
+        CREDITS
+      );
     }));
 
     it('should send appboy VisibilityPurchaseSuccess event', () => {
@@ -109,8 +125,9 @@ describe('BumpConfirmationModalComponent', () => {
 
       component.ngOnInit();
 
-      expect(appboy.logCustomEvent).toHaveBeenCalledWith('VisibilityPurchaseSuccess', {platform: 'web'});
+      expect(
+        appboy.logCustomEvent
+      ).toHaveBeenCalledWith('VisibilityPurchaseSuccess', { platform: 'web' });
     });
   });
-
 });

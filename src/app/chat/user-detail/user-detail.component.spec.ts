@@ -1,16 +1,19 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserDetailComponent } from './user-detail.component';
 import { CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
 import { UserService } from '../../core/user/user.service';
-import { MOCK_USER, RESPONSE_RATE, SCORING_STARS, USER_INFO_RESPONSE } from '../../../tests/user.fixtures.spec';
+import {
+  MOCK_USER,
+  RESPONSE_RATE,
+  SCORING_STARS,
+  USER_INFO_RESPONSE,
+} from '../../../tests/user.fixtures.spec';
 
 class MockUserService {
-
   getInfo() {
-    return observableOf(USER_INFO_RESPONSE);
+    return of(USER_INFO_RESPONSE);
   }
 }
 
@@ -21,13 +24,10 @@ describe('UserDetailComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UserDetailComponent ],
-      providers: [
-        {provide: UserService, useClass: MockUserService},
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+      declarations: [UserDetailComponent],
+      providers: [{ provide: UserService, useClass: MockUserService }],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -49,7 +49,7 @@ describe('UserDetailComponent', () => {
       component.user.scoringStars = undefined;
       component.user.responseRate = undefined;
       component.ngOnChanges({
-        user: new SimpleChange(null, MOCK_USER, false)
+        user: new SimpleChange(null, MOCK_USER, false),
       });
       expect(userService.getInfo).toHaveBeenCalledWith(MOCK_USER.id);
       expect(component.user.scoringStars).toBe(SCORING_STARS);
@@ -59,7 +59,7 @@ describe('UserDetailComponent', () => {
       component.user.scoringStars = 10;
       component.user.responseRate = 'test';
       component.ngOnChanges({
-        user: new SimpleChange( component.user, MOCK_USER, false)
+        user: new SimpleChange(component.user, MOCK_USER, false),
       });
       expect(userService.getInfo).not.toHaveBeenCalled();
       expect(component.user.scoringStars).toBe(10);

@@ -1,6 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
-import { Observable } from 'rxjs';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+  TestRequest,
+} from '@angular/common/http/testing';
 
 import { HelpService } from './help.service';
 import { FAQS, FAQ_FEATURES } from '../../tests/faq.fixtures.spec';
@@ -12,7 +15,7 @@ describe('HelpService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [HelpService]
+      providers: [HelpService],
     });
     service = TestBed.inject(HelpService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -20,15 +23,17 @@ describe('HelpService', () => {
 
   afterEach(() => {
     httpMock.verify();
-  })
+  });
 
   describe('getFaqs', () => {
     it('should get localized faqs from web resources', () => {
       let response: any;
       let localId = 'es';
 
-      service.getFaqs(localId).subscribe(res => response = res);
-      const req: TestRequest = httpMock.expectOne(`assets/json/faq.${localId}.json`);
+      service.getFaqs(localId).subscribe((res) => (response = res));
+      const req: TestRequest = httpMock.expectOne(
+        `assets/json/faq.${localId}.json`
+      );
       req.flush(FAQS);
 
       expect(req.request.method).toBe('GET');
@@ -41,8 +46,10 @@ describe('HelpService', () => {
       let response: any;
       let localId = 'es';
 
-      service.getFeatures(localId).subscribe(res => response = res);
-      const req: TestRequest = httpMock.expectOne(`assets/json/faq-features.${localId}.json`);
+      service.getFeatures(localId).subscribe((res) => (response = res));
+      const req: TestRequest = httpMock.expectOne(
+        `assets/json/faq-features.${localId}.json`
+      );
       req.flush(FAQ_FEATURES);
 
       expect(req.request.method).toBe('GET');

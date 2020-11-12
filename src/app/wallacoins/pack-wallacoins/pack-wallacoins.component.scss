@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 :host {
   border-radius: $border-radius;
@@ -32,7 +32,7 @@
   .icon {
     @include square(120px);
     border-radius: 50%;
-    background: rgba($blue-grey-5, .3) no-repeat center;
+    background: rgba($blue-grey-5, 0.3) no-repeat center;
     &.icon-1 {
       background-image: url(/assets/images/wallacoins-1.svg);
     }

@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EmailModalComponent } from './email-modal.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { UserService } from '../../../../core/user/user.service';
@@ -17,34 +17,32 @@ describe('EmailModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule
-      ],
+      imports: [ReactiveFormsModule],
       providers: [
         {
-          provide: UserService, useValue: {
-          updateEmail() {
-            return of({});
-          }
-        }
+          provide: UserService,
+          useValue: {
+            updateEmail() {
+              return of({});
+            },
+          },
         },
         {
-          provide: NgbActiveModal, useValue: {
-          close() {
-          }
-        }
+          provide: NgbActiveModal,
+          useValue: {
+            close() {},
+          },
         },
         {
-          provide: ErrorsService, useValue: {
-          i18nError() {
-          }
-        }
-        }
+          provide: ErrorsService,
+          useValue: {
+            i18nError() {},
+          },
+        },
       ],
       declarations: [EmailModalComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -56,9 +54,7 @@ describe('EmailModalComponent', () => {
   });
 
   describe('onSubmit', () => {
-
     describe('valid form', () => {
-
       beforeEach(() => {
         spyOn(userService, 'updateEmail').and.callThrough();
         spyOn(activeModal, 'close');
@@ -74,11 +70,9 @@ describe('EmailModalComponent', () => {
       it('should close modal', () => {
         expect(activeModal.close).toHaveBeenCalledWith(USER_EMAIL);
       });
-
     });
 
     describe('invalid form', () => {
-
       it('should be invalid if fields are empty', () => {
         component.onSubmit();
 
@@ -98,8 +92,6 @@ describe('EmailModalComponent', () => {
 
         expect(component.emailForm.get('email_address').dirty).toBeTruthy();
       });
-
     });
-
   });
 });

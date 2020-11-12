@@ -18,6 +18,10 @@ export interface ClickOtherProfile {
    */
   isPro?: boolean;
   /**
+   * Number of items the clicked user has on sale
+   */
+  numberOfItems?: number;
+  /**
    * Identifier of the user that is clicked
    */
   sellerUserId: string;

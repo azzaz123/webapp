@@ -25,8 +25,6 @@
   <translation id="cancelButton">Cancelar</translation>
   <translation id="deleteButton">Borrar</translation>
   <translation id="7022070615528435141">Borrar</translation>
-  <translation id="7008439939460403347">Reportar</translation>
-  <translation id="568597304214607466">Estoy reportando a este usuario porque...</translation>
   <translation id="20327443157350316">Bloquear usuario</translation>
   <translation id="5871136368461493241">No podrás enviar o recibir mensajes de este usuario. ¿Deseas continuar?</translation>
   <translation id="420763834450076269">Bloquear</translation>
@@ -44,8 +42,6 @@
   <translation id="newMessages">Nuevos mensajes</translation>
   <translation id="7443033219479243959">Servicio no disponible temporalmente.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Inténtelo de nuevo más tarde.</translation>
   <translation id="4896863464728200563">Escribe un mensaje...</translation>
-  <translation id="3093507871243266697">Esperando red...</translation>
-  <translation id="3208980041287937682">Conectado</translation>
   <translation id="4095254644079775415" desc="The distance between the user and the item">A <ph name="DISTANCE"><ex>DISTANCE</ex></ph>km de ti</translation>
   <translation id="9119757647796405986">Sin localización</translation>
   <translation id="1166265010439249641">Responde en menos de 1 hora</translation>
@@ -58,7 +54,6 @@
   <translation id="8998211649643752990">Estamos cargando todos tus mensajes por primera vez. Estarán disponibles antes de que acaben las obras de la Sagrada Família, un abrazo.</translation>
   <translation id="4814285799071780083">Eliminar</translation>
   <translation id="4338022632676445411">Vendido</translation>
-  <translation id="6543433128416987560">Reservado</translation>
   <translation id="8212177249756365917">Eliminar</translation>
   <translation id="6452372740127749380">Mensajes</translation>
   <translation id="1064116145041965896">Cita</translation>
@@ -120,7 +115,6 @@
   <translation id="8061241481597934094"><ph name="TOTAL_SELECTED"><ex>TOTAL_SELECTED</ex></ph> productos seleccionados</translation>
   <translation id="8141228329244837517">Subir un producto a mi catálogo</translation>
   <translation id="6946649608831221934">Subir un producto más a mi catálogo</translation>
-  <translation id="243983274320667129">Información de tu producto</translation>
   <translation id="4601810369894625886">Información de tu inmueble</translation>
   <translation id="8781767917622107949">Información básica</translation>
   <translation id="1511766279515968094">Marca</translation>
@@ -184,16 +178,10 @@
   <translation id="7083003813535210826">Destácalo en todo el país</translation>
   <translation id="8890553633144307762">Atrás</translation>
   <translation id="8260444303636416171">Hago envíos</translation>
-  <translation id="3322682308330601072">¿Qué estás vendiendo?</translation>
   <translation id="5315989345504029668">Escribe bien (y sin faltas de ortografía) para que te encuentren más fácilmente.</translation>
-  <translation id="6649229882788371997">(No te pases)</translation>
   <translation id="3306762056923998233">Añade un precio justo y la categoría que mejor representa a tu producto.</translation>
-  <translation id="1806667489382256324">Categoría</translation>
-  <translation id="5433438112560949935">Añade información relevante como estado, modelo, color...</translation>
-  <translation id="7493287338252374869">Cada detalle cuenta, ¡así que cuéntanos más!</translation>
   <translation id="2806917038528218276">Cosas que suelen preguntar los compradores...</translation>
   <translation id="6390066056926289377"><ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>kg Max<ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph><ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph></translation>
-  <translation id="5972351850683239127">Wallapop Envíos</translation>
   <translation id="2877776180648049476">Dinos cuánto pesa tu producto. Recuerda que la suma del largo, alto y ancho no puede exceder los 270cm.</translation>
   <translation id="2059029015636272683">Ahora puedes enviar a través de wallapop (casi) cualquier cosa de manera completamente segura. ¿Te animas? Además, ¡es gratis para ti!</translation>
   <translation id="4021752662928002901">Actualizar</translation>
@@ -209,7 +197,6 @@
   <translation id="3870006899502072841">Borrar producto de favoritos</translation>
   <translation id="3870268043917301466">¿Quieres eliminar definitivamente?</translation>
   <translation id="2874924373232293084">Reservar</translation>
-  <translation id="8016649850785953911">Anular reserva</translation>
   <translation id="596181013964941327">Reactivar</translation>
   <translation id="3762527362373672599">¡Enhorabuena!</translation>
   <translation id="8914444864521670589">Has vendido <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></translation>
@@ -322,10 +309,10 @@
   <translation id="4818441514225396186">Subir producto</translation>
   <translation id="6763447295092579753">Destacando tus productos los harás más visibles para el resto de la comunidad, gracias a sus funciones especiales. ¿Qué te aportará eso? Básicamente que te contacten más personas y lo vendas más rápido. Mira a continuación cuál encaja mejor con tu tipo de productos:</translation>
   <translation id="3358820219972327972">Destácalo en tu barrio</translation>
-  <translation id="7811918618267943066">Sé más visible entre los que te rodean. Sube tu producto a las primeras posiciones del muro y promociónalo en tu zona. También podrán chatear contigo directamente desde el muro.</translation>
+  <translation id="BumpTutorialAreaDescription">Sé más visible entre los que te rodean. Sube tu producto a las primeras posiciones del muro y promociónalo en tu zona.</translation>
   <translation id="23518581647153834">desde</translation>
   <translation id="5159395752955167009">Destácalo en tu ciudad</translation>
-  <translation id="7593136059683274248">Sé más visible en toda tu ciudad. Sube tu producto a las primeras posiciones del muro y promociónalo en tu ciudad. Podrán chatear contigo directamente desde el muro. </translation>
+  <translation id="BumpTutorialCityDescription">Sé más visible en toda tu ciudad. Sube tu producto a las primeras posiciones del muro y promociónalo en tu ciudad.</translation>
   <translation id="5670102462972301487">Destácalo en todo el país</translation>
   <translation id="3737564338592079354">El más potente de todos nuestros destacados. Tu producto se verá en todo el país sin importar la distancia y aparecerá diferenciado del muro, dándote visibilidad más allá de tu zona. </translation>
   <translation id="6730295275086165248">Descubre más ventajas</translation>
@@ -333,8 +320,6 @@
   <translation id="6289691030035518037">Los productos Destacados tienen una apariencia diferente. Y mucho más visible. A la ficha de tu producto se le añadirán un par de botones con los que el resto de usuarios podrán escribirte directamente o guardar tu producto como favorito. </translation>
   <translation id="4213947433233162088">Zonas especiales para tu producto</translation>
   <translation id="2483251316426820393">Tus productos Destacados aparecerán en zonas exclusivas y bien diferenciadas del muro, que te darán más visibilidad y preferencia respecto a otros productos.</translation>
-  <translation id="3258601590058086652">¿Tienes prisa para vender tu producto?</translation>
-  <translation id="4495547321385209565">Diferencia tu producto durante 7 días en el muro para que sea más fácil de encontrar mediante el filtro "Urge"</translation>
   <translation id="4532380494593950343">Aquí podrás ver y editar los datos de tu perfil</translation>
   <translation id="6938753357996446484">Tus favoritos</translation>
   <translation id="7695212222770955574">Estos son los productos de wallapop que más te gustan</translation>
@@ -344,12 +329,12 @@
   <translation id="442085080206895883">productos</translation>
   <translation id="776785241867401546">producto</translation>
   <translation id="994157966875519838">opinión</translation>
-  <translation id="1367227703192400664">Marcar como urgente</translation>
-  <translation id="1002906181596709279">Tu producto será mucho más visible y lo venderás antes</translation>
+  <translation id="UrgentCheckboxDisabled">Marcar como "urgente"</translation>
+  <translation id="UrgentCheckboxTooltip">Tu producto será mucho más visible y lo venderás antes</translation>
   <translation id="2212105134437554730">Estás siendo redirigido a nuestra pasarela de pago<ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>.<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph><ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>.<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph><ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>.<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
-  <translation id="124288245683167765">¡Márcalo como urgente!</translation>
+  <translation id="UrgentCheckboxTitle">¡Márcalo como "urgente"!</translation>
   <translation id="1388549121916575785">Tu producto ya se ha subido y está marcado como urgente</translation>
-  <translation id="6771710083447673223">Marcado como urgente</translation>
+  <translation id="UrgentCheckboxEnabled">Marcado como "urgente"</translation>
   <translation id="yourMessages">Tus Mensajes</translation>
   <translation id="8848709900682152607">Marcar todo como Procesado</translation>
   <translation id="4749295647449765550">Procesado</translation>
@@ -435,7 +420,7 @@
   <translation id="7239750919884229270">Actualizado</translation>
   <translation id="6140925356015461504"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph></translation>
   <translation id="708449889891136724"><ph name="TOTAL_SELECTED"><ex>TOTAL_SELECTED</ex></ph> productos seleccionados</translation>
-  <translation id="6923676368903866016"><ph name="START_TAG_MAT_ICON"><ex>&lt;mat-icon&gt;</ex></ph><ph name="CLOSE_TAG_MAT_ICON"><ex>&lt;/mat-icon&gt;</ex></ph>Delete</translation>
+  <translation id="6923676368903866016"><ph name="START_TAG_TSL_SVG_ICON"><ex>&lt;tsl-svg-icon&gt;</ex></ph><ph name="CLOSE_TAG_TSL_SVG_ICON"><ex>&lt;/tsl-svg-icon&gt;</ex></ph>Delete</translation>
   <translation id="5322473252816589112">Desactivar</translation>
   <translation id="4759723562137600498">Activar</translation>
   <translation id="13886945388572438">Destácalo</translation>
@@ -615,9 +600,6 @@
   <translation id="8421470283413526010">¡<ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{pack.forFree | number}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph><ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>{{pack.forFree | customCurrency}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph> de regalo!</translation>
   <translation id="6181907632373133266">Chats</translation>
   <translation id="2123659921722214537">Visualizaciones</translation>
-  <translation id="3537961834218859224">Te lo aseguramos</translation>
-  <translation id="5984580705945066559">Calcula el seguro gratis </translation>
-  <translation id="5856234352867328880">Financia esta compra</translation>
   <translation id="6174997588475722860">Recuerda que tu saldo y los packs de ahorro solo están (por el momento) disponibles en web.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Una vez cargado tu saldo, tiene un año de vigencia.</translation>
   <translation id="7356703231883565314">El uso de los wallacoins es exclusivo para la compra de Destacados. Recuerda que solo están (por el momento) disponibles en web.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>No se puede intercambiar por Euros y tienen un año de vigencia.</translation>
   <translation id="2767524293310239820">Los wallacoins te ayudarán a comprar Destacados. Aquí podrás conseguirlos y ver tu saldo disponible.</translation>
@@ -630,8 +612,6 @@
   <translation id="8329528856479718352">Marcar como urgente</translation>
   <translation id="3549265484659972037">Paga con tu saldo:</translation>
   <translation id="5266269636016082386">Paga con tus wallacoins:</translation>
-  <translation id="4418606013051113523">Marcar como urgente por <ph name="INTERPOLATION"><ex>{{productPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ex></ph>
-      <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>wallacoins<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="1666676372989024280">y te quedan <ph name="INTERPOLATION"><ex>{{creditInfo?.credit | number}}</ex></ph> wallacoins</translation>
   <translation id="3938280541945338173">y te quedan <ph name="INTERPOLATION"><ex>{{creditInfo?.credit | customCurrency}}</ex></ph> de saldo</translation>
   <translation id="349473182974314723">Tu producto se ha reactivado correctamente a wallapop y ha subido a las primeras posiciones</translation>
@@ -664,14 +644,7 @@
   <translation id="3879651736105644738">Así consigues más visitas, más conversaciones y más gente interesada.</translation>
   <translation id="916352071278248935">Tu Destacado acaba el <ph name="INTERPOLATION"><ex>{{item.bumpExpiringDate | dateCalendar:momentConfig}}</ex></ph></translation>
   <translation id="8413861205232330672">Todavía no disponemos de datos para este producto</translation>
-  <translation id="8167775963255607742">
-    Por sólo
-    <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{urgentPrice | customCurrency:&apos;EUR&apos;}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
-    <ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>{{urgentPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
-    <ph name="START_TAG_SPAN_2"><ex>&lt;span&gt;</ex></ph>wallacoins<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
-    <ph name="START_TAG_SPAN_3"><ex>&lt;span&gt;</ex></ph>de tu saldo<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
-    marca tu producto como "Urgente" durante 7 días para diferenciarte en el muro de los demás productos y que seas más fácil de encontrar mediante el filtro urge.
-  </translation>
+  <translation id="UrgentCheckboxDescription">Destaca el anuncio de tu producto marcándolo como “urgente”. Durante 7 días se diferenciará del resto de productos y atraerá la atención de más compradores.</translation>
   <translation id="1900996506417052092">¡Vas a contactar con un Profesional! Para ofrecerte un servicio más personalizado, ¿podrías dejarnos un teléfono para que te llamemos?</translation>
   <translation id="5694886960613125934">Vamos a hablarlo: </translation>
   <translation id="305827802561975907">Lo que debes saber:</translation>
@@ -743,7 +716,6 @@
   <translation id="4472894989449368622">Se comprobará diariamente si tienes destacados disponibles para tus programados.</translation>
   <translation id="4469663920044009823">Publica tu producto</translation>
   <translation id="5448941415082762589">Para poder ver estadísticas de tu producto publícalo para que los demás usuarios lo vean y puedan contactarte.</translation>
-  <translation id="8215426233314088255">¡Enhorabuena! Ya tienes tu producto subido a wallapop.</translation>
   <translation id="2828231996579923086">Aceptamos formatos .jpg y mínimo 400 x 400px</translation>
   <translation id="2099215062285114503">Cambiar foto</translation>
   <translation id="3395733106362662025">Imágenes de perfil</translation>
@@ -751,14 +723,12 @@
   <translation id="8493154674675875451">Foto de portada</translation>
   <translation id="8871965642938314035">(<ph name="INTERPOLATION"><ex>{{(status?.autorenew_scheduled?.citybump || 0) + (status?.autorenew_scheduled?.zonebump || 0)}}</ex></ph> planeado)</translation>
   <translation id="8132836034776935972">Te encontrarán antes si concretas</translation>
-  <translation id="3892318280760368021">Selecciona un tipo</translation>
-  <translation id="2559885490456050359">Marca</translation>
   <translation id="3351130716079059086">Conviértete en Pro</translation>
   <translation id="6632978177693812295">Vea las opciones Pro</translation>
   <translation id="5342432350421167093">Nombre</translation>
   <translation id="3586674587150281199">Apellidos</translation>
   <translation id="4644971093370005279">Web:</translation>
-  <translation id="2322741539330475902">Catálogo <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="START_TAG_MAT_ICON"><ex>&lt;mat-icon&gt;</ex></ph><ph name="CLOSE_TAG_MAT_ICON"><ex>&lt;/mat-icon&gt;</ex></ph>Pro<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="1061832772714507183">Catálogo <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="START_TAG_TSL_SVG_ICON"><ex>&lt;tsl-svg-icon&gt;</ex></ph><ph name="CLOSE_TAG_TSL_SVG_ICON"><ex>&lt;/tsl-svg-icon&gt;</ex></ph>Pro<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="792930787826735850">Tu perfil</translation>
   <translation id="4086606389696938932">Cuenta</translation>
   <translation id="5722353260643724736">Método de pago</translation>
@@ -767,19 +737,14 @@
   <translation id="5298644184637702922">Esto archivará la conversación.</translation>
   <translation id="archiveButton">Archivar</translation>
   <translation id="6288847433566396172">Desarchivar conversación</translation>
-  <translation id="3205414127595653303">Esto desarchivará la cconversación.</translation>
-  <translation id="1121513541518618634">Desarchivar</translation>
   <translation id="3094139520905825563">Elija una conversación<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
             de la lista de la izquierda</translation>
   <translation id="6105231501608810838">Servicio no disponible por el momento.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
             Inténtelo de nuevo más tarde.</translation>
-  <translation id="7913053333994057167">Desarchivar conversación</translation>
   <translation id="inboxBox">Bandeja de Entrada</translation>
   <translation id="inboxArchivedBox">Mensajes Archivados</translation>
   <translation id="8721026914522212662">Archivado</translation>
   <translation id="3644199581629588381">Escoge el género de la prenda</translation>
-  <translation id="45739481977493163">Talla</translation>
-  <translation id="1243184761486172945">Selecciona una talla</translation>
   <translation id="5635139981490841331">En pocas palabras...</translation>
   <translation id="1429172029774130296">Cargar más..</translation>
   <translation id="3650030434919639531">Utilizar una tarjeta guardada</translation>
@@ -793,14 +758,8 @@
   <translation id="6158688416374751486">Añade un precio justo y el area en metros cuadrados. Cuéntanos también el estado de la propiedad</translation>
   <translation id="6854882443364631275">Presta atención a los errores ortográficos, así nuestros usuarios podrán encontrar tu propiedad más facilmente.</translation>
   <translation id="6419236949160000852">Este es el lugar donde se encuentra tu espacio. Esta ubicación podría ser diferente de la ubicación de tu perfil.</translation>
-  <translation id="1554463637849211201">Fotos</translation>
   <translation id="591481955696105417">Puedes arrastrar y soltar fotos aquí. También puedes arrastrar y soltar para cambiar el orden. Máximo 4MB.</translation>
   <translation id="2852614655612881023">¿Que aspecto tiene?</translation>
-  <translation id="9201389463111383663">No hagas errores, ya que así la gente te encontrará más facilmente.</translation>
-  <translation id="101333005612370054">Añade un precio justo y la categoria que encaja mejor con tu item</translation>
-  <translation id="1663822447043824807">Puedes arrastrar y soltar fotos aquí. También puedes arrastrar y soltar para cambiar el orden. Máximo 10MB. Sólo aceptamos imágenes .jpg</translation>
-  <translation id="518944399314816423">Puedes enviar (casi) todo por wallapop. ¡Y es gratis!</translation>
-  <translation id="3784792223212622760">Cuéntanos cuánto pesa tu producto. Recuerda que la suma de la longitud, la altura y el ancho no puede superar los 270cm.</translation>
   <translation id="5171793882050317851" desc="La distancia entre el usuario y el item">
     A
     <ph name="DISTANCE"><ex>{{userDistance() | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>
@@ -941,8 +900,6 @@
   <translation id="8634562482546031854">Tipo de objeto</translation>
   <translation id="3584751519463738454">Tipo de prenda</translation>
   <translation id="7609145883180181653">¿Tienes más de <ph name="INTERPOLATION"><ex>{{subscription.tiers[subscription.tiers.length - 1].limit}}</ex></ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name.toLowerCase()}}</ex></ph>? <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>Contáctanos directamente<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
-  <translation id="4006216918341440943">Estado del producto</translation>
-  <translation id="8657848090104321234">Escoge un estado</translation>
   <translation id="931255636742351800">Sin límite</translation>
   <translation id="5813721227215884251">Plan <ph name="INTERPOLATION"><ex> {{selectedTier.limit}}</ex></ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name}}</ex></ph></translation>
   <translation id="3546316122339217988">Plan <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph> ilimitados</translation>
@@ -1014,6 +971,18 @@
   <translation id="3575157423161267350">Debes actualizar tu suscripción si quieres publicar más <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph></translation>
   <translation id="2475529887887098318"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>Ya has llegado al límite de <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph> que puedes publicar con una cuenta gratuita.<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></translation>
   <translation id="5156014220156743328">Siguiente paso</translation>
+  <translation id="7008439939460403347">Reportar</translation>
+  <translation id="568597304214607466">Estoy reportando a este usuario porque..</translation>
+  <translation id="7913053333994057167">Desarchivar conversación</translation>
+  <translation id="3205414127595653303">Esto desarchivará la conversación.</translation>
+  <translation id="1121513541518618634">Desarchivar</translation>
+  <translation id="3093507871243266697">Esperando red...</translation>
+  <translation id="3208980041287937682">Conectado</translation>
+  <translation id="8016649850785953911">Anular reserva</translation>
+  <translation id="3537961834218859224">Te lo aseguramos</translation>
+  <translation id="5984580705945066559">Calcula el seguro gratis</translation>
+  <translation id="5856234352867328880">Financia esta compra</translation>
+  <translation id="6543433128416987560">Reservado</translation>
 
   <!--Translations using keys-->
   <translation id="cardealerUpgradePlanContact">Para actualizar tu plan, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>{{email}}<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
@@ -1066,6 +1035,8 @@
   <translation id="ProfileProBillingFormType">Estoy registrado/a como</translation>
   <translation id="ProfileProBillingFormNatural">Persona física</translation>
   <translation id="ProfileProBillingFormLegal">Persona jurídica</translation>
+  <translation id="ProfileProBillingSubtitle">Por servicios que no sean suscripciones (por ejemplo, packs de visibilidad) no recibirás facturas.</translation>
+  <translation id="AddNewSubscriptionModalStep3Subtitle">Por servicios que no sean suscripciones (por ejemplo, packs de visibilidad) no recibirás facturas.</translation>
   <translation id="FirstName">Nombre</translation>
   <translation id="LastName">Apellidos</translation>
   <translation id="CompanyName">Nombre de la empresa</translation>
@@ -1123,4 +1094,58 @@
   <translation id="OrderYourCatalogBy">Ordena tu catálogo por</translation>
   <translation id="OrderBy">Ordenar por</translation>
   <translation id="ManageCatalogSubscription">Gestionar <ph name="INTERPOLATION"><ex>{{subscriptionSlot.category.name}}</ex>{{subscriptionSlot.category.name}}</ph></translation>
+  <translation id="UploadProductPrice">Precio</translation>
+  <translation id="UploadProductHeadline">¿Qué estás vendiendo?</translation>
+  <translation id="UploadProductSelectGenderPlaceholder">Selecciona un género</translation>
+  <translation id="UploadProductSubcategory">Subcategoría</translation>
+  <translation id="UploadProductSubcategory2">¿Podrías especificar?</translation>
+  <translation id="UploadProductTitle">Información de tu producto</translation>
+  <translation id="UploadProductModel">Modelo</translation>
+  <translation id="UploadProductCurrency">Moneda</translation>
+  <translation id="UploadProductDescription">Descripción</translation>
+  <translation id="UploadProductPricePlaceholder">(No te pases)</translation>
+  <translation id="UploadProductCategory">Categoría</translation>
+  <translation id="UploadProductCategoryPlaceholder">Categoría</translation>
+  <translation id="UploadProductDescriptionPlaceholder">Añade información relevante como estado, modelo, color...</translation>
+  <translation id="UploadProductCoachmarkDescription">Cada detalle cuenta, ¡así que cuéntanos más!</translation>
+  <translation id="UploadProductShipping">Wallapop Envíos</translation>
+  <translation id="UploadProductSubmitUpdate">Actualizar</translation>
+  <translation id="UploadProductSubmitItem">Subir producto</translation>
+  <translation id="UploadProductSelectGender">Sexo</translation>
+  <translation id="UploadProductSubcategoryPlaceholder">Subcategoría</translation>
+  <translation id="UploadProductSubcategory2Placeholder">¿Podrías especificar?</translation>
+  <translation id="UploadProductBrand">Marca</translation>
+  <translation id="UploadProductSelectSize">Talla</translation>
+  <translation id="UploadProductSelectSizePlaceholder">Selecciona una talla</translation>
+  <translation id="UploadProductPhotos">Fotos</translation>
+  <translation id="UploadProductPreview">¿Que aspecto tiene?</translation>
+  <translation id="UploadProductCoachmarkTitle">No hagas errores, ya que así la gente te encontrará más facilmente.</translation>
+  <translation id="UploadProductCoachmarkPrice">Añade un precio justo y la categoria que encaja mejor con tu item</translation>
+  <translation id="UploadProductCoachmarkPictures">Puedes arrastrar y soltar fotos aquí. También puedes arrastrar y soltar para cambiar el orden. Máximo 10MB. Sólo aceptamos imágenes .jpg</translation>
+  <translation id="UploadProductShippingDescription">Puedes enviar (casi) todo por wallapop. ¡Y es gratis!</translation>
+  <translation id="UploadProductCoachmarkShipping">Cuéntanos cuánto pesa tu producto. Recuerda que la suma de la longitud, la altura y el ancho no puede superar los 270cm.</translation>
+  <translation id="UploadProductSubmitLoading">Subiendo...<ph name="INTERPOLATION"><ex>{{ uploadCompletedPercentage }}</ex></ph>%</translation>
+  <translation id="UploadProductProductCondition">Estado del producto</translation>
+  <translation id="UploadProductProductConditionPlaceholder">Escoge un estado</translation>
+  <translation id="ForgetThisChat"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>Mejor no sigas por aquí<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></translation>
+  <translation id="MaliciousConversationDescription">Esta persona incumplió las normas de convivencia. Te sugerimos que no hagas caso de sus indicaciones ni te comuniques con ella por vías ajenas a wallapop, puede tratarse de un intento de estafa.</translation>
+  <translation id="ExitConversation">Salir de la conversación</translation>
+  <translation id="UploadConfirmationModalTitle">¡Genial! Tu producto ya está en wallapop</translation>
+  <translation id="UploadConfirmationModalSubtitle">¿Quieres venderlo cuanto antes?</translation>
+  <translation id="UploadConfirmationModalDescription">Marca como "urgente" el anuncio de tu producto. Durante 7 días se diferenciará del resto de productos y atraerá la atención de más compradores.</translation>
+  <translation id="UploadConfirmationModalButton">Marcar como "Urgente" por <ph name="INTERPOLATION"><ex>{{productPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ex></ph>
+      <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>wallacoins<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="PersonalDataInformationModalTitle"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>Quieren ayudarte ;-)<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></translation>
+  <translation id="PersonalDataInformationModalDesc">Un/a agente inmobiliario quiere atenderte en persona. Si te interesa, pulsa "Continuar" para compartir tu e-mail y tu número de teléfono.</translation>
+  <translation id="PersonalDataInformationModalButton">Continuar</translation>
+  <translation id="PersonalDataInformationModalFooterBold"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>Lo que debes saber:
+      <ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></translation>
+  <translation id="PersonalDataInformationModalFooter">El hecho de facilitar tus datos a través de este proceso implica que aceptas el tratamiento de dichos datos en los términos que a continuación se detallan.</translation>
+  <translation id="PersonalDataInformationModalLegal"> Wallapop, S.L, (en adelante, Wallapop), en condición de responsable del tratamiento, tratará los datos proporcionados con el fin de comunicarlo a un usuario profesional ajeno a la plataforma wallapop (una inmobiliaria), quien posteriormente, contactará contigo a efectos de informarte sobre sus productos/servicios que te has interesado..
+      <ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph><ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>
+       La base legal para el tratamiento de los mencionados datos es el consentimiento que has prestado vinculado al hecho de haber proporcionado, libremente, los mismos a través de este proceso. Los datos personales se conservarán mientras no solicites su supresión. Una vez solicitada la supresión, los datos se conservarán bloqueados impidiendo su tratamiento, excepto para la puesta a disposición de los datos a los jueces y tribunales, el Ministerio Fiscal o las Administraciones Públicas competentes, para la exigencia de posibles responsabilidades derivadas del tratamiento y solo por el plazo de prescripción de las mismas (5 años). Una vez transcurrido el indicado periodo de tiempo, el dato se eliminará.
+      <ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph><ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>
+      Podrás ejercer tus derechos de acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad de tus datos, así como la revocación, en cualquier momento, del consentimiento prestado, ante Wallapop, CIF nº B-66.04.9057, en la Calle Meridiana 89 Planta 6º, 08026, Barcelona (España), adjuntando fotocopia de tu DNI o documento identificativo válido equivalente. Podrás también ejercer tus derechos mediante comunicación dirigida a: privacidad@wallapop.com. Finalmente, te recordamos que puedes dirigir una reclamación ante la Agencia Española de Protección de Datos, si consideras que Wallapop ha vulnerado tus derechos en materia de protección de datos.”
+  </translation>
+
 </translationbundle>

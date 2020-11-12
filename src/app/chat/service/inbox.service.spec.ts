@@ -9,11 +9,21 @@ import { EventService } from '../../core/event/event.service';
 import { InboxConversation } from '../model/inbox-conversation';
 import { InboxItemStatus, InboxItemPlaceholder } from '../model/inbox-item';
 import { UserService } from '../../core/user/user.service';
-import { MOCK_USER, MockedUserService } from '../../../tests/user.fixtures.spec';
+import {
+  MOCK_USER,
+  MockedUserService,
+} from '../../../tests/user.fixtures.spec';
 import { InboxUserPlaceholder } from '../model/inbox-user';
 import { InboxConversationService } from './inbox-conversation.service';
-import { DeviceDetectorServiceMock, FeatureFlagServiceMock, MockRemoteConsoleService } from '../../../tests';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  DeviceDetectorServiceMock,
+  FeatureFlagServiceMock,
+  MockRemoteConsoleService,
+} from '../../../tests';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import { HttpModuleNew } from '../../core/http/http.module.new';
 import { RealTimeService } from '../../core/message/real-time.service';
 import { environment } from '../../../environments/environment';
@@ -22,9 +32,10 @@ import { HttpClient } from '@angular/common/http';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { RemoteConsoleService } from '../../core/remote-console';
 import { I18nService } from 'app/core/i18n/i18n.service';
+import { DesktopNotificationsService } from 'app/core/desktop-notifications/desktop-notifications.service';
+import { MockDesktopNotifications } from 'app/core/desktop-notifications/desktop-notifications.service.spec';
 
 describe('InboxService', () => {
-
   let inboxService: InboxService;
   let http: HttpClient;
   let realTime: RealTimeService;
@@ -38,10 +49,7 @@ describe('InboxService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpModuleNew,
-        HttpClientTestingModule
-      ],
+      imports: [HttpModuleNew, HttpClientTestingModule],
       providers: [
         InboxService,
         EventService,
@@ -51,19 +59,24 @@ describe('InboxService', () => {
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         {
-          provide: AccessTokenService, useValue: {
-            accessToken: 'ACCESS_TOKEN'
-          }
+          provide: AccessTokenService,
+          useValue: {
+            accessToken: 'ACCESS_TOKEN',
+          },
         },
-        { provide: InboxConversationService, useClass: InboxConversationService },
+        InboxConversationService,
         {
-          provide: RealTimeService, useValue: {
-            sendDeliveryReceipt(to: string, id: string, thread: string) {
-            }
-          }
+          provide: DesktopNotificationsService,
+          useClass: MockDesktopNotifications,
         },
-        I18nService
-      ]
+        {
+          provide: RealTimeService,
+          useValue: {
+            sendDeliveryReceipt(to: string, id: string, thread: string) {},
+          },
+        },
+        I18nService,
+      ],
     });
     inboxService = TestBed.inject(InboxService);
     http = TestBed.inject(HttpClient);
@@ -86,8 +99,10 @@ describe('InboxService', () => {
     let parsedConversationsResponse;
 
     beforeEach(() => {
-      spyOn(http, 'get').and.returnValue(of(JSON.parse(MOCK_INBOX_API_RESPONSE)));
-      spyOn(remoteConsoleService, 'sendConnectionChatTimeout');
+      spyOn(http, 'get').and.returnValue(
+        of(JSON.parse(MOCK_INBOX_API_RESPONSE))
+      );
+      spyOn(remoteConsoleService, 'sendChatConnectionTime');
     });
 
     it('should set selfId as the of the logged in used', () => {
@@ -111,18 +126,26 @@ describe('InboxService', () => {
 
       inboxConversationService.conversations.forEach((conversation, index) => {
         expect(conversation instanceof InboxConversation).toBe(true);
-        expect(conversation.lastMessage.id).toEqual(apiResponse[index].messages.messages[0].id);
+        expect(conversation.lastMessage.id).toEqual(
+          apiResponse[index].messages.messages[0].id
+        );
       });
     });
 
     it('should emit a EventService.INBOX_LOADED after getInbox returns', () => {
       spyOn(eventService, 'emit').and.callThrough();
       inboxService['selfId'] = MOCK_USER.id;
-      parsedConversationsResponse = inboxService['buildConversations'](JSON.parse(MOCK_INBOX_API_RESPONSE).conversations);
+      parsedConversationsResponse = inboxService['buildConversations'](
+        JSON.parse(MOCK_INBOX_API_RESPONSE).conversations
+      );
 
       inboxService.init();
 
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.INBOX_LOADED, parsedConversationsResponse, 'LOAD_INBOX');
+      expect(eventService.emit).toHaveBeenCalledWith(
+        EventService.INBOX_LOADED,
+        parsedConversationsResponse,
+        'LOAD_INBOX'
+      );
     });
 
     it('should emit a EventService.CHAT_CAN_PROCESS_RT with TRUE after getInbox returns', () => {
@@ -130,7 +153,10 @@ describe('InboxService', () => {
 
       inboxService.init();
 
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_CAN_PROCESS_RT, true);
+      expect(eventService.emit).toHaveBeenCalledWith(
+        EventService.CHAT_CAN_PROCESS_RT,
+        true
+      );
     });
 
     it('should call conversationService.subscribeChatEvents', () => {
@@ -144,7 +170,10 @@ describe('InboxService', () => {
     it('should send metric time to connect to chat', () => {
       inboxService.init();
 
-      expect(remoteConsoleService.sendConnectionChatTimeout).toHaveBeenCalledWith('inbox', true);
+      expect(remoteConsoleService.sendChatConnectionTime).toHaveBeenCalledWith(
+        'inbox',
+        true
+      );
     });
   });
 
@@ -152,8 +181,8 @@ describe('InboxService', () => {
     beforeEach(() => {
       spyOn<any>(inboxService, 'getInbox$').and.returnValue(throwError(''));
       spyOn<any>(inboxService, 'getArchivedInbox$').and.returnValue(of([]));
-      spyOn(remoteConsoleService, 'sendConnectionChatTimeout');
-      spyOn(remoteConsoleService, 'sendConnectionChatFailed');
+      spyOn(remoteConsoleService, 'sendChatConnectionTime');
+      spyOn(remoteConsoleService, 'sendChatFailedConnection');
     });
 
     it('should set errorRetrievingInbox to true', () => {
@@ -171,20 +200,17 @@ describe('InboxService', () => {
     it('should call send metric chat timeout', () => {
       inboxService.init();
 
-      expect(remoteConsoleService.sendConnectionChatTimeout).toHaveBeenCalledWith('inbox', false);
-    });
-
-    it('should send metric connection to inbox is failed', () => {
-      inboxService.init();
-
-      expect(remoteConsoleService.sendConnectionChatFailed).toHaveBeenCalledWith('inbox');
+      expect(remoteConsoleService.sendChatConnectionTime).toHaveBeenCalledWith(
+        'inbox',
+        false
+      );
     });
   });
 
   describe('process API item status as item flags', () => {
     let modifiedResponse;
 
-    beforeEach(() => modifiedResponse = JSON.parse(MOCK_INBOX_API_RESPONSE));
+    beforeEach(() => (modifiedResponse = JSON.parse(MOCK_INBOX_API_RESPONSE)));
 
     it('should set item.reserved TRUE when the API response returns an item with status reserved', () => {
       modifiedResponse.conversations[0].item.status = InboxItemStatus.RESERVED;
@@ -192,7 +218,9 @@ describe('InboxService', () => {
 
       inboxService.init();
 
-      expect(inboxConversationService.conversations[0].item.reserved).toBe(true);
+      expect(inboxConversationService.conversations[0].item.reserved).toBe(
+        true
+      );
     });
 
     it('should set item.sold TRUE when the API response returns an item with status sold', () => {
@@ -205,28 +233,32 @@ describe('InboxService', () => {
     });
 
     it('should set item.notAvailable TRUE when the API response returns an item with status not_available', () => {
-      modifiedResponse.conversations[0].item.status = InboxItemStatus.NOT_AVAILABLE;
+      modifiedResponse.conversations[0].item.status =
+        InboxItemStatus.NOT_AVAILABLE;
       spyOn(http, 'get').and.returnValue(of(modifiedResponse));
 
       inboxService.init();
 
-      expect(inboxConversationService.conversations[0].item.notAvailable).toBe(true);
+      expect(inboxConversationService.conversations[0].item.notAvailable).toBe(
+        true
+      );
     });
   });
 
   describe('process API user status', () => {
     let modifiedResponse;
-    beforeEach(() => modifiedResponse = JSON.parse(MOCK_INBOX_API_RESPONSE));
+    beforeEach(() => (modifiedResponse = JSON.parse(MOCK_INBOX_API_RESPONSE)));
 
     describe('user blocked', () => {
-
       it('should set user.blocked FALSE when the API response returns blocked FALSE', () => {
         modifiedResponse.conversations[0].with_user.blocked = false;
         spyOn(http, 'get').and.returnValue(of(modifiedResponse));
 
         inboxService.init();
 
-        expect(inboxConversationService.conversations[0].user.blocked).toBe(false);
+        expect(inboxConversationService.conversations[0].user.blocked).toBe(
+          false
+        );
       });
 
       it('should set user.blocked TRUE when the API response returns blocked TRUE AND available TRUE', () => {
@@ -236,7 +268,9 @@ describe('InboxService', () => {
 
         inboxService.init();
 
-        expect(inboxConversationService.conversations[0].user.blocked).toBe(true);
+        expect(inboxConversationService.conversations[0].user.blocked).toBe(
+          true
+        );
       });
 
       it('should set user.blocked FALSE when the API response returns blocked TRUE AND available FALSE', () => {
@@ -246,7 +280,9 @@ describe('InboxService', () => {
 
         inboxService.init();
 
-        expect(inboxConversationService.conversations[0].user.blocked).toBe(false);
+        expect(inboxConversationService.conversations[0].user.blocked).toBe(
+          false
+        );
       });
     });
 
@@ -257,7 +293,9 @@ describe('InboxService', () => {
 
         inboxService.init();
 
-        expect(inboxConversationService.conversations[0].user.available).toBe(false);
+        expect(inboxConversationService.conversations[0].user.available).toBe(
+          false
+        );
       });
 
       it('should set user.available TRUE when the API response returns blocked TRUE AND available TRUE', () => {
@@ -267,7 +305,9 @@ describe('InboxService', () => {
 
         inboxService.init();
 
-        expect(inboxConversationService.conversations[0].user.available).toBe(true);
+        expect(inboxConversationService.conversations[0].user.available).toBe(
+          true
+        );
       });
 
       it('should set user.available TRUE when the API response returns blocked FALSE AND available TRUE', () => {
@@ -277,14 +317,16 @@ describe('InboxService', () => {
 
         inboxService.init();
 
-        expect(inboxConversationService.conversations[0].user.available).toBe(true);
+        expect(inboxConversationService.conversations[0].user.available).toBe(
+          true
+        );
       });
     });
   });
 
   describe('process API response with missing user OR item', () => {
     let modifiedResponse;
-    beforeEach(() => modifiedResponse = JSON.parse(MOCK_INBOX_API_RESPONSE));
+    beforeEach(() => (modifiedResponse = JSON.parse(MOCK_INBOX_API_RESPONSE)));
 
     it('should set InboxItemPlaceholder as the item of a InboxConversation, when the API response does not return an item object', () => {
       delete modifiedResponse.conversations[0].item;
@@ -292,7 +334,9 @@ describe('InboxService', () => {
 
       inboxService.init();
 
-      expect(inboxConversationService.conversations[0].item).toEqual(InboxItemPlaceholder);
+      expect(inboxConversationService.conversations[0].item).toEqual(
+        InboxItemPlaceholder
+      );
     });
 
     it('should set InboxUserPlaceholder as the user of a InboxConversation, when the API response does not return a user object', () => {
@@ -301,25 +345,33 @@ describe('InboxService', () => {
 
       inboxService.init();
 
-      expect(inboxConversationService.conversations[0].user).toEqual(InboxUserPlaceholder);
+      expect(inboxConversationService.conversations[0].user).toEqual(
+        InboxUserPlaceholder
+      );
     });
   });
 
   describe('loadMorePages', () => {
     let modifiedResponse;
 
-    beforeEach(() => modifiedResponse = JSON.parse(MOCK_INBOX_API_RESPONSE));
+    beforeEach(() => (modifiedResponse = JSON.parse(MOCK_INBOX_API_RESPONSE)));
 
     it('should emit CHAT_CAN_PROCESS_RT with false', () => {
       spyOn(eventService, 'emit').and.callThrough();
-      spyOn(http, 'get')
-        .and.returnValues(of(modifiedResponse), of(modifiedResponse), of(modifiedResponse));
+      spyOn(http, 'get').and.returnValues(
+        of(modifiedResponse),
+        of(modifiedResponse),
+        of(modifiedResponse)
+      );
 
       inboxService.init();
 
       inboxService.loadMorePages();
 
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_CAN_PROCESS_RT, false);
+      expect(eventService.emit).toHaveBeenCalledWith(
+        EventService.CHAT_CAN_PROCESS_RT,
+        false
+      );
     });
 
     it('should GET next inbox', () => {
@@ -329,45 +381,60 @@ describe('InboxService', () => {
       inboxService.getNextPage$().subscribe();
 
       const req = httpTestingController.expectOne(
-        `${environment.baseUrl}bff/messaging/inbox?page_size=${InboxService.PAGE_SIZE}&from=${expectedRes.next_from}`);
+        `${environment.baseUrl}bff/messaging/inbox?page_size=${InboxService.PAGE_SIZE}&from=${expectedRes.next_from}`
+      );
 
       expect(req.request.method).toEqual('GET');
     });
 
     it('should not add existing conversations', () => {
-      spyOn(http, 'get')
-        .and.returnValues(of(modifiedResponse), of(modifiedResponse), of(modifiedResponse));
+      spyOn(http, 'get').and.returnValues(
+        of(modifiedResponse),
+        of(modifiedResponse),
+        of(modifiedResponse)
+      );
 
       inboxService.init();
 
       inboxService.loadMorePages();
 
-      expect(inboxConversationService.conversations.length).toBe(modifiedResponse.conversations.length);
+      expect(inboxConversationService.conversations.length).toBe(
+        modifiedResponse.conversations.length
+      );
     });
 
     it('should add not existing conversations', () => {
       const apiResponse = JSON.parse(JSON.stringify(modifiedResponse));
-      apiResponse.conversations.map(conversation => conversation.hash = `${conversation.hash}new`);
+      apiResponse.conversations.map(
+        (conversation) => (conversation.hash = `${conversation.hash}new`)
+      );
 
-      spyOn(http, 'get')
-        .and.returnValues(of(modifiedResponse), of(apiResponse), of(apiResponse));
+      spyOn(http, 'get').and.returnValues(
+        of(modifiedResponse),
+        of(apiResponse),
+        of(apiResponse)
+      );
 
       inboxService.init();
 
       inboxService.loadMorePages();
 
-      expect(inboxConversationService.conversations.length).toBe(modifiedResponse.conversations.length + apiResponse.conversations.length);
+      expect(inboxConversationService.conversations.length).toBe(
+        modifiedResponse.conversations.length + apiResponse.conversations.length
+      );
     });
   });
 
   describe('shouldLoadMorePages', () => {
     let modifiedResponse;
 
-    beforeEach(() => modifiedResponse = JSON.parse(MOCK_INBOX_API_RESPONSE));
+    beforeEach(() => (modifiedResponse = JSON.parse(MOCK_INBOX_API_RESPONSE)));
 
     it('should return TRUE if APIResponse has next_from', () => {
-      spyOn(http, 'get')
-        .and.returnValues(of(modifiedResponse), of(modifiedResponse));
+      spyOn(http, 'get').and.returnValues(
+        of(modifiedResponse),
+        of(modifiedResponse)
+      );
 
       inboxService.init();
 
@@ -376,7 +443,10 @@ describe('InboxService', () => {
 
     it('should return FALSE if APIResponse has not next_from', () => {
       delete modifiedResponse.next_from;
-      spyOn(http, 'get').and.returnValues(of(modifiedResponse), of(modifiedResponse));
+      spyOn(http, 'get').and.returnValues(
+        of(modifiedResponse),
+        of(modifiedResponse)
+      );
 
       inboxService.init();
 
@@ -391,7 +461,8 @@ describe('InboxService', () => {
       inboxService.getInbox$().subscribe();
 
       const req = httpTestingController.expectOne(
-        `${environment.baseUrl}bff/messaging/inbox?page_size=${InboxService.PAGE_SIZE}&max_messages=${messageNo}`);
+        `${environment.baseUrl}bff/messaging/inbox?page_size=${InboxService.PAGE_SIZE}&max_messages=${messageNo}`
+      );
       expect(req.request.method).toEqual('GET');
     });
 
@@ -399,9 +470,9 @@ describe('InboxService', () => {
       inboxService.getArchivedInbox$().subscribe();
 
       const req = httpTestingController.expectOne(
-        `${environment.baseUrl}bff/messaging/archived?page_size=${InboxService.PAGE_SIZE}&max_messages=${messageNo}`);
+        `${environment.baseUrl}bff/messaging/archived?page_size=${InboxService.PAGE_SIZE}&max_messages=${messageNo}`
+      );
       expect(req.request.method).toEqual('GET');
     });
   });
-
 });

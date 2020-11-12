@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 .NavLinks {
   display: flex;
@@ -47,7 +47,7 @@
       span {
         margin-right: $spacing-xs;
       }
-      mat-icon {
+      tsl-svg-icon  {
         ::ng-deep {
           width: 12px;
           vertical-align: middle;
@@ -75,7 +75,7 @@
       span {
         margin-right: $spacing-xs;
       }
-      mat-icon {
+      tsl-svg-icon  {
         ::ng-deep {
           width: 12px;
           vertical-align: middle;

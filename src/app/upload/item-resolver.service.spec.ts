@@ -2,13 +2,12 @@ import { TestBed } from '@angular/core/testing';
 
 import { ItemResolverService } from './item-resolver.service';
 import { ItemService } from '../core/item/item.service';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { ITEM_ID, MOCK_ITEM } from '../../tests/item.fixtures.spec';
 import { Item } from '../core/item/item';
 
 describe('ItemResolverService', () => {
-
   let service: ItemResolverService;
   let itemService: ItemService;
 
@@ -17,13 +16,14 @@ describe('ItemResolverService', () => {
       providers: [
         ItemResolverService,
         {
-          provide: ItemService, useValue: {
-          get() {
-            return of(MOCK_ITEM);
-          }
-        }
-        }
-      ]
+          provide: ItemService,
+          useValue: {
+            get() {
+              return of(MOCK_ITEM);
+            },
+          },
+        },
+      ],
     });
     service = TestBed.inject(ItemResolverService);
     itemService = TestBed.inject(ItemService);

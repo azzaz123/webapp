@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TabbarComponent } from './tabbar.component';
@@ -18,23 +17,21 @@ describe('TabbarComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [TabbarComponent],
-      imports: [
-        NgxPermissionsModule.forRoot()
-      ],
+      imports: [NgxPermissionsModule.forRoot()],
       providers: [
         {
-          provide: UserService, useValue: {
+          provide: UserService,
+          useValue: {
             me(): Observable<User> {
-              return observableOf(MOCK_USER);
-            }
+              return of(MOCK_USER);
+            },
           },
         },
         { provide: MessageService, useClass: MockMessageService },
-        { provide: 'SUBDOMAIN', useValue: 'es' }
+        { provide: 'SUBDOMAIN', useValue: 'es' },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

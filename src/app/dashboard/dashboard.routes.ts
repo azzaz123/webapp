@@ -12,17 +12,16 @@ const routes: Routes = [
     data: {
       permissions: {
         only: PERMISSIONS.professional,
-        redirectTo: '/catalog/list'
-      }
-    }
-  }
+        redirectTo: '/catalog/list',
+      },
+    },
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class DashboardRoutingModule {
-}
+export class DashboardRoutingModule {}
 
 export const dashboardRoutedComponents = [DashboardComponent];

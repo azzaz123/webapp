@@ -1,9 +1,7 @@
-
-import {takeWhile} from 'rxjs/operators';
+import { takeWhile } from 'rxjs/operators';
 import { Component, OnInit, EventEmitter, ViewChild } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { findIndex } from 'lodash-es';
-import { UUID } from 'angular2-uuid';
 import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
 import { ProUrgentConfirmationModalComponent } from './modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component';
 import { ProBumpConfirmationModalComponent } from './modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component';
@@ -22,14 +20,14 @@ import { ItemChangeEvent } from '../../catalog/list/catalog-item/item-change.int
 import { FinancialCard } from '../../core/payments/payment.interface';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
 import { Order, Product } from '../../core/item/item-response.interface';
+import { UuidService } from '../../core/uuid/uuid.service';
 
 @Component({
   selector: 'tsl-catalog-pro-list',
   templateUrl: './catalog-pro-list.component.html',
-  styleUrls: ['./catalog-pro-list.component.scss']
+  styleUrls: ['./catalog-pro-list.component.scss'],
 })
 export class CatalogProListComponent implements OnInit {
-
   public items: Item[] = [];
   public loading = true;
   public end: boolean;
@@ -49,31 +47,39 @@ export class CatalogProListComponent implements OnInit {
 
   @ViewChild(ItemSoldDirective, { static: true }) soldButton: ItemSoldDirective;
 
-  constructor(public itemService: ItemService,
-              private trackingService: TrackingService,
-              private modalService: NgbModal,
-              private eventService: EventService,
-              private i18n: I18nService,
-              private userService: UserService,
-              private errorService: ErrorsService,
-              private router: Router,
-              private route: ActivatedRoute) { }
+  constructor(
+    public itemService: ItemService,
+    private trackingService: TrackingService,
+    private modalService: NgbModal,
+    private eventService: EventService,
+    private i18n: I18nService,
+    private userService: UserService,
+    private errorService: ErrorsService,
+    private router: Router,
+    private uuidService: UuidService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
     this.getCounters();
     this.getItems();
-    const sorting: string[] = ['date_desc', 'date_asc', 'price_desc', 'price_asc'];
+    const sorting: string[] = [
+      'date_desc',
+      'date_asc',
+      'price_desc',
+      'price_asc',
+    ];
     this.orderBy = [];
     sorting.forEach((sort) => {
       this.orderBy.push({
         value: sort,
-        label: this.i18n.getTranslations(sort)
+        label: this.i18n.getTranslations(sort),
       });
     });
 
     this.eventService.subscribe('itemChangeStatus', (items) => {
       items.forEach((id: string) => {
-        const index: number = findIndex(this.items, {'id': id});
+        const index: number = findIndex(this.items, { id: id });
         this.items.splice(index, 1);
       });
     });
@@ -97,48 +103,58 @@ export class CatalogProListComponent implements OnInit {
             },
             bump: {
               component: ProBumpConfirmationModalComponent,
-              windowClass: 'bump-confirm'
-            }
+              windowClass: 'bump-confirm',
+            },
           };
           const modalType = localStorage.getItem('transactionType');
-          const modal = modalType && modals[modalType] ? modals[modalType] : modals.bump;
+          const modal =
+            modalType && modals[modalType] ? modals[modalType] : modals.bump;
 
           let modalRef: NgbModalRef = this.modalService.open(modal.component, {
             windowClass: modal.windowClass,
-            backdrop: 'static'
+            backdrop: 'static',
           });
           modalRef.componentInstance.code = params.code;
           if (params.extras) {
             modalRef.componentInstance.extras = params.extras;
           }
-          modalRef.result.then(() => {
-            modalRef = null;
-            localStorage.removeItem('transactionType');
-            if (params.code === '202') {
-              this.router.navigate(['pro/catalog/checkout-extras']);
-            } else {
-              this.router.navigate(['pro/catalog/list']);
-            }
-          }, () => {
-          });
+          modalRef.result.then(
+            () => {
+              modalRef = null;
+              localStorage.removeItem('transactionType');
+              if (params.code === '202') {
+                this.router.navigate(['pro/catalog/checkout-extras']);
+              } else {
+                this.router.navigate(['pro/catalog/list']);
+              }
+            },
+            () => {}
+          );
         }
         if (params && params.created) {
-          this.uploadModalRef = this.modalService.open(UploadConfirmationModalComponent, {
-            windowClass: 'upload',
-          });
-          this.uploadModalRef.result.then((orderEvent: OrderEvent) => {
-            this.uploadModalRef = null;
-            if (orderEvent) {
-              this.isUrgent = true;
-              this.feature(orderEvent);
+          this.uploadModalRef = this.modalService.open(
+            UploadConfirmationModalComponent,
+            {
+              windowClass: 'upload',
             }
-          }, () => {
-          });
+          );
+          this.uploadModalRef.result.then(
+            (orderEvent: OrderEvent) => {
+              this.uploadModalRef = null;
+              if (orderEvent) {
+                this.isUrgent = true;
+                this.feature(orderEvent);
+              }
+            },
+            () => {}
+          );
           this.cache = false;
           this.getItems();
           if (params.itemId) {
             this.itemService.get(params.itemId).subscribe((item: Item) => {
-              this.trackingService.track(TrackingService.UPLOADFORM_SUCCESS, {categoryId: item.categoryId});
+              this.trackingService.track(TrackingService.UPLOADFORM_SUCCESS, {
+                categoryId: item.categoryId,
+              });
             });
           }
         } else if (params && params.urgent) {
@@ -163,7 +179,7 @@ export class CatalogProListComponent implements OnInit {
               this.eventService.emit('itemChanged');
               this.itemChanged({
                 item: item,
-                action: ITEM_STATUS.SOLD
+                action: ITEM_STATUS.SOLD,
               });
               this.eventService.emit(EventService.ITEM_SOLD, item);
             });
@@ -180,23 +196,42 @@ export class CatalogProListComponent implements OnInit {
     if (!append) {
       this.items = [];
     }
-    this.itemService.mines(this.page, this.pageSize, this.sortBy, this.selectedStatus, this.term, this.cache).pipe(takeWhile(() => {
-      this.cache = true;
-      return this.active;
-    })).subscribe((items: Item[]) => {
-      if (this.selectedStatus === ITEM_STATUS.SOLD) {
-        this.trackingService.track(TrackingService.PRODUCT_LIST_SOLD_VIEWED, {total_products: items.length});
-      } else {
-        this.trackingService.track(TrackingService.PRODUCT_LIST_ACTIVE_VIEWED, {total_products: items.length});
-      }
-      this.trackingService.track(TrackingService.PRODUCT_LIST_LOADED, {page_number: this.page});
-      this.items = append ? this.items.concat(items) : items;
-      this.loading = false;
-      if (this.uploadModalRef) {
-        this.uploadModalRef.componentInstance.item = this.items[0];
-        this.uploadModalRef.componentInstance.urgentPrice();
-      }
-    });
+    this.itemService
+      .mines(
+        this.page,
+        this.pageSize,
+        this.sortBy,
+        this.selectedStatus,
+        this.term,
+        this.cache
+      )
+      .pipe(
+        takeWhile(() => {
+          this.cache = true;
+          return this.active;
+        })
+      )
+      .subscribe((items: Item[]) => {
+        if (this.selectedStatus === ITEM_STATUS.SOLD) {
+          this.trackingService.track(TrackingService.PRODUCT_LIST_SOLD_VIEWED, {
+            total_products: items.length,
+          });
+        } else {
+          this.trackingService.track(
+            TrackingService.PRODUCT_LIST_ACTIVE_VIEWED,
+            { total_products: items.length }
+          );
+        }
+        this.trackingService.track(TrackingService.PRODUCT_LIST_LOADED, {
+          page_number: this.page,
+        });
+        this.items = append ? this.items.concat(items) : items;
+        this.loading = false;
+        if (this.uploadModalRef) {
+          this.uploadModalRef.componentInstance.item = this.items[0];
+          this.uploadModalRef.componentInstance.urgentPrice();
+        }
+      });
   }
 
   ngOnDestroy() {
@@ -206,14 +241,20 @@ export class CatalogProListComponent implements OnInit {
   public search(term: string) {
     this.term = term;
     this.page = 1;
-    this.trackingService.track(TrackingService.PRODUCT_LIST_FILTERED_BY_TEXT, {filter: term, order_by: this.sortBy});
+    this.trackingService.track(TrackingService.PRODUCT_LIST_FILTERED_BY_TEXT, {
+      filter: term,
+      order_by: this.sortBy,
+    });
     this.getItems();
   }
 
   public sort(sortBy: string) {
     this.sortBy = sortBy;
     this.page = 1;
-    this.trackingService.track(TrackingService.PRODUCT_LIST_ORDERED_BY, {filter: this.term, order_by: sortBy});
+    this.trackingService.track(TrackingService.PRODUCT_LIST_ORDERED_BY, {
+      filter: this.term,
+      order_by: sortBy,
+    });
     this.getItems();
   }
 
@@ -232,7 +273,7 @@ export class CatalogProListComponent implements OnInit {
   }
 
   public itemChanged($event: ItemChangeEvent) {
-    const index: number = findIndex(this.items, {'_id': $event.item.id});
+    const index: number = findIndex(this.items, { _id: $event.item.id });
     this.items.splice(index, 1);
     this.cache = false;
     this.page = 1;
@@ -241,7 +282,7 @@ export class CatalogProListComponent implements OnInit {
   }
 
   public bumpCancelled($event: ItemChangeEvent) {
-    const index: number = findIndex(this.items, {'_id': $event.item.id});
+    const index: number = findIndex(this.items, { _id: $event.item.id });
     this.items[index].purchases = null;
     this.cache = false;
     this.page = 1;
@@ -254,41 +295,54 @@ export class CatalogProListComponent implements OnInit {
   }
 
   public feature(orderEvent: OrderEvent) {
-    const orderId: string = UUID.UUID();
-    this.itemService.purchaseProducts(orderEvent.order, orderId).subscribe((failedProducts: string[]) => {
-      if (failedProducts && failedProducts.length) {
-        this.errorService.i18nError('bumpError');
-      } else {
-        this.chooseCreditCard(orderId, orderEvent.total);
+    const orderId: string = this.uuidService.getUUID();
+    this.itemService.purchaseProducts(orderEvent.order, orderId).subscribe(
+      (failedProducts: string[]) => {
+        if (failedProducts && failedProducts.length) {
+          this.errorService.i18nError('bumpError');
+        } else {
+          this.chooseCreditCard(orderId, orderEvent.total);
+        }
+      },
+      () => {
+        this.deselect();
       }
-    }, () => {
-      this.deselect();
-    });
+    );
   }
 
-  private chooseCreditCard(orderId: string, total: number, financialCard?: FinancialCard) {
-    const modalRef: NgbModalRef = this.modalService.open(CreditCardModalComponent, {windowClass: 'credit-card'});
+  private chooseCreditCard(
+    orderId: string,
+    total: number,
+    financialCard?: FinancialCard
+  ) {
+    const modalRef: NgbModalRef = this.modalService.open(
+      CreditCardModalComponent,
+      { windowClass: 'credit-card' }
+    );
     modalRef.componentInstance.financialCard = financialCard;
     modalRef.componentInstance.total = total;
     modalRef.componentInstance.orderId = orderId;
-    modalRef.result.then((result: string) => {
-      if (result === undefined) {
-        this.isUrgent = false;
-        localStorage.removeItem('transactionType');
+    modalRef.result.then(
+      (result: string) => {
+        if (result === undefined) {
+          this.isUrgent = false;
+          localStorage.removeItem('transactionType');
+          this.deselect();
+          setTimeout(() => {
+            this.router.navigate(['catalog/list']);
+          }, 1000);
+        } else {
+          const code = result === 'success' ? 200 : -1;
+          this.deselect();
+          setTimeout(() => {
+            this.router.navigate(['catalog/list', { code }]);
+          }, 1000);
+        }
+      },
+      () => {
         this.deselect();
-        setTimeout(() => {
-          this.router.navigate(['catalog/list']);
-        }, 1000);
-      } else {
-        const code = result === 'success' ? 200 : -1;
-        this.deselect();
-        setTimeout(() => {
-          this.router.navigate(['catalog/list', {code}]);
-        }, 1000);
       }
-    }, () => {
-      this.deselect();
-    });
+    );
   }
 
   public getNumberOfProducts() {
@@ -314,13 +368,15 @@ export class CatalogProListComponent implements OnInit {
 
   private getUrgentPrice(itemId: string): void {
     this.itemService.getUrgentProducts(itemId).subscribe((product: Product) => {
-      const order: Order[] = [{
-        item_id: itemId,
-        product_id: product.durations[0].id
-      }];
+      const order: Order[] = [
+        {
+          item_id: itemId,
+          product_id: product.durations[0].id,
+        },
+      ];
       const orderEvent: OrderEvent = {
         order: order,
-        total: +product.durations[0].market_code
+        total: +product.durations[0].market_code,
       };
       this.feature(orderEvent);
     });
@@ -329,5 +385,4 @@ export class CatalogProListComponent implements OnInit {
   public getSubscriptionPlan(plan: number) {
     this.subscriptionPlan = plan;
   }
-
 }

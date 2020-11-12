@@ -16,7 +16,11 @@ export interface ClickKYCFinishIdentityVerification {
   /**
    * Chosen type of document on the KYC upload identity verification screen (Passport - Residence permit - Driving license - National Identity card)
    */
-  typeOfDocument: "passport" | "residence_permit" | "driving_license" | "national_identity_card";
+  typeOfDocument:
+    | 'passport'
+    | 'residence_permit'
+    | 'driving_license'
+    | 'national_identity_card';
   /**
    * Identifier of the KYC review documentation image screen
    */

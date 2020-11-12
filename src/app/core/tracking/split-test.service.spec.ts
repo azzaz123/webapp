@@ -3,12 +3,11 @@ import { SplitTestService } from './split-test.service';
 import { SplitTestUserInfo } from './split-test.interface';
 
 describe('SplitTestService', () => {
-
   let service: SplitTestService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [SplitTestService]
+      providers: [SplitTestService],
     });
     service = TestBed.inject(SplitTestService);
   });
@@ -16,5 +15,4 @@ describe('SplitTestService', () => {
   it('should create', () => {
     expect(service).toBeTruthy();
   });
-
 });

@@ -7,10 +7,9 @@ import { STATUS } from './selected-product.interface';
 @Component({
   selector: 'tsl-selected-items',
   templateUrl: './selected-items.component.html',
-  styleUrls: ['./selected-items.component.scss']
+  styleUrls: ['./selected-items.component.scss'],
 })
 export class SelectedItemsComponent implements OnInit {
-
   @Input() items: Item[] = [];
   @Input() selectedSubscriptionSlot: SubscriptionSlot;
   @Input() selectedStatus: string;
@@ -19,19 +18,21 @@ export class SelectedItemsComponent implements OnInit {
   public selectedItems: Item[];
   public disableFeatureOption: boolean;
 
-  constructor(public itemService: ItemService) {
-  }
+  constructor(public itemService: ItemService) {}
 
   ngOnInit() {
     this.itemService.selectedItems$.subscribe(() => {
-      this.selectedItems = this.itemService.selectedItems.map(id => this.items.find(item => item.id === id));
-      this.disableFeatureOption = !!this.isItemDisabled(this.selectedItems).length;
+      this.selectedItems = this.itemService.selectedItems.map((id) =>
+        this.items.find((item) => item.id === id)
+      );
+      this.disableFeatureOption = !!this.isItemDisabled(this.selectedItems)
+        .length;
     });
   }
 
   public deselect() {
     this.itemService.deselectItems();
-    this.items.map(item => item.selected = false);
+    this.items.map((item) => (item.selected = false));
     this.itemService.selectedAction = null;
     this.selectedItems = [];
   }
@@ -41,11 +42,14 @@ export class SelectedItemsComponent implements OnInit {
   }
 
   private isItemDisabled(items: Item[]) {
-    return items.filter(item => item.flags.onhold || item.flags.expired);
+    return items.filter((item) => item.flags.onhold || item.flags.expired);
   }
 
   get hideFeaturedButton(): boolean {
-    return this.selectedStatus === STATUS.INACTIVE || this.selectedStatus === STATUS.SOLD || this.disableFeatureOption
+    return (
+      this.selectedStatus === STATUS.INACTIVE ||
+      this.selectedStatus === STATUS.SOLD ||
+      this.disableFeatureOption
+    );
   }
-
 }

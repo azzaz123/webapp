@@ -1,11 +1,18 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InboxItemForSellComponent } from './inbox-item-for-sell.component';
 import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
-import { MOCK_USER, USER_ID, USER_INFO_RESPONSE, MOCK_USER_STATS } from '../../../../../tests/user.fixtures.spec';
-import { LATEST_ITEM_COUNT, MOCK_ITEM } from '../../../../../tests/item.fixtures.spec';
+import {
+  MOCK_USER,
+  USER_ID,
+  USER_INFO_RESPONSE,
+  MOCK_USER_STATS,
+} from '../../../../../tests/user.fixtures.spec';
+import {
+  LATEST_ITEM_COUNT,
+  MOCK_ITEM,
+} from '../../../../../tests/item.fixtures.spec';
 import { ItemService } from '../../../../core/item/item.service';
 import { UserService } from '../../../../core/user/user.service';
 import { InboxUser } from '../../../model/inbox-user';
@@ -19,30 +26,28 @@ describe('InboxItemForSellComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [],
-      declarations: [
-        InboxItemForSellComponent
-      ],
+      declarations: [InboxItemForSellComponent],
       providers: [
         {
-          provide: ItemService, useValue: {
-            getLatest() {
-            }
-          }
+          provide: ItemService,
+          useValue: {
+            getLatest() {},
+          },
         },
         {
-          provide: UserService, useValue: {
+          provide: UserService,
+          useValue: {
             getInfo() {
-              return observableOf(USER_INFO_RESPONSE);
+              return of(USER_INFO_RESPONSE);
             },
             getUserStats() {
-              return observableOf(MOCK_USER_STATS);
-            }
-          }
+              return of(MOCK_USER_STATS);
+            },
+          },
         },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -51,10 +56,12 @@ describe('InboxItemForSellComponent', () => {
     itemService = TestBed.inject(ItemService);
     userService = TestBed.inject(UserService);
     component.user = { id: USER_ID } as InboxUser;
-    spyOn(itemService, 'getLatest').and.returnValue(observableOf({
-      data: MOCK_ITEM,
-      count: LATEST_ITEM_COUNT
-    }));
+    spyOn(itemService, 'getLatest').and.returnValue(
+      of({
+        data: MOCK_ITEM,
+        count: LATEST_ITEM_COUNT,
+      })
+    );
     fixture.detectChanges();
   });
 
@@ -66,7 +73,7 @@ describe('InboxItemForSellComponent', () => {
     component.user.sellingItem = null;
 
     component.ngOnChanges({
-      user: new SimpleChange(null, MOCK_USER, false)
+      user: new SimpleChange(null, MOCK_USER, false),
     });
 
     expect(itemService.getLatest).toHaveBeenCalledWith(USER_ID);
@@ -78,7 +85,7 @@ describe('InboxItemForSellComponent', () => {
     component.user.sellingItem = MOCK_ITEM;
 
     component.ngOnChanges({
-      user: new SimpleChange(null, MOCK_USER, false)
+      user: new SimpleChange(null, MOCK_USER, false),
     });
 
     expect(itemService.getLatest).not.toHaveBeenCalled();

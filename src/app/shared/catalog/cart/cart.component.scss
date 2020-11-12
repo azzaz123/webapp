@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 $cart-height: calc(100vh - #{$topbar-height + $spacing-xl * 1.2});
 $title-height: 42px;
@@ -6,7 +6,8 @@ $main-total-height: 46px;
 $credit-total-height: 21px;
 $missing-total-height: 43px;
 $totals-margins: 0px;
-$total-height: $main-total-height + $totals-margins + $credit-total-height + $missing-total-height;
+$total-height: $main-total-height + $totals-margins + $credit-total-height +
+  $missing-total-height;
 $discounted-total-height: 30px;
 $stripe-card-element-height: 100px;
 $button-height: 42px;
@@ -80,7 +81,10 @@ h1 {
   height: $discounted-total-height;
 }
 
-.walla-total, .credit, .total, .missing {
+.walla-total,
+.credit,
+.total,
+.missing {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -105,7 +109,8 @@ h1 {
   }
 }
 
-.credit, .missing {
+.credit,
+.missing {
   .label {
     tsl-wallacoin {
       vertical-align: sub;
@@ -152,7 +157,8 @@ h1 {
   }
 }
 
-ul, li {
+ul,
+li {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -178,15 +184,19 @@ ul, li {
       width: 51px;
       height: 30px;
       margin-right: $spacing-s;
+      ::ng-deep svg {
+        height: 100%;
+        width: 100%;
+      }
     }
     .arrow-icon {
-      transform: rotate(-90deg) scale(.8);
+      transform: rotate(-90deg) scale(0.8);
       width: 9px;
       height: 13px;
     }
     &.collapsed {
       .arrow-icon {
-        transform: rotate(90deg) scale(.8);
+        transform: rotate(90deg) scale(0.8);
       }
     }
   }
@@ -257,7 +267,7 @@ tsl-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  mat-icon {
+  tsl-svg-icon {
     width: 21px;
     height: 15.5px;
   }
@@ -273,7 +283,7 @@ tsl-button {
   align-items: center;
   justify-content: center;
   position: relative;
-  mat-icon {
+  tsl-svg-icon {
     height: 14px;
     width: 11px;
     position: absolute;
@@ -289,14 +299,15 @@ tsl-button {
 .stripe-payment {
   text-align: center;
   margin: $spacing-xs 0 0 0;
-  mat-icon {
+  tsl-svg-icon {
     width: 100px;
     height: 25px;
   }
 }
 
 .Cart__NewCard {
-  &--add, &--used {
+  &--add,
+  &--used {
     margin: $spacing-s 0;
     font-size: $font-size-s;
     color: $walla-main;

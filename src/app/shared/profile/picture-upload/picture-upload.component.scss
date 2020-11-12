@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 h3 {
   font-size: $font-size-s;
@@ -31,7 +31,8 @@ h3 {
     align-items: center;
   }
 
-  tsl-user-avatar, tsl-user-cover {
+  tsl-user-avatar,
+  tsl-user-cover {
     margin-right: $spacing-ml;
   }
   .btn-upload {

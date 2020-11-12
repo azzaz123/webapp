@@ -5,10 +5,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'tsl-become-pro-modal',
   templateUrl: './become-pro-modal.component.html',
-  styleUrls: ['./become-pro-modal.component.scss']
+  styleUrls: ['./become-pro-modal.component.scss'],
 })
 export class BecomeProModalComponent {
-
-  constructor(public activeModal: NgbActiveModal) { }
-
+  constructor(public activeModal: NgbActiveModal) {}
 }

@@ -1,12 +1,16 @@
-
-import {of as observableOf,  Observable ,  Subject } from 'rxjs';
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { of, Subject } from 'rxjs';
+import {
+  async,
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 import { EventEmitter, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CatalogProListComponent } from './catalog-pro-list.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from '../../layout/toast/toast.service';
-import { Router, ActivatedRoute,NavigationEnd } from '@angular/router';
-import { UUID } from 'angular2-uuid';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { ProUrgentConfirmationModalComponent } from './modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component';
 import { ProBumpConfirmationModalComponent } from './modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component';
 import { ItemService, ITEM_STATUS } from '../../core/item/item.service';
@@ -19,12 +23,17 @@ import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.dire
 import { I18nService } from '../../core/i18n/i18n.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import {
-  ITEM_ID, MOCK_ITEM, MOCK_ITEM_V3, ORDER, ORDER_EVENT,
-  PRODUCT_RESPONSE
+  ITEM_ID,
+  MOCK_ITEM,
+  MOCK_ITEM_V3,
+  ORDER,
+  ORDER_EVENT,
+  PRODUCT_RESPONSE,
 } from '../../../tests/item.fixtures.spec';
 import { MOCK_USER_STATS } from '../../../tests/user.fixtures.spec';
 import { FINANCIAL_CARD } from '../../../tests/payments.fixtures.spec';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
+import { UuidService } from '../../core/uuid/uuid.service';
 
 describe('CatalogProListComponent', () => {
   let component: CatalogProListComponent;
@@ -32,7 +41,9 @@ describe('CatalogProListComponent', () => {
   let itemService: ItemService;
   let trackingService: TrackingService;
   let modalService: NgbModal;
-  const componentInstance: any = { urgentPrice: jasmine.createSpy('urgentPrice') };
+  const componentInstance: any = {
+    urgentPrice: jasmine.createSpy('urgentPrice'),
+  };
   let trackingServiceSpy: jasmine.Spy;
   let itemServiceSpy: jasmine.Spy;
   let userService: UserService;
@@ -41,93 +52,94 @@ describe('CatalogProListComponent', () => {
   let eventService: EventService;
   let errorService: ErrorsService;
   let modalSpy: jasmine.Spy;
+  let uuidService: UuidService;
   const routerEvents: Subject<any> = new Subject();
   const mockCounters = {
     sold: 0,
-    publish: 0
+    publish: 0,
   };
   const subscriptionPlan = 20;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CatalogProListComponent, ItemSoldDirective ],
+      declarations: [CatalogProListComponent, ItemSoldDirective],
       providers: [
         I18nService,
         EventService,
-        {provide: TrackingService, useClass: MockTrackingService},
+        { provide: TrackingService, useClass: MockTrackingService },
         {
-          provide: ItemService, useValue: {
+          provide: ItemService,
+          useValue: {
             selectedItems: [],
             mines() {
-              return observableOf([MOCK_ITEM, MOCK_ITEM]);
+              return of([MOCK_ITEM, MOCK_ITEM]);
             },
-            deselectItems() {
-            },
-            selectItem() {
-            },
-            purchaseProducts() {
-            },
-            getUrgentProducts() {
-            },
+            deselectItems() {},
+            selectItem() {},
+            purchaseProducts() {},
+            getUrgentProducts() {},
             get() {
-              return observableOf(MOCK_ITEM_V3);
-            }
-          }
+              return of(MOCK_ITEM_V3);
+            },
+          },
         },
         {
-          provide: NgbModal, useValue: {
+          provide: NgbModal,
+          useValue: {
             open() {
               return {
                 result: Promise.resolve(),
-                componentInstance: componentInstance
+                componentInstance: componentInstance,
               };
-            }
-          }
+            },
+          },
         },
         {
-          provide: UserService, useValue: {
+          provide: UserService,
+          useValue: {
             getStats() {
-              return observableOf(MOCK_USER_STATS);
+              return of(MOCK_USER_STATS);
             },
             me() {
-              return observableOf({});
-            }
-          }
+              return of({});
+            },
+          },
         },
         {
-          provide: ErrorsService, useValue: {
+          provide: ErrorsService,
+          useValue: {
             show() {
-              return observableOf({});
+              return of({});
             },
-            i18nError() {
-            }
-          }
+            i18nError() {},
+          },
         },
         {
-          provide: Router, useValue: {
-            navigate() {
-            },
-            events: routerEvents
-          }
+          provide: Router,
+          useValue: {
+            navigate() {},
+            events: routerEvents,
+          },
         },
         {
-          provide: PaymentService, useValue: {
+          provide: PaymentService,
+          useValue: {
             pay() {
-              return observableOf({});
-            }
-        }
+              return of({});
+            },
+          },
         },
         {
-          provide: ActivatedRoute, useValue: {
-            params: observableOf({
-              code: 200
-            })
-          }
-        }
+          provide: ActivatedRoute,
+          useValue: {
+            params: of({
+              code: 200,
+            }),
+          },
+        },
       ],
-      schemas: [ NO_ERRORS_SCHEMA ]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -144,6 +156,7 @@ describe('CatalogProListComponent', () => {
     itemServiceSpy = spyOn(itemService, 'mines').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
     eventService = TestBed.inject(EventService);
+    uuidService = TestBed.inject(UuidService);
     fixture.detectChanges();
   });
 
@@ -152,19 +165,22 @@ describe('CatalogProListComponent', () => {
       spyOn(router, 'navigate');
       spyOn(localStorage, 'getItem').and.returnValue('bump');
       spyOn(localStorage, 'removeItem');
-      route.params = observableOf({
+      route.params = of({
         code: 200,
-        extras: true
+        extras: true,
       });
       component['modalRef'] = <any>{
-        componentInstance: componentInstance
+        componentInstance: componentInstance,
       };
       component.ngOnInit();
       tick();
-      expect(modalService.open).toHaveBeenCalledWith(ProBumpConfirmationModalComponent, {
-        windowClass: 'bump-confirm',
-        backdrop: 'static'
-      });
+      expect(modalService.open).toHaveBeenCalledWith(
+        ProBumpConfirmationModalComponent,
+        {
+          windowClass: 'bump-confirm',
+          backdrop: 'static',
+        }
+      );
       expect(router.navigate).toHaveBeenCalledWith(['pro/catalog/list']);
       expect(localStorage.removeItem).toHaveBeenCalled();
       expect(component['modalRef'].componentInstance.extras).toBe(true);
@@ -173,19 +189,24 @@ describe('CatalogProListComponent', () => {
     it('should open bump confirmation modal and redirect to extras if code is 202', fakeAsync(() => {
       spyOn(router, 'navigate');
       spyOn(localStorage, 'getItem').and.returnValue('bump');
-      route.params = observableOf({
+      route.params = of({
         code: '202',
       });
       component['modalRef'] = <any>{
-        componentInstance: componentInstance
+        componentInstance: componentInstance,
       };
       component.ngOnInit();
       tick();
-      expect(modalService.open).toHaveBeenCalledWith(ProBumpConfirmationModalComponent, {
-        windowClass: 'bump-confirm',
-        backdrop: 'static'
-      });
-      expect(router.navigate).toHaveBeenCalledWith(['pro/catalog/checkout-extras']);
+      expect(modalService.open).toHaveBeenCalledWith(
+        ProBumpConfirmationModalComponent,
+        {
+          windowClass: 'bump-confirm',
+          backdrop: 'static',
+        }
+      );
+      expect(router.navigate).toHaveBeenCalledWith([
+        'pro/catalog/checkout-extras',
+      ]);
       expect(component['modalRef'].componentInstance.code).toBe('202');
     }));
 
@@ -201,12 +222,14 @@ describe('CatalogProListComponent', () => {
     }));
 
     it('should feature order', fakeAsync(() => {
-      spyOn(itemService, 'getUrgentProducts').and.returnValue(observableOf(PRODUCT_RESPONSE));
+      spyOn(itemService, 'getUrgentProducts').and.returnValue(
+        of(PRODUCT_RESPONSE)
+      );
       spyOn(localStorage, 'getItem').and.returnValue('false');
       spyOn(component, 'feature');
-      route.params = observableOf({
+      route.params = of({
         urgent: true,
-        itemId: MOCK_ITEM.id
+        itemId: MOCK_ITEM.id,
       });
 
       component.ngOnInit();
@@ -219,50 +242,56 @@ describe('CatalogProListComponent', () => {
     it('should open the urgent modal if transaction is set as urgent', fakeAsync(() => {
       spyOn(localStorage, 'getItem').and.returnValue('urgent');
       spyOn(localStorage, 'removeItem');
-      route.params = observableOf({
-        code: 200
+      route.params = of({
+        code: 200,
       });
 
       component.ngOnInit();
       tick();
 
       expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
-      expect(modalService.open).toHaveBeenCalledWith(ProUrgentConfirmationModalComponent, {
-        windowClass: 'urgent-confirm',
-        backdrop: 'static'
-      });
+      expect(modalService.open).toHaveBeenCalledWith(
+        ProUrgentConfirmationModalComponent,
+        {
+          windowClass: 'urgent-confirm',
+          backdrop: 'static',
+        }
+      );
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
     }));
 
     it('should open the bump modal if transaction is set as bump', fakeAsync(() => {
       spyOn(localStorage, 'getItem').and.returnValue('bump');
       spyOn(localStorage, 'removeItem');
-      route.params = observableOf({
-        code: 200
+      route.params = of({
+        code: 200,
       });
 
       component.ngOnInit();
       tick();
 
       expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
-      expect(modalService.open).toHaveBeenCalledWith(ProBumpConfirmationModalComponent, {
-        windowClass: 'bump-confirm',
-        backdrop: 'static'
-      });
+      expect(modalService.open).toHaveBeenCalledWith(
+        ProBumpConfirmationModalComponent,
+        {
+          windowClass: 'bump-confirm',
+          backdrop: 'static',
+        }
+      );
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
     }));
 
     it('should open sold modal', fakeAsync(() => {
-      route.params = observableOf({
+      route.params = of({
         sold: true,
-        itemId: ITEM_ID
+        itemId: ITEM_ID,
       });
       const onClickSpy = jasmine.createSpy('onClick');
       const emitter: EventEmitter<any> = new EventEmitter();
       component.soldButton = {
         item: null,
         onClick: onClickSpy,
-        callback: emitter
+        callback: emitter,
       } as any;
       spyOn(component, 'itemChanged');
       spyOn(eventService, 'emit');
@@ -275,15 +304,18 @@ describe('CatalogProListComponent', () => {
       expect(onClickSpy).toHaveBeenCalled();
       expect(component.itemChanged).toHaveBeenCalledWith({
         item: MOCK_ITEM_V3,
-        action: 'sold'
+        action: 'sold',
       });
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_SOLD, MOCK_ITEM_V3);
+      expect(eventService.emit).toHaveBeenCalledWith(
+        EventService.ITEM_SOLD,
+        MOCK_ITEM_V3
+      );
     }));
 
     it('should show error message if alreadyFeatured', fakeAsync(() => {
       spyOn(errorService, 'i18nError');
-      route.params = observableOf({
-        alreadyFeatured: true
+      route.params = of({
+        alreadyFeatured: true,
       });
 
       component.ngOnInit();
@@ -295,12 +327,24 @@ describe('CatalogProListComponent', () => {
 
   describe('getItems', () => {
     it('should call mines with default values and set items', () => {
-      expect(itemService.mines).toHaveBeenCalledWith(1, 20, 'date_desc', 'active', undefined, false );
+      expect(itemService.mines).toHaveBeenCalledWith(
+        1,
+        20,
+        'date_desc',
+        'active',
+        undefined,
+        false
+      );
       expect(component.items.length).toBe(2);
     });
 
     it('should track the ProductListLoaded event', () => {
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_LOADED, {page_number: 1});
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.PRODUCT_LIST_LOADED,
+        {
+          page_number: 1,
+        }
+      );
     });
 
     it('should track the ProductListSoldViewed if the selectedStatus is sold', () => {
@@ -309,7 +353,12 @@ describe('CatalogProListComponent', () => {
 
       component.ngOnInit();
 
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_SOLD_VIEWED, {total_products: 2});
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.PRODUCT_LIST_SOLD_VIEWED,
+        {
+          total_products: 2,
+        }
+      );
     });
 
     it('should track the ProductListActiveViewed if the selectedStatus is published', () => {
@@ -318,16 +367,27 @@ describe('CatalogProListComponent', () => {
 
       component.ngOnInit();
 
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_ACTIVE_VIEWED, {total_products: 2});
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.PRODUCT_LIST_ACTIVE_VIEWED,
+        {
+          total_products: 2,
+        }
+      );
     });
-
   });
 
   describe('loadMore', () => {
     it('should call mine with new page and append items', () => {
       component.loadMore();
 
-      expect(itemService.mines).toHaveBeenCalledWith(2, 20, 'date_desc', 'active', undefined, true);
+      expect(itemService.mines).toHaveBeenCalledWith(
+        2,
+        20,
+        'date_desc',
+        'active',
+        undefined,
+        true
+      );
       expect(component.items.length).toBe(4);
     });
   });
@@ -337,13 +397,25 @@ describe('CatalogProListComponent', () => {
       component['page'] = 2;
       component.search('term');
 
-      expect(itemService.mines).toHaveBeenCalledWith(1, 20, 'date_desc', 'active', 'term', true);
+      expect(itemService.mines).toHaveBeenCalledWith(
+        1,
+        20,
+        'date_desc',
+        'active',
+        'term',
+        true
+      );
     });
     it('should track the ProductListBulkUnselected event', () => {
       component.search('term');
 
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_FILTERED_BY_TEXT,
-        {filter: 'term', order_by: 'date_desc'});
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.PRODUCT_LIST_FILTERED_BY_TEXT,
+        {
+          filter: 'term',
+          order_by: 'date_desc',
+        }
+      );
     });
   });
 
@@ -352,14 +424,26 @@ describe('CatalogProListComponent', () => {
       component['page'] = 2;
       component.sort('date_asc');
 
-      expect(itemService.mines).toHaveBeenCalledWith(1, 20, 'date_asc', 'active', undefined, true);
+      expect(itemService.mines).toHaveBeenCalledWith(
+        1,
+        20,
+        'date_asc',
+        'active',
+        undefined,
+        true
+      );
     });
     it('should track the ProductListOrderedBy event', () => {
       component['term'] = 'term';
       component.sort('date_asc');
 
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_ORDERED_BY,
-        {filter: component['term'], order_by: 'date_asc'});
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.PRODUCT_LIST_ORDERED_BY,
+        {
+          filter: component['term'],
+          order_by: 'date_asc',
+        }
+      );
     });
   });
 
@@ -368,7 +452,14 @@ describe('CatalogProListComponent', () => {
       component['page'] = 2;
       component.filterByStatus('sold');
 
-      expect(itemService.mines).toHaveBeenCalledWith(1, 20, 'date_desc', 'sold', undefined, false);
+      expect(itemService.mines).toHaveBeenCalledWith(
+        1,
+        20,
+        'date_desc',
+        'sold',
+        undefined,
+        false
+      );
     });
   });
 
@@ -399,11 +490,11 @@ describe('CatalogProListComponent', () => {
   describe('feature', () => {
     let eventId: string;
     beforeEach(() => {
-      spyOn(UUID, 'UUID').and.returnValue('UUID');
+      spyOn(uuidService, 'getUUID').and.returnValue('UUID');
     });
     describe('success', () => {
       beforeEach(() => {
-        spyOn(itemService, 'purchaseProducts').and.returnValue(observableOf([]));
+        spyOn(itemService, 'purchaseProducts').and.returnValue(of([]));
         eventId = null;
       });
       describe('with credit card', () => {
@@ -411,7 +502,7 @@ describe('CatalogProListComponent', () => {
           beforeEach(fakeAsync(() => {
             modalSpy.and.returnValue({
               result: Promise.resolve('old'),
-              componentInstance: componentInstance
+              componentInstance: componentInstance,
             });
             spyOn(router, 'navigate');
             spyOn(component, 'deselect');
@@ -422,7 +513,7 @@ describe('CatalogProListComponent', () => {
             spyOn(router, 'navigate');
             component.feature({
               order: [ORDER],
-              total: 10
+              total: 10,
             });
             tick(1000);
           }));
@@ -432,7 +523,12 @@ describe('CatalogProListComponent', () => {
           });
 
           it('should open modal', () => {
-            expect(modalService.open).toHaveBeenCalledWith(CreditCardModalComponent, {windowClass: 'credit-card'});
+            expect(modalService.open).toHaveBeenCalledWith(
+              CreditCardModalComponent,
+              {
+                windowClass: 'credit-card',
+              }
+            );
           });
 
           it('should set financialCard and total to componentInstance', () => {
@@ -440,7 +536,10 @@ describe('CatalogProListComponent', () => {
           });
 
           it('should call purchaseProducts', () => {
-            expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID');
+            expect(itemService.purchaseProducts).toHaveBeenCalledWith(
+              [ORDER],
+              'UUID'
+            );
           });
         });
       });
@@ -495,7 +594,5 @@ describe('CatalogProListComponent', () => {
         expect(component.subscriptionPlan).toEqual(subscriptionPlan);
       });
     });
-
   });
-
 });

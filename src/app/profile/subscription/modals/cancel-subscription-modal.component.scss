@@ -1,8 +1,8 @@
-@import "~style/common";
+@import '~style/common';
 
 .CancelSubscription__box {
   text-align: center;
-  padding: $spacing-xl $spacing-xxxl*1.5 $spacing-xl;
+  padding: $spacing-xl $spacing-xxxl * 1.5 $spacing-xl;
   &--title {
     font-size: $font-size-l;
     font-weight: bold;
@@ -25,7 +25,7 @@
 .modal-close {
   width: $spacing-ms;
   height: $spacing-ms;
-  mat-icon {
+  tsl-svg-icon {
     width: $spacing-ms;
     height: $spacing-ms;
     line-height: $spacing-ms;

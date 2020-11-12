@@ -4,15 +4,16 @@ import { Router } from '@angular/router';
 import { I18nService } from '../i18n/i18n.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
-export const DEFAULT_ERROR_MESSAGE = 'Servicio no disponible temporalmente. Inténtelo de nuevo más tarde';
+export const DEFAULT_ERROR_MESSAGE =
+  'Servicio no disponible temporalmente. Inténtelo de nuevo más tarde';
 
 @Injectable()
 export class ErrorsService {
-
-  constructor(private toastService: ToastService,
-              private router: Router,
-              private i18n: I18nService) {
-  }
+  constructor(
+    private toastService: ToastService,
+    private router: Router,
+    private i18n: I18nService
+  ) {}
 
   show(res: HttpErrorResponse): void {
     const error = res.error;
@@ -24,15 +25,27 @@ export class ErrorsService {
       } else {
         message = error.message ? error.message : DEFAULT_ERROR_MESSAGE;
       }
-      this.toastService.show({text:message, title:'Oops!', type:'error'});
+      this.toastService.show({ text: message, title: 'Oops!', type: 'error' });
     }
   }
 
   i18nError(key: string, contacText: string = '', titleKey?: string) {
-    this.toastService.show({text:this.i18n.getTranslations(key) + contacText, title:titleKey ? this.i18n.getTranslations(titleKey) : this.i18n.getTranslations('defaultErrorTitle'),type:'error'});
+    this.toastService.show({
+      text: this.i18n.getTranslations(key) + contacText,
+      title: titleKey
+        ? this.i18n.getTranslations(titleKey)
+        : this.i18n.getTranslations('defaultErrorTitle'),
+      type: 'error',
+    });
   }
 
   i18nSuccess(key: string, contacText: string = '', titleKey?: string) {
-    this.toastService.show({text:this.i18n.getTranslations(key) + contacText, title:titleKey ? this.i18n.getTranslations(titleKey) : this.i18n.getTranslations('defaultSuccessTitle'), type:'success'});
+    this.toastService.show({
+      text: this.i18n.getTranslations(key) + contacText,
+      title: titleKey
+        ? this.i18n.getTranslations(titleKey)
+        : this.i18n.getTranslations('defaultSuccessTitle'),
+      type: 'success',
+    });
   }
 }

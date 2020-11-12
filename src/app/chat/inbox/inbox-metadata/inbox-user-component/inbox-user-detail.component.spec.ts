@@ -1,23 +1,28 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
 import { UserService } from '../../../../core/user/user.service';
 import { MOCKED_INBOX_CONVERSATIONS } from '../../../../../tests/inbox.fixtures.spec';
 import { InboxUserDetailComponent } from './inbox-user-detail.component';
-import { USER_INFO_RESPONSE, SCORING_STARS, RESPONSE_RATE } from '../../../../../tests/user.fixtures.spec';
+import {
+  USER_INFO_RESPONSE,
+  SCORING_STARS,
+  RESPONSE_RATE,
+} from '../../../../../tests/user.fixtures.spec';
 import { User } from '../../../../core/user/user';
 import { InboxUser } from '../../../model/inbox-user';
 import { Item } from '../../../../core/item/item';
 import { InboxItem } from '../../../model/inbox-item';
 
 class MockUserService {
-
   getInfo() {
-    return observableOf(USER_INFO_RESPONSE);
+    return of(USER_INFO_RESPONSE);
   }
 
-  calculateDistanceFromItem(user: User | InboxUser, item: Item | InboxItem): number {
+  calculateDistanceFromItem(
+    user: User | InboxUser,
+    item: Item | InboxItem
+  ): number {
     return 5.5;
   }
 }
@@ -30,13 +35,12 @@ describe('InboxUserDetailComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [InboxUserDetailComponent],
-      providers: [
-        { provide: UserService, useClass: MockUserService },
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
+      providers: [{ provide: UserService, useClass: MockUserService }],
+      schemas: [NO_ERRORS_SCHEMA],
     });
     fixture = TestBed.createComponent(InboxUserDetailComponent);
-    component = TestBed.createComponent(InboxUserDetailComponent).componentInstance;
+    component = TestBed.createComponent(InboxUserDetailComponent)
+      .componentInstance;
     userService = TestBed.inject(UserService);
     component.user = MOCKED_INBOX_CONVERSATIONS[0].user;
   });
@@ -51,10 +55,16 @@ describe('InboxUserDetailComponent', () => {
       component.user.responseRate = undefined;
 
       component.ngOnChanges({
-        user: new SimpleChange(null, MOCKED_INBOX_CONVERSATIONS[0].user.id, false)
+        user: new SimpleChange(
+          null,
+          MOCKED_INBOX_CONVERSATIONS[0].user.id,
+          false
+        ),
       });
 
-      expect(userService.getInfo).toHaveBeenCalledWith(MOCKED_INBOX_CONVERSATIONS[0].user.id);
+      expect(userService.getInfo).toHaveBeenCalledWith(
+        MOCKED_INBOX_CONVERSATIONS[0].user.id
+      );
       expect(component.user.score).toBe(SCORING_STARS);
       expect(component.user.responseRate).toBe(RESPONSE_RATE);
     });
@@ -65,7 +75,11 @@ describe('InboxUserDetailComponent', () => {
       component.user.distanceInKm = 5.5;
 
       component.ngOnChanges({
-        user: new SimpleChange(null, MOCKED_INBOX_CONVERSATIONS[0].user.id, false)
+        user: new SimpleChange(
+          null,
+          MOCKED_INBOX_CONVERSATIONS[0].user.id,
+          false
+        ),
       });
 
       expect(userService.getInfo).not.toHaveBeenCalled();

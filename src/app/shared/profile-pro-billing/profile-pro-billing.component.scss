@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 .delete-link {
   text-decoration: underline;
@@ -8,12 +8,16 @@
   align-items: end;
   display: grid;
   &:hover {
-      text-decoration: none;
+    text-decoration: none;
   }
 }
 
 .content {
   margin: 0 $spacing-s;
+
+  &-subtitle {
+    font-size: $font-size-s;
+  }
 }
 
 form {
@@ -37,7 +41,7 @@ form {
     }
   }
 }
-.RegistrationType{
+.RegistrationType {
   display: flex;
   .RegistrationType_radio {
     margin: 0 $spacing-l 0 0;

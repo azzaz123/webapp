@@ -1,10 +1,10 @@
-@import "~style/common";
+@import '~style/common';
 
 tsl-card {
   cursor: pointer;
   border-radius: $border-radius;
-  box-shadow: 0 0 2px 0 rgba($black, .1);
-  transition: all .15s ease;
+  box-shadow: 0 0 2px 0 rgba($black, 0.1);
+  transition: all 0.15s ease;
   & ::ng-deep tsl-card-image {
     display: block;
     padding: $spacing-xs;
@@ -16,7 +16,7 @@ tsl-card {
       white-space: nowrap;
       text-overflow: ellipsis;
       width: 100%;
-      display:inline-block;
+      display: inline-block;
     }
   }
 
@@ -32,9 +32,10 @@ tsl-card {
     .cart-footer-text {
       text-align: center;
     }
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       cursor: pointer;
-      background: rgba($blue-grey-4, .2);
+      background: rgba($blue-grey-4, 0.2);
     }
   }
 }

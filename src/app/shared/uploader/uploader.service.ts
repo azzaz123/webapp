@@ -1,18 +1,22 @@
+import { from, Observable, Subscriber, Subscription } from 'rxjs';
 
-import {from as observableFrom,  Observable, Subscriber, Subscription } from 'rxjs';
-
-import {combineLatest, mergeAll} from 'rxjs/operators';
+import { combineLatest, mergeAll } from 'rxjs/operators';
 import { EventEmitter, Injectable } from '@angular/core';
-import { NgUploaderOptions, UploadFile, UploadInput, UploadOutput, UploadStatus } from './upload.interface';
+import {
+  NgUploaderOptions,
+  UploadFile,
+  UploadInput,
+  UploadOutput,
+  UploadStatus,
+} from './upload.interface';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UploaderService {
-
   files: UploadFile[] = [];
-  uploads: { file?: UploadFile, files?: UploadFile[], sub: Subscription }[];
+  uploads: { file?: UploadFile; files?: UploadFile[]; sub: Subscription }[];
   serviceEvents: EventEmitter<UploadOutput>;
   options: NgUploaderOptions;
 
@@ -25,7 +29,9 @@ export class UploaderService {
   handleFiles(files: FileList, imageType?: string): void {
     [].forEach.call(files, (file: File, i: number) => {
       const uploadFile: UploadFile = {
-        fileIndex: this.files[this.files.length - 1] ? this.files[this.files.length - 1].fileIndex + 1 : 0,
+        fileIndex: this.files[this.files.length - 1]
+          ? this.files[this.files.length - 1].fileIndex + 1
+          : 0,
         file: file,
         id: this.generateId(),
         name: file.name,
@@ -36,19 +42,27 @@ export class UploaderService {
           data: {
             percentage: 0,
             speed: null,
-            speedHuman: null
-          }
+            speedHuman: null,
+          },
         },
-        lastModifiedDate: new Date(file.lastModified)
+        lastModifiedDate: new Date(file.lastModified),
       };
-      if (this.checkExtension(uploadFile, imageType) &&
+      if (
+        this.checkExtension(uploadFile, imageType) &&
         this.checkMaxUploads(uploadFile, imageType) &&
-        this.checkMaxSize(uploadFile, imageType)) {
+        this.checkMaxSize(uploadFile, imageType)
+      ) {
         let reader: FileReader = new FileReader();
         reader.readAsDataURL(<Blob>file);
         reader.addEventListener('load', (event: any) => {
-          uploadFile.preview = this.sanitizer.bypassSecurityTrustResourceUrl(event.target.result);
-          this.serviceEvents.emit({ type: 'addedToQueue', file: uploadFile, imageType: imageType });
+          uploadFile.preview = this.sanitizer.bypassSecurityTrustResourceUrl(
+            event.target.result
+          );
+          this.serviceEvents.emit({
+            type: 'addedToQueue',
+            file: uploadFile,
+            imageType: imageType,
+          });
         });
         this.files.push(uploadFile);
       }
@@ -67,7 +81,12 @@ export class UploaderService {
       return true;
     }
 
-    this.serviceEvents.emit({ type: 'rejected', file: file, reason: 'ExtensionNotAllowed', imageType });
+    this.serviceEvents.emit({
+      type: 'rejected',
+      file: file,
+      reason: 'ExtensionNotAllowed',
+      imageType,
+    });
 
     return false;
   }
@@ -76,7 +95,12 @@ export class UploaderService {
     if (this.files.length < this.options.maxUploads) {
       return true;
     }
-    this.serviceEvents.emit({ type: 'rejected', file: file, reason: 'MaxUploadsExceeded', imageType });
+    this.serviceEvents.emit({
+      type: 'rejected',
+      file: file,
+      reason: 'MaxUploadsExceeded',
+      imageType,
+    });
     return false;
   }
 
@@ -84,39 +108,63 @@ export class UploaderService {
     if (!this.options.maxSize || file.size < this.options.maxSize) {
       return true;
     }
-    this.serviceEvents.emit({ type: 'rejected', file: file, reason: 'MaxSizeExceeded', imageType });
+    this.serviceEvents.emit({
+      type: 'rejected',
+      file: file,
+      reason: 'MaxSizeExceeded',
+      imageType,
+    });
     return false;
   }
 
-  initInputEvents(input: EventEmitter<UploadInput>, imageType: string): Subscription {
+  initInputEvents(
+    input: EventEmitter<UploadInput>,
+    imageType: string
+  ): Subscription {
     const subscription: Subscription = input.subscribe((event: UploadInput) => {
       switch (event.type) {
         case 'uploadFile':
-          this.serviceEvents.emit({ type: 'start', file: event.file, imageType: imageType });
-          let newLenght: number = this.uploads.push({ file: event.file, sub: null });
-          const sub = this.uploadFile(event.file, event).subscribe(data => {
+          this.serviceEvents.emit({
+            type: 'start',
+            file: event.file,
+            imageType: imageType,
+          });
+          let newLenght: number = this.uploads.push({
+            file: event.file,
+            sub: null,
+          });
+          const sub = this.uploadFile(event.file, event).subscribe((data) => {
             data.imageType = imageType;
             this.serviceEvents.emit(data);
           });
           this.uploads[newLenght - 1].sub = sub;
           break;
         case 'uploadAll':
-          let concurrency = event.concurrency > 0 ? event.concurrency : Number.POSITIVE_INFINITY;
+          let concurrency =
+            event.concurrency > 0
+              ? event.concurrency
+              : Number.POSITIVE_INFINITY;
 
           const subscriber = Subscriber.create((data: UploadOutput) => {
             data.imageType = imageType;
             this.serviceEvents.emit(data);
           });
 
-          this.uploads = this.uploads.concat(this.files.map(file => {
-            return { file: file, sub: null };
-          }));
+          this.uploads = this.uploads.concat(
+            this.files.map((file) => {
+              return { file: file, sub: null };
+            })
+          );
 
-          const subscription = observableFrom(this.files
-            .filter(file => file.progress.status !== UploadStatus.Done)
-            .map(file => this.uploadFile(file, event))).pipe(
-            mergeAll(concurrency),
-            combineLatest(data => data),)
+          const subscription = from(
+            this.files
+              .filter((file) => file.progress.status !== UploadStatus.Done)
+              .map((file) => this.uploadFile(file, event))
+          )
+            .pipe(
+              mergeAll(concurrency),
+              combineLatest((data) => data)
+            )
             .subscribe(subscriber);
           break;
         case 'cancel':
@@ -125,20 +173,30 @@ export class UploaderService {
             return;
           }
 
-          const index = this.uploads.findIndex(upload => upload.file.id === id);
+          const index = this.uploads.findIndex(
+            (upload) => upload.file.id === id
+          );
           if (index !== -1) {
             if (this.uploads[index].sub) {
               this.uploads[index].sub.unsubscribe();
             }
 
-            this.serviceEvents.emit({ type: 'cancelled', file: this.uploads[index].file, imageType: imageType });
+            this.serviceEvents.emit({
+              type: 'cancelled',
+              file: this.uploads[index].file,
+              imageType: imageType,
+            });
             this.uploads[index].file.progress.status = UploadStatus.Canceled;
           }
           break;
         case 'cancelAll':
-          this.uploads.forEach(upload => {
+          this.uploads.forEach((upload) => {
             upload.file.progress.status = UploadStatus.Canceled;
-            this.serviceEvents.emit({ type: 'cancelled', file: upload.file, imageType: imageType });
+            this.serviceEvents.emit({
+              type: 'cancelled',
+              file: upload.file,
+              imageType: imageType,
+            });
           });
           break;
         case 'remove':
@@ -146,10 +204,16 @@ export class UploaderService {
           if (!removeId) {
             return;
           }
-          const removeIndex = this.files.findIndex(file => file.id === removeId);
+          const removeIndex = this.files.findIndex(
+            (file) => file.id === removeId
+          );
           if (removeIndex !== -1) {
             const deleted = this.files.splice(removeIndex, 1)[0];
-            this.serviceEvents.emit({ type: 'removed', file: deleted, imageType: imageType });
+            this.serviceEvents.emit({
+              type: 'removed',
+              file: deleted,
+              imageType: imageType,
+            });
           }
           break;
         case 'updateOrder':
@@ -161,7 +225,11 @@ export class UploaderService {
             file.fileIndex = i;
             return file;
           });
-          this.serviceEvents.emit({ type: 'orderUpdated', files: this.files, imageType: imageType });
+          this.serviceEvents.emit({
+            type: 'orderUpdated',
+            files: this.files,
+            imageType: imageType,
+          });
           break;
         case 'initialImages':
           this.files = event.files;
@@ -173,7 +241,7 @@ export class UploaderService {
   }
 
   uploadFile(file: UploadFile, event: UploadInput): Observable<UploadOutput> {
-    return new Observable(observer => {
+    return new Observable((observer) => {
       const url = event.url;
       const method = event.method || 'POST';
       const data = event.data || {};
@@ -184,30 +252,41 @@ export class UploaderService {
       let time: number = new Date().getTime();
       let load = 0;
 
-      xhr.upload.addEventListener('progress', (e: ProgressEvent) => {
-        if (e.lengthComputable) {
-          const percentage = Math.round((e.loaded * 100) / e.total);
-          const diff = new Date().getTime() - time;
-          time += diff;
-          load = e.loaded - load;
-          const speed = parseInt((load / diff * 1000) as any, 10);
-          const totalFilesSize = this.files.map(f => f.size).reduce((acc, size) => acc + size, 0);
+      xhr.upload.addEventListener(
+        'progress',
+        (e: ProgressEvent) => {
+          if (e.lengthComputable) {
+            const percentage = Math.round((e.loaded * 100) / e.total);
+            const diff = new Date().getTime() - time;
+            time += diff;
+            load = e.loaded - load;
+            const speed = parseInt(((load / diff) * 1000) as any, 10);
+            const totalFilesSize = this.files
+              .map((f) => f.size)
+              .reduce((acc, size) => acc + size, 0);
 
-          let uploadedPercentage = e.loaded / totalFilesSize * 100;
-          uploadedPercentage = uploadedPercentage < 100 ? uploadedPercentage : 100;
+            let uploadedPercentage = (e.loaded / totalFilesSize) * 100;
+            uploadedPercentage =
+              uploadedPercentage < 100 ? uploadedPercentage : 100;
 
-          file.progress = {
-            status: UploadStatus.Uploading,
-            data: {
-              percentage: percentage,
-              speed: speed,
-              speedHuman: `${humanizeBytes(speed)}/s`
-            }
-          };
+            file.progress = {
+              status: UploadStatus.Uploading,
+              data: {
+                percentage: percentage,
+                speed: speed,
+                speedHuman: `${humanizeBytes(speed)}/s`,
+              },
+            };
 
-          observer.next({ type: 'uploading', file: file, percentage: uploadedPercentage });
-        }
-      }, false);
+            observer.next({
+              type: 'uploading',
+              file: file,
+              percentage: uploadedPercentage,
+            });
+          }
+        },
+        false
+      );
 
       xhr.upload.addEventListener('error', (e: Event) => {
         observer.error(e);
@@ -222,8 +301,8 @@ export class UploaderService {
               percentage: 100,
               speed: null,
               speedHuman: null,
-              responseStatus: xhr.status
-            }
+              responseStatus: xhr.status,
+            },
           };
 
           try {
@@ -242,17 +321,25 @@ export class UploaderService {
       const form = new FormData();
       try {
         const uploadFile = file.file;
-        const uploadIndex = this.uploads.findIndex(upload => upload && upload.file.size === uploadFile.size);
-        if (this.uploads[uploadIndex] && this.uploads[uploadIndex].file.progress.status === UploadStatus.Canceled) {
+        const uploadIndex = this.uploads.findIndex(
+          (upload) => upload && upload.file.size === uploadFile.size
+        );
+        if (
+          this.uploads[uploadIndex] &&
+          this.uploads[uploadIndex].file.progress.status ===
+            UploadStatus.Canceled
+        ) {
           observer.complete();
         }
         form.append(event.fieldName || 'file', uploadFile, uploadFile.name);
 
-        Object.keys(data).forEach(key => {
-          let value = (key === 'order') ? file.fileIndex.toString() : data[key];
+        Object.keys(data).forEach((key) => {
+          let value = key === 'order' ? file.fileIndex.toString() : data[key];
           form.append(key, value);
         });
-        Object.keys(headers).forEach(key => xhr.setRequestHeader(key, headers[key]));
+        Object.keys(headers).forEach((key) =>
+          xhr.setRequestHeader(key, headers[key])
+        );
 
         this.serviceEvents.emit({ type: 'start', file: file });
         xhr.send(form);

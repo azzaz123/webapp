@@ -1,5 +1,4 @@
-
-import {of as observableOf, throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CartExtrasProComponent } from './cart-extras-pro.component';
@@ -16,8 +15,9 @@ import { CartChange } from '../../../shared/catalog/cart/cart-item.interface';
 import { CustomCurrencyPipe } from '../../../shared/pipes';
 import {
   BILLING_INFO_RESPONSE,
-  ORDER_CART_EXTRAS_PRO, PACK_ID,
-  PREPARED_PACKS
+  ORDER_CART_EXTRAS_PRO,
+  PACK_ID,
+  PREPARED_PACKS,
 } from '../../../../tests/payments.fixtures.spec';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { StripeService } from '../../../core/stripe/stripe.service';
@@ -40,62 +40,67 @@ describe('CartExtrasProComponent', () => {
     action: 'add',
     cart: CART_PRO_EXTRAS,
     packId: PACK_ID,
-    type: 'citybump'
+    type: 'citybump',
   };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CartExtrasProComponent, CustomCurrencyPipe ],
+      declarations: [CartExtrasProComponent, CustomCurrencyPipe],
       providers: [
         DecimalPipe,
         EventService,
         {
-          provide: CartService, useValue: {
-            createInstance() { },
-            clean() { },
-            removeProExtras() { },
-            cart$: observableOf(CART_CHANGE)
-          }
-        },
-        {
-          provide: PaymentService, useValue: {
-            getBillingInfo() {
-              return observableOf({});
-            },
-            orderExtrasProPack() {
-              return observableOf({});
-            },
-            updateBillingInfo() {
-              return observableOf({});
-            }
+          provide: CartService,
+          useValue: {
+            createInstance() {},
+            clean() {},
+            removeProExtras() {},
+            cart$: of(CART_CHANGE),
           },
         },
         {
-          provide: TrackingService, useClass: MockTrackingService
+          provide: PaymentService,
+          useValue: {
+            getBillingInfo() {
+              return of({});
+            },
+            orderExtrasProPack() {
+              return of({});
+            },
+            updateBillingInfo() {
+              return of({});
+            },
+          },
         },
         {
-          provide: ErrorsService, useValue: {
-            i18nError() { },
-            show() { }
-          }
+          provide: TrackingService,
+          useClass: MockTrackingService,
         },
         {
-          provide: Router, useValue: {
-            navigate() { }
-          }
+          provide: ErrorsService,
+          useValue: {
+            i18nError() {},
+            show() {},
+          },
         },
         {
-          provide: StripeService, useValue: {
+          provide: Router,
+          useValue: {
+            navigate() {},
+          },
+        },
+        {
+          provide: StripeService,
+          useValue: {
             buy() {},
             getCards() {
-              return observableOf(true);
-            }
-          }
+              return of(true);
+            },
+          },
         },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -112,7 +117,7 @@ describe('CartExtrasProComponent', () => {
       street: new FormControl(),
       surname: new FormControl(),
       id: new FormControl(),
-      type: new FormControl()
+      type: new FormControl(),
     });
     cartService = TestBed.inject(CartService);
     paymentService = TestBed.inject(PaymentService);
@@ -132,14 +137,14 @@ describe('CartExtrasProComponent', () => {
     });
 
     it('should call createInstance cartService method', () => {
-      expect(cartService.createInstance).toHaveBeenCalledWith(new CartProExtras());
+      expect(cartService.createInstance).toHaveBeenCalledWith(
+        new CartProExtras()
+      );
     });
 
     it('should set cart pro extras', () => {
       expect(component.cart).toEqual(CART_PRO_EXTRAS);
     });
-
-
   });
 
   describe('hasCard', () => {
@@ -209,7 +214,9 @@ describe('CartExtrasProComponent', () => {
       component.remove(PREPARED_PACKS[0].packs[0], 0);
 
       expect(cartService.removeProExtras).toHaveBeenCalledWith(
-        PREPARED_PACKS[0].packs[0].id, PREPARED_PACKS[0].packs[0].name.toLowerCase(), 0
+        PREPARED_PACKS[0].packs[0].id,
+        PREPARED_PACKS[0].packs[0].name.toLowerCase(),
+        0
       );
     });
   });
@@ -236,21 +243,27 @@ describe('CartExtrasProComponent', () => {
 
     describe('already has billing info', () => {
       beforeEach(() => {
-        spyOn(component.cart, 'prepareOrder').and.returnValue(ORDER_CART_EXTRAS_PRO);
+        spyOn(component.cart, 'prepareOrder').and.returnValue(
+          ORDER_CART_EXTRAS_PRO
+        );
         eventId = null;
       });
 
       it('should call paymentService orderExtrasProPack method to create a pack order', () => {
         spyOn(paymentService, 'orderExtrasProPack').and.callThrough();
-        
+
         component.checkout();
 
-        expect(paymentService.orderExtrasProPack).toHaveBeenCalledWith(ORDER_CART_EXTRAS_PRO);
+        expect(paymentService.orderExtrasProPack).toHaveBeenCalledWith(
+          ORDER_CART_EXTRAS_PRO
+        );
       });
 
       describe('when unkown error', () => {
         it('should call toastr with bump error', () => {
-          spyOn(paymentService, 'orderExtrasProPack').and.returnValue(throwError('Unknown'));
+          spyOn(paymentService, 'orderExtrasProPack').and.returnValue(
+            throwError('Unknown')
+          );
           spyOn(errorsService, 'i18nError');
 
           component.checkout();
@@ -281,12 +294,16 @@ describe('CartExtrasProComponent', () => {
 
             component.saveAndCheckout();
 
-            expect(paymentService.updateBillingInfo).toHaveBeenCalledWith(component.billingInfoForm.value);
+            expect(paymentService.updateBillingInfo).toHaveBeenCalledWith(
+              component.billingInfoForm.value
+            );
           });
 
           it('should show error if call fails', () => {
             spyOn(errorsService, 'show');
-            spyOn(paymentService, 'updateBillingInfo').and.returnValue(throwError('error'));
+            spyOn(paymentService, 'updateBillingInfo').and.returnValue(
+              throwError('error')
+            );
 
             component.saveAndCheckout();
 

@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SuggesterComponent } from './suggester.component';
 import { SuggesterService } from './suggester.service';
@@ -19,14 +18,16 @@ describe('SuggesterComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         {
-          provide: SuggesterService, useValue: {
+          provide: SuggesterService,
+          useValue: {
             getSuggestions: () => {
-              return observableOf(SUGGESTER_DATA_WEB);
-            }
-          }
-        }, EventService]
-    })
-      .compileComponents();
+              return of(SUGGESTER_DATA_WEB);
+            },
+          },
+        },
+        EventService,
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -44,14 +45,14 @@ describe('SuggesterComponent', () => {
     it('should search for suggestions from input text', () => {
       const input = 'mesa';
 
-      component.suggest(observableOf(input)).subscribe();
+      component.suggest(of(input)).subscribe();
 
       expect(suggesterService.getSuggestions).toHaveBeenCalled();
     });
     it('should search for suggestions from input < 3', () => {
       const input = 'me';
 
-      component.suggest(observableOf(input)).subscribe();
+      component.suggest(of(input)).subscribe();
 
       expect(suggesterService.getSuggestions).toHaveBeenCalled();
     });
@@ -63,7 +64,9 @@ describe('SuggesterComponent', () => {
 
       component.selectSuggestion(SUGGESTER_DATA_WEB[0]);
 
-      expect(component.newSearch.emit).toHaveBeenCalledWith(SUGGESTER_DATA_WEB[0]);
+      expect(component.newSearch.emit).toHaveBeenCalledWith(
+        SUGGESTER_DATA_WEB[0]
+      );
     });
   });
 
@@ -71,8 +74,8 @@ describe('SuggesterComponent', () => {
     it('should emit an event with the keyword parameter', () => {
       component.kwsEl = {
         nativeElement: {
-          value: 'mesa'
-        }
+          value: 'mesa',
+        },
       };
       spyOn(component.newSearchSubmit, 'emit');
 
@@ -86,8 +89,8 @@ describe('SuggesterComponent', () => {
     it('should emit an event with the keyword parameter', () => {
       component.kwsEl = {
         nativeElement: {
-          value: 'iphone'
-        }
+          value: 'iphone',
+        },
       };
       spyOn(component.newKeyword, 'emit');
 
@@ -96,5 +99,4 @@ describe('SuggesterComponent', () => {
       expect(component.newKeyword.emit).toHaveBeenCalledWith('iphone');
     });
   });
-
 });

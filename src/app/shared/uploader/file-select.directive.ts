@@ -1,6 +1,13 @@
 import {
-  Directive, ElementRef, EventEmitter, Inject, Input, OnDestroy, OnInit, Output,
-  PLATFORM_ID
+  Directive,
+  ElementRef,
+  EventEmitter,
+  Inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  PLATFORM_ID,
 } from '@angular/core';
 import { NgUploaderOptions, UploadOutput } from './upload.interface';
 import { isPlatformServer } from '@angular/common';
@@ -9,10 +16,9 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { UploaderService } from './uploader.service';
 
 @Directive({
-  selector: '[tslFileSelect]'
+  selector: '[tslFileSelect]',
 })
-export class FileSelectDirective  implements OnInit, OnDestroy {
-
+export class FileSelectDirective implements OnInit, OnDestroy {
   @Input() uploadInput: EventEmitter<any>;
   @Input() uploadCoverInput: EventEmitter<any>;
   @Output() uploadOutput: EventEmitter<UploadOutput>;
@@ -24,7 +30,12 @@ export class FileSelectDirective  implements OnInit, OnDestroy {
 
   subscription: Subscription;
 
-  constructor(@Inject(PLATFORM_ID) private platform_id, private elementRef: ElementRef, private sanitizer: DomSanitizer, private upload: UploaderService) {
+  constructor(
+    @Inject(PLATFORM_ID) private platform_id,
+    private elementRef: ElementRef,
+    private sanitizer: DomSanitizer,
+    private upload: UploaderService
+  ) {
     this.uploadOutput = new EventEmitter<UploadOutput>();
   }
 
@@ -45,13 +56,18 @@ export class FileSelectDirective  implements OnInit, OnDestroy {
     });
 
     if (this.uploadInput instanceof EventEmitter) {
-      this.subscription = this.upload.initInputEvents(this.uploadInput, this.imageType);
+      this.subscription = this.upload.initInputEvents(
+        this.uploadInput,
+        this.imageType
+      );
     }
 
     if (this.uploadCoverInput instanceof EventEmitter) {
-      this.subscription = this.upload.initInputEvents(this.uploadCoverInput, this.imageType);
+      this.subscription = this.upload.initInputEvents(
+        this.uploadCoverInput,
+        this.imageType
+      );
     }
-
   }
 
   ngOnDestroy() {
@@ -67,6 +83,5 @@ export class FileSelectDirective  implements OnInit, OnDestroy {
 
   fileListener = () => {
     this.upload.handleFiles(this.el.files, this.imageType);
-  }
-
+  };
 }

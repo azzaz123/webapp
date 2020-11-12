@@ -81,4 +81,8 @@ export interface ListItemCar {
    * Identifier of the screen that the item was uploaded from
    */
   screenId: number;
+  /**
+   * Hashtags
+   */
+  hashtags?: string;
 }

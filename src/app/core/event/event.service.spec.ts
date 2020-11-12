@@ -1,14 +1,13 @@
 /* tslint:disable:no-unused-variable */
 
-
-import {share} from 'rxjs/operators';
+import { share } from 'rxjs/operators';
 import { TestBed } from '@angular/core/testing';
 import { EventService } from './event.service';
-import { Subject ,  Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import createSpy = jasmine.createSpy;
 
 const EVENT_NAME = 'MockEventName';
-const EVENT_DATA: any = {number: 5};
+const EVENT_DATA: any = { number: 5 };
 const EVENT_CALLBACK: Function = createSpy('EVENT_CALLBACK');
 let service: EventService;
 
@@ -29,11 +28,13 @@ describe('Service: Event', () => {
       const subject = new Subject();
       service['subjects'][EVENT_NAME] = {
         observable: subject.asObservable().pipe(share()),
-        subject: subject
+        subject: subject,
       };
       spyOn(service['subjects'][EVENT_NAME].subject, 'next');
       service.emit(EVENT_NAME, EVENT_DATA);
-      expect(service['subjects'][EVENT_NAME].subject.next).toHaveBeenCalledWith([EVENT_DATA]);
+      expect(
+        service['subjects'][EVENT_NAME].subject.next
+      ).toHaveBeenCalledWith([EVENT_DATA]);
     });
   });
 
@@ -46,7 +47,10 @@ describe('Service: Event', () => {
       expect(EVENT_CALLBACK).toHaveBeenCalledTimes(1);
     });
     it('should return a subscription', () => {
-      const subscription: Subscription = service.subscribe(EVENT_NAME, EVENT_CALLBACK);
+      const subscription: Subscription = service.subscribe(
+        EVENT_NAME,
+        EVENT_CALLBACK
+      );
       expect(subscription instanceof Subscription).toBeTruthy();
     });
   });
@@ -59,5 +63,4 @@ describe('Service: Event', () => {
       expect(service['subjects'][EVENT_NAME]).toBeNull();
     });
   });
-
 });

@@ -80,7 +80,7 @@
           text-transform: uppercase;
         }
       }
-      mat-icon {
+      tsl-svg-icon {
         height: 48px;
         width: 48px;
         @include in-the-middle;
@@ -92,7 +92,7 @@
         }
       }
       &--cars {
-        mat-icon {
+        tsl-svg-icon {
           height: 26px;
           width: 26px;
         }
@@ -100,7 +100,7 @@
       &.active {
         .selector-icon {
           background-color: $walla-main;
-          mat-icon {
+          tsl-svg-icon {
             svg g,
             svg path {
               fill: $white !important;
@@ -116,7 +116,7 @@
         span {
           color: $blue-grey-2;
         }
-        mat-icon {
+        tsl-svg-icon {
           ::ng-deep {
             svg g,
             svg path {
@@ -125,29 +125,25 @@
           }
         }
       }
-      input[type="checkbox"] {
+      input[type='checkbox'] {
         position: absolute;
         clip: rect(0, 0, 0, 0);
         pointer-events: none;
       }
-    }
-
-    &.shipping-selector {
       @include media-breakpoint-down(sm) {
-        .selector {
+        &.shipping-selector {
+          width: calc(100% / 5);
+          padding: 0;
           .selector-icon {
-            width: calc(100% / 5);
             background-color: $white;
           }
           &.active {
             .selector-icon {
               background-color: $white;
-              mat-icon {
-                ::ng-deep {
-                  svg g,
-                  svg path {
-                    fill: $walla-main;
-                  }
+              tsl-svg-icon {
+                svg g,
+                svg path {
+                  fill: $walla-main !important;
                 }
               }
             }
@@ -202,17 +198,16 @@
       cursor: pointer;
       display: flex;
       justify-content: center;
-      mat-icon {
+      align-items: center;
+      tsl-svg-icon {
         display: none;
-        height: 9px;
-        width: 12px;
       }
       &.selected {
         background: $yellow-dark;
         border-color: transparent;
-        mat-icon {
+        tsl-svg-icon {
           display: flex;
-          ::ng-deep path {
+          svg g g {
             fill: $white;
           }
         }
@@ -225,16 +220,13 @@
       .select {
         &.selected {
           background: $walla-main;
-          mat-icon {
-            display: block;
-          }
         }
         &:hover {
           border-color: $walla-main;
         }
       }
     }
-    input[type="checkbox"] {
+    input[type='checkbox'] {
       position: absolute;
       clip: rect(0, 0, 0, 0);
       pointer-events: none;
@@ -250,12 +242,12 @@ form {
         border: 1px solid $negative-main !important;
       }
     }
-    ng-select.ng-invalid > div {
+    tsl-dropdown.ng-invalid > .Dropdown > div {
       border: 1px solid $negative-main !important;
     }
     .photo-wrapper:first-of-type .product-photo {
       border-color: $negative-main !important;
-      background-image: url("/assets/icons/camera-red.svg") !important;
+      background-image: url('/assets/icons/camera-red.svg') !important;
     }
     .input-radio.ng-invalid input {
       border: 1px solid $negative-main !important;

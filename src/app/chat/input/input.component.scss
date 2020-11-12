@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 form {
   position: relative;
@@ -7,7 +7,7 @@ form {
     width: 100%;
     border-radius: 24px;
     border: 1px solid $blue-grey-5;
-    transition: border-color ease .15s;
+    transition: border-color ease 0.15s;
     padding: $spacing-xs $spacing-xs $spacing-xs $spacing-ml;
     position: relative;
 
@@ -54,9 +54,9 @@ form {
         display: flex;
         justify-content: center;
         align-items: center;
-        transition: .15s ease all;
+        transition: 0.15s ease all;
 
-        mat-icon {
+        tsl-svg-icon {
           width: 22px;
           height: 23px;
         }

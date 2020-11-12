@@ -1,33 +1,54 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+  async,
+} from '@angular/core/testing';
 
 import { CurrentConversationComponent } from './current-conversation.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
-import { InboxMessage, MessageStatus, MessageType } from '../model/inbox-message';
-import { USER_ID } from '../../../tests/user.fixtures.spec';
+import {
+  CREATE_MOCK_INBOX_CONVERSATION,
+  MOCK_INBOX_CONVERSATION_WITH_MALICIOUS_USER,
+  MOCK_INBOX_CONVERSATION_BASIC,
+} from '../../../tests/inbox.fixtures.spec';
+import {
+  InboxMessage,
+  MessageStatus,
+  MessageType,
+} from '../model/inbox-message';
+import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
 import { RealTimeService } from '../../core/message/real-time.service';
 import { EventService } from '../../core/event/event.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { InboxConversationService } from '../service';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { ConversationServiceMock, MockRemoteConsoleService } from '../../../tests';
+import {
+  MockRemoteConsoleService,
+  InboxConversationServiceMock,
+} from '../../../tests';
 import { RealTimeServiceMock } from '../../../tests/real-time.fixtures.spec';
 import { DateCalendarPipe } from 'app/shared/pipes';
 import { RemoteConsoleService } from '../../core/remote-console';
-
-class MockConversationService {
-  public loadMoreMessages() {
-  }
-}
-
-class MessageHTMLElementMock {
-  scrollIntoView(arg?: boolean | ScrollIntoViewOptions): void {
-  }
-}
+import { MaliciousConversationModalComponent } from '../modals/malicious-conversation-modal/malicious-conversation-modal.component';
+import { SimpleChange, NO_ERRORS_SCHEMA } from '@angular/core';
+import {
+  AnalyticsEvent,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  ClickBannedUserChatPopUpCloseButton,
+  ClickBannedUserChatPopUpExitButton,
+  SCREEN_IDS,
+  ViewBannedUserChatPopUp,
+} from 'app/core/analytics/analytics-constants';
+import { AnalyticsService } from '../../core/analytics/analytics.service';
+import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
+import { UserService } from 'app/core/user/user.service';
+import * as Visibility from 'visibilityjs';
 
 describe('CurrentConversationComponent', () => {
   let component: CurrentConversationComponent;
@@ -36,32 +57,71 @@ describe('CurrentConversationComponent', () => {
   let eventService: EventService;
   let conversationService: InboxConversationService;
   let remoteConsoleService: RemoteConsoleService;
+  let analyticsService: AnalyticsService;
+  let modalService: NgbModal;
+  let userService: UserService;
+  let modalMockResult: Promise<{}>;
 
-  beforeEach(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        NgbModule,
-        NgxPermissionsModule.forRoot()
-      ],
-      declarations: [CurrentConversationComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      providers: [EventService,
+      imports: [NgxPermissionsModule.forRoot()],
+      declarations: [CurrentConversationComponent, DateCalendarPipe],
+      providers: [
+        EventService,
+        NgbModal,
         { provide: RealTimeService, useClass: RealTimeServiceMock },
         { provide: TrackingService, useClass: MockTrackingService },
-        { provide: InboxConversationService, useClass: ConversationServiceMock },
-        DateCalendarPipe,
+        {
+          provide: InboxConversationService,
+          useClass: InboxConversationServiceMock,
+        },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
-        I18nService
-      ]
-    });
+        { provide: AnalyticsService, useClass: MockAnalyticsService },
+        {
+          provide: UserService,
+          useValue: {
+            user: MOCK_USER,
+          },
+        },
+        {
+          provide: NgbModal,
+          useValue: {
+            open() {
+              return {
+                result: modalMockResult,
+                componentInstance: {
+                  chatContext: {
+                    userId: userService.user.id,
+                    bannedUserId: component.currentConversation?.user?.id,
+                    conversationId: component.currentConversation?.id,
+                    screenId: SCREEN_IDS.BannedUserChatPopUp,
+                  },
+                },
+              };
+            },
+          },
+        },
+        I18nService,
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
     fixture = TestBed.createComponent(CurrentConversationComponent);
     component = fixture.componentInstance;
     component.currentConversation = CREATE_MOCK_INBOX_CONVERSATION();
+    modalMockResult = Promise.resolve({});
 
     realTime = TestBed.inject(RealTimeService);
     eventService = TestBed.inject(EventService);
     conversationService = TestBed.inject(InboxConversationService);
     remoteConsoleService = TestBed.inject(RemoteConsoleService);
+    modalService = TestBed.inject(NgbModal);
+    analyticsService = TestBed.inject(AnalyticsService);
+    userService = TestBed.inject(UserService);
+
+    fixture.detectChanges();
   });
 
   describe('ngOnInit', () => {
@@ -71,25 +131,46 @@ describe('CurrentConversationComponent', () => {
 
     describe('when the browser window is visible', () => {
       beforeEach(() => {
-        spyOn(Visibility, 'onVisible').and.callFake((callback: Function) => callback());
+        spyOn(Visibility, 'onVisible').and.callFake((callback: Function) =>
+          callback()
+        );
       });
 
       it(`should call realTime.sendRead when a MESSAGE_ADDED event is triggered with a message belonging
       to the currentConversation`, fakeAsync(() => {
-        const newMessage = new InboxMessage('someId', component.currentConversation.id, 'hola!',
-          component.currentConversation.messages[0].from, false, new Date(), MessageStatus.RECEIVED, MessageType.TEXT);
+        const newMessage = new InboxMessage(
+          'someId',
+          component.currentConversation.id,
+          'hola!',
+          component.currentConversation.messages[0].from,
+          false,
+          new Date(),
+          MessageStatus.RECEIVED,
+          MessageType.TEXT
+        );
 
         component.ngOnInit();
         eventService.emit(EventService.MESSAGE_ADDED, newMessage);
         tick(1000);
 
-        expect(realTime.sendRead).toHaveBeenCalledWith(newMessage.from, component.currentConversation.id);
+        expect(realTime.sendRead).toHaveBeenCalledWith(
+          newMessage.from,
+          component.currentConversation.id
+        );
       }));
 
       it(`should NOT call realTime.sendRead when a MESSAGE_ADDED event is triggered with a message NOT belonging
         to the currentConversation`, fakeAsync(() => {
-        const newMessage = new InboxMessage('someId', 'other-thread-id', 'hola!',
-          component.currentConversation.messages[0].from, true, new Date(), MessageStatus.RECEIVED, MessageType.TEXT);
+        const newMessage = new InboxMessage(
+          'someId',
+          'other-thread-id',
+          'hola!',
+          component.currentConversation.messages[0].from,
+          true,
+          new Date(),
+          MessageStatus.RECEIVED,
+          MessageType.TEXT
+        );
 
         component.ngOnInit();
         eventService.emit(EventService.MESSAGE_ADDED, newMessage);
@@ -101,8 +182,16 @@ describe('CurrentConversationComponent', () => {
 
     it('should  NOT call realTime.sendRead when a MESSAGE_ADDED event AND the browser window is NOT visible', fakeAsync(() => {
       spyOn(Visibility, 'onVisible').and.callFake(() => false);
-      const newMessage = new InboxMessage('someId', component.currentConversation.id, 'hola!',
-        component.currentConversation.messages[0].from, true, new Date(), MessageStatus.RECEIVED, MessageType.TEXT);
+      const newMessage = new InboxMessage(
+        'someId',
+        component.currentConversation.id,
+        'hola!',
+        component.currentConversation.messages[0].from,
+        true,
+        new Date(),
+        MessageStatus.RECEIVED,
+        MessageType.TEXT
+      );
 
       component.ngOnInit();
       eventService.emit(EventService.MESSAGE_ADDED, newMessage);
@@ -147,12 +236,23 @@ describe('CurrentConversationComponent', () => {
     let nextMessage;
     beforeEach(() => {
       currentMessage = component.currentConversation.messages[0];
-      nextMessage = new InboxMessage('123', component.currentConversation.id, 'new msg', USER_ID, true, new Date(),
-        MessageStatus.RECEIVED, MessageType.TEXT);
+      nextMessage = new InboxMessage(
+        '123',
+        component.currentConversation.id,
+        'new msg',
+        USER_ID,
+        true,
+        new Date(),
+        MessageStatus.RECEIVED,
+        MessageType.TEXT
+      );
     });
 
     it('should return TRUE if it is called without a nextMessage parameter', () => {
-      const value = component.showDate(component.currentConversation.messages[0], null);
+      const value = component.showDate(
+        component.currentConversation.messages[0],
+        null
+      );
 
       expect(value).toBe(true);
     });
@@ -231,7 +331,9 @@ describe('CurrentConversationComponent', () => {
 
     it('should show message third voice', () => {
       expect(component.isThirdVoiceReview(MessageType.REVIEW)).toBeTruthy();
-      expect(component.isThirdVoiceDropPrice(MessageType.PRICE_DROP)).toBeTruthy();
+      expect(
+        component.isThirdVoiceDropPrice(MessageType.PRICE_DROP)
+      ).toBeTruthy();
     });
 
     it('should not show message third voice', () => {
@@ -254,7 +356,7 @@ describe('CurrentConversationComponent', () => {
     });
 
     it('should scroll to last message', () => {
-      const messageHTMLMock = new MessageHTMLElementMock();
+      const messageHTMLMock = { scrollIntoView: () => {} };
       spyOn(document, 'querySelector').and.returnValues(messageHTMLMock);
       spyOn(component, 'sendReadForLastInboxMessage');
 
@@ -267,7 +369,6 @@ describe('CurrentConversationComponent', () => {
   });
 
   describe('sendReadSignal', () => {
-
     it('should not scroll to last message', () => {
       component['lastInboxMessage'] = null;
       spyOn(realTime, 'sendRead');
@@ -278,17 +379,30 @@ describe('CurrentConversationComponent', () => {
     });
 
     it('should scroll to last message', fakeAsync(() => {
-      spyOn(Visibility, 'onVisible').and.callFake((callback: Function) => callback());
+      spyOn(Visibility, 'onVisible').and.callFake((callback: Function) =>
+        callback()
+      );
 
-      const inboxMessage = new InboxMessage('123', component.currentConversation.id, 'new msg', USER_ID, false, new Date(),
-        MessageStatus.RECEIVED, MessageType.TEXT);
+      const inboxMessage = new InboxMessage(
+        '123',
+        component.currentConversation.id,
+        'new msg',
+        USER_ID,
+        false,
+        new Date(),
+        MessageStatus.RECEIVED,
+        MessageType.TEXT
+      );
       component['lastInboxMessage'] = inboxMessage;
       spyOn(realTime, 'sendRead');
 
       component.sendReadForLastInboxMessage();
       tick(1000);
 
-      expect(realTime.sendRead).toHaveBeenCalledWith(inboxMessage.from, inboxMessage.thread);
+      expect(realTime.sendRead).toHaveBeenCalledWith(
+        inboxMessage.from,
+        inboxMessage.thread
+      );
     }));
   });
 
@@ -300,18 +414,28 @@ describe('CurrentConversationComponent', () => {
 
       component.navigationBack();
 
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.CURRENT_CONVERSATION_SET, null);
+      expect(eventService.emit).toHaveBeenCalledWith(
+        EventService.CURRENT_CONVERSATION_SET,
+        null
+      );
     });
   });
 
   describe('clickSendMessage', () => {
-
     beforeEach(() => spyOn(remoteConsoleService, 'sendMessageAckFailed'));
 
     it('should send message is not send for pending messages', fakeAsync(() => {
       const MESSAGE_ID = 'MESSAGE_ID';
-      const message = new InboxMessage(MESSAGE_ID, 'message_thread', 'text', 'user_id', true, new Date(),
-        MessageStatus.PENDING, MessageType.TEXT);
+      const message = new InboxMessage(
+        MESSAGE_ID,
+        'message_thread',
+        'text',
+        'user_id',
+        true,
+        new Date(),
+        MessageStatus.PENDING,
+        MessageType.TEXT
+      );
       component.currentConversation = CREATE_MOCK_INBOX_CONVERSATION();
       component.currentConversation.messages = [message];
 
@@ -319,12 +443,14 @@ describe('CurrentConversationComponent', () => {
 
       tick(component.MESSAGE_METRIC_DELAY);
 
-      expect(remoteConsoleService.sendMessageAckFailed).toHaveBeenCalledWith(MESSAGE_ID, 'message is not send after 5000ms');
+      expect(remoteConsoleService.sendMessageAckFailed).toHaveBeenCalledWith(
+        MESSAGE_ID,
+        'message is not send after 5000ms'
+      );
     }));
   });
 
   describe('restoreConnection', () => {
-
     beforeEach(() => {
       spyOn(remoteConsoleService, 'sendMessageAckFailed');
       component.ngOnInit();
@@ -332,13 +458,140 @@ describe('CurrentConversationComponent', () => {
 
     it('should send metric message is not sent after restoring metric', () => {
       const MESSAGE_ID = 'MESSAGE_ID';
-      const message = new InboxMessage(MESSAGE_ID, 'message_thread', 'text', 'user_id', true, new Date(),
-        MessageStatus.PENDING, MessageType.TEXT);
+      const message = new InboxMessage(
+        MESSAGE_ID,
+        'message_thread',
+        'text',
+        'user_id',
+        true,
+        new Date(),
+        MessageStatus.PENDING,
+        MessageType.TEXT
+      );
       component.currentConversation.messages = [message];
 
       eventService.emit(EventService.CONNECTION_RESTORED);
 
-      expect(remoteConsoleService.sendMessageAckFailed).toHaveBeenCalledWith(MESSAGE_ID, 'pending messages after restored connection');
+      expect(remoteConsoleService.sendMessageAckFailed).toHaveBeenCalledWith(
+        MESSAGE_ID,
+        'pending messages after restored connection'
+      );
+    });
+  });
+
+  describe('when opening a different conversation', () => {
+    beforeEach(() => {
+      spyOn(modalService, 'open').and.callThrough();
+      component.currentConversation = null;
+      fixture.detectChanges();
+    });
+
+    describe('and when other user is considered malicious', () => {
+      it('should show malicious modal', () => {
+        // TODO: Investigate more why fixture.detectChanges is not triggering component.ngOnChanges automatically
+        component.currentConversation = MOCK_INBOX_CONVERSATION_WITH_MALICIOUS_USER;
+        component.ngOnChanges({
+          currentConversation: new SimpleChange(
+            null,
+            MOCK_INBOX_CONVERSATION_WITH_MALICIOUS_USER,
+            false
+          ),
+        });
+
+        fixture.detectChanges();
+
+        expect(modalService.open).toHaveBeenCalledWith(
+          MaliciousConversationModalComponent,
+          {
+            windowClass: 'warning',
+          }
+        );
+      });
+    });
+
+    describe('and when other user is not considered malicious', () => {
+      it('should not show malicious modal', () => {
+        // TODO: Investigate more why fixture.detectChanges is not triggering component.ngOnChanges automatically
+        component.currentConversation = MOCK_INBOX_CONVERSATION_BASIC;
+        component.ngOnChanges({
+          currentConversation: new SimpleChange(
+            null,
+            MOCK_INBOX_CONVERSATION_BASIC,
+            false
+          ),
+        });
+        fixture.detectChanges();
+
+        expect(modalService.open).not.toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('Analytics', () => {
+    describe('when malicious modal is shown', () => {
+      let mockedAtr: ViewBannedUserChatPopUp;
+
+      beforeEach(fakeAsync(() => {
+        component.currentConversation = MOCK_INBOX_CONVERSATION_WITH_MALICIOUS_USER;
+        mockedAtr = {
+          userId: userService.user.id,
+          bannedUserId: component.currentConversation?.user?.id,
+          conversationId: component.currentConversation?.id,
+          screenId: SCREEN_IDS.BannedUserChatPopUp,
+        };
+        spyOn(analyticsService, 'trackEvent').and.callThrough();
+      }));
+
+      describe('and when user clicks on CTA', () => {
+        it('should track event to analytics', fakeAsync(() => {
+          const expectedEvent: AnalyticsEvent<ClickBannedUserChatPopUpExitButton> = {
+            name: ANALYTICS_EVENT_NAMES.ClickBannedUserChatPopUpExitButton,
+            eventType: ANALYTIC_EVENT_TYPES.Other,
+            attributes: mockedAtr,
+          };
+          spyOn(modalService, 'open').and.callThrough();
+
+          fixture.detectChanges();
+          component.ngOnChanges({
+            currentConversation: new SimpleChange(
+              null,
+              MOCK_INBOX_CONVERSATION_BASIC,
+              false
+            ),
+          });
+          tick();
+
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(
+            expectedEvent
+          );
+        }));
+      });
+
+      describe('and when user dismisses the modal', () => {
+        it('should track event to analytics', fakeAsync(() => {
+          modalMockResult = Promise.reject({});
+          const expectedEvent: AnalyticsEvent<ClickBannedUserChatPopUpCloseButton> = {
+            name: ANALYTICS_EVENT_NAMES.ClickBannedUserChatPopUpCloseButton,
+            eventType: ANALYTIC_EVENT_TYPES.Other,
+            attributes: mockedAtr,
+          };
+          spyOn(modalService, 'open').and.callThrough();
+
+          fixture.detectChanges();
+          component.ngOnChanges({
+            currentConversation: new SimpleChange(
+              null,
+              MOCK_INBOX_CONVERSATION_BASIC,
+              false
+            ),
+          });
+          tick();
+
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(
+            expectedEvent
+          );
+        }));
+      });
     });
   });
 });

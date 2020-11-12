@@ -1,6 +1,10 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
+import { of } from 'rxjs';
+import {
+  async,
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+} from '@angular/core/testing';
 import { ItemService } from '../core/item/item.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FavoritesComponent } from './favorites.component';
@@ -21,31 +25,35 @@ describe('FavoritesComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FavoritesComponent ],
+      declarations: [FavoritesComponent],
       providers: [
-        { provide: ItemService, useValue: {
-            myFavorites () {
-              return observableOf({data: [MOCK_ITEM, MOCK_ITEM], init: 2});
-            }
-          }
-        },
-        { provide: ProfileService, useValue: {
-            myFavorites () {
-              return observableOf({data: [MOCK_PROFILE, MOCK_PROFILE], init: 2});
-            }
-          }
+        {
+          provide: ItemService,
+          useValue: {
+            myFavorites() {
+              return of({ data: [MOCK_ITEM, MOCK_ITEM], init: 2 });
+            },
+          },
         },
         {
-          provide: UserService, useValue: {
+          provide: ProfileService,
+          useValue: {
+            myFavorites() {
+              return of({ data: [MOCK_PROFILE, MOCK_PROFILE], init: 2 });
+            },
+          },
+        },
+        {
+          provide: UserService,
+          useValue: {
             getStats() {
-              return observableOf(MOCK_USER_STATS);
-            }
-          }
+              return of(MOCK_USER_STATS);
+            },
+          },
         },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -62,12 +70,14 @@ describe('FavoritesComponent', () => {
   });
 
   describe('getItems', () => {
-
     beforeEach(fakeAsync(() => {
       spyOn(component, 'getItems').and.callThrough();
       spyOn(component, 'getProfiles').and.callThrough();
       itemServiceSpy = spyOn(itemService, 'myFavorites').and.callThrough();
-      profileServiceSpy = spyOn(profileService, 'myFavorites').and.callThrough();
+      profileServiceSpy = spyOn(
+        profileService,
+        'myFavorites'
+      ).and.callThrough();
     }));
 
     it('should call myFavorites when component init', () => {
@@ -112,7 +122,9 @@ describe('FavoritesComponent', () => {
     });
 
     it('should set end true if no init', () => {
-      itemServiceSpy.and.returnValue(observableOf({data: [MOCK_ITEM, MOCK_ITEM], init: null}));
+      itemServiceSpy.and.returnValue(
+        of({ data: [MOCK_ITEM, MOCK_ITEM], init: null })
+      );
       component.getItems();
 
       expect(component['end']).toBeTruthy();
@@ -121,7 +133,10 @@ describe('FavoritesComponent', () => {
 
   describe('filterByStatus', () => {
     beforeEach(() => {
-      profileServiceSpy = spyOn(profileService, 'myFavorites').and.callThrough();
+      profileServiceSpy = spyOn(
+        profileService,
+        'myFavorites'
+      ).and.callThrough();
       itemServiceSpy = spyOn(itemService, 'myFavorites').and.callThrough();
     });
 
@@ -149,9 +164,11 @@ describe('FavoritesComponent', () => {
   });
 
   describe('getProfiles', () => {
-
     beforeEach(() => {
-      profileServiceSpy = spyOn(profileService, 'myFavorites').and.callThrough();
+      profileServiceSpy = spyOn(
+        profileService,
+        'myFavorites'
+      ).and.callThrough();
       itemServiceSpy = spyOn(itemService, 'myFavorites').and.callThrough();
     });
 
@@ -180,7 +197,11 @@ describe('FavoritesComponent', () => {
       component.profiles = [MOCK_PROFILE];
       component.getProfiles(true);
 
-      expect(component.profiles).toEqual([MOCK_PROFILE, MOCK_PROFILE, MOCK_PROFILE]);
+      expect(component.profiles).toEqual([
+        MOCK_PROFILE,
+        MOCK_PROFILE,
+        MOCK_PROFILE,
+      ]);
     });
 
     it('should set loading to false', () => {
@@ -191,7 +212,9 @@ describe('FavoritesComponent', () => {
     });
 
     it('should set end true if no init', () => {
-      profileServiceSpy.and.returnValue(observableOf({data: [MOCK_PROFILE, MOCK_PROFILE], init: null}));
+      profileServiceSpy.and.returnValue(
+        of({ data: [MOCK_PROFILE, MOCK_PROFILE], init: null })
+      );
       component.getProfiles();
 
       expect(component['end']).toBeTruthy();
@@ -245,7 +268,7 @@ describe('FavoritesComponent', () => {
 
   describe('removeItem', () => {
     it('should remove item', () => {
-      const [item1, item2] = component.items = [MOCK_ITEM, MOCK_ITEM];
+      const [item1, item2] = (component.items = [MOCK_ITEM, MOCK_ITEM]);
       const NUMBEROFFAVORITES = 1;
 
       component.numberOfFavorites = NUMBEROFFAVORITES;
@@ -258,7 +281,10 @@ describe('FavoritesComponent', () => {
 
   describe('removeProfile', () => {
     it('should remove the profile', () => {
-      const [profile1, profile2] = component.profiles = [MOCK_PROFILE, MOCK_PROFILE];
+      const [profile1, profile2] = (component.profiles = [
+        MOCK_PROFILE,
+        MOCK_PROFILE,
+      ]);
       const NUMBEROFFAVORITES = 1;
 
       component.numberOfFavorites = NUMBEROFFAVORITES;
@@ -285,7 +311,9 @@ describe('FavoritesComponent', () => {
       component.getNumberOfFavorites();
 
       expect(userService.getStats).toHaveBeenCalled();
-      expect(component.numberOfFavorites).toEqual(MOCK_USER_STATS.counters.favorites);
+      expect(component.numberOfFavorites).toEqual(
+        MOCK_USER_STATS.counters.favorites
+      );
     });
   });
 });

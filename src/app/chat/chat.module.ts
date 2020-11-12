@@ -2,9 +2,12 @@ import { NgModule } from '@angular/core';
 import { chatRoutedComponents, ChatRoutingModule } from './chat.routes';
 import { InputComponent } from './input/input.component';
 import { ConnectionAlertComponent } from './connection-alert/connection-alert.component';
-import { NgbDropdownModule, NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbDropdownModule,
+  NgbModalModule,
+  NgbTooltipModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
-import { MatIconModule } from '@angular/material';
 import { ItemComponent } from './item/item.component';
 import { SharedModule } from '../shared/shared.module';
 import { CommonModule } from '@angular/common';
@@ -32,12 +35,13 @@ import { InboxItemForSellComponent } from './inbox/inbox-metadata/inbox-item-for
 import { AutosizeModule } from 'ngx-autosize';
 import { MessageModule } from './message/message.module';
 import { ConversationDetailsBarComponent } from './conversation-details-bar';
+import { MaliciousConversationModalComponent } from './modals/malicious-conversation-modal/malicious-conversation-modal.component';
+import { PersonalDataInformationModal } from './modals/personal-data-information-modal/personal-data-information-modal.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    MatIconModule,
     NgbTooltipModule,
     NgbDropdownModule,
     NgbModalModule,
@@ -45,7 +49,7 @@ import { ConversationDetailsBarComponent } from './conversation-details-bar';
     ChatRoutingModule,
     TrackingModule,
     AutosizeModule,
-    MessageModule
+    MessageModule,
   ],
   declarations: [
     chatRoutedComponents,
@@ -70,11 +74,11 @@ import { ConversationDetailsBarComponent } from './conversation-details-bar';
     InboxItemDetailComponent,
     InboxItemForSellComponent,
     ScrollingMessageComponent,
-    ConversationDetailsBarComponent
+    ConversationDetailsBarComponent,
+    MaliciousConversationModalComponent,
+    PersonalDataInformationModal,
   ],
-  exports: [
-    InboxConversationComponent
-  ],
+  exports: [InboxConversationComponent],
   entryComponents: [
     ArchiveInboxConversationComponent,
     UnarchiveInboxConversationComponent,
@@ -82,7 +86,8 @@ import { ConversationDetailsBarComponent } from './conversation-details-bar';
     ReportUserComponent,
     BlockUserComponent,
     UnblockUserComponent,
-  ]
+    MaliciousConversationModalComponent,
+    PersonalDataInformationModal,
+  ],
 })
-export class ChatModule {
-}
+export class ChatModule {}

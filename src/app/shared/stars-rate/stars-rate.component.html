@@ -1,5 +1,6 @@
-<span (mouseleave)="resetHovered()">
+<span class="stars-rate-container" (mouseleave)="resetHovered()">
   <span *ngFor="let star of starsArray" (mouseenter)="onHover(star.score)" (click)="setScore(star.score)">
-    <mat-icon svgIcon="star:{{star.type}}"></mat-icon>
+    <tsl-svg-icon *ngIf="star.type === 'full'" src="/assets/icons/star.svg"></tsl-svg-icon>
+    <tsl-svg-icon *ngIf="star.type !== 'full'" src="/assets/icons/star_empty.svg"></tsl-svg-icon>
   </span>
 </span>

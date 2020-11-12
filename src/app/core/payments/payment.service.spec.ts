@@ -1,26 +1,36 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
-import { PaymentService, PAYMENTS_API_URL, PROTOOL_API_URL } from './payment.service';
 import {
-  BillingInfoResponse, CreditInfo, Packs, Products
+  PaymentService,
+  PAYMENTS_API_URL,
+  PROTOOL_API_URL,
+} from './payment.service';
+import {
+  BillingInfoResponse,
+  CreditInfo,
+  Packs,
+  Products,
 } from './payment.interface';
 import {
   BILLING_INFO_RESPONSE,
   BUMPS_PRODUCT_RESPONSE,
-  createPacksFixture, createWallacreditsPacksFixture,
+  createPacksFixture,
+  createWallacreditsPacksFixture,
   PACK_RESPONSE,
   PERK_RESPONSE,
   PRODUCTS_RESPONSE_PACKS,
   ORDER_CART_EXTRAS_PRO,
-  WALLACREDITS_PACKS_RESPONSE
+  WALLACREDITS_PACKS_RESPONSE,
 } from '../../../tests/payments.fixtures.spec';
 import { PerksModel } from './payment.model';
 import { PRODUCT_RESPONSE } from '../../../tests/item.fixtures.spec';
 import { CREDITS_FACTOR, CREDITS_PACK_ID, Pack } from './pack';
 import { environment } from '../../../environments/environment';
-import { TestRequest, HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
-
+import {
+  TestRequest,
+  HttpTestingController,
+  HttpClientTestingModule,
+} from '@angular/common/http/testing';
 
 describe('PaymentService', () => {
   let service: PaymentService;
@@ -28,10 +38,8 @@ describe('PaymentService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        PaymentService,
-      ],
-      imports: [HttpClientTestingModule]
+      providers: [PaymentService],
+      imports: [HttpClientTestingModule],
     });
     service = TestBed.inject(PaymentService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -46,7 +54,7 @@ describe('PaymentService', () => {
       const expectedUrl = `${environment.baseUrl}${PAYMENTS_API_URL}/billing-info/me`;
       let response: BillingInfoResponse;
 
-      service.getBillingInfo().subscribe(r => response = r);
+      service.getBillingInfo().subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(BILLING_INFO_RESPONSE);
 
@@ -94,7 +102,9 @@ describe('PaymentService', () => {
       const paymentMethodId = 'pm_a1b2c3d4';
       const expectedUrl = `${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_intents/${paymentId}/confirm`;
 
-      service.paymentIntentsConfirm(orderId, paymentId, paymentMethodId).subscribe();
+      service
+        .paymentIntentsConfirm(orderId, paymentId, paymentMethodId)
+        .subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush({});
 
@@ -102,7 +112,7 @@ describe('PaymentService', () => {
       expect(req.request.method).toBe('POST');
       expect(req.request.body).toEqual({
         order_id: orderId,
-        payment_method_id: paymentMethodId
+        payment_method_id: paymentMethodId,
       });
     });
   });
@@ -119,7 +129,9 @@ describe('PaymentService', () => {
         });
         const reqPacks: TestRequest = httpMock.expectOne(expectedUrl);
         reqPacks.flush(PACK_RESPONSE);
-        const reqProducts: TestRequest = httpMock.expectOne(expectedProductsUrl);
+        const reqProducts: TestRequest = httpMock.expectOne(
+          expectedProductsUrl
+        );
         reqProducts.flush(PRODUCTS_RESPONSE_PACKS);
 
         expect(reqPacks.request.url).toEqual(expectedUrl);
@@ -133,8 +145,8 @@ describe('PaymentService', () => {
         const product: Products = {
           [CREDITS_PACK_ID]: {
             id: CREDITS_PACK_ID,
-            name: 'WALLACREDITS'
-          }
+            name: 'WALLACREDITS',
+          },
         };
         const expectedUrlParams = `products=${Object.keys(product)[0]}`;
         const expectedUrl = `${environment.baseUrl}${PAYMENTS_API_URL}/packs?${expectedUrlParams}`;
@@ -158,7 +170,7 @@ describe('PaymentService', () => {
 
     it('should get user credit', () => {
       let resp: CreditInfo;
-      spyOn(service, 'getPerks').and.returnValue(observableOf(PERKS_MODEL));
+      spyOn(service, 'getPerks').and.returnValue(of(PERKS_MODEL));
       const CREDIT = 100;
       PERKS_MODEL.wallacredits.quantity = CREDIT;
 
@@ -170,7 +182,7 @@ describe('PaymentService', () => {
       expect(resp).toEqual({
         currencyName: 'wallacredits',
         credit: CREDIT,
-        factor: CREDITS_FACTOR
+        factor: CREDITS_FACTOR,
       });
     });
   });
@@ -179,7 +191,9 @@ describe('PaymentService', () => {
     let resp: Pack[];
 
     beforeEach(() => {
-      spyOn(service, 'getPacks').and.returnValue(observableOf(createWallacreditsPacksFixture()));
+      spyOn(service, 'getPacks').and.returnValue(
+        of(createWallacreditsPacksFixture())
+      );
 
       service.getCreditsPacks().subscribe((r: Pack[]) => {
         resp = r;
@@ -190,8 +204,8 @@ describe('PaymentService', () => {
       expect(service.getPacks).toHaveBeenCalledWith({
         [CREDITS_PACK_ID]: {
           id: CREDITS_PACK_ID,
-          name: 'WALLACREDITS'
-        }
+          name: 'WALLACREDITS',
+        },
       });
     });
 
@@ -208,7 +222,7 @@ describe('PaymentService', () => {
       const expectedProductsUrl = `${environment.baseUrl}${PAYMENTS_API_URL}/products`;
       let response: Packs;
 
-      service.getSubscriptionPacks().subscribe(r => response = r);
+      service.getSubscriptionPacks().subscribe((r) => (response = r));
       const reqPacks: TestRequest = httpMock.expectOne(expectedUrl);
       reqPacks.flush(PACK_RESPONSE);
       const reqProducts: TestRequest = httpMock.expectOne(expectedProductsUrl);
@@ -241,7 +255,7 @@ describe('PaymentService', () => {
       const expectedProductsUrl = `${environment.baseUrl}${PAYMENTS_API_URL}/products`;
       let response: PerksModel;
 
-      service.getPerks(false).subscribe(r => response = r);
+      service.getPerks(false).subscribe((r) => (response = r));
       const reqPerks: TestRequest = httpMock.expectOne(expectedPerksUrl);
       reqPerks.flush(PERK_RESPONSE);
       const reqProducts: TestRequest = httpMock.expectOne(expectedProductsUrl);

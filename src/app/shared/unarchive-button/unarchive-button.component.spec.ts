@@ -2,13 +2,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { UnarchiveButtonComponent } from './unarchive-button.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { Lead } from '../../core/conversation/lead';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { CallsService } from '../../core/conversation/calls.service';
 import { CALL_ID, MOCK_CALL } from '../../../tests/call.fixtures';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 describe('UnarchiveButtonComponent', () => {
   let component: UnarchiveButtonComponent;
@@ -18,23 +18,21 @@ describe('UnarchiveButtonComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        NgbModule
-      ],
+      imports: [NgbModule],
       providers: [
         { provide: TrackingService, useClass: MockTrackingService },
         {
-          provide: CallsService, useValue: {
+          provide: CallsService,
+          useValue: {
             unarchive() {
               return of({});
-            }
-          }
-        }
+            },
+          },
+        },
       ],
       declarations: [UnarchiveButtonComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -57,7 +55,9 @@ describe('UnarchiveButtonComponent', () => {
       component.unarchive(new Event('click'));
 
       expect(callsService.unarchive).toHaveBeenCalledWith(CALL_ID);
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CALLS_MARK_PENDING);
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.CALLS_MARK_PENDING
+      );
     });
   });
 });

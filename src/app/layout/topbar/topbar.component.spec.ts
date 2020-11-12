@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { TopbarComponent } from './topbar.component';
@@ -11,7 +10,6 @@ import { environment } from '../../../environments/environment';
 import { SUGGESTER_DATA_WEB } from '../../../tests/suggester.fixtures.spec';
 import { User } from '../../core/user/user';
 import { USER_DATA } from '../../../tests/user.fixtures.spec';
-import { WindowRef } from '../../core/window/window.service';
 import { MessageService } from '../../chat/service/message.service';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { PaymentService } from '../../core/payments/payment.service';
@@ -41,7 +39,6 @@ describe('TopbarComponent', () => {
   let userService: UserService;
   let fixture: ComponentFixture<TopbarComponent>;
   let eventService: EventService;
-  let windowRef: WindowRef;
   const CURRENCY = 'wallacoins';
   const CREDITS = 1000;
   let paymentService: PaymentService;
@@ -53,53 +50,48 @@ describe('TopbarComponent', () => {
       providers: [
         DecimalPipe,
         {
-          provide: UserService, useValue: {
+          provide: UserService,
+          useValue: {
             me(): Observable<User> {
-              return observableOf(MOCK_USER);
+              return of(MOCK_USER);
             },
             isProfessional() {
-              return observableOf(true);
-            }
+              return of(true);
+            },
           },
         },
         {
-          provide: PaymentService, useValue: {
+          provide: PaymentService,
+          useValue: {
             getCreditInfo() {
-              return observableOf({
+              return of({
                 currencyName: CURRENCY,
-                credit: CREDITS
+                credit: CREDITS,
               });
-            }
-          }
+            },
+          },
         },
         {
-          provide: WindowRef, useValue: {
-            nativeWindow: {
-              location: {
-                href: environment.siteUrl
-              }
-            }
-          }
+          provide: MessageService,
+          useValue: {
+            totalUnreadMessages$: of(1),
+          },
         },
         {
-          provide: MessageService, useValue: {
-            totalUnreadMessages$: observableOf(1)
-          }
+          provide: 'SUBDOMAIN',
+          useValue: 'www',
         },
         {
-          provide: 'SUBDOMAIN', useValue: 'www'
+          provide: CookieService,
+          useValue: {
+            put(key, value) {},
+          },
         },
-        {
-          provide: CookieService, useValue: {
-            put(key, value) {
-            }
-          }
-        },
-        EventService],
+        EventService,
+      ],
       declarations: [TopbarComponent, CustomCurrencyPipe],
-      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
     userService = TestBed.inject(UserService);
   }));
 
@@ -108,7 +100,6 @@ describe('TopbarComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     eventService = TestBed.inject(EventService);
-    windowRef = TestBed.inject(WindowRef);
     paymentService = TestBed.inject(PaymentService);
     cookieService = TestBed.inject(CookieService);
   });
@@ -165,12 +156,23 @@ describe('TopbarComponent', () => {
 
     it('should set the credits cookies', () => {
       spyOn(cookieService, 'put');
-      const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
+      const cookieOptions =
+        environment.name === 'local'
+          ? { domain: 'localhost' }
+          : { domain: '.wallapop.com' };
 
       component.ngOnInit();
 
-      expect(cookieService.put).toHaveBeenCalledWith('creditName', component.currencyName, cookieOptions);
-      expect(cookieService.put).toHaveBeenCalledWith('creditQuantity', component.wallacoins.toString(), cookieOptions);
+      expect(cookieService.put).toHaveBeenCalledWith(
+        'creditName',
+        component.currencyName,
+        cookieOptions
+      );
+      expect(cookieService.put).toHaveBeenCalledWith(
+        'creditQuantity',
+        component.wallacoins.toString(),
+        cookieOptions
+      );
     });
   });
 
@@ -187,8 +189,8 @@ describe('TopbarComponent', () => {
     beforeEach(() => {
       component.kwsEl = {
         nativeElement: {
-          value: 'iphone'
-        }
+          value: 'iphone',
+        },
       };
     });
 
@@ -220,8 +222,11 @@ describe('TopbarComponent', () => {
 
       component.submitForm();
 
-      expect(windowRef.nativeWindow.location.href)
-        .toEqual(environment.siteUrl.replace('es', 'www') + 'search?category_ids=15000' + '&keywords=');
+      expect(window.location.href).toEqual(
+        environment.siteUrl.replace('es', 'www') +
+          'search?category_ids=15000' +
+          '&keywords='
+      );
     });
 
     it('should submit the search form for cars', () => {
@@ -229,9 +234,11 @@ describe('TopbarComponent', () => {
 
       component.submitForm();
 
-      expect(windowRef.nativeWindow.location.href)
-        .toEqual(environment.siteUrl.replace('es', 'www') + 'search?category_ids=100' + '&keywords=');
+      expect(window.location.href).toEqual(
+        environment.siteUrl.replace('es', 'www') +
+          'search?category_ids=100' +
+          '&keywords='
+      );
     });
   });
-
 });

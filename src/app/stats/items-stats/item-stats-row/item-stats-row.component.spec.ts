@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ItemStatsRowComponent } from './item-stats-row.component';
 import { ItemStatsService } from './item-stats-graph/item-stats.service';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '../../../shared/pipes';
 import { DecimalPipe, CommonModule } from '@angular/common';
@@ -11,7 +11,7 @@ import {
   ITEM_COUNTERS_DATA,
   ITEM_FAVORITES,
   ITEM_VIEWS,
-  MOCK_ITEM_V3
+  MOCK_ITEM_V3,
 } from '../../../../tests/item.fixtures.spec';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ItemService } from '../../../core/item/item.service';
@@ -27,30 +27,32 @@ describe('ItemStatsRowComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [CommonModule, NoopAnimationsModule],
-      declarations: [ ItemStatsRowComponent, CustomCurrencyPipe ],
+      declarations: [ItemStatsRowComponent, CustomCurrencyPipe],
       providers: [
         DecimalPipe,
         {
-          provide: 'SUBDOMAIN', useValue: 'es'
+          provide: 'SUBDOMAIN',
+          useValue: 'es',
         },
         {
-          provide: ItemStatsService, useValue: {
-          getStatistics() {
-            return of(ITEM_STATISTIC_RESPONSE);
-          }
-        }
+          provide: ItemStatsService,
+          useValue: {
+            getStatistics() {
+              return of(ITEM_STATISTIC_RESPONSE);
+            },
+          },
         },
         {
-          provide: ItemService, useValue: {
-          getCounters() {
-            return of(ITEM_COUNTERS_DATA);
-          }
-        }
-        }
+          provide: ItemService,
+          useValue: {
+            getCounters() {
+              return of(ITEM_COUNTERS_DATA);
+            },
+          },
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -64,7 +66,9 @@ describe('ItemStatsRowComponent', () => {
 
   describe('ngOnInit', () => {
     it('should set link', () => {
-      expect(component.link).toBe(environment.siteUrl + 'item/toyota-yaris-1-3-99cv-500008657');
+      expect(component.link).toBe(
+        environment.siteUrl + 'item/toyota-yaris-1-3-99cv-500008657'
+      );
     });
 
     it('should call getStatistics and set it', () => {
@@ -72,7 +76,9 @@ describe('ItemStatsRowComponent', () => {
 
       component.ngOnInit();
 
-      expect(itemStatsService.getStatistics).toHaveBeenCalledWith(MOCK_ITEM_V3.id);
+      expect(itemStatsService.getStatistics).toHaveBeenCalledWith(
+        MOCK_ITEM_V3.id
+      );
     });
 
     it('should call getCounters and set it', () => {
@@ -82,7 +88,7 @@ describe('ItemStatsRowComponent', () => {
 
       component.ngOnInit();
 
-      expect(itemService.getCounters).toHaveBeenCalledWith(MOCK_ITEM_V3.id)
+      expect(itemService.getCounters).toHaveBeenCalledWith(MOCK_ITEM_V3.id);
       expect(component.item.views).toBe(ITEM_VIEWS);
       expect(component.item.favorites).toBe(ITEM_FAVORITES);
       expect(component.item.conversations).toBe(ITEM_CONVERSATIONS);
@@ -90,13 +96,15 @@ describe('ItemStatsRowComponent', () => {
 
     it('should now show the current day stats', () => {
       let today = new Date();
-      today.setUTCHours(0,0,0,0);
+      today.setUTCHours(0, 0, 0, 0);
       const ITEM_STATISTIC_RESPONSE_V2 = ITEM_STATISTIC_RESPONSE;
       ITEM_STATISTIC_RESPONSE_V2.entries.push({
-        'date': today.toString(),
-        'values': {'favs': 95, 'views': 37, 'chats': 63}
-      })
-      spyOn(itemStatsService, 'getStatistics').and.returnValue(of(ITEM_STATISTIC_RESPONSE_V2));
+        date: today.toString(),
+        values: { favs: 95, views: 37, chats: 63 },
+      });
+      spyOn(itemStatsService, 'getStatistics').and.returnValue(
+        of(ITEM_STATISTIC_RESPONSE_V2)
+      );
 
       component.ngOnInit();
 

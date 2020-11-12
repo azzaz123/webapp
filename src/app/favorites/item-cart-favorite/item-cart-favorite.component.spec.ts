@@ -1,17 +1,20 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
-import {async, ComponentFixture, TestBed, fakeAsync, tick} from '@angular/core/testing';
+import { of } from 'rxjs';
+import {
+  async,
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import { ItemCartFavoriteComponent } from './item-cart-favorite.component';
-import { MatIconModule } from '@angular/material';
 import { ItemService } from '../../core/item/item.service';
 import { environment } from '../../../environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {ConfirmationModalComponent} from '../../shared/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
-import { WindowRef } from '../../core/window/window.service';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { MOCK_ITEM } from '../../../tests/item.fixtures.spec';
@@ -22,7 +25,6 @@ describe('ItemCartFavoriteComponent', () => {
   let element: HTMLElement;
 
   let itemService: ItemService;
-  let windowRef: WindowRef;
   let subdomain: string;
   let modalService: NgbModal;
 
@@ -30,36 +32,38 @@ describe('ItemCartFavoriteComponent', () => {
     result: Promise.resolve({
       score: 4,
       comments: 'comment',
-      userId: USER_ID
+      userId: USER_ID,
     }),
-    componentInstance: {}
+    componentInstance: {},
   };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ MatIconModule ],
-      declarations: [ ItemCartFavoriteComponent, CustomCurrencyPipe ],
+      imports: [],
+      declarations: [ItemCartFavoriteComponent, CustomCurrencyPipe],
       providers: [
         DecimalPipe,
-        WindowRef,
-        { provide: ItemService, useValue: {
-            favoriteItem () {
-              return observableOf({});
-            }
-          }
+        {
+          provide: ItemService,
+          useValue: {
+            favoriteItem() {
+              return of({});
+            },
+          },
         },
-        { provide: NgbModal, useValue: {
+        {
+          provide: NgbModal,
+          useValue: {
             open() {
               return modalRef;
-            }
-          }
+            },
+          },
         },
-        {provide: TrackingService, useClass: MockTrackingService},
-        { provide: 'SUBDOMAIN', useValue: 'www'}
+        { provide: TrackingService, useClass: MockTrackingService },
+        { provide: 'SUBDOMAIN', useValue: 'www' },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -68,7 +72,6 @@ describe('ItemCartFavoriteComponent', () => {
     element = fixture.nativeElement;
     component.item = MOCK_ITEM;
     itemService = TestBed.inject(ItemService);
-    windowRef = TestBed.inject(WindowRef);
     modalService = TestBed.inject(NgbModal);
     subdomain = TestBed.inject(<any>'SUBDOMAIN');
 
@@ -78,7 +81,10 @@ describe('ItemCartFavoriteComponent', () => {
   describe('goToItemDetail', () => {
     it('should change window url', () => {
       spyOn(window, 'open');
-      const MOCK_ITEM_URL: string = environment.siteUrl.replace('es', subdomain) + 'item/' + MOCK_ITEM.webSlug;
+      const MOCK_ITEM_URL: string =
+        environment.siteUrl.replace('es', subdomain) +
+        'item/' +
+        MOCK_ITEM.webSlug;
       component.goToItemDetail();
       expect(window.open).toHaveBeenCalledWith(MOCK_ITEM_URL);
     });
@@ -105,7 +111,9 @@ describe('ItemCartFavoriteComponent', () => {
       spyOn(component, 'removeFavoriteModal').and.callThrough();
       spyOn(modalService, 'open').and.callThrough();
       spyOn(component, 'removeFavorite').and.callThrough();
-      removeFavoriteButton = fixture.debugElement.nativeElement.querySelector('tsl-card-footer');
+      removeFavoriteButton = fixture.debugElement.nativeElement.querySelector(
+        'tsl-card-footer'
+      );
       removeFavoriteButton.click();
     }));
 
@@ -114,7 +122,10 @@ describe('ItemCartFavoriteComponent', () => {
     });
 
     it('should open accept modal', () => {
-      expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, { windowClass: 'modal-prompt' });
+      expect(modalService.open).toHaveBeenCalledWith(
+        ConfirmationModalComponent,
+        { windowClass: 'modal-prompt' }
+      );
     });
 
     it('should set modal type "3" ', () => {
