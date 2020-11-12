@@ -43,8 +43,6 @@ $feature-button-width: 170px;
     cursor: pointer;
     tsl-svg-icon {
       display: none;
-      height: 9px;
-      width: 12px;
     }
     &.selected {
       background: $walla-main;
