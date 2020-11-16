@@ -1,4 +1,4 @@
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import {
   async,
   ComponentFixture,
@@ -47,9 +47,7 @@ describe('HelpComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            params: of({
-              section: 'Perfil-6',
-            }),
+            fragment: of('Perfil-6'),
           },
         },
         {
@@ -89,43 +87,6 @@ describe('HelpComponent', () => {
 
       expect(helpService.getFeatures).toHaveBeenCalledWith('es');
       expect(component.features).toEqual(FAQ_FEATURES);
-    });
-
-    it('should call scrollToElement if there is a param', fakeAsync(() => {
-      spyOn(component, 'scrollToElement');
-      route.params = of({
-        section: 'Perfil-6',
-      });
-
-      component.ngOnInit();
-      tick(1000);
-
-      expect(component.scrollToElement).toHaveBeenCalledWith('Perfil-6');
-    }));
-  });
-
-  describe('scrollToElement', () => {
-    it('should set scrollTop to element position', () => {
-      const OFFSET_TOP = 100;
-      const OFFSET_HEIGHT = 200;
-      const FRAGMENT = 'fragment';
-      spyOn(documentObject, 'querySelector').and.returnValue({
-        offsetTop: OFFSET_TOP,
-        offsetHeight: OFFSET_HEIGHT,
-      });
-
-      component.scrollToElement(FRAGMENT);
-
-      expect(documentObject.querySelector).toHaveBeenCalledWith('#' + FRAGMENT);
-      expect(component.scrollTop).toBe(OFFSET_TOP - OFFSET_HEIGHT + 150);
-    });
-  });
-
-  describe('scrollToTop', () => {
-    it('should set scrollTop to 0', () => {
-      component.scrollToTop();
-
-      expect(component.scrollTop).toBe(0);
     });
   });
 

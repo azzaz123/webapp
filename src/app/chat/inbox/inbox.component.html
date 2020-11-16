@@ -4,6 +4,7 @@
     <tsl-pro-badge></tsl-pro-badge>
   </h2>
 </div>
+
 <div *ngxPermissionsOnly="['isProfessional']">
   <div ngbDropdown placement="bottom-left" class="inbox-header-menu"
        *ngIf="shouldDisplayHeader()">
@@ -27,10 +28,11 @@
   </div>
 </div>
 
-<div *ngxPermissionsOnly="['isNormal']">
+<div *ngxPermissionsExcept="['isProfessional']">
   <div class="inbox-header-menu" *ngIf="shouldDisplayHeader()">
     <div class="dropdown-header">
       <div *ngIf="isInbox" class="header-title" i18n="@@inboxBox">Inbox</div>
+      <tsl-pro-badge></tsl-pro-badge>
     </div>
   </div>
 </div>

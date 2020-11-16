@@ -33,6 +33,7 @@ import { MockAnalyticsService } from '../tests/analytics.fixtures.spec';
 import { DidomiService } from './core/didomi/didomi.service';
 import { MockDidomiService } from './core/didomi/didomi.service.spec';
 import { UuidService } from './core/uuid/uuid.service';
+import { SwUpdate } from '@angular/service-worker';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -72,6 +73,13 @@ describe('App', () => {
                 componentInstance: {},
               };
             },
+          },
+        },
+        {
+          provide: SwUpdate,
+          useValue: {
+            available: of(null),
+            activated: of(null),
           },
         },
         {

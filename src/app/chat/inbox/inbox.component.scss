@@ -139,17 +139,19 @@ tsl-process-all-button {
   z-index: 99;
   .dropdown-header {
     display: flex;
-    align-content: center;
+    align-items: center;
+    justify-content: center;
     margin-top: auto;
     margin-bottom: auto;
     .header-title {
       display: flex;
       font-size: 16px;
+      font-weight: $font-weight-chunky;
+      color: $blue-grey-1;
     }
     tsl-svg-icon {
-      height: 24px;
-      width: 24px;
       display: flex;
+      width: 28px;
     }
   }
   .dropdown-menu {
