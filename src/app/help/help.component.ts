@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HelpService } from './help.service';
 import { I18nService } from '../core/i18n/i18n.service';
@@ -7,13 +7,15 @@ import {
   SELLBYTEL_PHONE,
   CARDEALER_COMMERCIAL_CONTACT_MAIL,
 } from '../core/constants';
+import { finalize, take } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'tsl-help',
   templateUrl: './help.component.html',
   styleUrls: ['./help.component.scss'],
 })
-export class HelpComponent implements OnInit {
+export class HelpComponent implements OnInit, OnDestroy {
   public features: any[];
   public faqs: any[];
   public active: string;
@@ -21,6 +23,7 @@ export class HelpComponent implements OnInit {
   public scrollTop: number;
   public sellbytelPhone = SELLBYTEL_PHONE;
   public cardealerCommercialContactMail = CARDEALER_COMMERCIAL_CONTACT_MAIL;
+  private routeFragmentsSubscription: Subscription;
 
   constructor(
     private i18n: I18nService,
@@ -30,32 +33,27 @@ export class HelpComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.helpService.getFaqs(this.i18n.locale).subscribe((faqs: any[]) => {
-      this.faqs = faqs;
-    });
+    this.helpService
+      .getFaqs(this.i18n.locale)
+      .pipe(take(1))
+      .subscribe((faqs: any[]) => {
+        this.faqs = faqs;
+      });
     this.helpService
       .getFeatures(this.i18n.locale)
+      .pipe(
+        take(1),
+        finalize(() => this.subscribeToRouteAnchors())
+      )
       .subscribe((features: any[]) => {
         this.features = features;
       });
-    setTimeout(() => {
-      this.route.params.subscribe((params: any) => {
-        if (params.section) {
-          this.scrollToElement(params.section);
-        }
-      });
-    });
   }
 
-  public scrollToElement(fragment: string) {
-    const element: HTMLElement = this.document.querySelector('#' + fragment);
-    if (element) {
-      this.scrollTop = element.offsetTop - element.offsetHeight + 150;
+  ngOnDestroy() {
+    if (!!this.routeFragmentsSubscription) {
+      this.routeFragmentsSubscription.unsubscribe();
     }
-  }
-
-  public scrollToTop() {
-    this.scrollTop = 0;
   }
 
   public onPageScroll($event: Event) {
@@ -64,5 +62,24 @@ export class HelpComponent implements OnInit {
     } else {
       this.showScrollTop = false;
     }
+  }
+
+  public scrollToTop() {
+    this.scrollToElement('header');
+  }
+
+  private scrollToElement(fragment: string) {
+    const element: HTMLElement = this.document.querySelector('#' + fragment);
+    if (element) {
+      element.scrollIntoView({ block: 'center' });
+    }
+  }
+
+  private subscribeToRouteAnchors(): void {
+    this.routeFragmentsSubscription = this.route.fragment.subscribe(
+      (fragment: string) => {
+        this.scrollToElement(fragment);
+      }
+    );
   }
 }
