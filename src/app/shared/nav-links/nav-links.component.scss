@@ -26,10 +26,6 @@
       &.active {
         color: $walla-main;
         border-bottom: 2px solid $walla-main;
-        @media (max-width: 768px) {
-          color: $blue-grey-2;
-          border-bottom: none;
-        }
       }
     }
   }
