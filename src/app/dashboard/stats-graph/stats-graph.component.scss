@@ -36,9 +36,9 @@
 }
 
 .title,
-ng-select {
+tsl-dropdown {
   position: absolute;
-  margin-left: $spacing-l;
+  margin-left: $spacing-m;
   width: 205px;
   z-index: 1;
 }
@@ -47,10 +47,10 @@ ng-select {
   margin-top: $spacing-l;
 }
 
-ng-select {
+tsl-dropdown {
   $height: 38px;
   height: $height;
-  margin-top: $spacing-ml;
+  margin-top: $spacing-m;
   ::ng-deep {
     & > div {
       height: $height !important;
