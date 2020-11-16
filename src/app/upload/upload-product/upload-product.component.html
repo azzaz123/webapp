@@ -148,7 +148,7 @@
           </tsl-keyword-suggester>
         </div>
       </div>
-      <div class="col-md-3 mt-3" *ngIf="!!selectedRawCategory?.fields.gender">
+      <div class="col-md-3 mt-3" *ngIf="!!selectedRawCategory?.fields.gender && gender">
         <div class="form-group last">
           <label for="gender" i18n="@@UploadProductSelectGender">Gender</label>
           <tsl-dropdown class="form-control" formControlName="gender" id="gender" i18n-placeholder="@@UploadProductSelectGenderPlaceholder"
