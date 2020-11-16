@@ -1,9 +1,9 @@
-<div class="page-content" (scroll)="onPageScroll($event)" [scrollTop]="scrollTop">
+<div class="page-content" (scroll)="onPageScroll($event)">
   <div class="container">
     <tsl-header id="header">
       <div class="col-12">
         <div class="header-row">
-          <h1 class="header-title" i18n>Your help center</h1>
+          <h1 id="header" class="header-title" i18n>Your help center</h1>
         </div>
         <div class="header-row header-row--margin">
           <h4 class="header-subtitle" i18n>We hope that you can find here the answers for all your questions</h4>
@@ -16,7 +16,7 @@
           <div class="box-content box-left">
             <div class="features row">
               <div class="col" *ngFor="let featured of features">
-                <a (click)="scrollToElement(featured.link)" class="featured">
+                <a [routerLink]="['./']" fragment={{featured.link}} class="featured">
                   <tsl-svg-icon src="/assets/icons/{{featured.icon}}.svg"></tsl-svg-icon>
                   <div class="title">{{featured.title}}</div>
                   <div class="desc">{{featured.desc}}</div>
@@ -25,10 +25,10 @@
             </div>
             <ul class="summary">
               <li class="section" *ngFor="let faq of faqs">
-                <h3><a (click)="scrollToElement(faq.category)">{{faq.category}}</a></h3>
+                <h3><a [routerLink]="['./']" fragment={{faq.category}}>{{faq.category}}</a></h3>
                 <ul>
                   <li class="question" *ngFor="let question of faq.questions; let index = index">
-                    <a (click)="scrollToElement(faq.category + '-' + (index + 1))">{{question.title}}</a>
+                    <a [routerLink]="['./']" [fragment]="faq.category + '-' + (index + 1)">{{question.title}}</a>
                   </li>
                 </ul>
               </li>
@@ -74,4 +74,4 @@
   </div>
 </div>
 
-<a class="arrow-scroll-top" [hidden]="!showScrollTop"><tsl-svg-icon src="/assets/icons/arrow-right.svg" (click)="scrollToTop()"></tsl-svg-icon></a>
+<a class="arrow-scroll-top" [hidden]="!showScrollTop" (click)="scrollToTop()"><tsl-svg-icon src="/assets/icons/arrow-right.svg"></tsl-svg-icon></a>

@@ -1,5 +1,10 @@
 @import '~style/common';
 
+.page-content {
+  height: calc(100vh - #{$topbar-height});
+  overflow: scroll;
+}
+
 .box-left {
   padding: $spacing-xxxl 100px;
   a {
@@ -128,10 +133,7 @@ a {
   justify-content: center;
   cursor: pointer;
   tsl-svg-icon {
-    width: 17px;
-    height: 12px;
     transform: rotate(-90deg);
-    margin-left: -10px;
     ::ng-deep path {
       fill: $white;
     }
