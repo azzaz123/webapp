@@ -39,7 +39,7 @@
           <label class="col-12 col-md-3 text-md-right" i18n>Product location</label>
           <div class="col-12 col-md-6 offset-md-1">
             <tsl-location-box [location]="user.location" [form]="profileForm" name="location"
-              [updateLocation]="updateLocationWhenSearching"></tsl-location-box>
+              [updateLocation]="updateLocationWhenSearching" [isIncorrectAddress]="isIncorrectAddress"></tsl-location-box>
           </div>
         </div>
         <div class="pro-section" [class.not-pro]="!isPro">

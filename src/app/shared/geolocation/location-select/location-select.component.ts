@@ -24,6 +24,7 @@ export class LocationSelectComponent implements OnChanges {
   @Input() form: FormGroup;
   @Input() name: string;
   @Input() updateLocation = true;
+  @Input() isIncorrect = false;
   @Output() locationSelected: EventEmitter<Coordinate> = new EventEmitter();
   private control: AbstractControl;
   private latitudeControl: AbstractControl;
@@ -45,6 +46,10 @@ export class LocationSelectComponent implements OnChanges {
       );
       if (this.control.value) {
         this.control.markAsDirty();
+      }
+
+      if (this.isIncorrect) {
+        this.form.get(this.name + '.address').markAsDirty();
       }
     }
   }
