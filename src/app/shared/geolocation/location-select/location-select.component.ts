@@ -44,12 +44,8 @@ export class LocationSelectComponent implements OnChanges {
       this.approximatedLocation = this.form.get(
         this.name + '.approximated_location'
       );
-      if (this.control.value) {
+      if (this.control.value || this.isIncorrect) {
         this.control.markAsDirty();
-      }
-
-      if (this.isIncorrect) {
-        this.form.get(this.name + '.address').markAsDirty();
       }
     }
   }
