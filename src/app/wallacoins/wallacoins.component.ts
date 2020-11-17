@@ -47,6 +47,7 @@ export class WallacoinsComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('sw module change');
     this.openTutorialModal();
     this.paymentService.getCreditsPacks().subscribe((packs: Pack[]) => {
       this.packs = packs;

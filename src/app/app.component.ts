@@ -86,7 +86,6 @@ export class AppComponent implements OnInit {
   }
 
   private subscribeSWChanges() {
-    console.log('test enable sw');
     this.serviceWorker.available.subscribe((event) => {
       console.warn('current version is', event.current);
       console.warn('available version is', event.available);
