@@ -116,7 +116,7 @@ export class UploadProductComponent
   public brands: IOption[] = [];
   public models: IOption[] = [];
   public sizes: IOption[] = [];
-  public gender: IOption[];
+  public genders: IOption[];
   public brandSuggestions: Subject<KeywordSuggestion[]> = new Subject();
   public modelSuggestions: Subject<KeywordSuggestion[]> = new Subject();
   public uploadCompletedPercentage = 0;
@@ -191,7 +191,7 @@ export class UploadProductComponent
     private deviceService: DeviceDetectorService,
     private i18n: I18nService
   ) {
-    this.gender = [
+    this.genders = [
       { value: 'male', label: this.i18n.getTranslations('male') },
       { value: 'female', label: this.i18n.getTranslations('female') },
     ];
