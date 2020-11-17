@@ -35,6 +35,7 @@ import { StripeService } from './core/stripe/stripe.service';
 import { AnalyticsService } from './core/analytics/analytics.service';
 import { DidomiService } from './core/didomi/didomi.service';
 import { UuidService } from './core/uuid/uuid.service';
+import { SwUpdate } from '@angular/service-worker';
 
 @Component({
   selector: 'tsl-root',
@@ -72,7 +73,7 @@ export class AppComponent implements OnInit {
     private stripeService: StripeService,
     private analyticsService: AnalyticsService,
     private uuidService: UuidService,
-    // private serviceWorker: SwUpdate,
+    private serviceWorker: SwUpdate,
     private didomiService: DidomiService
   ) {}
 
@@ -85,14 +86,14 @@ export class AppComponent implements OnInit {
   }
 
   private subscribeSWChanges() {
-    /*     this.serviceWorker.available.subscribe((event) => {
+    this.serviceWorker.available.subscribe((event) => {
       console.warn('current version is', event.current);
       console.warn('available version is', event.available);
     });
     this.serviceWorker.activated.subscribe((event) => {
       console.warn('old version was', event.previous);
       console.warn('new version is', event.current);
-    }); */
+    });
   }
 
   private initializeConfigs(): void {
