@@ -594,43 +594,46 @@ describe('UploadCarComponent', () => {
       expect(component.uploadForm.get('year').valid).toBe(true);
     });
 
-    describe('whiteSpaceValidator', () => {
-      const emptyString = '       ';
+    describe('when user changes the form', () => {
+      describe('and when a required input value has an empty space', () => {
+        const emptyString = '       ';
 
-      it('should not accept empty string in model', () => {
-        component.uploadForm.get('model').patchValue(emptyString);
+        it('should not accept empty string in model', () => {
+          component.uploadForm.get('model').patchValue(emptyString);
 
-        expect(component.uploadForm.get('model').valid).toBe(false);
+          expect(component.uploadForm.get('model').valid).toBe(false);
+        });
+
+        it('should not accept empty string in brand', () => {
+          component.uploadForm.get('brand').patchValue(emptyString);
+
+          expect(component.uploadForm.get('brand').valid).toBe(false);
+        });
+
+        it('should not accept empty string in title', () => {
+          component.uploadForm.get('title').patchValue(emptyString);
+
+          expect(component.uploadForm.get('title').valid).toBe(false);
+        });
       });
 
-      it('should accept string in model', () => {
-        component.uploadForm.get('model').patchValue('Modal1');
+      describe('and when a required values does not have an empty space', () => {
+        it('should accept string in model', () => {
+          component.uploadForm.get('model').patchValue('Modal1');
 
-        expect(component.uploadForm.get('model').valid).toBe(true);
-      });
+          expect(component.uploadForm.get('model').valid).toBe(true);
+        });
+        it('should accept string in brand', () => {
+          component.uploadForm.get('brand').patchValue('Seat');
 
-      it('should not accept empty string in brand', () => {
-        component.uploadForm.get('brand').patchValue(emptyString);
+          expect(component.uploadForm.get('brand').valid).toBe(true);
+        });
 
-        expect(component.uploadForm.get('brand').valid).toBe(false);
-      });
+        it('should accept string in title', () => {
+          component.uploadForm.get('title').patchValue('Car title');
 
-      it('should accept string in brand', () => {
-        component.uploadForm.get('brand').patchValue('Seat');
-
-        expect(component.uploadForm.get('brand').valid).toBe(true);
-      });
-
-      it('should not accept empty string in title', () => {
-        component.uploadForm.get('title').patchValue(emptyString);
-
-        expect(component.uploadForm.get('title').valid).toBe(false);
-      });
-
-      it('should accept string in title', () => {
-        component.uploadForm.get('title').patchValue('Car title');
-
-        expect(component.uploadForm.get('title').valid).toBe(true);
+          expect(component.uploadForm.get('title').valid).toBe(true);
+        });
       });
     });
   });
