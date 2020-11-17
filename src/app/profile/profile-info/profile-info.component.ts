@@ -106,11 +106,11 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     if (this.user.location) {
       userData = {
         ...userData,
-        // location: {
-        //   address: this.user.location.title,
-        //   latitude: this.user.location.approximated_latitude,
-        //   longitude: this.user.location.approximated_longitude,
-        // },
+        location: {
+          address: this.user.location.title,
+          latitude: this.user.location.approximated_latitude,
+          longitude: this.user.location.approximated_longitude,
+        },
       };
     }
 
