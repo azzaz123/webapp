@@ -166,12 +166,13 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
       }
     }
 
+    this.isIncorrectAddress = !this.profileForm.get('location.address').valid;
+
     if (this.profileForm.valid) {
       const profileFormValue = { ...this.profileForm.value };
       const profileFormLocation = profileFormValue.location;
 
       delete profileFormValue.location;
-      this.isIncorrectAddress = false;
       this.loading = true;
 
       this.userService.updateProInfo(profileFormValue).subscribe(() => {
@@ -234,7 +235,6 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
           );
       });
     } else {
-      this.isIncorrectAddress = !this.profileForm.get('location.address').valid;
       this.errorsService.i18nError('formErrors');
     }
   }
