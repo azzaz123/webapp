@@ -106,11 +106,11 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     if (this.user.location) {
       userData = {
         ...userData,
-        location: {
-          address: this.user.location.title,
-          latitude: this.user.location.approximated_latitude,
-          longitude: this.user.location.approximated_longitude,
-        },
+        // location: {
+        //   address: this.user.location.title,
+        //   latitude: this.user.location.approximated_latitude,
+        //   longitude: this.user.location.approximated_longitude,
+        // },
       };
     }
 
@@ -234,11 +234,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
           );
       });
     } else {
-      if (!this.profileForm.get('location.address').valid) {
-        this.isIncorrectAddress = true;
-      } else {
-        this.isIncorrectAddress = false;
-      }
+      this.isIncorrectAddress = !this.profileForm.get('location.address').valid;
       this.errorsService.i18nError('formErrors');
     }
   }
