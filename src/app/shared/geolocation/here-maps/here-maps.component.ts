@@ -3,7 +3,6 @@ import {
   ElementRef,
   Input,
   OnChanges,
-  OnInit,
   ViewChild,
   AfterViewInit,
 } from '@angular/core';
@@ -34,7 +33,7 @@ export class HereMapsComponent implements AfterViewInit, OnChanges {
   private marker: any;
   private circle: any;
 
-  constructor(public hereMapsService: HereMapsService) {}
+  constructor(private hereMapsService: HereMapsService) {}
 
   ngAfterViewInit() {
     if (!this.coordinates) {

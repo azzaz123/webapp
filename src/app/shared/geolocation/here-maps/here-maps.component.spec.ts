@@ -155,7 +155,9 @@ describe('HereMapsComponent', () => {
         );
         expect(spinner).toBeTruthy();
       });
+    });
 
+    describe('when Here Maps is ready', () => {
       it('should not show the spinner', () => {
         spyOn(hereMapsService, 'isLibraryLoading$').and.returnValue(of(false));
         component.ngAfterViewInit();
