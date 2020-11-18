@@ -37,6 +37,7 @@ import {
   EditItemCar,
   ListItemCar,
 } from '../../core/analytics/analytics-constants';
+import { whitespaceValidator } from '../../core/form-validators/formValidators.func';
 
 @Component({
   selector: 'tsl-upload-car',
@@ -63,6 +64,7 @@ export class UploadCarComponent implements OnInit {
   public loading: boolean;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   private oldFormValue: any;
+  public currentYear = new Date().getFullYear();
   public isUrgent = false;
   public customMake = false;
   public customVersion = false;
@@ -89,14 +91,17 @@ export class UploadCarComponent implements OnInit {
       id: '',
       category_id: CARS_CATEGORY,
       images: [[], [Validators.required]],
-      model: ['', [Validators.required]],
-      brand: ['', [Validators.required]],
-      title: ['', [Validators.required]],
-      year: ['', [Validators.required]],
+      model: ['', [Validators.required, whitespaceValidator]],
+      brand: ['', [Validators.required, whitespaceValidator]],
+      title: ['', [Validators.required, whitespaceValidator]],
+      year: [
+        '',
+        [Validators.required, this.min(1900), this.max(this.currentYear)],
+      ],
       sale_price: ['', [Validators.required, this.min(0), this.max(999999999)]],
       financed_price: ['', [this.min(0), this.max(999999999)]],
       currency_code: ['EUR', [Validators.required]],
-      version: ['', [Validators.required]],
+      version: ['', [Validators.required, whitespaceValidator]],
       num_seats: ['', [this.min(0), this.max(99)]],
       num_doors: ['', [this.min(0), this.max(99)]],
       body_type: null,
@@ -111,9 +116,9 @@ export class UploadCarComponent implements OnInit {
         shipping_allowed: false,
       }),
       location: this.fb.group({
-        address: ['', [Validators.required]],
-        latitude: ['', [Validators.required]],
-        longitude: ['', [Validators.required]],
+        address: ['', [Validators.required, whitespaceValidator]],
+        latitude: ['', [Validators.required, whitespaceValidator]],
+        longitude: ['', [Validators.required, whitespaceValidator]],
       }),
     });
     this.initializePopoverConfiguration();
@@ -363,7 +368,7 @@ export class UploadCarComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.uploadForm.valid) {
       this.loading = true;
       this.uploadEvent.emit({
