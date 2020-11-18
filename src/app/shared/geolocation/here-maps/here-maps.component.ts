@@ -5,8 +5,10 @@ import {
   OnChanges,
   ViewChild,
   AfterViewInit,
+  OnDestroy,
 } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
 import { Coordinate } from '../../../core/geolocation/address-response.interface';
 import { HereMapsService } from './here-maps.service';
 
@@ -24,12 +26,13 @@ export const DEFAULT_COORDINATES: Coordinate = {
   templateUrl: './here-maps.component.html',
   styleUrls: ['./here-maps.component.scss'],
 })
-export class HereMapsComponent implements AfterViewInit, OnChanges {
+export class HereMapsComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() coordinates: Coordinate;
   @Input() zoom = MAP_ZOOM_GENERAL;
   @Input() size = 'normal';
   @Input() isApproximateLocation = false;
   @ViewChild('map', { static: true }) mapEl: ElementRef;
+  mapSubscription: Subscription;
   isLoading: Observable<boolean>;
   private map: any;
   private marker: any;
@@ -42,12 +45,15 @@ export class HereMapsComponent implements AfterViewInit, OnChanges {
     if (!this.coordinates) {
       this.coordinates = DEFAULT_COORDINATES;
     }
-    this.hereMapsService.initScript().subscribe((ready) => {
-      if (!ready) {
-        return;
-      }
-      this.initializeMap();
-    });
+    this.mapSubscription = this.hereMapsService
+      .initScript()
+      .pipe(distinctUntilChanged())
+      .subscribe((ready) => {
+        if (!ready) {
+          return;
+        }
+        this.initializeMap();
+      });
   }
 
   private initializeMap(): void {
@@ -129,5 +135,11 @@ export class HereMapsComponent implements AfterViewInit, OnChanges {
 
   public createMarker(coordinates: any, icon: H.map.Icon) {
     return new H.map.Marker(coordinates, { icon });
+  }
+
+  ngOnDestroy() {
+    if (this.mapSubscription) {
+      this.mapSubscription.unsubscribe();
+    }
   }
 }
