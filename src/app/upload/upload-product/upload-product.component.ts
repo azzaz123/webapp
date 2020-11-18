@@ -64,6 +64,7 @@ import {
   EditItemCG,
 } from '../../core/analytics/analytics-constants';
 import { CATEGORY_IDS } from '../../core/category/category-ids';
+import { I18nService } from 'app/core/i18n/i18n.service';
 
 function isObjectTypeRequiredValidator(formControl: AbstractControl) {
   const objectTypeControl: FormGroup = formControl?.parent as FormGroup;
@@ -115,10 +116,7 @@ export class UploadProductComponent
   public brands: IOption[] = [];
   public models: IOption[] = [];
   public sizes: IOption[] = [];
-  public gender: IOption[] = [
-    { value: 'male', label: 'Male' },
-    { value: 'female', label: 'Female' },
-  ];
+  public genders: IOption[];
   public brandSuggestions: Subject<KeywordSuggestion[]> = new Subject();
   public modelSuggestions: Subject<KeywordSuggestion[]> = new Subject();
   public uploadCompletedPercentage = 0;
@@ -190,9 +188,36 @@ export class UploadProductComponent
     private analyticsService: AnalyticsService,
     private userService: UserService,
     config: NgbPopoverConfig,
-    private deviceService: DeviceDetectorService
+    private deviceService: DeviceDetectorService,
+    private i18n: I18nService
   ) {
-    this.uploadForm = fb.group({
+    this.genders = [
+      { value: 'male', label: this.i18n.getTranslations('male') },
+      { value: 'female', label: this.i18n.getTranslations('female') },
+    ];
+    this.fillForm();
+    config.placement = 'right';
+    config.triggers = 'focus:blur';
+    config.container = 'body';
+  }
+
+  ngOnInit() {
+    this.getUploadCategories().subscribe((categories: CategoryOption[]) => {
+      this.categories = categories;
+
+      this.detectCategoryChanges();
+      this.detectObjectTypeChanges();
+      if (this.item) {
+        this.initializeEditForm();
+      }
+      this.detectFormChanges();
+      this.handleUploadFormExtraFields();
+    });
+    this.detectTitleKeyboardChanges();
+  }
+
+  private fillForm(): void {
+    this.uploadForm = this.fb.group({
       id: '',
       category_id: ['', [Validators.required]],
       images: [[], [Validators.required]],
@@ -200,7 +225,7 @@ export class UploadProductComponent
       sale_price: ['', [Validators.required, this.min(0), this.max(999999999)]],
       currency_code: ['EUR', [Validators.required]],
       description: ['', [Validators.required]],
-      sale_conditions: fb.group({
+      sale_conditions: this.fb.group({
         fix_price: false,
         exchange_allowed: false,
       }),
@@ -229,24 +254,6 @@ export class UploadProductComponent
         condition: [null],
       }),
     });
-    config.placement = 'right';
-    config.triggers = 'focus:blur';
-    config.container = 'body';
-  }
-
-  ngOnInit() {
-    this.getUploadCategories().subscribe((categories: CategoryOption[]) => {
-      this.categories = categories;
-
-      this.detectCategoryChanges();
-      this.detectObjectTypeChanges();
-      if (this.item) {
-        this.initializeEditForm();
-      }
-      this.detectFormChanges();
-      this.handleUploadFormExtraFields();
-    });
-    this.detectTitleKeyboardChanges();
   }
 
   private detectTitleKeyboardChanges(): void {

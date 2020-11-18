@@ -6,6 +6,8 @@ export class I18nService {
     en: {
       yes: 'Yes',
       no: 'No',
+      male: 'Male',
+      female: 'Female',
       daysMomentConfig: {
         lastDay: '[Yesterday] - HH:mm',
         sameDay: '[Today] - HH:mm',
@@ -200,6 +202,8 @@ export class I18nService {
     es: {
       yes: 'Sí',
       no: 'No',
+      male: 'Hombre',
+      female: 'Mujer',
       daysMomentConfig: {
         lastDay: '[Ayer] - HH:mm',
         sameDay: '[Hoy] - HH:mm',
