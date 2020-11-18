@@ -3,11 +3,12 @@ import {
   ElementRef,
   Input,
   OnChanges,
-  OnInit,
   ViewChild,
   AfterViewInit,
 } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Coordinate } from '../../../core/geolocation/address-response.interface';
+import { HereMapsService } from './here-maps.service';
 
 export const MAP_ZOOM_GENERAL = 5;
 export const MAP_ZOOM_MARKER = 15;
@@ -23,23 +24,34 @@ export const DEFAULT_COORDINATES: Coordinate = {
   templateUrl: './here-maps.component.html',
   styleUrls: ['./here-maps.component.scss'],
 })
-export class HereMapsComponent implements OnInit, AfterViewInit, OnChanges {
+export class HereMapsComponent implements AfterViewInit, OnChanges {
   @Input() coordinates: Coordinate;
   @Input() zoom = MAP_ZOOM_GENERAL;
   @Input() size = 'normal';
   @Input() isApproximateLocation = false;
   @ViewChild('map', { static: true }) mapEl: ElementRef;
-  public platform: any;
+  isLoading: Observable<boolean>;
   private map: any;
   private marker: any;
   private circle: any;
 
-  ngOnInit() {
-    this.initializePlatform();
-  }
+  constructor(private hereMapsService: HereMapsService) {}
 
   ngAfterViewInit() {
-    const defaultLayers = this.platform.createDefaultLayers();
+    this.isLoading = this.hereMapsService.isLibraryLoading$();
+    if (!this.coordinates) {
+      this.coordinates = DEFAULT_COORDINATES;
+    }
+    this.hereMapsService.initScript().subscribe((ready) => {
+      if (!ready) {
+        return;
+      }
+      this.initializeMap();
+    });
+  }
+
+  private initializeMap(): void {
+    const defaultLayers = this.hereMapsService.platform.createDefaultLayers();
     this.map = this.createMap(defaultLayers);
     const coordinates = this.getCenter();
     this.map.setCenter(coordinates);
@@ -96,15 +108,6 @@ export class HereMapsComponent implements OnInit, AfterViewInit, OnChanges {
       lat: this.coordinates.latitude,
       lng: this.coordinates.longitude,
     };
-  }
-
-  public initializePlatform() {
-    this.platform = new H.service.Platform({
-      app_id: 'RgPrXX1bXt123UgUFc7B',
-      app_code: 'HtfX0DsqZ2Y0x-44GfujFA',
-      useCIT: false,
-      useHTTPS: true,
-    });
   }
 
   public createMap(defaultLayers) {
