@@ -6,6 +6,7 @@ import {
   ViewChild,
   AfterViewInit,
 } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Coordinate } from '../../../core/geolocation/address-response.interface';
 import { HereMapsService } from './here-maps.service';
 
@@ -29,11 +30,14 @@ export class HereMapsComponent implements AfterViewInit, OnChanges {
   @Input() size = 'normal';
   @Input() isApproximateLocation = false;
   @ViewChild('map', { static: true }) mapEl: ElementRef;
+  isLoading: Observable<boolean>;
   private map: any;
   private marker: any;
   private circle: any;
 
-  constructor(private hereMapsService: HereMapsService) {}
+  constructor(private hereMapsService: HereMapsService) {
+    this.isLoading = hereMapsService.isLibraryLoading$();
+  }
 
   ngAfterViewInit() {
     if (!this.coordinates) {
