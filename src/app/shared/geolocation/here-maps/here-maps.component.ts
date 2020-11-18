@@ -35,11 +35,10 @@ export class HereMapsComponent implements AfterViewInit, OnChanges {
   private marker: any;
   private circle: any;
 
-  constructor(private hereMapsService: HereMapsService) {
-    this.isLoading = hereMapsService.isLibraryLoading$();
-  }
+  constructor(private hereMapsService: HereMapsService) {}
 
   ngAfterViewInit() {
+    this.isLoading = this.hereMapsService.isLibraryLoading$();
     if (!this.coordinates) {
       this.coordinates = DEFAULT_COORDINATES;
     }
