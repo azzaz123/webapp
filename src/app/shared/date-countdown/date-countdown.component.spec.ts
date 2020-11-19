@@ -30,10 +30,6 @@ describe('DateCountDownComponent', () => {
     spyOn(Date, 'now').and.returnValue(FAKE_TODAY_IN_MS);
   });
 
-  afterEach(() => {
-    fixture.destroy();
-  });
-
   it('should tick date to simulate a countdown', fakeAsync(() => {
     let shownText: string;
 

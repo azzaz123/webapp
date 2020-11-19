@@ -1,6 +1,4 @@
-import { format } from 'libphonenumber-js/custom';
 import { Component, Input, OnInit } from '@angular/core';
-
 import * as moment from 'moment';
 import { interval, Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
