@@ -10,7 +10,7 @@ import { CatalogCardComponent } from './catalog-card.component';
 import { ItemService } from '../../../core/item/item.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { CustomCurrencyPipe, CountdownPipe } from '../../pipes';
+import { CustomCurrencyPipe } from '../../pipes';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { DecimalPipe } from '@angular/common';
 import { ToastService } from '../../../layout/toast/toast.service';
@@ -45,7 +45,7 @@ describe('CatalogCardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CatalogCardComponent, CustomCurrencyPipe, CountdownPipe],
+      declarations: [CatalogCardComponent, CustomCurrencyPipe],
       providers: [
         DecimalPipe,
         I18nService,
@@ -86,7 +86,6 @@ describe('CatalogCardComponent', () => {
         },
         { provide: 'SUBDOMAIN', useValue: 'es' },
         EventService,
-        CountdownPipe,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
