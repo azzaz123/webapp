@@ -6,7 +6,6 @@ import {
   CustomCurrencyPipe,
   DateUntilDayPipe,
   DateCalendarPipe,
-  CountdownPipe,
 } from './pipes';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
 import { CardModule } from './card/card.module';
@@ -81,6 +80,7 @@ import { FullScreenModalComponent } from './modals/full-screen-menu/full-screen-
 import { DisableControlDirective } from './forms/disable-control.directive';
 import { RouterLinkDirectiveStub } from './router-link-directive-stub';
 import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
+import { DateCountDownComponent } from './date-countdown/date-countdown.component';
 
 @NgModule({
   imports: [
@@ -158,11 +158,11 @@ import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
     ProBadgeModule,
     DateUntilDayPipe,
     DateCalendarPipe,
-    CountdownPipe,
     ProfileProBillingComponent,
     FullScreenModalComponent,
     DisableControlDirective,
     SvgIconModule,
+    DateCountDownComponent,
   ],
   declarations: [
     AdComponent,
@@ -225,11 +225,11 @@ import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
     PreventDoubleClickDirective,
     DateUntilDayPipe,
     DateCalendarPipe,
-    CountdownPipe,
     ProfileProBillingComponent,
     FullScreenModalComponent,
     DisableControlDirective,
     RouterLinkDirectiveStub,
+    DateCountDownComponent,
   ],
   providers: [
     DecimalPipe,
