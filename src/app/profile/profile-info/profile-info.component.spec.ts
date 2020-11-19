@@ -347,8 +347,8 @@ describe('ProfileInfoComponent', () => {
         component.onSubmit();
       });
 
-      it('should set incorrect address to true', () => {
-        expect(component.isIncorrectAddress).toBeTruthy();
+      it('should notify address is not valid', () => {
+        expect(component.isIncorrectAddress).toBe(true);
       });
 
       it('should call i18nError if form is invalid', () => {
