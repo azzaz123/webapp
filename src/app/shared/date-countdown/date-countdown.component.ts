@@ -1,35 +1,23 @@
-import {
-  Pipe,
-  PipeTransform,
-  ChangeDetectorRef,
-  OnDestroy,
-  NgZone,
-} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import * as moment from 'moment';
-import { interval, Subscription } from 'rxjs';
+import { interval, Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
-@Pipe({ name: 'dateCountdown', pure: false })
-export class CountdownPipe implements PipeTransform, OnDestroy {
-  private subscription: Subscription;
+@Component({
+  selector: 'tsl-date-countdown',
+  templateUrl: 'date-countdown.component.html',
+  styleUrls: ['./date-countdown.component.scss'],
+})
+export class DateCountDownComponent implements OnInit {
+  @Input() dateEndTimestamp: number;
 
-  constructor(changeDetectorRef: ChangeDetectorRef) {
-    if (this.subscription) {
-      return;
-    }
+  countDown$: Observable<string>;
 
-    this.subscription = interval(1000).subscribe(() => {
-      changeDetectorRef.markForCheck();
-    });
-  }
-
-  ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-  }
-
-  public transform(deadlineInMs: number): string {
-    return this.formatRemainingTime(deadlineInMs);
+  ngOnInit(): void {
+    this.countDown$ = interval(1000).pipe(
+      startWith(0),
+      map(() => this.formatRemainingTime(this.dateEndTimestamp))
+    );
   }
 
   private formatRemainingTime(deadlineInMs: number): string {
