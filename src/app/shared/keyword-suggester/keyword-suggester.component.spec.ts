@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { KeywordSuggesterComponent } from './keyword-suggester.component';
 import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -17,20 +17,22 @@ describe('KeywordSuggesterComponent', () => {
   let fixture: ComponentFixture<KeywordSuggesterComponent>;
   let i18n: I18nService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [KeywordSuggesterComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        {
-          provide: I18nService,
-          useValue: {
-            getTranslations() {},
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [KeywordSuggesterComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          {
+            provide: I18nService,
+            useValue: {
+              getTranslations() {},
+            },
           },
-        },
-      ],
-    }).compileComponents();
-  }));
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(KeywordSuggesterComponent);

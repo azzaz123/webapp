@@ -1,10 +1,10 @@
 import { of } from 'rxjs';
 import {
-  async,
   fakeAsync,
   ComponentFixture,
   TestBed,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 import { UrgentConfirmationModalComponent } from './urgent-confirmation-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -28,34 +28,36 @@ describe('UrgentConfirmationModalComponent', () => {
   let userService: UserService;
   let paymentService: PaymentService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [UrgentConfirmationModalComponent, CustomCurrencyPipe],
-      providers: [
-        NgbActiveModal,
-        DecimalPipe,
-        EventService,
-        { provide: TrackingService, useClass: MockTrackingService },
-        {
-          provide: UserService,
-          useValue: {
-            me() {
-              return of(MOCK_USER);
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [UrgentConfirmationModalComponent, CustomCurrencyPipe],
+        providers: [
+          NgbActiveModal,
+          DecimalPipe,
+          EventService,
+          { provide: TrackingService, useClass: MockTrackingService },
+          {
+            provide: UserService,
+            useValue: {
+              me() {
+                return of(MOCK_USER);
+              },
             },
           },
-        },
-        {
-          provide: PaymentService,
-          useValue: {
-            getCreditInfo() {
-              return of({});
+          {
+            provide: PaymentService,
+            useValue: {
+              getCreditInfo() {
+                return of({});
+              },
             },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UrgentConfirmationModalComponent);

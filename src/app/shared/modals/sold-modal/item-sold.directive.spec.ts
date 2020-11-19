@@ -5,11 +5,11 @@ import {
   NO_ERRORS_SCHEMA,
 } from '@angular/core';
 import {
-  async,
   ComponentFixture,
   fakeAsync,
   TestBed,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -52,54 +52,56 @@ describe('ItemSoldDirective', () => {
     callback: null,
   };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ItemSoldDirective, TestComponent],
-      providers: [
-        { provide: TrackingService, useClass: MockTrackingService },
-        {
-          provide: ItemService,
-          useValue: {
-            selectedItems: [],
-            selectItem() {},
-            deselectItem() {},
-            deleteItem() {
-              return of({});
-            },
-            reserveItem() {
-              return of({});
-            },
-            reactivateItem() {
-              return of({});
-            },
-            getAvailableReactivationProducts() {},
-            canDoAction() {
-              return of(true);
-            },
-          },
-        },
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                result: Promise.resolve(),
-                componentInstance: modalInstance,
-              };
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ItemSoldDirective, TestComponent],
+        providers: [
+          { provide: TrackingService, useClass: MockTrackingService },
+          {
+            provide: ItemService,
+            useValue: {
+              selectedItems: [],
+              selectItem() {},
+              deselectItem() {},
+              deleteItem() {
+                return of({});
+              },
+              reserveItem() {
+                return of({});
+              },
+              reactivateItem() {
+                return of({});
+              },
+              getAvailableReactivationProducts() {},
+              canDoAction() {
+                return of(true);
+              },
             },
           },
-        },
-        {
-          provide: ErrorsService,
-          useValue: {
-            i18nError() {},
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  result: Promise.resolve(),
+                  componentInstance: modalInstance,
+                };
+              },
+            },
           },
-        },
-        { provide: 'SUBDOMAIN', useValue: 'es' },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: ErrorsService,
+            useValue: {
+              i18nError() {},
+            },
+          },
+          { provide: 'SUBDOMAIN', useValue: 'es' },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestComponent);

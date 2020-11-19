@@ -1,5 +1,5 @@
 import { of, throwError, Subject } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { BuyProductModalComponent } from './buy-product-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -34,67 +34,69 @@ describe('BuyProductModalComponent', () => {
   let uuidService: UuidService;
   const routerEvents: Subject<any> = new Subject();
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [BuyProductModalComponent, CustomCurrencyPipe],
-      providers: [
-        DecimalPipe,
-        EventService,
-        {
-          provide: ErrorsService,
-          useValue: {
-            i18nError() {},
-            show() {},
-          },
-        },
-        {
-          provide: Router,
-          useValue: {
-            navigate() {},
-            events: routerEvents,
-          },
-        },
-        {
-          provide: ItemService,
-          useValue: {
-            get() {
-              return of(MOCK_ITEM_V3);
-            },
-            purchaseProductsWithCredits() {
-              return of({
-                payment_needed: true,
-              });
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [BuyProductModalComponent, CustomCurrencyPipe],
+        providers: [
+          DecimalPipe,
+          EventService,
+          {
+            provide: ErrorsService,
+            useValue: {
+              i18nError() {},
+              show() {},
             },
           },
-        },
-        {
-          provide: NgbActiveModal,
-          useValue: {
-            close() {},
-            dismiss() {},
-          },
-        },
-        {
-          provide: PaymentService,
-          useValue: {
-            getCreditInfo() {
-              return of({});
+          {
+            provide: Router,
+            useValue: {
+              navigate() {},
+              events: routerEvents,
             },
           },
-        },
-        {
-          provide: StripeService,
-          useValue: {
-            buy() {},
-            getCards() {
-              return of([]);
+          {
+            provide: ItemService,
+            useValue: {
+              get() {
+                return of(MOCK_ITEM_V3);
+              },
+              purchaseProductsWithCredits() {
+                return of({
+                  payment_needed: true,
+                });
+              },
             },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: NgbActiveModal,
+            useValue: {
+              close() {},
+              dismiss() {},
+            },
+          },
+          {
+            provide: PaymentService,
+            useValue: {
+              getCreditInfo() {
+                return of({});
+              },
+            },
+          },
+          {
+            provide: StripeService,
+            useValue: {
+              buy() {},
+              getCards() {
+                return of([]);
+              },
+            },
+          },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BuyProductModalComponent);

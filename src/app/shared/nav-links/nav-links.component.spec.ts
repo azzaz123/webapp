@@ -1,9 +1,9 @@
 import {
-  async,
   ComponentFixture,
   TestBed,
   fakeAsync,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 
 import { NavLinksComponent } from './nav-links.component';
@@ -25,27 +25,33 @@ describe('NavLinksComponent', () => {
     items: [NAV_LINK],
   };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      declarations: [NavLinksComponent, SearchInputComponent, SelectComponent],
-      providers: [
-        { provide: DeviceDetectorService, useClass: DeviceDetectorService },
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                result: Promise.resolve(),
-                componentInstance: componentInstance,
-              };
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [],
+        declarations: [
+          NavLinksComponent,
+          SearchInputComponent,
+          SelectComponent,
+        ],
+        providers: [
+          { provide: DeviceDetectorService, useClass: DeviceDetectorService },
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  result: Promise.resolve(),
+                  componentInstance: componentInstance,
+                };
+              },
             },
           },
-        },
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NavLinksComponent);

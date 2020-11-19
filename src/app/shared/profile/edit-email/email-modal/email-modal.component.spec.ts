@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { EmailModalComponent } from './email-modal.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -15,35 +15,37 @@ describe('EmailModalComponent', () => {
   let userService: UserService;
   let activeModal: NgbActiveModal;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule],
-      providers: [
-        {
-          provide: UserService,
-          useValue: {
-            updateEmail() {
-              return of({});
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [ReactiveFormsModule],
+        providers: [
+          {
+            provide: UserService,
+            useValue: {
+              updateEmail() {
+                return of({});
+              },
             },
           },
-        },
-        {
-          provide: NgbActiveModal,
-          useValue: {
-            close() {},
+          {
+            provide: NgbActiveModal,
+            useValue: {
+              close() {},
+            },
           },
-        },
-        {
-          provide: ErrorsService,
-          useValue: {
-            i18nError() {},
+          {
+            provide: ErrorsService,
+            useValue: {
+              i18nError() {},
+            },
           },
-        },
-      ],
-      declarations: [EmailModalComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        declarations: [EmailModalComponent],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(EmailModalComponent);

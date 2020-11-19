@@ -1,5 +1,5 @@
 import { of } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CheckoutProComponent, BUMPS } from './checkout-pro.component';
 import { ItemService } from '../../core/item/item.service';
@@ -35,54 +35,56 @@ describe('CheckoutProComponent', () => {
     dates: MOCK_CALENDAR_DATE,
   };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [CheckoutProComponent],
-      providers: [
-        {
-          provide: ItemService,
-          useValue: {
-            selectedItems: SELECTED_ITEMS,
-            getItemsWithAvailableProducts() {
-              return of(ITEMS_WITH_PRODUCTS);
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [CheckoutProComponent],
+        providers: [
+          {
+            provide: ItemService,
+            useValue: {
+              selectedItems: SELECTED_ITEMS,
+              getItemsWithAvailableProducts() {
+                return of(ITEMS_WITH_PRODUCTS);
+              },
             },
           },
-        },
-        {
-          provide: Router,
-          useValue: {
-            navigate() {},
-          },
-        },
-        {
-          provide: CartService,
-          useValue: {
-            createInstance() {},
-            add() {},
-          },
-        },
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            params: of({}),
-          },
-        },
-        NgbDatepickerConfig,
-        {
-          provide: NgbCalendar,
-          useValue: {
-            getToday() {
-              return MOCK_DATE;
-            },
-            getNext() {
-              return MOCK_DATE;
+          {
+            provide: Router,
+            useValue: {
+              navigate() {},
             },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: CartService,
+            useValue: {
+              createInstance() {},
+              add() {},
+            },
+          },
+          {
+            provide: ActivatedRoute,
+            useValue: {
+              params: of({}),
+            },
+          },
+          NgbDatepickerConfig,
+          {
+            provide: NgbCalendar,
+            useValue: {
+              getToday() {
+                return MOCK_DATE;
+              },
+              getNext() {
+                return MOCK_DATE;
+              },
+            },
+          },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckoutProComponent);

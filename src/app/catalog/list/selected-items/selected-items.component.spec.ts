@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SelectedItemsComponent } from './selected-items.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
@@ -13,24 +13,26 @@ describe('SelectedItemsComponent', () => {
   const anId = '1';
   const anotherId = '2';
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SelectedItemsComponent],
-      imports: [NoopAnimationsModule],
-      providers: [
-        {
-          provide: ItemService,
-          useValue: {
-            selectedItems$: new ReplaySubject(),
-            selectedItems: [],
-            selectedAction: null,
-            deselectItems: () => {},
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [SelectedItemsComponent],
+        imports: [NoopAnimationsModule],
+        providers: [
+          {
+            provide: ItemService,
+            useValue: {
+              selectedItems$: new ReplaySubject(),
+              selectedItems: [],
+              selectedAction: null,
+              deselectItems: () => {},
+            },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SelectedItemsComponent);

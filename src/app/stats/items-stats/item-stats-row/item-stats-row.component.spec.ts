@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ItemStatsRowComponent } from './item-stats-row.component';
 import { ItemStatsService } from './item-stats-graph/item-stats.service';
@@ -24,36 +24,38 @@ describe('ItemStatsRowComponent', () => {
   let itemStatsService: ItemStatsService;
   let itemService: ItemService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [CommonModule, NoopAnimationsModule],
-      declarations: [ItemStatsRowComponent, CustomCurrencyPipe],
-      providers: [
-        DecimalPipe,
-        {
-          provide: 'SUBDOMAIN',
-          useValue: 'es',
-        },
-        {
-          provide: ItemStatsService,
-          useValue: {
-            getStatistics() {
-              return of(ITEM_STATISTIC_RESPONSE);
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [CommonModule, NoopAnimationsModule],
+        declarations: [ItemStatsRowComponent, CustomCurrencyPipe],
+        providers: [
+          DecimalPipe,
+          {
+            provide: 'SUBDOMAIN',
+            useValue: 'es',
+          },
+          {
+            provide: ItemStatsService,
+            useValue: {
+              getStatistics() {
+                return of(ITEM_STATISTIC_RESPONSE);
+              },
             },
           },
-        },
-        {
-          provide: ItemService,
-          useValue: {
-            getCounters() {
-              return of(ITEM_COUNTERS_DATA);
+          {
+            provide: ItemService,
+            useValue: {
+              getCounters() {
+                return of(ITEM_COUNTERS_DATA);
+              },
             },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ItemStatsRowComponent);

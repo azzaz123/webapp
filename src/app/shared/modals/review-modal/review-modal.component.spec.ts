@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ReviewModalComponent } from './review-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -20,42 +20,44 @@ describe('ReviewModalComponent', () => {
   let reviewService: ReviewService;
   let itemService: ItemService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ReviewModalComponent],
-      providers: [
-        {
-          provide: ItemService,
-          useValue: {
-            getConversationUsers() {
-              return of(CONVERSATION_USERS);
-            },
-            soldOutside() {
-              return of({});
-            },
-          },
-        },
-        {
-          provide: NgbActiveModal,
-          useValue: {
-            close() {},
-          },
-        },
-        {
-          provide: ReviewService,
-          useValue: {
-            createAsSeller() {
-              return of([]);
-            },
-            createAsBuyer() {
-              return of([]);
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ReviewModalComponent],
+        providers: [
+          {
+            provide: ItemService,
+            useValue: {
+              getConversationUsers() {
+                return of(CONVERSATION_USERS);
+              },
+              soldOutside() {
+                return of({});
+              },
             },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: NgbActiveModal,
+            useValue: {
+              close() {},
+            },
+          },
+          {
+            provide: ReviewService,
+            useValue: {
+              createAsSeller() {
+                return of([]);
+              },
+              createAsBuyer() {
+                return of([]);
+              },
+            },
+          },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ReviewModalComponent);

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { DiscountAvailableUnsubscribeInAppModalComponent } from './discount-available-unsubscribe-in-app-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -8,13 +8,15 @@ describe('DiscountAvailableUnsubscribeInAppModalComponent', () => {
   let component: DiscountAvailableUnsubscribeInAppModalComponent;
   let fixture: ComponentFixture<DiscountAvailableUnsubscribeInAppModalComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [DiscountAvailableUnsubscribeInAppModalComponent],
-      providers: [NgbActiveModal],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [DiscountAvailableUnsubscribeInAppModalComponent],
+        providers: [NgbActiveModal],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(

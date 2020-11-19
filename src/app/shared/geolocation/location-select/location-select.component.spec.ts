@@ -1,9 +1,9 @@
 import {
-  async,
   ComponentFixture,
   fakeAsync,
   TestBed,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 
 import {
@@ -30,34 +30,36 @@ describe('LocationSelectComponent', () => {
   };
   let userService: UserService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule],
-      providers: [
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                componentInstance: componentInstance,
-                result: Promise.resolve(USER_LOCATION_COORDINATES),
-              };
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [ReactiveFormsModule],
+        providers: [
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  componentInstance: componentInstance,
+                  result: Promise.resolve(USER_LOCATION_COORDINATES),
+                };
+              },
             },
           },
-        },
-        {
-          provide: UserService,
-          useValue: {
-            user: MOCK_USER,
-            updateLocation() {
-              return of(USER_LOCATION);
+          {
+            provide: UserService,
+            useValue: {
+              user: MOCK_USER,
+              updateLocation() {
+                return of(USER_LOCATION);
+              },
             },
           },
-        },
-      ],
-      declarations: [LocationSelectComponent],
-    }).compileComponents();
-  }));
+        ],
+        declarations: [LocationSelectComponent],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LocationSelectComponent);

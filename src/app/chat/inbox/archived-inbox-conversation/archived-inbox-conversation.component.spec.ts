@@ -1,6 +1,6 @@
 /* tslint:isUserDisable:no-unused-variable */
 
-import { TestBed, ComponentFixture, async } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
 import { InboxItemStatus } from '../../model/inbox-item';
@@ -11,13 +11,15 @@ describe('Component: Conversation', () => {
   let component: ArchivedInboxConversationComponent;
   let fixture: ComponentFixture<ArchivedInboxConversationComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ArchivedInboxConversationComponent, DateCalendarPipe],
-      providers: [DateCalendarPipe],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ArchivedInboxConversationComponent, DateCalendarPipe],
+        providers: [DateCalendarPipe],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ArchivedInboxConversationComponent);
