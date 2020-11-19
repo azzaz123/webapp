@@ -12,7 +12,7 @@ import { of, ReplaySubject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
-import { CustomCurrencyPipe, CountdownPipe } from '../../../shared/pipes';
+import { CustomCurrencyPipe } from '../../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ReactivateModalComponent } from '../modals/reactivate-modal/reactivate-modal.component';
@@ -54,7 +54,6 @@ describe('CatalogItemComponent', () => {
         CatalogItemComponent,
         CustomCurrencyPipe,
         ThousandSuffixesPipe,
-        CountdownPipe,
       ],
       providers: [
         DecimalPipe,
@@ -104,7 +103,6 @@ describe('CatalogItemComponent', () => {
           },
         },
         { provide: 'SUBDOMAIN', useValue: 'es' },
-        CountdownPipe,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
