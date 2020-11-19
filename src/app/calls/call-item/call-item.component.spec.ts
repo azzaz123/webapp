@@ -1,6 +1,6 @@
 import { of } from 'rxjs';
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CallItemComponent } from './call-item.component';
 import { ActivatedRoute } from '@angular/router';
@@ -19,29 +19,35 @@ describe('CallItemComponent', () => {
   let trackingService: TrackingService;
   let callService: CallsService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule],
-      declarations: [CallItemComponent, CallStatusLabelPipe, DateCalendarPipe],
-      providers: [
-        I18nService,
-        { provide: TrackingService, useClass: MockTrackingService },
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            queryParams: of({}),
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NoopAnimationsModule],
+        declarations: [
+          CallItemComponent,
+          CallStatusLabelPipe,
+          DateCalendarPipe,
+        ],
+        providers: [
+          I18nService,
+          { provide: TrackingService, useClass: MockTrackingService },
+          {
+            provide: ActivatedRoute,
+            useValue: {
+              queryParams: of({}),
+            },
           },
-        },
-        {
-          provide: CallsService,
-          useValue: {
-            stream() {},
+          {
+            provide: CallsService,
+            useValue: {
+              stream() {},
+            },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CallItemComponent);

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ThirdVoiceDropPriceComponent } from './third-voice-drop-price.component';
 import { ThirdVoiceReviewButtonComponent } from '../third-voice-review-button';
@@ -11,17 +11,19 @@ describe('ThirdVoiceDropPriceComponent', () => {
   let component: ThirdVoiceDropPriceComponent;
   let fixture: ComponentFixture<ThirdVoiceDropPriceComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [CommonModule],
-      declarations: [
-        ThirdVoiceDropPriceComponent,
-        ThirdVoiceMessageComponent,
-        ThirdVoiceReviewButtonComponent,
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [CommonModule],
+        declarations: [
+          ThirdVoiceDropPriceComponent,
+          ThirdVoiceMessageComponent,
+          ThirdVoiceReviewButtonComponent,
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ThirdVoiceDropPriceComponent);

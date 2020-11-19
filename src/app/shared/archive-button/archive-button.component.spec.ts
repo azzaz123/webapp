@@ -1,5 +1,5 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ArchiveButtonComponent } from './archive-button.component';
 import { of } from 'rxjs';
@@ -14,23 +14,25 @@ describe('ArchiveButtonComponent', () => {
   let callsService: CallsService;
   let trackingService: TrackingService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        { provide: TrackingService, useClass: MockTrackingService },
-        {
-          provide: CallsService,
-          useValue: {
-            archive() {
-              return of({});
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        providers: [
+          { provide: TrackingService, useClass: MockTrackingService },
+          {
+            provide: CallsService,
+            useValue: {
+              archive() {
+                return of({});
+              },
             },
           },
-        },
-      ],
-      declarations: [ArchiveButtonComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        declarations: [ArchiveButtonComponent],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ArchiveButtonComponent);

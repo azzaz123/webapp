@@ -1,11 +1,11 @@
 import { of, Subscription } from 'rxjs';
 /* tslint:disable:no-unused-variable */
 import {
-  async,
   ComponentFixture,
   TestBed,
   fakeAsync,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 import { CallsComponent } from './calls.component';
 import { CallsService } from '../core/conversation/calls.service';
@@ -23,29 +23,31 @@ describe('CallsComponent', () => {
   let route: ActivatedRoute;
   let trackingService: TrackingService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [CallsComponent],
-      providers: [
-        { provide: TrackingService, useClass: MockTrackingService },
-        {
-          provide: CallsService,
-          useValue: {
-            getPage() {
-              return of([]);
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [CallsComponent],
+        providers: [
+          { provide: TrackingService, useClass: MockTrackingService },
+          {
+            provide: CallsService,
+            useValue: {
+              getPage() {
+                return of([]);
+              },
             },
           },
-        },
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            queryParams: of({}),
+          {
+            provide: ActivatedRoute,
+            useValue: {
+              queryParams: of({}),
+            },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CallsComponent);

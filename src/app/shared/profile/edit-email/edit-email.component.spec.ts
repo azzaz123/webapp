@@ -1,8 +1,8 @@
 import {
-  async,
   ComponentFixture,
   fakeAsync,
   TestBed,
+  waitForAsync,
 } from '@angular/core/testing';
 
 import { EditEmailComponent } from './edit-email.component';
@@ -17,24 +17,26 @@ describe('EditEmailComponent', () => {
   let modalService: NgbModal;
   const componentInstance: any = {};
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [FormsModule],
-      providers: [
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                componentInstance: componentInstance,
-              };
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [FormsModule],
+        providers: [
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  componentInstance: componentInstance,
+                };
+              },
             },
           },
-        },
-      ],
-      declarations: [EditEmailComponent],
-    }).compileComponents();
-  }));
+        ],
+        declarations: [EditEmailComponent],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(EditEmailComponent);

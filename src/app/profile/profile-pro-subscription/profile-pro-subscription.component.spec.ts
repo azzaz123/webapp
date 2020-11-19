@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ProfileProSubscriptionComponent } from './profile-pro-subscription.component';
 import { of } from 'rxjs';
@@ -20,37 +20,39 @@ describe('ProfileProSubscriptionComponent', () => {
   const packs: Packs = createPacksFixture();
   const perksModel: PerksModel = new PerksModel();
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ProfileProSubscriptionComponent, SubscriptionIconPipe],
-      providers: [
-        {
-          provide: PaymentService,
-          useValue: {
-            getPerks() {
-              return of(perksModel);
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ProfileProSubscriptionComponent, SubscriptionIconPipe],
+        providers: [
+          {
+            provide: PaymentService,
+            useValue: {
+              getPerks() {
+                return of(perksModel);
+              },
+              getSubscriptionPacks() {
+                return of(packs);
+              },
             },
-            getSubscriptionPacks() {
-              return of(packs);
+          },
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {},
             },
           },
-        },
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {},
+          {
+            provide: Router,
+            useValue: {
+              navigate() {},
+            },
           },
-        },
-        {
-          provide: Router,
-          useValue: {
-            navigate() {},
-          },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProfileProSubscriptionComponent);

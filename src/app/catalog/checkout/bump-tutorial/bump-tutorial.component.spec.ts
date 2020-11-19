@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { BumpTutorialComponent, KEY_CODE } from './bump-tutorial.component';
 import { BumpTutorialService } from './bump-tutorial.service';
@@ -8,22 +8,24 @@ describe('BumpTutorialComponent', () => {
   let fixture: ComponentFixture<BumpTutorialComponent>;
   let tutorialService: BumpTutorialService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [BumpTutorialComponent],
-      providers: [
-        {
-          provide: BumpTutorialService,
-          useValue: {
-            nextStep() {},
-            resetStep() {},
-            prevStep() {},
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [BumpTutorialComponent],
+        providers: [
+          {
+            provide: BumpTutorialService,
+            useValue: {
+              nextStep() {},
+              resetStep() {},
+              prevStep() {},
+            },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BumpTutorialComponent);

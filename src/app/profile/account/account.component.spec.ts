@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AccountComponent } from './account.component';
 import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -25,52 +25,54 @@ describe('AccountComponent', () => {
     init: jasmine.createSpy('init'),
   };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, FormsModule, NgbButtonsModule],
-      providers: [
-        {
-          provide: UserService,
-          useValue: {
-            user: MOCK_FULL_USER,
-            me() {
-              return of(MOCK_FULL_USER);
-            },
-            edit() {
-              return of({});
-            },
-          },
-        },
-        {
-          provide: ErrorsService,
-          useValue: {
-            i18nError() {},
-            i18nSuccess() {},
-          },
-        },
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                componentInstance: componentInstance,
-                result: Promise.resolve(true),
-              };
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [ReactiveFormsModule, FormsModule, NgbButtonsModule],
+        providers: [
+          {
+            provide: UserService,
+            useValue: {
+              user: MOCK_FULL_USER,
+              me() {
+                return of(MOCK_FULL_USER);
+              },
+              edit() {
+                return of({});
+              },
             },
           },
-        },
-        {
-          provide: ProfileFormComponent,
-          useValue: {
-            initFormControl() {},
-            canExit() {},
+          {
+            provide: ErrorsService,
+            useValue: {
+              i18nError() {},
+              i18nSuccess() {},
+            },
           },
-        },
-      ],
-      declarations: [AccountComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  componentInstance: componentInstance,
+                  result: Promise.resolve(true),
+                };
+              },
+            },
+          },
+          {
+            provide: ProfileFormComponent,
+            useValue: {
+              initFormControl() {},
+              canExit() {},
+            },
+          },
+        ],
+        declarations: [AccountComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccountComponent);

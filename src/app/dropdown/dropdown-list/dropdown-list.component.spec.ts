@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { OptionList } from '../utils/option-list';
 import { OPTIONS } from '../utils/options.fixtures.spec';
@@ -9,11 +9,13 @@ describe('SelectDropdownComponent', () => {
   let component: DropdownListComponent;
   let fixture: ComponentFixture<DropdownListComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [DropdownListComponent],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [DropdownListComponent],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DropdownListComponent);

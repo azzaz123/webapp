@@ -1,9 +1,9 @@
 import {
-  async,
   ComponentFixture,
   fakeAsync,
   TestBed,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 import { LocationBoxComponent } from './location-box.component';
 import { UserService } from '../../../core/user/user.service';
@@ -24,23 +24,25 @@ describe('LocationBoxComponent', () => {
   let fixture: ComponentFixture<LocationBoxComponent>;
   let userService: UserService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, FormsModule],
-      declarations: [LocationBoxComponent],
-      providers: [
-        {
-          provide: UserService,
-          useValue: {
-            me() {
-              return of(MOCK_USER);
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [ReactiveFormsModule, FormsModule],
+        declarations: [LocationBoxComponent],
+        providers: [
+          {
+            provide: UserService,
+            useValue: {
+              me() {
+                return of(MOCK_USER);
+              },
             },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LocationBoxComponent);
