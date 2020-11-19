@@ -1,1 +1,5 @@
-<div id="map" #map [ngClass]="size"></div>
+<div id="map" #map [ngClass]="size">
+  <div *ngIf="isLoading | async" class="loading">
+    <img src="/assets/images/spinner.gif" height="50" width="50">
+  </div>
+</div>
