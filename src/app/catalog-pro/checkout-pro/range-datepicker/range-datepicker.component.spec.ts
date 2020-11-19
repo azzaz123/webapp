@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgbCalendar, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { RangeDatepickerComponent } from './range-datepicker.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -14,24 +14,26 @@ describe('RangeDatepickerComponent', () => {
   let component: RangeDatepickerComponent;
   let fixture: ComponentFixture<RangeDatepickerComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [BrowserAnimationsModule],
-      declarations: [RangeDatepickerComponent],
-      providers: [
-        NgbDatepickerConfig,
-        {
-          provide: NgbCalendar,
-          useValue: {
-            getToday() {
-              return MOCK_DATE;
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [BrowserAnimationsModule],
+        declarations: [RangeDatepickerComponent],
+        providers: [
+          NgbDatepickerConfig,
+          {
+            provide: NgbCalendar,
+            useValue: {
+              getToday() {
+                return MOCK_DATE;
+              },
             },
           },
-        },
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RangeDatepickerComponent);

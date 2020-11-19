@@ -1,5 +1,5 @@
 import { of } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CheckoutItemComponent } from './checkout-item.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '../../../shared/pipes';
@@ -30,24 +30,26 @@ describe('CheckoutItemComponent', () => {
   const TYPE = 'citybump';
   const DURATION = '24';
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [CheckoutItemComponent, CustomCurrencyPipe],
-      providers: [
-        DecimalPipe,
-        {
-          provide: CartService,
-          useValue: {
-            createInstance() {},
-            add() {},
-            remove() {},
-            cart$: of(CART_CHANGE),
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [CheckoutItemComponent, CustomCurrencyPipe],
+        providers: [
+          DecimalPipe,
+          {
+            provide: CartService,
+            useValue: {
+              createInstance() {},
+              add() {},
+              remove() {},
+              cart$: of(CART_CHANGE),
+            },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckoutItemComponent);

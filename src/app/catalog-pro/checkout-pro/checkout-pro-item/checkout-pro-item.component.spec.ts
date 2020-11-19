@@ -1,5 +1,5 @@
 import { of } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CheckoutProItemComponent } from './checkout-pro-item.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -34,37 +34,39 @@ describe('CheckoutProItemComponent', () => {
     type: 'citybump',
   };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule],
-      declarations: [CheckoutProItemComponent, CustomCurrencyPipe],
-      providers: [
-        DecimalPipe,
-        FormBuilder,
-        {
-          provide: CartService,
-          useValue: {
-            createInstance() {},
-            add() {},
-            remove() {},
-            cart$: of(CART_CHANGE),
-          },
-        },
-        {
-          provide: NgbCalendar,
-          useValue: {
-            getToday() {
-              return MOCK_DATE2;
-            },
-            getNext() {
-              return MOCK_DATE3;
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [FormsModule, ReactiveFormsModule],
+        declarations: [CheckoutProItemComponent, CustomCurrencyPipe],
+        providers: [
+          DecimalPipe,
+          FormBuilder,
+          {
+            provide: CartService,
+            useValue: {
+              createInstance() {},
+              add() {},
+              remove() {},
+              cart$: of(CART_CHANGE),
             },
           },
-        },
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: NgbCalendar,
+            useValue: {
+              getToday() {
+                return MOCK_DATE2;
+              },
+              getNext() {
+                return MOCK_DATE3;
+              },
+            },
+          },
+        ],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckoutProItemComponent);

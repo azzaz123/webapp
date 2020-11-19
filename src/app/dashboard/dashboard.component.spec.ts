@@ -1,6 +1,6 @@
 import { of } from 'rxjs';
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -41,34 +41,36 @@ describe('DashboardComponent', () => {
   let router: Router;
   let realTimeService: RealTimeService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        ChatModule,
-        RouterTestingModule.withRoutes([
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          ChatModule,
+          RouterTestingModule.withRoutes([
+            {
+              path: 'chat',
+              component: ChatComponent,
+            },
+          ]),
+        ],
+        declarations: [DashboardComponent],
+        providers: [
+          EventService,
+          { provide: TrackingService, useClass: MockTrackingService },
+          { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
+          { provide: InboxService, useClass: InboxServiceMock },
           {
-            path: 'chat',
-            component: ChatComponent,
+            provide: InboxConversationService,
+            useClass: InboxConversationServiceMock,
           },
-        ]),
-      ],
-      declarations: [DashboardComponent],
-      providers: [
-        EventService,
-        { provide: TrackingService, useClass: MockTrackingService },
-        { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
-        { provide: InboxService, useClass: InboxServiceMock },
-        {
-          provide: InboxConversationService,
-          useClass: InboxConversationServiceMock,
-        },
-        { provide: LoggedGuard, useClass: LoggedGuardServiceMock },
-        { provide: CallsService, useClass: CallsServiceMock },
-        { provide: RealTimeService, useClass: RealTimeServiceMock },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          { provide: LoggedGuard, useClass: LoggedGuardServiceMock },
+          { provide: CallsService, useClass: CallsServiceMock },
+          { provide: RealTimeService, useClass: RealTimeServiceMock },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DashboardComponent);
@@ -86,9 +88,12 @@ describe('DashboardComponent', () => {
     fixture.ngZone.run(() => router.initialNavigation());
   });
 
-  it('should create the app', async(() => {
-    expect(fixture.debugElement.componentInstance).toBeTruthy();
-  }));
+  it(
+    'should create the app',
+    waitForAsync(() => {
+      expect(fixture.debugElement.componentInstance).toBeTruthy();
+    })
+  );
 
   describe('ngOnInit', () => {
     it('should call methods', () => {

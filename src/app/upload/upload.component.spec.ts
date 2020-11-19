@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UploadComponent } from './upload.component';
 import { ItemService } from '../core/item/item.service';
@@ -18,30 +18,35 @@ describe('UploadComponent', () => {
   let userService: UserService;
   let trustAndSafetyService: TrustAndSafetyService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [NgxPermissionsModule.forRoot()],
-      declarations: [UploadComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        {
-          provide: ItemService,
-          useValue: {
-            getUrgentProductByCategoryId() {},
-          },
-        },
-        {
-          provide: UserService,
-          useValue: {
-            isProfessional() {
-              return of(false);
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NgxPermissionsModule.forRoot()],
+        declarations: [UploadComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          {
+            provide: ItemService,
+            useValue: {
+              getUrgentProductByCategoryId() {},
             },
           },
-        },
-        { provide: TrustAndSafetyService, useValue: MockTrustAndSafetyService },
-      ],
-    }).compileComponents();
-  }));
+          {
+            provide: UserService,
+            useValue: {
+              isProfessional() {
+                return of(false);
+              },
+            },
+          },
+          {
+            provide: TrustAndSafetyService,
+            useValue: MockTrustAndSafetyService,
+          },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UploadComponent);

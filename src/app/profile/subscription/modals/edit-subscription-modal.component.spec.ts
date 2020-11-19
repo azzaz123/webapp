@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -37,45 +37,47 @@ describe('EditSubscriptionModalComponent', () => {
   let subscriptionsService: SubscriptionsService;
   let modalService: NgbModal;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [EditSubscriptionModalComponent, DateUntilDayPipe],
-      providers: [
-        {
-          provide: NgbActiveModal,
-          useValue: {
-            close() {},
-          },
-        },
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                result: Promise.resolve(true),
-                componentInstance: {},
-              };
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [EditSubscriptionModalComponent, DateUntilDayPipe],
+        providers: [
+          {
+            provide: NgbActiveModal,
+            useValue: {
+              close() {},
             },
           },
-        },
-        {
-          provide: SubscriptionsService,
-          useValue: {
-            editSubscription() {
-              return of(202);
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  result: Promise.resolve(true),
+                  componentInstance: {},
+                };
+              },
             },
           },
-        },
-        I18nService,
-        EventService,
-        {
-          provide: AnalyticsService,
-          useClass: MockAnalyticsService,
-        },
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: SubscriptionsService,
+            useValue: {
+              editSubscription() {
+                return of(202);
+              },
+            },
+          },
+          I18nService,
+          EventService,
+          {
+            provide: AnalyticsService,
+            useClass: MockAnalyticsService,
+          },
+        ],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(EditSubscriptionModalComponent);

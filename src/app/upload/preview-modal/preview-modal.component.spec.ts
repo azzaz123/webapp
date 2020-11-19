@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { PreviewModalComponent } from './preview-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -14,24 +14,26 @@ describe('PreviewModalComponent', () => {
   let fixture: ComponentFixture<PreviewModalComponent>;
   let carKeysService: CarKeysService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        NgbActiveModal,
-        DecimalPipe,
-        {
-          provide: CarKeysService,
-          useValue: {
-            getTypeName() {
-              return of({});
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        providers: [
+          NgbActiveModal,
+          DecimalPipe,
+          {
+            provide: CarKeysService,
+            useValue: {
+              getTypeName() {
+                return of({});
+              },
             },
           },
-        },
-      ],
-      declarations: [PreviewModalComponent, CustomCurrencyPipe],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        declarations: [PreviewModalComponent, CustomCurrencyPipe],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PreviewModalComponent);

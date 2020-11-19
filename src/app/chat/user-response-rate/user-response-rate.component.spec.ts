@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { UserResponseRateComponent } from './user-response-rate.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -8,12 +8,14 @@ describe('UserResponseRateComponent', () => {
   let component: UserResponseRateComponent;
   let fixture: ComponentFixture<UserResponseRateComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [UserResponseRateComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [UserResponseRateComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UserResponseRateComponent);

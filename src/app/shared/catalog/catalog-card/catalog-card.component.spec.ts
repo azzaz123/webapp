@@ -1,9 +1,9 @@
 import {
-  async,
   ComponentFixture,
   TestBed,
   fakeAsync,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CatalogCardComponent } from './catalog-card.component';
@@ -43,54 +43,56 @@ describe('CatalogCardComponent', () => {
     item: null,
   };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [CatalogCardComponent, CustomCurrencyPipe, CountdownPipe],
-      providers: [
-        DecimalPipe,
-        I18nService,
-        { provide: TrackingService, useClass: MockTrackingService },
-        {
-          provide: ItemService,
-          useValue: {
-            selectedItems: [],
-            selectItem() {},
-            deselectItem() {},
-            reserveItem() {
-              return of({});
-            },
-            setSold() {
-              return of({});
-            },
-            cancelAutorenew() {
-              return of({});
-            },
-          },
-        },
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                result: Promise.resolve(),
-                componentInstance: componentInstance,
-              };
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [CatalogCardComponent, CustomCurrencyPipe, CountdownPipe],
+        providers: [
+          DecimalPipe,
+          I18nService,
+          { provide: TrackingService, useClass: MockTrackingService },
+          {
+            provide: ItemService,
+            useValue: {
+              selectedItems: [],
+              selectItem() {},
+              deselectItem() {},
+              reserveItem() {
+                return of({});
+              },
+              setSold() {
+                return of({});
+              },
+              cancelAutorenew() {
+                return of({});
+              },
             },
           },
-        },
-        {
-          provide: ErrorsService,
-          useValue: {
-            i18nError() {},
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  result: Promise.resolve(),
+                  componentInstance: componentInstance,
+                };
+              },
+            },
           },
-        },
-        { provide: 'SUBDOMAIN', useValue: 'es' },
-        EventService,
-        CountdownPipe,
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: ErrorsService,
+            useValue: {
+              i18nError() {},
+            },
+          },
+          { provide: 'SUBDOMAIN', useValue: 'es' },
+          EventService,
+          CountdownPipe,
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CatalogCardComponent);

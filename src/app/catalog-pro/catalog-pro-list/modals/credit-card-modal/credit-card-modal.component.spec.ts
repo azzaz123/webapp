@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CreditCardModalComponent } from './credit-card-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -24,36 +24,38 @@ describe('CreditCardModalComponent', () => {
   let router: Router;
   let uuidService: UuidService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [FormsModule],
-      providers: [
-        NgbActiveModal,
-        EventService,
-        ErrorsService,
-        {
-          provide: StripeService,
-          useValue: {
-            buy() {},
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [FormsModule],
+        providers: [
+          NgbActiveModal,
+          EventService,
+          ErrorsService,
+          {
+            provide: StripeService,
+            useValue: {
+              buy() {},
+            },
           },
-        },
-        {
-          provide: Router,
-          useValue: {
-            navigate() {},
+          {
+            provide: Router,
+            useValue: {
+              navigate() {},
+            },
           },
-        },
-        {
-          provide: I18nService,
-          useValue: {
-            getTranslations() {},
+          {
+            provide: I18nService,
+            useValue: {
+              getTranslations() {},
+            },
           },
-        },
-      ],
-      declarations: [CreditCardModalComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        declarations: [CreditCardModalComponent],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CreditCardModalComponent);

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { BecomeProModalComponent } from './become-pro-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -8,13 +8,15 @@ describe('BecomeProModalComponent', () => {
   let component: BecomeProModalComponent;
   let fixture: ComponentFixture<BecomeProModalComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [BecomeProModalComponent],
-      providers: [NgbActiveModal],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [BecomeProModalComponent],
+        providers: [NgbActiveModal],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BecomeProModalComponent);

@@ -1,10 +1,10 @@
 import { of } from 'rxjs';
 import {
-  async,
   ComponentFixture,
   TestBed,
   fakeAsync,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '../../shared/pipes';
@@ -37,34 +37,36 @@ describe('ItemCartFavoriteComponent', () => {
     componentInstance: {},
   };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      declarations: [ItemCartFavoriteComponent, CustomCurrencyPipe],
-      providers: [
-        DecimalPipe,
-        {
-          provide: ItemService,
-          useValue: {
-            favoriteItem() {
-              return of({});
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [],
+        declarations: [ItemCartFavoriteComponent, CustomCurrencyPipe],
+        providers: [
+          DecimalPipe,
+          {
+            provide: ItemService,
+            useValue: {
+              favoriteItem() {
+                return of({});
+              },
             },
           },
-        },
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return modalRef;
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return modalRef;
+              },
             },
           },
-        },
-        { provide: TrackingService, useClass: MockTrackingService },
-        { provide: 'SUBDOMAIN', useValue: 'www' },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          { provide: TrackingService, useClass: MockTrackingService },
+          { provide: 'SUBDOMAIN', useValue: 'www' },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ItemCartFavoriteComponent);

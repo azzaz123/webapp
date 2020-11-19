@@ -4,7 +4,7 @@ import {
   ElementRef,
   SecurityContext,
 } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { SvgService } from '../svg.service';
@@ -17,21 +17,23 @@ describe('SvgIconComponent', () => {
   let svgService: SvgService;
   let domSanitizer: DomSanitizer;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      declarations: [SvgIconComponent],
-      providers: [
-        {
-          provide: ElementRef,
-          useValue: {
-            nativeElement: {},
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [HttpClientTestingModule],
+        declarations: [SvgIconComponent],
+        providers: [
+          {
+            provide: ElementRef,
+            useValue: {
+              nativeElement: {},
+            },
           },
-        },
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SvgIconComponent);

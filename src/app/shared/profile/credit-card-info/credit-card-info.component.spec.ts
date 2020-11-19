@@ -1,9 +1,9 @@
 import {
-  async,
   ComponentFixture,
   fakeAsync,
   tick,
   TestBed,
+  waitForAsync,
 } from '@angular/core/testing';
 
 import { CreditCardInfoComponent } from './credit-card-info.component';
@@ -28,35 +28,37 @@ describe('CreditCardInfoComponent', () => {
   let deleteStripeCardButton;
   const componentInstance: any = {};
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [CreditCardInfoComponent],
-      providers: [
-        I18nService,
-        {
-          provide: StripeService,
-          useValue: {
-            deleteCard() {
-              return of({});
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [CreditCardInfoComponent],
+        providers: [
+          I18nService,
+          {
+            provide: StripeService,
+            useValue: {
+              deleteCard() {
+                return of({});
+              },
             },
           },
-        },
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                result: Promise.resolve(),
-                componentInstance: componentInstance,
-              };
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  result: Promise.resolve(),
+                  componentInstance: componentInstance,
+                };
+              },
+              close() {},
             },
-            close() {},
           },
-        },
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CreditCardInfoComponent);

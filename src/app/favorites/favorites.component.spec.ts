@@ -1,9 +1,9 @@
 import { of } from 'rxjs';
 import {
-  async,
   ComponentFixture,
   TestBed,
   fakeAsync,
+  waitForAsync,
 } from '@angular/core/testing';
 import { ItemService } from '../core/item/item.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -23,38 +23,40 @@ describe('FavoritesComponent', () => {
   let userService: UserService;
   let profileService: ProfileService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [FavoritesComponent],
-      providers: [
-        {
-          provide: ItemService,
-          useValue: {
-            myFavorites() {
-              return of({ data: [MOCK_ITEM, MOCK_ITEM], init: 2 });
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [FavoritesComponent],
+        providers: [
+          {
+            provide: ItemService,
+            useValue: {
+              myFavorites() {
+                return of({ data: [MOCK_ITEM, MOCK_ITEM], init: 2 });
+              },
             },
           },
-        },
-        {
-          provide: ProfileService,
-          useValue: {
-            myFavorites() {
-              return of({ data: [MOCK_PROFILE, MOCK_PROFILE], init: 2 });
+          {
+            provide: ProfileService,
+            useValue: {
+              myFavorites() {
+                return of({ data: [MOCK_PROFILE, MOCK_PROFILE], init: 2 });
+              },
             },
           },
-        },
-        {
-          provide: UserService,
-          useValue: {
-            getStats() {
-              return of(MOCK_USER_STATS);
+          {
+            provide: UserService,
+            useValue: {
+              getStats() {
+                return of(MOCK_USER_STATS);
+              },
             },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FavoritesComponent);
