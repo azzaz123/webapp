@@ -41,7 +41,14 @@
             ],
             "scripts": [
               "node_modules/stanza.io/build/stanzaio.bundle.js"
-            ]
+            ],
+            "allowedCommonJsDependencies": [
+              "crypto-js",
+              "echarts", 
+              "retry",
+              "visibilityjs",
+              "libphonenumber-js"
+           ]
           },
           "configurations": {
             "docker": {
