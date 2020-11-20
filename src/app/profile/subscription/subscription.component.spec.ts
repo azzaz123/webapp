@@ -198,18 +198,33 @@ describe('SubscriptionComponent', () => {
       );
     });
 
-    it('should not set loading to true if action is not present', () => {
+    it('should not set loading to true if action is not present', fakeAsync(() => {
       spyOn(modalService, 'open').and.returnValue({
-        result: Promise.resolve(null),
+        result: Promise.resolve(undefined),
         componentInstance: componentInstance,
       });
 
       component.subscriptions = MAPPED_SUBSCRIPTIONS;
 
       component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[0]);
+      tick();
 
       expect(component.loading).toBe(false);
-    });
+    }));
+
+    it('should not set loading to true if action is update', fakeAsync(() => {
+      spyOn(modalService, 'open').and.returnValue({
+        result: Promise.resolve('update'),
+        componentInstance: componentInstance,
+      });
+
+      component.subscriptions = MAPPED_SUBSCRIPTIONS;
+
+      component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[0]);
+      tick();
+
+      expect(component.loading).toBe(false);
+    }));
 
     it('should redirect to subscriptions if action is present and user is featured', fakeAsync(() => {
       spyOn(modalService, 'open').and.returnValue({
