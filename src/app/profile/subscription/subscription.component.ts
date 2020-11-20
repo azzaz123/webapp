@@ -55,7 +55,7 @@ export class SubscriptionsComponent implements OnInit {
     private router: Router,
     private analyticsService: AnalyticsService,
     private userService: UserService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loading = true;
@@ -80,8 +80,7 @@ export class SubscriptionsComponent implements OnInit {
     modalRef.result.then(
       (action: string) => {
         if (action) {
-          this.loading = true;
-          if (this.user && this.user.featured) {
+          if ((this.user && this.user.featured) || action === 'update') {
             this.isSubscriptionUpdated();
           } else {
             this.isUserUpdated();
