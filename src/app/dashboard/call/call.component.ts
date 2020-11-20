@@ -3,6 +3,8 @@ import { Remove } from '../../shared/archivable/animations';
 import { Call } from '../../core/conversation/calls';
 import { CallsService } from '../../core/conversation/calls.service';
 
+import { CalendarSpec } from 'moment';
+
 @Component({
   selector: 'tsl-call',
   templateUrl: './call.component.html',
@@ -13,9 +15,9 @@ export class CallComponent {
   @Input() call: Call;
   @HostBinding('class.archived')
   @HostBinding('@remove')
-  archived: boolean = false;
+  archived = false;
 
-  public momentConfig: any = {
+  public momentConfig: CalendarSpec = {
     lastDay: 'ddd',
     sameDay: 'HH:mm',
     nextDay: 'ddd',
