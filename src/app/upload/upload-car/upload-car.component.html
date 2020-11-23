@@ -71,8 +71,8 @@
           <tsl-dropdown *ngIf="!customMake" i18n-placeholder placeholder="Number plate" class="form-control"
             formControlName="year" id="year" [options]="years" [disableControl]="yearFieldDisabled" [isLoading]="isLoadingYears" (opened)="onIsYearsNeeded()">
           </tsl-dropdown>
-          <input *ngIf="customMake" type="text" i18n-placeholder placeholder="Number plate" class="form-control"
-            formControlName="year" id="year" [disableControl]="yearFieldDisabled" />
+          <input *ngIf="customMake" type="number" i18n-placeholder placeholder="Number plate" class="form-control"
+            formControlName="year" id="year" [disableControl]="yearFieldDisabled" min="1900" [max]="currentYear"/>
         </div>
       </div>
       <div class="col-12 col-md-8">

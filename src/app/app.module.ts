@@ -10,6 +10,8 @@ import { LayoutModule } from './layout/layout.module';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { HttpModuleNew } from './core/http/http.module.new';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { isSWEnabled } from 'environments/environment';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,6 +25,10 @@ import { HttpModuleNew } from './core/http/http.module.new';
     AppRoutingModule,
     LayoutModule,
     NgxPermissionsModule.forRoot(),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: isSWEnabled,
+      registrationStrategy: 'registerWithDelay:5000',
+    }),
   ],
   providers: [PROVIDERS],
   bootstrap: [AppComponent],

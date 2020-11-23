@@ -67,6 +67,7 @@ import {
 import { BrandModel } from '../brand-model.interface';
 import { CATEGORY_IDS } from '../../core/category/category-ids';
 import { CategoryOption } from 'app/core/category/category-response.interface';
+import { I18nService } from 'app/core/i18n/i18n.service';
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
 export const USER_LOCATION: UserLocation = {
@@ -178,6 +179,7 @@ describe('UploadProductComponent', () => {
             },
           },
         },
+        I18nService,
       ],
       declarations: [UploadProductComponent],
       schemas: [NO_ERRORS_SCHEMA],

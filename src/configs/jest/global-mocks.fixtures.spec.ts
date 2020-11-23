@@ -142,3 +142,17 @@ export const MOCK_SCREEN: { width: number; height: number } = {
   width: 1366,
   height: 768,
 };
+
+export const MOCK_HERE_MAPS: any = {
+  Map: null,
+  clustering: null,
+  data: null,
+  geo: null,
+  map: null,
+  mapevents: null,
+  util: null,
+  math: null,
+  net: null,
+  service: { Platform: (e) => e },
+  ui: null,
+};

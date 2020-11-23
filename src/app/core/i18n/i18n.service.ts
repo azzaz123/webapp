@@ -8,6 +8,8 @@ export class I18nService {
       no: 'No',
       defaultErrorMessage:
         'Service not available at this moment. Try again later',
+      male: 'Male',
+      female: 'Female',
       daysMomentConfig: {
         lastDay: '[Yesterday] - HH:mm',
         sameDay: '[Today] - HH:mm',
@@ -204,6 +206,8 @@ export class I18nService {
       no: 'No',
       defaultErrorMessage:
         'Servicio no disponible temporalmente. Inténtelo de nuevo más tarde',
+      male: 'Hombre',
+      female: 'Mujer',
       daysMomentConfig: {
         lastDay: '[Ayer] - HH:mm',
         sameDay: '[Hoy] - HH:mm',

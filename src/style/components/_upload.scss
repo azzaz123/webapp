@@ -198,17 +198,16 @@
       cursor: pointer;
       display: flex;
       justify-content: center;
+      align-items: center;
       tsl-svg-icon {
         display: none;
-        height: 9px;
-        width: 12px;
       }
       &.selected {
         background: $yellow-dark;
         border-color: transparent;
         tsl-svg-icon {
           display: flex;
-          ::ng-deep path {
+          svg g g {
             fill: $white;
           }
         }
@@ -221,9 +220,6 @@
       .select {
         &.selected {
           background: $walla-main;
-          tsl-svg-icon {
-            display: block;
-          }
         }
         &:hover {
           border-color: $walla-main;

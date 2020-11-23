@@ -1,0 +1,17 @@
+{
+  "name": "Wallapop",
+  "short_name": "Wallapop",
+  "theme_color": "#1976d2",
+  "background_color": "#fafafa",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "assets/images/logo-icon@144x144.png",
+      "type": "image/png",
+      "sizes": "144x144",
+      "purpose": "maskable any"
+    }
+  ]
+}

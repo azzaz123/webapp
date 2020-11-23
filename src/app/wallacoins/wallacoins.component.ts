@@ -38,13 +38,7 @@ export class WallacoinsComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private cd: ChangeDetectorRef
-  ) {
-    this.userService.isProfessional().subscribe((value: boolean) => {
-      if (value) {
-        this.router.navigate(['/pro/catalog/list']);
-      }
-    });
-  }
+  ) {}
 
   ngOnInit() {
     this.openTutorialModal();
