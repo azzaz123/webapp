@@ -125,9 +125,7 @@
               "ngswConfigPath": "ngsw-config.json"
             },
             "es": {
-              "i18nFile": "src/locale/es.xtb",
-              "i18nFormat": "xtb",
-              "i18nLocale": "es",
+              "localize": ["es"],
               "budgets": [
                 {
                   "type": "anyComponentStyle",
