@@ -13,7 +13,4 @@
       "node_modules/@types"
     ]
   },
-  "angularCompilerOptions": {
-    "enableIvy": false
-  }
 }
