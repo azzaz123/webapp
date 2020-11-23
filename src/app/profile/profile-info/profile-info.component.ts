@@ -39,6 +39,8 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
   public isPro: boolean;
   public updateLocationWhenSearching = false;
   public loading = false;
+  public isIncorrectAddress = false;
+
   @ViewChild(ProfileFormComponent, { static: true })
   formComponent: ProfileFormComponent;
 
@@ -129,7 +131,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     return this.formComponent.canExit();
   }
 
-  public onSubmit() {
+  public onSubmit(): void {
     this.setUsernameFormControlsErrors(false);
 
     const phoneNumberControl = this.profileForm.get('phone_number');
@@ -163,6 +165,8 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
         return;
       }
     }
+
+    this.isIncorrectAddress = !this.profileForm.get('location.address').valid;
 
     if (this.profileForm.valid) {
       const profileFormValue = { ...this.profileForm.value };
@@ -231,9 +235,6 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
           );
       });
     } else {
-      if (!this.profileForm.get('location.address').valid) {
-        this.profileForm.get('location.address').markAsDirty();
-      }
       this.errorsService.i18nError('formErrors');
     }
   }
