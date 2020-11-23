@@ -14,7 +14,7 @@
     "buildbeta-en": "ng build -c=beta --no-progress",
     "buildprod": "ng build --prod --i18n-locale es --i18n-file src/locale/es.xtb --i18n-format xtb --no-progress",
     "buildprod-en": "ng build --prod --no-progress",
-    "i18n": "ng xi18n --i18n-format=xmb --output-path=locale",
+    "i18n": "ng extract-i18n --format=xmb --output-path=src/locale",
     "serve": "ng serve -c=es",
     "test-once": "jest -c=src/configs/jest/jest.config.js",
     "test": "yarn test-once --watch",
