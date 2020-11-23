@@ -347,10 +347,8 @@ describe('ProfileInfoComponent', () => {
         component.onSubmit();
       });
 
-      it('should set dirty invalid fields', () => {
-        expect(
-          component.profileForm.get('location.address').dirty
-        ).toBeTruthy();
+      it('should notify address is not valid', () => {
+        expect(component.isIncorrectAddress).toBe(true);
       });
 
       it('should call i18nError if form is invalid', () => {

@@ -1,0 +1,5 @@
+@import '~web-styleguide/scss/colors';
+
+input.ng-dirty.ng-invalid {
+  border: 1px solid $negative-main !important;
+}
