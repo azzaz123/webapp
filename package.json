@@ -12,7 +12,7 @@
     "builddocker-en": "ng build -c=docker --no-progress",
     "buildbeta": "ng build -c=beta,es --no-progress",
     "buildbeta-en": "ng build -c=beta,es --no-progress",
-    "buildprod": "ng build -c=production,es",
+    "buildprod": "ng build -c=production,es --no-progress",
     "buildprod-en": "ng build -c=production --no-progress",
     "i18n": "ng extract-i18n --format=xmb --output-path=src/locale",
     "serve": "ng serve -c=es",
