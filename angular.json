@@ -47,7 +47,8 @@
               "echarts", 
               "retry",
               "visibilityjs",
-              "libphonenumber-js"
+              "libphonenumber-js",
+              "moment"
            ]
           },
           "configurations": {
