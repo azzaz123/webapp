@@ -27,6 +27,8 @@ import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
+import { ErrorsService } from '../errors/errors.service';
+import { I18nService } from '../i18n/i18n.service';
 
 const MOCK_PAYMENT_METHOD_ID = 'a0b1c2';
 
@@ -37,6 +39,7 @@ describe('StripeService', () => {
   let eventService: EventService;
   const routerEvents: Subject<any> = new Subject();
   let httpMock: HttpTestingController;
+  let errorService: ErrorsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -90,6 +93,8 @@ describe('StripeService', () => {
             },
           },
         },
+        ErrorsService,
+        I18nService,
       ],
       imports: [HttpClientTestingModule],
     });
@@ -98,6 +103,7 @@ describe('StripeService', () => {
     userService = TestBed.inject(UserService);
     httpMock = TestBed.inject(HttpTestingController);
     eventService = TestBed.inject(EventService);
+    errorService = TestBed.inject(ErrorsService);
   });
 
   describe('buy', () => {
