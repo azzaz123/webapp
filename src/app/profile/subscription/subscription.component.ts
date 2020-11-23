@@ -31,6 +31,14 @@ import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user';
 import { UserResponse } from 'app/core/user/user-response.interface';
 
+export enum SubscriptionModalAction {
+  ADD = 'add',
+  UPDATE = 'update',
+  CONTINUE = 'continue',
+  CANCEL_SUBSCRIPTION_SUCCESS = 'success',
+  CANCEL_SUBSCRIPTION_FAIL = 'fail'
+}
+
 export type SubscriptionModal =
   | typeof CheckSubscriptionInAppModalComponent
   | typeof CancelSubscriptionModalComponent
@@ -78,8 +86,8 @@ export class SubscriptionsComponent implements OnInit {
       this.subscriptions
     );
     modalRef.result.then(
-      (action: string) => {
-        if (action && action !== 'update') {
+      (action: SubscriptionModalAction) => {
+        if (action && action !== SubscriptionModalAction.UPDATE) {
           this.loading = true;
           if (this.user && this.user.featured) {
             this.isSubscriptionUpdated();
