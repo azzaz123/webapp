@@ -103,7 +103,13 @@ const loggedRoutes = [
   },
   {
     path: 'wallacoins',
-    canLoad: [LoggedGuard],
+    canLoad: [LoggedGuard, NgxPermissionsGuard],
+    data: {
+      permissions: {
+        except: PERMISSIONS.professional,
+        redirectTo: '/pro/catalog/list',
+      },
+    },
     loadChildren: () =>
       import('app/wallacoins/wallacoins.module').then(
         (m) => m.WallacoinsModule
