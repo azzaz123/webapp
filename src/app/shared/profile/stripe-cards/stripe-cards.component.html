@@ -13,7 +13,7 @@
               (onSetChangeCard)="onSetChangeCard($event)" (onDeleteStripeCard)="onDeleteCard($event)">
             </tsl-credit-card-info>
           </div>
-          <div class="StripeCards__addNew" *ngIf="subscriptionStripeCards.length <= 0">
+          <div class="StripeCards__addNew" *ngIf="subscriptionStripeCards?.length <= 0">
             <span i18n="@@AddNewSubscriptionCard" (click)="addNewSubscriptionCard()">Link a card to your subscriptions</span>
           </div>
       </div>

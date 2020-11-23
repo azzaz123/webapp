@@ -6,8 +6,6 @@ import {
   PaymentService,
   PAYMENT_RESPONSE_STATUS,
 } from '../payments/payment.service';
-import { User } from '../user/user';
-import { UserService } from '../user/user.service';
 import { Router } from '@angular/router';
 import { EventService } from '../event/event.service';
 import {
@@ -16,9 +14,9 @@ import {
   PaymentMethodCardResponse,
 } from '../payments/payment.interface';
 import { FinancialCard } from '../../shared/profile/credit-card-info/financial-card';
-import { FeatureflagService } from '../user/featureflag.service';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { ErrorsService } from '../errors/errors.service';
 
 export const PAYMENTS_API_URL = 'api/v3/payments';
 
@@ -26,30 +24,21 @@ export const STRIPE_PAYMENT_RESPONSE_EVENT_KEY = 'paymentActionResponse';
 
 @Injectable()
 export class StripeService {
-  public lib: any;
-  public elements: any;
-
-  public fullName: string;
-  public PAYMENT_PROVIDER_STRIPE = false;
+  public lib: stripe.Stripe;
   private financialCards: FinancialCard[];
 
   constructor(
     private paymentService: PaymentService,
-    private userService: UserService,
     private router: Router,
     private eventService: EventService,
+    private errorService: ErrorsService,
     private http: HttpClient
-  ) {
-    this.userService.me().subscribe((user: User) => {
-      this.fullName = user ? `${user.firstName} ${user.lastName}` : '';
-    });
-  }
+  ) {}
 
   public init() {
     this.lib = Stripe(environment.stripeKey, {
       betas: ['payment_intent_beta_3'],
     });
-    this.elements = this.lib.elements();
   }
 
   public buy(
@@ -195,20 +184,19 @@ export class StripeService {
     }
   };
 
-  payment = async (token, card) => {
-    return await this.lib.handleCardPayment(token, card, {
+  private async payment(token, card) {
+    return await this.handleCardPayment(token, card, {
       save_payment_method: true,
-      source_data: {
-        owner: { name: this.fullName },
-      },
     });
-  };
+  }
 
-  requiresActionPayment = async (paymentIntentSecret) => {
-    return await this.lib.handleCardPayment(paymentIntentSecret);
-  };
+  private async requiresActionPayment(paymentIntentSecret) {
+    return await this.handleCardPayment(paymentIntentSecret);
+  }
 
-  savedPayment = async (token) => await this.lib.handleCardPayment(token);
+  private async savedPayment(clientSecret) {
+    return await this.handleCardPayment(clientSecret);
+  }
 
   public mapResponse(res: PaymentMethodResponse): FinancialCard {
     return new FinancialCard(
@@ -249,5 +237,27 @@ export class StripeService {
 
   public createToken(param: any) {
     return this.lib.createToken(param);
+  }
+
+  private isBadToken(clientSecret: string): boolean {
+    if (clientSecret === '') {
+      this.errorService.i18nError('defaultErrorMessage');
+      return true;
+    }
+
+    return false;
+  }
+
+  private async handleCardPayment(
+    clientSecret: string,
+    card?: stripe.elements.Element,
+    options?: stripe.HandleCardPaymentOptions
+  ) {
+    if (this.isBadToken(clientSecret)) {
+      return;
+    }
+
+    // TODO: This method from Stripe is deprecated
+    return await this.lib.handleCardPayment(clientSecret, card, options);
   }
 }

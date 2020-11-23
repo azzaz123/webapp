@@ -191,6 +191,10 @@ $feature-button-width: 170px;
     }
   }
 
+  tsl-date-countdown {
+    width: $feature-button-width;
+  }
+
   .btn-featured {
     width: $feature-button-width;
     height: 40px;
