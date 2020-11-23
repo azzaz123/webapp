@@ -29,7 +29,6 @@ import { UnsubscribeInAppFirstModal } from './modals/unsubscribe-in-app-first-mo
 import { DiscountAvailableUnsubscribeInAppModalComponent } from './modals/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user';
-import { UserResponse } from 'app/core/user/user-response.interface';
 
 export enum SubscriptionModalAction {
   ADD = 'add',
