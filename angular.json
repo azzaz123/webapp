@@ -8,7 +8,8 @@
         "sourceLocale": "en",
         "locales": {
           "es": {
-            "translation": "src/locale/es.xtb"
+            "translation": "src/locale/es.xtb",
+            "baseHref": ""
           }
         }
       },
