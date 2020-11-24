@@ -5,10 +5,10 @@
   "projects": {
     "webapp": {
       "i18n": {
+        "sourceLocale": "en",
         "locales": {
           "es": {
-            "translation": "src/locale/es.xtb",
-            "baseHref": ""
+            "translation": "src/locale/es.xtb"
           }
         }
       },
@@ -20,6 +20,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "aot": true,
+            "localize": true,
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
