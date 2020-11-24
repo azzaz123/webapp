@@ -1,6 +1,6 @@
 <div class="header">
   <div class="modal-close light" (click)="activeModal.close()">
-    <mat-icon svgIcon="cross"></mat-icon>
+    <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
   </div>
   <div *ngIf="code === '200'">
     <h1 i18n>Congratulations</h1>
@@ -15,8 +15,8 @@
   <div class="urgent-background"></div>
   <p i18n>Share it with your friends:</p>
   <div class="social-icons">
-    <a (click)="facebookShare()"><mat-icon svgIcon="facebook"></mat-icon></a>
-    <a (click)="twitterShare()"><mat-icon svgIcon="twitter"></mat-icon></a>
+    <a (click)="facebookShare()"><tsl-svg-icon src="/assets/icons/facebook.svg"></tsl-svg-icon></a>
+    <a (click)="twitterShare()"><tsl-svg-icon src="/assets/icons/twitter.svg"></tsl-svg-icon></a>
   </div>
 </div>
 

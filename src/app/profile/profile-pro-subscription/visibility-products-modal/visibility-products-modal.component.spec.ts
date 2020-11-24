@@ -9,18 +9,17 @@ describe('VisibilityProductsModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ VisibilityProductsModalComponent ],
+      declarations: [VisibilityProductsModalComponent],
       providers: [
         {
-          provide: NgbActiveModal, useValue: {
-          close() {
-          }
-        }
+          provide: NgbActiveModal,
+          useValue: {
+            close() {},
+          },
         },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

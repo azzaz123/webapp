@@ -1,4 +1,10 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { EventService } from '../../core/event/event.service';
 
@@ -8,19 +14,17 @@ import { EventService } from '../../core/event/event.service';
   styleUrls: ['./connection-alert.component.scss'],
   animations: [
     trigger('visibilityChanged', [
-      state('true' , style({ opacity: 1, transform: 'translateY(0)'})),
-      state('false', style({ opacity: 0, transform: 'translateY(-100%)'})),
-      transition('* => *', animate('500ms'))
-    ])
-  ]
+      state('true', style({ opacity: 1, transform: 'translateY(0)' })),
+      state('false', style({ opacity: 0, transform: 'translateY(-100%)' })),
+      transition('* => *', animate('500ms')),
+    ]),
+  ],
 })
 export class ConnectionAlertComponent implements OnInit {
-
   public connected = true;
   public hide = true;
 
-  constructor(private eventService: EventService) {
-  }
+  constructor(private eventService: EventService) {}
 
   ngOnInit() {
     this.eventService.subscribe(EventService.CONNECTION_ERROR, () => {
@@ -34,5 +38,4 @@ export class ConnectionAlertComponent implements OnInit {
       }, 500);
     });
   }
-
 }

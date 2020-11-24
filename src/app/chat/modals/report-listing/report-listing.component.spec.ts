@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReportListingComponent } from './report-listing.component';
@@ -15,10 +14,12 @@ describe('ReportListingComponent', () => {
   let itemService: ItemService;
   let activeModal: NgbActiveModal;
 
-  const BAN_REASONS: BanReason[] = [{
-    id: 1,
-    label: 'ban reason'
-  }];
+  const BAN_REASONS: BanReason[] = [
+    {
+      id: 1,
+      label: 'ban reason',
+    },
+  ];
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -26,25 +27,25 @@ describe('ReportListingComponent', () => {
       providers: [
         NgbActiveModal,
         {
-          provide: ItemService, useValue: {
-          getBanReasons() {
-            return observableOf(BAN_REASONS);
-          }
-        }
-        }
+          provide: ItemService,
+          useValue: {
+            getBanReasons() {
+              return of(BAN_REASONS);
+            },
+          },
+        },
       ],
-      declarations: [ ReportListingComponent ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+      declarations: [ReportListingComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ReportListingComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    itemService = TestBed.get(ItemService);
-    activeModal = TestBed.get(NgbActiveModal);
+    itemService = TestBed.inject(ItemService);
+    activeModal = TestBed.inject(NgbActiveModal);
   });
 
   it('should be created', () => {
@@ -75,7 +76,7 @@ describe('ReportListingComponent', () => {
       component.close();
       expect(activeModal.close).toHaveBeenCalledWith({
         message: 'message',
-        reason: 1
+        reason: 1,
       });
     });
   });

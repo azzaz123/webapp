@@ -2,10 +2,15 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UnsubscribeModalComponent } from './unsubscribe-modal.component';
 import { UserService } from '../../core/user/user.service';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CUSTOM_REASON, MOCK_USER, MOCK_UNSUBSCRIBE_REASONS, SELECTED_REASON } from '../../../tests/user.fixtures.spec';
+import {
+  CUSTOM_REASON,
+  MOCK_USER,
+  MOCK_UNSUBSCRIBE_REASONS,
+  SELECTED_REASON,
+} from '../../../tests/user.fixtures.spec';
 import { EventService } from '../../core/event/event.service';
 import { environment } from '../../../environments/environment';
 import { AccessTokenService } from '../../core/http/access-token.service';
@@ -23,7 +28,8 @@ describe('UnsubscribeModalComponent', () => {
       declarations: [UnsubscribeModalComponent],
       providers: [
         {
-          provide: UserService, useValue: {
+          provide: UserService,
+          useValue: {
             getUnsubscribeReasons() {
               return of(MOCK_UNSUBSCRIBE_REASONS);
             },
@@ -32,41 +38,40 @@ describe('UnsubscribeModalComponent', () => {
             },
             isProUser() {
               return of(false);
-            }
-          }
+            },
+          },
         },
         {
-          provide: NgbActiveModal, useValue: {
-            close() {
-            }
-        }
+          provide: NgbActiveModal,
+          useValue: {
+            close() {},
+          },
         },
         {
-          provide: AccessTokenService, useValue: {
-          deleteAccessToken() {
-          }
-        }
+          provide: AccessTokenService,
+          useValue: {
+            deleteAccessToken() {},
+          },
         },
         {
-          provide: EventService, useValue: {
-            emit() {
-            }
-        }
-        }
+          provide: EventService,
+          useValue: {
+            emit() {},
+          },
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UnsubscribeModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    userService = TestBed.get(UserService);
-    activeModal = TestBed.get(NgbActiveModal);
-    accessTokenService = TestBed.get(AccessTokenService);
-    event = TestBed.get(EventService);
+    userService = TestBed.inject(UserService);
+    activeModal = TestBed.inject(NgbActiveModal);
+    accessTokenService = TestBed.inject(AccessTokenService);
+    event = TestBed.inject(EventService);
   });
 
   describe('ngOnInit', () => {
@@ -95,12 +100,10 @@ describe('UnsubscribeModalComponent', () => {
 
       expect(userService.isProUser).toHaveBeenCalled();
       expect(component.hasSubscription).toBe(false);
-
-    })
+    });
   });
 
   describe('send', () => {
-
     it('should call unsubscribe, deleteAccessToken and emit logout event', () => {
       spyOn(userService, 'unsubscribe').and.callThrough();
       spyOn(activeModal, 'close');
@@ -111,10 +114,16 @@ describe('UnsubscribeModalComponent', () => {
 
       component.send();
 
-      expect(userService.unsubscribe).toHaveBeenCalledWith(SELECTED_REASON, CUSTOM_REASON);
+      expect(userService.unsubscribe).toHaveBeenCalledWith(
+        SELECTED_REASON,
+        CUSTOM_REASON
+      );
       expect(activeModal.close).toHaveBeenCalled();
       expect(accessTokenService.deleteAccessToken).toHaveBeenCalled();
-      expect(event.emit).toHaveBeenCalledWith(EventService.USER_LOGOUT, environment.siteUrl);
+      expect(event.emit).toHaveBeenCalledWith(
+        EventService.USER_LOGOUT,
+        environment.siteUrl
+      );
     });
   });
 });

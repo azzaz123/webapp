@@ -4,10 +4,9 @@ import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'tsl-category-selector',
   templateUrl: './category-selector.component.html',
-  styleUrls: ['./category-selector.component.scss']
+  styleUrls: ['./category-selector.component.scss'],
 })
 export class CategorySelectorComponent {
-
   @Output() onSelect: EventEmitter<string> = new EventEmitter();
   public category: number;
 
@@ -21,5 +20,4 @@ export class CategorySelectorComponent {
     this.category = value;
     this.onSelect.emit(value.toString());
   }
-
 }

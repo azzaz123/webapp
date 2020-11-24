@@ -1,8 +1,13 @@
-import { async, fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  async,
+  fakeAsync,
+  ComponentFixture,
+  TestBed,
+} from '@angular/core/testing';
 
 import { CatalogStatusNavbarComponent } from './catalog-status-navbar.component';
 import { PaymentService } from '../../../core/payments/payment.service';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { ScheduledStatus } from '../../../core/payments/payment.interface';
 import { EventService } from '../../../core/event/event.service';
 
@@ -16,36 +21,36 @@ describe('CatalogStatusNavbarComponent', () => {
     autorenew_alert: 0,
     autorenew_scheduled: {},
     items_scheduled_purchases: { citybump: 2, countrybump: 3, zonebump: 1 },
-    purchased: { citybump: 1, countrybump: 2, urgent: 1, zonebump: 1 }
+    purchased: { citybump: 1, countrybump: 2, urgent: 1, zonebump: 1 },
   };
 
   const MOCK_STATUS_CITY: ScheduledStatus = {
     active: true,
     autorenew_alert: 0,
     autorenew_scheduled: {},
-    purchased: { citybump: 1 }
+    purchased: { citybump: 1 },
   };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CatalogStatusNavbarComponent ],
+      declarations: [CatalogStatusNavbarComponent],
       providers: [
         {
-          provide: PaymentService, useValue: {
-          getStatus() {
-            return of({MOCK_STATUS});
-          }
-        }
+          provide: PaymentService,
+          useValue: {
+            getStatus() {
+              return of({ MOCK_STATUS });
+            },
+          },
         },
-        EventService
-      ]
-    })
-    .compileComponents();
+        EventService,
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CatalogStatusNavbarComponent);
-    paymentService = TestBed.get(PaymentService);
+    paymentService = TestBed.inject(PaymentService);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -68,7 +73,6 @@ describe('CatalogStatusNavbarComponent', () => {
       expect(paymentService.getStatus).toHaveBeenCalled();
       expect(component.bumpsCounter).toBe(1);
     });
-
   });
 
   describe('select status', () => {
@@ -81,7 +85,6 @@ describe('CatalogStatusNavbarComponent', () => {
       });
       spyOn(component.filterByStatus, 'emit');
       component.selectStatus(status);
-
     }));
 
     afterEach(() => {
@@ -95,6 +98,5 @@ describe('CatalogStatusNavbarComponent', () => {
     it('should emit an event', () => {
       expect(component.filterByStatus.emit).toHaveBeenCalledWith(status);
     });
-
   });
 });

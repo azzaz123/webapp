@@ -5,9 +5,9 @@
     </div>
     <div class="col-6 col-phone">
       <span [ngSwitch]="call.callStatus" class="icon">
-        <mat-icon *ngSwitchCase="'ANSWERED'" class="call-received" svgIcon="call-received"></mat-icon>
-        <mat-icon *ngSwitchCase="'MISSED'" class="call-missed" svgIcon="call-missed" class="call-missed"></mat-icon>
-        <mat-icon *ngSwitchDefault class="call-shared" svgIcon="call-shared"></mat-icon>
+        <tsl-svg-icon *ngSwitchCase="'ANSWERED'" class="call-received" src="/assets/icons/call-received.svg"></tsl-svg-icon>
+        <tsl-svg-icon *ngSwitchCase="'MISSED'" class="call-missed" src="/assets/icons/call-missed.svg"></tsl-svg-icon>
+        <tsl-svg-icon *ngSwitchDefault class="call-shared" src="/assets/icons/call-shared.svg"></tsl-svg-icon>
       </span>
       <div class="phone-info">
         <span>{{call.phone}}</span>

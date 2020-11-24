@@ -1,7 +1,6 @@
-@import "~style/common";
+@import '~style/common';
 
 .top-bar {
-
   .expanded {
     .sm-device-container {
       padding-top: $spacing-xxl;
@@ -15,7 +14,8 @@
   top: 0;
   background-color: white;
 
-  .lg-device-container, .sm-device-container {
+  .lg-device-container,
+  .sm-device-container {
     display: inline-flex;
     background-color: transparent;
 
@@ -80,7 +80,7 @@
       right: $spacing-xl;
     }
 
-    mat-icon {
+    tsl-svg-icon {
       position: absolute;
       right: -$spacing-s;
       cursor: pointer;
@@ -109,8 +109,11 @@
 }
 
 .faded-user {
-  .sm-device-container, .lg-device-container {
-    tsl-user-avatar, h5, a.user-avatar {
+  .sm-device-container,
+  .lg-device-container {
+    tsl-user-avatar,
+    h5,
+    a.user-avatar {
       pointer-events: none;
       opacity: 0.5;
     }
@@ -184,6 +187,9 @@
 
 .back-arrow {
   position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 50px;
   z-index: 999;
 }
@@ -212,7 +218,7 @@
       color: $blue-grey-2;
       line-height: $line-height-l;
 
-      mat-icon {
+      tsl-svg-icon {
         height: 14px;
         width: 17px;
         margin: 0 $spacing-xxs 0 $spacing-s;
@@ -228,6 +234,6 @@
   &.user-detail-dropdown {
     opacity: 1;
     transition: opacity 1s ease-in-out;
-    transition-delay: .5s;
+    transition-delay: 0.5s;
   }
 }

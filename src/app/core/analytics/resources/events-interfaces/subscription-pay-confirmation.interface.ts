@@ -20,15 +20,19 @@ export interface SubscriptionPayConfirmation {
   /**
    * If the user is a new or recurrent subscriber
    */
-  isNewSubscriber: boolean;
+  isNewSubscriber?: boolean;
   /**
    * The users introduce a new card
    */
-  isNewCard: boolean;
+  isNewCard?: boolean;
   /**
    * Discount applied to the subscritpion in percent
    */
   discountPercent?: number;
+  /**
+   * If the user needs the invoice
+   */
+  invoiceNeeded: boolean;
   /**
    * Identifier of the screen
    */

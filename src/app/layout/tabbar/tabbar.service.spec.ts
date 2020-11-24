@@ -7,16 +7,18 @@ let tabBarService: TabbarService;
 describe('TabbarService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [TabbarService]
+      providers: [TabbarService],
     });
 
-    tabBarService = TestBed.get(TabbarService);
+    tabBarService = TestBed.inject(TabbarService);
   });
 
   describe('hideTabBar', () => {
     it('should emit tabBarHidden event with value true', () => {
       let tabBarHidden: boolean;
-      tabBarService.tabBarHidden$.subscribe(hidden => tabBarHidden = hidden);
+      tabBarService.tabBarHidden$.subscribe(
+        (hidden) => (tabBarHidden = hidden)
+      );
 
       tabBarService.hideTabBar();
 
@@ -27,7 +29,9 @@ describe('TabbarService', () => {
   describe('showTabBar', () => {
     it('should emit tabBarHidden event with value false', () => {
       let tabBarHidden: boolean;
-      tabBarService.tabBarHidden$.subscribe(hidden => tabBarHidden = hidden);
+      tabBarService.tabBarHidden$.subscribe(
+        (hidden) => (tabBarHidden = hidden)
+      );
 
       tabBarService.showTabBar();
 

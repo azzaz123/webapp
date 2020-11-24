@@ -27,31 +27,31 @@ export class PerksModel implements Perks {
     bump: {
       total: 0,
       quantity: 0,
-      createDate: 0
+      createDate: 0,
     },
     national: {
       total: 0,
       quantity: 0,
-      createDate: 0
+      createDate: 0,
     },
     listing: {
       quantity: 0,
-      createDate: 0
-    }
+      createDate: 0,
+    },
   };
   extra = {
     bump: {
-      quantity: 0
+      quantity: 0,
     },
     national: {
-      quantity: 0
-    }
+      quantity: 0,
+    },
   };
   wallacoins = {
-    quantity: 0
+    quantity: 0,
   };
   wallacredits = {
-    quantity: 0
+    quantity: 0,
   };
   getBumpCounter(): number {
     return this.subscription.bump.quantity + this.extra.bump.quantity;

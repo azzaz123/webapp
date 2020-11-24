@@ -4,8 +4,14 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ChangeCardModalComponent } from './change-card-modal.component';
 import { StripeService } from 'app/core/stripe/stripe.service';
-import { STRIPE_CARD_OPTION, STRIPE_CARD } from '../../../../tests/stripe.fixtures.spec';
-import { FINANCIAL_CARD, FINANCIAL_STRIPE_CARD } from '../../../../tests/payments.fixtures.spec';
+import {
+  STRIPE_CARD_OPTION,
+  STRIPE_CARD,
+} from '../../../../tests/stripe.fixtures.spec';
+import {
+  FINANCIAL_CARD,
+  FINANCIAL_STRIPE_CARD,
+} from '../../../../tests/payments.fixtures.spec';
 import { EventService } from 'app/core/event/event.service';
 
 describe('ChangeCardModalComponent', () => {
@@ -16,39 +22,38 @@ describe('ChangeCardModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-        declarations: [ChangeCardModalComponent],
-        providers: [
-          EventService,
-          {
-            provide: NgbActiveModal, useValue: {
-              close() {
-              },
-              dismiss() {
-              }
-            }
+      declarations: [ChangeCardModalComponent],
+      providers: [
+        EventService,
+        {
+          provide: NgbActiveModal,
+          useValue: {
+            close() {},
+            dismiss() {},
           },
-          {
-            provide: StripeService, useValue: {
-              setDefaultCard() {
-                return of(FINANCIAL_STRIPE_CARD);
-              },
-              getCards() {
-                return of([FINANCIAL_CARD]);
-              }
-            }
-          }
-        ],
-        schemas: [NO_ERRORS_SCHEMA]
-      })
-      .compileComponents();
+        },
+        {
+          provide: StripeService,
+          useValue: {
+            setDefaultCard() {
+              return of(FINANCIAL_STRIPE_CARD);
+            },
+            getCards() {
+              return of([FINANCIAL_CARD]);
+            },
+          },
+        },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ChangeCardModalComponent);
     component = fixture.componentInstance;
-    stripeService = TestBed.get(StripeService);
+    stripeService = TestBed.inject(StripeService);
     fixture.detectChanges();
-    activeModal = TestBed.get(NgbActiveModal);
+    activeModal = TestBed.inject(NgbActiveModal);
   });
 
   describe('setSavedCard', () => {
@@ -130,13 +135,15 @@ describe('ChangeCardModalComponent', () => {
   });
 
   describe('setNewDefaultCard', () => {
-    let paymentIntent = {payment_method: 'aaaabbbb3333'};
+    let paymentIntent = { payment_method: 'aaaabbbb3333' };
     it('should call setDefaultCard with paymentMethod', () => {
       spyOn(component, 'setDefaultCard').and.callThrough();
-      
+
       component.setNewDefaultCard(paymentIntent);
-      
-      expect(component.setDefaultCard).toHaveBeenCalledWith(paymentIntent.payment_method);
+
+      expect(component.setDefaultCard).toHaveBeenCalledWith(
+        paymentIntent.payment_method
+      );
     });
 
     it('should call setDefaultCard', () => {
@@ -145,9 +152,9 @@ describe('ChangeCardModalComponent', () => {
 
       component.setNewDefaultCard(paymentIntent);
 
-      expect(component.setDefaultCard).toHaveBeenCalledWith(paymentIntent.payment_method);
+      expect(component.setDefaultCard).toHaveBeenCalledWith(
+        paymentIntent.payment_method
+      );
     });
   });
-
-
 });

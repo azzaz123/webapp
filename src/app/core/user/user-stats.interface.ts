@@ -4,8 +4,8 @@ export interface UserStats {
 }
 
 export interface UserStatsResponse {
-  ratings: [{ type: string, value: number }],
-  counters: [{ type: string, value: number }]
+  ratings: [{ type: string; value: number }];
+  counters: [{ type: string; value: number }];
 }
 
 export interface Ratings {
@@ -25,10 +25,4 @@ export interface Counters {
   reports_received: number;
   onHold: number;
   featured?: number;
-}
-
-export interface AvailableSlots {
-  user_can_manage: boolean;
-  num_slots_cars: number;
-  num_max_cars?: number;
 }

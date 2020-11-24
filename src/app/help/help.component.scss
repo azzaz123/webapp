@@ -1,22 +1,31 @@
-@import "~style/common";
+@import '~style/common';
+
+.page-content {
+  height: calc(100vh - #{$topbar-height});
+  overflow: scroll;
+}
 
 .box-left {
   padding: $spacing-xxxl 100px;
   a {
     color: $blue-grey-1;
-    &:hover, &:active, &:focus {
+    &:hover,
+    &:active,
+    &:focus {
       text-decoration: none;
       color: $walla-main;
     }
   }
 }
 
-ul, li {
+ul,
+li {
   list-style: none;
   padding: 0;
 }
 
-h2, h3 {
+h2,
+h3 {
   font-weight: $font-weight-chunky;
   margin: 0;
 }
@@ -37,12 +46,12 @@ a {
 
 .features {
   margin-bottom: $spacing-xxl;
-  mat-icon {
+  tsl-svg-icon {
     width: 60px;
     height: 40px;
   }
   .col {
-    display:flex;
+    display: flex;
   }
   a.featured {
     border: solid 1px $blue-grey-5;
@@ -123,11 +132,8 @@ a {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  mat-icon {
-    width: 17px;
-    height: 12px;
+  tsl-svg-icon {
     transform: rotate(-90deg);
-    margin-left: -10px;
     ::ng-deep path {
       fill: $white;
     }

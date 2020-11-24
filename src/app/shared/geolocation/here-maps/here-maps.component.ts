@@ -1,5 +1,16 @@
-import { Component, ElementRef, Input, OnChanges, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  ViewChild,
+  AfterViewInit,
+  OnDestroy,
+} from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
 import { Coordinate } from '../../../core/geolocation/address-response.interface';
+import { HereMapsService } from './here-maps.service';
 
 export const MAP_ZOOM_GENERAL = 5;
 export const MAP_ZOOM_MARKER = 15;
@@ -7,32 +18,46 @@ export const USER_MARKER = '/assets/icons/user-marker.svg';
 export const USER_MARKER_SMALL = '/assets/icons/user-marker-small.svg';
 export const DEFAULT_COORDINATES: Coordinate = {
   latitude: 40.42028,
-  longitude: -3.70578
+  longitude: -3.70578,
 };
 
 @Component({
   selector: 'tsl-here-maps',
   templateUrl: './here-maps.component.html',
-  styleUrls: ['./here-maps.component.scss']
+  styleUrls: ['./here-maps.component.scss'],
 })
-export class HereMapsComponent implements OnInit, AfterViewInit, OnChanges {
-
+export class HereMapsComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() coordinates: Coordinate;
   @Input() zoom = MAP_ZOOM_GENERAL;
   @Input() size = 'normal';
   @Input() isApproximateLocation = false;
   @ViewChild('map', { static: true }) mapEl: ElementRef;
-  public platform: any;
+  mapSubscription: Subscription;
+  isLoading: Observable<boolean>;
   private map: any;
   private marker: any;
   private circle: any;
 
-  ngOnInit() {
-    this.initializePlatform();
-  }
+  constructor(private hereMapsService: HereMapsService) {}
 
   ngAfterViewInit() {
-    const defaultLayers = this.platform.createDefaultLayers();
+    this.isLoading = this.hereMapsService.isLibraryLoading$();
+    if (!this.coordinates) {
+      this.coordinates = DEFAULT_COORDINATES;
+    }
+    this.mapSubscription = this.hereMapsService
+      .initScript()
+      .pipe(distinctUntilChanged())
+      .subscribe((ready) => {
+        if (!ready) {
+          return;
+        }
+        this.initializeMap();
+      });
+  }
+
+  private initializeMap(): void {
+    const defaultLayers = this.hereMapsService.platform.createDefaultLayers();
     this.map = this.createMap(defaultLayers);
     const coordinates = this.getCenter();
     this.map.setCenter(coordinates);
@@ -87,17 +112,8 @@ export class HereMapsComponent implements OnInit, AfterViewInit, OnChanges {
   private getCenter() {
     return {
       lat: this.coordinates.latitude,
-      lng: this.coordinates.longitude
+      lng: this.coordinates.longitude,
     };
-  }
-
-  public initializePlatform() {
-    this.platform = new H.service.Platform({
-      app_id: 'RgPrXX1bXt123UgUFc7B',
-      app_code: 'HtfX0DsqZ2Y0x-44GfujFA',
-      useCIT: false,
-      useHTTPS: true
-    });
   }
 
   public createMap(defaultLayers) {
@@ -112,12 +128,18 @@ export class HereMapsComponent implements OnInit, AfterViewInit, OnChanges {
     return new H.map.Circle(coordinates, 650, {
       style: {
         fillColor: 'rgba(51, 51, 51, 0.15)',
-        lineWidth: 0
-      }
+        lineWidth: 0,
+      },
     });
   }
 
   public createMarker(coordinates: any, icon: H.map.Icon) {
     return new H.map.Marker(coordinates, { icon });
+  }
+
+  ngOnDestroy() {
+    if (this.mapSubscription) {
+      this.mapSubscription.unsubscribe();
+    }
   }
 }

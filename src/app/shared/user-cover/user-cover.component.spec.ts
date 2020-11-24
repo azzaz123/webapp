@@ -7,23 +7,19 @@ import { PLACEHOLDER_COVER, User } from '../../core/user/user';
 import { IMAGE, MICRO_NAME, USER_ID } from '../../../tests/user.fixtures.spec';
 
 describe('Component: UserCover', () => {
-
   let component: UserCoverComponent;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        UserCoverComponent
-      ],
-      declarations: [UserCoverComponent, SanitizedBackgroundDirective]
+      providers: [UserCoverComponent],
+      declarations: [UserCoverComponent, SanitizedBackgroundDirective],
     });
     component = TestBed.createComponent(UserCoverComponent).componentInstance;
   });
 
-
   describe('with user image', () => {
-
-    const IMAGE_URL = 'https://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320';
+    const IMAGE_URL =
+      'https://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320';
 
     beforeEach(() => {
       component.user = new User(USER_ID, MICRO_NAME, IMAGE);
@@ -38,12 +34,12 @@ describe('Component: UserCover', () => {
 
     it('should update imageCoverUrl', () => {
       const imageObject = {
-        test: 'test'
+        test: 'test',
       };
       const changes = {
         imageCoverUrl: {
-          currentValue: imageObject
-        }
+          currentValue: imageObject,
+        },
       };
 
       component.ngOnChanges(changes);
@@ -61,6 +57,4 @@ describe('Component: UserCover', () => {
       expect(component['avatar']).toBe(PLACEHOLDER_COVER);
     });
   });
-
-
 });

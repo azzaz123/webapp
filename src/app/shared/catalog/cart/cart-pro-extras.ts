@@ -4,7 +4,6 @@ import { sumBy } from 'lodash-es';
 import { OrderProExtras } from '../../../core/payments/payment.interface';
 
 export class CartProExtras extends CartBase {
-
   add(cartProExtrasPack: CartProExtrasPack, type: string) {
     this[type].cartItems.push(cartProExtrasPack);
     this.calculateTotals();
@@ -27,21 +26,26 @@ export class CartProExtras extends CartBase {
   prepareOrder(): OrderProExtras {
     const ordersArray: Array<string> = [];
     BUMP_TYPES.forEach((type: string) => {
-      const orders: Array<string> = this[type].cartItems.map((cartProExtrasPack: CartProExtrasPack) => {
-        return cartProExtrasPack.pack.id;
-      });
+      const orders: Array<string> = this[type].cartItems.map(
+        (cartProExtrasPack: CartProExtrasPack) => {
+          return cartProExtrasPack.pack.id;
+        }
+      );
       ordersArray.push(...orders);
     });
     return {
       id: this.getOrderId(),
-      packs: ordersArray
+      packs: ordersArray,
     };
   }
 
   private calculateTotals() {
     this.total = 0;
     BUMP_TYPES.forEach((type: string) => {
-      this[type].total = sumBy(this[type].cartItems, (c: CartProExtrasPack) => +c.pack.price);
+      this[type].total = sumBy(
+        this[type].cartItems,
+        (c: CartProExtrasPack) => +c.pack.price
+      );
       this.total += this[type].total;
     });
   }

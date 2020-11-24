@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 /* tslint:disable:no-unused-variable */
 import { DecimalPipe } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -15,7 +14,6 @@ import { environment } from '../../../../../environments/environment.prod';
 import { MOCKED_INBOX_CONVERSATIONS } from '../../../../../tests/inbox.fixtures.spec';
 
 describe('Component: Item', () => {
-
   let component: InboxItemDetailComponent;
   let fixture: ComponentFixture<InboxItemDetailComponent>;
   let itemService: ItemService;
@@ -23,7 +21,7 @@ describe('Component: Item', () => {
   let cookieService: CookieService;
 
   const MOCK_CLICK_EVENT = {
-    stopPropagation() { }
+    stopPropagation() {},
   };
 
   beforeEach(() => {
@@ -32,35 +30,39 @@ describe('Component: Item', () => {
       providers: [
         DecimalPipe,
         {
-          provide: ItemService, useValue: {
-          getCounters() {
-            return observableOf(ITEM_COUNTERS_DATA);
+          provide: ItemService,
+          useValue: {
+            getCounters() {
+              return of(ITEM_COUNTERS_DATA);
+            },
+            reserveItem() {
+              return of({});
+            },
           },
-          reserveItem() {
-            return observableOf({});
-          },
-        }
         },
         {
-          provide: CookieService, useValue: {
-          _value: {},
-          put(key, value) {
-            this._value[key] = value;
+          provide: CookieService,
+          useValue: {
+            _value: {},
+            put(key, value) {
+              this._value[key] = value;
+            },
+            get(key) {
+              return this._value[key];
+            },
           },
-          get(key) {
-            return this._value[key];
-          },
-        }
         },
-        {provide: TrackingService, useClass: MockTrackingService},
-        {provide: 'SUBDOMAIN', useValue: 'es'}],
-      schemas: [NO_ERRORS_SCHEMA]
+        { provide: TrackingService, useClass: MockTrackingService },
+        { provide: 'SUBDOMAIN', useValue: 'es' },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
     });
     fixture = TestBed.createComponent(InboxItemDetailComponent);
-    component = TestBed.createComponent(InboxItemDetailComponent).componentInstance;
-    itemService = TestBed.get(ItemService);
-    trackingService = TestBed.get(TrackingService);
-    cookieService = TestBed.get(CookieService);
+    component = TestBed.createComponent(InboxItemDetailComponent)
+      .componentInstance;
+    itemService = TestBed.inject(ItemService);
+    trackingService = TestBed.inject(TrackingService);
+    cookieService = TestBed.inject(CookieService);
     appboy.initialize(environment.appboy);
   });
 
@@ -69,7 +71,6 @@ describe('Component: Item', () => {
   });
 
   describe('getCounters', () => {
-
     it('should add item counters', () => {
       component.item = MOCKED_INBOX_CONVERSATIONS[0].item;
 
@@ -78,11 +79,9 @@ describe('Component: Item', () => {
       expect(component.item.views).toBe(123);
       expect(component.item.favorites).toBe(456);
     });
-
   });
 
   describe('prevent', () => {
-
     beforeEach(() => {
       component.item = MOCKED_INBOX_CONVERSATIONS[0].item;
     });
@@ -164,7 +163,10 @@ describe('Component: Item', () => {
 
       component.toggleReserve();
 
-      expect(itemService.reserveItem).toHaveBeenCalledWith(component.item.id, component.item.reserved);
+      expect(itemService.reserveItem).toHaveBeenCalledWith(
+        component.item.id,
+        component.item.reserved
+      );
     });
 
     it('should invert the boolean value of item.reserved when called', () => {
@@ -185,11 +187,14 @@ describe('Component: Item', () => {
       component.toggleReserve();
 
       expect(component.item.reserved).toBe(true);
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CHAT_PRODUCT_RESERVED,
-        {item_id: MOCKED_INBOX_CONVERSATIONS[0].item.id});
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.CHAT_PRODUCT_RESERVED,
+        {
+          item_id: MOCKED_INBOX_CONVERSATIONS[0].item.id,
+        }
+      );
     });
   });
-
 
   describe('trackSoldEvent', () => {
     beforeEach(() => {
@@ -201,16 +206,22 @@ describe('Component: Item', () => {
 
       component.trackSoldEvent(component.item);
 
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CHAT_PRODUCT_SOLD, {item_id: component.item.id});
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.CHAT_PRODUCT_SOLD,
+        {
+          item_id: component.item.id,
+        }
+      );
     });
-
 
     it('should send appboy Sold event', () => {
       spyOn(appboy, 'logCustomEvent');
 
       component.trackSoldEvent(MOCKED_INBOX_CONVERSATIONS[0].item);
 
-      expect(appboy.logCustomEvent).toHaveBeenCalledWith('Sold', {platform: 'web'});
+      expect(appboy.logCustomEvent).toHaveBeenCalledWith('Sold', {
+        platform: 'web',
+      });
     });
 
     it('should emit ITEM_SOLD event', () => {
@@ -218,8 +229,14 @@ describe('Component: Item', () => {
 
       component.trackSoldEvent(MOCKED_INBOX_CONVERSATIONS[0].item);
 
-      expect(window['fbq']).toHaveBeenCalledWith('track', 'CompleteRegistration',
-       { value: MOCKED_INBOX_CONVERSATIONS[0].item.price.amount, currency: MOCKED_INBOX_CONVERSATIONS[0].item.price.currency});
+      expect(window['fbq']).toHaveBeenCalledWith(
+        'track',
+        'CompleteRegistration',
+        {
+          value: MOCKED_INBOX_CONVERSATIONS[0].item.price.amount,
+          currency: MOCKED_INBOX_CONVERSATIONS[0].item.price.currency,
+        }
+      );
     });
   });
 });

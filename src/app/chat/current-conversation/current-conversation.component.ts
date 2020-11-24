@@ -8,8 +8,17 @@ import {
   OnDestroy,
   OnInit,
   SimpleChanges,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
+import {
+  AnalyticsEvent,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  ClickBannedUserChatPopUpCloseButton,
+  ClickBannedUserChatPopUpExitButton,
+  SCREEN_IDS,
+  ViewBannedUserChatPopUp,
+} from 'app/core/analytics/analytics-constants';
 import { EventService } from '../../core/event/event.service';
 import { RealTimeService } from '../../core/message/real-time.service';
 import { of, Subscription } from 'rxjs';
@@ -17,19 +26,29 @@ import { I18nService } from '../../core/i18n/i18n.service';
 import { InboxConversationService } from '../service';
 import { TextMessageComponent } from '../message/text-message';
 import { eq, includes, isEmpty } from 'lodash-es';
-import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '../model';
+import {
+  InboxConversation,
+  InboxMessage,
+  MessageStatus,
+  MessageType,
+} from '../model';
 import { ThirdVoiceDropPriceComponent } from '../message/third-voice-drop-price';
 import { ThirdVoiceReviewComponent } from '../message/third-voice-review';
 import { RemoteConsoleService } from '../../core/remote-console';
 import { delay } from 'rxjs/operators';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { MaliciousConversationModalComponent } from '../modals/malicious-conversation-modal/malicious-conversation-modal.component';
+import { AnalyticsService } from 'app/core/analytics/analytics.service';
+import { UserService } from 'app/core/user/user.service';
+import { onVisible } from 'visibilityjs';
 
 @Component({
   selector: 'tsl-current-conversation',
   templateUrl: './current-conversation.component.html',
-  styleUrls: ['./current-conversation.component.scss']
+  styleUrls: ['./current-conversation.component.scss'],
 })
-export class CurrentConversationComponent implements OnInit, OnChanges, AfterViewChecked, OnDestroy {
-
+export class CurrentConversationComponent
+  implements OnInit, OnChanges, AfterViewChecked, OnDestroy {
   public readonly BOTTOM_BUFFER_ZONE = 100;
   private MESSAGE_HEIGHT = 14;
   public readonly MESSAGE_METRIC_DELAY = 5 * 1000;
@@ -39,8 +58,10 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   @Input() connectionError: boolean;
   @Input() loadingError: boolean;
   @ViewChild('scrollElement') private scrollElement: ElementRef;
-  @ViewChild('userWarringNotification') private userWarringNotification: ElementRef;
+  @ViewChild('userWarringNotification')
+  private userWarringNotification: ElementRef;
 
+  private chatContext: ViewBannedUserChatPopUp;
   public momentConfig: any;
   private newMessageSubscription: Subscription;
   public isLoadingMoreMessages = false;
@@ -52,11 +73,16 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   public isConversationChanged: boolean;
   public isTopBarExpanded = false;
 
-  constructor(private eventService: EventService,
-              private i18n: I18nService,
-              private realTime: RealTimeService,
-              private inboxConversationService: InboxConversationService,
-              private remoteConsoleService: RemoteConsoleService) {
+  constructor(
+    private eventService: EventService,
+    i18n: I18nService,
+    private realTime: RealTimeService,
+    private inboxConversationService: InboxConversationService,
+    private remoteConsoleService: RemoteConsoleService,
+    private modalService: NgbModal,
+    private userService: UserService,
+    private analyticsService: AnalyticsService
+  ) {
     this.momentConfig = i18n.getTranslations('defaultDaysMomentConfig');
   }
 
@@ -66,7 +92,8 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
 
   ngOnInit() {
     this.isEndOfConversation = true;
-    this.newMessageSubscription = this.eventService.subscribe(EventService.MESSAGE_ADDED,
+    this.newMessageSubscription = this.eventService.subscribe(
+      EventService.MESSAGE_ADDED,
       (message: InboxMessage) => {
         this.isConversationChanged = true;
         this.lastInboxMessage = message;
@@ -75,33 +102,44 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
           this.scrollHeight = this.scrollLocalPosition;
         } else {
           this.noMessages += 1;
-          this.scrollHeight = this.scrollLocalPosition + this.noMessages * this.MESSAGE_HEIGHT;
+          this.scrollHeight =
+            this.scrollLocalPosition + this.noMessages * this.MESSAGE_HEIGHT;
         }
-      });
+      }
+    );
 
-    this.eventService.subscribe(EventService.MORE_MESSAGES_LOADED,
+    this.eventService.subscribe(
+      EventService.MORE_MESSAGES_LOADED,
       (conversation: InboxConversation) => {
         this.isLoadingMoreMessages = false;
         this.isConversationChanged = false;
         this.currentConversation = conversation;
-      });
+      }
+    );
 
-    this.eventService.subscribe(EventService.CONNECTION_RESTORED,
-      () => this.sendMetricMessageSendFailed('pending messages after restored connection'));
+    this.eventService.subscribe(EventService.CONNECTION_RESTORED, () =>
+      this.sendMetricMessageSendFailed(
+        'pending messages after restored connection'
+      )
+    );
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    const { currentConversation } = changes;
     this.scrollHeight = 0;
     this.scrollLocalPosition = 0;
-    if (changes['currentConversation']) {
+    if (currentConversation) {
+      this.openMaliciousConversationModal();
       this.isConversationChanged = true;
-      this.isTopBarExpanded = this.currentConversation && isEmpty(this.currentConversation.messages);
+      this.isTopBarExpanded =
+        this.currentConversation && isEmpty(this.currentConversation.messages);
     }
   }
 
   ngAfterViewChecked(): void {
     if (this.isConversationChanged && this.scrollElement) {
-      this.scrollElement.nativeElement.scrollTop = this.scrollElement.nativeElement.scrollHeight - this.scrollHeight;
+      this.scrollElement.nativeElement.scrollTop =
+        this.scrollElement.nativeElement.scrollHeight - this.scrollHeight;
     }
   }
 
@@ -117,8 +155,12 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   onScrollMessages(event: any) {
     this.noMessages = 0;
     this.isConversationChanged = false;
-    this.scrollLocalPosition = event.target.scrollHeight - event.target.scrollTop;
-    if (event.target.offsetHeight + event.target.scrollTop >= event.target.scrollHeight - this.BOTTOM_BUFFER_ZONE) {
+    this.scrollLocalPosition =
+      event.target.scrollHeight - event.target.scrollTop;
+    if (
+      event.target.offsetHeight + event.target.scrollTop >=
+      event.target.scrollHeight - this.BOTTOM_BUFFER_ZONE
+    ) {
       this.sendReadForLastInboxMessage();
       this.isEndOfConversation = true;
     } else {
@@ -126,8 +168,14 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     }
   }
 
-  public showDate(currentMessage: InboxMessage, nextMessage: InboxMessage): boolean {
-    return nextMessage ? new Date(currentMessage.date).toDateString() !== new Date(nextMessage.date).toDateString() : true;
+  public showDate(
+    currentMessage: InboxMessage,
+    nextMessage: InboxMessage
+  ): boolean {
+    return nextMessage
+      ? new Date(currentMessage.date).toDateString() !==
+          new Date(nextMessage.date).toDateString()
+      : true;
   }
 
   public dateIsThisYear(date: Date) {
@@ -142,8 +190,12 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   }
 
   private sendRead(message: InboxMessage) {
-    if (this.currentConversation !== null && eq(this.currentConversation.id, message.thread) && !message.fromSelf) {
-      Visibility.onVisible(() => {
+    if (
+      this.currentConversation !== null &&
+      eq(this.currentConversation.id, message.thread) &&
+      !message.fromSelf
+    ) {
+      onVisible(() => {
         setTimeout(() => {
           this.realTime.sendRead(message.from, message.thread);
         }, 1000);
@@ -152,7 +204,10 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   }
 
   public hasMoreMessages(): boolean {
-    return this.currentConversation.nextPageToken !== null && this.currentConversation.nextPageToken !== undefined;
+    return (
+      this.currentConversation.nextPageToken !== null &&
+      this.currentConversation.nextPageToken !== undefined
+    );
   }
 
   public loadMoreMessages(scrollHeight: number = 0) {
@@ -170,11 +225,17 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   }
 
   public isThirdVoiceDropPrice(messageType: MessageType): boolean {
-    return includes(ThirdVoiceDropPriceComponent.ALLOW_MESSAGES_TYPES, messageType);
+    return includes(
+      ThirdVoiceDropPriceComponent.ALLOW_MESSAGES_TYPES,
+      messageType
+    );
   }
 
   public isThirdVoiceReview(messageType: MessageType): boolean {
-    return includes(ThirdVoiceReviewComponent.ALLOW_MESSAGES_TYPES, messageType);
+    return includes(
+      ThirdVoiceReviewComponent.ALLOW_MESSAGES_TYPES,
+      messageType
+    );
   }
 
   public scrollToLastMessage(): void {
@@ -186,7 +247,9 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     }
 
     if (this.userWarringNotification) {
-      this.userWarringNotification.nativeElement.scrollIntoView({ behavior: 'smooth' });
+      this.userWarringNotification.nativeElement.scrollIntoView({
+        behavior: 'smooth',
+      });
     }
   }
 
@@ -203,19 +266,87 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   }
 
   public clickSendMessage(messageId: string): void {
-    of(messageId).pipe(delay(this.MESSAGE_METRIC_DELAY))
-      .subscribe(id => this.sendMetricMessageSendFailedByMessageId(id, `message is not send after ${this.MESSAGE_METRIC_DELAY}ms`));
+    of(messageId)
+      .pipe(delay(this.MESSAGE_METRIC_DELAY))
+      .subscribe((id) =>
+        this.sendMetricMessageSendFailedByMessageId(
+          id,
+          `message is not send after ${this.MESSAGE_METRIC_DELAY}ms`
+        )
+      );
   }
 
-  private sendMetricMessageSendFailedByMessageId(messageId: string, description: string): void {
+  private sendMetricMessageSendFailedByMessageId(
+    messageId: string,
+    description: string
+  ): void {
     this.currentConversation.messages
-      .filter(message => message.id === messageId && message.status === MessageStatus.PENDING)
-      .forEach(message => this.remoteConsoleService.sendMessageAckFailed(message.id, description));
+      .filter(
+        (message) =>
+          message.id === messageId && message.status === MessageStatus.PENDING
+      )
+      .forEach((message) =>
+        this.remoteConsoleService.sendMessageAckFailed(message.id, description)
+      );
   }
 
   private sendMetricMessageSendFailed(description: string): void {
+    if (!this.currentConversation) {
+      return;
+    }
+
     this.currentConversation.messages
-      .filter(message => message.status === MessageStatus.PENDING)
-      .forEach(message => this.remoteConsoleService.sendMessageAckFailed(message.id, description));
+      .filter((message) => message.status === MessageStatus.PENDING)
+      .forEach((message) =>
+        this.remoteConsoleService.sendMessageAckFailed(message.id, description)
+      );
+  }
+
+  private fillChatContext(): void {
+    this.chatContext = {
+      userId: this.userService.user.id,
+      bannedUserId: this.currentConversation?.user?.id,
+      conversationId: this.currentConversation?.id,
+      screenId: SCREEN_IDS.BannedUserChatPopUp,
+    };
+  }
+
+  private openMaliciousConversationModal(): void {
+    if (!this.currentConversation?.isFromMaliciousUser) {
+      return;
+    }
+    this.fillChatContext();
+    const modalRef: NgbModalRef = this.modalService.open(
+      MaliciousConversationModalComponent,
+      { windowClass: 'warning' }
+    );
+    modalRef.componentInstance.chatContext = this.chatContext;
+
+    modalRef.result
+      .then(() => this.handleUserConfirmsMaliciousModal())
+      .catch(() => this.trackDismissMaliciousModal());
+  }
+
+  private handleUserConfirmsMaliciousModal(): void {
+    this.inboxConversationService.currentConversation = null;
+    this.trackClickMaliciousModalCTAButton();
+  }
+
+  private trackClickMaliciousModalCTAButton(): void {
+    const event: AnalyticsEvent<ClickBannedUserChatPopUpExitButton> = {
+      name: ANALYTICS_EVENT_NAMES.ClickBannedUserChatPopUpExitButton,
+      eventType: ANALYTIC_EVENT_TYPES.Other,
+      attributes: this.chatContext,
+    };
+    this.analyticsService.trackEvent(event);
+  }
+
+  private trackDismissMaliciousModal(): void {
+    const event: AnalyticsEvent<ClickBannedUserChatPopUpCloseButton> = {
+      name: ANALYTICS_EVENT_NAMES.ClickBannedUserChatPopUpCloseButton,
+      eventType: ANALYTIC_EVENT_TYPES.Other,
+      attributes: this.chatContext,
+    };
+    this.analyticsService.trackEvent(event);
   }
 }

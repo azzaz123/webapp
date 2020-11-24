@@ -1,16 +1,16 @@
 <div class="modal-body">
   <div class="modal-close" (click)="dismiss()">
-    <mat-icon svgIcon="cross"></mat-icon>
+    <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
   </div>
   <p i18n>You are getting in touch with a professional! In order to offer a more personalised service, could you leave a phone to call you?</p>
-  <form [formGroup]="sendPhoneForm" (ngSubmit)="createPhoneNumberMessage()">
+  <form [formGroup]="sendPhoneForm" (ngSubmit)="handleSubmit()">
     <div class="form-group">
       <label for="phone" i18n>Let's talk about it:</label>
       <input type="text" class="form-control" id="phone" name="phone" tslRestrictInputNumber i18n-placeholder
         placeholder="Enter your phone..." #phoneInput formControlName="phone" required (keyup)="formatNumber($event)"/>
-      <a id="send" (click)="createPhoneNumberMessage()" [ngClass]="{selected: sendPhoneForm.controls.phone.valid}">
-        <mat-icon svgIcon="send"></mat-icon>
-      </a>
+      <button type="submit" id="send" [ngClass]="{selected: sendPhoneForm.controls.phone.valid}">
+        <tsl-svg-icon src="/assets/icons/send.svg"></tsl-svg-icon>
+      </button>
     </div>
   </form>
   <div class="small">

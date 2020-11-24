@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { GeolocationComponent } from './geolocation.component';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { GEOLOCATION_DATA_WEB } from '../../../tests/geolocation.fixtures.spec';
 import { COORDINATE_DATA_WEB } from '../../../tests/address.fixtures.spec';
 import { EventService } from '../../core/event/event.service';
@@ -19,48 +19,48 @@ describe('GeolocationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GeolocationComponent ],
+      declarations: [GeolocationComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         {
-          provide: GeolocationService, useValue: {
+          provide: GeolocationService,
+          useValue: {
             search: () => {
               return of(GEOLOCATION_DATA_WEB);
             },
             geocode: () => {
               return of(COORDINATE_DATA_WEB);
-            }
-          }
+            },
+          },
         },
         {
-          provide: CookieService, useValue: {
-            put(key, value) {
-            },
+          provide: CookieService,
+          useValue: {
+            put(key, value) {},
             get(key) {
               return 'Barcelona, Spain';
             },
-            remove(key) {
-            }
-          }
+            remove(key) {},
+          },
         },
         {
-          provide: UserService, useValue: {
-            updateSearchLocationCookies() {
-            }
-        }
+          provide: UserService,
+          useValue: {
+            updateSearchLocationCookies() {},
+          },
         },
-        EventService]
-    })
-    .compileComponents();
+        EventService,
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(GeolocationComponent);
     component = fixture.componentInstance;
-    eventService = TestBed.get(EventService);
-    geolocationService = TestBed.get(GeolocationService);
-    cookieService = TestBed.get(CookieService);
-    userService = TestBed.get(UserService);
+    eventService = TestBed.inject(EventService);
+    geolocationService = TestBed.inject(GeolocationService);
+    cookieService = TestBed.inject(CookieService);
+    userService = TestBed.inject(UserService);
   });
 
   describe('ngOnChanges', () => {
@@ -90,7 +90,6 @@ describe('GeolocationComponent', () => {
   });
 
   describe('select item', (): void => {
-
     beforeEach(() => {
       spyOn(component.newCoordinate, 'emit');
       spyOn(userService, 'updateSearchLocationCookies').and.callThrough();
@@ -101,14 +100,18 @@ describe('GeolocationComponent', () => {
       const newLocation = {
         latitude: COORDINATE_DATA_WEB.latitude,
         longitude: COORDINATE_DATA_WEB.longitude,
-        name: GEOLOCATION_DATA_WEB[0].item.description
+        name: GEOLOCATION_DATA_WEB[0].item.description,
       };
       done();
 
       component.selectItem(GEOLOCATION_DATA_WEB[0]);
 
-      expect(component.newCoordinate.emit).toHaveBeenCalledWith(COORDINATE_DATA_WEB);
-      expect(userService.updateSearchLocationCookies).toHaveBeenCalledWith(newLocation);
+      expect(component.newCoordinate.emit).toHaveBeenCalledWith(
+        COORDINATE_DATA_WEB
+      );
+      expect(userService.updateSearchLocationCookies).toHaveBeenCalledWith(
+        newLocation
+      );
     });
 
     it('should not save cookies if updateLocation false', () => {
@@ -136,5 +139,4 @@ describe('GeolocationComponent', () => {
       });
     });
   });
-
 });

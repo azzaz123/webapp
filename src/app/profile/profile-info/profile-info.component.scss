@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 $right-gutter: 35px;
 
@@ -49,4 +49,8 @@ form {
 
 .ProfileInfo__first-name {
   margin-right: $spacing-m;
+}
+
+input.ng-dirty.ng-invalid {
+  border: 1px solid $negative-main !important;
 }

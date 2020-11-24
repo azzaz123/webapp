@@ -1,4 +1,14 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { MessageService } from '../service/message.service';
 import { EventService } from '../../core/event/event.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
@@ -12,10 +22,9 @@ import { RemoteConsoleService } from '../../core/remote-console';
 @Component({
   selector: 'tsl-input',
   templateUrl: './input.component.html',
-  styleUrls: ['./input.component.scss']
+  styleUrls: ['./input.component.scss'],
 })
 export class InputComponent implements OnChanges, OnInit, AfterViewInit {
-
   @Input() currentConversation: InboxConversation;
   @Output() typing = new EventEmitter();
   @Output() clickSentMessage = new EventEmitter();
@@ -25,20 +34,27 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
   public isUserBlocked: boolean;
   public isFocus: boolean;
 
-  constructor(private messageService: MessageService,
-              private eventService: EventService,
-              private trackingService: TrackingService,
-              private remoteConsoleService: RemoteConsoleService,
-              private i18n: I18nService,
-              private deviceService: DeviceDetectorService) {
-  }
+  constructor(
+    private messageService: MessageService,
+    private eventService: EventService,
+    private trackingService: TrackingService,
+    private remoteConsoleService: RemoteConsoleService,
+    private i18n: I18nService,
+    private deviceService: DeviceDetectorService
+  ) {}
 
   ngOnInit() {
     this.isFocus = true;
     this.isUserBlocked = false;
-    this.eventService.subscribe(EventService.PRIVACY_LIST_UPDATED, (userIds: string[]) => {
-      this.isUserBlocked = includes(userIds, this.currentConversation.user.id);
-    });
+    this.eventService.subscribe(
+      EventService.PRIVACY_LIST_UPDATED,
+      (userIds: string[]) => {
+        this.isUserBlocked = includes(
+          userIds,
+          this.currentConversation.user.id
+        );
+      }
+    );
   }
 
   sendMessage($event: Event) {
@@ -49,7 +65,10 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
         this.trackingService.track(TrackingService.SEND_BUTTON, {
           thread_id: this.currentConversation.id,
         });
-        const messageId = this.messageService.send(this.currentConversation, this.message);
+        const messageId = this.messageService.send(
+          this.currentConversation,
+          this.message
+        );
         this.clickSentMessage.emit(messageId);
       }
       this.message = '';
@@ -65,7 +84,11 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
         }, 500);
       }
 
-      if (changes && changes.currentConversation && this.messageArea.nativeElement.value.length) {
+      if (
+        changes &&
+        changes.currentConversation &&
+        this.messageArea.nativeElement.value.length
+      ) {
         this.message = '';
       }
     }
@@ -93,7 +116,11 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   public isEmpty(): boolean {
-    return this.message === null || this.message === undefined || isEmpty(this.message.trim());
+    return (
+      this.message === null ||
+      this.message === undefined ||
+      isEmpty(this.message.trim())
+    );
   }
 
   public onFocusElement() {
@@ -109,6 +136,8 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   private findLinksWhereLinkIsNotWallapop(message: string): string[] {
-    return find(message.match(LinkTransformPipe.LINK_REG_EXP), link => isEmpty(link.match(LinkTransformPipe.WALLAPOP_REG_EXP)));
+    return find(message.match(LinkTransformPipe.LINK_REG_EXP), (link) =>
+      isEmpty(link.match(LinkTransformPipe.WALLAPOP_REG_EXP))
+    );
   }
 }

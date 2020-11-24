@@ -4,7 +4,7 @@ import {
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
-  HttpResponse
+  HttpResponse,
 } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 
@@ -15,14 +15,14 @@ export interface MockUrl {
 
 @Injectable()
 export class MockInterceptor implements HttpInterceptor {
+  public mockUrls: MockUrl[] = [];
 
-  public mockUrls: MockUrl[] = [
-  ];
+  constructor() {}
 
-  constructor() { }
-
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
+  intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
     for (const mockUrl of this.mockUrls) {
       if (mockUrl.url === request.url) {
         return of(new HttpResponse({ status: 200, body: mockUrl.data }));

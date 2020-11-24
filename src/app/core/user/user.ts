@@ -1,5 +1,11 @@
 import { Model } from '../resource/model.interface';
-import { UserExtrainfo, UserLocation, UserStatsOld, UserValidations, Image } from './user-response.interface';
+import {
+  UserExtrainfo,
+  UserLocation,
+  UserStatsOld,
+  UserValidations,
+  Image,
+} from './user-response.interface';
 import { Item } from '../item/item';
 import { environment } from '../../../environments/environment';
 
@@ -7,10 +13,9 @@ export const USER_BASE_PATH = 'http://es.wallapop.com/user/';
 export const PLACEHOLDER_AVATAR = '/assets/images/user.png';
 export const PLACEHOLDER_COVER = '/assets/images/cover.svg';
 export const PERMISSIONS = {
-  'normal': 'isNormal',
-  'professional': 'isProfessional',
-  'coins': 'coins',
-  'featured': 'isFeatured'
+  normal: 'isNormal',
+  professional: 'isProfessional',
+  featured: 'isFeatured',
 };
 
 export class User implements Model {
@@ -22,28 +27,30 @@ export class User implements Model {
   private _itemsCount: number;
   private _blocked: boolean;
 
-  constructor(private _id: string,
-              private _microName?: string,
-              private _image?: any,
-              private _location?: UserLocation,
-              private _stats?: UserStatsOld,
-              private _validations?: UserValidations,
-              private _verificationLevel?: number,
-              private _scoringStars?: number,
-              private _scoringStarts?: number,
-              private _responseRate?: string,
-              private _online?: boolean,
-              private _type?: string,
-              private _receivedReports?: number,
-              private webSlug?: string,
-              private _firstName?: string,
-              private _lastName?: string,
-              private _birthDate?: number,
-              private _gender?: string,
-              private _email?: string,
-              private _featured = false,
-              private _extraInfo?: UserExtrainfo,
-              private _coverImage?: Image) {
+  constructor(
+    private _id: string,
+    private _microName?: string,
+    private _image?: any,
+    private _location?: UserLocation,
+    private _stats?: UserStatsOld,
+    private _validations?: UserValidations,
+    private _verificationLevel?: number,
+    private _scoringStars?: number,
+    private _scoringStarts?: number,
+    private _responseRate?: string,
+    private _online?: boolean,
+    private _type?: string,
+    private _receivedReports?: number,
+    private webSlug?: string,
+    private _firstName?: string,
+    private _lastName?: string,
+    private _birthDate?: number,
+    private _gender?: string,
+    private _email?: string,
+    private _featured = false,
+    private _extraInfo?: UserExtrainfo,
+    private _coverImage?: Image
+  ) {
     this._webLink = webSlug ? USER_BASE_PATH + webSlug : null;
     this._type = this.mapType(this._type);
   }
@@ -236,9 +243,9 @@ export class User implements Model {
           small: url,
           large: url,
           medium: url,
-          xlarge: url
-        }
-      }
+          xlarge: url,
+        },
+      };
     } else {
       this._coverImage.urls_by_size.original = url;
       this._coverImage.urls_by_size.small = url;
@@ -249,6 +256,8 @@ export class User implements Model {
   }
 
   getUrl(subdomain: string) {
-    return environment.siteUrl.replace('es', subdomain) + 'user/' + this.webSlug;
+    return (
+      environment.siteUrl.replace('es', subdomain) + 'user/' + this.webSlug
+    );
   }
 }

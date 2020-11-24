@@ -1,7 +1,13 @@
-
-import {takeWhile} from 'rxjs/operators';
+import { takeWhile } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, OnDestroy, EventEmitter, Output, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  EventEmitter,
+  Output,
+  Input,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup } from '@angular/forms';
 import { BUMP_TYPES, CartBase } from '../../../shared/catalog/cart/cart-base';
@@ -9,21 +15,27 @@ import { CartService } from '../../../shared/catalog/cart/cart.service';
 import { CartProExtras } from '../../../shared/catalog/cart/cart-pro-extras';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
-import { PaymentService, PAYMENT_METHOD, PAYMENT_RESPONSE_STATUS } from '../../../core/payments/payment.service';
+import {
+  PaymentService,
+  PAYMENT_METHOD,
+  PAYMENT_RESPONSE_STATUS,
+} from '../../../core/payments/payment.service';
 import { CartChange } from '../../../shared/catalog/cart/cart-item.interface';
 import { Pack } from '../../../core/payments/pack';
-import { OrderProExtras, FinancialCardOption } from '../../../core/payments/payment.interface';
+import {
+  OrderProExtras,
+  FinancialCardOption,
+} from '../../../core/payments/payment.interface';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { EventService } from '../../../core/event/event.service';
-import { UUID } from 'angular2-uuid';
+import { UuidService } from '../../../core/uuid/uuid.service';
 
 @Component({
   selector: 'tsl-cart-extras-pro',
   templateUrl: './cart-extras-pro.component.html',
-  styleUrls: ['./cart-extras-pro.component.scss']
+  styleUrls: ['./cart-extras-pro.component.scss'],
 })
 export class CartExtrasProComponent implements OnInit, OnDestroy {
-
   public cart: CartBase;
   public types: string[] = BUMP_TYPES;
   public loading: boolean;
@@ -38,24 +50,28 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
   @Input() billingInfoForm: FormGroup;
   @Input() billingInfoFormEnabled: boolean;
 
-
-  constructor(private cartService: CartService,
+  constructor(
+    private cartService: CartService,
     private paymentService: PaymentService,
     private errorService: ErrorsService,
     private trackingService: TrackingService,
     private router: Router,
     private errorsService: ErrorsService,
     private stripeService: StripeService,
-    private eventService: EventService) { }
+    private uuidService: UuidService,
+    private eventService: EventService
+  ) {}
 
   ngOnInit() {
     this.eventService.subscribe('paymentResponse', (response) => {
       this.managePaymentResponse(response);
     });
     this.cartService.createInstance(new CartProExtras());
-    this.cartService.cart$.pipe(takeWhile(() => this.active)).subscribe((cartChange: CartChange) => {
-      this.cart = cartChange.cart;
-    });
+    this.cartService.cart$
+      .pipe(takeWhile(() => this.active))
+      .subscribe((cartChange: CartChange) => {
+        this.cart = cartChange.cart;
+      });
   }
 
   ngOnDestroy() {
@@ -73,51 +89,70 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
 
   checkout() {
     this.loading = true;
-    this.paymentService.getBillingInfo().subscribe(() => {
-      this.processCheckout();
-    }, () => {
-      this.billingInfoMissing.emit(true);
-      this.loading = false;
-    });
+    this.paymentService.getBillingInfo().subscribe(
+      () => {
+        this.processCheckout();
+      },
+      () => {
+        this.billingInfoMissing.emit(true);
+        this.loading = false;
+      }
+    );
   }
 
   saveAndCheckout() {
     this.loading = true;
     if (this.billingInfoForm.valid) {
-      this.paymentService.updateBillingInfo(this.billingInfoForm.value).subscribe(() => {
-        this.processCheckout();
-        this.loading = false;
-      }, (e: HttpErrorResponse) => {
-        this.errorsService.show(e);
-        this.loading = false;
-      });
+      this.paymentService
+        .updateBillingInfo(this.billingInfoForm.value)
+        .subscribe(
+          () => {
+            this.processCheckout();
+            this.loading = false;
+          },
+          (e: HttpErrorResponse) => {
+            this.errorsService.show(e);
+            this.loading = false;
+          }
+        );
     }
   }
 
   private processCheckout() {
     const order: OrderProExtras = this.cart.prepareOrder();
-    const paymentId: string = UUID.UUID();
+    const paymentId: string = this.uuidService.getUUID();
     order.provider = PAYMENT_METHOD.STRIPE;
-    this.paymentService.orderExtrasProPack(order).subscribe(() => {
-      this.track(order);
-      this.stripeService.buy(order.id, paymentId, this.hasSavedCard, this.savedCard, this.card);
-    }, (e: HttpErrorResponse) => {
-      this.loading = false;
-      if (e.error) {
-        this.errorService.show(e);
-      } else {
-        this.errorService.i18nError('bumpError');
+    this.paymentService.orderExtrasProPack(order).subscribe(
+      () => {
+        this.track(order);
+        this.stripeService.buy(
+          order.id,
+          paymentId,
+          this.hasSavedCard,
+          this.savedCard,
+          this.card
+        );
+      },
+      (e: HttpErrorResponse) => {
+        this.loading = false;
+        if (e.error) {
+          this.errorService.show(e);
+        } else {
+          this.errorService.i18nError('bumpError');
+        }
       }
-    });
+    );
   }
 
   private track(order: OrderProExtras) {
     const payment_method = PAYMENT_METHOD.STRIPE;
-    this.trackingService.track(TrackingService.PRO_PURCHASE_CHECKOUTPROEXTRACART,
+    this.trackingService.track(
+      TrackingService.PRO_PURCHASE_CHECKOUTPROEXTRACART,
       {
         selected_packs: order.packs,
-        payment_method
-      });
+        payment_method,
+      }
+    );
   }
 
   public hasCard(hasCard: boolean) {
@@ -134,7 +169,10 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
   private managePaymentResponse(paymentResponse: string): void {
     switch (paymentResponse && paymentResponse.toUpperCase()) {
       case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
-        this.router.navigate(['pro/catalog/list', { code: '200', extras: true }]);
+        this.router.navigate([
+          'pro/catalog/list',
+          { code: '200', extras: true },
+        ]);
         break;
       }
       default: {

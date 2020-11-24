@@ -1,8 +1,14 @@
 import { NgModule } from '@angular/core';
-import { profileRoutedComponents, ProfileRoutingModule } from './profile.routes';
+import {
+  profileRoutedComponents,
+  ProfileRoutingModule,
+} from './profile.routes';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatIconModule } from '@angular/material';
-import { NgbButtonsModule, NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbButtonsModule,
+  NgbModalModule,
+  NgbAccordionModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { GeolocationModule } from '../shared/geolocation/geolocation.module';
 import { SharedModule } from '../shared/shared.module';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
@@ -21,6 +27,7 @@ import { UnsubscribeInAppFirstModal } from './subscription/modals/unsubscribe-in
 import { SubscriptionBenefitsComponent } from './subscription/subscription-benefits/subscription-benefits.component';
 import { DiscountAvailableUnsubscribeInAppModalComponent } from './subscription/modals/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component';
 import { SubscriptionPriceDiscountComponent } from './subscription/subscription-price-discount/subscription-price-discount.component';
+import { DropdownModule } from 'app/dropdown/dropdown.module';
 
 @NgModule({
   imports: [
@@ -28,11 +35,12 @@ import { SubscriptionPriceDiscountComponent } from './subscription/subscription-
     ProfileRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    MatIconModule,
     NgbButtonsModule,
     GeolocationModule,
     NgbCarouselModule,
-    NgbAccordionModule
+    NgbAccordionModule,
+    NgbModalModule,
+    DropdownModule,
   ],
   declarations: [
     profileRoutedComponents,
@@ -50,8 +58,7 @@ import { SubscriptionPriceDiscountComponent } from './subscription/subscription-
     CheckSubscriptionInAppModalComponent,
     UnsubscribeInAppFirstModal,
     DiscountAvailableUnsubscribeInAppModalComponent,
-    SubscriptionPriceDiscountComponent
-    
+    SubscriptionPriceDiscountComponent,
   ],
   entryComponents: [
     UnsubscribeModalComponent,
@@ -65,7 +72,7 @@ import { SubscriptionPriceDiscountComponent } from './subscription/subscription-
     ContinueSubscriptionModalComponent,
     CheckSubscriptionInAppModalComponent,
     UnsubscribeInAppFirstModal,
-    DiscountAvailableUnsubscribeInAppModalComponent
-  ]
+    DiscountAvailableUnsubscribeInAppModalComponent,
+  ],
 })
-export class ProfileModule { }
+export class ProfileModule {}

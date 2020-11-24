@@ -9,7 +9,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 const MOCK_SUGGESTION: KeywordSuggestion = {
   suggestion: 'Samsung Galaxy S7',
-  value: { brand: 'Samsung', model: 'Galaxy S7' }
+  value: { brand: 'Samsung', model: 'Galaxy S7' },
 };
 
 describe('KeywordSuggesterComponent', () => {
@@ -23,20 +23,19 @@ describe('KeywordSuggesterComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         {
-          provide: I18nService, useValue: {
-            getTranslations() {
-            }
-          }
-        }
-      ]
-    })
-      .compileComponents();
+          provide: I18nService,
+          useValue: {
+            getTranslations() {},
+          },
+        },
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(KeywordSuggesterComponent);
     component = fixture.componentInstance;
-    i18n = TestBed.get(I18nService);
+    i18n = TestBed.inject(I18nService);
     component.suggestions = new Subject();
     component.placeholder = 'Brand';
     fixture.detectChanges();
@@ -52,7 +51,7 @@ describe('KeywordSuggesterComponent', () => {
     });
   });
 
-  describe(('inputValueChange'), () => {
+  describe('inputValueChange', () => {
     it('should emit the inputChange event with the input value', () => {
       const inputEvent = { target: { value: 'iPhone' } };
       spyOn(component.inputChange, 'emit');
@@ -63,7 +62,7 @@ describe('KeywordSuggesterComponent', () => {
     });
   });
 
-  describe(('handleInputBlur'), () => {
+  describe('handleInputBlur', () => {
     it('should hide the suggestions element', () => {
       component.suggestionsOpened = true;
 
@@ -73,24 +72,27 @@ describe('KeywordSuggesterComponent', () => {
     });
   });
 
-  describe(('selectSuggestion'), () => {
+  describe('selectSuggestion', () => {
     it('should hide the suggestions element', () => {
       component.suggestionsOpened = true;
-      
+
       component.selectSuggestion(MOCK_SUGGESTION);
 
       expect(component.suggestionsOpened).toBe(false);
     });
   });
 
-  describe(('onKeydown'), () => {
+  describe('onKeydown', () => {
     beforeEach(() => {
       component.keywordSuggestions = [MOCK_SUGGESTION];
     });
 
     it('should hide the suggestions element when pressing the ESC key', () => {
       component.suggestionsOpened = true;
-      const keyEvent = { keyCode: 13, preventDefault: jasmine.createSpy('preventDefault') };
+      const keyEvent = {
+        keyCode: 13,
+        preventDefault: jasmine.createSpy('preventDefault'),
+      };
 
       component.onKeydown(keyEvent);
 
@@ -99,7 +101,10 @@ describe('KeywordSuggesterComponent', () => {
 
     it('should hide the suggestions element when pressing the RETURN key', () => {
       component.suggestionsOpened = true;
-      const keyEvent = { keyCode: 13, preventDefault: jasmine.createSpy('preventDefault') };
+      const keyEvent = {
+        keyCode: 13,
+        preventDefault: jasmine.createSpy('preventDefault'),
+      };
 
       component.onKeydown(keyEvent);
 
@@ -110,8 +115,14 @@ describe('KeywordSuggesterComponent', () => {
       spyOn(component, 'selectSuggestion');
 
       component.suggestionsOpened = true;
-      const keyDownEvent = { keyCode: 40, preventDefault: jasmine.createSpy('preventDefault') };
-      const keyReturnEvent = { keyCode: 13, preventDefault: jasmine.createSpy('preventDefault') };
+      const keyDownEvent = {
+        keyCode: 40,
+        preventDefault: jasmine.createSpy('preventDefault'),
+      };
+      const keyReturnEvent = {
+        keyCode: 13,
+        preventDefault: jasmine.createSpy('preventDefault'),
+      };
 
       component.onKeydown(keyDownEvent);
       component.onKeydown(keyReturnEvent);
@@ -119,5 +130,4 @@ describe('KeywordSuggesterComponent', () => {
       expect(component.selectSuggestion).toHaveBeenCalledWith(MOCK_SUGGESTION);
     });
   });
-
 });

@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CatalogComponent } from './catalog.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -19,17 +18,18 @@ describe('CatalogComponent', () => {
       providers: [
         { provide: TrackingService, useClass: MockTrackingService },
         {
-          provide: UserService, useValue: {
+          provide: UserService,
+          useValue: {
             me() {
-              return observableOf(MOCK_USER);
-            }
-          }
+              return of(MOCK_USER);
+            },
+          },
         },
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     });
     fixture = TestBed.createComponent(CatalogComponent);
-    trackingService = TestBed.get(TrackingService);
+    trackingService = TestBed.inject(TrackingService);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -44,7 +44,9 @@ describe('CatalogComponent', () => {
 
       component.ngOnInit();
 
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CATALOG_VIEW_ITEMS);
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.CATALOG_VIEW_ITEMS
+      );
     });
   });
 });

@@ -1,50 +1,57 @@
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 
 import { NavLinksComponent } from './nav-links.component';
 import { SearchInputComponent } from '../search-input/search-input.component';
-import { MatIconModule } from '@angular/material/icon';
 import { SelectComponent } from '../select/select.component';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FullScreenModalComponent } from '../modals/full-screen-menu/full-screen-modal.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('NavLinksComponent', () => {
   let component: NavLinksComponent;
   let fixture: ComponentFixture<NavLinksComponent>;
   let deviceService: DeviceDetectorService;
   let modalService: NgbModal;
-  const NAV_LINK = {id: 'date_asc', display: 'On Date Ascending'};
-  const SORT_LINK = {value: 'date_asc', label: 'On Date Ascending'};
+  const NAV_LINK = { id: 'date_asc', display: 'On Date Ascending' };
+  const SORT_LINK = { value: 'date_asc', label: 'On Date Ascending' };
   const componentInstance = {
-    items: [NAV_LINK]
+    items: [NAV_LINK],
   };
-  
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ MatIconModule ],
-      declarations: [ NavLinksComponent, SearchInputComponent, SelectComponent ],
+      imports: [],
+      declarations: [NavLinksComponent, SearchInputComponent, SelectComponent],
       providers: [
         { provide: DeviceDetectorService, useClass: DeviceDetectorService },
         {
-          provide: NgbModal, useValue: {
+          provide: NgbModal,
+          useValue: {
             open() {
               return {
                 result: Promise.resolve(),
-                componentInstance: componentInstance
+                componentInstance: componentInstance,
               };
-            }
-          }
-        }
-      ]
-    })
-    .compileComponents();
+            },
+          },
+        },
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NavLinksComponent);
     component = fixture.componentInstance;
-    deviceService = TestBed.get(DeviceDetectorService);
-    modalService = TestBed.get(NgbModal);
+    deviceService = TestBed.inject(DeviceDetectorService);
+    modalService = TestBed.inject(NgbModal);
     component.sortItems = [SORT_LINK];
     component.navLinks = [NAV_LINK];
     fixture.detectChanges();
@@ -61,7 +68,7 @@ describe('NavLinksComponent', () => {
       component.ngOnInit();
 
       expect(component.selectedSort).toEqual(NAV_LINK);
-    })
+    });
 
     it('should set isMobile to true', () => {
       spyOn(deviceService, 'isMobile').and.returnValue(true);
@@ -87,7 +94,7 @@ describe('NavLinksComponent', () => {
       component.onClickSearch();
 
       expect(component.searchClicked).toBe(true);
-    })
+    });
   });
 
   describe('onSortChange', () => {
@@ -95,7 +102,7 @@ describe('NavLinksComponent', () => {
       component.onSortChange(NAV_LINK);
 
       expect(component.selectedSort).toEqual(NAV_LINK);
-    })
+    });
 
     it('should emit the new link id', () => {
       spyOn(component.sortChanged, 'emit');
@@ -103,9 +110,9 @@ describe('NavLinksComponent', () => {
       component.onSortChange(NAV_LINK);
 
       expect(component.sortChanged.emit).toHaveBeenCalledWith(NAV_LINK.id);
-    })
+    });
   });
-  
+
   describe('onDeleteSearch', () => {
     it('should call onSearchChange', () => {
       spyOn(component, 'onSearchChange').and.callThrough();
@@ -115,7 +122,7 @@ describe('NavLinksComponent', () => {
       expect(component.onSearchChange).toHaveBeenCalledWith('');
     });
   });
-  
+
   describe('onSearchChange', () => {
     it('should emit searchChanged', () => {
       spyOn(component.searchChanged, 'emit');
@@ -160,10 +167,10 @@ describe('NavLinksComponent', () => {
   });
 
   describe('selectSort', () => {
-    it('should open a fullscreen modal with the sort items',fakeAsync(() => {
+    it('should open a fullscreen modal with the sort items', fakeAsync(() => {
       spyOn(modalService, 'open').and.returnValue({
         result: Promise.resolve(NAV_LINK),
-        componentInstance: componentInstance
+        componentInstance: componentInstance,
       });
       spyOn(component, 'onSortChange').and.callThrough();
 
@@ -171,19 +178,18 @@ describe('NavLinksComponent', () => {
       tick();
 
       expect(modalService.open).toHaveBeenCalledWith(FullScreenModalComponent, {
-        windowClass: 'full-screen'
+        windowClass: 'full-screen',
       });
       expect(componentInstance.items).toEqual([NAV_LINK]);
       expect(component.onSortChange).toHaveBeenCalledWith(NAV_LINK);
     }));
-
   });
 
   describe('selectMenu', () => {
     it('should open a fullscreen modal with the link items', fakeAsync(() => {
       spyOn(modalService, 'open').and.returnValue({
         result: Promise.resolve(NAV_LINK),
-        componentInstance: componentInstance
+        componentInstance: componentInstance,
       });
       spyOn(component, 'onClickNavLink').and.callThrough();
 
@@ -191,12 +197,10 @@ describe('NavLinksComponent', () => {
       tick();
 
       expect(modalService.open).toHaveBeenCalledWith(FullScreenModalComponent, {
-        windowClass: 'full-screen'
+        windowClass: 'full-screen',
       });
       expect(componentInstance.items).toEqual([NAV_LINK]);
       expect(component.onClickNavLink).toHaveBeenCalledWith(NAV_LINK);
     }));
-    
   });
-
 });

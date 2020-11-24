@@ -3,18 +3,25 @@ import {
   SubscriptionsService,
   SUBSCRIPTIONS_URL,
   SUBSCRIPTIONS_SLOTS_ENDPOINT,
-  SUBSCRIPTION_TYPES
+  SUBSCRIPTION_TYPES,
 } from './subscriptions.service';
 import { of } from 'rxjs';
 import { UserService } from '../user/user.service';
 import { FeatureflagService } from '../user/featureflag.service';
-import { UUID } from 'angular2-uuid';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { HttpModuleNew } from '../http/http.module.new';
-import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+  TestRequest,
+} from '@angular/common/http/testing';
 import { environment } from '../../../environments/environment';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
-import { SubscriptionsResponse, SubscriptionSlot, Tier } from './subscriptions.interface';
+import {
+  SubscriptionsResponse,
+  SubscriptionSlot,
+  Tier,
+} from './subscriptions.interface';
 import {
   SUBSCRIPTIONS,
   MAPPED_SUBSCRIPTIONS,
@@ -26,21 +33,22 @@ import {
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED,
   SUBSCRIPTIONS_NOT_SUB,
   MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY,
-  MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE
+  MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE,
 } from '../../../tests/subscriptions.fixtures.spec';
 import { CategoryService } from '../category/category.service';
 import { AccessTokenService } from '../http/access-token.service';
 import { HttpClient } from '@angular/common/http';
 import { I18nService } from '../i18n/i18n.service';
+import { UuidService } from '../uuid/uuid.service';
 
 describe('SubscriptionsService', () => {
-
   let service: SubscriptionsService;
   let http: HttpClient;
   let httpMock: HttpTestingController;
   let userService: UserService;
   let featureflagService: FeatureflagService;
   let categoryService: CategoryService;
+  let uuidService: UuidService;
   const API_URL = 'api/v3/payments';
   const STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
 
@@ -50,15 +58,17 @@ describe('SubscriptionsService', () => {
       providers: [
         SubscriptionsService,
         {
-          provide: AccessTokenService, useValue: {
+          provide: AccessTokenService,
+          useValue: {
             accessToken: 'ACCESS_TOKEN',
             getTokenSignature() {
               return 'thesignature';
-            }
-          }
+            },
+          },
         },
         {
-          provide: UserService, useValue: {
+          provide: UserService,
+          useValue: {
             hasPerm() {
               return of(true);
             },
@@ -67,29 +77,33 @@ describe('SubscriptionsService', () => {
             },
             isProfessional() {
               return of(true);
-            }
-          }
+            },
+          },
         },
         {
-          provide: FeatureflagService, useValue: {
+          provide: FeatureflagService,
+          useValue: {
             getFlag() {
               return of(false);
-            }
-          }
+            },
+          },
         },
         CategoryService,
-        I18nService
-      ]
+        I18nService,
+      ],
     });
-    service = TestBed.get(SubscriptionsService);
-    http = TestBed.get(HttpClient);
-    httpMock = TestBed.get(HttpTestingController);
-    userService = TestBed.get(UserService);
-    featureflagService = TestBed.get(FeatureflagService);
-    categoryService = TestBed.get(CategoryService);
+    service = TestBed.inject(SubscriptionsService);
+    http = TestBed.inject(HttpClient);
+    httpMock = TestBed.inject(HttpTestingController);
+    userService = TestBed.inject(UserService);
+    featureflagService = TestBed.inject(FeatureflagService);
+    categoryService = TestBed.inject(CategoryService);
+    uuidService = TestBed.inject(UuidService);
     service.uuid = '1-2-3';
-    spyOn(UUID, 'UUID').and.returnValue('1-2-3');
-    spyOn(categoryService, 'getCategories').and.returnValue(of(CATEGORY_DATA_WEB));
+    spyOn(uuidService, 'getUUID').and.returnValue('1-2-3');
+    spyOn(categoryService, 'getCategories').and.returnValue(
+      of(CATEGORY_DATA_WEB)
+    );
   });
 
   afterEach(() => {
@@ -104,7 +118,7 @@ describe('SubscriptionsService', () => {
       const expectedBody = {
         payment_method_id: paymentId,
         product_subscription_id: subscriptionId,
-        billing: false
+        billing: false,
       };
 
       service.newSubscription(subscriptionId, paymentId).subscribe();
@@ -150,7 +164,7 @@ describe('SubscriptionsService', () => {
       const expectedUrl = `${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}/payment_attempt/1-2-3`;
       const expectedBody = {
         invoice_id: invoiceId,
-        payment_method_id: paymentMethodId
+        payment_method_id: paymentMethodId,
       };
 
       service.retrySubscription(invoiceId, paymentMethodId).subscribe();
@@ -169,7 +183,7 @@ describe('SubscriptionsService', () => {
       service.subscriptions = null;
       let response: SubscriptionsResponse[];
 
-      service.getSubscriptions(false).subscribe((res) => response = res);
+      service.getSubscriptions(false).subscribe((res) => (response = res));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(SUBSCRIPTIONS);
 
@@ -179,22 +193,33 @@ describe('SubscriptionsService', () => {
 
     it('should map the mock consumer goods category when backend returns a subscription type with category as 0', () => {
       const expectedUrl = `${environment.baseUrl}${SUBSCRIPTIONS_URL}`;
-      const subscriptionsWithConsumerGoods = [...SUBSCRIPTIONS, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED];
+      const subscriptionsWithConsumerGoods = [
+        ...SUBSCRIPTIONS,
+        MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED,
+      ];
       service.subscriptions = null;
       let response: SubscriptionsResponse[];
 
-      service.getSubscriptions(false).subscribe((res) => response = res);
+      service.getSubscriptions(false).subscribe((res) => (response = res));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(subscriptionsWithConsumerGoods);
 
-      const subscriptionForConsumerGoods = response.find(subscription => subscription.category_id === 0);
+      const subscriptionForConsumerGoods = response.find(
+        (subscription) => subscription.category_id === 0
+      );
       const consumerGoodsCategory = categoryService.getConsumerGoodsCategory();
       expect(req.request.url).toBe(expectedUrl);
       expect(response).toEqual(subscriptionsWithConsumerGoods);
-      expect(subscriptionForConsumerGoods.category_icon).toEqual(consumerGoodsCategory.icon_id);
-      expect(subscriptionForConsumerGoods.category_id).toEqual(consumerGoodsCategory.category_id);
-      expect(subscriptionForConsumerGoods.category_name).toEqual(consumerGoodsCategory.name);
-    })
+      expect(subscriptionForConsumerGoods.category_icon).toEqual(
+        consumerGoodsCategory.icon_id
+      );
+      expect(subscriptionForConsumerGoods.category_id).toEqual(
+        consumerGoodsCategory.category_id
+      );
+      expect(subscriptionForConsumerGoods.category_name).toEqual(
+        consumerGoodsCategory.name
+      );
+    });
   });
 
   describe('cancelSubscription', () => {
@@ -244,7 +269,7 @@ describe('SubscriptionsService', () => {
       let mappedSlots: SubscriptionSlot[];
       const expectedUrl = `${environment.baseUrl}${SUBSCRIPTIONS_SLOTS_ENDPOINT}`;
 
-      service.getSlots().subscribe(response => mappedSlots = response);
+      service.getSlots().subscribe((response) => (mappedSlots = response));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(MOCK_SUBSCRIPTION_SLOTS_GENERAL_RESPONSE);
 
@@ -256,16 +281,32 @@ describe('SubscriptionsService', () => {
 
   describe('isSubscriptionInApp', () => {
     it('should be false when subscription is not subscribed', () => {
-      expect(service.isSubscriptionInApp(MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED)).toBe(false);
+      expect(
+        service.isSubscriptionInApp(
+          MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED
+        )
+      ).toBe(false);
     });
 
     it('should be false when subscription is from Stripe', () => {
-      expect(service.isSubscriptionInApp(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED)).toBe(false);
+      expect(
+        service.isSubscriptionInApp(
+          MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED
+        )
+      ).toBe(false);
     });
 
     it('should be true when subscription was bought in Android or iOS', () => {
-      expect(service.isSubscriptionInApp(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_GOOGLE_PLAY_MAPPED)).toBe(true);
-      expect(service.isSubscriptionInApp(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_APPLE_STORE_MAPPED)).toBe(true);
+      expect(
+        service.isSubscriptionInApp(
+          MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_GOOGLE_PLAY_MAPPED
+        )
+      ).toBe(true);
+      expect(
+        service.isSubscriptionInApp(
+          MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_APPLE_STORE_MAPPED
+        )
+      ).toBe(true);
     });
   });
 
@@ -279,51 +320,83 @@ describe('SubscriptionsService', () => {
     });
 
     it('should be true when some subscription were bought in Android or iOS', () => {
-      expect(service.isOneSubscriptionInApp(MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY)).toBe(true);
-      expect(service.isOneSubscriptionInApp(MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE)).toBe(true);
+      expect(
+        service.isOneSubscriptionInApp(MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY)
+      ).toBe(true);
+      expect(
+        service.isOneSubscriptionInApp(MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE)
+      ).toBe(true);
     });
   });
 
   describe('isStripeSubscription', () => {
     it('should be false when subscription is not subscribed', () => {
-      expect(service.isStripeSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED)).toBe(false);
+      expect(
+        service.isStripeSubscription(
+          MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED
+        )
+      ).toBe(false);
     });
 
     it('should be false when subscription was bought in Android or iOS', () => {
-      expect(service.isStripeSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_GOOGLE_PLAY_MAPPED)).toBe(false);
-      expect(service.isStripeSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_APPLE_STORE_MAPPED)).toBe(false);
+      expect(
+        service.isStripeSubscription(
+          MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_GOOGLE_PLAY_MAPPED
+        )
+      ).toBe(false);
+      expect(
+        service.isStripeSubscription(
+          MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_APPLE_STORE_MAPPED
+        )
+      ).toBe(false);
     });
-    
+
     it('should be true when subscription is from Stripe', () => {
-      expect(service.isStripeSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED)).toBe(true);
+      expect(
+        service.isStripeSubscription(
+          MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED
+        )
+      ).toBe(true);
     });
   });
 
   describe('hasOneStripeSubscription', () => {
     it('should be false when all subscriptions are not subscribed', () => {
-      expect(service.hasOneStripeSubscription(SUBSCRIPTIONS_NOT_SUB)).toBe(false);
-    });
-    
-    it('should be false when some subscription were bought in Android or iOS', () => {
-      expect(service.hasOneStripeSubscription(MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY)).toBe(false);
-      expect(service.hasOneStripeSubscription(MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE)).toBe(false);
+      expect(service.hasOneStripeSubscription(SUBSCRIPTIONS_NOT_SUB)).toBe(
+        false
+      );
     });
 
-    it('should be true when some subscription are from Stripe' , () => {
+    it('should be false when some subscription were bought in Android or iOS', () => {
+      expect(
+        service.hasOneStripeSubscription(
+          MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY
+        )
+      ).toBe(false);
+      expect(
+        service.hasOneStripeSubscription(
+          MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE
+        )
+      ).toBe(false);
+    });
+
+    it('should be true when some subscription are from Stripe', () => {
       expect(service.hasOneStripeSubscription(SUBSCRIPTIONS)).toBe(true);
     });
   });
 
-
   describe('getUserSubscriptionType', () => {
-
     describe('when user is a car dealer', () => {
       it('should say that user subscription type is car dealer', () => {
         spyOn(userService, 'isProfessional').and.returnValue(of(true));
         let result: SUBSCRIPTION_TYPES;
 
-        service.getUserSubscriptionType().subscribe(response => result = response);
-        httpMock.expectOne(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`).flush({});
+        service
+          .getUserSubscriptionType()
+          .subscribe((response) => (result = response));
+        httpMock
+          .expectOne(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`)
+          .flush({});
 
         expect(result).toEqual(SUBSCRIPTION_TYPES.carDealer);
       });
@@ -334,8 +407,12 @@ describe('SubscriptionsService', () => {
         spyOn(userService, 'isProfessional').and.returnValue(of(false));
         let result: SUBSCRIPTION_TYPES;
 
-        service.getUserSubscriptionType().subscribe(response => result = response);
-        httpMock.expectOne(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`).flush(MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY);
+        service
+          .getUserSubscriptionType()
+          .subscribe((response) => (result = response));
+        httpMock
+          .expectOne(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`)
+          .flush(MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY);
 
         expect(result).toEqual(SUBSCRIPTION_TYPES.inApp);
       });
@@ -346,8 +423,12 @@ describe('SubscriptionsService', () => {
         spyOn(userService, 'isProfessional').and.returnValue(of(false));
         let result: SUBSCRIPTION_TYPES;
 
-        service.getUserSubscriptionType().subscribe(response => result = response);
-        httpMock.expectOne(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`).flush(SUBSCRIPTIONS);
+        service
+          .getUserSubscriptionType()
+          .subscribe((response) => (result = response));
+        httpMock
+          .expectOne(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`)
+          .flush(SUBSCRIPTIONS);
 
         expect(result).toEqual(SUBSCRIPTION_TYPES.stripe);
       });
@@ -358,8 +439,12 @@ describe('SubscriptionsService', () => {
         spyOn(userService, 'isProfessional').and.returnValue(of(false));
         let result: SUBSCRIPTION_TYPES;
 
-        service.getUserSubscriptionType().subscribe(response => result = response);
-        httpMock.expectOne(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`).flush(SUBSCRIPTIONS_NOT_SUB);
+        service
+          .getUserSubscriptionType()
+          .subscribe((response) => (result = response));
+        httpMock
+          .expectOne(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`)
+          .flush(SUBSCRIPTIONS_NOT_SUB);
 
         expect(result).toEqual(SUBSCRIPTION_TYPES.notSubscribed);
       });
@@ -370,9 +455,15 @@ describe('SubscriptionsService', () => {
       let result: SUBSCRIPTION_TYPES;
       let result2: SUBSCRIPTION_TYPES;
 
-      service.getUserSubscriptionType().subscribe(response => result = response);
-      httpMock.expectOne(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`).flush(SUBSCRIPTIONS_NOT_SUB);
-      service.getUserSubscriptionType().subscribe(response => result2 = response);
+      service
+        .getUserSubscriptionType()
+        .subscribe((response) => (result = response));
+      httpMock
+        .expectOne(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`)
+        .flush(SUBSCRIPTIONS_NOT_SUB);
+      service
+        .getUserSubscriptionType()
+        .subscribe((response) => (result2 = response));
       httpMock.expectNone(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`);
 
       expect(result).toBe(result2);
@@ -383,10 +474,18 @@ describe('SubscriptionsService', () => {
       let result: SUBSCRIPTION_TYPES;
       let result2: SUBSCRIPTION_TYPES;
 
-      service.getUserSubscriptionType().subscribe(response => result = response);
-      httpMock.expectOne(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`).flush(SUBSCRIPTIONS_NOT_SUB);
-      service.getUserSubscriptionType(false).subscribe(response => result2 = response);
-      httpMock.expectOne(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`).flush(SUBSCRIPTIONS);
+      service
+        .getUserSubscriptionType()
+        .subscribe((response) => (result = response));
+      httpMock
+        .expectOne(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`)
+        .flush(SUBSCRIPTIONS_NOT_SUB);
+      service
+        .getUserSubscriptionType(false)
+        .subscribe((response) => (result2 = response));
+      httpMock
+        .expectOne(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`)
+        .flush(SUBSCRIPTIONS);
 
       expect(result).not.toBe(result2);
     });
@@ -402,10 +501,10 @@ describe('SubscriptionsService', () => {
           currency: '€',
           discount_available: {
             months: 1,
-            discounted_price: 0
-          }
-        }
-        
+            discounted_price: 0,
+          },
+        };
+
         const result = service.getTierDiscountPercentatge(freeTier);
 
         expect(result).toBe(100);
@@ -419,19 +518,17 @@ describe('SubscriptionsService', () => {
           limit: 288,
           price: 100,
           currency: '€',
-          discount_available: null
-        }
-        
+          discount_available: null,
+        };
+
         const result = service.getTierDiscountPercentatge(tierWithoutDiscount);
 
         expect(result).toBe(0);
       });
     });
-
-  })
+  });
 
   afterAll(() => {
     TestBed.resetTestingModule();
   });
-
 });

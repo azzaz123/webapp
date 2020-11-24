@@ -31,7 +31,7 @@
         <span *ngIf="selectedLink.counter && selectedLink.counter.maxVal">
           ({{selectedLink.counter.currentVal}}/{{selectedLink.counter.maxVal}})
         </span>
-        <mat-icon svgIcon="caret"></mat-icon>
+        <tsl-svg-icon src="/assets/icons/caret.svg"></tsl-svg-icon>
       </a>
     </div>
     
@@ -39,7 +39,7 @@
       <tsl-select [items]="sortItems" (valueChanges)="onSortChange($event)" class="d-none d-sm-none d-md-block d-lg-block"></tsl-select>
       <a class="NavLinks__anchor active active d-block d-sm-block d-md-none" (click)="selectSort()">
         <span i18n="@@OrderBy">Order by</span>
-        <mat-icon svgIcon="caret"></mat-icon>
+        <tsl-svg-icon src="/assets/icons/caret.svg"></tsl-svg-icon>
       </a>
     </div>
   </div>

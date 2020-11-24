@@ -13,21 +13,31 @@ export enum MessageStatus {
   PENDING = 'pending',
   SENT = 'sent',
   RECEIVED = 'received',
-  READ = 'read'
+  READ = 'read',
 }
 
-export const MESSAGES_WHITE_LIST = [MessageType.TEXT, MessageType.REVIEW, MessageType.DROP_PRICE, MessageType.PRICE_DROP];
+export const MESSAGES_WHITE_LIST = [
+  MessageType.TEXT,
+  MessageType.REVIEW,
+  MessageType.DROP_PRICE,
+  MessageType.PRICE_DROP,
+];
 
-export const statusOrder = [MessageStatus.PENDING, MessageStatus.SENT, MessageStatus.RECEIVED, MessageStatus.READ];
+export const statusOrder = [
+  MessageStatus.PENDING,
+  MessageStatus.SENT,
+  MessageStatus.RECEIVED,
+  MessageStatus.READ,
+];
 
 export enum PhoneRequestState {
   PENDING = 'pending',
-  ANSWERED = 'answered'
+  ANSWERED = 'answered',
 }
 
 export enum PhoneMethod {
   CHAT_MESSAGE = 'bubble',
-  POP_UP = 'qa'
+  POP_UP = 'qa',
 }
 
 export class InboxMessage {
@@ -40,8 +50,8 @@ export class InboxMessage {
     private _date: Date,
     private _status: MessageStatus,
     private _type: MessageType,
-    private _payload?: MessagePayload) {
-  }
+    private _payload?: MessagePayload
+  ) {}
 
   get id(): string {
     return this._id;
@@ -99,16 +109,38 @@ export class InboxMessage {
     return this._payload;
   }
 
-  public static messsagesFromJson(messagesApiModel: InboxMessageApi[], conversationId: string, currentUserId: string, otherUserId: string): InboxMessage[] {
+  public static messsagesFromJson(
+    messagesApiModel: InboxMessageApi[],
+    conversationId: string,
+    currentUserId: string,
+    otherUserId: string
+  ): InboxMessage[] {
     return messagesApiModel
-    .map((message: InboxMessageApi) => this.buildMessage(message, conversationId, currentUserId, otherUserId))
-    .filter((message: InboxMessage) => MESSAGES_WHITE_LIST.includes(message.type));
+      .map((message: InboxMessageApi) =>
+        this.buildMessage(message, conversationId, currentUserId, otherUserId)
+      )
+      .filter((message: InboxMessage) =>
+        MESSAGES_WHITE_LIST.includes(message.type)
+      );
   }
 
-  private static buildMessage(message: InboxMessageApi, conversationId: string, currentUserId: string, otherUserId: string) {
-    return new InboxMessage(message.id, conversationId, message.text,
-      message.from_self ? currentUserId : otherUserId, message.from_self, new Date(message.timestamp),
-      message.status, message.type, message.payload);
+  private static buildMessage(
+    message: InboxMessageApi,
+    conversationId: string,
+    currentUserId: string,
+    otherUserId: string
+  ) {
+    return new InboxMessage(
+      message.id,
+      conversationId,
+      message.text,
+      message.from_self ? currentUserId : otherUserId,
+      message.from_self,
+      new Date(message.timestamp),
+      message.status,
+      message.type,
+      message.payload
+    );
   }
 }
 
@@ -116,4 +148,3 @@ export class MessagePayload {
   text: string;
   type: string;
 }
-

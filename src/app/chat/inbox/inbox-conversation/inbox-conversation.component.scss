@@ -1,13 +1,13 @@
-@import "~style/common";
+@import '~style/common';
 
-$transition-time: .15s;
+$transition-time: 0.15s;
 $check-width-and-spacing: 50px;
 $menu-width-and-spacing: 10px;
 :host {
   display: flex;
   box-sizing: border-box;
   transition: $transition-time ease background-color,
-  $transition-time ease border;
+    $transition-time ease border;
   border-top: 1px solid $blue-grey-5;
   overflow: hidden;
   cursor: pointer;
@@ -37,41 +37,46 @@ $menu-width-and-spacing: 10px;
     }
   }
 
-  tsl-archive-button, tsl-unarchive-button {
+  tsl-archive-button,
+  tsl-unarchive-button {
     @include hide();
     position: absolute;
     top: 43px;
     right: $spacing-ms;
   }
 
-  &:hover, &:active {
-    background-color: rgba($blue-grey-4, .2);
+  &:hover,
+  &:active {
+    background-color: rgba($blue-grey-4, 0.2);
   }
 
   &.professional {
     &:hover {
-      tsl-archive-button, tsl-unarchive-button {
+      tsl-archive-button,
+      tsl-unarchive-button {
         @include show();
       }
 
-      .badge-pill, .blocked {
+      .badge-pill,
+      .blocked {
         display: none;
       }
 
-      .message-row, .user-name-row-left {
+      .message-row,
+      .user-name-row-left {
         max-width: calc(100% - #{$check-width-and-spacing});
       }
 
       &.archive {
         overflow: visible;
 
-        .message-row, .user-name-row-left {
+        .message-row,
+        .user-name-row-left {
           max-width: calc(100% - #{$menu-width-and-spacing});
         }
       }
     }
   }
-
 
   & ::ng-deep tsl-item-avatar div {
     float: left;
@@ -79,26 +84,29 @@ $menu-width-and-spacing: 10px;
 
     .overlay {
       border-radius: 10px;
-      opacity: .25;
+      opacity: 0.25;
     }
 
-    .sold, .reserved, .not-available {
+    .sold,
+    .reserved,
+    .not-available {
       @include square(25px);
       position: absolute;
       top: 4px;
       left: 4px;
 
-      mat-icon {
+      tsl-svg-icon {
         height: 100% !important;
       }
     }
 
-    .sold mat-icon {
+    .sold tsl-svg-icon {
       width: 17px !important;
     }
 
-    .not-available, .reserved {
-      mat-icon {
+    .not-available,
+    .reserved {
+      tsl-svg-icon {
         width: 10px !important;
       }
     }
@@ -142,17 +150,19 @@ $menu-width-and-spacing: 10px;
       flex: none;
     }
 
-    mat-icon, span {
+    tsl-svg-icon,
+    span {
       vertical-align: middle;
     }
 
-    mat-icon {
+    tsl-svg-icon {
       @include square($phone-icon-adjusted-size);
     }
 
-    mat-icon.blocked, mat-icon.not-available {
+    tsl-svg-icon.blocked,
+    tsl-svg-icon.not-available {
       @include square(10px);
-      position: relative;
+      position: none;
       bottom: 4px;
       margin-right: $spacing-xs;
     }
@@ -213,7 +223,7 @@ $menu-width-and-spacing: 10px;
         color: $blue-grey-3;
       }
 
-      mat-icon {
+      tsl-svg-icon {
         height: 15px;
         width: 15px;
         vertical-align: bottom;
@@ -229,11 +239,21 @@ $menu-width-and-spacing: 10px;
           width: 20px;
           height: 14px;
           background: center left no-repeat;
-          &.pending { background-image: url(/assets/icons/msg-status-pending.svg); }
-          &.sent { background-image: url(/assets/icons/msg-status-sent.svg); }
-          &.received { background-image: url(/assets/icons/msg-status-received.svg); }
-          &.read { background-image: url(/assets/icons/msg-status-read-wallaColor.svg); }
-          &.error { background-image: url(/assets/icons/msg-status-error.svg); }
+          &.pending {
+            background-image: url(/assets/icons/msg-status-pending.svg);
+          }
+          &.sent {
+            background-image: url(/assets/icons/msg-status-sent.svg);
+          }
+          &.received {
+            background-image: url(/assets/icons/msg-status-received.svg);
+          }
+          &.read {
+            background-image: url(/assets/icons/msg-status-read-wallaColor.svg);
+          }
+          &.error {
+            background-image: url(/assets/icons/msg-status-error.svg);
+          }
         }
       }
     }
@@ -259,7 +279,6 @@ $menu-width-and-spacing: 10px;
   }
 }
 
-
 .message-date {
   font-size: $font-size-xs;
   color: $blue-grey-3;
@@ -272,7 +291,8 @@ a {
 .faded {
   padding-top: 50px;
 
-  tsl-item-avatar, .badge-pill {
+  tsl-item-avatar,
+  .badge-pill {
     opacity: 0.6;
   }
 
@@ -305,13 +325,14 @@ a {
   }
 }
 
-
 .badge-archive {
   .check-corporate {
     position: absolute;
     display: none;
     top: $spacing-xxl;
     right: $spacing-ms;
+    align-items: center;
+    justify-content: center;
 
     @include square(30px);
     border: 3px solid $blue-grey-4;
@@ -323,20 +344,18 @@ a {
     line-height: 0;
     cursor: pointer;
 
-    mat-icon {
-      height: 10px;
-      width: $spacing-l;
-
+    tsl-svg-icon {
       ::ng-deep g g {
         fill: $blue-grey-3;
       }
     }
 
     &:hover {
+      display: flex;
       background-color: $walla-main;
       border-color: $walla-main;
 
-      mat-icon {
+      tsl-svg-icon {
         ::ng-deep g g {
           fill: $white;
         }

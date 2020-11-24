@@ -2,13 +2,16 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReviewModalComponent } from './review-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { CONVERSATION_USERS, ITEM_ID, MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
+import {
+  CONVERSATION_USERS,
+  ITEM_ID,
+  MOCK_ITEM,
+} from '../../../../tests/item.fixtures.spec';
 import { ReviewService } from '../../../core/review/review.service';
 import { ItemService } from '../../../core/item/item.service';
 import { MOCKED_CONVERSATIONS } from '../../../../tests/conversation.fixtures.spec';
-
 
 describe('ReviewModalComponent', () => {
   let component: ReviewModalComponent;
@@ -19,47 +22,48 @@ describe('ReviewModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ReviewModalComponent ],
+      declarations: [ReviewModalComponent],
       providers: [
         {
-          provide: ItemService, useValue: {
+          provide: ItemService,
+          useValue: {
             getConversationUsers() {
               return of(CONVERSATION_USERS);
             },
             soldOutside() {
               return of({});
-            }
-          }
+            },
+          },
         },
         {
-          provide: NgbActiveModal, useValue: {
-            close() {
-            }
-          }
+          provide: NgbActiveModal,
+          useValue: {
+            close() {},
+          },
         },
         {
-          provide: ReviewService, useValue: {
+          provide: ReviewService,
+          useValue: {
             createAsSeller() {
               return of([]);
             },
             createAsBuyer() {
               return of([]);
-            }
-          }
-        }
+            },
+          },
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ReviewModalComponent);
     component = fixture.componentInstance;
     component.item = MOCK_ITEM;
-    itemService = TestBed.get(ItemService);
-    activeModal = TestBed.get(NgbActiveModal);
-    reviewService = TestBed.get(ReviewService);
+    itemService = TestBed.inject(ItemService);
+    activeModal = TestBed.inject(NgbActiveModal);
+    reviewService = TestBed.inject(ReviewService);
     spyOn(itemService, 'getConversationUsers').and.callThrough();
     fixture.detectChanges();
   });
@@ -117,16 +121,16 @@ describe('ReviewModalComponent', () => {
       const testDe = fixture.debugElement;
       testDe.triggerEventHandler('keyup', {
         target: {
-          value: 'some string here'
-        }
+          value: 'some string here',
+        },
       });
     });
 
     it('should set reviewCommentLength', () => {
       const fakeEvent = {
         target: {
-          value: 'abc'
-        }
+          value: 'abc',
+        },
       };
 
       component.countChars(fakeEvent);
@@ -155,7 +159,7 @@ describe('ReviewModalComponent', () => {
         item_id: ITEM_ID,
         comments: 'comments',
         score: 4 * 20,
-        price: 100
+        price: 100,
       });
     });
 
@@ -183,7 +187,7 @@ describe('ReviewModalComponent', () => {
         item_id: ITEM_ID,
         comments: 'comments',
         score: 4 * 20,
-        conversation_id: component.thread
+        conversation_id: component.thread,
       });
     });
 

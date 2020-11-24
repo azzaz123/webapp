@@ -19,12 +19,11 @@ import {
   ITEM_TITLE,
   ITEM_URL,
   ITEM_WEB_SLUG,
-  MOCK_ITEM
+  MOCK_ITEM,
 } from '../../../tests/item.fixtures.spec';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
 
 describe('Item', () => {
-
   let item: Item;
 
   beforeEach(() => {
@@ -93,5 +92,4 @@ describe('Item', () => {
     item.selected = false;
     expect(item.selected).toBeFalsy();
   });
-
 });

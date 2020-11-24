@@ -7,19 +7,20 @@ import { FinancialCard } from '../../profile/credit-card-info/financial-card';
 @Component({
   selector: 'tsl-new-card-modal',
   templateUrl: './new-card-modal.component.html',
-  styleUrls: ['./new-card-modal.component.scss']
+  styleUrls: ['./new-card-modal.component.scss'],
 })
 export class NewCardModalComponent {
-
   public loading: boolean;
 
-  constructor(public activeModal: NgbActiveModal,
-              private stripeService: StripeService) {
-  }
+  constructor(
+    public activeModal: NgbActiveModal,
+    private stripeService: StripeService
+  ) {}
 
   public onCreateCard(paymentMethod: PaymentMethodResponse) {
-    const financialCard: FinancialCard = this.stripeService.mapResponse(paymentMethod);
+    const financialCard: FinancialCard = this.stripeService.mapResponse(
+      paymentMethod
+    );
     this.activeModal.close(financialCard);
   }
-  
 }

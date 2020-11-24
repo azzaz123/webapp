@@ -1,29 +1,25 @@
-/* tslint:disable:no-unused-variable */
-
-
-import {of as observableOf, throwError as observableThrowError,  Observable ,  Subject } from 'rxjs';
-import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { of, throwError, Subject } from 'rxjs';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+} from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HaversineService } from 'ng2-haversine';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-
-import { ConversationService } from './core/conversation/conversation.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie';
-import { UUID } from 'angular2-uuid';
 import { TrackingService } from './core/tracking/tracking.service';
-import { MatIconRegistry } from '@angular/material';
 import { MessageService } from './chat/service/message.service';
-import { NotificationService } from './core/notification/notification.service';
+import { DesktopNotificationsService } from './core/desktop-notifications/desktop-notifications.service';
 import { EventService } from './core/event/event.service';
 import { ErrorsService } from './core/errors/errors.service';
 import { UserService } from './core/user/user.service';
 import { MOCK_USER, USER_ID } from '../tests/user.fixtures.spec';
 import { I18nService } from './core/i18n/i18n.service';
 import { MockTrackingService } from '../tests/tracking.fixtures.spec';
-import { WindowRef } from './core/window/window.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
@@ -36,6 +32,8 @@ import { AnalyticsService } from './core/analytics/analytics.service';
 import { MockAnalyticsService } from '../tests/analytics.fixtures.spec';
 import { DidomiService } from './core/didomi/didomi.service';
 import { MockDidomiService } from './core/didomi/didomi.service.spec';
+import { UuidService } from './core/uuid/uuid.service';
+import { SwUpdate } from '@angular/service-worker';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -44,12 +42,10 @@ let errorsService: ErrorsService;
 let eventService: EventService;
 let realTime: RealTimeService;
 let inboxService: InboxService;
-let notificationService: NotificationService;
+let desktopNotificationsService: DesktopNotificationsService;
 let messageService: MessageService;
 let titleService: Title;
 let trackingService: TrackingService;
-let window: any;
-let conversationService: ConversationService;
 let callsService: CallsService;
 let cookieService: CookieService;
 let connectionService: ConnectionService;
@@ -57,156 +53,132 @@ let paymentService: PaymentService;
 let stripeService: StripeService;
 let analyticsService: AnalyticsService;
 let didomiService: DidomiService;
+let uuidService: UuidService;
 
 const ACCESS_TOKEN = 'accesstoken';
 
 describe('App', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule,
-      ],
-      declarations: [
-        AppComponent
-      ],
+      imports: [RouterTestingModule],
+      declarations: [AppComponent],
       providers: [
         EventService,
         {
-          provide: NgbModal, useValue: {
+          provide: NgbModal,
+          useValue: {
             open() {
               return {
                 result: Promise.resolve(true),
-                componentInstance: {}
+                componentInstance: {},
               };
-            }
-          }
+            },
+          },
         },
         {
-          provide: InboxService, useValue: {
+          provide: SwUpdate,
+          useValue: {
+            available: of(null),
+            activated: of(null),
+          },
+        },
+        {
+          provide: InboxService,
+          useValue: {
             init() {},
-            saveInbox() {}
-          }
+            saveInbox() {},
+          },
         },
         {
-          provide: ConnectionService, useValue: {
-          checkConnection() {}
-        }
+          provide: ConnectionService,
+          useValue: {
+            checkConnection() {},
+          },
         },
         {
-          provide: RealTimeService, useValue: {
-          connect() {},
-          disconnect() {},
-          reconnect() {}
-          }
+          provide: RealTimeService,
+          useValue: {
+            connect() {},
+            disconnect() {},
+            reconnect() {},
+          },
         },
         ErrorsService,
         {
-          provide: UserService, useValue: {
-          checkUserStatus() {
+          provide: UserService,
+          useValue: {
+            checkUserStatus() {},
+            me() {
+              return of(MOCK_USER);
+            },
+            logout() {},
+            setPermission() {},
+            sendUserPresenceInterval() {},
+            isProfessional() {
+              return of(false);
+            },
           },
-          me() {
-            return observableOf(MOCK_USER);
-          },
-          logout() {
-          },
-          sendUserPresenceInterval() {},
-          isProfessional() {
-            return observableOf(false);
-          }
-        }
         },
-        HaversineService,
         {
-          provide: MessageService, useValue: {
-          totalUnreadMessages$: new Subject()
-        }
+          provide: MessageService,
+          useValue: {
+            totalUnreadMessages$: new Subject(),
+          },
         },
         I18nService,
+        { provide: TrackingService, useClass: MockTrackingService },
+        DesktopNotificationsService,
         {
-          provide: MatIconRegistry, useValue: {
-          addSvgIcon() {
-          },
-          addSvgIconInNamespace() {
-          },
-          addSvgIconSetInNamespace() {
-          }
-        }
-        },
-        {provide: TrackingService, useClass: MockTrackingService},
-        {
-          provide: NotificationService, useValue: {
-          init() {
-          }
-        }
-        },
-        {
-          provide: WindowRef, useValue: {
-          nativeWindow: {
-            location: {
-              reload() {
-              }
-            }
-          }
-        }
-        },
-        {
-          provide: ConversationService, useValue: {
-          init() {
-            return observableOf();
-          },
-          handleNewMessages() {},
-          resetCache() {},
-          syncItem() {},
-          processChatSignal() {}
-        }
-        },
-        {
-          provide: CallsService, useValue: {
+          provide: CallsService,
+          useValue: {
             init() {
-              return observableOf();
+              return of();
             },
-          syncItem() {}
-          }
+            syncItem() {},
+          },
         },
         {
-          provide: Router, useValue: {
-          events: observableOf(new NavigationEnd(1, 'test', 'test'))
-        }
+          provide: Router,
+          useValue: {
+            events: of(new NavigationEnd(1, 'test', 'test')),
+          },
         },
         {
-          provide: ActivatedRoute, useValue: {
-          outlet: 'primary',
-          data: observableOf({
-            title: 'Chat',
-            hideSidebar: true
-          })
-        }
+          provide: ActivatedRoute,
+          useValue: {
+            outlet: 'primary',
+            data: of({
+              title: 'Chat',
+              hideSidebar: true,
+            }),
+          },
         },
         {
-          provide: CookieService, useValue: {
-          value: null,
-            put() {
-            },
-            get () {
+          provide: CookieService,
+          useValue: {
+            value: null,
+            put() {},
+            get() {
               return this.value;
-            }
-          }
+            },
+          },
         },
         {
-          provide: PaymentService, useValue: {
-            deleteCache() {
-            }
-        }
+          provide: PaymentService,
+          useValue: {
+            deleteCache() {},
+          },
         },
         {
-          provide: StripeService, useValue: {
-            init() {}
-          }
+          provide: StripeService,
+          useValue: {
+            init() {},
+          },
         },
         { provide: AnalyticsService, useClass: MockAnalyticsService },
         { provide: DidomiService, useValue: MockDidomiService },
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     });
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
@@ -215,12 +187,10 @@ describe('App', () => {
     eventService = TestBed.inject(EventService);
     realTime = TestBed.inject(RealTimeService);
     inboxService = TestBed.inject(InboxService);
-    notificationService = TestBed.inject(NotificationService);
+    desktopNotificationsService = TestBed.inject(DesktopNotificationsService);
     messageService = TestBed.inject(MessageService);
     titleService = TestBed.inject(Title);
     trackingService = TestBed.inject(TrackingService);
-    window = TestBed.inject(WindowRef).nativeWindow;
-    conversationService = TestBed.inject(ConversationService);
     callsService = TestBed.inject(CallsService);
     cookieService = TestBed.inject(CookieService);
     connectionService = TestBed.inject(ConnectionService);
@@ -228,8 +198,10 @@ describe('App', () => {
     stripeService = TestBed.inject(StripeService);
     analyticsService = TestBed.inject(AnalyticsService);
     didomiService = TestBed.inject(DidomiService);
+    uuidService = TestBed.inject(UuidService);
 
-    spyOn(notificationService, 'init');
+    spyOn(desktopNotificationsService, 'init');
+    spyOn(window.location, 'reload');
   });
 
   it('should create the app', async(() => {
@@ -239,34 +211,39 @@ describe('App', () => {
 
   describe('set cookie', () => {
     it('should create a cookie', () => {
-      spyOn(UUID, 'UUID').and.returnValue('1-2-3');
+      spyOn(uuidService, 'getUUID').and.returnValue('1-2-3');
       spyOn(cookieService, 'put');
       spyOn(Date.prototype, 'getTime').and.returnValue(123456789);
       const currentDate = new Date();
-      const expirationDate = new Date(currentDate.getTime() + ( 900000 ));
-      const cookieOptions = {path: '/', expires: expirationDate};
+      const expirationDate = new Date(currentDate.getTime() + 900000);
+      const cookieOptions = { path: '/', expires: expirationDate };
 
       component.updateSessionCookie();
 
-      expect(cookieService.put).toHaveBeenCalledWith('app_session_id', UUID.UUID() , cookieOptions);
+      expect(cookieService.put).toHaveBeenCalledWith(
+        'app_session_id',
+        uuidService.getUUID(),
+        cookieOptions
+      );
     });
   });
 
   describe('subscribeEvents', () => {
     function getEventServiceSubscribeArgs() {
       const eventServiceSubscribeArgs = [];
-      eventService.subscribe['calls'].allArgs().map(call => eventServiceSubscribeArgs.push(call[0]));
+      eventService.subscribe['calls']
+        .allArgs()
+        .map((call) => eventServiceSubscribeArgs.push(call[0]));
       return eventServiceSubscribeArgs;
     }
 
     describe('success case', () => {
       function emitSuccessChatEvents() {
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-        eventService.emit(EventService.DB_READY);
         eventService.emit(EventService.CHAT_RT_CONNECTED);
       }
       beforeEach(fakeAsync(() => {
-        spyOn(callsService, 'init').and.returnValue(observableOf({}));
+        spyOn(callsService, 'init').and.returnValue(of({}));
         spyOn(inboxService, 'init');
       }));
 
@@ -279,12 +256,11 @@ describe('App', () => {
         expect(eventServiceCalls).toContain(EventService.USER_LOGIN);
       });
 
-      it('should perform a xmpp connect when the login event and the DB_READY event are triggered with the correct user data', () => {
-        spyOn(realTime, 'connect').and.callThrough();
+      it('should perform a xmpp connect when the login event is triggered with the correct user data', () => {
+        spyOn(realTime, 'connect');
 
         component.ngOnInit();
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-        eventService.emit(EventService.DB_READY);
 
         expect(realTime.connect).toHaveBeenCalledWith(USER_ID, ACCESS_TOKEN);
       });
@@ -307,7 +283,7 @@ describe('App', () => {
       });
 
       it('should call callsService.init twice if user is professional', () => {
-        spyOn(userService, 'isProfessional').and.returnValue(observableOf(true));
+        spyOn(userService, 'isProfessional').and.returnValue(of(true));
 
         component.ngOnInit();
         emitSuccessChatEvents();
@@ -322,15 +298,6 @@ describe('App', () => {
         expect(inboxService.init).toHaveBeenCalledTimes(1);
       });
 
-      it('should NOT unsubscribe from the RT_CONNECTED_EVENT', () => {
-        spyOn(userService, 'isProfessional').and.returnValue(observableOf(true));
-
-        component.ngOnInit();
-        emitSuccessChatEvents();
-
-        expect(component['RTConnectedSubscription'].closed).toBe(false);
-      });
-
       it('should send open_app event if cookie does not exist', () => {
         spyOn(trackingService, 'track');
         spyOn(cookieService, 'get').and.returnValue(null);
@@ -339,8 +306,13 @@ describe('App', () => {
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
 
         expect(cookieService.get).toHaveBeenCalledWith('app_session_id');
-        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.APP_OPEN,
-          { referer_url: component.previousUrl, current_url: component.currentUrl });
+        expect(trackingService.track).toHaveBeenCalledWith(
+          TrackingService.APP_OPEN,
+          {
+            referer_url: component.previousUrl,
+            current_url: component.currentUrl,
+          }
+        );
       });
 
       it('should call update session cookie if cookie does not exist', () => {
@@ -371,7 +343,7 @@ describe('App', () => {
         Object.defineProperty(userService, 'isLogged', {
           get() {
             return true;
-          }
+          },
         });
 
         component.ngOnInit();
@@ -382,7 +354,7 @@ describe('App', () => {
     });
 
     it('should NOT call userService.sendUserPresenceInterval is the user has not successfully logged in', () => {
-      spyOn(userService, 'me').and.returnValue(observableThrowError({}));
+      spyOn(userService, 'me').and.returnValue(throwError({}));
       spyOn(errorsService, 'show');
       spyOn(userService, 'sendUserPresenceInterval');
 
@@ -392,27 +364,10 @@ describe('App', () => {
       expect(userService.sendUserPresenceInterval).not.toHaveBeenCalled();
     });
 
-    it('should logout the user and show the error if token is expired', fakeAsync(() => {
-      const ERROR: any = {
-        'code': 1,
-        'type': 'error',
-        'message': 'Token expired'
-      };
-      spyOn(userService, 'logout');
-      spyOn(errorsService, 'show');
-      spyOn(userService, 'me').and.returnValue(observableThrowError(ERROR));
-
-      component.ngOnInit();
-      eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-
-      expect(userService.logout).toHaveBeenCalled();
-      expect(errorsService.show).toHaveBeenCalled();
-    }));
-
     it('should init notifications', () => {
       component.ngOnInit();
 
-      expect(notificationService.init).toHaveBeenCalled();
+      expect(desktopNotificationsService.init).toHaveBeenCalled();
     });
 
     it('should call realTime.disconnect on logout', () => {
@@ -462,19 +417,19 @@ describe('App', () => {
   });
 
   describe('config event tracking', () => {
-
     beforeEach(() => {
       spyOn(trackingService, 'track');
 
       component.ngOnInit();
       eventService.emit(EventService.USER_LOGOUT);
 
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MY_PROFILE_LOGGED_OUT);
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.MY_PROFILE_LOGGED_OUT
+      );
     });
   });
 
   describe('totalUnreadMessages$', () => {
-
     beforeEach(() => {
       spyOn(titleService, 'setTitle');
     });
@@ -516,7 +471,6 @@ describe('App', () => {
         expect(titleService.setTitle).toHaveBeenCalledWith('Chat');
       });
     });
-
   });
 
   describe('setTitle', () => {
@@ -560,5 +514,4 @@ describe('App', () => {
       expect(didomiService.initialize).toHaveBeenCalledTimes(1);
     });
   });
-
 });

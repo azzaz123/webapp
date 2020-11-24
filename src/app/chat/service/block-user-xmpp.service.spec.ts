@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 
 import { BlockUserXmppService } from './block-user-xmpp.service';
@@ -21,16 +20,16 @@ describe('BlockUserXmppService', () => {
         XmppService,
         EventService,
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
-        { provide: TrackingService, useValue: {} }
-      ]
+        { provide: TrackingService, useValue: {} },
+      ],
     });
-    service = TestBed.get(BlockUserXmppService);
-    xmppService = TestBed.get(XmppService);
+    service = TestBed.inject(BlockUserXmppService);
+    xmppService = TestBed.inject(XmppService);
   });
 
   describe('blockUser', () => {
     it('should call xmpp.blockUser when called', () => {
-      spyOn(xmppService, 'blockUser').and.returnValue(observableOf(true));
+      spyOn(xmppService, 'blockUser').and.returnValue(of(true));
 
       service.blockUser(MOCK_USER).subscribe();
 
@@ -40,7 +39,7 @@ describe('BlockUserXmppService', () => {
 
   describe('unblockUser', () => {
     it('should call xmpp.unblockUser when called', () => {
-      spyOn(xmppService, 'unblockUser').and.returnValue(observableOf(true));
+      spyOn(xmppService, 'unblockUser').and.returnValue(of(true));
 
       service.unblockUser(MOCK_USER).subscribe();
 

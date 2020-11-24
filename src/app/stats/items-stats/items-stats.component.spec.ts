@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ItemsStatsComponent } from './items-stats.component';
 import { ItemService } from '../../core/item/item.service';
-import { Observable ,  Subject, of } from 'rxjs';
+import { Subject, of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MOCK_ITEM } from '../../../tests/item.fixtures.spec';
 import { CheapestProducts } from '../../core/item/item-response.interface';
@@ -17,28 +17,28 @@ describe('ItemsStatsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [CommonModule],
-      declarations: [ ItemsStatsComponent ],
+      declarations: [ItemsStatsComponent],
       providers: [
         {
-          provide: ItemService, useValue: {
-          mine() {
-            return of({data: [MOCK_ITEM, MOCK_ITEM], init: 20})
+          provide: ItemService,
+          useValue: {
+            mine() {
+              return of({ data: [MOCK_ITEM, MOCK_ITEM], init: 20 });
+            },
+            getCheapestProductPrice() {
+              return of(PRICES);
+            },
           },
-          getCheapestProductPrice() {
-            return of(PRICES);
-          }
-        }
-        }
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ItemsStatsComponent);
     component = fixture.componentInstance;
-    itemService = TestBed.get(ItemService);
+    itemService = TestBed.inject(ItemService);
     component.paginate = new Subject<boolean>();
   });
 
@@ -58,7 +58,10 @@ describe('ItemsStatsComponent', () => {
 
       fixture.detectChanges();
 
-      expect(itemService.getCheapestProductPrice).toHaveBeenCalledWith(['9jd7ryx5odjk', '9jd7ryx5odjk']);
+      expect(itemService.getCheapestProductPrice).toHaveBeenCalledWith([
+        '9jd7ryx5odjk',
+        '9jd7ryx5odjk',
+      ]);
       expect(component.prices).toEqual(PRICES);
     });
   });

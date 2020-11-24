@@ -36,20 +36,15 @@ export class DidomiService {
       return false;
     }
 
-    const userConsentedCookies = this.library.getUserConsentStatusForPurpose('cookies');
-    const userConsentedGoogle = this.library.getUserConsentStatusForVendor('google');
-    const userConsentedContentPersonalization = this.library.getUserConsentStatusForPurpose('content_personalization');
-    const userConsentedAdsPersonalization = this.library.getUserConsentStatusForPurpose('advertising_personalization');
-    const userConsentedAdsDelivery = this.library.getUserConsentStatusForPurpose('ad_delivery');
+    const userConsentedGoogle = this.library.getUserConsentStatusForVendor(
+      'google'
+    );
+    const allConsents = this.library.getUserConsentStatusForAll();
+    const { purposes } = allConsents;
+    const { disabled: userDisabledPurpouses } = purposes;
 
     const allowingSegmentation =
-      !!userConsentedCookies &&
-      !!userConsentedGoogle &&
-      !!userConsentedContentPersonalization &&
-      !!userConsentedAdsPersonalization &&
-      !!userConsentedAdsDelivery;
-
+      userDisabledPurpouses.length === 0 && userConsentedGoogle;
     return allowingSegmentation;
   }
-
 }

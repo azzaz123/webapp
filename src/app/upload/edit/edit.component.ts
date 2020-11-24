@@ -11,27 +11,28 @@ import { UserService } from '../../core/user/user.service';
 @Component({
   selector: 'tsl-edit',
   templateUrl: './edit.component.html',
-  styleUrls: ['./edit.component.scss']
+  styleUrls: ['./edit.component.scss'],
 })
 export class EditComponent implements OnInit, CanComponentDeactivate {
-
   public item: Item;
   @ViewChild('scrollPanel', { static: true }) scrollPanel: ElementRef;
   private hasNotSavedChanges: boolean;
   public urgentPrice: string = null;
   public itemTypes: any = ITEM_TYPES;
 
-  constructor(private route: ActivatedRoute,
-              private router: Router,
-              private modalService: NgbModal,
-              private itemService: ItemService,
-              private userService: UserService) {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private modalService: NgbModal,
+    private itemService: ItemService,
+    private userService: UserService
+  ) {
     this.userService.isProfessional().subscribe((isPro: boolean) => {
       const id = route.snapshot.params['id'];
       if (isPro && !route.snapshot.parent.parent.parent.url.length) {
-        this.router.navigate(['/pro/catalog/edit/' + id])
+        this.router.navigate(['/pro/catalog/edit/' + id]);
       } else if (!isPro && route.snapshot.parent.parent.parent.url.length) {
-        this.router.navigate(['/catalog/edit/' + id])
+        this.router.navigate(['/catalog/edit/' + id]);
       }
     });
   }
@@ -49,9 +50,12 @@ export class EditComponent implements OnInit, CanComponentDeactivate {
     if (!this.hasNotSavedChanges) {
       return true;
     }
-    const modalRef: NgbModalRef = this.modalService.open(ExitConfirmationModalComponent, {
-      backdrop: 'static'
-    });
+    const modalRef: NgbModalRef = this.modalService.open(
+      ExitConfirmationModalComponent,
+      {
+        backdrop: 'static',
+      }
+    );
     modalRef.componentInstance.item = this.item;
     return modalRef.result;
   }
@@ -61,9 +65,10 @@ export class EditComponent implements OnInit, CanComponentDeactivate {
   }
 
   public getUrgentPrice(): void {
-    this.itemService.getUrgentProducts(this.item.id).subscribe((product: Product) => {
-      this.urgentPrice =  product.durations[0].market_code;
-    });
+    this.itemService
+      .getUrgentProducts(this.item.id)
+      .subscribe((product: Product) => {
+        this.urgentPrice = product.durations[0].market_code;
+      });
   }
-
 }

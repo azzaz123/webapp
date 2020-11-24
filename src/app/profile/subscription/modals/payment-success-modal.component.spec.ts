@@ -8,7 +8,7 @@ import {
   AnalyticsPageView,
   ViewSuccessSubscriptionPayment,
   ANALYTICS_EVENT_NAMES,
-  SCREEN_IDS
+  SCREEN_IDS,
 } from '../../../core/analytics/analytics-constants';
 import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
 import { SUBSCRIPTIONS_NOT_SUB } from '../../../../tests/subscriptions.fixtures.spec';
@@ -22,28 +22,28 @@ describe('PaymentSuccessModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PaymentSuccessModalComponent ],
+      declarations: [PaymentSuccessModalComponent],
       providers: [
         {
-          provide: NgbActiveModal, useValue: {
-            close() {
-            }
+          provide: NgbActiveModal,
+          useValue: {
+            close() {},
           },
         },
         {
-          provide: AnalyticsService, useClass: MockAnalyticsService
-        }
+          provide: AnalyticsService,
+          useClass: MockAnalyticsService,
+        },
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PaymentSuccessModalComponent);
     component = fixture.componentInstance;
-    activeModal = TestBed.get(NgbActiveModal);
-    analyticsService = TestBed.get(AnalyticsService);
+    activeModal = TestBed.inject(NgbActiveModal);
+    analyticsService = TestBed.inject(AnalyticsService);
     fixture.detectChanges();
   });
 
@@ -66,14 +66,16 @@ describe('PaymentSuccessModalComponent', () => {
           isNewSubscriber,
           isNewCard,
           tier,
-          screenId: SCREEN_IDS.ProfileSubscription
-        }
+          screenId: SCREEN_IDS.ProfileSubscription,
+        },
       };
 
       component.ngOnInit();
 
       expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
-      expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageView);
+      expect(analyticsService.trackPageView).toHaveBeenCalledWith(
+        expectedPageView
+      );
     });
   });
 

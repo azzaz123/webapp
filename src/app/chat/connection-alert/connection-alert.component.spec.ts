@@ -5,7 +5,6 @@ import { ConnectionAlertComponent } from './connection-alert.component';
 import { EventService } from '../../core/event/event.service';
 
 describe('Component: ConnectionAlert', () => {
-
   let component: ConnectionAlertComponent;
   let fixture: ComponentFixture<ConnectionAlertComponent>;
   let eventService: EventService;
@@ -13,11 +12,12 @@ describe('Component: ConnectionAlert', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ConnectionAlertComponent],
-      providers: [EventService]
+      providers: [EventService],
     });
     fixture = TestBed.createComponent(ConnectionAlertComponent);
-    component = TestBed.createComponent(ConnectionAlertComponent).componentInstance;
-    eventService = TestBed.get(EventService);
+    component = TestBed.createComponent(ConnectionAlertComponent)
+      .componentInstance;
+    eventService = TestBed.inject(EventService);
   });
 
   it('should listen to CONNECTION_ERROR', () => {
@@ -26,5 +26,4 @@ describe('Component: ConnectionAlert', () => {
     expect(component.connected).toBeFalsy();
     expect(component.hide).toBeFalsy();
   });
-
 });

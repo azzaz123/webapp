@@ -11,27 +11,25 @@ describe('NoCardModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-        declarations: [NoCardModalComponent],
-        providers: [
-          {
-            provide: NgbActiveModal, useValue: {
-              close() {
-              },
-              dismiss() {
-              }
-            }
-          }
-        ],
-        schemas: [NO_ERRORS_SCHEMA]
-      })
-      .compileComponents();
+      declarations: [NoCardModalComponent],
+      providers: [
+        {
+          provide: NgbActiveModal,
+          useValue: {
+            close() {},
+            dismiss() {},
+          },
+        },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NoCardModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    activeModal = TestBed.get(NgbActiveModal);
+    activeModal = TestBed.inject(NgbActiveModal);
   });
 
   describe('onDeleteCard', () => {
@@ -42,7 +40,5 @@ describe('NoCardModalComponent', () => {
 
       expect(activeModal.close).toHaveBeenCalledWith('deleteCardModal');
     });
-
   });
-
 });

@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 :host {
   padding: $spacing-xl;
@@ -8,7 +8,7 @@
   @include square(13px);
   top: 10px;
   right: 10px;
-  mat-icon {
+  tsl-svg-icon {
     @include square(13px);
     line-height: initial;
   }
@@ -46,7 +46,7 @@ a {
     text-decoration: underline;
     cursor: pointer;
     &:hover {
-      text-decoration: underline
+      text-decoration: underline;
     }
   }
 }

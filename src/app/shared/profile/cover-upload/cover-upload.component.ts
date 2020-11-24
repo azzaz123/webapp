@@ -1,19 +1,27 @@
-import { TOKEN_AUTHORIZATION_HEADER_NAME, TOKEN_SIGNATURE_HEADER_NAME, TOKEN_TIMESTAMP_HEADER_NAME } from './../../../core/http/interceptors/token.interceptor';
+import {
+  TOKEN_AUTHORIZATION_HEADER_NAME,
+  TOKEN_SIGNATURE_HEADER_NAME,
+  TOKEN_TIMESTAMP_HEADER_NAME,
+} from './../../../core/http/interceptors/token.interceptor';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { User } from '../../../core/user/user';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { UserService } from '../../../core/user/user.service';
 import { environment } from '../../../../environments/environment';
-import { NgUploaderOptions, UploadFile, UploadInput, UploadOutput } from '../../uploader/upload.interface';
+import {
+  NgUploaderOptions,
+  UploadFile,
+  UploadInput,
+  UploadOutput,
+} from '../../uploader/upload.interface';
 import { AccessTokenService } from '../../../core/http/access-token.service';
 
 @Component({
   selector: 'tsl-cover-upload',
   templateUrl: './cover-upload.component.html',
-  styleUrls: ['./cover-upload.component.scss']
+  styleUrls: ['./cover-upload.component.scss'],
 })
 export class CoverUploadComponent implements OnInit {
-
   @Input() user: User;
   file: UploadFile;
   uploadInput: EventEmitter<UploadInput> = new EventEmitter();
@@ -22,15 +30,17 @@ export class CoverUploadComponent implements OnInit {
   @Input() isPro: boolean;
   @Output() clickNotPro: EventEmitter<any> = new EventEmitter();
 
-  constructor(private errorsService: ErrorsService,
+  constructor(
+    private errorsService: ErrorsService,
     private userService: UserService,
-    private accesTokenService: AccessTokenService) { }
+    private accesTokenService: AccessTokenService
+  ) {}
 
   ngOnInit() {
     this.options = {
       allowedExtensions: ['jpg', 'jpeg'],
       maxUploads: 1,
-      maxSize: 3145728 // 3 MB
+      maxSize: 3145728, // 3 MB
     };
   }
 
@@ -57,11 +67,15 @@ export class CoverUploadComponent implements OnInit {
   private uploadPicture() {
     const url = 'api/v3/users/me/cover-image';
     const timestamp = new Date().getTime();
-    const signature = this.accesTokenService.getTokenSignature(url, 'POST', timestamp);
+    const signature = this.accesTokenService.getTokenSignature(
+      url,
+      'POST',
+      timestamp
+    );
     const headers = {
       [TOKEN_AUTHORIZATION_HEADER_NAME]: `Bearer ${this.accesTokenService.accessToken}`,
       [TOKEN_SIGNATURE_HEADER_NAME]: signature,
-      [TOKEN_TIMESTAMP_HEADER_NAME]: timestamp.toString()
+      [TOKEN_TIMESTAMP_HEADER_NAME]: timestamp.toString(),
     };
 
     const uploadinput: UploadInput = {
@@ -70,7 +84,7 @@ export class CoverUploadComponent implements OnInit {
       method: 'POST',
       fieldName: 'image',
       headers,
-      file: this.file
+      file: this.file,
     };
     this.uploadCoverInput.emit(uploadinput);
   }
@@ -78,7 +92,7 @@ export class CoverUploadComponent implements OnInit {
   private removeFromQueue(output) {
     this.uploadCoverInput.emit({
       type: 'remove',
-      id: output.file.id
+      id: output.file.id,
     });
     this.file = null;
   }
@@ -87,8 +101,10 @@ export class CoverUploadComponent implements OnInit {
     if (output.file.progress.data.responseStatus === 204) {
       this.userService.user.setCoverImageUrl(<string>output.file.preview);
     } else {
-      this.errorsService.i18nError('serverError', output.file.response.message ? output.file.response.message : '');
+      this.errorsService.i18nError(
+        'serverError',
+        output.file.response.message ? output.file.response.message : ''
+      );
     }
   }
-
 }

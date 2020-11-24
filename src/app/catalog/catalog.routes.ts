@@ -9,22 +9,31 @@ import { NgxPermissionsGuard } from 'ngx-permissions';
 import { PERMISSIONS } from '../core/user/user';
 import { isEmpty } from 'lodash-es';
 
-export function isNormalCatalogPermissions(rejectedPermissionName: string, route: ActivatedRouteSnapshot) {
+export function isNormalCatalogPermissions(
+  rejectedPermissionName: string,
+  route: ActivatedRouteSnapshot
+) {
   if (isEmpty(route.params)) {
     return '/pro/catalog/list';
   } else {
     return {
-      navigationCommands: ['/pro/catalog/list', route.params]
+      navigationCommands: ['/pro/catalog/list', route.params],
     };
   }
 }
 
-export function isNormalCheckoutPermissions(rejectedPermissionName: string, route: ActivatedRouteSnapshot) {
+export function isNormalCheckoutPermissions(
+  rejectedPermissionName: string,
+  route: ActivatedRouteSnapshot
+) {
   if (!route.params.itemId) {
     return '/pro/catalog/checkout';
   }
   return {
-    navigationCommands: ['/pro/catalog/checkout/', { itemId: route.params.itemId }]
+    navigationCommands: [
+      '/pro/catalog/checkout/',
+      { itemId: route.params.itemId },
+    ],
   };
 }
 
@@ -37,7 +46,7 @@ export const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'list'
+        redirectTo: 'list',
       },
       {
         path: 'list',
@@ -48,10 +57,10 @@ export const routes: Routes = [
           permissions: {
             except: PERMISSIONS.professional,
             redirectTo: {
-              isProfessional: isNormalCatalogPermissions
-            }
-          }
-        }
+              isProfessional: isNormalCatalogPermissions,
+            },
+          },
+        },
       },
       {
         path: 'checkout',
@@ -62,12 +71,12 @@ export const routes: Routes = [
           permissions: {
             except: PERMISSIONS.professional,
             redirectTo: {
-              isProfessional: isNormalCheckoutPermissions
-            }
-          }
-        }
+              isProfessional: isNormalCheckoutPermissions,
+            },
+          },
+        },
       },
-    ]
+    ],
   },
 ];
 
@@ -75,8 +84,7 @@ export const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class CatalogRoutingModule {
-}
+export class CatalogRoutingModule {}
 
 export const catalogRoutedComponents = [
   CatalogComponent,

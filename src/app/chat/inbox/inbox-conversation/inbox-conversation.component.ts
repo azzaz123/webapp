@@ -6,37 +6,44 @@ import { ThirdVoiceDropPriceComponent } from '../../message/third-voice-drop-pri
 import { ThirdVoiceReviewComponent } from '../../message/third-voice-review';
 import { includes } from 'lodash-es';
 
+import { CalendarSpec } from 'moment';
+
 @Component({
   selector: 'tsl-inbox-conversation',
   templateUrl: './inbox-conversation.component.html',
-  styleUrls: ['./inbox-conversation.component.scss']
+  styleUrls: ['./inbox-conversation.component.scss'],
 })
 export class InboxConversationComponent {
-
   @Input() conversation: InboxConversation;
   @Input() archiveConversation = false;
 
   public unreadCounterDisplayLimit = 99;
-  public momentConfig: any = {
+  public momentConfig: CalendarSpec = {
     lastDay: '[Yesterday]',
     sameDay: 'HH:mm',
     nextDay: 'ddd',
     lastWeek: 'D MMM.',
     nextWeek: 'ddd',
-    sameElse: 'D MMM.'
+    sameElse: 'D MMM.',
   };
 
-  constructor(private inboxConversationService: InboxConversationService, private i18n: I18nService) {
-  }
+  constructor(
+    private inboxConversationService: InboxConversationService,
+    private i18n: I18nService
+  ) {}
 
   public dateIsThisYear(): boolean {
     return this.conversation && this.conversation.modifiedDate
-      ? this.conversation.modifiedDate.getFullYear() === new Date().getFullYear() : false;
+      ? this.conversation.modifiedDate.getFullYear() ===
+          new Date().getFullYear()
+      : false;
   }
 
   public onClickArchiveConversation(): void {
     this.inboxConversationService.sendReadSignal(this.conversation);
-    this.inboxConversationService.archive$(this.conversation).subscribe(() => this.conversation = null);
+    this.inboxConversationService
+      .archive$(this.conversation)
+      .subscribe(() => (this.conversation = null));
   }
 
   public isText(inboxMessage: InboxMessage): boolean {
@@ -44,11 +51,17 @@ export class InboxConversationComponent {
   }
 
   public isThirdVoiceDropPrice(messageType: MessageType): boolean {
-    return includes(ThirdVoiceDropPriceComponent.ALLOW_MESSAGES_TYPES, messageType);
+    return includes(
+      ThirdVoiceDropPriceComponent.ALLOW_MESSAGES_TYPES,
+      messageType
+    );
   }
 
   public isThirdVoiceReview(messageType: MessageType): boolean {
-    return includes(ThirdVoiceReviewComponent.ALLOW_MESSAGES_TYPES, messageType);
+    return includes(
+      ThirdVoiceReviewComponent.ALLOW_MESSAGES_TYPES,
+      messageType
+    );
   }
 
   public getThirdVoiceTranslation(inboxMessage: InboxMessage): string {

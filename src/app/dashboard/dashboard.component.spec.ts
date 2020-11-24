@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -20,7 +19,7 @@ import {
   FeatureFlagServiceMock,
   InboxConversationServiceMock,
   InboxServiceMock,
-  LoggedGuardServiceMock
+  LoggedGuardServiceMock,
 } from '../../tests';
 import { InboxConversationService, InboxService } from '../chat/service';
 import { InboxConversation } from '../chat/model';
@@ -46,39 +45,41 @@ describe('DashboardComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         ChatModule,
-        RouterTestingModule.withRoutes([{
-          path: 'chat',
-          component: ChatComponent
-        }])
+        RouterTestingModule.withRoutes([
+          {
+            path: 'chat',
+            component: ChatComponent,
+          },
+        ]),
       ],
-      declarations: [
-        DashboardComponent
-      ],
+      declarations: [DashboardComponent],
       providers: [
         EventService,
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
         { provide: InboxService, useClass: InboxServiceMock },
-        { provide: InboxConversationService, useClass: InboxConversationServiceMock },
+        {
+          provide: InboxConversationService,
+          useClass: InboxConversationServiceMock,
+        },
         { provide: LoggedGuard, useClass: LoggedGuardServiceMock },
         { provide: CallsService, useClass: CallsServiceMock },
         { provide: RealTimeService, useClass: RealTimeServiceMock },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DashboardComponent);
     component = fixture.componentInstance;
-    callService = TestBed.get(CallsService);
-    trackingService = TestBed.get(TrackingService);
-    eventService = TestBed.get(EventService);
-    inboxService = TestBed.get(InboxService);
-    inboxConversationService = TestBed.get(InboxConversationService);
-    router = TestBed.get(Router);
-    realTimeService = TestBed.get(RealTimeService);
+    callService = TestBed.inject(CallsService);
+    trackingService = TestBed.inject(TrackingService);
+    eventService = TestBed.inject(EventService);
+    inboxService = TestBed.inject(InboxService);
+    inboxConversationService = TestBed.inject(InboxConversationService);
+    router = TestBed.inject(Router);
+    realTimeService = TestBed.inject(RealTimeService);
     fixture.detectChanges();
 
     // Prevent console warning when redirecting outside ngZone
@@ -90,7 +91,6 @@ describe('DashboardComponent', () => {
   }));
 
   describe('ngOnInit', () => {
-
     it('should call methods', () => {
       spyOn<any>(component, 'getData');
       spyOn<any>(component, 'getTotals');
@@ -116,7 +116,7 @@ describe('DashboardComponent', () => {
     const CONVERSATIONS: InboxConversation[] = createInboxConversationsArray(4);
 
     beforeEach(() => {
-      spyOn(callService, 'getPage').and.returnValue(observableOf(CALLS));
+      spyOn(callService, 'getPage').and.returnValue(of(CALLS));
       spyOn(trackingService, 'track');
       inboxConversationService.conversations = CONVERSATIONS;
 
@@ -133,21 +133,26 @@ describe('DashboardComponent', () => {
     });
 
     it('should track the ConversationListActiveLoaded event', () => {
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CONVERSATION_LIST_ACTIVE_LOADED);
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.CONVERSATION_LIST_ACTIVE_LOADED
+      );
     });
 
     it('should track the PhoneLeadListActiveLoaded event', () => {
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PHONE_LEAD_LIST_ACTIVE_LOADED);
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.PHONE_LEAD_LIST_ACTIVE_LOADED
+      );
     });
   });
 
   describe('getTotals', () => {
-
     beforeEach(() => {
-      spyOn(callService, 'getTotals').and.returnValue(observableOf({
-        calls: 6,
-        archived: 9
-      }));
+      spyOn(callService, 'getTotals').and.returnValue(
+        of({
+          calls: 6,
+          archived: 9,
+        })
+      );
       component.conversations = createInboxConversationsArray(3);
 
       component['getTotals']();
@@ -172,7 +177,9 @@ describe('DashboardComponent', () => {
 
       component.trackPhoneLeadOpened();
 
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PHONE_LEAD_OPENED);
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.PHONE_LEAD_OPENED
+      );
     });
   });
 
@@ -180,12 +187,19 @@ describe('DashboardComponent', () => {
     it('should navigate to chat and open conversation', () => {
       const spy = spyOn(router, 'navigateByUrl');
       spyOn(inboxConversationService, 'openConversation');
-      const conversation = createInboxConversationsArray(1, 'conversationId')[0];
+      const conversation = createInboxConversationsArray(
+        1,
+        'conversationId'
+      )[0];
 
       component.openConversation(conversation);
 
-      expect(inboxConversationService.openConversation).toHaveBeenCalledTimes(1);
-      expect(spy.calls.first().args[0]).toEqual(`/chat?conversationId=${conversation.id}`);
+      expect(inboxConversationService.openConversation).toHaveBeenCalledTimes(
+        1
+      );
+      expect(spy.calls.first().args[0]).toEqual(
+        `/chat?conversationId=${conversation.id}`
+      );
     });
   });
 

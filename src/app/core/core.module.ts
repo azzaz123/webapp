@@ -1,4 +1,9 @@
-import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
+import {
+  ModuleWithProviders,
+  NgModule,
+  Optional,
+  SkipSelf,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoggedGuard } from './user/logged.guard';
 import { CookieModule } from 'ngx-cookie';
@@ -13,17 +18,19 @@ import { TutorialService } from './tutorial/tutorial.service';
 import { AccessTokenService } from './http/access-token.service';
 import { ConversationModule } from './conversation/conversation.module';
 import { MessageService } from '../chat/service/message.service';
-import { NotificationService } from './notification/notification.service';
+import { DesktopNotificationsService } from './desktop-notifications/desktop-notifications.service';
 import { PaymentService } from './payments/payment.service';
-import { WindowRef } from './window/window.service';
 import { XmppService } from './xmpp/xmpp.service';
-import { PushNotificationsModule } from 'ng-push';
 import { ReviewService } from './review/review.service';
 import { ConnectionService } from './connection/connection.service';
 import { RealTimeService } from './message/real-time.service';
 import { ProfileModule } from './profile/profile.module';
 import { ProfileService } from './profile/profile.service';
-import { BlockUserService, BlockUserXmppService, InboxService } from '../chat/service';
+import {
+  BlockUserService,
+  BlockUserXmppService,
+  InboxService,
+} from '../chat/service';
 import { StripeService } from './stripe/stripe.service';
 import { SubscriptionsService } from './subscriptions/subscriptions.service';
 import { MobileBlockerModule } from './mobile-blocker/mobile-blocker.module';
@@ -40,9 +47,8 @@ import { InvoiceService } from './invoice/invoice.service';
     ItemModule,
     TrackingModule,
     ConversationModule.forRoot(),
-    PushNotificationsModule,
     ProfileModule,
-    MobileBlockerModule
+    MobileBlockerModule,
   ],
   exports: [
     CommonModule,
@@ -50,11 +56,10 @@ import { InvoiceService } from './invoice/invoice.service';
     ItemModule,
     TrackingModule,
     ProfileModule,
-    MobileBlockerModule
-  ]
+    MobileBlockerModule,
+  ],
 })
 export class CoreModule {
-
   static forRoot(): ModuleWithProviders<CoreModule> {
     return {
       ngModule: CoreModule,
@@ -67,9 +72,8 @@ export class CoreModule {
         TutorialService,
         AccessTokenService,
         MessageService,
-        NotificationService,
+        DesktopNotificationsService,
         PaymentService,
-        WindowRef,
         XmppService,
         RealTimeService,
         InboxService,
@@ -83,16 +87,16 @@ export class CoreModule {
         SubscriptionsService,
         DidomiService,
         TrustAndSafetyService,
-        InvoiceService
-      ]
+        InvoiceService,
+      ],
     };
   }
 
-  constructor (@Optional() @SkipSelf() parentModule: CoreModule) {
+  constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
     if (parentModule) {
       throw new Error(
-        'CoreModule is already loaded. Import it in the AppModule only');
+        'CoreModule is already loaded. Import it in the AppModule only'
+      );
     }
   }
-
 }

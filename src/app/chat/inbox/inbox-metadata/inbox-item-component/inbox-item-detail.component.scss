@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 :host {
   display: flex;
@@ -9,7 +9,9 @@
 
   &.faded {
     pointer-events: none;
-    .image-overlay, .actions-block, .card-block {
+    .image-overlay,
+    .actions-block,
+    .card-block {
       opacity: 0.5;
     }
   }
@@ -33,7 +35,7 @@
       @include square(40px);
       border: solid 2px rgba(207, 216, 220, 0.5);
       border-radius: 8px;
-      transition: all .2s ease;
+      transition: all 0.2s ease;
       position: absolute;
       top: 12px;
       right: 12px;
@@ -44,20 +46,23 @@
       background-color: white;
       padding: $spacing-xxs $spacing-s $spacing-xxs;
 
-      mat-icon ::ng-deep {
+      tsl-svg-icon ::ng-deep {
         float: left;
 
-        svg g g, svg path {
+        svg g g,
+        svg path {
           fill: $blue-grey-2;
         }
       }
 
-      &:hover, &.active {
+      &:hover,
+      &.active {
         background: $blue-grey-2;
         border-color: transparent;
 
-        mat-icon ::ng-deep {
-          svg g g, svg path {
+        tsl-svg-icon ::ng-deep {
+          svg g g,
+          svg path {
             fill: $white;
           }
         }
@@ -71,7 +76,8 @@
       flex-direction: column;
       width: 100%;
 
-      tsl-item-sold, tsl-item-reserved {
+      tsl-item-sold,
+      tsl-item-reserved {
         align-self: center;
       }
     }
@@ -89,16 +95,14 @@
       width: calc(50% - 10px);
     }
 
-    ::ng-deep
-    .btn-reserve {
+    ::ng-deep .btn-reserve {
       font-size: $font-size-xs;
       padding-top: $spacing-xs;
       padding-bottom: $spacing-xs;
       width: 100%;
     }
 
-    ::ng-deep
-    .btn-sold {
+    ::ng-deep .btn-sold {
       font-size: $font-size-xs;
       padding-top: $spacing-xs;
       padding-bottom: $spacing-xs;
@@ -138,13 +142,18 @@
         line-height: $line-height-l;
         flex-grow: 0;
 
-        mat-icon {
+        tsl-svg-icon {
           height: 14px;
           width: 17px;
           margin: 0 $spacing-s;
           margin-right: $spacing-xxs;
           display: inline-flex;
           vertical-align: sub;
+
+          &::ng-deep svg {
+            width: 100%;
+            height: 100%;
+          }
         }
       }
     }

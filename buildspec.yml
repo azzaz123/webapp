@@ -26,7 +26,7 @@ phases:
   build:
     commands:
       # RUN cfn-lint ON CLOUDFORMATION TEMPLATE FILES
-      - docker run -v "$PWD":/code -w /code $ECR/cfn-lint:stable -t infrastructure/*/*.yaml
+      - docker run -v "$PWD":/code -w /code $ECR/cfn-lint:latest -t infrastructure/*/*.yaml
 
       # OBTAIN WORKING BRANCH FROM ENV VARIABLE
       - echo $BRANCH

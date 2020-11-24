@@ -11,10 +11,9 @@ describe('ItemSoldComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ItemSoldComponent ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+      declarations: [ItemSoldComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

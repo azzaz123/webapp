@@ -1,6 +1,11 @@
-
-import {throwError as observableThrowError, of, throwError } from 'rxjs';
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { throwError, of } from 'rxjs';
+import {
+  async,
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 
 import { ProfileProBillingComponent } from './profile-pro-billing.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -9,7 +14,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeleteInfoConfirmationModalComponent } from './delete-info-confirmation-modal/delete-info-confirmation-modal.component';
 import { PaymentService } from '../../core/payments/payment.service';
 import { ErrorsService } from '../../core/errors/errors.service';
-import { BILLING_INFO_RESPONSE, BILLING_INFO_RESPONSE_LEGAL } from '../../../tests/payments.fixtures.spec';
+import {
+  BILLING_INFO_RESPONSE,
+  BILLING_INFO_RESPONSE_LEGAL,
+} from '../../../tests/payments.fixtures.spec';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
 import { EventService } from 'app/core/event/event.service';
 import { By } from '@angular/platform-browser';
@@ -25,14 +33,13 @@ describe('ProfileProBillingComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule
-      ],
+      imports: [ReactiveFormsModule],
       declarations: [ProfileProBillingComponent],
       providers: [
         EventService,
         {
-          provide: PaymentService, useValue: {
+          provide: PaymentService,
+          useValue: {
             updateBillingInfo() {
               return of({});
             },
@@ -41,48 +48,47 @@ describe('ProfileProBillingComponent', () => {
             },
             deleteBillingInfo() {
               return of({});
-            }
-          }
+            },
+          },
         },
         {
-          provide: ErrorsService, useValue: {
-            show() {
-            },
-            i18nSuccess() {
-            },
-            i18nError() {
-            }
-          }
+          provide: ErrorsService,
+          useValue: {
+            show() {},
+            i18nSuccess() {},
+            i18nError() {},
+          },
         },
         {
-          provide: NgbModal, useValue: {
+          provide: NgbModal,
+          useValue: {
             open() {
               return {
-                result: Promise.resolve(true)
+                result: Promise.resolve(true),
               };
-            }
-          }
+            },
+          },
         },
         {
-          provide: ProfileFormComponent, useValue: {
-            initFormControl() { },
-            canExit() { }
-          }
-        }
+          provide: ProfileFormComponent,
+          useValue: {
+            initFormControl() {},
+            canExit() {},
+          },
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
-    modalService = TestBed.get(NgbModal);
+    modalService = TestBed.inject(NgbModal);
     fixture = TestBed.createComponent(ProfileProBillingComponent);
     component = fixture.componentInstance;
-    paymentService = TestBed.get(PaymentService);
-    errorsService = TestBed.get(ErrorsService);
-    eventService = TestBed.get(EventService);
-    component.formComponent = TestBed.get(ProfileFormComponent);
+    paymentService = TestBed.inject(PaymentService);
+    errorsService = TestBed.inject(ErrorsService);
+    eventService = TestBed.inject(EventService);
+    component.formComponent = TestBed.inject(ProfileFormComponent);
     HTMLelement = fixture.debugElement;
     fixture.detectChanges();
   });
@@ -100,7 +106,7 @@ describe('ProfileProBillingComponent', () => {
 
     it('should set form value with billing info', () => {
       expect(component.billingForm.getRawValue()).toEqual({
-        ...BILLING_INFO_RESPONSE
+        ...BILLING_INFO_RESPONSE,
       });
     });
   });
@@ -114,18 +120,26 @@ describe('ProfileProBillingComponent', () => {
       it('should update billing info and should put false isnewBillingInfoForm boolean', () => {
         spyOn(paymentService, 'updateBillingInfo').and.callThrough();
         spyOn(component.billingInfoFormSaved, 'emit').and.callThrough();
-        spyOn(paymentService, 'getBillingInfo').and.returnValue(of(BILLING_INFO_RESPONSE_LEGAL));
+        spyOn(paymentService, 'getBillingInfo').and.returnValue(
+          of(BILLING_INFO_RESPONSE_LEGAL)
+        );
 
         component.onSubmit();
 
-        expect(paymentService.updateBillingInfo).toHaveBeenCalledWith(component.billingForm.getRawValue());
+        expect(paymentService.updateBillingInfo).toHaveBeenCalledWith(
+          component.billingForm.getRawValue()
+        );
         expect(component.isNewBillingInfoForm).toBe(false);
-        expect(component.billingInfoFormSaved.emit).toHaveBeenCalledWith(component.billingForm);
+        expect(component.billingInfoFormSaved.emit).toHaveBeenCalledWith(
+          component.billingForm
+        );
       });
 
       it('should show error if call fails', () => {
         spyOn(errorsService, 'show');
-        spyOn(paymentService, 'updateBillingInfo').and.returnValue(observableThrowError('error'));
+        spyOn(paymentService, 'updateBillingInfo').and.returnValue(
+          throwError('error')
+        );
 
         component.onSubmit();
 
@@ -144,7 +158,7 @@ describe('ProfileProBillingComponent', () => {
           street: 'street',
           surname: 'surname',
           id: '123',
-          type: 'legal'
+          type: 'legal',
         });
 
         HTMLelement.query(By.css('form')).triggerEventHandler('submit', null);
@@ -163,9 +177,9 @@ describe('ProfileProBillingComponent', () => {
           surname: 'surname',
           id: '123',
           type: 'legal',
-          country: 'catalonia'
+          country: 'catalonia',
         });
-        
+
         HTMLelement.queryAll(By.css('tsl-button'))[0].nativeElement.click();
 
         expect(component.billingForm.valid).toBeFalsy();
@@ -182,13 +196,15 @@ describe('ProfileProBillingComponent', () => {
 
         component.deleteBillingInfo();
 
-        expect(modalService.open).toHaveBeenCalledWith(DeleteInfoConfirmationModalComponent);
+        expect(modalService.open).toHaveBeenCalledWith(
+          DeleteInfoConfirmationModalComponent
+        );
       });
 
       describe('if user confirm modal', () => {
         beforeEach(fakeAsync(() => {
           spyOn(modalService, 'open').and.returnValue({
-            result: Promise.resolve(true)
+            result: Promise.resolve(true),
           });
         }));
 
@@ -208,12 +224,16 @@ describe('ProfileProBillingComponent', () => {
           component.deleteBillingInfo();
           tick();
 
-          expect(errorsService.i18nSuccess).toHaveBeenCalledWith('deleteBillingInfoSuccess');
+          expect(errorsService.i18nSuccess).toHaveBeenCalledWith(
+            'deleteBillingInfoSuccess'
+          );
         }));
 
         it('all reset form and set true isnewbillinginfo boolean', fakeAsync(() => {
           spyOn(component, 'initForm').and.callThrough();
-          spyOn(paymentService, 'getBillingInfo').and.returnValue(throwError('404'));
+          spyOn(paymentService, 'getBillingInfo').and.returnValue(
+            throwError('404')
+          );
 
           component.deleteBillingInfo();
           tick();
@@ -223,19 +243,23 @@ describe('ProfileProBillingComponent', () => {
         }));
 
         it('should show an 18n error message if the action has an error', fakeAsync(() => {
-          spyOn(paymentService, 'deleteBillingInfo').and.returnValue(observableThrowError(''));
+          spyOn(paymentService, 'deleteBillingInfo').and.returnValue(
+            throwError('')
+          );
           spyOn(errorsService, 'i18nError');
 
           component.deleteBillingInfo();
           tick();
 
-          expect(errorsService.i18nError).toHaveBeenCalledWith('deleteBillingInfoError');
+          expect(errorsService.i18nError).toHaveBeenCalledWith(
+            'deleteBillingInfoError'
+          );
         }));
       });
 
       it('should not enter inside modal', fakeAsync(() => {
         spyOn(modalService, 'open').and.returnValue({
-          result: Promise.resolve()
+          result: Promise.resolve(),
         });
         spyOn(paymentService, 'deleteBillingInfo').and.callThrough();
 

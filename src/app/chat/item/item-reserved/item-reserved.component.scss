@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 .reserved {
   display: flex;
@@ -10,7 +10,7 @@
   height: 38px;
   text-align: center;
   padding: 0 $spacing-ml;
-  mat-icon {
+  tsl-svg-icon {
     width: 15px;
     margin-right: $spacing-s;
   }

@@ -9,11 +9,11 @@ const ONE_DAY_IN_MS = ONE_HOUR_IN_MS * 24;
 const ELEVENTH_OF_JUNE_OF_2020_IN_MS = 1591867791429;
 
 @Component({
-  template: '{{timestamp | dateCalendar:momentConfig}}'
+  template: '{{timestamp | dateCalendar:momentConfig}}',
 })
 class MockComponent {
-  public timestamp;
-  public momentConfig;
+  public timestamp: number;
+  public momentConfig: moment.CalendarSpec;
 }
 
 describe('DateCalendarPipe', () => {
@@ -22,10 +22,7 @@ describe('DateCalendarPipe', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        MockComponent,
-        DateCalendarPipe
-      ]
+      declarations: [MockComponent, DateCalendarPipe],
     });
     fixture = TestBed.createComponent(MockComponent);
     component = fixture.componentInstance;
@@ -35,7 +32,7 @@ describe('DateCalendarPipe', () => {
       nextDay: '[Tomorrow]',
       lastWeek: 'dddd - HH:mm',
       nextWeek: 'dddd',
-      sameElse: 'MMM DD, YYYY'
+      sameElse: 'MMM DD, YYYY',
     };
 
     spyOn(Date, 'now').and.returnValue(ELEVENTH_OF_JUNE_OF_2020_IN_MS);
@@ -82,7 +79,6 @@ describe('DateCalendarPipe', () => {
     expect(shownText).toBe('Tomorrow');
   });
 
-
   it('should display "Day - hours:minutes" when date was from last week', () => {
     let shownText: string;
     const pastSaturdayInMs = ELEVENTH_OF_JUNE_OF_2020_IN_MS - ONE_DAY_IN_MS * 5;
@@ -110,7 +106,8 @@ describe('DateCalendarPipe', () => {
 
   it('should display "month name day number, year" when date is from same year', () => {
     let shownText: string;
-    const pastTwelvethOfApril = ELEVENTH_OF_JUNE_OF_2020_IN_MS - ONE_DAY_IN_MS * 60;
+    const pastTwelvethOfApril =
+      ELEVENTH_OF_JUNE_OF_2020_IN_MS - ONE_DAY_IN_MS * 60;
 
     component.timestamp = pastTwelvethOfApril;
     fixture.detectChanges();

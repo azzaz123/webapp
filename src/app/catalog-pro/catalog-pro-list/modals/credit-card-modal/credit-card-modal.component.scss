@@ -1,15 +1,14 @@
-@import "~style/common";
+@import '~style/common';
 
 .modal-body .modal-close {
   @include square(12px);
   top: 10px;
   right: 10px;
-  mat-icon {
+  tsl-svg-icon {
     @include square(12px);
     line-height: initial;
   }
 }
-
 
 #credit-card {
   width: 330px;
@@ -20,7 +19,8 @@
   color: $white;
   text-shadow: 0 2px 4px rgba(37, 50, 56, 0.15);
   position: relative;
-  .date, .number {
+  .date,
+  .number {
     position: absolute;
     bottom: 30px;
   }
@@ -57,7 +57,8 @@ tsl-stripe-card-selection {
 }
 
 .Cart__NewCard {
-  &--add, &--used {
+  &--add,
+  &--used {
     margin-bottom: $spacing-s;
     font-size: $font-size-s;
     color: $walla-main;

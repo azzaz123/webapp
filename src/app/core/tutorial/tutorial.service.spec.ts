@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { TestBed, inject } from '@angular/core/testing';
 
 import { TutorialService } from './tutorial.service';
@@ -7,7 +6,6 @@ import { UserService } from '../user/user.service';
 import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
 
 describe('TutorialService', () => {
-
   let service: TutorialService;
 
   beforeEach(() => {
@@ -15,19 +13,20 @@ describe('TutorialService', () => {
       providers: [
         TutorialService,
         {
-          provide: UserService, useValue: {
-          user: MOCK_USER,
-          me() {
-            return observableOf(MOCK_USER);
+          provide: UserService,
+          useValue: {
+            user: MOCK_USER,
+            me() {
+              return of(MOCK_USER);
+            },
+            isProfessional() {
+              return of(true);
+            },
           },
-          isProfessional() {
-            return observableOf(true);
-          }
-        }
-        }
-      ]
+        },
+      ],
     });
-    service = TestBed.get(TutorialService);
+    service = TestBed.inject(TutorialService);
   });
 
   describe('nextStep', () => {
@@ -65,7 +64,10 @@ describe('TutorialService', () => {
 
       service.setDisplayed();
 
-      expect(localStorage.setItem).toHaveBeenCalledWith(USER_ID + '-tutorial', 'true');
+      expect(localStorage.setItem).toHaveBeenCalledWith(
+        USER_ID + '-tutorial',
+        'true'
+      );
     });
   });
 

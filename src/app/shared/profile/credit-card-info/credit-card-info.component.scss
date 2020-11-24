@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 $card-width: 300px;
 $card-height: 88px;
@@ -57,7 +57,8 @@ $card-height: 88px;
         text-decoration: underline;
       }
     }
-    &-change, &-delete {
+    &-change,
+    &-delete {
       width: 50%;
       cursor: pointer;
       &:hover {

@@ -5,17 +5,27 @@ import {
   Output,
   Input,
   ChangeDetectorRef,
-  SimpleChanges, AfterViewInit, OnChanges, OnDestroy
+  SimpleChanges,
+  AfterViewInit,
+  OnChanges,
+  OnDestroy,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CartBase } from '../../catalog/cart/cart-base';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { FinancialCard } from '../../profile/credit-card-info/financial-card';
-import { PaymentMethodResponse, SetupIntentResponse, SetupIntent } from '../../../core/payments/payment.interface';
+import {
+  PaymentMethodResponse,
+  SetupIntentResponse,
+  SetupIntent,
+} from '../../../core/payments/payment.interface';
 import { ToastService } from '../../../layout/toast/toast.service';
 import { Tier } from '../../../core/subscriptions/subscriptions.interface';
-import { TERMS_AND_CONDITIONS_URL, PRIVACY_POLICY_URL } from '../../../core/constants';
+import {
+  TERMS_AND_CONDITIONS_URL,
+  PRIVACY_POLICY_URL,
+} from '../../../core/constants';
 
 @Component({
   selector: 'tsl-stripe-card-element',
@@ -29,12 +39,12 @@ import { TERMS_AND_CONDITIONS_URL, PRIVACY_POLICY_URL } from '../../../core/cons
     },
   ],
 })
-export class StripeCardElementComponent implements ControlValueAccessor, AfterViewInit, OnChanges, OnDestroy {
-
+export class StripeCardElementComponent
+  implements ControlValueAccessor, AfterViewInit, OnChanges, OnDestroy {
   private _model = false;
   public financialCard: FinancialCard;
   public hasFinancialCard: boolean;
-  public card: any;
+  public card: stripe.elements.Element;
   public termsAndConditionsURL = TERMS_AND_CONDITIONS_URL;
   public policyPrivacyURL = PRIVACY_POLICY_URL;
   @Input() type: string;
@@ -50,8 +60,12 @@ export class StripeCardElementComponent implements ControlValueAccessor, AfterVi
   @Output() hasCard: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() stripeCard: EventEmitter<any> = new EventEmitter<any>();
   @Output() stripeCardToken: EventEmitter<string> = new EventEmitter<string>();
-  @Output() onStripeCardCreate: EventEmitter<PaymentMethodResponse> = new EventEmitter();
-  @Output() onStripeSetDefaultCard: EventEmitter<SetupIntent> = new EventEmitter();
+  @Output() onStripeCardCreate: EventEmitter<
+    PaymentMethodResponse
+  > = new EventEmitter();
+  @Output() onStripeSetDefaultCard: EventEmitter<
+    SetupIntent
+  > = new EventEmitter();
   @Output() onClickUseSavedCard = new EventEmitter();
   @Output() onFocusCard = new EventEmitter<boolean>();
 
@@ -61,11 +75,12 @@ export class StripeCardElementComponent implements ControlValueAccessor, AfterVi
   private onModelChange: any = () => {};
   private onTouched: any = () => {};
 
-  constructor(private cd: ChangeDetectorRef,
-              private i18n: I18nService,
-              private stripeService: StripeService,
-              private toastService: ToastService) {
-  }
+  constructor(
+    private cd: ChangeDetectorRef,
+    private i18n: I18nService,
+    private stripeService: StripeService,
+    private toastService: ToastService
+  ) {}
 
   ngAfterViewInit() {
     this.initStripe();
@@ -94,7 +109,6 @@ export class StripeCardElementComponent implements ControlValueAccessor, AfterVi
   }
 
   ngOnDestroy() {
-    this.card.removeEventListener('change', this.cardHandler);
     this.card.destroy();
   }
 
@@ -109,7 +123,7 @@ export class StripeCardElementComponent implements ControlValueAccessor, AfterVi
 
   private initStripe() {
     const elements = this.stripeService.lib.elements({
-      locale: this.i18n.locale
+      locale: this.i18n.locale,
     });
 
     const style = {
@@ -141,34 +155,40 @@ export class StripeCardElementComponent implements ControlValueAccessor, AfterVi
     const { token, error } = await this.stripeService.createToken(this.card);
 
     if (error) {
-      this.toastService.show({text:error.message, type:'error'});
+      this.toastService.show({ text: error.message, type: 'error' });
     } else {
-      this.stripeCardToken.emit(token);
+      this.stripeCardToken.emit(token.id);
     }
   }
 
   public createNewCard() {
     this.newLoading = true;
-    this.stripeService.createStripeCard(this.card).then((paymentMethod: PaymentMethodResponse) => {
-      if (paymentMethod) {
-        this.onStripeCardCreate.emit(paymentMethod);
-      } else {
-        this.newLoading = false;
-      }
-    }).catch(() => this.newLoading = false);
+    this.stripeService
+      .createStripeCard(this.card)
+      .then((paymentMethod: PaymentMethodResponse) => {
+        if (paymentMethod) {
+          this.onStripeCardCreate.emit(paymentMethod);
+        } else {
+          this.newLoading = false;
+        }
+      })
+      .catch(() => (this.newLoading = false));
   }
 
   public setDefaultCard() {
     this.newLoading = true;
     this.stripeService.getSetupIntent().subscribe((clientSecret: any) => {
-      this.stripeService.createDefaultCard(clientSecret.setup_intent, {card: this.card}).then((result: any) => {
-        this.newLoading = false;
-        if (result.setupIntent && result.setupIntent.payment_method) {
-          this.onStripeSetDefaultCard.emit(result.setupIntent);
-        } else {
-          this.error = result.error.message;
-        }
-      }).catch(() => this.newLoading = false);
+      this.stripeService
+        .createDefaultCard(clientSecret.setup_intent, { card: this.card })
+        .then((result: any) => {
+          this.newLoading = false;
+          if (result.setupIntent && result.setupIntent.payment_method) {
+            this.onStripeSetDefaultCard.emit(result.setupIntent);
+          } else {
+            this.error = result.error.message;
+          }
+        })
+        .catch(() => (this.newLoading = false));
     });
   }
 
@@ -197,5 +217,4 @@ export class StripeCardElementComponent implements ControlValueAccessor, AfterVi
   public clickUseSavedCard() {
     this.onClickUseSavedCard.emit(true);
   }
-
 }

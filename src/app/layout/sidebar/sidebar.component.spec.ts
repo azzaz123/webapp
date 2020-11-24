@@ -1,60 +1,85 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of, Observable } from 'rxjs';
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { SidebarComponent } from './sidebar.component';
 import { UserService } from '../../core/user/user.service';
-import { TutorialService } from '../../core/tutorial/tutorial.service';
 import { User } from '../../core/user/user';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { MessageService } from '../../chat/service/message.service';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { Router, Routes } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { RouterLinkDirectiveStub } from 'app/shared/router-link-directive-stub';
+import { By } from '@angular/platform-browser';
+
+@Component({
+  template: '',
+})
+export class MockComponent {}
+
+const routes: Routes = [
+  { path: 'profile', component: MockComponent },
+  { path: 'pro/dashboard', component: MockComponent },
+  { path: 'catalog/list', component: MockComponent },
+  { path: 'wallacoins', component: MockComponent },
+  { path: 'chat', component: MockComponent },
+  { path: 'favorites', component: MockComponent },
+  { path: 'reviews', component: MockComponent },
+  { path: 'pro/calls', component: MockComponent },
+  { path: 'pro/help', component: MockComponent },
+  { path: 'pro/stats', component: MockComponent },
+];
 
 describe('SidebarComponent', () => {
   let component: SidebarComponent;
   let fixture: ComponentFixture<SidebarComponent>;
   let userService: UserService;
+  let router: Router;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SidebarComponent],
+      declarations: [SidebarComponent, RouterLinkDirectiveStub, MockComponent],
       imports: [
-        NgxPermissionsModule.forRoot()
+        NgxPermissionsModule.forRoot(),
+        RouterTestingModule.withRoutes(routes),
       ],
       providers: [
-        TutorialService,
         {
-          provide: UserService, useValue: {
-          logout() {
+          provide: UserService,
+          useValue: {
+            logout() {},
+            me(): Observable<User> {
+              return of(MOCK_USER);
+            },
+            isProfessional() {
+              return of(true);
+            },
           },
-          me(): Observable<User> {
-            return observableOf(MOCK_USER);
-          },
-          isProfessional() {
-            return observableOf(true);
-          },
-          hasPerm() {
-            return observableOf(true);
-          }
-        },
         },
         {
-          provide: MessageService, useValue: {
-          totalUnreadMessages$: observableOf(1)
-        }
-        }
+          provide: MessageService,
+          useValue: {
+            totalUnreadMessages$: of(1),
+          },
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SidebarComponent);
     component = fixture.componentInstance;
-    userService = TestBed.get(UserService);
+    userService = TestBed.inject(UserService);
     spyOn(userService, 'me').and.callThrough();
+    router = TestBed.get(Router);
     fixture.detectChanges();
   });
 
@@ -74,33 +99,70 @@ describe('SidebarComponent', () => {
       expect(userService.isProfessional).toHaveBeenCalled();
       expect(component.isProfessional).toBe(true);
     });
+  });
 
-    it('should call hasPerm and set the attribute', () => {
-      spyOn(userService, 'hasPerm').and.callThrough();
+  describe('Sidebar icons', () => {
+    it('should be shown profile icon as "active" when is in a profile section', () => {
+      component.isProfile = true;
+      const element: HTMLElement = fixture.nativeElement.querySelector(
+        '#qa-sidebar-profile'
+      );
 
       component.ngOnInit();
+      fixture.detectChanges();
 
-      expect(userService.hasPerm).toHaveBeenCalledWith('coins');
-      expect(component.withCoins).toBe(true);
+      expect(element.className).toContain('active');
     });
+
+    it('should be shown profile icon as "active" when is in profile url route', fakeAsync(() => {
+      fixture.ngZone.run(() => {
+        component.isProfile = false;
+        router.navigate(['profile']);
+
+        tick();
+        var activeLinks = fixture.debugElement
+          .queryAll(By.css('.active'))
+          .map(
+            (element) =>
+              element.injector.get(
+                RouterLinkDirectiveStub
+              ) as RouterLinkDirectiveStub
+          );
+
+        expect(activeLinks.length).toBe(1);
+        expect(activeLinks[0].linkParams).toEqual(['/profile']);
+      });
+    }));
+
+    it('should be shown catalog icon as "active" when it is in a product section', () => {
+      component.isProducts = true;
+      const element: HTMLElement = fixture.nativeElement.querySelector(
+        '#qa-sidebar-catalog'
+      );
+
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      expect(element.className).toContain('active');
+    });
+
+    it('should be shown chat icon as "active" when is in chat url route', fakeAsync(() => {
+      fixture.ngZone.run(() => {
+        router.navigate(['chat']);
+
+        tick();
+        var activeLinks = fixture.debugElement
+          .queryAll(By.css('.active'))
+          .map(
+            (element) =>
+              element.injector.get(
+                RouterLinkDirectiveStub
+              ) as RouterLinkDirectiveStub
+          );
+
+        expect(activeLinks.length).toBe(1);
+        expect(activeLinks[0].linkParams).toEqual(['/chat']);
+      });
+    }));
   });
-
-  describe('logout', () => {
-    const preventDefault = jasmine.createSpy('preventDefault');
-    const event = {preventDefault: preventDefault};
-
-    beforeEach(() => {
-      spyOn(userService, 'logout');
-      component.logout(event);
-    });
-
-    it('should prevent event', () => {
-      expect(preventDefault).toHaveBeenCalled();
-    });
-
-    it('should logout', () => {
-      expect(userService.logout).toHaveBeenCalled();
-    });
-  });
-
 });

@@ -4,9 +4,13 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ItemService } from '../../../core/item/item.service';
-import { Observable, of } from 'rxjs';
-import { CONVERSATION_USERS, ITEM_ID, ITEM_SALE_PRICE, MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
-
+import { of } from 'rxjs';
+import {
+  CONVERSATION_USERS,
+  ITEM_ID,
+  ITEM_SALE_PRICE,
+  MOCK_ITEM,
+} from '../../../../tests/item.fixtures.spec';
 
 describe('SoldModalComponent', () => {
   let component: SoldModalComponent;
@@ -20,28 +24,28 @@ describe('SoldModalComponent', () => {
       providers: [
         NgbActiveModal,
         {
-          provide: ItemService, useValue: {
-          getConversationUsers() {
-            return of(CONVERSATION_USERS);
+          provide: ItemService,
+          useValue: {
+            getConversationUsers() {
+              return of(CONVERSATION_USERS);
+            },
+            soldOutside() {
+              return of({});
+            },
           },
-          soldOutside() {
-            return of({});
-          }
-        }
-        }
+        },
       ],
       declarations: [SoldModalComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SoldModalComponent);
     component = fixture.componentInstance;
     component.item = MOCK_ITEM;
-    itemService = TestBed.get(ItemService);
-    activeModal = TestBed.get(NgbActiveModal);
+    itemService = TestBed.inject(ItemService);
+    activeModal = TestBed.inject(NgbActiveModal);
     spyOn(itemService, 'getConversationUsers').and.callThrough();
     fixture.detectChanges();
   });
@@ -102,5 +106,4 @@ describe('SoldModalComponent', () => {
       expect(component.userToReview).toBe(undefined);
     });
   });
-
 });

@@ -7,12 +7,15 @@ import { CheckoutProComponent } from './checkout-pro/checkout-pro.component';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { isEmpty } from 'lodash-es';
 
-export function isProfessionalCatalogPermissions(rejectedPermissionName: string, route: ActivatedRouteSnapshot) {
+export function getRedirectToCatalogList(
+  rejectedPermissionName: string,
+  route: ActivatedRouteSnapshot
+) {
   if (isEmpty(route.params)) {
     return '/catalog/list';
   } else {
     return {
-      navigationCommands: ['/catalog/list', route.params]
+      navigationCommands: ['/catalog/list', route.params],
     };
   }
 }
@@ -25,7 +28,7 @@ export const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'list'
+        redirectTo: 'list',
       },
       {
         path: 'list',
@@ -35,12 +38,9 @@ export const routes: Routes = [
           isProducts: true,
           permissions: {
             only: PERMISSIONS.professional,
-            redirectTo: {
-              isNormal: isProfessionalCatalogPermissions,
-              isFeatured: isProfessionalCatalogPermissions
-            }
-          }
-        }
+            redirectTo: getRedirectToCatalogList,
+          },
+        },
       },
       {
         path: 'checkout',
@@ -50,9 +50,9 @@ export const routes: Routes = [
           isProducts: true,
           permissions: {
             only: PERMISSIONS.professional,
-            redirectTo: '/catalog/checkout'
-          }
-        }
+            redirectTo: '/catalog/checkout',
+          },
+        },
       },
       {
         path: 'checkout-extras',
@@ -62,22 +62,22 @@ export const routes: Routes = [
           isProducts: true,
           permissions: {
             only: PERMISSIONS.professional,
-            redirectTo: '/catalog/list'
-          }
-        }
-      }
-    ]
-  }
+            redirectTo: '/catalog/list',
+          },
+        },
+      },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class CatalogProRoutingModule { }
+export class CatalogProRoutingModule {}
 
 export const catalogProRoutedComponents = [
   CatalogProListComponent,
   CheckoutProComponent,
-  CheckoutExtrasProComponent
+  CheckoutExtrasProComponent,
 ];

@@ -19,23 +19,23 @@ describe('SelectedItemsComponent', () => {
       imports: [NoopAnimationsModule],
       providers: [
         {
-          provide: ItemService, useValue: {
+          provide: ItemService,
+          useValue: {
             selectedItems$: new ReplaySubject(),
             selectedItems: [],
             selectedAction: null,
-            deselectItems: () =>  {}
-          }
-        }
+            deselectItems: () => {},
+          },
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SelectedItemsComponent);
     component = fixture.componentInstance;
-    itemService = TestBed.get(ItemService);
+    itemService = TestBed.inject(ItemService);
   });
 
   describe('ngOnInit', () => {
@@ -48,7 +48,7 @@ describe('SelectedItemsComponent', () => {
 
       itemService.selectedItems$.next({
         id: anId,
-        action: 'selected'
+        action: 'selected',
       });
 
       expect(component.selectedItems).toEqual([ITEMS[0], ITEMS[1]]);
@@ -64,12 +64,11 @@ describe('SelectedItemsComponent', () => {
 
       itemService.selectedItems$.next({
         id: anId,
-        action: 'selected'
+        action: 'selected',
       });
 
       expect(component.disableFeatureOption).toBe(true);
     });
-
   });
 
   describe('deselect', () => {
@@ -83,12 +82,12 @@ describe('SelectedItemsComponent', () => {
 
     it('should set as not selected all items', () => {
       const mockItems = createItemsArray(5);
-      mockItems.forEach(i => i.selected = true);
+      mockItems.forEach((i) => (i.selected = true));
       component.items = mockItems;
 
       component.deselect();
 
-      mockItems.forEach(i => {
+      mockItems.forEach((i) => {
         expect(i.selected).toBeFalsy();
       });
     });
@@ -120,5 +119,4 @@ describe('SelectedItemsComponent', () => {
       expect(component.selectedAction.emit).toHaveBeenCalledWith(action);
     });
   });
-
 });

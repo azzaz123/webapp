@@ -1,18 +1,23 @@
-import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+} from '@angular/core/testing';
 
 import { WallacoinsComponent } from './wallacoins.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { CustomCurrencyPipe } from '../shared/pipes';
 import { PaymentService } from '../core/payments/payment.service';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PerksModel } from '../core/payments/payment.model';
 import {
   createPerksModelFixture,
   createWallacoinsPacksFixture,
-  WALLACREDITS_PACKS_RESPONSE
+  WALLACREDITS_PACKS_RESPONSE,
 } from '../../tests/payments.fixtures.spec';
 import { CREDITS_PACK_ID, Pack } from '../core/payments/pack';
 import { BuyWallacoinsModalComponent } from './buy-wallacoins-modal/buy-wallacoins-modal.component';
@@ -46,75 +51,79 @@ describe('WallacoinsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WallacoinsComponent, CustomCurrencyPipe ],
+      declarations: [WallacoinsComponent, CustomCurrencyPipe],
       providers: [
         DecimalPipe,
         EventService,
         UserService,
-        {provide: TrackingService, useClass: MockTrackingService},
+        { provide: TrackingService, useClass: MockTrackingService },
         {
-          provide: PaymentService, useValue: {
-          getCreditsPacks() {
-            return of(CREDITS_PACKS);
+          provide: PaymentService,
+          useValue: {
+            getCreditsPacks() {
+              return of(CREDITS_PACKS);
+            },
+            getPerks() {
+              return of(PERKS);
+            },
           },
-          getPerks() {
-            return of(PERKS);
-          }
-        }
         },
         {
-          provide: NgbModal, useValue: {
+          provide: NgbModal,
+          useValue: {
             open() {
               return {
                 componentInstance: {},
-                result: Promise.resolve('success')
-              }
-            }
-        }
+                result: Promise.resolve('success'),
+              };
+            },
+          },
         },
         {
-          provide: Router, useValue: {
-            navigate() {
-            }
-        }
+          provide: Router,
+          useValue: {
+            navigate() {},
+          },
         },
         {
-          provide: ActivatedRoute, useValue: {
+          provide: ActivatedRoute,
+          useValue: {
             params: of({
-              code: '-1'
-            })
-        }
+              code: '-1',
+            }),
+          },
         },
         {
-          provide: UserService, useValue: {
+          provide: UserService,
+          useValue: {
             user: MOCK_USER,
             isProfessional() {
-              return of('')
+              return of('');
             },
             me() {
-              return of({})
-            }
-        }
+              return of({});
+            },
+          },
         },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(WallacoinsComponent);
     component = fixture.componentInstance;
-    localStorageSpy = spyOn(localStorage, 'getItem').and.returnValue(JSON.stringify(PACK));
+    localStorageSpy = spyOn(localStorage, 'getItem').and.returnValue(
+      JSON.stringify(PACK)
+    );
     fixture.detectChanges();
-    paymentService = TestBed.get(PaymentService);
-    modalService = TestBed.get(NgbModal);
-    router = TestBed.get(Router);
-    eventService = TestBed.get(EventService);
+    paymentService = TestBed.inject(PaymentService);
+    modalService = TestBed.inject(NgbModal);
+    router = TestBed.inject(Router);
+    eventService = TestBed.inject(EventService);
   });
 
   describe('ngOnInit', () => {
-
     it('should call getCreditsPacks and set packs', () => {
       spyOn(paymentService, 'getCreditsPacks').and.callThrough();
 
@@ -132,7 +141,10 @@ describe('WallacoinsComponent', () => {
       component.ngOnInit();
 
       expect(component.wallacoins).toEqual(PERKS.wallacoins.quantity);
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.TOTAL_CREDITS_UPDATED, PERKS.wallacoins.quantity);
+      expect(eventService.emit).toHaveBeenCalledWith(
+        EventService.TOTAL_CREDITS_UPDATED,
+        PERKS.wallacoins.quantity
+      );
     });
 
     it('should open modal if there is param.code', () => {
@@ -154,7 +166,6 @@ describe('WallacoinsComponent', () => {
 
       expect(component['openTutorialModal']).toHaveBeenCalled();
     });
-
   });
 
   describe('openBuyModal', () => {
@@ -168,11 +179,21 @@ describe('WallacoinsComponent', () => {
     }));
 
     it('should open modal', () => {
-      expect(modalService.open).toHaveBeenCalledWith(BuyWallacoinsModalComponent, {windowClass: 'modal-standard'});
+      expect(modalService.open).toHaveBeenCalledWith(
+        BuyWallacoinsModalComponent,
+        {
+          windowClass: 'modal-standard',
+        }
+      );
     });
 
     it('should open second modal', () => {
-      expect(modalService.open).toHaveBeenCalledWith(WallacoinsConfirmModalComponent, {windowClass: 'confirm-wallacoins'});
+      expect(modalService.open).toHaveBeenCalledWith(
+        WallacoinsConfirmModalComponent,
+        {
+          windowClass: 'confirm-wallacoins',
+        }
+      );
     });
 
     it('should redirect to catalog', () => {
@@ -180,7 +201,10 @@ describe('WallacoinsComponent', () => {
     });
 
     it('should emit TOTAL_CREDITS_UPDATED if response is success', () => {
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.TOTAL_CREDITS_UPDATED, component.wallacoins);
+      expect(eventService.emit).toHaveBeenCalledWith(
+        EventService.TOTAL_CREDITS_UPDATED,
+        component.wallacoins
+      );
     });
   });
 
@@ -192,8 +216,16 @@ describe('WallacoinsComponent', () => {
 
       component['openTutorialModal']();
 
-      expect(modalService.open).toHaveBeenCalledWith(WallacoinsTutorialComponent, {windowClass: 'tutorial-wallacoins'});
-      expect(localStorage.setItem).toHaveBeenCalledWith(USER_ID + '-wallacoins-tutorial', 'true');
+      expect(modalService.open).toHaveBeenCalledWith(
+        WallacoinsTutorialComponent,
+        {
+          windowClass: 'tutorial-wallacoins',
+        }
+      );
+      expect(localStorage.setItem).toHaveBeenCalledWith(
+        USER_ID + '-wallacoins-tutorial',
+        'true'
+      );
     });
   });
 });

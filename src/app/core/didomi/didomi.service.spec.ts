@@ -5,7 +5,7 @@ import { DIDOMI_EMBED } from './didomi-embed-script';
 export const MockDidomiService = {
   isReady: true,
   initialize: () => {},
-  userAllowedSegmentationInAds: () => true
+  userAllowedSegmentationInAds: () => true,
 };
 
 describe('Service: Didomi', () => {
@@ -15,7 +15,7 @@ describe('Service: Didomi', () => {
   beforeEach(() => {
     injector = getTestBed();
     injector.configureTestingModule({
-      providers: [ DidomiService ]
+      providers: [DidomiService],
     });
     service = injector.inject(DidomiService);
 
@@ -33,7 +33,9 @@ describe('Service: Didomi', () => {
   describe('when initializing the service', () => {
     it('should add Didomi SDK to app', () => {
       spyOn(document.head, 'appendChild');
-      const expectedScript: HTMLScriptElement = document.createElement('script');
+      const expectedScript: HTMLScriptElement = document.createElement(
+        'script'
+      );
       expectedScript.setAttribute('type', 'text/javascript');
       expectedScript.setAttribute('charset', 'utf-8');
       expectedScript.text = DIDOMI_EMBED;
@@ -60,43 +62,56 @@ describe('Service: Didomi', () => {
     });
   });
 
-  describe('when user accepts all GDPR vendors and purpouses', () => {
-    it('should allow user segmentation for ads', () => {
-      expect(service.userAllowedSegmentationInAds()).toBe(true);
-    });
-  });
-
-  describe('when user does not accept all GDPR vendors and purpouses', () => {
+  describe('when user accepts all purposes', () => {
     beforeEach(() => {
-      spyOn(Didomi, 'getUserConsentStatusForPurpose').and.returnValue(false);
-      spyOn(Didomi, 'getUserConsentStatusForVendor').and.returnValue(false);
+      spyOn(Didomi, 'getUserConsentStatusForAll').and.returnValue({
+        purposes: {
+          enabled: ['purpose1', 'purpose2', 'purpose3'],
+          disabled: [],
+        },
+      });
     });
 
-    it('should not allow user segmentation for ads', () => {
-      expect(service.userAllowedSegmentationInAds()).toBe(false);
+    describe('and when user also accepts Google vendor', () => {
+      beforeEach(() => {
+        spyOn(Didomi, 'getUserConsentStatusForVendor').and.callFake((key) => {
+          if (key === 'google') {
+            return true;
+          }
+        });
+      });
+
+      it('should allow user segmentation for ads', () => {
+        expect(service.userAllowedSegmentationInAds()).toBe(true);
+      });
+    });
+
+    describe('and when user rejects Google vendor', () => {
+      beforeEach(() => {
+        spyOn(Didomi, 'getUserConsentStatusForVendor').and.callFake((key) => {
+          if (key === 'google') {
+            return false;
+          }
+        });
+      });
+
+      it('should NOT allow user segmentation for ads', () => {
+        expect(service.userAllowedSegmentationInAds()).toBe(false);
+      });
     });
   });
 
-  describe('when user does not accept Google vendor', () => {
-    it('should not allow user segmentation for ads', () => {
-      spyOn(Didomi, 'getUserConsentStatusForVendor').and.callFake(key => {
-        if (key === 'google') {
-          return false;
-        }
+  describe('when user does not accept at least 1 purpose', () => {
+    beforeEach(() => {
+      spyOn(Didomi, 'getUserConsentStatusForAll').and.returnValue({
+        purposes: {
+          enabled: ['purpose1', 'purpose3'],
+          disabled: ['purpose2'],
+        },
       });
-
-      expect(service.userAllowedSegmentationInAds()).toBe(false);
     });
-  });
 
-  describe('when user does not accept the personalized ads purpouse', () => {
     it('should not allow user segmentation for ads', () => {
-      spyOn(Didomi, 'getUserConsentStatusForPurpose').and.callFake(key => {
-        if (key === 'advertising_personalization') {
-          return false;
-        }
-      });
-
       expect(service.userAllowedSegmentationInAds()).toBe(false);
     });
   });

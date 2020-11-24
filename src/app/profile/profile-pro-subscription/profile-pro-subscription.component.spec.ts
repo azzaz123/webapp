@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProfileProSubscriptionComponent } from './profile-pro-subscription.component';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubscriptionIconPipe } from './subscription-icon.pipe';
@@ -22,41 +22,42 @@ describe('ProfileProSubscriptionComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProfileProSubscriptionComponent, SubscriptionIconPipe ],
+      declarations: [ProfileProSubscriptionComponent, SubscriptionIconPipe],
       providers: [
         {
-          provide: PaymentService, useValue: {
-          getPerks() {
-            return of(perksModel);
+          provide: PaymentService,
+          useValue: {
+            getPerks() {
+              return of(perksModel);
+            },
+            getSubscriptionPacks() {
+              return of(packs);
+            },
           },
-          getSubscriptionPacks() {
-            return of(packs);
-          }
-        }
         },
         {
-          provide: NgbModal, useValue: {
-          open() {}
-        }
+          provide: NgbModal,
+          useValue: {
+            open() {},
+          },
         },
         {
-          provide: Router, useValue: {
-          navigate() {
-          }
-        }
+          provide: Router,
+          useValue: {
+            navigate() {},
+          },
         },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProfileProSubscriptionComponent);
     component = fixture.componentInstance;
-    paymentsService = TestBed.get(PaymentService);
-    modalService = TestBed.get(NgbModal);
-    router = TestBed.get(Router);
+    paymentsService = TestBed.inject(PaymentService);
+    modalService = TestBed.inject(NgbModal);
+    router = TestBed.inject(Router);
     spyOn(paymentsService, 'getSubscriptionPacks').and.callThrough();
     spyOn(paymentsService, 'getPerks').and.callThrough();
     fixture.detectChanges();
@@ -80,7 +81,10 @@ describe('ProfileProSubscriptionComponent', () => {
 
       component.openFaqs();
 
-      expect(router.navigate).toHaveBeenCalledWith(['pro/help', {section: 'Perfil-6'}]);
+      expect(router.navigate).toHaveBeenCalledWith([
+        'pro/help',
+        { section: 'Perfil-6' },
+      ]);
     });
   });
 });

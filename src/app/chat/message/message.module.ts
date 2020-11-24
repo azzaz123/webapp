@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { MatIconModule } from '@angular/material';
 import { CommonModule } from '@angular/common';
 import { ThirdVoiceMessageComponent } from './third-voice-message';
 import { TextMessageComponent } from './text-message';
@@ -9,11 +8,7 @@ import { ThirdVoiceDropPriceComponent } from './third-voice-drop-price';
 import { ThirdVoiceReviewComponent } from './third-voice-review';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    MatIconModule,
-    SharedModule
-  ],
+  imports: [CommonModule, SharedModule],
   declarations: [
     TextMessageComponent,
     ThirdVoiceMessageComponent,
@@ -24,8 +19,7 @@ import { ThirdVoiceReviewComponent } from './third-voice-review';
   exports: [
     TextMessageComponent,
     ThirdVoiceReviewComponent,
-    ThirdVoiceDropPriceComponent
-  ]
+    ThirdVoiceDropPriceComponent,
+  ],
 })
-export class MessageModule {
-}
+export class MessageModule {}

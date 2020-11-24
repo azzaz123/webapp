@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 $switch-width: 36px;
 $switch-height: 23px;
@@ -12,7 +12,9 @@ $switch-slider-diameter: 15px;
     height: $switch-height;
     margin: 0;
 
-    input {display:none;}
+    input {
+      display: none;
+    }
 
     .slider {
       position: absolute;
@@ -22,8 +24,8 @@ $switch-slider-diameter: 15px;
       right: 0;
       bottom: 0;
       background-color: $blue-grey-5;
-      transition: .4s;
-      border-radius: $switch-height/2
+      transition: 0.4s;
+      border-radius: $switch-height/2;
     }
 
     .slider:hover {
@@ -32,13 +34,13 @@ $switch-slider-diameter: 15px;
 
     .slider:before {
       position: absolute;
-      content: "";
+      content: '';
       height: $switch-slider-diameter;
       width: $switch-slider-diameter;
       left: 3px;
       bottom: 4px;
       background-color: white;
-      transition: .4s;
+      transition: 0.4s;
       border-radius: 50%;
     }
 
@@ -50,7 +52,8 @@ $switch-slider-diameter: 15px;
       background-color: $walla-dark;
     }
 
-    input:disabled + .slider, input:disabled:hover + .slider {
+    input:disabled + .slider,
+    input:disabled:hover + .slider {
       background-color: $blue-grey-5;
     }
 

@@ -1,19 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FinancialCard, FinancialCardOption } from '../../../../core/payments/payment.interface';
-import { UUID } from 'angular2-uuid/index';
+import {
+  FinancialCard,
+  FinancialCardOption,
+} from '../../../../core/payments/payment.interface';
 import { StripeService } from '../../../../core/stripe/stripe.service';
 import { ErrorsService } from '../../../../core/errors/errors.service';
 import { EventService } from '../../../../core/event/event.service';
 import { PAYMENT_RESPONSE_STATUS } from '../../../../core/payments/payment.service';
+import { UuidService } from '../../../../core/uuid/uuid.service';
 
 @Component({
   selector: 'tsl-credit-card-modal',
   templateUrl: './credit-card-modal.component.html',
-  styleUrls: ['./credit-card-modal.component.scss']
+  styleUrls: ['./credit-card-modal.component.scss'],
 })
 export class CreditCardModalComponent implements OnInit {
-
   public financialCard: FinancialCard;
   public orderId: string;
   public cardType = 'old';
@@ -25,10 +27,13 @@ export class CreditCardModalComponent implements OnInit {
   public card: any;
   public loading: boolean;
 
-  constructor(public activeModal: NgbActiveModal,
-              private stripeService: StripeService,
-              private errorService: ErrorsService,
-              private eventService: EventService) { }
+  constructor(
+    public activeModal: NgbActiveModal,
+    private stripeService: StripeService,
+    private errorService: ErrorsService,
+    private uuidService: UuidService,
+    private eventService: EventService
+  ) {}
 
   ngOnInit() {
     this.eventService.subscribe('paymentResponse', (response) => {
@@ -36,11 +41,17 @@ export class CreditCardModalComponent implements OnInit {
     });
   }
 
-  public checkout (orderId: string) {
-    const paymentId: string = UUID.UUID();
+  public checkout(orderId: string) {
+    const paymentId: string = this.uuidService.getUUID();
 
     if (this.selectedCard || !this.savedCard) {
-      this.stripeService.buy(orderId, paymentId, this.hasSavedCard, this.savedCard, this.card);
+      this.stripeService.buy(
+        orderId,
+        paymentId,
+        this.hasSavedCard,
+        this.savedCard,
+        this.card
+      );
     } else {
       this.loading = false;
       this.errorService.i18nError('noCardSelectedError');
@@ -48,7 +59,7 @@ export class CreditCardModalComponent implements OnInit {
   }
 
   private managePaymentResponse(paymentResponse) {
-    switch(paymentResponse && paymentResponse.toUpperCase()) {
+    switch (paymentResponse && paymentResponse.toUpperCase()) {
       case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
         this.activeModal.close('success');
         break;
@@ -87,5 +98,4 @@ export class CreditCardModalComponent implements OnInit {
       this.addNewCard();
     }
   }
-
 }

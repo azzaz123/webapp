@@ -10,10 +10,9 @@ describe('UserResponseRateComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UserResponseRateComponent ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      declarations: [UserResponseRateComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

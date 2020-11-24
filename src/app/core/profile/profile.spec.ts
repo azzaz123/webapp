@@ -2,15 +2,31 @@
 
 import { Profile } from './profile';
 import {
-  PROFILE_ID, MICRO_NAME, PROFILE_IMAGE, NUM_TOTAL_ITEMS, FAVORITED, IS_PROFESSIONAL, SCREEN_NAME
+  PROFILE_ID,
+  MICRO_NAME,
+  PROFILE_IMAGE,
+  NUM_TOTAL_ITEMS,
+  FAVORITED,
+  IS_PROFESSIONAL,
+  SCREEN_NAME,
 } from '../../../tests/profile.fixtures.spec';
 import { SCORING_STARS } from '../../../tests/user.fixtures.spec';
 
 describe('Profile', () => {
-
   it('should create an instance', () => {
-    expect(new Profile(PROFILE_ID, [PROFILE_IMAGE], MICRO_NAME, NUM_TOTAL_ITEMS, SCORING_STARS, PROFILE_IMAGE, FAVORITED,
-      IS_PROFESSIONAL, SCREEN_NAME)).toBeTruthy();
+    expect(
+      new Profile(
+        PROFILE_ID,
+        [PROFILE_IMAGE],
+        MICRO_NAME,
+        NUM_TOTAL_ITEMS,
+        SCORING_STARS,
+        PROFILE_IMAGE,
+        FAVORITED,
+        IS_PROFESSIONAL,
+        SCREEN_NAME
+      )
+    ).toBeTruthy();
   });
 
   it('should set the profile data through the constructor', () => {
@@ -36,5 +52,4 @@ describe('Profile', () => {
     expect(profile.is_professional).toBe(IS_PROFESSIONAL);
     expect(profile.screen_name).toBe(SCREEN_NAME);
   });
-
 });

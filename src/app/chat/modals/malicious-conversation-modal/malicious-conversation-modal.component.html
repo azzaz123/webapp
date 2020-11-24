@@ -1,0 +1,27 @@
+<div class="MaliciousConversationModal d-flex flex-column flex-md-row justify-content-between justify-content-md-center text-center text-md-left">
+  <div class="MaliciousConversationModal__close" (click)="activeModal.dismiss()">
+    <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
+  </div>
+
+  <div class="MaliciousConversationModal__image d-flex flex-column justify-content-center">
+    <img src="/assets/images/suspicious.svg" alt="suspicious"/>
+  </div>
+
+  <div class="MaliciousConversationModal__content d-flex flex-column justify-content-between justify-content-md-center">
+    <div class="MaliciousConversationModal__title">
+      <span i18n="@@ForgetThisChat"><b>You better forget this chat</b></span>
+    </div>
+
+    <div class="MaliciousConversationModal__description">
+      <span i18n="@@MaliciousConversationDescription">This person violated our coexistence rules. We suggest that you
+        ignore their messages and do not communicate with them through any means other than wallapop, as this may be
+        an attempt to defraud you. </span>
+    </div>
+
+    <div class="MaliciousConversationModal__actions">
+      <div class="d-flex justify-content-center">
+        <tsl-button (click)="activeModal.close(true)" i18n="@@ExitConversation">Exit the conversation</tsl-button>
+      </div>
+    </div>
+  </div>
+</div>

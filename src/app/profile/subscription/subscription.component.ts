@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AddNewSubscriptionModalComponent } from './modals/add-new-subscription-modal.component';
-import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES } from '../../core/subscriptions/subscriptions.interface';
+import {
+  SubscriptionsResponse,
+  SUBSCRIPTION_CATEGORIES,
+} from '../../core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
 import { isEqual } from 'lodash-es';
 import { Router } from '@angular/router';
@@ -16,7 +19,7 @@ import {
   AnalyticsPageView,
   ClickProfileSubscribeButton,
   ClickProfileEditCurrentSubscription,
-  ClickKeepCurrentSubscription
+  ClickKeepCurrentSubscription,
 } from '../../core/analytics/analytics-constants';
 import { ContinueSubscriptionModalComponent } from './modals/continue-subscription-modal.component';
 import { EditSubscriptionModalComponent } from './modals/edit-subscription-modal.component';
@@ -26,14 +29,21 @@ import { UnsubscribeInAppFirstModal } from './modals/unsubscribe-in-app-first-mo
 import { DiscountAvailableUnsubscribeInAppModalComponent } from './modals/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user';
-import { UserResponse } from 'app/core/user/user-response.interface';
+
+export enum SubscriptionModalAction {
+  ADD = 'add',
+  UPDATE = 'update',
+  CONTINUE = 'continue',
+  CANCEL_SUBSCRIPTION_SUCCESS = 'success',
+  CANCEL_SUBSCRIPTION_FAIL = 'fail',
+}
 
 export type SubscriptionModal =
-  typeof CheckSubscriptionInAppModalComponent |
-  typeof CancelSubscriptionModalComponent |
-  typeof ContinueSubscriptionModalComponent |
-  typeof EditSubscriptionModalComponent |
-  typeof AddNewSubscriptionModalComponent;
+  | typeof CheckSubscriptionInAppModalComponent
+  | typeof CancelSubscriptionModalComponent
+  | typeof ContinueSubscriptionModalComponent
+  | typeof EditSubscriptionModalComponent
+  | typeof AddNewSubscriptionModalComponent;
 
 @Component({
   selector: 'tsl-subscription',
@@ -46,56 +56,70 @@ export class SubscriptionsComponent implements OnInit {
   public loading = false;
   public user: User;
 
-  constructor(private modalService: NgbModal,
+  constructor(
+    private modalService: NgbModal,
     private subscriptionsService: SubscriptionsService,
     private router: Router,
     private analyticsService: AnalyticsService,
-    private userService: UserService) {
-  }
+    private userService: UserService
+  ) {}
 
   ngOnInit() {
     this.loading = true;
-    this.subscriptionsService.getSubscriptions(false)
-      .pipe(finalize(() => this.loading = false))
-      .subscribe(subscriptions => this.subscriptions = subscriptions);
+    this.subscriptionsService
+      .getSubscriptions(false)
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe((subscriptions) => (this.subscriptions = subscriptions));
 
     this.trackPageView();
-    this.userService.me(true).subscribe((user) => this.user = user);
+    this.userService.me(true).subscribe((user) => (this.user = user));
   }
 
   public openSubscriptionModal(subscription: SubscriptionsResponse): void {
     const modal = this.getModalTypeDependingOnSubscription(subscription);
-    let modalRef: NgbModalRef = this.modalService.open(modal, { windowClass: 'review' });
-    modalRef.componentInstance.subscription = subscription;
-    modalRef.componentInstance.isNewSubscriber = !this.subscriptionsService.hasOneStripeSubscription(this.subscriptions);
-    modalRef.result.then((action: string) => {
-      if (action) {
-        this.loading = true;
-        if (this.user && this.user.featured) {
-          this.isSubscriptionUpdated();
-        } else {
-          this.isUserUpdated();
-        }
-      }
-      modalRef = null;
-    }, () => {
-      modalRef = null;
+    let modalRef: NgbModalRef = this.modalService.open(modal, {
+      windowClass: 'review',
     });
+    modalRef.componentInstance.subscription = subscription;
+    modalRef.componentInstance.isNewSubscriber = !this.subscriptionsService.hasOneStripeSubscription(
+      this.subscriptions
+    );
+    modalRef.result.then(
+      (action: SubscriptionModalAction) => {
+        if (action && action !== SubscriptionModalAction.UPDATE) {
+          this.loading = true;
+          if (this.user && this.user.featured) {
+            this.isSubscriptionUpdated();
+          } else {
+            this.isUserUpdated();
+          }
+        }
+        modalRef = null;
+      },
+      () => {
+        modalRef = null;
+      }
+    );
 
     this.trackOpenModalEvent(subscription, modal);
   }
 
   private isUserUpdated() {
-    this.userService.me(false)
-    .pipe(
-      repeatWhen(completed => completed.pipe(delay(1000), takeWhile(() => this.loading))),
-      take(30),
-      finalize(() => {
-        this.router.navigate(['profile/info'])
-      })
-    )
-    .subscribe(
-      (updatedUser) => {
+    this.userService
+      .me(false)
+      .pipe(
+        repeatWhen((completed) =>
+          completed.pipe(
+            delay(1000),
+            takeWhile(() => this.loading)
+          )
+        ),
+        take(30),
+        finalize(() => {
+          this.router.navigate(['profile/info']);
+        })
+      )
+      .subscribe((updatedUser) => {
         if (updatedUser.featured) {
           this.loading = false;
         }
@@ -103,14 +127,19 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   private isSubscriptionUpdated() {
-    this.subscriptionsService.getSubscriptions(false)
-    .pipe(
-      repeatWhen(completed => completed.pipe(delay(1000), takeWhile(() => this.loading))),
-      take(30),
-      finalize(() => this.router.navigate(['profile/subscriptions']))
-    )
-    .subscribe(
-      (updatedSubscriptions) => {
+    this.subscriptionsService
+      .getSubscriptions(false)
+      .pipe(
+        repeatWhen((completed) =>
+          completed.pipe(
+            delay(1000),
+            takeWhile(() => this.loading)
+          )
+        ),
+        take(30),
+        finalize(() => this.router.navigate(['profile/subscriptions']))
+      )
+      .subscribe((updatedSubscriptions) => {
         if (!isEqual(this.subscriptions, updatedSubscriptions)) {
           this.subscriptions = updatedSubscriptions;
           this.loading = false;
@@ -122,14 +151,17 @@ export class SubscriptionsComponent implements OnInit {
     const pageView: AnalyticsPageView<ViewProfileSubscription> = {
       name: ANALYTICS_EVENT_NAMES.ViewProfileSubscription,
       attributes: {
-        screenId: SCREEN_IDS.ProfileSubscription
-      }
+        screenId: SCREEN_IDS.ProfileSubscription,
+      },
     };
 
     this.analyticsService.trackPageView(pageView);
   }
 
-  private trackOpenModalEvent(subscription: SubscriptionsResponse, modalType: SubscriptionModal) {
+  private trackOpenModalEvent(
+    subscription: SubscriptionsResponse,
+    modalType: SubscriptionModal
+  ) {
     if (modalType === AddNewSubscriptionModalComponent) {
       const event: AnalyticsEvent<ClickProfileSubscribeButton> = {
         name: ANALYTICS_EVENT_NAMES.ClickProfileSubscribeButton,
@@ -137,8 +169,10 @@ export class SubscriptionsComponent implements OnInit {
         attributes: {
           screenId: SCREEN_IDS.ProfileSubscription,
           subscription: subscription.category_id as SUBSCRIPTION_CATEGORIES,
-          isNewSubscriber: !this.subscriptionsService.hasOneStripeSubscription(this.subscriptions)
-        }
+          isNewSubscriber: !this.subscriptionsService.hasOneStripeSubscription(
+            this.subscriptions
+          ),
+        },
       };
 
       return this.analyticsService.trackEvent(event);
@@ -151,8 +185,8 @@ export class SubscriptionsComponent implements OnInit {
         attributes: {
           subscription: subscription.category_id as SUBSCRIPTION_CATEGORIES,
           tier: subscription.selected_tier_id,
-          screenId: SCREEN_IDS.ProfileSubscription
-        }
+          screenId: SCREEN_IDS.ProfileSubscription,
+        },
       };
 
       return this.analyticsService.trackEvent(event);
@@ -165,17 +199,22 @@ export class SubscriptionsComponent implements OnInit {
         attributes: {
           subscription: subscription.category_id as SUBSCRIPTION_CATEGORIES,
           tier: subscription.selected_tier_id,
-          screenId: SCREEN_IDS.ProfileSubscription
-        }
+          screenId: SCREEN_IDS.ProfileSubscription,
+        },
       };
 
       return this.analyticsService.trackEvent(event);
     }
   }
 
-  private getModalTypeDependingOnSubscription(subscription: SubscriptionsResponse): SubscriptionModal {
+  private getModalTypeDependingOnSubscription(
+    subscription: SubscriptionsResponse
+  ): SubscriptionModal {
     // User is trying to edit subscription that is from inapp and has discount
-    if (this.subscriptionsService.isSubscriptionInApp(subscription) && this.subscriptionsService.hasOneTierDiscount(subscription)) {
+    if (
+      this.subscriptionsService.isSubscriptionInApp(subscription) &&
+      this.subscriptionsService.hasOneTierDiscount(subscription)
+    ) {
       return DiscountAvailableUnsubscribeInAppModalComponent;
     }
 
@@ -183,22 +222,30 @@ export class SubscriptionsComponent implements OnInit {
     if (this.subscriptionsService.isSubscriptionInApp(subscription)) {
       return CheckSubscriptionInAppModalComponent;
     }
-    
+
     // Subscription is active, from Stripe, not cancelled, with only one tier and no limits
-    if (this.subscriptionsService.isStripeSubscription(subscription) && !subscription.subscribed_until && subscription.tiers.length === 1 && !subscription.tiers[0].limit) {
+    if (
+      this.subscriptionsService.isStripeSubscription(subscription) &&
+      !subscription.subscribed_until &&
+      subscription.tiers.length === 1 &&
+      !subscription.tiers[0].limit
+    ) {
       return CancelSubscriptionModalComponent;
     }
 
     // Subscription was previously canceled
-    if (this.subscriptionsService.isStripeSubscription(subscription) && subscription.subscribed_until) {
+    if (
+      this.subscriptionsService.isStripeSubscription(subscription) &&
+      subscription.subscribed_until
+    ) {
       return ContinueSubscriptionModalComponent;
     }
-    
+
     // Subscription is active
     if (this.subscriptionsService.isStripeSubscription(subscription)) {
       return EditSubscriptionModalComponent;
     }
-    
+
     // User is trying to subscribe but there is an active inapp subscription
     if (this.subscriptionsService.isOneSubscriptionInApp(this.subscriptions)) {
       return UnsubscribeInAppFirstModal;
@@ -209,23 +256,34 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   public showEdit(subscription: SubscriptionsResponse): boolean {
-    return !this.subscriptionsService.isSubscriptionInApp(subscription) && subscription.tiers.length !== 1;
+    return (
+      !this.subscriptionsService.isSubscriptionInApp(subscription) &&
+      subscription.tiers.length !== 1
+    );
   }
 
   public showCancel(subscription: SubscriptionsResponse): boolean {
-    return !this.subscriptionsService.isSubscriptionInApp(subscription) && subscription.tiers.length === 1;
+    return (
+      !this.subscriptionsService.isSubscriptionInApp(subscription) &&
+      subscription.tiers.length === 1
+    );
   }
 
   public showManageInApp(subscription: SubscriptionsResponse): boolean {
-    return this.subscriptionsService.isSubscriptionInApp(subscription) && !this.subscriptionsService.hasOneFreeTier(subscription);
+    return (
+      this.subscriptionsService.isSubscriptionInApp(subscription) &&
+      !this.subscriptionsService.hasOneFreeTier(subscription)
+    );
   }
 
   public showUnsubscribeFirst(subscription: SubscriptionsResponse): boolean {
-    return this.subscriptionsService.isSubscriptionInApp(subscription) && this.subscriptionsService.hasOneFreeTier(subscription);
+    return (
+      this.subscriptionsService.isSubscriptionInApp(subscription) &&
+      this.subscriptionsService.hasOneFreeTier(subscription)
+    );
   }
 
   public hasOneFreeSubscription() {
     return this.subscriptionsService.hasOneFreeSubscription(this.subscriptions);
   }
-
 }

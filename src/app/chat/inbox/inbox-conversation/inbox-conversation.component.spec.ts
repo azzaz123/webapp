@@ -9,7 +9,12 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { InboxConversationService } from '../../service';
 import { InboxConversationServiceMock } from '../../../../tests';
 import { of } from 'rxjs';
-import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '../../model';
+import {
+  InboxConversation,
+  InboxMessage,
+  MessageStatus,
+  MessageType,
+} from '../../model';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { DateCalendarPipe } from 'app/shared/pipes';
 import { CommonModule } from '@angular/common';
@@ -21,26 +26,25 @@ describe('Component: Conversation', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        CommonModule,
-        NgxPermissionsModule.forRoot()
-      ],
-      declarations: [InboxConversationComponent],
+      imports: [CommonModule, NgxPermissionsModule.forRoot()],
+      declarations: [InboxConversationComponent, DateCalendarPipe],
       providers: [
         I18nService,
-        { provide: InboxConversationService, useClass: InboxConversationServiceMock },
-        DateCalendarPipe
+        {
+          provide: InboxConversationService,
+          useClass: InboxConversationServiceMock,
+        },
+        DateCalendarPipe,
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(InboxConversationComponent);
     component = fixture.componentInstance;
     component.conversation = CREATE_MOCK_INBOX_CONVERSATION();
-    inboxConversationService = TestBed.get(InboxConversationService);
+    inboxConversationService = TestBed.inject(InboxConversationService);
     fixture.detectChanges();
   });
 
@@ -106,14 +110,17 @@ describe('Component: Conversation', () => {
     });
 
     it('should archive$ conversation and set conversation to NULL', () => {
-      spyOn(inboxConversationService, 'archive$').and.returnValue(of(inboxConversation));
+      spyOn(inboxConversationService, 'archive$').and.returnValue(
+        of(inboxConversation)
+      );
       component.conversation = inboxConversation;
 
       component.onClickArchiveConversation();
 
-      expect(inboxConversationService.archive$).toHaveBeenCalledWith(inboxConversation);
+      expect(inboxConversationService.archive$).toHaveBeenCalledWith(
+        inboxConversation
+      );
       expect(component.conversation).toEqual(null);
     });
   });
 });
-

@@ -50,6 +50,10 @@ export interface ClickRejectOffer {
    */
   title: string;
   /**
+   * Version of the accept screen
+   */
+  acceptScreenVersion: 'v1-original' | 'v2-green-redesign';
+  /**
    * Identifier of the accept offer screen
    */
   screenId: 210;

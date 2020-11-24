@@ -1,7 +1,12 @@
-
-import { of as observableOf, Subscription } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 import { CallsComponent } from './calls.component';
 import { CallsService } from '../core/conversation/calls.service';
 import { ActivatedRoute } from '@angular/router';
@@ -24,30 +29,31 @@ describe('CallsComponent', () => {
       providers: [
         { provide: TrackingService, useClass: MockTrackingService },
         {
-          provide: CallsService, useValue: {
+          provide: CallsService,
+          useValue: {
             getPage() {
-              return observableOf([]);
-            }
-          }
+              return of([]);
+            },
+          },
         },
         {
-          provide: ActivatedRoute, useValue: {
-            queryParams: observableOf({})
-          }
-        }
+          provide: ActivatedRoute,
+          useValue: {
+            queryParams: of({}),
+          },
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CallsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    callService = TestBed.get(CallsService);
-    route = TestBed.get(ActivatedRoute);
-    trackingService = TestBed.get(TrackingService);
+    callService = TestBed.inject(CallsService);
+    route = TestBed.inject(ActivatedRoute);
+    trackingService = TestBed.inject(TrackingService);
   });
 
   describe('ngOnInit', () => {
@@ -66,8 +72,8 @@ describe('CallsComponent', () => {
     });
 
     it('should set status', () => {
-      route.queryParams = observableOf({
-        status: 'test'
+      route.queryParams = of({
+        status: 'test',
       });
 
       component.ngOnInit();
@@ -98,7 +104,7 @@ describe('CallsComponent', () => {
       const CALLS: Call[] = createCallsArray(4);
 
       beforeEach(() => {
-        spyOn(callService, 'getPage').and.returnValue(observableOf(CALLS));
+        spyOn(callService, 'getPage').and.returnValue(of(CALLS));
         component['page'] = 1;
       });
 
@@ -123,7 +129,9 @@ describe('CallsComponent', () => {
         });
 
         it('should track the PoneLeadListActiveLoaded', () => {
-          expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PHONE_LEAD_LIST_ACTIVE_LOADED);
+          expect(trackingService.track).toHaveBeenCalledWith(
+            TrackingService.PHONE_LEAD_LIST_ACTIVE_LOADED
+          );
         });
       });
 
@@ -148,7 +156,9 @@ describe('CallsComponent', () => {
         });
 
         it('should track the PoneLeadListProcessedLoaded', () => {
-          expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PHONE_LEAD_LIST_PROCESSED_LOADED);
+          expect(trackingService.track).toHaveBeenCalledWith(
+            TrackingService.PHONE_LEAD_LIST_PROCESSED_LOADED
+          );
         });
       });
     });
@@ -158,7 +168,7 @@ describe('CallsComponent', () => {
         const SUBSCRIPTION = new Subscription();
 
         component['callsSubscription'] = SUBSCRIPTION;
-        spyOn(callService, 'getPage').and.returnValue(observableOf(SUBSCRIPTION));
+        spyOn(callService, 'getPage').and.returnValue(of(SUBSCRIPTION));
         spyOn(component['callsSubscription'], 'unsubscribe');
 
         component.getCalls();

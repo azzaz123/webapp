@@ -2,7 +2,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ArchiveButtonComponent } from './archive-button.component';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { CallsService } from '../../core/conversation/calls.service';
@@ -17,26 +17,26 @@ describe('ArchiveButtonComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       providers: [
-        {provide: TrackingService, useClass: MockTrackingService},
+        { provide: TrackingService, useClass: MockTrackingService },
         {
-          provide: CallsService, useValue: {
+          provide: CallsService,
+          useValue: {
             archive() {
               return of({});
-            }
-          }
-        }
+            },
+          },
+        },
       ],
       declarations: [ArchiveButtonComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ArchiveButtonComponent);
     component = fixture.componentInstance;
-    callsService = TestBed.get(CallsService);
-    trackingService = TestBed.get(TrackingService);
+    callsService = TestBed.inject(CallsService);
+    trackingService = TestBed.inject(TrackingService);
     fixture.detectChanges();
   });
 
@@ -57,9 +57,10 @@ describe('ArchiveButtonComponent', () => {
       component.archive(new Event(''));
 
       expect(callsService.archive).toHaveBeenCalledWith(CALL_ID);
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CALLS_PROCESSED);
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.CALLS_PROCESSED
+      );
     });
-
 
     it('should emit click event', () => {
       spyOn(callsService, 'archive').and.callThrough();

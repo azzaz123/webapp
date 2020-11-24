@@ -1,7 +1,8 @@
 import { Environment } from './environment.interface';
+import { environment as environmentBeta } from './environment.beta';
 import { dockNum } from './docknum';
 
-export const environment: Environment = {
+const environmentLocal: Environment = {
   production: false,
   name: 'local',
   baseUrl: `https://apigw.dock${dockNum}.wallapop.com/`,
@@ -10,11 +11,17 @@ export const environment: Environment = {
   siteUrl: `https://es.dock${dockNum}.wallapop.com/`,
   appboy: '516bd193-25b2-48b9-b79d-f8516f104d2f',
   cookieSuffix: 'Local',
-  clickStreamURL: 'https://precollector.wallapop.com/clickstream.json/sendEvents',
+  clickStreamURL:
+    'https://precollector.wallapop.com/clickstream.json/sendEvents',
   stripeKey: 'pk_test_YMrctQusG3vLNQkCSRYKdqwF',
   mParticleKey: 'us1-04eb03d316b54f4f99265340abe886e6',
   remoteConsoleUrl: 'https://client-metrics.beta.wallapop.com/metrics/chat',
   didomiKey: '56d12b9e-69db-4641-a15a-9c19f73aed7d',
   threatMetrixOrgId: '6ldgf22r',
-  threatMetrixProfilingDomain: 'clear.wallapop.com'
+  threatMetrixProfilingDomain: 'clear.wallapop.com',
 };
+
+export const environment =
+  dockNum === 'beta' ? environmentBeta : environmentLocal;
+
+export const isSWEnabled = false;

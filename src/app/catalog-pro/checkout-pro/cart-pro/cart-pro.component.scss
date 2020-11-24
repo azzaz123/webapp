@@ -1,203 +1,203 @@
-@import "~style/common";
+@import '~style/common';
 
 :host {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background: $white;
-    border-radius: $border-radius;
-    border: solid 1px $blue-grey-5;
-    width: 280px;
-    height: calc(100vh - 150px);
-    position: fixed;
-    padding: 0 $spacing-s;
-    overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: $white;
+  border-radius: $border-radius;
+  border: solid 1px $blue-grey-5;
+  width: 280px;
+  height: calc(100vh - 150px);
+  position: fixed;
+  padding: 0 $spacing-s;
+  overflow: hidden;
 }
 
 .cart-pro-title {
-    font-size: $font-size-s;
-    color: $blue-grey-1;
-    font-weight: $font-weight-chunky;
-    margin: 0;
+  font-size: $font-size-s;
+  color: $blue-grey-1;
+  font-weight: $font-weight-chunky;
+  margin: 0;
 }
 
 .cancel-icon {
-    cursor: pointer;
-    width: 12px;
-    margin-right: $spacing-s;    
-    &.disabled {
-        cursor: not-allowed;
-        opacity: 0.5;
-    }
+  cursor: pointer;
+  width: 12px;
+  margin-right: $spacing-s;
+  &.disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 }
 
 .cart-content {
-    overflow: auto;
-    padding: $spacing-xxl 0 $spacing-ml * 4 0;
-    .cart-header {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: $spacing-m $spacing-m 0 $spacing-m;
-        background-color: $white;
-        z-index: 1;
-        .btn-clear {
-            cursor: pointer;
-            font-size: $font-size-xxs;
-            color: $blue-grey-2;
-            &.disabled {
-                cursor: not-allowed;
-                opacity: 0.5;
-            }
-        }
+  overflow: auto;
+  padding: $spacing-xxl 0 $spacing-ml * 4 0;
+  .cart-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $spacing-m $spacing-m 0 $spacing-m;
+    background-color: $white;
+    z-index: 1;
+    .btn-clear {
+      cursor: pointer;
+      font-size: $font-size-xxs;
+      color: $blue-grey-2;
+      &.disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
     }
+  }
 }
 
 .items-list {
-    font-size: $font-size-xs;
-    list-style: none;
-    padding: 0;
+  font-size: $font-size-xs;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  .cart-box {
+    overflow: hidden;
+    margin-top: $spacing-ms;
+    border-radius: 5px;
+    background-color: $white;
+    box-shadow: 0 1px 2px 0 rgba($black, 0.05);
+    border: solid 0.5px $blue-grey-4;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    user-select: none;
+  }
+  .cart-description {
+    white-space: nowrap;
+    width: 60%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .cart-days {
+    font-weight: $font-weight-chunky;
+  }
+  .type-total {
+    padding: $spacing-ms;
     margin: 0;
+    cursor: pointer;
+    .wing-icon {
+      width: 51px;
+      height: 30px;
+      margin-right: $spacing-s;
+      &.citybump {
+        ::ng-deep svg g {
+          fill: $walla-main;
+        }
+      }
+    }
+    .arrow-icon {
+      transform: rotate(-90deg) scale(0.8);
+      width: 9px;
+      height: 13px;
+      transition: transform 150ms ease-in;
+    }
+    &.collapsed {
+      .arrow-icon {
+        transform: rotate(90deg) scale(0.8);
+      }
+    }
+  }
+  .type-wrapper {
+    background-color: rgba($blue-grey-5, 0.3);
+    padding: $spacing-s;
+    border-radius: 5px;
+    margin-bottom: $spacing-ms;
+    ul {
+      padding-left: $spacing-ms;
+    }
+  }
+  .price {
+    color: $blue-grey-2;
+    font-weight: $font-weight-chunky;
+  }
+  .citybump {
+    color: $walla-main;
+  }
+  .countrybump {
+    color: $country-bump;
+  }
+  .type {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .planned-label {
+    font-weight: $font-weight-chunky;
+    color: $blue-grey-2;
+  }
+  .close-icon {
+    @include square(16px);
+    margin: $spacing-ml $spacing-s $spacing-s 0;
+    cursor: pointer;
+  }
+  .cart-item {
+    display: flex;
+    align-items: center;
     .cart-box {
-        overflow: hidden;
-        margin-top: $spacing-ms;
-        border-radius: 5px;
-        background-color: $white;
-        box-shadow: 0 1px 2px 0 rgba($black, 0.05);
-        border: solid 0.5px $blue-grey-4;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        user-select: none;
-    }
-    .cart-description {
-        white-space: nowrap;
-        width: 60%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    .cart-days {
-        font-weight: $font-weight-chunky;
-    }
-    .type-total {
-        padding: $spacing-ms;
-        margin: 0;
-        cursor: pointer;
-        .wing-icon {
-            width: 51px;
-            height: 30px;
-            margin-right: $spacing-s;
-            &.citybump {
-                ::ng-deep svg g {
-                    fill: $walla-main
-                }
-            }
-        }
-        .arrow-icon {
-            transform: rotate(-90deg) scale(.8);
-            width: 9px;
-            height: 13px;
-            transition: transform 150ms ease-in;
-        }
-        &.collapsed {
-            .arrow-icon {
-                transform: rotate(90deg) scale(.8);
-            }
-        }
-    }
-    .type-wrapper {
-        background-color: rgba($blue-grey-5, 0.3);
-        padding: $spacing-s;
-        border-radius: 5px;
-        margin-bottom: $spacing-ms;
-        ul {
-            padding-left: $spacing-ms;
-        }
+      padding: $spacing-xxs;
+      flex: 1;
     }
     .price {
-        color: $blue-grey-2;
-        font-weight: $font-weight-chunky;
+      margin-right: $spacing-s;
     }
-    .citybump {
-        color: $walla-main
+    tsl-item-avatar {
+      ::ng-deep div {
+        @include square(32px);
+      }
     }
-    .countrybump {
-        color: $country-bump;
-    }
-    .type {
-        display: flex;        
-        flex-direction: column;
-        flex: 1;
-    }
-    .planned-label {
-        font-weight: $font-weight-chunky;
-        color: $blue-grey-2;
-    }
-    .close-icon {
-        @include square(16px);
-        margin: $spacing-ml $spacing-s $spacing-s 0;
-        cursor: pointer;
-    }
-    .cart-item {
-        display: flex;
-        align-items: center;
-        .cart-box {
-        padding: $spacing-xxs;
-        flex: 1;
-        }
-        .price {
-        margin-right: $spacing-s;
-        }
-        tsl-item-avatar {
-            ::ng-deep div {
-                @include square(32px);
-            }
-        }
-    }
+  }
 }
 
 .cart-balance {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    color: $blue-grey-1;
-    font-weight: $font-weight-chunky;
-    .cart-balance-title {
-        font-size: $font-size-xs;
-        text-transform: uppercase;
-        .balance {
-            margin-right: $spacing-xxs;
-        }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: $blue-grey-1;
+  font-weight: $font-weight-chunky;
+  .cart-balance-title {
+    font-size: $font-size-xs;
+    text-transform: uppercase;
+    .balance {
+      margin-right: $spacing-xxs;
     }
-    .cart-balance-number {
-        font-size: $font-size-xl;
-    }
+  }
+  .cart-balance-number {
+    font-size: $font-size-xl;
+  }
 }
 
 .cart-separator {
-    width: 100%;
-    height: 1px;
-    background-color: $blue-grey-5;
-    margin: $spacing-ms 0;
+  width: 100%;
+  height: 1px;
+  background-color: $blue-grey-5;
+  margin: $spacing-ms 0;
 }
 
-.btn-wrapper { 
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: $spacing-ml;
-    background-color: $white;
-    tsl-button {
-        display: block;
-        ::ng-deep .btn {
-            width: 100%;
-        }
+.btn-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: $spacing-ml;
+  background-color: $white;
+  tsl-button {
+    display: block;
+    ::ng-deep .btn {
+      width: 100%;
     }
+  }
 }

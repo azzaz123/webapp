@@ -1,52 +1,52 @@
-@import "~style/common";
+@import '~style/common';
 $send-icon-size: 40px;
 
-p  {
-    font-size: $font-size-m;
-    margin-top: $spacing-l;
-    padding: $spacing-xxl 0;
-    color: $blue-grey-1;
+p {
+  font-size: $font-size-m;
+  margin-top: $spacing-l;
+  padding: $spacing-xxl 0;
+  color: $blue-grey-1;
 }
 
 form {
-    position: relative;
-    input.form-control {
-        height: 30%;
-        padding: 0 0 $spacing-xs;
-        border-width: 0 0 1px;
-        border-radius: 0;
-    }
-    label {
-        font-size: $font-size-m;
-        color: $blue-grey-1;
-    }
+  position: relative;
+  input.form-control {
+    height: 30%;
+    padding: 0 0 $spacing-xs;
+    border-width: 0 0 1px;
+    border-radius: 0;
+  }
+  label {
+    font-size: $font-size-m;
+    color: $blue-grey-1;
+  }
 }
 
-
 .small p {
-    color: $blue-grey-3;
-    margin-top: $spacing-xs;
-    padding: 0;
-    font-size: $font-size-xxs;
+  color: $blue-grey-3;
+  margin-top: $spacing-xs;
+  padding: 0;
+  font-size: $font-size-xxs;
 }
 
 #send {
-    cursor: pointer;
-    position: absolute;
-    bottom: 7px;
-    right: 0;
-    border-radius: 50%;
-    background: $blue-grey-4;
-    @include square($send-icon-size);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: .15s ease all;
-    mat-icon {
-      width: 22px;
-      height: 23px;
-    }
-    &.selected {
-      background: $walla-main;
-    }
+  cursor: pointer;
+  position: absolute;
+  bottom: 7px;
+  right: 0;
+  border-radius: 50%;
+  border: 0;
+  background: $blue-grey-4;
+  @include square($send-icon-size);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.15s ease all;
+  tsl-svg-icon {
+    width: 22px;
+    height: 23px;
+  }
+  &.selected {
+    background: $walla-main;
+  }
 }

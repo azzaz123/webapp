@@ -1,4 +1,8 @@
-import { HttpClientTestingModule, TestRequest, HttpTestingController } from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  TestRequest,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
 import { environment } from '../../../../../environments/environment';
@@ -8,10 +12,14 @@ import { ItemStatisticFullResponse } from './item-stats-response.interface';
 
 export const MOCK_ITEM_STATS: ItemStatisticFullResponse = {
   entries: [
-    { date: '2020-20-20', bumped: true, values: { views: 123, chats: 0, favs: 42 } },
+    {
+      date: '2020-20-20',
+      bumped: true,
+      values: { views: 123, chats: 0, favs: 42 },
+    },
     { date: 'asap', values: { views: 10, chats: 0, favs: 1 } },
-  ]
-}
+  ],
+};
 
 describe('ItemStatsService', () => {
   let httpMock: HttpTestingController;
@@ -19,14 +27,12 @@ describe('ItemStatsService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        ItemStatsService
-      ],
+      providers: [ItemStatsService],
       imports: [HttpClientTestingModule],
     });
 
-    service = TestBed.get(ItemStatsService);
-    httpMock = TestBed.get(HttpTestingController);
+    service = TestBed.inject(ItemStatsService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {
@@ -39,7 +45,7 @@ describe('ItemStatsService', () => {
       const itemId = '123';
       const expectedUrl = `${environment.baseUrl}${ITEM_STATS_ENDPOINT}${itemId}`;
 
-      service.getStatistics(itemId).subscribe(r => response = r);
+      service.getStatistics(itemId).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(MOCK_ITEM_STATS);
 

@@ -1,16 +1,26 @@
-import { forkJoin } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { CarSuggestionsService } from './car-suggestions.service';
-import { IOption } from 'ng-select';
+import { IOption } from 'app/dropdown/utils/option.interface';
 import { CarKeysService } from './car-keys.service';
 import { Router } from '@angular/router';
 import { UploadEvent } from '../upload-event.interface';
-import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbModal,
+  NgbModalRef,
+  NgbPopoverConfig,
+} from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { Car } from '../../core/item/car';
-import { find, omit, isEqual } from 'lodash-es';
+import { omit, isEqual } from 'lodash-es';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { CARS_CATEGORY } from '../../core/item/item-categories';
 import { ItemService } from '../../core/item/item.service';
@@ -18,28 +28,29 @@ import { CarInfo, CarContent } from '../../core/item/item-response.interface';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { UserService } from '../../core/user/user.service';
 import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
-import { tap } from 'rxjs/operators';
+import { tap, finalize } from 'rxjs/operators';
 import {
   ANALYTIC_EVENT_TYPES,
   ANALYTICS_EVENT_NAMES,
   SCREEN_IDS,
   AnalyticsEvent,
   EditItemCar,
-  ListItemCar
+  ListItemCar,
 } from '../../core/analytics/analytics-constants';
+import { whitespaceValidator } from '../../core/form-validators/formValidators.func';
 
 @Component({
   selector: 'tsl-upload-car',
   templateUrl: './upload-car.component.html',
-  styleUrls: ['./upload-car.component.scss']
+  styleUrls: ['./upload-car.component.scss'],
 })
 export class UploadCarComponent implements OnInit {
-
   @Output() onValidationError: EventEmitter<any> = new EventEmitter();
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   @Input() item: Car;
   @Input() urgentPrice: number;
+
   public uploadForm: FormGroup;
   public models: IOption[];
   public years: IOption[];
@@ -48,18 +59,22 @@ export class UploadCarComponent implements OnInit {
   public carTypes: IOption[];
   public currencies: IOption[] = [
     { value: 'EUR', label: '€' },
-    { value: 'GBP', label: '£' }
+    { value: 'GBP', label: '£' },
   ];
   public loading: boolean;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   private oldFormValue: any;
+  public currentYear = new Date().getFullYear();
   public isUrgent = false;
   public customMake = false;
   public customVersion = false;
-  private settingItem: boolean;
   public uploadCompletedPercentage = 0;
 
-  constructor(private fb: FormBuilder,
+  isLoadingModels: boolean;
+  isLoadingYears: boolean;
+
+  constructor(
+    private fb: FormBuilder,
     private carSuggestionsService: CarSuggestionsService,
     private carKeysService: CarKeysService,
     private router: Router,
@@ -70,19 +85,23 @@ export class UploadCarComponent implements OnInit {
     private analyticsService: AnalyticsService,
     private userService: UserService,
     private subscriptionService: SubscriptionsService,
-    config: NgbPopoverConfig) {
+    private popoverConfig: NgbPopoverConfig
+  ) {
     this.uploadForm = fb.group({
       id: '',
       category_id: CARS_CATEGORY,
       images: [[], [Validators.required]],
-      model: [{ value: '', disabled: true }, [Validators.required]],
-      brand: ['', [Validators.required]],
-      title: ['', [Validators.required]],
-      year: [{ value: '', disabled: true }, [Validators.required]],
+      model: ['', [Validators.required, whitespaceValidator]],
+      brand: ['', [Validators.required, whitespaceValidator]],
+      title: ['', [Validators.required, whitespaceValidator]],
+      year: [
+        '',
+        [Validators.required, this.min(1900), this.max(this.currentYear)],
+      ],
       sale_price: ['', [Validators.required, this.min(0), this.max(999999999)]],
       financed_price: ['', [this.min(0), this.max(999999999)]],
       currency_code: ['EUR', [Validators.required]],
-      version: [{ value: '', disabled: true }, [Validators.required]],
+      version: ['', [Validators.required, whitespaceValidator]],
       num_seats: ['', [this.min(0), this.max(99)]],
       num_doors: ['', [this.min(0), this.max(99)]],
       body_type: null,
@@ -94,61 +113,182 @@ export class UploadCarComponent implements OnInit {
       sale_conditions: fb.group({
         fix_price: false,
         exchange_allowed: false,
-        shipping_allowed: false
+        shipping_allowed: false,
       }),
       location: this.fb.group({
-        address: ['', [Validators.required]],
-        latitude: ['', [Validators.required]],
-        longitude: ['', [Validators.required]],
-      })
+        address: ['', [Validators.required, whitespaceValidator]],
+        latitude: ['', [Validators.required, whitespaceValidator]],
+        longitude: ['', [Validators.required, whitespaceValidator]],
+      }),
     });
-    config.placement = 'right';
-    config.triggers = 'focus:blur';
-    config.container = 'body';
+    this.initializePopoverConfiguration();
   }
 
   ngOnInit() {
-    this.getBrands();
-    this.getCarTypes();
-    this.setItemData();
+    const isItemEdit = !!this.item;
+
+    if (isItemEdit) {
+      return this.initializeEditForm();
+    }
+    this.initializeUploadForm();
   }
 
-  private setItemData() {
-    if (this.item) {
-      this.settingItem = true;
-      const carYear: string = this.item.year ? this.item.year.toString() : '';
-      const carCategory: string = this.item.categoryId ? this.item.categoryId.toString() : '';
-      this.uploadForm.patchValue({
+  private initializeUploadForm(): void {
+    forkJoin([this.getBrands(), this.getCarTypes()])
+      .pipe(finalize(() => this.subscribeToFieldsChanges()))
+      .subscribe(([brands, carTypes]) => {
+        this.brands = brands;
+        this.carTypes = carTypes;
+      });
+  }
+
+  private initializeEditForm(): void {
+    this.uploadForm.patchValue(
+      {
         id: this.item.id,
+        model: this.item.model,
+        brand: this.item.brand,
         title: this.item.title,
+        year: `${this.item.year}`,
         sale_price: this.item.salePrice,
         financed_price: this.item.financedPrice,
-        currency_code: this.item.currencyCode,
-        storytelling: this.item.description,
-        sale_conditions: this.item.saleConditions,
-        category_id: carCategory,
+        version: this.item.version,
         num_seats: this.item.numSeats,
         num_doors: this.item.numDoors,
         body_type: this.item.bodyType,
         km: this.item.km,
+        storytelling: this.item.description,
         engine: this.item.engine,
         gearbox: this.item.gearbox,
         horsepower: this.item.horsepower,
-        brand: this.item.brand,
-        model: this.item.model,
-        year: carYear,
-        version: this.item.version
+        sale_conditions: {
+          fix_price: this.item.saleConditions?.fix_price,
+          exchange_allowed: this.item.saleConditions?.exchange_allowed,
+          shipping_allowed: this.item.saleConditions?.shipping_allowed,
+        },
+      },
+      { emitEvent: false }
+    );
+
+    forkJoin([
+      this.getBrands(),
+      this.getVersions(`${this.item.year}`),
+      this.getCarTypes(),
+    ])
+      .pipe(
+        finalize(() => {
+          this.customVersion = !this.versions.find(
+            (version) => this.item.version === version.value
+          );
+          this.customMake = !this.brands.find(
+            (brand) => this.item.brand === brand.value
+          );
+          this.subscribeToFieldsChanges();
+        })
+      )
+      .subscribe(([brands, versions, carTypes]) => {
+        this.brands = brands;
+        this.versions = versions;
+        this.carTypes = carTypes;
       });
-      this.getModels(this.item.brand, true);
-      this.getYears(this.item.model, true);
-      this.getVersions(carYear, true);
-      this.detectFormChanges();
-    }
+  }
+
+  private subscribeToFieldsChanges(): void {
+    this.subscribeToBrandChanges();
+    this.subscribeToModelChanges();
+    this.subscribeToYearChanges();
+    this.subscribeToVersionChanges();
+    this.detectFormChanges();
+  }
+
+  private initializePopoverConfiguration(): void {
+    this.popoverConfig.placement = 'right';
+    this.popoverConfig.triggers = 'focus:blur';
+    this.popoverConfig.container = 'body';
+  }
+
+  private subscribeToBrandChanges(): void {
+    this.uploadForm.get('brand').valueChanges.subscribe((brand: string) => {
+      this.resetFormFields([
+        'model',
+        'title',
+        'year',
+        'version',
+        'num_seats',
+        'num_doors',
+        'body_type',
+        'km',
+        'engine',
+        'gearbox',
+        'horsepower',
+      ]);
+      this.getModels();
+    });
+  }
+
+  private subscribeToModelChanges(): void {
+    this.uploadForm.get('model').valueChanges.subscribe((model: string) => {
+      this.resetFormFields([
+        'title',
+        'year',
+        'version',
+        'num_seats',
+        'num_doors',
+        'body_type',
+        'km',
+        'engine',
+        'gearbox',
+        'horsepower',
+      ]);
+      this.getYears();
+    });
+  }
+
+  private subscribeToYearChanges(): void {
+    this.uploadForm.get('year').valueChanges.subscribe((year: string) => {
+      this.resetFormFields([
+        'version',
+        'num_seats',
+        'num_doors',
+        'body_type',
+        'km',
+        'engine',
+        'gearbox',
+        'horsepower',
+      ]);
+      this.autocompleteTitle();
+      this.getVersions(year).subscribe((versions: IOption[]) => {
+        this.versions = versions;
+      });
+    });
+  }
+
+  private subscribeToVersionChanges(): void {
+    this.uploadForm.get('version').valueChanges.subscribe((version: string) => {
+      this.resetFormFields([
+        'num_seats',
+        'num_doors',
+        'body_type',
+        'km',
+        'engine',
+        'gearbox',
+        'horsepower',
+      ]);
+      this.getAutocompleteFields(version).subscribe((fields: CarInfo) => {
+        this.uploadForm.patchValue(fields, { emitEvent: false });
+      });
+    });
   }
 
   private detectFormChanges() {
     this.uploadForm.valueChanges.subscribe((value) => {
-      if (this.brands && this.carTypes && this.models && this.years && this.versions) {
+      if (
+        this.brands &&
+        this.carTypes &&
+        this.models &&
+        this.years &&
+        this.versions
+      ) {
         const oldItemData = omit(this.oldFormValue, ['images', 'location']);
         const newItemData = omit(value, ['images', 'location']);
         if (!this.oldFormValue) {
@@ -163,107 +303,77 @@ export class UploadCarComponent implements OnInit {
     });
   }
 
-  public noop() {
+  private getBrands(): Observable<IOption[]> {
+    return this.carSuggestionsService.getBrands();
   }
 
-  private getBrands() {
-    this.carSuggestionsService.getBrands().subscribe((brands: IOption[]) => {
-      this.brands = brands;
-      this.markFieldAsPristine('brand');
-      if (this.item) {
-        this.customMake = !find(this.brands, { value: this.item.brand });
-      }
-    });
+  private getCarTypes(): Observable<IOption[]> {
+    return this.carKeysService.getTypes();
   }
 
-  private getCarTypes() {
-    this.carKeysService.getTypes().subscribe((carTypes: IOption[]) => {
-      this.carTypes = carTypes;
-      this.markFieldAsPristine('body_type');
-    });
+  private getModels(): void {
+    this.isLoadingModels = true;
+    this.carSuggestionsService
+      .getModels(this.uploadForm.get('brand').value)
+      .pipe(finalize(() => (this.isLoadingModels = false)))
+      .subscribe((models: IOption[]) => {
+        this.models = models;
+      });
   }
 
-  public getModels(brand: string, editMode: boolean = false) {
-    this.carSuggestionsService.getModels(brand).subscribe((models: IOption[]) => {
-      if (models.length <= 0) {
-        this.customMake = true;
-      }
-      this.models = models;
-      this.toggleField('model', 'enable', !editMode);
-      if (!editMode) {
-        this.toggleField('year', 'disable');
-        this.toggleField('version', 'disable');
-      }
-      if (!this.settingItem) {
-        this.resetTitle();
-      }
-    });
+  private getYears(): void {
+    this.isLoadingYears = true;
+    this.carSuggestionsService
+      .getYears(
+        this.uploadForm.get('brand').value,
+        this.uploadForm.get('model').value
+      )
+      .pipe(finalize(() => (this.isLoadingYears = false)))
+      .subscribe((years: IOption[]) => {
+        this.years = years;
+      });
   }
 
-  public getYears(model: string, editMode: boolean = false) {
-    this.carSuggestionsService.getYears(
-      this.uploadForm.get('brand').value,
-      model
-    ).subscribe((years: IOption[]) => {
-      this.years = years;
-      this.toggleField('year', 'enable', !editMode);
-      if (!editMode) {
-        this.toggleField('version', 'disable');
-      }
-      if (!this.settingItem) {
-        this.resetTitle();
-      }
-    });
-  }
-
-  public getVersions(year: string, editMode: boolean = false) {
-    this.carSuggestionsService.getVersions(
+  private getVersions(year: string): Observable<IOption[]> {
+    return this.carSuggestionsService.getVersions(
       this.uploadForm.get('brand').value,
       this.uploadForm.get('model').value,
       year
-    ).subscribe((versions: IOption[]) => {
-      this.versions = versions;
-      this.toggleField('version', 'enable', !editMode);
-      if (this.item) {
-        this.customVersion = !find(this.versions, { value: this.item.version });
-      }
-      if (!this.settingItem) {
-        this.setTitle();
-      }
-      this.settingItem = false;
-    });
+    );
   }
 
-  public getInfo(version: string) {
-    this.itemService.getCarInfo(
+  private getAutocompleteFields(version: string) {
+    return this.itemService.getCarInfo(
       this.uploadForm.get('brand').value,
       this.uploadForm.get('model').value,
       version
-    ).subscribe((carInfo: CarInfo) => {
-      this.uploadForm.patchValue(carInfo);
+    );
+  }
+
+  private autocompleteTitle() {
+    const brand = this.uploadForm.get('brand').value;
+    const model = this.uploadForm.get('model').value;
+    const year = this.uploadForm.get('year').value;
+    const title = [brand, model, year]
+      .filter((t) => t)
+      .join(' ')
+      .trim();
+
+    this.uploadForm.get('title').patchValue(title);
+  }
+
+  private resetFormFields(fields: string[]): void {
+    fields.forEach((field) => {
+      this.uploadForm.get(field).reset(undefined, { emitEvent: false });
     });
   }
 
-  private setTitle() {
-    this.uploadForm.get('title').patchValue(
-      this.uploadForm.get('brand').value + ' ' +
-      this.uploadForm.get('model').value + ' ' +
-      this.uploadForm.get('year').value
-    );
-    this.uploadForm.get('title').markAsDirty();
-  }
-
-  private resetTitle() {
-    this.uploadForm.get('title').patchValue('');
-    this.uploadForm.get('title').markAsPristine();
-  }
-
-  onSubmit() {
+  onSubmit(): void {
     if (this.uploadForm.valid) {
       this.loading = true;
       this.uploadEvent.emit({
         type: this.item ? 'update' : 'create',
-        values: this.uploadForm.value
+        values: this.uploadForm.value,
       });
     } else {
       this.uploadForm.markAsPending();
@@ -282,18 +392,23 @@ export class UploadCarComponent implements OnInit {
   onUploaded(uploadEvent: any) {
     this.onFormChanged.emit(false);
     if (this.item) {
-      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, { category: this.uploadForm.value.category_id });
+      this.trackingService.track(
+        TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS,
+        { category: this.uploadForm.value.category_id }
+      );
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
     }
     if (this.isUrgent && uploadEvent.action !== 'createdOnHold') {
-      this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, { category: this.uploadForm.value.category_id });
+      this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, {
+        category: this.uploadForm.value.category_id,
+      });
       uploadEvent.action = 'urgent';
       localStorage.setItem('transactionType', 'urgent');
     }
 
     if (uploadEvent.action === 'createdOnHold') {
-      this.subscriptionService.getUserSubscriptionType().subscribe(type => {
+      this.subscriptionService.getUserSubscriptionType().subscribe((type) => {
         this.redirectToList(uploadEvent, type);
       });
     } else {
@@ -312,7 +427,7 @@ export class UploadCarComponent implements OnInit {
   private getRedirectParams(uploadEvent, userType: number) {
     const params: any = {
       [uploadEvent.action]: true,
-      itemId: uploadEvent.response.id || uploadEvent.response
+      itemId: uploadEvent.response.id || uploadEvent.response,
     };
 
     if (this.item && this.item.flags.onhold) {
@@ -326,39 +441,32 @@ export class UploadCarComponent implements OnInit {
     return params;
   }
 
-  onError(response: any) {
+  public onError(response: any) {
     this.loading = false;
     if (this.item) {
-      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_ERROR, { category: this.uploadForm.value.category_id });
+      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_ERROR, {
+        category: this.uploadForm.value.category_id,
+      });
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_ERROR);
     }
   }
 
-  private markFieldAsPristine(field: string) {
-    setTimeout(() => {
-      this.uploadForm.get(field).markAsPristine();
-    });
-  }
-
-  private toggleField(field: string, action: string, reset: boolean = true) {
-    this.uploadForm.get(field)[action]();
-    if (reset) {
-      this.uploadForm.get(field).setValue('');
-    }
-    this.markFieldAsPristine(field);
-  }
-
   preview() {
-    const modalRef: NgbModalRef = this.modalService.open(PreviewModalComponent, {
-      windowClass: 'preview'
-    });
+    const modalRef: NgbModalRef = this.modalService.open(
+      PreviewModalComponent,
+      {
+        windowClass: 'preview',
+      }
+    );
     modalRef.componentInstance.itemPreview = this.uploadForm.value;
     modalRef.componentInstance.getBodyType();
-    modalRef.result.then(() => {
-      this.onSubmit();
-    }, () => {
-    });
+    modalRef.result.then(
+      () => {
+        this.onSubmit();
+      },
+      () => {}
+    );
   }
 
   private min(min: number): ValidatorFn {
@@ -367,7 +475,7 @@ export class UploadCarComponent implements OnInit {
         return null;
       }
       const v: number = Number(control.value);
-      return v < min ? { 'min': { 'requiredMin': min, 'actualMin': v } } : null;
+      return v < min ? { min: { requiredMin: min, actualMin: v } } : null;
     };
   }
 
@@ -377,7 +485,7 @@ export class UploadCarComponent implements OnInit {
         return null;
       }
       const v: number = Number(control.value);
-      return v > max ? { 'max': { 'requiredMax': max, 'actualMax': v } } : null;
+      return v > max ? { max: { requiredMax: max, actualMax: v } } : null;
     };
   }
 
@@ -390,83 +498,96 @@ export class UploadCarComponent implements OnInit {
   }
 
   public toggleCustomMakeSelection() {
-    if (!this.customMake) {
-      this.customMake = true;
-      this.uploadForm.get('brand').patchValue('');
-      this.toggleField('model', 'enable');
-      this.toggleField('year', 'enable');
-      this.toggleField('version', 'enable');
-      if (!this.customVersion) {
-        this.customVersion = !this.customVersion;
-      }
-    } else {
-      this.customMake = false;
-      this.uploadForm.get('brand').patchValue('');
-      this.toggleField('model', 'disable');
-      this.toggleField('year', 'disable');
-      this.toggleField('version', 'disable');
-      this.customVersion = !this.customVersion;
-    }
+    this.resetFormFields(['brand', 'model', 'year']);
+    this.customMake = !this.customMake;
   }
 
   public toggleCustomVersionSelection() {
+    this.resetFormFields(['version']);
     this.customVersion = !this.customVersion;
-    if (this.customVersion) {
-      this.toggleField('version', 'enable');
-    } else if (!this.customMake && !this.years && !this.brands && !this.models || this.customMake) {
-      this.toggleField('version', 'disable');
-    }
   }
 
   public updateUploadPercentage(percentage: number) {
     this.uploadCompletedPercentage = Math.round(percentage);
   }
 
+  get modelFieldDisabled(): boolean {
+    return this.uploadForm.get('brand').invalid && !this.customMake;
+  }
+
+  get yearFieldDisabled(): boolean {
+    const modelField = this.uploadForm.get('model');
+
+    return (modelField.disabled || modelField.invalid) && !this.customMake;
+  }
+
+  get versionFieldDisabled(): boolean {
+    const yearField = this.uploadForm.get('year');
+
+    return (
+      (yearField.disabled || yearField.invalid) &&
+      !this.customMake &&
+      !this.customVersion
+    );
+  }
+
   private trackEditOrUpload(isEdit: boolean, item: CarContent) {
     return forkJoin([
       this.userService.isProfessional(),
       this.userService.isProUser(),
-    ]).pipe(tap((values: any[]) => {
-      const baseEventAttrs: any = {
-        itemId: item.id,
-        categoryId: item.category_id,
-        salePrice: item.sale_price,
-        title: item.title,
-        brand: item.brand,
-        model: item.model,
-        year: item.year,
-        km: item.km || null,
-        gearbox: item.gearbox || null,
-        engine: item.engine || null,
-        hp: item.horsepower || null,
-        numDoors: item.num_doors || null,
-        bodyType: item.body_type || null,
-        isCarDealer: values[0],
-        isPro: values[1]
-      };
+    ]).pipe(
+      tap((values: any[]) => {
+        const baseEventAttrs: any = {
+          itemId: item.id,
+          categoryId: item.category_id,
+          salePrice: item.sale_price,
+          title: item.title,
+          brand: item.brand,
+          model: item.model,
+          year: item.year,
+          km: item.km || null,
+          gearbox: item.gearbox || null,
+          engine: item.engine || null,
+          hp: item.horsepower || null,
+          numDoors: item.num_doors || null,
+          bodyType: item.body_type || null,
+          isCarDealer: values[0],
+          isPro: values[1],
+        };
 
-      if (isEdit) {
-        const editItemCarEvent: AnalyticsEvent<EditItemCar> = {
-          name: ANALYTICS_EVENT_NAMES.EditItemCar,
-          eventType: ANALYTIC_EVENT_TYPES.Other,
-          attributes: {
-            ...baseEventAttrs,
-            screenId: SCREEN_IDS.EditItem
-          }
-        };
-        this.analyticsService.trackEvent(editItemCarEvent);
-      } else {
-        const listItemCarEvent: AnalyticsEvent<ListItemCar> = {
-          name: ANALYTICS_EVENT_NAMES.ListItemCar,
-          eventType: ANALYTIC_EVENT_TYPES.Other,
-          attributes: {
-            ...baseEventAttrs,
-            screenId: SCREEN_IDS.Upload
-          }
-        };
-        this.analyticsService.trackEvent(listItemCarEvent);
-      }
-    }));
+        if (isEdit) {
+          const editItemCarEvent: AnalyticsEvent<EditItemCar> = {
+            name: ANALYTICS_EVENT_NAMES.EditItemCar,
+            eventType: ANALYTIC_EVENT_TYPES.Other,
+            attributes: {
+              ...baseEventAttrs,
+              screenId: SCREEN_IDS.EditItem,
+            },
+          };
+          this.analyticsService.trackEvent(editItemCarEvent);
+        } else {
+          const listItemCarEvent: AnalyticsEvent<ListItemCar> = {
+            name: ANALYTICS_EVENT_NAMES.ListItemCar,
+            eventType: ANALYTIC_EVENT_TYPES.Other,
+            attributes: {
+              ...baseEventAttrs,
+              screenId: SCREEN_IDS.Upload,
+            },
+          };
+          this.analyticsService.trackEvent(listItemCarEvent);
+        }
+      })
+    );
+  }
+  public onIsModelsNeeded(): void {
+    if (!this.models) {
+      this.getModels();
+    }
   }
 
+  public onIsYearsNeeded(): void {
+    if (!this.years) {
+      this.getYears();
+    }
+  }
 }

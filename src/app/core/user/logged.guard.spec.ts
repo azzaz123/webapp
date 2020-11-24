@@ -1,76 +1,34 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
-
-import {map} from 'rxjs/operators';
 import { TestBed } from '@angular/core/testing';
-import { LoggedGuard } from './logged.guard';
+import { LoggedGuard, REDIRECT_SECRET } from './logged.guard';
 import { environment } from '../../../environments/environment';
-import { WindowRef } from '../window/window.service';
 import { AccessTokenService } from '../http/access-token.service';
-import { NgxPermissionsService } from 'ngx-permissions';
-import { UserService } from './user.service';
-import { User, PERMISSIONS } from './user';
-import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-
-class MockWindow {
-  public nativeWindow = {
-    location: {
-      href: ''
-    }
-  };
-}
+import { CookieService } from 'ngx-cookie';
+import * as CryptoEUTF8 from 'crypto-js/enc-utf8';
+import * as CryptoJSAES from 'crypto-js/aes';
 
 describe('LoggedGuard', (): void => {
-
   let loggedGuard: LoggedGuard;
-  let window: WindowRef;
   let accessTokenService: AccessTokenService;
-  let permissionService: NgxPermissionsService;
-  let userService: UserService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        { provide: WindowRef, useClass: MockWindow },
-        {
-          provide: AccessTokenService, useValue: {
-            accessToken: null,
-            storeAccessToken(value) {
-              this.accessToken = value;
-            },
-            getTokenSignature() {
-              return 'thesignature';
-            }
-          }
-        },
         LoggedGuard,
+        AccessTokenService,
         {
-          provide: NgxPermissionsService,
+          provide: CookieService,
           useValue: {
-            getPermissions() { },
-            addPermission() { }
-          }
-        },
-        {
-          provide: UserService,
-          useValue: {
-            me(): Observable<User> {
-              return observableOf(MOCK_USER);
-            },
-            setPermission(userType: string): void { },
-            setSubscriptionsFeatureFlag() {
-              return observableOf(true);
-            }
+            put(value) {},
+            remove() {},
+            get() {},
           },
-        }
-      ]
+        },
+      ],
     });
-    loggedGuard = TestBed.get(LoggedGuard);
-    window = TestBed.get(WindowRef);
-    accessTokenService = TestBed.get(AccessTokenService);
-    accessTokenService.storeAccessToken(null);
-    userService = TestBed.get(UserService);
-    permissionService = TestBed.get(NgxPermissionsService);
+    loggedGuard = TestBed.inject(LoggedGuard);
+    accessTokenService = TestBed.inject(AccessTokenService);
+
+    window.location.href = 'https://web.wallapop.com';
   });
 
   it('should create an instance', (): void => {
@@ -78,47 +36,78 @@ describe('LoggedGuard', (): void => {
   });
 
   describe('canActivate', (): void => {
-    let redirectUrl;
+    describe('when the user is logged out', () => {
+      it('should deny access and redirect to SEO web with pending redirect', () => {
+        const decriptAux = (toDecrypt: string) =>
+          CryptoJSAES.decrypt(
+            decodeURIComponent(toDecrypt),
+            REDIRECT_SECRET
+          ).toString(CryptoEUTF8);
+        const expectedUrl = `${environment.siteUrl}login?redirectUrl=`;
+        const expectedRedirectQueryParam = window.location.href;
 
-    beforeEach(() => {
-      spyOn(permissionService, 'getPermissions').and.returnValue({});
-      spyOn(userService, 'me').and.callThrough();
-      redirectUrl = encodeURIComponent(window.nativeWindow.location.href);
+        const result = loggedGuard.canActivate();
+        const resultRedirectQueryParam = window.location.href
+          .split('?')[1]
+          .replace('redirectUrl=', '');
+
+        expect(result).toEqual(false);
+        expect(window.location.href.startsWith(expectedUrl)).toEqual(true);
+        expect(decriptAux(resultRedirectQueryParam)).toEqual(
+          expectedRedirectQueryParam
+        );
+      });
     });
 
-    it('should return false and redirect if no access token', (): void => {
-      const result = loggedGuard.canActivate();
+    describe('when access token in cookies', () => {
+      beforeEach(() => accessTokenService.storeAccessToken('abc'));
 
-      expect(result).toBeFalsy();
-      expect(window.nativeWindow.location.href).toBe(`${environment.siteUrl}login?redirectUrl=${redirectUrl}`);
+      it('should allow access and NOT redirect to SEO web if access token', () => {
+        const notExpectedUrl = `${environment.siteUrl}login?redirectUrl=`;
+
+        const result = loggedGuard.canActivate();
+
+        expect(result).toEqual(true);
+        expect(window.location.href.startsWith(notExpectedUrl)).toEqual(false);
+      });
+    });
+  });
+
+  describe('canLoad', () => {
+    describe('when the user is logged out', () => {
+      it('should deny access and redirect to SEO web with pending redirect', () => {
+        const decriptAux = (toDecrypt: string) =>
+          CryptoJSAES.decrypt(
+            decodeURIComponent(toDecrypt),
+            REDIRECT_SECRET
+          ).toString(CryptoEUTF8);
+        const expectedUrl = `${environment.siteUrl}login?redirectUrl=`;
+        const expectedRedirectQueryParam = window.location.href;
+
+        const result = loggedGuard.canActivate();
+        const resultRedirectQueryParam = window.location.href
+          .split('?')[1]
+          .replace('redirectUrl=', '');
+
+        expect(result).toEqual(false);
+        expect(window.location.href.startsWith(expectedUrl)).toEqual(true);
+        expect(decriptAux(resultRedirectQueryParam)).toEqual(
+          expectedRedirectQueryParam
+        );
+      });
     });
 
-    it('should return true and NOT redirect if access token', () => {
-      accessTokenService.storeAccessToken('abc');
-      const result = loggedGuard.canActivate();
+    describe('when access token in cookies', () => {
+      beforeEach(() => accessTokenService.storeAccessToken('abc'));
 
-      expect(result).toBeTruthy();
-      expect(window.nativeWindow.location.href).not.toBe(`${environment.siteUrl}login?redirectUrl=${redirectUrl}`);
-    });
+      it('should allow access and NOT redirect to SEO web if access token', () => {
+        const notExpectedUrl = `${environment.siteUrl}login?redirectUrl=`;
 
-    it('should check the current user permissions', () => {
-      accessTokenService.storeAccessToken('abc');
-      const result = loggedGuard.canActivate();
+        const result = loggedGuard.canActivate();
 
-      expect(permissionService.getPermissions).toHaveBeenCalled();
-      expect(result).toBeTruthy();
-    });
-
-    it('should call userService.me and set the permissions for the user', () => {
-      accessTokenService.storeAccessToken('abc');
-      const result = loggedGuard.canActivate();
-
-      userService.me().pipe(map((u: User) => {
-        expect(userService.setPermission).toHaveBeenCalledWith(u.type);
-      }));
-
-      expect(userService.me).toHaveBeenCalled();
-      expect(result).toBeTruthy();
+        expect(result).toEqual(true);
+        expect(window.location.href.startsWith(notExpectedUrl)).toEqual(false);
+      });
     });
   });
 });

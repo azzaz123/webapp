@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 .main-box {
   tsl-here-maps,
@@ -21,29 +21,4 @@
   border-radius: $border-radius;
   border: solid 1px $blue-grey-5;
   background: url(/assets/icons/user-marker-sad.svg) no-repeat center;
-}
-
-.checkbox-corporate {
-  margin-top: $spacing-ml;
-  span {
-    font-size: $font-size-m;
-    user-select: none;
-  }
-}
-
-#condition ::ng-deep select-dropdown > div {
-  .options ul li {
-    background-repeat: no-repeat;
-    background-position: $spacing-s;
-    padding-left: $spacing-xxxl !important;
-    &:nth-child(1) {
-      background-image: url(/assets/icons/new_construction.svg);
-    }
-    &:nth-child(2) {
-      background-image: url(/assets/icons/to_reform.svg);
-    }
-    &:nth-child(3) {
-      background-image: url(/assets/icons/mint.svg);
-    }
-  }
 }

@@ -14,5 +14,7 @@ export const environment: Environment = {
   remoteConsoleUrl: 'https://client-metrics.wallapop.com/metrics/chat',
   didomiKey: 'ffa4bae4-25a5-42df-a1a2-74f3dfa3cd35',
   threatMetrixOrgId: 'bjf37sdb',
-  threatMetrixProfilingDomain: 'clear.wallapop.com'
+  threatMetrixProfilingDomain: 'clear.wallapop.com',
 };
+
+export const isSWEnabled = true;

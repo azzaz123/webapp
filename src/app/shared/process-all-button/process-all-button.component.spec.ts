@@ -1,5 +1,11 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 import { ProcessAllButtonComponent } from './process-all-button.component';
 import { of } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -18,36 +24,38 @@ describe('ProcessAllButtonComponent', () => {
     TestBed.configureTestingModule({
       providers: [
         {
-          provide: TrackingService, useClass: MockTrackingService
+          provide: TrackingService,
+          useClass: MockTrackingService,
         },
         {
-          provide: NgbModal, useValue: {
+          provide: NgbModal,
+          useValue: {
             open() {
               return {
-                result: Promise.resolve()
+                result: Promise.resolve(),
               };
-            }
-          }
+            },
+          },
         },
         {
-          provide: CallsService, useValue: {
+          provide: CallsService,
+          useValue: {
             archiveAll() {
               return of({});
-            }
-          }
-        }
+            },
+          },
+        },
       ],
-      declarations: [ProcessAllButtonComponent]
-    })
-    .compileComponents();
+      declarations: [ProcessAllButtonComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProcessAllButtonComponent);
     component = fixture.componentInstance;
-    modal = TestBed.get(NgbModal);
-    callsService = TestBed.get(CallsService);
-    trackingService = TestBed.get(TrackingService);
+    modal = TestBed.inject(NgbModal);
+    callsService = TestBed.inject(CallsService);
+    trackingService = TestBed.inject(TrackingService);
     fixture.detectChanges();
   });
 
@@ -71,8 +79,9 @@ describe('ProcessAllButtonComponent', () => {
       tick();
 
       expect(callsService.archiveAll).toHaveBeenCalled();
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PHONE_LEAD_LIST_ALL_PROCESSED);
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.PHONE_LEAD_LIST_ALL_PROCESSED
+      );
     }));
   });
-
 });

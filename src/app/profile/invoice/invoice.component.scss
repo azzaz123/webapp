@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 h3 {
   font-size: $font-size-s;
@@ -19,7 +19,7 @@ h3 {
   border: 0;
 }
 
-mat-icon {
+tsl-svg-icon {
   width: 48px;
   height: 48px;
   &.closed {

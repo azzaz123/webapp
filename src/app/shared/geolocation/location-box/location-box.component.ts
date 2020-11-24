@@ -7,27 +7,26 @@ import { User } from '../../../core/user/user';
 @Component({
   selector: 'tsl-location-box',
   templateUrl: './location-box.component.html',
-  styleUrls: ['./location-box.component.scss']
+  styleUrls: ['./location-box.component.scss'],
 })
 export class LocationBoxComponent implements OnInit {
-
   @Input() form: FormGroup;
   @Input() name: string;
   @Input() title: string;
   @Input() updateLocation = true;
   @Input() location;
+  @Input() isIncorrectAddress = false;
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   public user: User;
   public coordinates: Coordinate;
 
-  constructor(private userService: UserService) {
-  }
+  constructor(private userService: UserService) {}
 
   ngOnInit() {
     if (this.location) {
       this.setLocation({
         latitude: this.location.approximated_latitude,
-        longitude: this.location.approximated_longitude
+        longitude: this.location.approximated_longitude,
       });
     } else {
       this.userService.me().subscribe((user: User) => {
@@ -36,11 +35,11 @@ export class LocationBoxComponent implements OnInit {
           this.form.get(this.name).patchValue({
             address: user.location.title,
             latitude: user.location.approximated_latitude,
-            longitude: user.location.approximated_longitude
+            longitude: user.location.approximated_longitude,
           });
           this.setLocation({
             latitude: user.location.approximated_latitude,
-            longitude: user.location.approximated_longitude
+            longitude: user.location.approximated_longitude,
           });
         }
       });
@@ -58,5 +57,4 @@ export class LocationBoxComponent implements OnInit {
   public emitLocation() {
     this.locationSelected.emit();
   }
-
 }

@@ -1,10 +1,12 @@
-
-import {throwError as observableThrowError,  Observable, of } from 'rxjs';
+import { throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { FINANCIAL_CARD, FINANCIAL_STRIPE_CARD } from '../../../../tests/payments.fixtures.spec';
+import {
+  FINANCIAL_CARD,
+  FINANCIAL_STRIPE_CARD,
+} from '../../../../tests/payments.fixtures.spec';
 import { StripeCardSelectionComponent } from './stripe-card-selection.component';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { FINANCIAL_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
@@ -21,35 +23,37 @@ describe('StripeCardSelectionComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [NgbButtonsModule, FormsModule],
-      declarations: [ StripeCardSelectionComponent ],
+      declarations: [StripeCardSelectionComponent],
       providers: [
         EventService,
         I18nService,
         {
-        provide: StripeService, useValue: {
-          getCards() {
-            return of([FINANCIAL_CARD]);
-          }
-        }
-      }],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+          provide: StripeService,
+          useValue: {
+            getCards() {
+              return of([FINANCIAL_CARD]);
+            },
+          },
+        },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(StripeCardSelectionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    stripeService = TestBed.get(StripeService);
-    eventService = TestBed.get(EventService);
-    i18nService = TestBed.get(I18nService);
+    stripeService = TestBed.inject(StripeService);
+    eventService = TestBed.inject(EventService);
+    i18nService = TestBed.inject(I18nService);
   });
 
   describe('ngOnInit', () => {
-
     it('should get and set financial card and emit true if present', () => {
-      spyOn(stripeService, 'getCards').and.returnValue(of([FINANCIAL_STRIPE_CARD]));
+      spyOn(stripeService, 'getCards').and.returnValue(
+        of([FINANCIAL_STRIPE_CARD])
+      );
       spyOn(component.hasCard, 'emit');
 
       component.ngOnInit();
@@ -60,7 +64,7 @@ describe('StripeCardSelectionComponent', () => {
 
     it('should get financial card and emit false if not present', () => {
       component.financialCards = undefined;
-      spyOn(stripeService, 'getCards').and.returnValue(observableThrowError({}));
+      spyOn(stripeService, 'getCards').and.returnValue(throwError({}));
       spyOn(component.hasCard, 'emit');
 
       component.ngOnInit();
@@ -75,7 +79,9 @@ describe('StripeCardSelectionComponent', () => {
       component.ngOnInit();
 
       expect(i18nService.getTranslations).toHaveBeenCalledTimes(1);
-      expect(i18nService.getTranslations).toHaveBeenCalledWith('noResultsFound');
+      expect(i18nService.getTranslations).toHaveBeenCalledWith(
+        'noResultsFound'
+      );
     });
   });
 });

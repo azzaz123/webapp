@@ -10,28 +10,25 @@ describe('BumpTutorialComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BumpTutorialComponent ],
-        providers: [
-          {
-            provide: BumpTutorialService, useValue: {
-              nextStep() {
-              },
-              resetStep() {
-              },
-              prevStep() {
-              }
-            }
-          }
-        ],
-        schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      declarations: [BumpTutorialComponent],
+      providers: [
+        {
+          provide: BumpTutorialService,
+          useValue: {
+            nextStep() {},
+            resetStep() {},
+            prevStep() {},
+          },
+        },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BumpTutorialComponent);
     component = fixture.componentInstance;
-    tutorialService = TestBed.get(BumpTutorialService);
+    tutorialService = TestBed.inject(BumpTutorialService);
   });
 
   describe('ngOnDestroy', () => {
@@ -67,7 +64,7 @@ describe('BumpTutorialComponent', () => {
     it('should call nextStep if keyCode is Right Arrow', () => {
       spyOn(tutorialService, 'nextStep');
       const event = {
-        keyCode: KEY_CODE.RIGHT_ARROW
+        keyCode: KEY_CODE.RIGHT_ARROW,
       };
 
       component.keyEvent(<KeyboardEvent>event);
@@ -78,7 +75,7 @@ describe('BumpTutorialComponent', () => {
     it('should call prevStep if keyCode is Left Arrow', () => {
       spyOn(tutorialService, 'prevStep');
       const event = {
-        keyCode: KEY_CODE.LEFT_ARROW
+        keyCode: KEY_CODE.LEFT_ARROW,
       };
 
       component.keyEvent(<KeyboardEvent>event);
@@ -89,7 +86,7 @@ describe('BumpTutorialComponent', () => {
     it('should call hide if keyCode is Escape', () => {
       spyOn(component, 'hide');
       const event = {
-        keyCode: KEY_CODE.ESC
+        keyCode: KEY_CODE.ESC,
       };
 
       component.keyEvent(<KeyboardEvent>event);
@@ -97,5 +94,4 @@ describe('BumpTutorialComponent', () => {
       expect(component.hide).toHaveBeenCalled();
     });
   });
-
 });

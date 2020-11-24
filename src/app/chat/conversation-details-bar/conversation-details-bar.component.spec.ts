@@ -1,4 +1,9 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 
 import { ConversationDetailsBarComponent } from './conversation-details-bar.component';
 import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
@@ -14,18 +19,42 @@ import { ToastService } from '../../layout/toast/toast.service';
 import { ItemService } from '../../core/item/item.service';
 import { UserService } from '../../core/user/user.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
-import { BlockUserService, BlockUserXmppService, InboxConversationService } from '../service';
+import {
+  BlockUserService,
+  BlockUserXmppService,
+  InboxConversationService,
+} from '../service';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
 import { User } from '../../core/user/user';
 import { SharedModule } from '../../shared/shared.module';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 class MockUserService {
-
-  public user: User = new User('fakeId', 'microName', null,
-    null, null, null, null, null, null,
-    null, null, null, null, null, null,
-    null, null, null, null, null, null, null);
+  public user: User = new User(
+    'fakeId',
+    'microName',
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  );
 
   public reportUser(): Observable<any> {
     return of({});
@@ -37,19 +66,16 @@ class MockUserService {
 }
 
 class MockItemService {
-
   public reportListing(): Observable<any> {
     return of({});
   }
 }
 
 class MockConversationService {
-  public loadMoreMessages() {
-  }
+  public loadMoreMessages() {}
 }
 
 class BlockUserServiceMock {
-
   blockUser(userHash: string) {
     return of();
   }
@@ -66,7 +92,7 @@ describe('ConversationDetailsBarComponent', () => {
   let realTime: RealTimeService;
   let eventService: EventService;
   let toastService: ToastService;
-  let itemService: MockItemService;
+  let itemService: ItemService;
   let userService: UserService;
   let trackingService: TrackingService;
   let modalService: NgbModal;
@@ -77,35 +103,39 @@ describe('ConversationDetailsBarComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
+        HttpClientTestingModule,
         SharedModule,
         NgbModule,
-        NgxPermissionsModule.forRoot()
+        NgxPermissionsModule.forRoot(),
       ],
       declarations: [ConversationDetailsBarComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      providers: [EventService,
+      providers: [
+        EventService,
         {
-          provide: RealTimeService, useValue: {
-            sendRead() {
-            }
-          }
+          provide: RealTimeService,
+          useValue: {
+            sendRead() {},
+          },
         },
-       
+
         { provide: ItemService, useClass: MockItemService },
         { provide: UserService, useClass: MockUserService },
         { provide: TrackingService, useClass: MockTrackingService },
-        { provide: InboxConversationService, useClass: MockConversationService },
+        {
+          provide: InboxConversationService,
+          useClass: MockConversationService,
+        },
         { provide: BlockUserService, useClass: BlockUserServiceMock },
         I18nService,
         {
-          provide: BlockUserXmppService, useValue: {
-            blockUser() {
-            },
-            unblockUser() {
-            }
-          }
-        }
-      ]
+          provide: BlockUserXmppService,
+          useValue: {
+            blockUser() {},
+            unblockUser() {},
+          },
+        },
+      ],
     }).compileComponents();
   });
 
@@ -113,16 +143,16 @@ describe('ConversationDetailsBarComponent', () => {
     fixture = TestBed.createComponent(ConversationDetailsBarComponent);
     component = fixture.componentInstance;
     component.currentConversation = CREATE_MOCK_INBOX_CONVERSATION();
-    realTime = TestBed.get(RealTimeService);
-    eventService = TestBed.get(EventService);
-    userService = TestBed.get(UserService);
-    trackingService = TestBed.get(TrackingService);
-    itemService = TestBed.get(ItemService);
-    toastService = TestBed.get(ToastService);
-    modalService = TestBed.get(NgbModal);
-    blockUserService = TestBed.get(BlockUserService);
-    blockUserXmppService = TestBed.get(BlockUserXmppService);
-    conversationService = TestBed.get(InboxConversationService);
+    realTime = TestBed.inject(RealTimeService);
+    eventService = TestBed.inject(EventService);
+    userService = TestBed.inject(UserService);
+    trackingService = TestBed.inject(TrackingService);
+    itemService = TestBed.inject(ItemService);
+    toastService = TestBed.inject(ToastService);
+    modalService = TestBed.inject(NgbModal);
+    blockUserService = TestBed.inject(BlockUserService);
+    blockUserXmppService = TestBed.inject(BlockUserXmppService);
+    conversationService = TestBed.inject(InboxConversationService);
   });
 
   it('should create', () => {
@@ -134,8 +164,8 @@ describe('ConversationDetailsBarComponent', () => {
       spyOn(modalService, 'open').and.returnValue({
         result: Promise.resolve({
           message: 'Report User Reason',
-          reason: 1
-        })
+          reason: 1,
+        }),
       });
     });
 
@@ -147,12 +177,17 @@ describe('ConversationDetailsBarComponent', () => {
       component.reportUserAction();
       tick();
 
-      expect(userService.reportUser).toHaveBeenCalledWith(component.currentConversation.user.id,
+      expect(userService.reportUser).toHaveBeenCalledWith(
+        component.currentConversation.user.id,
         component.currentConversation.item.id,
         component.currentConversation.id,
         1,
-        'Report User Reason');
-      expect(toastService.show).toHaveBeenCalledWith({text:'The user has been reported correctly', type:'success'});
+        'Report User Reason'
+      );
+      expect(toastService.show).toHaveBeenCalledWith({
+        text: 'The user has been reported correctly',
+        type: 'success',
+      });
     }));
 
     it('should track the UserProfileRepported event', fakeAsync(() => {
@@ -164,10 +199,13 @@ describe('ConversationDetailsBarComponent', () => {
       component.reportUserAction();
       tick();
 
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.USER_PROFILE_REPPORTED, {
-        user_id: 'l1kmzn82zn3p',
-        reason_id: 1
-      });
+      expect(trackingService.track).toHaveBeenCalledWith(
+        TrackingService.USER_PROFILE_REPPORTED,
+        {
+          user_id: 'l1kmzn82zn3p',
+          reason_id: 1,
+        }
+      );
     }));
   });
 
@@ -176,8 +214,8 @@ describe('ConversationDetailsBarComponent', () => {
       spyOn(modalService, 'open').and.returnValue({
         result: Promise.resolve({
           message: 'Report Listing Reason',
-          reason: 1
-        })
+          reason: 1,
+        }),
       });
     });
 
@@ -190,8 +228,15 @@ describe('ConversationDetailsBarComponent', () => {
         component.reportListingAction();
         tick();
 
-        expect(itemService.reportListing).toHaveBeenCalledWith(ITEM_ID, 'Report Listing Reason', 1);
-        expect(toastService.show).toHaveBeenCalledWith({text:'The listing has been reported correctly', type:'success'});
+        expect(itemService.reportListing).toHaveBeenCalledWith(
+          ITEM_ID,
+          'Report Listing Reason',
+          1
+        );
+        expect(toastService.show).toHaveBeenCalledWith({
+          text: 'The listing has been reported correctly',
+          type: 'success',
+        });
       }));
 
       it('should track the ProductRepported event', fakeAsync(() => {
@@ -203,18 +248,23 @@ describe('ConversationDetailsBarComponent', () => {
         component.reportListingAction();
         tick();
 
-        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_REPPORTED, {
-          product_id: ITEM_ID,
-          reason_id: 1
-        });
+        expect(trackingService.track).toHaveBeenCalledWith(
+          TrackingService.PRODUCT_REPPORTED,
+          {
+            product_id: ITEM_ID,
+            reason_id: 1,
+          }
+        );
       }));
     });
 
     describe('error', () => {
       it('should open toast if error 403', fakeAsync(() => {
-        spyOn(itemService, 'reportListing').and.returnValue(throwError({
-          status: 403
-        }));
+        spyOn(itemService, 'reportListing').and.returnValue(
+          throwError({
+            status: 403,
+          })
+        );
         spyOn(toastService, 'show').and.callThrough();
         component.currentConversation = MOCK_CONVERSATION();
 
@@ -229,7 +279,7 @@ describe('ConversationDetailsBarComponent', () => {
   describe('blockUserAction if backend return 200', () => {
     beforeEach(() => {
       spyOn(modalService, 'open').and.returnValue({
-        result: Promise.resolve()
+        result: Promise.resolve(),
       });
     });
 
@@ -242,16 +292,23 @@ describe('ConversationDetailsBarComponent', () => {
       component.blockUserAction();
       tick();
 
-      expect(blockUserService.blockUser).toHaveBeenCalledWith(component.currentConversation.user.id);
-      expect(blockUserXmppService.blockUser).toHaveBeenCalledWith(component.currentConversation.user);
-      expect(toastService.show).toHaveBeenCalledWith({text:'The user has been blocked', type:'success'});
+      expect(blockUserService.blockUser).toHaveBeenCalledWith(
+        component.currentConversation.user.id
+      );
+      expect(blockUserXmppService.blockUser).toHaveBeenCalledWith(
+        component.currentConversation.user
+      );
+      expect(toastService.show).toHaveBeenCalledWith({
+        text: 'The user has been blocked',
+        type: 'success',
+      });
     }));
   });
 
   describe('blockUserAction if backend return 400', () => {
     beforeEach(() => {
       spyOn(modalService, 'open').and.returnValue({
-        result: Promise.resolve()
+        result: Promise.resolve(),
       });
     });
 
@@ -264,7 +321,9 @@ describe('ConversationDetailsBarComponent', () => {
       component.blockUserAction();
       tick();
 
-      expect(blockUserService.blockUser).toHaveBeenCalledWith(component.currentConversation.user.id);
+      expect(blockUserService.blockUser).toHaveBeenCalledWith(
+        component.currentConversation.user.id
+      );
       expect(blockUserXmppService.blockUser).not.toHaveBeenCalled();
       expect(toastService.show).not.toHaveBeenCalled();
     }));
@@ -273,7 +332,7 @@ describe('ConversationDetailsBarComponent', () => {
   describe('unblockUserAction if backend return 200', () => {
     beforeEach(() => {
       spyOn(modalService, 'open').and.returnValue({
-        result: Promise.resolve()
+        result: Promise.resolve(),
       });
     });
 
@@ -286,16 +345,23 @@ describe('ConversationDetailsBarComponent', () => {
       component.unblockUserAction();
       tick();
 
-      expect(blockUserService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user.id);
-      expect(blockUserXmppService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user);
-      expect(toastService.show).toHaveBeenCalledWith({text:'The user has been unblocked',type:'success'});
+      expect(blockUserService.unblockUser).toHaveBeenCalledWith(
+        component.currentConversation.user.id
+      );
+      expect(blockUserXmppService.unblockUser).toHaveBeenCalledWith(
+        component.currentConversation.user
+      );
+      expect(toastService.show).toHaveBeenCalledWith({
+        text: 'The user has been unblocked',
+        type: 'success',
+      });
     }));
   });
 
   describe('unblockUserAction if backend return 400', () => {
     beforeEach(() => {
       spyOn(modalService, 'open').and.returnValue({
-        result: Promise.resolve()
+        result: Promise.resolve(),
       });
     });
 
@@ -308,7 +374,9 @@ describe('ConversationDetailsBarComponent', () => {
       component.unblockUserAction();
       tick();
 
-      expect(blockUserService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user.id);
+      expect(blockUserService.unblockUser).toHaveBeenCalledWith(
+        component.currentConversation.user.id
+      );
       expect(blockUserXmppService.unblockUser).not.toHaveBeenCalled();
       expect(toastService.show).not.toHaveBeenCalled();
     }));

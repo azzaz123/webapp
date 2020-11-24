@@ -22,68 +22,65 @@ describe('AccountComponent', () => {
   let errorsService: ErrorsService;
 
   const componentInstance: any = {
-    init: jasmine.createSpy('init')
+    init: jasmine.createSpy('init'),
   };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        FormsModule,
-        NgbButtonsModule
-      ],
+      imports: [ReactiveFormsModule, FormsModule, NgbButtonsModule],
       providers: [
         {
-          provide: UserService, useValue: {
-          user: MOCK_FULL_USER,
-          me() {
-            return of(MOCK_FULL_USER);
+          provide: UserService,
+          useValue: {
+            user: MOCK_FULL_USER,
+            me() {
+              return of(MOCK_FULL_USER);
+            },
+            edit() {
+              return of({});
+            },
           },
-          edit() {
-            return of({});
-          }
-        }
         },
         {
-          provide: ErrorsService, useValue: {
-          i18nError() {
+          provide: ErrorsService,
+          useValue: {
+            i18nError() {},
+            i18nSuccess() {},
           },
-          i18nSuccess() {
-          }
-        }
         },
         {
-          provide: NgbModal, useValue: {
-          open() {
-            return {
-              componentInstance: componentInstance,
-              result: Promise.resolve(true)
-            };
-          }
-        }
+          provide: NgbModal,
+          useValue: {
+            open() {
+              return {
+                componentInstance: componentInstance,
+                result: Promise.resolve(true),
+              };
+            },
+          },
         },
         {
-          provide: ProfileFormComponent, useValue: {
-            initFormControl() { },
-            canExit() { }
-          }
+          provide: ProfileFormComponent,
+          useValue: {
+            initFormControl() {},
+            canExit() {},
+          },
         },
       ],
       declarations: [AccountComponent],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccountComponent);
     component = fixture.componentInstance;
-    component.formComponent = TestBed.get(ProfileFormComponent);
-    userService = TestBed.get(UserService);
+    component.formComponent = TestBed.inject(ProfileFormComponent);
+    userService = TestBed.inject(UserService);
     spyOn(userService, 'me').and.callThrough();
     fixture.detectChanges();
-    errorsService = TestBed.get(ErrorsService);
-    modalService = TestBed.get(NgbModal);
+    errorsService = TestBed.inject(ErrorsService);
+    modalService = TestBed.inject(NgbModal);
   });
 
   describe('initForm', () => {
@@ -96,10 +93,11 @@ describe('AccountComponent', () => {
     it('should set profileForm with user data', () => {
       component.initForm();
 
-      expect(component.profileForm.get('birth_date').value).toBe(USER_BIRTH_DATE);
+      expect(component.profileForm.get('birth_date').value).toBe(
+        USER_BIRTH_DATE
+      );
       expect(component.profileForm.get('gender').value).toBe(USER_GENDER);
     });
-    
   });
 
   describe('onSubmit', () => {
@@ -109,7 +107,7 @@ describe('AccountComponent', () => {
         spyOn(errorsService, 'i18nSuccess');
         component.profileForm.patchValue({
           birth_date: USER_BIRTH_DATE,
-          gender: USER_GENDER
+          gender: USER_GENDER,
         });
 
         component.onSubmit();
@@ -118,14 +116,13 @@ describe('AccountComponent', () => {
       it('should call edit', () => {
         expect(userService.edit).toHaveBeenCalledWith({
           birth_date: USER_BIRTH_DATE,
-          gender: USER_GENDER
+          gender: USER_GENDER,
         });
       });
 
       it('should call i18nSuccess', () => {
         expect(errorsService.i18nSuccess).toHaveBeenCalledWith('userEdited');
       });
-
     });
 
     describe('invalid form', () => {
@@ -160,7 +157,6 @@ describe('AccountComponent', () => {
         expect(component.profileForm.get('birth_date').valid).toBe(false);
       });
     });
-
   });
 
   describe('openUnsubscribeModal', () => {
@@ -169,7 +165,10 @@ describe('AccountComponent', () => {
 
       component.openUnsubscribeModal();
 
-      expect(modalService.open).toHaveBeenCalledWith(UnsubscribeModalComponent, {windowClass: 'unsubscribe'});
+      expect(modalService.open).toHaveBeenCalledWith(
+        UnsubscribeModalComponent,
+        { windowClass: 'unsubscribe' }
+      );
     });
   });
 

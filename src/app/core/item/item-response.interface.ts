@@ -1,3 +1,4 @@
+import { SimpleObjectType } from 'app/upload/brand-model.interface';
 import { ApiResponse } from '../resource/api-response.interface';
 import { Image, UserLocation } from '../user/user-response.interface';
 import { Item } from './item';
@@ -71,18 +72,18 @@ export interface ItemByCategoryResponse {
   id: string;
   title: string;
   main_image: {
-      id: string;
-      original_width: number;
-      original_height: number
-      average_hex_color: string;
-      urls_by_size: {
-          small: string;
-          xmall: string;
-          original: string;
-          large: string;
-          xlarge: string;
-          medium: string;
-      }
+    id: string;
+    original_width: number;
+    original_height: number;
+    average_hex_color: string;
+    urls_by_size: {
+      small: string;
+      xmall: string;
+      original: string;
+      large: string;
+      xlarge: string;
+      medium: string;
+    };
   };
   modified_date: number;
   publish_date: number;
@@ -94,7 +95,7 @@ export interface ItemByCategoryResponse {
   web_slug: string;
   car_info?: {
     km: number;
-  }
+  };
 }
 
 export interface ItemVisibilityFlags {
@@ -367,10 +368,7 @@ export interface DeliveryInfo {
 }
 
 export interface ItemExtraInfo {
-  object_type: {
-    id: string;
-    name: string;
-  };
+  object_type?: SimpleObjectType;
   brand: string;
   model?: string;
   gender?: string;

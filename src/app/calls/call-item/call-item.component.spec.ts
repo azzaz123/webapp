@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -22,36 +21,34 @@ describe('CallItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        NoopAnimationsModule,
-      ],
+      imports: [NoopAnimationsModule],
       declarations: [CallItemComponent, CallStatusLabelPipe, DateCalendarPipe],
       providers: [
         I18nService,
         { provide: TrackingService, useClass: MockTrackingService },
         {
-          provide: ActivatedRoute, useValue: {
-            queryParams: observableOf({})
-          }
+          provide: ActivatedRoute,
+          useValue: {
+            queryParams: of({}),
+          },
         },
         {
-          provide: CallsService, useValue: {
-            stream() {
-            }
-          }
+          provide: CallsService,
+          useValue: {
+            stream() {},
+          },
         },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CallItemComponent);
     component = fixture.componentInstance;
     component.call = MOCK_CALL();
-    trackingService = TestBed.get(TrackingService);
-    callService = TestBed.get(CallsService);
+    trackingService = TestBed.inject(TrackingService);
+    callService = TestBed.inject(CallsService);
     fixture.detectChanges();
   });
 

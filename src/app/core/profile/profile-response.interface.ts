@@ -10,7 +10,7 @@ export interface ProfileResponse extends ApiResponse {
   user_image: ProfileImage;
   favorited: boolean;
   is_professional: boolean;
-  screen_name: string
+  screen_name: string;
 }
 
 export interface ProfileImage {

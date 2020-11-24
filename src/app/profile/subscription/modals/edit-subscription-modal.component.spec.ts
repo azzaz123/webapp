@@ -3,7 +3,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EditSubscriptionModalComponent } from './edit-subscription-modal.component';
-import { MAPPED_SUBSCRIPTIONS, TIER } from '../../../../tests/subscriptions.fixtures.spec';
+import {
+  MAPPED_SUBSCRIPTIONS,
+  TIER,
+} from '../../../../tests/subscriptions.fixtures.spec';
 import { ToastService } from '../../../layout/toast/toast.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { EventService } from '../../../core/event/event.service';
@@ -19,7 +22,7 @@ import {
   AnalyticsPageView,
   AnalyticsEvent,
   ANALYTIC_EVENT_TYPES,
-  ClickConfirmEditCurrentSubscription
+  ClickConfirmEditCurrentSubscription,
 } from '../../../core/analytics/analytics-constants';
 import { DateUntilDayPipe } from '../../../shared/pipes';
 import { SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
@@ -36,52 +39,54 @@ describe('EditSubscriptionModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditSubscriptionModalComponent, DateUntilDayPipe ],
+      declarations: [EditSubscriptionModalComponent, DateUntilDayPipe],
       providers: [
         {
-          provide: NgbActiveModal, useValue: {
-            close() {
-            }
-          }
+          provide: NgbActiveModal,
+          useValue: {
+            close() {},
+          },
         },
         {
-          provide: NgbModal, useValue: {
+          provide: NgbModal,
+          useValue: {
             open() {
               return {
                 result: Promise.resolve(true),
-                componentInstance: {}
+                componentInstance: {},
               };
-            }
-          }
+            },
+          },
         },
         {
-          provide: SubscriptionsService, useValue: {
+          provide: SubscriptionsService,
+          useValue: {
             editSubscription() {
               return of(202);
-            }
-          }
+            },
+          },
         },
         I18nService,
         EventService,
         {
-          provide: AnalyticsService, useClass: MockAnalyticsService
-        }
+          provide: AnalyticsService,
+          useClass: MockAnalyticsService,
+        },
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(EditSubscriptionModalComponent);
     component = fixture.componentInstance;
-    toastService = TestBed.get(ToastService);
-    activeModal = TestBed.get(NgbActiveModal);
-    modalService = TestBed.get(NgbModal);
-    eventService = TestBed.get(EventService);
-    subscriptionsService = TestBed.get(SubscriptionsService);
+    toastService = TestBed.inject(ToastService);
+    activeModal = TestBed.inject(NgbActiveModal);
+    modalService = TestBed.inject(NgbModal);
+    eventService = TestBed.inject(EventService);
+    subscriptionsService = TestBed.inject(SubscriptionsService);
     component.subscription = MAPPED_SUBSCRIPTIONS[2];
-    analyticsService = TestBed.get(AnalyticsService);
+    analyticsService = TestBed.inject(AnalyticsService);
     fixture.detectChanges();
   });
 
@@ -89,7 +94,9 @@ describe('EditSubscriptionModalComponent', () => {
     it('should set the selected tier and plan', () => {
       component.ngOnInit();
 
-      expect(component.selectedTier).toEqual(MAPPED_SUBSCRIPTIONS[2].selected_tier);
+      expect(component.selectedTier).toEqual(
+        MAPPED_SUBSCRIPTIONS[2].selected_tier
+      );
     });
 
     it('should send the page view event to analytics', () => {
@@ -97,13 +104,15 @@ describe('EditSubscriptionModalComponent', () => {
       const expectedPageView: AnalyticsPageView<ViewEditSubscriptionPlan> = {
         name: ANALYTICS_EVENT_NAMES.ViewEditSubscriptionPlan,
         attributes: {
-          screenId: SCREEN_IDS.SubscriptionManagement
-        }
+          screenId: SCREEN_IDS.SubscriptionManagement,
+        },
       };
       component.ngOnInit();
 
       expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
-      expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageView);
+      expect(analyticsService.trackPageView).toHaveBeenCalledWith(
+        expectedPageView
+      );
     });
 
     afterEach(() => {
@@ -118,8 +127,8 @@ describe('EditSubscriptionModalComponent', () => {
       component.close();
 
       expect(activeModal.close).toHaveBeenCalled();
-    })
-  })
+    });
+  });
 
   describe('selectListingLimit', () => {
     it('should set the selected tier', () => {
@@ -138,9 +147,9 @@ describe('EditSubscriptionModalComponent', () => {
       component.ngOnInit();
       component.selectListingLimit(tier);
       component.isCurrentTier();
-      
+
       expect(component.isCurrentTier()).toBe(true);
-    })
+    });
   });
 
   describe('editSubscription', () => {
@@ -153,8 +162,10 @@ describe('EditSubscriptionModalComponent', () => {
 
     it('should call the editSubscription service', () => {
       component.editSubscription();
-      
-      expect(component.subscriptionsService.editSubscription).toHaveBeenCalledWith(MAPPED_SUBSCRIPTIONS[2], tier.id);
+
+      expect(
+        component.subscriptionsService.editSubscription
+      ).toHaveBeenCalledWith(MAPPED_SUBSCRIPTIONS[2], tier.id);
       expect(component.loading).toBe(false);
     });
 
@@ -163,11 +174,12 @@ describe('EditSubscriptionModalComponent', () => {
         name: ANALYTICS_EVENT_NAMES.ClickConfirmEditCurrentSubscription,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
-          subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+          subscription: component.subscription
+            .category_id as SUBSCRIPTION_CATEGORIES,
           previousTier: component.currentTier.id,
           newTier: component.selectedTier.id,
-          screenId: SCREEN_IDS.ProfileSubscription
-        }
+          screenId: SCREEN_IDS.ProfileSubscription,
+        },
       };
 
       component.editSubscription();
@@ -183,10 +195,12 @@ describe('EditSubscriptionModalComponent', () => {
 
       component.cancelSubscription();
 
-      expect(modalService.open).toHaveBeenCalledWith(CancelSubscriptionModalComponent, {
-        windowClass: 'review'
-      });
+      expect(modalService.open).toHaveBeenCalledWith(
+        CancelSubscriptionModalComponent,
+        {
+          windowClass: 'review',
+        }
+      );
     });
   });
-
 });

@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IOption } from 'ng-select';
 import { RealestateKeysService } from './realestate-keys.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Key } from './key.interface';
@@ -7,10 +6,14 @@ import { UploadEvent } from '../upload-event.interface';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { Router } from '@angular/router';
 import { ErrorsService } from '../../core/errors/errors.service';
-import { Coordinate, ItemLocation } from '../../core/geolocation/address-response.interface';
-import { Item } from '../../core/item/item';
+import { ItemLocation } from '../../core/geolocation/address-response.interface';
+import { IOption } from 'app/dropdown/utils/option.interface';
 import { omit, isEqual } from 'lodash-es';
-import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbModal,
+  NgbModalRef,
+  NgbPopoverConfig,
+} from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { ItemService } from '../../core/item/item.service';
 import { Realestate } from '../../core/item/realestate';
@@ -25,16 +28,15 @@ import {
   SCREEN_IDS,
   AnalyticsEvent,
   EditItemRE,
-  ListItemRE
+  ListItemRE,
 } from '../../core/analytics/analytics-constants';
 
 @Component({
   selector: 'tsl-upload-realestate',
   templateUrl: './upload-realestate.component.html',
-  styleUrls: ['./upload-realestate.component.scss']
+  styleUrls: ['./upload-realestate.component.scss'],
 })
 export class UploadRealestateComponent implements OnInit {
-
   @Output() onValidationError: EventEmitter<any> = new EventEmitter();
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
@@ -54,11 +56,12 @@ export class UploadRealestateComponent implements OnInit {
   public conditions: IOption[];
   public currencies: IOption[] = [
     { value: 'EUR', label: '€' },
-    { value: 'GBP', label: '£' }
+    { value: 'GBP', label: '£' },
   ];
   public uploadCompletedPercentage = 0;
 
-  constructor(private fb: FormBuilder,
+  constructor(
+    private fb: FormBuilder,
     private realestateKeysService: RealestateKeysService,
     private router: Router,
     private errorsService: ErrorsService,
@@ -67,13 +70,17 @@ export class UploadRealestateComponent implements OnInit {
     private trackingService: TrackingService,
     private analyticsService: AnalyticsService,
     private userService: UserService,
-    config: NgbPopoverConfig) {
+    config: NgbPopoverConfig
+  ) {
     this.uploadForm = fb.group({
       id: '',
       category_id: REALESTATE_CATEGORY,
       images: [[], [Validators.required]],
       title: ['', [Validators.required]],
-      sale_price: ['', [Validators.required, Validators.min(0), Validators.max(999999999)]],
+      sale_price: [
+        '',
+        [Validators.required, Validators.min(0), Validators.max(999999999)],
+      ],
       currency_code: ['EUR', [Validators.required]],
       storytelling: '',
       operation: ['', [Validators.required]],
@@ -91,8 +98,8 @@ export class UploadRealestateComponent implements OnInit {
         address: ['', [Validators.required]],
         latitude: ['', [Validators.required]],
         longitude: ['', [Validators.required]],
-        approximated_location: false
-      })
+        approximated_location: false,
+      }),
     });
     config.placement = 'right';
     config.triggers = 'focus:blur';
@@ -120,28 +127,36 @@ export class UploadRealestateComponent implements OnInit {
         elevator: this.item.elevator,
         pool: this.item.pool,
         garden: this.item.garden,
-        location: this.item.location
+        location: this.item.location,
       });
       this.coordinates = {
         latitude: this.item.location.latitude,
         longitude: this.item.location.longitude,
         address: this.item.location.address,
-        approximated_location: this.item.location.approximated_location
+        approximated_location: this.item.location.approximated_location,
       };
       this.detectFormChanges();
     }
   }
 
   private getOptions() {
-    this.realestateKeysService.getOperations().subscribe((operations: Key[]) => {
-      this.operations = operations;
-    });
-    this.realestateKeysService.getConditions().subscribe((conditions: IOption[]) => {
-      this.conditions = conditions;
-    });
+    this.realestateKeysService
+      .getOperations()
+      .subscribe((operations: Key[]) => {
+        this.operations = operations;
+      });
+    this.realestateKeysService
+      .getConditions()
+      .subscribe((conditions: IOption[]) => {
+        this.conditions = conditions;
+      });
     this.getTypes('rent');
-    this.uploadForm.get('operation').valueChanges.subscribe((operation: string) => this.getTypes(operation));
-    this.uploadForm.get('type').valueChanges.subscribe((type: string) => this.getExtras(type));
+    this.uploadForm
+      .get('operation')
+      .valueChanges.subscribe((operation: string) => this.getTypes(operation));
+    this.uploadForm
+      .get('type')
+      .valueChanges.subscribe((type: string) => this.getExtras(type));
   }
 
   public emitLocation(): void {
@@ -153,7 +168,9 @@ export class UploadRealestateComponent implements OnInit {
   }
 
   private updateLocation() {
-    this.itemService.updateRealEstateLocation(this.item.id, this.coordinates).subscribe();
+    this.itemService
+      .updateRealEstateLocation(this.item.id, this.coordinates)
+      .subscribe();
   }
 
   private getTypes(operation: string) {
@@ -198,7 +215,7 @@ export class UploadRealestateComponent implements OnInit {
       this.loading = true;
       this.uploadEvent.emit({
         type: this.item ? 'update' : 'create',
-        values: this.uploadForm.value
+        values: this.uploadForm.value,
       });
     } else {
       this.uploadForm.markAsPending();
@@ -218,18 +235,23 @@ export class UploadRealestateComponent implements OnInit {
     this.onFormChanged.emit(false);
 
     if (this.item) {
-      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, { category: this.uploadForm.value.category_id });
+      this.trackingService.track(
+        TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS,
+        { category: this.uploadForm.value.category_id }
+      );
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
     }
     if (this.isUrgent) {
-      this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, { category: this.uploadForm.value.category_id });
+      this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, {
+        category: this.uploadForm.value.category_id,
+      });
       uploadEvent.action = 'urgent';
       localStorage.setItem('transactionType', 'urgent');
     }
     const params: any = {
       [uploadEvent.action]: true,
-      itemId: uploadEvent.response.id
+      itemId: uploadEvent.response.id,
     };
     if (this.item && this.item.flags.onhold) {
       params.onHold = true;
@@ -243,7 +265,9 @@ export class UploadRealestateComponent implements OnInit {
   onError(response: any) {
     this.loading = false;
     if (this.item) {
-      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_ERROR, { category: this.uploadForm.value.category_id });
+      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_ERROR, {
+        category: this.uploadForm.value.category_id,
+      });
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_ERROR);
     }
@@ -254,14 +278,19 @@ export class UploadRealestateComponent implements OnInit {
   }
 
   preview() {
-    const modalRef: NgbModalRef = this.modalService.open(PreviewModalComponent, {
-      windowClass: 'preview'
-    });
+    const modalRef: NgbModalRef = this.modalService.open(
+      PreviewModalComponent,
+      {
+        windowClass: 'preview',
+      }
+    );
     modalRef.componentInstance.itemPreview = this.uploadForm.value;
-    modalRef.result.then(() => {
-      this.onSubmit();
-    }, () => {
-    });
+    modalRef.result.then(
+      () => {
+        this.onSubmit();
+      },
+      () => {}
+    );
   }
 
   public updateUploadPercentage(percentage: number) {
@@ -269,8 +298,8 @@ export class UploadRealestateComponent implements OnInit {
   }
 
   private trackEditOrUpload(isEdit: boolean, item: RealestateContent) {
-    return this.userService.isProUser()
-      .pipe(tap((isProfessional: boolean) => {
+    return this.userService.isProUser().pipe(
+      tap((isProfessional: boolean) => {
         const baseEventAttrs: any = {
           itemId: item.id,
           categoryId: item.category_id,
@@ -281,7 +310,7 @@ export class UploadRealestateComponent implements OnInit {
           condition: item.condition,
           surface: item.surface || null,
           rooms: item.rooms || null,
-          isPro: isProfessional
+          isPro: isProfessional,
         };
 
         if (isEdit) {
@@ -290,8 +319,8 @@ export class UploadRealestateComponent implements OnInit {
             eventType: ANALYTIC_EVENT_TYPES.Other,
             attributes: {
               ...baseEventAttrs,
-              screenId: SCREEN_IDS.EditItem
-            }
+              screenId: SCREEN_IDS.EditItem,
+            },
           };
           this.analyticsService.trackEvent(editItemREEvent);
         } else {
@@ -300,12 +329,12 @@ export class UploadRealestateComponent implements OnInit {
             eventType: ANALYTIC_EVENT_TYPES.Other,
             attributes: {
               ...baseEventAttrs,
-              screenId: SCREEN_IDS.Upload
-            }
+              screenId: SCREEN_IDS.Upload,
+            },
           };
           this.analyticsService.trackEvent(listItemREEvent);
         }
-      }));
+      })
+    );
   }
-
 }

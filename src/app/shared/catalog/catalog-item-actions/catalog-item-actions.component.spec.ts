@@ -1,11 +1,19 @@
-import { async, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  async,
+  fakeAsync,
+  tick,
+  ComponentFixture,
+  TestBed,
+} from '@angular/core/testing';
 import { CatalogItemActionsComponent } from './catalog-item-actions.component';
 import { ItemService } from '../../../core/item/item.service';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
-  createItemsArray, ITEMS_BULK_RESPONSE,
-  ITEMS_BULK_RESPONSE_FAILED, ITEMS_BULK_UPDATED_IDS
+  createItemsArray,
+  ITEMS_BULK_RESPONSE,
+  ITEMS_BULK_RESPONSE_FAILED,
+  ITEMS_BULK_UPDATED_IDS,
 } from '../../../../tests/item.fixtures.spec';
 import { ToastService } from '../../../layout/toast/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -27,67 +35,63 @@ describe('CatalogItemActionsComponent', () => {
   let trackingService: TrackingService;
   let router: Router;
   let eventService: EventService;
-  const modal: any = {modal: true};
+  const modal: any = { modal: true };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CatalogItemActionsComponent ],
+      declarations: [CatalogItemActionsComponent],
       providers: [
         I18nService,
-        {provide: TrackingService, useClass: MockTrackingService},
+        { provide: TrackingService, useClass: MockTrackingService },
         {
-          provide: ItemService, useValue: {
-            deselectItems() {
-            },
-            bulkDelete() {
-            },
-            bulkSetDeactivate() {
-            },
-            bulkSetActivate() {
-            },
-            selectItem() {
-            }
-          }
+          provide: ItemService,
+          useValue: {
+            deselectItems() {},
+            bulkDelete() {},
+            bulkSetDeactivate() {},
+            bulkSetActivate() {},
+            selectItem() {},
+          },
         },
         {
-          provide: NgbModal, useValue: {
+          provide: NgbModal,
+          useValue: {
             open() {
               return {
                 componentInstance: {},
-                result: Promise.resolve()
+                result: Promise.resolve(),
               };
-            }
-          }
+            },
+          },
         },
         {
-          provide: ErrorsService, useValue: {
-            i18nError() {
-            }
-          }
+          provide: ErrorsService,
+          useValue: {
+            i18nError() {},
+          },
         },
         {
-          provide: Router, useValue: {
-            navigate() {
-            }
-          }
+          provide: Router,
+          useValue: {
+            navigate() {},
+          },
         },
-        EventService
+        EventService,
       ],
-      schemas: [ NO_ERRORS_SCHEMA ]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CatalogItemActionsComponent);
     component = fixture.componentInstance;
-    itemService = TestBed.get(ItemService);
-    toastService = TestBed.get(ToastService);
-    trackingService = TestBed.get(TrackingService);
-    errorsService = TestBed.get(ErrorsService);
-    modalService = TestBed.get(NgbModal);
-    router = TestBed.get(Router);
-    eventService = TestBed.get(EventService);
+    itemService = TestBed.inject(ItemService);
+    toastService = TestBed.inject(ToastService);
+    trackingService = TestBed.inject(TrackingService);
+    errorsService = TestBed.inject(ErrorsService);
+    modalService = TestBed.inject(NgbModal);
+    router = TestBed.inject(Router);
+    eventService = TestBed.inject(EventService);
     spyOn(modalService, 'open').and.callThrough();
     spyOn(toastService, 'show');
   });
@@ -120,7 +124,9 @@ describe('CatalogItemActionsComponent', () => {
 
     describe('success', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(itemService, 'bulkDelete').and.returnValue(of(ITEMS_BULK_RESPONSE));
+        spyOn(itemService, 'bulkDelete').and.returnValue(
+          of(ITEMS_BULK_RESPONSE)
+        );
 
         component.delete(modal);
         tick();
@@ -133,22 +139,27 @@ describe('CatalogItemActionsComponent', () => {
 
       it('should remove deleted items', () => {
         expect(component.items.length).toBe(TOTAL - 3);
-        expect(find(component.items, {'id': '1'})).toBeFalsy();
-        expect(find(component.items, {'id': '3'})).toBeFalsy();
-        expect(find(component.items, {'id': '5'})).toBeFalsy();
+        expect(find(component.items, { id: '1' })).toBeFalsy();
+        expect(find(component.items, { id: '3' })).toBeFalsy();
+        expect(find(component.items, { id: '5' })).toBeFalsy();
       });
     });
 
     describe('failed', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(itemService, 'bulkDelete').and.returnValue(of(ITEMS_BULK_RESPONSE_FAILED));
+        spyOn(itemService, 'bulkDelete').and.returnValue(
+          of(ITEMS_BULK_RESPONSE_FAILED)
+        );
 
         component.delete(modal);
         tick();
       }));
 
       it('should open error toastService', () => {
-        expect(toastService.show).toHaveBeenCalledWith({text:'Some listings have not been deleted due to an error', type:'error'});
+        expect(toastService.show).toHaveBeenCalledWith({
+          text: 'Some listings have not been deleted due to an error',
+          type: 'error',
+        });
       });
     });
   });
@@ -186,9 +197,7 @@ describe('CatalogItemActionsComponent', () => {
         expect(modalService.open).toHaveBeenCalled();
         expect(itemService.bulkSetActivate).toHaveBeenCalled();
       });
-
     });
-
   });
 
   describe('deactivate', () => {
@@ -214,11 +223,11 @@ describe('CatalogItemActionsComponent', () => {
       });
 
       it('should send a tracking event', () => {
-        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MYCATALOG_PRO_MODAL_DEACTIVATE);
+        expect(trackingService.track).toHaveBeenCalledWith(
+          TrackingService.MYCATALOG_PRO_MODAL_DEACTIVATE
+        );
       });
-
     });
-
   });
 
   describe('selectAll', () => {
@@ -227,7 +236,7 @@ describe('CatalogItemActionsComponent', () => {
 
       component.selectAll();
 
-      component.items.forEach(item => expect(item.selected).toBe(true));
+      component.items.forEach((item) => expect(item.selected).toBe(true));
     });
 
     it('should call n times the selectItem function', () => {
@@ -240,5 +249,4 @@ describe('CatalogItemActionsComponent', () => {
       expect(itemService.selectItem).toHaveBeenCalledTimes(TOTAL);
     });
   });
-
 });

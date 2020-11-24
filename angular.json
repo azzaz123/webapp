@@ -40,10 +40,7 @@
               "src/style/styles.scss"
             ],
             "scripts": [
-              "node_modules/stanza.io/build/stanzaio.bundle.js",
-              "node_modules/visibilityjs/lib/visibility.core.js",
-              "node_modules/indexeddb-getall-shim/IndexedDB-getAll-shim.js",
-              "src/assets/js/adsConfig.js"
+              "node_modules/stanza.io/build/stanzaio.bundle.js"
             ]
           },
           "configurations": {
@@ -88,7 +85,9 @@
                   "maximumWarning": "6kb",
                   "maximumError": "10kb"
                 }
-              ]
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "ngsw-config.json"
             },
             "production": {
               "fileReplacements": [
@@ -116,15 +115,22 @@
                   "maximumWarning": "6kb",
                   "maximumError": "10kb"
                 }
-              ]
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "ngsw-config.json"
             },
             "es": {
+              "i18nFile": "src/locale/es.xtb",
+              "i18nFormat": "xtb",
+              "i18nLocale": "es",
               "budgets": [
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "8kb"
                 }
-              ]
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "ngsw-config.json"
             }
           }
         },

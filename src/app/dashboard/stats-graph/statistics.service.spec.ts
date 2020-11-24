@@ -1,4 +1,8 @@
-import { HttpTestingController, TestRequest, HttpClientTestingModule } from '@angular/common/http/testing';
+import {
+  HttpTestingController,
+  TestRequest,
+  HttpClientTestingModule,
+} from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
 import { environment } from '../../../environments/environment';
@@ -14,10 +18,10 @@ describe('StatisticsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [StatisticsService]
+      providers: [StatisticsService],
     });
-    service = TestBed.get(StatisticsService);
-    httpMock = TestBed.get(HttpTestingController);
+    service = TestBed.inject(StatisticsService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {
@@ -30,8 +34,10 @@ describe('StatisticsService', () => {
       const expectedUrlParams = `durationInDays=${durationInDays}`;
       const expectedUrl = `${environment.baseUrl}${STATISTICS_ENDPOINT}?${expectedUrlParams}`;
       let response: StatisticFullResponse;
-    
-      service.getStatistics(durationInDays.toString()).subscribe(r => response = r);
+
+      service
+        .getStatistics(durationInDays.toString())
+        .subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(STATISTICS_RESPONSE);
 

@@ -1,13 +1,15 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CheckoutItemComponent } from './checkout-item.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '../../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import {
-  CITYBUMP_DURATIONS, ITEM_ID, ITEMS_WITH_PRODUCTS, ITEMS_WITH_PRODUCTS_PROVINCE,
-  MOCK_ITEM_V3
+  CITYBUMP_DURATIONS,
+  ITEM_ID,
+  ITEMS_WITH_PRODUCTS,
+  ITEMS_WITH_PRODUCTS_PROVINCE,
+  MOCK_ITEM_V3,
 } from '../../../../tests/item.fixtures.spec';
 import { CartService } from '../../../shared/catalog/cart/cart.service';
 import { Cart } from '../../../shared/catalog/cart/cart';
@@ -23,7 +25,7 @@ describe('CheckoutItemComponent', () => {
     action: 'add',
     cart: CART,
     itemId: ITEM_ID,
-    type: 'citybump'
+    type: 'citybump',
   };
   const TYPE = 'citybump';
   const DURATION = '24';
@@ -34,20 +36,17 @@ describe('CheckoutItemComponent', () => {
       providers: [
         DecimalPipe,
         {
-          provide: CartService, useValue: {
-            createInstance() {
-            },
-            add() {
-            },
-            remove() {
-            },
-            cart$: observableOf(CART_CHANGE)
-          }
-        }
+          provide: CartService,
+          useValue: {
+            createInstance() {},
+            add() {},
+            remove() {},
+            cart$: of(CART_CHANGE),
+          },
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -57,14 +56,13 @@ describe('CheckoutItemComponent', () => {
     component.creditInfo = {
       currencyName: 'wallacoins',
       credit: 200,
-      factor: 100
+      factor: 100,
     };
     fixture.detectChanges();
-    cartService = TestBed.get(CartService);
+    cartService = TestBed.inject(CartService);
   });
 
   describe('ngOnInit', () => {
-
     describe('ngOnInit', () => {
       it('should call createInstance cartService method', () => {
         spyOn(cartService, 'createInstance').and.callThrough();
@@ -89,7 +87,6 @@ describe('CheckoutItemComponent', () => {
     });
 
     describe('onRemoveOrClean', () => {
-
       beforeEach(() => {
         component.selectedType = TYPE;
         component.selectedDuration = DURATION;
@@ -99,9 +96,9 @@ describe('CheckoutItemComponent', () => {
         const cartChange: CartChange = {
           action: 'remove',
           itemId: MOCK_ITEM_V3.id,
-          cart: CART
+          cart: CART,
         };
-        cartService.cart$ = observableOf(cartChange);
+        cartService.cart$ = of(cartChange);
 
         component.ngOnInit();
       });
@@ -109,9 +106,9 @@ describe('CheckoutItemComponent', () => {
       it('should reset flags, selected type and duration if action clean', () => {
         const cartChange: CartChange = {
           action: 'clean',
-          cart: CART
+          cart: CART,
         };
-        cartService.cart$ = observableOf(cartChange);
+        cartService.cart$ = of(cartChange);
 
         component.ngOnInit();
       });
@@ -122,7 +119,6 @@ describe('CheckoutItemComponent', () => {
         expect(component.itemWithProducts.item.flags.bump_type).toBeUndefined();
         expect(component.itemWithProducts.item.flags.bumped).toBeFalsy();
       });
-
     });
   });
 
@@ -140,7 +136,7 @@ describe('CheckoutItemComponent', () => {
       component.creditInfo = {
         currencyName: 'yens',
         credit: 420,
-        factor: 1337
+        factor: 1337,
       };
       component.selectedType = null;
 
@@ -153,7 +149,6 @@ describe('CheckoutItemComponent', () => {
   });
 
   describe('select', () => {
-
     beforeEach(() => {
       component.duration = DURATION;
       spyOn(cartService, 'add');
@@ -168,10 +163,13 @@ describe('CheckoutItemComponent', () => {
     });
 
     it('should call add', () => {
-      expect(cartService.add).toHaveBeenCalledWith({
-        item: MOCK_ITEM_V3,
-        duration: CITYBUMP_DURATIONS[0]
-      }, TYPE);
+      expect(cartService.add).toHaveBeenCalledWith(
+        {
+          item: MOCK_ITEM_V3,
+          duration: CITYBUMP_DURATIONS[0],
+        },
+        TYPE
+      );
     });
 
     it('should set items flags', () => {
@@ -187,7 +185,6 @@ describe('CheckoutItemComponent', () => {
   });
 
   describe('duration', () => {
-
     it('should call select method when changed and selectedType is defined', () => {
       spyOn(component, 'select');
       component.selectedType = TYPE;
@@ -206,7 +203,5 @@ describe('CheckoutItemComponent', () => {
 
       expect(component.select).toHaveBeenCalledTimes(0);
     });
-
   });
-
 });

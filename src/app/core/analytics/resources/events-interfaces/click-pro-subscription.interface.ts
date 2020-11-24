@@ -10,6 +10,10 @@
  */
 export interface ClickProSubscription {
   /**
+   * If the view offers free trial or not
+   */
+  freeTrial?: boolean;
+  /**
    * Identifier of the screen in which the user has clicked
    */
   screenId: 111 | 112;
