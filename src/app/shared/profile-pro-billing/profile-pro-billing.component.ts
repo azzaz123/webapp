@@ -25,6 +25,7 @@ import { CanComponentDeactivate } from '../../shared/guards/can-component-deacti
 import { EventService } from 'app/core/event/event.service';
 import { validDNI, validNIE, validCIF } from 'spain-id';
 import { UuidService } from '../../core/uuid/uuid.service';
+import { whitespaceValidator } from 'app/core/form-validators/formValidators.func';
 
 export enum BILLING_TYPE {
   NATURAL = 'natural',
@@ -81,16 +82,22 @@ export class ProfileProBillingComponent
 
   buildForm() {
     this.billingForm = this.fb.group({
-      type: ['', [Validators.required]],
-      cif: ['', [Validators.required]],
-      city: ['', [Validators.required]],
-      company_name: ['', [Validators.required]],
-      country: ['', [Validators.required]],
+      type: ['', [Validators.required, whitespaceValidator]],
+      cif: ['', [Validators.required, whitespaceValidator]],
+      city: ['', [Validators.required, whitespaceValidator]],
+      company_name: ['', [Validators.required, whitespaceValidator]],
+      country: ['', [Validators.required, whitespaceValidator]],
       email: ['', [Validators.required, this.emailValidator]],
-      name: ['', [Validators.required, Validators.maxLength(32)]],
+      name: [
+        '',
+        [Validators.required, Validators.maxLength(32), whitespaceValidator],
+      ],
       postal_code: ['', [Validators.required, this.cpValidator]],
-      street: ['', [Validators.required]],
-      surname: ['', [Validators.required, Validators.maxLength(32)]],
+      street: ['', [Validators.required, whitespaceValidator]],
+      surname: [
+        '',
+        [Validators.required, Validators.maxLength(32), whitespaceValidator],
+      ],
       id: this.uuidService.getUUID(),
     });
   }
@@ -215,10 +222,18 @@ export class ProfileProBillingComponent
   private setNaturalRequiredFields() {
     this.billingForm
       .get('name')
-      .setValidators([Validators.required, Validators.maxLength(32)]);
+      .setValidators([
+        Validators.required,
+        Validators.maxLength(32),
+        whitespaceValidator,
+      ]);
     this.billingForm
       .get('surname')
-      .setValidators([Validators.required, Validators.maxLength(32)]);
+      .setValidators([
+        Validators.required,
+        Validators.maxLength(32),
+        whitespaceValidator,
+      ]);
     this.billingForm.get('company_name').setValidators(null);
     this.billingForm
       .get('cif')
