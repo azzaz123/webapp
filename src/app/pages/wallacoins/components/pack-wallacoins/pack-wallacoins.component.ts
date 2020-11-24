@@ -6,7 +6,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { Pack } from '../../../core/payments/pack';
+import { Pack } from '../../../../core/payments/pack';
 
 @Component({
   selector: 'tsl-pack-wallacoins',
