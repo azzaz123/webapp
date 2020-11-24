@@ -4,12 +4,12 @@ import {
   wallacoinsRoutedComponents,
   WallacoinsRoutingModule,
 } from './wallacoins.routes';
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { BuyWallacoinsModalComponent } from './buy-wallacoins-modal/buy-wallacoins-modal.component';
 import { FormsModule } from '@angular/forms';
 import { WallacoinsConfirmModalComponent } from './wallacoins-confirm-modal/wallacoins-confirm-modal.component';
-import { TrackingModule } from '../core/tracking/tracking.module';
+import { TrackingModule } from '../../core/tracking/tracking.module';
 import { PackWallacoinsComponent } from './pack-wallacoins/pack-wallacoins.component';
 import { WallacoinsTutorialComponent } from './wallacoins-tutorial/wallacoins-tutorial.component';
 

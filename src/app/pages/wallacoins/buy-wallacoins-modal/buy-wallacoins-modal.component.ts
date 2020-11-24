@@ -1,20 +1,20 @@
 import { Component, EventEmitter, OnInit } from '@angular/core';
-import { Pack } from '../../core/payments/pack';
+import { Pack } from '../../../core/payments/pack';
 import {
   PaymentService,
   PAYMENT_RESPONSE_STATUS,
   PAYMENT_METHOD,
-} from '../../core/payments/payment.service';
-import { ErrorsService } from '../../core/errors/errors.service';
+} from '../../../core/payments/payment.service';
+import { ErrorsService } from '../../../core/errors/errors.service';
 import {
   OrderProExtras,
   FinancialCardOption,
-} from '../../core/payments/payment.interface';
+} from '../../../core/payments/payment.interface';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { StripeService } from '../../core/stripe/stripe.service';
-import { EventService } from '../../core/event/event.service';
+import { StripeService } from '../../../core/stripe/stripe.service';
+import { EventService } from '../../../core/event/event.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { UuidService } from '../../core/uuid/uuid.service';
+import { UuidService } from '../../../core/uuid/uuid.service';
 
 @Component({
   selector: 'tsl-buy-wallacoins-modal',
