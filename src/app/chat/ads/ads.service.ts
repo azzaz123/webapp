@@ -1,22 +1,21 @@
-import { LoadExternalLibsService } from './../../core/load-external-libs/load-external-libs.service';
-import { tap, filter, mergeMap, finalize } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import {
-  Observable,
-  merge,
-  Subscription,
-  BehaviorSubject,
-  Subscriber,
-} from 'rxjs';
-
-import { CookieService } from 'ngx-cookie';
-import { AdKeyWords } from './ads.interface';
-import * as moment from 'moment';
-
-import { ADS_SOURCES, initAdsConfig } from './ads.config';
 import { DidomiService } from 'app/core/didomi/didomi.service';
 import { User } from 'app/core/user/user';
 import { UserService } from 'app/core/user/user.service';
+import * as moment from 'moment';
+import { CookieService } from 'ngx-cookie';
+import {
+  BehaviorSubject,
+  merge,
+  Observable,
+  Observer,
+  Subscriber,
+  Subscription,
+} from 'rxjs';
+import { filter, finalize, mergeMap, tap, switchMap } from 'rxjs/operators';
+import { LoadExternalLibsService } from './../../core/load-external-libs/load-external-libs.service';
+import { ADS_SOURCES, initAdsConfig } from './ads.config';
+import { AdKeyWords } from './ads.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -56,6 +55,7 @@ export class AdsService {
   }
 
   private initAddsLib(): void {
+    console.log('initAddsLib');
     initAdsConfig();
     this.initKeyWordsFromCookies();
     this.initPositionKeyWords();
@@ -74,7 +74,7 @@ export class AdsService {
     }
   }
 
-  private initKeyWordsFromCookies() {
+  private initKeyWordsFromCookies(): void {
     this.adKeyWords.brand = this.cookieService.get('brand');
     this.adKeyWords.content = this.cookieService.get('content');
     this.adKeyWords.category = this.cookieService.get('category');
@@ -82,7 +82,7 @@ export class AdsService {
     this.adKeyWords.maxprice = this.cookieService.get('maxprice');
   }
 
-  private initPositionKeyWords() {
+  private initPositionKeyWords(): void {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         this.adKeyWords.latitude = position.coords.latitude.toString();
@@ -91,7 +91,7 @@ export class AdsService {
     }
   }
 
-  private initGoogletagConfig() {
+  private initGoogletagConfig(): void {
     googletag.cmd.push(() => {
       this._adSlots.forEach((slot) => {
         googletag
@@ -107,47 +107,6 @@ export class AdsService {
       googletag.pubads().disableInitialLoad();
       googletag.pubads().setPublisherProvidedId(publisherId);
       googletag.enableServices();
-    });
-  }
-
-  public fetchHeaderBids(allowSegmentation = false) {
-    merge([this.requestBidAps(), this.requestBidCriteo()])
-      .pipe(finalize(() => this.sendAdServerRequest(allowSegmentation)))
-      .subscribe();
-  }
-
-  public requestBidAps() {
-    const apstagSlots = this._adSlots.map((slot) => {
-      return { slotID: slot.id, sizes: slot.sizes, slotName: slot.name };
-    });
-    return new Observable((subscriber: Subscriber<void>) => {
-      apstag.fetchBids(
-        {
-          slots: apstagSlots,
-          timeout: this._bidTimeout,
-        },
-        (bids) => {
-          subscriber.complete();
-        }
-      );
-    });
-  }
-
-  public requestBidCriteo() {
-    const adUnits = {
-      placements: this._adSlots.map((slot) => {
-        return { slotid: slot.id, zoneid: slot.zoneid };
-      }),
-    };
-    return new Observable((observer: Subscriber<void>) => {
-      Criteo.events.push(() => {
-        Criteo.SetLineItemRanges('0..4.5:0.01;4.50..27:0.05;27..72:0.1');
-        Criteo.RequestBids(
-          adUnits,
-          (bids) => observer.complete(),
-          this._bidTimeout
-        );
-      });
     });
   }
 
@@ -169,39 +128,77 @@ export class AdsService {
     this.adsRefreshSubscription = this.userService
       .me()
       .pipe(
-        tap((user: User) => {
-          this.adKeyWords.gender = user.gender;
-          this.adKeyWords.userId = user.id;
-          if (user.birthDate) {
-            this.adKeyWords.age = moment()
-              .diff(user.birthDate, 'years')
-              .toString();
-          }
-          if (!this.adKeyWords.latitude && user.location) {
-            this.adKeyWords.latitude = user.location.approximated_latitude.toString();
-          }
-          if (!this.adKeyWords.longitude && user.location) {
-            this.adKeyWords.longitude = user.location.approximated_longitude.toString();
-          }
-        }),
-        mergeMap(() => {
-          return this.allowSegmentation$.pipe(
-            filter((value) => value !== null)
-          );
-        })
+        tap((user: User) => this.updateAdKeywords(user)),
+        mergeMap(() => this.allowSegmentation$),
+        filter((allowSegmentation: boolean) => allowSegmentation !== null),
+        switchMap((allowSegmentation: boolean) =>
+          this.refreshAdWithKeyWords(allowSegmentation)
+        )
       )
-      .subscribe((allowSegmentation: boolean) => {
-        this.refreshAdWithKeyWords(allowSegmentation);
-      });
+      .subscribe();
   }
 
-  private refreshAdWithKeyWords(allowSegmentation: boolean): void {
+  private updateAdKeywords(user: User): void {
+    this.adKeyWords.gender = user.gender;
+    this.adKeyWords.userId = user.id;
+    if (user.birthDate) {
+      this.adKeyWords.age = moment().diff(user.birthDate, 'years').toString();
+    }
+    if (!this.adKeyWords.latitude && user.location) {
+      this.adKeyWords.latitude = user.location.approximated_latitude.toString();
+    }
+    if (!this.adKeyWords.longitude && user.location) {
+      this.adKeyWords.longitude = user.location.approximated_longitude.toString();
+    }
+  }
+
+  private refreshAdWithKeyWords(allowSegmentation: boolean): Observable<void> {
     Object.keys(this.adKeyWords).forEach((key) => {
       googletag.pubads().setTargeting(key, this.adKeyWords[key]);
     });
     googletag
       .pubads()
       .setTargeting('allowSegmentation', allowSegmentation ? 'true' : 'false');
-    this.fetchHeaderBids(allowSegmentation);
+    return this.fetchHeaderBids(allowSegmentation);
+  }
+
+  private fetchHeaderBids(allowSegmentation = false): Observable<void> {
+    return merge(this.requestBidAps(), this.requestBidCriteo()).pipe(
+      finalize(() => this.sendAdServerRequest(allowSegmentation))
+    );
+  }
+
+  private requestBidAps(): Observable<void> {
+    const apstagSlots = this._adSlots.map((slot) => ({
+      slotID: slot.id,
+      sizes: slot.sizes,
+      slotName: slot.name,
+    }));
+    return new Observable((observer: Subscriber<void>) => {
+      const config = {
+        slots: apstagSlots,
+        timeout: this._bidTimeout,
+      };
+      apstag.fetchBids(config, () => observer.complete());
+    });
+  }
+
+  private requestBidCriteo(): Observable<void> {
+    const adUnits = {
+      placements: this._adSlots.map((slot) => ({
+        slotid: slot.id,
+        zoneid: slot.zoneid,
+      })),
+    };
+    return new Observable((observer: Subscriber<void>) => {
+      Criteo.events.push(() => {
+        Criteo.SetLineItemRanges('0..4.5:0.01;4.50..27:0.05;27..72:0.1');
+        Criteo.RequestBids(
+          adUnits,
+          () => observer.complete(),
+          this._bidTimeout
+        );
+      });
+    });
   }
 }
