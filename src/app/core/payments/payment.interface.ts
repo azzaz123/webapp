@@ -80,7 +80,6 @@ export interface BillingInfoResponse {
   street: string;
   surname: string;
   type: string;
-  phone?: string;
 }
 
 export interface FinancialCard {
