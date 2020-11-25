@@ -27,13 +27,15 @@ class DocumentStub {
 
 describe('LoadExternalLibService', () => {
   let service: LoadExternalLibsService;
+  let documentStub: DocumentStub;
 
   beforeEach(() => {
+    documentStub = new DocumentStub();
     TestBed.configureTestingModule({
       providers: [
         {
           provide: DOCUMENT,
-          useFactory: () => new DocumentStub(),
+          useValue: documentStub,
         },
         LoadExternalLibsService,
       ],
@@ -61,5 +63,17 @@ describe('LoadExternalLibService', () => {
     observable.subscribe(() => {
       doneCallback();
     });
+  });
+
+  it('should cache observable of the libs', () => {
+    const source = 'http://external-lib.com/js';
+    spyOn(documentStub, 'createElement').and.returnValue(
+      new ScriptElementStub()
+    );
+
+    service.loadScript(source).subscribe();
+    service.loadScript(source).subscribe();
+
+    expect(documentStub.createElement).toHaveBeenCalledTimes(1);
   });
 });

@@ -1,4 +1,4 @@
-import { from, empty, Observable, of } from 'rxjs';
+import { from, Observable, of, EMPTY } from 'rxjs';
 import {
   ComponentFixture,
   fakeAsync,
@@ -12,7 +12,6 @@ import {
   NgbModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
-import { AdService } from '../core/ad/ad.service';
 import { I18nService } from '../core/i18n/i18n.service';
 import { EventService } from '../core/event/event.service';
 import { UserService } from '../core/user/user.service';
@@ -31,6 +30,7 @@ import { SEARCHID_STORAGE_NAME } from '../core/message/real-time.service';
 import { SendPhoneComponent } from './modals';
 import { PersonalDataInformationModal } from './modals/personal-data-information-modal/personal-data-information-modal.component';
 import { USER_STRING_ID } from '../core/constants/string-ids.enum';
+import { AdsService } from './ads/ads.service';
 
 class MockUserService {
   public isProfessional() {
@@ -38,7 +38,7 @@ class MockUserService {
   }
 
   public getPhoneInfo(userId: string): Observable<PhoneMethodResponse> {
-    return empty();
+    return EMPTY;
   }
 }
 
@@ -46,7 +46,7 @@ describe('Component: ChatComponent with ItemId', () => {
   let component: ChatComponent;
   let fixture: ComponentFixture<ChatComponent>;
   let eventService: EventService;
-  let adService: AdService;
+  let adService: AdsService;
   let userService: UserService;
   let activatedRoute: ActivatedRoute;
   let inboxService: InboxService;
@@ -76,7 +76,7 @@ describe('Component: ChatComponent with ItemId', () => {
         I18nService,
         EventService,
         {
-          provide: AdService,
+          provide: AdsService,
           useValue: {
             adsRefresh() {},
           },
@@ -89,7 +89,7 @@ describe('Component: ChatComponent with ItemId', () => {
     fixture = TestBed.createComponent(ChatComponent);
     component = fixture.componentInstance;
     eventService = TestBed.inject(EventService);
-    adService = TestBed.inject(AdService);
+    adService = TestBed.inject(AdsService);
     userService = TestBed.inject(UserService);
     activatedRoute = TestBed.inject(ActivatedRoute);
     inboxService = TestBed.inject(InboxService);
@@ -378,7 +378,7 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
   let component: ChatComponent;
   let fixture: ComponentFixture<ChatComponent>;
   let eventService: EventService;
-  let adService: AdService;
+  let adService: AdsService;
   let userService: UserService;
   let activatedRoute: ActivatedRoute;
   let inboxService: InboxService;
@@ -407,7 +407,7 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
         I18nService,
         EventService,
         {
-          provide: AdService,
+          provide: AdsService,
           useValue: {
             adsRefresh() {},
           },
@@ -420,7 +420,7 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
     fixture = TestBed.createComponent(ChatComponent);
     component = fixture.componentInstance;
     eventService = TestBed.inject(EventService);
-    adService = TestBed.inject(AdService);
+    adService = TestBed.inject(AdsService);
     userService = TestBed.inject(UserService);
     activatedRoute = TestBed.inject(ActivatedRoute);
     inboxService = TestBed.inject(InboxService);
