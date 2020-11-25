@@ -1,21 +1,22 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
-import { forkJoin, Observable, Subject, Subscriber } from 'rxjs';
+import { forkJoin, Observable, ReplaySubject, Subject, Subscriber } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class LoadExternalLibsService {
-  private externalLibsMap: Map<string, Subject<void>> = new Map<
+  private externalLibsMap: Map<string, ReplaySubject<void>> = new Map<
     string,
-    Subject<void>
+    ReplaySubject<void>
   >();
 
   constructor(@Inject(DOCUMENT) private document: Document) {}
 
   loadScript(src: string | string[]): Observable<void> {
-    return Array.isArray(src)
+    const observable: Observable<any> = Array.isArray(src)
       ? this.buildArrayLoaderObservable(src)
       : this.getSubjectBySrc(src);
+    return observable;
   }
 
   private buildArrayLoaderObservable(sources: string[]): Observable<void> {
@@ -27,18 +28,19 @@ export class LoadExternalLibsService {
 
   private getSubjectBySrc(src: string): Observable<void> {
     if (!this.externalLibsMap.has(src)) {
-      const subject: Subject<void> = this.buildSubject(src);
+      const subject: ReplaySubject<void> = this.buildSubject(src);
       this.externalLibsMap.set(src, subject);
     }
 
     return this.externalLibsMap.get(src).asObservable();
   }
 
-  private buildSubject(source: string): Subject<void> {
-    const subject: Subject<void> = new Subject<void>();
+  private buildSubject(source: string): ReplaySubject<void> {
+    const subject: ReplaySubject<void> = new ReplaySubject<void>();
     const script: HTMLScriptElement = this.renderScript(source);
     script.onload = () => {
       subject.next();
+      subject.complete();
     };
     return subject;
   }
@@ -52,19 +54,4 @@ export class LoadExternalLibsService {
     this.document.body.appendChild(script);
     return script;
   }
-  /*
-  private buildObservableLib(source: string): Observable<void> {
-    return new Observable((subscriber: Subscriber<void>) => {
-      const script = this.document.createElement('script');
-      script.type = 'text/javascript';
-      script.src = source;
-      script.async = true;
-      script.defer = true;
-      script.onload = () => {
-        subscriber.next();
-        subscriber.complete();
-      };
-      this.document.body.appendChild(script);
-    });
-  }*/
 }

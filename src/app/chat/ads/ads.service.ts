@@ -10,10 +10,10 @@ import {
 } from 'rxjs';
 
 import { CookieService } from 'ngx-cookie';
-import { AdKeyWords } from './adds.interface';
+import { AdKeyWords } from './ads.interface';
 import * as moment from 'moment';
 
-import { ADD_SOURCES, initAdsConfig } from './adds.config';
+import { ADS_SOURCES, initAdsConfig } from './ads.config';
 import { DidomiService } from 'app/core/didomi/didomi.service';
 import { User } from 'app/core/user/user';
 import { UserService } from 'app/core/user/user.service';
@@ -21,7 +21,7 @@ import { UserService } from 'app/core/user/user.service';
 @Injectable({
   providedIn: 'root',
 })
-export class AddsService {
+export class AdsService {
   public allowSegmentation$: BehaviorSubject<boolean> = new BehaviorSubject(
     null
   );
@@ -47,13 +47,16 @@ export class AddsService {
     private cookieService: CookieService,
     private didomiService: DidomiService,
     private loadExternalLibsService: LoadExternalLibsService
-  ) {
+  ) {}
+
+  loadAddsLibs(): void {
     this.loadExternalLibsService
-      .loadScript(ADD_SOURCES)
+      .loadScript(ADS_SOURCES)
       .subscribe(() => this.initAddsLib());
   }
 
   private initAddsLib(): void {
+    console.log('initAddsLib');
     initAdsConfig();
     this.initKeyWordsFromCookies();
     this.initPositionKeyWords();

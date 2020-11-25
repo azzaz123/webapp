@@ -28,7 +28,7 @@ import {
   ViewChatScreen,
 } from '../../core/analytics/analytics-constants';
 import { InboxMessage } from '../model';
-import { AddsService } from '../adds/adds.service';
+import { AdsService } from '../ads/ads.service';
 
 export enum InboxState {
   Inbox,
@@ -105,10 +105,12 @@ export class InboxComponent implements OnInit, OnDestroy {
     private eventService: EventService,
     private inboxConversationService: InboxConversationService,
     private userService: UserService,
-    private adService: AddsService,
+    private adService: AdsService,
     private remoteConsoleService: RemoteConsoleService,
     private analyticsService: AnalyticsService
-  ) {}
+  ) {
+    this.adService.loadAddsLibs();
+  }
 
   set loading(value: boolean) {
     this._loading = value;
