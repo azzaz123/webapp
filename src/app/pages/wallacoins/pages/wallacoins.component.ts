@@ -1,17 +1,17 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { PaymentService } from '../../core/payments/payment.service';
-import { Pack } from '../../core/payments/pack';
+import { PaymentService } from '../../../core/payments/payment.service';
+import { Pack } from '../../../core/payments/pack';
 import { NgbCarousel, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { BuyWallacoinsModalComponent } from './components/buy-wallacoins-modal/buy-wallacoins-modal.component';
-import { PerksModel } from '../../core/payments/payment.model';
-import { WallacoinsConfirmModalComponent } from './components/wallacoins-confirm-modal/wallacoins-confirm-modal.component';
+import { BuyWallacoinsModalComponent } from '../components/buy-wallacoins-modal/buy-wallacoins-modal.component';
+import { PerksModel } from '../../../core/payments/payment.model';
+import { WallacoinsConfirmModalComponent } from '../components/wallacoins-confirm-modal/wallacoins-confirm-modal.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EventService } from '../../core/event/event.service';
-import { TrackingService } from '../../core/tracking/tracking.service';
-import { UserService } from '../../core/user/user.service';
-import { WallacoinsTutorialComponent } from './components/wallacoins-tutorial/wallacoins-tutorial.component';
+import { EventService } from '../../../core/event/event.service';
+import { TrackingService } from '../../../core/tracking/tracking.service';
+import { UserService } from '../../../core/user/user.service';
+import { WallacoinsTutorialComponent } from '../components/wallacoins-tutorial/wallacoins-tutorial.component';
 import { Observable } from 'rxjs';
-import { User } from '../../core/user/user';
+import { User } from '../../../core/user/user';
 import { map } from 'rxjs/operators';
 
 @Component({
