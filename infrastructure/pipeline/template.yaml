@@ -291,13 +291,13 @@ Resources:
                   commands:
                     - >
                       if [ -d "en/" ] && [ -d "es/" ]; then
-                        aws s3 sync es/dist/es s3://$HOSTING_BUCKET_ES --delete
-                        aws s3 cp es/dist/es/index.html s3://$HOSTING_BUCKET_ES/index.html --cache-control max-age=0
-                        aws s3 sync en/dist/en s3://$HOSTING_BUCKET_EN --delete
-                        aws s3 cp en/dist/en/index.html s3://$HOSTING_BUCKET_EN/index.html --cache-control max-age=0
+                        aws s3 sync es/ s3://$HOSTING_BUCKET_ES --delete
+                        aws s3 cp es/index.html s3://$HOSTING_BUCKET_ES/index.html --cache-control max-age=0
+                        aws s3 sync en/ s3://$HOSTING_BUCKET_EN --delete
+                        aws s3 cp en/index.html s3://$HOSTING_BUCKET_EN/index.html --cache-control max-age=0
                       else
-                        aws s3 sync dist/es s3://$HOSTING_BUCKET_ES --delete
-                        aws s3 cp dist/es/index.html s3://$HOSTING_BUCKET_ES/index.html --cache-control max-age=0
+                        aws s3 sync es/ s3://$HOSTING_BUCKET_ES --delete
+                        aws s3 cp es/index.html s3://$HOSTING_BUCKET_ES/index.html --cache-control max-age=0
                       fi
       Environment:
         ComputeType: BUILD_GENERAL1_SMALL
