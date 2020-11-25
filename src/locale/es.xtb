@@ -1161,5 +1161,15 @@
       <ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph><ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>
       Podrás ejercer tus derechos de acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad de tus datos, así como la revocación, en cualquier momento, del consentimiento prestado, ante Wallapop, CIF nº B-66.04.9057, en la Calle Meridiana 89 Planta 6º, 08026, Barcelona (España), adjuntando fotocopia de tu DNI o documento identificativo válido equivalente. Podrás también ejercer tus derechos mediante comunicación dirigida a: privacidad@wallapop.com. Finalmente, te recordamos que puedes dirigir una reclamación ante la Agencia Española de Protección de Datos, si consideras que Wallapop ha vulnerado tus derechos en materia de protección de datos.”
   </translation>
-
+  <translation id="EmptyHistory">Tu historial está vacío</translation>
+  <translation id="LoadingData">Estamos cargando tu histórico de facturas...</translation>
+  <translation id="NotLoadedInvoices">Lo sentimos, en estos momentos no podemos cargar tus facturas. Intenta de nuevo más tarde.</translation>
+  <translation id="NotOldInvoices">No tienes facturas antiguas. Rellena los datos de facturación para futuras compras.</translation>
+  <translation id="FillDataInvoices">Rellena los datos de facturación para descargar tus facturas.</translation>
+  <translation id="InvoiceCorrectlyDownloaded">Tu factura se ha descargado correctamente.</translation>
+  <translation id="InvoiceGenerated">Tu factura se ha generado correctamente.</translation>
+  <translation id="InvoiceCannotDownload">Tu factura no se ha podido descargar. Intenta de nuevo.</translation>
+  <translation id="InvoiceCannotGenerate">Tu factura no se ha podido generar. Intenta de nuevo.</translation>
+  <translation id="SuccessEdit">Tus datos se han editado correctamente.</translation>
+  <translation id="ErrorSavingData">Error al guardar los datos. Intenta de nuevo.</translation>
 </translationbundle>

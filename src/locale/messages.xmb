@@ -236,7 +236,7 @@
   <msg id="7274286978511770772"><source>app/shared/payments/stripe/stripe-card-element.component.html:33</source>Continue to Checkout</msg>
   <msg id="3768927257183755959"><source>app/shared/payments/stripe/stripe-card-element.component.html:44</source><source>app/profile/profile-info/profile-info.component.html:83</source><source>app/profile/account/account.component.html:36</source>Save</msg>
   <msg id="848453031482663640"><source>app/shared/payments/stripe/stripe-card-element.component.html:55</source>Subscribe now</msg>
-  <msg id="Save"><source>app/shared/payments/stripe/stripe-card-element.component.html:66</source><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:135</source>Save</msg>
+  <msg id="Save"><source>app/shared/payments/stripe/stripe-card-element.component.html:66</source><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:136</source>Save</msg>
   <msg id="AddNewCreditCard"><source>app/shared/modals/new-card-modal/new-card-modal.component.html:6</source>Add a new credit card</msg>
   <msg id="ChangeSubscriptionCardSubtitle"><source>app/shared/modals/new-card-modal/new-card-modal.component.html:7</source><source>app/shared/modals/change-card-modal/change-card-modal.component.html:8</source>This will be the payment method linked to your subscription</msg>
   <msg id="ConfirmPaymentMethod"><source>app/shared/modals/confirm-card-modal/confirm-card-modal.component.html:5</source>Confirm payment method</msg>
@@ -256,7 +256,7 @@
   <msg id="OrderYourCatalogBy"><source>app/shared/modals/full-screen-menu/full-screen-modal.component.html:3</source>Order your catalog by</msg>
   <msg id="OrderBy"><source>app/shared/nav-links/nav-links.component.html:41</source>Order by</msg>
   <msg id="8458658926966860767"><source>app/shared/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:2</source>Are you sure you want to delete billing information?</msg>
-  <msg id="InvoiceInformation"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:7</source><source>app/profile/invoice/invoice.component.html:5</source>Invoice information</msg>
+  <msg id="InvoiceInformation"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:7</source><source>app/profile/invoice/invoice.component.html:6</source>Invoice information</msg>
   <msg id="ProfileProBillingSubtitle"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:10</source>For services other than subscriptions (e.g. visibility packs) you won&apos;t receive invoices.</msg>
   <msg id="ProfileProBillingFormType"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:16</source>Type of registration</msg>
   <msg id="ProfileProBillingFormNatural"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:25</source>Natural person</msg>
@@ -302,8 +302,11 @@
                     CIF/NIF must be valid.
                   </msg>
   <msg id="InvoiceHistory"><source>app/shared/invoice-history/invoice-history.component.html:5</source>Invoice history</msg>
-  <msg id="InvoiceHistorySubtitle"><source>app/shared/invoice-history/invoice-history.component.html:6</source>Fill in your invoice information in order to download your invoices.</msg>
-  <msg id="loadMoreButton"><source>app/shared/invoice-history/invoice-history.component.html:18,19</source><source>app/chat/inbox/inbox.component.html:71</source><source>app/chat/inbox/inbox.component.html:97</source><source>app/chat/current-conversation/current-conversation.component.html:87</source>Load more
+  <msg id="LoadingData"><source>app/shared/invoice-history/invoice-history.component.html:9</source>We are loading your invoice history...</msg>
+  <msg id="NotLoadedInvoices"><source>app/shared/invoice-history/invoice-history.component.html:10</source>Sorry, we cannot load your invoices at this time. Please try again later.</msg>
+  <msg id="EmptyHistory"><source>app/shared/invoice-history/invoice-history.component.html:11</source>Your history is empty.</msg>
+  <msg id="NotOldInvoices"><source>app/shared/invoice-history/invoice-history.component.html:12</source>You don&apos;t have any old invoices. Fill in the invoicing data for future purchases.</msg>
+  <msg id="loadMoreButton"><source>app/shared/invoice-history/invoice-history.component.html:26,27</source><source>app/chat/inbox/inbox.component.html:71</source><source>app/chat/inbox/inbox.component.html:97</source><source>app/chat/current-conversation/current-conversation.component.html:87</source>Load more
         </msg>
   <msg id="TransactionDate"><source>app/shared/invoice-history/invoice-item/invoice-item.component.html:16</source>Transaction date</msg>
   <msg id="Date"><source>app/shared/invoice-history/invoice-item/invoice-item.component.html:17</source>Date</msg>
