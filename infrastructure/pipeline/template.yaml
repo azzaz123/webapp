@@ -296,7 +296,7 @@ Resources:
                         aws s3 sync en/ s3://$HOSTING_BUCKET_EN --delete
                         aws s3 cp en/index.html s3://$HOSTING_BUCKET_EN/index.html --cache-control max-age=0
                       else
-                        aws s3 sync dist/es/ s3://$HOSTING_BUCKET_ES --delete
+                        aws s3 sync dist/es s3://$HOSTING_BUCKET_ES --delete
                         aws s3 cp dist/es/index.html s3://$HOSTING_BUCKET_ES/index.html --cache-control max-age=0
                       fi
       Environment:
