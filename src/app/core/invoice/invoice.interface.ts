@@ -1,14 +1,17 @@
 export interface Invoice {
   id: string;
-  title: string;
   price: number;
-  category_id: number;
-  transaction_date: number;
-  available?: boolean;
-  category_name?: string;
-  category_icon?: string;
+  currency: string;
+  description: string;
+  date: number;
+  invoice_generated: boolean;
 }
 
-export interface InvoiceDownload {
-  file: string;
+export interface InvoiceTransactions {
+  id: string;
+  price: number;
+  currency: string;
+  description: string;
+  date: number;
+  invoice_generated: boolean;
 }
