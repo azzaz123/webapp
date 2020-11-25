@@ -1,17 +1,27 @@
-import { tap, filter, mergeMap } from 'rxjs/operators';
+import { LoadExternalLibsService } from './../../core/load-external-libs/load-external-libs.service';
+import { tap, filter, mergeMap, finalize } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Observable, merge, Subscription, BehaviorSubject } from 'rxjs';
-import { UserService } from '../user/user.service';
+import {
+  Observable,
+  merge,
+  Subscription,
+  BehaviorSubject,
+  Subscriber,
+} from 'rxjs';
+
 import { CookieService } from 'ngx-cookie';
-import { AdKeyWords } from './ad.interface';
+import { AdKeyWords } from './adds.interface';
 import * as moment from 'moment';
-import { User } from '../user/user';
-import { DidomiService } from '../didomi/didomi.service';
 
-import { initAdsConfig } from './ad.config';
+import { ADD_SOURCES, initAdsConfig } from './adds.config';
+import { DidomiService } from 'app/core/didomi/didomi.service';
+import { User } from 'app/core/user/user';
+import { UserService } from 'app/core/user/user.service';
 
-@Injectable()
-export class AdService {
+@Injectable({
+  providedIn: 'root',
+})
+export class AddsService {
   public allowSegmentation$: BehaviorSubject<boolean> = new BehaviorSubject(
     null
   );
@@ -35,8 +45,15 @@ export class AdService {
   constructor(
     private userService: UserService,
     private cookieService: CookieService,
-    private didomiService: DidomiService
+    private didomiService: DidomiService,
+    private loadExternalLibsService: LoadExternalLibsService
   ) {
+    this.loadExternalLibsService
+      .loadScript(ADD_SOURCES)
+      .subscribe(() => this.initAddsLib());
+  }
+
+  private initAddsLib(): void {
     initAdsConfig();
     this.initKeyWordsFromCookies();
     this.initPositionKeyWords();
@@ -92,27 +109,23 @@ export class AdService {
   }
 
   public fetchHeaderBids(allowSegmentation = false) {
-    merge(this.requestBidAps(), this.requestBidCriteo()).subscribe(
-      null,
-      null,
-      () => {
-        this.sendAdServerRequest(allowSegmentation);
-      }
-    );
+    merge([this.requestBidAps(), this.requestBidCriteo()])
+      .pipe(finalize(() => this.sendAdServerRequest(allowSegmentation)))
+      .subscribe();
   }
 
   public requestBidAps() {
     const apstagSlots = this._adSlots.map((slot) => {
       return { slotID: slot.id, sizes: slot.sizes, slotName: slot.name };
     });
-    return Observable.create((observer) => {
+    return new Observable((subscriber: Subscriber<void>) => {
       apstag.fetchBids(
         {
           slots: apstagSlots,
           timeout: this._bidTimeout,
         },
         (bids) => {
-          observer.complete();
+          subscriber.complete();
         }
       );
     });
@@ -124,14 +137,12 @@ export class AdService {
         return { slotid: slot.id, zoneid: slot.zoneid };
       }),
     };
-    return Observable.create((observer) => {
+    return new Observable((observer: Subscriber<void>) => {
       Criteo.events.push(() => {
         Criteo.SetLineItemRanges('0..4.5:0.01;4.50..27:0.05;27..72:0.1');
         Criteo.RequestBids(
           adUnits,
-          (bids) => {
-            observer.complete();
-          },
+          (bids) => observer.complete(),
           this._bidTimeout
         );
       });

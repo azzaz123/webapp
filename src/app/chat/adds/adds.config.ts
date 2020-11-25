@@ -1,3 +1,9 @@
+export const ADD_SOURCES: string[] = [
+  'https://static.criteo.net/js/ld/publishertag.js',
+  'https://www.googletagservices.com/tag/js/gpt.js',
+  '//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',
+];
+
 export const initAdsConfig = () => {
   /* DFP */
   if (!googletag) {

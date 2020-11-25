@@ -5,12 +5,13 @@ import {
   TestBed,
   tick,
 } from '@angular/core/testing';
-import { AdService } from './ad.service';
-import { UserService } from '../user/user.service';
+import { AdService } from './adds.service';
+
 import { CookieService } from 'ngx-cookie';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-import { MockDidomiService } from '../didomi/didomi.service.spec';
-import { DidomiService } from '../didomi/didomi.service';
+import { DidomiService } from 'app/core/didomi/didomi.service';
+import { MockDidomiService } from 'app/core/didomi/didomi.service.spec';
+import { UserService } from 'app/core/user/user.service';
 
 let service: AdService;
 let userService: UserService;

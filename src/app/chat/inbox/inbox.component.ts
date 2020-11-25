@@ -18,7 +18,6 @@ import {
   keyframes,
 } from '@angular/animations';
 import { UserService } from '../../core/user/user.service';
-import { AdService } from '../../core/ad/ad.service';
 import { RemoteConsoleService } from '../../core/remote-console';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { countBy, map, find } from 'lodash-es';
@@ -29,6 +28,7 @@ import {
   ViewChatScreen,
 } from '../../core/analytics/analytics-constants';
 import { InboxMessage } from '../model';
+import { AddsService } from '../adds/adds.service';
 
 export enum InboxState {
   Inbox,
@@ -105,7 +105,7 @@ export class InboxComponent implements OnInit, OnDestroy {
     private eventService: EventService,
     private inboxConversationService: InboxConversationService,
     private userService: UserService,
-    private adService: AdService,
+    private adService: AddsService,
     private remoteConsoleService: RemoteConsoleService,
     private analyticsService: AnalyticsService
   ) {}
