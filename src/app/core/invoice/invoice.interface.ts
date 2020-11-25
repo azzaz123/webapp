@@ -14,6 +14,7 @@ export interface InvoiceTransactions {
   description: string;
   date: number;
   invoice_generated: boolean;
+  currencySymbol?: string;
 }
 
 export interface InvoiceDownload {

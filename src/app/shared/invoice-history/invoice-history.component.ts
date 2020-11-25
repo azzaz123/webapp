@@ -8,6 +8,10 @@ import { InvoiceTransactions } from 'app/core/invoice/invoice.interface';
   styleUrls: ['./invoice-history.component.scss'],
 })
 export class InvoiceHistoryComponent implements OnInit {
+  private currencies = {
+    EUR: '€',
+    GBP: '£',
+  };
   @Input() active: boolean;
   @Input() isBillingInfo: boolean;
   public loading = false;
@@ -26,7 +30,11 @@ export class InvoiceHistoryComponent implements OnInit {
   private getInvoiceTransactions(): void {
     this.loading = true;
     this.invoiceService.getInvoiceTransactions().subscribe(
-      (invoiceTransactions) => {
+      (invoiceTransactions: InvoiceTransactions[]) => {
+        invoiceTransactions.forEach(
+          (transaction) =>
+            (transaction.currencySymbol = this.currencies[transaction.currency])
+        );
         this.invoiceTransactions = invoiceTransactions;
         this.total =
           invoiceTransactions && invoiceTransactions.length
