@@ -6,6 +6,8 @@ export class I18nService {
     en: {
       yes: 'Yes',
       no: 'No',
+      defaultErrorMessage:
+        'Service not available at this moment. Try again later',
       male: 'Male',
       female: 'Female',
       daysMomentConfig: {
@@ -202,6 +204,8 @@ export class I18nService {
     es: {
       yes: 'Sí',
       no: 'No',
+      defaultErrorMessage:
+        'Servicio no disponible temporalmente. Inténtelo de nuevo más tarde',
       male: 'Hombre',
       female: 'Mujer',
       daysMomentConfig: {

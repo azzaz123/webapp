@@ -12,8 +12,8 @@ const ELEVENTH_OF_JUNE_OF_2020_IN_MS = 1591867791429;
   template: '{{timestamp | dateCalendar:momentConfig}}',
 })
 class MockComponent {
-  public timestamp;
-  public momentConfig;
+  public timestamp: number;
+  public momentConfig: moment.CalendarSpec;
 }
 
 describe('DateCalendarPipe', () => {
