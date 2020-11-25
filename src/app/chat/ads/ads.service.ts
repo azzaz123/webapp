@@ -56,7 +56,6 @@ export class AdsService {
   }
 
   private initAddsLib(): void {
-    console.log('initAddsLib');
     initAdsConfig();
     this.initKeyWordsFromCookies();
     this.initPositionKeyWords();
