@@ -1,4 +1,4 @@
-@import "~style/common";
+@import '~style/common';
 
 .InvoiceHistory {
   padding: $spacing-l;
@@ -6,4 +6,14 @@
     display: flex;
     justify-content: center;
   }
+}
+
+.inbox-size {
+  width: 100%;
+}
+
+.content {
+  text-align: center;
+  color: $blue-grey-2;
+  font-size: $font-size-s;
 }
