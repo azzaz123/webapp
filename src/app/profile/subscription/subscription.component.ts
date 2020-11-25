@@ -29,7 +29,14 @@ import { UnsubscribeInAppFirstModal } from './modals/unsubscribe-in-app-first-mo
 import { DiscountAvailableUnsubscribeInAppModalComponent } from './modals/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user';
-import { UserResponse } from 'app/core/user/user-response.interface';
+
+export enum SubscriptionModalAction {
+  ADD = 'add',
+  UPDATE = 'update',
+  CONTINUE = 'continue',
+  CANCEL_SUBSCRIPTION_SUCCESS = 'success',
+  CANCEL_SUBSCRIPTION_FAIL = 'fail'
+}
 
 export type SubscriptionModal =
   | typeof CheckSubscriptionInAppModalComponent
@@ -55,7 +62,7 @@ export class SubscriptionsComponent implements OnInit {
     private router: Router,
     private analyticsService: AnalyticsService,
     private userService: UserService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loading = true;
@@ -78,8 +85,8 @@ export class SubscriptionsComponent implements OnInit {
       this.subscriptions
     );
     modalRef.result.then(
-      (action: string) => {
-        if (action) {
+      (action: SubscriptionModalAction) => {
+        if (action && action !== SubscriptionModalAction.UPDATE) {
           this.loading = true;
           if (this.user && this.user.featured) {
             this.isSubscriptionUpdated();
