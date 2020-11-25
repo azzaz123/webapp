@@ -9,7 +9,7 @@ import { PaymentService } from 'app/core/payments/payment.service';
 })
 export class InvoiceComponent implements OnInit {
   public canDownloadInvoice: boolean;
-  public isTabOpened = true;
+  public isBilling = false;
 
   constructor(private paymentService: PaymentService) {}
 
@@ -20,11 +20,7 @@ export class InvoiceComponent implements OnInit {
   public getBillingInfo(): void {
     this.paymentService.getBillingInfo(true).subscribe(
       (res: BillingInfoResponse) => {
-        const isEmpty = Object.values(res).every(
-          (atr) => atr === null || atr === ''
-        );
-
-        this.isTabOpened = !res || isEmpty;
+        this.isBilling = res && !!res.cif && !!res.id;
         this.canDownloadInvoice = true;
       },
       () => {

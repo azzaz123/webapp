@@ -7,7 +7,7 @@
       </div>
       <div class="d-flex align-items-right justify-content-end flex-grow-1">
         <button ngbPanelToggle class="btn btn-link p-0">
-          <tsl-svg-icon  [ngClass]="{closed: !isTabOpened}" src="/assets/icons/arrow-waterfall.svg"></tsl-svg-icon>
+          <tsl-svg-icon  [ngClass]="{closed: isBilling}" src="/assets/icons/arrow-waterfall.svg"></tsl-svg-icon>
         </button>
       </div>
     </ng-template>
@@ -16,4 +16,4 @@
     </ng-template>
   </ngb-panel>
 </ngb-accordion>
-<tsl-invoice-history [active]="canDownloadInvoice"></tsl-invoice-history>
+<tsl-invoice-history [active]="canDownloadInvoice" [isBillingInfo]="isBilling"></tsl-invoice-history>
