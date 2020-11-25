@@ -93,7 +93,7 @@ describe('SubscriptionComponent', () => {
         {
           provide: Router,
           useValue: {
-            navigate() {},
+            navigate() { },
           },
         },
         {
@@ -221,7 +221,7 @@ describe('SubscriptionComponent', () => {
       component.subscriptions = MAPPED_SUBSCRIPTIONS;
 
       component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[0]);
-      tick();
+      tick(400000);
 
       expect(component.loading).toBe(false);
     }));
