@@ -86,7 +86,7 @@ export class SubscriptionsComponent implements OnInit {
     );
     modalRef.result.then(
       (action: SubscriptionModalAction) => {
-        if (action && action !== SubscriptionModalAction.UPDATE) {
+        if (action) {
           this.loading = true;
           if (this.user && this.user.featured) {
             this.isSubscriptionUpdated();
@@ -117,6 +117,7 @@ export class SubscriptionsComponent implements OnInit {
         take(30),
         finalize(() => {
           this.router.navigate(['profile/info']);
+          this.loading = false;
         })
       )
       .subscribe((updatedUser) => {
@@ -137,7 +138,7 @@ export class SubscriptionsComponent implements OnInit {
           )
         ),
         take(30),
-        finalize(() => this.router.navigate(['profile/subscriptions']))
+        finalize(() => {this.router.navigate(['profile/subscriptions']), this.loading = false})
       )
       .subscribe((updatedSubscriptions) => {
         if (!isEqual(this.subscriptions, updatedSubscriptions)) {
