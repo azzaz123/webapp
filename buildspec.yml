@@ -60,12 +60,10 @@ phases:
         if [ "`echo $ENV | grep prod`" != "" ]; then
           docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable yarn buildprod
           mkdir es
-          cp -r dist es
+          cp -r dist/es es
           zip -r webapp-${IMAGE_TAG}.zip es/*
-          rm -rf dist
-          docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable yarn buildprod-en
           mkdir en
-          cp -r dist en
+          cp -r dist/en en
           zip -r webapp-${IMAGE_TAG}.zip en/*
           rm -rf dist
         fi
@@ -74,12 +72,10 @@ phases:
         if [ "`echo $ENV | grep beta`" != "" ]; then
           docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable yarn buildbeta
           mkdir es
-          cp -r dist es
+          cp -r dist/es es
           zip -r webapp-${IMAGE_TAG}.zip es/*
-          rm -rf dist
-          docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable yarn buildbeta-en
           mkdir en
-          cp -r dist en
+          cp -r dist/en en
           zip -r webapp-${IMAGE_TAG}.zip en/*
           rm -rf dist
         fi
