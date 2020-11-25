@@ -15,3 +15,7 @@ export interface InvoiceTransactions {
   date: number;
   invoice_generated: boolean;
 }
+
+export interface InvoiceDownload {
+  file: string;
+}
