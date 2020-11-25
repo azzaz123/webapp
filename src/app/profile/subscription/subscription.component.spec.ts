@@ -198,9 +198,9 @@ describe('SubscriptionComponent', () => {
       );
     });
 
-    it('should not set loading to true if action is not present', () => {
+    it('should not set loading to true if action is not present', fakeAsync(() => {
       spyOn(modalService, 'open').and.returnValue({
-        result: Promise.resolve(null),
+        result: Promise.resolve(undefined),
         componentInstance: componentInstance,
       });
 
@@ -209,7 +209,7 @@ describe('SubscriptionComponent', () => {
       component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[0]);
 
       expect(component.loading).toBe(false);
-    });
+    }));
 
     it('should not load if it is updating', fakeAsync(() => {
       spyOn(modalService, 'open').and.returnValue({
