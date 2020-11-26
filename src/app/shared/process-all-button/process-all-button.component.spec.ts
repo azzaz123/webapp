@@ -1,10 +1,10 @@
 /* tslint:disable:no-unused-variable */
 import {
-  async,
   ComponentFixture,
   fakeAsync,
   TestBed,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 import { ProcessAllButtonComponent } from './process-all-button.component';
 import { of } from 'rxjs';
@@ -20,35 +20,37 @@ describe('ProcessAllButtonComponent', () => {
   let callsService: CallsService;
   let trackingService: TrackingService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        {
-          provide: TrackingService,
-          useClass: MockTrackingService,
-        },
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                result: Promise.resolve(),
-              };
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        providers: [
+          {
+            provide: TrackingService,
+            useClass: MockTrackingService,
+          },
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  result: Promise.resolve(),
+                };
+              },
             },
           },
-        },
-        {
-          provide: CallsService,
-          useValue: {
-            archiveAll() {
-              return of({});
+          {
+            provide: CallsService,
+            useValue: {
+              archiveAll() {
+                return of({});
+              },
             },
           },
-        },
-      ],
-      declarations: [ProcessAllButtonComponent],
-    }).compileComponents();
-  }));
+        ],
+        declarations: [ProcessAllButtonComponent],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProcessAllButtonComponent);

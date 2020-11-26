@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReviewItemComponent } from './review-item.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
@@ -15,23 +15,25 @@ describe('ReviewItemComponent', () => {
   let component: ReviewItemComponent;
   let fixture: ComponentFixture<ReviewItemComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ReviewItemComponent, SanitizedBackgroundDirective],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        { provide: 'SUBDOMAIN', useValue: 'www' },
-        {
-          provide: CategoryService,
-          useValue: {
-            getCategoryById: () => {
-              return of(CATEGORY_DATA_WEB[0]);
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ReviewItemComponent, SanitizedBackgroundDirective],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          { provide: 'SUBDOMAIN', useValue: 'www' },
+          {
+            provide: CategoryService,
+            useValue: {
+              getCategoryById: () => {
+                return of(CATEGORY_DATA_WEB[0]);
+              },
             },
           },
-        },
-      ],
-    }).compileComponents();
-  }));
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ReviewItemComponent);

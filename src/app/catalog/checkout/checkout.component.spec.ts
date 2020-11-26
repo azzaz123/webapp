@@ -1,5 +1,5 @@
 import { of } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CheckoutComponent } from './checkout.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../core/item/item.service';
@@ -24,43 +24,45 @@ describe('CheckoutComponent', () => {
 
   const SELECTED_ITEMS = ['1', '2', '3'];
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [CheckoutComponent],
-      providers: [
-        {
-          provide: ItemService,
-          useValue: {
-            selectedItems: SELECTED_ITEMS,
-            getItemsWithAvailableProducts() {
-              return of(ITEMS_WITH_PRODUCTS);
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [CheckoutComponent],
+        providers: [
+          {
+            provide: ItemService,
+            useValue: {
+              selectedItems: SELECTED_ITEMS,
+              getItemsWithAvailableProducts() {
+                return of(ITEMS_WITH_PRODUCTS);
+              },
             },
           },
-        },
-        {
-          provide: Router,
-          useValue: {
-            navigate() {},
-          },
-        },
-        {
-          provide: PaymentService,
-          useValue: {
-            getCreditInfo() {
-              return of({});
+          {
+            provide: Router,
+            useValue: {
+              navigate() {},
             },
           },
-        },
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            params: of({}),
+          {
+            provide: PaymentService,
+            useValue: {
+              getCreditInfo() {
+                return of({});
+              },
+            },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: ActivatedRoute,
+            useValue: {
+              params: of({}),
+            },
+          },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckoutComponent);

@@ -1,10 +1,10 @@
 import { throwError, of } from 'rxjs';
 import {
-  async,
   ComponentFixture,
   fakeAsync,
   TestBed,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 
 import { DropAreaComponent } from './drop-area.component';
@@ -43,56 +43,58 @@ describe('DropAreaComponent', () => {
   let itemService: ItemService;
   let modalService: NgbModal;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [DropAreaComponent],
-      providers: [
-        {
-          provide: ErrorsService,
-          useValue: {
-            i18nError() {},
-            i18nSuccess() {},
-          },
-        },
-        {
-          provide: UploadService,
-          useValue: {
-            createItemWithFirstImage() {},
-            uploadOtherImages() {},
-            removeImage() {},
-            updateOrder() {},
-            setInitialImages() {},
-            uploadSingleImage() {},
-          },
-        },
-        {
-          provide: ItemService,
-          useValue: {
-            update() {
-              return of({});
-            },
-            updatePicturesOrder() {
-              return of({});
-            },
-            deletePicture() {
-              return of({});
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [DropAreaComponent],
+        providers: [
+          {
+            provide: ErrorsService,
+            useValue: {
+              i18nError() {},
+              i18nSuccess() {},
             },
           },
-        },
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                result: Promise.resolve(),
-              };
+          {
+            provide: UploadService,
+            useValue: {
+              createItemWithFirstImage() {},
+              uploadOtherImages() {},
+              removeImage() {},
+              updateOrder() {},
+              setInitialImages() {},
+              uploadSingleImage() {},
             },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: ItemService,
+            useValue: {
+              update() {
+                return of({});
+              },
+              updatePicturesOrder() {
+                return of({});
+              },
+              deletePicture() {
+                return of({});
+              },
+            },
+          },
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  result: Promise.resolve(),
+                };
+              },
+            },
+          },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DropAreaComponent);

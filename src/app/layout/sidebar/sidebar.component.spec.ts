@@ -1,11 +1,11 @@
 import { of, Observable } from 'rxjs';
 /* tslint:disable:no-unused-variable */
 import {
-  async,
   ComponentFixture,
   fakeAsync,
   TestBed,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { SidebarComponent } from './sidebar.component';
@@ -43,36 +43,42 @@ describe('SidebarComponent', () => {
   let userService: UserService;
   let router: Router;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SidebarComponent, RouterLinkDirectiveStub, MockComponent],
-      imports: [
-        NgxPermissionsModule.forRoot(),
-        RouterTestingModule.withRoutes(routes),
-      ],
-      providers: [
-        {
-          provide: UserService,
-          useValue: {
-            logout() {},
-            me(): Observable<User> {
-              return of(MOCK_USER);
-            },
-            isProfessional() {
-              return of(true);
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          SidebarComponent,
+          RouterLinkDirectiveStub,
+          MockComponent,
+        ],
+        imports: [
+          NgxPermissionsModule.forRoot(),
+          RouterTestingModule.withRoutes(routes),
+        ],
+        providers: [
+          {
+            provide: UserService,
+            useValue: {
+              logout() {},
+              me(): Observable<User> {
+                return of(MOCK_USER);
+              },
+              isProfessional() {
+                return of(true);
+              },
             },
           },
-        },
-        {
-          provide: MessageService,
-          useValue: {
-            totalUnreadMessages$: of(1),
+          {
+            provide: MessageService,
+            useValue: {
+              totalUnreadMessages$: of(1),
+            },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SidebarComponent);

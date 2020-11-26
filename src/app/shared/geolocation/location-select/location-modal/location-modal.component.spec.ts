@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { LocationModalComponent } from './location-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -15,20 +15,22 @@ describe('LocationModalComponent', () => {
   let fixture: ComponentFixture<LocationModalComponent>;
   let activeModal: NgbActiveModal;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [LocationModalComponent],
-      providers: [
-        {
-          provide: NgbActiveModal,
-          useValue: {
-            close() {},
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [LocationModalComponent],
+        providers: [
+          {
+            provide: NgbActiveModal,
+            useValue: {
+              close() {},
+            },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LocationModalComponent);

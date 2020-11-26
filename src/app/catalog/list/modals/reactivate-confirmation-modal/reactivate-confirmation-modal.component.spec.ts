@@ -1,10 +1,10 @@
 import { of } from 'rxjs';
 import {
-  async,
   ComponentFixture,
   TestBed,
   tick,
   fakeAsync,
+  waitForAsync,
 } from '@angular/core/testing';
 
 import { ReactivateConfirmationModalComponent } from './reactivate-confirmation-modal.component';
@@ -21,25 +21,30 @@ describe('ReactivateConfirmationModalComponent', () => {
   let fixture: ComponentFixture<ReactivateConfirmationModalComponent>;
   let paymentService: PaymentService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ReactivateConfirmationModalComponent, CustomCurrencyPipe],
-      providers: [
-        NgbActiveModal,
-        DecimalPipe,
-        EventService,
-        {
-          provide: PaymentService,
-          useValue: {
-            getCreditInfo() {
-              return of({});
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          ReactivateConfirmationModalComponent,
+          CustomCurrencyPipe,
+        ],
+        providers: [
+          NgbActiveModal,
+          DecimalPipe,
+          EventService,
+          {
+            provide: PaymentService,
+            useValue: {
+              getCreditInfo() {
+                return of({});
+              },
             },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ReactivateConfirmationModalComponent);

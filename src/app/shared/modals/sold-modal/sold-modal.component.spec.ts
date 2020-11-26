@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SoldModalComponent } from './sold-modal.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -18,27 +18,29 @@ describe('SoldModalComponent', () => {
   let itemService: ItemService;
   let activeModal: NgbActiveModal;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [FormsModule],
-      providers: [
-        NgbActiveModal,
-        {
-          provide: ItemService,
-          useValue: {
-            getConversationUsers() {
-              return of(CONVERSATION_USERS);
-            },
-            soldOutside() {
-              return of({});
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [FormsModule],
+        providers: [
+          NgbActiveModal,
+          {
+            provide: ItemService,
+            useValue: {
+              getConversationUsers() {
+                return of(CONVERSATION_USERS);
+              },
+              soldOutside() {
+                return of({});
+              },
             },
           },
-        },
-      ],
-      declarations: [SoldModalComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        declarations: [SoldModalComponent],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SoldModalComponent);

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ItemStatsGraphComponent } from './item-stats-graph.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -10,13 +10,15 @@ describe('ItemStatsGraphComponent', () => {
   let component: ItemStatsGraphComponent;
   let fixture: ComponentFixture<ItemStatsGraphComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ItemStatsGraphComponent],
-      providers: [I18nService],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ItemStatsGraphComponent],
+        providers: [I18nService],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ItemStatsGraphComponent);

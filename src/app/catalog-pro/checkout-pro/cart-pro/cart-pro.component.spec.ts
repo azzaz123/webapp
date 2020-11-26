@@ -1,5 +1,5 @@
 import { throwError, of } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CartProComponent } from './cart-pro.component';
 import { FormsModule } from '@angular/forms';
@@ -48,60 +48,62 @@ describe('CartProComponent', () => {
     autorenew_scheduled: { citybump: 16, countrybump: 21 },
   };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [FormsModule],
-      declarations: [CartProComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      providers: [
-        {
-          provide: PaymentService,
-          useValue: {
-            getPerks() {
-              return of(perksModel);
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [FormsModule],
+        declarations: [CartProComponent],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+        providers: [
+          {
+            provide: PaymentService,
+            useValue: {
+              getPerks() {
+                return of(perksModel);
+              },
+              getStatus() {
+                return of(MOCK_STATUS);
+              },
             },
-            getStatus() {
-              return of(MOCK_STATUS);
+          },
+          {
+            provide: TrackingService,
+            useClass: MockTrackingService,
+          },
+          {
+            provide: CartService,
+            useValue: {
+              cart$: of(CART_CHANGE),
+              createInstance() {},
+              remove() {},
+              clean() {},
             },
           },
-        },
-        {
-          provide: TrackingService,
-          useClass: MockTrackingService,
-        },
-        {
-          provide: CartService,
-          useValue: {
-            cart$: of(CART_CHANGE),
-            createInstance() {},
-            remove() {},
-            clean() {},
-          },
-        },
-        {
-          provide: ItemService,
-          useValue: {
-            bumpProItems() {
-              return of({});
+          {
+            provide: ItemService,
+            useValue: {
+              bumpProItems() {
+                return of({});
+              },
+              deselectItems() {},
             },
-            deselectItems() {},
           },
-        },
-        {
-          provide: ErrorsService,
-          useValue: {
-            i18nError() {},
+          {
+            provide: ErrorsService,
+            useValue: {
+              i18nError() {},
+            },
           },
-        },
-        {
-          provide: Router,
-          useValue: {
-            navigate() {},
+          {
+            provide: Router,
+            useValue: {
+              navigate() {},
+            },
           },
-        },
-      ],
-    }).compileComponents();
-  }));
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CartProComponent);

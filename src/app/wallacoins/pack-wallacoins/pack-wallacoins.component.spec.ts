@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { PackWallacoinsComponent } from './pack-wallacoins.component';
 import { CustomCurrencyPipe } from '../../shared/pipes';
@@ -10,13 +10,15 @@ describe('PackWallacoinsComponent', () => {
   let component: PackWallacoinsComponent;
   let fixture: ComponentFixture<PackWallacoinsComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [PackWallacoinsComponent, CustomCurrencyPipe],
-      providers: [DecimalPipe],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [PackWallacoinsComponent, CustomCurrencyPipe],
+        providers: [DecimalPipe],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PackWallacoinsComponent);

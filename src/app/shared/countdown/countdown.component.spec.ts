@@ -1,10 +1,10 @@
 import {
-  async,
   ComponentFixture,
   discardPeriodicTasks,
   fakeAsync,
   TestBed,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 
 import { CountdownComponent } from './countdown.component';
@@ -16,12 +16,14 @@ describe('CountdownComponent', () => {
   let component: CountdownComponent;
   let fixture: ComponentFixture<CountdownComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [CountdownComponent],
-      providers: [I18nService],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [CountdownComponent],
+        providers: [I18nService],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CountdownComponent);

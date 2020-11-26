@@ -1,5 +1,5 @@
 import { SubscriptionPriceDiscountComponent } from './subscription-price-discount.component';
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
@@ -14,15 +14,17 @@ describe('SubscriptionPriceDiscountComponent', () => {
   let subscriptionsService: SubscriptionsService;
   const componentInstance = { subscription: MAPPED_SUBSCRIPTIONS[0] };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SubscriptionPriceDiscountComponent],
-      providers: [
-        { provide: SubscriptionsService, useClass: MockSubscriptionService },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [SubscriptionPriceDiscountComponent],
+        providers: [
+          { provide: SubscriptionsService, useClass: MockSubscriptionService },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SubscriptionPriceDiscountComponent);
