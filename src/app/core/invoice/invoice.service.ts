@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
 import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Invoice, InvoiceTransactions } from './invoice.interface';
+import { Invoice, InvoiceTransaction } from './invoice.interface';
 import { CategoryService } from '../category/category.service';
-import { mergeMap, map, catchError } from 'rxjs/operators';
-import { CategoryResponse } from '../category/category-response.interface';
+import { mergeMap } from 'rxjs/operators';
 
 export const PAYMENTS_API_URL = 'api/v3/payments';
 export const INVOICE_HISTORY_ENDPOINT = `${PAYMENTS_API_URL}/c2b/stripe/subscriptions/transactions`;
@@ -22,20 +21,16 @@ export class InvoiceService {
 
   public getInvoiceTransactions(
     cache: boolean = true
-  ): Observable<InvoiceTransactions[]> {
+  ): Observable<InvoiceTransaction[]> {
     if (this.invoices && cache) {
       return of(this.invoices);
     }
 
     return this.categoryService.getCategories().pipe(
       mergeMap(() => {
-        return this.http
-          .get<Invoice[]>(`${environment.baseUrl}${INVOICE_HISTORY_ENDPOINT}`)
-          .pipe(
-            catchError((error) => {
-              return of(error);
-            })
-          );
+        return this.http.get<Invoice[]>(
+          `${environment.baseUrl}${INVOICE_HISTORY_ENDPOINT}`
+        );
       })
     );
   }
@@ -43,16 +38,10 @@ export class InvoiceService {
   public generateInvoice(invoice: Invoice): Observable<Invoice[]> {
     return this.categoryService.getCategories().pipe(
       mergeMap(() => {
-        return this.http
-          .post<Invoice[]>(
-            `${environment.baseUrl}${INVOICE_DOWNLOAD_ENDPOINT}`,
-            invoice.id
-          )
-          .pipe(
-            catchError((error) => {
-              return of(error);
-            })
-          );
+        return this.http.post<Invoice[]>(
+          `${environment.baseUrl}${INVOICE_DOWNLOAD_ENDPOINT}`,
+          invoice.id
+        );
       })
     );
   }
@@ -60,15 +49,9 @@ export class InvoiceService {
   public downloadInvoice(invoice: Invoice): Observable<Invoice[]> {
     return this.categoryService.getCategories().pipe(
       mergeMap(() => {
-        return this.http
-          .get<Invoice[]>(
-            `${environment.baseUrl}${INVOICE_DOWNLOAD_ENDPOINT}/${invoice.id}`
-          )
-          .pipe(
-            catchError((error) => {
-              return of(error);
-            })
-          );
+        return this.http.get<Invoice[]>(
+          `${environment.baseUrl}${INVOICE_DOWNLOAD_ENDPOINT}/${invoice.id}`
+        );
       })
     );
   }
