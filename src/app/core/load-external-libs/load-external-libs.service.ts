@@ -12,7 +12,7 @@ export class LoadExternalLibsService {
 
   constructor(@Inject(DOCUMENT) private document: Document) {}
 
-  loadScript(src: string | string[]): Observable<void> {
+  public loadScript(src: string | string[]): Observable<void> {
     const observable: Observable<any> = Array.isArray(src)
       ? this.buildArrayLoaderObservable(src)
       : this.getSubjectBySrc(src);

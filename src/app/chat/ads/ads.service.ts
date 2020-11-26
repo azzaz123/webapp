@@ -48,14 +48,13 @@ export class AdsService {
     private loadExternalLibsService: LoadExternalLibsService
   ) {}
 
-  loadAddsLibs(): void {
+  public loadAddsLibs(): void {
     this.loadExternalLibsService
       .loadScript(ADS_SOURCES)
       .subscribe(() => this.initAddsLib());
   }
 
   private initAddsLib(): void {
-    console.log('initAddsLib');
     initAdsConfig();
     this.initKeyWordsFromCookies();
     this.initPositionKeyWords();
