@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { WallacoinsConfirmModalComponent } from './wallacoins-confirm-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -11,22 +11,24 @@ describe('WallacoinsConfirmModalComponent', () => {
   let component: WallacoinsConfirmModalComponent;
   let fixture: ComponentFixture<WallacoinsConfirmModalComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [WallacoinsConfirmModalComponent, CustomCurrencyPipe],
-      providers: [
-        DecimalPipe,
-        {
-          provide: NgbActiveModal,
-          useValue: {
-            close() {},
-            dismiss() {},
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [WallacoinsConfirmModalComponent, CustomCurrencyPipe],
+        providers: [
+          DecimalPipe,
+          {
+            provide: NgbActiveModal,
+            useValue: {
+              close() {},
+              dismiss() {},
+            },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(WallacoinsConfirmModalComponent);

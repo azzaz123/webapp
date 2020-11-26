@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { BlockUserComponent } from './block-user.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -7,12 +7,14 @@ describe('BlockUserComponent', () => {
   let component: BlockUserComponent;
   let fixture: ComponentFixture<BlockUserComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      providers: [NgbActiveModal],
-      declarations: [BlockUserComponent],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        providers: [NgbActiveModal],
+        declarations: [BlockUserComponent],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BlockUserComponent);

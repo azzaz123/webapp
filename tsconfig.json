@@ -3,7 +3,7 @@
     "target": "es6",
     "baseUrl": "./src",
     "outDir": "./dist/out-tsc",
-    "module": "esnext",
+    "module": "es2020",
     "moduleResolution": "node",
     "sourceMap": true,
     "importHelpers": true,
@@ -13,7 +13,4 @@
       "node_modules/@types"
     ]
   },
-  "angularCompilerOptions": {
-    "enableIvy": false
-  }
 }

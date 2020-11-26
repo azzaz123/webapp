@@ -1,9 +1,9 @@
 import {
-  async,
   ComponentFixture,
   TestBed,
   fakeAsync,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CatalogCardComponent } from './catalog-card.component';
@@ -13,12 +13,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustomCurrencyPipe } from '../../pipes';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { DecimalPipe } from '@angular/common';
-import { ToastService } from '../../../layout/toast/toast.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import {
   MOCK_ITEM,
   ITEM_ID,
-  ITEM_DATA3,
   getMockItemWithPurchases,
 } from '../../../../tests/item.fixtures.spec';
 import { of } from 'rxjs';
@@ -43,53 +41,55 @@ describe('CatalogCardComponent', () => {
     item: null,
   };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [CatalogCardComponent, CustomCurrencyPipe],
-      providers: [
-        DecimalPipe,
-        I18nService,
-        { provide: TrackingService, useClass: MockTrackingService },
-        {
-          provide: ItemService,
-          useValue: {
-            selectedItems: [],
-            selectItem() {},
-            deselectItem() {},
-            reserveItem() {
-              return of({});
-            },
-            setSold() {
-              return of({});
-            },
-            cancelAutorenew() {
-              return of({});
-            },
-          },
-        },
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                result: Promise.resolve(),
-                componentInstance: componentInstance,
-              };
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [CatalogCardComponent, CustomCurrencyPipe],
+        providers: [
+          DecimalPipe,
+          I18nService,
+          { provide: TrackingService, useClass: MockTrackingService },
+          {
+            provide: ItemService,
+            useValue: {
+              selectedItems: [],
+              selectItem() {},
+              deselectItem() {},
+              reserveItem() {
+                return of({});
+              },
+              setSold() {
+                return of({});
+              },
+              cancelAutorenew() {
+                return of({});
+              },
             },
           },
-        },
-        {
-          provide: ErrorsService,
-          useValue: {
-            i18nError() {},
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  result: Promise.resolve(),
+                  componentInstance: componentInstance,
+                };
+              },
+            },
           },
-        },
-        { provide: 'SUBDOMAIN', useValue: 'es' },
-        EventService,
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: ErrorsService,
+            useValue: {
+              i18nError() {},
+            },
+          },
+          { provide: 'SUBDOMAIN', useValue: 'es' },
+          EventService,
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CatalogCardComponent);

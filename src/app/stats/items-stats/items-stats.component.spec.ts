@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ItemsStatsComponent } from './items-stats.component';
 import { ItemService } from '../../core/item/item.service';
@@ -14,26 +14,28 @@ describe('ItemsStatsComponent', () => {
   let itemService: ItemService;
   const PRICES: CheapestProducts = { 1: '3.19', 2: '3.19' };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [CommonModule],
-      declarations: [ItemsStatsComponent],
-      providers: [
-        {
-          provide: ItemService,
-          useValue: {
-            mine() {
-              return of({ data: [MOCK_ITEM, MOCK_ITEM], init: 20 });
-            },
-            getCheapestProductPrice() {
-              return of(PRICES);
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [CommonModule],
+        declarations: [ItemsStatsComponent],
+        providers: [
+          {
+            provide: ItemService,
+            useValue: {
+              mine() {
+                return of({ data: [MOCK_ITEM, MOCK_ITEM], init: 20 });
+              },
+              getCheapestProductPrice() {
+                return of(PRICES);
+              },
             },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ItemsStatsComponent);

@@ -1,5 +1,5 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { UnarchiveButtonComponent } from './unarchive-button.component';
 import { of } from 'rxjs';
@@ -16,24 +16,26 @@ describe('UnarchiveButtonComponent', () => {
   let callsService: CallsService;
   let trackingService: TrackingService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [NgbModule],
-      providers: [
-        { provide: TrackingService, useClass: MockTrackingService },
-        {
-          provide: CallsService,
-          useValue: {
-            unarchive() {
-              return of({});
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NgbModule],
+        providers: [
+          { provide: TrackingService, useClass: MockTrackingService },
+          {
+            provide: CallsService,
+            useValue: {
+              unarchive() {
+                return of({});
+              },
             },
           },
-        },
-      ],
-      declarations: [UnarchiveButtonComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        declarations: [UnarchiveButtonComponent],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UnarchiveButtonComponent);

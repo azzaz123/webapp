@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ButtonComponent } from 'app/shared/button/button.component';
@@ -11,13 +11,15 @@ describe('MaliciousConversationModalComponent', () => {
   let activeModal: NgbActiveModal;
   let fixture: ComponentFixture<PersonalDataInformationModal>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ButtonComponent, PersonalDataInformationModal],
-      providers: [NgbActiveModal],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ButtonComponent, PersonalDataInformationModal],
+        providers: [NgbActiveModal],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PersonalDataInformationModal);

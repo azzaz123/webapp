@@ -1,8 +1,8 @@
 import {
-  async,
   ComponentFixture,
   fakeAsync,
   TestBed,
+  waitForAsync,
 } from '@angular/core/testing';
 
 import { WallacoinsComponent } from './wallacoins.component';
@@ -49,66 +49,68 @@ describe('WallacoinsComponent', () => {
   );
   let localStorageSpy: Spy;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [WallacoinsComponent, CustomCurrencyPipe],
-      providers: [
-        DecimalPipe,
-        EventService,
-        UserService,
-        { provide: TrackingService, useClass: MockTrackingService },
-        {
-          provide: PaymentService,
-          useValue: {
-            getCreditsPacks() {
-              return of(CREDITS_PACKS);
-            },
-            getPerks() {
-              return of(PERKS);
-            },
-          },
-        },
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                componentInstance: {},
-                result: Promise.resolve('success'),
-              };
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [WallacoinsComponent, CustomCurrencyPipe],
+        providers: [
+          DecimalPipe,
+          EventService,
+          UserService,
+          { provide: TrackingService, useClass: MockTrackingService },
+          {
+            provide: PaymentService,
+            useValue: {
+              getCreditsPacks() {
+                return of(CREDITS_PACKS);
+              },
+              getPerks() {
+                return of(PERKS);
+              },
             },
           },
-        },
-        {
-          provide: Router,
-          useValue: {
-            navigate() {},
-          },
-        },
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            params: of({
-              code: '-1',
-            }),
-          },
-        },
-        {
-          provide: UserService,
-          useValue: {
-            user: MOCK_USER,
-            isProfessional() {
-              return of('');
-            },
-            me() {
-              return of({});
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  componentInstance: {},
+                  result: Promise.resolve('success'),
+                };
+              },
             },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: Router,
+            useValue: {
+              navigate() {},
+            },
+          },
+          {
+            provide: ActivatedRoute,
+            useValue: {
+              params: of({
+                code: '-1',
+              }),
+            },
+          },
+          {
+            provide: UserService,
+            useValue: {
+              user: MOCK_USER,
+              isProfessional() {
+                return of('');
+              },
+              me() {
+                return of({});
+              },
+            },
+          },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(WallacoinsComponent);

@@ -1,7 +1,7 @@
 /* tslint:isUserDisable:no-unused-variable */
 
 import { InboxConversationComponent } from './inbox-conversation.component';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
 import { InboxItemStatus } from '../../model/inbox-item';
@@ -24,21 +24,23 @@ describe('Component: Conversation', () => {
   let component: InboxConversationComponent;
   let fixture: ComponentFixture<InboxConversationComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [CommonModule, NgxPermissionsModule.forRoot()],
-      declarations: [InboxConversationComponent, DateCalendarPipe],
-      providers: [
-        I18nService,
-        {
-          provide: InboxConversationService,
-          useClass: InboxConversationServiceMock,
-        },
-        DateCalendarPipe,
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [CommonModule, NgxPermissionsModule.forRoot()],
+        declarations: [InboxConversationComponent, DateCalendarPipe],
+        providers: [
+          I18nService,
+          {
+            provide: InboxConversationService,
+            useClass: InboxConversationServiceMock,
+          },
+          DateCalendarPipe,
+        ],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(InboxConversationComponent);

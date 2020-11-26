@@ -1,10 +1,10 @@
 import { throwError, of } from 'rxjs';
 import {
-  async,
   fakeAsync,
   tick,
   ComponentFixture,
   TestBed,
+  waitForAsync,
 } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FINANCIAL_STRIPE_CARD } from '../../../../tests/payments.fixtures.spec';
@@ -32,58 +32,60 @@ describe('StripeCardsComponent', () => {
   let subscriptionsService: SubscriptionsService;
   let toastService: ToastService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [StripeCardsComponent, ButtonComponent],
-      providers: [
-        I18nService,
-        {
-          provide: ErrorsService,
-          useValue: {
-            show() {},
-            i18nError() {},
-          },
-        },
-        {
-          provide: StripeService,
-          useValue: {
-            getCards() {
-              return of([FINANCIAL_STRIPE_CARD]);
-            },
-            addNewCard() {
-              return of({});
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [StripeCardsComponent, ButtonComponent],
+        providers: [
+          I18nService,
+          {
+            provide: ErrorsService,
+            useValue: {
+              show() {},
+              i18nError() {},
             },
           },
-        },
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                result: Promise.resolve(FINANCIAL_STRIPE_CARD),
-              };
+          {
+            provide: StripeService,
+            useValue: {
+              getCards() {
+                return of([FINANCIAL_STRIPE_CARD]);
+              },
+              addNewCard() {
+                return of({});
+              },
             },
           },
-        },
-        {
-          provide: SubscriptionsService,
-          useValue: {
-            getSubscriptions() {
-              return of(MAPPED_SUBSCRIPTIONS);
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  result: Promise.resolve(FINANCIAL_STRIPE_CARD),
+                };
+              },
             },
           },
-        },
-        {
-          provide: NgbActiveModal,
-          useValue: {
-            close() {},
-            dismiss() {},
+          {
+            provide: SubscriptionsService,
+            useValue: {
+              getSubscriptions() {
+                return of(MAPPED_SUBSCRIPTIONS);
+              },
+            },
           },
-        },
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: NgbActiveModal,
+            useValue: {
+              close() {},
+              dismiss() {},
+            },
+          },
+        ],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(StripeCardsComponent);

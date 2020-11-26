@@ -1,9 +1,9 @@
 import { of, throwError, Subject } from 'rxjs';
 import {
-  async,
   ComponentFixture,
   fakeAsync,
   TestBed,
+  waitForAsync,
 } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -204,10 +204,13 @@ describe('App', () => {
     spyOn(window.location, 'reload');
   });
 
-  it('should create the app', async(() => {
-    const app: AppComponent = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
-  }));
+  it(
+    'should create the app',
+    waitForAsync(() => {
+      const app: AppComponent = fixture.debugElement.componentInstance;
+      expect(app).toBeTruthy();
+    })
+  );
 
   describe('set cookie', () => {
     it('should create a cookie', () => {

@@ -1,10 +1,10 @@
 import { of, Subject } from 'rxjs';
 import {
-  async,
   ComponentFixture,
   TestBed,
   fakeAsync,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 import { EventEmitter, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CatalogProListComponent } from './catalog-pro-list.component';
@@ -60,87 +60,89 @@ describe('CatalogProListComponent', () => {
   };
   const subscriptionPlan = 20;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [CatalogProListComponent, ItemSoldDirective],
-      providers: [
-        I18nService,
-        EventService,
-        { provide: TrackingService, useClass: MockTrackingService },
-        {
-          provide: ItemService,
-          useValue: {
-            selectedItems: [],
-            mines() {
-              return of([MOCK_ITEM, MOCK_ITEM]);
-            },
-            deselectItems() {},
-            selectItem() {},
-            purchaseProducts() {},
-            getUrgentProducts() {},
-            get() {
-              return of(MOCK_ITEM_V3);
-            },
-          },
-        },
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                result: Promise.resolve(),
-                componentInstance: componentInstance,
-              };
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [CatalogProListComponent, ItemSoldDirective],
+        providers: [
+          I18nService,
+          EventService,
+          { provide: TrackingService, useClass: MockTrackingService },
+          {
+            provide: ItemService,
+            useValue: {
+              selectedItems: [],
+              mines() {
+                return of([MOCK_ITEM, MOCK_ITEM]);
+              },
+              deselectItems() {},
+              selectItem() {},
+              purchaseProducts() {},
+              getUrgentProducts() {},
+              get() {
+                return of(MOCK_ITEM_V3);
+              },
             },
           },
-        },
-        {
-          provide: UserService,
-          useValue: {
-            getStats() {
-              return of(MOCK_USER_STATS);
-            },
-            me() {
-              return of({});
-            },
-          },
-        },
-        {
-          provide: ErrorsService,
-          useValue: {
-            show() {
-              return of({});
-            },
-            i18nError() {},
-          },
-        },
-        {
-          provide: Router,
-          useValue: {
-            navigate() {},
-            events: routerEvents,
-          },
-        },
-        {
-          provide: PaymentService,
-          useValue: {
-            pay() {
-              return of({});
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  result: Promise.resolve(),
+                  componentInstance: componentInstance,
+                };
+              },
             },
           },
-        },
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            params: of({
-              code: 200,
-            }),
+          {
+            provide: UserService,
+            useValue: {
+              getStats() {
+                return of(MOCK_USER_STATS);
+              },
+              me() {
+                return of({});
+              },
+            },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: ErrorsService,
+            useValue: {
+              show() {
+                return of({});
+              },
+              i18nError() {},
+            },
+          },
+          {
+            provide: Router,
+            useValue: {
+              navigate() {},
+              events: routerEvents,
+            },
+          },
+          {
+            provide: PaymentService,
+            useValue: {
+              pay() {
+                return of({});
+              },
+            },
+          },
+          {
+            provide: ActivatedRoute,
+            useValue: {
+              params: of({
+                code: 200,
+              }),
+            },
+          },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CatalogProListComponent);

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -16,29 +16,31 @@ describe('NewCardModalComponent', () => {
   let activeModal: NgbActiveModal;
   let stripeService: StripeService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [NewCardModalComponent],
-      providers: [
-        {
-          provide: NgbActiveModal,
-          useValue: {
-            close() {},
-            dismiss() {},
-          },
-        },
-        {
-          provide: StripeService,
-          useValue: {
-            mapResponse() {
-              return FINANCIAL_CARD;
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [NewCardModalComponent],
+        providers: [
+          {
+            provide: NgbActiveModal,
+            useValue: {
+              close() {},
+              dismiss() {},
             },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: StripeService,
+            useValue: {
+              mapResponse() {
+                return FINANCIAL_CARD;
+              },
+            },
+          },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NewCardModalComponent);

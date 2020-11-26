@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { PaymentSuccessModalComponent } from './payment-success-modal.component';
@@ -20,24 +20,26 @@ describe('PaymentSuccessModalComponent', () => {
   let fixture: ComponentFixture<PaymentSuccessModalComponent>;
   let activeModal: NgbActiveModal;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [PaymentSuccessModalComponent],
-      providers: [
-        {
-          provide: NgbActiveModal,
-          useValue: {
-            close() {},
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [PaymentSuccessModalComponent],
+        providers: [
+          {
+            provide: NgbActiveModal,
+            useValue: {
+              close() {},
+            },
           },
-        },
-        {
-          provide: AnalyticsService,
-          useClass: MockAnalyticsService,
-        },
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: AnalyticsService,
+            useClass: MockAnalyticsService,
+          },
+        ],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PaymentSuccessModalComponent);

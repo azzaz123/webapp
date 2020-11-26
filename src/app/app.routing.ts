@@ -164,6 +164,7 @@ const routes: Routes = [...publicRoutes, ...loggedRoutes];
     RouterModule.forRoot(routes, {
       anchorScrolling: 'enabled',
       scrollPositionRestoration: 'enabled',
+      relativeLinkResolution: 'legacy',
     }),
   ],
   exports: [RouterModule],

@@ -1,5 +1,5 @@
 import { of } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { StatsGraphComponent } from './stats-graph.component';
 import { StatisticsService } from './statistics.service';
@@ -12,28 +12,30 @@ describe('StatsGraphComponent', () => {
   let fixture: ComponentFixture<StatsGraphComponent>;
   let statisticsService: StatisticsService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [StatsGraphComponent],
-      providers: [
-        {
-          provide: StatisticsService,
-          useValue: {
-            getStatistics() {
-              return of(STATISTICS_RESPONSE);
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [StatsGraphComponent],
+        providers: [
+          {
+            provide: StatisticsService,
+            useValue: {
+              getStatistics() {
+                return of(STATISTICS_RESPONSE);
+              },
             },
           },
-        },
-        {
-          provide: I18nService,
-          useValue: {
-            getTranslations() {},
+          {
+            provide: I18nService,
+            useValue: {
+              getTranslations() {},
+            },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(StatsGraphComponent);

@@ -1,5 +1,5 @@
 import { throwError, of } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { BuyWallacoinsModalComponent } from './buy-wallacoins-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -24,46 +24,48 @@ describe('BuyWallacoinsModalComponent', () => {
   let eventService: EventService;
   let uuidService: UuidService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [BuyWallacoinsModalComponent, CustomCurrencyPipe],
-      providers: [
-        EventService,
-        DecimalPipe,
-        {
-          provide: ErrorsService,
-          useValue: {
-            show() {},
-            i18nError() {},
-          },
-        },
-        {
-          provide: PaymentService,
-          useValue: {
-            orderExtrasProPack() {
-              return of({});
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [BuyWallacoinsModalComponent, CustomCurrencyPipe],
+        providers: [
+          EventService,
+          DecimalPipe,
+          {
+            provide: ErrorsService,
+            useValue: {
+              show() {},
+              i18nError() {},
             },
           },
-        },
-        {
-          provide: NgbActiveModal,
-          useValue: {
-            close() {},
-          },
-        },
-        {
-          provide: StripeService,
-          useValue: {
-            getCards() {
-              return of([]);
+          {
+            provide: PaymentService,
+            useValue: {
+              orderExtrasProPack() {
+                return of({});
+              },
             },
-            buy() {},
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: NgbActiveModal,
+            useValue: {
+              close() {},
+            },
+          },
+          {
+            provide: StripeService,
+            useValue: {
+              getCards() {
+                return of([]);
+              },
+              buy() {},
+            },
+          },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BuyWallacoinsModalComponent);
