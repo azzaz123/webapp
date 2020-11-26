@@ -1,6 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { ErrorsService } from 'app/core/errors/errors.service';
-import { InvoiceTransaction } from 'app/core/invoice/invoice.interface';
+import {
+  Invoice,
+  InvoiceTransaction,
+} from 'app/core/invoice/invoice.interface';
 import { InvoiceService } from 'app/core/invoice/invoice.service';
 
 @Component({
@@ -21,20 +24,18 @@ export class InvoiceItemComponent {
   public handleInvoice(e: Event, invoiceTransaction: InvoiceTransaction): void {
     e.stopPropagation();
     if (this.isBillingInfo && this.active) {
-      switch (invoiceTransaction.invoice_generated) {
-        case false:
-          this.generateInvoice(invoiceTransaction);
-          break;
-        case true:
-          this.downloadInvoice(invoiceTransaction);
-          break;
+      if (invoiceTransaction.invoice_generated) {
+        return this.downloadInvoice(invoiceTransaction);
       }
+
+      this.generateInvoice(invoiceTransaction);
     }
   }
 
   private generateInvoice(invoiceTransaction: InvoiceTransaction): void {
     this.invoiceService.generateInvoice(invoiceTransaction).subscribe(
-      () => {
+      (newInvoice: any) => {
+        this.updateInvoice(invoiceTransaction, newInvoice);
         this.errorsService.i18nSuccess('invoiceGenerated');
       },
       (error) => {
@@ -52,5 +53,12 @@ export class InvoiceItemComponent {
         this.errorsService.i18nError('invoiceCannotDownload');
       }
     );
+  }
+
+  private updateInvoice(
+    oldInvoice: InvoiceTransaction,
+    newInvoice: InvoiceTransaction
+  ): void {
+    oldInvoice = newInvoice;
   }
 }

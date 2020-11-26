@@ -102,4 +102,10 @@ $vertical-padding: $spacing-ms;
   &.payment {
     padding: 0 $spacing-ml;
   }
+
+  &.basic {
+    color: $walla-main;
+    background-color: transparent;
+    border: 0px;
+  }
 }
