@@ -18,12 +18,12 @@ export class InvoiceComponent implements OnInit {
   }
 
   public getBillingInfo(): void {
-    this.paymentService.getBillingInfo(true).subscribe(
+    this.paymentService.getBillingInfo(false).subscribe(
       (res: BillingInfoResponse) => {
         this.isBilling = res && !!res.cif && !!res.id;
         this.canDownloadInvoice = true;
       },
-      () => {
+      (error) => {
         this.canDownloadInvoice = false;
       }
     );

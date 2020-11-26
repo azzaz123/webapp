@@ -15,6 +15,7 @@ export class InvoiceItemComponent {
   @Input() invoice: InvoiceTransaction;
   @Input() active: boolean;
   @Input() isBillingInfo: boolean;
+  public loading = false;
 
   constructor(
     private invoiceService: InvoiceService,
@@ -23,6 +24,7 @@ export class InvoiceItemComponent {
 
   public handleInvoice(e: Event, invoiceTransaction: InvoiceTransaction): void {
     e.stopPropagation();
+    this.loadingState = true;
     if (this.isBillingInfo && this.active) {
       if (invoiceTransaction.invoice_generated) {
         return this.downloadInvoice(invoiceTransaction);
@@ -34,11 +36,13 @@ export class InvoiceItemComponent {
 
   private generateInvoice(invoiceTransaction: InvoiceTransaction): void {
     this.invoiceService.generateInvoice(invoiceTransaction).subscribe(
-      (newInvoice: any) => {
-        this.updateInvoice(invoiceTransaction, newInvoice);
+      () => {
+        invoiceTransaction.invoice_generated = true;
         this.errorsService.i18nSuccess('invoiceGenerated');
+        this.loadingState = false;
       },
       (error) => {
+        this.loadingState = false;
         this.errorsService.i18nError('invoiceCannotGenerate');
       }
     );
@@ -46,19 +50,31 @@ export class InvoiceItemComponent {
 
   private downloadInvoice(invoiceTransaction: InvoiceTransaction): void {
     this.invoiceService.downloadInvoice(invoiceTransaction).subscribe(
-      (pdfFile) => {
+      (blob) => {
         this.errorsService.i18nSuccess('invoiceCorrectlyDownloaded');
+        const invoiceDate = this.invoiceDateFormatted(
+          new Date(invoiceTransaction.date)
+        );
+        const fileURL = URL.createObjectURL(blob);
+        var fileLink = document.createElement('a');
+
+        fileLink.href = fileURL;
+        fileLink.download = `WallapopInvoice_${invoiceDate}`;
+        fileLink.click();
+        this.loadingState = false;
       },
       (error) => {
+        this.loadingState = false;
         this.errorsService.i18nError('invoiceCannotDownload');
       }
     );
   }
 
-  private updateInvoice(
-    oldInvoice: InvoiceTransaction,
-    newInvoice: InvoiceTransaction
-  ): void {
-    oldInvoice = newInvoice;
+  private invoiceDateFormatted(date: Date): string {
+    return `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`;
+  }
+
+  private set loadingState(status: boolean) {
+    this.loading = status;
   }
 }
