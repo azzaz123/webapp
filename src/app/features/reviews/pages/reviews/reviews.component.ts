@@ -3,6 +3,7 @@ import { User } from 'app/core/user/user';
 import { UserInfoResponse } from 'app/core/user/user-info.interface';
 import { UserStats } from 'app/core/user/user-stats.interface';
 import { UserService } from 'app/core/user/user.service';
+import { switchMap } from 'rxjs/operators';
 import { Review } from '../../review';
 import { ReviewsData } from '../../review-response.interface';
 import { UserReviewService } from '../../user-review.service';
@@ -33,11 +34,12 @@ export class ReviewsComponent implements OnInit {
   }
 
   public getUserScore() {
-    this.userService.me().subscribe((user: User) => {
-      this.userService.getInfo(user.id).subscribe((info: UserInfoResponse) => {
+    this.userService
+      .me()
+      .pipe(switchMap((user: User) => this.userService.getInfo(user.id)))
+      .subscribe((info: UserInfoResponse) => {
         this.userScore = info.scoring_stars;
       });
-    });
   }
 
   public getReviews(append?: boolean) {

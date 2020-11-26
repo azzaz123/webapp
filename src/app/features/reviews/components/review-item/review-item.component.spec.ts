@@ -1,14 +1,15 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { ReviewItemComponent } from './review-item.component';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { environment } from './../../../../../environments/environment';
 import {
   MOCK_REVIEWS,
   REVIEWS_RESPONSE,
-} from '../../../tests/review.fixtures.spec';
-import { SanitizedBackgroundDirective } from '../../shared/sanitized-background/sanitized-background.directive';
-import { environment } from '../../../environments/environment';
-import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
-import { CategoryService } from '../../core/category/category.service';
+} from './../../../../../tests/review.fixtures.spec';
+import { CATEGORY_DATA_WEB } from './../../../../../tests/category.fixtures.spec';
+import { CategoryService } from './../../../../core/category/category.service';
+import { SanitizedBackgroundDirective } from './../../../../shared/sanitized-background/sanitized-background.directive';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ReviewItemComponent } from './review-item.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+
 import { of } from 'rxjs';
 
 describe('ReviewItemComponent', () => {
