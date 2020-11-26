@@ -199,37 +199,22 @@ describe('SubscriptionComponent', () => {
       );
     });
 
-    it('should not load if action is not present', fakeAsync(() => {
+    it('should not set loading to true if action is not present', () => {
       spyOn(modalService, 'open').and.returnValue({
-        result: Promise.resolve(undefined),
+        result: Promise.resolve(null),
         componentInstance: componentInstance,
       });
 
       component.subscriptions = MAPPED_SUBSCRIPTIONS;
 
       component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[0]);
-      tick();
 
       expect(component.loading).toBe(false);
-    }));
-
-    it('should not load if it is updating', fakeAsync(() => {
-      spyOn(modalService, 'open').and.returnValue({
-        result: Promise.resolve(SubscriptionModalAction.UPDATE),
-        componentInstance: componentInstance,
-      });
-
-      component.subscriptions = MAPPED_SUBSCRIPTIONS;
-
-      component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[0]);
-      tick();
-
-      expect(component.loading).toBe(false);
-    }));
+    });
 
     it('should redirect to subscriptions if action is present and user is featured', fakeAsync(() => {
       spyOn(modalService, 'open').and.returnValue({
-        result: Promise.resolve(SubscriptionModalAction.ADD),
+        result: Promise.resolve('add'),
         componentInstance: componentInstance,
       });
       spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(
@@ -247,7 +232,7 @@ describe('SubscriptionComponent', () => {
 
     it('should redirect to profile if action is present and subscription changed and user is not featured', fakeAsync(() => {
       spyOn(modalService, 'open').and.returnValue({
-        result: Promise.resolve(SubscriptionModalAction.ADD),
+        result: Promise.resolve('add'),
         componentInstance: componentInstance,
       });
       spyOn(userService, 'me').and.returnValue(of(MOCK_FULL_USER));
