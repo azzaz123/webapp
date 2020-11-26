@@ -1,10 +1,10 @@
 import { throwError, of } from 'rxjs';
 import {
-  async,
   ComponentFixture,
   TestBed,
   fakeAsync,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 
 import { CartComponent } from './cart.component';
@@ -51,63 +51,65 @@ describe('CartComponent', () => {
     type: 'citybump',
   };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [FormsModule, NgbButtonsModule],
-      declarations: [CartComponent, CustomCurrencyPipe],
-      providers: [
-        DecimalPipe,
-        EventService,
-        {
-          provide: TrackingService,
-          useClass: MockTrackingService,
-        },
-        {
-          provide: CartService,
-          useValue: {
-            cart$: of(CART_CHANGE),
-            createInstance() {},
-            remove() {},
-            clean() {},
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [FormsModule, NgbButtonsModule],
+        declarations: [CartComponent, CustomCurrencyPipe],
+        providers: [
+          DecimalPipe,
+          EventService,
+          {
+            provide: TrackingService,
+            useClass: MockTrackingService,
           },
-        },
-        {
-          provide: ItemService,
-          useValue: {
-            purchaseProducts() {
-              return of({});
-            },
-            deselectItems() {},
-            purchaseProductsWithCredits() {
-              return of({
-                payment_needed: true,
-              });
+          {
+            provide: CartService,
+            useValue: {
+              cart$: of(CART_CHANGE),
+              createInstance() {},
+              remove() {},
+              clean() {},
             },
           },
-        },
-        {
-          provide: ErrorsService,
-          useValue: {
-            i18nError() {},
-            show() {},
+          {
+            provide: ItemService,
+            useValue: {
+              purchaseProducts() {
+                return of({});
+              },
+              deselectItems() {},
+              purchaseProductsWithCredits() {
+                return of({
+                  payment_needed: true,
+                });
+              },
+            },
           },
-        },
-        {
-          provide: Router,
-          useValue: {
-            navigate() {},
+          {
+            provide: ErrorsService,
+            useValue: {
+              i18nError() {},
+              show() {},
+            },
           },
-        },
-        {
-          provide: StripeService,
-          useValue: {
-            buy() {},
+          {
+            provide: Router,
+            useValue: {
+              navigate() {},
+            },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: StripeService,
+            useValue: {
+              buy() {},
+            },
+          },
+        ],
+        schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CartComponent);

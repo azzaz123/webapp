@@ -1,8 +1,8 @@
 import {
-  async,
   fakeAsync,
   ComponentFixture,
   TestBed,
+  waitForAsync,
 } from '@angular/core/testing';
 
 import { CatalogStatusNavbarComponent } from './catalog-status-navbar.component';
@@ -31,22 +31,24 @@ describe('CatalogStatusNavbarComponent', () => {
     purchased: { citybump: 1 },
   };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [CatalogStatusNavbarComponent],
-      providers: [
-        {
-          provide: PaymentService,
-          useValue: {
-            getStatus() {
-              return of({ MOCK_STATUS });
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [CatalogStatusNavbarComponent],
+        providers: [
+          {
+            provide: PaymentService,
+            useValue: {
+              getStatus() {
+                return of({ MOCK_STATUS });
+              },
             },
           },
-        },
-        EventService,
-      ],
-    }).compileComponents();
-  }));
+          EventService,
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CatalogStatusNavbarComponent);

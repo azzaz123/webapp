@@ -1,5 +1,5 @@
 import { Observable, of } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { TopbarComponent } from './topbar.component';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -44,56 +44,58 @@ describe('TopbarComponent', () => {
   let paymentService: PaymentService;
   let cookieService: CookieService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule, NgxPermissionsModule.forRoot()],
-      providers: [
-        DecimalPipe,
-        {
-          provide: UserService,
-          useValue: {
-            me(): Observable<User> {
-              return of(MOCK_USER);
-            },
-            isProfessional() {
-              return of(true);
-            },
-          },
-        },
-        {
-          provide: PaymentService,
-          useValue: {
-            getCreditInfo() {
-              return of({
-                currencyName: CURRENCY,
-                credit: CREDITS,
-              });
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [RouterTestingModule, NgxPermissionsModule.forRoot()],
+        providers: [
+          DecimalPipe,
+          {
+            provide: UserService,
+            useValue: {
+              me(): Observable<User> {
+                return of(MOCK_USER);
+              },
+              isProfessional() {
+                return of(true);
+              },
             },
           },
-        },
-        {
-          provide: MessageService,
-          useValue: {
-            totalUnreadMessages$: of(1),
+          {
+            provide: PaymentService,
+            useValue: {
+              getCreditInfo() {
+                return of({
+                  currencyName: CURRENCY,
+                  credit: CREDITS,
+                });
+              },
+            },
           },
-        },
-        {
-          provide: 'SUBDOMAIN',
-          useValue: 'www',
-        },
-        {
-          provide: CookieService,
-          useValue: {
-            put(key, value) {},
+          {
+            provide: MessageService,
+            useValue: {
+              totalUnreadMessages$: of(1),
+            },
           },
-        },
-        EventService,
-      ],
-      declarations: [TopbarComponent, CustomCurrencyPipe],
-      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-    userService = TestBed.inject(UserService);
-  }));
+          {
+            provide: 'SUBDOMAIN',
+            useValue: 'www',
+          },
+          {
+            provide: CookieService,
+            useValue: {
+              put(key, value) {},
+            },
+          },
+          EventService,
+        ],
+        declarations: [TopbarComponent, CustomCurrencyPipe],
+        schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+      userService = TestBed.inject(UserService);
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TopbarComponent);

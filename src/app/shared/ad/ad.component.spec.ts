@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AdComponent } from './ad.component';
 import { By } from '@angular/platform-browser';
 
@@ -10,11 +10,13 @@ describe('AdComponent', () => {
   const width = 400;
   let elementRef: any;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [AdComponent],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [AdComponent],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AdComponent);

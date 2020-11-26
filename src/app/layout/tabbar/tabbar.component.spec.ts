@@ -1,5 +1,5 @@
 import { Observable, of } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { TabbarComponent } from './tabbar.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
@@ -14,25 +14,27 @@ describe('TabbarComponent', () => {
   let component: TabbarComponent;
   let fixture: ComponentFixture<TabbarComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [TabbarComponent],
-      imports: [NgxPermissionsModule.forRoot()],
-      providers: [
-        {
-          provide: UserService,
-          useValue: {
-            me(): Observable<User> {
-              return of(MOCK_USER);
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [TabbarComponent],
+        imports: [NgxPermissionsModule.forRoot()],
+        providers: [
+          {
+            provide: UserService,
+            useValue: {
+              me(): Observable<User> {
+                return of(MOCK_USER);
+              },
             },
           },
-        },
-        { provide: MessageService, useClass: MockMessageService },
-        { provide: 'SUBDOMAIN', useValue: 'es' },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          { provide: MessageService, useClass: MockMessageService },
+          { provide: 'SUBDOMAIN', useValue: 'es' },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TabbarComponent);

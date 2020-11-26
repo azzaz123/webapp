@@ -2,10 +2,10 @@ import { SubscriptionsComponent } from './subscription.component';
 import {
   ComponentFixture,
   TestBed,
-  async,
   fakeAsync,
   tick,
   flush,
+  waitForAsync,
 } from '@angular/core/testing';
 import { CategoryService } from '../../core/category/category.service';
 import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
@@ -65,50 +65,52 @@ describe('SubscriptionComponent', () => {
   let userService: UserService;
   const componentInstance = { subscription: MAPPED_SUBSCRIPTIONS[0] };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SubscriptionsComponent],
-      providers: [
-        EventService,
-        { provide: SubscriptionsService, useClass: MockSubscriptionService },
-        {
-          provide: CategoryService,
-          useValue: {
-            getCategories() {
-              return of(CATEGORY_DATA_WEB);
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [SubscriptionsComponent],
+        providers: [
+          EventService,
+          { provide: SubscriptionsService, useClass: MockSubscriptionService },
+          {
+            provide: CategoryService,
+            useValue: {
+              getCategories() {
+                return of(CATEGORY_DATA_WEB);
+              },
             },
           },
-        },
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                result: Promise.resolve(),
-                componentInstance: componentInstance,
-              };
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  result: Promise.resolve(),
+                  componentInstance: componentInstance,
+                };
+              },
             },
           },
-        },
-        {
-          provide: Router,
-          useValue: {
-            navigate() {},
-          },
-        },
-        {
-          provide: UserService,
-          useValue: {
-            me() {
-              return of(USER_DATA);
+          {
+            provide: Router,
+            useValue: {
+              navigate() {},
             },
           },
-        },
-        { provide: AnalyticsService, useClass: MockAnalyticsService },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: UserService,
+            useValue: {
+              me() {
+                return of(USER_DATA);
+              },
+            },
+          },
+          { provide: AnalyticsService, useClass: MockAnalyticsService },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     modalService = TestBed.inject(NgbModal);

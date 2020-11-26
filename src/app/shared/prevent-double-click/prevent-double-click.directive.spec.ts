@@ -1,5 +1,5 @@
 import { Component, NO_ERRORS_SCHEMA, HostListener } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { PreventDoubleClickDirective } from './prevent-double-click.directive';
 import { ButtonComponent } from '../button/button.component';
 
@@ -27,17 +27,19 @@ describe('PreventDoubleClickDirective', () => {
   let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        PreventDoubleClickDirective,
-        ButtonComponent,
-        TestComponent,
-      ],
-      providers: [],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          PreventDoubleClickDirective,
+          ButtonComponent,
+          TestComponent,
+        ],
+        providers: [],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestComponent);

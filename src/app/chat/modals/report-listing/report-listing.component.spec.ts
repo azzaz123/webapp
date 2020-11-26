@@ -1,5 +1,5 @@
 import { of } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ReportListingComponent } from './report-listing.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -21,24 +21,26 @@ describe('ReportListingComponent', () => {
     },
   ];
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [FormsModule],
-      providers: [
-        NgbActiveModal,
-        {
-          provide: ItemService,
-          useValue: {
-            getBanReasons() {
-              return of(BAN_REASONS);
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [FormsModule],
+        providers: [
+          NgbActiveModal,
+          {
+            provide: ItemService,
+            useValue: {
+              getBanReasons() {
+                return of(BAN_REASONS);
+              },
             },
           },
-        },
-      ],
-      declarations: [ReportListingComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        declarations: [ReportListingComponent],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ReportListingComponent);

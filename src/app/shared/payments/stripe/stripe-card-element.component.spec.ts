@@ -1,9 +1,9 @@
 import {
-  async,
   ComponentFixture,
   TestBed,
   fakeAsync,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import {
@@ -21,44 +21,49 @@ describe('StripeCardElementComponent', () => {
   let fixture: ComponentFixture<StripeCardElementComponent>;
   let stripeService: StripeService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [StripeCardElementComponent],
-      imports: [ReactiveFormsModule, FormsModule],
-      providers: [
-        I18nService,
-        {
-          provide: StripeService,
-          useValue: {
-            createStripeCard() {
-              return Promise.resolve(PAYMENT_METHOD_CARD_RESPONSE[0]);
-            },
-            createDefaultCard() {
-              return Promise.resolve(SETUP_INTENT_DATA);
-            },
-            getSetupIntent() {
-              return of('abc');
-            },
-            lib: {
-              elements: () => {
-                return {
-                  create: () => {
-                    return {
-                      mount: () => {},
-                      addEventListener: () => {},
-                      removeEventListener: (type: string, listener: any) => {},
-                      destroy: () => {},
-                    };
-                  },
-                };
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [StripeCardElementComponent],
+        imports: [ReactiveFormsModule, FormsModule],
+        providers: [
+          I18nService,
+          {
+            provide: StripeService,
+            useValue: {
+              createStripeCard() {
+                return Promise.resolve(PAYMENT_METHOD_CARD_RESPONSE[0]);
+              },
+              createDefaultCard() {
+                return Promise.resolve(SETUP_INTENT_DATA);
+              },
+              getSetupIntent() {
+                return of('abc');
+              },
+              lib: {
+                elements: () => {
+                  return {
+                    create: () => {
+                      return {
+                        mount: () => {},
+                        addEventListener: () => {},
+                        removeEventListener: (
+                          type: string,
+                          listener: any
+                        ) => {},
+                        destroy: () => {},
+                      };
+                    },
+                  };
+                },
               },
             },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(StripeCardElementComponent);
