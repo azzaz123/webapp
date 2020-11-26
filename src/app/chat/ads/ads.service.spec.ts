@@ -1,3 +1,4 @@
+import { LOAD_EXTERNAL_LIBS_SERVICE_MOCK } from './../../../tests/load-external-libs.fixtures.spec';
 import { of } from 'rxjs';
 import {
   discardPeriodicTasks,
@@ -100,9 +101,7 @@ describe('AdService', () => {
         },
         {
           provide: LoadExternalLibsService,
-          useValue: {
-            loadScript: (src: string | string[]) => of(null),
-          },
+          useValue: LOAD_EXTERNAL_LIBS_SERVICE_MOCK,
         },
         {
           provide: DidomiService,
