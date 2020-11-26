@@ -38,11 +38,11 @@
               <label for="name" class="col-sm-12 col-md-5" i18n="@@FirstName">First Name</label>
               <div [ngClass]="{'col-sm-12 col-md-7': containerTypeIsModal, 'col-sm-12 col-md-5': !containerTypeIsModal}">
                 <input type="text" class="form-control" id="name" formControlName="name" />
-                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert">
-                  <span *ngIf="name.errors.required" i18n="@@NameRequired">
+                <div *ngIf="billingForm.controls.name.invalid && (billingForm.controls.name.dirty || billingForm.controls.name.touched)" class="alert">
+                  <span *ngIf="billingForm.controls.name.errors.required" i18n="@@NameRequired">
                     Name is required.
                   </span>
-                  <span *ngIf="name.errors.maxlength" i18n="@@NameMaxLength">
+                  <span *ngIf="billingForm.controls.name.errors.maxlength" i18n="@@NameMaxLength">
                     Name must be at most 32 characters long.
                   </span>
                 </div>
@@ -52,11 +52,11 @@
               <label for="surname" class="col-sm-12 col-md-5" i18n="@@LastName">Last Name</label>
               <div [ngClass]="{'col-sm-12 col-md-7': containerTypeIsModal, 'col-sm-12 col-md-5': !containerTypeIsModal}">
                 <input type="text" class="form-control" id="surname" formControlName="surname" />
-                <div *ngIf="surname.invalid && (surname.dirty || surname.touched)" class="alert">
-                  <span *ngIf="surname.errors.required" i18n="@@SurnameRequired">
+                <div *ngIf="billingForm.controls.surname.invalid && (billingForm.controls.surname.dirty || billingForm.controls.surname.touched)" class="alert">
+                  <span *ngIf="billingForm.controls.surname.errors.required" i18n="@@SurnameRequired">
                     Surname is required.
                   </span>
-                  <span *ngIf="surname.errors.maxlength" i18n="@@SurnameMaxLength">
+                  <span *ngIf="billingForm.controls.surname.errors.maxlength" i18n="@@SurnameMaxLength">
                     Surname must be at most 32 characters long.
                   </span>
                 </div>
@@ -66,11 +66,11 @@
               <label for="company_name" class="col-sm-12 col-md-5" i18n="@@CompanyName">Company Name</label>
               <div [ngClass]="{'col-sm-12 col-md-7': containerTypeIsModal, 'col-sm-12 col-md-5': !containerTypeIsModal}">
                 <input type="text" class="form-control" id="company_name" formControlName="company_name" />
-                <div *ngIf="company_name.invalid && (company_name.dirty || company_name.touched)" class="alert alert-danger">
-                  <span *ngIf="company_name.errors.required" i18n="@@CompanyNameRequired">
+                <div *ngIf="billingForm.controls.company_name.invalid && (billingForm.controls.company_name.dirty || billingForm.controls.company_name.touched)" class="alert alert-danger">
+                  <span *ngIf="billingForm.controls.company_name.errors.required" i18n="@@CompanyNameRequired">
                     Company name is required.
                   </span>
-                  <span *ngIf="company_name.errors.maxlength" i18n="@@CompanyNameMaxLength">
+                  <span *ngIf="billingForm.controls.company_name.errors.maxlength" i18n="@@CompanyNameMaxLength">
                     Company name must be at most 32 characters long.
                   </span>
                 </div>
@@ -80,11 +80,11 @@
               <label for="email" class="col-sm-12 col-md-5" i18n="@@Email">E-mail</label>
               <div [ngClass]="{'col-sm-12 col-md-7': containerTypeIsModal, 'col-sm-12 col-md-5': !containerTypeIsModal}">
                 <input type="text" class="form-control" id="email" formControlName="email" />
-                <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert">
-                  <span *ngIf="email.errors.required" i18n="@@EmailRequired">
+                <div *ngIf="billingForm.controls.email.invalid && (billingForm.controls.email.dirty || billingForm.controls.email.touched)" class="alert">
+                  <span *ngIf="billingForm.controls.email.errors.required" i18n="@@EmailRequired">
                     E-mail is required.
                   </span>
-                  <span *ngIf="email.errors.email" i18n="@@EmailFormat">
+                  <span *ngIf="billingForm.controls.email.errors.email" i18n="@@EmailFormat">
                     E-mail must be valid.
                   </span>
                 </div>
@@ -119,11 +119,11 @@
               <label *ngIf="type === 'natural'" for="cif" class="col-sm-12 col-md-5" i18n="@@NIFNumber">NIF Number</label>
               <div [ngClass]="{'col-sm-12 col-md-7': containerTypeIsModal, 'col-sm-12 col-md-5': !containerTypeIsModal}">
                 <input type="text" class="form-control" id="cif" formControlName="cif"/>
-                <div *ngIf="cif.invalid && (cif.dirty || cif.touched)" class="alert">
-                  <span *ngIf="cif.errors.required" i18n="@@CifRequired">
+                <div *ngIf="billingForm.controls.cif.invalid && (billingForm.controls.cif.dirty || billingForm.controls.cif.touched)" class="alert">
+                  <span *ngIf="billingForm.controls.cif.errors.required" i18n="@@CifRequired">
                     CIF/NIF is required.
                   </span>
-                  <span *ngIf="cif.errors.cif" i18n="@@CifFormat">
+                  <span *ngIf="billingForm.controls.cif.errors.cif" i18n="@@CifFormat">
                     CIF/NIF must be valid.
                   </span>
                 </div>

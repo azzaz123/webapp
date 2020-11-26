@@ -7,7 +7,7 @@ export interface Invoice {
   invoice_generated: boolean;
 }
 
-export interface InvoiceTransactions {
+export interface InvoiceTransaction {
   id: string;
   price: number;
   currency: string;

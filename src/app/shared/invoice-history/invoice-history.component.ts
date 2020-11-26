@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { InvoiceService } from 'app/core/invoice/invoice.service';
-import { InvoiceTransactions } from 'app/core/invoice/invoice.interface';
+import { InvoiceTransaction } from 'app/core/invoice/invoice.interface';
 
 @Component({
   selector: 'tsl-invoice-history',
@@ -15,7 +15,7 @@ export class InvoiceHistoryComponent implements OnInit {
   @Input() active: boolean;
   @Input() isBillingInfo: boolean;
   public loading = false;
-  public invoiceTransactions: InvoiceTransactions[];
+  public invoiceTransactions: InvoiceTransaction[];
   public limit = 5;
   public total: number;
   public isErrorLoading = false;
@@ -30,7 +30,7 @@ export class InvoiceHistoryComponent implements OnInit {
   private getInvoiceTransactions(): void {
     this.loading = true;
     this.invoiceService.getInvoiceTransactions().subscribe(
-      (invoiceTransactions: InvoiceTransactions[]) => {
+      (invoiceTransactions: InvoiceTransaction[]) => {
         invoiceTransactions.forEach(
           (transaction) =>
             (transaction.currencySymbol = this.currencies[transaction.currency])
@@ -76,14 +76,16 @@ export class InvoiceHistoryComponent implements OnInit {
           (!this.invoiceTransactions ||
             (this.invoiceTransactions && !this.invoiceTransactions.length)) &&
           this.isBillingInfo &&
-          !this.isErrorLoading
+          !this.isErrorLoading &&
+          !this.loading
         );
       case 'NotOldInvoices':
         return (
           (!this.invoiceTransactions ||
             (this.invoiceTransactions && !this.invoiceTransactions.length)) &&
           !this.isBillingInfo &&
-          !this.isErrorLoading
+          !this.isErrorLoading &&
+          !this.loading
         );
     }
   }
