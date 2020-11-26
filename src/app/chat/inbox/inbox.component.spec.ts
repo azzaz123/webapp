@@ -14,7 +14,6 @@ import {
 import { EventService } from '../../core/event/event.service';
 import { InboxConversation } from '../model/inbox-conversation';
 import { UserService } from '../../core/user/user.service';
-import { AdService } from '../../core/ad/ad.service';
 import { RemoteConsoleService } from '../../core/remote-console';
 import { MockRemoteConsoleService } from '../../../tests';
 import { User } from '../../core/user/user';
@@ -31,9 +30,11 @@ import { InboxUser } from '../model/inbox-user';
 import { Item } from '../../core/item/item';
 import { InboxItem } from '../model/inbox-item';
 import { DateCalendarPipe } from 'app/shared/pipes';
+import { AdsService } from '../ads/ads.service';
 
 class AdServiceMock {
   adsRefresh() {}
+  loadAddsLibs() {}
 }
 
 describe('Component: InboxComponent', () => {
@@ -42,7 +43,7 @@ describe('Component: InboxComponent', () => {
   let eventService: EventService;
   let userService: UserService;
   let conversationService: InboxConversationService;
-  let addService: AdService;
+  let addService: AdsService;
   let remoteConsoleService: RemoteConsoleService;
   let analyticsService: AnalyticsService;
 
@@ -56,7 +57,7 @@ describe('Component: InboxComponent', () => {
       ],
       providers: [
         EventService,
-        { provide: AdService, useClass: AdServiceMock },
+        { provide: AdsService, useClass: AdServiceMock },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         { provide: AnalyticsService, useClass: MockAnalyticsService },
         {
@@ -98,7 +99,7 @@ describe('Component: InboxComponent', () => {
     inboxService = TestBed.inject(InboxService);
     eventService = TestBed.inject(EventService);
     userService = TestBed.inject(UserService);
-    addService = TestBed.inject(AdService);
+    addService = TestBed.inject(AdsService);
     remoteConsoleService = TestBed.inject(RemoteConsoleService);
     conversationService = TestBed.inject(InboxConversationService);
     analyticsService = TestBed.inject(AnalyticsService);

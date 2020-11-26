@@ -1,3 +1,4 @@
+import { LOAD_EXTERNAL_LIBS_SERVICE_MOCK } from './../../../tests/load-external-libs.fixtures.spec';
 import { of } from 'rxjs';
 import {
   discardPeriodicTasks,
@@ -5,14 +6,16 @@ import {
   TestBed,
   tick,
 } from '@angular/core/testing';
-import { AdService } from './ad.service';
-import { UserService } from '../user/user.service';
+import { AdsService } from './ads.service';
+
 import { CookieService } from 'ngx-cookie';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-import { MockDidomiService } from '../didomi/didomi.service.spec';
-import { DidomiService } from '../didomi/didomi.service';
+import { DidomiService } from 'app/core/didomi/didomi.service';
+import { MockDidomiService } from 'app/core/didomi/didomi.service.spec';
+import { UserService } from 'app/core/user/user.service';
+import { LoadExternalLibsService } from 'app/core/load-external-libs/load-external-libs.service';
 
-let service: AdService;
+let service: AdsService;
 let userService: UserService;
 let cookieService: CookieService;
 
@@ -72,7 +75,7 @@ describe('AdService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        AdService,
+        AdsService,
         {
           provide: UserService,
           useValue: {
@@ -95,6 +98,10 @@ describe('AdService', () => {
               delete this.cookies[key];
             },
           },
+        },
+        {
+          provide: LoadExternalLibsService,
+          useValue: LOAD_EXTERNAL_LIBS_SERVICE_MOCK,
         },
         {
           provide: DidomiService,
@@ -123,7 +130,8 @@ describe('AdService', () => {
     Object.keys(cookies).forEach((key) => {
       cookieService.put(key, cookies[key]);
     });
-    service = TestBed.inject(AdService);
+    service = TestBed.inject(AdsService);
+    service.loadAddsLibs();
     service.allowSegmentation$.next(false);
   });
 
