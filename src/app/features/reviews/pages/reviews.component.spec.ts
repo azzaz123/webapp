@@ -2,8 +2,8 @@ import {
   MOCK_USER,
   MOCK_USER_STATS,
   USER_INFO_RESPONSE,
-} from './../../../../../tests/user.fixtures.spec';
-import { MOCK_REVIEWS } from './../../../../../tests/review.fixtures.spec';
+} from './../../../../tests/user.fixtures.spec';
+import { MOCK_REVIEWS } from './../../../../tests/review.fixtures.spec';
 import {
   fakeAsync,
   ComponentFixture,
@@ -15,7 +15,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserService } from 'app/core/user/user.service';
 import { of } from 'rxjs';
 
-import { UserReviewService } from '../../user-review.service';
+import { UserReviewService } from '../user-review.service';
 
 describe('ReviewsComponent', () => {
   let component: ReviewsComponent;

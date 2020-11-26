@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoggedGuard } from 'app/core/user/logged.guard';
 import { PERMISSIONS } from 'app/core/user/user';
 import { NgxPermissionsGuard } from 'ngx-permissions';
-import { ReviewsComponent } from './pages/reviews/reviews.component';
+import { ReviewsComponent } from './pages/reviews.component';
 
 const routes: Routes = [
   {

@@ -4,9 +4,9 @@ import { UserInfoResponse } from 'app/core/user/user-info.interface';
 import { UserStats } from 'app/core/user/user-stats.interface';
 import { UserService } from 'app/core/user/user.service';
 import { switchMap } from 'rxjs/operators';
-import { Review } from '../../review';
-import { ReviewsData } from '../../review-response.interface';
-import { UserReviewService } from '../../user-review.service';
+import { Review } from '../review';
+import { ReviewsData } from '../review-response.interface';
+import { UserReviewService } from '../user-review.service';
 
 @Component({
   selector: 'tsl-reviews',
