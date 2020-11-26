@@ -293,6 +293,12 @@ export class ProfileProBillingComponent
     return this.containerType === 'modal';
   }
 
+  get containerTypeIsModalOrProfileInfo(): boolean {
+    return (
+      this.containerType === 'modal' || this.containerType === 'profile-info'
+    );
+  }
+
   private cpValidator(control: AbstractControl): { [key: string]: boolean } {
     if (Validators.required(control)) {
       return null;

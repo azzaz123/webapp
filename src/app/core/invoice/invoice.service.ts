@@ -3,8 +3,6 @@ import { environment } from 'environments/environment';
 import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Invoice, InvoiceTransaction } from './invoice.interface';
-import { CategoryService } from '../category/category.service';
-import { mergeMap } from 'rxjs/operators';
 
 export const PAYMENTS_API_URL = 'api/v3/payments';
 export const INVOICE_HISTORY_ENDPOINT = `${PAYMENTS_API_URL}/c2b/stripe/subscriptions/transactions`;
@@ -14,10 +12,7 @@ export const INVOICE_DOWNLOAD_ENDPOINT = `${PAYMENTS_API_URL}/billing-info/invoi
 export class InvoiceService {
   public invoices: Invoice[];
 
-  constructor(
-    private http: HttpClient,
-    private categoryService: CategoryService
-  ) {}
+  constructor(private http: HttpClient) {}
 
   public getInvoiceTransactions(
     cache: boolean = true
@@ -26,33 +21,21 @@ export class InvoiceService {
       return of(this.invoices);
     }
 
-    return this.categoryService.getCategories().pipe(
-      mergeMap(() => {
-        return this.http.get<Invoice[]>(
-          `${environment.baseUrl}${INVOICE_HISTORY_ENDPOINT}`
-        );
-      })
+    return this.http.get<InvoiceTransaction[]>(
+      `${environment.baseUrl}${INVOICE_HISTORY_ENDPOINT}`
     );
   }
 
-  public generateInvoice(invoice: Invoice): Observable<Invoice[]> {
-    return this.categoryService.getCategories().pipe(
-      mergeMap(() => {
-        return this.http.post<Invoice[]>(
-          `${environment.baseUrl}${INVOICE_DOWNLOAD_ENDPOINT}`,
-          invoice.id
-        );
-      })
+  public generateInvoice(invoice: InvoiceTransaction): Observable<Invoice[]> {
+    return this.http.post<Invoice[]>(
+      `${environment.baseUrl}${INVOICE_DOWNLOAD_ENDPOINT}/${invoice.id}`,
+      {}
     );
   }
 
-  public downloadInvoice(invoice: Invoice): Observable<Invoice[]> {
-    return this.categoryService.getCategories().pipe(
-      mergeMap(() => {
-        return this.http.get<Invoice[]>(
-          `${environment.baseUrl}${INVOICE_DOWNLOAD_ENDPOINT}/${invoice.id}`
-        );
-      })
+  public downloadInvoice(invoice: InvoiceTransaction): Observable<Invoice[]> {
+    return this.http.get<Invoice[]>(
+      `${environment.baseUrl}${INVOICE_DOWNLOAD_ENDPOINT}/${invoice.id}`
     );
   }
 }
