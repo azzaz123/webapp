@@ -1107,6 +1107,7 @@
   <translation id="InvoiceHistory">Tus facturas</translation>
   <translation id="InvoiceHistorySubtitle">Rellena tus datos de facturación para descargar todas tus facturas.</translation>
   <translation id="DownloadInvoice">Descargar factura</translation>
+  <translation id="RequestInvoice">Solicitar factura</translation>
   <translation id="TransactionDate">Fecha de transacción</translation>
   <translation id="UploadProductPrice">Precio</translation>
   <translation id="UploadProductHeadline">¿Qué estás vendiendo?</translation>
