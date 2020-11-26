@@ -1,8 +1,8 @@
 import {
-  async,
   fakeAsync,
   ComponentFixture,
   TestBed,
+  waitForAsync,
 } from '@angular/core/testing';
 import { ReviewsComponent } from './reviews.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -24,36 +24,38 @@ describe('ReviewsComponent', () => {
   let userService: UserService;
   let myReviewsServiceSpy: jasmine.Spy;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ReviewsComponent],
-      providers: [
-        {
-          provide: UserService,
-          useValue: {
-            me() {
-              return of(MOCK_USER);
-            },
-            getInfo() {
-              return of(USER_INFO_RESPONSE);
-            },
-            getStats() {
-              return of(MOCK_USER_STATS);
-            },
-          },
-        },
-        {
-          provide: UserReviewService,
-          useValue: {
-            getPaginationReviews() {
-              return of({ data: MOCK_REVIEWS, init: 2 });
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ReviewsComponent],
+        providers: [
+          {
+            provide: UserService,
+            useValue: {
+              me() {
+                return of(MOCK_USER);
+              },
+              getInfo() {
+                return of(USER_INFO_RESPONSE);
+              },
+              getStats() {
+                return of(MOCK_USER_STATS);
+              },
             },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: UserReviewService,
+            useValue: {
+              getPaginationReviews() {
+                return of({ data: MOCK_REVIEWS, init: 2 });
+              },
+            },
+          },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ReviewsComponent);

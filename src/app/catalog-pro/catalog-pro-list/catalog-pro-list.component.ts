@@ -135,7 +135,7 @@ export class CatalogProListComponent implements OnInit {
           this.uploadModalRef = this.modalService.open(
             UploadConfirmationModalComponent,
             {
-              windowClass: 'upload',
+              windowClass: 'modal-standard',
             }
           );
           this.uploadModalRef.result.then(

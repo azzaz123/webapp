@@ -1,9 +1,9 @@
 import {
-  async,
   ComponentFixture,
   fakeAsync,
   TestBed,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 import { EditComponent } from './edit.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -27,65 +27,67 @@ describe('EditComponent', () => {
   let itemService: ItemService;
   const componentInstance: any = {};
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [EditComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            snapshot: {
-              data: {
-                item: MOCK_ITEM,
-              },
-              params: {
-                id: 1,
-              },
-              parent: {
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [EditComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          {
+            provide: ActivatedRoute,
+            useValue: {
+              snapshot: {
+                data: {
+                  item: MOCK_ITEM,
+                },
+                params: {
+                  id: 1,
+                },
                 parent: {
                   parent: {
-                    url: '',
+                    parent: {
+                      url: '',
+                    },
                   },
                 },
               },
             },
           },
-        },
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                result: Promise.resolve(true),
-                componentInstance: componentInstance,
-              };
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  result: Promise.resolve(true),
+                  componentInstance: componentInstance,
+                };
+              },
             },
           },
-        },
-        {
-          provide: ItemService,
-          useValue: {
-            getUrgentProducts() {},
-          },
-        },
-        {
-          provide: Router,
-          useValue: {
-            navigate() {},
-          },
-        },
-        {
-          provide: UserService,
-          useValue: {
-            isProfessional() {
-              return of(true);
+          {
+            provide: ItemService,
+            useValue: {
+              getUrgentProducts() {},
             },
           },
-        },
-      ],
-    }).compileComponents();
-  }));
+          {
+            provide: Router,
+            useValue: {
+              navigate() {},
+            },
+          },
+          {
+            provide: UserService,
+            useValue: {
+              isProfessional() {
+                return of(true);
+              },
+            },
+          },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(EditComponent);

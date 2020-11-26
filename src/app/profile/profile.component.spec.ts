@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ProfileComponent } from './profile.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
@@ -48,50 +48,52 @@ describe('ProfileComponent', () => {
   let subscriptionsService: SubscriptionsService;
   let hasOneTrialSubscription = false;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [NgxPermissionsModule.forRoot(), HttpClientTestingModule],
-      declarations: [ProfileComponent, StarsComponent, ProBadgeComponent],
-      providers: [
-        EventService,
-        I18nService,
-        AccessTokenService,
-        {
-          provide: CookieService,
-          useValue: {
-            value: null,
-            put() {},
-            get() {
-              return this.value;
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NgxPermissionsModule.forRoot(), HttpClientTestingModule],
+        declarations: [ProfileComponent, StarsComponent, ProBadgeComponent],
+        providers: [
+          EventService,
+          I18nService,
+          AccessTokenService,
+          {
+            provide: CookieService,
+            useValue: {
+              value: null,
+              put() {},
+              get() {
+                return this.value;
+              },
             },
           },
-        },
-        FeatureflagService,
-        SplitTestService,
-        UserService,
-        {
-          provide: 'SUBDOMAIN',
-          useValue: 'www',
-        },
-        {
-          provide: SubscriptionsService,
-          useClass: MockSubscriptionService,
-        },
-        {
-          provide: AnalyticsService,
-          useClass: MockAnalyticsService,
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-    fixture = TestBed.createComponent(ProfileComponent);
-    component = fixture.componentInstance;
-    userService = TestBed.inject(UserService);
-    httpMock = TestBed.inject(HttpTestingController);
-    analyticsService = TestBed.inject(AnalyticsService);
-    subscriptionsService = TestBed.inject(SubscriptionsService);
-    fixture.detectChanges();
-  }));
+          FeatureflagService,
+          SplitTestService,
+          UserService,
+          {
+            provide: 'SUBDOMAIN',
+            useValue: 'www',
+          },
+          {
+            provide: SubscriptionsService,
+            useClass: MockSubscriptionService,
+          },
+          {
+            provide: AnalyticsService,
+            useClass: MockAnalyticsService,
+          },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+      fixture = TestBed.createComponent(ProfileComponent);
+      component = fixture.componentInstance;
+      userService = TestBed.inject(UserService);
+      httpMock = TestBed.inject(HttpTestingController);
+      analyticsService = TestBed.inject(AnalyticsService);
+      subscriptionsService = TestBed.inject(SubscriptionsService);
+      fixture.detectChanges();
+    })
+  );
 
   afterAll(() => httpMock.verify());
 

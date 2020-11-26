@@ -1,5 +1,5 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CallComponent } from './call.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -15,22 +15,24 @@ describe('CallComponent', () => {
   let fixture: ComponentFixture<CallComponent>;
   let callService: CallsService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule],
-      providers: [
-        I18nService,
-        {
-          provide: CallsService,
-          useValue: {
-            stream() {},
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NoopAnimationsModule],
+        providers: [
+          I18nService,
+          {
+            provide: CallsService,
+            useValue: {
+              stream() {},
+            },
           },
-        },
-      ],
-      declarations: [CallComponent, CallStatusLabelPipe, DateCalendarPipe],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        declarations: [CallComponent, CallStatusLabelPipe, DateCalendarPipe],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CallComponent);

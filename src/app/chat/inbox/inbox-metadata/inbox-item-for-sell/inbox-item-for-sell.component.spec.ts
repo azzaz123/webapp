@@ -1,5 +1,5 @@
 import { of } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { InboxItemForSellComponent } from './inbox-item-for-sell.component';
 import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
@@ -23,32 +23,34 @@ describe('InboxItemForSellComponent', () => {
   let itemService: ItemService;
   let userService: UserService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      declarations: [InboxItemForSellComponent],
-      providers: [
-        {
-          provide: ItemService,
-          useValue: {
-            getLatest() {},
-          },
-        },
-        {
-          provide: UserService,
-          useValue: {
-            getInfo() {
-              return of(USER_INFO_RESPONSE);
-            },
-            getUserStats() {
-              return of(MOCK_USER_STATS);
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [],
+        declarations: [InboxItemForSellComponent],
+        providers: [
+          {
+            provide: ItemService,
+            useValue: {
+              getLatest() {},
             },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: UserService,
+            useValue: {
+              getInfo() {
+                return of(USER_INFO_RESPONSE);
+              },
+              getUserStats() {
+                return of(MOCK_USER_STATS);
+              },
+            },
+          },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(InboxItemForSellComponent);

@@ -1,5 +1,5 @@
 import { of } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { PlanDataComponent } from './plan-data.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -24,39 +24,41 @@ describe('PlanDataComponent', () => {
     purchased: { citybump: 1, countrybump: 2 },
   };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [PlanDataComponent],
-      providers: [
-        { provide: ItemService, useClass: MockedItemService },
-        {
-          provide: PaymentService,
-          useValue: {
-            getPerks() {
-              return of({});
-            },
-            getStatus() {
-              return of({ MOCK_STATUS });
-            },
-          },
-        },
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                componentInstance: {
-                  loadPurchases: loadPurchases,
-                },
-                result: Promise.resolve(),
-              };
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [PlanDataComponent],
+        providers: [
+          { provide: ItemService, useClass: MockedItemService },
+          {
+            provide: PaymentService,
+            useValue: {
+              getPerks() {
+                return of({});
+              },
+              getStatus() {
+                return of({ MOCK_STATUS });
+              },
             },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  componentInstance: {
+                    loadPurchases: loadPurchases,
+                  },
+                  result: Promise.resolve(),
+                };
+              },
+            },
+          },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PlanDataComponent);

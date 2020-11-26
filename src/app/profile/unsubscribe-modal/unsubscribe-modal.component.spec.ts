@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { UnsubscribeModalComponent } from './unsubscribe-modal.component';
 import { UserService } from '../../core/user/user.service';
@@ -23,46 +23,48 @@ describe('UnsubscribeModalComponent', () => {
   let accessTokenService: AccessTokenService;
   let event: EventService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [UnsubscribeModalComponent],
-      providers: [
-        {
-          provide: UserService,
-          useValue: {
-            getUnsubscribeReasons() {
-              return of(MOCK_UNSUBSCRIBE_REASONS);
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [UnsubscribeModalComponent],
+        providers: [
+          {
+            provide: UserService,
+            useValue: {
+              getUnsubscribeReasons() {
+                return of(MOCK_UNSUBSCRIBE_REASONS);
+              },
+              unsubscribe() {
+                return of({});
+              },
+              isProUser() {
+                return of(false);
+              },
             },
-            unsubscribe() {
-              return of({});
+          },
+          {
+            provide: NgbActiveModal,
+            useValue: {
+              close() {},
             },
-            isProUser() {
-              return of(false);
+          },
+          {
+            provide: AccessTokenService,
+            useValue: {
+              deleteAccessToken() {},
             },
           },
-        },
-        {
-          provide: NgbActiveModal,
-          useValue: {
-            close() {},
+          {
+            provide: EventService,
+            useValue: {
+              emit() {},
+            },
           },
-        },
-        {
-          provide: AccessTokenService,
-          useValue: {
-            deleteAccessToken() {},
-          },
-        },
-        {
-          provide: EventService,
-          useValue: {
-            emit() {},
-          },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UnsubscribeModalComponent);

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { UrgentCheckboxComponent } from './urgent-checkbox.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '../../shared/pipes';
@@ -12,23 +12,25 @@ describe('UrgentCheckboxComponent', () => {
   let fixture: ComponentFixture<UrgentCheckboxComponent>;
   let paymentService: PaymentService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [UrgentCheckboxComponent, CustomCurrencyPipe],
-      providers: [
-        DecimalPipe,
-        {
-          provide: PaymentService,
-          useValue: {
-            getCreditInfo() {
-              return of({});
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [UrgentCheckboxComponent, CustomCurrencyPipe],
+        providers: [
+          DecimalPipe,
+          {
+            provide: PaymentService,
+            useValue: {
+              getCreditInfo() {
+                return of({});
+              },
             },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UrgentCheckboxComponent);

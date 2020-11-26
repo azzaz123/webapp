@@ -1,5 +1,5 @@
 import { of } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { UploadConfirmationModalComponent } from './upload-confirmation-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -25,37 +25,39 @@ describe('UploadConfirmationModalComponent', () => {
   let activeModal: NgbActiveModal;
   let paymentService: PaymentService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [UploadConfirmationModalComponent, CustomCurrencyPipe],
-      providers: [
-        NgbActiveModal,
-        DecimalPipe,
-        { provide: TrackingService, useClass: MockTrackingService },
-        {
-          provide: ItemService,
-          useValue: {
-            getUrgentProducts() {},
-          },
-        },
-        {
-          provide: NgbActiveModal,
-          useValue: {
-            close() {},
-          },
-        },
-        {
-          provide: PaymentService,
-          useValue: {
-            getCreditInfo() {
-              return of({});
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [UploadConfirmationModalComponent, CustomCurrencyPipe],
+        providers: [
+          NgbActiveModal,
+          DecimalPipe,
+          { provide: TrackingService, useClass: MockTrackingService },
+          {
+            provide: ItemService,
+            useValue: {
+              getUrgentProducts() {},
             },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: NgbActiveModal,
+            useValue: {
+              close() {},
+            },
+          },
+          {
+            provide: PaymentService,
+            useValue: {
+              getCreditInfo() {
+                return of({});
+              },
+            },
+          },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UploadConfirmationModalComponent);

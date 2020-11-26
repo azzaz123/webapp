@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { ThirdVoiceMessageComponent } from './third-voice-message.component';
@@ -11,16 +11,18 @@ describe('ThirdVoiceMessageComponent', () => {
   let component: ThirdVoiceMessageComponent;
   let fixture: ComponentFixture<ThirdVoiceMessageComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        ThirdVoiceMessageComponent,
-        ThirdVoiceReviewButtonComponent,
-        LinkTransformPipe,
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          ThirdVoiceMessageComponent,
+          ThirdVoiceReviewButtonComponent,
+          LinkTransformPipe,
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ThirdVoiceMessageComponent);

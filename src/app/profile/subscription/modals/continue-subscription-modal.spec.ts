@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -27,44 +27,46 @@ describe('ContinueSubscriptionModalComponent', () => {
   let subscriptionsService: SubscriptionsService;
   let toastService: ToastService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ContinueSubscriptionModalComponent],
-      providers: [
-        {
-          provide: NgbActiveModal,
-          useValue: {
-            close() {},
-          },
-        },
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                result: Promise.resolve(),
-                componentInstance: {},
-              };
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ContinueSubscriptionModalComponent],
+        providers: [
+          {
+            provide: NgbActiveModal,
+            useValue: {
+              close() {},
             },
           },
-        },
-        {
-          provide: SubscriptionsService,
-          useValue: {
-            continueSubscription() {
-              return of(202);
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  result: Promise.resolve(),
+                  componentInstance: {},
+                };
+              },
             },
           },
-        },
-        I18nService,
-        {
-          provide: AnalyticsService,
-          useClass: MockAnalyticsService,
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: SubscriptionsService,
+            useValue: {
+              continueSubscription() {
+                return of(202);
+              },
+            },
+          },
+          I18nService,
+          {
+            provide: AnalyticsService,
+            useClass: MockAnalyticsService,
+          },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ContinueSubscriptionModalComponent);

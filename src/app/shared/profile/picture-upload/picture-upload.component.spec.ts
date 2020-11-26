@@ -3,7 +3,7 @@ import {
   TOKEN_SIGNATURE_HEADER_NAME,
   TOKEN_TIMESTAMP_HEADER_NAME,
 } from './../../../core/http/interceptors/token.interceptor';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { PictureUploadComponent } from './picture-upload.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserService } from '../../../core/user/user.service';
@@ -25,35 +25,37 @@ describe('PictureUploadComponent', () => {
   let errorsService: ErrorsService;
   const TIMESTAMP = 123456789;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [PictureUploadComponent],
-      providers: [
-        {
-          provide: UserService,
-          useValue: {
-            user: MOCK_USER,
-          },
-        },
-        {
-          provide: ErrorsService,
-          useValue: {
-            i18nError() {},
-          },
-        },
-        {
-          provide: AccessTokenService,
-          useValue: {
-            accessToken: 'thetoken',
-            getTokenSignature() {
-              return 'thesignature';
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [PictureUploadComponent],
+        providers: [
+          {
+            provide: UserService,
+            useValue: {
+              user: MOCK_USER,
             },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: ErrorsService,
+            useValue: {
+              i18nError() {},
+            },
+          },
+          {
+            provide: AccessTokenService,
+            useValue: {
+              accessToken: 'thetoken',
+              getTokenSignature() {
+                return 'thesignature';
+              },
+            },
+          },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PictureUploadComponent);
