@@ -71,7 +71,7 @@ export class InvoiceItemComponent {
   }
 
   private invoiceDateFormatted(date: Date): string {
-    return `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`;
+    return `${date.getDay()}-${date.getMonth()}-${date.getFullYear()}`;
   }
 
   private set loadingState(status: boolean) {

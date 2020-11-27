@@ -10,7 +10,7 @@ import { PaymentService } from 'app/core/payments/payment.service';
 export class InvoiceComponent implements OnInit {
   public canDownloadInvoice: boolean;
   public isBilling = false;
-
+  public activeIds: string[] = ['custom-panel-1'];
   constructor(private paymentService: PaymentService) {}
 
   ngOnInit() {
@@ -21,11 +21,20 @@ export class InvoiceComponent implements OnInit {
     this.paymentService.getBillingInfo(false).subscribe(
       (res: BillingInfoResponse) => {
         this.isBilling = res && !!res.cif && !!res.id;
+        this.handleModal(this.isBilling);
         this.canDownloadInvoice = true;
       },
       (error) => {
         this.canDownloadInvoice = false;
       }
     );
+  }
+
+  private handleModal(formIsFull = false): void {
+    if (formIsFull) {
+      this.activeIds = [];
+    } else {
+      this.activeIds = ['custom-panel-1'];
+    }
   }
 }

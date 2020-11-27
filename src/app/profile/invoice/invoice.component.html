@@ -1,7 +1,6 @@
-<ngb-accordion #a="ngbAccordion" activeIds="custom-panel-1">
+<ngb-accordion #a="ngbAccordion" [activeIds]="activeIds">
   <ngb-panel id="custom-panel-1">
-    <!-- NOT WORKING -->
-    <ng-template ngbPanelHeader let-opened="{{isTabOpened}}">
+    <ng-template ngbPanelHeader>
       <div class="d-flex align-items-left justify-content-start align-items-center">
           <h3 i18n="@@InvoiceInformation">Invoice information</h3>
       </div>
@@ -12,7 +11,7 @@
       </div>
     </ng-template>
     <ng-template ngbPanelContent>
-      <tsl-profile-pro-billing></tsl-profile-pro-billing>
+      <tsl-profile-pro-billing [containerType]="'profile-info'" (billingInfoFormSaved)="getBillingInfo()"></tsl-profile-pro-billing>
     </ng-template>
   </ngb-panel>
 </ngb-accordion>
