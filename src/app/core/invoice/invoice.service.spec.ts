@@ -1,23 +1,27 @@
-import { of, Observable } from 'rxjs';
-import { InvoiceService, INVOICE_HISTORY_ENDPOINT } from './invoice.service';
+import {
+  InvoiceService,
+  INVOICE_DOWNLOAD_ENDPOINT,
+  INVOICE_HISTORY_ENDPOINT,
+} from './invoice.service';
 import {
   HttpTestingController,
   HttpClientTestingModule,
   TestRequest,
 } from '@angular/common/http/testing';
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, fakeAsync } from '@angular/core/testing';
 import { environment } from 'environments/environment';
-import { Invoice } from './invoice.interface';
 import { MOCK_INVOICE_HISTORY } from '../../../tests/invoice.fixtures.spec';
 import { CategoryService } from '../category/category.service';
 import { I18nService } from '../i18n/i18n.service';
+import { InvoiceTransaction } from './invoice.interface';
 
 describe('InvoiceService', () => {
+  const invoice = MOCK_INVOICE_HISTORY[0];
   let service: InvoiceService;
   let httpMock: HttpTestingController;
   let categoryService: CategoryService;
 
-  beforeEach(async(() => {
+  beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       providers: [InvoiceService, CategoryService, I18nService],
       imports: [HttpClientTestingModule],
@@ -25,19 +29,19 @@ describe('InvoiceService', () => {
   }));
 
   beforeEach(() => {
-    service = TestBed.get(InvoiceService);
-    categoryService = TestBed.get(CategoryService);
-    httpMock = TestBed.get(HttpTestingController);
+    service = TestBed.inject(InvoiceService);
+    categoryService = TestBed.inject(CategoryService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {
     httpMock.verify();
   });
 
-  xdescribe('getInvoices', () => {
-    it('should get user billing info', () => {
-      const expectedUrl = `${environment.baseUrl}${INVOICE_HISTORY_ENDPOINT}/billing-info/me`;
-      let response: Invoice[];
+  describe('when requesting transactions...', () => {
+    it('should get user transactions', () => {
+      const expectedUrl = `${environment.baseUrl}${INVOICE_HISTORY_ENDPOINT}`;
+      let response: InvoiceTransaction[];
 
       service.getInvoiceTransactions().subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
@@ -47,21 +51,34 @@ describe('InvoiceService', () => {
       expect(response).toEqual(MOCK_INVOICE_HISTORY);
       expect(req.request.method).toBe('GET');
     });
+  });
 
-    it('should map the invoices and add the category properties', () => {
-      const expectedUrl = `${environment.baseUrl}${INVOICE_HISTORY_ENDPOINT}`;
-      const invoicesWithCategory: Invoice[] = [...MOCK_INVOICE_HISTORY];
-      service.invoices = null;
-      let response: Invoice[];
+  describe('when generating an invoice...', () => {
+    it('should request invoice', () => {
+      const expectedUrl = `${environment.baseUrl}${INVOICE_DOWNLOAD_ENDPOINT}/${invoice.id}`;
 
-      service
-        .getInvoiceTransactions(false)
-        .subscribe((res) => (response = res));
+      service.generateInvoice(invoice).subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);
-      req.flush(invoicesWithCategory);
+      req.flush({});
 
-      expect(req.request.url).toBe(expectedUrl);
-      expect(response).toEqual(invoicesWithCategory);
+      expect(req.request.url).toEqual(expectedUrl);
+      expect(req.request.method).toBe('POST');
+    });
+  });
+
+  describe('when downloading an invoice...', () => {
+    it('should return the blob of the invoice', () => {
+      const blobInvoice = new Blob([JSON.stringify(invoice)]);
+      const expectedUrl = `${environment.baseUrl}${INVOICE_DOWNLOAD_ENDPOINT}/${invoice.id}`;
+      let response: Blob;
+
+      service.downloadInvoice(invoice).subscribe((r) => (response = r));
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(blobInvoice);
+
+      expect(req.request.url).toEqual(expectedUrl);
+      expect(response).toEqual(blobInvoice);
+      expect(req.request.method).toBe('GET');
     });
   });
 });
