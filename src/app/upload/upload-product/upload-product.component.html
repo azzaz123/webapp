@@ -175,9 +175,9 @@
         </h2>
       </div>
     </div>
-    <tsl-drop-area [uploadEvent]="uploadEvent" type="consumer_goods" (onUploaded)="onUploaded($event)"
-      (onError)="onError($event)" (onUploadPercentageChange)="updateUploadPercentage($event)" formControlName="images"
-      [images]="item?.images" [itemId]="item?.id"></tsl-drop-area>
+    <tsl-drop-area [uploadEvent]="uploadEvent" type="consumer_goods"
+      (onError)="onError($event)" formControlName="images" [isUpdatingItem]="!!item" (onOrderImages)="onOrderImages()" (onDeleteImage)="onDeleteImage($event)" (onAddImage)="onAddImage($event)"
+      ></tsl-drop-area>
     <ng-template #coachmarkPictures>
       <div i18n="@@UploadProductCoachmarkPictures">
         You can drag and drop your photos here. Select and drag to change the

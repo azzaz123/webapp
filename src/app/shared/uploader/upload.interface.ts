@@ -55,6 +55,7 @@ export interface UploadOutput {
 export interface UploadInput {
   type:
     | 'uploadAll'
+    | 'uploadRemainingImages'
     | 'uploadFile'
     | 'cancel'
     | 'cancelAll'

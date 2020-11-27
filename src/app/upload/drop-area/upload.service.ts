@@ -11,14 +11,29 @@ import { ITEM_TYPES } from '../../core/item/item';
 import {
   UploadFile,
   UploadInput,
+  UploadOutput,
+  UploadStatus,
 } from '../../shared/uploader/upload.interface';
+import { ItemService } from 'app/core/item/item.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { UploaderService } from 'app/shared/uploader/uploader.service';
+import { ErrorsService } from 'app/core/errors/errors.service';
+import { Image } from '../../core/user/user-response.interface';
 
 @Injectable()
 export class UploadService {
   private API_URL = 'api/v3/items';
   uploadInput: EventEmitter<UploadInput> = new EventEmitter();
 
-  constructor(private accesTokenService: AccessTokenService) {}
+  constructor(
+    private accesTokenService: AccessTokenService,
+    private itemService: ItemService,
+    private uploadesService: UploaderService,
+    private errorsService: ErrorsService
+  ) {}
+  public createItem(values: any, itemType: string) {
+    return this.createItemWithFirstImage(values, values.images[0], itemType);
+  }
 
   public createItemWithFirstImage(
     values: any,
@@ -43,7 +58,11 @@ export class UploadService {
     } else {
       inputEvent = this.buildUploadEvent(values, file, this.API_URL, 'item');
     }
-    this.uploadInput.emit(inputEvent);
+    return this.uploadesService.uploadFile(file, inputEvent);
+  }
+
+  updateItem(values: any, type: string) {
+    return this.itemService.update(values, type);
   }
 
   private buildUploadEvent(
@@ -83,7 +102,7 @@ export class UploadService {
       '/picture' +
       (type !== 'real_estate' ? '2' : '');
     const inputEvent: UploadInput = {
-      type: 'uploadAll',
+      type: 'uploadRemainingImages',
       url: environment.baseUrl + url,
       method: 'POST',
       fieldName: 'image',
@@ -114,31 +133,7 @@ export class UploadService {
       headers: this.getUploadHeaders(url),
       file: file,
     };
-    this.uploadInput.emit(inputEvent);
-  }
-
-  public removeImage(file: UploadFile) {
-    const inputEvent: UploadInput = {
-      type: 'remove',
-      id: file.id,
-    };
-    this.uploadInput.emit(inputEvent);
-  }
-
-  public updateOrder(files) {
-    const inputEvent: UploadInput = {
-      type: 'updateOrder',
-      files: files,
-    };
-    this.uploadInput.emit(inputEvent);
-  }
-
-  public setInitialImages(files) {
-    const inputEvent: UploadInput = {
-      type: 'initialImages',
-      files: [...files],
-    };
-    this.uploadInput.emit(inputEvent);
+    return this.uploadesService.uploadFile(file, inputEvent);
   }
 
   private getUploadHeaders(url: string, additionalHeaders?: any): any {
@@ -155,5 +150,52 @@ export class UploadService {
       [TOKEN_SIGNATURE_HEADER_NAME]: signature,
       [TOKEN_TIMESTAMP_HEADER_NAME]: timestamp.toString(),
     };
+  }
+
+  public updateOrder(files, itemId) {
+    const picturesOrder = {};
+    files.forEach((file, index) => {
+      picturesOrder[file.response.id || file.response] = index;
+    });
+    return this.itemService.updatePicturesOrder(itemId, picturesOrder);
+  }
+
+  public convertImagesToFiles(images) {
+    return images.map((image: Image, index: number) => {
+      return {
+        fileIndex: index,
+        preview: image.urls_by_size.medium,
+        file: {
+          lastModifiedDate: '',
+          name: '',
+          webkitRelativePath: '',
+          size: 1,
+          type: 'jpg',
+          msClose() {},
+          msDetachStream() {},
+          slice() {
+            return new Blob();
+          },
+        },
+        id: image.id,
+        lastModifiedDate: new Date(),
+        name: '',
+        size: 1,
+        type: 'jpg',
+        progress: {
+          status: UploadStatus.Done,
+          data: {
+            percentage: 100,
+            speed: null,
+            speedHuman: null,
+          },
+        },
+        response: image,
+      };
+    });
+  }
+
+  public onDeleteImage(itemId: string, imageId: string) {
+    return this.itemService.deletePicture(itemId, imageId);
   }
 }

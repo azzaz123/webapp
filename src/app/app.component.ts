@@ -5,7 +5,7 @@ import {
   distinctUntilChanged,
   finalize,
 } from 'rxjs/operators';
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, HostListener, OnInit, Renderer2 } from '@angular/core';
 import { DomSanitizer, Title } from '@angular/platform-browser';
 import { configMoment } from './config/moment.config';
 import {
@@ -36,6 +36,7 @@ import { AnalyticsService } from './core/analytics/analytics.service';
 import { DidomiService } from './core/didomi/didomi.service';
 import { UuidService } from './core/uuid/uuid.service';
 import { SwUpdate } from '@angular/service-worker';
+import { UploaderService } from './shared/uploader/uploader.service';
 
 @Component({
   selector: 'tsl-root',
@@ -51,6 +52,7 @@ export class AppComponent implements OnInit {
   private currentUrl: string;
   private previousSlug: string;
   private sendPresenceInterval = 240000;
+  private preventWindowsClose = true;
 
   constructor(
     private event: EventService,
@@ -74,8 +76,14 @@ export class AppComponent implements OnInit {
     private analyticsService: AnalyticsService,
     private uuidService: UuidService,
     private serviceWorker: SwUpdate,
-    private didomiService: DidomiService
+    private didomiService: DidomiService,
+    private uploaderService: UploaderService
   ) {}
+
+  @HostListener('window:beforeunload', ['$event'])
+  beforeunloadHandler() {
+    return !this.preventWindowsClose;
+  }
 
   ngOnInit() {
     this.initializeConfigs();
@@ -83,6 +91,10 @@ export class AppComponent implements OnInit {
     this.initializeServices();
     this.initializeRouterEventListeners();
     this.subscribeSWChanges();
+
+    this.uploaderService.messajeStatus$.subscribe((type) => {
+      this.preventWindowsClose = type === 'uploading';
+    });
   }
 
   private subscribeSWChanges() {

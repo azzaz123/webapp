@@ -219,7 +219,7 @@
     </h2>
     <tsl-drop-area [uploadEvent]="uploadEvent" type="real_estate" (onUploaded)="onUploaded($event)"
       (onError)="onError($event)" (onUploadPercentageChange)="updateUploadPercentage($event)" formControlName="images"
-      [maxUploads]="10" [images]="item?.images" [itemId]="item?.id"></tsl-drop-area>
+      [maxUploads]="10"></tsl-drop-area>
     <ng-template #coachmarkPictures>
       <div i18n>
         You can drag and drop your photos here. Also drag and drop to change the

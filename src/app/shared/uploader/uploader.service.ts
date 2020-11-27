@@ -1,7 +1,14 @@
-import { from, Observable, Subscriber, Subscription } from 'rxjs';
+import {
+  BehaviorSubject,
+  from,
+  Observable,
+  Subject,
+  Subscriber,
+  Subscription,
+} from 'rxjs';
 
-import { combineLatest, mergeAll } from 'rxjs/operators';
-import { EventEmitter, Injectable } from '@angular/core';
+import { combineLatest, distinctUntilChanged, mergeAll } from 'rxjs/operators';
+import { EventEmitter, HostListener, Injectable } from '@angular/core';
 import {
   NgUploaderOptions,
   UploadFile,
@@ -10,6 +17,7 @@ import {
   UploadStatus,
 } from './upload.interface';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ErrorsService } from 'app/core/errors/errors.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,11 +27,19 @@ export class UploaderService {
   uploads: { file?: UploadFile; files?: UploadFile[]; sub: Subscription }[];
   serviceEvents: EventEmitter<UploadOutput>;
   options: NgUploaderOptions;
+  private messajeStatus: BehaviorSubject<any>;
+  messajeStatus$: Observable<any>;
 
-  constructor(private sanitizer: DomSanitizer) {
+  constructor(
+    private sanitizer: DomSanitizer,
+    private errorsService: ErrorsService
+  ) {
     this.files = [];
     this.serviceEvents = new EventEmitter();
     this.uploads = [];
+    this.messajeStatus = new BehaviorSubject(0);
+    this.messajeStatus$ = this.messajeStatus.asObservable();
+    this.showPoregressSecondary();
   }
 
   handleFiles(files: FileList, imageType?: string): void {
@@ -121,123 +137,48 @@ export class UploaderService {
     input: EventEmitter<UploadInput>,
     imageType: string
   ): Subscription {
-    const subscription: Subscription = input.subscribe((event: UploadInput) => {
-      switch (event.type) {
-        case 'uploadFile':
-          this.serviceEvents.emit({
-            type: 'start',
-            file: event.file,
-            imageType: imageType,
-          });
-          let newLenght: number = this.uploads.push({
-            file: event.file,
-            sub: null,
-          });
-          const sub = this.uploadFile(event.file, event).subscribe((data) => {
-            data.imageType = imageType;
-            this.serviceEvents.emit(data);
-          });
-          this.uploads[newLenght - 1].sub = sub;
-          break;
-        case 'uploadAll':
-          let concurrency =
-            event.concurrency > 0
-              ? event.concurrency
-              : Number.POSITIVE_INFINITY;
-
-          const subscriber = Subscriber.create((data: UploadOutput) => {
-            data.imageType = imageType;
-            this.serviceEvents.emit(data);
-          });
-
-          this.uploads = this.uploads.concat(
-            this.files.map((file) => {
-              return { file: file, sub: null };
-            })
-          );
-
-          const subscription = from(
-            this.files
-              .filter((file) => file.progress.status !== UploadStatus.Done)
-              .map((file) => this.uploadFile(file, event))
-          )
-            .pipe(
-              mergeAll(concurrency),
-              combineLatest((data) => data)
-            )
-            .subscribe(subscriber);
-          break;
-        case 'cancel':
-          const id = event.id || null;
-          if (!id) {
-            return;
-          }
-
-          const index = this.uploads.findIndex(
-            (upload) => upload.file.id === id
-          );
-          if (index !== -1) {
-            if (this.uploads[index].sub) {
-              this.uploads[index].sub.unsubscribe();
-            }
-
-            this.serviceEvents.emit({
-              type: 'cancelled',
-              file: this.uploads[index].file,
-              imageType: imageType,
-            });
-            this.uploads[index].file.progress.status = UploadStatus.Canceled;
-          }
-          break;
-        case 'cancelAll':
-          this.uploads.forEach((upload) => {
-            upload.file.progress.status = UploadStatus.Canceled;
-            this.serviceEvents.emit({
-              type: 'cancelled',
-              file: upload.file,
-              imageType: imageType,
-            });
-          });
-          break;
-        case 'remove':
-          const removeId = event.id || null;
-          if (!removeId) {
-            return;
-          }
-          const removeIndex = this.files.findIndex(
-            (file) => file.id === removeId
-          );
-          if (removeIndex !== -1) {
-            const deleted = this.files.splice(removeIndex, 1)[0];
-            this.serviceEvents.emit({
-              type: 'removed',
-              file: deleted,
-              imageType: imageType,
-            });
-          }
-          break;
-        case 'updateOrder':
-          const files = event.files || null;
-          if (!files) {
-            return;
-          }
-          this.files = files.map((file: UploadFile, i: number) => {
-            file.fileIndex = i;
-            return file;
-          });
-          this.serviceEvents.emit({
-            type: 'orderUpdated',
-            files: this.files,
-            imageType: imageType,
-          });
-          break;
-        case 'initialImages':
-          this.files = event.files;
-          break;
-      }
-    });
+    const subscription: Subscription = input.subscribe(
+      (event: UploadInput) => null
+    );
     this.serviceEvents.emit({ type: 'ready', imageType: imageType });
     return subscription;
+  }
+
+  uploadRemainingImages(imageType, event) {
+    let concurrency =
+      event.concurrency > 0 ? event.concurrency : Number.POSITIVE_INFINITY;
+
+    this.uploads = this.uploads.concat(
+      this.files.map((file) => {
+        return { file: file, sub: null };
+      })
+    );
+    const subscription = from(
+      this.files
+        .filter(
+          (file) =>
+            file.progress.status !== UploadStatus.Done &&
+            file.id !== this.files[0].id
+        )
+        .map((file) => this.uploadFile(file, event))
+    )
+      .pipe(
+        mergeAll(concurrency),
+        combineLatest((data) => data)
+      )
+      .subscribe((data: UploadOutput) => {
+        data.imageType = imageType;
+        this.messajeStatus.next(this.messajeStatus.getValue() + 1);
+        this.serviceEvents.emit(data);
+      });
+  }
+
+  private showPoregressSecondary() {
+    this.messajeStatus.pipe(distinctUntilChanged()).subscribe((type) => {
+      if (type) {
+        this.errorsService.i18nSuccess(type);
+      }
+    });
   }
 
   uploadFile(file: UploadFile, event: UploadInput): Observable<UploadOutput> {
@@ -294,7 +235,7 @@ export class UploaderService {
       });
 
       xhr.onreadystatechange = () => {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
           file.progress = {
             status: UploadStatus.Done,
             data: {

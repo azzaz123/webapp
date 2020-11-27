@@ -252,7 +252,7 @@
     </h2>
     <tsl-drop-area [uploadEvent]="uploadEvent" type="cars" (onUploaded)="onUploaded($event)" (onError)="onError($event)"
       (onUploadPercentageChange)="updateUploadPercentage($event)" formControlName="images" [maxUploads]="10"
-      [images]="item?.images" [itemId]="item?.id"></tsl-drop-area>
+      ></tsl-drop-area>
     <ng-template #coachmarkPictures>
       <div i18n>You can drag and drop your photos here. Select and drag to change the order. Max 10MB. We accept only
         .jpg images.</div>
