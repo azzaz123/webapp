@@ -80,7 +80,7 @@ export class ProfileProBillingComponent
     this.eventService.unsubscribeAll('formSubmited');
   }
 
-  buildForm() {
+  buildForm(): void {
     this.billingForm = this.fb.group({
       type: ['', [Validators.required, whitespaceValidator]],
       cif: ['', [Validators.required, whitespaceValidator]],
@@ -102,7 +102,7 @@ export class ProfileProBillingComponent
     });
   }
 
-  initForm(cache: boolean = true) {
+  initForm(cache: boolean = true): void {
     this.paymentService
       .getBillingInfo(cache)
       .subscribe(
