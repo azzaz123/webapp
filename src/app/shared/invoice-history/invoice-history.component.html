@@ -18,7 +18,6 @@
     *ngFor="let invoice of sortedInvoices | slice:0:limit"
     [invoice]="invoice"
     [active]="invoice"
-    [isBillingInfo]="isBillingInfo"
     >
     </tsl-invoice-item>
     <div class="InvoiceHistory__load-more-container" *ngIf="showLoadMore()">

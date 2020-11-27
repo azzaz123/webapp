@@ -13,7 +13,6 @@ export class InvoiceHistoryComponent implements OnInit {
     GBP: '£',
   };
   @Input() active: boolean;
-  @Input() isBillingInfo: boolean;
   public loading = false;
   public invoiceTransactions: InvoiceTransaction[];
   public limit = 5;
@@ -75,7 +74,7 @@ export class InvoiceHistoryComponent implements OnInit {
         return (
           (!this.invoiceTransactions ||
             (this.invoiceTransactions && !this.invoiceTransactions.length)) &&
-          this.isBillingInfo &&
+          this.active &&
           !this.isErrorLoading &&
           !this.loading
         );
@@ -83,7 +82,7 @@ export class InvoiceHistoryComponent implements OnInit {
         return (
           (!this.invoiceTransactions ||
             (this.invoiceTransactions && !this.invoiceTransactions.length)) &&
-          !this.isBillingInfo &&
+          !this.active &&
           !this.isErrorLoading &&
           !this.loading
         );

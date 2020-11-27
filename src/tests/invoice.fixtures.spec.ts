@@ -1,9 +1,9 @@
 import {
-  InvoiceTransactions,
+  InvoiceTransaction,
   InvoiceDownload,
 } from 'app/core/invoice/invoice.interface';
 
-export const MOCK_INVOICE_HISTORY: InvoiceTransactions[] = [
+export const MOCK_INVOICE_HISTORY: InvoiceTransaction[] = [
   {
     id: '1',
     description: 'Cars15',
@@ -102,7 +102,7 @@ export const MOCK_INVOICE_HISTORY: InvoiceTransactions[] = [
   },
 ];
 
-export const MOCK_INVOICE_HISTORY_MAPPED: InvoiceTransactions[] = [
+export const MOCK_INVOICE_HISTORY_MAPPED: InvoiceTransaction[] = [
   {
     id: '1',
     description: 'Cars15',
@@ -121,7 +121,7 @@ export const MOCK_INVOICE_HISTORY_MAPPED: InvoiceTransactions[] = [
   },
 ];
 
-export const MOCK_INVOICE_HISTORY_SORTED: InvoiceTransactions[] = [
+export const MOCK_INVOICE_HISTORY_SORTED: InvoiceTransaction[] = [
   {
     id: '1',
     description: 'Cars15',

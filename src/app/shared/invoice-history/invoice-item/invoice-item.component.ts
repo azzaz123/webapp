@@ -1,9 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ErrorsService } from 'app/core/errors/errors.service';
-import {
-  Invoice,
-  InvoiceTransaction,
-} from 'app/core/invoice/invoice.interface';
+import { InvoiceTransaction } from 'app/core/invoice/invoice.interface';
 import { InvoiceService } from 'app/core/invoice/invoice.service';
 
 @Component({
@@ -14,7 +11,6 @@ import { InvoiceService } from 'app/core/invoice/invoice.service';
 export class InvoiceItemComponent {
   @Input() invoice: InvoiceTransaction;
   @Input() active: boolean;
-  @Input() isBillingInfo: boolean;
   public loading = false;
 
   constructor(
@@ -25,7 +21,7 @@ export class InvoiceItemComponent {
   public handleInvoice(e: Event, invoiceTransaction: InvoiceTransaction): void {
     e.stopPropagation();
     this.loadingState = true;
-    if (this.isBillingInfo && this.active) {
+    if (this.active) {
       if (invoiceTransaction.invoice_generated) {
         return this.downloadInvoice(invoiceTransaction);
       }
