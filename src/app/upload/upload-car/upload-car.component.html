@@ -250,8 +250,8 @@
   <div class="box product-photos" [ngbPopover]="coachmarkPictures" [autoClose]="false" triggers="mouseenter:mouseleave">
     <h2 [ngClass]="{'ng-invalid': !uploadForm.controls.images.valid && uploadForm.controls.images.dirty}" i18n>Photos
     </h2>
-    <tsl-drop-area [uploadEvent]="uploadEvent" type="cars" (onUploaded)="onUploaded($event)" (onError)="onError($event)"
-      (onUploadPercentageChange)="updateUploadPercentage($event)" formControlName="images" [maxUploads]="10"
+    <tsl-drop-area [uploadEvent]="uploadEvent"
+      (onError)="onError($event)" formControlName="images" [isUpdatingItem]="!!item" (onOrderImages)="onOrderImages()" (onDeleteImage)="onDeleteImage($event)" (onAddImage)="onAddImage($event)"
       ></tsl-drop-area>
     <ng-template #coachmarkPictures>
       <div i18n>You can drag and drop your photos here. Select and drag to change the order. Max 10MB. We accept only

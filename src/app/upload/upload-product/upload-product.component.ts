@@ -455,7 +455,7 @@ export class UploadProductComponent
 
   private createItem(): void {
     this.uploadService
-      .createItem(this.parseUploadForm(), 'consumer_goods')
+      .createItem(this.parseUploadForm(), ITEM_TYPES.CONSUMER_GOODS)
       .subscribe(
         (response) => {
           this.updateUploadPercentage(response.percentage);
@@ -474,7 +474,7 @@ export class UploadProductComponent
 
   private uploadItem(): void {
     this.uploadService
-      .updateItem(this.parseUploadForm(), 'consumer_goods')
+      .updateItem(this.parseUploadForm(), ITEM_TYPES.REAL_ESTATE)
       .subscribe(
         (response) => {
           this.onUploaded({
@@ -537,7 +537,7 @@ export class UploadProductComponent
   public onAddImage(file: UploadFile): void {
     if (this.item) {
       this.uploadService
-        .uploadSingleImage(file, this.item.id, 'consumer_goods')
+        .uploadSingleImage(file, this.item.id, ITEM_TYPES.CONSUMER_GOODS)
         .subscribe(
           (value) => {
             if (value.type === 'done')

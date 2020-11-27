@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
+  FormControl,
   FormGroup,
   ValidatorFn,
   Validators,
@@ -38,6 +39,10 @@ import {
   ListItemCar,
 } from '../../core/analytics/analytics-constants';
 import { whitespaceValidator } from '../../core/form-validators/formValidators.func';
+import { UploadService } from '../drop-area/upload.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ITEM_TYPES } from 'app/core/item/item';
+import { UploadFile } from 'app/shared/uploader/upload.interface';
 
 @Component({
   selector: 'tsl-upload-car',
@@ -85,7 +90,8 @@ export class UploadCarComponent implements OnInit {
     private analyticsService: AnalyticsService,
     private userService: UserService,
     private subscriptionService: SubscriptionsService,
-    private popoverConfig: NgbPopoverConfig
+    private popoverConfig: NgbPopoverConfig,
+    private uploadService: UploadService
   ) {
     this.uploadForm = fb.group({
       id: '',
@@ -368,25 +374,61 @@ export class UploadCarComponent implements OnInit {
     });
   }
 
-  onSubmit(): void {
+  onSubmit() {
     if (this.uploadForm.valid) {
       this.loading = true;
-      this.uploadEvent.emit({
-        type: this.item ? 'update' : 'create',
-        values: this.uploadForm.value,
-      });
+      this.item ? this.uploadItem() : this.createItem();
     } else {
-      this.uploadForm.markAsPending();
-      if (!this.uploadForm.get('location.address').valid) {
-        this.uploadForm.get('location.address').markAsDirty();
-      }
-      if (!this.uploadForm.get('images').valid) {
-        this.errorsService.i18nError('missingImageError');
-      } else {
-        this.errorsService.i18nError('formErrors', '', 'formErrorsTitle');
-        this.onValidationError.emit();
-      }
+      this.invalidForm();
     }
+  }
+
+  private invalidForm(): void {
+    this.uploadForm.markAsPending();
+    if (!this.uploadForm.get('location.address').valid) {
+      this.uploadForm.get('location.address').markAsDirty();
+    }
+    if (!this.uploadForm.get('images').valid) {
+      this.errorsService.i18nError('missingImageError');
+    } else {
+      this.errorsService.i18nError('formErrors', '', 'formErrorsTitle');
+      this.onValidationError.emit();
+    }
+  }
+
+  private createItem(): void {
+    this.uploadService
+      .createItem(this.uploadForm.value, ITEM_TYPES.REAL_ESTATE)
+      .subscribe(
+        (response) => {
+          this.updateUploadPercentage(response.percentage);
+          if (response.type === 'done') {
+            this.onUploaded({
+              response: response.file.response,
+              action: 'created',
+            });
+          }
+        },
+        (error: HttpErrorResponse) => {
+          this.onError(error);
+        }
+      );
+  }
+
+  private uploadItem(): void {
+    this.uploadService
+      .updateItem(this.uploadForm.value, ITEM_TYPES.REAL_ESTATE)
+      .subscribe(
+        (response) => {
+          this.onUploaded({
+            response,
+            action: 'updated',
+          });
+        },
+        (error: HttpErrorResponse) => {
+          this.onError(error);
+        }
+      );
   }
 
   onUploaded(uploadEvent: any) {
@@ -588,6 +630,49 @@ export class UploadCarComponent implements OnInit {
   public onIsYearsNeeded(): void {
     if (!this.years) {
       this.getYears();
+    }
+  }
+
+  onDeleteImage(imageId: string): void {
+    this.uploadService
+      .onDeleteImage(this.item.id, imageId)
+      .subscribe(() => this.removeFileFromForm(imageId));
+  }
+
+  removeFileFromForm(imageId: string): void {
+    const imagesControl: FormControl = this.uploadForm.get(
+      'images'
+    ) as FormControl;
+    imagesControl.patchValue(
+      imagesControl.value.filter((image) => {
+        return (
+          image.id !== imageId &&
+          image.response !== imageId &&
+          image.response?.id !== imageId
+        );
+      })
+    );
+  }
+
+  onOrderImages(): void {
+    const images = this.uploadForm.get('images').value;
+    this.uploadService.updateOrder(images, this.item.id).subscribe();
+  }
+
+  public onAddImage(file: UploadFile): void {
+    if (this.item) {
+      this.uploadService
+        .uploadSingleImage(file, this.item.id, ITEM_TYPES.REAL_ESTATE)
+        .subscribe(
+          (value) => {
+            if (value.type === 'done')
+              this.errorsService.i18nSuccess('imageUploaded');
+          },
+          (error) => {
+            this.removeFileFromForm(file.id);
+            this.onError(error);
+          }
+        );
     }
   }
 }

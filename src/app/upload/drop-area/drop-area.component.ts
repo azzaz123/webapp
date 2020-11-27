@@ -44,7 +44,6 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
 
   @Input() isUpdatingItem: boolean;
   @Input() maxUploads = 10;
-  @Input() type: string;
   dragOver: boolean;
   files = [];
   placeholders: number[];
