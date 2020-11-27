@@ -1,7 +1,4 @@
-import {
-  InvoiceTransaction,
-  InvoiceDownload,
-} from 'app/core/invoice/invoice.interface';
+import { InvoiceTransaction } from 'app/core/invoice/invoice.interface';
 
 export const MOCK_INVOICE_HISTORY: InvoiceTransaction[] = [
   {
@@ -119,6 +116,14 @@ export const MOCK_INVOICE_HISTORY_MAPPED: InvoiceTransaction[] = [
     invoice_generated: false,
     currency: 'EUR',
   },
+  {
+    id: '1',
+    description: 'Cars15',
+    price: 35,
+    date: 1825710400000,
+    invoice_generated: true,
+    currency: 'EUR',
+  },
 ];
 
 export const MOCK_INVOICE_HISTORY_SORTED: InvoiceTransaction[] = [
@@ -219,7 +224,3 @@ export const MOCK_INVOICE_HISTORY_SORTED: InvoiceTransaction[] = [
     currency: 'EUR',
   },
 ];
-
-export const MOCK_INVOICE_DOWNLOAD: InvoiceDownload = {
-  file: 'pdfURL',
-};

@@ -1,5 +1,5 @@
 import { of } from 'rxjs';
-import { TestBed, ComponentFixture, async } from '@angular/core/testing';
+import { TestBed, ComponentFixture, fakeAsync } from '@angular/core/testing';
 import { InvoiceHistoryComponent } from './invoice-history.component';
 import { InvoiceService } from 'app/core/invoice/invoice.service';
 import {
@@ -13,7 +13,7 @@ describe('InvoiceComponent', () => {
   let fixture: ComponentFixture<InvoiceHistoryComponent>;
   let invoiceService: InvoiceService;
 
-  beforeEach(async(() => {
+  beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       declarations: [InvoiceHistoryComponent],
       providers: [

@@ -46,7 +46,7 @@ export class InvoiceItemComponent {
 
   private downloadInvoice(invoiceTransaction: InvoiceTransaction): void {
     this.invoiceService.downloadInvoice(invoiceTransaction).subscribe(
-      (blob) => {
+      (blob: Blob) => {
         this.errorsService.i18nSuccess('invoiceCorrectlyDownloaded');
         const invoiceDate = this.invoiceDateFormatted(
           new Date(invoiceTransaction.date)

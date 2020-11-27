@@ -7,7 +7,3 @@ export interface InvoiceTransaction {
   invoice_generated: boolean;
   currencySymbol?: string;
 }
-
-export interface InvoiceDownload {
-  file: string;
-}
