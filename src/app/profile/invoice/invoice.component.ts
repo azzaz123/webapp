@@ -9,7 +9,6 @@ import { PaymentService } from 'app/core/payments/payment.service';
 })
 export class InvoiceComponent implements OnInit {
   public canDownloadInvoice: boolean;
-  public isBilling = false;
   public activeIds: string[] = ['custom-panel-1'];
   constructor(private paymentService: PaymentService) {}
 
@@ -20,9 +19,8 @@ export class InvoiceComponent implements OnInit {
   public getBillingInfo(): void {
     this.paymentService.getBillingInfo(false).subscribe(
       (res: BillingInfoResponse) => {
-        this.isBilling = res && !!res.cif && !!res.id;
-        this.handleModal(this.isBilling);
-        this.canDownloadInvoice = true;
+        this.canDownloadInvoice = res && !!res.cif && !!res.id;
+        this.handleModal(this.canDownloadInvoice);
       },
       (error) => {
         this.canDownloadInvoice = false;
