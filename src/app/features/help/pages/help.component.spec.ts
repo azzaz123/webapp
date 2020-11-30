@@ -1,19 +1,13 @@
-import { of, Subscription } from 'rxjs';
-import {
-  ComponentFixture,
-  TestBed,
-  fakeAsync,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { FAQS, FAQ_FEATURES } from './../../../../tests/faq.fixtures.spec';
+import { of } from 'rxjs';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { HelpComponent } from './help.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { HelpService } from './help.service';
-import { FAQ_FEATURES, FAQS } from '../../tests/faq.fixtures.spec';
-import { I18nService } from '../core/i18n/i18n.service';
 import { DOCUMENT } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
+import { I18nService } from 'app/core/i18n/i18n.service';
+import { HelpService } from '../help.service';
 
 describe('HelpComponent', () => {
   let component: HelpComponent;

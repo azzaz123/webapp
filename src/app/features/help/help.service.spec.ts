@@ -6,7 +6,7 @@ import {
 } from '@angular/common/http/testing';
 
 import { HelpService } from './help.service';
-import { FAQS, FAQ_FEATURES } from '../../tests/faq.fixtures.spec';
+import { FAQS, FAQ_FEATURES } from '../../../tests/faq.fixtures.spec';
 
 describe('HelpService', () => {
   let service: HelpService;
