@@ -1,0 +1,3 @@
+#!/bin/bash
+
+pretty-quick --staged
