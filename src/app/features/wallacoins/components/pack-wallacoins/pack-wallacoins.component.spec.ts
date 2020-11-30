@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { PackWallacoinsComponent } from './pack-wallacoins.component';
-import { CustomCurrencyPipe } from '../../shared/pipes';
+import { CustomCurrencyPipe } from '../../../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Pack } from '../../core/payments/pack';
+import { Pack } from '../../../../core/payments/pack';
 
 describe('PackWallacoinsComponent', () => {
   let component: PackWallacoinsComponent;
