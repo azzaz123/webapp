@@ -1,8 +1,8 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
-import { CategoryResponse } from 'app/core/category/category-response.interface';
-import { CategoryService } from 'app/core/category/category.service';
-import { FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH } from 'app/core/item/item';
-import { Review } from '../../review';
+import { Review } from '../review';
+import { FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH } from '../../core/item/item';
+import { CategoryService } from '../../core/category/category.service';
+import { CategoryResponse } from '../../core/category/category-response.interface';
 
 @Component({
   selector: 'tsl-review-item',
