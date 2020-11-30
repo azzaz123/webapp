@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ReviewsComponent } from './reviews.component';
-import { LoggedGuard } from '../core/user/logged.guard';
+import { LoggedGuard } from 'app/core/user/logged.guard';
+import { PERMISSIONS } from 'app/core/user/user';
 import { NgxPermissionsGuard } from 'ngx-permissions';
-import { PERMISSIONS } from '../core/user/user';
+import { ReviewsComponent } from './pages/reviews.component';
 
 const routes: Routes = [
   {
