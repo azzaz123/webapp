@@ -4,6 +4,7 @@ import { InvoiceHistoryComponent } from './invoice-history.component';
 import { InvoiceService } from 'app/core/invoice/invoice.service';
 import {
   MOCK_INVOICE_HISTORY,
+  MOCK_INVOICE_HISTORY_MAPPED,
   MOCK_INVOICE_HISTORY_SORTED,
 } from '../../../tests/invoice.fixtures.spec';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -33,11 +34,11 @@ describe('InvoiceComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(InvoiceHistoryComponent);
     component = fixture.componentInstance;
-    invoiceService = TestBed.get(InvoiceService);
+    invoiceService = TestBed.inject(InvoiceService);
   });
 
-  describe('showLoadMore', () => {
-    it('should set showLoadMore to there are more than 5 invoices', () => {
+  describe('when we need load more data...', () => {
+    it('should show load more because we have more than 5 invoices', () => {
       component.invoiceTransactions = MOCK_INVOICE_HISTORY;
       component.total = MOCK_INVOICE_HISTORY.length;
 
@@ -47,7 +48,18 @@ describe('InvoiceComponent', () => {
     });
   });
 
-  describe('sortedInvoices', () => {
+  describe('when we dont need load more data...', () => {
+    it('shouldnt show load more because we dont have more than 5 invoices', () => {
+      component.invoiceTransactions = MOCK_INVOICE_HISTORY_MAPPED;
+      component.total = MOCK_INVOICE_HISTORY_MAPPED.length;
+
+      component.showLoadMore();
+
+      expect(component.showLoadMore()).toBe(false);
+    });
+  });
+
+  describe('when we sort invoices...', () => {
     it('should return the invoices sorted by date', () => {
       component.invoiceTransactions = MOCK_INVOICE_HISTORY;
 
@@ -55,7 +67,7 @@ describe('InvoiceComponent', () => {
     });
   });
 
-  describe('loadMore', () => {
+  describe('when we load more items...', () => {
     it('should update the list limit', () => {
       component.loadMore();
 
