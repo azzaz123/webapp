@@ -131,7 +131,7 @@
             </div>
             <div class="row" *ngIf="!containerTypeIsModal">
               <div class="col-7" [ngClass]="{'offset-md-5 offset-sm-2': isNewBillingInfoForm, 'offset-md-3 text-center': !isNewBillingInfoForm}">
-                <tsl-button [type]="'submit'" [disabled]="!formComponent.hasNotSavedChanges" [loading]="loading" className="btn-primary btn-big" i18n="@@Save">Save</tsl-button>
+                <tsl-button [type]="'submit'" [loading]="loading" className="btn-primary btn-big" i18n="@@Save">Save</tsl-button>
               </div>
             </div>
           </div>
