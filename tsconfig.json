@@ -2,6 +2,23 @@
   "compilerOptions": {
     "target": "es6",
     "baseUrl": "./src",
+    "paths": {
+      "@core/*": [
+        "app/core/*"
+      ],
+      "@shared/*": [
+        "app/shared/*"
+      ],
+      "@assets/*": [
+        "assets/*"
+      ],
+      "@environments/*": [
+        "environments/*"
+      ],
+      "@features/*":[
+        "app/features/*"
+      ]
+    },
     "outDir": "./dist/out-tsc",
     "module": "es2020",
     "moduleResolution": "node",
@@ -12,5 +29,5 @@
     "typeRoots": [
       "node_modules/@types"
     ]
-  },
+  }
 }
