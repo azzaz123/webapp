@@ -149,7 +149,7 @@ const loggedRoutes = [
     path: 'stats',
     canLoad: [LoggedGuard],
     loadChildren: () =>
-      import('app/stats/stats.module').then((m) => m.StatsModule),
+      import('app/features/stats/stats.module').then((m) => m.StatsModule),
   },
   {
     path: '**',

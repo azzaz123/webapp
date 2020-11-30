@@ -1,12 +1,12 @@
+import { MOCK_ITEM } from './../../../../../tests/item.fixtures.spec';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ItemsStatsComponent } from './items-stats.component';
-import { ItemService } from '../../core/item/item.service';
 import { Subject, of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MOCK_ITEM } from '../../../tests/item.fixtures.spec';
-import { CheapestProducts } from '../../core/item/item-response.interface';
 import { CommonModule } from '@angular/common';
+import { CheapestProducts } from 'app/core/item/item-response.interface';
+import { ItemService } from 'app/core/item/item.service';
 
 describe('ItemsStatsComponent', () => {
   let component: ItemsStatsComponent;

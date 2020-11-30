@@ -6,12 +6,6 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { Item } from '../../../core/item/item';
-import { ItemStatsService } from './item-stats-graph/item-stats.service';
-import {
-  ItemStatisticFullResponse,
-  ItemStatisticEntriesResponse,
-} from './item-stats-graph/item-stats-response.interface';
 import {
   animate,
   keyframes,
@@ -20,9 +14,15 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { ItemService } from '../../../core/item/item.service';
-import { ItemCounters } from '../../../core/item/item-response.interface';
 import { every, isEmpty } from 'lodash-es';
+import { Item } from 'app/core/item/item';
+import { ItemCounters } from 'app/core/item/item-response.interface';
+import { ItemService } from 'app/core/item/item.service';
+import {
+  ItemStatisticFullResponse,
+  ItemStatisticEntriesResponse,
+} from '../item-stats-graph/item-stats-response.interface';
+import { ItemStatsService } from '../item-stats-graph/item-stats.service';
 
 @Component({
   selector: 'tsl-item-stats-row',

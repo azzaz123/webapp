@@ -1,10 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Item } from 'app/core/item/item';
 import {
   CheapestProducts,
   ItemsData,
-} from '../../core/item/item-response.interface';
-import { ItemService } from '../../core/item/item.service';
-import { Item } from '../../core/item/item';
+} from 'app/core/item/item-response.interface';
+import { ItemService } from 'app/core/item/item.service';
+
 import { Subject } from 'rxjs';
 
 @Component({

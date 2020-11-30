@@ -2,14 +2,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { statsRoutedComponents, StatsRoutingModule } from './stats.routes';
-import { ItemsStatsComponent } from './items-stats/items-stats.component';
-import { SharedModule } from '../shared/shared.module';
-import { ItemStatsRowComponent } from './items-stats/item-stats-row/item-stats-row.component';
-import { TrackingModule } from '../core/tracking/tracking.module';
-import { ItemStatsGraphComponent } from './items-stats/item-stats-row/item-stats-graph/item-stats-graph.component';
-import { ItemStatsService } from './items-stats/item-stats-row/item-stats-graph/item-stats.service';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { TrackingModule } from 'app/core/tracking/tracking.module';
+import { SharedModule } from 'app/shared/shared.module';
+import { ItemStatsGraphComponent } from './components/item-stats-graph/item-stats-graph.component';
+import { ItemStatsService } from './components/item-stats-graph/item-stats.service';
+import { ItemStatsRowComponent } from './components/item-stats-row/item-stats-row.component';
+import { ItemsStatsComponent } from './components/items-stats/items-stats.component';
 
 @NgModule({
   imports: [
