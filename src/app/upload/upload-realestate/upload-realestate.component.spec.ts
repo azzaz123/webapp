@@ -42,6 +42,9 @@ import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
 import { RealestateContent } from '../../core/item/item-response.interface';
+import { UploadService } from '../drop-area/upload.service';
+import { MockUploadService } from '../../../tests/upload.fixtures.spec';
+import { ITEM_TYPES } from 'app/core/item/item';
 
 describe('UploadRealestateComponent', () => {
   let component: UploadRealestateComponent;
@@ -53,6 +56,7 @@ describe('UploadRealestateComponent', () => {
   let modalService: NgbModal;
   let analyticsService: AnalyticsService;
   let itemService: ItemService;
+  let uploadService: UploadService;
   const RESPONSE: Key[] = [{ id: 'test', icon_id: 'test', text: 'test' }];
   const RESPONSE_OPTION: IOption[] = [{ value: 'test', label: 'test' }];
   const componentInstance: any = {};
@@ -67,6 +71,7 @@ describe('UploadRealestateComponent', () => {
           NgbPopoverConfig,
           { provide: TrackingService, useClass: MockTrackingService },
           { provide: AnalyticsService, useClass: MockAnalyticsService },
+          { provide: UploadService, useClass: MockUploadService },
           {
             provide: UserService,
             useValue: {
@@ -140,6 +145,7 @@ describe('UploadRealestateComponent', () => {
     modalService = TestBed.inject(NgbModal);
     itemService = TestBed.inject(ItemService);
     analyticsService = TestBed.inject(AnalyticsService);
+    uploadService = TestBed.inject(UploadService);
     fixture.detectChanges();
   });
 
@@ -234,6 +240,9 @@ describe('UploadRealestateComponent', () => {
   });
 
   describe('onSubmit', () => {
+    beforeEach(() => {
+      spyOn(uploadService, 'createItem').and.callThrough();
+    });
     it('should has category set by default', () => {
       expect(component.uploadForm.get('category_id').value).toBe(
         REALESTATE_CATEGORY
@@ -241,19 +250,15 @@ describe('UploadRealestateComponent', () => {
     });
 
     it('should emit uploadEvent if form is valid', () => {
-      let input: any;
       component.uploadForm.patchValue(UPLOAD_FORM_REALESTATE_VALUES);
       expect(component.uploadForm.valid).toBe(true);
-      component.uploadEvent.subscribe((i: any) => {
-        input = i;
-      });
 
       component.onSubmit();
 
-      expect(input).toEqual({
-        type: 'create',
-        values: component.uploadForm.value,
-      });
+      expect(uploadService.createItem).toHaveBeenCalledWith(
+        component.uploadForm.value,
+        ITEM_TYPES.REAL_ESTATE
+      );
       expect(component.loading).toBe(true);
     });
 

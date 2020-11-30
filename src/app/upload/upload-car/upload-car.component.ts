@@ -12,7 +12,6 @@ import { CarSuggestionsService } from './car-suggestions.service';
 import { IOption } from 'app/dropdown/utils/option.interface';
 import { CarKeysService } from './car-keys.service';
 import { Router } from '@angular/router';
-import { UploadEvent } from '../upload-event.interface';
 import {
   NgbModal,
   NgbModalRef,
@@ -41,7 +40,7 @@ import {
 import { whitespaceValidator } from '../../core/form-validators/formValidators.func';
 import { UploadService } from '../drop-area/upload.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ITEM_TYPES } from 'app/core/item/item';
+import { Item, ITEM_TYPES } from 'app/core/item/item';
 import { UploadFile } from 'app/shared/uploader/upload.interface';
 
 @Component({
@@ -67,7 +66,6 @@ export class UploadCarComponent implements OnInit {
     { value: 'GBP', label: '£' },
   ];
   public loading: boolean;
-  uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   private oldFormValue: any;
   public currentYear = new Date().getFullYear();
   public isUrgent = false;
@@ -398,7 +396,7 @@ export class UploadCarComponent implements OnInit {
 
   private createItem(): void {
     this.uploadService
-      .createItem(this.uploadForm.value, ITEM_TYPES.REAL_ESTATE)
+      .createItem(this.uploadForm.value, ITEM_TYPES.CARS)
       .subscribe(
         (response) => {
           this.updateUploadPercentage(response.percentage);
@@ -417,7 +415,7 @@ export class UploadCarComponent implements OnInit {
 
   private uploadItem(): void {
     this.uploadService
-      .updateItem(this.uploadForm.value, ITEM_TYPES.REAL_ESTATE)
+      .updateItem(this.uploadForm.value, ITEM_TYPES.CARS)
       .subscribe(
         (response) => {
           this.onUploaded({
@@ -431,7 +429,7 @@ export class UploadCarComponent implements OnInit {
       );
   }
 
-  onUploaded(uploadEvent: any) {
+  onUploaded(uploadEvent: { action: string; response: CarContent }) {
     this.onFormChanged.emit(false);
     if (this.item) {
       this.trackingService.track(
@@ -441,7 +439,7 @@ export class UploadCarComponent implements OnInit {
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
     }
-    if (this.isUrgent && uploadEvent.action !== 'createdOnHold') {
+    if (this.isUrgent && !uploadEvent.response.flags.onhold) {
       this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, {
         category: this.uploadForm.value.category_id,
       });
@@ -449,9 +447,9 @@ export class UploadCarComponent implements OnInit {
       localStorage.setItem('transactionType', 'urgent');
     }
 
-    if (uploadEvent.action === 'createdOnHold') {
+    if (uploadEvent.response.flags.onhold) {
       this.subscriptionService.getUserSubscriptionType().subscribe((type) => {
-        this.redirectToList(uploadEvent, type);
+        this.redirectToList({ ...uploadEvent, action: 'createdOnHold' }, type);
       });
     } else {
       this.redirectToList(uploadEvent);
@@ -662,7 +660,7 @@ export class UploadCarComponent implements OnInit {
   public onAddImage(file: UploadFile): void {
     if (this.item) {
       this.uploadService
-        .uploadSingleImage(file, this.item.id, ITEM_TYPES.REAL_ESTATE)
+        .uploadSingleImage(file, this.item.id, ITEM_TYPES.CARS)
         .subscribe(
           (value) => {
             if (value.type === 'done')

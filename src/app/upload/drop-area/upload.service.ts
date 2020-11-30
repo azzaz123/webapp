@@ -28,8 +28,7 @@ export class UploadService {
   constructor(
     private accesTokenService: AccessTokenService,
     private itemService: ItemService,
-    private uploadesService: UploaderService,
-    private errorsService: ErrorsService
+    private uploaderService: UploaderService
   ) {}
   public createItem(values: any, itemType: string) {
     return this.createItemWithFirstImage(values, values.images[0], itemType);
@@ -58,7 +57,7 @@ export class UploadService {
     } else {
       inputEvent = this.buildUploadEvent(values, file, this.API_URL, 'item');
     }
-    return this.uploadesService.uploadFile(file, inputEvent);
+    return this.uploaderService.uploadFile(file, inputEvent);
   }
 
   updateItem(values: any, type: string) {
@@ -133,7 +132,7 @@ export class UploadService {
       headers: this.getUploadHeaders(url),
       file: file,
     };
-    return this.uploadesService.uploadFile(file, inputEvent);
+    return this.uploaderService.uploadFile(file, inputEvent);
   }
 
   private getUploadHeaders(url: string, additionalHeaders?: any): any {
@@ -152,15 +151,15 @@ export class UploadService {
     };
   }
 
-  public updateOrder(files, itemId) {
+  public updateOrder(files: UploadFile[], itemId: string) {
     const picturesOrder = {};
     files.forEach((file, index) => {
-      picturesOrder[file.response.id || file.response] = index;
+      picturesOrder[file.response?.id || file.response] = index;
     });
     return this.itemService.updatePicturesOrder(itemId, picturesOrder);
   }
 
-  public convertImagesToFiles(images) {
+  public convertImagesToFiles(images: Image[]) {
     return images.map((image: Image, index: number) => {
       return {
         fileIndex: index,

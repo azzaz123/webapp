@@ -217,7 +217,7 @@
       }" i18n>
       Photos
     </h2>
-    <tsl-drop-area [uploadEvent]="uploadEvent"
+    <tsl-drop-area 
       (onError)="onError($event)" formControlName="images" [isUpdatingItem]="!!item" (onOrderImages)="onOrderImages()" (onDeleteImage)="onDeleteImage($event)" (onAddImage)="onAddImage($event)"
       ></tsl-drop-area>
     <ng-template #coachmarkPictures>

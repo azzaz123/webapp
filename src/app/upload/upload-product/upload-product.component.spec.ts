@@ -68,6 +68,9 @@ import { BrandModel } from '../brand-model.interface';
 import { CATEGORY_IDS } from '../../core/category/category-ids';
 import { CategoryOption } from 'app/core/category/category-response.interface';
 import { I18nService } from 'app/core/i18n/i18n.service';
+import { UploadService } from '../drop-area/upload.service';
+import { MockUploadService } from '../../../tests/upload.fixtures.spec';
+import { ITEM_TYPES } from 'app/core/item/item';
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
 export const USER_LOCATION: UserLocation = {
@@ -95,6 +98,7 @@ describe('UploadProductComponent', () => {
   let deviceService: DeviceDetectorService;
   let userService: UserService;
   let categoryService: CategoryService;
+  let uploadService: UploadService;
   const componentInstance: any = {};
 
   beforeEach(
@@ -106,6 +110,7 @@ describe('UploadProductComponent', () => {
           NgbPopoverConfig,
           { provide: TrackingService, useClass: MockTrackingService },
           { provide: AnalyticsService, useClass: MockAnalyticsService },
+          { provide: UploadService, useClass: MockUploadService },
           {
             provide: DeviceDetectorService,
             useClass: DeviceDetectorServiceMock,
@@ -203,6 +208,7 @@ describe('UploadProductComponent', () => {
     deviceService = TestBed.inject(DeviceDetectorService);
     userService = TestBed.inject(UserService);
     categoryService = TestBed.inject(CategoryService);
+    uploadService = TestBed.inject(UploadService);
     appboy.initialize(environment.appboy);
     fixture.detectChanges();
   });
@@ -659,8 +665,10 @@ describe('UploadProductComponent', () => {
   });
 
   describe('onSubmit', () => {
+    beforeEach(() => {
+      spyOn(uploadService, 'createItem').and.callThrough();
+    });
     it('should emit uploadEvent if form is valid', () => {
-      let input: any;
       fixture.detectChanges();
       component.uploadForm.get('category_id').patchValue(CATEGORY_IDS.SERVICES);
       component.uploadForm.get('title').patchValue('test');
@@ -674,14 +682,11 @@ describe('UploadProductComponent', () => {
         longitude: USER_LOCATION.approximated_longitude,
       });
 
-      component.uploadEvent.subscribe((i: any) => {
-        input = i;
-      });
       component.onSubmit();
-      expect(input).toEqual({
-        type: 'create',
-        values: component.uploadForm.value,
-      });
+      expect(uploadService.createItem).toHaveBeenCalledWith(
+        component.uploadForm.value,
+        ITEM_TYPES.CONSUMER_GOODS
+      );
       expect(component.uploadForm.valid).toBe(true);
       expect(component.loading).toBe(true);
     });
@@ -733,34 +738,33 @@ describe('UploadProductComponent', () => {
       component.uploadForm.get('extra_info').get('object_type').enable();
       component.uploadForm.get('extra_info').get('object_type_2').enable();
       const expected = {
-        type: 'create',
-        values: {
-          category_id: CATEGORY_IDS.SERVICES,
-          currency_code: 'EUR',
-          delivery_info: null,
-          description: 'test',
-          extra_info: {
-            condition: null,
-            object_type: { id: 2 },
-          },
-          id: '',
-          images: [{ image: true }],
-          location: {
-            address: 'Carrer Sant Pere Mes Baix, Barcelona',
-            latitude: 41.399132621722174,
-            longitude: 2.17585484411869,
-          },
-          sale_conditions: { exchange_allowed: false, fix_price: false },
-          sale_price: 1000000,
-          title: 'test',
+        category_id: CATEGORY_IDS.SERVICES,
+        currency_code: 'EUR',
+        delivery_info: null,
+        description: 'test',
+        extra_info: {
+          condition: null,
+          object_type: { id: 2 },
         },
+        id: '',
+        images: [{ image: true }],
+        location: {
+          address: 'Carrer Sant Pere Mes Baix, Barcelona',
+          latitude: 41.399132621722174,
+          longitude: 2.17585484411869,
+        },
+        sale_conditions: { exchange_allowed: false, fix_price: false },
+        sale_price: 1000000,
+        title: 'test',
       };
-      spyOn(component.uploadEvent, 'emit');
 
       component.onSubmit();
       fixture.detectChanges();
 
-      expect(component.uploadEvent.emit).toHaveBeenCalledWith(expected);
+      expect(uploadService.createItem).toHaveBeenCalledWith(
+        expected,
+        ITEM_TYPES.CONSUMER_GOODS
+      );
     });
 
     it('should save the first level category', () => {
@@ -781,35 +785,37 @@ describe('UploadProductComponent', () => {
         },
       });
       component.uploadForm.get('extra_info').get('object_type').enable();
-      spyOn(component.uploadEvent, 'emit');
+
+      fixture.detectChanges();
+
       const expected = {
-        type: 'create',
-        values: {
-          category_id: CATEGORY_IDS.SERVICES,
-          currency_code: 'EUR',
-          delivery_info: null,
-          description: 'test',
-          extra_info: {
-            condition: null,
-            object_type: { id: 1 },
-          },
-          id: '',
-          images: [{ image: true }],
-          location: {
-            address: 'Carrer Sant Pere Mes Baix, Barcelona',
-            latitude: 41.399132621722174,
-            longitude: 2.17585484411869,
-          },
-          sale_conditions: { exchange_allowed: false, fix_price: false },
-          sale_price: 1000000,
-          title: 'test',
+        category_id: CATEGORY_IDS.SERVICES,
+        currency_code: 'EUR',
+        delivery_info: null,
+        description: 'test',
+        extra_info: {
+          condition: null,
+          object_type: { id: 1 },
         },
+        id: '',
+        images: [{ image: true }],
+        location: {
+          address: 'Carrer Sant Pere Mes Baix, Barcelona',
+          latitude: 41.399132621722174,
+          longitude: 2.17585484411869,
+        },
+        sale_conditions: { exchange_allowed: false, fix_price: false },
+        sale_price: 1000000,
+        title: 'test',
       };
 
       component.onSubmit();
       fixture.detectChanges();
 
-      expect(component.uploadEvent.emit).toHaveBeenCalledWith(expected);
+      expect(uploadService.createItem).toHaveBeenCalledWith(
+        expected,
+        ITEM_TYPES.CONSUMER_GOODS
+      );
     });
   });
 

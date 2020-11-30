@@ -55,6 +55,9 @@ import {
   ListItemCar,
 } from '../../core/analytics/analytics-constants';
 import { By } from '@angular/platform-browser';
+import { UploadService } from '../drop-area/upload.service';
+import { MockUploadService } from '../../../tests/upload.fixtures.spec';
+import { ITEM_TYPES } from 'app/core/item/item';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
@@ -68,6 +71,7 @@ describe('UploadCarComponent', () => {
   let trackingService: TrackingService;
   let analyticsService: AnalyticsService;
   let itemService: ItemService;
+  let uploadService: UploadService;
   let HTMLElement: DebugElement;
   const componentInstance: any = {
     getBodyType: jasmine.createSpy('getBodyType'),
@@ -82,6 +86,7 @@ describe('UploadCarComponent', () => {
           NgbPopoverConfig,
           { provide: TrackingService, useClass: MockTrackingService },
           { provide: AnalyticsService, useClass: MockAnalyticsService },
+          { provide: UploadService, useClass: MockUploadService },
           {
             provide: UserService,
             useValue: {
@@ -172,6 +177,7 @@ describe('UploadCarComponent', () => {
     trackingService = TestBed.inject(TrackingService);
     analyticsService = TestBed.inject(AnalyticsService);
     itemService = TestBed.inject(ItemService);
+    uploadService = TestBed.inject(UploadService);
     HTMLElement = fixture.debugElement;
   });
 
@@ -501,24 +507,23 @@ describe('UploadCarComponent', () => {
   });
 
   describe('onSubmit', () => {
+    beforeEach(() => {
+      spyOn(uploadService, 'createItem').and.callThrough();
+    });
     it('should has category set by default', () => {
       expect(component.uploadForm.get('category_id').value).toBe(CARS_CATEGORY);
     });
 
     it('should emit uploadEvent if form is valid', () => {
-      let input: any;
       component.uploadForm.patchValue(UPLOAD_FORM_CAR_VALUES);
       expect(component.uploadForm.valid).toBeTruthy();
-      component.uploadEvent.subscribe((i: any) => {
-        input = i;
-      });
 
       component.onSubmit();
 
-      expect(input).toEqual({
-        type: 'create',
-        values: component.uploadForm.value,
-      });
+      expect(uploadService.createItem).toHaveBeenCalledWith(
+        component.uploadForm.value,
+        ITEM_TYPES.CARS
+      );
       expect(component.loading).toBeTruthy();
     });
 

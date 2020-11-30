@@ -190,14 +190,10 @@ export class UploadProductComponent
       id: '',
       category_id: ['', [Validators.required]],
       images: [[], [Validators.required]],
-      files: [],
-      title: ['bicicleta', [Validators.required]],
-      sale_price: [
-        '20',
-        [Validators.required, this.min(0), this.max(999999999)],
-      ],
+      title: ['', [Validators.required]],
+      sale_price: ['', [Validators.required, this.min(0), this.max(999999999)]],
       currency_code: ['EUR', [Validators.required]],
-      description: ['test', [Validators.required]],
+      description: ['', [Validators.required]],
       sale_conditions: this.fb.group({
         fix_price: false,
         exchange_allowed: false,
@@ -474,7 +470,7 @@ export class UploadProductComponent
 
   private uploadItem(): void {
     this.uploadService
-      .updateItem(this.parseUploadForm(), ITEM_TYPES.REAL_ESTATE)
+      .updateItem(this.parseUploadForm(), ITEM_TYPES.CONSUMER_GOODS)
       .subscribe(
         (response) => {
           this.onUploaded({
@@ -551,7 +547,7 @@ export class UploadProductComponent
     }
   }
 
-  public onError(error: HttpErrorResponse): void {
+  public onError(error: HttpErrorResponse | any): void {
     this.loading = false;
     this.errorsService.i18nError(
       'serverError',

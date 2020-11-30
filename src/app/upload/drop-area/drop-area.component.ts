@@ -34,8 +34,6 @@ import { FileDropActions } from 'app/shared/uploader/file-drop.directive';
   ],
 })
 export class DropAreaComponent implements OnInit, ControlValueAccessor {
-  @Input() uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
-  @Output() onUploaded: EventEmitter<UploadedEvent> = new EventEmitter();
   @Output() onError: EventEmitter<any> = new EventEmitter();
   @Output() onUploadPercentageChange: EventEmitter<number> = new EventEmitter();
   @Output() onDeleteImage: EventEmitter<string> = new EventEmitter();
@@ -59,7 +57,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
   constructor(
     private errorsService: ErrorsService,
     private modalService: NgbModal,
-    private uploadesService: UploaderService
+    private uploaderService: UploaderService
   ) {}
 
   ngOnInit() {
@@ -70,7 +68,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
     };
     this.placeholders = range(this.maxUploads);
 
-    this.uploadesService.serviceEvents.subscribe((event: UploadOutput) => {
+    this.uploaderService.serviceEvents.subscribe((event: UploadOutput) => {
       this.onUploadOutput(event);
     });
   }
@@ -86,7 +84,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
   public registerOnTouched() {}
 
   public onUploadOutput(output: UploadOutput): void {
-    switch (output.type) {
+    switch (output?.type) {
       case 'addedToQueue':
         this.files.push(output.file);
         this.propagateChange(this.files);
