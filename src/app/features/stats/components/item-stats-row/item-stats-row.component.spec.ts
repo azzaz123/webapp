@@ -24,6 +24,7 @@ describe('ItemStatsRowComponent', () => {
   let fixture: ComponentFixture<ItemStatsRowComponent>;
   let itemStatsService: ItemStatsService;
   let itemService: ItemService;
+  const SubDomainMock = 'es';
 
   beforeEach(
     waitForAsync(() => {
@@ -34,7 +35,7 @@ describe('ItemStatsRowComponent', () => {
           DecimalPipe,
           {
             provide: 'SUBDOMAIN',
-            useValue: 'es',
+            useValue: SubDomainMock,
           },
           {
             provide: ItemStatsService,
@@ -70,7 +71,7 @@ describe('ItemStatsRowComponent', () => {
   describe('ngOnInit', () => {
     it('should set link', () => {
       expect(component.link).toBe(
-        environment.siteUrl + 'item/toyota-yaris-1-3-99cv-500008657'
+        'https://es.beta.wallapop.com/item/toyota-yaris-1-3-99cv-500008657'
       );
     });
 

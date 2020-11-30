@@ -23,83 +23,13 @@ import {
   ItemStatisticEntriesResponse,
 } from '../item-stats-graph/item-stats-response.interface';
 import { ItemStatsService } from '../item-stats-graph/item-stats.service';
+import { ITEM_STATS_ROW_ANIMATION } from './item-stats-row.animation';
 
 @Component({
   selector: 'tsl-item-stats-row',
   templateUrl: './item-stats-row.component.html',
   styleUrls: ['./item-stats-row.component.scss'],
-  animations: [
-    trigger('collapse', [
-      state(
-        'false',
-        style({
-          opacity: '1',
-          overflow: 'visible',
-          height: '*',
-        })
-      ),
-      state(
-        'true',
-        style({
-          opacity: '0',
-          overflow: 'hidden',
-          height: '0px',
-        })
-      ),
-      transition(
-        'false => true',
-        animate(
-          '.3s ease-in',
-          keyframes([
-            style({
-              overflow: 'visible',
-              height: '*',
-              opacity: '1',
-              offset: 0,
-            }),
-            style({
-              overflow: 'hidden',
-              height: '*',
-              opacity: '1',
-              offset: 0.01,
-            }),
-            style({
-              overflow: 'hidden',
-              height: '0px',
-              opacity: '0',
-              offset: 1,
-            }),
-          ])
-        )
-      ),
-      transition(
-        'true => false',
-        animate(
-          '.3s ease-out',
-          keyframes([
-            style({
-              overflow: 'hidden',
-              height: '0px',
-              opacity: '0',
-              offset: 0,
-            }),
-            style({
-              overflow: 'hidden',
-              height: '*',
-              opacity: '1',
-              offset: 0.99,
-            }),
-            style({
-              overflow: 'visible',
-              height: '*',
-              opacity: '1',
-              offset: 1,
-            }),
-          ])
-        )
-      ),
-    ]),
-  ],
+  animations: [ITEM_STATS_ROW_ANIMATION],
 })
 export class ItemStatsRowComponent implements OnInit {
   @Input() item: Item;
@@ -152,7 +82,7 @@ export class ItemStatsRowComponent implements OnInit {
   private removeCurrentDay(
     stats: ItemStatisticFullResponse
   ): ItemStatisticEntriesResponse[] {
-    let today = new Date();
+    const today = new Date();
     today.setUTCHours(0, 0, 0, 0);
     return stats.entries.filter(
       (stat) => stat.date !== today.getTime().toString()
