@@ -15,6 +15,7 @@ import {
   UploadOutput,
 } from '../../uploader/upload.interface';
 import { AccessTokenService } from '../../../core/http/access-token.service';
+import { UploaderService } from 'app/shared/uploader/uploader.service';
 
 @Component({
   selector: 'tsl-cover-upload',
@@ -24,8 +25,6 @@ import { AccessTokenService } from '../../../core/http/access-token.service';
 export class CoverUploadComponent implements OnInit {
   @Input() user: User;
   file: UploadFile;
-  uploadInput: EventEmitter<UploadInput> = new EventEmitter();
-  uploadCoverInput: EventEmitter<UploadInput> = new EventEmitter();
   options: NgUploaderOptions;
   @Input() isPro: boolean;
   @Output() clickNotPro: EventEmitter<any> = new EventEmitter();
@@ -33,7 +32,8 @@ export class CoverUploadComponent implements OnInit {
   constructor(
     private errorsService: ErrorsService,
     private userService: UserService,
-    private accesTokenService: AccessTokenService
+    private accesTokenService: AccessTokenService,
+    private uploaderService: UploaderService
   ) {}
 
   ngOnInit() {
@@ -48,17 +48,15 @@ export class CoverUploadComponent implements OnInit {
     switch (output.type) {
       case 'addedToQueue':
         this.file = output.file;
+        this.uploaderService.files = [];
         this.uploadPicture();
         break;
       case 'uploading':
         this.file = output.file;
         break;
-      case 'done':
-        this.removeFromQueue(output);
-        this.onUploadDone(output);
-        break;
       case 'rejected':
         this.errorsService.i18nError(output.reason, output.file.name);
+        this.uploaderService.files = [];
         this.file = null;
         break;
     }
@@ -85,26 +83,25 @@ export class CoverUploadComponent implements OnInit {
       fieldName: 'image',
       headers,
       file: this.file,
+      imageType: 'cover',
     };
-    this.uploadCoverInput.emit(uploadinput);
+    this.uploaderService.uploadFile(this.file, uploadinput).subscribe(
+      (output) => {
+        if (output?.type === 'done') {
+          if (output.file.progress.data.responseStatus === 204) {
+            this.userService.user.setCoverImageUrl(<string>output.file.preview);
+          } else {
+            this.showError(output.file.response.message);
+          }
+        }
+      },
+      (err) => {
+        this.showError();
+      }
+    );
   }
 
-  private removeFromQueue(output) {
-    this.uploadCoverInput.emit({
-      type: 'remove',
-      id: output.file.id,
-    });
-    this.file = null;
-  }
-
-  private onUploadDone(output: UploadOutput) {
-    if (output.file.progress.data.responseStatus === 204) {
-      this.userService.user.setCoverImageUrl(<string>output.file.preview);
-    } else {
-      this.errorsService.i18nError(
-        'serverError',
-        output.file.response.message ? output.file.response.message : ''
-      );
-    }
+  private showError(message?: string) {
+    this.errorsService.i18nError('serverError', message ? message : '');
   }
 }

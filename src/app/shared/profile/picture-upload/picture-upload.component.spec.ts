@@ -17,6 +17,8 @@ import {
 import { environment } from '../../../../environments/environment';
 import { UploadFile, UploadInput } from '../../uploader/upload.interface';
 import { AccessTokenService } from '../../../core/http/access-token.service';
+import { UploaderService } from 'app/shared/uploader/uploader.service';
+import { of } from 'rxjs';
 
 describe('PictureUploadComponent', () => {
   let component: PictureUploadComponent;
@@ -24,6 +26,7 @@ describe('PictureUploadComponent', () => {
   let userService: UserService;
   let errorsService: ErrorsService;
   const TIMESTAMP = 123456789;
+  let uploaderService: UploaderService;
 
   beforeEach(
     waitForAsync(() => {
@@ -51,6 +54,14 @@ describe('PictureUploadComponent', () => {
               },
             },
           },
+          {
+            provide: UploaderService,
+            useValue: {
+              uploadFile() {
+                return of(null);
+              },
+            },
+          },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -63,19 +74,13 @@ describe('PictureUploadComponent', () => {
     fixture.detectChanges();
     userService = TestBed.inject(UserService);
     errorsService = TestBed.inject(ErrorsService);
+    uploaderService = TestBed.inject(UploaderService);
   });
 
   describe('onUploadOutput', () => {
-    let uploadEvent: UploadInput;
-
-    beforeEach(() => {
-      component.uploadInput.subscribe((event) => {
-        uploadEvent = event;
-      });
-    });
-
     it('should send upload event if event is addedToQueue', () => {
       spyOn<any>(window, 'Date').and.returnValue({ getTime: () => TIMESTAMP });
+      spyOn(uploaderService, 'uploadFile').and.callThrough();
       const headers = {
         [TOKEN_AUTHORIZATION_HEADER_NAME]: 'Bearer thetoken',
         [TOKEN_SIGNATURE_HEADER_NAME]: 'thesignature',
@@ -87,13 +92,14 @@ describe('PictureUploadComponent', () => {
       });
 
       expect(component.file).toEqual(UPLOAD_FILE);
-      expect(uploadEvent).toEqual({
+      expect(uploaderService.uploadFile).toHaveBeenCalledWith(UPLOAD_FILE, {
         type: 'uploadFile',
         url: `${environment.baseUrl}api/v3/users/me/image`,
         method: 'POST',
         fieldName: 'image',
         headers,
         file: UPLOAD_FILE,
+        imageType: 'avatar',
       });
     });
 
@@ -106,24 +112,6 @@ describe('PictureUploadComponent', () => {
       expect(component.file).toEqual(UPLOAD_FILE);
     });
 
-    it('should send remove event and set image if event is done and status 204', () => {
-      const file = { ...UPLOAD_FILE };
-      file.progress.data.responseStatus = 204;
-
-      component.onUploadOutput({
-        type: 'done',
-        file: file,
-      });
-
-      expect(uploadEvent).toEqual({
-        type: 'remove',
-        id: UPLOAD_FILE_ID,
-      });
-      expect(userService.user.image.urls_by_size.medium).toBe(
-        UPLOAD_FILE.preview
-      );
-    });
-
     it('should show error if event is done and status not 204', () => {
       spyOn(errorsService, 'i18nError');
       const file = <UploadFile>{ ...UPLOAD_FILE };
@@ -133,8 +121,15 @@ describe('PictureUploadComponent', () => {
         message: ERROR,
       };
 
+      spyOn(uploaderService, 'uploadFile').and.returnValue(
+        of({
+          type: 'done',
+          file: file,
+        })
+      );
+
       component.onUploadOutput({
-        type: 'done',
+        type: 'addedToQueue',
         file: file,
       });
 

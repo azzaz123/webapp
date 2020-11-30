@@ -9,7 +9,7 @@
       <label class="btn btn-upload d-flex"
         [ngClass]="{disabled: file?.progress?.status === 0 || file?.progress?.status === 1}">
         <input type="file" imageType="cover" tslFileSelect (uploadOutput)="onUploadOutput($event)"
-          [uploadCoverInput]="uploadCoverInput" [options]="options"
+          [options]="options"
           [disabled]="file?.progress?.status === 0 || file?.progress?.status === 1" />
         <span class="loader" *ngIf="file?.progress?.status === 0 || file?.progress?.status === 1">
           <tsl-svg-icon src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>

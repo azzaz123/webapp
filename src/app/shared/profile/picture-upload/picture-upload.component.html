@@ -12,8 +12,8 @@
     <div class="upload-button">
       <label class="btn btn-upload"
         [ngClass]="{disabled: file?.progress?.status === 0 || file?.progress?.status === 1}">
-        <input type="file" imageType="avatar" tslFileSelect (uploadOutput)="onUploadOutput($event)"
-          [uploadInput]="uploadInput" [options]="options"
+        <input type="file" tslFileSelect imageType='avatar' (uploadOutput)="onUploadOutput($event)"
+         [options]="options"
           [disabled]="file?.progress?.status === 0 || file?.progress?.status === 1" />
         <span class="loader" *ngIf="file?.progress?.status === 0 || file?.progress?.status === 1">
           <tsl-svg-icon src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>

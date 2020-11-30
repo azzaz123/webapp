@@ -19,8 +19,6 @@ import { UploaderService } from './uploader.service';
   selector: '[tslFileSelect]',
 })
 export class FileSelectDirective implements OnInit, OnDestroy {
-  @Input() uploadInput: EventEmitter<any>;
-  @Input() uploadCoverInput: EventEmitter<any>;
   @Output() uploadOutput: EventEmitter<UploadOutput>;
   @Input() options: NgUploaderOptions;
   @Input() imageType: string;
@@ -54,20 +52,6 @@ export class FileSelectDirective implements OnInit, OnDestroy {
         this.uploadOutput.emit(event);
       }
     });
-
-    if (this.uploadInput instanceof EventEmitter) {
-      this.subscription = this.upload.initInputEvents(
-        this.uploadInput,
-        this.imageType
-      );
-    }
-
-    if (this.uploadCoverInput instanceof EventEmitter) {
-      this.subscription = this.upload.initInputEvents(
-        this.uploadCoverInput,
-        this.imageType
-      );
-    }
   }
 
   ngOnDestroy() {

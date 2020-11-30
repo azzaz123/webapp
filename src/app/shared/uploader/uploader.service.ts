@@ -133,17 +133,6 @@ export class UploaderService {
     return false;
   }
 
-  initInputEvents(
-    input: EventEmitter<UploadInput>,
-    imageType: string
-  ): Subscription {
-    const subscription: Subscription = input.subscribe(
-      (event: UploadInput) => null
-    );
-    this.serviceEvents.emit({ type: 'ready', imageType: imageType });
-    return subscription;
-  }
-
   uploadRemainingImages(imageType, event) {
     let concurrency =
       event.concurrency > 0 ? event.concurrency : Number.POSITIVE_INFINITY;
@@ -235,7 +224,7 @@ export class UploaderService {
       });
 
       xhr.onreadystatechange = () => {
-        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
           file.progress = {
             status: UploadStatus.Done,
             data: {
