@@ -8,26 +8,26 @@ import {
 import { WallacoinsComponent } from './wallacoins.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
-import { CustomCurrencyPipe } from '../shared/pipes';
-import { PaymentService } from '../core/payments/payment.service';
+import { CustomCurrencyPipe } from '../../../shared/pipes';
+import { PaymentService } from '../../../core/payments/payment.service';
 import { of } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PerksModel } from '../core/payments/payment.model';
+import { PerksModel } from '../../../core/payments/payment.model';
 import {
   createPerksModelFixture,
   createWallacoinsPacksFixture,
   WALLACREDITS_PACKS_RESPONSE,
-} from '../../tests/payments.fixtures.spec';
-import { CREDITS_PACK_ID, Pack } from '../core/payments/pack';
-import { BuyWallacoinsModalComponent } from './buy-wallacoins-modal/buy-wallacoins-modal.component';
-import { WallacoinsConfirmModalComponent } from './wallacoins-confirm-modal/wallacoins-confirm-modal.component';
-import { EventService } from '../core/event/event.service';
-import { MockTrackingService } from '../../tests/tracking.fixtures.spec';
-import { TrackingService } from '../core/tracking/tracking.service';
-import { UserService } from '../core/user/user.service';
-import { MOCK_USER, USER_ID } from '../../tests/user.fixtures.spec';
-import { WallacoinsTutorialComponent } from './wallacoins-tutorial/wallacoins-tutorial.component';
+} from '../../../../tests/payments.fixtures.spec';
+import { CREDITS_PACK_ID, Pack } from '../../../core/payments/pack';
+import { BuyWallacoinsModalComponent } from '../components/buy-wallacoins-modal/buy-wallacoins-modal.component';
+import { WallacoinsConfirmModalComponent } from '../components/wallacoins-confirm-modal/wallacoins-confirm-modal.component';
+import { EventService } from '../../../core/event/event.service';
+import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
+import { TrackingService } from '../../../core/tracking/tracking.service';
+import { UserService } from '../../../core/user/user.service';
+import { MOCK_USER, USER_ID } from '../../../../tests/user.fixtures.spec';
+import { WallacoinsTutorialComponent } from '../components/wallacoins-tutorial/wallacoins-tutorial.component';
 import Spy = jasmine.Spy;
 
 describe('WallacoinsComponent', () => {
