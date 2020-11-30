@@ -35,10 +35,26 @@
               "src/favicon.ico",
               "src/manifest.json",
               "src/service-worker.js",
-              "src/doubleclick",
-              "src/eyeblaster",
-              "src/flashtalking",
-              "src/ftlocal"
+              {
+                "glob": "**/*",
+                "input": "src/richmedia/doubleclick/",
+                "output": "doubleclick/"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/richmedia/eyeblaster/",
+                "output": "eyeblaster/"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/richmedia/flashtalking/",
+                "output": "flashtalking/"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/richmedia/ftlocal/",
+                "output": "ftlocal/"
+              }
             ],
             "styles": [
               "src/style/styles.scss"
