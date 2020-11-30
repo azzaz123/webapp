@@ -4,8 +4,6 @@ import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 export class I18nService {
   protected translations: any = {
     en: {
-      uploading: 'Cargando imagenes secundarias',
-      done: 'Carga completa',
       yes: 'Yes',
       no: 'No',
       defaultErrorMessage:
