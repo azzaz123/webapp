@@ -21,7 +21,6 @@ To do a clean installation after downloading the repo, follow this steps:
 3. Install [yarn](https://yarnpkg.com/lang/en/).
 4. Execute `nvm use` to use the version of the `.nvmrc`.
 5. Execute `yarn install` to download all dependencies.
-6. Execute `./prepare_repo.sh` in a terminal.
 
 ## Scripts
 
