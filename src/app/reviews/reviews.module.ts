@@ -5,9 +5,9 @@ import {
   ReviewsRoutingModule,
 } from './reviews.routes';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { ReviewItemComponent } from './review-item/review-item.component';
 import { UserReviewService } from './user-review.service';
-import { SharedModule } from 'app/shared/shared.module';
-import { ReviewItemComponent } from './components/review-item/review-item.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
