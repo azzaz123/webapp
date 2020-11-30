@@ -3,7 +3,7 @@ import {
   fakeAsync,
   TestBed,
   tick,
-  async,
+  waitForAsync,
 } from '@angular/core/testing';
 
 import { CurrentConversationComponent } from './current-conversation.component';
@@ -62,50 +62,52 @@ describe('CurrentConversationComponent', () => {
   let userService: UserService;
   let modalMockResult: Promise<{}>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [NgxPermissionsModule.forRoot()],
-      declarations: [CurrentConversationComponent, DateCalendarPipe],
-      providers: [
-        EventService,
-        NgbModal,
-        { provide: RealTimeService, useClass: RealTimeServiceMock },
-        { provide: TrackingService, useClass: MockTrackingService },
-        {
-          provide: InboxConversationService,
-          useClass: InboxConversationServiceMock,
-        },
-        { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
-        { provide: AnalyticsService, useClass: MockAnalyticsService },
-        {
-          provide: UserService,
-          useValue: {
-            user: MOCK_USER,
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NgxPermissionsModule.forRoot()],
+        declarations: [CurrentConversationComponent, DateCalendarPipe],
+        providers: [
+          EventService,
+          NgbModal,
+          { provide: RealTimeService, useClass: RealTimeServiceMock },
+          { provide: TrackingService, useClass: MockTrackingService },
+          {
+            provide: InboxConversationService,
+            useClass: InboxConversationServiceMock,
           },
-        },
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                result: modalMockResult,
-                componentInstance: {
-                  chatContext: {
-                    userId: userService.user.id,
-                    bannedUserId: component.currentConversation?.user?.id,
-                    conversationId: component.currentConversation?.id,
-                    screenId: SCREEN_IDS.BannedUserChatPopUp,
-                  },
-                },
-              };
+          { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
+          { provide: AnalyticsService, useClass: MockAnalyticsService },
+          {
+            provide: UserService,
+            useValue: {
+              user: MOCK_USER,
             },
           },
-        },
-        I18nService,
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  result: modalMockResult,
+                  componentInstance: {
+                    chatContext: {
+                      userId: userService.user.id,
+                      bannedUserId: component.currentConversation?.user?.id,
+                      conversationId: component.currentConversation?.id,
+                      screenId: SCREEN_IDS.BannedUserChatPopUp,
+                    },
+                  },
+                };
+              },
+            },
+          },
+          I18nService,
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CurrentConversationComponent);

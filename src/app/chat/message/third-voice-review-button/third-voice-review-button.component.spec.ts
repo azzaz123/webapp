@@ -1,10 +1,10 @@
 import { of } from 'rxjs';
 import {
-  async,
   ComponentFixture,
   fakeAsync,
   TestBed,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -50,17 +50,19 @@ describe('ThirdVoiceReviewComponent', () => {
   let modalService: NgbModal;
   let mockConversation: InboxConversation;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      declarations: [ThirdVoiceReviewButtonComponent, ButtonComponent],
-      providers: [
-        { provide: ReviewService, useClass: ReviewServiceMock },
-        { provide: NgbModal, useClass: NgbModalMock },
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [],
+        declarations: [ThirdVoiceReviewButtonComponent, ButtonComponent],
+        providers: [
+          { provide: ReviewService, useClass: ReviewServiceMock },
+          { provide: NgbModal, useClass: NgbModalMock },
+        ],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ThirdVoiceReviewButtonComponent);

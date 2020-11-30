@@ -1,9 +1,9 @@
 import {
-  async,
   fakeAsync,
   tick,
   ComponentFixture,
   TestBed,
+  waitForAsync,
 } from '@angular/core/testing';
 import { CatalogItemActionsComponent } from './catalog-item-actions.component';
 import { ItemService } from '../../../core/item/item.service';
@@ -37,50 +37,52 @@ describe('CatalogItemActionsComponent', () => {
   let eventService: EventService;
   const modal: any = { modal: true };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [CatalogItemActionsComponent],
-      providers: [
-        I18nService,
-        { provide: TrackingService, useClass: MockTrackingService },
-        {
-          provide: ItemService,
-          useValue: {
-            deselectItems() {},
-            bulkDelete() {},
-            bulkSetDeactivate() {},
-            bulkSetActivate() {},
-            selectItem() {},
-          },
-        },
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                componentInstance: {},
-                result: Promise.resolve(),
-              };
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [CatalogItemActionsComponent],
+        providers: [
+          I18nService,
+          { provide: TrackingService, useClass: MockTrackingService },
+          {
+            provide: ItemService,
+            useValue: {
+              deselectItems() {},
+              bulkDelete() {},
+              bulkSetDeactivate() {},
+              bulkSetActivate() {},
+              selectItem() {},
             },
           },
-        },
-        {
-          provide: ErrorsService,
-          useValue: {
-            i18nError() {},
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  componentInstance: {},
+                  result: Promise.resolve(),
+                };
+              },
+            },
           },
-        },
-        {
-          provide: Router,
-          useValue: {
-            navigate() {},
+          {
+            provide: ErrorsService,
+            useValue: {
+              i18nError() {},
+            },
           },
-        },
-        EventService,
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: Router,
+            useValue: {
+              navigate() {},
+            },
+          },
+          EventService,
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CatalogItemActionsComponent);

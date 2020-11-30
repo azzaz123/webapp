@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MaliciousConversationModalComponent } from './malicious-conversation-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -26,16 +26,18 @@ describe('MaliciousConversationModalComponent', () => {
     screenId: SCREEN_IDS.BannedUserChatPopUp,
   };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ButtonComponent, MaliciousConversationModalComponent],
-      providers: [
-        NgbActiveModal,
-        { provide: AnalyticsService, useClass: MockAnalyticsService },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ButtonComponent, MaliciousConversationModalComponent],
+        providers: [
+          NgbActiveModal,
+          { provide: AnalyticsService, useClass: MockAnalyticsService },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MaliciousConversationModalComponent);

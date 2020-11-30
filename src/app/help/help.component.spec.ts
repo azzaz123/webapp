@@ -1,10 +1,10 @@
 import { of, Subscription } from 'rxjs';
 import {
-  async,
   ComponentFixture,
   TestBed,
   fakeAsync,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 
 import { HelpComponent } from './help.component';
@@ -23,43 +23,45 @@ describe('HelpComponent', () => {
   let router: Router;
   let route: ActivatedRoute;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [HelpComponent],
-      providers: [
-        {
-          provide: HelpService,
-          useValue: {
-            getFaqs() {
-              return of(FAQS);
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [HelpComponent],
+        providers: [
+          {
+            provide: HelpService,
+            useValue: {
+              getFaqs() {
+                return of(FAQS);
+              },
+              getFeatures() {
+                return of(FAQ_FEATURES);
+              },
             },
-            getFeatures() {
-              return of(FAQ_FEATURES);
+          },
+          {
+            provide: Router,
+            useValue: {
+              navigate() {},
             },
           },
-        },
-        {
-          provide: Router,
-          useValue: {
-            navigate() {},
+          {
+            provide: ActivatedRoute,
+            useValue: {
+              fragment: of('Perfil-6'),
+            },
           },
-        },
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            fragment: of('Perfil-6'),
+          {
+            provide: I18nService,
+            useValue: {
+              locale: 'es',
+            },
           },
-        },
-        {
-          provide: I18nService,
-          useValue: {
-            locale: 'es',
-          },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HelpComponent);

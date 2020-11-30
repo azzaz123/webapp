@@ -1,10 +1,10 @@
 import { MockAnalyticsService } from './../../../tests/analytics.fixtures.spec';
 import {
-  async,
   ComponentFixture,
   fakeAsync,
   TestBed,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 
 import { UploadCarComponent } from './upload-car.component';
@@ -73,91 +73,93 @@ describe('UploadCarComponent', () => {
     getBodyType: jasmine.createSpy('getBodyType'),
   };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [NgbPopoverModule],
-      providers: [
-        FormBuilder,
-        NgbPopoverConfig,
-        { provide: TrackingService, useClass: MockTrackingService },
-        { provide: AnalyticsService, useClass: MockAnalyticsService },
-        {
-          provide: UserService,
-          useValue: {
-            isProfessional() {
-              return of(false);
-            },
-            isProUser() {
-              return of(false);
-            },
-          },
-        },
-        {
-          provide: CarSuggestionsService,
-          useValue: {
-            getBrands() {
-              return of(CAR_BRANDS);
-            },
-            getYears() {
-              return of(CAR_YEARS);
-            },
-            getModels() {
-              return of(CAR_MODELS);
-            },
-            getVersions() {
-              return of(CAR_VERSIONS);
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NgbPopoverModule],
+        providers: [
+          FormBuilder,
+          NgbPopoverConfig,
+          { provide: TrackingService, useClass: MockTrackingService },
+          { provide: AnalyticsService, useClass: MockAnalyticsService },
+          {
+            provide: UserService,
+            useValue: {
+              isProfessional() {
+                return of(false);
+              },
+              isProUser() {
+                return of(false);
+              },
             },
           },
-        },
-        {
-          provide: CarKeysService,
-          useValue: {
-            getTypes() {
-              return of(CAR_BODY_TYPES);
+          {
+            provide: CarSuggestionsService,
+            useValue: {
+              getBrands() {
+                return of(CAR_BRANDS);
+              },
+              getYears() {
+                return of(CAR_YEARS);
+              },
+              getModels() {
+                return of(CAR_MODELS);
+              },
+              getVersions() {
+                return of(CAR_VERSIONS);
+              },
             },
           },
-        },
-        {
-          provide: Router,
-          useValue: {
-            navigate() {},
-          },
-        },
-        {
-          provide: ErrorsService,
-          useValue: {
-            i18nSuccess() {},
-            i18nError() {},
-          },
-        },
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                result: Promise.resolve(),
-                componentInstance: componentInstance,
-              };
+          {
+            provide: CarKeysService,
+            useValue: {
+              getTypes() {
+                return of(CAR_BODY_TYPES);
+              },
             },
           },
-        },
-        {
-          provide: ItemService,
-          useValue: {
-            getCarInfo() {
-              return of(CAR_INFO);
+          {
+            provide: Router,
+            useValue: {
+              navigate() {},
             },
           },
-        },
-        {
-          provide: SubscriptionsService,
-          useClass: MockSubscriptionService,
-        },
-      ],
-      declarations: [UploadCarComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: ErrorsService,
+            useValue: {
+              i18nSuccess() {},
+              i18nError() {},
+            },
+          },
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  result: Promise.resolve(),
+                  componentInstance: componentInstance,
+                };
+              },
+            },
+          },
+          {
+            provide: ItemService,
+            useValue: {
+              getCarInfo() {
+                return of(CAR_INFO);
+              },
+            },
+          },
+          {
+            provide: SubscriptionsService,
+            useClass: MockSubscriptionService,
+          },
+        ],
+        declarations: [UploadCarComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UploadCarComponent);

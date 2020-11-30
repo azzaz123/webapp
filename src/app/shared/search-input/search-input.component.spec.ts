@@ -1,10 +1,10 @@
 /* tslint:disable:no-unused-variable */
 import {
-  async,
   ComponentFixture,
   TestBed,
   fakeAsync,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { SearchInputComponent } from './search-input.component';
@@ -14,13 +14,15 @@ describe('SearchInputComponent', () => {
   let component: SearchInputComponent;
   let fixture: ComponentFixture<SearchInputComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SearchInputComponent],
-      providers: [I18nService],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [SearchInputComponent],
+        providers: [I18nService],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchInputComponent);

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CheckoutExtrasProItemComponent } from './checkout-extras-pro-item.component';
 import { DecimalPipe } from '@angular/common';
@@ -14,22 +14,24 @@ describe('CheckoutExtrasProItemComponent', () => {
   let fixture: ComponentFixture<CheckoutExtrasProItemComponent>;
   let cartService: CartService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [CheckoutExtrasProItemComponent, CustomCurrencyPipe],
-      providers: [
-        DecimalPipe,
-        {
-          provide: CartService,
-          useValue: {
-            createInstance() {},
-            addProExtras() {},
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [CheckoutExtrasProItemComponent, CustomCurrencyPipe],
+        providers: [
+          DecimalPipe,
+          {
+            provide: CartService,
+            useValue: {
+              createInstance() {},
+              addProExtras() {},
+            },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckoutExtrasProItemComponent);

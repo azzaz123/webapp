@@ -1,5 +1,5 @@
 import { of } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SuggesterComponent } from './suggester.component';
 import { SuggesterService } from './suggester.service';
 import { SUGGESTER_DATA_WEB } from '../../../../tests/suggester.fixtures.spec';
@@ -12,23 +12,25 @@ describe('SuggesterComponent', () => {
   let suggesterService: SuggesterService;
   let eventService: EventService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SuggesterComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        {
-          provide: SuggesterService,
-          useValue: {
-            getSuggestions: () => {
-              return of(SUGGESTER_DATA_WEB);
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [SuggesterComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          {
+            provide: SuggesterService,
+            useValue: {
+              getSuggestions: () => {
+                return of(SUGGESTER_DATA_WEB);
+              },
             },
           },
-        },
-        EventService,
-      ],
-    }).compileComponents();
-  }));
+          EventService,
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SuggesterComponent);
