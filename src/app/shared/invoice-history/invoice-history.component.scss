@@ -1,7 +1,9 @@
 @import '~style/common';
 
 .InvoiceHistory {
-  padding: $spacing-l;
+  h3 {
+    padding: 0 $spacing-s 0 $spacing-l;
+  }
   &__load-more-container {
     display: flex;
     justify-content: center;
@@ -10,10 +12,12 @@
 
 .inbox-size {
   width: 100%;
+  padding: $spacing-m;
 }
 
 .content {
   text-align: center;
   color: $blue-grey-2;
   font-size: $font-size-s;
+  padding-top: 15px;
 }
