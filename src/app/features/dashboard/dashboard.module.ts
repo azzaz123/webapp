@@ -4,16 +4,18 @@ import {
   dashboardRoutedComponents,
   DashboardRoutingModule,
 } from './dashboard.routes';
-import { CallComponent } from './call/call.component';
-import { SharedModule } from '../shared/shared.module';
-import { ConversationModule } from '../core/conversation/conversation.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { StatsGraphComponent } from './stats-graph/stats-graph.component';
-import { StatisticsService } from './stats-graph/statistics.service';
 import { DropdownModule } from 'app/dropdown/dropdown.module';
 import { FormsModule } from '@angular/forms';
-import { ChatModule } from '../chat/chat.module';
+
 import { NgxEchartsModule } from 'ngx-echarts';
+import { ChatModule } from 'app/chat/chat.module';
+import { ConversationModule } from 'app/core/conversation/conversation.module';
+import { SharedModule } from 'app/shared/shared.module';
+import { CallComponent } from './components/call/call.component';
+
+import { StatsGraphComponent } from './components/stats-graph/stats-graph.component';
+import { StatisticsService } from './services/statistics.service';
 
 @NgModule({
   imports: [

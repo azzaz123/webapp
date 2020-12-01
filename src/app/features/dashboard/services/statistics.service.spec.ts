@@ -5,11 +5,11 @@ import {
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
-import { environment } from '../../../environments/environment';
-
 import { StatisticsService, STATISTICS_ENDPOINT } from './statistics.service';
-import { StatisticFullResponse } from './statistic-response.interface';
-import { STATISTICS_RESPONSE } from '../../../tests/statistics.fixtures.spec';
+
+import { STATISTICS_RESPONSE } from '../../../../tests/statistics.fixtures.spec';
+import { environment } from 'environments/environment';
+import { StatisticFullResponse } from '../statistic-response.interface';
 
 describe('StatisticsService', () => {
   let service: StatisticsService;

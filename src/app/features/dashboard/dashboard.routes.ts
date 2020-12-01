@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { PERMISSIONS } from 'app/core/user/user';
 import { NgxPermissionsGuard } from 'ngx-permissions';
-import { PERMISSIONS } from '../core/user/user';
-import { DashboardComponent } from './dashboard.component';
+import { DashboardComponent } from './pages/dashboard.component';
 
 const routes: Routes = [
   {

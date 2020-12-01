@@ -35,7 +35,7 @@ const loggedRoutes = [
       {
         path: 'dashboard',
         loadChildren: () =>
-          import('app/dashboard/dashboard.module').then(
+          import('app/features/dashboard/dashboard.module').then(
             (m) => m.DashboardModule
           ),
       },

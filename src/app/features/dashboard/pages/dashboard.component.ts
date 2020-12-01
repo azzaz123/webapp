@@ -1,14 +1,13 @@
 import { takeWhile } from 'rxjs/operators';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
-import { EventService } from '../core/event/event.service';
-import { Lead } from '../core/conversation/lead';
-import { TrackingService } from '../core/tracking/tracking.service';
-import { CallTotals } from '../core/conversation/totals.interface';
-import { CallsService } from '../core/conversation/calls.service';
-import { InboxConversation } from '../chat/model';
-import { InboxConversationService } from '../chat/service';
+import { InboxConversation } from 'app/chat/model';
+import { InboxConversationService } from 'app/chat/service';
+import { CallsService } from 'app/core/conversation/calls.service';
+import { Lead } from 'app/core/conversation/lead';
+import { CallTotals } from 'app/core/conversation/totals.interface';
+import { EventService } from 'app/core/event/event.service';
+import { TrackingService } from 'app/core/tracking/tracking.service';
 
 @Component({
   selector: 'tsl-dashboard',

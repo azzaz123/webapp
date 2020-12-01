@@ -5,30 +5,30 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DashboardComponent } from './dashboard.component';
-import { EventService } from '../core/event/event.service';
-import { TrackingService } from '../core/tracking/tracking.service';
-import { CallsService } from '../core/conversation/calls.service';
-import { MockTrackingService } from '../../tests/tracking.fixtures.spec';
-import { MOCK_CONVERSATION } from '../../tests/conversation.fixtures.spec';
-import { Lead } from '../core/conversation/lead';
-import { Call } from '../core/conversation/calls';
-import { createCallsArray } from '../../tests/call.fixtures';
-import { FeatureflagService } from '../core/user/featureflag.service';
 import {
   CallsServiceMock,
   FeatureFlagServiceMock,
   InboxConversationServiceMock,
   InboxServiceMock,
   LoggedGuardServiceMock,
-} from '../../tests';
-import { InboxConversationService, InboxService } from '../chat/service';
-import { InboxConversation } from '../chat/model';
-import { createInboxConversationsArray } from '../../tests/inbox.fixtures.spec';
-import { ChatModule } from '../chat/chat.module';
-import { LoggedGuard } from '../core/user/logged.guard';
-import { ChatComponent } from '../chat/chat.component';
-import { RealTimeService } from '../core/message/real-time.service';
-import { RealTimeServiceMock } from '../../tests/real-time.fixtures.spec';
+} from '../../../../tests';
+import { createInboxConversationsArray } from '../../../../tests/inbox.fixtures.spec';
+import { RealTimeServiceMock } from '../../../../tests/real-time.fixtures.spec';
+import { ChatComponent } from 'app/chat/chat.component';
+import { ChatModule } from 'app/chat/chat.module';
+import { InboxConversation } from 'app/chat/model';
+import { InboxService, InboxConversationService } from 'app/chat/service';
+import { Call } from 'app/core/conversation/calls';
+import { CallsService } from 'app/core/conversation/calls.service';
+import { Lead } from 'app/core/conversation/lead';
+import { EventService } from 'app/core/event/event.service';
+import { RealTimeService } from 'app/core/message/real-time.service';
+import { TrackingService } from 'app/core/tracking/tracking.service';
+import { FeatureflagService } from 'app/core/user/featureflag.service';
+import { LoggedGuard } from 'app/core/user/logged.guard';
+import { createCallsArray } from 'tests/call.fixtures';
+import { MOCK_CONVERSATION } from 'tests/conversation.fixtures.spec';
+import { MockTrackingService } from 'tests/tracking.fixtures.spec';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
