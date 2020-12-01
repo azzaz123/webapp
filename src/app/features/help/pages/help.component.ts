@@ -8,7 +8,7 @@ import {
   CARDEALER_COMMERCIAL_CONTACT_MAIL,
 } from 'app/core/constants';
 import { I18nService } from 'app/core/i18n/i18n.service';
-import { HelpService } from '../help.service';
+import { HelpService } from '../core/services/help.service';
 
 @Component({
   selector: 'tsl-help',

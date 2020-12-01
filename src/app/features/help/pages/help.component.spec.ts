@@ -1,4 +1,3 @@
-import { FAQS, FAQ_FEATURES } from './../../../../tests/faq.fixtures.spec';
 import { of } from 'rxjs';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
@@ -7,7 +6,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { I18nService } from 'app/core/i18n/i18n.service';
-import { HelpService } from '../help.service';
+import { FAQS, FAQ_FEATURES } from '../core/faq.fixtures.spec';
+import { HelpService } from '../core/services/help.service';
 
 describe('HelpComponent', () => {
   let component: HelpComponent;
