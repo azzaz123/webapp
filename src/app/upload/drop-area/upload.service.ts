@@ -9,6 +9,7 @@ import { environment } from '../../../environments/environment';
 import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
 import { ITEM_TYPES } from '../../core/item/item';
 import {
+  InputType,
   UploadFile,
   UploadInput,
   UploadStatus,
@@ -75,7 +76,7 @@ export class UploadService {
     }
 
     return {
-      type: 'uploadFile',
+      type: InputType.uploadFile,
       url: environment.baseUrl + url,
       method: 'POST',
       fieldName: 'image',
@@ -98,7 +99,7 @@ export class UploadService {
       '/picture' +
       (type !== 'real_estate' ? '2' : '');
     const inputEvent: UploadInput = {
-      type: 'uploadRemainingImages',
+      type: InputType.uploadRemainingImages,
       url: environment.baseUrl + url,
       method: 'POST',
       fieldName: 'image',
@@ -119,7 +120,7 @@ export class UploadService {
       '/picture' +
       (type !== 'real_estate' ? '2' : '');
     const inputEvent: UploadInput = {
-      type: 'uploadFile',
+      type: InputType.uploadFile,
       url: environment.baseUrl + url,
       method: 'POST',
       fieldName: 'image',

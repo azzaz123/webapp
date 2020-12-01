@@ -1,4 +1,4 @@
-import { throwError, of } from 'rxjs';
+import { of } from 'rxjs';
 import {
   ComponentFixture,
   fakeAsync,
@@ -9,32 +9,18 @@ import {
 
 import { DropAreaComponent } from './drop-area.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { UploadService } from './upload.service';
 import {
-  CAR_ID,
   UPLOAD_FILE,
-  UPLOAD_FILE_DATE,
   UPLOAD_FILE_DONE,
-  UPLOAD_FILE_ID,
   UPLOAD_FILE_NAME,
-  UPLOADED_FILE_FIRST,
-  UPLOADED_FILE_FIRST_ITEM,
   UPLOADED_FILE_OTHER,
-  UPLOADED_RESPONSE,
   UPLOAD_FILE_2,
 } from '../../../tests/upload.fixtures.spec';
-import { ItemService } from '../../core/item/item.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RemoveConfirmModalComponent } from './remove-confirm-modal/remove-confirm-modal.component';
-import { ITEM_ID, PICTURE_ID } from '../../../tests/item.fixtures.spec';
+import { PICTURE_ID } from '../../../tests/item.fixtures.spec';
 import { ErrorsService } from '../../core/errors/errors.service';
-import { IMAGE } from '../../../tests/user.fixtures.spec';
-import { UploadedEvent } from '../upload-event.interface';
-import { ITEM_TYPES } from '../../core/item/item';
-import {
-  UploadFile,
-  UploadStatus,
-} from '../../shared/uploader/upload.interface';
+import { OutputType, UploadFile } from '../../shared/uploader/upload.interface';
 import { UploaderService } from 'app/shared/uploader/uploader.service';
 import { FileDropActions } from 'app/shared/uploader/file-drop.directive';
 
@@ -117,14 +103,14 @@ describe('DropAreaComponent', () => {
       spyOn(component, 'propagateChange');
 
       component.onUploadOutput({
-        type: 'addedToQueue',
+        type: OutputType.addedToQueue,
         file: UPLOAD_FILE,
       });
 
       expect(component.files[0]).toEqual(UPLOAD_FILE);
       expect(component.propagateChange).toHaveBeenCalledWith(component.files);
       component.onUploadOutput({
-        type: 'addedToQueue',
+        type: OutputType.addedToQueue,
         file: UPLOADED_FILE_OTHER,
       });
       expect(component.files.length).toEqual(2);
@@ -135,7 +121,7 @@ describe('DropAreaComponent', () => {
       spyOn(component.onAddImage, 'emit');
 
       component.onUploadOutput({
-        type: 'addedToQueue',
+        type: OutputType.addedToQueue,
         file: UPLOAD_FILE,
       });
 
@@ -151,7 +137,7 @@ describe('DropAreaComponent', () => {
         component.files = [UPLOAD_FILE];
 
         component.onUploadOutput({
-          type: 'uploading',
+          type: OutputType.uploading,
           file: fileUploaded,
         });
 
@@ -181,7 +167,7 @@ describe('DropAreaComponent', () => {
       spyOn(errorsService, 'i18nError');
 
       component.onUploadOutput({
-        type: 'rejected',
+        type: OutputType.rejected,
         file: UPLOAD_FILE,
         reason: 'reason',
       });

@@ -9,7 +9,9 @@ import { ErrorsService } from '../../../core/errors/errors.service';
 import { UserService } from '../../../core/user/user.service';
 import { environment } from '../../../../environments/environment';
 import {
+  InputType,
   NgUploaderOptions,
+  OutputType,
   UploadFile,
   UploadInput,
   UploadOutput,
@@ -46,14 +48,14 @@ export class CoverUploadComponent implements OnInit {
 
   public onUploadOutput(output: UploadOutput): void {
     switch (output.type) {
-      case 'addedToQueue':
+      case OutputType.addedToQueue:
         this.file = output.file;
         this.uploadPicture();
         break;
-      case 'uploading':
+      case OutputType.uploading:
         this.file = output.file;
         break;
-      case 'rejected':
+      case OutputType.rejected:
         this.errorsService.i18nError(output.reason, output.file.name);
         this.file = null;
         break;
@@ -75,7 +77,7 @@ export class CoverUploadComponent implements OnInit {
     };
 
     const uploadinput: UploadInput = {
-      type: 'uploadFile',
+      type: InputType.uploadFile,
       url: environment.baseUrl + url,
       method: 'POST',
       fieldName: 'image',
@@ -85,7 +87,7 @@ export class CoverUploadComponent implements OnInit {
     };
     this.uploaderService.uploadFile(this.file, uploadinput).subscribe(
       (output) => {
-        if (output?.type === 'done') {
+        if (output?.type === OutputType.done) {
           if (output.file.progress.data.responseStatus === 204) {
             this.userService.user.setCoverImageUrl(<string>output.file.preview);
           } else {

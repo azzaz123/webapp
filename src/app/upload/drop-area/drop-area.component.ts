@@ -14,6 +14,7 @@ import { ErrorsService } from '../../core/errors/errors.service';
 import { Item } from '../../core/item/item';
 import {
   NgUploaderOptions,
+  OutputType,
   UploadFile,
   UploadOutput,
 } from '../../shared/uploader/upload.interface';
@@ -84,12 +85,12 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
 
   public onUploadOutput(output: UploadOutput): void {
     switch (output?.type) {
-      case 'addedToQueue':
+      case OutputType.addedToQueue:
         this.files.push(output.file);
         this.propagateChange(this.files);
         this.onAddImage.emit(output.file);
         break;
-      case 'rejected':
+      case OutputType.rejected:
         this.errorsService.i18nError(output.reason, output.file.name);
     }
   }

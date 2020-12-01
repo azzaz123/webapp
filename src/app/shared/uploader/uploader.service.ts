@@ -4,13 +4,13 @@ import { combineLatest, mergeAll } from 'rxjs/operators';
 import { EventEmitter, Injectable } from '@angular/core';
 import {
   NgUploaderOptions,
+  OutputType,
   UploadFile,
   UploadInput,
   UploadOutput,
   UploadStatus,
 } from './upload.interface';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ErrorsService } from 'app/core/errors/errors.service';
 import { cloneDeep } from 'lodash-es';
 
 @Injectable({
@@ -22,10 +22,7 @@ export class UploaderService {
   serviceEvents: EventEmitter<UploadOutput>;
   options: NgUploaderOptions;
 
-  constructor(
-    private sanitizer: DomSanitizer,
-    private errorsService: ErrorsService
-  ) {
+  constructor(private sanitizer: DomSanitizer) {
     this.files = [];
     this.serviceEvents = new EventEmitter();
     this.uploads = [];
@@ -65,7 +62,7 @@ export class UploaderService {
             event.target.result
           );
           this.serviceEvents.emit({
-            type: 'addedToQueue',
+            type: OutputType.addedToQueue,
             file: uploadFile,
             imageType: imageType,
           });
@@ -73,7 +70,7 @@ export class UploaderService {
         this.files.push(uploadFile);
       }
     });
-    this.serviceEvents.emit({ type: 'allAddedToQueue' });
+    this.serviceEvents.emit({ type: OutputType.allAddedToQueue });
   }
 
   private checkExtension(file: UploadFile, imageType: string): boolean {
@@ -88,7 +85,7 @@ export class UploaderService {
     }
 
     this.serviceEvents.emit({
-      type: 'rejected',
+      type: OutputType.rejected,
       file: file,
       reason: 'ExtensionNotAllowed',
       imageType,
@@ -102,7 +99,7 @@ export class UploaderService {
       return true;
     }
     this.serviceEvents.emit({
-      type: 'rejected',
+      type: OutputType.rejected,
       file: file,
       reason: 'MaxUploadsExceeded',
       imageType,
@@ -115,7 +112,7 @@ export class UploaderService {
       return true;
     }
     this.serviceEvents.emit({
-      type: 'rejected',
+      type: OutputType.rejected,
       file: file,
       reason: 'MaxSizeExceeded',
       imageType,
@@ -190,7 +187,7 @@ export class UploaderService {
             };
 
             observer.next({
-              type: 'uploading',
+              type: OutputType.uploading,
               file: file,
               percentage: uploadedPercentage,
             });
@@ -222,7 +219,7 @@ export class UploaderService {
             file.response = xhr.response;
           }
 
-          observer.next({ type: 'done', file: file });
+          observer.next({ type: OutputType.done, file: file });
           observer.complete();
         }
       };
@@ -252,7 +249,7 @@ export class UploaderService {
           xhr.setRequestHeader(key, headers[key])
         );
 
-        this.serviceEvents.emit({ type: 'start', file: file });
+        this.serviceEvents.emit({ type: OutputType.done, file: file });
         xhr.send(form);
       } catch (e) {
         console.error(e);

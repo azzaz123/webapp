@@ -68,7 +68,7 @@ import { I18nService } from 'app/core/i18n/i18n.service';
 import { UploadService } from '../drop-area/upload.service';
 import { deliveryInfo } from '../upload.constants';
 import { HttpErrorResponse } from '@angular/common/http';
-import { UploadFile } from 'app/shared/uploader/upload.interface';
+import { OutputType, UploadFile } from 'app/shared/uploader/upload.interface';
 
 function isObjectTypeRequiredValidator(formControl: AbstractControl) {
   const objectTypeControl: FormGroup = formControl?.parent as FormGroup;
@@ -455,7 +455,7 @@ export class UploadProductComponent
       .subscribe(
         (response) => {
           this.updateUploadPercentage(response.percentage);
-          if (response.type === 'done') {
+          if (response.type === OutputType.done) {
             this.onUploaded({
               response: response.file.response,
               action: 'created',
@@ -536,7 +536,7 @@ export class UploadProductComponent
         .uploadSingleImage(file, this.item.id, ITEM_TYPES.CONSUMER_GOODS)
         .subscribe(
           (value) => {
-            if (value.type === 'done')
+            if (value.type === OutputType.done)
               this.errorsService.i18nSuccess('imageUploaded');
           },
           (error) => {

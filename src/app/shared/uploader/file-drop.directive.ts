@@ -11,7 +11,7 @@ import {
   PLATFORM_ID,
 } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
-import { NgUploaderOptions, UploadOutput } from './upload.interface';
+import { NgUploaderOptions } from './upload.interface';
 import { Subscription } from 'rxjs';
 import { UploaderService } from './uploader.service';
 

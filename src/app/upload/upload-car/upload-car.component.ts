@@ -40,8 +40,8 @@ import {
 import { whitespaceValidator } from '../../core/form-validators/formValidators.func';
 import { UploadService } from '../drop-area/upload.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Item, ITEM_TYPES } from 'app/core/item/item';
-import { UploadFile } from 'app/shared/uploader/upload.interface';
+import { ITEM_TYPES } from 'app/core/item/item';
+import { OutputType, UploadFile } from 'app/shared/uploader/upload.interface';
 
 @Component({
   selector: 'tsl-upload-car',
@@ -401,7 +401,7 @@ export class UploadCarComponent implements OnInit {
       .subscribe(
         (response) => {
           this.updateUploadPercentage(response.percentage);
-          if (response.type === 'done') {
+          if (response.type === OutputType.done) {
             this.onUploaded({
               response: response.file.response,
               action: 'created',
@@ -664,7 +664,7 @@ export class UploadCarComponent implements OnInit {
         .uploadSingleImage(file, this.item.id, ITEM_TYPES.CARS)
         .subscribe(
           (value) => {
-            if (value.type === 'done')
+            if (value.type === OutputType.done)
               this.errorsService.i18nSuccess('imageUploaded');
           },
           (error) => {

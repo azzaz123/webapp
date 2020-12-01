@@ -7,6 +7,20 @@ export enum UploadStatus {
   Canceled,
 }
 
+export enum OutputType {
+  addedToQueue = 'addedToQueue',
+  allAddedToQueue = 'allAddedToQueue',
+  uploading = 'uploading',
+  done = 'done',
+  rejected = 'rejected',
+  start = 'start',
+}
+
+export enum InputType {
+  uploadRemainingImages = 'uploadRemainingImages',
+  uploadFile = 'uploadFile',
+}
+
 export interface UploadProgress {
   status: UploadStatus;
   data?: {
@@ -31,20 +45,7 @@ export interface UploadFile {
 }
 
 export interface UploadOutput {
-  type:
-    | 'ready'
-    | 'addedToQueue'
-    | 'allAddedToQueue'
-    | 'uploading'
-    | 'done'
-    | 'removed'
-    | 'start'
-    | 'cancelled'
-    | 'dragOver'
-    | 'dragOut'
-    | 'drop'
-    | 'rejected'
-    | 'orderUpdated';
+  type: OutputType;
   file?: UploadFile;
   reason?: string;
   files?: UploadFile[];
@@ -53,15 +54,7 @@ export interface UploadOutput {
 }
 
 export interface UploadInput {
-  type:
-    | 'uploadAll'
-    | 'uploadRemainingImages'
-    | 'uploadFile'
-    | 'cancel'
-    | 'cancelAll'
-    | 'remove'
-    | 'updateOrder'
-    | 'initialImages';
+  type: InputType;
   url?: string;
   method?: string;
   id?: string;

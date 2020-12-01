@@ -9,10 +9,8 @@ import { environment } from '../../../environments/environment';
 import {
   CAR_ID,
   UPLOAD_FILE,
-  UPLOAD_FILE_2,
   UPLOAD_FILE_DONE,
   UPLOAD_FILE_DONE_2,
-  UPLOAD_FILE_ID,
 } from '../../../tests/upload.fixtures.spec';
 import { USER_LOCATION_COORDINATES } from '../../../tests/user.fixtures.spec';
 import { AccessTokenService } from '../../core/http/access-token.service';
@@ -22,7 +20,7 @@ import {
   REALESTATE_CATEGORY,
 } from '../../core/item/item-categories';
 import { ITEM_TYPES } from '../../core/item/item';
-import { UploadInput } from '../../shared/uploader/upload.interface';
+import { InputType, UploadInput } from '../../shared/uploader/upload.interface';
 import { ItemService } from 'app/core/item/item.service';
 import { of } from 'rxjs';
 import { UploaderService } from 'app/shared/uploader/uploader.service';
@@ -100,7 +98,7 @@ describe('UploadService', () => {
         };
         service.createItemWithFirstImage(VALUES, UPLOAD_FILE, ITEM_TYPES.CARS);
         expect(uploaderService.uploadFile).toBeCalledWith(UPLOAD_FILE, {
-          type: 'uploadFile',
+          type: InputType.uploadFile,
           url: environment.baseUrl + 'api/v3/items/cars',
           method: 'POST',
           fieldName: 'image',
@@ -136,7 +134,7 @@ describe('UploadService', () => {
           );
 
           expect(uploaderService.uploadFile).toBeCalledWith(UPLOAD_FILE, {
-            type: 'uploadFile',
+            type: InputType.uploadFile,
             url: environment.baseUrl + 'api/v3/items/cars',
             method: 'POST',
             fieldName: 'image',
@@ -172,7 +170,7 @@ describe('UploadService', () => {
           ITEM_TYPES.CONSUMER_GOODS
         );
         expect(uploaderService.uploadFile).toHaveBeenCalledWith(UPLOAD_FILE, {
-          type: 'uploadFile',
+          type: InputType.uploadFile,
           url: environment.baseUrl + 'api/v3/items',
           method: 'POST',
           fieldName: 'image',
@@ -207,7 +205,7 @@ describe('UploadService', () => {
           );
 
           expect(uploaderService.uploadFile).toHaveBeenCalledWith(UPLOAD_FILE, {
-            type: 'uploadFile',
+            type: InputType.uploadFile,
             url: environment.baseUrl + 'api/v3/items',
             method: 'POST',
             fieldName: 'image',
@@ -249,7 +247,7 @@ describe('UploadService', () => {
         );
 
         expect(uploaderService.uploadFile).toHaveBeenCalledWith(UPLOAD_FILE, {
-          type: 'uploadFile',
+          type: InputType.uploadFile,
           url: environment.baseUrl + 'api/v3/items/real_estate',
           method: 'POST',
           fieldName: 'image',
@@ -332,7 +330,7 @@ describe('UploadService', () => {
         spyOn(uploaderService, 'uploadFile');
         service.uploadSingleImage(UPLOAD_FILE, CAR_ID, ITEM_TYPES.CARS);
         expect(uploaderService.uploadFile).toHaveBeenCalledWith(UPLOAD_FILE, {
-          type: 'uploadFile',
+          type: InputType.uploadFile,
           url:
             environment.baseUrl + 'api/v3/items/cars/' + CAR_ID + '/picture2',
           method: 'POST',
@@ -356,7 +354,7 @@ describe('UploadService', () => {
           ITEM_TYPES.CONSUMER_GOODS
         );
         expect(uploaderService.uploadFile).toHaveBeenCalledWith(UPLOAD_FILE, {
-          type: 'uploadFile',
+          type: InputType.uploadFile,
           url: environment.baseUrl + 'api/v3/items/' + ITEM_ID + '/picture2',
           method: 'POST',
           fieldName: 'image',

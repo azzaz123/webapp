@@ -14,7 +14,11 @@ import {
   UPLOAD_FILE_NAME,
 } from '../../../../tests/upload.fixtures.spec';
 import { environment } from '../../../../environments/environment';
-import { UploadFile } from '../../uploader/upload.interface';
+import {
+  InputType,
+  OutputType,
+  UploadFile,
+} from '../../uploader/upload.interface';
 import { AccessTokenService } from '../../../core/http/access-token.service';
 import { of } from 'rxjs';
 import { UploaderService } from 'app/shared/uploader/uploader.service';
@@ -87,13 +91,13 @@ describe('CoverUploadComponent', () => {
       };
 
       component.onUploadOutput({
-        type: 'addedToQueue',
+        type: OutputType.addedToQueue,
         file: UPLOAD_FILE,
       });
 
       expect(component.file).toEqual(UPLOAD_FILE);
       expect(uploaderService.uploadFile).toHaveBeenCalledWith(UPLOAD_FILE, {
-        type: 'uploadFile',
+        type: InputType.uploadFile,
         url: `${environment.baseUrl}api/v3/users/me/cover-image`,
         method: 'POST',
         fieldName: 'image',
@@ -105,7 +109,7 @@ describe('CoverUploadComponent', () => {
 
     it('should set file if event is uploading', () => {
       component.onUploadOutput({
-        type: 'uploading',
+        type: OutputType.uploading,
         file: UPLOAD_FILE,
       });
 
@@ -129,7 +133,7 @@ describe('CoverUploadComponent', () => {
       );
 
       component.onUploadOutput({
-        type: 'addedToQueue',
+        type: OutputType.addedToQueue,
         file: file,
       });
 
@@ -144,7 +148,7 @@ describe('CoverUploadComponent', () => {
       const ERROR = 'error';
 
       component.onUploadOutput({
-        type: 'rejected',
+        type: OutputType.rejected,
         file: UPLOAD_FILE,
         reason: ERROR,
       });
