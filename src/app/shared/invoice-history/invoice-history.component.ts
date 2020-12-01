@@ -69,23 +69,17 @@ export class InvoiceHistoryComponent implements OnInit {
   }
 
   protected isShowed(keyMessage: string): boolean {
+    const conditions =
+      (!Array.isArray(this.invoiceTransactions) ||
+        !this.invoiceTransactions.length) &&
+      !this.isErrorLoading &&
+      !this.loading;
+
     switch (keyMessage) {
       case 'EmptyHistory':
-        return (
-          (!this.invoiceTransactions ||
-            (this.invoiceTransactions && !this.invoiceTransactions.length)) &&
-          this.active &&
-          !this.isErrorLoading &&
-          !this.loading
-        );
+        return this.active && conditions;
       case 'NotOldInvoices':
-        return (
-          (!this.invoiceTransactions ||
-            (this.invoiceTransactions && !this.invoiceTransactions.length)) &&
-          !this.active &&
-          !this.isErrorLoading &&
-          !this.loading
-        );
+        return !this.active && conditions;
     }
   }
 }
