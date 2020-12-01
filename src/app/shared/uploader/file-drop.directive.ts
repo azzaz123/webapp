@@ -27,7 +27,10 @@ export enum FileDropActions {
 export class FileDropDirective implements OnInit, OnDestroy {
   @Input() options: NgUploaderOptions;
   @Input() imageType: string;
-  @Output() fileDropAction = new EventEmitter<FileDropActions>();
+  @Output() fileDropAction = new EventEmitter<{
+    action: FileDropActions;
+    files?: FileList;
+  }>();
 
   isServer: boolean = isPlatformServer(this.platform_id);
   el: HTMLInputElement;
@@ -61,7 +64,6 @@ export class FileDropDirective implements OnInit, OnDestroy {
     if (this.isServer) {
       return;
     }
-    this.uploaderService.files = [];
     this.uploaderService.uploads = [];
   }
 
@@ -74,8 +76,10 @@ export class FileDropDirective implements OnInit, OnDestroy {
   public onDrop(e: any) {
     e.stopPropagation();
     e.preventDefault();
-    this.uploaderService.handleFiles(e.dataTransfer.files);
-    this.fileDropAction.emit(FileDropActions.DROP);
+    this.fileDropAction.emit({
+      action: FileDropActions.DROP,
+      files: e.dataTransfer.files,
+    });
   }
 
   @HostListener('dragover', ['$event'])
@@ -88,7 +92,7 @@ export class FileDropDirective implements OnInit, OnDestroy {
         e.dataTransfer.effectAllowed === 'uninitialized') &&
       !this.isSafari
     ) {
-      this.fileDropAction.emit(FileDropActions.DRAGOVER);
+      this.fileDropAction.emit({ action: FileDropActions.DRAGOVER });
     }
   }
 
@@ -97,6 +101,6 @@ export class FileDropDirective implements OnInit, OnDestroy {
     if (!e) {
       return;
     }
-    this.fileDropAction.emit(FileDropActions.DRAGOUT);
+    this.fileDropAction.emit({ action: FileDropActions.DRAGOUT });
   }
 }

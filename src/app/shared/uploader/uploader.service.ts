@@ -42,7 +42,8 @@ export class UploaderService {
     this.showPoregressSecondary();
   }
 
-  handleFiles(files: FileList, imageType?: string): void {
+  handleFiles(files: FileList, imageType?: string, previousFiles = []): void {
+    this.files = previousFiles;
     [].forEach.call(files, (file: File, i: number) => {
       const uploadFile: UploadFile = {
         fileIndex: this.files[this.files.length - 1]

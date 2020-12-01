@@ -138,6 +138,7 @@ export class UploadRealestateComponent implements OnInit {
         pool: this.item.pool,
         garden: this.item.garden,
         location: this.item.location,
+        images: this.uploadService.convertImagesToFiles(this.item.images),
       });
       this.coordinates = {
         latitude: this.item.location.latitude,

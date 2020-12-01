@@ -170,6 +170,7 @@ export class UploadCarComponent implements OnInit {
           exchange_allowed: this.item.saleConditions?.exchange_allowed,
           shipping_allowed: this.item.saleConditions?.shipping_allowed,
         },
+        images: this.uploadService.convertImagesToFiles(this.item.images),
       },
       { emitEvent: false }
     );

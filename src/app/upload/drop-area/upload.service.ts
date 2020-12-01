@@ -11,13 +11,10 @@ import { ITEM_TYPES } from '../../core/item/item';
 import {
   UploadFile,
   UploadInput,
-  UploadOutput,
   UploadStatus,
 } from '../../shared/uploader/upload.interface';
 import { ItemService } from 'app/core/item/item.service';
-import { HttpErrorResponse } from '@angular/common/http';
 import { UploaderService } from 'app/shared/uploader/uploader.service';
-import { ErrorsService } from 'app/core/errors/errors.service';
 import { Image } from '../../core/user/user-response.interface';
 
 @Injectable()

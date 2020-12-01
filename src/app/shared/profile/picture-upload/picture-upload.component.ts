@@ -46,7 +46,6 @@ export class PictureUploadComponent implements OnInit {
     switch (output.type) {
       case 'addedToQueue':
         this.file = output.file;
-        this.uploaderService.files = [];
         this.uploadPicture();
         break;
       case 'uploading':
@@ -54,7 +53,6 @@ export class PictureUploadComponent implements OnInit {
         break;
       case 'rejected':
         this.errorsService.i18nError(output.reason, output.file.name);
-        this.uploaderService.files = [];
         this.file = null;
         break;
     }
