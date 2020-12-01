@@ -1,4 +1,4 @@
-import { User } from '../../core/user/user';
+import { User } from 'app/core/user/user';
 import { ReviewItem } from './review-item';
 
 export class Review {

@@ -15,7 +15,7 @@ import {
 } from '../../../../tests/user.fixtures.spec';
 import { UserService } from 'app/core/user/user.service';
 import { MOCK_REVIEWS } from '../../../../tests/review.fixtures.spec';
-import { UserReviewService } from '../user-review.service';
+import { UserReviewService } from '../core/user-review.service';
 
 describe('ReviewsComponent', () => {
   let component: ReviewsComponent;

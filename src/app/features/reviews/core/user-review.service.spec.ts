@@ -4,7 +4,7 @@ import { ReviewsData } from './review-response.interface';
 import {
   REVIEWS_RESPONSE,
   MOCK_REVIEWS,
-} from '../../../tests/review.fixtures.spec';
+} from '../../../../tests/review.fixtures.spec';
 import {
   TestRequest,
   HttpTestingController,
