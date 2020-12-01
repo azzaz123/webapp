@@ -4,10 +4,9 @@ import { Observable } from 'rxjs';
 import { ReviewResponse, ReviewsData } from './review-response.interface';
 import { Review } from './review';
 import { ReviewItem } from './review-item';
-
+import { User } from '../core/user/user';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { User } from 'app/core/user/user';
-import { environment } from 'environments/environment';
+import { environment } from '../../environments/environment';
 
 export const USER_REVIEWS_API_URL = 'api/v3/users/me/reviews';
 
