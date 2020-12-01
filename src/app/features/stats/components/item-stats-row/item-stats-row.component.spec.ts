@@ -15,7 +15,7 @@ import { DecimalPipe, CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ItemService } from 'app/core/item/item.service';
 import { CustomCurrencyPipe } from 'app/shared/pipes';
-import { environment } from 'environments/environment.beta';
+import { environment } from 'environments/environment';
 
 import { ItemStatsService } from '../item-stats-graph/item-stats.service';
 
@@ -24,7 +24,6 @@ describe('ItemStatsRowComponent', () => {
   let fixture: ComponentFixture<ItemStatsRowComponent>;
   let itemStatsService: ItemStatsService;
   let itemService: ItemService;
-  const SubDomainMock = 'es';
 
   beforeEach(
     waitForAsync(() => {
@@ -35,7 +34,7 @@ describe('ItemStatsRowComponent', () => {
           DecimalPipe,
           {
             provide: 'SUBDOMAIN',
-            useValue: SubDomainMock,
+            useValue: 'es',
           },
           {
             provide: ItemStatsService,
@@ -71,7 +70,7 @@ describe('ItemStatsRowComponent', () => {
   describe('ngOnInit', () => {
     it('should set link', () => {
       expect(component.link).toBe(
-        'https://es.beta.wallapop.com/item/toyota-yaris-1-3-99cv-500008657'
+        environment.siteUrl + 'item/toyota-yaris-1-3-99cv-500008657'
       );
     });
 

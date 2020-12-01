@@ -7,7 +7,7 @@ import { ReviewItem } from './review-item';
 
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { User } from 'app/core/user/user';
-import { environment } from 'environments/environment.beta';
+import { environment } from 'environments/environment';
 
 export const USER_REVIEWS_API_URL = 'api/v3/users/me/reviews';
 
