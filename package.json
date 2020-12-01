@@ -11,6 +11,7 @@
     "builddocker": "ng build -c=docker --no-progress",
     "buildbeta": "ng build -c=beta --no-progress",
     "buildprod": "ng build -c=production --no-progress",
+    "reinstall": "rm -rf node_modules && yarn install",
     "i18n": "ng extract-i18n --format=xmb --output-path=src/locale",
     "serve": "ng serve -c=es",
     "test-once": "jest -c=src/configs/jest/jest.config.js",
