@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Pack } from '../../core/payments/pack';
+import { Pack } from '../../../../core/payments/pack';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({

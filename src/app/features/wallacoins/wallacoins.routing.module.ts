@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoggedGuard } from '../core/user/logged.guard';
+import { LoggedGuard } from '../../core/user/logged.guard';
 import { NgxPermissionsGuard } from 'ngx-permissions';
-import { WallacoinsComponent } from './wallacoins.component';
+import { WallacoinsComponent } from './pages/wallacoins.component';
 
 const routes: Routes = [
   {
