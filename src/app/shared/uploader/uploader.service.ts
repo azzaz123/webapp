@@ -1,14 +1,7 @@
-import {
-  BehaviorSubject,
-  from,
-  Observable,
-  Subject,
-  Subscriber,
-  Subscription,
-} from 'rxjs';
+import { from, Observable, Subscription } from 'rxjs';
 
-import { combineLatest, distinctUntilChanged, mergeAll } from 'rxjs/operators';
-import { EventEmitter, HostListener, Injectable } from '@angular/core';
+import { combineLatest, mergeAll } from 'rxjs/operators';
+import { EventEmitter, Injectable } from '@angular/core';
 import {
   NgUploaderOptions,
   UploadFile,
@@ -18,6 +11,7 @@ import {
 } from './upload.interface';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ErrorsService } from 'app/core/errors/errors.service';
+import { cloneDeep } from 'lodash-es';
 
 @Injectable({
   providedIn: 'root',
@@ -27,8 +21,6 @@ export class UploaderService {
   uploads: { file?: UploadFile; files?: UploadFile[]; sub: Subscription }[];
   serviceEvents: EventEmitter<UploadOutput>;
   options: NgUploaderOptions;
-  private messajeStatus: BehaviorSubject<any>;
-  messajeStatus$: Observable<any>;
 
   constructor(
     private sanitizer: DomSanitizer,
@@ -37,13 +29,10 @@ export class UploaderService {
     this.files = [];
     this.serviceEvents = new EventEmitter();
     this.uploads = [];
-    this.messajeStatus = new BehaviorSubject(0);
-    this.messajeStatus$ = this.messajeStatus.asObservable();
-    this.showPoregressSecondary();
   }
 
   handleFiles(files: FileList, imageType?: string, previousFiles = []): void {
-    this.files = previousFiles;
+    this.files = cloneDeep(previousFiles);
     [].forEach.call(files, (file: File, i: number) => {
       const uploadFile: UploadFile = {
         fileIndex: this.files[this.files.length - 1]
@@ -158,17 +147,8 @@ export class UploaderService {
       )
       .subscribe((data: UploadOutput) => {
         data.imageType = imageType;
-        this.messajeStatus.next(this.messajeStatus.getValue() + 1);
         this.serviceEvents.emit(data);
       });
-  }
-
-  private showPoregressSecondary() {
-    this.messajeStatus.pipe(distinctUntilChanged()).subscribe((type) => {
-      if (type) {
-        this.errorsService.i18nSuccess(type);
-      }
-    });
   }
 
   uploadFile(file: UploadFile, event: UploadInput): Observable<UploadOutput> {

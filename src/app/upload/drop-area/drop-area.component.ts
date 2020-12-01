@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { throttle, range } from 'lodash-es';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { UploadEvent, UploadedEvent } from '../upload-event.interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RemoveConfirmModalComponent } from './remove-confirm-modal/remove-confirm-modal.component';
 import { ErrorsService } from '../../core/errors/errors.service';
@@ -100,8 +99,9 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
     files?: FileList;
   }) {
     this.setDragOver(event.action === FileDropActions.DRAGOVER);
-    if (event.files)
+    if (event.files) {
       this.uploaderService.handleFiles(event.files, null, this.files);
+    }
   }
 
   public remove(file: UploadFile, event: Event) {
