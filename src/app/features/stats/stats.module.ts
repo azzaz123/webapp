@@ -7,9 +7,10 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { TrackingModule } from 'app/core/tracking/tracking.module';
 import { SharedModule } from 'app/shared/shared.module';
 import { ItemStatsGraphComponent } from './components/item-stats-graph/item-stats-graph.component';
-import { ItemStatsService } from './components/item-stats-graph/item-stats.service';
+
 import { ItemStatsRowComponent } from './components/item-stats-row/item-stats-row.component';
 import { ItemsStatsComponent } from './components/items-stats/items-stats.component';
+import { ItemStatsService } from './core/services/item-stats.service';
 
 @NgModule({
   imports: [

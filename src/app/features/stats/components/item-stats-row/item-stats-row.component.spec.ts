@@ -16,8 +16,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ItemService } from 'app/core/item/item.service';
 import { CustomCurrencyPipe } from 'app/shared/pipes';
 import { environment } from 'environments/environment';
-
-import { ItemStatsService } from '../item-stats-graph/item-stats.service';
+import { ItemStatsService } from '../../core/services/item-stats.service';
 
 describe('ItemStatsRowComponent', () => {
   let component: ItemStatsRowComponent;
