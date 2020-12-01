@@ -74,6 +74,23 @@ yarn buildprod
 yarn buildprod-en
 ```
 
+### Githooks
+
+We are using a tool called [husky](https://typicode.github.io/husky/#/) to sync our defined scripts with native githooks that are defined at `scripts/githooks`.
+
+By default, husky is sync (adds/removes/updates hooks) after every `postinstall` event when installing the package dependencies.
+
+If you want to add a new hook, you should follow this steps:
+
+1. Create a file in the `scripts/githooks` folder. The name should be an actual githook event to ease reading. Example: `scripts/githooks/pre-push`.
+2. Attach the hook with husky using the following command:
+
+```
+npx husky add pre-push "scripts/githooks/pre-push"
+```
+
+3. A new file will be created: `.husky/pre-push`. You'll need to version this (husky v5 works this way).
+
 ## How to deploy:
 
 Currently this project uses gitflow. To start and finish a release one has to use the ReleaseBot
