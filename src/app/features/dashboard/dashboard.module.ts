@@ -15,7 +15,7 @@ import { SharedModule } from 'app/shared/shared.module';
 import { CallComponent } from './components/call/call.component';
 
 import { StatsGraphComponent } from './components/stats-graph/stats-graph.component';
-import { StatisticsService } from './services/statistics.service';
+import { StatisticsService } from './core/services/statistics.service';
 
 @NgModule({
   imports: [

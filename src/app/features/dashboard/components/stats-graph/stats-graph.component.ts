@@ -1,15 +1,16 @@
 import { Component, Inject, Input, LOCALE_ID, OnInit } from '@angular/core';
-import {
-  StatisticEntriesResponse,
-  StatisticFullResponse,
-} from '../../statistic-response.interface';
+
 import { IOption } from 'app/dropdown/utils/option.interface';
 import * as moment from 'moment';
 import { EChartOption } from 'echarts';
 import { find } from 'lodash-es';
 import { I18nService } from 'app/core/i18n/i18n.service';
 import { UuidService } from 'app/core/uuid/uuid.service';
-import { StatisticsService } from '../../services/statistics.service';
+import { StatisticsService } from '../../core/services/statistics.service';
+import {
+  StatisticFullResponse,
+  StatisticEntriesResponse,
+} from '../../core/statistic-response.interface';
 
 @Component({
   selector: 'tsl-stats-graph',
