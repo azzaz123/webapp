@@ -15,8 +15,11 @@
       "@environments/*": [
         "environments/*"
       ],
-      "@features/*":[
+      "@features/*": [
         "app/features/*"
+      ],
+      "@fixtures/*": [
+        "app/tests/*"
       ]
     },
     "outDir": "./dist/out-tsc",
