@@ -160,19 +160,19 @@ describe('DropAreaComponent', () => {
     });
 
     it('should set dragOver if event dragOver', () => {
-      component.onFileDropAction(FileDropActions.DRAGOVER);
+      component.onFileDropAction({ action: FileDropActions.DRAGOVER });
 
       expect(component.dragOver).toBeTruthy();
     });
 
     it('should set dragOver if event dragOut', () => {
-      component.onFileDropAction(FileDropActions.DRAGOUT);
+      component.onFileDropAction({ action: FileDropActions.DRAGOUT });
 
       expect(component.dragOver).toBeFalsy();
     });
 
     it('should set dragOver if event drop', () => {
-      component.onFileDropAction(FileDropActions.DROP);
+      component.onFileDropAction({ action: FileDropActions.DROP });
 
       expect(component.dragOver).toBeFalsy();
     });

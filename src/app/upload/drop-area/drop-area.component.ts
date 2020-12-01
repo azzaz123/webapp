@@ -95,7 +95,10 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
     }
   }
 
-  public onFileDropAction(event: { action: FileDropActions; files: FileList }) {
+  public onFileDropAction(event: {
+    action: FileDropActions;
+    files?: FileList;
+  }) {
     this.setDragOver(event.action === FileDropActions.DRAGOVER);
     if (event.files)
       this.uploaderService.handleFiles(event.files, null, this.files);
