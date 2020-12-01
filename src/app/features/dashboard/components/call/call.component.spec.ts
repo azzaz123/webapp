@@ -1,3 +1,5 @@
+import { MOCK_CONVERSATION } from './../../../../../tests/conversation.fixtures.spec';
+import { MOCK_CALL } from './../../../../../tests/call.fixtures';
 /* tslint:disable:no-unused-variable */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
@@ -8,8 +10,6 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CallsService } from 'app/core/conversation/calls.service';
 import { I18nService } from 'app/core/i18n/i18n.service';
 import { CallStatusLabelPipe, DateCalendarPipe } from 'app/shared/pipes';
-import { MOCK_CALL } from 'tests/call.fixtures';
-import { MOCK_CONVERSATION } from 'tests/conversation.fixtures.spec';
 
 describe('CallComponent', () => {
   let component: CallComponent;

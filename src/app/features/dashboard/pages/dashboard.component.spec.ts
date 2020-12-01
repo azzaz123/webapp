@@ -1,3 +1,5 @@
+import { MOCK_CONVERSATION } from './../../../../tests/conversation.fixtures.spec';
+import { MockTrackingService } from './../../../../tests/tracking.fixtures.spec';
 import { of } from 'rxjs';
 /* tslint:disable:no-unused-variable */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
@@ -26,9 +28,7 @@ import { RealTimeService } from 'app/core/message/real-time.service';
 import { TrackingService } from 'app/core/tracking/tracking.service';
 import { FeatureflagService } from 'app/core/user/featureflag.service';
 import { LoggedGuard } from 'app/core/user/logged.guard';
-import { createCallsArray } from 'tests/call.fixtures';
-import { MOCK_CONVERSATION } from 'tests/conversation.fixtures.spec';
-import { MockTrackingService } from 'tests/tracking.fixtures.spec';
+import { createCallsArray } from '../../../../tests/call.fixtures';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;

@@ -1,4 +1,4 @@
-import { StatisticFullResponse } from '../app/dashboard/stats-graph/statistic-response.interface';
+import { StatisticFullResponse } from 'app/features/dashboard/statistic-response.interface';
 import { ItemStatisticFullResponse } from '../app/stats/items-stats/item-stats-row/item-stats-graph/item-stats-response.interface';
 
 export const STATISTICS_RESPONSE: StatisticFullResponse = {
