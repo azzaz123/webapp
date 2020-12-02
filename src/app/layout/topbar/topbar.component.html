@@ -27,7 +27,10 @@
     <span *ngxPermissionsOnly="['isProfessional']" i18n>My Pro Zone</span>
     <div class="horizontal-line"></div>
   </a>
-  <tsl-button [routerLink]="['/catalog/upload']" tslTrackEvent="MYZONE_UPLOAD">
+  <tsl-button class="TopBar__btn" [className]="'btn-outline-primary'" tslTrackEvent=""> <!-- todo track event-->
+    <span i18n>Signup or signin</span>
+  </tsl-button>
+  <tsl-button class="TopBar__btn TopBar__btn--with-icon" [routerLink]="['/catalog/upload']" tslTrackEvent="MYZONE_UPLOAD">
     <tsl-svg-icon src="/assets/icons/upload.svg"></tsl-svg-icon>
     <span *ngxPermissionsExcept="['isProfessional']" i18n>List a product</span>
     <span *ngxPermissionsOnly="['isProfessional']" i18n>List a car</span>
