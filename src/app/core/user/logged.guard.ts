@@ -9,10 +9,7 @@ export const REDIRECT_SECRET = 'redirectSecretBRUH';
 
 @Injectable()
 export class LoggedGuard implements CanActivate, CanLoad {
-  constructor(
-    private accessTokenService: AccessTokenService,
-    private router: Router
-  ) {}
+  constructor(private accessTokenService: AccessTokenService) {}
 
   private _getEncryptedAndEncodedRedirect(): string {
     const encryptedCurrentUrl = CryptoJSAES.encrypt(
@@ -25,7 +22,10 @@ export class LoggedGuard implements CanActivate, CanLoad {
 
   private _loggedGuardLogic(): boolean {
     if (!this.accessTokenService.accessToken) {
-      this.router.navigate(['/', PUBLIC_PATHS.LOGIN]);
+      const redirect = `${
+        environment.siteUrl
+      }login?redirectUrl=${this._getEncryptedAndEncodedRedirect()}`;
+      window.location.href = redirect;
       return false;
     }
     return true;
