@@ -1,9 +1,9 @@
 import {
-  async,
   ComponentFixture,
   TestBed,
   tick,
   fakeAsync,
+  waitForAsync,
 } from '@angular/core/testing';
 import { AddNewSubscriptionModalComponent } from './add-new-subscription-modal.component';
 import { of, throwError } from 'rxjs';
@@ -62,95 +62,97 @@ describe('AddNewSubscriptionModalComponent', () => {
     subscription: MAPPED_SUBSCRIPTIONS[2],
   };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [NgbCarouselModule],
-      declarations: [
-        AddNewSubscriptionModalComponent,
-        CustomCurrencyPipe,
-        DateUntilDayPipe,
-      ],
-      providers: [
-        DecimalPipe,
-        EventService,
-        {
-          provide: NgbActiveModal,
-          useValue: {
-            close() {},
-          },
-        },
-        {
-          provide: ErrorsService,
-          useValue: {
-            i18nError() {},
-          },
-        },
-        {
-          provide: StripeService,
-          useValue: {
-            addNewCard() {
-              return of(200);
-            },
-            actionPayment() {},
-          },
-        },
-        {
-          provide: SubscriptionsService,
-          useValue: {
-            newSubscription() {
-              return of({});
-            },
-            checkNewSubscriptionStatus() {
-              return of(SUBSCRIPTION_SUCCESS);
-            },
-            retrySubscription() {
-              return of('');
-            },
-            checkRetrySubscriptionStatus() {
-              return of('');
-            },
-            getTierDiscountPercentatge() {
-              return 0;
-            },
-            isFreeTier() {
-              return false;
-            },
-            isDiscountedTier() {
-              return false;
-            },
-            hasTrial() {
-              return true;
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NgbCarouselModule],
+        declarations: [
+          AddNewSubscriptionModalComponent,
+          CustomCurrencyPipe,
+          DateUntilDayPipe,
+        ],
+        providers: [
+          DecimalPipe,
+          EventService,
+          {
+            provide: NgbActiveModal,
+            useValue: {
+              close() {},
             },
           },
-        },
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                result: Promise.resolve(),
-                componentInstance: componentInstance,
-              };
+          {
+            provide: ErrorsService,
+            useValue: {
+              i18nError() {},
             },
           },
-        },
-        {
-          provide: PaymentService,
-          useValue: {
-            getBillingInfo() {
-              return of('');
+          {
+            provide: StripeService,
+            useValue: {
+              addNewCard() {
+                return of(200);
+              },
+              actionPayment() {},
             },
           },
-        },
-        {
-          provide: AnalyticsService,
-          useClass: MockAnalyticsService,
-        },
-        I18nService,
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: SubscriptionsService,
+            useValue: {
+              newSubscription() {
+                return of({});
+              },
+              checkNewSubscriptionStatus() {
+                return of(SUBSCRIPTION_SUCCESS);
+              },
+              retrySubscription() {
+                return of('');
+              },
+              checkRetrySubscriptionStatus() {
+                return of('');
+              },
+              getTierDiscountPercentatge() {
+                return 0;
+              },
+              isFreeTier() {
+                return false;
+              },
+              isDiscountedTier() {
+                return false;
+              },
+              hasTrial() {
+                return true;
+              },
+            },
+          },
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  result: Promise.resolve(),
+                  componentInstance: componentInstance,
+                };
+              },
+            },
+          },
+          {
+            provide: PaymentService,
+            useValue: {
+              getBillingInfo() {
+                return of('');
+              },
+            },
+          },
+          {
+            provide: AnalyticsService,
+            useClass: MockAnalyticsService,
+          },
+          I18nService,
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AddNewSubscriptionModalComponent);
@@ -327,11 +329,12 @@ describe('AddNewSubscriptionModalComponent', () => {
       tick();
 
       expect(component.isRetryInvoice).toBe(false);
-      expect(
-        modalService.open
-      ).toHaveBeenCalledWith(PaymentSuccessModalComponent, {
-        windowClass: 'success',
-      });
+      expect(modalService.open).toHaveBeenCalledWith(
+        PaymentSuccessModalComponent,
+        {
+          windowClass: 'success',
+        }
+      );
     }));
 
     it('should call actionPayment if response status is requires_action', fakeAsync(() => {
@@ -433,7 +436,7 @@ describe('AddNewSubscriptionModalComponent', () => {
       spyOn(analyticsService, 'trackEvent');
       const expectedEvent: AnalyticsEvent<ClickSubscriptionSubscribe> = {
         name: ANALYTICS_EVENT_NAMES.ClickSubscriptionSubscribe,
-        eventType: ANALYTIC_EVENT_TYPES.Other,
+        eventType: ANALYTIC_EVENT_TYPES.Navigation,
         attributes: {
           subscription: component.subscription
             .category_id as SUBSCRIPTION_CATEGORIES,
@@ -460,7 +463,7 @@ describe('AddNewSubscriptionModalComponent', () => {
         it('should send valid event', () => {
           const expectedEvent: AnalyticsEvent<SubscriptionPayConfirmation> = {
             name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
-            eventType: ANALYTIC_EVENT_TYPES.Other,
+            eventType: ANALYTIC_EVENT_TYPES.Transaction,
             attributes: {
               subscription: component.subscription
                 .category_id as SUBSCRIPTION_CATEGORIES,
@@ -488,7 +491,7 @@ describe('AddNewSubscriptionModalComponent', () => {
         it('should send valid event', () => {
           const expectedEvent: AnalyticsEvent<SubscriptionPayConfirmation> = {
             name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
-            eventType: ANALYTIC_EVENT_TYPES.Other,
+            eventType: ANALYTIC_EVENT_TYPES.Transaction,
             attributes: {
               subscription: component.subscription
                 .category_id as SUBSCRIPTION_CATEGORIES,
@@ -518,7 +521,7 @@ describe('AddNewSubscriptionModalComponent', () => {
         it('should send valid event', () => {
           const expectedEvent: AnalyticsEvent<SubscriptionPayConfirmation> = {
             name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
-            eventType: ANALYTIC_EVENT_TYPES.Other,
+            eventType: ANALYTIC_EVENT_TYPES.Transaction,
             attributes: {
               subscription: component.subscription
                 .category_id as SUBSCRIPTION_CATEGORIES,
@@ -547,7 +550,7 @@ describe('AddNewSubscriptionModalComponent', () => {
         it('should send valid event', () => {
           const expectedEvent: AnalyticsEvent<SubscriptionPayConfirmation> = {
             name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
-            eventType: ANALYTIC_EVENT_TYPES.Other,
+            eventType: ANALYTIC_EVENT_TYPES.Transaction,
             attributes: {
               subscription: component.subscription
                 .category_id as SUBSCRIPTION_CATEGORIES,

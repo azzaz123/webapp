@@ -1,5 +1,5 @@
 import { of, throwError } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CartExtrasProComponent } from './cart-extras-pro.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -43,65 +43,67 @@ describe('CartExtrasProComponent', () => {
     type: 'citybump',
   };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [CartExtrasProComponent, CustomCurrencyPipe],
-      providers: [
-        DecimalPipe,
-        EventService,
-        {
-          provide: CartService,
-          useValue: {
-            createInstance() {},
-            clean() {},
-            removeProExtras() {},
-            cart$: of(CART_CHANGE),
-          },
-        },
-        {
-          provide: PaymentService,
-          useValue: {
-            getBillingInfo() {
-              return of({});
-            },
-            orderExtrasProPack() {
-              return of({});
-            },
-            updateBillingInfo() {
-              return of({});
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [CartExtrasProComponent, CustomCurrencyPipe],
+        providers: [
+          DecimalPipe,
+          EventService,
+          {
+            provide: CartService,
+            useValue: {
+              createInstance() {},
+              clean() {},
+              removeProExtras() {},
+              cart$: of(CART_CHANGE),
             },
           },
-        },
-        {
-          provide: TrackingService,
-          useClass: MockTrackingService,
-        },
-        {
-          provide: ErrorsService,
-          useValue: {
-            i18nError() {},
-            show() {},
-          },
-        },
-        {
-          provide: Router,
-          useValue: {
-            navigate() {},
-          },
-        },
-        {
-          provide: StripeService,
-          useValue: {
-            buy() {},
-            getCards() {
-              return of(true);
+          {
+            provide: PaymentService,
+            useValue: {
+              getBillingInfo() {
+                return of({});
+              },
+              orderExtrasProPack() {
+                return of({});
+              },
+              updateBillingInfo() {
+                return of({});
+              },
             },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: TrackingService,
+            useClass: MockTrackingService,
+          },
+          {
+            provide: ErrorsService,
+            useValue: {
+              i18nError() {},
+              show() {},
+            },
+          },
+          {
+            provide: Router,
+            useValue: {
+              navigate() {},
+            },
+          },
+          {
+            provide: StripeService,
+            useValue: {
+              buy() {},
+              getCards() {
+                return of(true);
+              },
+            },
+          },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CartExtrasProComponent);

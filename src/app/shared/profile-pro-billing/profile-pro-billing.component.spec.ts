@@ -1,10 +1,10 @@
 import { throwError, of } from 'rxjs';
 import {
-  async,
   ComponentFixture,
   TestBed,
   fakeAsync,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 
 import { ProfileProBillingComponent } from './profile-pro-billing.component';
@@ -31,55 +31,57 @@ describe('ProfileProBillingComponent', () => {
   let eventService: EventService;
   let HTMLelement: DebugElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule],
-      declarations: [ProfileProBillingComponent],
-      providers: [
-        EventService,
-        {
-          provide: PaymentService,
-          useValue: {
-            updateBillingInfo() {
-              return of({});
-            },
-            getBillingInfo() {
-              return of(BILLING_INFO_RESPONSE);
-            },
-            deleteBillingInfo() {
-              return of({});
-            },
-          },
-        },
-        {
-          provide: ErrorsService,
-          useValue: {
-            show() {},
-            i18nSuccess() {},
-            i18nError() {},
-          },
-        },
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                result: Promise.resolve(true),
-              };
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [ReactiveFormsModule],
+        declarations: [ProfileProBillingComponent],
+        providers: [
+          EventService,
+          {
+            provide: PaymentService,
+            useValue: {
+              updateBillingInfo() {
+                return of({});
+              },
+              getBillingInfo() {
+                return of(BILLING_INFO_RESPONSE);
+              },
+              deleteBillingInfo() {
+                return of({});
+              },
             },
           },
-        },
-        {
-          provide: ProfileFormComponent,
-          useValue: {
-            initFormControl() {},
-            canExit() {},
+          {
+            provide: ErrorsService,
+            useValue: {
+              show() {},
+              i18nSuccess() {},
+              i18nError() {},
+            },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  result: Promise.resolve(true),
+                };
+              },
+            },
+          },
+          {
+            provide: ProfileFormComponent,
+            useValue: {
+              initFormControl() {},
+              canExit() {},
+            },
+          },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     modalService = TestBed.inject(NgbModal);

@@ -1,5 +1,5 @@
 import { of } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CheckoutExtrasProComponent } from './checkout-extras-pro.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
@@ -14,22 +14,24 @@ describe('CheckoutExtrasProComponent', () => {
   let fixture: ComponentFixture<CheckoutExtrasProComponent>;
   let paymentService: PaymentService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [CheckoutExtrasProComponent],
-      providers: [
-        {
-          provide: PaymentService,
-          useValue: {
-            getPacks() {
-              return of({});
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [CheckoutExtrasProComponent],
+        providers: [
+          {
+            provide: PaymentService,
+            useValue: {
+              getPacks() {
+                return of({});
+              },
             },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckoutExtrasProComponent);

@@ -1,5 +1,5 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ProfileImagesComponent } from './profile-images.component';
 import { SanitizedBackgroundDirective } from '../sanitized-background/sanitized-background.directive';
@@ -17,12 +17,14 @@ describe('ItemAvatarComponent', () => {
   let component: ProfileImagesComponent;
   let fixture: ComponentFixture<ProfileImagesComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      declarations: [ProfileImagesComponent, SanitizedBackgroundDirective],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [],
+        declarations: [ProfileImagesComponent, SanitizedBackgroundDirective],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProfileImagesComponent);

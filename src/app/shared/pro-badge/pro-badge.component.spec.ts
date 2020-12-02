@@ -1,8 +1,8 @@
 import {
-  async,
   ComponentFixture,
   TestBed,
   getTestBed,
+  waitForAsync,
 } from '@angular/core/testing';
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -16,21 +16,23 @@ describe('ProBadgeComponent', () => {
   let component: ProBadgeComponent;
   let userService: UserService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      providers: [
-        {
-          provide: UserService,
-          useValue: {
-            isPro: false,
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [],
+        providers: [
+          {
+            provide: UserService,
+            useValue: {
+              isPro: false,
+            },
           },
-        },
-      ],
-      declarations: [ProBadgeComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        declarations: [ProBadgeComponent],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProBadgeComponent);

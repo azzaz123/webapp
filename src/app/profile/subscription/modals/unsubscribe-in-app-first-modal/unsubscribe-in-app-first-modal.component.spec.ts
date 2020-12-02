@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { UnsubscribeInAppFirstModal } from './unsubscribe-in-app-first-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -8,13 +8,15 @@ describe('UnsubscribeInAppFirstModal', () => {
   let component: UnsubscribeInAppFirstModal;
   let fixture: ComponentFixture<UnsubscribeInAppFirstModal>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [UnsubscribeInAppFirstModal],
-      providers: [NgbActiveModal],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [UnsubscribeInAppFirstModal],
+        providers: [NgbActiveModal],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UnsubscribeInAppFirstModal);

@@ -1,5 +1,5 @@
 import { of } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ReactivateModalComponent } from './reactivate-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -15,24 +15,26 @@ describe('ReactivateModalComponent', () => {
   let fixture: ComponentFixture<ReactivateModalComponent>;
   let paymentService: PaymentService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ReactivateModalComponent, CustomCurrencyPipe],
-      providers: [
-        NgbActiveModal,
-        DecimalPipe,
-        {
-          provide: PaymentService,
-          useValue: {
-            getCreditInfo() {
-              return of({});
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ReactivateModalComponent, CustomCurrencyPipe],
+        providers: [
+          NgbActiveModal,
+          DecimalPipe,
+          {
+            provide: PaymentService,
+            useValue: {
+              getCreditInfo() {
+                return of({});
+              },
             },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ReactivateModalComponent);

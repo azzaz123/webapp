@@ -1,9 +1,9 @@
 import {
-  async,
   ComponentFixture,
   fakeAsync,
   TestBed,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
@@ -52,29 +52,31 @@ describe('SendPhoneComponent', () => {
   );
   const MOCK_VALID_SPANISH_PHONES = ['+34 912345678', '+34 612 345 678'];
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [SharedModule, ReactiveFormsModule, HttpClientTestingModule],
-      providers: [
-        NgbActiveModal,
-        FormBuilder,
-        {
-          provide: InboxConversationService,
-          useClass: InboxConversationServiceMock,
-        },
-        { provide: RealTimeService, useClass: RealTimeServiceMock },
-        { provide: TrackingService, useClass: MockTrackingService },
-        {
-          provide: ErrorsService,
-          useValue: {
-            i18nError() {},
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [SharedModule, ReactiveFormsModule, HttpClientTestingModule],
+        providers: [
+          NgbActiveModal,
+          FormBuilder,
+          {
+            provide: InboxConversationService,
+            useClass: InboxConversationServiceMock,
           },
-        },
-      ],
-      declarations: [SendPhoneComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          { provide: RealTimeService, useClass: RealTimeServiceMock },
+          { provide: TrackingService, useClass: MockTrackingService },
+          {
+            provide: ErrorsService,
+            useValue: {
+              i18nError() {},
+            },
+          },
+        ],
+        declarations: [SendPhoneComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SendPhoneComponent);

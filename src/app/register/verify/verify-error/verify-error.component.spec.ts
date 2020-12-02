@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { VerifyErrorComponent } from './verify-error.component';
 
@@ -6,11 +6,13 @@ describe('VerifyErrorComponent', () => {
   let component: VerifyErrorComponent;
   let fixture: ComponentFixture<VerifyErrorComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [VerifyErrorComponent],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [VerifyErrorComponent],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(VerifyErrorComponent);

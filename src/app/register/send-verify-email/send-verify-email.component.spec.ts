@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { SendVerifyEmailComponent } from './send-verify-email.component';
 
@@ -6,11 +6,13 @@ describe('SendVerifyEmailComponent', () => {
   let component: SendVerifyEmailComponent;
   let fixture: ComponentFixture<SendVerifyEmailComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SendVerifyEmailComponent],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [SendVerifyEmailComponent],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SendVerifyEmailComponent);

@@ -1,8 +1,8 @@
 import {
-  async,
   ComponentFixture,
   TestBed,
   getTestBed,
+  waitForAsync,
 } from '@angular/core/testing';
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -20,16 +20,24 @@ describe('MobileBlockerComponent', () => {
   let deviceDetectorService: DeviceDetectorService;
   let fixture: ComponentFixture<MobileBlockerComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [MobileBlockerComponent],
-      providers: [
-        { provide: UserService, useValue: { isProfessional: () => of(false) } },
-        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [MobileBlockerComponent],
+        providers: [
+          {
+            provide: UserService,
+            useValue: { isProfessional: () => of(false) },
+          },
+          {
+            provide: DeviceDetectorService,
+            useClass: DeviceDetectorServiceMock,
+          },
+        ],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MobileBlockerComponent);
