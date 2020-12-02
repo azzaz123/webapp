@@ -4,13 +4,13 @@ import { ReviewsData } from './review-response.interface';
 import {
   REVIEWS_RESPONSE,
   MOCK_REVIEWS,
-} from '../../tests/review.fixtures.spec';
+} from '../../../../tests/review.fixtures.spec';
 import {
   TestRequest,
   HttpTestingController,
   HttpClientTestingModule,
 } from '@angular/common/http/testing';
-import { environment } from '../../environments/environment';
+import { environment } from 'environments/environment';
 
 describe('UserReviewService', () => {
   let service: UserReviewService;
