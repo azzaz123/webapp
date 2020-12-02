@@ -1,4 +1,3 @@
-import { MockTrackingService } from './../../../../tests/tracking.fixtures.spec';
 import { of, Subscription } from 'rxjs';
 /* tslint:disable:no-unused-variable */
 import {
@@ -11,10 +10,11 @@ import {
 import { CallsComponent } from './calls.component';
 import { ActivatedRoute } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Call } from 'app/core/conversation/calls';
-import { CallsService } from 'app/core/conversation/calls.service';
-import { TrackingService } from 'app/core/tracking/tracking.service';
-import { createCallsArray } from './../../../../tests/call.fixtures';
+import { Call } from '@core/conversation/calls';
+import { CallsService } from '@core/conversation/calls.service';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
+import { createCallsArray } from '@fixtures/call.fixtures';
 
 describe('CallsComponent', () => {
   let component: CallsComponent;

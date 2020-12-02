@@ -2,9 +2,9 @@ import { takeWhile } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { Call } from 'app/core/conversation/calls';
-import { CallsService } from 'app/core/conversation/calls.service';
-import { TrackingService } from 'app/core/tracking/tracking.service';
+import { Call } from '@core/conversation/calls';
+import { CallsService } from '@core/conversation/calls.service';
+import { TrackingService } from '@core/tracking/tracking.service';
 
 @Component({
   selector: 'tsl-calls',
