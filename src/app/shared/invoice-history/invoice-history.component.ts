@@ -63,7 +63,7 @@ export class InvoiceHistoryComponent implements OnInit {
     return (
       this.invoiceTransactions &&
       this.invoiceTransactions.sort((a, b) => {
-        return <any>new Date(b.date) - <any>new Date(a.date);
+        return b.date - a.date;
       })
     );
   }

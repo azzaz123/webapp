@@ -107,5 +107,8 @@ $vertical-padding: $spacing-ms;
     color: $walla-main;
     background-color: transparent;
     border: 0px;
+    &:disabled {
+      cursor: not-allowed;
+    }
   }
 }

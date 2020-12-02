@@ -21,12 +21,16 @@ export class InvoiceItemComponent {
 
   public handleInvoice(e: Event, invoiceTransaction: InvoiceTransaction): void {
     e.stopPropagation();
-    this.loadingState = true;
-    if (this.active && invoiceTransaction.invoice_generated) {
-      this.downloadInvoice(invoiceTransaction);
-    } else if (this.active && !invoiceTransaction.invoice_generated) {
-      this.generateInvoice(invoiceTransaction);
+    if (!this.active) {
+      return;
     }
+    this.loadingState = true;
+
+    if (invoiceTransaction.invoice_generated) {
+      this.downloadInvoice(invoiceTransaction);
+      return;
+    }
+    this.generateInvoice(invoiceTransaction);
   }
 
   private generateInvoice(invoiceTransaction: InvoiceTransaction): void {
@@ -43,7 +47,7 @@ export class InvoiceItemComponent {
           invoiceTransaction.invoice_generated = true;
           this.errorsService.i18nSuccess('invoiceGenerated');
         },
-        (error) => {
+        () => {
           this.errorsService.i18nError('invoiceCannotGenerate');
         }
       );
@@ -64,11 +68,14 @@ export class InvoiceItemComponent {
           const invoiceDate = this.invoiceDateFormatted(
             new Date(invoiceTransaction.date)
           );
+          const invoiceDescription = this.invoiceDescriptionformatted(
+            invoiceTransaction.description
+          );
           const fileURL = URL.createObjectURL(blob);
           const fileLink = document.createElement('a');
 
           fileLink.href = fileURL;
-          fileLink.download = `WallapopInvoice_${invoiceDate}`;
+          fileLink.download = `wallapop-${invoiceDescription}-${invoiceDate}.pdf`;
           fileLink.click();
         },
         (error) => {
@@ -78,7 +85,11 @@ export class InvoiceItemComponent {
   }
 
   private invoiceDateFormatted(date: Date): string {
-    return `${date.getDay()}-${date.getMonth()}-${date.getFullYear()}`;
+    return date.toISOString().slice(0, 10).replace(/-/g, '');
+  }
+
+  private invoiceDescriptionformatted(description): string {
+    return description.replace(/ /g, '-');
   }
 
   private set loadingState(status: boolean) {

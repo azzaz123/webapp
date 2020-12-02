@@ -26,7 +26,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.paymentService.getBillingInfo(false).subscribe(
         (res: BillingInfoResponse) => {
-          this.canDownloadInvoice = res && !!res.cif && !!res.id;
+          this.canDownloadInvoice = !!res && !!res.cif && !!res.id;
           this.handleModal = this.canDownloadInvoice;
         },
         (error) => {
