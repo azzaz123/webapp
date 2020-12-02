@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { AccessTokenService } from '../http/access-token.service';
 import * as CryptoJSAES from 'crypto-js/aes';
-import { PUBLIC_PATHS } from 'app/app-routing-constants';
 
 export const REDIRECT_SECRET = 'redirectSecretBRUH';
 
