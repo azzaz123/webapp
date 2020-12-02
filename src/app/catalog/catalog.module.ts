@@ -22,7 +22,7 @@ import { ReactivateConfirmationModalComponent } from './list/modals/reactivate-c
 import { ListingfeeConfirmationModalComponent } from './list/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { SubscriptionsSlotsListComponent } from './list/subscriptions-slots/subscriptions-slots-list/subscriptions-slots-list.component';
 import { SubscriptionsSlotItemComponent } from './list/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component';
-import { ReviewsModule } from '../reviews/reviews.module';
+import { ReviewsModule } from 'app/features/reviews/reviews.module';
 
 @NgModule({
   imports: [
