@@ -9,7 +9,6 @@ import {
 import { UserService } from '../../core/user/user.service';
 import { environment } from '../../../environments/environment';
 import { Coordinate } from '../../core/geolocation/address-response.interface';
-import { CategoryResponse } from '../../core/category/category-response.interface';
 import { SuggesterResponse } from './suggester/suggester-response.interface';
 import { User } from '../../core/user/user';
 import { MessageService } from '../../chat/service/message.service';
@@ -17,6 +16,7 @@ import { PaymentService } from '../../core/payments/payment.service';
 import { CreditInfo } from '../../core/payments/payment.interface';
 import { EventService } from '../../core/event/event.service';
 import { CookieService } from 'ngx-cookie';
+import { PUBLIC_PATHS } from 'app/app-routing-constants';
 
 @Component({
   selector: 'tsl-topbar',
@@ -37,6 +37,7 @@ export class TopbarComponent implements OnInit {
   public isProfessional: boolean;
   public wallacoins: number = 0;
   public currencyName: string;
+  public isLogged: boolean;
 
   constructor(
     public userService: UserService,
@@ -50,6 +51,7 @@ export class TopbarComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isLogged = this.userService.isLogged;
     this.userService.me().subscribe((user) => {
       this.user = user;
     });
@@ -67,6 +69,12 @@ export class TopbarComponent implements OnInit {
         }
       }
     );
+    this.eventService.subscribe(EventService.USER_LOGIN, () => {
+      this.isLogged = this.userService.isLogged;
+    });
+    this.eventService.subscribe(EventService.USER_LOGOUT, () => {
+      this.isLogged = this.userService.isLogged;
+    });
   }
 
   private updateCreditInfo(cache?: boolean) {
