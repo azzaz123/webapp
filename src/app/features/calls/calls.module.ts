@@ -1,7 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { callsRoutedComponents, CallsRoutingModule } from './calls.routes';
+import {
+  callsRoutedComponents,
+  CallsRoutingModule,
+} from './calls.routing.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CallItemComponent } from './components/call-item/call-item.component';
 import { CallsComponent } from './pages/calls.component';
