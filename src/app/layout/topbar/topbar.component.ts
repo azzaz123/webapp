@@ -24,6 +24,7 @@ import { PUBLIC_PATHS } from 'app/app-routing-constants';
   styleUrls: ['./topbar.component.scss'],
 })
 export class TopbarComponent implements OnInit {
+  public readonly LOGIN_PATH = PUBLIC_PATHS.LOGIN;
   public user: User;
   public coordinates: Coordinate;
   public category: number;
