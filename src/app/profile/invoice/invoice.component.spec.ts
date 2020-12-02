@@ -53,7 +53,7 @@ describe('InvoiceComponent', () => {
           of(BILLING_INFO_RESPONSE)
         );
 
-        component.getBillingInfo();
+        component.handleModalAndInvoicePermission();
 
         expect(component.canDownloadInvoice).toBe(true);
         expect(component.activeIds).toEqual([]);
@@ -62,7 +62,7 @@ describe('InvoiceComponent', () => {
       it('should NOT let download invoices if you havent billing info', () => {
         spyOn(paymentService, 'getBillingInfo').and.callThrough();
 
-        component.getBillingInfo();
+        component.handleModalAndInvoicePermission();
 
         expect(component.canDownloadInvoice).toBe(false);
         expect(component.activeIds).toEqual(['custom-panel-1']);
@@ -73,7 +73,7 @@ describe('InvoiceComponent', () => {
       it('should NOT let download invoices if the request failed', () => {
         spyOn(paymentService, 'getBillingInfo').and.returnValue(throwError({}));
 
-        component.getBillingInfo();
+        component.handleModalAndInvoicePermission();
 
         expect(component.canDownloadInvoice).toBe(false);
         expect(component.activeIds).toEqual(['custom-panel-1']);

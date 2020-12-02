@@ -3,15 +3,16 @@ import { BillingInfoResponse } from 'app/core/payments/payment.interface';
 import { PaymentService } from 'app/core/payments/payment.service';
 import { UserService } from 'app/core/user/user.service';
 import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-invoice',
   templateUrl: './invoice.component.html',
   styleUrls: ['./invoice.component.scss'],
 })
-export class InvoiceComponent implements OnInit, OnDestroy {
-  private subscriptions: Subscription[] = [];
+export class InvoiceComponent implements OnInit {
   public canDownloadInvoice: boolean;
+  private isCardealer: boolean;
   public activeIds: string[] = ['custom-panel-1'];
 
   constructor(
@@ -23,30 +24,33 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     this.handleIsCardealerUser();
   }
 
-  ngOnDestroy() {
-    this.subscriptions.forEach((x) => x.unsubscribe);
-  }
-
   private handleIsCardealerUser(): void {
-    this.userService.isProfessional().subscribe((isCardealer) => {
-      if (!isCardealer) {
-        this.getBillingInfo();
-      }
-    });
+    this.userService
+      .isProfessional()
+      .pipe(take(1))
+      .subscribe((isCardealer: boolean) => {
+        this.isCardealer = isCardealer;
+        if (!this.isCardealer) {
+          this.handleModalAndInvoicePermission();
+        }
+      });
   }
 
-  public getBillingInfo(): void {
-    this.subscriptions.push(
-      this.paymentService.getBillingInfo(false).subscribe(
-        (res: BillingInfoResponse) => {
-          this.canDownloadInvoice = !!res && !!res.cif && !!res.id;
-          this.handleModal = this.canDownloadInvoice;
-        },
-        (error) => {
-          this.canDownloadInvoice = false;
-        }
-      )
-    );
+  public handleModalAndInvoicePermission(): void {
+    if (!this.canDownloadInvoice && !this.isCardealer) {
+      this.paymentService
+        .getBillingInfo(false)
+        .pipe(take(1))
+        .subscribe(
+          (res: BillingInfoResponse) => {
+            this.canDownloadInvoice = !!res && !!res.cif && !!res.id;
+            this.handleModal = this.canDownloadInvoice;
+          },
+          () => {
+            this.canDownloadInvoice = false;
+          }
+        );
+    }
   }
 
   set handleModal(formIsFull) {
