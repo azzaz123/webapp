@@ -1,14 +1,14 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HelpService } from './help.service';
-import { I18nService } from '../core/i18n/i18n.service';
 import { DOCUMENT } from '@angular/common';
+import { finalize, take } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 import {
   SELLBYTEL_PHONE,
   CARDEALER_COMMERCIAL_CONTACT_MAIL,
-} from '../core/constants';
-import { finalize, take } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+} from '@core/constants';
+import { I18nService } from '@core/i18n/i18n.service';
+import { HelpService } from '../core/services/help.service';
 
 @Component({
   selector: 'tsl-help',

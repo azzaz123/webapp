@@ -6,7 +6,7 @@ import {
 } from '@angular/common/http/testing';
 
 import { HelpService } from './help.service';
-import { FAQS, FAQ_FEATURES } from '../../tests/faq.fixtures.spec';
+import { FAQS, FAQ_FEATURES } from '../faq.fixtures.spec';
 
 describe('HelpService', () => {
   let service: HelpService;
@@ -28,7 +28,7 @@ describe('HelpService', () => {
   describe('getFaqs', () => {
     it('should get localized faqs from web resources', () => {
       let response: any;
-      let localId = 'es';
+      const localId = 'es';
 
       service.getFaqs(localId).subscribe((res) => (response = res));
       const req: TestRequest = httpMock.expectOne(
@@ -44,7 +44,7 @@ describe('HelpService', () => {
   describe('getFeatures', () => {
     it('should get localized faq features from web resources', () => {
       let response: any;
-      let localId = 'es';
+      const localId = 'es';
 
       service.getFeatures(localId).subscribe((res) => (response = res));
       const req: TestRequest = httpMock.expectOne(
