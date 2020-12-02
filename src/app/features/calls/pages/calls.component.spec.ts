@@ -1,3 +1,4 @@
+import { MockTrackingService } from './../../../../tests/tracking.fixtures.spec';
 import { of, Subscription } from 'rxjs';
 /* tslint:disable:no-unused-variable */
 import {
@@ -8,13 +9,12 @@ import {
   waitForAsync,
 } from '@angular/core/testing';
 import { CallsComponent } from './calls.component';
-import { CallsService } from '../core/conversation/calls.service';
 import { ActivatedRoute } from '@angular/router';
-import { TrackingService } from '../core/tracking/tracking.service';
-import { MockTrackingService } from '../../tests/tracking.fixtures.spec';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { createCallsArray } from '../../tests/call.fixtures';
-import { Call } from '../core/conversation/calls';
+import { Call } from 'app/core/conversation/calls';
+import { CallsService } from 'app/core/conversation/calls.service';
+import { TrackingService } from 'app/core/tracking/tracking.service';
+import { createCallsArray } from './../../../../tests/call.fixtures';
 
 describe('CallsComponent', () => {
   let component: CallsComponent;

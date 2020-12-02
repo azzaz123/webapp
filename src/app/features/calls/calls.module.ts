@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { SharedModule } from '../shared/shared.module';
-import { CallsComponent } from './calls.component';
 import { callsRoutedComponents, CallsRoutingModule } from './calls.routes';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { CallItemComponent } from './call-item/call-item.component';
-import { ConversationModule } from '../core/conversation/conversation.module';
-import { TrackingModule } from '../core/tracking/tracking.module';
+import { ConversationModule } from 'app/core/conversation/conversation.module';
+import { TrackingModule } from 'app/core/tracking/tracking.module';
+import { SharedModule } from 'app/shared/shared.module';
+import { CallItemComponent } from './components/call-item/call-item.component';
+import { CallsComponent } from './pages/calls.component';
 
 @NgModule({
   imports: [

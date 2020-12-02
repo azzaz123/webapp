@@ -1,17 +1,17 @@
+import { MOCK_CALL } from './../../../../../tests/call.fixtures';
+import { MockTrackingService } from './../../../../../tests/tracking.fixtures.spec';
 import { of } from 'rxjs';
 /* tslint:disable:no-unused-variable */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CallItemComponent } from './call-item.component';
 import { ActivatedRoute } from '@angular/router';
-import { TrackingService } from '../../core/tracking/tracking.service';
-import { CallsService } from '../../core/conversation/calls.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { CallStatusLabelPipe, DateCalendarPipe } from '../../shared/pipes';
-import { I18nService } from '../../core/i18n/i18n.service';
-import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
-import { MOCK_CALL } from '../../../tests/call.fixtures';
-import { createMessagesArray } from '../../../tests/message.fixtures.spec';
+import { CallsService } from 'app/core/conversation/calls.service';
+import { I18nService } from 'app/core/i18n/i18n.service';
+import { TrackingService } from 'app/core/tracking/tracking.service';
+import { CallStatusLabelPipe, DateCalendarPipe } from 'app/shared/pipes';
+import { createMessagesArray } from './../../../../../tests/message.fixtures.spec';
 
 describe('CallItemComponent', () => {
   let component: CallItemComponent;
