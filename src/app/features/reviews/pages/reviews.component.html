@@ -1,0 +1,36 @@
+<div class="page-content"
+     infiniteScroll
+     [infiniteScrollDistance]="5"
+     [infiniteScrollThrottle]="100"
+     [infiniteScrollDisabled]="end || loading"
+     (scrolled)="loadMore()"
+     [scrollTop]="scrollTop">
+  <div class="container">
+    <tsl-header>
+      <div class="col-9">
+        <div class="header-row">
+          <h1 class="header-title" i18n>Your Reviews</h1>
+        </div>
+        <div class="header-row header-row--margin">
+          <h4 class="header-subtitle" i18n>This is what people think about you. </h4>
+        </div>
+      </div>
+      <div class="user-average col-2 d-none d-md-block">
+        <p i18n>Your average</p>
+        <tsl-stars class="header-rating" [stars]="this.userScore" [normalized]="false"></tsl-stars>
+      </div>
+      <div class="user-number-reviews text-center col-3 col-md-1">
+        <p>{{ numberOfReviews }}</p>
+        <p *ngIf="numberOfReviews > 1 || numberOfReviews === 0" i18n>reviews</p>
+        <p *ngIf="numberOfReviews === 1" i18n>review</p>
+      </div>
+    </tsl-header>
+    <div class="row">
+      <div class="reviews-empty-state d-none d-md-block" *ngIf="!reviews.length && !loading">
+        <tsl-svg-icon src="/assets/icons/reviews-empty-state.svg" class="image"></tsl-svg-icon>
+        <div class="message" i18n>Nobody has written a review about you because you didn't buy or sell anything yet. Wake up!</div>
+      </div>
+      <tsl-review-item *ngFor="let review of reviews" [review]="review" class="review-container col-md-12"></tsl-review-item>
+    </div>
+  </div>
+</div>

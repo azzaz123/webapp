@@ -6,8 +6,7 @@ import {
   finalize,
 } from 'rxjs/operators';
 import { Component, OnInit, Renderer2 } from '@angular/core';
-import { DomSanitizer, Title } from '@angular/platform-browser';
-import { configMoment } from './config/moment.config';
+import { Title } from '@angular/platform-browser';
 import {
   ActivatedRoute,
   NavigationEnd,
@@ -16,6 +15,7 @@ import {
   RouteConfigLoadStart,
   Router,
 } from '@angular/router';
+import * as moment from 'moment';
 import { environment } from '../environments/environment';
 import { CookieOptions, CookieService } from 'ngx-cookie';
 import { TrackingService } from './core/tracking/tracking.service';
@@ -60,7 +60,6 @@ export class AppComponent implements OnInit {
     private desktopNotificationsService: DesktopNotificationsService,
     private messageService: MessageService,
     private titleService: Title,
-    private sanitizer: DomSanitizer,
     private trackingService: TrackingService,
     private i18n: I18nService,
     private router: Router,
@@ -97,7 +96,11 @@ export class AppComponent implements OnInit {
   }
 
   private initializeConfigs(): void {
-    configMoment(this.i18n.locale);
+    this.setMomentLocale();
+  }
+
+  private setMomentLocale(): void {
+    moment.locale(this.i18n.locale);
   }
 
   private initializeServices(): void {

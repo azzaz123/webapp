@@ -99,7 +99,9 @@ const loggedRoutes = [
     path: 'reviews',
     canLoad: [LoggedGuard],
     loadChildren: () =>
-      import('app/reviews/reviews.module').then((m) => m.ReviewsModule),
+      import('app/features/reviews/reviews.module').then(
+        (m) => m.ReviewsModule
+      ),
   },
   {
     path: 'wallacoins',
@@ -149,7 +151,7 @@ const loggedRoutes = [
     path: 'stats',
     canLoad: [LoggedGuard],
     loadChildren: () =>
-      import('app/stats/stats.module').then((m) => m.StatsModule),
+      import('app/features/stats/stats.module').then((m) => m.StatsModule),
   },
   {
     path: '**',
