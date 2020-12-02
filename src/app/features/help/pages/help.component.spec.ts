@@ -5,7 +5,7 @@ import { HelpComponent } from './help.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
-import { I18nService } from 'app/core/i18n/i18n.service';
+import { I18nService } from '@core/i18n/i18n.service';
 import { FAQS, FAQ_FEATURES } from '../core/faq.fixtures.spec';
 import { HelpService } from '../core/services/help.service';
 

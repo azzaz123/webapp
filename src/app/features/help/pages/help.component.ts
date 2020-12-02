@@ -6,8 +6,8 @@ import { Subscription } from 'rxjs';
 import {
   SELLBYTEL_PHONE,
   CARDEALER_COMMERCIAL_CONTACT_MAIL,
-} from 'app/core/constants';
-import { I18nService } from 'app/core/i18n/i18n.service';
+} from '@core/constants';
+import { I18nService } from '@core/i18n/i18n.service';
 import { HelpService } from '../core/services/help.service';
 
 @Component({
