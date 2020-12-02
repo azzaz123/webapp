@@ -4,16 +4,17 @@ import { PERMISSIONS } from './core/user/user';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { DevelopmentGuard } from './core/user/development.guard';
 import { LoggedGuard } from './core/user/logged.guard';
+import { PUBLIC_PATHS } from './app-routing-constants';
 
 const publicRoutes = [
   {
-    path: 'login',
+    path: PUBLIC_PATHS.LOGIN,
     canLoad: [DevelopmentGuard],
     loadChildren: () =>
       import('app/login/login.module').then((m) => m.LoginModule),
   },
   {
-    path: 'register',
+    path: PUBLIC_PATHS.REGISTER,
     canLoad: [DevelopmentGuard],
     loadChildren: () =>
       import('app/register/register.module').then((m) => m.RegisterModule),
