@@ -4,7 +4,7 @@
       <div class="col-12">
         <h3 i18n="@@InvoiceHistory">Invoice history</h3>
             <div *ngIf="!invoiceTransactions || (invoiceTransactions && !invoiceTransactions.length)">
-              <img class="inbox-size" src="/assets/images/empty-invoices-placeholder.svg"/>
+              <img class="InvoiceHistory__feedback" src="/assets/images/empty-invoices-placeholder.svg"/>
               <div class="content">
                 <span [hidden]="!loading" i18n="@@LoadingData">We are loading your invoice history...</span>
                 <span *ngIf="isErrorLoading" i18n="@@NotLoadedInvoices">Sorry, we cannot load your invoices at this time. Please try again later.</span>

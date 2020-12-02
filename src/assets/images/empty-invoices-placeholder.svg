@@ -1,16 +1,1 @@
-<svg width="1125" height="196" viewBox="0 0 1125 196" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M0.616943 10C0.616943 4.75329 4.87024 0.5 10.1169 0.5H1114.88C1120.13 0.5 1124.38 4.75329 1124.38 10V80C1124.38 85.2467 1120.13 89.5 1114.88 89.5H10.117C4.87025 89.5 0.616943 85.2467 0.616943 80V10Z" fill="white" stroke="#ECEFF1"/>
-<rect x="13" y="20" width="192" height="12" rx="4" fill="#ECEFF1"/>
-<rect x="483.883" y="20" width="105" height="12" rx="4" fill="#ECEFF1"/>
-<rect x="951.883" y="20" width="141" height="20" rx="4" fill="#ECEFF1"/>
-<rect x="13" y="50" width="192" height="12" rx="4" fill="#ECEFF1"/>
-<rect x="483.883" y="50" width="105" height="12" rx="4" fill="#ECEFF1"/>
-<g opacity="0.5">
-<path d="M0.616943 116C0.616943 110.753 4.87024 106.5 10.1169 106.5H1114.88C1120.13 106.5 1124.38 110.753 1124.38 116V186C1124.38 191.247 1120.13 195.5 1114.88 195.5H10.117C4.87025 195.5 0.616943 191.247 0.616943 186V116Z" fill="white" stroke="#ECEFF1"/>
-<rect x="13" y="126" width="192" height="12" rx="4" fill="#ECEFF1"/>
-<rect x="483.883" y="126" width="105" height="12" rx="4" fill="#ECEFF1"/>
-<rect x="951.883" y="126" width="141" height="20" rx="4" fill="#ECEFF1"/>
-<rect x="13" y="156" width="192" height="12" rx="4" fill="#ECEFF1"/>
-<rect x="483.883" y="156" width="105" height="12" rx="4" fill="#ECEFF1"/>
-</g>
-</svg>
+<svg width="1125" height="196" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M.617 10a9.5 9.5 0 019.5-9.5H1114.88c5.25 0 9.5 4.253 9.5 9.5v70c0 5.247-4.25 9.5-9.5 9.5H10.117a9.5 9.5 0 01-9.5-9.5V10z" fill="#fff" stroke="#ECEFF1"/><rect x="13" y="20" width="192" height="12" rx="4" fill="#ECEFF1"/><rect x="483.883" y="20" width="105" height="12" rx="4" fill="#ECEFF1"/><rect x="951.883" y="20" width="141" height="20" rx="4" fill="#ECEFF1"/><rect x="13" y="50" width="192" height="12" rx="4" fill="#ECEFF1"/><rect x="483.883" y="50" width="105" height="12" rx="4" fill="#ECEFF1"/><g opacity=".5"><path d="M.617 116a9.5 9.5 0 019.5-9.5H1114.88c5.25 0 9.5 4.253 9.5 9.5v70c0 5.247-4.25 9.5-9.5 9.5H10.117a9.5 9.5 0 01-9.5-9.5v-70z" fill="#fff" stroke="#ECEFF1"/><rect x="13" y="126" width="192" height="12" rx="4" fill="#ECEFF1"/><rect x="483.883" y="126" width="105" height="12" rx="4" fill="#ECEFF1"/><rect x="951.883" y="126" width="141" height="20" rx="4" fill="#ECEFF1"/><rect x="13" y="156" width="192" height="12" rx="4" fill="#ECEFF1"/><rect x="483.883" y="156" width="105" height="12" rx="4" fill="#ECEFF1"/></g></svg>
