@@ -34,6 +34,9 @@ import { DidomiService } from './core/didomi/didomi.service';
 import { MockDidomiService } from './core/didomi/didomi.service.spec';
 import { UuidService } from './core/uuid/uuid.service';
 import { SwUpdate } from '@angular/service-worker';
+import * as moment from 'moment';
+
+jest.mock('moment');
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -211,6 +214,14 @@ describe('App', () => {
       expect(app).toBeTruthy();
     })
   );
+
+  describe('when the app initializes', () => {
+    beforeEach(() => component.ngOnInit());
+
+    it('should set current app language to date library', () => {
+      expect(moment.locale).toHaveBeenCalledWith('en');
+    });
+  });
 
   describe('set cookie', () => {
     it('should create a cookie', () => {
