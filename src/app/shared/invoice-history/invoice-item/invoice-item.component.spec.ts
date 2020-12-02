@@ -78,7 +78,7 @@ describe('InvoiceItemComponent', () => {
     });
 
     describe('when the transaction is active... ', () => {
-      describe('when the invoice service succed.. ', () => {
+      describe('when the invoice service succeed.. ', () => {
         it('should generate an invoice and show success message', () => {
           spyOn(invoiceService, 'generateInvoice').and.returnValue(of(null));
 

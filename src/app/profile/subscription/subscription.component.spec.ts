@@ -1,13 +1,9 @@
-import {
-  SubscriptionModalAction,
-  SubscriptionsComponent,
-} from './subscription.component';
+import { SubscriptionsComponent } from './subscription.component';
 import {
   ComponentFixture,
   TestBed,
   fakeAsync,
   tick,
-  flush,
   waitForAsync,
 } from '@angular/core/testing';
 import { CategoryService } from '../../core/category/category.service';
@@ -51,7 +47,6 @@ import { UserService } from 'app/core/user/user.service';
 import {
   USER_DATA,
   MOCK_FULL_USER_NON_FEATURED,
-  MOCK_USER,
   MOCK_FULL_USER,
 } from '../../../tests/user.fixtures.spec';
 

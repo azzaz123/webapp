@@ -65,7 +65,7 @@ export class InvoiceItemComponent {
             new Date(invoiceTransaction.date)
           );
           const fileURL = URL.createObjectURL(blob);
-          var fileLink = document.createElement('a');
+          const fileLink = document.createElement('a');
 
           fileLink.href = fileURL;
           fileLink.download = `WallapopInvoice_${invoiceDate}`;

@@ -49,7 +49,7 @@ describe('InvoiceComponent', () => {
   });
 
   describe('when we dont need load more data...', () => {
-    it('shouldnt show load more because we dont have more than 5 invoices', () => {
+    it('should NOT show load more because we dont have more than 5 invoices', () => {
       component.invoiceTransactions = MOCK_INVOICE_HISTORY_MAPPED;
       component.total = MOCK_INVOICE_HISTORY_MAPPED.length;
 

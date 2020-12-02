@@ -4,7 +4,7 @@ import { PaymentService } from 'app/core/payments/payment.service';
 import { InvoiceComponent } from './invoice.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BILLING_INFO_RESPONSE } from '../../../tests/payments.fixtures.spec';
-import { NgbAccordion, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 describe('InvoiceComponent', () => {
   let component: InvoiceComponent;
@@ -48,7 +48,7 @@ describe('InvoiceComponent', () => {
         expect(component.activeIds).toEqual([]);
       });
 
-      it('shouldnt let download invoices if you havent billing info', () => {
+      it('should NOT let download invoices if you havent billing info', () => {
         spyOn(paymentService, 'getBillingInfo').and.callThrough();
 
         component.getBillingInfo();
@@ -59,7 +59,7 @@ describe('InvoiceComponent', () => {
     });
 
     describe('when request fails... ', () => {
-      it('shouldnt let download invoices if the request failed', () => {
+      it('should NOT let download invoices if the request failed', () => {
         spyOn(paymentService, 'getBillingInfo').and.returnValue(throwError({}));
 
         component.getBillingInfo();
