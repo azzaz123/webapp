@@ -13,9 +13,9 @@ import { of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DecimalPipe, CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ItemService } from 'app/core/item/item.service';
-import { CustomCurrencyPipe } from 'app/shared/pipes';
-import { environment } from 'environments/environment';
+import { ItemService } from '@core/item/item.service';
+import { CustomCurrencyPipe } from '@shared/pipes';
+import { environment } from '@environments/environment';
 import { ItemStatsService } from '../../core/services/item-stats.service';
 
 describe('ItemStatsRowComponent', () => {

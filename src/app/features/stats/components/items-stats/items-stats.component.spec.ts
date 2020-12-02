@@ -5,8 +5,8 @@ import { ItemsStatsComponent } from './items-stats.component';
 import { Subject, of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CheapestProducts } from 'app/core/item/item-response.interface';
-import { ItemService } from 'app/core/item/item.service';
+import { CheapestProducts } from '@core/item/item-response.interface';
+import { ItemService } from '@core/item/item.service';
 
 describe('ItemsStatsComponent', () => {
   let component: ItemsStatsComponent;
