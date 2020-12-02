@@ -1,3 +1,4 @@
+import { Item } from './../../../../core/item/item';
 import {
   AfterViewInit,
   Component,
@@ -6,15 +7,14 @@ import {
   LOCALE_ID,
   OnInit,
 } from '@angular/core';
-import {
-  ItemStatisticEntriesResponse,
-  ItemStatisticFullResponse,
-} from './item-stats-response.interface';
-import { Item } from '../../../../core/item/item';
-import { I18nService } from '../../../../core/i18n/i18n.service';
+import { I18nService } from '@core/i18n/i18n.service';
 import { EChartOption } from 'echarts';
 import * as moment from 'moment';
-import { UuidService } from '../../../../core/uuid/uuid.service';
+import {
+  ItemStatisticFullResponse,
+  ItemStatisticEntriesResponse,
+} from '../../core/item-stats-response.interface';
+import { UuidService } from '@core/uuid/uuid.service';
 
 const GRAPH_COLORS = {
   CHAT: '#EEAA42',

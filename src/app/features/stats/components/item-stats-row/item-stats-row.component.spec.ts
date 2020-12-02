@@ -1,22 +1,22 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import { ItemStatsRowComponent } from './item-stats-row.component';
-import { ItemStatsService } from './item-stats-graph/item-stats.service';
-import { of } from 'rxjs';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CustomCurrencyPipe } from '../../../shared/pipes';
-import { DecimalPipe, CommonModule } from '@angular/common';
 import {
   ITEM_CONVERSATIONS,
   ITEM_COUNTERS_DATA,
   ITEM_FAVORITES,
   ITEM_VIEWS,
   MOCK_ITEM_V3,
-} from '../../../../tests/item.fixtures.spec';
+} from './../../../../../tests/item.fixtures.spec';
+import { ITEM_STATISTIC_RESPONSE } from './../../../../../tests/statistics.fixtures.spec';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+
+import { ItemStatsRowComponent } from './item-stats-row.component';
+import { of } from 'rxjs';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { DecimalPipe, CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ItemService } from '../../../core/item/item.service';
-import { ITEM_STATISTIC_RESPONSE } from '../../../../tests/statistics.fixtures.spec';
-import { environment } from '../../../../environments/environment';
+import { ItemService } from '@core/item/item.service';
+import { CustomCurrencyPipe } from '@shared/pipes';
+import { environment } from '@environments/environment';
+import { ItemStatsService } from '../../core/services/item-stats.service';
 
 describe('ItemStatsRowComponent', () => {
   let component: ItemStatsRowComponent;

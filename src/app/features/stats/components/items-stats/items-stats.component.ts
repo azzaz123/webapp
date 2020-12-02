@@ -2,9 +2,9 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {
   CheapestProducts,
   ItemsData,
-} from '../../core/item/item-response.interface';
-import { ItemService } from '../../core/item/item.service';
-import { Item } from '../../core/item/item';
+} from '@core/item/item-response.interface';
+import { ItemService } from '@core/item/item.service';
+import { Item } from 'app/core/item/item';
 import { Subject } from 'rxjs';
 
 @Component({
