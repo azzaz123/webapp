@@ -5,11 +5,13 @@ import { InvoiceComponent } from './invoice.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BILLING_INFO_RESPONSE } from '../../../tests/payments.fixtures.spec';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { UserService } from 'app/core/user/user.service';
 
 describe('InvoiceComponent', () => {
   let component: InvoiceComponent;
   let fixture: ComponentFixture<InvoiceComponent>;
   let paymentService: PaymentService;
+  let userService: UserService;
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
@@ -19,6 +21,14 @@ describe('InvoiceComponent', () => {
           useValue: {
             getBillingInfo() {
               return of({});
+            },
+          },
+        },
+        {
+          provide: UserService,
+          useValue: {
+            isProfessional() {
+              return of(true);
             },
           },
         },
@@ -33,6 +43,7 @@ describe('InvoiceComponent', () => {
     fixture = TestBed.createComponent(InvoiceComponent);
     component = fixture.componentInstance;
     paymentService = TestBed.inject(PaymentService);
+    userService = TestBed.inject(UserService);
   });
 
   describe('when getting our billing info...', () => {
@@ -67,6 +78,30 @@ describe('InvoiceComponent', () => {
         expect(component.canDownloadInvoice).toBe(false);
         expect(component.activeIds).toEqual(['custom-panel-1']);
       });
+    });
+  });
+
+  describe('when user is NOT cardealer...', () => {
+    it('should search billing information', () => {
+      spyOn(userService, 'isProfessional').and.returnValue(of(false));
+      spyOn(paymentService, 'getBillingInfo');
+
+      fixture.detectChanges();
+      component.ngOnInit();
+
+      expect(paymentService.getBillingInfo).toBeCalled();
+    });
+  });
+
+  describe('when user is cardealer...', () => {
+    it('should NOT search billing information', () => {
+      spyOn(userService, 'isProfessional').and.returnValue(of(true));
+      spyOn(paymentService, 'getBillingInfo');
+
+      fixture.detectChanges();
+      component.ngOnInit();
+
+      expect(paymentService.getBillingInfo).not.toBeCalled();
     });
   });
 });
