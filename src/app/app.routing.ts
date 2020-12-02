@@ -111,7 +111,7 @@ const loggedRoutes = [
       },
     },
     loadChildren: () =>
-      import('app/wallacoins/wallacoins.module').then(
+      import('app/features/wallacoins/wallacoins.module').then(
         (m) => m.WallacoinsModule
       ),
   },

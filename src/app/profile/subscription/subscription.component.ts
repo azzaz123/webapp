@@ -29,7 +29,6 @@ import { UnsubscribeInAppFirstModal } from './modals/unsubscribe-in-app-first-mo
 import { DiscountAvailableUnsubscribeInAppModalComponent } from './modals/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user';
-import { UserResponse } from 'app/core/user/user-response.interface';
 
 export type SubscriptionModal =
   | typeof CheckSubscriptionInAppModalComponent
@@ -55,7 +54,7 @@ export class SubscriptionsComponent implements OnInit {
     private router: Router,
     private analyticsService: AnalyticsService,
     private userService: UserService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loading = true;
@@ -110,6 +109,7 @@ export class SubscriptionsComponent implements OnInit {
         take(30),
         finalize(() => {
           this.router.navigate(['profile/info']);
+          this.loading = false;
         })
       )
       .subscribe((updatedUser) => {
@@ -130,7 +130,7 @@ export class SubscriptionsComponent implements OnInit {
           )
         ),
         take(30),
-        finalize(() => this.router.navigate(['profile/subscriptions']))
+        finalize(() => { this.router.navigate(['profile/subscriptions']), this.loading = false })
       )
       .subscribe((updatedSubscriptions) => {
         if (!isEqual(this.subscriptions, updatedSubscriptions)) {

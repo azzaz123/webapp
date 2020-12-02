@@ -3,16 +3,16 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { BuyWallacoinsModalComponent } from './buy-wallacoins-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CustomCurrencyPipe } from '../../shared/pipes';
+import { CustomCurrencyPipe } from '../../../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
-import { ErrorsService } from '../../core/errors/errors.service';
-import { PaymentService } from '../../core/payments/payment.service';
+import { ErrorsService } from '../../../../core/errors/errors.service';
+import { PaymentService } from '../../../../core/payments/payment.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Pack } from '../../core/payments/pack';
-import { StripeService } from '../../core/stripe/stripe.service';
-import { EventService } from '../../core/event/event.service';
-import { STRIPE_CARD_OPTION } from '../../../tests/stripe.fixtures.spec';
-import { UuidService } from '../../core/uuid/uuid.service';
+import { Pack } from '../../../../core/payments/pack';
+import { StripeService } from '../../../../core/stripe/stripe.service';
+import { EventService } from '../../../../core/event/event.service';
+import { STRIPE_CARD_OPTION } from '../../../../../tests/stripe.fixtures.spec';
+import { UuidService } from '../../../../core/uuid/uuid.service';
 
 describe('BuyWallacoinsModalComponent', () => {
   let component: BuyWallacoinsModalComponent;
