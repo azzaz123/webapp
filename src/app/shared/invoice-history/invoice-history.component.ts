@@ -35,10 +35,7 @@ export class InvoiceHistoryComponent implements OnInit {
             (transaction.currencySymbol = this.currencies[transaction.currency])
         );
         this.invoiceTransactions = invoiceTransactions;
-        this.total =
-          invoiceTransactions && invoiceTransactions.length
-            ? this.invoiceTransactions.length
-            : 0;
+        this.total = invoiceTransactions.length;
         this.loading = false;
       },
       (error) => {

@@ -38,7 +38,7 @@
               <label for="name" class="col-sm-12 col-md-5" i18n="@@FirstName">First Name</label>
               <div [ngClass]="{'col-sm-12 col-md-7': containerTypeIsModal, 'col-sm-12 col-md-5': !containerTypeIsModal}">
                 <input type="text" class="form-control" id="name" formControlName="name" />
-                <div *ngIf="billingForm.controls.name.invalid && (billingForm.controls.name.dirty || billingForm.controls.name.touched)" class="alert">
+                <div *ngIf="handleErrorFormcontrol(billingForm.controls.name)" class="alert">
                   <span *ngIf="billingForm.controls.name.errors.required" i18n="@@NameRequired">
                     Name is required.
                   </span>
@@ -52,7 +52,7 @@
               <label for="surname" class="col-sm-12 col-md-5" i18n="@@LastName">Last Name</label>
               <div [ngClass]="{'col-sm-12 col-md-7': containerTypeIsModal, 'col-sm-12 col-md-5': !containerTypeIsModal}">
                 <input type="text" class="form-control" id="surname" formControlName="surname" />
-                <div *ngIf="billingForm.controls.surname.invalid && (billingForm.controls.surname.dirty || billingForm.controls.surname.touched)" class="alert">
+                <div *ngIf="handleErrorFormcontrol(billingForm.controls.surname)" class="alert">
                   <span *ngIf="billingForm.controls.surname.errors.required" i18n="@@SurnameRequired">
                     Surname is required.
                   </span>
@@ -66,7 +66,7 @@
               <label for="company_name" class="col-sm-12 col-md-5" i18n="@@CompanyName">Company Name</label>
               <div [ngClass]="{'col-sm-12 col-md-7': containerTypeIsModal, 'col-sm-12 col-md-5': !containerTypeIsModal}">
                 <input type="text" class="form-control" id="company_name" formControlName="company_name" />
-                <div *ngIf="billingForm.controls.company_name.invalid && (billingForm.controls.company_name.dirty || billingForm.controls.company_name.touched)" class="alert alert-danger">
+                <div *ngIf="handleErrorFormcontrol(billingForm.controls.company_name)" class="alert alert-danger">
                   <span *ngIf="billingForm.controls.company_name.errors.required" i18n="@@CompanyNameRequired">
                     Company name is required.
                   </span>
@@ -80,7 +80,7 @@
               <label for="email" class="col-sm-12 col-md-5" i18n="@@Email">E-mail</label>
               <div [ngClass]="{'col-sm-12 col-md-7': containerTypeIsModal, 'col-sm-12 col-md-5': !containerTypeIsModal}">
                 <input type="text" class="form-control" id="email" formControlName="email" />
-                <div *ngIf="billingForm.controls.email.invalid && (billingForm.controls.email.dirty || billingForm.controls.email.touched)" class="alert">
+                <div *ngIf="handleErrorFormcontrol(billingForm.controls.email)" class="alert">
                   <span *ngIf="billingForm.controls.email.errors.required" i18n="@@EmailRequired">
                     E-mail is required.
                   </span>
@@ -119,7 +119,7 @@
               <label *ngIf="type === 'natural'" for="cif" class="col-sm-12 col-md-5" i18n="@@NIFNumber">NIF Number</label>
               <div [ngClass]="{'col-sm-12 col-md-7': containerTypeIsModal, 'col-sm-12 col-md-5': !containerTypeIsModal}">
                 <input type="text" class="form-control" id="cif" formControlName="cif"/>
-                <div *ngIf="billingForm.controls.cif.invalid && (billingForm.controls.cif.dirty || billingForm.controls.cif.touched)" class="alert">
+                <div *ngIf="handleErrorFormcontrol(billingForm.controls.cif)" class="alert">
                   <span *ngIf="billingForm.controls.cif.errors.required" i18n="@@CifRequired">
                     CIF/NIF is required.
                   </span>

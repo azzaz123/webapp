@@ -78,7 +78,7 @@ export class InvoiceItemComponent {
           fileLink.download = `wallapop-${invoiceDescription}-${invoiceDate}.pdf`;
           fileLink.click();
         },
-        (error) => {
+        () => {
           this.errorsService.i18nError('invoiceCannotDownload');
         }
       );

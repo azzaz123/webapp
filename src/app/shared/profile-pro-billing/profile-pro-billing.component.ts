@@ -211,6 +211,12 @@ export class ProfileProBillingComponent
       });
   }
 
+  public handleErrorFormcontrol(formControlAtr: FormControl): boolean {
+    return (
+      formControlAtr.invalid && (formControlAtr.dirty || formControlAtr.touched)
+    );
+  }
+
   private patchFormValues() {
     for (const control in this.billingForm.controls) {
       if (this.billingForm.controls.hasOwnProperty(control)) {
