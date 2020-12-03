@@ -529,7 +529,7 @@ export class UploadProductComponent
       this.uploadService
         .uploadSingleImage(file, this.item.id, ITEM_TYPES.CONSUMER_GOODS)
         .subscribe(
-          (value) => {
+          (value: UploadOutput) => {
             if (value.type === OutputType.done)
               this.errorsService.i18nSuccess('imageUploaded');
           },

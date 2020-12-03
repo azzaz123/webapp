@@ -25,7 +25,7 @@ import { Realestate } from '../../core/item/realestate';
 import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { UserService } from '../../core/user/user.service';
-import { RealestateContent } from '../../core/item/item-response.interface';
+import { RealestateContent, RealStateResponse } from '../../core/item/item-response.interface';
 import { tap } from 'rxjs/operators';
 import {
   ANALYTIC_EVENT_TYPES,
@@ -37,7 +37,7 @@ import {
 } from '../../core/analytics/analytics-constants';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UploadService } from '../drop-area/upload.service';
-import { OutputType, UploadFile } from 'app/shared/uploader/upload.interface';
+import { OutputType, UploadAction, UploadFile, UploadOutput } from 'app/shared/uploader/upload.interface';
 import { ITEM_TYPES } from 'app/core/item/item';
 
 @Component({
@@ -224,7 +224,7 @@ export class UploadRealestateComponent implements OnInit {
   onSubmit() {
     if (this.uploadForm.valid) {
       this.loading = true;
-      this.item ? this.uploadItem() : this.createItem();
+      this.item ? this.updateItem() : this.createItem();
     } else {
       this.invalidForm();
     }
@@ -247,13 +247,10 @@ export class UploadRealestateComponent implements OnInit {
     this.uploadService
       .createItem(this.uploadForm.value, ITEM_TYPES.REAL_ESTATE)
       .subscribe(
-        (response) => {
+        (response: UploadOutput) => {
           this.updateUploadPercentage(response.percentage);
           if (response.type === OutputType.done) {
-            this.onUploaded({
-              response: response.file.response,
-              action: 'created',
-            });
+            this.onUploaded(response.file.response, UploadAction.created);
           }
         },
         (error: HttpErrorResponse) => {
@@ -262,15 +259,12 @@ export class UploadRealestateComponent implements OnInit {
       );
   }
 
-  private uploadItem(): void {
+  private updateItem(): void {
     this.uploadService
       .updateItem(this.uploadForm.value, ITEM_TYPES.REAL_ESTATE)
       .subscribe(
-        (response) => {
-          this.onUploaded({
-            response,
-            action: 'updated',
-          });
+        (response: RealStateResponse) => {
+          this.onUploaded(response.content, UploadAction.updated);
         },
         (error: HttpErrorResponse) => {
           this.onError(error);
@@ -278,7 +272,7 @@ export class UploadRealestateComponent implements OnInit {
       );
   }
 
-  onUploaded(uploadEvent: any) {
+  onUploaded(response: RealestateContent, action: UploadAction) {
     this.onFormChanged.emit(false);
 
     if (this.item) {
@@ -293,24 +287,28 @@ export class UploadRealestateComponent implements OnInit {
       this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, {
         category: this.uploadForm.value.category_id,
       });
-      uploadEvent.action = 'urgent';
+      action = UploadAction.urgent;
       localStorage.setItem('transactionType', 'urgent');
     }
     const params: any = {
-      [uploadEvent.action]: true,
-      itemId: uploadEvent.response.id,
+      [action]: true,
+      itemId: response.id,
     };
     if (this.item && this.item.flags.onhold) {
       params.onHold = true;
     }
 
-    this.trackEditOrUpload(!!this.item, uploadEvent.response).subscribe(() =>
+    this.trackEditOrUpload(!!this.item, response).subscribe(() =>
       this.router.navigate(['/catalog/list', params])
     );
   }
 
-  onError(response: any) {
+  onError(error: HttpErrorResponse | any): void {
     this.loading = false;
+    this.errorsService.i18nError(
+      'serverError',
+      error.message ? error.message : ''
+    );
     if (this.item) {
       this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_ERROR, {
         category: this.uploadForm.value.category_id,
@@ -388,22 +386,18 @@ export class UploadRealestateComponent implements OnInit {
   onDeleteImage(imageId: string): void {
     this.uploadService
       .onDeleteImage(this.item.id, imageId)
-      .subscribe(() => this.removeFileFromForm(imageId));
+      .subscribe(
+        () => this.removeFileFromForm(imageId),
+        () => null
+        );
   }
 
   removeFileFromForm(imageId: string): void {
     const imagesControl: FormControl = this.uploadForm.get(
       'images'
     ) as FormControl;
-    imagesControl.patchValue(
-      imagesControl.value.filter((image) => {
-        return (
-          image.id !== imageId &&
-          image.response !== imageId &&
-          image.response?.id !== imageId
-        );
-      })
-    );
+    const images: UploadFile[] = imagesControl.value;
+    imagesControl.patchValue(images.filter((image) => image.id !== imageId));
   }
 
   onOrderImages(): void {
