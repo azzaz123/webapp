@@ -13,6 +13,7 @@ import { PUBLIC_PATHS } from 'app/app-routing-constants';
   styleUrls: ['./tabbar.component.scss'],
 })
 export class TabbarComponent implements OnInit {
+  public readonly LOGIN_PATH = PUBLIC_PATHS.LOGIN;
   public user: User;
   public homeUrl: string;
   public hidden = false;
