@@ -30,7 +30,7 @@ const loggedRoutes = [
       {
         path: 'help',
         loadChildren: () =>
-          import('app/help/help.module').then((m) => m.HelpModule),
+          import('app/features/help/help.module').then((m) => m.HelpModule),
       },
       {
         path: 'dashboard',
