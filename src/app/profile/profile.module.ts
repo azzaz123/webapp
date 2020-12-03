@@ -29,6 +29,7 @@ import { DiscountAvailableUnsubscribeInAppModalComponent } from './subscription/
 import { SubscriptionPriceDiscountComponent } from './subscription/subscription-price-discount/subscription-price-discount.component';
 import { DropdownModule } from 'app/dropdown/dropdown.module';
 import { InvoiceHistoryComponent } from '@shared/invoice-history/invoice-history.component';
+import { InvoiceItemComponent } from '@shared/invoice-history/invoice-item/invoice-item.component';
 
 @NgModule({
   imports: [
@@ -61,6 +62,7 @@ import { InvoiceHistoryComponent } from '@shared/invoice-history/invoice-history
     DiscountAvailableUnsubscribeInAppModalComponent,
     SubscriptionPriceDiscountComponent,
     InvoiceHistoryComponent,
+    InvoiceItemComponent,
   ],
   entryComponents: [
     UnsubscribeModalComponent,
@@ -76,6 +78,7 @@ import { InvoiceHistoryComponent } from '@shared/invoice-history/invoice-history
     UnsubscribeInAppFirstModal,
     DiscountAvailableUnsubscribeInAppModalComponent,
     InvoiceHistoryComponent,
+    InvoiceItemComponent,
   ],
 })
 export class ProfileModule {}

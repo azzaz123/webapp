@@ -11,26 +11,22 @@ import {
 import { TestBed, fakeAsync } from '@angular/core/testing';
 import { environment } from 'environments/environment';
 import { MOCK_INVOICE_HISTORY } from '../../../tests/invoice.fixtures.spec';
-import { CategoryService } from '../category/category.service';
-import { I18nService } from '../i18n/i18n.service';
 import { InvoiceTransaction } from './invoice.interface';
 
 describe('InvoiceService', () => {
   const invoice = MOCK_INVOICE_HISTORY[0];
   let service: InvoiceService;
   let httpMock: HttpTestingController;
-  let categoryService: CategoryService;
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      providers: [InvoiceService, CategoryService, I18nService],
+      providers: [InvoiceService],
       imports: [HttpClientTestingModule],
     }).compileComponents();
   }));
 
   beforeEach(() => {
     service = TestBed.inject(InvoiceService);
-    categoryService = TestBed.inject(CategoryService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 

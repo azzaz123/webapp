@@ -10,6 +10,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { InvoiceService } from 'app/core/invoice/invoice.service';
 import { of, throwError } from 'rxjs';
 import { ErrorsService } from '../../../core/errors/errors.service';
+import { By } from '@angular/platform-browser';
 
 describe('InvoiceItemComponent', () => {
   const invoiceNotGenerated = MOCK_INVOICE_HISTORY[1];
@@ -79,6 +80,16 @@ describe('InvoiceItemComponent', () => {
 
     describe('when the transaction is active... ', () => {
       describe('when the invoice service succeed.. ', () => {
+        it('should have been enabled', () => {
+          const invoiceActionButton = fixture.debugElement.query(
+            By.css('tsl-button')
+          ).nativeElement;
+
+          fixture.detectChanges();
+
+          expect(invoiceActionButton.disabled).toBe(false);
+        });
+
         it('should generate an invoice and show success message', () => {
           spyOn(invoiceService, 'generateInvoice').and.returnValue(of(null));
 
@@ -144,8 +155,21 @@ describe('InvoiceItemComponent', () => {
     });
 
     describe('when the transaction is not active..', () => {
-      it('it shouldnt call the invoice service', () => {
+      beforeEach(() => {
         component.active = false;
+      });
+
+      it('should have been disabled', () => {
+        const invoiceActionButton = fixture.debugElement.query(
+          By.css('tsl-button')
+        ).nativeElement;
+
+        fixture.detectChanges();
+
+        expect(invoiceActionButton.disabled).toBe(true);
+      });
+
+      it('it shouldnt call the invoice service', () => {
         spyOn(invoiceService, 'generateInvoice');
         spyOn(invoiceService, 'downloadInvoice');
 

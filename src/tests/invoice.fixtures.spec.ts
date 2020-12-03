@@ -134,6 +134,7 @@ export const MOCK_INVOICE_HISTORY_SORTED: InvoiceTransaction[] = [
     date: 1900000000000,
     invoice_generated: false,
     currency: 'EUR',
+    currencySymbol: '€',
   },
   {
     id: '1',
@@ -142,6 +143,7 @@ export const MOCK_INVOICE_HISTORY_SORTED: InvoiceTransaction[] = [
     date: 1800000000000,
     invoice_generated: false,
     currency: 'EUR',
+    currencySymbol: '€',
   },
   {
     id: '1',
@@ -150,6 +152,7 @@ export const MOCK_INVOICE_HISTORY_SORTED: InvoiceTransaction[] = [
     date: 1700000000000,
     invoice_generated: true,
     currency: 'EUR',
+    currencySymbol: '€',
   },
   {
     id: '1',
@@ -158,6 +161,7 @@ export const MOCK_INVOICE_HISTORY_SORTED: InvoiceTransaction[] = [
     date: 1600000000000,
     invoice_generated: true,
     currency: 'EUR',
+    currencySymbol: '€',
   },
   {
     id: '1',
@@ -166,6 +170,7 @@ export const MOCK_INVOICE_HISTORY_SORTED: InvoiceTransaction[] = [
     date: 1500000000000,
     invoice_generated: true,
     currency: 'EUR',
+    currencySymbol: '€',
   },
   {
     id: '1',
@@ -174,6 +179,7 @@ export const MOCK_INVOICE_HISTORY_SORTED: InvoiceTransaction[] = [
     date: 1400000000000,
     invoice_generated: false,
     currency: 'EUR',
+    currencySymbol: '€',
   },
   {
     id: '1',
@@ -182,6 +188,7 @@ export const MOCK_INVOICE_HISTORY_SORTED: InvoiceTransaction[] = [
     date: 1300000000000,
     invoice_generated: true,
     currency: 'EUR',
+    currencySymbol: '€',
   },
   {
     id: '1',
@@ -190,6 +197,7 @@ export const MOCK_INVOICE_HISTORY_SORTED: InvoiceTransaction[] = [
     date: 1200000000000,
     invoice_generated: false,
     currency: 'EUR',
+    currencySymbol: '€',
   },
   {
     id: '1',
@@ -198,6 +206,7 @@ export const MOCK_INVOICE_HISTORY_SORTED: InvoiceTransaction[] = [
     date: 1110000000000,
     invoice_generated: true,
     currency: 'EUR',
+    currencySymbol: '€',
   },
   {
     id: '1',
@@ -206,6 +215,7 @@ export const MOCK_INVOICE_HISTORY_SORTED: InvoiceTransaction[] = [
     date: 1100000000000,
     invoice_generated: false,
     currency: 'EUR',
+    currencySymbol: '€',
   },
   {
     id: '1',
@@ -214,6 +224,7 @@ export const MOCK_INVOICE_HISTORY_SORTED: InvoiceTransaction[] = [
     date: 1100000000000,
     invoice_generated: false,
     currency: 'EUR',
+    currencySymbol: '€',
   },
   {
     id: '1',
@@ -222,5 +233,6 @@ export const MOCK_INVOICE_HISTORY_SORTED: InvoiceTransaction[] = [
     date: 1000000000000,
     invoice_generated: true,
     currency: 'EUR',
+    currencySymbol: '€',
   },
 ];

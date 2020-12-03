@@ -77,7 +77,6 @@ import { ChangeCardModalComponent } from './modals/change-card-modal/change-card
 import { ConfirmCardModalComponent } from './modals/confirm-card-modal/confirm-card-modal.component';
 import { ProfileProBillingComponent } from './profile-pro-billing/profile-pro-billing.component';
 import { FullScreenModalComponent } from './modals/full-screen-menu/full-screen-modal.component';
-import { InvoiceItemComponent } from './invoice-history/invoice-item/invoice-item.component';
 import { DisableControlDirective } from './forms/disable-control.directive';
 import { RouterLinkDirectiveStub } from './router-link-directive-stub';
 import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
@@ -161,7 +160,6 @@ import { DateCountDownComponent } from './date-countdown/date-countdown.componen
     DateCalendarPipe,
     ProfileProBillingComponent,
     FullScreenModalComponent,
-    InvoiceItemComponent,
     DisableControlDirective,
     SvgIconModule,
     DateCountDownComponent,
@@ -229,7 +227,6 @@ import { DateCountDownComponent } from './date-countdown/date-countdown.componen
     DateCalendarPipe,
     ProfileProBillingComponent,
     FullScreenModalComponent,
-    InvoiceItemComponent,
     DisableControlDirective,
     RouterLinkDirectiveStub,
     DateCountDownComponent,

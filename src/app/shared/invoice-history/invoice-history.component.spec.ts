@@ -1,4 +1,5 @@
 import { of } from 'rxjs';
+import { By } from '@angular/platform-browser';
 import { TestBed, ComponentFixture, fakeAsync } from '@angular/core/testing';
 import { InvoiceHistoryComponent } from './invoice-history.component';
 import { InvoiceService } from 'app/core/invoice/invoice.service';
@@ -42,20 +43,27 @@ describe('InvoiceComponent', () => {
       component.invoiceTransactions = MOCK_INVOICE_HISTORY;
       component.total = MOCK_INVOICE_HISTORY.length;
 
-      component.showLoadMore();
+      fixture.detectChanges();
+      const loadMoreDiv = fixture.debugElement.query(
+        By.css('.InvoiceHistory__load-more-container')
+      );
 
-      expect(component.showLoadMore()).toBe(true);
+      expect(loadMoreDiv).toBeTruthy();
     });
   });
 
   describe('when we dont need load more data...', () => {
     it('should NOT show load more because we dont have more than 5 invoices', () => {
-      component.invoiceTransactions = MOCK_INVOICE_HISTORY_MAPPED;
-      component.total = MOCK_INVOICE_HISTORY_MAPPED.length;
+      spyOn(invoiceService, 'getInvoiceTransactions').and.returnValue(
+        of(MOCK_INVOICE_HISTORY_MAPPED)
+      );
 
-      component.showLoadMore();
+      fixture.detectChanges();
+      const loadMoreDiv = fixture.debugElement.query(
+        By.css('.InvoiceHistory__load-more-container')
+      );
 
-      expect(component.showLoadMore()).toBe(false);
+      expect(loadMoreDiv).toBeNull();
     });
   });
 
