@@ -436,7 +436,7 @@ describe('AddNewSubscriptionModalComponent', () => {
       spyOn(analyticsService, 'trackEvent');
       const expectedEvent: AnalyticsEvent<ClickSubscriptionSubscribe> = {
         name: ANALYTICS_EVENT_NAMES.ClickSubscriptionSubscribe,
-        eventType: ANALYTIC_EVENT_TYPES.Other,
+        eventType: ANALYTIC_EVENT_TYPES.Navigation,
         attributes: {
           subscription: component.subscription
             .category_id as SUBSCRIPTION_CATEGORIES,
@@ -463,7 +463,7 @@ describe('AddNewSubscriptionModalComponent', () => {
         it('should send valid event', () => {
           const expectedEvent: AnalyticsEvent<SubscriptionPayConfirmation> = {
             name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
-            eventType: ANALYTIC_EVENT_TYPES.Other,
+            eventType: ANALYTIC_EVENT_TYPES.Transaction,
             attributes: {
               subscription: component.subscription
                 .category_id as SUBSCRIPTION_CATEGORIES,
@@ -491,7 +491,7 @@ describe('AddNewSubscriptionModalComponent', () => {
         it('should send valid event', () => {
           const expectedEvent: AnalyticsEvent<SubscriptionPayConfirmation> = {
             name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
-            eventType: ANALYTIC_EVENT_TYPES.Other,
+            eventType: ANALYTIC_EVENT_TYPES.Transaction,
             attributes: {
               subscription: component.subscription
                 .category_id as SUBSCRIPTION_CATEGORIES,
@@ -521,7 +521,7 @@ describe('AddNewSubscriptionModalComponent', () => {
         it('should send valid event', () => {
           const expectedEvent: AnalyticsEvent<SubscriptionPayConfirmation> = {
             name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
-            eventType: ANALYTIC_EVENT_TYPES.Other,
+            eventType: ANALYTIC_EVENT_TYPES.Transaction,
             attributes: {
               subscription: component.subscription
                 .category_id as SUBSCRIPTION_CATEGORIES,
@@ -550,7 +550,7 @@ describe('AddNewSubscriptionModalComponent', () => {
         it('should send valid event', () => {
           const expectedEvent: AnalyticsEvent<SubscriptionPayConfirmation> = {
             name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
-            eventType: ANALYTIC_EVENT_TYPES.Other,
+            eventType: ANALYTIC_EVENT_TYPES.Transaction,
             attributes: {
               subscription: component.subscription
                 .category_id as SUBSCRIPTION_CATEGORIES,
