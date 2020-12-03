@@ -1,4 +1,4 @@
-import { CanActivate, CanLoad, Router } from '@angular/router';
+import { CanActivate, CanLoad } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { AccessTokenService } from '../http/access-token.service';
