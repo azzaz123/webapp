@@ -42,7 +42,7 @@ const loggedRoutes = [
       {
         path: 'calls',
         loadChildren: () =>
-          import('app/calls/calls.module').then((m) => m.CallsModule),
+          import('app/features/calls/calls.module').then((m) => m.CallsModule),
       },
       {
         path: 'catalog',
