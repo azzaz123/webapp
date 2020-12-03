@@ -7,6 +7,8 @@ import {
 import {
   MOCK_ITEM_CELLPHONES,
   MOCK_ITEM_CELLPHONES_NO_SUBCATEGORY,
+  MOCK_ITEM_RESPONSE_CONTENT,
+  UPLOAD_FORM_ITEM_VALUES,
 } from './../../../tests/item.fixtures.spec';
 import {
   ComponentFixture,
@@ -19,7 +21,7 @@ import {
 import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import {
   NgbModal,
   NgbPopoverConfig,
@@ -69,8 +71,16 @@ import { CATEGORY_IDS } from '../../core/category/category-ids';
 import { CategoryOption } from 'app/core/category/category-response.interface';
 import { I18nService } from 'app/core/i18n/i18n.service';
 import { UploadService } from '../drop-area/upload.service';
-import { MockUploadService } from '../../../tests/upload.fixtures.spec';
+import {
+  MockUploadService,
+  MOCK_UPLOAD_OUTPUT_DONE,
+  MOCK_UPLOAD_OUTPUT_PENDING,
+  UPLOAD_FILE_2,
+  UPLOAD_FILE_DONE,
+  UPLOAD_FILE_DONE_2,
+} from '../../../tests/upload.fixtures.spec';
 import { ITEM_TYPES } from 'app/core/item/item';
+import { UploadAction } from 'app/shared/uploader/upload.interface';
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
 export const USER_LOCATION: UserLocation = {
@@ -665,10 +675,8 @@ describe('UploadProductComponent', () => {
   });
 
   describe('onSubmit', () => {
-    beforeEach(() => {
-      spyOn(uploadService, 'createItem').and.callThrough();
-    });
     it('should emit uploadEvent if form is valid', () => {
+      spyOn(uploadService, 'createItem').and.callThrough();
       fixture.detectChanges();
       component.uploadForm.get('category_id').patchValue(CATEGORY_IDS.SERVICES);
       component.uploadForm.get('title').patchValue('test');
@@ -718,6 +726,7 @@ describe('UploadProductComponent', () => {
     });
 
     it('should save the second level category', () => {
+      spyOn(uploadService, 'createItem').and.callThrough();
       component.uploadForm.patchValue({
         category_id: CATEGORY_IDS.SERVICES,
         title: 'test',
@@ -768,6 +777,7 @@ describe('UploadProductComponent', () => {
     });
 
     it('should save the first level category', () => {
+      spyOn(uploadService, 'createItem').and.callThrough();
       component.uploadForm.patchValue({
         category_id: CATEGORY_IDS.SERVICES,
         title: 'test',
@@ -817,8 +827,113 @@ describe('UploadProductComponent', () => {
         ITEM_TYPES.CONSUMER_GOODS
       );
     });
-  });
 
+    describe('and when there is not an item uploaded', () => {
+      beforeEach(() => {
+        component.item = null;
+        component.uploadForm.patchValue(UPLOAD_FORM_ITEM_VALUES);
+      });
+
+      it('should upload the item if the service return done', () => {
+        spyOn(uploadService, 'createItem').and.returnValue(
+          of(MOCK_UPLOAD_OUTPUT_DONE)
+        );
+        spyOn(component, 'onUploaded');
+
+        fixture.detectChanges();
+        component.onSubmit();
+
+        expect(uploadService.createItem).toHaveBeenCalledTimes(1);
+        expect(uploadService.createItem).toHaveBeenCalledWith(
+          component.uploadForm.value,
+          ITEM_TYPES.CONSUMER_GOODS
+        );
+        expect(component.onUploaded).toHaveBeenCalledTimes(1);
+        expect(component.onUploaded).toHaveBeenCalledWith(
+          MOCK_UPLOAD_OUTPUT_DONE.file.response,
+          UploadAction.created
+        );
+      });
+
+      it('should do nothing if the service not return done', () => {
+        spyOn(uploadService, 'createItem').and.returnValue(
+          of(MOCK_UPLOAD_OUTPUT_PENDING)
+        );
+        spyOn(component, 'onUploaded');
+
+        fixture.detectChanges();
+        component.onSubmit();
+
+        expect(uploadService.createItem).toHaveBeenCalledTimes(1);
+        expect(component.onUploaded).toHaveBeenCalledTimes(0);
+      });
+
+      it('should show error if the service fails', () => {
+        spyOn(uploadService, 'createItem').and.returnValue(
+          throwError({ message: 'error' })
+        );
+        spyOn(component, 'onUploaded');
+        spyOn(errorService, 'i18nError');
+
+        fixture.detectChanges();
+        component.onSubmit();
+
+        expect(uploadService.createItem).toHaveBeenCalledTimes(1);
+        expect(component.onUploaded).not.toHaveBeenCalled();
+        expect(errorService.i18nError).toHaveBeenCalledTimes(1);
+        expect(errorService.i18nError).toHaveBeenCalledWith(
+          'serverError',
+          'error'
+        );
+      });
+    });
+
+    describe('and when there is an item uploaded', () => {
+      beforeEach(() => {
+        component.item = MOCK_ITEM;
+        component.uploadForm.patchValue(UPLOAD_FORM_ITEM_VALUES);
+      });
+
+      it('should upload the item if the service success', () => {
+        spyOn(uploadService, 'updateItem').and.returnValue(
+          of({ content: MOCK_ITEM_RESPONSE_CONTENT })
+        );
+        spyOn(component, 'onUploaded');
+        fixture.detectChanges();
+        component.onSubmit();
+
+        expect(uploadService.updateItem).toHaveBeenCalledTimes(1);
+        expect(uploadService.updateItem).toHaveBeenCalledWith(
+          component.uploadForm.value,
+          ITEM_TYPES.CONSUMER_GOODS
+        );
+        expect(component.onUploaded).toHaveBeenCalledTimes(1);
+        expect(component.onUploaded).toHaveBeenCalledWith(
+          MOCK_ITEM_RESPONSE_CONTENT,
+          UploadAction.updated
+        );
+      });
+
+      it('should show error if the service fails', () => {
+        spyOn(uploadService, 'updateItem').and.returnValue(
+          throwError({ message: 'error' })
+        );
+        spyOn(component, 'onUploaded');
+        spyOn(errorService, 'i18nError');
+
+        fixture.detectChanges();
+        component.onSubmit();
+
+        expect(uploadService.updateItem).toHaveBeenCalledTimes(1);
+        expect(component.onUploaded).not.toHaveBeenCalled();
+        expect(errorService.i18nError).toHaveBeenCalledTimes(1);
+        expect(errorService.i18nError).toHaveBeenCalledWith(
+          'serverError',
+          'error'
+        );
+      });
+    });
+  });
   describe('when selecting a category', () => {
     it('should get the object types for the selected category', () => {
       component.uploadForm.patchValue({
@@ -990,24 +1105,8 @@ describe('UploadProductComponent', () => {
   });
 
   describe('onUploaded', () => {
-    const MOCK_RESPONSE_CONTENT: ItemContent = {
-      id: MOCK_ITEM.id,
-      category_id: MOCK_ITEM.categoryId,
-      sale_price: MOCK_ITEM.salePrice,
-      title: MOCK_ITEM.title,
-      description: MOCK_ITEM.description,
-      modified_date: MOCK_ITEM.modifiedDate,
-      flags: MOCK_ITEM.flags,
-      seller_id: 'ukd73df',
-      web_slug: MOCK_ITEM.webSlug,
-    };
-    const uploadedEvent = {
-      action: 'updated',
-      response: {
-        id: '1',
-        content: MOCK_RESPONSE_CONTENT,
-      },
-    };
+    const action = UploadAction.updated;
+    const response = MOCK_ITEM_RESPONSE_CONTENT;
 
     it('should emit form changed event', () => {
       let formChanged = true;
@@ -1015,7 +1114,7 @@ describe('UploadProductComponent', () => {
         formChanged = value;
       });
 
-      component.onUploaded(uploadedEvent);
+      component.onUploaded(response, action);
 
       expect(formChanged).toBeFalsy();
     });
@@ -1023,11 +1122,11 @@ describe('UploadProductComponent', () => {
     it('should redirect', () => {
       spyOn(router, 'navigate');
 
-      component.onUploaded(uploadedEvent);
+      component.onUploaded(response, action);
 
       expect(router.navigate).toHaveBeenCalledWith([
         '/catalog/list',
-        { [uploadedEvent.action]: true, itemId: uploadedEvent.response.id },
+        { [action]: true, itemId: response.id },
       ]);
     });
 
@@ -1035,7 +1134,7 @@ describe('UploadProductComponent', () => {
       spyOn(appboy, 'logCustomEvent');
 
       component.item = MOCK_ITEM;
-      component.onUploaded(uploadedEvent);
+      component.onUploaded(response, action);
 
       expect(appboy.logCustomEvent).toHaveBeenCalledWith('Edit', {
         platform: 'web',
@@ -1045,7 +1144,7 @@ describe('UploadProductComponent', () => {
     it('should send appboy List event if any item is selected', () => {
       spyOn(appboy, 'logCustomEvent');
 
-      component.onUploaded(uploadedEvent);
+      component.onUploaded(response, action);
 
       expect(appboy.logCustomEvent).toHaveBeenCalledWith('List', {
         platform: 'web',
@@ -1055,14 +1154,8 @@ describe('UploadProductComponent', () => {
     describe('if it`s a item modification', () => {
       it('should send the Edit Item CG tracking event', () => {
         component.item = MOCK_ITEM;
-        const editEvent: any = {
-          action: 'update',
-          response: {
-            id: MOCK_ITEM.id,
-            type: 'edit',
-          },
-        };
-        const editResponse: ItemContent = MOCK_RESPONSE_CONTENT;
+        const action = UploadAction.updated;
+        const editResponse: ItemContent = MOCK_ITEM_RESPONSE_CONTENT;
         const expectedEvent: AnalyticsEvent<EditItemCG> = {
           name: ANALYTICS_EVENT_NAMES.EditItemCG,
           eventType: ANALYTIC_EVENT_TYPES.Other,
@@ -1075,11 +1168,10 @@ describe('UploadProductComponent', () => {
             screenId: SCREEN_IDS.EditItem,
           },
         };
-        editEvent.response = editResponse;
         spyOn(analyticsService, 'trackEvent');
 
         component.ngOnInit();
-        component.onUploaded(editEvent);
+        component.onUploaded(editResponse, action);
 
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
       });
@@ -1087,14 +1179,8 @@ describe('UploadProductComponent', () => {
 
     describe('if it`s a item upload', () => {
       it('should send the List Item CG tracking event', () => {
-        const uploadEvent: any = {
-          action: 'create',
-          response: {
-            id: MOCK_ITEM.id,
-            type: 'upload',
-          },
-        };
-        const uploadResponse: ItemContent = MOCK_RESPONSE_CONTENT;
+        const action = UploadAction.created;
+        const uploadResponse: ItemContent = MOCK_ITEM_RESPONSE_CONTENT;
         const expectedEvent: AnalyticsEvent<ListItemCG> = {
           name: ANALYTICS_EVENT_NAMES.ListItemCG,
           eventType: ANALYTIC_EVENT_TYPES.Other,
@@ -1107,11 +1193,10 @@ describe('UploadProductComponent', () => {
             screenId: SCREEN_IDS.Upload,
           },
         };
-        uploadEvent.response = uploadResponse;
         spyOn(analyticsService, 'trackEvent');
 
         component.ngOnInit();
-        component.onUploaded(uploadEvent);
+        component.onUploaded(uploadResponse, action);
 
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
       });
@@ -1128,6 +1213,26 @@ describe('UploadProductComponent', () => {
       expect(component.loading).toBeFalsy();
       expect(trackingService.track).toHaveBeenCalledWith(
         TrackingService.UPLOADFORM_ERROR
+      );
+    });
+    it('should show toast with default message', () => {
+      spyOn(errorService, 'i18nError').and.callThrough();
+
+      component.onError('error');
+
+      expect(errorService.i18nError).toHaveBeenCalledTimes(1);
+      expect(errorService.i18nError).toHaveBeenCalledWith('serverError', '');
+    });
+
+    it('should show toast with custom message', () => {
+      spyOn(errorService, 'i18nError').and.callThrough();
+
+      component.onError({ message: 'error' });
+
+      expect(errorService.i18nError).toHaveBeenCalledTimes(1);
+      expect(errorService.i18nError).toHaveBeenCalledWith(
+        'serverError',
+        'error'
       );
     });
   });
@@ -1521,5 +1626,113 @@ describe('UploadProductComponent', () => {
         expect(component.searchSuggestedCategories).toBeCalled();
       });
     }));
+  });
+
+  describe('delete image', () => {
+    it('should not remove imagen from form is service fails', () => {
+      component.item = MOCK_ITEM;
+      component.uploadForm.patchValue({
+        images: [UPLOAD_FILE_DONE, UPLOAD_FILE_DONE_2],
+      });
+      spyOn(uploadService, 'onDeleteImage').and.returnValue(throwError('err'));
+
+      component.onDeleteImage(UPLOAD_FILE_DONE.id);
+
+      expect(uploadService.onDeleteImage).toHaveBeenCalledTimes(1);
+      expect(uploadService.onDeleteImage).toHaveBeenCalledWith(
+        component.item.id,
+        UPLOAD_FILE_DONE.id
+      );
+      expect(component.uploadForm.get('images').value).toEqual([
+        UPLOAD_FILE_DONE,
+        UPLOAD_FILE_DONE_2,
+      ]);
+    });
+    it('should remove imagen from form is service is successful', () => {
+      component.item = MOCK_ITEM;
+      component.uploadForm.patchValue({
+        images: [UPLOAD_FILE_DONE, UPLOAD_FILE_DONE_2],
+      });
+      spyOn(uploadService, 'onDeleteImage').and.returnValue(of(null));
+
+      component.onDeleteImage(UPLOAD_FILE_DONE.id);
+
+      expect(uploadService.onDeleteImage).toHaveBeenCalledTimes(1);
+      expect(uploadService.onDeleteImage).toHaveBeenCalledWith(
+        component.item.id,
+        UPLOAD_FILE_DONE.id
+      );
+      expect(component.uploadForm.get('images').value).not.toContain(
+        UPLOAD_FILE_DONE
+      );
+      expect(component.uploadForm.get('images').value).toContain(
+        UPLOAD_FILE_DONE_2
+      );
+    });
+  });
+
+  describe('order images', () => {
+    it('should call the service', () => {
+      component.item = MOCK_ITEM;
+      const images = [UPLOAD_FILE_DONE, UPLOAD_FILE_DONE_2];
+      component.uploadForm.patchValue({ images });
+      spyOn(uploadService, 'updateOrder').and.callThrough();
+
+      component.onOrderImages();
+
+      expect(uploadService.updateOrder).toHaveBeenCalledTimes(1);
+      expect(uploadService.updateOrder).toHaveBeenCalledWith(
+        images,
+        MOCK_ITEM.id
+      );
+    });
+  });
+  describe('add single imagen', () => {
+    it('should show success toast', () => {
+      component.item = MOCK_ITEM;
+      const images = [UPLOAD_FILE_DONE, UPLOAD_FILE_2];
+      spyOn(uploadService, 'uploadSingleImage').and.returnValue(
+        of(MOCK_UPLOAD_OUTPUT_DONE)
+      );
+      spyOn(errorService, 'i18nSuccess').and.callThrough();
+
+      component.onAddImage(images[1]);
+
+      expect(uploadService.uploadSingleImage).toHaveBeenCalledTimes(1);
+      expect(uploadService.uploadSingleImage).toHaveBeenCalledWith(
+        images[1],
+        MOCK_ITEM.id,
+        ITEM_TYPES.CONSUMER_GOODS
+      );
+      expect(errorService.i18nSuccess).toHaveBeenCalledTimes(1);
+      expect(errorService.i18nSuccess).toHaveBeenCalledWith('imageUploaded');
+    });
+    it('should show image from form if fails', () => {
+      component.item = MOCK_ITEM;
+      const images = [UPLOAD_FILE_DONE, UPLOAD_FILE_2];
+      component.uploadForm.patchValue({
+        images,
+      });
+      spyOn(uploadService, 'uploadSingleImage').and.returnValue(
+        throwError('error')
+      );
+      spyOn(errorService, 'i18nError').and.callThrough();
+
+      component.onAddImage(images[1]);
+
+      expect(uploadService.uploadSingleImage).toHaveBeenCalledTimes(1);
+      expect(uploadService.uploadSingleImage).toHaveBeenCalledWith(
+        images[1],
+        MOCK_ITEM.id,
+        ITEM_TYPES.CONSUMER_GOODS
+      );
+      expect(errorService.i18nError).toHaveBeenCalledTimes(1);
+      expect(component.uploadForm.get('images').value).not.toContain(
+        UPLOAD_FILE_2
+      );
+      expect(component.uploadForm.get('images').value).toContain(
+        UPLOAD_FILE_DONE
+      );
+    });
   });
 });

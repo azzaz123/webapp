@@ -41,6 +41,7 @@ import { Item, ITEM_TYPES } from '../../core/item/item';
 import {
   DeliveryInfo,
   ItemContent,
+  ItemResponse,
 } from '../../core/item/item-response.interface';
 import { GeneralSuggestionsService } from './general-suggestions.service';
 import { KeywordSuggestion } from '../../shared/keyword-suggester/keyword-suggestion.interface';
@@ -68,7 +69,7 @@ import { I18nService } from 'app/core/i18n/i18n.service';
 import { UploadService } from '../drop-area/upload.service';
 import { deliveryInfo } from '../upload.constants';
 import { HttpErrorResponse } from '@angular/common/http';
-import { OutputType, UploadFile } from 'app/shared/uploader/upload.interface';
+import { OutputType, UploadAction, UploadFile, UploadOutput } from 'app/shared/uploader/upload.interface';
 
 function isObjectTypeRequiredValidator(formControl: AbstractControl) {
   const objectTypeControl: FormGroup = formControl?.parent as FormGroup;
@@ -423,14 +424,14 @@ export class UploadProductComponent
     }
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.uploadForm.valid) {
       this.loading = true;
       if (this.item && this.item.itemType === this.itemTypes.CONSUMER_GOODS) {
         this.uploadForm.value.sale_conditions.shipping_allowed = !!this
           .uploadForm.value.delivery_info;
       }
-      this.item ? this.uploadItem() : this.createItem();
+      this.item ? this.updateItem() : this.createItem();
     } else {
       this.invalidForm();
     }
@@ -453,13 +454,10 @@ export class UploadProductComponent
     this.uploadService
       .createItem(this.parseUploadForm(), ITEM_TYPES.CONSUMER_GOODS)
       .subscribe(
-        (response) => {
+        (response: UploadOutput) => {
           this.updateUploadPercentage(response.percentage);
           if (response.type === OutputType.done) {
-            this.onUploaded({
-              response: response.file.response,
-              action: 'created',
-            });
+            this.onUploaded(response.file.response, UploadAction.created);
           }
         },
         (error: HttpErrorResponse) => {
@@ -468,15 +466,12 @@ export class UploadProductComponent
       );
   }
 
-  private uploadItem(): void {
+  private updateItem(): void {
     this.uploadService
       .updateItem(this.parseUploadForm(), ITEM_TYPES.CONSUMER_GOODS)
       .subscribe(
-        (response) => {
-          this.onUploaded({
-            response,
-            action: 'updated',
-          });
+        (response: ItemResponse) => {
+          this.onUploaded(response.content, UploadAction.updated);
         },
         (error: HttpErrorResponse) => {
           this.onError(error);
@@ -496,9 +491,8 @@ export class UploadProductComponent
     return values;
   }
 
-  onUploaded(uploadEvent: any) {
+  onUploaded(response: ItemContent, action: UploadAction) {
     this.onFormChanged.emit(false);
-
     if (this.item) {
       this.trackingService.track(
         TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS,
@@ -515,16 +509,16 @@ export class UploadProductComponent
       this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, {
         category: this.uploadForm.value.category_id,
       });
-      uploadEvent.action = 'urgent';
+      action = UploadAction.urgent;
       localStorage.setItem('transactionType', 'urgent');
     }
 
-    this.trackEditOrUpload(!!this.item, uploadEvent.response).subscribe(() =>
+    this.trackEditOrUpload(!!this.item, response).subscribe(() =>
       this.router.navigate([
         '/catalog/list',
         {
-          [uploadEvent.action]: true,
-          itemId: uploadEvent.response.id || uploadEvent.response,
+          [action]: true,
+          itemId: response.id
         },
       ])
     );
@@ -918,22 +912,18 @@ export class UploadProductComponent
   onDeleteImage(imageId: string): void {
     this.uploadService
       .onDeleteImage(this.item.id, imageId)
-      .subscribe(() => this.removeFileFromForm(imageId));
+      .subscribe(
+        () => this.removeFileFromForm(imageId),
+        () => null
+        );
   }
 
   removeFileFromForm(imageId: string): void {
     const imagesControl: FormControl = this.uploadForm.get(
       'images'
     ) as FormControl;
-    imagesControl.patchValue(
-      imagesControl.value.filter((image) => {
-        return (
-          image.id !== imageId &&
-          image.response !== imageId &&
-          image.response?.id !== imageId
-        );
-      })
-    );
+    const images: UploadFile[] = imagesControl.value;
+    imagesControl.patchValue(images.filter((image) => image.id !== imageId));
   }
 
   onOrderImages(): void {

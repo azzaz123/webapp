@@ -22,7 +22,7 @@ import {
   CAR_VERSIONS,
   CAR_YEARS,
   MOCK_CAR,
-  MOCK_RESPONSE_CONTENT,
+  MOCK_CAR_RESPONSE_CONTENT,
 } from '../../../tests/car.fixtures.spec';
 import {
   NgbModal,
@@ -727,7 +727,7 @@ describe('UploadCarComponent', () => {
 
       it('should upload the item if the service success', () => {
         spyOn(uploadService, 'updateItem').and.returnValue(
-          of({ content: MOCK_RESPONSE_CONTENT })
+          of(MOCK_CAR_RESPONSE_CONTENT)
         );
         spyOn(component, 'onUploaded');
         fixture.detectChanges();
@@ -740,7 +740,7 @@ describe('UploadCarComponent', () => {
         );
         expect(component.onUploaded).toHaveBeenCalledTimes(1);
         expect(component.onUploaded).toHaveBeenCalledWith(
-          MOCK_RESPONSE_CONTENT,
+          MOCK_CAR_RESPONSE_CONTENT,
           UploadAction.updated
         );
       });
@@ -772,7 +772,7 @@ describe('UploadCarComponent', () => {
 
   describe('onUploaded', () => {
     const action = UploadAction.updated;
-    const response = MOCK_RESPONSE_CONTENT;
+    const response = MOCK_CAR_RESPONSE_CONTENT;
     it('should redirect', () => {
       component.item = <Car>MOCK_ITEM_V3;
       component.item.flags.onhold = null;
@@ -819,7 +819,7 @@ describe('UploadCarComponent', () => {
       it('should send the Edit Item Car tracking event', () => {
         component.item = MOCK_CAR;
         const action = UploadAction.updated;
-        const editResponse: CarContent = MOCK_RESPONSE_CONTENT;
+        const editResponse: CarContent = MOCK_CAR_RESPONSE_CONTENT;
         const expectedEvent: AnalyticsEvent<EditItemCar> = {
           name: ANALYTICS_EVENT_NAMES.EditItemCar,
           eventType: ANALYTIC_EVENT_TYPES.Other,
@@ -854,7 +854,7 @@ describe('UploadCarComponent', () => {
     describe('if it`s a item upload', () => {
       it('should send the List Item Car tracking event', () => {
         const action = UploadAction.created;
-        const uploadResponse: CarContent = MOCK_RESPONSE_CONTENT;
+        const uploadResponse: CarContent = MOCK_CAR_RESPONSE_CONTENT;
         const expectedEvent: AnalyticsEvent<ListItemCar> = {
           name: ANALYTICS_EVENT_NAMES.ListItemCar,
           eventType: ANALYTIC_EVENT_TYPES.Other,

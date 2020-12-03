@@ -20,9 +20,7 @@ import { UploaderService } from 'app/shared/uploader/uploader.service';
 import { Image } from '../../core/user/user-response.interface';
 import { Observable } from 'rxjs';
 import {
-  ItemResponse,
-  ItemProResponse,
-  CarResponse,
+  CarContent, ItemResponse, RealStateResponse
 } from 'app/core/item/item-response.interface';
 
 @Injectable()
@@ -72,7 +70,7 @@ export class UploadService {
     values: any,
     type: ITEM_TYPES
   ): Observable<
-    ItemResponse | ItemProResponse | CarResponse | ItemProResponse
+    ItemResponse | CarContent | RealStateResponse
   > {
     return this.itemService.update(values, type);
   }

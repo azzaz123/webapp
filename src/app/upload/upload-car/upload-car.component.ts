@@ -27,7 +27,6 @@ import { ItemService } from '../../core/item/item.service';
 import {
   CarInfo,
   CarContent,
-  CarResponse,
 } from '../../core/item/item-response.interface';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { UserService } from '../../core/user/user.service';
@@ -424,8 +423,8 @@ export class UploadCarComponent implements OnInit {
     this.uploadService
       .updateItem(this.uploadForm.value, ITEM_TYPES.CARS)
       .subscribe(
-        (response: CarResponse) => {
-          this.onUploaded(response.content, UploadAction.updated);
+        (response: CarContent) => {
+          this.onUploaded(response, UploadAction.updated);
         },
         (error: HttpErrorResponse) => {
           this.onError(error);

@@ -304,7 +304,7 @@ export const CAR_INFO: CarInfo = {
   version: 'version',
 };
 
-export const MOCK_RESPONSE_CONTENT: CarContent = {
+export const MOCK_CAR_RESPONSE_CONTENT: CarContent = {
   id: MOCK_CAR.id,
   category_id: MOCK_CAR.categoryId,
   sale_price: MOCK_CAR.salePrice,
