@@ -20,11 +20,11 @@ import {
   getMockItemWithPurchases,
 } from '../../../../tests/item.fixtures.spec';
 import { of } from 'rxjs';
-import { ItemChangeEvent } from '../../../catalog/list/catalog-item/item-change.interface';
 import { Item } from '../../../core/item/item';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { environment } from '../../../../environments/environment';
 import { EventService } from '../../../core/event/event.service';
+import { ItemChangeEvent } from '@features/catalog/core/item-change.interface';
 
 describe('CatalogCardComponent', () => {
   let component: CatalogCardComponent;

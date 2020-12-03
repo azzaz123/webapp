@@ -1,4 +1,5 @@
 import { Component, HostListener, OnDestroy } from '@angular/core';
+import { BumpTutorialService } from '@features/catalog/core/services/bump-tutorial.service';
 import { range } from 'lodash-es';
 
 export enum KEY_CODE {

@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterModule, Routes } from '@angular/router';
 
-import { ListComponent } from './list/list.component';
-import { LoggedGuard } from '../core/user/logged.guard';
 import { CatalogComponent } from './catalog.component';
-import { CheckoutComponent } from './checkout/checkout.component';
 import { NgxPermissionsGuard } from 'ngx-permissions';
-import { PERMISSIONS } from '../core/user/user';
 import { isEmpty } from 'lodash-es';
+import { LoggedGuard } from '@core/user/logged.guard';
+import { PERMISSIONS } from '@core/user/user';
+import { CheckoutComponent } from './pages/checkout/checkout.component';
+import { ListComponent } from './pages/list/list.component';
 
 export function isNormalCatalogPermissions(
   rejectedPermissionName: string,

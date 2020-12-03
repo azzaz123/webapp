@@ -14,13 +14,13 @@ import { I18nService } from '../../core/i18n/i18n.service';
 import { EventService } from '../../core/event/event.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ItemService, ITEM_STATUS } from '../../core/item/item.service';
-import { OrderEvent } from '../../catalog/list/selected-items/selected-product.interface';
-import { UploadConfirmationModalComponent } from '../../catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component';
-import { ItemChangeEvent } from '../../catalog/list/catalog-item/item-change.interface';
 import { FinancialCard } from '../../core/payments/payment.interface';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
 import { Order, Product } from '../../core/item/item-response.interface';
 import { UuidService } from '../../core/uuid/uuid.service';
+import { OrderEvent } from '@features/catalog/components/selected-items/selected-product.interface';
+import { ItemChangeEvent } from '@features/catalog/core/item-change.interface';
+import { UploadConfirmationModalComponent } from '@features/catalog/modals/upload-confirmation-modal/upload-confirmation-modal.component';
 
 @Component({
   selector: 'tsl-catalog-pro-list',
