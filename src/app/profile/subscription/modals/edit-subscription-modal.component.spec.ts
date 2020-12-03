@@ -126,7 +126,7 @@ describe('EditSubscriptionModalComponent', () => {
     it('should close the modal and redirect to the profile', () => {
       spyOn(activeModal, 'close');
 
-      component.close();
+      component.close('');
 
       expect(activeModal.close).toHaveBeenCalled();
     });
