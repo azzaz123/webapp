@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Item } from '../../../../core/item/item';
-import { TrackingService } from '../../../../core/tracking/tracking.service';
-import { UserService } from '../../../../core/user/user.service';
-import { PaymentService } from '../../../../core/payments/payment.service';
-import { EventService } from '../../../../core/event/event.service';
-import { CreditInfo } from '../../../../core/payments/payment.interface';
+import { Item } from '@core/item/item';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { UserService } from '@core/user/user.service';
+import { PaymentService } from '@core/payments/payment.service';
+import { EventService } from '@core/event/event.service';
+import { CreditInfo } from '@core/payments/payment.interface';
 
 @Component({
   selector: 'tsl-urgent-confirmation-modal',

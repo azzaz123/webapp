@@ -1,19 +1,15 @@
 import { takeWhile } from 'rxjs/operators';
 import { Component, Input, OnDestroy, OnInit, OnChanges } from '@angular/core';
-import { ItemWithProducts } from '../../../core/item/item-response.interface';
+import { ItemWithProducts } from '@core/item/item-response.interface';
 import { keys } from 'lodash-es';
-import { CartService } from '../../../shared/catalog/cart/cart.service';
-import {
-  CartChange,
-  CartItem,
-} from '../../../shared/catalog/cart/cart-item.interface';
+import { CartService } from '@shared/catalog/cart/cart.service';
+import { CartChange, CartItem } from '@shared/catalog/cart/cart-item.interface';
 import {
   BUMP_PROVINCIAL_TYPES,
   BUMP_TYPES,
-} from '../../../shared/catalog/cart/cart-base';
-import { Cart } from '../../../shared/catalog/cart/cart';
-import { PaymentService } from '../../../core/payments/payment.service';
-import { CreditInfo } from '../../../core/payments/payment.interface';
+} from '@shared/catalog/cart/cart-base';
+import { Cart } from '@shared/catalog/cart/cart';
+import { CreditInfo } from '@core/payments/payment.interface';
 
 @Component({
   selector: 'tsl-checkout-item',

@@ -9,15 +9,15 @@ import {
 import { UrgentConfirmationModalComponent } from './urgent-confirmation-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { TrackingService } from '../../../../core/tracking/tracking.service';
-import { UserService } from '../../../../core/user/user.service';
-import { MOCK_USER } from '../../../../../tests/user.fixtures.spec';
-import { MockTrackingService } from '../../../../../tests/tracking.fixtures.spec';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { UserService } from '@core/user/user.service';
+import { MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { DecimalPipe } from '@angular/common';
-import { CustomCurrencyPipe } from '../../../../shared/pipes';
-import { PaymentService } from '../../../../core/payments/payment.service';
-import { EventService } from '../../../../core/event/event.service';
-import { CreditInfo } from '../../../../core/payments/payment.interface';
+import { CustomCurrencyPipe } from '@shared/pipes';
+import { PaymentService } from '@core/payments/payment.service';
+import { EventService } from '@core/event/event.service';
+import { CreditInfo } from '@core/payments/payment.interface';
 import { environment } from 'environments/environment';
 
 describe('UrgentConfirmationModalComponent', () => {

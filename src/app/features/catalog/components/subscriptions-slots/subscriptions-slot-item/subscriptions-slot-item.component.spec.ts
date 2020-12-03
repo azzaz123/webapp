@@ -2,17 +2,17 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { SubscriptionsSlotItemComponent } from './subscriptions-slot-item.component';
-import { MOCK_SUBSCRIPTION_SLOT_CARS } from '../../../../../tests/subscriptions.fixtures.spec';
-import { CATEGORY_DATA_WEB } from '../../../../../tests/category.fixtures.spec';
-import { AnalyticsService } from '../../../../core/analytics/analytics.service';
-import { MockAnalyticsService } from '../../../../../tests/analytics.fixtures.spec';
+import { MOCK_SUBSCRIPTION_SLOT_CARS } from '@fixtures/subscriptions.fixtures.spec';
+import { CATEGORY_DATA_WEB } from '@fixtures/category.fixtures.spec';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import {
   AnalyticsEvent,
   ClickCatalogManagement,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   SCREEN_IDS,
-} from '../../../../core/analytics/analytics-constants';
+} from '@core/analytics/analytics-constants';
 
 describe('SubscriptionsSlotItemComponent', () => {
   let component: SubscriptionsSlotItemComponent;

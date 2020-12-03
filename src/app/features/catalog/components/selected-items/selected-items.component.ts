@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Item } from '../../../core/item/item';
-import { ItemService } from '../../../core/item/item.service';
-import { SubscriptionSlot } from '../../../core/subscriptions/subscriptions.interface';
+import { Item } from '@core/item/item';
+import { ItemService } from '@core/item/item.service';
+import { SubscriptionSlot } from '@core/subscriptions/subscriptions.interface';
 import { STATUS } from './selected-product.interface';
 
 @Component({

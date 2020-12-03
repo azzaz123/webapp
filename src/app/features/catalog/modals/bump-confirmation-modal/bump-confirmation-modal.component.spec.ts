@@ -8,15 +8,15 @@ import {
 import { BumpConfirmationModalComponent } from './bump-confirmation-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { TrackingService } from '../../../../core/tracking/tracking.service';
-import { UserService } from '../../../../core/user/user.service';
-import { MockTrackingService } from '../../../../../tests/tracking.fixtures.spec';
-import { MOCK_USER } from '../../../../../tests/user.fixtures.spec';
-import { PaymentService } from '../../../../core/payments/payment.service';
-import { CustomCurrencyPipe } from '../../../../shared/pipes';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { UserService } from '@core/user/user.service';
+import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
+import { MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { PaymentService } from '@core/payments/payment.service';
+import { CustomCurrencyPipe } from '@shared/pipes';
 import { DecimalPipe } from '@angular/common';
-import { EventService } from '../../../../core/event/event.service';
-import { CreditInfo } from '../../../../core/payments/payment.interface';
+import { EventService } from '@core/event/event.service';
+import { CreditInfo } from '@core/payments/payment.interface';
 import { environment } from 'environments/environment';
 
 let component: BumpConfirmationModalComponent;

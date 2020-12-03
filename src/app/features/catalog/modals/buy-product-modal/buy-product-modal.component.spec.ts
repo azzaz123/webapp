@@ -4,22 +4,20 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { BuyProductModalComponent } from './buy-product-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
-import { CustomCurrencyPipe } from '../../../../shared/pipes';
-import {
-  MOCK_ITEM_V3,
-  ORDER_EVENT,
-} from '../../../../../tests/item.fixtures.spec';
-import { ItemService } from '../../../../core/item/item.service';
+import { CustomCurrencyPipe } from '@shared/pipes';
+import { MOCK_ITEM_V3, ORDER_EVENT } from '@fixtures/item.fixtures.spec';
+import { ItemService } from '@core/item/item.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { PaymentService } from '../../../../core/payments/payment.service';
-import { EventService } from '../../../../core/event/event.service';
-import { CreditInfo } from '../../../../core/payments/payment.interface';
-import { OrderEvent } from '../../selected-items/selected-product.interface';
-import { StripeService } from '../../../../core/stripe/stripe.service';
+import { PaymentService } from '@core/payments/payment.service';
+import { EventService } from '@core/event/event.service';
+import { CreditInfo } from '@core/payments/payment.interface';
+
+import { StripeService } from '@core/stripe/stripe.service';
 import { Router } from '@angular/router';
-import { STRIPE_CARD_OPTION } from '../../../../../tests/stripe.fixtures.spec';
-import { ErrorsService } from '../../../../core/errors/errors.service';
-import { UuidService } from '../../../../core/uuid/uuid.service';
+import { STRIPE_CARD_OPTION } from '@fixtures/stripe.fixtures.spec';
+import { ErrorsService } from '@core/errors/errors.service';
+import { UuidService } from '@core/uuid/uuid.service';
+import { OrderEvent } from '@features/catalog/components/selected-items/selected-product.interface';
 
 describe('BuyProductModalComponent', () => {
   let component: BuyProductModalComponent;

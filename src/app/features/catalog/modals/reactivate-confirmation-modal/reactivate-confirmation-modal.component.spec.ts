@@ -10,10 +10,10 @@ import {
 import { ReactivateConfirmationModalComponent } from './reactivate-confirmation-modal.component';
 import { DecimalPipe } from '@angular/common';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { CustomCurrencyPipe } from '../../../../shared/pipes';
-import { PaymentService } from '../../../../core/payments/payment.service';
-import { CreditInfo } from '../../../../core/payments/payment.interface';
-import { EventService } from '../../../../core/event/event.service';
+import { CustomCurrencyPipe } from '@shared/pipes';
+import { PaymentService } from '@core/payments/payment.service';
+import { CreditInfo } from '@core/payments/payment.interface';
+import { EventService } from '@core/event/event.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('ReactivateConfirmationModalComponent', () => {

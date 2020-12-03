@@ -33,7 +33,7 @@ import { NavLink } from '@shared/nav-links/nav-link.interface';
 import { User } from '@core/user/user';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { BumpTutorialComponent } from '@features/catalog/components/bump-tutorial/bump-tutorial.component';
-import { ItemChangeEvent } from '@features/catalog/components/catalog-item/item-change.interface';
+import { ItemChangeEvent } from '@features/catalog/core/item-change.interface';
 import {
   STATUS,
   OrderEvent,

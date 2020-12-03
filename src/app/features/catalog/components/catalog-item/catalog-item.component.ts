@@ -1,3 +1,5 @@
+import { ReactivateModalComponent } from '../../modals/reactivate-modal/reactivate-modal.component';
+
 import {
   Component,
   EventEmitter,
@@ -7,19 +9,18 @@ import {
   Output,
 } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ToastService } from '../../../layout/toast/toast.service';
+import { ToastService } from '@layout/toast/toast.service';
 
-import { ItemService } from '../../../core/item/item.service';
-import { ItemChangeEvent } from './item-change.interface';
-import { TrackingService } from '../../../core/tracking/tracking.service';
-import { ReactivateModalComponent } from '../modals/reactivate-modal/reactivate-modal.component';
-import { Order, Product } from '../../../core/item/item-response.interface';
+import { ItemService } from '@core/item/item.service';
+import { ItemChangeEvent } from '../../core/item-change.interface';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { Order, Product } from '@core/item/item-response.interface';
 import { OrderEvent } from '../selected-items/selected-product.interface';
-import { DEFAULT_ERROR_MESSAGE } from '../../../core/errors/errors.service';
-import { Item } from '../../../core/item/item';
-import { EventService } from '../../../core/event/event.service';
+import { DEFAULT_ERROR_MESSAGE } from '@core/errors/errors.service';
+import { Item } from '@core/item/item';
+import { EventService } from '@core/event/event.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { PAYMENT_METHOD } from '../../../core/payments/payment.service';
+import { PAYMENT_METHOD } from '@core/payments/payment.service';
 
 @Component({
   selector: 'tsl-catalog-item',

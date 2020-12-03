@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { TutorialService } from '../../../core/tutorial/tutorial.service';
-import { UserService } from '../../../core/user/user.service';
+import { TutorialService } from '@core/tutorial/tutorial.service';
+import { UserService } from '@core/user/user.service';
 
 @Injectable()
 export class BumpTutorialService extends TutorialService {

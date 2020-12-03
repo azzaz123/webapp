@@ -2,7 +2,7 @@ import { of } from 'rxjs';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CheckoutItemComponent } from './checkout-item.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CustomCurrencyPipe } from '../../../shared/pipes';
+import { CustomCurrencyPipe } from '@shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import {
   CITYBUMP_DURATIONS,
@@ -10,10 +10,10 @@ import {
   ITEMS_WITH_PRODUCTS,
   ITEMS_WITH_PRODUCTS_PROVINCE,
   MOCK_ITEM_V3,
-} from '../../../../tests/item.fixtures.spec';
-import { CartService } from '../../../shared/catalog/cart/cart.service';
-import { Cart } from '../../../shared/catalog/cart/cart';
-import { CartChange } from '../../../shared/catalog/cart/cart-item.interface';
+} from '@fixtures/item.fixtures.spec';
+import { CartService } from '@shared/catalog/cart/cart.service';
+import { Cart } from '@shared/catalog/cart/cart';
+import { CartChange } from '@shared/catalog/cart/cart-item.interface';
 
 describe('CheckoutItemComponent', () => {
   let component: CheckoutItemComponent;

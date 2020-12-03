@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Item } from '../../../../core/item/item';
-import { PaymentService } from '../../../../core/payments/payment.service';
-import { CreditInfo } from '../../../../core/payments/payment.interface';
+import { Item } from '@core/item/item';
+import { PaymentService } from '@core/payments/payment.service';
+import { CreditInfo } from '@core/payments/payment.interface';
 
 @Component({
   selector: 'tsl-reactivate-modal',

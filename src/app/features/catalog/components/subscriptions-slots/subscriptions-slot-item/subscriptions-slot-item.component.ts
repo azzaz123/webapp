@@ -1,13 +1,13 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { SubscriptionSlot } from '../../../../core/subscriptions/subscriptions.interface';
-import { AnalyticsService } from '../../../../core/analytics/analytics.service';
+import { SubscriptionSlot } from '@core/subscriptions/subscriptions.interface';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 import {
   AnalyticsEvent,
   ClickCatalogManagement,
   SCREEN_IDS,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
-} from '../../../../core/analytics/analytics-constants';
+} from '@core/analytics/analytics-constants';
 
 @Component({
   selector: 'tsl-subscriptions-slot-item',

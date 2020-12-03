@@ -1,14 +1,14 @@
 import { share } from 'rxjs/operators';
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { TrackingService } from '../../../../core/tracking/tracking.service';
-import { Order, Product } from '../../../../core/item/item-response.interface';
-import { OrderEvent } from '../../selected-items/selected-product.interface';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { Order, Product } from '@core/item/item-response.interface';
 import { Observable } from 'rxjs';
-import { ItemService } from '../../../../core/item/item.service';
-import { Item } from '../../../../core/item/item';
-import { PaymentService } from '../../../../core/payments/payment.service';
-import { CreditInfo } from '../../../../core/payments/payment.interface';
+import { ItemService } from '@core/item/item.service';
+import { Item } from '@core/item/item';
+import { PaymentService } from '@core/payments/payment.service';
+import { CreditInfo } from '@core/payments/payment.interface';
+import { OrderEvent } from '@features/catalog/components/selected-items/selected-product.interface';
 
 @Component({
   selector: 'tsl-upload-confirmation-modal',

@@ -1,21 +1,21 @@
-import { Component, EventEmitter, OnInit } from '@angular/core';
-import { OrderEvent } from '../../selected-items/selected-product.interface';
-import { ItemService } from '../../../../core/item/item.service';
-import { Item } from '../../../../core/item/item';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { PurchaseProductsWithCreditsResponse } from '../../../../core/item/item-response.interface';
-import {
-  PaymentService,
-  PAYMENT_RESPONSE_STATUS,
-} from '../../../../core/payments/payment.service';
-import { EventService } from '../../../../core/event/event.service';
+import { Component, OnInit } from '@angular/core';
+import { ErrorsService } from '@core/errors/errors.service';
+import { EventService } from '@core/event/event.service';
+import { Item } from '@core/item/item';
+import { PurchaseProductsWithCreditsResponse } from '@core/item/item-response.interface';
+import { ItemService } from '@core/item/item.service';
 import {
   CreditInfo,
   FinancialCardOption,
-} from '../../../../core/payments/payment.interface';
-import { StripeService } from '../../../../core/stripe/stripe.service';
-import { ErrorsService } from '../../../../core/errors/errors.service';
-import { UuidService } from '../../../../core/uuid/uuid.service';
+} from '@core/payments/payment.interface';
+import {
+  PaymentService,
+  PAYMENT_RESPONSE_STATUS,
+} from '@core/payments/payment.service';
+import { StripeService } from '@core/stripe/stripe.service';
+import { UuidService } from '@core/uuid/uuid.service';
+import { OrderEvent } from '@features/catalog/components/selected-items/selected-product.interface';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'tsl-buy-product-modal',

@@ -7,15 +7,14 @@ import {
 } from '@angular/core/testing';
 
 import { CatalogItemComponent } from './catalog-item.component';
-import { ItemChangeEvent } from './item-change.interface';
+import { ItemChangeEvent } from '../../core/item-change.interface';
 import { of, ReplaySubject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ItemService } from '../../../core/item/item.service';
-import { CustomCurrencyPipe } from '../../../shared/pipes';
+import { ItemService } from '@core/item/item.service';
+import { CustomCurrencyPipe } from '@shared/pipes';
 import { DecimalPipe } from '@angular/common';
-import { TrackingService } from '../../../core/tracking/tracking.service';
-import { ReactivateModalComponent } from '../modals/reactivate-modal/reactivate-modal.component';
+import { TrackingService } from '@core/tracking/tracking.service';
 import {
   ITEM_ID,
   MOCK_ITEM,
@@ -23,16 +22,17 @@ import {
   PRODUCT_DURATION_MARKET_CODE,
   PRODUCT_RESPONSE,
   ITEM_WEB_SLUG,
-} from '../../../../tests/item.fixtures.spec';
-import { ErrorsService } from '../../../core/errors/errors.service';
-import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
-import { Item } from '../../../core/item/item';
-import { EventService } from '../../../core/event/event.service';
-import { environment } from '../../../../environments/environment';
+} from '@fixtures/item.fixtures.spec';
+import { ErrorsService } from '@core/errors/errors.service';
+import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
+import { Item } from '@core/item/item';
+import { EventService } from '@core/event/event.service';
+import { environment } from '@environments/environment';
 import * as moment from 'moment';
-import { ThousandSuffixesPipe } from '../../../shared/number-conversion/thousand-suffixes.pipe';
-import { SelectedItemsAction } from '../../../core/item/item-response.interface';
+import { ThousandSuffixesPipe } from '@shared/number-conversion/thousand-suffixes.pipe';
+import { SelectedItemsAction } from '@core/item/item-response.interface';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { ReactivateModalComponent } from '../../modals/reactivate-modal/reactivate-modal.component';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;

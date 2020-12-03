@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { TrackingService } from '../../../../core/tracking/tracking.service';
-import { UserService } from '../../../../core/user/user.service';
-import { PaymentService } from '../../../../core/payments/payment.service';
-import { CreditInfo } from '../../../../core/payments/payment.interface';
-import { EventService } from '../../../../core/event/event.service';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { UserService } from '@core/user/user.service';
+import { PaymentService } from '@core/payments/payment.service';
+import { CreditInfo } from '@core/payments/payment.interface';
+import { EventService } from '@core/event/event.service';
 
 @Component({
   selector: 'tsl-bump-confirmation-modal',

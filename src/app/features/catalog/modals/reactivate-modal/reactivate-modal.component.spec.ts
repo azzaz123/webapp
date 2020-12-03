@@ -4,11 +4,11 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactivateModalComponent } from './reactivate-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { CustomCurrencyPipe } from '../../../../shared/pipes';
+import { CustomCurrencyPipe } from '@shared/pipes';
 import { DecimalPipe } from '@angular/common';
-import { MOCK_ITEM } from '../../../../../tests/item.fixtures.spec';
-import { PaymentService } from '../../../../core/payments/payment.service';
-import { CreditInfo } from '../../../../core/payments/payment.interface';
+import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
+import { PaymentService } from '@core/payments/payment.service';
+import { CreditInfo } from '@core/payments/payment.interface';
 
 describe('ReactivateModalComponent', () => {
   let component: ReactivateModalComponent;

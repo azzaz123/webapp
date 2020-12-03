@@ -1,4 +1,4 @@
-import { OrderEvent } from '../selected-items/selected-product.interface';
+import { OrderEvent } from '../components/selected-items/selected-product.interface';
 import { Item } from '../../../core/item/item';
 
 export interface ItemChangeEvent {

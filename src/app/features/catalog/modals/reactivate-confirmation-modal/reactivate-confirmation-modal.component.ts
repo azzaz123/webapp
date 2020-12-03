@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { CreditInfo } from '../../../../core/payments/payment.interface';
-import { PaymentService } from '../../../../core/payments/payment.service';
-import { EventService } from '../../../../core/event/event.service';
+import { CreditInfo } from '@core/payments/payment.interface';
+import { PaymentService } from '@core/payments/payment.service';
+import { EventService } from '@core/event/event.service';
 
 @Component({
   selector: 'tsl-reactivate-confirmation-modal',

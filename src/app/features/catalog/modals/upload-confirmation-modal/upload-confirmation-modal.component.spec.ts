@@ -3,19 +3,19 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { UploadConfirmationModalComponent } from './upload-confirmation-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { TrackingService } from '../../../../core/tracking/tracking.service';
-import { ItemService } from '../../../../core/item/item.service';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { ItemService } from '@core/item/item.service';
 import {
   PRODUCT_RESPONSE,
   ORDER_EVENT,
   PRODUCT_DURATION_ID,
   MOCK_ITEM,
-} from '../../../../../tests/item.fixtures.spec';
-import { MockTrackingService } from '../../../../../tests/tracking.fixtures.spec';
+} from '@fixtures/item.fixtures.spec';
+import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { DecimalPipe } from '@angular/common';
-import { CustomCurrencyPipe } from '../../../../shared/pipes';
-import { PaymentService } from '../../../../core/payments/payment.service';
-import { CreditInfo } from '../../../../core/payments/payment.interface';
+import { CustomCurrencyPipe } from '@shared/pipes';
+import { PaymentService } from '@core/payments/payment.service';
+import { CreditInfo } from '@core/payments/payment.interface';
 
 describe('UploadConfirmationModalComponent', () => {
   let component: UploadConfirmationModalComponent;

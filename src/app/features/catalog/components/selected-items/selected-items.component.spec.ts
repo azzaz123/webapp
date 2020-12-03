@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SelectedItemsComponent } from './selected-items.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ItemService } from '../../../core/item/item.service';
+import { ItemService } from '@core/item/item.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ReplaySubject } from 'rxjs';
-import { createItemsArray } from '../../../../tests/item.fixtures.spec';
+import { createItemsArray } from '@fixtures/item.fixtures.spec';
 
 describe('SelectedItemsComponent', () => {
   let component: SelectedItemsComponent;
