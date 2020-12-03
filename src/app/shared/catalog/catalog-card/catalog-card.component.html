@@ -32,11 +32,11 @@
         <span i18n *ngIf="item.purchases.scheduled_bump_type && !item.plannedStartsToday">
           From {{item.purchases.scheduled_start_date | date:'dd/MM/yy'}} to {{item.purchases.scheduled_end_date | date:'dd/MM/yy'}}
         </span>
-        <span i18n *ngIf="!item.purchases.scheduled_bump_type && !item.plannedStartsToday">
-          <tsl-date-countdown [dateEndTimestamp]="item.purchases.expiration_date"></tsl-date-countdown> remaining
+        <span *ngIf="!item.purchases.scheduled_bump_type && !item.plannedStartsToday">
+          <tsl-date-countdown [dateEndTimestamp]="item.purchases.expiration_date"></tsl-date-countdown>
         </span>
-        <span i18n *ngIf="item.purchases.scheduled_bump_type && item.plannedStartsToday">
-          <tsl-date-countdown [dateEndTimestamp]="item.purchases.scheduled_end_date"></tsl-date-countdown> remaining
+        <span *ngIf="item.purchases.scheduled_bump_type && item.plannedStartsToday">
+          <tsl-date-countdown [dateEndTimestamp]="item.purchases.scheduled_end_date"></tsl-date-countdown>
         </span>
         <span class="cancel-bump {{item.purchases.bump_type || item.purchases.scheduled_bump_type}}"
               (click)="cancelAutorenew(item, cancelAutorenewModal)"
