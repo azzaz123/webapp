@@ -1,6 +1,10 @@
 import { Observable, of } from 'rxjs';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  DebugElement,
+  NO_ERRORS_SCHEMA,
+} from '@angular/core';
 import { TopbarComponent } from './topbar.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserService } from '../../core/user/user.service';
@@ -16,6 +20,7 @@ import { PaymentService } from '../../core/payments/payment.service';
 import { CustomCurrencyPipe } from '../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import { CookieService } from 'ngx-cookie';
+import {} from '@core/http/access-token.service';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -36,6 +41,8 @@ const MOCK_USER = new User(
 
 describe('TopbarComponent', () => {
   let component: TopbarComponent;
+  let de: DebugElement;
+  let el: HTMLElement;
   let userService: UserService;
   let fixture: ComponentFixture<TopbarComponent>;
   let eventService: EventService;
@@ -58,6 +65,9 @@ describe('TopbarComponent', () => {
               },
               isProfessional() {
                 return of(true);
+              },
+              get isLogged(): boolean {
+                return true;
               },
             },
           },
@@ -100,6 +110,8 @@ describe('TopbarComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TopbarComponent);
     component = fixture.componentInstance;
+    de = fixture.debugElement;
+    el = de.nativeElement;
     fixture.detectChanges();
     eventService = TestBed.inject(EventService);
     paymentService = TestBed.inject(PaymentService);
@@ -111,6 +123,26 @@ describe('TopbarComponent', () => {
   });
 
   describe('ngOnInit', () => {
+    it('should set isLogged variable with userService isLogged value', () => {
+      component.isLogged = null;
+      component.ngOnInit();
+      expect(component.isLogged).toBe(true);
+    });
+
+    it('should update isLogged with userService isLogged value on USER_LOGIN event', () => {
+      component.isLogged = null;
+      component.ngOnInit();
+      eventService.emit(EventService.USER_LOGIN);
+      expect(component.isLogged).toBe(true);
+    });
+
+    it('should update isLogged with userService isLogged value on USER_LOGOUT event', () => {
+      component.isLogged = null;
+      component.ngOnInit();
+      eventService.emit(EventService.USER_LOGOUT);
+      expect(component.isLogged).toBe(true);
+    });
+
     it('should set the private user variable with the content of the user', () => {
       component.user = null;
       component.ngOnInit();
@@ -175,6 +207,61 @@ describe('TopbarComponent', () => {
         component.wallacoins.toString(),
         cookieOptions
       );
+    });
+  });
+
+  describe('user session', () => {
+    const suggesterSelector = '#top-bar-suggester';
+    const messagesBtnSelector = '#top-bar-inbox';
+    const wallacoinsBtnSelector = '#top-bar-wallacoins';
+    const myZoneBtnSelector = '#top-bar-my-zone';
+    const signinSignupBtnSelector = '#top-bar-signin';
+    const newProductBtnSelector = '#top-bar-upload';
+
+    describe('logged', () => {
+      beforeEach(() => {
+        component.isLogged = true;
+        fixture.detectChanges();
+      });
+      it('should show logged elements', () => {
+        expect(el.querySelector(suggesterSelector)).not.toBeNull();
+        expect(el.querySelector(messagesBtnSelector)).not.toBeNull();
+        expect(el.querySelector(wallacoinsBtnSelector)).not.toBeNull();
+        expect(el.querySelector(myZoneBtnSelector)).not.toBeNull();
+        expect(el.querySelector(newProductBtnSelector)).not.toBeNull();
+      });
+
+      it('should not show no logged elements', () => {
+        expect(el.querySelector(signinSignupBtnSelector)).toBeNull();
+      });
+    });
+
+    describe('NO logged', () => {
+      beforeEach(() => {
+        component.isLogged = false;
+        fixture.detectChanges();
+      });
+
+      it('should show not logged elements', () => {
+        expect(el.querySelector(suggesterSelector)).not.toBeNull();
+        expect(el.querySelector(messagesBtnSelector)).not.toBeNull();
+        expect(el.querySelector(signinSignupBtnSelector)).not.toBeNull();
+        expect(el.querySelector(newProductBtnSelector)).not.toBeNull();
+      });
+
+      it('should not show logged elements', () => {
+        expect(el.querySelector(wallacoinsBtnSelector)).toBeNull();
+        expect(el.querySelector(myZoneBtnSelector)).toBeNull();
+      });
+    });
+  });
+
+  describe('update keyword', () => {
+    const newKeyword = 'iphone';
+    it('should update the keyword', () => {
+      component.kws = 'iphone';
+      component.onKeywordUpdate(newKeyword);
+      expect(component.kws).toEqual(newKeyword);
     });
   });
 
