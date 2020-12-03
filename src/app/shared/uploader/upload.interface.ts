@@ -16,6 +16,13 @@ export enum OutputType {
   start = 'start',
 }
 
+export enum UploadAction {
+  created = 'created',
+  updated = 'updated',
+  urgent = 'urgent',
+  createdOnHold = 'createdOnHold',
+}
+
 export enum InputType {
   uploadRemainingImages = 'uploadRemainingImages',
   uploadFile = 'uploadFile',

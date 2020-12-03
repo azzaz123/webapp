@@ -12,11 +12,18 @@ import {
   InputType,
   UploadFile,
   UploadInput,
+  UploadOutput,
   UploadStatus,
 } from '../../shared/uploader/upload.interface';
 import { ItemService } from 'app/core/item/item.service';
 import { UploaderService } from 'app/shared/uploader/uploader.service';
 import { Image } from '../../core/user/user-response.interface';
+import { Observable } from 'rxjs';
+import {
+  ItemResponse,
+  ItemProResponse,
+  CarResponse,
+} from 'app/core/item/item-response.interface';
 
 @Injectable()
 export class UploadService {
@@ -28,15 +35,18 @@ export class UploadService {
     private itemService: ItemService,
     private uploaderService: UploaderService
   ) {}
-  public createItem(values: any, itemType: string) {
+  public createItem(
+    values: any,
+    itemType: ITEM_TYPES
+  ): Observable<UploadOutput> {
     return this.createItemWithFirstImage(values, values.images[0], itemType);
   }
 
   public createItemWithFirstImage(
     values: any,
     file: UploadFile,
-    itemType: string
-  ) {
+    itemType: ITEM_TYPES
+  ): Observable<UploadOutput> {
     let inputEvent: UploadInput;
     if (itemType === ITEM_TYPES.CARS) {
       inputEvent = this.buildUploadEvent(
@@ -58,7 +68,12 @@ export class UploadService {
     return this.uploaderService.uploadFile(file, inputEvent);
   }
 
-  updateItem(values: any, type: string) {
+  updateItem(
+    values: any,
+    type: ITEM_TYPES
+  ): Observable<
+    ItemResponse | ItemProResponse | CarResponse | ItemProResponse
+  > {
     return this.itemService.update(values, type);
   }
 
@@ -111,14 +126,14 @@ export class UploadService {
     this.uploadInput.emit(inputEvent);
   }
 
-  public uploadSingleImage(file: UploadFile, itemId: string, type: string) {
+  public uploadSingleImage(file: UploadFile, itemId: string, type: ITEM_TYPES) {
     const url =
       this.API_URL +
       '/' +
-      (type !== 'consumer_goods' ? type + '/' : '') +
+      (type !== ITEM_TYPES.CONSUMER_GOODS ? type + '/' : '') +
       itemId +
       '/picture' +
-      (type !== 'real_estate' ? '2' : '');
+      (type !== ITEM_TYPES.REAL_ESTATE ? '2' : '');
     const inputEvent: UploadInput = {
       type: InputType.uploadFile,
       url: environment.baseUrl + url,

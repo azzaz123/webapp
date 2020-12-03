@@ -24,7 +24,11 @@ import { omit, isEqual } from 'lodash-es';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { CARS_CATEGORY } from '../../core/item/item-categories';
 import { ItemService } from '../../core/item/item.service';
-import { CarInfo, CarContent } from '../../core/item/item-response.interface';
+import {
+  CarInfo,
+  CarContent,
+  CarResponse,
+} from '../../core/item/item-response.interface';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { UserService } from '../../core/user/user.service';
 import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
@@ -41,7 +45,12 @@ import { whitespaceValidator } from '../../core/form-validators/formValidators.f
 import { UploadService } from '../drop-area/upload.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ITEM_TYPES } from 'app/core/item/item';
-import { OutputType, UploadFile } from 'app/shared/uploader/upload.interface';
+import {
+  OutputType,
+  UploadAction,
+  UploadFile,
+  UploadOutput,
+} from 'app/shared/uploader/upload.interface';
 
 @Component({
   selector: 'tsl-upload-car',
@@ -376,7 +385,7 @@ export class UploadCarComponent implements OnInit {
   onSubmit() {
     if (this.uploadForm.valid) {
       this.loading = true;
-      this.item ? this.uploadItem() : this.createItem();
+      this.item ? this.updateItem() : this.createItem();
     } else {
       this.invalidForm();
     }
@@ -399,13 +408,10 @@ export class UploadCarComponent implements OnInit {
     this.uploadService
       .createItem(this.uploadForm.value, ITEM_TYPES.CARS)
       .subscribe(
-        (response) => {
+        (response: UploadOutput) => {
           this.updateUploadPercentage(response.percentage);
           if (response.type === OutputType.done) {
-            this.onUploaded({
-              response: response.file.response,
-              action: 'created',
-            });
+            this.onUploaded(response.file.response, UploadAction.created);
           }
         },
         (error: HttpErrorResponse) => {
@@ -414,15 +420,12 @@ export class UploadCarComponent implements OnInit {
       );
   }
 
-  private uploadItem(): void {
+  private updateItem(): void {
     this.uploadService
       .updateItem(this.uploadForm.value, ITEM_TYPES.CARS)
       .subscribe(
-        (response) => {
-          this.onUploaded({
-            response,
-            action: 'updated',
-          });
+        (response: CarResponse) => {
+          this.onUploaded(response.content, UploadAction.updated);
         },
         (error: HttpErrorResponse) => {
           this.onError(error);
@@ -430,7 +433,7 @@ export class UploadCarComponent implements OnInit {
       );
   }
 
-  onUploaded(uploadEvent: { action: string; response: CarContent }) {
+  onUploaded(response: CarContent, action: UploadAction) {
     this.onFormChanged.emit(false);
     if (this.item) {
       this.trackingService.track(
@@ -440,50 +443,58 @@ export class UploadCarComponent implements OnInit {
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
     }
-    if (this.isUrgent && !uploadEvent.response.flags.onhold) {
+    if (this.isUrgent && !response.flags.onhold) {
       this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, {
         category: this.uploadForm.value.category_id,
       });
-      uploadEvent.action = 'urgent';
+      action = UploadAction.urgent;
       localStorage.setItem('transactionType', 'urgent');
     }
 
-    if (uploadEvent.response.flags.onhold) {
+    if (response.flags.onhold) {
       this.subscriptionService.getUserSubscriptionType().subscribe((type) => {
-        this.redirectToList({ ...uploadEvent, action: 'createdOnHold' }, type);
+        this.redirectToList(UploadAction.createdOnHold, response, type);
       });
     } else {
-      this.redirectToList(uploadEvent);
+      this.redirectToList(action, response);
     }
   }
 
-  public redirectToList(uploadEvent, type = 1) {
-    const params = this.getRedirectParams(uploadEvent, type);
+  public redirectToList(action: UploadAction, response: CarContent, type = 1) {
+    const params = this.getRedirectParams(action, response, type);
 
-    this.trackEditOrUpload(!!this.item, uploadEvent.response).subscribe(() =>
+    this.trackEditOrUpload(!!this.item, response).subscribe(() =>
       this.router.navigate(['/catalog/list', params])
     );
   }
 
-  private getRedirectParams(uploadEvent, userType: number) {
+  private getRedirectParams(
+    action: UploadAction,
+    response: CarContent,
+    userType: number
+  ) {
     const params: any = {
-      [uploadEvent.action]: true,
-      itemId: uploadEvent.response.id || uploadEvent.response,
+      [action]: true,
+      itemId: response.id,
     };
 
     if (this.item && this.item.flags.onhold) {
       params.onHold = true;
     }
 
-    if (uploadEvent.action === 'createdOnHold') {
+    if (action === UploadAction.createdOnHold) {
       params.onHoldType = userType;
     }
 
     return params;
   }
 
-  public onError(response: any) {
+  public onError(error: HttpErrorResponse | any): void {
     this.loading = false;
+    this.errorsService.i18nError(
+      'serverError',
+      error.message ? error.message : ''
+    );
     if (this.item) {
       this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_ERROR, {
         category: this.uploadForm.value.category_id,
@@ -632,28 +643,22 @@ export class UploadCarComponent implements OnInit {
     }
   }
 
-  onDeleteImage(imageId: string): void {
-    this.uploadService
-      .onDeleteImage(this.item.id, imageId)
-      .subscribe(() => this.removeFileFromForm(imageId));
-  }
-
-  removeFileFromForm(imageId: string): void {
-    const imagesControl: FormControl = this.uploadForm.get(
-      'images'
-    ) as FormControl;
-    imagesControl.patchValue(
-      imagesControl.value.filter((image) => {
-        return (
-          image.id !== imageId &&
-          image.response !== imageId &&
-          image.response?.id !== imageId
-        );
-      })
+  public onDeleteImage(imageId: string): void {
+    this.uploadService.onDeleteImage(this.item.id, imageId).subscribe(
+      () => this.removeFileFromForm(imageId),
+      () => null
     );
   }
 
-  onOrderImages(): void {
+  private removeFileFromForm(imageId: string): void {
+    const imagesControl: FormControl = this.uploadForm.get(
+      'images'
+    ) as FormControl;
+    const images: UploadFile[] = imagesControl.value;
+    imagesControl.patchValue(images.filter((image) => image.id !== imageId));
+  }
+
+  public onOrderImages(): void {
     const images = this.uploadForm.get('images').value;
     this.uploadService.updateOrder(images, this.item.id).subscribe();
   }
@@ -663,7 +668,7 @@ export class UploadCarComponent implements OnInit {
       this.uploadService
         .uploadSingleImage(file, this.item.id, ITEM_TYPES.CARS)
         .subscribe(
-          (value) => {
+          (value: UploadOutput) => {
             if (value.type === OutputType.done)
               this.errorsService.i18nSuccess('imageUploaded');
           },

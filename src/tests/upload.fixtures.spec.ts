@@ -1,7 +1,9 @@
 import { IMAGE, IMAGE_2 } from './user.fixtures.spec';
 import { ITEM_ID } from './item.fixtures.spec';
 import {
+  OutputType,
   UploadFile,
+  UploadOutput,
   UploadStatus,
 } from '../app/shared/uploader/upload.interface';
 import { ITEM_TYPES } from 'app/core/item/item';
@@ -73,9 +75,9 @@ export const UPLOAD_FILE_DONE: UploadFile = {
 };
 
 export const UPLOAD_FILE_DONE_2: UploadFile = {
-  fileIndex: 0,
+  fileIndex: 1,
   file: new File(['file'], ''),
-  id: UPLOAD_FILE_ID,
+  id: '456',
   name: UPLOAD_FILE_NAME,
   size: 123,
   type: 'image/jpeg',
@@ -173,6 +175,16 @@ export const UPLOADED_FILE_OTHER: UploadFile = <UploadFile>{
   ...UPLOAD_FILE,
   id: 'otherId',
   response: 21341421435,
+};
+
+export const MOCK_UPLOAD_OUTPUT_DONE: UploadOutput = {
+  file: UPLOAD_FILE_DONE,
+  type: OutputType.done,
+};
+
+export const MOCK_UPLOAD_OUTPUT_PENDING: UploadOutput = {
+  file: UPLOAD_FILE,
+  type: OutputType.uploading,
 };
 
 export class MockUploadService {

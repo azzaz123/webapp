@@ -29,6 +29,18 @@ export interface ItemResponse {
   type: string;
 }
 
+export interface CarResponse {
+  content: CarContent;
+  id: string;
+  type: string;
+}
+
+export interface RealStateResponse {
+  content: RealestateContent;
+  id: string;
+  type: string;
+}
+
 export interface ItemContent {
   category_id?: number;
   currency_code?: string;

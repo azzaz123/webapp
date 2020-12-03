@@ -629,7 +629,7 @@ export class ItemService {
     );
   }
 
-  public update(item: any, itemType: string): Observable<any> {
+  public update(item: any, itemType: ITEM_TYPES): Observable<any> {
     let url: string = ITEMS_API_URL + '/';
     let headers: HttpHeaders = new HttpHeaders({ 'X-DeviceOS': '0' });
 
