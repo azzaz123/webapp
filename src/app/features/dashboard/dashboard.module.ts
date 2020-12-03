@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {
   dashboardRoutedComponents,
   DashboardRoutingModule,
-} from './dashboard.routes';
+} from './dashboard.routing.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { DropdownModule } from 'app/dropdown/dropdown.module';
 import { FormsModule } from '@angular/forms';
