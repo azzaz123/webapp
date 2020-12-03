@@ -1,5 +1,6 @@
-import { MOCK_CONVERSATION } from './../../../../tests/conversation.fixtures.spec';
-import { MockTrackingService } from './../../../../tests/tracking.fixtures.spec';
+import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
+import { MOCK_CONVERSATION } from '@fixtures/conversation.fixtures.spec';
+import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { of } from 'rxjs';
 /* tslint:disable:no-unused-variable */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
@@ -7,28 +8,25 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DashboardComponent } from './dashboard.component';
-import {
-  CallsServiceMock,
-  FeatureFlagServiceMock,
-  InboxConversationServiceMock,
-  InboxServiceMock,
-  LoggedGuardServiceMock,
-} from '../../../../tests';
-import { createInboxConversationsArray } from '../../../../tests/inbox.fixtures.spec';
-import { RealTimeServiceMock } from '../../../../tests/real-time.fixtures.spec';
+import { createInboxConversationsArray } from '@fixtures/inbox.fixtures.spec';
+import { RealTimeServiceMock } from '@fixtures/real-time.fixtures.spec';
 import { ChatComponent } from 'app/chat/chat.component';
 import { ChatModule } from 'app/chat/chat.module';
 import { InboxConversation } from 'app/chat/model';
 import { InboxService, InboxConversationService } from 'app/chat/service';
-import { Call } from 'app/core/conversation/calls';
-import { CallsService } from 'app/core/conversation/calls.service';
-import { Lead } from 'app/core/conversation/lead';
-import { EventService } from 'app/core/event/event.service';
-import { RealTimeService } from 'app/core/message/real-time.service';
-import { TrackingService } from 'app/core/tracking/tracking.service';
-import { FeatureflagService } from 'app/core/user/featureflag.service';
-import { LoggedGuard } from 'app/core/user/logged.guard';
-import { createCallsArray } from '../../../../tests/call.fixtures';
+import { Call } from '@core/conversation/calls';
+import { CallsService } from '@core/conversation/calls.service';
+import { Lead } from '@core/conversation/lead';
+import { EventService } from '@core/event/event.service';
+import { RealTimeService } from '@core/message/real-time.service';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { FeatureflagService } from '@core/user/featureflag.service';
+import { LoggedGuard } from '@core/user/logged.guard';
+import { createCallsArray } from '@fixtures/call.fixtures';
+import { CallsServiceMock } from '@fixtures/call-service.fixtures.spec';
+import { InboxConversationServiceMock } from '@fixtures/inbox-coversation-service.fixtures.spec';
+import { InboxServiceMock } from '@fixtures/inbox-service.fixtures.spec';
+import { LoggedGuardServiceMock } from '@fixtures/logged-guard-service.fixtures.spec';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;

@@ -9,13 +9,14 @@ import { DropdownModule } from 'app/dropdown/dropdown.module';
 import { FormsModule } from '@angular/forms';
 
 import { NgxEchartsModule } from 'ngx-echarts';
-import { ChatModule } from 'app/chat/chat.module';
-import { ConversationModule } from 'app/core/conversation/conversation.module';
-import { SharedModule } from 'app/shared/shared.module';
+
 import { CallComponent } from './components/call/call.component';
 
 import { StatsGraphComponent } from './components/stats-graph/stats-graph.component';
 import { StatisticsService } from './core/services/statistics.service';
+import { SharedModule } from '@shared/shared.module';
+import { ConversationModule } from '@core/conversation/conversation.module';
+import { ChatModule } from 'app/chat/chat.module';
 
 @NgModule({
   imports: [

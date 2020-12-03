@@ -1,7 +1,7 @@
 import { Component, HostBinding, HostListener, Input } from '@angular/core';
-import { Call } from 'app/core/conversation/calls';
-import { CallsService } from 'app/core/conversation/calls.service';
-import { Remove } from 'app/shared/archivable/animations';
+import { Call } from '@core/conversation/calls';
+import { CallsService } from '@core/conversation/calls.service';
+import { Remove } from '@shared/archivable/animations';
 
 import { CalendarSpec } from 'moment';
 

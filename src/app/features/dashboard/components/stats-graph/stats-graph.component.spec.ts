@@ -1,10 +1,10 @@
-import { STATISTICS_RESPONSE } from './../../../../../tests/statistics.fixtures.spec';
+import { STATISTICS_RESPONSE } from '@fixtures/statistics.fixtures.spec';
 import { of } from 'rxjs';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { StatsGraphComponent } from './stats-graph.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { I18nService } from 'app/core/i18n/i18n.service';
+import { I18nService } from '@core/i18n/i18n.service';
 import { StatisticsService } from '../../core/services/statistics.service';
 
 describe('StatsGraphComponent', () => {

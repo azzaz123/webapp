@@ -3,11 +3,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { InboxConversation } from 'app/chat/model';
 import { InboxConversationService } from 'app/chat/service';
-import { CallsService } from 'app/core/conversation/calls.service';
-import { Lead } from 'app/core/conversation/lead';
-import { CallTotals } from 'app/core/conversation/totals.interface';
-import { EventService } from 'app/core/event/event.service';
-import { TrackingService } from 'app/core/tracking/tracking.service';
+import { CallsService } from '@core/conversation/calls.service';
+import { Lead } from '@core/conversation/lead';
+import { CallTotals } from '@core/conversation/totals.interface';
+import { EventService } from '@core/event/event.service';
+import { TrackingService } from '@core/tracking/tracking.service';
 
 @Component({
   selector: 'tsl-dashboard',

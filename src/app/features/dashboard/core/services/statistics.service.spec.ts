@@ -1,4 +1,4 @@
-import { STATISTICS_RESPONSE } from './../../../../../tests/statistics.fixtures.spec';
+import { STATISTICS_RESPONSE } from '@fixtures/statistics.fixtures.spec';
 import {
   HttpTestingController,
   TestRequest,
@@ -8,7 +8,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { StatisticsService, STATISTICS_ENDPOINT } from './statistics.service';
 
-import { environment } from 'environments/environment';
+import { environment } from '@environments/environment';
 import { StatisticFullResponse } from '../statistic-response.interface';
 
 describe('StatisticsService', () => {

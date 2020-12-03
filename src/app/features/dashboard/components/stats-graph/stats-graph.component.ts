@@ -4,8 +4,8 @@ import { IOption } from 'app/dropdown/utils/option.interface';
 import * as moment from 'moment';
 import { EChartOption } from 'echarts';
 import { find } from 'lodash-es';
-import { I18nService } from 'app/core/i18n/i18n.service';
-import { UuidService } from 'app/core/uuid/uuid.service';
+import { I18nService } from '@core/i18n/i18n.service';
+import { UuidService } from '@core/uuid/uuid.service';
 import { StatisticsService } from '../../core/services/statistics.service';
 import {
   StatisticFullResponse,
