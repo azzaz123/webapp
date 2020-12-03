@@ -66,8 +66,8 @@ export class EditSubscriptionModalComponent implements OnInit {
     this.analyticsService.trackPageView(pageView);
   }
 
-  public close() {
-    this.activeModal.close('update');
+  public close(status: string) {
+    this.activeModal.close(status);
   }
 
   public editSubscription() {
@@ -95,7 +95,7 @@ export class EditSubscriptionModalComponent implements OnInit {
             type: 'error',
           });
         }
-        this.close();
+        this.close('update');
       });
   }
 
@@ -110,14 +110,16 @@ export class EditSubscriptionModalComponent implements OnInit {
   }
 
   public cancelSubscription() {
-    this.close();
     const modal = CancelSubscriptionModalComponent;
     let modalRef: NgbModalRef = this.modalService.open(modal, {
       windowClass: 'review',
     });
     modalRef.componentInstance.subscription = this.subscription;
     modalRef.result.then(
-      (result: string) => (modalRef = null),
+      (result: string) => {
+        this.close(result);
+        modalRef = null;
+      },
       () => {}
     );
   }
