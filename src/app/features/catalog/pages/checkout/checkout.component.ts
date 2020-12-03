@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ItemService } from '../../core/item/item.service';
-import { ItemWithProducts } from '../../core/item/item-response.interface';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BumpTutorialComponent } from './bump-tutorial/bump-tutorial.component';
-import { CreditInfo } from '../../core/payments/payment.interface';
-import { PaymentService } from '../../core/payments/payment.service';
+import { ItemWithProducts } from '@core/item/item-response.interface';
+import { ItemService } from '@core/item/item.service';
+import { CreditInfo } from '@core/payments/payment.interface';
+import { PaymentService } from '@core/payments/payment.service';
+import { BumpTutorialComponent } from '@features/catalog/components/bump-tutorial/bump-tutorial.component';
 
 @Component({
   selector: 'tsl-checkout',

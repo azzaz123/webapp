@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import {
   catalogRoutedComponents,
   CatalogRoutingModule,
-} from './catalog.routes';
-import { SharedModule } from '../shared/shared.module';
+} from './catalog.routing.module';
+import { SharedModule } from '@shared/shared.module';
 import { CatalogItemComponent } from './list/catalog-item/catalog-item.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -16,7 +16,7 @@ import { UrgentConfirmationModalComponent } from './list/modals/urgent-confirmat
 import { CheckoutItemComponent } from './checkout/checkout-item/checkout-item.component';
 import { BumpTutorialComponent } from './checkout/bump-tutorial/bump-tutorial.component';
 import { BumpTutorialService } from './checkout/bump-tutorial/bump-tutorial.service';
-import { TrackingModule } from '../core/tracking/tracking.module';
+import { TrackingModule } from '@core/tracking/tracking.module';
 import { BuyProductModalComponent } from './list/modals/buy-product-modal/buy-product-modal.component';
 import { ReactivateConfirmationModalComponent } from './list/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component';
 import { ListingfeeConfirmationModalComponent } from './list/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';

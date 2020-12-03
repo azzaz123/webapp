@@ -2,10 +2,10 @@ import { of } from 'rxjs';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CatalogComponent } from './catalog.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { TrackingService } from '../core/tracking/tracking.service';
-import { MockTrackingService } from '../../tests/tracking.fixtures.spec';
-import { UserService } from '../core/user/user.service';
-import { MOCK_USER } from '../../tests/user.fixtures.spec';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { UserService } from '@core/user/user.service';
+import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
+import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 
 describe('CatalogComponent', () => {
   let component: CatalogComponent;

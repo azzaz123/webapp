@@ -1,49 +1,49 @@
 import { takeWhile } from 'rxjs/operators';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ItemService } from '../../core/item/item.service';
-import { ItemChangeEvent } from './catalog-item/item-change.interface';
+import { ItemService } from '@core/item/item.service';
 import { find, findIndex } from 'lodash-es';
 import {
   ItemBulkResponse,
   ItemsData,
   Order,
   Product,
-} from '../../core/item/item-response.interface';
+} from '@core/item/item-response.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
-import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
+import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import {
-  OrderEvent,
-  STATUS,
-} from './selected-items/selected-product.interface';
-import { UploadConfirmationModalComponent } from './modals/upload-confirmation-modal/upload-confirmation-modal.component';
-import { TrackingService } from '../../core/tracking/tracking.service';
-import { ErrorsService } from '../../core/errors/errors.service';
-import { UserService } from '../../core/user/user.service';
-import { Counters, UserStats } from '../../core/user/user-stats.interface';
-import { BumpTutorialComponent } from '../checkout/bump-tutorial/bump-tutorial.component';
-import { Item } from '../../core/item/item';
-import { PaymentService } from '../../core/payments/payment.service';
-import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
-import { EventService } from '../../core/event/event.service';
-import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.directive';
-import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product-modal.component';
-import { ReactivateConfirmationModalComponent } from './modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component';
-import { I18nService } from '../../core/i18n/i18n.service';
-import { TooManyItemsModalComponent } from '../../shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
-import { ActivateItemsModalComponent } from '../../shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component';
-import { DeactivateItemsModalComponent } from '../../shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
-import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
-import { CreditInfo } from '../../core/payments/payment.interface';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { ErrorsService } from '@core/errors/errors.service';
+import { UserService } from '@core/user/user.service';
+import { Counters, UserStats } from '@core/user/user-stats.interface';
+import { Item } from '@core/item/item';
+import { PaymentService } from '@core/payments/payment.service';
+import { EventService } from '@core/event/event.service';
+import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
+import { I18nService } from '@core/i18n/i18n.service';
+import { TooManyItemsModalComponent } from '@shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
+import { ActivateItemsModalComponent } from '@shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component';
+import { DeactivateItemsModalComponent } from '@shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
+import { CreditInfo } from '@core/payments/payment.interface';
 import {
   SubscriptionsService,
   SUBSCRIPTION_TYPES,
-} from '../../core/subscriptions/subscriptions.service';
-import { SubscriptionSlot } from '../../core/subscriptions/subscriptions.interface';
-import { NavLink } from '../../shared/nav-links/nav-link.interface';
-import { User } from '../../core/user/user';
+} from '@core/subscriptions/subscriptions.service';
+import { SubscriptionSlot } from '@core/subscriptions/subscriptions.interface';
+import { NavLink } from '@shared/nav-links/nav-link.interface';
+import { User } from '@core/user/user';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { BumpTutorialComponent } from '@features/catalog/components/bump-tutorial/bump-tutorial.component';
+import { ItemChangeEvent } from '@features/catalog/components/catalog-item/item-change.interface';
+import {
+  STATUS,
+  OrderEvent,
+} from '@features/catalog/components/selected-items/selected-product.interface';
+import { BumpConfirmationModalComponent } from '@features/catalog/modals/bump-confirmation-modal/bump-confirmation-modal.component';
+import { BuyProductModalComponent } from '@features/catalog/modals/buy-product-modal/buy-product-modal.component';
+import { ListingfeeConfirmationModalComponent } from '@features/catalog/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
+import { ReactivateConfirmationModalComponent } from '@features/catalog/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component';
+import { UploadConfirmationModalComponent } from '@features/catalog/modals/upload-confirmation-modal/upload-confirmation-modal.component';
+import { UrgentConfirmationModalComponent } from '@features/catalog/modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
 
 export const SORTS = ['date_desc', 'date_asc', 'price_desc', 'price_asc'];
 
