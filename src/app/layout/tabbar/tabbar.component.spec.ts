@@ -99,7 +99,7 @@ describe('TabbarComponent', () => {
 
       it('should show no logged content', () => {
         expect(el.querySelector(accessBtnTextSelector).innerHTML).toEqual(
-          'Access'
+          'Log in'
         );
       });
     });

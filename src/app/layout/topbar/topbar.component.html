@@ -30,7 +30,7 @@
     <div class="horizontal-line"></div>
   </a>
   <tsl-button id="top-bar-signin" *ngIf="!isLogged" class="TopBar__btn" [className]="'btn-outline-primary'" [routerLink]="['/', LOGIN_PATH]" >
-    <span i18n>Signup or signin</span>
+    <span i18n="@@TopBarButtonRegisteOrSignin">Register or signin</span>
   </tsl-button>
   <tsl-button id="top-bar-upload" class="TopBar__btn TopBar__btn--with-icon" [routerLink]="['/catalog/upload']" tslTrackEvent="MYZONE_UPLOAD">
     <tsl-svg-icon src="/assets/icons/upload.svg"></tsl-svg-icon>
