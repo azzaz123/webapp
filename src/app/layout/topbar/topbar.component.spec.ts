@@ -123,20 +123,20 @@ describe('TopbarComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should set isLogged variable with userService isLogged value', () => {
+    it('should set user session', () => {
       component.isLogged = null;
       component.ngOnInit();
       expect(component.isLogged).toBe(true);
     });
 
-    it('should update isLogged with userService isLogged value on USER_LOGIN event', () => {
+    it('should update user session on user login', () => {
       component.isLogged = null;
       component.ngOnInit();
       eventService.emit(EventService.USER_LOGIN);
       expect(component.isLogged).toBe(true);
     });
 
-    it('should update isLogged with userService isLogged value on USER_LOGOUT event', () => {
+    it('should update user session on user logout', () => {
       component.isLogged = null;
       component.ngOnInit();
       eventService.emit(EventService.USER_LOGOUT);
@@ -210,7 +210,7 @@ describe('TopbarComponent', () => {
     });
   });
 
-  describe('user session', () => {
+  describe('when user session changes', () => {
     const suggesterSelector = '#top-bar-suggester';
     const messagesBtnSelector = '#top-bar-inbox';
     const wallacoinsBtnSelector = '#top-bar-wallacoins';
@@ -218,7 +218,7 @@ describe('TopbarComponent', () => {
     const signinSignupBtnSelector = '#top-bar-signin';
     const newProductBtnSelector = '#top-bar-upload';
 
-    describe('logged', () => {
+    describe('when user is logged', () => {
       beforeEach(() => {
         component.isLogged = true;
         fixture.detectChanges();
@@ -236,7 +236,7 @@ describe('TopbarComponent', () => {
       });
     });
 
-    describe('NO logged', () => {
+    describe('when user is not logged', () => {
       beforeEach(() => {
         component.isLogged = false;
         fixture.detectChanges();

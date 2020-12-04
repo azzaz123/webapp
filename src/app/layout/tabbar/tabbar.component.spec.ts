@@ -54,20 +54,20 @@ describe('TabbarComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should set isLogged variable with userService isLogged value', () => {
+    it('should set user session', () => {
       component.isLogged = null;
       component.ngOnInit();
       expect(component.isLogged).toBe(true);
     });
 
-    it('should update isLogged with userService isLogged value on USER_LOGIN event', () => {
+    it('should update user session on user login', () => {
       component.isLogged = null;
       component.ngOnInit();
       eventService.emit(EventService.USER_LOGIN);
       expect(component.isLogged).toBe(true);
     });
 
-    it('should update isLogged with userService isLogged value on USER_LOGOUT event', () => {
+    it('should update user session on user logout', () => {
       component.isLogged = null;
       component.ngOnInit();
       eventService.emit(EventService.USER_LOGOUT);
@@ -75,10 +75,10 @@ describe('TabbarComponent', () => {
     });
   });
 
-  describe('user session', () => {
+  describe('when user session changes', () => {
     const accessBtnTextSelector = '#tab-bar-access-zone span';
 
-    describe('logged', () => {
+    describe('when user is logged', () => {
       beforeEach(() => {
         component.hidden = false;
         component.isLogged = true;
@@ -91,7 +91,7 @@ describe('TabbarComponent', () => {
       });
     });
 
-    describe('NO logged', () => {
+    describe('when user is not logged', () => {
       beforeEach(() => {
         component.isLogged = false;
         fixture.detectChanges();
