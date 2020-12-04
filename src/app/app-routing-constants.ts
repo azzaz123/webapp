@@ -1,4 +1,4 @@
-export const PUBLIC_PATHS = {
-  LOGIN: 'login',
-  REGISTER: 'register',
-};
+export enum PUBLIC_PATHS {
+  LOGIN = 'login',
+  REGISTER = 'register',
+}
