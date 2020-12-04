@@ -211,7 +211,7 @@ export class ProfileProBillingComponent
       });
   }
 
-  public handleErrorFormcontrol(formControlAtr: AbstractControl): boolean {
+  public isIncorrectFormcontrol(formControlAtr: AbstractControl): boolean {
     return (
       formControlAtr.invalid && (formControlAtr.dirty || formControlAtr.touched)
     );
