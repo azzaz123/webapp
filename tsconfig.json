@@ -19,7 +19,7 @@
         "app/features/*"
       ],
       "@fixtures/*": [
-        "app/tests/*"
+        "tests/*"
       ]
     },
     "outDir": "./dist/out-tsc",
