@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterModule, Routes } from '@angular/router';
-import { CatalogProListComponent } from './catalog-pro-list/catalog-pro-list.component';
-import { PERMISSIONS } from '../core/user/user';
-import { CheckoutExtrasProComponent } from './checkout-extras-pro/checkout-extras-pro.component';
-import { CheckoutProComponent } from './checkout-pro/checkout-pro.component';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { isEmpty } from 'lodash-es';
+import { PERMISSIONS } from '@core/user/user';
+import { CatalogProListComponent } from './pages/catalog-pro-list/catalog-pro-list.component';
+import { CheckoutExtrasProComponent } from './pages/checkout-extras-pro/checkout-extras-pro.component';
+import { CheckoutProComponent } from './pages/checkout-pro/checkout-pro.component';
 
 export function getRedirectToCatalogList(
   rejectedPermissionName: string,
