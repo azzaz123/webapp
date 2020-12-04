@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { InvoiceService } from 'app/core/invoice/invoice.service';
 import { InvoiceTransaction } from 'app/core/invoice/invoice.interface';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-invoice-history',
@@ -28,20 +29,28 @@ export class InvoiceHistoryComponent implements OnInit {
 
   private getInvoiceTransactions(): void {
     this.loading = true;
-    this.invoiceService.getInvoiceTransactions().subscribe(
-      (invoiceTransactions: InvoiceTransaction[]) => {
-        invoiceTransactions.forEach(
-          (transaction) =>
-            (transaction.currencySymbol = this.currencies[transaction.currency])
-        );
-        this.invoiceTransactions = invoiceTransactions;
-        this.total = invoiceTransactions.length;
-        this.loading = false;
-      },
-      (error) => {
-        this.isErrorLoading = true;
-      }
-    );
+    this.invoiceService
+      .getInvoiceTransactions()
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+        })
+      )
+      .subscribe(
+        (invoiceTransactions: InvoiceTransaction[]) => {
+          invoiceTransactions.forEach(
+            (transaction) =>
+              (transaction.currencySymbol = this.currencies[
+                transaction.currency
+              ])
+          );
+          this.invoiceTransactions = invoiceTransactions;
+          this.total = invoiceTransactions.length;
+        },
+        (error) => {
+          this.isErrorLoading = true;
+        }
+      );
   }
 
   public loadMore(): void {
@@ -56,7 +65,7 @@ export class InvoiceHistoryComponent implements OnInit {
     );
   }
 
-  get sortedInvoices() {
+  get sortedInvoices(): InvoiceTransaction[] {
     return (
       this.invoiceTransactions &&
       this.invoiceTransactions.sort((a, b) => {
@@ -65,7 +74,7 @@ export class InvoiceHistoryComponent implements OnInit {
     );
   }
 
-  protected isShowed(keyMessage: string): boolean {
+  protected isShown(keyMessage: string): boolean {
     const conditions =
       (!Array.isArray(this.invoiceTransactions) ||
         !this.invoiceTransactions.length) &&

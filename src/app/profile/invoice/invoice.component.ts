@@ -53,7 +53,7 @@ export class InvoiceComponent implements OnInit {
     }
   }
 
-  set handleModal(formIsFull) {
+  set handleModal(formIsFull: boolean) {
     this.activeIds = formIsFull ? [] : ['custom-panel-1'];
   }
 }

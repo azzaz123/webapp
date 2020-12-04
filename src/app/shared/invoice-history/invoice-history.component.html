@@ -8,8 +8,8 @@
               <div class="content">
                 <span [hidden]="!loading" i18n="@@LoadingData">We are loading your invoice history...</span>
                 <span *ngIf="isErrorLoading" i18n="@@NotLoadedInvoices">Sorry, we cannot load your invoices at this time. Please try again later.</span>
-                <span i18n="@@EmptyHistory" *ngIf="isShowed('EmptyHistory')">Your history is empty.</span>
-                <span i18n="@@NotOldInvoices" *ngIf="isShowed('NotOldInvoices')">You don't have any old invoices. Fill in the invoicing data for future purchases.</span>
+                <span i18n="@@EmptyHistory" *ngIf="isShown('EmptyHistory')">Your history is empty.</span>
+                <span i18n="@@NotOldInvoices" *ngIf="isShown('NotOldInvoices')">You don't have any old invoices. Fill in the invoicing data for future purchases.</span>
               </div>
             </div>
       </div>
