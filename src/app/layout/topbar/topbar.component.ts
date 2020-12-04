@@ -3,6 +3,7 @@ import {
   ElementRef,
   Inject,
   Input,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -17,13 +18,14 @@ import { CreditInfo } from '../../core/payments/payment.interface';
 import { EventService } from '../../core/event/event.service';
 import { CookieService } from 'ngx-cookie';
 import { PUBLIC_PATHS } from 'app/app-routing-constants';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'tsl-topbar',
   templateUrl: './topbar.component.html',
   styleUrls: ['./topbar.component.scss'],
 })
-export class TopbarComponent implements OnInit {
+export class TopbarComponent implements OnInit, OnDestroy {
   public readonly LOGIN_PATH = PUBLIC_PATHS.LOGIN;
   public user: User;
   public coordinates: Coordinate;
@@ -40,6 +42,8 @@ export class TopbarComponent implements OnInit {
   public currencyName: string;
   public isLogged: boolean;
 
+  private componentSubscriptions: Subscription[] = [];
+
   constructor(
     public userService: UserService,
     public messageService: MessageService,
@@ -53,29 +57,40 @@ export class TopbarComponent implements OnInit {
 
   ngOnInit() {
     this.isLogged = this.userService.isLogged;
-    this.userService.me().subscribe((user) => {
-      this.user = user;
-    });
-    this.userService.isProfessional().subscribe((value: boolean) => {
-      this.isProfessional = value;
-    });
-    this.updateCreditInfo();
-    this.eventService.subscribe(
-      EventService.TOTAL_CREDITS_UPDATED,
-      (totalCredits: number) => {
-        if (totalCredits) {
-          this.wallacoins = totalCredits;
-        } else {
-          this.updateCreditInfo(false);
-        }
-      }
+    this.componentSubscriptions.push(
+      this.userService.me().subscribe((user) => {
+        this.user = user;
+      })
     );
-    this.eventService.subscribe(EventService.USER_LOGIN, () => {
-      this.isLogged = this.userService.isLogged;
-    });
-    this.eventService.subscribe(EventService.USER_LOGOUT, () => {
-      this.isLogged = this.userService.isLogged;
-    });
+    this.componentSubscriptions.push(
+      this.userService.isProfessional().subscribe((value: boolean) => {
+        this.isProfessional = value;
+      })
+    );
+    this.updateCreditInfo();
+    this.componentSubscriptions.push(
+      this.eventService.subscribe(
+        EventService.TOTAL_CREDITS_UPDATED,
+        (totalCredits: number) => {
+          if (totalCredits) {
+            this.wallacoins = totalCredits;
+          } else {
+            this.updateCreditInfo(false);
+          }
+        }
+      )
+    );
+    this.componentSubscriptions.push(
+      this.eventService.subscribe(EventService.USER_LOGIN, () => {
+        this.isLogged = this.userService.isLogged;
+      })
+    );
+
+    this.componentSubscriptions.push(
+      this.eventService.subscribe(EventService.USER_LOGOUT, () => {
+        this.isLogged = this.userService.isLogged;
+      })
+    );
   }
 
   private updateCreditInfo(cache?: boolean) {
@@ -120,5 +135,11 @@ export class TopbarComponent implements OnInit {
 
   public onKeywordUpdate(newKeyword: string) {
     this.kws = newKeyword;
+  }
+
+  ngOnDestroy(): void {
+    this.componentSubscriptions.forEach((subscription: Subscription) => {
+      subscription.unsubscribe();
+    });
   }
 }
