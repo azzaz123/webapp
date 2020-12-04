@@ -20,7 +20,6 @@ import { PaymentService } from '../../core/payments/payment.service';
 import { CustomCurrencyPipe } from '../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import { CookieService } from 'ngx-cookie';
-import {} from '@core/http/access-token.service';
 
 const MOCK_USER = new User(
   USER_DATA.id,
