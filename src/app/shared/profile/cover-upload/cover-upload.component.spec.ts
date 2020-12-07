@@ -20,7 +20,7 @@ import {
   UploadFile,
 } from '../../uploader/upload.interface';
 import { AccessTokenService } from '../../../core/http/access-token.service';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { UploaderService } from 'app/shared/uploader/uploader.service';
 
 describe('CoverUploadComponent', () => {
@@ -126,10 +126,7 @@ describe('CoverUploadComponent', () => {
       };
 
       spyOn(uploaderService, 'uploadFile').and.returnValue(
-        of({
-          type: OutputType.done,
-          file: file,
-        })
+        throwError(file.response)
       );
 
       component.onUploadOutput({

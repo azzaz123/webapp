@@ -19,7 +19,6 @@ import {
 import { AccessTokenService } from '../../../core/http/access-token.service';
 import { UploaderService } from 'app/shared/uploader/uploader.service';
 import { finalize } from 'rxjs/operators';
-import { OutputFile } from 'typescript';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({

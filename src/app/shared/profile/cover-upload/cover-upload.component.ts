@@ -18,6 +18,8 @@ import {
 } from '../../uploader/upload.interface';
 import { AccessTokenService } from '../../../core/http/access-token.service';
 import { UploaderService } from 'app/shared/uploader/uploader.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-cover-upload',
@@ -26,10 +28,13 @@ import { UploaderService } from 'app/shared/uploader/uploader.service';
 })
 export class CoverUploadComponent implements OnInit {
   @Input() user: User;
+  @Input() isPro: boolean;
+
+  @Output() clickNotPro: EventEmitter<null> = new EventEmitter();
+
   file: UploadFile;
   options: NgUploaderOptions;
-  @Input() isPro: boolean;
-  @Output() clickNotPro: EventEmitter<any> = new EventEmitter();
+  isLoading: boolean;
 
   constructor(
     private errorsService: ErrorsService,
@@ -63,6 +68,7 @@ export class CoverUploadComponent implements OnInit {
   }
 
   private uploadPicture() {
+    this.isLoading = true;
     const url = 'api/v3/users/me/cover-image';
     const timestamp = new Date().getTime();
     const signature = this.accesTokenService.getTokenSignature(
@@ -85,20 +91,19 @@ export class CoverUploadComponent implements OnInit {
       file: this.file,
       imageType: 'cover',
     };
-    this.uploaderService.uploadFile(this.file, uploadinput).subscribe(
-      (output) => {
-        if (output?.type === OutputType.done) {
-          if (output.file.progress.data.responseStatus === 204) {
+    this.uploaderService
+      .uploadFile(this.file, uploadinput)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe(
+        (output: UploadOutput) => {
+          if (output?.type === OutputType.done) {
             this.userService.user.setCoverImageUrl(<string>output.file.preview);
-          } else {
-            this.showError(output.file.response.message);
           }
+        },
+        (error: HttpErrorResponse) => {
+          this.showError(error.message);
         }
-      },
-      (err) => {
-        this.showError();
-      }
-    );
+      );
   }
 
   private showError(message?: string) {
