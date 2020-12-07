@@ -293,7 +293,7 @@ export class AppComponent implements OnInit {
         }
         const title = !event['title'] ? 'Wallapop' : event['title'];
         this.titleService.setTitle(notifications + title);
-        this.hideSidebar = event[PATH_EVENTS.hideSidebar];
+        this.hideSidebar = !!event[PATH_EVENTS.hideSidebar];
         this.isMyZone = event['isMyZone'];
         this.isProducts = event['isProducts'];
         this.isProfile = event['isProfile'];
@@ -328,7 +328,7 @@ export class AppComponent implements OnInit {
         map(() => this.activatedRoute.root.firstChild.snapshot.data || {})
       )
       .subscribe((data: any) => {
-        this.hideSidebar = data[PATH_EVENTS.hideSidebar];
+        this.hideSidebar = !!data[PATH_EVENTS.hideSidebar];
       });
   }
 
