@@ -1,24 +1,24 @@
-import { of } from 'rxjs';
-
-import { catchError } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
-import { InboxService, InboxConversationService } from './service';
-import { InboxConversation, PhoneMethod } from './model';
-import { UserService } from '../core/user/user.service';
-import { EventService } from '../core/event/event.service';
 import { ActivatedRoute, Params } from '@angular/router';
-import { isNil } from 'lodash-es';
-import { TrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safety.service';
-import { SessionProfileDataLocation } from 'app/core/trust-and-safety/trust-and-safety.interface';
-import { SEARCHID_STORAGE_NAME } from '../core/message/real-time.service';
+import { USER_STRING_ID } from '@core/constants/string-ids.enum';
+import { EventService } from '@core/event/event.service';
+import { SEARCHID_STORAGE_NAME } from '@core/message/real-time.service';
+import { SessionProfileDataLocation } from '@core/trust-and-safety/trust-and-safety.interface';
+import { TrustAndSafetyService } from '@core/trust-and-safety/trust-and-safety.service';
+import { UserService } from '@core/user/user.service';
 import {
+  NgbModal,
   NgbModalOptions,
   NgbModalRef,
-  NgbModal,
 } from '@ng-bootstrap/ng-bootstrap';
+import { isNil } from 'lodash-es';
+import { of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { InboxConversationService } from './core/inbox/inbox-conversation.service';
+import { InboxService } from './core/inbox/inbox.service';
+import { InboxConversation, PhoneMethod } from './core/model';
 import { SendPhoneComponent } from './modals';
 import { PersonalDataInformationModal } from './modals/personal-data-information-modal/personal-data-information-modal.component';
-import { USER_STRING_ID } from '../core/constants/string-ids.enum';
 
 @Component({
   selector: 'tsl-chat',

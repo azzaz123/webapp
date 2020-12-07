@@ -1,18 +1,17 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import { MaliciousConversationModalComponent } from './malicious-conversation-modal.component';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ButtonComponent } from 'app/shared/button/button.component';
-import { By } from '@angular/platform-browser';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { AnalyticsService } from 'app/core/analytics/analytics.service';
-import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
   SCREEN_IDS,
   ViewBannedUserChatPopUp,
 } from 'app/core/analytics/analytics-constants';
+import { AnalyticsService } from 'app/core/analytics/analytics.service';
+import { ButtonComponent } from 'app/shared/button/button.component';
+import { MaliciousConversationModalComponent } from './malicious-conversation-modal.component';
 
 describe('MaliciousConversationModalComponent', () => {
   let component: MaliciousConversationModalComponent;

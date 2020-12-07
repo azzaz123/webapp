@@ -1,18 +1,18 @@
-import { catchError, map, tap } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { InboxConversation } from '../model';
-import { MessageService } from './message.service';
-import { FeatureflagService } from '../../core/user/featureflag.service';
-import { EventService } from '../../core/event/event.service';
-import { UserService } from '../../core/user/user.service';
-import { InboxConversationService } from './inbox-conversation.service';
-import { InboxApi, InboxConversationApi } from '../model/api';
-import { uniqBy } from 'lodash-es';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
-import { RemoteConsoleService } from '../../core/remote-console';
+import { Injectable } from '@angular/core';
+import { EventService } from '@core/event/event.service';
+import { RemoteConsoleService } from '@core/remote-console';
+import { FeatureflagService } from '@core/user/featureflag.service';
+import { UserService } from '@core/user/user.service';
+import { environment } from '@environments/environment';
 import { ConnectionType } from 'app/core/remote-console/connection-type';
+import { uniqBy } from 'lodash-es';
+import { Observable, of } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
+import { MessageService } from '../message/message.service';
+import { InboxConversation } from '../model';
+import { InboxApi, InboxConversationApi } from '../model/api';
+import { InboxConversationService } from './inbox-conversation.service';
 
 @Injectable()
 export class InboxService {
@@ -241,7 +241,7 @@ export class InboxService {
         ),
         map(
           (inbox: InboxApi) =>
-            (this.inboxConversationService.archivedConversations = this.inboxConversationService.archivedConversations = this.processArchivedInboxResponse(
+            (this.inboxConversationService.archivedConversations = this.processArchivedInboxResponse(
               inbox
             ))
         )

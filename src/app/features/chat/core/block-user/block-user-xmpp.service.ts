@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { XmppService } from '../../core/xmpp/xmpp.service';
-import { User } from '../../core/user/user';
+import { XmppService } from '@core/xmpp/xmpp.service';
+import { User } from '@core/user/user';
 import { Observable } from 'rxjs';
 import { InboxUser } from '../model/inbox-user';
 

@@ -1,13 +1,13 @@
-import { InboxMessage } from './inbox-message';
-import { InboxUser, InboxUserPlaceholder } from './inbox-user';
+import { environment } from '@environments/environment';
+import { InboxConversationApi, InboxItemApi, InboxUserApi } from './api';
 import {
-  InboxItemStatus,
   InboxImage,
   InboxItem,
   InboxItemPlaceholder,
+  InboxItemStatus,
 } from './inbox-item';
-import { environment } from '../../../environments/environment';
-import { InboxConversationApi, InboxItemApi, InboxUserApi } from './api';
+import { InboxMessage } from './inbox-message';
+import { InboxUser, InboxUserPlaceholder } from './inbox-user';
 
 export class InboxConversation {
   constructor(

@@ -1,39 +1,36 @@
-import { TestBed } from '@angular/core/testing';
-import { InboxService } from './inbox.service';
-import { MessageService } from './message.service';
-import { of, throwError } from 'rxjs';
-import { MOCK_INBOX_API_RESPONSE } from '../../../tests/inbox.fixtures.spec';
-import { MockMessageService } from '../../../tests/message.fixtures.spec';
-import { FeatureflagService } from '../../core/user/featureflag.service';
-import { EventService } from '../../core/event/event.service';
-import { InboxConversation } from '../model/inbox-conversation';
-import { InboxItemStatus, InboxItemPlaceholder } from '../model/inbox-item';
-import { UserService } from '../../core/user/user.service';
-import {
-  MOCK_USER,
-  MockedUserService,
-} from '../../../tests/user.fixtures.spec';
-import { InboxUserPlaceholder } from '../model/inbox-user';
-import { InboxConversationService } from './inbox-conversation.service';
-import {
-  DeviceDetectorServiceMock,
-  FeatureFlagServiceMock,
-  MockRemoteConsoleService,
-} from '../../../tests';
+import { HttpClient } from '@angular/common/http';
 import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
-import { HttpModuleNew } from '../../core/http/http.module.new';
-import { RealTimeService } from '../../core/message/real-time.service';
-import { environment } from '../../../environments/environment';
-import { AccessTokenService } from '../../core/http/access-token.service';
-import { HttpClient } from '@angular/common/http';
-import { DeviceDetectorService } from 'ngx-device-detector';
-import { RemoteConsoleService } from '../../core/remote-console';
-import { I18nService } from 'app/core/i18n/i18n.service';
+import { TestBed } from '@angular/core/testing';
+import { EventService } from '@core/event/event.service';
+import { AccessTokenService } from '@core/http/access-token.service';
+import { HttpModuleNew } from '@core/http/http.module.new';
+import { RealTimeService } from '@core/message/real-time.service';
+import { RemoteConsoleService } from '@core/remote-console';
+import { FeatureflagService } from '@core/user/featureflag.service';
+import { UserService } from '@core/user/user.service';
+import { environment } from '@environments/environment';
+import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
+import { MOCK_INBOX_API_RESPONSE } from '@fixtures/inbox.fixtures.spec';
+import { MockMessageService } from '@fixtures/message.fixtures.spec';
+import {
+  DeviceDetectorServiceMock,
+  MockRemoteConsoleService,
+} from '@fixtures/remote-console.fixtures.spec';
+import { MockedUserService, MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { DesktopNotificationsService } from 'app/core/desktop-notifications/desktop-notifications.service';
 import { MockDesktopNotifications } from 'app/core/desktop-notifications/desktop-notifications.service.spec';
+import { I18nService } from 'app/core/i18n/i18n.service';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { of, throwError } from 'rxjs';
+import { MessageService } from '../message/message.service';
+import { InboxConversation } from '../model/inbox-conversation';
+import { InboxItemPlaceholder, InboxItemStatus } from '../model/inbox-item';
+import { InboxUserPlaceholder } from '../model/inbox-user';
+import { InboxConversationService } from './inbox-conversation.service';
+import { InboxService } from './inbox.service';
 
 describe('InboxService', () => {
   let inboxService: InboxService;

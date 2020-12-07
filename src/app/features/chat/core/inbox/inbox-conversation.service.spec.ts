@@ -1,50 +1,46 @@
-import { of } from 'rxjs';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
-
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { EventService } from '@core/event/event.service';
+import { AccessTokenService } from '@core/http/access-token.service';
+import { HttpModuleNew } from '@core/http/http.module.new';
+import { ItemService } from '@core/item/item.service';
+import { RealTimeService } from '@core/message/real-time.service';
+import { RemoteConsoleService } from '@core/remote-console';
+import { UserService } from '@core/user/user.service';
+import { environment } from '@environments/environment';
+import { MOCK_API_CONVERSATION } from '@fixtures/conversation.fixtures.spec';
 import {
-  InboxConversationService,
-  ERROR_CODE_TOO_MANY_NEW_CONVERSATIONS,
-} from './inbox-conversation.service';
-import { MessageService } from './message.service';
-import { RealTimeService } from '../../core/message/real-time.service';
-import { EventService } from '../../core/event/event.service';
-import {
-  CREATE_MOCK_INBOX_CONVERSATION,
   createInboxConversationsArray,
-} from '../../../tests/inbox.fixtures.spec';
+  CREATE_MOCK_INBOX_CONVERSATION,
+} from '@fixtures/inbox.fixtures.spec';
+import { MockedItemService } from '@fixtures/item.fixtures.spec';
+import { createInboxMessagesArray } from '@fixtures/message.fixtures.spec';
+import { RealTimeServiceMock } from '@fixtures/real-time.fixtures.spec';
+import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
+import { MockedUserService, MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { DesktopNotificationsService } from 'app/core/desktop-notifications/desktop-notifications.service';
+import { I18nService } from 'app/core/i18n/i18n.service';
+import { TrackingService } from 'app/core/tracking/tracking.service';
+import { Toast } from 'app/layout/toast/toast.interface';
+import { ToastService } from 'app/layout/toast/toast.service';
+import { uniq } from 'lodash-es';
+import * as moment from 'moment';
+import { of } from 'rxjs';
+import { MessageService } from '../message/message.service';
 import {
-  InboxConversation,
   InboxMessage,
   MessageStatus,
   MessageType,
-} from '../../chat/model';
+  InboxConversation,
+} from '../model';
 import { ChatSignal, ChatSignalType } from '../model/chat-signal';
-import { createInboxMessagesArray } from '../../../tests/message.fixtures.spec';
-import { UserService } from '../../core/user/user.service';
 import {
-  MOCK_USER,
-  MockedUserService,
-} from '../../../tests/user.fixtures.spec';
-import { MOCK_API_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
-import { ItemService } from '../../core/item/item.service';
-import { MockedItemService } from '../../../tests/item.fixtures.spec';
-import { HttpModuleNew } from '../../core/http/http.module.new';
-import { environment } from '../../../environments/environment';
-import { uniq } from 'lodash-es';
-import { AccessTokenService } from '../../core/http/access-token.service';
-import * as moment from 'moment';
-import { RealTimeServiceMock } from '../../../tests/real-time.fixtures.spec';
-import { RemoteConsoleService } from '../../core/remote-console';
-import { I18nService } from 'app/core/i18n/i18n.service';
-import { ToastService } from 'app/layout/toast/toast.service';
-import { Toast } from 'app/layout/toast/toast.interface';
-import { DesktopNotificationsService } from 'app/core/desktop-notifications/desktop-notifications.service';
-import { TrackingService } from 'app/core/tracking/tracking.service';
-import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
+  ERROR_CODE_TOO_MANY_NEW_CONVERSATIONS,
+  InboxConversationService,
+} from './inbox-conversation.service';
 
 describe('InboxConversationService', () => {
   let service: InboxConversationService;

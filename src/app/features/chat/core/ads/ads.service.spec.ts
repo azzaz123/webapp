@@ -1,4 +1,4 @@
-import { LOAD_EXTERNAL_LIBS_SERVICE_MOCK } from './../../../tests/load-external-libs.fixtures.spec';
+import { LOAD_EXTERNAL_LIBS_SERVICE_MOCK } from '@fixtures/load-external-libs.fixtures.spec';
 import { of } from 'rxjs';
 import {
   discardPeriodicTasks,
@@ -9,7 +9,7 @@ import {
 import { AdsService } from './ads.service';
 
 import { CookieService } from 'ngx-cookie';
-import { MOCK_USER } from '../../../tests/user.fixtures.spec';
+import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { DidomiService } from 'app/core/didomi/didomi.service';
 import { MockDidomiService } from 'app/core/didomi/didomi.service.spec';
 import { UserService } from 'app/core/user/user.service';

@@ -8,12 +8,11 @@ import {
   BehaviorSubject,
   merge,
   Observable,
-  Observer,
   Subscriber,
   Subscription,
 } from 'rxjs';
 import { filter, finalize, mergeMap, tap, switchMap } from 'rxjs/operators';
-import { LoadExternalLibsService } from './../../core/load-external-libs/load-external-libs.service';
+import { LoadExternalLibsService } from '@core/load-external-libs/load-external-libs.service';
 import { ADS_SOURCES, initAdsConfig } from './ads.config';
 import { AdKeyWords } from './ads.interface';
 

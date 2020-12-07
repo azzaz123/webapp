@@ -1,38 +1,36 @@
 import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import {
   ComponentFixture,
   fakeAsync,
   TestBed,
   tick,
   waitForAsync,
 } from '@angular/core/testing';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
-import { format } from 'libphonenumber-js/custom';
-import { metadata } from 'assets/js/metadata-phonenumber';
 import { By } from '@angular/platform-browser';
-
-import { environment } from '../../../../environments/environment';
-import { SendPhoneComponent } from './send-phone.component';
-import { TrackingService } from '../../../core/tracking/tracking.service';
-import { ErrorsService } from '../../../core/errors/errors.service';
-
-import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
-import { MOCK_CONVERSATION } from '../../../../tests/conversation.fixtures.spec';
+import { ErrorsService } from '@core/errors/errors.service';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { environment } from '@environments/environment';
+import { InboxConversationService } from '@features/chat/core/inbox/inbox-conversation.service';
+import { MOCK_CONVERSATION } from '@fixtures/conversation.fixtures.spec';
+import { InboxConversationServiceMock } from '@fixtures/inbox-coversation-service.fixtures.spec';
 import {
-  MOCK_INBOX_CONVERSATION,
   CREATE_MOCK_INBOX_CONVERSATION,
-} from '../../../../tests/inbox.fixtures.spec';
-import { InboxConversationService } from '../../service';
-import { InboxConversationServiceMock } from '../../../../tests';
-import { empty } from 'rxjs';
-import { SharedModule } from '../../../shared/shared.module';
+  MOCK_INBOX_CONVERSATION,
+} from '@fixtures/inbox.fixtures.spec';
+import { RealTimeServiceMock } from '@fixtures/real-time.fixtures.spec';
+import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { SharedModule } from '@shared/shared.module';
 import { RealTimeService } from 'app/core/message/real-time.service';
-import { RealTimeServiceMock } from '../../../../tests/real-time.fixtures.spec';
+import { metadata } from 'assets/js/metadata-phonenumber';
+import { format } from 'libphonenumber-js/custom';
+import { EMPTY } from 'rxjs';
+import { SendPhoneComponent } from './send-phone.component';
 
 describe('SendPhoneComponent', () => {
   let component: SendPhoneComponent;
@@ -135,7 +133,7 @@ describe('SendPhoneComponent', () => {
         spyOn(
           inboxConversationService,
           'addPhoneNumberToConversation$'
-        ).and.returnValue(empty());
+        ).and.returnValue(EMPTY);
         component.conversation = MOCK_CONVERSATION();
 
         component.handleSubmit();

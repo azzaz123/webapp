@@ -1,4 +1,4 @@
-import { Item } from '../../core/item/item';
+import { Item } from '@core/item/item';
 
 export interface InboxUserLocation {
   approximated_latitude: number;

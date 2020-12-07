@@ -1,11 +1,18 @@
-import { mergeMap, map, catchError, delay } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { RealTimeService } from '../../core/message/real-time.service';
-import { EventService } from '../../core/event/event.service';
-import { ChatSignal, ChatSignalType } from '../model/chat-signal';
-import { MessageService } from './message.service';
+import { ConversationResponse } from '@core/conversation/conversation-response.interface';
+import { EventService } from '@core/event/event.service';
+import { RealTimeService } from '@core/message/real-time.service';
+import { RemoteConsoleService } from '@core/remote-console';
+import { environment } from '@environments/environment';
+import { DesktopNotificationsService } from 'app/core/desktop-notifications/desktop-notifications.service';
+import { I18nService } from 'app/core/i18n/i18n.service';
+import { ToastService } from 'app/layout/toast/toast.service';
+import { find, head, isEmpty, isNil, some } from 'lodash-es';
+import * as moment from 'moment';
 import { Observable, of, throwError } from 'rxjs';
-import { ConversationResponse } from '../../core/conversation/conversation-response.interface';
+import { catchError, delay, map, mergeMap } from 'rxjs/operators';
+import { MessageService } from '../message/message.service';
 import {
   InboxConversation,
   InboxMessage,
@@ -13,15 +20,8 @@ import {
   MessageType,
   statusOrder,
 } from '../model';
-import { find, head, isEmpty, isNil, some } from 'lodash-es';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
-import * as moment from 'moment';
 import { InboxConversationApi, InboxMessagesApi } from '../model/api';
-import { RemoteConsoleService } from '../../core/remote-console';
-import { ToastService } from 'app/layout/toast/toast.service';
-import { I18nService } from 'app/core/i18n/i18n.service';
-import { DesktopNotificationsService } from 'app/core/desktop-notifications/desktop-notifications.service';
+import { ChatSignal, ChatSignalType } from '../model/chat-signal';
 
 export const ERROR_CODE_TOO_MANY_NEW_CONVERSATIONS = 100;
 

@@ -5,7 +5,7 @@ import {
 } from '@angular/common/http/testing';
 
 import { BlockUserService } from './block-user.service';
-import { environment } from '../../../environments/environment';
+import { environment } from '@environments/environment';
 
 describe('BlockUserService', () => {
   const USER_ID = '7s6gwr3c54s';

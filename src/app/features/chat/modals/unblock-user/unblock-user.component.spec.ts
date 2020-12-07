@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import { UnblockUserComponent } from './unblock-user.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { UnblockUserComponent } from './unblock-user.component';
 
 describe('UnblockUserComponent', () => {
   let component: UnblockUserComponent;

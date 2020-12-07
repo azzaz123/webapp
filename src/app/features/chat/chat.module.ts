@@ -1,40 +1,39 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { chatRoutedComponents, ChatRoutingModule } from './chat.routes';
-import { InputComponent } from './input/input.component';
-import { ConnectionAlertComponent } from './connection-alert/connection-alert.component';
+import { FormsModule } from '@angular/forms';
+import { TrackingModule } from '@core/tracking/tracking.module';
 import {
   NgbDropdownModule,
   NgbModalModule,
   NgbTooltipModule,
 } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule } from '@angular/forms';
-import { ItemComponent } from './item/item.component';
 import { SharedModule } from '@shared/shared.module';
-import { CommonModule } from '@angular/common';
+import { AutosizeModule } from 'ngx-autosize';
+import { chatRoutedComponents, ChatRoutingModule } from './chat.routes';
+import { InboxComponent, InboxConversationComponent } from './children/inbox';
+import { InboxItemDetailComponent } from './children/inbox/components/inbox-item-component';
+import { InboxItemForSellComponent } from './children/inbox/components/inbox-item-for-sell/inbox-item-for-sell.component';
+import { InboxUserDetailComponent } from './children/inbox/components/inbox-user-component';
+import { ItemComponent } from './children/item';
+import { ItemReservedComponent } from './children/item/components/item-reserved';
+import { ItemSoldComponent } from './children/item/components/item-sold';
+import { MessageModule } from './children/message';
+import { ArchivedInboxConversationComponent } from './components/archived-inbox-conversation';
+import { ConnectionAlertComponent } from './components/connection-alert/inbox';
+import { ConversationDetailsBarComponent } from './components/conversation-details-bar';
+import { CurrentConversationComponent } from './components/current-conversation';
+import { InputComponent } from './components/input';
+import { ScrollingMessageComponent } from './components/scrolling-message';
+import { UserDetailComponent } from './components/user-detail';
+import { UserResponseRateComponent } from './components/user-response-rate';
 import {
+  ArchiveInboxConversationComponent,
+  BlockUserComponent,
   ReportListingComponent,
   ReportUserComponent,
-  BlockUserComponent,
-  UnblockUserComponent,
-  ArchiveInboxConversationComponent,
   UnarchiveInboxConversationComponent,
+  UnblockUserComponent,
 } from './modals';
-import { UserDetailComponent } from './user-detail/user-detail.component';
-import { ItemReservedComponent } from './item/item-reserved/item-reserved.component';
-import { ItemSoldComponent } from './item/item-sold/item-sold.component';
-import { UserResponseRateComponent } from './user-response-rate/user-response-rate.component';
-import { TrackingModule } from '@core/tracking/tracking.module';
-import { InboxComponent } from './inbox/inbox.component';
-import { InboxConversationComponent } from './inbox/inbox-conversation/inbox-conversation.component';
-import { CurrentConversationComponent } from './current-conversation/current-conversation.component';
-import { ArchivedInboxConversationComponent } from './inbox/archived-inbox-conversation/archived-inbox-conversation.component';
-import { InboxUserDetailComponent } from './inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component';
-import { InboxItemDetailComponent } from './inbox/inbox-metadata/inbox-item-component/inbox-item-detail.component';
-import { ScrollingMessageComponent } from './scrolling-message';
-import { InboxItemForSellComponent } from './inbox/inbox-metadata/inbox-item-for-sell/inbox-item-for-sell.component';
-import { AutosizeModule } from 'ngx-autosize';
-import { MessageModule } from './message/message.module';
-import { ConversationDetailsBarComponent } from './conversation-details-bar';
 import { MaliciousConversationModalComponent } from './modals/malicious-conversation-modal/malicious-conversation-modal.component';
 import { PersonalDataInformationModal } from './modals/personal-data-information-modal/personal-data-information-modal.component';
 

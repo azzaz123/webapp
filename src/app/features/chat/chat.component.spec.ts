@@ -1,36 +1,38 @@
-import { from, Observable, of, EMPTY } from 'rxjs';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
   fakeAsync,
   TestBed,
   tick,
 } from '@angular/core/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { USER_STRING_ID } from '@core/constants/string-ids.enum';
+import { EventService } from '@core/event/event.service';
+import { I18nService } from '@core/i18n/i18n.service';
+import { SEARCHID_STORAGE_NAME } from '@core/message/real-time.service';
+import { PhoneMethodResponse } from '@core/user/phone-method.interface';
+import { UserService } from '@core/user/user.service';
+import { InboxConversationServiceMock } from '@fixtures/inbox-coversation-service.fixtures.spec';
+import { InboxServiceMock } from '@fixtures/inbox-service.fixtures.spec';
+import { CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/inbox.fixtures.spec';
 import {
   NgbModal,
   NgbModalOptions,
   NgbModule,
 } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule } from '@angular/forms';
-import { I18nService } from '../core/i18n/i18n.service';
-import { EventService } from '../core/event/event.service';
-import { UserService } from '../core/user/user.service';
-import { NgxPermissionsModule } from 'ngx-permissions';
-import { CREATE_MOCK_INBOX_CONVERSATION } from '../../tests/inbox.fixtures.spec';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
-import { InboxConversationService, InboxService } from './service';
-import { InboxConversationServiceMock, InboxServiceMock } from '../../tests';
-import { PhoneMethodResponse } from '../core/user/phone-method.interface';
-import { InboxConversation, MessageStatus, PhoneMethod } from './model';
-import { ChatComponent } from './chat.component';
-import { TrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safety.service';
 import { MockTrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safety.fixtures.spec';
 import { SessionProfileDataLocation } from 'app/core/trust-and-safety/trust-and-safety.interface';
-import { SEARCHID_STORAGE_NAME } from '../core/message/real-time.service';
+import { TrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safety.service';
+import { NgxPermissionsModule } from 'ngx-permissions';
+import { EMPTY, from, Observable, of } from 'rxjs';
+import { ChatComponent } from './chat.component';
+import { AdsService } from './core/ads/ads.service';
+import { InboxConversationService } from './core/inbox/inbox-conversation.service';
+import { InboxService } from './core/inbox/inbox.service';
+import { InboxConversation, MessageStatus, PhoneMethod } from './core/model';
 import { SendPhoneComponent } from './modals';
 import { PersonalDataInformationModal } from './modals/personal-data-information-modal/personal-data-information-modal.component';
-import { USER_STRING_ID } from '../core/constants/string-ids.enum';
-import { AdsService } from './ads/ads.service';
 
 class MockUserService {
   public isProfessional() {

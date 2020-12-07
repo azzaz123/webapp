@@ -1,3 +1,5 @@
+import { InboxConversationService } from './../../core/inbox/inbox-conversation.service';
+import { InboxConversation } from './../../core/model/inbox-conversation';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {
@@ -6,8 +8,8 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { ErrorsService } from '../../../core/errors/errors.service';
-import { TrackingService } from '../../../core/tracking/tracking.service';
+import { ErrorsService } from '@core/errors/errors.service';
+import { TrackingService } from '@core/tracking/tracking.service';
 import {
   AsYouType,
   format,
@@ -15,8 +17,7 @@ import {
   isValidNumber,
 } from 'libphonenumber-js/custom';
 import { metadata } from 'assets/js/metadata-phonenumber';
-import { InboxConversation } from '../../model';
-import { InboxConversationService } from '../../service';
+
 import { RealTimeService } from 'app/core/message/real-time.service';
 
 @Component({

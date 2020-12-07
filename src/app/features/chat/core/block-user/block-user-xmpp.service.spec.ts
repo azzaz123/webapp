@@ -1,13 +1,12 @@
+import { TestBed } from '@angular/core/testing';
+import { EventService } from '@core/event/event.service';
+import { RemoteConsoleService } from '@core/remote-console';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { XmppService } from '@core/xmpp/xmpp.service';
+import { MockRemoteConsoleService } from '@fixtures/remote-console.fixtures.spec';
+import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { of } from 'rxjs';
-import { TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
-
 import { BlockUserXmppService } from './block-user-xmpp.service';
-import { XmppService } from '../../core/xmpp/xmpp.service';
-import { EventService } from '../../core/event/event.service';
-import { TrackingService } from '../../core/tracking/tracking.service';
-import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-import { RemoteConsoleService } from '../../core/remote-console';
-import { MockRemoteConsoleService } from '../../../tests';
 
 let service: BlockUserXmppService;
 let xmppService: XmppService;

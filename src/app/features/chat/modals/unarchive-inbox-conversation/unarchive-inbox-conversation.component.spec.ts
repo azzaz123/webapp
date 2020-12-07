@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UnarchiveInboxConversationComponent } from './unarchive-inbox-conversation.component';
 
