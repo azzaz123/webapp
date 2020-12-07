@@ -538,19 +538,19 @@ describe('App', () => {
     const sidebarSelector = 'tsl-sidebar';
 
     it('should not have sidebar by default', () => {
-      expect(el.querySelector(sidebarSelector)).toBeNull();
+      expect(el.querySelector(sidebarSelector)).toBeFalsy();
     });
 
     it('should have sidebar if show', () => {
       component.hideSidebar = false;
       fixture.detectChanges();
-      expect(el.querySelector(sidebarSelector)).not.toBeNull();
+      expect(el.querySelector(sidebarSelector)).toBeTruthy();
     });
 
     it('should not have sidebar if hidden', () => {
       component.hideSidebar = true;
       fixture.detectChanges();
-      expect(el.querySelector(sidebarSelector)).toBeNull();
+      expect(el.querySelector(sidebarSelector)).toBeFalsy();
     });
   });
 });
