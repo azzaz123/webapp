@@ -1,21 +1,21 @@
-import { Observable, of } from 'rxjs';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { TopbarComponent } from './topbar.component';
-import { RouterTestingModule } from '@angular/router/testing';
-import { UserService } from '../../core/user/user.service';
-import { EventService } from '../../core/event/event.service';
-import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
-import { environment } from '../../../environments/environment';
-import { SUGGESTER_DATA_WEB } from '../../../tests/suggester.fixtures.spec';
-import { User } from '../../core/user/user';
-import { USER_DATA } from '../../../tests/user.fixtures.spec';
-import { MessageService } from '../../chat/service/message.service';
-import { NgxPermissionsModule } from 'ngx-permissions';
-import { PaymentService } from '../../core/payments/payment.service';
-import { CustomCurrencyPipe } from '../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MessageService } from '@features/chat/core/message/message.service';
 import { CookieService } from 'ngx-cookie';
+import { NgxPermissionsModule } from 'ngx-permissions';
+import { Observable, of } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
+import { SUGGESTER_DATA_WEB } from '../../../tests/suggester.fixtures.spec';
+import { USER_DATA } from '../../../tests/user.fixtures.spec';
+import { EventService } from '../../core/event/event.service';
+import { PaymentService } from '../../core/payments/payment.service';
+import { User } from '../../core/user/user';
+import { UserService } from '../../core/user/user.service';
+import { CustomCurrencyPipe } from '../../shared/pipes';
+import { TopbarComponent } from './topbar.component';
 
 const MOCK_USER = new User(
   USER_DATA.id,

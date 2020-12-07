@@ -1,10 +1,3 @@
-import {
-  mergeMap,
-  map,
-  filter,
-  distinctUntilChanged,
-  finalize,
-} from 'rxjs/operators';
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import {
@@ -15,27 +8,34 @@ import {
   RouteConfigLoadStart,
   Router,
 } from '@angular/router';
+import { SwUpdate } from '@angular/service-worker';
+import { InboxService } from '@features/chat/core/inbox/inbox.service';
+import { MessageService } from '@features/chat/core/message/message.service';
 import * as moment from 'moment';
-import { environment } from '../environments/environment';
 import { CookieOptions, CookieService } from 'ngx-cookie';
-import { TrackingService } from './core/tracking/tracking.service';
-import { EventService } from './core/event/event.service';
-import { UserService } from './core/user/user.service';
-import { DesktopNotificationsService } from './core/desktop-notifications/desktop-notifications.service';
-import { MessageService } from './chat/service/message.service';
-import { I18nService } from './core/i18n/i18n.service';
-import { User } from './core/user/user';
+import {
+  distinctUntilChanged,
+  filter,
+  finalize,
+  map,
+  mergeMap,
+} from 'rxjs/operators';
+import { environment } from '../environments/environment';
+import { AnalyticsService } from './core/analytics/analytics.service';
 import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
-import { Item } from './core/item/item';
-import { PaymentService } from './core/payments/payment.service';
-import { RealTimeService } from './core/message/real-time.service';
-import { InboxService } from './chat/service';
-import { StripeService } from './core/stripe/stripe.service';
-import { AnalyticsService } from './core/analytics/analytics.service';
+import { DesktopNotificationsService } from './core/desktop-notifications/desktop-notifications.service';
 import { DidomiService } from './core/didomi/didomi.service';
+import { EventService } from './core/event/event.service';
+import { I18nService } from './core/i18n/i18n.service';
+import { Item } from './core/item/item';
+import { RealTimeService } from './core/message/real-time.service';
+import { PaymentService } from './core/payments/payment.service';
+import { StripeService } from './core/stripe/stripe.service';
+import { TrackingService } from './core/tracking/tracking.service';
+import { User } from './core/user/user';
+import { UserService } from './core/user/user.service';
 import { UuidService } from './core/uuid/uuid.service';
-import { SwUpdate } from '@angular/service-worker';
 
 @Component({
   selector: 'tsl-root',

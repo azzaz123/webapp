@@ -8,7 +8,7 @@ import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MockMessageService } from '../../../tests/message.fixtures.spec';
-import { MessageService } from '../../chat/service/message.service';
+import { MessageService } from '@features/chat/core/message/message.service';
 
 describe('TabbarComponent', () => {
   let component: TabbarComponent;

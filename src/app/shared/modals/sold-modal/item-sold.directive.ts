@@ -5,13 +5,12 @@ import {
   Input,
   Output,
 } from '@angular/core';
-import { ItemService } from '../../../core/item/item.service';
+import { InboxItem } from '@features/chat/core/model';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { Item } from '../../../core/item/item';
+import { ItemService } from '../../../core/item/item.service';
 import { SoldModalComponent } from './sold-modal.component';
-import { InboxItem } from '../../../chat/model/inbox-item';
 
 @Directive({
   selector: '[tslItemSold]',

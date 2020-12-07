@@ -3,7 +3,7 @@ import { Component, OnInit, Inject, HostListener } from '@angular/core';
 import { UserService } from '../../core/user/user.service';
 import { User } from '../../core/user/user';
 import { TabbarService } from './tabbar.service';
-import { MessageService } from '../../chat/service/message.service';
+import { MessageService } from '@features/chat/core/message/message.service';
 
 @Component({
   selector: 'tsl-tabbar',
