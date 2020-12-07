@@ -219,8 +219,13 @@ export class UploaderService {
             file.response = xhr.response;
           }
 
-          observer.next({ type: OutputType.done, file: file });
-          observer.complete();
+          if (xhr.status === 200 || xhr.status === 204) {
+            observer.next({ type: OutputType.done, file: file });
+            observer.complete();
+          } else {
+            observer.error(file.response);
+            observer.complete();
+          }
         }
       };
 
@@ -229,16 +234,6 @@ export class UploaderService {
       const form = new FormData();
       try {
         const uploadFile = file.file;
-        const uploadIndex = this.uploads.findIndex(
-          (upload) => upload && upload.file.size === uploadFile.size
-        );
-        if (
-          this.uploads[uploadIndex] &&
-          this.uploads[uploadIndex].file.progress.status ===
-            UploadStatus.Canceled
-        ) {
-          observer.complete();
-        }
         form.append(event.fieldName || 'file', uploadFile, uploadFile.name);
 
         Object.keys(data).forEach((key) => {
@@ -248,8 +243,6 @@ export class UploaderService {
         Object.keys(headers).forEach((key) =>
           xhr.setRequestHeader(key, headers[key])
         );
-
-        this.serviceEvents.emit({ type: OutputType.done, file: file });
         xhr.send(form);
       } catch (e) {
         console.error(e);

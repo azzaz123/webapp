@@ -24,10 +24,7 @@ import { omit, isEqual } from 'lodash-es';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { CARS_CATEGORY } from '../../core/item/item-categories';
 import { ItemService } from '../../core/item/item.service';
-import {
-  CarInfo,
-  CarContent,
-} from '../../core/item/item-response.interface';
+import { CarInfo, CarContent } from '../../core/item/item-response.interface';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { UserService } from '../../core/user/user.service';
 import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
@@ -645,7 +642,7 @@ export class UploadCarComponent implements OnInit {
   public onDeleteImage(imageId: string): void {
     this.uploadService.onDeleteImage(this.item.id, imageId).subscribe(
       () => this.removeFileFromForm(imageId),
-      () => null
+      (error: HttpErrorResponse) => this.onError(error)
     );
   }
 
@@ -659,7 +656,10 @@ export class UploadCarComponent implements OnInit {
 
   public onOrderImages(): void {
     const images = this.uploadForm.get('images').value;
-    this.uploadService.updateOrder(images, this.item.id).subscribe();
+    this.uploadService.updateOrder(images, this.item.id).subscribe(
+      () => null,
+      (error: HttpErrorResponse) => this.onError(error)
+    );
   }
 
   public onAddImage(file: UploadFile): void {
@@ -668,10 +668,12 @@ export class UploadCarComponent implements OnInit {
         .uploadSingleImage(file, this.item.id, ITEM_TYPES.CARS)
         .subscribe(
           (value: UploadOutput) => {
-            if (value.type === OutputType.done)
+            if (value.type === OutputType.done) {
               this.errorsService.i18nSuccess('imageUploaded');
+              file.id = value.file.response;
+            }
           },
-          (error) => {
+          (error: HttpErrorResponse) => {
             this.removeFileFromForm(file.id);
             this.onError(error);
           }

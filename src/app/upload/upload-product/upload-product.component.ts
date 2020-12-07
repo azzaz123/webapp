@@ -69,7 +69,12 @@ import { I18nService } from 'app/core/i18n/i18n.service';
 import { UploadService } from '../drop-area/upload.service';
 import { deliveryInfo } from '../upload.constants';
 import { HttpErrorResponse } from '@angular/common/http';
-import { OutputType, UploadAction, UploadFile, UploadOutput } from 'app/shared/uploader/upload.interface';
+import {
+  OutputType,
+  UploadAction,
+  UploadFile,
+  UploadOutput,
+} from 'app/shared/uploader/upload.interface';
 
 function isObjectTypeRequiredValidator(formControl: AbstractControl) {
   const objectTypeControl: FormGroup = formControl?.parent as FormGroup;
@@ -518,7 +523,7 @@ export class UploadProductComponent
         '/catalog/list',
         {
           [action]: true,
-          itemId: response.id
+          itemId: response.id,
         },
       ])
     );
@@ -530,10 +535,12 @@ export class UploadProductComponent
         .uploadSingleImage(file, this.item.id, ITEM_TYPES.CONSUMER_GOODS)
         .subscribe(
           (value: UploadOutput) => {
-            if (value.type === OutputType.done)
+            if (value.type === OutputType.done) {
               this.errorsService.i18nSuccess('imageUploaded');
+              file.id = value.file.response;
+            }
           },
-          (error) => {
+          (error: HttpErrorResponse) => {
             this.removeFileFromForm(file.id);
             this.onError(error);
           }
@@ -909,16 +916,14 @@ export class UploadProductComponent
     );
   }
 
-  onDeleteImage(imageId: string): void {
-    this.uploadService
-      .onDeleteImage(this.item.id, imageId)
-      .subscribe(
-        () => this.removeFileFromForm(imageId),
-        () => null
-        );
+  public onDeleteImage(imageId: string): void {
+    this.uploadService.onDeleteImage(this.item.id, imageId).subscribe(
+      () => this.removeFileFromForm(imageId),
+      (error: HttpErrorResponse) => this.onError(error)
+    );
   }
 
-  removeFileFromForm(imageId: string): void {
+  private removeFileFromForm(imageId: string): void {
     const imagesControl: FormControl = this.uploadForm.get(
       'images'
     ) as FormControl;
@@ -926,8 +931,11 @@ export class UploadProductComponent
     imagesControl.patchValue(images.filter((image) => image.id !== imageId));
   }
 
-  onOrderImages(): void {
+  public onOrderImages(): void {
     const images = this.uploadForm.get('images').value;
-    this.uploadService.updateOrder(images, this.item.id).subscribe();
+    this.uploadService.updateOrder(images, this.item.id).subscribe(
+      () => null,
+      (error: HttpErrorResponse) => this.onError(error)
+    );
   }
 }

@@ -11,11 +11,11 @@
     <tsl-user-avatar [user]="user" [imageUrl]="user?.image?.urls_by_size.medium" size="80"></tsl-user-avatar>
     <div class="upload-button">
       <label class="btn btn-upload"
-        [ngClass]="{disabled: file?.progress?.status === 0 || file?.progress?.status === 1}">
+        [ngClass]="{disabled: isLoading}">
         <input type="file" tslFileSelect imageType='avatar' (uploadOutput)="onUploadOutput($event)"
          [options]="options"
-          [disabled]="file?.progress?.status === 0 || file?.progress?.status === 1" />
-        <span class="loader" *ngIf="file?.progress?.status === 0 || file?.progress?.status === 1">
+          [disabled]="isLoading" />
+        <span class="loader" *ngIf="isLoading">
           <tsl-svg-icon src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
         </span>
         <span i18n *ngIf="user?.image">Update picture</span>

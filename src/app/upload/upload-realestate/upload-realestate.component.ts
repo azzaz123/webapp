@@ -25,7 +25,10 @@ import { Realestate } from '../../core/item/realestate';
 import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { UserService } from '../../core/user/user.service';
-import { RealestateContent, RealStateResponse } from '../../core/item/item-response.interface';
+import {
+  RealestateContent,
+  RealStateResponse,
+} from '../../core/item/item-response.interface';
 import { tap } from 'rxjs/operators';
 import {
   ANALYTIC_EVENT_TYPES,
@@ -37,7 +40,12 @@ import {
 } from '../../core/analytics/analytics-constants';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UploadService } from '../drop-area/upload.service';
-import { OutputType, UploadAction, UploadFile, UploadOutput } from 'app/shared/uploader/upload.interface';
+import {
+  OutputType,
+  UploadAction,
+  UploadFile,
+  UploadOutput,
+} from 'app/shared/uploader/upload.interface';
 import { ITEM_TYPES } from 'app/core/item/item';
 
 @Component({
@@ -383,16 +391,14 @@ export class UploadRealestateComponent implements OnInit {
     );
   }
 
-  onDeleteImage(imageId: string): void {
-    this.uploadService
-      .onDeleteImage(this.item.id, imageId)
-      .subscribe(
-        () => this.removeFileFromForm(imageId),
-        () => null
-        );
+  public onDeleteImage(imageId: string): void {
+    this.uploadService.onDeleteImage(this.item.id, imageId).subscribe(
+      () => this.removeFileFromForm(imageId),
+      (error: HttpErrorResponse) => this.onError(error)
+    );
   }
 
-  removeFileFromForm(imageId: string): void {
+  private removeFileFromForm(imageId: string): void {
     const imagesControl: FormControl = this.uploadForm.get(
       'images'
     ) as FormControl;
@@ -400,9 +406,12 @@ export class UploadRealestateComponent implements OnInit {
     imagesControl.patchValue(images.filter((image) => image.id !== imageId));
   }
 
-  onOrderImages(): void {
+  public onOrderImages(): void {
     const images = this.uploadForm.get('images').value;
-    this.uploadService.updateOrder(images, this.item.id).subscribe();
+    this.uploadService.updateOrder(images, this.item.id).subscribe(
+      () => null,
+      (error: HttpErrorResponse) => this.onError(error)
+    );
   }
 
   public onAddImage(file: UploadFile): void {
@@ -410,11 +419,13 @@ export class UploadRealestateComponent implements OnInit {
       this.uploadService
         .uploadSingleImage(file, this.item.id, ITEM_TYPES.REAL_ESTATE)
         .subscribe(
-          (value) => {
-            if (value.type === OutputType.done)
+          (value: UploadOutput) => {
+            if (value.type === OutputType.done) {
               this.errorsService.i18nSuccess('imageUploaded');
+              file.id = value.file.response;
+            }
           },
-          (error) => {
+          (error: HttpErrorResponse) => {
             this.removeFileFromForm(file.id);
             this.onError(error);
           }

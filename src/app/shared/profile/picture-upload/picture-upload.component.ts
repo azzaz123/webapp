@@ -3,7 +3,7 @@ import {
   TOKEN_SIGNATURE_HEADER_NAME,
   TOKEN_TIMESTAMP_HEADER_NAME,
 } from './../../../core/http/interceptors/token.interceptor';
-import { Component, EventEmitter, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { User } from '../../../core/user/user';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { UserService } from '../../../core/user/user.service';
@@ -18,6 +18,9 @@ import {
 } from '../../uploader/upload.interface';
 import { AccessTokenService } from '../../../core/http/access-token.service';
 import { UploaderService } from 'app/shared/uploader/uploader.service';
+import { finalize } from 'rxjs/operators';
+import { OutputFile } from 'typescript';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'tsl-picture-upload',
@@ -28,6 +31,7 @@ export class PictureUploadComponent implements OnInit {
   @Input() user: User;
   file: UploadFile;
   options: NgUploaderOptions;
+  isLoading: boolean;
 
   constructor(
     private errorsService: ErrorsService,
@@ -61,6 +65,7 @@ export class PictureUploadComponent implements OnInit {
   }
 
   private uploadPicture() {
+    this.isLoading = true;
     const url = 'api/v3/users/me/image';
     const timestamp = new Date().getTime();
     const signature = this.accesTokenService.getTokenSignature(
@@ -83,21 +88,20 @@ export class PictureUploadComponent implements OnInit {
       file: this.file,
       imageType: 'avatar',
     };
-    this.uploaderService.uploadFile(this.file, uploadinput).subscribe(
-      (output) => {
-        if (output?.type === OutputType.done) {
-          if (output.file.progress.data.responseStatus === 204) {
+    this.uploaderService
+      .uploadFile(this.file, uploadinput)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe(
+        (output: UploadOutput) => {
+          if (output?.type === OutputType.done) {
             this.userService.user.image.urls_by_size.medium =
               output.file.preview;
-          } else {
-            this.showError(output.file.response.message);
           }
+        },
+        (error: HttpErrorResponse) => {
+          this.showError(error.message);
         }
-      },
-      (err) => {
-        this.showError();
-      }
-    );
+      );
   }
 
   private showError(message?: string) {

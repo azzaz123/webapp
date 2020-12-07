@@ -127,7 +127,7 @@ describe('CoverUploadComponent', () => {
 
       spyOn(uploaderService, 'uploadFile').and.returnValue(
         of({
-          type: 'done',
+          type: OutputType.done,
           file: file,
         })
       );

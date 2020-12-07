@@ -21,7 +21,7 @@ import {
 } from '../../uploader/upload.interface';
 import { AccessTokenService } from '../../../core/http/access-token.service';
 import { UploaderService } from 'app/shared/uploader/uploader.service';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 describe('PictureUploadComponent', () => {
   let component: PictureUploadComponent;
@@ -125,10 +125,7 @@ describe('PictureUploadComponent', () => {
       };
 
       spyOn(uploaderService, 'uploadFile').and.returnValue(
-        of({
-          type: 'done',
-          file: file,
-        })
+        throwError(file.response)
       );
 
       component.onUploadOutput({
