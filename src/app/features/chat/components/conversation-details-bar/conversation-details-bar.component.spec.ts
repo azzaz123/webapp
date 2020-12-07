@@ -6,29 +6,30 @@ import {
 } from '@angular/core/testing';
 
 import { ConversationDetailsBarComponent } from './conversation-details-bar.component';
-import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
-import { TrackingService } from '../../core/tracking/tracking.service';
-import { ITEM_ID } from '../../../tests/item.fixtures.spec';
+import { MOCK_CONVERSATION } from '@fixtures/conversation.fixtures.spec';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { ITEM_ID } from '@fixtures/item.fixtures.spec';
 import { Observable, of, throwError } from 'rxjs';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { EventService } from '../../core/event/event.service';
-import { RealTimeService } from '../../core/message/real-time.service';
-import { ToastService } from '../../layout/toast/toast.service';
-import { ItemService } from '../../core/item/item.service';
-import { UserService } from '../../core/user/user.service';
-import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
+import { EventService } from '@core/event/event.service';
+import { RealTimeService } from '@core/message/real-time.service';
+import { ToastService } from '@layout/toast/toast.service';
+import { ItemService } from '@core/item/item.service';
+import { UserService } from '@core/user/user.service';
+import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
+
+import { I18nService } from '@core/i18n/i18n.service';
+import { CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/inbox.fixtures.spec';
+import { User } from '@core/user/user';
+import { SharedModule } from '@shared/shared.module';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
   BlockUserService,
   BlockUserXmppService,
   InboxConversationService,
-} from '../service';
-import { I18nService } from '../../core/i18n/i18n.service';
-import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
-import { User } from '../../core/user/user';
-import { SharedModule } from '../../shared/shared.module';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+} from '@features/chat/core/service';
 
 class MockUserService {
   public user: User = new User(

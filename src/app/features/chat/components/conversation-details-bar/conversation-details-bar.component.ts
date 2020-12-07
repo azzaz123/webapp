@@ -1,23 +1,27 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { InboxConversation } from '../model';
-import { ArchiveInboxConversationComponent } from '../modals/archive-inbox-conversation';
-import { EventService } from '../../core/event/event.service';
-import { UnarchiveInboxConversationComponent } from '../modals/unarchive-inbox-conversation';
-import { ReportUserComponent } from '../modals/report-user';
-import { TrackingService } from '../../core/tracking/tracking.service';
-import { ReportListingComponent } from '../modals/report-listing';
-import { BlockUserComponent } from '../modals/block-user';
-import { UnblockUserComponent } from '../modals/unblock-user';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastService } from '../../layout/toast/toast.service';
-import { UserService } from '../../core/user/user.service';
-import { ItemService } from '../../core/item/item.service';
+import { EventService } from '@core/event/event.service';
+import { I18nService } from '@core/i18n/i18n.service';
+import { ItemService } from '@core/item/item.service';
+
+import { TrackingService } from '@core/tracking/tracking.service';
+import { UserService } from '@core/user/user.service';
+import { ToastService } from '@layout/toast/toast.service';
+
+import { InboxConversation } from '@features/chat/core/model';
 import {
   BlockUserService,
   BlockUserXmppService,
   InboxConversationService,
-} from '../service';
-import { I18nService } from '../../core/i18n/i18n.service';
+} from '@features/chat/core/service';
+import {
+  ArchiveInboxConversationComponent,
+  UnarchiveInboxConversationComponent,
+  ReportUserComponent,
+  ReportListingComponent,
+  BlockUserComponent,
+  UnblockUserComponent,
+} from '@features/chat/modals';
 
 @Component({
   selector: 'tsl-conversation-details-bar',

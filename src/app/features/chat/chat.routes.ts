@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { ChatComponent } from './chat.component';
-import { LoggedGuard } from '../core/user/logged.guard';
+import { LoggedGuard } from '@core/user/logged.guard';
 
 const routes: Routes = [
   {

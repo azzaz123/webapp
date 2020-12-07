@@ -19,28 +19,29 @@ import {
   SCREEN_IDS,
   ViewBannedUserChatPopUp,
 } from 'app/core/analytics/analytics-constants';
-import { EventService } from '../../core/event/event.service';
-import { RealTimeService } from '../../core/message/real-time.service';
+import { EventService } from '@core/event/event.service';
+import { RealTimeService } from '@core/message/real-time.service';
 import { of, Subscription } from 'rxjs';
-import { I18nService } from '../../core/i18n/i18n.service';
-import { InboxConversationService } from '../service';
+import { I18nService } from '@core/i18n/i18n.service';
+
 import { TextMessageComponent } from '../message/text-message';
 import { eq, includes, isEmpty } from 'lodash-es';
-import {
-  InboxConversation,
-  InboxMessage,
-  MessageStatus,
-  MessageType,
-} from '../model';
 import { ThirdVoiceDropPriceComponent } from '../message/third-voice-drop-price';
 import { ThirdVoiceReviewComponent } from '../message/third-voice-review';
-import { RemoteConsoleService } from '../../core/remote-console';
+import { RemoteConsoleService } from '@core/remote-console';
 import { delay } from 'rxjs/operators';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { MaliciousConversationModalComponent } from '../modals/malicious-conversation-modal/malicious-conversation-modal.component';
 import { AnalyticsService } from 'app/core/analytics/analytics.service';
 import { UserService } from 'app/core/user/user.service';
 import { onVisible } from 'visibilityjs';
+import { InboxConversationService } from '@features/chat/core/service';
+import {
+  InboxConversation,
+  InboxMessage,
+  MessageType,
+  MessageStatus,
+} from '@features/chat/core/model';
+import { MaliciousConversationModalComponent } from '@features/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component';
 
 @Component({
   selector: 'tsl-current-conversation',

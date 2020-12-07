@@ -9,7 +9,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { ItemComponent } from './item/item.component';
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '@shared/shared.module';
 import { CommonModule } from '@angular/common';
 import {
   ReportListingComponent,
@@ -23,7 +23,7 @@ import { UserDetailComponent } from './user-detail/user-detail.component';
 import { ItemReservedComponent } from './item/item-reserved/item-reserved.component';
 import { ItemSoldComponent } from './item/item-sold/item-sold.component';
 import { UserResponseRateComponent } from './user-response-rate/user-response-rate.component';
-import { TrackingModule } from '../core/tracking/tracking.module';
+import { TrackingModule } from '@core/tracking/tracking.module';
 import { InboxComponent } from './inbox/inbox.component';
 import { InboxConversationComponent } from './inbox/inbox-conversation/inbox-conversation.component';
 import { CurrentConversationComponent } from './current-conversation/current-conversation.component';

@@ -1,23 +1,15 @@
-/* tslint:isUserDisable:no-unused-variable */
-
-import { InboxConversationComponent } from './inbox-conversation.component';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
-import { InboxItemStatus } from '../../model/inbox-item';
-import { NgxPermissionsModule } from 'ngx-permissions';
-import { InboxConversationService } from '../../service';
-import { InboxConversationServiceMock } from '../../../../tests';
-import { of } from 'rxjs';
-import {
-  InboxConversation,
-  InboxMessage,
-  MessageStatus,
-  MessageType,
-} from '../../model';
-import { I18nService } from '../../../core/i18n/i18n.service';
-import { DateCalendarPipe } from 'app/shared/pipes';
 import { CommonModule } from '@angular/common';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { I18nService } from '@core/i18n/i18n.service';
+import { InboxConversation, InboxItemStatus } from '@features/chat/core/model';
+import { InboxConversationService } from '@features/chat/core/service';
+import { InboxConversationServiceMock } from '@fixtures/inbox-coversation-service.fixtures.spec';
+import { CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/inbox.fixtures.spec';
+import { DateCalendarPipe } from 'app/shared/pipes';
+import { NgxPermissionsModule } from 'ngx-permissions';
+import { of } from 'rxjs';
+import { InboxConversationComponent } from './inbox-conversation.component';
 
 describe('Component: Conversation', () => {
   let inboxConversationService: InboxConversationService;

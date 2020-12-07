@@ -3,10 +3,8 @@
 import { Observable, of } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { InboxComponent, InboxState } from './inbox.component';
-import { InboxConversationComponent } from './inbox-conversation/inbox-conversation.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { InboxService, InboxConversationService } from '../service';
 import {
   createInboxConversationsArray,
   CREATE_MOCK_INBOX_CONVERSATION,
@@ -31,6 +29,8 @@ import { Item } from '../../core/item/item';
 import { InboxItem } from '../model/inbox-item';
 import { DateCalendarPipe } from 'app/shared/pipes';
 import { AdsService } from '../ads/ads.service';
+import { InboxConversationComponent } from '../components/inbox-conversation';
+import { InboxConversationService } from '@features/chat/core/service/inbox-conversation.service';
 
 class AdServiceMock {
   adsRefresh() {}

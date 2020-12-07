@@ -1,8 +1,6 @@
-/* tslint:disable:no-unused-variable */
-
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { EventService } from '@core/event/event.service';
 import { ConnectionAlertComponent } from './connection-alert.component';
-import { EventService } from '../../core/event/event.service';
 
 describe('Component: ConnectionAlert', () => {
   let component: ConnectionAlertComponent;

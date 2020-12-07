@@ -11,30 +11,20 @@ import {
   CREATE_MOCK_INBOX_CONVERSATION,
   MOCK_INBOX_CONVERSATION_WITH_MALICIOUS_USER,
   MOCK_INBOX_CONVERSATION_BASIC,
-} from '../../../tests/inbox.fixtures.spec';
-import {
-  InboxMessage,
-  MessageStatus,
-  MessageType,
-} from '../model/inbox-message';
-import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
-import { RealTimeService } from '../../core/message/real-time.service';
-import { EventService } from '../../core/event/event.service';
-import { TrackingService } from '../../core/tracking/tracking.service';
-import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
-import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
+} from '@fixtures/inbox.fixtures.spec';
+import { MOCK_USER, USER_ID } from '@fixtures/user.fixtures.spec';
+import { RealTimeService } from '@core/message/real-time.service';
+import { EventService } from '@core/event/event.service';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
+import { MOCK_CONVERSATION } from '@fixtures/conversation.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { I18nService } from '../../core/i18n/i18n.service';
-import { InboxConversationService } from '../service';
+import { I18nService } from '@core/i18n/i18n.service';
+
 import { NgxPermissionsModule } from 'ngx-permissions';
-import {
-  MockRemoteConsoleService,
-  InboxConversationServiceMock,
-} from '../../../tests';
-import { RealTimeServiceMock } from '../../../tests/real-time.fixtures.spec';
+
+import { RealTimeServiceMock } from '@fixtures/real-time.fixtures.spec';
 import { DateCalendarPipe } from 'app/shared/pipes';
-import { RemoteConsoleService } from '../../core/remote-console';
-import { MaliciousConversationModalComponent } from '../modals/malicious-conversation-modal/malicious-conversation-modal.component';
 import { SimpleChange, NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   AnalyticsEvent,
@@ -45,10 +35,20 @@ import {
   SCREEN_IDS,
   ViewBannedUserChatPopUp,
 } from 'app/core/analytics/analytics-constants';
-import { AnalyticsService } from '../../core/analytics/analytics.service';
-import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { UserService } from 'app/core/user/user.service';
 import * as Visibility from 'visibilityjs';
+import {
+  InboxMessage,
+  MessageStatus,
+  MessageType,
+} from '@features/chat/core/model';
+import { InboxConversationService } from '@features/chat/core/service';
+import { RemoteConsoleService } from '@core/remote-console';
+import { MaliciousConversationModalComponent } from '@features/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component';
+import { MockRemoteConsoleService } from '@fixtures/remote-console.fixtures.spec';
+import { InboxConversationServiceMock } from '@fixtures/inbox-coversation-service.fixtures.spec';
 
 describe('CurrentConversationComponent', () => {
   let component: CurrentConversationComponent;

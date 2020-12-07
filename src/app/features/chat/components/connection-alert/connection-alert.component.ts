@@ -6,7 +6,7 @@ import {
   trigger,
 } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import { EventService } from '../../core/event/event.service';
+import { EventService } from '@core/event/event.service';
 
 @Component({
   selector: 'tsl-connection-alert',
