@@ -567,13 +567,17 @@ describe('App', () => {
 
     it('should have sidebar if show', () => {
       component.hideSidebar = false;
+
       fixture.detectChanges();
+
       expect(el.querySelector(sidebarSelector)).toBeTruthy();
     });
 
     it('should not have sidebar if hidden', () => {
       component.hideSidebar = true;
+
       fixture.detectChanges();
+
       expect(el.querySelector(sidebarSelector)).toBeFalsy();
     });
   });
