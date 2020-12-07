@@ -325,10 +325,15 @@ export class AppComponent implements OnInit {
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
-        map(() => this.activatedRoute.root.firstChild.snapshot.data || {})
+        map(
+          () =>
+            this.activatedRoute.root.firstChild.snapshot.data[
+              PATH_EVENTS.hideSidebar
+            ] || null
+        )
       )
-      .subscribe((data: any) => {
-        this.hideSidebar = !!data[PATH_EVENTS.hideSidebar];
+      .subscribe((hideSidebar: boolean) => {
+        this.hideSidebar = !!hideSidebar;
       });
   }
 
