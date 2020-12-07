@@ -4,6 +4,7 @@ import { PERMISSIONS } from './core/user/user';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { DevelopmentGuard } from './core/user/development.guard';
 import { LoggedGuard } from './core/user/logged.guard';
+import { PATH_EVENTS } from './app-routing-constants';
 
 const publicRoutes = [
   {
@@ -12,7 +13,7 @@ const publicRoutes = [
     loadChildren: () =>
       import('app/login/login.module').then((m) => m.LoginModule),
     data: {
-      hideSidebar: true,
+      [PATH_EVENTS.hideSidebar]: true,
     },
   },
   {
@@ -21,7 +22,7 @@ const publicRoutes = [
     loadChildren: () =>
       import('app/register/register.module').then((m) => m.RegisterModule),
     data: {
-      hideSidebar: true,
+      [PATH_EVENTS.hideSidebar]: true,
     },
   },
 ];
