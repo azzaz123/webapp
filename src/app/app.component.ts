@@ -319,6 +319,17 @@ export class AppComponent implements OnInit {
     });
   }
 
+  private setHideSidebar(): void {
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        map(() => this.activatedRoute.root.firstChild.snapshot.data || {})
+      )
+      .subscribe((data: any) => {
+        this.hideSidebar = data['hideSidebar'];
+      });
+  }
+
   private setLoading(loading: boolean): void {
     loading
       ? this.renderer.addClass(document.body, 'route-loading')
