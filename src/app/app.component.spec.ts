@@ -537,7 +537,7 @@ describe('App', () => {
   describe('When sidebar hide/show status changes', () => {
     const sidebarSelector = 'tsl-sidebar';
 
-    it('should have sidebar by default', () => {
+    it('should not have sidebar by default', () => {
       expect(el.querySelector(sidebarSelector)).toBeNull();
     });
 
