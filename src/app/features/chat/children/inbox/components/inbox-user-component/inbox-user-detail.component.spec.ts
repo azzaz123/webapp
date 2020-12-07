@@ -1,18 +1,17 @@
-import { of } from 'rxjs';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
-import { UserService } from '../../../../core/user/user.service';
-import { MOCKED_INBOX_CONVERSATIONS } from '../../../../../tests/inbox.fixtures.spec';
-import { InboxUserDetailComponent } from './inbox-user-detail.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Item } from '@core/item/item';
+import { User } from '@core/user/user';
+import { UserService } from '@core/user/user.service';
+import { InboxItem, InboxUser } from '@features/chat/core/model';
+import { MOCKED_INBOX_CONVERSATIONS } from '@fixtures/inbox.fixtures.spec';
 import {
-  USER_INFO_RESPONSE,
-  SCORING_STARS,
   RESPONSE_RATE,
-} from '../../../../../tests/user.fixtures.spec';
-import { User } from '../../../../core/user/user';
-import { InboxUser } from '../../../model/inbox-user';
-import { Item } from '../../../../core/item/item';
-import { InboxItem } from '../../../model/inbox-item';
+  SCORING_STARS,
+  USER_INFO_RESPONSE,
+} from '@fixtures/user.fixtures.spec';
+import { of } from 'rxjs';
+import { InboxUserDetailComponent } from './inbox-user-detail.component';
 
 class MockUserService {
   getInfo() {

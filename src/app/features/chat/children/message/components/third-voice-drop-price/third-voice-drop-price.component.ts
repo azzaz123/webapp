@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { InboxMessage, MessageType } from '../../model';
+import { InboxMessage, MessageType } from '@features/chat/core/model';
 
 @Component({
   selector: 'tsl-third-voice-drop-price',

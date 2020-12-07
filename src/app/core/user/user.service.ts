@@ -24,11 +24,11 @@ import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { PhoneMethodResponse } from './phone-method.interface';
-import { InboxUser } from '../../chat/model/inbox-user';
-import { InboxItem } from '../../chat/model';
+
 import { APP_VERSION } from '../../../environments/version';
 import { UserReportApi } from './user-report.interface';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { InboxUser, InboxItem } from '@features/chat/core/model';
 
 export const LOGIN_ENDPOINT = 'shnm-portlet/api/v1/access.json/login3';
 export const LOGOUT_ENDPOINT = 'rest/logout';

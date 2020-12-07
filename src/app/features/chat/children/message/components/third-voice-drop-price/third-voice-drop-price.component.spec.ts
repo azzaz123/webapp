@@ -1,11 +1,10 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import { ThirdVoiceDropPriceComponent } from './third-voice-drop-price.component';
-import { ThirdVoiceReviewButtonComponent } from '../third-voice-review-button';
-import { ThirdVoiceMessageComponent } from '../third-voice-message';
 import { CommonModule } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/inbox.fixtures.spec';
+import { ThirdVoiceMessageComponent } from '../third-voice-message';
+import { ThirdVoiceReviewButtonComponent } from '../third-voice-review-button';
+import { ThirdVoiceDropPriceComponent } from './third-voice-drop-price.component';
 
 describe('ThirdVoiceDropPriceComponent', () => {
   let component: ThirdVoiceDropPriceComponent;

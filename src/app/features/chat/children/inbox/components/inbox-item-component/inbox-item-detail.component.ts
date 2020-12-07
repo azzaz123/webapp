@@ -6,10 +6,10 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { InboxItem } from '../../../model/inbox-item';
-import { ItemService } from '../../../../core/item/item.service';
-import { TrackingService } from '../../../../core/tracking/tracking.service';
-import { ItemCounters } from '../../../../core/item/item-response.interface';
+import { ItemCounters } from '@core/item/item-response.interface';
+import { ItemService } from '@core/item/item.service';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { InboxItem } from '@features/chat/core/model';
 
 @Component({
   selector: 'tsl-inbox-item-detail',

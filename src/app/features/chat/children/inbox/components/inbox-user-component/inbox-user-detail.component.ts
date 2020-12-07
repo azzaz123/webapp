@@ -1,8 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { InboxUser } from '../../../model/inbox-user';
-import { UserService } from '../../../../core/user/user.service';
-import { UserInfoResponse } from '../../../../core/user/user-info.interface';
-import { InboxItem } from '../../../model/inbox-item';
+import { UserInfoResponse } from '@core/user/user-info.interface';
+import { UserService } from '@core/user/user.service';
+import { InboxItem, InboxUser } from '@features/chat/core/model';
 
 @Component({
   selector: 'tsl-inbox-user-detail',

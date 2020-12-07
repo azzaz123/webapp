@@ -1,17 +1,17 @@
-import { of } from 'rxjs';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { CheckoutComponent } from './checkout.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ItemService } from '../../core/item/item.service';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ItemService } from '@core/item/item.service';
+import { CreditInfo } from '@core/payments/payment.interface';
+import { PaymentService } from '@core/payments/payment.service';
+import { environment } from '@environments/environment';
 import {
-  ITEM_ID,
   ITEMS_WITH_PRODUCTS,
   ITEMS_WITH_PRODUCTS_PROVINCE,
-} from '../../../tests/item.fixtures.spec';
-import { ActivatedRoute, Router } from '@angular/router';
-import { PaymentService } from '../../core/payments/payment.service';
-import { CreditInfo } from '../../core/payments/payment.interface';
-import { environment } from '../../../environments/environment';
+  ITEM_ID,
+} from '@fixtures/item.fixtures.spec';
+import { of } from 'rxjs';
+import { CheckoutComponent } from './checkout.component';
 
 describe('CheckoutComponent', () => {
   let component: CheckoutComponent;

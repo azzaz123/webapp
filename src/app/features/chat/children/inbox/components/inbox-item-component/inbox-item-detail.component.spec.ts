@@ -1,17 +1,17 @@
-import { of } from 'rxjs';
 /* tslint:disable:no-unused-variable */
 import { DecimalPipe } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ItemService } from '@core/item/item.service';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { environment } from '@environments/environment.prod';
+import { MOCKED_INBOX_CONVERSATIONS } from '@fixtures/inbox.fixtures.spec';
+import { ITEM_COUNTERS_DATA } from '@fixtures/item.fixtures.spec';
+import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
+import { CustomCurrencyPipe } from '@shared/pipes';
 import { CookieService } from 'ngx-cookie';
+import { of } from 'rxjs';
 import { InboxItemDetailComponent } from './inbox-item-detail.component';
-import { ItemService } from '../../../../core/item/item.service';
-import { TrackingService } from '../../../../core/tracking/tracking.service';
-import { CustomCurrencyPipe } from '../../../../shared/pipes';
-import { ITEM_COUNTERS_DATA } from '../../../../../tests/item.fixtures.spec';
-import { MockTrackingService } from '../../../../../tests/tracking.fixtures.spec';
-import { environment } from '../../../../../environments/environment.prod';
-import { MOCKED_INBOX_CONVERSATIONS } from '../../../../../tests/inbox.fixtures.spec';
 
 describe('Component: Item', () => {
   let component: InboxItemDetailComponent;

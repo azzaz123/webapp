@@ -1,16 +1,12 @@
-import { Input, OnInit, Directive } from '@angular/core';
-
-import { InboxMessage } from '../model/inbox-message';
-import { InboxConversation } from '../model/inbox-conversation';
+import { Directive, Input } from '@angular/core';
+import { InboxConversation, InboxMessage } from '@features/chat/core/model';
 
 @Directive()
-export abstract class MessageComponent implements OnInit {
+export abstract class MessageComponent {
   private readonly HTML_REGEX = /<[a-z][\s\S]*>/i;
 
   @Input() message: InboxMessage;
   @Input() currentConversation: InboxConversation;
-
-  ngOnInit() {}
 
   public messageContainsHTMLTag(): boolean {
     return this.containsHTMLTag(this.message.text);

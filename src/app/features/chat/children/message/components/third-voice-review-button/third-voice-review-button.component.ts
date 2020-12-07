@@ -1,11 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-
+import { ConversationUser } from '@core/item/item-response.interface';
+import { ReviewService } from '@core/review/review.service';
+import { InboxItem, InboxMessage, InboxUser } from '@features/chat/core/model';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ReviewService } from '../../../core/review/review.service';
-import { ReviewModalComponent } from '../../../shared/modals/review-modal/review-modal.component';
-import { SoldModalComponent } from '../../../shared/modals/sold-modal/sold-modal.component';
-import { ConversationUser } from '../../../core/item/item-response.interface';
-import { InboxItem, InboxMessage, InboxUser } from '../../model';
+import { ReviewModalComponent } from '@shared/modals/review-modal/review-modal.component';
+import { SoldModalComponent } from '@shared/modals/sold-modal/sold-modal.component';
 
 @Component({
   selector: 'tsl-third-voice-button',

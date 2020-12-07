@@ -1,8 +1,6 @@
 /* tslint:disable:no-unused-variable */
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-
 import { ItemSoldComponent } from './item-sold.component';
 
 describe('ItemSoldComponent', () => {

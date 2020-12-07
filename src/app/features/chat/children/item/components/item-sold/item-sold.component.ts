@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Item } from '../../../core/item/item';
+import { Item } from '@core/item/item';
 
 @Component({
   selector: 'tsl-item-sold',

@@ -1,6 +1,6 @@
-import { MessageComponent } from './message.component';
-import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
 import { Directive } from '@angular/core';
+import { CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/inbox.fixtures.spec';
+import { MessageComponent } from './message.component';
 
 @Directive()
 class MessageComponentMock extends MessageComponent {}
@@ -19,8 +19,6 @@ describe('MessageComponent', () => {
 
   it('should clear inbox conversation', () => {
     component.currentConversation = CREATE_MOCK_INBOX_CONVERSATION();
-
-    component.ngOnInit();
 
     expect(component.currentConversation).not.toBeNull();
   });

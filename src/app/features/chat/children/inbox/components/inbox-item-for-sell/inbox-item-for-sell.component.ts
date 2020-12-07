@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { InboxUser } from '../../../model/inbox-user';
-import { ItemDataResponse } from '../../../../core/item/item-response.interface';
-import { ItemService } from '../../../../core/item/item.service';
+import { ItemDataResponse } from '@core/item/item-response.interface';
+import { ItemService } from '@core/item/item.service';
+import { InboxUser } from '@features/chat/core/model';
 
 @Component({
   selector: 'tsl-inbox-item-for-sell',

@@ -1,12 +1,15 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ThirdVoiceReviewComponent } from './third-voice-review.component';
-import { ThirdVoiceMessageComponent } from '../third-voice-message';
-import { SharedModule } from '../../../shared/shared.module';
 import { CommonModule } from '@angular/common';
-import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
-import { InboxMessage, MessageStatus, MessageType } from '../../model';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {
+  InboxMessage,
+  MessageStatus,
+  MessageType,
+} from '@features/chat/core/model';
+import { CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/inbox.fixtures.spec';
+import { SharedModule } from '@shared/shared.module';
+import { ThirdVoiceMessageComponent } from '../third-voice-message';
+import { ThirdVoiceReviewComponent } from './third-voice-review.component';
 
 describe('ThirdVoiceReviewComponent', () => {
   let component: ThirdVoiceReviewComponent;

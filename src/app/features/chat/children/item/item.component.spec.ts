@@ -1,18 +1,24 @@
-import { of } from 'rxjs';
 /* tslint:disable:no-unused-variable */
 import { DecimalPipe } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CustomCurrencyPipe } from '../../shared/pipes';
-import { ItemService } from '../../core/item/item.service';
+import { CATEGORY_IDS } from '@core/category/category-ids';
+import { Item } from '@core/item/item';
+import { ItemService } from '@core/item/item.service';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { UserService } from '@core/user/user.service';
+import { environment } from '@environments/environment';
 import {
   ITEM_COUNTERS_DATA,
   ITEM_WEB_SLUG,
   MOCK_ITEM,
   MOCK_ITEM_CAR,
-} from '../../../tests/item.fixtures.spec';
-import { TrackingService } from '../../core/tracking/tracking.service';
-import { UserService } from '../../core/user/user.service';
+} from '@fixtures/item.fixtures.spec';
+import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
+import { MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { CustomCurrencyPipe } from '@shared/pipes';
+import { CookieService } from 'ngx-cookie';
+import { of } from 'rxjs';
 import {
   ItemComponent,
   mapfreLinks,
@@ -21,12 +27,6 @@ import {
   showWillisCategories,
   vertiLinks,
 } from './item.component';
-import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
-import { environment } from '../../../environments/environment';
-import { Item } from '../../core/item/item';
-import { CookieService } from 'ngx-cookie';
-import { CATEGORY_IDS } from '../../core/category/category-ids';
 
 describe('Component: Item', () => {
   let component: ItemComponent;

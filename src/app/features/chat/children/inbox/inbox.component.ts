@@ -1,34 +1,34 @@
 import {
+  animate,
+  keyframes,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
+import {
   Component,
+  ElementRef,
   EventEmitter,
+  OnDestroy,
   OnInit,
   Output,
   ViewChild,
-  ElementRef,
-  OnDestroy,
 } from '@angular/core';
-import { EventService } from '../../core/event/event.service';
-import { InboxConversation } from '../model';
-import { InboxService, InboxConversationService } from '../service';
 import {
-  trigger,
-  transition,
-  style,
-  animate,
-  keyframes,
-} from '@angular/animations';
-import { UserService } from '../../core/user/user.service';
-import { RemoteConsoleService } from '../../core/remote-console';
-import { AnalyticsService } from '../../core/analytics/analytics.service';
-import { countBy, map, find } from 'lodash-es';
-import {
+  AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
   SCREEN_IDS,
-  AnalyticsPageView,
   ViewChatScreen,
-} from '../../core/analytics/analytics-constants';
-import { InboxMessage } from '../model';
-import { AdsService } from '../ads/ads.service';
+} from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { EventService } from '@core/event/event.service';
+import { RemoteConsoleService } from '@core/remote-console';
+import { UserService } from '@core/user/user.service';
+import { AdsService } from '@features/chat/core/ads/ads.service';
+import { InboxConversationService } from '@features/chat/core/inbox/inbox-conversation.service';
+import { InboxService } from '@features/chat/core/inbox/inbox.service';
+import { InboxConversation, InboxMessage } from '@features/chat/core/model';
+import { countBy, find, map } from 'lodash-es';
 
 export enum InboxState {
   Inbox,

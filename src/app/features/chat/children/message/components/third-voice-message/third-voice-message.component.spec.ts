@@ -1,11 +1,10 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-
-import { ThirdVoiceMessageComponent } from './third-voice-message.component';
-import { LinkTransformPipe } from '../../../shared/pipes/link-transform';
-import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MessageType } from '@features/chat/core/model/inbox-message';
+import { CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/inbox.fixtures.spec';
+import { LinkTransformPipe } from '@shared/pipes/link-transform';
 import { ThirdVoiceReviewButtonComponent } from '../third-voice-review-button';
-import { MessageType } from '../../model/inbox-message';
+import { ThirdVoiceMessageComponent } from './third-voice-message.component';
 
 describe('ThirdVoiceMessageComponent', () => {
   let component: ThirdVoiceMessageComponent;

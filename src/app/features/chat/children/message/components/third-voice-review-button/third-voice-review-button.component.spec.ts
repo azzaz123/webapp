@@ -1,4 +1,4 @@
-import { of } from 'rxjs';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
   fakeAsync,
@@ -6,17 +6,16 @@ import {
   tick,
   waitForAsync,
 } from '@angular/core/testing';
-
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ReviewService } from '@core/review/review.service';
+import { InboxConversation } from '@features/chat/core/model';
+import { CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/inbox.fixtures.spec';
+import { USER_ID } from '@fixtures/user.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ButtonComponent } from '@shared/button/button.component';
+import { ReviewModalComponent } from '@shared/modals/review-modal/review-modal.component';
+import { SoldModalComponent } from '@shared/modals/sold-modal/sold-modal.component';
+import { of } from 'rxjs';
 import { ThirdVoiceReviewButtonComponent } from './third-voice-review-button.component';
-import { ButtonComponent } from '../../../shared/button/button.component';
-import { ReviewService } from '../../../core/review/review.service';
-import { USER_ID } from '../../../../tests/user.fixtures.spec';
-import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
-import { ReviewModalComponent } from '../../../shared/modals/review-modal/review-modal.component';
-import { SoldModalComponent } from '../../../shared/modals/sold-modal/sold-modal.component';
-import { InboxConversation } from '../../model';
 
 const modalRef: any = {
   result: Promise.resolve({

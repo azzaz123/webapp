@@ -1,5 +1,10 @@
 import { Component, Input } from '@angular/core';
-import { InboxItem, InboxMessage, InboxUser, MessageType } from '../../model';
+import {
+  InboxItem,
+  InboxMessage,
+  InboxUser,
+  MessageType,
+} from '@features/chat/core/model';
 import { eq } from 'lodash-es';
 
 @Component({

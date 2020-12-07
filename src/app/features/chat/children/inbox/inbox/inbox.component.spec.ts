@@ -1,36 +1,37 @@
-/* tslint:disable:no-unused-variable */
-
-import { Observable, of } from 'rxjs';
-import { TestBed } from '@angular/core/testing';
-import { InboxComponent, InboxState } from './inbox.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { NgxPermissionsModule } from 'ngx-permissions';
+import { TestBed } from '@angular/core/testing';
 import {
-  createInboxConversationsArray,
-  CREATE_MOCK_INBOX_CONVERSATION,
-} from '../../../tests/inbox.fixtures.spec';
-import { EventService } from '../../core/event/event.service';
-import { InboxConversation } from '../model/inbox-conversation';
-import { UserService } from '../../core/user/user.service';
-import { RemoteConsoleService } from '../../core/remote-console';
-import { MockRemoteConsoleService } from '../../../tests';
-import { User } from '../../core/user/user';
-import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
-import { AnalyticsService } from '../../core/analytics/analytics.service';
-import {
+  AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
   SCREEN_IDS,
   ViewChatScreen,
-  AnalyticsPageView,
-} from '../../core/analytics/analytics-constants';
-import { InboxUser } from '../model/inbox-user';
-import { Item } from '../../core/item/item';
-import { InboxItem } from '../model/inbox-item';
+} from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { EventService } from '@core/event/event.service';
+import { Item } from '@core/item/item';
+import { RemoteConsoleService } from '@core/remote-console';
+import { User } from '@core/user/user';
+import { UserService } from '@core/user/user.service';
+import { AdsService } from '@features/chat/core/ads/ads.service';
+import { InboxConversationService } from '@features/chat/core/inbox/inbox-conversation.service';
+import { InboxService } from '@features/chat/core/inbox/inbox.service';
+import {
+  InboxConversation,
+  InboxItem,
+  InboxUser,
+} from '@features/chat/core/model';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import {
+  createInboxConversationsArray,
+  CREATE_MOCK_INBOX_CONVERSATION,
+} from '@fixtures/inbox.fixtures.spec';
+import { MockRemoteConsoleService } from '@fixtures/remote-console.fixtures.spec';
+import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { DateCalendarPipe } from 'app/shared/pipes';
-import { AdsService } from '../ads/ads.service';
+import { NgxPermissionsModule } from 'ngx-permissions';
+import { Observable, of } from 'rxjs';
 import { InboxConversationComponent } from '../components/inbox-conversation';
-import { InboxConversationService } from '@features/chat/core/service/inbox-conversation.service';
+import { InboxComponent, InboxState } from '../inbox.component';
 
 class AdServiceMock {
   adsRefresh() {}

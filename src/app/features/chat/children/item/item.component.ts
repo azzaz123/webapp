@@ -1,4 +1,3 @@
-import { takeWhile } from 'rxjs/operators';
 import {
   Component,
   Inject,
@@ -7,14 +6,15 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { Item } from '../../core/item/item';
-import { ItemService } from '../../core/item/item.service';
-import { ItemCounters } from '../../core/item/item-response.interface';
-import { TrackingService } from '../../core/tracking/tracking.service';
-import { UserService } from '../../core/user/user.service';
-import { User } from '../../core/user/user';
-import { CATEGORY_IDS } from '../../core/category/category-ids';
+import { CATEGORY_IDS } from '@core/category/category-ids';
+import { Item } from '@core/item/item';
+import { ItemCounters } from '@core/item/item-response.interface';
+import { ItemService } from '@core/item/item.service';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { User } from '@core/user/user';
+import { UserService } from '@core/user/user.service';
 import { CookieService } from 'ngx-cookie';
+import { takeWhile } from 'rxjs/operators';
 
 export const showWillisCategories = [
   CATEGORY_IDS.GAMES_CONSOLES,

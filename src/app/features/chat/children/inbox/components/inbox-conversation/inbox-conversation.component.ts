@@ -1,16 +1,15 @@
 import { Component, Input } from '@angular/core';
 import { I18nService } from '@core/i18n/i18n.service';
+import { ThirdVoiceDropPriceComponent } from '@features/chat/children/message/components/third-voice-drop-price';
+import { ThirdVoiceReviewComponent } from '@features/chat/children/message/components/third-voice-review';
+import { InboxConversationService } from '@features/chat/core/inbox/inbox-conversation.service';
 import {
   InboxConversation,
   InboxMessage,
   MessageType,
 } from '@features/chat/core/model';
-import { InboxConversationService } from '@features/chat/core/service';
 import { includes } from 'lodash-es';
-
 import { CalendarSpec } from 'moment';
-import { ThirdVoiceDropPriceComponent } from '../message/third-voice-drop-price';
-import { ThirdVoiceReviewComponent } from '../message/third-voice-review';
 
 @Component({
   selector: 'tsl-inbox-conversation',

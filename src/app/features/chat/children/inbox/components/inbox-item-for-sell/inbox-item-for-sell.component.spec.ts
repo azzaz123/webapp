@@ -1,21 +1,17 @@
-import { of } from 'rxjs';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import { InboxItemForSellComponent } from './inbox-item-for-sell.component';
 import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ItemService } from '@core/item/item.service';
+import { UserService } from '@core/user/user.service';
+import { InboxUser } from '@features/chat/core/model';
+import { LATEST_ITEM_COUNT, MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import {
   MOCK_USER,
+  MOCK_USER_STATS,
   USER_ID,
   USER_INFO_RESPONSE,
-  MOCK_USER_STATS,
-} from '../../../../../tests/user.fixtures.spec';
-import {
-  LATEST_ITEM_COUNT,
-  MOCK_ITEM,
-} from '../../../../../tests/item.fixtures.spec';
-import { ItemService } from '../../../../core/item/item.service';
-import { UserService } from '../../../../core/user/user.service';
-import { InboxUser } from '../../../model/inbox-user';
+} from '@fixtures/user.fixtures.spec';
+import { of } from 'rxjs';
+import { InboxItemForSellComponent } from './inbox-item-for-sell.component';
 
 describe('InboxItemForSellComponent', () => {
   let component: InboxItemForSellComponent;
