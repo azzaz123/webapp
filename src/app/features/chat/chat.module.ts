@@ -10,10 +10,11 @@ import {
 import { SharedModule } from '@shared/shared.module';
 import { AutosizeModule } from 'ngx-autosize';
 import { chatRoutedComponents, ChatRoutingModule } from './chat.routes';
-import { InboxComponent, InboxConversationComponent } from './children/inbox';
+import { InboxConversationComponent } from './children/inbox/components/inbox-conversation';
 import { InboxItemDetailComponent } from './children/inbox/components/inbox-item-component';
 import { InboxItemForSellComponent } from './children/inbox/components/inbox-item-for-sell/inbox-item-for-sell.component';
 import { InboxUserDetailComponent } from './children/inbox/components/inbox-user-component';
+import { InboxComponent } from './children/inbox/inbox.component';
 import { ItemComponent } from './children/item';
 import { ItemReservedComponent } from './children/item/components/item-reserved';
 import { ItemSoldComponent } from './children/item/components/item-sold';

@@ -1,34 +1,35 @@
 /* tslint:disable:no-unused-variable */
 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
   fakeAsync,
   TestBed,
   tick,
 } from '@angular/core/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { InputComponent } from './input.component';
-import { Conversation } from '../../core/conversation/conversation';
-import { MessageService } from '../service/message.service';
-import { EventService } from '../../core/event/event.service';
-import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
-import { USER_ID } from '../../../tests/user.fixtures.spec';
-import { TrackingService } from '../../core/tracking/tracking.service';
-import { I18nService } from '../../core/i18n/i18n.service';
-import { AutosizeModule } from 'ngx-autosize';
-import { DeviceDetectorService } from 'ngx-device-detector';
-import {
-  DeviceDetectorServiceMock,
-  MockRemoteConsoleService,
-} from '../../../tests';
-import { RemoteConsoleService } from '../../core/remote-console';
-import { InboxConversation } from '../model';
+import { Conversation } from '@core/conversation/conversation';
+import { EventService } from '@core/event/event.service';
+import { I18nService } from '@core/i18n/i18n.service';
+import { RemoteConsoleService } from '@core/remote-console';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { MessageService } from '@features/chat/core/message/message.service';
+import { InboxConversation } from '@features/chat/core/model';
+
+import { MOCK_CONVERSATION } from '@fixtures/conversation.fixtures.spec';
 import {
   CREATE_MOCK_INBOX_CONVERSATION,
   SECOND_MOCK_INBOX_CONVERSATION,
-} from '../../../tests/inbox.fixtures.spec';
+} from '@fixtures/inbox.fixtures.spec';
+import {
+  DeviceDetectorServiceMock,
+  MockRemoteConsoleService,
+} from '@fixtures/remote-console.fixtures.spec';
+import { USER_ID } from '@fixtures/user.fixtures.spec';
+import { AutosizeModule } from 'ngx-autosize';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { InputComponent } from './input.component';
 
 class MessageServiceMock {
   send(c: Conversation, t: string): void {}

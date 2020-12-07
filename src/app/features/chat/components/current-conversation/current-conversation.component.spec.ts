@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
 import {
   ComponentFixture,
   fakeAsync,
@@ -5,27 +6,32 @@ import {
   tick,
   waitForAsync,
 } from '@angular/core/testing';
-
-import { CurrentConversationComponent } from './current-conversation.component';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { EventService } from '@core/event/event.service';
+import { I18nService } from '@core/i18n/i18n.service';
+import { RealTimeService } from '@core/message/real-time.service';
+import { RemoteConsoleService } from '@core/remote-console';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { InboxConversationService } from '@features/chat/core/inbox/inbox-conversation.service';
+import {
+  InboxMessage,
+  MessageStatus,
+  MessageType,
+} from '@features/chat/core/model';
+import { MaliciousConversationModalComponent } from '@features/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import { MOCK_CONVERSATION } from '@fixtures/conversation.fixtures.spec';
+import { InboxConversationServiceMock } from '@fixtures/inbox-coversation-service.fixtures.spec';
 import {
   CREATE_MOCK_INBOX_CONVERSATION,
-  MOCK_INBOX_CONVERSATION_WITH_MALICIOUS_USER,
   MOCK_INBOX_CONVERSATION_BASIC,
+  MOCK_INBOX_CONVERSATION_WITH_MALICIOUS_USER,
 } from '@fixtures/inbox.fixtures.spec';
-import { MOCK_USER, USER_ID } from '@fixtures/user.fixtures.spec';
-import { RealTimeService } from '@core/message/real-time.service';
-import { EventService } from '@core/event/event.service';
-import { TrackingService } from '@core/tracking/tracking.service';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
-import { MOCK_CONVERSATION } from '@fixtures/conversation.fixtures.spec';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { I18nService } from '@core/i18n/i18n.service';
-
-import { NgxPermissionsModule } from 'ngx-permissions';
-
 import { RealTimeServiceMock } from '@fixtures/real-time.fixtures.spec';
-import { DateCalendarPipe } from 'app/shared/pipes';
-import { SimpleChange, NO_ERRORS_SCHEMA } from '@angular/core';
+import { MockRemoteConsoleService } from '@fixtures/remote-console.fixtures.spec';
+import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
+import { MOCK_USER, USER_ID } from '@fixtures/user.fixtures.spec';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
@@ -35,20 +41,11 @@ import {
   SCREEN_IDS,
   ViewBannedUserChatPopUp,
 } from 'app/core/analytics/analytics-constants';
-import { AnalyticsService } from '@core/analytics/analytics.service';
-import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { UserService } from 'app/core/user/user.service';
+import { DateCalendarPipe } from 'app/shared/pipes';
+import { NgxPermissionsModule } from 'ngx-permissions';
 import * as Visibility from 'visibilityjs';
-import {
-  InboxMessage,
-  MessageStatus,
-  MessageType,
-} from '@features/chat/core/model';
-import { InboxConversationService } from '@features/chat/core/service';
-import { RemoteConsoleService } from '@core/remote-console';
-import { MaliciousConversationModalComponent } from '@features/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component';
-import { MockRemoteConsoleService } from '@fixtures/remote-console.fixtures.spec';
-import { InboxConversationServiceMock } from '@fixtures/inbox-coversation-service.fixtures.spec';
+import { CurrentConversationComponent } from './current-conversation.component';
 
 describe('CurrentConversationComponent', () => {
   let component: CurrentConversationComponent;

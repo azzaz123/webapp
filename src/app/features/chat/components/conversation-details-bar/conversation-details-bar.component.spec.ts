@@ -1,35 +1,31 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
   fakeAsync,
   TestBed,
   tick,
 } from '@angular/core/testing';
-
-import { ConversationDetailsBarComponent } from './conversation-details-bar.component';
-import { MOCK_CONVERSATION } from '@fixtures/conversation.fixtures.spec';
-import { TrackingService } from '@core/tracking/tracking.service';
-import { ITEM_ID } from '@fixtures/item.fixtures.spec';
-import { Observable, of, throwError } from 'rxjs';
-import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgxPermissionsModule } from 'ngx-permissions';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { EventService } from '@core/event/event.service';
-import { RealTimeService } from '@core/message/real-time.service';
-import { ToastService } from '@layout/toast/toast.service';
-import { ItemService } from '@core/item/item.service';
-import { UserService } from '@core/user/user.service';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
-
 import { I18nService } from '@core/i18n/i18n.service';
-import { CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/inbox.fixtures.spec';
+import { ItemService } from '@core/item/item.service';
+import { RealTimeService } from '@core/message/real-time.service';
+import { TrackingService } from '@core/tracking/tracking.service';
 import { User } from '@core/user/user';
+import { UserService } from '@core/user/user.service';
+import { BlockUserXmppService } from '@features/chat/core/block-user/block-user-xmpp.service';
+import { BlockUserService } from '@features/chat/core/block-user/block-user.service';
+import { InboxConversationService } from '@features/chat/core/inbox/inbox-conversation.service';
+import { MOCK_CONVERSATION } from '@fixtures/conversation.fixtures.spec';
+import { CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/inbox.fixtures.spec';
+import { ITEM_ID } from '@fixtures/item.fixtures.spec';
+import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
+import { ToastService } from '@layout/toast/toast.service';
+import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '@shared/shared.module';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import {
-  BlockUserService,
-  BlockUserXmppService,
-  InboxConversationService,
-} from '@features/chat/core/service';
+import { NgxPermissionsModule } from 'ngx-permissions';
+import { Observable, of, throwError } from 'rxjs';
+import { ConversationDetailsBarComponent } from './conversation-details-bar.component';
 
 class MockUserService {
   public user: User = new User(

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { I18nService } from '../../core/i18n/i18n.service';
-import { RealTimeService } from '../../core/message/real-time.service';
+import { I18nService } from '@core/i18n/i18n.service';
+import { RealTimeService } from '@core/message/real-time.service';
 import { InboxConversation } from '../model';
 
 @Injectable()

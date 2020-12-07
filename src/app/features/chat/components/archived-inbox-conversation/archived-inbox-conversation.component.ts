@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { InboxConversation } from '../../model/inbox-conversation';
+import { InboxConversation } from '@features/chat/core/model';
+
 import { CalendarSpec } from 'moment';
 @Component({
   selector: 'tsl-archived-inbox-conversation',

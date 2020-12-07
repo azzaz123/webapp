@@ -1,11 +1,9 @@
-/* tslint:isUserDisable:no-unused-variable */
-
-import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
-import { InboxItemStatus } from '../../model/inbox-item';
-import { ArchivedInboxConversationComponent } from './archived-inbox-conversation.component';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { InboxItemStatus } from '@features/chat/core/model';
+import { CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/inbox.fixtures.spec';
 import { DateCalendarPipe } from 'app/shared/pipes';
+import { ArchivedInboxConversationComponent } from './archived-inbox-conversation.component';
 
 describe('Component: Conversation', () => {
   let component: ArchivedInboxConversationComponent;

@@ -1,12 +1,11 @@
-import { of } from 'rxjs';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import { ReportListingComponent } from './report-listing.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { BanReason } from '@core/item/ban-reason.interface';
+import { ItemService } from '@core/item/item.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ItemService } from '../../../core/item/item.service';
-import { BanReason } from '../../../core/item/ban-reason.interface';
+import { of } from 'rxjs';
+import { ReportListingComponent } from './report-listing.component';
 
 describe('ReportListingComponent', () => {
   let component: ReportListingComponent;

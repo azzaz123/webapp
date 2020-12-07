@@ -1,8 +1,7 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import { UserResponseRateComponent } from './user-response-rate.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MOCK_USER } from '../../../tests/user.fixtures.spec';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { UserResponseRateComponent } from './user-response-rate.component';
 
 describe('UserResponseRateComponent', () => {
   let component: UserResponseRateComponent;

@@ -1,12 +1,11 @@
-import { of } from 'rxjs';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import { ReportUserComponent } from './report-user.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { BanReason } from '@core/item/ban-reason.interface';
+import { UserService } from '@core/user/user.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { UserService } from '../../../core/user/user.service';
-import { BanReason } from '../../../core/item/ban-reason.interface';
+import { of } from 'rxjs';
+import { ReportUserComponent } from './report-user.component';
 
 describe('ReportUserComponent', () => {
   let component: ReportUserComponent;

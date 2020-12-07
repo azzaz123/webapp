@@ -10,6 +10,22 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
+import { EventService } from '@core/event/event.service';
+import { I18nService } from '@core/i18n/i18n.service';
+import { RealTimeService } from '@core/message/real-time.service';
+import { RemoteConsoleService } from '@core/remote-console';
+import { TextMessageComponent } from '@features/chat/children/message/components/text-message';
+import { ThirdVoiceDropPriceComponent } from '@features/chat/children/message/components/third-voice-drop-price';
+import { ThirdVoiceReviewComponent } from '@features/chat/children/message/components/third-voice-review';
+import { InboxConversationService } from '@features/chat/core/inbox/inbox-conversation.service';
+import {
+  InboxConversation,
+  InboxMessage,
+  MessageStatus,
+  MessageType,
+} from '@features/chat/core/model';
+import { MaliciousConversationModalComponent } from '@features/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
@@ -19,29 +35,12 @@ import {
   SCREEN_IDS,
   ViewBannedUserChatPopUp,
 } from 'app/core/analytics/analytics-constants';
-import { EventService } from '@core/event/event.service';
-import { RealTimeService } from '@core/message/real-time.service';
-import { of, Subscription } from 'rxjs';
-import { I18nService } from '@core/i18n/i18n.service';
-
-import { TextMessageComponent } from '../message/text-message';
-import { eq, includes, isEmpty } from 'lodash-es';
-import { ThirdVoiceDropPriceComponent } from '../message/third-voice-drop-price';
-import { ThirdVoiceReviewComponent } from '../message/third-voice-review';
-import { RemoteConsoleService } from '@core/remote-console';
-import { delay } from 'rxjs/operators';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AnalyticsService } from 'app/core/analytics/analytics.service';
 import { UserService } from 'app/core/user/user.service';
+import { eq, includes, isEmpty } from 'lodash-es';
+import { of, Subscription } from 'rxjs';
+import { delay } from 'rxjs/operators';
 import { onVisible } from 'visibilityjs';
-import { InboxConversationService } from '@features/chat/core/service';
-import {
-  InboxConversation,
-  InboxMessage,
-  MessageType,
-  MessageStatus,
-} from '@features/chat/core/model';
-import { MaliciousConversationModalComponent } from '@features/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component';
 
 @Component({
   selector: 'tsl-current-conversation',

@@ -1,13 +1,13 @@
 import {
   Component,
-  OnInit,
   Input,
   OnChanges,
+  OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { UserInfoResponse } from '../../core/user/user-info.interface';
-import { UserService } from '../../core/user/user.service';
-import { User } from '../../core/user/user';
+import { User } from '@core/user/user';
+import { UserInfoResponse } from '@core/user/user-info.interface';
+import { UserService } from '@core/user/user.service';
 
 @Component({
   selector: 'tsl-user-detail',

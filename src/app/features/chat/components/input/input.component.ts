@@ -9,15 +9,15 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { MessageService } from '../service/message.service';
-import { EventService } from '../../core/event/event.service';
-import { TrackingService } from '../../core/tracking/tracking.service';
-import { InboxConversation } from '../model/inbox-conversation';
-import { LinkTransformPipe } from '../../shared/pipes/link-transform';
-import { I18nService } from '../../core/i18n/i18n.service';
+import { EventService } from '@core/event/event.service';
+import { I18nService } from '@core/i18n/i18n.service';
+import { RemoteConsoleService } from '@core/remote-console';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { MessageService } from '@features/chat/core/message/message.service';
+import { InboxConversation } from '@features/chat/core/model';
+import { LinkTransformPipe } from '@shared/pipes';
 import { find, includes, isEmpty } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { RemoteConsoleService } from '../../core/remote-console';
 
 @Component({
   selector: 'tsl-input',

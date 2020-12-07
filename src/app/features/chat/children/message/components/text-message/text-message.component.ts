@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MessageType } from '@features/chat/core/model';
 import { MessageComponent } from '../../message.component';
 
@@ -7,10 +7,6 @@ import { MessageComponent } from '../../message.component';
   templateUrl: 'text-message.component.html',
   styleUrls: ['text-message.component.scss', '../../message.component.scss'],
 })
-export class TextMessageComponent extends MessageComponent implements OnInit {
+export class TextMessageComponent extends MessageComponent {
   public static ALLOW_MESSAGES_TYPES = [MessageType.TEXT];
-
-  ngOnInit() {
-    super.ngOnInit();
-  }
 }

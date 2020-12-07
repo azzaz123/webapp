@@ -32,7 +32,7 @@ import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { DateCalendarPipe } from '@shared/pipes';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { Observable, of } from 'rxjs';
-import { InboxConversationComponent } from '.';
+import { InboxConversationComponent } from './components/inbox-conversation';
 import { InboxComponent, InboxState } from './inbox.component';
 
 class AdServiceMock {
