@@ -56,21 +56,27 @@ describe('TabbarComponent', () => {
   describe('ngOnInit', () => {
     it('should set user session', () => {
       component.isLogged = null;
+
       component.ngOnInit();
+
       expect(component.isLogged).toBe(true);
     });
 
     it('should update user session on user login', () => {
       component.isLogged = null;
+
       component.ngOnInit();
       eventService.emit(EventService.USER_LOGIN);
+
       expect(component.isLogged).toBe(true);
     });
 
     it('should update user session on user logout', () => {
       component.isLogged = null;
+
       component.ngOnInit();
       eventService.emit(EventService.USER_LOGOUT);
+
       expect(component.isLogged).toBe(true);
     });
   });
@@ -82,8 +88,10 @@ describe('TabbarComponent', () => {
       beforeEach(() => {
         component.hidden = false;
         component.isLogged = true;
+
         fixture.detectChanges();
       });
+
       it('should show logged content', () => {
         expect(el.querySelector(accessBtnTextSelector).innerHTML).toEqual(
           'My Zone'

@@ -124,27 +124,35 @@ describe('TopbarComponent', () => {
   describe('ngOnInit', () => {
     it('should set user session', () => {
       component.isLogged = null;
+
       component.ngOnInit();
+
       expect(component.isLogged).toBe(true);
     });
 
     it('should update user session on user login', () => {
       component.isLogged = null;
+
       component.ngOnInit();
       eventService.emit(EventService.USER_LOGIN);
+
       expect(component.isLogged).toBe(true);
     });
 
     it('should update user session on user logout', () => {
       component.isLogged = null;
+
       component.ngOnInit();
       eventService.emit(EventService.USER_LOGOUT);
+
       expect(component.isLogged).toBe(true);
     });
 
     it('should set the private user variable with the content of the user', () => {
       component.user = null;
+
       component.ngOnInit();
+
       expect(component.user).toBe(MOCK_USER);
     });
 
