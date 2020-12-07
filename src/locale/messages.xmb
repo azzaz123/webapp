@@ -72,12 +72,6 @@
   <msg id="ngb.timepicker.AM"><source>node_modules/@ng-bootstrap/ng-bootstrap/fesm5/@ng-bootstrap/ng-bootstrap/timepicker/timepicker.ts:295</source><ph name="INTERPOLATION"/></msg>
   <msg id="ngb.toast.close-aria"><source>node_modules/@ng-bootstrap/ng-bootstrap/fesm5/@ng-bootstrap/ng-bootstrap/toast/toast.ts:70,81</source>Close</msg>
   <msg id="3339021787040924237"><source>src/app/layout/topbar/suggester/suggester.component.html:1</source>Search in All categories</msg>
-  <msg id="1900996506417052092"><source>src/app/chat/modals/send-phone/send-phone.component.html:4</source>You are getting in touch with a professional! In order to offer a more personalised service, could you leave a phone to call you?</msg>
-  <msg id="5694886960613125934"><source>src/app/chat/modals/send-phone/send-phone.component.html:7</source>Let&apos;s talk about it:</msg>
-  <msg id="3202305721451114390"><source>src/app/chat/modals/send-phone/send-phone.component.html:9</source>Enter your phone...</msg>
-  <msg id="305827802561975907"><source>src/app/chat/modals/send-phone/send-phone.component.html:16</source>You should know:</msg>
-  <msg id="807686572653733419"><source>src/app/chat/modals/send-phone/send-phone.component.html:17</source>Only in case you give consent, the phone number will be shared with a professional user outside our platform (an interested dealer). The data collected will be used as long as you do not oppose.</msg>
-  <msg id="430278916884204896"><source>src/app/chat/modals/send-phone/send-phone.component.html:18</source>You can exercise your rights on access, rectification, suppression, opposition, limitation to data processing and portability and revocation of consents provided to Wallapop SL,<ph name="LINE_BREAK"/> tax ID number B-66.04.9057, Avenida Meridiana 89 6th floor, 08026, Barcelona (Spain), attaching a photocopy of your ID number or an equivalent valid identification document.<ph name="LINE_BREAK"/> For your convenience, and without prejudice to the fulfilment of certain formal requirements established by the law, Wallapop SL offers the possibility of exercising the aforementioned rights through this email: privacidad@wallapop.com.</msg>
   <msg id="ChangeSubscriptionCardSubtitle"><source>src/app/shared/modals/change-card-modal/change-card-modal.component.html:7</source>This will be the payment method linked to your subscription</msg>
   <msg id="SelectSavedCard"><source>src/app/shared/modals/change-card-modal/change-card-modal.component.html:25</source>Select saved card</msg>
   <msg id="ChangeSelectSubscriptionCardTitle"><source>src/app/shared/modals/change-card-modal/change-card-modal.component.html:5</source>Select a credit card</msg>
@@ -110,26 +104,28 @@
   <msg id="NIFNumber"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:86</source>NIF Number</msg>
   <msg id="Save"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:93</source>Save</msg>
   <msg id="AddNewCreditCard"><source>src/app/shared/modals/new-card-modal/new-card-modal.component.html:5</source>Add a new credit card</msg>
+  <msg id="2341832243359741366"><source>src/app/shared/payments/stripe-card-selection/stripe-card-selection.component.html:1</source>Select saved card</msg>
+  <msg id="7145885217817968593"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:18,21</source> By subscribing, you are accepting the <ph name="START_LINK"/>terms &amp; conditions<ph name="CLOSE_LINK"/> and the <ph name="START_LINK_1"/>privacy policy<ph name="CLOSE_LINK"/> of Wallapop S.L. and Stripe Ltd </msg>
+  <msg id="7274286978511770772"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:32</source>Continue to Checkout</msg>
+  <msg id="3650030434919639531"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:10</source>Use saved card</msg>
+  <msg id="4121630926102377372"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:14</source>The payment failed. Please enter another credit card.</msg>
+  <msg id="3768927257183755959"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:43</source>Save</msg>
+  <msg id="848453031482663640"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:54</source>Subscribe now</msg>
+  <msg id="5722353260643724736"><source>src/app/shared/profile/stripe-cards/stripe-cards.component.html:4</source>Payment method</msg>
+  <msg id="CurrentCards"><source>src/app/shared/profile/stripe-cards/stripe-cards.component.html:20</source>Saved cards</msg>
+  <msg id="SubscriptionCard"><source>src/app/shared/profile/stripe-cards/stripe-cards.component.html:9</source>Card linked to subscriptions</msg>
+  <msg id="AddNewSubscriptionCard"><source>src/app/shared/profile/stripe-cards/stripe-cards.component.html:16</source>Link a card to your subscriptions</msg>
+  <msg id="3894950702316166331"><source>src/app/shared/spinner/spinner.component.html:3</source>Loading...</msg>
+  <msg id="8998211649643752990"><source>src/app/shared/spinner/spinner.component.html:4</source>We are loading all your messages for the first time. They will be available before the Sagrada Familia work has been finished.</msg>
+  <msg id="8458658926966860767"><source>src/app/shared/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:1</source>Are you sure you want to delete billing information?</msg>
+  <msg id="2159130950882492111"><source>src/app/shared/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:4</source>Cancel</msg>
+  <msg id="7092318893814699678"><source>src/app/shared/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:5</source>Yes, I am sure</msg>
+  <msg id="DeleteCard"><source>src/app/shared/profile/credit-card-info/credit-card-info.component.html:16</source>Delete card</msg>
+  <msg id="ChangeCard"><source>src/app/shared/profile/credit-card-info/credit-card-info.component.html:15</source>Change card</msg>
   <msg id="4918814479561513634"><source>src/app/shared/exit-confirmation-modal/exit-confirmation-modal.component.html:1</source>Do you want to leave this page?</msg>
   <msg id="6618892692857491514"><source>src/app/shared/exit-confirmation-modal/exit-confirmation-modal.component.html:2</source>There are unsaved info. If you leave without saving, you will lose your changes.</msg>
   <msg id="3542042671420335679"><source>src/app/shared/exit-confirmation-modal/exit-confirmation-modal.component.html:5</source>No</msg>
   <msg id="4510233521290203619"><source>src/app/shared/exit-confirmation-modal/exit-confirmation-modal.component.html:6</source>Yes, leave</msg>
-  <msg id="4749295647449765550"><source>src/app/shared/archivable/archivable.component.html:5</source>Processed</msg>
-  <msg id="8753092784115704500"><source>src/app/shared/process-all-button/process-all-button.component.html:6</source>Process all</msg>
-  <msg id="4965764680155209445"><source>src/app/shared/process-all-button/process-all-button.component.html:7</source>This will process all the elements in this page.</msg>
-  <msg id="2159130950882492111"><source>src/app/shared/process-all-button/process-all-button.component.html:10</source>Cancel</msg>
-  <msg id="3762527362373672599"><source>src/app/shared/modals/sold-modal/sold-modal.component.html:5</source>Congratulations!</msg>
-  <msg id="8914444864521670589"><source>src/app/shared/modals/sold-modal/sold-modal.component.html:6</source>You sold <ph name="START_TAG_STRONG"/><ph name="INTERPOLATION"/><ph name="CLOSE_TAG_STRONG"/></msg>
-  <msg id="2882903364152951366"><source>src/app/shared/modals/sold-modal/sold-modal.component.html:9</source>Who bought this from you?</msg>
-  <msg id="1337808500533761318"><source>src/app/shared/modals/sold-modal/sold-modal.component.html:24</source>I didn&apos;t sell this on wallapop</msg>
-  <msg id="2286494898080570401"><source>src/app/shared/modals/sold-modal/sold-modal.component.html:36</source>Thanks</msg>
-  <msg id="2928844379959000123"><source>src/app/shared/modals/sold-modal/sold-modal.component.html:37</source>Your feedback is important for the<ph name="LINE_BREAK"/>Wallapop community.</msg>
-  <msg id="6962699013778688473"><source>src/app/shared/modals/sold-modal/sold-modal.component.html:38</source>Continue</msg>
-  <msg id="5847549463396300276"><source>src/app/shared/modals/review-modal/review-modal.component.html:7</source>Rate your experience with <ph name="START_TAG_STRONG"/><ph name="INTERPOLATION"/><ph name="CLOSE_TAG_STRONG"/></msg>
-  <msg id="4650730844441578299"><source>src/app/shared/modals/review-modal/review-modal.component.html:8</source>Click on the stars to leave your review. The more stars, the better your experience.</msg>
-  <msg id="8149407802234183277"><source>src/app/shared/modals/review-modal/review-modal.component.html:16</source>Leave a review...</msg>
-  <msg id="7430416142942514215"><source>src/app/shared/modals/review-modal/review-modal.component.html:22</source>Publish</msg>
-  <msg id="3113301792677314615"><source>src/app/shared/modals/review-modal/review-modal.component.html:11</source>I sold this for:</msg>
   <msg id="5657739434954342535"><source>src/app/shared/confirmation-modal/confirmation-modal.component.html:2</source>Delete item</msg>
   <msg id="5455708050129988024"><source>src/app/shared/confirmation-modal/confirmation-modal.component.html:3</source>This will delete the item.</msg>
   <msg id="321759774936322640"><source>src/app/shared/confirmation-modal/confirmation-modal.component.html:6</source>Delete items</msg>
@@ -231,6 +227,11 @@
   <msg id="2314075913167237221"><source>src/app/shared/catalog/cart/cart.component.html:44</source>City</msg>
   <msg id="516176798986294299"><source>src/app/shared/catalog/cart/cart.component.html:45</source>Country</msg>
   <msg id="6581598798517073714"><source>src/app/shared/catalog/cart/cart.component.html:103</source>+ Add another credit card</msg>
+  <msg id="4749295647449765550"><source>src/app/shared/archivable/archivable.component.html:5</source>Processed</msg>
+  <msg id="8493154674675875451"><source>src/app/shared/profile/cover-upload/cover-upload.component.html:2</source>Cover image</msg>
+  <msg id="2828231996579923086"><source>src/app/shared/profile/cover-upload/cover-upload.component.html:20</source>JPG format and a minimum size of 400 x 400px are accepted.</msg>
+  <msg id="2099215062285114503"><source>src/app/shared/profile/cover-upload/cover-upload.component.html:16</source>Update picture</msg>
+  <msg id="1897498190172236951"><source>src/app/shared/profile/cover-upload/cover-upload.component.html:17</source>Upload picture</msg>
   <msg id="4464028962645674576"><source>src/app/shared/catalog/catalog-status-navbar/catalog-status-navbar.component.html:1,3</source>Active <ph name="START_TAG_SPAN_1"/>(<ph name="INTERPOLATION"/>/<ph name="START_TAG_SPAN"/><ph name="INTERPOLATION_1"/><ph name="CLOSE_TAG_SPAN"/>)<ph name="CLOSE_TAG_SPAN"/></msg>
   <msg id="8497824097226681583"><source>src/app/shared/catalog/catalog-status-navbar/catalog-status-navbar.component.html:3,5</source>Inactive <ph name="START_TAG_SPAN"/>(<ph name="INTERPOLATION"/>)<ph name="CLOSE_TAG_SPAN"/></msg>
   <msg id="466090356732378705"><source>src/app/shared/catalog/catalog-status-navbar/catalog-status-navbar.component.html:5,7</source>Bumped <ph name="START_TAG_SPAN"/>(<ph name="INTERPOLATION"/>)<ph name="CLOSE_TAG_SPAN"/></msg>
@@ -251,6 +252,7 @@
   <msg id="428164738594731840"><source>src/app/shared/catalog/catalog-card/catalog-card.component.html:43</source> Cancel</msg>
   <msg id="7514254130085804538"><source>src/app/shared/catalog/catalog-card/catalog-card.component.html:62</source>Mark as sold</msg>
   <msg id="853408948668135550"><source>src/app/shared/catalog/catalog-card/catalog-card.component.html:65</source>Mark as reserved</msg>
+  <msg id="7585826646011739428"><source>src/app/shared/catalog/catalog-card/catalog-card.component.html:68</source>Edit</msg>
   <msg id="4416413576346763682"><source>src/app/shared/catalog/catalog-card/catalog-card.component.html:76</source>Pending</msg>
   <msg id="5272763997595694217"><source>src/app/shared/catalog/catalog-card/catalog-card.component.html:83</source>Cancel Autorenew</msg>
   <msg id="291347435854981703"><source>src/app/shared/catalog/catalog-card/catalog-card.component.html:84</source>Do you really want to cancel the autorenew for this item?</msg>
@@ -454,6 +456,39 @@
   <msg id="6543433128416987560"><source>src/app/chat/item/item-reserved/item-reserved.component.html:2</source>Reserved</msg>
   <msg id="3093507871243266697"><source>src/app/chat/connection-alert/connection-alert.component.html:1</source>Waiting for network...</msg>
   <msg id="3208980041287937682"><source>src/app/chat/connection-alert/connection-alert.component.html:2</source>Connected</msg>
+  <msg id="4163236016169197783"><source>src/app/shared/geolocation/location-box/location-box.component.html:12</source>This is the spot where your wallapop profile is located. We will show all your products here.</msg>
+  <msg id="958176169457402389"><source>src/app/shared/geolocation/location-box/location-box.component.html:3</source>Your products are in:</msg>
+  <msg id="8931167307338687444"><source>src/app/shared/geolocation/location-box/location-box.component.html:18,20</source>Mark the location in a place where you usually are. This will help other users to find you and improve your user experience.</msg>
+  <msg id="792930787826735850"><source>src/app/profile/profile.component.html:6</source>Your profile</msg>
+  <msg id="4532380494593950343"><source>src/app/profile/profile.component.html:11</source>From here you can view and edit your profile</msg>
+  <msg id="7022993325750262876"><source>src/app/profile/profile.component.html:13</source>View my public profile</msg>
+  <msg id="4086606389696938932"><source>src/app/profile/profile.component.html:27</source>Account</msg>
+  <msg id="690637757793763587"><source>src/app/profile/profile.component.html:29</source>Billing information</msg>
+  <msg id="5875130684997376720"><source>src/app/profile/profile.component.html:31</source>Billing</msg>
+  <msg id="1812379335568847528"><source>src/app/profile/profile.component.html:33</source>Subscriptions</msg>
+  <msg id="7830707034534607415"><source>src/app/profile/profile.component.html:35</source>Subscription</msg>
+  <msg id="1900996506417052092"><source>src/app/chat/modals/send-phone/send-phone.component.html:4</source>You are getting in touch with a professional! In order to offer a more personalised service, could you leave a phone to call you?</msg>
+  <msg id="5694886960613125934"><source>src/app/chat/modals/send-phone/send-phone.component.html:7</source>Let&apos;s talk about it:</msg>
+  <msg id="3202305721451114390"><source>src/app/chat/modals/send-phone/send-phone.component.html:9</source>Enter your phone...</msg>
+  <msg id="305827802561975907"><source>src/app/chat/modals/send-phone/send-phone.component.html:16</source>You should know:</msg>
+  <msg id="807686572653733419"><source>src/app/chat/modals/send-phone/send-phone.component.html:17</source>Only in case you give consent, the phone number will be shared with a professional user outside our platform (an interested dealer). The data collected will be used as long as you do not oppose.</msg>
+  <msg id="430278916884204896"><source>src/app/chat/modals/send-phone/send-phone.component.html:18</source>You can exercise your rights on access, rectification, suppression, opposition, limitation to data processing and portability and revocation of consents provided to Wallapop SL,<ph name="LINE_BREAK"/> tax ID number B-66.04.9057, Avenida Meridiana 89 6th floor, 08026, Barcelona (Spain), attaching a photocopy of your ID number or an equivalent valid identification document.<ph name="LINE_BREAK"/> For your convenience, and without prejudice to the fulfilment of certain formal requirements established by the law, Wallapop SL offers the possibility of exercising the aforementioned rights through this email: privacidad@wallapop.com.</msg>
+  <msg id="blockUser"><source>src/app/chat/conversation-details-bar/conversation-details-bar.component.html:84,86</source>Block this User </msg>
+  <msg id="unblockUser"><source>src/app/chat/conversation-details-bar/conversation-details-bar.component.html:88,90</source>Unblock this User </msg>
+  <msg id="deleteConversation"><source>src/app/chat/conversation-details-bar/conversation-details-bar.component.html:66,68</source>Delete conversation </msg>
+  <msg id="archiveConversation"><source>src/app/chat/conversation-details-bar/conversation-details-bar.component.html:69,71</source>Archive conversation </msg>
+  <msg id="unarchiveConversation"><source>src/app/chat/conversation-details-bar/conversation-details-bar.component.html:72,74</source>Unarchive conversation </msg>
+  <msg id="reportListing"><source>src/app/chat/conversation-details-bar/conversation-details-bar.component.html:76,78</source>Report this Listing </msg>
+  <msg id="reportUser"><source>src/app/chat/conversation-details-bar/conversation-details-bar.component.html:80,82</source>Report this User </msg>
+  <msg id="2020278898288143668"><source>src/app/chat/inbox/inbox-metadata/inbox-item-for-sell/inbox-item-for-sell.component.html:7</source>Selling</msg>
+  <msg id="3893097575013115653"><source>src/app/chat/inbox/inbox-metadata/inbox-item-for-sell/inbox-item-for-sell.component.html:8</source>+<ph name="INTERPOLATION"/> More</msg>
+  <msg id="7962273932004201523"><source>src/app/chat/inbox/inbox-metadata/inbox-item-component/inbox-item-detail.component.html:23,25</source>Sold </msg>
+  <msg id="6969584346860248976" desc="The distance between the user and the item"><source>src/app/chat/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:13,16</source> <ph name="DISTANCE"/>km from you </msg>
+  <msg id="4359291232904891489"><source>src/app/shared/geolocation/location-select/location-select.component.html:2</source>Set a location</msg>
+  <msg id="4391289919356861627"><source>src/app/shared/geolocation/location-select/location-modal/location-modal.component.html:3</source>Apply</msg>
+  <msg id="thirdVoiceReviewFirstMessage"><source>src/app/chat/message/third-voice-review/third-voice-review.component.html:1</source>You have found what you were looking for. Great!! </msg>
+  <msg id="thirdVoiceReviewSecondMessage"><source>src/app/chat/message/third-voice-review/third-voice-review.component.html:5</source>How did it go? Review your experience with this user will help our community</msg>
+  <msg id="thirdVoiceDropPrice"><source>src/app/chat/message/third-voice-drop-price/third-voice-drop-price.component.html:1</source>The product has dropped in price. Do you want to cut a deal?</msg>
   <msg id="7532148292247615475"><source>src/app/profile/profile-pro-subscription/profile-pro-subscription.component.html:10</source>Each plan allows you to have up to a maximum number of cars published in the wallapop app and website.</msg>
   <msg id="cardealerUpgradePlanContact"><source>src/app/profile/profile-pro-subscription/profile-pro-subscription.component.html:11</source>To upgrade your plan, call us at <ph name="INTERPOLATION"/> or send us an email at <ph name="START_LINK"/><ph name="INTERPOLATION_1"/><ph name="CLOSE_LINK"/></msg>
   <msg id="5736913742704520146"><source>src/app/profile/profile-pro-subscription/profile-pro-subscription.component.html:40</source>City visibility</msg>
@@ -593,11 +628,11 @@
   <msg id="2347321246651029433"><source>src/app/profile/subscription/modals/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component.html:22</source>2. Wait for the plan to expire. Check and be aware of the expiration date of your subscription.</msg>
   <msg id="7589681963132617331"><source>src/app/profile/subscription/modals/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component.html:23</source>3. Once expired, choose your free subscription here in web.</msg>
   <msg id="8438681505217357359"><source>src/app/profile/subscription/modals/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component.html:26</source>If you have any doubts, <ph name="START_LINK"/>contact us<ph name="CLOSE_LINK"/>.</msg>
-  <msg id="5500835400289213295"><source>src/app/profile/subscription/modals/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component.html:9</source><ph name="START_BOLD_TEXT"/>You have to unsubscribe all your inapp subscriptions first<ph name="CLOSE_BOLD_TEXT"/></msg>
-  <msg id="3261431386963936058"><source>src/app/profile/subscription/modals/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component.html:13</source>If you want to subscribe, first you need to go to the app store and cancel any active inapp subscription.</msg>
   <msg id="6488767812620715130"><source>src/app/profile/subscription/modals/check-subscription-in-app-modal/check-subscription-in-app-modal.component.html:9</source><ph name="START_BOLD_TEXT"/>It seems that you are trying to change something in your subscription<ph name="CLOSE_BOLD_TEXT"/></msg>
   <msg id="6830193087899555637"><source>src/app/profile/subscription/modals/check-subscription-in-app-modal/check-subscription-in-app-modal.component.html:13</source>If you want to unsubscribe, go to the app store and cancel it.</msg>
   <msg id="2881743164290660474"><source>src/app/profile/subscription/modals/check-subscription-in-app-modal/check-subscription-in-app-modal.component.html:14</source>To edit your subscription, go to the app store and cancel it. Then, you can subscribe the new subscription in your wallapop profile.</msg>
+  <msg id="5500835400289213295"><source>src/app/profile/subscription/modals/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component.html:9</source><ph name="START_BOLD_TEXT"/>You have to unsubscribe all your inapp subscriptions first<ph name="CLOSE_BOLD_TEXT"/></msg>
+  <msg id="3261431386963936058"><source>src/app/profile/subscription/modals/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component.html:13</source>If you want to subscribe, first you need to go to the app store and cancel any active inapp subscription.</msg>
   <msg id="2303735769987845467"><source>src/app/profile/profile-pro-subscription/visibility-products-modal/visibility-products-modal.component.html:4</source>Visibility products</msg>
   <msg id="5130627671872052700"><source>src/app/profile/profile-pro-subscription/visibility-products-modal/visibility-products-modal.component.html:7</source>Feature on your city</msg>
   <msg id="1768872655561111284"><source>src/app/profile/profile-pro-subscription/visibility-products-modal/visibility-products-modal.component.html:8</source>Get on first position</msg>
