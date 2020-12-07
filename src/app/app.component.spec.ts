@@ -534,7 +534,7 @@ describe('App', () => {
     });
   });
 
-  fdescribe('When sidebar hide/show status changes', () => {
+  describe('When sidebar hide/show status changes', () => {
     const sidebarSelector = 'tsl-sidebar';
 
     it('should have sidebar by default', () => {
