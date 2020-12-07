@@ -132,6 +132,7 @@ export class AppComponent implements OnInit {
     this.updateUrlAndSendAnalytics();
     this.setTitle();
     this.setBodyClass();
+    this.setHideSidebar();
   }
 
   private handleUserLoggedIn(user: User, accessToken: string): void {
