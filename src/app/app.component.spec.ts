@@ -7,7 +7,7 @@ import {
 } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie';
@@ -40,6 +40,8 @@ jest.mock('moment');
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
+let de: DebugElement;
+let el: HTMLElement;
 let userService: UserService;
 let errorsService: ErrorsService;
 let eventService: EventService;
@@ -185,6 +187,9 @@ describe('App', () => {
     });
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
+    de = fixture.debugElement;
+    el = de.nativeElement;
+    fixture.detectChanges();
     userService = TestBed.inject(UserService);
     errorsService = TestBed.inject(ErrorsService);
     eventService = TestBed.inject(EventService);
@@ -526,6 +531,26 @@ describe('App', () => {
       component.ngOnInit();
 
       expect(didomiService.initialize).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  fdescribe('When sidebar hide/show status changes', () => {
+    const sidebarSelector = 'tsl-sidebar';
+
+    it('should have sidebar by default', () => {
+      expect(el.querySelector(sidebarSelector)).toBeNull();
+    });
+
+    it('should have sidebar if show', () => {
+      component.hideSidebar = false;
+      fixture.detectChanges();
+      expect(el.querySelector(sidebarSelector)).not.toBeNull();
+    });
+
+    it('should not have sidebar if hidden', () => {
+      component.hideSidebar = true;
+      fixture.detectChanges();
+      expect(el.querySelector(sidebarSelector)).toBeNull();
     });
   });
 });
