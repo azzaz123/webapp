@@ -11,12 +11,18 @@ const publicRoutes = [
     canLoad: [DevelopmentGuard],
     loadChildren: () =>
       import('app/login/login.module').then((m) => m.LoginModule),
+    data: {
+      hideSidebar: true,
+    },
   },
   {
     path: 'register',
     canLoad: [DevelopmentGuard],
     loadChildren: () =>
       import('app/register/register.module').then((m) => m.RegisterModule),
+    data: {
+      hideSidebar: true,
+    },
   },
 ];
 
