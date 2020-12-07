@@ -189,7 +189,6 @@ describe('App', () => {
     component = fixture.componentInstance;
     de = fixture.debugElement;
     el = de.nativeElement;
-    fixture.detectChanges();
     userService = TestBed.inject(UserService);
     errorsService = TestBed.inject(ErrorsService);
     eventService = TestBed.inject(EventService);
@@ -536,6 +535,10 @@ describe('App', () => {
 
   describe('When sidebar hide/show status changes', () => {
     const sidebarSelector = 'tsl-sidebar';
+
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
 
     it('should not have sidebar by default', () => {
       expect(el.querySelector(sidebarSelector)).toBeFalsy();
