@@ -35,6 +35,7 @@ import { MockDidomiService } from './core/didomi/didomi.service.spec';
 import { UuidService } from './core/uuid/uuid.service';
 import { SwUpdate } from '@angular/service-worker';
 import * as moment from 'moment';
+import { PATH_EVENTS } from './app-routing-constants';
 
 jest.mock('moment');
 
@@ -59,6 +60,7 @@ let stripeService: StripeService;
 let analyticsService: AnalyticsService;
 let didomiService: DidomiService;
 let uuidService: UuidService;
+let activatedRoute: ActivatedRoute;
 
 const ACCESS_TOKEN = 'accesstoken';
 
@@ -152,6 +154,7 @@ describe('App', () => {
           provide: ActivatedRoute,
           useValue: {
             outlet: 'primary',
+            root: { firstChild: { snapshot: {} } },
             data: of({
               title: 'Chat',
               hideSidebar: true,
@@ -206,6 +209,7 @@ describe('App', () => {
     analyticsService = TestBed.inject(AnalyticsService);
     didomiService = TestBed.inject(DidomiService);
     uuidService = TestBed.inject(UuidService);
+    activatedRoute = TestBed.inject(ActivatedRoute);
 
     spyOn(desktopNotificationsService, 'init');
     spyOn(window.location, 'reload');
@@ -530,6 +534,23 @@ describe('App', () => {
       component.ngOnInit();
 
       expect(didomiService.initialize).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('When current route data changes', () => {
+    beforeEach(() => {
+      activatedRoute.root.firstChild.snapshot.data = {};
+    });
+
+    it('should update sidebar status with the route specification', () => {
+      const hideSidebarValue = false;
+      activatedRoute.root.firstChild.snapshot.data[
+        PATH_EVENTS.hideSidebar
+      ] = hideSidebarValue;
+
+      component.ngOnInit();
+
+      expect(component.hideSidebar).toEqual(hideSidebarValue);
     });
   });
 
