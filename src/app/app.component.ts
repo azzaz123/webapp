@@ -43,7 +43,7 @@ import { SwUpdate } from '@angular/service-worker';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  public hideSidebar: boolean;
+  public hideSidebar: boolean = true;
   public isMyZone: boolean;
   public isProducts: boolean;
   public isProfile: boolean;
