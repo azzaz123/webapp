@@ -36,6 +36,7 @@ import { AnalyticsService } from './core/analytics/analytics.service';
 import { DidomiService } from './core/didomi/didomi.service';
 import { UuidService } from './core/uuid/uuid.service';
 import { SwUpdate } from '@angular/service-worker';
+import { PATH_EVENTS } from './app-routing-constants';
 
 @Component({
   selector: 'tsl-root',
@@ -292,7 +293,7 @@ export class AppComponent implements OnInit {
         }
         const title = !event['title'] ? 'Wallapop' : event['title'];
         this.titleService.setTitle(notifications + title);
-        this.hideSidebar = event['hideSidebar'];
+        this.hideSidebar = event[PATH_EVENTS.hideSidebar];
         this.isMyZone = event['isMyZone'];
         this.isProducts = event['isProducts'];
         this.isProfile = event['isProfile'];
@@ -327,7 +328,7 @@ export class AppComponent implements OnInit {
         map(() => this.activatedRoute.root.firstChild.snapshot.data || {})
       )
       .subscribe((data: any) => {
-        this.hideSidebar = data['hideSidebar'];
+        this.hideSidebar = data[PATH_EVENTS.hideSidebar];
       });
   }
 
