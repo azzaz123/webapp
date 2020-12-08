@@ -45,6 +45,7 @@ import { CATEGORY_IDS } from '../../../core/category/category-ids';
 import { SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
 import { PaymentService } from 'app/core/payments/payment.service';
 import { I18nService } from 'app/core/i18n/i18n.service';
+import { ModalStatuses } from '../subscription.component';
 
 describe('AddNewSubscriptionModalComponent', () => {
   let component: AddNewSubscriptionModalComponent;
@@ -229,7 +230,7 @@ describe('AddNewSubscriptionModalComponent', () => {
 
       component.close();
 
-      expect(activeModal.close).toHaveBeenCalledWith('add');
+      expect(activeModal.close).toHaveBeenCalledWith(ModalStatuses.ADD);
     });
   });
 
