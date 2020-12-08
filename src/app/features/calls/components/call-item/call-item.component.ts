@@ -5,11 +5,11 @@ import {
   HostBinding,
   HostListener,
 } from '@angular/core';
-import { Remove } from '../../shared/archivable/animations';
-import { Call } from '../../core/conversation/calls';
-import { Message } from '../../core/message/message';
-import { I18nService } from '../../core/i18n/i18n.service';
-import { CallsService } from '../../core/conversation/calls.service';
+import { Call } from '@core/conversation/calls';
+import { CallsService } from '@core/conversation/calls.service';
+import { I18nService } from '@core/i18n/i18n.service';
+import { Message } from '@core/message/message';
+import { Remove } from '@shared/archivable/animations';
 
 @Component({
   selector: 'tsl-call-item',
@@ -33,7 +33,7 @@ export class CallItemComponent implements OnChanges {
     this.momentConfig = i18n.getTranslations('daysMomentConfig');
   }
 
-  ngOnChanges(changes?: any) {
+  ngOnChanges() {
     this.messages = this.call.messages.slice(-4);
     if (this.call instanceof Call) {
       const minutes: number = Math.floor((<Call>this.call).callDuration / 60);

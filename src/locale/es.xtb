@@ -642,7 +642,7 @@
   <translation id="6818764209697915477">Destácalo desde <ph name="INTERPOLATION"><ex>{{price | customCurrency}}</ex></ph></translation>
   <translation id="6821183586555063962">Este producto está Destacado</translation>
   <translation id="3879651736105644738">Así consigues más visitas, más conversaciones y más gente interesada.</translation>
-  <translation id="916352071278248935">Tu Destacado acaba el <ph name="INTERPOLATION"><ex>{{item.bumpExpiringDate | dateCalendar:momentConfig}}</ex></ph></translation>
+  <translation id="7053754921723483950">Tu Destacado acaba el <ph name="INTERPOLATION"><ex>{{item.bumpExpiringDate | dateCalendar:momentConfig}}</ex></ph></translation>
   <translation id="8413861205232330672">Todavía no disponemos de datos para este producto</translation>
   <translation id="UrgentCheckboxDescription">Destaca el anuncio de tu producto marcándolo como “urgente”. Durante 7 días se diferenciará del resto de productos y atraerá la atención de más compradores.</translation>
   <translation id="1900996506417052092">¡Vas a contactar con un Profesional! Para ofrecerte un servicio más personalizado, ¿podrías dejarnos un teléfono para que te llamemos?</translation>
@@ -1028,6 +1028,7 @@
   <translation id="RangeDatepickerCountrybump">destacado de país</translation>
   <translation id="RangeDatepickerCitybumps">destacados de ciudad</translation>
   <translation id="RangeDatepickerCountrybumps">destacados de país</translation>
+  <translation id="RangeDatepickerMultiBumps">Destacados múltiples</translation>
   <translation id="Apply">Aplicar</translation>
   <translation id="CheckoutProPlanning">Planificación</translation>
   <translation id="ApplyAll">Aplicar a todos</translation>

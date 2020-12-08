@@ -8,13 +8,13 @@ import {
   waitForAsync,
 } from '@angular/core/testing';
 import { CallsComponent } from './calls.component';
-import { CallsService } from '../core/conversation/calls.service';
 import { ActivatedRoute } from '@angular/router';
-import { TrackingService } from '../core/tracking/tracking.service';
-import { MockTrackingService } from '../../tests/tracking.fixtures.spec';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { createCallsArray } from '../../tests/call.fixtures';
-import { Call } from '../core/conversation/calls';
+import { Call } from '@core/conversation/calls';
+import { CallsService } from '@core/conversation/calls.service';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
+import { createCallsArray } from '@fixtures/call.fixtures';
 
 describe('CallsComponent', () => {
   let component: CallsComponent;
