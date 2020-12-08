@@ -70,7 +70,6 @@ export class UploaderService {
         this.files.push(uploadFile);
       }
     });
-    this.serviceEvents.emit({ type: OutputType.allAddedToQueue });
   }
 
   private checkExtension(file: UploadFile, imageType: string): boolean {

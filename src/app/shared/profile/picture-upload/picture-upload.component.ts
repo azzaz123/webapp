@@ -84,7 +84,6 @@ export class PictureUploadComponent implements OnInit {
       method: 'POST',
       fieldName: 'image',
       headers,
-      file: this.file,
       imageType: 'avatar',
     };
     this.uploaderService

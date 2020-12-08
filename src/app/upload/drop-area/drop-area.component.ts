@@ -3,6 +3,7 @@ import {
   EventEmitter,
   forwardRef,
   Input,
+  OnDestroy,
   OnInit,
   Output,
 } from '@angular/core';
@@ -20,6 +21,7 @@ import {
 } from '../../shared/uploader/upload.interface';
 import { UploaderService } from 'app/shared/uploader/uploader.service';
 import { FileDropActions } from 'app/shared/uploader/file-drop.directive';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'tsl-drop-area',
@@ -33,7 +35,8 @@ import { FileDropActions } from 'app/shared/uploader/file-drop.directive';
     },
   ],
 })
-export class DropAreaComponent implements OnInit, ControlValueAccessor {
+export class DropAreaComponent
+  implements OnInit, ControlValueAccessor, OnDestroy {
   @Output() onError: EventEmitter<any> = new EventEmitter();
   @Output() onUploadPercentageChange: EventEmitter<number> = new EventEmitter();
   @Output() onDeleteImage: EventEmitter<string> = new EventEmitter();
@@ -42,11 +45,13 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
 
   @Input() isUpdatingItem: boolean;
   @Input() maxUploads = 10;
+
   dragOver: boolean;
   files = [];
   placeholders: number[];
   options: NgUploaderOptions;
   item: Item;
+  eventsSubscrition: Subscription;
 
   private setDragOver = throttle((dragOver: boolean) => {
     this.dragOver = dragOver;
@@ -67,10 +72,15 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
       maxSize: 10 * 1024 * 1024, // 10 MB
     };
     this.placeholders = range(this.maxUploads);
+    this.subscribeEvents();
+  }
 
-    this.uploaderService.serviceEvents.subscribe((event: UploadOutput) => {
-      this.onUploadOutput(event);
-    });
+  private subscribeEvents(): void {
+    this.eventsSubscrition = this.uploaderService.serviceEvents.subscribe(
+      (event: UploadOutput) => {
+        this.onUploadOutput(event);
+      }
+    );
   }
 
   public writeValue(value: any) {
@@ -123,7 +133,11 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
     });
   }
 
-  updateOrder() {
+  public updateOrder(): void {
     this.onOrderImages.emit();
+  }
+
+  ngOnDestroy() {
+    this.eventsSubscrition.unsubscribe();
   }
 }

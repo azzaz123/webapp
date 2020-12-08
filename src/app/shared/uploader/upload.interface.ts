@@ -9,11 +9,9 @@ export enum UploadStatus {
 
 export enum OutputType {
   addedToQueue = 'addedToQueue',
-  allAddedToQueue = 'allAddedToQueue',
   uploading = 'uploading',
   done = 'done',
   rejected = 'rejected',
-  start = 'start',
 }
 
 export enum UploadAction {
@@ -67,7 +65,6 @@ export interface UploadInput {
   id?: string;
   fieldName?: string;
   fileIndex?: number;
-  file?: UploadFile;
   data?: { [key: string]: string | Blob };
   headers?: { [key: string]: string };
   concurrency?: number;

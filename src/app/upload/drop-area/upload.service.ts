@@ -4,12 +4,14 @@ import {
   TOKEN_SIGNATURE_HEADER_NAME,
   TOKEN_TIMESTAMP_HEADER_NAME,
 } from './../../core/http/interceptors/token.interceptor';
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
 import { ITEM_TYPES } from '../../core/item/item';
+import { cloneDeep } from 'lodash-es';
 import {
   InputType,
+  OutputType,
   UploadFile,
   UploadInput,
   UploadOutput,
@@ -18,15 +20,17 @@ import {
 import { ItemService } from 'app/core/item/item.service';
 import { UploaderService } from 'app/shared/uploader/uploader.service';
 import { Image } from '../../core/user/user-response.interface';
-import { Observable } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import {
-  CarContent, ItemResponse, RealStateResponse
+  CarContent,
+  ItemResponse,
+  RealStateResponse,
 } from 'app/core/item/item-response.interface';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class UploadService {
   private API_URL = 'api/v3/items';
-  uploadInput: EventEmitter<UploadInput> = new EventEmitter();
 
   constructor(
     private accesTokenService: AccessTokenService,
@@ -37,7 +41,23 @@ export class UploadService {
     values: any,
     itemType: ITEM_TYPES
   ): Observable<UploadOutput> {
-    return this.createItemWithFirstImage(values, values.images[0], itemType);
+    const parsedValues = cloneDeep(values);
+    delete parsedValues.images;
+    return this.createItemWithFirstImage(
+      parsedValues,
+      values.images[0],
+      itemType
+    ).pipe(
+      tap((response: UploadOutput) => {
+        if (response.type === OutputType.done) {
+          this.uploadOtherImages(
+            response.file.response.id,
+            values.images,
+            itemType
+          ).subscribe();
+        }
+      })
+    );
   }
 
   public createItemWithFirstImage(
@@ -49,19 +69,17 @@ export class UploadService {
     if (itemType === ITEM_TYPES.CARS) {
       inputEvent = this.buildUploadEvent(
         values,
-        file,
         this.API_URL + '/cars',
         'item_car'
       );
     } else if (itemType === ITEM_TYPES.REAL_ESTATE) {
       inputEvent = this.buildUploadEvent(
         values,
-        file,
         this.API_URL + '/real_estate',
         'item_real_estate'
       );
     } else {
-      inputEvent = this.buildUploadEvent(values, file, this.API_URL, 'item');
+      inputEvent = this.buildUploadEvent(values, this.API_URL, 'item');
     }
     return this.uploaderService.uploadFile(file, inputEvent);
   }
@@ -69,15 +87,14 @@ export class UploadService {
   updateItem(
     values: any,
     type: ITEM_TYPES
-  ): Observable<
-    ItemResponse | CarContent | RealStateResponse
-  > {
-    return this.itemService.update(values, type);
+  ): Observable<ItemResponse | CarContent | RealStateResponse> {
+    const parsedValues = cloneDeep(values);
+    delete parsedValues.images;
+    return this.itemService.update(parsedValues, type);
   }
 
   private buildUploadEvent(
     values: any,
-    file: UploadFile,
     url: string,
     fieldName: string
   ): UploadInput {
@@ -99,29 +116,42 @@ export class UploadService {
         }),
       },
       headers: this.getUploadHeaders(url, { 'X-DeviceOS': '0' }),
-      file: file,
     };
   }
 
-  public uploadOtherImages(itemId: string, type: string) {
+  public uploadOtherImages(
+    itemId: string,
+    files: UploadFile[],
+    itemType: ITEM_TYPES
+  ): Observable<UploadOutput[]> {
+    const remainigFiles = files.slice(1);
     const url =
       this.API_URL +
       '/' +
-      (type !== 'consumer_goods' ? type + '/' : '') +
+      (itemType !== ITEM_TYPES.CONSUMER_GOODS ? itemType + '/' : '') +
       itemId +
       '/picture' +
-      (type !== 'real_estate' ? '2' : '');
-    const inputEvent: UploadInput = {
-      type: InputType.uploadRemainingImages,
-      url: environment.baseUrl + url,
-      method: 'POST',
-      fieldName: 'image',
-      data: {
-        order: '$order',
-      },
-      headers: this.getUploadHeaders(url),
-    };
-    this.uploadInput.emit(inputEvent);
+      (itemType !== ITEM_TYPES.REAL_ESTATE ? '2' : '');
+
+    const imagesRequest: Observable<UploadOutput>[] = [];
+
+    if (remainigFiles.length > 0) {
+      remainigFiles.forEach((file: UploadFile) => {
+        const inputEvent: UploadInput = {
+          type: InputType.uploadRemainingImages,
+          url: environment.baseUrl + url,
+          method: 'POST',
+          fieldName: 'image',
+          data: {
+            order: '$order',
+          },
+          headers: this.getUploadHeaders(url),
+        };
+        imagesRequest.push(this.uploaderService.uploadFile(file, inputEvent));
+      });
+    }
+
+    return forkJoin(imagesRequest);
   }
 
   public uploadSingleImage(file: UploadFile, itemId: string, type: ITEM_TYPES) {
@@ -141,7 +171,6 @@ export class UploadService {
         order: '$order',
       },
       headers: this.getUploadHeaders(url),
-      file: file,
     };
     return this.uploaderService.uploadFile(file, inputEvent);
   }

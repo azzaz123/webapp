@@ -88,7 +88,6 @@ export class CoverUploadComponent implements OnInit {
       method: 'POST',
       fieldName: 'image',
       headers,
-      file: this.file,
       imageType: 'cover',
     };
     this.uploaderService
