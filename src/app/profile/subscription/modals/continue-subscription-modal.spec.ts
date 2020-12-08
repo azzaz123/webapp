@@ -18,6 +18,7 @@ import {
 } from '../../../core/analytics/analytics-constants';
 import { SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
 import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
+import { ModalStatuses } from '../subscription.component';
 
 describe('ContinueSubscriptionModalComponent', () => {
   let component: ContinueSubscriptionModalComponent;
@@ -85,7 +86,7 @@ describe('ContinueSubscriptionModalComponent', () => {
 
       component.close();
 
-      expect(activeModal.close).toHaveBeenCalledWith('continue');
+      expect(activeModal.close).toHaveBeenCalledWith(ModalStatuses.CONTINUE);
     });
   });
 

@@ -85,7 +85,7 @@ export class SubscriptionsComponent implements OnInit {
       this.subscriptions
     );
     modalRef.result.then(
-      (action: string) => {
+      (action: ModalStatuses) => {
         if (action) {
           this.loading = true;
           if (this.user && this.user.featured) {

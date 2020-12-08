@@ -26,6 +26,7 @@ import {
 } from '../../../core/analytics/analytics-constants';
 import { DateUntilDayPipe } from '../../../shared/pipes';
 import { SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
+import { ModalStatuses } from '../subscription.component';
 
 describe('EditSubscriptionModalComponent', () => {
   let component: EditSubscriptionModalComponent;
@@ -123,12 +124,12 @@ describe('EditSubscriptionModalComponent', () => {
   });
 
   describe('close', () => {
-    it('should close the modal and redirect to the profile', () => {
+    it('should close the modal with modal status', () => {
       spyOn(activeModal, 'close');
 
-      component.close('');
+      component.close(ModalStatuses.UPDATE);
 
-      expect(activeModal.close).toHaveBeenCalled();
+      expect(activeModal.close).toHaveBeenCalledWith(ModalStatuses.UPDATE);
     });
   });
 
