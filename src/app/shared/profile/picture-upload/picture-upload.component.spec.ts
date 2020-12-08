@@ -101,7 +101,6 @@ describe('PictureUploadComponent', () => {
         method: 'POST',
         fieldName: 'image',
         headers,
-        file: UPLOAD_FILE,
         imageType: 'avatar',
       });
     });

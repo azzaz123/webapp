@@ -102,7 +102,6 @@ describe('CoverUploadComponent', () => {
         method: 'POST',
         fieldName: 'image',
         headers,
-        file: UPLOAD_FILE,
         imageType: 'cover',
       });
     });

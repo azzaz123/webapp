@@ -49,10 +49,11 @@ export class UploadService {
       itemType
     ).pipe(
       tap((response: UploadOutput) => {
-        if (response.type === OutputType.done) {
-          this.uploadOtherImages(
+        if (response.type === OutputType.done && values.images.length > 1) {
+          const remainigFiles = values.images.slice(1);
+          this.uploadRemainingImages(
             response.file.response.id,
-            values.images,
+            remainigFiles,
             itemType
           ).subscribe();
         }
@@ -60,7 +61,7 @@ export class UploadService {
     );
   }
 
-  public createItemWithFirstImage(
+  private createItemWithFirstImage(
     values: any,
     file: UploadFile,
     itemType: ITEM_TYPES
@@ -119,12 +120,11 @@ export class UploadService {
     };
   }
 
-  public uploadOtherImages(
+  private uploadRemainingImages(
     itemId: string,
     files: UploadFile[],
     itemType: ITEM_TYPES
   ): Observable<UploadOutput[]> {
-    const remainigFiles = files.slice(1);
     const url =
       this.API_URL +
       '/' +
@@ -135,22 +135,19 @@ export class UploadService {
 
     const imagesRequest: Observable<UploadOutput>[] = [];
 
-    if (remainigFiles.length > 0) {
-      remainigFiles.forEach((file: UploadFile) => {
-        const inputEvent: UploadInput = {
-          type: InputType.uploadRemainingImages,
-          url: environment.baseUrl + url,
-          method: 'POST',
-          fieldName: 'image',
-          data: {
-            order: '$order',
-          },
-          headers: this.getUploadHeaders(url),
-        };
-        imagesRequest.push(this.uploaderService.uploadFile(file, inputEvent));
-      });
-    }
-
+    files.forEach((file: UploadFile) => {
+      const inputEvent: UploadInput = {
+        type: InputType.uploadRemainingImages,
+        url: environment.baseUrl + url,
+        method: 'POST',
+        fieldName: 'image',
+        data: {
+          order: '$order',
+        },
+        headers: this.getUploadHeaders(url),
+      };
+      imagesRequest.push(this.uploaderService.uploadFile(file, inputEvent));
+    });
     return forkJoin(imagesRequest);
   }
 

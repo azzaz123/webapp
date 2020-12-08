@@ -138,6 +138,8 @@ export class DropAreaComponent
   }
 
   ngOnDestroy() {
-    this.eventsSubscrition.unsubscribe();
+    if (this.eventsSubscrition) {
+      this.eventsSubscrition.unsubscribe();
+    }
   }
 }
