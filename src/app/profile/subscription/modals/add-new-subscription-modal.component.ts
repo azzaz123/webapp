@@ -48,6 +48,7 @@ import {
 } from '../../../core/constants';
 import { IOption } from 'app/dropdown/utils/option.interface';
 import { I18nService } from 'app/core/i18n/i18n.service';
+import { ModalStatuses } from '../subscription.component';
 
 @Component({
   selector: 'tsl-add-new-subscription-modal',
@@ -123,7 +124,7 @@ export class AddNewSubscriptionModalComponent
   }
 
   public close() {
-    this.activeModal.close('add');
+    this.activeModal.close(ModalStatuses.ADD);
   }
 
   public addSubscription(paymentMethod: PaymentMethodResponse) {

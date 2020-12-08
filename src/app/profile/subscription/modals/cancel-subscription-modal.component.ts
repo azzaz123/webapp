@@ -15,6 +15,7 @@ import {
   SCREEN_IDS,
   ClickConfirmCloseSubscription,
 } from '../../../core/analytics/analytics-constants';
+import { ModalStatuses } from '../subscription.component';
 
 @Component({
   selector: 'tsl-cancel-subscription-modal',
@@ -48,7 +49,7 @@ export class CancelSubscriptionModalComponent {
             type: 'success',
           });
           this.loading = false;
-          this.activeModal.close('success');
+          this.activeModal.close(ModalStatuses.SUCCESS);
         } else {
           this.loading = false;
           this.toastService.show({
@@ -58,7 +59,7 @@ export class CancelSubscriptionModalComponent {
               this.i18n.getTranslations('cancelSubscriptionErrorBody'),
             type: 'error',
           });
-          this.activeModal.close('fail');
+          this.activeModal.close(ModalStatuses.FAIL);
         }
       });
   }

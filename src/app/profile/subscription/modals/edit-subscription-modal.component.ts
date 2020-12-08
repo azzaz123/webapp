@@ -23,6 +23,7 @@ import {
   ClickConfirmEditCurrentSubscription,
   ANALYTIC_EVENT_TYPES,
 } from '../../../core/analytics/analytics-constants';
+import { ModalStatuses } from '../subscription.component';
 
 @Component({
   selector: 'tsl-edit-subscription-modal',
@@ -66,7 +67,7 @@ export class EditSubscriptionModalComponent implements OnInit {
     this.analyticsService.trackPageView(pageView);
   }
 
-  public close(status: string) {
+  public close(status: ModalStatuses) {
     this.activeModal.close(status);
   }
 
@@ -95,7 +96,7 @@ export class EditSubscriptionModalComponent implements OnInit {
             type: 'error',
           });
         }
-        this.close('update');
+        this.close(ModalStatuses.UPDATE);
       });
   }
 
@@ -116,7 +117,7 @@ export class EditSubscriptionModalComponent implements OnInit {
     });
     modalRef.componentInstance.subscription = this.subscription;
     modalRef.result.then(
-      (result: string) => {
+      (result: ModalStatuses) => {
         this.close(result);
         modalRef = null;
       },

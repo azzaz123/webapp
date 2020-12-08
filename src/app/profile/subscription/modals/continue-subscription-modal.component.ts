@@ -15,6 +15,7 @@ import {
   SCREEN_IDS,
 } from '../../../core/analytics/analytics-constants';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
+import { ModalStatuses } from '../subscription.component';
 
 @Component({
   selector: 'tsl-continue-subscription-modal',
@@ -34,7 +35,7 @@ export class ContinueSubscriptionModalComponent {
   ) {}
 
   public close() {
-    this.activeModal.close('continue');
+    this.activeModal.close(ModalStatuses.CONTINUE);
   }
 
   public continueSubscription() {

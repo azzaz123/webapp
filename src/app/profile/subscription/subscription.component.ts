@@ -37,6 +37,14 @@ export type SubscriptionModal =
   | typeof EditSubscriptionModalComponent
   | typeof AddNewSubscriptionModalComponent;
 
+  export enum ModalStatuses {
+    UPDATE = 'update',
+    CONTINUE = 'continue',
+    SUCCESS = 'success',
+    FAIL = 'fail',
+    ADD = 'add'
+  }
+
 @Component({
   selector: 'tsl-subscription',
   templateUrl: './subscription.component.html',
