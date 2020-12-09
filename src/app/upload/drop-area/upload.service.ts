@@ -13,9 +13,12 @@ import {
   InputType,
   OutputType,
   UploadFile,
+  IProductUploadForm,
+  ICarUploadForm,
   UploadInput,
   UploadOutput,
   UploadStatus,
+  IRealEstateUploadForm,
 } from '@shared/uploader/upload.interface';
 import { ItemService } from '@core/item/item.service';
 import { UploaderService } from '@shared/uploader/uploader.service';
@@ -38,7 +41,7 @@ export class UploadService {
     private uploaderService: UploaderService
   ) {}
   public createItem(
-    values: any,
+    values: IProductUploadForm | IRealEstateUploadForm | ICarUploadForm,
     itemType: ITEM_TYPES
   ): Observable<UploadOutput> {
     const parsedValues = cloneDeep(values);
@@ -62,7 +65,7 @@ export class UploadService {
   }
 
   private createItemWithFirstImage(
-    values: any,
+    values: IProductUploadForm | IRealEstateUploadForm | ICarUploadForm,
     file: UploadFile,
     itemType: ITEM_TYPES
   ): Observable<UploadOutput> {
@@ -86,7 +89,7 @@ export class UploadService {
   }
 
   updateItem(
-    values: any,
+    values: IProductUploadForm | IRealEstateUploadForm | ICarUploadForm,
     type: ITEM_TYPES
   ): Observable<ItemResponse | CarContent | RealStateResponse> {
     const parsedValues = cloneDeep(values);
@@ -95,7 +98,7 @@ export class UploadService {
   }
 
   private buildUploadEvent(
-    values: any,
+    values: IProductUploadForm | IRealEstateUploadForm | ICarUploadForm,
     url: string,
     fieldName: string
   ): UploadInput {
@@ -151,7 +154,11 @@ export class UploadService {
     return forkJoin(imagesRequest);
   }
 
-  public uploadSingleImage(file: UploadFile, itemId: string, type: ITEM_TYPES) {
+  public uploadSingleImage(
+    file: UploadFile,
+    itemId: string,
+    type: ITEM_TYPES
+  ): Observable<UploadOutput> {
     const url =
       this.API_URL +
       '/' +
@@ -188,7 +195,7 @@ export class UploadService {
     };
   }
 
-  public updateOrder(files: UploadFile[], itemId: string) {
+  public updateOrder(files: UploadFile[], itemId: string): Observable<void> {
     const picturesOrder = {};
     files.forEach((file, index) => {
       picturesOrder[file.response?.id || file.response] = index;
@@ -196,7 +203,7 @@ export class UploadService {
     return this.itemService.updatePicturesOrder(itemId, picturesOrder);
   }
 
-  public convertImagesToFiles(images: Image[]) {
+  public convertImagesToFiles(images: Image[]): any[] {
     return images.map((image: Image, index: number) => {
       return {
         fileIndex: index,
@@ -231,7 +238,7 @@ export class UploadService {
     });
   }
 
-  public onDeleteImage(itemId: string, imageId: string) {
+  public onDeleteImage(itemId: string, imageId: string): Observable<void> {
     return this.itemService.deletePicture(itemId, imageId);
   }
 }
