@@ -136,7 +136,7 @@ export class UploadProductComponent
     { value: 'EUR', label: '€' },
     { value: 'GBP', label: '£' },
   ];
-  public deliveryInfo: any = deliveryInfo;
+  public deliveryInfo = deliveryInfo;
   public categories: CategoryOption[] = [];
   public loading: boolean;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();

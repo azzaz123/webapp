@@ -9,6 +9,7 @@ import { ErrorsService } from '@core/errors/errors.service';
 import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
 import {
+  imageType,
   InputType,
   NgUploaderOptions,
   OutputType,
@@ -20,6 +21,7 @@ import { AccessTokenService } from '@core/http/access-token.service';
 import { UploaderService } from '@shared/uploader/uploader.service';
 import { finalize } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
+import { IMAGE } from '@fixtures/user.fixtures.spec';
 
 @Component({
   selector: 'tsl-picture-upload',
@@ -31,6 +33,7 @@ export class PictureUploadComponent implements OnInit {
   file: UploadFile;
   options: NgUploaderOptions;
   isLoading: boolean;
+  imageType = imageType;
 
   constructor(
     private errorsService: ErrorsService,
@@ -84,7 +87,7 @@ export class PictureUploadComponent implements OnInit {
       method: 'POST',
       fieldName: 'image',
       headers,
-      imageType: 'avatar',
+      imageType: this.imageType.AVATAR,
     };
     this.uploaderService
       .uploadFile(this.file, uploadinput)

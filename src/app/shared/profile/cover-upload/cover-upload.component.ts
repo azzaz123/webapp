@@ -9,6 +9,7 @@ import { ErrorsService } from '@core/errors/errors.service';
 import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
 import {
+  imageType,
   InputType,
   NgUploaderOptions,
   OutputType,
@@ -35,6 +36,7 @@ export class CoverUploadComponent implements OnInit {
   file: UploadFile;
   options: NgUploaderOptions;
   isLoading: boolean;
+  imageType = imageType;
 
   constructor(
     private errorsService: ErrorsService,
@@ -88,7 +90,7 @@ export class CoverUploadComponent implements OnInit {
       method: 'POST',
       fieldName: 'image',
       headers,
-      imageType: 'cover',
+      imageType: this.imageType.COVER,
     };
     this.uploaderService
       .uploadFile(this.file, uploadinput)

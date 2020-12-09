@@ -15,6 +15,7 @@ import {
 } from '../../../../tests/upload.fixtures.spec';
 import { environment } from '@environments/environment';
 import {
+  imageType,
   InputType,
   OutputType,
   UploadFile,
@@ -102,7 +103,7 @@ describe('CoverUploadComponent', () => {
         method: 'POST',
         fieldName: 'image',
         headers,
-        imageType: 'cover',
+        imageType: imageType.COVER,
       });
     });
 

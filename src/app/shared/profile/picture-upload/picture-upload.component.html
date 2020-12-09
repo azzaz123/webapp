@@ -12,7 +12,7 @@
     <div class="upload-button">
       <label class="btn btn-upload"
         [ngClass]="{disabled: isLoading}">
-        <input type="file" tslFileSelect imageType='avatar' (uploadOutput)="onUploadOutput($event)"
+        <input type="file" tslFileSelect [imageType]='imageType.AVATAR' (uploadOutput)="onUploadOutput($event)"
          [options]="options"
           [disabled]="isLoading" />
         <span class="loader" *ngIf="isLoading">
