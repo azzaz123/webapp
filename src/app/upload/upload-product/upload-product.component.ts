@@ -429,7 +429,7 @@ export class UploadProductComponent
     }
   }
 
-  onSubmit(): void {
+  public onSubmit(): void {
     if (this.uploadForm.valid) {
       this.loading = true;
       if (this.item && this.item.itemType === this.itemTypes.CONSUMER_GOODS) {

@@ -378,7 +378,7 @@ export class UploadCarComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  public onSubmit(): void {
     if (this.uploadForm.valid) {
       this.loading = true;
       this.item ? this.updateItem() : this.createItem();

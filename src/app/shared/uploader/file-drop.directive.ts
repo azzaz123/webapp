@@ -21,16 +21,18 @@ export enum FileDropActions {
   DRAGOVER = 'dragOver',
 }
 
+export interface IFileDropAction {
+  action: FileDropActions;
+  files?: FileList;
+}
+
 @Directive({
   selector: '[tslFileDrop]',
 })
 export class FileDropDirective implements OnInit, OnDestroy {
   @Input() options: NgUploaderOptions;
   @Input() imageType: string;
-  @Output() fileDropAction = new EventEmitter<{
-    action: FileDropActions;
-    files?: FileList;
-  }>();
+  @Output() fileDropAction = new EventEmitter<IFileDropAction>();
 
   isServer: boolean = isPlatformServer(this.platform_id);
   el: HTMLInputElement;

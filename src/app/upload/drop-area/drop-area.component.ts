@@ -20,7 +20,10 @@ import {
   UploadOutput,
 } from '../../shared/uploader/upload.interface';
 import { UploaderService } from 'app/shared/uploader/uploader.service';
-import { FileDropActions } from 'app/shared/uploader/file-drop.directive';
+import {
+  FileDropActions,
+  IFileDropAction,
+} from 'app/shared/uploader/file-drop.directive';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -38,7 +41,6 @@ import { Subscription } from 'rxjs';
 export class DropAreaComponent
   implements OnInit, ControlValueAccessor, OnDestroy {
   @Output() onError: EventEmitter<any> = new EventEmitter();
-  @Output() onUploadPercentageChange: EventEmitter<number> = new EventEmitter();
   @Output() onDeleteImage: EventEmitter<string> = new EventEmitter();
   @Output() onOrderImages: EventEmitter<any> = new EventEmitter();
   @Output() onAddImage: EventEmitter<any> = new EventEmitter();
@@ -47,10 +49,9 @@ export class DropAreaComponent
   @Input() maxUploads = 10;
 
   dragOver: boolean;
-  files = [];
+  files: UploadFile[] = [];
   placeholders: number[];
   options: NgUploaderOptions;
-  item: Item;
   eventsSubscrition: Subscription;
 
   private setDragOver = throttle((dragOver: boolean) => {
@@ -83,7 +84,7 @@ export class DropAreaComponent
     );
   }
 
-  public writeValue(value: any) {
+  public writeValue(value: UploadFile[]) {
     this.files = value;
   }
 
@@ -105,17 +106,14 @@ export class DropAreaComponent
     }
   }
 
-  public onFileDropAction(event: {
-    action: FileDropActions;
-    files?: FileList;
-  }) {
+  public onFileDropAction(event: IFileDropAction): void {
     this.setDragOver(event.action === FileDropActions.DRAGOVER);
     if (event.files) {
       this.uploaderService.handleFiles(event.files, null, this.files);
     }
   }
 
-  public remove(file: UploadFile, event: Event) {
+  public remove(file: UploadFile, event: Event): void {
     event.stopPropagation();
     event.preventDefault();
     if (this.isUpdatingItem) {

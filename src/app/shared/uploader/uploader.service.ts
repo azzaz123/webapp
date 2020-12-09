@@ -1,6 +1,4 @@
-import { from, Observable, Subscription } from 'rxjs';
-
-import { combineLatest, mergeAll } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
 import { EventEmitter, Injectable } from '@angular/core';
 import {
   NgUploaderOptions,
@@ -119,34 +117,6 @@ export class UploaderService {
     return false;
   }
 
-  uploadRemainingImages(imageType, event) {
-    let concurrency =
-      event.concurrency > 0 ? event.concurrency : Number.POSITIVE_INFINITY;
-
-    this.uploads = this.uploads.concat(
-      this.files.map((file) => {
-        return { file: file, sub: null };
-      })
-    );
-    const subscription = from(
-      this.files
-        .filter(
-          (file) =>
-            file.progress.status !== UploadStatus.Done &&
-            file.id !== this.files[0].id
-        )
-        .map((file) => this.uploadFile(file, event))
-    )
-      .pipe(
-        mergeAll(concurrency),
-        combineLatest((data) => data)
-      )
-      .subscribe((data: UploadOutput) => {
-        data.imageType = imageType;
-        this.serviceEvents.emit(data);
-      });
-  }
-
   uploadFile(file: UploadFile, event: UploadInput): Observable<UploadOutput> {
     return new Observable((observer) => {
       const url = event.url;
@@ -220,11 +190,10 @@ export class UploaderService {
 
           if (xhr.status === 200 || xhr.status === 204) {
             observer.next({ type: OutputType.done, file: file });
-            observer.complete();
           } else {
             observer.error(file.response);
-            observer.complete();
           }
+          observer.complete();
         }
       };
 

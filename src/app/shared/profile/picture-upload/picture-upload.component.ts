@@ -63,7 +63,7 @@ export class PictureUploadComponent implements OnInit {
     }
   }
 
-  private uploadPicture() {
+  private uploadPicture(): void {
     this.isLoading = true;
     const url = 'api/v3/users/me/image';
     const timestamp = new Date().getTime();
@@ -102,7 +102,7 @@ export class PictureUploadComponent implements OnInit {
       );
   }
 
-  private showError(message?: string) {
+  private showError(message?: string): void {
     this.errorsService.i18nError('serverError', message ? message : '');
   }
 }
