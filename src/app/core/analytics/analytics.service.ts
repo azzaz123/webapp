@@ -2,12 +2,13 @@ import mParticle from '@mparticle/web-sdk';
 import appboyKit from '@mparticle/web-appboy-kit';
 import { UserService } from './../user/user.service';
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { environment } from '@environments/environment';
 import { User } from '../user/user';
 import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
 import { CookieService } from 'ngx-cookie';
 import { UuidService } from '../uuid/uuid.service';
 
+// TODO: This should not be exported. Anything that uses this should start using the getDeviceId method
 export const DEVICE_ID_COOKIE_NAME = 'device_id';
 
 @Injectable({
@@ -20,7 +21,11 @@ export class AnalyticsService {
     private cookieService: CookieService
   ) {}
 
+  private static DEVICE_ID_COOKIE_NAME = 'device_id';
+
   public initialize() {
+    // TODO: Passing an empty object to identify an unknown user allows to set userAttributes
+    //       This logic should be modified accordingly to prepare for the new public part of the webapp
     this.userService.me().subscribe((user: User) => {
       if (!user) {
         return;
@@ -35,17 +40,9 @@ export class AnalyticsService {
           },
         },
         identityCallback: (result) => {
-          let deviceId = this.cookieService.get(DEVICE_ID_COOKIE_NAME);
-          if (!deviceId) {
-            deviceId = this.uuidService.getUUID();
-            this.cookieService.put(DEVICE_ID_COOKIE_NAME, deviceId, {
-              expires: new Date('2038-01-19'),
-            });
-          }
-
           const user = result.getUser();
           if (user) {
-            user.setUserAttribute('deviceId', deviceId);
+            user.setUserAttribute('deviceId', this.getDeviceId());
           }
         },
       };
@@ -61,5 +58,23 @@ export class AnalyticsService {
 
   public trackPageView<T>(page: AnalyticsPageView<T>) {
     mParticle.logPageView(page.name, page.attributes, page.flags);
+  }
+
+  // TODO: This might not be it's place
+  public getDeviceId(): string {
+    let deviceId = this.cookieService.get(
+      AnalyticsService.DEVICE_ID_COOKIE_NAME
+    );
+    if (!deviceId) {
+      deviceId = this.uuidService.getUUID();
+      this.cookieService.put(AnalyticsService.DEVICE_ID_COOKIE_NAME, deviceId, {
+        expires: new Date('2038-01-19'),
+        // TODO: Generic cookie options could be abstracted and extended on each case
+        domain: environment.name === 'local' ? 'localhost' : '.wallapop.com',
+        path: '/',
+      });
+    }
+
+    return deviceId;
   }
 }

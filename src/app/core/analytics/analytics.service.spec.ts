@@ -2,7 +2,7 @@ import { of } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { AnalyticsService } from './analytics.service';
 import { UserService } from '../user/user.service';
-import { MOCK_USER } from '../../../tests/user.fixtures.spec';
+import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
 import mParticle from '@mparticle/web-sdk';
 import appboyKit from '@mparticle/web-appboy-kit';
@@ -42,6 +42,8 @@ describe('AnalyticsService', () => {
   let service: AnalyticsService;
   let deviceIdValue: string;
   let uuidService: UuidService;
+  let cookieService: CookieService;
+  let cookies: object;
 
   beforeEach(() => {
     deviceIdValue = 'deviceId';
@@ -59,14 +61,22 @@ describe('AnalyticsService', () => {
         {
           provide: CookieService,
           useValue: {
-            get: () => deviceIdValue,
-            put: (value) => {
-              deviceIdValue = value;
+            get: (name): string => {
+              return cookies[name]?.value;
+            },
+            put: (name, value, options): void => {
+              cookies[name] = {
+                value,
+                options,
+              };
             },
           },
         },
       ],
     });
+
+    cookies = {};
+    cookieService = TestBed.inject(CookieService);
     uuidService = TestBed.inject(UuidService);
     service = TestBed.inject(AnalyticsService);
   });
@@ -78,13 +88,15 @@ describe('AnalyticsService', () => {
         spyOn(mParticle, 'init').and.callThrough();
         spyOn(user, 'setUserAttribute');
         spyOn(appboyKit, 'register');
+        spyOn(uuidService, 'getUUID').and.returnValue('newUUID');
 
         service.initialize();
 
-        expect(mParticle.init).toHaveBeenCalled();
+        expect(mParticle.init).toHaveBeenCalledTimes(1);
+        expect(uuidService.getUUID).toHaveBeenCalledTimes(1);
         expect(user.setUserAttribute).toHaveBeenCalledWith(
           'deviceId',
-          'deviceId'
+          'newUUID'
         );
         expect(appboyKit.register).toHaveBeenCalled();
       });
@@ -105,6 +117,46 @@ describe('AnalyticsService', () => {
           mParticle.Identity.getCurrentUser().setUserAttribute
         ).toHaveBeenCalledWith('deviceId', 'newDeviceId');
         expect(appboyKit.register).toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('getDeviceId', () => {
+    describe('when no device id cookie is set', () => {
+      it("should return the cookie's value", () => {
+        spyOn(uuidService, 'getUUID').and.returnValue('newDeviceId');
+        spyOn(cookieService, 'put');
+
+        const deviceId = service.getDeviceId();
+
+        expect(deviceId).toEqual('newDeviceId');
+        expect(cookieService.put).toHaveBeenCalledWith(
+          'device_id',
+          'newDeviceId',
+          {
+            domain: 'localhost',
+            path: '/',
+            expires: expect.any(Date),
+          }
+        );
+      });
+    });
+
+    describe('when device id cookie is set', () => {
+      it('should return a new value and set the cookie', () => {
+        cookies = {
+          device_id: {
+            value: 'deviceId',
+          },
+        };
+        spyOn(cookieService, 'put');
+        spyOn(uuidService, 'getUUID');
+
+        const deviceId = service.getDeviceId();
+
+        expect(deviceId).toEqual('deviceId');
+        expect(cookieService.put).not.toHaveBeenCalled();
+        expect(uuidService.getUUID).not.toHaveBeenCalled();
       });
     });
   });

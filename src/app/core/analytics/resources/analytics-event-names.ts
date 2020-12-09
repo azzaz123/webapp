@@ -78,6 +78,7 @@ export enum ANALYTICS_EVENT_NAMES {
   RegisterGoogleSuccess = 'Register Google Success',
   RegisterMailSuccess = 'Register Mail Success',
   RegisterVerificationSuccess = 'Register Verification Success',
+  OpenWallapop = 'Open Wallapop',
   ListItemCar = 'List Item Car',
   ListItemCG = 'List Item CG',
   ListItemRE = 'List Item RE',

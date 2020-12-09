@@ -1,3 +1,4 @@
+import { CookieModule } from 'ngx-cookie';
 import {
   ModuleWithProviders,
   NgModule,
@@ -5,8 +6,9 @@ import {
   SkipSelf,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+import { SessionService } from '@core/session/session.service';
 import { LoggedGuard } from './user/logged.guard';
-import { CookieModule } from 'ngx-cookie';
 import { UserModule } from './user/user.module';
 import { ItemModule } from './item/item.module';
 import { EventService } from './event/event.service';
@@ -16,7 +18,6 @@ import { ErrorsService } from './errors/errors.service';
 import { TutorialService } from './tutorial/tutorial.service';
 import { AccessTokenService } from './http/access-token.service';
 import { ConversationModule } from './conversation/conversation.module';
-import { MessageService } from '../chat/service/message.service';
 import { DesktopNotificationsService } from './desktop-notifications/desktop-notifications.service';
 import { PaymentService } from './payments/payment.service';
 import { XmppService } from './xmpp/xmpp.service';
@@ -29,6 +30,7 @@ import {
   BlockUserService,
   BlockUserXmppService,
   InboxService,
+  MessageService,
 } from '../chat/service';
 import { StripeService } from './stripe/stripe.service';
 import { SubscriptionsService } from './subscriptions/subscriptions.service';
@@ -84,6 +86,7 @@ export class CoreModule {
         SubscriptionsService,
         DidomiService,
         TrustAndSafetyService,
+        SessionService,
       ],
     };
   }

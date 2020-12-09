@@ -77,6 +77,7 @@ export * from './register-form-error.interface';
 export * from './register-google-success.interface';
 export * from './register-mail-success.interface';
 export * from './register-verification-success.interface';
+export * from './open-wallapop.interface';
 export * from './list-item-car.interface';
 export * from './list-item-cg.interface';
 export * from './list-item-re.interface';
