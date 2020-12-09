@@ -1178,5 +1178,8 @@
   <translation id="FooterLinksProfessionalLabel">Profesional</translation>
   <translation id="FooterLinksProfessionalHref">https://about.wallapop.com/motor/</translation>
   <translation id="FooterCopyright">Copyright © <ph name="INTERPOLATION"/> wallapop © de sus respectivos propietarios</translation>
-
+  <translation id="FooterSocialFacebookLabel">wallapop, la web y app para comprar y vender, también está en Facebook</translation>
+  <translation id="FooterSocialTwitterLabel">wallapop, la web y app para comprar y vender, también está en Twitter</translation>
+  <translation id="FooterSocialInstagramLabel">wallapop, la web y app para comprar y vender, también está en Instagram</translation>
+  
 </translationbundle>
