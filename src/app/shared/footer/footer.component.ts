@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 import { I18nService } from '@core/i18n/i18n.service';
-import { FOOTER_LINKS } from './constants/footer-constants';
-import { FooterLinkSection } from './interfaces/footer-link-section.interface';
+import {
+  FOOTER_APPS,
+  FOOTER_LINKS,
+  FOOTER_SOCIAL,
+} from './constants/footer-constants';
+import { FooterIcon, FooterLinkSection } from './interfaces/footer.interface';
 
 @Component({
   selector: 'tsl-footer',
@@ -11,6 +15,8 @@ import { FooterLinkSection } from './interfaces/footer-link-section.interface';
 export class FooterComponent {
   public currentYear = new Date().getFullYear();
   public readonly FOOTER_LINKS: FooterLinkSection[] = FOOTER_LINKS;
+  public readonly FOOTER_APPS: FooterIcon[] = FOOTER_APPS;
+  public readonly FOOTER_SOCIAL: FooterIcon[] = FOOTER_SOCIAL;
 
   constructor(private i18nService: I18nService) {
     this.FOOTER_LINKS = FOOTER_LINKS.filter(

@@ -4,6 +4,15 @@
   background-color: $white;
   font-size: $font-size-s;
 
+  a {
+    color: $blue-grey-3;
+
+    &:hover {
+      color: $walla-main;
+      text-decoration: none;
+    }
+  }
+
   &__section {
     &:first-child {
       padding: $spacing-xxxl $spacing-m;
@@ -14,10 +23,15 @@
     }
 
     &:last-child {
+      border-top: 1px solid $blue-grey-4;
+      display: flex;
+      height: 92px;
+      justify-content: center;
+      align-items: center;
     }
 
     &__container {
-      &-first {
+      &--first {
         color: $blue-grey-2;
         font-size: $font-size-xs;
 
@@ -43,14 +57,42 @@
           font-weight: $font-weight-chunky;
           padding-top: 0;
         }
+      }
+    }
 
-        a {
-          color: $blue-grey-3;
+    &__link {
+      align-items: center;
+      display: flex;
 
-          &:hover {
-            color: $walla-main;
-            text-decoration: none;
-          }
+      tsl-svg-icon {
+        margin-right: $spacing-s;
+
+        ::ng-deep svg {
+          height: 28px;
+          width: 20px;
+        }
+      }
+    }
+
+    &--social {
+      text-align: left;
+
+      @include media-breakpoint-up(md) {
+        text-align: right;
+      }
+
+      a {
+        display: inline-block;
+        height: 30px;
+        text-align: center;
+        width: 30px;
+
+        tsl-svg-icon {
+          align-items: center;
+          display: flex;
+          height: 100%;
+          justify-content: center;
+          width: 100%;
         }
       }
     }
