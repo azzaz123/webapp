@@ -488,7 +488,7 @@ describe('CurrentConversationComponent', () => {
       fixture.detectChanges();
     });
 
-    describe('and when other user is considered malicious', () => { 
+    describe('and when other user is considered malicious', () => {
       beforeEach(() => {
         component.currentConversation = MOCK_INBOX_CONVERSATION_WITH_MALICIOUS_USER;
         component.ngOnChanges({
@@ -522,15 +522,15 @@ describe('CurrentConversationComponent', () => {
 
     describe('when user is not considered malicious but unsubscribed to wallapop', () => {
       beforeEach(() => {
-         component.currentConversation = MOCK_INBOX_CONVERSATION_WITH_UNSUBSCRIBED_USER;
-         component.ngOnChanges({
-           currentConversation: new SimpleChange(
-             null,
-             MOCK_INBOX_CONVERSATION_WITH_UNSUBSCRIBED_USER,
-             false
-           ),
-         });
-         fixture.detectChanges();
+        component.currentConversation = MOCK_INBOX_CONVERSATION_WITH_UNSUBSCRIBED_USER;
+        component.ngOnChanges({
+          currentConversation: new SimpleChange(
+            null,
+            MOCK_INBOX_CONVERSATION_WITH_UNSUBSCRIBED_USER,
+            false
+          ),
+        });
+        fixture.detectChanges();
       });
 
       it('should not show malicious modal', () => {
