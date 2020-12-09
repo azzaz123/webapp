@@ -1,3 +1,4 @@
+import { ItemChangeEvent } from './../../../catalog/list/catalog-item/item-change.interface';
 import {
   ComponentFixture,
   TestBed,

@@ -21,7 +21,9 @@
       "@fixtures/*": [
         "tests/*"
       ],
-      "@layout/*": ["app/layout/*"]
+      "@layout/*": [
+        "app/layout/*"
+      ]
     },
     "outDir": "./dist/out-tsc",
     "module": "es2020",
