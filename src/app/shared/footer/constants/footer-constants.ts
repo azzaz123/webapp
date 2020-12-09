@@ -1,4 +1,6 @@
-export const FOOTER_LINKS = [
+import { FooterLinkSection } from '../interfaces/footer-link-section.interface';
+
+export const FOOTER_LINKS: FooterLinkSection[] = [
   {
     title: $localize`:@@FooterLinksWallapopTitle:wallapop`,
     links: [
@@ -29,7 +31,7 @@ export const FOOTER_LINKS = [
       },
       {
         label: $localize`:@@FooterLinksPublishRulesLabel:Publishing rules`,
-        href: $localize`:@@FooterLinksPublishRulesHref:https://ayuda.wallapop.com/hc/en-us/sections/360001177137-Publishing-rules`,
+        href: $localize`:@@FooterLinksPublishRulesHref:https://ayuda.wallapop.com/hc/en-us/articles/360004667717-What-content-is-not-allowed-on-wallapop-`,
       },
       {
         label: $localize`:@@FooterLinksSecurityTipsLabel:Security tips`,
@@ -56,6 +58,7 @@ export const FOOTER_LINKS = [
   },
   {
     title: $localize`:@@FooterLinksMotorTitle:Motor`,
+    excludedLanguages: ['en'],
     links: [
       {
         label: $localize`:@@FooterLinksParticularLabel:Particular`,
