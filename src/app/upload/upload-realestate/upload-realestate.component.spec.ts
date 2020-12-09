@@ -9,11 +9,11 @@ import {
 import { UploadRealestateComponent } from './upload-realestate.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { TrackingService } from '../../core/tracking/tracking.service';
+import { TrackingService } from '@core/tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { RealestateKeysService } from './realestate-keys.service';
 import { of, throwError } from 'rxjs';
-import { ErrorsService } from '../../core/errors/errors.service';
+import { ErrorsService } from '@core/errors/errors.service';
 import { Router } from '@angular/router';
 import { Key } from './key.interface';
 import { IOption } from 'app/dropdown/utils/option.interface';
@@ -29,8 +29,8 @@ import {
   MOCK_REALESTATE_RESPONSE_CONTENT,
   UPLOAD_FORM_REALESTATE_VALUES,
 } from '../../../tests/realestate.fixtures.spec';
-import { ItemService } from '../../core/item/item.service';
-import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
+import { ItemService } from '@core/item/item.service';
+import { REALESTATE_CATEGORY } from '@core/item/item-categories';
 import {
   ANALYTIC_EVENT_TYPES,
   ANALYTICS_EVENT_NAMES,
@@ -38,15 +38,22 @@ import {
   AnalyticsEvent,
   EditItemRE,
   ListItemRE,
-} from '../../core/analytics/analytics-constants';
-import { AnalyticsService } from '../../core/analytics/analytics.service';
+} from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
-import { UserService } from '../../core/user/user.service';
-import { RealestateContent } from '../../core/item/item-response.interface';
+import { UserService } from '@core/user/user.service';
+import { RealestateContent } from '@core/item/item-response.interface';
 import { UploadService } from '../drop-area/upload.service';
-import { MockUploadService, MOCK_UPLOAD_OUTPUT_DONE, MOCK_UPLOAD_OUTPUT_PENDING, UPLOAD_FILE_2, UPLOAD_FILE_DONE, UPLOAD_FILE_DONE_2 } from '../../../tests/upload.fixtures.spec';
-import { ITEM_TYPES } from 'app/core/item/item';
-import { UploadAction } from 'app/shared/uploader/upload.interface';
+import {
+  MockUploadService,
+  MOCK_UPLOAD_OUTPUT_DONE,
+  MOCK_UPLOAD_OUTPUT_PENDING,
+  UPLOAD_FILE_2,
+  UPLOAD_FILE_DONE,
+  UPLOAD_FILE_DONE_2,
+} from '../../../tests/upload.fixtures.spec';
+import { ITEM_TYPES } from '@core/item/item';
+import { UploadAction } from '@shared/uploader/upload.interface';
 
 describe('UploadRealestateComponent', () => {
   let component: UploadRealestateComponent;
@@ -381,12 +388,11 @@ describe('UploadRealestateComponent', () => {
         );
       });
     });
-  
   });
 
   describe('onUploaded', () => {
-    const action = UploadAction.updated
-    const response = MOCK_REALESTATE_RESPONSE_CONTENT
+    const action = UploadAction.updated;
+    const response = MOCK_REALESTATE_RESPONSE_CONTENT;
 
     it('should redirect', () => {
       component.item = MOCK_REALESTATE;
@@ -421,7 +427,7 @@ describe('UploadRealestateComponent', () => {
     describe('if it`s a item modification', () => {
       it('should send the Edit Item RE tracking event', () => {
         component.item = MOCK_REALESTATE;
-        const action = UploadAction.updated
+        const action = UploadAction.updated;
         const editResponse: RealestateContent = MOCK_REALESTATE_RESPONSE_CONTENT;
         const expectedEvent: AnalyticsEvent<EditItemRE> = {
           name: ANALYTICS_EVENT_NAMES.EditItemRE,
@@ -451,7 +457,7 @@ describe('UploadRealestateComponent', () => {
 
     describe('if it`s a item upload', () => {
       it('should send the List Item RE tracking event', () => {
-        const action = UploadAction.created
+        const action = UploadAction.created;
         const uploadResponse: RealestateContent = MOCK_REALESTATE_RESPONSE_CONTENT;
         const expectedEvent: AnalyticsEvent<ListItemRE> = {
           name: ANALYTICS_EVENT_NAMES.ListItemRE,

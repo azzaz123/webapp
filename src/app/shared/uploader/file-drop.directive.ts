@@ -13,7 +13,6 @@ import {
 import { isPlatformServer } from '@angular/common';
 import { NgUploaderOptions } from './upload.interface';
 import { Subscription } from 'rxjs';
-import { UploaderService } from './uploader.service';
 
 export enum FileDropActions {
   DROP = 'drop',
@@ -43,8 +42,7 @@ export class FileDropDirective implements OnInit, OnDestroy {
 
   constructor(
     @Inject(PLATFORM_ID) private platform_id,
-    private elementRef: ElementRef,
-    private uploaderService: UploaderService
+    private elementRef: ElementRef
   ) {
     this.isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
     this.isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
@@ -66,7 +64,6 @@ export class FileDropDirective implements OnInit, OnDestroy {
     if (this.isServer) {
       return;
     }
-    this.uploaderService.uploads = [];
   }
 
   stopEvent = (e: Event) => {

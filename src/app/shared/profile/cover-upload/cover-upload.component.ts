@@ -2,12 +2,12 @@ import {
   TOKEN_AUTHORIZATION_HEADER_NAME,
   TOKEN_SIGNATURE_HEADER_NAME,
   TOKEN_TIMESTAMP_HEADER_NAME,
-} from './../../../core/http/interceptors/token.interceptor';
+} from '@core/http/interceptors/token.interceptor';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { User } from '../../../core/user/user';
-import { ErrorsService } from '../../../core/errors/errors.service';
-import { UserService } from '../../../core/user/user.service';
-import { environment } from '../../../../environments/environment';
+import { User } from '@core/user/user';
+import { ErrorsService } from '@core/errors/errors.service';
+import { UserService } from '@core/user/user.service';
+import { environment } from '@environments/environment';
 import {
   InputType,
   NgUploaderOptions,
@@ -16,8 +16,8 @@ import {
   UploadInput,
   UploadOutput,
 } from '../../uploader/upload.interface';
-import { AccessTokenService } from '../../../core/http/access-token.service';
-import { UploaderService } from 'app/shared/uploader/uploader.service';
+import { AccessTokenService } from '@core/http/access-token.service';
+import { UploaderService } from '@shared/uploader/uploader.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { finalize } from 'rxjs/operators';
 

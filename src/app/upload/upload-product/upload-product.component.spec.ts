@@ -28,7 +28,7 @@ import {
   NgbPopoverModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { UploadProductComponent } from './upload-product.component';
-import { CategoryService } from '../../core/category/category.service';
+import { CategoryService } from '@core/category/category.service';
 import {
   CATEGORIES_OPTIONS_CONSUMER_GOODS,
   CATEGORIES_DATA_CONSUMER_GOODS,
@@ -37,9 +37,9 @@ import {
   SUGGESTED_CATEGORY_COMPUTERS_ELECTRONICS,
 } from '../../../tests/category.fixtures.spec';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
-import { TrackingService } from '../../core/tracking/tracking.service';
-import { ErrorsService } from '../../core/errors/errors.service';
-import { User } from '../../core/user/user';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { ErrorsService } from '@core/errors/errors.service';
+import { User } from '@core/user/user';
 import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import {
@@ -48,13 +48,13 @@ import {
   MOCK_ITEM,
   MOCK_ITEM_FASHION,
 } from '../../../tests/item.fixtures.spec';
-import { UserLocation } from '../../core/user/user-response.interface';
-import { environment } from '../../../environments/environment';
+import { UserLocation } from '@core/user/user-response.interface';
+import { environment } from '@environments/environment';
 import { GeneralSuggestionsService } from './general-suggestions.service';
-import { AnalyticsService } from '../../core/analytics/analytics.service';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
-import { UserService } from '../../core/user/user.service';
-import { ItemContent } from '../../core/item/item-response.interface';
+import { UserService } from '@core/user/user.service';
+import { ItemContent } from '@core/item/item-response.interface';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { DeviceDetectorServiceMock } from '../../../tests';
 
@@ -65,11 +65,11 @@ import {
   AnalyticsEvent,
   EditItemCG,
   ListItemCG,
-} from '../../core/analytics/analytics-constants';
+} from '@core/analytics/analytics-constants';
 import { BrandModel } from '../brand-model.interface';
-import { CATEGORY_IDS } from '../../core/category/category-ids';
-import { CategoryOption } from 'app/core/category/category-response.interface';
-import { I18nService } from 'app/core/i18n/i18n.service';
+import { CATEGORY_IDS } from '@core/category/category-ids';
+import { CategoryOption } from '@core/category/category-response.interface';
+import { I18nService } from '@core/i18n/i18n.service';
 import { UploadService } from '../drop-area/upload.service';
 import {
   MockUploadService,
@@ -79,8 +79,8 @@ import {
   UPLOAD_FILE_DONE,
   UPLOAD_FILE_DONE_2,
 } from '../../../tests/upload.fixtures.spec';
-import { ITEM_TYPES } from 'app/core/item/item';
-import { UploadAction } from 'app/shared/uploader/upload.interface';
+import { ITEM_TYPES } from '@core/item/item';
+import { UploadAction } from '@shared/uploader/upload.interface';
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
 export const USER_LOCATION: UserLocation = {

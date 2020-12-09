@@ -2,10 +2,10 @@ import {
   TOKEN_AUTHORIZATION_HEADER_NAME,
   TOKEN_SIGNATURE_HEADER_NAME,
   TOKEN_TIMESTAMP_HEADER_NAME,
-} from './../../core/http/interceptors/token.interceptor';
+} from '@core/http/interceptors/token.interceptor';
 import { TestBed } from '@angular/core/testing';
 import { UploadService } from './upload.service';
-import { environment } from '../../../environments/environment';
+import { environment } from '@environments/environment';
 import {
   CAR_ID,
   UPLOAD_FILE,
@@ -14,17 +14,14 @@ import {
   UPLOAD_FILE_DONE_2,
 } from '../../../tests/upload.fixtures.spec';
 import { USER_LOCATION_COORDINATES } from '../../../tests/user.fixtures.spec';
-import { AccessTokenService } from '../../core/http/access-token.service';
+import { AccessTokenService } from '@core/http/access-token.service';
 import { ITEM_ID } from '../../../tests/item.fixtures.spec';
-import {
-  CARS_CATEGORY,
-  REALESTATE_CATEGORY,
-} from '../../core/item/item-categories';
-import { ITEM_TYPES } from '../../core/item/item';
-import { InputType, OutputType } from '../../shared/uploader/upload.interface';
-import { ItemService } from 'app/core/item/item.service';
+import { CARS_CATEGORY, REALESTATE_CATEGORY } from '@core/item/item-categories';
+import { ITEM_TYPES } from '@core/item/item';
+import { InputType, OutputType } from '@shared/uploader/upload.interface';
+import { ItemService } from '@core/item/item.service';
 import { of } from 'rxjs';
-import { UploaderService } from 'app/shared/uploader/uploader.service';
+import { UploaderService } from '@shared/uploader/uploader.service';
 
 describe('UploadService', () => {
   let service: UploadService;

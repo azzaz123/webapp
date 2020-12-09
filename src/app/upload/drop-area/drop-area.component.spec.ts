@@ -19,10 +19,10 @@ import {
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RemoveConfirmModalComponent } from './remove-confirm-modal/remove-confirm-modal.component';
 import { PICTURE_ID } from '../../../tests/item.fixtures.spec';
-import { ErrorsService } from '../../core/errors/errors.service';
-import { OutputType, UploadFile } from '../../shared/uploader/upload.interface';
-import { UploaderService } from 'app/shared/uploader/uploader.service';
-import { FileDropActions } from 'app/shared/uploader/file-drop.directive';
+import { ErrorsService } from '@core/errors/errors.service';
+import { OutputType, UploadFile } from '@shared/uploader/upload.interface';
+import { UploaderService } from '@shared/uploader/uploader.service';
+import { FileDropActions } from '@shared/uploader/file-drop.directive';
 
 describe('DropAreaComponent', () => {
   let component: DropAreaComponent;

@@ -1,8 +1,8 @@
 import {
   CategoryResponse,
   SuggestedCategory,
-} from './../../core/category/category-response.interface';
-import { AnalyticsService } from './../../core/analytics/analytics.service';
+} from '@core/category/category-response.interface';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 import {
   Component,
   ElementRef,
@@ -31,20 +31,20 @@ import {
   NgbModalRef,
   NgbPopoverConfig,
 } from '@ng-bootstrap/ng-bootstrap';
-import { CategoryOption } from '../../core/category/category-response.interface';
+import { CategoryOption } from '@core/category/category-response.interface';
 import { UploadEvent } from '../upload-event.interface';
-import { CategoryService } from '../../core/category/category.service';
+import { CategoryService } from '@core/category/category.service';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
-import { TrackingService } from '../../core/tracking/tracking.service';
-import { ErrorsService } from '../../core/errors/errors.service';
-import { Item, ITEM_TYPES } from '../../core/item/item';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { ErrorsService } from '@core/errors/errors.service';
+import { Item, ITEM_TYPES } from '@core/item/item';
 import {
   DeliveryInfo,
   ItemContent,
   ItemResponse,
-} from '../../core/item/item-response.interface';
+} from '@core/item/item-response.interface';
 import { GeneralSuggestionsService } from './general-suggestions.service';
-import { KeywordSuggestion } from '../../shared/keyword-suggester/keyword-suggestion.interface';
+import { KeywordSuggestion } from '@shared/keyword-suggester/keyword-suggestion.interface';
 import { Subject, Observable, fromEvent } from 'rxjs';
 import {
   Brand,
@@ -53,7 +53,7 @@ import {
   ObjectType,
   SimpleObjectType,
 } from '../brand-model.interface';
-import { UserService } from '../../core/user/user.service';
+import { UserService } from '@core/user/user.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { tap, map, debounceTime } from 'rxjs/operators';
 import {
@@ -63,9 +63,9 @@ import {
   AnalyticsEvent,
   ListItemCG,
   EditItemCG,
-} from '../../core/analytics/analytics-constants';
-import { CATEGORY_IDS } from '../../core/category/category-ids';
-import { I18nService } from 'app/core/i18n/i18n.service';
+} from '@core/analytics/analytics-constants';
+import { CATEGORY_IDS } from '@core/category/category-ids';
+import { I18nService } from '@core/i18n/i18n.service';
 import { UploadService } from '../drop-area/upload.service';
 import { deliveryInfo } from '../upload.constants';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -74,7 +74,7 @@ import {
   UploadAction,
   UploadFile,
   UploadOutput,
-} from 'app/shared/uploader/upload.interface';
+} from '@shared/uploader/upload.interface';
 
 function isObjectTypeRequiredValidator(formControl: AbstractControl) {
   const objectTypeControl: FormGroup = formControl?.parent as FormGroup;

@@ -8,10 +8,10 @@ import {
 } from '@angular/forms';
 import { Key } from './key.interface';
 import { UploadEvent } from '../upload-event.interface';
-import { TrackingService } from '../../core/tracking/tracking.service';
+import { TrackingService } from '@core/tracking/tracking.service';
 import { Router } from '@angular/router';
-import { ErrorsService } from '../../core/errors/errors.service';
-import { ItemLocation } from '../../core/geolocation/address-response.interface';
+import { ErrorsService } from '@core/errors/errors.service';
+import { ItemLocation } from '@core/geolocation/address-response.interface';
 import { IOption } from 'app/dropdown/utils/option.interface';
 import { omit, isEqual } from 'lodash-es';
 import {
@@ -20,15 +20,15 @@ import {
   NgbPopoverConfig,
 } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
-import { ItemService } from '../../core/item/item.service';
-import { Realestate } from '../../core/item/realestate';
-import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
-import { AnalyticsService } from '../../core/analytics/analytics.service';
-import { UserService } from '../../core/user/user.service';
+import { ItemService } from '@core/item/item.service';
+import { Realestate } from '@core/item/realestate';
+import { REALESTATE_CATEGORY } from '@core/item/item-categories';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { UserService } from '@core/user/user.service';
 import {
   RealestateContent,
   RealStateResponse,
-} from '../../core/item/item-response.interface';
+} from '@core/item/item-response.interface';
 import { tap } from 'rxjs/operators';
 import {
   ANALYTIC_EVENT_TYPES,
@@ -37,7 +37,7 @@ import {
   AnalyticsEvent,
   EditItemRE,
   ListItemRE,
-} from '../../core/analytics/analytics-constants';
+} from '@core/analytics/analytics-constants';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UploadService } from '../drop-area/upload.service';
 import {
@@ -45,8 +45,8 @@ import {
   UploadAction,
   UploadFile,
   UploadOutput,
-} from 'app/shared/uploader/upload.interface';
-import { ITEM_TYPES } from 'app/core/item/item';
+} from '@shared/uploader/upload.interface';
+import { ITEM_TYPES } from '@core/item/item';
 
 @Component({
   selector: 'tsl-upload-realestate',

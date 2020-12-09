@@ -1,13 +1,13 @@
-import { AccessTokenService } from './../../core/http/access-token.service';
+import { AccessTokenService } from '@core/http/access-token.service';
 import {
   TOKEN_AUTHORIZATION_HEADER_NAME,
   TOKEN_SIGNATURE_HEADER_NAME,
   TOKEN_TIMESTAMP_HEADER_NAME,
-} from './../../core/http/interceptors/token.interceptor';
+} from '@core/http/interceptors/token.interceptor';
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
-import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
-import { ITEM_TYPES } from '../../core/item/item';
+import { environment } from '@environments/environment';
+import { REALESTATE_CATEGORY } from '@core/item/item-categories';
+import { ITEM_TYPES } from '@core/item/item';
 import { cloneDeep } from 'lodash-es';
 import {
   InputType,
@@ -16,16 +16,16 @@ import {
   UploadInput,
   UploadOutput,
   UploadStatus,
-} from '../../shared/uploader/upload.interface';
-import { ItemService } from 'app/core/item/item.service';
-import { UploaderService } from 'app/shared/uploader/uploader.service';
-import { Image } from '../../core/user/user-response.interface';
+} from '@shared/uploader/upload.interface';
+import { ItemService } from '@core/item/item.service';
+import { UploaderService } from '@shared/uploader/uploader.service';
+import { Image } from '@core/user/user-response.interface';
 import { forkJoin, Observable } from 'rxjs';
 import {
   CarContent,
   ItemResponse,
   RealStateResponse,
-} from 'app/core/item/item-response.interface';
+} from '@core/item/item-response.interface';
 import { tap } from 'rxjs/operators';
 
 @Injectable()

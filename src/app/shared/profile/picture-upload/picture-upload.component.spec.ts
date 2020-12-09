@@ -2,25 +2,25 @@ import {
   TOKEN_AUTHORIZATION_HEADER_NAME,
   TOKEN_SIGNATURE_HEADER_NAME,
   TOKEN_TIMESTAMP_HEADER_NAME,
-} from './../../../core/http/interceptors/token.interceptor';
+} from '@core/http/interceptors/token.interceptor';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { PictureUploadComponent } from './picture-upload.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { UserService } from '../../../core/user/user.service';
-import { ErrorsService } from '../../../core/errors/errors.service';
+import { UserService } from '@core/user/user.service';
+import { ErrorsService } from '@core/errors/errors.service';
 import { MOCK_USER } from '../../../../tests/user.fixtures.spec';
 import {
   UPLOAD_FILE,
   UPLOAD_FILE_NAME,
 } from '../../../../tests/upload.fixtures.spec';
-import { environment } from '../../../../environments/environment';
+import { environment } from '@environments/environment';
 import {
   InputType,
   OutputType,
   UploadFile,
 } from '../../uploader/upload.interface';
-import { AccessTokenService } from '../../../core/http/access-token.service';
-import { UploaderService } from 'app/shared/uploader/uploader.service';
+import { AccessTokenService } from '@core/http/access-token.service';
+import { UploaderService } from '@shared/uploader/uploader.service';
 import { of, throwError } from 'rxjs';
 
 describe('PictureUploadComponent', () => {

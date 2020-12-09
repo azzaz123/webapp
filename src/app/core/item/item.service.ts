@@ -51,7 +51,7 @@ import { ITEM_BAN_REASONS } from './ban-reasons';
 import { ItemLocation } from '../geolocation/address-response.interface';
 import { Realestate } from './realestate';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
+import { environment } from '@environments/environment';
 import * as mapRx from 'rxjs/operators';
 import { UuidService } from '../uuid/uuid.service';
 

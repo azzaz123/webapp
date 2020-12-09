@@ -18,16 +18,16 @@ import {
   NgbPopoverConfig,
 } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
-import { TrackingService } from '../../core/tracking/tracking.service';
-import { Car } from '../../core/item/car';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { Car } from '@core/item/car';
 import { omit, isEqual } from 'lodash-es';
-import { ErrorsService } from '../../core/errors/errors.service';
-import { CARS_CATEGORY } from '../../core/item/item-categories';
-import { ItemService } from '../../core/item/item.service';
-import { CarInfo, CarContent } from '../../core/item/item-response.interface';
-import { AnalyticsService } from '../../core/analytics/analytics.service';
-import { UserService } from '../../core/user/user.service';
-import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
+import { ErrorsService } from '@core/errors/errors.service';
+import { CARS_CATEGORY } from '@core/item/item-categories';
+import { ItemService } from '@core/item/item.service';
+import { CarInfo, CarContent } from '@core/item/item-response.interface';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { UserService } from '@core/user/user.service';
+import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { tap, finalize } from 'rxjs/operators';
 import {
   ANALYTIC_EVENT_TYPES,
@@ -36,17 +36,17 @@ import {
   AnalyticsEvent,
   EditItemCar,
   ListItemCar,
-} from '../../core/analytics/analytics-constants';
-import { whitespaceValidator } from '../../core/form-validators/formValidators.func';
+} from '@core/analytics/analytics-constants';
+import { whitespaceValidator } from '@core/form-validators/formValidators.func';
 import { UploadService } from '../drop-area/upload.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ITEM_TYPES } from 'app/core/item/item';
+import { ITEM_TYPES } from '@core/item/item';
 import {
   OutputType,
   UploadAction,
   UploadFile,
   UploadOutput,
-} from 'app/shared/uploader/upload.interface';
+} from '@shared/uploader/upload.interface';
 
 @Component({
   selector: 'tsl-upload-car',

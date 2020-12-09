@@ -34,18 +34,18 @@ import {
   MOCK_ITEM_V3,
   UPLOAD_FORM_CAR_VALUES,
 } from '../../../tests/item.fixtures.spec';
-import { TrackingService } from '../../core/tracking/tracking.service';
-import { ErrorsService } from '../../core/errors/errors.service';
-import { User } from '../../core/user/user';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { ErrorsService } from '@core/errors/errors.service';
+import { User } from '@core/user/user';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
-import { Car } from '../../core/item/car';
-import { CARS_CATEGORY } from '../../core/item/item-categories';
-import { ItemService } from '../../core/item/item.service';
-import { AnalyticsService } from '../../core/analytics/analytics.service';
-import { UserService } from '../../core/user/user.service';
-import { CarContent } from '../../core/item/item-response.interface';
-import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
+import { Car } from '@core/item/car';
+import { CARS_CATEGORY } from '@core/item/item-categories';
+import { ItemService } from '@core/item/item.service';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { UserService } from '@core/user/user.service';
+import { CarContent } from '@core/item/item-response.interface';
+import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { MockSubscriptionService } from '../../../tests/subscriptions.fixtures.spec';
 import {
   ANALYTIC_EVENT_TYPES,
@@ -54,7 +54,7 @@ import {
   AnalyticsEvent,
   EditItemCar,
   ListItemCar,
-} from '../../core/analytics/analytics-constants';
+} from '@core/analytics/analytics-constants';
 import { By } from '@angular/platform-browser';
 import { UploadService } from '../drop-area/upload.service';
 import {
@@ -65,8 +65,8 @@ import {
   UPLOAD_FILE_DONE,
   UPLOAD_FILE_DONE_2,
 } from '../../../tests/upload.fixtures.spec';
-import { ITEM_TYPES } from 'app/core/item/item';
-import { UploadAction } from 'app/shared/uploader/upload.interface';
+import { ITEM_TYPES } from '@core/item/item';
+import { UploadAction } from '@shared/uploader/upload.interface';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 

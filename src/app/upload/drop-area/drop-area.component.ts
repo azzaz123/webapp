@@ -11,19 +11,18 @@ import { throttle, range } from 'lodash-es';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RemoveConfirmModalComponent } from './remove-confirm-modal/remove-confirm-modal.component';
-import { ErrorsService } from '../../core/errors/errors.service';
-import { Item } from '../../core/item/item';
+import { ErrorsService } from '@core/errors/errors.service';
 import {
   NgUploaderOptions,
   OutputType,
   UploadFile,
   UploadOutput,
-} from '../../shared/uploader/upload.interface';
-import { UploaderService } from 'app/shared/uploader/uploader.service';
+} from '@shared/uploader/upload.interface';
+import { UploaderService } from '@shared/uploader/uploader.service';
 import {
   FileDropActions,
   IFileDropAction,
-} from 'app/shared/uploader/file-drop.directive';
+} from '@shared/uploader/file-drop.directive';
 import { Subscription } from 'rxjs';
 
 @Component({

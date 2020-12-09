@@ -1,4 +1,4 @@
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { EventEmitter, Injectable } from '@angular/core';
 import {
   NgUploaderOptions,
@@ -16,14 +16,12 @@ import { cloneDeep } from 'lodash-es';
 })
 export class UploaderService {
   files: UploadFile[] = [];
-  uploads: { file?: UploadFile; files?: UploadFile[]; sub: Subscription }[];
   serviceEvents: EventEmitter<UploadOutput>;
   options: NgUploaderOptions;
 
   constructor(private sanitizer: DomSanitizer) {
     this.files = [];
     this.serviceEvents = new EventEmitter();
-    this.uploads = [];
   }
 
   handleFiles(files: FileList, imageType?: string, previousFiles = []): void {
