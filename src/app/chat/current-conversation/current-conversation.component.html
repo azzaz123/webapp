@@ -35,10 +35,17 @@
               <span i18n="@@blockedPersonError">You have blocked this person. To continue chatting, unblock them</span>
             </div>
 
-            <div *ngIf="!currentConversation.user.blocked && !currentConversation.user.available"
-                 class="date-marker date-marker-error">
+            <div *ngIf="!currentConversation.user.available && !currentConversation.isFromMaliciousUser"
+                  id = "userIsNotAvailableWarning"
+                 class="date-marker date-marker-warning date-marker-warning-blue">
               <span class="emoticon emoticon-dashing-away"></span>
               <span i18n="@@userIsNotAvailableWarning">This person is no longer a wallapop member</span>
+            </div>
+
+            <div *ngIf="currentConversation.isFromMaliciousUser"
+                  id = "userIsBlocked"
+                 class="date-marker date-marker-error">
+              <span i18n="@@userIsBlocked">This person has been excluded from wallapop for suspicious activity.</span>
             </div>
 
             <div *ngIf="!currentConversation.user.blocked
