@@ -106,7 +106,7 @@ $vertical-padding: $spacing-ms;
   &.basic {
     color: $walla-main;
     background-color: transparent;
-    border: 0px;
+    border: 0;
     &:disabled {
       cursor: not-allowed;
     }

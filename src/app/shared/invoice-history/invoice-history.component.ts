@@ -3,6 +3,11 @@ import { InvoiceService } from 'app/core/invoice/invoice.service';
 import { InvoiceTransaction } from 'app/core/invoice/invoice.interface';
 import { finalize } from 'rxjs/operators';
 
+export enum InvoiceRequestStatus {
+  EMPTY_HISTORY = 'EmptyHistory',
+  NOT_OLD_INVOICES = 'NotOldInvoices',
+}
+
 @Component({
   selector: 'tsl-invoice-history',
   templateUrl: './invoice-history.component.html',
@@ -74,7 +79,7 @@ export class InvoiceHistoryComponent implements OnInit {
     );
   }
 
-  protected isShown(keyMessage: string): boolean {
+  protected isShown(keyMessage: InvoiceRequestStatus): boolean {
     const conditions =
       (!Array.isArray(this.invoiceTransactions) ||
         !this.invoiceTransactions.length) &&
@@ -82,9 +87,9 @@ export class InvoiceHistoryComponent implements OnInit {
       !this.loading;
 
     switch (keyMessage) {
-      case 'EmptyHistory':
+      case InvoiceRequestStatus.EMPTY_HISTORY:
         return this.active && conditions;
-      case 'NotOldInvoices':
+      case InvoiceRequestStatus.NOT_OLD_INVOICES:
         return !this.active && conditions;
     }
   }
