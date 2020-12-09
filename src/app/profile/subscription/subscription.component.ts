@@ -30,14 +30,6 @@ import { DiscountAvailableUnsubscribeInAppModalComponent } from './modals/discou
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user';
 
-export enum SubscriptionModalAction {
-  ADD = 'add',
-  UPDATE = 'update',
-  CONTINUE = 'continue',
-  CANCEL_SUBSCRIPTION_SUCCESS = 'success',
-  CANCEL_SUBSCRIPTION_FAIL = 'fail',
-}
-
 export type SubscriptionModal =
   | typeof CheckSubscriptionInAppModalComponent
   | typeof CancelSubscriptionModalComponent
