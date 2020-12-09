@@ -207,9 +207,10 @@ describe('DropAreaComponent', () => {
   });
 
   describe('updateOrder', () => {
-    it('should call removeImage', () => {
+    it('should call updateOrder', () => {
       spyOn(component.onOrderImages, 'emit');
       component.files = [UPLOAD_FILE_DONE, UPLOAD_FILE_DONE];
+      component.isUpdatingItem = true;
 
       component.updateOrder();
 

@@ -134,7 +134,9 @@ export class DropAreaComponent
   }
 
   public updateOrder(): void {
-    this.onOrderImages.emit();
+    if (this.isUpdatingItem) {
+      this.onOrderImages.emit();
+    }
   }
 
   ngOnDestroy() {
