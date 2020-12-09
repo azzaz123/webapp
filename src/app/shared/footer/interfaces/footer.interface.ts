@@ -3,3 +3,9 @@ export interface FooterLinkSection {
   excludedLanguages?: string[];
   links: { label: string; href: string }[];
 }
+
+export interface FooterIcon {
+  label: string;
+  href: string;
+  iconSrc: string;
+}
