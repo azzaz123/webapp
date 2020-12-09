@@ -326,7 +326,7 @@ export const MOCK_INBOX_USER = new InboxUser(
   'xpzp3dpqnk63',
   'John D.',
   false,
-  false,
+  true,
   'johnnycash-56047883',
   'http://cdn-beta.wallapop.com/images/13/16/sp/__/c13p71883041/i413962112.jpg?pictureSize=W640',
   'unknown',
