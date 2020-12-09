@@ -4,6 +4,7 @@ import { PERMISSIONS } from './core/user/user';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { DevelopmentGuard } from './core/user/development.guard';
 import { LoggedGuard } from './core/user/logged.guard';
+import { PATH_EVENTS } from './app-routing-constants';
 
 const publicRoutes = [
   {
@@ -11,12 +12,18 @@ const publicRoutes = [
     canLoad: [DevelopmentGuard],
     loadChildren: () =>
       import('app/login/login.module').then((m) => m.LoginModule),
+    data: {
+      [PATH_EVENTS.hideSidebar]: true,
+    },
   },
   {
     path: 'register',
     canLoad: [DevelopmentGuard],
     loadChildren: () =>
       import('app/register/register.module').then((m) => m.RegisterModule),
+    data: {
+      [PATH_EVENTS.hideSidebar]: true,
+    },
   },
 ];
 
@@ -35,7 +42,7 @@ const loggedRoutes = [
       {
         path: 'dashboard',
         loadChildren: () =>
-          import('app/dashboard/dashboard.module').then(
+          import('app/features/dashboard/dashboard.module').then(
             (m) => m.DashboardModule
           ),
       },
