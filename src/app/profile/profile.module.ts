@@ -28,8 +28,8 @@ import { SubscriptionBenefitsComponent } from './subscription/subscription-benef
 import { DiscountAvailableUnsubscribeInAppModalComponent } from './subscription/modals/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component';
 import { SubscriptionPriceDiscountComponent } from './subscription/subscription-price-discount/subscription-price-discount.component';
 import { DropdownModule } from 'app/dropdown/dropdown.module';
-import { InvoiceHistoryComponent } from '@shared/invoice-history/invoice-history.component';
-import { InvoiceItemComponent } from '@shared/invoice-history/invoice-item/invoice-item.component';
+import { InvoiceHistoryComponent } from './invoice-history/invoice-history.component';
+import { InvoiceItemComponent } from './invoice-history/invoice-item/invoice-item.component';
 
 @NgModule({
   imports: [

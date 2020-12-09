@@ -1,8 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BillingInfoResponse } from 'app/core/payments/payment.interface';
 import { PaymentService } from 'app/core/payments/payment.service';
 import { UserService } from 'app/core/user/user.service';
-import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 @Component({
