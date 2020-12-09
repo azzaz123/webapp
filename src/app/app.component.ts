@@ -36,6 +36,7 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { DidomiService } from '@core/didomi/didomi.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import { SwUpdate } from '@angular/service-worker';
+import { PATH_EVENTS } from './app-routing-constants';
 import { SessionService } from '@core/session/session.service';
 import { OpenWallapop } from '@core/analytics/resources/events-interfaces';
 import { ANALYTICS_EVENT_NAMES } from '@core/analytics/resources/analytics-event-names';
@@ -48,7 +49,7 @@ import { ANALYTIC_EVENT_TYPES } from '@core/analytics/analytics-constants';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  public hideSidebar: boolean;
+  public hideSidebar: boolean = true;
   public isMyZone: boolean;
   public isProducts: boolean;
   public isProfile: boolean;
@@ -140,6 +141,7 @@ export class AppComponent implements OnInit {
     this.updateUrlAndSendAnalytics();
     this.setTitle();
     this.setBodyClass();
+    this.setHideSidebar();
   }
 
   private handleUserLoggedIn(user: User, accessToken: string): void {
@@ -312,7 +314,7 @@ export class AppComponent implements OnInit {
         }
         const title = !event['title'] ? 'Wallapop' : event['title'];
         this.titleService.setTitle(notifications + title);
-        this.hideSidebar = event['hideSidebar'];
+        this.hideSidebar = !!event[PATH_EVENTS.hideSidebar];
         this.isMyZone = event['isMyZone'];
         this.isProducts = event['isProducts'];
         this.isProfile = event['isProfile'];
@@ -338,6 +340,22 @@ export class AppComponent implements OnInit {
         this.setLoading(false);
       }
     });
+  }
+
+  private setHideSidebar(): void {
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        map(
+          () =>
+            this.activatedRoute.root.firstChild.snapshot.data[
+              PATH_EVENTS.hideSidebar
+            ] || null
+        )
+      )
+      .subscribe((hideSidebar: boolean) => {
+        this.hideSidebar = !!hideSidebar;
+      });
   }
 
   private setLoading(loading: boolean): void {

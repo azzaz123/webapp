@@ -7,7 +7,7 @@ import {
 } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie';
@@ -35,6 +35,7 @@ import { MockDidomiService } from '@core/didomi/didomi.service.spec';
 import { UuidService } from '@core/uuid/uuid.service';
 import { SwUpdate } from '@angular/service-worker';
 import * as moment from 'moment';
+import { PATH_EVENTS } from './app-routing-constants';
 import { SessionService } from '@core/session/session.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
@@ -42,6 +43,8 @@ jest.mock('moment');
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
+let de: DebugElement;
+let el: HTMLElement;
 let userService: UserService;
 let errorsService: ErrorsService;
 let eventService: EventService;
@@ -59,6 +62,7 @@ let stripeService: StripeService;
 let analyticsService: AnalyticsService;
 let didomiService: DidomiService;
 let uuidService: UuidService;
+let activatedRoute: ActivatedRoute;
 
 const ACCESS_TOKEN = 'accesstoken';
 
@@ -152,6 +156,7 @@ describe('App', () => {
           provide: ActivatedRoute,
           useValue: {
             outlet: 'primary',
+            root: { firstChild: { snapshot: {} } },
             data: of({
               title: 'Chat',
               hideSidebar: true,
@@ -189,6 +194,8 @@ describe('App', () => {
     });
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
+    de = fixture.debugElement;
+    el = de.nativeElement;
     userService = TestBed.inject(UserService);
     errorsService = TestBed.inject(ErrorsService);
     eventService = TestBed.inject(EventService);
@@ -206,6 +213,7 @@ describe('App', () => {
     analyticsService = TestBed.inject(AnalyticsService);
     didomiService = TestBed.inject(DidomiService);
     uuidService = TestBed.inject(UuidService);
+    activatedRoute = TestBed.inject(ActivatedRoute);
 
     spyOn(desktopNotificationsService, 'init');
     spyOn(window.location, 'reload');
@@ -530,6 +538,51 @@ describe('App', () => {
       component.ngOnInit();
 
       expect(didomiService.initialize).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('When current route data changes', () => {
+    beforeEach(() => {
+      activatedRoute.root.firstChild.snapshot.data = {};
+    });
+
+    it('should update sidebar status with the route specification', () => {
+      const hideSidebarValue = false;
+      activatedRoute.root.firstChild.snapshot.data[
+        PATH_EVENTS.hideSidebar
+      ] = hideSidebarValue;
+
+      component.ngOnInit();
+
+      expect(component.hideSidebar).toEqual(hideSidebarValue);
+    });
+  });
+
+  describe('When sidebar hide/show status changes', () => {
+    const sidebarSelector = 'tsl-sidebar';
+
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
+    it('should not have sidebar by default', () => {
+      expect(el.querySelector(sidebarSelector)).toBeFalsy();
+    });
+
+    it('should have sidebar if show', () => {
+      component.hideSidebar = false;
+
+      fixture.detectChanges();
+
+      expect(el.querySelector(sidebarSelector)).toBeTruthy();
+    });
+
+    it('should not have sidebar if hidden', () => {
+      component.hideSidebar = true;
+
+      fixture.detectChanges();
+
+      expect(el.querySelector(sidebarSelector)).toBeFalsy();
     });
   });
 });

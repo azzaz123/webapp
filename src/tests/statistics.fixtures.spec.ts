@@ -1,5 +1,5 @@
-import { ItemStatisticFullResponse } from 'app/features/stats/core/item-stats-response.interface';
-import { StatisticFullResponse } from '../app/dashboard/stats-graph/statistic-response.interface';
+import { StatisticFullResponse } from '@features/dashboard/core/statistic-response.interface';
+import { ItemStatisticFullResponse } from '@features/stats/core/item-stats-response.interface';
 
 export const STATISTICS_RESPONSE: StatisticFullResponse = {
   totals: {

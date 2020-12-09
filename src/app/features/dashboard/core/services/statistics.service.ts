@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { StatisticFullResponse } from './statistic-response.interface';
+
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
+import { environment } from '@environments/environment';
+import { StatisticFullResponse } from '../statistic-response.interface';
 
 export const STATISTICS_ENDPOINT = 'api/v3/protool/dashboard/statistics/';
 
