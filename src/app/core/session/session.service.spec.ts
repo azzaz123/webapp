@@ -86,7 +86,7 @@ describe('SessionService', () => {
       wallapop_keep_session: {
         value: 'true',
         options: {
-          domain: '.wallapop.com',
+          domain: 'localhost',
           path: '/',
           expires: expect.any(Date),
         },
