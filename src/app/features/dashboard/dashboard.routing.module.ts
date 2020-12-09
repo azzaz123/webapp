@@ -1,20 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CallsComponent } from './calls.component';
+import { PERMISSIONS } from '@core/user/user';
 import { NgxPermissionsGuard } from 'ngx-permissions';
-import { PERMISSIONS } from '../core/user/user';
+import { DashboardComponent } from './pages/dashboard.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: CallsComponent,
+    component: DashboardComponent,
     canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         only: PERMISSIONS.professional,
         redirectTo: '/catalog/list',
       },
-      isMyZone: true,
     },
   },
 ];
@@ -23,6 +22,6 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class CallsRoutingModule {}
+export class DashboardRoutingModule {}
 
-export const callsRoutedComponents = [CallsComponent];
+export const dashboardRoutedComponents = [DashboardComponent];
