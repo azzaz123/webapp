@@ -1,7 +1,11 @@
+export interface FooterLink {
+  label: string;
+  href: string;
+}
 export interface FooterLinkSection {
   title: string;
   excludedLanguages?: string[];
-  links: { label: string; href: string }[];
+  links: FooterLink[];
 }
 
 export interface FooterIcon {
