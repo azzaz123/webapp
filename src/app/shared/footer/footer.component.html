@@ -11,7 +11,7 @@
             <ul class="Footer__section__list">
               <li>{{section.title}}</li>
               <li *ngFor="let link of section.links">
-                <a [href]="link.href" rel="nofollow">{{link.label}}</a>
+                <a [href]="link.href" rel="nofollow" [title]="link.label" >{{link.label}}</a>
               </li>
             </ul>
           </div>
