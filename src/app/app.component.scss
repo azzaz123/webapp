@@ -1,0 +1,12 @@
+@import '~style/common';
+
+tsl-footer {
+  bottom: 64px;
+  position: absolute;
+  left: 0;
+  right: 0;
+
+  @include media-breakpoint-up(lg) {
+    bottom: 0;
+  }
+}
