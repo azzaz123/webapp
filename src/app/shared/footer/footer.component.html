@@ -1,1 +1,25 @@
-FOOTER
+<footer class="Footer">
+  <div class="Footer__section container">
+    <div class="row">
+      <div class="Footer__section__container-first col-sm-12 col-md">
+        <img src="/assets/images/footer/logo.png" alt="wallapop">
+        <p i18n="@@FooterCopyright">Copyright © {{currentYear}} wallapop © of their respective owners</p>
+      </div>
+      <div  class="col-sm-12 col-md">
+        <div class="row">
+          <div *ngFor="let section of FOOTER_LINKS" class="col-6 col-md">
+            <ul class="Footer__section__list">
+              <li>{{section.title}}</li>
+              <li *ngFor="let link of section.links">
+                <a [href]="link.href" >{{link.label}}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="Footer__section">
+    <div class="container"></div>
+  </div>
+</footer>
