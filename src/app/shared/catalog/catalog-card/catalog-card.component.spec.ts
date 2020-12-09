@@ -1,3 +1,4 @@
+import { ItemChangeEvent } from './../../../catalog/list/catalog-item/item-change.interface';
 import {
   ComponentFixture,
   TestBed,
@@ -20,7 +21,6 @@ import {
   getMockItemWithPurchases,
 } from '../../../../tests/item.fixtures.spec';
 import { of } from 'rxjs';
-import { ItemChangeEvent } from '../../../catalog/list/catalog-item/item-change.interface';
 import { Item } from '../../../core/item/item';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { environment } from '../../../../environments/environment';
