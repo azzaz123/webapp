@@ -15,7 +15,7 @@
 
   &__section {
     &:first-child {
-      padding: $spacing-xxxl $spacing-m;
+      padding: $spacing-xxl $spacing-m;
 
       @include media-breakpoint-up(md) {
         padding: $spacing-xxxl 0;
@@ -41,6 +41,7 @@
 
         img {
           max-width: 100%;
+          margin-bottom: $spacing-s;
         }
       }
     }
@@ -50,7 +51,7 @@
       padding: 0;
 
       li {
-        padding-top: $spacing-m;
+        padding-top: $spacing-s;
 
         &:first-child {
           color: $blue-grey-2;
@@ -68,31 +69,37 @@
         margin-right: $spacing-s;
 
         ::ng-deep svg {
-          height: 28px;
-          width: 20px;
+          height: 20px;
+          width: 28px;
         }
       }
     }
 
-    &--social {
-      text-align: left;
-
-      @include media-breakpoint-up(md) {
-        text-align: right;
+    &__item {
+      @include media-breakpoint-down(md) {
+        margin-bottom: $spacing-ms;
       }
 
-      a {
-        display: inline-block;
-        height: 30px;
-        text-align: center;
-        width: 30px;
+      &--social {
+        text-align: left;
 
-        tsl-svg-icon {
-          align-items: center;
-          display: flex;
-          height: 100%;
-          justify-content: center;
-          width: 100%;
+        @include media-breakpoint-up(md) {
+          text-align: right;
+        }
+
+        a {
+          display: inline-block;
+          height: 30px;
+          text-align: center;
+          width: 30px;
+
+          tsl-svg-icon {
+            align-items: center;
+            display: flex;
+            height: 100%;
+            justify-content: center;
+            width: 100%;
+          }
         }
       }
     }

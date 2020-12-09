@@ -20,13 +20,13 @@
     </div>
   </div>
   <div class="Footer__section">
-    <div class="container row">
-      <a class="col-6 col-md p-0 Footer__section__link" target="_blank" rel="nofollow noopener"
+    <div class="container row p-md-0">
+      <a class="col-6 col-md p-0 Footer__section__item Footer__section__link" target="_blank" rel="nofollow noopener"
        [href]="app.href" *ngFor="let app of FOOTER_APPS" [title]="app.label">
         <tsl-svg-icon [src]="app.iconSrc"></tsl-svg-icon>
         {{app.label}}
       </a>
-      <div class="col-6 col-md p-0 Footer__section--social">
+      <div class="col-6 col-md p-0 Footer__section__item--social">
        <a [href]="app.href" *ngFor="let app of FOOTER_SOCIAL" [title]="app.label" target="_blank" rel="nofollow me noopener">
         <tsl-svg-icon [src]="app.iconSrc"></tsl-svg-icon>
         </a>
