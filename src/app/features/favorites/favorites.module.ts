@@ -4,11 +4,11 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import {
   favoritesRoutedComponents,
   FavoritesRoutingModule,
-} from './favorites.routes';
-import { SharedModule } from '../shared/shared.module';
-import { ItemCartFavoriteComponent } from './item-cart-favorite/item-cart-favorite.component';
-import { ProfileCardFavoriteComponent } from './profile-card-favorite/profile-card-favorite.component';
-import { ProfileImagesComponent } from '../shared/profile-images/profile-images.component';
+} from './favorites.routing.module';
+import { SharedModule } from '@shared/shared.module';
+import { ItemCartFavoriteComponent } from './components/item-cart-favorite/item-cart-favorite.component';
+import { ProfileCardFavoriteComponent } from './components/profile-card-favorite/profile-card-favorite.component';
+import { ProfileImagesComponent } from '@shared/profile-images/profile-images.component';
 
 @NgModule({
   imports: [
