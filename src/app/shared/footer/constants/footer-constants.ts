@@ -77,19 +77,19 @@ export const FOOTER_APPS: FooterIcon[] = [
     label: 'Apple store',
     href:
       'https://app.adjust.com/rh6uzq?&_pid=web&_me=www&campaign=desktop_footer',
-    iconSrc: '/assets/icons/download-ios.svg',
+    iconSrc: '/assets/icons/footer/ios.svg',
   },
   {
     label: 'AppGallery',
     href:
       'https://app.adjust.com/6lbll37_ce4bza8?redirect=https%3A%2F%2Fappgallery.huawei.com%2F%23%2Fapp%2FC102446799&_pid=web&_me=www&campaign=desktop_footer',
-    iconSrc: '/assets/icons/download-huawei.svg',
+    iconSrc: '/assets/icons/footer/huawei.svg',
   },
   {
     label: 'Google Play',
     href:
       'https://app.adjust.com/dst7wh?&_pid=web&_me=www&campaign=desktop_footer',
-    iconSrc: '/assets/icons/download-android.svg',
+    iconSrc: '/assets/icons/footer/android.svg',
   },
 ];
 
@@ -97,16 +97,16 @@ export const FOOTER_SOCIAL: FooterIcon[] = [
   {
     label: $localize`:@@FooterSocialFacebookLabel:wallapop, the app to buy and sell nearby, it's also on Facebook`,
     href: 'https://facebook.com/wallapop.es',
-    iconSrc: '/assets/icons/facebook.svg',
+    iconSrc: '/assets/icons/footer/facebook.svg',
   },
   {
     label: $localize`:@@FooterSocialTwitterLabel:wallapop, the app to buy and sell nearby, it's also on Twitter`,
     href: 'https://twitter.com/wallapop',
-    iconSrc: '/assets/icons/twitter.svg',
+    iconSrc: '/assets/icons/footer/twitter.svg',
   },
   {
     label: $localize`:@@FooterSocialInstagramLabel:wallapop, the app to buy and sell nearby, it's also on Instagram`,
     href: 'https://www.instagram.com/wallapop/',
-    iconSrc: '/assets/icons/instagram.svg',
+    iconSrc: '/assets/icons/footer/instagram.svg',
   },
 ];
