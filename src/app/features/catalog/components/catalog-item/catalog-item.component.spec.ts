@@ -1,3 +1,5 @@
+import { DecimalPipe } from '@angular/common';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
   fakeAsync,
@@ -5,34 +7,31 @@ import {
   tick,
   waitForAsync,
 } from '@angular/core/testing';
-
-import { CatalogItemComponent } from './catalog-item.component';
-import { ItemChangeEvent } from '../../core/item-change.interface';
-import { of, ReplaySubject } from 'rxjs';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ErrorsService } from '@core/errors/errors.service';
+import { EventService } from '@core/event/event.service';
+import { Item } from '@core/item/item';
+import { SelectedItemsAction } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
-import { CustomCurrencyPipe } from '@shared/pipes';
-import { DecimalPipe } from '@angular/common';
 import { TrackingService } from '@core/tracking/tracking.service';
+import { environment } from '@environments/environment';
 import {
   ITEM_ID,
+  ITEM_WEB_SLUG,
   MOCK_ITEM,
   ORDER_EVENT,
   PRODUCT_DURATION_MARKET_CODE,
   PRODUCT_RESPONSE,
-  ITEM_WEB_SLUG,
 } from '@fixtures/item.fixtures.spec';
-import { ErrorsService } from '@core/errors/errors.service';
 import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
-import { Item } from '@core/item/item';
-import { EventService } from '@core/event/event.service';
-import { environment } from '@environments/environment';
-import * as moment from 'moment';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ThousandSuffixesPipe } from '@shared/number-conversion/thousand-suffixes.pipe';
-import { SelectedItemsAction } from '@core/item/item-response.interface';
+import { CustomCurrencyPipe } from '@shared/pipes';
+import * as moment from 'moment';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { of, ReplaySubject } from 'rxjs';
+import { ItemChangeEvent } from '../../core/item-change.interface';
 import { ReactivateModalComponent } from '../../modals/reactivate-modal/reactivate-modal.component';
+import { CatalogItemComponent } from './catalog-item.component';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;

@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
   fakeAsync,
@@ -5,59 +6,58 @@ import {
   tick,
   waitForAsync,
 } from '@angular/core/testing';
-import { ListComponent } from './list.component';
-import { ItemService } from '@core/item/item.service';
-import { of, Subject, ReplaySubject } from 'rxjs';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { find } from 'lodash-es';
-import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastService } from '@layout/toast/toast.service';
+import { By } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { CategoryService } from '@core/category/category.service';
+import { ErrorsService } from '@core/errors/errors.service';
+import { EventService } from '@core/event/event.service';
+import { HttpModuleNew } from '@core/http/http.module.new';
+import { I18nService } from '@core/i18n/i18n.service';
+import { Item } from '@core/item/item';
+import { ItemService } from '@core/item/item.service';
+import { CreditInfo } from '@core/payments/payment.interface';
+import { PaymentService } from '@core/payments/payment.service';
+import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { FeatureflagService } from '@core/user/featureflag.service';
+import { UserService } from '@core/user/user.service';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import { CATEGORY_DATA_WEB } from '@fixtures/category.fixtures.spec';
+import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import {
   createItemsArray,
   ITEMS_BULK_RESPONSE,
   ITEMS_BULK_RESPONSE_FAILED,
   MOCK_ITEM,
   MOCK_ITEM_V3,
+  MOCK_LISTING_FEE_ORDER,
   ORDER_EVENT,
   PRODUCT_RESPONSE,
-  MOCK_LISTING_FEE_ORDER,
 } from '@fixtures/item.fixtures.spec';
-import { TrackingService } from '@core/tracking/tracking.service';
-import { I18nService } from '@core/i18n/i18n.service';
-import { ErrorsService } from '@core/errors/errors.service';
-import { UserService } from '@core/user/user.service';
-import { PaymentService } from '@core/payments/payment.service';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
-import { Item } from '@core/item/item';
-import { EventService } from '@core/event/event.service';
-import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
-import { CreditInfo } from '@core/payments/payment.interface';
-import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
-import { HttpModuleNew } from '@core/http/http.module.new';
-import { CategoryService } from '@core/category/category.service';
+import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 import {
   MockSubscriptionService,
   MOCK_SUBSCRIPTION_SLOTS,
 } from '@fixtures/subscriptions.fixtures.spec';
-import { FeatureflagService } from '@core/user/featureflag.service';
-import { TooManyItemsModalComponent } from '@shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
-import { CATEGORY_DATA_WEB } from '@fixtures/category.fixtures.spec';
-import { DeviceDetectorService } from 'ngx-device-detector';
+import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { MOCK_USER, USER_INFO_RESPONSE } from '@fixtures/user.fixtures.spec';
-import { By } from '@angular/platform-browser';
-import { AnalyticsService } from '@core/analytics/analytics.service';
-import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
-import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
-import { SubscriptionsSlotItemComponent } from '@features/catalog/components/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component';
-import { SubscriptionsSlotsListComponent } from '@features/catalog/components/subscriptions-slots/subscriptions-slots-list/subscriptions-slots-list.component';
-import { BuyProductModalComponent } from '@features/catalog/modals/buy-product-modal/buy-product-modal.component';
-import { ListingfeeConfirmationModalComponent } from '@features/catalog/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
-import { UrgentConfirmationModalComponent } from '@features/catalog/modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
-import { BumpConfirmationModalComponent } from '@features/catalog/modals/bump-confirmation-modal/bump-confirmation-modal.component';
-import { UploadConfirmationModalComponent } from '@features/catalog/modals/upload-confirmation-modal/upload-confirmation-modal.component';
+import { ToastService } from '@layout/toast/toast.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { TooManyItemsModalComponent } from '@shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
+import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
+import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
+import { find } from 'lodash-es';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { of, ReplaySubject, Subject } from 'rxjs';
+import { SubscriptionsSlotItemComponent } from '../../components/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component';
+import { SubscriptionsSlotsListComponent } from '../../components/subscriptions-slots/subscriptions-slots-list/subscriptions-slots-list.component';
+import { BumpConfirmationModalComponent } from '../../modals/bump-confirmation-modal/bump-confirmation-modal.component';
+import { BuyProductModalComponent } from '../../modals/buy-product-modal/buy-product-modal.component';
+import { ListingfeeConfirmationModalComponent } from '../../modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
+import { UploadConfirmationModalComponent } from '../../modals/upload-confirmation-modal/upload-confirmation-modal.component';
+import { UrgentConfirmationModalComponent } from '../../modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
+import { ListComponent } from './list.component';
 
 describe('ListComponent', () => {
   let component: ListComponent;

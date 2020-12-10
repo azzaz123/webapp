@@ -14,8 +14,8 @@ import {
 } from '@core/payments/payment.service';
 import { StripeService } from '@core/stripe/stripe.service';
 import { UuidService } from '@core/uuid/uuid.service';
-import { OrderEvent } from '@features/catalog/components/selected-items/selected-product.interface';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { OrderEvent } from '../../components/selected-items/selected-product.interface';
 
 @Component({
   selector: 'tsl-buy-product-modal',

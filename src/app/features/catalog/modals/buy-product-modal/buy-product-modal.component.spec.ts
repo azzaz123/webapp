@@ -1,23 +1,21 @@
-import { of, throwError, Subject } from 'rxjs';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import { BuyProductModalComponent } from './buy-product-modal.component';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
-import { CustomCurrencyPipe } from '@shared/pipes';
-import { MOCK_ITEM_V3, ORDER_EVENT } from '@fixtures/item.fixtures.spec';
-import { ItemService } from '@core/item/item.service';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { PaymentService } from '@core/payments/payment.service';
-import { EventService } from '@core/event/event.service';
-import { CreditInfo } from '@core/payments/payment.interface';
-
-import { StripeService } from '@core/stripe/stripe.service';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { STRIPE_CARD_OPTION } from '@fixtures/stripe.fixtures.spec';
 import { ErrorsService } from '@core/errors/errors.service';
+import { EventService } from '@core/event/event.service';
+import { ItemService } from '@core/item/item.service';
+import { CreditInfo } from '@core/payments/payment.interface';
+import { PaymentService } from '@core/payments/payment.service';
+import { StripeService } from '@core/stripe/stripe.service';
 import { UuidService } from '@core/uuid/uuid.service';
-import { OrderEvent } from '@features/catalog/components/selected-items/selected-product.interface';
+import { MOCK_ITEM_V3, ORDER_EVENT } from '@fixtures/item.fixtures.spec';
+import { STRIPE_CARD_OPTION } from '@fixtures/stripe.fixtures.spec';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { CustomCurrencyPipe } from '@shared/pipes';
+import { of, Subject, throwError } from 'rxjs';
+import { OrderEvent } from '../../components/selected-items/selected-product.interface';
+import { BuyProductModalComponent } from './buy-product-modal.component';
 
 describe('BuyProductModalComponent', () => {
   let component: BuyProductModalComponent;
@@ -27,8 +25,6 @@ describe('BuyProductModalComponent', () => {
   let paymentService: PaymentService;
   let eventService: EventService;
   let stripeService: StripeService;
-  let errorService: ErrorsService;
-  let router: Router;
   let uuidService: UuidService;
   const routerEvents: Subject<any> = new Subject();
 
