@@ -1,11 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'tsl-public',
   templateUrl: './public.component.html',
 })
-export class PublicComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit(): void {}
-}
+export class PublicComponent {}
