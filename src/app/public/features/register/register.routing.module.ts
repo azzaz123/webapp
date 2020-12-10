@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { VerifyComponent } from './verify/verify.component';
-import { SendVerifyEmailComponent } from './send-verify-email/send-verify-email.component';
-import { RegisterComponent } from './register.component';
-import { VerifySuccessComponent } from './verify/verify-success/verify-success.component';
-import { VerifyErrorComponent } from './verify/verify-error/verify-error.component';
+import { RegisterComponent } from './pages/register.component';
+import { SendVerifyEmailComponent } from './pages/send-verify-email/send-verify-email.component';
+import { VerifyErrorComponent } from './pages/verify/verify-error/verify-error.component';
+import { VerifySuccessComponent } from './pages/verify/verify-success/verify-success.component';
+import { VerifyComponent } from './pages/verify/verify.component';
 
 const routes: Routes = [
   {
