@@ -14,7 +14,7 @@ import {
   TOKEN_SIGNATURE_HEADER_NAME,
 } from './token.interceptor';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { LOGIN_ENDPOINT } from '../../user/user.service';
+import { LOGIN_ENDPOINT } from '@public/features/login/core/services/login.service';
 
 const MOCK_TOKEN = 'token';
 const MOCK_V3_ENDPOINT = 'api/v3/endpoint';
@@ -31,9 +31,9 @@ describe(`TokenInterceptor`, () => {
       imports: [HttpClientTestingModule, HttpModuleNew],
     });
 
-    http = injector.get(HttpClient);
-    httpMock = injector.get(HttpTestingController);
-    accessTokenService = injector.get(AccessTokenService);
+    http = injector.inject(HttpClient);
+    httpMock = injector.inject(HttpTestingController);
+    accessTokenService = injector.inject(AccessTokenService);
   });
 
   afterEach((): void => {
