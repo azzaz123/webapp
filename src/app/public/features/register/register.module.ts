@@ -7,13 +7,14 @@ import {
 } from './register.routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegisterService } from './core/services/register.service';
+import { SharedModule } from '@shared/shared.module';
 
 @NgModule({
   imports: [
-    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     RegisterRoutingModule,
+    SharedModule,
   ],
   providers: [RegisterService],
   declarations: [registerRoutedComponents, registerNonroutedComponents],
