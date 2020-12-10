@@ -6,9 +6,8 @@ import { PublicProfileComponent } from './pages/public-profile.component';
 import { PublishedComponent } from './pages/published/published.component';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'user/:id' },
   {
-    path: 'user/:id',
+    path: '',
     component: PublicProfileComponent,
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'published' },
