@@ -14,7 +14,7 @@
 
       <div class="TooManyItemsModal__content-info-description">
         <div *ngIf="type === notSubscribedType">
-          <span [hidden]="isFreeTrial">Subscribe to a PRO account to publish more</span>
+          <span [hidden]="isFreeTrial" i18n="@@SubscribeToProToPublishMore">Subscribe to a PRO account to publish more</span>
           <span *ngIf="isFreeTrial" i18n="@@TooManyItemsModalTryTrial">
             To publish more {{categorySubscription?.category_name}}, try wallapop PRO with a free {{categorySubscription?.trial_days}}-day trial.
           </span>

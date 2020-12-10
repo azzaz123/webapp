@@ -4,7 +4,11 @@ import {
   ProfileRoutingModule,
 } from './profile.routes';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbButtonsModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbButtonsModule,
+  NgbModalModule,
+  NgbAccordionModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { GeolocationModule } from '../shared/geolocation/geolocation.module';
 import { SharedModule } from '../shared/shared.module';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
@@ -24,6 +28,8 @@ import { SubscriptionBenefitsComponent } from './subscription/subscription-benef
 import { DiscountAvailableUnsubscribeInAppModalComponent } from './subscription/modals/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component';
 import { SubscriptionPriceDiscountComponent } from './subscription/subscription-price-discount/subscription-price-discount.component';
 import { DropdownModule } from 'app/dropdown/dropdown.module';
+import { InvoiceHistoryComponent } from './invoice-history/invoice-history.component';
+import { InvoiceItemComponent } from './invoice-history/invoice-item/invoice-item.component';
 
 @NgModule({
   imports: [
@@ -34,6 +40,7 @@ import { DropdownModule } from 'app/dropdown/dropdown.module';
     NgbButtonsModule,
     GeolocationModule,
     NgbCarouselModule,
+    NgbAccordionModule,
     NgbModalModule,
     DropdownModule,
   ],
@@ -54,6 +61,8 @@ import { DropdownModule } from 'app/dropdown/dropdown.module';
     UnsubscribeInAppFirstModal,
     DiscountAvailableUnsubscribeInAppModalComponent,
     SubscriptionPriceDiscountComponent,
+    InvoiceHistoryComponent,
+    InvoiceItemComponent,
   ],
   entryComponents: [
     UnsubscribeModalComponent,
@@ -68,6 +77,8 @@ import { DropdownModule } from 'app/dropdown/dropdown.module';
     CheckSubscriptionInAppModalComponent,
     UnsubscribeInAppFirstModal,
     DiscountAvailableUnsubscribeInAppModalComponent,
+    InvoiceHistoryComponent,
+    InvoiceItemComponent,
   ],
 })
 export class ProfileModule {}

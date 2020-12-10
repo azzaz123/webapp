@@ -76,6 +76,14 @@ $vertical-padding: $spacing-ms;
     color: $walla-main;
     &:hover {
       color: $white;
+      &:disabled {
+        color: $blue-grey-4;
+        cursor: not-allowed;
+      }
+    }
+    &:disabled {
+      border-color: $blue-grey-4;
+      color: $blue-grey-4;
     }
   }
   &.btn-gray {
@@ -93,5 +101,14 @@ $vertical-padding: $spacing-ms;
 
   &.payment {
     padding: 0 $spacing-ml;
+  }
+
+  &.basic {
+    color: $walla-main;
+    background-color: transparent;
+    border: 0;
+    &:disabled {
+      cursor: not-allowed;
+    }
   }
 }
