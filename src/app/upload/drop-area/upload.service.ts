@@ -19,17 +19,18 @@ import {
   UploadOutput,
   UploadStatus,
   IRealEstateUploadForm,
+  PendingFiles,
 } from '@shared/uploader/upload.interface';
 import { ItemService } from '@core/item/item.service';
 import { UploaderService } from '@shared/uploader/uploader.service';
 import { Image } from '@core/user/user-response.interface';
-import { forkJoin, Observable } from 'rxjs';
+import { combineLatest, forkJoin, Observable } from 'rxjs';
 import {
   CarContent,
   ItemResponse,
   RealStateResponse,
 } from '@core/item/item-response.interface';
-import { tap } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
 export class UploadService {
@@ -46,22 +47,65 @@ export class UploadService {
   ): Observable<UploadOutput> {
     const parsedValues = cloneDeep(values);
     delete parsedValues.images;
-    return this.createItemWithFirstImage(
-      parsedValues,
-      values.images[0],
-      itemType
-    ).pipe(
-      tap((response: UploadOutput) => {
-        if (response.type === OutputType.done && values.images.length > 1) {
-          const remainigFiles = values.images.slice(1);
-          this.uploadRemainingImages(
-            response.file.response.id,
-            remainigFiles,
-            itemType
-          ).subscribe();
+
+    // TODO THIS WILL BE REFACTORED WITH THE PARALIZATION OF UPLOAD FILES.
+    return new Observable((observer) => {
+      this.createItemWithFirstImage(
+        parsedValues,
+        values.images[0],
+        itemType
+      ).subscribe(
+        (response: UploadOutput) => {
+          if (values.images.length > 1) {
+            if (response.type === OutputType.done) {
+              const remainigFiles = values.images.slice(1);
+              this.uploadRemainingImages(
+                response.file.response.id,
+                remainigFiles,
+                itemType
+              ).subscribe(
+                (fileResonses: UploadOutput[]) => {
+                  if (
+                    fileResonses.every((file) => file.type === OutputType.done)
+                  ) {
+                    observer.next(response);
+                    observer.complete();
+                  } else {
+                    const partialResponse: UploadOutput = cloneDeep(response);
+                    partialResponse.pendingFiles = this.calculatePendingFiles(
+                      fileResonses
+                    );
+                    partialResponse.type = OutputType.uploading;
+                    observer.next(partialResponse);
+                  }
+                },
+                (error: HttpErrorResponse) => {
+                  observer.error(error);
+                }
+              );
+            } else {
+              observer.next(response);
+            }
+          } else {
+            observer.next(response);
+            if (response.type === OutputType.done) {
+              observer.complete();
+            }
+          }
+        },
+        (error: HttpErrorResponse) => {
+          observer.error(error);
+          observer.complete();
         }
-      })
-    );
+      );
+    });
+  }
+
+  private calculatePendingFiles(files: UploadOutput[]): PendingFiles {
+    const totalFiles = files.length + 1;
+    const currentUploading =
+      files.filter((file) => file.type === OutputType.done).length + 2;
+    return { totalFiles, currentUploading };
   }
 
   private createItemWithFirstImage(
@@ -151,7 +195,7 @@ export class UploadService {
       };
       imagesRequest.push(this.uploaderService.uploadFile(file, inputEvent));
     });
-    return forkJoin(imagesRequest);
+    return combineLatest(imagesRequest);
   }
 
   public uploadSingleImage(

@@ -43,6 +43,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ITEM_TYPES } from '@core/item/item';
 import {
   OutputType,
+  PendingFiles,
   UploadAction,
   UploadFile,
   UploadOutput,
@@ -77,6 +78,7 @@ export class UploadCarComponent implements OnInit {
   public customMake = false;
   public customVersion = false;
   public uploadCompletedPercentage = 0;
+  public perdingFiles: PendingFiles;
 
   isLoadingModels: boolean;
   isLoadingYears: boolean;
@@ -406,6 +408,9 @@ export class UploadCarComponent implements OnInit {
       .subscribe(
         (response: UploadOutput) => {
           this.updateUploadPercentage(response.percentage);
+          if (response.pendingFiles) {
+            this.perdingFiles = response.pendingFiles;
+          }
           if (response.type === OutputType.done) {
             this.onUploaded(response.file.response, UploadAction.created);
           }

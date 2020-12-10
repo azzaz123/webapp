@@ -42,6 +42,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { UploadService } from '../drop-area/upload.service';
 import {
   OutputType,
+  PendingFiles,
   UploadAction,
   UploadFile,
   UploadOutput,
@@ -76,6 +77,7 @@ export class UploadRealestateComponent implements OnInit {
     { value: 'GBP', label: '£' },
   ];
   public uploadCompletedPercentage = 0;
+  public perdingFiles: PendingFiles;
 
   constructor(
     private fb: FormBuilder,
@@ -257,6 +259,9 @@ export class UploadRealestateComponent implements OnInit {
       .subscribe(
         (response: UploadOutput) => {
           this.updateUploadPercentage(response.percentage);
+          if (response.pendingFiles) {
+            this.perdingFiles = response.pendingFiles;
+          }
           if (response.type === OutputType.done) {
             this.onUploaded(response.file.response, UploadAction.created);
           }

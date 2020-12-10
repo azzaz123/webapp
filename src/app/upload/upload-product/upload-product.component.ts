@@ -71,6 +71,7 @@ import { deliveryInfo } from '../upload.constants';
 import { HttpErrorResponse } from '@angular/common/http';
 import {
   OutputType,
+  PendingFiles,
   UploadAction,
   UploadFile,
   UploadOutput,
@@ -130,6 +131,7 @@ export class UploadProductComponent
   public brandSuggestions: Subject<KeywordSuggestion[]> = new Subject();
   public modelSuggestions: Subject<KeywordSuggestion[]> = new Subject();
   public uploadCompletedPercentage = 0;
+  public perdingFiles: PendingFiles;
 
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
@@ -461,6 +463,9 @@ export class UploadProductComponent
       .subscribe(
         (response: UploadOutput) => {
           this.updateUploadPercentage(response.percentage);
+          if (response.pendingFiles) {
+            this.perdingFiles = response.pendingFiles;
+          }
           if (response.type === OutputType.done) {
             this.onUploaded(response.file.response, UploadAction.created);
           }

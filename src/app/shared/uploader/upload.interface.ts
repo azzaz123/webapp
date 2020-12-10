@@ -54,9 +54,14 @@ export interface UploadOutput {
   type: OutputType;
   file?: UploadFile;
   reason?: string;
-  files?: UploadFile[];
+  pendingFiles?: PendingFiles;
   imageType?: string;
   percentage?: number;
+}
+
+export interface PendingFiles {
+  totalFiles: number;
+  currentUploading: number;
 }
 
 export interface UploadInput {
