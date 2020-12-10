@@ -71,35 +71,8 @@ describe(`TokenInterceptor`, () => {
     });
   });
 
-  describe('when the user does not have access token and URL is not login', () => {
-    beforeEach(() => accessTokenService.deleteAccessToken());
-
-    it('should not do http petition', () => {
-      http.get(environment.baseUrl).subscribe();
-
-      httpMock.expectNone(environment.baseUrl);
-    });
-
-    it('should return 401 and empty response', () => {
-      let response;
-
-      http
-        .get<HttpResponse<Object>>(
-          `${environment.baseUrl}${MOCK_V3_ENDPOINT}`,
-          { observe: 'response' as 'body' }
-        )
-        .subscribe((r) => (response = r));
-
-      expect(response.status).toEqual(401);
-      expect(response.statusText).toEqual('Unauthorized');
-      expect(response.body).toEqual({});
-      httpMock.expectNone(`${environment.baseUrl}${MOCK_V3_ENDPOINT}`);
-    });
-  });
-
-  describe('when the user does not have access token but request is to login endpoint', () => {
+  describe('when the user does not have access token', () => {
     it('should not add authorization header', () => {
-      accessTokenService.storeAccessToken(MOCK_TOKEN);
       const expectedUrl = `${environment.baseUrl}${LOGIN_ENDPOINT}`;
 
       http.get(expectedUrl).subscribe();
