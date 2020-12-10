@@ -2,8 +2,8 @@
   <form [formGroup]="billingForm" (submit)="onSubmit($event)">
     <div class="box profile-box">
       <div class="content" [hidden]="loading">
-        <div class="row mb-2 mb-md-4" *ngIf="!containerTypeIsModal">
-          <div class="col-11 offset-sm-0 offset-md-1">
+        <div class="row mb-2 mb-md-4" *ngIf="!containerTypeIsModalOrProfileInfo">
+          <div class="col-12">
             <h3 i18n="@@InvoiceInformation">Invoice information</h3>
           </div>
           <div class="content-subtitle col-11 offset-sm-0 offset-md-1">
@@ -38,24 +38,56 @@
               <label for="name" class="col-sm-12 col-md-5" i18n="@@FirstName">First Name</label>
               <div [ngClass]="{'col-sm-12 col-md-7': containerTypeIsModal, 'col-sm-12 col-md-5': !containerTypeIsModal}">
                 <input type="text" class="form-control" id="name" formControlName="name" />
+                <div *ngIf="isIncorrectFormcontrol(billingForm.controls.name)" class="alert">
+                  <span *ngIf="billingForm.controls.name.errors.required" i18n="@@NameRequired">
+                    Name is required.
+                  </span>
+                  <span *ngIf="billingForm.controls.name.errors.maxlength" i18n="@@NameMaxLength">
+                    Name must be at most 32 characters long.
+                  </span>
+                </div>
               </div>
             </div>
             <div *ngIf="type === 'natural'" class="form-group row align-items-center">
               <label for="surname" class="col-sm-12 col-md-5" i18n="@@LastName">Last Name</label>
               <div [ngClass]="{'col-sm-12 col-md-7': containerTypeIsModal, 'col-sm-12 col-md-5': !containerTypeIsModal}">
                 <input type="text" class="form-control" id="surname" formControlName="surname" />
+                <div *ngIf="isIncorrectFormcontrol(billingForm.controls.surname)" class="alert">
+                  <span *ngIf="billingForm.controls.surname.errors.required" i18n="@@SurnameRequired">
+                    Surname is required.
+                  </span>
+                  <span *ngIf="billingForm.controls.surname.errors.maxlength" i18n="@@SurnameMaxLength">
+                    Surname must be at most 32 characters long.
+                  </span>
+                </div>
               </div>
             </div>
             <div *ngIf="type === 'legal'" class="form-group row align-items-center">
               <label for="company_name" class="col-sm-12 col-md-5" i18n="@@CompanyName">Company Name</label>
               <div [ngClass]="{'col-sm-12 col-md-7': containerTypeIsModal, 'col-sm-12 col-md-5': !containerTypeIsModal}">
                 <input type="text" class="form-control" id="company_name" formControlName="company_name" />
+                <div *ngIf="isIncorrectFormcontrol(billingForm.controls.company_name)" class="alert alert-danger">
+                  <span *ngIf="billingForm.controls.company_name.errors.required" i18n="@@CompanyNameRequired">
+                    Company name is required.
+                  </span>
+                  <span *ngIf="billingForm.controls.company_name.errors.maxlength" i18n="@@CompanyNameMaxLength">
+                    Company name must be at most 32 characters long.
+                  </span>
+                </div>
               </div>
             </div>
             <div class="form-group row align-items-center">
               <label for="email" class="col-sm-12 col-md-5" i18n="@@Email">E-mail</label>
               <div [ngClass]="{'col-sm-12 col-md-7': containerTypeIsModal, 'col-sm-12 col-md-5': !containerTypeIsModal}">
                 <input type="text" class="form-control" id="email" formControlName="email" />
+                <div *ngIf="isIncorrectFormcontrol(billingForm.controls.email)" class="alert">
+                  <span *ngIf="billingForm.controls.email.errors.required" i18n="@@EmailRequired">
+                    E-mail is required.
+                  </span>
+                  <span *ngIf="billingForm.controls.email.errors.email" i18n="@@EmailFormat">
+                    E-mail must be valid.
+                  </span>
+                </div>
               </div>
             </div>
             <div class="form-group row align-items-center">
@@ -87,6 +119,14 @@
               <label *ngIf="type === 'natural'" for="cif" class="col-sm-12 col-md-5" i18n="@@NIFNumber">NIF Number</label>
               <div [ngClass]="{'col-sm-12 col-md-7': containerTypeIsModal, 'col-sm-12 col-md-5': !containerTypeIsModal}">
                 <input type="text" class="form-control" id="cif" formControlName="cif"/>
+                <div *ngIf="isIncorrectFormcontrol(billingForm.controls.cif)" class="alert">
+                  <span *ngIf="billingForm.controls.cif.errors.required" i18n="@@CifRequired">
+                    CIF/NIF is required.
+                  </span>
+                  <span *ngIf="billingForm.controls.cif.errors.cif" i18n="@@CifFormat">
+                    CIF/NIF must be valid.
+                  </span>
+                </div>
               </div>
             </div>
             <div class="row" *ngIf="!containerTypeIsModal">

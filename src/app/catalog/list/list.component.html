@@ -74,7 +74,7 @@
     </tsl-nav-links>
 
     <div class="items">
-      <div id="catalog-empty-state" *ngIf="!items.length && !loading && selectedStatus !== 'reviews'">
+      <div id="catalog-empty-state" class="d-none d-md-block" *ngIf="!items.length && !loading && selectedStatus !== 'reviews'">
         <tsl-svg-icon src="/assets/icons/items-empty-state.svg" class="image"></tsl-svg-icon>
       </div>
 

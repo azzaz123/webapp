@@ -354,7 +354,7 @@ export class AddNewSubscriptionModalComponent
   public trackClickContinueToPayment() {
     const event: AnalyticsEvent<ClickSubscriptionSubscribe> = {
       name: ANALYTICS_EVENT_NAMES.ClickSubscriptionSubscribe,
-      eventType: ANALYTIC_EVENT_TYPES.Other,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
       attributes: {
         subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
         screenId: SCREEN_IDS.Subscription,
@@ -372,7 +372,7 @@ export class AddNewSubscriptionModalComponent
     );
     const event: AnalyticsEvent<SubscriptionPayConfirmation> = {
       name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
-      eventType: ANALYTIC_EVENT_TYPES.Other,
+      eventType: ANALYTIC_EVENT_TYPES.Transaction,
       attributes: {
         subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
         tier: this.selectedTier.id,

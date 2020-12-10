@@ -4,6 +4,7 @@ import { PERMISSIONS } from './core/user/user';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { DevelopmentGuard } from './core/user/development.guard';
 import { LoggedGuard } from './core/user/logged.guard';
+import { PATH_EVENTS } from './app-routing-constants';
 
 const publicRoutes = [
   {
@@ -11,12 +12,18 @@ const publicRoutes = [
     canLoad: [DevelopmentGuard],
     loadChildren: () =>
       import('app/login/login.module').then((m) => m.LoginModule),
+    data: {
+      [PATH_EVENTS.hideSidebar]: true,
+    },
   },
   {
     path: 'register',
     canLoad: [DevelopmentGuard],
     loadChildren: () =>
       import('app/register/register.module').then((m) => m.RegisterModule),
+    data: {
+      [PATH_EVENTS.hideSidebar]: true,
+    },
   },
 ];
 
@@ -30,19 +37,19 @@ const loggedRoutes = [
       {
         path: 'help',
         loadChildren: () =>
-          import('app/help/help.module').then((m) => m.HelpModule),
+          import('app/features/help/help.module').then((m) => m.HelpModule),
       },
       {
         path: 'dashboard',
         loadChildren: () =>
-          import('app/dashboard/dashboard.module').then(
+          import('app/features/dashboard/dashboard.module').then(
             (m) => m.DashboardModule
           ),
       },
       {
         path: 'calls',
         loadChildren: () =>
-          import('app/calls/calls.module').then((m) => m.CallsModule),
+          import('app/features/calls/calls.module').then((m) => m.CallsModule),
       },
       {
         path: 'catalog',
@@ -50,7 +57,7 @@ const loggedRoutes = [
           {
             path: '',
             loadChildren: () =>
-              import('app/catalog-pro/catalog-pro.module').then(
+              import('app/features/catalog-pro/catalog-pro.module').then(
                 (m) => m.CatalogProModule
               ),
           },
@@ -93,7 +100,9 @@ const loggedRoutes = [
     path: 'favorites',
     canLoad: [LoggedGuard],
     loadChildren: () =>
-      import('app/favorites/favorites.module').then((m) => m.FavoritesModule),
+      import('app/features/favorites/favorites.module').then(
+        (m) => m.FavoritesModule
+      ),
   },
   {
     path: 'reviews',
@@ -151,7 +160,7 @@ const loggedRoutes = [
     path: 'stats',
     canLoad: [LoggedGuard],
     loadChildren: () =>
-      import('app/stats/stats.module').then((m) => m.StatsModule),
+      import('app/features/stats/stats.module').then((m) => m.StatsModule),
   },
   {
     path: '**',

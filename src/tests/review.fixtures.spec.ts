@@ -6,9 +6,9 @@ import {
   ReviewDataBuyer,
   ReviewDataSeller,
 } from '../app/core/review/review.interface';
-import { Review } from 'app/features/reviews/review';
-import { ReviewItem } from 'app/features/reviews/review-item';
-import { ReviewResponse } from 'app/features/reviews/review-response.interface';
+import { Review } from 'app/features/reviews/core/review';
+import { ReviewItem } from 'app/features/reviews/core/review-item';
+import { ReviewResponse } from 'app/features/reviews/core/review-response.interface';
 
 export const REVIEW_DATA_BUYER: ReviewDataBuyer = {
   conversation_id: CONVERSATION_ID,

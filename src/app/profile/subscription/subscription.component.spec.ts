@@ -4,7 +4,6 @@ import {
   TestBed,
   fakeAsync,
   tick,
-  flush,
   waitForAsync,
 } from '@angular/core/testing';
 import { CategoryService } from '../../core/category/category.service';
@@ -15,8 +14,6 @@ import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
 import {
   MAPPED_SUBSCRIPTIONS,
   MAPPED_SUBSCRIPTIONS_ADDED,
-  MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED,
-  MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED,
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED,
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED,
   MAPPED_SUBSCRIPTIONS_WITH_INAPP,
@@ -50,7 +47,6 @@ import { UserService } from 'app/core/user/user.service';
 import {
   USER_DATA,
   MOCK_FULL_USER_NON_FEATURED,
-  MOCK_USER,
   MOCK_FULL_USER,
 } from '../../../tests/user.fixtures.spec';
 

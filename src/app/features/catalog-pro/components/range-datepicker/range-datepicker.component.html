@@ -1,0 +1,28 @@
+<div class="datepicker-content" [@fadeInOut]>
+  <div class="datepicker-overlay" (click)="onCancel()"></div>
+  <div class="datepicker-wrapper">
+    <ngb-datepicker #dp (select)="onDateSelection($event)" [navigation]="'none'" [dayTemplate]="t" [minDate]="minDate" [(ngModel)]="model"></ngb-datepicker>
+    <ng-template #t let-date="date" let-focused="focused" let-disabled="disabled">
+      <span class="custom-day" class="{{bumpType}}" [ngClass]="{start: isFrom(date), end:isTo(date)}" [class.focused]="focused"
+        [class.disabled]="disabled" [class.range]="isFrom(date) || isTo(date) || isInside(date) || isHovered(date)" [class.faded]="isHovered(date) || isInside(date)"
+        (mouseenter)="hoveredDate = date" (mouseleave)="hoveredDate = null">
+        {{date.day}}
+      </span>
+    </ng-template>
+    <div class="selected-text" [ngClass]="bumpType">
+      <span i18n="@@RangeDatepickerHaveSelected">You have selected </span>
+      <div class="bold">
+        <span>{{newDates.numberOfDays}} </span>
+        <span *ngIf="bumpType === 'citybump' && newDates.numberOfDays === 1" i18n="@@RangeDatepickerCitybump">city bump</span>
+        <span *ngIf="bumpType === 'countrybump' && newDates.numberOfDays === 1" i18n="@@RangeDatepickerCountrybump">country bump</span>
+        <span *ngIf="bumpType === 'citybump' && newDates.numberOfDays > 1" i18n="@@RangeDatepickerCitybumps">city bumps</span>
+        <span *ngIf="bumpType === 'countrybump' && newDates.numberOfDays > 1" i18n="@@RangeDatepickerCountrybumps">country bumps</span>
+        <span *ngIf="bumpType === 'planning'" i18n="@@RangeDatepickerMultiBumps">Multiselect bumps</span>
+      </div>
+    </div>
+    <div class="datepicker-btn-wrapper">
+      <button class="datepicker-btn cancel" (click)="onCancel()" i18n="@@Cancel">Cancel</button>
+      <button class="datepicker-btn apply" [ngClass]="bumpType" (click)="onApply()" [disabled]="!startDate || !endDate" i18n="@@Apply">Apply</button>
+    </div>
+  </div>
+</div>
