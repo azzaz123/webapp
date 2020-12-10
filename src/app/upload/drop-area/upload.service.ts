@@ -189,7 +189,7 @@ export class UploadService {
         method: 'POST',
         fieldName: 'image',
         data: {
-          order: '$order',
+          order: file.fileIndex.toString(),
         },
         headers: this.getUploadHeaders(url),
       };
@@ -216,7 +216,7 @@ export class UploadService {
       method: 'POST',
       fieldName: 'image',
       data: {
-        order: '$order',
+        order: file.fileIndex.toString(),
       },
       headers: this.getUploadHeaders(url),
     };

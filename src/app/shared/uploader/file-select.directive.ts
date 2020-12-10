@@ -11,8 +11,6 @@ import {
 } from '@angular/core';
 import { NgUploaderOptions, UploadOutput } from './upload.interface';
 import { isPlatformServer } from '@angular/common';
-import { Subscription } from 'rxjs';
-import { DomSanitizer } from '@angular/platform-browser';
 import { UploaderService } from './uploader.service';
 
 @Directive({
@@ -26,12 +24,9 @@ export class FileSelectDirective implements OnInit, OnDestroy {
   isServer: boolean = isPlatformServer(this.platform_id);
   el: HTMLInputElement;
 
-  subscription: Subscription;
-
   constructor(
     @Inject(PLATFORM_ID) private platform_id,
     private elementRef: ElementRef,
-    private sanitizer: DomSanitizer,
     private upload: UploaderService
   ) {
     this.uploadOutput = new EventEmitter<UploadOutput>();
@@ -60,9 +55,6 @@ export class FileSelectDirective implements OnInit, OnDestroy {
     }
 
     this.el.removeEventListener('change', this.fileListener, false);
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
   }
 
   fileListener = () => {

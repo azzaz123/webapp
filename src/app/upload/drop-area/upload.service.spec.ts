@@ -279,7 +279,7 @@ describe('UploadService', () => {
             method: 'POST',
             fieldName: 'image',
             data: {
-              order: '$order',
+              order: '0',
             },
             headers,
           }
@@ -314,7 +314,7 @@ describe('UploadService', () => {
             method: 'POST',
             fieldName: 'image',
             data: {
-              order: '$order',
+              order: '0',
             },
             headers,
           }
@@ -344,7 +344,7 @@ describe('UploadService', () => {
             method: 'POST',
             fieldName: 'image',
             data: {
-              order: '$order',
+              order: '0',
             },
             headers,
           }
@@ -365,7 +365,7 @@ describe('UploadService', () => {
           method: 'POST',
           fieldName: 'image',
           data: {
-            order: '$order',
+            order: '0',
           },
           headers,
         });
@@ -387,7 +387,7 @@ describe('UploadService', () => {
           method: 'POST',
           fieldName: 'image',
           data: {
-            order: '$order',
+            order: '0',
           },
           headers,
         });

@@ -96,13 +96,18 @@ export class DropAreaComponent
   public onUploadOutput(output: UploadOutput): void {
     switch (output?.type) {
       case OutputType.addedToQueue:
-        this.files.push(output.file);
-        this.propagateChange(this.files);
-        this.onAddImage.emit(output.file);
+        this.addImage(output.file);
         break;
       case OutputType.rejected:
         this.errorsService.i18nError(output.reason, output.file.name);
     }
+  }
+
+  private addImage(file: UploadFile): void {
+    file.fileIndex = this.files.length + 1;
+    this.files.push(file);
+    this.propagateChange(this.files);
+    this.onAddImage.emit(file);
   }
 
   public onFileDropAction(event: IFileDropAction): void {
