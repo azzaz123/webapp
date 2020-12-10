@@ -30,6 +30,7 @@ import {
   EditItemRE,
   ListItemRE,
 } from '../../core/analytics/analytics-constants';
+import { whitespaceValidator } from '@core/form-validators/formValidators.func';
 
 @Component({
   selector: 'tsl-upload-realestate',
@@ -82,7 +83,7 @@ export class UploadRealestateComponent implements OnInit {
         [Validators.required, Validators.min(0), Validators.max(999999999)],
       ],
       currency_code: ['EUR', [Validators.required]],
-      storytelling: ['', Validators.required],
+      storytelling: ['', whitespaceValidator],
       operation: ['', [Validators.required]],
       type: ['', [Validators.required]],
       condition: ['', [Validators.required]],
