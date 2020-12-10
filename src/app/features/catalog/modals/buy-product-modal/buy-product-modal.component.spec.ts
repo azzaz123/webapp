@@ -102,8 +102,6 @@ describe('BuyProductModalComponent', () => {
     paymentService = TestBed.inject(PaymentService);
     eventService = TestBed.inject(EventService);
     stripeService = TestBed.inject(StripeService);
-    errorService = TestBed.inject(ErrorsService);
-    router = TestBed.inject(Router);
     uuidService = TestBed.inject(UuidService);
   });
 
