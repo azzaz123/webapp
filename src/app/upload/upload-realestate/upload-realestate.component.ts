@@ -83,7 +83,7 @@ export class UploadRealestateComponent implements OnInit {
         [Validators.required, Validators.min(0), Validators.max(999999999)],
       ],
       currency_code: ['EUR', [Validators.required]],
-      storytelling: ['', whitespaceValidator],
+      storytelling: ['', [Validators.required, whitespaceValidator]],
       operation: ['', [Validators.required]],
       type: ['', [Validators.required]],
       condition: ['', [Validators.required]],
