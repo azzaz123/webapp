@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ItemService } from '../core/item/item.service';
-import { ItemsData } from '../core/item/item-response.interface';
-import { UserService } from '../core/user/user.service';
-import { UserStats, Counters } from '../core/user/user-stats.interface';
-import { Item } from '../core/item/item';
-import { ProfilesData } from '../core/profile/profile-response.interface';
-import { ProfileService } from '../core/profile/profile.service';
-import { Profile } from '../core/profile/profile';
+import { ItemService } from '@core/item/item.service';
+import { ItemsData } from '@core/item/item-response.interface';
+import { UserService } from '@core/user/user.service';
+import { UserStats, Counters } from '@core/user/user-stats.interface';
+import { Item } from '@core/item/item';
+import { ProfilesData } from '@core/profile/profile-response.interface';
+import { ProfileService } from '@core/profile/profile.service';
+import { Profile } from '@core/profile/profile';
 
 @Component({
   selector: 'tsl-favorites',

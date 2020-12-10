@@ -7,17 +7,17 @@ import {
   waitForAsync,
 } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CustomCurrencyPipe } from '../../shared/pipes';
+import { CustomCurrencyPipe } from '@shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import { ItemCartFavoriteComponent } from './item-cart-favorite.component';
-import { ItemService } from '../../core/item/item.service';
-import { environment } from '../../../environments/environment';
+import { ItemService } from '@core/item/item.service';
+import { environment } from '@environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
-import { TrackingService } from '../../core/tracking/tracking.service';
-import { USER_ID } from '../../../tests/user.fixtures.spec';
-import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
-import { MOCK_ITEM } from '../../../tests/item.fixtures.spec';
+import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { USER_ID } from '@fixtures/user.fixtures.spec';
+import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
+import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 
 describe('ItemCartFavoriteComponent', () => {
   let component: ItemCartFavoriteComponent;

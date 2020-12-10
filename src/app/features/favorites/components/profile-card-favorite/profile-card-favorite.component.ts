@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, Output, Inject } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
-import { ProfileService } from '../../core/profile/profile.service';
-import { Profile } from '../../core/profile/profile';
-import { environment } from '../../../environments/environment';
+import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
+import { ProfileService } from '@core/profile/profile.service';
+import { Profile } from '@core/profile/profile';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'tsl-profile-card-favorite',
