@@ -28,7 +28,6 @@ describe('ProfileProBillingComponent', () => {
   let paymentService: PaymentService;
   let errorsService: ErrorsService;
   let modalService: NgbModal;
-  let eventService: EventService;
   let HTMLelement: DebugElement;
 
   beforeEach(
@@ -89,7 +88,6 @@ describe('ProfileProBillingComponent', () => {
     component = fixture.componentInstance;
     paymentService = TestBed.inject(PaymentService);
     errorsService = TestBed.inject(ErrorsService);
-    eventService = TestBed.inject(EventService);
     component.formComponent = TestBed.inject(ProfileFormComponent);
     HTMLelement = fixture.debugElement;
     fixture.detectChanges();
@@ -288,6 +286,83 @@ describe('ProfileProBillingComponent', () => {
       component.containerType = 'modal';
 
       expect(component.containerTypeIsModal).toBe(true);
+    });
+  });
+
+  describe('when we fill the form...', () => {
+    const validForm = {
+      cif: '06353225G',
+      company_name: 'Wallapop',
+      email: 'wallapop@wallapop.com',
+      name: 'Wallapop',
+      surname: 'Wallapop',
+    };
+
+    const invalidForm = {
+      cif: null,
+      company_name: null,
+      email: null,
+      name: null,
+      surname: null,
+    };
+    describe('when the invoice is for a natural person...', () => {
+      beforeEach(() => {
+        component.type = 'natural';
+      });
+
+      it('should show errors when the form is incorrect', () => {
+        component.billingForm.patchValue(invalidForm);
+
+        fixture.detectChanges();
+
+        component.onSubmit();
+        fixture.detectChanges();
+        const errorMessages = HTMLelement.queryAll(By.css('.alert'));
+
+        expect(errorMessages.length).toBe(4);
+      });
+
+      it('should NOT show errors when the form is correct', () => {
+        component.billingForm.patchValue(validForm);
+
+        fixture.detectChanges();
+
+        component.onSubmit();
+        fixture.detectChanges();
+        const errorMessages = HTMLelement.queryAll(By.css('.alert'));
+
+        expect(errorMessages.length).toBe(0);
+      });
+    });
+
+    describe('when the invoice is for a legal person...', () => {
+      beforeEach(() => {
+        component.type = 'legal';
+      });
+
+      it('should show errors when the form is incorrect', () => {
+        component.billingForm.patchValue(invalidForm);
+
+        fixture.detectChanges();
+
+        component.onSubmit();
+        fixture.detectChanges();
+        const errorMessages = HTMLelement.queryAll(By.css('.alert'));
+
+        expect(errorMessages.length).toBe(3);
+      });
+
+      it('should NOT show errors when the form is correct', () => {
+        component.billingForm.patchValue(validForm);
+
+        fixture.detectChanges();
+
+        component.onSubmit();
+        fixture.detectChanges();
+        const errorMessages = HTMLelement.queryAll(By.css('.alert'));
+
+        expect(errorMessages.length).toBe(0);
+      });
     });
   });
 });
