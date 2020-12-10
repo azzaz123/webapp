@@ -1006,6 +1006,7 @@
   <translation id="TooManyItemsModalTryTrial">Para publicar más <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph>, prueba gratis wallapop PRO durante <ph name="INTERPOLATION_1"><ex>{{categorySubscription?.trial_days}}</ex>{{categorySubscription?.trial_days}}</ph> días.</translation>
   <translation id="AddNewModalSubscribeNow">¡Prueba gratis <ph name="INTERPOLATION"><ex>{{subscription?.trial_days}}</ex>{{subscription?.trial_days}}</ph> días!</translation>
   <translation id="EditSubscriptionModalCancelSubscription">Quiero cancelar mi suscripción</translation>
+  <translation id="SubscribeToProToPublishMore">Subscríbete a la cuenta PRO para publicar más</translation>
   <translation id="EditSubscriptionModalCancelFreeTrial">Cancelar prueba gratuita</translation>
   <translation id="MissingPaymentMethodTitle">No hay un método de pago disponible</translation>
   <translation id="MissingPaymentMethodSubtitle">No hay un método de pago disponible para que podamos renovar tu suscripción cuando caduque.</translation>
