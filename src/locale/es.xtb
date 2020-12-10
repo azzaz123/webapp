@@ -1006,6 +1006,7 @@
   <translation id="TooManyItemsModalTryTrial">Para publicar más <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph>, prueba gratis wallapop PRO durante <ph name="INTERPOLATION_1"><ex>{{categorySubscription?.trial_days}}</ex>{{categorySubscription?.trial_days}}</ph> días.</translation>
   <translation id="AddNewModalSubscribeNow">¡Prueba gratis <ph name="INTERPOLATION"><ex>{{subscription?.trial_days}}</ex>{{subscription?.trial_days}}</ph> días!</translation>
   <translation id="EditSubscriptionModalCancelSubscription">Quiero cancelar mi suscripción</translation>
+  <translation id="SubscribeToProToPublishMore">Subscríbete a la cuenta PRO para publicar más</translation>
   <translation id="EditSubscriptionModalCancelFreeTrial">Cancelar prueba gratuita</translation>
   <translation id="MissingPaymentMethodTitle">No hay un método de pago disponible</translation>
   <translation id="MissingPaymentMethodSubtitle">No hay un método de pago disponible para que podamos renovar tu suscripción cuando caduque.</translation>
@@ -1092,9 +1093,24 @@
   <translation id="step3of4">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>3<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
   <translation id="step4of4">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
   <translation id="InvoiceInformation">Información de facturación</translation>
+  <translation id="NameRequired">El nombre es obligatorio.</translation>
+  <translation id="NameMaxLength">El nombre no puede tener más de 32 catacteres.</translation>
+  <translation id="SurnameRequired">El apellido es requerido.</translation>
+  <translation id="SurnameMaxLength">El apellido no puede tener más de 32 catacteres.</translation>
+  <translation id="CompanyNameRequired">El nombre de empresa es requerido.</translation>
+  <translation id="CompanyNameMaxLength">El nombre de empresa no puede tener más de 32 catacteres.</translation>
+  <translation id="CifRequired">El CIF/NIF es requerido.</translation>
+  <translation id="CifFormat">El CIF/NIF debe ser válido.</translation>
+  <translation id="EmailRequired">E-mail is required.</translation>
+  <translation id="EmailFormat">E-mail must be valid.</translation>
   <translation id="OrderYourCatalogBy">Ordena tu catálogo por</translation>
   <translation id="OrderBy">Ordenar por</translation>
   <translation id="ManageCatalogSubscription">Gestionar <ph name="INTERPOLATION"><ex>{{subscriptionSlot.category.name}}</ex>{{subscriptionSlot.category.name}}</ph></translation>
+  <translation id="InvoiceHistory">Tus facturas</translation>
+  <translation id="InvoiceHistorySubtitle">Rellena tus datos de facturación para descargar todas tus facturas.</translation>
+  <translation id="DownloadInvoice">Descargar factura</translation>
+  <translation id="RequestInvoice">Solicitar factura</translation>
+  <translation id="TransactionDate">Fecha de transacción</translation>
   <translation id="UploadProductPrice">Precio</translation>
   <translation id="UploadProductHeadline">¿Qué estás vendiendo?</translation>
   <translation id="UploadProductSelectGenderPlaceholder">Selecciona un género</translation>
@@ -1151,5 +1167,15 @@
   <translation id="TopBarButtonRegisteOrSignin">Regístrate o inicia sesión</translation>
   <translation id="TabBarButtonLogin">Acceso</translation>
   <translation id="TabBarButtonMyZone">Mi zona</translation>
-
+  <translation id="EmptyHistory">Tu historial está vacío</translation>
+  <translation id="LoadingData">Estamos cargando tu histórico de facturas...</translation>
+  <translation id="NotLoadedInvoices">Lo sentimos, en estos momentos no podemos cargar tus facturas. Intenta de nuevo más tarde.</translation>
+  <translation id="NotOldInvoices">No tienes facturas antiguas. Rellena los datos de facturación para futuras compras.</translation>
+  <translation id="FillDataInvoices">Rellena los datos de facturación para descargar tus facturas.</translation>
+  <translation id="InvoiceCorrectlyDownloaded">Tu factura se ha descargado correctamente.</translation>
+  <translation id="InvoiceGenerated">Tu factura se ha generado correctamente.</translation>
+  <translation id="InvoiceCannotDownload">Tu factura no se ha podido descargar. Intenta de nuevo.</translation>
+  <translation id="InvoiceCannotGenerate">Tu factura no se ha podido generar. Intenta de nuevo.</translation>
+  <translation id="SuccessEdit">Tus datos se han editado correctamente.</translation>
+  <translation id="ErrorSavingData">Error al guardar los datos. Intenta de nuevo.</translation>
 </translationbundle>
