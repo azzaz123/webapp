@@ -5,24 +5,19 @@ import {
   TestBed,
   waitForAsync,
 } from '@angular/core/testing';
-import { AppComponent } from './app.component';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
-import { SwUpdate } from '@angular/service-worker';
+
 import { InboxService } from '@features/chat/core/inbox/inbox.service';
 import { MessageService } from '@features/chat/core/message/message.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import * as moment from 'moment';
 import { CookieService } from 'ngx-cookie';
 import { of, Subject, throwError } from 'rxjs';
 import { MockAnalyticsService } from '../tests/analytics.fixtures.spec';
 import { MOCK_ITEM_V3 } from '../tests/item.fixtures.spec';
 import { MockTrackingService } from '../tests/tracking.fixtures.spec';
 import { MOCK_USER, USER_ID } from '../tests/user.fixtures.spec';
-import { PATH_EVENTS } from './app-routing-constants';
 import { AppComponent } from './app.component';
 import { AnalyticsService } from './core/analytics/analytics.service';
 import { ConnectionService } from './core/connection/connection.service';
