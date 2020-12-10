@@ -57,7 +57,7 @@ const loggedRoutes = [
           {
             path: '',
             loadChildren: () =>
-              import('app/catalog-pro/catalog-pro.module').then(
+              import('app/features/catalog-pro/catalog-pro.module').then(
                 (m) => m.CatalogProModule
               ),
           },

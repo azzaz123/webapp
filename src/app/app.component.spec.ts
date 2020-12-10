@@ -5,6 +5,9 @@ import {
   TestBed,
   waitForAsync,
 } from '@angular/core/testing';
+import { AppComponent } from './app.component';
+import { RouterTestingModule } from '@angular/router/testing';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -36,6 +39,9 @@ import { StripeService } from './core/stripe/stripe.service';
 import { TrackingService } from './core/tracking/tracking.service';
 import { UserService } from './core/user/user.service';
 import { UuidService } from './core/uuid/uuid.service';
+import { SwUpdate } from '@angular/service-worker';
+import * as moment from 'moment';
+import { PATH_EVENTS } from './app-routing-constants';
 
 jest.mock('moment');
 
