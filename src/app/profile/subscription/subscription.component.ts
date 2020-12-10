@@ -54,7 +54,7 @@ export class SubscriptionsComponent implements OnInit {
     private router: Router,
     private analyticsService: AnalyticsService,
     private userService: UserService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.loading = true;
@@ -130,7 +130,10 @@ export class SubscriptionsComponent implements OnInit {
           )
         ),
         take(30),
-        finalize(() => { this.router.navigate(['profile/subscriptions']), this.loading = false })
+        finalize(() => {
+          this.router.navigate(['profile/subscriptions']),
+            (this.loading = false);
+        })
       )
       .subscribe((updatedSubscriptions) => {
         if (!isEqual(this.subscriptions, updatedSubscriptions)) {
