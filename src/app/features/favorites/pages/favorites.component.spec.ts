@@ -5,14 +5,14 @@ import {
   fakeAsync,
   waitForAsync,
 } from '@angular/core/testing';
-import { ItemService } from '../core/item/item.service';
+import { ItemService } from '@core/item/item.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FavoritesComponent } from './favorites.component';
-import { UserService } from '../core/user/user.service';
-import { MOCK_USER_STATS } from '../../tests/user.fixtures.spec';
-import { MOCK_ITEM } from '../../tests/item.fixtures.spec';
-import { ProfileService } from '../core/profile/profile.service';
-import { MOCK_PROFILE } from '../../tests/profile.fixtures.spec';
+import { UserService } from '@core/user/user.service';
+import { MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
+import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
+import { ProfileService } from '@core/profile/profile.service';
+import { MOCK_PROFILE } from '@fixtures/profile.fixtures.spec';
 
 describe('FavoritesComponent', () => {
   let component: FavoritesComponent;

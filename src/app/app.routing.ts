@@ -100,7 +100,9 @@ const loggedRoutes = [
     path: 'favorites',
     canLoad: [LoggedGuard],
     loadChildren: () =>
-      import('app/favorites/favorites.module').then((m) => m.FavoritesModule),
+      import('app/features/favorites/favorites.module').then(
+        (m) => m.FavoritesModule
+      ),
   },
   {
     path: 'reviews',
