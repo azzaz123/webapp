@@ -4,9 +4,9 @@ import {
   registerRoutedComponents,
   registerNonroutedComponents,
   RegisterRoutingModule,
-} from './register.routes';
+} from './register.routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RegisterService } from './register.service';
+import { RegisterService } from './core/services/register.service';
 
 @NgModule({
   imports: [
