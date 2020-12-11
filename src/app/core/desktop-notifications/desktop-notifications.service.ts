@@ -38,7 +38,11 @@ export class DesktopNotificationsService {
   }
 
   public browserSupportsNotifications(): boolean {
-    return !!Notification && !!Notification.requestPermission;
+    return (
+      'Notification' in window &&
+      !!Notification &&
+      !!Notification.requestPermission
+    );
   }
 
   public canShowNotifications(): boolean {
