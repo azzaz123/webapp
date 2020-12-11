@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ReviewsComponent } from '@features/reviews/pages/reviews.component';
-import { InfoComponent } from './pages/info/info.component';
 import { PublicProfileComponent } from './pages/public-profile.component';
-import { PublishedComponent } from './pages/published/published.component';
+import { UserInfoComponent } from './pages/user-info/user-info.component';
+import { UserPublishedComponent } from './pages/user-published/user-published.component';
+import { UserReviewsComponent } from './pages/user-reviews/user-reviews.component';
 import { PUBLIC_PROFILE_PATHS } from './public-profile-routing-constants';
 
 const routes: Routes = [
@@ -18,15 +18,15 @@ const routes: Routes = [
       },
       {
         path: PUBLIC_PROFILE_PATHS.PUBLISHED,
-        component: PublishedComponent,
+        component: UserPublishedComponent,
       },
       {
         path: PUBLIC_PROFILE_PATHS.REVIEWS,
-        component: ReviewsComponent,
+        component: UserReviewsComponent,
       },
       {
         path: PUBLIC_PROFILE_PATHS.INFO,
-        component: InfoComponent,
+        component: UserInfoComponent,
       },
     ],
   },
@@ -40,7 +40,7 @@ export class PublicProfileRoutingModule {}
 
 export const publicProfileRoutedComponents = [
   PublicProfileComponent,
-  PublishedComponent,
-  ReviewsComponent,
-  InfoComponent,
+  UserPublishedComponent,
+  UserReviewsComponent,
+  UserInfoComponent,
 ];
