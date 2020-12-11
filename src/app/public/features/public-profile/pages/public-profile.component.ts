@@ -6,6 +6,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./public-profile.component.scss'],
 })
 export class PublicProfileComponent implements OnInit {
+  //TODO remove hardcoded data when user services are available
+  userStats = {
+    buys: 0,
+    publish: 5,
+    reports_received: 0,
+    reviews: 0,
+    sells: 0,
+    sold: 0,
+  };
   constructor() {}
 
   ngOnInit(): void {}
