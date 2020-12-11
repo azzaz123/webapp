@@ -39,10 +39,9 @@ import { Subscription } from 'rxjs';
 })
 export class DropAreaComponent
   implements OnInit, ControlValueAccessor, OnDestroy {
-  @Output() onError: EventEmitter<any> = new EventEmitter();
   @Output() onDeleteImage: EventEmitter<string> = new EventEmitter();
-  @Output() onOrderImages: EventEmitter<any> = new EventEmitter();
-  @Output() onAddImage: EventEmitter<any> = new EventEmitter();
+  @Output() onOrderImages: EventEmitter<void> = new EventEmitter();
+  @Output() onAddImage: EventEmitter<UploadFile> = new EventEmitter();
 
   @Input() isUpdatingItem: boolean;
   @Input() maxUploads = 10;
@@ -113,7 +112,7 @@ export class DropAreaComponent
   public onFileDropAction(event: IFileDropAction): void {
     this.setDragOver(event.action === FileDropActions.DRAGOVER);
     if (event.files) {
-      this.uploaderService.handleFiles(event.files, null, this.files);
+      this.onFilesAdded(event.files);
     }
   }
 
@@ -153,5 +152,9 @@ export class DropAreaComponent
     if (this.eventsSubscrition) {
       this.eventsSubscrition.unsubscribe();
     }
+  }
+
+  public onFilesAdded(event: FileList): void {
+    this.uploaderService.handleFiles(event, this.options, null, this.files);
   }
 }

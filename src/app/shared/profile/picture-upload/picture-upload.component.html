@@ -12,8 +12,7 @@
     <div class="upload-button">
       <label class="btn btn-upload"
         [ngClass]="{disabled: isLoading}">
-        <input type="file" tslFileSelect [imageType]='imageType.AVATAR' (uploadOutput)="onUploadOutput($event)"
-         [options]="options"
+        <input type="file" tslFileSelect (filesSelected)="onFilesAdded($event)"
           [disabled]="isLoading" />
         <span class="loader" *ngIf="isLoading">
           <tsl-svg-icon src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>

@@ -3,13 +3,20 @@ import {
   TOKEN_SIGNATURE_HEADER_NAME,
   TOKEN_TIMESTAMP_HEADER_NAME,
 } from '@core/http/interceptors/token.interceptor';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { User } from '@core/user/user';
 import { ErrorsService } from '@core/errors/errors.service';
 import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
 import {
-  imageType,
+  ImageType,
   NgUploaderOptions,
   OutputType,
   UploadFile,
@@ -20,13 +27,14 @@ import { AccessTokenService } from '@core/http/access-token.service';
 import { UploaderService } from '@shared/uploader/uploader.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { finalize } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'tsl-cover-upload',
   templateUrl: './cover-upload.component.html',
   styleUrls: ['./cover-upload.component.scss'],
 })
-export class CoverUploadComponent implements OnInit {
+export class CoverUploadComponent implements OnInit, OnDestroy {
   @Input() user: User;
   @Input() isPro: boolean;
 
@@ -35,7 +43,8 @@ export class CoverUploadComponent implements OnInit {
   file: UploadFile;
   options: NgUploaderOptions;
   isLoading: boolean;
-  imageType = imageType;
+  imageType = ImageType.COVER;
+  eventsSubscription: Subscription;
 
   constructor(
     private errorsService: ErrorsService,
@@ -50,6 +59,17 @@ export class CoverUploadComponent implements OnInit {
       maxUploads: 1,
       maxSize: 1024 * 1024 * 3, // 3 MB
     };
+    this.subscribeUploadEvents();
+  }
+
+  private subscribeUploadEvents(): void {
+    this.eventsSubscription = this.uploaderService.serviceEvents.subscribe(
+      (event: UploadOutput) => {
+        if (event.imageType === this.imageType) {
+          this.onUploadOutput(event);
+        }
+      }
+    );
   }
 
   public onUploadOutput(output: UploadOutput): void {
@@ -88,7 +108,7 @@ export class CoverUploadComponent implements OnInit {
       method: 'POST',
       fieldName: 'image',
       headers,
-      imageType: this.imageType.COVER,
+      imageType: this.imageType,
     };
     this.uploaderService
       .uploadFile(this.file, uploadinput)
@@ -107,5 +127,15 @@ export class CoverUploadComponent implements OnInit {
 
   private showError(message?: string): void {
     this.errorsService.i18nError('serverError', message ? message : '');
+  }
+
+  public onFilesAdded(event: FileList): void {
+    this.uploaderService.handleFiles(event, this.options, this.imageType);
+  }
+
+  ngOnDestroy() {
+    if (this.eventsSubscription) {
+      this.eventsSubscription.unsubscribe();
+    }
   }
 }

@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs';
 import { EventEmitter, Injectable } from '@angular/core';
 import {
+  ImageType,
   NgUploaderOptions,
   OutputType,
   UploadFile,
@@ -15,21 +16,23 @@ import { cloneDeep } from 'lodash-es';
   providedIn: 'root',
 })
 export class UploaderService {
-  files: UploadFile[] = [];
   serviceEvents: EventEmitter<UploadOutput>;
-  options: NgUploaderOptions;
 
   constructor(private sanitizer: DomSanitizer) {
-    this.files = [];
     this.serviceEvents = new EventEmitter();
   }
 
-  handleFiles(files: FileList, imageType?: string, previousFiles = []): void {
-    this.files = cloneDeep(previousFiles);
+  handleFiles(
+    files: FileList,
+    options: NgUploaderOptions,
+    imageType?: ImageType,
+    previousFiles: UploadFile[] = []
+  ): void {
+    const _previousFiles: UploadFile[] = cloneDeep(previousFiles);
     [].forEach.call(files, (file: File, i: number) => {
       const uploadFile: UploadFile = {
-        fileIndex: this.files[this.files.length - 1]
-          ? this.files[this.files.length - 1].fileIndex + 1
+        fileIndex: _previousFiles[_previousFiles.length - 1]
+          ? _previousFiles[_previousFiles.length - 1].fileIndex + 1
           : 0,
         file: file,
         id: this.generateId(),
@@ -47,9 +50,9 @@ export class UploaderService {
         lastModifiedDate: new Date(file.lastModified),
       };
       if (
-        this.checkExtension(uploadFile, imageType) &&
-        this.checkMaxUploads(uploadFile, imageType) &&
-        this.checkMaxSize(uploadFile, imageType)
+        this.checkExtension(uploadFile, options, imageType) &&
+        this.checkMaxUploads(uploadFile, options, _previousFiles, imageType) &&
+        this.checkMaxSize(uploadFile, options, imageType)
       ) {
         let reader: FileReader = new FileReader();
         reader.readAsDataURL(<Blob>file);
@@ -63,13 +66,17 @@ export class UploaderService {
             imageType: imageType,
           });
         });
-        this.files.push(uploadFile);
+        _previousFiles.push(uploadFile);
       }
     });
   }
 
-  private checkExtension(file: UploadFile, imageType: string): boolean {
-    let allowedExtensions = this.options.allowedExtensions || [];
+  private checkExtension(
+    file: UploadFile,
+    options: NgUploaderOptions,
+    imageType: string
+  ): boolean {
+    let allowedExtensions = options.allowedExtensions || [];
     if (allowedExtensions.indexOf(file.type.toLowerCase()) !== -1) {
       return true;
     }
@@ -89,8 +96,13 @@ export class UploaderService {
     return false;
   }
 
-  private checkMaxUploads(file: UploadFile, imageType: string): boolean {
-    if (this.files.length < this.options.maxUploads) {
+  private checkMaxUploads(
+    file: UploadFile,
+    options: NgUploaderOptions,
+    files: UploadFile[],
+    imageType: string
+  ): boolean {
+    if (files.length < options.maxUploads) {
       return true;
     }
     this.serviceEvents.emit({
@@ -102,8 +114,12 @@ export class UploaderService {
     return false;
   }
 
-  private checkMaxSize(file: UploadFile, imageType: string): boolean {
-    if (!this.options.maxSize || file.size < this.options.maxSize) {
+  private checkMaxSize(
+    file: UploadFile,
+    options: NgUploaderOptions,
+    imageType: string
+  ): boolean {
+    if (!options.maxSize || file.size < options.maxSize) {
       return true;
     }
     this.serviceEvents.emit({
@@ -136,11 +152,8 @@ export class UploaderService {
             time += diff;
             load = e.loaded - load;
             const speed = parseInt(((load / diff) * 1000) as any, 10);
-            const totalFilesSize = this.files
-              .map((f) => f.size)
-              .reduce((acc, size) => acc + size, 0);
 
-            let uploadedPercentage = (e.loaded / totalFilesSize) * 100;
+            let uploadedPercentage = (e.loaded / file.size) * 100;
             uploadedPercentage =
               uploadedPercentage < 100 ? uploadedPercentage : 100;
 

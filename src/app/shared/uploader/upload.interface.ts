@@ -146,7 +146,7 @@ export interface ICarUploadForm extends IUploadForm {
   horsepower: string;
 }
 
-export enum imageType {
+export enum ImageType {
   COVER = 'cover',
   AVATAR = 'avatar',
 }

@@ -27,7 +27,7 @@
             *ngIf="isUpdatingItem && (files[i]?.progress?.status === 0 || files[i]?.progress?.status === 1)">
             <tsl-svg-icon src="/assets/icons/spinner.svg" class="spinner corporate"></tsl-svg-icon>
           </div>
-          <input *ngIf="!files[i]" type="file" tslFileSelect [options]="options" multiple="true" />
+          <input *ngIf="!files[i]" type="file" (filesSelected)="onFilesAdded($event)" tslFileSelect multiple="true" />
         </label>
         <span class="main-image-label d-none d-md-block" *ngIf="i === 0" i18n>Main photo</span>
       </div>
