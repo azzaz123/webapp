@@ -23,6 +23,9 @@
       ],
       "@layout/*": [
         "app/layout/*"
+      ],
+      "@public/*": [
+        "app/public/*"
       ]
     },
     "outDir": "./dist/out-tsc",
