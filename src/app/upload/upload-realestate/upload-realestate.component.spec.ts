@@ -270,6 +270,12 @@ describe('UploadRealestateComponent', () => {
 
       expect(errorService.i18nError).toHaveBeenCalledWith('missingImageError');
     });
+
+    it('should avoid submit if storytelling has only spaces', () => {
+      component.uploadForm.get('storytelling').setValue('   ');
+
+      expect(component.uploadForm.get('storytelling').invalid).toBeTruthy();
+    });
   });
 
   describe('onUploaded', () => {

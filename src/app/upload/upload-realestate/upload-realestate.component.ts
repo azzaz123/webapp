@@ -16,6 +16,7 @@ import {
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ErrorsService } from '@core/errors/errors.service';
+import { whitespaceValidator } from '@core/form-validators/formValidators.func';
 import { ItemLocation } from '@core/geolocation/address-response.interface';
 import { REALESTATE_CATEGORY } from '@core/item/item-categories';
 import { RealestateContent } from '@core/item/item-response.interface';
@@ -87,7 +88,7 @@ export class UploadRealestateComponent implements OnInit {
         [Validators.required, Validators.min(0), Validators.max(999999999)],
       ],
       currency_code: ['EUR', [Validators.required]],
-      storytelling: '',
+      storytelling: ['', [Validators.required, whitespaceValidator]],
       operation: ['', [Validators.required]],
       type: ['', [Validators.required]],
       condition: ['', [Validators.required]],
