@@ -174,7 +174,7 @@ export class CurrentConversationComponent
   ): boolean {
     return nextMessage
       ? new Date(currentMessage.date).toDateString() !==
-      new Date(nextMessage.date).toDateString()
+          new Date(nextMessage.date).toDateString()
       : true;
   }
 

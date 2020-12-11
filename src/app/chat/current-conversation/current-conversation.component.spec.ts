@@ -10,7 +10,8 @@ import { CurrentConversationComponent } from './current-conversation.component';
 import {
   CREATE_MOCK_INBOX_CONVERSATION,
   MOCK_INBOX_CONVERSATION_WITH_MALICIOUS_USER,
-  MOCK_INBOX_CONVERSATION_BASIC, MOCK_INBOX_CONVERSATION_WITH_UNSUBSCRIBED_USER
+  MOCK_INBOX_CONVERSATION_BASIC,
+  MOCK_INBOX_CONVERSATION_WITH_UNSUBSCRIBED_USER,
 } from '../../../tests/inbox.fixtures.spec';
 import {
   InboxMessage,
@@ -358,7 +359,7 @@ describe('CurrentConversationComponent', () => {
     });
 
     it('should scroll to last message', () => {
-      const messageHTMLMock = { scrollIntoView: () => { } };
+      const messageHTMLMock = { scrollIntoView: () => {} };
       spyOn(document, 'querySelector').and.returnValues(messageHTMLMock);
       spyOn(component, 'sendReadForLastInboxMessage');
 
