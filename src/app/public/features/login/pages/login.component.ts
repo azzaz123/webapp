@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserService } from '../core/user/user.service';
-import { LoginResponse } from '../core/user/login-response.interface';
+import { AccessTokenService } from '@core/http/access-token.service';
+import { LoginResponse } from '../core/login-response.interface';
+import { LoginService } from '../core/services/login.service';
 
 const TEST_INSTALLATION_TYPE = 'WEB';
 
@@ -16,8 +17,9 @@ export class LoginComponent implements OnInit {
   public loading: boolean;
 
   constructor(
-    private fb: FormBuilder,
-    private userService: UserService,
+    fb: FormBuilder,
+    private accessTokenService: AccessTokenService,
+    private loginService: LoginService,
     private router: Router
   ) {
     this.loginForm = fb.group({
@@ -28,7 +30,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.userService.isLogged) {
+    if (this.accessTokenService.accessToken) {
       this.router.navigate(['/chat']);
     }
   }
@@ -36,7 +38,7 @@ export class LoginComponent implements OnInit {
   public onSubmit() {
     if (this.loginForm.valid) {
       this.loading = true;
-      this.userService.login(this.loginForm.value).subscribe(
+      this.loginService.login(this.loginForm.value).subscribe(
         (r: LoginResponse) => {
           this.router.navigate(['/chat']);
         },
