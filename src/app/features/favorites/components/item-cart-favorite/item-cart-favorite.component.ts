@@ -6,11 +6,11 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { ItemService } from '../../core/item/item.service';
+import { ItemService } from '@core/item/item.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
-import { TrackingService } from '../../core/tracking/tracking.service';
-import { Item } from '../../core/item/item';
+import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { Item } from '@core/item/item';
 
 @Component({
   selector: 'tsl-item-cart-favorite',
