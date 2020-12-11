@@ -12,10 +12,10 @@ import {
   UPLOAD_FILE_2,
   UPLOAD_FILE_DONE,
   UPLOAD_FILE_DONE_2,
-} from '../../../tests/upload.fixtures.spec';
-import { USER_LOCATION_COORDINATES } from '../../../tests/user.fixtures.spec';
+} from '@fixtures/upload.fixtures.spec';
+import { USER_LOCATION_COORDINATES } from '@fixtures/user.fixtures.spec';
 import { AccessTokenService } from '@core/http/access-token.service';
-import { ITEM_ID } from '../../../tests/item.fixtures.spec';
+import { ITEM_ID } from '@fixtures/item.fixtures.spec';
 import { CARS_CATEGORY, REALESTATE_CATEGORY } from '@core/item/item-categories';
 import { ITEM_TYPES } from '@core/item/item';
 import { OutputType } from '@shared/uploader/upload.interface';

@@ -1,4 +1,4 @@
-import { MockAnalyticsService } from './../../../tests/analytics.fixtures.spec';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import {
   ComponentFixture,
   fakeAsync,
@@ -23,7 +23,7 @@ import {
   CAR_YEARS,
   MOCK_CAR,
   MOCK_CAR_RESPONSE_CONTENT,
-} from '../../../tests/car.fixtures.spec';
+} from '@fixtures/car.fixtures.spec';
 import {
   NgbModal,
   NgbPopoverConfig,
@@ -33,12 +33,12 @@ import { PreviewModalComponent } from '../preview-modal/preview-modal.component'
 import {
   MOCK_ITEM_V3,
   UPLOAD_FORM_CAR_VALUES,
-} from '../../../tests/item.fixtures.spec';
+} from '@fixtures/item.fixtures.spec';
 import { TrackingService } from '@core/tracking/tracking.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { User } from '@core/user/user';
-import { USER_ID } from '../../../tests/user.fixtures.spec';
-import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
+import { USER_ID } from '@fixtures/user.fixtures.spec';
+import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { Car } from '@core/item/car';
 import { CARS_CATEGORY } from '@core/item/item-categories';
 import { ItemService } from '@core/item/item.service';
@@ -46,7 +46,7 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { UserService } from '@core/user/user.service';
 import { CarContent } from '@core/item/item-response.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
-import { MockSubscriptionService } from '../../../tests/subscriptions.fixtures.spec';
+import { MockSubscriptionService } from '@fixtures/subscriptions.fixtures.spec';
 import {
   ANALYTIC_EVENT_TYPES,
   ANALYTICS_EVENT_NAMES,
@@ -64,7 +64,7 @@ import {
   UPLOAD_FILE_2,
   UPLOAD_FILE_DONE,
   UPLOAD_FILE_DONE_2,
-} from '../../../tests/upload.fixtures.spec';
+} from '@fixtures/upload.fixtures.spec';
 import { ITEM_TYPES } from '@core/item/item';
 import { UploadAction } from '@shared/uploader/upload.interface';
 

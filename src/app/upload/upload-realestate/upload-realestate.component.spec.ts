@@ -10,14 +10,14 @@ import { UploadRealestateComponent } from './upload-realestate.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { TrackingService } from '@core/tracking/tracking.service';
-import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
+import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { RealestateKeysService } from './realestate-keys.service';
 import { of, throwError } from 'rxjs';
 import { ErrorsService } from '@core/errors/errors.service';
 import { Router } from '@angular/router';
 import { Key } from './key.interface';
 import { IOption } from 'app/dropdown/utils/option.interface';
-import { IMAGE, USER_LOCATION } from '../../../tests/user.fixtures.spec';
+import { IMAGE, USER_LOCATION } from '@fixtures/user.fixtures.spec';
 import {
   NgbModal,
   NgbPopoverConfig,
@@ -28,7 +28,7 @@ import {
   MOCK_REALESTATE,
   MOCK_REALESTATE_RESPONSE_CONTENT,
   UPLOAD_FORM_REALESTATE_VALUES,
-} from '../../../tests/realestate.fixtures.spec';
+} from '@fixtures/realestate.fixtures.spec';
 import { ItemService } from '@core/item/item.service';
 import { REALESTATE_CATEGORY } from '@core/item/item-categories';
 import {
@@ -40,7 +40,7 @@ import {
   ListItemRE,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { UserService } from '@core/user/user.service';
 import { RealestateContent } from '@core/item/item-response.interface';
 import { UploadService } from '../drop-area/upload.service';
@@ -51,7 +51,7 @@ import {
   UPLOAD_FILE_2,
   UPLOAD_FILE_DONE,
   UPLOAD_FILE_DONE_2,
-} from '../../../tests/upload.fixtures.spec';
+} from '@fixtures/upload.fixtures.spec';
 import { ITEM_TYPES } from '@core/item/item';
 import { UploadAction } from '@shared/uploader/upload.interface';
 

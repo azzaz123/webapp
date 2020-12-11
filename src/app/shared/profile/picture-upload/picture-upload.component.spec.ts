@@ -8,11 +8,8 @@ import { PictureUploadComponent } from './picture-upload.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserService } from '@core/user/user.service';
 import { ErrorsService } from '@core/errors/errors.service';
-import { MOCK_USER } from '../../../../tests/user.fixtures.spec';
-import {
-  UPLOAD_FILE,
-  UPLOAD_FILE_NAME,
-} from '../../../../tests/upload.fixtures.spec';
+import { MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { UPLOAD_FILE, UPLOAD_FILE_NAME } from '@fixtures/upload.fixtures.spec';
 import { environment } from '@environments/environment';
 import {
   imageType,

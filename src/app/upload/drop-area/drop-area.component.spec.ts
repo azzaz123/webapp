@@ -15,10 +15,10 @@ import {
   UPLOAD_FILE_NAME,
   UPLOADED_FILE_OTHER,
   UPLOAD_FILE_2,
-} from '../../../tests/upload.fixtures.spec';
+} from '@fixtures/upload.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RemoveConfirmModalComponent } from './remove-confirm-modal/remove-confirm-modal.component';
-import { PICTURE_ID } from '../../../tests/item.fixtures.spec';
+import { PICTURE_ID } from '@fixtures/item.fixtures.spec';
 import { ErrorsService } from '@core/errors/errors.service';
 import { OutputType, UploadFile } from '@shared/uploader/upload.interface';
 import { UploaderService } from '@shared/uploader/uploader.service';

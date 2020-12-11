@@ -3,13 +3,13 @@ import {
   MOCK_OBJECT_TYPES,
   MOCK_OBJECT_TYPES_RESPONSE,
   MOCK_OBJECT_TYPES_WITH_CHILDREN,
-} from './../../../tests/extra-info.fixtures.spec';
+} from '@fixtures/extra-info.fixtures.spec';
 import {
   MOCK_ITEM_CELLPHONES,
   MOCK_ITEM_CELLPHONES_NO_SUBCATEGORY,
   MOCK_ITEM_RESPONSE_CONTENT,
   UPLOAD_FORM_ITEM_VALUES,
-} from './../../../tests/item.fixtures.spec';
+} from '@fixtures/item.fixtures.spec';
 import {
   ComponentFixture,
   fakeAsync,
@@ -35,24 +35,24 @@ import {
   CATEGORY_DATA_WEB,
   SUGGESTED_CATEGORY_TV_AUDIO_CAMERAS,
   SUGGESTED_CATEGORY_COMPUTERS_ELECTRONICS,
-} from '../../../tests/category.fixtures.spec';
+} from '@fixtures/category.fixtures.spec';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { TrackingService } from '@core/tracking/tracking.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { User } from '@core/user/user';
-import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
-import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
+import { MOCK_USER, USER_ID } from '@fixtures/user.fixtures.spec';
+import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import {
   ITEM_CATEGORY_ID,
   ITEM_DELIVERY_INFO,
   MOCK_ITEM,
   MOCK_ITEM_FASHION,
-} from '../../../tests/item.fixtures.spec';
+} from '@fixtures/item.fixtures.spec';
 import { UserLocation } from '@core/user/user-response.interface';
 import { environment } from '@environments/environment';
 import { GeneralSuggestionsService } from './general-suggestions.service';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { UserService } from '@core/user/user.service';
 import { ItemContent } from '@core/item/item-response.interface';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -78,7 +78,7 @@ import {
   UPLOAD_FILE_2,
   UPLOAD_FILE_DONE,
   UPLOAD_FILE_DONE_2,
-} from '../../../tests/upload.fixtures.spec';
+} from '@fixtures/upload.fixtures.spec';
 import { ITEM_TYPES } from '@core/item/item';
 import { UploadAction } from '@shared/uploader/upload.interface';
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
