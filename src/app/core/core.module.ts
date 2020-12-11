@@ -36,6 +36,7 @@ import { MobileBlockerModule } from './mobile-blocker/mobile-blocker.module';
 import { DevelopmentGuard } from './user/development.guard';
 import { DidomiService } from './didomi/didomi.service';
 import { TrustAndSafetyService } from './trust-and-safety/trust-and-safety.service';
+import { InvoiceService } from './invoice/invoice.service';
 
 @NgModule({
   imports: [
@@ -84,6 +85,7 @@ export class CoreModule {
         SubscriptionsService,
         DidomiService,
         TrustAndSafetyService,
+        InvoiceService,
       ],
     };
   }
