@@ -231,7 +231,7 @@
   <tsl-urgent-checkbox [categoryId]="categoryId" [urgentPrice]="urgentPrice" (urgentSelected)="selectUrgent($event)">
   </tsl-urgent-checkbox>
   <div class="row">
-    <div class="col-12 col-md-4">
+    <div class="col-12 col-md-5">
       <tsl-button [type]="'submit'" className="btn-primary btn-block" [disabled]="loading">
         <span *ngIf="!item && !loading" i18n="@@UploadProductSubmitItem">Post Ad</span>
         <span *ngIf="item && !loading" i18n="@@UploadProductSubmitUpdate">Update</span>
