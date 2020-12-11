@@ -21,6 +21,13 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'user/:id',
+        loadChildren: () =>
+          import('./features/public-profile/public-profile.module').then(
+            (m) => m.PublicProfileModule
+          ),
+      },
+      {
         path: '**',
         redirectTo: 'login',
       },
