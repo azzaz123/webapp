@@ -1,0 +1,41 @@
+@import '~style/common';
+
+:host {
+  .ProfileTabs {
+    &__nav {
+      display: flex;
+    }
+
+    &__link {
+      color: $blue-grey-2;
+      flex: 1;
+      font-size: $font-size-s;
+      padding: $spacing-x1 $spacing-x3;
+      text-align: center;
+
+      &.active {
+        color: $blue-grey-1;
+
+        &::after {
+          background-color: $walla-main;
+          content: '';
+          display: block;
+          height: 2px;
+          margin: auto;
+          position: relative;
+          top: $spacing-x1;
+          width: 70%;
+        }
+
+        .ProfileTabs__link__counter {
+          font-weight: $font-weight-chunky;
+        }
+      }
+
+      &__counter {
+        display: block;
+        font-size: $font-size-ll;
+      }
+    }
+  }
+}

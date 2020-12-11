@@ -1,3 +1,10 @@
-<nav class="nav filters-nav">
-    <a *ngFor="let tab of PROFILE_TABS" class="nav-link" [routerLink]="tab.href" [routerLinkActive]="'active'">{{tab.label}}</a>
+<nav class="ProfileTabs__nav">
+    <a *ngFor="let tab of PROFILE_TABS" class="ProfileTabs__link" [routerLink]="tab.href" [routerLinkActive]="'active'">
+        <span class="ProfileTabs__link__counter">{{tab.count}}</span>
+        {{tab.label}}
+    </a>
+    <a class="ProfileTabs__link" [routerLink]="INFO_TAB_PATH" [routerLinkActive]="'active'">
+        <span class="ProfileTabs__link__counter">+</span>
+        <span i18n="@@ProfileTabsInfoLabel">Info</span>
+    </a>
 </nav>
