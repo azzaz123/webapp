@@ -24,10 +24,8 @@
     <div class="row">
       <div class="col-12">
         <nav class="nav filters-nav">
-          <a (click)="filterByStatus('products')" [ngClass]="{active: selectedStatus === 'products'}" class="nav-link"
-            i18n>Products</a>
-          <a (click)="filterByStatus('profiles')" [ngClass]="{active: selectedStatus === 'profiles'}" class="nav-link"
-            i18n="tab|plural">Profiles</a>
+          <a class="nav-link" i18n (click)="filterByStatus('products')" [routerLink]="['item']" routerLinkActive="active">Products</a>
+          <a class="nav-link" i18n="tab|plural" (click)="filterByStatus('profile')" [routerLink]="['profiles']" routerLinkActive="active">Profiles</a>
         </nav>
       </div>
     </div>
@@ -35,7 +33,8 @@
       <div class="favorites-empty-state"
         *ngIf="!items.length && !loading && selectedStatus === 'products' || !profiles.length && !loading && selectedStatus === 'profiles'">
         <tsl-svg-icon src="/assets/icons/favorites-empty-state.svg" class="d-none d-md-block image"></tsl-svg-icon>
-        <tsl-svg-icon src="/assets/icons/favorites-empty-state-mobile.svg" class="d-block d-md-none image"></tsl-svg-icon>
+        <tsl-svg-icon src="/assets/icons/favorites-empty-state-mobile.svg" class="d-block d-md-none image">
+        </tsl-svg-icon>
         <div class="d-none d-md-block message" *ngIf="selectedStatus === 'products'" i18n>In this list you can see all
           the products you
           saved as favourite</div>
@@ -45,13 +44,15 @@
       </div>
       <div class="cards-container" *ngIf="selectedStatus === 'products'">
         <div class="card-wrapper" *ngFor="let item of items">
-          <tsl-item-cart-favorite [item]="item" (onFavoriteChange)="onFavoriteChange($event)"> </tsl-item-cart-favorite>
+          <router-outlet></router-outlet>
+         <!-- <tsl-item-cart-favorite [item]="item" (onFavoriteChange)="onFavoriteChange($event)"> -->
         </div>
       </div>
       <div class="cards-container" *ngIf="selectedStatus === 'profiles'">
         <div class="card-wrapper" *ngFor="let profile of profiles">
-          <tsl-profile-card-favorite [profile]="profile" (onFavoriteProfileChange)="onFavoriteProfileChange($event)">
-          </tsl-profile-card-favorite>
+          <!-- <tsl-profile-card-favorite [profile]="profile" (onFavoriteProfileChange)="onFavoriteProfileChange($event)">
+          </tsl-profile-card-favorite> -->
+          <router-outlet></router-outlet>
         </div>
       </div>
     </div>
