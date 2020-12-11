@@ -11,6 +11,7 @@
       flex: 1;
       font-size: $font-size-s;
       padding: $spacing-x1 $spacing-x3;
+      position: relative;
       text-align: center;
 
       &.active {
@@ -18,13 +19,15 @@
 
         &::after {
           background-color: $walla-main;
+          bottom: 0;
           content: '';
           display: block;
           height: 2px;
+          left: 0;
           margin: auto;
-          position: relative;
-          top: $spacing-x1;
-          width: 70%;
+          position: absolute;
+          right: 0;
+          width: 100%;
         }
 
         .ProfileTabs__link__counter {
