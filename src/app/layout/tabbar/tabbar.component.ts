@@ -5,8 +5,9 @@ import { User } from '../../core/user/user';
 import { TabbarService } from './tabbar.service';
 import { MessageService } from '../../chat/service/message.service';
 import { EventService } from '@core/event/event.service';
-import { PUBLIC_PATHS } from 'app/app-routing-constants';
 import { Subscription } from 'rxjs';
+import { APP_PATHS } from 'app/app-routing-constants';
+import { PUBLIC_PATHS } from 'app/public/public-routing-constants';
 
 @Component({
   selector: 'tsl-tabbar',
@@ -14,7 +15,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./tabbar.component.scss'],
 })
 export class TabbarComponent implements OnInit {
-  public readonly LOGIN_PATH = PUBLIC_PATHS.LOGIN;
+  public readonly LOGIN_PATH = `${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.LOGIN}`;
   public user: User;
   public homeUrl: string;
   public hidden = false;

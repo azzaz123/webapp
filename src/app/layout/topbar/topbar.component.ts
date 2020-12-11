@@ -17,8 +17,9 @@ import { PaymentService } from '../../core/payments/payment.service';
 import { CreditInfo } from '../../core/payments/payment.interface';
 import { EventService } from '../../core/event/event.service';
 import { CookieService } from 'ngx-cookie';
-import { PUBLIC_PATHS } from 'app/app-routing-constants';
 import { Subscription } from 'rxjs';
+import { APP_PATHS } from 'app/app-routing-constants';
+import { PUBLIC_PATHS } from 'app/public/public-routing-constants';
 
 @Component({
   selector: 'tsl-topbar',
@@ -26,7 +27,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./topbar.component.scss'],
 })
 export class TopbarComponent implements OnInit, OnDestroy {
-  public readonly LOGIN_PATH = PUBLIC_PATHS.LOGIN;
+  public readonly LOGIN_PATH = `${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.LOGIN}`;
   public user: User;
   public coordinates: Coordinate;
   public category: number;
