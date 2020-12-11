@@ -1,15 +1,9 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import {
-  competitorLinks,
-  ProfileInfoComponent,
-  BAD_USERNAME_ERROR_CODE,
-} from './profile-info.component';
-import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ErrorsService } from '../../core/errors/errors.service';
-import { UserService } from '../../core/user/user.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { of, throwError } from 'rxjs';
+import { By } from '@angular/platform-browser';
+import { ErrorsService } from '@core/errors/errors.service';
+import { UserService } from '@core/user/user.service';
 import {
   IMAGE,
   MOCK_FULL_USER,
@@ -17,12 +11,17 @@ import {
   USER_EDIT_DATA,
   USER_LOCATION_COORDINATES,
   USER_PRO_DATA,
-} from '../../../tests/user.fixtures.spec';
-import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
-import { SwitchComponent } from '../../shared/switch/switch.component';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { BecomeProModalComponent } from '../become-pro-modal/become-pro-modal.component';
-import { By } from '@angular/platform-browser';
+} from '@fixtures/user.fixtures.spec';
+import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
+import { SwitchComponent } from '@shared/switch/switch.component';
+import { of, throwError } from 'rxjs';
+import { BecomeProModalComponent } from '../../modal/become-pro-modal/become-pro-modal.component';
+import {
+  BAD_USERNAME_ERROR_CODE,
+  competitorLinks,
+  ProfileInfoComponent,
+} from './profile-info.component';
 
 describe('ProfileInfoComponent', () => {
   let component: ProfileInfoComponent;

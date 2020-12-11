@@ -1,14 +1,14 @@
-import { of } from 'rxjs';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { TestBed, ComponentFixture, fakeAsync } from '@angular/core/testing';
-import { InvoiceHistoryComponent } from './invoice-history.component';
-import { InvoiceService } from 'app/core/invoice/invoice.service';
+import { InvoiceService } from '@core/invoice/invoice.service';
 import {
   MOCK_INVOICE_HISTORY,
   MOCK_INVOICE_HISTORY_MAPPED,
   MOCK_INVOICE_HISTORY_SORTED,
-} from '../../../tests/invoice.fixtures.spec';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+} from '@fixtures/invoice.fixtures.spec';
+import { of } from 'rxjs';
+import { InvoiceHistoryComponent } from './invoice-history.component';
 
 describe('InvoiceComponent', () => {
   let component: InvoiceHistoryComponent;

@@ -1,43 +1,42 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { ProfileComponent } from './profile.component';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  UserService,
-  USER_ENDPOINT,
-  USER_STATS_ENDPOINT,
-} from '../core/user/user.service';
-import {
-  USER_DATA,
-  MOCK_NON_FEATURED_USER_RESPONSE,
-  MOCK_USER_STATS_RESPONSE,
-} from '../../tests/user.fixtures.spec';
-import { I18nService } from '../core/i18n/i18n.service';
-import { environment } from '../../environments/environment';
-import { NgxPermissionsModule } from 'ngx-permissions';
-import { FeatureflagService } from '../core/user/featureflag.service';
-import { MockSubscriptionService } from '../../tests/subscriptions.fixtures.spec';
-import { EventService } from '../core/event/event.service';
 import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
-import { AccessTokenService } from '../core/http/access-token.service';
-import { CookieService } from 'ngx-cookie';
-import { SplitTestService } from '../core/tracking/split-test.service';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { StarsComponent } from '../shared/stars/stars.component';
-import { ProBadgeComponent } from '../shared/pro-badge/pro-badge.component';
+import { EventService } from '@core/event/event.service';
+import { AccessTokenService } from '@core/http/access-token.service';
+import { I18nService } from '@core/i18n/i18n.service';
+import { SplitTestService } from '@core/tracking/split-test.service';
+import { FeatureflagService } from '@core/user/featureflag.service';
+import {
+  UserService,
+  USER_ENDPOINT,
+  USER_STATS_ENDPOINT,
+} from '@core/user/user.service';
+import { environment } from '@environments/environment';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import { MockSubscriptionService } from '@fixtures/subscriptions.fixtures.spec';
+import {
+  MOCK_NON_FEATURED_USER_RESPONSE,
+  MOCK_USER_STATS_RESPONSE,
+  USER_DATA,
+} from '@fixtures/user.fixtures.spec';
+import { ProBadgeComponent } from '@shared/pro-badge/pro-badge.component';
+import { StarsComponent } from '@shared/stars/stars.component';
 import {
   AnalyticsEvent,
-  ClickProSubscription,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
+  ClickProSubscription,
   SCREEN_IDS,
 } from 'app/core/analytics/analytics-constants';
 import { AnalyticsService } from 'app/core/analytics/analytics.service';
-import { of } from 'rxjs';
-import { MockAnalyticsService } from '../../tests/analytics.fixtures.spec';
 import { SubscriptionsService } from 'app/core/subscriptions/subscriptions.service';
+import { CookieService } from 'ngx-cookie';
+import { NgxPermissionsModule } from 'ngx-permissions';
+import { ProfileComponent } from './profile.component';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;

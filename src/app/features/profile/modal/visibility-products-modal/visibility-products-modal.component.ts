@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -6,8 +6,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './visibility-products-modal.component.html',
   styleUrls: ['./visibility-products-modal.component.scss'],
 })
-export class VisibilityProductsModalComponent implements OnInit {
+export class VisibilityProductsModalComponent {
   constructor(public activeModal: NgbActiveModal) {}
-
-  ngOnInit() {}
 }

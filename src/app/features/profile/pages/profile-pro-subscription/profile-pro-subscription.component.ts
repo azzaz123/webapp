@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Packs } from '../../core/payments/payment.interface';
-import { PerksModel } from '../../core/payments/payment.model';
-import { PaymentService } from '../../core/payments/payment.service';
-import { Pack } from '../../core/payments/pack';
 import {
-  SELLBYTEL_PHONE,
   CARDEALER_COMMERCIAL_CONTACT_MAIL,
-} from '../../core/constants';
+  SELLBYTEL_PHONE,
+} from '@core/constants';
+import { Pack } from '@core/payments/pack';
+import { Packs } from '@core/payments/payment.interface';
+import { PerksModel } from '@core/payments/payment.model';
+import { PaymentService } from '@core/payments/payment.service';
 
 @Component({
   selector: 'tsl-profile-pro-subscription',

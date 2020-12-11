@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { BillingInfoResponse } from 'app/core/payments/payment.interface';
-import { PaymentService } from 'app/core/payments/payment.service';
-import { UserService } from 'app/core/user/user.service';
+import { BillingInfoResponse } from '@core/payments/payment.interface';
+import { PaymentService } from '@core/payments/payment.service';
+import { UserService } from '@core/user/user.service';
 import { take } from 'rxjs/operators';
 
 @Component({

@@ -1,15 +1,14 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import { AccountComponent } from './account.component';
-import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { UnsubscribeModalComponent } from '../unsubscribe-modal/unsubscribe-modal.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { UserService } from '../../core/user/user.service';
-import { MOCK_FULL_USER } from '../../../tests/user.fixtures.spec';
-import { Observable, of } from 'rxjs';
-import { ErrorsService } from '../../core/errors/errors.service';
-import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ErrorsService } from '@core/errors/errors.service';
+import { UserService } from '@core/user/user.service';
+import { MOCK_FULL_USER } from '@fixtures/user.fixtures.spec';
+import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
+import { of } from 'rxjs';
+import { UnsubscribeModalComponent } from '../../modal/unsubscribe-modal/unsubscribe-modal.component';
+import { AccountComponent } from './account.component';
 
 const USER_BIRTH_DATE = '2018-04-12';
 const USER_GENDER = 'M';

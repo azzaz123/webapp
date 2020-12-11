@@ -1,50 +1,53 @@
+import { DecimalPipe } from '@angular/common';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
+  fakeAsync,
   TestBed,
   tick,
-  fakeAsync,
   waitForAsync,
 } from '@angular/core/testing';
-import { AddNewSubscriptionModalComponent } from './add-new-subscription-modal.component';
-import { of, throwError } from 'rxjs';
-import { NgbActiveModal, NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { EventService } from '../../../core/event/event.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ErrorsService } from '../../../core/errors/errors.service';
-import { StripeService } from '../../../core/stripe/stripe.service';
-import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
-import {
-  SUBSCRIPTION_REQUIRES_ACTION,
-  SUBSCRIPTION_REQUIRES_PAYMENT,
-  SUBSCRIPTION_SUCCESS,
-  TIER,
-  MAPPED_SUBSCRIPTIONS,
-  MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED,
-} from '../../../../tests/subscriptions.fixtures.spec';
-import {
-  STRIPE_CARD,
-  FINANCIAL_CARD_OPTION,
-} from '../../../../tests/stripe.fixtures.spec';
-import { PaymentSuccessModalComponent } from './payment-success-modal.component';
-import { PAYMENT_METHOD_DATA } from '../../../../tests/payments.fixtures.spec';
-import { AnalyticsService } from '../../../core/analytics/analytics.service';
-import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
 import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
-  SCREEN_IDS,
   ClickSubscriptionDirectContact,
-  SubscriptionPayConfirmation,
   ClickSubscriptionSubscribe,
-} from '../../../core/analytics/analytics-constants';
-import { CustomCurrencyPipe, DateUntilDayPipe } from '../../../shared/pipes';
-import { DecimalPipe } from '@angular/common';
-import { CATEGORY_IDS } from '../../../core/category/category-ids';
-import { SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
-import { PaymentService } from 'app/core/payments/payment.service';
+  SCREEN_IDS,
+  SubscriptionPayConfirmation,
+} from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { CATEGORY_IDS } from '@core/category/category-ids';
+import { ErrorsService } from '@core/errors/errors.service';
+import { EventService } from '@core/event/event.service';
+import { StripeService } from '@core/stripe/stripe.service';
+import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import { PAYMENT_METHOD_DATA } from '@fixtures/payments.fixtures.spec';
+import {
+  FINANCIAL_CARD_OPTION,
+  STRIPE_CARD,
+} from '@fixtures/stripe.fixtures.spec';
+import {
+  MAPPED_SUBSCRIPTIONS,
+  MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED,
+  SUBSCRIPTION_REQUIRES_ACTION,
+  SUBSCRIPTION_REQUIRES_PAYMENT,
+  SUBSCRIPTION_SUCCESS,
+  TIER,
+} from '@fixtures/subscriptions.fixtures.spec';
+import {
+  NgbActiveModal,
+  NgbCarouselModule,
+  NgbModal,
+} from '@ng-bootstrap/ng-bootstrap';
+import { CustomCurrencyPipe, DateUntilDayPipe } from '@shared/pipes';
 import { I18nService } from 'app/core/i18n/i18n.service';
+import { PaymentService } from 'app/core/payments/payment.service';
+import { of, throwError } from 'rxjs';
+import { PaymentSuccessModalComponent } from '../payment-success/payment-success-modal.component';
+import { AddNewSubscriptionModalComponent } from './add-new-subscription-modal.component';
 
 describe('AddNewSubscriptionModalComponent', () => {
   let component: AddNewSubscriptionModalComponent;

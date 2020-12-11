@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { ErrorsService } from 'app/core/errors/errors.service';
-import { InvoiceTransaction } from 'app/core/invoice/invoice.interface';
-import { InvoiceService } from 'app/core/invoice/invoice.service';
+import { ErrorsService } from '@core/errors/errors.service';
+import { InvoiceTransaction } from '@core/invoice/invoice.interface';
+import { InvoiceService } from '@core/invoice/invoice.service';
 import { finalize, take } from 'rxjs/operators';
 
 @Component({

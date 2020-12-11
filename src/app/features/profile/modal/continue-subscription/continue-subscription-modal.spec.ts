@@ -1,23 +1,22 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ContinueSubscriptionModalComponent } from './continue-subscription-modal.component';
-import { MAPPED_SUBSCRIPTIONS } from '../../../../tests/subscriptions.fixtures.spec';
-import { ToastService } from '../../../layout/toast/toast.service';
-import { I18nService } from '../../../core/i18n/i18n.service';
-import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
-import { of } from 'rxjs';
-import { AnalyticsService } from '../../../core/analytics/analytics.service';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
-  SCREEN_IDS,
   ClickCancelCloseSubscription,
-} from '../../../core/analytics/analytics-constants';
-import { SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
-import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
+  SCREEN_IDS,
+} from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { I18nService } from '@core/i18n/i18n.service';
+import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import { MAPPED_SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
+import { ToastService } from '@layout/toast/toast.service';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { of } from 'rxjs';
+import { ContinueSubscriptionModalComponent } from './continue-subscription-modal.component';
 
 describe('ContinueSubscriptionModalComponent', () => {
   let component: ContinueSubscriptionModalComponent;

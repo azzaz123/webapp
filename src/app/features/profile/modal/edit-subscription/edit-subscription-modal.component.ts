@@ -1,28 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  NgbActiveModal,
-  NgbModalRef,
-  NgbModal,
-} from '@ng-bootstrap/ng-bootstrap';
+  AnalyticsEvent,
+  AnalyticsPageView,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  ClickConfirmEditCurrentSubscription,
+  SCREEN_IDS,
+  ViewEditSubscriptionPlan,
+} from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { I18nService } from '@core/i18n/i18n.service';
 import {
   SubscriptionsResponse,
-  Tier,
   SUBSCRIPTION_CATEGORIES,
-} from '../../../core/subscriptions/subscriptions.interface';
-import { ToastService } from '../../../layout/toast/toast.service';
-import { I18nService } from '../../../core/i18n/i18n.service';
-import { CancelSubscriptionModalComponent } from './cancel-subscription-modal.component';
-import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
-import { AnalyticsService } from '../../../core/analytics/analytics.service';
+  Tier,
+} from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { ToastService } from '@layout/toast/toast.service';
 import {
-  AnalyticsPageView,
-  ViewEditSubscriptionPlan,
-  ANALYTICS_EVENT_NAMES,
-  SCREEN_IDS,
-  AnalyticsEvent,
-  ClickConfirmEditCurrentSubscription,
-  ANALYTIC_EVENT_TYPES,
-} from '../../../core/analytics/analytics-constants';
+  NgbActiveModal,
+  NgbModal,
+  NgbModalRef,
+} from '@ng-bootstrap/ng-bootstrap';
+import { CancelSubscriptionModalComponent } from '../cancel-subscription/cancel-subscription-modal.component';
 
 @Component({
   selector: 'tsl-edit-subscription-modal',

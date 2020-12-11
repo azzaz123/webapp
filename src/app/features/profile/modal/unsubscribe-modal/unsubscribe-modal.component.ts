@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { EventService } from '@core/event/event.service';
+import { AccessTokenService } from '@core/http/access-token.service';
+import { UnsubscribeReason } from '@core/user/unsubscribe-reason.interface';
+import { UserService } from '@core/user/user.service';
+import { environment } from '@environments/environment';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { UserService } from '../../core/user/user.service';
-import { UnsubscribeReason } from '../../core/user/unsubscribe-reason.interface';
-import { EventService } from '../../core/event/event.service';
-import { environment } from '../../../environments/environment';
-import { AccessTokenService } from '../../core/http/access-token.service';
-import { User } from '../../core/user/user';
 
 @Component({
   selector: 'tsl-unsubscribe-modal',

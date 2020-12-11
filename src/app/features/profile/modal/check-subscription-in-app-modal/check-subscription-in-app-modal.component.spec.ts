@@ -1,8 +1,7 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import { CheckSubscriptionInAppModalComponent } from './check-subscription-in-app-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { CheckSubscriptionInAppModalComponent } from './check-subscription-in-app-modal.component';
 
 describe('CheckSubscriptionInAppModalComponent', () => {
   let component: CheckSubscriptionInAppModalComponent;

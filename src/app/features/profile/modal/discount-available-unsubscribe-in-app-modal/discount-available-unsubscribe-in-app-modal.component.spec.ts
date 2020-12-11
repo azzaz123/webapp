@@ -1,8 +1,7 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import { DiscountAvailableUnsubscribeInAppModalComponent } from './discount-available-unsubscribe-in-app-modal.component';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { DiscountAvailableUnsubscribeInAppModalComponent } from './discount-available-unsubscribe-in-app-modal.component';
 
 describe('DiscountAvailableUnsubscribeInAppModalComponent', () => {
   let component: DiscountAvailableUnsubscribeInAppModalComponent;

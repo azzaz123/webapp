@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { SUPPORT_MAIL } from '../../../../core/constants';
+import { SUPPORT_MAIL } from '@core/constants';
 
 @Component({
   selector: 'tsl-unsubscribe-in-app-first-modal',

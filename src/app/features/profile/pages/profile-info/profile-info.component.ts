@@ -1,19 +1,19 @@
 import { Component, ViewChild } from '@angular/core';
-import { UserService } from '../../core/user/user.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import * as moment from 'moment';
-import { CanComponentDeactivate } from '../../shared/guards/can-component-deactivate.interface';
-import { User } from '../../core/user/user';
-import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
-import { ErrorsService } from '../../core/errors/errors.service';
-import { UserProInfo } from '../../core/user/user-info.interface';
+import { ErrorsService } from '@core/errors/errors.service';
+import { Coordinate } from '@core/geolocation/address-response.interface';
+import { User } from '@core/user/user';
+import { UserProInfo } from '@core/user/user-info.interface';
+import { UserService } from '@core/user/user.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { BecomeProModalComponent } from '../become-pro-modal/become-pro-modal.component';
-import { Coordinate } from '../../core/geolocation/address-response.interface';
-import { isValidNumber } from 'libphonenumber-js/custom';
+import { CanComponentDeactivate } from '@shared/guards/can-component-deactivate.interface';
+import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { metadata } from 'assets/js/metadata-phonenumber';
+import { isValidNumber } from 'libphonenumber-js/custom';
+import * as moment from 'moment';
 import { forkJoin } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+import { BecomeProModalComponent } from '../../modal/become-pro-modal/become-pro-modal.component';
 
 export const competitorLinks = [
   'coches.net',

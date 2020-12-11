@@ -1,12 +1,12 @@
-import { SubscriptionPriceDiscountComponent } from './subscription-price-discount.component';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import {
   MAPPED_SUBSCRIPTIONS,
   MAPPED_SUBSCRIPTIONS_ADDED,
   MockSubscriptionService,
-} from '../../../../tests/subscriptions.fixtures.spec';
+} from '@fixtures/subscriptions.fixtures.spec';
+import { SubscriptionPriceDiscountComponent } from './subscription-price-discount.component';
 
 describe('SubscriptionPriceDiscountComponent', () => {
   let component: SubscriptionPriceDiscountComponent;

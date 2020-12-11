@@ -1,16 +1,16 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {
-  TestBed,
   ComponentFixture,
   fakeAsync,
+  TestBed,
   tick,
 } from '@angular/core/testing';
-import { InvoiceItemComponent } from './invoice-item.component';
-import { MOCK_INVOICE_HISTORY } from '../../../../tests/invoice.fixtures.spec';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { InvoiceService } from 'app/core/invoice/invoice.service';
-import { of, throwError } from 'rxjs';
-import { ErrorsService } from '../../../core/errors/errors.service';
 import { By } from '@angular/platform-browser';
+import { ErrorsService } from '@core/errors/errors.service';
+import { InvoiceService } from '@core/invoice/invoice.service';
+import { MOCK_INVOICE_HISTORY } from '@fixtures/invoice.fixtures.spec';
+import { of, throwError } from 'rxjs';
+import { InvoiceItemComponent } from './invoice-item.component';
 
 describe('InvoiceItemComponent', () => {
   const invoiceNotGenerated = MOCK_INVOICE_HISTORY[1];

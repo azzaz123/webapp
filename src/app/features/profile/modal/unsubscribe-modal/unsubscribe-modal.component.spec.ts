@@ -1,19 +1,17 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import { UnsubscribeModalComponent } from './unsubscribe-modal.component';
-import { UserService } from '../../core/user/user.service';
-import { of } from 'rxjs';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { EventService } from '@core/event/event.service';
+import { AccessTokenService } from '@core/http/access-token.service';
+import { UserService } from '@core/user/user.service';
+import { environment } from '@environments/environment';
 import {
   CUSTOM_REASON,
-  MOCK_USER,
   MOCK_UNSUBSCRIBE_REASONS,
   SELECTED_REASON,
-} from '../../../tests/user.fixtures.spec';
-import { EventService } from '../../core/event/event.service';
-import { environment } from '../../../environments/environment';
-import { AccessTokenService } from '../../core/http/access-token.service';
+} from '@fixtures/user.fixtures.spec';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { of } from 'rxjs';
+import { UnsubscribeModalComponent } from './unsubscribe-modal.component';
 
 describe('UnsubscribeModalComponent', () => {
   let component: UnsubscribeModalComponent;

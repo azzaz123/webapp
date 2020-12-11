@@ -1,15 +1,15 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { UserService } from '../core/user/user.service';
-import { UserStats } from '../core/user/user-stats.interface';
-import { SubscriptionsService } from '../core/subscriptions/subscriptions.service';
-import { AnalyticsService } from 'app/core/analytics/analytics.service';
+import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { UserStats } from '@core/user/user-stats.interface';
+import { UserService } from '@core/user/user.service';
 import {
   AnalyticsEvent,
-  ClickProSubscription,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
+  ClickProSubscription,
   SCREEN_IDS,
 } from 'app/core/analytics/analytics-constants';
+import { AnalyticsService } from 'app/core/analytics/analytics.service';
 
 @Component({
   selector: 'tsl-profile',

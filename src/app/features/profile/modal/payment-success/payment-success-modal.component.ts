@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import {
   AnalyticsPageView,
-  ViewSuccessSubscriptionPayment,
   ANALYTICS_EVENT_NAMES,
   SCREEN_IDS,
-} from '../../../core/analytics/analytics-constants';
-import { SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
+  ViewSuccessSubscriptionPayment,
+} from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'tsl-payment-success-modal',

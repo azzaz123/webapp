@@ -1,9 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
+import { Component, Input, OnInit } from '@angular/core';
 import {
   SubscriptionBenefit,
   SubscriptionsResponse,
-} from '../../../core/subscriptions/subscriptions.interface';
+} from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 
 @Component({
   selector: 'tsl-subscription-price-discount',

@@ -1,18 +1,17 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { PaymentSuccessModalComponent } from './payment-success-modal.component';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { AnalyticsService } from '../../../core/analytics/analytics.service';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {
   AnalyticsPageView,
-  ViewSuccessSubscriptionPayment,
   ANALYTICS_EVENT_NAMES,
   SCREEN_IDS,
-} from '../../../core/analytics/analytics-constants';
-import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
-import { SUBSCRIPTIONS_NOT_SUB } from '../../../../tests/subscriptions.fixtures.spec';
-import { SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
+  ViewSuccessSubscriptionPayment,
+} from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import { SUBSCRIPTIONS_NOT_SUB } from '@fixtures/subscriptions.fixtures.spec';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { PaymentSuccessModalComponent } from './payment-success-modal.component';
 
 describe('PaymentSuccessModalComponent', () => {
   let component: PaymentSuccessModalComponent;

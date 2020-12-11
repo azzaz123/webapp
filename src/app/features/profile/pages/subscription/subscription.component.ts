@@ -1,34 +1,34 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { AddNewSubscriptionModalComponent } from './modals/add-new-subscription-modal.component';
+import { Router } from '@angular/router';
+import {
+  AnalyticsEvent,
+  AnalyticsPageView,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  ClickKeepCurrentSubscription,
+  ClickProfileEditCurrentSubscription,
+  ClickProfileSubscribeButton,
+  SCREEN_IDS,
+  ViewProfileSubscription,
+} from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 import {
   SubscriptionsResponse,
   SUBSCRIPTION_CATEGORIES,
-} from '../../core/subscriptions/subscriptions.interface';
-import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
-import { isEqual } from 'lodash-es';
-import { Router } from '@angular/router';
-import { finalize, repeatWhen, take, takeWhile, delay } from 'rxjs/operators';
-import { AnalyticsService } from '../../core/analytics/analytics.service';
-import {
-  SCREEN_IDS,
-  ANALYTIC_EVENT_TYPES,
-  ANALYTICS_EVENT_NAMES,
-  AnalyticsEvent,
-  ViewProfileSubscription,
-  AnalyticsPageView,
-  ClickProfileSubscribeButton,
-  ClickProfileEditCurrentSubscription,
-  ClickKeepCurrentSubscription,
-} from '../../core/analytics/analytics-constants';
-import { ContinueSubscriptionModalComponent } from './modals/continue-subscription-modal.component';
-import { EditSubscriptionModalComponent } from './modals/edit-subscription-modal.component';
-import { CancelSubscriptionModalComponent } from './modals/cancel-subscription-modal.component';
-import { CheckSubscriptionInAppModalComponent } from './modals/check-subscription-in-app-modal/check-subscription-in-app-modal.component';
-import { UnsubscribeInAppFirstModal } from './modals/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
-import { DiscountAvailableUnsubscribeInAppModalComponent } from './modals/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component';
-import { UserService } from 'app/core/user/user.service';
+} from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { AddNewSubscriptionModalComponent } from '@features/profile/modal/add-new-subscription/add-new-subscription-modal.component';
+import { CancelSubscriptionModalComponent } from '@features/profile/modal/cancel-subscription/cancel-subscription-modal.component';
+import { CheckSubscriptionInAppModalComponent } from '@features/profile/modal/check-subscription-in-app-modal/check-subscription-in-app-modal.component';
+import { ContinueSubscriptionModalComponent } from '@features/profile/modal/continue-subscription/continue-subscription-modal.component';
+import { DiscountAvailableUnsubscribeInAppModalComponent } from '@features/profile/modal/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component';
+import { EditSubscriptionModalComponent } from '@features/profile/modal/edit-subscription/edit-subscription-modal.component';
+import { UnsubscribeInAppFirstModal } from '@features/profile/modal/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { User } from 'app/core/user/user';
+import { UserService } from 'app/core/user/user.service';
+import { isEqual } from 'lodash-es';
+import { delay, finalize, repeatWhen, take, takeWhile } from 'rxjs/operators';
 
 export type SubscriptionModal =
   | typeof CheckSubscriptionInAppModalComponent

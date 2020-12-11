@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import {
-  SubscriptionsResponse,
-  SUBSCRIPTION_CATEGORIES,
-} from '../../../core/subscriptions/subscriptions.interface';
-import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
-import { ToastService } from '../../../layout/toast/toast.service';
-import { I18nService } from '../../../core/i18n/i18n.service';
-import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
-  SCREEN_IDS,
   ClickConfirmCloseSubscription,
-} from '../../../core/analytics/analytics-constants';
+  SCREEN_IDS,
+} from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { I18nService } from '@core/i18n/i18n.service';
+import {
+  SubscriptionsResponse,
+  SUBSCRIPTION_CATEGORIES,
+} from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { ToastService } from '@layout/toast/toast.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'tsl-cancel-subscription-modal',

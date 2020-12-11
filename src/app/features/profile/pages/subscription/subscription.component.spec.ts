@@ -1,54 +1,54 @@
-import { SubscriptionsComponent } from './subscription.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
-  TestBed,
   fakeAsync,
+  TestBed,
   tick,
   waitForAsync,
 } from '@angular/core/testing';
-import { CategoryService } from '../../core/category/category.service';
-import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { of } from 'rxjs';
-import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
+import { Router } from '@angular/router';
+import {
+  AnalyticsEvent,
+  AnalyticsPageView,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  ClickKeepCurrentSubscription,
+  ClickProfileEditCurrentSubscription,
+  ClickProfileSubscribeButton,
+  SCREEN_IDS,
+  ViewProfileSubscription,
+} from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { CategoryService } from '@core/category/category.service';
+import { EventService } from '@core/event/event.service';
+import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { AddNewSubscriptionModalComponent } from '@features/profile/modal/add-new-subscription/add-new-subscription-modal.component';
+import { CancelSubscriptionModalComponent } from '@features/profile/modal/cancel-subscription/cancel-subscription-modal.component';
+import { CheckSubscriptionInAppModalComponent } from '@features/profile/modal/check-subscription-in-app-modal/check-subscription-in-app-modal.component';
+import { ContinueSubscriptionModalComponent } from '@features/profile/modal/continue-subscription/continue-subscription-modal.component';
+import { EditSubscriptionModalComponent } from '@features/profile/modal/edit-subscription/edit-subscription-modal.component';
+import { UnsubscribeInAppFirstModal } from '@features/profile/modal/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import { CATEGORY_DATA_WEB } from '@fixtures/category.fixtures.spec';
 import {
   MAPPED_SUBSCRIPTIONS,
   MAPPED_SUBSCRIPTIONS_ADDED,
-  MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED,
-  MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED,
   MAPPED_SUBSCRIPTIONS_WITH_INAPP,
   MockSubscriptionService,
+  MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED,
+  MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED,
   SUBSCRIPTIONS_NOT_SUB,
-} from '../../../tests/subscriptions.fixtures.spec';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AddNewSubscriptionModalComponent } from './modals/add-new-subscription-modal.component';
-import { EditSubscriptionModalComponent } from './modals/edit-subscription-modal.component';
-import { EventService } from '../../core/event/event.service';
-import { Router } from '@angular/router';
-import { AnalyticsService } from '../../core/analytics/analytics.service';
-import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
+} from '@fixtures/subscriptions.fixtures.spec';
 import {
-  SCREEN_IDS,
-  ANALYTICS_EVENT_NAMES,
-  AnalyticsEvent,
-  ANALYTIC_EVENT_TYPES,
-  AnalyticsPageView,
-  ViewProfileSubscription,
-  ClickProfileSubscribeButton,
-  ClickProfileEditCurrentSubscription,
-  ClickKeepCurrentSubscription,
-} from '../../core/analytics/analytics-constants';
-import { CancelSubscriptionModalComponent } from './modals/cancel-subscription-modal.component';
-import { ContinueSubscriptionModalComponent } from './modals/continue-subscription-modal.component';
-import { CheckSubscriptionInAppModalComponent } from './modals/check-subscription-in-app-modal/check-subscription-in-app-modal.component';
-import { UnsubscribeInAppFirstModal } from './modals/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
-import { SUBSCRIPTION_CATEGORIES } from '../../core/subscriptions/subscriptions.interface';
-import { UserService } from 'app/core/user/user.service';
-import {
-  USER_DATA,
-  MOCK_FULL_USER_NON_FEATURED,
   MOCK_FULL_USER,
-} from '../../../tests/user.fixtures.spec';
+  MOCK_FULL_USER_NON_FEATURED,
+  USER_DATA,
+} from '@fixtures/user.fixtures.spec';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UserService } from 'app/core/user/user.service';
+import { of } from 'rxjs';
+import { SubscriptionsComponent } from './subscription.component';
 
 describe('SubscriptionComponent', () => {
   let component: SubscriptionsComponent;

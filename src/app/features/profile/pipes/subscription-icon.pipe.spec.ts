@@ -1,5 +1,5 @@
+import { Pack } from '@core/payments/pack';
 import { SubscriptionIconPipe } from './subscription-icon.pipe';
-import { Pack } from '../../core/payments/pack';
 
 describe('SubscriptionIconPipe', () => {
   let pipe: SubscriptionIconPipe;

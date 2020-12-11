@@ -1,53 +1,57 @@
 import {
-  Component,
-  OnInit,
-  HostListener,
-  ViewChild,
-  OnDestroy,
   AfterViewInit,
+  Component,
+  HostListener,
+  OnDestroy,
+  OnInit,
+  ViewChild,
 } from '@angular/core';
-import { NgbActiveModal, NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
-import {
-  StripeService,
-  STRIPE_PAYMENT_RESPONSE_EVENT_KEY,
-} from '../../../core/stripe/stripe.service';
-import {
-  FinancialCardOption,
-  PaymentMethodResponse,
-} from '../../../core/payments/payment.interface';
-import { EventService } from '../../../core/event/event.service';
-import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { PaymentSuccessModalComponent } from './payment-success-modal.component';
-import { ErrorsService } from '../../../core/errors/errors.service';
-import {
-  SubscriptionResponse,
-  SubscriptionsResponse,
-  Tier,
-  SUBSCRIPTION_CATEGORIES,
-} from '../../../core/subscriptions/subscriptions.interface';
-import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
-  SCREEN_IDS,
-  SubscriptionPayConfirmation,
   ClickSubscriptionDirectContact,
   ClickSubscriptionSubscribe,
-} from '../../../core/analytics/analytics-constants';
-import {
-  PAYMENT_RESPONSE_STATUS,
-  PaymentService,
-} from '../../../core/payments/payment.service';
-import { CATEGORY_IDS } from '../../../core/category/category-ids';
+  SCREEN_IDS,
+  SubscriptionPayConfirmation,
+} from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { CATEGORY_IDS } from '@core/category/category-ids';
 import {
   CAR_DEALER_TYPEFORM_URL,
-  TERMS_AND_CONDITIONS_URL,
   PRIVACY_POLICY_URL,
-} from '../../../core/constants';
+  TERMS_AND_CONDITIONS_URL,
+} from '@core/constants';
+import { ErrorsService } from '@core/errors/errors.service';
+import { EventService } from '@core/event/event.service';
+import { I18nService } from '@core/i18n/i18n.service';
+import {
+  FinancialCardOption,
+  PaymentMethodResponse,
+} from '@core/payments/payment.interface';
+import {
+  PaymentService,
+  PAYMENT_RESPONSE_STATUS,
+} from '@core/payments/payment.service';
+import {
+  StripeService,
+  STRIPE_PAYMENT_RESPONSE_EVENT_KEY,
+} from '@core/stripe/stripe.service';
+import {
+  SubscriptionResponse,
+  SubscriptionsResponse,
+  SUBSCRIPTION_CATEGORIES,
+  Tier,
+} from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import {
+  NgbActiveModal,
+  NgbCarousel,
+  NgbModal,
+  NgbModalRef,
+} from '@ng-bootstrap/ng-bootstrap';
 import { IOption } from 'app/dropdown/utils/option.interface';
-import { I18nService } from 'app/core/i18n/i18n.service';
+import { PaymentSuccessModalComponent } from '../payment-success/payment-success-modal.component';
 
 @Component({
   selector: 'tsl-add-new-subscription-modal',

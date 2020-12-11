@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
-import { LoggedGuard } from '../core/user/logged.guard';
-import { ProfileComponent } from './profile.component';
-import { ExitConfirmGuard } from '../shared/guards/exit-confirm.guard';
+import { LoggedGuard } from '@core/user/logged.guard';
+import { PERMISSIONS } from '@core/user/user';
+import { ExitConfirmGuard } from '@shared/guards/exit-confirm.guard';
 import { NgxPermissionsGuard } from 'ngx-permissions';
-import { PERMISSIONS } from '../core/user/user';
-import { ProfileInfoComponent } from './profile-info/profile-info.component';
-import { AccountComponent } from './account/account.component';
-import { ProfileProSubscriptionComponent } from './profile-pro-subscription/profile-pro-subscription.component';
-import { SubscriptionsComponent } from './subscription/subscription.component';
-import { InvoiceComponent } from './invoice/invoice.component';
+import { AccountComponent } from './pages/account/account.component';
+import { InvoiceComponent } from './pages/invoice/invoice.component';
+import { ProfileInfoComponent } from './pages/profile-info/profile-info.component';
+import { ProfileProSubscriptionComponent } from './pages/profile-pro-subscription/profile-pro-subscription.component';
+import { ProfileComponent } from './pages/profile.component';
+import { SubscriptionsComponent } from './pages/subscription/subscription.component';
 
 const routes: Routes = [
   {

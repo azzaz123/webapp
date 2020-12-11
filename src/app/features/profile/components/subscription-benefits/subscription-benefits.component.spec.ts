@@ -1,13 +1,12 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { SubscriptionBenefitsComponent } from './subscription-benefits.component';
-import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import {
   MockSubscriptionService,
   MOCK_SUBSCRIPTION_BENEFITS,
-} from '../../../../tests/subscriptions.fixtures.spec';
-import { By } from '@angular/platform-browser';
+} from '@fixtures/subscriptions.fixtures.spec';
+import { SubscriptionBenefitsComponent } from './subscription-benefits.component';
 
 describe('SubscriptionBenefitsComponent', () => {
   let component: SubscriptionBenefitsComponent;

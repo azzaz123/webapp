@@ -1,11 +1,11 @@
-import { of, throwError } from 'rxjs';
-import { TestBed, ComponentFixture, fakeAsync } from '@angular/core/testing';
-import { PaymentService } from 'app/core/payments/payment.service';
-import { InvoiceComponent } from './invoice.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { BILLING_INFO_RESPONSE } from '../../../tests/payments.fixtures.spec';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { BILLING_INFO_RESPONSE } from '@fixtures/payments.fixtures.spec';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { PaymentService } from 'app/core/payments/payment.service';
 import { UserService } from 'app/core/user/user.service';
+import { of, throwError } from 'rxjs';
+import { InvoiceComponent } from './invoice.component';
 
 describe('InvoiceComponent', () => {
   let component: InvoiceComponent;

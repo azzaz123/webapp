@@ -1,8 +1,7 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import { BecomeProModalComponent } from './become-pro-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { BecomeProModalComponent } from './become-pro-modal.component';
 
 describe('BecomeProModalComponent', () => {
   let component: BecomeProModalComponent;

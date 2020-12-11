@@ -1,19 +1,19 @@
 import { Component, ViewChild } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { UnsubscribeModalComponent } from '../unsubscribe-modal/unsubscribe-modal.component';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
-import { UserService } from '../../core/user/user.service';
-import { ErrorsService } from '../../core/errors/errors.service';
-import { User } from '../../core/user/user';
+import { ErrorsService } from '@core/errors/errors.service';
+import { User } from '@core/user/user';
+import { UserService } from '@core/user/user.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CanComponentDeactivate } from '@shared/guards/can-component-deactivate.interface';
+import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import * as moment from 'moment';
 import { finalize } from 'rxjs/operators';
-import { CanComponentDeactivate } from '../../shared/guards/can-component-deactivate.interface';
+import { UnsubscribeModalComponent } from '../../modal/unsubscribe-modal/unsubscribe-modal.component';
 
 @Component({
   selector: 'tsl-account',

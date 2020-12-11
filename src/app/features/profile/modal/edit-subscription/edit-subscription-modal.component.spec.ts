@@ -1,31 +1,30 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { EditSubscriptionModalComponent } from './edit-subscription-modal.component';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {
+  AnalyticsEvent,
+  AnalyticsPageView,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  ClickConfirmEditCurrentSubscription,
+  SCREEN_IDS,
+  ViewEditSubscriptionPlan,
+} from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { EventService } from '@core/event/event.service';
+import { I18nService } from '@core/i18n/i18n.service';
+import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import {
   MAPPED_SUBSCRIPTIONS,
   TIER,
-} from '../../../../tests/subscriptions.fixtures.spec';
-import { ToastService } from '../../../layout/toast/toast.service';
-import { I18nService } from '../../../core/i18n/i18n.service';
-import { EventService } from '../../../core/event/event.service';
+} from '@fixtures/subscriptions.fixtures.spec';
+import { ToastService } from '@layout/toast/toast.service';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DateUntilDayPipe } from '@shared/pipes';
 import { of } from 'rxjs';
-import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
-import { CancelSubscriptionModalComponent } from './cancel-subscription-modal.component';
-import { AnalyticsService } from '../../../core/analytics/analytics.service';
-import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
-import {
-  ViewEditSubscriptionPlan,
-  ANALYTICS_EVENT_NAMES,
-  SCREEN_IDS,
-  AnalyticsPageView,
-  AnalyticsEvent,
-  ANALYTIC_EVENT_TYPES,
-  ClickConfirmEditCurrentSubscription,
-} from '../../../core/analytics/analytics-constants';
-import { DateUntilDayPipe } from '../../../shared/pipes';
-import { SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
+import { CancelSubscriptionModalComponent } from '../cancel-subscription/cancel-subscription-modal.component';
+import { EditSubscriptionModalComponent } from './edit-subscription-modal.component';
 
 describe('EditSubscriptionModalComponent', () => {
   let component: EditSubscriptionModalComponent;

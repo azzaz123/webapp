@@ -1,15 +1,14 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import { ProfileProSubscriptionComponent } from './profile-pro-subscription.component';
-import { of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { SubscriptionIconPipe } from './subscription-icon.pipe';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { PaymentService } from '../../core/payments/payment.service';
-import { Packs } from '../../core/payments/payment.interface';
-import { createPacksFixture } from '../../../tests/payments.fixtures.spec';
-import { PerksModel } from '../../core/payments/payment.model';
+import { Packs } from '@core/payments/payment.interface';
+import { PerksModel } from '@core/payments/payment.model';
+import { PaymentService } from '@core/payments/payment.service';
+import { createPacksFixture } from '@fixtures/payments.fixtures.spec';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { of } from 'rxjs';
+import { SubscriptionIconPipe } from '../../pipes/subscription-icon.pipe';
+import { ProfileProSubscriptionComponent } from './profile-pro-subscription.component';
 
 describe('ProfileProSubscriptionComponent', () => {
   let component: ProfileProSubscriptionComponent;

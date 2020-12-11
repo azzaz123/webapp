@@ -1,5 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { User } from '../../core/user/user';
+import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({

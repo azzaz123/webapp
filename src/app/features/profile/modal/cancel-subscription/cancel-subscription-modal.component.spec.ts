@@ -1,23 +1,22 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { CancelSubscriptionModalComponent } from './cancel-subscription-modal.component';
-import { MAPPED_SUBSCRIPTIONS } from '../../../../tests/subscriptions.fixtures.spec';
-import { ToastService } from '../../../layout/toast/toast.service';
-import { I18nService } from '../../../core/i18n/i18n.service';
-import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
-import { of } from 'rxjs';
-import { AnalyticsService } from '../../../core/analytics/analytics.service';
-import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {
   AnalyticsEvent,
-  ClickConfirmCloseSubscription,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
+  ClickConfirmCloseSubscription,
   SCREEN_IDS,
-} from '../../../core/analytics/analytics-constants';
-import { SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
+} from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { I18nService } from '@core/i18n/i18n.service';
+import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import { MAPPED_SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
+import { ToastService } from '@layout/toast/toast.service';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { of } from 'rxjs';
+import { CancelSubscriptionModalComponent } from './cancel-subscription-modal.component';
 
 describe('CancelSubscriptionModalComponent', () => {
   let component: CancelSubscriptionModalComponent;

@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { InvoiceService } from 'app/core/invoice/invoice.service';
-import { InvoiceTransaction } from 'app/core/invoice/invoice.interface';
+import { Component, Input, OnInit } from '@angular/core';
+import { InvoiceTransaction } from '@core/invoice/invoice.interface';
+import { InvoiceService } from '@core/invoice/invoice.service';
 import { finalize } from 'rxjs/operators';
 
 export enum InvoiceRequestStatus {
