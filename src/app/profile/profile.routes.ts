@@ -10,7 +10,7 @@ import { ProfileInfoComponent } from './profile-info/profile-info.component';
 import { AccountComponent } from './account/account.component';
 import { ProfileProSubscriptionComponent } from './profile-pro-subscription/profile-pro-subscription.component';
 import { SubscriptionsComponent } from './subscription/subscription.component';
-import { ProfileProBillingComponent } from '../shared/profile-pro-billing/profile-pro-billing.component';
+import { InvoiceComponent } from './invoice/invoice.component';
 
 const routes: Routes = [
   {
@@ -57,7 +57,7 @@ const routes: Routes = [
       },
       {
         path: 'billing',
-        component: ProfileProBillingComponent,
+        component: InvoiceComponent,
         canDeactivate: [ExitConfirmGuard],
         data: {
           isMyZone: true,
@@ -92,4 +92,5 @@ export const profileRoutedComponents = [
   AccountComponent,
   SubscriptionsComponent,
   ProfileProSubscriptionComponent,
+  InvoiceComponent,
 ];
