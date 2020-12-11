@@ -10,7 +10,6 @@ import { REALESTATE_CATEGORY } from '@core/item/item-categories';
 import { ITEM_TYPES } from '@core/item/item';
 import { cloneDeep } from 'lodash-es';
 import {
-  InputType,
   OutputType,
   UploadFile,
   IProductUploadForm,
@@ -24,7 +23,7 @@ import {
 import { ItemService } from '@core/item/item.service';
 import { UploaderService } from '@shared/uploader/uploader.service';
 import { Image } from '@core/user/user-response.interface';
-import { combineLatest, forkJoin, Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import {
   CarContent,
   ItemResponse,
@@ -154,7 +153,6 @@ export class UploadService {
     }
 
     return {
-      type: InputType.uploadFile,
       url: environment.baseUrl + url,
       method: 'POST',
       fieldName: 'image',
@@ -172,28 +170,9 @@ export class UploadService {
     files: UploadFile[],
     itemType: ITEM_TYPES
   ): Observable<UploadOutput[]> {
-    const url =
-      this.API_URL +
-      '/' +
-      (itemType !== ITEM_TYPES.CONSUMER_GOODS ? itemType + '/' : '') +
-      itemId +
-      '/picture' +
-      (itemType !== ITEM_TYPES.REAL_ESTATE ? '2' : '');
-
     const imagesRequest: Observable<UploadOutput>[] = [];
-
     files.forEach((file: UploadFile) => {
-      const inputEvent: UploadInput = {
-        type: InputType.uploadRemainingImages,
-        url: environment.baseUrl + url,
-        method: 'POST',
-        fieldName: 'image',
-        data: {
-          order: file.fileIndex.toString(),
-        },
-        headers: this.getUploadHeaders(url),
-      };
-      imagesRequest.push(this.uploaderService.uploadFile(file, inputEvent));
+      imagesRequest.push(this.uploadSingleImage(file, itemId, itemType));
     });
     return combineLatest(imagesRequest);
   }
@@ -211,7 +190,6 @@ export class UploadService {
       '/picture' +
       (type !== ITEM_TYPES.REAL_ESTATE ? '2' : '');
     const inputEvent: UploadInput = {
-      type: InputType.uploadFile,
       url: environment.baseUrl + url,
       method: 'POST',
       fieldName: 'image',

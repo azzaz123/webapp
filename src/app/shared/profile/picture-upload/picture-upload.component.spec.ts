@@ -16,7 +16,6 @@ import {
 import { environment } from '@environments/environment';
 import {
   imageType,
-  InputType,
   OutputType,
   UploadFile,
 } from '../../uploader/upload.interface';
@@ -97,7 +96,6 @@ describe('PictureUploadComponent', () => {
 
       expect(component.file).toEqual(UPLOAD_FILE);
       expect(uploaderService.uploadFile).toHaveBeenCalledWith(UPLOAD_FILE, {
-        type: InputType.uploadFile,
         url: `${environment.baseUrl}api/v3/users/me/image`,
         method: 'POST',
         fieldName: 'image',

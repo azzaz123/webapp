@@ -10,7 +10,6 @@ import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
 import {
   imageType,
-  InputType,
   NgUploaderOptions,
   OutputType,
   UploadFile,
@@ -21,7 +20,6 @@ import { AccessTokenService } from '@core/http/access-token.service';
 import { UploaderService } from '@shared/uploader/uploader.service';
 import { finalize } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
-import { IMAGE } from '@fixtures/user.fixtures.spec';
 
 @Component({
   selector: 'tsl-picture-upload',
@@ -46,7 +44,7 @@ export class PictureUploadComponent implements OnInit {
     this.options = {
       allowedExtensions: ['jpg', 'jpeg'],
       maxUploads: 1,
-      maxSize: 3145728, // 3 MB
+      maxSize: 1024 * 1024 * 3, // 3 MB
     };
   }
 
@@ -82,7 +80,6 @@ export class PictureUploadComponent implements OnInit {
     };
 
     const uploadinput: UploadInput = {
-      type: InputType.uploadFile,
       url: environment.baseUrl + url,
       method: 'POST',
       fieldName: 'image',

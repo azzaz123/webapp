@@ -138,7 +138,15 @@ export class DropAreaComponent
   public updateOrder(): void {
     if (this.isUpdatingItem) {
       this.onOrderImages.emit();
+    } else {
+      this.updateIndex();
     }
+  }
+
+  private updateIndex(): void {
+    this.files.forEach((file, index) => {
+      file.fileIndex = index;
+    });
   }
 
   ngOnDestroy() {

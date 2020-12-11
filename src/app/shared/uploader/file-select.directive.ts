@@ -12,6 +12,7 @@ import {
 import { NgUploaderOptions, UploadOutput } from './upload.interface';
 import { isPlatformServer } from '@angular/common';
 import { UploaderService } from './uploader.service';
+import { Subscription } from 'rxjs';
 
 @Directive({
   selector: '[tslFileSelect]',
@@ -23,6 +24,7 @@ export class FileSelectDirective implements OnInit, OnDestroy {
 
   isServer: boolean = isPlatformServer(this.platform_id);
   el: HTMLInputElement;
+  eventsSubscription: Subscription;
 
   constructor(
     @Inject(PLATFORM_ID) private platform_id,
@@ -42,16 +44,22 @@ export class FileSelectDirective implements OnInit, OnDestroy {
 
     this.upload.options = this.options;
 
-    this.upload.serviceEvents.subscribe((event: UploadOutput) => {
-      if (event.imageType === this.imageType) {
-        this.uploadOutput.emit(event);
+    this.eventsSubscription = this.upload.serviceEvents.subscribe(
+      (event: UploadOutput) => {
+        if (event.imageType === this.imageType) {
+          this.uploadOutput.emit(event);
+        }
       }
-    });
+    );
   }
 
   ngOnDestroy() {
     if (this.isServer) {
       return;
+    }
+
+    if (this.eventsSubscription) {
+      this.eventsSubscription.unsubscribe();
     }
 
     this.el.removeEventListener('change', this.fileListener, false);

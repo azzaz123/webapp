@@ -10,7 +10,6 @@ import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
 import {
   imageType,
-  InputType,
   NgUploaderOptions,
   OutputType,
   UploadFile,
@@ -49,7 +48,7 @@ export class CoverUploadComponent implements OnInit {
     this.options = {
       allowedExtensions: ['jpg', 'jpeg'],
       maxUploads: 1,
-      maxSize: 3145728, // 3 MB
+      maxSize: 1024 * 1024 * 3, // 3 MB
     };
   }
 
@@ -85,7 +84,6 @@ export class CoverUploadComponent implements OnInit {
     };
 
     const uploadinput: UploadInput = {
-      type: InputType.uploadFile,
       url: environment.baseUrl + url,
       method: 'POST',
       fieldName: 'image',

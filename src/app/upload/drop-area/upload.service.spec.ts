@@ -18,7 +18,7 @@ import { AccessTokenService } from '@core/http/access-token.service';
 import { ITEM_ID } from '../../../tests/item.fixtures.spec';
 import { CARS_CATEGORY, REALESTATE_CATEGORY } from '@core/item/item-categories';
 import { ITEM_TYPES } from '@core/item/item';
-import { InputType, OutputType } from '@shared/uploader/upload.interface';
+import { OutputType } from '@shared/uploader/upload.interface';
 import { ItemService } from '@core/item/item.service';
 import { of } from 'rxjs';
 import { UploaderService } from '@shared/uploader/uploader.service';
@@ -95,7 +95,6 @@ describe('UploadService', () => {
           VALUES.images.length
         );
         expect(uploaderService.uploadFile).toBeCalledWith(UPLOAD_FILE, {
-          type: InputType.uploadFile,
           url: environment.baseUrl + 'api/v3/items/cars',
           method: 'POST',
           fieldName: 'image',
@@ -128,7 +127,6 @@ describe('UploadService', () => {
             VALUES.images.length
           );
           expect(uploaderService.uploadFile).toBeCalledWith(UPLOAD_FILE, {
-            type: InputType.uploadFile,
             url: environment.baseUrl + 'api/v3/items/cars',
             method: 'POST',
             fieldName: 'image',
@@ -163,7 +161,6 @@ describe('UploadService', () => {
           VALUES.images.length
         );
         expect(uploaderService.uploadFile).toHaveBeenCalledWith(UPLOAD_FILE, {
-          type: InputType.uploadFile,
           url: environment.baseUrl + 'api/v3/items',
           method: 'POST',
           fieldName: 'image',
@@ -197,7 +194,6 @@ describe('UploadService', () => {
             VALUES.images.length
           );
           expect(uploaderService.uploadFile).toHaveBeenCalledWith(UPLOAD_FILE, {
-            type: InputType.uploadFile,
             url: environment.baseUrl + 'api/v3/items',
             method: 'POST',
             fieldName: 'image',
@@ -236,7 +232,6 @@ describe('UploadService', () => {
           VALUES_FINAL.images.length
         );
         expect(uploaderService.uploadFile).toHaveBeenCalledWith(UPLOAD_FILE, {
-          type: InputType.uploadFile,
           url: environment.baseUrl + 'api/v3/items/real_estate',
           method: 'POST',
           fieldName: 'image',
@@ -273,7 +268,6 @@ describe('UploadService', () => {
         expect(uploaderService.uploadFile).toHaveBeenLastCalledWith(
           UPLOAD_FILE_2,
           {
-            type: InputType.uploadRemainingImages,
             url:
               environment.baseUrl + 'api/v3/items/cars/' + CAR_ID + '/picture2',
             method: 'POST',
@@ -305,7 +299,6 @@ describe('UploadService', () => {
         expect(uploaderService.uploadFile).toHaveBeenLastCalledWith(
           UPLOAD_FILE_2,
           {
-            type: InputType.uploadRemainingImages,
             url:
               environment.baseUrl +
               'api/v3/items/real_estate/' +
@@ -339,7 +332,6 @@ describe('UploadService', () => {
         expect(uploaderService.uploadFile).toHaveBeenLastCalledWith(
           UPLOAD_FILE_2,
           {
-            type: InputType.uploadRemainingImages,
             url: environment.baseUrl + 'api/v3/items/' + ITEM_ID + '/picture2',
             method: 'POST',
             fieldName: 'image',
@@ -359,7 +351,6 @@ describe('UploadService', () => {
         spyOn(uploaderService, 'uploadFile');
         service.uploadSingleImage(UPLOAD_FILE, CAR_ID, ITEM_TYPES.CARS);
         expect(uploaderService.uploadFile).toHaveBeenCalledWith(UPLOAD_FILE, {
-          type: InputType.uploadFile,
           url:
             environment.baseUrl + 'api/v3/items/cars/' + CAR_ID + '/picture2',
           method: 'POST',
@@ -382,7 +373,6 @@ describe('UploadService', () => {
           ITEM_TYPES.CONSUMER_GOODS
         );
         expect(uploaderService.uploadFile).toHaveBeenCalledWith(UPLOAD_FILE, {
-          type: InputType.uploadFile,
           url: environment.baseUrl + 'api/v3/items/' + ITEM_ID + '/picture2',
           method: 'POST',
           fieldName: 'image',

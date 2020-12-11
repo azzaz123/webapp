@@ -22,11 +22,6 @@ export enum UploadAction {
   createdOnHold = 'createdOnHold',
 }
 
-export enum InputType {
-  uploadRemainingImages = 'uploadRemainingImages',
-  uploadFile = 'uploadFile',
-}
-
 export interface UploadProgress {
   status: UploadStatus;
   data?: {
@@ -65,7 +60,6 @@ export interface PendingFiles {
 }
 
 export interface UploadInput {
-  type: InputType;
   url?: string;
   method?: string;
   id?: string;
