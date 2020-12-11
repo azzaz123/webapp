@@ -88,7 +88,9 @@ const loggedRoutes = [
     path: 'profile',
     canLoad: [LoggedGuard],
     loadChildren: () =>
-      import('app/profile/profile.module').then((m) => m.ProfileModule),
+      import('app/features/profile/profile.module').then(
+        (m) => m.ProfileModule
+      ),
   },
   {
     path: 'chat',
