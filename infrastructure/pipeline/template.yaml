@@ -11,16 +11,16 @@ Parameters:
     Description: 'Name of the project'
     Type: String
   BucketES:
-    Description: 'ARN of the S3 bucket where the app in ES is hosted'
+    Description: 'ARN of the S3 bucket where the app in ES is hosted' # todo: only used for roles/permissions, might be able to delete it
     Type: String
   BucketEN:
-    Description: 'ARN of the S3 bucket where the app in EN is hosted'
+    Description: 'ARN of the S3 bucket where the app in EN is hosted' # todo: only used for roles/permissions, might be able to delete it
     Type: String
   BucketESName:
-    Description: 'Name of the S3 bucket where the app in ES is hosted'
+    Description: 'Name of the S3 bucket where the app in ES is hosted' # todo: if we use the same template and properties for beta for both accounts, it'll throw an error because the bucket already exists
     Type: String
   BucketENName:
-    Description: 'Name of the S3 bucket where the app in EN is hosted'
+    Description: 'Name of the S3 bucket where the app in EN is hosted' # todo: if we use the same template and properties for beta for both accounts, it'll throw an error because the bucket already exists
     Type: String
 
 Resources:
@@ -36,7 +36,7 @@ Resources:
               Service: codepipeline.amazonaws.com
             Action: sts:AssumeRole
 
-  CodePipelinePolicy:
+  CodePipelinePolicy: # todo: we should change this to the common roles?w
     Type: "AWS::IAM::Policy"
     Properties:
       PolicyName: !Sub "webapp-pipeline-policy-${EnvName}"
@@ -314,10 +314,10 @@ Resources:
               !Sub "Core-${EnvName}-SSHSecurityGroup"
         VpcId:
           Fn::ImportValue:
-            !Sub "Core-${EnvName}-VPC"
+            !Sub "${EnvName}-vpc"
         Subnets:
           - Fn::ImportValue:
-              !Sub "Core-${EnvName}-NatSubnet1"
+              !Sub "${EnvName}-public-subnet-a"
       Tags:
         - Key: Env
           Value: !Ref EnvName
@@ -364,10 +364,10 @@ Resources:
               !Sub "Core-${EnvName}-SSHSecurityGroup"
         VpcId:
           Fn::ImportValue:
-            !Sub "Core-${EnvName}-VPC"
+            !Sub "${EnvName}-vpc"
         Subnets:
           - Fn::ImportValue:
-              !Sub "Core-${EnvName}-NatSubnet1"
+              !Sub "${EnvName}-private-subnet-a"
       Tags:
         - Key: Env
           Value: !Ref EnvName

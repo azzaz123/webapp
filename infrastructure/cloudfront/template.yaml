@@ -6,19 +6,19 @@ Parameters:
     Description: 'Name of this project'
     Type: String
   BucketES:
-    Description: 'Bucket where the ES webapp resides'
+    Description: 'Bucket where the ES webapp resides' # todo: bucket created in s3/template.yaml
     Type: String
   BucketEN:
-    Description: 'Bucket where the EN webapp resides'
+    Description: 'Bucket where the EN webapp resides' # todo: bucket created in s3/template.yaml
     Type: String
   HostES:
-    Description: 'URL to access to it'
+    Description: 'URL to access to it' # todo: hostedzone with public domain?
     Type: String
   HostEN:
-    Description: 'URL to access to it'
+    Description: 'URL to access to it' # todo: hostedzone with public domain?
     Type: String
   HostedZoneName:
-    Description: 'Name of the hosted zone'
+    Description: 'Name of the hosted zone' # todo: hostedzone with public domain?
     Type: String
   Certificate:
     Description: 'Acm Certificate'
@@ -151,7 +151,7 @@ Resources:
       RecordSets:
         - AliasTarget:
             DNSName: !GetAtt WebEsDistribution.DomainName
-            HostedZoneId: Z2FDTNDATAQYW2
+            HostedZoneId: Z2FDTNDATAQYW2 # todo: import?
           Name: !Ref HostES
           Type: A
 
@@ -162,7 +162,7 @@ Resources:
       RecordSets:
         - AliasTarget:
             DNSName: !GetAtt WebEnDistribution.DomainName
-            HostedZoneId: Z2FDTNDATAQYW2
+            HostedZoneId: Z2FDTNDATAQYW2 # todo: import?
           Name: !Ref HostEN
           Type: A
 
