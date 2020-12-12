@@ -1126,6 +1126,7 @@
   <translation id="UploadProductShippingDescription">Puedes enviar (casi) todo por wallapop. ¡Y es gratis!</translation>
   <translation id="UploadProductCoachmarkShipping">Cuéntanos cuánto pesa tu producto. Recuerda que la suma de la longitud, la altura y el ancho no puede superar los 270cm.</translation>
   <translation id="UploadProductSubmitLoading">Subiendo...<ph name="INTERPOLATION"><ex>{{ uploadCompletedPercentage }}</ex></ph>%</translation>
+  <translation id="UploadImagesSubmitLoading">Subiendo imagen...<ph name="INTERPOLATION"><ex>{{ perdingFiles.currentUploading }}</ex></ph>/<ph name="INTERPOLATION_1"><ex>{{ perdingFiles.totalFiles }}</ex></ph></translation>
   <translation id="UploadProductProductCondition">Estado del producto</translation>
   <translation id="UploadProductProductConditionPlaceholder">Escoge un estado</translation>
   <translation id="ForgetThisChat"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>Mejor no sigas por aquí<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></translation>
