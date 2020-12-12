@@ -1,5 +1,5 @@
-import { Observable } from 'rxjs';
-import { EventEmitter, Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { Injectable } from '@angular/core';
 import {
   ImageType,
   NgUploaderOptions,
@@ -16,11 +16,10 @@ import { cloneDeep } from 'lodash-es';
   providedIn: 'root',
 })
 export class UploaderService {
-  serviceEvents: EventEmitter<UploadOutput>;
+  private serviceEvents = new Subject<UploadOutput>();
+  public serviceEvents$ = this.serviceEvents.asObservable();
 
-  constructor(private sanitizer: DomSanitizer) {
-    this.serviceEvents = new EventEmitter();
-  }
+  constructor(private sanitizer: DomSanitizer) {}
 
   handleFiles(
     files: FileList,
@@ -60,7 +59,7 @@ export class UploaderService {
           uploadFile.preview = this.sanitizer.bypassSecurityTrustResourceUrl(
             event.target.result
           );
-          this.serviceEvents.emit({
+          this.serviceEvents.next({
             type: OutputType.addedToQueue,
             file: uploadFile,
             imageType: imageType,
@@ -86,7 +85,7 @@ export class UploaderService {
       return true;
     }
 
-    this.serviceEvents.emit({
+    this.serviceEvents.next({
       type: OutputType.rejected,
       file: file,
       reason: 'ExtensionNotAllowed',
@@ -105,7 +104,7 @@ export class UploaderService {
     if (files.length < options.maxUploads) {
       return true;
     }
-    this.serviceEvents.emit({
+    this.serviceEvents.next({
       type: OutputType.rejected,
       file: file,
       reason: 'MaxUploadsExceeded',
@@ -122,7 +121,7 @@ export class UploaderService {
     if (!options.maxSize || file.size < options.maxSize) {
       return true;
     }
-    this.serviceEvents.emit({
+    this.serviceEvents.next({
       type: OutputType.rejected,
       file: file,
       reason: 'MaxSizeExceeded',

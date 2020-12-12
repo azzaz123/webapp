@@ -75,7 +75,7 @@ export class DropAreaComponent
   }
 
   private subscribeEvents(): void {
-    this.eventsSubscrition = this.uploaderService.serviceEvents.subscribe(
+    this.eventsSubscrition = this.uploaderService.serviceEvents$.subscribe(
       (event: UploadOutput) => {
         this.onUploadOutput(event);
       }

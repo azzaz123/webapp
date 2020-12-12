@@ -1,4 +1,3 @@
-import { of } from 'rxjs';
 import {
   ComponentFixture,
   fakeAsync,
@@ -23,6 +22,7 @@ import { ErrorsService } from '@core/errors/errors.service';
 import { OutputType, UploadFile } from '@shared/uploader/upload.interface';
 import { UploaderService } from '@shared/uploader/uploader.service';
 import { FileDropActions } from '@shared/uploader/file-drop.directive';
+import { MockUploaderService } from '@fixtures/uploader.fixtures.spec';
 
 describe('DropAreaComponent', () => {
   let component: DropAreaComponent;
@@ -45,9 +45,7 @@ describe('DropAreaComponent', () => {
           },
           {
             provide: UploaderService,
-            useValue: {
-              serviceEvents: of(null),
-            },
+            useClass: MockUploaderService,
           },
           {
             provide: NgbModal,

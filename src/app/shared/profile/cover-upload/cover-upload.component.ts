@@ -63,7 +63,7 @@ export class CoverUploadComponent implements OnInit, OnDestroy {
   }
 
   private subscribeUploadEvents(): void {
-    this.eventsSubscription = this.uploaderService.serviceEvents.subscribe(
+    this.eventsSubscription = this.uploaderService.serviceEvents$.subscribe(
       (event: UploadOutput) => {
         if (event.imageType === this.imageType) {
           this.onUploadOutput(event);
