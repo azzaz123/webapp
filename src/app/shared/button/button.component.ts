@@ -7,6 +7,7 @@ import { Component, Input } from '@angular/core';
 })
 export class ButtonComponent {
   @Input() className = 'btn-primary';
+  @Input() classLoading = 'white';
   @Input() type = 'button';
   @Input() disabled: boolean;
   @Input() loading: boolean;

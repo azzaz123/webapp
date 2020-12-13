@@ -1,45 +1,40 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { RealestateKeysService } from './realestate-keys.service';
 import {
+  AbstractControl,
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { Key } from './key.interface';
-import { UploadEvent } from '../upload-event.interface';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { Router } from '@angular/router';
+import {
+  AnalyticsEvent,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  EditItemRE,
+  ListItemRE,
+  SCREEN_IDS,
+} from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ErrorsService } from '@core/errors/errors.service';
+import { whitespaceValidator } from '@core/form-validators/formValidators.func';
 import { ItemLocation } from '@core/geolocation/address-response.interface';
-import { IOption } from 'app/dropdown/utils/option.interface';
-import { omit, isEqual } from 'lodash-es';
+import { ITEM_TYPES } from '@core/item/item';
+import { REALESTATE_CATEGORY } from '@core/item/item-categories';
+import {
+  RealestateContent,
+  RealStateResponse,
+} from '@core/item/item-response.interface';
+import { ItemService } from '@core/item/item.service';
+import { Realestate } from '@core/item/realestate';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { UserService } from '@core/user/user.service';
 import {
   NgbModal,
   NgbModalRef,
   NgbPopoverConfig,
 } from '@ng-bootstrap/ng-bootstrap';
-import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
-import { ItemService } from '@core/item/item.service';
-import { Realestate } from '@core/item/realestate';
-import { REALESTATE_CATEGORY } from '@core/item/item-categories';
-import { AnalyticsService } from '@core/analytics/analytics.service';
-import { UserService } from '@core/user/user.service';
-import {
-  RealestateContent,
-  RealStateResponse,
-} from '@core/item/item-response.interface';
-import { tap } from 'rxjs/operators';
-import {
-  ANALYTIC_EVENT_TYPES,
-  ANALYTICS_EVENT_NAMES,
-  SCREEN_IDS,
-  AnalyticsEvent,
-  EditItemRE,
-  ListItemRE,
-} from '@core/analytics/analytics-constants';
-import { HttpErrorResponse } from '@angular/common/http';
-import { UploadService } from '../drop-area/upload.service';
 import {
   OutputType,
   PendingFiles,
@@ -47,7 +42,14 @@ import {
   UploadFile,
   UploadOutput,
 } from '@shared/uploader/upload.interface';
-import { ITEM_TYPES } from '@core/item/item';
+import { IOption } from 'app/dropdown/utils/option.interface';
+import { isEqual, omit } from 'lodash-es';
+import { tap } from 'rxjs/operators';
+import { UploadService } from '../drop-area/upload.service';
+import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
+import { UploadEvent } from '../upload-event.interface';
+import { Key } from './key.interface';
+import { RealestateKeysService } from './realestate-keys.service';
 
 @Component({
   selector: 'tsl-upload-realestate',
@@ -102,7 +104,7 @@ export class UploadRealestateComponent implements OnInit {
         [Validators.required, Validators.min(0), Validators.max(999999999)],
       ],
       currency_code: ['EUR', [Validators.required]],
-      storytelling: '',
+      storytelling: ['', [Validators.required, whitespaceValidator]],
       operation: ['', [Validators.required]],
       type: ['', [Validators.required]],
       condition: ['', [Validators.required]],
@@ -242,6 +244,7 @@ export class UploadRealestateComponent implements OnInit {
 
   private invalidForm(): void {
     this.uploadForm.markAsPending();
+    this.uploadForm.markAllAsTouched();
     if (!this.uploadForm.get('location.address').valid) {
       this.uploadForm.get('location.address').markAsDirty();
     }
@@ -329,6 +332,11 @@ export class UploadRealestateComponent implements OnInit {
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_ERROR);
     }
+  }
+
+  hasErrorToShow(controlName: string): boolean {
+    const control: AbstractControl = this.uploadForm.get(controlName);
+    return control.invalid && control.touched;
   }
 
   public selectUrgent(isUrgent: boolean): void {

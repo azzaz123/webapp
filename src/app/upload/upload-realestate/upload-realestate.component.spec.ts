@@ -283,6 +283,12 @@ describe('UploadRealestateComponent', () => {
       expect(errorService.i18nError).toHaveBeenCalledWith('missingImageError');
     });
 
+    it('should avoid submit if storytelling has only spaces', () => {
+      component.uploadForm.get('storytelling').setValue('   ');
+
+      expect(component.uploadForm.get('storytelling').invalid).toBeTruthy();
+    });
+
     describe('and when there is not an item uploaded', () => {
       beforeEach(() => {
         component.item = null;
@@ -608,6 +614,31 @@ describe('UploadRealestateComponent', () => {
       component.updateUploadPercentage(19.52);
 
       expect(component.uploadCompletedPercentage).toBe(20);
+    });
+  });
+
+  describe('hasErrorToShow', () => {
+    const controlName = 'operation';
+    it('should does not show error at the init', () => {
+      const hasErrorToShow: boolean = component.hasErrorToShow(controlName);
+
+      expect(hasErrorToShow).toBeFalsy();
+    });
+
+    it('should show error if the control is invalid and touched', () => {
+      component.uploadForm.get(controlName).markAsTouched();
+
+      const hasErrorToShow: boolean = component.hasErrorToShow(controlName);
+
+      expect(hasErrorToShow).toBeTruthy();
+    });
+
+    it('should does not show error if is valid and touched', () => {
+      component.uploadForm.get(controlName).setValue('Any Value is valid');
+
+      const hasErrorToShow: boolean = component.hasErrorToShow(controlName);
+
+      expect(hasErrorToShow).toBeFalsy();
     });
   });
 
