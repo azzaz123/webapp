@@ -1,11 +1,11 @@
 <!-- header para pro -->
-<div *ngIf="userInfo" class="container align-middle ProfileUser__container">
+<div *ngIf="userInfo && userStats" class="container align-middle ProfileUser__container">
   <div class="row">
     <div class="col-12 col-sm-6 row ProfileUser__info">
-      <img [src]="userImg" alt="" class="ProfileUser__info__image" />
+      <tsl-user-avatar  class="ProfileUser__info__image"></tsl-user-avatar>
       <div class="wrapper">
-        <h3>Fake Name</h3>
-        Estrellas
+        <h3>{{userInfo.micro_name}}</h3>
+        <tsl-stars [stars]="userStats?.ratings?.reviews" [normalized]="false"></tsl-stars>
       </div>
       <div class="ProBadge" [hidden]="!userInfo.isPro">
         <div class="ProBadge-icon">
@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="col-12 col-sm-6 ProfileUser__stats">
-      <tsl-user-stats [userId]="userId"></tsl-user-stats>
+      <tsl-user-stats [userStats]="userStats"></tsl-user-stats>
     </div>
   </div>
 </div>

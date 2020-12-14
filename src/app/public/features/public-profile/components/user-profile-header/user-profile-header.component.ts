@@ -1,8 +1,8 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { UserInfo } from '../../core/public-profile.interface';
 import { PublicProfileService } from '../../core/services/public-profile.service';
-import { PLACEHOLDER_AVATAR } from '@core/user/user';
+import { UserStats } from '@core/user/user-stats.interface';
 
 @Component({
   selector: 'tsl-user-profile-header',
@@ -11,9 +11,9 @@ import { PLACEHOLDER_AVATAR } from '@core/user/user';
 })
 export class UserProfileHeaderComponent implements OnInit, OnDestroy {
   @Input() userId: string;
-  userImg = PLACEHOLDER_AVATAR;
   subscriptions: Subscription[] = [];
-  userInfo;
+  userStats: UserStats;
+  userInfo: UserInfo;
 
   constructor(private publicProfileService: PublicProfileService) {}
 
@@ -27,12 +27,13 @@ export class UserProfileHeaderComponent implements OnInit, OnDestroy {
 
   getUserInformation(): void {
     this.subscriptions.push(
-      this.publicProfileService
-        .getUser(this.userId)
-        .subscribe((userInfo: UserInfo) => {
-          this.userInfo = userInfo;
-          console.log('userInfo => ', userInfo);
-        })
+      forkJoin([
+        this.publicProfileService.getUser(this.userId),
+        this.publicProfileService.getStats(this.userId),
+      ]).subscribe(([userInfo, userStats]: [UserInfo, UserStats]) => {
+        this.userInfo = userInfo;
+        this.userStats = userStats;
+      })
     );
   }
 }

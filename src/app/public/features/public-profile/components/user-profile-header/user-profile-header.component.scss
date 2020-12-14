@@ -9,16 +9,17 @@
 
 .ProfileUser__info {
   align-items: center;
-  .wrapper {
-    display: grid;
-    grid-template-rows: 2;
-  }
+}
+
+.ProfileUser__stats {
+  margin-top: $spacing-l;
+  align-items: center;
 }
 
 .ProfileUser__info__image {
   position: relative;
   @include square(80px);
-  margin: $spacing-m;
+  margin: $spacing-l;
   background: #c4c4c4;
   border-radius: $spacing-xxxl;
 }
