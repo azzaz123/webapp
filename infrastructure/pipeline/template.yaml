@@ -27,10 +27,10 @@ Parameters:
 # We need this for now to be able to have a bucket in the  new account with a different name than the current one in beta
 Mappings:
   ConfigFileName:
-    745640521341:
+    '745640521341':
       beta: 'beta'
       prod: 'prod'
-    139222918132:
+    '139222918132':
       beta: 'beta_account'
 
 Resources:
