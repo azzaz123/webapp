@@ -8,6 +8,7 @@ import { ItemCartFavoriteComponent } from './components/item-cart-favorite/item-
 import { PERMISSIONS } from '@core/user/user';
 import { ExitConfirmGuard } from '@shared/guards/exit-confirm.guard';
 import { ItemsPageComponent } from './components/items-page/items-page.component';
+import { ProfilesPageComponent } from './components/profiles-page/profiles-page.component';
 
 const routes: Routes = [
   {
@@ -24,7 +25,7 @@ const routes: Routes = [
       },
       {
         path: 'profiles',
-        component: ProfileCardFavoriteComponent,
+        component: ProfilesPageComponent,
       },
     ],
   },
@@ -41,4 +42,5 @@ export const favoritesRoutedComponents = [
   ItemCartFavoriteComponent,
   ProfileCardFavoriteComponent,
   ItemsPageComponent,
+  ProfilesPageComponent,
 ];
