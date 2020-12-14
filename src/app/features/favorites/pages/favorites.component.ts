@@ -55,6 +55,7 @@ export class FavoritesComponent implements OnInit {
         this.items = this.items.concat(items);
         this.loading = false;
         this.end = !itemsData.init;
+        console.log('items', this.items);
         this.router.navigateByUrl('/favorites/products', {
           state: { data: this.items },
         });
@@ -74,7 +75,7 @@ export class FavoritesComponent implements OnInit {
         this.loading = false;
         this.end = !profilesData.init;
         this.router.navigateByUrl('/favorites/profiles', {
-          state: this.profiles,
+          state: { data: this.profiles },
         });
       });
   }

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Item } from '@core/item/item';
 import { ItemsData } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
+import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 
 @Component({
   selector: 'tsl-items-page',
@@ -10,18 +11,15 @@ import { ItemService } from '@core/item/item.service';
   styleUrls: ['./items-page.component.scss'],
 })
 export class ItemsPageComponent implements OnInit {
-  public items: Item[];
+  public items: Item[] = [];
   public numberOfFavorites: number;
   public loading = false;
   public end = false;
 
-  constructor(private router: Router, public itemService: ItemService) {
-    const items = this.router.getCurrentNavigation().extras.state;
-    this.items = items.data;
-  }
+  constructor(public itemService: ItemService) {}
 
   ngOnInit(): void {
-    this.getItems();
+    this.items = history.state.data;
   }
 
   public loadMore() {
@@ -52,9 +50,6 @@ export class ItemsPageComponent implements OnInit {
         this.items = this.items.concat(items);
         this.loading = false;
         this.end = !itemsData.init;
-        this.router.navigateByUrl('/favorites/products', {
-          state: { data: this.items },
-        });
       });
   }
 }

@@ -28,9 +28,7 @@ export class ItemCartFavoriteComponent implements OnInit {
     private trackingService: TrackingService,
     private router: Router,
     @Inject('SUBDOMAIN') private subdomain: string
-  ) {
-    const items = this.router.getCurrentNavigation().extras.state;
-  }
+  ) {}
 
   ngOnInit() {}
 

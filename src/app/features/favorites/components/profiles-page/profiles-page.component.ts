@@ -11,15 +11,15 @@ import { MOCK_PROFILE } from '@fixtures/profile.fixtures.spec';
   styleUrls: ['./profiles-page.component.scss'],
 })
 export class ProfilesPageComponent implements OnInit {
-  public profiles: Profile[] = [MOCK_PROFILE, MOCK_PROFILE];
+  public profiles: Profile[] = [];
   public loading = false;
   public end = false;
 
-  constructor(private profileService: ProfileService, private router: Router) {
-    //this.profiles = this.router.getCurrentNavigation().extras.state.data;
-  }
+  constructor(private profileService: ProfileService, private router: Router) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.profiles = history.state.data;
+  }
 
   public loadMore() {
     this.getProfiles(true);

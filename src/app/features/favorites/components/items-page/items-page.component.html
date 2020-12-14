@@ -1,20 +1,15 @@
-<h1>Item</h1>
-<div class="page-content" infiniteScroll [infiniteScrollDistance]="3" [infiniteScrollThrottle]="100"
-  [infiniteScrollDisabled]="end || loading" (scrolled)="loadMore()">
-    <div class="favorites-empty-state"
-    *ngIf="!items.length">
-    <tsl-svg-icon src="/assets/icons/favorites-empty-state.svg" class="d-none d-md-block image"></tsl-svg-icon>
-    <tsl-svg-icon src="/assets/icons/favorites-empty-state-mobile.svg" class="d-block d-md-none image">
-    </tsl-svg-icon>
-    <div class="d-none d-md-block message" i18n>In this list you can see all
-        the products you
-        saved as favourite
-        </div>
-    </div> 
-    <div class="cards-container" *ngIf="!!items.length">
-        <div class="card-wrapper" *ngFor="let item of items">
-        <tsl-item-cart-favorite [item]="item" (onFavoriteChange)="onFavoriteChange($event)"></tsl-item-cart-favorite>
-        </div>
-    </div>
+<div class="favorites-empty-state"
+  *ngIf="!items.length">
+  <tsl-svg-icon src="/assets/icons/favorites-empty-state.svg" class="d-none d-md-block image"></tsl-svg-icon>
+  <tsl-svg-icon src="/assets/icons/favorites-empty-state-mobile.svg" class="d-block d-md-none image">
+  </tsl-svg-icon>
+  <div class="d-none d-md-block message" i18n>In this list you can see all the products you saved as favourite
+  </div>
+</div> 
+<div class="cards-container"  *ngIf="!!items.length">
+  <div class="card-wrapper" *ngFor="let item of items">
+    <tsl-item-cart-favorite [item]="item" (onFavoriteChange)="onFavoriteChange($event)"></tsl-item-cart-favorite>
+  </div>
 </div>
+
 
