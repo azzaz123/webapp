@@ -6,10 +6,10 @@ Parameters:
     Description: 'Name of this project'
     Type: String
   BucketES:
-    Description: 'Bucket where the ES webapp resides' # todo: bucket created in s3/template.yaml
+    Description: 'Bucket where the ES webapp resides'
     Type: String
   BucketEN:
-    Description: 'Bucket where the EN webapp resides' # todo: bucket created in s3/template.yaml
+    Description: 'Bucket where the EN webapp resides'
     Type: String
   HostES:
     Description: 'URL to access to it' # todo: hostedzone with public domain?

@@ -11,17 +11,27 @@ Parameters:
     Description: 'Name of the project'
     Type: String
   BucketES:
-    Description: 'ARN of the S3 bucket where the app in ES is hosted' # todo: only used for roles/permissions, might be able to delete it
+    Description: 'ARN of the S3 bucket where the app in ES is hosted'
     Type: String
   BucketEN:
-    Description: 'ARN of the S3 bucket where the app in EN is hosted' # todo: only used for roles/permissions, might be able to delete it
+    Description: 'ARN of the S3 bucket where the app in EN is hosted'
     Type: String
   BucketESName:
-    Description: 'Name of the S3 bucket where the app in ES is hosted' # todo: if we use the same template and properties for beta for both accounts, it'll throw an error because the bucket already exists
+    Description: 'Name of the S3 bucket where the app in ES is hosted'
     Type: String
   BucketENName:
-    Description: 'Name of the S3 bucket where the app in EN is hosted' # todo: if we use the same template and properties for beta for both accounts, it'll throw an error because the bucket already exists
+    Description: 'Name of the S3 bucket where the app in EN is hosted'
     Type: String
+
+# TODO: clean this up and leave a single config for the beta environment when everything is migrated to the new account
+# We need this for now to be able to have a bucket in the  new account with a different name than the current one in beta
+Mappings:
+  ConfigFileName:
+    745640521341:
+      beta: 'beta'
+      prod: 'prod'
+    139222918132:
+      beta: 'beta_account'
 
 Resources:
   CodePipelineServiceRole:
@@ -36,7 +46,7 @@ Resources:
               Service: codepipeline.amazonaws.com
             Action: sts:AssumeRole
 
-  CodePipelinePolicy: # todo: we should change this to the common roles?w
+  CodePipelinePolicy:
     Type: "AWS::IAM::Policy"
     Properties:
       PolicyName: !Sub "webapp-pipeline-policy-${EnvName}"
@@ -471,7 +481,10 @@ Resources:
                 ActionMode: CREATE_UPDATE
                 Capabilities: CAPABILITY_IAM
                 StackName: !Sub webapp-pipeline-${EnvName}
-                TemplateConfiguration: !Sub App::infrastructure/pipeline/${EnvName}.json
+                TemplateConfiguration:
+                  !Sub
+                    - 'App::infrastructure/pipeline/${ConfigFile}.json'
+                    - ConfigFile: !FindInMap [ConfigFileName, !Ref "AWS::AccountId", !Ref EnvName]
                 TemplatePath: App::infrastructure/pipeline/template.yaml
                 RoleArn: !GetAtt CloudFormationExecutionRole.Arn
               InputArtifacts:
@@ -487,7 +500,10 @@ Resources:
                 ActionMode: CREATE_UPDATE
                 Capabilities: CAPABILITY_IAM
                 StackName: !Sub webapp-s3-${EnvName}
-                TemplateConfiguration: !Sub App::infrastructure/s3/${EnvName}.json
+                TemplateConfiguration:
+                  !Sub
+                  - 'App::infrastructure/s3/${ConfigFile}.json'
+                  - ConfigFile: !FindInMap [ ConfigFileName, !Ref "AWS::AccountId", !Ref EnvName ]
                 TemplatePath: App::infrastructure/s3/template.yml
                 RoleArn: !GetAtt CloudFormationExecutionRole.Arn
               InputArtifacts:
@@ -503,7 +519,10 @@ Resources:
                 ActionMode: CREATE_UPDATE
                 Capabilities: CAPABILITY_IAM
                 StackName: !Sub Webapp-${EnvName}
-                TemplateConfiguration: !Sub App::infrastructure/cloudfront/${EnvName}.json
+                TemplateConfiguration:
+                  !Sub
+                  - 'App::infrastructure/cloudfront/${ConfigFile}.json'
+                  - ConfigFile: !FindInMap [ ConfigFileName, !Ref "AWS::AccountId", !Ref EnvName ]
                 TemplatePath: App::infrastructure/cloudfront/template.yaml
                 RoleArn: !GetAtt CloudFormationExecutionRole.Arn
               InputArtifacts:

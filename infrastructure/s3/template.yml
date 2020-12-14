@@ -4,10 +4,10 @@ Description: |
 
 Parameters:
   BucketNameES:
-    Description: 'Name of the bucket ES' # todo: if we use the same template and properties for beta for both accounts, it'll throw an error because the bucket already exists
+    Description: 'Name of the bucket ES'
     Type: String
   BucketNameEN:
-    Description: 'Name of the bucket EN' # todo: if we use the same template and properties for beta for both accounts, it'll throw an error because the bucket already exists
+    Description: 'Name of the bucket EN'
     Type: String
 
 Resources:
