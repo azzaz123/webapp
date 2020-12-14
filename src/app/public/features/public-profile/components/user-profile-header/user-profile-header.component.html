@@ -1,1 +1,21 @@
-<p>user-profile-header works!</p>
+<!-- header para pro -->
+<div *ngIf="userInfo" class="container align-middle ProfileUser__container">
+  <div class="row">
+    <div class="col-12 col-sm-6 row ProfileUser__info">
+      <img [src]="userImg" alt="" class="ProfileUser__info__image" />
+      <div class="wrapper">
+        <h3>Fake Name</h3>
+        Estrellas
+      </div>
+      <div class="ProBadge" [hidden]="!userInfo.isPro">
+        <div class="ProBadge-icon">
+          <tsl-svg-icon src="/assets/icons/pro-seal.svg"></tsl-svg-icon>
+        </div>
+        <div>PRO</div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 ProfileUser__stats">
+      <tsl-user-stats [userId]="userId"></tsl-user-stats>
+    </div>
+  </div>
+</div>

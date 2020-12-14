@@ -1,0 +1,24 @@
+@import '~style/common';
+
+.ProfileUser__container {
+  background-color: $white;
+  border-radius: 0 0 $border-radius $border-radius;
+  display: flex;
+  flex-direction: column;
+}
+
+.ProfileUser__info {
+  align-items: center;
+  .wrapper {
+    display: grid;
+    grid-template-rows: 2;
+  }
+}
+
+.ProfileUser__info__image {
+  position: relative;
+  @include square(80px);
+  margin: $spacing-m;
+  background: #c4c4c4;
+  border-radius: $spacing-xxxl;
+}
