@@ -40,9 +40,9 @@ export class AnalyticsService {
           },
         },
         identityCallback: (result) => {
-          const user = result.getUser();
-          if (user) {
-            user.setUserAttribute('deviceId', this.getDeviceId());
+          const mParticleUser = result.getUser();
+          if (mParticleUser) {
+            mParticleUser.setUserAttribute('deviceId', this.getDeviceId());
           }
         },
       };

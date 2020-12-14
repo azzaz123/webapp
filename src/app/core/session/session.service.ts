@@ -8,7 +8,7 @@ export class SessionService {
   private static SESSION_TRACK_INTERVAL = 60000;
   private static SESSION_TIMEOUT = 15 * 60000;
 
-  private readonly isNewSession;
+  private readonly isNewSession: boolean;
 
   constructor(private cookieService: CookieService) {
     this.isNewSession =

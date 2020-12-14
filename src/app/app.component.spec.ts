@@ -38,6 +38,7 @@ import * as moment from 'moment';
 import { PATH_EVENTS } from './app-routing-constants';
 import { SessionService } from '@core/session/session.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { DeviceService } from '@core/device/device.service';
 
 jest.mock('moment');
 
@@ -189,6 +190,7 @@ describe('App', () => {
         { provide: DidomiService, useValue: MockDidomiService },
         SessionService,
         DeviceDetectorService,
+        DeviceService,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     });
