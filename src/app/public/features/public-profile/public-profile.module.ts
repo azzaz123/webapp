@@ -9,7 +9,7 @@ import { UserProfileHeaderComponent } from './components/user-profile-header/use
 import { ShareUserComponent } from './components/share-user/share-user.component';
 import { LikeUserComponent } from './components/like-user/like-user.component';
 import { ProfileTabsComponent } from './components/profile-tabs/profile-tabs.component';
-import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
+import { SharedModule } from '@shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -20,6 +20,6 @@ import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
     LikeUserComponent,
     ProfileTabsComponent,
   ],
-  imports: [CommonModule, PublicProfileRoutingModule, SvgIconModule],
+  imports: [CommonModule, PublicProfileRoutingModule, SharedModule],
 })
 export class PublicProfileModule {}
