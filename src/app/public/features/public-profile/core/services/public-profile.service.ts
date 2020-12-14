@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Counters, Ratings } from '@core/user/user-stats.interface';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { environment } from '../../../../../../environments/environment';
+import { environment } from '@environments/environment';
 import { UserInfo, UserStats } from '../public-profile.interface';
 
 export const PROFILE_API_URL = 'api/v3/users/';
@@ -13,9 +14,16 @@ export class PublicProfileService {
   constructor(private http: HttpClient) {}
 
   public getStats(userId: string): Observable<any> {
-    return this.http.get<UserStats>(
-      `${environment.baseUrl}${PROFILE_API_URL}${userId}/stats`
-    );
+    return this.http
+      .get<UserStats>(`${environment.baseUrl}${PROFILE_API_URL}${userId}/stats`)
+      .pipe(
+        map((response) => {
+          return {
+            ratings: this.toRatingsStats(response.ratings),
+            counters: this.toCountersStats(response.counters),
+          };
+        })
+      );
   }
 
   public getFavourite(userId: string): Observable<any> {
@@ -55,6 +63,7 @@ export class PublicProfileService {
   }
 
   public getUser(userId: string): Observable<UserInfo> {
+    // BUSCAR IMAGEN DEL USUARIO
     return this.http
       .get<UserInfo>(`${environment.baseUrl}${PROFILE_API_URL}${userId}`)
       .pipe(
@@ -67,5 +76,18 @@ export class PublicProfileService {
 
   public isPro(user: UserInfo): boolean {
     return user && user.featured;
+  }
+
+  public toRatingsStats(ratings): Ratings {
+    return ratings.reduce(({}, rating) => {
+      return { reviews: rating.value };
+    }, {});
+  }
+
+  public toCountersStats(counters): Counters {
+    return counters.reduce((counterObj, counter) => {
+      counterObj[counter.type] = counter.value;
+      return counterObj;
+    }, {});
   }
 }
