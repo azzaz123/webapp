@@ -7,6 +7,7 @@ import { User } from '../user/user';
 import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
 import { CookieService } from 'ngx-cookie';
 import { UuidService } from '../uuid/uuid.service';
+import { filter } from 'rxjs/operators';
 
 // TODO: This should not be exported. Anything that uses this should start using the getDeviceId method
 export const DEVICE_ID_COOKIE_NAME = 'device_id';
@@ -26,30 +27,29 @@ export class AnalyticsService {
   public initialize() {
     // TODO: Passing an empty object to identify an unknown user allows to set userAttributes
     //       This logic should be modified accordingly to prepare for the new public part of the webapp
-    this.userService.me().subscribe((user: User) => {
-      if (!user) {
-        return;
-      }
-
-      const CONFIG = {
-        isDevelopmentMode: !environment.production,
-        identifyRequest: {
-          userIdentities: {
-            email: user.email,
-            customerid: user.id,
+    this.userService
+      .me()
+      .pipe(filter((user) => !!user))
+      .subscribe((user: User) => {
+        const CONFIG = {
+          isDevelopmentMode: !environment.production,
+          identifyRequest: {
+            userIdentities: {
+              email: user.email,
+              customerid: user.id,
+            },
           },
-        },
-        identityCallback: (result) => {
-          const mParticleUser = result.getUser();
-          if (mParticleUser) {
-            mParticleUser.setUserAttribute('deviceId', this.getDeviceId());
-          }
-        },
-      };
+          identityCallback: (result) => {
+            const mParticleUser = result.getUser();
+            if (mParticleUser) {
+              mParticleUser.setUserAttribute('deviceId', this.getDeviceId());
+            }
+          },
+        };
 
-      appboyKit.register(CONFIG);
-      mParticle.init(environment.mParticleKey, CONFIG);
-    });
+        appboyKit.register(CONFIG);
+        mParticle.init(environment.mParticleKey, CONFIG);
+      });
   }
 
   public trackEvent<T>(event: AnalyticsEvent<T>) {
