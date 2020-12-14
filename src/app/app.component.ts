@@ -40,8 +40,8 @@ import { PATH_EVENTS } from './app-routing-constants';
 import { SessionService } from '@core/session/session.service';
 import { OpenWallapop } from '@core/analytics/resources/events-interfaces';
 import { ANALYTICS_EVENT_NAMES } from '@core/analytics/resources/analytics-event-names';
-import { DeviceDetectorService } from 'ngx-device-detector';
 import { ANALYTIC_EVENT_TYPES } from '@core/analytics/analytics-constants';
+import { DeviceService } from '@core/device/device.service';
 
 @Component({
   selector: 'tsl-root',
@@ -81,7 +81,7 @@ export class AppComponent implements OnInit {
     private uuidService: UuidService,
     private serviceWorker: SwUpdate,
     private didomiService: DidomiService,
-    private deviceDetectorService: DeviceDetectorService
+    private deviceService: DeviceService
   ) {}
 
   ngOnInit() {
@@ -220,7 +220,7 @@ export class AppComponent implements OnInit {
       attributes: {
         currentUrl: window.location.href,
         refererUrl: document.referrer,
-        webPlatformType: this.getDeviceType(),
+        webPlatformType: this.deviceService.getDeviceType(),
         webDeviceId: this.analyticsService.getDeviceId(),
       },
     });
@@ -362,17 +362,5 @@ export class AppComponent implements OnInit {
     loading
       ? this.renderer.addClass(document.body, 'route-loading')
       : this.renderer.removeClass(document.body, 'route-loading');
-  }
-
-  private getDeviceType(): 'desktop' | 'tablet' | 'mobile' {
-    if (this.deviceDetectorService.isMobile()) {
-      return 'mobile';
-    }
-
-    if (this.deviceDetectorService.isTablet()) {
-      return 'tablet';
-    }
-
-    return 'desktop';
   }
 }
