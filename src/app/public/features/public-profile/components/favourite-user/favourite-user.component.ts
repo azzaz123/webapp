@@ -1,12 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'tsl-favourite-user',
   templateUrl: './favourite-user.component.html',
   styleUrls: ['./favourite-user.component.scss'],
 })
-export class FavouriteUserComponent implements OnInit {
+export class FavouriteUserComponent {
+  @Input() isFavourite: boolean = false;
+
   constructor() {}
 
-  ngOnInit(): void {}
+  toggleFavourite(): void {
+    this.isFavourite = !this.isFavourite;
+  }
 }
