@@ -12,7 +12,6 @@ import { ItemModule } from './item/item.module';
 import { EventService } from './event/event.service';
 import { TrackingModule } from './tracking/tracking.module';
 import { I18nService } from './i18n/i18n.service';
-import { AdService } from './ad/ad.service';
 import { ErrorsService } from './errors/errors.service';
 import { TutorialService } from './tutorial/tutorial.service';
 import { AccessTokenService } from './http/access-token.service';
@@ -37,6 +36,7 @@ import { MobileBlockerModule } from './mobile-blocker/mobile-blocker.module';
 import { DevelopmentGuard } from './user/development.guard';
 import { DidomiService } from './didomi/didomi.service';
 import { TrustAndSafetyService } from './trust-and-safety/trust-and-safety.service';
+import { InvoiceService } from './invoice/invoice.service';
 
 @NgModule({
   imports: [
@@ -79,13 +79,13 @@ export class CoreModule {
         BlockUserService,
         BlockUserXmppService,
         ReviewService,
-        AdService,
         ConnectionService,
         ProfileService,
         StripeService,
         SubscriptionsService,
         DidomiService,
         TrustAndSafetyService,
+        InvoiceService,
       ],
     };
   }

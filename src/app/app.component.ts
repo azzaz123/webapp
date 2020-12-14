@@ -6,8 +6,7 @@ import {
   finalize,
 } from 'rxjs/operators';
 import { Component, OnInit, Renderer2 } from '@angular/core';
-import { DomSanitizer, Title } from '@angular/platform-browser';
-import { configMoment } from './config/moment.config';
+import { Title } from '@angular/platform-browser';
 import {
   ActivatedRoute,
   NavigationEnd,
@@ -16,6 +15,7 @@ import {
   RouteConfigLoadStart,
   Router,
 } from '@angular/router';
+import * as moment from 'moment';
 import { environment } from '../environments/environment';
 import { CookieOptions, CookieService } from 'ngx-cookie';
 import { TrackingService } from './core/tracking/tracking.service';
@@ -35,6 +35,8 @@ import { StripeService } from './core/stripe/stripe.service';
 import { AnalyticsService } from './core/analytics/analytics.service';
 import { DidomiService } from './core/didomi/didomi.service';
 import { UuidService } from './core/uuid/uuid.service';
+import { SwUpdate } from '@angular/service-worker';
+import { PATH_EVENTS } from './app-routing-constants';
 
 @Component({
   selector: 'tsl-root',
@@ -42,7 +44,7 @@ import { UuidService } from './core/uuid/uuid.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  public hideSidebar: boolean;
+  public hideSidebar: boolean = true;
   public isMyZone: boolean;
   public isProducts: boolean;
   public isProfile: boolean;
@@ -59,7 +61,6 @@ export class AppComponent implements OnInit {
     private desktopNotificationsService: DesktopNotificationsService,
     private messageService: MessageService,
     private titleService: Title,
-    private sanitizer: DomSanitizer,
     private trackingService: TrackingService,
     private i18n: I18nService,
     private router: Router,
@@ -72,6 +73,7 @@ export class AppComponent implements OnInit {
     private stripeService: StripeService,
     private analyticsService: AnalyticsService,
     private uuidService: UuidService,
+    private serviceWorker: SwUpdate,
     private didomiService: DidomiService
   ) {}
 
@@ -80,10 +82,26 @@ export class AppComponent implements OnInit {
     this.initializeEventListeners();
     this.initializeServices();
     this.initializeRouterEventListeners();
+    this.subscribeSWChanges();
+  }
+
+  private subscribeSWChanges() {
+    this.serviceWorker.available.subscribe((event) => {
+      console.warn('current version is', event.current);
+      console.warn('available version is', event.available);
+    });
+    this.serviceWorker.activated.subscribe((event) => {
+      console.warn('old version was', event.previous);
+      console.warn('new version is', event.current);
+    });
   }
 
   private initializeConfigs(): void {
-    configMoment(this.i18n.locale);
+    this.setMomentLocale();
+  }
+
+  private setMomentLocale(): void {
+    moment.locale(this.i18n.locale);
   }
 
   private initializeServices(): void {
@@ -115,6 +133,7 @@ export class AppComponent implements OnInit {
     this.updateUrlAndSendAnalytics();
     this.setTitle();
     this.setBodyClass();
+    this.setHideSidebar();
   }
 
   private handleUserLoggedIn(user: User, accessToken: string): void {
@@ -274,7 +293,7 @@ export class AppComponent implements OnInit {
         }
         const title = !event['title'] ? 'Wallapop' : event['title'];
         this.titleService.setTitle(notifications + title);
-        this.hideSidebar = event['hideSidebar'];
+        this.hideSidebar = !!event[PATH_EVENTS.hideSidebar];
         this.isMyZone = event['isMyZone'];
         this.isProducts = event['isProducts'];
         this.isProfile = event['isProfile'];
@@ -300,6 +319,22 @@ export class AppComponent implements OnInit {
         this.setLoading(false);
       }
     });
+  }
+
+  private setHideSidebar(): void {
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        map(
+          () =>
+            this.activatedRoute.root.firstChild.snapshot.data[
+              PATH_EVENTS.hideSidebar
+            ] || null
+        )
+      )
+      .subscribe((hideSidebar: boolean) => {
+        this.hideSidebar = !!hideSidebar;
+      });
   }
 
   private setLoading(loading: boolean): void {

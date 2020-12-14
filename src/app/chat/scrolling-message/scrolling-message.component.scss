@@ -1,13 +1,15 @@
 @import '~style/common';
 
 .btn-scrolling {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 42px;
   height: 42px;
   border-radius: 21px;
   box-shadow: 0 1px 4px 0 rgba($black, 0.25);
   background-color: $white;
   text-align: center;
-  padding: $spacing-s;
   position: absolute;
   right: 25px;
   bottom: $line-height-ml;
@@ -41,10 +43,6 @@
       display: inline-block;
       vertical-align: middle;
     }
-  }
-
-  tsl-svg-icon {
-    margin: 10px 3px;
   }
 }
 

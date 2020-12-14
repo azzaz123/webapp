@@ -1,10 +1,10 @@
 import { MockAnalyticsService } from './../../../tests/analytics.fixtures.spec';
 import {
-  async,
   ComponentFixture,
   fakeAsync,
   TestBed,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 
 import { UploadCarComponent } from './upload-car.component';
@@ -73,91 +73,93 @@ describe('UploadCarComponent', () => {
     getBodyType: jasmine.createSpy('getBodyType'),
   };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [NgbPopoverModule],
-      providers: [
-        FormBuilder,
-        NgbPopoverConfig,
-        { provide: TrackingService, useClass: MockTrackingService },
-        { provide: AnalyticsService, useClass: MockAnalyticsService },
-        {
-          provide: UserService,
-          useValue: {
-            isProfessional() {
-              return of(false);
-            },
-            isProUser() {
-              return of(false);
-            },
-          },
-        },
-        {
-          provide: CarSuggestionsService,
-          useValue: {
-            getBrands() {
-              return of(CAR_BRANDS);
-            },
-            getYears() {
-              return of(CAR_YEARS);
-            },
-            getModels() {
-              return of(CAR_MODELS);
-            },
-            getVersions() {
-              return of(CAR_VERSIONS);
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NgbPopoverModule],
+        providers: [
+          FormBuilder,
+          NgbPopoverConfig,
+          { provide: TrackingService, useClass: MockTrackingService },
+          { provide: AnalyticsService, useClass: MockAnalyticsService },
+          {
+            provide: UserService,
+            useValue: {
+              isProfessional() {
+                return of(false);
+              },
+              isProUser() {
+                return of(false);
+              },
             },
           },
-        },
-        {
-          provide: CarKeysService,
-          useValue: {
-            getTypes() {
-              return of(CAR_BODY_TYPES);
+          {
+            provide: CarSuggestionsService,
+            useValue: {
+              getBrands() {
+                return of(CAR_BRANDS);
+              },
+              getYears() {
+                return of(CAR_YEARS);
+              },
+              getModels() {
+                return of(CAR_MODELS);
+              },
+              getVersions() {
+                return of(CAR_VERSIONS);
+              },
             },
           },
-        },
-        {
-          provide: Router,
-          useValue: {
-            navigate() {},
-          },
-        },
-        {
-          provide: ErrorsService,
-          useValue: {
-            i18nSuccess() {},
-            i18nError() {},
-          },
-        },
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                result: Promise.resolve(),
-                componentInstance: componentInstance,
-              };
+          {
+            provide: CarKeysService,
+            useValue: {
+              getTypes() {
+                return of(CAR_BODY_TYPES);
+              },
             },
           },
-        },
-        {
-          provide: ItemService,
-          useValue: {
-            getCarInfo() {
-              return of(CAR_INFO);
+          {
+            provide: Router,
+            useValue: {
+              navigate() {},
             },
           },
-        },
-        {
-          provide: SubscriptionsService,
-          useClass: MockSubscriptionService,
-        },
-      ],
-      declarations: [UploadCarComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: ErrorsService,
+            useValue: {
+              i18nSuccess() {},
+              i18nError() {},
+            },
+          },
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  result: Promise.resolve(),
+                  componentInstance: componentInstance,
+                };
+              },
+            },
+          },
+          {
+            provide: ItemService,
+            useValue: {
+              getCarInfo() {
+                return of(CAR_INFO);
+              },
+            },
+          },
+          {
+            provide: SubscriptionsService,
+            useClass: MockSubscriptionService,
+          },
+        ],
+        declarations: [UploadCarComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UploadCarComponent);
@@ -537,37 +539,104 @@ describe('UploadCarComponent', () => {
     it('should not accept sale_price < 0', () => {
       component.uploadForm.get('sale_price').patchValue(-1);
 
-      expect(component.uploadForm.valid).toBeFalsy();
+      expect(component.uploadForm.get('sale_price').valid).toBe(false);
     });
 
     it('should not accept sale_price > 999999999', () => {
       component.uploadForm.get('sale_price').patchValue(9999999999);
 
-      expect(component.uploadForm.valid).toBeFalsy();
+      expect(component.uploadForm.get('sale_price').valid).toBe(false);
     });
 
     it('should not accept km < 0', () => {
       component.uploadForm.get('km').patchValue(-1);
 
-      expect(component.uploadForm.valid).toBeFalsy();
+      expect(component.uploadForm.get('km').valid).toBe(false);
     });
 
     it('should not accept km > 999999999', () => {
       component.uploadForm.get('km').patchValue(9999999999);
 
-      expect(component.uploadForm.valid).toBeFalsy();
+      expect(component.uploadForm.get('km').valid).toBe(false);
     });
 
     it('should not accept num_seats < 0', () => {
       component.uploadForm.get('num_seats').patchValue(-1);
 
-      expect(component.uploadForm.valid).toBeFalsy();
+      expect(component.uploadForm.get('num_seats').valid).toBe(false);
     });
 
     it('should not accept num_seats > 99', () => {
       component.uploadForm.get('num_seats').patchValue(100);
 
-      expect(component.uploadForm.valid).toBeFalsy();
+      expect(component.uploadForm.get('num_seats').valid).toBe(false);
+    });
+
+    it('should not accept year < 1900', () => {
+      component.uploadForm.get('year').patchValue(1800);
+
+      expect(component.uploadForm.get('year').valid).toBe(false);
+    });
+
+    it('should not accept year > actualYear', () => {
+      component.uploadForm.get('year').patchValue(component.currentYear + 5);
+
+      expect(component.uploadForm.get('year').valid).toBe(false);
+    });
+
+    it('should accept year between actualYear and > 1900', () => {
+      component.uploadForm.get('year').patchValue(1950);
+
+      expect(component.uploadForm.get('year').valid).toBe(true);
+    });
+
+    it('should accept year actualYear', () => {
+      component.uploadForm.get('year').patchValue(component.currentYear);
+
+      expect(component.uploadForm.get('year').valid).toBe(true);
+    });
+
+    describe('when user changes the form', () => {
+      describe('and when a required input value has an empty space', () => {
+        const emptyString = '       ';
+
+        it('should not accept empty string in model', () => {
+          component.uploadForm.get('model').patchValue(emptyString);
+
+          expect(component.uploadForm.get('model').valid).toBe(false);
+        });
+
+        it('should not accept empty string in brand', () => {
+          component.uploadForm.get('brand').patchValue(emptyString);
+
+          expect(component.uploadForm.get('brand').valid).toBe(false);
+        });
+
+        it('should not accept empty string in title', () => {
+          component.uploadForm.get('title').patchValue(emptyString);
+
+          expect(component.uploadForm.get('title').valid).toBe(false);
+        });
+      });
+
+      describe('and when a required values does not have an empty space', () => {
+        it('should accept string in model', () => {
+          component.uploadForm.get('model').patchValue('Modal1');
+
+          expect(component.uploadForm.get('model').valid).toBe(true);
+        });
+        it('should accept string in brand', () => {
+          component.uploadForm.get('brand').patchValue('Seat');
+
+          expect(component.uploadForm.get('brand').valid).toBe(true);
+        });
+
+        it('should accept string in title', () => {
+          component.uploadForm.get('title').patchValue('Car title');
+
+          expect(component.uploadForm.get('title').valid).toBe(true);
+        });
+      });
     });
   });
 

@@ -6,6 +6,8 @@ import { ThirdVoiceDropPriceComponent } from '../../message/third-voice-drop-pri
 import { ThirdVoiceReviewComponent } from '../../message/third-voice-review';
 import { includes } from 'lodash-es';
 
+import { CalendarSpec } from 'moment';
+
 @Component({
   selector: 'tsl-inbox-conversation',
   templateUrl: './inbox-conversation.component.html',
@@ -16,7 +18,7 @@ export class InboxConversationComponent {
   @Input() archiveConversation = false;
 
   public unreadCounterDisplayLimit = 99;
-  public momentConfig: any = {
+  public momentConfig: CalendarSpec = {
     lastDay: '[Yesterday]',
     sameDay: 'HH:mm',
     nextDay: 'ddd',

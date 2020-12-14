@@ -1,6 +1,7 @@
 <tsl-toast  aria-live="polite" aria-atomic="true"></tsl-toast>
 <tsl-topbar [isMyZone]="isMyZone"></tsl-topbar>
-<tsl-sidebar class="d-none d-lg-block" [hidden]="hideSidebar" [isProducts]="isProducts" [isProfile]="isProfile"></tsl-sidebar>
+<tsl-sidebar class="d-none d-lg-block" *ngIf="!hideSidebar" [isProducts]="isProducts" [isProfile]="isProfile"></tsl-sidebar>
 <tsl-tabbar class="d-flex d-lg-none"></tsl-tabbar>
 <router-outlet></router-outlet>
 <tsl-mobile-blocker (viewIsBlocked)="onViewIsBlocked()"></tsl-mobile-blocker>
+<tsl-footer *ngIf="hideSidebar"></tsl-footer>

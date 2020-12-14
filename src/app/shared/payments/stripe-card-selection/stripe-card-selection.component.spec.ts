@@ -1,5 +1,5 @@
 import { throwError, of } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -20,25 +20,27 @@ describe('StripeCardSelectionComponent', () => {
   let eventService: EventService;
   let i18nService: I18nService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [NgbButtonsModule, FormsModule],
-      declarations: [StripeCardSelectionComponent],
-      providers: [
-        EventService,
-        I18nService,
-        {
-          provide: StripeService,
-          useValue: {
-            getCards() {
-              return of([FINANCIAL_CARD]);
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NgbButtonsModule, FormsModule],
+        declarations: [StripeCardSelectionComponent],
+        providers: [
+          EventService,
+          I18nService,
+          {
+            provide: StripeService,
+            useValue: {
+              getCards() {
+                return of([FINANCIAL_CARD]);
+              },
             },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(StripeCardSelectionComponent);

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { GeolocationComponent } from './geolocation.component';
 import { of } from 'rxjs';
@@ -17,42 +17,44 @@ describe('GeolocationComponent', () => {
   let cookieService: CookieService;
   let userService: UserService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [GeolocationComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        {
-          provide: GeolocationService,
-          useValue: {
-            search: () => {
-              return of(GEOLOCATION_DATA_WEB);
-            },
-            geocode: () => {
-              return of(COORDINATE_DATA_WEB);
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [GeolocationComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          {
+            provide: GeolocationService,
+            useValue: {
+              search: () => {
+                return of(GEOLOCATION_DATA_WEB);
+              },
+              geocode: () => {
+                return of(COORDINATE_DATA_WEB);
+              },
             },
           },
-        },
-        {
-          provide: CookieService,
-          useValue: {
-            put(key, value) {},
-            get(key) {
-              return 'Barcelona, Spain';
+          {
+            provide: CookieService,
+            useValue: {
+              put(key, value) {},
+              get(key) {
+                return 'Barcelona, Spain';
+              },
+              remove(key) {},
             },
-            remove(key) {},
           },
-        },
-        {
-          provide: UserService,
-          useValue: {
-            updateSearchLocationCookies() {},
+          {
+            provide: UserService,
+            useValue: {
+              updateSearchLocationCookies() {},
+            },
           },
-        },
-        EventService,
-      ],
-    }).compileComponents();
-  }));
+          EventService,
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(GeolocationComponent);

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -9,21 +9,23 @@ describe('ConfirmCardModalComponent', () => {
   let fixture: ComponentFixture<ConfirmCardModalComponent>;
   let activeModal: NgbActiveModal;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ConfirmCardModalComponent],
-      providers: [
-        {
-          provide: NgbActiveModal,
-          useValue: {
-            close() {},
-            dismiss() {},
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ConfirmCardModalComponent],
+        providers: [
+          {
+            provide: NgbActiveModal,
+            useValue: {
+              close() {},
+              dismiss() {},
+            },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ConfirmCardModalComponent);

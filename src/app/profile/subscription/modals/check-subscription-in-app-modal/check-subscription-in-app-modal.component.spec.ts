@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CheckSubscriptionInAppModalComponent } from './check-subscription-in-app-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -8,13 +8,15 @@ describe('CheckSubscriptionInAppModalComponent', () => {
   let component: CheckSubscriptionInAppModalComponent;
   let fixture: ComponentFixture<CheckSubscriptionInAppModalComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [CheckSubscriptionInAppModalComponent],
-      providers: [NgbActiveModal],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [CheckSubscriptionInAppModalComponent],
+        providers: [NgbActiveModal],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckSubscriptionInAppModalComponent);

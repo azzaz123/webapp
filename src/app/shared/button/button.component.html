@@ -2,6 +2,6 @@
         [disabled]="disabled"
         [class.loading]="loading"
         [type]="type">
-  <tsl-svg-icon src="/assets/icons/spinner.svg" *ngIf="loading" class="spinner white"></tsl-svg-icon>
+  <tsl-svg-icon src="/assets/icons/spinner.svg" *ngIf="loading" class="spinner {{classLoading}}"></tsl-svg-icon>
   <ng-content *ngIf="!loading"></ng-content>
 </button>

@@ -5,6 +5,10 @@
   "projects": {
     "webapp": {
       "i18n": {
+        "sourceLocale": {
+          "code": "en",
+          "baseHref": ""
+        },
         "locales": {
           "es": {
             "translation": "src/locale/es.xtb",
@@ -31,17 +35,41 @@
               "src/favicon.ico",
               "src/manifest.json",
               "src/service-worker.js",
-              "src/doubleclick",
-              "src/eyeblaster",
-              "src/flashtalking",
-              "src/ftlocal"
+              {
+                "glob": "**/*",
+                "input": "src/richmedia/doubleclick/",
+                "output": "doubleclick/"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/richmedia/eyeblaster/",
+                "output": "eyeblaster/"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/richmedia/flashtalking/",
+                "output": "flashtalking/"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/richmedia/ftlocal/",
+                "output": "ftlocal/"
+              }
             ],
             "styles": [
               "src/style/styles.scss"
             ],
             "scripts": [
               "node_modules/stanza.io/build/stanzaio.bundle.js"
-            ]
+            ],
+            "allowedCommonJsDependencies": [
+              "crypto-js",
+              "echarts", 
+              "retry",
+              "visibilityjs",
+              "libphonenumber-js",
+              "moment"
+           ]
           },
           "configurations": {
             "docker": {
@@ -57,7 +85,8 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.docker.ts"
                 }
-              ]
+              ],
+              "localize": ["es"]
             },
             "beta": {
               "fileReplacements": [
@@ -69,7 +98,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": true,
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -85,7 +113,10 @@
                   "maximumWarning": "6kb",
                   "maximumError": "10kb"
                 }
-              ]
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "ngsw-config.json",
+              "localize": true
             },
             "production": {
               "fileReplacements": [
@@ -97,7 +128,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -113,18 +143,21 @@
                   "maximumWarning": "6kb",
                   "maximumError": "10kb"
                 }
-              ]
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "ngsw-config.json",
+              "localize": true
             },
             "es": {
-              "i18nFile": "src/locale/es.xtb",
-              "i18nFormat": "xtb",
-              "i18nLocale": "es",
+              "localize": ["es"],
               "budgets": [
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "8kb"
                 }
-              ]
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "ngsw-config.json"
             }
           }
         },
@@ -134,15 +167,6 @@
             "browserTarget": "webapp:build"
           },
           "configurations": {
-            "docker": {
-              "browserTarget": "webapp:build:docker"
-            },
-            "beta": {
-              "browserTarget": "webapp:build:beta"
-            },
-            "production": {
-              "browserTarget": "webapp:build:production"
-            },
             "es": {
               "browserTarget": "webapp:build:es"
             }

@@ -6,6 +6,10 @@ export class I18nService {
     en: {
       yes: 'Yes',
       no: 'No',
+      defaultErrorMessage:
+        'Service not available at this moment. Try again later',
+      male: 'Male',
+      female: 'Female',
       daysMomentConfig: {
         lastDay: '[Yesterday] - HH:mm',
         sameDay: '[Today] - HH:mm',
@@ -196,10 +200,22 @@ export class I18nService {
       ],
       tooManyNewConversations:
         "We can't keep up with you. Wait a moment so you can open up new conversations.",
+      invoiceCorrectlyDownloaded:
+        'Your invoice has been successfully downloaded',
+      invoiceGenerated: 'Your invoice has been successfully generated',
+      invoiceCannotDownload:
+        'Your invoice could not be downloaded. Please try again',
+      invoiceCannotGenerate:
+        'Your invoice could not be generated. Please try again',
+      errorSavingData: 'Error while saving data. Please try again',
     },
     es: {
       yes: 'Sí',
       no: 'No',
+      defaultErrorMessage:
+        'Servicio no disponible temporalmente. Inténtelo de nuevo más tarde',
+      male: 'Hombre',
+      female: 'Mujer',
       daysMomentConfig: {
         lastDay: '[Ayer] - HH:mm',
         sameDay: '[Hoy] - HH:mm',
@@ -399,6 +415,13 @@ export class I18nService {
       ],
       tooManyNewConversations:
         'No te podemos seguir el ritmo. Espera un momento para poder abrir nuevas conversaciones.',
+      invoiceCorrectlyDownloaded: 'Tu factura se ha descargado correctamente',
+      invoiceGenerated: 'Tu factura se ha generado correctamente',
+      invoiceCannotDownload:
+        'Tu factura no se ha podido descargar. Intenta de nuevo',
+      invoiceCannotGenerate:
+        'Tu factura no se ha podido generar. Intenta de nuevo',
+      errorSavingData: 'Error al guardar los datos. Intenta de nuevo',
     },
   };
 

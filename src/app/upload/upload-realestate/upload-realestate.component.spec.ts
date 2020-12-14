@@ -1,9 +1,9 @@
 import {
-  async,
   ComponentFixture,
   fakeAsync,
   TestBed,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 
 import { UploadRealestateComponent } from './upload-realestate.component';
@@ -57,76 +57,78 @@ describe('UploadRealestateComponent', () => {
   const RESPONSE_OPTION: IOption[] = [{ value: 'test', label: 'test' }];
   const componentInstance: any = {};
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [NgbPopoverModule],
-      declarations: [UploadRealestateComponent],
-      providers: [
-        FormBuilder,
-        NgbPopoverConfig,
-        { provide: TrackingService, useClass: MockTrackingService },
-        { provide: AnalyticsService, useClass: MockAnalyticsService },
-        {
-          provide: UserService,
-          useValue: {
-            isProUser() {
-              return of(false);
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NgbPopoverModule],
+        declarations: [UploadRealestateComponent],
+        providers: [
+          FormBuilder,
+          NgbPopoverConfig,
+          { provide: TrackingService, useClass: MockTrackingService },
+          { provide: AnalyticsService, useClass: MockAnalyticsService },
+          {
+            provide: UserService,
+            useValue: {
+              isProUser() {
+                return of(false);
+              },
             },
           },
-        },
-        {
-          provide: RealestateKeysService,
-          useValue: {
-            getOperations() {
-              return of(RESPONSE);
-            },
-            getConditions() {
-              return of(RESPONSE_OPTION);
-            },
-            getExtras() {
-              return of(RESPONSE);
-            },
-            getTypes() {
-              return of(RESPONSE);
-            },
-          },
-        },
-        {
-          provide: Router,
-          useValue: {
-            navigate() {},
-          },
-        },
-        {
-          provide: ErrorsService,
-          useValue: {
-            i18nSuccess() {},
-            i18nError() {},
-          },
-        },
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                result: Promise.resolve(),
-                componentInstance: componentInstance,
-              };
+          {
+            provide: RealestateKeysService,
+            useValue: {
+              getOperations() {
+                return of(RESPONSE);
+              },
+              getConditions() {
+                return of(RESPONSE_OPTION);
+              },
+              getExtras() {
+                return of(RESPONSE);
+              },
+              getTypes() {
+                return of(RESPONSE);
+              },
             },
           },
-        },
-        {
-          provide: ItemService,
-          useValue: {
-            updateRealEstateLocation() {
-              return of({});
+          {
+            provide: Router,
+            useValue: {
+              navigate() {},
             },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: ErrorsService,
+            useValue: {
+              i18nSuccess() {},
+              i18nError() {},
+            },
+          },
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  result: Promise.resolve(),
+                  componentInstance: componentInstance,
+                };
+              },
+            },
+          },
+          {
+            provide: ItemService,
+            useValue: {
+              updateRealEstateLocation() {
+                return of({});
+              },
+            },
+          },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UploadRealestateComponent);
@@ -267,6 +269,12 @@ describe('UploadRealestateComponent', () => {
       component.onSubmit();
 
       expect(errorService.i18nError).toHaveBeenCalledWith('missingImageError');
+    });
+
+    it('should avoid submit if storytelling has only spaces', () => {
+      component.uploadForm.get('storytelling').setValue('   ');
+
+      expect(component.uploadForm.get('storytelling').invalid).toBeTruthy();
     });
   });
 
@@ -503,6 +511,31 @@ describe('UploadRealestateComponent', () => {
       component.updateUploadPercentage(19.52);
 
       expect(component.uploadCompletedPercentage).toBe(20);
+    });
+  });
+
+  describe('hasErrorToShow', () => {
+    const controlName = 'operation';
+    it('should does not show error at the init', () => {
+      const hasErrorToShow: boolean = component.hasErrorToShow(controlName);
+
+      expect(hasErrorToShow).toBeFalsy();
+    });
+
+    it('should show error if the control is invalid and touched', () => {
+      component.uploadForm.get(controlName).markAsTouched();
+
+      const hasErrorToShow: boolean = component.hasErrorToShow(controlName);
+
+      expect(hasErrorToShow).toBeTruthy();
+    });
+
+    it('should does not show error if is valid and touched', () => {
+      component.uploadForm.get(controlName).setValue('Any Value is valid');
+
+      const hasErrorToShow: boolean = component.hasErrorToShow(controlName);
+
+      expect(hasErrorToShow).toBeFalsy();
     });
   });
 });

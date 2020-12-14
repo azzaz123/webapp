@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ListingfeeConfirmationModalComponent } from './listingfee-confirmation-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -8,21 +8,23 @@ describe('ListingfeeConfirmationModalComponent', () => {
   let component: ListingfeeConfirmationModalComponent;
   let fixture: ComponentFixture<ListingfeeConfirmationModalComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ListingfeeConfirmationModalComponent],
-      providers: [
-        {
-          provide: NgbActiveModal,
-          useValue: {
-            close() {},
-            dismiss() {},
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ListingfeeConfirmationModalComponent],
+        providers: [
+          {
+            provide: NgbActiveModal,
+            useValue: {
+              close() {},
+              dismiss() {},
+            },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ListingfeeConfirmationModalComponent);

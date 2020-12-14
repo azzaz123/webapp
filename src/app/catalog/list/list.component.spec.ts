@@ -1,14 +1,14 @@
 import {
-  async,
   ComponentFixture,
   fakeAsync,
   TestBed,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 import { ListComponent } from './list.component';
 import { ItemService } from '../../core/item/item.service';
-import { Observable, of, Subject, ReplaySubject } from 'rxjs';
-import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
+import { of, Subject, ReplaySubject } from 'rxjs';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { find } from 'lodash-es';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -17,7 +17,6 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import {
   createItemsArray,
-  ITEM_FLAGS,
   ITEMS_BULK_RESPONSE,
   ITEMS_BULK_RESPONSE_FAILED,
   MOCK_ITEM,
@@ -54,8 +53,6 @@ import {
 } from '../../../tests';
 import { TooManyItemsModalComponent } from '../../shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
-import { UserReviewService } from '../../reviews/user-review.service';
-import { MOCK_REVIEWS } from '../../../tests/review.fixtures.spec';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import {
   MOCK_USER,
@@ -97,123 +94,128 @@ describe('ListComponent', () => {
     publish: 12,
   };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpModuleNew],
-      declarations: [
-        ListComponent,
-        ItemSoldDirective,
-        SubscriptionsSlotsListComponent,
-        SubscriptionsSlotItemComponent,
-      ],
-      providers: [
-        I18nService,
-        EventService,
-        { provide: SubscriptionsService, useClass: MockSubscriptionService },
-        { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
-        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
-        {
-          provide: CategoryService,
-          useValue: {
-            getCategoryById() {
-              return of(CATEGORY_DATA_WEB);
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [HttpModuleNew],
+        declarations: [
+          ListComponent,
+          ItemSoldDirective,
+          SubscriptionsSlotsListComponent,
+          SubscriptionsSlotItemComponent,
+        ],
+        providers: [
+          I18nService,
+          EventService,
+          { provide: SubscriptionsService, useClass: MockSubscriptionService },
+          { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
+          {
+            provide: DeviceDetectorService,
+            useClass: DeviceDetectorServiceMock,
+          },
+          {
+            provide: CategoryService,
+            useValue: {
+              getCategoryById() {
+                return of(CATEGORY_DATA_WEB);
+              },
             },
           },
-        },
-        { provide: TrackingService, useClass: MockTrackingService },
-        {
-          provide: ItemService,
-          useValue: {
-            mine() {
-              return of({ data: [MOCK_ITEM, MOCK_ITEM], init: 20 });
-            },
-            deselectItems() {},
-            bulkDelete() {},
-            bulkReserve() {},
-            purchaseProducts() {},
-            selectItem() {},
-            getUrgentProducts() {},
-            get() {
-              return of(MOCK_ITEM_V3);
-            },
-            bulkSetActivate() {},
-            bulkSetDeactivate() {},
-            activate() {},
-            deactivate() {},
-            selectedItems$: new ReplaySubject(1),
-            selectedItems: [],
-          },
-        },
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                result: Promise.resolve(),
-                componentInstance: componentInstance,
-              };
+          { provide: TrackingService, useClass: MockTrackingService },
+          {
+            provide: ItemService,
+            useValue: {
+              mine() {
+                return of({ data: [MOCK_ITEM, MOCK_ITEM], init: 20 });
+              },
+              deselectItems() {},
+              bulkDelete() {},
+              bulkReserve() {},
+              purchaseProducts() {},
+              selectItem() {},
+              getUrgentProducts() {},
+              get() {
+                return of(MOCK_ITEM_V3);
+              },
+              bulkSetActivate() {},
+              bulkSetDeactivate() {},
+              activate() {},
+              deactivate() {},
+              selectedItems$: new ReplaySubject(1),
+              selectedItems: [],
             },
           },
-        },
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            params: of({
-              code: 200,
-            }),
-          },
-        },
-        {
-          provide: PaymentService,
-          useValue: {
-            getCreditInfo() {
-              return of({
-                currencyName: CURRENCY,
-                credit: CREDITS,
-              });
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  result: Promise.resolve(),
+                  componentInstance: componentInstance,
+                };
+              },
             },
           },
-        },
-        {
-          provide: ErrorsService,
-          useValue: {
-            show() {},
-            i18nError() {},
-            i18nSuccess() {},
-          },
-        },
-        {
-          provide: Router,
-          useValue: {
-            navigate() {},
-            events: routerEvents,
-          },
-        },
-        {
-          provide: UserService,
-          useValue: {
-            getStats() {
-              return of({
-                counters: mockCounters,
-              });
-            },
-            me() {
-              return of(MOCK_USER);
-            },
-            getInfo() {
-              return of(USER_INFO_RESPONSE);
+          {
+            provide: ActivatedRoute,
+            useValue: {
+              params: of({
+                code: 200,
+              }),
             },
           },
-        },
-        {
-          provide: DeviceDetectorService,
-          useClass: DeviceDetectorServiceMock,
-        },
-        { provide: AnalyticsService, useClass: MockAnalyticsService },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: PaymentService,
+            useValue: {
+              getCreditInfo() {
+                return of({
+                  currencyName: CURRENCY,
+                  credit: CREDITS,
+                });
+              },
+            },
+          },
+          {
+            provide: ErrorsService,
+            useValue: {
+              show() {},
+              i18nError() {},
+              i18nSuccess() {},
+            },
+          },
+          {
+            provide: Router,
+            useValue: {
+              navigate() {},
+              events: routerEvents,
+            },
+          },
+          {
+            provide: UserService,
+            useValue: {
+              getStats() {
+                return of({
+                  counters: mockCounters,
+                });
+              },
+              me() {
+                return of(MOCK_USER);
+              },
+              getInfo() {
+                return of(USER_INFO_RESPONSE);
+              },
+            },
+          },
+          {
+            provide: DeviceDetectorService,
+            useClass: DeviceDetectorServiceMock,
+          },
+          { provide: AnalyticsService, useClass: MockAnalyticsService },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ListComponent);

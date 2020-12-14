@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -20,33 +20,35 @@ describe('ChangeCardModalComponent', () => {
   let activeModal: NgbActiveModal;
   let stripeService: StripeService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ChangeCardModalComponent],
-      providers: [
-        EventService,
-        {
-          provide: NgbActiveModal,
-          useValue: {
-            close() {},
-            dismiss() {},
-          },
-        },
-        {
-          provide: StripeService,
-          useValue: {
-            setDefaultCard() {
-              return of(FINANCIAL_STRIPE_CARD);
-            },
-            getCards() {
-              return of([FINANCIAL_CARD]);
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ChangeCardModalComponent],
+        providers: [
+          EventService,
+          {
+            provide: NgbActiveModal,
+            useValue: {
+              close() {},
+              dismiss() {},
             },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: StripeService,
+            useValue: {
+              setDefaultCard() {
+                return of(FINANCIAL_STRIPE_CARD);
+              },
+              getCards() {
+                return of([FINANCIAL_CARD]);
+              },
+            },
+          },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ChangeCardModalComponent);

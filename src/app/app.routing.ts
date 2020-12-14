@@ -1,24 +1,20 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes, Route } from '@angular/router';
 import { PERMISSIONS } from './core/user/user';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { DevelopmentGuard } from './core/user/development.guard';
 import { LoggedGuard } from './core/user/logged.guard';
+import { PATH_EVENTS } from './app-routing-constants';
 
-const publicRoutes = [
-  {
-    path: 'login',
-    canLoad: [DevelopmentGuard],
-    loadChildren: () =>
-      import('app/login/login.module').then((m) => m.LoginModule),
+const publicRoute: Route = {
+  path: 'public',
+  canLoad: [DevelopmentGuard],
+  loadChildren: () =>
+    import('@public/public.module').then((m) => m.PublicModule),
+  data: {
+    [PATH_EVENTS.hideSidebar]: true,
   },
-  {
-    path: 'register',
-    canLoad: [DevelopmentGuard],
-    loadChildren: () =>
-      import('app/register/register.module').then((m) => m.RegisterModule),
-  },
-];
+};
 
 const loggedRoutes = [
   { path: '', pathMatch: 'full', redirectTo: 'chat' },
@@ -30,19 +26,19 @@ const loggedRoutes = [
       {
         path: 'help',
         loadChildren: () =>
-          import('app/help/help.module').then((m) => m.HelpModule),
+          import('app/features/help/help.module').then((m) => m.HelpModule),
       },
       {
         path: 'dashboard',
         loadChildren: () =>
-          import('app/dashboard/dashboard.module').then(
+          import('app/features/dashboard/dashboard.module').then(
             (m) => m.DashboardModule
           ),
       },
       {
         path: 'calls',
         loadChildren: () =>
-          import('app/calls/calls.module').then((m) => m.CallsModule),
+          import('app/features/calls/calls.module').then((m) => m.CallsModule),
       },
       {
         path: 'catalog',
@@ -50,7 +46,7 @@ const loggedRoutes = [
           {
             path: '',
             loadChildren: () =>
-              import('app/catalog-pro/catalog-pro.module').then(
+              import('app/features/catalog-pro/catalog-pro.module').then(
                 (m) => m.CatalogProModule
               ),
           },
@@ -93,19 +89,29 @@ const loggedRoutes = [
     path: 'favorites',
     canLoad: [LoggedGuard],
     loadChildren: () =>
-      import('app/favorites/favorites.module').then((m) => m.FavoritesModule),
+      import('app/features/favorites/favorites.module').then(
+        (m) => m.FavoritesModule
+      ),
   },
   {
     path: 'reviews',
     canLoad: [LoggedGuard],
     loadChildren: () =>
-      import('app/reviews/reviews.module').then((m) => m.ReviewsModule),
+      import('app/features/reviews/reviews.module').then(
+        (m) => m.ReviewsModule
+      ),
   },
   {
     path: 'wallacoins',
-    canLoad: [LoggedGuard],
+    canLoad: [LoggedGuard, NgxPermissionsGuard],
+    data: {
+      permissions: {
+        except: PERMISSIONS.professional,
+        redirectTo: '/pro/catalog/list',
+      },
+    },
     loadChildren: () =>
-      import('app/wallacoins/wallacoins.module').then(
+      import('app/features/wallacoins/wallacoins.module').then(
         (m) => m.WallacoinsModule
       ),
   },
@@ -143,7 +149,7 @@ const loggedRoutes = [
     path: 'stats',
     canLoad: [LoggedGuard],
     loadChildren: () =>
-      import('app/stats/stats.module').then((m) => m.StatsModule),
+      import('app/features/stats/stats.module').then((m) => m.StatsModule),
   },
   {
     path: '**',
@@ -151,13 +157,14 @@ const loggedRoutes = [
   },
 ];
 
-const routes: Routes = [...publicRoutes, ...loggedRoutes];
+const routes: Routes = [publicRoute, ...loggedRoutes];
 
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, {
       anchorScrolling: 'enabled',
       scrollPositionRestoration: 'enabled',
+      relativeLinkResolution: 'legacy',
     }),
   ],
   exports: [RouterModule],

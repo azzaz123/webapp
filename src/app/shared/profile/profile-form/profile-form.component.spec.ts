@@ -1,9 +1,9 @@
 import {
-  async,
   ComponentFixture,
   fakeAsync,
   TestBed,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 
 import { ProfileFormComponent } from './profile-form.component';
@@ -18,30 +18,32 @@ describe('ProfileFormComponent', () => {
   let fixture: ComponentFixture<ProfileFormComponent>;
   let modalService: NgbModal;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ProfileFormComponent],
-      providers: [
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                result: Promise.resolve(true),
-              };
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ProfileFormComponent],
+        providers: [
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  result: Promise.resolve(true),
+                };
+              },
             },
           },
-        },
-        {
-          provide: ErrorsService,
-          useValue: {
-            i18nError() {},
-            i18nSuccess() {},
+          {
+            provide: ErrorsService,
+            useValue: {
+              i18nError() {},
+              i18nSuccess() {},
+            },
           },
-        },
-      ],
-    }).compileComponents();
-  }));
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProfileFormComponent);

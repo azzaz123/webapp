@@ -1,0 +1,68 @@
+@import '~style/common';
+
+:host {
+  position: relative;
+  display: block;
+}
+
+.chart {
+  background-color: $white;
+  border-radius: $border-radius;
+  padding: $spacing-ml $spacing-ms;
+  @media (max-width: 1420px) {
+    padding-top: $spacing-xxxl;
+  }
+}
+
+.chart {
+  ::ng-deep {
+    a {
+      display: none !important;
+    }
+    text {
+      font-family: $wallie;
+    }
+    .amcharts-axis-label,
+    .amcharts-balloon-div-categoryAxis {
+      text-transform: uppercase;
+      div {
+        font-family: $wallie !important;
+        font-size: $font-size-xxs !important;
+        font-weight: bold !important;
+        line-height: $line-height-ml !important;
+      }
+    }
+  }
+}
+
+.title,
+tsl-dropdown {
+  position: absolute;
+  margin-left: $spacing-m;
+  width: 205px;
+  z-index: 1;
+}
+
+.title {
+  margin-top: $spacing-l;
+}
+
+tsl-dropdown {
+  $height: 38px;
+  height: $height;
+  margin-top: $spacing-m;
+  ::ng-deep {
+    & > div {
+      height: $height !important;
+      & > div.single > div.value {
+        height: $height;
+        line-height: $line-height-xxl !important;
+      }
+      & > div.single > div.toggle {
+        background-position: 2px 2px;
+        height: $height;
+        width: $height !important;
+      }
+    }
+  }
+}

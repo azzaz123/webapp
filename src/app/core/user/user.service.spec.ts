@@ -11,8 +11,6 @@ import {
 } from '@angular/common/http/testing';
 import {
   UserService,
-  LOGIN_ENDPOINT,
-  LOGOUT_ENDPOINT,
   USER_ONLINE_ENDPOINT,
   PROTOOL_EXTRA_INFO_ENDPOINT,
   USER_LOCATION_ENDPOINT,
@@ -24,9 +22,7 @@ import {
   USER_PASSWORD_ENDPOINT,
   USER_UNSUBSCRIBE_REASONS_ENDPOINT,
   USER_UNSUBSCRIBE_ENDPOINT,
-  USER_PROFILE_SUBSCRIPTION_INFO_TYPE_ENDPOINT,
   USER_BY_ID_ENDPOINT,
-  USER_PROFILE_SUBSCRIPTION_INFO_ENDPOINT,
   USER_REPORT_ENDPOINT,
   USER_COVER_IMAGE_ENDPOINT,
   USER_PHONE_INFO_ENDPOINT,
@@ -40,7 +36,6 @@ import {
   IMAGE,
   MOCK_FULL_USER,
   MOCK_USER,
-  MOCK_USER_RESPONSE_BODY,
   MOCK_UNSUBSCRIBE_REASONS,
   SELECTED_REASON,
   USER_DATA,
@@ -61,14 +56,13 @@ import { AccessTokenService } from '../http/access-token.service';
 import { EventService } from '../event/event.service';
 import { PERMISSIONS, User } from './user';
 import { environment } from '../../../environments/environment';
-import { LoginResponse } from './login-response.interface';
 import { Image, UserLocation } from './user-response.interface';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { FeatureflagService } from './featureflag.service';
 import { APP_VERSION } from '../../../environments/version';
 import { PhoneMethod } from '../../chat/model';
-import { HttpParams, HttpRequest } from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 
 describe('Service: User', () => {
   let service: UserService;
@@ -329,55 +323,6 @@ describe('Service: User', () => {
       const user: User = (service as any).getFakeUser(USER_ID);
       expect(user.id).toBe(USER_ID);
       expect(user.microName).toBe(FAKE_USER_NAME);
-    });
-  });
-
-  describe('login', () => {
-    let response: LoginResponse;
-    const FORM_INPUT = {
-      emailAddress: 'test@test.it',
-      installationType: 'ANDROID',
-      password: 'test',
-    };
-
-    it('should send user login request to backend', () => {
-      const expectedBody = new HttpParams()
-        .set('emailAddress', FORM_INPUT.emailAddress)
-        .set('installationType', FORM_INPUT.installationType)
-        .set('password', FORM_INPUT.password)
-        .toString();
-
-      service.login(FORM_INPUT).subscribe((r) => (response = r));
-      const req = httpMock.expectOne(`${environment.baseUrl}${LOGIN_ENDPOINT}`);
-      req.flush(MOCK_USER_RESPONSE_BODY);
-
-      expect(req.request.method).toBe('POST');
-      expect(req.request.body.toString()).toEqual(expectedBody);
-    });
-
-    it('should store token when backend has responded', () => {
-      spyOn(accessTokenService, 'storeAccessToken');
-
-      service.login(FORM_INPUT).subscribe();
-      const req = httpMock.expectOne(`${environment.baseUrl}${LOGIN_ENDPOINT}`);
-      req.flush(MOCK_USER_RESPONSE_BODY);
-
-      expect(accessTokenService.storeAccessToken).toHaveBeenCalledWith(
-        MOCK_USER_RESPONSE_BODY.token
-      );
-    });
-
-    it('should emit event when user logged in successfuly', () => {
-      spyOn(eventService, 'emit').and.callThrough();
-
-      service.login(FORM_INPUT).subscribe();
-      const req = httpMock.expectOne(`${environment.baseUrl}${LOGIN_ENDPOINT}`);
-      req.flush(MOCK_USER_RESPONSE_BODY);
-
-      expect(eventService.emit).toHaveBeenCalledWith(
-        EventService.USER_LOGIN,
-        MOCK_USER_RESPONSE_BODY.token
-      );
     });
   });
 

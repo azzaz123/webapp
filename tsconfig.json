@@ -2,8 +2,34 @@
   "compilerOptions": {
     "target": "es6",
     "baseUrl": "./src",
+    "paths": {
+      "@core/*": [
+        "app/core/*"
+      ],
+      "@shared/*": [
+        "app/shared/*"
+      ],
+      "@assets/*": [
+        "assets/*"
+      ],
+      "@environments/*": [
+        "environments/*"
+      ],
+      "@features/*": [
+        "app/features/*"
+      ],
+      "@fixtures/*": [
+        "tests/*"
+      ],
+      "@layout/*": [
+        "app/layout/*"
+      ],
+      "@public/*": [
+        "app/public/*"
+      ]
+    },
     "outDir": "./dist/out-tsc",
-    "module": "esnext",
+    "module": "es2020",
     "moduleResolution": "node",
     "sourceMap": true,
     "importHelpers": true,
@@ -12,8 +38,5 @@
     "typeRoots": [
       "node_modules/@types"
     ]
-  },
-  "angularCompilerOptions": {
-    "enableIvy": false
   }
 }

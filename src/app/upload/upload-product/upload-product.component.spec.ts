@@ -9,11 +9,11 @@ import {
   MOCK_ITEM_CELLPHONES_NO_SUBCATEGORY,
 } from './../../../tests/item.fixtures.spec';
 import {
-  async,
   ComponentFixture,
   fakeAsync,
   TestBed,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
@@ -67,6 +67,7 @@ import {
 import { BrandModel } from '../brand-model.interface';
 import { CATEGORY_IDS } from '../../core/category/category-ids';
 import { CategoryOption } from 'app/core/category/category-response.interface';
+import { I18nService } from 'app/core/i18n/i18n.service';
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
 export const USER_LOCATION: UserLocation = {
@@ -96,93 +97,99 @@ describe('UploadProductComponent', () => {
   let categoryService: CategoryService;
   const componentInstance: any = {};
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [NgbPopoverModule],
-      providers: [
-        FormBuilder,
-        NgbPopoverConfig,
-        { provide: TrackingService, useClass: MockTrackingService },
-        { provide: AnalyticsService, useClass: MockAnalyticsService },
-        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
-        {
-          provide: UserService,
-          useValue: {
-            isProUser() {
-              return of(false);
-            },
-            isPro: false,
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NgbPopoverModule],
+        providers: [
+          FormBuilder,
+          NgbPopoverConfig,
+          { provide: TrackingService, useClass: MockTrackingService },
+          { provide: AnalyticsService, useClass: MockAnalyticsService },
+          {
+            provide: DeviceDetectorService,
+            useClass: DeviceDetectorServiceMock,
           },
-        },
-        {
-          provide: Router,
-          useValue: {
-            navigate() {},
-          },
-        },
-        {
-          provide: ErrorsService,
-          useValue: {
-            i18nSuccess() {},
-            i18nError() {},
-          },
-        },
-        {
-          provide: CategoryService,
-          useValue: {
-            getCategories() {
-              return of(CATEGORIES_DATA_CONSUMER_GOODS);
-            },
-            getSuggestedCategory() {
-              return of(SUGGESTED_CATEGORY_TV_AUDIO_CAMERAS);
+          {
+            provide: UserService,
+            useValue: {
+              isProUser() {
+                return of(false);
+              },
+              isPro: false,
             },
           },
-        },
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                result: Promise.resolve(),
-                componentInstance: componentInstance,
-              };
+          {
+            provide: Router,
+            useValue: {
+              navigate() {},
             },
           },
-        },
-        {
-          provide: GeneralSuggestionsService,
-          useValue: {
-            getObjectTypes() {
-              return of([]);
-            },
-            getBrands() {
-              return of({});
-            },
-            getModels() {
-              return of(['iPhone 2G', 'iPhone 3G', 'iPhone 4']);
-            },
-            getBrandsAndModels() {
-              return of([
-                { brand: 'Apple', model: 'iPhone XSX' },
-                { brand: 'Samsung', model: 'Galaxy S20' },
-              ]);
-            },
-            getSizes() {
-              return of([
-                { value: '1', label: 'XXXS / 30 / 2' },
-                { value: '2', label: 'XXS / 32 / 4' },
-              ]);
-            },
-            getConditions() {
-              return of({ MOCK_CONDITIONS });
+          {
+            provide: ErrorsService,
+            useValue: {
+              i18nSuccess() {},
+              i18nError() {},
             },
           },
-        },
-      ],
-      declarations: [UploadProductComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: CategoryService,
+            useValue: {
+              getCategories() {
+                return of(CATEGORIES_DATA_CONSUMER_GOODS);
+              },
+              getSuggestedCategory() {
+                return of(SUGGESTED_CATEGORY_TV_AUDIO_CAMERAS);
+              },
+            },
+          },
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  result: Promise.resolve(),
+                  componentInstance: componentInstance,
+                };
+              },
+            },
+          },
+          {
+            provide: GeneralSuggestionsService,
+            useValue: {
+              getObjectTypes() {
+                return of([]);
+              },
+              getBrands() {
+                return of({});
+              },
+              getModels() {
+                return of(['iPhone 2G', 'iPhone 3G', 'iPhone 4']);
+              },
+              getBrandsAndModels() {
+                return of([
+                  { brand: 'Apple', model: 'iPhone XSX' },
+                  { brand: 'Samsung', model: 'Galaxy S20' },
+                ]);
+              },
+              getSizes() {
+                return of([
+                  { value: '1', label: 'XXXS / 30 / 2' },
+                  { value: '2', label: 'XXS / 32 / 4' },
+                ]);
+              },
+              getConditions() {
+                return of({ MOCK_CONDITIONS });
+              },
+            },
+          },
+          I18nService,
+        ],
+        declarations: [UploadProductComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UploadProductComponent);

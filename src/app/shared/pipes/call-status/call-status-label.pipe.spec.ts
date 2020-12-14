@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-variable */
 
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { CallStatusLabelPipe } from './call-status-label.pipe';
 import { Component } from '@angular/core';
 import { I18nService } from '../../../core/i18n/i18n.service';

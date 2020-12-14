@@ -187,6 +187,9 @@
 
 .back-arrow {
   position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 50px;
   z-index: 999;
 }

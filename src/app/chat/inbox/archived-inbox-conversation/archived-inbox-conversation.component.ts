@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { InboxConversation } from '../../model/inbox-conversation';
-
+import { CalendarSpec } from 'moment';
 @Component({
   selector: 'tsl-archived-inbox-conversation',
   templateUrl: './archived-inbox-conversation.component.html',
@@ -10,7 +10,7 @@ export class ArchivedInboxConversationComponent {
   @Input() conversation: InboxConversation;
 
   public unreadCounterDisplayLimit = 99;
-  public momentConfig: any = {
+  public momentConfig: CalendarSpec = {
     lastDay: '[Yesterday]',
     sameDay: 'HH:mm',
     nextDay: 'ddd',

@@ -19,8 +19,6 @@ $feature-button-width: 170px;
   cursor: pointer;
   tsl-svg-icon {
     display: none;
-    height: 9px;
-    width: 12px;
   }
 
   &:hover {
@@ -191,6 +189,10 @@ $feature-button-width: 170px;
     .actions {
       min-width: auto;
     }
+  }
+
+  tsl-date-countdown {
+    width: $feature-button-width;
   }
 
   .btn-featured {

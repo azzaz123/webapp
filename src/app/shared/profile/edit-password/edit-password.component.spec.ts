@@ -1,8 +1,8 @@
 import {
-  async,
   ComponentFixture,
   fakeAsync,
   TestBed,
+  waitForAsync,
 } from '@angular/core/testing';
 
 import { EditPasswordComponent } from './edit-password.component';
@@ -15,20 +15,22 @@ describe('EditPasswordComponent', () => {
   let fixture: ComponentFixture<EditPasswordComponent>;
   let modalService: NgbModal;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [FormsModule],
-      providers: [
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {},
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [FormsModule],
+        providers: [
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {},
+            },
           },
-        },
-      ],
-      declarations: [EditPasswordComponent],
-    }).compileComponents();
-  }));
+        ],
+        declarations: [EditPasswordComponent],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(EditPasswordComponent);

@@ -1,9 +1,9 @@
 import {
-  async,
   ComponentFixture,
   fakeAsync,
   TestBed,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 
 import { CatalogItemComponent } from './catalog-item.component';
@@ -12,7 +12,7 @@ import { of, ReplaySubject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
-import { CustomCurrencyPipe, CountdownPipe } from '../../../shared/pipes';
+import { CustomCurrencyPipe } from '../../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ReactivateModalComponent } from '../modals/reactivate-modal/reactivate-modal.component';
@@ -48,67 +48,67 @@ describe('CatalogItemComponent', () => {
     item: null,
   };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        CatalogItemComponent,
-        CustomCurrencyPipe,
-        ThousandSuffixesPipe,
-        CountdownPipe,
-      ],
-      providers: [
-        DecimalPipe,
-        EventService,
-        { provide: TrackingService, useClass: MockTrackingService },
-        { provide: DeviceDetectorService, useClass: DeviceDetectorService },
-        {
-          provide: ItemService,
-          useValue: {
-            selectedItems: [],
-            selectedItems$: new ReplaySubject<SelectedItemsAction>(1),
-            selectItem() {},
-            deselectItem() {},
-            deleteItem() {
-              return of({});
-            },
-            reserveItem() {
-              return of({});
-            },
-            reactivateItem() {
-              return of({});
-            },
-            getAvailableReactivationProducts() {},
-            canDoAction() {
-              return of(true);
-            },
-            getListingFeeInfo() {
-              return of(PRODUCT_RESPONSE);
-            },
-          },
-        },
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                result: Promise.resolve(),
-                componentInstance: componentInstance,
-              };
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          CatalogItemComponent,
+          CustomCurrencyPipe,
+          ThousandSuffixesPipe,
+        ],
+        providers: [
+          DecimalPipe,
+          EventService,
+          { provide: TrackingService, useClass: MockTrackingService },
+          { provide: DeviceDetectorService, useClass: DeviceDetectorService },
+          {
+            provide: ItemService,
+            useValue: {
+              selectedItems: [],
+              selectedItems$: new ReplaySubject<SelectedItemsAction>(1),
+              selectItem() {},
+              deselectItem() {},
+              deleteItem() {
+                return of({});
+              },
+              reserveItem() {
+                return of({});
+              },
+              reactivateItem() {
+                return of({});
+              },
+              getAvailableReactivationProducts() {},
+              canDoAction() {
+                return of(true);
+              },
+              getListingFeeInfo() {
+                return of(PRODUCT_RESPONSE);
+              },
             },
           },
-        },
-        {
-          provide: ErrorsService,
-          useValue: {
-            i18nError() {},
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  result: Promise.resolve(),
+                  componentInstance: componentInstance,
+                };
+              },
+            },
           },
-        },
-        { provide: 'SUBDOMAIN', useValue: 'es' },
-        CountdownPipe,
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: ErrorsService,
+            useValue: {
+              i18nError() {},
+            },
+          },
+          { provide: 'SUBDOMAIN', useValue: 'es' },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CatalogItemComponent);

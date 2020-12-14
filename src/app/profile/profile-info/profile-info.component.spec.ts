@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {
   competitorLinks,
@@ -32,79 +32,81 @@ describe('ProfileInfoComponent', () => {
   let modalService: NgbModal;
   const modalInstance: any = null;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, FormsModule, NgbButtonsModule],
-      providers: [
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {},
-          },
-        },
-        {
-          provide: UserService,
-          useValue: {
-            user: MOCK_FULL_USER,
-            me() {
-              return of(MOCK_FULL_USER);
-            },
-            isProUser() {
-              return of({});
-            },
-            getProInfo() {
-              return of({});
-            },
-            getUserCover() {
-              return of({});
-            },
-            updateProInfo() {
-              return of({});
-            },
-            edit() {
-              return of({});
-            },
-            updateLocation() {
-              return of({});
-            },
-            updateSearchLocationCookies() {},
-          },
-        },
-        {
-          provide: ErrorsService,
-          useValue: {
-            i18nError() {},
-            i18nSuccess() {},
-            show() {},
-          },
-        },
-        {
-          provide: NgbModal,
-          useValue: {
-            open() {
-              return {
-                componentInstance: modalInstance,
-                result: Promise.resolve(true),
-              };
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [ReactiveFormsModule, FormsModule, NgbButtonsModule],
+        providers: [
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {},
             },
           },
-        },
-        {
-          provide: ProfileFormComponent,
-          useValue: {
-            initFormControl() {},
-            canExit() {},
+          {
+            provide: UserService,
+            useValue: {
+              user: MOCK_FULL_USER,
+              me() {
+                return of(MOCK_FULL_USER);
+              },
+              isProUser() {
+                return of({});
+              },
+              getProInfo() {
+                return of({});
+              },
+              getUserCover() {
+                return of({});
+              },
+              updateProInfo() {
+                return of({});
+              },
+              edit() {
+                return of({});
+              },
+              updateLocation() {
+                return of({});
+              },
+              updateSearchLocationCookies() {},
+            },
           },
-        },
-      ],
-      declarations: [
-        ProfileInfoComponent,
-        ProfileFormComponent,
-        SwitchComponent,
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+          {
+            provide: ErrorsService,
+            useValue: {
+              i18nError() {},
+              i18nSuccess() {},
+              show() {},
+            },
+          },
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  componentInstance: modalInstance,
+                  result: Promise.resolve(true),
+                };
+              },
+            },
+          },
+          {
+            provide: ProfileFormComponent,
+            useValue: {
+              initFormControl() {},
+              canExit() {},
+            },
+          },
+        ],
+        declarations: [
+          ProfileInfoComponent,
+          ProfileFormComponent,
+          SwitchComponent,
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
   beforeEach(() => {
     fixture = TestBed.createComponent(ProfileInfoComponent);
     component = fixture.componentInstance;
@@ -347,10 +349,8 @@ describe('ProfileInfoComponent', () => {
         component.onSubmit();
       });
 
-      it('should set dirty invalid fields', () => {
-        expect(
-          component.profileForm.get('location.address').dirty
-        ).toBeTruthy();
+      it('should notify address is not valid', () => {
+        expect(component.isIncorrectAddress).toBe(true);
       });
 
       it('should call i18nError if form is invalid', () => {

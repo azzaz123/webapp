@@ -1,7 +1,3 @@
-import { Review } from '../app/reviews/review';
-import { ReviewItem } from '../app/reviews/review-item';
-import { ReviewResponse } from '../app/reviews/review-response.interface';
-
 import { CONVERSATION_ID } from './conversation.fixtures.spec';
 import { MICRO_NAME, USER_ID, USER_WEB_SLUG } from './user.fixtures.spec';
 import { ITEM_ID } from './item.fixtures.spec';
@@ -10,6 +6,9 @@ import {
   ReviewDataBuyer,
   ReviewDataSeller,
 } from '../app/core/review/review.interface';
+import { Review } from 'app/features/reviews/core/review';
+import { ReviewItem } from 'app/features/reviews/core/review-item';
+import { ReviewResponse } from 'app/features/reviews/core/review-response.interface';
 
 export const REVIEW_DATA_BUYER: ReviewDataBuyer = {
   conversation_id: CONVERSATION_ID,
