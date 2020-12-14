@@ -17,26 +17,9 @@ $spacing-x5: $base-spacing * 5;
       display: flex;
       font-size: $font-size-s;
       padding: $spacing-x1 $spacing-x2;
-      tsl-svg-icon {
+      tsl-favourite-icon {
         height: $spacing-x2;
         margin-right: $spacing-x1;
-        ::ng-deep {
-          svg {
-            height: 100%;
-            path {
-              fill: transparent;
-              stroke: $blue-grey-2;
-            }
-          }
-        }
-        &.active {
-          ::ng-deep {
-            path {
-              fill: $negative-main;
-              stroke: $negative-dark;
-            }
-          }
-        }
       }
     }
   }

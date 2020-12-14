@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FavouriteUserComponent } from './favourite-user.component';
-import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
+import { FavouriteIconModule } from '@public/core/components/favourite-icon/favourite-icon.module';
 
 @NgModule({
   declarations: [FavouriteUserComponent],
-  imports: [CommonModule, SvgIconModule],
+  imports: [CommonModule, FavouriteIconModule],
   exports: [FavouriteUserComponent],
 })
 export class FavouriteUserModule {}
