@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./favorites.component.scss'],
 })
 export class FavoritesComponent implements OnInit {
+  public test = false;
   public items: Item[] = [];
   public profiles: Profile[] = [];
   public selectedStatus = 'products';
@@ -31,19 +32,21 @@ export class FavoritesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.getItems();
+    this.getItems(true, true);
     this.getNumberOfFavorites();
   }
 
-  public filterByStatus(status: string) {
+  public routesByStatus(status: string) {
     if (status !== this.selectedStatus) {
       this.selectedStatus = status;
-      this.selectedStatus === 'products' ? this.getItems() : this.getProfiles();
+      this.selectedStatus === 'products'
+        ? this.getItems(true, true)
+        : this.getProfiles(true, true);
       this.getNumberOfFavorites();
     }
   }
 
-  public getItems(append?: boolean) {
+  public getItems(append?: boolean, shouldRoute?: boolean) {
     this.loading = true;
     if (!append) {
       this.items = [];
@@ -55,14 +58,15 @@ export class FavoritesComponent implements OnInit {
         this.items = this.items.concat(items);
         this.loading = false;
         this.end = !itemsData.init;
-        console.log('items', this.items);
-        this.router.navigateByUrl('/favorites/products', {
-          state: { data: this.items },
-        });
+        if (shouldRoute) {
+          this.router.navigateByUrl('/favorites/products', {
+            state: { data: this.items },
+          });
+        }
       });
   }
 
-  public getProfiles(append?: boolean) {
+  public getProfiles(append?: boolean, shouldRoute?: boolean) {
     this.loading = true;
     if (!append) {
       this.profiles = [];
@@ -74,9 +78,11 @@ export class FavoritesComponent implements OnInit {
         this.profiles = this.profiles.concat(profiles);
         this.loading = false;
         this.end = !profilesData.init;
-        this.router.navigateByUrl('/favorites/profiles', {
-          state: { data: this.profiles },
-        });
+        if (shouldRoute) {
+          this.router.navigateByUrl('/favorites/profiles', {
+            state: { data: this.profiles },
+          });
+        }
       });
   }
 
