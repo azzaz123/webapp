@@ -11,6 +11,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { TrackingService } from '@core/tracking/tracking.service';
 import { Item } from '@core/item/item';
+import { Router, RouteReuseStrategy } from '@angular/router';
 
 @Component({
   selector: 'tsl-item-cart-favorite',
@@ -25,8 +26,11 @@ export class ItemCartFavoriteComponent implements OnInit {
     private itemService: ItemService,
     private modalService: NgbModal,
     private trackingService: TrackingService,
+    private router: Router,
     @Inject('SUBDOMAIN') private subdomain: string
-  ) {}
+  ) {
+    const items = this.router.getCurrentNavigation().extras.state;
+  }
 
   ngOnInit() {}
 
