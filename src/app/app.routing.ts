@@ -122,7 +122,9 @@ const loggedRoutes = [
       {
         path: '',
         loadChildren: () =>
-          import('app/catalog/catalog.module').then((m) => m.CatalogModule),
+          import('app/features/catalog/catalog.module').then(
+            (m) => m.CatalogModule
+          ),
       },
       {
         path: 'upload',
