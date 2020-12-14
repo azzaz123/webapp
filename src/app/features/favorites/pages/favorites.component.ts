@@ -7,6 +7,7 @@ import { Item } from '@core/item/item';
 import { ProfilesData } from '@core/profile/profile-response.interface';
 import { ProfileService } from '@core/profile/profile.service';
 import { Profile } from '@core/profile/profile';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'tsl-favorites',
@@ -25,7 +26,8 @@ export class FavoritesComponent implements OnInit {
   constructor(
     public itemService: ItemService,
     private userService: UserService,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -53,6 +55,9 @@ export class FavoritesComponent implements OnInit {
         this.items = this.items.concat(items);
         this.loading = false;
         this.end = !itemsData.init;
+        this.router.navigateByUrl('/favorites/products', {
+          state: { data: this.items },
+        });
       });
   }
 
@@ -68,6 +73,9 @@ export class FavoritesComponent implements OnInit {
         this.profiles = this.profiles.concat(profiles);
         this.loading = false;
         this.end = !profilesData.init;
+        this.router.navigateByUrl('/favorites/profiles', {
+          state: this.profiles,
+        });
       });
   }
 
