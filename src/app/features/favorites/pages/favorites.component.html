@@ -25,40 +25,12 @@
       <div class="col-12">
         <nav class="nav filters-nav">
           <a class="nav-link" (click)="filterByStatus('products')" i18n   routerLinkActive="active">Products</a>
-          <a class="nav-link" (click)="filterByStatus('profiles')" i18n="tab|plural" [routerLink]="['profiles']" routerLinkActive="active">Profiles</a>
+          <a class="nav-link" (click)="filterByStatus('profiles')" i18n="tab|plural" routerLinkActive="active">Profiles</a>
         </nav>
       </div>
     </div>
     <div class="mt-3">
-     <!--  <div class="favorites-empty-state"
-        *ngIf="!items.length && !loading && selectedStatus === 'products' || !profiles.length && !loading && selectedStatus === 'profiles'">
-        <tsl-svg-icon src="/assets/icons/favorites-empty-state.svg" class="d-none d-md-block image"></tsl-svg-icon>
-        <tsl-svg-icon src="/assets/icons/favorites-empty-state-mobile.svg" class="d-block d-md-none image">
-        </tsl-svg-icon>
-        <div class="d-none d-md-block message" (click)="filterByStatus('products')" *ngIf="selectedStatus === 'products'" i18n>In this list you can see all
-          the products you
-          saved as favourite</div>
-        <div class="d-none d-md-block message" (click)="filterByStatus('profiles')" *ngIf="selectedStatus === 'profiles'" i18n>In this list you can see all
-          the profiles you
-          saved as favourite</div>
-      </div> -->
-    
-        <router-outlet></router-outlet>
-      
-      
-     <!--  <div class="cards-container" *ngIf="selectedStatus === 'products'">
-        <div class="card-wrapper" *ngFor="let item of items">
-          <router-outlet></router-outlet>
-         <tsl-item-cart-favorite [item]="item" (onFavoriteChange)="onFavoriteChange($event)">
-        </div>
-      </div> -->
-    <!--   <div class="cards-container" *ngIf="selectedStatus === 'profiles'">
-        <div class="card-wrapper" *ngFor="let profile of profiles">
-          <tsl-profile-card-favorite [profile]="profile" (onFavoriteProfileChange)="onFavoriteProfileChange($event)">
-          </tsl-profile-card-favorite> 
-          <router-outlet></router-outlet>
-        </div>
-      </div> -->
+      <router-outlet></router-outlet>
     </div>
   </div>
 </div>
