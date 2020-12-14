@@ -1,1 +1,4 @@
-<p>favourite-user works!</p>
+<button class="FavouriteUser__btn" (click)="toggleFavourite()">
+    <tsl-svg-icon src="/assets/icons/heart-full.svg" [class.active]="isFavourite"></tsl-svg-icon>
+    <span i18n="@@FavouriteUserLabel">Favourite user</span>
+</button>

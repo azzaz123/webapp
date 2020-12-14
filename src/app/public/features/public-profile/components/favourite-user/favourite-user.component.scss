@@ -1,0 +1,43 @@
+@import '~style/common';
+
+$base-spacing: 8px;
+$spacing-x1: $base-spacing;
+$spacing-x2: $base-spacing * 2;
+$spacing-x3: $base-spacing * 3;
+$spacing-x4: $base-spacing * 4;
+$spacing-x5: $base-spacing * 5;
+
+:host {
+  .FavouriteUser {
+    &__btn {
+      align-items: center;
+      background-color: $white;
+      border: none;
+      border-radius: $spacing-x3;
+      display: flex;
+      font-size: $font-size-s;
+      padding: $spacing-x1 $spacing-x2;
+      tsl-svg-icon {
+        height: $spacing-x2;
+        margin-right: $spacing-x1;
+        ::ng-deep {
+          svg {
+            height: 100%;
+            path {
+              fill: transparent;
+              stroke: $blue-grey-2;
+            }
+          }
+        }
+        &.active {
+          ::ng-deep {
+            path {
+              fill: $negative-main;
+              stroke: $negative-dark;
+            }
+          }
+        }
+      }
+    }
+  }
+}
