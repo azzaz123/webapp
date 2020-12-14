@@ -1,16 +1,17 @@
-
-<div class="favorites-empty-state"
-  *ngIf="!profiles.length">
-  <tsl-svg-icon src="/assets/icons/favorites-empty-state.svg" class="d-none d-md-block image"></tsl-svg-icon>
-  <tsl-svg-icon src="/assets/icons/favorites-empty-state-mobile.svg" class="d-block d-md-none image">
-  </tsl-svg-icon>
-  <div class="d-none d-md-block message" i18n>In this list you can see all the profiles you saved as favourite
-  </div>
-</div> 
-<div class="cards-container"  *ngIf="!!profiles.length">
-  <div class="card-wrapper" *ngFor="let profile of profiles">
-    <tsl-profile-card-favorite [profile]="profile" (onFavoriteProfileChange)="onFavoriteProfileChange($event)">
-    </tsl-profile-card-favorite> 
+<div *ngIf="!!profiles">
+  <div class="favorites-empty-state"
+    *ngIf="!profiles.length">
+    <tsl-svg-icon src="/assets/icons/favorites-empty-state.svg" class="d-none d-md-block image"></tsl-svg-icon>
+    <tsl-svg-icon src="/assets/icons/favorites-empty-state-mobile.svg" class="d-block d-md-none image">
+    </tsl-svg-icon>
+    <div class="d-none d-md-block message" i18n>In this list you can see all the profiles you saved as favourite
+    </div>
+  </div> 
+  <div class="cards-container"  *ngIf="!!profiles.length">
+    <div class="card-wrapper" *ngFor="let profile of profiles">
+      <tsl-profile-card-favorite [profile]="profile" (onFavoriteProfileChange)="onFavoriteProfileChange($event)">
+      </tsl-profile-card-favorite> 
+    </div>
   </div>
 </div>
 
