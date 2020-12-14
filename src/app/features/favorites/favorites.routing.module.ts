@@ -7,29 +7,23 @@ import { ProfileCardFavoriteComponent } from './components/profile-card-favorite
 import { ItemCartFavoriteComponent } from './components/item-cart-favorite/item-cart-favorite.component';
 import { PERMISSIONS } from '@core/user/user';
 import { ExitConfirmGuard } from '@shared/guards/exit-confirm.guard';
+import { ItemsPageComponent } from './components/items-page/items-page.component';
 
 const routes: Routes = [
   {
     path: '',
     component: FavoritesComponent,
-    canActivate: [LoggedGuard, NgxPermissionsGuard],
+    canActivate: [LoggedGuard],
     canDeactivate: [ExitConfirmGuard],
     canActivateChild: [NgxPermissionsGuard],
-    data: {
-      isMyZone: true,
-      permissions: {
-        except: PERMISSIONS.professional,
-        redirectTo: '/pro/profile',
-      },
-    },
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'items' },
+      { path: '', pathMatch: 'full', redirectTo: 'products' },
       {
-        path: 'items',
-        component: ItemCartFavoriteComponent,
+        path: 'products',
+        component: ItemsPageComponent,
       },
       {
-        path: 'profile',
+        path: 'profiles',
         component: ProfileCardFavoriteComponent,
       },
     ],
@@ -46,4 +40,5 @@ export const favoritesRoutedComponents = [
   FavoritesComponent,
   ItemCartFavoriteComponent,
   ProfileCardFavoriteComponent,
+  ItemsPageComponent,
 ];
