@@ -1,4 +1,6 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FavouriteIconModule } from '@public/core/components/favourite-icon/favourite-icon.module';
 
 import { FavouriteUserComponent } from './favourite-user.component';
 
@@ -9,6 +11,7 @@ describe('FavouriteUserComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [FavouriteUserComponent],
+      imports: [FavouriteIconModule, HttpClientTestingModule],
     }).compileComponents();
   });
 
