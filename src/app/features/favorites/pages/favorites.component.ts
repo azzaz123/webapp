@@ -35,6 +35,11 @@ export class FavoritesComponent implements OnInit {
   }
 
   onActivate(componentReference) {
+    if (
+      !componentReference.onFavoriteItemPageChange ||
+      !componentReference.onFavoriteProfilePageChange
+    )
+      return;
     componentReference.onFavoriteItemPageChange.subscribe((isItemRemoved) => {
       if (isItemRemoved) {
         this.numberOfFavorites--;
