@@ -31,7 +31,7 @@
   <msg id="1660800252915157371"><source>src/app/layout/topbar/topbar.component.html:13</source>credit</msg>
   <msg id="4053902008669548465"><source>src/app/layout/topbar/topbar.component.html:27</source>My Zone</msg>
   <msg id="3983509092263971640"><source>src/app/layout/topbar/topbar.component.html:28</source>My Pro Zone</msg>
-  <msg id="TopBarButtonRegisteOrSignin"><source>src/app/layout/topbar/topbar.component.html:32</source>Register or signin</msg>
+  <msg id="TopBarButtonRegisteOrSignin"><source>src/app/layout/topbar/topbar.component.html:32</source>Register or sign in</msg>
   <msg id="4818441514225396186"><source>src/app/layout/topbar/topbar.component.html:36</source>List a product</msg>
   <msg id="6348395677948023023"><source>src/app/layout/topbar/topbar.component.html:37</source>List a car</msg>
   <msg id="4915431133669985304"><source>src/app/layout/sidebar/sidebar.component.html:6</source>Profile</msg>
