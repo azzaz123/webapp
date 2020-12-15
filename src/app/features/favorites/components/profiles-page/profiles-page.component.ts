@@ -18,7 +18,7 @@ export class ProfilesPageComponent implements OnInit {
   constructor(private profileService: ProfileService, private router: Router) {}
 
   ngOnInit(): void {
-    this.profiles = history.state.data;
+    this.getProfiles();
   }
 
   public loadMore() {
@@ -45,9 +45,10 @@ export class ProfilesPageComponent implements OnInit {
   }
 
   public removeProfile(profile: Profile) {
-    if (this.profiles.length) {
+    //EventEmitter
+    /* if (this.profiles.length) {
       const index = this.profiles.indexOf(profile);
       this.profiles.splice(index, 1);
-    }
+    } */
   }
 }

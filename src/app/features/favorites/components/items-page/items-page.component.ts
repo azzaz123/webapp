@@ -24,19 +24,6 @@ export class ItemsPageComponent implements OnInit {
     this.getItems(true);
   }
 
-  public onFavoriteChange(item: Item) {
-    this.removeItem(item);
-  }
-
-  public removeItem(item: Item) {
-    //EventEmitter
-    /*  if (this.items.length) {
-      const index = this.items.indexOf(item);
-      this.items.splice(index, 1);
-      this.numberOfFavorites--;
-    } */
-  }
-
   public getItems(append?: boolean) {
     this.loading = true;
     if (!append) {
@@ -50,5 +37,18 @@ export class ItemsPageComponent implements OnInit {
         this.loading = false;
         this.end = !itemsData.init;
       });
+  }
+
+  public onFavoriteItemChange(item: Item) {
+    this.removeItem(item);
+  }
+
+  public removeItem(item: Item) {
+    //EventEmitter
+    /*  if (this.items.length) {
+      const index = this.items.indexOf(item);
+      this.items.splice(index, 1);
+      this.numberOfFavorites--;
+    } */
   }
 }

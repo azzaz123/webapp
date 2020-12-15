@@ -31,7 +31,6 @@ export class FavoritesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    //this.getItems();
     this.getNumberOfFavorites();
   }
 
@@ -44,27 +43,7 @@ export class FavoritesComponent implements OnInit {
       this.getNumberOfFavorites();
     }
   }
-
-  /* public getItems(append?: boolean, shouldRoute?: boolean) {
-    this.loading = true;
-    if (!append) {
-      this.items = [];
-    }
-    this.itemService
-      .myFavorites(this.items.length)
-      .subscribe((itemsData: ItemsData) => {
-        const items = itemsData.data;
-        this.items = this.items.concat(items);
-        this.loading = false;
-        this.end = !itemsData.init;
-        if (shouldRoute) {
-          this.router.navigateByUrl('/favorites/products', {
-            state: { data: this.items },
-          });
-        }
-      });
-  } */
-
+  /* 
   public getProfiles(append?: boolean, shouldRoute?: boolean) {
     this.loading = true;
     if (!append) {
@@ -83,36 +62,30 @@ export class FavoritesComponent implements OnInit {
           });
         }
       });
-  }
+  } */
 
-  public onFavoriteChange(item: Item) {
+  /*   public onFavoriteChange(item: Item) {
     this.removeItem(item);
-  }
+  } */
 
-  public onFavoriteProfileChange(profile: Profile) {
+  /*   public onFavoriteProfileChange(profile: Profile) {
     this.removeProfile(profile);
-  }
+  } */
 
-  public removeProfile(profile: Profile) {
+  /*   public removeProfile(profile: Profile) {
     if (this.profiles.length) {
       const index = this.profiles.indexOf(profile);
       this.profiles.splice(index, 1);
       this.numberOfFavorites--;
     }
-  }
+  } */
 
-  public removeItem(item: Item) {
+  /*   public removeItem(item: Item) {
     if (this.items.length) {
       const index = this.items.indexOf(item);
       this.items.splice(index, 1);
       this.numberOfFavorites--;
     }
-  }
-
-  /* public loadMore() {
-    this.selectedStatus === 'products'
-      ? this.getItems(true)
-      : this.getProfiles(true);
   } */
 
   public getNumberOfFavorites() {
