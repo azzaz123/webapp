@@ -19,13 +19,11 @@
         <tsl-svg-icon src="/assets/icons/location.svg"></tsl-svg-icon>{{userInfo.location.zip}}, {{userInfo.location.city}}
         <a (click)="showLocation()" i18n="@@ShowLocation" class="ml-2">View location</a>
     </div>
-    <div [hidden]="!userInfo.isPro">
-        <!-- Change URL -->
-        <a href="{{ userInfo.url_share }}" target="_blank" i18n="@RedirectWeb">Go to the website</a>
+    <div [hidden]="!userInfo.isPro || !userInfo.extra_info?.link">
+        <a href="{{ userInfo.extra_info.link }}" target="_blank" i18n="@RedirectWeb">Go to the website</a>
     </div>
-    <div class="d-flex align-items-center">
+    <div [hidden]="!userInfo.isPro || !userInfo.extra_info?.phone_number" class="d-flex align-items-center">
         <a (click)="togglePhone()" i18n="@@ShowPhone">Show phone number</a>
-        <!-- Add phone -->
-        <div [hidden]="!isPhone" class="ml-2">NumTelf</div>
+        <div [hidden]="!isPhone" class="ml-2">{{userInfo.extra_info.phone_number}}</div>
     </div>
 </div>

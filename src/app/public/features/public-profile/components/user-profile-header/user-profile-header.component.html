@@ -3,7 +3,7 @@
   <div class="container align-middle ProfileUser__container">
     <div class="row">
       <div class="col-12 col-sm-6 row ProfileUser__info">
-        <tsl-user-avatar  class="ProfileUser__info__image" [imageUrl]="userInfo.image" size="80"></tsl-user-avatar>
+        <tsl-user-avatar  class="ProfileUser__info__image" [user]="userInfo" size="80"></tsl-user-avatar>
         <div class="wrapper">
           <h3>{{userInfo.micro_name}}</h3>
           <tsl-stars [stars]="userStats?.ratings?.reviews" [normalized]="false"></tsl-stars>
@@ -20,9 +20,9 @@
         <tsl-user-stats [userStats]="userStats" [userInfo]="userInfo"></tsl-user-stats>
       </div>
     </div>
-    <div class="row"  [hidden]="!userInfo.isPro">
-      <strong i18n="@@About">About</strong>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam semper tellus a dapibus iaculis. Pellentesque sed justo ac mi molestie mollis nec vitae lacus. Suspendisse et mi eu metus egestas ultricies. In et aliquam est. Aliquam porttitor nec neque ut iaculis. Sed imperdiet lorem at viverra sodales. Donec maximus consequat risus eget consectetur. Integer lectus lorem, dignissim vitae ornare sit amet, accumsan eu tellus. Proin viverra nisl eu magna varius, eget commodo quam blandit. In et condimentum dolor, vitae tempus magna. Integer rutrum cursus dui, ac rhoncus dolor aliquet sit amet. Nullam laoreet sit amet arcu vitae suscipit.
+    <div class="row"  [hidden]="!userInfo.isPro || !userInfo.extra_info?.description">
+      <strong class="w-100" i18n="@@About">About</strong>
+        {{userInfo.extra_info.description}}
     </div>
   </div>
 </div>
