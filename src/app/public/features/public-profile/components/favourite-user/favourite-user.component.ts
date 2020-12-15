@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { PublicProfileService } from '@public/core/services/public-profile.service';
 
 @Component({
   selector: 'tsl-favourite-user',
@@ -7,10 +8,21 @@ import { Component, Input } from '@angular/core';
 })
 export class FavouriteUserComponent {
   @Input() isFavourite: boolean = false;
+  @Input() userId: string;
 
-  constructor() {}
+  constructor(private publicProfileService: PublicProfileService) {}
 
   toggleFavourite(): void {
     this.isFavourite = !this.isFavourite;
+
+    (this.isFavourite
+      ? this.publicProfileService.markAsFavourite(this.userId)
+      : this.publicProfileService.unmarkAsFavourite(this.userId)
+    ).subscribe(
+      () => {},
+      () => {
+        this.isFavourite = !this.isFavourite;
+      }
+    );
   }
 }
