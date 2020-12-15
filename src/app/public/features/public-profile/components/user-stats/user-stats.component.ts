@@ -1,6 +1,9 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { UserStats } from '@core/user/user-stats.interface';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { UserInfo } from '../../core/public-profile.interface';
+import { PUBLIC_PROFILE_PATHS } from '../../public-profile-routing-constants';
 
 @Component({
   selector: 'tsl-user-stats',
@@ -12,11 +15,28 @@ export class UserStatsComponent {
   @Input() userInfo: UserInfo;
   isPhone = false;
 
-  constructor() {}
+  constructor(
+    private deviceService: DeviceDetectorService,
+    private router: Router
+  ) {}
 
   togglePhone(): void {
     this.isPhone = !this.isPhone;
   }
 
-  showLocation(): void {}
+  public showLocation(): void {
+    const URL = `${this.cleanCurrentURL()}${PUBLIC_PROFILE_PATHS.INFO}`;
+    if (this.deviceService.isMobile()) {
+      this.router.navigate([URL], { fragment: 'map' });
+    } else {
+      this.router.navigate([URL]);
+    }
+  }
+
+  private cleanCurrentURL(): string {
+    const URL = this.router.url;
+    let to = URL.lastIndexOf('/');
+    to = to == -1 ? URL.length : to + 1;
+    return URL.substring(0, to);
+  }
 }
