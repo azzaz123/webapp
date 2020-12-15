@@ -1,19 +1,17 @@
-import { InboxConversation } from '../app/chat/model/inbox-conversation';
-import { InboxUser } from '../app/chat/model/inbox-user';
 import {
+  InboxConversation,
   InboxItem,
-  InboxItemStatus,
   InboxItemPlaceholder,
-} from '../app/chat/model/inbox-item';
-import {
+  InboxItemStatus,
   InboxMessage,
+  InboxUser,
   MessageStatus,
   MessageType,
-} from '../app/chat/model/inbox-message';
+} from '@features/chat/core/model';
+import { CATEGORY_IDS } from '../app/core/category/category-ids';
+import { ITEM_ID, MOCK_ITEM } from './item.fixtures.spec';
 import { MESSAGE_MAIN } from './message.fixtures.spec';
 import { OTHER_USER_ID, USER_ID } from './user.fixtures.spec';
-import { ITEM_ID, MOCK_ITEM } from './item.fixtures.spec';
-import { CATEGORY_IDS } from '../app/core/category/category-ids';
 
 export const CONVERSATION_ID: string = MESSAGE_MAIN.thread;
 export const CONVERSATION_PHONE = '123.456.789';

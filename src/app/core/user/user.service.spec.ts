@@ -1,43 +1,30 @@
-import { of } from 'rxjs';
+import { HttpParams } from '@angular/common/http';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import {
   discardPeriodicTasks,
   fakeAsync,
   TestBed,
   tick,
 } from '@angular/core/testing';
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
-import {
-  UserService,
-  USER_ONLINE_ENDPOINT,
-  PROTOOL_EXTRA_INFO_ENDPOINT,
-  USER_LOCATION_ENDPOINT,
-  USER_STORE_LOCATION_ENDPOINT,
-  USER_STATS_ENDPOINT,
-  USER_STATS_BY_ID_ENDPOINT,
-  USER_ENDPOINT,
-  USER_EMAIL_ENDPOINT,
-  USER_PASSWORD_ENDPOINT,
-  USER_UNSUBSCRIBE_REASONS_ENDPOINT,
-  USER_UNSUBSCRIBE_ENDPOINT,
-  USER_BY_ID_ENDPOINT,
-  USER_REPORT_ENDPOINT,
-  USER_COVER_IMAGE_ENDPOINT,
-  USER_PHONE_INFO_ENDPOINT,
-  USER_EXTRA_INFO_ENDPOINT,
-} from './user.service';
-import { ITEM_LOCATION, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
-import { Item } from '../item/item';
-import { I18nService } from '../i18n/i18n.service';
+import { AccessTokenService } from '@core/http/access-token.service';
+import { I18nService } from '@core/i18n/i18n.service';
+import { Item } from '@core/item/item';
+import { environment } from '@environments/environment';
+import { APP_VERSION } from '@environments/version';
+import { PhoneMethod } from '@features/chat/core/model';
+import { ITEM_LOCATION, MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import {
   CUSTOM_REASON,
   IMAGE,
   MOCK_FULL_USER,
-  MOCK_USER,
   MOCK_UNSUBSCRIBE_REASONS,
+  MOCK_USER,
+  MOCK_USER_STATS,
   SELECTED_REASON,
+  USERS_STATS,
   USER_DATA,
   USER_EDIT_DATA,
   USER_EMAIL,
@@ -47,22 +34,35 @@ import {
   USER_LOCATION_COORDINATES,
   USER_PRO_DATA,
   USER_PRO_INFO_RESPONSE,
-  USERS_STATS,
-  MOCK_USER_STATS,
-} from '../../../tests/user.fixtures.spec';
-import { UserStats } from './user-stats.interface';
-import { UnsubscribeReason } from './unsubscribe-reason.interface';
-import { AccessTokenService } from '../http/access-token.service';
-import { EventService } from '../event/event.service';
-import { PERMISSIONS, User } from './user';
-import { environment } from '../../../environments/environment';
-import { Image, UserLocation } from './user-response.interface';
+} from '@fixtures/user.fixtures.spec';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
+import { of } from 'rxjs';
+import { EventService } from '../event/event.service';
 import { FeatureflagService } from './featureflag.service';
-import { APP_VERSION } from '../../../environments/version';
-import { PhoneMethod } from '../../chat/model';
-import { HttpParams } from '@angular/common/http';
+import { UnsubscribeReason } from './unsubscribe-reason.interface';
+import { PERMISSIONS, User } from './user';
+import { Image, UserLocation } from './user-response.interface';
+import { UserStats } from './user-stats.interface';
+import {
+  PROTOOL_EXTRA_INFO_ENDPOINT,
+  UserService,
+  USER_BY_ID_ENDPOINT,
+  USER_COVER_IMAGE_ENDPOINT,
+  USER_EMAIL_ENDPOINT,
+  USER_ENDPOINT,
+  USER_EXTRA_INFO_ENDPOINT,
+  USER_LOCATION_ENDPOINT,
+  USER_ONLINE_ENDPOINT,
+  USER_PASSWORD_ENDPOINT,
+  USER_PHONE_INFO_ENDPOINT,
+  USER_REPORT_ENDPOINT,
+  USER_STATS_BY_ID_ENDPOINT,
+  USER_STATS_ENDPOINT,
+  USER_STORE_LOCATION_ENDPOINT,
+  USER_UNSUBSCRIBE_ENDPOINT,
+  USER_UNSUBSCRIBE_REASONS_ENDPOINT,
+} from './user.service';
 
 describe('Service: User', () => {
   let service: UserService;
