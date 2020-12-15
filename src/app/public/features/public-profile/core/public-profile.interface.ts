@@ -9,17 +9,17 @@ export interface UserInfo {
   url_share: string;
   web_slug: string;
   isPro?: boolean;
-  image: Image;
+  image?: Image;
+  extra_info?: UserExtrainfo;
 }
 
 export interface UserStats {
-  counters: UserCounter[];
-  ratings: 'reviews';
+  counters: CounterTypes;
+  ratings: Ratings;
 }
 
-export interface UserCounter {
-  type: CounterTypes;
-  value: number;
+export interface Ratings {
+  reviews: number;
 }
 
 export interface UserLocation {
@@ -46,11 +46,38 @@ export interface Image {
   };
 }
 
-export enum CounterTypes {
-  'publish',
-  'buys',
-  'sells',
-  'reviews',
-  'sold',
-  'reports_received',
+export interface CounterTypes {
+  publish: number;
+  buys: number;
+  sells: number;
+  reviews: number;
+  sold: number;
+  reports_received: number;
+}
+
+export interface UserExtrainfo {
+  description: string;
+  address?: string;
+  phone_number: string;
+  link: string;
+  latitude?: number;
+  longitude?: number;
+  consent_third_parties_use_data?: boolean;
+  modified_date?: number;
+  new_chat_notification?: boolean;
+  news_notification?: boolean;
+  only_chat_phone_notification?: boolean;
+  opening_hours?: string;
+  updatedAddress?: boolean;
+  updatedConsentThirdPartiesUseData?: boolean;
+  updatedDescription?: boolean;
+  updatedLatitude?: boolean;
+  updatedLink?: boolean;
+  updatedLongitude?: boolean;
+  updatedModifiedDate?: boolean;
+  updatedNewChatNotification?: boolean;
+  updatedNewsNotification?: boolean;
+  updatedOnlyChatPhoneNotification?: boolean;
+  updatedOpeningHours?: boolean;
+  updatedPhoneNumber?: boolean;
 }
