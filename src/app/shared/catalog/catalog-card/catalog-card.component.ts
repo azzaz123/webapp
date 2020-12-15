@@ -1,13 +1,14 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Item } from '../../../core/item/item';
-import { ItemChangeEvent } from '../../../catalog/list/catalog-item/item-change.interface';
+
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ItemService } from '../../../core/item/item.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { EventService } from '../../../core/event/event.service';
+import { ItemChangeEvent } from '@features/catalog/core/item-change.interface';
 
 @Component({
   selector: 'tsl-catalog-card',
