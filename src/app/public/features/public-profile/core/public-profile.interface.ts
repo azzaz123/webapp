@@ -9,6 +9,7 @@ export interface UserInfo {
   url_share: string;
   web_slug: string;
   isPro?: boolean;
+  image: Image;
 }
 
 export interface UserStats {
@@ -28,6 +29,21 @@ export interface UserLocation {
   approximated_longitude: number;
   city: string;
   zip: string;
+}
+
+export interface Image {
+  id: string;
+  legacy_id?: number;
+  original_width: number;
+  original_height: number;
+  urls_by_size: {
+    original: string;
+    small: string;
+    large: string;
+    medium: string;
+    xlarge: string;
+    xsmall: string;
+  };
 }
 
 export enum CounterTypes {

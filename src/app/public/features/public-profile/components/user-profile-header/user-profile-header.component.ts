@@ -33,6 +33,15 @@ export class UserProfileHeaderComponent implements OnInit, OnDestroy {
       ]).subscribe(([userInfo, userStats]: [UserInfo, UserStats]) => {
         this.userInfo = userInfo;
         this.userStats = userStats;
+
+        if (userInfo.isPro) {
+          console.log('inside');
+          this.publicProfileService
+            .getProUserInfo(this.userId)
+            .subscribe((userProInfo) => {
+              console.log('userProInfo => ', userProInfo);
+            });
+        }
       })
     );
   }

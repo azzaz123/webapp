@@ -3,22 +3,26 @@
   <div class="container align-middle ProfileUser__container">
     <div class="row">
       <div class="col-12 col-sm-6 row ProfileUser__info">
-        <tsl-user-avatar  class="ProfileUser__info__image"></tsl-user-avatar>
+        <tsl-user-avatar  class="ProfileUser__info__image" [imageUrl]="userInfo.image" size="80"></tsl-user-avatar>
         <div class="wrapper">
           <h3>{{userInfo.micro_name}}</h3>
           <tsl-stars [stars]="userStats?.ratings?.reviews" [normalized]="false"></tsl-stars>
           <span class="user-number-reviews">({{userStats.counters.reviews}})</span>
-        </div>
-        <div class="ProBadge" [hidden]="!userInfo.isPro">
-          <div class="ProBadge-icon">
-            <tsl-svg-icon src="/assets/icons/pro-seal.svg"></tsl-svg-icon>
+          <div class="ProBadge" [hidden]="!userInfo.isPro">
+            <div class="ProBadge-icon mt-1">
+              <tsl-svg-icon src="/assets/icons/pro-seal.svg"></tsl-svg-icon>
+              <strong class="ml-2">PRO</strong>
+            </div>
           </div>
-          <div>PRO</div>
         </div>
       </div>
       <div class="col-12 col-sm-6 ProfileUser__stats">
-        <tsl-user-stats [userStats]="userStats"></tsl-user-stats>
+        <tsl-user-stats [userStats]="userStats" [userInfo]="userInfo"></tsl-user-stats>
       </div>
+    </div>
+    <div class="row"  [hidden]="!userInfo.isPro">
+      <strong>Acerca de</strong>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam semper tellus a dapibus iaculis. Pellentesque sed justo ac mi molestie mollis nec vitae lacus. Suspendisse et mi eu metus egestas ultricies. In et aliquam est. Aliquam porttitor nec neque ut iaculis. Sed imperdiet lorem at viverra sodales. Donec maximus consequat risus eget consectetur. Integer lectus lorem, dignissim vitae ornare sit amet, accumsan eu tellus. Proin viverra nisl eu magna varius, eget commodo quam blandit. In et condimentum dolor, vitae tempus magna. Integer rutrum cursus dui, ac rhoncus dolor aliquet sit amet. Nullam laoreet sit amet arcu vitae suscipit.
     </div>
   </div>
 </div>
