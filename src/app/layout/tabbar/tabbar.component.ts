@@ -1,13 +1,13 @@
-import { environment } from './../../../environments/environment';
-import { Component, OnInit, Inject, HostListener } from '@angular/core';
-import { UserService } from '../../core/user/user.service';
-import { User } from '../../core/user/user';
-import { TabbarService } from './tabbar.service';
-import { MessageService } from '../../chat/service/message.service';
+import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { EventService } from '@core/event/event.service';
-import { Subscription } from 'rxjs';
+import { User } from '@core/user/user';
+import { UserService } from '@core/user/user.service';
+import { environment } from '@environments/environment';
+import { MessageService } from '@features/chat/core/message/message.service';
 import { APP_PATHS } from 'app/app-routing-constants';
 import { PUBLIC_PATHS } from 'app/public/public-routing-constants';
+import { Subscription } from 'rxjs';
+import { TabbarService } from './tabbar.service';
 
 @Component({
   selector: 'tsl-tabbar',

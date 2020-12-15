@@ -16,7 +16,7 @@ import { StatsGraphComponent } from './components/stats-graph/stats-graph.compon
 import { StatisticsService } from './core/services/statistics.service';
 import { SharedModule } from '@shared/shared.module';
 import { ConversationModule } from '@core/conversation/conversation.module';
-import { ChatModule } from 'app/chat/chat.module';
+import { ChatModule } from '@features/chat/chat.module';
 
 @NgModule({
   imports: [

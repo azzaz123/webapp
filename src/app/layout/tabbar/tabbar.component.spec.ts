@@ -1,15 +1,14 @@
-import { Observable, of } from 'rxjs';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import { TabbarComponent } from './tabbar.component';
-import { NgxPermissionsModule } from 'ngx-permissions';
-import { User } from '../../core/user/user';
-import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-import { UserService } from '../../core/user/user.service';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
-import { MockMessageService } from '../../../tests/message.fixtures.spec';
-import { MessageService } from '../../chat/service/message.service';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { EventService } from '@core/event/event.service';
+import { User } from '@core/user/user';
+import { UserService } from '@core/user/user.service';
+import { MessageService } from '@features/chat/core/message/message.service';
+import { MockMessageService } from '@fixtures/message.fixtures.spec';
+import { MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { NgxPermissionsModule } from 'ngx-permissions';
+import { Observable, of } from 'rxjs';
+import { TabbarComponent } from './tabbar.component';
 
 describe('TabbarComponent', () => {
   let component: TabbarComponent;
