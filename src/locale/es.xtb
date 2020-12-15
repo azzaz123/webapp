@@ -1164,6 +1164,42 @@
       <ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph><ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>
       Podrás ejercer tus derechos de acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad de tus datos, así como la revocación, en cualquier momento, del consentimiento prestado, ante Wallapop, CIF nº B-66.04.9057, en la Calle Meridiana 89 Planta 6º, 08026, Barcelona (España), adjuntando fotocopia de tu DNI o documento identificativo válido equivalente. Podrás también ejercer tus derechos mediante comunicación dirigida a: privacidad@wallapop.com. Finalmente, te recordamos que puedes dirigir una reclamación ante la Agencia Española de Protección de Datos, si consideras que Wallapop ha vulnerado tus derechos en materia de protección de datos.”
   </translation>
+  <translation id="TopBarButtonRegisteOrSignin">Regístrate o inicia sesión</translation>
+  <translation id="TabBarButtonLogin">Acceso</translation>
+  <translation id="TabBarButtonMyZone">Mi zona</translation>
+  <translation id="FooterLinksWallapopTitle">wallapop</translation>
+  <translation id="FooterLinksAboutLabel">¿Quiénes somos?</translation>
+  <translation id="FooterLinksAboutHref">https://about.wallapop.com/</translation>
+  <translation id="FooterLinksPressLabel">Prensa</translation>
+  <translation id="FooterLinksPressHref"><https://about.wallapop.com/prensa</translation>
+  <translation id="FooterLinksJobsLabel">Empleo</translation>
+  <translation id="FooterLinksJobsHref">https://apply.workable.com/wallapop/</translation>
+  <translation id="FooterLinksTeamLabel">Equipo</translation>
+  <translation id="FooterLinksTeamHref">https://about.wallapop.com/equipo/</translation>
+  <translation id="FooterLinksSupportTitle">Soporte</translation>
+  <translation id="FooterLinksFaqLabel">Preguntas Frecuentes</translation>
+  <translation id="FooterLinksFaqHref">https://ayuda.wallapop.com/hc/es-es</translation>
+  <translation id="FooterLinksPublishRulesLabel">Reglas de publicación</translation>
+  <translation id="FooterLinksPublishRulesHref">https://ayuda.wallapop.com/hc/es-es/articles/360004667717--Qué-contenido-no-está-permitido-en-wallapop-</translation>
+  <translation id="FooterLinksSecurityTipsLabel">Consejos de seguridad</translation>
+  <translation id="FooterLinksSecurityTipsHref">https://ayuda.wallapop.com/hc/es-es/sections/360001177157-Consejos-de-seguridad</translation>
+  <translation id="FooterLinksLegalTitle">Legal</translation>
+  <translation id="FooterLinksTermsLabel">Condiciones de uso</translation>
+  <translation id="FooterLinksTermsHref">https://about.wallapop.com/condiciones-de-uso/</translation>
+  <translation id="FooterLinksPrivacyLabel">Política de Privacidad</translation>
+  <translation id="FooterLinksPrivacyHref">https://about.wallapop.com/politica-privacidad/</translation>
+  <translation id="FooterLinksCookiessLabel">Cookies</translation>
+  <translation id="FooterLinksCookiesHref">https://about.wallapop.com/cookies/</translation>
+  <translation id="FooterLinksMotorTitle">Motor</translation>
+  <translation id="FooterLinksParticularLabel">Particular</translation>
+  <translation id="FooterLinksParticularHref">https://about.wallapop.com/cars-buyer/</translation>
+  <translation id="FooterLinksProfessionalLabel">Profesional</translation>
+  <translation id="FooterLinksProfessionalHref">https://about.wallapop.com/motor/</translation>
+  <translation id="FooterCopyright">Copyright © <ph name="INTERPOLATION"/> wallapop © de sus respectivos propietarios</translation>
+  <translation id="FooterSocialFacebookLabel">wallapop, la web y app para comprar y vender, también está en Facebook</translation>
+  <translation id="FooterSocialTwitterLabel">wallapop, la web y app para comprar y vender, también está en Twitter</translation>
+  <translation id="FooterSocialInstagramLabel">wallapop, la web y app para comprar y vender, también está en Instagram</translation>
+  
   <translation id="EmptyHistory">Tu historial está vacío</translation>
   <translation id="LoadingData">Estamos cargando tu histórico de facturas...</translation>
   <translation id="NotLoadedInvoices">Lo sentimos, en estos momentos no podemos cargar tus facturas. Intenta de nuevo más tarde.</translation>

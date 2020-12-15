@@ -14,11 +14,11 @@ import { UuidService } from '@core/uuid/uuid.service';
 import { CreditCardModalComponent } from '@features/catalog-pro/modals/credit-card-modal/credit-card-modal.component';
 import { ProBumpConfirmationModalComponent } from '@features/catalog-pro/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component';
 import { ProUrgentConfirmationModalComponent } from '@features/catalog-pro/modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component';
+import { OrderEvent } from '@features/catalog/components/selected-items/selected-product.interface';
+import { ItemChangeEvent } from '@features/catalog/core/item-change.interface';
+import { UploadConfirmationModalComponent } from '@features/catalog/modals/upload-confirmation-modal/upload-confirmation-modal.component';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
-import { ItemChangeEvent } from 'app/catalog/list/catalog-item/item-change.interface';
-import { UploadConfirmationModalComponent } from 'app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component';
-import { OrderEvent } from 'app/catalog/list/selected-items/selected-product.interface';
 import { findIndex } from 'lodash-es';
 import { takeWhile } from 'rxjs/operators';
 

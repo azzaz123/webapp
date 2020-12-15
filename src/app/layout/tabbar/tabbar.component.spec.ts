@@ -6,13 +6,17 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { User } from '../../core/user/user';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { MockMessageService } from '../../../tests/message.fixtures.spec';
 import { MessageService } from '../../chat/service/message.service';
+import { EventService } from '@core/event/event.service';
 
 describe('TabbarComponent', () => {
   let component: TabbarComponent;
+  let de: DebugElement;
+  let el: HTMLElement;
   let fixture: ComponentFixture<TabbarComponent>;
+  let eventService: EventService;
 
   beforeEach(
     waitForAsync(() => {
@@ -26,10 +30,14 @@ describe('TabbarComponent', () => {
               me(): Observable<User> {
                 return of(MOCK_USER);
               },
+              get isLogged(): boolean {
+                return true;
+              },
             },
           },
           { provide: MessageService, useClass: MockMessageService },
           { provide: 'SUBDOMAIN', useValue: 'es' },
+          EventService,
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -39,7 +47,70 @@ describe('TabbarComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TabbarComponent);
     component = fixture.componentInstance;
+    de = fixture.debugElement;
+    el = de.nativeElement;
     fixture.detectChanges();
+    eventService = TestBed.inject(EventService);
+  });
+
+  describe('ngOnInit', () => {
+    it('should set user session', () => {
+      component.isLogged = null;
+
+      component.ngOnInit();
+
+      expect(component.isLogged).toBe(true);
+    });
+
+    it('should update user session on user login', () => {
+      component.isLogged = null;
+
+      component.ngOnInit();
+      eventService.emit(EventService.USER_LOGIN);
+
+      expect(component.isLogged).toBe(true);
+    });
+
+    it('should update user session on user logout', () => {
+      component.isLogged = null;
+
+      component.ngOnInit();
+      eventService.emit(EventService.USER_LOGOUT);
+
+      expect(component.isLogged).toBe(true);
+    });
+  });
+
+  describe('when user session changes', () => {
+    const accessBtnTextSelector = '#tab-bar-access-zone span';
+
+    describe('when user is logged', () => {
+      beforeEach(() => {
+        component.hidden = false;
+        component.isLogged = true;
+
+        fixture.detectChanges();
+      });
+
+      it('should show logged content', () => {
+        expect(el.querySelector(accessBtnTextSelector).innerHTML).toEqual(
+          'My Zone'
+        );
+      });
+    });
+
+    describe('when user is not logged', () => {
+      beforeEach(() => {
+        component.isLogged = false;
+        fixture.detectChanges();
+      });
+
+      it('should show no logged content', () => {
+        expect(el.querySelector(accessBtnTextSelector).innerHTML).toEqual(
+          'Log in'
+        );
+      });
+    });
   });
 
   describe('when using a text input: on focus in', () => {

@@ -19,7 +19,7 @@
             <div class="form-group">
               <div class="selector-container">
                 <label ngbButtonLabel class="btn selector" *ngFor="let operation of operations">
-                  <div class="selector-icon">
+                  <div class="selector-icon" [class.error-required]="hasErrorToShow('operation')">
                     <input ngbButton type="radio" name="operation" [value]="operation.id" />
                     <tsl-svg-icon src="/assets/icons/{{operation.icon_id}}.svg"></tsl-svg-icon>
                   </div>
@@ -47,7 +47,7 @@
             <div class="form-group">
               <div class="selector-container">
                 <label ngbButtonLabel class="selector" *ngFor="let type of types">
-                  <div class="selector-icon">
+                  <div class="selector-icon" [class.error-required]="hasErrorToShow('type')">
                     <input ngbButton type="radio" name="type" [value]="type.id" />
                     <tsl-svg-icon src="/assets/icons/{{type.icon_id}}.svg"></tsl-svg-icon>
                   </div>
@@ -190,7 +190,7 @@
               uploadForm.value.location.approximated_location
             "></tsl-here-maps>
           <div class="fake-map" *ngIf="!coordinates"></div>
-          <p i18n>
+          <p i18n class="my-2">
             This is the spot where your space is located. This location could be
             different from your profile location.
           </p>
