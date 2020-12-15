@@ -1175,4 +1175,11 @@
   <translation id="InvoiceCannotGenerate">Tu factura no se ha podido generar. Intenta de nuevo.</translation>
   <translation id="SuccessEdit">Tus datos se han editado correctamente.</translation>
   <translation id="ErrorSavingData">Error al guardar los datos. Intenta de nuevo.</translation>
+  <translation id="Sales">Ventas</translation>
+  <translation id="Purchases">Compras</translation>
+  <translation id="Shipments">Envíos</translation>
+  <translation id="ShowPhone">Ver número de teléfono</translation>
+  <translation id="ShowLocation">Ver ubicación</translation>
+  <translation id="RedirectWeb">Ir a la web<</translation>
+  <translation id="About">Acerca de</translation>
 </translationbundle>
