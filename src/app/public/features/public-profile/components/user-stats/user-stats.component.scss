@@ -1,6 +1,19 @@
 @import '~style/common';
 
+.PorfileUser__stats {
+  a {
+    color: $walla-main;
+    display: inline-block;
+    cursor: pointer;
+  }
+}
+
+.PorfileUser__stats__location {
+  margin-bottom: $spacing-xs;
+}
+
 tsl-svg-icon {
+  margin-right: 5px;
   ::ng-deep svg {
     @include square(25px);
     g g,
