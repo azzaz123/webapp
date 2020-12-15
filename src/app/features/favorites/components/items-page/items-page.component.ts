@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Item } from '@core/item/item';
 import { ItemsData } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
-import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 
 @Component({
   selector: 'tsl-items-page',
@@ -19,7 +17,7 @@ export class ItemsPageComponent implements OnInit {
   constructor(public itemService: ItemService) {}
 
   ngOnInit(): void {
-    this.items = history.state.data;
+    this.getItems();
   }
 
   public loadMore() {
@@ -31,11 +29,12 @@ export class ItemsPageComponent implements OnInit {
   }
 
   public removeItem(item: Item) {
-    if (this.items.length) {
+    //EventEmitter
+    /*  if (this.items.length) {
       const index = this.items.indexOf(item);
       this.items.splice(index, 1);
       this.numberOfFavorites--;
-    }
+    } */
   }
 
   public getItems(append?: boolean) {

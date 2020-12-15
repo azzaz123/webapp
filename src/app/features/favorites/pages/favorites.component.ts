@@ -15,7 +15,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./favorites.component.scss'],
 })
 export class FavoritesComponent implements OnInit {
-  public test = false;
   public items: Item[] = [];
   public profiles: Profile[] = [];
   public selectedStatus = 'products';
@@ -32,7 +31,7 @@ export class FavoritesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.getItems(true, true);
+    //this.getItems();
     this.getNumberOfFavorites();
   }
 
@@ -40,13 +39,13 @@ export class FavoritesComponent implements OnInit {
     if (status !== this.selectedStatus) {
       this.selectedStatus = status;
       this.selectedStatus === 'products'
-        ? this.getItems(true, true)
-        : this.getProfiles(true, true);
+        ? this.router.navigateByUrl('/favorites/products')
+        : this.router.navigateByUrl('/favorites/profiles');
       this.getNumberOfFavorites();
     }
   }
 
-  public getItems(append?: boolean, shouldRoute?: boolean) {
+  /* public getItems(append?: boolean, shouldRoute?: boolean) {
     this.loading = true;
     if (!append) {
       this.items = [];
@@ -64,7 +63,7 @@ export class FavoritesComponent implements OnInit {
           });
         }
       });
-  }
+  } */
 
   public getProfiles(append?: boolean, shouldRoute?: boolean) {
     this.loading = true;
@@ -110,11 +109,11 @@ export class FavoritesComponent implements OnInit {
     }
   }
 
-  public loadMore() {
+  /* public loadMore() {
     this.selectedStatus === 'products'
       ? this.getItems(true)
       : this.getProfiles(true);
-  }
+  } */
 
   public getNumberOfFavorites() {
     this.userService.getStats().subscribe((userStats: UserStats) => {
