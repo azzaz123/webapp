@@ -12,8 +12,8 @@ import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { UPLOAD_FILE, UPLOAD_FILE_NAME } from '@fixtures/upload.fixtures.spec';
 import { environment } from '@environments/environment';
 import {
-  ImageType,
-  OutputType,
+  IMAGE_TYPE,
+  OUTPUT_TYPE,
   UploadFile,
 } from '../../uploader/upload.interface';
 import { AccessTokenService } from '@core/http/access-token.service';
@@ -79,9 +79,9 @@ describe('CoverUploadComponent', () => {
       spyOn(uploaderService, 'uploadFile').and.callThrough();
 
       uploaderService.serviceEvents$ = of({
-        type: OutputType.addedToQueue,
+        type: OUTPUT_TYPE.addedToQueue,
         file: UPLOAD_FILE,
-        imageType: ImageType.COVER,
+        imageType: IMAGE_TYPE.COVER,
       });
 
       const headers = {
@@ -98,15 +98,15 @@ describe('CoverUploadComponent', () => {
         method: 'POST',
         fieldName: 'image',
         headers,
-        imageType: ImageType.COVER,
+        imageType: IMAGE_TYPE.COVER,
       });
     });
 
     it('should set file if event is uploading', () => {
       uploaderService.serviceEvents$ = of({
-        type: OutputType.uploading,
+        type: OUTPUT_TYPE.uploading,
         file: UPLOAD_FILE,
-        imageType: ImageType.COVER,
+        imageType: IMAGE_TYPE.COVER,
       });
       fixture.detectChanges();
 
@@ -125,9 +125,9 @@ describe('CoverUploadComponent', () => {
         throwError(file.response)
       );
       uploaderService.serviceEvents$ = of({
-        type: OutputType.addedToQueue,
+        type: OUTPUT_TYPE.addedToQueue,
         file: file,
-        imageType: ImageType.COVER,
+        imageType: IMAGE_TYPE.COVER,
       });
 
       fixture.detectChanges();
@@ -142,10 +142,10 @@ describe('CoverUploadComponent', () => {
       spyOn(errorsService, 'i18nError');
       const ERROR = 'error';
       uploaderService.serviceEvents$ = of({
-        type: OutputType.rejected,
+        type: OUTPUT_TYPE.rejected,
         file: UPLOAD_FILE,
         reason: ERROR,
-        imageType: ImageType.COVER,
+        imageType: IMAGE_TYPE.COVER,
       });
 
       fixture.detectChanges();

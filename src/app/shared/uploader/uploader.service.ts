@@ -1,13 +1,13 @@
 import { Observable, Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import {
-  ImageType,
+  IMAGE_TYPE,
   NgUploaderOptions,
-  OutputType,
+  OUTPUT_TYPE,
   UploadFile,
   UploadInput,
   UploadOutput,
-  UploadStatus,
+  UPLOAD_STATUS,
 } from './upload.interface';
 import { DomSanitizer } from '@angular/platform-browser';
 import { cloneDeep } from 'lodash-es';
@@ -24,7 +24,7 @@ export class UploaderService {
   handleFiles(
     files: FileList,
     options: NgUploaderOptions,
-    imageType?: ImageType,
+    imageType?: IMAGE_TYPE,
     previousFiles: UploadFile[] = []
   ): void {
     const _previousFiles: UploadFile[] = cloneDeep(previousFiles);
@@ -39,7 +39,7 @@ export class UploaderService {
         size: file.size,
         type: file.type,
         progress: {
-          status: UploadStatus.Queue,
+          status: UPLOAD_STATUS.Queue,
           data: {
             percentage: 0,
             speed: null,
@@ -60,9 +60,9 @@ export class UploaderService {
             event.target.result
           );
           this.serviceEvents.next({
-            type: OutputType.addedToQueue,
+            type: OUTPUT_TYPE.addedToQueue,
             file: uploadFile,
-            imageType: imageType,
+            imageType,
           });
         });
         _previousFiles.push(uploadFile);
@@ -73,7 +73,7 @@ export class UploaderService {
   private checkExtension(
     file: UploadFile,
     options: NgUploaderOptions,
-    imageType: string
+    imageType: IMAGE_TYPE
   ): boolean {
     let allowedExtensions = options.allowedExtensions || [];
     if (allowedExtensions.indexOf(file.type.toLowerCase()) !== -1) {
@@ -86,7 +86,7 @@ export class UploaderService {
     }
 
     this.serviceEvents.next({
-      type: OutputType.rejected,
+      type: OUTPUT_TYPE.rejected,
       file: file,
       reason: 'ExtensionNotAllowed',
       imageType,
@@ -99,13 +99,13 @@ export class UploaderService {
     file: UploadFile,
     options: NgUploaderOptions,
     files: UploadFile[],
-    imageType: string
+    imageType: IMAGE_TYPE
   ): boolean {
     if (files.length < options.maxUploads) {
       return true;
     }
     this.serviceEvents.next({
-      type: OutputType.rejected,
+      type: OUTPUT_TYPE.rejected,
       file: file,
       reason: 'MaxUploadsExceeded',
       imageType,
@@ -116,13 +116,13 @@ export class UploaderService {
   private checkMaxSize(
     file: UploadFile,
     options: NgUploaderOptions,
-    imageType: string
+    imageType: IMAGE_TYPE
   ): boolean {
     if (!options.maxSize || file.size < options.maxSize) {
       return true;
     }
     this.serviceEvents.next({
-      type: OutputType.rejected,
+      type: OUTPUT_TYPE.rejected,
       file: file,
       reason: 'MaxSizeExceeded',
       imageType,
@@ -157,7 +157,7 @@ export class UploaderService {
               uploadedPercentage < 100 ? uploadedPercentage : 100;
 
             file.progress = {
-              status: UploadStatus.Uploading,
+              status: UPLOAD_STATUS.Uploading,
               data: {
                 percentage: percentage,
                 speed: speed,
@@ -166,7 +166,7 @@ export class UploaderService {
             };
 
             observer.next({
-              type: OutputType.uploading,
+              type: OUTPUT_TYPE.uploading,
               file: file,
               percentage: uploadedPercentage,
             });
@@ -183,7 +183,7 @@ export class UploaderService {
       xhr.onreadystatechange = () => {
         if (xhr.readyState === XMLHttpRequest.DONE) {
           file.progress = {
-            status: UploadStatus.Done,
+            status: UPLOAD_STATUS.Done,
             data: {
               percentage: 100,
               speed: null,
@@ -199,7 +199,7 @@ export class UploaderService {
           }
 
           if (xhr.status === 200 || xhr.status === 204) {
-            observer.next({ type: OutputType.done, file: file });
+            observer.next({ type: OUTPUT_TYPE.done, file: file });
           } else {
             observer.error(file.response);
           }

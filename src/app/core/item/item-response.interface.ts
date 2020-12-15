@@ -36,7 +36,7 @@ export interface CarResponse extends BaseUpdateItemResponse {
   content: CarContent;
 }
 
-export interface RealStateResponse extends BaseUpdateItemResponse {
+export interface RealEstateResponse extends BaseUpdateItemResponse {
   content: RealestateContent;
 }
 

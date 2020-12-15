@@ -1,4 +1,4 @@
-export const deliveryInfo = [
+export const DELIVERY_INFO = [
   {
     size: '20x38x40cm',
     value: {

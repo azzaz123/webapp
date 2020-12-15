@@ -1,10 +1,10 @@
 import { IMAGE, IMAGE_2 } from './user.fixtures.spec';
 import { ITEM_ID } from './item.fixtures.spec';
 import {
-  OutputType,
+  OUTPUT_TYPE,
   UploadFile,
   UploadOutput,
-  UploadStatus,
+  UPLOAD_STATUS,
 } from '../app/shared/uploader/upload.interface';
 import { ITEM_TYPES } from 'app/core/item/item';
 import { of } from 'rxjs';
@@ -21,7 +21,7 @@ export const UPLOAD_FILE: UploadFile = {
   size: 123,
   type: 'image/jpeg',
   progress: {
-    status: UploadStatus.Queue,
+    status: UPLOAD_STATUS.Queue,
     data: {
       percentage: 0,
       speed: null,
@@ -41,7 +41,7 @@ export const UPLOAD_FILE_2: UploadFile = {
   size: 123,
   type: 'image/jpeg',
   progress: {
-    status: UploadStatus.Queue,
+    status: UPLOAD_STATUS.Queue,
     data: {
       percentage: 0,
       speed: null,
@@ -61,7 +61,7 @@ export const UPLOAD_FILE_DONE: UploadFile = {
   size: 123,
   type: 'image/jpeg',
   progress: {
-    status: UploadStatus.Done,
+    status: UPLOAD_STATUS.Done,
     data: {
       percentage: 0,
       speed: null,
@@ -82,7 +82,7 @@ export const UPLOAD_FILE_DONE_2: UploadFile = {
   size: 123,
   type: 'image/jpeg',
   progress: {
-    status: UploadStatus.Done,
+    status: UPLOAD_STATUS.Done,
     data: {
       percentage: 0,
       speed: null,
@@ -179,12 +179,12 @@ export const UPLOADED_FILE_OTHER: UploadFile = <UploadFile>{
 
 export const MOCK_UPLOAD_OUTPUT_DONE: UploadOutput = {
   file: UPLOAD_FILE_DONE,
-  type: OutputType.done,
+  type: OUTPUT_TYPE.done,
 };
 
 export const MOCK_UPLOAD_OUTPUT_PENDING: UploadOutput = {
   file: UPLOAD_FILE,
-  type: OutputType.uploading,
+  type: OUTPUT_TYPE.uploading,
 };
 
 export class MockUploadService {

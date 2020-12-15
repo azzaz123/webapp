@@ -67,12 +67,12 @@ import {
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { I18nService } from '@core/i18n/i18n.service';
 import { UploadService } from '../drop-area/upload.service';
-import { deliveryInfo } from '../upload.constants';
+import { DELIVERY_INFO } from '../upload.constants';
 import { HttpErrorResponse } from '@angular/common/http';
 import {
-  OutputType,
+  OUTPUT_TYPE,
   PendingFiles,
-  UploadAction,
+  UPLOAD_ACTION,
   UploadFile,
   UploadOutput,
 } from '@shared/uploader/upload.interface';
@@ -131,14 +131,14 @@ export class UploadProductComponent
   public brandSuggestions: Subject<KeywordSuggestion[]> = new Subject();
   public modelSuggestions: Subject<KeywordSuggestion[]> = new Subject();
   public uploadCompletedPercentage = 0;
-  public perdingFiles: PendingFiles;
+  public pendingFiles: PendingFiles;
 
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
     { value: 'EUR', label: '€' },
     { value: 'GBP', label: '£' },
   ];
-  public deliveryInfo = deliveryInfo;
+  public deliveryInfo = DELIVERY_INFO;
   public categories: CategoryOption[] = [];
   public loading: boolean;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
@@ -464,10 +464,10 @@ export class UploadProductComponent
         (response: UploadOutput) => {
           this.updateUploadPercentage(response.percentage);
           if (response.pendingFiles) {
-            this.perdingFiles = response.pendingFiles;
+            this.pendingFiles = response.pendingFiles;
           }
-          if (response.type === OutputType.done) {
-            this.onUploaded(response.file.response, UploadAction.created);
+          if (response.type === OUTPUT_TYPE.done) {
+            this.onUploaded(response.file.response, UPLOAD_ACTION.created);
           }
         },
         (error: HttpErrorResponse) => {
@@ -481,7 +481,7 @@ export class UploadProductComponent
       .updateItem(this.parseUploadForm(), ITEM_TYPES.CONSUMER_GOODS)
       .subscribe(
         (response: ItemResponse) => {
-          this.onUploaded(response.content, UploadAction.updated);
+          this.onUploaded(response.content, UPLOAD_ACTION.updated);
         },
         (error: HttpErrorResponse) => {
           this.onError(error);
@@ -501,7 +501,7 @@ export class UploadProductComponent
     return values;
   }
 
-  onUploaded(response: ItemContent, action: UploadAction) {
+  onUploaded(response: ItemContent, action: UPLOAD_ACTION) {
     this.onFormChanged.emit(false);
     if (this.item) {
       this.trackingService.track(
@@ -519,7 +519,7 @@ export class UploadProductComponent
       this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, {
         category: this.uploadForm.value.category_id,
       });
-      action = UploadAction.urgent;
+      action = UPLOAD_ACTION.urgent;
       localStorage.setItem('transactionType', 'urgent');
     }
 
@@ -540,7 +540,7 @@ export class UploadProductComponent
         .uploadSingleImage(file, this.item.id, ITEM_TYPES.CONSUMER_GOODS)
         .subscribe(
           (value: UploadOutput) => {
-            if (value.type === OutputType.done) {
+            if (value.type === OUTPUT_TYPE.done) {
               this.errorsService.i18nSuccess('imageUploaded');
               file.id = value.file.response;
             }

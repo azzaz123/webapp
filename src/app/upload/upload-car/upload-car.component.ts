@@ -42,9 +42,9 @@ import { UploadService } from '../drop-area/upload.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ITEM_TYPES } from '@core/item/item';
 import {
-  OutputType,
+  OUTPUT_TYPE,
   PendingFiles,
-  UploadAction,
+  UPLOAD_ACTION,
   UploadFile,
   UploadOutput,
 } from '@shared/uploader/upload.interface';
@@ -78,7 +78,7 @@ export class UploadCarComponent implements OnInit {
   public customMake = false;
   public customVersion = false;
   public uploadCompletedPercentage = 0;
-  public perdingFiles: PendingFiles;
+  public pendingFiles: PendingFiles;
 
   isLoadingModels: boolean;
   isLoadingYears: boolean;
@@ -409,10 +409,10 @@ export class UploadCarComponent implements OnInit {
         (response: UploadOutput) => {
           this.updateUploadPercentage(response.percentage);
           if (response.pendingFiles) {
-            this.perdingFiles = response.pendingFiles;
+            this.pendingFiles = response.pendingFiles;
           }
-          if (response.type === OutputType.done) {
-            this.onUploaded(response.file.response, UploadAction.created);
+          if (response.type === OUTPUT_TYPE.done) {
+            this.onUploaded(response.file.response, UPLOAD_ACTION.created);
           }
         },
         (error: HttpErrorResponse) => {
@@ -426,7 +426,7 @@ export class UploadCarComponent implements OnInit {
       .updateItem(this.uploadForm.value, ITEM_TYPES.CARS)
       .subscribe(
         (response: CarContent) => {
-          this.onUploaded(response, UploadAction.updated);
+          this.onUploaded(response, UPLOAD_ACTION.updated);
         },
         (error: HttpErrorResponse) => {
           this.onError(error);
@@ -434,7 +434,7 @@ export class UploadCarComponent implements OnInit {
       );
   }
 
-  onUploaded(response: CarContent, action: UploadAction) {
+  onUploaded(response: CarContent, action: UPLOAD_ACTION) {
     this.onFormChanged.emit(false);
     if (this.item) {
       this.trackingService.track(
@@ -448,20 +448,20 @@ export class UploadCarComponent implements OnInit {
       this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, {
         category: this.uploadForm.value.category_id,
       });
-      action = UploadAction.urgent;
+      action = UPLOAD_ACTION.urgent;
       localStorage.setItem('transactionType', 'urgent');
     }
 
     if (response.flags.onhold) {
       this.subscriptionService.getUserSubscriptionType().subscribe((type) => {
-        this.redirectToList(UploadAction.createdOnHold, response, type);
+        this.redirectToList(UPLOAD_ACTION.createdOnHold, response, type);
       });
     } else {
       this.redirectToList(action, response);
     }
   }
 
-  public redirectToList(action: UploadAction, response: CarContent, type = 1) {
+  public redirectToList(action: UPLOAD_ACTION, response: CarContent, type = 1) {
     const params = this.getRedirectParams(action, response, type);
 
     this.trackEditOrUpload(!!this.item, response).subscribe(() =>
@@ -470,7 +470,7 @@ export class UploadCarComponent implements OnInit {
   }
 
   private getRedirectParams(
-    action: UploadAction,
+    action: UPLOAD_ACTION,
     response: CarContent,
     userType: number
   ) {
@@ -483,7 +483,7 @@ export class UploadCarComponent implements OnInit {
       params.onHold = true;
     }
 
-    if (action === UploadAction.createdOnHold) {
+    if (action === UPLOAD_ACTION.createdOnHold) {
       params.onHoldType = userType;
     }
 
@@ -673,7 +673,7 @@ export class UploadCarComponent implements OnInit {
         .uploadSingleImage(file, this.item.id, ITEM_TYPES.CARS)
         .subscribe(
           (value: UploadOutput) => {
-            if (value.type === OutputType.done) {
+            if (value.type === OUTPUT_TYPE.done) {
               this.errorsService.i18nSuccess('imageUploaded');
               file.id = value.file.response;
             }

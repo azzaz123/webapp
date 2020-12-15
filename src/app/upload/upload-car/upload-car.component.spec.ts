@@ -66,7 +66,7 @@ import {
   UPLOAD_FILE_DONE_2,
 } from '@fixtures/upload.fixtures.spec';
 import { ITEM_TYPES } from '@core/item/item';
-import { UploadAction } from '@shared/uploader/upload.interface';
+import { UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
@@ -674,7 +674,7 @@ describe('UploadCarComponent', () => {
         expect(component.onUploaded).toHaveBeenCalledTimes(1);
         expect(component.onUploaded).toHaveBeenCalledWith(
           MOCK_UPLOAD_OUTPUT_DONE.file.response,
-          UploadAction.created
+          UPLOAD_ACTION.created
         );
       });
 
@@ -741,7 +741,7 @@ describe('UploadCarComponent', () => {
         expect(component.onUploaded).toHaveBeenCalledTimes(1);
         expect(component.onUploaded).toHaveBeenCalledWith(
           MOCK_CAR_RESPONSE_CONTENT,
-          UploadAction.updated
+          UPLOAD_ACTION.updated
         );
       });
 
@@ -771,7 +771,7 @@ describe('UploadCarComponent', () => {
   });
 
   describe('onUploaded', () => {
-    const action = UploadAction.updated;
+    const action = UPLOAD_ACTION.updated;
     const response = MOCK_CAR_RESPONSE_CONTENT;
     it('should redirect', () => {
       component.item = <Car>MOCK_ITEM_V3;
@@ -818,7 +818,7 @@ describe('UploadCarComponent', () => {
     describe('if it`s a item modification', () => {
       it('should send the Edit Item Car tracking event', () => {
         component.item = MOCK_CAR;
-        const action = UploadAction.updated;
+        const action = UPLOAD_ACTION.updated;
         const editResponse: CarContent = MOCK_CAR_RESPONSE_CONTENT;
         const expectedEvent: AnalyticsEvent<EditItemCar> = {
           name: ANALYTICS_EVENT_NAMES.EditItemCar,
@@ -853,7 +853,7 @@ describe('UploadCarComponent', () => {
 
     describe('if it`s a item upload', () => {
       it('should send the List Item Car tracking event', () => {
-        const action = UploadAction.created;
+        const action = UPLOAD_ACTION.created;
         const uploadResponse: CarContent = MOCK_CAR_RESPONSE_CONTENT;
         const expectedEvent: AnalyticsEvent<ListItemCar> = {
           name: ANALYTICS_EVENT_NAMES.ListItemCar,

@@ -30,7 +30,7 @@ export interface IFileDropAction {
 })
 export class FileDropDirective implements OnInit, OnDestroy {
   @Input() options: NgUploaderOptions;
-  @Input() imageType: string;
+  @Input() IMAGE_TYPE: string;
   @Output() fileDropAction = new EventEmitter<IFileDropAction>();
 
   isServer: boolean = isPlatformServer(this.platform_id);

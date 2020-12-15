@@ -53,7 +53,7 @@ import {
   UPLOAD_FILE_DONE_2,
 } from '@fixtures/upload.fixtures.spec';
 import { ITEM_TYPES } from '@core/item/item';
-import { UploadAction } from '@shared/uploader/upload.interface';
+import { UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 
 describe('UploadRealestateComponent', () => {
   let component: UploadRealestateComponent;
@@ -312,7 +312,7 @@ describe('UploadRealestateComponent', () => {
         expect(component.onUploaded).toHaveBeenCalledTimes(1);
         expect(component.onUploaded).toHaveBeenCalledWith(
           MOCK_UPLOAD_OUTPUT_DONE.file.response,
-          UploadAction.created
+          UPLOAD_ACTION.created
         );
       });
 
@@ -371,7 +371,7 @@ describe('UploadRealestateComponent', () => {
         expect(component.onUploaded).toHaveBeenCalledTimes(1);
         expect(component.onUploaded).toHaveBeenCalledWith(
           MOCK_REALESTATE_RESPONSE_CONTENT,
-          UploadAction.updated
+          UPLOAD_ACTION.updated
         );
       });
 
@@ -397,7 +397,7 @@ describe('UploadRealestateComponent', () => {
   });
 
   describe('onUploaded', () => {
-    const action = UploadAction.updated;
+    const action = UPLOAD_ACTION.updated;
     const response = MOCK_REALESTATE_RESPONSE_CONTENT;
 
     it('should redirect', () => {
@@ -433,7 +433,7 @@ describe('UploadRealestateComponent', () => {
     describe('if it`s a item modification', () => {
       it('should send the Edit Item RE tracking event', () => {
         component.item = MOCK_REALESTATE;
-        const action = UploadAction.updated;
+        const action = UPLOAD_ACTION.updated;
         const editResponse: RealestateContent = MOCK_REALESTATE_RESPONSE_CONTENT;
         const expectedEvent: AnalyticsEvent<EditItemRE> = {
           name: ANALYTICS_EVENT_NAMES.EditItemRE,
@@ -463,7 +463,7 @@ describe('UploadRealestateComponent', () => {
 
     describe('if it`s a item upload', () => {
       it('should send the List Item RE tracking event', () => {
-        const action = UploadAction.created;
+        const action = UPLOAD_ACTION.created;
         const uploadResponse: RealestateContent = MOCK_REALESTATE_RESPONSE_CONTENT;
         const expectedEvent: AnalyticsEvent<ListItemRE> = {
           name: ANALYTICS_EVENT_NAMES.ListItemRE,

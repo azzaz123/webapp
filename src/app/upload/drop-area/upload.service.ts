@@ -10,13 +10,13 @@ import { REALESTATE_CATEGORY } from '@core/item/item-categories';
 import { ITEM_TYPES } from '@core/item/item';
 import { cloneDeep } from 'lodash-es';
 import {
-  OutputType,
+  OUTPUT_TYPE,
   UploadFile,
   IProductUploadForm,
   ICarUploadForm,
   UploadInput,
   UploadOutput,
-  UploadStatus,
+  UPLOAD_STATUS,
   IRealEstateUploadForm,
   PendingFiles,
 } from '@shared/uploader/upload.interface';
@@ -27,7 +27,7 @@ import { combineLatest, Observable } from 'rxjs';
 import {
   CarContent,
   ItemResponse,
-  RealStateResponse,
+  RealEstateResponse,
 } from '@core/item/item-response.interface';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -56,7 +56,7 @@ export class UploadService {
       ).subscribe(
         (response: UploadOutput) => {
           if (values.images.length > 1) {
-            if (response.type === OutputType.done) {
+            if (response.type === OUTPUT_TYPE.done) {
               const remainigFiles = values.images.slice(1);
               this.uploadRemainingImages(
                 response.file.response.id,
@@ -65,7 +65,7 @@ export class UploadService {
               ).subscribe(
                 (fileResonses: UploadOutput[]) => {
                   if (
-                    fileResonses.every((file) => file.type === OutputType.done)
+                    fileResonses.every((file) => file.type === OUTPUT_TYPE.done)
                   ) {
                     observer.next(response);
                     observer.complete();
@@ -74,7 +74,7 @@ export class UploadService {
                     partialResponse.pendingFiles = this.calculatePendingFiles(
                       fileResonses
                     );
-                    partialResponse.type = OutputType.uploading;
+                    partialResponse.type = OUTPUT_TYPE.uploading;
                     observer.next(partialResponse);
                   }
                 },
@@ -87,7 +87,7 @@ export class UploadService {
             }
           } else {
             observer.next(response);
-            if (response.type === OutputType.done) {
+            if (response.type === OUTPUT_TYPE.done) {
               observer.complete();
             }
           }
@@ -103,7 +103,7 @@ export class UploadService {
   private calculatePendingFiles(files: UploadOutput[]): PendingFiles {
     const totalFiles = files.length + 1;
     const currentUploading =
-      files.filter((file) => file.type === OutputType.done).length + 2;
+      files.filter((file) => file.type === OUTPUT_TYPE.done).length + 2;
     return { totalFiles, currentUploading };
   }
 
@@ -134,7 +134,7 @@ export class UploadService {
   updateItem(
     values: IProductUploadForm | IRealEstateUploadForm | ICarUploadForm,
     type: ITEM_TYPES
-  ): Observable<ItemResponse | CarContent | RealStateResponse> {
+  ): Observable<ItemResponse | CarContent | RealEstateResponse> {
     const parsedValues = cloneDeep(values);
     delete parsedValues.images;
     return this.itemService.update(parsedValues, type);
@@ -248,7 +248,7 @@ export class UploadService {
         size: 1,
         type: 'jpg',
         progress: {
-          status: UploadStatus.Done,
+          status: UPLOAD_STATUS.Done,
           data: {
             percentage: 100,
             speed: null,

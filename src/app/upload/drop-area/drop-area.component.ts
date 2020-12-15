@@ -14,7 +14,7 @@ import { RemoveConfirmModalComponent } from './remove-confirm-modal/remove-confi
 import { ErrorsService } from '@core/errors/errors.service';
 import {
   NgUploaderOptions,
-  OutputType,
+  OUTPUT_TYPE,
   UploadFile,
   UploadOutput,
 } from '@shared/uploader/upload.interface';
@@ -50,7 +50,7 @@ export class DropAreaComponent
   files: UploadFile[] = [];
   placeholders: number[];
   options: NgUploaderOptions;
-  eventsSubscrition: Subscription;
+  eventsSubscription: Subscription;
 
   private setDragOver = throttle((dragOver: boolean) => {
     this.dragOver = dragOver;
@@ -75,7 +75,7 @@ export class DropAreaComponent
   }
 
   private subscribeEvents(): void {
-    this.eventsSubscrition = this.uploaderService.serviceEvents$.subscribe(
+    this.eventsSubscription = this.uploaderService.serviceEvents$.subscribe(
       (event: UploadOutput) => {
         this.onUploadOutput(event);
       }
@@ -94,10 +94,10 @@ export class DropAreaComponent
 
   public onUploadOutput(output: UploadOutput): void {
     switch (output?.type) {
-      case OutputType.addedToQueue:
+      case OUTPUT_TYPE.addedToQueue:
         this.addImage(output.file);
         break;
-      case OutputType.rejected:
+      case OUTPUT_TYPE.rejected:
         this.errorsService.i18nError(output.reason, output.file.name);
     }
   }
@@ -149,8 +149,8 @@ export class DropAreaComponent
   }
 
   ngOnDestroy() {
-    if (this.eventsSubscrition) {
-      this.eventsSubscrition.unsubscribe();
+    if (this.eventsSubscription) {
+      this.eventsSubscription.unsubscribe();
     }
   }
 

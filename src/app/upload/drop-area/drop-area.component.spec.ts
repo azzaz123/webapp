@@ -19,7 +19,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RemoveConfirmModalComponent } from './remove-confirm-modal/remove-confirm-modal.component';
 import { PICTURE_ID } from '@fixtures/item.fixtures.spec';
 import { ErrorsService } from '@core/errors/errors.service';
-import { OutputType, UploadFile } from '@shared/uploader/upload.interface';
+import { OUTPUT_TYPE, UploadFile } from '@shared/uploader/upload.interface';
 import { UploaderService } from '@shared/uploader/uploader.service';
 import { FileDropActions } from '@shared/uploader/file-drop.directive';
 import { MockUploaderService } from '@fixtures/uploader.fixtures.spec';
@@ -101,14 +101,14 @@ describe('DropAreaComponent', () => {
       spyOn(component, 'propagateChange');
 
       component.onUploadOutput({
-        type: OutputType.addedToQueue,
+        type: OUTPUT_TYPE.addedToQueue,
         file: UPLOAD_FILE,
       });
 
       expect(component.files[0]).toEqual(UPLOAD_FILE);
       expect(component.propagateChange).toHaveBeenCalledWith(component.files);
       component.onUploadOutput({
-        type: OutputType.addedToQueue,
+        type: OUTPUT_TYPE.addedToQueue,
         file: UPLOADED_FILE_OTHER,
       });
       expect(component.files.length).toEqual(2);
@@ -119,7 +119,7 @@ describe('DropAreaComponent', () => {
       spyOn(component.onAddImage, 'emit');
 
       component.onUploadOutput({
-        type: OutputType.addedToQueue,
+        type: OUTPUT_TYPE.addedToQueue,
         file: UPLOAD_FILE,
       });
 
@@ -135,7 +135,7 @@ describe('DropAreaComponent', () => {
         component.files = [UPLOAD_FILE];
 
         component.onUploadOutput({
-          type: OutputType.uploading,
+          type: OUTPUT_TYPE.uploading,
           file: fileUploaded,
         });
 
@@ -165,7 +165,7 @@ describe('DropAreaComponent', () => {
       spyOn(errorsService, 'i18nError');
 
       component.onUploadOutput({
-        type: OutputType.rejected,
+        type: OUTPUT_TYPE.rejected,
         file: UPLOAD_FILE,
         reason: 'reason',
       });

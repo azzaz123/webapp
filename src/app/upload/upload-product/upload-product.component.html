@@ -235,8 +235,8 @@
       <tsl-button [type]="'submit'" className="btn-primary btn-block" [disabled]="loading">
         <span *ngIf="!item && !loading" i18n="@@UploadProductSubmitItem">Post Ad</span>
         <span *ngIf="item && !loading" i18n="@@UploadProductSubmitUpdate">Update</span>
-        <span *ngIf="loading && !perdingFiles" i18n="@@UploadProductSubmitLoading">Uploading... {{ uploadCompletedPercentage }}%</span>
-        <span *ngIf="loading && perdingFiles" i18n="@@UploadImagesSubmitLoading">Uploading image... {{ perdingFiles.currentUploading}}/{{perdingFiles.totalFiles}}</span>
+        <span *ngIf="loading && !pendingFiles" i18n="@@UploadProductSubmitLoading">Uploading... {{ uploadCompletedPercentage }}%</span>
+        <span *ngIf="loading && pendingFiles" i18n="@@UploadImagesSubmitLoading">Uploading image... {{ pendingFiles.currentUploading}}/{{pendingFiles.totalFiles}}</span>
       </tsl-button>
     </div>
     <div class="col-md-3 d-none d-md-block">

@@ -24,7 +24,7 @@ import { ITEM_TYPES } from '@core/item/item';
 import { REALESTATE_CATEGORY } from '@core/item/item-categories';
 import {
   RealestateContent,
-  RealStateResponse,
+  RealEstateResponse,
 } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
 import { Realestate } from '@core/item/realestate';
@@ -36,9 +36,9 @@ import {
   NgbPopoverConfig,
 } from '@ng-bootstrap/ng-bootstrap';
 import {
-  OutputType,
+  OUTPUT_TYPE,
   PendingFiles,
-  UploadAction,
+  UPLOAD_ACTION,
   UploadFile,
   UploadOutput,
 } from '@shared/uploader/upload.interface';
@@ -79,7 +79,7 @@ export class UploadRealestateComponent implements OnInit {
     { value: 'GBP', label: '£' },
   ];
   public uploadCompletedPercentage = 0;
-  public perdingFiles: PendingFiles;
+  public pendingFiles: PendingFiles;
 
   constructor(
     private fb: FormBuilder,
@@ -263,10 +263,10 @@ export class UploadRealestateComponent implements OnInit {
         (response: UploadOutput) => {
           this.updateUploadPercentage(response.percentage);
           if (response.pendingFiles) {
-            this.perdingFiles = response.pendingFiles;
+            this.pendingFiles = response.pendingFiles;
           }
-          if (response.type === OutputType.done) {
-            this.onUploaded(response.file.response, UploadAction.created);
+          if (response.type === OUTPUT_TYPE.done) {
+            this.onUploaded(response.file.response, UPLOAD_ACTION.created);
           }
         },
         (error: HttpErrorResponse) => {
@@ -279,8 +279,8 @@ export class UploadRealestateComponent implements OnInit {
     this.uploadService
       .updateItem(this.uploadForm.value, ITEM_TYPES.REAL_ESTATE)
       .subscribe(
-        (response: RealStateResponse) => {
-          this.onUploaded(response.content, UploadAction.updated);
+        (response: RealEstateResponse) => {
+          this.onUploaded(response.content, UPLOAD_ACTION.updated);
         },
         (error: HttpErrorResponse) => {
           this.onError(error);
@@ -288,7 +288,7 @@ export class UploadRealestateComponent implements OnInit {
       );
   }
 
-  onUploaded(response: RealestateContent, action: UploadAction) {
+  onUploaded(response: RealestateContent, action: UPLOAD_ACTION) {
     this.onFormChanged.emit(false);
 
     if (this.item) {
@@ -303,7 +303,7 @@ export class UploadRealestateComponent implements OnInit {
       this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, {
         category: this.uploadForm.value.category_id,
       });
-      action = UploadAction.urgent;
+      action = UPLOAD_ACTION.urgent;
       localStorage.setItem('transactionType', 'urgent');
     }
     const params: any = {
@@ -433,7 +433,7 @@ export class UploadRealestateComponent implements OnInit {
         .uploadSingleImage(file, this.item.id, ITEM_TYPES.REAL_ESTATE)
         .subscribe(
           (value: UploadOutput) => {
-            if (value.type === OutputType.done) {
+            if (value.type === OUTPUT_TYPE.done) {
               this.errorsService.i18nSuccess('imageUploaded');
               file.id = value.file.response;
             }

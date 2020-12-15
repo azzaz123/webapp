@@ -18,7 +18,7 @@ import { AccessTokenService } from '@core/http/access-token.service';
 import { ITEM_ID } from '@fixtures/item.fixtures.spec';
 import { CARS_CATEGORY, REALESTATE_CATEGORY } from '@core/item/item-categories';
 import { ITEM_TYPES } from '@core/item/item';
-import { OutputType } from '@shared/uploader/upload.interface';
+import { OUTPUT_TYPE } from '@shared/uploader/upload.interface';
 import { ItemService } from '@core/item/item.service';
 import { of } from 'rxjs';
 import { UploaderService } from '@shared/uploader/uploader.service';
@@ -253,7 +253,7 @@ describe('UploadService', () => {
     describe('car', () => {
       it('should emit uploadFile event', () => {
         spyOn(uploaderService, 'uploadFile').and.returnValue(
-          of({ type: OutputType.done, file: { response: { id: CAR_ID } } })
+          of({ type: OUTPUT_TYPE.done, file: { response: { id: CAR_ID } } })
         );
         const VALUES: any = {
           images: [UPLOAD_FILE, UPLOAD_FILE_2],
@@ -284,7 +284,7 @@ describe('UploadService', () => {
     describe('real estate', () => {
       it('should emit uploadFile event', () => {
         spyOn(uploaderService, 'uploadFile').and.returnValue(
-          of({ type: OutputType.done, file: { response: { id: ITEM_ID } } })
+          of({ type: OUTPUT_TYPE.done, file: { response: { id: ITEM_ID } } })
         );
         const VALUES: any = {
           images: [UPLOAD_FILE, UPLOAD_FILE_2],
@@ -318,7 +318,7 @@ describe('UploadService', () => {
     describe('normal item', () => {
       it('should emit uploadFile event', () => {
         spyOn(uploaderService, 'uploadFile').and.returnValue(
-          of({ type: OutputType.done, file: { response: { id: ITEM_ID } } })
+          of({ type: OUTPUT_TYPE.done, file: { response: { id: ITEM_ID } } })
         );
         const VALUES: any = {
           images: [UPLOAD_FILE, UPLOAD_FILE_2],

@@ -16,9 +16,9 @@ import { ErrorsService } from '@core/errors/errors.service';
 import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
 import {
-  ImageType,
+  IMAGE_TYPE,
   NgUploaderOptions,
-  OutputType,
+  OUTPUT_TYPE,
   UploadFile,
   UploadInput,
   UploadOutput,
@@ -26,7 +26,7 @@ import {
 import { AccessTokenService } from '@core/http/access-token.service';
 import { UploaderService } from '@shared/uploader/uploader.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { finalize } from 'rxjs/operators';
+import { filter, finalize, take } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -43,7 +43,7 @@ export class CoverUploadComponent implements OnInit, OnDestroy {
   file: UploadFile;
   options: NgUploaderOptions;
   isLoading: boolean;
-  imageType = ImageType.COVER;
+  imageType = IMAGE_TYPE.COVER;
   eventsSubscription: Subscription;
 
   constructor(
@@ -74,14 +74,14 @@ export class CoverUploadComponent implements OnInit, OnDestroy {
 
   public onUploadOutput(output: UploadOutput): void {
     switch (output.type) {
-      case OutputType.addedToQueue:
+      case OUTPUT_TYPE.addedToQueue:
         this.file = output.file;
         this.uploadPicture();
         break;
-      case OutputType.uploading:
+      case OUTPUT_TYPE.uploading:
         this.file = output.file;
         break;
-      case OutputType.rejected:
+      case OUTPUT_TYPE.rejected:
         this.errorsService.i18nError(output.reason, output.file.name);
         this.file = null;
         break;
@@ -112,12 +112,14 @@ export class CoverUploadComponent implements OnInit, OnDestroy {
     };
     this.uploaderService
       .uploadFile(this.file, uploadinput)
-      .pipe(finalize(() => (this.isLoading = false)))
+      .pipe(
+        filter((output: UploadOutput) => output?.type === OUTPUT_TYPE.done),
+        take(1),
+        finalize(() => (this.isLoading = false))
+      )
       .subscribe(
         (output: UploadOutput) => {
-          if (output?.type === OutputType.done) {
-            this.userService.user.setCoverImageUrl(<string>output.file.preview);
-          }
+          this.userService.user.setCoverImageUrl(<string>output.file.preview);
         },
         (error: HttpErrorResponse) => {
           this.showError(error.message);
@@ -126,7 +128,7 @@ export class CoverUploadComponent implements OnInit, OnDestroy {
   }
 
   private showError(message?: string): void {
-    this.errorsService.i18nError('serverError', message ? message : '');
+    this.errorsService.i18nError('serverError', message || '');
   }
 
   public onFilesAdded(event: FileList): void {

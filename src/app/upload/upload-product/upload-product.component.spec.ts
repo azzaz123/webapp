@@ -80,7 +80,7 @@ import {
   UPLOAD_FILE_DONE_2,
 } from '@fixtures/upload.fixtures.spec';
 import { ITEM_TYPES } from '@core/item/item';
-import { UploadAction } from '@shared/uploader/upload.interface';
+import { UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
 export const USER_LOCATION: UserLocation = {
@@ -851,7 +851,7 @@ describe('UploadProductComponent', () => {
         expect(component.onUploaded).toHaveBeenCalledTimes(1);
         expect(component.onUploaded).toHaveBeenCalledWith(
           MOCK_UPLOAD_OUTPUT_DONE.file.response,
-          UploadAction.created
+          UPLOAD_ACTION.created
         );
       });
 
@@ -910,7 +910,7 @@ describe('UploadProductComponent', () => {
         expect(component.onUploaded).toHaveBeenCalledTimes(1);
         expect(component.onUploaded).toHaveBeenCalledWith(
           MOCK_ITEM_RESPONSE_CONTENT,
-          UploadAction.updated
+          UPLOAD_ACTION.updated
         );
       });
 
@@ -1105,7 +1105,7 @@ describe('UploadProductComponent', () => {
   });
 
   describe('onUploaded', () => {
-    const action = UploadAction.updated;
+    const action = UPLOAD_ACTION.updated;
     const response = MOCK_ITEM_RESPONSE_CONTENT;
 
     it('should emit form changed event', () => {
@@ -1154,7 +1154,7 @@ describe('UploadProductComponent', () => {
     describe('if it`s a item modification', () => {
       it('should send the Edit Item CG tracking event', () => {
         component.item = MOCK_ITEM;
-        const action = UploadAction.updated;
+        const action = UPLOAD_ACTION.updated;
         const editResponse: ItemContent = MOCK_ITEM_RESPONSE_CONTENT;
         const expectedEvent: AnalyticsEvent<EditItemCG> = {
           name: ANALYTICS_EVENT_NAMES.EditItemCG,
@@ -1179,7 +1179,7 @@ describe('UploadProductComponent', () => {
 
     describe('if it`s a item upload', () => {
       it('should send the List Item CG tracking event', () => {
-        const action = UploadAction.created;
+        const action = UPLOAD_ACTION.created;
         const uploadResponse: ItemContent = MOCK_ITEM_RESPONSE_CONTENT;
         const expectedEvent: AnalyticsEvent<ListItemCG> = {
           name: ANALYTICS_EVENT_NAMES.ListItemCG,

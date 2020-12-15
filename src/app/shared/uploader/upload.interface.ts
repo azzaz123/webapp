@@ -1,21 +1,21 @@
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { DeliveryInfo } from '@core/item/item-response.interface';
 
-export enum UploadStatus {
+export enum UPLOAD_STATUS {
   Queue,
   Uploading,
   Done,
   Canceled,
 }
 
-export enum OutputType {
+export enum OUTPUT_TYPE {
   addedToQueue = 'addedToQueue',
   uploading = 'uploading',
   done = 'done',
   rejected = 'rejected',
 }
 
-export enum UploadAction {
+export enum UPLOAD_ACTION {
   created = 'created',
   updated = 'updated',
   urgent = 'urgent',
@@ -23,7 +23,7 @@ export enum UploadAction {
 }
 
 export interface UploadProgress {
-  status: UploadStatus;
+  status: UPLOAD_STATUS;
   data?: {
     percentage: number;
     speed: number;
@@ -46,11 +46,11 @@ export interface UploadFile {
 }
 
 export interface UploadOutput {
-  type: OutputType;
+  type: OUTPUT_TYPE;
   file?: UploadFile;
   reason?: string;
   pendingFiles?: PendingFiles;
-  imageType?: string;
+  imageType?: IMAGE_TYPE;
   percentage?: number;
 }
 
@@ -67,9 +67,8 @@ export interface UploadInput {
   fileIndex?: number;
   data?: { [key: string]: string | Blob };
   headers?: { [key: string]: string };
-  concurrency?: number;
   files?: UploadFile[];
-  imageType?: string;
+  imageType?: IMAGE_TYPE;
 }
 
 export interface NgUploaderOptions {
@@ -146,7 +145,7 @@ export interface ICarUploadForm extends IUploadForm {
   horsepower: string;
 }
 
-export enum ImageType {
+export enum IMAGE_TYPE {
   COVER = 'cover',
   AVATAR = 'avatar',
 }
