@@ -1,3 +1,5 @@
-<tsl-user-profile-header></tsl-user-profile-header>
-<tsl-profile-tabs></tsl-profile-tabs>
-<router-outlet></router-outlet>
+<div *ngIf="userId" class="page-content">
+    <tsl-user-profile-header [userId]="userId"></tsl-user-profile-header>
+    <tsl-profile-tabs></tsl-profile-tabs>
+    <router-outlet></router-outlet>
+</div>
