@@ -3,7 +3,7 @@ import { IOption } from 'app/dropdown/utils/option.interface';
 import { Car } from '../app/core/item/car';
 import { CAR_ID } from './upload.fixtures.spec';
 import { CARS_CATEGORY } from '../app/core/item/item-categories';
-import { CarInfo } from '../app/core/item/item-response.interface';
+import { CarContent, CarInfo } from '../app/core/item/item-response.interface';
 
 export const CAR_BODY_TYPES_RESPONSE: any = [
   {
@@ -302,4 +302,25 @@ export const CAR_INFO: CarInfo = {
   num_doors: 2,
   num_seats: 2,
   version: 'version',
+};
+
+export const MOCK_CAR_RESPONSE_CONTENT: CarContent = {
+  id: MOCK_CAR.id,
+  category_id: MOCK_CAR.categoryId,
+  sale_price: MOCK_CAR.salePrice,
+  title: MOCK_CAR.title,
+  description: MOCK_CAR.description,
+  modified_date: MOCK_CAR.modifiedDate,
+  flags: MOCK_CAR.flags,
+  seller_id: 'ukd73df',
+  web_slug: MOCK_CAR.webSlug,
+  brand: MOCK_CAR.brand,
+  model: MOCK_CAR.model,
+  body_type: MOCK_CAR.bodyType,
+  km: MOCK_CAR.km,
+  year: MOCK_CAR.year,
+  engine: MOCK_CAR.engine,
+  gearbox: MOCK_CAR.gearbox,
+  horsepower: MOCK_CAR.horsepower,
+  num_doors: MOCK_CAR.numDoors,
 };

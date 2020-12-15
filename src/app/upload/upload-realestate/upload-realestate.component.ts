@@ -1,7 +1,9 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
+  FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
@@ -18,8 +20,12 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { whitespaceValidator } from '@core/form-validators/formValidators.func';
 import { ItemLocation } from '@core/geolocation/address-response.interface';
+import { ITEM_TYPES } from '@core/item/item';
 import { REALESTATE_CATEGORY } from '@core/item/item-categories';
-import { RealestateContent } from '@core/item/item-response.interface';
+import {
+  RealestateContent,
+  RealEstateResponse,
+} from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
 import { Realestate } from '@core/item/realestate';
 import { TrackingService } from '@core/tracking/tracking.service';
@@ -29,9 +35,17 @@ import {
   NgbModalRef,
   NgbPopoverConfig,
 } from '@ng-bootstrap/ng-bootstrap';
+import {
+  OUTPUT_TYPE,
+  PendingFiles,
+  UPLOAD_ACTION,
+  UploadFile,
+  UploadOutput,
+} from '@shared/uploader/upload.interface';
 import { IOption } from 'app/dropdown/utils/option.interface';
 import { isEqual, omit } from 'lodash-es';
 import { tap } from 'rxjs/operators';
+import { UploadService } from '../drop-area/upload.service';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { UploadEvent } from '../upload-event.interface';
 import { Key } from './key.interface';
@@ -65,6 +79,7 @@ export class UploadRealestateComponent implements OnInit {
     { value: 'GBP', label: '£' },
   ];
   public uploadCompletedPercentage = 0;
+  public pendingFiles: PendingFiles;
 
   constructor(
     private fb: FormBuilder,
@@ -76,6 +91,7 @@ export class UploadRealestateComponent implements OnInit {
     private trackingService: TrackingService,
     private analyticsService: AnalyticsService,
     private userService: UserService,
+    private uploadService: UploadService,
     config: NgbPopoverConfig
   ) {
     this.uploadForm = fb.group({
@@ -134,6 +150,7 @@ export class UploadRealestateComponent implements OnInit {
         pool: this.item.pool,
         garden: this.item.garden,
         location: this.item.location,
+        images: this.uploadService.convertImagesToFiles(this.item.images),
       });
       this.coordinates = {
         latitude: this.item.location.latitude,
@@ -216,29 +233,62 @@ export class UploadRealestateComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  public onSubmit(): void {
     if (this.uploadForm.valid) {
       this.loading = true;
-      this.uploadEvent.emit({
-        type: this.item ? 'update' : 'create',
-        values: this.uploadForm.value,
-      });
+      this.item ? this.updateItem() : this.createItem();
     } else {
-      this.uploadForm.markAsPending();
-      this.uploadForm.markAllAsTouched();
-      if (!this.uploadForm.get('location.address').valid) {
-        this.uploadForm.get('location.address').markAsDirty();
-      }
-      if (!this.uploadForm.get('images').valid) {
-        this.errorsService.i18nError('missingImageError');
-      } else {
-        this.errorsService.i18nError('formErrors', '', 'formErrorsTitle');
-        this.onValidationError.emit();
-      }
+      this.invalidForm();
     }
   }
 
-  onUploaded(uploadEvent: any) {
+  private invalidForm(): void {
+    this.uploadForm.markAsPending();
+    this.uploadForm.markAllAsTouched();
+    if (!this.uploadForm.get('location.address').valid) {
+      this.uploadForm.get('location.address').markAsDirty();
+    }
+    if (!this.uploadForm.get('images').valid) {
+      this.errorsService.i18nError('missingImageError');
+    } else {
+      this.errorsService.i18nError('formErrors', '', 'formErrorsTitle');
+      this.onValidationError.emit();
+    }
+  }
+
+  private createItem(): void {
+    this.uploadService
+      .createItem(this.uploadForm.value, ITEM_TYPES.REAL_ESTATE)
+      .subscribe(
+        (response: UploadOutput) => {
+          this.updateUploadPercentage(response.percentage);
+          if (response.pendingFiles) {
+            this.pendingFiles = response.pendingFiles;
+          }
+          if (response.type === OUTPUT_TYPE.done) {
+            this.onUploaded(response.file.response, UPLOAD_ACTION.created);
+          }
+        },
+        (error: HttpErrorResponse) => {
+          this.onError(error);
+        }
+      );
+  }
+
+  private updateItem(): void {
+    this.uploadService
+      .updateItem(this.uploadForm.value, ITEM_TYPES.REAL_ESTATE)
+      .subscribe(
+        (response: RealEstateResponse) => {
+          this.onUploaded(response.content, UPLOAD_ACTION.updated);
+        },
+        (error: HttpErrorResponse) => {
+          this.onError(error);
+        }
+      );
+  }
+
+  onUploaded(response: RealestateContent, action: UPLOAD_ACTION) {
     this.onFormChanged.emit(false);
 
     if (this.item) {
@@ -253,24 +303,28 @@ export class UploadRealestateComponent implements OnInit {
       this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, {
         category: this.uploadForm.value.category_id,
       });
-      uploadEvent.action = 'urgent';
+      action = UPLOAD_ACTION.urgent;
       localStorage.setItem('transactionType', 'urgent');
     }
     const params: any = {
-      [uploadEvent.action]: true,
-      itemId: uploadEvent.response.id,
+      [action]: true,
+      itemId: response.id,
     };
     if (this.item && this.item.flags.onhold) {
       params.onHold = true;
     }
 
-    this.trackEditOrUpload(!!this.item, uploadEvent.response).subscribe(() =>
+    this.trackEditOrUpload(!!this.item, response).subscribe(() =>
       this.router.navigate(['/catalog/list', params])
     );
   }
 
-  onError(response: any) {
+  onError(error: HttpErrorResponse | any): void {
     this.loading = false;
+    this.errorsService.i18nError(
+      'serverError',
+      error.message ? error.message : ''
+    );
     if (this.item) {
       this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_ERROR, {
         category: this.uploadForm.value.category_id,
@@ -348,5 +402,47 @@ export class UploadRealestateComponent implements OnInit {
         }
       })
     );
+  }
+
+  public onDeleteImage(imageId: string): void {
+    this.uploadService.onDeleteImage(this.item.id, imageId).subscribe(
+      () => this.removeFileFromForm(imageId),
+      (error: HttpErrorResponse) => this.onError(error)
+    );
+  }
+
+  private removeFileFromForm(imageId: string): void {
+    const imagesControl: FormControl = this.uploadForm.get(
+      'images'
+    ) as FormControl;
+    const images: UploadFile[] = imagesControl.value;
+    imagesControl.patchValue(images.filter((image) => image.id !== imageId));
+  }
+
+  public onOrderImages(): void {
+    const images = this.uploadForm.get('images').value;
+    this.uploadService.updateOrder(images, this.item.id).subscribe(
+      () => null,
+      (error: HttpErrorResponse) => this.onError(error)
+    );
+  }
+
+  public onAddImage(file: UploadFile): void {
+    if (this.item) {
+      this.uploadService
+        .uploadSingleImage(file, this.item.id, ITEM_TYPES.REAL_ESTATE)
+        .subscribe(
+          (value: UploadOutput) => {
+            if (value.type === OUTPUT_TYPE.done) {
+              this.errorsService.i18nSuccess('imageUploaded');
+              file.id = value.file.response;
+            }
+          },
+          (error: HttpErrorResponse) => {
+            this.removeFileFromForm(file.id);
+            this.onError(error);
+          }
+        );
+    }
   }
 }

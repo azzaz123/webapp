@@ -25,6 +25,7 @@ import {
   RealEstateUploadForm,
   ListingFeeProductInfo,
   ItemExtraInfo,
+  ItemContent,
 } from '../app/core/item/item-response.interface';
 
 import { CartItem } from '../app/shared/catalog/cart/cart-item.interface';
@@ -1264,6 +1265,11 @@ export const UPLOAD_FORM_ITEM_VALUES: ItemUploadForm = {
     exchange_allowed: false,
     shipping_allowed: false,
   },
+  location: {
+    address: USER_LOCATION.title,
+    latitude: USER_LOCATION.approximated_latitude,
+    longitude: USER_LOCATION.approximated_longitude,
+  },
   images: [{ image: true }],
 };
 
@@ -1661,4 +1667,16 @@ export const MOCK_LISTING_FEE_PRODUCT: ListingFeeProductInfo = {
       },
     ],
   },
+};
+
+export const MOCK_ITEM_RESPONSE_CONTENT: ItemContent = {
+  id: MOCK_ITEM.id,
+  category_id: MOCK_ITEM.categoryId,
+  sale_price: MOCK_ITEM.salePrice,
+  title: MOCK_ITEM.title,
+  description: MOCK_ITEM.description,
+  modified_date: MOCK_ITEM.modifiedDate,
+  flags: MOCK_ITEM.flags,
+  seller_id: 'ukd73df',
+  web_slug: MOCK_ITEM.webSlug,
 };

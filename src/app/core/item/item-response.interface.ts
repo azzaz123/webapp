@@ -23,10 +23,21 @@ export interface ItemResponseV2 extends ApiResponse {
   delivery_info?: DeliveryInfo;
 }
 
-export interface ItemResponse {
-  content: ItemContent;
+interface BaseUpdateItemResponse {
   id: string;
   type: string;
+}
+
+export interface ItemResponse extends BaseUpdateItemResponse {
+  content: ItemContent;
+}
+
+export interface CarResponse extends BaseUpdateItemResponse {
+  content: CarContent;
+}
+
+export interface RealEstateResponse extends BaseUpdateItemResponse {
+  content: RealestateContent;
 }
 
 export interface ItemContent {

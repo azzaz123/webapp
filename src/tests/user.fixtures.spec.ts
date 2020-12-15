@@ -54,6 +54,26 @@ export const IMAGE: Image = {
   },
 };
 
+export const IMAGE_2: Image = {
+  id: 'aaaaa23323',
+  legacy_id: 500002512,
+  original_width: 100,
+  original_height: 62,
+  average_hex_color: '6a707b',
+  urls_by_size: {
+    original:
+      'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=ORIGINAL',
+    small:
+      'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
+    large:
+      'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
+    medium:
+      'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
+    xlarge:
+      'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
+  },
+};
+
 export const USER_LOCATION: UserLocation = {
   id: 101,
   approximated_latitude: 41.399132621722174,
