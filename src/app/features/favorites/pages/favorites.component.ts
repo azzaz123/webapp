@@ -43,50 +43,6 @@ export class FavoritesComponent implements OnInit {
       this.getNumberOfFavorites();
     }
   }
-  /* 
-  public getProfiles(append?: boolean, shouldRoute?: boolean) {
-    this.loading = true;
-    if (!append) {
-      this.profiles = [];
-    }
-    this.profileService
-      .myFavorites(this.profiles.length)
-      .subscribe((profilesData: ProfilesData) => {
-        const profiles = profilesData.data;
-        this.profiles = this.profiles.concat(profiles);
-        this.loading = false;
-        this.end = !profilesData.init;
-        if (shouldRoute) {
-          this.router.navigateByUrl('/favorites/profiles', {
-            state: { data: this.profiles },
-          });
-        }
-      });
-  } */
-
-  /*   public onFavoriteChange(item: Item) {
-    this.removeItem(item);
-  } */
-
-  /*   public onFavoriteProfileChange(profile: Profile) {
-    this.removeProfile(profile);
-  } */
-
-  /*   public removeProfile(profile: Profile) {
-    if (this.profiles.length) {
-      const index = this.profiles.indexOf(profile);
-      this.profiles.splice(index, 1);
-      this.numberOfFavorites--;
-    }
-  } */
-
-  /*   public removeItem(item: Item) {
-    if (this.items.length) {
-      const index = this.items.indexOf(item);
-      this.items.splice(index, 1);
-      this.numberOfFavorites--;
-    }
-  } */
 
   public getNumberOfFavorites() {
     this.userService.getStats().subscribe((userStats: UserStats) => {
