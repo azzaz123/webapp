@@ -1,25 +1,25 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Counters, Ratings } from '@core/user/user-stats.interface';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
-import { Image, UserInfo, UserStats } from '../public-profile.interface';
+import {
+  CounterTypes,
+  Ratings,
+  UserInfo,
+  UserStats,
+} from '../public-profile.interface';
 
 export const PROFILE_API_URL = (userId: string) => `api/v3/users/${userId}`;
-export const PROTOOL_ENDPOINT = (userId: string) =>
-  `api/v3/protool/${userId}/extraInfo`;
-
-export const USER_PROFILE_SUBSCRIPTION_INFO_ENDPOINT = (userId: string) =>
-  `api/v3/users/${userId}/profile-subscription-info`;
-
+export const PRO_USERS_ENDPOINT = (userId: string) =>
+  `api/v3/users/${userId}/extra-info`;
 @Injectable({
   providedIn: 'root',
 })
 export class PublicProfileService {
   constructor(private http: HttpClient) {}
 
-  public getStats(userId: string): Observable<any> {
+  public getStats(userId: string): Observable<UserStats> {
     return this.http
       .get<UserStats>(`${environment.baseUrl}${PROFILE_API_URL(userId)}/stats`)
       .pipe(
@@ -74,10 +74,6 @@ export class PublicProfileService {
       .pipe(
         map((user: UserInfo) => {
           user.isPro = this.isPro(user);
-          this.getUserProfilePicture(userId).subscribe((image: Image) => {
-            console.log('image => ', image);
-            user.image = image;
-          });
           return user;
         })
       );
@@ -87,29 +83,16 @@ export class PublicProfileService {
     return user && user.featured;
   }
 
-  public toRatingsStats(ratings): Ratings {
+  private toRatingsStats(ratings): Ratings {
     return ratings.reduce(({}, rating) => {
       return { reviews: rating.value };
     }, {});
   }
 
-  public toCountersStats(counters): Counters {
+  private toCountersStats(counters): CounterTypes {
     return counters.reduce((counterObj, counter) => {
       counterObj[counter.type] = counter.value;
       return counterObj;
     }, {});
-  }
-
-  // TODO: check always returning null		Date: 2020/12/15
-  private getUserProfilePicture(userId: string): Observable<Image> {
-    return this.http.get<Image>(
-      `${environment.baseUrl}${PROFILE_API_URL(userId)}/cover-image`
-    );
-  }
-
-  public getProUserInfo(userId: string): Observable<any> {
-    return this.http.get<any>(
-      `${USER_PROFILE_SUBSCRIPTION_INFO_ENDPOINT(userId)}`
-    );
   }
 }
