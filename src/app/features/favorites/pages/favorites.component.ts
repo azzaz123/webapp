@@ -21,17 +21,23 @@ export class FavoritesComponent implements OnInit {
   public loading = false;
   public end = false;
   public numberOfFavorites: number;
+  public isDataPassed = false;
   private counters: Counters;
 
   constructor(
     public itemService: ItemService,
     private userService: UserService,
-    private profileService: ProfileService,
     private router: Router
   ) {}
 
   ngOnInit() {
     this.getNumberOfFavorites();
+  }
+
+  public onItemsPageChange(isDataPassed: boolean) {
+    console.log('parentData');
+    this.isDataPassed = isDataPassed;
+    console.log('isDataPassed', isDataPassed);
   }
 
   public routesByStatus(status: string) {

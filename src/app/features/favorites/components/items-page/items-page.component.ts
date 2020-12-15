@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Item } from '@core/item/item';
 import { ItemsData } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
@@ -9,10 +9,14 @@ import { ItemService } from '@core/item/item.service';
   styleUrls: ['./items-page.component.scss'],
 })
 export class ItemsPageComponent implements OnInit {
+  //@Output() onFavoriteChange: EventEmitter<Item> = new EventEmitter();
+  @Output() onItemsPageChange: EventEmitter<Boolean> = new EventEmitter();
+
   public items: Item[] = [];
   public numberOfFavorites: number;
   public loading = false;
   public end = false;
+  public isDataPassed = true;
 
   constructor(public itemService: ItemService) {}
 
@@ -37,6 +41,11 @@ export class ItemsPageComponent implements OnInit {
         this.loading = false;
         this.end = !itemsData.init;
       });
+  }
+
+  public testData() {
+    console.log('clicked child');
+    this.onItemsPageChange.emit(this.isDataPassed);
   }
 
   public onFavoriteItemChange(item: Item) {
