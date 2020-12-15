@@ -1,6 +1,5 @@
 <div infiniteScroll [infiniteScrollDistance]="3" [infiniteScrollThrottle]="100"
 [infiniteScrollDisabled]="end || loading" (scrolled)="loadMore()">
-<button (click)="testData()">TEST</button>
   <div class="favorites-empty-state"
     *ngIf="!items.length ">
     <tsl-svg-icon src="/assets/icons/favorites-empty-state.svg" class="d-none d-md-block image"></tsl-svg-icon>

@@ -9,14 +9,15 @@ import { ItemService } from '@core/item/item.service';
   styleUrls: ['./items-page.component.scss'],
 })
 export class ItemsPageComponent implements OnInit {
-  //@Output() onFavoriteChange: EventEmitter<Item> = new EventEmitter();
-  @Output() onItemsPageChange: EventEmitter<Boolean> = new EventEmitter();
+  @Output() onFavoriteItemPageChange: EventEmitter<
+    Boolean
+  > = new EventEmitter();
 
   public items: Item[] = [];
   public numberOfFavorites: number;
   public loading = false;
   public end = false;
-  public isDataPassed = true;
+  public isItemRomved = true;
 
   constructor(public itemService: ItemService) {}
 
@@ -43,21 +44,15 @@ export class ItemsPageComponent implements OnInit {
       });
   }
 
-  public testData() {
-    console.log('clicked child');
-    this.onItemsPageChange.emit(this.isDataPassed);
-  }
-
-  public onFavoriteItemChange(item: Item) {
+  public onFavoriteChange(item: Item) {
     this.removeItem(item);
   }
 
   public removeItem(item: Item) {
-    //EventEmitter
-    /*  if (this.items.length) {
+    if (this.items.length) {
       const index = this.items.indexOf(item);
       this.items.splice(index, 1);
-      this.numberOfFavorites--;
-    } */
+      this.onFavoriteItemPageChange.emit(this.isItemRomved);
+    }
   }
 }

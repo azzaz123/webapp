@@ -53,6 +53,7 @@ export class ItemCartFavoriteComponent implements OnInit {
 
   removeFavorite() {
     this.itemService.favoriteItem(this.item.id, false).subscribe(() => {
+      console.log('cart removed item');
       this.item.favorited = false;
       this.onFavoriteChange.emit(this.item);
       this.trackingService.track(TrackingService.FAVOURITES_BUTTON_UNFAVORITE);
