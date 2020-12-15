@@ -1,5 +1,5 @@
 import { USER_LOCATION } from './user.fixtures.spec';
-import { RealEstateUploadForm } from '../app/core/item/item-response.interface';
+import { RealestateContent, RealEstateUploadForm } from '../app/core/item/item-response.interface';
 import { Realestate } from '../app/core/item/realestate';
 import { ITEM_ID } from './item.fixtures.spec';
 
@@ -140,3 +140,20 @@ export const MOCK_REALESTATE: Realestate = new Realestate(
   REALESTATE_CONTENT_DATA.pool,
   REALESTATE_CONTENT_DATA.garden
 );
+
+export const MOCK_REALESTATE_RESPONSE_CONTENT: RealestateContent = {
+  id: MOCK_REALESTATE.id,
+  category_id: MOCK_REALESTATE.categoryId,
+  sale_price: MOCK_REALESTATE.salePrice,
+  title: MOCK_REALESTATE.title,
+  description: MOCK_REALESTATE.description,
+  modified_date: MOCK_REALESTATE.modifiedDate,
+  flags: MOCK_REALESTATE.flags,
+  seller_id: 'ukd73df',
+  web_slug: MOCK_REALESTATE.webSlug,
+  operation: MOCK_REALESTATE.operation,
+  type: MOCK_REALESTATE.type,
+  surface: MOCK_REALESTATE.surface,
+  rooms: MOCK_REALESTATE.rooms,
+  condition: MOCK_REALESTATE.condition,
+};
