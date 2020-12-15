@@ -1,42 +1,42 @@
-import { of } from 'rxjs';
-import { TestBed } from '@angular/core/testing';
-import { CallsService } from './calls.service';
-import { UserService } from '../user/user.service';
-import { ItemService } from '../item/item.service';
-import { XmppService } from '../xmpp/xmpp.service';
-import { EventService } from '../event/event.service';
 import {
-  MOCK_USER,
-  MockedUserService,
-  USER_ID,
-  USER_ITEM_DISTANCE,
-} from '../../../tests/user.fixtures.spec';
-import { ITEM_ID, MockedItemService } from '../../../tests/item.fixtures.spec';
-import { TrackingService } from '../tracking/tracking.service';
-import { Call } from './calls';
+  HttpClientTestingModule,
+  HttpTestingController,
+  TestRequest,
+} from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { MockRemoteConsoleService } from '../../../tests';
+import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
 import { CALLS_DATA, createCallsArray } from '../../../tests/call.fixtures';
-import { Conversation } from './conversation';
 import {
   CONVERSATIONS_DATA,
   createConversationsArray,
 } from '../../../tests/conversation.fixtures.spec';
-import { CallTotals } from './totals.interface';
+import { ITEM_ID, MockedItemService } from '../../../tests/item.fixtures.spec';
+import { RealTimeServiceMock } from '../../../tests/real-time.fixtures.spec';
+import {
+  MockedUserService,
+  MOCK_USER,
+  USER_ID,
+  USER_ITEM_DISTANCE,
+} from '../../../tests/user.fixtures.spec';
+import { AnalyticsService } from '../analytics/analytics.service';
 import { ConnectionService } from '../connection/connection.service';
+import { EventService } from '../event/event.service';
+import { Item } from '../item/item';
+import { ItemService } from '../item/item.service';
 import { RealTimeService } from '../message/real-time.service';
 import { RemoteConsoleService } from '../remote-console';
-import { MockRemoteConsoleService } from '../../../tests';
-import { BlockUserXmppService } from '../../chat/service';
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
-import { TestRequest } from '@angular/common/http/testing';
-import { environment } from '../../../environments/environment';
+import { TrackingService } from '../tracking/tracking.service';
 import { User } from '../user/user';
-import { Item } from '../item/item';
-import { AnalyticsService } from '../analytics/analytics.service';
-import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
-import { RealTimeServiceMock } from '../../../tests/real-time.fixtures.spec';
+import { UserService } from '../user/user.service';
+import { XmppService } from '../xmpp/xmpp.service';
+import { BlockUserXmppService } from './../../features/chat/core/block-user/block-user-xmpp.service';
+import { Call } from './calls';
+import { CallsService } from './calls.service';
+import { Conversation } from './conversation';
+import { CallTotals } from './totals.interface';
 
 let service: CallsService;
 let userService: UserService;

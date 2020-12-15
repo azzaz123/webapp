@@ -83,7 +83,7 @@ const loggedRoutes = [
     path: 'chat',
     canLoad: [LoggedGuard],
     loadChildren: () =>
-      import('app/chat/chat.module').then((m) => m.ChatModule),
+      import('app/features/chat/chat.module').then((m) => m.ChatModule),
   },
   {
     path: 'favorites',

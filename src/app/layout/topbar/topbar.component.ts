@@ -7,19 +7,19 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { UserService } from '../../core/user/user.service';
-import { environment } from '../../../environments/environment';
-import { Coordinate } from '../../core/geolocation/address-response.interface';
-import { SuggesterResponse } from './suggester/suggester-response.interface';
-import { User } from '../../core/user/user';
-import { MessageService } from '../../chat/service/message.service';
-import { PaymentService } from '../../core/payments/payment.service';
-import { CreditInfo } from '../../core/payments/payment.interface';
-import { EventService } from '../../core/event/event.service';
-import { CookieService } from 'ngx-cookie';
-import { Subscription } from 'rxjs';
+import { EventService } from '@core/event/event.service';
+import { Coordinate } from '@core/geolocation/address-response.interface';
+import { CreditInfo } from '@core/payments/payment.interface';
+import { PaymentService } from '@core/payments/payment.service';
+import { User } from '@core/user/user';
+import { UserService } from '@core/user/user.service';
+import { environment } from '@environments/environment';
+import { MessageService } from '@features/chat/core/message/message.service';
 import { APP_PATHS } from 'app/app-routing-constants';
 import { PUBLIC_PATHS } from 'app/public/public-routing-constants';
+import { CookieService } from 'ngx-cookie';
+import { Subscription } from 'rxjs';
+import { SuggesterResponse } from './suggester/suggester-response.interface';
 
 @Component({
   selector: 'tsl-topbar',
