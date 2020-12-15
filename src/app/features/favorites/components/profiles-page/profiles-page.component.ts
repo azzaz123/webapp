@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Profile } from '@core/profile/profile';
 import { ProfilesData } from '@core/profile/profile-response.interface';
 import { ProfileService } from '@core/profile/profile.service';
-import { MOCK_PROFILE } from '@fixtures/profile.fixtures.spec';
 
 @Component({
   selector: 'tsl-profiles-page',
@@ -11,9 +10,13 @@ import { MOCK_PROFILE } from '@fixtures/profile.fixtures.spec';
   styleUrls: ['./profiles-page.component.scss'],
 })
 export class ProfilesPageComponent implements OnInit {
+  @Output() onFavoriteProfilePageChange: EventEmitter<
+    Boolean
+  > = new EventEmitter();
   public profiles: Profile[] = [];
   public loading = false;
   public end = false;
+  public isProfileRemoved = true;
 
   constructor(private profileService: ProfileService, private router: Router) {}
 
@@ -45,10 +48,10 @@ export class ProfilesPageComponent implements OnInit {
   }
 
   public removeProfile(profile: Profile) {
-    //EventEmitter
-    /* if (this.profiles.length) {
+    if (this.profiles.length) {
       const index = this.profiles.indexOf(profile);
       this.profiles.splice(index, 1);
-    } */
+      this.onFavoriteProfilePageChange.emit(this.isProfileRemoved);
+    }
   }
 }

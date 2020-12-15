@@ -37,10 +37,17 @@ export class FavoritesComponent implements OnInit {
   onActivate(componentReference) {
     componentReference.onFavoriteItemPageChange.subscribe((isItemRemoved) => {
       if (isItemRemoved) {
-        console.log('emoved');
         this.numberOfFavorites--;
       }
     });
+
+    componentReference.onFavoriteProfilePageChange.subscribe(
+      (isProfileRemoved) => {
+        if (isProfileRemoved) {
+          this.numberOfFavorites--;
+        }
+      }
+    );
   }
 
   public onItemsPageChange(isDataPassed: boolean) {
