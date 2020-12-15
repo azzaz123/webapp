@@ -6,7 +6,6 @@ import {
 } from './public-profile-routing.module';
 import { UserStatsComponent } from './components/user-stats/user-stats.component';
 import { UserProfileHeaderComponent } from './components/user-profile-header/user-profile-header.component';
-import { ShareUserComponent } from './components/share-user/share-user.component';
 import { ProfileTabsComponent } from './components/profile-tabs/profile-tabs.component';
 import { FavouriteUserModule } from './components/favourite-user/favourite-user.module';
 
@@ -15,7 +14,6 @@ import { FavouriteUserModule } from './components/favourite-user/favourite-user.
     publicProfileRoutedComponents,
     UserProfileHeaderComponent,
     UserStatsComponent,
-    ShareUserComponent,
     ProfileTabsComponent,
   ],
   imports: [CommonModule, PublicProfileRoutingModule, FavouriteUserModule],
