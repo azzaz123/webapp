@@ -23,6 +23,7 @@ export interface Ratings {
 }
 
 export interface UserLocation {
+  id?: number;
   approxRadius: number;
   approximated_latitude: number;
   approximated_location: boolean;
@@ -36,13 +37,14 @@ export interface Image {
   legacy_id?: number;
   original_width: number;
   original_height: number;
+  average_hex_color?: string;
   urls_by_size: {
     original: string;
     small: string;
     large: string;
     medium: string;
     xlarge: string;
-    xsmall: string;
+    xmall: string;
   };
 }
 
@@ -53,6 +55,11 @@ export interface CounterTypes {
   reviews: number;
   sold: number;
   reports_received: number;
+  favorites?: number;
+  views?: number;
+  profile_favorited_received?: number;
+  profile_favorited?: number;
+  onHold?: number;
 }
 
 export interface UserExtrainfo {
