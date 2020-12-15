@@ -26,6 +26,7 @@ import {
   CREATE_MOCK_INBOX_CONVERSATION,
   MOCK_INBOX_CONVERSATION_BASIC,
   MOCK_INBOX_CONVERSATION_WITH_MALICIOUS_USER,
+  MOCK_INBOX_CONVERSATION_WITH_UNSUBSCRIBED_USER,
 } from '@fixtures/inbox.fixtures.spec';
 import { RealTimeServiceMock } from '@fixtures/real-time.fixtures.spec';
 import { MockRemoteConsoleService } from '@fixtures/remote-console.fixtures.spec';
