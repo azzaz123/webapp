@@ -24,7 +24,7 @@ export class SessionService {
     const boundPutSessionCookie = this.putSessionCookie.bind(this);
     this.putSessionCookie();
     setInterval(boundPutSessionCookie, SessionService.SESSION_TRACK_INTERVAL);
-    window.onunload = boundPutSessionCookie;
+    // window.onunload = boundPutSessionCookie;
   }
 
   private putSessionCookie() {

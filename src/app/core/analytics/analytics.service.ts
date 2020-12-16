@@ -1,4 +1,4 @@
-import { ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import mParticle from '@mparticle/web-sdk';
 import appboyKit from '@mparticle/web-appboy-kit';
 import { UserService } from './../user/user.service';
@@ -25,7 +25,13 @@ export class AnalyticsService {
 
   private static DEVICE_ID_COOKIE_NAME = 'device_id';
 
-  public mParticleReady$: ReplaySubject<void> = new ReplaySubject<void>();
+  private readonly _mParticleReady$: ReplaySubject<void> = new ReplaySubject<
+    void
+  >();
+
+  public get mParticleReady$(): Observable<void> {
+    return this._mParticleReady$.asObservable();
+  }
 
   public initialize() {
     // TODO: Passing an empty object to identify an unknown user allows to set userAttributes
@@ -53,7 +59,7 @@ export class AnalyticsService {
         appboyKit.register(CONFIG);
         mParticle.init(environment.mParticleKey, CONFIG);
         mParticle.ready(() => {
-          this.mParticleReady$.next();
+          this._mParticleReady$.next();
         });
       });
   }

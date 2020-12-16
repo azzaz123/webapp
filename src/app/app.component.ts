@@ -4,6 +4,8 @@ import {
   filter,
   distinctUntilChanged,
   finalize,
+  take,
+  concatMap,
 } from 'rxjs/operators';
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
@@ -119,9 +121,12 @@ export class AppComponent implements OnInit {
     this.userService.checkUserStatus();
     this.desktopNotificationsService.init();
     this.connectionService.checkConnection();
-    this.analyticsService.mParticleReady$.subscribe(() => {
-      this.sessionService.newSession$.subscribe(() => this.trackOpenWallapop());
-    });
+    this.analyticsService.mParticleReady$
+      .pipe(
+        concatMap(() => this.sessionService.newSession$),
+        take(1)
+      )
+      .subscribe(() => this.trackOpenWallapop());
   }
 
   // TODO: This should be encapsualted in a service (e.g.: BrazeService)
