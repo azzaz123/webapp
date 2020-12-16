@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '@core/user/user';
+import { Image } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
 import { forkJoin, Subscription } from 'rxjs';
 import { PublicProfileService } from '../core/services/public-profile.service';
@@ -22,31 +23,39 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.getUserId();
+    this.getUser();
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription: Subscription) =>
+      subscription.unsubscribe()
+    );
   }
 
-  private getUserId(): void {
-    this.route.queryParams.subscribe((params) => {
-      this.userId = params.id;
-      if (this.userId) {
-        this.getUserInformation();
-      }
-    });
+  private getUser(): void {
+    this.subscriptions.push(
+      this.route.queryParams.subscribe((params) => {
+        this.userId = params.id;
+        if (this.userId) {
+          this.getUserInfoAndStats();
+        }
+      })
+    );
   }
 
-  private getUserInformation(): void {
+  private getUserInfoAndStats(): void {
     this.subscriptions.push(
       forkJoin([
         this.publicProfileService.getUser(this.userId),
         this.publicProfileService.getStats(this.userId),
-      ]).subscribe(([userInfo, userStats]: [User, UserStats]) => {
-        this.userInfo = userInfo;
-        this.userStats = userStats;
-      })
+        this.publicProfileService.getCoverImage(this.userId),
+      ]).subscribe(
+        ([userInfo, userStats, coverImage]: [User, UserStats, Image]) => {
+          this.userInfo = userInfo;
+          this.userInfo.coverImage = coverImage;
+          this.userStats = userStats;
+        }
+      )
     );
   }
 }

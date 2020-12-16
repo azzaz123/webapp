@@ -1,5 +1,7 @@
 <div *ngIf="userInfo && userStats">
-  <div class="HeaderPro" [hidden]="!userInfo.isPro"></div>
+  <div class="HeaderPro" [hidden]="!userInfo.isPro">
+    <tsl-user-cover [user]="userInfo"></tsl-user-cover>
+  </div>
   <div class="container align-middle ProfileUser__container d-flex flex-column">
     <div class="row">
       <div class="col-12 col-sm-6 row ProfileUser__info align-items-center">
@@ -9,7 +11,7 @@
           <tsl-stars class="d-inline-block" [stars]="userStats?.ratings?.reviews" [normalized]="false"></tsl-stars>
           <span class="user-number-reviews mb-0">({{userStats.counters.reviews}})</span>
           <div class="ProBadge" [hidden]="!userInfo.isPro">
-            <div class="ProBadge-icon mt-1">
+            <div class="ProBadge-icon mt-1 d-flex align-items-center">
               <tsl-svg-icon src="/assets/icons/pro-seal.svg"></tsl-svg-icon>
               <strong class="ml-2">PRO</strong>
             </div>
