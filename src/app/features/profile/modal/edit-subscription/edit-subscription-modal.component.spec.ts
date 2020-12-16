@@ -9,6 +9,7 @@ import {
   SCREEN_IDS,
   ViewEditSubscriptionPlan,
 } from '@core/analytics/analytics-constants';
+import { ModalStatuses } from '@features/profile/pages/subscription/subscription.component';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
@@ -122,12 +123,12 @@ describe('EditSubscriptionModalComponent', () => {
   });
 
   describe('close', () => {
-    it('should close the modal and redirect to the profile', () => {
+    it('should close the modal with modal status', () => {
       spyOn(activeModal, 'close');
 
-      component.close();
+      component.close(ModalStatuses.UPDATE);
 
-      expect(activeModal.close).toHaveBeenCalled();
+      expect(activeModal.close).toHaveBeenCalledWith(ModalStatuses.UPDATE);
     });
   });
 

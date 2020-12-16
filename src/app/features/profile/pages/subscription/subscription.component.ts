@@ -37,6 +37,14 @@ export type SubscriptionModal =
   | typeof EditSubscriptionModalComponent
   | typeof AddNewSubscriptionModalComponent;
 
+export enum ModalStatuses {
+  UPDATE = 'update',
+  CONTINUE = 'continue',
+  SUCCESS = 'success',
+  FAIL = 'fail',
+  ADD = 'add',
+}
+
 @Component({
   selector: 'tsl-subscription',
   templateUrl: './subscription.component.html',
@@ -77,7 +85,7 @@ export class SubscriptionsComponent implements OnInit {
       this.subscriptions
     );
     modalRef.result.then(
-      (action: string) => {
+      (action: ModalStatuses) => {
         if (action) {
           this.loading = true;
           if (this.user && this.user.featured) {

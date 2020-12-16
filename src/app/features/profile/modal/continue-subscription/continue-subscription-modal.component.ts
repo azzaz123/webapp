@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ModalStatuses } from '@features/profile/pages/subscription/subscription.component';
 import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
@@ -34,7 +35,7 @@ export class ContinueSubscriptionModalComponent {
   ) {}
 
   public close() {
-    this.activeModal.close('continue');
+    this.activeModal.close(ModalStatuses.CONTINUE);
   }
 
   public continueSubscription() {
