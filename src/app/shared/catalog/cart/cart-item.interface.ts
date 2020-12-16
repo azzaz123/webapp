@@ -1,8 +1,9 @@
 import { Duration } from '../../../core/item/item-response.interface';
 import { Item } from '../../../core/item/item';
 import { CartBase } from './cart-base';
-import { CalendarDates } from '../../../catalog-pro/checkout-pro/range-datepicker/calendar-dates';
+
 import { Pack } from '../../../core/payments/pack';
+import { CalendarDates } from '@features/catalog-pro/core/calendar-dates';
 
 export interface CartItem {
   item: Item;

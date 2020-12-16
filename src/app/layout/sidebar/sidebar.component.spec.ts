@@ -1,4 +1,4 @@
-import { of, Observable } from 'rxjs';
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 /* tslint:disable:no-unused-variable */
 import {
   ComponentFixture,
@@ -7,17 +7,17 @@ import {
   tick,
   waitForAsync,
 } from '@angular/core/testing';
-import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
-import { SidebarComponent } from './sidebar.component';
-import { UserService } from '../../core/user/user.service';
-import { User } from '../../core/user/user';
-import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-import { MessageService } from '../../chat/service/message.service';
-import { NgxPermissionsModule } from 'ngx-permissions';
+import { By } from '@angular/platform-browser';
 import { Router, Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MessageService } from '@features/chat/core/message/message.service';
 import { RouterLinkDirectiveStub } from 'app/shared/router-link-directive-stub';
-import { By } from '@angular/platform-browser';
+import { NgxPermissionsModule } from 'ngx-permissions';
+import { Observable, of } from 'rxjs';
+import { MOCK_USER } from '../../../tests/user.fixtures.spec';
+import { User } from '../../core/user/user';
+import { UserService } from '../../core/user/user.service';
+import { SidebarComponent } from './sidebar.component';
 
 @Component({
   template: '',

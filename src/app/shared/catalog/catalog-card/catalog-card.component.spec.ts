@@ -1,30 +1,30 @@
+import { DecimalPipe } from '@angular/common';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
-  TestBed,
   fakeAsync,
+  TestBed,
   tick,
   waitForAsync,
 } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CatalogCardComponent } from './catalog-card.component';
+import { ItemChangeEvent } from '@features/catalog/core/item-change.interface';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { of } from 'rxjs';
+import { environment } from '../../../../environments/environment';
+import {
+  getMockItemWithPurchases,
+  ITEM_ID,
+  MOCK_ITEM,
+} from '../../../../tests/item.fixtures.spec';
+import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
+import { ErrorsService } from '../../../core/errors/errors.service';
+import { EventService } from '../../../core/event/event.service';
+import { I18nService } from '../../../core/i18n/i18n.service';
+import { Item } from '../../../core/item/item';
 import { ItemService } from '../../../core/item/item.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustomCurrencyPipe } from '../../pipes';
-import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
-import { DecimalPipe } from '@angular/common';
-import { ErrorsService } from '../../../core/errors/errors.service';
-import {
-  MOCK_ITEM,
-  ITEM_ID,
-  getMockItemWithPurchases,
-} from '../../../../tests/item.fixtures.spec';
-import { of } from 'rxjs';
-import { ItemChangeEvent } from '../../../catalog/list/catalog-item/item-change.interface';
-import { Item } from '../../../core/item/item';
-import { I18nService } from '../../../core/i18n/i18n.service';
-import { environment } from '../../../../environments/environment';
-import { EventService } from '../../../core/event/event.service';
+import { CatalogCardComponent } from './catalog-card.component';
 
 describe('CatalogCardComponent', () => {
   let component: CatalogCardComponent;

@@ -211,30 +211,50 @@
     }
   }
   tsl-button {
-    ::ng-deep button {
-      display: flex;
-      align-items: center;
-      font-weight: $font-weight-chunky;
-      font-size: $font-size-s;
-      padding-left: $spacing-s;
-      padding-top: $spacing-s;
-      padding-bottom: $spacing-s;
-    }
-    ::ng-deep tsl-svg-icon {
-      vertical-align: middle;
-      margin-right: $spacing-xs;
-      @include square(26px);
-    }
-    &:hover {
-      ::ng-deep tsl-svg-icon {
-        #fill {
-          transition: all 0.2s ease-in-out;
-          fill-opacity: 1;
+    &.TopBar {
+      &__btn {
+        ::ng-deep button {
+          align-items: center;
+          display: flex;
+          font-size: $font-size-s;
+          font-weight: $font-weight-chunky;
+          line-height: $spacing-l;
+          padding-bottom: $spacing-s;
+          padding-top: $spacing-s;
         }
-        #plus {
-          rect {
-            transition: all 0.2s ease-in-out;
-            fill: $walla-main;
+
+        &--regular {
+          ::ng-deep button span {
+            font-weight: normal;
+          }
+        }
+
+        &--with-icon {
+          margin-left: $spacing-ml;
+
+          ::ng-deep button {
+            padding-left: $spacing-s;
+          }
+
+          ::ng-deep tsl-svg-icon {
+            @include square(26px);
+            margin-right: $spacing-s;
+            vertical-align: middle;
+          }
+
+          &:hover {
+            ::ng-deep tsl-svg-icon {
+              #fill {
+                fill-opacity: 1;
+                transition: all 0.2s ease-in-out;
+              }
+              #plus {
+                rect {
+                  fill: $walla-main;
+                  transition: all 0.2s ease-in-out;
+                }
+              }
+            }
           }
         }
       }

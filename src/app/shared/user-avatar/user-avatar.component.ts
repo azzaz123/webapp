@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
+import { InboxUser } from '@features/chat/core/model';
 import { environment } from '../../../environments/environment';
 import { PLACEHOLDER_AVATAR, User } from '../../core/user/user';
-import { InboxUser } from '../../chat/model/inbox-user';
 
 @Component({
   selector: 'tsl-user-avatar',

@@ -1,0 +1,18 @@
+<ngb-accordion #a="ngbAccordion" [activeIds]="activeIds">
+  <ngb-panel id="custom-panel-1">
+    <ng-template ngbPanelHeader>
+      <div class="d-flex align-items-left justify-content-start align-items-center">
+          <h3 i18n="@@InvoiceInformation">Invoice information</h3>
+      </div>
+      <div class="d-flex align-items-right justify-content-end flex-grow-1">
+        <button ngbPanelToggle class="btn btn-link p-0">
+          <tsl-svg-icon src="/assets/icons/arrow-waterfall.svg"></tsl-svg-icon>
+        </button>
+      </div>
+    </ng-template>
+    <ng-template ngbPanelContent>
+      <tsl-profile-pro-billing [containerType]="'profile-info'" (billingInfoFormSaved)="handleModalAndInvoicePermission()"></tsl-profile-pro-billing>
+    </ng-template>
+  </ngb-panel>
+</ngb-accordion>
+<tsl-invoice-history *ngxPermissionsExcept="['isProfessional']" [active]="canDownloadInvoice"></tsl-invoice-history>

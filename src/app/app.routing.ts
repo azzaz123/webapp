@@ -1,31 +1,20 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes, Route } from '@angular/router';
 import { PERMISSIONS } from './core/user/user';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { DevelopmentGuard } from './core/user/development.guard';
 import { LoggedGuard } from './core/user/logged.guard';
-import { PATH_EVENTS } from './app-routing-constants';
+import { APP_PATHS, PATH_EVENTS } from './app-routing-constants';
 
-const publicRoutes = [
-  {
-    path: 'login',
-    canLoad: [DevelopmentGuard],
-    loadChildren: () =>
-      import('app/login/login.module').then((m) => m.LoginModule),
-    data: {
-      [PATH_EVENTS.hideSidebar]: true,
-    },
+const publicRoute: Route = {
+  path: APP_PATHS.PUBLIC,
+  canLoad: [DevelopmentGuard],
+  loadChildren: () =>
+    import('@public/public.module').then((m) => m.PublicModule),
+  data: {
+    [PATH_EVENTS.hideSidebar]: true,
   },
-  {
-    path: 'register',
-    canLoad: [DevelopmentGuard],
-    loadChildren: () =>
-      import('app/register/register.module').then((m) => m.RegisterModule),
-    data: {
-      [PATH_EVENTS.hideSidebar]: true,
-    },
-  },
-];
+};
 
 const loggedRoutes = [
   { path: '', pathMatch: 'full', redirectTo: 'chat' },
@@ -57,7 +46,7 @@ const loggedRoutes = [
           {
             path: '',
             loadChildren: () =>
-              import('app/catalog-pro/catalog-pro.module').then(
+              import('app/features/catalog-pro/catalog-pro.module').then(
                 (m) => m.CatalogProModule
               ),
           },
@@ -88,19 +77,23 @@ const loggedRoutes = [
     path: 'profile',
     canLoad: [LoggedGuard],
     loadChildren: () =>
-      import('app/profile/profile.module').then((m) => m.ProfileModule),
+      import('app/features/profile/profile.module').then(
+        (m) => m.ProfileModule
+      ),
   },
   {
     path: 'chat',
     canLoad: [LoggedGuard],
     loadChildren: () =>
-      import('app/chat/chat.module').then((m) => m.ChatModule),
+      import('app/features/chat/chat.module').then((m) => m.ChatModule),
   },
   {
     path: 'favorites',
     canLoad: [LoggedGuard],
     loadChildren: () =>
-      import('app/favorites/favorites.module').then((m) => m.FavoritesModule),
+      import('app/features/favorites/favorites.module').then(
+        (m) => m.FavoritesModule
+      ),
   },
   {
     path: 'reviews',
@@ -131,7 +124,9 @@ const loggedRoutes = [
       {
         path: '',
         loadChildren: () =>
-          import('app/catalog/catalog.module').then((m) => m.CatalogModule),
+          import('app/features/catalog/catalog.module').then(
+            (m) => m.CatalogModule
+          ),
       },
       {
         path: 'upload',
@@ -166,7 +161,7 @@ const loggedRoutes = [
   },
 ];
 
-const routes: Routes = [...publicRoutes, ...loggedRoutes];
+const routes: Routes = [publicRoute, ...loggedRoutes];
 
 @NgModule({
   imports: [

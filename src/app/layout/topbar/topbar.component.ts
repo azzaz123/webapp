@@ -3,27 +3,31 @@ import {
   ElementRef,
   Inject,
   Input,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { UserService } from '../../core/user/user.service';
-import { environment } from '../../../environments/environment';
-import { Coordinate } from '../../core/geolocation/address-response.interface';
-import { CategoryResponse } from '../../core/category/category-response.interface';
-import { SuggesterResponse } from './suggester/suggester-response.interface';
-import { User } from '../../core/user/user';
-import { MessageService } from '../../chat/service/message.service';
-import { PaymentService } from '../../core/payments/payment.service';
-import { CreditInfo } from '../../core/payments/payment.interface';
-import { EventService } from '../../core/event/event.service';
+import { EventService } from '@core/event/event.service';
+import { Coordinate } from '@core/geolocation/address-response.interface';
+import { CreditInfo } from '@core/payments/payment.interface';
+import { PaymentService } from '@core/payments/payment.service';
+import { User } from '@core/user/user';
+import { UserService } from '@core/user/user.service';
+import { environment } from '@environments/environment';
+import { MessageService } from '@features/chat/core/message/message.service';
+import { APP_PATHS } from 'app/app-routing-constants';
+import { PUBLIC_PATHS } from 'app/public/public-routing-constants';
 import { CookieService } from 'ngx-cookie';
+import { Subscription } from 'rxjs';
+import { SuggesterResponse } from './suggester/suggester-response.interface';
 
 @Component({
   selector: 'tsl-topbar',
   templateUrl: './topbar.component.html',
   styleUrls: ['./topbar.component.scss'],
 })
-export class TopbarComponent implements OnInit {
+export class TopbarComponent implements OnInit, OnDestroy {
+  public readonly LOGIN_PATH = `${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.LOGIN}`;
   public user: User;
   public coordinates: Coordinate;
   public category: number;
@@ -37,6 +41,9 @@ export class TopbarComponent implements OnInit {
   public isProfessional: boolean;
   public wallacoins: number = 0;
   public currencyName: string;
+  public isLogged: boolean;
+
+  private componentSubscriptions: Subscription[] = [];
 
   constructor(
     public userService: UserService,
@@ -50,22 +57,40 @@ export class TopbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.me().subscribe((user) => {
-      this.user = user;
-    });
-    this.userService.isProfessional().subscribe((value: boolean) => {
-      this.isProfessional = value;
-    });
+    this.isLogged = this.userService.isLogged;
+    this.componentSubscriptions.push(
+      this.userService.me().subscribe((user) => {
+        this.user = user;
+      })
+    );
+    this.componentSubscriptions.push(
+      this.userService.isProfessional().subscribe((value: boolean) => {
+        this.isProfessional = value;
+      })
+    );
     this.updateCreditInfo();
-    this.eventService.subscribe(
-      EventService.TOTAL_CREDITS_UPDATED,
-      (totalCredits: number) => {
-        if (totalCredits) {
-          this.wallacoins = totalCredits;
-        } else {
-          this.updateCreditInfo(false);
+    this.componentSubscriptions.push(
+      this.eventService.subscribe(
+        EventService.TOTAL_CREDITS_UPDATED,
+        (totalCredits: number) => {
+          if (totalCredits) {
+            this.wallacoins = totalCredits;
+          } else {
+            this.updateCreditInfo(false);
+          }
         }
-      }
+      )
+    );
+    this.componentSubscriptions.push(
+      this.eventService.subscribe(EventService.USER_LOGIN, () => {
+        this.isLogged = this.userService.isLogged;
+      })
+    );
+
+    this.componentSubscriptions.push(
+      this.eventService.subscribe(EventService.USER_LOGOUT, () => {
+        this.isLogged = this.userService.isLogged;
+      })
     );
   }
 
@@ -111,5 +136,11 @@ export class TopbarComponent implements OnInit {
 
   public onKeywordUpdate(newKeyword: string) {
     this.kws = newKeyword;
+  }
+
+  ngOnDestroy(): void {
+    this.componentSubscriptions.forEach((subscription: Subscription) => {
+      subscription.unsubscribe();
+    });
   }
 }
