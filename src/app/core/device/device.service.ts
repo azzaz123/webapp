@@ -3,7 +3,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 
 import { DeviceType } from '@core/device/deviceType.enum';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class DeviceService {
   constructor(private deviceDetectorService: DeviceDetectorService) {}
 

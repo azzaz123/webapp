@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { SessionService } from '@core/session/session.service';
 import { LoggedGuard } from './user/logged.guard';
 import { UserModule } from './user/user.module';
 import { ItemModule } from './item/item.module';
@@ -38,7 +37,6 @@ import { MobileBlockerModule } from './mobile-blocker/mobile-blocker.module';
 import { DevelopmentGuard } from './user/development.guard';
 import { DidomiService } from './didomi/didomi.service';
 import { TrustAndSafetyService } from './trust-and-safety/trust-and-safety.service';
-import { DeviceService } from '@core/device/device.service';
 
 @NgModule({
   imports: [
@@ -87,8 +85,6 @@ export class CoreModule {
         SubscriptionsService,
         DidomiService,
         TrustAndSafetyService,
-        SessionService,
-        DeviceService,
       ],
     };
   }
