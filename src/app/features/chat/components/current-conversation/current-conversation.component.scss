@@ -155,8 +155,12 @@
     content: '\01F47B';
   }
 
-  .emoticon-padlock {
+  .emoticon-padlock::before {
     content: '\01F512';
+  }
+
+  .emoticon-monocle-face::before {
+    content: '\01F9D0';
   }
 }
 
