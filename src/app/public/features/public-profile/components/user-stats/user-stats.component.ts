@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { User } from '@core/user/user';
 import { UserStats } from '@core/user/user-stats.interface';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { UserInfo } from '../../core/public-profile.interface';
 import { PUBLIC_PROFILE_PATHS } from '../../public-profile-routing-constants';
 
 @Component({
@@ -12,7 +12,7 @@ import { PUBLIC_PROFILE_PATHS } from '../../public-profile-routing-constants';
 })
 export class UserStatsComponent {
   @Input() userStats: UserStats;
-  @Input() userInfo: UserInfo;
+  @Input() userInfo: User;
   isPhone = false;
 
   constructor(
