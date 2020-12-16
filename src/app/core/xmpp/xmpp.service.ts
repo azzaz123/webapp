@@ -1,29 +1,29 @@
-import {
-  from,
-  of,
-  Observable,
-  Observer,
-  ReplaySubject,
-  throwError,
-} from 'rxjs';
-
-import { map, tap, mergeMap } from 'rxjs/operators';
-import { clone, eq, remove, includes } from 'lodash-es';
 import { Injectable } from '@angular/core';
-import { EventService } from '../event/event.service';
-import { XmppBodyMessage, XMPPClient, JID } from './xmpp.interface';
-import { User } from '../user/user';
-import { environment } from '../../../environments/environment';
-import { ChatSignal, ChatSignalType } from '../../chat/model';
 import {
+  ChatSignal,
+  ChatSignalType,
   InboxConversation,
   InboxMessage,
   InboxUser,
-  MESSAGES_WHITE_LIST,
   MessageStatus,
+  MESSAGES_WHITE_LIST,
   MessageType,
-} from '../../chat/model';
+} from '@features/chat/core/model';
+import { clone, eq, includes, remove } from 'lodash-es';
+import {
+  from,
+  Observable,
+  Observer,
+  of,
+  ReplaySubject,
+  throwError,
+} from 'rxjs';
+import { map, mergeMap, tap } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
+import { EventService } from '../event/event.service';
 import { RemoteConsoleService } from '../remote-console';
+import { User } from '../user/user';
+import { JID, XmppBodyMessage, XMPPClient } from './xmpp.interface';
 
 @Injectable()
 export class XmppService {

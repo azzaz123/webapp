@@ -1,19 +1,18 @@
-import { empty, Observable, of } from 'rxjs';
-
-import { InboxConversation } from '../app/chat/model';
+import { InboxConversation } from '@features/chat/core/model';
+import { EMPTY, Observable, of } from 'rxjs';
 
 export class InboxConversationServiceMock {
   public conversations: InboxConversation[] = [];
   public archivedConversations: InboxConversation[] = [];
 
   openConversationByItemId$(itemId: string): Observable<InboxConversation> {
-    return empty();
+    return EMPTY;
   }
 
   openConversationByConversationId$(
     conversation: string
   ): Observable<InboxConversation> {
-    return empty();
+    return EMPTY;
   }
 
   public openConversation(conversation: InboxConversation): void {}
@@ -30,7 +29,7 @@ export class InboxConversationServiceMock {
     inboxConversation: InboxConversation,
     phoneNumber: string
   ): Observable<any> {
-    return empty();
+    return EMPTY;
   }
 
   loadMoreMessages() {}
