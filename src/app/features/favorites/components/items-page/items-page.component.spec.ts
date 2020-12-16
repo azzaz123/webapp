@@ -50,12 +50,7 @@ describe('ItemsPageComponent', () => {
   describe('getItems', () => {
     beforeEach(fakeAsync(() => {
       spyOn(component, 'getItems').and.callThrough();
-      //spyOn(component, 'getProfiles').and.callThrough();
       itemServiceSpy = spyOn(itemService, 'myFavorites').and.callThrough();
-      /*  profileServiceSpy = spyOn(
-        profileService,
-        'myFavorites'
-      ).and.callThrough(); */
     }));
 
     it('should call myFavorites when component init', () => {
@@ -138,6 +133,13 @@ describe('ItemsPageComponent', () => {
   });
 
   describe('loadMore', () => {
-    it('should load more products', () => {});
+    it('should load more products', () => {
+      spyOn(component, 'loadMore').and.callThrough();
+      spyOn(component, 'getItems');
+
+      component.loadMore();
+
+      expect(component.getItems).toHaveBeenCalledWith(true);
+    });
   });
 });
