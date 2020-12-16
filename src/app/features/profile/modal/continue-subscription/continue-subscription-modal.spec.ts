@@ -8,7 +8,6 @@ import {
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
 import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
-import { ModalStatuses } from '@features/profile/pages/subscription/subscription.component';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
@@ -18,6 +17,7 @@ import { ToastService } from '@layout/toast/toast.service';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 import { ContinueSubscriptionModalComponent } from './continue-subscription-modal.component';
+import { ModalStatuses } from '@features/profile/core/modal.statuses.enum';
 
 describe('ContinueSubscriptionModalComponent', () => {
   let component: ContinueSubscriptionModalComponent;

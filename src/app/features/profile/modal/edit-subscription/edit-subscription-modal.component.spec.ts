@@ -9,12 +9,12 @@ import {
   SCREEN_IDS,
   ViewEditSubscriptionPlan,
 } from '@core/analytics/analytics-constants';
-import { ModalStatuses } from '@features/profile/pages/subscription/subscription.component';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { ModalStatuses } from '@features/profile/core/modal.statuses.enum';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import {
   MAPPED_SUBSCRIPTIONS,

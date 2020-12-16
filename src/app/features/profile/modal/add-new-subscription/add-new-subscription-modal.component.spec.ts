@@ -23,7 +23,7 @@ import { EventService } from '@core/event/event.service';
 import { StripeService } from '@core/stripe/stripe.service';
 import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
-import { ModalStatuses } from '@features/profile/pages/subscription/subscription.component';
+import { ModalStatuses } from '@features/profile/core/modal.statuses.enum';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { PAYMENT_METHOD_DATA } from '@fixtures/payments.fixtures.spec';
 import {
