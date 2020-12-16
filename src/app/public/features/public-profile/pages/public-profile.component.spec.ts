@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -12,6 +13,7 @@ describe('PublicProfileComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
       declarations: [PublicProfileComponent],
       providers: [
         {
@@ -42,14 +44,18 @@ describe('PublicProfileComponent', () => {
 
       component.ngOnInit();
       fixture.detectChanges();
-      const containerPage = fixture.debugElement.query(By.css('.page-content'));
+      const containerPage = fixture.debugElement.query(
+        By.css('.PublicProfile')
+      );
 
       expect(containerPage).toBeFalsy();
       expect(component.userId).toBe(undefined);
     });
 
     it('should show the page if we have the user id', () => {
-      const containerPage = fixture.debugElement.query(By.css('.page-content'));
+      const containerPage = fixture.debugElement.query(
+        By.css('.PublicProfile')
+      );
 
       expect(containerPage).toBeTruthy();
       expect(component.userId).toBe('123');

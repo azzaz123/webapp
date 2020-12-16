@@ -49,7 +49,8 @@ export class User implements Model {
     private _email?: string,
     private _featured = false,
     private _extraInfo?: UserExtrainfo,
-    private _coverImage?: Image
+    private _coverImage?: Image,
+    private _isPro?: boolean
   ) {
     this._webLink = webSlug ? USER_BASE_PATH + webSlug : null;
     this._type = this.mapType(this._type);
@@ -229,6 +230,14 @@ export class User implements Model {
 
   set coverImage(value: any) {
     this._coverImage = value;
+  }
+
+  get isPro(): boolean {
+    return this._isPro;
+  }
+
+  set isPro(value: boolean) {
+    this._isPro = value;
   }
 
   public setCoverImageUrl(url: string) {

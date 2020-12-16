@@ -4,12 +4,15 @@ import {
   TestRequest,
 } from '@angular/common/http/testing';
 import { fakeAsync, TestBed } from '@angular/core/testing';
+import { User } from '@core/user/user';
+import { UserStats } from '@core/user/user-stats.interface';
 import {
-  MOCK_USER_INFO,
+  MOCK_FULL_USER,
+  MOCK_FULL_USER_FEATURED,
   MOCK_USER_STATS,
   USERS_STATS,
-} from '@public/fixtures/public-profile.fixtures.spec';
-import { UserInfo, UserStats } from '../public-profile.interface';
+  USER_DATA,
+} from '@fixtures/user.fixtures.spec';
 import { environment } from 'environments/environment';
 
 import {
@@ -82,14 +85,14 @@ describe('PublicProfileService', () => {
   describe('when getting user...', () => {
     it('should get user', () => {
       const expectedUrl = `${environment.baseUrl}${PROFILE_API_URL(userId)}`;
-      let response: UserInfo;
+      let response: User;
 
       service.getUser(userId).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
-      req.flush(MOCK_USER_INFO);
+      req.flush(USER_DATA);
 
       expect(req.request.url).toEqual(expectedUrl);
-      expect(response).toEqual(MOCK_USER_INFO);
+      expect(response).toEqual(MOCK_FULL_USER_FEATURED);
       expect(req.request.method).toBe('GET');
     });
   });
@@ -100,10 +103,13 @@ describe('PublicProfileService', () => {
 
   describe('when checking if user is pro...', () => {
     it('should return false if the user is NOT pro', () => {
-      expect(service.isPro(MOCK_USER_INFO)).toBe(false);
+      const MOCK_NORMAL_INFO = MOCK_FULL_USER;
+      MOCK_NORMAL_INFO.featured = false;
+
+      expect(service.isPro(MOCK_NORMAL_INFO)).toBe(false);
     });
     it('should return true if the user is pro', () => {
-      const MOCK_PRO_INFO = MOCK_USER_INFO;
+      const MOCK_PRO_INFO = MOCK_FULL_USER;
       MOCK_PRO_INFO.featured = true;
 
       expect(service.isPro(MOCK_PRO_INFO)).toBe(true);

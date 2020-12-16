@@ -4,11 +4,13 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 import {
-  CounterTypes,
+  Counters,
   Ratings,
-  UserInfo,
   UserStats,
-} from '../public-profile.interface';
+  UserStatsResponse,
+} from '@core/user/user-stats.interface';
+import { User } from '@core/user/user';
+import { UserResponse } from '@core/user/user-response.interface';
 
 export const PROFILE_API_URL = (userId: string) => `api/v3/users/${userId}`;
 export const PRO_USERS_ENDPOINT = (userId: string) =>
@@ -21,7 +23,9 @@ export class PublicProfileService {
 
   public getStats(userId: string): Observable<UserStats> {
     return this.http
-      .get<UserStats>(`${environment.baseUrl}${PROFILE_API_URL(userId)}/stats`)
+      .get<UserStatsResponse>(
+        `${environment.baseUrl}${PROFILE_API_URL(userId)}/stats`
+      )
       .pipe(
         map((response) => {
           return {
@@ -68,18 +72,13 @@ export class PublicProfileService {
     );
   }
 
-  public getUser(userId: string): Observable<UserInfo> {
+  public getUser(userId: string): Observable<User> {
     return this.http
-      .get<UserInfo>(`${environment.baseUrl}${PROFILE_API_URL(userId)}`)
-      .pipe(
-        map((user: UserInfo) => {
-          user.isPro = this.isPro(user);
-          return user;
-        })
-      );
+      .get<UserResponse>(`${environment.baseUrl}${PROFILE_API_URL(userId)}`)
+      .pipe(map((user) => this.mapRecordData(user)));
   }
 
-  public isPro(user: UserInfo): boolean {
+  public isPro(user: User | UserResponse): boolean {
     return user && user.featured;
   }
 
@@ -89,10 +88,42 @@ export class PublicProfileService {
     }, {});
   }
 
-  private toCountersStats(counters): CounterTypes {
+  private toCountersStats(counters): Counters {
     return counters.reduce((counterObj, counter) => {
       counterObj[counter.type] = counter.value;
       return counterObj;
     }, {});
+  }
+
+  private mapRecordData(data: UserResponse): User {
+    if (!data || !data.id) {
+      return null;
+    }
+
+    return new User(
+      data.id,
+      data.micro_name,
+      data.image,
+      data.location,
+      data.stats,
+      data.validations,
+      data.verification_level,
+      data.scoring_stars,
+      data.scoring_starts,
+      data.response_rate,
+      data.online,
+      data.type,
+      data.received_reports,
+      data.web_slug,
+      data.first_name,
+      data.last_name,
+      data.birth_date,
+      data.gender,
+      data.email,
+      data.featured,
+      data.extra_info,
+      null,
+      this.isPro(data)
+    );
   }
 }
