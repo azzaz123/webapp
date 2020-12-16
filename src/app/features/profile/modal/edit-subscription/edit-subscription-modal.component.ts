@@ -16,7 +16,6 @@ import {
   Tier,
 } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
-import { ModalStatuses } from '@features/profile/pages/subscription/subscription.component';
 import { ToastService } from '@layout/toast/toast.service';
 import {
   NgbActiveModal,
@@ -24,6 +23,7 @@ import {
   NgbModalRef,
 } from '@ng-bootstrap/ng-bootstrap';
 import { CancelSubscriptionModalComponent } from '../cancel-subscription/cancel-subscription-modal.component';
+import { ModalStatuses } from '../../core/modal.statuses.enum';
 
 @Component({
   selector: 'tsl-edit-subscription-modal',
