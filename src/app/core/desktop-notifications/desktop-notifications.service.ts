@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { TrackingService } from '../tracking/tracking.service';
-import { I18nService } from '../i18n/i18n.service';
-import { PLACEHOLDER_AVATAR } from '../user/user';
-import { InboxMessage, InboxConversation } from 'app/chat/model';
+import { InboxConversation, InboxMessage } from '@features/chat/core/model';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { I18nService } from '../i18n/i18n.service';
+import { TrackingService } from '../tracking/tracking.service';
+import { PLACEHOLDER_AVATAR } from '../user/user';
 
 export const ASK_PERMISSIONS_TIMEOUT_MS = 5000;
 
