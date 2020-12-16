@@ -1,1 +1,10 @@
-<p>profile-tabs works!</p>
+<nav class="ProfileTabs__nav">
+    <a *ngFor="let tab of PROFILE_TABS" class="ProfileTabs__link" [routerLink]="tab.href" [routerLinkActive]="'ProfileTabs__link--active'">
+        <span class="ProfileTabs__link__counter">{{tab.count}}</span>
+        {{tab.label}}
+    </a>
+    <a class="ProfileTabs__link" [routerLink]="INFO_TAB_PATH" [routerLinkActive]="'ProfileTabs__link--active'">
+        <span class="ProfileTabs__link__counter">+</span>
+        <span i18n="@@ProfileTabsInfoLabel">Info</span>
+    </a>
+</nav>

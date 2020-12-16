@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
+import { FooterModule } from '@shared/footer/footer.module';
 
 @NgModule({
-  imports: [],
+  exports: [FooterModule],
 })
 export class PublicLayoutModule {}

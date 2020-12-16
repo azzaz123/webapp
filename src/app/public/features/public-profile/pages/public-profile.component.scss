@@ -1,0 +1,14 @@
+@import '~style/common';
+
+:host {
+  background-color: $blue-grey-5;
+  display: block;
+
+  .PublicProfile {
+    &__section {
+      &--second {
+        flex-wrap: wrap-reverse;
+      }
+    }
+  }
+}
