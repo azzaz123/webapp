@@ -1,13 +1,23 @@
 import { of } from 'rxjs';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+  waitForAsync,
+} from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FavoritesComponent } from './favorites.component';
 import { UserService } from '@core/user/user.service';
 import { MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Routes } from '@angular/router';
+import { Router, RouterLinkWithHref, Routes } from '@angular/router';
 import { ItemsPageComponent } from '../components/items-page/items-page.component';
 import { ProfilesPageComponent } from '../components/profiles-page/profiles-page.component';
+import { ItemService } from '@core/item/item.service';
+import { By } from '@angular/platform-browser';
+import { LocationStrategy } from '@angular/common';
+import { ProfileService } from '@core/profile/profile.service';
 
 const routes: Routes = [
   {
@@ -23,6 +33,8 @@ const routes: Routes = [
 describe('FavoritesComponent', () => {
   let component: FavoritesComponent;
   let fixture: ComponentFixture<FavoritesComponent>;
+  let location: LocationStrategy;
+  let router: Router;
   let userService: UserService;
 
   beforeEach(
@@ -31,6 +43,22 @@ describe('FavoritesComponent', () => {
         declarations: [FavoritesComponent],
         imports: [RouterTestingModule.withRoutes(routes)],
         providers: [
+          {
+            provide: ItemService,
+            useValue: {
+              myFavorites() {
+                return of({});
+              },
+            },
+          },
+          {
+            provide: ProfileService,
+            useValue: {
+              myFavorites() {
+                return of();
+              },
+            },
+          },
           {
             provide: UserService,
             useValue: {
@@ -49,11 +77,43 @@ describe('FavoritesComponent', () => {
     fixture = TestBed.createComponent(FavoritesComponent);
     component = fixture.componentInstance;
     userService = TestBed.inject(UserService);
+    router = TestBed.inject(Router);
+    location = TestBed.inject(LocationStrategy);
     fixture.detectChanges();
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('Navigation', () => {
+    it('should navigate to favorites/products page after clicking produts tab', fakeAsync(() => {
+      const linkInstance = fixture.debugElement
+        .query(By.css('#products-tab'))
+        .injector.get(RouterLinkWithHref);
+      const element: HTMLElement = fixture.debugElement.query(
+        By.css('#products-tab')
+      ).nativeElement;
+
+      element.click();
+      tick();
+
+      expect(linkInstance['href']).toBe('/products');
+    }));
+
+    it('should navigate to favorites/profiles page after clicking profiles tab', fakeAsync(() => {
+      const linkInstance = fixture.debugElement
+        .query(By.css('#profiles-tab'))
+        .injector.get(RouterLinkWithHref);
+      const element: HTMLElement = fixture.debugElement.query(
+        By.css('#profiles-tab')
+      ).nativeElement;
+
+      element.click();
+      tick();
+
+      expect(linkInstance['href']).toBe('/profiles');
+    }));
   });
 
   describe('onActivate', () => {
