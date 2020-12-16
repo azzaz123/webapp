@@ -1,0 +1,117 @@
+<div id="empty-state" *ngIf="!currentConversation || loadingError">
+  <div class="empty" *ngIf="emptyInbox && !loadingError">
+    <div>
+      <img class="inbox-size" src="/assets/images/empty-inbox-conversation.svg" />
+    </div>
+  </div>
+  <div class="content" *ngIf="!emptyInbox || loadingError">
+    <img class="image" src="/assets/images/empty-state.svg" />
+    <p *ngIf="!emptyInbox && !connectionError && !loadingError" i18n>Choose a conversation<br />
+      from the list on the left</p>
+    <p *ngIf="emptyInbox && !connectionError && !loadingError" i18n>There are no messages</p>
+    <p *ngIf="connectionError || loadingError" i18n>Service not available at the moment.<br />
+      Try again later.</p>
+  </div>
+</div>
+
+<div *ngIf="currentConversation && !loadingError" class="messaging-container">
+  <div class="messaging">
+    <div class="chat">
+
+      <tsl-conversation-details-bar [currentConversation]="currentConversation" [isExpanded]="isTopBarExpanded"
+        (blockUserEvent)="scrollToLastMessage()" (expandContainer)="expandTopBar($event)"
+        [ngClass]="{expanded: isTopBarExpanded}"></tsl-conversation-details-bar>
+
+      <div class="messages-panel-container" #scrollElement (scroll)="onScrollMessages($event)">
+
+        <div class="empty-container"></div>
+
+        <div class="message-container" [ngClass]="{'extra-top-padding': hasMoreMessages()}">
+          <div class="notification-container" #userWarringNotification>
+            <div *ngIf="currentConversation.user.blocked" class="date-marker date-marker-error">
+              <span class="emoticon emoticon-woman-gesturing-no"></span>
+              <span i18n="@@blockedPersonError">You have blocked this person. To continue chatting, unblock them</span>
+            </div>
+
+            <div *ngIf="!currentConversation.user.available && !currentConversation.isFromMaliciousUser"
+              id="userIsNotAvailableWarning" class="date-marker date-marker-warning date-marker-warning-blue">
+              <span class="emoticon emoticon-dashing-away"></span>
+              <span i18n="@@userIsNotAvailableWarning">This person is no longer a wallapop member</span>
+            </div>
+
+            <div *ngIf="currentConversation.isFromMaliciousUser" id="userIsBlocked"
+              class="date-marker date-marker-error">
+              <span class="emoticon emoticon-monocle-face"></span>
+              <span i18n="@@userIsBlocked">This person has been excluded from wallapop for suspicious activity.</span>
+            </div>
+
+            <div *ngIf="!currentConversation.user.blocked
+            && currentConversation.user.available
+            && currentConversation.item.unpublished" class="date-marker date-marker-warning date-marker-warning-blue">
+              <span class="emoticon emoticon-ghost"></span>
+              <span i18n="@@itemIsNotAvailableWarning">This product has expired or has been removed</span>
+            </div>
+
+            <div *ngIf="!currentConversation.user.blocked
+            && currentConversation.user.available
+            && currentConversation.item.notAvailable" class="date-marker date-marker-warning date-marker-warning-red">
+              <span class="emoticon emoticon-police-car"></span>
+              <span i18n="@@itemIsUnpublishedWarning">The product violates wallapop coexistence regulations</span>
+            </div>
+          </div>
+
+          <div *ngFor="let message of currentConversation?.messages; let i = index" class="message-wrapper"
+            [ngClass]="{'message-owner': message.fromSelf, 'not-message-owner': !message.fromSelf}">
+            <div *ngIf="showDate(message, currentConversation.messages[i+1])" class="date-marker">
+              <span *ngIf="dateIsThisYear(message.date)">{{message.date | dateCalendar:momentConfig}}</span>
+              <span *ngIf="!dateIsThisYear(message.date)">{{message.date | date:'d MMM. yyyy' }}</span>
+            </div>
+
+            <tsl-text-message *ngIf="isTextMessage(message.type)" [message]="message"></tsl-text-message>
+            <tsl-third-voice-drop-price *ngIf="isThirdVoiceDropPrice(message.type)" [message]="message">
+            </tsl-third-voice-drop-price>
+            <tsl-third-voice-review *ngIf="isThirdVoiceReview(message.type)" [message]="message"
+              [user]="currentConversation.user" [item]="currentConversation.item"></tsl-third-voice-review>
+          </div>
+
+          <div class="notification-container">
+            <div class="date-marker date-marker-warning date-marker-warning-blue notification-secure-privacy ">
+              <span class="emoticon emoticon-padlock"></span>
+              <span i18n="@@securityWarning">For security reasons, never share private data</span>
+            </div>
+          </div>
+
+          <div *ngIf="hasMoreMessages()" class="more-messages-loader">
+            <a class="load-more">
+              <span *ngIf="!isLoadingMoreMessages" (click)="loadMoreMessages(scrollElement.scrollHeight)"
+                i18n="@@loadMoreButton">Load more</span>
+              <tsl-svg-icon *ngIf="isLoadingMoreMessages" src="/assets/icons/spinner.svg" class="spinner">
+              </tsl-svg-icon>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="scroll-message-container">
+        <tsl-scrolling-message [isVisible]="!isEndOfConversation" [noMessages]="currentConversation.unreadCounter"
+          (clickScroll)="scrollToLastMessage()"></tsl-scrolling-message>
+      </div>
+
+      <div class="input send-message-container">
+        <tsl-input [currentConversation]="currentConversation" (typing)="typing()"
+          (clickSentMessage)="clickSendMessage($event)"></tsl-input>
+      </div>
+    </div>
+  </div>
+
+  <div id="conversation-meta" class="conversation-meta d-none d-xl-block">
+    <div class="card">
+      <tsl-inbox-user-detail [user]="currentConversation.user" [item]="currentConversation.item"
+        [phoneNumber]="currentConversation.phoneNumber"></tsl-inbox-user-detail>
+    </div>
+    <tsl-inbox-item-for-sell *ngxPermissionsOnly="['isProfessional']" [user]="currentConversation.user">
+    </tsl-inbox-item-for-sell>
+    <tsl-inbox-item-detail [item]="currentConversation.item"></tsl-inbox-item-detail>
+    <tsl-ad slotid="div-gpt-ad-1508490196308-0"></tsl-ad>
+  </div>
+</div>

@@ -1,49 +1,49 @@
 import { TestBed } from '@angular/core/testing';
-import { RealTimeService } from './real-time.service';
-import { XmppService } from '../xmpp/xmpp.service';
-import { EventService } from '../event/event.service';
-import { TrackingService } from '../tracking/tracking.service';
-import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
+import {
+  InboxConversation,
+  InboxMessage,
+  MessageStatus,
+  MessageType,
+} from '@features/chat/core/model';
 import { of, throwError } from 'rxjs';
-import { Message } from './message';
+import { environment } from '../../../environments/environment.docker';
+import {
+  MockConnectionService,
+  MockRemoteConsoleService,
+} from '../../../tests';
+import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
+import {
+  CONVERSATION_ID,
+  MOCKED_CONVERSATIONS,
+  MOCK_CONVERSATION,
+} from '../../../tests/conversation.fixtures.spec';
+import {
+  CREATE_MOCK_INBOX_CONVERSATION,
+  CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE,
+  MOCK_INBOX_CONVERSATION,
+} from '../../../tests/inbox.fixtures.spec';
+import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import {
   ACCESS_TOKEN,
   MOCK_USER,
   USER_ID,
 } from '../../../tests/user.fixtures.spec';
 import {
-  CONVERSATION_ID,
-  MOCK_CONVERSATION,
-  MOCKED_CONVERSATIONS,
-} from '../../../tests/conversation.fixtures.spec';
-import { environment } from '../../../environments/environment.docker';
-import { RemoteConsoleService } from '../remote-console';
-import {
-  MockConnectionService,
-  MockRemoteConsoleService,
-} from '../../../tests';
-import { AnalyticsService } from '../analytics/analytics.service';
-import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
-import {
-  ANALYTIC_EVENT_TYPES,
-  ANALYTICS_EVENT_NAMES,
   AnalyticsEvent,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
   SCREEN_IDS,
   SendFirstMessage,
 } from '../analytics/analytics-constants';
+import { AnalyticsService } from '../analytics/analytics.service';
 import { ConnectionService } from '../connection/connection.service';
-import {
-  CREATE_MOCK_INBOX_CONVERSATION,
-  CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE,
-  MOCK_INBOX_CONVERSATION,
-} from '../../../tests/inbox.fixtures.spec';
-import {
-  InboxConversation,
-  InboxMessage,
-  MessageStatus,
-  MessageType,
-} from '../../chat/model';
+import { EventService } from '../event/event.service';
 import { I18nService } from '../i18n/i18n.service';
+import { RemoteConsoleService } from '../remote-console';
+import { TrackingService } from '../tracking/tracking.service';
+import { XmppService } from '../xmpp/xmpp.service';
+import { Message } from './message';
+import { RealTimeService } from './real-time.service';
 
 let service: RealTimeService;
 let eventService: EventService;

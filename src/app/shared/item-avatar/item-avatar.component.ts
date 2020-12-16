@@ -1,11 +1,11 @@
 import { Component, Input, OnChanges } from '@angular/core';
+import { InboxItem } from '@features/chat/core/model';
+import { environment } from '../../../environments/environment';
 import {
   FAKE_ITEM_IMAGE_SMALL_BASE_PATH,
   FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH,
   Item,
 } from '../../core/item/item';
-import { environment } from '../../../environments/environment';
-import { InboxItem } from '../../chat/model';
 
 @Component({
   selector: 'tsl-item-avatar',

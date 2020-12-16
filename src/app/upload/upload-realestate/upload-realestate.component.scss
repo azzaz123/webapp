@@ -22,3 +22,7 @@
   border: solid 1px $blue-grey-5;
   background: url(/assets/icons/user-marker-sad.svg) no-repeat center;
 }
+
+div.selector-icon.error-required {
+  border: 1px solid $negative-main;
+}

@@ -1,21 +1,25 @@
-import { Observable, of } from 'rxjs';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { TopbarComponent } from './topbar.component';
-import { RouterTestingModule } from '@angular/router/testing';
-import { UserService } from '../../core/user/user.service';
-import { EventService } from '../../core/event/event.service';
-import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
-import { environment } from '../../../environments/environment';
-import { SUGGESTER_DATA_WEB } from '../../../tests/suggester.fixtures.spec';
-import { User } from '../../core/user/user';
-import { USER_DATA } from '../../../tests/user.fixtures.spec';
-import { MessageService } from '../../chat/service/message.service';
-import { NgxPermissionsModule } from 'ngx-permissions';
-import { PaymentService } from '../../core/payments/payment.service';
-import { CustomCurrencyPipe } from '../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  DebugElement,
+  NO_ERRORS_SCHEMA,
+} from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { EventService } from '@core/event/event.service';
+import { PaymentService } from '@core/payments/payment.service';
+import { User } from '@core/user/user';
+import { UserService } from '@core/user/user.service';
+import { environment } from '@environments/environment';
+import { MessageService } from '@features/chat/core/message/message.service';
+import { CATEGORY_DATA_WEB } from '@fixtures/category.fixtures.spec';
+import { SUGGESTER_DATA_WEB } from '@fixtures/suggester.fixtures.spec';
+import { USER_DATA } from '@fixtures/user.fixtures.spec';
+import { CustomCurrencyPipe } from '@shared/pipes';
 import { CookieService } from 'ngx-cookie';
+import { NgxPermissionsModule } from 'ngx-permissions';
+import { Observable, of } from 'rxjs';
+import { TopbarComponent } from './topbar.component';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -36,6 +40,8 @@ const MOCK_USER = new User(
 
 describe('TopbarComponent', () => {
   let component: TopbarComponent;
+  let de: DebugElement;
+  let el: HTMLElement;
   let userService: UserService;
   let fixture: ComponentFixture<TopbarComponent>;
   let eventService: EventService;
@@ -58,6 +64,9 @@ describe('TopbarComponent', () => {
               },
               isProfessional() {
                 return of(true);
+              },
+              get isLogged(): boolean {
+                return true;
               },
             },
           },
@@ -100,6 +109,8 @@ describe('TopbarComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TopbarComponent);
     component = fixture.componentInstance;
+    de = fixture.debugElement;
+    el = de.nativeElement;
     fixture.detectChanges();
     eventService = TestBed.inject(EventService);
     paymentService = TestBed.inject(PaymentService);
@@ -111,9 +122,37 @@ describe('TopbarComponent', () => {
   });
 
   describe('ngOnInit', () => {
+    it('should set user session', () => {
+      component.isLogged = null;
+
+      component.ngOnInit();
+
+      expect(component.isLogged).toBe(true);
+    });
+
+    it('should update user session on user login', () => {
+      component.isLogged = null;
+
+      component.ngOnInit();
+      eventService.emit(EventService.USER_LOGIN);
+
+      expect(component.isLogged).toBe(true);
+    });
+
+    it('should update user session on user logout', () => {
+      component.isLogged = null;
+
+      component.ngOnInit();
+      eventService.emit(EventService.USER_LOGOUT);
+
+      expect(component.isLogged).toBe(true);
+    });
+
     it('should set the private user variable with the content of the user', () => {
       component.user = null;
+
       component.ngOnInit();
+
       expect(component.user).toBe(MOCK_USER);
     });
 
@@ -175,6 +214,61 @@ describe('TopbarComponent', () => {
         component.wallacoins.toString(),
         cookieOptions
       );
+    });
+  });
+
+  describe('when user session changes', () => {
+    const suggesterSelector = '#top-bar-suggester';
+    const messagesBtnSelector = '#top-bar-inbox';
+    const wallacoinsBtnSelector = '#top-bar-wallacoins';
+    const myZoneBtnSelector = '#top-bar-my-zone';
+    const signinSignupBtnSelector = '#top-bar-signin';
+    const newProductBtnSelector = '#top-bar-upload';
+
+    describe('when user is logged', () => {
+      beforeEach(() => {
+        component.isLogged = true;
+        fixture.detectChanges();
+      });
+      it('should show logged elements', () => {
+        expect(el.querySelector(suggesterSelector)).not.toBeNull();
+        expect(el.querySelector(messagesBtnSelector)).not.toBeNull();
+        expect(el.querySelector(wallacoinsBtnSelector)).not.toBeNull();
+        expect(el.querySelector(myZoneBtnSelector)).not.toBeNull();
+        expect(el.querySelector(newProductBtnSelector)).not.toBeNull();
+      });
+
+      it('should not show no logged elements', () => {
+        expect(el.querySelector(signinSignupBtnSelector)).toBeNull();
+      });
+    });
+
+    describe('when user is not logged', () => {
+      beforeEach(() => {
+        component.isLogged = false;
+        fixture.detectChanges();
+      });
+
+      it('should show not logged elements', () => {
+        expect(el.querySelector(suggesterSelector)).not.toBeNull();
+        expect(el.querySelector(messagesBtnSelector)).not.toBeNull();
+        expect(el.querySelector(signinSignupBtnSelector)).not.toBeNull();
+        expect(el.querySelector(newProductBtnSelector)).not.toBeNull();
+      });
+
+      it('should not show logged elements', () => {
+        expect(el.querySelector(wallacoinsBtnSelector)).toBeNull();
+        expect(el.querySelector(myZoneBtnSelector)).toBeNull();
+      });
+    });
+  });
+
+  describe('update keyword', () => {
+    const newKeyword = 'iphone';
+    it('should update the keyword', () => {
+      component.kws = 'iphone';
+      component.onKeywordUpdate(newKeyword);
+      expect(component.kws).toEqual(newKeyword);
     });
   });
 
