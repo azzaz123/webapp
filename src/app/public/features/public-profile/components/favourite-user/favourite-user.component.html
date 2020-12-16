@@ -1,4 +1,4 @@
-<button class="FavouriteUser__btn" (click)="toggleFavourite()">
+<button class="FavouriteUser__btn" (click)="toggleFavourite()" tslCheckSession>
     <tsl-favourite-icon [active]="isFavourite"></tsl-favourite-icon>
     <span i18n="@@FavouriteUserLabel">Favourite user</span>
 </button>
