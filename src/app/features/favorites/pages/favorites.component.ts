@@ -1,12 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ItemService } from '@core/item/item.service';
-import { ItemsData } from '@core/item/item-response.interface';
 import { UserService } from '@core/user/user.service';
 import { UserStats, Counters } from '@core/user/user-stats.interface';
-import { Item } from '@core/item/item';
-import { ProfilesData } from '@core/profile/profile-response.interface';
-import { ProfileService } from '@core/profile/profile.service';
-import { Profile } from '@core/profile/profile';
 import { Router } from '@angular/router';
 
 @Component({
@@ -15,19 +9,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./favorites.component.scss'],
 })
 export class FavoritesComponent implements OnInit {
-  public items: Item[] = [];
-  public profiles: Profile[] = [];
   public selectedStatus = 'products';
-  public loading = false;
-  public end = false;
   public numberOfFavorites: number;
   private counters: Counters;
 
-  constructor(
-    public itemService: ItemService,
-    private userService: UserService,
-    private router: Router
-  ) {}
+  constructor(private userService: UserService) {}
 
   ngOnInit() {
     this.getNumberOfFavorites();
@@ -52,16 +38,6 @@ export class FavoritesComponent implements OnInit {
         }
       }
     );
-  }
-
-  public routesByStatus(status: string) {
-    if (status !== this.selectedStatus) {
-      this.selectedStatus = status;
-      this.selectedStatus === 'products'
-        ? this.router.navigateByUrl('/favorites/products')
-        : this.router.navigateByUrl('/favorites/profiles');
-    }
-    this.getNumberOfFavorites();
   }
 
   public getNumberOfFavorites() {
