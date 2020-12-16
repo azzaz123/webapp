@@ -1,19 +1,18 @@
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-
-import {
-  DesktopNotificationsService,
-  ASK_PERMISSIONS_TIMEOUT_MS,
-} from './desktop-notifications.service';
-import { TrackingService } from '../tracking/tracking.service';
-import { I18nService } from '../i18n/i18n.service';
-import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
-import { createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import {
   InboxConversation,
   InboxMessage,
-  MessageType,
   MessageStatus,
-} from '../../../app/chat/model';
+  MessageType,
+} from '@features/chat/core/model';
+import { createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
+import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
+import { I18nService } from '../i18n/i18n.service';
+import { TrackingService } from '../tracking/tracking.service';
+import {
+  ASK_PERMISSIONS_TIMEOUT_MS,
+  DesktopNotificationsService,
+} from './desktop-notifications.service';
 
 export class MockDesktopNotifications {
   public init(): void {}

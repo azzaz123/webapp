@@ -20,7 +20,6 @@ import {
   PaymentMethodCardResponse,
   FinancialCard,
   PaymentMethodResponse,
-  SetupIntent,
   SetupIntentResponse,
 } from '../app/core/payments/payment.interface';
 import { PurchasesModel } from '../app/core/payments/purchase.model';

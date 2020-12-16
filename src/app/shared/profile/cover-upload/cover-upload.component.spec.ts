@@ -2,27 +2,31 @@ import {
   TOKEN_AUTHORIZATION_HEADER_NAME,
   TOKEN_TIMESTAMP_HEADER_NAME,
   TOKEN_SIGNATURE_HEADER_NAME,
-} from './../../../core/http/interceptors/token.interceptor';
+} from '@core/http/interceptors/token.interceptor';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CoverUploadComponent } from './cover-upload.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { UserService } from '../../../core/user/user.service';
-import { ErrorsService } from '../../../core/errors/errors.service';
-import { MOCK_USER } from '../../../../tests/user.fixtures.spec';
+import { UserService } from '@core/user/user.service';
+import { ErrorsService } from '@core/errors/errors.service';
+import { MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { UPLOAD_FILE, UPLOAD_FILE_NAME } from '@fixtures/upload.fixtures.spec';
+import { environment } from '@environments/environment';
 import {
-  UPLOAD_FILE,
-  UPLOAD_FILE_ID,
-  UPLOAD_FILE_NAME,
-} from '../../../../tests/upload.fixtures.spec';
-import { environment } from '../../../../environments/environment';
-import { UploadFile, UploadInput } from '../../uploader/upload.interface';
-import { AccessTokenService } from '../../../core/http/access-token.service';
+  IMAGE_TYPE,
+  OUTPUT_TYPE,
+  UploadFile,
+} from '../../uploader/upload.interface';
+import { AccessTokenService } from '@core/http/access-token.service';
+import { of, throwError } from 'rxjs';
+import { UploaderService } from '@shared/uploader/uploader.service';
+import { MockUploaderService } from '@fixtures/uploader.fixtures.spec';
 
 describe('CoverUploadComponent', () => {
   let component: CoverUploadComponent;
   let fixture: ComponentFixture<CoverUploadComponent>;
   let userService: UserService;
   let errorsService: ErrorsService;
+  let uploaderService: UploaderService;
   const TIMESTAMP = 123456789;
 
   beforeEach(
@@ -51,6 +55,10 @@ describe('CoverUploadComponent', () => {
               },
             },
           },
+          {
+            provide: UploaderService,
+            useClass: MockUploaderService,
+          },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -60,69 +68,49 @@ describe('CoverUploadComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CoverUploadComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
     userService = TestBed.inject(UserService);
     errorsService = TestBed.inject(ErrorsService);
+    uploaderService = TestBed.inject(UploaderService);
   });
 
   describe('onUploadOutput', () => {
-    let uploadEvent: UploadInput;
-
-    beforeEach(() => {
-      component.uploadCoverInput.subscribe((event) => {
-        uploadEvent = event;
-      });
-    });
-
     it('should send upload event if event is addedToQueue', () => {
       spyOn<any>(window, 'Date').and.returnValue({ getTime: () => TIMESTAMP });
+      spyOn(uploaderService, 'uploadFile').and.callThrough();
+
+      uploaderService.serviceEvents$ = of({
+        type: OUTPUT_TYPE.addedToQueue,
+        file: UPLOAD_FILE,
+        imageType: IMAGE_TYPE.COVER,
+      });
+
       const headers = {
         [TOKEN_AUTHORIZATION_HEADER_NAME]: 'Bearer thetoken',
         [TOKEN_SIGNATURE_HEADER_NAME]: 'thesignature',
         [TOKEN_TIMESTAMP_HEADER_NAME]: `${TIMESTAMP}`,
       };
 
-      component.onUploadOutput({
-        type: 'addedToQueue',
-        file: UPLOAD_FILE,
-      });
+      fixture.detectChanges();
 
       expect(component.file).toEqual(UPLOAD_FILE);
-      expect(uploadEvent).toEqual({
-        type: 'uploadFile',
+      expect(uploaderService.uploadFile).toHaveBeenCalledWith(UPLOAD_FILE, {
         url: `${environment.baseUrl}api/v3/users/me/cover-image`,
         method: 'POST',
         fieldName: 'image',
         headers,
-        file: UPLOAD_FILE,
+        imageType: IMAGE_TYPE.COVER,
       });
     });
 
     it('should set file if event is uploading', () => {
-      component.onUploadOutput({
-        type: 'uploading',
+      uploaderService.serviceEvents$ = of({
+        type: OUTPUT_TYPE.uploading,
         file: UPLOAD_FILE,
+        imageType: IMAGE_TYPE.COVER,
       });
+      fixture.detectChanges();
 
       expect(component.file).toEqual(UPLOAD_FILE);
-    });
-
-    it('should send remove event and set image if event is done and status 204', () => {
-      const file = { ...UPLOAD_FILE };
-      file.progress.data.responseStatus = 204;
-
-      component.onUploadOutput({
-        type: 'done',
-        file: file,
-      });
-
-      expect(uploadEvent).toEqual({
-        type: 'remove',
-        id: UPLOAD_FILE_ID,
-      });
-      expect(userService.user.coverImage.urls_by_size.medium).toBe(
-        UPLOAD_FILE.preview
-      );
     });
 
     it('should show error if event is done and status not 204', () => {
@@ -133,11 +121,16 @@ describe('CoverUploadComponent', () => {
       file.response = {
         message: ERROR,
       };
-
-      component.onUploadOutput({
-        type: 'done',
+      spyOn(uploaderService, 'uploadFile').and.returnValue(
+        throwError(file.response)
+      );
+      uploaderService.serviceEvents$ = of({
+        type: OUTPUT_TYPE.addedToQueue,
         file: file,
+        imageType: IMAGE_TYPE.COVER,
       });
+
+      fixture.detectChanges();
 
       expect(errorsService.i18nError).toHaveBeenCalledWith(
         'serverError',
@@ -148,12 +141,14 @@ describe('CoverUploadComponent', () => {
     it('should throw error if event is rejected', () => {
       spyOn(errorsService, 'i18nError');
       const ERROR = 'error';
-
-      component.onUploadOutput({
-        type: 'rejected',
+      uploaderService.serviceEvents$ = of({
+        type: OUTPUT_TYPE.rejected,
         file: UPLOAD_FILE,
         reason: ERROR,
+        imageType: IMAGE_TYPE.COVER,
       });
+
+      fixture.detectChanges();
 
       expect(errorsService.i18nError).toHaveBeenCalledWith(
         ERROR,

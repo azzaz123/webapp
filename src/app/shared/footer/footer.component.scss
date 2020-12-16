@@ -66,12 +66,9 @@
       display: flex;
 
       tsl-svg-icon {
+        width: 24px;
+        height: 24px;
         margin-right: $spacing-s;
-
-        ::ng-deep svg {
-          height: 20px;
-          width: 28px;
-        }
       }
     }
 
@@ -92,14 +89,6 @@
           height: 30px;
           text-align: center;
           width: 30px;
-
-          tsl-svg-icon {
-            align-items: center;
-            display: flex;
-            height: 100%;
-            justify-content: center;
-            width: 100%;
-          }
         }
       }
     }

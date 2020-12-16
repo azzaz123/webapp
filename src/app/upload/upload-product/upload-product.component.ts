@@ -1,8 +1,8 @@
 import {
   CategoryResponse,
   SuggestedCategory,
-} from './../../core/category/category-response.interface';
-import { AnalyticsService } from './../../core/analytics/analytics.service';
+} from '@core/category/category-response.interface';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 import {
   Component,
   ElementRef,
@@ -31,19 +31,20 @@ import {
   NgbModalRef,
   NgbPopoverConfig,
 } from '@ng-bootstrap/ng-bootstrap';
-import { CategoryOption } from '../../core/category/category-response.interface';
+import { CategoryOption } from '@core/category/category-response.interface';
 import { UploadEvent } from '../upload-event.interface';
-import { CategoryService } from '../../core/category/category.service';
+import { CategoryService } from '@core/category/category.service';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
-import { TrackingService } from '../../core/tracking/tracking.service';
-import { ErrorsService } from '../../core/errors/errors.service';
-import { Item, ITEM_TYPES } from '../../core/item/item';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { ErrorsService } from '@core/errors/errors.service';
+import { Item, ITEM_TYPES } from '@core/item/item';
 import {
   DeliveryInfo,
   ItemContent,
-} from '../../core/item/item-response.interface';
+  ItemResponse,
+} from '@core/item/item-response.interface';
 import { GeneralSuggestionsService } from './general-suggestions.service';
-import { KeywordSuggestion } from '../../shared/keyword-suggester/keyword-suggestion.interface';
+import { KeywordSuggestion } from '@shared/keyword-suggester/keyword-suggestion.interface';
 import { Subject, Observable, fromEvent } from 'rxjs';
 import {
   Brand,
@@ -52,7 +53,7 @@ import {
   ObjectType,
   SimpleObjectType,
 } from '../brand-model.interface';
-import { UserService } from '../../core/user/user.service';
+import { UserService } from '@core/user/user.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { tap, map, debounceTime } from 'rxjs/operators';
 import {
@@ -62,9 +63,19 @@ import {
   AnalyticsEvent,
   ListItemCG,
   EditItemCG,
-} from '../../core/analytics/analytics-constants';
-import { CATEGORY_IDS } from '../../core/category/category-ids';
-import { I18nService } from 'app/core/i18n/i18n.service';
+} from '@core/analytics/analytics-constants';
+import { CATEGORY_IDS } from '@core/category/category-ids';
+import { I18nService } from '@core/i18n/i18n.service';
+import { UploadService } from '../drop-area/upload.service';
+import { DELIVERY_INFO } from '../upload.constants';
+import { HttpErrorResponse } from '@angular/common/http';
+import {
+  OUTPUT_TYPE,
+  PendingFiles,
+  UPLOAD_ACTION,
+  UploadFile,
+  UploadOutput,
+} from '@shared/uploader/upload.interface';
 
 function isObjectTypeRequiredValidator(formControl: AbstractControl) {
   const objectTypeControl: FormGroup = formControl?.parent as FormGroup;
@@ -120,49 +131,14 @@ export class UploadProductComponent
   public brandSuggestions: Subject<KeywordSuggestion[]> = new Subject();
   public modelSuggestions: Subject<KeywordSuggestion[]> = new Subject();
   public uploadCompletedPercentage = 0;
+  public pendingFiles: PendingFiles;
 
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
     { value: 'EUR', label: '€' },
     { value: 'GBP', label: '£' },
   ];
-  public deliveryInfo: any = [
-    {
-      size: '20x38x40cm',
-      value: {
-        min_weight_kg: 0,
-        max_weight_kg: 2,
-      },
-    },
-    {
-      size: '20x38x40cm',
-      value: {
-        min_weight_kg: 2,
-        max_weight_kg: 5,
-      },
-    },
-    {
-      size: '30x40x50cm',
-      value: {
-        min_weight_kg: 5,
-        max_weight_kg: 10,
-      },
-    },
-    {
-      size: '40x50x60cm',
-      value: {
-        min_weight_kg: 10,
-        max_weight_kg: 20,
-      },
-    },
-    {
-      size: '50x60x60cm',
-      value: {
-        min_weight_kg: 20,
-        max_weight_kg: 30,
-      },
-    },
-  ];
+  public deliveryInfo = DELIVERY_INFO;
   public categories: CategoryOption[] = [];
   public loading: boolean;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
@@ -189,7 +165,8 @@ export class UploadProductComponent
     private userService: UserService,
     config: NgbPopoverConfig,
     private deviceService: DeviceDetectorService,
-    private i18n: I18nService
+    private i18n: I18nService,
+    private uploadService: UploadService
   ) {
     this.genders = [
       { value: 'male', label: this.i18n.getTranslations('male') },
@@ -284,6 +261,7 @@ export class UploadProductComponent
       category_id: this.item.categoryId.toString(),
       delivery_info: this.getDeliveryInfo(),
       extra_info: this.getExtraInfo(),
+      images: this.uploadService.convertImagesToFiles(this.item.images),
     });
     this.oldDeliveryValue = this.getDeliveryInfo();
   }
@@ -453,31 +431,62 @@ export class UploadProductComponent
     }
   }
 
-  onSubmit() {
+  public onSubmit(): void {
     if (this.uploadForm.valid) {
       this.loading = true;
       if (this.item && this.item.itemType === this.itemTypes.CONSUMER_GOODS) {
-        this.uploadForm.value.sale_conditions.shipping_allowed = this.uploadForm
-          .value.delivery_info
-          ? true
-          : false;
+        this.uploadForm.value.sale_conditions.shipping_allowed = !!this
+          .uploadForm.value.delivery_info;
       }
-      this.uploadEvent.emit({
-        type: this.item ? 'update' : 'create',
-        values: this.parseUploadForm(),
-      });
+      this.item ? this.updateItem() : this.createItem();
     } else {
-      this.uploadForm.markAsPending();
-      if (!this.uploadForm.get('location.address').valid) {
-        this.uploadForm.get('location.address').markAsDirty();
-      }
-      if (!this.uploadForm.get('images').valid) {
-        this.errorsService.i18nError('missingImageError');
-      } else {
-        this.errorsService.i18nError('formErrors', '', 'formErrorsTitle');
-        this.onValidationError.emit();
-      }
+      this.invalidForm();
     }
+  }
+
+  private invalidForm(): void {
+    this.uploadForm.markAsPending();
+    if (!this.uploadForm.get('location.address').valid) {
+      this.uploadForm.get('location.address').markAsDirty();
+    }
+    if (!this.uploadForm.get('images').valid) {
+      this.errorsService.i18nError('missingImageError');
+    } else {
+      this.errorsService.i18nError('formErrors', '', 'formErrorsTitle');
+      this.onValidationError.emit();
+    }
+  }
+
+  private createItem(): void {
+    this.uploadService
+      .createItem(this.parseUploadForm(), ITEM_TYPES.CONSUMER_GOODS)
+      .subscribe(
+        (response: UploadOutput) => {
+          this.updateUploadPercentage(response.percentage);
+          if (response.pendingFiles) {
+            this.pendingFiles = response.pendingFiles;
+          }
+          if (response.type === OUTPUT_TYPE.done) {
+            this.onUploaded(response.file.response, UPLOAD_ACTION.created);
+          }
+        },
+        (error: HttpErrorResponse) => {
+          this.onError(error);
+        }
+      );
+  }
+
+  private updateItem(): void {
+    this.uploadService
+      .updateItem(this.parseUploadForm(), ITEM_TYPES.CONSUMER_GOODS)
+      .subscribe(
+        (response: ItemResponse) => {
+          this.onUploaded(response.content, UPLOAD_ACTION.updated);
+        },
+        (error: HttpErrorResponse) => {
+          this.onError(error);
+        }
+      );
   }
 
   private parseUploadForm(): any {
@@ -492,9 +501,8 @@ export class UploadProductComponent
     return values;
   }
 
-  onUploaded(uploadEvent: any) {
+  onUploaded(response: ItemContent, action: UPLOAD_ACTION) {
     this.onFormChanged.emit(false);
-
     if (this.item) {
       this.trackingService.track(
         TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS,
@@ -511,20 +519,46 @@ export class UploadProductComponent
       this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, {
         category: this.uploadForm.value.category_id,
       });
-      uploadEvent.action = 'urgent';
+      action = UPLOAD_ACTION.urgent;
       localStorage.setItem('transactionType', 'urgent');
     }
 
-    this.trackEditOrUpload(!!this.item, uploadEvent.response).subscribe(() =>
+    this.trackEditOrUpload(!!this.item, response).subscribe(() =>
       this.router.navigate([
         '/catalog/list',
-        { [uploadEvent.action]: true, itemId: uploadEvent.response.id },
+        {
+          [action]: true,
+          itemId: response.id,
+        },
       ])
     );
   }
 
-  onError(response: any) {
+  public onAddImage(file: UploadFile): void {
+    if (this.item) {
+      this.uploadService
+        .uploadSingleImage(file, this.item.id, ITEM_TYPES.CONSUMER_GOODS)
+        .subscribe(
+          (value: UploadOutput) => {
+            if (value.type === OUTPUT_TYPE.done) {
+              this.errorsService.i18nSuccess('imageUploaded');
+              file.id = value.file.response;
+            }
+          },
+          (error: HttpErrorResponse) => {
+            this.removeFileFromForm(file.id);
+            this.onError(error);
+          }
+        );
+    }
+  }
+
+  public onError(error: HttpErrorResponse | any): void {
     this.loading = false;
+    this.errorsService.i18nError(
+      'serverError',
+      error.message ? error.message : ''
+    );
     if (this.item) {
       this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_ERROR, {
         category: this.uploadForm.value.category_id,
@@ -884,6 +918,29 @@ export class UploadProductComponent
     return (
       formCategoryValue !== suggestedId &&
       this.categories.find((category) => category.value === suggestedId) != null
+    );
+  }
+
+  public onDeleteImage(imageId: string): void {
+    this.uploadService.onDeleteImage(this.item.id, imageId).subscribe(
+      () => this.removeFileFromForm(imageId),
+      (error: HttpErrorResponse) => this.onError(error)
+    );
+  }
+
+  private removeFileFromForm(imageId: string): void {
+    const imagesControl: FormControl = this.uploadForm.get(
+      'images'
+    ) as FormControl;
+    const images: UploadFile[] = imagesControl.value;
+    imagesControl.patchValue(images.filter((image) => image.id !== imageId));
+  }
+
+  public onOrderImages(): void {
+    const images = this.uploadForm.get('images').value;
+    this.uploadService.updateOrder(images, this.item.id).subscribe(
+      () => null,
+      (error: HttpErrorResponse) => this.onError(error)
     );
   }
 }
