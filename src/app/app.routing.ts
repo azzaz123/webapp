@@ -4,10 +4,10 @@ import { PERMISSIONS } from './core/user/user';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { DevelopmentGuard } from './core/user/development.guard';
 import { LoggedGuard } from './core/user/logged.guard';
-import { PATH_EVENTS } from './app-routing-constants';
+import { APP_PATHS, PATH_EVENTS } from './app-routing-constants';
 
 const publicRoute: Route = {
-  path: 'public',
+  path: APP_PATHS.PUBLIC,
   canLoad: [DevelopmentGuard],
   loadChildren: () =>
     import('@public/public.module').then((m) => m.PublicModule),
@@ -83,7 +83,7 @@ const loggedRoutes = [
     path: 'chat',
     canLoad: [LoggedGuard],
     loadChildren: () =>
-      import('app/chat/chat.module').then((m) => m.ChatModule),
+      import('app/features/chat/chat.module').then((m) => m.ChatModule),
   },
   {
     path: 'favorites',
@@ -122,7 +122,9 @@ const loggedRoutes = [
       {
         path: '',
         loadChildren: () =>
-          import('app/catalog/catalog.module').then((m) => m.CatalogModule),
+          import('app/features/catalog/catalog.module').then(
+            (m) => m.CatalogModule
+          ),
       },
       {
         path: 'upload',
