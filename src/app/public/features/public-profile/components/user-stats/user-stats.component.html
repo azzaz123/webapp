@@ -19,11 +19,11 @@
         <tsl-svg-icon src="/assets/icons/location.svg"></tsl-svg-icon>{{userInfo.location.zip}}, {{userInfo.location.city}}
         <a (click)="showLocation()" i18n="@@ShowLocation" class="ml-2">View location</a>
     </div>
-    <div *ngIf="userInfo.isPro && (userInfo.extra_info && userInfo.extra_info.link)">
-        <a href="{{ userInfo.extra_info.link }}" target="_blank" i18n="@RedirectWeb">Go to the website</a>
+    <div *ngIf="userInfo.isPro && (userInfo.extraInfo && userInfo.extraInfo.link)">
+        <a href="{{ userInfo.extraInfo.link }}" target="_blank" i18n="@RedirectWeb">Go to the website</a>
     </div>
-    <div *ngIf="userInfo.isPro && (userInfo.extra_info && userInfo.extra_info.phone_number)" class="d-flex align-items-center">
+    <div *ngIf="userInfo.isPro && (userInfo.extraInfo && userInfo.extraInfo.phone_number)" class="d-flex align-items-center">
         <a (click)="togglePhone()" i18n="@@ShowPhone">Show phone number</a>
-        <div [hidden]="!isPhone" class="ml-2">{{userInfo.extra_info.phone_number}}</div>
+        <div [hidden]="!isPhone" class="ml-2">{{userInfo.extraInfo.phone_number}}</div>
     </div>
 </div>
