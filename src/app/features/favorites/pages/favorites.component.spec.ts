@@ -146,7 +146,7 @@ describe('FavoritemsComponent', () => {
       expect(component.numberOfFavorites).toBe(originalNumberOfFavorites - 1);
     }));
 
-    /* it('should remove the number of favorite after user removed favorite profile', fakeAsync(() => {
+    it('should remove the number of favorite after user removed favorite profile', fakeAsync(() => {
       let originalNumberOfFavorites: number = 5;
       component.numberOfFavorites = originalNumberOfFavorites;
       spyOn(component, 'onActivate').and.callThrough();
@@ -160,7 +160,7 @@ describe('FavoritemsComponent', () => {
       fixture.detectChanges();
 
       expect(component.numberOfFavorites).toBe(originalNumberOfFavorites - 1);
-    })); */
+    }));
   });
 
   describe('getNumberOfFavorites', () => {
