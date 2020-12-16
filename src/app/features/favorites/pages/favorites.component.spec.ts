@@ -4,6 +4,21 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FavoritesComponent } from './favorites.component';
 import { UserService } from '@core/user/user.service';
 import { MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
+import { RouterTestingModule } from '@angular/router/testing';
+import { Routes } from '@angular/router';
+import { ItemsPageComponent } from '../components/items-page/items-page.component';
+import { ProfilesPageComponent } from '../components/profiles-page/profiles-page.component';
+
+const routes: Routes = [
+  {
+    path: 'products',
+    component: ItemsPageComponent,
+  },
+  {
+    path: 'profiles',
+    component: ProfilesPageComponent,
+  },
+];
 
 describe('FavoritesComponent', () => {
   let component: FavoritesComponent;
@@ -14,6 +29,7 @@ describe('FavoritesComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [FavoritesComponent],
+        imports: [RouterTestingModule.withRoutes(routes)],
         providers: [
           {
             provide: UserService,
