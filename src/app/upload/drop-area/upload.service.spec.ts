@@ -2,28 +2,31 @@ import {
   TOKEN_AUTHORIZATION_HEADER_NAME,
   TOKEN_SIGNATURE_HEADER_NAME,
   TOKEN_TIMESTAMP_HEADER_NAME,
-} from './../../core/http/interceptors/token.interceptor';
+} from '@core/http/interceptors/token.interceptor';
 import { TestBed } from '@angular/core/testing';
 import { UploadService } from './upload.service';
-import { environment } from '../../../environments/environment';
+import { environment } from '@environments/environment';
 import {
   CAR_ID,
   UPLOAD_FILE,
-  UPLOAD_FILE_ID,
-} from '../../../tests/upload.fixtures.spec';
-import { USER_LOCATION_COORDINATES } from '../../../tests/user.fixtures.spec';
-import { AccessTokenService } from '../../core/http/access-token.service';
-import { ITEM_ID } from '../../../tests/item.fixtures.spec';
-import {
-  CARS_CATEGORY,
-  REALESTATE_CATEGORY,
-} from '../../core/item/item-categories';
-import { ITEM_TYPES } from '../../core/item/item';
-import { UploadInput } from '../../shared/uploader/upload.interface';
+  UPLOAD_FILE_2,
+  UPLOAD_FILE_DONE,
+  UPLOAD_FILE_DONE_2,
+} from '@fixtures/upload.fixtures.spec';
+import { USER_LOCATION_COORDINATES } from '@fixtures/user.fixtures.spec';
+import { AccessTokenService } from '@core/http/access-token.service';
+import { ITEM_ID } from '@fixtures/item.fixtures.spec';
+import { CARS_CATEGORY, REALESTATE_CATEGORY } from '@core/item/item-categories';
+import { ITEM_TYPES } from '@core/item/item';
+import { OUTPUT_TYPE } from '@shared/uploader/upload.interface';
+import { ItemService } from '@core/item/item.service';
+import { of } from 'rxjs';
+import { UploaderService } from '@shared/uploader/uploader.service';
 
 describe('UploadService', () => {
   let service: UploadService;
-  let response: UploadInput;
+  let itemService: ItemService;
+  let uploaderService: UploaderService;
   let accessTokenService: AccessTokenService;
   const TIMESTAMP = 123456789;
   const headers = {
@@ -45,29 +48,53 @@ describe('UploadService', () => {
             },
           },
         },
+        {
+          provide: ItemService,
+          useValue: {
+            deletePicture() {
+              return of(null);
+            },
+            updatePicturesOrder() {
+              return of(null);
+            },
+          },
+        },
+        {
+          provide: UploaderService,
+          useValue: {
+            uploadFile() {
+              return of(null);
+            },
+          },
+        },
       ],
     });
     service = TestBed.inject(UploadService);
     accessTokenService = TestBed.inject(AccessTokenService);
-    response = null;
-    service.uploadInput.subscribe((r: UploadInput) => {
-      response = r;
-    });
+    itemService = TestBed.inject(ItemService);
+    uploaderService = TestBed.inject(UploaderService);
 
-    spyOn(Date, 'now').and.returnValues(TIMESTAMP);
+    spyOn(Date, 'now').and.returnValue(TIMESTAMP);
   });
 
   describe('createItemWithFirstImage', () => {
     describe('car', () => {
+      beforeEach(() => {
+        spyOn(uploaderService, 'uploadFile').and.callThrough();
+      });
+
       it('should emit uploadFile event', () => {
         const VALUES: any = {
-          test: 'hola',
-          hola: 'hey',
           category_id: CARS_CATEGORY,
+          images: [UPLOAD_FILE],
         };
-        service.createItemWithFirstImage(VALUES, UPLOAD_FILE, ITEM_TYPES.CARS);
-        expect(response).toEqual({
-          type: 'uploadFile',
+
+        service.createItem(VALUES, ITEM_TYPES.CARS).subscribe();
+
+        expect(uploaderService.uploadFile).toHaveBeenCalledTimes(
+          VALUES.images.length
+        );
+        expect(uploaderService.uploadFile).toBeCalledWith(UPLOAD_FILE, {
           url: environment.baseUrl + 'api/v3/items/cars',
           method: 'POST',
           fieldName: 'image',
@@ -80,14 +107,12 @@ describe('UploadService', () => {
             ...headers,
             'X-DeviceOS': '0',
           },
-          file: UPLOAD_FILE,
         });
       });
 
       describe('with user location', () => {
         const VALUES: any = {
-          test: 'hola',
-          hola: 'hey',
+          images: [UPLOAD_FILE],
           category_id: CARS_CATEGORY,
         };
         const VALUES_WITH_LOCATION: any = {
@@ -96,33 +121,46 @@ describe('UploadService', () => {
         };
 
         it('should send values without user location', () => {
-          service.createItemWithFirstImage(
-            VALUES_WITH_LOCATION,
-            UPLOAD_FILE,
-            ITEM_TYPES.CARS
-          );
+          service.createItem(VALUES_WITH_LOCATION, ITEM_TYPES.CARS).subscribe();
 
-          expect(response.data.item_car).toEqual(
-            new Blob([JSON.stringify(VALUES)])
+          expect(uploaderService.uploadFile).toHaveBeenCalledTimes(
+            VALUES.images.length
           );
+          expect(uploaderService.uploadFile).toBeCalledWith(UPLOAD_FILE, {
+            url: environment.baseUrl + 'api/v3/items/cars',
+            method: 'POST',
+            fieldName: 'image',
+            data: {
+              item_car: new Blob([JSON.stringify(VALUES)], {
+                type: 'application/json',
+              }),
+            },
+            headers: {
+              ...headers,
+              'X-DeviceOS': '0',
+            },
+          });
         });
       });
     });
 
     describe('normal item', () => {
+      beforeEach(() => {
+        spyOn(uploaderService, 'uploadFile').and.callThrough();
+      });
+
       it('should emit uploadFile event', () => {
         const VALUES: any = {
-          test: 'hola',
-          hola: 'hey',
+          images: [UPLOAD_FILE],
           category_id: '200',
         };
-        service.createItemWithFirstImage(
-          VALUES,
-          UPLOAD_FILE,
-          ITEM_TYPES.CONSUMER_GOODS
+
+        service.createItem(VALUES, ITEM_TYPES.CONSUMER_GOODS).subscribe();
+
+        expect(uploaderService.uploadFile).toHaveBeenCalledTimes(
+          VALUES.images.length
         );
-        expect(response).toEqual({
-          type: 'uploadFile',
+        expect(uploaderService.uploadFile).toHaveBeenCalledWith(UPLOAD_FILE, {
           url: environment.baseUrl + 'api/v3/items',
           method: 'POST',
           fieldName: 'image',
@@ -135,13 +173,11 @@ describe('UploadService', () => {
             ...headers,
             'X-DeviceOS': '0',
           },
-          file: UPLOAD_FILE,
         });
       });
       describe('with user location', () => {
         const VALUES: any = {
-          test: 'hola',
-          hola: 'hey',
+          images: [UPLOAD_FILE],
           category_id: '200',
         };
         const VALUES_WITH_LOCATION: any = {
@@ -150,24 +186,37 @@ describe('UploadService', () => {
         };
 
         it('should send values without user location', () => {
-          service.createItemWithFirstImage(
-            VALUES_WITH_LOCATION,
-            UPLOAD_FILE,
-            ITEM_TYPES.CONSUMER_GOODS
-          );
+          service
+            .createItem(VALUES_WITH_LOCATION, ITEM_TYPES.CONSUMER_GOODS)
+            .subscribe();
 
-          expect(response.data.item).toEqual(
-            new Blob([JSON.stringify(VALUES)])
+          expect(uploaderService.uploadFile).toHaveBeenCalledTimes(
+            VALUES.images.length
           );
+          expect(uploaderService.uploadFile).toHaveBeenCalledWith(UPLOAD_FILE, {
+            url: environment.baseUrl + 'api/v3/items',
+            method: 'POST',
+            fieldName: 'image',
+            data: {
+              item: new Blob([JSON.stringify(VALUES)], {
+                type: 'application/json',
+              }),
+            },
+            headers: {
+              ...headers,
+              'X-DeviceOS': '0',
+            },
+          });
         });
       });
     });
 
     describe('real estate', () => {
       it('should emit uploadFile event', () => {
+        spyOn(uploaderService, 'uploadFile').and.callThrough();
+
         const VALUES_FINAL: any = {
-          test: 'hola',
-          hola: 'hey',
+          images: [UPLOAD_FILE],
           location: USER_LOCATION_COORDINATES,
         };
 
@@ -177,14 +226,12 @@ describe('UploadService', () => {
           id: 100,
         };
 
-        service.createItemWithFirstImage(
-          VALUES,
-          UPLOAD_FILE,
-          ITEM_TYPES.REAL_ESTATE
-        );
+        service.createItem(VALUES, ITEM_TYPES.REAL_ESTATE).subscribe();
 
-        expect(response).toEqual({
-          type: 'uploadFile',
+        expect(uploaderService.uploadFile).toHaveBeenCalledTimes(
+          VALUES_FINAL.images.length
+        );
+        expect(uploaderService.uploadFile).toHaveBeenCalledWith(UPLOAD_FILE, {
           url: environment.baseUrl + 'api/v3/items/real_estate',
           method: 'POST',
           fieldName: 'image',
@@ -197,7 +244,6 @@ describe('UploadService', () => {
             ...headers,
             'X-DeviceOS': '0',
           },
-          file: UPLOAD_FILE,
         });
       });
     });
@@ -206,57 +252,95 @@ describe('UploadService', () => {
   describe('uploadOtherImages', () => {
     describe('car', () => {
       it('should emit uploadFile event', () => {
-        service.uploadOtherImages(CAR_ID, 'cars');
+        spyOn(uploaderService, 'uploadFile').and.returnValue(
+          of({ type: OUTPUT_TYPE.done, file: { response: { id: CAR_ID } } })
+        );
+        const VALUES: any = {
+          images: [UPLOAD_FILE, UPLOAD_FILE_2],
+          category_id: '200',
+        };
 
-        expect(response).toEqual({
-          type: 'uploadAll',
-          url:
-            environment.baseUrl + 'api/v3/items/cars/' + CAR_ID + '/picture2',
-          method: 'POST',
-          fieldName: 'image',
-          data: {
-            order: '$order',
-          },
-          headers,
-        });
+        service.createItem(VALUES, ITEM_TYPES.CARS).subscribe();
+
+        expect(uploaderService.uploadFile).toHaveBeenCalledTimes(
+          VALUES.images.length
+        );
+        expect(uploaderService.uploadFile).toHaveBeenLastCalledWith(
+          UPLOAD_FILE_2,
+          {
+            url:
+              environment.baseUrl + 'api/v3/items/cars/' + CAR_ID + '/picture2',
+            method: 'POST',
+            fieldName: 'image',
+            data: {
+              order: '0',
+            },
+            headers,
+          }
+        );
       });
     });
 
     describe('real estate', () => {
       it('should emit uploadFile event', () => {
-        service.uploadOtherImages(ITEM_ID, 'real_estate');
+        spyOn(uploaderService, 'uploadFile').and.returnValue(
+          of({ type: OUTPUT_TYPE.done, file: { response: { id: ITEM_ID } } })
+        );
+        const VALUES: any = {
+          images: [UPLOAD_FILE, UPLOAD_FILE_2],
+          category_id: '200',
+        };
 
-        expect(response).toEqual({
-          type: 'uploadAll',
-          url:
-            environment.baseUrl +
-            'api/v3/items/real_estate/' +
-            ITEM_ID +
-            '/picture',
-          method: 'POST',
-          fieldName: 'image',
-          data: {
-            order: '$order',
-          },
-          headers,
-        });
+        service.createItem(VALUES, ITEM_TYPES.REAL_ESTATE).subscribe();
+
+        expect(uploaderService.uploadFile).toHaveBeenCalledTimes(
+          VALUES.images.length
+        );
+        expect(uploaderService.uploadFile).toHaveBeenLastCalledWith(
+          UPLOAD_FILE_2,
+          {
+            url:
+              environment.baseUrl +
+              'api/v3/items/real_estate/' +
+              ITEM_ID +
+              '/picture',
+            method: 'POST',
+            fieldName: 'image',
+            data: {
+              order: '0',
+            },
+            headers,
+          }
+        );
       });
     });
 
     describe('normal item', () => {
       it('should emit uploadFile event', () => {
-        service.uploadOtherImages(ITEM_ID, 'consumer_goods');
+        spyOn(uploaderService, 'uploadFile').and.returnValue(
+          of({ type: OUTPUT_TYPE.done, file: { response: { id: ITEM_ID } } })
+        );
+        const VALUES: any = {
+          images: [UPLOAD_FILE, UPLOAD_FILE_2],
+          category_id: '200',
+        };
+        service.createItem(VALUES, ITEM_TYPES.CONSUMER_GOODS).subscribe();
 
-        expect(response).toEqual({
-          type: 'uploadAll',
-          url: environment.baseUrl + 'api/v3/items/' + ITEM_ID + '/picture2',
-          method: 'POST',
-          fieldName: 'image',
-          data: {
-            order: '$order',
-          },
-          headers,
-        });
+        expect(uploaderService.uploadFile).toHaveBeenCalledTimes(
+          VALUES.images.length
+        );
+        expect(uploaderService.uploadFile).toHaveBeenLastCalledWith(
+          UPLOAD_FILE_2,
+          {
+            url: environment.baseUrl + 'api/v3/items/' + ITEM_ID + '/picture2',
+            method: 'POST',
+            fieldName: 'image',
+            data: {
+              order: '0',
+            },
+            headers,
+          }
+        );
       });
     });
   });
@@ -264,38 +348,38 @@ describe('UploadService', () => {
   describe('uploadSingleImage', () => {
     describe('car', () => {
       it('should emit uploadFile event', () => {
+        spyOn(uploaderService, 'uploadFile');
         service.uploadSingleImage(UPLOAD_FILE, CAR_ID, ITEM_TYPES.CARS);
-        expect(response).toEqual({
-          type: 'uploadFile',
+        expect(uploaderService.uploadFile).toHaveBeenCalledWith(UPLOAD_FILE, {
           url:
             environment.baseUrl + 'api/v3/items/cars/' + CAR_ID + '/picture2',
           method: 'POST',
           fieldName: 'image',
           data: {
-            order: '$order',
+            order: '0',
           },
           headers,
-          file: UPLOAD_FILE,
         });
       });
     });
     describe('normal item', () => {
+      beforeEach(() => {
+        spyOn(uploaderService, 'uploadFile');
+      });
       it('should emit uploadFile event', () => {
         service.uploadSingleImage(
           UPLOAD_FILE,
           ITEM_ID,
           ITEM_TYPES.CONSUMER_GOODS
         );
-        expect(response).toEqual({
-          type: 'uploadFile',
+        expect(uploaderService.uploadFile).toHaveBeenCalledWith(UPLOAD_FILE, {
           url: environment.baseUrl + 'api/v3/items/' + ITEM_ID + '/picture2',
           method: 'POST',
           fieldName: 'image',
           data: {
-            order: '$order',
+            order: '0',
           },
           headers,
-          file: UPLOAD_FILE,
         });
       });
     });
@@ -303,35 +387,32 @@ describe('UploadService', () => {
 
   describe('removeImage', () => {
     it('should emit uploadFile event', () => {
-      service.removeImage(UPLOAD_FILE);
-      expect(response).toEqual({
-        type: 'remove',
-        id: UPLOAD_FILE_ID,
-      });
+      spyOn(itemService, 'deletePicture');
+
+      service.onDeleteImage('123', UPLOAD_FILE.id);
+
+      expect(itemService.deletePicture).toHaveBeenCalledWith(
+        '123',
+        UPLOAD_FILE.id
+      );
     });
   });
 
   describe('updateOrder', () => {
     it('should emit uploadFile event', () => {
-      const FILES = [UPLOAD_FILE, UPLOAD_FILE, UPLOAD_FILE];
-      service.updateOrder(FILES);
-      expect(response).toEqual({
-        type: 'updateOrder',
-        files: FILES,
-      });
-    });
-  });
+      spyOn(itemService, 'updatePicturesOrder');
+      const FILES = [UPLOAD_FILE_DONE, UPLOAD_FILE_DONE_2];
+      const expectedOrder = {
+        [UPLOAD_FILE_DONE.response.id]: 0,
+        [UPLOAD_FILE_DONE_2.response.id]: 1,
+      };
 
-  describe('setInitialImages', () => {
-    it('should emit initialImages event', () => {
-      const FILES = [UPLOAD_FILE, UPLOAD_FILE, UPLOAD_FILE];
+      service.updateOrder(FILES, '123');
 
-      service.setInitialImages(FILES);
-
-      expect(response).toEqual({
-        type: 'initialImages',
-        files: FILES,
-      });
+      expect(itemService.updatePicturesOrder).toHaveBeenCalledWith(
+        '123',
+        expectedOrder
+      );
     });
   });
 });

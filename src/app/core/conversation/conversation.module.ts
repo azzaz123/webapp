@@ -1,17 +1,17 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
-import { MessageService } from '../../chat/service';
 import { CommonModule } from '@angular/common';
-import { ItemModule } from '../item/item.module';
+import { ModuleWithProviders, NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MessageService } from '@features/chat/core/message/message.service';
+import { SendPhoneComponent } from '@features/chat/modals';
 import {
   NgbDropdownModule,
   NgbModalModule,
   NgbTooltipModule,
 } from '@ng-bootstrap/ng-bootstrap';
-import { CallsService } from './calls.service';
 import { CallStatusLabelPipe } from '../../shared/pipes';
-import { SendPhoneComponent } from '../../chat/modals/send-phone';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
+import { ItemModule } from '../item/item.module';
+import { CallsService } from './calls.service';
 
 @NgModule({
   imports: [

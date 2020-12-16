@@ -223,6 +223,12 @@
           padding-top: $spacing-s;
         }
 
+        &--regular {
+          ::ng-deep button span {
+            font-weight: normal;
+          }
+        }
+
         &--with-icon {
           margin-left: $spacing-ml;
 
