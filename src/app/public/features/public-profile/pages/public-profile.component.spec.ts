@@ -3,13 +3,19 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import {
+  MOCK_FULL_USER_FEATURED,
+  MOCK_USER_STATS,
+} from '@fixtures/user.fixtures.spec';
 import { of } from 'rxjs';
+import { PublicProfileService } from '../core/services/public-profile.service';
 import { PublicProfileComponent } from './public-profile.component';
 
 describe('PublicProfileComponent', () => {
   let component: PublicProfileComponent;
   let fixture: ComponentFixture<PublicProfileComponent>;
   let route: ActivatedRoute;
+  let publicProfileService: PublicProfileService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -22,6 +28,17 @@ describe('PublicProfileComponent', () => {
             queryParams: of({ id: '123' }),
           },
         },
+        {
+          provide: PublicProfileService,
+          useValue: {
+            getUser() {
+              return of(MOCK_FULL_USER_FEATURED);
+            },
+            getStats() {
+              return of(MOCK_USER_STATS);
+            },
+          },
+        },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -32,6 +49,7 @@ describe('PublicProfileComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     route = TestBed.inject(ActivatedRoute);
+    publicProfileService = TestBed.inject(PublicProfileService);
   });
 
   it('should create', () => {
@@ -39,26 +57,50 @@ describe('PublicProfileComponent', () => {
   });
 
   describe('when we access to a public profile...', () => {
-    it('should NOT show the page if NOT user id', () => {
-      route.queryParams = of({});
+    describe('when we have the user id...', () => {
+      it('should show the page if we have the user id', () => {
+        const containerPage = fixture.debugElement.query(
+          By.css('.PublicProfile')
+        );
 
-      component.ngOnInit();
-      fixture.detectChanges();
-      const containerPage = fixture.debugElement.query(
-        By.css('.PublicProfile')
-      );
+        expect(containerPage).toBeTruthy();
+        expect(component.userId).toBe('123');
+      });
 
-      expect(containerPage).toBeFalsy();
-      expect(component.userId).toBe(undefined);
-    });
+      it('should call for more data', () => {
+        spyOn(publicProfileService, 'getUser');
+        spyOn(publicProfileService, 'getStats');
 
-    it('should show the page if we have the user id', () => {
-      const containerPage = fixture.debugElement.query(
-        By.css('.PublicProfile')
-      );
+        component.ngOnInit();
 
-      expect(containerPage).toBeTruthy();
-      expect(component.userId).toBe('123');
+        expect(publicProfileService.getUser).toHaveBeenCalledTimes(1);
+        expect(publicProfileService.getStats).toHaveBeenCalledTimes(1);
+      });
+
+      describe('when NOT have the user id..', () => {
+        it('should NOT show the page', () => {
+          route.queryParams = of({});
+
+          component.ngOnInit();
+          fixture.detectChanges();
+          const containerPage = fixture.debugElement.query(
+            By.css('.PublicProfile')
+          );
+          expect(containerPage).toBeFalsy();
+          expect(component.userId).toBe(undefined);
+        });
+
+        it('should NOT call for more data', () => {
+          spyOn(publicProfileService, 'getUser');
+          spyOn(publicProfileService, 'getStats');
+          route.queryParams = of({});
+
+          component.ngOnInit();
+
+          expect(publicProfileService.getUser).not.toHaveBeenCalled();
+          expect(publicProfileService.getStats).not.toHaveBeenCalled();
+        });
+      });
     });
   });
 });
