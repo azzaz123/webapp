@@ -44,6 +44,7 @@ import {
   Tier,
 } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { ModalStatuses } from '@features/profile/pages/subscription/subscription.component';
 import {
   NgbActiveModal,
   NgbCarousel,
@@ -127,7 +128,7 @@ export class AddNewSubscriptionModalComponent
   }
 
   public close() {
-    this.activeModal.close('add');
+    this.activeModal.close(ModalStatuses.ADD);
   }
 
   public addSubscription(paymentMethod: PaymentMethodResponse) {

@@ -16,6 +16,7 @@ import {
   Tier,
 } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { ModalStatuses } from '@features/profile/pages/subscription/subscription.component';
 import { ToastService } from '@layout/toast/toast.service';
 import {
   NgbActiveModal,
@@ -66,8 +67,8 @@ export class EditSubscriptionModalComponent implements OnInit {
     this.analyticsService.trackPageView(pageView);
   }
 
-  public close() {
-    this.activeModal.close('update');
+  public close(status: ModalStatuses) {
+    this.activeModal.close(status);
   }
 
   public editSubscription() {
@@ -95,7 +96,7 @@ export class EditSubscriptionModalComponent implements OnInit {
             type: 'error',
           });
         }
-        this.close();
+        this.close(ModalStatuses.UPDATE);
       });
   }
 
@@ -110,14 +111,16 @@ export class EditSubscriptionModalComponent implements OnInit {
   }
 
   public cancelSubscription() {
-    this.close();
     const modal = CancelSubscriptionModalComponent;
     let modalRef: NgbModalRef = this.modalService.open(modal, {
       windowClass: 'review',
     });
     modalRef.componentInstance.subscription = this.subscription;
     modalRef.result.then(
-      (result: string) => (modalRef = null),
+      (result: ModalStatuses) => {
+        this.close(result);
+        modalRef = null;
+      },
       () => {}
     );
   }
