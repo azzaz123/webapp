@@ -33,14 +33,12 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
   }
 
   private getUser(): void {
-    this.subscriptions.push(
-      this.route.queryParams.subscribe((params) => {
-        this.userId = params.id;
-        if (this.userId) {
-          this.getUserInfoAndStats();
-        }
-      })
-    );
+    this.userId = this.route.snapshot.paramMap.get('id');
+    if (this.userId) {
+      this.getUserInfoAndStats();
+    } else {
+      this.resetInfo();
+    }
   }
 
   private getUserInfoAndStats(): void {
@@ -57,5 +55,11 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
         }
       )
     );
+  }
+
+  private resetInfo(): void {
+    // TODO: Check for default user		Date: 2020/12/16
+    this.userStats = null;
+    this.userInfo = null;
   }
 }

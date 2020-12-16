@@ -26,7 +26,11 @@ describe('PublicProfileComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            queryParams: of({ id: '123' }),
+            snapshot: {
+              paramMap: {
+                get: () => '123',
+              },
+            },
           },
         },
         {
@@ -80,30 +84,33 @@ describe('PublicProfileComponent', () => {
         expect(publicProfileService.getUser).toHaveBeenCalledTimes(1);
         expect(publicProfileService.getStats).toHaveBeenCalledTimes(1);
       });
+    });
 
-      describe('when NOT have the user id..', () => {
-        it('should NOT show the page', () => {
-          route.queryParams = of({});
+    describe('when NOT have the user id..', () => {
+      beforeEach(() => {
+        spyOn(route.snapshot.paramMap, 'get').and.returnValue(undefined);
+      });
 
-          component.ngOnInit();
-          fixture.detectChanges();
-          const containerPage = fixture.debugElement.query(
-            By.css('.PublicProfile')
-          );
-          expect(containerPage).toBeFalsy();
-          expect(component.userId).toBe(undefined);
-        });
+      it('should NOT show the page', () => {
+        component.ngOnInit();
+        fixture.detectChanges();
+        const containerPage = fixture.debugElement.query(
+          By.css('.PublicProfile')
+        );
 
-        it('should NOT call for more data', () => {
-          spyOn(publicProfileService, 'getUser');
-          spyOn(publicProfileService, 'getStats');
-          route.queryParams = of({});
+        expect(containerPage).toBeFalsy();
+        expect(component.userId).toBe(undefined);
+      });
 
-          component.ngOnInit();
+      it('should NOT call for more data', () => {
+        spyOn(publicProfileService, 'getUser');
+        spyOn(publicProfileService, 'getStats');
 
-          expect(publicProfileService.getUser).not.toHaveBeenCalled();
-          expect(publicProfileService.getStats).not.toHaveBeenCalled();
-        });
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        expect(publicProfileService.getUser).not.toHaveBeenCalled();
+        expect(publicProfileService.getStats).not.toHaveBeenCalled();
       });
     });
   });
