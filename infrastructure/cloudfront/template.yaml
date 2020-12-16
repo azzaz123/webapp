@@ -151,7 +151,7 @@ Resources:
       RecordSets:
         - AliasTarget:
             DNSName: !GetAtt WebEsDistribution.DomainName
-            HostedZoneId: Z2FDTNDATAQYW2 # todo: import?
+            HostedZoneId: Z2FDTNDATAQYW2
           Name: !Ref HostES
           Type: A
 
@@ -162,7 +162,7 @@ Resources:
       RecordSets:
         - AliasTarget:
             DNSName: !GetAtt WebEnDistribution.DomainName
-            HostedZoneId: Z2FDTNDATAQYW2 # todo: import?
+            HostedZoneId: Z2FDTNDATAQYW2
           Name: !Ref HostEN
           Type: A
 
