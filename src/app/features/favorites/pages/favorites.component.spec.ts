@@ -4,25 +4,17 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FavoritesComponent } from './favorites.component';
 import { UserService } from '@core/user/user.service';
 import { MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
-import { Router } from '@angular/router';
 
 describe('FavoritesComponent', () => {
   let component: FavoritesComponent;
   let fixture: ComponentFixture<FavoritesComponent>;
   let userService: UserService;
-  let router: Router;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [FavoritesComponent],
         providers: [
-          {
-            provide: Router,
-            useValue: {
-              navigateByUrl() {},
-            },
-          },
           {
             provide: UserService,
             useValue: {
@@ -41,7 +33,6 @@ describe('FavoritesComponent', () => {
     fixture = TestBed.createComponent(FavoritesComponent);
     component = fixture.componentInstance;
     userService = TestBed.inject(UserService);
-    router = TestBed.inject(Router);
     fixture.detectChanges();
   });
 
