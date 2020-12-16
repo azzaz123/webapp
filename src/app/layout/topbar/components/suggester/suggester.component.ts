@@ -9,9 +9,8 @@ import {
   ViewChild,
   ElementRef,
 } from '@angular/core';
-import { SuggesterResponse } from './suggester-response.interface';
-
-import { SuggesterService } from './suggester.service';
+import { SuggesterResponse } from '../../core/interfaces/suggester-response.interface';
+import { SuggesterService } from '@layout/topbar/core/services/suggester.service';
 
 @Component({
   selector: 'tsl-suggester',
