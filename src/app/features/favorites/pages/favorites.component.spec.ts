@@ -41,11 +41,7 @@ describe('FavoritesComponent', () => {
   });
 
   describe('onActivate', () => {
-    //Todo
-    it('should remove the number of favorite after user removed favorite product', () => {
-      /*  spyOn(component, 'onActivate').and.callThrough();
-      component.onActivate(component); */
-    });
+    it('should remove the number of favorite after user removed favorite product', () => {});
 
     it('should remove the number of favorite after user removed favorite profile', () => {});
   });
