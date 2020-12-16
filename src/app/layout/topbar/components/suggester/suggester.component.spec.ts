@@ -1,10 +1,10 @@
 import { of } from 'rxjs';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SuggesterComponent } from './suggester.component';
-import { SuggesterService } from './suggester.service';
-import { SUGGESTER_DATA_WEB } from '../../../../tests/suggester.fixtures.spec';
-import { EventService } from '../../../core/event/event.service';
+import { SUGGESTER_DATA_WEB } from '@fixtures/suggester.fixtures.spec';
+import { EventService } from '@core/event/event.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { SuggesterService } from '@layout/topbar/core/services/suggester.service';
 
 describe('SuggesterComponent', () => {
   let component: SuggesterComponent;
