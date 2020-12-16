@@ -11,7 +11,7 @@ export class PublicWebUrlService {
 
   constructor() {}
 
-  private _getEncryptedAndEncodedRedirect(): string {
+  private getEncryptedAndEncodedRedirect(): string {
     const encryptedCurrentUrl = CryptoJSAES.encrypt(
       window.location.href,
       this.REDIRECT_SECRET
@@ -23,6 +23,6 @@ export class PublicWebUrlService {
   public getLoginUrl(): string {
     return `${
       environment.siteUrl
-    }login?redirectUrl=${this._getEncryptedAndEncodedRedirect()}`;
+    }login?redirectUrl=${this.getEncryptedAndEncodedRedirect()}`;
   }
 }
