@@ -44,7 +44,6 @@ import {
   Tier,
 } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
-import { ModalStatuses } from '@features/profile/pages/subscription/subscription.component';
 import {
   NgbActiveModal,
   NgbCarousel,
@@ -52,6 +51,7 @@ import {
   NgbModalRef,
 } from '@ng-bootstrap/ng-bootstrap';
 import { IOption } from 'app/dropdown/utils/option.interface';
+import { ModalStatuses } from '../../core/modal.statuses.enum';
 import { PaymentSuccessModalComponent } from '../payment-success/payment-success-modal.component';
 
 @Component({

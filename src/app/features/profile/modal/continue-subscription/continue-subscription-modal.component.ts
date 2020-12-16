@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ModalStatuses } from '@features/profile/pages/subscription/subscription.component';
 import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
@@ -16,6 +15,7 @@ import {
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { ToastService } from '@layout/toast/toast.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalStatuses } from '../../core/modal.statuses.enum';
 
 @Component({
   selector: 'tsl-continue-subscription-modal',
