@@ -21,7 +21,6 @@ export class FavoritesComponent implements OnInit {
   public loading = false;
   public end = false;
   public numberOfFavorites: number;
-  public isDataPassed = false;
   private counters: Counters;
 
   constructor(
@@ -34,7 +33,7 @@ export class FavoritesComponent implements OnInit {
     this.getNumberOfFavorites();
   }
 
-  onActivate(componentReference) {
+  public onActivate(componentReference) {
     if (
       !componentReference.onFavoriteItemPageChange ||
       !componentReference.onFavoriteProfilePageChange
@@ -55,20 +54,14 @@ export class FavoritesComponent implements OnInit {
     );
   }
 
-  public onItemsPageChange(isDataPassed: boolean) {
-    console.log('parentData');
-    this.isDataPassed = isDataPassed;
-    console.log('isDataPassed', isDataPassed);
-  }
-
   public routesByStatus(status: string) {
     if (status !== this.selectedStatus) {
       this.selectedStatus = status;
       this.selectedStatus === 'products'
         ? this.router.navigateByUrl('/favorites/products')
         : this.router.navigateByUrl('/favorites/profiles');
-      this.getNumberOfFavorites();
     }
+    this.getNumberOfFavorites();
   }
 
   public getNumberOfFavorites() {
