@@ -43,8 +43,9 @@ describe('UserProfileHeaderComponent', () => {
     describe('when the user is pro...', () => {
       describe('when have the extra info..', () => {
         it('should show the pro elements', () => {
-          const headerPro = fixture.debugElement.query(By.css('.HeaderPro'))
-            .nativeNode;
+          const headerPro = fixture.debugElement.query(
+            By.css('tsl-user-cover')
+          );
           const proBadge = fixture.debugElement.query(By.css('.ProBadge'))
             .nativeNode;
           const aboutSection = fixture.debugElement
@@ -52,7 +53,7 @@ describe('UserProfileHeaderComponent', () => {
             .find((anchors) => anchors.nativeElement.innerHTML === 'About')
             .nativeElement;
 
-          expect(headerPro.hasAttribute('hidden')).toBe(false);
+          expect(headerPro).toBeTruthy();
           expect(proBadge.hasAttribute('hidden')).toBe(false);
           expect(aboutSection).toBeTruthy();
         });
@@ -63,13 +64,14 @@ describe('UserProfileHeaderComponent', () => {
           component.userInfo.extraInfo.description = null;
 
           fixture.detectChanges();
-          const headerPro = fixture.debugElement.query(By.css('.HeaderPro'))
-            .nativeNode;
+          const headerPro = fixture.debugElement.query(
+            By.css('tsl-user-cover')
+          );
           const proBadge = fixture.debugElement.query(By.css('.ProBadge'))
             .nativeNode;
           const aboutSection = fixture.debugElement.queryAll(By.css('strong'));
 
-          expect(headerPro.hasAttribute('hidden')).toBe(false);
+          expect(headerPro).toBeTruthy();
           expect(proBadge.hasAttribute('hidden')).toBe(false);
           expect(aboutSection.length).toBe(1);
         });
@@ -81,13 +83,12 @@ describe('UserProfileHeaderComponent', () => {
         component.userInfo.isPro = false;
 
         fixture.detectChanges();
-        const headerPro = fixture.debugElement.query(By.css('.HeaderPro'))
-          .nativeNode;
+        const headerPro = fixture.debugElement.query(By.css('tsl-user-cover'));
         const proBadge = fixture.debugElement.query(By.css('.ProBadge'))
           .nativeNode;
         const aboutSection = fixture.debugElement.queryAll(By.css('strong'));
 
-        expect(headerPro.hasAttribute('hidden')).toBe(true);
+        expect(headerPro).toBeFalsy();
         expect(proBadge.hasAttribute('hidden')).toBe(true);
         expect(aboutSection.length).toBe(1);
       });

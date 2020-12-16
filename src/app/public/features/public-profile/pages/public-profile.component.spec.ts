@@ -4,6 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import {
+  IMAGE,
   MOCK_FULL_USER_FEATURED,
   MOCK_USER_STATS,
 } from '@fixtures/user.fixtures.spec';
@@ -36,6 +37,9 @@ describe('PublicProfileComponent', () => {
             },
             getStats() {
               return of(MOCK_USER_STATS);
+            },
+            getCoverImage() {
+              return of(IMAGE);
             },
           },
         },

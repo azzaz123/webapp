@@ -1,5 +1,5 @@
 <div *ngIf="userInfo && userStats">
-  <div class="HeaderPro" [hidden]="!userInfo.isPro">
+  <div class="HeaderPro" *ngIf="userInfo.isPro">
     <tsl-user-cover [user]="userInfo"></tsl-user-cover>
   </div>
   <div class="container align-middle ProfileUser__container d-flex flex-column">

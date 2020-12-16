@@ -10,11 +10,14 @@ import {
   UserStatsResponse,
 } from '@core/user/user-stats.interface';
 import { User } from '@core/user/user';
-import { UserResponse } from '@core/user/user-response.interface';
+import { Image, UserResponse } from '@core/user/user-response.interface';
 
 export const PROFILE_API_URL = (userId: string) => `api/v3/users/${userId}`;
 export const PRO_USERS_ENDPOINT = (userId: string) =>
-  `api/v3/users/${userId}/extra-info`;
+  `${PROFILE_API_URL(userId)}/extra-info`;
+export const USER_COVER_IMAGE_ENDPOINT = (userId: string) =>
+  `${PROFILE_API_URL(userId)}/cover-image`;
+
 @Injectable({
   providedIn: 'root',
 })
@@ -80,6 +83,12 @@ export class PublicProfileService {
 
   public isPro(user: User | UserResponse): boolean {
     return user && user.featured;
+  }
+
+  public getCoverImage(userId: string): Observable<Image> {
+    return this.http.get<Image>(
+      `${environment.baseUrl}${USER_COVER_IMAGE_ENDPOINT(userId)}`
+    );
   }
 
   private toRatingsStats(ratings): Ratings {

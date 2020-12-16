@@ -5,6 +5,7 @@ import {
 } from '@angular/common/http/testing';
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { User } from '@core/user/user';
+import { Image } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
 import {
   MOCK_FULL_USER,
@@ -12,12 +13,14 @@ import {
   MOCK_USER_STATS,
   USERS_STATS,
   USER_DATA,
+  IMAGE,
 } from '@fixtures/user.fixtures.spec';
 import { environment } from 'environments/environment';
 
 import {
   PublicProfileService,
   PROFILE_API_URL,
+  USER_COVER_IMAGE_ENDPOINT,
 } from './public-profile.service';
 
 describe('PublicProfileService', () => {
@@ -113,6 +116,23 @@ describe('PublicProfileService', () => {
       MOCK_PRO_INFO.featured = true;
 
       expect(service.isPro(MOCK_PRO_INFO)).toBe(true);
+    });
+  });
+
+  describe('when getting cover image...', () => {
+    it('should return cover image', () => {
+      const expectedUrl = `${environment.baseUrl}${USER_COVER_IMAGE_ENDPOINT(
+        userId
+      )}`;
+      let response: Image;
+
+      service.getCoverImage(userId).subscribe((r) => (response = r));
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(IMAGE);
+
+      expect(req.request.url).toEqual(expectedUrl);
+      expect(response).toEqual(IMAGE);
+      expect(req.request.method).toBe('GET');
     });
   });
 });
