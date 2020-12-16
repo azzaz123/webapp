@@ -5,11 +5,11 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 
-import { environment } from '../../../../environments/environment';
+import { environment } from '@environments/environment';
 
 import { SuggesterService, SUGGESTER_ENDPOINT } from './suggester.service';
-import { SuggesterResponse } from './suggester-response.interface';
-import { SUGGESTER_DATA_WEB } from '../../../../tests/suggester.fixtures.spec';
+import { SuggesterResponse } from '../interfaces/suggester-response.interface';
+import { SUGGESTER_DATA_WEB } from '@fixtures/suggester.fixtures.spec';
 
 describe('SuggesterService', () => {
   let service: SuggesterService;
