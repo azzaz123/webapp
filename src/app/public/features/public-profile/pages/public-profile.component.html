@@ -1,5 +1,13 @@
-<div *ngIf="userId" class="page-content">
-    <tsl-user-profile-header [userId]="userId"></tsl-user-profile-header>
-    <tsl-profile-tabs></tsl-profile-tabs>
+<div *ngIf="userId" class="PublicProfile container">
+    <tsl-user-profile-header [userInfo]="userInfo" [userStats]="userStats"></tsl-user-profile-header>
+    <div class="PublicProfile__section--second row">
+        <div class="col-12 col-md-6">
+            <tsl-profile-tabs [userStats]="userStats"></tsl-profile-tabs>
+        </div>
+        <div class="col-12 col-md-6">
+           <tsl-share-user></tsl-share-user>
+           <tsl-favourite-user></tsl-favourite-user>
+        </div>
+    </div>
     <router-outlet></router-outlet>
 </div>

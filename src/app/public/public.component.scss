@@ -1,0 +1,6 @@
+@import '~style/common';
+
+:host {
+  display: block;
+  margin-top: $topbar-height;
+}

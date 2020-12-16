@@ -1220,4 +1220,7 @@
   <translation id="ShowLocation">Ver ubicación</translation>
   <translation id="RedirectWeb">Ir a la web<</translation>
   <translation id="About">Acerca de</translation>
+  <translation id="ProfileTabsPublishedLabel">En venta</translation>
+  <translation id="ProfileTabsReviewsLabel">Opiniones</translation>
+  <translation id="ProfileTabsInfoLabel">Info</translation>
 </translationbundle>

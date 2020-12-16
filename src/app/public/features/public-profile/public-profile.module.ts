@@ -7,9 +7,9 @@ import {
 import { UserStatsComponent } from './components/user-stats/user-stats.component';
 import { UserProfileHeaderComponent } from './components/user-profile-header/user-profile-header.component';
 import { ShareUserComponent } from './components/share-user/share-user.component';
-import { LikeUserComponent } from './components/like-user/like-user.component';
 import { ProfileTabsComponent } from './components/profile-tabs/profile-tabs.component';
 import { SharedModule } from '@shared/shared.module';
+import { FavouriteUserComponent } from './components/favourite-user/favourite-user.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +17,7 @@ import { SharedModule } from '@shared/shared.module';
     UserProfileHeaderComponent,
     UserStatsComponent,
     ShareUserComponent,
-    LikeUserComponent,
+    FavouriteUserComponent,
     ProfileTabsComponent,
   ],
   imports: [CommonModule, PublicProfileRoutingModule, SharedModule],
