@@ -14,7 +14,6 @@ export class ItemsPageComponent implements OnInit {
   > = new EventEmitter();
 
   public items: Item[] = [];
-  public numberOfFavorites: number;
   public loading = false;
   public end = false;
   public isItemRomved = true;

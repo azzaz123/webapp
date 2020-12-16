@@ -117,12 +117,10 @@ describe('ItemsPageComponent', () => {
   });
 
   describe('removeItem', () => {
-    it('should remove item and change number of favorites', () => {
+    it('should remove the item and change number of favorites', () => {
       spyOn(component.onFavoriteItemPageChange, 'emit');
       const [item1, item2] = (component.items = [MOCK_ITEM, MOCK_ITEM]);
-      const NUMBEROFFAVORITES = 1;
 
-      component.numberOfFavorites = NUMBEROFFAVORITES;
       component.removeItem(item1);
 
       expect(component.items).toEqual([item2]);

@@ -1,5 +1,4 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
 import { Profile } from '@core/profile/profile';
 import { ProfilesData } from '@core/profile/profile-response.interface';
 import { ProfileService } from '@core/profile/profile.service';
@@ -18,7 +17,7 @@ export class ProfilesPageComponent implements OnInit {
   public end = false;
   public isProfileRemoved = true;
 
-  constructor(private profileService: ProfileService, private router: Router) {}
+  constructor(private profileService: ProfileService) {}
 
   ngOnInit(): void {
     this.getProfiles();
