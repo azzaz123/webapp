@@ -1,24 +1,22 @@
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie';
 import { environment } from '@environments/environment';
+import { ReplaySubject } from 'rxjs';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class SessionService {
+  public newSession$: ReplaySubject<void> = new ReplaySubject<void>();
+
   private static SESSION_COOKIE_NAME = 'wallapop_keep_session';
   private static SESSION_TRACK_INTERVAL = 60000;
   private static SESSION_TIMEOUT = 15 * 60000;
 
-  private readonly isNewSession: boolean;
-
   constructor(private cookieService: CookieService) {
-    this.isNewSession =
+    const isNewSession =
       this.cookieService.get(SessionService.SESSION_COOKIE_NAME) !== 'true';
     this.initSessionTracking();
-  }
-
-  public onNewSession(callback: Function): void {
-    if (this.isNewSession) {
-      callback();
+    if (isNewSession) {
+      this.newSession$.next();
     }
   }
 

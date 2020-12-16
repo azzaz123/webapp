@@ -38,10 +38,10 @@ import { UuidService } from '@core/uuid/uuid.service';
 import { SwUpdate } from '@angular/service-worker';
 import { PATH_EVENTS } from './app-routing-constants';
 import { SessionService } from '@core/session/session.service';
+import { DeviceService } from '@core/device/device.service';
 import { OpenWallapop } from '@core/analytics/resources/events-interfaces';
 import { ANALYTICS_EVENT_NAMES } from '@core/analytics/resources/analytics-event-names';
 import { ANALYTIC_EVENT_TYPES } from '@core/analytics/analytics-constants';
-import { DeviceService } from '@core/device/device.service';
 
 @Component({
   selector: 'tsl-root',
@@ -119,7 +119,9 @@ export class AppComponent implements OnInit {
     this.userService.checkUserStatus();
     this.desktopNotificationsService.init();
     this.connectionService.checkConnection();
-    this.sessionService.onNewSession(this.trackOpenWallapop.bind(this));
+    this.analyticsService.mParticleReady$.subscribe(() => {
+      this.sessionService.newSession$.subscribe(() => this.trackOpenWallapop());
+    });
   }
 
   // TODO: This should be encapsualted in a service (e.g.: BrazeService)
