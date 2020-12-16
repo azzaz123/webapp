@@ -1,36 +1,41 @@
 /* tslint:disable:no-unused-variable */
 
-import { of } from 'rxjs';
 import {
   discardPeriodicTasks,
   fakeAsync,
   TestBed,
   tick,
 } from '@angular/core/testing';
-import { XmppService } from './xmpp.service';
-import { EventService } from '../event/event.service';
 import {
-  MOCK_USER,
-  OTHER_USER_ID,
-  USER_ID,
-} from '../../../tests/user.fixtures.spec';
+  ChatSignal,
+  ChatSignalType,
+  InboxMessage,
+  MessageStatus,
+  MessageType,
+} from '@features/chat/core/model';
+import { of } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { MockRemoteConsoleService } from '../../../tests';
 import { CONVERSATION_ID } from '../../../tests/conversation.fixtures.spec';
-import { XmppBodyMessage } from './xmpp.interface';
+import {
+  CREATE_MOCK_INBOX_CONVERSATION,
+  CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE,
+} from '../../../tests/inbox.fixtures.spec';
 import {
   MOCK_MESSAGE,
   MOCK_MESSAGE_FROM_OTHER,
   MOCK_PAYLOAD_KO,
   MOCK_PAYLOAD_OK,
 } from '../../../tests/message.fixtures.spec';
-import { environment } from '../../../environments/environment';
-import { ChatSignal, ChatSignalType } from '../../chat/model/chat-signal';
-import { RemoteConsoleService } from '../remote-console';
-import { MockRemoteConsoleService } from '../../../tests';
 import {
-  CREATE_MOCK_INBOX_CONVERSATION,
-  CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE,
-} from '../../../tests/inbox.fixtures.spec';
-import { InboxMessage, MessageStatus, MessageType } from '../../chat/model';
+  MOCK_USER,
+  OTHER_USER_ID,
+  USER_ID,
+} from '../../../tests/user.fixtures.spec';
+import { EventService } from '../event/event.service';
+import { RemoteConsoleService } from '../remote-console';
+import { XmppBodyMessage } from './xmpp.interface';
+import { XmppService } from './xmpp.service';
 
 const mamFirstIndex = '1899';
 const mamCount = 1900;

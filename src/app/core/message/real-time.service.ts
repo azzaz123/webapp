@@ -3,8 +3,6 @@ import { Injectable } from '@angular/core';
 import { XmppService } from '../xmpp/xmpp.service';
 import { EventService } from '../event/event.service';
 import { TrackingService } from '../tracking/tracking.service';
-import { ChatSignal, ChatSignalType } from '../../chat/model/chat-signal';
-import { InboxConversation, InboxMessage } from '../../chat/model';
 import { RemoteConsoleService } from '../remote-console';
 import { AnalyticsService } from '../analytics/analytics.service';
 import {
@@ -17,6 +15,12 @@ import {
 import { ConnectionService } from '../connection/connection.service';
 import { ConnectionType } from '../remote-console/connection-type';
 import { I18nService } from '../i18n/i18n.service';
+import {
+  InboxConversation,
+  InboxMessage,
+  ChatSignal,
+  ChatSignalType,
+} from '@features/chat/core/model';
 
 export const SEARCHID_STORAGE_NAME = 'searchId';
 

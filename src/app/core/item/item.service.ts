@@ -51,7 +51,7 @@ import { ITEM_BAN_REASONS } from './ban-reasons';
 import { ItemLocation } from '../geolocation/address-response.interface';
 import { Realestate } from './realestate';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
+import { environment } from '@environments/environment';
 import * as mapRx from 'rxjs/operators';
 import { UuidService } from '../uuid/uuid.service';
 
@@ -629,7 +629,7 @@ export class ItemService {
     );
   }
 
-  public update(item: any, itemType: string): Observable<any> {
+  public update(item: any, itemType: ITEM_TYPES): Observable<any> {
     let url: string = ITEMS_API_URL + '/';
     let headers: HttpHeaders = new HttpHeaders({ 'X-DeviceOS': '0' });
 

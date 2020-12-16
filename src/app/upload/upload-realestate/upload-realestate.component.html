@@ -217,9 +217,9 @@
       }" i18n>
       Photos
     </h2>
-    <tsl-drop-area [uploadEvent]="uploadEvent" type="real_estate" (onUploaded)="onUploaded($event)"
-      (onError)="onError($event)" (onUploadPercentageChange)="updateUploadPercentage($event)" formControlName="images"
-      [maxUploads]="10" [images]="item?.images" [itemId]="item?.id"></tsl-drop-area>
+    <tsl-drop-area 
+      (onError)="onError($event)" formControlName="images" [isUpdatingItem]="!!item" (onOrderImages)="onOrderImages()" (onDeleteImage)="onDeleteImage($event)" (onAddImage)="onAddImage($event)"
+      ></tsl-drop-area>
     <ng-template #coachmarkPictures>
       <div i18n>
         You can drag and drop your photos here. Also drag and drop to change the
@@ -230,11 +230,12 @@
   <tsl-urgent-checkbox [categoryId]="13000" [urgentPrice]="urgentPrice" (urgentSelected)="selectUrgent($event)">
   </tsl-urgent-checkbox>
   <div class="row">
-    <div class="col-12 col-md-4">
+    <div class="col-12 col-md-5">
       <tsl-button [type]="'submit'" className="btn-primary btn-block" [disabled]="loading">
         <span *ngIf="!item && !loading" i18n>Post Ad</span>
         <span *ngIf="item && !loading" i18n>Update</span>
-        <span *ngIf="loading" i18n>Uploading... {{ uploadCompletedPercentage }}%</span>
+        <span *ngIf="loading && !pendingFiles" i18n="@@UploadProductSubmitLoading">Uploading... {{ uploadCompletedPercentage }}%</span>
+        <span *ngIf="loading && pendingFiles" i18n="@@UploadImagesSubmitLoading">Uploading image... {{ pendingFiles.currentUploading}}/{{pendingFiles.totalFiles}}</span>
       </tsl-button>
     </div>
     <div class="col-md-3 d-none d-md-block">
