@@ -26,7 +26,6 @@ export class ItemCartFavoriteComponent implements OnInit {
     private itemService: ItemService,
     private modalService: NgbModal,
     private trackingService: TrackingService,
-    private router: Router,
     @Inject('SUBDOMAIN') private subdomain: string
   ) {}
 
@@ -53,7 +52,6 @@ export class ItemCartFavoriteComponent implements OnInit {
 
   removeFavorite() {
     this.itemService.favoriteItem(this.item.id, false).subscribe(() => {
-      console.log('cart removed item');
       this.item.favorited = false;
       this.onFavoriteChange.emit(this.item);
       this.trackingService.track(TrackingService.FAVOURITES_BUTTON_UNFAVORITE);
