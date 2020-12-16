@@ -6,18 +6,25 @@ import {
   tick,
   waitForAsync,
 } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { EventEmitter, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FavoritesComponent } from './favorites.component';
 import { UserService } from '@core/user/user.service';
 import { MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Router, RouterLinkWithHref, Routes } from '@angular/router';
+import { RouterLinkWithHref, Routes } from '@angular/router';
 import { ItemsPageComponent } from '../components/items-page/items-page.component';
 import { ProfilesPageComponent } from '../components/profiles-page/profiles-page.component';
 import { ItemService } from '@core/item/item.service';
 import { By } from '@angular/platform-browser';
-import { LocationStrategy } from '@angular/common';
 import { ProfileService } from '@core/profile/profile.service';
+
+export class ItemsPageStub {
+  onFavoriteItemPageChange: EventEmitter<Boolean> = new EventEmitter(true);
+}
+
+export class ProfilesPageStub {
+  onFavoriteProfilePageChange: EventEmitter<Boolean> = new EventEmitter(true);
+}
 
 const routes: Routes = [
   {
@@ -30,19 +37,21 @@ const routes: Routes = [
   },
 ];
 
-describe('FavoritesComponent', () => {
+describe('FavoritemsComponent', () => {
   let component: FavoritesComponent;
   let fixture: ComponentFixture<FavoritesComponent>;
-  let location: LocationStrategy;
-  let router: Router;
+  let itemsPageStub: ItemsPageStub;
+  let profilesPageStub: ProfilesPageStub;
   let userService: UserService;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [FavoritesComponent],
+        declarations: [FavoritesComponent, ItemsPageComponent],
         imports: [RouterTestingModule.withRoutes(routes)],
         providers: [
+          ItemsPageStub,
+          ProfilesPageStub,
           {
             provide: ItemService,
             useValue: {
@@ -77,8 +86,8 @@ describe('FavoritesComponent', () => {
     fixture = TestBed.createComponent(FavoritesComponent);
     component = fixture.componentInstance;
     userService = TestBed.inject(UserService);
-    router = TestBed.inject(Router);
-    location = TestBed.inject(LocationStrategy);
+    itemsPageStub = TestBed.inject(ItemsPageStub);
+    profilesPageStub = TestBed.inject(ProfilesPageStub);
     fixture.detectChanges();
   });
 
@@ -88,38 +97,70 @@ describe('FavoritesComponent', () => {
 
   describe('Navigation', () => {
     it('should navigate to favorites/products page after clicking produts tab', fakeAsync(() => {
-      const linkInstance = fixture.debugElement
-        .query(By.css('#products-tab'))
-        .injector.get(RouterLinkWithHref);
-      const element: HTMLElement = fixture.debugElement.query(
-        By.css('#products-tab')
-      ).nativeElement;
+      fixture.ngZone.run(() => {
+        const linkInstance = fixture.debugElement
+          .query(By.css('#products-tab'))
+          .injector.get(RouterLinkWithHref);
+        const element: HTMLElement = fixture.debugElement.query(
+          By.css('#products-tab')
+        ).nativeElement;
 
-      element.click();
-      tick();
+        element.click();
+        tick();
 
-      expect(linkInstance['href']).toBe('/products');
+        expect(linkInstance['href']).toBe('/products');
+      });
     }));
 
     it('should navigate to favorites/profiles page after clicking profiles tab', fakeAsync(() => {
-      const linkInstance = fixture.debugElement
-        .query(By.css('#profiles-tab'))
-        .injector.get(RouterLinkWithHref);
-      const element: HTMLElement = fixture.debugElement.query(
-        By.css('#profiles-tab')
-      ).nativeElement;
+      fixture.ngZone.run(() => {
+        const linkInstance = fixture.debugElement
+          .query(By.css('#profiles-tab'))
+          .injector.get(RouterLinkWithHref);
+        const element: HTMLElement = fixture.debugElement.query(
+          By.css('#profiles-tab')
+        ).nativeElement;
 
-      element.click();
-      tick();
+        element.click();
+        tick();
 
-      expect(linkInstance['href']).toBe('/profiles');
+        expect(linkInstance['href']).toBe('/profiles');
+      });
     }));
   });
 
   describe('onActivate', () => {
-    it('should remove the number of favorite after user removed favorite product', () => {});
+    it('should remove the number of favorite after user removed favorite product', fakeAsync(() => {
+      let originalNumberOfFavorites: number = 5;
+      component.numberOfFavorites = originalNumberOfFavorites;
+      spyOn(component, 'onActivate').and.callThrough();
+      spyOn(
+        itemsPageStub.onFavoriteItemPageChange,
+        'subscribe'
+      ).and.returnValue(of(true));
 
-    it('should remove the number of favorite after user removed favorite profile', () => {});
+      component.onActivate(itemsPageStub as ItemsPageComponent);
+      tick();
+      fixture.detectChanges();
+
+      expect(component.numberOfFavorites).toBe(originalNumberOfFavorites - 1);
+    }));
+
+    /* it('should remove the number of favorite after user removed favorite profile', fakeAsync(() => {
+      let originalNumberOfFavorites: number = 5;
+      component.numberOfFavorites = originalNumberOfFavorites;
+      spyOn(component, 'onActivate').and.callThrough();
+      spyOn(
+        profilesPageStub.onFavoriteProfilePageChange,
+        'subscribe'
+      ).and.returnValue(of(true));
+
+      component.onActivate(profilesPageStub as ProfilesPageComponent);
+      tick();
+      fixture.detectChanges();
+
+      expect(component.numberOfFavorites).toBe(originalNumberOfFavorites - 1);
+    })); */
   });
 
   describe('getNumberOfFavorites', () => {

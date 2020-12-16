@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '@core/user/user.service';
 import { UserStats, Counters } from '@core/user/user-stats.interface';
 import { Router } from '@angular/router';
+import { ItemsPageComponent } from '../components/items-page/items-page.component';
+import { ProfilesPageComponent } from '../components/profiles-page/profiles-page.component';
 
 @Component({
   selector: 'tsl-favorites',
@@ -19,29 +21,29 @@ export class FavoritesComponent implements OnInit {
     this.getNumberOfFavorites();
   }
 
-  public onActivate(componentReference) {
-    if (
-      !componentReference.onFavoriteItemPageChange ||
-      !componentReference.onFavoriteProfilePageChange
-    )
-      return;
-    console.log('component ref', componentReference);
-    componentReference.onFavoriteItemPageChange.subscribe((isItemRemoved) => {
-      console.log('component ref', componentReference);
-      console.log('component ref', componentReference);
-      if (isItemRemoved) {
-        this.numberOfFavorites--;
-      }
-    });
-
-    componentReference.onFavoriteProfilePageChange.subscribe(
-      (isProfileRemoved) => {
-        console.log('component ref', componentReference);
-        if (isProfileRemoved) {
-          this.numberOfFavorites--;
+  public onActivate(
+    componentReference: ProfilesPageComponent | ItemsPageComponent
+  ) {
+    if ((componentReference as ItemsPageComponent).onFavoriteItemPageChange) {
+      (componentReference as ItemsPageComponent).onFavoriteItemPageChange.subscribe(
+        (isItemRemoved) => {
+          if (isItemRemoved) {
+            this.numberOfFavorites--;
+            console.log('read', this.numberOfFavorites, isItemRemoved);
+          }
         }
-      }
-    );
+      );
+    } else if (
+      (componentReference as ProfilesPageComponent).onFavoriteProfilePageChange
+    ) {
+      (componentReference as ProfilesPageComponent).onFavoriteProfilePageChange.subscribe(
+        (isProfileRemoved) => {
+          if (isProfileRemoved) {
+            this.numberOfFavorites--;
+          }
+        }
+      );
+    } else return;
   }
 
   public getNumberOfFavorites() {
