@@ -3,21 +3,27 @@
     <label i18n>Cover image</label>
   </div>
   <div class="col-12 col-md-6 offset-md-1">
-    <tsl-user-cover (click)="clickNotPro.emit()" [user]="user" [imageCoverUrl]="user?.coverImage?.urls_by_size?.medium"
-      size="80"></tsl-user-cover>
-    <div class="upload-button" *ngIf="isPro">
-      <label class="btn btn-upload d-flex"
-        [ngClass]="{disabled: isLoading}">
-        <input type="file" tslFileSelect (filesSelected)="onFilesAdded($event)"
-          [disabled]="isLoading" />
-        <span class="loader" *ngIf="isLoading">
-          <tsl-svg-icon src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
-        </span>
-        <span i18n *ngIf="user?.coverImage" class="d-none d-md-block">Update picture</span>
-        <span i18n *ngIf="!user?.coverImage" class="d-none d-md-block">Upload picture</span>
-      </label>
-      <div>
-        <p i18n>JPG format and a minimum size of 400 x 400px are accepted.</p>
+    <div class="row mb-2 user-cover-container">
+      <div class="col-12">
+        <tsl-user-cover (click)="clickNotPro.emit()" [user]="user"
+          [imageCoverUrl]="user?.coverImage?.urls_by_size?.medium" size="80"></tsl-user-cover>
+      </div>
+    </div>
+    <div class="row" *ngIf="isPro">
+      <div class="col-12">
+        <div class="upload-button">
+          <label class="btn btn-upload d-flex" [ngClass]="{disabled: isLoading}">
+            <input type="file" tslFileSelect (filesSelected)="onFilesAdded($event)" [disabled]="isLoading" />
+            <span class="loader" *ngIf="isLoading">
+              <tsl-svg-icon src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
+            </span>
+            <span i18n *ngIf="user?.coverImage" class="d-none d-md-block">Update picture</span>
+            <span i18n *ngIf="!user?.coverImage" class="d-none d-md-block">Upload picture</span>
+          </label>
+          <div>
+            <p i18n>JPG format and a minimum size of 400 x 400px are accepted.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>

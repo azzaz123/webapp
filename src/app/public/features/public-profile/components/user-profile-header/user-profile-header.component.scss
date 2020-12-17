@@ -1,5 +1,9 @@
 @import '~style/common';
 
+.HeaderPro {
+  height: 160px;
+}
+
 .ProfileUser__container {
   background-color: $white;
   border-radius: 0 0 $border-radius $border-radius;

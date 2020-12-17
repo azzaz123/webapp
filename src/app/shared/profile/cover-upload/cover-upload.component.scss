@@ -67,3 +67,12 @@ h3 {
     }
   }
 }
+
+.user-cover-container {
+  height: 160px;
+  tsl-user-cover {
+    ::ng-deep .avatar-rounded {
+      border-radius: 0.3rem;
+    }
+  }
+}

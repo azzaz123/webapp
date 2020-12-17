@@ -1,7 +1,6 @@
 @import '~style/common';
 
 :host {
-  display: inline-block;
   width: 100%;
 }
 
@@ -11,9 +10,8 @@ div {
 
 .avatar-rounded {
   background-size: cover;
-  border-radius: 2%;
   background-position: center;
   width: 100%;
-  height: 120px;
+  height: 100%;
   object-fit: cover;
 }
