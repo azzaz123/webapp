@@ -777,6 +777,7 @@
   <translation id="6904447978553402020">Precio al contado</translation>
   <translation id="blockedPersonError">Has bloqueado a esta persona. Para seguir charlando, desbloquéala</translation>
   <translation id="userIsNotAvailableWarning">Esta persona ya no es miembro de wallapop</translation>
+  <translation id="userIsBlocked">Esta persona ha sido excluida de wallapop por actividad sospechosa.</translation>
   <translation id="itemIsNotAvailableWarning">El producto ha caducado o ha sido eliminado</translation>
   <translation id="itemIsUnpublishedWarning">El producto incumple las normas de convivencia de wallapop</translation>
   <translation id="securityWarning">Por razones de seguridad, nunca compartas datos privados</translation>
@@ -1142,6 +1143,7 @@
   <translation id="UploadProductShippingDescription">Puedes enviar (casi) todo por wallapop. ¡Y es gratis!</translation>
   <translation id="UploadProductCoachmarkShipping">Cuéntanos cuánto pesa tu producto. Recuerda que la suma de la longitud, la altura y el ancho no puede superar los 270cm.</translation>
   <translation id="UploadProductSubmitLoading">Subiendo...<ph name="INTERPOLATION"><ex>{{ uploadCompletedPercentage }}</ex></ph>%</translation>
+  <translation id="UploadImagesSubmitLoading">Subiendo imagen...<ph name="INTERPOLATION"><ex>{{ pendingFiles.currentUploading }}</ex></ph>/<ph name="INTERPOLATION_1"><ex>{{ pendingFiles.totalFiles }}</ex></ph></translation>
   <translation id="UploadProductProductCondition">Estado del producto</translation>
   <translation id="UploadProductProductConditionPlaceholder">Escoge un estado</translation>
   <translation id="ForgetThisChat"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>Mejor no sigas por aquí<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></translation>
@@ -1164,6 +1166,9 @@
       <ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph><ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>
       Podrás ejercer tus derechos de acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad de tus datos, así como la revocación, en cualquier momento, del consentimiento prestado, ante Wallapop, CIF nº B-66.04.9057, en la Calle Meridiana 89 Planta 6º, 08026, Barcelona (España), adjuntando fotocopia de tu DNI o documento identificativo válido equivalente. Podrás también ejercer tus derechos mediante comunicación dirigida a: privacidad@wallapop.com. Finalmente, te recordamos que puedes dirigir una reclamación ante la Agencia Española de Protección de Datos, si consideras que Wallapop ha vulnerado tus derechos en materia de protección de datos.”
   </translation>
+  <translation id="TopBarButtonRegisteOrSignin">Regístrate o inicia sesión</translation>
+  <translation id="TabBarButtonLogin">Acceso</translation>
+  <translation id="TabBarButtonMyZone">Mi zona</translation>
   <translation id="FooterLinksWallapopTitle">wallapop</translation>
   <translation id="FooterLinksAboutLabel">¿Quiénes somos?</translation>
   <translation id="FooterLinksAboutHref">https://about.wallapop.com/</translation>

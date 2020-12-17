@@ -1,0 +1,40 @@
+<div class="topbar-logo-icon">
+  <a [href]="homeUrl">
+    <i class="ic-logo-web"></i>
+  </a>
+</div>
+<tsl-suggester id="top-bar-suggester" (newSearchSubmit)="onSearchSubmit($event)" (newKeyword)="onKeywordUpdate($event)"
+  (newSearch)="onSearchUpdate($event)"></tsl-suggester>
+<div class="main-header-login d-none d-lg-flex" [class.professional]="isProfessional">
+  <ng-container *ngIf="isLogged">
+    <a id="top-bar-wallacoins" [hidden]="!currencyName" *ngxPermissionsExcept="['isProfessional']" tslTrackEvent="MYZONE_NAVBAR_WALLACOINS"
+      class="main-header-credits menu-link" [routerLink]="['/wallacoins']" [routerLinkActive]="['active']">
+      <tsl-svg-icon src="/assets/icons/wallacoins-nav.svg" class="topbar-icon"></tsl-svg-icon>
+      <span *ngIf="currencyName === 'wallacoins'"><b>{{wallacoins | number}}</b> {{currencyName}}</span>
+      <span *ngIf="currencyName !== 'wallacoins'"><b>{{wallacoins | customCurrency}}</b> <span i18n>credit</span></span>
+      <div class="horizontal-line"></div>
+    </a>
+  </ng-container>
+  <a id="top-bar-inbox" class="main-header-chat menu-link" [routerLink]="['/chat']" [routerLinkActive]="['active']">
+    <div class="news-badge" *ngIf="(messageService.totalUnreadMessages$ | async) > 0"></div>
+    <tsl-svg-icon src="/assets/icons/messages.svg" class="topbar-icon"></tsl-svg-icon>
+    <span i18n>Messages</span>
+    <div class="horizontal-line"></div>
+  </a>
+  <a id="top-bar-my-zone" *ngIf="isLogged" class="main-header-my-zone menu-link" [routerLink]="['/catalog/list']" tslTrackEvent="MYZONE_LERDI_BEHAVIOR"
+    [class.active]="isMyZone">
+    <tsl-user-avatar class="topbar-avatar" [size]="32" [user]="user" *ngIf="user"
+      [imageUrl]="user?.image?.urls_by_size.medium"></tsl-user-avatar>
+    <span *ngxPermissionsExcept="['isProfessional']" i18n>My Zone</span>
+    <span *ngxPermissionsOnly="['isProfessional']" i18n>My Pro Zone</span>
+    <div class="horizontal-line"></div>
+  </a>
+  <tsl-button id="top-bar-signin" *ngIf="!isLogged" class="TopBar__btn TopBar__btn--regular" [className]="'btn-outline-primary'" [routerLink]="['/', LOGIN_PATH]" >
+    <span i18n="@@TopBarButtonRegisteOrSignin">Register or sign in</span>
+  </tsl-button>
+  <tsl-button id="top-bar-upload" class="TopBar__btn TopBar__btn--with-icon" [routerLink]="['/catalog/upload']" tslTrackEvent="MYZONE_UPLOAD">
+    <tsl-svg-icon src="/assets/icons/upload.svg"></tsl-svg-icon>
+    <span *ngxPermissionsExcept="['isProfessional']" i18n>List a product</span>
+    <span *ngxPermissionsOnly="['isProfessional']" i18n>List a car</span>
+  </tsl-button>
+</div>

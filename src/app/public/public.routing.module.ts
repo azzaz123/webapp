@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { PUBLIC_PATHS } from './public-routing-constants';
 import { PublicComponent } from './public.component';
 
 const routes: Routes = [
@@ -7,14 +8,14 @@ const routes: Routes = [
     path: '',
     component: PublicComponent,
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'login' },
+      { path: '', pathMatch: 'full', redirectTo: PUBLIC_PATHS.LOGIN },
       {
-        path: 'login',
+        path: PUBLIC_PATHS.LOGIN,
         loadChildren: () =>
           import('./features/login/login.module').then((m) => m.LoginModule),
       },
       {
-        path: 'register',
+        path: PUBLIC_PATHS.REGISTER,
         loadChildren: () =>
           import('./features/register/register.module').then(
             (m) => m.RegisterModule
@@ -22,7 +23,7 @@ const routes: Routes = [
       },
       {
         path: '**',
-        redirectTo: 'login',
+        redirectTo: PUBLIC_PATHS.LOGIN,
       },
     ],
   },

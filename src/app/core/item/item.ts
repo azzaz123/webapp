@@ -22,11 +22,11 @@ export const ITEM_STATUSES: any = {
   sold: ['SOLD_OUTSIDE', 'BOUGHT'],
 };
 
-export const ITEM_TYPES: any = {
-  CONSUMER_GOODS: 'consumer_goods',
-  CARS: 'cars',
-  REAL_ESTATE: 'real_estate',
-};
+export enum ITEM_TYPES {
+  CONSUMER_GOODS = 'consumer_goods',
+  CARS = 'cars',
+  REAL_ESTATE = 'real_estate',
+}
 
 export class Item implements Model {
   private _webLink: string;

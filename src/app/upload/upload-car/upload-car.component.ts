@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
+  FormControl,
   FormGroup,
   ValidatorFn,
   Validators,
@@ -11,23 +12,22 @@ import { CarSuggestionsService } from './car-suggestions.service';
 import { IOption } from 'app/dropdown/utils/option.interface';
 import { CarKeysService } from './car-keys.service';
 import { Router } from '@angular/router';
-import { UploadEvent } from '../upload-event.interface';
 import {
   NgbModal,
   NgbModalRef,
   NgbPopoverConfig,
 } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
-import { TrackingService } from '../../core/tracking/tracking.service';
-import { Car } from '../../core/item/car';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { Car } from '@core/item/car';
 import { omit, isEqual } from 'lodash-es';
-import { ErrorsService } from '../../core/errors/errors.service';
-import { CARS_CATEGORY } from '../../core/item/item-categories';
-import { ItemService } from '../../core/item/item.service';
-import { CarInfo, CarContent } from '../../core/item/item-response.interface';
-import { AnalyticsService } from '../../core/analytics/analytics.service';
-import { UserService } from '../../core/user/user.service';
-import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
+import { ErrorsService } from '@core/errors/errors.service';
+import { CARS_CATEGORY } from '@core/item/item-categories';
+import { ItemService } from '@core/item/item.service';
+import { CarInfo, CarContent } from '@core/item/item-response.interface';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { UserService } from '@core/user/user.service';
+import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { tap, finalize } from 'rxjs/operators';
 import {
   ANALYTIC_EVENT_TYPES,
@@ -36,8 +36,18 @@ import {
   AnalyticsEvent,
   EditItemCar,
   ListItemCar,
-} from '../../core/analytics/analytics-constants';
-import { whitespaceValidator } from '../../core/form-validators/formValidators.func';
+} from '@core/analytics/analytics-constants';
+import { whitespaceValidator } from '@core/form-validators/formValidators.func';
+import { UploadService } from '../drop-area/upload.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ITEM_TYPES } from '@core/item/item';
+import {
+  OUTPUT_TYPE,
+  PendingFiles,
+  UPLOAD_ACTION,
+  UploadFile,
+  UploadOutput,
+} from '@shared/uploader/upload.interface';
 
 @Component({
   selector: 'tsl-upload-car',
@@ -62,13 +72,13 @@ export class UploadCarComponent implements OnInit {
     { value: 'GBP', label: '£' },
   ];
   public loading: boolean;
-  uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   private oldFormValue: any;
   public currentYear = new Date().getFullYear();
   public isUrgent = false;
   public customMake = false;
   public customVersion = false;
   public uploadCompletedPercentage = 0;
+  public pendingFiles: PendingFiles;
 
   isLoadingModels: boolean;
   isLoadingYears: boolean;
@@ -85,7 +95,8 @@ export class UploadCarComponent implements OnInit {
     private analyticsService: AnalyticsService,
     private userService: UserService,
     private subscriptionService: SubscriptionsService,
-    private popoverConfig: NgbPopoverConfig
+    private popoverConfig: NgbPopoverConfig,
+    private uploadService: UploadService
   ) {
     this.uploadForm = fb.group({
       id: '',
@@ -166,6 +177,7 @@ export class UploadCarComponent implements OnInit {
           exchange_allowed: this.item.saleConditions?.exchange_allowed,
           shipping_allowed: this.item.saleConditions?.shipping_allowed,
         },
+        images: this.uploadService.convertImagesToFiles(this.item.images),
       },
       { emitEvent: false }
     );
@@ -368,28 +380,61 @@ export class UploadCarComponent implements OnInit {
     });
   }
 
-  onSubmit(): void {
+  public onSubmit(): void {
     if (this.uploadForm.valid) {
       this.loading = true;
-      this.uploadEvent.emit({
-        type: this.item ? 'update' : 'create',
-        values: this.uploadForm.value,
-      });
+      this.item ? this.updateItem() : this.createItem();
     } else {
-      this.uploadForm.markAsPending();
-      if (!this.uploadForm.get('location.address').valid) {
-        this.uploadForm.get('location.address').markAsDirty();
-      }
-      if (!this.uploadForm.get('images').valid) {
-        this.errorsService.i18nError('missingImageError');
-      } else {
-        this.errorsService.i18nError('formErrors', '', 'formErrorsTitle');
-        this.onValidationError.emit();
-      }
+      this.invalidForm();
     }
   }
 
-  onUploaded(uploadEvent: any) {
+  private invalidForm(): void {
+    this.uploadForm.markAsPending();
+    if (!this.uploadForm.get('location.address').valid) {
+      this.uploadForm.get('location.address').markAsDirty();
+    }
+    if (!this.uploadForm.get('images').valid) {
+      this.errorsService.i18nError('missingImageError');
+    } else {
+      this.errorsService.i18nError('formErrors', '', 'formErrorsTitle');
+      this.onValidationError.emit();
+    }
+  }
+
+  private createItem(): void {
+    this.uploadService
+      .createItem(this.uploadForm.value, ITEM_TYPES.CARS)
+      .subscribe(
+        (response: UploadOutput) => {
+          this.updateUploadPercentage(response.percentage);
+          if (response.pendingFiles) {
+            this.pendingFiles = response.pendingFiles;
+          }
+          if (response.type === OUTPUT_TYPE.done) {
+            this.onUploaded(response.file.response, UPLOAD_ACTION.created);
+          }
+        },
+        (error: HttpErrorResponse) => {
+          this.onError(error);
+        }
+      );
+  }
+
+  private updateItem(): void {
+    this.uploadService
+      .updateItem(this.uploadForm.value, ITEM_TYPES.CARS)
+      .subscribe(
+        (response: CarContent) => {
+          this.onUploaded(response, UPLOAD_ACTION.updated);
+        },
+        (error: HttpErrorResponse) => {
+          this.onError(error);
+        }
+      );
+  }
+
+  onUploaded(response: CarContent, action: UPLOAD_ACTION) {
     this.onFormChanged.emit(false);
     if (this.item) {
       this.trackingService.track(
@@ -399,50 +444,58 @@ export class UploadCarComponent implements OnInit {
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
     }
-    if (this.isUrgent && uploadEvent.action !== 'createdOnHold') {
+    if (this.isUrgent && !response.flags.onhold) {
       this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, {
         category: this.uploadForm.value.category_id,
       });
-      uploadEvent.action = 'urgent';
+      action = UPLOAD_ACTION.urgent;
       localStorage.setItem('transactionType', 'urgent');
     }
 
-    if (uploadEvent.action === 'createdOnHold') {
+    if (response.flags.onhold) {
       this.subscriptionService.getUserSubscriptionType().subscribe((type) => {
-        this.redirectToList(uploadEvent, type);
+        this.redirectToList(UPLOAD_ACTION.createdOnHold, response, type);
       });
     } else {
-      this.redirectToList(uploadEvent);
+      this.redirectToList(action, response);
     }
   }
 
-  public redirectToList(uploadEvent, type = 1) {
-    const params = this.getRedirectParams(uploadEvent, type);
+  public redirectToList(action: UPLOAD_ACTION, response: CarContent, type = 1) {
+    const params = this.getRedirectParams(action, response, type);
 
-    this.trackEditOrUpload(!!this.item, uploadEvent.response).subscribe(() =>
+    this.trackEditOrUpload(!!this.item, response).subscribe(() =>
       this.router.navigate(['/catalog/list', params])
     );
   }
 
-  private getRedirectParams(uploadEvent, userType: number) {
+  private getRedirectParams(
+    action: UPLOAD_ACTION,
+    response: CarContent,
+    userType: number
+  ) {
     const params: any = {
-      [uploadEvent.action]: true,
-      itemId: uploadEvent.response.id || uploadEvent.response,
+      [action]: true,
+      itemId: response.id,
     };
 
     if (this.item && this.item.flags.onhold) {
       params.onHold = true;
     }
 
-    if (uploadEvent.action === 'createdOnHold') {
+    if (action === UPLOAD_ACTION.createdOnHold) {
       params.onHoldType = userType;
     }
 
     return params;
   }
 
-  public onError(response: any) {
+  public onError(error: HttpErrorResponse | any): void {
     this.loading = false;
+    this.errorsService.i18nError(
+      'serverError',
+      error.message ? error.message : ''
+    );
     if (this.item) {
       this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_ERROR, {
         category: this.uploadForm.value.category_id,
@@ -588,6 +641,48 @@ export class UploadCarComponent implements OnInit {
   public onIsYearsNeeded(): void {
     if (!this.years) {
       this.getYears();
+    }
+  }
+
+  public onDeleteImage(imageId: string): void {
+    this.uploadService.onDeleteImage(this.item.id, imageId).subscribe(
+      () => this.removeFileFromForm(imageId),
+      (error: HttpErrorResponse) => this.onError(error)
+    );
+  }
+
+  private removeFileFromForm(imageId: string): void {
+    const imagesControl: FormControl = this.uploadForm.get(
+      'images'
+    ) as FormControl;
+    const images: UploadFile[] = imagesControl.value;
+    imagesControl.patchValue(images.filter((image) => image.id !== imageId));
+  }
+
+  public onOrderImages(): void {
+    const images = this.uploadForm.get('images').value;
+    this.uploadService.updateOrder(images, this.item.id).subscribe(
+      () => null,
+      (error: HttpErrorResponse) => this.onError(error)
+    );
+  }
+
+  public onAddImage(file: UploadFile): void {
+    if (this.item) {
+      this.uploadService
+        .uploadSingleImage(file, this.item.id, ITEM_TYPES.CARS)
+        .subscribe(
+          (value: UploadOutput) => {
+            if (value.type === OUTPUT_TYPE.done) {
+              this.errorsService.i18nSuccess('imageUploaded');
+              file.id = value.file.response;
+            }
+          },
+          (error: HttpErrorResponse) => {
+            this.removeFileFromForm(file.id);
+            this.onError(error);
+          }
+        );
     }
   }
 }

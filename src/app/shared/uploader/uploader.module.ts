@@ -8,6 +8,5 @@ import { UploaderService } from './uploader.service';
   imports: [CommonModule],
   declarations: [FileDropDirective, FileSelectDirective],
   exports: [FileDropDirective, FileSelectDirective],
-  providers: [UploaderService],
 })
 export class UploaderModule {}

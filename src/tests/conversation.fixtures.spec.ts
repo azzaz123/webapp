@@ -1,11 +1,11 @@
+import { Conversation } from '@core/conversation/conversation';
+import { ConversationResponse } from '@core/conversation/conversation-response.interface';
+import { SurveyResponse } from '@core/conversation/lead-response.interface';
+import { Item } from '@core/item/item';
+import { User } from '@core/user/user';
+import { ITEM_ID, ITEM_LEGACY_ID, MOCK_ITEM } from './item.fixtures.spec';
 import { MESSAGE_MAIN } from './message.fixtures.spec';
 import { MOCK_USER, USER_ID } from './user.fixtures.spec';
-import { ITEM_ID, ITEM_LEGACY_ID, MOCK_ITEM } from './item.fixtures.spec';
-import { Conversation } from '../app/core/conversation/conversation';
-import { User } from '../app/core/user/user';
-import { Item } from '../app/core/item/item';
-import { ConversationResponse } from '../app/core/conversation/conversation-response.interface';
-import { SurveyResponse } from '../app/core/conversation/lead-response.interface';
 
 export const CONVERSATION_ID: string = MESSAGE_MAIN.thread;
 export const CONVERSATION_PHONE = '123.456.789';
