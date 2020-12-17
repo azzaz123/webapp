@@ -1216,4 +1216,10 @@
   <translation id="ProfileTabsPublishedLabel">En venta</translation>
   <translation id="ProfileTabsReviewsLabel">Opiniones</translation>
   <translation id="ProfileTabsInfoLabel">Info</translation>
+  <translation id="ProfileInfoVerified">Información verificada</translation>
+  <translation id="ProfileInfoNumber">Número de teléfono</translation>
+  <translation id="ProfileInfoRatio">Ratio de respuesta</translation>
+  <translation id="ProfileInfoMemberSince">Miembro desde</translation>
+  <translation id="ProfileInfoSchedule">Horario de apertura</translation>
+  <translation id="ProfileInfoLocation">Ubicación</translation>
 </translationbundle>

@@ -1,0 +1,11 @@
+@import '~style/common';
+
+.UserInfo {
+  background-color: $white;
+  border-radius: $border-radius;
+  font-size: $font-size-s;
+
+  .bold-title {
+    font-weight: $font-weight-chunky;
+  }
+}
