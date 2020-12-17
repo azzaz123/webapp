@@ -12,13 +12,13 @@ Parameters:
     Description: 'Bucket where the EN webapp resides'
     Type: String
   HostES:
-    Description: 'URL to access to it' # todo: hostedzone with public domain?
+    Description: 'URL to access to it'
     Type: String
   HostEN:
-    Description: 'URL to access to it' # todo: hostedzone with public domain?
+    Description: 'URL to access to it'
     Type: String
   HostedZoneName:
-    Description: 'Name of the hosted zone' # todo: hostedzone with public domain?
+    Description: 'Name of the hosted zone'
     Type: String
   Certificate:
     Description: 'Acm Certificate'
