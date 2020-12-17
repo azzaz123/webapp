@@ -21,11 +21,11 @@ import {
   PRODUCTS_RESPONSE_PACKS,
   ORDER_CART_EXTRAS_PRO,
   WALLACREDITS_PACKS_RESPONSE,
-} from '../../../tests/payments.fixtures.spec';
+} from '@fixtures/payments.fixtures.spec';
 import { PerksModel } from './payment.model';
-import { PRODUCT_RESPONSE } from '../../../tests/item.fixtures.spec';
+import { PRODUCT_RESPONSE } from '@fixtures/item.fixtures.spec';
 import { CREDITS_FACTOR, CREDITS_PACK_ID, Pack } from './pack';
-import { environment } from '../../../environments/environment';
+import { environment } from '@environments/environment';
 import {
   TestRequest,
   HttpTestingController,

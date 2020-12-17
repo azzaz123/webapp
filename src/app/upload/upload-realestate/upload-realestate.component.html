@@ -19,7 +19,7 @@
             <div class="form-group">
               <div class="selector-container">
                 <label ngbButtonLabel class="btn selector" *ngFor="let operation of operations">
-                  <div class="selector-icon">
+                  <div class="selector-icon" [class.error-required]="hasErrorToShow('operation')">
                     <input ngbButton type="radio" name="operation" [value]="operation.id" />
                     <tsl-svg-icon src="/assets/icons/{{operation.icon_id}}.svg"></tsl-svg-icon>
                   </div>
@@ -47,7 +47,7 @@
             <div class="form-group">
               <div class="selector-container">
                 <label ngbButtonLabel class="selector" *ngFor="let type of types">
-                  <div class="selector-icon">
+                  <div class="selector-icon" [class.error-required]="hasErrorToShow('type')">
                     <input ngbButton type="radio" name="type" [value]="type.id" />
                     <tsl-svg-icon src="/assets/icons/{{type.icon_id}}.svg"></tsl-svg-icon>
                   </div>
@@ -190,7 +190,7 @@
               uploadForm.value.location.approximated_location
             "></tsl-here-maps>
           <div class="fake-map" *ngIf="!coordinates"></div>
-          <p i18n>
+          <p i18n class="my-2">
             This is the spot where your space is located. This location could be
             different from your profile location.
           </p>
@@ -217,9 +217,9 @@
       }" i18n>
       Photos
     </h2>
-    <tsl-drop-area [uploadEvent]="uploadEvent" type="real_estate" (onUploaded)="onUploaded($event)"
-      (onError)="onError($event)" (onUploadPercentageChange)="updateUploadPercentage($event)" formControlName="images"
-      [maxUploads]="10" [images]="item?.images" [itemId]="item?.id"></tsl-drop-area>
+    <tsl-drop-area 
+      (onError)="onError($event)" formControlName="images" [isUpdatingItem]="!!item" (onOrderImages)="onOrderImages()" (onDeleteImage)="onDeleteImage($event)" (onAddImage)="onAddImage($event)"
+      ></tsl-drop-area>
     <ng-template #coachmarkPictures>
       <div i18n>
         You can drag and drop your photos here. Also drag and drop to change the
@@ -230,11 +230,12 @@
   <tsl-urgent-checkbox [categoryId]="13000" [urgentPrice]="urgentPrice" (urgentSelected)="selectUrgent($event)">
   </tsl-urgent-checkbox>
   <div class="row">
-    <div class="col-12 col-md-4">
+    <div class="col-12 col-md-5">
       <tsl-button [type]="'submit'" className="btn-primary btn-block" [disabled]="loading">
         <span *ngIf="!item && !loading" i18n>Post Ad</span>
         <span *ngIf="item && !loading" i18n>Update</span>
-        <span *ngIf="loading" i18n>Uploading... {{ uploadCompletedPercentage }}%</span>
+        <span *ngIf="loading && !pendingFiles" i18n="@@UploadProductSubmitLoading">Uploading... {{ uploadCompletedPercentage }}%</span>
+        <span *ngIf="loading && pendingFiles" i18n="@@UploadImagesSubmitLoading">Uploading image... {{ pendingFiles.currentUploading}}/{{pendingFiles.totalFiles}}</span>
       </tsl-button>
     </div>
     <div class="col-md-3 d-none d-md-block">

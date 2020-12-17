@@ -1,38 +1,39 @@
-import { of, throwError, Subject } from 'rxjs';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import {
   ComponentFixture,
   fakeAsync,
   TestBed,
   waitForAsync,
 } from '@angular/core/testing';
-import { AppComponent } from './app.component';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie';
-import { TrackingService } from '@core/tracking/tracking.service';
-import { MessageService } from './chat/service';
-import { DesktopNotificationsService } from '@core/desktop-notifications/desktop-notifications.service';
-import { EventService } from '@core/event/event.service';
-import { ErrorsService } from '@core/errors/errors.service';
-import { UserService } from '@core/user/user.service';
-import { MOCK_USER, USER_ID } from '../tests/user.fixtures.spec';
-import { I18nService } from '@core/i18n/i18n.service';
-import { MockTrackingService } from '../tests/tracking.fixtures.spec';
+
+import { InboxService } from '@features/chat/core/inbox/inbox.service';
+import { MessageService } from '@features/chat/core/message/message.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ConnectionService } from '@core/connection/connection.service';
-import { CallsService } from '@core/conversation/calls.service';
-import { MOCK_ITEM_V3 } from '../tests/item.fixtures.spec';
-import { PaymentService } from '@core/payments/payment.service';
-import { RealTimeService } from '@core/message/real-time.service';
-import { InboxService } from './chat/service';
-import { StripeService } from '@core/stripe/stripe.service';
-import { AnalyticsService } from '@core/analytics/analytics.service';
+import { CookieService } from 'ngx-cookie';
+import { of, Subject, throwError } from 'rxjs';
 import { MockAnalyticsService } from '../tests/analytics.fixtures.spec';
-import { DidomiService } from '@core/didomi/didomi.service';
-import { MockDidomiService } from '@core/didomi/didomi.service.spec';
-import { UuidService } from '@core/uuid/uuid.service';
+import { MOCK_ITEM_V3 } from '../tests/item.fixtures.spec';
+import { MockTrackingService } from '../tests/tracking.fixtures.spec';
+import { MOCK_USER, USER_ID } from '../tests/user.fixtures.spec';
+import { AppComponent } from './app.component';
+import { AnalyticsService } from './core/analytics/analytics.service';
+import { ConnectionService } from './core/connection/connection.service';
+import { CallsService } from './core/conversation/calls.service';
+import { DesktopNotificationsService } from './core/desktop-notifications/desktop-notifications.service';
+import { DidomiService } from './core/didomi/didomi.service';
+import { MockDidomiService } from './core/didomi/didomi.service.spec';
+import { ErrorsService } from './core/errors/errors.service';
+import { EventService } from './core/event/event.service';
+import { I18nService } from './core/i18n/i18n.service';
+import { RealTimeService } from './core/message/real-time.service';
+import { PaymentService } from './core/payments/payment.service';
+import { StripeService } from './core/stripe/stripe.service';
+import { TrackingService } from './core/tracking/tracking.service';
+import { UserService } from './core/user/user.service';
+import { UuidService } from './core/uuid/uuid.service';
 import { SwUpdate } from '@angular/service-worker';
 import * as moment from 'moment';
 import { PATH_EVENTS } from './app-routing-constants';

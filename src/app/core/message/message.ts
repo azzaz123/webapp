@@ -1,6 +1,6 @@
+import { MessageStatus, MessagePayload } from '@features/chat/core/model';
 import { Model } from '../resource/model.interface';
 import { User } from '../user/user';
-import { MessagePayload, MessageStatus } from '../../chat/model';
 
 export class Message implements Model {
   private _user: User;

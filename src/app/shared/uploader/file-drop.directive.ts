@@ -11,23 +11,27 @@ import {
   PLATFORM_ID,
 } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
-import {
-  NgUploaderOptions,
-  UploadInput,
-  UploadOutput,
-} from './upload.interface';
+import { NgUploaderOptions } from './upload.interface';
 import { Subscription } from 'rxjs';
-import { DomSanitizer } from '@angular/platform-browser';
-import { UploaderService } from './uploader.service';
+
+export enum FileDropActions {
+  DROP = 'drop',
+  DRAGOUT = 'dragOut',
+  DRAGOVER = 'dragOver',
+}
+
+export interface IFileDropAction {
+  action: FileDropActions;
+  files?: FileList;
+}
 
 @Directive({
   selector: '[tslFileDrop]',
 })
 export class FileDropDirective implements OnInit, OnDestroy {
-  @Input() uploadInput: EventEmitter<UploadInput>;
   @Input() options: NgUploaderOptions;
-  @Input() imageType: string;
-  @Output() uploadOutput: EventEmitter<UploadOutput>;
+  @Input() IMAGE_TYPE: string;
+  @Output() fileDropAction = new EventEmitter<IFileDropAction>();
 
   isServer: boolean = isPlatformServer(this.platform_id);
   el: HTMLInputElement;
@@ -38,11 +42,8 @@ export class FileDropDirective implements OnInit, OnDestroy {
 
   constructor(
     @Inject(PLATFORM_ID) private platform_id,
-    private elementRef: ElementRef,
-    private sanitizer: DomSanitizer,
-    private upload: UploaderService
+    private elementRef: ElementRef
   ) {
-    this.uploadOutput = new EventEmitter<UploadOutput>();
     this.isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
     this.isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
     this.isChrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
@@ -54,20 +55,6 @@ export class FileDropDirective implements OnInit, OnDestroy {
     }
 
     this.el = this.elementRef.nativeElement;
-
-    this.upload.options = this.options;
-
-    this.upload.serviceEvents.subscribe((event: UploadOutput) => {
-      this.uploadOutput.emit(event);
-    });
-
-    if (this.uploadInput instanceof EventEmitter) {
-      this.subscription = this.upload.initInputEvents(
-        this.uploadInput,
-        this.imageType
-      );
-    }
-
     this.el.addEventListener('drop', this.stopEvent, false);
     this.el.addEventListener('dragenter', this.stopEvent, false);
     this.el.addEventListener('dragover', this.stopEvent, false);
@@ -77,11 +64,6 @@ export class FileDropDirective implements OnInit, OnDestroy {
     if (this.isServer) {
       return;
     }
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-    this.upload.files = [];
-    this.upload.uploads = [];
   }
 
   stopEvent = (e: Event) => {
@@ -93,10 +75,10 @@ export class FileDropDirective implements OnInit, OnDestroy {
   public onDrop(e: any) {
     e.stopPropagation();
     e.preventDefault();
-
-    const event: UploadOutput = { type: 'drop' };
-    this.uploadOutput.emit(event);
-    this.upload.handleFiles(e.dataTransfer.files);
+    this.fileDropAction.emit({
+      action: FileDropActions.DROP,
+      files: e.dataTransfer.files,
+    });
   }
 
   @HostListener('dragover', ['$event'])
@@ -109,8 +91,7 @@ export class FileDropDirective implements OnInit, OnDestroy {
         e.dataTransfer.effectAllowed === 'uninitialized') &&
       !this.isSafari
     ) {
-      const event: UploadOutput = { type: 'dragOver' };
-      this.uploadOutput.emit(event);
+      this.fileDropAction.emit({ action: FileDropActions.DRAGOVER });
     }
   }
 
@@ -119,8 +100,6 @@ export class FileDropDirective implements OnInit, OnDestroy {
     if (!e) {
       return;
     }
-
-    const event: UploadOutput = { type: 'dragOut' };
-    this.uploadOutput.emit(event);
+    this.fileDropAction.emit({ action: FileDropActions.DRAGOUT });
   }
 }

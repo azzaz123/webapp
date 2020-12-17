@@ -1,42 +1,40 @@
-import { CookieModule } from 'ngx-cookie';
+import { CommonModule } from '@angular/common';
 import {
   ModuleWithProviders,
   NgModule,
   Optional,
   SkipSelf,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
-import { LoggedGuard } from './user/logged.guard';
-import { UserModule } from './user/user.module';
-import { ItemModule } from './item/item.module';
-import { EventService } from './event/event.service';
-import { TrackingModule } from './tracking/tracking.module';
-import { I18nService } from './i18n/i18n.service';
-import { ErrorsService } from './errors/errors.service';
-import { TutorialService } from './tutorial/tutorial.service';
-import { AccessTokenService } from './http/access-token.service';
+import { BlockUserXmppService } from '@features/chat/core/block-user/block-user-xmpp.service';
+import { BlockUserService } from '@features/chat/core/block-user/block-user.service';
+import { InboxService } from '@features/chat/core/inbox/inbox.service';
+import { MessageService } from '@features/chat/core/message/message.service';
+import { CookieModule } from 'ngx-cookie';
+import { ConnectionService } from './connection/connection.service';
 import { ConversationModule } from './conversation/conversation.module';
 import { DesktopNotificationsService } from './desktop-notifications/desktop-notifications.service';
-import { PaymentService } from './payments/payment.service';
-import { XmppService } from './xmpp/xmpp.service';
-import { ReviewService } from './review/review.service';
-import { ConnectionService } from './connection/connection.service';
+import { DidomiService } from './didomi/didomi.service';
+import { ErrorsService } from './errors/errors.service';
+import { EventService } from './event/event.service';
+import { AccessTokenService } from './http/access-token.service';
+import { I18nService } from './i18n/i18n.service';
+import { ItemModule } from './item/item.module';
 import { RealTimeService } from './message/real-time.service';
+import { MobileBlockerModule } from './mobile-blocker/mobile-blocker.module';
+import { PaymentService } from './payments/payment.service';
 import { ProfileModule } from './profile/profile.module';
 import { ProfileService } from './profile/profile.service';
-import {
-  BlockUserService,
-  BlockUserXmppService,
-  InboxService,
-  MessageService,
-} from '../chat/service';
+import { ReviewService } from './review/review.service';
 import { StripeService } from './stripe/stripe.service';
 import { SubscriptionsService } from './subscriptions/subscriptions.service';
-import { MobileBlockerModule } from './mobile-blocker/mobile-blocker.module';
-import { DevelopmentGuard } from './user/development.guard';
-import { DidomiService } from './didomi/didomi.service';
+import { TrackingModule } from './tracking/tracking.module';
 import { TrustAndSafetyService } from './trust-and-safety/trust-and-safety.service';
+import { TutorialService } from './tutorial/tutorial.service';
+import { DevelopmentGuard } from './user/development.guard';
+import { LoggedGuard } from './user/logged.guard';
+import { UserModule } from './user/user.module';
+import { XmppService } from './xmpp/xmpp.service';
+import { InvoiceService } from './invoice/invoice.service';
 
 @NgModule({
   imports: [
@@ -85,6 +83,7 @@ export class CoreModule {
         SubscriptionsService,
         DidomiService,
         TrustAndSafetyService,
+        InvoiceService,
       ],
     };
   }

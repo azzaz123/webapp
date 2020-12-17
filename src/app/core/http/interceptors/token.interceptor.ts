@@ -10,7 +10,7 @@ import { Observable, of } from 'rxjs';
 
 import { AccessTokenService } from '../access-token.service';
 import { environment } from '../../../../environments/environment';
-import { LOGIN_ENDPOINT } from '../../user/user.service';
+import { LOGIN_ENDPOINT } from '@public/features/login/core/services/login.service';
 
 export const TOKEN_AUTHORIZATION_HEADER_NAME = 'Authorization';
 export const TOKEN_TIMESTAMP_HEADER_NAME = 'Timestamp';
@@ -27,16 +27,12 @@ export class TokenInterceptor implements HttpInterceptor {
     if (request.url.endsWith('.svg')) {
       return next.handle(request);
     }
-
-    if (
-      this.accessTokenService.accessToken ||
-      request.url === `${environment.baseUrl}${LOGIN_ENDPOINT}`
-    ) {
+    {
       const setHeaders: any = {};
 
       if (
         !request.headers.has(TOKEN_AUTHORIZATION_HEADER_NAME) &&
-        request.url !== `${environment.baseUrl}${LOGIN_ENDPOINT}`
+        !!this.accessTokenService.accessToken
       ) {
         setHeaders[
           TOKEN_AUTHORIZATION_HEADER_NAME
@@ -57,10 +53,6 @@ export class TokenInterceptor implements HttpInterceptor {
       }
       request = request.clone({ setHeaders });
       return next.handle(request);
-    } else {
-      return of(
-        new HttpResponse({ status: 401, statusText: 'Unauthorized', body: {} })
-      );
     }
   }
 }

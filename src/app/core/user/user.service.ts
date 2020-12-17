@@ -5,7 +5,6 @@ import { Inject, Injectable } from '@angular/core';
 import { PERMISSIONS, User } from './user';
 import { EventService } from '../event/event.service';
 import { Item } from '../item/item';
-import { LoginResponse } from './login-response.interface';
 import { UserLocation, UserResponse, Image } from './user-response.interface';
 import { BanReason } from '../item/ban-reason.interface';
 import { I18nService } from '../i18n/i18n.service';
@@ -24,13 +23,12 @@ import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { PhoneMethodResponse } from './phone-method.interface';
-import { InboxUser } from '../../chat/model/inbox-user';
-import { InboxItem } from '../../chat/model';
+
 import { APP_VERSION } from '../../../environments/version';
 import { UserReportApi } from './user-report.interface';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { InboxUser, InboxItem } from '@features/chat/core/model';
 
-export const LOGIN_ENDPOINT = 'shnm-portlet/api/v1/access.json/login3';
 export const LOGOUT_ENDPOINT = 'rest/logout';
 
 export const USER_BASE_ENDPOINT = 'api/v3/users/';
@@ -88,22 +86,6 @@ export class UserService {
 
   get isPro(): boolean {
     return this._user && this._user.featured;
-  }
-
-  public login(data: any): Observable<LoginResponse> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/x-www-form-urlencoded',
-    });
-    const body = new HttpParams()
-      .set('emailAddress', data.emailAddress)
-      .set('installationType', data.installationType)
-      .set('password', data.password);
-
-    return this.http
-      .post<LoginResponse>(`${environment.baseUrl}${LOGIN_ENDPOINT}`, body, {
-        headers,
-      })
-      .pipe(map((r) => this.storeData(r)));
   }
 
   public logout(redirect?: string) {
@@ -207,12 +189,6 @@ export class UserService {
         user.location.approximated_longitude || user.location.longitude,
     };
     return this.getDistanceInKilometers(currentUserCoord, userCoord);
-  }
-
-  private storeData(data: LoginResponse): LoginResponse {
-    this.accessTokenService.storeAccessToken(data.token);
-    this.event.emit(EventService.USER_LOGIN, data.token);
-    return data;
   }
 
   public getBanReasons(): Observable<BanReason[]> {

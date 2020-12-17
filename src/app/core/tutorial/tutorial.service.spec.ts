@@ -1,9 +1,8 @@
+import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { TestBed, inject } from '@angular/core/testing';
-
-import { TutorialService } from './tutorial.service';
-import { UserService } from '../user/user.service';
 import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
+import { UserService } from '../user/user.service';
+import { TutorialService } from './tutorial.service';
 
 describe('TutorialService', () => {
   let service: TutorialService;
