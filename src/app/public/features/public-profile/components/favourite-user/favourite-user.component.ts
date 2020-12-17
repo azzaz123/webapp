@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { PublicProfileService } from '@public/core/services/public-profile.service';
+import { PublicProfileService } from '@public/Features/public-profile/core/services/public-profile.service';
 
 @Component({
   selector: 'tsl-favourite-user',
