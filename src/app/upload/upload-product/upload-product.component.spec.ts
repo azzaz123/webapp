@@ -1323,19 +1323,6 @@ describe('UploadProductComponent', () => {
     }));
   });
 
-  describe('Select Urgent', () => {
-    it('should set as urgent when checkbox is selected', () => {
-      component.selectUrgent(true);
-
-      expect(component.isUrgent).toBeTruthy();
-    });
-    it('should set as not urgent when checkbox is unselected', () => {
-      component.selectUrgent(false);
-
-      expect(component.isUrgent).toBeFalsy();
-    });
-  });
-
   describe('when changing the upload category', () => {
     let categoryId: number;
 

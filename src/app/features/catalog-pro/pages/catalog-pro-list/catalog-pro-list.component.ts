@@ -13,7 +13,6 @@ import { UserService } from '@core/user/user.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import { CreditCardModalComponent } from '@features/catalog-pro/modals/credit-card-modal/credit-card-modal.component';
 import { ProBumpConfirmationModalComponent } from '@features/catalog-pro/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component';
-import { ProUrgentConfirmationModalComponent } from '@features/catalog-pro/modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component';
 import { OrderEvent } from '@features/catalog/components/selected-items/selected-product.interface';
 import { ItemChangeEvent } from '@features/catalog/core/item-change.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -95,10 +94,6 @@ export class CatalogProListComponent implements OnInit {
           this.cache = false;
           this.getItems();
           const modals = {
-            urgent: {
-              component: ProUrgentConfirmationModalComponent,
-              windowClass: 'urgent-confirm',
-            },
             bump: {
               component: ProBumpConfirmationModalComponent,
               windowClass: 'bump-confirm',
