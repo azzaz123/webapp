@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '@core/user/user';
+import { UserInfoResponse } from '@core/user/user-info.interface';
 import { Image } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
 import { forkJoin, Subscription } from 'rxjs';
@@ -36,8 +37,6 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     this.userId = this.route.snapshot.paramMap.get('id');
     if (this.userId) {
       this.getUserInfoAndStats();
-    } else {
-      this.resetInfo();
     }
   }
 
@@ -55,11 +54,5 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
         }
       )
     );
-  }
-
-  private resetInfo(): void {
-    // TODO: Check for default user		Date: 2020/12/16
-    this.userStats = null;
-    this.userInfo = null;
   }
 }
