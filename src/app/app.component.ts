@@ -13,11 +13,13 @@ import { MessageService } from '@features/chat/core/message/message.service';
 import * as moment from 'moment';
 import { CookieOptions, CookieService } from 'ngx-cookie';
 import {
+  concatMap,
   distinctUntilChanged,
   filter,
   finalize,
   map,
   mergeMap,
+  take,
 } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 import { AnalyticsService } from './core/analytics/analytics.service';
