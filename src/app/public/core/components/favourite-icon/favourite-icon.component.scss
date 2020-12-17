@@ -10,11 +10,13 @@
       }
     }
   }
-  &.active {
+  &--active {
     ::ng-deep {
-      path {
-        fill: $negative-main;
-        stroke: $negative-dark;
+      svg {
+        path {
+          fill: $negative-main;
+          stroke: $negative-dark;
+        }
       }
     }
   }
