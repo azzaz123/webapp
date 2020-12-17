@@ -131,35 +131,34 @@ describe('FavoritemsComponent', () => {
 
   describe('onActivate', () => {
     it('should remove the number of favorite after user removed favorite product', fakeAsync(() => {
-      let originalNumberOfFavorites: number = 5;
-      component.numberOfFavorites = originalNumberOfFavorites;
-      spyOn(component, 'onActivate').and.callThrough();
       spyOn(
         itemsPageStub.onFavoriteItemPageChange,
         'subscribe'
       ).and.returnValue(of(true));
+      spyOn(component, 'onActivate').and.callThrough();
 
       component.onActivate(itemsPageStub as ItemsPageComponent);
-      tick();
-      fixture.detectChanges();
 
-      expect(component.numberOfFavorites).toBe(originalNumberOfFavorites - 1);
+      tick();
+
+      expect(
+        itemsPageStub.onFavoriteItemPageChange.subscribe
+      ).toHaveBeenCalled();
     }));
 
     it('should remove the number of favorite after user removed favorite profile', fakeAsync(() => {
-      let originalNumberOfFavorites: number = 5;
-      component.numberOfFavorites = originalNumberOfFavorites;
-      spyOn(component, 'onActivate').and.callThrough();
       spyOn(
         profilesPageStub.onFavoriteProfilePageChange,
         'subscribe'
       ).and.returnValue(of(true));
+      spyOn(component, 'onActivate').and.callThrough();
 
       component.onActivate(profilesPageStub as ProfilesPageComponent);
       tick();
-      fixture.detectChanges();
 
-      expect(component.numberOfFavorites).toBe(originalNumberOfFavorites - 1);
+      expect(
+        profilesPageStub.onFavoriteProfilePageChange.subscribe
+      ).toHaveBeenCalled();
     }));
   });
 

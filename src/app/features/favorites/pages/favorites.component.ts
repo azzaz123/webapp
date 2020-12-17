@@ -29,7 +29,6 @@ export class FavoritesComponent implements OnInit {
         (isItemRemoved: boolean) => {
           if (isItemRemoved) {
             this.numberOfFavorites--;
-            console.log('read', this.numberOfFavorites, isItemRemoved);
           }
         }
       );
