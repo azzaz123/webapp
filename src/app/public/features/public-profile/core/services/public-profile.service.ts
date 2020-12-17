@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import {
   IsFavouriteBodyResponse,
   MarkAsFavouriteBodyRequest,
+  MarkAsFavouriteBodyResponse,
 } from '../interfaces/public-profile-request.interface';
 
 export const PROFILE_API_URL = 'api/v3/users/';
@@ -29,14 +30,18 @@ export class PublicProfileService {
       );
   }
 
-  public markAsFavourite(userId: string): Observable<any> {
+  public markAsFavourite(
+    userId: string
+  ): Observable<MarkAsFavouriteBodyResponse> {
     return this.http.put(
       `${environment.baseUrl}${PROFILE_API_URL}${userId}/${FAVOURITE_API_PATH}`,
       { favorited: true } as MarkAsFavouriteBodyRequest
     );
   }
 
-  public unmarkAsFavourite(userId: string): Observable<any> {
+  public unmarkAsFavourite(
+    userId: string
+  ): Observable<MarkAsFavouriteBodyResponse> {
     return this.http.put(
       `${environment.baseUrl}${PROFILE_API_URL}${userId}/${FAVOURITE_API_PATH}`,
       { favorited: false } as MarkAsFavouriteBodyRequest
