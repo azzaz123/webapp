@@ -1,11 +1,4 @@
 import { Component } from '@angular/core';
-import {
-  AnalyticsEvent,
-  ANALYTICS_EVENT_NAMES,
-  ANALYTIC_EVENT_TYPES,
-  ClickConfirmCloseSubscription,
-  SCREEN_IDS,
-} from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import {
@@ -15,6 +8,14 @@ import {
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { ToastService } from '@layout/toast/toast.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {
+  SCREEN_IDS,
+  AnalyticsEvent,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  ClickConfirmCloseSubscription,
+} from '@core/analytics/analytics-constants';
+import { ModalStatuses } from '../../core/modal.statuses.enum';
 
 @Component({
   selector: 'tsl-cancel-subscription-modal',
@@ -48,7 +49,7 @@ export class CancelSubscriptionModalComponent {
             type: 'success',
           });
           this.loading = false;
-          this.activeModal.close('success');
+          this.activeModal.close(ModalStatuses.SUCCESS);
         } else {
           this.loading = false;
           this.toastService.show({
@@ -58,7 +59,7 @@ export class CancelSubscriptionModalComponent {
               this.i18n.getTranslations('cancelSubscriptionErrorBody'),
             type: 'error',
           });
-          this.activeModal.close('fail');
+          this.activeModal.close(ModalStatuses.FAIL);
         }
       });
   }

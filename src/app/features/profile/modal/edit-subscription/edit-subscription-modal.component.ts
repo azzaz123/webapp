@@ -23,6 +23,7 @@ import {
   NgbModalRef,
 } from '@ng-bootstrap/ng-bootstrap';
 import { CancelSubscriptionModalComponent } from '../cancel-subscription/cancel-subscription-modal.component';
+import { ModalStatuses } from '../../core/modal.statuses.enum';
 
 @Component({
   selector: 'tsl-edit-subscription-modal',
@@ -66,8 +67,8 @@ export class EditSubscriptionModalComponent implements OnInit {
     this.analyticsService.trackPageView(pageView);
   }
 
-  public close() {
-    this.activeModal.close('update');
+  public close(status: ModalStatuses) {
+    this.activeModal.close(status);
   }
 
   public editSubscription() {
@@ -95,7 +96,7 @@ export class EditSubscriptionModalComponent implements OnInit {
             type: 'error',
           });
         }
-        this.close();
+        this.close(ModalStatuses.UPDATE);
       });
   }
 
@@ -110,14 +111,16 @@ export class EditSubscriptionModalComponent implements OnInit {
   }
 
   public cancelSubscription() {
-    this.close();
     const modal = CancelSubscriptionModalComponent;
     let modalRef: NgbModalRef = this.modalService.open(modal, {
       windowClass: 'review',
     });
     modalRef.componentInstance.subscription = this.subscription;
     modalRef.result.then(
-      (result: string) => (modalRef = null),
+      (result: ModalStatuses) => {
+        this.close(result);
+        modalRef = null;
+      },
       () => {}
     );
   }

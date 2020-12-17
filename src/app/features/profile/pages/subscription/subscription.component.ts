@@ -23,6 +23,7 @@ import { CheckSubscriptionInAppModalComponent } from '@features/profile/modal/ch
 import { ContinueSubscriptionModalComponent } from '@features/profile/modal/continue-subscription/continue-subscription-modal.component';
 import { DiscountAvailableUnsubscribeInAppModalComponent } from '@features/profile/modal/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component';
 import { EditSubscriptionModalComponent } from '@features/profile/modal/edit-subscription/edit-subscription-modal.component';
+import { ModalStatuses } from '@features/profile/core/modal.statuses.enum';
 import { UnsubscribeInAppFirstModal } from '@features/profile/modal/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { User } from 'app/core/user/user';
@@ -77,7 +78,7 @@ export class SubscriptionsComponent implements OnInit {
       this.subscriptions
     );
     modalRef.result.then(
-      (action: string) => {
+      (action: ModalStatuses) => {
         if (action) {
           this.loading = true;
           if (this.user && this.user.featured) {

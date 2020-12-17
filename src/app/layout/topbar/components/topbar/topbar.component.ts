@@ -15,11 +15,11 @@ import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
 import { MessageService } from '@features/chat/core/message/message.service';
+import { SuggesterResponse } from '@layout/topbar/core/interfaces/suggester-response.interface';
 import { APP_PATHS } from 'app/app-routing-constants';
 import { PUBLIC_PATHS } from 'app/public/public-routing-constants';
 import { CookieService } from 'ngx-cookie';
 import { Subscription } from 'rxjs';
-import { SuggesterResponse } from './suggester/suggester-response.interface';
 
 @Component({
   selector: 'tsl-topbar',
