@@ -26,6 +26,7 @@ import {
   CREATE_MOCK_INBOX_CONVERSATION,
   MOCK_INBOX_CONVERSATION_BASIC,
   MOCK_INBOX_CONVERSATION_WITH_MALICIOUS_USER,
+  MOCK_INBOX_CONVERSATION_WITH_UNSUBSCRIBED_USER,
 } from '@fixtures/inbox.fixtures.spec';
 import { RealTimeServiceMock } from '@fixtures/real-time.fixtures.spec';
 import { MockRemoteConsoleService } from '@fixtures/remote-console.fixtures.spec';
@@ -486,8 +487,7 @@ describe('CurrentConversationComponent', () => {
     });
 
     describe('and when other user is considered malicious', () => {
-      it('should show malicious modal', () => {
-        // TODO: Investigate more why fixture.detectChanges is not triggering component.ngOnChanges automatically
+      beforeEach(() => {
         component.currentConversation = MOCK_INBOX_CONVERSATION_WITH_MALICIOUS_USER;
         component.ngOnChanges({
           currentConversation: new SimpleChange(
@@ -498,13 +498,49 @@ describe('CurrentConversationComponent', () => {
         });
 
         fixture.detectChanges();
-
+      });
+      it('should show malicious modal', () => {
+        // TODO: Investigate more why fixture.detectChanges is not triggering component.ngOnChanges automatically
         expect(modalService.open).toHaveBeenCalledWith(
           MaliciousConversationModalComponent,
           {
             windowClass: 'warning',
           }
         );
+      });
+
+      it('should show red chat bubble with text indicates user is banned', () => {
+        const bannedChatBubbleElement: HTMLElement = fixture.elementRef.nativeElement.querySelector(
+          '#userIsBlocked'
+        );
+
+        expect(bannedChatBubbleElement).toBeTruthy();
+      });
+    });
+
+    describe('when user is not considered malicious but unsubscribed to wallapop', () => {
+      beforeEach(() => {
+        component.currentConversation = MOCK_INBOX_CONVERSATION_WITH_UNSUBSCRIBED_USER;
+        component.ngOnChanges({
+          currentConversation: new SimpleChange(
+            null,
+            MOCK_INBOX_CONVERSATION_WITH_UNSUBSCRIBED_USER,
+            false
+          ),
+        });
+        fixture.detectChanges();
+      });
+
+      it('should not show malicious modal', () => {
+        expect(modalService.open).not.toHaveBeenCalled();
+      });
+
+      it('should show blue chat bubble with text indicates user is unsubscribed', () => {
+        const bannedChatBubbleElement: HTMLElement = fixture.elementRef.nativeElement.querySelector(
+          '#userIsNotAvailableWarning'
+        );
+
+        expect(bannedChatBubbleElement).toBeTruthy();
       });
     });
 

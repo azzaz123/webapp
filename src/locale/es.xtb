@@ -777,6 +777,7 @@
   <translation id="6904447978553402020">Precio al contado</translation>
   <translation id="blockedPersonError">Has bloqueado a esta persona. Para seguir charlando, desbloquéala</translation>
   <translation id="userIsNotAvailableWarning">Esta persona ya no es miembro de wallapop</translation>
+  <translation id="userIsBlocked">Esta persona ha sido excluida de wallapop por actividad sospechosa.</translation>
   <translation id="itemIsNotAvailableWarning">El producto ha caducado o ha sido eliminado</translation>
   <translation id="itemIsUnpublishedWarning">El producto incumple las normas de convivencia de wallapop</translation>
   <translation id="securityWarning">Por razones de seguridad, nunca compartas datos privados</translation>
