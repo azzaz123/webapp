@@ -1,11 +1,11 @@
-<div *ngIf="userInfo && userStats">
+<div *ngIf="userInfo && userStats" class="mb-4">
   <div class="HeaderPro" *ngIf="userInfo.isPro">
     <tsl-user-cover [user]="userInfo"></tsl-user-cover>
   </div>
   <div class="container align-middle ProfileUser__container d-flex flex-column py-4">
     <div class="row px-2 px-md-4">
       <div class="col-12 col-sm-6 ProfileUser__info">
-        <div class="row">
+        <div class="d-flex">
           <tsl-user-avatar class="ProfileUser__info__image mr-3" [user]="userInfo" size="80"></tsl-user-avatar>
           <div class="wrapper">
             <h3>{{userInfo.microName}}</h3>
@@ -20,7 +20,7 @@
           </div>
         </div>
       </div>
-      <div class="col-12 col-sm-6">
+      <div class="col-12 col-sm-6 mt-4 mt-md-0">
         <tsl-user-stats [userStats]="userStats" [userInfo]="userInfo"></tsl-user-stats>
       </div>
     </div>

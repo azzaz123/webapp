@@ -1,7 +1,7 @@
 <div *ngIf="userStats && userStats.counters && userInfo" class="PorfileUser__stats">
     <div class="row align-left">
         <div class="col-6 col-sm-4 d-flex align-items-center" i18n="@@Sales">
-            <tsl-svg-icon src="/assets/icons/navigation_dashboard.svg"></tsl-svg-icon>
+            <tsl-svg-icon class="mr-1" src="/assets/icons/public-profile/stats.svg"></tsl-svg-icon>
             <strong class="mr-1">{{userStats.counters.sold}}</strong>
             Sales
         </div>
@@ -11,18 +11,21 @@
         </div>
     </div>
     <div i18n="@@Shipments" class="d-flex align-items-center">
-        <tsl-svg-icon src="/assets/icons/cm-shipping.svg"></tsl-svg-icon>
+        <tsl-svg-icon class="mr-1" src="/assets/icons/public-profile/box.svg"></tsl-svg-icon>
         <strong class="mr-1">{{userStats.counters.sells}}</strong>
         Shipments
     </div>
     <div class="PorfileUser__stats__location" class="d-flex align-items-center">
-        <tsl-svg-icon src="/assets/icons/location.svg"></tsl-svg-icon>{{userInfo.location.zip}}, {{userInfo.location.city}}
+        <tsl-svg-icon class="mr-1" src="/assets/icons/public-profile/location.svg"></tsl-svg-icon>
+        {{userInfo.location.zip}},
+        {{userInfo.location.city}}
         <a (click)="showLocation()" i18n="@@ShowLocation" class="ml-2">View location</a>
     </div>
     <div *ngIf="userInfo.isPro && (userInfo.extraInfo && userInfo.extraInfo.link)">
         <a href="{{ userInfo.extraInfo.link }}" target="_blank" i18n="@RedirectWeb">Go to the website</a>
     </div>
-    <div *ngIf="userInfo.isPro && (userInfo.extraInfo && userInfo.extraInfo.phone_number)" class="d-flex align-items-center">
+    <div *ngIf="userInfo.isPro && (userInfo.extraInfo && userInfo.extraInfo.phone_number)"
+        class="d-flex align-items-center">
         <a (click)="togglePhone()" i18n="@@ShowPhone">Show phone number</a>
         <div [hidden]="!isPhone" class="ml-2">{{userInfo.extraInfo.phone_number}}</div>
     </div>
