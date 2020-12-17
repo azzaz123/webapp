@@ -34,20 +34,20 @@ describe('SessionService', () => {
     spyOn(cookieService, 'put').and.callThrough();
   });
 
-  describe('onNewSession', () => {
-    describe('when no session cookie is present', () => {
-      it('should execute session callbacks and start session', () => {
+  describe('When the app initializes', () => {
+    describe("and it's a new session", () => {
+      it('should update newSession$ listeners', () => {
         const service = TestBed.inject(SessionService);
         const callback = jest.fn();
 
-        service.onNewSession(callback);
+        service.newSession$.subscribe(() => callback());
 
         expect(callback).toHaveBeenCalledTimes(1);
         expectInitSession();
       });
     });
 
-    describe('when cookie session is present', () => {
+    describe("and it's not a new session", () => {
       beforeEach(() => {
         cookies = {
           wallapop_keep_session: {
@@ -55,11 +55,11 @@ describe('SessionService', () => {
           },
         };
       });
-      it('should not execute session callbacks and keep session', () => {
+      it('should not update newSession$ listeners', () => {
         const service = TestBed.inject(SessionService);
         const callback = jest.fn();
 
-        service.onNewSession(callback);
+        service.newSession$.subscribe(() => callback());
 
         expect(callback).toHaveBeenCalledTimes(0);
         expectInitSession();

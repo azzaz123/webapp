@@ -39,6 +39,10 @@ import { PATH_EVENTS } from './app-routing-constants';
 import { SessionService } from '@core/session/session.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { DeviceService } from '@core/device/device.service';
+import {
+  ANALYTIC_EVENT_TYPES,
+  ANALYTICS_EVENT_NAMES,
+} from '@core/analytics/analytics-constants';
 
 jest.mock('moment');
 
@@ -585,6 +589,43 @@ describe('App', () => {
       fixture.detectChanges();
 
       expect(el.querySelector(sidebarSelector)).toBeFalsy();
+    });
+  });
+
+  describe('When the app initializes', () => {
+    it('should send Open Wallapop if user has a new session', () => {
+      spyOn(analyticsService, 'trackEvent');
+
+      component.ngOnInit();
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith({
+        attributes: {
+          currentUrl: 'http://localhost/',
+          refererUrl: '',
+          webDeviceId: undefined,
+          webPlatformType: 'desktop',
+        },
+        eventType: ANALYTIC_EVENT_TYPES.Other,
+        name: ANALYTICS_EVENT_NAMES.OpenWallapop,
+      });
+    });
+
+    it('should not send Open Wallapop if has an old session', () => {
+      cookieService.put('wallapop_keep_session', 'true');
+      spyOn(analyticsService, 'trackEvent');
+
+      component.ngOnInit();
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith({
+        attributes: {
+          currentUrl: 'http://localhost/',
+          refererUrl: '',
+          webDeviceId: undefined,
+          webPlatformType: 'desktop',
+        },
+        eventType: ANALYTIC_EVENT_TYPES.Other,
+        name: ANALYTICS_EVENT_NAMES.OpenWallapop,
+      });
     });
   });
 });
