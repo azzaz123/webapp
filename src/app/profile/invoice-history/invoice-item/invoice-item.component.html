@@ -13,9 +13,8 @@
             <div class="InvoiceItem__info-title date">{{ invoice.date | date: 'd LLL yyyy'}}</div>
           </div>
           <div class="col-12 col-md-3 ml-auto d-md-flex align-items-center justify-content-center text-center">
-            <tsl-button [disabled]="!active" [className]="invoice.invoice_generated ? 'btn-outline-primary' : 'basic'"
-            [loading]="loading"
-            classLoading="grey" 
+            <tsl-svg-icon  *ngIf="loading" src="/assets/icons/spinner.svg" class="spinner grey"></tsl-svg-icon>
+            <tsl-button  *ngIf="!loading"  [disabled]="!active" [className]="invoice.invoice_generated ? 'btn-outline-primary' : 'basic'"
             (click)="handleInvoice($event, invoice)" 
             >
             <span i18n="@@RequestInvoice" *ngIf="!invoice.invoice_generated">Request invoice</span>

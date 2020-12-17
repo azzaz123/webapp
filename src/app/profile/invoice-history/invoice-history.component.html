@@ -1,31 +1,39 @@
 <div class="box profile-box">
   <div class="InvoiceHistory">
-    <div class="row mb-2 mb-md-4">
-      <div class="col-12">
         <h3 i18n="@@InvoiceHistory">Invoice history</h3>
-            <div *ngIf="!invoiceTransactions || (invoiceTransactions && !invoiceTransactions.length)">
-              <img class="InvoiceHistory__feedback" src="/assets/images/empty-invoices-placeholder.svg"/>
-              <div class="content">
-                <span [hidden]="!loading" i18n="@@LoadingData">We are loading your invoice history...</span>
-                <span *ngIf="isErrorLoading" i18n="@@NotLoadedInvoices">Sorry, we cannot load your invoices at this time. Please try again later.</span>
-                <span i18n="@@EmptyHistory" *ngIf="isShown('EmptyHistory')">Your history is empty.</span>
-                <span i18n="@@NotOldInvoices" *ngIf="isShown('NotOldInvoices')">You don't have any old invoices. Fill in the invoicing data for future purchases.</span>
-              </div>
-            </div>
+        <div>
+          <span i18n="@@InvoiceHistoryDescription" class="InvoiceHistory__description">
+            For now, you can only view or download invoices or credit memos from your subscriptions.
+          </span>
+        </div>
+    <div class="InvoiceHistory__tabs">
+      <tsl-button [className]="getButtonClass(filterInvoices.ALL)" (click)="onChangeFilter(filterInvoices.ALL)" i18n="@@InvoiceHistoryAll">All</tsl-button>
+      <tsl-button [className]="getButtonClass(filterInvoices.INVOICES)" (click)="onChangeFilter(filterInvoices.INVOICES)" i18n="@@InvoiceHistoryInvoices">Invoices</tsl-button>
+      <tsl-button [className]="getButtonClass(filterInvoices.CREDIT)" (click)="onChangeFilter(filterInvoices.CREDIT)" i18n="@@InvoiceHistoryCredit">Credit memos</tsl-button>
+    </div>
+    <div *ngIf="!filteredTransactions?.length; else showTransactions">
+      <img class="InvoiceHistory__feedback" src="/assets/images/empty-invoices-placeholder.svg"/>
+      <div class="content">
+        <span *ngIf="loading" i18n="@@LoadingData">We are loading your invoice history...</span>
+        <span *ngIf="isErrorLoading" i18n="@@NotLoadedInvoices">Sorry, we cannot load your invoices at this time. Please try again later.</span>
+        <span i18n="@@EmptyHistory" *ngIf="isShown('EmptyHistory')">Your history is empty.</span>
+        <span i18n="@@NotOldInvoices" *ngIf="isShown('NotOldInvoices')">You don't have any old invoices. Fill in the invoicing data for future purchases.</span>
       </div>
     </div>
-    <tsl-invoice-item 
-    *ngFor="let invoice of sortedInvoices | slice:0:limit"
-    [invoice]="invoice"
-    [active]="active"
-    >
-    </tsl-invoice-item>
-    <div class="InvoiceHistory__load-more-container" *ngIf="showLoadMore()">
-      <a class="load-more">
-        <tsl-button className="btn-outline-primary" (click)="loadMore()" i18n="@@loadMoreButton"
-        >Load more
-        </tsl-button>
-      </a>
-    </div>
+    <ng-template #showTransactions>
+      <tsl-invoice-item 
+      *ngFor="let invoice of filteredTransactions | slice:0:filterConfig[selectedFilter].limit"
+      [invoice]="invoice"
+      [active]="active"
+      >
+      </tsl-invoice-item>
+      <div class="InvoiceHistory__load-more-container" *ngIf="showLoadMore()">
+        <a class="load-more">
+          <tsl-button className="btn-outline-primary" (click)="loadMore()" i18n="@@loadMoreButton"
+          >Load more
+          </tsl-button>
+        </a>
+      </div>
+    </ng-template>
   </div>
 </div>
