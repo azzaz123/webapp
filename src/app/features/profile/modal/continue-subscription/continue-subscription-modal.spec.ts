@@ -7,9 +7,9 @@ import {
   ClickCancelCloseSubscription,
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
+import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { I18nService } from '@core/i18n/i18n.service';
-import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MAPPED_SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
@@ -17,6 +17,7 @@ import { ToastService } from '@layout/toast/toast.service';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 import { ContinueSubscriptionModalComponent } from './continue-subscription-modal.component';
+import { ModalStatuses } from '@features/profile/core/modal.statuses.enum';
 
 describe('ContinueSubscriptionModalComponent', () => {
   let component: ContinueSubscriptionModalComponent;
@@ -84,7 +85,7 @@ describe('ContinueSubscriptionModalComponent', () => {
 
       component.close();
 
-      expect(activeModal.close).toHaveBeenCalledWith('continue');
+      expect(activeModal.close).toHaveBeenCalledWith(ModalStatuses.CONTINUE);
     });
   });
 

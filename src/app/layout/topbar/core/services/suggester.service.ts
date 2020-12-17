@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { SuggesterResponse } from './suggester-response.interface';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
+import { environment } from '@environments/environment';
+import { SuggesterResponse } from '../interfaces/suggester-response.interface';
 
 export const SUGGESTER_ENDPOINT = 'api/v3/suggesters/search';
 

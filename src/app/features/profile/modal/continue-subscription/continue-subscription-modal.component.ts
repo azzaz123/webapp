@@ -15,6 +15,7 @@ import {
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { ToastService } from '@layout/toast/toast.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalStatuses } from '../../core/modal.statuses.enum';
 
 @Component({
   selector: 'tsl-continue-subscription-modal',
@@ -34,7 +35,7 @@ export class ContinueSubscriptionModalComponent {
   ) {}
 
   public close() {
-    this.activeModal.close('continue');
+    this.activeModal.close(ModalStatuses.CONTINUE);
   }
 
   public continueSubscription() {

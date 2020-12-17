@@ -14,6 +14,7 @@ import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { ModalStatuses } from '@features/profile/core/modal.statuses.enum';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import {
   MAPPED_SUBSCRIPTIONS,
@@ -122,12 +123,12 @@ describe('EditSubscriptionModalComponent', () => {
   });
 
   describe('close', () => {
-    it('should close the modal and redirect to the profile', () => {
+    it('should close the modal with modal status', () => {
       spyOn(activeModal, 'close');
 
-      component.close();
+      component.close(ModalStatuses.UPDATE);
 
-      expect(activeModal.close).toHaveBeenCalled();
+      expect(activeModal.close).toHaveBeenCalledWith(ModalStatuses.UPDATE);
     });
   });
 

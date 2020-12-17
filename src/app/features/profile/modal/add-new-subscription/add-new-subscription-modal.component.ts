@@ -51,6 +51,7 @@ import {
   NgbModalRef,
 } from '@ng-bootstrap/ng-bootstrap';
 import { IOption } from 'app/dropdown/utils/option.interface';
+import { ModalStatuses } from '../../core/modal.statuses.enum';
 import { PaymentSuccessModalComponent } from '../payment-success/payment-success-modal.component';
 
 @Component({
@@ -127,7 +128,7 @@ export class AddNewSubscriptionModalComponent
   }
 
   public close() {
-    this.activeModal.close('add');
+    this.activeModal.close(ModalStatuses.ADD);
   }
 
   public addSubscription(paymentMethod: PaymentMethodResponse) {
