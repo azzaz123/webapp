@@ -8,10 +8,6 @@
   background-color: $white;
   border-radius: 0 0 $border-radius $border-radius;
   font-size: $font-size-s;
-  margin-bottom: $spacing-m;
-  .row {
-    margin: $spacing-ml 0;
-  }
 
   .user-number-reviews {
     font-size: $font-size-s;
@@ -22,13 +18,16 @@
 .ProfileUser__info {
   .ProfileUser__info__image {
     position: relative;
-    margin-right: $spacing-m;
     @include square(80px);
     background: $color-grey-light;
     border-radius: $spacing-xxxl;
   }
 }
 
-.ProfileUser__stats {
-  margin-top: $spacing-l;
+.ProBadge {
+  .ProBadge-icon {
+    tsl-svg-icon {
+      @include square(14px);
+    }
+  }
 }

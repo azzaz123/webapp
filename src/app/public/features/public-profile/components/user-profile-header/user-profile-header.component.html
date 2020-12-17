@@ -2,27 +2,29 @@
   <div class="HeaderPro" *ngIf="userInfo.isPro">
     <tsl-user-cover [user]="userInfo"></tsl-user-cover>
   </div>
-  <div class="container align-middle ProfileUser__container d-flex flex-column">
-    <div class="row">
-      <div class="col-12 col-sm-6 row ProfileUser__info align-items-center">
-        <tsl-user-avatar class="ProfileUser__info__image" [user]="userInfo" size="80"></tsl-user-avatar>
-        <div class="wrapper">
-          <h3>{{userInfo.microName}}</h3>
-          <tsl-stars class="d-inline-block" [stars]="userStats?.ratings?.reviews" [normalized]="false"></tsl-stars>
-          <span class="user-number-reviews mb-0">({{userStats.ratings.reviews}})</span>
-          <div class="ProBadge" [hidden]="!userInfo.isPro">
-            <div class="ProBadge-icon mt-1 d-flex align-items-center">
-              <tsl-svg-icon src="/assets/icons/pro-seal.svg"></tsl-svg-icon>
-              <strong class="ml-2">PRO</strong>
+  <div class="container align-middle ProfileUser__container d-flex flex-column py-4">
+    <div class="row px-2 px-md-4">
+      <div class="col-12 col-sm-6 ProfileUser__info">
+        <div class="row">
+          <tsl-user-avatar class="ProfileUser__info__image mr-3" [user]="userInfo" size="80"></tsl-user-avatar>
+          <div class="wrapper">
+            <h3>{{userInfo.microName}}</h3>
+            <tsl-stars class="d-inline-block" [stars]="userStats?.ratings?.reviews" [normalized]="false"></tsl-stars>
+            <span class="user-number-reviews mb-0">({{userStats.ratings.reviews}})</span>
+            <div class="ProBadge" [hidden]="!userInfo.isPro">
+              <div class="ProBadge-icon mt-1">
+                <tsl-svg-icon src="/assets/icons/pro-seal.svg"></tsl-svg-icon>
+                <strong class="ml-2">PRO</strong>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-12 col-sm-6 ProfileUser__stats align-items-center">
+      <div class="col-12 col-sm-6">
         <tsl-user-stats [userStats]="userStats" [userInfo]="userInfo"></tsl-user-stats>
       </div>
     </div>
-    <div class="row" *ngIf="userInfo.isPro && (userInfo.extraInfo && userInfo.extraInfo.description)">
+    <div class="row px-2 px-md-4 mt-4" *ngIf="userInfo.isPro && (userInfo.extraInfo && userInfo.extraInfo.description)">
       <strong class="w-100" i18n="@@About">About</strong>
       {{userInfo.extraInfo.description}}
     </div>
