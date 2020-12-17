@@ -5,7 +5,7 @@
   <div class="container align-middle ProfileUser__container d-flex flex-column py-4">
     <div class="row px-2 px-md-4">
       <div class="col-12 col-sm-6 ProfileUser__info">
-        <div class="d-flex">
+        <div class="d-flex align-items-center">
           <tsl-user-avatar class="ProfileUser__info__image mr-3" [user]="userInfo" size="80"></tsl-user-avatar>
           <div class="wrapper">
             <h3>{{userInfo.microName}}</h3>
@@ -14,7 +14,7 @@
             <div class="ProBadge" [hidden]="!userInfo.isPro">
               <div class="ProBadge-icon mt-1">
                 <tsl-svg-icon src="/assets/icons/pro-seal.svg"></tsl-svg-icon>
-                <strong class="ml-2">PRO</strong>
+                <div class="ml-2 d-inline bold-title">PRO</div>
               </div>
             </div>
           </div>
@@ -24,11 +24,11 @@
         <tsl-user-stats [userStats]="userStats" [userInfo]="userInfo"></tsl-user-stats>
       </div>
     </div>
-    <div class="row px-2 px-md-4 mt-4" *ngIf="userInfo.isPro && (userInfo.extraInfo && userInfo.extraInfo.description)">
+    <div class="row px-2 px-md-4 mt-4" *ngIf="isProAndHaveDescription()">
       <div class="col-12">
         <div class="row mb-1">
           <div class="col-12">
-            <strong class="w-100" i18n="@@About">About</strong>
+            <div class="w-100 bold-title" i18n="@@About">About</div>
           </div>
         </div>
         <div class="row">

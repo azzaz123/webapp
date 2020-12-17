@@ -2,17 +2,17 @@
     <div class="row align-left">
         <div class="col-6 col-sm-4 d-flex align-items-center" i18n="@@Sales">
             <tsl-svg-icon class="mr-1" src="/assets/icons/public-profile/stats.svg"></tsl-svg-icon>
-            <strong class="mr-1">{{userStats.counters.sold}}</strong>
+            <div class="mr-1 bold-counter">{{userStats.counters.sold}}</div>
             Sales
         </div>
         <div class="col-6 col-sm-8 d-flex align-items-center" i18n="@@Purchases">
-            <strong class="mr-1">{{userStats.counters.buys}}</strong>
+            <div class="mr-1 bold-counter">{{userStats.counters.buys}}</div>
             Purchases
         </div>
     </div>
     <div i18n="@@Shipments" class="d-flex align-items-center">
         <tsl-svg-icon class="mr-1" src="/assets/icons/public-profile/box.svg"></tsl-svg-icon>
-        <strong class="mr-1">{{userStats.counters.sells}}</strong>
+        <div class="mr-1 bold-counter">{{userStats.counters.sells}}</div>
         Shipments
     </div>
     <div class="PorfileUser__stats__location" class="d-flex align-items-center">

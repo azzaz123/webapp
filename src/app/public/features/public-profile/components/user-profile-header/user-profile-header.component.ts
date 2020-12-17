@@ -12,4 +12,12 @@ export class UserProfileHeaderComponent {
   @Input() userInfo: User;
 
   constructor() {}
+
+  isProAndHaveDescription(): boolean {
+    return !!(
+      this.userInfo.isPro &&
+      this.userInfo.extraInfo &&
+      this.userInfo.extraInfo.description
+    );
+  }
 }

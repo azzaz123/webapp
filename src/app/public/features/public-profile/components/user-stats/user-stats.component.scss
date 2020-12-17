@@ -6,6 +6,9 @@
     display: inline-block;
     cursor: pointer;
   }
+  .bold-counter {
+    font-weight: $font-weight-chunky;
+  }
 }
 
 .PorfileUser__stats__location {

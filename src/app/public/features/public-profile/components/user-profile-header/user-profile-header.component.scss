@@ -13,6 +13,10 @@
     font-size: $font-size-s;
     color: $blue-grey-3;
   }
+
+  .bold-title {
+    font-weight: $font-weight-chunky;
+  }
 }
 
 .ProfileUser__info {
@@ -20,7 +24,7 @@
     position: relative;
     @include square(80px);
     background: $color-grey-light;
-    border-radius: $spacing-xxxl;
+    border-radius: 50%;
   }
 }
 

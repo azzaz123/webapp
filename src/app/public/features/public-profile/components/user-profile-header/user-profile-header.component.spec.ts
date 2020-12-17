@@ -49,7 +49,7 @@ describe('UserProfileHeaderComponent', () => {
           const proBadge = fixture.debugElement.query(By.css('.ProBadge'))
             .nativeNode;
           const aboutSection = fixture.debugElement
-            .queryAll(By.css('strong'))
+            .queryAll(By.css('.bold-title'))
             .find((anchors) => anchors.nativeElement.innerHTML === 'About')
             .nativeElement;
 
@@ -69,7 +69,9 @@ describe('UserProfileHeaderComponent', () => {
           );
           const proBadge = fixture.debugElement.query(By.css('.ProBadge'))
             .nativeNode;
-          const aboutSection = fixture.debugElement.queryAll(By.css('strong'));
+          const aboutSection = fixture.debugElement.queryAll(
+            By.css('.bold-title')
+          );
 
           expect(headerPro).toBeTruthy();
           expect(proBadge.hasAttribute('hidden')).toBe(false);
@@ -86,7 +88,9 @@ describe('UserProfileHeaderComponent', () => {
         const headerPro = fixture.debugElement.query(By.css('tsl-user-cover'));
         const proBadge = fixture.debugElement.query(By.css('.ProBadge'))
           .nativeNode;
-        const aboutSection = fixture.debugElement.queryAll(By.css('strong'));
+        const aboutSection = fixture.debugElement.queryAll(
+          By.css('.bold-title')
+        );
 
         expect(headerPro).toBeFalsy();
         expect(proBadge.hasAttribute('hidden')).toBe(true);
