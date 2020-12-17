@@ -1,6 +1,6 @@
 @import '~style/common';
 
-.PorfileUser__stats {
+.PorfileUser {
   a {
     color: $walla-main;
     display: inline-block;
@@ -11,6 +11,6 @@
   }
 }
 
-.PorfileUser__stats__location {
+.PorfileUser__location {
   margin-bottom: $spacing-xs;
 }

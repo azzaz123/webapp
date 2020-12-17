@@ -57,9 +57,7 @@ describe('UserStatsComponent', () => {
 
   describe('when we have the necessary data...', () => {
     it('should show the content', () => {
-      const containerPage = fixture.debugElement.query(
-        By.css('.PorfileUser__stats')
-      );
+      const containerPage = fixture.debugElement.query(By.css('.PorfileUser'));
 
       expect(containerPage).toBeTruthy();
     });
@@ -144,9 +142,7 @@ describe('UserStatsComponent', () => {
       component.userStats = null;
 
       fixture.detectChanges();
-      const containerPage = fixture.debugElement.query(
-        By.css('.PorfileUser__stats')
-      );
+      const containerPage = fixture.debugElement.query(By.css('.PorfileUser'));
 
       expect(containerPage).toBeFalsy();
     });

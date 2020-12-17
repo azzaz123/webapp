@@ -1,4 +1,4 @@
-<div *ngIf="userStats && userStats.counters && userInfo" class="PorfileUser__stats">
+<div *ngIf="userStats && userStats.counters && userInfo" class="PorfileUser">
     <div class="row align-left">
         <div class="col-6 col-sm-4 d-flex align-items-center" i18n="@@Sales">
             <tsl-svg-icon class="mr-1" src="/assets/icons/public-profile/stats.svg"></tsl-svg-icon>
@@ -15,7 +15,7 @@
         <div class="mr-1 bold-counter">{{userStats.counters.sells}}</div>
         Shipments
     </div>
-    <div class="PorfileUser__stats__location" class="d-flex align-items-center">
+    <div class="PorfileUser__location" class="d-flex align-items-center">
         <tsl-svg-icon class="mr-1" src="/assets/icons/public-profile/location.svg"></tsl-svg-icon>
         {{userInfo.location.zip}},
         {{userInfo.location.city}}
