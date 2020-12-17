@@ -31,6 +31,7 @@ export class InvoiceHistoryComponent implements OnInit {
   public isErrorLoading = false;
   public filterInvoices = TRANSACTIONS_FILTERS;
   public selectedFilter = TRANSACTIONS_FILTERS.ALL;
+  public invoiceRequestStatus = InvoiceRequestStatus;
   private LOAD_MORE_QUANTITY = 5;
   private START_LIMIT = 5;
 

@@ -135,24 +135,6 @@ describe('InvoiceComponent', () => {
     });
   });
 
-  describe('when we load more items...', () => {
-    it('should update the list limit in the current filter', () => {
-      component.selectedFilter = TRANSACTIONS_FILTERS.ALL;
-
-      component.loadMore();
-
-      expect(component.filterConfig[TRANSACTIONS_FILTERS.ALL].limit).toEqual(
-        10
-      );
-      expect(
-        component.filterConfig[TRANSACTIONS_FILTERS.INVOICES].limit
-      ).toEqual(5);
-      expect(component.filterConfig[TRANSACTIONS_FILTERS.CREDIT].limit).toEqual(
-        5
-      );
-    });
-  });
-
   describe('when we change category', () => {
     beforeEach(() => {
       fixture.detectChanges();
