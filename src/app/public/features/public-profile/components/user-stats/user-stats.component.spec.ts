@@ -33,6 +33,7 @@ describe('UserStatsComponent', () => {
           provide: Router,
           useValue: {
             navigate() {},
+            url: 'environment/public/user/1234/published',
           },
         },
       ],
@@ -63,18 +64,31 @@ describe('UserStatsComponent', () => {
       expect(containerPage).toBeTruthy();
     });
 
-    it('should show the location when we click on the anchor...', () => {
-      spyOn(router, 'navigate');
-      spyOn(component, 'showLocation');
-      const locationAnchor = fixture.debugElement
-        .queryAll(By.css('a'))
-        .find((anchors) => anchors.nativeElement.innerHTML === 'View location')
-        .nativeElement;
+    describe('when we click on the location anchor...', () => {
+      const expectedURL = 'environment/public/user/1234/info';
 
-      locationAnchor.click();
+      describe('and when our device is NOT a phone', () => {
+        it('should redirect to info path...', () => {
+          locationSpyAndClick();
 
-      expect(component.showLocation).toHaveBeenCalledTimes(1);
-      // expect(router.navigate).toHaveBeenCalledTimes(1);
+          expect(component.showLocation).toHaveBeenCalledTimes(1);
+          expect(router.navigate).toHaveBeenCalledTimes(1);
+          expect(router.navigate).toHaveBeenCalledWith([expectedURL]);
+        });
+
+        describe('and when our device is a phone', () => {
+          it('should redirect to info path with fragment...', () => {
+            spyOn(deviceDetectorService, 'isMobile').and.returnValue(true);
+            locationSpyAndClick();
+
+            expect(component.showLocation).toHaveBeenCalledTimes(1);
+            expect(router.navigate).toHaveBeenCalledTimes(1);
+            expect(router.navigate).toHaveBeenCalledWith([expectedURL], {
+              fragment: 'map',
+            });
+          });
+        });
+      });
     });
 
     describe('when the user is pro...', () => {
@@ -86,7 +100,7 @@ describe('UserStatsComponent', () => {
         });
 
         it('should toggle the phone when click on the anchor...', () => {
-          spyOn(component, 'togglePhone');
+          spyOn(component, 'togglePhone').and.callThrough();
           const phoneAnchor = fixture.debugElement
             .queryAll(By.css('a'))
             .find(
@@ -97,7 +111,7 @@ describe('UserStatsComponent', () => {
           phoneAnchor.click();
 
           expect(component.togglePhone).toHaveBeenCalledTimes(1);
-          // expect(component.isPhone).toBe(true);
+          expect(component.isPhone).toBe(true);
         });
       });
       describe('when NOT have the extra info', () => {
@@ -137,4 +151,15 @@ describe('UserStatsComponent', () => {
       expect(containerPage).toBeFalsy();
     });
   });
+
+  function locationSpyAndClick() {
+    spyOn(router, 'navigate');
+    spyOn(component, 'showLocation').and.callThrough();
+    const locationAnchor = fixture.debugElement
+      .queryAll(By.css('a'))
+      .find((anchors) => anchors.nativeElement.innerHTML === 'View location')
+      .nativeElement;
+
+    locationAnchor.click();
+  }
 });
