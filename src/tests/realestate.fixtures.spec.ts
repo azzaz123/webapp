@@ -1,5 +1,8 @@
 import { USER_LOCATION } from './user.fixtures.spec';
-import { RealestateContent, RealEstateUploadForm } from '../app/core/item/item-response.interface';
+import {
+  RealestateContent,
+  RealEstateUploadForm,
+} from '../app/core/item/item-response.interface';
 import { Realestate } from '../app/core/item/realestate';
 import { ITEM_ID } from './item.fixtures.spec';
 

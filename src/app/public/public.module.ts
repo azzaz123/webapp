@@ -7,6 +7,5 @@ import { PublicComponent } from './public.component';
 @NgModule({
   imports: [PublicCoreModule, PublicLayoutModule, PublicRoutingModule],
   declarations: [PublicComponent],
-  bootstrap: [PublicComponent],
 })
 export class PublicModule {}
