@@ -1108,6 +1108,10 @@
   <translation id="OrderBy">Ordenar por</translation>
   <translation id="ManageCatalogSubscription">Gestionar <ph name="INTERPOLATION"><ex>{{subscriptionSlot.category.name}}</ex>{{subscriptionSlot.category.name}}</ph></translation>
   <translation id="InvoiceHistory">Tus facturas</translation>
+  <translation id="InvoiceHistoryDescription">De momento, solo puedes ver o descargar facturas o abonos de tus suscripciones.</translation>
+  <translation id="InvoiceHistoryAll">Todo</translation>
+  <translation id="InvoiceHistoryInvoices">Facturas</translation>
+  <translation id="InvoiceHistoryCredit">Abonos</translation>
   <translation id="InvoiceHistorySubtitle">Rellena tus datos de facturación para descargar todas tus facturas.</translation>
   <translation id="DownloadInvoice">Descargar factura</translation>
   <translation id="RequestInvoice">Solicitar factura</translation>
