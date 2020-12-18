@@ -1,16 +1,15 @@
 @import '~style/common';
 
-.PorfileUser {
+.ProfileUser {
   a {
     color: $walla-main;
     display: inline-block;
     cursor: pointer;
   }
-  .bold-counter {
+  &__counter--bold {
     font-weight: $font-weight-chunky;
   }
-}
-
-.PorfileUser__location {
-  margin-bottom: $spacing-xs;
+  &__location {
+    margin-bottom: $spacing-xs;
+  }
 }

@@ -1,21 +1,45 @@
-<div *ngIf="userStats && userStats.counters && userInfo" class="PorfileUser">
+<div *ngIf="userStats && userStats.counters && userInfo" class="ProfileUser">
     <div class="row align-left">
-        <div class="col-6 col-sm-4 d-flex align-items-center" i18n="@@Sales">
+        <div class="col-6 col-sm-4 d-flex align-items-center">
             <tsl-svg-icon class="mr-1" src="/assets/icons/public-profile/stats.svg"></tsl-svg-icon>
-            <div class="mr-1 bold-counter">{{userStats.counters.sold}}</div>
-            Sales
+            <div class="mr-1 ProfileUser__counter--bold">{{userStats.counters.sold}}</div>
+            <ng-container [ngPlural]="userStats.counters.sold">
+                <ng-template ngPluralCase="=1">
+                    <ng-container i18n="@@Sale">Sale</ng-container>
+                </ng-template>
+                <ng-template ngPluralCase="other">
+                    <ng-container i18n="@@Sales">Sales
+                    </ng-container>
+                </ng-template>
+            </ng-container>
         </div>
-        <div class="col-6 col-sm-8 d-flex align-items-center" i18n="@@Purchases">
-            <div class="mr-1 bold-counter">{{userStats.counters.buys}}</div>
-            Purchases
+        <div class="col-6 col-sm-8 d-flex align-items-center">
+            <div class="mr-1 ProfileUser__counter--bold">{{userStats.counters.buys}}</div>
+            <ng-container [ngPlural]="userStats.counters.buys">
+                <ng-template ngPluralCase="=1">
+                    <ng-container i18n="@@Purchase">Purchase</ng-container>
+                </ng-template>
+                <ng-template ngPluralCase="other">
+                    <ng-container i18n="@@Purchase">Purchases
+                    </ng-container>
+                </ng-template>
+            </ng-container>
         </div>
     </div>
-    <div i18n="@@Shipments" class="d-flex align-items-center">
+    <div class="d-flex align-items-center">
         <tsl-svg-icon class="mr-1" src="/assets/icons/public-profile/box.svg"></tsl-svg-icon>
-        <div class="mr-1 bold-counter">{{userStats.counters.sells}}</div>
-        Shipments
+        <div class="mr-1 ProfileUser__counter--bold">{{userStats.counters.sells}}</div>
+        <ng-container [ngPlural]="userStats.counters.sells">
+            <ng-template ngPluralCase="=1">
+                <ng-container i18n="@@Shipment">Shipment</ng-container>
+            </ng-template>
+            <ng-template ngPluralCase="other">
+                <ng-container i18n="@@Shipments">Shipments
+                </ng-container>
+            </ng-template>
+        </ng-container>
     </div>
-    <div class="PorfileUser__location" class="d-flex align-items-center">
+    <div class="ProfileUser__location" class="d-flex align-items-center">
         <tsl-svg-icon class="mr-1" src="/assets/icons/public-profile/location.svg"></tsl-svg-icon>
         {{userInfo.location.zip}},
         {{userInfo.location.city}}

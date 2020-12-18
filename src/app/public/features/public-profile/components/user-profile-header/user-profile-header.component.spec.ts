@@ -9,6 +9,10 @@ import {
 import { UserProfileHeaderComponent } from './user-profile-header.component';
 
 describe('UserProfileHeaderComponent', () => {
+  const profileContainerClass = '.ProfileUser__container';
+  const proBadgeClass = '.ProBadge';
+  const userCoverTag = 'tsl-user-cover';
+  const boldTitleClass = '.ProfileUser__container__title--bold';
   let component: UserProfileHeaderComponent;
   let fixture: ComponentFixture<UserProfileHeaderComponent>;
 
@@ -34,7 +38,7 @@ describe('UserProfileHeaderComponent', () => {
   describe('when we have the user info and the stats', () => {
     it('should load the content', () => {
       const containerPage = fixture.debugElement.query(
-        By.css('.ProfileUser__container')
+        By.css(profileContainerClass)
       );
 
       expect(containerPage).toBeTruthy();
@@ -43,13 +47,11 @@ describe('UserProfileHeaderComponent', () => {
     describe('when the user is pro...', () => {
       describe('when have the extra info..', () => {
         it('should show the pro elements', () => {
-          const headerPro = fixture.debugElement.query(
-            By.css('tsl-user-cover')
-          );
-          const proBadge = fixture.debugElement.query(By.css('.ProBadge'))
+          const headerPro = fixture.debugElement.query(By.css(userCoverTag));
+          const proBadge = fixture.debugElement.query(By.css(proBadgeClass))
             .nativeNode;
           const aboutSection = fixture.debugElement
-            .queryAll(By.css('.bold-title'))
+            .queryAll(By.css(boldTitleClass))
             .find((anchors) => anchors.nativeElement.innerHTML === 'About')
             .nativeElement;
 
@@ -64,13 +66,11 @@ describe('UserProfileHeaderComponent', () => {
           component.userInfo.extraInfo.description = null;
 
           fixture.detectChanges();
-          const headerPro = fixture.debugElement.query(
-            By.css('tsl-user-cover')
-          );
-          const proBadge = fixture.debugElement.query(By.css('.ProBadge'))
+          const headerPro = fixture.debugElement.query(By.css(userCoverTag));
+          const proBadge = fixture.debugElement.query(By.css(proBadgeClass))
             .nativeNode;
           const aboutSection = fixture.debugElement.queryAll(
-            By.css('.bold-title')
+            By.css(boldTitleClass)
           );
 
           expect(headerPro).toBeTruthy();
@@ -85,11 +85,11 @@ describe('UserProfileHeaderComponent', () => {
         component.userInfo.isPro = false;
 
         fixture.detectChanges();
-        const headerPro = fixture.debugElement.query(By.css('tsl-user-cover'));
-        const proBadge = fixture.debugElement.query(By.css('.ProBadge'))
+        const headerPro = fixture.debugElement.query(By.css(userCoverTag));
+        const proBadge = fixture.debugElement.query(By.css(proBadgeClass))
           .nativeNode;
         const aboutSection = fixture.debugElement.queryAll(
-          By.css('.bold-title')
+          By.css(boldTitleClass)
         );
 
         expect(headerPro).toBeFalsy();
@@ -105,7 +105,7 @@ describe('UserProfileHeaderComponent', () => {
 
       fixture.detectChanges();
       const containerPage = fixture.debugElement.query(
-        By.css('.ProfileUser__container')
+        By.css(profileContainerClass)
       );
 
       expect(containerPage).toBeFalsy();

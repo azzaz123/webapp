@@ -11,6 +11,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
 
 describe('UserStatsComponent', () => {
+  const profileUserClass = '.ProfileUser';
   let component: UserStatsComponent;
   let fixture: ComponentFixture<UserStatsComponent>;
   let deviceDetectorService: DeviceDetectorService;
@@ -57,7 +58,9 @@ describe('UserStatsComponent', () => {
 
   describe('when we have the necessary data...', () => {
     it('should show the content', () => {
-      const containerPage = fixture.debugElement.query(By.css('.PorfileUser'));
+      const containerPage = fixture.debugElement.query(
+        By.css(profileUserClass)
+      );
 
       expect(containerPage).toBeTruthy();
     });
@@ -142,7 +145,9 @@ describe('UserStatsComponent', () => {
       component.userStats = null;
 
       fixture.detectChanges();
-      const containerPage = fixture.debugElement.query(By.css('.PorfileUser'));
+      const containerPage = fixture.debugElement.query(
+        By.css(profileUserClass)
+      );
 
       expect(containerPage).toBeFalsy();
     });
