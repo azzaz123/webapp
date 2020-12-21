@@ -130,7 +130,7 @@ describe('UserStatsComponent', () => {
 
     describe('when the user is NOT pro...', () => {
       it('should show only one anchor', () => {
-        component.userInfo.isPro = false;
+        component.userInfo.featured = false;
 
         fixture.detectChanges();
         const errorMessages = fixture.debugElement.queryAll(By.css('a'));

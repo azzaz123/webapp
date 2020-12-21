@@ -166,9 +166,7 @@ export class PublicProfileService {
       data.gender,
       data.email,
       data.featured,
-      data.extra_info,
-      null,
-      this.isPro(data)
+      data.extra_info
     );
   }
 }

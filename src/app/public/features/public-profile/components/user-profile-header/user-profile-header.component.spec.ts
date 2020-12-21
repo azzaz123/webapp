@@ -82,7 +82,7 @@ describe('UserProfileHeaderComponent', () => {
 
     describe('when the user is NOT pro...', () => {
       it('should NOT show the pro elements', () => {
-        component.userInfo.isPro = false;
+        component.userInfo.featured = false;
 
         fixture.detectChanges();
         const headerPro = fixture.debugElement.query(By.css(userCoverTag));

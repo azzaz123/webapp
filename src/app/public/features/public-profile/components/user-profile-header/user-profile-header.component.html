@@ -1,5 +1,5 @@
 <div *ngIf="userInfo && userStats" class="mb-4">
-  <div class="HeaderPro" *ngIf="userInfo.isPro">
+  <div class="HeaderPro" *ngIf="userInfo.featured">
     <tsl-user-cover [user]="userInfo"></tsl-user-cover>
   </div>
   <div class="container align-middle ProfileUser__container d-flex flex-column py-4">
@@ -11,7 +11,7 @@
             <h3>{{userInfo.microName}}</h3>
             <tsl-stars class="d-inline-block" [stars]="userStats.ratings?.reviews" [normalized]="false"></tsl-stars>
             <span class="user-number-reviews mb-0">({{userStats.counters?.reviews}})</span>
-            <div class="ProBadge" [hidden]="!userInfo.isPro">
+            <div class="ProBadge" [hidden]="!userInfo.featured">
               <div class="ProBadge-icon mt-1">
                 <tsl-svg-icon src="/assets/icons/pro-seal.svg"></tsl-svg-icon>
                 <div class="ml-2 d-inline ProfileUser__container__title--bold">PRO</div>
