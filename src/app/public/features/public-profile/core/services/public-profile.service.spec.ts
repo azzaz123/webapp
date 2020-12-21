@@ -16,17 +16,20 @@ import {
   IMAGE,
 } from '@fixtures/user.fixtures.spec';
 import { environment } from 'environments/environment';
+import { MarkAsFavouriteBodyRequest } from '../interfaces/public-profile-request.interface';
 
 import {
   PublicProfileService,
   PROFILE_API_URL,
   USER_COVER_IMAGE_ENDPOINT,
+  FAVOURITE_API_PATH,
 } from './public-profile.service';
 
 describe('PublicProfileService', () => {
   let service: PublicProfileService;
   let httpMock: HttpTestingController;
   const userId = '123';
+  const FAVOURITE_API_URL = `${environment.baseUrl}${PROFILE_API_URL}${userId}/${FAVOURITE_API_PATH}`;
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
@@ -133,6 +136,40 @@ describe('PublicProfileService', () => {
       expect(req.request.url).toEqual(expectedUrl);
       expect(response).toEqual(IMAGE);
       expect(req.request.method).toBe('GET');
+    });
+
+    describe('when requesting isFavourite', () => {
+      it('should ask server for response', () => {
+        service.isFavourite(userId).subscribe();
+
+        const req = httpMock.expectOne(FAVOURITE_API_URL);
+        expect(req.request.method).toEqual('GET');
+        expect(req.request.body).toBeNull();
+      });
+    });
+
+    describe('when requesting markAsFavourite', () => {
+      it('should ask server for response', () => {
+        const bodyRequest: MarkAsFavouriteBodyRequest = { favorited: true };
+
+        service.markAsFavourite(userId).subscribe();
+
+        const req = httpMock.expectOne(FAVOURITE_API_URL);
+        expect(req.request.method).toEqual('PUT');
+        expect(req.request.body).toEqual(bodyRequest);
+      });
+    });
+
+    describe('when requesting unmarkAsFavourite', () => {
+      it('should ask server for response', () => {
+        const bodyRequest: MarkAsFavouriteBodyRequest = { favorited: false };
+
+        service.unmarkAsFavourite(userId).subscribe();
+
+        const req = httpMock.expectOne(FAVOURITE_API_URL);
+        expect(req.request.method).toEqual('PUT');
+        expect(req.request.body).toEqual(bodyRequest);
+      });
     });
   });
 });

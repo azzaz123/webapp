@@ -6,20 +6,22 @@ import {
 } from './public-profile-routing.module';
 import { UserStatsComponent } from './components/user-stats/user-stats.component';
 import { UserProfileHeaderComponent } from './components/user-profile-header/user-profile-header.component';
-import { ShareUserComponent } from './components/share-user/share-user.component';
 import { ProfileTabsComponent } from './components/profile-tabs/profile-tabs.component';
 import { SharedModule } from '@shared/shared.module';
-import { FavouriteUserComponent } from './components/favourite-user/favourite-user.component';
+import { FavouriteUserModule } from './components/favourite-user/favourite-user.module';
 
 @NgModule({
   declarations: [
     publicProfileRoutedComponents,
     UserProfileHeaderComponent,
     UserStatsComponent,
-    ShareUserComponent,
-    FavouriteUserComponent,
     ProfileTabsComponent,
   ],
-  imports: [CommonModule, PublicProfileRoutingModule, SharedModule],
+  imports: [
+    CommonModule,
+    PublicProfileRoutingModule,
+    SharedModule,
+    FavouriteUserModule,
+  ],
 })
 export class PublicProfileModule {}

@@ -17,7 +17,7 @@ export class ProfileTabsComponent implements OnInit {
 
   ngOnInit(): void {
     PROFILE_TABS.map((tab: ProfileTab) => {
-      tab.count = this.userStats[tab.id] || 0;
+      tab.count = this.userStats ? this.userStats[tab.id] || 0 : 0;
     });
   }
 }

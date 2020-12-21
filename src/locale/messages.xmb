@@ -169,6 +169,7 @@
   <msg id="Shipments"><source>src/app/public/features/public-profile/components/user-stats/user-stats.component.html:36,38</source>Shipments </msg>
   <msg id="2829845275414656954" desc="@RedirectWeb"><source>src/app/public/features/public-profile/components/user-stats/user-stats.component.html:48</source>Go to the website</msg>
   <msg id="ShowPhone"><source>src/app/public/features/public-profile/components/user-stats/user-stats.component.html:52</source>Show phone number</msg>
+  <msg id="FavouriteUserLabel"><source>src/app/public/features/public-profile/components/favourite-user/favourite-user.component.html:2</source>Favourite user</msg>
   <msg id="ProfileTabsPublishedLabel"><source>src/app/public/features/public-profile/components/profile-tabs/constants/profile-tab-constants.ts:13</source>Published</msg>
   <msg id="ProfileTabsReviewsLabel"><source>src/app/public/features/public-profile/components/profile-tabs/constants/profile-tab-constants.ts:18</source>Reviews</msg>
   <msg id="OrderBy"><source>src/app/shared/nav-links/nav-links.component.html:40</source>Order by</msg>
@@ -265,8 +266,6 @@
   <msg id="8497824097226681583"><source>src/app/shared/catalog/catalog-status-navbar/catalog-status-navbar.component.html:3,5</source>Inactive <ph name="START_TAG_SPAN"/>(<ph name="INTERPOLATION"/>)<ph name="CLOSE_TAG_SPAN"/></msg>
   <msg id="466090356732378705"><source>src/app/shared/catalog/catalog-status-navbar/catalog-status-navbar.component.html:5,7</source>Bumped <ph name="START_TAG_SPAN"/>(<ph name="INTERPOLATION"/>)<ph name="CLOSE_TAG_SPAN"/></msg>
   <msg id="4403347238652124439"><source>src/app/shared/catalog/catalog-status-navbar/catalog-status-navbar.component.html:7,9</source>Sold <ph name="START_TAG_SPAN"/>(<ph name="INTERPOLATION"/>)<ph name="CLOSE_TAG_SPAN"/></msg>
-  <msg id="DeleteCard"><source>src/app/shared/profile/credit-card-info/credit-card-info.component.html:16</source>Delete card</msg>
-  <msg id="ChangeCard"><source>src/app/shared/profile/credit-card-info/credit-card-info.component.html:15</source>Change card</msg>
   <msg id="4058575476871566236"><source>src/app/shared/catalog/catalog-card/catalog-card.component.html:17</source>Published</msg>
   <msg id="7239750919884229270"><source>src/app/shared/catalog/catalog-card/catalog-card.component.html:21</source>Updated</msg>
   <msg id="2123659921722214537"><source>src/app/shared/catalog/catalog-card/catalog-card.component.html:47</source>Views</msg>
@@ -281,6 +280,8 @@
   <msg id="5272763997595694217"><source>src/app/shared/catalog/catalog-card/catalog-card.component.html:83</source>Cancel Autorenew</msg>
   <msg id="291347435854981703"><source>src/app/shared/catalog/catalog-card/catalog-card.component.html:84</source>Do you really want to cancel the autorenew for this item?</msg>
   <msg id="2807800733729323332"><source>src/app/shared/catalog/catalog-card/catalog-card.component.html:88</source>Yes</msg>
+  <msg id="DeleteCard"><source>src/app/shared/profile/credit-card-info/credit-card-info.component.html:16</source>Delete card</msg>
+  <msg id="ChangeCard"><source>src/app/shared/profile/credit-card-info/credit-card-info.component.html:15</source>Change card</msg>
   <msg id="3395733106362662025"><source>src/app/shared/profile/picture-upload/picture-upload.component.html:2</source>Profile images</msg>
   <msg id="5064069563768684657"><source>src/app/shared/profile/picture-upload/picture-upload.component.html:7</source>Main image</msg>
   <msg id="9071783025483844562"><source>src/app/shared/profile/edit-password/password-modal/password-modal.component.html:4</source>Update your password</msg>
@@ -390,10 +391,6 @@
   <msg id="6306441078838263413"><source>src/app/features/reviews/pages/reviews.component.html:23</source>reviews</msg>
   <msg id="994157966875519838"><source>src/app/features/reviews/pages/reviews.component.html:24</source>review</msg>
   <msg id="5327426729320041573"><source>src/app/features/reviews/pages/reviews.component.html:30</source>Nobody has written a review about you because you didn&apos;t buy or sell anything yet. Wake up!</msg>
-  <msg id="5371960677736303052"><source>src/app/shared/geolocation/geolocation.component.html:8</source>Where?</msg>
-  <msg id="ForgetThisChat"><source>src/app/features/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component.html:11</source><ph name="START_BOLD_TEXT"/>You better forget this chat<ph name="CLOSE_BOLD_TEXT"/></msg>
-  <msg id="MaliciousConversationDescription"><source>src/app/features/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component.html:15,18</source>This person violated our coexistence rules. We suggest that you ignore their messages and do not communicate with them through any means other than wallapop, as this may be an attempt to defraud you. </msg>
-  <msg id="ExitConversation"><source>src/app/features/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component.html:22</source>Exit the conversation</msg>
   <msg id="6938753357996446484"><source>src/app/features/favorites/pages/favorites.component.html:6</source>Your favorites</msg>
   <msg id="351850805832815905" desc="plural" meaning="tab"><source>src/app/features/favorites/pages/favorites.component.html:29</source>Profiles</msg>
   <msg id="7695212222770955574"><source>src/app/features/favorites/pages/favorites.component.html:9,11</source>These are the wallapop products that you like the most</msg>
@@ -402,6 +399,10 @@
   <msg id="6799485957303243139"><source>src/app/features/favorites/pages/favorites.component.html:19</source>favorite</msg>
   <msg id="7492492990436838508"><source>src/app/features/favorites/pages/favorites.component.html:38,41</source>In this list you can see all the products you saved as favourite</msg>
   <msg id="8518412285806135836"><source>src/app/features/favorites/pages/favorites.component.html:41,44</source>In this list you can see all the profiles you saved as favourite</msg>
+  <msg id="5371960677736303052"><source>src/app/shared/geolocation/geolocation.component.html:8</source>Where?</msg>
+  <msg id="ForgetThisChat"><source>src/app/features/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component.html:11</source><ph name="START_BOLD_TEXT"/>You better forget this chat<ph name="CLOSE_BOLD_TEXT"/></msg>
+  <msg id="MaliciousConversationDescription"><source>src/app/features/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component.html:15,18</source>This person violated our coexistence rules. We suggest that you ignore their messages and do not communicate with them through any means other than wallapop, as this may be an attempt to defraud you. </msg>
+  <msg id="ExitConversation"><source>src/app/features/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component.html:22</source>Exit the conversation</msg>
   <msg id="4163236016169197783"><source>src/app/shared/geolocation/location-box/location-box.component.html:12</source>This is the spot where your wallapop profile is located. We will show all your products here.</msg>
   <msg id="958176169457402389"><source>src/app/shared/geolocation/location-box/location-box.component.html:3</source>Your products are in:</msg>
   <msg id="8931167307338687444"><source>src/app/shared/geolocation/location-box/location-box.component.html:18,20</source>Mark the location in a place where you usually are. This will help other users to find you and improve your user experience.</msg>
@@ -459,6 +460,7 @@
   <msg id="4179349933130995178"><source>src/app/features/reviews/components/review-item/review-item.component.html:22</source>Bought:</msg>
   <msg id="3188298240836661570"><source>src/app/features/reviews/components/review-item/review-item.component.html:27</source>A wallapop item</msg>
   <msg id="5941682960252754908"><source>src/app/features/reviews/components/review-item/review-item.component.html:34</source>a wallapop user</msg>
+  <msg id="8212177249756365917"><source>src/app/features/favorites/components/profile-card-favorite/profile-card-favorite.component.html:18</source> Remove </msg>
   <msg id="4359291232904891489"><source>src/app/shared/geolocation/location-select/location-select.component.html:2</source>Set a location</msg>
   <msg id="4391289919356861627"><source>src/app/shared/geolocation/location-select/location-modal/location-modal.component.html:3</source>Apply</msg>
   <msg id="PersonalDataInformationModalTitle"><source>src/app/features/chat/modals/personal-data-information-modal/personal-data-information-modal.component.html:9</source><ph name="START_BOLD_TEXT"/>They want to help you ;-)<ph name="CLOSE_BOLD_TEXT"/></msg>
@@ -479,7 +481,6 @@
   <msg id="loadMoreButton"><source>src/app/features/chat/components/current-conversation/current-conversation.component.html:86</source>Load more</msg>
   <msg id="3093507871243266697"><source>src/app/features/chat/components/connection-alert/connection-alert.component.html:1</source>Waiting for network...</msg>
   <msg id="3208980041287937682"><source>src/app/features/chat/components/connection-alert/connection-alert.component.html:2</source>Connected</msg>
-  <msg id="8212177249756365917"><source>src/app/features/favorites/components/profile-card-favorite/profile-card-favorite.component.html:18</source> Remove </msg>
   <msg id="yourMessages"><source>src/app/features/chat/children/inbox/inbox.component.html:2</source>Your Messages</msg>
   <msg id="inboxBox"><source>src/app/features/chat/children/inbox/inbox.component.html:18</source>Inbox</msg>
   <msg id="inboxArchivedBox"><source>src/app/features/chat/children/inbox/inbox.component.html:23</source>Archived Messages</msg>
@@ -560,11 +561,11 @@
   <msg id="AddNewModalSubscribeNow"><source>src/app/features/profile/modal/add-new-subscription/add-new-subscription-modal.component.html:201</source>Try the <ph name="INTERPOLATION"/>-day trial for free!</msg>
   <msg id="thirdVoiceReviewFirstMessage"><source>src/app/features/chat/children/message/components/third-voice-review/third-voice-review.component.html:1</source>You have found what you were looking for. Great!! </msg>
   <msg id="thirdVoiceReviewSecondMessage"><source>src/app/features/chat/children/message/components/third-voice-review/third-voice-review.component.html:5</source>How did it go? Review your experience with this user will help our community</msg>
-  <msg id="thirdVoiceDropPrice"><source>src/app/features/chat/children/message/components/third-voice-drop-price/third-voice-drop-price.component.html:1</source>The product has dropped in price. Do you want to cut a deal?</msg>
   <msg id="8016649850785953911"><source>src/app/features/chat/children/item/item.component.html:17</source>Unreserve</msg>
   <msg id="3537961834218859224"><source>src/app/features/chat/children/item/item.component.html:38,40</source> Add Insurance </msg>
   <msg id="5984580705945066559"><source>src/app/features/chat/children/item/item.component.html:44,46</source> Add insurance to this product </msg>
   <msg id="5856234352867328880"><source>src/app/features/chat/children/item/item.component.html:50,52</source> Finance your purchase </msg>
+  <msg id="8721026914522212662"><source>src/app/features/chat/components/archived-inbox-conversation/archived-inbox-conversation.component.html:41</source>Archived </msg>
   <msg id="cancelButton"><source>src/app/features/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:7</source>Cancel</msg>
   <msg id="deleteConversation"><source>src/app/features/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:1</source>Delete conversation</msg>
   <msg id="deleteConversationWarning"><source>src/app/features/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:2</source>This will delete the conversation.</msg>
@@ -589,7 +590,10 @@
   <msg id="20327443157350316"><source>src/app/features/chat/modals/block-user/block-user.component.html:1</source>Block user</msg>
   <msg id="5871136368461493241"><source>src/app/features/chat/modals/block-user/block-user.component.html:2</source>You won&apos;t be able to send or receive messages from this user. Do you wish to continue?</msg>
   <msg id="420763834450076269"><source>src/app/features/chat/modals/block-user/block-user.component.html:6</source>Block</msg>
-  <msg id="8721026914522212662"><source>src/app/features/chat/components/archived-inbox-conversation/archived-inbox-conversation.component.html:41</source>Archived </msg>
+  <msg id="thirdVoiceDropPrice"><source>src/app/features/chat/children/message/components/third-voice-drop-price/third-voice-drop-price.component.html:1</source>The product has dropped in price. Do you want to cut a deal?</msg>
+  <msg id="7962273932004201523"><source>src/app/features/chat/children/inbox/components/inbox-item-component/inbox-item-detail.component.html:23,25</source>Sold </msg>
+  <msg id="6969584346860248976" desc="The distance between the user and the item"><source>src/app/features/chat/children/inbox/components/inbox-user-component/inbox-user-detail.component.html:13,16</source> <ph name="DISTANCE"/>km from you </msg>
+  <msg id="9119757647796405986"><source>src/app/features/chat/children/inbox/components/inbox-user-component/inbox-user-detail.component.html:16</source>No location</msg>
   <msg id="792930787826735850"><source>src/app/features/profile/pages/profile.component.html:6</source>Your profile</msg>
   <msg id="4532380494593950343"><source>src/app/features/profile/pages/profile.component.html:11</source>From here you can view and edit your profile</msg>
   <msg id="7022993325750262876"><source>src/app/features/profile/pages/profile.component.html:13</source>View my public profile</msg>
@@ -598,14 +602,6 @@
   <msg id="5875130684997376720"><source>src/app/features/profile/pages/profile.component.html:31</source>Billing</msg>
   <msg id="1812379335568847528"><source>src/app/features/profile/pages/profile.component.html:33</source>Subscriptions</msg>
   <msg id="7830707034534607415"><source>src/app/features/profile/pages/profile.component.html:35</source>Subscription</msg>
-  <msg id="7962273932004201523"><source>src/app/features/chat/children/inbox/components/inbox-item-component/inbox-item-detail.component.html:23,25</source>Sold </msg>
-  <msg id="6969584346860248976" desc="The distance between the user and the item"><source>src/app/features/chat/children/inbox/components/inbox-user-component/inbox-user-detail.component.html:13,16</source> <ph name="DISTANCE"/>km from you </msg>
-  <msg id="9119757647796405986"><source>src/app/features/chat/children/inbox/components/inbox-user-component/inbox-user-detail.component.html:16</source>No location</msg>
-  <msg id="blockUser"><source>src/app/features/chat/components/conversation-details-bar/conversation-details-bar.component.html:84,86</source>Block this User </msg>
-  <msg id="unblockUser"><source>src/app/features/chat/components/conversation-details-bar/conversation-details-bar.component.html:88,90</source>Unblock this User </msg>
-  <msg id="unarchiveConversation"><source>src/app/features/chat/components/conversation-details-bar/conversation-details-bar.component.html:72,74</source>Unarchive conversation </msg>
-  <msg id="reportListing"><source>src/app/features/chat/components/conversation-details-bar/conversation-details-bar.component.html:76,78</source>Report this Listing </msg>
-  <msg id="reportUser"><source>src/app/features/chat/components/conversation-details-bar/conversation-details-bar.component.html:80,82</source>Report this User </msg>
   <msg id="7532148292247615475"><source>src/app/features/profile/pages/profile-pro-subscription/profile-pro-subscription.component.html:10</source>Each plan allows you to have up to a maximum number of cars published in the wallapop app and website.</msg>
   <msg id="cardealerUpgradePlanContact"><source>src/app/features/profile/pages/profile-pro-subscription/profile-pro-subscription.component.html:11</source>To upgrade your plan, call us at <ph name="INTERPOLATION"/> or send us an email at <ph name="START_LINK"/><ph name="INTERPOLATION_1"/><ph name="CLOSE_LINK"/></msg>
   <msg id="5736913742704520146"><source>src/app/features/profile/pages/profile-pro-subscription/profile-pro-subscription.component.html:40</source>City visibility</msg>
@@ -691,6 +687,11 @@
   <msg id="5927748278732131263"><source>src/app/features/chat/components/user-response-rate/user-response-rate.component.html:8</source>Typically responds within a day</msg>
   <msg id="6807057680918467236"><source>src/app/features/chat/components/user-response-rate/user-response-rate.component.html:10</source>Responds in more than 24 hours</msg>
   <msg id="4095254644079775415" desc="The distance between the user and the item"><source>src/app/features/chat/components/user-detail/user-detail.component.html:5</source><ph name="DISTANCE"/>km from you</msg>
+  <msg id="blockUser"><source>src/app/features/chat/components/conversation-details-bar/conversation-details-bar.component.html:84,86</source>Block this User </msg>
+  <msg id="unblockUser"><source>src/app/features/chat/components/conversation-details-bar/conversation-details-bar.component.html:88,90</source>Unblock this User </msg>
+  <msg id="unarchiveConversation"><source>src/app/features/chat/components/conversation-details-bar/conversation-details-bar.component.html:72,74</source>Unarchive conversation </msg>
+  <msg id="reportListing"><source>src/app/features/chat/components/conversation-details-bar/conversation-details-bar.component.html:76,78</source>Report this Listing </msg>
+  <msg id="reportUser"><source>src/app/features/chat/components/conversation-details-bar/conversation-details-bar.component.html:80,82</source>Report this User </msg>
   <msg id="thirdVoiceDoReview"><source>src/app/features/chat/children/message/components/third-voice-review-button/third-voice-review-button.component.html:0</source>Do review</msg>
   <msg id="thirdVoiceThanksForRating"><source>src/app/features/chat/children/message/components/third-voice-review-button/third-voice-review-button.component.html:3</source>Thanks! Others will appreciate your opinion</msg>
   <msg id="6543433128416987560"><source>src/app/features/chat/children/item/components/item-reserved/item-reserved.component.html:2</source>Reserved</msg>

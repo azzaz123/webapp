@@ -11,12 +11,16 @@ import {
 } from '@core/user/user-stats.interface';
 import { User } from '@core/user/user';
 import { Image, UserResponse } from '@core/user/user-response.interface';
+import {
+  IsFavouriteBodyResponse,
+  MarkAsFavouriteBodyRequest,
+  MarkAsFavouriteBodyResponse,
+} from '../interfaces/public-profile-request.interface';
 
 export const PROFILE_API_URL = (userId: string) => `api/v3/users/${userId}`;
-export const PRO_USERS_ENDPOINT = (userId: string) =>
-  `${PROFILE_API_URL(userId)}/extra-info`;
 export const USER_COVER_IMAGE_ENDPOINT = (userId: string) =>
   `${PROFILE_API_URL(userId)}/cover-image`;
+export const FAVOURITE_API_PATH = 'favorite';
 
 @Injectable({
   providedIn: 'root',
@@ -35,6 +39,18 @@ export class PublicProfileService {
             ratings: this.toRatingsStats(response.ratings),
             counters: this.toCountersStats(response.counters),
           };
+        })
+      );
+  }
+
+  public isFavourite(userId: string): Observable<boolean> {
+    return this.http
+      .get(
+        `${environment.baseUrl}${PROFILE_API_URL}${userId}/${FAVOURITE_API_PATH}`
+      )
+      .pipe(
+        map((isFavouriteResponse: IsFavouriteBodyResponse) => {
+          return isFavouriteResponse.favorited;
         })
       );
   }
@@ -88,6 +104,24 @@ export class PublicProfileService {
   public getCoverImage(userId: string): Observable<Image> {
     return this.http.get<Image>(
       `${environment.baseUrl}${USER_COVER_IMAGE_ENDPOINT(userId)}`
+    );
+  }
+
+  public markAsFavourite(
+    userId: string
+  ): Observable<MarkAsFavouriteBodyResponse> {
+    return this.http.put(
+      `${environment.baseUrl}${PROFILE_API_URL}${userId}/${FAVOURITE_API_PATH}`,
+      { favorited: true } as MarkAsFavouriteBodyRequest
+    );
+  }
+
+  public unmarkAsFavourite(
+    userId: string
+  ): Observable<MarkAsFavouriteBodyResponse> {
+    return this.http.put(
+      `${environment.baseUrl}${PROFILE_API_URL}${userId}/${FAVOURITE_API_PATH}`,
+      { favorited: false } as MarkAsFavouriteBodyRequest
     );
   }
 
