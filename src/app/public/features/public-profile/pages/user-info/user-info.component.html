@@ -1,29 +1,39 @@
 <div class="UserInfo py-4">
     <div class="row px-2 px-md-4">
-        <div class="col-12 col-md-12 col-lg-6">
+        <div class="col-12">
             <div class="row">
-                <div class="col-12 col-md-6 mb-3">
-                    <div class="bold-title mb-1" i18n="@@ProfileInfoVerified">Verified information</div>
-                    <a class="d-block">Email</a>
-                    <a class="d-block">Facebook</a>
-                    <a class="d-block" i18n="@@ProfileInfoNumber">Phone number</a>
+                <div class="col-12 col-md-6 col-lg-3 mb-3">
+                    <div class="row">
+                        <div class="col">
+                            <div class="bold-title mb-1" i18n="@@ProfileInfoVerified">Verified information</div>
+                            <a class="d-block">Email</a>
+                            <a class="d-block">Facebook</a>
+                            <a class="d-block" i18n="@@ProfileInfoNumber">Phone number</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="bold-title mb-1" i18n="@@ProfileInfoMemberSince">Member since</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-12 col-md-6 mb-3">
-                    <div class="bold-title" i18n="@@ProfileInfoRatio">Response rate</div>
+                <div class="col-12 col-md-6 col-lg-3 mb-3">
+                    <div class="row">
+                        <div class="col">
+                            <div class="bold-title" i18n="@@ProfileInfoRatio">Response rate</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="bold-title mb-1" i18n="@@ProfileInfoSchedule">Opening hours</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="bold-title" i18n="@@ProfileInfoLocation">Location</div>
+                    <!-- <tsl-here-maps *ngIf="coordinates" [coordinates]="coordinates" zoom="15" size="small"></tsl-here-maps> -->
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12 col-md-6">
-                    <div class="bold-title mb-1" i18n="@@ProfileInfoMemberSince">Member since</div>
-
-                </div>
-                <div class="col-12 col-md-6">
-                    <div class="bold-title mb-1" i18n="@@ProfileInfoSchedule">Opening hours</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-lg-6">
-            <div class="bold-title" i18n="@@ProfileInfoLocation">Location</div>
         </div>
     </div>
 </div>
