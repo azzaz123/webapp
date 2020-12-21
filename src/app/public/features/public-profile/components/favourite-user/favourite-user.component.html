@@ -1,1 +1,4 @@
-<p>favourite-user works!</p>
+<button class="FavouriteUser__btn d-flex align-items-center border-0" (click)="toggleFavourite()" tslCheckSession>
+    <tsl-favourite-icon [active]="isFavourite"></tsl-favourite-icon>
+    <span i18n="@@FavouriteUserLabel">Favourite user</span>
+</button>
