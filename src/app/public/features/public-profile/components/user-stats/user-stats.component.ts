@@ -13,7 +13,7 @@ import { PUBLIC_PROFILE_PATHS } from '../../public-profile-routing-constants';
 export class UserStatsComponent {
   @Input() userStats: UserStats;
   @Input() userInfo: User;
-  isPhone = false;
+  public isPhone = false;
 
   constructor(
     private deviceService: DeviceDetectorService,

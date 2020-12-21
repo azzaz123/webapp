@@ -12,10 +12,10 @@ import { PublicProfileService } from '../core/services/public-profile.service';
   styleUrls: ['./public-profile.component.scss'],
 })
 export class PublicProfileComponent implements OnInit, OnDestroy {
-  userId: string;
-  subscriptions: Subscription[] = [];
-  userStats: UserStats;
-  userInfo: User;
+  public userId: string;
+  public userStats: UserStats;
+  public userInfo: User;
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private route: ActivatedRoute,
