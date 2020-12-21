@@ -9,7 +9,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { CarSuggestionsService } from './car-suggestions.service';
-import { IOption } from 'app/dropdown/utils/option.interface';
+import { IOption } from '@shared/dropdown/utils/option.interface';
 import { CarKeysService } from './car-keys.service';
 import { Router } from '@angular/router';
 import {

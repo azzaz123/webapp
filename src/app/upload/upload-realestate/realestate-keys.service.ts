@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { Observable, of } from 'rxjs';
 import { Key } from './key.interface';
-import { IOption } from 'app/dropdown/utils/option.interface';
+import { IOption } from '@shared/dropdown/utils/option.interface';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';

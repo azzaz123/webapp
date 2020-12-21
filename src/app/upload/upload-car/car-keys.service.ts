@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { IOption } from 'app/dropdown/utils/option.interface';
+import { IOption } from '@shared/dropdown/utils/option.interface';
 import { filter } from 'lodash-es';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { environment } from '../../../environments/environment';

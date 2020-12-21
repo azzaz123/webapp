@@ -42,7 +42,7 @@ import {
   UploadFile,
   UploadOutput,
 } from '@shared/uploader/upload.interface';
-import { IOption } from 'app/dropdown/utils/option.interface';
+import { IOption } from '@shared/dropdown/utils/option.interface';
 import { isEqual, omit } from 'lodash-es';
 import { tap } from 'rxjs/operators';
 import { UploadService } from '../drop-area/upload.service';

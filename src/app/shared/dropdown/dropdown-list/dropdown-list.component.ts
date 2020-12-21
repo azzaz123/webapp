@@ -20,7 +20,7 @@ import { Option } from '../utils/option';
   styleUrls: ['./dropdown-list.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class DropdownListComponent implements AfterViewInit, OnChanges, OnInit {
+export class DropdownListComponent implements AfterViewInit, OnChanges {
   @Input() filterEnabled: boolean;
   @Input() left: number;
   @Input() multiple: boolean;
@@ -44,10 +44,6 @@ export class DropdownListComponent implements AfterViewInit, OnChanges, OnInit {
   @ViewChild('optionsList') optionsList: any;
 
   constructor(public hostElement: ElementRef) {}
-
-  /** Event handlers. **/
-
-  ngOnInit() {}
 
   ngOnChanges(changes: any) {
     if (!this.isLoading && changes.optionList) {
@@ -113,23 +109,23 @@ export class DropdownListComponent implements AfterViewInit, OnChanges, OnInit {
   }
 
   moveHighlightedIntoView() {
-    let list = this.optionsList?.nativeElement;
+    const list = this.optionsList?.nativeElement;
     if (!list) {
       return;
     }
-    let listHeight = list.offsetHeight;
+    const listHeight = list.offsetHeight;
 
-    let itemIndex = this.optionList.getHighlightedIndex();
+    const itemIndex = this.optionList.getHighlightedIndex();
 
     if (itemIndex > -1) {
-      let item = list.children[0].children[itemIndex];
-      let itemHeight = item.offsetHeight;
+      const item = list.children[0].children[itemIndex];
+      const itemHeight = item.offsetHeight;
 
-      let itemTop = itemIndex * itemHeight;
-      let itemBottom = itemTop + itemHeight;
+      const itemTop = itemIndex * itemHeight;
+      const itemBottom = itemTop + itemHeight;
 
-      let viewTop = list.scrollTop;
-      let viewBottom = viewTop + listHeight;
+      const viewTop = list.scrollTop;
+      const viewBottom = viewTop + listHeight;
 
       if (itemBottom > viewBottom) {
         list.scrollTop = itemBottom - listHeight;
@@ -140,9 +136,9 @@ export class DropdownListComponent implements AfterViewInit, OnChanges, OnInit {
   }
 
   private handleOptionsWheel(e: any) {
-    let div = this.optionsList?.nativeElement;
-    let atTop = div.scrollTop === 0;
-    let atBottom = div.offsetHeight + div.scrollTop === div.scrollHeight;
+    const div = this.optionsList?.nativeElement;
+    const atTop = div.scrollTop === 0;
+    const atBottom = div.offsetHeight + div.scrollTop === div.scrollHeight;
 
     if (atTop && e.deltaY < 0) {
       e.preventDefault();

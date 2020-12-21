@@ -18,7 +18,7 @@ import {
   FASHION_KEYS_API_URL,
   CONDITION_KEYS_API_URL,
 } from './general-suggestions.service';
-import { IOption } from 'app/dropdown/utils/option.interface';
+import { IOption } from '@shared/dropdown/utils/option.interface';
 import { BrandModel, Brand, Model, ObjectType } from '../brand-model.interface';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { CATEGORY_IDS } from '../../core/category/category-ids';

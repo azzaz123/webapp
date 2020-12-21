@@ -5,7 +5,7 @@ import {
   DashboardRoutingModule,
 } from './dashboard.routing.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { DropdownModule } from 'app/dropdown/dropdown.module';
+import { DropdownModule } from '@shared/dropdown/dropdown.module';
 import { FormsModule } from '@angular/forms';
 
 import { NgxEchartsModule } from 'ngx-echarts';

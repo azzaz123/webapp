@@ -8,7 +8,7 @@ import {
 import { environment } from '../../../environments/environment';
 
 import { CarKeysService, CARS_KEYS_ENDPOINT } from './car-keys.service';
-import { IOption } from 'app/dropdown/utils/option.interface';
+import { IOption } from '@shared/dropdown/utils/option.interface';
 import {
   CAR_BODY_TYPES,
   CAR_BODY_TYPES_RESPONSE,

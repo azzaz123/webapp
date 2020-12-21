@@ -29,7 +29,7 @@ import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GeolocationModule } from '../shared/geolocation/geolocation.module';
 import { GeneralSuggestionsService } from './upload-product/general-suggestions.service';
-import { DropdownModule } from 'app/dropdown/dropdown.module';
+import { DropdownModule } from '@shared/dropdown/dropdown.module';
 
 @NgModule({
   imports: [
