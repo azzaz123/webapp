@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '@core/user/user';
-import { UserInfoResponse } from '@core/user/user-info.interface';
 import { Image } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
 import { forkJoin, Subscription } from 'rxjs';

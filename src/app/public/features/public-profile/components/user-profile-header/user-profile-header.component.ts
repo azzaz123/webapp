@@ -14,10 +14,6 @@ export class UserProfileHeaderComponent {
   constructor() {}
 
   isProAndHaveDescription(): boolean {
-    return !!(
-      this.userInfo.isPro &&
-      this.userInfo.extraInfo &&
-      this.userInfo.extraInfo.description
-    );
+    return !!(this.userInfo.isPro && this.userInfo.extraInfo?.description);
   }
 }

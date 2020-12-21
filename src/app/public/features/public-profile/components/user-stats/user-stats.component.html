@@ -48,8 +48,7 @@
     <div *ngIf="userInfo.isPro && (userInfo.extraInfo && userInfo.extraInfo.link)">
         <a href="{{ userInfo.extraInfo.link }}" target="_blank" i18n="@RedirectWeb">Go to the website</a>
     </div>
-    <div *ngIf="userInfo.isPro && (userInfo.extraInfo && userInfo.extraInfo.phone_number)"
-        class="d-flex align-items-center">
+    <div *ngIf="userInfo.isPro && userInfo.extraInfo?.phone_number" class="d-flex align-items-center">
         <a (click)="togglePhone()" i18n="@@ShowPhone">Show phone number</a>
         <div [hidden]="!isPhone" class="ml-2">{{userInfo.extraInfo.phone_number}}</div>
     </div>
