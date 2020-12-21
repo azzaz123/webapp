@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Route, RouterModule } from '@angular/router';
 import { PublicProfileComponent } from './pages/public-profile.component';
 import { UserInfoComponent } from './pages/user-info/user-info.component';
 import { UserPublishedComponent } from './pages/user-published/user-published.component';
 import { UserReviewsComponent } from './pages/user-reviews/user-reviews.component';
 import { PUBLIC_PROFILE_PATHS } from './public-profile-routing-constants';
 
-const routes: Routes = [
+const routes: Route[] = [
   {
     path: '',
     component: PublicProfileComponent,

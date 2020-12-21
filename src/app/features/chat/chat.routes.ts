@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Route, RouterModule } from '@angular/router';
 import { LoggedGuard } from '@core/user/logged.guard';
 import { ChatComponent } from './chat.component';
 
-const routes: Routes = [
+const routes: Route[] = [
   {
     path: '',
     component: ChatComponent,
