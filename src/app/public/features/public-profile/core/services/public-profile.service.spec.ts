@@ -23,6 +23,7 @@ import {
   PROFILE_API_URL,
   USER_COVER_IMAGE_ENDPOINT,
   FAVOURITE_API_PATH,
+  STATS_ENDPOINT,
 } from './public-profile.service';
 
 describe('PublicProfileService', () => {
@@ -49,9 +50,7 @@ describe('PublicProfileService', () => {
 
   describe('when getting stats...', () => {
     it('should get user stats', () => {
-      const expectedUrl = `${environment.baseUrl}${PROFILE_API_URL(
-        userId
-      )}/stats`;
+      const expectedUrl = `${environment.baseUrl}${STATS_ENDPOINT(userId)}`;
       let response: UserStats;
 
       service.getStats(userId).subscribe((r) => (response = r));

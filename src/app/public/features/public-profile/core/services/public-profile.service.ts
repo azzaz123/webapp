@@ -20,6 +20,18 @@ import {
 export const PROFILE_API_URL = (userId: string) => `api/v3/users/${userId}`;
 export const USER_COVER_IMAGE_ENDPOINT = (userId: string) =>
   `${PROFILE_API_URL(userId)}/cover-image`;
+export const STATS_ENDPOINT = (userId: string) =>
+  `${PROFILE_API_URL(userId)}/stats`;
+export const REVIEWS_ENDPOINT = (userId: string) =>
+  `${PROFILE_API_URL(userId)}/reviews`;
+export const PUBLISHED_ITEMS_ENDPOINT = (userId: string) =>
+  `${PROFILE_API_URL(userId)}/items/published`;
+export const SOLDS_ITEMS_ENDPOINT = (userId: string) =>
+  `${PROFILE_API_URL(userId)}/items/solds`;
+export const TRANSACTIONS_BUYS_ENDPOINT = (userId: string) =>
+  `${PROFILE_API_URL(userId)}/transactions/buys`;
+export const TRANSACTIONS_SOLDS_ENDPOINT = (userId: string) =>
+  `${PROFILE_API_URL(userId)}/transactions/solds`;
 export const FAVOURITE_API_PATH = 'favorite';
 
 @Injectable({
@@ -30,9 +42,7 @@ export class PublicProfileService {
 
   public getStats(userId: string): Observable<UserStats> {
     return this.http
-      .get<UserStatsResponse>(
-        `${environment.baseUrl}${PROFILE_API_URL(userId)}/stats`
-      )
+      .get<UserStatsResponse>(`${environment.baseUrl}${STATS_ENDPOINT(userId)}`)
       .pipe(
         map((response) => {
           return {
@@ -55,39 +65,31 @@ export class PublicProfileService {
       );
   }
 
-  public getFavourite(userId: string): Observable<any> {
-    return this.http.get(
-      `${environment.baseUrl}${PROFILE_API_URL(userId)}/favorite`
-    );
-  }
-
   public getReviews(userId: string): Observable<any> {
-    return this.http.get(
-      `${environment.baseUrl}${PROFILE_API_URL(userId)}/reviews`
-    );
+    return this.http.get(`${environment.baseUrl}${REVIEWS_ENDPOINT(userId)}`);
   }
 
   public getPublishedItems(userId: string): Observable<any> {
     return this.http.get(
-      `${environment.baseUrl}${PROFILE_API_URL(userId)}/items/published`
+      `${environment.baseUrl}${PUBLISHED_ITEMS_ENDPOINT(userId)}`
     );
   }
 
   public getSoldItems(userId: string): Observable<any> {
     return this.http.get(
-      `${environment.baseUrl}${PROFILE_API_URL(userId)}/items/solds`
+      `${environment.baseUrl}${SOLDS_ITEMS_ENDPOINT(userId)}`
     );
   }
 
   public getBuyTransactions(userId: string): Observable<any> {
     return this.http.get(
-      `${environment.baseUrl}${PROFILE_API_URL(userId)}/transactions/buys`
+      `${environment.baseUrl}${TRANSACTIONS_BUYS_ENDPOINT(userId)}`
     );
   }
 
   public getSoldsTransactions(userId: string): Observable<any> {
     return this.http.get(
-      `${environment.baseUrl}${PROFILE_API_URL(userId)}/transactions/solds`
+      `${environment.baseUrl}${TRANSACTIONS_SOLDS_ENDPOINT(userId)}`
     );
   }
 
