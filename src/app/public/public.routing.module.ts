@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Route } from '@angular/router';
 import { PUBLIC_PATHS } from './public-routing-constants';
 import { PublicComponent } from './public.component';
 
-const routes: Routes = [
+const routes: Route[] = [
   {
     path: '',
     component: PublicComponent,

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes, Route } from '@angular/router';
+import { RouterModule, Route } from '@angular/router';
 import { PERMISSIONS } from './core/user/user';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { DevelopmentGuard } from './core/user/development.guard';
@@ -165,7 +165,7 @@ const loggedRoutes = [
   },
 ];
 
-const routes: Routes = [publicRoute, ...loggedRoutes];
+const routes: Route[] = [publicRoute, ...loggedRoutes];
 
 @NgModule({
   imports: [
