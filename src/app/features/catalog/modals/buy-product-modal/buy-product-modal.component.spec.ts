@@ -110,15 +110,6 @@ describe('BuyProductModalComponent', () => {
       spyOn(itemService, 'get').and.callThrough();
     });
 
-    it('should get and set item', () => {
-      component.type = 'urgent';
-
-      component.ngOnInit();
-
-      expect(component.item).toEqual(MOCK_ITEM_V3);
-      expect(component.item.urgent).toBe(true);
-    });
-
     it('should call getCreditInfo and set it', () => {
       const creditInfo: CreditInfo = {
         currencyName: 'wallacoins',

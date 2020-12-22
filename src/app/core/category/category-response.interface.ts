@@ -1,4 +1,4 @@
-import { IOption } from 'app/dropdown/utils/option.interface';
+import { IOption } from '@shared/dropdown/utils/option.interface';
 
 export interface CategoryResponse {
   category_id: number;

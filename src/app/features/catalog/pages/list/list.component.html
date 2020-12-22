@@ -5,8 +5,7 @@
      [infiniteScrollDisabled]="!items.length || end || loading"
      (scrolled)="loadMore()"
      [scrollTop]="scrollTop">
-  <tsl-spinner [firstLoad]="false" *ngIf="isUrgent"></tsl-spinner>
-  <div class="container" *ngIf="!isUrgent">
+  <div class="container">
     <tsl-header>
       <div class="col-8 col-md-7">
         <div class="header-row">
