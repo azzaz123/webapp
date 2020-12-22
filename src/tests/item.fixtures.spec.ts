@@ -31,7 +31,7 @@ import {
 import { CartItem } from '../app/shared/catalog/cart/cart-item.interface';
 import { USER_ID, USER_LOCATION } from './user.fixtures.spec';
 import { Image, UserLocation } from '../app/core/user/user-response.interface';
-import { clone } from 'lodash-es';
+import { clone } from '@features/upload/drop-area/node_modules/lodash-es';
 import { Item, ITEM_TYPES } from '../app/core/item/item';
 import {
   CARS_CATEGORY,

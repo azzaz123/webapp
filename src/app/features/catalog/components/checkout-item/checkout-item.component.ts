@@ -1,7 +1,7 @@
 import { takeWhile } from 'rxjs/operators';
 import { Component, Input, OnDestroy, OnInit, OnChanges } from '@angular/core';
 import { ItemWithProducts } from '@core/item/item-response.interface';
-import { keys } from 'lodash-es';
+import { keys } from '@features/upload/drop-area/node_modules/lodash-es';
 import { CartService } from '@shared/catalog/cart/cart.service';
 import { CartChange, CartItem } from '@shared/catalog/cart/cart-item.interface';
 import {

@@ -27,7 +27,10 @@ import { TooManyItemsModalComponent } from '@shared/catalog/modals/too-many-item
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
 import { NavLink } from '@shared/nav-links/nav-link.interface';
-import { find, findIndex } from 'lodash-es';
+import {
+  find,
+  findIndex,
+} from '@features/upload/drop-area/node_modules/lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { takeWhile } from 'rxjs/operators';
 import { BumpTutorialComponent } from '../../components/bump-tutorial/bump-tutorial.component';

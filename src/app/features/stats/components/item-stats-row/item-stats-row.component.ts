@@ -14,7 +14,10 @@ import {
   ItemStatisticFullResponse,
 } from '@features/stats/core/item-stats-response.interface';
 import { ItemStatsService } from '@features/stats/core/services/item-stats.service';
-import { every, isEmpty } from 'lodash-es';
+import {
+  every,
+  isEmpty,
+} from '@features/upload/drop-area/node_modules/lodash-es';
 import { ITEM_STATS_ROW_ANIMATION } from './item-stats-row.animation';
 
 @Component({

@@ -8,7 +8,10 @@ import { ToastService } from '../../../layout/toast/toast.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Item } from '../../../core/item/item';
 
-import { find, findIndex } from 'lodash-es';
+import {
+  find,
+  findIndex,
+} from '@features/upload/drop-area/node_modules/lodash-es';
 import { TooManyItemsModalComponent } from '../modals/too-many-items-modal/too-many-items-modal.component';
 import { AlreadyFeaturedModalComponent } from '../modals/already-featured-modal/already-featured-modal.component';
 import { Router } from '@angular/router';

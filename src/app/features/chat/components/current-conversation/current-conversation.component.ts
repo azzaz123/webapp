@@ -37,7 +37,11 @@ import {
 } from 'app/core/analytics/analytics-constants';
 import { AnalyticsService } from 'app/core/analytics/analytics.service';
 import { UserService } from 'app/core/user/user.service';
-import { eq, includes, isEmpty } from 'lodash-es';
+import {
+  eq,
+  includes,
+  isEmpty,
+} from '@features/upload/drop-area/node_modules/lodash-es';
 import { of, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { onVisible } from 'visibilityjs';

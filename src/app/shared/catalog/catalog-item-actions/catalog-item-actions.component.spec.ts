@@ -17,7 +17,7 @@ import {
 } from '../../../../tests/item.fixtures.spec';
 import { ToastService } from '../../../layout/toast/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { find } from 'lodash-es';
+import { find } from '@features/upload/drop-area/node_modules/lodash-es';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { I18nService } from '../../../core/i18n/i18n.service';

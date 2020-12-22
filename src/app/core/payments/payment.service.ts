@@ -12,7 +12,13 @@ import {
   ScheduledStatus,
   PaymentIntents,
 } from './payment.interface';
-import { mapValues, values, keyBy, groupBy, min } from 'lodash-es';
+import {
+  mapValues,
+  values,
+  keyBy,
+  groupBy,
+  min,
+} from '@features/upload/drop-area/node_modules/lodash-es';
 import { CREDITS_FACTOR, CREDITS_PACK_ID, Pack, PACKS_TYPES } from './pack';
 import { PerksModel } from './payment.model';
 import { HttpClient } from '@angular/common/http';

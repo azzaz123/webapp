@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { toUpper } from 'lodash-es';
+import { toUpper } from '@features/upload/drop-area/node_modules/lodash-es';
 
 import { MetricTypeEnum } from './metric-type.enum';
 import { APP_VERSION } from '../../../environments/version';

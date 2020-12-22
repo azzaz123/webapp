@@ -1,6 +1,9 @@
 import { CartBase, BUMP_TYPES } from './cart-base';
 import { CartProItem } from './cart-item.interface';
-import { findIndex, sumBy } from 'lodash-es';
+import {
+  findIndex,
+  sumBy,
+} from '@features/upload/drop-area/node_modules/lodash-es';
 import { OrderPro } from '../../../core/item/item-response.interface';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 

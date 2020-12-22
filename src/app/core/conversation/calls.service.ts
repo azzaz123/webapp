@@ -13,7 +13,7 @@ import {
   map as lodashMap,
   reverse,
   sortBy,
-} from 'lodash-es';
+} from '@features/upload/drop-area/node_modules/lodash-es';
 import { Lead } from './lead';
 import { Conversation } from './conversation';
 import { CallTotals } from './totals.interface';

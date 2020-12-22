@@ -6,7 +6,7 @@ import {
   Output,
 } from '@angular/core';
 import { SelectOption } from './select.interface';
-import { find } from 'lodash-es';
+import { find } from '@features/upload/drop-area/node_modules/lodash-es';
 
 @Component({
   selector: 'tsl-select',

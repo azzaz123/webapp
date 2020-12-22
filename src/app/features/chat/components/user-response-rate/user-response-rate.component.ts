@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { isNil } from 'lodash-es';
+import { isNil } from '@features/upload/drop-area/node_modules/lodash-es';
 
 @Component({
   selector: 'tsl-user-response-rate',

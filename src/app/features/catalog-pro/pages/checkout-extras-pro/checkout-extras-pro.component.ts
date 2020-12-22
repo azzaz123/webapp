@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { map, orderBy } from 'lodash-es';
+import {
+  map,
+  orderBy,
+} from '@features/upload/drop-area/node_modules/lodash-es';
 import { FormGroup } from '@angular/forms';
 import { PaymentService } from '@core/payments/payment.service';
 import { Packs } from '@core/payments/payment.interface';

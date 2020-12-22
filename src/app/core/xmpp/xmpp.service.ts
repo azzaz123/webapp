@@ -9,7 +9,12 @@ import {
   MESSAGES_WHITE_LIST,
   MessageType,
 } from '@features/chat/core/model';
-import { clone, eq, includes, remove } from 'lodash-es';
+import {
+  clone,
+  eq,
+  includes,
+  remove,
+} from '@features/upload/drop-area/node_modules/lodash-es';
 import {
   from,
   Observable,

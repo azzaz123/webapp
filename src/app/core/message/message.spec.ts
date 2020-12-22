@@ -6,7 +6,7 @@ import {
   MOCK_MESSAGE,
 } from '../../../tests/message.fixtures.spec';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-import { clone } from 'lodash-es';
+import { clone } from '@features/upload/drop-area/node_modules/lodash-es';
 
 describe('Message', () => {
   it('should create an instance', () => {

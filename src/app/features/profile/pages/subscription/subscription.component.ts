@@ -28,7 +28,7 @@ import { UnsubscribeInAppFirstModal } from '@features/profile/modal/unsubscribe-
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { User } from 'app/core/user/user';
 import { UserService } from 'app/core/user/user.service';
-import { isEqual } from 'lodash-es';
+import { isEqual } from '@features/upload/drop-area/node_modules/lodash-es';
 import { delay, finalize, repeatWhen, take, takeWhile } from 'rxjs/operators';
 
 export type SubscriptionModal =
