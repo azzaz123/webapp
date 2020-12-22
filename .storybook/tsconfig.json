@@ -10,9 +10,7 @@
     "exclude": [
       "../src/test.ts",
       "../src/**/*.spec.ts",
-      "../projects/**/*.spec.ts",
-      "../src/app/shared/geolocation/**/*.ts",
-      "../src/app/shared/payments/stripe/**/*.ts"
+      "../projects/**/*.spec.ts"
     ],
     "include": [
       "../src/**/*",
