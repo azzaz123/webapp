@@ -1,1 +1,55 @@
-<p>stats works!</p>
+<div *ngIf="userStats && userStats.counters && userInfo" class="ProfileUser">
+    <div class="row align-left">
+        <div class="col-6 col-sm-4 d-flex align-items-center">
+            <tsl-svg-icon class="mr-1" src="/assets/icons/public-profile/stats.svg"></tsl-svg-icon>
+            <div class="mr-1 ProfileUser__counter--bold">{{userStats.counters.sold}}</div>
+            <ng-container [ngPlural]="userStats.counters.sold">
+                <ng-template ngPluralCase="=1">
+                    <ng-container i18n="@@Sale">Sale</ng-container>
+                </ng-template>
+                <ng-template ngPluralCase="other">
+                    <ng-container i18n="@@Sales">Sales
+                    </ng-container>
+                </ng-template>
+            </ng-container>
+        </div>
+        <div class="col-6 col-sm-8 d-flex align-items-center">
+            <div class="mr-1 ProfileUser__counter--bold">{{userStats.counters.buys}}</div>
+            <ng-container [ngPlural]="userStats.counters.buys">
+                <ng-template ngPluralCase="=1">
+                    <ng-container i18n="@@Purchase">Purchase</ng-container>
+                </ng-template>
+                <ng-template ngPluralCase="other">
+                    <ng-container i18n="@@Purchase">Purchases
+                    </ng-container>
+                </ng-template>
+            </ng-container>
+        </div>
+    </div>
+    <div class="d-flex align-items-center">
+        <tsl-svg-icon class="mr-1" src="/assets/icons/public-profile/box.svg"></tsl-svg-icon>
+        <div class="mr-1 ProfileUser__counter--bold">{{userStats.counters.sells}}</div>
+        <ng-container [ngPlural]="userStats.counters.sells">
+            <ng-template ngPluralCase="=1">
+                <ng-container i18n="@@Shipment">Shipment</ng-container>
+            </ng-template>
+            <ng-template ngPluralCase="other">
+                <ng-container i18n="@@Shipments">Shipments
+                </ng-container>
+            </ng-template>
+        </ng-container>
+    </div>
+    <div class="d-flex align-items-center">
+        <tsl-svg-icon class="mr-1" src="/assets/icons/public-profile/location.svg"></tsl-svg-icon>
+        {{userInfo.location.zip}},
+        {{userInfo.location.city}}
+        <a (click)="showLocation()" i18n="@@ShowLocation" class="ml-2">View location</a>
+    </div>
+    <div *ngIf="userInfo.featured && (userInfo.extraInfo && userInfo.extraInfo.link)">
+        <a href="{{ userInfo.extraInfo.link }}" target="_blank" i18n="@RedirectWeb">Go to the website</a>
+    </div>
+    <div *ngIf="userInfo.featured && userInfo.extraInfo?.phone_number" class="d-flex align-items-center">
+        <a (click)="togglePhone()" i18n="@@ShowPhone">Show phone number</a>
+        <div [hidden]="!isPhone" class="ml-2">{{userInfo.extraInfo.phone_number}}</div>
+    </div>
+</div>
