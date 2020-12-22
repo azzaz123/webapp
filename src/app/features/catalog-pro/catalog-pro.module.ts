@@ -17,7 +17,6 @@ import { PlanDataComponent } from './components/plan-data/plan-data.component';
 import { RangeDatepickerComponent } from './components/range-datepicker/range-datepicker.component';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
 import { ProBumpConfirmationModalComponent } from './modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component';
-import { ProUrgentConfirmationModalComponent } from './modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component';
 
 @NgModule({
   imports: [
@@ -32,7 +31,6 @@ import { ProUrgentConfirmationModalComponent } from './modals/pro-urgent-confirm
   declarations: [
     catalogProRoutedComponents,
     ProBumpConfirmationModalComponent,
-    ProUrgentConfirmationModalComponent,
     PlanDataComponent,
     CartExtrasProComponent,
     CheckoutExtrasProItemComponent,
@@ -43,7 +41,6 @@ import { ProUrgentConfirmationModalComponent } from './modals/pro-urgent-confirm
   ],
   entryComponents: [
     ProBumpConfirmationModalComponent,
-    ProUrgentConfirmationModalComponent,
     CreditCardModalComponent,
   ],
 })

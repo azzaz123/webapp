@@ -14,7 +14,6 @@ import { CarSuggestionsService } from './upload-car/car-suggestions.service';
 import { UploadProductComponent } from './upload-product/upload-product.component';
 import { UploadRealestateComponent } from './upload-realestate/upload-realestate.component';
 import { RealestateKeysService } from './upload-realestate/realestate-keys.service';
-import { UrgentCheckboxComponent } from './urgent-checkbox/urgent-checkbox.component';
 import { UploadComponent } from './upload.component';
 import { ItemResolverService } from './item-resolver.service';
 import { NgxPermissionsModule } from 'ngx-permissions';
@@ -57,7 +56,6 @@ import { DropdownModule } from 'app/dropdown/dropdown.module';
     UploadCarComponent,
     UploadProductComponent,
     UploadRealestateComponent,
-    UrgentCheckboxComponent,
     UploadComponent,
   ],
   providers: [
