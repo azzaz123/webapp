@@ -21,6 +21,7 @@ export interface UserResponse extends ApiResponse {
   email?: string;
   featured?: boolean;
   extra_info?: UserExtrainfo;
+  register_date?: Date;
 }
 
 export interface Image {

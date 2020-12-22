@@ -179,7 +179,9 @@ export class PublicProfileService {
       data.gender,
       data.email,
       data.featured,
-      data.extra_info
+      data.extra_info,
+      null,
+      data.register_date
     );
   }
 }
