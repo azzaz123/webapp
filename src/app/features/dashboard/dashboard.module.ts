@@ -1,22 +1,18 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ConversationModule } from '@core/conversation/conversation.module';
+import { ChatModule } from '@features/chat/chat.module';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { SharedModule } from '@shared/shared.module';
+import { NgxEchartsModule } from 'ngx-echarts';
+import { CallComponent } from './components/call/call.component';
+import { StatsGraphComponent } from './components/stats-graph/stats-graph.component';
+import { StatisticsService } from './core/services/statistics.service';
 import {
   dashboardRoutedComponents,
   DashboardRoutingModule,
 } from './dashboard.routing.module';
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { DropdownModule } from '@shared/dropdown/dropdown.module';
-import { FormsModule } from '@angular/forms';
-
-import { NgxEchartsModule } from 'ngx-echarts';
-
-import { CallComponent } from './components/call/call.component';
-
-import { StatsGraphComponent } from './components/stats-graph/stats-graph.component';
-import { StatisticsService } from './core/services/statistics.service';
-import { SharedModule } from '@shared/shared.module';
-import { ConversationModule } from '@core/conversation/conversation.module';
-import { ChatModule } from '@features/chat/chat.module';
 
 @NgModule({
   imports: [
@@ -28,7 +24,6 @@ import { ChatModule } from '@features/chat/chat.module';
     NgxEchartsModule,
     FormsModule,
     ChatModule,
-    DropdownModule,
   ],
   declarations: [dashboardRoutedComponents, CallComponent, StatsGraphComponent],
   providers: [StatisticsService],

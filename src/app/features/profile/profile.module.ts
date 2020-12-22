@@ -9,7 +9,6 @@ import {
 import { GeolocationModule } from '@shared/geolocation/geolocation.module';
 import { DeleteInfoConfirmationModalComponent } from '@shared/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component';
 import { SharedModule } from '@shared/shared.module';
-import { DropdownModule } from '@shared/dropdown/dropdown.module';
 import { InvoiceHistoryComponent } from './components/invoice-history/invoice-history.component';
 import { InvoiceItemComponent } from './components/invoice-item/invoice-item.component';
 import { SubscriptionBenefitsComponent } from './components/subscription-benefits/subscription-benefits.component';
@@ -42,7 +41,6 @@ import {
     NgbCarouselModule,
     NgbAccordionModule,
     NgbModalModule,
-    DropdownModule,
   ],
   declarations: [
     profileRoutedComponents,

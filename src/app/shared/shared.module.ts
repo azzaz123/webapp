@@ -163,6 +163,7 @@ import { DateCountDownComponent } from './date-countdown/date-countdown.componen
     DisableControlDirective,
     SvgIconModule,
     DateCountDownComponent,
+    DropdownModule,
   ],
   declarations: [
     AdComponent,
