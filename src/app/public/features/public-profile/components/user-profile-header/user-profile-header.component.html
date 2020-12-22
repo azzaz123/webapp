@@ -1,1 +1,42 @@
-<p>user-profile-header works!</p>
+<div *ngIf="userInfo && userStats" class="mb-4">
+  <div class="HeaderPro" *ngIf="userInfo.featured">
+    <tsl-user-cover [user]="userInfo"></tsl-user-cover>
+  </div>
+  <div class="container align-middle ProfileUser__container d-flex flex-column py-4">
+    <div class="row px-2 px-md-4">
+      <div class="col-12 col-sm-6 ProfileUser__info">
+        <div class="d-flex align-items-center">
+          <tsl-user-avatar class="ProfileUser__info__image mr-3" [user]="userInfo" size="80"></tsl-user-avatar>
+          <div class="wrapper">
+            <h3>{{userInfo.microName}}</h3>
+            <tsl-stars class="d-inline-block" [stars]="userStats.ratings?.reviews" [normalized]="false"></tsl-stars>
+            <span class="user-number-reviews mb-0">({{userStats.counters?.reviews}})</span>
+            <div class="ProBadge" [hidden]="!userInfo.featured">
+              <div class="ProBadge-icon mt-1">
+                <tsl-svg-icon src="/assets/icons/pro-seal.svg"></tsl-svg-icon>
+                <div class="ml-2 d-inline ProfileUser__container__title--bold">PRO</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 mt-4 mt-md-0">
+        <tsl-user-stats [userStats]="userStats" [userInfo]="userInfo"></tsl-user-stats>
+      </div>
+    </div>
+    <div class="row px-2 px-md-4 mt-4" *ngIf="isProAndHaveDescription()">
+      <div class="col-12">
+        <div class="row mb-1">
+          <div class="col-12">
+            <div class="w-100 ProfileUser__container__title--bold" i18n="@@About">About</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            {{userInfo.extraInfo.description}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

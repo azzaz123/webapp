@@ -1,0 +1,12 @@
+@import '~style/common';
+
+.ProfileUser {
+  a {
+    color: $walla-main;
+    display: inline-block;
+    cursor: pointer;
+  }
+  &__counter--bold {
+    font-weight: $font-weight-chunky;
+  }
+}

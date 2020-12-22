@@ -1213,6 +1213,16 @@
   <translation id="InvoiceCannotGenerate">Tu factura no se ha podido generar. Intenta de nuevo.</translation>
   <translation id="SuccessEdit">Tus datos se han editado correctamente.</translation>
   <translation id="ErrorSavingData">Error al guardar los datos. Intenta de nuevo.</translation>
+  <translation id="Sale">Venta</translation>
+  <translation id="Sales">Ventas</translation>
+  <translation id="Purchase">Compra</translation>
+  <translation id="Purchases">Compras</translation>
+  <translation id="Shipment">Envío</translation>
+  <translation id="Shipments">Envíos</translation>
+  <translation id="ShowPhone">Ver número de teléfono</translation>
+  <translation id="ShowLocation">Ver ubicación</translation>
+  <translation id="RedirectWeb">Ir a la web<</translation>
+  <translation id="About">Acerca de</translation>
   <translation id="FavouriteUserLabel">Usuario favorito</translation>
   <translation id="ProfileTabsPublishedLabel">En venta</translation>
   <translation id="ProfileTabsReviewsLabel">Opiniones</translation>

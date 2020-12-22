@@ -4,7 +4,7 @@ import * as CryptoJSAES from 'crypto-js/aes';
 import { REDIRECT_SECRET } from '@core/user/logged.guard';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PublicWebUrlService {
   private REDIRECT_SECRET = REDIRECT_SECRET;
