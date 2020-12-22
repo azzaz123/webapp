@@ -1,65 +1,174 @@
 import {
   HttpClientTestingModule,
   HttpTestingController,
+  TestRequest,
 } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
-import { environment } from '@environments/environment';
-import { MarkAsFavouriteBodyRequest } from '../interfaces/public-profile-request.interface';
+import { fakeAsync, TestBed } from '@angular/core/testing';
+import { User } from '@core/user/user';
+import { Image } from '@core/user/user-response.interface';
+import { UserStats } from '@core/user/user-stats.interface';
 import {
-  FAVOURITE_API_PATH,
-  PROFILE_API_URL,
+  MOCK_FULL_USER,
+  MOCK_FULL_USER_FEATURED,
+  MOCK_USER_STATS,
+  USERS_STATS,
+  USER_DATA,
+  IMAGE,
+} from '@fixtures/user.fixtures.spec';
+import { environment } from 'environments/environment';
+import { MarkAsFavouriteBodyRequest } from '../interfaces/public-profile-request.interface';
+
+import {
   PublicProfileService,
+  PROFILE_API_URL,
+  USER_COVER_IMAGE_ENDPOINT,
+  FAVOURITE_API_PATH,
+  STATS_ENDPOINT,
 } from './public-profile.service';
 
 describe('PublicProfileService', () => {
-  let publicProfileService: PublicProfileService;
-  let httpService: HttpTestingController;
-  const USER_ID = 'USER_ID';
-  const FAVOURITE_API_URL = `${environment.baseUrl}${PROFILE_API_URL}${USER_ID}/${FAVOURITE_API_PATH}`;
+  let service: PublicProfileService;
+  let httpMock: HttpTestingController;
+  const userId = '123';
+  const FAVOURITE_API_URL = `${environment.baseUrl}${PROFILE_API_URL}${userId}/${FAVOURITE_API_PATH}`;
+
+  beforeEach(fakeAsync(() => {
+    TestBed.configureTestingModule({
+      providers: [PublicProfileService],
+      imports: [HttpClientTestingModule],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-    });
-    publicProfileService = TestBed.inject(PublicProfileService);
-    httpService = TestBed.inject(HttpTestingController);
+    service = TestBed.inject(PublicProfileService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
-  it('should be created', () => {
-    expect(publicProfileService).toBeTruthy();
+  afterEach(() => {
+    httpMock.verify();
   });
 
-  describe('when requesting isFavourite', () => {
-    it('should ask server for response', () => {
-      publicProfileService.isFavourite(USER_ID).subscribe();
+  describe('when getting stats...', () => {
+    it('should get user stats', () => {
+      const expectedUrl = `${environment.baseUrl}${STATS_ENDPOINT(userId)}`;
+      let response: UserStats;
 
-      const req = httpService.expectOne(FAVOURITE_API_URL);
-      expect(req.request.method).toEqual('GET');
-      expect(req.request.body).toBeNull();
-    });
-  });
+      service.getStats(userId).subscribe((r) => (response = r));
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(USERS_STATS);
 
-  describe('when requesting markAsFavourite', () => {
-    it('should ask server for response', () => {
-      const bodyRequest: MarkAsFavouriteBodyRequest = { favorited: true };
-
-      publicProfileService.markAsFavourite(USER_ID).subscribe();
-
-      const req = httpService.expectOne(FAVOURITE_API_URL);
-      expect(req.request.method).toEqual('PUT');
-      expect(req.request.body).toEqual(bodyRequest);
+      expect(req.request.url).toEqual(expectedUrl);
+      expect(response).toEqual(MOCK_USER_STATS);
+      expect(req.request.method).toBe('GET');
     });
   });
 
-  describe('when requesting unmarkAsFavourite', () => {
-    it('should ask server for response', () => {
-      const bodyRequest: MarkAsFavouriteBodyRequest = { favorited: false };
+  describe('when getting favourite...', () => {
+    it('should get user favourite', () => {});
+  });
 
-      publicProfileService.unmarkAsFavourite(USER_ID).subscribe();
+  describe('when getting reviews...', () => {
+    it('should get user reviews', () => {});
+  });
 
-      const req = httpService.expectOne(FAVOURITE_API_URL);
-      expect(req.request.method).toEqual('PUT');
-      expect(req.request.body).toEqual(bodyRequest);
+  describe('when getting published items...', () => {
+    it('should get user published items', () => {});
+  });
+
+  describe('when getting sold items...', () => {
+    it('should get user sold items', () => {});
+  });
+
+  describe('when getting buy transactions...', () => {
+    it('should get user buy transactions', () => {});
+  });
+
+  describe('when getting solds transactions...', () => {
+    it('should get user solds transactions', () => {});
+  });
+
+  describe('when getting user...', () => {
+    it('should get user', () => {
+      const expectedUrl = `${environment.baseUrl}${PROFILE_API_URL(userId)}`;
+      let response: User;
+
+      service.getUser(userId).subscribe((r) => (response = r));
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(USER_DATA);
+
+      expect(req.request.url).toEqual(expectedUrl);
+      expect(response).toEqual(MOCK_FULL_USER_FEATURED);
+      expect(req.request.method).toBe('GET');
+    });
+  });
+
+  describe('when getting info from pro user...', () => {
+    it('should get info pro user', () => {});
+  });
+
+  describe('when checking if user is pro...', () => {
+    it('should return false if the user is NOT pro', () => {
+      const MOCK_NORMAL_INFO = MOCK_FULL_USER;
+      MOCK_NORMAL_INFO.featured = false;
+
+      expect(service.isPro(MOCK_NORMAL_INFO)).toBe(false);
+    });
+    it('should return true if the user is pro', () => {
+      const MOCK_PRO_INFO = MOCK_FULL_USER;
+      MOCK_PRO_INFO.featured = true;
+
+      expect(service.isPro(MOCK_PRO_INFO)).toBe(true);
+    });
+  });
+
+  describe('when getting cover image...', () => {
+    it('should return cover image', () => {
+      const expectedUrl = `${environment.baseUrl}${USER_COVER_IMAGE_ENDPOINT(
+        userId
+      )}`;
+      let response: Image;
+
+      service.getCoverImage(userId).subscribe((r) => (response = r));
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(IMAGE);
+
+      expect(req.request.url).toEqual(expectedUrl);
+      expect(response).toEqual(IMAGE);
+      expect(req.request.method).toBe('GET');
+    });
+
+    describe('when requesting isFavourite', () => {
+      it('should ask server for response', () => {
+        service.isFavourite(userId).subscribe();
+
+        const req = httpMock.expectOne(FAVOURITE_API_URL);
+        expect(req.request.method).toEqual('GET');
+        expect(req.request.body).toBeNull();
+      });
+    });
+
+    describe('when requesting markAsFavourite', () => {
+      it('should ask server for response', () => {
+        const bodyRequest: MarkAsFavouriteBodyRequest = { favorited: true };
+
+        service.markAsFavourite(userId).subscribe();
+
+        const req = httpMock.expectOne(FAVOURITE_API_URL);
+        expect(req.request.method).toEqual('PUT');
+        expect(req.request.body).toEqual(bodyRequest);
+      });
+    });
+
+    describe('when requesting unmarkAsFavourite', () => {
+      it('should ask server for response', () => {
+        const bodyRequest: MarkAsFavouriteBodyRequest = { favorited: false };
+
+        service.unmarkAsFavourite(userId).subscribe();
+
+        const req = httpMock.expectOne(FAVOURITE_API_URL);
+        expect(req.request.method).toEqual('PUT');
+        expect(req.request.body).toEqual(bodyRequest);
+      });
     });
   });
 });

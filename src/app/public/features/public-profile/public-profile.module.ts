@@ -7,6 +7,7 @@ import {
 import { UserStatsComponent } from './components/user-stats/user-stats.component';
 import { UserProfileHeaderComponent } from './components/user-profile-header/user-profile-header.component';
 import { ProfileTabsComponent } from './components/profile-tabs/profile-tabs.component';
+import { SharedModule } from '@shared/shared.module';
 import { FavouriteUserModule } from './components/favourite-user/favourite-user.module';
 
 @NgModule({
@@ -16,6 +17,11 @@ import { FavouriteUserModule } from './components/favourite-user/favourite-user.
     UserStatsComponent,
     ProfileTabsComponent,
   ],
-  imports: [CommonModule, PublicProfileRoutingModule, FavouriteUserModule],
+  imports: [
+    CommonModule,
+    PublicProfileRoutingModule,
+    SharedModule,
+    FavouriteUserModule,
+  ],
 })
 export class PublicProfileModule {}

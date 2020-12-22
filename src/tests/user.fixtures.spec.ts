@@ -242,6 +242,30 @@ export const MOCK_FULL_USER = new User(
   USER_DATA.extra_info
 );
 
+export const MOCK_FULL_USER_FEATURED = new User(
+  USER_DATA.id,
+  USER_DATA.micro_name,
+  USER_DATA.image,
+  USER_DATA.location,
+  USER_DATA.stats,
+  USER_DATA.validations,
+  USER_DATA.verification_level,
+  USER_DATA.scoring_stars,
+  USER_DATA.scoring_starts,
+  USER_DATA.response_rate,
+  USER_DATA.online,
+  USER_DATA.type,
+  USER_DATA.received_reports,
+  USER_DATA.web_slug,
+  USER_DATA.first_name,
+  USER_DATA.last_name,
+  USER_DATA.birth_date,
+  USER_DATA.gender,
+  USER_DATA.email,
+  USER_DATA.featured,
+  USER_DATA.extra_info
+);
+
 export const MOCK_FULL_USER_NON_FEATURED = new User(
   MOCK_NON_FEATURED_USER_RESPONSE.id,
   MOCK_NON_FEATURED_USER_RESPONSE.micro_name,
