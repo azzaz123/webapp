@@ -3,18 +3,6 @@ import { IOption } from './option.interface';
 import { Diacritics } from './diacritics';
 
 export class OptionList {
-  private _options: Array<Option>;
-
-  /* Consider using these for performance improvement. */
-  // private _selection: Array<Option>;
-  // private _filtered: Array<Option>;
-  // private _value: Array<string>;
-
-  private _highlightedOption: Option = null;
-  private _hasShown: boolean;
-  private _hasSelected: boolean;
-  private _hasValues: boolean;
-
   get hasShown(): boolean {
     return this._hasShown;
   }
@@ -33,7 +21,7 @@ export class OptionList {
     }
 
     this._options = options.map((option) => {
-      let o: Option = new Option(option);
+      const o: Option = new Option(option);
       if (option.disabled) {
         o.disabled = true;
       }
@@ -48,12 +36,6 @@ export class OptionList {
 
   get options(): Array<Option> {
     return this._options;
-  }
-
-  getOptionsByValue(value: string): Array<Option> {
-    return this.options.filter((option) => {
-      return option.value === value;
-    });
   }
 
   /** Value. **/
@@ -75,6 +57,53 @@ export class OptionList {
 
   get selection(): Array<Option> {
     return this.options.filter((option) => option.selected);
+  }
+
+  /** Filter. **/
+
+  get filtered(): Array<Option> {
+    return this.options.filter((option) => option.shown);
+  }
+
+  get filteredEnabled(): Array<Option> {
+    return this.options.filter((option) => option.shown && !option.disabled);
+  }
+
+  /** Highlight. **/
+
+  get highlightedOption(): Option {
+    return this._highlightedOption;
+  }
+  private _options: Array<Option>;
+
+  /* Consider using these for performance improvement. */
+  // private _selection: Array<Option>;
+  // private _filtered: Array<Option>;
+  // private _value: Array<string>;
+
+  private _highlightedOption: Option = null;
+  private _hasShown: boolean;
+  private _hasSelected: boolean;
+  private _hasValues: boolean;
+
+  // v0 and v1 are assumed not to be undefined or null.
+  static equalValues(v0: Array<string>, v1: Array<string>): boolean {
+    if (v0.length !== v1.length) {
+      return false;
+    }
+
+    const a: Array<string> = v0.slice().sort();
+    const b: Array<string> = v1.slice().sort();
+
+    return a.every((v, i) => {
+      return v === b[i];
+    });
+  }
+
+  getOptionsByValue(value: string): Array<Option> {
+    return this.options.filter((option) => {
+      return option.value === value;
+    });
   }
 
   select(option: Option, multiple: boolean) {
@@ -101,26 +130,16 @@ export class OptionList {
     this._hasSelected = this.options.some((option) => option.selected);
   }
 
-  /** Filter. **/
-
-  get filtered(): Array<Option> {
-    return this.options.filter((option) => option.shown);
-  }
-
-  get filteredEnabled(): Array<Option> {
-    return this.options.filter((option) => option.shown && !option.disabled);
-  }
-
   filter(term: string): boolean {
-    let anyShown: boolean = false;
+    let anyShown = false;
 
     if (term.trim() === '') {
       this.resetFilter();
       anyShown = this.options.length > 0;
     } else {
       this.options.forEach((option) => {
-        let l: string = Diacritics.strip(option.label).toUpperCase();
-        let t: string = Diacritics.strip(term).toUpperCase();
+        const l: string = Diacritics.strip(option.label).toUpperCase();
+        const t: string = Diacritics.strip(term).toUpperCase();
         option.shown = l.indexOf(t) > -1;
 
         if (option.shown) {
@@ -141,14 +160,8 @@ export class OptionList {
     });
   }
 
-  /** Highlight. **/
-
-  get highlightedOption(): Option {
-    return this._highlightedOption;
-  }
-
   highlight() {
-    let option: Option = this.hasShownSelected()
+    const option: Option = this.hasShownSelected()
       ? this.getFirstShownSelected()
       : this.getFirstShown();
     this.highlightOption(option);
@@ -164,8 +177,8 @@ export class OptionList {
   }
 
   highlightNextOption() {
-    let shownEnabledOptions = this.filteredEnabled;
-    let index = this.getHighlightedIndexFromList(shownEnabledOptions);
+    const shownEnabledOptions = this.filteredEnabled;
+    const index = this.getHighlightedIndexFromList(shownEnabledOptions);
 
     if (index > -1 && index < shownEnabledOptions.length - 1) {
       this.highlightOption(shownEnabledOptions[index + 1]);
@@ -173,8 +186,8 @@ export class OptionList {
   }
 
   highlightPreviousOption() {
-    let shownEnabledOptions = this.filteredEnabled;
-    let index = this.getHighlightedIndexFromList(shownEnabledOptions);
+    const shownEnabledOptions = this.filteredEnabled;
+    const index = this.getHighlightedIndexFromList(shownEnabledOptions);
 
     if (index > 0) {
       this.highlightOption(shownEnabledOptions[index - 1]);
@@ -210,7 +223,7 @@ export class OptionList {
   }
 
   private getFirstShown(): Option {
-    for (let option of this.options) {
+    for (const option of this.options) {
       if (option.shown) {
         return option;
       }
@@ -219,25 +232,11 @@ export class OptionList {
   }
 
   private getFirstShownSelected(): Option {
-    for (let option of this.options) {
+    for (const option of this.options) {
       if (option.shown && option.selected) {
         return option;
       }
     }
     return null;
-  }
-
-  // v0 and v1 are assumed not to be undefined or null.
-  static equalValues(v0: Array<string>, v1: Array<string>): boolean {
-    if (v0.length !== v1.length) {
-      return false;
-    }
-
-    let a: Array<string> = v0.slice().sort();
-    let b: Array<string> = v1.slice().sort();
-
-    return a.every((v, i) => {
-      return v === b[i];
-    });
   }
 }

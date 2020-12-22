@@ -4,7 +4,7 @@ import {
   CarSuggestionsService,
   CARS_SUGGESTER_API_URL,
 } from './car-suggestions.service';
-import { IOption } from 'app/dropdown/utils/option.interface';
+import { IOption } from '@shared/dropdown/utils/option.interface';
 import {
   CAR_BRANDS,
   CAR_BRANDS_RESPONSE,

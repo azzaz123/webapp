@@ -24,7 +24,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { IOption } from 'app/dropdown/utils/option.interface';
+import { IOption } from '@shared/dropdown/utils/option.interface';
 import { omit, isEqual, cloneDeep } from 'lodash-es';
 import {
   NgbModal,

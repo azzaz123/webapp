@@ -16,7 +16,7 @@ import { of, throwError } from 'rxjs';
 import { ErrorsService } from '@core/errors/errors.service';
 import { Router } from '@angular/router';
 import { Key } from './key.interface';
-import { IOption } from 'app/dropdown/utils/option.interface';
+import { IOption } from '@shared/dropdown/utils/option.interface';
 import { IMAGE, USER_LOCATION } from '@fixtures/user.fixtures.spec';
 import {
   NgbModal,

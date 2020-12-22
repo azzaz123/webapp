@@ -50,7 +50,7 @@ import {
   NgbModal,
   NgbModalRef,
 } from '@ng-bootstrap/ng-bootstrap';
-import { IOption } from 'app/dropdown/utils/option.interface';
+import { IOption } from '@shared/dropdown/utils/option.interface';
 import { ModalStatuses } from '../../core/modal.statuses.enum';
 import { PaymentSuccessModalComponent } from '../payment-success/payment-success-modal.component';
 
