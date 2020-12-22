@@ -526,19 +526,6 @@ describe('UploadRealestateComponent', () => {
     });
   });
 
-  describe('selectUrgent', () => {
-    it('should set as urgent when checkbox is selected', () => {
-      component.selectUrgent(true);
-
-      expect(component.isUrgent).toBe(true);
-    });
-    it('should set as not urgent when checkbox is unselected', () => {
-      component.selectUrgent(false);
-
-      expect(component.isUrgent).toBe(false);
-    });
-  });
-
   describe('emitLocation', () => {
     let categoryId: number;
     const USER_LOCATION_COORDINATES: any = {

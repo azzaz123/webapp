@@ -803,18 +803,6 @@ describe('UploadCarComponent', () => {
       ]);
     });
 
-    it('should set action as urgent if item is urgent and product not on hold', () => {
-      component.isUrgent = true;
-      spyOn(router, 'navigate');
-
-      component.onUploaded(response, action);
-
-      expect(router.navigate).toHaveBeenCalledWith([
-        '/catalog/list',
-        { urgent: true, itemId: response.id },
-      ]);
-    });
-
     describe('if it`s a item modification', () => {
       it('should send the Edit Item Car tracking event', () => {
         component.item = MOCK_CAR;
@@ -976,19 +964,6 @@ describe('UploadCarComponent', () => {
     }));
     it('should call getBodyType', () => {
       expect(componentInstance.getBodyType).toHaveBeenCalled();
-    });
-  });
-
-  describe('Select Urgent', () => {
-    it('should set as urgent when checkbox is selected', () => {
-      component.selectUrgent(true);
-
-      expect(component.isUrgent).toBeTruthy();
-    });
-    it('should set as not urgent when checkbox is unselected', () => {
-      component.selectUrgent(false);
-
-      expect(component.isUrgent).toBeFalsy();
     });
   });
 

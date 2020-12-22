@@ -107,7 +107,6 @@ export class UploadProductComponent
   implements OnInit, AfterContentInit, OnChanges {
   @Input() categoryId: string;
   @Input() item: Item;
-  @Input() urgentPrice: number;
   @Output() onValidationError: EventEmitter<any> = new EventEmitter();
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
   @Output() onCategorySelect = new EventEmitter<string>();
@@ -148,7 +147,6 @@ export class UploadProductComponent
   private oldDeliveryValue: any;
   private rawCategories: CategoryResponse[];
   public selectedRawCategory: CategoryResponse;
-  public isUrgent = false;
   public cellPhonesCategoryId = CATEGORY_IDS.CELL_PHONES_ACCESSORIES;
   public fashionCategoryId = CATEGORY_IDS.FASHION_ACCESSORIES;
   public lastSuggestedCategoryText: string;
@@ -515,14 +513,6 @@ export class UploadProductComponent
       ga('send', 'event', 'Upload', 'done', 'Web mobile analysis');
     }
 
-    if (this.isUrgent) {
-      this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, {
-        category: this.uploadForm.value.category_id,
-      });
-      action = UPLOAD_ACTION.urgent;
-      localStorage.setItem('transactionType', 'urgent');
-    }
-
     this.trackEditOrUpload(!!this.item, response).subscribe(() =>
       this.router.navigate([
         '/catalog/list',
@@ -602,10 +592,6 @@ export class UploadProductComponent
       const v: number = Number(control.value);
       return v > max ? { max: { requiredMax: max, actualMax: v } } : null;
     };
-  }
-
-  public selectUrgent(isUrgent: boolean): void {
-    this.isUrgent = isUrgent;
   }
 
   public emitLocation(): void {
