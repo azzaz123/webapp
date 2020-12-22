@@ -7,16 +7,8 @@
         "heremaps"
       ]
     },
-    "exclude": [
-      "../src/test.ts",
-      "../src/**/*.spec.ts",
-      "../projects/**/*.spec.ts"
-    ],
-    "include": [
-      "../src/**/*",
-      "../projects/**/*"
-    ],
     "files": [
       "./typings.d.ts"
     ]
 }
+ 
