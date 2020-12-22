@@ -41,6 +41,5 @@ export class PublicProfileRoutingModule {}
 export const publicProfileRoutedComponents = [
   PublicProfileComponent,
   UserPublishedComponent,
-  UserReviewsComponent,
   UserInfoComponent,
 ];
