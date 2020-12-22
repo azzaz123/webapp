@@ -20,7 +20,6 @@ import { ReviewModalComponent } from './modals/review-modal/review-modal.compone
 import { ItemSoldDirective } from './modals/sold-modal/item-sold.directive';
 import { StarsRateComponent } from './stars-rate/stars-rate.component';
 import { SanitizedBackgroundDirective } from './sanitized-background/sanitized-background.directive';
-import { UserAvatarComponent } from './user-avatar/user-avatar.component';
 import { ProcessAllButtonComponent } from './process-all-button/process-all-button.component';
 import { ArchivableComponent } from './archivable/archivable.component';
 import { ArchiveButtonComponent } from './archive-button/archive-button.component';
@@ -81,6 +80,8 @@ import { RouterLinkDirectiveStub } from './router-link-directive-stub';
 import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
 import { DateCountDownComponent } from './date-countdown/date-countdown.component';
 import { StarsModule } from './stars/stars.module';
+import { UserAvatarModule } from './user-avatar/user-avatar.module';
+import { SanitizedBackgroundModule } from './sanitized-background/sanitized-background.module';
 
 @NgModule({
   imports: [
@@ -99,10 +100,12 @@ import { StarsModule } from './stars/stars.module';
     SvgIconModule,
     DropdownModule,
     StarsModule,
+    UserAvatarModule,
     SanitizedBackgroundModule,
   ],
   exports: [
     SanitizedBackgroundModule,
+    UserAvatarModule,
     StarsModule,
     CardModule,
     CommonModule,
@@ -115,9 +118,7 @@ import { StarsModule } from './stars/stars.module';
     ButtonComponent,
     SoldModalComponent,
     ItemSoldDirective,
-    SanitizedBackgroundDirective,
     StarsRateComponent,
-    UserAvatarComponent,
     StatusIconComponent,
     ProcessAllButtonComponent,
     ArchivableComponent,
@@ -177,9 +178,7 @@ import { StarsModule } from './stars/stars.module';
     ButtonComponent,
     SoldModalComponent,
     ItemSoldDirective,
-    SanitizedBackgroundDirective,
     StarsRateComponent,
-    UserAvatarComponent,
     StatusIconComponent,
     ProcessAllButtonComponent,
     ArchivableComponent,
