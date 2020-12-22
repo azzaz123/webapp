@@ -6,15 +6,24 @@
                     <div class="row mb-3">
                         <div class="col">
                             <div class="bold-title mb-1" i18n="@@ProfileInfoVerified">Verified information</div>
-                            <a class="d-block">Email</a>
-                            <tsl-svg-icon src="/assets/icons/check-blue.svg" (click)="open('SOCIAL_MEDIA_INFO.EMAIL')">
-                            </tsl-svg-icon>
-                            <a class="d-block">Facebook</a>
-                            <tsl-svg-icon src="/assets/icons/check-blue.svg"
-                                (click)="open('SOCIAL_MEDIA_INFO.FACEBOOK')"></tsl-svg-icon>
-                            <a class="d-block" i18n="@@ProfileInfoNumber">Phone number</a>
-                            <tsl-svg-icon src="/assets/icons/check-blue.svg"
-                                (click)="open('SOCIAL_MEDIA_INFO.PHONE_NUMBER')"></tsl-svg-icon>
+                            <div>
+                                <tsl-svg-icon src="/assets/icons/share_mail.svg"></tsl-svg-icon>
+                                <a class="d-block">Email</a>
+                                <tsl-svg-icon src="/assets/icons/check-blue.svg">
+                                </tsl-svg-icon>
+                            </div>
+                            <div>
+                                <tsl-svg-icon src="/assets/icons/share_facebook.svg"></tsl-svg-icon>
+                                <a class="d-block">Facebook</a>
+                                <tsl-svg-icon src="/assets/icons/check-blue.svg">
+                                </tsl-svg-icon>
+                            </div>
+                            <div>
+                                <tsl-svg-icon src="/assets/icons/share_whatsapp.svg"></tsl-svg-icon>
+                                <a class="d-block" i18n="@@ProfileInfoNumber">Phone number</a>
+                                <tsl-svg-icon src="/assets/icons/check-blue.svg">
+                                </tsl-svg-icon>
+                            </div>
                         </div>
                     </div>
                     <div class="row mb-3">

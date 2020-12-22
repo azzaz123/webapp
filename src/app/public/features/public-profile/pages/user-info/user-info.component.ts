@@ -14,11 +14,14 @@ export class UserInfoComponent implements OnInit {
   ngOnInit(): void {}
 
   open(socialMedia: SOCIAL_MEDIA_INFO): void {
-    if (socialMedia === SOCIAL_MEDIA_INFO.EMAIL) {
-    } else if (socialMedia === SOCIAL_MEDIA_INFO.FACEBOOK) {
-    }
+    switch (socialMedia) {
+      case SOCIAL_MEDIA_INFO.EMAIL:
+        break;
+      case SOCIAL_MEDIA_INFO.FACEBOOK:
+        break;
 
-    // It's phone handle
-    return;
+      case SOCIAL_MEDIA_INFO.PHONE_NUMBER:
+        break;
+    }
   }
 }
