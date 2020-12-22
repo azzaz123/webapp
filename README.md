@@ -183,12 +183,11 @@ Chat sequence diagrams: https://confluence.wallapop.com/display/ROV/Chat+sequenc
 
 We've started to use [Storybook](https://storybook.js.org/) to develop and document the common components.
 
-There's 2 different scripts available to run.
+Scripts available to run:
 
-| Script      | Description                                                                       |
-| ----------- | --------------------------------------------------------------------------------- |
-| `docs:json` | Generation of the documentation.json (necessary for Storybook)                    |
-| `storybook` | Runs docs:json script and starts a server on port 6006 with the Storybook project |
+| Script      | Description                                                                                     |
+| ----------- | ----------------------------------------------------------------------------------------------- |
+| `storybook` | Generates a documentation json file and starts a server on port 6006 with the Storybook project |
 
 ## Prettier
 
