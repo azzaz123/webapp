@@ -15,6 +15,10 @@ export class PublicProfileComponent implements OnInit {
     sells: 0,
     sold: 0,
   };
+
+  //TODO remove hardcoded data when userId comes from url
+  userId: string = 'userId';
+
   constructor() {}
 
   ngOnInit(): void {}

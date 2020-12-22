@@ -57,8 +57,24 @@ describe('ProfileTabsComponent', () => {
       });
     });
 
-    it('should show all stats to 0 if they are not defined', () => {
+    it('should show all stats to 0 if they are not arriving as input', () => {
       component.userStats = {};
+
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      PROFILE_TABS.forEach((tab: ProfileTab) => {
+        expect(
+          parseInt(
+            el.querySelector(`[href="/${tab.href}"] ${tabCounterSelector}`)
+              .innerHTML
+          )
+        ).toEqual(0);
+      });
+    });
+
+    it('should show all stats to 0 if they are not defined', () => {
+      component.userStats = undefined;
 
       component.ngOnInit();
       fixture.detectChanges();
