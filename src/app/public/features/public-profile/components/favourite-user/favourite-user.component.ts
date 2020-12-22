@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy } from '@angular/core';
 import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
-import { take } from 'rxjs/internal/operators/take';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-favourite-user',
