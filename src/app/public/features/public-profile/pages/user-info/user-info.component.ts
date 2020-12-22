@@ -17,7 +17,7 @@ export class UserInfoComponent implements OnInit {
     this.getUser();
   }
 
-  getUser(): void {
+  private getUser(): void {
     this.user = this.publicProfileService.user;
     if (this.userHaveLocation())
       this.coordinates = {
@@ -28,8 +28,8 @@ export class UserInfoComponent implements OnInit {
 
   private userHaveLocation(): boolean {
     return !!(
-      this.user.location.approximated_latitude &&
-      this.user.location.approximated_longitude
+      this.user?.location?.approximated_latitude &&
+      this.user?.location?.approximated_longitude
     );
   }
 }

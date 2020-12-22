@@ -28,9 +28,12 @@
                         </div>
                         <div class="col-12 col-md-6 order-2 mb-3 mb-lg-0">
                             <div class="bold-title mb-1" i18n="@@ProfileInfoMemberSince">Member since</div>
-                            <div *ngIf="user.registerDate">
+                            <div *ngIf="user.registerDate; else noRegisterDate">
                                 {{user.registerDate | date: 'dd/MM/yyyy' }}
                             </div>
+                            <ng-template #noRegisterDate>
+                                <span i18n="@@Unknown">Unknown</span>
+                            </ng-template>
                         </div>
                         <div class="col-12 col-md-6 order-lg-1 order-3 mb-3">
                             <div class="bold-title" i18n="@@ProfileInfoRatio">Response rate</div>
