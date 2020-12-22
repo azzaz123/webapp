@@ -11,7 +11,7 @@ import {
   NgbModalOptions,
   NgbModalRef,
 } from '@ng-bootstrap/ng-bootstrap';
-import { isNil } from '@features/upload/components/drop-area/node_modules/lodash-es';
+import { isNil } from 'lodash-es';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { InboxConversationService } from './core/inbox/inbox-conversation.service';

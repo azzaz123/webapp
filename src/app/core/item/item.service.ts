@@ -40,7 +40,7 @@ import {
   map as lodashMap,
   filter,
   sortBy,
-} from '@features/upload/components/drop-area/node_modules/lodash-es';
+} from 'lodash-es';
 import { I18nService } from '../i18n/i18n.service';
 import { BanReason } from './ban-reason.interface';
 import { TrackingService } from '../tracking/tracking.service';

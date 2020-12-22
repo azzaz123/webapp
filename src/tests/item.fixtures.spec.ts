@@ -1,4 +1,13 @@
+import { OrderEvent } from '@features/catalog/components/selected-items/selected-product.interface';
+import { clone } from 'lodash-es';
+import * as moment from 'moment';
 import { Observable, of } from 'rxjs';
+import { CATEGORY_IDS } from '../app/core/category/category-ids';
+import { Item, ITEM_TYPES } from '../app/core/item/item';
+import {
+  CARS_CATEGORY,
+  REALESTATE_CATEGORY,
+} from '../app/core/item/item-categories';
 import {
   AllowedActionResponse,
   AvailableProductsResponse,
@@ -8,8 +17,11 @@ import {
   Duration,
   ItemActions,
   ItemBulkResponse,
+  ItemContent,
   ItemCounters,
+  ItemExtraInfo,
   ItemFlags,
+  ItemProResponse,
   ItemResponse,
   ItemResponseV2,
   ItemSaleConditions,
@@ -17,30 +29,17 @@ import {
   ItemUploadForm,
   ItemWithProducts,
   LatestItemResponse,
+  ListingFeeProductInfo,
   Order,
   Product,
   ProductDurations,
   Purchase,
-  ItemProResponse,
   RealEstateUploadForm,
-  ListingFeeProductInfo,
-  ItemExtraInfo,
-  ItemContent,
 } from '../app/core/item/item-response.interface';
-
-import { CartItem } from '../app/shared/catalog/cart/cart-item.interface';
-import { USER_ID, USER_LOCATION } from './user.fixtures.spec';
 import { Image, UserLocation } from '../app/core/user/user-response.interface';
-import { clone } from '@features/upload/components/drop-area/node_modules/lodash-es';
-import { Item, ITEM_TYPES } from '../app/core/item/item';
-import {
-  CARS_CATEGORY,
-  REALESTATE_CATEGORY,
-} from '../app/core/item/item-categories';
-import * as moment from 'moment';
+import { CartItem } from '../app/shared/catalog/cart/cart-item.interface';
 import { MOCK_SUBSCRIPTION_SLOTS_RESPONSE } from './subscriptions.fixtures.spec';
-import { CATEGORY_IDS } from '../app/core/category/category-ids';
-import { OrderEvent } from '@features/catalog/components/selected-items/selected-product.interface';
+import { USER_ID, USER_LOCATION } from './user.fixtures.spec';
 
 export const PICTURE_ID = '9jd7ryx5odjk';
 export const ITEM_CATEGORY_ID = 12545;

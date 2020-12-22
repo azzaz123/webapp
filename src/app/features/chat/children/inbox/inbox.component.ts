@@ -28,11 +28,7 @@ import { AdsService } from '@features/chat/core/ads/ads.service';
 import { InboxConversationService } from '@features/chat/core/inbox/inbox-conversation.service';
 import { InboxService } from '@features/chat/core/inbox/inbox.service';
 import { InboxConversation, InboxMessage } from '@features/chat/core/model';
-import {
-  countBy,
-  find,
-  map,
-} from '@features/upload/components/drop-area/node_modules/lodash-es';
+import { countBy, find, map } from 'lodash-es';
 
 export enum InboxState {
   Inbox,

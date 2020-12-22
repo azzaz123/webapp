@@ -1,4 +1,4 @@
-import { map } from '@features/upload/components/drop-area/node_modules/lodash-es';
+import { map } from 'lodash-es';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Car } from '../app/core/item/car';
 import { CAR_ID } from './upload.fixtures.spec';

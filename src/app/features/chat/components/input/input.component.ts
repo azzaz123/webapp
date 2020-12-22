@@ -16,11 +16,7 @@ import { TrackingService } from '@core/tracking/tracking.service';
 import { MessageService } from '@features/chat/core/message/message.service';
 import { InboxConversation } from '@features/chat/core/model';
 import { LinkTransformPipe } from '@shared/pipes';
-import {
-  find,
-  includes,
-  isEmpty,
-} from '@features/upload/components/drop-area/node_modules/lodash-es';
+import { find, includes, isEmpty } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({

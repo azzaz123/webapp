@@ -6,7 +6,7 @@ import { FeatureflagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
 import { ConnectionType } from 'app/core/remote-console/connection-type';
-import { uniqBy } from '@features/upload/components/drop-area/node_modules/lodash-es';
+import { uniqBy } from 'lodash-es';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { MessageService } from '../message/message.service';

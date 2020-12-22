@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterModule, Routes } from '@angular/router';
 import { NgxPermissionsGuard } from 'ngx-permissions';
-import { isEmpty } from '@features/upload/components/drop-area/node_modules/lodash-es';
+import { isEmpty } from 'lodash-es';
 import { PERMISSIONS } from '@core/user/user';
 import { CatalogProListComponent } from './pages/catalog-pro-list/catalog-pro-list.component';
 import { CheckoutExtrasProComponent } from './pages/checkout-extras-pro/checkout-extras-pro.component';
