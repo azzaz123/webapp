@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterModule, Routes } from '@angular/router';
-import { PERMISSIONS } from '../core/user/user';
-import { UploadComponent } from './upload.component';
-import { EditComponent } from './edit/edit.component';
-import { ExitConfirmGuard } from '../shared/guards/exit-confirm.guard';
-import { ItemResolverService } from './item-resolver.service';
+import { ExitConfirmGuard } from '@shared/guards/exit-confirm.guard';
+
 import { NgxPermissionsGuard } from 'ngx-permissions';
+import { EditComponent } from './components/edit/edit.component';
+import { ItemResolverService } from './core/resolvers/item-resolver.service';
+import { UploadComponent } from './pages/upload.component';
 
 const routes: Routes = [
   {

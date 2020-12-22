@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { I18nService } from '../../../../../core/i18n/i18n.service';
-import { Observable, of } from 'rxjs';
-import { Key } from '../../models/key.interface';
-import { IOption } from '@shared/dropdown/utils/option.interface';
-import { environment } from '../../../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { I18nService } from '@core/i18n/i18n.service';
+import { environment } from '@environments/environment';
+import { IOption } from '@shared/dropdown/utils/option.interface';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Key } from '../../models/key.interface';
 
 export const REAL_ESTATE_KEYS_ENDPOINT = 'api/v3/real_estate/keys';
 

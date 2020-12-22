@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
+import { CarUploadForm } from '@core/item/item-response.interface';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CarKeysService } from '../../core/services/car-keys/car-keys.service';
-import { CarUploadForm } from '../../../../core/item/item-response.interface';
 
 @Component({
   selector: 'tsl-preview-modal',

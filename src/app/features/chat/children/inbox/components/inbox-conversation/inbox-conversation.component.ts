@@ -8,7 +8,7 @@ import {
   InboxMessage,
   MessageType,
 } from '@features/chat/core/model';
-import { includes } from '@features/upload/drop-area/node_modules/lodash-es';
+import { includes } from '@features/upload/components/drop-area/node_modules/lodash-es';
 import { CalendarSpec } from 'moment';
 
 @Component({

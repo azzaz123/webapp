@@ -11,7 +11,7 @@ import { Item } from '../../../core/item/item';
 import {
   find,
   findIndex,
-} from '@features/upload/drop-area/node_modules/lodash-es';
+} from '@features/upload/components/drop-area/node_modules/lodash-es';
 import { TooManyItemsModalComponent } from '../modals/too-many-items-modal/too-many-items-modal.component';
 import { AlreadyFeaturedModalComponent } from '../modals/already-featured-modal/already-featured-modal.component';
 import { Router } from '@angular/router';

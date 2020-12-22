@@ -35,24 +35,21 @@ import {
   NgbModalRef,
   NgbPopoverConfig,
 } from '@ng-bootstrap/ng-bootstrap';
+import { IOption } from '@shared/dropdown/utils/option.interface';
 import {
   OUTPUT_TYPE,
   PendingFiles,
-  UPLOAD_ACTION,
   UploadFile,
   UploadOutput,
+  UPLOAD_ACTION,
 } from '@shared/uploader/upload.interface';
-import { IOption } from '@shared/dropdown/utils/option.interface';
-import {
-  isEqual,
-  omit,
-} from '@features/upload/pages/upload-car/node_modules/@features/upload/pages/upload-product/node_modules/lodash-es';
+import { isEqual, omit } from 'lodash-es';
 import { tap } from 'rxjs/operators';
+import { Key } from '../../core/models/key.interface';
+import { UploadEvent } from '../../core/models/upload-event.interface';
+import { RealestateKeysService } from '../../core/services/realstate-keys/realestate-keys.service';
 import { UploadService } from '../../core/services/upload/upload.service';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
-import { UploadEvent } from '../../core/models/upload-event.interface';
-import { Key } from '../../core/models/key.interface';
-import { RealestateKeysService } from '../../core/services/realstate-keys/realestate-keys.service';
 
 @Component({
   selector: 'tsl-upload-realestate',

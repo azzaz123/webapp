@@ -41,7 +41,7 @@ import {
   eq,
   includes,
   isEmpty,
-} from '@features/upload/drop-area/node_modules/lodash-es';
+} from '@features/upload/components/drop-area/node_modules/lodash-es';
 import { of, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { onVisible } from 'visibilityjs';

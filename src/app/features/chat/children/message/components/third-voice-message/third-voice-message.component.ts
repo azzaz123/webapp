@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { InboxItem, InboxUser, MessageType } from '@features/chat/core/model';
-import { eq } from '@features/upload/drop-area/node_modules/lodash-es';
+import { eq } from '@features/upload/components/drop-area/node_modules/lodash-es';
 import { MessageComponent } from '../../message.component';
 
 @Component({

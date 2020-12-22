@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
   fakeAsync,
@@ -5,20 +6,18 @@ import {
   tick,
   waitForAsync,
 } from '@angular/core/testing';
-import { EditComponent } from './edit.component';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ExitConfirmationModalComponent } from '../../../shared/exit-confirmation-modal/exit-confirmation-modal.component';
+import { ItemService } from '@core/item/item.service';
+import { UserService } from '@core/user/user.service';
 import {
+  ITEM_ID,
   MOCK_ITEM,
   PRODUCT_RESPONSE,
-  ITEM_DATA_V3,
-  ITEM_ID,
-} from '../../../../tests/item.fixtures.spec';
-import { ItemService } from '../../../core/item/item.service';
+} from '@fixtures/item.fixtures.spec';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ExitConfirmationModalComponent } from '@shared/exit-confirmation-modal/exit-confirmation-modal.component';
 import { of } from 'rxjs';
-import { UserService } from '../../../core/user/user.service';
+import { EditComponent } from './edit.component';
 
 describe('EditComponent', () => {
   let component: EditComponent;

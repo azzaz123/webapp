@@ -1,42 +1,39 @@
 import {
-  MOCK_OBJECT_TYPE_ID,
-  MOCK_BRAND_MODEL_RESPONSE,
-  MOCK_MODEL,
-  MOCK_MODELS_RESPONSE,
+  HttpClientTestingModule,
+  HttpTestingController,
+  TestRequest,
+} from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
+import { CATEGORY_IDS } from '@core/category/category-ids';
+import { I18nService } from '@core/i18n/i18n.service';
+import { environment } from '@environments/environment';
+import {
+  MOCK_BRAND,
   MOCK_BRANDS_RESPONSE,
-  MOCK_GENDER,
-  MOCK_SIZES,
-  MOCK_SIZES_RESPONSE,
+  MOCK_BRAND_MODEL_RESPONSE,
   MOCK_CONDITIONS,
   MOCK_CONDITIONS_RESPONSE,
-} from '../../../../../../tests/extra-info.fixtures.spec';
-import { TestBed } from '@angular/core/testing';
-
-import {
-  GeneralSuggestionsService,
-  SUGGESTERS_API_URL,
-  FASHION_KEYS_API_URL,
-  CONDITION_KEYS_API_URL,
-} from './general-suggestions.service';
+  MOCK_GENDER,
+  MOCK_MODEL,
+  MOCK_MODELS_RESPONSE,
+  MOCK_OBJECT_TYPES,
+  MOCK_OBJECT_TYPE_ID,
+  MOCK_SIZES,
+  MOCK_SIZES_RESPONSE,
+} from '@fixtures/extra-info.fixtures.spec';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import {
-  BrandModel,
   Brand,
+  BrandModel,
   Model,
   ObjectType,
 } from '../../models/brand-model.interface';
-import { I18nService } from '../../../../../core/i18n/i18n.service';
-import { CATEGORY_IDS } from '../../../../../core/category/category-ids';
-import { environment } from '../../../../../../environments/environment';
 import {
-  TestRequest,
-  HttpTestingController,
-  HttpClientTestingModule,
-} from '@angular/common/http/testing';
-import {
-  MOCK_OBJECT_TYPES,
-  MOCK_BRAND,
-} from '../../../../../../tests/extra-info.fixtures.spec';
+  CONDITION_KEYS_API_URL,
+  FASHION_KEYS_API_URL,
+  GeneralSuggestionsService,
+  SUGGESTERS_API_URL,
+} from './general-suggestions.service';
 
 describe('GeneralSuggestionsService', () => {
   let service: GeneralSuggestionsService;

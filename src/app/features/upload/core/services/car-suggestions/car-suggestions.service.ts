@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { IOption } from '@shared/dropdown/utils/option.interface';
-import { environment } from '../../../../../../environments/environment';
-import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { environment } from '@environments/environment';
+import { IOption } from '@shared/dropdown/utils/option.interface';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 export const CARS_SUGGESTER_API_URL = 'api/v3/suggesters/cars';
 

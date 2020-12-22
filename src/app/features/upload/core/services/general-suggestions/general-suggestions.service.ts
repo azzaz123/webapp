@@ -1,21 +1,21 @@
-import { map } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { I18nService } from '@core/i18n/i18n.service';
+import { environment } from '@environments/environment';
 import { IOption } from '@shared/dropdown/utils/option.interface';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import {
   Brand,
   BrandModel,
   Model,
-  SizesResponse,
-  Size,
   ObjectType,
+  Size,
+  SizesResponse,
 } from '../../models/brand-model.interface';
-import { I18nService } from '../../../../../core/i18n/i18n.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from '../../../../../../environments/environment';
 import {
-  ConditionsResponse,
   Condition,
+  ConditionsResponse,
 } from '../../models/condition.interface';
 
 export const SUGGESTERS_API_URL = 'api/v3/suggesters/general';

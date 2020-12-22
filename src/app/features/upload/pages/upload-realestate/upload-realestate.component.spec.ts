@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
   fakeAsync,
@@ -5,45 +6,31 @@ import {
   tick,
   waitForAsync,
 } from '@angular/core/testing';
-
-import { UploadRealestateComponent } from './upload-realestate.component';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { TrackingService } from '@core/tracking/tracking.service';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
-import { RealestateKeysService } from '../../core/services/realstate-keys/realestate-keys.service';
-import { of, throwError } from 'rxjs';
-import { ErrorsService } from '@core/errors/errors.service';
 import { Router } from '@angular/router';
-import { Key } from '../../core/models/key.interface';
-import { IOption } from '@shared/dropdown/utils/option.interface';
-import { IMAGE, USER_LOCATION } from '@fixtures/user.fixtures.spec';
 import {
-  NgbModal,
-  NgbPopoverConfig,
-  NgbPopoverModule,
-} from '@ng-bootstrap/ng-bootstrap';
-import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
+  AnalyticsEvent,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  EditItemRE,
+  ListItemRE,
+  SCREEN_IDS,
+} from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { ErrorsService } from '@core/errors/errors.service';
+import { ITEM_TYPES } from '@core/item/item';
+import { REALESTATE_CATEGORY } from '@core/item/item-categories';
+import { RealestateContent } from '@core/item/item-response.interface';
+import { ItemService } from '@core/item/item.service';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { UserService } from '@core/user/user.service';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import {
   MOCK_REALESTATE,
   MOCK_REALESTATE_RESPONSE_CONTENT,
   UPLOAD_FORM_REALESTATE_VALUES,
 } from '@fixtures/realestate.fixtures.spec';
-import { ItemService } from '@core/item/item.service';
-import { REALESTATE_CATEGORY } from '@core/item/item-categories';
-import {
-  ANALYTIC_EVENT_TYPES,
-  ANALYTICS_EVENT_NAMES,
-  SCREEN_IDS,
-  AnalyticsEvent,
-  EditItemRE,
-  ListItemRE,
-} from '@core/analytics/analytics-constants';
-import { AnalyticsService } from '@core/analytics/analytics.service';
-import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import { UserService } from '@core/user/user.service';
-import { RealestateContent } from '@core/item/item-response.interface';
-import { UploadService } from '../../core/services/upload/upload.service';
+import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import {
   MockUploadService,
   MOCK_UPLOAD_OUTPUT_DONE,
@@ -52,8 +39,20 @@ import {
   UPLOAD_FILE_DONE,
   UPLOAD_FILE_DONE_2,
 } from '@fixtures/upload.fixtures.spec';
-import { ITEM_TYPES } from '@core/item/item';
+import { IMAGE, USER_LOCATION } from '@fixtures/user.fixtures.spec';
+import {
+  NgbModal,
+  NgbPopoverConfig,
+  NgbPopoverModule,
+} from '@ng-bootstrap/ng-bootstrap';
+import { IOption } from '@shared/dropdown/utils/option.interface';
 import { UPLOAD_ACTION } from '@shared/uploader/upload.interface';
+import { of, throwError } from 'rxjs';
+import { Key } from '../../core/models/key.interface';
+import { RealestateKeysService } from '../../core/services/realstate-keys/realestate-keys.service';
+import { UploadService } from '../../core/services/upload/upload.service';
+import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
+import { UploadRealestateComponent } from './upload-realestate.component';
 
 describe('UploadRealestateComponent', () => {
   let component: UploadRealestateComponent;

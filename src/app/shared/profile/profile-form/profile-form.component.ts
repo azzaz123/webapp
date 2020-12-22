@@ -7,7 +7,7 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { isEqual } from '@features/upload/drop-area/node_modules/lodash-es';
+import { isEqual } from '@features/upload/components/drop-area/node_modules/lodash-es';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ExitConfirmationModalComponent } from '../../exit-confirmation-modal/exit-confirmation-modal.component';
 

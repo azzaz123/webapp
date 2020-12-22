@@ -1,4 +1,4 @@
-import { forkJoin, Observable } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   AbstractControl,
@@ -8,49 +8,46 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { CarSuggestionsService } from '../../core/services/car-suggestions/car-suggestions.service';
-import { IOption } from '@shared/dropdown/utils/option.interface';
-import { CarKeysService } from '../../core/services/car-keys/car-keys.service';
 import { Router } from '@angular/router';
+import {
+  AnalyticsEvent,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  EditItemCar,
+  ListItemCar,
+  SCREEN_IDS,
+} from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { ErrorsService } from '@core/errors/errors.service';
+import { whitespaceValidator } from '@core/form-validators/formValidators.func';
+import { Car } from '@core/item/car';
+import { ITEM_TYPES } from '@core/item/item';
+import { CARS_CATEGORY } from '@core/item/item-categories';
+import { CarContent, CarInfo } from '@core/item/item-response.interface';
+import { ItemService } from '@core/item/item.service';
+import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { UserService } from '@core/user/user.service';
 import {
   NgbModal,
   NgbModalRef,
   NgbPopoverConfig,
 } from '@ng-bootstrap/ng-bootstrap';
-import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
-import { TrackingService } from '@core/tracking/tracking.service';
-import { Car } from '@core/item/car';
-import {
-  omit,
-  isEqual,
-} from '@features/upload/pages/upload-product/node_modules/lodash-es';
-import { ErrorsService } from '@core/errors/errors.service';
-import { CARS_CATEGORY } from '@core/item/item-categories';
-import { ItemService } from '@core/item/item.service';
-import { CarInfo, CarContent } from '@core/item/item-response.interface';
-import { AnalyticsService } from '@core/analytics/analytics.service';
-import { UserService } from '@core/user/user.service';
-import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
-import { tap, finalize } from 'rxjs/operators';
-import {
-  ANALYTIC_EVENT_TYPES,
-  ANALYTICS_EVENT_NAMES,
-  SCREEN_IDS,
-  AnalyticsEvent,
-  EditItemCar,
-  ListItemCar,
-} from '@core/analytics/analytics-constants';
-import { whitespaceValidator } from '@core/form-validators/formValidators.func';
-import { UploadService } from '../../core/services/upload/upload.service';
-import { HttpErrorResponse } from '@angular/common/http';
-import { ITEM_TYPES } from '@core/item/item';
+import { IOption } from '@shared/dropdown/utils/option.interface';
 import {
   OUTPUT_TYPE,
   PendingFiles,
-  UPLOAD_ACTION,
   UploadFile,
   UploadOutput,
+  UPLOAD_ACTION,
 } from '@shared/uploader/upload.interface';
+import { isEqual, omit } from 'lodash-es';
+import { forkJoin, Observable } from 'rxjs';
+import { finalize, tap } from 'rxjs/operators';
+import { CarKeysService } from '../../core/services/car-keys/car-keys.service';
+import { CarSuggestionsService } from '../../core/services/car-suggestions/car-suggestions.service';
+import { UploadService } from '../../core/services/upload/upload.service';
+import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
 
 @Component({
   selector: 'tsl-upload-car',

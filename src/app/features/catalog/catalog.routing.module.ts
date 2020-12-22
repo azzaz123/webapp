@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, RouterModule, Routes } from '@angular/router';
 
 import { CatalogComponent } from './catalog.component';
 import { NgxPermissionsGuard } from 'ngx-permissions';
-import { isEmpty } from '@features/upload/drop-area/node_modules/lodash-es';
+import { isEmpty } from '@features/upload/components/drop-area/node_modules/lodash-es';
 import { LoggedGuard } from '@core/user/logged.guard';
 import { PERMISSIONS } from '@core/user/user';
 import { CheckoutComponent } from './pages/checkout/checkout.component';

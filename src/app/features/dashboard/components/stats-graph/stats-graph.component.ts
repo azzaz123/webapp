@@ -3,7 +3,7 @@ import { Component, Inject, Input, LOCALE_ID, OnInit } from '@angular/core';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import * as moment from 'moment';
 import { EChartOption } from 'echarts';
-import { find } from '@features/upload/drop-area/node_modules/lodash-es';
+import { find } from '@features/upload/components/drop-area/node_modules/lodash-es';
 import { I18nService } from '@core/i18n/i18n.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import { StatisticsService } from '../../core/services/statistics.service';

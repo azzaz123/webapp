@@ -17,7 +17,7 @@ import { ItemStatsService } from '@features/stats/core/services/item-stats.servi
 import {
   every,
   isEmpty,
-} from '@features/upload/drop-area/node_modules/lodash-es';
+} from '@features/upload/components/drop-area/node_modules/lodash-es';
 import { ITEM_STATS_ROW_ANIMATION } from './item-stats-row.animation';
 
 @Component({

@@ -1,13 +1,12 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import { PreviewModalComponent } from './preview-modal.component';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { DecimalPipe } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { UPLOAD_FORM_CAR_VALUES } from '../../../../../tests/item.fixtures.spec';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { UPLOAD_FORM_CAR_VALUES } from '@fixtures/item.fixtures.spec';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { CustomCurrencyPipe } from '@shared/pipes';
 import { of } from 'rxjs';
 import { CarKeysService } from '../../core/services/car-keys/car-keys.service';
-import { CustomCurrencyPipe } from '../../../../shared/pipes';
-import { DecimalPipe } from '@angular/common';
+import { PreviewModalComponent } from './preview-modal.component';
 
 describe('PreviewModalComponent', () => {
   let component: PreviewModalComponent;

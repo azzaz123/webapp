@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import { RemoveConfirmModalComponent } from './remove-confirm-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { RemoveConfirmModalComponent } from './remove-confirm-modal.component';
 
 describe('RemoveConfirmModalComponent', () => {
   let component: RemoveConfirmModalComponent;

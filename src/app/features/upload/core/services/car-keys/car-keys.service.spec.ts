@@ -1,19 +1,17 @@
-import { TestBed } from '@angular/core/testing';
 import {
   HttpClientTestingModule,
   HttpTestingController,
   TestRequest,
 } from '@angular/common/http/testing';
-
-import { environment } from '../../../../../../environments/environment';
-
-import { CarKeysService, CARS_KEYS_ENDPOINT } from './car-keys.service';
-import { IOption } from '@shared/dropdown/utils/option.interface';
+import { TestBed } from '@angular/core/testing';
+import { I18nService } from '@core/i18n/i18n.service';
+import { environment } from '@environments/environment';
 import {
   CAR_BODY_TYPES,
   CAR_BODY_TYPES_RESPONSE,
-} from '../../../../../../tests/car.fixtures.spec';
-import { I18nService } from '../../../../../core/i18n/i18n.service';
+} from '@fixtures/car.fixtures.spec';
+import { IOption } from '@shared/dropdown/utils/option.interface';
+import { CarKeysService, CARS_KEYS_ENDPOINT } from './car-keys.service';
 
 describe('CarKeysService', () => {
   let service: CarKeysService;

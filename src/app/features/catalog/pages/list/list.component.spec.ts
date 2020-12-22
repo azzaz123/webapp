@@ -47,7 +47,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TooManyItemsModalComponent } from '@shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
-import { find } from '@features/upload/drop-area/node_modules/lodash-es';
+import { find } from '@features/upload/components/drop-area/node_modules/lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { of, ReplaySubject, Subject } from 'rxjs';
 import { SubscriptionsSlotItemComponent } from '../../components/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component';

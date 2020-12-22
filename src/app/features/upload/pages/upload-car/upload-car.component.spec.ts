@@ -1,4 +1,4 @@
-import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
   fakeAsync,
@@ -6,14 +6,29 @@ import {
   tick,
   waitForAsync,
 } from '@angular/core/testing';
-
-import { UploadCarComponent } from './upload-car.component';
-import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { CarSuggestionsService } from '../../core/services/car-suggestions/car-suggestions.service';
-import { of, throwError } from 'rxjs';
-import { CarKeysService } from '../../core/services/car-keys/car-keys.service';
+import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import {
+  AnalyticsEvent,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  EditItemCar,
+  ListItemCar,
+  SCREEN_IDS,
+} from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { ErrorsService } from '@core/errors/errors.service';
+import { Car } from '@core/item/car';
+import { ITEM_TYPES } from '@core/item/item';
+import { CARS_CATEGORY } from '@core/item/item-categories';
+import { CarContent } from '@core/item/item-response.interface';
+import { ItemService } from '@core/item/item.service';
+import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { User } from '@core/user/user';
+import { UserService } from '@core/user/user.service';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import {
   CAR_BODY_TYPES,
   CAR_BRANDS,
@@ -25,38 +40,11 @@ import {
   MOCK_CAR_RESPONSE_CONTENT,
 } from '@fixtures/car.fixtures.spec';
 import {
-  NgbModal,
-  NgbPopoverConfig,
-  NgbPopoverModule,
-} from '@ng-bootstrap/ng-bootstrap';
-import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
-import {
   MOCK_ITEM_V3,
   UPLOAD_FORM_CAR_VALUES,
 } from '@fixtures/item.fixtures.spec';
-import { TrackingService } from '@core/tracking/tracking.service';
-import { ErrorsService } from '@core/errors/errors.service';
-import { User } from '@core/user/user';
-import { USER_ID } from '@fixtures/user.fixtures.spec';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
-import { Car } from '@core/item/car';
-import { CARS_CATEGORY } from '@core/item/item-categories';
-import { ItemService } from '@core/item/item.service';
-import { AnalyticsService } from '@core/analytics/analytics.service';
-import { UserService } from '@core/user/user.service';
-import { CarContent } from '@core/item/item-response.interface';
-import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { MockSubscriptionService } from '@fixtures/subscriptions.fixtures.spec';
-import {
-  ANALYTIC_EVENT_TYPES,
-  ANALYTICS_EVENT_NAMES,
-  SCREEN_IDS,
-  AnalyticsEvent,
-  EditItemCar,
-  ListItemCar,
-} from '@core/analytics/analytics-constants';
-import { By } from '@angular/platform-browser';
-import { UploadService } from '../../core/services/upload/upload.service';
+import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import {
   MockUploadService,
   MOCK_UPLOAD_OUTPUT_DONE,
@@ -65,8 +53,19 @@ import {
   UPLOAD_FILE_DONE,
   UPLOAD_FILE_DONE_2,
 } from '@fixtures/upload.fixtures.spec';
-import { ITEM_TYPES } from '@core/item/item';
+import { USER_ID } from '@fixtures/user.fixtures.spec';
+import {
+  NgbModal,
+  NgbPopoverConfig,
+  NgbPopoverModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { UPLOAD_ACTION } from '@shared/uploader/upload.interface';
+import { of, throwError } from 'rxjs';
+import { CarKeysService } from '../../core/services/car-keys/car-keys.service';
+import { CarSuggestionsService } from '../../core/services/car-suggestions/car-suggestions.service';
+import { UploadService } from '../../core/services/upload/upload.service';
+import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
+import { UploadCarComponent } from './upload-car.component';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 

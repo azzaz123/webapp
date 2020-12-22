@@ -18,7 +18,7 @@ import {
   keyBy,
   groupBy,
   min,
-} from '@features/upload/drop-area/node_modules/lodash-es';
+} from '@features/upload/components/drop-area/node_modules/lodash-es';
 import { CREDITS_FACTOR, CREDITS_PACK_ID, Pack, PACKS_TYPES } from './pack';
 import { PerksModel } from './payment.model';
 import { HttpClient } from '@angular/common/http';

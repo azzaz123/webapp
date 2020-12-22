@@ -1,35 +1,35 @@
+import { HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { AccessTokenService } from '@core/http/access-token.service';
 import {
   TOKEN_AUTHORIZATION_HEADER_NAME,
   TOKEN_SIGNATURE_HEADER_NAME,
   TOKEN_TIMESTAMP_HEADER_NAME,
 } from '@core/http/interceptors/token.interceptor';
-import { Injectable } from '@angular/core';
-import { environment } from '@environments/environment';
-import { REALESTATE_CATEGORY } from '@core/item/item-categories';
 import { ITEM_TYPES } from '@core/item/item';
-import { cloneDeep } from 'lodash-es';
-import {
-  OUTPUT_TYPE,
-  UploadFile,
-  IProductUploadForm,
-  ICarUploadForm,
-  UploadInput,
-  UploadOutput,
-  UPLOAD_STATUS,
-  IRealEstateUploadForm,
-  PendingFiles,
-} from '@shared/uploader/upload.interface';
-import { ItemService } from '@core/item/item.service';
-import { UploaderService } from '@shared/uploader/uploader.service';
-import { Image } from '@core/user/user-response.interface';
-import { combineLatest, Observable } from 'rxjs';
+import { REALESTATE_CATEGORY } from '@core/item/item-categories';
 import {
   CarContent,
   ItemResponse,
   RealEstateResponse,
 } from '@core/item/item-response.interface';
-import { HttpErrorResponse } from '@angular/common/http';
+import { ItemService } from '@core/item/item.service';
+import { Image } from '@core/user/user-response.interface';
+import { environment } from '@environments/environment';
+import {
+  ICarUploadForm,
+  IProductUploadForm,
+  IRealEstateUploadForm,
+  OUTPUT_TYPE,
+  PendingFiles,
+  UploadFile,
+  UploadInput,
+  UploadOutput,
+  UPLOAD_STATUS,
+} from '@shared/uploader/upload.interface';
+import { UploaderService } from '@shared/uploader/uploader.service';
+import { cloneDeep } from 'lodash-es';
+import { combineLatest, Observable } from 'rxjs';
 
 @Injectable()
 export class UploadService {

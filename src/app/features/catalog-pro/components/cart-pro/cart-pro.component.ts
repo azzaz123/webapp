@@ -14,7 +14,7 @@ import {
   CartProItem,
 } from '@shared/catalog/cart/cart-item.interface';
 import { OrderPro } from '@core/item/item-response.interface';
-import { some } from '@features/upload/drop-area/node_modules/lodash-es';
+import { some } from '@features/upload/components/drop-area/node_modules/lodash-es';
 import { HttpErrorResponse } from '@angular/common/http';
 
 export interface Balance {

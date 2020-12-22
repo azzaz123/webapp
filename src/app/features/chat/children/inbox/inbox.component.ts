@@ -32,7 +32,7 @@ import {
   countBy,
   find,
   map,
-} from '@features/upload/drop-area/node_modules/lodash-es';
+} from '@features/upload/components/drop-area/node_modules/lodash-es';
 
 export enum InboxState {
   Inbox,

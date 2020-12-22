@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
   fakeAsync,
@@ -5,24 +6,22 @@ import {
   tick,
   waitForAsync,
 } from '@angular/core/testing';
-
-import { DropAreaComponent } from './drop-area.component';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ErrorsService } from '@core/errors/errors.service';
+import { PICTURE_ID } from '@fixtures/item.fixtures.spec';
 import {
+  UPLOADED_FILE_OTHER,
   UPLOAD_FILE,
+  UPLOAD_FILE_2,
   UPLOAD_FILE_DONE,
   UPLOAD_FILE_NAME,
-  UPLOADED_FILE_OTHER,
-  UPLOAD_FILE_2,
 } from '@fixtures/upload.fixtures.spec';
+import { MockUploaderService } from '@fixtures/uploader.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { RemoveConfirmModalComponent } from '../modals/remove-confirm-modal/remove-confirm-modal.component';
-import { PICTURE_ID } from '@fixtures/item.fixtures.spec';
-import { ErrorsService } from '@core/errors/errors.service';
+import { FileDropActions } from '@shared/uploader/file-drop.directive';
 import { OUTPUT_TYPE, UploadFile } from '@shared/uploader/upload.interface';
 import { UploaderService } from '@shared/uploader/uploader.service';
-import { FileDropActions } from '@shared/uploader/file-drop.directive';
-import { MockUploaderService } from '@fixtures/uploader.fixtures.spec';
+import { RemoveConfirmModalComponent } from '../../modals/remove-confirm-modal/remove-confirm-modal.component';
+import { DropAreaComponent } from './drop-area.component';
 
 describe('DropAreaComponent', () => {
   let component: DropAreaComponent;

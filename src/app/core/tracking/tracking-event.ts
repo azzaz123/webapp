@@ -1,6 +1,6 @@
 import { TrackingEventBase } from './tracking-event-base.interface';
 import { getTimestamp } from './getTimestamp.func';
-import { replace } from '@features/upload/drop-area/node_modules/lodash-es';
+import { replace } from '@features/upload/components/drop-area/node_modules/lodash-es';
 import { UuidService } from '../uuid/uuid.service';
 
 export class TrackingEvent {

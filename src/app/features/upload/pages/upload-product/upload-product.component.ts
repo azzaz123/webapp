@@ -1,21 +1,16 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import {
-  CategoryResponse,
-  SuggestedCategory,
-} from '@core/category/category-response.interface';
-import { AnalyticsService } from '@core/analytics/analytics.service';
-import {
+  AfterContentInit,
   Component,
   ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
-  ViewChild,
-  AfterContentInit,
-  OnChanges,
   SimpleChanges,
+  ViewChild,
 } from '@angular/core';
-import { Router } from '@angular/router';
 import {
   AbstractControl,
   FormBuilder,
@@ -24,28 +19,52 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { IOption } from '@shared/dropdown/utils/option.interface';
-import { omit, isEqual, cloneDeep } from 'lodash-es';
+import { Router } from '@angular/router';
 import {
-  NgbModal,
-  NgbModalRef,
-  NgbPopoverConfig,
-} from '@ng-bootstrap/ng-bootstrap';
-import { CategoryOption } from '@core/category/category-response.interface';
-import { UploadEvent } from '../../core/models/upload-event.interface';
+  AnalyticsEvent,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  EditItemCG,
+  ListItemCG,
+  SCREEN_IDS,
+} from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { CATEGORY_IDS } from '@core/category/category-ids';
+import {
+  CategoryOption,
+  CategoryResponse,
+  SuggestedCategory,
+} from '@core/category/category-response.interface';
 import { CategoryService } from '@core/category/category.service';
-import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { ErrorsService } from '@core/errors/errors.service';
+import { I18nService } from '@core/i18n/i18n.service';
 import { Item, ITEM_TYPES } from '@core/item/item';
 import {
   DeliveryInfo,
   ItemContent,
   ItemResponse,
 } from '@core/item/item-response.interface';
-import { GeneralSuggestionsService } from '../../core/services/general-suggestions/general-suggestions.service';
+import { TrackingService } from '@core/tracking/tracking.service';
+import { UserService } from '@core/user/user.service';
+import {
+  NgbModal,
+  NgbModalRef,
+  NgbPopoverConfig,
+} from '@ng-bootstrap/ng-bootstrap';
+import { IOption } from '@shared/dropdown/utils/option.interface';
 import { KeywordSuggestion } from '@shared/keyword-suggester/keyword-suggestion.interface';
-import { Subject, Observable, fromEvent } from 'rxjs';
+import {
+  OUTPUT_TYPE,
+  PendingFiles,
+  UploadFile,
+  UploadOutput,
+  UPLOAD_ACTION,
+} from '@shared/uploader/upload.interface';
+import { cloneDeep, isEqual, omit } from 'lodash-es';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { fromEvent, Observable, Subject } from 'rxjs';
+import { debounceTime, map, tap } from 'rxjs/operators';
+import { DELIVERY_INFO } from '../../core/config/upload.constants';
 import {
   Brand,
   BrandModel,
@@ -53,29 +72,10 @@ import {
   ObjectType,
   SimpleObjectType,
 } from '../../core/models/brand-model.interface';
-import { UserService } from '@core/user/user.service';
-import { DeviceDetectorService } from 'ngx-device-detector';
-import { tap, map, debounceTime } from 'rxjs/operators';
-import {
-  ANALYTIC_EVENT_TYPES,
-  ANALYTICS_EVENT_NAMES,
-  SCREEN_IDS,
-  AnalyticsEvent,
-  ListItemCG,
-  EditItemCG,
-} from '@core/analytics/analytics-constants';
-import { CATEGORY_IDS } from '@core/category/category-ids';
-import { I18nService } from '@core/i18n/i18n.service';
+import { UploadEvent } from '../../core/models/upload-event.interface';
+import { GeneralSuggestionsService } from '../../core/services/general-suggestions/general-suggestions.service';
 import { UploadService } from '../../core/services/upload/upload.service';
-import { DELIVERY_INFO } from '../../core/config/upload.constants';
-import { HttpErrorResponse } from '@angular/common/http';
-import {
-  OUTPUT_TYPE,
-  PendingFiles,
-  UPLOAD_ACTION,
-  UploadFile,
-  UploadOutput,
-} from '@shared/uploader/upload.interface';
+import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
 
 function isObjectTypeRequiredValidator(formControl: AbstractControl) {
   const objectTypeControl: FormGroup = formControl?.parent as FormGroup;

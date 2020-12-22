@@ -5,7 +5,7 @@ import {
   InboxUser,
   MessageType,
 } from '@features/chat/core/model';
-import { eq } from '@features/upload/drop-area/node_modules/lodash-es';
+import { eq } from '@features/upload/components/drop-area/node_modules/lodash-es';
 
 @Component({
   selector: 'tsl-third-voice-review',

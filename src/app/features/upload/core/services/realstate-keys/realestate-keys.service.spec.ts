@@ -1,19 +1,17 @@
-import { TestBed } from '@angular/core/testing';
 import {
-  TestRequest,
-  HttpTestingController,
   HttpClientTestingModule,
+  HttpTestingController,
+  TestRequest,
 } from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
+import { I18nService } from '@core/i18n/i18n.service';
+import { environment } from '@environments/environment';
 import { IOption } from '@shared/dropdown/utils/option.interface';
-
-import { environment } from '../../../../../../environments/environment';
-
+import { Key } from '../../models/key.interface';
 import {
   RealestateKeysService,
   REAL_ESTATE_KEYS_ENDPOINT,
 } from './realestate-keys.service';
-import { I18nService } from '../../../../../core/i18n/i18n.service';
-import { Key } from '../../models/key.interface';
 
 describe('RealestateKeysService', () => {
   let service: RealestateKeysService;

@@ -10,7 +10,7 @@ import {
   UPLOAD_STATUS,
 } from './upload.interface';
 import { DomSanitizer } from '@angular/platform-browser';
-import { cloneDeep } from '@features/upload/drop-area/node_modules/lodash-es';
+import { cloneDeep } from '@features/upload/components/drop-area/node_modules/lodash-es';
 
 @Injectable({
   providedIn: 'root',

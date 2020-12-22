@@ -1,10 +1,10 @@
-import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
-import { ItemService } from '../../../core/item/item.service';
-import { Product } from '../../../core/item/item-response.interface';
-import { UserService } from '../../../core/user/user.service';
-import { CARS_CATEGORY } from '../../../core/item/item-categories';
-import { TrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safety.service';
-import { SessionProfileDataLocation } from 'app/core/trust-and-safety/trust-and-safety.interface';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { CARS_CATEGORY } from '@core/item/item-categories';
+import { Product } from '@core/item/item-response.interface';
+import { ItemService } from '@core/item/item.service';
+import { SessionProfileDataLocation } from '@core/trust-and-safety/trust-and-safety.interface';
+import { TrustAndSafetyService } from '@core/trust-and-safety/trust-and-safety.service';
+import { UserService } from '@core/user/user.service';
 
 @Component({
   selector: 'tsl-upload',

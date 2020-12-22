@@ -1,18 +1,15 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { UploadComponent } from './upload.component';
-import { ItemService } from '../../../core/item/item.service';
-import {
-  PRODUCT_RESPONSE,
-  ITEM_DATA_V3,
-} from '../../../../tests/item.fixtures.spec';
-import { of } from 'rxjs';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { CARS_CATEGORY } from '@core/item/item-categories';
+import { ItemService } from '@core/item/item.service';
+import { MockTrustAndSafetyService } from '@core/trust-and-safety/trust-and-safety.fixtures.spec';
+import { SessionProfileDataLocation } from '@core/trust-and-safety/trust-and-safety.interface';
+import { TrustAndSafetyService } from '@core/trust-and-safety/trust-and-safety.service';
+import { UserService } from '@core/user/user.service';
+import { ITEM_DATA_V3, PRODUCT_RESPONSE } from '@fixtures/item.fixtures.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { UserService } from '../../../core/user/user.service';
-import { CARS_CATEGORY } from '../../../core/item/item-categories';
-import { TrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safety.service';
-import { MockTrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safety.fixtures.spec';
-import { SessionProfileDataLocation } from 'app/core/trust-and-safety/trust-and-safety.interface';
+import { of } from 'rxjs';
+import { UploadComponent } from './upload.component';
 
 describe('UploadComponent', () => {
   let component: UploadComponent;

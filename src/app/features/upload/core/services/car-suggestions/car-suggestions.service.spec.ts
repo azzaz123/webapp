@@ -1,10 +1,10 @@
-import { TestBed } from '@angular/core/testing';
-
 import {
-  CarSuggestionsService,
-  CARS_SUGGESTER_API_URL,
-} from './car-suggestions.service';
-import { IOption } from '@shared/dropdown/utils/option.interface';
+  HttpClientTestingModule,
+  HttpTestingController,
+  TestRequest,
+} from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
+import { environment } from '@environments/environment';
 import {
   CAR_BRANDS,
   CAR_BRANDS_RESPONSE,
@@ -14,13 +14,12 @@ import {
   CAR_VERSIONS_RESPONSE,
   CAR_YEARS,
   CAR_YEARS_RESPONSE,
-} from '../../../../../../tests/car.fixtures.spec';
-import { environment } from '../../../../../../environments/environment';
+} from '@fixtures/car.fixtures.spec';
+import { IOption } from '@shared/dropdown/utils/option.interface';
 import {
-  TestRequest,
-  HttpTestingController,
-  HttpClientTestingModule,
-} from '@angular/common/http/testing';
+  CarSuggestionsService,
+  CARS_SUGGESTER_API_URL,
+} from './car-suggestions.service';
 
 let service: CarSuggestionsService;
 let httpMock: HttpTestingController;

@@ -1,8 +1,7 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import { CategorySelectorComponent } from './category-selector.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
+import { CategorySelectorComponent } from './category-selector.component';
 
 describe('CategorySelectorComponent', () => {
   let component: CategorySelectorComponent;

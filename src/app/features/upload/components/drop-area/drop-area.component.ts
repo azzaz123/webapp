@@ -7,14 +7,13 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import {
-  throttle,
-  range,
-} from '@features/upload/pages/upload-realestate/node_modules/@features/upload/pages/upload-car/node_modules/@features/upload/pages/upload-product/node_modules/lodash-es';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { RemoveConfirmModalComponent } from '../modals/remove-confirm-modal/remove-confirm-modal.component';
 import { ErrorsService } from '@core/errors/errors.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {
+  FileDropActions,
+  IFileDropAction,
+} from '@shared/uploader/file-drop.directive';
 import {
   NgUploaderOptions,
   OUTPUT_TYPE,
@@ -22,11 +21,9 @@ import {
   UploadOutput,
 } from '@shared/uploader/upload.interface';
 import { UploaderService } from '@shared/uploader/uploader.service';
-import {
-  FileDropActions,
-  IFileDropAction,
-} from '@shared/uploader/file-drop.directive';
+import { range, throttle } from 'lodash-es';
 import { Subscription } from 'rxjs';
+import { RemoveConfirmModalComponent } from '../../modals/remove-confirm-modal/remove-confirm-modal.component';
 
 @Component({
   selector: 'tsl-drop-area',

@@ -17,7 +17,7 @@ import { OrderEvent } from '@features/catalog/components/selected-items/selected
 import { ItemChangeEvent } from '@features/catalog/core/item-change.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
-import { findIndex } from '@features/upload/drop-area/node_modules/lodash-es';
+import { findIndex } from '@features/upload/components/drop-area/node_modules/lodash-es';
 import { takeWhile } from 'rxjs/operators';
 
 @Component({

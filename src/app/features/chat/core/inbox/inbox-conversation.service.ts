@@ -14,7 +14,7 @@ import {
   isEmpty,
   isNil,
   some,
-} from '@features/upload/drop-area/node_modules/lodash-es';
+} from '@features/upload/components/drop-area/node_modules/lodash-es';
 import * as moment from 'moment';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, delay, map, mergeMap } from 'rxjs/operators';

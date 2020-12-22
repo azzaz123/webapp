@@ -1,5 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { eq, gt } from '@features/upload/drop-area/node_modules/lodash-es';
+import {
+  eq,
+  gt,
+} from '@features/upload/components/drop-area/node_modules/lodash-es';
 
 @Component({
   selector: 'tsl-scrolling-message',

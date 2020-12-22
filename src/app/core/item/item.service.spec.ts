@@ -70,7 +70,7 @@ import {
 } from '../../../tests/car.fixtures.spec';
 import { Car } from './car';
 import { CART_ORDER_PRO } from '../../../tests/pro-item.fixtures.spec';
-import { find } from '@features/upload/drop-area/node_modules/lodash-es';
+import { find } from '@features/upload/components/drop-area/node_modules/lodash-es';
 import {
   MOCK_REALESTATE,
   REALESTATE_CONTENT_DATA,
