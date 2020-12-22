@@ -99,8 +99,10 @@ import { StarsModule } from './stars/stars.module';
     SvgIconModule,
     DropdownModule,
     StarsModule,
+    SanitizedBackgroundModule,
   ],
   exports: [
+    SanitizedBackgroundModule,
     StarsModule,
     CardModule,
     CommonModule,
