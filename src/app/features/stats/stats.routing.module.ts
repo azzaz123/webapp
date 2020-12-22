@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Route } from '@angular/router';
 import { LoggedGuard } from '@core/user/logged.guard';
 import { PERMISSIONS } from '@core/user/user';
 
@@ -7,7 +7,7 @@ import { NgxPermissionsGuard } from 'ngx-permissions';
 import { ItemsStatsComponent } from './components/items-stats/items-stats.component';
 import { StatsComponent } from './pages/stats.component';
 
-const routes: Routes = [
+const routes: Route[] = [
   {
     path: '',
     component: StatsComponent,

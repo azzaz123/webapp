@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ActivatedRouteSnapshot, RouterModule, Routes } from '@angular/router';
+import { ActivatedRouteSnapshot, Route, RouterModule } from '@angular/router';
 
 import { CatalogComponent } from './catalog.component';
 import { NgxPermissionsGuard } from 'ngx-permissions';
@@ -37,7 +37,7 @@ export function isNormalCheckoutPermissions(
   };
 }
 
-export const routes: Routes = [
+export const routes: Route[] = [
   {
     path: '',
     canActivate: [LoggedGuard],

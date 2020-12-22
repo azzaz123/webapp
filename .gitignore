@@ -49,3 +49,7 @@ docknum.ts
 # System Files
 .DS_Store
 Thumbs.db
+
+# Storybook
+documentation.json
+/storybook-static

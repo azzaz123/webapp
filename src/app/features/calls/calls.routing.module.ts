@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Route } from '@angular/router';
 import { PERMISSIONS } from '@core/user/user';
 
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { CallsComponent } from './pages/calls.component';
 
-const routes: Routes = [
+const routes: Route[] = [
   {
     path: '',
     component: CallsComponent,
