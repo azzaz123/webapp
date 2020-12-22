@@ -263,7 +263,8 @@ export const MOCK_FULL_USER_FEATURED = new User(
   USER_DATA.gender,
   USER_DATA.email,
   USER_DATA.featured,
-  USER_DATA.extra_info
+  USER_DATA.extra_info,
+  null
 );
 
 export const MOCK_FULL_USER_NON_FEATURED = new User(
