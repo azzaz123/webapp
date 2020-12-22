@@ -59,7 +59,6 @@ export class UploadCarComponent implements OnInit {
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   @Input() item: Car;
-  @Input() urgentPrice: number;
 
   public uploadForm: FormGroup;
   public models: IOption[];
@@ -74,7 +73,6 @@ export class UploadCarComponent implements OnInit {
   public loading: boolean;
   private oldFormValue: any;
   public currentYear = new Date().getFullYear();
-  public isUrgent = false;
   public customMake = false;
   public customVersion = false;
   public uploadCompletedPercentage = 0;
@@ -444,13 +442,6 @@ export class UploadCarComponent implements OnInit {
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
     }
-    if (this.isUrgent && !response.flags.onhold) {
-      this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, {
-        category: this.uploadForm.value.category_id,
-      });
-      action = UPLOAD_ACTION.urgent;
-      localStorage.setItem('transactionType', 'urgent');
-    }
 
     if (response.flags.onhold) {
       this.subscriptionService.getUserSubscriptionType().subscribe((type) => {
@@ -540,10 +531,6 @@ export class UploadCarComponent implements OnInit {
       const v: number = Number(control.value);
       return v > max ? { max: { requiredMax: max, actualMax: v } } : null;
     };
-  }
-
-  public selectUrgent(isUrgent: boolean): void {
-    this.isUrgent = isUrgent;
   }
 
   public emitLocation(): void {

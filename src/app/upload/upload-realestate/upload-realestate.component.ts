@@ -61,13 +61,11 @@ export class UploadRealestateComponent implements OnInit {
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   @Input() item: Realestate;
-  @Input() urgentPrice: number;
   public coordinates: ItemLocation;
 
   public uploadForm: FormGroup;
   public loading: boolean;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
-  public isUrgent = false;
   private oldFormValue: any;
 
   public operations: Key[];
@@ -299,13 +297,6 @@ export class UploadRealestateComponent implements OnInit {
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
     }
-    if (this.isUrgent) {
-      this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, {
-        category: this.uploadForm.value.category_id,
-      });
-      action = UPLOAD_ACTION.urgent;
-      localStorage.setItem('transactionType', 'urgent');
-    }
     const params: any = {
       [action]: true,
       itemId: response.id,
@@ -337,10 +328,6 @@ export class UploadRealestateComponent implements OnInit {
   hasErrorToShow(controlName: string): boolean {
     const control: AbstractControl = this.uploadForm.get(controlName);
     return control.invalid && control.touched;
-  }
-
-  public selectUrgent(isUrgent: boolean): void {
-    this.isUrgent = isUrgent;
   }
 
   preview() {

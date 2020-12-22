@@ -261,8 +261,6 @@
 
   <tsl-location-box *ngIf="!!uploadForm" [form]="uploadForm" name="location" (locationSelected)="emitLocation()"
     title="Your car is in:" i18n-title></tsl-location-box>
-  <tsl-urgent-checkbox [categoryId]="100" [urgentPrice]="urgentPrice" (urgentSelected)="selectUrgent($event)">
-  </tsl-urgent-checkbox>
   <div class="row">
     <div class="col-12 col-md-5">
       <tsl-button [type]="'submit'" className="btn-primary btn-block" [disabled]="loading">

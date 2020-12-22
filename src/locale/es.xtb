@@ -329,12 +329,7 @@
   <translation id="442085080206895883">productos</translation>
   <translation id="776785241867401546">producto</translation>
   <translation id="994157966875519838">opinión</translation>
-  <translation id="UrgentCheckboxDisabled">Marcar como "urgente"</translation>
-  <translation id="UrgentCheckboxTooltip">Tu producto será mucho más visible y lo venderás antes</translation>
   <translation id="2212105134437554730">Estás siendo redirigido a nuestra pasarela de pago<ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>.<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph><ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>.<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph><ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>.<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
-  <translation id="UrgentCheckboxTitle">¡Márcalo como "urgente"!</translation>
-  <translation id="1388549121916575785">Tu producto ya se ha subido y está marcado como urgente</translation>
-  <translation id="UrgentCheckboxEnabled">Marcado como "urgente"</translation>
   <translation id="yourMessages">Tus Mensajes</translation>
   <translation id="8848709900682152607">Marcar todo como Procesado</translation>
   <translation id="4749295647449765550">Procesado</translation>
@@ -609,7 +604,6 @@
   <translation id="1895957424873987405">Empleo</translation>
   <translation id="70240206675549090">¿Wallacoins? Los wallacoins son la nueva moneda de wallapop con la que podrás ahorrar comprando Destacados. Hazte con alguno de nuestros packs y te regalaremos más wallacoins para tus compras.</translation>
   <translation id="7478441329490273363">¿Qué es esto? Son packs de ahorro para tus Destacados. Recarga tu saldo aquí y obtendrás descuentos para comprar tus Destacados.</translation>
-  <translation id="8329528856479718352">Marcar como urgente</translation>
   <translation id="3549265484659972037">Paga con tu saldo:</translation>
   <translation id="5266269636016082386">Paga con tus wallacoins:</translation>
   <translation id="1666676372989024280">y te quedan <ph name="INTERPOLATION"><ex>{{creditInfo?.credit | number}}</ex></ph> wallacoins</translation>
@@ -644,7 +638,6 @@
   <translation id="3879651736105644738">Así consigues más visitas, más conversaciones y más gente interesada.</translation>
   <translation id="7053754921723483950">Tu Destacado acaba el <ph name="INTERPOLATION"><ex>{{item.bumpExpiringDate | dateCalendar:momentConfig}}</ex></ph></translation>
   <translation id="8413861205232330672">Todavía no disponemos de datos para este producto</translation>
-  <translation id="UrgentCheckboxDescription">Destaca el anuncio de tu producto marcándolo como “urgente”. Durante 7 días se diferenciará del resto de productos y atraerá la atención de más compradores.</translation>
   <translation id="1900996506417052092">¡Vas a contactar con un Profesional! Para ofrecerte un servicio más personalizado, ¿podrías dejarnos un teléfono para que te llamemos?</translation>
   <translation id="5694886960613125934">Vamos a hablarlo: </translation>
   <translation id="305827802561975907">Lo que debes saber:</translation>
@@ -1153,11 +1146,6 @@
   <translation id="ForgetThisChat"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>Mejor no sigas por aquí<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></translation>
   <translation id="MaliciousConversationDescription">Esta persona incumplió las normas de convivencia. Te sugerimos que no hagas caso de sus indicaciones ni te comuniques con ella por vías ajenas a wallapop, puede tratarse de un intento de estafa.</translation>
   <translation id="ExitConversation">Salir de la conversación</translation>
-  <translation id="UploadConfirmationModalTitle">¡Genial! Tu producto ya está en wallapop</translation>
-  <translation id="UploadConfirmationModalSubtitle">¿Quieres venderlo cuanto antes?</translation>
-  <translation id="UploadConfirmationModalDescription">Marca como "urgente" el anuncio de tu producto. Durante 7 días se diferenciará del resto de productos y atraerá la atención de más compradores.</translation>
-  <translation id="UploadConfirmationModalButton">Marcar como "Urgente" por <ph name="INTERPOLATION"><ex>{{productPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ex></ph>
-      <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>wallacoins<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="PersonalDataInformationModalTitle"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>Quieren ayudarte ;-)<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></translation>
   <translation id="PersonalDataInformationModalDesc">Un/a agente inmobiliario quiere atenderte en persona. Si te interesa, pulsa "Continuar" para compartir tu e-mail y tu número de teléfono.</translation>
   <translation id="PersonalDataInformationModalButton">Continuar</translation>
