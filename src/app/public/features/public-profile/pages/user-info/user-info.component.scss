@@ -8,4 +8,21 @@
   .bold-title {
     font-weight: $font-weight-chunky;
   }
+
+  a {
+    cursor: pointer;
+    &.disabled {
+      color: $blue-grey-3;
+      &:hover {
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .fake-map {
+    height: 130px;
+    border-radius: $border-radius;
+    border: solid 1px $blue-grey-5;
+    background: url(/assets/icons/user-marker-sad.svg) no-repeat center;
+  }
 }

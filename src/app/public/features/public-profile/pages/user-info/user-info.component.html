@@ -1,4 +1,4 @@
-<div class="UserInfo py-4 my-4 d-inline-block w-100">
+<div class="UserInfo py-4 my-4 d-inline-block w-100" *ngIf="user">
     <div class="row px-2 px-md-4">
         <div class="col-12">
             <div class="row">
@@ -6,22 +6,23 @@
                     <div class="row mb-3">
                         <div class="col">
                             <div class="bold-title mb-1" i18n="@@ProfileInfoVerified">Verified information</div>
-                            <div>
-                                <tsl-svg-icon src="/assets/icons/share_mail.svg"></tsl-svg-icon>
-                                <a class="d-block">Email</a>
-                                <tsl-svg-icon src="/assets/icons/check-blue.svg">
+                            <div class="d-flex">
+                                <tsl-svg-icon src="/assets/icons/share_mail.svg" class="mr-2"></tsl-svg-icon>
+                                <a class="mr-2" [class.disabled]="!user.validations?.email">Email</a>
+                                <tsl-svg-icon src="/assets/icons/check-blue.svg" [hidden]="!user.validations?.email">
                                 </tsl-svg-icon>
                             </div>
-                            <div>
-                                <tsl-svg-icon src="/assets/icons/share_facebook.svg"></tsl-svg-icon>
-                                <a class="d-block">Facebook</a>
-                                <tsl-svg-icon src="/assets/icons/check-blue.svg">
+                            <div class="d-flex">
+                                <tsl-svg-icon src="/assets/icons/share_facebook.svg" class="mr-2"></tsl-svg-icon>
+                                <a class="mr-2" [class.disabled]="!user.validations?.facebook">Facebook</a>
+                                <tsl-svg-icon src="/assets/icons/check-blue.svg" [hidden]="!user.validations?.facebook">
                                 </tsl-svg-icon>
                             </div>
-                            <div>
-                                <tsl-svg-icon src="/assets/icons/share_whatsapp.svg"></tsl-svg-icon>
-                                <a class="d-block" i18n="@@ProfileInfoNumber">Phone number</a>
-                                <tsl-svg-icon src="/assets/icons/check-blue.svg">
+                            <div class="d-flex">
+                                <tsl-svg-icon src="/assets/icons/share_whatsapp.svg" class="mr-2"></tsl-svg-icon>
+                                <a class="mr-2" [class.disabled]="!user.validations?.mobile"
+                                    i18n="@@ProfileInfoNumber">Phone number</a>
+                                <tsl-svg-icon src="/assets/icons/check-blue.svg" [hidden]="!user.validations?.mobile">
                                 </tsl-svg-icon>
                             </div>
                         </div>
@@ -32,22 +33,26 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-6 col-lg-3">
+                <div class="col-12 col-md-6 col-lg-3 d-lg-inline d-flex flex-column-reverse justify-content-end ">
                     <div class="row mb-3">
                         <div class="col">
                             <div class="bold-title" i18n="@@ProfileInfoRatio">Response rate</div>
+                            {{user.responseRate}}
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col">
                             <div class="bold-title mb-1" i18n="@@ProfileInfoSchedule">Opening hours</div>
+                            {{user.extraInfo?.opening_hours}}
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-lg-6">
-                    <div class="bold-title" i18n="@@ProfileInfoLocation">Location</div>
-                    <tsl-here-maps *ngIf="coordinates" [coordinates]="coordinates" zoom="15" size="small">
+                    <div class="bold-title  mb-1" i18n="@@ProfileInfoLocation">Location</div>
+                    <tsl-here-maps *ngIf="coordinates" [coordinates]="coordinates" zoom="15" size="small"
+                        [isApproximateLocation]="coordinates.approximated_location">
                     </tsl-here-maps>
+                    <div class="fake-map" *ngIf="!coordinates"></div>
                 </div>
             </div>
         </div>
