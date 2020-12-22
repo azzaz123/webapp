@@ -32,7 +32,12 @@ export const TRANSACTIONS_BUYS_ENDPOINT = (userId: string) =>
   `${PROFILE_API_URL(userId)}/transactions/buys`;
 export const TRANSACTIONS_SOLDS_ENDPOINT = (userId: string) =>
   `${PROFILE_API_URL(userId)}/transactions/solds`;
+
 export const FAVOURITE_API_PATH = 'favorite';
+export const IS_FAROURITE_ENDPOINT = (userId: string) =>
+  `${PROFILE_API_URL(userId)}/${FAVOURITE_API_PATH}`;
+export const MARK_AS_FAVOURITE_ENDPOINT = (userId: string) =>
+  `${PROFILE_API_URL(userId)}/${FAVOURITE_API_PATH}`;
 
 @Injectable({
   providedIn: 'root',
@@ -55,9 +60,7 @@ export class PublicProfileService {
 
   public isFavourite(userId: string): Observable<boolean> {
     return this.http
-      .get(
-        `${environment.baseUrl}${PROFILE_API_URL}${userId}/${FAVOURITE_API_PATH}`
-      )
+      .get(`${environment.baseUrl}${IS_FAROURITE_ENDPOINT(userId)}`)
       .pipe(
         map((isFavouriteResponse: IsFavouriteBodyResponse) => {
           return isFavouriteResponse.favorited;
@@ -113,7 +116,7 @@ export class PublicProfileService {
     userId: string
   ): Observable<MarkAsFavouriteBodyResponse> {
     return this.http.put(
-      `${environment.baseUrl}${PROFILE_API_URL}${userId}/${FAVOURITE_API_PATH}`,
+      `${environment.baseUrl}${MARK_AS_FAVOURITE_ENDPOINT(userId)}`,
       { favorited: true } as MarkAsFavouriteBodyRequest
     );
   }
@@ -122,7 +125,7 @@ export class PublicProfileService {
     userId: string
   ): Observable<MarkAsFavouriteBodyResponse> {
     return this.http.put(
-      `${environment.baseUrl}${PROFILE_API_URL}${userId}/${FAVOURITE_API_PATH}`,
+      `${environment.baseUrl}${MARK_AS_FAVOURITE_ENDPOINT(userId)}`,
       { favorited: false } as MarkAsFavouriteBodyRequest
     );
   }
