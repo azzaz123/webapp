@@ -1,5 +1,5 @@
 import { map } from 'lodash-es';
-import { IOption } from 'app/dropdown/utils/option.interface';
+import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Car } from '../app/core/item/car';
 import { CAR_ID } from './upload.fixtures.spec';
 import { CARS_CATEGORY } from '../app/core/item/item-categories';
