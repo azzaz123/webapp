@@ -101,6 +101,7 @@ import { StarsModule } from './stars/stars.module';
     StarsModule,
   ],
   exports: [
+    StarsModule,
     CardModule,
     CommonModule,
     UploaderModule,
