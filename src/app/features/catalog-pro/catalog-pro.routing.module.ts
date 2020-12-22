@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ActivatedRouteSnapshot, RouterModule, Routes } from '@angular/router';
+import { ActivatedRouteSnapshot, Route, RouterModule } from '@angular/router';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { isEmpty } from 'lodash-es';
 import { PERMISSIONS } from '@core/user/user';
@@ -20,7 +20,7 @@ export function getRedirectToCatalogList(
   }
 }
 
-export const routes: Routes = [
+export const routes: Route[] = [
   {
     path: '',
     canActivateChild: [NgxPermissionsGuard],

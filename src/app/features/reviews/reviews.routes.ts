@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Route } from '@angular/router';
 import { LoggedGuard } from 'app/core/user/logged.guard';
 import { PERMISSIONS } from 'app/core/user/user';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { ReviewsComponent } from './pages/reviews.component';
 
-const routes: Routes = [
+const routes: Route[] = [
   {
     path: '',
     component: ReviewsComponent,

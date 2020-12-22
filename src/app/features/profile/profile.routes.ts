@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Route, RouterModule } from '@angular/router';
 import { LoggedGuard } from '@core/user/logged.guard';
 import { PERMISSIONS } from '@core/user/user';
 import { ExitConfirmGuard } from '@shared/guards/exit-confirm.guard';
@@ -11,7 +11,7 @@ import { ProfileProSubscriptionComponent } from './pages/profile-pro-subscriptio
 import { ProfileComponent } from './pages/profile.component';
 import { SubscriptionsComponent } from './pages/subscription/subscription.component';
 
-const routes: Routes = [
+const routes: Route[] = [
   {
     path: '',
     component: ProfileComponent,
