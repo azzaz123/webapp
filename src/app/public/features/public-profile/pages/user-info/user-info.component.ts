@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Coordinate } from '@core/geolocation/address-response.interface';
-import { SOCIAL_MEDIA_INFO } from '../../public-profile-routing-constants';
-
+import { User } from '@core/user/user';
+import { PublicProfileService } from '../../core/services/public-profile.service';
 @Component({
   selector: 'tsl-user-info',
   templateUrl: './user-info.component.html',
@@ -9,19 +9,27 @@ import { SOCIAL_MEDIA_INFO } from '../../public-profile-routing-constants';
 })
 export class UserInfoComponent implements OnInit {
   public coordinates: Coordinate;
-  constructor() {}
+  public user: User;
 
-  ngOnInit(): void {}
+  constructor(private publicProfileService: PublicProfileService) {}
 
-  open(socialMedia: SOCIAL_MEDIA_INFO): void {
-    switch (socialMedia) {
-      case SOCIAL_MEDIA_INFO.EMAIL:
-        break;
-      case SOCIAL_MEDIA_INFO.FACEBOOK:
-        break;
+  ngOnInit(): void {
+    this.getUser();
+  }
 
-      case SOCIAL_MEDIA_INFO.PHONE_NUMBER:
-        break;
-    }
+  getUser(): void {
+    this.user = this.publicProfileService.user;
+    if (this.userHaveLocation())
+      this.coordinates = {
+        latitude: this.user.location.approximated_latitude,
+        longitude: this.user.location.approximated_longitude,
+      };
+  }
+
+  private userHaveLocation(): boolean {
+    return !!(
+      this.user.location.approximated_latitude &&
+      this.user.location.approximated_longitude
+    );
   }
 }
