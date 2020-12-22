@@ -83,4 +83,5 @@ export interface UserExtrainfo {
   link: string;
   latitude?: number;
   longitude?: number;
+  opening_hours?: string;
 }
