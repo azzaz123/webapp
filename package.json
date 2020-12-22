@@ -25,8 +25,7 @@
     "mparticle": "yarn install && yarn upgrade mparticle_json_validation && node scripts/mparticle.js",
     "analyze-bundle": "yarn buildprod --statsJson=true && yarn webpack-bundle-analyzer dist/es/stats.json",
     "libphonenumber-metadata": "./scripts/generate-metadata/generate-metadata.sh",
-    "docs:json": "compodoc -p ./tsconfig.json -e json -d .",
-    "storybook": "npm run docs:json && start-storybook -p 6006"
+    "storybook": "compodoc -p ./tsconfig.json -e json -d . && start-storybook -p 6006"
   },
   "private": true,
   "dependencies": {
