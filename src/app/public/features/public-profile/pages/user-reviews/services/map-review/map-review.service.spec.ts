@@ -3,18 +3,22 @@ import { MapReviewService } from './map-review.service';
 import { REVIEWS_RESPONSE, MOCK_REVIEWS } from '@fixtures/review.fixtures.spec';
 
 describe('MapReviewService', () => {
-  let service: MapReviewService;
+  let mapReviewService: MapReviewService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [MapReviewService],
     });
-    service = TestBed.inject(MapReviewService);
+    mapReviewService = TestBed.inject(MapReviewService);
+  });
+
+  it('should be created', () => {
+    expect(mapReviewService).toBeTruthy();
   });
 
   describe('When asking for reviews map', () => {
     it('should return correctly mapped list', () => {
-      const mapped = service.mapItems(REVIEWS_RESPONSE);
+      const mapped = mapReviewService.mapItems(REVIEWS_RESPONSE);
 
       expect(mapped).toEqual(MOCK_REVIEWS);
     });
