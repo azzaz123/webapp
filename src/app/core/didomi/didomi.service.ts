@@ -12,9 +12,14 @@ import { DidomiLibrary } from './didomi.interface';
 export class DidomiService {
   private static NAME_LIB = 'Didomi';
 
-  private isReady$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
-    false
-  );
+  private isReadySubject: BehaviorSubject<boolean> = new BehaviorSubject<
+    boolean
+  >(false);
+
+  private isReady$(): Observable<boolean> {
+    return this.isReadySubject.asObservable();
+  }
+
   get library(): DidomiLibrary {
     return this.window['Didomi'];
   }
@@ -45,13 +50,13 @@ export class DidomiService {
   private addOnReadyListener() {
     this.window['didomiOnReady'] = this.window['didomiOnReady'] || [];
     this.window['didomiOnReady'].push(() => {
-      this.isReady$.next(true);
+      this.isReadySubject.next(true);
     });
   }
 
   private onConsentChanged(): Observable<boolean> {
     return new Observable((subscriber: Subscriber<any>) => {
-      this.library.on('consent.changed', (event: any) => {
+      this.library.on('consent.changed', () => {
         const userAllowed: boolean = this.userAllowedSegmentationInAds();
         subscriber.next(userAllowed);
       });

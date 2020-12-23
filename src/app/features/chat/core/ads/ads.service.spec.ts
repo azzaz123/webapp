@@ -4,8 +4,8 @@ import {
   TestBed,
   tick,
 } from '@angular/core/testing';
+import { MockDidomiService } from '@core/didomi/didomi.mock';
 import { DidomiService } from '@core/didomi/didomi.service';
-import { MockDidomiService } from '@core/didomi/didomi.service.spec';
 import { LoadExternalLibsService } from '@core/load-external-libs/load-external-libs.service';
 import { UserService } from '@core/user/user.service';
 import { LOAD_EXTERNAL_LIBS_SERVICE_MOCK } from '@fixtures/load-external-libs.fixtures.spec';
