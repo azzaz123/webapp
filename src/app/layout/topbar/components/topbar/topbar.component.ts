@@ -15,7 +15,9 @@ import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
 import { MessageService } from '@features/chat/core/message/message.service';
+import { WallacoinsDisabledModalComponent } from '@features/wallacoins/components/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
 import { SuggesterResponse } from '@layout/topbar/core/interfaces/suggester-response.interface';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { APP_PATHS } from 'app/app-routing-constants';
 import { PUBLIC_PATHS } from 'app/public/public-routing-constants';
 import { CookieService } from 'ngx-cookie';
@@ -51,6 +53,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
     private paymentService: PaymentService,
     private eventService: EventService,
     private cookieService: CookieService,
+    private modalService: NgbModal,
     @Inject('SUBDOMAIN') private subdomain: string
   ) {
     this.homeUrl = environment.siteUrl.replace('es', this.subdomain);
@@ -136,6 +139,13 @@ export class TopbarComponent implements OnInit, OnDestroy {
 
   public onKeywordUpdate(newKeyword: string) {
     this.kws = newKeyword;
+  }
+
+  public onOpenWallacoinsModal(): void {
+    this.modalService.open(WallacoinsDisabledModalComponent, {
+      windowClass: 'modal-standard',
+      backdrop: 'static',
+    });
   }
 
   ngOnDestroy(): void {

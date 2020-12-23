@@ -7,8 +7,8 @@
   (newSearch)="onSearchUpdate($event)"></tsl-suggester>
 <div class="main-header-login d-none d-lg-flex" [class.professional]="isProfessional">
   <ng-container *ngIf="isLogged">
-    <a id="top-bar-wallacoins" [hidden]="!currencyName" *ngxPermissionsExcept="['isProfessional']" tslTrackEvent="MYZONE_NAVBAR_WALLACOINS"
-      class="main-header-credits menu-link" [routerLink]="['/wallacoins']" [routerLinkActive]="['active']">
+    <a id="top-bar-wallacoins" [hidden]="!currencyName || wallacoins === 0" *ngxPermissionsExcept="['isProfessional']" tslTrackEvent="MYZONE_NAVBAR_WALLACOINS"
+      class="main-header-credits menu-link" (click)="onOpenWallacoinsModal()">
       <tsl-svg-icon src="/assets/icons/wallacoins-nav.svg" class="topbar-icon"></tsl-svg-icon>
       <span *ngIf="currencyName === 'wallacoins'"><b>{{wallacoins | number}}</b> {{currencyName}}</span>
       <span *ngIf="currencyName !== 'wallacoins'"><b>{{wallacoins | customCurrency}}</b> <span i18n>credit</span></span>
