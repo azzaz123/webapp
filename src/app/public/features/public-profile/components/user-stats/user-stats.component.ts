@@ -3,7 +3,10 @@ import { Router } from '@angular/router';
 import { User } from '@core/user/user';
 import { UserStats } from '@core/user/user-stats.interface';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { PUBLIC_PROFILE_PATHS } from '../../public-profile-routing-constants';
+import {
+  mapRedirection,
+  PUBLIC_PROFILE_PATHS,
+} from '../../public-profile-routing-constants';
 
 @Component({
   selector: 'tsl-user-stats',
@@ -27,7 +30,7 @@ export class UserStatsComponent {
   public showLocation(): void {
     const URL = `${this.cleanCurrentURL()}${PUBLIC_PROFILE_PATHS.INFO}`;
     if (this.deviceService.isMobile()) {
-      this.router.navigate([URL], { fragment: 'map' });
+      this.router.navigate([URL], { fragment: mapRedirection });
     } else {
       this.router.navigate([URL]);
     }

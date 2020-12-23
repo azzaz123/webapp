@@ -7,6 +7,7 @@ import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { of } from 'rxjs';
 import { PublicProfileService } from '../../core/services/public-profile.service';
+import { mapRedirection } from '../../public-profile-routing-constants';
 
 import { UserInfoComponent } from './user-info.component';
 
@@ -44,7 +45,7 @@ describe('UserInfoComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            fragment: of('map'),
+            fragment: of(mapRedirection),
           },
         },
       ],
