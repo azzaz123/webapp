@@ -16,8 +16,8 @@ describe('UserInfoComponent', () => {
 
   const mapTag = 'tsl-here-maps';
   const containerClass = '.UserInfo';
-  const fakeMapClass = '.fake-map';
-  const mediaClass = '.media';
+  const fakeMapClass = '.UserInfo__fake-map';
+  const mediaClass = '.UserInfo__media';
 
   let component: UserInfoComponent;
   let fixture: ComponentFixture<UserInfoComponent>;

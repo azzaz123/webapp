@@ -5,20 +5,25 @@
   border-radius: $border-radius;
   font-size: $font-size-s;
 
-  .bold-title {
+  &__title--bold {
     font-weight: $font-weight-chunky;
   }
 
-  .media {
+  &__media {
     &.disabled {
       color: $blue-grey-3;
     }
   }
 
-  .fake-map {
+  &__fake-map {
     height: 130px;
     border-radius: $border-radius;
     border: solid 1px $blue-grey-5;
     background: url(/assets/icons/user-marker-sad.svg) no-repeat center;
+  }
+  &__check {
+    ::ng-deep svg g g {
+      fill: $walla-main;
+    }
   }
 }
