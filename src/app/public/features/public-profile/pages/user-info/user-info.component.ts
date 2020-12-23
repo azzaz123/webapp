@@ -11,7 +11,7 @@ import { User } from '@core/user/user';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Subscription } from 'rxjs';
 import { PublicProfileService } from '../../core/services/public-profile.service';
-import { mapRedirection } from '../../public-profile-routing-constants';
+import { MAP_REDIRECTION } from '../../public-profile-routing-constants';
 @Component({
   selector: 'tsl-user-info',
   templateUrl: './user-info.component.html',
@@ -41,7 +41,7 @@ export class UserInfoComponent implements OnInit, OnDestroy {
     if (this.user && this.deviceService.isMobile()) {
       this.subscriptions.push(
         this.route.fragment.subscribe((fragment) => {
-          if (fragment?.includes(mapRedirection)) {
+          if (fragment?.includes(MAP_REDIRECTION)) {
             this.scrollIntoMap();
           }
         })

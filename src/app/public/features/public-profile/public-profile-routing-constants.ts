@@ -4,4 +4,4 @@ export enum PUBLIC_PROFILE_PATHS {
   INFO = 'info',
 }
 
-export const mapRedirection = 'map';
+export const MAP_REDIRECTION = 'map';
