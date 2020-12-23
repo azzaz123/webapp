@@ -7,29 +7,31 @@
                         <div class="col-12 col-md-6 order-0 mb-3">
                             <p class="UserInfo__title--bold mb-1" i18n="@@ProfileInfoVerified">Verified information
                             </p>
-                            <div class="d-flex">
+                            <div class="d-flex UserInfo__containerMedia mb-1">
                                 <tsl-svg-icon src="/assets/icons/share_mail.svg" class="mr-2"></tsl-svg-icon>
-                                <span class="mr-2 UserInfo__media"
+                                <span class="mr-2 UserInfo__containerMedia__media"
                                     [ngClass]="{disabled: !user.validations?.email}">Email
                                 </span>
-                                <tsl-svg-icon class="UserInfo__check" src="/assets/icons/check.svg"
+                                <tsl-svg-icon class="UserInfo__containerMedia__check" src="/assets/icons/check.svg"
                                     *ngIf="user.validations?.email">
                                 </tsl-svg-icon>
                             </div>
-                            <div class="d-flex">
+                            <div class="d-flex UserInfo__containerMedia mb-1">
                                 <tsl-svg-icon src="/assets/icons/share_facebook.svg" class="mr-2"></tsl-svg-icon>
-                                <span class="mr-2 UserInfo__media" [ngClass]="{disabled: !user.validations?.facebook}">
+                                <span class="mr-2 UserInfo__containerMedia__media"
+                                    [ngClass]="{disabled: !user.validations?.facebook}">
                                     Facebook
                                 </span>
-                                <tsl-svg-icon class="UserInfo__check" src="/assets/icons/check.svg"
+                                <tsl-svg-icon class="UserInfo__containerMedia__check" src="/assets/icons/check.svg"
                                     *ngIf="user.validations?.facebook">
                                 </tsl-svg-icon>
                             </div>
-                            <div class="d-flex">
+                            <div class="d-flex UserInfo__containerMedia">
                                 <tsl-svg-icon src="/assets/icons/share_whatsapp.svg" class="mr-2"></tsl-svg-icon>
-                                <span class="mr-2 UserInfo__media" [ngClass]="{disabled: !user.validations?.mobile}"
-                                    i18n="@@ProfileInfoNumber">Phone number</span>
-                                <tsl-svg-icon class="UserInfo__check" src="/assets/icons/check.svg"
+                                <span class="mr-2 UserInfo__containerMedia__media"
+                                    [ngClass]="{disabled: !user.validations?.mobile}" i18n="@@ProfileInfoNumber">Phone
+                                    number</span>
+                                <tsl-svg-icon class="UserInfo__containerMedia__check" src="/assets/icons/check.svg"
                                     *ngIf="user.validations?.mobile">
                                 </tsl-svg-icon>
                             </div>

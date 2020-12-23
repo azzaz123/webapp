@@ -9,21 +9,26 @@
     font-weight: $font-weight-chunky;
   }
 
-  &__media {
-    &.disabled {
-      color: $blue-grey-3;
-    }
-  }
-
   &__fake-map {
     height: 130px;
     border-radius: $border-radius;
     border: solid 1px $blue-grey-5;
     background: url(/assets/icons/user-marker-sad.svg) no-repeat center;
   }
-  &__check {
-    ::ng-deep svg g g {
-      fill: $walla-main;
+
+  &__containerMedia {
+    height: $spacing-ml;
+
+    &__media {
+      &.disabled {
+        color: $blue-grey-3;
+      }
+    }
+
+    &__check {
+      ::ng-deep svg g g {
+        fill: $walla-main;
+      }
     }
   }
 }
