@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
-import { SpinnerComponent } from './spinner/spinner.component';
 import { AdComponent } from './ad/ad.component';
 import {
   CustomCurrencyPipe,
@@ -19,7 +18,6 @@ import { SoldModalComponent } from './modals/sold-modal/sold-modal.component';
 import { ReviewModalComponent } from './modals/review-modal/review-modal.component';
 import { ItemSoldDirective } from './modals/sold-modal/item-sold.directive';
 import { StarsRateComponent } from './stars-rate/stars-rate.component';
-import { SanitizedBackgroundDirective } from './sanitized-background/sanitized-background.directive';
 import { ProcessAllButtonComponent } from './process-all-button/process-all-button.component';
 import { ArchivableComponent } from './archivable/archivable.component';
 import { ArchiveButtonComponent } from './archive-button/archive-button.component';
@@ -82,6 +80,7 @@ import { DateCountDownComponent } from './date-countdown/date-countdown.componen
 import { StarsModule } from './stars/stars.module';
 import { UserAvatarModule } from './user-avatar/user-avatar.module';
 import { SanitizedBackgroundModule } from './sanitized-background/sanitized-background.module';
+import { SpinnerModule } from './spinner/spinner.module';
 
 @NgModule({
   imports: [
@@ -102,15 +101,16 @@ import { SanitizedBackgroundModule } from './sanitized-background/sanitized-back
     StarsModule,
     UserAvatarModule,
     SanitizedBackgroundModule,
+    SpinnerModule,
   ],
   exports: [
+    SpinnerModule,
     SanitizedBackgroundModule,
     UserAvatarModule,
     StarsModule,
     CardModule,
     CommonModule,
     UploaderModule,
-    SpinnerComponent,
     AdComponent,
     CustomCurrencyPipe,
     RestrictInputDirective,
@@ -171,7 +171,6 @@ import { SanitizedBackgroundModule } from './sanitized-background/sanitized-back
   declarations: [
     AdComponent,
     ConfirmationModalComponent,
-    SpinnerComponent,
     CustomCurrencyPipe,
     RestrictInputDirective,
     HeaderComponent,
