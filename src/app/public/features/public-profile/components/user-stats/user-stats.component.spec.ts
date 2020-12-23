@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserStatsComponent } from './user-stats.component';
 import { By } from '@angular/platform-browser';
@@ -13,6 +14,7 @@ describe('UserStatsComponent', () => {
   const profileUserClass = '.ProfileUser';
   let component: UserStatsComponent;
   let fixture: ComponentFixture<UserStatsComponent>;
+  let deviceDetectorService: DeviceDetectorService;
   let router: Router;
 
   beforeEach(async () => {
@@ -20,6 +22,14 @@ describe('UserStatsComponent', () => {
       imports: [RouterTestingModule],
       declarations: [UserStatsComponent],
       providers: [
+        {
+          provide: DeviceDetectorService,
+          useValue: {
+            isMobile() {
+              return false;
+            },
+          },
+        },
         {
           provide: Router,
           useValue: {
@@ -37,6 +47,7 @@ describe('UserStatsComponent', () => {
     component = fixture.componentInstance;
     component.userInfo = MOCK_FULL_USER_FEATURED;
     component.userStats = MOCK_USER_STATS;
+    deviceDetectorService = TestBed.inject(DeviceDetectorService);
     router = TestBed.inject(Router);
     fixture.detectChanges();
   });
@@ -57,12 +68,27 @@ describe('UserStatsComponent', () => {
     describe('when we click on the location anchor...', () => {
       const expectedURL = 'environment/public/user/1234/info';
 
-      it('should redirect to info path...', () => {
-        locationSpyAndClick();
+      describe('and when our device is NOT a phone', () => {
+        it('should redirect to info path...', () => {
+          locationSpyAndClick();
 
-        expect(component.showLocation).toHaveBeenCalledTimes(1);
-        expect(router.navigate).toHaveBeenCalledTimes(1);
-        expect(router.navigate).toHaveBeenCalledWith([expectedURL]);
+          expect(component.showLocation).toHaveBeenCalledTimes(1);
+          expect(router.navigate).toHaveBeenCalledTimes(1);
+          expect(router.navigate).toHaveBeenCalledWith([expectedURL]);
+        });
+
+        describe('and when our device is a phone', () => {
+          it('should redirect to info path with fragment...', () => {
+            spyOn(deviceDetectorService, 'isMobile').and.returnValue(true);
+            locationSpyAndClick();
+
+            expect(component.showLocation).toHaveBeenCalledTimes(1);
+            expect(router.navigate).toHaveBeenCalledTimes(1);
+            expect(router.navigate).toHaveBeenCalledWith([expectedURL], {
+              fragment: 'map',
+            });
+          });
+        });
       });
     });
 
