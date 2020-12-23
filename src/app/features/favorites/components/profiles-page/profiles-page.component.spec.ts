@@ -118,7 +118,6 @@ describe('ProfilesPageComponent', () => {
         MOCK_PROFILE,
         MOCK_PROFILE,
       ]);
-      const NUMBEROFFAVORITES = 1;
 
       component.removeProfile(profile1);
 
