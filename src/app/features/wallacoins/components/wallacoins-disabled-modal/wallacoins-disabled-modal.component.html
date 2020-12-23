@@ -1,0 +1,12 @@
+<div class="modal-close" (click)="activeModal.close()">
+  <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
+</div>
+<div class="d-flex">
+  <div class="image-col"></div>
+  <div class="content-col d-flex flex-column align-items-center">
+      <h1 class="modal-title" i18n="@@WallacoinsDisabledModalTitle">Goodbye, credit! 👋🏼</h1>
+      <span class="modal-text" i18n="@@WallacoinsDisabledModalText">We have deactivated the "credit" feature, also known as "wallacoins". From now on it's no longer possible to buy saving packs.<br><br>
+        If you have credit in your account, you can continue featuring items until the credit is spent. Credit is valid for one year from the day it was charged to your account.</span>
+      <tsl-button className="btn btn-primary btn-block" (click)="activeModal.close()" i18n="@@WallacoinsDisabledModalButton">Got it</tsl-button>
+  </div>
+</div>
