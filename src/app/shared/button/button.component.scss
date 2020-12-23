@@ -111,4 +111,16 @@ $vertical-padding: $spacing-ms;
       cursor: not-allowed;
     }
   }
+
+  &.invoice {
+    color: $blue-grey-1;
+    background-color: transparent;
+    border: 0;
+    font-weight: bold;
+    font-size: $font-size-s;
+    &--selected {
+      background-color: $blue-grey-1;
+      color: $white;
+    }
+  }
 }
