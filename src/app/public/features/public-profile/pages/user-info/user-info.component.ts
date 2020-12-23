@@ -59,6 +59,6 @@ export class UserInfoComponent implements OnInit, OnDestroy {
   }
 
   private scrollIntoMap(): void {
-    document.getElementById('map').scrollIntoView();
+    document.getElementById('map').scrollIntoView({ behavior: 'smooth' });
   }
 }

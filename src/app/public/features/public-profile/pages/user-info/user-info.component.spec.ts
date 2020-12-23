@@ -2,8 +2,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { of } from 'rxjs';
 import { PublicProfileService } from '../../core/services/public-profile.service';
 
 import { UserInfoComponent } from './user-info.component';
@@ -38,6 +40,12 @@ describe('UserInfoComponent', () => {
             isMobile() {
               return false;
             },
+          },
+        },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            fragment: of('map'),
           },
         },
       ],
@@ -135,6 +143,24 @@ describe('UserInfoComponent', () => {
         mediaDivs.forEach((x) => {
           expect(x.nativeElement.classList).toContain('disabled');
         });
+      });
+    });
+
+    describe('when we access from the header', () => {
+      it('should scroll if the device is a mobile', () => {
+        spyOn(deviceDetectorService, 'isMobile').and.returnValue(true);
+        spyOn(document, 'getElementById');
+
+        fixture.detectChanges();
+        component.ngAfterViewInit();
+
+        expect(document.getElementById).toHaveBeenCalledWith('map');
+      });
+
+      it('should NOT scroll if the device is NOT a mobile', () => {
+        spyOn(document, 'getElementById');
+
+        expect(document.getElementById).not.toHaveBeenCalled();
       });
     });
   });
