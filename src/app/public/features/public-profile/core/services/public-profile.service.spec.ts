@@ -27,7 +27,6 @@ import {
   PublicProfileService,
   PROFILE_API_URL,
   USER_COVER_IMAGE_ENDPOINT,
-  FAVOURITE_API_PATH,
   STATS_ENDPOINT,
   REVIEWS_ENDPOINT,
   IS_FAROURITE_ENDPOINT,
@@ -38,7 +37,6 @@ describe('PublicProfileService', () => {
   let service: PublicProfileService;
   let httpMock: HttpTestingController;
   const userId = '123';
-  const FAVOURITE_API_URL = `${environment.baseUrl}${PROFILE_API_URL}${userId}/${FAVOURITE_API_PATH}`;
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
