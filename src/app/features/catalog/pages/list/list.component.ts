@@ -7,8 +7,6 @@ import { Item } from '@core/item/item';
 import {
   ItemBulkResponse,
   ItemsData,
-  Order,
-  Product,
 } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
 import { CreditInfo } from '@core/payments/payment.interface';
@@ -42,8 +40,6 @@ import { BumpConfirmationModalComponent } from '../../modals/bump-confirmation-m
 import { BuyProductModalComponent } from '../../modals/buy-product-modal/buy-product-modal.component';
 import { ListingfeeConfirmationModalComponent } from '../../modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { ReactivateConfirmationModalComponent } from '../../modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component';
-import { UploadConfirmationModalComponent } from '../../modals/upload-confirmation-modal/upload-confirmation-modal.component';
-import { UrgentConfirmationModalComponent } from '../../modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
 
 export const SORTS = ['date_desc', 'date_asc', 'price_desc', 'price_asc'];
 
@@ -69,7 +65,6 @@ export class ListComponent implements OnInit, OnDestroy {
   private uploadModalRef: NgbModalRef;
   private active = true;
   private firstItemLoad = true;
-  public isUrgent = false;
   public numberOfProducts: number;
   private counters: Counters;
   private tooManyItemsModalRef: NgbModalRef;
@@ -170,7 +165,6 @@ export class ListComponent implements OnInit, OnDestroy {
       this.route.params.subscribe((params: any) => {
         if (params && params.code) {
           const modals = {
-            urgent: UrgentConfirmationModalComponent,
             bump: BumpConfirmationModalComponent,
             reactivate: ReactivateConfirmationModalComponent,
             listingfee: ListingfeeConfirmationModalComponent,
@@ -233,29 +227,7 @@ export class ListComponent implements OnInit, OnDestroy {
             }
           );
         }
-        if (params && params.created && !this.deviceService.isMobile()) {
-          this.uploadModalRef = this.modalService.open(
-            UploadConfirmationModalComponent,
-            {
-              windowClass: 'modal-standard',
-            }
-          );
-          this.uploadModalRef.result.then(
-            (orderEvent: OrderEvent) => {
-              this.uploadModalRef = null;
-              if (orderEvent) {
-                this.isUrgent = true;
-                this.feature(orderEvent, 'urgent');
-              }
-            },
-            () => {}
-          );
-        } else if (params && params.urgent) {
-          this.isUrgent = true;
-          setTimeout(() => {
-            this.getUrgentPrice(params.itemId);
-          }, 3000);
-        } else if (params && params.updated) {
+        if (params && params.updated) {
           this.errorService.i18nSuccess('itemUpdated');
         } else if (params && params.createdOnHold) {
           this.tooManyItemsModalRef = this.modalService.open(
@@ -511,19 +483,13 @@ export class ListComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.type = type;
     modalRef.componentInstance.orderEvent = orderEvent;
     modalRef.componentInstance.creditInfo = this.creditInfo;
-    modalRef.result.then(
-      (result: string) => {
-        this.isUrgent = false;
-        if (result === 'success') {
-          this.router.navigate(['catalog/list', { code: 200 }]);
-        } else {
-          this.router.navigate(['catalog/list', { code: -1 }]);
-        }
-      },
-      () => {
-        this.isUrgent = false;
+    modalRef.result.then((result: string) => {
+      if (result === 'success') {
+        this.router.navigate(['catalog/list', { code: 200 }]);
+      } else {
+        this.router.navigate(['catalog/list', { code: -1 }]);
       }
-    );
+    });
   }
 
   public getNumberOfProducts() {
@@ -562,22 +528,6 @@ export class ListComponent implements OnInit, OnDestroy {
     } else if (this.selectedStatus === STATUS.PUBLISHED) {
       this.numberOfProducts = this.counters.publish;
     }
-  }
-
-  private getUrgentPrice(itemId: string): void {
-    this.itemService.getUrgentProducts(itemId).subscribe((product: Product) => {
-      const order: Order[] = [
-        {
-          item_id: itemId,
-          product_id: product.durations[0].id,
-        },
-      ];
-      const orderEvent: OrderEvent = {
-        order: order,
-        total: +product.durations[0].market_code,
-      };
-      this.feature(orderEvent, 'urgent');
-    });
   }
 
   public deactivate() {

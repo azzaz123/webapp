@@ -53,9 +53,6 @@ export class BuyProductModalComponent implements OnInit {
       .get(this.orderEvent.order[0].item_id)
       .subscribe((item: Item) => {
         this.item = item;
-        if (this.type === 'urgent') {
-          this.item.urgent = true;
-        }
       });
 
     this.paymentService.getCreditInfo().subscribe((creditInfo: CreditInfo) => {
@@ -116,9 +113,7 @@ export class BuyProductModalComponent implements OnInit {
           } else {
             localStorage.setItem('transactionSpent', creditsToPay.toString());
             if (this.creditInfo.credit > 0) {
-              if (this.type === 'urgent') {
-                localStorage.setItem('transactionType', 'urgentWithCredits');
-              } else if (this.type === 'reactivate') {
+              if (this.type === 'reactivate') {
                 localStorage.setItem(
                   'transactionType',
                   'reactivateWithCredits'

@@ -1,12 +1,22 @@
 @import '~style/common';
 
 .InvoiceHistory {
-  h3 {
-    padding: 0 $spacing-s 0 $spacing-l;
-  }
+  padding: $spacing-m $spacing-xl;
+
   &__load-more-container {
     display: flex;
     justify-content: center;
+  }
+
+  &__description {
+    color: $blue-grey-3;
+  }
+
+  &__tabs {
+    padding: $spacing-m $spacing-s;
+    & > * {
+      padding: 0 $spacing-xs;
+    }
   }
 }
 

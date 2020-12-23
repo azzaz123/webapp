@@ -1,6 +1,6 @@
 import { Component, Inject, Input, LOCALE_ID, OnInit } from '@angular/core';
 
-import { IOption } from 'app/dropdown/utils/option.interface';
+import { IOption } from '@shared/dropdown/utils/option.interface';
 import * as moment from 'moment';
 import { EChartOption } from 'echarts';
 import { find } from 'lodash-es';
