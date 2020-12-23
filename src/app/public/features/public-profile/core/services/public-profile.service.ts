@@ -16,6 +16,7 @@ import {
   MarkAsFavouriteBodyRequest,
   MarkAsFavouriteBodyResponse,
 } from '../interfaces/public-profile-request.interface';
+import { PaginationService } from '@public/core/services/pagination/pagination.service';
 
 export const PROFILE_API_URL = (userId: string) => `api/v3/users/${userId}`;
 export const USER_COVER_IMAGE_ENDPOINT = (userId: string) =>
@@ -43,7 +44,10 @@ export const MARK_AS_FAVOURITE_ENDPOINT = (userId: string) =>
   providedIn: 'root',
 })
 export class PublicProfileService {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private paginationService: PaginationService
+  ) {}
 
   public getStats(userId: string): Observable<UserStats> {
     return this.http
@@ -68,8 +72,11 @@ export class PublicProfileService {
       );
   }
 
-  public getReviews(userId: string): Observable<any> {
-    return this.http.get(`${environment.baseUrl}${REVIEWS_ENDPOINT(userId)}`);
+  public getReviews(userId: string, init?: number): Observable<any> {
+    return this.http.get(
+      `${environment.baseUrl}${REVIEWS_ENDPOINT(userId)}`,
+      this.paginationService.getSpecificRequestOptions(init || 0)
+    );
   }
 
   public getPublishedItems(userId: string): Observable<any> {
