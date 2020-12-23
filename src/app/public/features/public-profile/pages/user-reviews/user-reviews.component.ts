@@ -29,7 +29,7 @@ export class UserReviewsComponent {
     this.paginationService
       .getItems(
         this.publicProfileService.getReviews(
-          '1kmzngw3gs6n3',
+          this.publicProfileService.user.id,
           this.nextPaginationItem
         )
       )
