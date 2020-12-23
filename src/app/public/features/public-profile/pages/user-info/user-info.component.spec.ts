@@ -11,7 +11,6 @@ import { PublicProfileService } from '../../core/services/public-profile.service
 import { UserInfoComponent } from './user-info.component';
 
 describe('UserInfoComponent', () => {
-  let publicProfileService: PublicProfileService;
   let deviceDetectorService: DeviceDetectorService;
 
   const mapTag = 'tsl-here-maps';
@@ -56,7 +55,6 @@ describe('UserInfoComponent', () => {
     fixture = TestBed.createComponent(UserInfoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    publicProfileService = TestBed.inject(PublicProfileService);
     deviceDetectorService = TestBed.inject(DeviceDetectorService);
   });
 
