@@ -33,7 +33,7 @@ export class UserInfoComponent implements OnInit, OnDestroy {
     if (this.user && this.deviceService.isMobile()) {
       this.subscriptions.push(
         this.route.fragment.subscribe((fragment) => {
-          if (fragment.includes('map')) {
+          if (fragment?.includes('map')) {
             this.scrollIntoMap();
           }
         })

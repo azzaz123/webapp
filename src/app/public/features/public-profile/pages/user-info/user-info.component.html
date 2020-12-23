@@ -1,70 +1,65 @@
-<div class="UserInfo py-4 my-4 d-inline-block w-100" *ngIf="user">
-    <div class="row px-3 px-md-4">
-        <div class="col-12">
+<div class="UserInfo py-4 my-4 d-inline-block w-100 container" *ngIf="user">
+    <div class="row px-2 px-md-4">
+        <div class="col-12 col-lg-6">
             <div class="row">
-                <div class="col-12 col-lg-6">
-                    <div class="row">
-                        <div class="col-12 col-md-6 order-0 mb-3">
-                            <p class="UserInfo__title--bold mb-1" i18n="@@ProfileInfoVerified">Verified information
-                            </p>
-                            <div class="d-flex UserInfo__containerMedia mb-1">
-                                <tsl-svg-icon src="/assets/icons/share_mail.svg" class="mr-2"></tsl-svg-icon>
-                                <span class="mr-2 UserInfo__containerMedia__media"
-                                    [ngClass]="{disabled: !user.validations?.email}">Email
-                                </span>
-                                <tsl-svg-icon class="UserInfo__containerMedia__check" src="/assets/icons/check.svg"
-                                    *ngIf="user.validations?.email">
-                                </tsl-svg-icon>
-                            </div>
-                            <div class="d-flex UserInfo__containerMedia mb-1">
-                                <tsl-svg-icon src="/assets/icons/share_facebook.svg" class="mr-2"></tsl-svg-icon>
-                                <span class="mr-2 UserInfo__containerMedia__media"
-                                    [ngClass]="{disabled: !user.validations?.facebook}">
-                                    Facebook
-                                </span>
-                                <tsl-svg-icon class="UserInfo__containerMedia__check" src="/assets/icons/check.svg"
-                                    *ngIf="user.validations?.facebook">
-                                </tsl-svg-icon>
-                            </div>
-                            <div class="d-flex UserInfo__containerMedia">
-                                <tsl-svg-icon src="/assets/icons/share_whatsapp.svg" class="mr-2"></tsl-svg-icon>
-                                <span class="mr-2 UserInfo__containerMedia__media"
-                                    [ngClass]="{disabled: !user.validations?.mobile}" i18n="@@ProfileInfoNumber">Phone
-                                    number</span>
-                                <tsl-svg-icon class="UserInfo__containerMedia__check" src="/assets/icons/check.svg"
-                                    *ngIf="user.validations?.mobile">
-                                </tsl-svg-icon>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6 order-2 mb-3 mb-lg-0" id="map">
-                            <p class="UserInfo__title--bold mb-1" i18n="@@ProfileInfoMemberSince">Member since</p>
-                            <div *ngIf="user.registerDate; else noRegisterDate">
-                                {{user.registerDate | date: 'dd/MM/yyyy' }}
-                            </div>
-                            <ng-template #noRegisterDate>
-                                <span i18n="@@Unknown">Unknown</span>
-                            </ng-template>
-                        </div>
-                        <div class="col-12 col-md-6 order-lg-1 order-3 mb-3">
-                            <p class="UserInfo__title--bold mb-1" i18n="@@ProfileInfoRatio">Response rate</p>
-                            <tsl-user-response-rate [responseRate]="user.responseRate" [showIcon]="false">
-                            </tsl-user-response-rate>
-                        </div>
-                        <div class="col-12 col-md-6 order-lg-3 order-1 mb-3 mb-lg-0"
-                            *ngIf="user.extraInfo?.opening_hours">
-                            <p class="UserInfo__title--bold mb-1" i18n="@@ProfileInfoSchedule">Opening hours</p>
-                            {{user.extraInfo?.opening_hours}}
-                        </div>
+                <div class="col-12 col-md-6 order-0 mb-3">
+                    <p class="UserInfo__title--bold mb-1" i18n="@@ProfileInfoVerified">Verified information
+                    </p>
+                    <div class="d-flex UserInfo__containerMedia mb-1">
+                        <tsl-svg-icon src="/assets/icons/share_mail.svg" class="mr-2"></tsl-svg-icon>
+                        <span class="mr-2 UserInfo__containerMedia__media"
+                            [ngClass]="{disabled: !user.validations?.email}">Email
+                        </span>
+                        <tsl-svg-icon class="UserInfo__containerMedia__check" src="/assets/icons/check.svg"
+                            *ngIf="user.validations?.email">
+                        </tsl-svg-icon>
+                    </div>
+                    <div class="d-flex UserInfo__containerMedia mb-1">
+                        <tsl-svg-icon src="/assets/icons/share_facebook.svg" class="mr-2"></tsl-svg-icon>
+                        <span class="mr-2 UserInfo__containerMedia__media"
+                            [ngClass]="{disabled: !user.validations?.facebook}">
+                            Facebook
+                        </span>
+                        <tsl-svg-icon class="UserInfo__containerMedia__check" src="/assets/icons/check.svg"
+                            *ngIf="user.validations?.facebook">
+                        </tsl-svg-icon>
+                    </div>
+                    <div class="d-flex UserInfo__containerMedia">
+                        <tsl-svg-icon src="/assets/icons/share_whatsapp.svg" class="mr-2"></tsl-svg-icon>
+                        <span class="mr-2 UserInfo__containerMedia__media"
+                            [ngClass]="{disabled: !user.validations?.mobile}" i18n="@@ProfileInfoNumber">Phone
+                            number</span>
+                        <tsl-svg-icon class="UserInfo__containerMedia__check" src="/assets/icons/check.svg"
+                            *ngIf="user.validations?.mobile">
+                        </tsl-svg-icon>
                     </div>
                 </div>
-                <div class="col-12 col-lg-6">
-                    <p class="UserInfo__title--bold  mb-1" i18n="@@ProfileInfoLocation">Location</p>
-                    <tsl-here-maps *ngIf="coordinates" [coordinates]="coordinates" zoom="15" size="small"
-                        [isApproximateLocation]="coordinates.approximated_location">
-                    </tsl-here-maps>
-                    <div class="UserInfo__fake-map" *ngIf="!coordinates"></div>
+                <div class="col-12 col-md-6 order-2 mb-3 mb-lg-0" id="map">
+                    <p class="UserInfo__title--bold mb-1" i18n="@@ProfileInfoMemberSince">Member since</p>
+                    <div *ngIf="user.registerDate; else noRegisterDate">
+                        {{user.registerDate | date: 'dd/MM/yyyy' }}
+                    </div>
+                    <ng-template #noRegisterDate>
+                        <span i18n="@@Unknown">Unknown</span>
+                    </ng-template>
+                </div>
+                <div class="col-12 col-md-6 order-lg-1 order-3 mb-3">
+                    <p class="UserInfo__title--bold mb-1" i18n="@@ProfileInfoRatio">Response rate</p>
+                    <tsl-user-response-rate [responseRate]="user.responseRate" [showIcon]="false">
+                    </tsl-user-response-rate>
+                </div>
+                <div class="col-12 col-md-6 order-lg-3 order-1 mb-3 mb-lg-0" *ngIf="user.extraInfo?.opening_hours">
+                    <p class="UserInfo__title--bold mb-1" i18n="@@ProfileInfoSchedule">Opening hours</p>
+                    {{user.extraInfo?.opening_hours}}
                 </div>
             </div>
+        </div>
+        <div class="col-12 col-lg-6">
+            <p class="UserInfo__title--bold  mb-1" i18n="@@ProfileInfoLocation">Location</p>
+            <tsl-here-maps *ngIf="coordinates" [coordinates]="coordinates" zoom="15" size="small"
+                [isApproximateLocation]="coordinates.approximated_location">
+            </tsl-here-maps>
+            <div class="UserInfo__fake-map" *ngIf="!coordinates"></div>
         </div>
     </div>
 </div>
