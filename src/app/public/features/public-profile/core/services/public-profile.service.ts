@@ -17,6 +17,7 @@ import {
   MarkAsFavouriteBodyResponse,
 } from '../interfaces/public-profile-request.interface';
 import { PaginationService } from '@public/core/services/pagination/pagination.service';
+import { ReviewsData } from '@features/reviews/core/review-response.interface';
 
 export const PROFILE_API_URL = (userId: string) => `api/v3/users/${userId}`;
 export const USER_COVER_IMAGE_ENDPOINT = (userId: string) =>
@@ -78,8 +79,8 @@ export class PublicProfileService {
       );
   }
 
-  public getReviews(userId: string, init?: number): Observable<any> {
-    return this.http.get(
+  public getReviews(userId: string, init?: number): Observable<ReviewsData[]> {
+    return this.http.get<ReviewsData[]>(
       `${environment.baseUrl}${REVIEWS_ENDPOINT(userId)}`,
       this.paginationService.getSpecificRequestOptions(init || 0)
     );
