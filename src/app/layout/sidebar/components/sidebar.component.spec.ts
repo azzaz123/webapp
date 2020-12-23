@@ -14,9 +14,9 @@ import { MessageService } from '@features/chat/core/message/message.service';
 import { RouterLinkDirectiveStub } from 'app/shared/router-link-directive-stub';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { Observable, of } from 'rxjs';
-import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-import { User } from '../../core/user/user';
-import { UserService } from '../../core/user/user.service';
+import { MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { User } from '@core/user/user';
+import { UserService } from '@core/user/user.service';
 import { SidebarComponent } from './sidebar.component';
 
 @Component({
