@@ -1,19 +1,37 @@
+import { TestBed } from '@angular/core/testing';
+import { LoadExternalLibsService } from '@core/load-external-libs/load-external-libs.service';
+import { EMPTY, of } from 'rxjs';
 import { DidomiService } from './didomi.service';
+
+export const MockDidomiService = {
+  userAllowedSegmentationInAds$: () => of(true),
+};
 
 describe('Service: Didomi', () => {
   let service: DidomiService;
   let loadExternalLibsServiceMock;
 
   beforeEach(() => {
-    loadExternalLibsServiceMock = jasmine.createSpyObj(
-      'loadExternalLibsService',
-      ['loadScriptByText']
-    );
+    loadExternalLibsServiceMock = {
+      loadScriptByText: EMPTY,
+    };
 
-    service = new DidomiService(loadExternalLibsServiceMock);
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: LoadExternalLibsService,
+          useValue: loadExternalLibsServiceMock,
+        },
+        DidomiService,
+      ],
+    });
+
+    service = TestBed.inject(DidomiService);
   });
 
-  it('should');
+  it('should create the service', () => {
+    expect(service).toBeTruthy();
+  });
 });
 
 /*

@@ -64,19 +64,6 @@ export class AdsService {
       .subscribe((userAllowed: boolean) =>
         this.allowSegmentation$.next(userAllowed)
       );
-    /*
-    if (this.didomiService.isReady) {
-      this.allowSegmentation$.next(
-        this.didomiService.userAllowedSegmentationInAds()
-      );
-    } else {
-      this.didomiService.isReady$.subscribe(() => {
-        this.allowSegmentation$.next(
-          this.didomiService.userAllowedSegmentationInAds()
-        );
-      });
-    }
-    */
   }
 
   private initKeyWordsFromCookies(): void {

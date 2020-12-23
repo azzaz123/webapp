@@ -73,8 +73,7 @@ export class AppComponent implements OnInit {
     private stripeService: StripeService,
     private analyticsService: AnalyticsService,
     private uuidService: UuidService,
-    private serviceWorker: SwUpdate,
-    private didomiService: DidomiService
+    private serviceWorker: SwUpdate
   ) {}
 
   ngOnInit() {
@@ -105,7 +104,6 @@ export class AppComponent implements OnInit {
   }
 
   private initializeServices(): void {
-    this.didomiService.initialize();
     this.stripeService.init();
     this.analyticsService.initialize();
     this.initializeBraze();

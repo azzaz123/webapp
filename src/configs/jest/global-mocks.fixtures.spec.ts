@@ -120,6 +120,9 @@ export const MOCK_DIDOMI: DidomiLibrary = {
       },
     };
   },
+  on: (event: string, callback: (event: any) => void) => {
+    callback({});
+  },
 };
 
 export const MOCK_THREAT_METRIX: ThreatMetrixLibrary = {

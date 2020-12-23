@@ -1,19 +1,18 @@
-import { LOAD_EXTERNAL_LIBS_SERVICE_MOCK } from '@fixtures/load-external-libs.fixtures.spec';
-import { of } from 'rxjs';
 import {
   discardPeriodicTasks,
   fakeAsync,
   TestBed,
   tick,
 } from '@angular/core/testing';
-import { AdsService } from './ads.service';
-
-import { CookieService } from 'ngx-cookie';
+import { DidomiService } from '@core/didomi/didomi.service';
+import { MockDidomiService } from '@core/didomi/didomi.service.spec';
+import { LoadExternalLibsService } from '@core/load-external-libs/load-external-libs.service';
+import { UserService } from '@core/user/user.service';
+import { LOAD_EXTERNAL_LIBS_SERVICE_MOCK } from '@fixtures/load-external-libs.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
-import { DidomiService } from 'app/core/didomi/didomi.service';
-import { MockDidomiService } from 'app/core/didomi/didomi.service.spec';
-import { UserService } from 'app/core/user/user.service';
-import { LoadExternalLibsService } from 'app/core/load-external-libs/load-external-libs.service';
+import { CookieService } from 'ngx-cookie';
+import { of } from 'rxjs';
+import { AdsService } from './ads.service';
 
 let service: AdsService;
 let userService: UserService;
