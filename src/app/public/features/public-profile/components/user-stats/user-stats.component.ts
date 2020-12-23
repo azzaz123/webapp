@@ -2,7 +2,6 @@ import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '@core/user/user';
 import { UserStats } from '@core/user/user-stats.interface';
-import { DeviceDetectorService } from 'ngx-device-detector';
 import { PUBLIC_PROFILE_PATHS } from '../../public-profile-routing-constants';
 
 @Component({
@@ -15,22 +14,15 @@ export class UserStatsComponent {
   @Input() userInfo: User;
   public isPhone = false;
 
-  constructor(
-    private deviceService: DeviceDetectorService,
-    private router: Router
-  ) {}
+  constructor(private router: Router) {}
 
-  togglePhone(): void {
+  public togglePhone(): void {
     this.isPhone = !this.isPhone;
   }
 
   public showLocation(): void {
     const URL = `${this.cleanCurrentURL()}${PUBLIC_PROFILE_PATHS.INFO}`;
-    if (this.deviceService.isMobile()) {
-      this.router.navigate([URL], { fragment: 'map' });
-    } else {
-      this.router.navigate([URL]);
-    }
+    this.router.navigate([URL]);
   }
 
   private cleanCurrentURL(): string {
