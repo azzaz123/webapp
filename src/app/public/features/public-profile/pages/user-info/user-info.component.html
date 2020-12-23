@@ -8,20 +8,21 @@
                             <div class="bold-title mb-1" i18n="@@ProfileInfoVerified">Verified information</div>
                             <div class="d-flex">
                                 <tsl-svg-icon src="/assets/icons/share_mail.svg" class="mr-2"></tsl-svg-icon>
-                                <a class="mr-2" [class.disabled]="!user.validations?.email">Email</a>
+                                <div class="mr-2 media" [ngClass]="{disabled: !user.validations?.email}">Email</div>
                                 <tsl-svg-icon src="/assets/icons/check-blue.svg" [hidden]="!user.validations?.email">
                                 </tsl-svg-icon>
                             </div>
                             <div class="d-flex">
                                 <tsl-svg-icon src="/assets/icons/share_facebook.svg" class="mr-2"></tsl-svg-icon>
-                                <a class="mr-2" [class.disabled]="!user.validations?.facebook">Facebook</a>
+                                <div class="mr-2 media" [ngClass]="{disabled: !user.validations?.facebook}">Facebook
+                                </div>
                                 <tsl-svg-icon src="/assets/icons/check-blue.svg" [hidden]="!user.validations?.facebook">
                                 </tsl-svg-icon>
                             </div>
                             <div class="d-flex">
                                 <tsl-svg-icon src="/assets/icons/share_whatsapp.svg" class="mr-2"></tsl-svg-icon>
-                                <a class="mr-2" [class.disabled]="!user.validations?.mobile"
-                                    i18n="@@ProfileInfoNumber">Phone number</a>
+                                <div class="mr-2 media" [ngClass]="{disabled: !user.validations?.mobile}"
+                                    i18n="@@ProfileInfoNumber">Phone number</div>
                                 <tsl-svg-icon src="/assets/icons/check-blue.svg" [hidden]="!user.validations?.mobile">
                                 </tsl-svg-icon>
                             </div>

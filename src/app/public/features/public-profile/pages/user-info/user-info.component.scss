@@ -9,13 +9,9 @@
     font-weight: $font-weight-chunky;
   }
 
-  a {
-    cursor: pointer;
+  .media {
     &.disabled {
       color: $blue-grey-3;
-      &:hover {
-        cursor: not-allowed;
-      }
     }
   }
 

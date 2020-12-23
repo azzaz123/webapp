@@ -10,9 +10,9 @@ import { UserInfoComponent } from './user-info.component';
 describe('UserInfoComponent', () => {
   let publicProfileService: PublicProfileService;
   const mapTag = 'tsl-here-maps';
-  const userResponseTag = 'tsl-user-response-rate';
   const containerClass = '.UserInfo';
   const fakeMapClass = '.fake-map';
+  const mediaClass = '.media';
 
   let component: UserInfoComponent;
   let fixture: ComponentFixture<UserInfoComponent>;
@@ -87,6 +87,42 @@ describe('UserInfoComponent', () => {
 
         expect(mapComponent).toBeTruthy();
         expect(fakeMapComponent).toBeFalsy();
+      });
+    });
+
+    describe('when the information is verified...', () => {
+      beforeEach(() => {
+        component.user.validations.email = true;
+        component.user.validations.facebook = true;
+        component.user.validations.mobile = true;
+      });
+
+      it('should NOT apply the disabled style', () => {
+        fixture.detectChanges();
+        const mediaDivs = fixture.debugElement.queryAll(By.css(mediaClass));
+
+        expect(mediaDivs.length).toBe(3);
+        mediaDivs.forEach((x) => {
+          expect(x.nativeElement.classList).not.toContain('disabled');
+        });
+      });
+    });
+
+    describe('when the information is NOT verified...', () => {
+      beforeEach(() => {
+        component.user.validations.email = false;
+        component.user.validations.facebook = false;
+        component.user.validations.mobile = false;
+      });
+
+      it('should apply the disabled style', () => {
+        fixture.detectChanges();
+        const mediaDivs = fixture.debugElement.queryAll(By.css(mediaClass));
+
+        expect(mediaDivs.length).toBe(3);
+        mediaDivs.forEach((x) => {
+          expect(x.nativeElement.classList).toContain('disabled');
+        });
       });
     });
   });
