@@ -41,7 +41,7 @@ export enum SCREEN_IDS {
   ItemReactivation = 212,
   BumpItem = 213,
   MyFavoriteProfilesSection = 214,
-  ReviewsSection = 215,
+  OtherReviewsSection = 215,
   WebHome = 216,
   SavedSearchesNewVsOld = 217,
   NotificationCenter = 218,
@@ -61,4 +61,9 @@ export enum SCREEN_IDS {
   HashtagsSuggestedUpload = 232,
   MyProfileMenu = 233,
   OwnReviewsSection = 234,
+  MyWallet = 235,
+  BankTransferAmount = 236,
+  BankTransferConfirm = 237,
+  Checkout = 238,
+  MySoldItems = 239,
 }

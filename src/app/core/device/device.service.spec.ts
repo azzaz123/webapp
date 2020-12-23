@@ -2,16 +2,42 @@ import { TestBed } from '@angular/core/testing';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
+import { UuidService } from '@core/uuid/uuid.service';
+import { CookieService } from 'ngx-cookie';
 
 describe('DeviceService', () => {
   let deviceService: DeviceService;
+  let uuidService: UuidService;
+  let cookieService: CookieService;
   let deviceDetectorService: DeviceDetectorService;
+  let cookies: object;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [DeviceService, DeviceDetectorService],
+      providers: [
+        DeviceService,
+        DeviceDetectorService,
+        UuidService,
+        {
+          provide: CookieService,
+          useValue: {
+            get: (name): string => {
+              return cookies[name]?.value;
+            },
+            put: (name, value, options): void => {
+              cookies[name] = {
+                value,
+                options,
+              };
+            },
+          },
+        },
+      ],
     });
 
+    cookies = {};
+    uuidService = TestBed.inject(UuidService);
+    cookieService = TestBed.inject(CookieService);
     deviceDetectorService = TestBed.inject(DeviceDetectorService);
     deviceService = TestBed.inject(DeviceService);
   });
@@ -41,6 +67,46 @@ describe('DeviceService', () => {
       let deviceType = deviceService.getDeviceType();
 
       expect(deviceType).toEqual(DeviceType.DESKTOP);
+    });
+  });
+
+  describe('getDeviceId', () => {
+    describe('when no device id cookie is set', () => {
+      it("should return the cookie's value", () => {
+        spyOn(uuidService, 'getUUID').and.returnValue('newDeviceId');
+        spyOn(cookieService, 'put');
+
+        const deviceId = deviceService.getDeviceId();
+
+        expect(deviceId).toEqual('newDeviceId');
+        expect(cookieService.put).toHaveBeenCalledWith(
+          'device_id',
+          'newDeviceId',
+          {
+            domain: 'localhost',
+            path: '/',
+            expires: expect.any(Date),
+          }
+        );
+      });
+    });
+
+    describe('when device id cookie is set', () => {
+      it('should return a new value and set the cookie', () => {
+        cookies = {
+          device_id: {
+            value: 'deviceId',
+          },
+        };
+        spyOn(cookieService, 'put');
+        spyOn(uuidService, 'getUUID');
+
+        const deviceId = deviceService.getDeviceId();
+
+        expect(deviceId).toEqual('deviceId');
+        expect(cookieService.put).not.toHaveBeenCalled();
+        expect(uuidService.getUUID).not.toHaveBeenCalled();
+      });
     });
   });
 });

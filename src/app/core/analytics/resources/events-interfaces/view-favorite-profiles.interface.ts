@@ -18,6 +18,10 @@ export interface ViewFavoriteProfiles {
    */
   numberOfProfiles: number;
   /**
+   * Flag true or false is the view shows an empty state
+   */
+  emptyState?: boolean;
+  /**
    * Name of the experiment or A/B testing applied to the user who has viewed the section of favorite profiles. The default value would be 'baseline'
    */
   experiment?: string;

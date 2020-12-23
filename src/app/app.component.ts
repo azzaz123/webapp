@@ -228,7 +228,7 @@ export class AppComponent implements OnInit {
         currentUrl: window.location.href,
         refererUrl: document.referrer,
         webPlatformType: this.deviceService.getDeviceType(),
-        webDeviceId: this.analyticsService.getDeviceId(),
+        webDeviceId: this.deviceService.getDeviceId(),
       },
     });
   }

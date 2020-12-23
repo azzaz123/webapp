@@ -21,4 +21,12 @@ export interface ViewNotificationCenter {
    * Total number of notifications the user has
    */
   numberOfTotalNotifications: number;
+  /**
+   * Flag true or false is the view shows an empty state
+   */
+  emptyState?: boolean;
+  /**
+   * Name of the experiment or A/B testing applied to the user who has viewed the favorite items section.
+   */
+  experiment?: string;
 }

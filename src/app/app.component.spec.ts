@@ -69,6 +69,7 @@ let analyticsService: AnalyticsService;
 let didomiService: DidomiService;
 let uuidService: UuidService;
 let activatedRoute: ActivatedRoute;
+let deviceService: DeviceService;
 
 const ACCESS_TOKEN = 'accesstoken';
 
@@ -203,6 +204,7 @@ describe('App', () => {
     component = fixture.componentInstance;
     de = fixture.debugElement;
     el = de.nativeElement;
+    deviceService = TestBed.inject(DeviceService);
     userService = TestBed.inject(UserService);
     errorsService = TestBed.inject(ErrorsService);
     eventService = TestBed.inject(EventService);
@@ -596,6 +598,7 @@ describe('App', () => {
   describe('When the app initializes', () => {
     it('should send Open Wallapop if user has a new session', () => {
       spyOn(analyticsService, 'trackEvent');
+      spyOn(deviceService, 'getDeviceId').and.returnValue('newUUID');
 
       component.ngOnInit();
 
@@ -603,7 +606,7 @@ describe('App', () => {
         attributes: {
           currentUrl: 'http://localhost/',
           refererUrl: '',
-          webDeviceId: undefined,
+          webDeviceId: 'newUUID',
           webPlatformType: 'desktop',
         },
         eventType: ANALYTIC_EVENT_TYPES.Other,
@@ -614,6 +617,7 @@ describe('App', () => {
     it('should not send Open Wallapop if has an old session', () => {
       cookieService.put('wallapop_keep_session', 'true');
       spyOn(analyticsService, 'trackEvent');
+      spyOn(deviceService, 'getDeviceId').and.returnValue('newUUID');
 
       component.ngOnInit();
 
@@ -621,7 +625,7 @@ describe('App', () => {
         attributes: {
           currentUrl: 'http://localhost/',
           refererUrl: '',
-          webDeviceId: undefined,
+          webDeviceId: 'newUUID',
           webPlatformType: 'desktop',
         },
         eventType: ANALYTIC_EVENT_TYPES.Other,

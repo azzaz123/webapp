@@ -16,17 +16,25 @@ export interface ViewSavedSearches {
   /**
    * Number of different saved searches the user has in the my saved searches section
    */
-  numberOfSavedSearches: number;
+  numberOfSavedSearches?: number;
   /**
    * Number of inactive saved searches the user has in the my saved searches section
    */
-  numberOfInactiveSavedSearches: number;
+  numberOfInactiveSavedSearches?: number;
   /**
    * Number of saved searches with 0 hits the user has in the my saved searches section
    */
-  numberOfSavedSearchesWithZeroHits: number;
+  numberOfSavedSearchesWithZeroHits?: number;
   /**
    * Total number of hits in the my saved searches section
    */
-  numberOfHits: number;
+  numberOfHits?: number;
+  /**
+   * Flag true or false is the view shows an empty state
+   */
+  emptyState?: boolean;
+  /**
+   * Name of the experiment or A/B testing applied to the user who has viewed the saved searches section.
+   */
+  experiment?: string;
 }

@@ -6,9 +6,8 @@ import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { User } from '../user/user';
 import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
-import { CookieService } from 'ngx-cookie';
-import { UuidService } from '../uuid/uuid.service';
 import { filter } from 'rxjs/operators';
+import { DeviceService } from '@core/device/device.service';
 
 // TODO: This should not be exported. Anything that uses this should start using the getDeviceId method
 export const DEVICE_ID_COOKIE_NAME = 'device_id';
@@ -19,11 +18,8 @@ export const DEVICE_ID_COOKIE_NAME = 'device_id';
 export class AnalyticsService {
   constructor(
     private userService: UserService,
-    private uuidService: UuidService,
-    private cookieService: CookieService
+    private deviceService: DeviceService
   ) {}
-
-  private static DEVICE_ID_COOKIE_NAME = 'device_id';
 
   private readonly _mParticleReady$: ReplaySubject<void> = new ReplaySubject<
     void
@@ -51,7 +47,10 @@ export class AnalyticsService {
           identityCallback: (result) => {
             const mParticleUser = result.getUser();
             if (mParticleUser) {
-              mParticleUser.setUserAttribute('deviceId', this.getDeviceId());
+              mParticleUser.setUserAttribute(
+                'deviceId',
+                this.deviceService.getDeviceId()
+              );
             }
           },
         };
@@ -70,23 +69,5 @@ export class AnalyticsService {
 
   public trackPageView<T>(page: AnalyticsPageView<T>) {
     mParticle.logPageView(page.name, page.attributes, page.flags);
-  }
-
-  // TODO: This might not be it's place
-  public getDeviceId(): string {
-    let deviceId = this.cookieService.get(
-      AnalyticsService.DEVICE_ID_COOKIE_NAME
-    );
-    if (!deviceId) {
-      deviceId = this.uuidService.getUUID();
-      this.cookieService.put(AnalyticsService.DEVICE_ID_COOKIE_NAME, deviceId, {
-        expires: new Date('2038-01-19'),
-        // TODO: Generic cookie options could be abstracted and extended on each case
-        domain: environment.name === 'local' ? 'localhost' : '.wallapop.com',
-        path: '/',
-      });
-    }
-
-    return deviceId;
   }
 }

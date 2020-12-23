@@ -69,4 +69,8 @@ export interface ClickItemCard {
    * When the event is triggered in SavedSearchesNewVsOld screen (217), specify if it is in the 'new' results or 'old'
    */
   savedSearchResults?: string;
+  /**
+   * Used in the case of having more than one section in the landings to specify what type of landing it is
+   */
+  seoSection?: string;
 }

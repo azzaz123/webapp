@@ -14,7 +14,15 @@ export interface ViewMessages {
    */
   screenId: 228;
   /**
+   * Flag true or false is the view shows an empty state
+   */
+  emptyState?: boolean;
+  /**
    * Number of unread messages the user has in the my messages section
    */
   numberOfUnreadMessages: number;
+  /**
+   * Name of the experiment or A/B testing applied to the user who has viewed the section. The default value would be 'baseline'
+   */
+  experiment?: string;
 }

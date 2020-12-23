@@ -17,4 +17,8 @@ export interface ViewEditProfile {
    * If the item is from a professional user
    */
   isPro: boolean;
+  /**
+   * Name of the experiment or A/B testing applied to the user who has performed the view. The default value would be 'baseline'
+   */
+  experiment?: string;
 }
