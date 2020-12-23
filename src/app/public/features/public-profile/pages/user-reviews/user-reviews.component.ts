@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MapReviewService } from '@public/features/public-profile/pages/user-reviews/services/map-review/map-review.service';
 import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
 import { PaginationService } from '@public/core/services/pagination/pagination.service';
+import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
 
 @Component({
   selector: 'tsl-user-reviews',
@@ -10,15 +11,22 @@ import { PaginationService } from '@public/core/services/pagination/pagination.s
 })
 export class UserReviewsComponent {
   public reviews = [];
+  public nextPaginationItem: number = 0;
   constructor(
     private publicProfileService: PublicProfileService,
     private mapReviewService: MapReviewService,
     private paginationService: PaginationService
   ) {
     this.paginationService
-      .getItems(this.publicProfileService.getReviews('1kmzngw3g6n3'))
-      .subscribe((test: any) => {
-        this.reviews = this.mapReviewService.mapItems(test.results);
+      .getItems(
+        this.publicProfileService.getReviews(
+          '1kmzngw3g6n3',
+          this.nextPaginationItem
+        )
+      )
+      .subscribe((response: PaginationResponse) => {
+        this.reviews = this.mapReviewService.mapItems(response.results);
+        this.nextPaginationItem = response.init;
       });
   }
 }
