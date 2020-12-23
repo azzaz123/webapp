@@ -1,3 +1,5 @@
 <div class="d-inline-block w-100 my-4">
+    <tsl-spinner *ngIf="loading"></tsl-spinner>
     <tsl-review-item class="d-block mb-3" *ngFor="let review of reviews" [review]="review"></tsl-review-item>
+    <button *ngIf="nextPaginationItem" (click)="loadMore()" class="UserReviews__btn d-block btn btn-primary m-auto" i18n="@@USerReviewsLoadMore">Load more reviews</button>
 </div>

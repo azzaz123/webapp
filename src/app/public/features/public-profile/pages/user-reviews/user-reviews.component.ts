@@ -3,6 +3,7 @@ import { MapReviewService } from '@public/features/public-profile/pages/user-rev
 import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
 import { PaginationService } from '@public/core/services/pagination/pagination.service';
 import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-user-reviews',
@@ -12,21 +13,36 @@ import { PaginationResponse } from '@public/core/services/pagination/pagination.
 export class UserReviewsComponent {
   public reviews = [];
   public nextPaginationItem: number = 0;
+  public loading: boolean = true;
+
   constructor(
     private publicProfileService: PublicProfileService,
     private mapReviewService: MapReviewService,
     private paginationService: PaginationService
   ) {
+    this.loadItems();
+  }
+
+  private loadItems(): void {
+    this.loading = true;
+
     this.paginationService
       .getItems(
         this.publicProfileService.getReviews(
-          '1kmzngw3g6n3',
+          '1kmzngw3gs6n3',
           this.nextPaginationItem
         )
       )
+      .pipe(finalize(() => (this.loading = false)))
       .subscribe((response: PaginationResponse) => {
-        this.reviews = this.mapReviewService.mapItems(response.results);
+        this.reviews = this.reviews.concat(
+          this.mapReviewService.mapItems(response.results)
+        );
         this.nextPaginationItem = response.init;
       });
+  }
+
+  loadMore(): void {
+    this.loadItems();
   }
 }
