@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { LoadExternalLibsService } from '@core/load-external-libs/load-external-libs.service';
-import { EMPTY, of } from 'rxjs';
+import { of } from 'rxjs';
+import { WINDOW_TOKEN } from './../window/window.token';
 import { DidomiService } from './didomi.service';
 
 export const MockDidomiService = {
@@ -10,14 +11,34 @@ export const MockDidomiService = {
 describe('Service: Didomi', () => {
   let service: DidomiService;
   let loadExternalLibsServiceMock;
+  let windowMock: Window = <any>{
+    Didomi: null,
+    didomiOnReady: [],
+  };
+
+  const DidomiMock = {
+    getUserConsentStatusForPurpose: (purpouseKey: string) => true,
+    getUserConsentStatusForVendor: (vendorKey: string) => true,
+    getUserConsentStatusForAll: () => ({
+      purposes: { enabled: [], disabled: [] },
+    }),
+    on: (event: string, callback: (event: any) => any) => null,
+  };
 
   beforeEach(() => {
     loadExternalLibsServiceMock = {
-      loadScriptByText: () => EMPTY,
+      loadScriptByText: () => {
+        windowMock['Didomi'] = DidomiMock;
+        windowMock['didomiOnReady'][0]();
+      },
     };
 
     TestBed.configureTestingModule({
       providers: [
+        {
+          provide: WINDOW_TOKEN,
+          useValue: windowMock,
+        },
         {
           provide: LoadExternalLibsService,
           useValue: loadExternalLibsServiceMock,
@@ -32,16 +53,8 @@ describe('Service: Didomi', () => {
   it('should create the service', () => {
     expect(service).toBeTruthy();
   });
-  /*
-  describe('userAllowedSegmentationInAds', () => {
-    beforeEach(() => {
-      spyOn(Didomi, 'getUserConsentStatusForVendor').and.callFake((key) => {
-        if (key === 'google') {
-          return true;
-        }
-      });
-    });
 
+  describe('userAllowedSegmentationInAds', () => {
     it('should load didomi lib if not loaded yet', () => {
       spyOn(loadExternalLibsServiceMock, 'loadScriptByText').and.returnValue(
         of(null)
@@ -52,7 +65,6 @@ describe('Service: Didomi', () => {
       });
     });
   });
-  */
 });
 
 /*

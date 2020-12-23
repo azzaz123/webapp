@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { WINDOW_TOKEN } from './../window/window.token';
+import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subscriber } from 'rxjs';
 import { filter, startWith, switchMap } from 'rxjs/operators';
 import { LoadExternalLibsService } from '../load-external-libs/load-external-libs.service';
@@ -14,9 +15,14 @@ export class DidomiService {
   private isReady$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     false
   );
-  private library: DidomiLibrary = null;
+  get library(): DidomiLibrary {
+    return this.window['Didomi'];
+  }
 
-  constructor(private loadExternalLibsService: LoadExternalLibsService) {
+  constructor(
+    @Inject(WINDOW_TOKEN) private window: Window,
+    private loadExternalLibsService: LoadExternalLibsService
+  ) {
     this.addOnReadyListener();
   }
 
@@ -37,9 +43,8 @@ export class DidomiService {
   }
 
   private addOnReadyListener() {
-    window['didomiOnReady'] = window['didomiOnReady'] || [];
-    window['didomiOnReady'].push(() => {
-      this.library = Didomi;
+    this.window['didomiOnReady'] = this.window['didomiOnReady'] || [];
+    this.window['didomiOnReady'].push(() => {
       this.isReady$.next(true);
     });
   }
