@@ -1226,4 +1226,7 @@
   <translation id="ProfileInfoSchedule">Horario de apertura</translation>
   <translation id="ProfileInfoLocation">Ubicación</translation>
   <translation id="Unknown">Desconocido</translation>
+  <translation id="UserReviewsNoResults">Usuario sin opiniones</translation>
+  <translation id="UserReviewsLoadMore">Ver más opiniones</translation>
+  
 </translationbundle>
