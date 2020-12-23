@@ -10,6 +10,7 @@ import { UserProfileHeaderComponent } from './components/user-profile-header/use
 import { ProfileTabsComponent } from './components/profile-tabs/profile-tabs.component';
 import { SharedModule } from '@shared/shared.module';
 import { FavouriteUserModule } from './components/favourite-user/favourite-user.module';
+import { CardModule } from '@public/core/components/card/card.module';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { FavouriteUserModule } from './components/favourite-user/favourite-user.
     PublicProfileRoutingModule,
     SharedModule,
     FavouriteUserModule,
+    CardModule,
   ],
 })
 export class PublicProfileModule {}
