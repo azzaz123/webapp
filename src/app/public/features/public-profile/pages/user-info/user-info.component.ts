@@ -1,29 +1,43 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Coordinate } from '@core/geolocation/address-response.interface';
 import { User } from '@core/user/user';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { Subscription } from 'rxjs';
 import { PublicProfileService } from '../../core/services/public-profile.service';
 @Component({
   selector: 'tsl-user-info',
   templateUrl: './user-info.component.html',
   styleUrls: ['./user-info.component.scss'],
 })
-export class UserInfoComponent implements OnInit {
+export class UserInfoComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
   public coordinates: Coordinate;
   public user: User;
 
   constructor(
     private deviceService: DeviceDetectorService,
-    private publicProfileService: PublicProfileService
+    private publicProfileService: PublicProfileService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.getUser();
   }
 
-  ngAfterViewInit() {
-    if (this.user) {
-      this.scrollIntoMap();
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((x) => x.unsubscribe());
+  }
+
+  ngAfterViewInit(): void {
+    if (this.user && this.deviceService.isMobile()) {
+      this.subscriptions.push(
+        this.route.fragment.subscribe((fragment) => {
+          if (fragment.includes('map')) {
+            this.scrollIntoMap();
+          }
+        })
+      );
     }
   }
 
@@ -45,8 +59,6 @@ export class UserInfoComponent implements OnInit {
   }
 
   private scrollIntoMap(): void {
-    if (this.deviceService.isMobile()) {
-      document.getElementById('map').scrollIntoView();
-    }
+    document.getElementById('map').scrollIntoView();
   }
 }

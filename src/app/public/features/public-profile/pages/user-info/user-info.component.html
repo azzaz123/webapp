@@ -27,7 +27,7 @@
                                 </tsl-svg-icon>
                             </div>
                         </div>
-                        <div class="col-12 col-md-6 order-2 mb-3 mb-lg-0">
+                        <div class="col-12 col-md-6 order-2 mb-3 mb-lg-0" id="map">
                             <div class="bold-title mb-1" i18n="@@ProfileInfoMemberSince">Member since</div>
                             <div *ngIf="user.registerDate; else noRegisterDate">
                                 {{user.registerDate | date: 'dd/MM/yyyy' }}
@@ -47,7 +47,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-lg-6" id="map">
+                <div class="col-12 col-lg-6">
                     <div class="bold-title  mb-1" i18n="@@ProfileInfoLocation">Location</div>
                     <tsl-here-maps *ngIf="coordinates" [coordinates]="coordinates" zoom="15" size="small"
                         [isApproximateLocation]="coordinates.approximated_location">
