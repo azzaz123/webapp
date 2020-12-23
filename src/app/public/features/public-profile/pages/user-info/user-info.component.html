@@ -34,7 +34,7 @@
                         </tsl-svg-icon>
                     </div>
                 </div>
-                <div class="col-12 col-md-6 order-2 mb-3 mb-lg-0" id="map">
+                <div class="col-12 col-md-6 order-2 mb-3 mb-lg-0" #map>
                     <p class="UserInfo__title--bold mb-1" i18n="@@ProfileInfoMemberSince">Member since</p>
                     <span *ngIf="user.registerDate; else noRegisterDate">
                         {{user.registerDate | date: 'dd/MM/yyyy' }}

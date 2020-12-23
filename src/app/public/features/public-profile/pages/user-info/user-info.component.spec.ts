@@ -149,18 +149,22 @@ describe('UserInfoComponent', () => {
     describe('when we access from the header', () => {
       it('should scroll if the device is a mobile', () => {
         spyOn(deviceDetectorService, 'isMobile').and.returnValue(true);
-        spyOn(document, 'getElementById');
+        spyOn(component.mapView.nativeElement, 'scrollIntoView');
 
         fixture.detectChanges();
         component.ngAfterViewInit();
 
-        expect(document.getElementById).toHaveBeenCalledWith('map');
+        expect(
+          component.mapView.nativeElement.scrollIntoView
+        ).toHaveBeenCalledWith({ behavior: 'smooth' });
       });
 
       it('should NOT scroll if the device is NOT a mobile', () => {
-        spyOn(document, 'getElementById');
+        spyOn(component.mapView.nativeElement, 'scrollIntoView');
 
-        expect(document.getElementById).not.toHaveBeenCalled();
+        expect(
+          component.mapView.nativeElement.scrollIntoView
+        ).not.toHaveBeenCalled();
       });
     });
   });

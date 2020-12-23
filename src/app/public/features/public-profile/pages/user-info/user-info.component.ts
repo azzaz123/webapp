@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Coordinate } from '@core/geolocation/address-response.interface';
 import { User } from '@core/user/user';
@@ -11,6 +17,7 @@ import { PublicProfileService } from '../../core/services/public-profile.service
   styleUrls: ['./user-info.component.scss'],
 })
 export class UserInfoComponent implements OnInit, OnDestroy {
+  @ViewChild('map') mapView: ElementRef;
   private subscriptions: Subscription[] = [];
   public coordinates: Coordinate;
   public user: User;
@@ -59,6 +66,6 @@ export class UserInfoComponent implements OnInit, OnDestroy {
   }
 
   private scrollIntoMap(): void {
-    document.getElementById('map').scrollIntoView({ behavior: 'smooth' });
+    this.mapView.nativeElement.scrollIntoView({ behavior: 'smooth' });
   }
 }
