@@ -36,9 +36,9 @@
                 </div>
                 <div class="col-12 col-md-6 order-2 mb-3 mb-lg-0" id="map">
                     <p class="UserInfo__title--bold mb-1" i18n="@@ProfileInfoMemberSince">Member since</p>
-                    <div *ngIf="user.registerDate; else noRegisterDate">
+                    <span *ngIf="user.registerDate; else noRegisterDate">
                         {{user.registerDate | date: 'dd/MM/yyyy' }}
-                    </div>
+                    </span>
                     <ng-template #noRegisterDate>
                         <span i18n="@@Unknown">Unknown</span>
                     </ng-template>
