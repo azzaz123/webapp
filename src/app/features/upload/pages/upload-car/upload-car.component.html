@@ -1,0 +1,278 @@
+<form *ngIf="!!uploadForm" [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
+
+  <div class="box">
+    <div class="row">
+      <div class="col-12">
+        <h2 i18n>Basic Information</h2>
+      </div>
+    </div>
+    <div class="row" [ngbPopover]="coachmarkMake" [autoClose]="false" popoverClass="ml-3">
+      <div class="col-12 col-md-6">
+        <div class="form-group">
+          <label for="brand" i18n>Make</label>
+          <div class="pull-right">
+            <a class="other-make" (click)="toggleCustomMakeSelection()">
+              <span *ngIf="!customMake" i18n>Select another make</span>
+              <span *ngIf="customMake" i18n>Select a predefined make</span>
+            </a>
+          </div>
+          <tsl-dropdown *ngIf="!customMake" i18n-placeholder placeholder="E.g. Seat" class="form-control"
+            [options]="brands"
+            formControlName="brand" id="brand">
+          </tsl-dropdown>
+          <input *ngIf="customMake" type="text" placeholder="E.g. Seat" class="form-control" formControlName="brand"
+            id="brand" />
+        </div>
+      </div>
+      <div class="col-12 col-md-6">
+        <div class="form-group">
+          <label for="model" i18n>Model</label>
+          <tsl-dropdown *ngIf="!customMake" i18n-placeholder placeholder="E.g. Ibiza" class="form-control" [isLoading]="isLoadingModels" (opened)="onIsModelsNeeded()"
+            formControlName="model" id="model" [options]="models" [disableControl]="modelFieldDisabled">
+          </tsl-dropdown>
+          <input *ngIf="customMake" type="text" i18n-placeholder placeholder="E.g. Ibiza" class="form-control"
+            formControlName="model" id="model" [disableControl]="modelFieldDisabled" />
+        </div>
+      </div>
+      <ng-template #coachmarkMake>
+        <div i18n>The basics: make.</div>
+      </ng-template>
+    </div>
+    <div class="row" [ngbPopover]="coachmarkPrice" [autoClose]="false" popoverClass="ml-3">
+      <div class="col-12 col-md-5">
+        <div class="form-group">
+          <label for="price" i18n>Cash price</label>
+          <input i18n-placeholder placeholder="With love..." type="number" class="form-control"
+            formControlName="sale_price" id="price" min="0" max="999999999" />
+        </div>
+      </div>
+      <div class="col-12 col-md-5">
+        <div class="form-group">
+          <label for="price" i18n>Financed price (optional)</label>
+          <input i18n-placeholder placeholder="Final price when financed" type="number" class="form-control"
+            formControlName="financed_price" id="financed_price" min="0" max="999999999" />
+        </div>
+      </div>
+      <div class="col-12 col-md-2">
+        <div class="form-group">
+          <label for="currency" i18n>Currency</label>
+          <tsl-dropdown class="form-control" formControlName="currency_code" id="currency" [options]="currencies"
+            noFilter="10"></tsl-dropdown>
+        </div>
+      </div>
+      <ng-template #coachmarkPrice>
+        <div i18n>Tell us how much you want for it: we won't tell anyone ;)</div>
+      </ng-template>
+    </div>
+    <div class="row" [ngbPopover]="coachmarkTitle" [autoClose]="false" popoverClass="ml-3">
+      <div class="col-12 col-md-4">
+        <div class="form-group">
+          <label for="year" i18n>Year</label>
+          <tsl-dropdown *ngIf="!customMake" i18n-placeholder placeholder="Number plate" class="form-control"
+            formControlName="year" id="year" [options]="years" [disableControl]="yearFieldDisabled" [isLoading]="isLoadingYears" (opened)="onIsYearsNeeded()">
+          </tsl-dropdown>
+          <input *ngIf="customMake" type="number" i18n-placeholder placeholder="Number plate" class="form-control"
+            formControlName="year" id="year" [disableControl]="yearFieldDisabled" min="1900" [max]="currentYear"/>
+        </div>
+      </div>
+      <div class="col-12 col-md-8">
+        <div class="form-group last">
+          <label for="headline" i18n>Title</label>
+          <span class="chars-counter">{{uploadForm.value?.title?.length}}/50</span>
+          <input i18n-placeholder placeholder="This is what you will see in the ad" type="text" class="form-control"
+            formControlName="title" id="headline" maxlength="50" />
+        </div>
+      </div>
+      <ng-template #coachmarkTitle>
+        <div i18n>Go for it! The more you say the better chance they have of finding of reaching you.</div>
+      </ng-template>
+    </div>
+  </div>
+  <div class="box">
+    <h2 i18n>Information about your vehicle</h2>
+    <div class="row" [ngbPopover]="coachmarkSeats" [autoClose]="false" popoverClass="ml-3">
+      <div class="col-12 col-md-6">
+        <div class="form-group">
+          <label for="version" i18n>Version</label>
+          <div class="pull-right">
+            <a class="other-make" *ngIf="!customMake" (click)="toggleCustomVersionSelection()">
+              <span *ngIf="!customVersion" i18n>Select another version</span>
+              <span *ngIf="customVersion" i18n>Select a predefined version</span>
+            </a>
+          </div>
+          <tsl-dropdown *ngIf="!customMake && !customVersion" i18n-placeholder
+            placeholder="Is is a particular model or series?" class="form-control" formControlName="version"
+            for="version" [options]="versions" [disableControl]="versionFieldDisabled"></tsl-dropdown>
+          <input *ngIf="customMake || customVersion" type="text" i18n-placeholder
+            placeholder="Is is a particular model or series?" class="form-control" formControlName="version"
+            id="version" [disableControl]="versionFieldDisabled"/>
+        </div>
+      </div>
+      <div class="col-12 col-md-6">
+        <div class="form-group">
+          <label for="seats" i18n>Number of seats</label>
+          <input i18n-placeholder placeholder="Add a number" type="number" class="form-control"
+            formControlName="num_seats" id="seats" min="0" max="99" />
+        </div>
+      </div>
+      <ng-template #coachmarkSeats>
+        <div i18n>Can all your family fit in there or just the dog?</div>
+      </ng-template>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <div class="form-group">
+          <label for="seats" i18n>Number of doors</label>
+          <input i18n-placeholder placeholder="Add a number" type="number" class="form-control"
+            formControlName="num_doors" id="doors" min="0" max="99" />
+        </div>
+      </div>
+      <div class="col-12 col-md-6">
+        <div class="form-group">
+          <label for="seats" i18n>Horsepower</label>
+          <input i18n-placeholder placeholder="Add a number" type="number" class="form-control"
+            formControlName="horsepower" id="horsepower" min="0" max="999" />
+        </div>
+      </div>
+    </div>
+    <div class="row" [ngbPopover]="coachmarkType" [autoClose]="false" popoverClass="ml-3">
+      <div class="col-12 col-md-6">
+        <div class="form-group">
+          <label for="carType" i18n>Type of car</label>
+          <tsl-dropdown i18n-placeholder placeholder="Small, coupé, sedan, family, van..." class="form-control"
+            formControlName="body_type" id="carType" [options]="carTypes" noFilter="20"></tsl-dropdown>
+        </div>
+      </div>
+      <div class="col-12 col-md-6">
+        <div class="form-group">
+          <label for="km" i18n>Kilometers</label>
+          <input i18n-placeholder placeholder="Exact kilometers" type="number" class="form-control" formControlName="km"
+            id="km" min="0" max="999999999" />
+        </div>
+      </div>
+      <ng-template #coachmarkType>
+        <div i18n>Is it for getting around at the weekend or for everyday use?</div>
+      </ng-template>
+    </div>
+    <div class="row" [ngbPopover]="coachmarkMotor" [autoClose]="false" popoverClass="ml-3"
+      triggers="mouseenter:mouseleave">
+      <div class="col-12 col-md-6">
+        <div class="row">
+          <div class="col">
+            <h3 class="selector-title" i18n>Motor</h3>
+          </div>
+        </div>
+        <div ngbRadioGroup class="row" name="radioBasic" formControlName="engine" tabindex="11">
+          <div class="col">
+            <div class="form-group">
+              <div class="selector-container">
+                <label ngbButtonLabel class="selector selector--cars">
+                  <div class="selector-icon btn">
+                    <input ngbButton type="radio" name="engine" value="gasoline">
+                    <tsl-svg-icon src="/assets/icons/gasoline.svg"></tsl-svg-icon>
+                  </div>
+                  <span class="selector-text selector-text--uppercase" i18n>Petrol</span>
+                </label>
+                <label ngbButtonLabel class="selector selector--cars">
+                  <div class="selector-icon btn">
+                    <input ngbButton type="radio" name="engine" value="gasoil">
+                    <tsl-svg-icon src="/assets/icons/gasoil.svg"></tsl-svg-icon>
+                  </div>
+                  <span class="selector-text selector-text--uppercase" i18n>Diesel</span>
+                </label>
+                <label ngbButtonLabel class="selector selector--cars">
+                  <div class="selector-icon btn">
+                    <input ngbButton type="radio" name="engine" value="electric-hybrid">
+                    <tsl-svg-icon src="/assets/icons/electric-hybrid.svg"></tsl-svg-icon>
+                  </div>
+                  <span class="selector-text selector-text--uppercase" i18n>Electric</span>
+                </label>
+                <label ngbButtonLabel class="selector selector--cars">
+                  <div class="selector-icon btn">
+                    <input ngbButton type="radio" name="engine" value="others">
+                    <tsl-svg-icon src="/assets/icons/others.svg"></tsl-svg-icon>
+                  </div>
+                  <span class="selector-text selector-text--uppercase" i18n>Other...</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ng-template #coachmarkMotor>
+          <div i18n>It's important, trust us!</div>
+        </ng-template>
+      </div>
+      <div class="col-12 col-md-6">
+        <div class="row">
+          <div class="col">
+            <h3 class="selector-title" i18n>Transmission</h3>
+          </div>
+        </div>
+        <div ngbRadioGroup class="row" name="radioBasic" formControlName="gearbox" tabindex="12">
+          <div class="col">
+            <div class="form-group">
+              <div class="selector-container">
+                <label ngbButtonLabel class="selector selector--cars">
+                  <div class="selector-icon btn">
+                    <input ngbButton type="radio" name="gearbox" value="manual">
+                    <tsl-svg-icon src="/assets/icons/manual.svg"></tsl-svg-icon>
+                  </div>
+                  <span class="selector-text selector-text--uppercase" i18n>Manual</span>
+                </label>
+                <label ngbButtonLabel class="selector selector--cars">
+                  <div class="selector-icon btn">
+                    <input ngbButton type="radio" name="gearbox" value="automatic">
+                    <tsl-svg-icon src="/assets/icons/automatic.svg"></tsl-svg-icon>
+                  </div>
+                  <span class="selector-text selector-text--uppercase" i18n>Automatic</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" [ngbPopover]="coachmarkDescription" [autoClose]="false" popoverClass="ml-3">
+      <div class="col-12">
+        <div class="form-group last">
+          <label for="tellUs" i18n>Description</label>
+          <span class="chars-counter">{{uploadForm.value?.storytelling?.length}}/650</span>
+          <textarea i18n-placeholder placeholder="Tell us more. Used or new? Yellow or red? Has it got any bumps?"
+            fz-elastic class="form-control" formControlName="storytelling" id="tellUs" maxlength="650"></textarea>
+        </div>
+      </div>
+      <ng-template #coachmarkDescription>
+        <div i18n>Don't leave anything out. The details are key to selling faster.</div>
+      </ng-template>
+    </div>
+  </div>
+
+  <div class="box product-photos" [ngbPopover]="coachmarkPictures" [autoClose]="false" triggers="mouseenter:mouseleave">
+    <h2 [ngClass]="{'ng-invalid': !uploadForm.controls.images.valid && uploadForm.controls.images.dirty}" i18n>Photos
+    </h2>
+    <tsl-drop-area
+      (onError)="onError($event)" formControlName="images" [isUpdatingItem]="!!item" (onOrderImages)="onOrderImages()" (onDeleteImage)="onDeleteImage($event)" (onAddImage)="onAddImage($event)"
+      ></tsl-drop-area>
+    <ng-template #coachmarkPictures>
+      <div i18n>You can drag and drop your photos here. Select and drag to change the order. Max 10MB. We accept only
+        .jpg images.</div>
+    </ng-template>
+  </div>
+
+  <tsl-location-box *ngIf="!!uploadForm" [form]="uploadForm" name="location" (locationSelected)="emitLocation()"
+    title="Your car is in:" i18n-title></tsl-location-box>
+  <div class="row">
+    <div class="col-12 col-md-5">
+      <tsl-button [type]="'submit'" className="btn-primary btn-block" [disabled]="loading">
+        <span *ngIf="!item && !loading" i18n>Post Ad</span>
+        <span *ngIf="item && !loading" i18n>Update</span>
+        <span *ngIf="loading && !pendingFiles" i18n="@@UploadProductSubmitLoading">Uploading... {{ uploadCompletedPercentage }}%</span>
+        <span *ngIf="loading && pendingFiles" i18n="@@UploadImagesSubmitLoading">Uploading image... {{ pendingFiles.currentUploading}}/{{pendingFiles.totalFiles}}</span>
+      </tsl-button>
+    </div>
+    <div class="col-md-3 d-none d-md-block">
+      <button type="button" (click)="preview()" class="btn btn-link" [disabled]="!uploadForm.valid"
+        tslTrackEvent="UPLOADFORM_PREVIEW" i18n>How does it look?</button>
+    </div>
+  </div>
+</form>
