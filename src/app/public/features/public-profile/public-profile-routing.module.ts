@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
 import { PublicProfileComponent } from './pages/public-profile.component';
 import { UserInfoComponent } from './pages/user-info/user-info.component';
+import { UserInfoModule } from './pages/user-info/user-info.module';
 import { UserPublishedComponent } from './pages/user-published/user-published.component';
 import { UserReviewsComponent } from './pages/user-reviews/user-reviews.component';
 import { PUBLIC_PROFILE_PATHS } from './public-profile-routing-constants';
@@ -42,5 +43,6 @@ export const publicProfileRoutedComponents = [
   PublicProfileComponent,
   UserPublishedComponent,
   UserReviewsComponent,
-  UserInfoComponent,
 ];
+
+export const publicProfileRoutedModules = [UserInfoModule];

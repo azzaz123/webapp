@@ -26,7 +26,7 @@ import { CurrentConversationComponent } from './components/current-conversation'
 import { InputComponent } from './components/input';
 import { ScrollingMessageComponent } from './components/scrolling-message';
 import { UserDetailComponent } from './components/user-detail';
-import { UserResponseRateComponent } from './components/user-response-rate';
+import { UserResponseRateModule } from './components/user-response-rate/user-response-rate.module';
 import {
   ArchiveInboxConversationComponent,
   BlockUserComponent,
@@ -50,6 +50,7 @@ import { PersonalDataInformationModal } from './modals/personal-data-information
     TrackingModule,
     AutosizeModule,
     MessageModule,
+    UserResponseRateModule,
   ],
   declarations: [
     chatRoutedComponents,
@@ -65,7 +66,6 @@ import { PersonalDataInformationModal } from './modals/personal-data-information
     BlockUserComponent,
     UnblockUserComponent,
     UserDetailComponent,
-    UserResponseRateComponent,
     InboxComponent,
     InboxConversationComponent,
     ArchivedInboxConversationComponent,
