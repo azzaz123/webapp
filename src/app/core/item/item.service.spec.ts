@@ -1,48 +1,65 @@
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+  TestRequest,
+} from '@angular/common/http/testing';
 import { fakeAsync, TestBed } from '@angular/core/testing';
+import { find } from 'lodash-es';
+import { environment } from '../../../environments/environment';
 import {
-  ItemService,
-  PUBLISHED_ID,
-  ONHOLD_ID,
-  PAYMENT_PROVIDER,
-  ITEM_STATUSES,
-  ITEMS_API_URL,
-  WEB_ITEMS_API_URL,
-  USERS_API_URL,
-  PROTOOL_API_URL,
-  V1_API_URL,
-} from './item.service';
+  CAR_DATA,
+  CAR_DATA_FORM,
+  CAR_INFO,
+  MOCK_CAR,
+} from '../../../tests/car.fixtures.spec';
 import {
-  ACTIONS_ALLOWED_CAN_MARK_SOLD_RESPONSE,
   ACTIONS_ALLOWED_CANNOT_MARK_SOLD_RESPONSE,
+  ACTIONS_ALLOWED_CAN_MARK_SOLD_RESPONSE,
   CONVERSATION_USERS,
   createItemsArray,
-  ITEM_CATEGORY_ID,
-  ITEM_COUNTERS_DATA,
-  ITEM_DATA,
-  ITEM_DATA_V3,
-  ITEM_FAVORITES,
-  ITEM_ID,
-  ITEM_VIEWS,
   ITEMS_BULK_RESPONSE,
   ITEMS_BULK_UPDATED_IDS,
   ITEMS_DATA_V3,
   ITEMS_DATA_v3_FAVORITES,
   ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE,
   ITEMS_WITH_PRODUCTS,
+  ITEM_CATEGORY_ID,
+  ITEM_COUNTERS_DATA,
+  ITEM_DATA,
+  ITEM_DATA_V3,
+  ITEM_DATA_V4,
+  ITEM_DATA_V5,
+  ITEM_FAVORITES,
+  ITEM_ID,
+  ITEM_PUBLISHED_DATE,
+  ITEM_SALE_PRICE,
+  ITEM_VIEWS,
   LATEST_ITEM_COUNT,
   LATEST_ITEM_DATA,
   LATEST_ITEM_DATA_EMPTY,
   MOCK_ITEM_V3,
-  ORDER,
-  PRODUCT_RESPONSE,
-  PRODUCTS_RESPONSE,
-  PURCHASES,
-  ITEM_PUBLISHED_DATE,
-  ITEM_SALE_PRICE,
-  ITEM_DATA_V4,
-  ITEM_DATA_V5,
   MOCK_LISTING_FEE_PRODUCT,
+  ORDER,
+  PRODUCTS_RESPONSE,
+  PRODUCT_RESPONSE,
+  PURCHASES,
 } from '../../../tests/item.fixtures.spec';
+import { CART_ORDER_PRO } from '../../../tests/pro-item.fixtures.spec';
+import {
+  MOCK_REALESTATE,
+  REALESTATE_CONTENT_DATA,
+  REALESTATE_DATA,
+  UPLOAD_FORM_REALESTATE_VALUES,
+} from '../../../tests/realestate.fixtures.spec';
+import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
+import { CAR_ID, UPLOAD_FILE_ID } from '../../../tests/upload.fixtures.spec';
+import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
+import { EventService } from '../event/event.service';
+import { I18nService } from '../i18n/i18n.service';
+import { TrackingService } from '../tracking/tracking.service';
+import { UserService } from '../user/user.service';
+import { UuidService } from '../uuid/uuid.service';
+import { Car } from './car';
 import { Item, ITEM_BASE_PATH, ITEM_TYPES } from './item';
 import {
   CarInfo,
@@ -54,36 +71,19 @@ import {
   ItemWithProducts,
   Product,
 } from './item-response.interface';
-import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
-import { I18nService } from '../i18n/i18n.service';
-import { TrackingService } from '../tracking/tracking.service';
-import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
-import { EventService } from '../event/event.service';
-import { UserService } from '../user/user.service';
-import { environment } from '../../../environments/environment';
-import { CAR_ID, UPLOAD_FILE_ID } from '../../../tests/upload.fixtures.spec';
 import {
-  CAR_DATA,
-  CAR_DATA_FORM,
-  CAR_INFO,
-  MOCK_CAR,
-} from '../../../tests/car.fixtures.spec';
-import { Car } from './car';
-import { CART_ORDER_PRO } from '../../../tests/pro-item.fixtures.spec';
-import { find } from 'lodash-es';
-import {
-  MOCK_REALESTATE,
-  REALESTATE_CONTENT_DATA,
-  REALESTATE_DATA,
-  UPLOAD_FORM_REALESTATE_VALUES,
-} from '../../../tests/realestate.fixtures.spec';
+  ItemService,
+  ITEMS_API_URL,
+  ITEM_STATUSES,
+  ONHOLD_ID,
+  PAYMENT_PROVIDER,
+  PROTOOL_API_URL,
+  PUBLISHED_ID,
+  USERS_API_URL,
+  V1_API_URL,
+  WEB_ITEMS_API_URL,
+} from './item.service';
 import { Realestate } from './realestate';
-import {
-  TestRequest,
-  HttpTestingController,
-  HttpClientTestingModule,
-} from '@angular/common/http/testing';
-import { UuidService } from '../uuid/uuid.service';
 
 describe('ItemService', () => {
   const FAKE_ITEM_TITLE = 'No disponible';

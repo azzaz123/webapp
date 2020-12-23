@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import {
   PublicProfileRoutingModule,
   publicProfileRoutedComponents,
+  publicProfileRoutedModules,
 } from './public-profile-routing.module';
 import { UserStatsComponent } from './components/user-stats/user-stats.component';
 import { UserProfileHeaderComponent } from './components/user-profile-header/user-profile-header.component';
@@ -20,10 +21,10 @@ import { UserReviewsModule } from './pages/user-reviews/user-reviews.module';
   ],
   imports: [
     CommonModule,
+    publicProfileRoutedModules,
     PublicProfileRoutingModule,
     SharedModule,
     FavouriteUserModule,
-    UserReviewsModule,
   ],
 })
 export class PublicProfileModule {}

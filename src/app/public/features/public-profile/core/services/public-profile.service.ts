@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 import {
   Counters,
@@ -44,10 +44,16 @@ export const MARK_AS_FAVOURITE_ENDPOINT = (userId: string) =>
   providedIn: 'root',
 })
 export class PublicProfileService {
+  private _user: User;
+
   constructor(
     private http: HttpClient,
     private paginationService: PaginationService
   ) {}
+
+  get user(): User {
+    return this._user;
+  }
 
   public getStats(userId: string): Observable<UserStats> {
     return this.http
@@ -103,10 +109,17 @@ export class PublicProfileService {
     );
   }
 
-  public getUser(userId: string): Observable<User> {
+  public getUser(userId: string, useCache = true): Observable<User> {
+    if (useCache && this._user) {
+      return of(this._user);
+    }
+
     return this.http
       .get<UserResponse>(`${environment.baseUrl}${PROFILE_API_URL(userId)}`)
-      .pipe(map((user) => this.mapRecordData(user)));
+      .pipe(
+        map((user) => this.mapRecordData(user)),
+        tap((user) => (this._user = user))
+      );
   }
 
   public isPro(user: User | UserResponse): boolean {
@@ -176,7 +189,9 @@ export class PublicProfileService {
       data.gender,
       data.email,
       data.featured,
-      data.extra_info
+      data.extra_info,
+      null,
+      data.register_date
     );
   }
 }
