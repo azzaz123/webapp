@@ -24,7 +24,7 @@ export class PaginationService {
     );
   }
 
-  getSpecificRequestOptions(init: number) {
+  public getSpecificRequestOptions(init: number) {
     return {
       params: {
         init: init || 0,
