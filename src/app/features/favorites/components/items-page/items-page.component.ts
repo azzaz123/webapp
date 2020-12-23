@@ -16,7 +16,7 @@ export class ItemsPageComponent implements OnInit {
   public items: Item[] = [];
   public loading = false;
   public end = false;
-  public isItemRomved = true;
+  public isItemRemoved = true;
 
   constructor(public itemService: ItemService) {}
 
@@ -51,7 +51,7 @@ export class ItemsPageComponent implements OnInit {
     if (this.items.length) {
       const index = this.items.indexOf(item);
       this.items.splice(index, 1);
-      this.onFavoriteItemPageChange.emit(this.isItemRomved);
+      this.onFavoriteItemPageChange.emit(this.isItemRemoved);
     }
   }
 }

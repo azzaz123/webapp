@@ -11,7 +11,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { TrackingService } from '@core/tracking/tracking.service';
 import { Item } from '@core/item/item';
-import { Router, RouteReuseStrategy } from '@angular/router';
 
 @Component({
   selector: 'tsl-item-cart-favorite',

@@ -125,7 +125,7 @@ describe('ItemsPageComponent', () => {
 
       expect(component.items).toEqual([item2]);
       expect(component.onFavoriteItemPageChange.emit).toHaveBeenCalledWith(
-        component.isItemRomved
+        component.isItemRemoved
       );
     });
   });
