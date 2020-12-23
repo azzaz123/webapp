@@ -3,12 +3,15 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { PublicProfileService } from '../../core/services/public-profile.service';
 
 import { UserInfoComponent } from './user-info.component';
 
 describe('UserInfoComponent', () => {
   let publicProfileService: PublicProfileService;
+  let deviceDetectorService: DeviceDetectorService;
+
   const mapTag = 'tsl-here-maps';
   const containerClass = '.UserInfo';
   const fakeMapClass = '.fake-map';
@@ -29,6 +32,14 @@ describe('UserInfoComponent', () => {
             user: MOCK_USER,
           },
         },
+        {
+          provide: DeviceDetectorService,
+          useValue: {
+            isMobile() {
+              return false;
+            },
+          },
+        },
       ],
     }).compileComponents();
   });
@@ -38,6 +49,7 @@ describe('UserInfoComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     publicProfileService = TestBed.inject(PublicProfileService);
+    deviceDetectorService = TestBed.inject(DeviceDetectorService);
   });
 
   it('should create', () => {
