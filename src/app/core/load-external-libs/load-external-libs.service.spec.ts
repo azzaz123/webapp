@@ -16,6 +16,12 @@ class ScriptElementStub {
   onload: () => void;
 }
 
+const TextScriptMock = `
+  (function(window) {
+    window.scriptLoaded = true
+  })(window)
+`;
+
 class DocumentStub {
   body = {
     appendChild() {},
@@ -73,6 +79,27 @@ describe('LoadExternalLibService', () => {
 
     service.loadScriptBySource(source).subscribe();
     service.loadScriptBySource(source).subscribe();
+
+    expect(documentStub.createElement).toHaveBeenCalledTimes(1);
+  });
+
+  it('should create a script with text script', () => {
+    spyOn(documentStub, 'createElement').and.returnValue(
+      new ScriptElementStub()
+    );
+
+    service.loadScriptByText('textScript', TextScriptMock).subscribe();
+
+    expect(documentStub.createElement).toHaveBeenCalled();
+  });
+
+  it('should cache script with text script if we called twice', () => {
+    spyOn(documentStub, 'createElement').and.returnValue(
+      new ScriptElementStub()
+    );
+
+    service.loadScriptByText('textScript', TextScriptMock).subscribe();
+    service.loadScriptByText('textScript', TextScriptMock).subscribe();
 
     expect(documentStub.createElement).toHaveBeenCalledTimes(1);
   });

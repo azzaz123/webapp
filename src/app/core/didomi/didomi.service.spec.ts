@@ -13,7 +13,7 @@ describe('Service: Didomi', () => {
 
   beforeEach(() => {
     loadExternalLibsServiceMock = {
-      loadScriptByText: EMPTY,
+      loadScriptByText: () => EMPTY,
     };
 
     TestBed.configureTestingModule({
@@ -32,6 +32,27 @@ describe('Service: Didomi', () => {
   it('should create the service', () => {
     expect(service).toBeTruthy();
   });
+  /*
+  describe('userAllowedSegmentationInAds', () => {
+    beforeEach(() => {
+      spyOn(Didomi, 'getUserConsentStatusForVendor').and.callFake((key) => {
+        if (key === 'google') {
+          return true;
+        }
+      });
+    });
+
+    it('should load didomi lib if not loaded yet', () => {
+      spyOn(loadExternalLibsServiceMock, 'loadScriptByText').and.returnValue(
+        of(null)
+      );
+
+      service.userAllowedSegmentationInAds$().subscribe(() => {
+        expect(loadExternalLibsServiceMock.loadScriptByText).toHaveBeenCalled();
+      });
+    });
+  });
+  */
 });
 
 /*
