@@ -16,6 +16,7 @@ import {
   MarkAsFavouriteBodyRequest,
   MarkAsFavouriteBodyResponse,
 } from '../interfaces/public-profile-request.interface';
+import { Item } from '@core/item/item';
 
 export const PROFILE_API_URL = (userId: string) => `api/v3/users/${userId}`;
 export const USER_COVER_IMAGE_ENDPOINT = (userId: string) =>
@@ -75,8 +76,8 @@ export class PublicProfileService {
     return this.http.get(`${environment.baseUrl}${REVIEWS_ENDPOINT(userId)}`);
   }
 
-  public getPublishedItems(userId: string): Observable<any> {
-    return this.http.get(
+  public getPublishedItems(userId: string): Observable<Item[]> {
+    return this.http.get<Item[]>(
       `${environment.baseUrl}${PUBLISHED_ITEMS_ENDPOINT(userId)}`
     );
   }

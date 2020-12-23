@@ -1,3 +1,13 @@
-<div class="container">
-    <div class="row"></div>
+<div class="CardContainer container">
+    <div class="row">
+        <div class="col-12">
+            <div>
+                <img [src]="itemImage">
+            </div>
+            <span>{{item.salePrice}}</span>
+            <tsl-favourite-icon></tsl-favourite-icon>
+            <span>{{item.title}}</span>
+            <span>{{item.description}}</span>
+        </div>
+    </div>
 </div>
