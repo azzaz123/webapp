@@ -65,7 +65,7 @@ import { StripeCardsComponent } from './profile/stripe-cards/stripe-cards.compon
 import { NewCardModalComponent } from './modals/new-card-modal/new-card-modal.component';
 import { NoCardModalComponent } from './modals/no-card-modal/no-card-modal.component';
 import { StripeCardSelectionComponent } from './payments/stripe-card-selection/stripe-card-selection.component';
-import { DropdownModule } from 'app/dropdown/dropdown.module';
+import { DropdownModule } from '@shared/dropdown/dropdown.module';
 import { LinkTransformPipe } from './pipes';
 import { NavLinksComponent } from './nav-links/nav-links.component';
 import { SubscriptionsService } from '../core/subscriptions/subscriptions.service';
@@ -163,6 +163,7 @@ import { DateCountDownComponent } from './date-countdown/date-countdown.componen
     DisableControlDirective,
     SvgIconModule,
     DateCountDownComponent,
+    DropdownModule,
   ],
   declarations: [
     AdComponent,
