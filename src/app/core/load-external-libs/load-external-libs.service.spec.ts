@@ -44,7 +44,7 @@ describe('LoadExternalLibService', () => {
   });
 
   it('should create an script with a observable complete', (doneCallback) => {
-    const observable: Observable<void> = service.loadScript(
+    const observable: Observable<void> = service.loadScriptBySource(
       'http://external-lib.com/js'
     );
 
@@ -54,7 +54,7 @@ describe('LoadExternalLibService', () => {
   });
 
   it('should create a list of scripts with a observable complete', (doneCallback) => {
-    const observable: Observable<void> = service.loadScript([
+    const observable: Observable<void> = service.loadScriptBySource([
       'http://external-lib.com/js',
       'http://external-lib.com/js2',
       'http://external-lib.com/js3',
@@ -71,8 +71,8 @@ describe('LoadExternalLibService', () => {
       new ScriptElementStub()
     );
 
-    service.loadScript(source).subscribe();
-    service.loadScript(source).subscribe();
+    service.loadScriptBySource(source).subscribe();
+    service.loadScriptBySource(source).subscribe();
 
     expect(documentStub.createElement).toHaveBeenCalledTimes(1);
   });

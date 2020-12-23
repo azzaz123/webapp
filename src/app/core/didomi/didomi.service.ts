@@ -1,25 +1,28 @@
+import { LoadExternalLibsService } from '../load-external-libs/load-external-libs.service';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { DIDOMI_EMBED } from './didomi-embed-script';
 import { DidomiLibrary } from './didomi.interface';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class DidomiService {
+  private static NAME_LIB = 'Didomi';
+
   public isReady = false;
   public isReady$: Subject<boolean> = new Subject<boolean>();
   public library: DidomiLibrary = null;
 
-  public initialize(): void {
+  constructor(private loadExternalLibsService: LoadExternalLibsService) {
     this.addOnReadyListener();
-    this.appendSDKScriptToDom();
   }
 
-  private appendSDKScriptToDom() {
-    const coreScript: HTMLScriptElement = document.createElement('script');
-    coreScript.setAttribute('type', 'text/javascript');
-    coreScript.setAttribute('charset', 'utf-8');
-    coreScript.text = DIDOMI_EMBED;
-    document.head.appendChild(coreScript);
+  public initialize(): void {
+    this.loadExternalLibsService.loadScriptByText(
+      DidomiService.NAME_LIB,
+      DIDOMI_EMBED
+    );
   }
 
   private addOnReadyListener() {

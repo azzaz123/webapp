@@ -49,7 +49,7 @@ export class AdsService {
 
   public loadAddsLibs(): void {
     this.loadExternalLibsService
-      .loadScript(ADS_SOURCES)
+      .loadScriptBySource(ADS_SOURCES)
       .subscribe(() => this.initAddsLib());
   }
 

@@ -13,11 +13,11 @@ import { CookieModule } from 'ngx-cookie';
 import { ConnectionService } from './connection/connection.service';
 import { ConversationModule } from './conversation/conversation.module';
 import { DesktopNotificationsService } from './desktop-notifications/desktop-notifications.service';
-import { DidomiService } from './didomi/didomi.service';
 import { ErrorsService } from './errors/errors.service';
 import { EventService } from './event/event.service';
 import { AccessTokenService } from './http/access-token.service';
 import { I18nService } from './i18n/i18n.service';
+import { InvoiceService } from './invoice/invoice.service';
 import { ItemModule } from './item/item.module';
 import { RealTimeService } from './message/real-time.service';
 import { MobileBlockerModule } from './mobile-blocker/mobile-blocker.module';
@@ -34,7 +34,6 @@ import { DevelopmentGuard } from './user/development.guard';
 import { LoggedGuard } from './user/logged.guard';
 import { UserModule } from './user/user.module';
 import { XmppService } from './xmpp/xmpp.service';
-import { InvoiceService } from './invoice/invoice.service';
 
 @NgModule({
   imports: [
@@ -81,7 +80,6 @@ export class CoreModule {
         ProfileService,
         StripeService,
         SubscriptionsService,
-        DidomiService,
         TrustAndSafetyService,
         InvoiceService,
       ],
