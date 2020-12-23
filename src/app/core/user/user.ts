@@ -237,7 +237,7 @@ export class User implements Model {
   }
 
   set registerDate(value: Date) {
-    this.registerDate = value;
+    this._registerDate = value;
   }
 
   public setCoverImageUrl(url: string) {
