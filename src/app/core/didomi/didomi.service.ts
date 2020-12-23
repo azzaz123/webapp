@@ -1,6 +1,7 @@
-import { LoadExternalLibsService } from '../load-external-libs/load-external-libs.service';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subscriber } from 'rxjs';
+import { filter, startWith, switchMap } from 'rxjs/operators';
+import { LoadExternalLibsService } from '../load-external-libs/load-external-libs.service';
 import { DIDOMI_EMBED } from './didomi-embed-script';
 import { DidomiLibrary } from './didomi.interface';
 
@@ -10,16 +11,26 @@ import { DidomiLibrary } from './didomi.interface';
 export class DidomiService {
   private static NAME_LIB = 'Didomi';
 
-  public isReady = false;
-  public isReady$: Subject<boolean> = new Subject<boolean>();
-  public library: DidomiLibrary = null;
+  private isReady$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
+  private library: DidomiLibrary = null;
 
   constructor(private loadExternalLibsService: LoadExternalLibsService) {
     this.addOnReadyListener();
   }
 
-  public initialize(): void {
-    this.loadExternalLibsService.loadScriptByText(
+  public userAllowedSegmentationInAds$(): Observable<boolean> {
+    return this.loadDidomiLib().pipe(
+      switchMap(() => this.isReady$),
+      filter((isReady: boolean) => isReady),
+      switchMap(() => this.onConsentChanged()),
+      startWith(this.userAllowedSegmentationInAds())
+    );
+  }
+
+  private loadDidomiLib(): Observable<void> {
+    return this.loadExternalLibsService.loadScriptByText(
       DidomiService.NAME_LIB,
       DIDOMI_EMBED
     );
@@ -29,16 +40,20 @@ export class DidomiService {
     window['didomiOnReady'] = window['didomiOnReady'] || [];
     window['didomiOnReady'].push(() => {
       this.library = Didomi;
-      this.isReady = true;
       this.isReady$.next(true);
     });
   }
 
-  public userAllowedSegmentationInAds(): boolean {
-    if (!this.library) {
-      return false;
-    }
+  private onConsentChanged(): Observable<boolean> {
+    return new Observable((subscriber: Subscriber<any>) => {
+      this.library.on('consent.changed', (event: any) => {
+        const userAllowed: boolean = this.userAllowedSegmentationInAds();
+        subscriber.next(userAllowed);
+      });
+    });
+  }
 
+  private userAllowedSegmentationInAds(): boolean {
     const userConsentedGoogle = this.library.getUserConsentStatusForVendor(
       'google'
     );

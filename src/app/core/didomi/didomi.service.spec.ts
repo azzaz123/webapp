@@ -1,3 +1,22 @@
+import { DidomiService } from './didomi.service';
+
+describe('Service: Didomi', () => {
+  let service: DidomiService;
+  let loadExternalLibsServiceMock;
+
+  beforeEach(() => {
+    loadExternalLibsServiceMock = jasmine.createSpyObj(
+      'loadExternalLibsService',
+      ['loadScriptByText']
+    );
+
+    service = new DidomiService(loadExternalLibsServiceMock);
+  });
+
+  it('should');
+});
+
+/*
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { DidomiService } from './didomi.service';
 import { DIDOMI_EMBED } from './didomi-embed-script';
@@ -116,3 +135,4 @@ describe('Service: Didomi', () => {
     });
   });
 });
+*/

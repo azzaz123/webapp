@@ -59,6 +59,12 @@ export class AdsService {
     this.initPositionKeyWords();
     this.initGoogletagConfig();
 
+    this.didomiService
+      .userAllowedSegmentationInAds$()
+      .subscribe((userAllowed: boolean) =>
+        this.allowSegmentation$.next(userAllowed)
+      );
+    /*
     if (this.didomiService.isReady) {
       this.allowSegmentation$.next(
         this.didomiService.userAllowedSegmentationInAds()
@@ -70,6 +76,7 @@ export class AdsService {
         );
       });
     }
+    */
   }
 
   private initKeyWordsFromCookies(): void {
