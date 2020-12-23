@@ -20,4 +20,13 @@ export class PaginationService {
       })
     );
   }
+
+  getSpecificRequestOptions(init: number) {
+    return {
+      params: {
+        init: init || 0,
+      } as any,
+      observe: 'response' as 'body',
+    };
+  }
 }
