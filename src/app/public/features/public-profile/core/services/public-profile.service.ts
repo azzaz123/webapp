@@ -16,12 +16,6 @@ import {
   MarkAsFavouriteBodyRequest,
   MarkAsFavouriteBodyResponse,
 } from '../interfaces/public-profile-request.interface';
-import { Item } from '@core/item/item';
-import {
-  ItemProContent,
-  ItemProResponse,
-} from '@core/item/item-response.interface';
-import { UuidService } from '@core/uuid/uuid.service';
 export const PROFILE_API_URL = (userId: string) => `api/v3/users/${userId}`;
 export const USER_COVER_IMAGE_ENDPOINT = (userId: string) =>
   `${PROFILE_API_URL(userId)}/cover-image`;
@@ -45,7 +39,7 @@ export const FAVOURITE_API_PATH = 'favorite';
 export class PublicProfileService {
   private _user: User;
 
-  constructor(private http: HttpClient, private uuidService: UuidService) {}
+  constructor(private http: HttpClient) {}
 
   get user(): User {
     return this._user;
@@ -80,25 +74,10 @@ export class PublicProfileService {
     return this.http.get(`${environment.baseUrl}${REVIEWS_ENDPOINT(userId)}`);
   }
 
-  public getPublishedItems(userId: string): Observable<Item[]> {
-    return this.http
-      .get(`${environment.baseUrl}${PUBLISHED_ITEMS_ENDPOINT(userId)}`)
-      .pipe(
-        map((res: ItemProResponse[]) => {
-          if (res.length > 0) {
-            return res.map((i: ItemProResponse) => {
-              const item: Item = this.mapRecordDataPro(i);
-              item.views = i.content.views;
-              item.favorites = i.content.favorites;
-              item.conversations = i.content.conversations;
-              item.purchases = i.content.purchases ? i.content.purchases : null;
-              item.km = i.content.km ? i.content.km : null;
-              return item;
-            });
-          }
-          return [];
-        })
-      );
+  public getPublishedItems(userId: string): Observable<any> {
+    return this.http.get(
+      `${environment.baseUrl}${PUBLISHED_ITEMS_ENDPOINT(userId)}`
+    );
   }
 
   public getSoldItems(userId: string): Observable<any> {
@@ -202,48 +181,6 @@ export class PublicProfileService {
       data.extra_info,
       null,
       data.register_date
-    );
-  }
-
-  private mapRecordDataPro(response: ItemProResponse): Item {
-    const data: ItemProResponse = <ItemProResponse>response;
-    const content: ItemProContent = data.content;
-    return this.mapItemPro(content);
-  }
-
-  private mapItemPro(content: ItemProContent): Item {
-    return new Item(
-      content.id,
-      null,
-      content.seller_id,
-      content.title,
-      content.description,
-      content.category_id,
-      null,
-      content.price,
-      content.currency,
-      content.modified_date,
-      null,
-      content.flags,
-      null,
-      null,
-      {
-        id: this.uuidService.getUUID(),
-        original_width: content.image ? content.image.original_width : null,
-        original_height: content.image ? content.image.original_height : null,
-        average_hex_color: '',
-        urls_by_size: {
-          original: content.image.original,
-          small: content.image.small,
-          large: content.image.large,
-          medium: content.image.medium,
-          xlarge: content.image.xlarge,
-        },
-      },
-      content.images,
-      content.web_slug,
-      content.publish_date,
-      null
     );
   }
 }
