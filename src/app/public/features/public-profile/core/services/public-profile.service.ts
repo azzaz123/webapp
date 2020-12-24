@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -79,10 +79,13 @@ export class PublicProfileService {
       );
   }
 
-  public getReviews(userId: string, init?: number): Observable<ReviewsData[]> {
-    return this.http.get<ReviewsData[]>(
+  public getReviews(
+    userId: string,
+    init?: number
+  ): Observable<HttpResponse<ReviewsData[]>> {
+    return this.http.get<HttpResponse<ReviewsData[]>>(
       `${environment.baseUrl}${REVIEWS_ENDPOINT(userId)}`,
-      this.paginationService.getSpecificRequestOptions(init || 0)
+      this.paginationService.getPaginationRequestOptions(init || 0)
     );
   }
 
