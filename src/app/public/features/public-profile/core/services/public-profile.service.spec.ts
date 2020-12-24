@@ -1,3 +1,4 @@
+import { HttpResponse } from '@angular/common/http';
 import {
   HttpClientTestingModule,
   HttpTestingController,
@@ -7,11 +8,7 @@ import { fakeAsync, TestBed } from '@angular/core/testing';
 import { User } from '@core/user/user';
 import { Image } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
-import {
-  ReviewResponse,
-  ReviewsData,
-} from '@features/reviews/core/review-response.interface';
-import { REVIEWS_RESPONSE } from '@fixtures/review.fixtures.spec';
+import { ReviewsData } from '@features/reviews/core/review-response.interface';
 import {
   MOCK_FULL_USER,
   MOCK_FULL_USER_FEATURED,
@@ -77,7 +74,7 @@ describe('PublicProfileService', () => {
     it('should get user reviews', () => {
       const expectedUrl = `${environment.baseUrl}${REVIEWS_ENDPOINT(userId)}`;
       let urlParams = '?init=0';
-      let response: ReviewsData[];
+      let response: HttpResponse<ReviewsData[]>;
 
       service.getReviews(userId).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl + urlParams);
@@ -90,7 +87,7 @@ describe('PublicProfileService', () => {
       const expectedUrl = `${environment.baseUrl}${REVIEWS_ENDPOINT(userId)}`;
       const randomNum = 40;
       let urlParams = '?init=' + randomNum;
-      let response: ReviewsData[];
+      let response: HttpResponse<ReviewsData[]>;
 
       service.getReviews(userId, randomNum).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl + urlParams);
