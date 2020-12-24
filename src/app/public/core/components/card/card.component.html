@@ -1,13 +1,16 @@
-<div class="CardContainer">
-    <div>
+<div class="CardContainer" *ngIf="item">
+    <div class="CardContainer__image">
+        <!-- <tsl-svg-icon></tsl-svg-icon> -->
         <tsl-item-avatar [item]="item" size="full" fallbackLight="true"></tsl-item-avatar>
     </div>
-    <div class="d-flex">
-        <div>
-            <span>{{item.salePrice | customCurrency }}</span>
-            <tsl-favourite-icon></tsl-favourite-icon>
+    <div class="m-1">
+        <div class="d-flex justify-content-between">
+            <span class="CardContainer__price--bold">{{item.salePrice | customCurrency }}</span>
+            <tsl-favourite-icon [active]="item.favorited"></tsl-favourite-icon>
         </div>
-        <span>{{item.title}}</span>
-        <span>{{item.description}}</span>
+        <div class="CardContainer__description">
+            <p class="mb-0">{{item.title}}</p>
+            <p class="mb-0">{{item.description}}</p>
+        </div>
     </div>
 </div>

@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
@@ -17,6 +18,7 @@ export default {
         FavouriteIconModule,
         ItemAvatarModule,
         CustomCurrencyModule,
+        SvgIconModule,
       ],
     }),
   ],

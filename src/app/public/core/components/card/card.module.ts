@@ -4,6 +4,7 @@ import { CardComponent } from './card.component';
 import { FavouriteIconModule } from '../favourite-icon/favourite-icon.module';
 import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
+import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 
 @NgModule({
   declarations: [CardComponent],
@@ -12,6 +13,7 @@ import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-curre
     FavouriteIconModule,
     ItemAvatarModule,
     CustomCurrencyModule,
+    SvgIconModule,
   ],
   exports: [CardComponent],
 })
