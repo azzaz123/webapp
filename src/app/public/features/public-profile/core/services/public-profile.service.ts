@@ -16,6 +16,7 @@ import {
   MarkAsFavouriteBodyRequest,
   MarkAsFavouriteBodyResponse,
 } from '../interfaces/public-profile-request.interface';
+
 export const PROFILE_API_URL = (userId: string) => `api/v3/users/${userId}`;
 export const USER_COVER_IMAGE_ENDPOINT = (userId: string) =>
   `${PROFILE_API_URL(userId)}/cover-image`;
