@@ -1,19 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { MapReviewService } from '@public/features/public-profile/pages/user-reviews/services/map-review/map-review.service';
 import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
 import { PaginationService } from '@public/core/services/pagination/pagination.service';
 import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
-import { finalize } from 'rxjs/operators';
+import { finalize, take } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'tsl-user-reviews',
   templateUrl: './user-reviews.component.html',
   styleUrls: ['./user-reviews.component.scss'],
 })
-export class UserReviewsComponent {
+export class UserReviewsComponent implements OnDestroy {
   public reviews = [];
-  public nextPaginationItem: number = 0;
-  public loading: boolean = true;
+  public nextPaginationItem = 0;
+  public loading = true;
+
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private publicProfileService: PublicProfileService,
@@ -26,23 +30,34 @@ export class UserReviewsComponent {
   private loadItems(): void {
     this.loading = true;
 
-    this.paginationService
-      .getItems(
-        this.publicProfileService.getReviews(
-          this.publicProfileService.user.id,
-          this.nextPaginationItem
+    this.subscriptions.push(
+      this.paginationService
+        .getItems(
+          this.publicProfileService.getReviews(
+            this.publicProfileService.user.id,
+            this.nextPaginationItem
+          )
         )
-      )
-      .pipe(finalize(() => (this.loading = false)))
-      .subscribe((response: PaginationResponse) => {
-        this.reviews = this.reviews.concat(
-          this.mapReviewService.mapItems(response.results)
-        );
-        this.nextPaginationItem = response.init;
-      });
+        .pipe(
+          finalize(() => (this.loading = false)),
+          take(1)
+        )
+        .subscribe((response: PaginationResponse) => {
+          this.reviews = this.reviews.concat(
+            this.mapReviewService.mapItems(response.results)
+          );
+          this.nextPaginationItem = response.init;
+        })
+    );
   }
 
   public loadMore(): void {
     this.loadItems();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription: Subscription) =>
+      subscription.unsubscribe()
+    );
   }
 }
