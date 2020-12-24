@@ -22,7 +22,6 @@ class DidomiStub {
   }
 
   on(event: string, callback: (event: any) => any): void {
-    console.log('event', event);
     this.callback = callback;
   }
 
