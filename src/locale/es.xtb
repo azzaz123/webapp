@@ -1228,5 +1228,6 @@
   <translation id="Unknown">Desconocido</translation>
   <translation id="UserReviewsNoResults">Usuario sin opiniones</translation>
   <translation id="UserReviewsLoadMore">Ver más opiniones</translation>
-  
+  <translation id="UserPublishedNoResults">Usuario sin productos</translation>
+  <translation id="UserPublishedLoadMore">Ver más productos</translation>
 </translationbundle>
