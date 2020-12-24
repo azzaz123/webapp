@@ -11,7 +11,7 @@ export class PaginationService {
   constructor() {}
 
   public getItems(
-    endpointSubscribable: Observable<any>
+    endpointSubscribable: Observable<HttpResponse<any>>
   ): Observable<PaginationResponse> {
     return endpointSubscribable.pipe(
       map((r: HttpResponse<any>) => {
