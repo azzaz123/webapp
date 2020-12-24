@@ -15,6 +15,7 @@ import { ItemStatsService } from './core/services/item-stats.service';
 import { TrackingModule } from '@core/tracking/tracking.module';
 import { SharedModule } from '@shared/shared.module';
 import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
+import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 
 @NgModule({
   imports: [
@@ -25,6 +26,7 @@ import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
     InfiniteScrollModule,
     NgxEchartsModule,
     ItemAvatarModule,
+    CustomCurrencyModule,
   ],
   providers: [ItemStatsService],
   declarations: [

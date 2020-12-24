@@ -18,6 +18,7 @@ import { RangeDatepickerComponent } from './components/range-datepicker/range-da
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
 import { ProBumpConfirmationModalComponent } from './modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component';
 import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
+import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 
 @NgModule({
   imports: [
@@ -29,6 +30,7 @@ import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
     ReactiveFormsModule,
     NgbDatepickerModule,
     ItemAvatarModule,
+    CustomCurrencyModule,
   ],
   declarations: [
     catalogProRoutedComponents,

@@ -2,11 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { AdComponent } from './ad/ad.component';
-import {
-  CustomCurrencyPipe,
-  DateUntilDayPipe,
-  DateCalendarPipe,
-} from './pipes';
+import { DateUntilDayPipe, DateCalendarPipe } from './pipes';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
 import { CardModule } from './card/card.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -81,6 +77,7 @@ import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
 import { DateCountDownComponent } from './date-countdown/date-countdown.component';
 import { ItemAvatarModule } from './item-avatar/item-avatar.module';
 import { SanitizedBackgroundModule } from './sanitized-background/sanitized-background.module';
+import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.module';
 
 @NgModule({
   imports: [
@@ -100,6 +97,7 @@ import { SanitizedBackgroundModule } from './sanitized-background/sanitized-back
     DropdownModule,
     ItemAvatarModule,
     SanitizedBackgroundModule,
+    CustomCurrencyModule,
   ],
   exports: [
     CardModule,
@@ -107,7 +105,6 @@ import { SanitizedBackgroundModule } from './sanitized-background/sanitized-back
     UploaderModule,
     SpinnerComponent,
     AdComponent,
-    CustomCurrencyPipe,
     RestrictInputDirective,
     HeaderComponent,
     ButtonComponent,
@@ -169,7 +166,6 @@ import { SanitizedBackgroundModule } from './sanitized-background/sanitized-back
     AdComponent,
     ConfirmationModalComponent,
     SpinnerComponent,
-    CustomCurrencyPipe,
     RestrictInputDirective,
     HeaderComponent,
     ButtonComponent,

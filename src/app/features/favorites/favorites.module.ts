@@ -11,6 +11,7 @@ import { ProfileCardFavoriteComponent } from './components/profile-card-favorite
 import { ProfileImagesComponent } from '@shared/profile-images/profile-images.component';
 import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
 import { SanitizedBackgroundModule } from '@shared/sanitized-background/sanitized-background.module';
+import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { SanitizedBackgroundModule } from '@shared/sanitized-background/sanitize
     SharedModule,
     ItemAvatarModule,
     SanitizedBackgroundModule,
+    CustomCurrencyModule,
   ],
   declarations: [
     favoritesRoutedComponents,

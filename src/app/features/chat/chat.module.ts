@@ -8,6 +8,7 @@ import {
   NgbTooltipModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
+import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { SharedModule } from '@shared/shared.module';
 import { AutosizeModule } from 'ngx-autosize';
 import { chatRoutedComponents, ChatRoutingModule } from './chat.routes';
@@ -53,6 +54,7 @@ import { PersonalDataInformationModal } from './modals/personal-data-information
     MessageModule,
     UserResponseRateModule,
     ItemAvatarModule,
+    CustomCurrencyModule,
   ],
   declarations: [
     chatRoutedComponents,
