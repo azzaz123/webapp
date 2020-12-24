@@ -18,6 +18,7 @@ import {
 } from '../interfaces/public-profile-request.interface';
 import { PaginationService } from '@public/core/services/pagination/pagination.service';
 import { ReviewsData } from '@features/reviews/core/review-response.interface';
+import { ItemResponse } from '@core/item/item-response.interface';
 
 export const PROFILE_API_URL = (userId: string) => `api/v3/users/${userId}`;
 export const USER_COVER_IMAGE_ENDPOINT = (userId: string) =>
@@ -89,9 +90,13 @@ export class PublicProfileService {
     );
   }
 
-  public getPublishedItems(userId: string): Observable<any> {
-    return this.http.get(
-      `${environment.baseUrl}${PUBLISHED_ITEMS_ENDPOINT(userId)}`
+  public getPublishedItems(
+    userId: string,
+    init?: number
+  ): Observable<HttpResponse<ItemResponse[]>> {
+    return this.http.get<HttpResponse<ItemResponse[]>>(
+      `${environment.baseUrl}${PUBLISHED_ITEMS_ENDPOINT(userId)}`,
+      this.paginationService.getPaginationRequestOptions(init || 0)
     );
   }
 
