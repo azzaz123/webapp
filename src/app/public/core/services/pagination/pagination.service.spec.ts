@@ -13,7 +13,7 @@ describe('PaginationService', () => {
     expect(paginationService).toBeTruthy();
   });
 
-  describe('getSpecificRequestOptions', () => {
+  describe('getPaginationRequestOptions', () => {
     const defaultReturn = {
       params: {
         init: 0,
@@ -22,7 +22,7 @@ describe('PaginationService', () => {
     };
 
     it('should return default response if no init param', () => {
-      const result = paginationService.getSpecificRequestOptions(null);
+      const result = paginationService.getPaginationRequestOptions(null);
 
       expect(result).toEqual(defaultReturn);
     });
@@ -31,7 +31,7 @@ describe('PaginationService', () => {
       const randomNum = 22;
       defaultReturn.params.init = randomNum;
 
-      const result = paginationService.getSpecificRequestOptions(randomNum);
+      const result = paginationService.getPaginationRequestOptions(randomNum);
 
       expect(result).toEqual(defaultReturn);
     });

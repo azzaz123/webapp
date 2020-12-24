@@ -2,7 +2,10 @@ import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { PaginationResponse } from './pagination.interface';
+import {
+  PaginationRequestOptions,
+  PaginationResponse,
+} from './pagination.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +27,7 @@ export class PaginationService {
     );
   }
 
-  public getSpecificRequestOptions(init: number) {
+  public getPaginationRequestOptions(init: number): PaginationRequestOptions {
     return {
       params: {
         init: init || 0,
