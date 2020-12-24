@@ -42,7 +42,7 @@ export class UserReviewsComponent {
       });
   }
 
-  loadMore(): void {
+  public loadMore(): void {
     this.loadItems();
   }
 }
