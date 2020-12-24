@@ -20,7 +20,6 @@ import { ReviewModalComponent } from './modals/review-modal/review-modal.compone
 import { ItemSoldDirective } from './modals/sold-modal/item-sold.directive';
 import { StarsRateComponent } from './stars-rate/stars-rate.component';
 import { StarsComponent } from './stars/stars.component';
-import { SanitizedBackgroundDirective } from './sanitized-background/sanitized-background.directive';
 import { UserAvatarComponent } from './user-avatar/user-avatar.component';
 import { ProcessAllButtonComponent } from './process-all-button/process-all-button.component';
 import { ArchivableComponent } from './archivable/archivable.component';
@@ -29,7 +28,6 @@ import { UnarchiveButtonComponent } from './unarchive-button/unarchive-button.co
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { SwitchComponent } from './switch/switch.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
-import { ItemAvatarComponent } from './item-avatar/item-avatar.component';
 import { SearchInputComponent } from './search-input/search-input.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SelectComponent } from './select/select.component';
@@ -81,6 +79,8 @@ import { DisableControlDirective } from './forms/disable-control.directive';
 import { RouterLinkDirectiveStub } from './router-link-directive-stub';
 import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
 import { DateCountDownComponent } from './date-countdown/date-countdown.component';
+import { ItemAvatarModule } from './item-avatar/item-avatar.module';
+import { SanitizedBackgroundModule } from './sanitized-background/sanitized-background.module';
 
 @NgModule({
   imports: [
@@ -98,6 +98,8 @@ import { DateCountDownComponent } from './date-countdown/date-countdown.componen
     ProBadgeModule,
     SvgIconModule,
     DropdownModule,
+    ItemAvatarModule,
+    SanitizedBackgroundModule,
   ],
   exports: [
     CardModule,
@@ -111,7 +113,6 @@ import { DateCountDownComponent } from './date-countdown/date-countdown.componen
     ButtonComponent,
     SoldModalComponent,
     ItemSoldDirective,
-    SanitizedBackgroundDirective,
     StarsComponent,
     StarsRateComponent,
     UserAvatarComponent,
@@ -123,7 +124,6 @@ import { DateCountDownComponent } from './date-countdown/date-countdown.componen
     SwitchComponent,
     ReviewModalComponent,
     NgxPermissionsModule,
-    ItemAvatarComponent,
     SearchInputComponent,
     SelectComponent,
     RestrictInputNumberDirective,
@@ -175,7 +175,6 @@ import { DateCountDownComponent } from './date-countdown/date-countdown.componen
     ButtonComponent,
     SoldModalComponent,
     ItemSoldDirective,
-    SanitizedBackgroundDirective,
     StarsComponent,
     StarsRateComponent,
     UserAvatarComponent,
@@ -188,7 +187,6 @@ import { DateCountDownComponent } from './date-countdown/date-countdown.componen
     SwitchComponent,
     ReviewModalComponent,
     CheckboxComponent,
-    ItemAvatarComponent,
     SelectComponent,
     SearchInputComponent,
     TooManyItemsModalComponent,

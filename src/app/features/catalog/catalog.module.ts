@@ -21,6 +21,7 @@ import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product
 import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { ReactivateConfirmationModalComponent } from './modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component';
 import { ReactivateModalComponent } from './modals/reactivate-modal/reactivate-modal.component';
+import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
 
 @NgModule({
   imports: [
@@ -33,6 +34,7 @@ import { ReactivateModalComponent } from './modals/reactivate-modal/reactivate-m
     NgbButtonsModule,
     NgbTooltipModule,
     ReviewsModule,
+    ItemAvatarModule,
   ],
   providers: [BumpTutorialService],
   declarations: [

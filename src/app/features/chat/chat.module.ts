@@ -7,6 +7,7 @@ import {
   NgbModalModule,
   NgbTooltipModule,
 } from '@ng-bootstrap/ng-bootstrap';
+import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
 import { SharedModule } from '@shared/shared.module';
 import { AutosizeModule } from 'ngx-autosize';
 import { chatRoutedComponents, ChatRoutingModule } from './chat.routes';
@@ -51,6 +52,7 @@ import { PersonalDataInformationModal } from './modals/personal-data-information
     AutosizeModule,
     MessageModule,
     UserResponseRateModule,
+    ItemAvatarModule,
   ],
   declarations: [
     chatRoutedComponents,

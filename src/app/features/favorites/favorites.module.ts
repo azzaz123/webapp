@@ -9,6 +9,8 @@ import { SharedModule } from '@shared/shared.module';
 import { ItemCartFavoriteComponent } from './components/item-cart-favorite/item-cart-favorite.component';
 import { ProfileCardFavoriteComponent } from './components/profile-card-favorite/profile-card-favorite.component';
 import { ProfileImagesComponent } from '@shared/profile-images/profile-images.component';
+import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
+import { SanitizedBackgroundModule } from '@shared/sanitized-background/sanitized-background.module';
 
 @NgModule({
   imports: [
@@ -16,6 +18,8 @@ import { ProfileImagesComponent } from '@shared/profile-images/profile-images.co
     FavoritesRoutingModule,
     InfiniteScrollModule,
     SharedModule,
+    ItemAvatarModule,
+    SanitizedBackgroundModule,
   ],
   declarations: [
     favoritesRoutedComponents,
