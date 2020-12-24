@@ -1,5 +1,10 @@
+import { CommonModule } from '@angular/common';
+import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
+import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
+import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { moduleMetadata } from '@storybook/angular';
 import { Story, Meta } from '@storybook/angular/types-6-0';
+import { FavouriteIconModule } from '../favourite-icon/favourite-icon.module';
 import { CardComponent } from './card.component';
 
 export default {
@@ -7,7 +12,12 @@ export default {
   decorators: [
     moduleMetadata({
       declarations: [CardComponent],
-      imports: [],
+      imports: [
+        CommonModule,
+        FavouriteIconModule,
+        ItemAvatarModule,
+        CustomCurrencyModule,
+      ],
     }),
   ],
 } as Meta;
@@ -18,4 +28,6 @@ const Template: Story<CardComponent> = (args: CardComponent) => ({
 });
 
 export const Default = Template.bind({});
-Default.args = {};
+Default.args = {
+  item: MOCK_ITEM,
+};
