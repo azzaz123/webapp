@@ -12,9 +12,11 @@ import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
 import { MessageService } from '@features/chat/core/message/message.service';
+import { WallacoinsDisabledModalComponent } from '@features/wallacoins/components/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
 import { CATEGORY_DATA_WEB } from '@fixtures/category.fixtures.spec';
 import { SUGGESTER_DATA_WEB } from '@fixtures/suggester.fixtures.spec';
 import { USER_DATA } from '@fixtures/user.fixtures.spec';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustomCurrencyPipe } from '@shared/pipes';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsModule } from 'ngx-permissions';
@@ -49,6 +51,7 @@ describe('TopbarComponent', () => {
   const CREDITS = 1000;
   let paymentService: PaymentService;
   let cookieService: CookieService;
+  let modalService: NgbModal;
 
   beforeEach(
     waitForAsync(() => {
@@ -97,6 +100,17 @@ describe('TopbarComponent', () => {
               put(key, value) {},
             },
           },
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  componentInstance: {},
+                  result: Promise.resolve('success'),
+                };
+              },
+            },
+          },
           EventService,
         ],
         declarations: [TopbarComponent, CustomCurrencyPipe],
@@ -115,6 +129,7 @@ describe('TopbarComponent', () => {
     eventService = TestBed.inject(EventService);
     paymentService = TestBed.inject(PaymentService);
     cookieService = TestBed.inject(CookieService);
+    modalService = TestBed.inject(NgbModal);
   });
 
   it('should be created', () => {
@@ -362,6 +377,21 @@ describe('TopbarComponent', () => {
       fixture.detectChanges();
 
       expect(el.querySelector(wallacoinsBtnSelector)).toBeNull();
+    });
+
+    it('should open modal when credit es clicked', () => {
+      spyOn(modalService, 'open').and.callThrough();
+
+      el.querySelector<any>(wallacoinsBtnSelector).click();
+
+      expect(modalService.open).toHaveBeenCalledTimes(1);
+      expect(modalService.open).toHaveBeenCalledWith(
+        WallacoinsDisabledModalComponent,
+        {
+          backdrop: 'static',
+          windowClass: 'modal-standard',
+        }
+      );
     });
   });
 });

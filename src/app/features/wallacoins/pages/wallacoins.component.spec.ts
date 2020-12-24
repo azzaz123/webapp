@@ -2,6 +2,7 @@ import {
   ComponentFixture,
   fakeAsync,
   TestBed,
+  tick,
   waitForAsync,
 } from '@angular/core/testing';
 
@@ -29,6 +30,7 @@ import { UserService } from '../../../core/user/user.service';
 import { MOCK_USER, USER_ID } from '../../../../tests/user.fixtures.spec';
 import { WallacoinsTutorialComponent } from '../components/wallacoins-tutorial/wallacoins-tutorial.component';
 import Spy = jasmine.Spy;
+import { WallacoinsDisabledModalComponent } from '../components/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
 
 describe('WallacoinsComponent', () => {
   let component: WallacoinsComponent;
@@ -126,48 +128,33 @@ describe('WallacoinsComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should call getCreditsPacks and set packs', () => {
-      spyOn(paymentService, 'getCreditsPacks').and.callThrough();
+    it('should open modal disabled wallacoins modal', () => {
+      spyOn(modalService, 'open').and.callThrough();
 
       component.ngOnInit();
 
-      expect(component.packs).toEqual(CREDITS_PACKS);
-      expect(component.currencyName).toBe('wallacoins');
-      expect(component.factor).toBe(100);
-    });
-
-    it('should call getPerks, set perks and emit event', () => {
-      spyOn(paymentService, 'getPerks').and.callThrough();
-      spyOn(eventService, 'emit');
-
-      component.ngOnInit();
-
-      expect(component.wallacoins).toEqual(PERKS.wallacoins.quantity);
-      expect(eventService.emit).toHaveBeenCalledWith(
-        EventService.TOTAL_CREDITS_UPDATED,
-        PERKS.wallacoins.quantity
+      expect(modalService.open).toHaveBeenCalledTimes(1);
+      expect(modalService.open).toHaveBeenCalledWith(
+        WallacoinsDisabledModalComponent,
+        {
+          backdrop: 'static',
+          windowClass: 'modal-standard',
+        }
       );
     });
 
-    it('should open modal if there is param.code', () => {
-      spyOn(localStorage, 'removeItem');
-      spyOn<any>(component, 'openConfirmModal');
+    it('should redirect when modal is closed', fakeAsync(() => {
+      spyOn(modalService, 'open').and.returnValue({
+        result: Promise.resolve(),
+      });
+      spyOn(router, 'navigate');
 
       component.ngOnInit();
+      tick();
 
-      expect(localStorage.getItem).toHaveBeenCalledWith('pack');
-      expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
-      expect(localStorage.removeItem).toHaveBeenCalledWith('pack');
-      expect(component['openConfirmModal']).toHaveBeenCalledWith(PACK, '-1');
-    });
-
-    it('should call openTutorialModal', () => {
-      spyOn<any>(component, 'openTutorialModal');
-
-      component.ngOnInit();
-
-      expect(component['openTutorialModal']).toHaveBeenCalled();
-    });
+      expect(router.navigate).toHaveBeenCalledTimes(1);
+      expect(router.navigate).toHaveBeenCalledWith(['catalog/list']);
+    }));
   });
 
   describe('openBuyModal', () => {
