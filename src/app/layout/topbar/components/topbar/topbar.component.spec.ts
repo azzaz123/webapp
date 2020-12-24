@@ -337,4 +337,31 @@ describe('TopbarComponent', () => {
       );
     });
   });
+
+  describe('Credit', () => {
+    const wallacoinsBtnSelector = '#top-bar-wallacoins';
+
+    it('should show credit when credit is > 0', () => {
+      spyOn(paymentService, 'getCreditInfo').and.callThrough();
+
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      expect(el.querySelector(wallacoinsBtnSelector)).not.toBeNull();
+    });
+
+    it('should not show credit when credit is = 0', () => {
+      spyOn(paymentService, 'getCreditInfo').and.returnValue(
+        of({
+          currencyName: CURRENCY,
+          credit: 0,
+        })
+      );
+
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      expect(el.querySelector(wallacoinsBtnSelector)).toBeNull();
+    });
+  });
 });
