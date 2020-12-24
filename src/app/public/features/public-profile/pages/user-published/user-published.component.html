@@ -1,1 +1,8 @@
-<p>user-published works!</p>
+<div class="d-inline-block w-100 my-4">
+    <tsl-spinner *ngIf="loading"></tsl-spinner>
+    <p class="text-center m-5" *ngIf="!loading && items.length == 0" i18n="@@UserPublishedNoResults">User without products</p>
+    <div *ngFor="let item of items">
+        {{item | json}}
+    </div>
+    <button *ngIf="nextPaginationItem" (click)="loadMore()" class="UserPublished__btn d-block btn btn-primary mx-auto mt-4" i18n="@@UserPublishedLoadMore">Load more products</button>
+</div>
