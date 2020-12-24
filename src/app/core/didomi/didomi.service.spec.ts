@@ -37,11 +37,12 @@ describe('Service: Didomi', () => {
     Didomi: null,
     didomiOnReady: [],
   };
+  const didomiStub = new DidomiStub();
 
   beforeEach(() => {
     loadExternalLibsServiceMock = {
       loadScriptByText: () => {
-        windowMock['Didomi'] = new DidomiStub();
+        windowMock['Didomi'] = didomiStub;
         windowMock['didomiOnReady'][0]();
         return of(null);
       },
@@ -88,6 +89,35 @@ describe('Service: Didomi', () => {
       setTimeout(() => {
         windowMock['Didomi'].makeCallback();
       }, 1000);
+    });
+
+    it('should block when user disallowed consent', () => {
+      spyOn(didomiStub, 'getUserConsentStatusForVendor').and.returnValue(false);
+
+      service.userAllowedSegmentationInAds$().subscribe((allowed: boolean) => {
+        expect(allowed).toBeFalsy();
+      });
+    });
+
+    it('should block when user disable purposes', () => {
+      spyOn(didomiStub, 'getUserConsentStatusForAll').and.returnValue({
+        purposes: { enabled: [], disabled: ['ads', 'search ads'] },
+      });
+
+      service.userAllowedSegmentationInAds$().subscribe((allowed: boolean) => {
+        expect(allowed).toBeFalsy();
+      });
+    });
+
+    it('should allow when user enable purposes and consent', () => {
+      spyOn(didomiStub, 'getUserConsentStatusForVendor').and.returnValue(true);
+      spyOn(didomiStub, 'getUserConsentStatusForAll').and.returnValue({
+        purposes: { enabled: [], disabled: [] },
+      });
+
+      service.userAllowedSegmentationInAds$().subscribe((allowed: boolean) => {
+        expect(allowed).toBeTruthy();
+      });
     });
   });
 });
