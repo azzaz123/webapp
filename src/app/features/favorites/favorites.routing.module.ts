@@ -5,7 +5,6 @@ import { LoggedGuard } from '@core/user/logged.guard';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { ProfileCardFavoriteComponent } from './components/profile-card-favorite/profile-card-favorite.component';
 import { ItemCartFavoriteComponent } from './components/item-cart-favorite/item-cart-favorite.component';
-import { PERMISSIONS } from '@core/user/user';
 import { ExitConfirmGuard } from '@shared/guards/exit-confirm.guard';
 import { ItemsPageComponent } from './components/items-page/items-page.component';
 import { ProfilesPageComponent } from './components/profiles-page/profiles-page.component';
