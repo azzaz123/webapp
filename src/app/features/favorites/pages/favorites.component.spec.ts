@@ -96,7 +96,7 @@ describe('FavouriteItemsComponent', () => {
   });
 
   describe('Navigation', () => {
-    it('should navigate to favorites/products page after clicking produts tab', fakeAsync(() => {
+    it('should navigate to favorites/products page after clicking products tab', fakeAsync(() => {
       fixture.ngZone.run(() => {
         const linkInstance = fixture.debugElement
           .query(By.css('#products-tab'))
