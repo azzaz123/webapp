@@ -37,7 +37,7 @@ const routes: Routes = [
   },
 ];
 
-describe('FavoritemsComponent', () => {
+describe('FavouriteItemsComponent', () => {
   let component: FavoritesComponent;
   let fixture: ComponentFixture<FavoritesComponent>;
   let itemsPageStub: ItemsPageStub;
