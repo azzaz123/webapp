@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '@core/user/user.service';
 import { UserStats, Counters } from '@core/user/user-stats.interface';
-import { Router } from '@angular/router';
 import { ItemsPageComponent } from '../components/items-page/items-page.component';
 import { ProfilesPageComponent } from '../components/profiles-page/profiles-page.component';
 
