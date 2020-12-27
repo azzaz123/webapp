@@ -1,4 +1,4 @@
-<div infiniteScroll [infiniteScrollDistance]="3" [infiniteScrollThrottle]="100"
+<div class="card" infiniteScroll [infiniteScrollDistance]="3" [infiniteScrollThrottle]="100"
 [infiniteScrollDisabled]="end || loading" (scrolled)="loadMore()">
   <div class="favorites-empty-state"
     *ngIf="!profiles.length">
