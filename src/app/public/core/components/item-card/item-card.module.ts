@@ -5,6 +5,8 @@ import { FavouriteIconModule } from '../favourite-icon/favourite-icon.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { SanitizedBackgroundModule } from '@shared/sanitized-background/sanitized-background.module';
+import { ItemApiModule } from '@public/core/services/api/item/item-api.service';
+import { ItemCardService } from './services/item-card.service';
 
 @NgModule({
   declarations: [ItemCardComponent],
@@ -14,7 +16,9 @@ import { SanitizedBackgroundModule } from '@shared/sanitized-background/sanitize
     CustomCurrencyModule,
     SvgIconModule,
     SanitizedBackgroundModule,
+    ItemApiModule,
   ],
   exports: [ItemCardComponent],
+  providers: [ItemCardService],
 })
 export class ItemCardModule {}

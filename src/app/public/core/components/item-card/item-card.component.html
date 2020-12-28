@@ -8,7 +8,7 @@
     <div class="m-2">
         <div class="d-flex justify-content-between mb-1">
             <span class="ItemCard__price ItemCard__price--bold">{{item.salePrice | customCurrency }}</span>
-            <tsl-favourite-icon class="ItemCard__favourite" [active]="item.flags.favorite"></tsl-favourite-icon>
+            <tsl-favourite-icon class="ItemCard__favourite" [active]="item.flags.favorite" (click)="toggleFavourite()"></tsl-favourite-icon>
         </div>
         <div class="ItemCard__info">
             <p class="ItemCard__info__title mb-1">{{item.title}}</p>

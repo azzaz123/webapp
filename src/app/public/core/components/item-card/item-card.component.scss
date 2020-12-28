@@ -76,6 +76,7 @@ $icon-margin: $spacer * 0.5;
   }
 
   &__favourite {
+    cursor: pointer;
     ::ng-deep svg {
       width: 20px;
     }
