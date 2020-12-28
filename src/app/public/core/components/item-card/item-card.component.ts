@@ -2,11 +2,11 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Item } from '@core/item/item';
 
 @Component({
-  selector: 'tsl-public-card',
-  templateUrl: './card.component.html',
-  styleUrls: ['./card.component.scss'],
+  selector: 'tsl-public-ItemCard',
+  templateUrl: './item-card.component.html',
+  styleUrls: ['./item-card.component.scss'],
 })
-export class CardComponent implements OnInit {
+export class ItemCardComponent implements OnInit {
   @Input() item: Item;
   @Input() showDescription = true;
 
