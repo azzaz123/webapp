@@ -43,7 +43,7 @@ describe('ItemApiService', () => {
   });
 
   describe('unmarkAsFavourite', () => {
-    it('should mark the selected item as favorite', () => {
+    it('should unmark the selected item as favorite', () => {
       const expectedUrl = MARK_AS_FAVORITE_ENDPOINT(ITEM_ID);
       const expectedBody = {
         favorited: false,
