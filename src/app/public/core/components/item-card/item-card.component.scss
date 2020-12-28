@@ -18,6 +18,8 @@ $image-height: 177px;
   }
 
   &__image {
+    background-size: cover;
+    background-repeat: no-repeat;
     height: $image-height;
 
     tsl-item-avatar {

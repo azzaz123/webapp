@@ -1,7 +1,6 @@
 <div class="ItemCardContainer" [class.ItemCardContainer--with-description]="showDescription" *ngIf="item">
-    <div class="ItemCardContainer__image">
+    <div class="ItemCardContainer__image" tslsanitizedBackground="{{item.mainImage.urls_by_size.medium}}" [fallback]="IMAGE_FALLBACK">
         <!-- <tsl-svg-icon></tsl-svg-icon> -->
-        <tsl-item-avatar [item]="item" fallbackLight="true"></tsl-item-avatar>
     </div>
     <div class="m-2">
         <div class="d-flex justify-content-between mb-1">

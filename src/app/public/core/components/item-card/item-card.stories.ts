@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Item } from '@core/item/item';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { ITEM_DATA, MOCK_ITEM } from '@fixtures/item.fixtures.spec';
-import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
+import { SanitizedBackgroundModule } from '@shared/sanitized-background/sanitized-background.module';
 import { moduleMetadata } from '@storybook/angular';
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { FavouriteIconModule } from '../favourite-icon/favourite-icon.module';
@@ -17,9 +17,9 @@ export default {
       imports: [
         CommonModule,
         FavouriteIconModule,
-        ItemAvatarModule,
         CustomCurrencyModule,
         SvgIconModule,
+        SanitizedBackgroundModule,
       ],
     }),
   ],
