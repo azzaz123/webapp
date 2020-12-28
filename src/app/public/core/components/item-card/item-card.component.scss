@@ -35,9 +35,15 @@ $icon-margin: $spacer * 0.5;
       }
     }
 
-    &--default {
+    &--medium {
       ::ng-deep svg {
         width: 18px;
+      }
+    }
+
+    &--big {
+      ::ng-deep svg {
+        width: 20px;
       }
     }
 
