@@ -8,6 +8,7 @@ import { Item } from '@core/item/item';
 })
 export class CardComponent implements OnInit {
   @Input() item: Item;
+  @Input() showDescription = true;
 
   constructor() {}
 
