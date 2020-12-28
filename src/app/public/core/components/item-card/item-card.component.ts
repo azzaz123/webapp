@@ -6,7 +6,7 @@ import { take } from 'rxjs/operators';
 import { ItemCardService } from './services/item-card.service';
 
 @Component({
-  selector: 'tsl-public-ItemCard',
+  selector: 'tsl-public-item-card',
   templateUrl: './item-card.component.html',
   styleUrls: ['./item-card.component.scss'],
 })
