@@ -75,3 +75,143 @@ LongInfo.args = {
   showDescription: true,
   item: MOCK_ITEM_2,
 };
+
+export const Favorited = Template.bind({});
+const MOCK_ITEM_3 = new Item(
+  ITEM_DATA.id,
+  ITEM_DATA.legacy_id,
+  ITEM_DATA.owner,
+  ITEM_DATA.title,
+  ITEM_DATA.description,
+  ITEM_DATA.category_id,
+  ITEM_DATA.location,
+  ITEM_DATA.sale_price,
+  ITEM_DATA.currency_code,
+  ITEM_DATA.modified_date,
+  ITEM_DATA.url,
+  {
+    pending: false,
+    banned: false,
+    expired: false,
+    favorite: true,
+    sold: false,
+    reserved: false,
+    bumped: false,
+  },
+  ITEM_DATA.actions_allowed,
+  ITEM_DATA.sale_conditions,
+  ITEM_DATA.main_image,
+  ITEM_DATA.images,
+  ITEM_DATA.web_slug,
+  ITEM_DATA.published_date,
+  ITEM_DATA.delivery_info
+);
+Favorited.args = {
+  showDescription: true,
+  item: MOCK_ITEM_3,
+};
+
+export const Reserved = Template.bind({});
+const MOCK_ITEM_4 = new Item(
+  ITEM_DATA.id,
+  ITEM_DATA.legacy_id,
+  ITEM_DATA.owner,
+  ITEM_DATA.title,
+  ITEM_DATA.description,
+  ITEM_DATA.category_id,
+  ITEM_DATA.location,
+  ITEM_DATA.sale_price,
+  ITEM_DATA.currency_code,
+  ITEM_DATA.modified_date,
+  ITEM_DATA.url,
+  {
+    pending: false,
+    banned: false,
+    expired: false,
+    favorite: false,
+    sold: false,
+    reserved: true,
+    bumped: false,
+  },
+  ITEM_DATA.actions_allowed,
+  ITEM_DATA.sale_conditions,
+  ITEM_DATA.main_image,
+  ITEM_DATA.images,
+  ITEM_DATA.web_slug,
+  ITEM_DATA.published_date,
+  ITEM_DATA.delivery_info
+);
+Reserved.args = {
+  showDescription: true,
+  item: MOCK_ITEM_4,
+};
+
+export const Sold = Template.bind({});
+const MOCK_ITEM_5 = new Item(
+  ITEM_DATA.id,
+  ITEM_DATA.legacy_id,
+  ITEM_DATA.owner,
+  ITEM_DATA.title,
+  ITEM_DATA.description,
+  ITEM_DATA.category_id,
+  ITEM_DATA.location,
+  ITEM_DATA.sale_price,
+  ITEM_DATA.currency_code,
+  ITEM_DATA.modified_date,
+  ITEM_DATA.url,
+  {
+    pending: false,
+    banned: false,
+    expired: false,
+    favorite: false,
+    sold: false,
+    reserved: false,
+    bumped: false,
+  },
+  ITEM_DATA.actions_allowed,
+  ITEM_DATA.sale_conditions,
+  ITEM_DATA.main_image,
+  ITEM_DATA.images,
+  ITEM_DATA.web_slug,
+  ITEM_DATA.published_date,
+  ITEM_DATA.delivery_info
+);
+Sold.args = {
+  showDescription: true,
+  item: MOCK_ITEM_5,
+};
+
+export const Bumped = Template.bind({});
+const MOCK_ITEM_6 = new Item(
+  ITEM_DATA.id,
+  ITEM_DATA.legacy_id,
+  ITEM_DATA.owner,
+  ITEM_DATA.title,
+  ITEM_DATA.description,
+  ITEM_DATA.category_id,
+  ITEM_DATA.location,
+  ITEM_DATA.sale_price,
+  ITEM_DATA.currency_code,
+  ITEM_DATA.modified_date,
+  ITEM_DATA.url,
+  {
+    pending: false,
+    banned: false,
+    expired: false,
+    favorite: false,
+    sold: false,
+    reserved: false,
+    bumped: true,
+  },
+  ITEM_DATA.actions_allowed,
+  ITEM_DATA.sale_conditions,
+  ITEM_DATA.main_image,
+  ITEM_DATA.images,
+  ITEM_DATA.web_slug,
+  ITEM_DATA.published_date,
+  ITEM_DATA.delivery_info
+);
+Bumped.args = {
+  showDescription: true,
+  item: MOCK_ITEM_6,
+};
