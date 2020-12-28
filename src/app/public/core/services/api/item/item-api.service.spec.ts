@@ -8,7 +8,7 @@ import { ItemApiService, MARK_AS_FAVORITE_ENDPOINT } from './item-api.module';
 
 describe('ItemApiService', () => {
   let httpMock: HttpTestingController;
-  let service: ItemApiService;
+  let itemApiService: ItemApiService;
   const ITEM_ID = '123';
 
   beforeEach(() => {
@@ -17,7 +17,7 @@ describe('ItemApiService', () => {
       imports: [HttpClientTestingModule],
     });
 
-    service = TestBed.inject(ItemApiService);
+    itemApiService = TestBed.inject(ItemApiService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -32,7 +32,7 @@ describe('ItemApiService', () => {
         favorited: true,
       };
 
-      service.markAsFavourite(ITEM_ID).subscribe();
+      itemApiService.markAsFavourite(ITEM_ID).subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush({});
 
@@ -49,7 +49,7 @@ describe('ItemApiService', () => {
         favorited: false,
       };
 
-      service.unmarkAsFavourite(ITEM_ID).subscribe();
+      itemApiService.unmarkAsFavourite(ITEM_ID).subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush({});
 
