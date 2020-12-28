@@ -20,6 +20,7 @@ import { TrackingService } from '@core/tracking/tracking.service';
 import { User } from '@core/user/user';
 import { Counters, UserStats } from '@core/user/user-stats.interface';
 import { UserService } from '@core/user/user.service';
+import { BumpSuggestionModalComponent } from '@features/catalog/modals/bump-suggestion-modal/bump-suggestion-modal.component';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ActivateItemsModalComponent } from '@shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component';
 import { DeactivateItemsModalComponent } from '@shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
@@ -62,7 +63,7 @@ export class ListComponent implements OnInit, OnDestroy {
   private init = 0;
   public end: boolean;
   public scrollTop: number;
-  private uploadModalRef: NgbModalRef;
+  private bumpSuggestionModalRef: NgbModalRef;
   private active = true;
   private firstItemLoad = true;
   public numberOfProducts: number;
@@ -227,7 +228,9 @@ export class ListComponent implements OnInit, OnDestroy {
             }
           );
         }
-        if (params && params.updated) {
+        if (params && params.created) {
+          this.showBumpSuggestionModal(params.itemId);
+        } else if (params && params.updated) {
           this.errorService.i18nSuccess('itemUpdated');
         } else if (params && params.createdOnHold) {
           this.tooManyItemsModalRef = this.modalService.open(
@@ -265,6 +268,23 @@ export class ListComponent implements OnInit, OnDestroy {
           this.errorService.i18nError('alreadyFeatured');
         }
       });
+    });
+  }
+
+  private showBumpSuggestionModal(itemId: string): void {
+    this.bumpSuggestionModalRef = this.modalService.open(
+      BumpSuggestionModalComponent,
+      {
+        windowClass: 'modal-standard',
+      }
+    );
+    this.bumpSuggestionModalRef.componentInstance.itemId = itemId;
+    this.bumpSuggestionModalRef.componentInstance.item = this.items[0];
+    this.bumpSuggestionModalRef.result.then((redirect: boolean) => {
+      if (redirect) {
+        this.router.navigate(['catalog/checkout', { itemId }]);
+      }
+      this.bumpSuggestionModalRef = null;
     });
   }
 
@@ -369,10 +389,8 @@ export class ListComponent implements OnInit, OnDestroy {
           this.init = itemsData.init;
           this.items = append ? this.items.concat(items) : items;
           this.end = !this.init;
-          if (this.uploadModalRef) {
-            this.uploadModalRef.componentInstance.item = this.items[0];
-            this.uploadModalRef.componentInstance.trackUploaded();
-            this.uploadModalRef.componentInstance.urgentPrice();
+          if (this.bumpSuggestionModalRef) {
+            this.bumpSuggestionModalRef.componentInstance.item = this.items[0];
           }
           if (this.firstItemLoad) {
             setTimeout(() => {
