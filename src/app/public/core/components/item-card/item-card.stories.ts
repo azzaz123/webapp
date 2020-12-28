@@ -2,12 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Item } from '@core/item/item';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { ITEM_DATA, MOCK_ITEM } from '@fixtures/item.fixtures.spec';
+import { ItemApiModule } from '@public/core/services/api/item/item-api.service';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { SanitizedBackgroundModule } from '@shared/sanitized-background/sanitized-background.module';
 import { moduleMetadata } from '@storybook/angular';
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { FavouriteIconModule } from '../favourite-icon/favourite-icon.module';
 import { ItemCardComponent } from './item-card.component';
+import { ItemCardService } from './services/item-card.service';
 
 export default {
   title: 'Webapp/ItemCard',
@@ -20,7 +22,9 @@ export default {
         CustomCurrencyModule,
         SvgIconModule,
         SanitizedBackgroundModule,
+        ItemApiModule,
       ],
+      providers: [ItemCardService],
     }),
   ],
 } as Meta;
@@ -45,7 +49,6 @@ MOCK_ITEM.mainImage.urls_by_size = {
 
 export const Default = Template.bind({});
 Default.args = {
-  showDescription: true,
   item: MOCK_ITEM,
 };
 
@@ -54,7 +57,7 @@ const MOCK_ITEM_2 = new Item(
   ITEM_DATA.id,
   ITEM_DATA.legacy_id,
   ITEM_DATA.owner,
-  'Title max chars, title max chars, title max chars,',
+  'Title max chars, title max chars, title max chars.',
   'Long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max ch',
   ITEM_DATA.category_id,
   ITEM_DATA.location,
@@ -107,7 +110,6 @@ const MOCK_ITEM_3 = new Item(
   ITEM_DATA.delivery_info
 );
 Favorited.args = {
-  showDescription: true,
   item: MOCK_ITEM_3,
 };
 
@@ -142,7 +144,6 @@ const MOCK_ITEM_4 = new Item(
   ITEM_DATA.delivery_info
 );
 Reserved.args = {
-  showDescription: true,
   item: MOCK_ITEM_4,
 };
 
@@ -177,7 +178,6 @@ const MOCK_ITEM_5 = new Item(
   ITEM_DATA.delivery_info
 );
 Sold.args = {
-  showDescription: true,
   item: MOCK_ITEM_5,
 };
 
@@ -212,7 +212,6 @@ const MOCK_ITEM_6 = new Item(
   ITEM_DATA.delivery_info
 );
 Bumped.args = {
-  showDescription: true,
   item: MOCK_ITEM_6,
 };
 
@@ -248,6 +247,5 @@ const MOCK_ITEM_7 = new Item(
 );
 
 BumpedAndReserved.args = {
-  showDescription: true,
   item: MOCK_ITEM_7,
 };
