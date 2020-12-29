@@ -37,5 +37,5 @@ MOCK_ITEM.mainImage.urls_by_size = {
 
 export const Default = Template.bind({});
 Default.args = {
-  items: [MOCK_ITEM, MOCK_ITEM, MOCK_ITEM, MOCK_ITEM],
+  items: [MOCK_ITEM, MOCK_ITEM, MOCK_ITEM, MOCK_ITEM, MOCK_ITEM, MOCK_ITEM],
 };
