@@ -81,6 +81,7 @@ import { DisableControlDirective } from './forms/disable-control.directive';
 import { RouterLinkDirectiveStub } from './router-link-directive-stub';
 import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
 import { DateCountDownComponent } from './date-countdown/date-countdown.component';
+import { BumpSuggestionModalComponent } from './modals/bump-suggestion-modal/bump-suggestion-modal.component';
 
 @NgModule({
   imports: [
@@ -231,6 +232,7 @@ import { DateCountDownComponent } from './date-countdown/date-countdown.componen
     DisableControlDirective,
     RouterLinkDirectiveStub,
     DateCountDownComponent,
+    BumpSuggestionModalComponent,
   ],
   providers: [
     DecimalPipe,
@@ -256,6 +258,7 @@ import { DateCountDownComponent } from './date-countdown/date-countdown.componen
     ConfirmCardModalComponent,
     ChangeCardModalComponent,
     FullScreenModalComponent,
+    BumpSuggestionModalComponent,
   ],
 })
 export class SharedModule {}

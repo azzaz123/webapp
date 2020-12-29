@@ -16,6 +16,7 @@ import { ProBumpConfirmationModalComponent } from '@features/catalog-pro/modals/
 import { OrderEvent } from '@features/catalog/components/selected-items/selected-product.interface';
 import { ItemChangeEvent } from '@features/catalog/core/item-change.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { BumpSuggestionModalComponent } from '@shared/modals/bump-suggestion-modal/bump-suggestion-modal.component';
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
 import { findIndex } from 'lodash-es';
 import { takeWhile } from 'rxjs/operators';
@@ -40,7 +41,7 @@ export class CatalogProListComponent implements OnInit {
   private cache = false;
   public numberOfProducts: number;
   public subscriptionPlan: number;
-  private uploadModalRef: NgbModalRef;
+  private bumpSuggestionModalRef: NgbModalRef;
 
   @ViewChild(ItemSoldDirective, { static: true }) soldButton: ItemSoldDirective;
 
@@ -125,6 +126,7 @@ export class CatalogProListComponent implements OnInit {
           );
         }
         if (params && params.created) {
+          this.showBumpSuggestionModal(params.itemId);
           this.cache = false;
           this.getItems();
           if (params.itemId) {
@@ -199,9 +201,8 @@ export class CatalogProListComponent implements OnInit {
         });
         this.items = append ? this.items.concat(items) : items;
         this.loading = false;
-        if (this.uploadModalRef) {
-          this.uploadModalRef.componentInstance.item = this.items[0];
-          this.uploadModalRef.componentInstance.urgentPrice();
+        if (this.bumpSuggestionModalRef) {
+          this.bumpSuggestionModalRef.componentInstance.item = this.items[0];
         }
       });
   }
@@ -355,5 +356,22 @@ export class CatalogProListComponent implements OnInit {
 
   public getSubscriptionPlan(plan: number) {
     this.subscriptionPlan = plan;
+  }
+
+  private showBumpSuggestionModal(itemId: string): void {
+    this.bumpSuggestionModalRef = this.modalService.open(
+      BumpSuggestionModalComponent,
+      {
+        windowClass: 'modal-standard',
+      }
+    );
+    this.bumpSuggestionModalRef.componentInstance.itemId = itemId;
+    this.bumpSuggestionModalRef.componentInstance.item = this.items[0];
+    this.bumpSuggestionModalRef.result.then((redirect: boolean) => {
+      if (redirect) {
+        this.router.navigate(['catalog/checkout', { itemId }]);
+      }
+      this.bumpSuggestionModalRef = null;
+    });
   }
 }

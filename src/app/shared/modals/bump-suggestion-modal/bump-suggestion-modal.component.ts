@@ -33,6 +33,7 @@ export class BumpSuggestionModalComponent implements OnInit {
     this.itemService
       .getCheapestProductPrice([this.itemId])
       .subscribe((value: CheapestProducts) => {
+        console.log('test', value);
         this.productPrice = +value[this.itemId];
       });
   }

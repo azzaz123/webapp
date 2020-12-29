@@ -9,7 +9,7 @@
   <h1 class="modal-title" i18n="@@UploadConfirmationModalSubtitle">Want to sell it quickly?</h1>	
   <p class="modal-text" i18n="@@UploadConfirmationModalDescription">Highlight your item so that more people see it. Many more!</p>	
   <tsl-button *ngIf="productPrice"
-    className="btn-feature btn-block"	
+    className="btn btn-primary btn-block"	
     (click)="activeModal.close(true)"
     i18n="@@UploadConfirmationModalButton">Mark as "Urgent" for {{ +productPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName }}
   </tsl-button>	

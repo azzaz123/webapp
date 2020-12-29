@@ -21,7 +21,6 @@ import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product
 import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { ReactivateConfirmationModalComponent } from './modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component';
 import { ReactivateModalComponent } from './modals/reactivate-modal/reactivate-modal.component';
-import { BumpSuggestionModalComponent } from './modals/bump-suggestion-modal/bump-suggestion-modal.component';
 
 @NgModule({
   imports: [
@@ -49,7 +48,6 @@ import { BumpSuggestionModalComponent } from './modals/bump-suggestion-modal/bum
     BuyProductModalComponent,
     ReactivateConfirmationModalComponent,
     ListingfeeConfirmationModalComponent,
-    BumpSuggestionModalComponent,
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
@@ -57,7 +55,6 @@ import { BumpSuggestionModalComponent } from './modals/bump-suggestion-modal/bum
     BuyProductModalComponent,
     ReactivateConfirmationModalComponent,
     ListingfeeConfirmationModalComponent,
-    BumpSuggestionModalComponent,
   ],
 })
 export class CatalogModule {}
