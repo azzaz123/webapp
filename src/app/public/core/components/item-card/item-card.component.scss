@@ -11,9 +11,13 @@ $icon-margin: $spacer * 0.5;
   border-radius: $border-radius;
   font-size: $font-size-s;
   height: $container-height-without-description;
+  width: 210px;
   min-width: 165px;
   overflow: hidden;
-  width: 220px;
+
+  @include media-breakpoint-down(xs) {
+    width: 165px;
+  }
 
   &--with-description {
     height: $container-height-with-description;
