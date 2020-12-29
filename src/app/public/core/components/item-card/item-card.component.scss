@@ -1,0 +1,104 @@
+@import '~style/common';
+
+$container-height-with-description: 330px;
+$container-height-without-description: 260px;
+$image-height: 177px;
+$icon-margin: $spacer * 0.5;
+
+.ItemCard {
+  background-color: $white;
+  border: 1px solid $blue-grey-4;
+  border-radius: $border-radius;
+  font-size: $font-size-s;
+  height: $container-height-without-description;
+  width: 210px;
+  min-width: 165px;
+  overflow: hidden;
+
+  @include media-breakpoint-down(xs) {
+    width: 100%;
+    min-width: auto;
+  }
+
+  &--with-description {
+    height: $container-height-with-description;
+  }
+
+  &__icon {
+    @include square(32px);
+    background: $white;
+    border-radius: 50%;
+    top: $icon-margin;
+
+    &--wallapop {
+      background: $walla-main;
+    }
+
+    &--small {
+      ::ng-deep svg {
+        width: 15px;
+      }
+    }
+
+    &--medium {
+      ::ng-deep svg {
+        width: 18px;
+      }
+    }
+
+    &--big {
+      ::ng-deep svg {
+        width: 20px;
+      }
+    }
+
+    &--left {
+      left: $icon-margin;
+    }
+
+    &--right {
+      right: $icon-margin;
+    }
+  }
+
+  &__image {
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: $image-height;
+
+    tsl-item-avatar {
+      ::ng-deep div {
+        @include square(100%);
+      }
+    }
+  }
+
+  &__price {
+    font-size: $font-size-l;
+    &--bold {
+      font-weight: $font-weight-chunky;
+    }
+  }
+
+  &__favourite {
+    cursor: pointer;
+    ::ng-deep svg {
+      width: 20px;
+    }
+  }
+
+  &__info {
+    line-height: $font-size-m;
+
+    &__title {
+      @include vertical-ellipsis(2);
+    }
+    &__description {
+      @include vertical-ellipsis(4);
+
+      &--light {
+        color: $blue-grey-2;
+      }
+    }
+  }
+}
