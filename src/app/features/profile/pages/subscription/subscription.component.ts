@@ -7,9 +7,10 @@ import {
   ANALYTIC_EVENT_TYPES,
   ClickKeepCurrentSubscription,
   ClickProfileEditCurrentSubscription,
-  ClickProfileSubscribeButton,
+  ClickSubscriptionManagementPlus,
   SCREEN_IDS,
-  ViewProfileSubscription,
+  ViewSubscription,
+  ViewSubscriptionManagement,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import {
@@ -62,8 +63,9 @@ export class SubscriptionsComponent implements OnInit {
     this.subscriptionsService
       .getSubscriptions(false)
       .pipe(finalize(() => (this.loading = false)))
-      .subscribe((subscriptions) => (this.subscriptions = subscriptions));
-
+      .subscribe((subscriptions) => {
+        this.subscriptions = subscriptions;
+      });
     this.trackPageView();
     this.userService.me(true).subscribe((user) => (this.user = user));
   }
@@ -145,12 +147,27 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   private trackPageView() {
-    const pageView: AnalyticsPageView<ViewProfileSubscription> = {
-      name: ANALYTICS_EVENT_NAMES.ViewProfileSubscription,
-      attributes: {
-        screenId: SCREEN_IDS.ProfileSubscription,
-      },
-    };
+    let pageView: AnalyticsPageView<
+      ViewSubscriptionManagement | ViewSubscription
+    >;
+    if (
+      this.subscriptionsService.hasOneStripeSubscription(this.subscriptions) ||
+      this.subscriptionsService.isOneSubscriptionInApp(this.subscriptions)
+    ) {
+      pageView = {
+        name: ANALYTICS_EVENT_NAMES.ViewSubscriptionManagement,
+        attributes: {
+          screenId: SCREEN_IDS.SubscriptionManagement,
+        },
+      };
+    } else {
+      pageView = {
+        name: ANALYTICS_EVENT_NAMES.ViewSubscription,
+        attributes: {
+          screenId: SCREEN_IDS.Subscription,
+        },
+      };
+    }
 
     this.analyticsService.trackPageView(pageView);
   }
@@ -160,11 +177,11 @@ export class SubscriptionsComponent implements OnInit {
     modalType: SubscriptionModal
   ) {
     if (modalType === AddNewSubscriptionModalComponent) {
-      const event: AnalyticsEvent<ClickProfileSubscribeButton> = {
-        name: ANALYTICS_EVENT_NAMES.ClickProfileSubscribeButton,
+      const event: AnalyticsEvent<ClickSubscriptionManagementPlus> = {
+        name: ANALYTICS_EVENT_NAMES.ClickSubscriptionManagementPlus,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
-          screenId: SCREEN_IDS.ProfileSubscription,
+          screenId: SCREEN_IDS.SubscriptionManagement,
           subscription: subscription.category_id as SUBSCRIPTION_CATEGORIES,
           isNewSubscriber: !this.subscriptionsService.hasOneStripeSubscription(
             this.subscriptions
