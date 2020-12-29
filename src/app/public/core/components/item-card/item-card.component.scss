@@ -16,7 +16,8 @@ $icon-margin: $spacer * 0.5;
   overflow: hidden;
 
   @include media-breakpoint-down(xs) {
-    width: 165px;
+    width: 100%;
+    min-width: auto;
   }
 
   &--with-description {
