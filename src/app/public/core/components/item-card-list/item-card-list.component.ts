@@ -13,7 +13,5 @@ export class ItemCardListComponent {
 
   constructor(private deviceDetectionService: DeviceDetectorService) {
     this.showDescription = !this.deviceDetectionService.isMobile();
-
-    console.log(this.deviceDetectionService.isMobile());
   }
 }

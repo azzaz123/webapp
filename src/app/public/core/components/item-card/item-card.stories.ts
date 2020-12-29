@@ -52,6 +52,12 @@ Default.args = {
   item: MOCK_ITEM,
 };
 
+export const WithoutDescription = Template.bind({});
+WithoutDescription.args = {
+  item: MOCK_ITEM,
+  showDescription: false,
+};
+
 export const LongInfo = Template.bind({});
 const MOCK_ITEM_2 = new Item(
   ITEM_DATA.id,
