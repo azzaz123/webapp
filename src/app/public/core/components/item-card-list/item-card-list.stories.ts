@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { moduleMetadata } from '@storybook/angular';
 import { Story, Meta } from '@storybook/angular/types-6-0';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { ItemCardModule } from '../item-card/item-card.module';
 import { ItemCardListComponent } from './item-card-list.component';
 
@@ -11,6 +12,7 @@ export default {
     moduleMetadata({
       declarations: [ItemCardListComponent],
       imports: [CommonModule, ItemCardModule],
+      providers: [DeviceDetectorService],
     }),
   ],
 } as Meta;
