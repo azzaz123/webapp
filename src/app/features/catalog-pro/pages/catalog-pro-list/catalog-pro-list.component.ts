@@ -366,10 +366,9 @@ export class CatalogProListComponent implements OnInit {
       }
     );
     this.bumpSuggestionModalRef.componentInstance.itemId = itemId;
-    this.bumpSuggestionModalRef.componentInstance.item = this.items[0];
     this.bumpSuggestionModalRef.result.then((redirect: boolean) => {
       if (redirect) {
-        this.router.navigate(['catalog/checkout', { itemId }]);
+        this.router.navigate(['pro/catalog/checkout', { itemId }]);
       }
       this.bumpSuggestionModalRef = null;
     });

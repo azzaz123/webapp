@@ -46,6 +46,7 @@ import { ToastService } from '@layout/toast/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TooManyItemsModalComponent } from '@shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
+import { BumpSuggestionModalComponent } from '@shared/modals/bump-suggestion-modal/bump-suggestion-modal.component';
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
 import { find } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -298,6 +299,55 @@ describe('ListComponent', () => {
       expect(errorService.i18nSuccess).toHaveBeenCalledWith('itemUpdated');
     }));
 
+    describe('bump suggestion modal', () => {
+      beforeEach(() => {
+        route.params = of({
+          created: true,
+          itemId: '1',
+        });
+      });
+
+      it('should open bump suggestion modal if item is created', fakeAsync(() => {
+        component.ngOnInit();
+        tick();
+
+        expect(modalService.open).toHaveBeenCalledWith(
+          BumpSuggestionModalComponent,
+          {
+            windowClass: 'modal-standard',
+          }
+        );
+      }));
+
+      it('should redirect when modal CTA button modal is clicked', fakeAsync(() => {
+        modalSpy.and.returnValue({
+          result: Promise.resolve(true),
+          componentInstance: { item: null },
+        });
+        spyOn(router, 'navigate');
+        component.ngOnInit();
+        tick();
+
+        expect(router.navigate).toHaveBeenCalledTimes(1);
+        expect(router.navigate).toHaveBeenCalledWith([
+          'catalog/checkout',
+          { itemId: '1' },
+        ]);
+      }));
+
+      it('should not redirect when modal is closed', fakeAsync(() => {
+        modalSpy.and.returnValue({
+          result: Promise.resolve(false),
+          componentInstance: { item: null },
+        });
+        spyOn(router, 'navigate');
+        component.ngOnInit();
+        tick();
+
+        expect(router.navigate).not.toHaveBeenCalled();
+      }));
+    });
+
     it('should open the listing fee modal if transaction is set as purchaseListingFee', fakeAsync(() => {
       spyOn(localStorage, 'getItem').and.returnValue('purchaseListingFee');
       spyOn(localStorage, 'removeItem');
@@ -507,23 +557,17 @@ describe('ListComponent', () => {
       component.ngOnInit();
       expect(component['end']).toBeTruthy();
     });
-    it('should set item to upload modal and call urgentPrice', fakeAsync(() => {
-      component['uploadModalRef'] = <any>{
+    it('should set item to bumb suggestion modal', fakeAsync(() => {
+      component['bumpSuggestionModalRef'] = <any>{
         componentInstance: componentInstance,
       };
 
       component.ngOnInit();
       tick();
 
-      expect(component['uploadModalRef'].componentInstance.item).toEqual(
-        component.items[0]
-      );
       expect(
-        component['uploadModalRef'].componentInstance.trackUploaded
-      ).toHaveBeenCalled();
-      expect(
-        component['uploadModalRef'].componentInstance.urgentPrice
-      ).toHaveBeenCalled();
+        component['bumpSuggestionModalRef'].componentInstance.item
+      ).toEqual(component.items[0]);
     }));
   });
 

@@ -1,68 +1,63 @@
 import { of } from 'rxjs';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { UploadConfirmationModalComponent } from './upload-confirmation-modal.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { ItemService } from '@core/item/item.service';
-import {
-  PRODUCT_RESPONSE,
-  ORDER_EVENT,
-  PRODUCT_DURATION_ID,
-  MOCK_ITEM,
-} from '@fixtures/item.fixtures.spec';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
+import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { DecimalPipe } from '@angular/common';
 import { CustomCurrencyPipe } from '@shared/pipes';
 import { PaymentService } from '@core/payments/payment.service';
 import { CreditInfo } from '@core/payments/payment.interface';
+import { BumpSuggestionModalComponent } from './bump-suggestion-modal.component';
+import { By } from '@angular/platform-browser';
+import { ButtonComponent } from '@shared/button/button.component';
 
-describe('UploadConfirmationModalComponent', () => {
-  let component: UploadConfirmationModalComponent;
-  let fixture: ComponentFixture<UploadConfirmationModalComponent>;
-  let trackingService: TrackingService;
+describe('BumpSuggestionModalComponent', () => {
+  let component: BumpSuggestionModalComponent;
+  let fixture: ComponentFixture<BumpSuggestionModalComponent>;
   let itemService: ItemService;
   let activeModal: NgbActiveModal;
   let paymentService: PaymentService;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [UploadConfirmationModalComponent, CustomCurrencyPipe],
-        providers: [
-          NgbActiveModal,
-          DecimalPipe,
-          { provide: TrackingService, useClass: MockTrackingService },
-          {
-            provide: ItemService,
-            useValue: {
-              getUrgentProducts() {},
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        BumpSuggestionModalComponent,
+        ButtonComponent,
+        CustomCurrencyPipe,
+      ],
+      providers: [
+        DecimalPipe,
+        {
+          provide: ItemService,
+          useValue: {
+            getCheapestProductPrice() {
+              return of({ ['1']: '20' });
             },
           },
-          {
-            provide: NgbActiveModal,
-            useValue: {
-              close() {},
+        },
+        {
+          provide: NgbActiveModal,
+          useValue: {
+            close() {},
+          },
+        },
+        {
+          provide: PaymentService,
+          useValue: {
+            getCreditInfo() {
+              return of({});
             },
           },
-          {
-            provide: PaymentService,
-            useValue: {
-              getCreditInfo() {
-                return of({});
-              },
-            },
-          },
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+        },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UploadConfirmationModalComponent);
+    fixture = TestBed.createComponent(BumpSuggestionModalComponent);
     component = fixture.componentInstance;
-    trackingService = TestBed.inject(TrackingService);
     itemService = TestBed.inject(ItemService);
     activeModal = TestBed.inject(NgbActiveModal);
     paymentService = TestBed.inject(PaymentService);
@@ -79,97 +74,82 @@ describe('UploadConfirmationModalComponent', () => {
 
       component.ngOnInit();
 
-      expect(paymentService.getCreditInfo).toHaveBeenCalled();
+      expect(paymentService.getCreditInfo).toHaveBeenCalledTimes(1);
       expect(component.creditInfo).toEqual(creditInfo);
     });
-  });
 
-  describe('urgentPrice', () => {
-    it('should call urgentPrice', () => {
-      spyOn(itemService, 'getUrgentProducts').and.returnValue(
-        of(PRODUCT_RESPONSE)
-      );
-      component.item = MOCK_ITEM;
+    it('should call and set cheapest price', () => {
+      spyOn(itemService, 'getCheapestProductPrice').and.callThrough();
+      component.itemId = '1';
 
-      component.urgentPrice();
+      component.ngOnInit();
 
-      expect(itemService.getUrgentProducts).toHaveBeenCalledWith(MOCK_ITEM.id);
-      expect(component.productPrice).toEqual(
-        +PRODUCT_RESPONSE.durations[0].market_code
-      );
-      expect(component.productId).toEqual(PRODUCT_RESPONSE.durations[0].id);
+      expect(itemService.getCheapestProductPrice).toHaveBeenCalledTimes(1);
+      expect(itemService.getCheapestProductPrice).toHaveBeenCalledWith(['1']);
+      expect(component.productPrice).toEqual(20);
     });
   });
 
-  describe('featureUrgentItem', () => {
-    it('should close the modal with an order event', () => {
+  describe('Share', () => {
+    it('should open facebook link', () => {
+      spyOn(window, 'open');
+      component.item = MOCK_ITEM;
+
+      component.facebookShare();
+
+      expect(window.open).toHaveBeenCalledTimes(1);
+      expect(window.open).toHaveBeenCalledWith(
+        `https://www.facebook.com/dialog/share?app_id=258778180928082&display=popup&href=${encodeURIComponent(
+          component.item.webLink
+        )}`,
+        'fbShareWindow',
+        'height=450, width=550, toolbar=0, location=0, menubar=0, directories=0, scrollbars=0'
+      );
+    });
+
+    it('should open twiter link', () => {
+      spyOn(window, 'open');
+      component.item = MOCK_ITEM;
+
+      component.twitterShare();
+
+      expect(window.open).toHaveBeenCalledTimes(1);
+      expect(window.open).toHaveBeenCalledWith(
+        `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+          component.item.webLink
+        )}`,
+        'twShareWindow',
+        'height=269,width=550, toolbar=0, location=0, menubar=0, directories=0, scrollbars=0'
+      );
+    });
+  });
+
+  describe('Close modal', () => {
+    beforeEach(() => {
       spyOn(activeModal, 'close');
-      spyOn(localStorage, 'setItem');
-      component.item = MOCK_ITEM;
-      component.productId = PRODUCT_DURATION_ID;
-      component.productPrice = +PRODUCT_RESPONSE.durations[0].market_code;
-
-      component.featureUrgentItem();
-
-      expect(activeModal.close).toHaveBeenCalledWith(ORDER_EVENT);
-      expect(localStorage.setItem).toHaveBeenCalledWith(
-        'transactionType',
-        'urgent'
-      );
-    });
-  });
-
-  describe('trackUploaded', () => {
-    it('should send the uploaded tracking', () => {
-      spyOn(trackingService, 'track');
-      component.item = MOCK_ITEM;
-
-      component.trackUploaded();
-
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.UPLOADFORM_SUCCESS,
-        {
-          categoryId: component.item.categoryId,
-        }
-      );
     });
 
-    it('should send facebook AddToCart tracking', () => {
-      spyOn(window as any, 'fbq');
-      component.item = MOCK_ITEM;
-      const event = {
-        value: component.item.salePrice,
-        currency: component.item.currencyCode,
-        content_ids: component.item.id,
-        content_type: component.item.categoryId,
-      };
+    it('should be closed pressing close button', () => {
+      const closeButton = fixture.debugElement.query(By.css('.modal-close'))
+        .nativeElement;
 
-      component.trackUploaded();
+      closeButton.click();
 
-      expect(window['fbq']).toHaveBeenCalledWith('track', 'AddToCart', event);
+      expect(activeModal.close).toHaveBeenCalledTimes(1);
+      expect(activeModal.close).toHaveBeenLastCalledWith(false);
     });
 
-    it('should send pinterest addtocart tracking', () => {
-      spyOn(window as any, 'pintrk');
-      component.item = MOCK_ITEM;
-      const event = {
-        value: component.item.salePrice,
-        currency: component.item.currencyCode,
-        line_items: [
-          {
-            product_category: component.item.categoryId,
-            product_id: component.item.id,
-          },
-        ],
-      };
+    it('should be closed pressing CTA button', () => {
+      component.itemId = '1';
+      fixture.detectChanges();
+      const submitButton = fixture.debugElement.query(
+        By.directive(ButtonComponent)
+      ).nativeElement;
 
-      component.trackUploaded();
+      submitButton.click();
 
-      expect(window['pintrk']).toHaveBeenCalledWith(
-        'track',
-        'addtocart',
-        event
-      );
+      expect(activeModal.close).toHaveBeenCalledTimes(1);
+      expect(activeModal.close).toHaveBeenLastCalledWith(true);
     });
   });
 });

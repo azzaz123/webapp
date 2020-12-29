@@ -29,16 +29,15 @@ export class BumpSuggestionModalComponent implements OnInit {
     this.getCreditInfo();
   }
 
-  private getCheapestProductPrice() {
+  private getCheapestProductPrice(): void {
     this.itemService
       .getCheapestProductPrice([this.itemId])
       .subscribe((value: CheapestProducts) => {
-        console.log('test', value);
         this.productPrice = +value[this.itemId];
       });
   }
 
-  private getCreditInfo() {
+  private getCreditInfo(): void {
     this.paymentService
       .getCreditInfo(false)
       .subscribe((creditInfo: CreditInfo) => {
@@ -46,8 +45,7 @@ export class BumpSuggestionModalComponent implements OnInit {
       });
   }
 
-  public facebookShare() {
-    console.log('fb', this.item);
+  public facebookShare(): void {
     const url =
       'https://www.facebook.com/dialog/share?app_id=258778180928082&display=popup&href=' +
       encodeURIComponent(this.item.webLink);
@@ -58,13 +56,9 @@ export class BumpSuggestionModalComponent implements OnInit {
     );
   }
 
-  public twitterShare() {
-    const text = 'Mira que acabo de encontrar en @Wallapop:';
+  public twitterShare(): void {
     const url =
-      'https://twitter.com/intent/tweet?' +
-      'text=' +
-      encodeURIComponent(text) +
-      '&url=' +
+      'https://twitter.com/intent/tweet?url=' +
       encodeURIComponent(this.item.webLink);
     window.open(
       url,

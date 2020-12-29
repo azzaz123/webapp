@@ -26,6 +26,7 @@ import {
 import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BumpSuggestionModalComponent } from '@shared/modals/bump-suggestion-modal/bump-suggestion-modal.component';
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
 import { of, Subject } from 'rxjs';
 import { CatalogProListComponent } from './catalog-pro-list.component';
@@ -183,6 +184,55 @@ describe('CatalogProListComponent', () => {
       expect(component['modalRef'].componentInstance.extras).toBe(true);
     }));
 
+    describe('bump suggestion modal', () => {
+      beforeEach(() => {
+        route.params = of({
+          created: true,
+          itemId: '1',
+        });
+      });
+
+      it('should open bump suggestion modal if item is created', fakeAsync(() => {
+        component.ngOnInit();
+        tick();
+
+        expect(modalService.open).toHaveBeenCalledWith(
+          BumpSuggestionModalComponent,
+          {
+            windowClass: 'modal-standard',
+          }
+        );
+      }));
+
+      it('should redirect when modal CTA button modal is clicked', fakeAsync(() => {
+        modalSpy.and.returnValue({
+          result: Promise.resolve(true),
+          componentInstance: { item: null },
+        });
+        spyOn(router, 'navigate');
+        component.ngOnInit();
+        tick();
+
+        expect(router.navigate).toHaveBeenCalledTimes(1);
+        expect(router.navigate).toHaveBeenCalledWith([
+          'pro/catalog/checkout',
+          { itemId: '1' },
+        ]);
+      }));
+
+      it('should not redirect when modal is closed', fakeAsync(() => {
+        modalSpy.and.returnValue({
+          result: Promise.resolve(false),
+          componentInstance: { item: null },
+        });
+        spyOn(router, 'navigate');
+        component.ngOnInit();
+        tick();
+
+        expect(router.navigate).not.toHaveBeenCalled();
+      }));
+    });
+
     it('should open bump confirmation modal and redirect to extras if code is 202', fakeAsync(() => {
       spyOn(router, 'navigate');
       spyOn(localStorage, 'getItem').and.returnValue('bump');
@@ -318,6 +368,19 @@ describe('CatalogProListComponent', () => {
         }
       );
     });
+
+    it('should set item to bumb suggestion modal', fakeAsync(() => {
+      component['bumpSuggestionModalRef'] = <any>{
+        componentInstance: componentInstance,
+      };
+
+      component.ngOnInit();
+      tick();
+
+      expect(
+        component['bumpSuggestionModalRef'].componentInstance.item
+      ).toEqual(component.items[0]);
+    }));
 
     it('should track the ProductListActiveViewed if the selectedStatus is published', () => {
       component['selectedStatus'] = ITEM_STATUS.PUBLISHED;
