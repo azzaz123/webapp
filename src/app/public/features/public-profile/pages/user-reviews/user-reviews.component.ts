@@ -4,6 +4,7 @@ import { PublicProfileService } from '@public/features/public-profile/core/servi
 import { PaginationService } from '@public/core/services/pagination/pagination.service';
 import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
 import { finalize, take } from 'rxjs/operators';
+import { Review } from '@features/reviews/core/review';
 
 @Component({
   selector: 'tsl-user-reviews',
@@ -11,7 +12,7 @@ import { finalize, take } from 'rxjs/operators';
   styleUrls: ['./user-reviews.component.scss'],
 })
 export class UserReviewsComponent implements OnInit {
-  public reviews = [];
+  public reviews: Review[] = [];
   public nextPaginationItem = 0;
   public loading = true;
 
