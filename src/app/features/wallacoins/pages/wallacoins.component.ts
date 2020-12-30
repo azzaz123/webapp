@@ -13,7 +13,6 @@ import { WallacoinsTutorialComponent } from '../components/wallacoins-tutorial/w
 import { Observable } from 'rxjs';
 import { User } from '../../../core/user/user';
 import { map } from 'rxjs/operators';
-import { WallacoinsDisabledModalComponent } from '../components/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
 
 @Component({
   selector: 'tsl-wallacoins',
@@ -42,10 +41,6 @@ export class WallacoinsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.onOpenWallacoinsModal();
-    /*  
-    TODO: Remove when we sure that this feature will no be reactivate again
-
     this.openTutorialModal();
     this.paymentService.getCreditsPacks().subscribe((packs: Pack[]) => {
       this.packs = packs;
@@ -70,20 +65,6 @@ export class WallacoinsComponent implements OnInit {
           this.trackingService.track(TrackingService.BUY_MORE_CREDITS_ERROR);
         }
       }
-    });
-    */
-  }
-
-  private onOpenWallacoinsModal(): void {
-    const modalRef: NgbModalRef = this.modalService.open(
-      WallacoinsDisabledModalComponent,
-      {
-        windowClass: 'modal-standard',
-        backdrop: 'static',
-      }
-    );
-    modalRef.result.then(() => {
-      this.router.navigate(['catalog/list']);
     });
   }
 

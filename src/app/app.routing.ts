@@ -116,10 +116,7 @@ const loggedRoutes = [
         redirectTo: '/pro/catalog/list',
       },
     },
-    loadChildren: () =>
-      import('app/features/wallacoins/wallacoins.module').then(
-        (m) => m.WallacoinsModule
-      ),
+    redirectTo: 'catalog/list;bumpModal=true',
   },
   {
     path: 'catalog',

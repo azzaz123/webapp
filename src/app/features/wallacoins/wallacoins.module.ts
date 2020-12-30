@@ -12,7 +12,6 @@ import { WallacoinsConfirmModalComponent } from './components/wallacoins-confirm
 import { TrackingModule } from '../../core/tracking/tracking.module';
 import { PackWallacoinsComponent } from './components/pack-wallacoins/pack-wallacoins.component';
 import { WallacoinsTutorialComponent } from './components/wallacoins-tutorial/wallacoins-tutorial.component';
-import { WallacoinsDisabledModalComponent } from './components/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
 
 @NgModule({
   imports: [
@@ -30,13 +29,11 @@ import { WallacoinsDisabledModalComponent } from './components/wallacoins-disabl
     WallacoinsConfirmModalComponent,
     PackWallacoinsComponent,
     WallacoinsTutorialComponent,
-    WallacoinsDisabledModalComponent,
   ],
   entryComponents: [
     BuyWallacoinsModalComponent,
     WallacoinsConfirmModalComponent,
     WallacoinsTutorialComponent,
-    WallacoinsDisabledModalComponent,
   ],
 })
 export class WallacoinsModule {}
