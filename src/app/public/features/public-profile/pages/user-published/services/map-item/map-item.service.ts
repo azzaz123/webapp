@@ -8,10 +8,11 @@ import {
   RealestateContent,
 } from '@core/item/item-response.interface';
 import { Realestate } from '@core/item/realestate';
+import { UuidService } from '@core/uuid/uuid.service';
 
 @Injectable()
 export class MapItemService {
-  constructor() {}
+  constructor(private uuidService: UuidService) {}
 
   public mapItems(items: ItemResponse[]): Item[] {
     return items.map((reviewResponse: ItemResponse) => {
@@ -109,7 +110,7 @@ export class MapItemService {
       content.images
         ? content.images[0]
         : {
-            id: '123', // TODO UUID
+            id: this.uuidService.getUUID(),
             original_width: content.image ? content.image.original_width : null,
             original_height: content.image
               ? content.image.original_height
