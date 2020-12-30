@@ -5,6 +5,7 @@ import { PaginationService } from '@public/core/services/pagination/pagination.s
 import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
 import { finalize, take } from 'rxjs/operators';
 import { Review } from '@features/reviews/core/review';
+import { ReviewResponse } from '@features/reviews/core/review-response.interface';
 
 @Component({
   selector: 'tsl-user-reviews',
@@ -40,7 +41,7 @@ export class UserReviewsComponent implements OnInit {
         finalize(() => (this.loading = false)),
         take(1)
       )
-      .subscribe((response: PaginationResponse) => {
+      .subscribe((response: PaginationResponse<ReviewResponse>) => {
         this.reviews = this.reviews.concat(
           this.mapReviewService.mapItems(response.results)
         );
