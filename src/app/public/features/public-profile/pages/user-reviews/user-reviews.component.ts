@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MapReviewService } from '@public/features/public-profile/pages/user-reviews/services/map-review/map-review.service';
 import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
 import { PaginationService } from '@public/core/services/pagination/pagination.service';
@@ -10,7 +10,7 @@ import { finalize, take } from 'rxjs/operators';
   templateUrl: './user-reviews.component.html',
   styleUrls: ['./user-reviews.component.scss'],
 })
-export class UserReviewsComponent {
+export class UserReviewsComponent implements OnInit {
   public reviews = [];
   public nextPaginationItem = 0;
   public loading = true;
@@ -19,7 +19,9 @@ export class UserReviewsComponent {
     private publicProfileService: PublicProfileService,
     private mapReviewService: MapReviewService,
     private paginationService: PaginationService
-  ) {
+  ) {}
+
+  public ngOnInit(): void {
     this.loadItems();
   }
 
