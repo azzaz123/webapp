@@ -72,12 +72,12 @@ import { DisableControlDirective } from './forms/disable-control.directive';
 import { RouterLinkDirectiveStub } from './router-link-directive-stub';
 import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
 import { DateCountDownComponent } from './date-countdown/date-countdown.component';
+import { ItemAvatarModule } from './item-avatar/item-avatar.module';
+import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.module';
 import { StarsModule } from './stars/stars.module';
 import { UserAvatarModule } from './user-avatar/user-avatar.module';
 import { SpinnerModule } from './spinner/spinner.module';
-import { ItemAvatarModule } from './item-avatar/item-avatar.module';
 import { SanitizedBackgroundModule } from './sanitized-background/sanitized-background.module';
-import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.module';
 
 @NgModule({
   imports: [
@@ -95,13 +95,13 @@ import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.mo
     ProBadgeModule,
     SvgIconModule,
     DropdownModule,
+    ItemAvatarModule,
+    SanitizedBackgroundModule,
+    CustomCurrencyModule,
     StarsModule,
     UserAvatarModule,
     SanitizedBackgroundModule,
     SpinnerModule,
-    ItemAvatarModule,
-    SanitizedBackgroundModule,
-    CustomCurrencyModule,
   ],
   exports: [
     SpinnerModule,
