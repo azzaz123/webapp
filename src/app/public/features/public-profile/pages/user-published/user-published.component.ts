@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Item } from '@core/item/item';
+import { ItemResponse } from '@core/item/item-response.interface';
 import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
 import { PaginationService } from '@public/core/services/pagination/pagination.service';
 import { finalize, take } from 'rxjs/operators';
 import { PublicProfileService } from '../../core/services/public-profile.service';
+import { MapItemService } from './services/map-item/map-item.service';
 
 @Component({
   selector: 'tsl-user-published',
@@ -17,7 +19,8 @@ export class UserPublishedComponent implements OnInit {
 
   constructor(
     private publicProfileService: PublicProfileService,
-    private paginationService: PaginationService
+    private paginationService: PaginationService,
+    private mapItemService: MapItemService
   ) {}
 
   ngOnInit(): void {
@@ -40,8 +43,10 @@ export class UserPublishedComponent implements OnInit {
           take(1)
         )
         .subscribe(
-          (response: PaginationResponse<Item>) => {
-            this.items = this.items.concat(response.results);
+          (response: PaginationResponse<ItemResponse>) => {
+            this.items = this.items.concat(
+              this.mapItemService.mapItems(response.results)
+            );
             this.nextPaginationItem = response.init;
           },
           () => {
