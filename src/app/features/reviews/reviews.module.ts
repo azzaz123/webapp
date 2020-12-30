@@ -5,21 +5,21 @@ import {
   ReviewsRoutingModule,
 } from './reviews.routes';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-
 import { UserReviewService } from './core/user-review.service';
 import { SharedModule } from 'app/shared/shared.module';
-import { ReviewItemComponent } from './components/review-item/review-item.component';
 import { SanitizedBackgroundModule } from '@shared/sanitized-background/sanitized-background.module';
+import { ReviewItemModule } from './components/review-item/review-item.module';
 
 @NgModule({
   imports: [
     SharedModule,
     CommonModule,
     ReviewsRoutingModule,
+    ReviewItemModule,
     InfiniteScrollModule,
     SanitizedBackgroundModule,
   ],
-  declarations: [reviewsRoutedComponents, ReviewItemComponent],
+  declarations: [reviewsRoutedComponents],
   providers: [UserReviewService],
   exports: [reviewsRoutedComponents],
 })

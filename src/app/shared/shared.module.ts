@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
-import { SpinnerComponent } from './spinner/spinner.component';
 import { AdComponent } from './ad/ad.component';
 import { DateUntilDayPipe, DateCalendarPipe } from './pipes';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
@@ -15,8 +14,6 @@ import { SoldModalComponent } from './modals/sold-modal/sold-modal.component';
 import { ReviewModalComponent } from './modals/review-modal/review-modal.component';
 import { ItemSoldDirective } from './modals/sold-modal/item-sold.directive';
 import { StarsRateComponent } from './stars-rate/stars-rate.component';
-import { StarsComponent } from './stars/stars.component';
-import { UserAvatarComponent } from './user-avatar/user-avatar.component';
 import { ProcessAllButtonComponent } from './process-all-button/process-all-button.component';
 import { ArchivableComponent } from './archivable/archivable.component';
 import { ArchiveButtonComponent } from './archive-button/archive-button.component';
@@ -76,8 +73,11 @@ import { RouterLinkDirectiveStub } from './router-link-directive-stub';
 import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
 import { DateCountDownComponent } from './date-countdown/date-countdown.component';
 import { ItemAvatarModule } from './item-avatar/item-avatar.module';
-import { SanitizedBackgroundModule } from './sanitized-background/sanitized-background.module';
 import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.module';
+import { StarsModule } from './stars/stars.module';
+import { UserAvatarModule } from './user-avatar/user-avatar.module';
+import { SanitizedBackgroundModule } from './sanitized-background/sanitized-background.module';
+import { SpinnerModule } from './spinner/spinner.module';
 
 @NgModule({
   imports: [
@@ -98,21 +98,26 @@ import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.mo
     ItemAvatarModule,
     SanitizedBackgroundModule,
     CustomCurrencyModule,
+    StarsModule,
+    UserAvatarModule,
+    SanitizedBackgroundModule,
+    SpinnerModule,
   ],
   exports: [
+    SpinnerModule,
+    SanitizedBackgroundModule,
+    UserAvatarModule,
+    StarsModule,
     CardModule,
     CommonModule,
     UploaderModule,
-    SpinnerComponent,
     AdComponent,
     RestrictInputDirective,
     HeaderComponent,
     ButtonComponent,
     SoldModalComponent,
     ItemSoldDirective,
-    StarsComponent,
     StarsRateComponent,
-    UserAvatarComponent,
     StatusIconComponent,
     ProcessAllButtonComponent,
     ArchivableComponent,
@@ -165,15 +170,12 @@ import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.mo
   declarations: [
     AdComponent,
     ConfirmationModalComponent,
-    SpinnerComponent,
     RestrictInputDirective,
     HeaderComponent,
     ButtonComponent,
     SoldModalComponent,
     ItemSoldDirective,
-    StarsComponent,
     StarsRateComponent,
-    UserAvatarComponent,
     StatusIconComponent,
     ProcessAllButtonComponent,
     ArchivableComponent,
