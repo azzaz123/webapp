@@ -17,9 +17,6 @@ $cols-xs: 2;
 
   @include media-breakpoint-up(sm) {
     @include grid-setup($cols-sm);
-    &__card {
-      margin: auto;
-    }
   }
 
   @include media-breakpoint-up(md) {
