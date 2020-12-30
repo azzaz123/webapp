@@ -1,7 +1,7 @@
-import { HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 
-export interface PaginationResponse {
-  results: any[];
+export interface PaginationResponse<T> {
+  results: T[];
   init: number;
 }
 export interface PaginationRequestOptions {

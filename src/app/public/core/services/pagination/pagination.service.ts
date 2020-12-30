@@ -15,7 +15,7 @@ export class PaginationService {
 
   public getItems(
     endpointSubscribable: Observable<HttpResponse<any>>
-  ): Observable<PaginationResponse> {
+  ): Observable<PaginationResponse<any>> {
     return endpointSubscribable.pipe(
       map((r: HttpResponse<any>) => {
         const nextPage: string = r.headers.get('x-nextpage');
