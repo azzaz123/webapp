@@ -1,7 +1,7 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Item } from '@core/item/item';
 import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
 import { PaginationService } from '@public/core/services/pagination/pagination.service';
-import { Subscription } from 'rxjs';
 import { finalize, take } from 'rxjs/operators';
 import { PublicProfileService } from '../../core/services/public-profile.service';
 
@@ -10,49 +10,41 @@ import { PublicProfileService } from '../../core/services/public-profile.service
   templateUrl: './user-published.component.html',
   styleUrls: ['./user-published.component.scss'],
 })
-export class UserPublishedComponent implements OnDestroy {
-  public items = [];
+export class UserPublishedComponent implements OnInit {
+  public items: Item[] = [];
   public nextPaginationItem = 0;
   public loading = true;
-
-  private subscriptions: Subscription[] = [];
 
   constructor(
     private publicProfileService: PublicProfileService,
     private paginationService: PaginationService
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.loadItems();
   }
 
   private loadItems(): void {
     this.loading = true;
 
-    this.subscriptions.push(
-      this.paginationService
-        .getItems(
-          this.publicProfileService.getPublishedItems(
-            this.publicProfileService.user.id,
-            this.nextPaginationItem
-          )
+    this.paginationService
+      .getItems(
+        this.publicProfileService.getPublishedItems(
+          this.publicProfileService.user.id,
+          this.nextPaginationItem
         )
-        .pipe(
-          finalize(() => (this.loading = false)),
-          take(1)
-        )
-        .subscribe((response: PaginationResponse) => {
-          this.items = this.items.concat(response.results);
-          this.nextPaginationItem = response.init;
-        })
-    );
+      )
+      .pipe(
+        finalize(() => (this.loading = false)),
+        take(1)
+      )
+      .subscribe((response: PaginationResponse<Item>) => {
+        this.items = this.items.concat(response.results);
+        this.nextPaginationItem = response.init;
+      });
   }
 
   public loadMore(): void {
     this.loadItems();
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription: Subscription) =>
-      subscription.unsubscribe()
-    );
   }
 }
