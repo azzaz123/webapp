@@ -30,26 +30,40 @@ export class UserReviewsComponent implements OnInit {
   private loadItems(): void {
     this.loading = true;
 
-    this.paginationService
-      .getItems(
-        this.publicProfileService.getReviews(
-          this.publicProfileService.user.id,
-          this.nextPaginationItem
+    try {
+      this.paginationService
+        .getItems(
+          this.publicProfileService.getReviews(
+            this.publicProfileService.user.id,
+            this.nextPaginationItem
+          )
         )
-      )
-      .pipe(
-        finalize(() => (this.loading = false)),
-        take(1)
-      )
-      .subscribe((response: PaginationResponse<ReviewResponse>) => {
-        this.reviews = this.reviews.concat(
-          this.mapReviewService.mapItems(response.results)
+        .pipe(
+          finalize(() => (this.loading = false)),
+          take(1)
+        )
+        .subscribe(
+          (response: PaginationResponse<ReviewResponse>) => {
+            this.reviews = this.reviews.concat(
+              this.mapReviewService.mapItems(response.results)
+            );
+            this.nextPaginationItem = response.init;
+          },
+          () => {
+            this.onError;
+          }
         );
-        this.nextPaginationItem = response.init;
-      });
+    } catch (err: any) {
+      this.onError();
+    }
   }
 
   public loadMore(): void {
     this.loadItems();
+  }
+
+  private onError(): void {
+    this.reviews = [];
+    this.loading = false;
   }
 }
