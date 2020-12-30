@@ -42,9 +42,7 @@ export const IS_FAROURITE_ENDPOINT = (userId: string) =>
 export const MARK_AS_FAVOURITE_ENDPOINT = (userId: string) =>
   `${PROFILE_API_URL(userId)}/${FAVOURITE_API_PATH}`;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class PublicProfileService {
   private _user: User;
 

@@ -11,6 +11,8 @@ import { ProfileTabsComponent } from './components/profile-tabs/profile-tabs.com
 import { SharedModule } from '@shared/shared.module';
 import { FavouriteUserModule } from './components/favourite-user/favourite-user.module';
 import { UserReviewsModule } from './pages/user-reviews/user-reviews.module';
+import { PublicProfileService } from './core/services/public-profile.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -21,10 +23,12 @@ import { UserReviewsModule } from './pages/user-reviews/user-reviews.module';
   ],
   imports: [
     CommonModule,
+    HttpClientModule,
     publicProfileRoutedModules,
     PublicProfileRoutingModule,
     SharedModule,
     FavouriteUserModule,
   ],
+  providers: [PublicProfileService],
 })
 export class PublicProfileModule {}
