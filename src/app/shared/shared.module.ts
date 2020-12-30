@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
-import { SpinnerComponent } from './spinner/spinner.component';
 import { AdComponent } from './ad/ad.component';
 import {
   CustomCurrencyPipe,
@@ -19,9 +18,6 @@ import { SoldModalComponent } from './modals/sold-modal/sold-modal.component';
 import { ReviewModalComponent } from './modals/review-modal/review-modal.component';
 import { ItemSoldDirective } from './modals/sold-modal/item-sold.directive';
 import { StarsRateComponent } from './stars-rate/stars-rate.component';
-import { StarsComponent } from './stars/stars.component';
-import { SanitizedBackgroundDirective } from './sanitized-background/sanitized-background.directive';
-import { UserAvatarComponent } from './user-avatar/user-avatar.component';
 import { ProcessAllButtonComponent } from './process-all-button/process-all-button.component';
 import { ArchivableComponent } from './archivable/archivable.component';
 import { ArchiveButtonComponent } from './archive-button/archive-button.component';
@@ -81,6 +77,10 @@ import { DisableControlDirective } from './forms/disable-control.directive';
 import { RouterLinkDirectiveStub } from './router-link-directive-stub';
 import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
 import { DateCountDownComponent } from './date-countdown/date-countdown.component';
+import { StarsModule } from './stars/stars.module';
+import { UserAvatarModule } from './user-avatar/user-avatar.module';
+import { SanitizedBackgroundModule } from './sanitized-background/sanitized-background.module';
+import { SpinnerModule } from './spinner/spinner.module';
 
 @NgModule({
   imports: [
@@ -98,12 +98,19 @@ import { DateCountDownComponent } from './date-countdown/date-countdown.componen
     ProBadgeModule,
     SvgIconModule,
     DropdownModule,
+    StarsModule,
+    UserAvatarModule,
+    SanitizedBackgroundModule,
+    SpinnerModule,
   ],
   exports: [
+    SpinnerModule,
+    SanitizedBackgroundModule,
+    UserAvatarModule,
+    StarsModule,
     CardModule,
     CommonModule,
     UploaderModule,
-    SpinnerComponent,
     AdComponent,
     CustomCurrencyPipe,
     RestrictInputDirective,
@@ -111,10 +118,7 @@ import { DateCountDownComponent } from './date-countdown/date-countdown.componen
     ButtonComponent,
     SoldModalComponent,
     ItemSoldDirective,
-    SanitizedBackgroundDirective,
-    StarsComponent,
     StarsRateComponent,
-    UserAvatarComponent,
     StatusIconComponent,
     ProcessAllButtonComponent,
     ArchivableComponent,
@@ -168,17 +172,13 @@ import { DateCountDownComponent } from './date-countdown/date-countdown.componen
   declarations: [
     AdComponent,
     ConfirmationModalComponent,
-    SpinnerComponent,
     CustomCurrencyPipe,
     RestrictInputDirective,
     HeaderComponent,
     ButtonComponent,
     SoldModalComponent,
     ItemSoldDirective,
-    SanitizedBackgroundDirective,
-    StarsComponent,
     StarsRateComponent,
-    UserAvatarComponent,
     StatusIconComponent,
     ProcessAllButtonComponent,
     ArchivableComponent,

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -16,6 +16,8 @@ import {
   MarkAsFavouriteBodyRequest,
   MarkAsFavouriteBodyResponse,
 } from '../interfaces/public-profile-request.interface';
+import { PaginationService } from '@public/core/services/pagination/pagination.service';
+import { ReviewsData } from '@features/reviews/core/review-response.interface';
 
 export const PROFILE_API_URL = (userId: string) => `api/v3/users/${userId}`;
 export const USER_COVER_IMAGE_ENDPOINT = (userId: string) =>
@@ -32,7 +34,12 @@ export const TRANSACTIONS_BUYS_ENDPOINT = (userId: string) =>
   `${PROFILE_API_URL(userId)}/transactions/buys`;
 export const TRANSACTIONS_SOLDS_ENDPOINT = (userId: string) =>
   `${PROFILE_API_URL(userId)}/transactions/solds`;
+
 export const FAVOURITE_API_PATH = 'favorite';
+export const IS_FAROURITE_ENDPOINT = (userId: string) =>
+  `${PROFILE_API_URL(userId)}/${FAVOURITE_API_PATH}`;
+export const MARK_AS_FAVOURITE_ENDPOINT = (userId: string) =>
+  `${PROFILE_API_URL(userId)}/${FAVOURITE_API_PATH}`;
 
 @Injectable({
   providedIn: 'root',
@@ -40,7 +47,10 @@ export const FAVOURITE_API_PATH = 'favorite';
 export class PublicProfileService {
   private _user: User;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private paginationService: PaginationService
+  ) {}
 
   get user(): User {
     return this._user;
@@ -61,9 +71,7 @@ export class PublicProfileService {
 
   public isFavourite(userId: string): Observable<boolean> {
     return this.http
-      .get(
-        `${environment.baseUrl}${PROFILE_API_URL}${userId}/${FAVOURITE_API_PATH}`
-      )
+      .get(`${environment.baseUrl}${IS_FAROURITE_ENDPOINT(userId)}`)
       .pipe(
         map((isFavouriteResponse: IsFavouriteBodyResponse) => {
           return isFavouriteResponse.favorited;
@@ -71,8 +79,14 @@ export class PublicProfileService {
       );
   }
 
-  public getReviews(userId: string): Observable<any> {
-    return this.http.get(`${environment.baseUrl}${REVIEWS_ENDPOINT(userId)}`);
+  public getReviews(
+    userId: string,
+    init?: number
+  ): Observable<HttpResponse<ReviewsData[]>> {
+    return this.http.get<HttpResponse<ReviewsData[]>>(
+      `${environment.baseUrl}${REVIEWS_ENDPOINT(userId)}`,
+      this.paginationService.getPaginationRequestOptions(init || 0)
+    );
   }
 
   public getPublishedItems(userId: string): Observable<any> {
@@ -126,7 +140,7 @@ export class PublicProfileService {
     userId: string
   ): Observable<MarkAsFavouriteBodyResponse> {
     return this.http.put(
-      `${environment.baseUrl}${PROFILE_API_URL}${userId}/${FAVOURITE_API_PATH}`,
+      `${environment.baseUrl}${MARK_AS_FAVOURITE_ENDPOINT(userId)}`,
       { favorited: true } as MarkAsFavouriteBodyRequest
     );
   }
@@ -135,7 +149,7 @@ export class PublicProfileService {
     userId: string
   ): Observable<MarkAsFavouriteBodyResponse> {
     return this.http.put(
-      `${environment.baseUrl}${PROFILE_API_URL}${userId}/${FAVOURITE_API_PATH}`,
+      `${environment.baseUrl}${MARK_AS_FAVOURITE_ENDPOINT(userId)}`,
       { favorited: false } as MarkAsFavouriteBodyRequest
     );
   }
