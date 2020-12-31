@@ -8,9 +8,7 @@ import {
 import { UserStatsComponent } from './components/user-stats/user-stats.component';
 import { UserProfileHeaderComponent } from './components/user-profile-header/user-profile-header.component';
 import { ProfileTabsComponent } from './components/profile-tabs/profile-tabs.component';
-import { SharedModule } from '@shared/shared.module';
 import { FavouriteUserModule } from './components/favourite-user/favourite-user.module';
-import { UserReviewsModule } from './pages/user-reviews/user-reviews.module';
 import { PublicProfileService } from './core/services/public-profile.service';
 import { HttpClientModule } from '@angular/common/http';
 import { SpinnerModule } from '@shared/spinner/spinner.module';
@@ -27,7 +25,6 @@ import { SpinnerModule } from '@shared/spinner/spinner.module';
     HttpClientModule,
     publicProfileRoutedModules,
     PublicProfileRoutingModule,
-    // SharedModule,
     SpinnerModule,
     FavouriteUserModule,
   ],
