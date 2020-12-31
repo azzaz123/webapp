@@ -13,6 +13,7 @@ import { FavouriteUserModule } from './components/favourite-user/favourite-user.
 import { UserReviewsModule } from './pages/user-reviews/user-reviews.module';
 import { PublicProfileService } from './core/services/public-profile.service';
 import { HttpClientModule } from '@angular/common/http';
+import { SpinnerModule } from '@shared/spinner/spinner.module';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     publicProfileRoutedModules,
     PublicProfileRoutingModule,
-    SharedModule,
+    // SharedModule,
+    SpinnerModule,
     FavouriteUserModule,
   ],
   providers: [PublicProfileService],
