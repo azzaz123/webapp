@@ -1,1 +1,27 @@
 @import '~style/common';
+
+.ErrorBox {
+  &__img {
+    max-width: 100%;
+  }
+  &__title {
+    color: $blue-grey-1;
+    font-size: $font-size-l;
+    font-weight: $font-weight-chunky;
+  }
+
+  &__subtitle {
+    color: $blue-grey-2;
+    font-size: $font-size-m;
+  }
+
+  &__btn {
+    border-radius: $button-border-radius;
+
+    &--link {
+      background: transparent;
+      border: 0;
+      color: $walla-main;
+    }
+  }
+}
