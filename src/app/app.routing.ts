@@ -165,7 +165,17 @@ const loggedRoutes = [
   },
 ];
 
-const routes: Route[] = [publicRoute, ...loggedRoutes];
+const notFoundRoute: Route = {
+  path: APP_PATHS.NOT_FOUND,
+  canLoad: [DevelopmentGuard],
+  loadChildren: () =>
+    import('@features/error/error.module').then((m) => m.ErrorModule),
+  data: {
+    [PATH_EVENTS.hideSidebar]: true,
+  },
+};
+
+const routes: Route[] = [notFoundRoute, publicRoute, ...loggedRoutes];
 
 @NgModule({
   imports: [
