@@ -62,11 +62,15 @@ export class SubscriptionsComponent implements OnInit {
     this.loading = true;
     this.subscriptionsService
       .getSubscriptions(false)
-      .pipe(finalize(() => (this.loading = false)))
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+          this.trackPageView();
+        })
+      )
       .subscribe((subscriptions) => {
         this.subscriptions = subscriptions;
       });
-    this.trackPageView();
     this.userService.me(true).subscribe((user) => (this.user = user));
   }
 
