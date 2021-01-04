@@ -9,9 +9,9 @@ import { GeolocationModule } from '../shared/geolocation/geolocation.module';
 import { TrackingModule } from '../core/tracking/tracking.module';
 import { SharedModule } from '../shared/shared.module';
 import { TabbarComponent } from './tabbar/tabbar.component';
-import { ToastComponent } from './toast/components/toast.component';
 import { TopbarModule } from './topbar/topbar.module';
 import { SidebarModule } from './sidebar/sidebar.module';
+import { ToastModule } from './toast/toast.module';
 
 @NgModule({
   imports: [
@@ -24,9 +24,10 @@ import { SidebarModule } from './sidebar/sidebar.module';
     TrackingModule,
     SidebarModule,
     TopbarModule,
+    ToastModule,
   ],
-  exports: [SidebarModule, TopbarModule, TabbarComponent, ToastComponent],
-  declarations: [TabbarComponent, ToastComponent],
+  exports: [SidebarModule, TopbarModule, TabbarComponent, ToastModule],
+  declarations: [TabbarComponent],
   providers: [GeolocationService, CategoryService],
 })
 export class LayoutModule {}
