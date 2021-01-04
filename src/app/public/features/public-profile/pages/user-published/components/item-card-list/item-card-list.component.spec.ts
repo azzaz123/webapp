@@ -61,11 +61,11 @@ describe('ItemCardListComponent', () => {
 
     describe('when device is mobile', () => {
       it('should NOT show card descriptions if device is mobile', () => {
-        expect(
+        const randomCardWithoutDescription =
           el
             .querySelectorAll(cardSelector)[0]
-            .getAttribute(cardShowDescriptionAttr) === 'false'
-        ).toBeTruthy();
+            .getAttribute(cardShowDescriptionAttr) === 'false';
+        expect(randomCardWithoutDescription).toBeTruthy();
       });
     });
 
@@ -81,11 +81,12 @@ describe('ItemCardListComponent', () => {
       });
 
       it('should show card descriptions', () => {
-        expect(
+        const randomCardWithDescription =
           el
             .querySelectorAll(cardSelector)[0]
-            .getAttribute(cardShowDescriptionAttr) === 'true'
-        ).toBeTruthy();
+            .getAttribute(cardShowDescriptionAttr) === 'true';
+
+        expect(randomCardWithDescription).toBeTruthy();
       });
     });
   });
