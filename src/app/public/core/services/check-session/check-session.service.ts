@@ -9,8 +9,12 @@ export class CheckSessionService {
     private publicWebUrlService: PublicWebUrlService
   ) {}
 
+  public hasSession(): boolean {
+    return this.accessTokenService.accessToken !== undefined;
+  }
+
   public checkSessionAction(): void {
-    if (!this.accessTokenService.accessToken) {
+    if (!this.hasSession()) {
       window.location.assign(this.publicWebUrlService.getLoginUrl());
     }
   }
