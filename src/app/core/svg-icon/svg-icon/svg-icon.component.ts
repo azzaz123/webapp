@@ -15,6 +15,9 @@ import { SvgService } from '../svg.service';
 })
 export class SvgIconComponent implements OnInit {
   @Input() src: string;
+  @Input() width: string;
+  @Input() height: string;
+  @Input() fill: string;
 
   constructor(
     private svgService: SvgService,
@@ -37,7 +40,23 @@ export class SvgIconComponent implements OnInit {
             SecurityContext.HTML,
             svgElement
           );
+
+          this.handleCustomAttributes();
         });
+    }
+  }
+
+  private handleCustomAttributes(): void {
+    let style = '';
+    style += this.width ? `width: ${this.width}px;` : '';
+    style += this.height ? `height: ${this.height}px;` : '';
+    style += this.fill ? `fill: ${this.fill};` : '';
+
+    if (style !== '') {
+      this.element.nativeElement?.firstElementChild?.setAttribute(
+        'style',
+        style
+      );
     }
   }
 
