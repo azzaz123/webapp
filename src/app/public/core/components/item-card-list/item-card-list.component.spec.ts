@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
@@ -16,7 +17,7 @@ describe('ItemCardListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ItemCardListComponent],
-      imports: [CommonModule, ItemCardModule],
+      imports: [CommonModule, ItemCardModule, HttpClientTestingModule],
       providers: [
         DeviceDetectorService,
         {

@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
 import { ItemApiModule } from '@public/core/services/api/item/item-api.module';
 import { ItemCardService } from './item-card.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ItemCardService', () => {
   let itemApiService: ItemApiService;
@@ -11,7 +12,7 @@ describe('ItemCardService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [ItemCardService],
-      imports: [ItemApiModule],
+      imports: [ItemApiModule, HttpClientTestingModule],
     });
 
     itemApiService = TestBed.inject(ItemApiService);

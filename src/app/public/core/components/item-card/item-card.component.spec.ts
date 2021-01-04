@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
@@ -27,6 +28,7 @@ describe('ItemCardComponent', () => {
         SvgIconModule,
         SanitizedBackgroundModule,
         ItemApiModule,
+        HttpClientTestingModule,
       ],
       providers: [ItemCardService],
     }).compileComponents();
