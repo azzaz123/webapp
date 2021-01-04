@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
-import { ItemApiModule } from '@public/core/services/api/item/item-api.service';
+import { ItemApiModule } from '@public/core/services/api/item/item-api.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { SanitizedBackgroundModule } from '@shared/sanitized-background/sanitized-background.module';
 import { FavouriteIconModule } from '../favourite-icon/favourite-icon.module';
@@ -27,6 +28,7 @@ describe('ItemCardComponent', () => {
         SvgIconModule,
         SanitizedBackgroundModule,
         ItemApiModule,
+        HttpClientTestingModule,
       ],
       providers: [ItemCardService],
     }).compileComponents();

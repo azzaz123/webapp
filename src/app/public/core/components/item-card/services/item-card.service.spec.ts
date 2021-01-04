@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { ItemApiService } from '@public/core/services/api/item/item-api.module';
-import { ItemApiModule } from '@public/core/services/api/item/item-api.service';
+import { ItemApiService } from '@public/core/services/api/item/item-api.service';
+import { ItemApiModule } from '@public/core/services/api/item/item-api.module';
 import { ItemCardService } from './item-card.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ItemCardService', () => {
   let itemApiService: ItemApiService;
@@ -11,7 +12,7 @@ describe('ItemCardService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [ItemCardService],
-      imports: [ItemApiModule],
+      imports: [ItemApiModule, HttpClientTestingModule],
     });
 
     itemApiService = TestBed.inject(ItemApiService);
@@ -19,7 +20,7 @@ describe('ItemCardService', () => {
   });
 
   describe('markAsFavourite', () => {
-    it('should call the api service to mark the selected item as favorit', () => {
+    it('should call the api service to mark the selected item as favourite', () => {
       spyOn(itemApiService, 'markAsFavourite');
 
       itemCardService.markAsFavourite(ITEM_ID);
@@ -29,7 +30,7 @@ describe('ItemCardService', () => {
   });
 
   describe('unmarkAsFavourite', () => {
-    it('should call the api service to unmark the selected item as favorite', () => {
+    it('should call the api service to unmark the selected item as favourite', () => {
       spyOn(itemApiService, 'unmarkAsFavourite');
 
       itemCardService.unmarkAsFavourite(ITEM_ID);

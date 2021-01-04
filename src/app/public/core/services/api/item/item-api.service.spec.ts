@@ -4,7 +4,7 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { ItemApiService, MARK_AS_FAVORITE_ENDPOINT } from './item-api.module';
+import { ItemApiService, MARK_AS_FAVORITE_ENDPOINT } from './item-api.service';
 
 describe('ItemApiService', () => {
   let httpMock: HttpTestingController;

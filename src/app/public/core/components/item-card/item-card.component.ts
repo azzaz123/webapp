@@ -18,7 +18,7 @@ export class ItemCardComponent implements OnDestroy {
 
   constructor(private itemCardService: ItemCardService) {}
 
-  toggleFavourite(): void {
+  public toggleFavourite(): void {
     this.item.flags.favorite = !this.item.flags.favorite;
 
     this.subscriptions.push(
