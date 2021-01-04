@@ -3,11 +3,11 @@ import { Item } from '@core/item/item';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { ITEM_DATA, MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { ItemApiModule } from '@public/core/services/api/item/item-api.module';
+import { FavouriteIconModule } from '@public/shared/components/favourite-icon/favourite-icon.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { SanitizedBackgroundModule } from '@shared/sanitized-background/sanitized-background.module';
 import { moduleMetadata } from '@storybook/angular';
 import { Story, Meta } from '@storybook/angular/types-6-0';
-import { FavouriteIconModule } from '../favourite-icon/favourite-icon.module';
 import { ItemCardComponent } from './item-card.component';
 import { ItemCardService } from './services/item-card.service';
 
