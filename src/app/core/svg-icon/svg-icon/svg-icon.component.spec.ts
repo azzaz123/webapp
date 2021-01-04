@@ -85,7 +85,7 @@ describe('SvgIconComponent', () => {
       });
 
       it('should set the custom style attributes', () => {
-        const expectedStyle = 'width: 10px;height: 10px;fill: red;';
+        const expectedStyle = 'width: 10px;height: 10px;';
         component.width = '10';
         component.height = '10';
         component.fill = 'red';

@@ -50,7 +50,6 @@ export class SvgIconComponent implements OnInit {
     let style = '';
     style += this.width ? `width: ${this.width}px;` : '';
     style += this.height ? `height: ${this.height}px;` : '';
-    style += this.fill ? `fill: ${this.fill};` : '';
 
     if (style !== '') {
       this.element.nativeElement?.firstElementChild?.setAttribute(
@@ -58,6 +57,19 @@ export class SvgIconComponent implements OnInit {
         style
       );
     }
+
+    if (this.fill) {
+      this.fillSvg();
+    }
+  }
+
+  private fillSvg(): void {
+    const svgPaths = this.element.nativeElement?.firstElementChild?.getElementsByTagName(
+      'path'
+    );
+    [...svgPaths].forEach((path) => {
+      path.setAttribute('style', `fill: ${this.fill};`);
+    });
   }
 
   get hasSvgExtension(): boolean {
