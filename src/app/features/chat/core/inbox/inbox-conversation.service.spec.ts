@@ -25,7 +25,7 @@ import { DesktopNotificationsService } from 'app/core/desktop-notifications/desk
 import { I18nService } from 'app/core/i18n/i18n.service';
 import { TrackingService } from 'app/core/tracking/tracking.service';
 import { Toast } from 'app/layout/toast/toast.interface';
-import { ToastService } from 'app/layout/toast/toast.service';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { uniq } from 'lodash-es';
 import * as moment from 'moment';
 import { of } from 'rxjs';

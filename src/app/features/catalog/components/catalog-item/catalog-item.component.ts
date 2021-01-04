@@ -9,7 +9,7 @@ import {
   Output,
 } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ToastService } from '@layout/toast/toast.service';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 
 import { ItemService } from '@core/item/item.service';
 import { ItemChangeEvent } from '../../core/item-change.interface';

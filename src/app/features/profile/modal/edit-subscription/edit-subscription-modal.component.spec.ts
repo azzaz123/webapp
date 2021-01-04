@@ -20,7 +20,7 @@ import {
   MAPPED_SUBSCRIPTIONS,
   TIER,
 } from '@fixtures/subscriptions.fixtures.spec';
-import { ToastService } from '@layout/toast/toast.service';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DateUntilDayPipe } from '@shared/pipes';
 import { of } from 'rxjs';
