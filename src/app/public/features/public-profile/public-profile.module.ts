@@ -10,7 +10,6 @@ import { UserProfileHeaderComponent } from './components/user-profile-header/use
 import { ProfileTabsComponent } from './components/profile-tabs/profile-tabs.component';
 import { FavouriteUserModule } from './components/favourite-user/favourite-user.module';
 import { PublicProfileService } from './core/services/public-profile.service';
-import { HttpClientModule } from '@angular/common/http';
 import { SpinnerModule } from '@shared/spinner/spinner.module';
 
 @NgModule({
@@ -22,7 +21,6 @@ import { SpinnerModule } from '@shared/spinner/spinner.module';
   ],
   imports: [
     CommonModule,
-    HttpClientModule,
     publicProfileRoutedModules,
     PublicProfileRoutingModule,
     SpinnerModule,
