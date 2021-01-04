@@ -4,7 +4,7 @@ import {
   AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
-  ClickConfirmEditCurrentSubscription,
+  ClickSubscriptionPlanDone,
   SCREEN_IDS,
   ViewEditSubscriptionPlan,
 } from '@core/analytics/analytics-constants';
@@ -130,14 +130,14 @@ export class EditSubscriptionModalComponent implements OnInit {
   }
 
   private trackClickConfirmEdit() {
-    const event: AnalyticsEvent<ClickConfirmEditCurrentSubscription> = {
-      name: ANALYTICS_EVENT_NAMES.ClickConfirmEditCurrentSubscription,
+    const event: AnalyticsEvent<ClickSubscriptionPlanDone> = {
+      name: ANALYTICS_EVENT_NAMES.ClickSubscriptionPlanDone,
       eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
         subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
         previousTier: this.currentTier.id,
         newTier: this.selectedTier.id,
-        screenId: SCREEN_IDS.ProfileSubscription,
+        screenId: SCREEN_IDS.SubscriptionManagement,
       },
     };
     this.analyticsService.trackEvent(event);
