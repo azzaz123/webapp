@@ -7,7 +7,7 @@ import {
 import { ToastComponent } from './toast.component';
 import { ToastService } from './core/services/toast.service';
 import { By } from '@angular/platform-browser';
-import { Toast } from './toast.interface';
+import { Toast } from './core/interfaces/toast.interface';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 describe('ToastComponent', () => {

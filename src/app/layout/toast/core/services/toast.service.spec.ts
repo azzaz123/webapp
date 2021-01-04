@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { ToastService } from './toast.service';
-import { Toast } from '../../toast.interface';
+import { Toast } from '../interfaces/toast.interface';
 
 describe('ToastService', () => {
   let service: ToastService;
