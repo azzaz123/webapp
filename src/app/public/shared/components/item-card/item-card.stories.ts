@@ -25,6 +25,7 @@ export default {
       ],
     }),
   ],
+  argTypes: { toggleFavourite: { action: 'toggleFavourite' } },
 } as Meta;
 
 const Template: Story<ItemCardComponent> = (args: ItemCardComponent) => ({

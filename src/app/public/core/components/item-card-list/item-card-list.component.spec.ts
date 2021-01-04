@@ -4,7 +4,7 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { ItemCardModule } from '../item-card/item-card.module';
+import { ItemCardModule } from '../../../shared/components/item-card/item-card.module';
 import { ItemCardListComponent } from './item-card-list.component';
 
 describe('ItemCardListComponent', () => {

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ItemCardListComponent } from './item-card-list.component';
-import { ItemCardModule } from '../item-card/item-card.module';
+import { ItemCardModule } from '../../../shared/components/item-card/item-card.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
 @NgModule({
