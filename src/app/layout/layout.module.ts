@@ -9,7 +9,7 @@ import { GeolocationModule } from '../shared/geolocation/geolocation.module';
 import { TrackingModule } from '../core/tracking/tracking.module';
 import { SharedModule } from '../shared/shared.module';
 import { TabbarComponent } from './tabbar/tabbar.component';
-import { ToastComponent } from './toast/toast.component';
+import { ToastComponent } from './toast/components/toast.component';
 import { TopbarModule } from './topbar/topbar.module';
 import { SidebarModule } from './sidebar/sidebar.module';
 
