@@ -12,7 +12,6 @@ import { FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH } from '@core/profile/profile';
   selector: 'tsl-public-item-card',
   templateUrl: './item-card.component.html',
   styleUrls: ['./item-card.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemCardComponent {
   @Input() item: Item;
