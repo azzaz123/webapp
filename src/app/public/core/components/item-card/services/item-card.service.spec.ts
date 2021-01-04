@@ -19,7 +19,7 @@ describe('ItemCardService', () => {
   });
 
   describe('markAsFavourite', () => {
-    it('should call the api service to mark the selected item as favorit', () => {
+    it('should call the api service to mark the selected item as favourite', () => {
       spyOn(itemApiService, 'markAsFavourite');
 
       itemCardService.markAsFavourite(ITEM_ID);
@@ -29,7 +29,7 @@ describe('ItemCardService', () => {
   });
 
   describe('unmarkAsFavourite', () => {
-    it('should call the api service to unmark the selected item as favorite', () => {
+    it('should call the api service to unmark the selected item as favourite', () => {
       spyOn(itemApiService, 'unmarkAsFavourite');
 
       itemCardService.unmarkAsFavourite(ITEM_ID);
