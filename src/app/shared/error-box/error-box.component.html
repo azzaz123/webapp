@@ -2,9 +2,6 @@
     <img class="ErrorBox__img mb-3" *ngIf="img" [src]="img" [alt]="title">
     <p class="ErrorBox__title">{{title}}</p>
     <p class="ErrorBox__subtitle">{{subtitle}}</p>
-
-    <button  *ngIf="exit" class="ErrorBox__btn btn" 
-    [class.btn-primary]="exit.type === ERROR_BOX_EXIT_TYPE.BUTTON"
-    [class.ErrorBox__btn--link]="exit.type === ERROR_BOX_EXIT_TYPE.LINK" (click)="exitClick.emit()">{{exit.label}}</button>
-
+    <button  *ngIf="exit" class="ErrorBox__btn btn {{exit.type === ERROR_BOX_EXIT_TYPE.LINK ? 'ErrorBox__btn--link border-0': ''}}" 
+    [class.btn-primary]="exit.type === ERROR_BOX_EXIT_TYPE.BUTTON" (click)="exitClick.emit()">{{exit.label}}</button>
 </div>
