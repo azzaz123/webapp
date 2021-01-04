@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { ItemApiService } from '@public/core/services/api/item/item-api.module';
-import { ItemApiModule } from '@public/core/services/api/item/item-api.service';
+import { ItemApiService } from '@public/core/services/api/item/item-api.service';
+import { ItemApiModule } from '@public/core/services/api/item/item-api.module';
 import { ItemCardService } from './item-card.service';
 
 describe('ItemCardService', () => {

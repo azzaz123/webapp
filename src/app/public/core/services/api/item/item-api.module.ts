@@ -1,30 +1,9 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { environment } from '@environments/environment';
-import { Observable } from 'rxjs';
-import { MarkAsFavouriteBodyRequest } from './interfaces/item-request.interface';
-import { MarkAsFavouriteBodyResponse } from './interfaces/item-response.interface';
+import { NgModule } from '@angular/core';
+import { ItemApiService } from './item-api.service';
+import { HttpClientModule } from '@angular/common/http';
 
-export const ITEMS_API_URL = (userId: string) =>
-  `${environment.baseUrl}api/v3/users/${userId}`;
-export const MARK_AS_FAVORITE_ENDPOINT = (id: string) =>
-  `${ITEMS_API_URL(id)}/favorite`;
-
-@Injectable()
-export class ItemApiService {
-  constructor(private http: HttpClient) {}
-
-  public markAsFavourite(id: string): Observable<MarkAsFavouriteBodyResponse> {
-    return this.http.put(MARK_AS_FAVORITE_ENDPOINT(id), {
-      favorited: true,
-    } as MarkAsFavouriteBodyRequest);
-  }
-
-  public unmarkAsFavourite(
-    id: string
-  ): Observable<MarkAsFavouriteBodyResponse> {
-    return this.http.put(MARK_AS_FAVORITE_ENDPOINT(id), {
-      favorited: false,
-    } as MarkAsFavouriteBodyRequest);
-  }
-}
+@NgModule({
+  imports: [HttpClientModule],
+  providers: [ItemApiService],
+})
+export class ItemApiModule {}

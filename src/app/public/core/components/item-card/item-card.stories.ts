@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Item } from '@core/item/item';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { ITEM_DATA, MOCK_ITEM } from '@fixtures/item.fixtures.spec';
-import { ItemApiModule } from '@public/core/services/api/item/item-api.service';
+import { ItemApiModule } from '@public/core/services/api/item/item-api.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { SanitizedBackgroundModule } from '@shared/sanitized-background/sanitized-background.module';
 import { moduleMetadata } from '@storybook/angular';

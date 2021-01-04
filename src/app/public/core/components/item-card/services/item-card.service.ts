@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MarkAsFavouriteBodyResponse } from '@public/core/services/api/item/interfaces/item-response.interface';
-import { ItemApiService } from '@public/core/services/api/item/item-api.module';
+import { ItemApiService } from '@public/core/services/api/item/item-api.service';
 import { Observable } from 'rxjs';
 
 @Injectable()
