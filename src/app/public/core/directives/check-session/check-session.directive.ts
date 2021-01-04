@@ -1,19 +1,13 @@
 import { Directive, HostListener } from '@angular/core';
-import { AccessTokenService } from '@core/http/access-token.service';
-import { PublicWebUrlService } from '@public/core/services/public-web-url/public-web-url.service';
+import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 
 @Directive({
   selector: '[tslCheckSession]',
 })
 export class CheckSessionDirective {
-  constructor(
-    private accessTokenService: AccessTokenService,
-    private publicWebUrlService: PublicWebUrlService
-  ) {}
+  constructor(private checkSessionService: CheckSessionService) {}
 
   @HostListener('click') onClick() {
-    if (!this.accessTokenService.accessToken) {
-      window.location.assign(this.publicWebUrlService.getLoginUrl());
-    }
+    this.checkSessionService.checkSessionAction();
   }
 }
