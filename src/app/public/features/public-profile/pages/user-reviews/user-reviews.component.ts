@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MapReviewService } from '@public/features/public-profile/pages/user-reviews/services/map-review/map-review.service';
 import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
 import { PaginationService } from '@public/core/services/pagination/pagination.service';
