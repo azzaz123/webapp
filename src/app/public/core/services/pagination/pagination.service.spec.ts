@@ -28,10 +28,10 @@ describe('PaginationService', () => {
     });
 
     it('should return default response with param as params.init', () => {
-      const randomNum = 22;
-      defaultReturn.params.init = randomNum;
+      const itemsFrom = 22;
+      defaultReturn.params.init = itemsFrom;
 
-      const result = paginationService.getPaginationRequestOptions(randomNum);
+      const result = paginationService.getPaginationRequestOptions(itemsFrom);
 
       expect(result).toEqual(defaultReturn);
     });

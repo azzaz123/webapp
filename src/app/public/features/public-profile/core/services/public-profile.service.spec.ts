@@ -87,11 +87,11 @@ describe('PublicProfileService', () => {
 
     it('should get user reviews with correct pagination', () => {
       const expectedUrl = `${environment.baseUrl}${REVIEWS_ENDPOINT(userId)}`;
-      const randomNum = 40;
-      let urlParams = '?init=' + randomNum;
+      const itemsFrom = 40;
+      let urlParams = '?init=' + itemsFrom;
       let response: HttpResponse<ReviewsData[]>;
 
-      service.getReviews(userId, randomNum).subscribe((r) => (response = r));
+      service.getReviews(userId, itemsFrom).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl + urlParams);
 
       expect(req.request.url).toEqual(expectedUrl);
@@ -118,12 +118,12 @@ describe('PublicProfileService', () => {
       const expectedUrl = `${environment.baseUrl}${PUBLISHED_ITEMS_ENDPOINT(
         userId
       )}`;
-      const randomNum = 40;
-      let urlParams = '?init=' + randomNum;
+      const itemsFrom = 40;
+      let urlParams = '?init=' + itemsFrom;
       let response: HttpResponse<ItemResponse[]>;
 
       service
-        .getPublishedItems(userId, randomNum)
+        .getPublishedItems(userId, itemsFrom)
         .subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl + urlParams);
 
