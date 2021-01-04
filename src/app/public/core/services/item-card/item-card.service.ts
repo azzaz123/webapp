@@ -20,7 +20,7 @@ export class ItemCardService {
       .subscribe(
         () => {},
         () => {
-          item.flags.favorite = item.flags.favorite;
+          item.flags.favorite = !item.flags.favorite;
         }
       );
   }
