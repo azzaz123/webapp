@@ -1,6 +1,8 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AccessTokenService } from '@core/http/access-token.service';
+import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { PublicProfileService } from '../../core/services/public-profile.service';
 import { ItemCardListModule } from './components/item-card-list/item-card-list.module';
 import { MapItemService } from './services/map-item/map-item.service';
@@ -17,7 +19,17 @@ describe('UserPublishedComponent', () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, ItemCardListModule],
       declarations: [UserPublishedComponent],
-      providers: [PublicProfileService, MapItemService],
+      providers: [
+        PublicProfileService,
+        MapItemService,
+        CheckSessionService,
+        {
+          provide: AccessTokenService,
+          useValue: {
+            accessToken: 'ACCESS_TOKEN',
+          },
+        },
+      ],
     }).compileComponents();
   });
 
