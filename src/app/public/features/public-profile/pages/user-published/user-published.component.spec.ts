@@ -1,8 +1,8 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ItemCardListModule } from '@public/core/components/item-card-list/item-card-list.module';
 import { PublicProfileService } from '../../core/services/public-profile.service';
+import { ItemCardListModule } from './components/item-card-list/item-card-list.module';
 import { MapItemService } from './services/map-item/map-item.service';
 
 import { UserPublishedComponent } from './user-published.component';
