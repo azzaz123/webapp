@@ -7,18 +7,26 @@
 
 <div class="content-col">	
   <h1 class="modal-title" i18n="@@BumpSuggestionModalSubtitle">Want to sell it quickly?</h1>	
-  <p class="modal-text" i18n="@@BumpSuggestionModalDescription">Highlight your item so that more people see it. Many more!</p>	
-  <tsl-button *ngIf="productPrice"
+  <p class="modal-text" i18n="@@BumpSuggestionModalDescription">Highlight your item so that more people see it. Many more!</p>
+  <ng-container *ngIf="productPrice && productCurrency; else noPriceButton">
+    <tsl-button
+      className="btn btn-primary btn-block"	
+      (click)="activeModal.close(true)"
+      i18n="@@BumpSuggestionModalButton">Bump it from {{ productPrice | customCurrency:productCurrency }}
+    </tsl-button>	
+  </ng-container>
+  <ng-template #noPriceButton>
+    <tsl-button
     className="btn btn-primary btn-block"	
     (click)="activeModal.close(true)"
-    i18n="@@BumpSuggestionModalButton">Bump from {{ +productPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName }}
+    i18n="@@BumpSuggestionModalNoPriceButton">Bump it
   </tsl-button>	
-
+  </ng-template>
 </div>	
 <div class="share">	
-  <div i18n="@@BumpSuggestionModalShare">Share it with your friends:</div>	
-  <div class="social-icons">	
-    <a (click)="facebookShare()"><tsl-svg-icon src="/assets/icons/facebook.svg"></tsl-svg-icon></a>	
-    <a (click)="twitterShare()"><tsl-svg-icon src="/assets/icons/twitter.svg"></tsl-svg-icon></a>	
-  </div>	
+    <div i18n="@@BumpSuggestionModalShare">Share it with your friends:</div>	
+    <div class="social-icons" [ngClass]="{'social-icons__disabled' : !item?.webLink}">	
+      <a (click)="facebookShare()"><tsl-svg-icon src="/assets/icons/facebook.svg"></tsl-svg-icon></a>	
+      <a (click)="twitterShare()"><tsl-svg-icon src="/assets/icons/twitter.svg"></tsl-svg-icon></a>	
+    </div>	
 </div>

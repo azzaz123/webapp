@@ -5,6 +5,7 @@ import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { Item } from '@core/item/item';
 import {
+  CheapestProducts,
   ItemBulkResponse,
   ItemsData,
 } from '@core/item/item-response.interface';
@@ -278,13 +279,25 @@ export class ListComponent implements OnInit, OnDestroy {
         windowClass: 'modal-standard',
       }
     );
-    this.bumpSuggestionModalRef.componentInstance.itemId = itemId;
     this.bumpSuggestionModalRef.result.then((redirect: boolean) => {
       if (redirect) {
         this.router.navigate(['catalog/checkout', { itemId }]);
       }
       this.bumpSuggestionModalRef = null;
     });
+  }
+
+  private getCheapestProductPrice(
+    modalRef: NgbModalRef,
+    itemId: string,
+    creditInfo: CreditInfo
+  ): void {
+    this.itemService
+      .getCheapestProductPrice([itemId])
+      .subscribe((value: CheapestProducts) => {
+        modalRef.componentInstance.productPrice =
+          +value[itemId] * creditInfo.factor;
+      });
   }
 
   private getCreditInfo() {
@@ -296,6 +309,15 @@ export class ListComponent implements OnInit, OnDestroy {
           creditInfo.factor = 1;
         }
         this.creditInfo = creditInfo;
+        if (this.bumpSuggestionModalRef) {
+          this.getCheapestProductPrice(
+            this.bumpSuggestionModalRef,
+            this.route.snapshot.paramMap.get('itemId'),
+            creditInfo
+          );
+          this.bumpSuggestionModalRef.componentInstance.productCurrency =
+            creditInfo.currencyName;
+        }
       });
   }
 

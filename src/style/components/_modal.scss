@@ -437,6 +437,13 @@ $modal-border-radius: 0.3rem;
         display: flex;
         justify-content: center;
         margin-bottom: $spacing-ml;
+
+        &__disabled {
+          opacity: 0.5;
+          pointer-events: none;
+          cursor: default;
+        }
+
         a {
           display: flex;
           justify-content: center;

@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { PaymentService } from '@core/payments/payment.service';
-import { CreditInfo } from '@core/payments/payment.interface';
 import { Item } from '@core/item/item';
-import { CheapestProducts } from '@core/item/item-response.interface';
-import { ItemService } from '@core/item/item.service';
 
 @Component({
   selector: 'tsl-bump-suggestion-modal',
@@ -13,37 +9,12 @@ import { ItemService } from '@core/item/item.service';
 })
 export class BumpSuggestionModalComponent implements OnInit {
   public item: Item;
-  public itemId: string;
   public productPrice: number;
-  public productId: string;
-  public creditInfo: CreditInfo;
+  public productCurrency: string;
 
-  constructor(
-    public activeModal: NgbActiveModal,
-    private itemService: ItemService,
-    private paymentService: PaymentService
-  ) {}
+  constructor(public activeModal: NgbActiveModal) {}
 
-  ngOnInit() {
-    this.getCheapestProductPrice();
-    this.getCreditInfo();
-  }
-
-  private getCheapestProductPrice(): void {
-    this.itemService
-      .getCheapestProductPrice([this.itemId])
-      .subscribe((value: CheapestProducts) => {
-        this.productPrice = +value[this.itemId];
-      });
-  }
-
-  private getCreditInfo(): void {
-    this.paymentService
-      .getCreditInfo(false)
-      .subscribe((creditInfo: CreditInfo) => {
-        this.creditInfo = creditInfo;
-      });
-  }
+  ngOnInit() {}
 
   public facebookShare(): void {
     const url =
