@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { LoadExternalLibsService } from '../load-external-libs/load-external-libs.service';
 import { WINDOW_TOKEN } from './../window/window.token';
 import { DIDOMI_EMBED } from './didomi-embed-script';
@@ -11,12 +10,15 @@ const EVENTS: string[] = ['consent.changed'];
   providedIn: 'root',
 })
 export class DidomiService {
+  private static NAME_LIB = 'Didomi';
+  private static DIDOMI_ON_READY = 'didomiOnReady';
+
   get allowed$(): Observable<boolean> {
     return this.allowedSubject.asObservable();
   }
 
   get library(): DidomiLibrary {
-    return this.window['Didomi'];
+    return this.window[DidomiService.NAME_LIB];
   }
 
   constructor(
@@ -25,7 +27,6 @@ export class DidomiService {
   ) {
     this.addOnReadyListener();
   }
-  private static NAME_LIB = 'Didomi';
 
   private allowedSubject: BehaviorSubject<boolean> = new BehaviorSubject<
     boolean
@@ -44,8 +45,9 @@ export class DidomiService {
   }
 
   private addOnReadyListener(): void {
-    this.window['didomiOnReady'] = this.window['didomiOnReady'] || [];
-    this.window['didomiOnReady'].push(() => {
+    this.window[DidomiService.DIDOMI_ON_READY] =
+      this.window[DidomiService.DIDOMI_ON_READY] || [];
+    this.window[DidomiService.DIDOMI_ON_READY].push(() => {
       this.allowedSubject.next(this.userAllowedSegmentationInAds());
       this.addEventListen('consent.changed');
     });
