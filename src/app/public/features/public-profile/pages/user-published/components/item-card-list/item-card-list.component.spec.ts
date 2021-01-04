@@ -2,8 +2,10 @@ import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AccessTokenService } from '@core/http/access-token.service';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { ItemApiModule } from '@public/core/services/api/item/item-api.module';
+import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 import { ItemCardModule } from '@public/shared/components/item-card/item-card.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -27,6 +29,13 @@ describe('ItemCardListComponent', () => {
       ],
       providers: [
         ItemCardService,
+        CheckSessionService,
+        {
+          provide: AccessTokenService,
+          useValue: {
+            accessToken: 'ACCESS_TOKEN',
+          },
+        },
         {
           provide: DeviceDetectorService,
           useValue: {
