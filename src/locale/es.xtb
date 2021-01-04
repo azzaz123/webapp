@@ -1210,4 +1210,5 @@
   <translation id="BumpSuggestionModalDescription">Destaca tu producto para que lo vean más personas. ¡Muuuchas más!</translation>
   <translation id="BumpSuggestionModalShare">Compártelo con tus amigos:</translation>
   <translation id="BumpSuggestionModalButton">Destaca desde <ph name="INTERPOLATION"/> </translation>
+  <translation id="BumpSuggestionModalNoPriceButton">Destaca</translation>
 </translationbundle>
