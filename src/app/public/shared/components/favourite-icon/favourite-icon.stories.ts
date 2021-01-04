@@ -9,7 +9,7 @@ export default {
   decorators: [
     moduleMetadata({
       declarations: [FavouriteIconComponent],
-      imports: [SvgIconModule],
+      imports: [SvgIconModule, HttpClientModule],
     }),
   ],
 } as Meta;
