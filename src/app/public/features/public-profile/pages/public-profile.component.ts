@@ -46,7 +46,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       forkJoin([
         // TODO: If one of these fails, all the subscription returns error and it's not captured,
-        //we will redirecto to the 404 page when exists (WEB-190)
+        //we will redirect to to the 404 page when exists (WEB-190)
         this.publicProfileService.getUser(this.userId),
         this.publicProfileService.getStats(this.userId),
         this.publicProfileService.getCoverImage(this.userId),
