@@ -34,21 +34,23 @@ $modal-border-radius: 0.3rem;
     tsl-svg-icon {
       height: 15px;
       line-height: $line-height-xl;
-      ::ng-deep path {
+      path {
         fill: $blue-grey-4;
       }
     }
-    &:hover tsl-svg-icon ::ng-deep path {
-      fill: $blue-grey-1;
+    &:hover {
+      tsl-svg-icon path {
+        fill: $blue-grey-1 !important;
+      }
     }
     &.light {
-      tsl-svg-icon ::ng-deep path {
+      tsl-svg-icon path {
         fill: $white;
         opacity: 0.5;
       }
     }
     &.grey {
-      tsl-svg-icon ::ng-deep path {
+      tsl-svg-icon path {
         fill: $blue-grey-4;
       }
     }
