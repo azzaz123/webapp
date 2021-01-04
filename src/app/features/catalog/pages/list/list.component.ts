@@ -264,7 +264,7 @@ export class ListComponent implements OnInit, OnDestroy {
           });
         } else if (params && params.alreadyFeatured) {
           this.errorService.i18nError('alreadyFeatured');
-        } else if (params && params.bumpModal) {
+        } else if (params && params.disableWallacoinsModal) {
           this.onOpenWallacoinsModal();
         }
       });

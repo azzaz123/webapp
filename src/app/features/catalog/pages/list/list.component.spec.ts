@@ -47,6 +47,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TooManyItemsModalComponent } from '@shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
+import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
 import { find } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { of, ReplaySubject, Subject } from 'rxjs';
@@ -353,6 +354,24 @@ describe('ListComponent', () => {
       expect(modalService.open).toHaveBeenCalledWith(
         TooManyItemsModalComponent,
         {
+          windowClass: 'modal-standard',
+        }
+      );
+    }));
+
+    it('should open disable wallacoins modal if has param disableWallacoinsModal', fakeAsync(() => {
+      route.params = of({
+        disableWallacoinsModal: true,
+      });
+
+      component.ngOnInit();
+      tick();
+
+      expect(modalService.open).toHaveBeenCalledTimes(1);
+      expect(modalService.open).toHaveBeenCalledWith(
+        WallacoinsDisabledModalComponent,
+        {
+          backdrop: 'static',
           windowClass: 'modal-standard',
         }
       );

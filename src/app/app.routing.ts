@@ -116,7 +116,7 @@ const loggedRoutes = [
         redirectTo: '/pro/catalog/list',
       },
     },
-    redirectTo: 'catalog/list;bumpModal=true',
+    redirectTo: 'catalog/list;disableWallacoinsModal=true',
   },
   {
     path: 'catalog',
