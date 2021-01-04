@@ -42,17 +42,12 @@ export class UserPublishedComponent implements OnInit {
           finalize(() => (this.loading = false)),
           take(1)
         )
-        .subscribe(
-          (response: PaginationResponse<ItemResponse>) => {
-            this.items = this.items.concat(
-              this.mapItemService.mapItems(response.results)
-            );
-            this.nextPaginationItem = response.init;
-          },
-          () => {
-            this.onError();
-          }
-        );
+        .subscribe((response: PaginationResponse<ItemResponse>) => {
+          this.items = this.items.concat(
+            this.mapItemService.mapItems(response.results)
+          );
+          this.nextPaginationItem = response.init;
+        }, this.onError);
     } catch (err: any) {
       this.onError();
     }

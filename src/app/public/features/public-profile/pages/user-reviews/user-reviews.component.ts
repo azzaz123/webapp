@@ -42,17 +42,12 @@ export class UserReviewsComponent implements OnInit {
           finalize(() => (this.loading = false)),
           take(1)
         )
-        .subscribe(
-          (response: PaginationResponse<ReviewResponse>) => {
-            this.reviews = this.reviews.concat(
-              this.mapReviewService.mapItems(response.results)
-            );
-            this.nextPaginationItem = response.init;
-          },
-          () => {
-            this.onError;
-          }
-        );
+        .subscribe((response: PaginationResponse<ReviewResponse>) => {
+          this.reviews = this.reviews.concat(
+            this.mapReviewService.mapItems(response.results)
+          );
+          this.nextPaginationItem = response.init;
+        }, this.onError);
     } catch (err: any) {
       this.onError();
     }
