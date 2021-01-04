@@ -95,6 +95,27 @@ describe('BumpSuggestionModalComponent', () => {
         'height=269,width=550, toolbar=0, location=0, menubar=0, directories=0, scrollbars=0'
       );
     });
+
+    it('should not disable shere icons if item data is available', () => {
+      component.item = MOCK_ITEM;
+
+      fixture.detectChanges();
+
+      const shareIcons = fixture.debugElement.query(
+        By.css('.social-icons__disabled')
+      );
+      expect(shareIcons).toBeFalsy();
+    });
+
+    it('should disable shere icons if item data is not available', () => {
+      fixture.detectChanges();
+
+      const shareIcons = fixture.debugElement.query(
+        By.css('.social-icons__disabled')
+      );
+
+      expect(shareIcons).toBeTruthy();
+    });
   });
 
   describe('Close modal', () => {
@@ -122,6 +143,42 @@ describe('BumpSuggestionModalComponent', () => {
 
       expect(activeModal.close).toHaveBeenCalledTimes(1);
       expect(activeModal.close).toHaveBeenLastCalledWith(true);
+    });
+  });
+
+  describe('CTA button', () => {
+    it('should show price if has price and currency', () => {
+      component.productPrice = 10;
+      component.productCurrency = 'EUR';
+
+      fixture.detectChanges();
+      const submitButton = fixture.debugElement.query(
+        By.directive(ButtonComponent)
+      ).nativeElement;
+
+      expect(submitButton.textContent).toEqual('Feature it from 10€');
+    });
+
+    it('should not show price if has not price', () => {
+      component.productCurrency = 'EUR';
+
+      fixture.detectChanges();
+      const submitButton = fixture.debugElement.query(
+        By.directive(ButtonComponent)
+      ).nativeElement;
+
+      expect(submitButton.textContent).toEqual('Feature it');
+    });
+
+    it('should not show price if has not currency', () => {
+      component.productPrice = 10;
+
+      fixture.detectChanges();
+      const submitButton = fixture.debugElement.query(
+        By.directive(ButtonComponent)
+      ).nativeElement;
+
+      expect(submitButton.textContent).toEqual('Feature it');
     });
   });
 });

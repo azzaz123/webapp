@@ -197,7 +197,7 @@ describe('CatalogProListComponent', () => {
       expect(component['modalRef'].componentInstance.extras).toBe(true);
     }));
 
-    fdescribe('bump suggestion modal', () => {
+    describe('bump suggestion modal', () => {
       beforeEach(() => {
         route.params = of({
           created: true,
