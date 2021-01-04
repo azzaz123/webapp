@@ -11,20 +11,17 @@ import { ProfileTabsComponent } from './components/profile-tabs/profile-tabs.com
 import { FavouriteUserModule } from './components/favourite-user/favourite-user.module';
 import { PublicProfileService } from './core/services/public-profile.service';
 import { SpinnerModule } from '@shared/spinner/spinner.module';
+import { UserProfileHeaderModule } from './components/user-profile-header/user-profile-header.module';
 
 @NgModule({
-  declarations: [
-    publicProfileRoutedComponents,
-    UserProfileHeaderComponent,
-    UserStatsComponent,
-    ProfileTabsComponent,
-  ],
+  declarations: [publicProfileRoutedComponents, ProfileTabsComponent],
   imports: [
     CommonModule,
     publicProfileRoutedModules,
     PublicProfileRoutingModule,
     SpinnerModule,
     FavouriteUserModule,
+    UserProfileHeaderModule,
   ],
   providers: [PublicProfileService],
 })
