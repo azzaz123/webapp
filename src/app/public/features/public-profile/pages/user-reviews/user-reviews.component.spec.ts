@@ -51,7 +51,7 @@ describe('UserReviewsComponent', () => {
   describe('when component inits', () => {
     const reviewSelector = 'tsl-review-item';
 
-    it('should print same amount of reviews recieved', () => {
+    it('should print same amount of reviews received', () => {
       const componentReviewsLength = component.reviews.length;
       const domReviewsLength = el.querySelectorAll(reviewSelector).length;
 

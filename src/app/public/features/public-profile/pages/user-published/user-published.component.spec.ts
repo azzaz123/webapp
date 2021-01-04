@@ -36,7 +36,7 @@ describe('UserPublishedComponent', () => {
   describe('when component inits', () => {
     const itemCardSelector = 'tsl-public-item-card';
 
-    it('should print same amount of items recieved', () => {
+    it('should print same amount of items received', () => {
       const componentItemsLength = component.items.length;
       const domItemsLength = el.querySelectorAll(itemCardSelector).length;
 
