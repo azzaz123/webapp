@@ -7,7 +7,7 @@ import { MessageService } from '@features/chat/core/message/message.service';
 import { APP_PATHS } from 'app/app-routing-constants';
 import { PUBLIC_PATHS } from 'app/public/public-routing-constants';
 import { Subscription } from 'rxjs';
-import { TabbarService } from './tabbar.service';
+import { TabbarService } from './core/services/tabbar.service';
 
 @Component({
   selector: 'tsl-tabbar',
