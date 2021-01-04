@@ -2,20 +2,21 @@ import { TestBed } from '@angular/core/testing';
 import { LoadExternalLibsService } from '@core/load-external-libs/load-external-libs.service';
 import { of } from 'rxjs';
 import { WINDOW_TOKEN } from './../window/window.token';
+import { DidomiUserConsents } from './didomi.interface';
 import { DidomiService } from './didomi.service';
 
 class DidomiStub {
   callback: (event: any) => any;
 
-  getUserConsentStatusForPurpose(purpouseKey: string) {
+  getUserConsentStatusForPurpose(purpouseKey: string): boolean {
     return true;
   }
 
-  getUserConsentStatusForVendor(vendorKey: string) {
+  getUserConsentStatusForVendor(vendorKey: string): boolean {
     return true;
   }
 
-  getUserConsentStatusForAll() {
+  getUserConsentStatusForAll(): DidomiUserConsents {
     return {
       purposes: { enabled: [], disabled: [] },
     };
@@ -76,7 +77,7 @@ describe('Service: Didomi', () => {
       });
     });
 
-    it('should return inialize not allowed', () => {
+    it('should return not allowed on the init', () => {
       service.userAllowedSegmentationInAds$().subscribe((allowed: boolean) => {
         expect(allowed).toBeFalsy();
       });
