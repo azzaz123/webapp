@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Item } from '@core/item/item';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
