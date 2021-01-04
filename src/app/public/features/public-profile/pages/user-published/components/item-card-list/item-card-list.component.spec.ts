@@ -3,8 +3,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
+import { ItemApiModule } from '@public/core/services/api/item/item-api.module';
+import { ItemCardService } from '@public/core/services/item-card/item-card.service';
+import { ItemCardModule } from '@public/shared/components/item-card/item-card.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { ItemCardModule } from '../item-card/item-card.module';
 import { ItemCardListComponent } from './item-card-list.component';
 
 describe('ItemCardListComponent', () => {
@@ -17,9 +19,14 @@ describe('ItemCardListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ItemCardListComponent],
-      imports: [CommonModule, ItemCardModule, HttpClientTestingModule],
+      imports: [
+        CommonModule,
+        ItemCardModule,
+        ItemApiModule,
+        HttpClientTestingModule,
+      ],
       providers: [
-        DeviceDetectorService,
+        ItemCardService,
         {
           provide: DeviceDetectorService,
           useValue: {

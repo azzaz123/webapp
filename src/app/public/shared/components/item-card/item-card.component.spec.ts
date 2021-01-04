@@ -5,12 +5,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { ItemApiModule } from '@public/core/services/api/item/item-api.module';
+import { FavouriteIconModule } from '@public/shared/components/favourite-icon/favourite-icon.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { SanitizedBackgroundModule } from '@shared/sanitized-background/sanitized-background.module';
-import { FavouriteIconModule } from '../favourite-icon/favourite-icon.module';
 
 import { ItemCardComponent } from './item-card.component';
-import { ItemCardService } from './services/item-card.service';
 
 describe('ItemCardComponent', () => {
   let component: ItemCardComponent;
@@ -27,10 +26,8 @@ describe('ItemCardComponent', () => {
         CustomCurrencyModule,
         SvgIconModule,
         SanitizedBackgroundModule,
-        ItemApiModule,
         HttpClientTestingModule,
       ],
-      providers: [ItemCardService],
     }).compileComponents();
   });
 
@@ -62,12 +59,11 @@ describe('ItemCardComponent', () => {
       });
 
       it('should change favourite state on favourite icon click', () => {
-        favouriteIconElement.click();
-        fixture.detectChanges();
+        spyOn(component.toggleFavourite, 'emit');
 
-        expect(
-          favouriteIconElement.getAttribute(favouriteIconAttr) === 'false'
-        ).toBeTruthy();
+        favouriteIconElement.click();
+
+        expect(component.toggleFavourite.emit).toBeCalled();
       });
     });
 
@@ -85,64 +81,11 @@ describe('ItemCardComponent', () => {
       });
 
       it('should change favourite state on favourite icon click', () => {
+        spyOn(component.toggleFavourite, 'emit');
+
         favouriteIconElement.click();
-        fixture.detectChanges();
 
-        expect(
-          favouriteIconElement.getAttribute(favouriteIconAttr) === 'true'
-        ).toBeTruthy();
-      });
-    });
-  });
-
-  describe('favourite', () => {
-    const favouriteIconSelector = 'tsl-favourite-icon';
-    const favouriteIconAttr = 'ng-reflect-active';
-    let favouriteIconElement: HTMLElement;
-
-    describe('when is favourite', () => {
-      beforeEach(() => {
-        component.item.flags.favorite = true;
-        fixture.detectChanges();
-        favouriteIconElement = el.querySelector(favouriteIconSelector);
-      });
-
-      it('should show item as favourite', () => {
-        expect(
-          favouriteIconElement.getAttribute(favouriteIconAttr) === 'true'
-        ).toBeTruthy();
-      });
-
-      it('should change favourite state on favourite icon click', () => {
-        favouriteIconElement.click();
-        fixture.detectChanges();
-
-        expect(
-          favouriteIconElement.getAttribute(favouriteIconAttr) === 'false'
-        ).toBeTruthy();
-      });
-    });
-
-    describe('when is NOT favourite', () => {
-      beforeEach(() => {
-        component.item.flags.favorite = false;
-        fixture.detectChanges();
-        favouriteIconElement = el.querySelector(favouriteIconSelector);
-      });
-
-      it('should show item as NOT favourite', () => {
-        expect(
-          favouriteIconElement.getAttribute(favouriteIconAttr) === 'false'
-        ).toBeTruthy();
-      });
-
-      it('should change favourite state on favourite icon click', () => {
-        favouriteIconElement.click();
-        fixture.detectChanges();
-
-        expect(
-          favouriteIconElement.getAttribute(favouriteIconAttr) === 'true'
-        ).toBeTruthy();
+        expect(component.toggleFavourite.emit).toBeCalled();
       });
     });
   });
