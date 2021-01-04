@@ -312,7 +312,7 @@ export class ListComponent implements OnInit, OnDestroy {
         if (this.bumpSuggestionModalRef) {
           this.getCheapestProductPrice(
             this.bumpSuggestionModalRef,
-            this.route.snapshot.paramMap.get('itemId'),
+            this.route.snapshot.params['itemId'],
             creditInfo
           );
           this.bumpSuggestionModalRef.componentInstance.productCurrency =

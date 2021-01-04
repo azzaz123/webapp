@@ -7,14 +7,12 @@ import { Item } from '@core/item/item';
   templateUrl: './bump-suggestion-modal.component.html',
   styleUrls: ['./bump-suggestion-modal.component.scss'],
 })
-export class BumpSuggestionModalComponent implements OnInit {
+export class BumpSuggestionModalComponent {
   public item: Item;
   public productPrice: number;
   public productCurrency: string;
 
   constructor(public activeModal: NgbActiveModal) {}
-
-  ngOnInit() {}
 
   public facebookShare(): void {
     const url =

@@ -33,7 +33,6 @@ import {
   MOCK_ITEM_V3,
   MOCK_LISTING_FEE_ORDER,
   ORDER_EVENT,
-  PRODUCT_RESPONSE,
 } from '@fixtures/item.fixtures.spec';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 import {
@@ -137,6 +136,9 @@ describe('ListComponent', () => {
               deactivate() {},
               selectedItems$: new ReplaySubject(1),
               selectedItems: [],
+              getCheapestProductPrice() {
+                return of({ [1]: '10' });
+              },
             },
           },
           {
@@ -153,6 +155,11 @@ describe('ListComponent', () => {
           {
             provide: ActivatedRoute,
             useValue: {
+              snapshot: {
+                params: {
+                  itemId: 1,
+                },
+              },
               params: of({
                 code: 200,
               }),
@@ -235,6 +242,47 @@ describe('ListComponent', () => {
 
   describe('ngOnInit', () => {
     describe('getCreditInfo', () => {
+      it('should set the creditInfo', () => {
+        const creditInfo: CreditInfo = {
+          currencyName: 'wallacoins',
+          credit: 2000,
+          factor: 100,
+        };
+        spyOn(paymentService, 'getCreditInfo').and.returnValue(of(creditInfo));
+
+        component.ngOnInit();
+
+        expect(component.creditInfo).toEqual(creditInfo);
+      });
+
+      it('should set price to bumb suggestion modal', fakeAsync(() => {
+        const creditInfo: CreditInfo = {
+          currencyName: 'EUR',
+          credit: 10,
+          factor: 1,
+        };
+        spyOn(paymentService, 'getCreditInfo').and.returnValue(of(creditInfo));
+        spyOn(itemService, 'getCheapestProductPrice').and.callThrough();
+
+        component['bumpSuggestionModalRef'] = <any>{
+          componentInstance: componentInstance,
+        };
+
+        component.ngOnInit();
+        tick();
+
+        expect(
+          component['bumpSuggestionModalRef'].componentInstance.productCurrency
+        ).toEqual('EUR');
+        expect(itemService.getCheapestProductPrice).toHaveBeenCalledTimes(1);
+        expect(itemService.getCheapestProductPrice).toHaveBeenLastCalledWith([
+          1,
+        ]);
+        expect(
+          component['bumpSuggestionModalRef'].componentInstance.productPrice
+        ).toEqual(creditInfo.factor * 10);
+      }));
+
       it('should set the creditInfo', () => {
         const creditInfo: CreditInfo = {
           currencyName: 'wallacoins',

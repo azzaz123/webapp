@@ -63,33 +63,6 @@ describe('BumpSuggestionModalComponent', () => {
     paymentService = TestBed.inject(PaymentService);
   });
 
-  describe('ngOnInit', () => {
-    it('should call and set credit info', () => {
-      const creditInfo: CreditInfo = {
-        currencyName: 'wallacoins',
-        credit: 200,
-        factor: 100,
-      };
-      spyOn(paymentService, 'getCreditInfo').and.returnValue(of(creditInfo));
-
-      component.ngOnInit();
-
-      expect(paymentService.getCreditInfo).toHaveBeenCalledTimes(1);
-      expect(component.creditInfo).toEqual(creditInfo);
-    });
-
-    it('should call and set cheapest price', () => {
-      spyOn(itemService, 'getCheapestProductPrice').and.callThrough();
-      component.itemId = '1';
-
-      component.ngOnInit();
-
-      expect(itemService.getCheapestProductPrice).toHaveBeenCalledTimes(1);
-      expect(itemService.getCheapestProductPrice).toHaveBeenCalledWith(['1']);
-      expect(component.productPrice).toEqual(20);
-    });
-  });
-
   describe('Share', () => {
     it('should open facebook link', () => {
       spyOn(window, 'open');
@@ -140,7 +113,6 @@ describe('BumpSuggestionModalComponent', () => {
     });
 
     it('should be closed pressing CTA button', () => {
-      component.itemId = '1';
       fixture.detectChanges();
       const submitButton = fixture.debugElement.query(
         By.directive(ButtonComponent)

@@ -342,7 +342,7 @@ export class CatalogProListComponent implements OnInit {
     });
   }
 
-  public getSubscriptionPlan(plan: number) {
+  public getSubscriptionPlan(plan: number): void {
     this.subscriptionPlan = plan;
   }
 

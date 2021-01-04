@@ -23,6 +23,10 @@ import {
   ITEM_ID,
   ORDER,
 } from '@fixtures/item.fixtures.spec';
+import {
+  createPacksFixture,
+  createPerksModelFixture,
+} from '@fixtures/payments.fixtures.spec';
 import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -49,6 +53,8 @@ describe('CatalogProListComponent', () => {
   let errorService: ErrorsService;
   let modalSpy: jasmine.Spy;
   let uuidService: UuidService;
+  let paymentService: PaymentService;
+
   const routerEvents: Subject<any> = new Subject();
   const mockCounters = {
     sold: 0,
@@ -124,6 +130,12 @@ describe('CatalogProListComponent', () => {
               pay() {
                 return of({});
               },
+              getPerks() {
+                return of(createPerksModelFixture());
+              },
+              getPacks() {
+                return of(createPacksFixture());
+              },
             },
           },
           {
@@ -155,6 +167,7 @@ describe('CatalogProListComponent', () => {
     modalSpy = spyOn(modalService, 'open').and.callThrough();
     eventService = TestBed.inject(EventService);
     uuidService = TestBed.inject(UuidService);
+    paymentService = TestBed.inject(PaymentService);
     fixture.detectChanges();
   });
 
@@ -184,7 +197,7 @@ describe('CatalogProListComponent', () => {
       expect(component['modalRef'].componentInstance.extras).toBe(true);
     }));
 
-    describe('bump suggestion modal', () => {
+    fdescribe('bump suggestion modal', () => {
       beforeEach(() => {
         route.params = of({
           created: true,
@@ -192,7 +205,7 @@ describe('CatalogProListComponent', () => {
         });
       });
 
-      it('should open bump suggestion modal if item is created', fakeAsync(() => {
+      it('should open bump suggestion modal', fakeAsync(() => {
         component.ngOnInit();
         tick();
 
@@ -202,6 +215,39 @@ describe('CatalogProListComponent', () => {
             windowClass: 'modal-standard',
           }
         );
+      }));
+
+      it('should open bump suggestion modal with the price', fakeAsync(() => {
+        spyOn(paymentService, 'getPerks').and.callThrough();
+        spyOn(paymentService, 'getPacks').and.callThrough();
+
+        component.ngOnInit();
+        tick();
+
+        component['bumpSuggestionModalRef'] = <any>{
+          componentInstance: componentInstance,
+        };
+
+        expect(paymentService.getPacks).toHaveBeenCalledTimes(1);
+        expect(paymentService.getPacks).toHaveBeenCalledWith();
+        expect(
+          component['bumpSuggestionModalRef'].componentInstance.productPrice
+        ).toEqual(5.99);
+        expect(
+          component['bumpSuggestionModalRef'].componentInstance.productCurrency
+        ).toEqual('EUR');
+      }));
+
+      it('should open bump suggestion modal without the price', fakeAsync(() => {
+        const mock = createPerksModelFixture();
+        mock.subscription.national.quantity = 1;
+        spyOn(paymentService, 'getPerks').and.returnValue(of(mock));
+        spyOn(paymentService, 'getPacks');
+
+        component.ngOnInit();
+        tick();
+
+        expect(paymentService.getPacks).not.toHaveBeenCalled();
       }));
 
       it('should redirect when modal CTA button modal is clicked', fakeAsync(() => {
