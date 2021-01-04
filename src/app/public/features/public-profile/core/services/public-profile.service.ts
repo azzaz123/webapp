@@ -80,21 +80,21 @@ export class PublicProfileService {
 
   public getReviews(
     userId: string,
-    init?: number
+    init: number = 0
   ): Observable<HttpResponse<ReviewsData[]>> {
     return this.http.get<HttpResponse<ReviewsData[]>>(
       `${environment.baseUrl}${REVIEWS_ENDPOINT(userId)}`,
-      this.paginationService.getPaginationRequestOptions(init || 0)
+      this.paginationService.getPaginationRequestOptions(init)
     );
   }
 
   public getPublishedItems(
     userId: string,
-    init?: number
+    init: number = 0
   ): Observable<HttpResponse<ItemResponse[]>> {
     return this.http.get<HttpResponse<ItemResponse[]>>(
       `${environment.baseUrl}${PUBLISHED_ITEMS_ENDPOINT(userId)}`,
-      this.paginationService.getPaginationRequestOptions(init || 0)
+      this.paginationService.getPaginationRequestOptions(init)
     );
   }
 
