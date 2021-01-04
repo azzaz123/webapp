@@ -51,11 +51,14 @@ describe('SvgIconComponent', () => {
 
   describe('ngOnInit() - initializing the component', () => {
     describe('if the src is a svg', () => {
-      it('should display the icon in the HTML', () => {
+      beforeEach(() => {
         spyOn(svgService, 'getIconByPath').and.returnValue(of(svgTag));
         component.src = 'mySvg.svg';
         fixture.detectChanges();
         component.ngOnInit();
+      });
+
+      it('should display the icon in the HTML', () => {
         const secureSvg: SafeHtml = domSanitizer.bypassSecurityTrustHtml(
           svgTag
         );
@@ -79,6 +82,20 @@ describe('SvgIconComponent', () => {
           secureSvg
         );
         expect(innerHTML).toBe(sanitizedSvg);
+      });
+
+      it('should set the custom style attributes', () => {
+        const expectedStyle = 'width: 10px;height: 10px;fill: red;';
+        component.width = '10';
+        component.height = '10';
+        component.fill = 'red';
+
+        fixture.detectChanges();
+        component.ngOnInit();
+        const innerHTML: HTMLElement =
+          fixture.elementRef.nativeElement.innerHTML;
+
+        expect(innerHTML).toContain(expectedStyle);
       });
     });
 
