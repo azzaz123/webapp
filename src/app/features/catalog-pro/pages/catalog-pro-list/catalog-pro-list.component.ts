@@ -4,7 +4,6 @@ import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { Item } from '@core/item/item';
-import { Order, Product } from '@core/item/item-response.interface';
 import { ItemService, ITEM_STATUS } from '@core/item/item.service';
 import { Pack } from '@core/payments/pack';
 import { FinancialCard, Packs } from '@core/payments/payment.interface';
@@ -400,5 +399,9 @@ export class CatalogProListComponent implements OnInit {
         });
       }
     });
+  }
+
+  public onSetSubscriptionPlan(plan: number): void {
+    this.subscriptionPlan = plan;
   }
 }
