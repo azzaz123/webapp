@@ -16,7 +16,6 @@ describe('SvgIconComponent', () => {
   const width = 10;
   const height = 10;
   const fill = 'red';
-  const background = 'blue';
   let component: SvgIconComponent;
   let fixture: ComponentFixture<SvgIconComponent>;
   let svgService: SvgService;
@@ -94,7 +93,6 @@ describe('SvgIconComponent', () => {
           component.width = width;
           component.height = height;
           component.fill = fill;
-          component.background = background;
 
           fixture.detectChanges();
           component.ngOnInit();
@@ -109,9 +107,6 @@ describe('SvgIconComponent', () => {
             `${height}px`
           );
           expect(innerHTML.getAttribute(SVG_ATTRIBUTES.FILL)).toBe(fill);
-          expect(innerHTML.getAttribute(SVG_ATTRIBUTES.STYLE)).toBe(
-            `background: ${background};`
-          );
         });
 
         it('should apply the custom width', () => {
@@ -150,21 +145,6 @@ describe('SvgIconComponent', () => {
 
           expect(innerHTML.getAttribute(SVG_ATTRIBUTES.FILL)).toEqual(
             customFillColor
-          );
-        });
-
-        it('should apply the custom background', () => {
-          const customBackgroundColor = 'red';
-          component.background = customBackgroundColor;
-
-          fixture.detectChanges();
-          component.ngOnInit();
-          const innerHTML: HTMLElement = fixture.debugElement.nativeElement.querySelector(
-            svgSelector
-          );
-
-          expect(innerHTML.getAttribute(SVG_ATTRIBUTES.STYLE)).toBe(
-            `background: ${customBackgroundColor};`
           );
         });
       });

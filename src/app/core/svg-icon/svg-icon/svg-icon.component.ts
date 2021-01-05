@@ -13,7 +13,6 @@ export enum SVG_ATTRIBUTES {
   WIDTH = 'width',
   HEIGHT = 'height',
   FILL = 'fill',
-  STYLE = 'style',
 }
 @Component({
   selector: 'tsl-svg-icon',
@@ -22,7 +21,6 @@ export enum SVG_ATTRIBUTES {
 export class SvgIconComponent implements OnInit {
   @Input() src: string;
   @Input() fill: string;
-  @Input() background: string;
   @Input() width: number;
   @Input() height: number;
 
@@ -64,13 +62,6 @@ export class SvgIconComponent implements OnInit {
 
     if (this.fill) {
       this.setAttribute(SVG_ATTRIBUTES.FILL, this.fill);
-    }
-
-    if (this.background) {
-      this.setAttribute(
-        SVG_ATTRIBUTES.STYLE,
-        `background: ${this.background};`
-      );
     }
   }
 
