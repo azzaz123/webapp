@@ -14,12 +14,11 @@ export class ItemCardService {
     (item.flags.favorite
       ? this.markAsFavourite(item.id)
       : this.unmarkAsFavourite(item.id)
-    ).subscribe(
-      () => {},
-      () => {
+    ).subscribe({
+      next: () => {
         item.flags.favorite = !item.flags.favorite;
-      }
-    );
+      },
+    });
   }
 
   private markAsFavourite(id: string): Observable<MarkAsFavouriteBodyResponse> {
