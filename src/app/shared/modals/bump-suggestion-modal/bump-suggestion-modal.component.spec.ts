@@ -102,7 +102,7 @@ describe('BumpSuggestionModalComponent', () => {
       fixture.detectChanges();
 
       const shareIcons = fixture.debugElement.query(
-        By.css('.social-icons__disabled')
+        By.css('.social-icons--disabled')
       );
       expect(shareIcons).toBeFalsy();
     });
@@ -111,7 +111,7 @@ describe('BumpSuggestionModalComponent', () => {
       fixture.detectChanges();
 
       const shareIcons = fixture.debugElement.query(
-        By.css('.social-icons__disabled')
+        By.css('.social-icons--disabled')
       );
 
       expect(shareIcons).toBeTruthy();

@@ -258,7 +258,6 @@ import { BumpSuggestionModalComponent } from './modals/bump-suggestion-modal/bum
     ConfirmCardModalComponent,
     ChangeCardModalComponent,
     FullScreenModalComponent,
-    BumpSuggestionModalComponent,
   ],
 })
 export class SharedModule {}

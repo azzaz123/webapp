@@ -440,7 +440,7 @@ $modal-border-radius: 0.3rem;
         justify-content: center;
         margin-bottom: $spacing-ml;
 
-        &__disabled {
+        &--disabled {
           opacity: 0.5;
           pointer-events: none;
           cursor: default;

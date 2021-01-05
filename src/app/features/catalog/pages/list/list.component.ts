@@ -280,10 +280,10 @@ export class ListComponent implements OnInit, OnDestroy {
       }
     );
     this.bumpSuggestionModalRef.result.then((redirect: boolean) => {
+      this.bumpSuggestionModalRef = null;
       if (redirect) {
         this.router.navigate(['catalog/checkout', { itemId }]);
       }
-      this.bumpSuggestionModalRef = null;
     });
   }
 
