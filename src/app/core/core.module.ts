@@ -10,11 +10,13 @@ import { BlockUserService } from '@features/chat/core/block-user/block-user.serv
 import { InboxService } from '@features/chat/core/inbox/inbox.service';
 import { MessageService } from '@features/chat/core/message/message.service';
 import { CookieModule } from 'ngx-cookie';
+import { CategoryService } from './category/category.service';
 import { ConnectionService } from './connection/connection.service';
 import { ConversationModule } from './conversation/conversation.module';
 import { DesktopNotificationsService } from './desktop-notifications/desktop-notifications.service';
 import { ErrorsService } from './errors/errors.service';
 import { EventService } from './event/event.service';
+import { GeolocationService } from './geolocation/geolocation.service';
 import { AccessTokenService } from './http/access-token.service';
 import { I18nService } from './i18n/i18n.service';
 import { InvoiceService } from './invoice/invoice.service';
@@ -82,6 +84,8 @@ export class CoreModule {
         SubscriptionsService,
         TrustAndSafetyService,
         InvoiceService,
+        GeolocationService,
+        CategoryService,
       ],
     };
   }
