@@ -15,7 +15,7 @@ export class ItemCardService {
       ? this.markAsFavourite(item.id)
       : this.unmarkAsFavourite(item.id)
     ).subscribe({
-      next: () => {
+      error: () => {
         item.flags.favorite = !item.flags.favorite;
       },
     });
