@@ -94,7 +94,6 @@ describe('SvgIconComponent', () => {
           component.height = height;
           component.fill = fill;
 
-          fixture.detectChanges();
           component.ngOnInit();
           const innerHTML: HTMLElement = fixture.debugElement.nativeElement.querySelector(
             svgSelector
@@ -112,7 +111,6 @@ describe('SvgIconComponent', () => {
         it('should apply the custom width', () => {
           component.width = 50;
 
-          fixture.detectChanges();
           component.ngOnInit();
           const innerHTML: HTMLElement = fixture.debugElement.nativeElement.querySelector(
             svgSelector
@@ -124,7 +122,6 @@ describe('SvgIconComponent', () => {
         it('should apply the custom height', () => {
           component.height = 350;
 
-          fixture.detectChanges();
           component.ngOnInit();
           const innerHTML: HTMLElement = fixture.debugElement.nativeElement.querySelector(
             svgSelector
@@ -137,7 +134,6 @@ describe('SvgIconComponent', () => {
           const customFillColor = 'pink';
           component.fill = customFillColor;
 
-          fixture.detectChanges();
           component.ngOnInit();
           const innerHTML: HTMLElement = fixture.debugElement.nativeElement.querySelector(
             svgSelector
