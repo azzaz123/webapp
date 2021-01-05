@@ -47,7 +47,8 @@ const Template: Story<ItemCardComponent> = (args: ItemCardComponent) => ({
       HttpClientModule,
     ],
   },
-  template: '<tsl-public-item-card [item]="item"></tsl-public-item-card>',
+  template:
+    '<tsl-public-item-card [item]="item" (toggleFavourite)="toggleFavourite()"></tsl-public-item-card>',
 });
 
 export const Default = Template.bind({});
