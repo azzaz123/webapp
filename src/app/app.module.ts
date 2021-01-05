@@ -25,7 +25,6 @@ import { FooterModule } from '@layout/footer/footer.module';
     HttpClientModule,
     AppRoutingModule,
     LayoutModule,
-    FooterModule,
     NgxPermissionsModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: isSWEnabled,
