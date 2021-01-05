@@ -4,6 +4,7 @@ import { CheckSessionService } from './check-session.service';
 
 describe('CheckSessionService', () => {
   let checkSessionService: CheckSessionService;
+  let accessTokenService: AccessTokenService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -19,10 +20,19 @@ describe('CheckSessionService', () => {
     });
 
     checkSessionService = TestBed.inject(CheckSessionService);
+    accessTokenService = TestBed.inject(AccessTokenService);
   });
 
   it('should be created', () => {
     expect(checkSessionService).toBeTruthy();
+  });
+
+  describe('hasSession', () => {
+    it('should return boolean with access token definition', () => {
+      expect(checkSessionService.hasSession()).toEqual(
+        accessTokenService.accessToken !== undefined
+      );
+    });
   });
 
   describe('checkSessionAction', () => {

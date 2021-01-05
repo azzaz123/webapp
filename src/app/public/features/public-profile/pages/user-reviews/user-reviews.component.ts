@@ -1,7 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MapReviewService } from '@public/features/public-profile/pages/user-reviews/services/map-review/map-review.service';
 import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
-import { PaginationService } from '@public/core/services/pagination/pagination.service';
 import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
 import { finalize, take } from 'rxjs/operators';
 import { Review } from '@features/reviews/core/review';
@@ -19,8 +18,7 @@ export class UserReviewsComponent implements OnInit {
 
   constructor(
     private publicProfileService: PublicProfileService,
-    private mapReviewService: MapReviewService,
-    private paginationService: PaginationService
+    private mapReviewService: MapReviewService
   ) {}
 
   public ngOnInit(): void {
@@ -30,26 +28,30 @@ export class UserReviewsComponent implements OnInit {
   private loadItems(): void {
     this.loading = true;
 
-    this.paginationService
-      .getItems(
-        this.publicProfileService.getReviews(
-          this.publicProfileService.user.id,
-          this.nextPaginationItem
+    try {
+      this.publicProfileService
+        .getReviews(this.publicProfileService.user.id, this.nextPaginationItem)
+        .pipe(
+          finalize(() => (this.loading = false)),
+          take(1)
         )
-      )
-      .pipe(
-        finalize(() => (this.loading = false)),
-        take(1)
-      )
-      .subscribe((response: PaginationResponse<ReviewResponse>) => {
-        this.reviews = this.reviews.concat(
-          this.mapReviewService.mapItems(response.results)
-        );
-        this.nextPaginationItem = response.init;
-      });
+        .subscribe((response: PaginationResponse<ReviewResponse>) => {
+          this.reviews = this.reviews.concat(
+            this.mapReviewService.mapItems(response.results)
+          );
+          this.nextPaginationItem = response.init;
+        }, this.onError);
+    } catch (err: any) {
+      this.onError();
+    }
   }
 
   public loadMore(): void {
     this.loadItems();
+  }
+
+  private onError(): void {
+    this.reviews = [];
+    this.loading = false;
   }
 }

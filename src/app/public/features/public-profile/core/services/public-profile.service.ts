@@ -17,7 +17,12 @@ import {
   MarkAsFavouriteBodyResponse,
 } from '../interfaces/public-profile-request.interface';
 import { PaginationService } from '@public/core/services/pagination/pagination.service';
-import { ReviewsData } from '@features/reviews/core/review-response.interface';
+import {
+  ReviewResponse,
+  ReviewsData,
+} from '@features/reviews/core/review-response.interface';
+import { ItemResponse } from '@core/item/item-response.interface';
+import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
 
 export const PROFILE_API_URL = (userId: string) => `api/v3/users/${userId}`;
 export const USER_COVER_IMAGE_ENDPOINT = (userId: string) =>
@@ -41,9 +46,7 @@ export const IS_FAROURITE_ENDPOINT = (userId: string) =>
 export const MARK_AS_FAVOURITE_ENDPOINT = (userId: string) =>
   `${PROFILE_API_URL(userId)}/${FAVOURITE_API_PATH}`;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class PublicProfileService {
   private _user: User;
 
@@ -81,17 +84,25 @@ export class PublicProfileService {
 
   public getReviews(
     userId: string,
-    init?: number
-  ): Observable<HttpResponse<ReviewsData[]>> {
-    return this.http.get<HttpResponse<ReviewsData[]>>(
-      `${environment.baseUrl}${REVIEWS_ENDPOINT(userId)}`,
-      this.paginationService.getPaginationRequestOptions(init || 0)
+    init: number = 0
+  ): Observable<PaginationResponse<ReviewResponse>> {
+    return this.paginationService.getItems(
+      this.http.get<HttpResponse<ReviewsData[]>>(
+        `${environment.baseUrl}${REVIEWS_ENDPOINT(userId)}`,
+        this.paginationService.getPaginationRequestOptions(init)
+      )
     );
   }
 
-  public getPublishedItems(userId: string): Observable<any> {
-    return this.http.get(
-      `${environment.baseUrl}${PUBLISHED_ITEMS_ENDPOINT(userId)}`
+  public getPublishedItems(
+    userId: string,
+    init: number = 0
+  ): Observable<PaginationResponse<ItemResponse>> {
+    return this.paginationService.getItems(
+      this.http.get<HttpResponse<ItemResponse[]>>(
+        `${environment.baseUrl}${PUBLISHED_ITEMS_ENDPOINT(userId)}`,
+        this.paginationService.getPaginationRequestOptions(init)
+      )
     );
   }
 
