@@ -4,7 +4,6 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
-import { ItemApiModule } from '@public/core/services/api/item/item-api.module';
 import { FavouriteIconModule } from '@public/shared/components/favourite-icon/favourite-icon.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { SanitizedBackgroundModule } from '@shared/sanitized-background/sanitized-background.module';

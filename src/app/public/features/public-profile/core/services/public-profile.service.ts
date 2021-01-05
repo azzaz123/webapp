@@ -154,7 +154,7 @@ export class PublicProfileService {
   ): Observable<MarkAsFavouriteBodyResponse> {
     return this.http.put(
       `${environment.baseUrl}${MARK_AS_FAVOURITE_ENDPOINT(userId)}`,
-      { favorited: true } as MarkAsFavouriteBodyRequest
+      { favorited: true }
     );
   }
 
@@ -163,7 +163,7 @@ export class PublicProfileService {
   ): Observable<MarkAsFavouriteBodyResponse> {
     return this.http.put(
       `${environment.baseUrl}${MARK_AS_FAVOURITE_ENDPOINT(userId)}`,
-      { favorited: false } as MarkAsFavouriteBodyRequest
+      { favorited: false }
     );
   }
 
