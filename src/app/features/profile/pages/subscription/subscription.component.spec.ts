@@ -14,9 +14,10 @@ import {
   ANALYTIC_EVENT_TYPES,
   ClickKeepCurrentSubscription,
   ClickProfileEditCurrentSubscription,
-  ClickProfileSubscribeButton,
+  ClickSubscriptionManagementPlus,
   SCREEN_IDS,
-  ViewProfileSubscription,
+  ViewSubscription,
+  ViewSubscriptionManagement,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { CategoryService } from '@core/category/category.service';
@@ -132,12 +133,27 @@ describe('SubscriptionComponent', () => {
       expect(component.subscriptions).toEqual(MAPPED_SUBSCRIPTIONS);
     });
 
-    it('should send page view event to analytics', () => {
+    it('should set the user information', () => {
+      spyOn(userService, 'me').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(userService.me).toHaveBeenCalledTimes(1);
+      expect(component.user).toEqual(USER_DATA);
+    });
+
+    afterEach(() => {
+      TestBed.resetTestingModule();
+    });
+  });
+
+  describe('Send page view event to analytics', () => {
+    it('when has subscriptions', () => {
       spyOn(analyticsService, 'trackPageView');
-      const expectedPageViewEvent: AnalyticsPageView<ViewProfileSubscription> = {
-        name: ANALYTICS_EVENT_NAMES.ViewProfileSubscription,
+      const expectedPageViewEvent: AnalyticsPageView<ViewSubscriptionManagement> = {
+        name: ANALYTICS_EVENT_NAMES.ViewSubscriptionManagement,
         attributes: {
-          screenId: SCREEN_IDS.ProfileSubscription,
+          screenId: SCREEN_IDS.SubscriptionManagement,
         },
       };
 
@@ -149,13 +165,24 @@ describe('SubscriptionComponent', () => {
       );
     });
 
-    it('should set the user information', () => {
-      spyOn(userService, 'me').and.callThrough();
+    it('when has not subscriptions', () => {
+      spyOn(analyticsService, 'trackPageView');
+      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(
+        of(SUBSCRIPTIONS_NOT_SUB)
+      );
+      const expectedPageViewEvent: AnalyticsPageView<ViewSubscription> = {
+        name: ANALYTICS_EVENT_NAMES.ViewSubscription,
+        attributes: {
+          screenId: SCREEN_IDS.Subscription,
+        },
+      };
 
       component.ngOnInit();
 
-      expect(userService.me).toHaveBeenCalledTimes(1);
-      expect(component.user).toEqual(USER_DATA);
+      expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+      expect(analyticsService.trackPageView).toHaveBeenCalledWith(
+        expectedPageViewEvent
+      );
     });
 
     afterEach(() => {
@@ -355,11 +382,11 @@ describe('SubscriptionComponent', () => {
   describe('when the user is NOT subscribed to the selected category and has another subscription', () => {
     it('should send event to analytics', () => {
       spyOn(analyticsService, 'trackEvent');
-      const expectedEvent: AnalyticsEvent<ClickProfileSubscribeButton> = {
-        name: ANALYTICS_EVENT_NAMES.ClickProfileSubscribeButton,
+      const expectedEvent: AnalyticsEvent<ClickSubscriptionManagementPlus> = {
+        name: ANALYTICS_EVENT_NAMES.ClickSubscriptionManagementPlus,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
-          screenId: SCREEN_IDS.ProfileSubscription,
+          screenId: SCREEN_IDS.SubscriptionManagement,
           subscription: SUBSCRIPTIONS_NOT_SUB[0]
             .category_id as SUBSCRIPTION_CATEGORIES,
           isNewSubscriber: false,
@@ -398,11 +425,11 @@ describe('SubscriptionComponent', () => {
       spyOn(subscriptionsService, 'hasOneStripeSubscription').and.returnValue(
         false
       );
-      const expectedEvent: AnalyticsEvent<ClickProfileSubscribeButton> = {
-        name: ANALYTICS_EVENT_NAMES.ClickProfileSubscribeButton,
+      const expectedEvent: AnalyticsEvent<ClickSubscriptionManagementPlus> = {
+        name: ANALYTICS_EVENT_NAMES.ClickSubscriptionManagementPlus,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
-          screenId: SCREEN_IDS.ProfileSubscription,
+          screenId: SCREEN_IDS.SubscriptionManagement,
           subscription: MAPPED_SUBSCRIPTIONS[0]
             .category_id as SUBSCRIPTION_CATEGORIES,
           isNewSubscriber: true,
