@@ -4,7 +4,6 @@ import {
   TestRequest,
 } from '@angular/common/http/testing';
 import { fakeAsync, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
 import { ItemResponse } from '@core/item/item-response.interface';
 import { User } from '@core/user/user';
 import { Image } from '@core/user/user-response.interface';
@@ -17,9 +16,11 @@ import {
   USERS_STATS,
   USER_DATA,
   IMAGE,
+  EMPTY_STATS,
 } from '@fixtures/user.fixtures.spec';
 import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
 import { environment } from 'environments/environment';
+import { throwError } from 'rxjs';
 import { MarkAsFavouriteBodyRequest } from '../interfaces/public-profile-request.interface';
 
 import {
@@ -40,15 +41,7 @@ describe('PublicProfileService', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      providers: [
-        PublicProfileService,
-        {
-          provide: Router,
-          useValue: {
-            navigate() {},
-          },
-        },
-      ],
+      providers: [PublicProfileService],
       imports: [HttpClientTestingModule],
     }).compileComponents();
   }));
@@ -73,6 +66,19 @@ describe('PublicProfileService', () => {
 
       expect(req.request.url).toEqual(expectedUrl);
       expect(response).toEqual(MOCK_USER_STATS);
+      expect(req.request.method).toBe('GET');
+    });
+
+    it('should return empty stats when we get an error', () => {
+      const expectedUrl = `${environment.baseUrl}${STATS_ENDPOINT(userId)}`;
+      let response: UserStats;
+
+      service.getStats(userId).subscribe((r) => (response = r));
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(throwError(''));
+
+      expect(req.request.url).toEqual(expectedUrl);
+      expect(response).toEqual(EMPTY_STATS);
       expect(req.request.method).toBe('GET');
     });
   });
