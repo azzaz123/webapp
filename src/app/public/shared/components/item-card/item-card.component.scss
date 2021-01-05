@@ -7,7 +7,6 @@ $icon-margin: $spacer * 0.5;
 
 .ItemCard {
   background-color: $white;
-  border: 1px solid $blue-grey-4;
   border-radius: $border-radius;
   font-size: $font-size-s;
   height: $container-height-without-description;
@@ -16,6 +15,12 @@ $icon-margin: $spacer * 0.5;
 
   &--with-description {
     height: $container-height-with-description;
+  }
+
+  &__data {
+    border: 1px solid $blue-grey-4;
+    border-bottom-left-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
   }
 
   &__icon {
