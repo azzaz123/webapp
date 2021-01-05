@@ -4,7 +4,6 @@ import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { FavouriteIconModule } from '@public/shared/components/favourite-icon/favourite-icon.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { SanitizedBackgroundModule } from '@shared/sanitized-background/sanitized-background.module';
-import { moduleMetadata } from '@storybook/angular';
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { ItemCardComponent } from './item-card.component';
 import {
@@ -19,18 +18,16 @@ import {
 
 export default {
   title: 'Webapp/ItemCard',
+  component: ItemCardComponent,
   decorators: [
-    moduleMetadata({
-      declarations: [ItemCardComponent],
-      imports: [
-        CommonModule,
-        FavouriteIconModule,
-        CustomCurrencyModule,
-        SvgIconModule,
-        SanitizedBackgroundModule,
-        HttpClientModule,
-      ],
-    }),
+    (storyFunc) => {
+      const story = storyFunc();
+
+      return {
+        ...story,
+        template: `<div style="max-width: 200px">${story.template}</div>`,
+      };
+    },
   ],
   argTypes: { toggleFavourite: { action: 'toggleFavourite' } },
 } as Meta;
@@ -38,6 +35,19 @@ export default {
 const Template: Story<ItemCardComponent> = (args: ItemCardComponent) => ({
   component: ItemCardComponent,
   props: args,
+  moduleMetadata: {
+    declarations: [ItemCardComponent],
+    imports: [
+      CommonModule,
+      FavouriteIconModule,
+      CustomCurrencyModule,
+      SvgIconModule,
+      SanitizedBackgroundModule,
+      HttpClientModule,
+    ],
+  },
+  template:
+    '<tsl-public-item-card [item]="item" [showDescription]="showDescription" (toggleFavourite)="toggleFavourite()"></tsl-public-item-card>',
 });
 
 export const Default = Template.bind({});

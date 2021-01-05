@@ -17,7 +17,7 @@ export class ItemApiService {
   public markAsFavourite(id: string): Observable<MarkAsFavouriteBodyResponse> {
     return this.http.put(MARK_AS_FAVORITE_ENDPOINT(id), {
       favorited: true,
-    } as MarkAsFavouriteBodyRequest);
+    });
   }
 
   public unmarkAsFavourite(
@@ -25,6 +25,6 @@ export class ItemApiService {
   ): Observable<MarkAsFavouriteBodyResponse> {
     return this.http.put(MARK_AS_FAVORITE_ENDPOINT(id), {
       favorited: false,
-    } as MarkAsFavouriteBodyRequest);
+    });
   }
 }
