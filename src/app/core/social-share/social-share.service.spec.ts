@@ -40,7 +40,7 @@ describe('SocialShareService', () => {
       expect(window.open).toHaveBeenCalledWith(
         `https://twitter.com/intent/tweet?url=${encodeURIComponent(itemLink)}`,
         'twShareWindow',
-        'height=269,width=550, toolbar=0, location=0, menubar=0, directories=0, scrollbars=0'
+        'height=269, width=550, toolbar=0, location=0, menubar=0, directories=0, scrollbars=0'
       );
     });
   });
