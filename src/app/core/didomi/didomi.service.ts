@@ -34,7 +34,7 @@ export class DidomiService {
 
   public userAllowedSegmentationInAds$(): Observable<boolean> {
     this.loadDidomiLib();
-    return this.allowedSubject.asObservable();
+    return this.allowed$;
   }
 
   private loadDidomiLib(): void {

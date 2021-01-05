@@ -31,10 +31,15 @@ class DidomiStub {
   }
 }
 
+interface WindowDidomi {
+  Didomi: DidomiStub;
+  didomiOnReady: Function[];
+}
+
 describe('Service: Didomi', () => {
   let service: DidomiService;
   let loadExternalLibsServiceMock;
-  const windowMock: Window = <any>{
+  const windowMock: WindowDidomi = {
     Didomi: null,
     didomiOnReady: [],
   };
