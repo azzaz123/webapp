@@ -24,7 +24,6 @@ import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
 import { DesktopNotificationsService } from './core/desktop-notifications/desktop-notifications.service';
 import { DidomiService } from './core/didomi/didomi.service';
-import { MockDidomiService } from './core/didomi/didomi.service.spec';
 import { ErrorsService } from './core/errors/errors.service';
 import { EventService } from './core/event/event.service';
 import { I18nService } from './core/i18n/i18n.service';
@@ -59,7 +58,6 @@ let connectionService: ConnectionService;
 let paymentService: PaymentService;
 let stripeService: StripeService;
 let analyticsService: AnalyticsService;
-let didomiService: DidomiService;
 let uuidService: UuidService;
 let activatedRoute: ActivatedRoute;
 
@@ -185,7 +183,6 @@ describe('App', () => {
           },
         },
         { provide: AnalyticsService, useClass: MockAnalyticsService },
-        { provide: DidomiService, useValue: MockDidomiService },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     });
@@ -208,7 +205,6 @@ describe('App', () => {
     paymentService = TestBed.inject(PaymentService);
     stripeService = TestBed.inject(StripeService);
     analyticsService = TestBed.inject(AnalyticsService);
-    didomiService = TestBed.inject(DidomiService);
     uuidService = TestBed.inject(UuidService);
     activatedRoute = TestBed.inject(ActivatedRoute);
 
@@ -525,16 +521,6 @@ describe('App', () => {
       component.ngOnInit();
 
       expect(analyticsService.initialize).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  describe('GDPR', () => {
-    it('should initialize the GDPR library', () => {
-      spyOn(didomiService, 'initialize');
-
-      component.ngOnInit();
-
-      expect(didomiService.initialize).toHaveBeenCalledTimes(1);
     });
   });
 
