@@ -6,6 +6,7 @@ import { ERROR_BOX_EXIT_TYPE } from './interfaces/error-box-exit-type';
 
 export default {
   title: 'Webapp/ErrorBox',
+  component: ErrorBoxComponent,
   decorators: [
     moduleMetadata({
       imports: [CommonModule],
