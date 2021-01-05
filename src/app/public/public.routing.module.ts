@@ -22,6 +22,11 @@ const routes: Routes = [
           ),
       },
       {
+        path: PUBLIC_PATHS.WALL,
+        loadChildren: () =>
+          import('./features/wall/wall.module').then((m) => m.WallModule),
+      },
+      {
         path: '**',
         redirectTo: PUBLIC_PATHS.LOGIN,
       },
