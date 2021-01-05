@@ -24,14 +24,14 @@ export class SessionService {
     }
   }
 
-  private initSessionTracking() {
+  private initSessionTracking(): void {
     const boundPutSessionCookie = this.putSessionCookie.bind(this);
     this.putSessionCookie();
     setInterval(boundPutSessionCookie, SessionService.SESSION_TRACK_INTERVAL);
     window.onunload = boundPutSessionCookie;
   }
 
-  private putSessionCookie() {
+  private putSessionCookie(): void {
     this.cookieService.put(SessionService.SESSION_COOKIE_NAME, 'true', {
       expires: new Date(new Date().getTime() + SessionService.SESSION_TIMEOUT),
       // TODO: Generic cookie options could be abstracted and extended on each case
