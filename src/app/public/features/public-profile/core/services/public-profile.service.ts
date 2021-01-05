@@ -1,7 +1,7 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, tap, catchError } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 import {
   Counters,
@@ -23,6 +23,7 @@ import {
 } from '@features/reviews/core/review-response.interface';
 import { ItemResponse } from '@core/item/item-response.interface';
 import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
+import { EMPTY_STATS } from '@fixtures/user.fixtures.spec';
 
 export const PROFILE_API_URL = (userId: string) => `api/v3/users/${userId}`;
 export const USER_COVER_IMAGE_ENDPOINT = (userId: string) =>
@@ -68,7 +69,8 @@ export class PublicProfileService {
             ratings: this.toRatingsStats(response.ratings),
             counters: this.toCountersStats(response.counters),
           };
-        })
+        }),
+        catchError(() => of(EMPTY_STATS))
       );
   }
 

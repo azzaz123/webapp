@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '@core/user/user';
 import { Image } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
@@ -21,7 +21,8 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private publicProfileService: PublicProfileService
+    private publicProfileService: PublicProfileService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -43,6 +44,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
 
   private getUserInfoAndStats(): void {
     this.loading = true;
+
     this.subscriptions.push(
       forkJoin([
         this.publicProfileService.getUser(this.userId),
@@ -50,17 +52,27 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
       ])
         .pipe(
           finalize(() => {
-            if (!this.userInfo?.featured) {
-              return (this.loading = false);
-            }
-            this.getCoverImage();
+            this.handleCoverImage();
           })
         )
-        .subscribe(([userInfo, userStats]: [User, UserStats]) => {
-          this.userInfo = userInfo;
-          this.userStats = userStats;
-        })
+        .subscribe(
+          ([userInfo, userStats]: [User, UserStats]) => {
+            this.userInfo = userInfo;
+            this.userStats = userStats;
+          },
+          () => {
+            this.router.navigate(['/404']);
+          }
+        )
     );
+  }
+
+  private handleCoverImage(): void {
+    if (!this.userInfo?.featured) {
+      this.loading = false;
+      return;
+    }
+    this.getCoverImage();
   }
 
   private getCoverImage(): void {
