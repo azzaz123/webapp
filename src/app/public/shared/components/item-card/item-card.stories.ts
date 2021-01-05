@@ -19,18 +19,16 @@ import {
 
 export default {
   title: 'Webapp/ItemCard',
+  component: ItemCardComponent,
   decorators: [
-    moduleMetadata({
-      declarations: [ItemCardComponent],
-      imports: [
-        CommonModule,
-        FavouriteIconModule,
-        CustomCurrencyModule,
-        SvgIconModule,
-        SanitizedBackgroundModule,
-        HttpClientModule,
-      ],
-    }),
+    (storyFunc) => {
+      const story = storyFunc();
+
+      return {
+        ...story,
+        template: `<div style="max-width: 200px">${story.template}</div>`,
+      };
+    },
   ],
   argTypes: { toggleFavourite: { action: 'toggleFavourite' } },
 } as Meta;
@@ -38,6 +36,18 @@ export default {
 const Template: Story<ItemCardComponent> = (args: ItemCardComponent) => ({
   component: ItemCardComponent,
   props: args,
+  moduleMetadata: {
+    declarations: [ItemCardComponent],
+    imports: [
+      CommonModule,
+      FavouriteIconModule,
+      CustomCurrencyModule,
+      SvgIconModule,
+      SanitizedBackgroundModule,
+      HttpClientModule,
+    ],
+  },
+  template: '<tsl-public-item-card [item]="item"></tsl-public-item-card>',
 });
 
 export const Default = Template.bind({});
