@@ -3,7 +3,6 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MOCK_REVIEWS } from '@fixtures/review.fixtures.spec';
 import { MOCK_FULL_USER_FEATURED } from '@fixtures/user.fixtures.spec';
-import { PaginationService } from '@public/core/services/pagination/pagination.service';
 import { of } from 'rxjs';
 import { PublicProfileService } from '../../core/services/public-profile.service';
 import { MapReviewService } from './services/map-review/map-review.service';
@@ -30,7 +29,6 @@ describe('UserReviewsComponent', () => {
           },
         },
         MapReviewService,
-        PaginationService,
       ],
       declarations: [UserReviewsComponent],
     }).compileComponents();
@@ -51,7 +49,7 @@ describe('UserReviewsComponent', () => {
   describe('when component inits', () => {
     const reviewSelector = 'tsl-review-item';
 
-    it('should print same amount of reviews recieved', () => {
+    it('should print same amount of reviews received', () => {
       const componentReviewsLength = component.reviews.length;
       const domReviewsLength = el.querySelectorAll(reviewSelector).length;
 

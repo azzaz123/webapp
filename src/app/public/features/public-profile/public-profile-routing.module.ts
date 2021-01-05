@@ -4,6 +4,7 @@ import { PublicProfileComponent } from './pages/public-profile.component';
 import { UserInfoComponent } from './pages/user-info/user-info.component';
 import { UserInfoModule } from './pages/user-info/user-info.module';
 import { UserPublishedComponent } from './pages/user-published/user-published.component';
+import { UserPublishedModule } from './pages/user-published/user-published.module';
 import { UserReviewsComponent } from './pages/user-reviews/user-reviews.component';
 import { UserReviewsModule } from './pages/user-reviews/user-reviews.module';
 import { PUBLIC_PROFILE_PATHS } from './public-profile-routing-constants';
@@ -40,9 +41,10 @@ const routes: Route[] = [
 })
 export class PublicProfileRoutingModule {}
 
-export const publicProfileRoutedComponents = [
-  PublicProfileComponent,
-  UserPublishedComponent,
-];
+export const publicProfileRoutedComponents = [PublicProfileComponent];
 
-export const publicProfileRoutedModules = [UserInfoModule, UserReviewsModule];
+export const publicProfileRoutedModules = [
+  UserInfoModule,
+  UserReviewsModule,
+  UserPublishedModule,
+];

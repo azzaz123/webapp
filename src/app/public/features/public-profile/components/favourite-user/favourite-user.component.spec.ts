@@ -22,6 +22,7 @@ describe('FavouriteUserComponent', () => {
       ],
       declarations: [FavouriteUserComponent],
       providers: [
+        PublicProfileService,
         {
           provide: AccessTokenService,
           useValue: {

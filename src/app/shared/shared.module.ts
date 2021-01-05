@@ -76,8 +76,9 @@ import { ItemAvatarModule } from './item-avatar/item-avatar.module';
 import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.module';
 import { StarsModule } from './stars/stars.module';
 import { UserAvatarModule } from './user-avatar/user-avatar.module';
-import { SanitizedBackgroundModule } from './sanitized-background/sanitized-background.module';
 import { SpinnerModule } from './spinner/spinner.module';
+import { SanitizedBackgroundModule } from './sanitized-background/sanitized-background.module';
+import { UserCoverModule } from './user-cover/user-cover.module';
 
 @NgModule({
   imports: [
@@ -102,6 +103,7 @@ import { SpinnerModule } from './spinner/spinner.module';
     UserAvatarModule,
     SanitizedBackgroundModule,
     SpinnerModule,
+    UserCoverModule,
   ],
   exports: [
     SpinnerModule,
@@ -144,7 +146,6 @@ import { SpinnerModule } from './spinner/spinner.module';
     ExitConfirmationModalComponent,
     CountdownComponent,
     ThousandSuffixesPipe,
-    UserCoverComponent,
     CoverUploadComponent,
     KeywordSuggesterComponent,
     StripeCardElementComponent,
@@ -207,7 +208,6 @@ import { SpinnerModule } from './spinner/spinner.module';
     ThousandSuffixesPipe,
     ActivateItemsModalComponent,
     DeactivateItemsModalComponent,
-    UserCoverComponent,
     CoverUploadComponent,
     KeywordSuggesterComponent,
     StripeCardElementComponent,
