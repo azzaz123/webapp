@@ -9,6 +9,12 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { take } from 'rxjs/operators';
 import { SvgService } from '../svg.service';
 
+export enum SVG_ATTRIBUTES {
+  WIDTH = 'width',
+  HEIGHT = 'height',
+  FILL = 'fill',
+  STYLE = 'style',
+}
 @Component({
   selector: 'tsl-svg-icon',
   template: '',
@@ -16,6 +22,7 @@ import { SvgService } from '../svg.service';
 export class SvgIconComponent implements OnInit {
   @Input() src: string;
   @Input() fill: string;
+  @Input() background: string;
   @Input() width: number;
   @Input() height: number;
 
@@ -47,29 +54,31 @@ export class SvgIconComponent implements OnInit {
   }
 
   private handleCustomAttributes(): void {
-    let style = '';
-    style += this.width ? `width: ${this.width}px;` : '';
-    style += this.height ? `height: ${this.height}px;` : '';
+    if (this.width) {
+      this.setAttribute(SVG_ATTRIBUTES.WIDTH, `${this.width}px`);
+    }
 
-    if (style !== '') {
-      this.element.nativeElement?.firstElementChild?.setAttribute(
-        'style',
-        style
-      );
+    if (this.height) {
+      this.setAttribute(SVG_ATTRIBUTES.HEIGHT, `${this.height}px`);
     }
 
     if (this.fill) {
-      this.fillSvg();
+      this.setAttribute(SVG_ATTRIBUTES.FILL, this.fill);
+    }
+
+    if (this.background) {
+      this.setAttribute(
+        SVG_ATTRIBUTES.STYLE,
+        `background: ${this.background};`
+      );
     }
   }
 
-  private fillSvg(): void {
-    const svgPaths = this.element.nativeElement?.firstElementChild?.getElementsByTagName(
-      'path'
+  private setAttribute(attribute: SVG_ATTRIBUTES, value: string): void {
+    this.element.nativeElement?.firstElementChild?.setAttribute(
+      attribute,
+      value
     );
-    [...svgPaths].forEach((path) => {
-      path.setAttribute('style', `fill: ${this.fill};`);
-    });
   }
 
   get hasSvgExtension(): boolean {

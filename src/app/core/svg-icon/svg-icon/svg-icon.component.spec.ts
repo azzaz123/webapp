@@ -8,10 +8,15 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { SvgService } from '../svg.service';
-import { SvgIconComponent } from './svg-icon.component';
+import { SvgIconComponent, SVG_ATTRIBUTES } from './svg-icon.component';
 
 describe('SvgIconComponent', () => {
   const svgTag: string = '<svg></svg>';
+  const svgSelector: string = 'svg';
+  const width = 10;
+  const height = 10;
+  const fill = 'red';
+  const background = 'blue';
   let component: SvgIconComponent;
   let fixture: ComponentFixture<SvgIconComponent>;
   let svgService: SvgService;
@@ -84,18 +89,84 @@ describe('SvgIconComponent', () => {
         expect(innerHTML).toBe(sanitizedSvg);
       });
 
-      it('should set the custom style attributes', () => {
-        const expectedStyle = 'width: 10px;height: 10px;';
-        component.width = 10;
-        component.height = 10;
-        component.fill = 'red';
+      describe('when we receive custom attributes...', () => {
+        it('should set the whole custom style attributes', () => {
+          component.width = width;
+          component.height = height;
+          component.fill = fill;
+          component.background = background;
 
-        fixture.detectChanges();
-        component.ngOnInit();
-        const innerHTML: HTMLElement =
-          fixture.elementRef.nativeElement.innerHTML;
+          fixture.detectChanges();
+          component.ngOnInit();
+          const innerHTML: HTMLElement = fixture.debugElement.nativeElement.querySelector(
+            svgSelector
+          );
 
-        expect(innerHTML).toContain(expectedStyle);
+          expect(innerHTML.getAttribute(SVG_ATTRIBUTES.WIDTH)).toBe(
+            `${width}px`
+          );
+          expect(innerHTML.getAttribute(SVG_ATTRIBUTES.HEIGHT)).toBe(
+            `${height}px`
+          );
+          expect(innerHTML.getAttribute(SVG_ATTRIBUTES.FILL)).toBe(fill);
+          expect(innerHTML.getAttribute(SVG_ATTRIBUTES.STYLE)).toBe(
+            `background: ${background};`
+          );
+        });
+
+        it('should apply the custom width', () => {
+          component.width = 50;
+
+          fixture.detectChanges();
+          component.ngOnInit();
+          const innerHTML: HTMLElement = fixture.debugElement.nativeElement.querySelector(
+            svgSelector
+          );
+
+          expect(innerHTML.getAttribute(SVG_ATTRIBUTES.WIDTH)).toBe('50px');
+        });
+
+        it('should apply the custom height', () => {
+          component.height = 350;
+
+          fixture.detectChanges();
+          component.ngOnInit();
+          const innerHTML: HTMLElement = fixture.debugElement.nativeElement.querySelector(
+            svgSelector
+          );
+
+          expect(innerHTML.getAttribute(SVG_ATTRIBUTES.HEIGHT)).toBe('350px');
+        });
+
+        it('should apply the custom fill', () => {
+          const customFillColor = 'pink';
+          component.fill = customFillColor;
+
+          fixture.detectChanges();
+          component.ngOnInit();
+          const innerHTML: HTMLElement = fixture.debugElement.nativeElement.querySelector(
+            svgSelector
+          );
+
+          expect(innerHTML.getAttribute(SVG_ATTRIBUTES.FILL)).toEqual(
+            customFillColor
+          );
+        });
+
+        it('should apply the custom background', () => {
+          const customBackgroundColor = 'red';
+          component.background = customBackgroundColor;
+
+          fixture.detectChanges();
+          component.ngOnInit();
+          const innerHTML: HTMLElement = fixture.debugElement.nativeElement.querySelector(
+            svgSelector
+          );
+
+          expect(innerHTML.getAttribute(SVG_ATTRIBUTES.STYLE)).toBe(
+            `background: ${customBackgroundColor};`
+          );
+        });
       });
     });
 
