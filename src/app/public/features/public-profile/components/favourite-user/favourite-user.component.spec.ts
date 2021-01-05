@@ -1,12 +1,12 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AccessTokenService } from '@core/http/access-token.service';
-import { FavouriteIconModule } from '@public/core/components/favourite-icon/favourite-icon.module';
 import { CheckSessionModule } from '@public/core/directives/check-session/check-session.module';
 import { of } from 'rxjs/internal/observable/of';
 import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
 
 import { FavouriteUserComponent } from './favourite-user.component';
+import { FavouriteIconModule } from '@public/shared/components/favourite-icon/favourite-icon.module';
 
 describe('FavouriteUserComponent', () => {
   let component: FavouriteUserComponent;

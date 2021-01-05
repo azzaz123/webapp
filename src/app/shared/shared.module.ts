@@ -1,11 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { AdComponent } from './ad/ad.component';
-import {
-  CustomCurrencyPipe,
-  DateUntilDayPipe,
-  DateCalendarPipe,
-} from './pipes';
+import { DateUntilDayPipe, DateCalendarPipe } from './pipes';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
 import { CardModule } from './card/card.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -25,7 +21,6 @@ import { UnarchiveButtonComponent } from './unarchive-button/unarchive-button.co
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { SwitchComponent } from './switch/switch.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
-import { ItemAvatarComponent } from './item-avatar/item-avatar.component';
 import { SearchInputComponent } from './search-input/search-input.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SelectComponent } from './select/select.component';
@@ -77,6 +72,8 @@ import { DisableControlDirective } from './forms/disable-control.directive';
 import { RouterLinkDirectiveStub } from './router-link-directive-stub';
 import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
 import { DateCountDownComponent } from './date-countdown/date-countdown.component';
+import { ItemAvatarModule } from './item-avatar/item-avatar.module';
+import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.module';
 import { StarsModule } from './stars/stars.module';
 import { UserAvatarModule } from './user-avatar/user-avatar.module';
 import { SanitizedBackgroundModule } from './sanitized-background/sanitized-background.module';
@@ -98,6 +95,9 @@ import { SpinnerModule } from './spinner/spinner.module';
     ProBadgeModule,
     SvgIconModule,
     DropdownModule,
+    ItemAvatarModule,
+    SanitizedBackgroundModule,
+    CustomCurrencyModule,
     StarsModule,
     UserAvatarModule,
     SanitizedBackgroundModule,
@@ -112,7 +112,6 @@ import { SpinnerModule } from './spinner/spinner.module';
     CommonModule,
     UploaderModule,
     AdComponent,
-    CustomCurrencyPipe,
     RestrictInputDirective,
     HeaderComponent,
     ButtonComponent,
@@ -127,7 +126,6 @@ import { SpinnerModule } from './spinner/spinner.module';
     SwitchComponent,
     ReviewModalComponent,
     NgxPermissionsModule,
-    ItemAvatarComponent,
     SearchInputComponent,
     SelectComponent,
     RestrictInputNumberDirective,
@@ -172,7 +170,6 @@ import { SpinnerModule } from './spinner/spinner.module';
   declarations: [
     AdComponent,
     ConfirmationModalComponent,
-    CustomCurrencyPipe,
     RestrictInputDirective,
     HeaderComponent,
     ButtonComponent,
@@ -188,7 +185,6 @@ import { SpinnerModule } from './spinner/spinner.module';
     SwitchComponent,
     ReviewModalComponent,
     CheckboxComponent,
-    ItemAvatarComponent,
     SelectComponent,
     SearchInputComponent,
     TooManyItemsModalComponent,

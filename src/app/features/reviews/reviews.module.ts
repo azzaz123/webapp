@@ -7,6 +7,7 @@ import {
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { UserReviewService } from './core/user-review.service';
 import { SharedModule } from 'app/shared/shared.module';
+import { SanitizedBackgroundModule } from '@shared/sanitized-background/sanitized-background.module';
 import { ReviewItemModule } from './components/review-item/review-item.module';
 
 @NgModule({
@@ -16,6 +17,7 @@ import { ReviewItemModule } from './components/review-item/review-item.module';
     ReviewsRoutingModule,
     ReviewItemModule,
     InfiniteScrollModule,
+    SanitizedBackgroundModule,
   ],
   declarations: [reviewsRoutedComponents],
   providers: [UserReviewService],
