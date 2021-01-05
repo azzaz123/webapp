@@ -43,7 +43,7 @@ export class CatalogProListComponent implements OnInit {
   public active = true;
   private cache = false;
   public numberOfProducts: number;
-  public subscriptionPlan: number;
+  public _subscriptionPlan: number;
   private bumpSuggestionModalRef: NgbModalRef;
 
   @ViewChild(ItemSoldDirective, { static: true }) soldButton: ItemSoldDirective;
@@ -61,6 +61,14 @@ export class CatalogProListComponent implements OnInit {
     private route: ActivatedRoute,
     private paymentService: PaymentService
   ) {}
+
+  set subscriptionPlan(plan: number) {
+    this._subscriptionPlan = plan;
+  }
+
+  get subscriptionPlan(): number {
+    return this._subscriptionPlan;
+  }
 
   ngOnInit() {
     this.getCounters();
@@ -340,10 +348,6 @@ export class CatalogProListComponent implements OnInit {
     this.userService.getStats().subscribe((userStats: UserStats) => {
       this.counters = userStats.counters;
     });
-  }
-
-  public getSubscriptionPlan(plan: number): void {
-    this.subscriptionPlan = plan;
   }
 
   private showBumpSuggestionModal(itemId: string): void {

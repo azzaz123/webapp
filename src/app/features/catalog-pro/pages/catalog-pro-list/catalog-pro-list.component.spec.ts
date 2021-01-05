@@ -656,7 +656,7 @@ describe('CatalogProListComponent', () => {
 
     describe('getSubscriptionPlan', () => {
       it('should set the subscription plan to the current one', () => {
-        component.getSubscriptionPlan(subscriptionPlan);
+        component.subscriptionPlan = subscriptionPlan;
 
         expect(component.subscriptionPlan).toEqual(subscriptionPlan);
       });
