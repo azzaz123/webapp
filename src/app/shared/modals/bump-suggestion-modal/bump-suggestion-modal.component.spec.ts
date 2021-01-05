@@ -7,10 +7,10 @@ import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { DecimalPipe } from '@angular/common';
 import { CustomCurrencyPipe } from '@shared/pipes';
 import { PaymentService } from '@core/payments/payment.service';
-import { CreditInfo } from '@core/payments/payment.interface';
 import { BumpSuggestionModalComponent } from './bump-suggestion-modal.component';
 import { By } from '@angular/platform-browser';
 import { ButtonComponent } from '@shared/button/button.component';
+import { SocialShareService } from '@core/social-share/social-share.service';
 
 describe('BumpSuggestionModalComponent', () => {
   let component: BumpSuggestionModalComponent;
@@ -18,6 +18,7 @@ describe('BumpSuggestionModalComponent', () => {
   let itemService: ItemService;
   let activeModal: NgbActiveModal;
   let paymentService: PaymentService;
+  let socialShareService: SocialShareService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -50,6 +51,13 @@ describe('BumpSuggestionModalComponent', () => {
             },
           },
         },
+        {
+          provide: SocialShareService,
+          useValue: {
+            facebookShare() {},
+            twitterShare() {},
+          },
+        },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -61,38 +69,31 @@ describe('BumpSuggestionModalComponent', () => {
     itemService = TestBed.inject(ItemService);
     activeModal = TestBed.inject(NgbActiveModal);
     paymentService = TestBed.inject(PaymentService);
+    socialShareService = TestBed.inject(SocialShareService);
   });
 
   describe('Share', () => {
     it('should open facebook link', () => {
-      spyOn(window, 'open');
+      spyOn(socialShareService, 'facebookShare');
       component.item = MOCK_ITEM;
 
-      component.facebookShare();
+      component.onFacebookShare();
 
-      expect(window.open).toHaveBeenCalledTimes(1);
-      expect(window.open).toHaveBeenCalledWith(
-        `https://www.facebook.com/dialog/share?app_id=258778180928082&display=popup&href=${encodeURIComponent(
-          component.item.webLink
-        )}`,
-        'fbShareWindow',
-        'height=450, width=550, toolbar=0, location=0, menubar=0, directories=0, scrollbars=0'
+      expect(socialShareService.facebookShare).toHaveBeenCalledTimes(1);
+      expect(socialShareService.facebookShare).toHaveBeenCalledWith(
+        MOCK_ITEM.webLink
       );
     });
 
     it('should open twiter link', () => {
-      spyOn(window, 'open');
+      spyOn(socialShareService, 'twitterShare');
       component.item = MOCK_ITEM;
 
-      component.twitterShare();
+      component.onTwitterShare();
 
-      expect(window.open).toHaveBeenCalledTimes(1);
-      expect(window.open).toHaveBeenCalledWith(
-        `https://twitter.com/intent/tweet?url=${encodeURIComponent(
-          component.item.webLink
-        )}`,
-        'twShareWindow',
-        'height=269,width=550, toolbar=0, location=0, menubar=0, directories=0, scrollbars=0'
+      expect(socialShareService.twitterShare).toHaveBeenCalledTimes(1);
+      expect(socialShareService.twitterShare).toHaveBeenCalledWith(
+        MOCK_ITEM.webLink
       );
     });
 

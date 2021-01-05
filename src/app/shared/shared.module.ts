@@ -82,6 +82,7 @@ import { RouterLinkDirectiveStub } from './router-link-directive-stub';
 import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
 import { DateCountDownComponent } from './date-countdown/date-countdown.component';
 import { BumpSuggestionModalComponent } from './modals/bump-suggestion-modal/bump-suggestion-modal.component';
+import { SocialShareService } from '@core/social-share/social-share.service';
 
 @NgModule({
   imports: [
@@ -241,6 +242,7 @@ import { BumpSuggestionModalComponent } from './modals/bump-suggestion-modal/bum
     ThousandSuffixesPipe,
     LinkTransformPipe,
     SubscriptionsService,
+    SocialShareService,
   ],
   entryComponents: [
     ConfirmationModalComponent,
