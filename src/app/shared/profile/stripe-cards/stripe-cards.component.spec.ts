@@ -19,7 +19,7 @@ import { ButtonComponent } from '../../button/button.component';
 import { NewCardModalComponent } from 'app/shared/modals/new-card-modal/new-card-modal.component';
 import { SubscriptionsService } from 'app/core/subscriptions/subscriptions.service';
 import { MAPPED_SUBSCRIPTIONS } from '../../../../tests/subscriptions.fixtures.spec';
-import { ToastService } from 'app/layout/toast/toast.service';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 
 describe('StripeCardsComponent', () => {
   let component: StripeCardsComponent;

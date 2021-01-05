@@ -8,10 +8,10 @@ import { GeolocationService } from '../core/geolocation/geolocation.service';
 import { GeolocationModule } from '../shared/geolocation/geolocation.module';
 import { TrackingModule } from '../core/tracking/tracking.module';
 import { SharedModule } from '../shared/shared.module';
-import { ToastComponent } from './toast/toast.component';
 import { TopbarModule } from './topbar/topbar.module';
 import { SidebarModule } from './sidebar/sidebar.module';
 import { TabbarModule } from './tabbar/tabbar.module';
+import { ToastModule } from './toast/toast.module';
 
 @NgModule({
   imports: [
@@ -24,10 +24,10 @@ import { TabbarModule } from './tabbar/tabbar.module';
     TrackingModule,
     SidebarModule,
     TopbarModule,
+    ToastModule,
     TabbarModule,
   ],
-  exports: [SidebarModule, TopbarModule, ToastComponent, TabbarModule],
-  declarations: [ToastComponent],
+  exports: [SidebarModule, TopbarModule, TabbarModule, ToastModule],
   providers: [GeolocationService, CategoryService],
 })
 export class LayoutModule {}

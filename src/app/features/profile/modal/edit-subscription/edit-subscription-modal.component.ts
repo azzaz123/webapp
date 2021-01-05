@@ -16,7 +16,7 @@ import {
   Tier,
 } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
-import { ToastService } from '@layout/toast/toast.service';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import {
   NgbActiveModal,
   NgbModal,
