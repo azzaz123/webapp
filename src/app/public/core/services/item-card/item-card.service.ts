@@ -3,7 +3,6 @@ import { Item } from '@core/item/item';
 import { MarkAsFavouriteBodyResponse } from '@public/core/services/api/item/interfaces/item-response.interface';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
 
 @Injectable()
 export class ItemCardService {
@@ -15,14 +14,12 @@ export class ItemCardService {
     (item.flags.favorite
       ? this.markAsFavourite(item.id)
       : this.unmarkAsFavourite(item.id)
-    )
-      .pipe(take(1))
-      .subscribe(
-        () => {},
-        () => {
-          item.flags.favorite = !item.flags.favorite;
-        }
-      );
+    ).subscribe(
+      () => {},
+      () => {
+        item.flags.favorite = !item.flags.favorite;
+      }
+    );
   }
 
   private markAsFavourite(id: string): Observable<MarkAsFavouriteBodyResponse> {
