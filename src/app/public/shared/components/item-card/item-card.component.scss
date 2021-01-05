@@ -4,6 +4,7 @@ $container-height-with-description: 330px;
 $container-height-without-description: 260px;
 $image-height: 177px;
 $icon-margin: $spacer * 0.5;
+$hover-box-shadow: 0 2px 10px 0 rgba(37, 50, 56, 0.1);
 
 .ItemCard {
   background-color: $white;
@@ -18,10 +19,20 @@ $icon-margin: $spacer * 0.5;
     height: $container-height-with-description;
   }
 
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $hover-box-shadow;
+  }
+
   &__data {
     border: 1px solid $blue-grey-4;
     border-bottom-left-radius: $border-radius;
     border-bottom-right-radius: $border-radius;
+    height: $container-height-without-description - $image-height;
+
+    &--with-description {
+      height: $container-height-with-description - $image-height;
+    }
   }
 
   &__icon {
