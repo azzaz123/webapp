@@ -20,7 +20,7 @@ import {
   SetupIntentResponse,
   SetupIntent,
 } from '../../../core/payments/payment.interface';
-import { ToastService } from '../../../layout/toast/toast.service';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { Tier } from '../../../core/subscriptions/subscriptions.interface';
 import {
   TERMS_AND_CONDITIONS_URL,

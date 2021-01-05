@@ -20,7 +20,7 @@ import { MOCK_CONVERSATION } from '@fixtures/conversation.fixtures.spec';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/inbox.fixtures.spec';
 import { ITEM_ID } from '@fixtures/item.fixtures.spec';
 import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
-import { ToastService } from '@layout/toast/toast.service';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '@shared/shared.module';
 import { NgxPermissionsModule } from 'ngx-permissions';
