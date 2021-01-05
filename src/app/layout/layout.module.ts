@@ -5,7 +5,6 @@ import { TabbarModule } from './tabbar/tabbar.module';
 import { ToastModule } from './toast/toast.module';
 
 @NgModule({
-  imports: [SidebarModule, TopbarModule, ToastModule, TabbarModule],
   exports: [SidebarModule, TopbarModule, TabbarModule, ToastModule],
 })
 export class LayoutModule {}
