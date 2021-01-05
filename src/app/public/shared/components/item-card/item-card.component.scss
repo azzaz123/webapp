@@ -8,6 +8,7 @@ $icon-margin: $spacer * 0.5;
 .ItemCard {
   background-color: $white;
   border-radius: $border-radius;
+  cursor: pointer;
   font-size: $font-size-s;
   height: $container-height-without-description;
   width: 100%;
