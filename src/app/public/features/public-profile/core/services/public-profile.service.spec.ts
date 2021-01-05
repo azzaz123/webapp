@@ -9,7 +9,7 @@ import { ItemResponse } from '@core/item/item-response.interface';
 import { User } from '@core/user/user';
 import { Image } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
-import { ReviewsData } from '@features/reviews/core/review-response.interface';
+import { ReviewResponse } from '@features/reviews/core/review-response.interface';
 import {
   MOCK_FULL_USER,
   MOCK_FULL_USER_FEATURED,
@@ -18,6 +18,7 @@ import {
   USER_DATA,
   IMAGE,
 } from '@fixtures/user.fixtures.spec';
+import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
 import { environment } from 'environments/environment';
 import { MarkAsFavouriteBodyRequest } from '../interfaces/public-profile-request.interface';
 
@@ -76,7 +77,7 @@ describe('PublicProfileService', () => {
     it('should get user reviews', () => {
       const expectedUrl = `${environment.baseUrl}${REVIEWS_ENDPOINT(userId)}`;
       let urlParams = '?init=0';
-      let response: HttpResponse<ReviewsData[]>;
+      let response: PaginationResponse<ReviewResponse>;
 
       service.getReviews(userId).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl + urlParams);
@@ -89,7 +90,7 @@ describe('PublicProfileService', () => {
       const expectedUrl = `${environment.baseUrl}${REVIEWS_ENDPOINT(userId)}`;
       const itemsFrom = 40;
       let urlParams = '?init=' + itemsFrom;
-      let response: HttpResponse<ReviewsData[]>;
+      let response: PaginationResponse<ReviewResponse>;
 
       service.getReviews(userId, itemsFrom).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl + urlParams);
@@ -105,7 +106,7 @@ describe('PublicProfileService', () => {
         userId
       )}`;
       let urlParams = '?init=0';
-      let response: HttpResponse<ItemResponse[]>;
+      let response: PaginationResponse<ItemResponse>;
 
       service.getPublishedItems(userId).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl + urlParams);
@@ -120,7 +121,7 @@ describe('PublicProfileService', () => {
       )}`;
       const itemsFrom = 40;
       let urlParams = '?init=' + itemsFrom;
-      let response: HttpResponse<ItemResponse[]>;
+      let response: PaginationResponse<ItemResponse>;
 
       service
         .getPublishedItems(userId, itemsFrom)

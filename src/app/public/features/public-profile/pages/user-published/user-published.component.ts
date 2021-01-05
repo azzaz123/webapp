@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Item } from '@core/item/item';
 import { ItemResponse } from '@core/item/item-response.interface';
 import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
-import { PaginationService } from '@public/core/services/pagination/pagination.service';
 import { finalize, take } from 'rxjs/operators';
 import { PublicProfileService } from '../../core/services/public-profile.service';
 import { MapItemService } from './services/map-item/map-item.service';
@@ -19,7 +18,6 @@ export class UserPublishedComponent implements OnInit {
 
   constructor(
     private publicProfileService: PublicProfileService,
-    private paginationService: PaginationService,
     private mapItemService: MapItemService
   ) {}
 
@@ -31,12 +29,10 @@ export class UserPublishedComponent implements OnInit {
     this.loading = true;
 
     try {
-      this.paginationService
-        .getItems(
-          this.publicProfileService.getPublishedItems(
-            this.publicProfileService.user.id,
-            this.nextPaginationItem
-          )
+      this.publicProfileService
+        .getPublishedItems(
+          this.publicProfileService.user.id,
+          this.nextPaginationItem
         )
         .pipe(
           finalize(() => (this.loading = false)),

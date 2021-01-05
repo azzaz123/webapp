@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MapReviewService } from '@public/features/public-profile/pages/user-reviews/services/map-review/map-review.service';
 import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
-import { PaginationService } from '@public/core/services/pagination/pagination.service';
 import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
 import { finalize, take } from 'rxjs/operators';
 import { Review } from '@features/reviews/core/review';
@@ -19,8 +18,7 @@ export class UserReviewsComponent implements OnInit {
 
   constructor(
     private publicProfileService: PublicProfileService,
-    private mapReviewService: MapReviewService,
-    private paginationService: PaginationService
+    private mapReviewService: MapReviewService
   ) {}
 
   public ngOnInit(): void {
@@ -31,13 +29,8 @@ export class UserReviewsComponent implements OnInit {
     this.loading = true;
 
     try {
-      this.paginationService
-        .getItems(
-          this.publicProfileService.getReviews(
-            this.publicProfileService.user.id,
-            this.nextPaginationItem
-          )
-        )
+      this.publicProfileService
+        .getReviews(this.publicProfileService.user.id, this.nextPaginationItem)
         .pipe(
           finalize(() => (this.loading = false)),
           take(1)
