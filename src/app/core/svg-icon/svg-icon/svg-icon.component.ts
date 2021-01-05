@@ -15,9 +15,9 @@ import { SvgService } from '../svg.service';
 })
 export class SvgIconComponent implements OnInit {
   @Input() src: string;
-  @Input() width: string;
-  @Input() height: string;
   @Input() fill: string;
+  @Input() width: number;
+  @Input() height: number;
 
   constructor(
     private svgService: SvgService,
