@@ -12,7 +12,6 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { HttpModuleNew } from './core/http/http.module.new';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { isSWEnabled } from 'environments/environment';
-import { FooterModule } from '@layout/footer/footer.module';
 
 @NgModule({
   declarations: [AppComponent],
