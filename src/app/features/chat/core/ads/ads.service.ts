@@ -49,7 +49,7 @@ export class AdsService {
 
   public loadAddsLibs(): void {
     this.loadExternalLibsService
-      .loadScript(ADS_SOURCES)
+      .loadScriptBySource(ADS_SOURCES)
       .subscribe(() => this.initAddsLib());
   }
 
@@ -59,17 +59,11 @@ export class AdsService {
     this.initPositionKeyWords();
     this.initGoogletagConfig();
 
-    if (this.didomiService.isReady) {
-      this.allowSegmentation$.next(
-        this.didomiService.userAllowedSegmentationInAds()
+    this.didomiService
+      .userAllowedSegmentationInAds$()
+      .subscribe((userAllowed: boolean) =>
+        this.allowSegmentation$.next(userAllowed)
       );
-    } else {
-      this.didomiService.isReady$.subscribe(() => {
-        this.allowSegmentation$.next(
-          this.didomiService.userAllowedSegmentationInAds()
-        );
-      });
-    }
   }
 
   private initKeyWordsFromCookies(): void {

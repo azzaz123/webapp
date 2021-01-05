@@ -9,7 +9,7 @@ import { STRIPE_CARD_OPTION } from '@fixtures/stripe.fixtures.spec';
 import { StripeService } from '@core/stripe/stripe.service';
 import { EventService } from '@core/event/event.service';
 import { ErrorsService } from '@core/errors/errors.service';
-import { ToastService } from '@layout/toast/toast.service';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { Router } from '@angular/router';
 import { I18nService } from '@core/i18n/i18n.service';
 import { UuidService } from '@core/uuid/uuid.service';
