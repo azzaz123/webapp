@@ -28,11 +28,11 @@ describe('ItemCardService', () => {
 
     it('should remove favourite flag if already favourite', () => {
       const ITEM = MOCK_ITEM_V3;
-      ITEM.flags.favorite = false;
+      ITEM.flags.favorite = true;
 
       itemCardService.toggleFavourite(ITEM);
 
-      expect(ITEM.flags.favorite).toBeTruthy();
+      expect(ITEM.flags.favorite).toBeFalsy();
     });
   });
 });
