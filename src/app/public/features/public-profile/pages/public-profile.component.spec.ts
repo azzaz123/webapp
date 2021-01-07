@@ -119,12 +119,15 @@ describe('PublicProfileComponent', () => {
       });
 
       describe('and we NOT get the user...', () => {
+        beforeEach(() => {
+          resetVariables();
+        });
+
         it('should redirect to the 404 page', () => {
           spyOn(publicProfileService, 'getUser').and.returnValue(
             throwError('')
           );
           spyOn(router, 'navigate');
-          resetVariables();
 
           component.ngOnInit();
           fixture.detectChanges();
