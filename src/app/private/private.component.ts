@@ -23,7 +23,6 @@ import {
   take,
 } from 'rxjs/operators';
 import { environment } from '@environments/environment';
-import { PATH_EVENTS } from '../app-routing-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ConnectionService } from '@core/connection/connection.service';
 import { CallsService } from '@core/conversation/calls.service';
@@ -49,7 +48,6 @@ import { ANALYTIC_EVENT_TYPES } from '@core/analytics/analytics-constants';
   templateUrl: './private.component.html',
 })
 export class PrivateComponent implements OnInit {
-  public hideSidebar: boolean = true;
   public isMyZone: boolean;
   public isProducts: boolean;
   public isProfile: boolean;
@@ -144,7 +142,6 @@ export class PrivateComponent implements OnInit {
     this.updateUrlAndSendAnalytics();
     this.setTitle();
     this.setBodyClass();
-    this.setHideSidebar();
   }
 
   private handleUserLoggedIn(user: User, accessToken: string): void {
@@ -317,7 +314,6 @@ export class PrivateComponent implements OnInit {
         }
         const title = !event['title'] ? 'Wallapop' : event['title'];
         this.titleService.setTitle(notifications + title);
-        this.hideSidebar = !!event[PATH_EVENTS.hideSidebar];
         this.isMyZone = event['isMyZone'];
         this.isProducts = event['isProducts'];
         this.isProfile = event['isProfile'];
@@ -343,22 +339,6 @@ export class PrivateComponent implements OnInit {
         this.setLoading(false);
       }
     });
-  }
-
-  private setHideSidebar(): void {
-    this.router.events
-      .pipe(
-        filter((event) => event instanceof NavigationEnd),
-        map(
-          () =>
-            this.activatedRoute.root.firstChild.snapshot.data[
-              PATH_EVENTS.hideSidebar
-            ] || null
-        )
-      )
-      .subscribe((hideSidebar: boolean) => {
-        this.hideSidebar = !!hideSidebar;
-      });
   }
 
   private setLoading(loading: boolean): void {

@@ -35,7 +35,6 @@ import { UserService } from './core/user/user.service';
 import { UuidService } from './core/uuid/uuid.service';
 import { SwUpdate } from '@angular/service-worker';
 import * as moment from 'moment';
-import { PATH_EVENTS } from './app-routing-constants';
 import { SessionService } from '@core/session/session.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { DeviceService } from '@core/device/device.service';
@@ -164,7 +163,6 @@ describe('App', () => {
             root: { firstChild: { snapshot: {} } },
             data: of({
               title: 'Chat',
-              hideSidebar: true,
             }),
           },
         },
@@ -511,11 +509,6 @@ describe('App', () => {
 
       expect(titleService.setTitle).toHaveBeenCalledWith('Chat');
     });
-    it('should set hideSidebar true', () => {
-      component['setTitle']();
-
-      expect(component.hideSidebar).toBeTruthy();
-    });
   });
 
   describe('Stripe', () => {
@@ -533,51 +526,6 @@ describe('App', () => {
       component.ngOnInit();
 
       expect(analyticsService.initialize).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  describe('When current route data changes', () => {
-    beforeEach(() => {
-      activatedRoute.root.firstChild.snapshot.data = {};
-    });
-
-    it('should update sidebar status with the route specification', () => {
-      const hideSidebarValue = false;
-      activatedRoute.root.firstChild.snapshot.data[
-        PATH_EVENTS.hideSidebar
-      ] = hideSidebarValue;
-
-      component.ngOnInit();
-
-      expect(component.hideSidebar).toEqual(hideSidebarValue);
-    });
-  });
-
-  describe('When sidebar hide/show status changes', () => {
-    const sidebarSelector = 'tsl-sidebar';
-
-    beforeEach(() => {
-      fixture.detectChanges();
-    });
-
-    it('should not have sidebar by default', () => {
-      expect(el.querySelector(sidebarSelector)).toBeFalsy();
-    });
-
-    it('should have sidebar if show', () => {
-      component.hideSidebar = false;
-
-      fixture.detectChanges();
-
-      expect(el.querySelector(sidebarSelector)).toBeTruthy();
-    });
-
-    it('should not have sidebar if hidden', () => {
-      component.hideSidebar = true;
-
-      fixture.detectChanges();
-
-      expect(el.querySelector(sidebarSelector)).toBeFalsy();
     });
   });
 
