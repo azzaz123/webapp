@@ -1205,4 +1205,7 @@
   <translation id="InvoiceCannotGenerate">Tu factura no se ha podido generar. Intenta de nuevo.</translation>
   <translation id="SuccessEdit">Tus datos se han editado correctamente.</translation>
   <translation id="ErrorSavingData">Error al guardar los datos. Intenta de nuevo.</translation>
+  <translation id="WallacoinsDisabledModalTitle">¡Adiós, saldo! 👋🏼</translation>
+  <translation id="WallacoinsDisabledModalText">Hemos desactivado la funcionalidad &quot;saldo&quot;, también conocida como &quot;wallacoins&quot;. Ya no es posible comprar packs de Destacados.<ph name="LINE_BREAK"/><ph name="LINE_BREAK"/> Si queda saldo en tu cuenta, puedes seguir destacando productos hasta que se agote. El saldo tiene un año de vigencia a partir del día en el que lo cargaste a tu cuenta.</translation>
+  <translation id="WallacoinsDisabledModalButton">Entendido</translation>
 </translationbundle>
