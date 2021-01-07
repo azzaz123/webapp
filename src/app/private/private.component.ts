@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
 })
 export class PrivateComponent {
   //TODO: All this variables/functions are temporary
-  // and will be removed when moving the logic from the app.component
+  // and will be removed when moving the logic + routing from the app.component
   // to the private.component
   public isMyZone = false;
   public hideSidebar = false;
