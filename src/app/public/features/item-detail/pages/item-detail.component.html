@@ -1,14 +1,13 @@
 <div class="Wrapper">
-    <!-- Only shows when is Desktop or Tablet -->
-    <div class="Ads PaddingTop bg-info">
-        <div class="Ads_Top">Ad arriba</div>
+    <div *ngIf="device === 'desktop' || device === 'tablet'" class="Ads PaddingTop bg-info">
+        <div class="Ads_Top">Top Ad</div>
     </div>
     <div class="Wrapper_Detail">
-        <div class="Ads">
+        <div class="Ads" *ngIf="device === 'desktop'">
             <div class="Ads_Left bg-info">
                 <div class="Ads_Left_ClammySidebarTop">
                     <div class="Ads_Left_ClammySidebarTop__PubWallTop">
-                        Ad a la izquierda
+                        Left Ad
                     </div>
                 </div>
             </div>
@@ -16,11 +15,11 @@
         <div class="box Wrapper_Detail_Item">
             Item detail container
         </div>
-        <div class="Ads">
+        <div class="Ads" *ngIf="device === 'desktop'">
             <div class="Ads_Right bg-info">
                 <div class="Ads_Right_ClammySidebarTop">
                     <div class="Ads_Right_ClammySidebarTop__PubWallTop">
-                        Ad a la derecha
+                        Right Ad
                     </div>
                 </div>
             </div>

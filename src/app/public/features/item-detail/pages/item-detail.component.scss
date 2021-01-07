@@ -51,15 +51,18 @@ $product-detail-card-width: 681px;
 }
 
 @media only screen and (max-width: 1270px) {
-  .Ads_top {
-    margin-left: auto;
-    margin-right: auto;
-    padding-right: 0;
+  .Ads {
+    &_Top {
+      margin-left: auto;
+      margin-right: auto;
+      padding-right: 0;
+    }
   }
 
-  .ItemWrapper {
-    &._Detail {
-      .Ads_Left {
+  .Wrapper_Detail {
+    .Ads {
+      &_Right,
+      &_Left {
         display: none;
       }
     }
