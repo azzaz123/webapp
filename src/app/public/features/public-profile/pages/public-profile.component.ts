@@ -69,11 +69,10 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
   }
 
   private handleCoverImage(): void {
-    if (!this.userInfo?.featured) {
-      this.loading = false;
-      return;
+    if (this.userInfo?.featured) {
+      return this.getCoverImage();
     }
-    this.getCoverImage();
+    this.loading = false;
   }
 
   private getCoverImage(): void {
