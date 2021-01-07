@@ -42,16 +42,9 @@ $product-detail-card-width: 681px;
     width: 300px;
     display: flex;
     justify-content: center;
-
-    &_ClammySidebarTop {
-      height: 97%;
-
-      &_PubWallTop {
-        position: sticky;
-        position: -webkit-sticky;
-        top: 70px;
-      }
-    }
+    position: sticky;
+    position: -webkit-sticky;
+    top: 70px;
   }
 
   &.PaddingTop {
