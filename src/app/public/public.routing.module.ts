@@ -22,7 +22,7 @@ const routes: Route[] = [
           ),
       },
       {
-        path: 'user/:id',
+        path: PUBLIC_PATHS.USER_DETAIL,
         loadChildren: () =>
           import('./features/public-profile/public-profile.module').then(
             (m) => m.PublicProfileModule
