@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '@core/user/user';
 import { Image } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
+import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
+import { APP_PATHS } from 'app/app-routing-constants';
 import { forkJoin, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { PublicProfileService } from '../core/services/public-profile.service';
@@ -21,7 +23,8 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private publicProfileService: PublicProfileService
+    private publicProfileService: PublicProfileService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -35,7 +38,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
   }
 
   private getUser(): void {
-    this.userId = this.route.snapshot.paramMap.get('id');
+    this.userId = this.route.snapshot.paramMap.get(PUBLIC_PATH_PARAMS.ID);
     if (this.userId) {
       this.getUserInfoAndStats();
     }
@@ -43,22 +46,42 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
 
   private getUserInfoAndStats(): void {
     this.loading = true;
+
     this.subscriptions.push(
       forkJoin([
-        // TODO: If one of these fails, all the subscription returns error and it's not captured,
-        //we will redirect to to the 404 page when exists (WEB-190)
         this.publicProfileService.getUser(this.userId),
         this.publicProfileService.getStats(this.userId),
-        this.publicProfileService.getCoverImage(this.userId),
       ])
-        .pipe(finalize(() => (this.loading = false)))
+        .pipe(
+          finalize(() => {
+            this.handleCoverImage();
+          })
+        )
         .subscribe(
-          ([userInfo, userStats, coverImage]: [User, UserStats, Image]) => {
+          ([userInfo, userStats]: [User, UserStats]) => {
             this.userInfo = userInfo;
-            this.userInfo.coverImage = coverImage;
             this.userStats = userStats;
+          },
+          () => {
+            this.router.navigate([`/${APP_PATHS.NOT_FOUND}`]);
           }
         )
     );
+  }
+
+  private handleCoverImage(): void {
+    if (this.userInfo?.featured) {
+      return this.getCoverImage();
+    }
+    this.loading = false;
+  }
+
+  private getCoverImage(): void {
+    this.publicProfileService
+      .getCoverImage(this.userId)
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe((coverImage: Image) => {
+        this.userInfo.coverImage = coverImage;
+      });
   }
 }

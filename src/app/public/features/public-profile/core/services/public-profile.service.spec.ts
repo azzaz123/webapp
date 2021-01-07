@@ -1,4 +1,3 @@
-import { HttpResponse } from '@angular/common/http';
 import {
   HttpClientTestingModule,
   HttpTestingController,
@@ -10,6 +9,7 @@ import { User } from '@core/user/user';
 import { Image } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
 import { ReviewResponse } from '@features/reviews/core/review-response.interface';
+import { EMPTY_STATS } from './constants/stats-constants';
 import {
   MOCK_FULL_USER,
   MOCK_FULL_USER_FEATURED,
@@ -20,6 +20,7 @@ import {
 } from '@fixtures/user.fixtures.spec';
 import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
 import { environment } from 'environments/environment';
+import { throwError } from 'rxjs';
 import { MarkAsFavouriteBodyRequest } from '../interfaces/public-profile-request.interface';
 
 import {
@@ -65,6 +66,19 @@ describe('PublicProfileService', () => {
 
       expect(req.request.url).toEqual(expectedUrl);
       expect(response).toEqual(MOCK_USER_STATS);
+      expect(req.request.method).toBe('GET');
+    });
+
+    it('should return empty stats when we get an error', () => {
+      const expectedUrl = `${environment.baseUrl}${STATS_ENDPOINT(userId)}`;
+      let response: UserStats;
+
+      service.getStats(userId).subscribe((r) => (response = r));
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(throwError(''));
+
+      expect(req.request.url).toEqual(expectedUrl);
+      expect(response).toEqual(EMPTY_STATS);
       expect(req.request.method).toBe('GET');
     });
   });
