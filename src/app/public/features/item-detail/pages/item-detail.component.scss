@@ -1,0 +1,67 @@
+@import '~style/common';
+$product-detail-card-width: 681px;
+
+:host {
+  padding-top: 66px;
+  background-color: $blue-grey-5;
+  display: block;
+}
+
+.Wrapper {
+  &_Detail {
+    padding: $spacing-xl 0;
+    display: flex;
+    justify-content: space-around;
+  }
+}
+
+.Ads {
+  &_Top {
+    text-align: center;
+  }
+
+  &_Right,
+  &_Left {
+    width: 300px;
+    display: flex;
+    justify-content: center;
+
+    &_ClammySidebarTop {
+      height: 97%;
+
+      &_PubWallTop {
+        position: sticky;
+        position: -webkit-sticky;
+        top: 70px;
+      }
+    }
+  }
+
+  &.PaddingTop {
+    padding-top: $spacing-xl;
+  }
+}
+
+.Wrapper_Detail_Item {
+  width: $product-detail-card-width;
+
+  @media (max-width: $product-detail-card-width) {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 1270px) {
+  .Ads_top {
+    margin-left: auto;
+    margin-right: auto;
+    padding-right: 0;
+  }
+
+  .ItemWrapper {
+    &._Detail {
+      .Ads_Left {
+        display: none;
+      }
+    }
+  }
+}
