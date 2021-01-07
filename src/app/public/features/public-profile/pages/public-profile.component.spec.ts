@@ -8,12 +8,13 @@ import {
   MOCK_FULL_USER_FEATURED,
   MOCK_USER_STATS,
 } from '@fixtures/user.fixtures.spec';
+import { APP_PATHS } from 'app/app-routing-constants';
 import { of, throwError } from 'rxjs';
 import { PublicProfileService } from '../core/services/public-profile.service';
 import { PublicProfileComponent } from './public-profile.component';
 
 describe('PublicProfileComponent', () => {
-  const containerClass = '.PublicProfile';
+  const containerSelector = '.PublicProfile';
   let component: PublicProfileComponent;
   let fixture: ComponentFixture<PublicProfileComponent>;
   let route: ActivatedRoute;
@@ -78,7 +79,7 @@ describe('PublicProfileComponent', () => {
       describe('and we get the user...', () => {
         it('should show the page if we have the user id', () => {
           const containerPage = fixture.debugElement.query(
-            By.css(containerClass)
+            By.css(containerSelector)
           );
 
           expect(containerPage).toBeTruthy();
@@ -128,11 +129,13 @@ describe('PublicProfileComponent', () => {
           component.ngOnInit();
           fixture.detectChanges();
           const containerPage = fixture.debugElement.query(
-            By.css(containerClass)
+            By.css(containerSelector)
           );
 
           expect(containerPage).toBeFalsy();
-          expect(router.navigate).toHaveBeenCalledWith(['/404']);
+          expect(router.navigate).toHaveBeenCalledWith([
+            `/${APP_PATHS.NOT_FOUND}`,
+          ]);
         });
       });
     });
@@ -146,7 +149,7 @@ describe('PublicProfileComponent', () => {
         component.ngOnInit();
         fixture.detectChanges();
         const containerPage = fixture.debugElement.query(
-          By.css(containerClass)
+          By.css(containerSelector)
         );
 
         expect(containerPage).toBeFalsy();

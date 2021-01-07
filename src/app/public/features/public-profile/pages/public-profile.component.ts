@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '@core/user/user';
 import { Image } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
+import { APP_PATHS } from 'app/app-routing-constants';
 import { forkJoin, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { PublicProfileService } from '../core/services/public-profile.service';
@@ -61,7 +62,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
             this.userStats = userStats;
           },
           () => {
-            this.router.navigate(['/404']);
+            this.router.navigate([`/${APP_PATHS.NOT_FOUND}`]);
           }
         )
     );
