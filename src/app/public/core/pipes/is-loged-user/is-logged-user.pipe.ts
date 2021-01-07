@@ -1,0 +1,13 @@
+import { Pipe, PipeTransform } from '@angular/core';
+import { UserService } from '@core/user/user.service';
+
+@Pipe({
+  name: 'isLoggedUser',
+})
+export class IsLoggedUserPipe implements PipeTransform {
+  constructor(private userService: UserService) {}
+
+  transform(userId: string): boolean {
+    return this.userService.user ? userId === this.userService.user.id : false;
+  }
+}
