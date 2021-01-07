@@ -22,7 +22,6 @@ import { I18nService } from './i18n/i18n.service';
 import { InvoiceService } from './invoice/invoice.service';
 import { ItemModule } from './item/item.module';
 import { RealTimeService } from './message/real-time.service';
-import { MobileBlockerModule } from './mobile-blocker/mobile-blocker.module';
 import { PaymentService } from './payments/payment.service';
 import { ProfileModule } from './profile/profile.module';
 import { ProfileService } from './profile/profile.service';
@@ -46,7 +45,6 @@ import { XmppService } from './xmpp/xmpp.service';
     TrackingModule,
     ConversationModule.forRoot(),
     ProfileModule,
-    MobileBlockerModule,
   ],
   exports: [
     CommonModule,
@@ -54,7 +52,6 @@ import { XmppService } from './xmpp/xmpp.service';
     ItemModule,
     TrackingModule,
     ProfileModule,
-    MobileBlockerModule,
   ],
 })
 export class CoreModule {
