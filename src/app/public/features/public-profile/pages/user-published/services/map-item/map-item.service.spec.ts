@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { Item } from '@core/item/item';
-import { ItemResponse } from '@core/item/item-response.interface';
 import { CAR_DATA, MOCK_CAR } from '@fixtures/car.fixtures.spec';
 import { ITEM_DATA_V3 } from '@fixtures/item.fixtures.spec';
 import {
@@ -25,24 +24,35 @@ describe('MapItemService', () => {
 
   describe('When asking for items map', () => {
     it('should return correctly mapped list default item', () => {
+      (ITEM_DATA_V3.content.user as any) = {
+        id: ITEM_DATA_V3.content.seller_id,
+      };
       const items: Item[] = mapItemService.mapItems([ITEM_DATA_V3]);
 
       expect(items[0] instanceof Item).toBeTruthy();
     });
 
     it('should return correctly mapped car item', () => {
-      const items: Item[] = mapItemService.mapItems([
-        (CAR_DATA as any) as ItemResponse,
-      ]);
+      const CAR = CAR_DATA as any;
+      CAR.content = {
+        ...CAR_DATA.content,
+        user: { id: CAR_DATA.content.seller_id },
+      };
+
+      const items: Item[] = mapItemService.mapItems([CAR]);
 
       expect(items[0] instanceof Item).toBeTruthy();
       expect(items[0]).toEqual(MOCK_CAR);
     });
 
     it('should return correctly mapped real estate item', () => {
-      const items: Item[] = mapItemService.mapItems([
-        (REALESTATE_DATA as any) as ItemResponse,
-      ]);
+      const REALESTATE = REALESTATE_DATA as any;
+      REALESTATE.content = {
+        ...REALESTATE_DATA.content,
+        user: { id: REALESTATE_DATA.content.seller_id },
+      };
+
+      const items: Item[] = mapItemService.mapItems([REALESTATE]);
 
       expect(items[0] instanceof Item).toBeTruthy();
       expect(items[0]).toEqual(MOCK_REALESTATE);
