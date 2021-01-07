@@ -360,8 +360,6 @@ export const RATINGS_RESPONSE: Ratings = {
 
 export const USER_REPORTS_RECEIVED = 5;
 
-export const EMPTY_USER_REPORTS_RECEIVED = 0;
-
 export const COUNTERS_RESPONSE: Counters = {
   publish: 0,
   buys: 0,
@@ -379,29 +377,6 @@ export const COUNTERS_RESPONSE: Counters = {
 export const MOCK_USER_STATS: UserStats = {
   ratings: RATINGS_RESPONSE,
   counters: COUNTERS_RESPONSE,
-};
-
-export const EMPTY_RATINGS: Ratings = {
-  reviews: 0,
-};
-
-export const EMPTY_COUNTERS: Counters = {
-  publish: 0,
-  buys: 0,
-  sells: 0,
-  favorites: 0,
-  views: 0,
-  profile_favorited_received: 0,
-  profile_favorited: 0,
-  reviews: 0,
-  sold: 0,
-  reports_received: EMPTY_USER_REPORTS_RECEIVED,
-  onHold: 0,
-};
-
-export const EMPTY_STATS: UserStats = {
-  ratings: EMPTY_RATINGS,
-  counters: EMPTY_COUNTERS,
 };
 
 export const MOCK_USER_STATS_RESPONSE = {

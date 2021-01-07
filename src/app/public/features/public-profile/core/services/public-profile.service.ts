@@ -13,7 +13,6 @@ import { User } from '@core/user/user';
 import { Image, UserResponse } from '@core/user/user-response.interface';
 import {
   IsFavouriteBodyResponse,
-  MarkAsFavouriteBodyRequest,
   MarkAsFavouriteBodyResponse,
 } from '../interfaces/public-profile-request.interface';
 import { PaginationService } from '@public/core/services/pagination/pagination.service';
@@ -23,7 +22,7 @@ import {
 } from '@features/reviews/core/review-response.interface';
 import { ItemResponse } from '@core/item/item-response.interface';
 import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
-import { EMPTY_STATS } from '@fixtures/user.fixtures.spec';
+import { EMPTY_STATS } from '@fixtures/stats.fixtures';
 
 export const PROFILE_API_URL = (userId: string) => `api/v3/users/${userId}`;
 export const USER_COVER_IMAGE_ENDPOINT = (userId: string) =>

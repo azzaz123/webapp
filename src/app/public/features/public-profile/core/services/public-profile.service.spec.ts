@@ -9,6 +9,7 @@ import { User } from '@core/user/user';
 import { Image } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
 import { ReviewResponse } from '@features/reviews/core/review-response.interface';
+import { EMPTY_STATS } from '@fixtures/stats.fixtures';
 import {
   MOCK_FULL_USER,
   MOCK_FULL_USER_FEATURED,
@@ -16,7 +17,6 @@ import {
   USERS_STATS,
   USER_DATA,
   IMAGE,
-  EMPTY_STATS,
 } from '@fixtures/user.fixtures.spec';
 import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
 import { environment } from 'environments/environment';
