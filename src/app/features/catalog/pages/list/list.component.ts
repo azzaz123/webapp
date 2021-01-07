@@ -28,6 +28,7 @@ import { TooManyItemsModalComponent } from '@shared/catalog/modals/too-many-item
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { BumpSuggestionModalComponent } from '@shared/modals/bump-suggestion-modal/bump-suggestion-modal.component';
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
+import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
 import { NavLink } from '@shared/nav-links/nav-link.interface';
 import { find, findIndex } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -267,8 +268,17 @@ export class ListComponent implements OnInit, OnDestroy {
           });
         } else if (params && params.alreadyFeatured) {
           this.errorService.i18nError('alreadyFeatured');
+        } else if (params && params.disableWallacoinsModal) {
+          this.onOpenWallacoinsModal();
         }
       });
+    });
+  }
+
+  private onOpenWallacoinsModal(): void {
+    this.modalService.open(WallacoinsDisabledModalComponent, {
+      windowClass: 'modal-standard',
+      backdrop: 'static',
     });
   }
 

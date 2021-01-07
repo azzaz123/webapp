@@ -81,6 +81,7 @@ import { DisableControlDirective } from './forms/disable-control.directive';
 import { RouterLinkDirectiveStub } from './router-link-directive-stub';
 import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
 import { DateCountDownComponent } from './date-countdown/date-countdown.component';
+import { WallacoinsDisabledModalComponent } from './modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
 import { BumpSuggestionModalComponent } from './modals/bump-suggestion-modal/bump-suggestion-modal.component';
 import { SocialShareService } from '@core/social-share/social-share.service';
 
@@ -166,6 +167,7 @@ import { SocialShareService } from '@core/social-share/social-share.service';
     SvgIconModule,
     DateCountDownComponent,
     DropdownModule,
+    WallacoinsDisabledModalComponent,
   ],
   declarations: [
     AdComponent,
@@ -234,6 +236,7 @@ import { SocialShareService } from '@core/social-share/social-share.service';
     RouterLinkDirectiveStub,
     DateCountDownComponent,
     BumpSuggestionModalComponent,
+    WallacoinsDisabledModalComponent,
   ],
   providers: [
     DecimalPipe,
@@ -260,6 +263,7 @@ import { SocialShareService } from '@core/social-share/social-share.service';
     ConfirmCardModalComponent,
     ChangeCardModalComponent,
     FullScreenModalComponent,
+    WallacoinsDisabledModalComponent,
   ],
 })
 export class SharedModule {}
