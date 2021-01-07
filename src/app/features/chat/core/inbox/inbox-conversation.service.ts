@@ -7,7 +7,7 @@ import { RemoteConsoleService } from '@core/remote-console';
 import { environment } from '@environments/environment';
 import { DesktopNotificationsService } from 'app/core/desktop-notifications/desktop-notifications.service';
 import { I18nService } from 'app/core/i18n/i18n.service';
-import { ToastService } from 'app/layout/toast/toast.service';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { find, head, isEmpty, isNil, some } from 'lodash-es';
 import * as moment from 'moment';
 import { Observable, of, throwError } from 'rxjs';

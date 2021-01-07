@@ -1,50 +1,75 @@
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Inject, Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { LoadExternalLibsService } from '../load-external-libs/load-external-libs.service';
+import { WINDOW_TOKEN } from './../window/window.token';
 import { DIDOMI_EMBED } from './didomi-embed-script';
-import { DidomiLibrary } from './didomi.interface';
+import { DidomiLibrary, DidomiUserConsents } from './didomi.interface';
 
-@Injectable()
+const EVENTS: string[] = ['consent.changed'];
+@Injectable({
+  providedIn: 'root',
+})
 export class DidomiService {
-  public isReady = false;
-  public isReady$: Subject<boolean> = new Subject<boolean>();
-  public library: DidomiLibrary = null;
+  private static NAME_LIB = 'Didomi';
+  private static DIDOMI_ON_READY = 'didomiOnReady';
 
-  public initialize(): void {
+  get allowed$(): Observable<boolean> {
+    return this.allowedSubject.asObservable();
+  }
+
+  get library(): DidomiLibrary {
+    return this.window[DidomiService.NAME_LIB];
+  }
+
+  constructor(
+    @Inject(WINDOW_TOKEN) private window: Window,
+    private loadExternalLibsService: LoadExternalLibsService
+  ) {
     this.addOnReadyListener();
-    this.appendSDKScriptToDom();
   }
 
-  private appendSDKScriptToDom() {
-    const coreScript: HTMLScriptElement = document.createElement('script');
-    coreScript.setAttribute('type', 'text/javascript');
-    coreScript.setAttribute('charset', 'utf-8');
-    coreScript.text = DIDOMI_EMBED;
-    document.head.appendChild(coreScript);
+  private allowedSubject: BehaviorSubject<boolean> = new BehaviorSubject<
+    boolean
+  >(false);
+
+  public userAllowedSegmentationInAds$(): Observable<boolean> {
+    this.loadDidomiLib();
+    return this.allowed$;
   }
 
-  private addOnReadyListener() {
-    window['didomiOnReady'] = window['didomiOnReady'] || [];
-    window['didomiOnReady'].push(() => {
-      this.library = Didomi;
-      this.isReady = true;
-      this.isReady$.next(true);
+  private loadDidomiLib(): void {
+    this.loadExternalLibsService.loadScriptByText(
+      DidomiService.NAME_LIB,
+      DIDOMI_EMBED
+    );
+  }
+
+  private addOnReadyListener(): void {
+    this.window[DidomiService.DIDOMI_ON_READY] =
+      this.window[DidomiService.DIDOMI_ON_READY] || [];
+    this.window[DidomiService.DIDOMI_ON_READY].push(() => {
+      this.allowedSubject.next(this.userAllowedSegmentationInAds());
+      this.addEventListen('consent.changed');
     });
   }
 
-  public userAllowedSegmentationInAds(): boolean {
-    if (!this.library) {
-      return false;
-    }
-
-    const userConsentedGoogle = this.library.getUserConsentStatusForVendor(
+  private userAllowedSegmentationInAds(): boolean {
+    const userConsentedGoogle: boolean = !!this.library.getUserConsentStatusForVendor(
       'google'
     );
-    const allConsents = this.library.getUserConsentStatusForAll();
+    const allConsents: DidomiUserConsents = this.library.getUserConsentStatusForAll();
     const { purposes } = allConsents;
     const { disabled: userDisabledPurpouses } = purposes;
 
-    const allowingSegmentation =
+    const allowingSegmentation: boolean =
       userDisabledPurpouses.length === 0 && userConsentedGoogle;
     return allowingSegmentation;
+  }
+
+  private addEventListen(event: string): void {
+    this.library.on(event, (e) => {
+      const allowed: boolean = this.userAllowedSegmentationInAds();
+      this.allowedSubject.next(allowed);
+    });
   }
 }
