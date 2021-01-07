@@ -10,7 +10,6 @@ import {
   MOCK_USER_STATS,
 } from '@fixtures/user.fixtures.spec';
 import { PublicPipesModule } from '@public/core/pipes/public-pipes.module';
-import { of } from 'rxjs';
 import { APP_PATHS } from 'app/app-routing-constants';
 import { of, throwError } from 'rxjs';
 import { PublicProfileService } from '../core/services/public-profile.service';
