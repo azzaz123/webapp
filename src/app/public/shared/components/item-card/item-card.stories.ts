@@ -25,7 +25,7 @@ export default {
 
       return {
         ...story,
-        template: `<div style="max-width: 200px">${story.template}</div>`,
+        template: `<div style="max-width: 220px">${story.template}</div>`,
       };
     },
   ],
