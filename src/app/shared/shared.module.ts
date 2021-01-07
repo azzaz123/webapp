@@ -81,6 +81,7 @@ import { DisableControlDirective } from './forms/disable-control.directive';
 import { RouterLinkDirectiveStub } from './router-link-directive-stub';
 import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
 import { DateCountDownComponent } from './date-countdown/date-countdown.component';
+import { WallacoinsDisabledModalComponent } from './modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
 
 @NgModule({
   imports: [
@@ -164,6 +165,7 @@ import { DateCountDownComponent } from './date-countdown/date-countdown.componen
     SvgIconModule,
     DateCountDownComponent,
     DropdownModule,
+    WallacoinsDisabledModalComponent,
   ],
   declarations: [
     AdComponent,
@@ -231,6 +233,7 @@ import { DateCountDownComponent } from './date-countdown/date-countdown.componen
     DisableControlDirective,
     RouterLinkDirectiveStub,
     DateCountDownComponent,
+    WallacoinsDisabledModalComponent,
   ],
   providers: [
     DecimalPipe,
@@ -256,6 +259,7 @@ import { DateCountDownComponent } from './date-countdown/date-countdown.componen
     ConfirmCardModalComponent,
     ChangeCardModalComponent,
     FullScreenModalComponent,
+    WallacoinsDisabledModalComponent,
   ],
 })
 export class SharedModule {}
