@@ -4,7 +4,7 @@
         <div class="col-12 col-md-6">
             <tsl-profile-tabs [userStats]="userStats.counters"></tsl-profile-tabs>
         </div>
-        <div class="col-12 col-md-6 d-flex align-items-center justify-content-end">
+        <div  *ngIf="!(userId | isLoggedUser)" class="col-12 col-md-6 d-flex align-items-center justify-content-end">
             <tsl-favourite-user [userId]="userId"></tsl-favourite-user>
         </div>
     </div>
