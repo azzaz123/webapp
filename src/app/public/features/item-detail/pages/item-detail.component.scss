@@ -34,6 +34,7 @@ $product-detail-card-width: 681px;
 
 .Ads {
   &_Top {
+    margin-top: $spacing-xl;
     text-align: center;
   }
 
@@ -45,10 +46,6 @@ $product-detail-card-width: 681px;
     position: sticky;
     position: -webkit-sticky;
     top: 70px;
-  }
-
-  &.PaddingTop {
-    padding-top: $spacing-xl;
   }
 }
 
