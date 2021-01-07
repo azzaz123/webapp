@@ -27,6 +27,7 @@ describe('MapItemService', () => {
       (ITEM_DATA_V3.content.user as any) = {
         id: ITEM_DATA_V3.content.seller_id,
       };
+
       const items: Item[] = mapItemService.mapItems([ITEM_DATA_V3]);
 
       expect(items[0] instanceof Item).toBeTruthy();
