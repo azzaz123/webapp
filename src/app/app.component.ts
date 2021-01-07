@@ -14,11 +14,13 @@ import { MessageService } from '@features/chat/core/message/message.service';
 import * as moment from 'moment';
 import { CookieOptions, CookieService } from 'ngx-cookie';
 import {
+  concatMap,
   distinctUntilChanged,
   filter,
   finalize,
   map,
   mergeMap,
+  take,
 } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 import { PATH_EVENTS } from './app-routing-constants';
@@ -36,6 +38,11 @@ import { TrackingService } from './core/tracking/tracking.service';
 import { User } from './core/user/user';
 import { UserService } from './core/user/user.service';
 import { UuidService } from './core/uuid/uuid.service';
+import { SessionService } from '@core/session/session.service';
+import { DeviceService } from '@core/device/device.service';
+import { OpenWallapop } from '@core/analytics/resources/events-interfaces';
+import { ANALYTICS_EVENT_NAMES } from '@core/analytics/resources/analytics-event-names';
+import { ANALYTIC_EVENT_TYPES } from '@core/analytics/analytics-constants';
 
 @Component({
   selector: 'tsl-root',
@@ -71,8 +78,10 @@ export class AppComponent implements OnInit {
     private callService: CallsService,
     private stripeService: StripeService,
     private analyticsService: AnalyticsService,
+    private sessionService: SessionService,
     private uuidService: UuidService,
-    private serviceWorker: SwUpdate
+    private serviceWorker: SwUpdate,
+    private deviceService: DeviceService
   ) {}
 
   ngOnInit() {
@@ -109,6 +118,12 @@ export class AppComponent implements OnInit {
     this.userService.checkUserStatus();
     this.desktopNotificationsService.init();
     this.connectionService.checkConnection();
+    this.analyticsService.mParticleReady$
+      .pipe(
+        concatMap(() => this.sessionService.newSession$),
+        take(1)
+      )
+      .subscribe(() => this.trackOpenWallapop());
   }
 
   // TODO: This should be encapsualted in a service (e.g.: BrazeService)
@@ -199,6 +214,19 @@ export class AppComponent implements OnInit {
     this.trackingService.track(TrackingService.APP_OPEN, {
       referer_url: this.previousUrl,
       current_url: this.currentUrl,
+    });
+  }
+
+  private trackOpenWallapop(): void {
+    this.analyticsService.trackEvent<OpenWallapop>({
+      name: ANALYTICS_EVENT_NAMES.OpenWallapop,
+      eventType: ANALYTIC_EVENT_TYPES.Other,
+      attributes: {
+        currentUrl: window.location.href,
+        refererUrl: document.referrer,
+        webPlatformType: this.deviceService.getDeviceType(),
+        webDeviceId: this.deviceService.getDeviceId(),
+      },
     });
   }
 

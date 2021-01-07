@@ -6,23 +6,23 @@
  */
 
 /**
- * User views the section of favorite items
+ * User views the section of own sold items
  */
-export interface ViewFavoriteItems {
+export interface ViewOwnSoldItems {
   /**
-   * Identifier of my favorite items section screen
+   * Identifier of my sold items section screen
    */
-  screenId: 194;
+  screenId: 239;
   /**
-   * Number of different items the user has in the my favorite items section
+   * Number of sold items
    */
-  numberOfItems: number;
+  numberOfItems?: number;
   /**
    * Flag true or false is the view shows an empty state
    */
   emptyState?: boolean;
   /**
-   * Name of the experiment or A/B testing applied to the user who has viewed the favorite items section.
+   * Name of the experiment or A/B testing applied to the user who has viewed the sold items section of sold items.
    */
   experiment?: string;
 }
