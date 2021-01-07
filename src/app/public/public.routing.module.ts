@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PUBLIC_PATHS } from './public-routing-constants';
+import { PUBLIC_PATHS, PUBLIC_PATH_PARAMS } from './public-routing-constants';
 import { PublicComponent } from './public.component';
 
 const routes: Routes = [
@@ -27,7 +27,7 @@ const routes: Routes = [
           import('./features/wall/wall.module').then((m) => m.WallModule),
       },
       {
-        path: PUBLIC_PATHS.ITEM_DETAIL,
+        path: `${PUBLIC_PATHS.ITEM_DETAIL}/:${PUBLIC_PATH_PARAMS.ID}`,
         loadChildren: () =>
           import('./features/item-detail/item-detail.module').then(
             (m) => m.ItemDetailModule

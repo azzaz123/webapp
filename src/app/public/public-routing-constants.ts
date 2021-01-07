@@ -2,5 +2,9 @@ export enum PUBLIC_PATHS {
   LOGIN = 'login',
   REGISTER = 'register',
   WALL = 'wall',
-  ITEM_DETAIL = 'item/:id',
+  ITEM_DETAIL = 'item',
+}
+
+export enum PUBLIC_PATH_PARAMS {
+  ID = 'id',
 }
