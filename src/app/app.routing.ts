@@ -16,7 +16,7 @@ const publicRoute: Route = {
 
 const privateRoute = {
   path: APP_PATHS.PRIVATE,
-  canActivate: [LoggedGuard],
+  canLoad: [LoggedGuard],
   loadChildren: () =>
     import('@private/private.module').then((m) => m.PrivateModule),
 };
