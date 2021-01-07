@@ -3,11 +3,13 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { UserService } from '@core/user/user.service';
 import {
   IMAGE,
   MOCK_FULL_USER_FEATURED,
   MOCK_USER_STATS,
 } from '@fixtures/user.fixtures.spec';
+import { PublicPipesModule } from '@public/core/pipes/public-pipes.module';
 import { of } from 'rxjs';
 import { PublicProfileService } from '../core/services/public-profile.service';
 import { PublicProfileComponent } from './public-profile.component';
@@ -20,7 +22,7 @@ describe('PublicProfileComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, PublicPipesModule],
       declarations: [PublicProfileComponent],
       providers: [
         {
@@ -45,6 +47,12 @@ describe('PublicProfileComponent', () => {
             getCoverImage() {
               return of(IMAGE);
             },
+          },
+        },
+        {
+          provide: UserService,
+          useValue: {
+            user: {},
           },
         },
       ],
