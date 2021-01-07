@@ -14,16 +14,14 @@ const publicRoute: Route = {
   },
 };
 
-const loggedRoutes = [
-  {
-    path: APP_PATHS.PRIVATE,
-    canActivate: [LoggedGuard],
-    loadChildren: () =>
-      import('@private/private.module').then((m) => m.PrivateModule),
-  },
-];
+const privateRoute = {
+  path: APP_PATHS.PRIVATE,
+  canActivate: [LoggedGuard],
+  loadChildren: () =>
+    import('@private/private.module').then((m) => m.PrivateModule),
+};
 
-const routes: Routes = [publicRoute, ...loggedRoutes];
+const routes: Routes = [publicRoute, privateRoute];
 
 @NgModule({
   imports: [
