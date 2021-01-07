@@ -8,23 +8,26 @@ import {
   RouteConfigLoadStart,
   Router,
 } from '@angular/router';
+import { SwUpdate } from '@angular/service-worker';
 import { InboxService } from '@features/chat/core/inbox/inbox.service';
 import { MessageService } from '@features/chat/core/message/message.service';
 import * as moment from 'moment';
 import { CookieOptions, CookieService } from 'ngx-cookie';
 import {
+  concatMap,
   distinctUntilChanged,
   filter,
   finalize,
   map,
   mergeMap,
+  take,
 } from 'rxjs/operators';
 import { environment } from '../environments/environment';
+import { PATH_EVENTS } from './app-routing-constants';
 import { AnalyticsService } from './core/analytics/analytics.service';
 import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
 import { DesktopNotificationsService } from './core/desktop-notifications/desktop-notifications.service';
-import { DidomiService } from './core/didomi/didomi.service';
 import { EventService } from './core/event/event.service';
 import { I18nService } from './core/i18n/i18n.service';
 import { Item } from './core/item/item';
@@ -35,8 +38,11 @@ import { TrackingService } from './core/tracking/tracking.service';
 import { User } from './core/user/user';
 import { UserService } from './core/user/user.service';
 import { UuidService } from './core/uuid/uuid.service';
-import { SwUpdate } from '@angular/service-worker';
-import { PATH_EVENTS } from './app-routing-constants';
+import { SessionService } from '@core/session/session.service';
+import { DeviceService } from '@core/device/device.service';
+import { OpenWallapop } from '@core/analytics/resources/events-interfaces';
+import { ANALYTICS_EVENT_NAMES } from '@core/analytics/resources/analytics-event-names';
+import { ANALYTIC_EVENT_TYPES } from '@core/analytics/analytics-constants';
 
 @Component({
   selector: 'tsl-root',
@@ -72,9 +78,10 @@ export class AppComponent implements OnInit {
     private callService: CallsService,
     private stripeService: StripeService,
     private analyticsService: AnalyticsService,
+    private sessionService: SessionService,
     private uuidService: UuidService,
     private serviceWorker: SwUpdate,
-    private didomiService: DidomiService
+    private deviceService: DeviceService
   ) {}
 
   ngOnInit() {
@@ -105,13 +112,18 @@ export class AppComponent implements OnInit {
   }
 
   private initializeServices(): void {
-    this.didomiService.initialize();
     this.stripeService.init();
     this.analyticsService.initialize();
     this.initializeBraze();
     this.userService.checkUserStatus();
     this.desktopNotificationsService.init();
     this.connectionService.checkConnection();
+    this.analyticsService.mParticleReady$
+      .pipe(
+        concatMap(() => this.sessionService.newSession$),
+        take(1)
+      )
+      .subscribe(() => this.trackOpenWallapop());
   }
 
   // TODO: This should be encapsualted in a service (e.g.: BrazeService)
@@ -202,6 +214,19 @@ export class AppComponent implements OnInit {
     this.trackingService.track(TrackingService.APP_OPEN, {
       referer_url: this.previousUrl,
       current_url: this.currentUrl,
+    });
+  }
+
+  private trackOpenWallapop(): void {
+    this.analyticsService.trackEvent<OpenWallapop>({
+      name: ANALYTICS_EVENT_NAMES.OpenWallapop,
+      eventType: ANALYTIC_EVENT_TYPES.Other,
+      attributes: {
+        currentUrl: window.location.href,
+        refererUrl: document.referrer,
+        webPlatformType: this.deviceService.getDeviceType(),
+        webDeviceId: this.deviceService.getDeviceId(),
+      },
     });
   }
 

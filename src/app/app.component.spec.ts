@@ -24,7 +24,6 @@ import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
 import { DesktopNotificationsService } from './core/desktop-notifications/desktop-notifications.service';
 import { DidomiService } from './core/didomi/didomi.service';
-import { MockDidomiService } from './core/didomi/didomi.service.spec';
 import { ErrorsService } from './core/errors/errors.service';
 import { EventService } from './core/event/event.service';
 import { I18nService } from './core/i18n/i18n.service';
@@ -37,6 +36,13 @@ import { UuidService } from './core/uuid/uuid.service';
 import { SwUpdate } from '@angular/service-worker';
 import * as moment from 'moment';
 import { PATH_EVENTS } from './app-routing-constants';
+import { SessionService } from '@core/session/session.service';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { DeviceService } from '@core/device/device.service';
+import {
+  ANALYTIC_EVENT_TYPES,
+  ANALYTICS_EVENT_NAMES,
+} from '@core/analytics/analytics-constants';
 
 jest.mock('moment');
 
@@ -59,9 +65,9 @@ let connectionService: ConnectionService;
 let paymentService: PaymentService;
 let stripeService: StripeService;
 let analyticsService: AnalyticsService;
-let didomiService: DidomiService;
 let uuidService: UuidService;
 let activatedRoute: ActivatedRoute;
+let deviceService: DeviceService;
 
 const ACCESS_TOKEN = 'accesstoken';
 
@@ -185,7 +191,9 @@ describe('App', () => {
           },
         },
         { provide: AnalyticsService, useClass: MockAnalyticsService },
-        { provide: DidomiService, useValue: MockDidomiService },
+        SessionService,
+        DeviceDetectorService,
+        DeviceService,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     });
@@ -193,6 +201,7 @@ describe('App', () => {
     component = fixture.componentInstance;
     de = fixture.debugElement;
     el = de.nativeElement;
+    deviceService = TestBed.inject(DeviceService);
     userService = TestBed.inject(UserService);
     errorsService = TestBed.inject(ErrorsService);
     eventService = TestBed.inject(EventService);
@@ -208,7 +217,6 @@ describe('App', () => {
     paymentService = TestBed.inject(PaymentService);
     stripeService = TestBed.inject(StripeService);
     analyticsService = TestBed.inject(AnalyticsService);
-    didomiService = TestBed.inject(DidomiService);
     uuidService = TestBed.inject(UuidService);
     activatedRoute = TestBed.inject(ActivatedRoute);
 
@@ -528,16 +536,6 @@ describe('App', () => {
     });
   });
 
-  describe('GDPR', () => {
-    it('should initialize the GDPR library', () => {
-      spyOn(didomiService, 'initialize');
-
-      component.ngOnInit();
-
-      expect(didomiService.initialize).toHaveBeenCalledTimes(1);
-    });
-  });
-
   describe('When current route data changes', () => {
     beforeEach(() => {
       activatedRoute.root.firstChild.snapshot.data = {};
@@ -580,6 +578,45 @@ describe('App', () => {
       fixture.detectChanges();
 
       expect(el.querySelector(sidebarSelector)).toBeFalsy();
+    });
+  });
+
+  describe('When the app initializes', () => {
+    it('should send Open Wallapop if user has a new session', () => {
+      spyOn(analyticsService, 'trackEvent');
+      spyOn(deviceService, 'getDeviceId').and.returnValue('newUUID');
+
+      component.ngOnInit();
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith({
+        attributes: {
+          currentUrl: 'http://localhost/',
+          refererUrl: '',
+          webDeviceId: 'newUUID',
+          webPlatformType: 'desktop',
+        },
+        eventType: ANALYTIC_EVENT_TYPES.Other,
+        name: ANALYTICS_EVENT_NAMES.OpenWallapop,
+      });
+    });
+
+    it('should not send Open Wallapop if has an old session', () => {
+      cookieService.put('wallapop_keep_session', 'true');
+      spyOn(analyticsService, 'trackEvent');
+      spyOn(deviceService, 'getDeviceId').and.returnValue('newUUID');
+
+      component.ngOnInit();
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith({
+        attributes: {
+          currentUrl: 'http://localhost/',
+          refererUrl: '',
+          webDeviceId: 'newUUID',
+          webPlatformType: 'desktop',
+        },
+        eventType: ANALYTIC_EVENT_TYPES.Other,
+        name: ANALYTICS_EVENT_NAMES.OpenWallapop,
+      });
     });
   });
 });

@@ -15,6 +15,8 @@ import { MessageService } from '@features/chat/core/message/message.service';
 import { CATEGORY_DATA_WEB } from '@fixtures/category.fixtures.spec';
 import { SUGGESTER_DATA_WEB } from '@fixtures/suggester.fixtures.spec';
 import { USER_DATA } from '@fixtures/user.fixtures.spec';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
 import { CustomCurrencyPipe } from '@shared/pipes';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsModule } from 'ngx-permissions';
@@ -49,6 +51,7 @@ describe('TopbarComponent', () => {
   const CREDITS = 1000;
   let paymentService: PaymentService;
   let cookieService: CookieService;
+  let modalService: NgbModal;
 
   beforeEach(
     waitForAsync(() => {
@@ -97,6 +100,17 @@ describe('TopbarComponent', () => {
               put(key, value) {},
             },
           },
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  componentInstance: {},
+                  result: Promise.resolve('success'),
+                };
+              },
+            },
+          },
           EventService,
         ],
         declarations: [TopbarComponent, CustomCurrencyPipe],
@@ -115,6 +129,7 @@ describe('TopbarComponent', () => {
     eventService = TestBed.inject(EventService);
     paymentService = TestBed.inject(PaymentService);
     cookieService = TestBed.inject(CookieService);
+    modalService = TestBed.inject(NgbModal);
   });
 
   it('should be created', () => {
@@ -334,6 +349,48 @@ describe('TopbarComponent', () => {
         environment.siteUrl.replace('es', 'www') +
           'search?category_ids=100' +
           '&keywords='
+      );
+    });
+  });
+
+  describe('Credit', () => {
+    const wallacoinsBtnSelector = '#top-bar-wallacoins';
+
+    it('should show credit when credit is > 0', () => {
+      spyOn(paymentService, 'getCreditInfo').and.callThrough();
+
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      expect(el.querySelector(wallacoinsBtnSelector)).not.toBeNull();
+    });
+
+    it('should not show credit when credit is = 0', () => {
+      spyOn(paymentService, 'getCreditInfo').and.returnValue(
+        of({
+          currencyName: CURRENCY,
+          credit: 0,
+        })
+      );
+
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      expect(el.querySelector(wallacoinsBtnSelector)).toBeNull();
+    });
+
+    it('should open modal when credit es clicked', () => {
+      spyOn(modalService, 'open').and.callThrough();
+
+      el.querySelector<any>(wallacoinsBtnSelector).click();
+
+      expect(modalService.open).toHaveBeenCalledTimes(1);
+      expect(modalService.open).toHaveBeenCalledWith(
+        WallacoinsDisabledModalComponent,
+        {
+          backdrop: 'static',
+          windowClass: 'modal-standard',
+        }
       );
     });
   });

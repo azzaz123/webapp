@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { ErrorsService, DEFAULT_ERROR_MESSAGE } from './errors.service';
-import { ToastService } from '../../layout/toast/toast.service';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Component } from '@angular/core';
 import { I18nService } from '../i18n/i18n.service';
