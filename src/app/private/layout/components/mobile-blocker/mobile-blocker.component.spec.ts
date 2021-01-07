@@ -7,7 +7,7 @@ import {
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MobileBlockerComponent } from './mobile-blocker.component';
-import { DeviceDetectorServiceMock } from '../../../tests';
+import { DeviceDetectorServiceMock } from '../../../../../tests';
 import { UserService } from '@core/user/user.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { of } from 'rxjs';

@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { TopbarModule } from './topbar/topbar.module';
-import { SidebarModule } from './sidebar/sidebar.module';
 import { TabbarModule } from './tabbar/tabbar.module';
 import { ToastModule } from './toast/toast.module';
-import { MobileBlockerModule } from './mobile-blocker/mobile-blocker.module';
+
+//TODO: This will be removed in next iterations as these modules are only used in the private layout
+import { MobileBlockerModule } from '@private/layout/components/mobile-blocker/mobile-blocker.module';
+import { SidebarModule } from '@private/layout/components/sidebar/sidebar.module';
 
 @NgModule({
   exports: [
