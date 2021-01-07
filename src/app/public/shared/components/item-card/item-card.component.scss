@@ -1,7 +1,7 @@
 @import '~style/common';
 
-$container-height-with-description: 330px;
-$container-height-without-description: 260px;
+$container-height-with-description: 345px;
+$container-height-without-description: 262px;
 $image-height: 177px;
 $icon-margin: $spacer * 0.5;
 $hover-box-shadow: 0 2px 10px 0 rgba(37, 50, 56, 0.1);
@@ -100,8 +100,6 @@ $hover-box-shadow: 0 2px 10px 0 rgba(37, 50, 56, 0.1);
   }
 
   &__info {
-    line-height: $font-size-m;
-
     &__title {
       @include vertical-ellipsis(2);
     }
