@@ -9,7 +9,7 @@ import { User } from '@core/user/user';
 import { Image } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
 import { ReviewResponse } from '@features/reviews/core/review-response.interface';
-import { EMPTY_STATS } from '@fixtures/stats.fixtures';
+import { EMPTY_STATS } from './constants/stats-constants';
 import {
   MOCK_FULL_USER,
   MOCK_FULL_USER_FEATURED,

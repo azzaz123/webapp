@@ -22,7 +22,7 @@ import {
 } from '@features/reviews/core/review-response.interface';
 import { ItemResponse } from '@core/item/item-response.interface';
 import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
-import { EMPTY_STATS } from '@fixtures/stats.fixtures';
+import { EMPTY_STATS } from './constants/stats-constants';
 
 export const PROFILE_API_URL = (userId: string) => `api/v3/users/${userId}`;
 export const USER_COVER_IMAGE_ENDPOINT = (userId: string) =>
