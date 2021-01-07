@@ -1,3 +1,4 @@
+import { User } from '@core/user/user';
 import { SimpleObjectType } from '@features/upload/core/models/brand-model.interface';
 import { ApiResponse } from '../resource/api-response.interface';
 import { Image, UserLocation } from '../user/user-response.interface';
@@ -71,6 +72,7 @@ export interface ItemContent {
   extra_info?: ItemExtraInfo;
   publish_date?: number;
   km?: number;
+  user?: User;
 }
 
 export interface ItemProResponse {
