@@ -12,6 +12,23 @@ $product-detail-card-width: 681px;
     padding: $spacing-xl 0;
     display: flex;
     justify-content: space-around;
+
+    &_Container {
+      width: $product-detail-card-width;
+
+      @media (max-width: $product-detail-card-width) {
+        width: 100%;
+      }
+
+      &_Item {
+        background-color: $white;
+        padding: 0 $spacing-ml $spacing-xl;
+        border-radius: 10px;
+        border: solid 1px $blue-grey-5;
+        position: relative;
+        width: 100%;
+      }
+    }
   }
 }
 
@@ -39,14 +56,6 @@ $product-detail-card-width: 681px;
 
   &.PaddingTop {
     padding-top: $spacing-xl;
-  }
-}
-
-.Wrapper_Detail_Item {
-  width: $product-detail-card-width;
-
-  @media (max-width: $product-detail-card-width) {
-    width: 100%;
   }
 }
 
