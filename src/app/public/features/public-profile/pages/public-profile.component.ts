@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '@core/user/user';
 import { Image } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
+import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { APP_PATHS } from 'app/app-routing-constants';
 import { forkJoin, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
@@ -37,7 +38,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
   }
 
   private getUser(): void {
-    this.userId = this.route.snapshot.paramMap.get('id');
+    this.userId = this.route.snapshot.paramMap.get(PUBLIC_PATH_PARAMS.ID);
     if (this.userId) {
       this.getUserInfoAndStats();
     }

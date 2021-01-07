@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Route } from '@angular/router';
-import { PUBLIC_PATHS } from './public-routing-constants';
+import { PUBLIC_PATHS, PUBLIC_PATH_PARAMS } from './public-routing-constants';
 import { PublicComponent } from './public.component';
 
 const routes: Route[] = [
@@ -22,7 +22,7 @@ const routes: Route[] = [
           ),
       },
       {
-        path: PUBLIC_PATHS.USER_DETAIL,
+        path: `${PUBLIC_PATHS.USER_DETAIL}/:${PUBLIC_PATH_PARAMS.ID}`,
         loadChildren: () =>
           import('./features/public-profile/public-profile.module').then(
             (m) => m.PublicProfileModule
