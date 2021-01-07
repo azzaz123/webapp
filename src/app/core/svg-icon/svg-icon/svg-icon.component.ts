@@ -9,12 +9,20 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { take } from 'rxjs/operators';
 import { SvgService } from '../svg.service';
 
+export enum SVG_ATTRIBUTES {
+  WIDTH = 'width',
+  HEIGHT = 'height',
+  FILL = 'fill',
+}
 @Component({
   selector: 'tsl-svg-icon',
   template: '',
 })
 export class SvgIconComponent implements OnInit {
   @Input() src: string;
+  @Input() fill: string;
+  @Input() width: number;
+  @Input() height: number;
 
   constructor(
     private svgService: SvgService,
@@ -37,8 +45,31 @@ export class SvgIconComponent implements OnInit {
             SecurityContext.HTML,
             svgElement
           );
+
+          this.handleCustomAttributes();
         });
     }
+  }
+
+  private handleCustomAttributes(): void {
+    if (this.width) {
+      this.setAttribute(SVG_ATTRIBUTES.WIDTH, `${this.width}px`);
+    }
+
+    if (this.height) {
+      this.setAttribute(SVG_ATTRIBUTES.HEIGHT, `${this.height}px`);
+    }
+
+    if (this.fill) {
+      this.setAttribute(SVG_ATTRIBUTES.FILL, this.fill);
+    }
+  }
+
+  private setAttribute(attribute: SVG_ATTRIBUTES, value: string): void {
+    this.element.nativeElement?.firstElementChild?.setAttribute(
+      attribute,
+      value
+    );
   }
 
   get hasSvgExtension(): boolean {

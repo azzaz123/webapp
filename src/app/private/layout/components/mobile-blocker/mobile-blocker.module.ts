@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { MobileBlockerComponent } from './mobile-blocker.component';
-import { SvgIconModule } from '../svg-icon/svg-icon.module';
 
 @NgModule({
   imports: [CommonModule, SvgIconModule],

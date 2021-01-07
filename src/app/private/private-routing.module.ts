@@ -1,7 +1,10 @@
 import { NgModule } from '@angular/core';
-import { Route, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
+import { PrivateComponent } from './private.component';
 
-const routes: Route[] = [];
+const routes: Routes = [
+  { path: '', component: PrivateComponent, children: [] },
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
