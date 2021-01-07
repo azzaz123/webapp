@@ -73,12 +73,13 @@ import { RouterLinkDirectiveStub } from './router-link-directive-stub';
 import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
 import { DateCountDownComponent } from './date-countdown/date-countdown.component';
 import { ItemAvatarModule } from './item-avatar/item-avatar.module';
-import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.module';
 import { StarsModule } from './stars/stars.module';
 import { UserAvatarModule } from './user-avatar/user-avatar.module';
 import { SpinnerModule } from './spinner/spinner.module';
 import { SanitizedBackgroundModule } from './sanitized-background/sanitized-background.module';
 import { UserCoverModule } from './user-cover/user-cover.module';
+import { WallacoinsDisabledModalComponent } from './modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
+import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.module';
 
 @NgModule({
   imports: [
@@ -167,6 +168,7 @@ import { UserCoverModule } from './user-cover/user-cover.module';
     SvgIconModule,
     DateCountDownComponent,
     DropdownModule,
+    WallacoinsDisabledModalComponent,
   ],
   declarations: [
     AdComponent,
@@ -227,6 +229,7 @@ import { UserCoverModule } from './user-cover/user-cover.module';
     DisableControlDirective,
     RouterLinkDirectiveStub,
     DateCountDownComponent,
+    WallacoinsDisabledModalComponent,
   ],
   providers: [
     DecimalPipe,
@@ -252,6 +255,7 @@ import { UserCoverModule } from './user-cover/user-cover.module';
     ConfirmCardModalComponent,
     ChangeCardModalComponent,
     FullScreenModalComponent,
+    WallacoinsDisabledModalComponent,
   ],
 })
 export class SharedModule {}

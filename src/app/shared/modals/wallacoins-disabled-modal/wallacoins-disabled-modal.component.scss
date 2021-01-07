@@ -1,0 +1,18 @@
+@import '~style/common';
+
+.modal-close {
+  @include square(13px);
+  tsl-svg-icon {
+    @include square(13px);
+    line-height: initial;
+  }
+}
+
+.content-col {
+  padding: $spacing-xl $spacing-m;
+  .modal-text {
+    text-align: center;
+    max-width: 400px;
+    margin: $spacing-s 0 $spacing-l 0;
+  }
+}

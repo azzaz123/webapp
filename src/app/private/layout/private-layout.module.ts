@@ -1,8 +1,17 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { TabbarModule } from '@layout/tabbar/tabbar.module';
+import { ToastModule } from '@layout/toast/toast.module';
+import { TopbarModule } from '@layout/topbar/topbar.module';
+import { MobileBlockerModule } from '@private/layout/components/mobile-blocker/mobile-blocker.module';
+import { SidebarModule } from '@private/layout/components/sidebar/sidebar.module';
 
 @NgModule({
-  declarations: [],
-  imports: [CommonModule],
+  exports: [
+    SidebarModule,
+    TopbarModule,
+    TabbarModule,
+    ToastModule,
+    MobileBlockerModule,
+  ],
 })
 export class PrivateLayoutModule {}

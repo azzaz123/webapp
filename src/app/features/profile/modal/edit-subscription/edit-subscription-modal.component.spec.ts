@@ -5,7 +5,7 @@ import {
   AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
-  ClickConfirmEditCurrentSubscription,
+  ClickSubscriptionPlanDone,
   SCREEN_IDS,
   ViewEditSubscriptionPlan,
 } from '@core/analytics/analytics-constants';
@@ -20,7 +20,7 @@ import {
   MAPPED_SUBSCRIPTIONS,
   TIER,
 } from '@fixtures/subscriptions.fixtures.spec';
-import { ToastService } from '@layout/toast/toast.service';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DateUntilDayPipe } from '@shared/pipes';
 import { of } from 'rxjs';
@@ -172,15 +172,15 @@ describe('EditSubscriptionModalComponent', () => {
     });
 
     it('should send event to analytics', () => {
-      const expectedEvent: AnalyticsEvent<ClickConfirmEditCurrentSubscription> = {
-        name: ANALYTICS_EVENT_NAMES.ClickConfirmEditCurrentSubscription,
+      const expectedEvent: AnalyticsEvent<ClickSubscriptionPlanDone> = {
+        name: ANALYTICS_EVENT_NAMES.ClickSubscriptionPlanDone,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
           subscription: component.subscription
             .category_id as SUBSCRIPTION_CATEGORIES,
           previousTier: component.currentTier.id,
           newTier: component.selectedTier.id,
-          screenId: SCREEN_IDS.ProfileSubscription,
+          screenId: SCREEN_IDS.SubscriptionManagement,
         },
       };
 
