@@ -1,4 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { DeviceService } from '@core/device/device.service';
+import { DeviceType } from '@core/device/deviceType.enum';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 import { CookieService } from 'ngx-cookie';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -6,8 +9,13 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { ItemDetailComponent } from './item-detail.component';
 
 describe('ItemDetailComponent', () => {
+  const topAdTag = '.Ads_Top';
+  const leftAdTag = '.Ads_Left';
+  const rightAdTag = '.Ads_Right';
+
   let component: ItemDetailComponent;
   let fixture: ComponentFixture<ItemDetailComponent>;
+  let deviceService: DeviceService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -25,11 +33,60 @@ describe('ItemDetailComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ItemDetailComponent);
     component = fixture.componentInstance;
+    deviceService = TestBed.inject(DeviceService);
 
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('when we are on MOBILE...', () => {
+    it('should NOT show ADS', () => {
+      spyOn(deviceService, 'getDeviceType').and.returnValue(DeviceType.MOBILE);
+
+      component.ngOnInit();
+      fixture.detectChanges();
+      const topAd = fixture.debugElement.query(By.css(topAdTag));
+      const leftAd = fixture.debugElement.query(By.css(leftAdTag));
+      const rightAd = fixture.debugElement.query(By.css(rightAdTag));
+
+      expect(topAd).toBeFalsy();
+      expect(leftAd).toBeFalsy();
+      expect(rightAd).toBeFalsy();
+    });
+  });
+
+  describe('when we are on TABLET...', () => {
+    it('should show only the top AD', () => {
+      spyOn(deviceService, 'getDeviceType').and.returnValue(DeviceType.TABLET);
+
+      component.ngOnInit();
+      fixture.detectChanges();
+      const topAd = fixture.debugElement.query(By.css(topAdTag));
+      const leftAd = fixture.debugElement.query(By.css(leftAdTag));
+      const rightAd = fixture.debugElement.query(By.css(rightAdTag));
+
+      expect(topAd).toBeTruthy();
+      expect(leftAd).toBeFalsy();
+      expect(rightAd).toBeFalsy();
+    });
+  });
+
+  describe('when er are on DESKTOP...', () => {
+    it('should show the three ADS', () => {
+      spyOn(deviceService, 'getDeviceType').and.returnValue(DeviceType.DESKTOP);
+
+      component.ngOnInit();
+      fixture.detectChanges();
+      const topAd = fixture.debugElement.query(By.css(topAdTag));
+      const leftAd = fixture.debugElement.query(By.css(leftAdTag));
+      const rightAd = fixture.debugElement.query(By.css(rightAdTag));
+
+      expect(topAd).toBeTruthy();
+      expect(leftAd).toBeTruthy();
+      expect(rightAd).toBeTruthy();
+    });
   });
 });
