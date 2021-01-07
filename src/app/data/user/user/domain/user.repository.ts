@@ -1,3 +1,4 @@
+import { UserUpdate } from './user-update';
 import { UserId } from '../../shared/domain/user-id';
 import { InjectionToken } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -15,6 +16,8 @@ export interface UserRepository {
   updateEmail(emailAddress: string): Observable<void>;
 
   updatePassword(oldPassword: string, newPassword: string): Observable<void>;
+
+  updateProfile(userEdit: Partial<UserUpdate>): Observable<User>;
 
   sendUserPresence(): Observable<void>;
 }
