@@ -25,6 +25,7 @@ import { PaymentService } from './payments/payment.service';
 import { ProfileModule } from './profile/profile.module';
 import { ProfileService } from './profile/profile.service';
 import { ReviewService } from './review/review.service';
+import { CoreStoreModule } from './store/core-store.module';
 import { StripeService } from './stripe/stripe.service';
 import { SubscriptionsService } from './subscriptions/subscriptions.service';
 import { TrackingModule } from './tracking/tracking.module';
@@ -45,6 +46,7 @@ import { XmppService } from './xmpp/xmpp.service';
     ConversationModule.forRoot(),
     ProfileModule,
     MobileBlockerModule,
+    CoreStoreModule,
   ],
   exports: [
     CommonModule,
