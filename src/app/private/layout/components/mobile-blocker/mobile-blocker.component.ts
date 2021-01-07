@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { UserService } from '../user/user.service';
-import { ADJUST_IOS_URL, ADJUST_ANDROID_URL } from '../constants';
+import { UserService } from '@core/user/user.service';
+import { ADJUST_IOS_URL, ADJUST_ANDROID_URL } from '@core/constants';
 
 @Component({
   selector: 'tsl-mobile-blocker',

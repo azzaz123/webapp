@@ -10,17 +10,18 @@ import { BlockUserService } from '@features/chat/core/block-user/block-user.serv
 import { InboxService } from '@features/chat/core/inbox/inbox.service';
 import { MessageService } from '@features/chat/core/message/message.service';
 import { CookieModule } from 'ngx-cookie';
+import { CategoryService } from './category/category.service';
 import { ConnectionService } from './connection/connection.service';
 import { ConversationModule } from './conversation/conversation.module';
 import { DesktopNotificationsService } from './desktop-notifications/desktop-notifications.service';
 import { ErrorsService } from './errors/errors.service';
 import { EventService } from './event/event.service';
+import { GeolocationService } from './geolocation/geolocation.service';
 import { AccessTokenService } from './http/access-token.service';
 import { I18nService } from './i18n/i18n.service';
 import { InvoiceService } from './invoice/invoice.service';
 import { ItemModule } from './item/item.module';
 import { RealTimeService } from './message/real-time.service';
-import { MobileBlockerModule } from './mobile-blocker/mobile-blocker.module';
 import { PaymentService } from './payments/payment.service';
 import { ProfileModule } from './profile/profile.module';
 import { ProfileService } from './profile/profile.service';
@@ -44,7 +45,6 @@ import { XmppService } from './xmpp/xmpp.service';
     TrackingModule,
     ConversationModule.forRoot(),
     ProfileModule,
-    MobileBlockerModule,
   ],
   exports: [
     CommonModule,
@@ -52,7 +52,6 @@ import { XmppService } from './xmpp/xmpp.service';
     ItemModule,
     TrackingModule,
     ProfileModule,
-    MobileBlockerModule,
   ],
 })
 export class CoreModule {
@@ -82,6 +81,8 @@ export class CoreModule {
         SubscriptionsService,
         TrustAndSafetyService,
         InvoiceService,
+        GeolocationService,
+        CategoryService,
       ],
     };
   }

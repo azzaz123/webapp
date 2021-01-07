@@ -6,17 +6,25 @@
  */
 
 /**
- * User views Edit Profile
+ * View own reviews screen
  */
-export interface ViewEditProfile {
+export interface ViewOwnReviews {
   /**
-   * Identifier of the Edit Profile screen
+   * Identifier of the view own reviews screen
    */
-  screenId: 148;
+  screenId: 234;
   /**
-   * If the item is from a professional user
+   * If the user profile is a pro user
    */
   isPro: boolean;
+  /**
+   * Number of reviews
+   */
+  numberOfReviews?: number;
+  /**
+   * Reviews score
+   */
+  reviewsScore?: number;
   /**
    * Name of the experiment or A/B testing applied to the user who has performed the view. The default value would be 'baseline'
    */
