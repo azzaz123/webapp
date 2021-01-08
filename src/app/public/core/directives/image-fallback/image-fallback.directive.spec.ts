@@ -1,5 +1,3 @@
-/* tslint:disable:no-unused-variable */
-
 import { ImageFallbackDirective } from './image-fallback.directive';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
