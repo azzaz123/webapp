@@ -1,0 +1,3 @@
+<div class="ItemCardList w-100 m-auto">
+    <tsl-public-item-card *ngFor="let item of items" [item]="item" [showDescription]="showDescription" (toggleFavourite)="toggleFavourite(item)"></tsl-public-item-card>
+</div>

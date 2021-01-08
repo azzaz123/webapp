@@ -8,7 +8,7 @@ import {
   waitForAsync,
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Router, Routes } from '@angular/router';
+import { Route, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MessageService } from '@features/chat/core/message/message.service';
 import { RouterLinkDirectiveStub } from 'app/shared/router-link-directive-stub';
@@ -24,7 +24,7 @@ import { SidebarComponent } from './sidebar.component';
 })
 export class MockComponent {}
 
-const routes: Routes = [
+const routes: Route[] = [
   { path: 'profile', component: MockComponent },
   { path: 'pro/dashboard', component: MockComponent },
   { path: 'catalog/list', component: MockComponent },
