@@ -42,7 +42,7 @@ describe('ItemCardComponent', () => {
   describe('favourite', () => {
     const favouriteIconSelector = 'tsl-favourite-icon';
 
-    describe('when is disabled', () => {
+    describe('when is enabled', () => {
       const favouriteIconAttr = 'ng-reflect-active';
       let favouriteIconElement: HTMLElement;
       describe('when is favourite', () => {
