@@ -21,6 +21,8 @@ $product-detail-card-width: 681px;
       }
 
       &_Item {
+        // The height will be removed
+        height: 800px;
         background-color: $white;
         padding: 0 $spacing-ml $spacing-xl;
         border-radius: 10px;
@@ -35,11 +37,15 @@ $product-detail-card-width: 681px;
 .Ads {
   &_Top {
     margin-top: $spacing-xl;
+    // The height will be removed
+    height: 150px;
     text-align: center;
   }
 
   &_Right,
   &_Left {
+    // The height will be removed
+    height: 200px;
     width: 300px;
     display: flex;
     justify-content: center;
