@@ -5,6 +5,4 @@ import { Component } from '@angular/core';
   templateUrl: './top-ad.component.html',
   styleUrls: ['./top-ad.component.scss'],
 })
-export class TopAdComponent {
-  constructor() {}
-}
+export class TopAdComponent {}

@@ -5,6 +5,4 @@ import { Component } from '@angular/core';
   templateUrl: './side-ad.component.html',
   styleUrls: ['./side-ad.component.scss'],
 })
-export class SideAdComponent {
-  constructor() {}
-}
+export class SideAdComponent {}
