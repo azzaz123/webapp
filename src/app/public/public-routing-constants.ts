@@ -3,6 +3,7 @@ export enum PUBLIC_PATHS {
   REGISTER = 'register',
   WALL = 'wall',
   ITEM_DETAIL = 'item',
+  USER_DETAIL = 'user',
 }
 
 export enum PUBLIC_PATH_PARAMS {

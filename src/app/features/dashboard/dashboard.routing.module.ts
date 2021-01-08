@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Route, RouterModule } from '@angular/router';
 import { PERMISSIONS } from '@core/user/user';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { DashboardComponent } from './pages/dashboard.component';
 
-const routes: Routes = [
+const routes: Route[] = [
   {
     path: '',
     component: DashboardComponent,

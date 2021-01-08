@@ -7,6 +7,7 @@ import {
   NgbModalModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { GeolocationModule } from '@shared/geolocation/geolocation.module';
+import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { DeleteInfoConfirmationModalComponent } from '@shared/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component';
 import { SharedModule } from '@shared/shared.module';
 import { InvoiceHistoryComponent } from './components/invoice-history/invoice-history.component';
@@ -41,6 +42,7 @@ import {
     NgbCarouselModule,
     NgbAccordionModule,
     NgbModalModule,
+    CustomCurrencyModule,
   ],
   declarations: [
     profileRoutedComponents,

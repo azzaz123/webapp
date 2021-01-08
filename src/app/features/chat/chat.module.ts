@@ -7,6 +7,8 @@ import {
   NgbModalModule,
   NgbTooltipModule,
 } from '@ng-bootstrap/ng-bootstrap';
+import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
+import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { SharedModule } from '@shared/shared.module';
 import { AutosizeModule } from 'ngx-autosize';
 import { chatRoutedComponents, ChatRoutingModule } from './chat.routes';
@@ -26,7 +28,7 @@ import { CurrentConversationComponent } from './components/current-conversation'
 import { InputComponent } from './components/input';
 import { ScrollingMessageComponent } from './components/scrolling-message';
 import { UserDetailComponent } from './components/user-detail';
-import { UserResponseRateComponent } from './components/user-response-rate';
+import { UserResponseRateModule } from './components/user-response-rate/user-response-rate.module';
 import {
   ArchiveInboxConversationComponent,
   BlockUserComponent,
@@ -50,6 +52,9 @@ import { PersonalDataInformationModal } from './modals/personal-data-information
     TrackingModule,
     AutosizeModule,
     MessageModule,
+    UserResponseRateModule,
+    ItemAvatarModule,
+    CustomCurrencyModule,
   ],
   declarations: [
     chatRoutedComponents,
@@ -65,7 +70,6 @@ import { PersonalDataInformationModal } from './modals/personal-data-information
     BlockUserComponent,
     UnblockUserComponent,
     UserDetailComponent,
-    UserResponseRateComponent,
     InboxComponent,
     InboxConversationComponent,
     ArchivedInboxConversationComponent,
