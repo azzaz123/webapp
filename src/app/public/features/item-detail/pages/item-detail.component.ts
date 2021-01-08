@@ -8,7 +8,8 @@ import { DeviceType } from '@core/device/deviceType.enum';
   styleUrls: ['./item-detail.component.scss'],
 })
 export class ItemDetailComponent implements OnInit {
-  device: DeviceType;
+  public deviceType = DeviceType;
+  public device: DeviceType;
 
   constructor(private deviceService: DeviceService) {}
 
