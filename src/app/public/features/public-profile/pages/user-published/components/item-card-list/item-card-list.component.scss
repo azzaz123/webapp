@@ -1,0 +1,29 @@
+@import '~style/common';
+
+$margin: $spacer * 0.5;
+$cols-lg: 5;
+$cols-md: 4;
+$cols-sm: 3;
+$cols-xs: 2;
+
+@mixin grid-setup($numCols) {
+  grid-template-columns: repeat($numCols, 1fr);
+}
+
+.ItemCardList {
+  @include grid-setup($cols-xs);
+  display: grid;
+  grid-gap: $margin;
+
+  @include media-breakpoint-up(sm) {
+    @include grid-setup($cols-sm);
+  }
+
+  @include media-breakpoint-up(md) {
+    @include grid-setup($cols-md);
+  }
+
+  @include media-breakpoint-up(lg) {
+    @include grid-setup($cols-lg);
+  }
+}

@@ -14,6 +14,7 @@ export class UserCoverComponent implements OnChanges {
   @Input() size = 40;
   @Input() user: User;
   @Input() imageCoverUrl: string;
+  @Input() class: string;
 
   constructor() {}
 
