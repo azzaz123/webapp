@@ -7,6 +7,7 @@ import { SuggesterService } from './core/services/suggester.service';
 import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '@shared/shared.module';
 import { FormsModule } from '@angular/forms';
+import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
     RouterModule,
     NgbTypeaheadModule,
+    CustomCurrencyModule,
   ],
   exports: [TopbarComponent, SuggesterComponent],
   declarations: [TopbarComponent, SuggesterComponent],
