@@ -1,6 +1,5 @@
 @import '~style/common';
 $product-detail-card-width: 681px;
-$ads-width: 300px;
 
 :host {
   padding-top: 66px;
@@ -9,25 +8,16 @@ $ads-width: 300px;
 }
 
 .ItemDetail {
-  &__topAd {
-    // The height will be removed
-    height: 150px;
-  }
-
   &__content {
     // The height will be removed
     height: 800px;
     width: $product-detail-card-width;
     background-color: $white;
-    padding: 0 $spacing-ml $spacing-xl;
-    border-radius: 10px;
+    border-radius: $border-radius;
     border: solid 1px $blue-grey-5;
   }
 
-  &__sideAd {
-    // The height will be removed
-    height: 200px;
-    width: $ads-width;
+  tsl-side-ad {
     top: 70px;
   }
 }
