@@ -6,15 +6,15 @@
  */
 
 /**
- * User views Edit Profile
+ * View own profile menu screen
  */
-export interface ViewEditProfile {
+export interface ViewProfileMenu {
   /**
-   * Identifier of the Edit Profile screen
+   * Identifier of the view own profile menu screen
    */
-  screenId: 148;
+  screenId: 233;
   /**
-   * If the item is from a professional user
+   * If the user is a pro user
    */
   isPro: boolean;
   /**
