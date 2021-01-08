@@ -42,7 +42,7 @@ describe('ItemCardComponent', () => {
   describe('favourite', () => {
     const favouriteIconSelector = 'tsl-favourite-icon';
 
-    describe('when is enabled', () => {
+    describe('when icon should be displayed', () => {
       const favouriteIconAttr = 'ng-reflect-active';
       let favouriteIconElement: HTMLElement;
       describe('when is favourite', () => {
@@ -90,7 +90,7 @@ describe('ItemCardComponent', () => {
       });
     });
 
-    describe('when is disabled', () => {
+    describe('when icon should not be displayed', () => {
       beforeEach(() => {
         component.showFavourite = false;
         fixture.detectChanges();
