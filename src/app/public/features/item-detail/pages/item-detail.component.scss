@@ -1,5 +1,6 @@
 @import '~style/common';
 $product-detail-card-width: 681px;
+$ads-width: 300px;
 
 :host {
   padding-top: 66px;
@@ -7,69 +8,26 @@ $product-detail-card-width: 681px;
   display: block;
 }
 
-.Wrapper {
-  &_Detail {
-    padding: $spacing-xl 0;
-    display: flex;
-    justify-content: space-around;
-
-    &_Container {
-      width: $product-detail-card-width;
-
-      @media (max-width: $product-detail-card-width) {
-        width: 100%;
-      }
-
-      &_Item {
-        // The height will be removed
-        height: 800px;
-        background-color: $white;
-        padding: 0 $spacing-ml $spacing-xl;
-        border-radius: 10px;
-        border: solid 1px $blue-grey-5;
-        position: relative;
-        width: 100%;
-      }
-    }
-  }
-}
-
-.Ads {
-  &_Top {
-    margin-top: $spacing-xl;
+.ItemDetail {
+  &__topAd {
     // The height will be removed
     height: 150px;
-    text-align: center;
   }
 
-  &_Right,
-  &_Left {
+  &__content {
+    // The height will be removed
+    height: 800px;
+    width: $product-detail-card-width;
+    background-color: $white;
+    padding: 0 $spacing-ml $spacing-xl;
+    border-radius: 10px;
+    border: solid 1px $blue-grey-5;
+  }
+
+  &__sideAd {
     // The height will be removed
     height: 200px;
-    width: 300px;
-    display: flex;
-    justify-content: center;
-    position: sticky;
-    position: -webkit-sticky;
+    width: $ads-width;
     top: 70px;
-  }
-}
-
-@media only screen and (max-width: 1270px) {
-  .Ads {
-    &_Top {
-      margin-left: auto;
-      margin-right: auto;
-      padding-right: 0;
-    }
-  }
-
-  .Wrapper_Detail {
-    .Ads {
-      &_Right,
-      &_Left {
-        display: none;
-      }
-    }
   }
 }

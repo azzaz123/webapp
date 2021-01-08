@@ -1,19 +1,18 @@
-<div class="Wrapper">
-    <div *ngIf="device === deviceType.DESKTOP || device === deviceType.TABLET" class="Ads">
-        <div class="Ads_Top bg-info"></div>
+<div class="ItemDetail">
+    <div *ngIf="device === deviceType.DESKTOP || device === deviceType.TABLET"
+        class="ItemDetail__topAd text-center bg-info mt-4 mx-0 mx-xl-auto pr-xl-0">
+        top ad module
     </div>
-    <div class="Wrapper_Detail">
-        <div class="Ads" *ngIf="device === deviceType.DESKTOP">
-            <div class="Ads_Left bg-info">
-            </div>
+    <div class="d-flex justify-content-around py-4">
+        <div class="ItemDetail__sideAd justify-content-center position-sticky d-none d-xl-block bg-info"
+            *ngIf="device === deviceType.DESKTOP">
+            side ad module
         </div>
-        <div class="Wrapper_Detail_Container">
-            <div class="Wrapper_Detail_Container_Item">
-            </div>
+        <div class="ItemDetail__content">
         </div>
-        <div class="Ads" *ngIf="device === deviceType.DESKTOP">
-            <div class="Ads_Right bg-info">
-            </div>
+        <div class="ItemDetail__sideAd justify-content-center position-sticky d-none d-xl-block bg-info"
+            *ngIf="device === deviceType.DESKTOP">
+            side ad module
         </div>
     </div>
 </div>
