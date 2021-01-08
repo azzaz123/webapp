@@ -1,3 +1,4 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DeviceService } from '@core/device/device.service';
@@ -9,9 +10,8 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { ItemDetailComponent } from './item-detail.component';
 
 describe('ItemDetailComponent', () => {
-  const topAdTag = '.Ads_Top';
-  const leftAdTag = '.Ads_Left';
-  const rightAdTag = '.Ads_Right';
+  const topAdTag = 'tsl-top-ad';
+  const sideAdTag = 'tsl-side-ad';
 
   let component: ItemDetailComponent;
   let fixture: ComponentFixture<ItemDetailComponent>;
@@ -27,6 +27,7 @@ describe('ItemDetailComponent', () => {
           useValue: {},
         },
       ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 
@@ -49,12 +50,10 @@ describe('ItemDetailComponent', () => {
       component.ngOnInit();
       fixture.detectChanges();
       const topAd = fixture.debugElement.query(By.css(topAdTag));
-      const leftAd = fixture.debugElement.query(By.css(leftAdTag));
-      const rightAd = fixture.debugElement.query(By.css(rightAdTag));
+      const sideAds = fixture.debugElement.queryAll(By.css(sideAdTag));
 
       expect(topAd).toBeFalsy();
-      expect(leftAd).toBeFalsy();
-      expect(rightAd).toBeFalsy();
+      expect(sideAds.length).toBe(0);
     });
   });
 
@@ -65,12 +64,10 @@ describe('ItemDetailComponent', () => {
       component.ngOnInit();
       fixture.detectChanges();
       const topAd = fixture.debugElement.query(By.css(topAdTag));
-      const leftAd = fixture.debugElement.query(By.css(leftAdTag));
-      const rightAd = fixture.debugElement.query(By.css(rightAdTag));
+      const sideAds = fixture.debugElement.queryAll(By.css(sideAdTag));
 
       expect(topAd).toBeTruthy();
-      expect(leftAd).toBeFalsy();
-      expect(rightAd).toBeFalsy();
+      expect(sideAds.length).toBe(0);
     });
   });
 
@@ -81,12 +78,10 @@ describe('ItemDetailComponent', () => {
       component.ngOnInit();
       fixture.detectChanges();
       const topAd = fixture.debugElement.query(By.css(topAdTag));
-      const leftAd = fixture.debugElement.query(By.css(leftAdTag));
-      const rightAd = fixture.debugElement.query(By.css(rightAdTag));
+      const sideAds = fixture.debugElement.queryAll(By.css(sideAdTag));
 
       expect(topAd).toBeTruthy();
-      expect(leftAd).toBeTruthy();
-      expect(rightAd).toBeTruthy();
+      expect(sideAds.length).toBe(2);
     });
   });
 });
