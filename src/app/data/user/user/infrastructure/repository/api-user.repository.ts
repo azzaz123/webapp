@@ -1,4 +1,3 @@
-
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -8,33 +7,39 @@ import { UserRepository } from '../../domain/user.repository';
 
 @Injectable()
 export class ApiUserRepository implements UserRepository {
+  static USER_BASE_ENDPOINT = 'api/v3/users';
+  static USER_PROFILE_URL = `${ApiUserRepository.USER_BASE_ENDPOINT}/me`;
+  static UPDATE_EMAIL_URL =  `${ApiUserRepository.USER_BASE_ENDPOINT}/email`;
+  static UPDATE_PASSWORD_URL = `${ApiUserRepository.USER_BASE_ENDPOINT}/password`;
+  static PRESENCE_ONLINE_URL = `${ApiUserRepository.USER_BASE_ENDPOINT}/online`
 
-  private static USER_BASE_ENDPOINT = 'api/v3/users';
+
 
   constructor(private http: HttpClient) {}
 
   getById(userId: string): Observable<User> {
-    return this.http.get<User>(`${ApiUserRepository.USER_BASE_ENDPOINT}/${userId}`);
+    return this.http.get<User>(
+      `${ApiUserRepository.USER_BASE_ENDPOINT}/${userId}`
+    );
   }
 
   getMyProfile(): Observable<User> {
-    return this.http.get<User>(`${ApiUserRepository.USER_BASE_ENDPOINT}/me`);
+    return this.http.get<User>(ApiUserRepository.USER_PROFILE_URL);
   }
 
   updateEmail(email_address: string): Observable<void> {
-    return this.http.post<void>(`${ApiUserRepository.USER_BASE_ENDPOINT}/email`, {email_address});
+    return this.http.post<void>(    ApiUserRepository.UPDATE_EMAIL_URL,{ email_address });
   }
 
   updatePassword(old_password: string, new_password: string): Observable<void> {
-    return this.http.post<void>(`${ApiUserRepository.USER_BASE_ENDPOINT}/password`, {old_password, new_password});
+    return this.http.post<void>(ApiUserRepository.UPDATE_PASSWORD_URL,{ old_password, new_password });
   }
 
   updateProfile(userEdit: Partial<UserUpdate>): Observable<User> {
-    return this.http.post<User>(`${ApiUserRepository.USER_BASE_ENDPOINT}/me`, userEdit);
+    return this.http.post<User>(ApiUserRepository.USER_PROFILE_URL,userEdit);
   }
 
   sendUserPresence(): Observable<void> {
-    return this.http.post<void>(`${ApiUserRepository.USER_BASE_ENDPOINT}/online`, null);
+    return this.http.post<void>(ApiUserRepository.PRESENCE_ONLINE_URL,null);
   }
-
 }

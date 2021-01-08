@@ -1,4 +1,5 @@
 import { UserId } from '../../shared/domain/user-id';
+import { UserGender } from './user-gender';
 import { UserImage } from './user-image';
 
 export interface User {
@@ -8,6 +9,6 @@ export interface User {
   firstName: string;
   lastName: string;
   birthDate: number;
-  gender: string;
+  gender: UserGender;
   email: string;
 }
