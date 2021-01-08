@@ -289,12 +289,14 @@ export class ListComponent implements OnInit, OnDestroy {
         windowClass: 'modal-standard',
       }
     );
-    this.bumpSuggestionModalRef.result.then((redirect: boolean) => {
-      this.bumpSuggestionModalRef = null;
-      if (redirect) {
-        this.router.navigate(['catalog/checkout', { itemId }]);
+    this.bumpSuggestionModalRef.result.then(
+      (result: { redirect: boolean; hasPrice?: boolean }) => {
+        this.bumpSuggestionModalRef = null;
+        if (result?.redirect) {
+          this.router.navigate(['catalog/checkout', { itemId }]);
+        }
       }
-    });
+    );
   }
 
   private getCheapestProductPrice(

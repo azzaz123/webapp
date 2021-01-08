@@ -357,12 +357,18 @@ export class CatalogProListComponent implements OnInit {
       }
     );
     this.getBumpSuggestionModalPrice(this.bumpSuggestionModalRef);
-    this.bumpSuggestionModalRef.result.then((redirect: boolean) => {
-      this.bumpSuggestionModalRef = null;
-      if (redirect) {
-        this.router.navigate(['pro/catalog/checkout', { itemId }]);
+    this.bumpSuggestionModalRef.result.then(
+      (result: { redirect: boolean; hasPrice?: boolean }) => {
+        this.bumpSuggestionModalRef = null;
+        if (result?.redirect) {
+          if (result.hasPrice) {
+            this.router.navigate(['pro/catalog/checkout-extras']);
+          } else {
+            this.router.navigate(['pro/catalog/checkout', { itemId }]);
+          }
+        }
       }
-    });
+    );
   }
 
   private getBumpSuggestionModalPrice(modalRef: NgbModalRef): void {

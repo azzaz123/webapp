@@ -131,7 +131,7 @@ describe('BumpSuggestionModalComponent', () => {
       closeButton.click();
 
       expect(activeModal.close).toHaveBeenCalledTimes(1);
-      expect(activeModal.close).toHaveBeenLastCalledWith(false);
+      expect(activeModal.close).toHaveBeenLastCalledWith({ redirect: false });
     });
 
     it('should be closed pressing CTA button', () => {
@@ -143,7 +143,7 @@ describe('BumpSuggestionModalComponent', () => {
       submitButton.click();
 
       expect(activeModal.close).toHaveBeenCalledTimes(1);
-      expect(activeModal.close).toHaveBeenLastCalledWith(true);
+      expect(activeModal.close).toHaveBeenLastCalledWith({ redirect: true });
     });
   });
 

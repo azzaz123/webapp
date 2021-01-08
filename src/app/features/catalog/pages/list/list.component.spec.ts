@@ -370,7 +370,7 @@ describe('ListComponent', () => {
 
       it('should redirect when modal CTA button modal is clicked', fakeAsync(() => {
         modalSpy.and.returnValue({
-          result: Promise.resolve(true),
+          result: Promise.resolve({ redirect: true }),
           componentInstance: { item: null },
         });
         spyOn(router, 'navigate');
@@ -386,7 +386,7 @@ describe('ListComponent', () => {
 
       it('should not redirect when modal is closed', fakeAsync(() => {
         modalSpy.and.returnValue({
-          result: Promise.resolve(false),
+          result: Promise.resolve({ redirect: false }),
           componentInstance: { item: null },
         });
         spyOn(router, 'navigate');

@@ -250,9 +250,9 @@ describe('CatalogProListComponent', () => {
         expect(paymentService.getPacks).not.toHaveBeenCalled();
       }));
 
-      it('should redirect when modal CTA button modal is clicked', fakeAsync(() => {
+      it('should redirect checkout when modal CTA button modal is clicked', fakeAsync(() => {
         modalSpy.and.returnValue({
-          result: Promise.resolve(true),
+          result: Promise.resolve({ redirect: true }),
           componentInstance: { item: null },
         });
         spyOn(router, 'navigate');
@@ -266,9 +266,24 @@ describe('CatalogProListComponent', () => {
         ]);
       }));
 
+      it('should redirect extra checkouts when modal CTA button modal is clicked', fakeAsync(() => {
+        modalSpy.and.returnValue({
+          result: Promise.resolve({ redirect: true, hasPrice: true }),
+          componentInstance: { item: null },
+        });
+        spyOn(router, 'navigate');
+        component.ngOnInit();
+        tick();
+
+        expect(router.navigate).toHaveBeenCalledTimes(1);
+        expect(router.navigate).toHaveBeenCalledWith([
+          'pro/catalog/checkout-extras',
+        ]);
+      }));
+
       it('should not redirect when modal is closed', fakeAsync(() => {
         modalSpy.and.returnValue({
-          result: Promise.resolve(false),
+          result: Promise.resolve({ redirect: false }),
           componentInstance: { item: null },
         });
         spyOn(router, 'navigate');

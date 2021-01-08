@@ -1,5 +1,5 @@
 <div class="header">	
-  <div class="modal-close light" (click)="activeModal.close(false)">	
+  <div class="modal-close light" (click)="activeModal.close({redirect: false})">	
     <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>	
   </div>	
   <h1 i18n="@@BumpSuggestionModalTitle">Great! Now your item is on wallapop</h1>	
@@ -11,13 +11,13 @@
   <ng-container *ngIf="productPrice && productCurrency; else noPriceButton">
     <tsl-button
       className="btn btn-primary btn-block"	
-      (click)="activeModal.close(true)"
+      (click)="activeModal.close({redirect: true, hasPrice: true})"
       i18n="@@BumpSuggestionModalButton">Feature it from {{ productPrice | customCurrency:productCurrency }}</tsl-button>	
   </ng-container>
   <ng-template #noPriceButton>
     <tsl-button
     className="btn btn-primary btn-block"	
-    (click)="activeModal.close(true)"
+    (click)="activeModal.close({redirect: true})"
     i18n="@@BumpSuggestionModalNoPriceButton">Feature it</tsl-button>	
   </ng-template>
 </div>	
