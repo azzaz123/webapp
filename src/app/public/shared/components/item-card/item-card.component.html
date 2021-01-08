@@ -3,7 +3,10 @@
     <tsl-svg-icon *ngIf="item.flags?.reserved" class="ItemCard__icon ItemCard__icon--left ItemCard__icon--small position-absolute d-flex justify-content-center align-items-center" src="/assets/icons/item-card/reserved.svg"></tsl-svg-icon>
     <tsl-svg-icon *ngIf="item.flags?.bumped" class="ItemCard__icon ItemCard__icon--right ItemCard__icon--medium position-absolute ItemCard__icon--wallapop d-flex justify-content-center align-items-center" src="/assets/icons/item-card/bumped.svg"></tsl-svg-icon>
     
-    <div class="ItemCard__image" tslsanitizedBackground="{{item.mainImage?.urls_by_size?.medium}}" [fallback]="IMAGE_FALLBACK"></div>
+    <div class="ItemCard__image overflow-hidden">
+        <img class="w-100 h-100" [src]="item.mainImage?.urls_by_size?.medium" [fallback]="IMAGE_FALLBACK"/>
+    </div>
+
     <div class="ItemCard__data p-2 border-top-0" [class.ItemCard__data--with-description]="showDescription">
         <div class="d-flex justify-content-between mb-1">
             <span class="ItemCard__price ItemCard__price--bold">{{item.salePrice | customCurrency }}</span>
