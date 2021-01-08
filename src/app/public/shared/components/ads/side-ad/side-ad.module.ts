@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { SideAdComponent } from './side-ad.component';
 
 @NgModule({
-  declarations: [],
-  imports: [CommonModule],
+  declarations: [SideAdComponent],
+  exports: [SideAdComponent],
 })
 export class SideAdModule {}
