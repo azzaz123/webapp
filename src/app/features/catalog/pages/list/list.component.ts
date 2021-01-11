@@ -608,12 +608,13 @@ export class ListComponent implements OnInit, OnDestroy {
     const activedItems = [];
     items.forEach((id: string) => {
       let item: Item = find(this.items, { id: id });
-      item.flags[STATUS.ONHOLD] = false;
-      item.selected = false;
       activedItems.push(item);
       if (this.selectedStatus === STATUS.INACTIVE) {
         const itemIndex = this.items.indexOf(item);
         this.items.splice(itemIndex, 1);
+      } else {
+        item.flags[STATUS.ONHOLD] = false;
+        item.selected = false;
       }
     });
     this.activationSuccessful(activedItems);
@@ -627,7 +628,6 @@ export class ListComponent implements OnInit, OnDestroy {
 
   private updateCountersWhenActivate(items: Item[]): void {
     let selectedSlot: SubscriptionSlot;
-
     if (!this.selectedSubscriptionSlot) {
       selectedSlot = this.subscriptionSlots.find(
         (slot) => slot.category.category_id === items[0].categoryId
@@ -636,10 +636,14 @@ export class ListComponent implements OnInit, OnDestroy {
       selectedSlot = this.selectedSubscriptionSlot;
       const inactiveNavLink = this.getNavLinkById('inactive');
       inactiveNavLink.counter.currentVal -= items.length;
-
       const activeNavLink = this.getNavLinkById('active');
       activeNavLink.counter.currentVal += items.length;
     }
+
+    if (!selectedSlot) {
+      return;
+    }
+
     const updatedAvailableSlotVal = (selectedSlot.available -= items.length);
     selectedSlot.available =
       updatedAvailableSlotVal < 0 ? 0 : updatedAvailableSlotVal;
