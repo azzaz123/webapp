@@ -11,6 +11,7 @@ import { Story, Meta } from '@storybook/angular/types-6-0';
 import { CookieModule } from 'ngx-cookie';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ItemCardListComponent } from './item-card-list.component';
+import { CUSTOM_VIEWPORT_NAME } from '@storybook-config/viewports/custom-viewports';
 
 export default {
   title: 'Webapp/ItemCardList',
@@ -58,7 +59,7 @@ Large.args = {
 };
 Large.parameters = {
   viewport: {
-    defaultViewport: 'LG',
+    defaultViewport: CUSTOM_VIEWPORT_NAME.LG,
   },
 };
 
@@ -68,7 +69,7 @@ Medium.args = {
 };
 Medium.parameters = {
   viewport: {
-    defaultViewport: 'MD',
+    defaultViewport: CUSTOM_VIEWPORT_NAME.MD,
   },
 };
 
@@ -78,7 +79,7 @@ Small.args = {
 };
 Small.parameters = {
   viewport: {
-    defaultViewport: 'SM',
+    defaultViewport: CUSTOM_VIEWPORT_NAME.SM,
   },
 };
 
@@ -88,6 +89,6 @@ ExtraSmall.args = {
 };
 ExtraSmall.parameters = {
   viewport: {
-    defaultViewport: 'XS',
+    defaultViewport: CUSTOM_VIEWPORT_NAME.XS,
   },
 };
