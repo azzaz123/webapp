@@ -34,6 +34,13 @@ const routes: Route[] = [
           import('./features/wall/wall.module').then((m) => m.WallModule),
       },
       {
+        path: `${PUBLIC_PATHS.ITEM_DETAIL}/:${PUBLIC_PATH_PARAMS.ID}`,
+        loadChildren: () =>
+          import('./features/item-detail/item-detail.module').then(
+            (m) => m.ItemDetailModule
+          ),
+      },
+      {
         path: '**',
         redirectTo: PUBLIC_PATHS.LOGIN,
       },
