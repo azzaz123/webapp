@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { IsLoggedUserPipe } from './is-loged-user/is-logged-user.pipe';
+import { isCurrentUserPipe } from './is-current-user/is-current-user.pipe';
 
 @NgModule({
-  declarations: [IsLoggedUserPipe],
-  exports: [IsLoggedUserPipe],
+  declarations: [isCurrentUserPipe],
+  exports: [isCurrentUserPipe],
 })
 export class PublicPipesModule {}

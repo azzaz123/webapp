@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserService } from '@core/user/user.service';
-import { IsLoggedUserPipe } from './is-logged-user.pipe';
+import { isCurrentUserPipe } from './is-current-user.pipe';
 
 @Component({
-  template: '{{userId | isLoggedUser}}',
+  template: '{{userId | isCurrentUser}}',
 })
 class TestComponent {
   public userId: string;
 }
 
-describe('IsLoggedUserPipe', () => {
+describe('isCurrentUserPipe', () => {
   const userId = '123';
   const userId_2 = '456';
   let userService: UserService;
@@ -19,7 +19,7 @@ describe('IsLoggedUserPipe', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [IsLoggedUserPipe, TestComponent],
+      declarations: [isCurrentUserPipe, TestComponent],
       providers: [
         {
           provide: UserService,

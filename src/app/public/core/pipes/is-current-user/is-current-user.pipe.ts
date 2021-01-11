@@ -2,9 +2,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { UserService } from '@core/user/user.service';
 
 @Pipe({
-  name: 'isLoggedUser',
+  name: 'isCurrentUser',
 })
-export class IsLoggedUserPipe implements PipeTransform {
+export class isCurrentUserPipe implements PipeTransform {
   constructor(private userService: UserService) {}
 
   transform(userId: string): boolean {
