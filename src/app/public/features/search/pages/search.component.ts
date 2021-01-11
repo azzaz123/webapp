@@ -5,4 +5,4 @@ import { Component } from '@angular/core';
   templateUrl: 'wall.component.html',
   styleUrls: ['./wall.component.scss'],
 })
-export class WallComponent {}
+export class SearchComponent {}
