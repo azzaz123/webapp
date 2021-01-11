@@ -38,7 +38,7 @@ import { XmppService } from './xmpp/xmpp.service';
 
 @NgModule({
   imports: [
-    CookieModule.forChild(),
+    CookieModule.forRoot(),
     CommonModule,
     UserModule,
     ItemModule,

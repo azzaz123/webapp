@@ -5,7 +5,7 @@ import {
 } from '@angular/common/http/testing';
 
 import { environment } from '../../../../environments/environment';
-import { HttpModuleNew } from '../http.module.new';
+import { HttpModule } from '../http.module';
 import { MockInterceptor } from './mock.interceptor';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { FeatureflagService } from '../../user/featureflag.service';
@@ -21,7 +21,7 @@ describe(`MockInterceptor`, () => {
   beforeEach(() => {
     injector = getTestBed();
     injector.configureTestingModule({
-      imports: [HttpClientTestingModule, HttpModuleNew],
+      imports: [HttpClientTestingModule, HttpModule],
       providers: [
         { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
         {
