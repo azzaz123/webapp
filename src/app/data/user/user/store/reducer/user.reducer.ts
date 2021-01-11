@@ -13,7 +13,7 @@ export interface UserState {
   isAuthenticated: boolean;
 }
 
-const INITIAL_STATE: UserState = {
+export const INITIAL_STATE: UserState = {
   user: null,
   loading: false,
   isAuthenticated: false,
@@ -25,12 +25,10 @@ const reducer = createReducer(
   on(LoadUserProfileSuccess, (state, { user }) => ({
     ...state,
     user,
+    loading: false,
     isAuthenticated: true,
   })),
-  on(LoadUserProfileSuccess, LoadUserProfileFailed, (state) => ({
-    ...state,
-    loading: false,
-  }))
+  on(LoadUserProfileFailed, () => ({ ...INITIAL_STATE }))
 );
 
 export function userReducer(

@@ -99,7 +99,6 @@ describe('ApiUserRepository', () => {
       const req = httpTestingController .expectOne(ApiUserRepository.USER_PROFILE_URL);
       expect(req.request.method).toBe('POST');
       req.flush(user)
-
     })
   })
 
