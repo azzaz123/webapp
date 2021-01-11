@@ -27,7 +27,7 @@ import { TooManyItemsModalComponent } from '@shared/catalog/modals/too-many-item
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
 import { NavLink } from '@shared/nav-links/nav-link.interface';
-import { find, findIndex } from 'lodash-es';
+import { find, findIndex, cloneDeep } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { takeWhile } from 'rxjs/operators';
 import { BumpTutorialComponent } from '../../components/bump-tutorial/bump-tutorial.component';
@@ -393,6 +393,8 @@ export class ListComponent implements OnInit, OnDestroy {
     } else if ($event.action === 'reactivated') {
       const index: number = findIndex(this.items, { _id: $event.item.id });
       this.items[index].flags.expired = false;
+    } else if ($event.action === 'activate') {
+      this.onAction($event.action, $event.item.id);
     } else {
       const index: number = findIndex(this.items, { _id: $event.item.id });
       this.items.splice(index, 1);
@@ -408,10 +410,10 @@ export class ListComponent implements OnInit, OnDestroy {
     this.itemService.selectedAction = null;
   }
 
-  public onAction(actionType: string) {
+  public onAction(actionType: string, itemId?: string) {
     if (actionType === 'activate') {
       this.subscriptionsService.getUserSubscriptionType().subscribe((type) => {
-        this.activate(type);
+        this.activate(type, itemId);
       });
     }
 
@@ -549,49 +551,88 @@ export class ListComponent implements OnInit, OnDestroy {
     });
   }
 
-  public activate(subscriptionType = SUBSCRIPTION_TYPES.stripe) {
-    const items = this.itemService.selectedItems;
+  public activate(
+    subscriptionType = SUBSCRIPTION_TYPES.stripe,
+    itemId?: string
+  ) {
     this.modalService.open(ActivateItemsModalComponent).result.then(() => {
-      this.itemService.activate().subscribe(
-        (resp: any) => {
-          items.forEach((id: string) => {
-            let item: Item = find(this.items, { id: id });
-            item.flags[STATUS.ONHOLD] = false;
-            item.selected = false;
-
-            const itemIndex = this.items.indexOf(item);
-            this.items.splice(itemIndex, 1);
-          });
-
-          this.getNumberOfProducts();
-          this.updateCountersWhenActivate(items.length);
-
-          this.eventService.emit('itemChanged');
-        },
-        () => {
-          const modalRef = this.modalService.open(TooManyItemsModalComponent, {
-            windowClass: 'modal-standard',
-          });
-          modalRef.componentInstance.type = subscriptionType;
-        }
-      );
+      itemId
+        ? this.activateSingleItem(itemId, subscriptionType)
+        : this.activateMultiItems(subscriptionType);
     });
   }
 
-  private updateCountersWhenActivate(numActivatedItems: number) {
+  private activateSingleItem(
+    itemId: string,
+    subscriptionType: SUBSCRIPTION_TYPES
+  ): void {
+    this.itemService.activateSingleItem(itemId).subscribe(
+      () => {
+        this.parseActivation([itemId]);
+      },
+      () => {
+        const modalRef = this.modalService.open(TooManyItemsModalComponent, {
+          windowClass: 'modal-standard',
+        });
+        modalRef.componentInstance.type = subscriptionType;
+      }
+    );
+  }
+
+  private activateMultiItems(subscriptionType: SUBSCRIPTION_TYPES): void {
+    const items = this.itemService.selectedItems;
+    this.itemService.activate().subscribe(
+      () => {
+        this.parseActivation(items);
+      },
+      () => {
+        const modalRef = this.modalService.open(TooManyItemsModalComponent, {
+          windowClass: 'modal-standard',
+        });
+        modalRef.componentInstance.type = subscriptionType;
+      }
+    );
+  }
+
+  private parseActivation(items: string[]) {
+    const activedItems = [];
+    items.forEach((id: string) => {
+      let item: Item = find(this.items, { id: id });
+      item.flags[STATUS.ONHOLD] = false;
+      item.selected = false;
+      activedItems.push(item);
+      if (this.selectedStatus === STATUS.INACTIVE) {
+        const itemIndex = this.items.indexOf(item);
+        this.items.splice(itemIndex, 1);
+      }
+    });
+    this.activationSuccessful(activedItems);
+  }
+
+  private activationSuccessful(items: Item[]): void {
+    this.getNumberOfProducts();
+    this.updateCountersWhenActivate(items);
+    this.eventService.emit('itemChanged');
+  }
+
+  private updateCountersWhenActivate(items: Item[]): void {
+    let selectedSlot: SubscriptionSlot;
+
     if (!this.selectedSubscriptionSlot) {
-      return;
+      selectedSlot = this.subscriptionSlots.find(
+        (slot) => slot.category.category_id === items[0].categoryId
+      );
+    } else {
+      selectedSlot = this.selectedSubscriptionSlot;
+      const inactiveNavLink = this.getNavLinkById('inactive');
+      inactiveNavLink.counter.currentVal -= items.length;
+
+      const activeNavLink = this.getNavLinkById('active');
+      activeNavLink.counter.currentVal += items.length;
     }
-
-    const updatedAvailableSlotVal = (this.selectedSubscriptionSlot.available -= numActivatedItems);
-    this.selectedSubscriptionSlot.available =
+    const updatedAvailableSlotVal = (selectedSlot.available -= items.length);
+    selectedSlot.available =
       updatedAvailableSlotVal < 0 ? 0 : updatedAvailableSlotVal;
-
-    const inactiveNavLink = this.getNavLinkById('inactive');
-    inactiveNavLink.counter.currentVal -= numActivatedItems;
-
-    const activeNavLink = this.getNavLinkById('active');
-    activeNavLink.counter.currentVal += numActivatedItems;
   }
 
   private updateCountersWhenDeactivate(numDeactivatedItems: number) {

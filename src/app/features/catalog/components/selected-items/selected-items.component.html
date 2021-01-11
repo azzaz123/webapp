@@ -49,9 +49,14 @@
             i18n>Deactivate</button>
 
           <!-- Activate -->
-          <button class="btn-activate" *ngIf="selectedSubscriptionSlot && selectedStatus === 'inactive'"
-            [hidden]="itemService.selectedAction === 'feature' || selectedStatus !== 'inactive'"
-            [disabled]="!itemService.selectedItems.length" (click)="onClickAction('activate')" i18n>Activate</button>
+          <div class="SelectedItems__feature d-none d-md-flex flex-column mt-3 ml-4" *ngIf="showActiveButton">
+            <tsl-button className="btn-primary btn-big" [disabled]="!itemService.selectedItems.length"
+            (click)="onClickAction('activate')" 
+            i18n>Activate</tsl-button>
+            <span class="address mt-1">
+              Avenida Meridiana 89, 08026 Barcelona, España
+            </span>
+        </div>
 
           <!-- Feature -->
           <div class="SelectedItems__feature d-none d-md-flex flex-column mt-3 ml-4"

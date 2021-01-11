@@ -1039,6 +1039,13 @@ export class ItemService {
       .pipe(tap(() => this.deselectItems()));
   }
 
+  public activateSingleItem(id: string): Observable<void> {
+    return this.http.put<void>(
+      `${environment.baseUrl}${ITEMS_API_URL}/${id}/activate`,
+      {}
+    );
+  }
+
   public deactivate(): Observable<any> {
     return this.http
       .put(`${environment.baseUrl}${ITEMS_API_URL}/inactivate`, {
