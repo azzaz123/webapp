@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
-import { SideAdModule } from './side-sky/side-ad.module';
-import { TopAdModule } from './top-sky/top-ad.module';
+import { SideAdModule } from './side-ad/side-ad.module';
+import { TopAdModule } from './top-ad/top-ad.module';
 
 @NgModule({
   imports: [TopAdModule, SideAdModule],
