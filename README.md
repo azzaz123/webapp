@@ -10,6 +10,7 @@ The private web app for Wallapop once you do login in the public one.
 - [How to deploy - custom branch](#how-to-deploy---custom-branch)
 - [Commentaries](#commentaries)
 - [Documentation](#documentation)
+- [Srotybook](#storybook)
 - [Prettier](#prettier)
 
 ## Installation
@@ -177,6 +178,16 @@ If you wanna update the value of the libphonenumber-js metadata you should follo
 ## Documentation
 
 Chat sequence diagrams: https://confluence.wallapop.com/display/ROV/Chat+sequence+diagrams
+
+## Storybook
+
+We've started to use [Storybook](https://storybook.js.org/) to develop and document the common components.
+
+Scripts available to run:
+
+| Script      | Description                                                                                     |
+| ----------- | ----------------------------------------------------------------------------------------------- |
+| `storybook` | Generates a documentation json file and starts a server on port 6006 with the Storybook project |
 
 ## Prettier
 
