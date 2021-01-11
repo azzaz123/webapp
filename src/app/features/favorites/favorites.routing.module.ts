@@ -8,6 +8,7 @@ import { ItemCartFavoriteComponent } from './components/item-cart-favorite/item-
 import { ExitConfirmGuard } from '@shared/guards/exit-confirm.guard';
 import { ItemsPageComponent } from './components/items-page/items-page.component';
 import { ProfilesPageComponent } from './components/profiles-page/profiles-page.component';
+import { APP_PATHS } from 'app/app-routing-constants';
 
 const routes: Routes = [
   {
@@ -17,13 +18,13 @@ const routes: Routes = [
     canDeactivate: [ExitConfirmGuard],
     canActivateChild: [NgxPermissionsGuard],
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'products' },
+      { path: '', pathMatch: 'full', redirectTo: APP_PATHS.PRODUCTS },
       {
-        path: 'products',
+        path: APP_PATHS.PRODUCTS,
         component: ItemsPageComponent,
       },
       {
-        path: 'profiles',
+        path: APP_PATHS.PROFILES,
         component: ProfilesPageComponent,
       },
     ],

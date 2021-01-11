@@ -17,6 +17,7 @@ import { ProfilesPageComponent } from '../components/profiles-page/profiles-page
 import { ItemService } from '@core/item/item.service';
 import { By } from '@angular/platform-browser';
 import { ProfileService } from '@core/profile/profile.service';
+import { APP_PATHS } from 'app/app-routing-constants';
 
 export class ItemsPageStub {
   onFavoriteItemPageChange: EventEmitter<Boolean> = new EventEmitter(true);
@@ -28,11 +29,11 @@ export class ProfilesPageStub {
 
 const routes: Routes = [
   {
-    path: 'products',
+    path: APP_PATHS.PRODUCTS,
     component: ItemsPageComponent,
   },
   {
-    path: 'profiles',
+    path: APP_PATHS.PROFILES,
     component: ProfilesPageComponent,
   },
 ];
