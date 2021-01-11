@@ -7,4 +7,4 @@ import { TopSkyComponent } from './top-sky.component';
   imports: [CommonModule],
   exports: [TopSkyComponent],
 })
-export class TopSkyModule {}
+export class TopAdModule {}

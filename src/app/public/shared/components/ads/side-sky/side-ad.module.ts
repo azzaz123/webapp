@@ -7,4 +7,4 @@ import { SideSkyComponent } from './side-sky.component';
   imports: [CommonModule],
   exports: [SideSkyComponent],
 })
-export class SideSkyModule {}
+export class SideAdModule {}
