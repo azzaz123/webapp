@@ -5,11 +5,11 @@ import {
   itemDetailRoutedComponents,
   ItemDetailRoutingModule,
 } from './item-detail-routing.module';
-import { AdsModule } from '@public/shared/components/ads/ads.module';
+import { SkiesModule } from '@public/shared/components/skies/skies.module';
 
 @NgModule({
   declarations: [itemDetailRoutedComponents],
-  imports: [CommonModule, ItemDetailRoutingModule, AdsModule],
+  imports: [CommonModule, ItemDetailRoutingModule, SkiesModule],
   providers: [ItemDetailService],
 })
 export class ItemDetailModule {}

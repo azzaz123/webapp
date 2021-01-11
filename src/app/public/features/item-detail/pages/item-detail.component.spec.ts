@@ -10,8 +10,8 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { ItemDetailComponent } from './item-detail.component';
 
 describe('ItemDetailComponent', () => {
-  const topAdTag = 'tsl-top-ad';
-  const sideAdTag = 'tsl-side-ad';
+  const topSkyTag = 'tsl-top-sky';
+  const sideSkyTag = 'tsl-side-sky';
 
   let component: ItemDetailComponent;
   let fixture: ComponentFixture<ItemDetailComponent>;
@@ -49,8 +49,8 @@ describe('ItemDetailComponent', () => {
 
       component.ngOnInit();
       fixture.detectChanges();
-      const topAd = fixture.debugElement.query(By.css(topAdTag));
-      const sideAds = fixture.debugElement.queryAll(By.css(sideAdTag));
+      const topAd = fixture.debugElement.query(By.css(topSkyTag));
+      const sideAds = fixture.debugElement.queryAll(By.css(sideSkyTag));
 
       expect(topAd).toBeFalsy();
       expect(sideAds.length).toBe(0);
@@ -63,8 +63,8 @@ describe('ItemDetailComponent', () => {
 
       component.ngOnInit();
       fixture.detectChanges();
-      const topAd = fixture.debugElement.query(By.css(topAdTag));
-      const sideAds = fixture.debugElement.queryAll(By.css(sideAdTag));
+      const topAd = fixture.debugElement.query(By.css(topSkyTag));
+      const sideAds = fixture.debugElement.queryAll(By.css(sideSkyTag));
 
       expect(topAd).toBeTruthy();
       expect(sideAds.length).toBe(0);
@@ -77,8 +77,8 @@ describe('ItemDetailComponent', () => {
 
       component.ngOnInit();
       fixture.detectChanges();
-      const topAd = fixture.debugElement.query(By.css(topAdTag));
-      const sideAds = fixture.debugElement.queryAll(By.css(sideAdTag));
+      const topAd = fixture.debugElement.query(By.css(topSkyTag));
+      const sideAds = fixture.debugElement.queryAll(By.css(sideSkyTag));
 
       expect(topAd).toBeTruthy();
       expect(sideAds.length).toBe(2);

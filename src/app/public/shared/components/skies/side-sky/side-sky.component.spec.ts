@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TopAdComponent } from './top-ad.component';
+import { SideSkyComponent } from './side-sky.component';
 
-describe('TopAdComponent', () => {
-  let component: TopAdComponent;
-  let fixture: ComponentFixture<TopAdComponent>;
+describe('SideSkyComponent', () => {
+  let component: SideSkyComponent;
+  let fixture: ComponentFixture<SideSkyComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TopAdComponent],
+      declarations: [SideSkyComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TopAdComponent);
+    fixture = TestBed.createComponent(SideSkyComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
