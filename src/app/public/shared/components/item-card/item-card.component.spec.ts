@@ -4,9 +4,9 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
+import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
 import { FavouriteIconModule } from '@public/shared/components/favourite-icon/favourite-icon.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
-import { SanitizedBackgroundModule } from '@shared/sanitized-background/sanitized-background.module';
 
 import { ItemCardComponent } from './item-card.component';
 
@@ -24,7 +24,7 @@ describe('ItemCardComponent', () => {
         FavouriteIconModule,
         CustomCurrencyModule,
         SvgIconModule,
-        SanitizedBackgroundModule,
+        ImageFallbackModule,
         HttpClientTestingModule,
       ],
     }).compileComponents();
