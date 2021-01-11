@@ -1,13 +1,8 @@
 @import '~style/common';
 $product-detail-card-width: 681px;
 
-:host {
-  padding-top: 32px;
-  background-color: $blue-grey-5;
-  display: block;
-}
-
 .ItemDetail {
+  background-color: $blue-grey-5;
   &__content {
     // The height will be removed
     height: 800px;
@@ -18,6 +13,6 @@ $product-detail-card-width: 681px;
   }
 
   tsl-side-ad {
-    top: 70px;
+    top: calc(#{$topbar-height} + #{$spacer * 0.5});
   }
 }
