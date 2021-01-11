@@ -7,9 +7,10 @@ import {
   ANALYTIC_EVENT_TYPES,
   ClickKeepCurrentSubscription,
   ClickProfileEditCurrentSubscription,
-  ClickProfileSubscribeButton,
+  ClickSubscriptionManagementPlus,
   SCREEN_IDS,
-  ViewProfileSubscription,
+  ViewSubscription,
+  ViewSubscriptionManagement,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import {
@@ -23,6 +24,7 @@ import { CheckSubscriptionInAppModalComponent } from '@features/profile/modal/ch
 import { ContinueSubscriptionModalComponent } from '@features/profile/modal/continue-subscription/continue-subscription-modal.component';
 import { DiscountAvailableUnsubscribeInAppModalComponent } from '@features/profile/modal/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component';
 import { EditSubscriptionModalComponent } from '@features/profile/modal/edit-subscription/edit-subscription-modal.component';
+import { ModalStatuses } from '@features/profile/core/modal.statuses.enum';
 import { UnsubscribeInAppFirstModal } from '@features/profile/modal/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { User } from 'app/core/user/user';
@@ -60,10 +62,15 @@ export class SubscriptionsComponent implements OnInit {
     this.loading = true;
     this.subscriptionsService
       .getSubscriptions(false)
-      .pipe(finalize(() => (this.loading = false)))
-      .subscribe((subscriptions) => (this.subscriptions = subscriptions));
-
-    this.trackPageView();
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+          this.trackPageView();
+        })
+      )
+      .subscribe((subscriptions) => {
+        this.subscriptions = subscriptions;
+      });
     this.userService.me(true).subscribe((user) => (this.user = user));
   }
 
@@ -77,7 +84,7 @@ export class SubscriptionsComponent implements OnInit {
       this.subscriptions
     );
     modalRef.result.then(
-      (action: string) => {
+      (action: ModalStatuses) => {
         if (action) {
           this.loading = true;
           if (this.user && this.user.featured) {
@@ -144,12 +151,27 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   private trackPageView() {
-    const pageView: AnalyticsPageView<ViewProfileSubscription> = {
-      name: ANALYTICS_EVENT_NAMES.ViewProfileSubscription,
-      attributes: {
-        screenId: SCREEN_IDS.ProfileSubscription,
-      },
-    };
+    let pageView: AnalyticsPageView<
+      ViewSubscriptionManagement | ViewSubscription
+    >;
+    if (
+      this.subscriptionsService.hasOneStripeSubscription(this.subscriptions) ||
+      this.subscriptionsService.isOneSubscriptionInApp(this.subscriptions)
+    ) {
+      pageView = {
+        name: ANALYTICS_EVENT_NAMES.ViewSubscriptionManagement,
+        attributes: {
+          screenId: SCREEN_IDS.SubscriptionManagement,
+        },
+      };
+    } else {
+      pageView = {
+        name: ANALYTICS_EVENT_NAMES.ViewSubscription,
+        attributes: {
+          screenId: SCREEN_IDS.Subscription,
+        },
+      };
+    }
 
     this.analyticsService.trackPageView(pageView);
   }
@@ -159,11 +181,11 @@ export class SubscriptionsComponent implements OnInit {
     modalType: SubscriptionModal
   ) {
     if (modalType === AddNewSubscriptionModalComponent) {
-      const event: AnalyticsEvent<ClickProfileSubscribeButton> = {
-        name: ANALYTICS_EVENT_NAMES.ClickProfileSubscribeButton,
+      const event: AnalyticsEvent<ClickSubscriptionManagementPlus> = {
+        name: ANALYTICS_EVENT_NAMES.ClickSubscriptionManagementPlus,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
-          screenId: SCREEN_IDS.ProfileSubscription,
+          screenId: SCREEN_IDS.SubscriptionManagement,
           subscription: subscription.category_id as SUBSCRIPTION_CATEGORIES,
           isNewSubscriber: !this.subscriptionsService.hasOneStripeSubscription(
             this.subscriptions

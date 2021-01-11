@@ -26,6 +26,9 @@
       ],
       "@public/*": [
         "app/public/*"
+      ],
+      "@private/*": [
+        "app/private/*"
       ]
     },
     "outDir": "./dist/out-tsc",

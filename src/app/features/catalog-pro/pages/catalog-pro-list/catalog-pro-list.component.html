@@ -1,6 +1,5 @@
 <div class="page-content" infiniteScroll [infiniteScrollDistance]="5" [infiniteScrollThrottle]="100"
   [infiniteScrollDisabled]="end || loading" (scrolled)="loadMore()">
-  <tsl-spinner [firstLoad]="false" *ngIf="isUrgent"></tsl-spinner>
   <div class="container">
     <div class="header">
       <div class="left-col">

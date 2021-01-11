@@ -1,12 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
-import { SpinnerComponent } from './spinner/spinner.component';
 import { AdComponent } from './ad/ad.component';
-import {
-  CustomCurrencyPipe,
-  DateUntilDayPipe,
-  DateCalendarPipe,
-} from './pipes';
+import { DateUntilDayPipe, DateCalendarPipe } from './pipes';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
 import { CardModule } from './card/card.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -19,9 +14,6 @@ import { SoldModalComponent } from './modals/sold-modal/sold-modal.component';
 import { ReviewModalComponent } from './modals/review-modal/review-modal.component';
 import { ItemSoldDirective } from './modals/sold-modal/item-sold.directive';
 import { StarsRateComponent } from './stars-rate/stars-rate.component';
-import { StarsComponent } from './stars/stars.component';
-import { SanitizedBackgroundDirective } from './sanitized-background/sanitized-background.directive';
-import { UserAvatarComponent } from './user-avatar/user-avatar.component';
 import { ProcessAllButtonComponent } from './process-all-button/process-all-button.component';
 import { ArchivableComponent } from './archivable/archivable.component';
 import { ArchiveButtonComponent } from './archive-button/archive-button.component';
@@ -29,7 +21,6 @@ import { UnarchiveButtonComponent } from './unarchive-button/unarchive-button.co
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { SwitchComponent } from './switch/switch.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
-import { ItemAvatarComponent } from './item-avatar/item-avatar.component';
 import { SearchInputComponent } from './search-input/search-input.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SelectComponent } from './select/select.component';
@@ -65,7 +56,7 @@ import { StripeCardsComponent } from './profile/stripe-cards/stripe-cards.compon
 import { NewCardModalComponent } from './modals/new-card-modal/new-card-modal.component';
 import { NoCardModalComponent } from './modals/no-card-modal/no-card-modal.component';
 import { StripeCardSelectionComponent } from './payments/stripe-card-selection/stripe-card-selection.component';
-import { DropdownModule } from 'app/dropdown/dropdown.module';
+import { DropdownModule } from '@shared/dropdown/dropdown.module';
 import { LinkTransformPipe } from './pipes';
 import { NavLinksComponent } from './nav-links/nav-links.component';
 import { SubscriptionsService } from '../core/subscriptions/subscriptions.service';
@@ -81,6 +72,14 @@ import { DisableControlDirective } from './forms/disable-control.directive';
 import { RouterLinkDirectiveStub } from './router-link-directive-stub';
 import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
 import { DateCountDownComponent } from './date-countdown/date-countdown.component';
+import { ItemAvatarModule } from './item-avatar/item-avatar.module';
+import { StarsModule } from './stars/stars.module';
+import { UserAvatarModule } from './user-avatar/user-avatar.module';
+import { SpinnerModule } from './spinner/spinner.module';
+import { SanitizedBackgroundModule } from './sanitized-background/sanitized-background.module';
+import { UserCoverModule } from './user-cover/user-cover.module';
+import { WallacoinsDisabledModalComponent } from './modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
+import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.module';
 
 @NgModule({
   imports: [
@@ -98,23 +97,30 @@ import { DateCountDownComponent } from './date-countdown/date-countdown.componen
     ProBadgeModule,
     SvgIconModule,
     DropdownModule,
+    ItemAvatarModule,
+    SanitizedBackgroundModule,
+    CustomCurrencyModule,
+    StarsModule,
+    UserAvatarModule,
+    SanitizedBackgroundModule,
+    SpinnerModule,
+    UserCoverModule,
   ],
   exports: [
+    SpinnerModule,
+    SanitizedBackgroundModule,
+    UserAvatarModule,
+    StarsModule,
     CardModule,
     CommonModule,
     UploaderModule,
-    SpinnerComponent,
     AdComponent,
-    CustomCurrencyPipe,
     RestrictInputDirective,
     HeaderComponent,
     ButtonComponent,
     SoldModalComponent,
     ItemSoldDirective,
-    SanitizedBackgroundDirective,
-    StarsComponent,
     StarsRateComponent,
-    UserAvatarComponent,
     StatusIconComponent,
     ProcessAllButtonComponent,
     ArchivableComponent,
@@ -123,7 +129,6 @@ import { DateCountDownComponent } from './date-countdown/date-countdown.componen
     SwitchComponent,
     ReviewModalComponent,
     NgxPermissionsModule,
-    ItemAvatarComponent,
     SearchInputComponent,
     SelectComponent,
     RestrictInputNumberDirective,
@@ -142,7 +147,6 @@ import { DateCountDownComponent } from './date-countdown/date-countdown.componen
     ExitConfirmationModalComponent,
     CountdownComponent,
     ThousandSuffixesPipe,
-    UserCoverComponent,
     CoverUploadComponent,
     KeywordSuggesterComponent,
     StripeCardElementComponent,
@@ -163,21 +167,18 @@ import { DateCountDownComponent } from './date-countdown/date-countdown.componen
     DisableControlDirective,
     SvgIconModule,
     DateCountDownComponent,
+    DropdownModule,
+    WallacoinsDisabledModalComponent,
   ],
   declarations: [
     AdComponent,
     ConfirmationModalComponent,
-    SpinnerComponent,
-    CustomCurrencyPipe,
     RestrictInputDirective,
     HeaderComponent,
     ButtonComponent,
     SoldModalComponent,
     ItemSoldDirective,
-    SanitizedBackgroundDirective,
-    StarsComponent,
     StarsRateComponent,
-    UserAvatarComponent,
     StatusIconComponent,
     ProcessAllButtonComponent,
     ArchivableComponent,
@@ -187,7 +188,6 @@ import { DateCountDownComponent } from './date-countdown/date-countdown.componen
     SwitchComponent,
     ReviewModalComponent,
     CheckboxComponent,
-    ItemAvatarComponent,
     SelectComponent,
     SearchInputComponent,
     TooManyItemsModalComponent,
@@ -210,7 +210,6 @@ import { DateCountDownComponent } from './date-countdown/date-countdown.componen
     ThousandSuffixesPipe,
     ActivateItemsModalComponent,
     DeactivateItemsModalComponent,
-    UserCoverComponent,
     CoverUploadComponent,
     KeywordSuggesterComponent,
     StripeCardElementComponent,
@@ -230,6 +229,7 @@ import { DateCountDownComponent } from './date-countdown/date-countdown.componen
     DisableControlDirective,
     RouterLinkDirectiveStub,
     DateCountDownComponent,
+    WallacoinsDisabledModalComponent,
   ],
   providers: [
     DecimalPipe,
@@ -255,6 +255,7 @@ import { DateCountDownComponent } from './date-countdown/date-countdown.componen
     ConfirmCardModalComponent,
     ChangeCardModalComponent,
     FullScreenModalComponent,
+    WallacoinsDisabledModalComponent,
   ],
 })
 export class SharedModule {}

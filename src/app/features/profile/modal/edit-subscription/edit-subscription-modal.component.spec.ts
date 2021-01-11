@@ -5,7 +5,7 @@ import {
   AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
-  ClickConfirmEditCurrentSubscription,
+  ClickSubscriptionPlanDone,
   SCREEN_IDS,
   ViewEditSubscriptionPlan,
 } from '@core/analytics/analytics-constants';
@@ -14,12 +14,13 @@ import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { ModalStatuses } from '@features/profile/core/modal.statuses.enum';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import {
   MAPPED_SUBSCRIPTIONS,
   TIER,
 } from '@fixtures/subscriptions.fixtures.spec';
-import { ToastService } from '@layout/toast/toast.service';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DateUntilDayPipe } from '@shared/pipes';
 import { of } from 'rxjs';
@@ -122,12 +123,12 @@ describe('EditSubscriptionModalComponent', () => {
   });
 
   describe('close', () => {
-    it('should close the modal and redirect to the profile', () => {
+    it('should close the modal with modal status', () => {
       spyOn(activeModal, 'close');
 
-      component.close();
+      component.close(ModalStatuses.UPDATE);
 
-      expect(activeModal.close).toHaveBeenCalled();
+      expect(activeModal.close).toHaveBeenCalledWith(ModalStatuses.UPDATE);
     });
   });
 
@@ -171,15 +172,15 @@ describe('EditSubscriptionModalComponent', () => {
     });
 
     it('should send event to analytics', () => {
-      const expectedEvent: AnalyticsEvent<ClickConfirmEditCurrentSubscription> = {
-        name: ANALYTICS_EVENT_NAMES.ClickConfirmEditCurrentSubscription,
+      const expectedEvent: AnalyticsEvent<ClickSubscriptionPlanDone> = {
+        name: ANALYTICS_EVENT_NAMES.ClickSubscriptionPlanDone,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
           subscription: component.subscription
             .category_id as SUBSCRIPTION_CATEGORIES,
           previousTier: component.currentTier.id,
           newTier: component.selectedTier.id,
-          screenId: SCREEN_IDS.ProfileSubscription,
+          screenId: SCREEN_IDS.SubscriptionManagement,
         },
       };
 

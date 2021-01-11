@@ -64,7 +64,7 @@
             ],
             "allowedCommonJsDependencies": [
               "crypto-js",
-              "echarts", 
+              "echarts",
               "retry",
               "visibilityjs",
               "libphonenumber-js",

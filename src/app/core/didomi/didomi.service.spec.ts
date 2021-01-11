@@ -1,118 +1,129 @@
-import { TestBed, getTestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
+import { LoadExternalLibsService } from '@core/load-external-libs/load-external-libs.service';
+import { of } from 'rxjs';
+import { WINDOW_TOKEN } from './../window/window.token';
+import { DidomiUserConsents } from './didomi.interface';
 import { DidomiService } from './didomi.service';
-import { DIDOMI_EMBED } from './didomi-embed-script';
 
-export const MockDidomiService = {
-  isReady: true,
-  initialize: () => {},
-  userAllowedSegmentationInAds: () => true,
-};
+class DidomiStub {
+  callback: (event: any) => any;
+
+  getUserConsentStatusForPurpose(purpouseKey: string): boolean {
+    return true;
+  }
+
+  getUserConsentStatusForVendor(vendorKey: string): boolean {
+    return true;
+  }
+
+  getUserConsentStatusForAll(): DidomiUserConsents {
+    return {
+      purposes: { enabled: [], disabled: [] },
+    };
+  }
+
+  on(event: string, callback: (event: any) => any): void {
+    this.callback = callback;
+  }
+
+  makeCallback(): void {
+    this.callback('');
+  }
+}
+
+interface WindowDidomi {
+  Didomi: DidomiStub;
+  didomiOnReady: Function[];
+}
 
 describe('Service: Didomi', () => {
-  let injector: TestBed;
   let service: DidomiService;
+  let loadExternalLibsServiceMock;
+  const windowMock: WindowDidomi = {
+    Didomi: null,
+    didomiOnReady: [],
+  };
+  const didomiStub = new DidomiStub();
 
   beforeEach(() => {
-    injector = getTestBed();
-    injector.configureTestingModule({
-      providers: [DidomiService],
+    loadExternalLibsServiceMock = {
+      loadScriptByText: () => {
+        windowMock['Didomi'] = didomiStub;
+        windowMock['didomiOnReady'][0]();
+        return of(null);
+      },
+    };
+
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: WINDOW_TOKEN,
+          useValue: windowMock,
+        },
+        {
+          provide: LoadExternalLibsService,
+          useValue: loadExternalLibsServiceMock,
+        },
+        DidomiService,
+      ],
     });
-    service = injector.inject(DidomiService);
 
-    spyOn(service.isReady$, 'next');
-    window['didomiOnReady'] = [];
-
-    service.initialize();
-    window['didomiOnReady'][0](); // Executed by the Didomi SDK when ready
+    service = TestBed.inject(DidomiService);
   });
 
   it('should create the service', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('when initializing the service', () => {
-    it('should add Didomi SDK to app', () => {
-      spyOn(document.head, 'appendChild');
-      const expectedScript: HTMLScriptElement = document.createElement(
-        'script'
-      );
-      expectedScript.setAttribute('type', 'text/javascript');
-      expectedScript.setAttribute('charset', 'utf-8');
-      expectedScript.text = DIDOMI_EMBED;
-
-      service.initialize();
-
-      expect(document.head.appendChild).toHaveBeenCalledTimes(1);
-      expect(document.head.appendChild).toHaveBeenCalledWith(expectedScript);
-    });
-
-    it('should notify that service is ready when SDK is ready', () => {
-      expect(service.isReady).toBe(true);
-      expect(service.isReady$.next).toHaveBeenCalledTimes(1);
-      expect(service.isReady$.next).toHaveBeenCalledWith(true);
-      expect(service.library).toEqual(Didomi);
-    });
-  });
-
-  describe('when library is not ready', () => {
-    it('should consider that user is not allowing segmentation for ads', () => {
-      service.library = null;
-
-      expect(service.userAllowedSegmentationInAds()).toBe(false);
-    });
-  });
-
-  describe('when user accepts all purposes', () => {
-    beforeEach(() => {
-      spyOn(Didomi, 'getUserConsentStatusForAll').and.returnValue({
-        purposes: {
-          enabled: ['purpose1', 'purpose2', 'purpose3'],
-          disabled: [],
-        },
+  describe('userAllowedSegmentationInAds', () => {
+    it('should load didomi lib if not loaded yet', () => {
+      service.userAllowedSegmentationInAds$().subscribe(() => {
+        expect(loadExternalLibsServiceMock.loadScriptByText).toHaveBeenCalled();
       });
     });
 
-    describe('and when user also accepts Google vendor', () => {
-      beforeEach(() => {
-        spyOn(Didomi, 'getUserConsentStatusForVendor').and.callFake((key) => {
-          if (key === 'google') {
-            return true;
-          }
-        });
-      });
-
-      it('should allow user segmentation for ads', () => {
-        expect(service.userAllowedSegmentationInAds()).toBe(true);
+    it('should return not allowed on the init', () => {
+      service.userAllowedSegmentationInAds$().subscribe((allowed: boolean) => {
+        expect(allowed).toBeFalsy();
       });
     });
 
-    describe('and when user rejects Google vendor', () => {
-      beforeEach(() => {
-        spyOn(Didomi, 'getUserConsentStatusForVendor').and.callFake((key) => {
-          if (key === 'google') {
-            return false;
-          }
-        });
+    it('should update value if the user change the consent', () => {
+      service.userAllowedSegmentationInAds$().subscribe((allowed: boolean) => {
+        expect(allowed).toBeTruthy();
       });
-
-      it('should NOT allow user segmentation for ads', () => {
-        expect(service.userAllowedSegmentationInAds()).toBe(false);
-      });
+      setTimeout(() => {
+        windowMock['Didomi'].makeCallback();
+      }, 1000);
     });
-  });
 
-  describe('when user does not accept at least 1 purpose', () => {
-    beforeEach(() => {
-      spyOn(Didomi, 'getUserConsentStatusForAll').and.returnValue({
-        purposes: {
-          enabled: ['purpose1', 'purpose3'],
-          disabled: ['purpose2'],
-        },
+    it('should block when user disallowed consent', () => {
+      spyOn(didomiStub, 'getUserConsentStatusForVendor').and.returnValue(false);
+
+      service.userAllowedSegmentationInAds$().subscribe((allowed: boolean) => {
+        expect(allowed).toBeFalsy();
       });
     });
 
-    it('should not allow user segmentation for ads', () => {
-      expect(service.userAllowedSegmentationInAds()).toBe(false);
+    it('should block when user disable purposes', () => {
+      spyOn(didomiStub, 'getUserConsentStatusForAll').and.returnValue({
+        purposes: { enabled: [], disabled: ['ads', 'search ads'] },
+      });
+
+      service.userAllowedSegmentationInAds$().subscribe((allowed: boolean) => {
+        expect(allowed).toBeFalsy();
+      });
+    });
+
+    it('should allow when user enable purposes and consent', () => {
+      spyOn(didomiStub, 'getUserConsentStatusForVendor').and.returnValue(true);
+      spyOn(didomiStub, 'getUserConsentStatusForAll').and.returnValue({
+        purposes: { enabled: [], disabled: [] },
+      });
+
+      service.userAllowedSegmentationInAds$().subscribe((allowed: boolean) => {
+        expect(allowed).toBeTruthy();
+      });
     });
   });
 });

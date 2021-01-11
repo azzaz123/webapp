@@ -12,7 +12,7 @@ export const MOCK_INVOICE_HISTORY: InvoiceTransaction[] = [
   {
     id: '1',
     description: 'Cars15',
-    price: 35,
+    price: -35,
     date: 1100000000000,
     invoice_generated: false,
     currency: 'EUR',
@@ -60,7 +60,7 @@ export const MOCK_INVOICE_HISTORY: InvoiceTransaction[] = [
   {
     id: '1',
     description: 'Cars15',
-    price: 35,
+    price: -35,
     date: 1100000000000,
     invoice_generated: false,
     currency: 'EUR',
@@ -211,7 +211,7 @@ export const MOCK_INVOICE_HISTORY_SORTED: InvoiceTransaction[] = [
   {
     id: '1',
     description: 'Cars15',
-    price: 35,
+    price: -35,
     date: 1100000000000,
     invoice_generated: false,
     currency: 'EUR',
@@ -220,7 +220,7 @@ export const MOCK_INVOICE_HISTORY_SORTED: InvoiceTransaction[] = [
   {
     id: '1',
     description: 'Cars15',
-    price: 35,
+    price: -35,
     date: 1100000000000,
     invoice_generated: false,
     currency: 'EUR',

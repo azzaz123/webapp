@@ -1,4 +1,4 @@
-import { IOption } from 'app/dropdown/utils/option.interface';
+import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Pack } from './pack';
 export interface PerkResponse {
   expire_date: number;

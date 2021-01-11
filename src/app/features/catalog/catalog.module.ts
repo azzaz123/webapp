@@ -21,8 +21,8 @@ import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product
 import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { ReactivateConfirmationModalComponent } from './modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component';
 import { ReactivateModalComponent } from './modals/reactivate-modal/reactivate-modal.component';
-import { UploadConfirmationModalComponent } from './modals/upload-confirmation-modal/upload-confirmation-modal.component';
-import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
+import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
+import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 
 @NgModule({
   imports: [
@@ -35,6 +35,8 @@ import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-m
     NgbButtonsModule,
     NgbTooltipModule,
     ReviewsModule,
+    ItemAvatarModule,
+    CustomCurrencyModule,
   ],
   providers: [BumpTutorialService],
   declarations: [
@@ -44,20 +46,16 @@ import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-m
     SubscriptionsSlotItemComponent,
     SubscriptionsSlotsListComponent,
     BumpConfirmationModalComponent,
-    UploadConfirmationModalComponent,
     ReactivateModalComponent,
     CheckoutItemComponent,
     BumpTutorialComponent,
-    UrgentConfirmationModalComponent,
     BuyProductModalComponent,
     ReactivateConfirmationModalComponent,
     ListingfeeConfirmationModalComponent,
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
-    UploadConfirmationModalComponent,
     ReactivateModalComponent,
-    UrgentConfirmationModalComponent,
     BuyProductModalComponent,
     ReactivateConfirmationModalComponent,
     ListingfeeConfirmationModalComponent,

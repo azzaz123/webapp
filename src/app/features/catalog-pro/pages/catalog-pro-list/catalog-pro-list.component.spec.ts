@@ -17,12 +17,9 @@ import { UserService } from '@core/user/user.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import { CreditCardModalComponent } from '@features/catalog-pro/modals/credit-card-modal/credit-card-modal.component';
 import { ProBumpConfirmationModalComponent } from '@features/catalog-pro/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component';
-import { ProUrgentConfirmationModalComponent } from '@features/catalog-pro/modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component';
 import {
   MOCK_ITEM,
   MOCK_ITEM_V3,
-  PRODUCT_RESPONSE,
-  ORDER_EVENT,
   ITEM_ID,
   ORDER,
 } from '@fixtures/item.fixtures.spec';
@@ -219,45 +216,6 @@ describe('CatalogProListComponent', () => {
       routerEvents.next(new NavigationEnd(1, 'url', 'url2'));
       expect(component.end).toBe(false);
       expect(component['getItems']).toHaveBeenCalledTimes(3);
-    }));
-
-    it('should feature order', fakeAsync(() => {
-      spyOn(itemService, 'getUrgentProducts').and.returnValue(
-        of(PRODUCT_RESPONSE)
-      );
-      spyOn(localStorage, 'getItem').and.returnValue('false');
-      spyOn(component, 'feature');
-      route.params = of({
-        urgent: true,
-        itemId: MOCK_ITEM.id,
-      });
-
-      component.ngOnInit();
-      tick(3000);
-
-      expect(component.isUrgent).toBe(true);
-      expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT);
-    }));
-
-    it('should open the urgent modal if transaction is set as urgent', fakeAsync(() => {
-      spyOn(localStorage, 'getItem').and.returnValue('urgent');
-      spyOn(localStorage, 'removeItem');
-      route.params = of({
-        code: 200,
-      });
-
-      component.ngOnInit();
-      tick();
-
-      expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
-      expect(modalService.open).toHaveBeenCalledWith(
-        ProUrgentConfirmationModalComponent,
-        {
-          windowClass: 'urgent-confirm',
-          backdrop: 'static',
-        }
-      );
-      expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
     }));
 
     it('should open the bump modal if transaction is set as bump', fakeAsync(() => {

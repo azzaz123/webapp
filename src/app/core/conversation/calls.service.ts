@@ -1,11 +1,5 @@
-import { forkJoin, of, Observable, ReplaySubject } from 'rxjs';
-
-import { map, tap, catchError, mergeMap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Call } from './calls';
-import { UserService } from '../user/user.service';
-import { ItemService } from '../item/item.service';
-import { EventService } from '../event/event.service';
 import {
   difference,
   findIndex,
@@ -14,16 +8,21 @@ import {
   reverse,
   sortBy,
 } from 'lodash-es';
-import { Lead } from './lead';
-import { Conversation } from './conversation';
-import { CallTotals } from './totals.interface';
-import { CallResponse } from './call-response.interface';
-import { RealTimeService } from '../message/real-time.service';
-import { HttpClient } from '@angular/common/http';
+import { forkJoin, Observable, of, ReplaySubject } from 'rxjs';
+import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { LeadResponse } from './lead-response.interface';
-import { User } from '../user/user';
+import { EventService } from '../event/event.service';
 import { Item } from '../item/item';
+import { ItemService } from '../item/item.service';
+import { RealTimeService } from '../message/real-time.service';
+import { User } from '../user/user';
+import { UserService } from '../user/user.service';
+import { CallResponse } from './call-response.interface';
+import { Call } from './calls';
+import { Conversation } from './conversation';
+import { Lead } from './lead';
+import { LeadResponse } from './lead-response.interface';
+import { CallTotals } from './totals.interface';
 
 @Injectable()
 export class CallsService {

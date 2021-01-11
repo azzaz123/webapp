@@ -1,4 +1,4 @@
-import { SimpleObjectType } from 'app/upload/brand-model.interface';
+import { SimpleObjectType } from '@features/upload/core/models/brand-model.interface';
 import { ApiResponse } from '../resource/api-response.interface';
 import { Image, UserLocation } from '../user/user-response.interface';
 import { Item } from './item';

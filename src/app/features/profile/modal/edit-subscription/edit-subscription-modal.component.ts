@@ -4,7 +4,7 @@ import {
   AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
-  ClickConfirmEditCurrentSubscription,
+  ClickSubscriptionPlanDone,
   SCREEN_IDS,
   ViewEditSubscriptionPlan,
 } from '@core/analytics/analytics-constants';
@@ -16,13 +16,14 @@ import {
   Tier,
 } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
-import { ToastService } from '@layout/toast/toast.service';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import {
   NgbActiveModal,
   NgbModal,
   NgbModalRef,
 } from '@ng-bootstrap/ng-bootstrap';
 import { CancelSubscriptionModalComponent } from '../cancel-subscription/cancel-subscription-modal.component';
+import { ModalStatuses } from '../../core/modal.statuses.enum';
 
 @Component({
   selector: 'tsl-edit-subscription-modal',
@@ -66,8 +67,8 @@ export class EditSubscriptionModalComponent implements OnInit {
     this.analyticsService.trackPageView(pageView);
   }
 
-  public close() {
-    this.activeModal.close('update');
+  public close(status: ModalStatuses) {
+    this.activeModal.close(status);
   }
 
   public editSubscription() {
@@ -95,7 +96,7 @@ export class EditSubscriptionModalComponent implements OnInit {
             type: 'error',
           });
         }
-        this.close();
+        this.close(ModalStatuses.UPDATE);
       });
   }
 
@@ -110,14 +111,16 @@ export class EditSubscriptionModalComponent implements OnInit {
   }
 
   public cancelSubscription() {
-    this.close();
     const modal = CancelSubscriptionModalComponent;
     let modalRef: NgbModalRef = this.modalService.open(modal, {
       windowClass: 'review',
     });
     modalRef.componentInstance.subscription = this.subscription;
     modalRef.result.then(
-      (result: string) => (modalRef = null),
+      (result: ModalStatuses) => {
+        this.close(result);
+        modalRef = null;
+      },
       () => {}
     );
   }
@@ -127,14 +130,14 @@ export class EditSubscriptionModalComponent implements OnInit {
   }
 
   private trackClickConfirmEdit() {
-    const event: AnalyticsEvent<ClickConfirmEditCurrentSubscription> = {
-      name: ANALYTICS_EVENT_NAMES.ClickConfirmEditCurrentSubscription,
+    const event: AnalyticsEvent<ClickSubscriptionPlanDone> = {
+      name: ANALYTICS_EVENT_NAMES.ClickSubscriptionPlanDone,
       eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
         subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
         previousTier: this.currentTier.id,
         newTier: this.selectedTier.id,
-        screenId: SCREEN_IDS.ProfileSubscription,
+        screenId: SCREEN_IDS.SubscriptionManagement,
       },
     };
     this.analyticsService.trackEvent(event);

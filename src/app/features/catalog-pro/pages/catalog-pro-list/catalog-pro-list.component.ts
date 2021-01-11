@@ -13,10 +13,8 @@ import { UserService } from '@core/user/user.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import { CreditCardModalComponent } from '@features/catalog-pro/modals/credit-card-modal/credit-card-modal.component';
 import { ProBumpConfirmationModalComponent } from '@features/catalog-pro/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component';
-import { ProUrgentConfirmationModalComponent } from '@features/catalog-pro/modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component';
 import { OrderEvent } from '@features/catalog/components/selected-items/selected-product.interface';
 import { ItemChangeEvent } from '@features/catalog/core/item-change.interface';
-import { UploadConfirmationModalComponent } from '@features/catalog/modals/upload-confirmation-modal/upload-confirmation-modal.component';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
 import { findIndex } from 'lodash-es';
@@ -31,7 +29,6 @@ export class CatalogProListComponent implements OnInit {
   public items: Item[] = [];
   public loading = true;
   public end: boolean;
-  public isUrgent = false;
   public orderBy: any[];
   public selectedStatus: string = ITEM_STATUS.ACTIVE;
   public sortBy = 'date_desc';
@@ -97,10 +94,6 @@ export class CatalogProListComponent implements OnInit {
           this.cache = false;
           this.getItems();
           const modals = {
-            urgent: {
-              component: ProUrgentConfirmationModalComponent,
-              windowClass: 'urgent-confirm',
-            },
             bump: {
               component: ProBumpConfirmationModalComponent,
               windowClass: 'bump-confirm',
@@ -132,22 +125,6 @@ export class CatalogProListComponent implements OnInit {
           );
         }
         if (params && params.created) {
-          this.uploadModalRef = this.modalService.open(
-            UploadConfirmationModalComponent,
-            {
-              windowClass: 'modal-standard',
-            }
-          );
-          this.uploadModalRef.result.then(
-            (orderEvent: OrderEvent) => {
-              this.uploadModalRef = null;
-              if (orderEvent) {
-                this.isUrgent = true;
-                this.feature(orderEvent);
-              }
-            },
-            () => {}
-          );
           this.cache = false;
           this.getItems();
           if (params.itemId) {
@@ -157,11 +134,6 @@ export class CatalogProListComponent implements OnInit {
               });
             });
           }
-        } else if (params && params.urgent) {
-          this.isUrgent = true;
-          setTimeout(() => {
-            this.getUrgentPrice(params.itemId);
-          }, 3000);
         } else if (params && params.updated) {
           this.cache = false;
           if (params.onHold) {
@@ -325,7 +297,6 @@ export class CatalogProListComponent implements OnInit {
     modalRef.result.then(
       (result: string) => {
         if (result === undefined) {
-          this.isUrgent = false;
           localStorage.removeItem('transactionType');
           this.deselect();
           setTimeout(() => {

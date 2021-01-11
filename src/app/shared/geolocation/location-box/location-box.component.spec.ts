@@ -8,7 +8,7 @@ import {
 import { LocationBoxComponent } from './location-box.component';
 import { UserService } from '../../../core/user/user.service';
 import { of } from 'rxjs';
-import { USER_LOCATION } from '../../../upload/upload-product/upload-product.component.spec';
+import { USER_LOCATION } from '../../../features/upload/pages/upload-product/upload-product.component.spec';
 import {
   FormControl,
   FormGroup,

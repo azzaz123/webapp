@@ -8,7 +8,7 @@ import { finalize } from 'rxjs/operators';
 import { SubscriptionsService } from 'app/core/subscriptions/subscriptions.service';
 import { SubscriptionsResponse } from 'app/core/subscriptions/subscriptions.interface';
 import { ChangeCardModalComponent } from 'app/shared/modals/change-card-modal/change-card-modal.component';
-import { ToastService } from 'app/layout/toast/toast.service';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { I18nService } from 'app/core/i18n/i18n.service';
 
 @Component({

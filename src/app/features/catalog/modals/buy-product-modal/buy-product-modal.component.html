@@ -13,7 +13,6 @@
     <div class="buy-product-modal-icon" *ngIf="type === 'listing-fee'"></div>
   </div>
   <div class="right">
-    <h2 *ngIf="type === 'urgent'" i18n>Mark as urgent</h2>
     <h2 *ngIf="type === 'reactivate'" i18n>Reactivate + visibility</h2>
     <h2 *ngIf="type === 'listing-fee'" i18n>Publish your car</h2>
     <h3 *ngIf="creditInfo?.credit > 0 && creditInfo?.credit < orderEvent.total && !hasSavedCard">

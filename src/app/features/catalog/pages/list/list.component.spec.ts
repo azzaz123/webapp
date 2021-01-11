@@ -42,11 +42,12 @@ import {
 } from '@fixtures/subscriptions.fixtures.spec';
 import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { MOCK_USER, USER_INFO_RESPONSE } from '@fixtures/user.fixtures.spec';
-import { ToastService } from '@layout/toast/toast.service';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TooManyItemsModalComponent } from '@shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
+import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
 import { find } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { of, ReplaySubject, Subject } from 'rxjs';
@@ -55,8 +56,6 @@ import { SubscriptionsSlotsListComponent } from '../../components/subscriptions-
 import { BumpConfirmationModalComponent } from '../../modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { BuyProductModalComponent } from '../../modals/buy-product-modal/buy-product-modal.component';
 import { ListingfeeConfirmationModalComponent } from '../../modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
-import { UploadConfirmationModalComponent } from '../../modals/upload-confirmation-modal/upload-confirmation-modal.component';
-import { UrgentConfirmationModalComponent } from '../../modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
 import { ListComponent } from './list.component';
 
 describe('ListComponent', () => {
@@ -280,27 +279,6 @@ describe('ListComponent', () => {
       expect(component['getItems']).toHaveBeenCalledTimes(2);
     }));
 
-    it('should open upload confirmation modal', fakeAsync(() => {
-      spyOn(component, 'feature');
-      spyOn(localStorage, 'getItem').and.returnValue('false');
-      route.params = of({
-        created: true,
-      });
-
-      component.feature(ORDER_EVENT);
-      component.ngOnInit();
-      tick();
-
-      expect(modalService.open).toHaveBeenCalledWith(
-        UploadConfirmationModalComponent,
-        {
-          windowClass: 'modal-standard',
-        }
-      );
-      expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT);
-      expect(component.isUrgent).toBe(false);
-    }));
-
     describe('if it`s a mobile device', () => {
       it('should not open upload confirmation modal', () => {
         spyOn(deviceService, 'isMobile').and.returnValue(true);
@@ -319,45 +297,6 @@ describe('ListComponent', () => {
       component.ngOnInit();
       tick();
       expect(errorService.i18nSuccess).toHaveBeenCalledWith('itemUpdated');
-    }));
-
-    it('should feature order', fakeAsync(() => {
-      spyOn(itemService, 'getUrgentProducts').and.returnValue(
-        of(PRODUCT_RESPONSE)
-      );
-      spyOn(localStorage, 'getItem').and.returnValue('false');
-      spyOn(component, 'feature');
-      route.params = of({
-        urgent: true,
-        itemId: MOCK_ITEM.id,
-      });
-
-      component.ngOnInit();
-      tick(3000);
-
-      expect(component.isUrgent).toBe(true);
-      expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT, 'urgent');
-    }));
-
-    it('should open the urgent modal if transaction is set as urgent', fakeAsync(() => {
-      spyOn(localStorage, 'getItem').and.returnValue('urgent');
-      spyOn(localStorage, 'removeItem');
-      route.params = of({
-        code: 200,
-      });
-
-      component.ngOnInit();
-      tick();
-
-      expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
-      expect(modalService.open).toHaveBeenCalledWith(
-        UrgentConfirmationModalComponent,
-        {
-          windowClass: 'modal-standard',
-          backdrop: 'static',
-        }
-      );
-      expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
     }));
 
     it('should open the listing fee modal if transaction is set as purchaseListingFee', fakeAsync(() => {
@@ -415,6 +354,24 @@ describe('ListComponent', () => {
       expect(modalService.open).toHaveBeenCalledWith(
         TooManyItemsModalComponent,
         {
+          windowClass: 'modal-standard',
+        }
+      );
+    }));
+
+    it('should open disable wallacoins modal if has param disableWallacoinsModal', fakeAsync(() => {
+      route.params = of({
+        disableWallacoinsModal: true,
+      });
+
+      component.ngOnInit();
+      tick();
+
+      expect(modalService.open).toHaveBeenCalledTimes(1);
+      expect(modalService.open).toHaveBeenCalledWith(
+        WallacoinsDisabledModalComponent,
+        {
+          backdrop: 'static',
           windowClass: 'modal-standard',
         }
       );
@@ -864,7 +821,6 @@ describe('ListComponent', () => {
         component.feature(ORDER_EVENT, 'urgent');
         tick();
 
-        expect(component.isUrgent).toBe(false);
         expect(router.navigate).toHaveBeenCalledWith([
           'catalog/list',
           { code: 200 },
@@ -883,7 +839,6 @@ describe('ListComponent', () => {
         component.feature(ORDER_EVENT, 'urgent');
         tick();
 
-        expect(component.isUrgent).toBe(false);
         expect(router.navigate).toHaveBeenCalledWith([
           'catalog/list',
           { code: -1 },
