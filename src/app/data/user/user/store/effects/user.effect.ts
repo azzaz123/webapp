@@ -11,6 +11,12 @@ import {
   LoadUserProfile,
   LoadUserProfileFailed,
   LoadUserProfileSuccess,
+  SendUpdateEmail,
+  SendUpdateEmailFailed,
+  SendUpdateEmailSuccess,
+  SendUpdatePassword,
+  SendUpdatePasswordFailed,
+  SendUpdatePasswordSuccess,
 } from './../../actions/user.action';
 
 @Injectable()
@@ -26,6 +32,28 @@ export class UserEffects {
       exhaustMap(() => this.repository.getMyProfile()),
       map((user: User) => LoadUserProfileSuccess({ user })),
       catchError(() => of(LoadUserProfileFailed()))
+    )
+  );
+
+  updateEmail$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(SendUpdateEmail),
+      exhaustMap(({ emailAddress }) =>
+        this.repository.updateEmail(emailAddress)
+      ),
+      map(() => SendUpdateEmailSuccess()),
+      catchError(() => of(SendUpdateEmailFailed()))
+    )
+  );
+
+  updatePassword$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(SendUpdatePassword),
+      exhaustMap(({ old_password, new_password }) =>
+        this.repository.updatePassword(old_password, new_password)
+      ),
+      map(() => SendUpdatePasswordSuccess()),
+      catchError(() => of(SendUpdatePasswordFailed()))
     )
   );
 }

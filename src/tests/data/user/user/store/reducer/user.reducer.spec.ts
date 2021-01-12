@@ -33,13 +33,16 @@ describe('User Reducer', () => {
 
     it('should set user and authenticated when user is loaded successfully', () => {
       const { INITIAL_STATE } = fromReducer;
-      const user: User = UserMother.random();
+      const userDetail: User = UserMother.random();
 
       let state = fromReducer.userReducer(INITIAL_STATE, LoadUserProfile());
-      state = fromReducer.userReducer(state, LoadUserProfileSuccess({ user }));
+      state = fromReducer.userReducer(
+        state,
+        LoadUserProfileSuccess({ user: userDetail })
+      );
 
       expect(state).toEqual({
-        user,
+        userDetail,
         loading: false,
         isAuthenticated: true,
       });

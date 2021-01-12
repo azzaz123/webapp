@@ -1,11 +1,11 @@
 import { ApiResponse } from '@core/resource/api-response.interface';
 
-export interface UserResponse extends ApiResponse {
+export interface ApiUserResponse extends ApiResponse {
   micro_name: string;
-  image: Image;
-  location: UserLocation;
-  stats: UserStatsOld;
-  validations: UserValidations;
+  image: ApiImage;
+  location: ApiUserLocation;
+  stats: ApiUserStatsOld;
+  validations: ApiUserValidations;
   verification_level: number;
   scoring_stars: number;
   scoring_starts: number;
@@ -20,12 +20,12 @@ export interface UserResponse extends ApiResponse {
   gender?: string;
   email?: string;
   featured?: boolean;
-  extra_info?: UserExtrainfo;
+  extra_info?: ApiUserExtrainfo;
 }
 
 
 
-export interface Image {
+export interface ApiImage {
   id: string;
   legacy_id?: number;
   original_width: number;
@@ -40,7 +40,7 @@ export interface Image {
   };
 }
 
-export interface UserLocation {
+export interface ApiUserLocation {
   id: number;
   approximated_latitude: number;
   approximated_longitude: number;
@@ -55,7 +55,7 @@ export interface UserLocation {
   address?: string;
 }
 
-export interface UserStatsOld {
+export interface ApiUserStatsOld {
   published: number;
   sold: number;
   favorites: number;
@@ -65,7 +65,7 @@ export interface UserStatsOld {
   purchased: number;
 }
 
-export interface UserValidations {
+export interface ApiUserValidations {
   email: boolean;
   mobile: boolean;
   facebook: boolean;
@@ -78,7 +78,7 @@ export interface UserValidations {
   birthday: boolean;
 }
 
-export interface UserExtrainfo {
+export interface ApiUserExtrainfo {
   description: string;
   address?: string;
   phone_number: string;

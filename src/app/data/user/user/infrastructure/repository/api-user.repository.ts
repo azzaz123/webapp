@@ -1,9 +1,12 @@
+import { ApiUserMapper } from './api-user.mapper';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { User } from '../../domain/user';
 import { UserUpdate } from '../../domain/user-update';
 import { UserRepository } from '../../domain/user.repository';
+import { ApiUserResponse } from './api-user.response';
 
 @Injectable()
 export class ApiUserRepository implements UserRepository {
@@ -18,17 +21,16 @@ export class ApiUserRepository implements UserRepository {
   constructor(private http: HttpClient) {}
 
   getById(userId: string): Observable<User> {
-    return this.http.get<User>(
-      `${ApiUserRepository.USER_BASE_ENDPOINT}/${userId}`
-    );
+    return this.http.get<ApiUserResponse>(`${ApiUserRepository.USER_BASE_ENDPOINT}/${userId}`)
+    .pipe(map(ApiUserMapper.toDomain));
   }
 
   getMyProfile(): Observable<User> {
-    return this.http.get<User>(ApiUserRepository.USER_PROFILE_URL);
+    return this.http.get<ApiUserResponse>(ApiUserRepository.USER_PROFILE_URL).pipe(map(ApiUserMapper.toDomain));
   }
 
   updateEmail(email_address: string): Observable<void> {
-    return this.http.post<void>(    ApiUserRepository.UPDATE_EMAIL_URL,{ email_address });
+    return this.http.post<void>(ApiUserRepository.UPDATE_EMAIL_URL,{ email_address });
   }
 
   updatePassword(old_password: string, new_password: string): Observable<void> {

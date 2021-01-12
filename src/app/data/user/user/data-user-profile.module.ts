@@ -4,11 +4,11 @@ import { StoreModule } from '@ngrx/store';
 import { USER_REPOSITORY_TOKEN } from './domain/user.repository';
 import { ApiUserRepository } from './infrastructure/repository/api-user.repository';
 import { UserEffects } from './store/effects/user.effect';
-import { userReducer } from './store/reducer/user.reducer';
+import { KEY_FEATURE_STATE, userState } from './store/reducer';
 
 @NgModule({
   imports: [
-    StoreModule.forFeature('user', { user: userReducer }),
+    StoreModule.forFeature(KEY_FEATURE_STATE, userState),
     EffectsModule.forFeature([UserEffects]),
   ],
   providers: [
