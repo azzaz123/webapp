@@ -39,7 +39,6 @@ import { CatalogCardComponent } from './catalog/catalog-card/catalog-card.compon
 import { CatalogItemActionsComponent } from './catalog/catalog-item-actions/catalog-item-actions.component';
 import { CatalogStatusNavbarComponent } from './catalog/catalog-status-navbar/catalog-status-navbar.component';
 import { CartComponent } from './catalog/cart/cart.component';
-import { CartService } from './catalog/cart/cart.service';
 import { TrackingModule } from '../core/tracking/tracking.module';
 import { RouterModule } from '@angular/router';
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
@@ -48,7 +47,6 @@ import { ThousandSuffixesPipe } from './number-conversion/thousand-suffixes.pipe
 import { ActivateItemsModalComponent } from './catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component';
 import { DeactivateItemsModalComponent } from './catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
 import { UploaderModule } from './uploader/uploader.module';
-import { UserCoverComponent } from './user-cover/user-cover.component';
 import { CoverUploadComponent } from './profile/cover-upload/cover-upload.component';
 import { KeywordSuggesterComponent } from './keyword-suggester/keyword-suggester.component';
 import { StripeCardElementComponent } from './payments/stripe/stripe-card-element.component';
@@ -234,10 +232,8 @@ import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.mo
   providers: [
     DecimalPipe,
     ExitConfirmGuard,
-    CartService,
     ThousandSuffixesPipe,
     LinkTransformPipe,
-    SubscriptionsService,
   ],
   entryComponents: [
     ConfirmationModalComponent,

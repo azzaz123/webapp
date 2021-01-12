@@ -9,6 +9,7 @@ import { BlockUserXmppService } from '@features/chat/core/block-user/block-user-
 import { BlockUserService } from '@features/chat/core/block-user/block-user.service';
 import { InboxService } from '@features/chat/core/inbox/inbox.service';
 import { MessageService } from '@features/chat/core/message/message.service';
+import { CartService } from '@shared/catalog/cart/cart.service';
 import { CookieModule } from 'ngx-cookie';
 import { CategoryService } from './category/category.service';
 import { ConnectionService } from './connection/connection.service';
@@ -83,6 +84,7 @@ export class CoreModule {
         InvoiceService,
         GeolocationService,
         CategoryService,
+        CartService,
       ],
     };
   }
