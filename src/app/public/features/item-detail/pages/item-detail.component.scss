@@ -21,8 +21,8 @@ $item-detail-card-width: 681px;
     border-radius: $border-radius;
     border: solid 1px $blue-grey-5;
   }
+}
 
-  tsl-side-sky {
-    top: calc(#{$topbar-height} + #{$spacer * 0.5});
-  }
+tsl-side-sky {
+  top: calc(#{$topbar-height} + #{$spacer * 0.5});
 }
