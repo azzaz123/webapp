@@ -1,0 +1,36 @@
+@import '~style/common';
+
+$item-images-height: 477px;
+$icon-margin: $spacer * 0.5;
+
+.ItemImages {
+  height: $item-images-height;
+
+  &_image {
+    border-radius: $border-radius;
+  }
+}
+
+.ItemFlags__icon {
+  z-index: 51;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.5);
+  background: $white;
+  border-radius: 20px;
+  height: 38px;
+  width: fit-content;
+  border: solid 1px $blue-grey-5;
+  padding: 0 16px 0 12px;
+  top: $icon-margin;
+
+  &--wallapop {
+    background: $walla-main;
+  }
+
+  &--left {
+    left: $icon-margin;
+  }
+
+  &--right {
+    right: $icon-margin;
+  }
+}

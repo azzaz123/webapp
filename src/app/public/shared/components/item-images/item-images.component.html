@@ -1,8 +1,26 @@
+<div *ngIf="itemFlags?.sold"
+    class="ItemFlags__icon ItemFlags__icon--left d-flex justify-content-center align-items-center" i18n="@@Sold">
+    <tsl-svg-icon width="20" height="20" src="/assets/icons/item-card/sold.svg" class="mr-2"></tsl-svg-icon>
+    Sold
+</div>
+<div *ngIf="itemFlags?.reserved"
+    class="ItemFlags__icon ItemFlags__icon--left d-flex justify-content-center align-items-center" i18n="@@Reserved">
+    <tsl-svg-icon width="15" height="15" src="/assets/icons/item-card/reserved.svg" class="mr-2"></tsl-svg-icon>
+    Reserved
+</div>
+<div *ngIf="itemFlags?.bumped"
+    class="ItemFlags__icon ItemFlags__icon--right ItemFlags__icon--wallapop d-flex justify-content-center align-items-center"
+    i18n="@@Featured">
+    <tsl-svg-icon width="18" height="18" src="/assets/icons/item-card/bumped.svg" class="mr-2"></tsl-svg-icon>
+    Featured
+</div>
 <ngb-carousel interval="0" *ngIf="images?.length" class="ItemImages bg-danger"
-    (swipeleft)="onSwipe(SWIPE_TYPE_ENUM.LEFT)" (swipeRight)="onSwipe(SWIPE_TYPE_ENUM.RIGHT)">
+    (swipeleft)="onSwipe(SWIPE_TYPE_ENUM.LEFT)" (swipeRight)="onSwipe(SWIPE_TYPE_ENUM.RIGHT)"
+    (click)="openModalImageSlider()">
+
     <ng-template ngbSlide *ngFor="let image of images">
         <div class="picsum-img-wrapper">
-            <img [src]="image.urls_by_size.medium" alt="">
+            <img [src]="image.urls_by_size.medium" alt="" class="ItemImages_image">
         </div>
     </ng-template>
 </ngb-carousel>
