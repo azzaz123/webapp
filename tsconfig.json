@@ -30,6 +30,9 @@
       "@private/*": [
         "app/private/*"
       ],
+      "@storybook-config/*": [
+        "../.storybook/*"
+      ],
       "@stories/*": [
         "stories/*"
       ]

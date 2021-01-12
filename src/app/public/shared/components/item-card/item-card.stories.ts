@@ -39,12 +39,18 @@ const Template: Story<ItemCardComponent> = (args: ItemCardComponent) => ({
     ],
   },
   template:
-    '<tsl-public-item-card [item]="item" [showDescription]="showDescription" (toggleFavourite)="toggleFavourite()"></tsl-public-item-card>',
+    '<tsl-public-item-card [item]="item" [showDescription]="showDescription" [showFavourite]="showFavourite" (toggleFavourite)="toggleFavourite()"></tsl-public-item-card>',
 });
 
 export const Default = Template.bind({});
 Default.args = {
   item: MOCK_ITEM_1,
+};
+
+export const WithoutFavourite = Template.bind({});
+WithoutFavourite.args = {
+  item: MOCK_ITEM_1,
+  showFavourite: false,
 };
 
 export const WithoutDescription = Template.bind({});
