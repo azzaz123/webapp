@@ -902,6 +902,21 @@ describe('ItemService', () => {
     });
   });
 
+  describe('activateSingleItem', () => {
+    it('should active an item', () => {
+      const id = '1';
+      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${id}/activate`;
+
+      service.activateSingleItem(id).subscribe();
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush({});
+
+      expect(req.request.url).toBe(expectedUrl);
+      expect(req.request.body).toEqual({});
+      expect(req.request.method).toBe('PUT');
+    });
+  });
+
   describe('mines', () => {
     function testPaginationAndGetMines() {
       let INIT = 0;
