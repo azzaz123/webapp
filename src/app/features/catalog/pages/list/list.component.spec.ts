@@ -12,7 +12,7 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { CategoryService } from '@core/category/category.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
-import { HttpModuleNew } from '@core/http/http.module.new';
+import { HttpModule } from '@core/http/http.module';
 import { I18nService } from '@core/i18n/i18n.service';
 import { Item } from '@core/item/item';
 import { ItemService } from '@core/item/item.service';
@@ -91,7 +91,7 @@ describe('ListComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [HttpModuleNew],
+        imports: [HttpModule],
         declarations: [
           ListComponent,
           ItemSoldDirective,
