@@ -29,6 +29,9 @@
       ],
       "@private/*": [
         "app/private/*"
+      ],
+      "@storybook-config/*": [
+        "../.storybook/*"
       ]
     },
     "outDir": "./dist/out-tsc",

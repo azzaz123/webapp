@@ -10,6 +10,7 @@ import { FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH } from '@core/profile/profile';
 export class ItemCardComponent {
   @Input() item: Item;
   @Input() showDescription = true;
+  @Input() showFavourite = true;
   @Output() toggleFavourite: EventEmitter<void> = new EventEmitter<void>();
 
   public readonly IMAGE_FALLBACK = FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH;
