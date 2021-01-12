@@ -5,13 +5,12 @@ import {
   publicProfileRoutedComponents,
   publicProfileRoutedModules,
 } from './public-profile-routing.module';
-import { UserStatsComponent } from './components/user-stats/user-stats.component';
-import { UserProfileHeaderComponent } from './components/user-profile-header/user-profile-header.component';
 import { ProfileTabsComponent } from './components/profile-tabs/profile-tabs.component';
 import { FavouriteUserModule } from './components/favourite-user/favourite-user.module';
 import { PublicProfileService } from './core/services/public-profile.service';
 import { SpinnerModule } from '@shared/spinner/spinner.module';
 import { UserProfileHeaderModule } from './components/user-profile-header/user-profile-header.module';
+import { PublicPipesModule } from '@public/core/pipes/public-pipes.module';
 
 @NgModule({
   declarations: [publicProfileRoutedComponents, ProfileTabsComponent],
@@ -22,6 +21,7 @@ import { UserProfileHeaderModule } from './components/user-profile-header/user-p
     SpinnerModule,
     FavouriteUserModule,
     UserProfileHeaderModule,
+    PublicPipesModule,
   ],
   providers: [PublicProfileService],
 })
