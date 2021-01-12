@@ -6,7 +6,7 @@ import {
 import { TestBed } from '@angular/core/testing';
 import { EventService } from '@core/event/event.service';
 import { AccessTokenService } from '@core/http/access-token.service';
-import { HttpModuleNew } from '@core/http/http.module.new';
+import { HttpModule } from '@core/http/http.module';
 import { RealTimeService } from '@core/message/real-time.service';
 import { RemoteConsoleService } from '@core/remote-console';
 import { FeatureflagService } from '@core/user/featureflag.service';
@@ -46,7 +46,7 @@ describe('InboxService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpModuleNew, HttpClientTestingModule],
+      imports: [HttpModule, HttpClientTestingModule],
       providers: [
         InboxService,
         EventService,

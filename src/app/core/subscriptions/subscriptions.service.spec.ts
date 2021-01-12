@@ -9,7 +9,7 @@ import { of } from 'rxjs';
 import { UserService } from '../user/user.service';
 import { FeatureflagService } from '../user/featureflag.service';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-import { HttpModuleNew } from '../http/http.module.new';
+import { HttpModule } from '../http/http.module';
 import {
   HttpClientTestingModule,
   HttpTestingController,
@@ -54,7 +54,7 @@ describe('SubscriptionsService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, HttpModuleNew],
+      imports: [HttpClientTestingModule, HttpModule],
       providers: [
         SubscriptionsService,
         {
