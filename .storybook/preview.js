@@ -1,6 +1,9 @@
 
 import { setCompodocJson } from "@storybook/addon-docs/angular";
 import docJson from "../documentation.json";
+
+import '../src/style/styles.scss';
+
 setCompodocJson(docJson);
 
 

@@ -29,6 +29,9 @@
       ],
       "@private/*": [
         "app/private/*"
+      ],
+      "@stories/*": [
+        "stories/*"
       ]
     },
     "outDir": "./dist/out-tsc",
