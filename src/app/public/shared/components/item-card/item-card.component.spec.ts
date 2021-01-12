@@ -41,50 +41,63 @@ describe('ItemCardComponent', () => {
 
   describe('favourite', () => {
     const favouriteIconSelector = 'tsl-favourite-icon';
-    const favouriteIconAttr = 'ng-reflect-active';
-    let favouriteIconElement: HTMLElement;
 
-    describe('when is favourite', () => {
-      beforeEach(() => {
-        component.item.flags.favorite = true;
-        fixture.detectChanges();
-        favouriteIconElement = el.querySelector(favouriteIconSelector);
+    describe('when icon should be displayed', () => {
+      const favouriteIconAttr = 'ng-reflect-active';
+      let favouriteIconElement: HTMLElement;
+      describe('when is favourite', () => {
+        beforeEach(() => {
+          component.item.flags.favorite = true;
+          fixture.detectChanges();
+          favouriteIconElement = el.querySelector(favouriteIconSelector);
+        });
+
+        it('should show item as favourite', () => {
+          expect(
+            favouriteIconElement.getAttribute(favouriteIconAttr) === 'true'
+          ).toBeTruthy();
+        });
+
+        it('should change favourite state on favourite icon click', () => {
+          spyOn(component.toggleFavourite, 'emit');
+
+          favouriteIconElement.click();
+
+          expect(component.toggleFavourite.emit).toBeCalled();
+        });
       });
 
-      it('should show item as favourite', () => {
-        expect(
-          favouriteIconElement.getAttribute(favouriteIconAttr) === 'true'
-        ).toBeTruthy();
-      });
+      describe('when is NOT favourite', () => {
+        beforeEach(() => {
+          component.item.flags.favorite = false;
+          fixture.detectChanges();
+          favouriteIconElement = el.querySelector(favouriteIconSelector);
+        });
 
-      it('should change favourite state on favourite icon click', () => {
-        spyOn(component.toggleFavourite, 'emit');
+        it('should show item as NOT favourite', () => {
+          expect(
+            favouriteIconElement.getAttribute(favouriteIconAttr) === 'false'
+          ).toBeTruthy();
+        });
 
-        favouriteIconElement.click();
+        it('should change favourite state on favourite icon click', () => {
+          spyOn(component.toggleFavourite, 'emit');
 
-        expect(component.toggleFavourite.emit).toBeCalled();
+          favouriteIconElement.click();
+
+          expect(component.toggleFavourite.emit).toBeCalled();
+        });
       });
     });
 
-    describe('when is NOT favourite', () => {
+    describe('when icon should not be displayed', () => {
       beforeEach(() => {
-        component.item.flags.favorite = false;
+        component.showFavourite = false;
         fixture.detectChanges();
-        favouriteIconElement = el.querySelector(favouriteIconSelector);
       });
 
-      it('should show item as NOT favourite', () => {
-        expect(
-          favouriteIconElement.getAttribute(favouriteIconAttr) === 'false'
-        ).toBeTruthy();
-      });
-
-      it('should change favourite state on favourite icon click', () => {
-        spyOn(component.toggleFavourite, 'emit');
-
-        favouriteIconElement.click();
-
-        expect(component.toggleFavourite.emit).toBeCalled();
+      it('should not show favourite icon', () => {
+        expect(el.querySelector(favouriteIconSelector)).toBeFalsy();
       });
     });
   });

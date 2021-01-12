@@ -29,7 +29,7 @@ export class MapItemService {
   private mapCar(content: CarContent): Car {
     return new Car(
       content.id,
-      content.seller_id,
+      content.user.id,
       content.title,
       content.storytelling,
       content.sale_price === undefined ? content.price : content.sale_price,
@@ -64,7 +64,7 @@ export class MapItemService {
   private mapRealEstate(content: RealestateContent): Realestate {
     return new Realestate(
       content.id,
-      content.seller_id,
+      content.user.id,
       content.title,
       content.storytelling,
       content.location,
@@ -95,7 +95,7 @@ export class MapItemService {
     return new Item(
       content.id,
       null,
-      content.seller_id,
+      content.user.id,
       content.title,
       content.description,
       content.category_id,
