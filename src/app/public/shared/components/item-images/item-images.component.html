@@ -1,0 +1,8 @@
+<ngb-carousel interval="0" *ngIf="images?.length" class="ItemImages bg-danger"
+    (swipeleft)="onSwipe(SWIPE_TYPE_ENUM.LEFT)" (swipeRight)="onSwipe(SWIPE_TYPE_ENUM.RIGHT)">
+    <ng-template ngbSlide *ngFor="let image of images">
+        <div class="picsum-img-wrapper">
+            <img [src]="image.urls_by_size.medium" alt="">
+        </div>
+    </ng-template>
+</ngb-carousel>
