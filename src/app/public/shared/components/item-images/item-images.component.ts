@@ -2,8 +2,8 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Image } from '@core/user/user-response.interface';
 import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
 import { SWIPE_TYPE } from '@public/shared/constants/swipeType.enum';
-import { IMAGE, IMAGE_2 } from '@fixtures/user.fixtures.spec';
 import { ItemFlags } from '@core/item/item-response.interface';
+import { FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH } from '@core/item/item';
 
 @Component({
   selector: 'tsl-item-images',
@@ -11,21 +11,11 @@ import { ItemFlags } from '@core/item/item-response.interface';
   styleUrls: ['./item-images.component.scss'],
 })
 export class ItemImagesComponent implements OnInit {
-  @ViewChild(NgbCarousel) public carousel: NgbCarousel;
+  public readonly IMAGE_FALLBACK = FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH;
   public SWIPE_TYPE_ENUM = SWIPE_TYPE;
-  @Input() images: Image[] = [IMAGE, IMAGE_2, IMAGE, IMAGE_2];
-  @Input() itemFlags: ItemFlags = {
-    pending: false,
-    sold: true,
-    favorite: false,
-    reserved: true,
-    removed: false,
-    banned: false,
-    expired: false,
-    review_done: false,
-    bumped: true,
-    highlighted: false,
-  };
+  @ViewChild(NgbCarousel) public carousel: NgbCarousel;
+  @Input() images: Image[];
+  @Input() itemFlags: ItemFlags;
 
   constructor() {}
   ngOnInit(): void {}
