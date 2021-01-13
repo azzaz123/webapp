@@ -9,7 +9,7 @@ import { ErrorsService } from '@core/errors/errors.service';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { CanComponentDeactivate } from '@shared/guards/can-component-deactivate.interface';
+import { CanComponentDeactivate } from '@core/guards/can-component-deactivate.interface';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import * as moment from 'moment';
 import { finalize } from 'rxjs/operators';

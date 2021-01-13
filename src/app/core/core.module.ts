@@ -10,7 +10,7 @@ import { BlockUserService } from '@features/chat/core/block-user/block-user.serv
 import { InboxService } from '@features/chat/core/inbox/inbox.service';
 import { MessageService } from '@features/chat/core/message/message.service';
 import { CartService } from '@shared/catalog/cart/cart.service';
-import { ExitConfirmGuard } from '@shared/guards/exit-confirm.guard';
+import { ExitConfirmGuard } from './guards/exit-confirm.guard';
 import { CookieModule } from 'ngx-cookie';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { NgxPermissionsModule } from 'ngx-permissions';
