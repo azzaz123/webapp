@@ -52,13 +52,6 @@ import { XmppService } from './xmpp/xmpp.service';
     ProfileModule,
     DeviceDetectorModule.forRoot(),
   ],
-  exports: [
-    CommonModule,
-    UserModule,
-    ItemModule,
-    TrackingModule,
-    ProfileModule,
-  ],
 })
 export class CoreModule {
   static forRoot(): ModuleWithProviders<CoreModule> {
