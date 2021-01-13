@@ -14,6 +14,7 @@ import { ExitConfirmGuard } from '@shared/guards/exit-confirm.guard';
 import { LinkTransformPipe } from '@shared/pipes';
 import { CookieModule } from 'ngx-cookie';
 import { DeviceDetectorModule } from 'ngx-device-detector';
+import { NgxPermissionsModule } from 'ngx-permissions';
 import { CategoryService } from './category/category.service';
 import { ConnectionService } from './connection/connection.service';
 import { ConversationModule } from './conversation/conversation.module';
@@ -43,6 +44,7 @@ import { XmppService } from './xmpp/xmpp.service';
 @NgModule({
   imports: [
     CookieModule.forRoot(),
+    NgxPermissionsModule.forRoot(),
     CommonModule,
     UserModule,
     ItemModule,
