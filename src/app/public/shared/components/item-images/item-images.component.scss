@@ -4,15 +4,10 @@ $item-images-height: 477px;
 $item-flag-height: 38px;
 $icon-margin: $spacer;
 
-.ItemImages {
-  height: $item-images-height;
-
-  &__image {
-    border-radius: $border-radius;
-    height: $item-images-height;
-  }
+::ng-deep .carousel-control-prev,
+::ng-deep .carousel-control-next {
+  cursor: pointer;
 }
-
 ::ng-deep .carousel-indicators {
   background: linear-gradient(to top, rgba($black, 0.25), rgba($black, 0));
   border-radius: $border-radius;
@@ -21,4 +16,13 @@ $icon-margin: $spacer;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: auto;
+}
+
+.ItemImages {
+  height: $item-images-height;
+
+  &__image {
+    border-radius: $border-radius;
+    height: $item-images-height;
+  }
 }
