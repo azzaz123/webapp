@@ -5,45 +5,12 @@ $item-flag-height: 38px;
 $icon-margin: $spacer;
 
 .ItemImages {
-  // The margin-top will be removed
-  margin-top: 20px;
   height: $item-images-height;
 
-  &__flag {
-    z-index: 2;
-    top: $icon-margin;
-    border-radius: $border-radius * 2;
-    background: $white;
-    margin-bottom: $spacing-ms;
-    height: $item-flag-height;
-    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.5);
-
-    &--left {
-      left: $icon-margin;
-    }
-
-    &--right {
-      right: $icon-margin;
-    }
-
-    &--reserved {
-      color: $skyblue-dark;
-    }
-
-    &--sold {
-      color: $magenta-main;
-    }
-
-    &--bumped {
-      background-color: $walla-main;
-      color: $white;
-    }
+  &__image {
+    border-radius: $border-radius;
+    height: $item-images-height;
   }
-}
-
-.ItemImages__image {
-  border-radius: $border-radius;
-  height: $item-images-height;
 }
 
 ::ng-deep .carousel-indicators {
