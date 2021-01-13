@@ -24,7 +24,6 @@ describe('ImagesCarouselComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ImagesCarouselComponent);
     component = fixture.componentInstance;
-    component.images = ['', ''];
     fixture.detectChanges();
   });
 
@@ -35,6 +34,11 @@ describe('ImagesCarouselComponent', () => {
   });
 
   describe('when we have images...', () => {
+    beforeEach(() => {
+      component.images = [''];
+      fixture.detectChanges();
+    });
+
     it('should show the normal image slider', () => {
       const normalSlider = fixture.debugElement.query(
         By.css(defaultIdTemplate)
@@ -45,6 +49,39 @@ describe('ImagesCarouselComponent', () => {
 
       expect(normalSlider).toBeTruthy();
       expect(fallbackSlider).toBeFalsy();
+    });
+
+    describe('when we swipe in the carousel...', () => {
+      it('should show the previous image if we swipe right', () => {
+        spyOn(component.carousel, 'prev');
+
+        fixture.debugElement
+          .query(By.css(carouselTag))
+          .triggerEventHandler('swiperight', {});
+        expect(component.carousel.prev).toHaveBeenCalled();
+      });
+
+      it('should show the next image if we swipe left', () => {
+        spyOn(component.carousel, 'next');
+
+        fixture.debugElement
+          .query(By.css(carouselTag))
+          .triggerEventHandler('swipeleft', {});
+
+        expect(component.carousel.next).toHaveBeenCalled();
+      });
+    });
+
+    describe('when we click on the carousel...', () => {
+      it('should open the image slider...', () => {
+        spyOn(component.currentImageIndex, 'emit');
+
+        fixture.debugElement
+          .query(By.css(carouselImageClass))
+          .triggerEventHandler('click', {});
+
+        expect(component.currentImageIndex.emit).toHaveBeenCalled();
+      });
     });
   });
 
@@ -64,39 +101,6 @@ describe('ImagesCarouselComponent', () => {
 
       expect(normalSlider).toBeFalsy();
       expect(fallbackSlider).toBeTruthy();
-    });
-  });
-
-  describe('when we swipe in the carousel...', () => {
-    it('should show the previous image if we swipe right', () => {
-      spyOn(component.carousel, 'prev');
-
-      fixture.debugElement
-        .query(By.css(carouselTag))
-        .triggerEventHandler('swiperight', {});
-      expect(component.carousel.prev).toHaveBeenCalled();
-    });
-
-    it('should show the next image if we swipe left', () => {
-      spyOn(component.carousel, 'next');
-
-      fixture.debugElement
-        .query(By.css(carouselTag))
-        .triggerEventHandler('swipeleft', {});
-
-      expect(component.carousel.next).toHaveBeenCalled();
-    });
-  });
-
-  describe('when we click on the carousel...', () => {
-    it('should open the image slider...', () => {
-      spyOn(component.currentImageIndex, 'emit');
-
-      fixture.debugElement
-        .query(By.css(carouselImageClass))
-        .triggerEventHandler('click', {});
-
-      expect(component.currentImageIndex.emit).toHaveBeenCalled();
     });
   });
 });
