@@ -44,7 +44,6 @@ describe('User Reducer', () => {
       expect(state).toEqual({
         userDetail,
         loading: false,
-        isAuthenticated: true,
       });
     });
 

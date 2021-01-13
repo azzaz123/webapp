@@ -16,7 +16,9 @@ export class UserImageMother {
         small: faker.image.imageUrl(),
         xlarge: faker.image.imageUrl(),
         xmall: faker.image.imageUrl(),
+        ...image?.urls_by_size,
       },
+      ...image,
     };
   }
 }

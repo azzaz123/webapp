@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { DataUserModule } from './user-bk/data-user.module';
+import { DataUserModule } from './user/data-user.module';
 
 @NgModule({
   imports: [DataUserModule],

@@ -23,5 +23,5 @@ export const selectUserProfileLoading = createSelector(
 
 export const selectUserProfileIsAuthenticated = createSelector(
   selectUserProfileState,
-  (userProfileState: UserProfileState) => userProfileState.isAuthenticated
+  (userProfileState: UserProfileState) => !!userProfileState.userDetail
 );

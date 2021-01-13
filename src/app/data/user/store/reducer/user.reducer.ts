@@ -13,13 +13,11 @@ import { User } from '../../domain';
 export interface UserProfileState {
   userDetail: User | null;
   loading: boolean;
-  isAuthenticated: boolean;
 }
 
 export const INITIAL_STATE: UserProfileState = {
   userDetail: null,
   loading: false,
-  isAuthenticated: false,
 };
 
 const reducer = createReducer(
@@ -32,7 +30,6 @@ const reducer = createReducer(
     ...state,
     userDetail: user,
     loading: false,
-    isAuthenticated: true,
   })),
   on(LoadUserProfileFailed, () => ({ ...INITIAL_STATE })),
   on(SendUpdateEmailFailed, SendUpdatePasswordFailed, (state) => ({

@@ -1,8 +1,8 @@
 import { UserGender } from '@data/user';
-import * as faker from 'faker';
+import { random } from 'faker';
 
 export class UserGenderMother {
   static random(): UserGender {
-    return faker.random.arrayElement([UserGender.MALE, UserGender.FEMALE]);
+    return random.arrayElement([UserGender.MALE, UserGender.FEMALE]);
   }
 }
