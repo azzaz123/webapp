@@ -3,10 +3,13 @@ import {
   HttpTestingController
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { User, UserUpdate } from '@data/user';
+import { Profile, UserLocation, UserUpdate } from '@data/user';
+import { ApiUserLocationMapper, ApiUserMapper } from 'app/data/user/infrastructure/profile/api-user.mapper';
 import { ApiUserRepository } from 'app/data/user/infrastructure/profile/api-user.repository';
-import { UserUpdateMother } from './../../domain/user-update.mother';
-import { UserMother } from './../../domain/user.mother';
+import { ApiUserResponse } from 'app/data/user/infrastructure/profile/api-user.response';
+import { ProfileMother } from '../../domain/profile/profile.mother';
+import { UserUpdateMother } from '../../domain/profile/user-update.mother';
+import { ApiUserResponseMother } from './api-user.response.mother';
 
 describe('ApiUserRepository', () => {
   let repository: ApiUserRepository;
@@ -32,33 +35,38 @@ describe('ApiUserRepository', () => {
 
   describe('getById', () => {
     it('should make a get user by userid and return that user', () => {
+      const apiResponse: ApiUserResponse = ApiUserResponseMother.random();
+      const user: Profile = ApiUserMapper.toDomain(apiResponse);
+      const location: UserLocation = ApiUserLocationMapper.toDomain(apiResponse);
 
-      const user: User = UserMother.random();
-
-      repository.getById(user.id).subscribe((response: User) => {
-        expect(response).toEqual(user);
+      repository.getById(user.id).subscribe((response: [Profile, UserLocation] ) => {
+        expect(response[0]).toEqual(user);
+        expect(response[1]).toEqual(location);
       });
 
       const req = httpTestingController.expectOne(
         `${ApiUserRepository.USER_BASE_ENDPOINT}/${user.id}`
       );
       expect(req.request.method).toBe('GET');
-      req.flush(user);
+      req.flush(apiResponse);
     });
   });
 
   describe('getMyProfile', () => {
 
     it('should make a get to my profile and return my user', () => {
-      const user: User = UserMother.random();
+      const apiResponse: ApiUserResponse = ApiUserResponseMother.random();
+      const profile: Profile = ApiUserMapper.toDomain(apiResponse);
+      const location: UserLocation = ApiUserLocationMapper.toDomain(apiResponse);
 
-      repository.getMyProfile().subscribe((response: User) => {
-        expect(response).toEqual(user);
+      repository.getMyProfile().subscribe((response) => {
+        expect(response[0]).toEqual(profile);
+        expect(response[1]).toEqual(location);
       });
 
       const req = httpTestingController.expectOne(ApiUserRepository.USER_PROFILE_URL);
       expect(req.request.method).toBe('GET');
-      req.flush(user);
+      req.flush(apiResponse);
     });
 
   });
@@ -86,10 +94,11 @@ describe('ApiUserRepository', () => {
   describe('updateProfile', () => {
     it('should make a post to update profile', () => {
       const userUpdate: UserUpdate = UserUpdateMother.random()
-      const user: User = UserMother.random({firstName: userUpdate.first_name, lastName: userUpdate.last_name, gender: userUpdate.gender});
+      const user: Profile = ProfileMother
+        .random({firstName: userUpdate.first_name, lastName: userUpdate.last_name, gender: userUpdate.gender});
 
 
-      repository.updateProfile(userUpdate).subscribe((response: User) => {
+      repository.updateProfile(userUpdate).subscribe((response: Profile) => {
         expect(response).toEqual(user);
       });
 

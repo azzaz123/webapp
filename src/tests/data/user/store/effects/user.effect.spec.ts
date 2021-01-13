@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { User, USER_REPOSITORY_TOKEN } from '@data/user';
+import { Profile, USER_REPOSITORY_TOKEN } from '@data/user';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import {
@@ -9,9 +9,9 @@ import {
 } from 'app/data/user/actions/user.action';
 import { UserEffects } from 'app/data/user/store/effects/user.effect';
 import { Observable, of, throwError } from 'rxjs';
-import { UserMother } from './../../domain';
+import { ProfileMother } from './../../domain';
 
-describe('User EFfect', () => {
+describe('User Effect', () => {
   let actions$ = new Observable<Action>();
   let userEffects: UserEffects;
   let repositoryMock;
@@ -39,7 +39,7 @@ describe('User EFfect', () => {
 
   describe('loadUsers', () => {
     it('should get profile when emit Load Profile', () => {
-      const user: User = UserMother.random();
+      const user: Profile = ProfileMother.random();
       spyOn(repositoryMock, 'getMyProfile').and.returnValue(of(user));
 
       actions$ = of(LoadUserProfile());

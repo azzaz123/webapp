@@ -2,27 +2,31 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { User, UserRepository, UserUpdate } from '../../domain';
-import { ApiUserMapper } from './api-user.mapper';
+import { Profile, UserLocation, UserRepository, UserUpdate } from '../../domain';
+import { ApiUserLocationMapper, ApiUserMapper } from './api-user.mapper';
 import { ApiUserResponse } from './api-user.response';
 
 @Injectable()
 export class ApiUserRepository implements UserRepository {
   static USER_BASE_ENDPOINT = 'api/v3/users';
   static USER_PROFILE_URL = `${ApiUserRepository.USER_BASE_ENDPOINT}/me`;
-  static UPDATE_EMAIL_URL =  `${ApiUserRepository.USER_BASE_ENDPOINT}/email`;
+  static UPDATE_EMAIL_URL = `${ApiUserRepository.USER_BASE_ENDPOINT}/email`;
   static UPDATE_PASSWORD_URL = `${ApiUserRepository.USER_BASE_ENDPOINT}/password`;
   static PRESENCE_ONLINE_URL = `${ApiUserRepository.USER_BASE_ENDPOINT}/online`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  getById(userId: string): Observable<User> {
+  getById(userId: string): Observable<[Profile, UserLocation]> {
     return this.http.get<ApiUserResponse>(`${ApiUserRepository.USER_BASE_ENDPOINT}/${userId}`)
-    .pipe(map(ApiUserMapper.toDomain));
+      .pipe(
+        map((apiUser: ApiUserResponse) => ([ApiUserMapper.toDomain(apiUser), ApiUserLocationMapper.toDomain(apiUser)]))
+      );
   }
 
-  getMyProfile(): Observable<User> {
-    return this.http.get<ApiUserResponse>(ApiUserRepository.USER_PROFILE_URL).pipe(map(ApiUserMapper.toDomain));
+  getMyProfile(): Observable<[Profile, UserLocation]> {
+    return this.http.get<ApiUserResponse>(ApiUserRepository.USER_PROFILE_URL).pipe(
+      map((apiUser: ApiUserResponse) => ([ApiUserMapper.toDomain(apiUser), ApiUserLocationMapper.toDomain(apiUser)]))
+    );
   }
 
   updateEmail(email_address: string): Observable<void> {
@@ -33,8 +37,8 @@ export class ApiUserRepository implements UserRepository {
     return this.http.post<void>(ApiUserRepository.UPDATE_PASSWORD_URL, { old_password, new_password });
   }
 
-  updateProfile(userEdit: Partial<UserUpdate>): Observable<User> {
-    return this.http.post<User>(ApiUserRepository.USER_PROFILE_URL, userEdit);
+  updateProfile(userEdit: Partial<UserUpdate>): Observable<Profile> {
+    return this.http.post<Profile>(ApiUserRepository.USER_PROFILE_URL, userEdit);
   }
 
   sendUserPresence(): Observable<void> {

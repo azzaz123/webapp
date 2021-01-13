@@ -2,10 +2,10 @@ import * as faker from 'faker';
 import { UserIdMother } from './user-id.mother';
 import { UserGenderMother } from './user-gender.mother';
 import { UserImageMother } from './user-image.mother';
-import { User } from '@data/user';
+import { Profile } from '@data/user';
 
-export class UserMother {
-  static random(partial: Partial<User> = {}): User {
+export class ProfileMother {
+  static random(partial: Partial<Profile> = {}): Profile {
     return {
       id: UserIdMother.random(),
       microName: faker.name.firstName(),

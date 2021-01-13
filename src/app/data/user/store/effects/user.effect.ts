@@ -1,19 +1,10 @@
 import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, exhaustMap, map } from 'rxjs/operators';
-import {
-  LoadUserProfile,
-  LoadUserProfileFailed,
-  LoadUserProfileSuccess,
-  SendUpdateEmail,
-  SendUpdateEmailFailed,
-  SendUpdateEmailSuccess,
-  SendUpdatePassword,
-  SendUpdatePasswordFailed,
-  SendUpdatePasswordSuccess,
-} from '../../actions/user.action';
-import { User, UserRepository, USER_REPOSITORY_TOKEN } from '../../domain';
+import { catchError, exhaustMap, map, mergeMap } from 'rxjs/operators';
+
+import * as fromActions from '../../actions';
+import { Profile, UserRepository, USER_REPOSITORY_TOKEN } from '../../domain';
 
 @Injectable()
 export class UserEffects {
@@ -24,32 +15,35 @@ export class UserEffects {
 
   loadUser$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(LoadUserProfile),
+      ofType(fromActions.LoadUserProfile),
       exhaustMap(() => this.repository.getMyProfile()),
-      map((user: User) => LoadUserProfileSuccess({ user })),
-      catchError(() => of(LoadUserProfileFailed()))
+      mergeMap(([user, location]) => [
+        fromActions.LoadUserProfileSuccess({ user }),
+        fromActions.UserLocationLoaded({ location }),
+      ]),
+      catchError(() => of(fromActions.LoadUserProfileFailed()))
     )
   );
 
   updateEmail$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(SendUpdateEmail),
+      ofType(fromActions.SendUpdateEmail),
       exhaustMap(({ emailAddress }) =>
         this.repository.updateEmail(emailAddress)
       ),
-      map(() => SendUpdateEmailSuccess()),
-      catchError(() => of(SendUpdateEmailFailed()))
+      map(() => fromActions.SendUpdateEmailSuccess()),
+      catchError(() => of(fromActions.SendUpdateEmailFailed()))
     )
   );
 
   updatePassword$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(SendUpdatePassword),
+      ofType(fromActions.SendUpdatePassword),
       exhaustMap(({ old_password, new_password }) =>
         this.repository.updatePassword(old_password, new_password)
       ),
-      map(() => SendUpdatePasswordSuccess()),
-      catchError(() => of(SendUpdatePasswordFailed()))
+      map(() => fromActions.SendUpdatePasswordSuccess()),
+      catchError(() => of(fromActions.SendUpdatePasswordFailed()))
     )
   );
 }

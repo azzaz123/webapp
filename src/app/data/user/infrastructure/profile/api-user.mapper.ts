@@ -1,9 +1,10 @@
-import { User, UserGender, UserImage } from '../../domain';
+
+import { Profile, UserGender, UserImage, UserLocation } from '../../domain';
 import { ApiImage, ApiUserResponse } from './api-user.response';
 
 
 export class ApiUserMapper {
-  static toDomain(apiUser: ApiUserResponse): User {
+  static toDomain(apiUser: ApiUserResponse): Profile {
     return {
       id: '',
       microName: apiUser.micro_name,
@@ -32,6 +33,14 @@ export class ApiUserImageMapper {
         xlarge: apiImage.urls_by_size.xlarge,
         xmall: apiImage.urls_by_size.small
       }
+    };
+  }
+}
+
+export class ApiUserLocationMapper {
+  static toDomain( {location}: ApiUserResponse): UserLocation {
+    return {
+      ...location
     };
   }
 }

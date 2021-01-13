@@ -1,19 +1,19 @@
 import { BooleanMother } from '@fixtures/shared';
-import { User } from 'app/data/user/domain';
-import { UserProfileState } from 'app/data/user/store/reducer/user.reducer';
+import { Profile } from 'app/data/user/domain';
+import { UserProfileState } from 'app/data/user/store/reducer/profile.reducer';
 import {
   selectUserProfileDetail,
   selectUserProfileIsAuthenticated,
   selectUserProfileLoading,
 } from 'app/data/user/store/selectors';
-import { UserStateMother } from '../reducer/user.state.mother';
-import { UserMother } from './../../domain/user.mother';
+import { UserProfileStateMother } from '../reducer/user.state.mother';
+import { ProfileMother } from '../../domain/profile/profile.mother';
 
-describe('UserSelector', () => {
+describe('ProfileSelector', () => {
   describe('selectUserProfileDetail', () => {
     it('should return a user Detail', () => {
-      const user: User = UserMother.random();
-      const state: UserProfileState = UserStateMother.random({
+      const user: Profile = ProfileMother.random();
+      const state: UserProfileState = UserProfileStateMother.random({
         userDetail: user,
       });
 
@@ -26,7 +26,9 @@ describe('UserSelector', () => {
   describe('selectUserProfileLoading', () => {
     it('should return is is loading', () => {
       const loading: boolean = BooleanMother.random();
-      const state: UserProfileState = UserStateMother.random({ loading });
+      const state: UserProfileState = UserProfileStateMother.random({
+        loading,
+      });
 
       const select = selectUserProfileLoading.projector(state);
 
@@ -36,8 +38,8 @@ describe('UserSelector', () => {
 
   describe('selectUserProfileIsAuthenticated', () => {
     it('should return authenticated if there is an user', () => {
-      const user: User = UserMother.random();
-      const state: UserProfileState = UserStateMother.random({
+      const user: Profile = ProfileMother.random();
+      const state: UserProfileState = UserProfileStateMother.random({
         userDetail: user,
       });
 
@@ -47,7 +49,7 @@ describe('UserSelector', () => {
     });
 
     it('should return not authenticated if there is not an user', () => {
-      const state: UserProfileState = UserStateMother.random({
+      const state: UserProfileState = UserProfileStateMother.random({
         userDetail: null,
       });
 

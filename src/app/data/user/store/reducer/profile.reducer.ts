@@ -8,20 +8,20 @@ import {
   SendUpdatePassword,
   SendUpdatePasswordFailed,
 } from '../../actions/user.action';
-import { User } from '../../domain';
+import { Profile } from '../../domain';
 
 export interface UserProfileState {
-  userDetail: User | null;
+  userDetail: Profile | null;
   loading: boolean;
 }
 
-export const INITIAL_STATE: UserProfileState = {
+export const INITIAL_USER_PROFILE_STATE: UserProfileState = {
   userDetail: null,
   loading: false,
 };
 
 const reducer = createReducer(
-  INITIAL_STATE,
+  INITIAL_USER_PROFILE_STATE,
   on(LoadUserProfile, SendUpdateEmail, SendUpdatePassword, (state) => ({
     ...state,
     loading: true,
@@ -31,7 +31,7 @@ const reducer = createReducer(
     userDetail: user,
     loading: false,
   })),
-  on(LoadUserProfileFailed, () => ({ ...INITIAL_STATE })),
+  on(LoadUserProfileFailed, () => ({ ...INITIAL_USER_PROFILE_STATE })),
   on(SendUpdateEmailFailed, SendUpdatePasswordFailed, (state) => ({
     ...state,
     loading: false,

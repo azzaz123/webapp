@@ -3,7 +3,7 @@ import { UserImage } from 'app/data/user/domain';
 import * as faker from 'faker';
 
 export class UserImageMother {
-  static random(image: Partial<UserImage>): UserImage {
+  static random(image: Partial<UserImage> = {}): UserImage {
     return {
       average_hex_color: ColourMother.randomHex(),
       id: faker.random.uuid(),

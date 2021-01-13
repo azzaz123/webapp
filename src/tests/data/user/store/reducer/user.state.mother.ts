@@ -1,11 +1,11 @@
 import { BooleanMother } from '@fixtures/shared';
-import { UserProfileState } from 'app/data/user/store/reducer/user.reducer';
-import { UserMother } from '../../domain';
+import { UserProfileState } from 'app/data/user/store/reducer/profile.reducer';
+import { ProfileMother } from '../../domain';
 
-export class UserStateMother {
+export class UserProfileStateMother {
   static random(partial: Partial<UserProfileState> = {}): UserProfileState {
     return {
-      userDetail: UserMother.random(),
+      userDetail: ProfileMother.random(),
       loading: BooleanMother.random(),
       ...partial,
     };

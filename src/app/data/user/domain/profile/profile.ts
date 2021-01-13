@@ -2,7 +2,7 @@ import { UserGender } from './user-gender';
 import { UserId } from './user-id';
 import { UserImage } from './user-image';
 
-export interface User {
+export interface Profile {
   id: UserId;
   microName: string;
   image: UserImage;

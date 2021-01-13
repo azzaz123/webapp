@@ -1,1 +1,1 @@
-export * from './user.selector';
+export * from './profile.selector';
