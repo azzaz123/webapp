@@ -2,11 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { Observable } from 'rxjs';
-import { MarkAsFavouriteBodyRequest } from './interfaces/item-request.interface';
 import { MarkAsFavouriteBodyResponse } from './interfaces/item-response.interface';
 
 export const ITEMS_API_URL = (userId: string) =>
-  `${environment.baseUrl}api/v3/users/${userId}`;
+  `${environment.baseUrl}api/v3/items/${userId}`;
 export const MARK_AS_FAVORITE_ENDPOINT = (id: string) =>
   `${ITEMS_API_URL(id)}/favorite`;
 

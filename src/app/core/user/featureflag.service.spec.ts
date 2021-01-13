@@ -6,7 +6,7 @@ import {
   TestRequest,
 } from '@angular/common/http/testing';
 
-import { HttpModuleNew } from '../http/http.module.new';
+import { HttpModule } from '../http/http.module';
 import {
   FeatureflagService,
   FEATURE_FLAG_ENDPOINT,
