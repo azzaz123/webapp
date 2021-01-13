@@ -6,7 +6,6 @@ import { ConfirmationModalComponent } from './confirmation-modal/confirmation-mo
 import { CardModule } from './card/card.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GeolocationModule } from './geolocation/geolocation.module';
-import { ExitConfirmGuard } from './guards/exit-confirm.guard';
 import { RestrictInputDirective } from './restrict-input/restrict-input.directive';
 import { HeaderComponent } from './header/header.component';
 import { ButtonComponent } from './button/button.component';
@@ -225,7 +224,6 @@ import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.mo
     DateCountDownComponent,
     WallacoinsDisabledModalComponent,
   ],
-  providers: [ExitConfirmGuard],
   entryComponents: [
     ConfirmationModalComponent,
     SoldModalComponent,
