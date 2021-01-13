@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Route } from '@angular/router';
 import { FavoritesComponent } from './pages/favorites.component';
 import { LoggedGuard } from '@core/user/logged.guard';
 import { NgxPermissionsGuard } from 'ngx-permissions';
@@ -10,7 +10,7 @@ import { ItemsPageComponent } from './components/items-page/items-page.component
 import { ProfilesPageComponent } from './components/profiles-page/profiles-page.component';
 import { APP_PATHS } from 'app/app-routing-constants';
 
-const routes: Routes = [
+const routes: Route[] = [
   {
     path: '',
     component: FavoritesComponent,

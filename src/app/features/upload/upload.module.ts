@@ -9,9 +9,9 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { DropdownModule } from '@shared/dropdown/dropdown.module';
 import { GeolocationModule } from '@shared/geolocation/geolocation.module';
+import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { SharedModule } from '@shared/shared.module';
 import { DndModule } from 'ng2-dnd';
-import { NgxPermissionsModule } from 'ngx-permissions';
 import { CategorySelectorComponent } from './components/category-selector/category-selector.component';
 import { DropAreaComponent } from './components/drop-area/drop-area.component';
 import { EditComponent } from './components/edit/edit.component';
@@ -36,7 +36,6 @@ import { uploadRoutedComponents, UploadRoutingModule } from './upload.routes';
     FormsModule,
     ReactiveFormsModule,
     UploadRoutingModule,
-    NgxPermissionsModule.forChild(),
     NgbPopoverModule,
     TrackingModule,
     DndModule.forRoot(),
@@ -44,6 +43,7 @@ import { uploadRoutedComponents, UploadRoutingModule } from './upload.routes';
     GeolocationModule,
     NgbButtonsModule,
     DropdownModule,
+    CustomCurrencyModule,
   ],
   declarations: [
     uploadRoutedComponents,

@@ -5,7 +5,7 @@ import {
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { EventService } from '@core/event/event.service';
 import { AccessTokenService } from '@core/http/access-token.service';
-import { HttpModuleNew } from '@core/http/http.module.new';
+import { HttpModule } from '@core/http/http.module';
 import { ItemService } from '@core/item/item.service';
 import { RealTimeService } from '@core/message/real-time.service';
 import { RemoteConsoleService } from '@core/remote-console';
@@ -24,8 +24,8 @@ import { MockedUserService, MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { DesktopNotificationsService } from 'app/core/desktop-notifications/desktop-notifications.service';
 import { I18nService } from 'app/core/i18n/i18n.service';
 import { TrackingService } from 'app/core/tracking/tracking.service';
-import { Toast } from 'app/layout/toast/toast.interface';
-import { ToastService } from 'app/layout/toast/toast.service';
+import { Toast } from '@layout/toast/core/interfaces/toast.interface';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { uniq } from 'lodash-es';
 import * as moment from 'moment';
 import { of } from 'rxjs';
@@ -57,7 +57,7 @@ describe('InboxConversationService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, HttpModuleNew],
+      imports: [HttpClientTestingModule, HttpModule],
       providers: [
         InboxConversationService,
         EventService,

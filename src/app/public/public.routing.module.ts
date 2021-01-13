@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { PUBLIC_PATHS } from './public-routing-constants';
+import { RouterModule, Route } from '@angular/router';
+import { PUBLIC_PATHS, PUBLIC_PATH_PARAMS } from './public-routing-constants';
 import { PublicComponent } from './public.component';
 
-const routes: Routes = [
+const routes: Route[] = [
   {
     path: '',
     component: PublicComponent,
@@ -20,6 +20,18 @@ const routes: Routes = [
           import('./features/register/register.module').then(
             (m) => m.RegisterModule
           ),
+      },
+      {
+        path: `${PUBLIC_PATHS.USER_DETAIL}/:${PUBLIC_PATH_PARAMS.ID}`,
+        loadChildren: () =>
+          import('./features/public-profile/public-profile.module').then(
+            (m) => m.PublicProfileModule
+          ),
+      },
+      {
+        path: PUBLIC_PATHS.WALL,
+        loadChildren: () =>
+          import('./features/wall/wall.module').then((m) => m.WallModule),
       },
       {
         path: '**',

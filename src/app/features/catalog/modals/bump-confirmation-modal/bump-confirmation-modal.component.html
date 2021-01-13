@@ -30,10 +30,6 @@
         <span *ngIf="!withCoins" i18n>You have {{creditInfo?.credit | customCurrency}} credit</span>
       </b>
       </p>
-      <tsl-button className="btn btn-primary btn-block" (click)="activeModal.dismiss()">
-        <span *ngIf="withCoins" i18n>Buy more Wallacoins</span>
-        <span *ngIf="!withCoins" i18n>Buy more credit</span>
-      </tsl-button>
       <a class="link" (click)="activeModal.close()" i18n>Go to my catalogue</a>
     </div>
 

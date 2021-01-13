@@ -20,7 +20,7 @@
       }
       &.active {
         color: $walla-main;
-        border-bottom: 2px solid $walla-main;
+        border-bottom: $tab-active-border-width solid $walla-main;
       }
     }
   }

@@ -16,7 +16,7 @@ import {
   UnarchiveInboxConversationComponent,
   UnblockUserComponent,
 } from '@features/chat/modals';
-import { ToastService } from '@layout/toast/toast.service';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({

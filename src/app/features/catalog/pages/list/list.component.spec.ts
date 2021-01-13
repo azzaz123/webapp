@@ -12,7 +12,7 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { CategoryService } from '@core/category/category.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
-import { HttpModuleNew } from '@core/http/http.module.new';
+import { HttpModule } from '@core/http/http.module';
 import { I18nService } from '@core/i18n/i18n.service';
 import { Item } from '@core/item/item';
 import { ItemService } from '@core/item/item.service';
@@ -42,11 +42,12 @@ import {
 } from '@fixtures/subscriptions.fixtures.spec';
 import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { MOCK_USER, USER_INFO_RESPONSE } from '@fixtures/user.fixtures.spec';
-import { ToastService } from '@layout/toast/toast.service';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TooManyItemsModalComponent } from '@shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
+import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
 import { find } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { of, ReplaySubject, Subject } from 'rxjs';
@@ -90,7 +91,7 @@ describe('ListComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [HttpModuleNew],
+        imports: [HttpModule],
         declarations: [
           ListComponent,
           ItemSoldDirective,
@@ -353,6 +354,24 @@ describe('ListComponent', () => {
       expect(modalService.open).toHaveBeenCalledWith(
         TooManyItemsModalComponent,
         {
+          windowClass: 'modal-standard',
+        }
+      );
+    }));
+
+    it('should open disable wallacoins modal if has param disableWallacoinsModal', fakeAsync(() => {
+      route.params = of({
+        disableWallacoinsModal: true,
+      });
+
+      component.ngOnInit();
+      tick();
+
+      expect(modalService.open).toHaveBeenCalledTimes(1);
+      expect(modalService.open).toHaveBeenCalledWith(
+        WallacoinsDisabledModalComponent,
+        {
+          backdrop: 'static',
           windowClass: 'modal-standard',
         }
       );

@@ -9,7 +9,9 @@ import { SharedModule } from '@shared/shared.module';
 import { ItemCartFavoriteComponent } from './components/item-cart-favorite/item-cart-favorite.component';
 import { ProfileCardFavoriteComponent } from './components/profile-card-favorite/profile-card-favorite.component';
 import { ProfileImagesComponent } from '@shared/profile-images/profile-images.component';
-import { TrackingModule } from '@core/tracking/tracking.module';
+import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
+import { SanitizedBackgroundModule } from '@shared/sanitized-background/sanitized-background.module';
+import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 
 @NgModule({
   imports: [
@@ -17,7 +19,9 @@ import { TrackingModule } from '@core/tracking/tracking.module';
     FavoritesRoutingModule,
     InfiniteScrollModule,
     SharedModule,
-    TrackingModule,
+    ItemAvatarModule,
+    SanitizedBackgroundModule,
+    CustomCurrencyModule,
   ],
   declarations: [
     favoritesRoutedComponents,
