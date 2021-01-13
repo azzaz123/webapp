@@ -2,7 +2,7 @@
 
 .TooManyItemsModal {
   width: 100%;
-  padding: 36px 44px 19px 67px;
+  padding: 44px 44px 22px 67px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -20,11 +20,8 @@
   tsl-svg-icon {
     @include square($spacing-ms);
     line-height: initial;
-
-    svg {
-      path {
-        fill: $blue-grey-3;
-      }
+    ::ng-deep svg path {
+      fill: $blue-grey-3;
     }
   }
 }
@@ -33,7 +30,9 @@
   display: flex;
   align-items: center;
   text-align: justify;
-  margin-bottom: 20px;
+  margin-bottom: 33px;
+  background: url(/assets/images/too-many-items-background.svg) no-repeat;
+  padding-left: 194px;
 }
 
 .TooManyItemsModal__content-info-title {
