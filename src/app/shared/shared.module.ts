@@ -56,7 +56,6 @@ import { DropdownModule } from '@shared/dropdown/dropdown.module';
 import { LinkTransformPipe } from './pipes';
 import { NavLinksComponent } from './nav-links/nav-links.component';
 import { PreventDoubleClickDirective } from './prevent-double-click/prevent-double-click.directive';
-import { DeviceDetectorModule } from 'ngx-device-detector';
 import { ProBadgeModule } from './pro-badge/pro-badge.module';
 import { StatusIconComponent } from './status-icon';
 import { ChangeCardModalComponent } from './modals/change-card-modal/change-card-modal.component';
@@ -88,7 +87,6 @@ import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.mo
     TrackingModule,
     RouterModule,
     UploaderModule,
-    DeviceDetectorModule.forRoot(),
     ProBadgeModule,
     SvgIconModule,
     DropdownModule,
