@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import {
   ModuleWithProviders,
   NgModule,
@@ -10,6 +10,7 @@ import { BlockUserService } from '@features/chat/core/block-user/block-user.serv
 import { InboxService } from '@features/chat/core/inbox/inbox.service';
 import { MessageService } from '@features/chat/core/message/message.service';
 import { CartService } from '@shared/catalog/cart/cart.service';
+import { LinkTransformPipe } from '@shared/pipes';
 import { CookieModule } from 'ngx-cookie';
 import { CategoryService } from './category/category.service';
 import { ConnectionService } from './connection/connection.service';
@@ -85,6 +86,8 @@ export class CoreModule {
         GeolocationService,
         CategoryService,
         CartService,
+        DecimalPipe,
+        LinkTransformPipe,
       ],
     };
   }

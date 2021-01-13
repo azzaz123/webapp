@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule, DecimalPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { AdComponent } from './ad/ad.component';
 import { DateUntilDayPipe, DateCalendarPipe } from './pipes';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
@@ -43,7 +43,6 @@ import { TrackingModule } from '../core/tracking/tracking.module';
 import { RouterModule } from '@angular/router';
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
 import { CountdownComponent } from './countdown/countdown.component';
-import { ThousandSuffixesPipe } from './number-conversion/thousand-suffixes.pipe';
 import { ActivateItemsModalComponent } from './catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component';
 import { DeactivateItemsModalComponent } from './catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
 import { UploaderModule } from './uploader/uploader.module';
@@ -57,7 +56,6 @@ import { StripeCardSelectionComponent } from './payments/stripe-card-selection/s
 import { DropdownModule } from '@shared/dropdown/dropdown.module';
 import { LinkTransformPipe } from './pipes';
 import { NavLinksComponent } from './nav-links/nav-links.component';
-import { SubscriptionsService } from '../core/subscriptions/subscriptions.service';
 import { PreventDoubleClickDirective } from './prevent-double-click/prevent-double-click.directive';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { ProBadgeModule } from './pro-badge/pro-badge.module';
@@ -144,7 +142,6 @@ import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.mo
     CartComponent,
     ExitConfirmationModalComponent,
     CountdownComponent,
-    ThousandSuffixesPipe,
     CoverUploadComponent,
     KeywordSuggesterComponent,
     StripeCardElementComponent,
@@ -205,7 +202,6 @@ import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.mo
     CartComponent,
     ExitConfirmationModalComponent,
     CountdownComponent,
-    ThousandSuffixesPipe,
     ActivateItemsModalComponent,
     DeactivateItemsModalComponent,
     CoverUploadComponent,
@@ -229,12 +225,7 @@ import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.mo
     DateCountDownComponent,
     WallacoinsDisabledModalComponent,
   ],
-  providers: [
-    DecimalPipe,
-    ExitConfirmGuard,
-    ThousandSuffixesPipe,
-    LinkTransformPipe,
-  ],
+  providers: [ExitConfirmGuard],
   entryComponents: [
     ConfirmationModalComponent,
     SoldModalComponent,
