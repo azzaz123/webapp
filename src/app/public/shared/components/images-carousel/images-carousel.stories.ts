@@ -32,12 +32,13 @@ const Template: Story<ImagesCarouselComponent> = (
   template: '<tsl-images-carousel [images]="images"></tsl-images-carousel>',
 });
 
-const imageURL =
-  'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002514&pictureSize=W320';
-
+const imagesURL = [
+  'http://cdn-dock135.wallapop.com/images/10420/0t/__/c10420p38019/i42022.jpg?pictureSize=W640',
+  'http://cdn-dock135.wallapop.com/images/10420/14/__/c10420p52007/i58009.jpg?pictureSize=W640',
+];
 export const Default = Template.bind({});
 Default.args = {
-  images: [imageURL, imageURL],
+  images: imagesURL,
 };
 
 export const WithoutImages = Template.bind({});
