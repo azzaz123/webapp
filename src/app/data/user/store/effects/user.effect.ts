@@ -2,9 +2,8 @@ import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, exhaustMap, map, mergeMap } from 'rxjs/operators';
-
 import * as fromActions from '../../actions';
-import { Profile, UserRepository, USER_REPOSITORY_TOKEN } from '../../domain';
+import { UserRepository, USER_REPOSITORY_TOKEN } from '../../domain';
 
 @Injectable()
 export class UserEffects {
@@ -19,7 +18,7 @@ export class UserEffects {
       exhaustMap(() => this.repository.getMyProfile()),
       mergeMap(([user, location]) => [
         fromActions.LoadUserProfileSuccess({ user }),
-        fromActions.UserLocationLoaded({ location }),
+        fromActions.SetUserLocation({ location }),
       ]),
       catchError(() => of(fromActions.LoadUserProfileFailed()))
     )

@@ -1,8 +1,12 @@
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { USER_REPOSITORY_TOKEN } from './domain';
-import { ApiUserRepository } from './infrastructure/profile/api-user.repository';
+import {
+  USER_LOCATION_REPOSITORY_TOKEN,
+  USER_REPOSITORY_TOKEN,
+} from './domain';
+import { ApiUserRepository } from './infrastructure/api-user.repository';
+import { ApiUserLocationRepository } from './infrastructure/location/api-user-location.repository';
 import { UserEffects } from './store/effects/user.effect';
 import { KEY_FEATURE_STATE, userState } from './store/reducer';
 
@@ -15,6 +19,10 @@ import { KEY_FEATURE_STATE, userState } from './store/reducer';
     {
       provide: USER_REPOSITORY_TOKEN,
       useClass: ApiUserRepository,
+    },
+    {
+      provide: USER_LOCATION_REPOSITORY_TOKEN,
+      useClass: ApiUserLocationRepository,
     },
   ],
 })

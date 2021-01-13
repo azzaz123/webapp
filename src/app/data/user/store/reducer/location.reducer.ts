@@ -1,5 +1,5 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { UserLocationLoaded } from '../../actions';
+import { SetUserLocation } from '../../actions';
 import { UserLocation } from '../../domain';
 
 export interface UserLocationState {
@@ -12,7 +12,7 @@ export const INITIAL_USER_LOCATION_STATE: UserLocationState = {
 
 const reducer = createReducer(
   INITIAL_USER_LOCATION_STATE,
-  on(UserLocationLoaded, (state, { location }) => ({ location }))
+  on(SetUserLocation, (state, { location }) => ({ location }))
 );
 
 export function locationReducer(

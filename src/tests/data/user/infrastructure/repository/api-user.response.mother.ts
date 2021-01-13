@@ -1,7 +1,7 @@
 
 
 import { ColourMother } from '@fixtures/shared';
-import { ApiUserExtrainfo, ApiUserResponse, ApiUserStatsOld, ApiUserValidations } from 'app/data/user/infrastructure/profile/api-user.response';
+import { ApiUserExtrainfo, ApiUserResponse, ApiUserStatsOld, ApiUserValidations } from 'app/data/user/infrastructure/api-user.response';
 import * as faker from 'faker';
 import { UserGenderMother, UserLocationMother } from './../../domain';
 

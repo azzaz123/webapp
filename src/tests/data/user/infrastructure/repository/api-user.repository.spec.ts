@@ -4,9 +4,9 @@ import {
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Profile, UserLocation, UserUpdate } from '@data/user';
-import { ApiUserLocationMapper, ApiUserMapper } from 'app/data/user/infrastructure/profile/api-user.mapper';
-import { ApiUserRepository } from 'app/data/user/infrastructure/profile/api-user.repository';
-import { ApiUserResponse } from 'app/data/user/infrastructure/profile/api-user.response';
+import { ApiUserLocationMapper, ApiUserMapper } from 'app/data/user/infrastructure/api-user.mapper';
+import { ApiUserRepository } from 'app/data/user/infrastructure/api-user.repository';
+import { ApiUserResponse } from 'app/data/user/infrastructure/api-user.response';
 import { ProfileMother } from '../../domain/profile/profile.mother';
 import { UserUpdateMother } from '../../domain/profile/user-update.mother';
 import { ApiUserResponseMother } from './api-user.response.mother';

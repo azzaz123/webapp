@@ -1,5 +1,5 @@
-import { UserLocationLoaded } from './../../../../../app/data/user/actions/location.action';
 import { UserLocation } from '@core/user/user-response.interface';
+import { SetUserLocation } from '@data/user';
 import { Action } from '@ngrx/store';
 import * as fromReducer from 'app/data/user/store/reducer/location.reducer';
 import { UserLocationMother } from './../../domain';
@@ -29,7 +29,7 @@ describe('Location Reducer', () => {
 
       const state = fromReducer.locationReducer(
         INITIAL_USER_LOCATION_STATE,
-        UserLocationLoaded({ location })
+        SetUserLocation({ location })
       );
 
       expect(state).toEqual({ location });

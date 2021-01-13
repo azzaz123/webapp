@@ -1,5 +1,5 @@
 
-import { Profile, UserGender, UserImage, UserLocation } from '../../domain';
+import { Profile, UserGender, UserImage, UserLocation } from '../domain';
 import { ApiImage, ApiUserResponse } from './api-user.response';
 
 
