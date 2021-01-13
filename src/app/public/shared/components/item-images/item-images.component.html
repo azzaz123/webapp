@@ -17,9 +17,14 @@
         <tsl-svg-icon width="18" height="18" src="/assets/icons/item-card/bumped.svg" class="mr-2"></tsl-svg-icon>
         Featured
     </div>
-    <ngb-carousel interval="0" *ngIf="images?.length" (swipeleft)="onSwipe(SWIPE_TYPE_ENUM.LEFT)"
-        (swipeRight)="onSwipe(SWIPE_TYPE_ENUM.RIGHT)" (click)="openModalImageSlider()">
-        <ng-template ngbSlide *ngFor="let image of images">
+    <ngb-carousel interval="0" (swipeleft)="onSwipe(SWIPE_TYPE_ENUM.LEFT)" (swipeRight)="onSwipe(SWIPE_TYPE_ENUM.RIGHT)"
+        (click)="openModalImageSlider()">
+        <ng-template ngbSlide *ngIf="!images?.length; else imageTemplate">
+            <div class="ItemImages__image">
+                <img [src]="IMAGE_FALLBACK" alt="fallback" class="w-100 h-100">
+            </div>
+        </ng-template>
+        <ng-template ngbSlide *ngFor="let image of images" #imageTemplate>
             <div class="ItemImages__image">
                 <img [src]="image.urls_by_size?.medium" alt="" class="w-100 h-100" [fallback]="IMAGE_FALLBACK"
                     loading="lazy">

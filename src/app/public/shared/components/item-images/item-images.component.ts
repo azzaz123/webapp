@@ -20,7 +20,7 @@ export class ItemImagesComponent implements OnInit {
   constructor() {}
   ngOnInit(): void {}
 
-  onSwipe(swipe: SWIPE_TYPE): void {
+  public onSwipe(swipe: SWIPE_TYPE): void {
     if (swipe === SWIPE_TYPE.RIGHT) {
       this.carousel.prev();
     }
@@ -30,5 +30,5 @@ export class ItemImagesComponent implements OnInit {
     }
   }
 
-  openModalImageSlider(): void {}
+  public openModalImageSlider(): void {}
 }
