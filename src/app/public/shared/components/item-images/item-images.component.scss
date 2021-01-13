@@ -1,36 +1,45 @@
 @import '~style/common';
 
 $item-images-height: 477px;
-$icon-margin: $spacer * 0.5;
+$item-flag-height: 38px;
+$icon-margin: $spacer;
 
 .ItemImages {
   height: $item-images-height;
 
-  &_image {
-    border-radius: $border-radius;
+  &__flag {
+    z-index: 2;
+    top: $icon-margin;
+    border-radius: $border-radius * 2;
+    background: $white;
+    margin-bottom: $spacing-ms;
+    height: $item-flag-height;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.5);
+
+    &--left {
+      left: $icon-margin;
+    }
+
+    &--right {
+      right: $icon-margin;
+    }
+
+    &--reserved {
+      color: $skyblue-dark;
+    }
+
+    &--sold {
+      color: $magenta-main;
+    }
+
+    &--bumped {
+      background-color: $walla-main;
+      color: $white;
+    }
   }
 }
 
-.ItemFlags__icon {
-  z-index: 51;
-  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.5);
-  background: $white;
-  border-radius: 20px;
-  height: 38px;
-  width: fit-content;
-  border: solid 1px $blue-grey-5;
-  padding: 0 16px 0 12px;
-  top: $icon-margin;
-
-  &--wallapop {
-    background: $walla-main;
-  }
-
-  &--left {
-    left: $icon-margin;
-  }
-
-  &--right {
-    right: $icon-margin;
-  }
+.ItemImages__image {
+  border-radius: $border-radius;
+  height: $item-images-height;
 }
