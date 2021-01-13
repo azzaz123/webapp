@@ -341,6 +341,10 @@ export class MockedUserService {
   }
 
   public getPhoneInfo(userId: string) {}
+
+  public checkUserPermissions(): Observable<boolean> {
+    return of(true);
+  }
 }
 
 export const USER_INFO_RESPONSE: UserInfoResponse = {
