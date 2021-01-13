@@ -41,6 +41,11 @@ Default.args = {
   images: imagesURL,
 };
 
+export const OneImage = Template.bind({});
+OneImage.args = {
+  images: [imagesURL[0]],
+};
+
 export const WithoutImages = Template.bind({});
 WithoutImages.args = {
   images: null,

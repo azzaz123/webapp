@@ -6,9 +6,10 @@ import { ImageFallbackModule } from '@public/core/directives/image-fallback/imag
 import { ImagesCarouselComponent } from './images-carousel.component';
 
 describe('ImagesCarouselComponent', () => {
-  const fallbackIdTemplate = '#fallbackTemplate';
-  const imageIdTemplate = '#imageTemplate';
+  const fallbackIdTemplate = '#fallbackCarousel';
+  const defaultIdTemplate = '#defaultCarousel';
   const carouselTag = 'ngb-carousel';
+  const carouselImageClass = '.ImagesCarousel__image';
 
   let component: ImagesCarouselComponent;
   let fixture: ComponentFixture<ImagesCarouselComponent>;
@@ -23,6 +24,7 @@ describe('ImagesCarouselComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ImagesCarouselComponent);
     component = fixture.componentInstance;
+    component.images = ['', ''];
     fixture.detectChanges();
   });
 
@@ -32,32 +34,30 @@ describe('ImagesCarouselComponent', () => {
     fixture.detectChanges();
   });
 
-  xdescribe('when we have images...', () => {
-    beforeEach(() => {
-      component.images = ['', ''];
-
-      fixture.detectChanges();
-    });
+  describe('when we have images...', () => {
     it('should show the normal image slider', () => {
-      const normalSlider = fixture.debugElement.query(By.css(imageIdTemplate));
+      const normalSlider = fixture.debugElement.query(
+        By.css(defaultIdTemplate)
+      );
       const fallbackSlider = fixture.debugElement.query(
         By.css(fallbackIdTemplate)
       );
 
       expect(normalSlider).toBeTruthy();
-      expect(fallbackSlider).toBeTruthy();
+      expect(fallbackSlider).toBeFalsy();
     });
   });
 
   describe(`when we don't have images...`, () => {
     beforeEach(() => {
       component.images = null;
-
       fixture.detectChanges();
     });
 
     it('should show the fallback image slider', () => {
-      const normalSlider = fixture.debugElement.query(By.css(imageIdTemplate));
+      const normalSlider = fixture.debugElement.query(
+        By.css(defaultIdTemplate)
+      );
       const fallbackSlider = fixture.debugElement.query(
         By.css(fallbackIdTemplate)
       );
@@ -90,13 +90,13 @@ describe('ImagesCarouselComponent', () => {
 
   describe('when we click on the carousel...', () => {
     it('should open the image slider...', () => {
-      spyOn(component, 'emitCurrentImage');
+      spyOn(component.currentImageIndex, 'emit');
 
       fixture.debugElement
-        .query(By.css(carouselTag))
+        .query(By.css(carouselImageClass))
         .triggerEventHandler('click', {});
 
-      expect(component.emitCurrentImage).toHaveBeenCalled();
+      expect(component.currentImageIndex.emit).toHaveBeenCalled();
     });
   });
 });
