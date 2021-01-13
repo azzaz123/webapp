@@ -3,6 +3,7 @@ import { UserService } from '@core/user/user.service';
 import { UserStats, Counters } from '@core/user/user-stats.interface';
 import { ItemsPageComponent } from '../components/items-page/items-page.component';
 import { ProfilesPageComponent } from '../components/profiles-page/profiles-page.component';
+import { FAVORITES_PATHS } from '../favorites-routing-constan';
 
 @Component({
   selector: 'tsl-favorites',
@@ -10,7 +11,7 @@ import { ProfilesPageComponent } from '../components/profiles-page/profiles-page
   styleUrls: ['./favorites.component.scss'],
 })
 export class FavoritesComponent implements OnInit {
-  public selectedStatus = 'products';
+  public selectedStatus = FAVORITES_PATHS.PRODUCTS;
   public numberOfFavorites: number;
   private counters: Counters;
 
@@ -53,7 +54,7 @@ export class FavoritesComponent implements OnInit {
 
   private setNumberOfFavorites() {
     this.numberOfFavorites =
-      this.selectedStatus === 'products'
+      this.selectedStatus === FAVORITES_PATHS.PRODUCTS
         ? this.counters.favorites
         : this.counters.profile_favorited;
   }
