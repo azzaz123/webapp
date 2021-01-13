@@ -1,6 +1,6 @@
 <div class="ItemImages position-relative">
-    <ngb-carousel interval="0" (swipeleft)="onSwipe(SWIPE_TYPE_ENUM.LEFT)" (swipeRight)="onSwipe(SWIPE_TYPE_ENUM.RIGHT)"
-        (click)="openModalImageSlider()">
+    <ngb-carousel interval="0" (swipeleft)="onSwipe(SWIPE_TYPE_ENUM.LEFT)" (swiperight)="onSwipe(SWIPE_TYPE_ENUM.RIGHT)"
+        (click)="emitCurrentImage()">
         <ng-template ngbSlide *ngIf="!images?.length; else imageTemplate" #fallbackTemplate>
             <div class="ItemImages__image">
                 <img [src]="IMAGE_FALLBACK" alt="fallback" class="w-100 h-100">
@@ -8,8 +8,7 @@
         </ng-template>
         <ng-template ngbSlide *ngFor="let image of images" #imageTemplate>
             <div class="ItemImages__image">
-                <img [src]="image.urls_by_size?.medium" alt="" class="w-100 h-100" [fallback]="IMAGE_FALLBACK"
-                    loading="lazy">
+                <img [src]="image" alt="" class="w-100 h-100" [fallback]="IMAGE_FALLBACK" loading="lazy">
             </div>
         </ng-template>
     </ngb-carousel>

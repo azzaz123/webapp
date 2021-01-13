@@ -2,7 +2,6 @@
 
 $item-images-height: 477px;
 $item-flag-height: 38px;
-$icon-margin: $spacer;
 
 ::ng-deep .carousel-control-prev,
 ::ng-deep .carousel-control-next {
@@ -18,7 +17,7 @@ $icon-margin: $spacer;
   margin-bottom: auto;
 }
 
-.ItemImages {
+.ImagesCarousel {
   height: $item-images-height;
 
   &__image {
