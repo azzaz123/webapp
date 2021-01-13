@@ -1,0 +1,28 @@
+@import '~style/common';
+$item-detail-card-width: 681px;
+
+:host {
+  background-color: $blue-grey-5;
+  display: block;
+}
+
+.ItemDetail {
+  &__container {
+    @include media-breakpoint-up(xl) {
+      max-width: 1440px;
+    }
+  }
+  &__content {
+    // The height will be removed
+    height: 800px;
+    width: 100%;
+    max-width: $item-detail-card-width;
+    background-color: $white;
+    border-radius: $border-radius;
+    border: solid 1px $blue-grey-5;
+  }
+}
+
+tsl-side-sky {
+  top: calc(#{$topbar-height} + #{$spacer * 0.5});
+}
