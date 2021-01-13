@@ -5,6 +5,8 @@ $item-flag-height: 38px;
 $icon-margin: $spacer;
 
 .ItemImages {
+  // The margin-top will be removed
+  margin-top: 20px;
   height: $item-images-height;
 
   &__flag {
@@ -42,4 +44,14 @@ $icon-margin: $spacer;
 .ItemImages__image {
   border-radius: $border-radius;
   height: $item-images-height;
+}
+
+::ng-deep .carousel-indicators {
+  background: linear-gradient(to top, rgba($black, 0.25), rgba($black, 0));
+  border-radius: $border-radius;
+  height: 54px;
+  bottom: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: auto;
 }
