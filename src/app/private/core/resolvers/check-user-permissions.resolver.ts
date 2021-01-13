@@ -3,9 +3,7 @@ import { Resolve } from '@angular/router';
 import { UserService } from '@core/user/user.service';
 import { Observable } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class CheckUserPermissionsResolver implements Resolve<boolean> {
   constructor(private userService: UserService) {}
 
