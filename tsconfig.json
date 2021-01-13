@@ -42,7 +42,8 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "importHelpers": true,
-    "emitDecoratorMetadata": true,
+    // BEFOREMERGE: https://stackoverflow.com/questions/56870661/angular-7-2-1-es6-class-referenceerror-cannot-access-x-before-initializatio
+    "emitDecoratorMetadata": false,
     "experimentalDecorators": true,
     "typeRoots": [
       "node_modules/@types"

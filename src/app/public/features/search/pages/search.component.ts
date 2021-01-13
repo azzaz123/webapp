@@ -1,8 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Item } from '@core/item/item';
+import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 
 @Component({
-  selector: 'tsl-wall',
-  templateUrl: 'wall.component.html',
-  styleUrls: ['./wall.component.scss'],
+  selector: 'tsl-search',
+  templateUrl: './search.component.html',
+  styleUrls: ['./search.component.scss'],
 })
-export class SearchComponent {}
+export class SearchComponent implements OnInit {
+  public items: Item[];
+
+  constructor() {}
+
+  public ngOnInit() {
+    this.items = Array(10).fill(MOCK_ITEM);
+  }
+}
