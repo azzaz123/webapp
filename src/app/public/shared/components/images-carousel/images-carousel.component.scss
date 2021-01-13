@@ -25,3 +25,11 @@ $item-flag-height: 38px;
     height: $item-images-height;
   }
 }
+
+.hideControllers {
+  ::ng-deep .carousel-control-prev,
+  ::ng-deep .carousel-control-next,
+  ::ng-deep .carousel-indicators {
+    display: none;
+  }
+}
