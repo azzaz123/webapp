@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { AdComponent } from './ad/ad.component';
 import { DateUntilDayPipe, DateCalendarPipe } from './pipes';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
@@ -222,6 +222,7 @@ import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.mo
     DateCountDownComponent,
     WallacoinsDisabledModalComponent,
   ],
+  providers: [DecimalPipe, LinkTransformPipe],
   entryComponents: [
     ConfirmationModalComponent,
     SoldModalComponent,

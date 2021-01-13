@@ -1,4 +1,4 @@
-import { CommonModule, DecimalPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {
   ModuleWithProviders,
   NgModule,
@@ -11,7 +11,6 @@ import { InboxService } from '@features/chat/core/inbox/inbox.service';
 import { MessageService } from '@features/chat/core/message/message.service';
 import { CartService } from '@shared/catalog/cart/cart.service';
 import { ExitConfirmGuard } from '@shared/guards/exit-confirm.guard';
-import { LinkTransformPipe } from '@shared/pipes';
 import { CookieModule } from 'ngx-cookie';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { NgxPermissionsModule } from 'ngx-permissions';
@@ -91,8 +90,6 @@ export class CoreModule {
         GeolocationService,
         CategoryService,
         CartService,
-        DecimalPipe,
-        LinkTransformPipe,
         ExitConfirmGuard,
       ],
     };
