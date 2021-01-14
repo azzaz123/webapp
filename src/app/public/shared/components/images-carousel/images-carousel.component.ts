@@ -29,11 +29,11 @@ export class ImagesCarouselComponent {
 
   public onSwipe(swipe: SWIPE_TYPE): void {
     if (swipe === SWIPE_TYPE.RIGHT) {
-      this.carousel.prev();
+      return this.carousel.prev();
     }
 
     if (swipe === SWIPE_TYPE.LEFT) {
-      this.carousel.next();
+      return this.carousel.next();
     }
   }
 
