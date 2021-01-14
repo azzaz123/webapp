@@ -9,9 +9,6 @@ const routes: Routes = [
   {
     path: '',
     component: PrivateComponent,
-    resolve: {
-      isUserPermissionChecked: CheckUserPermissionsResolver,
-    },
     children: [
       {
         path: 'pro',
