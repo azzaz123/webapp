@@ -32,4 +32,19 @@ export class ImagesCarouselComponent {
   public emitCurrentImage(imageIndex: number): void {
     this.currentImageIndex.emit(imageIndex);
   }
+
+  public canLoadImage(i: number): boolean {
+    return this.isSlideAllowed(i);
+  }
+
+  private isSlideAllowed(slideId: number): boolean {
+    const loadTheNext = 3;
+    const currentIndex = parseInt(this.currentSlide.slice(-1));
+    const templateSlide = `${this.NGB_SLIDE}${slideId}`;
+
+    return [...Array(loadTheNext).keys()].some(
+      (slide: number) =>
+        `${this.NGB_SLIDE}${currentIndex + slide}` === templateSlide
+    );
+  }
 }
