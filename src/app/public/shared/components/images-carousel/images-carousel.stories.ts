@@ -33,8 +33,8 @@ const Template: Story<ImagesCarouselComponent> = (
 });
 
 const imagesURL = [
-  'http://cdn-dock135.wallapop.com/images/10420/0t/__/c10420p38019/i42022.jpg?pictureSize=W640',
-  'http://cdn-dock135.wallapop.com/images/10420/14/__/c10420p52007/i58009.jpg?pictureSize=W640',
+  'http://localhost:6006/images/item-camera.jpg',
+  'http://localhost:6006/images/item-pc.jpg',
 ];
 export const Default = Template.bind({});
 Default.args = {
