@@ -1,20 +1,16 @@
-<div class="ImagesCarousel position-relative">
+<div class="ImagesCarousel position-relative h-100 w-100">
     <ngb-carousel *ngIf="images?.length; else fallbackCarousel" interval="0" id="defaultCarousel"
         (swipeleft)="onSwipe(SWIPE_TYPE.LEFT)" (swiperight)="onSwipe(SWIPE_TYPE.RIGHT)" [ngClass]="{
         'hideControllers': images?.length <=1}">
         <ng-template *ngFor="let image of images; let i = index" ngbSlide>
-            <div class="ImagesCarousel__image h-100" (click)="emitCurrentImage(i)">
-                <img *ngIf="currentSlide === NGB_SLIDE+i" [src]="image" alt="" class="w-100 h-100"
-                    [fallback]="IMAGE_FALLBACK" loading="lazy">
-            </div>
+            <img *ngIf="currentSlide === NGB_SLIDE+i" [src]="image" alt="" [fallback]="IMAGE_FALLBACK" loading="lazy"
+                class="ImagesCarousel__image" (click)="emitCurrentImage(i)">
         </ng-template>
     </ngb-carousel>
     <ng-template #fallbackCarousel>
         <ngb-carousel interval="0" id="fallbackCarousel" class="hideControllers">
             <ng-template ngbSlide>
-                <div class="ImagesCarousel__image">
-                    <img [src]="IMAGE_FALLBACK" alt="fallback" class="w-100 h-100" loading="lazy">
-                </div>
+                <img class="ImagesCarousel__image" [src]="IMAGE_FALLBACK" alt="fallback" loading="lazy">
             </ng-template>
         </ngb-carousel>
     </ng-template>
