@@ -2,6 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AccessTokenService } from '@core/http/access-token.service';
+import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { PublicProfileService } from '../../core/services/public-profile.service';
 import { ItemCardListModule } from './components/item-card-list/item-card-list.module';
@@ -23,6 +24,7 @@ describe('UserPublishedComponent', () => {
         PublicProfileService,
         MapItemService,
         CheckSessionService,
+        PublicUserApiService,
         {
           provide: AccessTokenService,
           useValue: {
