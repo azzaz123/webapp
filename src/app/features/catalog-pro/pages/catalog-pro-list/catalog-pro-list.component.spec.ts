@@ -23,9 +23,14 @@ import {
   ITEM_ID,
   ORDER,
 } from '@fixtures/item.fixtures.spec';
+import {
+  createPacksFixture,
+  createPerksModelFixture,
+} from '@fixtures/payments.fixtures.spec';
 import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BumpSuggestionModalComponent } from '@shared/modals/bump-suggestion-modal/bump-suggestion-modal.component';
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
 import { of, Subject } from 'rxjs';
 import { CatalogProListComponent } from './catalog-pro-list.component';
@@ -48,6 +53,8 @@ describe('CatalogProListComponent', () => {
   let errorService: ErrorsService;
   let modalSpy: jasmine.Spy;
   let uuidService: UuidService;
+  let paymentService: PaymentService;
+
   const routerEvents: Subject<any> = new Subject();
   const mockCounters = {
     sold: 0,
@@ -123,6 +130,12 @@ describe('CatalogProListComponent', () => {
               pay() {
                 return of({});
               },
+              getPerks() {
+                return of(createPerksModelFixture());
+              },
+              getPacks() {
+                return of(createPacksFixture());
+              },
             },
           },
           {
@@ -154,6 +167,7 @@ describe('CatalogProListComponent', () => {
     modalSpy = spyOn(modalService, 'open').and.callThrough();
     eventService = TestBed.inject(EventService);
     uuidService = TestBed.inject(UuidService);
+    paymentService = TestBed.inject(PaymentService);
     fixture.detectChanges();
   });
 
@@ -182,6 +196,103 @@ describe('CatalogProListComponent', () => {
       expect(localStorage.removeItem).toHaveBeenCalled();
       expect(component['modalRef'].componentInstance.extras).toBe(true);
     }));
+
+    describe('bump suggestion modal', () => {
+      beforeEach(() => {
+        route.params = of({
+          created: true,
+          itemId: '1',
+        });
+      });
+
+      it('should open bump suggestion modal', fakeAsync(() => {
+        component.ngOnInit();
+        tick();
+
+        expect(modalService.open).toHaveBeenCalledWith(
+          BumpSuggestionModalComponent,
+          {
+            windowClass: 'modal-standard',
+          }
+        );
+      }));
+
+      it('should open bump suggestion modal with the price', fakeAsync(() => {
+        spyOn(paymentService, 'getPerks').and.callThrough();
+        spyOn(paymentService, 'getPacks').and.callThrough();
+
+        component.ngOnInit();
+        tick();
+
+        component['bumpSuggestionModalRef'] = <any>{
+          componentInstance: componentInstance,
+        };
+
+        expect(paymentService.getPacks).toHaveBeenCalledTimes(1);
+        expect(paymentService.getPacks).toHaveBeenCalledWith();
+        expect(
+          component['bumpSuggestionModalRef'].componentInstance.productPrice
+        ).toEqual(5.99);
+        expect(
+          component['bumpSuggestionModalRef'].componentInstance.productCurrency
+        ).toEqual('EUR');
+      }));
+
+      it('should open bump suggestion modal without the price', fakeAsync(() => {
+        const mock = createPerksModelFixture();
+        mock.subscription.national.quantity = 1;
+        spyOn(paymentService, 'getPerks').and.returnValue(of(mock));
+        spyOn(paymentService, 'getPacks');
+
+        component.ngOnInit();
+        tick();
+
+        expect(paymentService.getPacks).not.toHaveBeenCalled();
+      }));
+
+      it('should redirect checkout when modal CTA button modal is clicked', fakeAsync(() => {
+        modalSpy.and.returnValue({
+          result: Promise.resolve({ redirect: true }),
+          componentInstance: { item: null },
+        });
+        spyOn(router, 'navigate');
+        component.ngOnInit();
+        tick();
+
+        expect(router.navigate).toHaveBeenCalledTimes(1);
+        expect(router.navigate).toHaveBeenCalledWith([
+          'pro/catalog/checkout',
+          { itemId: '1' },
+        ]);
+      }));
+
+      it('should redirect extra checkouts when modal CTA button modal is clicked', fakeAsync(() => {
+        modalSpy.and.returnValue({
+          result: Promise.resolve({ redirect: true, hasPrice: true }),
+          componentInstance: { item: null },
+        });
+        spyOn(router, 'navigate');
+        component.ngOnInit();
+        tick();
+
+        expect(router.navigate).toHaveBeenCalledTimes(1);
+        expect(router.navigate).toHaveBeenCalledWith([
+          'pro/catalog/checkout-extras',
+        ]);
+      }));
+
+      it('should not redirect when modal is closed', fakeAsync(() => {
+        modalSpy.and.returnValue({
+          result: Promise.resolve({ redirect: false }),
+          componentInstance: { item: null },
+        });
+        spyOn(router, 'navigate');
+        component.ngOnInit();
+        tick();
+
+        expect(router.navigate).not.toHaveBeenCalled();
+      }));
+    });
 
     it('should open bump confirmation modal and redirect to extras if code is 202', fakeAsync(() => {
       spyOn(router, 'navigate');
@@ -318,6 +429,19 @@ describe('CatalogProListComponent', () => {
         }
       );
     });
+
+    it('should set item to bumb suggestion modal', fakeAsync(() => {
+      component['bumpSuggestionModalRef'] = <any>{
+        componentInstance: componentInstance,
+      };
+
+      component.ngOnInit();
+      tick();
+
+      expect(
+        component['bumpSuggestionModalRef'].componentInstance.item
+      ).toEqual(component.items[0]);
+    }));
 
     it('should track the ProductListActiveViewed if the selectedStatus is published', () => {
       component['selectedStatus'] = ITEM_STATUS.PUBLISHED;
@@ -547,7 +671,7 @@ describe('CatalogProListComponent', () => {
 
     describe('getSubscriptionPlan', () => {
       it('should set the subscription plan to the current one', () => {
-        component.getSubscriptionPlan(subscriptionPlan);
+        component.subscriptionPlan = subscriptionPlan;
 
         expect(component.subscriptionPlan).toEqual(subscriptionPlan);
       });
