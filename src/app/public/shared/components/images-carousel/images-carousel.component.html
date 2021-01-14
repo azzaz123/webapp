@@ -2,7 +2,7 @@
     <ngb-carousel *ngIf="images?.length; else fallbackCarousel" interval="0" id="defaultCarousel"
         (swipeleft)="carousel.next()" (swiperight)="carousel.prev()" [ngClass]="{
         'hideControllers': images?.length <=1}">
-        <ng-template *ngFor="let image of images; let i = index" ngbSlide>
+        <ng-template *ngFor="let image of images; let i = index" ngbSlide [id]="NGB_SLIDE + i">
             <img *ngIf="currentSlide === NGB_SLIDE+i" [src]="image" alt="" [fallback]="IMAGE_FALLBACK" loading="lazy"
                 class="ImagesCarousel__image" (click)="emitCurrentImage(i)">
         </ng-template>
