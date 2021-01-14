@@ -1,6 +1,6 @@
 <div class="ImagesCarousel position-relative">
     <ngb-carousel *ngIf="images?.length; else fallbackCarousel" interval="0" id="defaultCarousel"
-        (swipeleft)="onSwipe(SWIPE_TYPE_ENUM.LEFT)" (swiperight)="onSwipe(SWIPE_TYPE_ENUM.RIGHT)" [ngClass]="{
+        (swipeleft)="onSwipe(SWIPE_TYPE.LEFT)" (swiperight)="onSwipe(SWIPE_TYPE.RIGHT)" [ngClass]="{
         'hideControllers': images?.length <=1}">
         <ng-template *ngFor="let image of images; let i = index" ngbSlide>
             <div class="ImagesCarousel__image" (click)="emitCurrentImage(i)">

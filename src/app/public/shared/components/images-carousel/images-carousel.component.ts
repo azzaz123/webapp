@@ -17,7 +17,7 @@ import { FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH } from '@core/item/item';
 })
 export class ImagesCarouselComponent implements OnInit {
   public readonly IMAGE_FALLBACK = FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH;
-  public SWIPE_TYPE_ENUM = SWIPE_TYPE;
+  public SWIPE_TYPE = SWIPE_TYPE;
   @ViewChild(NgbCarousel) public carousel: NgbCarousel;
   @Input() images: string[];
   @Output() currentImageIndex: EventEmitter<number> = new EventEmitter<
