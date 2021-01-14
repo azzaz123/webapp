@@ -17,6 +17,8 @@ import { FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH } from '@core/item/item';
 export class ImagesCarouselComponent {
   public readonly IMAGE_FALLBACK = FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH;
   public SWIPE_TYPE = SWIPE_TYPE;
+  public readonly NGB_SLIDE = 'ngb-slide-';
+
   @ViewChild(NgbCarousel) public carousel: NgbCarousel;
   @Input() images: string[];
   @Output() currentImageIndex: EventEmitter<number> = new EventEmitter<
@@ -33,6 +35,10 @@ export class ImagesCarouselComponent {
     if (swipe === SWIPE_TYPE.LEFT) {
       this.carousel.next();
     }
+  }
+
+  get currentSlide(): string {
+    return this.carousel?.activeId || this.NGB_SLIDE + 0;
   }
 
   public emitCurrentImage(imageIndex: number): void {
