@@ -19,6 +19,7 @@ export class ImagesCarouselComponent {
 
   @ViewChild(NgbCarousel) public carousel: NgbCarousel;
   @Input() images: string[];
+  @Input() paginationSize = 3;
   @Output() currentImageIndex: EventEmitter<number> = new EventEmitter<
     number
   >();
@@ -38,11 +39,10 @@ export class ImagesCarouselComponent {
   }
 
   private isSlideAllowed(slideId: number): boolean {
-    const loadTheNext = 3;
     const currentIndex = parseInt(this.currentSlide.slice(-1));
     const templateSlide = `${this.NGB_SLIDE}${slideId}`;
 
-    return [...Array(loadTheNext).keys()].some(
+    return [...Array(this.paginationSize).keys()].some(
       (slide: number) =>
         `${this.NGB_SLIDE}${currentIndex + slide}` === templateSlide
     );
