@@ -3,7 +3,7 @@
         (swipeleft)="onSwipe(SWIPE_TYPE.LEFT)" (swiperight)="onSwipe(SWIPE_TYPE.RIGHT)" [ngClass]="{
         'hideControllers': images?.length <=1}">
         <ng-template *ngFor="let image of images; let i = index" ngbSlide>
-            <div class="ImagesCarousel__image" (click)="emitCurrentImage(i)">
+            <div class="ImagesCarousel__image h-100" (click)="emitCurrentImage(i)">
                 <img *ngIf="currentSlide === NGB_SLIDE+i" [src]="image" alt="" class="w-100 h-100"
                     [fallback]="IMAGE_FALLBACK" loading="lazy">
             </div>

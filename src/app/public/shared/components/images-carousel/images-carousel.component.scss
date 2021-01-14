@@ -1,6 +1,5 @@
 @import '~style/common';
 
-$item-images-height: 477px;
 $item-flag-height: 38px;
 
 ::ng-deep .carousel-control-prev,
@@ -18,11 +17,8 @@ $item-flag-height: 38px;
 }
 
 .ImagesCarousel {
-  height: $item-images-height;
-
   &__image {
-    border-radius: $border-radius;
-    height: $item-images-height;
+    object-fit: cover;
   }
 }
 
