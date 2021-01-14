@@ -3,9 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class BlockUserService {
   public static readonly BLOCK_USER_ENDPOINT = `api/v3/instant-messaging/privacy/user`;
 
