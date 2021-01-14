@@ -50,28 +50,14 @@ describe('ProfilesPageComponent', () => {
       ).and.callThrough();
     });
 
-    it('if append argument is false should clear the profile array', () => {
-      component.profiles = [MOCK_PROFILE];
-      component.getProfiles(false);
-
-      expect(component.profiles).toEqual([MOCK_PROFILE, MOCK_PROFILE]);
-    });
-
-    it('if append argument is not defined should clear the profile array', () => {
+    it('when initiate the page, should not load more profiles', () => {
       component.profiles = [MOCK_PROFILE];
       component.getProfiles();
 
       expect(component.profiles).toEqual([MOCK_PROFILE, MOCK_PROFILE]);
     });
 
-    it('should call myFavorites with profiles length', () => {
-      const init = component.profiles.length;
-      component.getProfiles(true);
-
-      expect(profileService.myFavorites).toHaveBeenCalledWith(init);
-    });
-
-    it('if append argument is true, current component.profile should add the profile', () => {
+    it('when scrolling the page, should load more profiles', () => {
       component.profiles = [MOCK_PROFILE];
       component.getProfiles(true);
 
@@ -82,14 +68,7 @@ describe('ProfilesPageComponent', () => {
       ]);
     });
 
-    it('should set loading to false', () => {
-      component.loading = true;
-      component.getProfiles();
-
-      expect(component.loading).toBeFalsy();
-    });
-
-    it('should set end true if no init', () => {
+    it('should stop ininite scroll if there is no next page of profiles', () => {
       profileServiceSpy.and.returnValue(
         of({ data: [MOCK_PROFILE, MOCK_PROFILE], init: null })
       );
@@ -104,7 +83,7 @@ describe('ProfilesPageComponent', () => {
       spyOn(component, 'removeProfile');
     });
 
-    it('should call removeProfile with a profile argument', () => {
+    it('should remove profile if we click on remove', () => {
       component.onFavoriteProfileChange(MOCK_PROFILE);
 
       expect(component.removeProfile).toHaveBeenCalledWith(MOCK_PROFILE);
