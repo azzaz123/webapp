@@ -81,7 +81,7 @@ describe('ItemCartFavoriteComponent', () => {
   });
 
   describe('goToItemDetail', () => {
-    it('should change window url', () => {
+    it('should go to product detail page', () => {
       spyOn(window, 'open');
       const MOCK_ITEM_URL: string =
         environment.siteUrl.replace('es', subdomain) +

@@ -50,7 +50,7 @@ describe('ProfilesPageComponent', () => {
       ).and.callThrough();
     });
 
-    it('when initiate the page, should not load more profiles', () => {
+    it('when initiate the page, should load profiles', () => {
       component.profiles = [MOCK_PROFILE];
       component.getProfiles();
 
@@ -83,7 +83,7 @@ describe('ProfilesPageComponent', () => {
       spyOn(component, 'removeProfile');
     });
 
-    it('should remove profile if we click on remove', () => {
+    it('should remove the profile if we click on remove', () => {
       component.onFavoriteProfileChange(MOCK_PROFILE);
 
       expect(component.removeProfile).toHaveBeenCalledWith(MOCK_PROFILE);
@@ -108,7 +108,7 @@ describe('ProfilesPageComponent', () => {
   });
 
   describe('loadMore', () => {
-    it('should load more products', () => {
+    it('should load more profiles', () => {
       spyOn(component, 'loadMore').and.callThrough();
       spyOn(component, 'getProfiles');
 

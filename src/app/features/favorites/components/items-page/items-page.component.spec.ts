@@ -53,48 +53,20 @@ describe('ItemsPageComponent', () => {
       itemServiceSpy = spyOn(itemService, 'myFavorites').and.callThrough();
     }));
 
-    it('should call myFavorites when component init', () => {
+    it('initiate the page, should load products', () => {
       component.ngOnInit();
 
       expect(component.getItems).toHaveBeenCalled();
     });
 
-    it('if append argument is false should clear item array', () => {
-      component.items = [MOCK_ITEM];
-      component.getItems(false);
-
-      expect(component.items).toEqual([MOCK_ITEM, MOCK_ITEM]);
-    });
-
-    it('if append argument is not defined should clear item array', () => {
-      component.items = [MOCK_ITEM];
-      component.getItems();
-
-      expect(component.items).toEqual([MOCK_ITEM, MOCK_ITEM]);
-    });
-
-    it('should call myFavorites with items length', () => {
-      const init = component.items.length;
-      component.getItems(true);
-
-      expect(itemService.myFavorites).toHaveBeenCalledWith(init);
-    });
-
-    it('if append argument is true, current component.item should add ', () => {
+    it('when scrolling the page, should load more products', () => {
       component.items = [MOCK_ITEM];
       component.getItems(true);
 
       expect(component.items).toEqual([MOCK_ITEM, MOCK_ITEM, MOCK_ITEM]);
     });
 
-    it('should set loading to false', () => {
-      component.loading = true;
-      component.getItems();
-
-      expect(component.loading).toBeFalsy();
-    });
-
-    it('should set end true if no init', () => {
+    it('should stop ininite scroll if there is no next page of products', () => {
       itemServiceSpy.and.returnValue(
         of({ data: [MOCK_ITEM, MOCK_ITEM], init: null })
       );
@@ -109,7 +81,7 @@ describe('ItemsPageComponent', () => {
       spyOn(component, 'removeItem');
     });
 
-    it('should call removeItem with item argument', () => {
+    it('should remove the product if we click on remove', () => {
       component.onFavoriteChange(MOCK_ITEM);
 
       expect(component.removeItem).toHaveBeenCalledWith(MOCK_ITEM);
@@ -117,7 +89,7 @@ describe('ItemsPageComponent', () => {
   });
 
   describe('removeItem', () => {
-    it('should remove the item and change number of favorites', () => {
+    it('should remove the product and change number of favorites', () => {
       spyOn(component.onFavoriteItemPageChange, 'emit');
       const [item1, item2] = (component.items = [MOCK_ITEM, MOCK_ITEM]);
 
