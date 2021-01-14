@@ -1,5 +1,5 @@
 import { CUSTOM_VIEWPORTS } from './viewports/custom-viewports';
-import './polyfills';
+import '../src/polyfills';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
