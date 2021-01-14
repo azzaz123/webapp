@@ -24,7 +24,7 @@
 </a>
 
 <a class="sidebar-section" id="qa-sidebar-messages" [routerLink]="['/chat']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_CHAT">
-  <div class="chat-notification-pending" *ngIf="(messageService.totalUnreadMessages$ | async) > 0"></div>
+  <div class="chat-notification-pending" *ngIf="(unreadChatMessagesService.totalUnreadMessages$ | async) > 0"></div>
   <div class="sidebar-section-circle">
     <tsl-svg-icon src="/assets/icons/navigation_messages.svg"></tsl-svg-icon>
   </div>

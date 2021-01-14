@@ -29,7 +29,7 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { uniq } from 'lodash-es';
 import * as moment from 'moment';
 import { of } from 'rxjs';
-import { MessageService } from '../message/message.service';
+import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 import {
   InboxMessage,
   MessageStatus,
@@ -47,7 +47,7 @@ describe('InboxConversationService', () => {
   let eventService: EventService;
   let realTime: RealTimeService;
   let remoteConsoleService: RemoteConsoleService;
-  let messageService: MessageService;
+  let unreadChatMessagesService: UnreadChatMessagesService;
   let userService: UserService;
   let itemService: ItemService;
   let toastService: ToastService;
@@ -75,7 +75,10 @@ describe('InboxConversationService', () => {
           provide: RemoteConsoleService,
           useValue: { sendPresentationMessageTimeout: () => {} },
         },
-        { provide: MessageService, useValue: { totalUnreadMessages: 0 } },
+        {
+          provide: UnreadChatMessagesService,
+          useValue: { totalUnreadMessages: 0 },
+        },
         { provide: UserService, useClass: MockedUserService },
         { provide: ItemService, useClass: MockedItemService },
         ToastService,
@@ -88,7 +91,7 @@ describe('InboxConversationService', () => {
     eventService = TestBed.inject(EventService);
     realTime = TestBed.inject(RealTimeService);
     remoteConsoleService = TestBed.inject(RemoteConsoleService);
-    messageService = TestBed.inject(MessageService);
+    unreadChatMessagesService = TestBed.inject(UnreadChatMessagesService);
     userService = TestBed.inject(UserService);
     itemService = TestBed.inject(ItemService);
     toastService = TestBed.inject(ToastService);
@@ -296,7 +299,7 @@ describe('InboxConversationService', () => {
         expect(service.conversations[0].unreadCounter).toEqual(
           unreadCounterBefore + count
         );
-        expect(messageService.totalUnreadMessages).toEqual(
+        expect(unreadChatMessagesService.totalUnreadMessages).toEqual(
           unreadCounterBefore + count
         );
       });
@@ -321,12 +324,12 @@ describe('InboxConversationService', () => {
         expect(service.conversations[0].unreadCounter).toEqual(
           unreadCounterBefore + 1
         );
-        expect(messageService.totalUnreadMessages).toEqual(
+        expect(unreadChatMessagesService.totalUnreadMessages).toEqual(
           unreadCounterBefore + 1
         );
       });
 
-      it('should not increment the conversation.unreadCount nor the messageService.totalUnreadMessages for new messages fromSelf', () => {
+      it('should not increment the conversation.unreadCount nor the unreadChatMessagesService.totalUnreadMessages for new messages fromSelf', () => {
         const message = new InboxMessage(
           'mockId',
           conversations[0].id,
@@ -344,7 +347,9 @@ describe('InboxConversationService', () => {
         expect(service.conversations[0].unreadCounter).toEqual(
           unreadCounterBefore
         );
-        expect(messageService.totalUnreadMessages).toEqual(unreadCounterBefore);
+        expect(unreadChatMessagesService.totalUnreadMessages).toEqual(
+          unreadCounterBefore
+        );
       });
 
       describe('and when the message is not from self', () => {
@@ -525,7 +530,9 @@ describe('InboxConversationService', () => {
         expect(service.conversations[0].unreadCounter).toEqual(
           unreadCounterBefore
         );
-        expect(messageService.totalUnreadMessages).toEqual(unreadCounterBefore);
+        expect(unreadChatMessagesService.totalUnreadMessages).toEqual(
+          unreadCounterBefore
+        );
       });
     });
 
@@ -628,7 +635,7 @@ describe('InboxConversationService', () => {
       beforeEach(() => {
         mockedConversation = service.conversations[0];
         mockedConversation.messages = createInboxMessagesArray(10);
-        messageService.totalUnreadMessages = unreadCount;
+        unreadChatMessagesService.totalUnreadMessages = unreadCount;
         mockedConversation.unreadCounter = unreadCount;
       });
 
@@ -646,7 +653,7 @@ describe('InboxConversationService', () => {
           expect(mockedConversation.unreadCounter).toBe(unreadCount);
         });
 
-        it('should NOT decrease messageService.totalUnreadMessages counter', () => {
+        it('should NOT decrease unreadChatMessagesService.totalUnreadMessages counter', () => {
           const signal = new ChatSignal(
             ChatSignalType.READ,
             mockedConversation.id,
@@ -656,7 +663,9 @@ describe('InboxConversationService', () => {
           );
           service.processNewChatSignal(signal);
 
-          expect(messageService.totalUnreadMessages).toBe(unreadCount);
+          expect(unreadChatMessagesService.totalUnreadMessages).toBe(
+            unreadCount
+          );
         });
       });
 
@@ -705,7 +714,7 @@ describe('InboxConversationService', () => {
           expect(mockedConversation.unreadCounter).toBe(0);
         });
 
-        it('should decrase messageService.totalUnreadMessages counter by the number of messages that are being marked as READ', () => {
+        it('should decrase unreadChatMessagesService.totalUnreadMessages counter by the number of messages that are being marked as READ', () => {
           expect(mockedConversation.unreadCounter).toBe(unreadCount);
 
           const signal = new ChatSignal(
@@ -717,10 +726,10 @@ describe('InboxConversationService', () => {
           );
           service.processNewChatSignal(signal);
 
-          expect(messageService.totalUnreadMessages).toBe(0);
+          expect(unreadChatMessagesService.totalUnreadMessages).toBe(0);
         });
 
-        it(`should set messageService.totalUnreadMessages counter to 0 if the number of messages that are being marked as READ is greater
+        it(`should set unreadChatMessagesService.totalUnreadMessages counter to 0 if the number of messages that are being marked as READ is greater
         than the existing counter (disallow negative values in counter)`, () => {
           mockedConversation.unreadCounter = 5;
 
@@ -733,7 +742,7 @@ describe('InboxConversationService', () => {
           );
           service.processNewChatSignal(signal);
 
-          expect(messageService.totalUnreadMessages).toBe(0);
+          expect(unreadChatMessagesService.totalUnreadMessages).toBe(0);
         });
       });
     });
