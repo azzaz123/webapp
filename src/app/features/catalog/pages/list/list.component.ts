@@ -28,7 +28,7 @@ import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmat
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
 import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
 import { NavLink } from '@shared/nav-links/nav-link.interface';
-import { find, findIndex, cloneDeep } from 'lodash-es';
+import { find, findIndex } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { takeWhile } from 'rxjs/operators';
 import { BumpTutorialComponent } from '../../components/bump-tutorial/bump-tutorial.component';
@@ -604,7 +604,7 @@ export class ListComponent implements OnInit, OnDestroy {
     );
   }
 
-  private parseActivation(items: string[]) {
+  private parseActivation(items: string[]): void {
     const activedItems = [];
     items.forEach((id: string) => {
       let item: Item = find(this.items, { id: id });

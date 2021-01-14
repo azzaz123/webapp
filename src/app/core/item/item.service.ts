@@ -67,6 +67,7 @@ export const ITEM_STATUSES: any = {
 
 export const PAYMENT_PROVIDER = 'STRIPE';
 export const MINES_BY_CATEGORY_ENDPOINT = 'api/v3/items/manageable-items/';
+export const ACTIVATE_ENDPOINT = 'activate';
 export enum ITEM_STATUS {
   SOLD = 'sold',
   ACTIVE = 'active',
@@ -1033,7 +1034,7 @@ export class ItemService {
 
   public activate(): Observable<any> {
     return this.http
-      .put(`${environment.baseUrl}${ITEMS_API_URL}/activate`, {
+      .put(`${environment.baseUrl}${ITEMS_API_URL}/${ACTIVATE_ENDPOINT}`, {
         ids: this.selectedItems,
       })
       .pipe(tap(() => this.deselectItems()));
@@ -1041,7 +1042,7 @@ export class ItemService {
 
   public activateSingleItem(id: string): Observable<void> {
     return this.http.put<void>(
-      `${environment.baseUrl}${ITEMS_API_URL}/${id}/activate`,
+      `${environment.baseUrl}${ITEMS_API_URL}/${id}/${ACTIVATE_ENDPOINT}`,
       {}
     );
   }

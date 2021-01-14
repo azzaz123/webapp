@@ -72,6 +72,7 @@ import {
   Product,
 } from './item-response.interface';
 import {
+  ACTIVATE_ENDPOINT,
   ItemService,
   ITEMS_API_URL,
   ITEM_STATUSES,
@@ -905,7 +906,7 @@ describe('ItemService', () => {
   describe('activateSingleItem', () => {
     it('should active an item', () => {
       const id = '1';
-      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${id}/activate`;
+      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${id}/${ACTIVATE_ENDPOINT}`;
 
       service.activateSingleItem(id).subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);
