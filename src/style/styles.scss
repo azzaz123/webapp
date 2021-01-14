@@ -93,7 +93,7 @@ body {
 .page-content {
   padding-left: $sidebar-width;
   padding-top: $topbar-height;
-  background: rgba(236, 239, 241, 0.6);
+  background: $main-background-color;
   min-height: 100%;
   @include media-breakpoint-down(md) {
     padding-left: 0;
