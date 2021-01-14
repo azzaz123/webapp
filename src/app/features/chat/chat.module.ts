@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { TrackingModule } from '@core/tracking/tracking.module';
 import {
   NgbDropdownModule,
   NgbModalModule,
@@ -49,7 +48,6 @@ import { PersonalDataInformationModal } from './modals/personal-data-information
     NgbModalModule,
     SharedModule,
     ChatRoutingModule,
-    TrackingModule,
     AutosizeModule,
     MessageModule,
     UserResponseRateModule,

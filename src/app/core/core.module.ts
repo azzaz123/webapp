@@ -7,22 +7,29 @@ import { EventService } from './event/event.service';
 import { GeolocationService } from './geolocation/geolocation.service';
 import { AccessTokenService } from './http/access-token.service';
 import { I18nService } from './i18n/i18n.service';
-import { ItemModule } from './item/item.module';
 import { PaymentService } from './payments/payment.service';
-import { TrackingModule } from './tracking/tracking.module';
 import { DevelopmentGuard } from './user/development.guard';
 import { LoggedGuard } from './user/logged.guard';
-import { UserModule } from './user/user.module';
 import { SocialShareService } from './social-share/social-share.service';
+import { AnalyticsService } from './analytics/analytics.service';
+import { DeviceService } from './device/device.service';
+import { DidomiService } from './didomi/didomi.service';
+import { LoadExternalLibsService } from './load-external-libs/load-external-libs.service';
+import { FeatureflagService } from './user/featureflag.service';
+import { SessionService } from './session/session.service';
+import { UuidService } from './uuid/uuid.service';
+import { AdsService } from '@features/chat/core/ads/ads.service';
+import { HereMapsService } from '@shared/geolocation/here-maps/here-maps.service';
+import { UserService } from './user/user.service';
+import { TrackingService } from './tracking/tracking.service';
+import { NavigatorService } from './tracking/navigator.service';
+import { ItemService } from './item/item.service';
 
 @NgModule({
   imports: [
     CookieModule.forRoot(),
     NgxPermissionsModule.forRoot(),
-    TrackingModule,
     DeviceDetectorModule.forRoot(),
-    UserModule,
-    ItemModule,
   ],
   providers: [
     LoggedGuard,
@@ -34,6 +41,19 @@ import { SocialShareService } from './social-share/social-share.service';
     PaymentService,
     SocialShareService,
     GeolocationService,
+    HereMapsService,
+    AnalyticsService,
+    DeviceService,
+    DidomiService,
+    LoadExternalLibsService,
+    FeatureflagService,
+    SessionService,
+    UuidService,
+    AdsService,
+    TrackingService,
+    NavigatorService,
+    UserService,
+    ItemService,
   ],
 })
 export class CoreModule {

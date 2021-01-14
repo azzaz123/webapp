@@ -38,7 +38,6 @@ import { CatalogCardComponent } from './catalog/catalog-card/catalog-card.compon
 import { CatalogItemActionsComponent } from './catalog/catalog-item-actions/catalog-item-actions.component';
 import { CatalogStatusNavbarComponent } from './catalog/catalog-status-navbar/catalog-status-navbar.component';
 import { CartComponent } from './catalog/cart/cart.component';
-import { TrackingModule } from '../core/tracking/tracking.module';
 import { RouterModule } from '@angular/router';
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
 import { CountdownComponent } from './countdown/countdown.component';
@@ -75,6 +74,7 @@ import { UserCoverModule } from './user-cover/user-cover.module';
 import { WallacoinsDisabledModalComponent } from './modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
 import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.module';
 import { BumpSuggestionModalComponent } from './modals/bump-suggestion-modal/bump-suggestion-modal.component';
+import { TrackEventDirective } from '@core/tracking/track-event.directive';
 
 @NgModule({
   imports: [
@@ -85,7 +85,6 @@ import { BumpSuggestionModalComponent } from './modals/bump-suggestion-modal/bum
     FormsModule,
     GeolocationModule,
     NgxPermissionsModule.forChild(),
-    TrackingModule,
     RouterModule,
     UploaderModule,
     ProBadgeModule,
@@ -162,6 +161,7 @@ import { BumpSuggestionModalComponent } from './modals/bump-suggestion-modal/bum
     DateCountDownComponent,
     DropdownModule,
     WallacoinsDisabledModalComponent,
+    TrackEventDirective,
   ],
   declarations: [
     AdComponent,
@@ -223,6 +223,7 @@ import { BumpSuggestionModalComponent } from './modals/bump-suggestion-modal/bum
     DateCountDownComponent,
     BumpSuggestionModalComponent,
     WallacoinsDisabledModalComponent,
+    TrackEventDirective,
   ],
   providers: [DecimalPipe, LinkTransformPipe],
   entryComponents: [

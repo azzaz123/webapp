@@ -6,7 +6,9 @@ import * as CryptoJSAES from 'crypto-js/aes';
 
 export const REDIRECT_SECRET = 'redirectSecretBRUH';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class LoggedGuard implements CanActivate, CanLoad {
   constructor(private accessTokenService: AccessTokenService) {}
 

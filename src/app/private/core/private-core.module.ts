@@ -19,9 +19,12 @@ import { CategoryService } from '@core/category/category.service';
 import { CartService } from '@shared/catalog/cart/cart.service';
 import { ExitConfirmGuard } from '@core/guards/exit-confirm.guard';
 import { InvoiceService } from '@core/invoice/invoice.service';
+import { InboxConversationService } from '@features/chat/core/inbox/inbox-conversation.service';
+import { RemoteConsoleModule } from '@core/remote-console';
+import { UploaderService } from '@shared/uploader/uploader.service';
 
 @NgModule({
-  imports: [ConversationModule.forRoot(), ProfileModule],
+  imports: [ConversationModule.forRoot(), ProfileModule, RemoteConsoleModule],
   providers: [
     CheckUserPermissionsResolver,
     ErrorsService,
@@ -41,6 +44,8 @@ import { InvoiceService } from '@core/invoice/invoice.service';
     CategoryService,
     CartService,
     ExitConfirmGuard,
+    InboxConversationService,
+    UploaderService,
   ],
 })
 export class PrivateCoreModule {}
