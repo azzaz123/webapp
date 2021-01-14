@@ -6,7 +6,7 @@ import { User } from '@core/user/user';
 import { UserProInfo } from '@core/user/user-info.interface';
 import { UserService } from '@core/user/user.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { CanComponentDeactivate } from '@shared/guards/can-component-deactivate.interface';
+import { CanComponentDeactivate } from '@core/guards/can-component-deactivate.interface';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { metadata } from 'assets/js/metadata-phonenumber';
 import { isValidNumber } from 'libphonenumber-js/custom';

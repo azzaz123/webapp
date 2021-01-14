@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { EventService } from '@core/event/event.service';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
-import { MessageService } from '@features/chat/core/message/message.service';
-import { MockMessageService } from '@fixtures/message.fixtures.spec';
+import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
+import { MockUnreadChatMessagesService } from '@fixtures/message.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { Observable, of } from 'rxjs';
@@ -34,7 +34,10 @@ describe('TabbarComponent', () => {
               },
             },
           },
-          { provide: MessageService, useClass: MockMessageService },
+          {
+            provide: UnreadChatMessagesService,
+            useClass: MockUnreadChatMessagesService,
+          },
           { provide: 'SUBDOMAIN', useValue: 'es' },
           EventService,
         ],
