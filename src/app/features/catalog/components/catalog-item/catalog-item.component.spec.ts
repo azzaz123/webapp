@@ -24,7 +24,6 @@ import {
 } from '@fixtures/item.fixtures.spec';
 import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ThousandSuffixesPipe } from '@shared/number-conversion/thousand-suffixes.pipe';
 import { CustomCurrencyPipe } from '@shared/pipes';
 import * as moment from 'moment';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -50,11 +49,7 @@ describe('CatalogItemComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [
-          CatalogItemComponent,
-          CustomCurrencyPipe,
-          ThousandSuffixesPipe,
-        ],
+        declarations: [CatalogItemComponent, CustomCurrencyPipe],
         providers: [
           DecimalPipe,
           EventService,
