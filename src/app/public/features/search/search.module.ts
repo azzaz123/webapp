@@ -5,6 +5,7 @@ import { SearchRoutingModule } from './search.routing.module';
 import { SearchLayoutComponent } from './components/search-layout/search-layout.component';
 import { PublicLayoutModule } from '@public/layout/public-layout.module';
 import { ItemCardListModule } from '@public/features/public-profile/pages/user-published/components/item-card-list/item-card-list.module';
+import { CheckSessionModule } from '@public/core/directives/check-session/check-session.module';
 
 @NgModule({
   imports: [
@@ -12,6 +13,7 @@ import { ItemCardListModule } from '@public/features/public-profile/pages/user-p
     SearchRoutingModule,
     PublicLayoutModule,
     ItemCardListModule,
+    CheckSessionModule,
   ],
   declarations: [SearchComponent, SearchLayoutComponent],
 })

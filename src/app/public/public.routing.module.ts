@@ -29,7 +29,7 @@ const routes: Route[] = [
           ),
       },
       {
-        path: PUBLIC_PATHS.WALL,
+        path: PUBLIC_PATHS.SEARCH,
         loadChildren: () =>
           import('./features/search/search.module').then((m) => m.SearchModule),
       },

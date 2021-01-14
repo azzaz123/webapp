@@ -1,7 +1,7 @@
 export enum PUBLIC_PATHS {
   LOGIN = 'login',
   REGISTER = 'register',
-  WALL = 'wall',
+  SEARCH = 'search',
   USER_DETAIL = 'user',
 }
 
