@@ -29,7 +29,6 @@ describe('ImagesCarouselComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    component.ngOnInit();
     fixture.detectChanges();
   });
 

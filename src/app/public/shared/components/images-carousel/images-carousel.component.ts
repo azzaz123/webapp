@@ -2,7 +2,6 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnInit,
   Output,
   ViewChild,
 } from '@angular/core';
@@ -15,7 +14,7 @@ import { FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH } from '@core/item/item';
   templateUrl: './images-carousel.component.html',
   styleUrls: ['./images-carousel.component.scss'],
 })
-export class ImagesCarouselComponent implements OnInit {
+export class ImagesCarouselComponent {
   public readonly IMAGE_FALLBACK = FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH;
   public SWIPE_TYPE = SWIPE_TYPE;
   @ViewChild(NgbCarousel) public carousel: NgbCarousel;
@@ -25,7 +24,6 @@ export class ImagesCarouselComponent implements OnInit {
   >();
 
   constructor() {}
-  ngOnInit(): void {}
 
   public onSwipe(swipe: SWIPE_TYPE): void {
     if (swipe === SWIPE_TYPE.RIGHT) {
