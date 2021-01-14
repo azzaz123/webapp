@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-// BEFOREMERGE: Not fully sure about the naming, I think we could use reusable layouts so the
+// Naming should be abstracted if this component is reused
 @Component({
   selector: 'tsl-search-layout',
   templateUrl: './search-layout.component.html',
