@@ -13,7 +13,7 @@ describe('Location Reducer', () => {
         type: 'unkown',
       };
 
-      const state = fromReducer.locationReducer(
+      const state = fromReducer.userLocationReducer(
         INITIAL_USER_LOCATION_STATE,
         action
       );
@@ -27,7 +27,7 @@ describe('Location Reducer', () => {
       const { INITIAL_USER_LOCATION_STATE } = fromReducer;
       const location: UserLocation = UserLocationMother.random();
 
-      const state = fromReducer.locationReducer(
+      const state = fromReducer.userLocationReducer(
         INITIAL_USER_LOCATION_STATE,
         SetUserLocation({ location })
       );

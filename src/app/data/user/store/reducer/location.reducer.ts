@@ -15,7 +15,7 @@ const reducer = createReducer(
   on(SetUserLocation, (state, { location }) => ({ location }))
 );
 
-export function locationReducer(
+export function userLocationReducer(
   state: UserLocationState | undefined,
   action: Action
 ): UserLocationState {

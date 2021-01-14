@@ -38,6 +38,15 @@ describe('User Effect', () => {
   });
 
   describe('loadUsers', () => {
+    it('should call repository getMyProfile', () => {
+      const user: Profile = ProfileMother.random();
+      spyOn(repositoryMock, 'getMyProfile').and.returnValue(of(user));
+
+      actions$ = of(LoadUserProfile());
+
+      userEffects.loadUser$.subscribe();
+      expect(repositoryMock.getMyProfile).toHaveBeenCalledTimes(1);
+    });
     it('should get profile when emit Load Profile', () => {
       const user: Profile = ProfileMother.random();
       spyOn(repositoryMock, 'getMyProfile').and.returnValue(of(user));

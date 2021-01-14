@@ -38,7 +38,7 @@ const reducer = createReducer(
   }))
 );
 
-export function userReducer(
+export function userProfileReducer(
   state: UserProfileState | undefined,
   action: Action
 ): UserProfileState {

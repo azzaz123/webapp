@@ -16,7 +16,10 @@ describe('Profile Reducer', () => {
         type: 'Unkown',
       };
 
-      const state = fromReducer.userReducer(INITIAL_USER_PROFILE_STATE, action);
+      const state = fromReducer.userProfileReducer(
+        INITIAL_USER_PROFILE_STATE,
+        action
+      );
 
       expect(state).toEqual(INITIAL_USER_PROFILE_STATE);
     });
@@ -26,7 +29,7 @@ describe('Profile Reducer', () => {
     it('should set loading true when load user profile', () => {
       const { INITIAL_USER_PROFILE_STATE } = fromReducer;
 
-      const state = fromReducer.userReducer(
+      const state = fromReducer.userProfileReducer(
         INITIAL_USER_PROFILE_STATE,
         LoadUserProfile()
       );
@@ -38,11 +41,11 @@ describe('Profile Reducer', () => {
       const { INITIAL_USER_PROFILE_STATE } = fromReducer;
       const userDetail: Profile = ProfileMother.random();
 
-      let state = fromReducer.userReducer(
+      let state = fromReducer.userProfileReducer(
         INITIAL_USER_PROFILE_STATE,
         LoadUserProfile()
       );
-      state = fromReducer.userReducer(
+      state = fromReducer.userProfileReducer(
         state,
         LoadUserProfileSuccess({ user: userDetail })
       );
@@ -56,11 +59,11 @@ describe('Profile Reducer', () => {
     it('should set initial state when user load fails', () => {
       const { INITIAL_USER_PROFILE_STATE } = fromReducer;
 
-      let state = fromReducer.userReducer(
+      let state = fromReducer.userProfileReducer(
         INITIAL_USER_PROFILE_STATE,
         LoadUserProfile()
       );
-      state = fromReducer.userReducer(state, LoadUserProfileFailed());
+      state = fromReducer.userProfileReducer(state, LoadUserProfileFailed());
 
       expect(state).toEqual(INITIAL_USER_PROFILE_STATE);
     });
