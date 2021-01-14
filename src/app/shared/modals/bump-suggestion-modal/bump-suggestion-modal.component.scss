@@ -1,0 +1,12 @@
+@import '~style/common';
+
+.content-col {
+  background: url(/assets/images/bump-suggestion-background.svg) no-repeat 90px
+    47px;
+  background-size: 130px;
+  padding: $spacing-xl $spacing-xxl $spacing-m 260px;
+  margin-bottom: $spacing-ml;
+  p {
+    margin: 0 auto $spacing-l auto;
+  }
+}

@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
+import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
 import { FavouriteIconModule } from '@public/shared/components/favourite-icon/favourite-icon.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
-import { SanitizedBackgroundModule } from '@shared/sanitized-background/sanitized-background.module';
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { ItemCardComponent } from './item-card.component';
 import {
@@ -42,17 +42,23 @@ const Template: Story<ItemCardComponent> = (args: ItemCardComponent) => ({
       FavouriteIconModule,
       CustomCurrencyModule,
       SvgIconModule,
-      SanitizedBackgroundModule,
       HttpClientModule,
+      ImageFallbackModule,
     ],
   },
   template:
-    '<tsl-public-item-card [item]="item" [showDescription]="showDescription" (toggleFavourite)="toggleFavourite()"></tsl-public-item-card>',
+    '<tsl-public-item-card [item]="item" [showDescription]="showDescription" [showFavourite]="showFavourite" (toggleFavourite)="toggleFavourite()"></tsl-public-item-card>',
 });
 
 export const Default = Template.bind({});
 Default.args = {
   item: MOCK_ITEM_1,
+};
+
+export const WithoutFavourite = Template.bind({});
+WithoutFavourite.args = {
+  item: MOCK_ITEM_1,
+  showFavourite: false,
 };
 
 export const WithoutDescription = Template.bind({});

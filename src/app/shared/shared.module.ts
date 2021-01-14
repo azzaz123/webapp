@@ -80,6 +80,8 @@ import { SanitizedBackgroundModule } from './sanitized-background/sanitized-back
 import { UserCoverModule } from './user-cover/user-cover.module';
 import { WallacoinsDisabledModalComponent } from './modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
 import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.module';
+import { BumpSuggestionModalComponent } from './modals/bump-suggestion-modal/bump-suggestion-modal.component';
+import { SocialShareService } from '@core/social-share/social-share.service';
 
 @NgModule({
   imports: [
@@ -229,6 +231,7 @@ import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.mo
     DisableControlDirective,
     RouterLinkDirectiveStub,
     DateCountDownComponent,
+    BumpSuggestionModalComponent,
     WallacoinsDisabledModalComponent,
   ],
   providers: [
@@ -238,6 +241,7 @@ import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.mo
     ThousandSuffixesPipe,
     LinkTransformPipe,
     SubscriptionsService,
+    SocialShareService,
   ],
   entryComponents: [
     ConfirmationModalComponent,

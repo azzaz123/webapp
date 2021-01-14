@@ -10,6 +10,7 @@ import { BlockUserService } from '@features/chat/core/block-user/block-user.serv
 import { InboxService } from '@features/chat/core/inbox/inbox.service';
 import { MessageService } from '@features/chat/core/message/message.service';
 import { CookieModule } from 'ngx-cookie';
+import { NgxPermissionsModule } from 'ngx-permissions';
 import { CategoryService } from './category/category.service';
 import { ConnectionService } from './connection/connection.service';
 import { ConversationModule } from './conversation/conversation.module';
@@ -38,7 +39,8 @@ import { XmppService } from './xmpp/xmpp.service';
 
 @NgModule({
   imports: [
-    CookieModule.forChild(),
+    CookieModule.forRoot(),
+    NgxPermissionsModule.forRoot(),
     CommonModule,
     UserModule,
     ItemModule,

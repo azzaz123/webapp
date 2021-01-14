@@ -6,7 +6,7 @@ import {
 } from '@angular/common/http/testing';
 
 import { environment } from '../../../../environments/environment';
-import { HttpModuleNew } from '../http.module.new';
+import { HttpModule } from '../http.module';
 import { AccessTokenService } from '../access-token.service';
 import { TOKEN_AUTHORIZATION_HEADER_NAME } from './index';
 import {
@@ -15,6 +15,7 @@ import {
 } from './token.interceptor';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { LOGIN_ENDPOINT } from '@public/features/login/core/services/login.service';
+import { CookieModule } from 'ngx-cookie';
 
 const MOCK_TOKEN = 'token';
 const MOCK_V3_ENDPOINT = 'api/v3/endpoint';
@@ -28,7 +29,7 @@ describe(`TokenInterceptor`, () => {
   beforeEach(() => {
     injector = getTestBed();
     injector.configureTestingModule({
-      imports: [HttpClientTestingModule, HttpModuleNew],
+      imports: [HttpClientTestingModule, HttpModule, CookieModule.forRoot()],
     });
 
     http = injector.inject(HttpClient);
