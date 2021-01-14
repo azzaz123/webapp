@@ -3,19 +3,18 @@ import { styledWrapperDecorator } from '@stories/decorators/styled-wrapper/style
 import { Story } from '@storybook/angular/types-6-0';
 import { moduleMetadata } from '@storybook/angular';
 import { SearchLayoutComponent } from '@public/features/search/components/search-layout/search-layout.component';
-import { I18nService } from '@core/i18n/i18n.service';
-import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
-import { HttpClientModule } from '@angular/common/http';
-import { FooterModule } from '@public/layout/components/footer/footer.module';
 import { ItemCardListModule } from '@public/features/public-profile/pages/user-published/components/item-card-list/item-card-list.module';
-import { CheckSessionModule } from '@public/core/directives/check-session/check-session.module';
-import { AccessTokenService } from '@core/http/access-token.service';
-import { CookieModule } from 'ngx-cookie';
-import { UserService } from '@core/user/user.service';
-import { EventService } from '@core/event/event.service';
-import { NgxPermissionsStore } from 'ngx-permissions';
+import { CUSTOM_VIEWPORT_NAME } from '@storybook-config/viewports/custom-viewports';
+import { HttpModule } from '@core/http/http.module';
+import { ItemCardListComponent } from '@public/features/public-profile/pages/user-published/components/item-card-list/item-card-list.component';
 import { CoreModule } from '@core/core.module';
 import { SharedModule } from '@shared/shared.module';
+import { ItemCardService } from '@public/core/services/item-card/item-card.service';
+import { ItemApiModule } from '@public/core/services/api/item/item-api.module';
+import { CheckSessionModule } from '@public/core/directives/check-session/check-session.module';
+import { ItemService } from '@core/item/item.service';
+import { EventService } from '@core/event/event.service';
+import { I18nService } from '@core/i18n/i18n.service';
 
 export default {
   title: 'Webapp/Pages/Search',
@@ -23,23 +22,20 @@ export default {
   decorators: [
     moduleMetadata({
       providers: [
-        I18nService,
-        AccessTokenService,
-        UserService,
+        ItemService,
         EventService,
-        NgxPermissionsStore,
+        I18nService,
+        ItemCardService,
         { provide: 'SUBDOMAIN', useValue: 'www' },
       ],
       declarations: [SearchComponent, SearchLayoutComponent],
       imports: [
-        SvgIconModule,
-        HttpClientModule,
-        ItemCardListModule,
-        FooterModule,
-        CheckSessionModule,
-        CookieModule.forRoot(),
         CoreModule,
         SharedModule,
+        HttpModule,
+        ItemApiModule,
+        CheckSessionModule,
+        ItemCardListModule,
       ],
     }),
     styledWrapperDecorator('margin: -1rem;'),
@@ -53,3 +49,38 @@ const Template: Story<SearchComponent> = (args) => ({
 });
 
 export const Default = Template.bind({});
+
+export const ExtraLarge = Template.bind({});
+ExtraLarge.parameters = {
+  viewport: {
+    defaultViewport: CUSTOM_VIEWPORT_NAME.XL,
+  },
+};
+
+export const Large = Template.bind({});
+Large.parameters = {
+  viewport: {
+    defaultViewport: CUSTOM_VIEWPORT_NAME.LG,
+  },
+};
+
+export const Medium = Template.bind({});
+Medium.parameters = {
+  viewport: {
+    defaultViewport: CUSTOM_VIEWPORT_NAME.MD,
+  },
+};
+
+export const Small = Template.bind({});
+Small.parameters = {
+  viewport: {
+    defaultViewport: CUSTOM_VIEWPORT_NAME.SM,
+  },
+};
+
+export const ExtraSmall = Template.bind({});
+ExtraSmall.parameters = {
+  viewport: {
+    defaultViewport: CUSTOM_VIEWPORT_NAME.XS,
+  },
+};

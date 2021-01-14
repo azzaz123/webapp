@@ -4,6 +4,7 @@ import { styledWrapperDecorator } from '@stories/decorators/styled-wrapper/style
 import { moduleMetadata } from '@storybook/angular';
 import { LoremIpsumComponent } from '@stories/components/lorem-ipsum/lorem-ipsum.component';
 import { StyledBoxComponent } from '@stories/components/colored-box/styled-box.component';
+import { CUSTOM_VIEWPORT_NAME } from '@storybook-config/viewports/custom-viewports';
 
 export default {
   title: 'Webapp/Layouts/Search Layout',
@@ -39,4 +40,38 @@ const Template: Story<SearchLayoutComponent> = (args) => ({
 });
 
 export const Default = Template.bind({});
-Default.args = {};
+
+export const ExtraLarge = Template.bind({});
+ExtraLarge.parameters = {
+  viewport: {
+    defaultViewport: CUSTOM_VIEWPORT_NAME.XL,
+  },
+};
+
+export const Large = Template.bind({});
+Large.parameters = {
+  viewport: {
+    defaultViewport: CUSTOM_VIEWPORT_NAME.LG,
+  },
+};
+
+export const Medium = Template.bind({});
+Medium.parameters = {
+  viewport: {
+    defaultViewport: CUSTOM_VIEWPORT_NAME.MD,
+  },
+};
+
+export const Small = Template.bind({});
+Small.parameters = {
+  viewport: {
+    defaultViewport: CUSTOM_VIEWPORT_NAME.SM,
+  },
+};
+
+export const ExtraSmall = Template.bind({});
+ExtraSmall.parameters = {
+  viewport: {
+    defaultViewport: CUSTOM_VIEWPORT_NAME.XS,
+  },
+};
