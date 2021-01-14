@@ -115,7 +115,7 @@ export const MOCK_PAYLOAD_KO: MessagePayload = {
   text: 'text',
 };
 
-export class MockMessageService {
+export class MockUnreadChatMessagesService {
   public totalUnreadMessages$: Subject<number> = new Subject<number>();
   private _totalUnreadMessages = 0;
 

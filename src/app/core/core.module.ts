@@ -8,7 +8,7 @@ import {
 import { BlockUserXmppService } from '@features/chat/core/block-user/block-user-xmpp.service';
 import { BlockUserService } from '@features/chat/core/block-user/block-user.service';
 import { InboxService } from '@features/chat/core/inbox/inbox.service';
-import { MessageService } from '@features/chat/core/message/message.service';
+import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 import { CartService } from '@shared/catalog/cart/cart.service';
 import { ExitConfirmGuard } from './guards/exit-confirm.guard';
 import { CookieModule } from 'ngx-cookie';
@@ -66,7 +66,7 @@ export class CoreModule {
         ErrorsService,
         TutorialService,
         AccessTokenService,
-        MessageService,
+        UnreadChatMessagesService,
         DesktopNotificationsService,
         PaymentService,
         XmppService,

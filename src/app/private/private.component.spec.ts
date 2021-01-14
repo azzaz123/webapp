@@ -11,7 +11,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 
 import { InboxService } from '@features/chat/core/inbox/inbox.service';
-import { MessageService } from '@features/chat/core/message/message.service';
+import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie';
 import { of, Subject, throwError } from 'rxjs';
@@ -56,7 +56,7 @@ let eventService: EventService;
 let realTime: RealTimeService;
 let inboxService: InboxService;
 let desktopNotificationsService: DesktopNotificationsService;
-let messageService: MessageService;
+let unreadChatMessagesService: UnreadChatMessagesService;
 let titleService: Title;
 let trackingService: TrackingService;
 let callsService: CallsService;
@@ -134,7 +134,7 @@ describe('App', () => {
           },
         },
         {
-          provide: MessageService,
+          provide: UnreadChatMessagesService,
           useValue: {
             totalUnreadMessages$: new Subject(),
           },
@@ -207,7 +207,7 @@ describe('App', () => {
     realTime = TestBed.inject(RealTimeService);
     inboxService = TestBed.inject(InboxService);
     desktopNotificationsService = TestBed.inject(DesktopNotificationsService);
-    messageService = TestBed.inject(MessageService);
+    unreadChatMessagesService = TestBed.inject(UnreadChatMessagesService);
     titleService = TestBed.inject(Title);
     trackingService = TestBed.inject(TrackingService);
     callsService = TestBed.inject(CallsService);
@@ -470,14 +470,14 @@ describe('App', () => {
       });
       it('should update the title with unread messages when > 0', () => {
         component.ngOnInit();
-        messageService.totalUnreadMessages$.next(100);
+        unreadChatMessagesService.totalUnreadMessages$.next(100);
 
         expect(titleService.setTitle).toHaveBeenCalledWith('(100) Chat');
       });
 
       it('should update the title just with the title when unread messages are 0', () => {
         component.ngOnInit();
-        messageService.totalUnreadMessages$.next(0);
+        unreadChatMessagesService.totalUnreadMessages$.next(0);
 
         expect(titleService.setTitle).toHaveBeenCalledWith('Chat');
       });
@@ -489,14 +489,14 @@ describe('App', () => {
       });
       it('should update the title with unread messages when > 0', () => {
         component.ngOnInit();
-        messageService.totalUnreadMessages$.next(100);
+        unreadChatMessagesService.totalUnreadMessages$.next(100);
 
         expect(titleService.setTitle).toHaveBeenCalledWith('(100) Chat');
       });
 
       it('should update the title just with the title when unread messages are 0', () => {
         component.ngOnInit();
-        messageService.totalUnreadMessages$.next(0);
+        unreadChatMessagesService.totalUnreadMessages$.next(0);
 
         expect(titleService.setTitle).toHaveBeenCalledWith('Chat');
       });

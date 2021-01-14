@@ -3,23 +3,19 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ConnectionService } from '@core/connection/connection.service';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
-import { RealTimeService } from '@core/message/real-time.service';
 import { RemoteConsoleService } from '@core/remote-console';
 import { TrackingService } from '@core/tracking/tracking.service';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { XmppService } from '@core/xmpp/xmpp.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import { CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/inbox.fixtures.spec';
 import { MockRemoteConsoleService } from '@fixtures/remote-console.fixtures.spec';
 import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { USER_ID } from '@fixtures/user.fixtures.spec';
-import { InboxConversation } from '../model';
-import { MessageService } from './message.service';
+import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 
 describe('Service: Message', () => {
-  let realTime: RealTimeService;
-  let service: MessageService;
+  let service: UnreadChatMessagesService;
   let userService: UserService;
   let connectionService: ConnectionService;
   let trackingService: TrackingService;
@@ -29,11 +25,10 @@ describe('Service: Message', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        MessageService,
+        UnreadChatMessagesService,
         XmppService,
         EventService,
         I18nService,
-        RealTimeService,
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: ConnectionService, useValue: {} },
         { provide: UserService, useValue: { user: new User(USER_ID) } },
@@ -41,8 +36,7 @@ describe('Service: Message', () => {
         { provide: AnalyticsService, useClass: MockAnalyticsService },
       ],
     });
-    realTime = TestBed.inject(RealTimeService);
-    service = TestBed.inject(MessageService);
+    service = TestBed.inject(UnreadChatMessagesService);
     userService = TestBed.inject(UserService);
     connectionService = TestBed.inject(ConnectionService);
     trackingService = TestBed.inject(TrackingService);
@@ -64,15 +58,6 @@ describe('Service: Message', () => {
       service.totalUnreadMessages = VALUE;
       expect(changedValue).toBe(VALUE);
       expect(service.totalUnreadMessages).toBe(VALUE);
-    });
-  });
-
-  describe('send', () => {
-    it('should call the send message', () => {
-      spyOn(realTime, 'sendMessage');
-      const conversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION();
-      service.send(conversation, 'text');
-      expect(realTime.sendMessage).toHaveBeenCalledWith(conversation, 'text');
     });
   });
 });
