@@ -4,7 +4,11 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { ItemApiService, MARK_AS_FAVORITE_ENDPOINT } from './item-api.service';
+import {
+  GET_ITEM_ENDPOINT,
+  ItemApiService,
+  MARK_AS_FAVORITE_ENDPOINT,
+} from './item-api.service';
 
 describe('ItemApiService', () => {
   let httpMock: HttpTestingController;
@@ -23,6 +27,19 @@ describe('ItemApiService', () => {
 
   afterEach(() => {
     httpMock.verify();
+  });
+
+  describe('getItemById', () => {
+    it('should ask for the item', () => {
+      const expectedUrl = GET_ITEM_ENDPOINT(ITEM_ID);
+
+      itemApiService.getItemById(ITEM_ID).subscribe();
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush({});
+
+      expect(req.request.url).toBe(expectedUrl);
+      expect(req.request.method).toBe('GET');
+    });
   });
 
   describe('markAsFavourite', () => {
