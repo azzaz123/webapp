@@ -34,6 +34,7 @@ describe('ImagesCarouselComponent', () => {
 
   describe('when we have images...', () => {
     beforeEach(() => {
+      spyOn(component, 'canLoadImage').and.returnValue(true);
       component.images = [''];
       fixture.detectChanges();
     });
@@ -57,6 +58,7 @@ describe('ImagesCarouselComponent', () => {
         fixture.debugElement
           .query(By.css(carouselTag))
           .triggerEventHandler('swiperight', {});
+
         expect(component.carousel.prev).toHaveBeenCalled();
       });
 
