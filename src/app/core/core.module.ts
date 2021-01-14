@@ -39,6 +39,7 @@ import { DevelopmentGuard } from './user/development.guard';
 import { LoggedGuard } from './user/logged.guard';
 import { UserModule } from './user/user.module';
 import { XmppService } from './xmpp/xmpp.service';
+import { SocialShareService } from './social-share/social-share.service';
 
 @NgModule({
   imports: [
@@ -84,6 +85,7 @@ export class CoreModule {
         CategoryService,
         CartService,
         ExitConfirmGuard,
+        SocialShareService,
       ],
     };
   }
