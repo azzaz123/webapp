@@ -4,9 +4,11 @@ import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { Item } from '@core/item/item';
-import { Order, Product } from '@core/item/item-response.interface';
 import { ItemService, ITEM_STATUS } from '@core/item/item.service';
-import { FinancialCard } from '@core/payments/payment.interface';
+import { Pack } from '@core/payments/pack';
+import { FinancialCard, Packs } from '@core/payments/payment.interface';
+import { PerksModel } from '@core/payments/payment.model';
+import { PaymentService } from '@core/payments/payment.service';
 import { TrackingService } from '@core/tracking/tracking.service';
 import { Counters, UserStats } from '@core/user/user-stats.interface';
 import { UserService } from '@core/user/user.service';
@@ -16,6 +18,7 @@ import { ProBumpConfirmationModalComponent } from '@features/catalog-pro/modals/
 import { OrderEvent } from '@features/catalog/components/selected-items/selected-product.interface';
 import { ItemChangeEvent } from '@features/catalog/core/item-change.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { BumpSuggestionModalComponent } from '@shared/modals/bump-suggestion-modal/bump-suggestion-modal.component';
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
 import { findIndex } from 'lodash-es';
 import { takeWhile } from 'rxjs/operators';
@@ -39,8 +42,8 @@ export class CatalogProListComponent implements OnInit {
   public active = true;
   private cache = false;
   public numberOfProducts: number;
-  public subscriptionPlan: number;
-  private uploadModalRef: NgbModalRef;
+  public _subscriptionPlan: number;
+  private bumpSuggestionModalRef: NgbModalRef;
 
   @ViewChild(ItemSoldDirective, { static: true }) soldButton: ItemSoldDirective;
 
@@ -54,8 +57,17 @@ export class CatalogProListComponent implements OnInit {
     private errorService: ErrorsService,
     private router: Router,
     private uuidService: UuidService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private paymentService: PaymentService
   ) {}
+
+  set subscriptionPlan(plan: number) {
+    this._subscriptionPlan = plan;
+  }
+
+  get subscriptionPlan(): number {
+    return this._subscriptionPlan;
+  }
 
   ngOnInit() {
     this.getCounters();
@@ -125,6 +137,7 @@ export class CatalogProListComponent implements OnInit {
           );
         }
         if (params && params.created) {
+          this.showBumpSuggestionModal(params.itemId);
           this.cache = false;
           this.getItems();
           if (params.itemId) {
@@ -199,9 +212,8 @@ export class CatalogProListComponent implements OnInit {
         });
         this.items = append ? this.items.concat(items) : items;
         this.loading = false;
-        if (this.uploadModalRef) {
-          this.uploadModalRef.componentInstance.item = this.items[0];
-          this.uploadModalRef.componentInstance.urgentPrice();
+        if (this.bumpSuggestionModalRef) {
+          this.bumpSuggestionModalRef.componentInstance.item = this.items[0];
         }
       });
   }
@@ -337,23 +349,65 @@ export class CatalogProListComponent implements OnInit {
     });
   }
 
-  private getUrgentPrice(itemId: string): void {
-    this.itemService.getUrgentProducts(itemId).subscribe((product: Product) => {
-      const order: Order[] = [
-        {
-          item_id: itemId,
-          product_id: product.durations[0].id,
-        },
-      ];
-      const orderEvent: OrderEvent = {
-        order: order,
-        total: +product.durations[0].market_code,
-      };
-      this.feature(orderEvent);
+  private showBumpSuggestionModal(itemId: string): void {
+    this.bumpSuggestionModalRef = this.modalService.open(
+      BumpSuggestionModalComponent,
+      {
+        windowClass: 'modal-standard',
+      }
+    );
+    this.getBumpSuggestionModalPrice(this.bumpSuggestionModalRef);
+    this.bumpSuggestionModalRef.result.then(
+      (result: { redirect: boolean; hasPrice?: boolean }) => {
+        this.bumpSuggestionModalRef = null;
+        if (result?.redirect) {
+          if (result.hasPrice) {
+            this.router.navigate(['pro/catalog/checkout-extras']);
+          } else {
+            this.router.navigate(['pro/catalog/checkout', { itemId }]);
+          }
+        }
+      }
+    );
+  }
+
+  private getBumpSuggestionModalPrice(modalRef: NgbModalRef): void {
+    this.paymentService.getPerks(true).subscribe((perks: PerksModel) => {
+      if (
+        perks.getBumpCounter() === 0 &&
+        perks.getNationalBumpCounter() === 0
+      ) {
+        this.paymentService.getPacks().subscribe((packs: Packs) => {
+          let minValue: Pack = null;
+          const allowed = ['cityBump', 'countryBump'];
+
+          const filtered = Object.keys(packs)
+            .filter((key) => allowed.includes(key))
+            .reduce((obj, key) => {
+              obj[key] = packs[key].reduce((prev, curr) =>
+                +prev.price < +curr.price ? prev : curr
+              );
+              return obj;
+            }, {});
+
+          for (const property in filtered) {
+            if (minValue) {
+              minValue =
+                +minValue.price > +filtered[property].price
+                  ? filtered[property]
+                  : minValue;
+            } else {
+              minValue = filtered[property];
+            }
+          }
+          modalRef.componentInstance.productPrice = +minValue.price;
+          modalRef.componentInstance.productCurrency = minValue.currency;
+        });
+      }
     });
   }
 
-  public getSubscriptionPlan(plan: number) {
+  public onSetSubscriptionPlan(plan: number): void {
     this.subscriptionPlan = plan;
   }
 }

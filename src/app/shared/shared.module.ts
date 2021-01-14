@@ -74,6 +74,7 @@ import { SanitizedBackgroundModule } from './sanitized-background/sanitized-back
 import { UserCoverModule } from './user-cover/user-cover.module';
 import { WallacoinsDisabledModalComponent } from './modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
 import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.module';
+import { BumpSuggestionModalComponent } from './modals/bump-suggestion-modal/bump-suggestion-modal.component';
 
 @NgModule({
   imports: [
@@ -220,6 +221,7 @@ import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.mo
     DisableControlDirective,
     RouterLinkDirectiveStub,
     DateCountDownComponent,
+    BumpSuggestionModalComponent,
     WallacoinsDisabledModalComponent,
   ],
   providers: [DecimalPipe, LinkTransformPipe],
