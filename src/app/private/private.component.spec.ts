@@ -11,7 +11,6 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 
 import { InboxService } from '@features/chat/core/inbox/inbox.service';
-import { MessageService } from '@features/chat/core/message/message.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie';
 import { of, Subject, throwError } from 'rxjs';
@@ -23,7 +22,6 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ConnectionService } from '@core/connection/connection.service';
 import { CallsService } from '@core/conversation/calls.service';
 import { DesktopNotificationsService } from '@core/desktop-notifications/desktop-notifications.service';
-import { DidomiService } from '@core/didomi/didomi.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
@@ -56,7 +54,6 @@ let eventService: EventService;
 let realTime: RealTimeService;
 let inboxService: InboxService;
 let desktopNotificationsService: DesktopNotificationsService;
-let messageService: MessageService;
 let titleService: Title;
 let trackingService: TrackingService;
 let callsService: CallsService;
@@ -133,12 +130,6 @@ describe('App', () => {
             },
           },
         },
-        {
-          provide: MessageService,
-          useValue: {
-            totalUnreadMessages$: new Subject(),
-          },
-        },
         I18nService,
         { provide: TrackingService, useClass: MockTrackingService },
         DesktopNotificationsService,
@@ -207,7 +198,6 @@ describe('App', () => {
     realTime = TestBed.inject(RealTimeService);
     inboxService = TestBed.inject(InboxService);
     desktopNotificationsService = TestBed.inject(DesktopNotificationsService);
-    messageService = TestBed.inject(MessageService);
     titleService = TestBed.inject(Title);
     trackingService = TestBed.inject(TrackingService);
     callsService = TestBed.inject(CallsService);
@@ -456,50 +446,6 @@ describe('App', () => {
       expect(trackingService.track).toHaveBeenCalledWith(
         TrackingService.MY_PROFILE_LOGGED_OUT
       );
-    });
-  });
-
-  describe('totalUnreadMessages$', () => {
-    beforeEach(() => {
-      spyOn(titleService, 'setTitle');
-    });
-
-    describe('with no messages', () => {
-      beforeEach(() => {
-        spyOn(titleService, 'getTitle').and.returnValue('Chat');
-      });
-      it('should update the title with unread messages when > 0', () => {
-        component.ngOnInit();
-        messageService.totalUnreadMessages$.next(100);
-
-        expect(titleService.setTitle).toHaveBeenCalledWith('(100) Chat');
-      });
-
-      it('should update the title just with the title when unread messages are 0', () => {
-        component.ngOnInit();
-        messageService.totalUnreadMessages$.next(0);
-
-        expect(titleService.setTitle).toHaveBeenCalledWith('Chat');
-      });
-    });
-
-    describe('with messages', () => {
-      beforeEach(() => {
-        spyOn(titleService, 'getTitle').and.returnValue('(10) Chat');
-      });
-      it('should update the title with unread messages when > 0', () => {
-        component.ngOnInit();
-        messageService.totalUnreadMessages$.next(100);
-
-        expect(titleService.setTitle).toHaveBeenCalledWith('(100) Chat');
-      });
-
-      it('should update the title just with the title when unread messages are 0', () => {
-        component.ngOnInit();
-        messageService.totalUnreadMessages$.next(0);
-
-        expect(titleService.setTitle).toHaveBeenCalledWith('Chat');
-      });
     });
   });
 

@@ -14,7 +14,7 @@ import { PaymentService } from '@core/payments/payment.service';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
-import { MessageService } from '@features/chat/core/message/message.service';
+import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 import { SuggesterResponse } from '@layout/topbar/core/interfaces/suggester-response.interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
@@ -49,7 +49,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
 
   constructor(
     public userService: UserService,
-    public messageService: MessageService,
+    public unreadChatMessagesService: UnreadChatMessagesService,
     private paymentService: PaymentService,
     private eventService: EventService,
     private cookieService: CookieService,

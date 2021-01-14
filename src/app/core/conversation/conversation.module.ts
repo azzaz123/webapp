@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MessageService } from '@features/chat/core/message/message.service';
 import { SendPhoneComponent } from '@features/chat/modals';
 import {
   NgbDropdownModule,
@@ -32,7 +31,7 @@ export class ConversationModule {
   static forRoot(): ModuleWithProviders<ConversationModule> {
     return {
       ngModule: ConversationModule,
-      providers: [MessageService, CallsService],
+      providers: [CallsService],
     };
   }
 }

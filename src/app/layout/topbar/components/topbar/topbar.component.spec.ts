@@ -11,7 +11,7 @@ import { PaymentService } from '@core/payments/payment.service';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
-import { MessageService } from '@features/chat/core/message/message.service';
+import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 import { CATEGORY_DATA_WEB } from '@fixtures/category.fixtures.spec';
 import { SUGGESTER_DATA_WEB } from '@fixtures/suggester.fixtures.spec';
 import { USER_DATA } from '@fixtures/user.fixtures.spec';
@@ -85,7 +85,7 @@ describe('TopbarComponent', () => {
             },
           },
           {
-            provide: MessageService,
+            provide: UnreadChatMessagesService,
             useValue: {
               totalUnreadMessages$: of(1),
             },

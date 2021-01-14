@@ -10,7 +10,6 @@ import {
 } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 import { InboxService } from '@features/chat/core/inbox/inbox.service';
-import { MessageService } from '@features/chat/core/message/message.service';
 import * as moment from 'moment';
 import { CookieOptions, CookieService } from 'ngx-cookie';
 import {
@@ -62,7 +61,6 @@ export class PrivateComponent implements OnInit {
     private inboxService: InboxService,
     public userService: UserService,
     private desktopNotificationsService: DesktopNotificationsService,
-    private messageService: MessageService,
     private titleService: Title,
     private trackingService: TrackingService,
     private i18n: I18nService,
@@ -266,21 +264,6 @@ export class PrivateComponent implements OnInit {
         this.realTime.reconnect();
       }
     });
-
-    this.subscribeUnreadMessages();
-  }
-
-  private subscribeUnreadMessages(): void {
-    this.messageService.totalUnreadMessages$.subscribe(
-      (unreadMessages: number) => {
-        let title: string = this.titleService.getTitle().split(') ')[1];
-        title = title ? title : this.titleService.getTitle();
-        if (unreadMessages > 0) {
-          title = '(' + unreadMessages + ') ' + title;
-        }
-        this.titleService.setTitle(title);
-      }
-    );
   }
 
   private subscribeEventItemUpdated(): void {
