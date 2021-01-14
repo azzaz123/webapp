@@ -3,7 +3,7 @@ import { EventService } from '@core/event/event.service';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
-import { MessageService } from '@features/chat/core/message/message.service';
+import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 import { APP_PATHS } from 'app/app-routing-constants';
 import { PUBLIC_PATHS } from 'app/public/public-routing-constants';
 import { Subscription } from 'rxjs';
@@ -27,7 +27,7 @@ export class TabbarComponent implements OnInit {
   constructor(
     private userService: UserService,
     private tabBarService: TabbarService,
-    private messageService: MessageService,
+    private unreadChatMessagesService: UnreadChatMessagesService,
     private eventService: EventService,
     @Inject('SUBDOMAIN') private subdomain: string
   ) {
@@ -45,7 +45,7 @@ export class TabbarComponent implements OnInit {
       )
     );
     this.componentSubscriptions.push(
-      this.messageService.totalUnreadMessages$.subscribe(
+      this.unreadChatMessagesService.totalUnreadMessages$.subscribe(
         (unreadMessages) => (this.hasUnreadMessages = !!unreadMessages)
       )
     );

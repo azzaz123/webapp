@@ -8,8 +8,11 @@ import {
 import { BlockUserXmppService } from '@features/chat/core/block-user/block-user-xmpp.service';
 import { BlockUserService } from '@features/chat/core/block-user/block-user.service';
 import { InboxService } from '@features/chat/core/inbox/inbox.service';
-import { MessageService } from '@features/chat/core/message/message.service';
+import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
+import { CartService } from '@shared/catalog/cart/cart.service';
+import { ExitConfirmGuard } from './guards/exit-confirm.guard';
 import { CookieModule } from 'ngx-cookie';
+import { DeviceDetectorModule } from 'ngx-device-detector';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { CategoryService } from './category/category.service';
 import { ConnectionService } from './connection/connection.service';
@@ -36,6 +39,7 @@ import { DevelopmentGuard } from './user/development.guard';
 import { LoggedGuard } from './user/logged.guard';
 import { UserModule } from './user/user.module';
 import { XmppService } from './xmpp/xmpp.service';
+import { SocialShareService } from './social-share/social-share.service';
 
 @NgModule({
   imports: [
@@ -47,13 +51,7 @@ import { XmppService } from './xmpp/xmpp.service';
     TrackingModule,
     ConversationModule.forRoot(),
     ProfileModule,
-  ],
-  exports: [
-    CommonModule,
-    UserModule,
-    ItemModule,
-    TrackingModule,
-    ProfileModule,
+    DeviceDetectorModule.forRoot(),
   ],
 })
 export class CoreModule {
@@ -68,7 +66,7 @@ export class CoreModule {
         ErrorsService,
         TutorialService,
         AccessTokenService,
-        MessageService,
+        UnreadChatMessagesService,
         DesktopNotificationsService,
         PaymentService,
         XmppService,
@@ -85,6 +83,9 @@ export class CoreModule {
         InvoiceService,
         GeolocationService,
         CategoryService,
+        CartService,
+        ExitConfirmGuard,
+        SocialShareService,
       ],
     };
   }

@@ -9,7 +9,7 @@ import { ConnectionType } from 'app/core/remote-console/connection-type';
 import { uniqBy } from 'lodash-es';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { MessageService } from '../message/message.service';
+import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 import { InboxConversation } from '../model';
 import { InboxApi, InboxConversationApi } from '../model/api';
 import { InboxConversationService } from './inbox-conversation.service';
@@ -30,9 +30,8 @@ export class InboxService {
 
   constructor(
     private http: HttpClient,
-    private messageService: MessageService,
+    private unreadChatMessagesService: UnreadChatMessagesService,
     private inboxConversationService: InboxConversationService,
-    private featureflagService: FeatureflagService,
     private eventService: EventService,
     private userService: UserService,
     private remoteConsoleService: RemoteConsoleService
@@ -162,7 +161,7 @@ export class InboxService {
   }
 
   public getInbox$(): Observable<InboxConversation[]> {
-    this.messageService.totalUnreadMessages = 0;
+    this.unreadChatMessagesService.totalUnreadMessages = 0;
     return this.http
       .get<InboxApi>(`${environment.baseUrl}bff/messaging/inbox`, {
         params: {
@@ -295,7 +294,8 @@ export class InboxService {
         conversationResponse,
         this.selfId
       );
-      this.messageService.totalUnreadMessages += conversation.unreadCounter;
+      this.unreadChatMessagesService.totalUnreadMessages +=
+        conversation.unreadCounter;
       return conversation;
     });
   }
