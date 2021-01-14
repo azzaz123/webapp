@@ -16,8 +16,8 @@ export class RecommenderApiService {
   public getRecommendedItemsByItemId(
     id: string
   ): Observable<RecommendedItemsBodyResponse> {
-    return this.http.get(GET_RECOMENDATIONS_ENDPOINT(id)) as Observable<
-      RecommendedItemsBodyResponse
-    >;
+    return this.http.get<RecommendedItemsBodyResponse>(
+      GET_RECOMENDATIONS_ENDPOINT(id)
+    );
   }
 }

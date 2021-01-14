@@ -15,8 +15,8 @@ export const GET_ITEM_ENDPOINT = (id: string) => `${ITEMS_API_URL(id)}`;
 export class ItemApiService {
   constructor(private http: HttpClient) {}
 
-  public getItemById(id: string): Observable<ItemResponse> {
-    return this.http.get(GET_ITEM_ENDPOINT(id)) as Observable<ItemResponse>;
+  public getItem(id: string): Observable<ItemResponse> {
+    return this.http.get<ItemResponse>(GET_ITEM_ENDPOINT(id));
   }
 
   public markAsFavourite(id: string): Observable<MarkAsFavouriteBodyResponse> {

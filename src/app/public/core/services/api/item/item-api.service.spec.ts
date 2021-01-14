@@ -29,11 +29,11 @@ describe('ItemApiService', () => {
     httpMock.verify();
   });
 
-  describe('getItemById', () => {
+  describe('getItem', () => {
     it('should ask for the item', () => {
       const expectedUrl = GET_ITEM_ENDPOINT(ITEM_ID);
 
-      itemApiService.getItemById(ITEM_ID).subscribe();
+      itemApiService.getItem(ITEM_ID).subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush({});
 
