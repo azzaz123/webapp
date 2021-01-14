@@ -22,7 +22,4 @@
         [ngClass]="item?.purchases?.bump_type || item?.purchases?.scheduled_bump_type">
     <tsl-svg-icon src="/assets/icons/wing.svg"></tsl-svg-icon>
   </span>
-  <span class="urgent" *ngIf="item?.urgent && !item?.sold && !item.flags.onhold">
-    <tsl-svg-icon src="/assets/icons/urgent.svg"></tsl-svg-icon>
-  </span>
 </div>
