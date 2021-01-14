@@ -266,21 +266,6 @@ export class PrivateComponent implements OnInit {
         this.realTime.reconnect();
       }
     });
-
-    this.subscribeUnreadMessages();
-  }
-
-  private subscribeUnreadMessages(): void {
-    this.unreadChatMessagesService.totalUnreadMessages$.subscribe(
-      (unreadMessages: number) => {
-        let title: string = this.titleService.getTitle().split(') ')[1];
-        title = title ? title : this.titleService.getTitle();
-        if (unreadMessages > 0) {
-          title = '(' + unreadMessages + ') ' + title;
-        }
-        this.titleService.setTitle(title);
-      }
-    );
   }
 
   private subscribeEventItemUpdated(): void {
