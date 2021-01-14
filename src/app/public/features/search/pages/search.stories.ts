@@ -6,7 +6,6 @@ import { SearchLayoutComponent } from '@public/features/search/components/search
 import { ItemCardListModule } from '@public/features/public-profile/pages/user-published/components/item-card-list/item-card-list.module';
 import { CUSTOM_VIEWPORT_NAME } from '@storybook-config/viewports/custom-viewports';
 import { HttpModule } from '@core/http/http.module';
-import { ItemCardListComponent } from '@public/features/public-profile/pages/user-published/components/item-card-list/item-card-list.component';
 import { CoreModule } from '@core/core.module';
 import { SharedModule } from '@shared/shared.module';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
