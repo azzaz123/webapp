@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Profile, UserLocation, UserRepository, UserUpdate } from '../domain';
+import { Profile, UserLocation, UserRepository, UserUpdate } from '../../domain';
 import { ApiUserLocationMapper, ApiUserMapper } from './api-user.mapper';
 import { ApiUserResponse } from './api-user.response';
 

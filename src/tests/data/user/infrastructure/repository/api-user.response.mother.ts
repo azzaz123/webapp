@@ -1,7 +1,6 @@
-
-
+import { LatitudeMother, LongitudeMother } from '@fixtures/core';
 import { ColourMother } from '@fixtures/shared';
-import { ApiUserExtrainfo, ApiUserResponse, ApiUserStatsOld, ApiUserValidations } from 'app/data/user/infrastructure/api-user.response';
+import { ApiUserExtrainfo, ApiUserResponse, ApiUserStatsOld, ApiUserValidations } from 'app/data/user/infrastructure/repository/api-user.response';
 import * as faker from 'faker';
 import { UserGenderMother, UserLocationMother } from './../../domain';
 
@@ -89,8 +88,8 @@ export class ApiUserExtrainfoMother {
       address: faker.address.streetAddress(),
       phone_number: faker.phone.phoneNumber(),
       link: faker.internet.url(),
-      latitude: faker.random.number({min: -90, max: 90}),
-      longitude: faker.random.number({min: -180, max: 180}),
+      latitude: LatitudeMother.random(),
+      longitude: LongitudeMother.random(),
       ...partial
     }
   }

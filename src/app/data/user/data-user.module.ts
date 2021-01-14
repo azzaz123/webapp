@@ -5,8 +5,8 @@ import {
   USER_LOCATION_REPOSITORY_TOKEN,
   USER_REPOSITORY_TOKEN,
 } from './domain';
-import { ApiUserRepository } from './infrastructure/api-user.repository';
-import { ApiUserLocationRepository } from './infrastructure/location/api-user-location.repository';
+import { ApiUserRepository } from './infrastructure/repository/api-user.repository';
+import { ApiUserLocationRepository } from './infrastructure/repository/location/api-user-location.repository';
 import { UserEffects } from './store/effects/user.effect';
 import { KEY_FEATURE_STATE, userState } from './store/reducer';
 
