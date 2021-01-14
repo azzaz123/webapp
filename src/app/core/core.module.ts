@@ -9,7 +9,11 @@ import { BlockUserXmppService } from '@features/chat/core/block-user/block-user-
 import { BlockUserService } from '@features/chat/core/block-user/block-user.service';
 import { InboxService } from '@features/chat/core/inbox/inbox.service';
 import { MessageService } from '@features/chat/core/message/message.service';
+import { CartService } from '@shared/catalog/cart/cart.service';
+import { ExitConfirmGuard } from './guards/exit-confirm.guard';
 import { CookieModule } from 'ngx-cookie';
+import { DeviceDetectorModule } from 'ngx-device-detector';
+import { NgxPermissionsModule } from 'ngx-permissions';
 import { CategoryService } from './category/category.service';
 import { ConnectionService } from './connection/connection.service';
 import { ConversationModule } from './conversation/conversation.module';
@@ -35,23 +39,19 @@ import { DevelopmentGuard } from './user/development.guard';
 import { LoggedGuard } from './user/logged.guard';
 import { UserModule } from './user/user.module';
 import { XmppService } from './xmpp/xmpp.service';
+import { SocialShareService } from './social-share/social-share.service';
 
 @NgModule({
   imports: [
     CookieModule.forRoot(),
+    NgxPermissionsModule.forRoot(),
     CommonModule,
     UserModule,
     ItemModule,
     TrackingModule,
     ConversationModule.forRoot(),
     ProfileModule,
-  ],
-  exports: [
-    CommonModule,
-    UserModule,
-    ItemModule,
-    TrackingModule,
-    ProfileModule,
+    DeviceDetectorModule.forRoot(),
   ],
 })
 export class CoreModule {
@@ -83,6 +83,9 @@ export class CoreModule {
         InvoiceService,
         GeolocationService,
         CategoryService,
+        CartService,
+        ExitConfirmGuard,
+        SocialShareService,
       ],
     };
   }

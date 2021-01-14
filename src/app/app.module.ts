@@ -5,7 +5,6 @@ import { AppRoutingModule } from './app.routing';
 import { CoreModule } from './core/core.module';
 import { PROVIDERS } from './providers';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgxPermissionsModule } from 'ngx-permissions';
 import { HttpModule } from './core/http/http.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { isSWEnabled } from 'environments/environment';
@@ -18,7 +17,6 @@ import { isSWEnabled } from 'environments/environment';
     BrowserModule,
     HttpModule,
     AppRoutingModule,
-    NgxPermissionsModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: isSWEnabled,
       registrationStrategy: 'registerWithDelay:5000',
