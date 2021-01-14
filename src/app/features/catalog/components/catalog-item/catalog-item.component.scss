@@ -300,20 +300,6 @@ $feature-button-width: 170px;
         }
       }
     }
-    ::ng-deep .btn-activation {
-      width: $feature-button-width;
-      height: 40px;
-      padding: 0 $spacing-ml;
-      padding-left: $spacing-ms;
-      font-size: $font-size-s;
-      @include media-breakpoint-down(md) {
-        width: $feature-button-width / 2;
-        padding: 0;
-        span {
-          display: none;
-        }
-      }
-    }
   }
 }
 
