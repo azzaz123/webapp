@@ -34,7 +34,6 @@ describe('ImagesCarouselComponent', () => {
 
   describe('when we have images...', () => {
     beforeEach(() => {
-      spyOn(component, 'canLoadImage').and.returnValue(true);
       component.images = [''];
       fixture.detectChanges();
     });

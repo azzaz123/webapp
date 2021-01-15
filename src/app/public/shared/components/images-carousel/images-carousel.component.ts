@@ -30,16 +30,6 @@ export class ImagesCarouselComponent {
     this.currentImageIndex.emit(imageIndex);
   }
 
-  public canLoadImage(slideId: number): boolean {
-    const currentIndex = parseInt(this.currentSlide.slice(-1));
-    const templateSlide = `${this.NGB_SLIDE}${slideId}`;
-
-    return [...Array(this.paginationSize).keys()].some(
-      (slide: number) =>
-        `${this.NGB_SLIDE}${currentIndex + slide}` === templateSlide
-    );
-  }
-
   get currentSlide(): string {
     return this.carousel?.activeId || this.NGB_SLIDE + 0;
   }
