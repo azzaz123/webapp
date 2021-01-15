@@ -96,12 +96,8 @@ describe('ItemCartFavoriteComponent', () => {
     beforeEach(() => {
       spyOn(component.onFavoriteChange, 'emit');
     });
-    it('should set favorited property to false', () => {
-      component.item.favorited = true;
-      component.removeFavorite();
-      expect(component.item.favorited).toBeFalsy();
-    });
-    it('should call onFavoriteChange emit method', () => {
+
+    it('should remove product from favorite after clicking Remove button', () => {
       component.removeFavorite();
       expect(component.onFavoriteChange.emit).toHaveBeenCalledWith(MOCK_ITEM);
     });
@@ -119,22 +115,11 @@ describe('ItemCartFavoriteComponent', () => {
       removeFavoriteButton.click();
     }));
 
-    it('when click tsl-cardFooter should call removeFavoriteModal method', () => {
+    it('when click on the footer of the product card, we should open a modal for asking to remove the product from favorite', () => {
       expect(component.removeFavoriteModal).toHaveBeenCalled();
     });
 
-    it('should open accept modal', () => {
-      expect(modalService.open).toHaveBeenCalledWith(
-        ConfirmationModalComponent,
-        { windowClass: 'modal-prompt' }
-      );
-    });
-
-    it('should set modal type "3" ', () => {
-      expect(modalRef.componentInstance.type).toEqual(3);
-    });
-
-    it('should call removeFavorite method ', fakeAsync(() => {
+    it('should remove the product from favourites after confirming to remove in the modal', fakeAsync(() => {
       tick();
       expect(component.removeFavorite).toHaveBeenCalled();
     }));
