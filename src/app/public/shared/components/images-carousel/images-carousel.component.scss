@@ -35,6 +35,9 @@ $item-flag-height: 38px;
 
   &__image {
     object-fit: cover;
+    &--fallback {
+      border-radius: $border-radius;
+    }
   }
 }
 

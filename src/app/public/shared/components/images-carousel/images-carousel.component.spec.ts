@@ -6,7 +6,7 @@ import { ImageFallbackModule } from '@public/core/directives/image-fallback/imag
 import { ImagesCarouselComponent } from './images-carousel.component';
 
 describe('ImagesCarouselComponent', () => {
-  const fallbackIdTemplate = '#fallbackCarousel';
+  const fallbackImageClass = '.ImagesCarousel__image--fallback';
   const defaultIdTemplate = '#defaultCarousel';
   const carouselTag = 'ngb-carousel';
   const carouselImageClass = '.ImagesCarousel__image';
@@ -44,7 +44,7 @@ describe('ImagesCarouselComponent', () => {
         By.css(defaultIdTemplate)
       );
       const fallbackSlider = fixture.debugElement.query(
-        By.css(fallbackIdTemplate)
+        By.css(fallbackImageClass)
       );
 
       expect(normalSlider).toBeTruthy();
@@ -97,7 +97,7 @@ describe('ImagesCarouselComponent', () => {
         By.css(defaultIdTemplate)
       );
       const fallbackSlider = fixture.debugElement.query(
-        By.css(fallbackIdTemplate)
+        By.css(fallbackImageClass)
       );
 
       expect(normalSlider).toBeFalsy();
