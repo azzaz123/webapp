@@ -26,19 +26,11 @@ export class ImagesCarouselComponent {
 
   constructor() {}
 
-  get currentSlide(): string {
-    return this.carousel?.activeId || this.NGB_SLIDE + 0;
-  }
-
   public emitCurrentImage(imageIndex: number): void {
     this.currentImageIndex.emit(imageIndex);
   }
 
-  public canLoadImage(i: number): boolean {
-    return this.isSlideAllowed(i);
-  }
-
-  private isSlideAllowed(slideId: number): boolean {
+  public canLoadImage(slideId: number): boolean {
     const currentIndex = parseInt(this.currentSlide.slice(-1));
     const templateSlide = `${this.NGB_SLIDE}${slideId}`;
 
@@ -46,5 +38,9 @@ export class ImagesCarouselComponent {
       (slide: number) =>
         `${this.NGB_SLIDE}${currentIndex + slide}` === templateSlide
     );
+  }
+
+  get currentSlide(): string {
+    return this.carousel?.activeId || this.NGB_SLIDE + 0;
   }
 }
