@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
 import { FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH } from '@core/item/item';
+import { CarouselImage } from '@public/shared/constants/images-carousel.interface';
 
 @Component({
   selector: 'tsl-images-carousel',
@@ -20,14 +21,14 @@ export class ImagesCarouselComponent {
   @ViewChild(NgbCarousel) public carousel: NgbCarousel;
   @Input() images: string[];
   @Input() paginationSize = 3;
-  @Output() currentImageIndex: EventEmitter<number> = new EventEmitter<
-    number
+  @Output() imageClick: EventEmitter<CarouselImage> = new EventEmitter<
+    CarouselImage
   >();
 
   constructor() {}
 
   public emitCurrentImage(imageIndex: number): void {
-    this.currentImageIndex.emit(imageIndex);
+    this.imageClick.emit({ index: imageIndex });
   }
 
   get currentSlide(): string {

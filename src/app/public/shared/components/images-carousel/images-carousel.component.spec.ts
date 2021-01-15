@@ -74,13 +74,13 @@ describe('ImagesCarouselComponent', () => {
 
     describe('when we click on the carousel...', () => {
       it('should open the image slider...', () => {
-        spyOn(component.currentImageIndex, 'emit');
+        spyOn(component.imageClick, 'emit');
 
         fixture.debugElement
           .query(By.css(carouselImageClass))
           .triggerEventHandler('click', {});
 
-        expect(component.currentImageIndex.emit).toHaveBeenCalled();
+        expect(component.imageClick.emit).toHaveBeenCalled();
       });
     });
   });
