@@ -1,4 +1,6 @@
 import { CommonModule } from '@angular/common';
+import { HammerModule } from '@angular/platform-browser';
+import { HAMMER_PROVIDER } from '@core/hammerjs/hammerjs-provider';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
 import { Story, Meta } from '@storybook/angular/types-6-0';
@@ -26,8 +28,13 @@ const Template: Story<ImagesCarouselComponent> = (
   props: args,
   moduleMetadata: {
     declarations: [ImagesCarouselComponent],
-    imports: [CommonModule, NgbCarouselModule, ImageFallbackModule],
-    providers: [],
+    imports: [
+      CommonModule,
+      NgbCarouselModule,
+      ImageFallbackModule,
+      HammerModule,
+    ],
+    providers: [HAMMER_PROVIDER],
   },
   template: '<tsl-images-carousel [images]="images"></tsl-images-carousel>',
 });
