@@ -21,7 +21,7 @@ import { ErrorsService } from '../../core/errors/errors.service';
 import { BillingInfoResponse } from '../../core/payments/payment.interface';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
 import { finalize } from 'rxjs/operators';
-import { CanComponentDeactivate } from '../../shared/guards/can-component-deactivate.interface';
+import { CanComponentDeactivate } from '@core/guards/can-component-deactivate.interface';
 import { EventService } from 'app/core/event/event.service';
 import { validDNI, validNIE, validCIF } from 'spain-id';
 import { UuidService } from '../../core/uuid/uuid.service';

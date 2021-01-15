@@ -408,7 +408,7 @@ export class UserService {
       return of(true);
     }
 
-    return this.me().pipe(
+    return this.me(false).pipe(
       tap((user) => this.setPermission(user)),
       map(() => true),
       catchError(() => of(true))

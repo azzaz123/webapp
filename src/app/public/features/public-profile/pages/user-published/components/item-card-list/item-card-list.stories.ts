@@ -12,6 +12,11 @@ import { CookieModule } from 'ngx-cookie';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ItemCardListComponent } from './item-card-list.component';
 import { CUSTOM_VIEWPORT_NAME } from '@storybook-config/viewports/custom-viewports';
+import { PublicPipesModule } from '@public/core/pipes/public-pipes.module';
+import { EventService } from '@core/event/event.service';
+import { I18nService } from '@core/i18n/i18n.service';
+import { UserService } from '@core/user/user.service';
+import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 
 export default {
   title: 'Webapp/ItemCardList',
@@ -24,6 +29,8 @@ export default {
         ItemCardModule,
         HttpClientModule,
         CookieModule.forRoot(),
+        PublicPipesModule,
+        NgxPermissionsModule.forRoot(),
       ],
       providers: [
         DeviceDetectorService,
@@ -31,6 +38,11 @@ export default {
         CheckSessionService,
         ItemApiService,
         AccessTokenService,
+        UserService,
+        EventService,
+        I18nService,
+        NgxPermissionsService,
+        { provide: 'SUBDOMAIN', useValue: 'es' },
       ],
     }),
   ],

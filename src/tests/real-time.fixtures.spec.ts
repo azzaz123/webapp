@@ -13,4 +13,8 @@ export class RealTimeServiceMock {
   sendDeliveryReceipt(to: string, id: string, thread: string): void {}
 
   addPhoneNumberMessageToConversation(conversation: InboxConversation) {}
+
+  sendMessage(conversation: InboxConversation, body: string): string {
+    return '';
+  }
 }
