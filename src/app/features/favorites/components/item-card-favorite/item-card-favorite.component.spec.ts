@@ -9,7 +9,7 @@ import {
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '@shared/pipes';
 import { DecimalPipe } from '@angular/common';
-import { ItemCartFavoriteComponent } from './item-cart-favorite.component';
+import { ItemCardFavoriteComponent } from './item-card-favorite.component';
 import { ItemService } from '@core/item/item.service';
 import { environment } from '@environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -19,9 +19,9 @@ import { USER_ID } from '@fixtures/user.fixtures.spec';
 import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 
-describe('ItemCartFavoriteComponent', () => {
-  let component: ItemCartFavoriteComponent;
-  let fixture: ComponentFixture<ItemCartFavoriteComponent>;
+describe('ItemCardFavoriteComponent', () => {
+  let component: ItemCardFavoriteComponent;
+  let fixture: ComponentFixture<ItemCardFavoriteComponent>;
   let element: HTMLElement;
 
   let itemService: ItemService;
@@ -41,7 +41,7 @@ describe('ItemCartFavoriteComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [],
-        declarations: [ItemCartFavoriteComponent, CustomCurrencyPipe],
+        declarations: [ItemCardFavoriteComponent, CustomCurrencyPipe],
         providers: [
           DecimalPipe,
           {
@@ -69,7 +69,7 @@ describe('ItemCartFavoriteComponent', () => {
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ItemCartFavoriteComponent);
+    fixture = TestBed.createComponent(ItemCardFavoriteComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.item = MOCK_ITEM;

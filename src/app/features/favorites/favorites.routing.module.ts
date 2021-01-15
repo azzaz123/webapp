@@ -4,7 +4,7 @@ import { FavoritesComponent } from './pages/favorites.component';
 import { LoggedGuard } from '@core/user/logged.guard';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { ProfileCardFavoriteComponent } from './components/profile-card-favorite/profile-card-favorite.component';
-import { ItemCartFavoriteComponent } from './components/item-cart-favorite/item-cart-favorite.component';
+import { ItemCardFavoriteComponent } from './components/item-card-favorite/item-card-favorite.component';
 import { ExitConfirmGuard } from '@shared/guards/exit-confirm.guard';
 import { ItemsPageComponent } from './components/items-page/items-page.component';
 import { ProfilesPageComponent } from './components/profiles-page/profiles-page.component';
@@ -39,7 +39,7 @@ export class FavoritesRoutingModule {}
 
 export const favoritesRoutedComponents = [
   FavoritesComponent,
-  ItemCartFavoriteComponent,
+  ItemCardFavoriteComponent,
   ProfileCardFavoriteComponent,
   ItemsPageComponent,
   ProfilesPageComponent,
