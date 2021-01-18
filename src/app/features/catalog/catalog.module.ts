@@ -8,7 +8,6 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbButtonsModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReviewsModule } from 'app/features/reviews/reviews.module';
-import { TrackingModule } from '@core/tracking/tracking.module';
 import { BumpTutorialComponent } from './components/bump-tutorial/bump-tutorial.component';
 import { CatalogItemComponent } from './components/catalog-item/catalog-item.component';
 import { CheckoutItemComponent } from './components/checkout-item/checkout-item.component';
@@ -31,7 +30,6 @@ import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-curre
     CatalogRoutingModule,
     InfiniteScrollModule,
     ReactiveFormsModule,
-    TrackingModule,
     NgbButtonsModule,
     NgbTooltipModule,
     ReviewsModule,

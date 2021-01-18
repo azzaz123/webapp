@@ -13,7 +13,7 @@ import { isSWEnabled } from 'environments/environment';
   declarations: [AppComponent],
   imports: [
     BrowserAnimationsModule,
-    CoreModule.forRoot(),
+    CoreModule,
     BrowserModule,
     HttpModule,
     AppRoutingModule,

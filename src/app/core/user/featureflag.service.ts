@@ -16,7 +16,9 @@ export enum FEATURE_FLAGS_ENUM {
   STRIPE = 'web_stripe',
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class FeatureflagService {
   private storedFeatureFlags: FeatureFlag[] = [];
 

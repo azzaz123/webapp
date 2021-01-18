@@ -38,6 +38,7 @@ describe('StripeCardsComponent', () => {
         declarations: [StripeCardsComponent, ButtonComponent],
         providers: [
           I18nService,
+          ToastService,
           {
             provide: ErrorsService,
             useValue: {

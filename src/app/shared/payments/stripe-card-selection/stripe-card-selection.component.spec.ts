@@ -12,6 +12,7 @@ import { StripeService } from '../../../core/stripe/stripe.service';
 import { FINANCIAL_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
 import { EventService } from '../../../core/event/event.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 
 describe('StripeCardSelectionComponent', () => {
   let component: StripeCardSelectionComponent;
@@ -28,6 +29,7 @@ describe('StripeCardSelectionComponent', () => {
         providers: [
           EventService,
           I18nService,
+          ToastService,
           {
             provide: StripeService,
             useValue: {

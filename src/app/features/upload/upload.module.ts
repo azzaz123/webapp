@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TrackingModule } from '@core/tracking/tracking.module';
 import {
   NgbButtonsModule,
   NgbCarouselModule,
@@ -37,7 +36,6 @@ import { uploadRoutedComponents, UploadRoutingModule } from './upload.routes';
     ReactiveFormsModule,
     UploadRoutingModule,
     NgbPopoverModule,
-    TrackingModule,
     DndModule.forRoot(),
     NgbCarouselModule,
     GeolocationModule,
