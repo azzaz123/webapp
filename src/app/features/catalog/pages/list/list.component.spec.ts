@@ -101,6 +101,7 @@ describe('ListComponent', () => {
         providers: [
           I18nService,
           EventService,
+          ToastService,
           { provide: SubscriptionsService, useClass: MockSubscriptionService },
           { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
           {

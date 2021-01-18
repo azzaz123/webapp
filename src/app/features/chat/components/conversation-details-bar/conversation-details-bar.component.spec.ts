@@ -109,6 +109,7 @@ describe('ConversationDetailsBarComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         EventService,
+        ToastService,
         {
           provide: RealTimeService,
           useValue: {

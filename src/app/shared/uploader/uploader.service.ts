@@ -12,9 +12,7 @@ import {
 import { DomSanitizer } from '@angular/platform-browser';
 import { cloneDeep } from 'lodash-es';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class UploaderService {
   private serviceEvents = new Subject<UploadOutput>();
   public serviceEvents$ = this.serviceEvents.asObservable();

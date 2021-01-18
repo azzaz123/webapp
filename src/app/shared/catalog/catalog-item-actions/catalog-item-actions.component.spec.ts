@@ -43,6 +43,7 @@ describe('CatalogItemActionsComponent', () => {
         declarations: [CatalogItemActionsComponent],
         providers: [
           I18nService,
+          ToastService,
           { provide: TrackingService, useClass: MockTrackingService },
           {
             provide: ItemService,

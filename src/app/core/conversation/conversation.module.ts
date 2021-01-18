@@ -9,13 +9,11 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { CallStatusLabelPipe } from '../../shared/pipes';
 import { SharedModule } from '../../shared/shared.module';
-import { ItemModule } from '../item/item.module';
 import { CallsService } from './calls.service';
 
 @NgModule({
   imports: [
     CommonModule,
-    ItemModule,
     NgbTooltipModule,
     NgbDropdownModule,
     NgbModalModule,
