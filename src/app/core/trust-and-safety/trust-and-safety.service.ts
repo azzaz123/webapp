@@ -14,9 +14,7 @@ import { UuidService } from '../uuid/uuid.service';
 
 export const USER_STARTER_ENDPOINT = `${environment.baseUrl}api/v3/users/me/starter`;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class TrustAndSafetyService {
   private _threatMetrixRef: ThreatMetrixLibrary;
   private _sessionId: string;

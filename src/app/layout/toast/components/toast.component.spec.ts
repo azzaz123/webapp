@@ -20,14 +20,7 @@ describe('ToastComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [NgbModule],
-        providers: [
-          {
-            provide: toastService,
-            useValue: {
-              toasts: [],
-            },
-          },
-        ],
+        providers: [ToastService],
         declarations: [ToastComponent],
       }).compileComponents();
     })
