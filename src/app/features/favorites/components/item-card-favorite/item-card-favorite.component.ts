@@ -13,11 +13,11 @@ import { TrackingService } from '@core/tracking/tracking.service';
 import { Item } from '@core/item/item';
 
 @Component({
-  selector: 'tsl-item-cart-favorite',
-  templateUrl: './item-cart-favorite.component.html',
-  styleUrls: ['./item-cart-favorite.component.scss'],
+  selector: 'tsl-item-card-favorite',
+  templateUrl: './item-card-favorite.component.html',
+  styleUrls: ['./item-card-favorite.component.scss'],
 })
-export class ItemCartFavoriteComponent implements OnInit {
+export class ItemCardFavoriteComponent implements OnInit {
   @Input() item: Item;
   @Output() onFavoriteChange: EventEmitter<Item> = new EventEmitter();
 

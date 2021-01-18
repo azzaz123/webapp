@@ -9,7 +9,7 @@ import {
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '@shared/pipes';
 import { DecimalPipe } from '@angular/common';
-import { ItemCartFavoriteComponent } from './item-cart-favorite.component';
+import { ItemCardFavoriteComponent } from './item-card-favorite.component';
 import { ItemService } from '@core/item/item.service';
 import { environment } from '@environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -19,9 +19,9 @@ import { USER_ID } from '@fixtures/user.fixtures.spec';
 import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 
-describe('ItemCartFavoriteComponent', () => {
-  let component: ItemCartFavoriteComponent;
-  let fixture: ComponentFixture<ItemCartFavoriteComponent>;
+describe('ItemCardFavoriteComponent', () => {
+  let component: ItemCardFavoriteComponent;
+  let fixture: ComponentFixture<ItemCardFavoriteComponent>;
   let element: HTMLElement;
 
   let itemService: ItemService;
@@ -41,7 +41,7 @@ describe('ItemCartFavoriteComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [],
-        declarations: [ItemCartFavoriteComponent, CustomCurrencyPipe],
+        declarations: [ItemCardFavoriteComponent, CustomCurrencyPipe],
         providers: [
           DecimalPipe,
           {
@@ -69,7 +69,7 @@ describe('ItemCartFavoriteComponent', () => {
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ItemCartFavoriteComponent);
+    fixture = TestBed.createComponent(ItemCardFavoriteComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.item = MOCK_ITEM;
@@ -81,7 +81,7 @@ describe('ItemCartFavoriteComponent', () => {
   });
 
   describe('goToItemDetail', () => {
-    it('should change window url', () => {
+    it('should go to product detail page', () => {
       spyOn(window, 'open');
       const MOCK_ITEM_URL: string =
         environment.siteUrl.replace('es', subdomain) +
@@ -96,12 +96,8 @@ describe('ItemCartFavoriteComponent', () => {
     beforeEach(() => {
       spyOn(component.onFavoriteChange, 'emit');
     });
-    it('should set favorited property to false', () => {
-      component.item.favorited = true;
-      component.removeFavorite();
-      expect(component.item.favorited).toBeFalsy();
-    });
-    it('should call onFavoriteChange emit method', () => {
+
+    it('should remove product from favorite after clicking Remove button', () => {
       component.removeFavorite();
       expect(component.onFavoriteChange.emit).toHaveBeenCalledWith(MOCK_ITEM);
     });
@@ -119,22 +115,11 @@ describe('ItemCartFavoriteComponent', () => {
       removeFavoriteButton.click();
     }));
 
-    it('when click tsl-cardFooter should call removeFavoriteModal method', () => {
+    it('when click on the footer of the product card, we should open a modal for asking to remove the product from favorite', () => {
       expect(component.removeFavoriteModal).toHaveBeenCalled();
     });
 
-    it('should open accept modal', () => {
-      expect(modalService.open).toHaveBeenCalledWith(
-        ConfirmationModalComponent,
-        { windowClass: 'modal-prompt' }
-      );
-    });
-
-    it('should set modal type "3" ', () => {
-      expect(modalRef.componentInstance.type).toEqual(3);
-    });
-
-    it('should call removeFavorite method ', fakeAsync(() => {
+    it('should remove the product from favourites after confirming to remove in the modal', fakeAsync(() => {
       tick();
       expect(component.removeFavorite).toHaveBeenCalled();
     }));

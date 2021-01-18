@@ -83,13 +83,13 @@ describe('ProfileCardFavoriteComponent', () => {
     beforeEach(() => {
       spyOn(component.onFavoriteProfileChange, 'emit');
     });
-    it('should set favorited property to false', () => {
+
+    it('should remove profile if the remove button is clicked', () => {
       component.profile.favorited = true;
+
       component.removeFavorite();
+
       expect(component.profile.favorited).toBe(false);
-    });
-    it('should call onFavoriteChange emit method', () => {
-      component.removeFavorite();
       expect(component.onFavoriteProfileChange.emit).toHaveBeenCalledWith(
         MOCK_PROFILE
       );
@@ -108,11 +108,8 @@ describe('ProfileCardFavoriteComponent', () => {
       removeFavoriteButton.click();
     }));
 
-    it('when click tsl-cardFooter should call removeFavoriteModal method', () => {
+    it('when click on the footer of the profile card, we should open a modal for asking to remove the profile', () => {
       expect(component.removeFavoriteModal).toHaveBeenCalled();
-    });
-
-    it('should open accept modal', () => {
       expect(modalService.open).toHaveBeenCalledWith(
         ConfirmationModalComponent,
         { windowClass: 'modal-prompt' }
@@ -123,14 +120,14 @@ describe('ProfileCardFavoriteComponent', () => {
       expect(modalRef.componentInstance.type).toEqual(5);
     });
 
-    it('should call removeFavorite method ', fakeAsync(() => {
+    it('should remove the profile after confirming to remove in the modal', fakeAsync(() => {
       tick();
       expect(component.removeFavorite).toHaveBeenCalled();
     }));
   });
 
   describe('goToProfileDetail', () => {
-    it('should change window url', () => {
+    it('should go to profile detail page', () => {
       spyOn(window, 'open');
       const MOCK_PROFILE_URL: string =
         environment.siteUrl.replace('es', subdomain) +
