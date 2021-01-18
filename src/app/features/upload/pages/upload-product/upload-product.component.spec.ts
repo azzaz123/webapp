@@ -73,6 +73,7 @@ import { I18nService } from '@core/i18n/i18n.service';
 import { UploadService } from '../../core/services/upload/upload.service';
 import {
   MockUploadService,
+  MOCK_UPLOAD_ITEM_OUTPUT_DONE,
   MOCK_UPLOAD_OUTPUT_DONE,
   MOCK_UPLOAD_OUTPUT_PENDING,
   UPLOAD_FILE_2,
@@ -81,6 +82,8 @@ import {
 } from '@fixtures/upload.fixtures.spec';
 import { ITEM_TYPES } from '@core/item/item';
 import { UPLOAD_ACTION } from '@shared/uploader/upload.interface';
+import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { MockSubscriptionService } from '@fixtures/subscriptions.fixtures.spec';
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
 export const USER_LOCATION: UserLocation = {
@@ -197,6 +200,10 @@ describe('UploadProductComponent', () => {
                 return of({ MOCK_CONDITIONS });
               },
             },
+          },
+          {
+            provide: SubscriptionsService,
+            useClass: MockSubscriptionService,
           },
           I18nService,
         ],
@@ -836,7 +843,7 @@ describe('UploadProductComponent', () => {
 
       it('should upload the item if the service return done', () => {
         spyOn(uploadService, 'createItem').and.returnValue(
-          of(MOCK_UPLOAD_OUTPUT_DONE)
+          of(MOCK_UPLOAD_ITEM_OUTPUT_DONE)
         );
         spyOn(component, 'onUploaded');
 
@@ -850,7 +857,7 @@ describe('UploadProductComponent', () => {
         );
         expect(component.onUploaded).toHaveBeenCalledTimes(1);
         expect(component.onUploaded).toHaveBeenCalledWith(
-          MOCK_UPLOAD_OUTPUT_DONE.file.response,
+          MOCK_UPLOAD_ITEM_OUTPUT_DONE.file.response.content,
           UPLOAD_ACTION.created
         );
       });
