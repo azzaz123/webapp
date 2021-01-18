@@ -9,6 +9,7 @@ import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { Observable, of } from 'rxjs';
 import { TabbarComponent } from './tabbar.component';
+import { TabbarService } from '../core/services/tabbar.service';
 
 describe('TabbarComponent', () => {
   let component: TabbarComponent;
@@ -40,6 +41,7 @@ describe('TabbarComponent', () => {
           },
           { provide: 'SUBDOMAIN', useValue: 'es' },
           EventService,
+          TabbarService,
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();

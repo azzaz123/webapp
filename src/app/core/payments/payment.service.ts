@@ -32,7 +32,9 @@ export enum PAYMENT_RESPONSE_STATUS {
 export const PAYMENTS_API_URL = 'api/v3/payments';
 export const PROTOOL_API_URL = 'api/v3/protool';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class PaymentService {
   private products: Products;
   private perksModel: PerksModel;

@@ -14,9 +14,7 @@ import { CookieService } from 'ngx-cookie';
 import { DEVICE_ID_COOKIE_NAME } from '../analytics/analytics.service';
 import { UuidService } from '../uuid/uuid.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class RemoteConsoleService implements OnDestroy {
   private deviceId: string;
   private sessionId: string;

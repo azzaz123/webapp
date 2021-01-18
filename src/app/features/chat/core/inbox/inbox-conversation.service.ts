@@ -25,9 +25,7 @@ import { ChatSignal, ChatSignalType } from '../model/chat-signal';
 
 export const ERROR_CODE_TOO_MANY_NEW_CONVERSATIONS = 100;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class InboxConversationService {
   public static readonly RESEND_BEFORE_5_DAYS = 5;
   public static readonly MESSAGES_IN_CONVERSATION = 30;

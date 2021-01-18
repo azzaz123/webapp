@@ -69,6 +69,7 @@ describe('EditSubscriptionModalComponent', () => {
           },
           I18nService,
           EventService,
+          ToastService,
           {
             provide: AnalyticsService,
             useClass: MockAnalyticsService,
