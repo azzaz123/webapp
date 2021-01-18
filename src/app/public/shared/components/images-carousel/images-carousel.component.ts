@@ -45,17 +45,19 @@ export class ImagesCarouselComponent {
   }
 
   get leftFlag(): FlagProperties {
-    const flagStatus = Object.keys(this.itemFlags).find(
-      (itemStatus: string) => {
-        if (
-          LEFT_FLAGS.some((flag) => flag.id === itemStatus) &&
-          this.itemFlags[itemStatus]
-        ) {
-          return itemStatus;
+    if (this.itemFlags) {
+      const flagStatus = Object.keys(this.itemFlags).find(
+        (itemStatus: string) => {
+          if (
+            LEFT_FLAGS.some((flag) => flag.id === itemStatus) &&
+            this.itemFlags[itemStatus]
+          ) {
+            return itemStatus;
+          }
         }
-      }
-    );
+      );
 
-    return LEFT_FLAGS.find((flag) => flag.id === flagStatus);
+      return LEFT_FLAGS.find((flag) => flag.id === flagStatus);
+    }
   }
 }
