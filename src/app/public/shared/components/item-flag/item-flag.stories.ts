@@ -25,7 +25,7 @@ const Template: Story<ItemFlagComponent> = (args: ItemFlagComponent) => ({
     declarations: [ItemFlagComponent],
     imports: [SvgIconModule, HttpClientModule],
   },
-  template: `<tsl-item-flag [type]="type">{{content}}</tsl-item-flag>`,
+  template: `<div style="width: 400px"> <tsl-item-flag [type]="type">{{content}}</tsl-item-flag> </div>`,
 });
 
 export const Default = Template.bind({});
