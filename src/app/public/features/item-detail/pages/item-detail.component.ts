@@ -23,6 +23,7 @@ export class ItemDetailComponent implements OnInit {
     review_done: false,
     bumped: true,
     highlighted: false,
+    onhold: true,
   };
 
   constructor(private deviceService: DeviceService) {}
