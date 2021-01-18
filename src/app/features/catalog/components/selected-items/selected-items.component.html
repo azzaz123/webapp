@@ -42,9 +42,9 @@
           </button>
 
           <!-- Deactivate -->
-          <button class="btn-deactivate dark" *ngIf="selectedSubscriptionSlot && selectedStatus === 'active'"
+          <button class="btn-deactivate dark" *ngIf="selectedSubscriptionSlot && selectedStatus === STATUS.ACTIVE"
             (click)="onClickAction('deactivate')"
-            [hidden]="itemService.selectedAction === 'feature' || (selectedStatus !== 'published' && selectedStatus !== 'active')"
+            [hidden]="itemService.selectedAction === 'feature' || (selectedStatus !== STATUS.PUBLISHED && selectedStatus !== STATUS.ACTIVE)"
             [disabled]="!itemService.selectedItems.length" tslTrackEvent="MYCATALOG_PRO_DEACTIVATE"
             i18n>Deactivate</button>
 

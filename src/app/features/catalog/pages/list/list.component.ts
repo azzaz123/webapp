@@ -634,9 +634,9 @@ export class ListComponent implements OnInit, OnDestroy {
       );
     } else {
       selectedSlot = this.selectedSubscriptionSlot;
-      const inactiveNavLink = this.getNavLinkById('inactive');
+      const inactiveNavLink = this.getNavLinkById(STATUS.INACTIVE);
       inactiveNavLink.counter.currentVal -= items.length;
-      const activeNavLink = this.getNavLinkById('active');
+      const activeNavLink = this.getNavLinkById(STATUS.ACTIVE);
       activeNavLink.counter.currentVal += items.length;
     }
 
@@ -656,12 +656,12 @@ export class ListComponent implements OnInit, OnDestroy {
 
     this.selectedSubscriptionSlot.available += numDeactivatedItems;
 
-    const inactiveNavLink = this.getNavLinkById('inactive');
+    const inactiveNavLink = this.getNavLinkById(STATUS.INACTIVE);
     if (inactiveNavLink.counter) {
       inactiveNavLink.counter.currentVal += numDeactivatedItems;
     }
 
-    const activeNavLink = this.getNavLinkById('active');
+    const activeNavLink = this.getNavLinkById(STATUS.ACTIVE);
     activeNavLink.counter.currentVal -= numDeactivatedItems;
   }
 

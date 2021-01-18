@@ -23,6 +23,7 @@ export class SelectedItemsComponent implements OnInit, OnDestroy {
   @Input() selectedStatus: STATUS;
   @Output() selectedAction: EventEmitter<string> = new EventEmitter();
 
+  public STATUS = STATUS;
   public selectedItems: Item[];
   public disableFeatureOption: boolean;
   public showActiveOption: boolean;

@@ -959,8 +959,12 @@ describe('ListComponent', () => {
           MOCK_SUBSCRIPTION_SLOT_CARS
         );
         component.navLinks = [
-          { id: 'inactive', display: 'navLink', counter: { currentVal: 0 } },
-          { id: 'active', display: 'navLink', counter: { currentVal: 0 } },
+          {
+            id: STATUS.INACTIVE,
+            display: 'navLink',
+            counter: { currentVal: 0 },
+          },
+          { id: STATUS.ACTIVE, display: 'navLink', counter: { currentVal: 0 } },
         ];
 
         component.activate();
@@ -1033,8 +1037,12 @@ describe('ListComponent', () => {
           MOCK_SUBSCRIPTION_SLOT_CARS
         );
         component.navLinks = [
-          { id: 'inactive', display: 'navLink', counter: { currentVal: 0 } },
-          { id: 'active', display: 'navLink', counter: { currentVal: 0 } },
+          {
+            id: STATUS.INACTIVE,
+            display: 'navLink',
+            counter: { currentVal: 0 },
+          },
+          { id: STATUS.ACTIVE, display: 'navLink', counter: { currentVal: 0 } },
         ];
 
         component.activate(SUBSCRIPTION_TYPES.stripe, '1');
@@ -1048,7 +1056,7 @@ describe('ListComponent', () => {
   describe('deactivate', () => {
     const TOTAL: number = 5;
     beforeEach(() => {
-      component.selectedStatus = 'active';
+      component.selectedStatus = STATUS.ACTIVE;
       component.items = createItemsArray(TOTAL);
       itemService.selectedItems = ['1'];
       component.items[0].flags['onhold'] = false;
