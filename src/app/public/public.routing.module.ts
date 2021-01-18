@@ -29,9 +29,9 @@ const routes: Route[] = [
           ),
       },
       {
-        path: PUBLIC_PATHS.WALL,
+        path: PUBLIC_PATHS.SEARCH,
         loadChildren: () =>
-          import('./features/wall/wall.module').then((m) => m.WallModule),
+          import('./features/search/search.module').then((m) => m.SearchModule),
       },
       {
         path: '**',
