@@ -1,13 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { ITEM_FLAG_TYPES } from './item-flag-constants';
 
-export enum ITEM_FLAG_TYPES {
-  DEFAULT = 'text',
-  SOLD = 'sold',
-  RESERVED = 'reserved',
-  EXPIRED = 'expired',
-  INACTIVE = 'inactive',
-  FEATURED = 'featured',
-}
 @Component({
   selector: 'tsl-item-flag',
   templateUrl: './item-flag.component.html',
