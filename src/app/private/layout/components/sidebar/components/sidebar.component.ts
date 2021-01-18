@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UserService } from '@core/user/user.service';
 import { User } from '@core/user/user';
-import { MessageService } from '@features/chat/core/message/message.service';
+import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 
 @Component({
   selector: 'tsl-sidebar',
@@ -16,7 +16,7 @@ export class SidebarComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    public messageService: MessageService
+    public unreadChatMessagesService: UnreadChatMessagesService
   ) {}
 
   ngOnInit() {

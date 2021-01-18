@@ -7,7 +7,9 @@ import * as CryptoJSBase64 from 'crypto-js/enc-base64';
 export const SECRET =
   'UTI5dVozSmhkSE1zSUhsdmRTZDJaU0JtYjNWdVpDQnBkQ0VnUVhKbElIbHZkU0J5WldGa2VTQjBieUJxYjJsdUlIVnpQeUJxYjJKelFIZGhiR3hoY0c5d0xtTnZiUT09';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class AccessTokenService {
   private _accessToken: string;
 

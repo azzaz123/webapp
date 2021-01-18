@@ -6,12 +6,10 @@ import {
   MockInterceptor,
   NullQueryParamsInterceptor,
 } from './interceptors';
-import { AccessTokenService } from './access-token.service';
 
 @NgModule({
   imports: [HttpClientModule],
   providers: [
-    AccessTokenService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

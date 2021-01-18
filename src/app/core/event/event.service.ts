@@ -2,7 +2,9 @@ import { share } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class EventService {
   public static USER_LOGIN = 'loginEvent';
   public static USER_LOGOUT = 'logoutEvent';

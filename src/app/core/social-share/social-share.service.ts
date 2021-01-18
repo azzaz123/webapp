@@ -10,7 +10,9 @@ const FACEBOOK_PARAMS =
 const TWITTER_PARAMS =
   'height=269, width=550, toolbar=0, location=0, menubar=0, directories=0, scrollbars=0';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class SocialShareService {
   public facebookShare(webLink: string): void {
     const url = FACEBOOK_URL + encodeURIComponent(webLink);

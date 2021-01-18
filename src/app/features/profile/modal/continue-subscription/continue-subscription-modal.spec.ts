@@ -62,6 +62,7 @@ describe('ContinueSubscriptionModalComponent', () => {
             provide: AnalyticsService,
             useClass: MockAnalyticsService,
           },
+          ToastService,
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
