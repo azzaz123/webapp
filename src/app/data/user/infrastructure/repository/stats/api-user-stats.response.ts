@@ -1,11 +1,11 @@
-
 import { UserCounter, UserRating, UserStats } from './../../../domain';
+
 export interface ApiUserStatsResponse {
   ratings: TypeValue[];
   counters: TypeValue[];
 }
 
-interface TypeValue {
+export interface TypeValue {
   type: string;
   value: number;
 }
@@ -15,7 +15,7 @@ export class ApiUserStasMapper {
     return {
       ratings: ApiUserStatsRatingMapper.toDomain(ratings),
       counters: ApiUserStatsCounterMapper.toDomain(counters)
-    }
+    };
   }
 }
 

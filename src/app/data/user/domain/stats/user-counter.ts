@@ -10,5 +10,5 @@ export interface UserCounter {
   sold: number;
   reports_received: number;
   onHold: number;
-  featured?: number;
+  featured: number;
 }

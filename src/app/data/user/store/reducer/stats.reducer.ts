@@ -15,14 +15,14 @@ export interface UserStatsState {
   loading: boolean;
 }
 
-export const INTIAL_USER_STATS_STATE: UserStatsState = {
+export const INITIAL_USER_STATS_STATE: UserStatsState = {
   stats: null,
   statsByUserId: null,
   loading: false,
 };
 
 const reducer = createReducer(
-  INTIAL_USER_STATS_STATE,
+  INITIAL_USER_STATS_STATE,
   on(LoadUserStats, LoadUserStatsByUserId, (state) => ({
     ...state,
     loading: true,
