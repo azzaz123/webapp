@@ -1,63 +1,38 @@
 import { of } from 'rxjs';
 import {
   ComponentFixture,
-  fakeAsync,
   TestBed,
-  tick,
+  fakeAsync,
   waitForAsync,
 } from '@angular/core/testing';
-import { EventEmitter, NO_ERRORS_SCHEMA } from '@angular/core';
+import { ItemService } from '@core/item/item.service';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FavoritesComponent } from './favorites.component';
 import { UserService } from '@core/user/user.service';
 import { MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
-import { RouterTestingModule } from '@angular/router/testing';
-import { RouterLinkWithHref, Routes } from '@angular/router';
-import { ItemsPageComponent } from '../components/items-page/items-page.component';
-import { ProfilesPageComponent } from '../components/profiles-page/profiles-page.component';
-import { ItemService } from '@core/item/item.service';
-import { By } from '@angular/platform-browser';
+import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { ProfileService } from '@core/profile/profile.service';
-import { FAVORITES_PATHS } from '../favorites-routing-constan';
+import { MOCK_PROFILE } from '@fixtures/profile.fixtures.spec';
 
-export class ItemsPageStub {
-  onFavoriteItemPageChange: EventEmitter<Boolean> = new EventEmitter(true);
-}
-
-export class ProfilesPageStub {
-  onFavoriteProfilePageChange: EventEmitter<Boolean> = new EventEmitter(true);
-}
-
-const routes: Routes = [
-  {
-    path: FAVORITES_PATHS.PRODUCTS,
-    component: ItemsPageComponent,
-  },
-  {
-    path: FAVORITES_PATHS.PROFILES,
-    component: ProfilesPageComponent,
-  },
-];
-
-describe('FavouriteItemsComponent', () => {
+describe('FavoritesComponent', () => {
   let component: FavoritesComponent;
   let fixture: ComponentFixture<FavoritesComponent>;
-  let itemsPageStub: ItemsPageStub;
-  let profilesPageStub: ProfilesPageStub;
+  let itemService: ItemService;
+  let itemServiceSpy: jasmine.Spy;
+  let profileServiceSpy: jasmine.Spy;
   let userService: UserService;
+  let profileService: ProfileService;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [FavoritesComponent, ItemsPageComponent],
-        imports: [RouterTestingModule.withRoutes(routes)],
+        declarations: [FavoritesComponent],
         providers: [
-          ItemsPageStub,
-          ProfilesPageStub,
           {
             provide: ItemService,
             useValue: {
               myFavorites() {
-                return of({});
+                return of({ data: [MOCK_ITEM, MOCK_ITEM], init: 2 });
               },
             },
           },
@@ -65,7 +40,7 @@ describe('FavouriteItemsComponent', () => {
             provide: ProfileService,
             useValue: {
               myFavorites() {
-                return of();
+                return of({ data: [MOCK_PROFILE, MOCK_PROFILE], init: 2 });
               },
             },
           },
@@ -86,9 +61,9 @@ describe('FavouriteItemsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(FavoritesComponent);
     component = fixture.componentInstance;
+    itemService = TestBed.inject(ItemService);
     userService = TestBed.inject(UserService);
-    itemsPageStub = TestBed.inject(ItemsPageStub);
-    profilesPageStub = TestBed.inject(ProfilesPageStub);
+    profileService = TestBed.inject(ProfileService);
     fixture.detectChanges();
   });
 
@@ -96,71 +71,230 @@ describe('FavouriteItemsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('Navigation', () => {
-    it('should navigate to favorites/products page after clicking products tab', fakeAsync(() => {
-      fixture.ngZone.run(() => {
-        const linkInstance = fixture.debugElement
-          .query(By.css('#products-tab'))
-          .injector.get(RouterLinkWithHref);
-        const element: HTMLElement = fixture.debugElement.query(
-          By.css('#products-tab')
-        ).nativeElement;
-
-        element.click();
-        tick();
-
-        expect(linkInstance['href']).toBe('/products');
-      });
+  describe('getItems', () => {
+    beforeEach(fakeAsync(() => {
+      spyOn(component, 'getItems').and.callThrough();
+      spyOn(component, 'getProfiles').and.callThrough();
+      itemServiceSpy = spyOn(itemService, 'myFavorites').and.callThrough();
+      profileServiceSpy = spyOn(
+        profileService,
+        'myFavorites'
+      ).and.callThrough();
     }));
 
-    it('should navigate to favorites/profiles page after clicking profiles tab', fakeAsync(() => {
-      fixture.ngZone.run(() => {
-        const linkInstance = fixture.debugElement
-          .query(By.css('#profiles-tab'))
-          .injector.get(RouterLinkWithHref);
-        const element: HTMLElement = fixture.debugElement.query(
-          By.css('#profiles-tab')
-        ).nativeElement;
+    it('should call myFavorites when component init', () => {
+      component.ngOnInit();
 
-        element.click();
-        tick();
+      expect(component.getItems).toHaveBeenCalled();
+    });
 
-        expect(linkInstance['href']).toBe('/profiles');
-      });
-    }));
+    it('if append argument is false should clear item array', () => {
+      component.items = [MOCK_ITEM];
+      component.getItems(false);
+
+      expect(component.items).toEqual([MOCK_ITEM, MOCK_ITEM]);
+    });
+
+    it('if append argument is not defined should clear item array', () => {
+      component.items = [MOCK_ITEM];
+      component.getItems();
+
+      expect(component.items).toEqual([MOCK_ITEM, MOCK_ITEM]);
+    });
+
+    it('should call myFavorites with items length', () => {
+      const init = component.items.length;
+      component.getItems(true);
+
+      expect(itemService.myFavorites).toHaveBeenCalledWith(init);
+    });
+
+    it('if append argument is true, current component.item should add ', () => {
+      component.items = [MOCK_ITEM];
+      component.getItems(true);
+
+      expect(component.items).toEqual([MOCK_ITEM, MOCK_ITEM, MOCK_ITEM]);
+    });
+
+    it('should set loading to false', () => {
+      component.loading = true;
+      component.getItems();
+
+      expect(component.loading).toBeFalsy();
+    });
+
+    it('should set end true if no init', () => {
+      itemServiceSpy.and.returnValue(
+        of({ data: [MOCK_ITEM, MOCK_ITEM], init: null })
+      );
+      component.getItems();
+
+      expect(component['end']).toBeTruthy();
+    });
   });
 
-  describe('onActivate', () => {
-    it('should remove the number of favorite after user removed favorite product', fakeAsync(() => {
-      spyOn(
-        itemsPageStub.onFavoriteItemPageChange,
-        'subscribe'
-      ).and.returnValue(of(true));
-      spyOn(component, 'onActivate').and.callThrough();
+  describe('filterByStatus', () => {
+    beforeEach(() => {
+      profileServiceSpy = spyOn(
+        profileService,
+        'myFavorites'
+      ).and.callThrough();
+      itemServiceSpy = spyOn(itemService, 'myFavorites').and.callThrough();
+    });
 
-      component.onActivate(itemsPageStub as ItemsPageComponent);
+    it('should call getItems if selected status is profiles', () => {
+      spyOn(component, 'getItems').and.callThrough();
+      spyOn(component, 'getNumberOfFavorites').and.callThrough();
 
-      tick();
+      component.selectedStatus = 'profiles';
+      component.filterByStatus('products');
 
-      expect(
-        itemsPageStub.onFavoriteItemPageChange.subscribe
-      ).toHaveBeenCalled();
-    }));
+      expect(component.getItems).toHaveBeenCalled();
+      expect(component.getNumberOfFavorites).toHaveBeenCalled();
+    });
 
-    it('should remove the number of favorite after user removed favorite profile', fakeAsync(() => {
-      spyOn(
-        profilesPageStub.onFavoriteProfilePageChange,
-        'subscribe'
-      ).and.returnValue(of(true));
-      spyOn(component, 'onActivate').and.callThrough();
+    it('should call getProfiles if selected status is products', () => {
+      spyOn(component, 'getProfiles').and.callThrough();
+      spyOn(component, 'getNumberOfFavorites').and.callThrough();
 
-      component.onActivate(profilesPageStub as ProfilesPageComponent);
-      tick();
+      component.selectedStatus = 'products';
+      component.filterByStatus('profiles');
 
-      expect(
-        profilesPageStub.onFavoriteProfilePageChange.subscribe
-      ).toHaveBeenCalled();
-    }));
+      expect(component.getProfiles).toHaveBeenCalled();
+      expect(component.getNumberOfFavorites).toHaveBeenCalled();
+    });
+  });
+
+  describe('getProfiles', () => {
+    beforeEach(() => {
+      profileServiceSpy = spyOn(
+        profileService,
+        'myFavorites'
+      ).and.callThrough();
+      itemServiceSpy = spyOn(itemService, 'myFavorites').and.callThrough();
+    });
+
+    it('if append argument is false should clear the profile array', () => {
+      component.profiles = [MOCK_PROFILE];
+      component.getProfiles(false);
+
+      expect(component.profiles).toEqual([MOCK_PROFILE, MOCK_PROFILE]);
+    });
+
+    it('if append argument is not defined should clear the profile array', () => {
+      component.profiles = [MOCK_PROFILE];
+      component.getProfiles();
+
+      expect(component.profiles).toEqual([MOCK_PROFILE, MOCK_PROFILE]);
+    });
+
+    it('should call myFavorites with profiles length', () => {
+      const init = component.profiles.length;
+      component.getProfiles(true);
+
+      expect(profileService.myFavorites).toHaveBeenCalledWith(init);
+    });
+
+    it('if append argument is true, current component.profile should add the profile', () => {
+      component.profiles = [MOCK_PROFILE];
+      component.getProfiles(true);
+
+      expect(component.profiles).toEqual([
+        MOCK_PROFILE,
+        MOCK_PROFILE,
+        MOCK_PROFILE,
+      ]);
+    });
+
+    it('should set loading to false', () => {
+      component.loading = true;
+      component.getProfiles();
+
+      expect(component.loading).toBeFalsy();
+    });
+
+    it('should set end true if no init', () => {
+      profileServiceSpy.and.returnValue(
+        of({ data: [MOCK_PROFILE, MOCK_PROFILE], init: null })
+      );
+      component.getProfiles();
+
+      expect(component['end']).toBeTruthy();
+    });
+  });
+
+  describe('onFavoriteChange', () => {
+    beforeEach(() => {
+      spyOn(component, 'removeItem');
+    });
+
+    it('should call removeItem with item argument', () => {
+      component.onFavoriteChange(MOCK_ITEM);
+
+      expect(component.removeItem).toHaveBeenCalledWith(MOCK_ITEM);
+    });
+  });
+
+  describe('onFavoriteProfileChange', () => {
+    beforeEach(() => {
+      spyOn(component, 'removeProfile');
+    });
+
+    it('should call removeProfile with a profile argument', () => {
+      component.onFavoriteProfileChange(MOCK_PROFILE);
+
+      expect(component.removeProfile).toHaveBeenCalledWith(MOCK_PROFILE);
+    });
+  });
+
+  describe('loadMore', () => {
+    beforeEach(() => {
+      spyOn(component, 'getItems');
+      spyOn(component, 'getProfiles');
+    });
+
+    it('should call removeItems with item argument if selectedStatus is products', () => {
+      component.selectedStatus = 'products';
+      component.loadMore();
+
+      expect(component.getItems).toHaveBeenCalledWith(true);
+    });
+
+    it('should call removeProfiles if selectedStatus is profiles', () => {
+      component.selectedStatus = 'profiles';
+      component.loadMore();
+
+      expect(component.getProfiles).toHaveBeenCalledWith(true);
+    });
+  });
+
+  describe('removeItem', () => {
+    it('should remove item', () => {
+      const [item1, item2] = (component.items = [MOCK_ITEM, MOCK_ITEM]);
+      const NUMBEROFFAVORITES = 1;
+
+      component.numberOfFavorites = NUMBEROFFAVORITES;
+      component.removeItem(item1);
+
+      expect(component.items).toEqual([item2]);
+      expect(component.numberOfFavorites).toEqual(NUMBEROFFAVORITES - 1);
+    });
+  });
+
+  describe('removeProfile', () => {
+    it('should remove the profile', () => {
+      const [profile1, profile2] = (component.profiles = [
+        MOCK_PROFILE,
+        MOCK_PROFILE,
+      ]);
+      const NUMBEROFFAVORITES = 1;
+
+      component.numberOfFavorites = NUMBEROFFAVORITES;
+      component.removeProfile(profile1);
+
+      expect(component.profiles).toEqual([profile2]);
+      expect(component.numberOfFavorites).toEqual(NUMBEROFFAVORITES - 1);
+    });
   });
 
   describe('getNumberOfFavorites', () => {
