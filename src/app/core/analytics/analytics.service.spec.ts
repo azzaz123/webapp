@@ -2,12 +2,11 @@ import { of } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { AnalyticsService } from './analytics.service';
 import { UserService } from '../user/user.service';
-import { MOCK_USER } from '../../../tests/user.fixtures.spec';
+import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
 import mParticle from '@mparticle/web-sdk';
 import appboyKit from '@mparticle/web-appboy-kit';
-import { CookieService } from 'ngx-cookie';
-import { UuidService } from '../uuid/uuid.service';
+import { DeviceService } from '@core/device/device.service';
 
 const user = {
   setUserAttribute: () => {},
@@ -40,8 +39,8 @@ jest.mock('@mparticle/web-appboy-kit', () => ({
 
 describe('AnalyticsService', () => {
   let service: AnalyticsService;
+  let deviceService: DeviceService;
   let deviceIdValue: string;
-  let uuidService: UuidService;
 
   beforeEach(() => {
     deviceIdValue = 'deviceId';
@@ -57,17 +56,15 @@ describe('AnalyticsService', () => {
           },
         },
         {
-          provide: CookieService,
+          provide: DeviceService,
           useValue: {
-            get: () => deviceIdValue,
-            put: (value) => {
-              deviceIdValue = value;
-            },
+            getDeviceId: () => {},
           },
         },
       ],
     });
-    uuidService = TestBed.inject(UuidService);
+
+    deviceService = TestBed.inject(DeviceService);
     service = TestBed.inject(AnalyticsService);
   });
 
@@ -78,13 +75,14 @@ describe('AnalyticsService', () => {
         spyOn(mParticle, 'init').and.callThrough();
         spyOn(user, 'setUserAttribute');
         spyOn(appboyKit, 'register');
+        spyOn(deviceService, 'getDeviceId').and.returnValue('newUUID');
 
         service.initialize();
 
-        expect(mParticle.init).toHaveBeenCalled();
+        expect(mParticle.init).toHaveBeenCalledTimes(1);
         expect(user.setUserAttribute).toHaveBeenCalledWith(
           'deviceId',
-          'deviceId'
+          'newUUID'
         );
         expect(appboyKit.register).toHaveBeenCalled();
       });
@@ -96,7 +94,7 @@ describe('AnalyticsService', () => {
         spyOn(mParticle, 'init').and.callThrough();
         spyOn(mParticle.Identity.getCurrentUser(), 'setUserAttribute');
         spyOn(appboyKit, 'register');
-        spyOn(uuidService, 'getUUID').and.returnValue('newDeviceId');
+        spyOn(deviceService, 'getDeviceId').and.returnValue('newDeviceId');
 
         service.initialize();
 

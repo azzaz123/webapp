@@ -1,9 +1,4 @@
-<div
-  *ngIf="!uploadedCover"
-  [tslsanitizedBackground]="avatar"
-  [fallback]="fallback"
-  class="avatar-rounded"></div>
+<div *ngIf="!uploadedCover" [tslsanitizedBackground]="avatar" [fallback]="fallback" class="avatar {{class}}">
+</div>
 
-<img *ngIf="uploadedCover"
-     [src]="uploadedCover"
-     class="avatar-rounded"/>
+<img *ngIf="uploadedCover" [src]="uploadedCover" class="avatar {{class}}" />

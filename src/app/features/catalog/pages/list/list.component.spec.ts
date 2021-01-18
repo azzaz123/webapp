@@ -12,7 +12,7 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { CategoryService } from '@core/category/category.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
-import { HttpModuleNew } from '@core/http/http.module.new';
+import { HttpModule } from '@core/http/http.module';
 import { I18nService } from '@core/i18n/i18n.service';
 import { Item } from '@core/item/item';
 import { ItemService } from '@core/item/item.service';
@@ -33,7 +33,6 @@ import {
   MOCK_ITEM_V3,
   MOCK_LISTING_FEE_ORDER,
   ORDER_EVENT,
-  PRODUCT_RESPONSE,
 } from '@fixtures/item.fixtures.spec';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 import {
@@ -46,6 +45,7 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TooManyItemsModalComponent } from '@shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
+import { BumpSuggestionModalComponent } from '@shared/modals/bump-suggestion-modal/bump-suggestion-modal.component';
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
 import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
 import { find } from 'lodash-es';
@@ -91,7 +91,7 @@ describe('ListComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [HttpModuleNew],
+        imports: [HttpModule],
         declarations: [
           ListComponent,
           ItemSoldDirective,
@@ -101,6 +101,7 @@ describe('ListComponent', () => {
         providers: [
           I18nService,
           EventService,
+          ToastService,
           { provide: SubscriptionsService, useClass: MockSubscriptionService },
           { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
           {
@@ -137,6 +138,9 @@ describe('ListComponent', () => {
               deactivate() {},
               selectedItems$: new ReplaySubject(1),
               selectedItems: [],
+              getCheapestProductPrice() {
+                return of({ [1]: '10' });
+              },
             },
           },
           {
@@ -153,6 +157,11 @@ describe('ListComponent', () => {
           {
             provide: ActivatedRoute,
             useValue: {
+              snapshot: {
+                params: {
+                  itemId: 1,
+                },
+              },
               params: of({
                 code: 200,
               }),
@@ -247,6 +256,47 @@ describe('ListComponent', () => {
 
         expect(component.creditInfo).toEqual(creditInfo);
       });
+
+      it('should set price to bumb suggestion modal', fakeAsync(() => {
+        const creditInfo: CreditInfo = {
+          currencyName: 'EUR',
+          credit: 10,
+          factor: 1,
+        };
+        spyOn(paymentService, 'getCreditInfo').and.returnValue(of(creditInfo));
+        spyOn(itemService, 'getCheapestProductPrice').and.callThrough();
+
+        component['bumpSuggestionModalRef'] = <any>{
+          componentInstance: componentInstance,
+        };
+
+        component.ngOnInit();
+        tick();
+
+        expect(
+          component['bumpSuggestionModalRef'].componentInstance.productCurrency
+        ).toEqual('EUR');
+        expect(itemService.getCheapestProductPrice).toHaveBeenCalledTimes(1);
+        expect(itemService.getCheapestProductPrice).toHaveBeenLastCalledWith([
+          1,
+        ]);
+        expect(
+          component['bumpSuggestionModalRef'].componentInstance.productPrice
+        ).toEqual(creditInfo.factor * 10);
+      }));
+
+      it('should set the creditInfo', () => {
+        const creditInfo: CreditInfo = {
+          currencyName: 'wallacoins',
+          credit: 2000,
+          factor: 100,
+        };
+        spyOn(paymentService, 'getCreditInfo').and.returnValue(of(creditInfo));
+
+        component.ngOnInit();
+
+        expect(component.creditInfo).toEqual(creditInfo);
+      });
     });
 
     it('should open bump confirmation modal', fakeAsync(() => {
@@ -298,6 +348,55 @@ describe('ListComponent', () => {
       tick();
       expect(errorService.i18nSuccess).toHaveBeenCalledWith('itemUpdated');
     }));
+
+    describe('bump suggestion modal', () => {
+      beforeEach(() => {
+        route.params = of({
+          created: true,
+          itemId: '1',
+        });
+      });
+
+      it('should open bump suggestion modal if item is created', fakeAsync(() => {
+        component.ngOnInit();
+        tick();
+
+        expect(modalService.open).toHaveBeenCalledWith(
+          BumpSuggestionModalComponent,
+          {
+            windowClass: 'modal-standard',
+          }
+        );
+      }));
+
+      it('should redirect when modal CTA button modal is clicked', fakeAsync(() => {
+        modalSpy.and.returnValue({
+          result: Promise.resolve({ redirect: true }),
+          componentInstance: { item: null },
+        });
+        spyOn(router, 'navigate');
+        component.ngOnInit();
+        tick();
+
+        expect(router.navigate).toHaveBeenCalledTimes(1);
+        expect(router.navigate).toHaveBeenCalledWith([
+          'catalog/checkout',
+          { itemId: '1' },
+        ]);
+      }));
+
+      it('should not redirect when modal is closed', fakeAsync(() => {
+        modalSpy.and.returnValue({
+          result: Promise.resolve({ redirect: false }),
+          componentInstance: { item: null },
+        });
+        spyOn(router, 'navigate');
+        component.ngOnInit();
+        tick();
+
+        expect(router.navigate).not.toHaveBeenCalled();
+      }));
+    });
 
     it('should open the listing fee modal if transaction is set as purchaseListingFee', fakeAsync(() => {
       spyOn(localStorage, 'getItem').and.returnValue('purchaseListingFee');
@@ -526,23 +625,17 @@ describe('ListComponent', () => {
       component.ngOnInit();
       expect(component['end']).toBeTruthy();
     });
-    it('should set item to upload modal and call urgentPrice', fakeAsync(() => {
-      component['uploadModalRef'] = <any>{
+    it('should set item to bumb suggestion modal', fakeAsync(() => {
+      component['bumpSuggestionModalRef'] = <any>{
         componentInstance: componentInstance,
       };
 
       component.ngOnInit();
       tick();
 
-      expect(component['uploadModalRef'].componentInstance.item).toEqual(
-        component.items[0]
-      );
       expect(
-        component['uploadModalRef'].componentInstance.trackUploaded
-      ).toHaveBeenCalled();
-      expect(
-        component['uploadModalRef'].componentInstance.urgentPrice
-      ).toHaveBeenCalled();
+        component['bumpSuggestionModalRef'].componentInstance.item
+      ).toEqual(component.items[0]);
     }));
   });
 

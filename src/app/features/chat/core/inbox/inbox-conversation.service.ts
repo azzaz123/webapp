@@ -12,7 +12,7 @@ import { find, head, isEmpty, isNil, some } from 'lodash-es';
 import * as moment from 'moment';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, delay, map, mergeMap } from 'rxjs/operators';
-import { MessageService } from '../message/message.service';
+import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 import {
   InboxConversation,
   InboxMessage,
@@ -25,9 +25,7 @@ import { ChatSignal, ChatSignalType } from '../model/chat-signal';
 
 export const ERROR_CODE_TOO_MANY_NEW_CONVERSATIONS = 100;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class InboxConversationService {
   public static readonly RESEND_BEFORE_5_DAYS = 5;
   public static readonly MESSAGES_IN_CONVERSATION = 30;
@@ -47,7 +45,7 @@ export class InboxConversationService {
   constructor(
     private httpClient: HttpClient,
     private realTime: RealTimeService,
-    private messageService: MessageService,
+    private unreadChatMessagesService: UnreadChatMessagesService,
     private remoteConsoleService: RemoteConsoleService,
     private eventService: EventService,
     private toastService: ToastService,
@@ -186,7 +184,7 @@ export class InboxConversationService {
 
   private incrementUnreadCounter(existingConversation: InboxConversation) {
     existingConversation.unreadCounter++;
-    this.messageService.totalUnreadMessages++;
+    this.unreadChatMessagesService.totalUnreadMessages++;
   }
 
   public processNewChatSignal(signal: ChatSignal) {
@@ -226,7 +224,8 @@ export class InboxConversationService {
         message.status = MessageStatus.READ;
       });
       if (!markMessagesFromSelf) {
-        this.messageService.totalUnreadMessages -= conversation.unreadCounter;
+        this.unreadChatMessagesService.totalUnreadMessages -=
+          conversation.unreadCounter;
         conversation.unreadCounter = 0;
       }
     }

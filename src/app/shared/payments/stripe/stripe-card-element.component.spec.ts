@@ -15,6 +15,7 @@ import { StripeService } from '../../../core/stripe/stripe.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { of } from 'rxjs';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 
 describe('StripeCardElementComponent', () => {
   let component: StripeCardElementComponent;
@@ -28,6 +29,7 @@ describe('StripeCardElementComponent', () => {
         imports: [ReactiveFormsModule, FormsModule],
         providers: [
           I18nService,
+          ToastService,
           {
             provide: StripeService,
             useValue: {

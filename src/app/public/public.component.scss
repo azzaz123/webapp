@@ -1,0 +1,11 @@
+@import '~style/common';
+
+:host {
+  display: block;
+  margin-top: $topbar-height;
+  background-color: $main-background-color;
+
+  @include media-breakpoint-down(md) {
+    padding-bottom: $tabbar-height;
+  }
+}

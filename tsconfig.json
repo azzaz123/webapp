@@ -30,6 +30,9 @@
       "@private/*": [
         "app/private/*"
       ],
+      "@storybook-config/*": [
+        "../.storybook/*"
+      ],
       "@data/user": [
         "app/data/user/index.ts"
       ],

@@ -12,17 +12,19 @@ import { ItemStatsGraphComponent } from './components/item-stats-graph/item-stat
 import { ItemStatsRowComponent } from './components/item-stats-row/item-stats-row.component';
 import { ItemsStatsComponent } from './components/items-stats/items-stats.component';
 import { ItemStatsService } from './core/services/item-stats.service';
-import { TrackingModule } from '@core/tracking/tracking.module';
 import { SharedModule } from '@shared/shared.module';
+import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
+import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 
 @NgModule({
   imports: [
     CommonModule,
     StatsRoutingModule,
     SharedModule,
-    TrackingModule,
     InfiniteScrollModule,
     NgxEchartsModule,
+    ItemAvatarModule,
+    CustomCurrencyModule,
   ],
   providers: [ItemStatsService],
   declarations: [

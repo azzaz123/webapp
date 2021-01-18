@@ -1,93 +1,64 @@
-import { CommonModule } from '@angular/common';
-import {
-  ModuleWithProviders,
-  NgModule,
-  Optional,
-  SkipSelf,
-} from '@angular/core';
-import { BlockUserXmppService } from '@features/chat/core/block-user/block-user-xmpp.service';
-import { BlockUserService } from '@features/chat/core/block-user/block-user.service';
-import { InboxService } from '@features/chat/core/inbox/inbox.service';
-import { MessageService } from '@features/chat/core/message/message.service';
+import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 import { CookieModule } from 'ngx-cookie';
-import { ConnectionService } from './connection/connection.service';
-import { ConversationModule } from './conversation/conversation.module';
-import { DesktopNotificationsService } from './desktop-notifications/desktop-notifications.service';
-import { ErrorsService } from './errors/errors.service';
+import { DeviceDetectorModule } from 'ngx-device-detector';
+import { NgxPermissionsModule } from 'ngx-permissions';
 import { EventService } from './event/event.service';
+import { GeolocationService } from './geolocation/geolocation.service';
 import { AccessTokenService } from './http/access-token.service';
 import { I18nService } from './i18n/i18n.service';
-import { InvoiceService } from './invoice/invoice.service';
-import { ItemModule } from './item/item.module';
-import { RealTimeService } from './message/real-time.service';
-import { MobileBlockerModule } from './mobile-blocker/mobile-blocker.module';
 import { PaymentService } from './payments/payment.service';
-import { ProfileModule } from './profile/profile.module';
-import { ProfileService } from './profile/profile.service';
-import { ReviewService } from './review/review.service';
 import { CoreStoreModule } from './store/core-store.module';
-import { StripeService } from './stripe/stripe.service';
-import { SubscriptionsService } from './subscriptions/subscriptions.service';
-import { TrackingModule } from './tracking/tracking.module';
-import { TrustAndSafetyService } from './trust-and-safety/trust-and-safety.service';
-import { TutorialService } from './tutorial/tutorial.service';
 import { DevelopmentGuard } from './user/development.guard';
 import { LoggedGuard } from './user/logged.guard';
-import { UserModule } from './user/user.module';
-import { XmppService } from './xmpp/xmpp.service';
+import { SocialShareService } from './social-share/social-share.service';
+import { AnalyticsService } from './analytics/analytics.service';
+import { DeviceService } from './device/device.service';
+import { DidomiService } from './didomi/didomi.service';
+import { LoadExternalLibsService } from './load-external-libs/load-external-libs.service';
+import { FeatureflagService } from './user/featureflag.service';
+import { SessionService } from './session/session.service';
+import { UuidService } from './uuid/uuid.service';
+import { AdsService } from '@features/chat/core/ads/ads.service';
+import { HereMapsService } from '@shared/geolocation/here-maps/here-maps.service';
+import { UserService } from './user/user.service';
+import { TrackingService } from './tracking/tracking.service';
+import { NavigatorService } from './tracking/navigator.service';
+import { ItemService } from './item/item.service';
 
 @NgModule({
   imports: [
-    CookieModule.forChild(),
-    CommonModule,
-    UserModule,
-    ItemModule,
-    TrackingModule,
-    ConversationModule.forRoot(),
-    ProfileModule,
-    MobileBlockerModule,
+    CookieModule.forRoot(),
+    NgxPermissionsModule.forRoot(),
+    DeviceDetectorModule.forRoot(),
     CoreStoreModule,
   ],
-  exports: [
-    CommonModule,
-    UserModule,
-    ItemModule,
-    TrackingModule,
-    ProfileModule,
-    MobileBlockerModule,
+  providers: [
+    LoggedGuard,
+    DevelopmentGuard,
+    EventService,
+    I18nService,
+    AccessTokenService,
+    UnreadChatMessagesService,
+    PaymentService,
+    SocialShareService,
+    GeolocationService,
+    HereMapsService,
+    AnalyticsService,
+    DeviceService,
+    DidomiService,
+    LoadExternalLibsService,
+    FeatureflagService,
+    SessionService,
+    UuidService,
+    AdsService,
+    TrackingService,
+    NavigatorService,
+    UserService,
+    ItemService,
   ],
 })
 export class CoreModule {
-  static forRoot(): ModuleWithProviders<CoreModule> {
-    return {
-      ngModule: CoreModule,
-      providers: [
-        LoggedGuard,
-        DevelopmentGuard,
-        EventService,
-        I18nService,
-        ErrorsService,
-        TutorialService,
-        AccessTokenService,
-        MessageService,
-        DesktopNotificationsService,
-        PaymentService,
-        XmppService,
-        RealTimeService,
-        InboxService,
-        BlockUserService,
-        BlockUserXmppService,
-        ReviewService,
-        ConnectionService,
-        ProfileService,
-        StripeService,
-        SubscriptionsService,
-        TrustAndSafetyService,
-        InvoiceService,
-      ],
-    };
-  }
-
   constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
     if (parentModule) {
       throw new Error(

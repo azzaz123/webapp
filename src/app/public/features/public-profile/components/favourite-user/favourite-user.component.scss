@@ -1,0 +1,12 @@
+@import '~style/common';
+
+.FavouriteUser {
+  &__btn {
+    background-color: $white;
+    border-radius: $button-border-radius;
+    font-size: $font-size-s;
+    tsl-favourite-icon {
+      height: $spacer;
+    }
+  }
+}

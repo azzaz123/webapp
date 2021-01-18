@@ -9,9 +9,9 @@ import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { BuyWallacoinsModalComponent } from './components/buy-wallacoins-modal/buy-wallacoins-modal.component';
 import { FormsModule } from '@angular/forms';
 import { WallacoinsConfirmModalComponent } from './components/wallacoins-confirm-modal/wallacoins-confirm-modal.component';
-import { TrackingModule } from '../../core/tracking/tracking.module';
 import { PackWallacoinsComponent } from './components/pack-wallacoins/pack-wallacoins.component';
 import { WallacoinsTutorialComponent } from './components/wallacoins-tutorial/wallacoins-tutorial.component';
+import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 
 @NgModule({
   imports: [
@@ -20,8 +20,8 @@ import { WallacoinsTutorialComponent } from './components/wallacoins-tutorial/wa
     WallacoinsRoutingModule,
     NgbCarouselModule,
     FormsModule,
-    TrackingModule,
     NgbCarouselModule,
+    CustomCurrencyModule,
   ],
   declarations: [
     wallacoinsRoutedComponents,

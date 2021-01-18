@@ -8,7 +8,6 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbButtonsModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReviewsModule } from 'app/features/reviews/reviews.module';
-import { TrackingModule } from '@core/tracking/tracking.module';
 import { BumpTutorialComponent } from './components/bump-tutorial/bump-tutorial.component';
 import { CatalogItemComponent } from './components/catalog-item/catalog-item.component';
 import { CheckoutItemComponent } from './components/checkout-item/checkout-item.component';
@@ -21,6 +20,8 @@ import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product
 import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { ReactivateConfirmationModalComponent } from './modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component';
 import { ReactivateModalComponent } from './modals/reactivate-modal/reactivate-modal.component';
+import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
+import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 
 @NgModule({
   imports: [
@@ -29,10 +30,11 @@ import { ReactivateModalComponent } from './modals/reactivate-modal/reactivate-m
     CatalogRoutingModule,
     InfiniteScrollModule,
     ReactiveFormsModule,
-    TrackingModule,
     NgbButtonsModule,
     NgbTooltipModule,
     ReviewsModule,
+    ItemAvatarModule,
+    CustomCurrencyModule,
   ],
   providers: [BumpTutorialService],
   declarations: [

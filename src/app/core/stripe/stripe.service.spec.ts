@@ -29,6 +29,7 @@ import {
 } from '@angular/common/http/testing';
 import { ErrorsService } from '../errors/errors.service';
 import { I18nService } from '../i18n/i18n.service';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 
 const MOCK_PAYMENT_METHOD_ID = 'a0b1c2';
 
@@ -95,6 +96,7 @@ describe('StripeService', () => {
         },
         ErrorsService,
         I18nService,
+        ToastService,
       ],
       imports: [HttpClientTestingModule],
     });

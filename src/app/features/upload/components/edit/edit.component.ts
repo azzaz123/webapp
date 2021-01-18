@@ -6,7 +6,7 @@ import { ItemService } from '@core/item/item.service';
 import { UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ExitConfirmationModalComponent } from '@shared/exit-confirmation-modal/exit-confirmation-modal.component';
-import { CanComponentDeactivate } from '@shared/guards/can-component-deactivate.interface';
+import { CanComponentDeactivate } from '@core/guards/can-component-deactivate.interface';
 
 @Component({
   selector: 'tsl-edit',
