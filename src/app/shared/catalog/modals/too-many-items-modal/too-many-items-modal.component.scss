@@ -2,7 +2,7 @@
 
 .TooManyItemsModal {
   width: 100%;
-  padding: 44px 44px 22px 67px;
+  padding: $spacing-xxl $spacing-xxl $spacing-ml $spacing-xxxl;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -30,7 +30,7 @@
   display: flex;
   align-items: center;
   text-align: justify;
-  margin-bottom: 33px;
+  margin-bottom: $spacing-xl;
   background: url(/assets/images/too-many-items-background.svg) no-repeat;
   padding-left: 194px;
 }

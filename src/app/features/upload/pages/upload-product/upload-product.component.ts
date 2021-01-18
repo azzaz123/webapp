@@ -536,7 +536,7 @@ export class UploadProductComponent
     action: UPLOAD_ACTION,
     response: ItemContent,
     type: SUBSCRIPTION_TYPES = SUBSCRIPTION_TYPES.notSubscribed
-  ) {
+  ): void {
     const params = this.getRedirectParams(action, response, type);
 
     this.trackEditOrUpload(!!this.item, response).subscribe(() =>
@@ -548,7 +548,7 @@ export class UploadProductComponent
     action: UPLOAD_ACTION,
     response: ItemContent,
     userType: SUBSCRIPTION_TYPES
-  ) {
+  ): void {
     const params: any = {
       [action]: true,
       itemId: response.id,
