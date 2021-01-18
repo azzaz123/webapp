@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { ItemService } from '@core/item/item.service';
+import { ItemsData } from '@core/item/item-response.interface';
 import { UserService } from '@core/user/user.service';
 import { UserStats, Counters } from '@core/user/user-stats.interface';
-import { ItemsPageComponent } from '../components/items-page/items-page.component';
-import { ProfilesPageComponent } from '../components/profiles-page/profiles-page.component';
-import { FAVORITES_PATHS } from '../favorites-routing-constan';
+import { Item } from '@core/item/item';
+import { ProfilesData } from '@core/profile/profile-response.interface';
+import { ProfileService } from '@core/profile/profile.service';
+import { Profile } from '@core/profile/profile';
 
 @Component({
   selector: 'tsl-favorites',
@@ -11,38 +14,91 @@ import { FAVORITES_PATHS } from '../favorites-routing-constan';
   styleUrls: ['./favorites.component.scss'],
 })
 export class FavoritesComponent implements OnInit {
-  public selectedStatus = FAVORITES_PATHS.PRODUCTS;
+  public items: Item[] = [];
+  public profiles: Profile[] = [];
+  public selectedStatus = 'products';
+  public loading = false;
+  public end = false;
   public numberOfFavorites: number;
   private counters: Counters;
 
-  constructor(private userService: UserService) {}
+  constructor(
+    public itemService: ItemService,
+    private userService: UserService,
+    private profileService: ProfileService
+  ) {}
 
   ngOnInit() {
+    this.getItems();
     this.getNumberOfFavorites();
   }
 
-  public onActivate(
-    componentReference: ProfilesPageComponent | ItemsPageComponent
-  ) {
-    if ((componentReference as ItemsPageComponent).onFavoriteItemPageChange) {
-      (componentReference as ItemsPageComponent).onFavoriteItemPageChange.subscribe(
-        (isItemRemoved: boolean) => {
-          if (isItemRemoved) {
-            this.numberOfFavorites--;
-          }
-        }
-      );
-    } else if (
-      (componentReference as ProfilesPageComponent).onFavoriteProfilePageChange
-    ) {
-      (componentReference as ProfilesPageComponent).onFavoriteProfilePageChange.subscribe(
-        (isProfileRemoved: boolean) => {
-          if (isProfileRemoved) {
-            this.numberOfFavorites--;
-          }
-        }
-      );
-    } else return;
+  public filterByStatus(status: string) {
+    if (status !== this.selectedStatus) {
+      this.selectedStatus = status;
+      this.selectedStatus === 'products' ? this.getItems() : this.getProfiles();
+      this.getNumberOfFavorites();
+    }
+  }
+
+  public getItems(append?: boolean) {
+    this.loading = true;
+    if (!append) {
+      this.items = [];
+    }
+    this.itemService
+      .myFavorites(this.items.length)
+      .subscribe((itemsData: ItemsData) => {
+        const items = itemsData.data;
+        this.items = this.items.concat(items);
+        this.loading = false;
+        this.end = !itemsData.init;
+      });
+  }
+
+  public getProfiles(append?: boolean) {
+    this.loading = true;
+    if (!append) {
+      this.profiles = [];
+    }
+    this.profileService
+      .myFavorites(this.profiles.length)
+      .subscribe((profilesData: ProfilesData) => {
+        const profiles = profilesData.data;
+        this.profiles = this.profiles.concat(profiles);
+        this.loading = false;
+        this.end = !profilesData.init;
+      });
+  }
+
+  public onFavoriteChange(item: Item) {
+    this.removeItem(item);
+  }
+
+  public onFavoriteProfileChange(profile: Profile) {
+    this.removeProfile(profile);
+  }
+
+  public removeProfile(profile: Profile) {
+    if (this.profiles.length) {
+      const index = this.profiles.indexOf(profile);
+      this.profiles.splice(index, 1);
+      this.numberOfFavorites--;
+    }
+  }
+
+  public removeItem(item: Item) {
+    if (this.items.length) {
+      const index = this.items.indexOf(item);
+      this.items.splice(index, 1);
+      this.numberOfFavorites--;
+    }
+  }
+
+  public loadMore() {
+    this.selectedStatus === 'products'
+      ? this.getItems(true)
+      : this.getProfiles(true);
   }
 
   public getNumberOfFavorites() {
@@ -54,7 +110,7 @@ export class FavoritesComponent implements OnInit {
 
   private setNumberOfFavorites() {
     this.numberOfFavorites =
-      this.selectedStatus === FAVORITES_PATHS.PRODUCTS
+      this.selectedStatus === 'products'
         ? this.counters.favorites
         : this.counters.profile_favorited;
   }
