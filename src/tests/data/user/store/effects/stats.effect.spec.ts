@@ -82,7 +82,7 @@ describe('Stats Effect', () => {
 
       actions$ = of(LoadUserStatsByUserId({ userId }));
 
-      statsEffects.loadUserStats$.subscribe();
+      statsEffects.loadUserStatsByUserId$.subscribe();
       expect(repositoryMock.getByUserId).toHaveBeenCalledTimes(1);
     });
 
