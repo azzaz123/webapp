@@ -10,7 +10,7 @@ $item-flag-width: 133px;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.5);
 
   &--expired {
-    color: $skyblue-light;
+    color: $softblue-main;
   }
 
   &--inactive {
@@ -22,7 +22,7 @@ $item-flag-width: 133px;
   }
 
   &--sold {
-    color: $magenta-red;
+    color: $negative-main;
   }
 
   &--featured {
