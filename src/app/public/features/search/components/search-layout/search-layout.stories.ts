@@ -5,6 +5,7 @@ import { moduleMetadata } from '@storybook/angular';
 import { LoremIpsumComponent } from '@stories/components/lorem-ipsum/lorem-ipsum.component';
 import { StyledBoxComponent } from '@stories/components/colored-box/styled-box.component';
 import { CUSTOM_VIEWPORT_NAME } from '@storybook-config/viewports/custom-viewports';
+import { ViewportService } from '@core/viewport/viewport.service';
 
 export default {
   title: 'Webapp/Layouts/Search Layout',
@@ -12,6 +13,7 @@ export default {
   decorators: [
     moduleMetadata({
       declarations: [LoremIpsumComponent, StyledBoxComponent],
+      providers: [ViewportService],
     }),
     styledWrapperDecorator('margin: -1rem;'),
   ],
