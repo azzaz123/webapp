@@ -13,10 +13,7 @@ export enum ITEM_FLAG_TYPES {
   templateUrl: './item-flag.component.html',
   styleUrls: ['./item-flag.component.scss'],
 })
-export class ItemFlagComponent implements OnInit {
+export class ItemFlagComponent {
   @Input() type: ITEM_FLAG_TYPES;
-  @Input() message: string;
   constructor() {}
-
-  ngOnInit(): void {}
 }
