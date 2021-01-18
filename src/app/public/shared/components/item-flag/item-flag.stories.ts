@@ -29,7 +29,7 @@ const Template: Story<ItemFlagComponent> = (args: ItemFlagComponent) => ({
 
 export const Default = Template.bind({});
 Default.args = {
-  type: ITEM_FLAG_TYPES.TEXT,
+  type: ITEM_FLAG_TYPES.DEFAULT,
   content: 'Text',
 };
 export const Sold = Template.bind({});

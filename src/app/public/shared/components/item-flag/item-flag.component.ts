@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 export enum ITEM_FLAG_TYPES {
-  TEXT = 'text',
+  DEFAULT = 'text',
   SOLD = 'sold',
   RESERVED = 'reserved',
   EXPIRED = 'expired',
@@ -14,6 +14,6 @@ export enum ITEM_FLAG_TYPES {
   styleUrls: ['./item-flag.component.scss'],
 })
 export class ItemFlagComponent {
-  @Input() type: ITEM_FLAG_TYPES;
+  @Input() type: ITEM_FLAG_TYPES = ITEM_FLAG_TYPES.DEFAULT;
   constructor() {}
 }
