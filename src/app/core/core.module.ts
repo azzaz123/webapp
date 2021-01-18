@@ -5,6 +5,8 @@ import {
   Optional,
   SkipSelf,
 } from '@angular/core';
+import { HammerModule } from '@angular/platform-browser';
+import { HAMMER_PROVIDER } from './hammerjs/hammerjs-provider';
 import { BlockUserXmppService } from '@features/chat/core/block-user/block-user-xmpp.service';
 import { BlockUserService } from '@features/chat/core/block-user/block-user.service';
 import { InboxService } from '@features/chat/core/inbox/inbox.service';
@@ -52,6 +54,7 @@ import { SocialShareService } from './social-share/social-share.service';
     ConversationModule.forRoot(),
     ProfileModule,
     DeviceDetectorModule.forRoot(),
+    HammerModule,
   ],
 })
 export class CoreModule {
@@ -83,6 +86,7 @@ export class CoreModule {
         InvoiceService,
         GeolocationService,
         CategoryService,
+        HAMMER_PROVIDER,
         CartService,
         ExitConfirmGuard,
         SocialShareService,
