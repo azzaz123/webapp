@@ -6,6 +6,7 @@ import { SearchLayoutComponent } from './components/search-layout/search-layout.
 import { PublicLayoutModule } from '@public/layout/public-layout.module';
 import { ItemCardListModule } from '@public/features/public-profile/pages/user-published/components/item-card-list/item-card-list.module';
 import { CheckSessionModule } from '@public/core/directives/check-session/check-session.module';
+import { ViewportService } from '@core/viewport/viewport.service';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { CheckSessionModule } from '@public/core/directives/check-session/check-
     ItemCardListModule,
     CheckSessionModule,
   ],
+  providers: [ViewportService],
   declarations: [SearchComponent, SearchLayoutComponent],
 })
 export class SearchModule {}

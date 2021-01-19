@@ -12,6 +12,7 @@ describe('ViewportService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        ViewportService,
         {
           provide: WINDOW_TOKEN,
           useValue: {
