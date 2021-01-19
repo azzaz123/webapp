@@ -12,19 +12,20 @@ export class ViewportService {
   private _onWidthChange: ReplaySubject<number> = new ReplaySubject(1);
   private _onViewportChange: ReplaySubject<ViewportType> = new ReplaySubject(1);
   private currentViewport: ViewportType;
+  private currentWidth: number;
 
-  get $onWidthChange(): Observable<number> {
+  get onWidthChange(): Observable<number> {
     return this._onWidthChange.asObservable();
   }
 
-  get $onViewportChange(): Observable<ViewportType> {
+  get onViewportChange(): Observable<ViewportType> {
     return this._onViewportChange.asObservable();
   }
 
   constructor(@Inject(WINDOW_TOKEN) private window: Window) {
     this.window.addEventListener('resize', this.onResize.bind(this));
 
-    this.$onWidthChange.subscribe((width) => {
+    this.onWidthChange.subscribe((width) => {
       const calculatedViewport = this.calculateViewport(width).type;
       if (calculatedViewport !== this.currentViewport) {
         this.currentViewport = calculatedViewport;
@@ -48,7 +49,12 @@ export class ViewportService {
   }
 
   private onResize(): void {
-    this._onWidthChange.next(this.window.innerWidth);
+    const width = this.window.innerWidth;
+
+    if (width !== this.currentWidth) {
+      this.currentWidth = width;
+      this._onWidthChange.next(this.currentWidth);
+    }
   }
 
   private getBiggestViewport(...viewports: Viewport[]): Viewport {
