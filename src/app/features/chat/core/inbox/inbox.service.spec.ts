@@ -31,6 +31,7 @@ import { InboxItemPlaceholder, InboxItemStatus } from '../model/inbox-item';
 import { InboxUserPlaceholder } from '../model/inbox-user';
 import { InboxConversationService } from './inbox-conversation.service';
 import { InboxService } from './inbox.service';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 
 describe('InboxService', () => {
   let inboxService: InboxService;
@@ -50,6 +51,7 @@ describe('InboxService', () => {
       providers: [
         InboxService,
         EventService,
+        ToastService,
         {
           provide: UnreadChatMessagesService,
           useClass: MockUnreadChatMessagesService,

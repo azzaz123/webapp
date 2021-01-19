@@ -33,6 +33,7 @@ describe('Service: Errors', () => {
       declarations: [LoginComponent, RoutingComponent],
       providers: [
         ErrorsService,
+        ToastService,
         {
           provide: I18nService,
           useValue: {

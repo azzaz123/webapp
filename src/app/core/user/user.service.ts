@@ -63,7 +63,9 @@ export enum USER_TYPE {
   NORMAL = 'normal',
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class UserService {
   private _user: User;
   private _users: User[] = [];

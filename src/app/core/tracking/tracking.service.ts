@@ -1,22 +1,14 @@
 import { Injectable } from '@angular/core';
 import * as CryptoJSha1 from 'crypto-js/sha1';
 import { TrackingEvent } from './tracking-event';
-import {
-  TrackingEventBase,
-  TrackingEventData,
-} from './tracking-event-base.interface';
+import { TrackingEventBase } from './tracking-event-base.interface';
 import { UserService } from '../user/user.service';
 import { environment } from '../../../environments/environment';
 import { getTimestamp } from './getTimestamp.func';
 import { CookieService } from 'ngx-cookie';
 import { NavigatorService } from './navigator.service';
-import { EventService } from '../event/event.service';
-import { Subject } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { UuidService } from '../uuid/uuid.service';
-
-const maxBatchSize = 1000;
-const sendInterval = 10000;
 
 const CATEGORY_IDS: any = {
   ProConversations: '24',
@@ -87,7 +79,9 @@ const TYPES_IDS: any = {
   PushNotification: '15',
 };
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class TrackingService {
   public static CONVERSATION_LIST_ACTIVE_LOADED: TrackingEventBase = {
     name: '351',
@@ -911,15 +905,11 @@ export class TrackingService {
   private deviceAccessTokenId: string = null;
   private sessionIdCookieName = 'session_id';
   private deviceAccessTokenIdCookieName = 'device_access_token_id';
-  private trackingEvents$: Subject<TrackingEventData> = new Subject();
-  private sentEvents: Array<TrackingEventData> = [];
-  private dbReady = false;
 
   constructor(
     private navigatorService: NavigatorService,
     private http: HttpClient,
     private userService: UserService,
-    private eventService: EventService,
     private uuidService: UuidService,
     private cookieService: CookieService
   ) {

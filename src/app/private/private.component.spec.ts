@@ -41,6 +41,7 @@ import {
 import * as moment from 'moment';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { PrivateComponent } from './private.component';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 
 jest.mock('moment');
 
@@ -68,13 +69,14 @@ let deviceService: DeviceService;
 
 const ACCESS_TOKEN = 'accesstoken';
 
-describe('App', () => {
+describe('PrivateComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [PrivateComponent],
       providers: [
         EventService,
+        ToastService,
         {
           provide: NgbModal,
           useValue: {

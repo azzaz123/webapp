@@ -32,6 +32,7 @@ describe('CreditCardModalComponent', () => {
           NgbActiveModal,
           EventService,
           ErrorsService,
+          ToastService,
           {
             provide: StripeService,
             useValue: {

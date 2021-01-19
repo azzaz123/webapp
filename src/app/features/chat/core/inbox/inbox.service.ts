@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EventService } from '@core/event/event.service';
 import { RemoteConsoleService } from '@core/remote-console';
-import { FeatureflagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
 import { ConnectionType } from 'app/core/remote-console/connection-type';

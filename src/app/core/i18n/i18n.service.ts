@@ -1,6 +1,8 @@
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class I18nService {
   protected translations: any = {
     en: {

@@ -10,7 +10,9 @@ export const MAPS_PLACES_API = 'maps/places';
 export const MAPS_PLACE_API = 'maps/here/place';
 export const MAPS_PROVIDER = 'here';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class GeolocationService {
   constructor(private http: HttpClient) {}
 
