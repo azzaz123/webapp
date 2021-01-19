@@ -1,8 +1,8 @@
 <div class="ItemFlag ItemFlag--{{type | lowercase}} d-flex px-3 py-2">
-    <tsl-svg-icon src="/assets/icons/item-flags/{{type | lowercase}}.svg" class="mr-2 d-flex">
+    <tsl-svg-icon [src]="flag?.icon" class="mr-2 d-flex" [fill]="flag?.fill">
     </tsl-svg-icon>
     <div class="ItemFlag__content">
-        <div *ngIf="type !== ITEM_FLAG_TYPES.DEFAULT; else ownTranslation">{{message}}</div>
+        <div *ngIf="type !== ITEM_FLAG_TYPES.DEFAULT; else ownTranslation">{{flag?.label}}</div>
         <ng-template #ownTranslation>
             <ng-content></ng-content>
         </ng-template>

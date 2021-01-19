@@ -11,8 +11,7 @@ export class ItemFlagComponent {
   @Input() type: ITEM_FLAG_TYPES = ITEM_FLAG_TYPES.DEFAULT;
   constructor() {}
 
-  get message(): string {
-    return FLAGS.find((flag: FlagProperties) => flag.itemType === this.type)
-      ?.label;
+  get flag(): FlagProperties {
+    return FLAGS.find((flag: FlagProperties) => flag.itemType === this.type);
   }
 }
