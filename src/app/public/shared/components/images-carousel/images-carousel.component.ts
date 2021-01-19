@@ -44,7 +44,7 @@ export class ImagesCarouselComponent {
     return this.carousel?.activeId || this.NGB_SLIDE + 0;
   }
 
-  get leftFlag(): FlagProperties {
+  get leftFlagType(): ITEM_FLAG_TYPES {
     if (this.itemFlags) {
       const flagStatus = Object.keys(this.itemFlags).find(
         (itemStatus: string) => {
@@ -57,7 +57,7 @@ export class ImagesCarouselComponent {
         }
       );
 
-      return LEFT_FLAGS.find((flag) => flag.id === flagStatus);
+      return LEFT_FLAGS.find((flag) => flag.id === flagStatus)?.itemType;
     }
   }
 }

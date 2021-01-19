@@ -2,6 +2,9 @@
     <tsl-svg-icon src="/assets/icons/item-flags/{{type | lowercase}}.svg" class="mr-2 d-flex">
     </tsl-svg-icon>
     <div class="ItemFlag__content">
-        <ng-content></ng-content>
+        <div *ngIf="type !== ITEM_FLAG_TYPES.DEFAULT; else ownTranslation">{{message}}</div>
+        <ng-template #ownTranslation>
+            <ng-content></ng-content>
+        </ng-template>
     </div>
 </div>

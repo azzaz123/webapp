@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ITEM_FLAG_TYPES } from './item-flag-constants';
+import { ITEM_FLAG_TYPES, FlagProperties, FLAGS } from './item-flag-constants';
 
 @Component({
   selector: 'tsl-item-flag',
@@ -7,6 +7,12 @@ import { ITEM_FLAG_TYPES } from './item-flag-constants';
   styleUrls: ['./item-flag.component.scss'],
 })
 export class ItemFlagComponent {
+  public readonly ITEM_FLAG_TYPES = ITEM_FLAG_TYPES;
   @Input() type: ITEM_FLAG_TYPES = ITEM_FLAG_TYPES.DEFAULT;
   constructor() {}
+
+  get message(): string {
+    return FLAGS.find((flag: FlagProperties) => flag.itemType === this.type)
+      ?.label;
+  }
 }

@@ -11,20 +11,7 @@ import { ItemFlags } from '@core/item/item-response.interface';
 export class ItemDetailComponent implements OnInit {
   public deviceType = DeviceType;
   public device: DeviceType;
-  // TODO: Delete mock object		Date: 2021/01/18
-  itemFlags: ItemFlags = {
-    pending: false,
-    sold: false,
-    favorite: false,
-    reserved: false,
-    removed: false,
-    banned: false,
-    expired: false,
-    review_done: false,
-    bumped: true,
-    highlighted: false,
-    onhold: true,
-  };
+  public itemFlags: ItemFlags;
 
   constructor(private deviceService: DeviceService) {}
 

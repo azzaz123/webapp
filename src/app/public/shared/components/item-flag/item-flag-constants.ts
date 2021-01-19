@@ -9,29 +9,37 @@ export enum ITEM_FLAG_TYPES {
 
 export interface FlagProperties {
   id: string;
-  translation: string;
+  label: string;
   itemType: ITEM_FLAG_TYPES;
 }
 
 export const LEFT_FLAGS: FlagProperties[] = [
   {
     id: 'sold',
-    translation: $localize`:@@Sold:Sold`,
+    label: $localize`:@@Sold:Sold`,
     itemType: ITEM_FLAG_TYPES.SOLD,
   },
   {
     id: 'reserved',
-    translation: $localize`:@@Reserved:Reserved`,
+    label: $localize`:@@Reserved:Reserved`,
     itemType: ITEM_FLAG_TYPES.RESERVED,
   },
   {
     id: 'expired',
-    translation: $localize`:@@Expired:Expired`,
+    label: $localize`:@@Expired:Expired`,
     itemType: ITEM_FLAG_TYPES.EXPIRED,
   },
   {
     id: 'onhold',
-    translation: $localize`:@@Inactive:Inactive`,
+    label: $localize`:@@Inactive:Inactive`,
     itemType: ITEM_FLAG_TYPES.INACTIVE,
   },
 ];
+
+export const BUMP_FLAG: FlagProperties = {
+  id: 'featured',
+  label: $localize`:@@Featured:Featured`,
+  itemType: ITEM_FLAG_TYPES.FEATURED,
+};
+
+export const FLAGS: FlagProperties[] = [...LEFT_FLAGS, BUMP_FLAG];

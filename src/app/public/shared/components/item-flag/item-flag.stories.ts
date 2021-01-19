@@ -36,25 +36,20 @@ Default.args = {
 export const Sold = Template.bind({});
 Sold.args = {
   type: ITEM_FLAG_TYPES.SOLD,
-  content: 'Sold',
 };
 export const Reserved = Template.bind({});
 Reserved.args = {
   type: ITEM_FLAG_TYPES.RESERVED,
-  content: 'Reserved',
 };
 export const Expired = Template.bind({});
 Expired.args = {
   type: ITEM_FLAG_TYPES.EXPIRED,
-  content: 'Expired',
 };
 export const Inactive = Template.bind({});
 Inactive.args = {
   type: ITEM_FLAG_TYPES.INACTIVE,
-  content: 'Inactive',
 };
 export const Featured = Template.bind({});
 Featured.args = {
   type: ITEM_FLAG_TYPES.FEATURED,
-  content: 'Featured',
 };
