@@ -7,7 +7,7 @@ import {
 } from '@core/viewport/viewport.enum';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ViewportService {
   private _onWidthChange: ReplaySubject<number> = new ReplaySubject(1);
   private _onViewportChange: ReplaySubject<ViewportType> = new ReplaySubject(1);
