@@ -29,7 +29,7 @@ describe('ItemFlagComponent', () => {
 
   describe('when we pass an item type...', () => {
     beforeEach(() => {
-      component.type = ITEM_FLAG_TYPES.DEFAULT;
+      component.type = ITEM_FLAG_TYPES.SOLD;
 
       fixture.detectChanges();
     });

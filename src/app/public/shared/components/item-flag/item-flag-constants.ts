@@ -1,5 +1,5 @@
 export enum ITEM_FLAG_TYPES {
-  DEFAULT = 'text',
+  DEFAULT = 'default',
   SOLD = 'sold',
   RESERVED = 'reserved',
   EXPIRED = 'expired',
