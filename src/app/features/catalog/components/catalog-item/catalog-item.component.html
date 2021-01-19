@@ -19,20 +19,21 @@
 
       <div class="CatalogItem__content-veil" *ngIf="selectMode" (click)="select(item)"></div>
 
-      <div class="col p-0 d-flex align-items-center justify-content-center item-image clickable" (click)="openItem()">
+      <div class="col p-0 d-flex align-items-center justify-content-center item-image clickable" 
+      [ngClass]="{'item-image--onHold': item.flags.onhold }"  (click)="openItem()">
         <tsl-item-avatar [item]="item" size="big" fallbackLight="true"></tsl-item-avatar>
       </div>
 
       <div class="col overflow-sm-hidden">
         <div class="row h-100 d-flex align-items-center">
 
-          <div class="col-12 col-md-2 d-flex flex-column clickable" (click)="openItem()">
+          <div class="col-12 col-md-2 d-flex flex-column clickable" [ngClass]="{'clickable--onHold': item.flags.onhold }" (click)="openItem()">
             <span class="info-price"> {{item.salePrice | customCurrency:item.currencyCode}} </span>
             <span class="info-title subtitle"> {{item.title}}</span>
             <span class="info-title subtitle" *ngIf="item.car_info?.km"> {{item.car_info?.km | number}} km</span>
           </div>
 
-          <div class="col d-none d-md-flex flex-column item-info clickable" (click)="openItem()">
+          <div class="col d-none d-md-flex flex-column item-info clickable" [ngClass]="{'clickable--onHold': item.flags.onhold }" (click)="openItem()">
             <div i18n>Published</div>
             <div class="subtitle"> {{ item.publishedDate | date: 'dd/MM/yyyy'}}</div>
           </div>
@@ -44,14 +45,14 @@
             </ng-container>
             <ng-template #onHoldDate>
               <div>
-                <span class="subscribe onHold" i18n>
+                <span class="subtitle subtitle--onHold" i18n>
                 Inactive
               </span>
             </div>
             </ng-template>
           </div>
 
-          <div class="col-1 d-none d-md-block item-info clickable" *ngIf="showListingFee() || item.listingFeeExpiringDate"
+          <div class="col-1 d-none d-md-block item-info clickable" [ngClass]="{'clickable--onHold': item.flags.onhold }" *ngIf="showListingFee() || item.listingFeeExpiringDate"
             (click)="openItem()">
             <div *ngIf="showListingFee()" i18n>Active</div>
             <tsl-countdown *ngIf="item.listingFeeExpiringDate" class="subtitle"
