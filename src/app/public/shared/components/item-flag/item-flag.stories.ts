@@ -6,16 +6,6 @@ import { ItemFlagComponent } from './item-flag.component';
 
 export default {
   title: 'Webapp/ItemFlag',
-  decorators: [
-    (storyFunc) => {
-      const story = storyFunc();
-
-      return {
-        ...story,
-        template: `${story.template}`,
-      };
-    },
-  ],
 } as Meta;
 
 const Template: Story<ItemFlagComponent> = (args: ItemFlagComponent) => ({

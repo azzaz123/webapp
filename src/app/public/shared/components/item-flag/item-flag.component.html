@@ -1,5 +1,5 @@
 <div class="ItemFlag ItemFlag--{{type | lowercase}} d-flex px-3 py-2">
-    <tsl-svg-icon [src]="flag?.icon" class="mr-2 d-flex" [fill]="flag?.fill">
+    <tsl-svg-icon *ngIf="flag?.icon" [src]="flag?.icon" class="mr-2 d-flex" [fill]="flag?.fill">
     </tsl-svg-icon>
     <div class="ItemFlag__content">
         <div *ngIf="type !== ITEM_FLAG_TYPES.DEFAULT; else ownTranslation">{{flag?.label}}</div>
