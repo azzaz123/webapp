@@ -17,12 +17,14 @@ export class SearchLayoutComponent implements OnInit, OnDestroy {
   constructor(private viewportService: ViewportService) {}
 
   public ngOnInit(): void {
-    this.viewportService.$onViewportChange.subscribe((viewport) => {
-      this.shouldRenderBottomRow =
-        viewport === ViewportType.XS || viewport === ViewportType.SM;
-      this.shouldRenderRightColumn =
-        viewport === ViewportType.XL || viewport === ViewportType.XXL;
-    });
+    this.subscription = this.viewportService.$onViewportChange.subscribe(
+      (viewport) => {
+        this.shouldRenderBottomRow =
+          viewport === ViewportType.XS || viewport === ViewportType.SM;
+        this.shouldRenderRightColumn =
+          viewport === ViewportType.XL || viewport === ViewportType.XXL;
+      }
+    );
   }
 
   public ngOnDestroy(): void {
