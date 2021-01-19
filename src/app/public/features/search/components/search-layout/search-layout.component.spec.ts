@@ -22,7 +22,7 @@ describe('SearchLayoutComponent', () => {
         {
           provide: ViewportService,
           useValue: {
-            $onViewportChange: viewportSubject,
+            onViewportChange: viewportSubject.asObservable(),
           },
         },
       ],
