@@ -17,7 +17,7 @@ export class SearchLayoutComponent implements OnInit, OnDestroy {
   constructor(private viewportService: ViewportService) {}
 
   public ngOnInit(): void {
-    this.subscription = this.viewportService.$onViewportChange.subscribe(
+    this.subscription = this.viewportService.onViewportChange.subscribe(
       (viewport) => {
         this.shouldRenderBottomRow =
           viewport === ViewportType.XS || viewport === ViewportType.SM;

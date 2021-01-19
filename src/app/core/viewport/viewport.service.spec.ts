@@ -35,14 +35,14 @@ describe('ViewportService', () => {
   describe('When a new subscriber appears...', () => {
     it('should emit latest width', () => {
       const callback = jest.fn();
-      viewportService.$onWidthChange.subscribe(callback);
+      viewportService.onWidthChange.subscribe(callback);
 
       expect(callback).toBeCalledWith(0);
       expect(callback).toHaveBeenCalledTimes(1);
     });
     it('should emit latest viewport', () => {
       const callback = jest.fn();
-      viewportService.$onViewportChange.subscribe(callback);
+      viewportService.onViewportChange.subscribe(callback);
 
       expect(callback).toBeCalledWith(ViewportType.XS);
       expect(callback).toHaveBeenCalledTimes(1);
@@ -95,7 +95,7 @@ describe('ViewportService', () => {
 
   function expectWidthToBeEmitted(width: number): void {
     const widthChangeHandler = jest.fn();
-    viewportService.$onWidthChange.subscribe(widthChangeHandler);
+    viewportService.onWidthChange.subscribe(widthChangeHandler);
 
     innerWidth = width;
     resizeCallback();
@@ -108,7 +108,7 @@ describe('ViewportService', () => {
     viewport: ViewportType
   ): void {
     const viewportChangeHandler = jest.fn();
-    viewportService.$onViewportChange.subscribe(viewportChangeHandler);
+    viewportService.onViewportChange.subscribe(viewportChangeHandler);
 
     innerWidth = width;
     resizeCallback();
