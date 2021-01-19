@@ -13,7 +13,7 @@ export enum ITEM_FLAG_ICONS {
   DEFAULT = '/assets/icons/item-flags/default.svg',
   SOLD = '/assets/icons/item-flags/sold.svg',
   RESERVED = '/assets/icons/item-flags/reserved.svg',
-  EXPIRED = '/assets/icons/item-flags/clock.svg',
+  EXPIRED = '/assets/icons/item-flags/expired.svg',
   INACTIVE = '/assets/icons/item-flags/clock.svg',
   FEATURED = '/assets/icons/item-flags/featured.svg',
 }
