@@ -14,6 +14,7 @@ import { CheckSessionModule } from '@public/core/directives/check-session/check-
 import { ItemService } from '@core/item/item.service';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
+import { ViewportService } from '@core/viewport/viewport.service';
 
 export default {
   title: 'Webapp/Pages/Search',
@@ -21,6 +22,7 @@ export default {
   decorators: [
     moduleMetadata({
       providers: [
+        ViewportService,
         ItemService,
         EventService,
         I18nService,
