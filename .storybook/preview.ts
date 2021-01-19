@@ -4,6 +4,9 @@ import '../src/style/styles.scss';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
+  backgrounds: {
+    default: 'light',
+  },
   viewport: {
     viewports: {
       ...CUSTOM_VIEWPORTS,

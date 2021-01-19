@@ -1,0 +1,10 @@
+<div class="Bubble Bubble__wrapper" [ngClass]="variant" (click)="onClick()">
+  <span *ngIf="counter" class="Bubble__counter">{{counter}}</span>
+  <tsl-svg-icon *ngIf="!counter && icon" class="Bubble__icon" [src]="icon" [width]="26" [height]="26"></tsl-svg-icon>
+  <div class="Bubble__content">
+    <ng-content></ng-content>
+  </div>
+  <tsl-svg-icon *ngIf="isDropdown" class="Bubble__dropdown_arrow" src="/assets/icons/dropdown-arrow.svg"
+                [width]="10" [height]="6">
+  </tsl-svg-icon>
+</div>
