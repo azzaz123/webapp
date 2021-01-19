@@ -9,22 +9,6 @@ $item-flag-width: 133px;
   background: $white;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.5);
 
-  &--expired {
-    color: $softblue-main;
-  }
-
-  &--inactive {
-    color: $magenta-main;
-  }
-
-  &--reserved {
-    color: $skyblue-dark;
-  }
-
-  &--sold {
-    color: $negative-main;
-  }
-
   &--featured {
     background-color: $walla-main;
     color: $white;
