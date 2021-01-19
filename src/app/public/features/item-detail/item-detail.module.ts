@@ -6,7 +6,7 @@ import {
   ItemDetailRoutingModule,
 } from './item-detail-routing.module';
 import { AdsModule } from '@public/shared/components/ads/ads.module';
-import { ImagesCarouselModule } from '@public/shared/components/images-carousel/images-carousel.module';
+import { ItemImagesCarouselModule } from '@public/shared/components/item-images-carousel/item-images-carousel.module';
 
 @NgModule({
   declarations: [itemDetailRoutedComponents],
@@ -14,7 +14,7 @@ import { ImagesCarouselModule } from '@public/shared/components/images-carousel/
     CommonModule,
     ItemDetailRoutingModule,
     AdsModule,
-    ImagesCarouselModule,
+    ItemImagesCarouselModule,
   ],
   providers: [ItemDetailService],
 })

@@ -12,6 +12,7 @@ export class ItemDetailComponent implements OnInit {
   public deviceType = DeviceType;
   public device: DeviceType;
   public itemFlags: ItemFlags;
+  public images: string[];
 
   constructor(private deviceService: DeviceService) {}
 

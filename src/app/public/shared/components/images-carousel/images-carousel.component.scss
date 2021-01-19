@@ -41,19 +41,6 @@ $item-flag-height: 38px;
   }
 }
 
-.ItemFlag {
-  top: $spacer;
-  z-index: 2;
-
-  &--left {
-    left: $spacer;
-  }
-
-  &--right {
-    right: $spacer;
-  }
-}
-
 .hideControllers {
   ::ng-deep .carousel-control-prev,
   ::ng-deep .carousel-control-next,
