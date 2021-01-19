@@ -17,7 +17,7 @@ export default {
 
       return {
         ...story,
-        template: `<div style="width: 600px; position:absolute;">${story.template}</div>`,
+        template: `<div style="width: 600px; height: 350px; position:relative;">${story.template}</div>`,
       };
     },
   ],

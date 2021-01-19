@@ -1,4 +1,3 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
@@ -19,7 +18,6 @@ describe('ImagesCarouselComponent', () => {
     await TestBed.configureTestingModule({
       imports: [NgbCarouselModule, ImageFallbackModule],
       declarations: [ImagesCarouselComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 
