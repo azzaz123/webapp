@@ -46,8 +46,7 @@ export class AdsService {
 
   private initAddsLib(): void {
     initAdsConfig();
-    this.initKeyWordsFromCookies();
-    this.initPositionKeyWords();
+    this.setAdKeywords();
     this.googlePublisherTagService.init(AD_SLOTS);
 
     this.didomiService
@@ -57,15 +56,28 @@ export class AdsService {
       );
   }
 
-  private initKeyWordsFromCookies(): void {
-    this.adKeyWords.brand = this.cookieService.get('brand');
-    this.adKeyWords.content = this.cookieService.get('content');
-    this.adKeyWords.category = this.cookieService.get('category');
-    this.adKeyWords.minprice = this.cookieService.get('minprice');
-    this.adKeyWords.maxprice = this.cookieService.get('maxprice');
+  private setAdKeywords(): void {
+    this.setAdKeywordsFromCookies();
+    this.setAdkeywordsLocation();
   }
 
-  private initPositionKeyWords(): void {
+  private setAdKeywordsFromCookies(): void {
+    const brand = this.cookieService.get('brand');
+    const content = this.cookieService.get('content');
+    const category = this.cookieService.get('category');
+    const minprice = this.cookieService.get('minprice');
+    const maxprice = this.cookieService.get('maxprice');
+
+    this.adKeyWords = {
+      brand,
+      content,
+      category,
+      minprice,
+      maxprice,
+    };
+  }
+
+  private setAdkeywordsLocation(): void {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         this.adKeyWords.latitude = position.coords.latitude.toString();
