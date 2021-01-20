@@ -23,13 +23,13 @@ export class GooglePublisherTagService {
       googletag.pubads().collapseEmptyDivs();
       googletag.pubads().disableInitialLoad();
       googletag.pubads().setPublisherProvidedId(publisherId);
+      googletag.enableServices();
     });
   }
 
   public setAdsSegmentation(allowSegmentation = false): void {
     googletag.cmd.push(() => {
       apstag.setDisplayBids();
-      Criteo.SetDFPKeyValueTargeting();
       googletag
         .pubads()
         .setRequestNonPersonalizedAds(allowSegmentation ? 0 : 1);

@@ -157,7 +157,7 @@ export class AdsService {
   }
 
   private fetchHeaderBids(allowSegmentation = false): Observable<void> {
-    return merge(this.requestBidAps(), this.requestBidCriteo()).pipe(
+    return merge(this.requestBidAps(), this.criteoService.requestBid()).pipe(
       finalize(() =>
         this.googlePublisherTagService.setAdsSegmentation(allowSegmentation)
       )
@@ -176,25 +176,6 @@ export class AdsService {
         timeout: this._bidTimeout,
       };
       apstag.fetchBids(config, () => observer.complete());
-    });
-  }
-
-  private requestBidCriteo(): Observable<void> {
-    const adUnits = {
-      placements: AD_SLOTS.map((slot) => ({
-        slotid: slot.id,
-        zoneid: slot.zoneid,
-      })),
-    };
-    return new Observable((observer: Subscriber<void>) => {
-      Criteo.events.push(() => {
-        Criteo.SetLineItemRanges('0..4.5:0.01;4.50..27:0.05;27..72:0.1');
-        Criteo.RequestBids(
-          adUnits,
-          () => observer.complete(),
-          this._bidTimeout
-        );
-      });
     });
   }
 

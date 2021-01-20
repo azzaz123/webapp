@@ -4,5 +4,5 @@ export interface AdSlot {
   id: AdSlotId;
   name: string;
   sizes: [number, number][];
-  zoneid: number;
+  networkId: number;
 }
