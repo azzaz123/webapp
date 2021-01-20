@@ -42,7 +42,7 @@ describe('Stats Effect', () => {
   });
 
   describe('loadUserStats', () => {
-    it('should call repository getStats', () => {
+    it('should use the repository to get states', () => {
       const stats: UserStats = UserStatsMother.random();
       spyOn(repositoryMock, 'getStats').and.returnValue(of(stats));
 
@@ -75,7 +75,7 @@ describe('Stats Effect', () => {
   });
 
   describe('LoadUserStatsByUserId', () => {
-    it('should call repository getStats', () => {
+    it('should use repository getStats', () => {
       const stats: UserStats = UserStatsMother.random();
       const userId: UserId = UserIdMother.random();
       spyOn(repositoryMock, 'getByUserId').and.returnValue(of(stats));

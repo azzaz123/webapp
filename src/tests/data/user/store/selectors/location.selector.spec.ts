@@ -5,7 +5,7 @@ import { UserLocationMother } from './../../domain/location/user-location.mother
 
 describe('Location Selector', () => {
   describe('selectUserLocation', () => {
-    it('should return the location of state', () => {
+    it('should receive location', () => {
       const location: UserLocation = UserLocationMother.random();
 
       const select = selectUserLocation.projector({ location });

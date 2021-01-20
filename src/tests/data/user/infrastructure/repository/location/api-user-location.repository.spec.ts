@@ -28,7 +28,7 @@ describe('ApiUserLocationRepository', () => {
   });
 
   describe('updateByCoordinates', () => {
-    it('should update coordinates and return a location', () => {
+    it('should update coordinates receiving the new location', () => {
       const location: UserLocation = UserLocationMother.random();
       const coordinates: Coordinate = CoordinateMother.random();
 

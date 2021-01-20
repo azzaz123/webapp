@@ -31,7 +31,7 @@ describe('ApiUserStatsRepository', () => {
 
   describe('getStats', () => {
 
-    it('should return a userStats', () => {
+    it('should receive stats of the user', () => {
       const apiUserStatsResponse: ApiUserStatsResponse = ApiUserStatsResponseMother.random();
       const stats: UserStats = ApiUserStasMapper.toDomain(apiUserStatsResponse);
 
@@ -47,10 +47,10 @@ describe('ApiUserStatsRepository', () => {
   });
 
   describe('getByUserId', () => {
-    it('should return a userStats by userId', () => {
+    it('should receive a stats of user by his id', () => {
       const apiUserStatsResponse: ApiUserStatsResponse = ApiUserStatsResponseMother.random();
       const stats: UserStats = ApiUserStasMapper.toDomain(apiUserStatsResponse);
-      const userId: UserId = UserIdMother.random()
+      const userId: UserId = UserIdMother.random();
 
       repository.getByUserId(userId).subscribe((response: UserStats) => {
         expect(response).toEqual(stats);

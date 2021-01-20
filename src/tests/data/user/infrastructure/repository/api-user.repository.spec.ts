@@ -55,7 +55,7 @@ describe('ApiUserRepository', () => {
 
   describe('getMyProfile', () => {
 
-    it('should make a get to my profile and return my user', () => {
+    it('should get my profile to api server', () => {
       const apiResponse: ApiUserResponse = ApiUserResponseMother.random();
       const profile: Profile = ApiUserMapper.toDomain(apiResponse);
       const location: UserLocation = ApiUserLocationMapper.toDomain(apiResponse);
@@ -73,7 +73,7 @@ describe('ApiUserRepository', () => {
   });
 
   describe('updateEmail', () => {
-    it('should make a post to update email', () => {
+    it('should update the email user to api server', () => {
       repository.updateEmail('newEmail@email.com').subscribe();
 
       const req = httpTestingController.expectOne(ApiUserRepository.UPDATE_EMAIL_URL);
@@ -83,7 +83,7 @@ describe('ApiUserRepository', () => {
   });
 
   describe('updatePassword', () => {
-   it('should make a post to update password and return void', () => {
+   it('should update password user to api server', () => {
      repository.updatePassword('password', 'password').subscribe();
 
      const req = httpTestingController.expectOne(ApiUserRepository.UPDATE_PASSWORD_URL);
@@ -93,7 +93,7 @@ describe('ApiUserRepository', () => {
   });
 
   describe('updateProfile', () => {
-    it('should make a post to update profile', () => {
+    it('should update profile to api servier', () => {
       const userUpdate: UserUpdate = UserUpdateMother.random()
       const user: Profile = ProfileMother
         .random({firstName: userUpdate.first_name, lastName: userUpdate.last_name, gender: userUpdate.gender});
@@ -110,7 +110,7 @@ describe('ApiUserRepository', () => {
   });
 
   describe('sendUserPresence', () => {
-    it('should make a post to set online user', () => {
+    it('should send that the user is online to api server', () => {
       repository.sendUserPresence().subscribe();
 
       const req = httpTestingController.expectOne(ApiUserRepository.PRESENCE_ONLINE_URL);

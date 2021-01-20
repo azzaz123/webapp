@@ -11,7 +11,7 @@ import { UserStatsStateMother } from './../reducer/user-stats.state.mother';
 
 describe('UserStatsSelector', () => {
   describe('selectUserStats', () => {
-    it('should return stats of profile', () => {
+    it('should receive stats of profile', () => {
       const stats: UserStats = UserStatsMother.random();
       const state: UserStatsState = UserStatsStateMother.random({ stats });
 
@@ -22,7 +22,7 @@ describe('UserStatsSelector', () => {
   });
 
   describe('selectUserStatsByUserId', () => {
-    it('should return stats by userId', () => {
+    it('should receive stats by userId', () => {
       const stats: UserStats = UserStatsMother.random();
       const state: UserStatsState = UserStatsStateMother.random({
         statsByUserId: stats,
@@ -35,11 +35,13 @@ describe('UserStatsSelector', () => {
   });
 
   describe('selectUserStatsLoading', () => {
-    const loading: boolean = BooleanMother.random();
-    const state: UserStatsState = UserStatsStateMother.random({ loading });
+    it('should receive if stats is loading or not', () => {
+      const loading: boolean = BooleanMother.random();
+      const state: UserStatsState = UserStatsStateMother.random({ loading });
 
-    const select = selectUserStatsLoading.projector(state);
+      const select = selectUserStatsLoading.projector(state);
 
-    expect(select).toEqual(loading);
+      expect(select).toEqual(loading);
+    });
   });
 });

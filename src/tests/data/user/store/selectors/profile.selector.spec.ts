@@ -11,7 +11,7 @@ import { ProfileMother } from '../../domain/profile/profile.mother';
 
 describe('ProfileSelector', () => {
   describe('selectUserProfileDetail', () => {
-    it('should return a user Detail', () => {
+    it('should receive the user profile', () => {
       const user: Profile = ProfileMother.random();
       const state: UserProfileState = UserProfileStateMother.random({
         userDetail: user,
@@ -24,7 +24,7 @@ describe('ProfileSelector', () => {
   });
 
   describe('selectUserProfileLoading', () => {
-    it('should return is is loading', () => {
+    it('should receive if is loading or not', () => {
       const loading: boolean = BooleanMother.random();
       const state: UserProfileState = UserProfileStateMother.random({
         loading,
@@ -37,7 +37,7 @@ describe('ProfileSelector', () => {
   });
 
   describe('selectUserProfileIsAuthenticated', () => {
-    it('should return authenticated if there is an user', () => {
+    it('should receive if there is an user authenticated', () => {
       const user: Profile = ProfileMother.random();
       const state: UserProfileState = UserProfileStateMother.random({
         userDetail: user,
@@ -48,7 +48,7 @@ describe('ProfileSelector', () => {
       expect(select).toBe(true);
     });
 
-    it('should return not authenticated if there is not an user', () => {
+    it('should received if there is not an user authenticated', () => {
       const state: UserProfileState = UserProfileStateMother.random({
         userDetail: null,
       });
