@@ -32,6 +32,9 @@
       ],
       "@storybook-config/*": [
         "../.storybook/*"
+      ],
+      "@stories/*": [
+        "stories/*"
       ]
     },
     "outDir": "./dist/out-tsc",

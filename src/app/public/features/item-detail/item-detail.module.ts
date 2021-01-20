@@ -10,10 +10,16 @@ import { ItemApiService } from '@public/core/services/api/item/item-api.service'
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
 import { MapItemService } from '../public-profile/pages/user-published/services/map-item/map-item.service';
+import { ImagesCarouselModule } from '@public/shared/components/images-carousel/images-carousel.module';
 
 @NgModule({
   declarations: [itemDetailRoutedComponents],
-  imports: [CommonModule, ItemDetailRoutingModule, AdsModule],
+  imports: [
+    CommonModule,
+    ItemDetailRoutingModule,
+    AdsModule,
+    ImagesCarouselModule,
+  ],
   providers: [
     ItemDetailService,
     ItemApiService,

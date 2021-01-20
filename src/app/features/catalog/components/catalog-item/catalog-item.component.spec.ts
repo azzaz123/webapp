@@ -23,6 +23,7 @@ import {
   PRODUCT_RESPONSE,
 } from '@fixtures/item.fixtures.spec';
 import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustomCurrencyPipe } from '@shared/pipes';
 import * as moment from 'moment';
@@ -53,6 +54,7 @@ describe('CatalogItemComponent', () => {
         providers: [
           DecimalPipe,
           EventService,
+          ToastService,
           { provide: TrackingService, useClass: MockTrackingService },
           { provide: DeviceDetectorService, useClass: DeviceDetectorService },
           {
