@@ -17,7 +17,7 @@ import { StripeService } from '../../../core/stripe/stripe.service';
 import { FinancialCard } from '../../profile/credit-card-info/financial-card';
 import {
   PaymentMethodResponse,
-  SetupIntentResponse,
+  PAYMENT_ERROR_TYPE,
   SetupIntent,
 } from '../../../core/payments/payment.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
@@ -47,6 +47,7 @@ export class StripeCardElementComponent
   public card: stripe.elements.Element;
   public termsAndConditionsURL = TERMS_AND_CONDITIONS_URL;
   public policyPrivacyURL = PRIVACY_POLICY_URL;
+  public errorType = PAYMENT_ERROR_TYPE;
   @Input() type: string;
   @Input() cart: CartBase;
   @Input() loading: boolean;
@@ -56,7 +57,7 @@ export class StripeCardElementComponent
   @Input() disabled: number;
   @Input() spaceBetween = false;
   @Input() showUseSavedCard = false;
-  @Input() isPaymentError: boolean;
+  @Input() paymentError: PAYMENT_ERROR_TYPE;
   @Output() hasCard: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() stripeCard: EventEmitter<any> = new EventEmitter<any>();
   @Output() stripeCardToken: EventEmitter<string> = new EventEmitter<string>();

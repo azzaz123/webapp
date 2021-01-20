@@ -7,12 +7,24 @@
                 </div>
             </div>
         </fieldset>
-        <div class="card-feedback" [ngClass]="{'card-feedback--flexible': showUseSavedCard}">
-            <div *ngIf="type === 'subscription' && showUseSavedCard" class="card-feedback__action"(click)="clickUseSavedCard()" i18n>Use saved card</div>
-            <div id="card-errors" role="alert" *ngIf="error">
-                {{ error }}
+        <div class="d-flex flex-column justify-content-flex-start">
+            <div [ngClass]="{'card-feedback--flexible': showUseSavedCard}">
+                <ng-container [ngSwitch]="paymentError">
+                    <div *ngSwitchCase="errorType.CARD_NUMBER" class="StripeCard__error">
+                        Card number isn't valid.
+                    </div>
+                    <div *ngSwitchCase="errorType.CVC_CODE" class="StripeCard__error">
+                        CVC number isn't valid
+                    </div>
+                    <div *ngSwitchCase="errorType.DATE_INVALID" class="StripeCard__error">
+                        Card date isn't valid
+                    </div>
+                </ng-container>
+                <div id="card-errors" role="alert" *ngIf="error">
+                    {{ error }}
+                </div>
             </div>
-            <div class="StripeCard__error" *ngIf="isPaymentError" i18n>The payment failed. Please enter another credit card.</div>
+            <div *ngIf="type === 'subscription' && showUseSavedCard" class="card-feedback__action"(click)="clickUseSavedCard()" i18n>Use saved card</div>
         </div>
 
         <div [hidden]="type !== 'subscription'" class="StripeCardElement__legal-info" i18n>

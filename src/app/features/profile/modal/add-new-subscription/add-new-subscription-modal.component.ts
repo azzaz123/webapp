@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import {
   AfterViewInit,
   Component,
@@ -28,11 +29,13 @@ import { I18nService } from '@core/i18n/i18n.service';
 import {
   FinancialCardOption,
   PaymentMethodResponse,
+  PAYMENT_ERROR_TYPE,
 } from '@core/payments/payment.interface';
 import {
   PaymentService,
   PAYMENT_RESPONSE_STATUS,
 } from '@core/payments/payment.service';
+import { STRIPE_ERROR } from '@core/stripe/stripe.interface';
 import {
   StripeService,
   STRIPE_PAYMENT_RESPONSE_EVENT_KEY,
@@ -69,7 +72,7 @@ export class AddNewSubscriptionModalComponent
   public selectedCard = false;
   public selectedTier: Tier;
   public loading = false;
-  public isPaymentError = false;
+  public paymentError: PAYMENT_ERROR_TYPE;
   public isRetryInvoice = false;
   public subscription: SubscriptionsResponse;
   public isNewSubscriber = false;
@@ -144,7 +147,7 @@ export class AddNewSubscriptionModalComponent
           );
         }
       },
-      () => this.requestNewPayment()
+      (error: HttpErrorResponse) => this.requestNewPayment(error)
     );
   }
 
@@ -175,12 +178,14 @@ export class AddNewSubscriptionModalComponent
                     case PAYMENT_RESPONSE_STATUS.REQUIRES_PAYMENT_METHOD: {
                       this.isRetryInvoice = true;
                       this._invoiceId = response.latest_invoice_id;
-                      this.requestNewPayment({
-                        error: {
-                          message:
-                            PAYMENT_RESPONSE_STATUS.REQUIRES_PAYMENT_METHOD,
-                        },
-                      });
+                      this.requestNewPayment(
+                        new HttpErrorResponse({
+                          error: {
+                            message:
+                              PAYMENT_RESPONSE_STATUS.REQUIRES_PAYMENT_METHOD,
+                          },
+                        })
+                      );
                       break;
                     }
                     case PAYMENT_RESPONSE_STATUS.REQUIRES_ACTION: {
@@ -226,12 +231,14 @@ export class AddNewSubscriptionModalComponent
                 switch (response.status.toUpperCase()) {
                   case PAYMENT_RESPONSE_STATUS.REQUIRES_PAYMENT_METHOD: {
                     this.isRetryInvoice = true;
-                    this.requestNewPayment({
-                      error: {
-                        message:
-                          PAYMENT_RESPONSE_STATUS.REQUIRES_PAYMENT_METHOD,
-                      },
-                    });
+                    this.requestNewPayment(
+                      new HttpErrorResponse({
+                        error: {
+                          message:
+                            PAYMENT_RESPONSE_STATUS.REQUIRES_PAYMENT_METHOD,
+                        },
+                      })
+                    );
                     break;
                   }
                   case PAYMENT_RESPONSE_STATUS.REQUIRES_ACTION: {
@@ -312,11 +319,17 @@ export class AddNewSubscriptionModalComponent
     }
   }
 
-  private requestNewPayment(error?: any) {
-    this.errorService.i18nError('paymentFailed');
+  private requestNewPayment(error?: HttpErrorResponse): void {
+    // const paymentError = this.paymentService.getErrorType(error.error[0].error_code)
+    this.paymentError = this.paymentService.getErrorType(
+      STRIPE_ERROR.incorrect_number
+    );
+    this.errorService.i18nError(
+      this.paymentError ? 'paymentFailed' : 'paymentFailedUnknow',
+      '',
+      'paymentFailedToastTitle'
+    );
     this.loading = false;
-    this.isPaymentError = true;
-    this.action = 'clear';
   }
 
   private paymentSucceeded() {
@@ -351,8 +364,8 @@ export class AddNewSubscriptionModalComponent
   }
 
   @HostListener('click') onClick() {
-    if (this.isPaymentError) {
-      this.isPaymentError = false;
+    if (this.paymentError) {
+      this.paymentError = null;
     }
   }
 

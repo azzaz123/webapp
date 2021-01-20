@@ -168,7 +168,10 @@ export class I18nService {
       continueSubscriptionSuccessBody: 'Your subscription is active again',
       continueSubscriptionErrorTitle: 'Error:',
       continueSubscriptionErrorBody: 'We could not proceed with your request.',
-      paymentFailed: 'The payment could not be done',
+      paymentFailed: 'Check your card details.',
+      paymentFailedUnknow:
+        "For some reason, the payment couldn't be processed. Please try again.",
+      paymentFailedToastTitle: 'Something went wrong',
       consumerGoodsGeneralCategoryTitle: 'Everything else',
       nodata: 'No data available',
       SubscriptionCardNotSet: 'Your card could not be saved',
@@ -383,7 +386,10 @@ export class I18nService {
       continueSubscriptionErrorTitle: 'Ha habido un error',
       continueSubscriptionErrorBody:
         'Tu suscripción no ha podido ser restablecida.',
-      paymentFailed: 'No ha podido realizarse el pago',
+      paymentFailed: 'Revisa los datos de tu tarjeta.',
+      paymentFailedUnknow:
+        'Por alguna razón, el pago no se ha podido realizar. Por favor vuelve a intentarlo.',
+      paymentFailedToastTitle: 'Algo ha fallado',
       consumerGoodsGeneralCategoryTitle: 'Todo lo demás',
       nodata: 'No hay datos disponibles',
       SubscriptionCardNotSet: 'Tu tarjeta no ha podido ser guardada',

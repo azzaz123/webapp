@@ -41,6 +41,7 @@
 .StripeCard__error {
   color: $negative-dark;
   font-size: $font-size-s;
+  margin-bottom: $spacing-m;
 }
 
 tsl-button {
@@ -92,6 +93,13 @@ tsl-button {
   font-size: $font-size-s;
   text-align: left;
   cursor: pointer;
+}
+
+.StripeElement {
+  margin: $spacing-m 0 $spacing-s 0;
+  &--invalid {
+    border-color: transparent;
+  }
 }
 
 .StripeCardElement__legal-info {

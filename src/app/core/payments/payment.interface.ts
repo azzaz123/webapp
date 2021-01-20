@@ -205,3 +205,9 @@ export interface PaymentIntents {
   token: string;
   status?: string;
 }
+
+export enum PAYMENT_ERROR_TYPE {
+  CARD_NUMBER = 'card_number',
+  CVC_CODE = 'cvc_code',
+  DATE_INVALID = 'date_invalid',
+}
