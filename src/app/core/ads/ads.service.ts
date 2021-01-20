@@ -4,13 +4,7 @@ import { User } from 'app/core/user/user';
 import { UserService } from 'app/core/user/user.service';
 import * as moment from 'moment';
 import { CookieService } from 'ngx-cookie';
-import {
-  BehaviorSubject,
-  merge,
-  Observable,
-  Subscriber,
-  Subscription,
-} from 'rxjs';
+import { BehaviorSubject, merge, Observable, Subscription } from 'rxjs';
 import { filter, finalize, mergeMap, tap, switchMap } from 'rxjs/operators';
 import { LoadExternalLibsService } from '@core/load-external-libs/load-external-libs.service';
 import { AD_SLOTS } from './constants/ad-slots';
@@ -18,6 +12,7 @@ import { ADS_SOURCES } from './constants';
 import { AdKeyWords, AdSlotId } from './interfaces';
 import { GooglePublisherTagService } from './services/google-publisher-tag.service';
 import { CriteoService } from './services/criteo.service';
+import { AmazonPublisherService } from './services/amazon-publisher.service';
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +23,6 @@ export class AdsService {
   );
   public adKeyWords: AdKeyWords = {} as AdKeyWords;
   public adsRefreshSubscription: Subscription;
-  private _bidTimeout = 2000;
 
   constructor(
     private userService: UserService,
@@ -36,7 +30,8 @@ export class AdsService {
     private didomiService: DidomiService,
     private loadExternalLibsService: LoadExternalLibsService,
     private googlePublisherTagService: GooglePublisherTagService,
-    private criteoService: CriteoService
+    private criteoService: CriteoService,
+    private amazonPublisherService: AmazonPublisherService
   ) {}
 
   public init(): void {
@@ -71,19 +66,12 @@ export class AdsService {
       return false;
     }
 
-    if (!apstag) {
+    if (!this.amazonPublisherService.isLibraryRefDefined()) {
       console.warn('Amazon Publisher Service could not be loaded');
       return false;
     }
 
-    apstag.init({
-      pubID: '3703',
-      adServer: 'googletag',
-      gdpr: {
-        cmpTimeout: 1000,
-      },
-    });
-
+    this.amazonPublisherService.init();
     return true;
   }
 
@@ -157,26 +145,14 @@ export class AdsService {
   }
 
   private fetchHeaderBids(allowSegmentation = false): Observable<void> {
-    return merge(this.requestBidAps(), this.criteoService.requestBid()).pipe(
+    return merge(
+      this.amazonPublisherService.requestBid(AD_SLOTS),
+      this.criteoService.requestBid()
+    ).pipe(
       finalize(() =>
         this.googlePublisherTagService.setAdsSegmentation(allowSegmentation)
       )
     );
-  }
-
-  private requestBidAps(): Observable<void> {
-    const apstagSlots = AD_SLOTS.map((slot) => ({
-      slotID: slot.id,
-      sizes: slot.sizes,
-      slotName: slot.name,
-    }));
-    return new Observable((observer: Subscriber<void>) => {
-      const config = {
-        slots: apstagSlots,
-        timeout: this._bidTimeout,
-      };
-      apstag.fetchBids(config, () => observer.complete());
-    });
   }
 
   public displayAdBySlotId(slotId: AdSlotId): void {
