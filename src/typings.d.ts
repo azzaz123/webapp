@@ -10,7 +10,7 @@ declare let appboy: any;
 declare let ga: Function;
 declare let fbq: Function;
 declare let pintrk: Function;
-declare let Criteo: any;
+declare let Criteo: import('./app/core/ads/interfaces/criteo.interface').CriteoLibrary;
 declare let apstag: any;
 declare let mParticle: any;
 declare let Didomi: import('./app/core/didomi/didomi.interface').DidomiLibrary;
