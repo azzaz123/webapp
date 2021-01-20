@@ -33,6 +33,9 @@
       "@storybook-config/*": [
         "../.storybook/*"
       ],
+      "@stories/*": [
+        "stories/*"
+      ],
       "@data/user": [
         "app/data/user/index.ts"
       ],
