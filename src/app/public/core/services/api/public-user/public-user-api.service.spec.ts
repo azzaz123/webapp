@@ -7,7 +7,7 @@ import { ReviewResponse } from '@features/reviews/core/review-response.interface
 import { environment } from 'environments/environment';
 
 import {
-  IS_FAROURITE_ENDPOINT,
+  IS_FAVOURITE_ENDPOINT,
   MARK_AS_FAVOURITE_ENDPOINT,
   PROFILE_API_URL,
   PublicUserApiService,
@@ -162,7 +162,7 @@ describe('PublicUserApiService', () => {
   });
 
   describe('when requesting isFavourite', () => {
-    const expectedUrl = `${environment.baseUrl}${IS_FAROURITE_ENDPOINT(
+    const expectedUrl = `${environment.baseUrl}${IS_FAVOURITE_ENDPOINT(
       userId
     )}`;
 

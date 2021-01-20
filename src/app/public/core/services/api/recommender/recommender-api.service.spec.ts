@@ -5,7 +5,7 @@ import {
 import { TestBed } from '@angular/core/testing';
 import {
   RecommenderApiService,
-  GET_RECOMENDATIONS_ENDPOINT,
+  GET_RECOMMENDATIONS_ENDPOINT,
 } from './recommender-api.service';
 
 describe('RecommenderApiService', () => {
@@ -29,7 +29,7 @@ describe('RecommenderApiService', () => {
 
   describe('getRecommendedItemsByItemId', () => {
     it('should ask for the recommended items', () => {
-      const expectedUrl = GET_RECOMENDATIONS_ENDPOINT(ITEM_ID);
+      const expectedUrl = GET_RECOMMENDATIONS_ENDPOINT(ITEM_ID);
 
       recommenderApiService.getRecommendedItemsByItemId(ITEM_ID).subscribe();
       const req = httpMock.expectOne(expectedUrl);

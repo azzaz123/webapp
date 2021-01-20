@@ -6,7 +6,7 @@ import { RecommendedItemsBodyResponse } from './interfaces/recommender-response.
 
 export const RECOMMENDER_API_URL = (userId: string) =>
   `${environment.baseUrl}api/v3/recommender/${userId}`;
-export const GET_RECOMENDATIONS_ENDPOINT = (id: string) =>
+export const GET_RECOMMENDATIONS_ENDPOINT = (id: string) =>
   `${RECOMMENDER_API_URL(id)}`;
 
 @Injectable()
@@ -17,7 +17,7 @@ export class RecommenderApiService {
     id: string
   ): Observable<RecommendedItemsBodyResponse> {
     return this.http.get<RecommendedItemsBodyResponse>(
-      GET_RECOMENDATIONS_ENDPOINT(id)
+      GET_RECOMMENDATIONS_ENDPOINT(id)
     );
   }
 }

@@ -30,7 +30,7 @@ export const TRANSACTIONS_SOLDS_ENDPOINT = (userId: string) =>
   `${PROFILE_API_URL(userId)}/transactions/solds`;
 
 export const FAVOURITE_API_PATH = 'favorite';
-export const IS_FAROURITE_ENDPOINT = (userId: string) =>
+export const IS_FAVOURITE_ENDPOINT = (userId: string) =>
   `${PROFILE_API_URL(userId)}/${FAVOURITE_API_PATH}`;
 export const MARK_AS_FAVOURITE_ENDPOINT = (userId: string) =>
   `${PROFILE_API_URL(userId)}/${FAVOURITE_API_PATH}`;
@@ -50,7 +50,7 @@ export class PublicUserApiService {
 
   public isFavourite(userId: string): Observable<boolean> {
     return this.http.get<boolean>(
-      `${environment.baseUrl}${IS_FAROURITE_ENDPOINT(userId)}`
+      `${environment.baseUrl}${IS_FAVOURITE_ENDPOINT(userId)}`
     );
   }
 
