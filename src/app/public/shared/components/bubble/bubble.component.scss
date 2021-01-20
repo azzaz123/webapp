@@ -51,29 +51,14 @@
 
   &__wrapper {
     min-width: 150px;
-    padding: 5px 15px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    height: 36px;
 
     border-radius: 21px;
     cursor: pointer;
   }
 
-  &__content,
-  &__icon,
-  &__counter,
-  &__dropdown_arrow {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
   &__content {
     flex-basis: 100%;
-    padding-right: 10px;
-    padding-left: 10px;
   }
 
   &__counter {
@@ -83,7 +68,5 @@
     flex-shrink: 0;
     font-size: 12px;
     line-height: 14px;
-
-    border-radius: 50%;
   }
 }
