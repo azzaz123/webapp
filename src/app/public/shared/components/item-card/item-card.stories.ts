@@ -15,20 +15,12 @@ import {
   MOCK_ITEM_6,
   MOCK_ITEM_7,
 } from './item-card.mock.stories';
+import { styledWrapperDecorator } from '@stories/decorators/styled-wrapper/styled-wrapper.decorator';
 
 export default {
   title: 'Webapp/ItemCard',
   component: ItemCardComponent,
-  decorators: [
-    (storyFunc) => {
-      const story = storyFunc();
-
-      return {
-        ...story,
-        template: `<div style="max-width: 220px">${story.template}</div>`,
-      };
-    },
-  ],
+  decorators: [styledWrapperDecorator('max-width: 220px;')],
   argTypes: { toggleFavourite: { action: 'toggleFavourite' } },
 } as Meta;
 
