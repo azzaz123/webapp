@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 
 const FACEBOOK_URL =
-  'https://www.facebook.com/dialog/share?app_id=258778180928082&display=popup&href=';
-const TWITTER_URL = 'https://twitter.com/intent/tweet?url=';
+  'https://www.facebook.com/dialog/share?app_id=258778180928082&display=popup&';
+const TWITTER_URL = 'https://twitter.com/intent/tweet?';
 const FACEBOOK_NAME = 'fbShareWindow';
 const TWITTER_NAME = 'twShareWindow';
 const FACEBOOK_PARAMS =
@@ -14,13 +14,25 @@ const TWITTER_PARAMS =
   providedIn: 'root',
 })
 export class SocialShareService {
-  public facebookShare(webLink: string): void {
-    const url = FACEBOOK_URL + encodeURIComponent(webLink);
-    window.open(url, FACEBOOK_NAME, FACEBOOK_PARAMS);
+  public twitterShare(url: string, text?: string): void {
+    const params: URLSearchParams = new URLSearchParams();
+    params.set('url', url);
+
+    if (text) {
+      params.set('text', text);
+    }
+
+    window.open(TWITTER_URL + params.toString(), TWITTER_NAME, TWITTER_PARAMS);
   }
 
-  public twitterShare(webLink: string): void {
-    const url = TWITTER_URL + encodeURIComponent(webLink);
-    window.open(url, TWITTER_NAME, TWITTER_PARAMS);
+  public facebookShare(url: string): void {
+    const params: URLSearchParams = new URLSearchParams();
+    params.set('href', url);
+
+    window.open(
+      FACEBOOK_URL + params.toString(),
+      FACEBOOK_NAME,
+      FACEBOOK_PARAMS
+    );
   }
 }
