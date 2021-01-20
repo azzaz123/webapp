@@ -15,6 +15,7 @@ import { filter, finalize, mergeMap, tap, switchMap } from 'rxjs/operators';
 import { LoadExternalLibsService } from '@core/load-external-libs/load-external-libs.service';
 import { ADS_SOURCES, initAdsConfig } from './ads.config';
 import { AdKeyWords } from './ads.interface';
+import { AD_SLOTS } from './ad-slots';
 
 @Injectable({
   providedIn: 'root',
@@ -25,19 +26,6 @@ export class AdsService {
   );
   public adKeyWords: AdKeyWords = {} as AdKeyWords;
   public adsRefreshSubscription: Subscription;
-  private _adSlots = [
-    {
-      name: '/130868815/chat_right',
-      id: 'div-gpt-ad-1508490196308-0',
-      sizes: [
-        [240, 400],
-        [120, 600],
-        [160, 600],
-        [300, 250],
-      ],
-      zoneid: 978109,
-    },
-  ];
   private _bidTimeout = 2000;
 
   constructor(
@@ -85,7 +73,7 @@ export class AdsService {
 
   private initGoogletagConfig(): void {
     googletag.cmd.push(() => {
-      this._adSlots.forEach((slot) => {
+      AD_SLOTS.forEach((slot) => {
         googletag
           .defineSlot(slot.name, slot.sizes, slot.id)
           .setTargeting('ad_group', Adomik.randomAdGroup())
@@ -161,7 +149,7 @@ export class AdsService {
   }
 
   private requestBidAps(): Observable<void> {
-    const apstagSlots = this._adSlots.map((slot) => ({
+    const apstagSlots = AD_SLOTS.map((slot) => ({
       slotID: slot.id,
       sizes: slot.sizes,
       slotName: slot.name,
@@ -177,7 +165,7 @@ export class AdsService {
 
   private requestBidCriteo(): Observable<void> {
     const adUnits = {
-      placements: this._adSlots.map((slot) => ({
+      placements: AD_SLOTS.map((slot) => ({
         slotid: slot.id,
         zoneid: slot.zoneid,
       })),
