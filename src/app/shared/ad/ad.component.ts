@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, Input } from '@angular/core';
 import { AdsService } from '@core/ads/ads.service';
-import { AdSlotId } from '@core/ads/interfaces';
+import { AdSlot } from '@core/ads/interfaces';
 
 @Component({
   selector: 'tsl-ad',
@@ -8,11 +8,11 @@ import { AdSlotId } from '@core/ads/interfaces';
   styleUrls: ['./ad.component.scss'],
 })
 export class AdComponent implements AfterViewInit {
-  @Input() slotid: AdSlotId;
+  @Input() adSlot: AdSlot;
 
   constructor(private adService: AdsService) {}
 
   ngAfterViewInit() {
-    this.adService.displayAdBySlotId(this.slotid);
+    this.adService.displayAdBySlotId(this.adSlot.id);
   }
 }
