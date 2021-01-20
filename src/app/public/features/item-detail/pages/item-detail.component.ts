@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
+import { ItemFlags } from '@core/item/item-response.interface';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -10,6 +11,8 @@ import { DeviceType } from '@core/device/deviceType.enum';
 export class ItemDetailComponent implements OnInit {
   public deviceType = DeviceType;
   public device: DeviceType;
+  public itemFlags: ItemFlags;
+  public images: string[];
 
   constructor(private deviceService: DeviceService) {}
 
