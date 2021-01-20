@@ -10,15 +10,9 @@
         <div class="d-flex flex-column justify-content-flex-start">
             <div [ngClass]="{'card-feedback--flexible': showUseSavedCard}">
                 <ng-container [ngSwitch]="paymentError">
-                    <div *ngSwitchCase="errorType.CARD_NUMBER" class="StripeCard__error">
-                        Card number isn't valid.
-                    </div>
-                    <div *ngSwitchCase="errorType.CVC_CODE" class="StripeCard__error">
-                        CVC number isn't valid
-                    </div>
-                    <div *ngSwitchCase="errorType.DATE_INVALID" class="StripeCard__error">
-                        Card date isn't valid
-                    </div>
+                    <div i18n="@@CardNumberIsNotValid" *ngSwitchCase="errorType.CARD_NUMBER" class="StripeCard__error">Card number isn't valid.</div>
+                    <div i18n="@@CvcNumberIsNotValid" *ngSwitchCase="errorType.CVC_CODE" class="StripeCard__error">CVC number isn't valid.</div>
+                    <div i18n="@@CardDateIsNotValid" *ngSwitchCase="errorType.DATE_INVALID" class="StripeCard__error">Card date isn't valid.</div>
                 </ng-container>
                 <div id="card-errors" role="alert" *ngIf="error">
                     {{ error }}
