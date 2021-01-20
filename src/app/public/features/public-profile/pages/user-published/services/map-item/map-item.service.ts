@@ -16,18 +16,18 @@ export class MapItemService {
 
   public mapItems(items: ItemResponse[]): Item[] {
     return items.map((itemResponse: ItemResponse) => {
-      return this.mapAnyItem(itemResponse);
+      return this.mapItem(itemResponse);
     });
   }
 
-  public mapAnyItem(item: ItemResponse): Item {
+  public mapItem(item: ItemResponse): Item {
     const content: ItemContent = item.content;
     if (item.type === 'cars') {
       return this.mapCar(content);
     } else if (item.type === 'real_estate') {
       return this.mapRealEstate(content);
     }
-    return this.mapItem(content);
+    return this.mapConsumerGoods(content);
   }
 
   private mapCar(content: CarContent): Car {
@@ -95,7 +95,7 @@ export class MapItemService {
     );
   }
 
-  private mapItem(content: ItemContent): Item {
+  private mapConsumerGoods(content: ItemContent): Item {
     return new Item(
       content.id,
       null,

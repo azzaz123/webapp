@@ -27,7 +27,7 @@ export class ItemDetailService {
           mergeMap((user: UserResponse) => {
             item.content.user = this.mapUser(user);
             return of({
-              item: this.mapItemService.mapAnyItem(item),
+              item: this.mapItemService.mapItem(item),
               user: this.mapUser(user),
             });
           })

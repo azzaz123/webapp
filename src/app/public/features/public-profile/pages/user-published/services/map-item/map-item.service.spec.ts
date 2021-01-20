@@ -66,7 +66,7 @@ describe('MapItemService', () => {
         id: ITEM_DATA_V3.content.seller_id,
       };
 
-      const item: Item = mapItemService.mapAnyItem(ITEM_DATA_V3);
+      const item: Item = mapItemService.mapItem(ITEM_DATA_V3);
 
       expect(item instanceof Item).toBeTruthy();
     });
@@ -78,7 +78,7 @@ describe('MapItemService', () => {
         user: { id: CAR_DATA.content.seller_id },
       };
 
-      const item: Item = mapItemService.mapAnyItem(CAR);
+      const item: Item = mapItemService.mapItem(CAR);
 
       expect(item instanceof Item).toBeTruthy();
       expect(item).toEqual(MOCK_CAR);
@@ -91,7 +91,7 @@ describe('MapItemService', () => {
         user: { id: REALESTATE_DATA.content.seller_id },
       };
 
-      const item: Item = mapItemService.mapAnyItem(REALESTATE);
+      const item: Item = mapItemService.mapItem(REALESTATE);
 
       expect(item instanceof Item).toBeTruthy();
       expect(item).toEqual(MOCK_REALESTATE);
