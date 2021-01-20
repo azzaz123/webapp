@@ -8,10 +8,9 @@ export const ADS_SOURCES: string[] = [
 ];
 
 export const initAdsConfig = () => {
-  /* DFP */
   if (!googletag) {
-    googletag = {};
-  } // TODO: Check if can be removed
+    throw new Error('Google Publisher Tag is not defined');
+  }
 
   /* Adomik */ if (!window['Adomik']) {
     window['Adomik'] = {};
