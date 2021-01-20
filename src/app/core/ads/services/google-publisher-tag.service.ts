@@ -23,7 +23,6 @@ export class GooglePublisherTagService {
       googletag.pubads().collapseEmptyDivs();
       googletag.pubads().disableInitialLoad();
       googletag.pubads().setPublisherProvidedId(publisherId);
-      googletag.enableServices();
     });
   }
 
@@ -42,5 +41,9 @@ export class GooglePublisherTagService {
     googletag.cmd.push(() => {
       googletag.display(slotId);
     });
+  }
+
+  public isLibraryRefDefined(): boolean {
+    return !!googletag;
   }
 }

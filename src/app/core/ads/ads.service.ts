@@ -59,7 +59,7 @@ export class AdsService {
   }
 
   private checkAdsLibraries(): boolean {
-    if (!googletag) {
+    if (!this.googlePublisherTagService.isLibraryRefDefined()) {
       console.warn('Google Publisher Tag could not be loaded');
       return false;
     }
