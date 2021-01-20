@@ -32,27 +32,4 @@ export class GooglePublisherTagServiceService {
       googletag.display(slotId);
     });
   }
-
-  private defineSlots(adSlots: AdSlot[]): void {
-    adSlots.forEach((slot) => {
-      googletag
-        .defineSlot(slot.name, slot.sizes, slot.id)
-        .setTargeting('ad_group', 'ad_opt')
-        .setTargeting('ad_h', new Date().getUTCHours().toString())
-        .addService(googletag.pubads());
-    });
-  }
-
-  private loadInitialConfiguration(): void {
-    googletag.pubads().disableInitialLoad();
-    googletag.pubads().enableSingleRequest();
-    googletag.pubads().collapseEmptyDivs();
-    this.setPublisherId();
-  }
-
-  private setPublisherId(): void {
-    let publisherId = this.cookieService.get('publisherId');
-    publisherId = publisherId ? publisherId : '-1' + Array(31).join('0');
-    googletag.pubads().setPublisherProvidedId(publisherId);
-  }
 }
