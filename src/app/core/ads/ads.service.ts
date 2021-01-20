@@ -13,7 +13,6 @@ import {
 } from 'rxjs';
 import { filter, finalize, mergeMap, tap, switchMap } from 'rxjs/operators';
 import { LoadExternalLibsService } from '@core/load-external-libs/load-external-libs.service';
-import { initAdsConfig } from './ads.config';
 import { AD_SLOTS } from './constants/ad-slots';
 import { ADS_SOURCES } from './constants';
 import { AdKeyWords, AdSlotId } from './interfaces';
@@ -38,14 +37,17 @@ export class AdsService {
     private googlePublisherTagService: GooglePublisherTagService
   ) {}
 
-  public loadAddsLibs(): void {
+  public init(): void {
     this.loadExternalLibsService
       .loadScriptBySource(ADS_SOURCES)
-      .subscribe(() => this.initAddsLib());
+      .subscribe(() => this.loadAdsConfiguration());
   }
 
-  private initAddsLib(): void {
-    initAdsConfig();
+  private loadAdsConfiguration(): void {
+    if (!this.checkAdsLibraries()) {
+      return;
+    }
+
     this.setAdKeywords();
     this.googlePublisherTagService.init(AD_SLOTS);
 
@@ -54,6 +56,43 @@ export class AdsService {
       .subscribe((userAllowed: boolean) =>
         this.allowSegmentation$.next(userAllowed)
       );
+  }
+
+  private checkAdsLibraries(): boolean {
+    if (!googletag) {
+      console.warn('Google Publisher Tag could not be loaded');
+      return false;
+    }
+
+    if (!Criteo) {
+      console.warn('Criteo could not be loaded');
+      return false;
+    }
+
+    if (!apstag) {
+      console.warn('Amazon Publisher Service could not be loaded');
+      return false;
+    }
+
+    Criteo.events = Criteo.events || [];
+    for (let i = 0; i < 10; i++) {
+      try {
+        Criteo.RenderAd('%%PATTERN:crt_bidid%%', window.document);
+        break;
+      } catch (e) {
+        continue;
+      }
+    }
+
+    apstag.init({
+      pubID: '3703',
+      adServer: 'googletag',
+      gdpr: {
+        cmpTimeout: 1000,
+      },
+    });
+
+    return true;
   }
 
   private setAdKeywords(): void {

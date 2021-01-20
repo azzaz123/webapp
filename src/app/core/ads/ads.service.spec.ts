@@ -130,7 +130,7 @@ describe('AdService', () => {
       cookieService.put(key, cookies[key]);
     });
     service = TestBed.inject(AdsService);
-    service.loadAddsLibs();
+    service.init();
     service.allowSegmentation$.next(false);
   });
 
