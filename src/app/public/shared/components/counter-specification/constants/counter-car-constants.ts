@@ -1,8 +1,8 @@
-import { ITEM_SPECIFICATION } from '@public/core/constants/item-specifications-constants';
+import { ItemSpecification } from '@public/core/constants/item-specifications-constants';
 import { CAR_SPECIFICATION_TYPE } from '@public/core/constants/item-specifications/cars-constants';
-import { CAR_ICON } from './car-icons-constants';
+import { CAR_ICON } from './icons-car-constants';
 
-export const CAR_ICON_SPEC_TRANSLATION: ITEM_SPECIFICATION[] = [
+export const CAR_ICON_SPEC_TRANSLATION: ItemSpecification[] = [
   {
     icon: CAR_ICON.COUPE,
     label: {
@@ -124,7 +124,7 @@ export const CAR_ICON_SPEC_TRANSLATION: ITEM_SPECIFICATION[] = [
   },
 ];
 
-export const CAR_ICON_SPEC: ITEM_SPECIFICATION[] = [
+export const CAR_ICON_SPEC: ItemSpecification[] = [
   {
     icon: CAR_ICON.SEATS,
     type: CAR_SPECIFICATION_TYPE.SEATS,
@@ -150,7 +150,7 @@ export const CAR_ICON_SPEC: ITEM_SPECIFICATION[] = [
     type: CAR_SPECIFICATION_TYPE.HORSEPOWER,
   },
 ];
-export const CAR_TYPE_SPECIFICATION: ITEM_SPECIFICATION[] = [
+export const CAR_TYPE_SPECIFICATION: ItemSpecification[] = [
   ...CAR_ICON_SPEC_TRANSLATION,
   ...CAR_ICON_SPEC,
 ];

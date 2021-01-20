@@ -1,8 +1,8 @@
-import { ITEM_SPECIFICATION } from '@public/core/constants/item-specifications-constants';
+import { ItemSpecification } from '@public/core/constants/item-specifications-constants';
 import { REAL_STATE_TYPE } from '@public/core/constants/item-specifications/realestate-constants';
-import { REAL_ESTATE_ICON } from './realestate-icons-constants';
+import { REAL_ESTATE_ICON } from './icons-realestate-constants';
 
-export const REAL_ESTATE_NUMERIC_SPECIFICATION: ITEM_SPECIFICATION[] = [
+export const REAL_ESTATE_NUMERIC_SPECIFICATION: ItemSpecification[] = [
   {
     type: REAL_STATE_TYPE.BATHROOMS,
     label: {
@@ -23,7 +23,7 @@ export const REAL_ESTATE_NUMERIC_SPECIFICATION: ITEM_SPECIFICATION[] = [
   },
 ];
 
-export const REAL_ESTATE_ICON_SPEC_TRANSLATION: ITEM_SPECIFICATION[] = [
+export const REAL_ESTATE_ICON_SPEC_TRANSLATION: ItemSpecification[] = [
   {
     icon: REAL_ESTATE_ICON.GARAGE,
     label: { singular: $localize`:@@Garage:Garage` },
@@ -96,7 +96,7 @@ export const REAL_ESTATE_ICON_SPEC_TRANSLATION: ITEM_SPECIFICATION[] = [
   },
 ];
 
-export const REAL_ESTATE_TYPE_SPECIFICATION: ITEM_SPECIFICATION[] = [
+export const REAL_ESTATE_TYPE_SPECIFICATION: ItemSpecification[] = [
   ...REAL_ESTATE_NUMERIC_SPECIFICATION,
   ...REAL_ESTATE_ICON_SPEC_TRANSLATION,
 ];
