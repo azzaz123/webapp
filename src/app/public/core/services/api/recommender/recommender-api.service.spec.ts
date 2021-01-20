@@ -1,6 +1,5 @@
 import {
   HttpClientTestingModule,
-  TestRequest,
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';

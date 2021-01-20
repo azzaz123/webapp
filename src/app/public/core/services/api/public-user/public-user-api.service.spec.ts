@@ -1,12 +1,9 @@
 import {
   HttpClientTestingModule,
   HttpTestingController,
-  TestRequest,
 } from '@angular/common/http/testing';
 import { fakeAsync, TestBed } from '@angular/core/testing';
-import { UserStats } from '@core/user/user-stats.interface';
 import { ReviewResponse } from '@features/reviews/core/review-response.interface';
-import { MOCK_USER_STATS, USERS_STATS } from '@fixtures/user.fixtures.spec';
 import { environment } from 'environments/environment';
 
 import {
