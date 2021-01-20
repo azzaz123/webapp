@@ -15,7 +15,7 @@ import { filter, finalize, mergeMap, tap, switchMap } from 'rxjs/operators';
 import { LoadExternalLibsService } from '@core/load-external-libs/load-external-libs.service';
 import { initAdsConfig } from './ads.config';
 import { AD_SLOTS } from './constants/ad-slots';
-import { ADS_SOURCES, AD_GROUP } from './constants';
+import { ADS_SOURCES } from './constants';
 import { AdKeyWords, AdSlotId } from './interfaces';
 import { GooglePublisherTagServiceService } from './services/google-publisher-tag-service.service';
 
@@ -48,7 +48,7 @@ export class AdsService {
     initAdsConfig();
     this.initKeyWordsFromCookies();
     this.initPositionKeyWords();
-    this.initGoogletagConfig();
+    this.googlePublisherTagService.init(AD_SLOTS);
 
     this.didomiService
       .userAllowedSegmentationInAds$()
@@ -72,25 +72,6 @@ export class AdsService {
         this.adKeyWords.longitude = position.coords.longitude.toString();
       });
     }
-  }
-
-  private initGoogletagConfig(): void {
-    googletag.cmd.push(() => {
-      AD_SLOTS.forEach((slot) => {
-        googletag
-          .defineSlot(slot.name, slot.sizes, slot.id)
-          .setTargeting('ad_group', AD_GROUP)
-          .setTargeting('ad_h', new Date().getUTCHours().toString())
-          .addService(googletag.pubads());
-      });
-      let publisherId = this.cookieService.get('publisherId');
-      publisherId = publisherId ? publisherId : '-1' + Array(31).join('0');
-      googletag.pubads().enableSingleRequest();
-      googletag.pubads().collapseEmptyDivs();
-      googletag.pubads().disableInitialLoad();
-      googletag.pubads().setPublisherProvidedId(publisherId);
-      googletag.enableServices();
-    });
   }
 
   public sendAdServerRequest(allowSegmentation = false) {

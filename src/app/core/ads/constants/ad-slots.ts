@@ -14,4 +14,4 @@ export const CHAT_AD_SLOTS: AdSlot[] = [
   },
 ];
 
-export const AD_SLOTS = [...CHAT_AD_SLOTS] as const;
+export const AD_SLOTS = [...CHAT_AD_SLOTS];
