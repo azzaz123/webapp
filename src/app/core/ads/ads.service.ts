@@ -157,12 +157,10 @@ export class AdsService {
   }
 
   private refreshAdWithKeyWords(allowSegmentation: boolean): Observable<void> {
-    Object.keys(this.adKeyWords).forEach((key) => {
-      googletag.pubads().setTargeting(key, this.adKeyWords[key]);
-    });
-    googletag
-      .pubads()
-      .setTargeting('allowSegmentation', allowSegmentation ? 'true' : 'false');
+    this.googlePublisherTagService.setTargetingByAdsKeywords(
+      this.adKeyWords,
+      allowSegmentation
+    );
     return this.fetchHeaderBids(allowSegmentation);
   }
 

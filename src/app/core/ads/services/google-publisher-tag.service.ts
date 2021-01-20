@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie';
-import { AdSlot, AdSlotId } from '../interfaces';
+import { AdKeyWords, AdSlot, AdSlotId } from '../interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -35,6 +35,18 @@ export class GooglePublisherTagService {
         .setRequestNonPersonalizedAds(allowSegmentation ? 0 : 1);
       googletag.pubads().refresh();
     });
+  }
+
+  public setTargetingByAdsKeywords(
+    adKeywords: AdKeyWords,
+    allowSegmentation = false
+  ): void {
+    Object.keys(adKeywords).forEach((key) => {
+      googletag.pubads().setTargeting(key, adKeywords[key]);
+    });
+    googletag
+      .pubads()
+      .setTargeting('allowSegmentation', allowSegmentation ? 'true' : 'false');
   }
 
   public displayAdBySlotId(slotId: AdSlotId): void {
