@@ -17,7 +17,7 @@ import { initAdsConfig } from './ads.config';
 import { AD_SLOTS } from './constants/ad-slots';
 import { ADS_SOURCES } from './constants';
 import { AdKeyWords, AdSlotId } from './interfaces';
-import { GooglePublisherTagServiceService } from './services/google-publisher-tag-service.service';
+import { GooglePublisherTagService } from './services/google-publisher-tag.service';
 
 @Injectable({
   providedIn: 'root',
@@ -35,7 +35,7 @@ export class AdsService {
     private cookieService: CookieService,
     private didomiService: DidomiService,
     private loadExternalLibsService: LoadExternalLibsService,
-    private googlePublisherTagService: GooglePublisherTagServiceService
+    private googlePublisherTagService: GooglePublisherTagService
   ) {}
 
   public loadAddsLibs(): void {

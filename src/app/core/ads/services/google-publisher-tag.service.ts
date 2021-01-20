@@ -5,7 +5,7 @@ import { AdSlot, AdSlotId } from '../interfaces';
 @Injectable({
   providedIn: 'root',
 })
-export class GooglePublisherTagServiceService {
+export class GooglePublisherTagService {
   constructor(private cookieService: CookieService) {}
 
   public init(adSlots: AdSlot[]): void {
