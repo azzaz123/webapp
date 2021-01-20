@@ -8,6 +8,7 @@ import { GeolocationService } from './geolocation/geolocation.service';
 import { AccessTokenService } from './http/access-token.service';
 import { I18nService } from './i18n/i18n.service';
 import { PaymentService } from './payments/payment.service';
+import { CoreStoreModule } from './store/core-store.module';
 import { DevelopmentGuard } from './user/development.guard';
 import { LoggedGuard } from './user/logged.guard';
 import { SocialShareService } from './social-share/social-share.service';
@@ -30,6 +31,7 @@ import { ItemService } from './item/item.service';
     CookieModule.forRoot(),
     NgxPermissionsModule.forRoot(),
     DeviceDetectorModule.forRoot(),
+    CoreStoreModule,
   ],
   providers: [
     LoggedGuard,
