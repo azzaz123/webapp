@@ -20,7 +20,6 @@ export class ImagesCarouselComponent {
 
   @ViewChild(NgbCarousel) public carousel: NgbCarousel;
   @Input() images: string[];
-  @Input() paginationSize = 3;
   @Output() imageClick: EventEmitter<CarouselImage> = new EventEmitter<
     CarouselImage
   >();

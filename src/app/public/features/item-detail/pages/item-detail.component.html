@@ -7,8 +7,8 @@
                 <tsl-side-sky class="position-sticky d-none d-xl-block"></tsl-side-sky>
             </div>
             <div class="ItemDetail__content px-4 pb-5">
-                <div class="ItemDetail__carousel">
-                    <tsl-images-carousel></tsl-images-carousel>
+                <div class="ItemDetail__carousel position-relative">
+                    <tsl-item-images-carousel [images]="images" [itemFlags]="itemFlags"></tsl-item-images-carousel>
                 </div>
             </div>
             <div *ngIf="device === deviceType.DESKTOP">

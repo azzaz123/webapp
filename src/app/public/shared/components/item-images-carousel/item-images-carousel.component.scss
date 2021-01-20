@@ -1,0 +1,14 @@
+@import '~style/common';
+
+.ItemFlag {
+  top: $spacer;
+  z-index: 100;
+
+  &--left {
+    left: $spacer;
+  }
+
+  &--right {
+    right: $spacer;
+  }
+}

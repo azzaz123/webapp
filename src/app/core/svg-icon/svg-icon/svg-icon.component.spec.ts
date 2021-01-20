@@ -11,7 +11,7 @@ import { SvgService } from '../svg.service';
 import { SvgIconComponent, SVG_ATTRIBUTES } from './svg-icon.component';
 
 describe('SvgIconComponent', () => {
-  const svgTag: string = '<svg></svg>';
+  const svgTag: string = '<svg display="flex"></svg>';
   const svgSelector: string = 'svg';
   const width = 10;
   const height = 10;
