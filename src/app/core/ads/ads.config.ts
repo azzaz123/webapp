@@ -11,25 +11,12 @@ export const ADS_SOURCES: string[] = [
   '//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',
 ];
 
+export const AD_GROUP = 'ad_opt';
+
 export const initAdsConfig = () => {
   if (!googletag) {
     throw new Error('Google Publisher Tag is not defined');
   }
-
-  /* Adomik */ if (!window['Adomik']) {
-    window['Adomik'] = {};
-  }
-  Adomik.randomAdGroup = function () {
-    const rand = Math.random();
-    switch (false) {
-      case !(rand < 0.09):
-        return 'ad_ex' + Math.floor(100 * rand);
-      case !(rand < 0.1):
-        return 'ad_bc';
-      default:
-        return 'ad_opt';
-    }
-  };
 
   /* Criteo */
   if (!window['Criteo']) {

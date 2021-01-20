@@ -13,7 +13,7 @@ import {
 } from 'rxjs';
 import { filter, finalize, mergeMap, tap, switchMap } from 'rxjs/operators';
 import { LoadExternalLibsService } from '@core/load-external-libs/load-external-libs.service';
-import { ADS_SOURCES, initAdsConfig } from './ads.config';
+import { ADS_SOURCES, AD_GROUP, initAdsConfig } from './ads.config';
 import { AdKeyWords } from './ads.interface';
 import { AD_SLOTS } from './ad-slots';
 
@@ -76,7 +76,7 @@ export class AdsService {
       AD_SLOTS.forEach((slot) => {
         googletag
           .defineSlot(slot.name, slot.sizes, slot.id)
-          .setTargeting('ad_group', Adomik.randomAdGroup())
+          .setTargeting('ad_group', AD_GROUP)
           .setTargeting('ad_h', new Date().getUTCHours().toString())
           .addService(googletag.pubads());
       });
