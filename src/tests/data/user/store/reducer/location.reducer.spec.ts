@@ -1,5 +1,4 @@
-import { UserLocation } from '@core/user/user-response.interface';
-import { SetUserLocation } from '@data/user';
+import { SetUserLocation, UserLocation } from '@data/user';
 import { Action } from '@ngrx/store';
 import * as fromReducer from 'app/data/user/store/reducer/location.reducer';
 import { UserLocationMother } from './../../domain';

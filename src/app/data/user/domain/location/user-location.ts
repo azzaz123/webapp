@@ -1,5 +1,4 @@
 export interface UserLocation {
-  id: number;
   approximated_latitude: number;
   approximated_longitude: number;
   city: string;

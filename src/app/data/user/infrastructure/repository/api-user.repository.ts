@@ -3,21 +3,22 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Profile, UserLocation, UserRepository, UserUpdate } from '../../domain';
+import { USER_BASE_ENDPOINT } from './api-user.constant';
 import { ApiUserLocationMapper, ApiUserMapper } from './api-user.mapper';
 import { ApiUserResponse } from './api-user.response';
 
 @Injectable()
 export class ApiUserRepository implements UserRepository {
-  static USER_BASE_ENDPOINT = 'api/v3/users';
-  static USER_PROFILE_URL = `${ApiUserRepository.USER_BASE_ENDPOINT}/me`;
-  static UPDATE_EMAIL_URL = `${ApiUserRepository.USER_BASE_ENDPOINT}/email`;
-  static UPDATE_PASSWORD_URL = `${ApiUserRepository.USER_BASE_ENDPOINT}/password`;
-  static PRESENCE_ONLINE_URL = `${ApiUserRepository.USER_BASE_ENDPOINT}/online`;
+
+  static USER_PROFILE_URL = `${USER_BASE_ENDPOINT}/me`;
+  static UPDATE_EMAIL_URL = `${USER_BASE_ENDPOINT}/email`;
+  static UPDATE_PASSWORD_URL = `${USER_BASE_ENDPOINT}/password`;
+  static PRESENCE_ONLINE_URL = `${USER_BASE_ENDPOINT}/online`;
 
   constructor(private http: HttpClient) { }
 
   getById(userId: string): Observable<[Profile, UserLocation]> {
-    return this.http.get<ApiUserResponse>(`${ApiUserRepository.USER_BASE_ENDPOINT}/${userId}`)
+    return this.http.get<ApiUserResponse>(`${USER_BASE_ENDPOINT}/${userId}`)
       .pipe(
         map((apiUser: ApiUserResponse) => ([ApiUserMapper.toDomain(apiUser), ApiUserLocationMapper.toDomain(apiUser)]))
       );

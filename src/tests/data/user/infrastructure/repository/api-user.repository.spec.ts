@@ -4,6 +4,7 @@ import {
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Profile, UserLocation, UserUpdate } from '@data/user';
+import { USER_BASE_ENDPOINT } from 'app/data/user/infrastructure/repository/api-user.constant';
 import { ApiUserLocationMapper, ApiUserMapper } from 'app/data/user/infrastructure/repository/api-user.mapper';
 import { ApiUserRepository } from 'app/data/user/infrastructure/repository/api-user.repository';
 import { ApiUserResponse } from 'app/data/user/infrastructure/repository/api-user.response';
@@ -45,7 +46,7 @@ describe('ApiUserRepository', () => {
       });
 
       const req = httpTestingController.expectOne(
-        `${ApiUserRepository.USER_BASE_ENDPOINT}/${user.id}`
+        `${USER_BASE_ENDPOINT}/${user.id}`
       );
       expect(req.request.method).toBe('GET');
       req.flush(apiResponse);
