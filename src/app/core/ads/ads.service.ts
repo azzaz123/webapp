@@ -17,6 +17,7 @@ import { AD_SLOTS } from './constants/ad-slots';
 import { ADS_SOURCES } from './constants';
 import { AdKeyWords, AdSlotId } from './interfaces';
 import { GooglePublisherTagService } from './services/google-publisher-tag.service';
+import { CriteoService } from './services/criteo.service';
 
 @Injectable({
   providedIn: 'root',
@@ -34,7 +35,8 @@ export class AdsService {
     private cookieService: CookieService,
     private didomiService: DidomiService,
     private loadExternalLibsService: LoadExternalLibsService,
-    private googlePublisherTagService: GooglePublisherTagService
+    private googlePublisherTagService: GooglePublisherTagService,
+    private criteoService: CriteoService
   ) {}
 
   public init(): void {
@@ -64,7 +66,7 @@ export class AdsService {
       return false;
     }
 
-    if (!Criteo) {
+    if (!this.criteoService.isLibraryRefDefined()) {
       console.warn('Criteo could not be loaded');
       return false;
     }
@@ -72,16 +74,6 @@ export class AdsService {
     if (!apstag) {
       console.warn('Amazon Publisher Service could not be loaded');
       return false;
-    }
-
-    Criteo.events = Criteo.events || [];
-    for (let i = 0; i < 10; i++) {
-      try {
-        Criteo.RenderAd('%%PATTERN:crt_bidid%%', window.document);
-        break;
-      } catch (e) {
-        continue;
-      }
     }
 
     apstag.init({
