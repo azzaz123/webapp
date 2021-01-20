@@ -1,6 +1,6 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { UserService } from '@core/user/user.service';
 import { Profile, UserId } from '@data/user';
 import { ProfileMother, UserIdMother } from '@fixtures/data/user/domain';
 import { Store } from '@ngrx/store';
@@ -8,7 +8,7 @@ import { of } from 'rxjs';
 import { IsCurrentUserPipe } from './is-current-user.pipe';
 
 @Component({
-  template: '{{userId | isCurrentUser}}',
+  template: '{{userId | isCurrentUser | async}}',
 })
 class TestComponent {
   public userId: string;
@@ -24,6 +24,7 @@ describe('isCurrentUserPipe', () => {
       select: () => {},
     };
     TestBed.configureTestingModule({
+      imports: [CommonModule],
       declarations: [IsCurrentUserPipe, TestComponent],
       providers: [
         {

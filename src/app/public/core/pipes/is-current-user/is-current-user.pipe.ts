@@ -1,8 +1,8 @@
-import { map } from 'lodash-es';
 import { Pipe, PipeTransform } from '@angular/core';
 import { Profile, selectUserProfileDetail } from '@data/user';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Pipe({
   name: 'isCurrentUser',
