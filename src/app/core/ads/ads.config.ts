@@ -1,6 +1,9 @@
+export const GOOGLE_PUBLISHER_TAG_URL =
+  'https://securepubads.g.doubleclick.net/tag/js/gpt.js';
+
 export const ADS_SOURCES: string[] = [
+  GOOGLE_PUBLISHER_TAG_URL,
   'https://static.criteo.net/js/ld/publishertag.js',
-  'https://www.googletagservices.com/tag/js/gpt.js',
   '//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',
 ];
 
