@@ -3,7 +3,7 @@ import { Meta, Story } from '@storybook/angular/types-6-0';
 import { styledWrapperDecorator } from '@stories/decorators/styled-wrapper/styled-wrapper.decorator';
 import { moduleMetadata } from '@storybook/angular';
 import { LoremIpsumComponent } from '@stories/components/lorem-ipsum/lorem-ipsum.component';
-import { StyledBoxComponent } from '@stories/components/colored-box/styled-box.component';
+import { StyledBoxComponent } from '@stories/components/styled-box/styled-box.component';
 import { CUSTOM_VIEWPORT_NAME } from '@storybook-config/viewports/custom-viewports';
 import { ViewportService } from '@core/viewport/viewport.service';
 
