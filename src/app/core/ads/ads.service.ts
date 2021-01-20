@@ -86,17 +86,6 @@ export class AdsService {
     }
   }
 
-  public sendAdServerRequest(allowSegmentation = false) {
-    googletag.cmd.push(() => {
-      apstag.setDisplayBids();
-      Criteo.SetDFPKeyValueTargeting();
-      googletag
-        .pubads()
-        .setRequestNonPersonalizedAds(allowSegmentation ? 0 : 1);
-      googletag.pubads().refresh();
-    });
-  }
-
   public adsRefresh(): void {
     if (this.adsRefreshSubscription && !this.adsRefreshSubscription.closed) {
       return;
@@ -140,7 +129,9 @@ export class AdsService {
 
   private fetchHeaderBids(allowSegmentation = false): Observable<void> {
     return merge(this.requestBidAps(), this.requestBidCriteo()).pipe(
-      finalize(() => this.sendAdServerRequest(allowSegmentation))
+      finalize(() =>
+        this.googlePublisherTagService.setAdsSegmentation(allowSegmentation)
+      )
     );
   }
 

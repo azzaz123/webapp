@@ -27,6 +27,17 @@ export class GooglePublisherTagService {
     });
   }
 
+  public setAdsSegmentation(allowSegmentation = false): void {
+    googletag.cmd.push(() => {
+      apstag.setDisplayBids();
+      Criteo.SetDFPKeyValueTargeting();
+      googletag
+        .pubads()
+        .setRequestNonPersonalizedAds(allowSegmentation ? 0 : 1);
+      googletag.pubads().refresh();
+    });
+  }
+
   public displayAdBySlotId(slotId: AdSlotId): void {
     googletag.cmd.push(() => {
       googletag.display(slotId);
