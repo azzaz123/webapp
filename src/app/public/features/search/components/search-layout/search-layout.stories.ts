@@ -33,11 +33,12 @@ const Template: Story<SearchLayoutComponent> = (args) => ({
   moduleMetadata: {
     declarations: [SearchLayoutComponent],
   },
-  template: `<tsl-search-layout>
+  template: `
+    <tsl-search-layout>
       <stories-lorem-ipsum main></stories-lorem-ipsum>
-      <stories-styled-box top [style]="${boxStyle}"></stories-styled-box>
-      <stories-styled-box right [style]="${boxStyle}"></stories-styled-box>
-      <stories-styled-box bottom [style]="${boxStyle}"></stories-styled-box>
+      <stories-styled-box top [style]="${boxStyle}" text="Top box"></stories-styled-box>
+      <stories-styled-box right [style]="${boxStyle}" text="Right box"></stories-styled-box>
+      <stories-styled-box bottom [style]="${boxStyle}" text="Bottom box"></stories-styled-box>
     </tsl-search-layout>`,
 });
 
