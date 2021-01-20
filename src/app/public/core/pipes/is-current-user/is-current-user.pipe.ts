@@ -1,13 +1,18 @@
+import { map } from 'lodash-es';
 import { Pipe, PipeTransform } from '@angular/core';
-import { UserService } from '@core/user/user.service';
+import { Profile, selectUserProfileDetail } from '@data/user';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
 @Pipe({
   name: 'isCurrentUser',
 })
-export class isCurrentUserPipe implements PipeTransform {
-  constructor(private userService: UserService) {}
+export class IsCurrentUserPipe implements PipeTransform {
+  constructor(private store: Store) {}
 
-  transform(userId: string): boolean {
-    return this.userService.user ? userId === this.userService.user.id : false;
+  transform(userId: string): Observable<boolean> {
+    return this.store
+      .select(selectUserProfileDetail)
+      .pipe(map((user: Profile | null) => user?.id === userId));
   }
 }
