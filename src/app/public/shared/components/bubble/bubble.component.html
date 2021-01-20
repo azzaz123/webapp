@@ -1,4 +1,4 @@
-<div class="Bubble Bubble__wrapper" [ngClass]="variant" (click)="onClick()">
+<div class="Bubble Bubble__wrapper" [ngClass]="variant" (click)="emitClick()">
   <span *ngIf="counter" class="Bubble__counter">{{counter}}</span>
   <tsl-svg-icon *ngIf="!counter && icon" class="Bubble__icon" [src]="icon" [width]="26" [height]="26"></tsl-svg-icon>
   <div class="Bubble__content">

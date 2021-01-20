@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 export enum BubbleVariants {
   ACTIVE = 'active',
@@ -15,5 +15,9 @@ export class BubbleComponent {
   @Input() variant: BubbleVariants = BubbleVariants.ACTIVE;
   @Input() isDropdown: boolean;
   @Input() counter: number;
-  @Input() onClick: () => void;
+  @Output() onClick: EventEmitter<void> = new EventEmitter();
+
+  public emitClick(): void {
+    this.onClick.emit();
+  }
 }

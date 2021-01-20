@@ -117,14 +117,11 @@ describe('BubbleComponent', () => {
   });
 
   describe('When clicked', () => {
-    let callback: () => void;
-    beforeEach(async () => {
-      callback = jest.fn();
-      await setInputs({ onClick: callback });
-    });
     it('should execute callback', () => {
+      spyOn(component.onClick, 'emit');
       debugElement.query(By.css('.Bubble')).triggerEventHandler('click', null);
-      expect(callback).toHaveBeenCalledTimes(1);
+
+      expect(component.onClick.emit).toHaveBeenCalledTimes(1);
     });
   });
 
