@@ -18,7 +18,7 @@ import { LoadExternalLibsService } from './load-external-libs/load-external-libs
 import { FeatureflagService } from './user/featureflag.service';
 import { SessionService } from './session/session.service';
 import { UuidService } from './uuid/uuid.service';
-import { AdsService } from '@features/chat/core/ads/ads.service';
+import { AdsService } from '@core/ads/ads.service';
 import { HereMapsService } from '@shared/geolocation/here-maps/here-maps.service';
 import { UserService } from './user/user.service';
 import { TrackingService } from './tracking/tracking.service';

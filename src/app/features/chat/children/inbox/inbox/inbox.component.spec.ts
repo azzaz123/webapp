@@ -12,7 +12,7 @@ import { Item } from '@core/item/item';
 import { RemoteConsoleService } from '@core/remote-console';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
-import { AdsService } from '@features/chat/core/ads/ads.service';
+import { AdsService } from '@core/ads/ads.service';
 import { InboxConversationService } from '@features/chat/core/inbox/inbox-conversation.service';
 import { InboxService } from '@features/chat/core/inbox/inbox.service';
 import {
