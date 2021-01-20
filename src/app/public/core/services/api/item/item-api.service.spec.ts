@@ -34,7 +34,7 @@ describe('ItemApiService', () => {
       const expectedUrl = GET_ITEM_ENDPOINT(ITEM_ID);
 
       itemApiService.getItem(ITEM_ID).subscribe();
-      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      const req = httpMock.expectOne(expectedUrl);
       req.flush({});
 
       expect(req.request.url).toBe(expectedUrl);
@@ -50,7 +50,7 @@ describe('ItemApiService', () => {
       };
 
       itemApiService.markAsFavourite(ITEM_ID).subscribe();
-      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      const req = httpMock.expectOne(expectedUrl);
       req.flush({});
 
       expect(req.request.url).toBe(expectedUrl);
@@ -67,7 +67,7 @@ describe('ItemApiService', () => {
       };
 
       itemApiService.unmarkAsFavourite(ITEM_ID).subscribe();
-      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      const req = httpMock.expectOne(expectedUrl);
       req.flush({});
 
       expect(req.request.url).toBe(expectedUrl);

@@ -48,7 +48,7 @@ describe('PublicUserApiService', () => {
       const expectedUrl = `${environment.baseUrl}${STATS_ENDPOINT(userId)}`;
 
       publicUserApiService.getStats(userId).subscribe();
-      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      const req = httpMock.expectOne(expectedUrl);
 
       expect(req.request.url).toEqual(expectedUrl);
       expect(req.request.method).toBe('GET');
@@ -58,7 +58,7 @@ describe('PublicUserApiService', () => {
       const expectedUrl = `${environment.baseUrl}${STATS_ENDPOINT(userId)}`;
 
       publicUserApiService.getStats(userId).subscribe();
-      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      const req = httpMock.expectOne(expectedUrl);
 
       expect(req.request.url).toEqual(expectedUrl);
       expect(req.request.method).toBe('GET');
@@ -76,7 +76,7 @@ describe('PublicUserApiService', () => {
       let response: PaginationResponse<ReviewResponse>;
 
       publicUserApiService.getReviews(userId).subscribe((r) => (response = r));
-      const req: TestRequest = httpMock.expectOne(expectedUrl + urlParams);
+      const req = httpMock.expectOne(expectedUrl + urlParams);
 
       expect(req.request.url).toEqual(expectedUrl);
       expect(req.request.method).toBe('GET');
@@ -91,7 +91,7 @@ describe('PublicUserApiService', () => {
       publicUserApiService
         .getReviews(userId, itemsFrom)
         .subscribe((r) => (response = r));
-      const req: TestRequest = httpMock.expectOne(expectedUrl + urlParams);
+      const req = httpMock.expectOne(expectedUrl + urlParams);
 
       expect(req.request.url).toEqual(expectedUrl);
       expect(req.request.method).toBe('GET');
@@ -106,7 +106,7 @@ describe('PublicUserApiService', () => {
       let urlParams = '?init=0';
 
       publicUserApiService.getPublishedItems(userId).subscribe();
-      const req: TestRequest = httpMock.expectOne(expectedUrl + urlParams);
+      const req = httpMock.expectOne(expectedUrl + urlParams);
 
       expect(req.request.url).toEqual(expectedUrl);
       expect(req.request.method).toBe('GET');
@@ -120,7 +120,7 @@ describe('PublicUserApiService', () => {
       let urlParams = '?init=' + itemsFrom;
 
       publicUserApiService.getPublishedItems(userId, itemsFrom).subscribe();
-      const req: TestRequest = httpMock.expectOne(expectedUrl + urlParams);
+      const req = httpMock.expectOne(expectedUrl + urlParams);
 
       expect(req.request.url).toEqual(expectedUrl);
       expect(req.request.method).toBe('GET');
@@ -144,7 +144,7 @@ describe('PublicUserApiService', () => {
       const expectedUrl = `${environment.baseUrl}${PROFILE_API_URL(userId)}`;
 
       publicUserApiService.getUser(userId).subscribe();
-      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      const req = httpMock.expectOne(expectedUrl);
 
       expect(req.request.url).toEqual(expectedUrl);
       expect(req.request.method).toBe('GET');
@@ -157,7 +157,7 @@ describe('PublicUserApiService', () => {
         userId
       )}`;
       publicUserApiService.getCoverImage(userId).subscribe();
-      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      const req = httpMock.expectOne(expectedUrl);
 
       expect(req.request.url).toEqual(expectedUrl);
       expect(req.request.method).toBe('GET');

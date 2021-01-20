@@ -33,7 +33,7 @@ describe('RecommenderApiService', () => {
       const expectedUrl = GET_RECOMENDATIONS_ENDPOINT(ITEM_ID);
 
       recommenderApiService.getRecommendedItemsByItemId(ITEM_ID).subscribe();
-      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      const req = httpMock.expectOne(expectedUrl);
       req.flush({});
 
       expect(req.request.url).toBe(expectedUrl);
