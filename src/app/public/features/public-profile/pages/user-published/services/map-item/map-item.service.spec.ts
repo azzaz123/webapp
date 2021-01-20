@@ -59,4 +59,42 @@ describe('MapItemService', () => {
       expect(items[0]).toEqual(MOCK_REALESTATE);
     });
   });
+
+  describe('When asking for one item map', () => {
+    it('should return correctly mapped list default item', () => {
+      (ITEM_DATA_V3.content.user as any) = {
+        id: ITEM_DATA_V3.content.seller_id,
+      };
+
+      const item: Item = mapItemService.mapAnyItem(ITEM_DATA_V3);
+
+      expect(item instanceof Item).toBeTruthy();
+    });
+
+    it('should return correctly mapped car item', () => {
+      const CAR = CAR_DATA as any;
+      CAR.content = {
+        ...CAR_DATA.content,
+        user: { id: CAR_DATA.content.seller_id },
+      };
+
+      const item: Item = mapItemService.mapAnyItem(CAR);
+
+      expect(item instanceof Item).toBeTruthy();
+      expect(item).toEqual(MOCK_CAR);
+    });
+
+    it('should return correctly mapped real estate item', () => {
+      const REALESTATE = REALESTATE_DATA as any;
+      REALESTATE.content = {
+        ...REALESTATE_DATA.content,
+        user: { id: REALESTATE_DATA.content.seller_id },
+      };
+
+      const item: Item = mapItemService.mapAnyItem(REALESTATE);
+
+      expect(item instanceof Item).toBeTruthy();
+      expect(item).toEqual(MOCK_REALESTATE);
+    });
+  });
 });
