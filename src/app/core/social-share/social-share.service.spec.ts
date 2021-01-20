@@ -63,4 +63,20 @@ describe('SocialShareService', () => {
       );
     });
   });
+
+  describe('when requesting email share', () => {
+    it('should open link', () => {
+      spyOn(window, 'open');
+      const itemLink = 'test';
+      const subject = 'test';
+      const message = 'test';
+
+      service.emailShare(itemLink, subject, message);
+
+      expect(window.open).toHaveBeenCalledTimes(1);
+      expect(window.open).toHaveBeenCalledWith(
+        `mailto:?body=${message} - ${itemLink}&subject=${subject}`
+      );
+    });
+  });
 });

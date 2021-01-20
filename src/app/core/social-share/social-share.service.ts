@@ -35,4 +35,8 @@ export class SocialShareService {
       FACEBOOK_PARAMS
     );
   }
+
+  public emailShare(url: string, subject: string, message: string): void {
+    window.open(`mailto:?body=${message} - ${url}&subject=${subject}`);
+  }
 }
