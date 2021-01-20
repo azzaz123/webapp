@@ -36,7 +36,7 @@ describe('ItemFlagComponent', () => {
 
     it('should load the icon', () => {
       const svgComponent: HTMLElement = fixture.nativeElement.querySelector(
-        `.ItemFlag--${component.type.toLocaleLowerCase()} > ${svgTag}`
+        `.ItemFlag > ${svgTag}`
       );
 
       expect(svgComponent).toBeTruthy();
