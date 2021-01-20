@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subscriber } from 'rxjs';
+import { AD_SLOT_NETWORK_ID } from '../constants';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,7 @@ export class CriteoService {
     return new Observable((observer: Subscriber<void>) => {
       Criteo.events.push(() => {
         Criteo.RequestBidsOnGoogleTagSlots(
-          6866,
+          AD_SLOT_NETWORK_ID,
           () => {
             Criteo.SetDFPKeyValueTargeting();
             observer.complete();

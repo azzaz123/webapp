@@ -1,5 +1,7 @@
 import { AdSlot } from '../interfaces/ad-slot.interface';
 
+export const AD_SLOT_NETWORK_ID = 6866;
+
 export const CHAT_AD_SLOTS: AdSlot[] = [
   {
     id: 'div-gpt-ad-1508490196308-0',
@@ -11,7 +13,7 @@ export const CHAT_AD_SLOTS: AdSlot[] = [
       [300, 600],
       [336, 280],
     ],
-    networkId: 6866,
+    networkId: AD_SLOT_NETWORK_ID,
   },
 ];
 
