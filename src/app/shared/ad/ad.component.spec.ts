@@ -22,8 +22,6 @@ describe('AdComponent', () => {
     fixture = TestBed.createComponent(AdComponent);
     component = fixture.componentInstance;
     component.slotid = slotid;
-    component.height = height;
-    component.width = width;
     fixture.detectChanges();
 
     elementRef = fixture.debugElement.query(By.css(`#${slotid}`)).nativeElement;

@@ -16,7 +16,8 @@ import { LoadExternalLibsService } from '@core/load-external-libs/load-external-
 import { initAdsConfig } from './ads.config';
 import { AD_SLOTS } from './constants/ad-slots';
 import { ADS_SOURCES, AD_GROUP } from './constants';
-import { AdKeyWords } from './interfaces';
+import { AdKeyWords, AdSlotId } from './interfaces';
+import { GooglePublisherTagServiceService } from './services/google-publisher-tag-service.service';
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +34,8 @@ export class AdsService {
     private userService: UserService,
     private cookieService: CookieService,
     private didomiService: DidomiService,
-    private loadExternalLibsService: LoadExternalLibsService
+    private loadExternalLibsService: LoadExternalLibsService,
+    private googlePublisherTagService: GooglePublisherTagServiceService
   ) {}
 
   public loadAddsLibs(): void {
@@ -181,5 +183,9 @@ export class AdsService {
         );
       });
     });
+  }
+
+  public displayAdBySlotId(slotId: AdSlotId): void {
+    this.googlePublisherTagService.displayAdBySlotId(slotId);
   }
 }

@@ -1,8 +1,8 @@
-:host {
-  .tsl-ad {
-    text-align: center;
-    > div {
-      display: inline-block;
-    }
+.Sky__container {
+  height: auto !important;
+  width: auto !important;
+  text-align: center;
+  > div {
+    display: inline-block;
   }
 }
