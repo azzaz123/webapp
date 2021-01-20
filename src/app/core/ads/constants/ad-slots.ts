@@ -1,16 +1,9 @@
-export type AdSlotId = string;
-
-export interface AdSlot {
-  id: AdSlotId;
-  name: string;
-  sizes: [number, number][];
-  zoneid: number;
-}
+import { AdSlot } from '../interfaces/ad-slot.interface';
 
 export const CHAT_AD_SLOTS: AdSlot[] = [
   {
-    name: '/130868815/chat_right',
     id: 'div-gpt-ad-1508490196308-0',
+    name: '/130868815/chat_right',
     sizes: [
       [240, 400],
       [120, 600],

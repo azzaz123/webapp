@@ -13,9 +13,10 @@ import {
 } from 'rxjs';
 import { filter, finalize, mergeMap, tap, switchMap } from 'rxjs/operators';
 import { LoadExternalLibsService } from '@core/load-external-libs/load-external-libs.service';
-import { ADS_SOURCES, AD_GROUP, initAdsConfig } from './ads.config';
-import { AdKeyWords } from './ads.interface';
-import { AD_SLOTS } from './ad-slots';
+import { initAdsConfig } from './ads.config';
+import { AD_SLOTS } from './constants/ad-slots';
+import { ADS_SOURCES, AD_GROUP } from './constants';
+import { AdKeyWords } from './interfaces';
 
 @Injectable({
   providedIn: 'root',
