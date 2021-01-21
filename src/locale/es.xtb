@@ -1261,4 +1261,8 @@
   <translation id="NewBuild">Obra nueva</translation>
   <translation id="GoodCondition">Buen estado</translation>
   <translation id="ForRefurbishment">A reformar</translation>
+  <translation id="New">Nuevo</translation>
+  <translation id="Crappy">Destrozado</translation>
+  <translation id="CarMint">Km. 0</translation>
+  <translation id="CarUsed">Ocasión</translation>
 </translationbundle>

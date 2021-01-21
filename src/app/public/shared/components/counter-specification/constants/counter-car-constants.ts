@@ -94,6 +94,34 @@ export const CAR_ICON_SPEC_TRANSLATION: ItemSpecification[] = [
     },
     type: CAR_SPECIFICATION_TYPE.MANUAL,
   },
+  {
+    icon: CAR_ICON.BRAND_NEW,
+    label: {
+      singular: $localize`:@@New:Brand New`,
+    },
+    type: CAR_SPECIFICATION_TYPE.CONDITION_0,
+  },
+  {
+    icon: CAR_ICON.MINT,
+    label: {
+      singular: $localize`:@@CarMint:Mint`,
+    },
+    type: CAR_SPECIFICATION_TYPE.CONDITION_1,
+  },
+  {
+    icon: CAR_ICON.SOME_BLOW,
+    label: {
+      singular: $localize`:@@CarUsed:Used`,
+    },
+    type: CAR_SPECIFICATION_TYPE.CONDITION_2,
+  },
+  {
+    icon: CAR_ICON.CRAPPY,
+    label: {
+      singular: $localize`:@@Crappy:Crappy`,
+    },
+    type: CAR_SPECIFICATION_TYPE.CONDITION_3,
+  },
 ];
 
 export const CAR_ICON_SPEC: ItemSpecification[] = [
@@ -120,22 +148,6 @@ export const CAR_ICON_SPEC: ItemSpecification[] = [
   {
     icon: CAR_ICON.HORSEPOWER,
     type: CAR_SPECIFICATION_TYPE.HORSEPOWER,
-  },
-  {
-    icon: CAR_ICON.BRAND_NEW,
-    type: CAR_SPECIFICATION_TYPE.CONDITION_0,
-  },
-  {
-    icon: CAR_ICON.MINT,
-    type: CAR_SPECIFICATION_TYPE.CONDITION_1,
-  },
-  {
-    icon: CAR_ICON.SOME_BLOW,
-    type: CAR_SPECIFICATION_TYPE.CONDITION_2,
-  },
-  {
-    icon: CAR_ICON.CRAPPY,
-    type: CAR_SPECIFICATION_TYPE.CONDITION_3,
   },
 ];
 export const CAR_TYPE_SPECIFICATION: ItemSpecification[] = [
