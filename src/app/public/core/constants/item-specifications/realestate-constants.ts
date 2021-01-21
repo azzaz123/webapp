@@ -9,7 +9,6 @@ export enum REAL_STATE_TYPE {
   SURFACE = 'surface',
   FLAT = 'flat',
   HOUSE = 'house',
-  ROOM = 'room',
   OFFICE = 'office',
   LAND = 'land',
   BOX_ROOM = 'box_room',

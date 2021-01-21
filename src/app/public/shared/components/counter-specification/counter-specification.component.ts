@@ -24,7 +24,7 @@ export class CounterSpecificationComponent {
   }
 
   get translation(): string {
-    if (!this.type) return this.label;
+    if (!this.type || !this.counterInfo?.label) return this.label;
 
     return this.counter === 1 || !this.counter
       ? this.counterInfo?.label?.singular

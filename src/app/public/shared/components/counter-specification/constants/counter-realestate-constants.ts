@@ -60,11 +60,6 @@ export const REAL_ESTATE_ICON_SPEC_TRANSLATION: ItemSpecification[] = [
     label: { singular: $localize`:@@House:House` },
   },
   {
-    icon: REAL_ESTATE_ICON.ROOM,
-    type: REAL_STATE_TYPE.ROOM,
-    label: { singular: $localize`:@@Room:Room` },
-  },
-  {
     icon: REAL_ESTATE_ICON.OFFICE,
     type: REAL_STATE_TYPE.OFFICE,
     label: { singular: $localize`:@@Office:Premises/Office` },
