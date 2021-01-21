@@ -40,9 +40,9 @@ describe('isCurrentUserPipe', () => {
 
   describe('when user logged', () => {
     it('should return true if session user id is equal', () => {
-      const user: Profile = ProfileMother.random();
-      component.userId = user.id;
-      spyOn(storeMock, 'select').and.returnValue(of(user));
+      const userId: UserId = UserIdMother.random();
+      component.userId = userId;
+      spyOn(storeMock, 'select').and.returnValue(of(userId));
 
       fixture.detectChanges();
 
