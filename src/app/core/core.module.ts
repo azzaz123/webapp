@@ -18,18 +18,19 @@ import { LoadExternalLibsService } from './load-external-libs/load-external-libs
 import { FeatureflagService } from './user/featureflag.service';
 import { SessionService } from './session/session.service';
 import { UuidService } from './uuid/uuid.service';
-import { AdsService } from '@core/ads/services';
 import { HereMapsService } from '@shared/geolocation/here-maps/here-maps.service';
 import { UserService } from './user/user.service';
 import { TrackingService } from './tracking/tracking.service';
 import { NavigatorService } from './tracking/navigator.service';
 import { ItemService } from './item/item.service';
+import { AdsModule } from './ads/ads.module';
 
 @NgModule({
   imports: [
     CookieModule.forRoot(),
     NgxPermissionsModule.forRoot(),
     DeviceDetectorModule.forRoot(),
+    AdsModule,
   ],
   providers: [
     LoggedGuard,
@@ -49,7 +50,6 @@ import { ItemService } from './item/item.service';
     FeatureflagService,
     SessionService,
     UuidService,
-    AdsService,
     TrackingService,
     NavigatorService,
     UserService,
