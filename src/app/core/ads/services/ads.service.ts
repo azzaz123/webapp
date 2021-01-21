@@ -9,11 +9,9 @@ import { filter, finalize, mergeMap, tap, switchMap } from 'rxjs/operators';
 import { LoadExternalLibsService } from '@core/load-external-libs/load-external-libs.service';
 import { ADS_SOURCES, AD_SLOTS } from './../constants';
 import { AdKeyWords, AdSlotId } from './../interfaces';
-import {
-  AmazonPublisherService,
-  CriteoService,
-  GooglePublisherTagService,
-} from './../services';
+import { GooglePublisherTagService } from './../services/google-publisher-tag.service';
+import { CriteoService } from './../services/criteo.service';
+import { AmazonPublisherService } from './../services/amazon-publisher.service';
 
 @Injectable({
   providedIn: 'root',
