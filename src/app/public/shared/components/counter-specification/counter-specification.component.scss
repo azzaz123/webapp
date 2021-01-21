@@ -1,13 +1,20 @@
 @import '~style/common';
 
-.CounterSpecification {
-  &--icon {
-    width: fit-content;
-    margin: 0 auto;
-  }
+.CounterSpec {
+  &__container {
+    @include square(48px);
 
-  &--counter {
-    font-size: $font-size-xl;
+    * {
+      margin: 0 auto;
+    }
+
+    &--counter {
+      font-size: $font-size-xl;
+    }
+
+    &--icon {
+      width: fit-content;
+    }
   }
 
   &--measure {
