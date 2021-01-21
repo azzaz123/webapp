@@ -7,12 +7,13 @@ import { CookieService } from 'ngx-cookie';
 import { BehaviorSubject, merge, Observable, Subscription } from 'rxjs';
 import { filter, finalize, mergeMap, tap, switchMap } from 'rxjs/operators';
 import { LoadExternalLibsService } from '@core/load-external-libs/load-external-libs.service';
-import { AD_SLOTS } from './constants/ad-slots';
-import { ADS_SOURCES } from './constants';
-import { AdKeyWords, AdSlotId } from './interfaces';
-import { GooglePublisherTagService } from './services/google-publisher-tag.service';
-import { CriteoService } from './services/criteo.service';
-import { AmazonPublisherService } from './services/amazon-publisher.service';
+import { ADS_SOURCES, AD_SLOTS } from './../constants';
+import { AdKeyWords, AdSlotId } from './../interfaces';
+import {
+  AmazonPublisherService,
+  CriteoService,
+  GooglePublisherTagService,
+} from './../services';
 
 @Injectable({
   providedIn: 'root',

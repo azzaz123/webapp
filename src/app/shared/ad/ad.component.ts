@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input } from '@angular/core';
-import { AdsService } from '@core/ads/ads.service';
+import { AdsService } from '@core/ads/services';
 import { AdSlot } from '@core/ads/interfaces';
 
 @Component({

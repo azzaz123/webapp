@@ -24,7 +24,7 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { EventService } from '@core/event/event.service';
 import { RemoteConsoleService } from '@core/remote-console';
 import { UserService } from '@core/user/user.service';
-import { AdsService } from '@core/ads/ads.service';
+import { AdsService } from '@core/ads/services';
 import { InboxConversationService } from '@features/chat/core/inbox/inbox-conversation.service';
 import { InboxService } from '@features/chat/core/inbox/inbox.service';
 import { InboxConversation, InboxMessage } from '@features/chat/core/model';
