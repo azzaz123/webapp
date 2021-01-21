@@ -1,5 +1,3 @@
-/* tslint:disable:no-unused-variable */
-
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import {
@@ -34,11 +32,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { Observable, of } from 'rxjs';
 import { InboxConversationComponent } from './components/inbox-conversation';
 import { InboxComponent, InboxState } from './inbox.component';
-
-class AdServiceMock {
-  adsRefresh() {}
-  loadAddsLibs() {}
-}
+import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 
 describe('Component: InboxComponent', () => {
   let component: InboxComponent;
@@ -60,7 +54,7 @@ describe('Component: InboxComponent', () => {
       ],
       providers: [
         EventService,
-        { provide: AdsService, useClass: AdServiceMock },
+        { provide: AdsService, useClass: MockAdsService },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         { provide: AnalyticsService, useClass: MockAnalyticsService },
         {

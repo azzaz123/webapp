@@ -10,9 +10,9 @@ import { AdSlot } from '@core/ads/interfaces';
 export class AdComponent implements AfterViewInit {
   @Input() adSlot: AdSlot;
 
-  constructor(private adService: AdsService) {}
+  constructor(private adsService: AdsService) {}
 
   ngAfterViewInit() {
-    this.adService.displayAdBySlotId(this.adSlot.id);
+    this.adsService.displayAdBySlotId(this.adSlot.id);
   }
 }
