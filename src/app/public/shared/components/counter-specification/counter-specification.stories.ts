@@ -44,23 +44,29 @@ CarType.args = {
   type: CAR_SPECIFICATION_TYPE.SMALL,
 };
 
-export const CounterIcon = Template.bind({});
-CounterIcon.args = {
-  counter: '/assets/icons/cars/new_car_ribbon.svg',
-  label: 'Random',
+export const SingularLabel = Template.bind({});
+SingularLabel.args = {
+  type: REAL_STATE_TYPE.ROOMS,
+  counter: 1,
 };
 
-export const CustomCounter = Template.bind({});
-CustomCounter.args = {
-  type: CAR_SPECIFICATION_TYPE.FOUR_DOORS,
-  label: 4,
-};
-
-export const CustomLabel = Template.bind({});
-CustomLabel.args = {
+export const PluralLabel = Template.bind({});
+PluralLabel.args = {
   type: REAL_STATE_TYPE.ROOMS,
   counter: 3,
 };
 
+export const CustomLabel = Template.bind({});
+CustomLabel.args = {
+  type: CAR_SPECIFICATION_TYPE.FOUR_DOORS,
+  label: 4,
+};
+
 export const CounterNumber = Template.bind({});
 CounterNumber.args = { counter: 5, label: 'Random' };
+
+export const CustomSpecification = Template.bind({});
+CustomSpecification.args = {
+  counter: '/assets/icons/cars/new_car_ribbon.svg',
+  label: 'Random',
+};
