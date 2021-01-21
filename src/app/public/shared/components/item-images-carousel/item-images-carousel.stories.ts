@@ -9,7 +9,7 @@ import { ItemFlagModule } from '../item-flag/item-flag.module';
 import { ItemImagesCarouselComponent } from './item-images-carousel.component';
 
 export default {
-  title: 'Webapp/Public/Shared/ItemImagesCarousel',
+  title: 'Webapp/Public/Shared/Components/ItemImagesCarousel',
   component: ItemImagesCarouselComponent,
   decorators: [
     (storyFunc) => {

@@ -19,7 +19,8 @@ import { UserService } from '@core/user/user.service';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 
 export default {
-  title: 'Webapp/ItemCardList',
+  title:
+    'Webapp/Public/Features/PublicProfile/Pages/UserPublished/ItemCardList',
   component: ItemCardListComponent,
   decorators: [
     moduleMetadata({
