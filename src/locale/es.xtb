@@ -986,17 +986,17 @@
   <translation id="CheckoutProPlanningApplyAll">Programar todos</translation>
   <translation id="SubscriptionsSlotItemPublishMore">Puedes publicar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph><ph name="INTERPOLATION"><ex>{{subscriptionSlot.available}}</ex>{{subscriptionSlot.available}}</ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph> <ph name="INTERPOLATION_1"><ex>{{subscriptionSlot.category.name}}</ex>{{subscriptionSlot.category.name}}</ph> más</translation>
   <translation id="ListComponentHeaderSubtitle">Aquí podrás subir productos, gestionar los que ya tienes y destacarlos para venderlos antes</translation>
-  <translation id="TooManyItemsModalButtonGoToSubscriptions">Elige una suscripción PRO</translation>
+  <translation id="TooManyItemsModalButtonGoToSubscriptions">Ver planes</translation>
   <translation id="TooManyItemsModalButtonGoToTrial">Comenzar prueba gratuita</translation>
   <translation id="TooManyItemsModalCardealerTitle"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>Estás intentando activar más <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph> de los que te permite tu plan.<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></translation>
   <translation id="TooManyItemsModalTitle"><ph name="START_BOLD_TEXT"/>Has alcanzado el límite de publicación<ph name="CLOSE_BOLD_TEXT"/></translation>
   <translation id="TooManyItemsModalCarDealerDesc">Por favor, deselecciona algunos productos o</translation>
   <translation id="ContactUs">contacta con nosotros</translation>
   <translation id="TooManyItemsModalDescriptionInApp">Debes actualizar tu suscripción <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>mediante la app de wallapop<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph> si quieres publicar más <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph></translation>
-  <translation id="TooManyItemsModalDescription">Debes actualizar tu suscripción si quieres publicar más <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph></translation>
+  <translation id="TooManyItemsModalDescription">¿Quieres publicar más <ph name="INTERPOLATION"/>? Puede que te interese suscribirte a wallapop PRO. Disfrutarás de las ventajas de ser un profesional de las ventas online. ¡Venderás más! <ph name="LINE_BREAK"/><ph name="LINE_BREAK"/>Si decides que Wallapop PRO no es para ti, los productos que subas quedarán inactivos, es decir, nadie podrá verlos ni comprarlos.</translation>
   <translation id="Understood">De acuerdo</translation>
-  <translation id="TooManyItemsModalButtonCancel">No publicar</translation>
-  <translation id="TooManyItemsModalTryTrial">Para publicar más <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph>, prueba gratis wallapop PRO durante <ph name="INTERPOLATION_1"><ex>{{categorySubscription?.trial_days}}</ex>{{categorySubscription?.trial_days}}</ph> días.</translation>
+  <translation id="TooManyItemsModalButtonCancel">Ahora no, gracias</translation>
+  <translation id="TooManyItemsModalTryTrial">Para publicar más  <ph name="INTERPOLATION"/>, <ph name="START_BOLD_TEXT"/>prueba gratis wallapop PRO durante <ph name="INTERPOLATION_1"/> días.<ph name="CLOSE_BOLD_TEXT"/> Disfrutarás de las ventajas de ser un profesional de las ventas online. ¡Venderás más! <ph name="LINE_BREAK"/><ph name="LINE_BREAK"/>Si decides que Wallapop PRO no es para ti, los productos que subas quedarán inactivos, es decir, nadie podrá verlos ni comprarlos.</translation>
   <translation id="subscriptionNewModalUntilDate"><ph name="INTERPOLATION"><ex>{{0 | customCurrency}}</ex>{{0 | customCurrency}}</ph> hasta <ph name="INTERPOLATION_1"><ex>{{subscription.trial_days | dateUntilDay}}</ex>{{subscription.trial_days | dateUntilDay}}</ph></translation>
   <translation id="subscriptionEditModalUntilDate"> Empieza en <ph name="INTERPOLATION"><ex>{{subscription.trial_days | dateUntilDay}}</ex>{{subscription.trial_days | dateUntilDay}}</ph></translation>
   <translation id="SubscriptionPriceDiscountFromPrice">Desde: </translation>

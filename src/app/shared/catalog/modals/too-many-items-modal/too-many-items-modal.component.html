@@ -11,7 +11,7 @@
           <span i18n="@@TooManyItemsModalCardealerTitle"><b>You are trying to activate more {{categorySubscription?.category_name}} than what your plan supports</b></span>
         </ng-container>
         <ng-template #noCarDealerTitle>
-          <span i18n="@@TooManyItemsModalTitle"><b>You have reached your subscription limit</b></span>
+          <span i18n="@@TooManyItemsModalTitle"><b>You've reached the listing limit</b></span>
         </ng-template>
       </div>
       <div class="TooManyItemsModal__content-info-description">
@@ -23,13 +23,16 @@
         </ng-container>
         <ng-template #noCarDealerDescription>
           <ng-container *ngIf="isFreeTrial; else noFreeTrial">
-            <span i18n="@@TooManyItemsModalTryTrial">
-              To list more {{categorySubscription?.category_name}}, try wallapop PRO with a free {{categorySubscription?.trial_days}}-day trial.
+            <span i18n="@@TooManyItemsModalTryTrial">To list more {{categorySubscription?.category_name}}, <b>try wallapop PRO with a {{categorySubscription?.trial_days}}-day free trial.</b> You'll enjoy the benefits of being an online sales professional. Prepare to sell more!
+              <br><br>If you think Wallapop PRO isn't for you, your new listings will be inactive, i.e. no one can see them nor buy them.
             </span>
           </ng-container>
           <ng-template #noFreeTrial>
             <span i18n="@@TooManyItemsModalDescriptionInApp" *ngIf="type === inAppType">You must upgrade your subscription <b>through the wallapop app</b> if you want to publish more {{categorySubscription?.category_name}}</span>
-            <span i18n="@@TooManyItemsModalDescription" *ngIf="type === stripeType">You must upgrade your subscription if you want to publish more {{categorySubscription?.category_name}}</span>
+            <span i18n="@@TooManyItemsModalDescription" *ngIf="type === stripeType">Do you want to list more {{categorySubscription?.category_name}}? You might be interested in subscribing to wallapop PRO.
+              You'll enjoy the benefits of being an online sales professional. Prepare to sell more!
+              <br><br>
+              If you think Wallapop PRO isn't for you, your new listings will be inactive, i.e. no one can see them nor buy them.</span>
           </ng-template>
         </ng-template>
       </div>
@@ -40,13 +43,13 @@
     <tsl-button *ngIf="type === inAppType || type === carDealerType" (click)="activeModal.close()" i18n="@@Understood">Understood</tsl-button>
     <tsl-button *ngIf="type === notSubscribedType || type === stripeType" (click)="activeModal.close()"
     [routerLink]="'/profile/subscriptions'">
-      <span [hidden]="isFreeTrial" i18n="@@TooManyItemsModalButtonGoToSubscriptions">Go to subscriptions</span>
+      <span *ngIf="!isFreeTrial" i18n="@@TooManyItemsModalButtonGoToSubscriptions">See plans</span>
       <span *ngIf="isFreeTrial" i18n="@@TooManyItemsModalButtonGoToTrial">Start free trial</span>
     </tsl-button>
     <div class="TooManyItemsModal__actions-optional"
       *ngIf="type === notSubscribedType || type === stripeType"
       (click)="activeModal.close()" i18n="@@TooManyItemsModalButtonCancel"
-    >Don't list it</div>
+    >Not now, thanks</div>
   </div>
 
 </div>
