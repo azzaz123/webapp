@@ -18,8 +18,8 @@ export enum CAR_ICON {
   GASOLINE = '/assets/icons/gasoline.svg',
   AUTOMATIC = '/assets/icons/automatic.svg',
   MANUAL = '/assets/icons/manual.svg',
-  CONDITION_0 = '/assets/icons/brand_new.svg',
-  CONDITION_1 = '/assets/icons/mint.svg',
-  CONDITION_2 = '/assets/icons/some_blow.svg',
-  CONDITION_3 = '/assets/icons/crappy.svg',
+  BRAND_NEW = '/assets/icons/brand_new.svg',
+  MINT = '/assets/icons/mint.svg',
+  SOME_BLOW = '/assets/icons/some_blow.svg',
+  CRAPPY = '/assets/icons/crappy.svg',
 }

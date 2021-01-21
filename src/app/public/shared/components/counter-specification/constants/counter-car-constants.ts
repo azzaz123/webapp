@@ -122,19 +122,19 @@ export const CAR_ICON_SPEC: ItemSpecification[] = [
     type: CAR_SPECIFICATION_TYPE.HORSEPOWER,
   },
   {
-    icon: CAR_ICON.CONDITION_0,
+    icon: CAR_ICON.BRAND_NEW,
     type: CAR_SPECIFICATION_TYPE.CONDITION_0,
   },
   {
-    icon: CAR_ICON.CONDITION_1,
+    icon: CAR_ICON.MINT,
     type: CAR_SPECIFICATION_TYPE.CONDITION_1,
   },
   {
-    icon: CAR_ICON.CONDITION_2,
+    icon: CAR_ICON.SOME_BLOW,
     type: CAR_SPECIFICATION_TYPE.CONDITION_2,
   },
   {
-    icon: CAR_ICON.CONDITION_3,
+    icon: CAR_ICON.CRAPPY,
     type: CAR_SPECIFICATION_TYPE.CONDITION_3,
   },
 ];
