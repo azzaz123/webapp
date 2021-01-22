@@ -3,7 +3,7 @@
         <fieldset class="field-row">
             <div class="form-row">
                 <div class="field">
-                    <div id="checkout-card" class="input empty"></div>
+                    <div id="checkout-card" class="input empty" [ngClass]="{'StripeElement--invalid': paymentError}"></div>
                 </div>
             </div>
         </fieldset>
