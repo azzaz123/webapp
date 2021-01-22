@@ -15,11 +15,11 @@ import {
 export class UserBasicInfoComponent implements OnInit {
   @Input() userStats: UserStats;
   @Input() userInfo: User;
-  @Input() size: SIZE;
+  @Input() styleSize: SIZE = SIZE.SMALL;
 
   ngOnInit(): void {}
 
   get sizeProperties(): StyleProperties {
-    return STYLE_SIZES.find((style) => style.size === this.size);
+    return STYLE_SIZES.find((style) => style.size === this.styleSize);
   }
 }
