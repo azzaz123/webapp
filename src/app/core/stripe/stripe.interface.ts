@@ -22,13 +22,9 @@ export interface PaymentIntent {
 }
 
 export enum STRIPE_ERROR {
-  incorrect_number = 'incorrect_number',
-  invalid_number = 'invalid_number',
-  incorrect_cvc = 'incorrect_cvc',
-  invalid_cvc = 'invalid_cvc',
-  invalid_expiry_year = 'invalid_expiry_year',
-  invalid_expiry_month = 'invalid_expiry_month',
+  card_declined = 'card_declined',
   expired_card = 'expired_card',
+  incorrect_cvc = 'incorrect_cvc',
 }
 
 export interface PaymentError {

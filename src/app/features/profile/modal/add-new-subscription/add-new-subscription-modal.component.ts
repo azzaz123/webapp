@@ -29,7 +29,6 @@ import { I18nService } from '@core/i18n/i18n.service';
 import {
   FinancialCardOption,
   PaymentMethodResponse,
-  PAYMENT_ERROR_TYPE,
 } from '@core/payments/payment.interface';
 import {
   PaymentService,
@@ -72,7 +71,7 @@ export class AddNewSubscriptionModalComponent
   public selectedCard = false;
   public selectedTier: Tier;
   public loading = false;
-  public paymentError: PAYMENT_ERROR_TYPE;
+  public paymentError: STRIPE_ERROR;
   public isRetryInvoice = false;
   public subscription: SubscriptionsResponse;
   public isNewSubscriber = false;
@@ -320,10 +319,9 @@ export class AddNewSubscriptionModalComponent
   }
 
   private requestNewPayment(error?: HttpErrorResponse): void {
-    // const paymentError = this.paymentService.getErrorType(error.error[0].error_code)
-    this.paymentError = this.paymentService.getErrorType(
-      STRIPE_ERROR.incorrect_number
-    );
+    if (error?.error[0]?.error_code in STRIPE_ERROR) {
+      this.paymentError = error.error[0].error_code;
+    }
     this.errorService.i18nError(
       this.paymentError ? 'paymentFailed' : 'paymentFailedUnknow',
       '',

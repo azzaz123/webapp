@@ -11,7 +11,6 @@ import {
   Products,
   ScheduledStatus,
   PaymentIntents,
-  PAYMENT_ERROR_TYPE,
 } from './payment.interface';
 import { mapValues, values, keyBy, groupBy, min } from 'lodash-es';
 import { CREDITS_FACTOR, CREDITS_PACK_ID, Pack, PACKS_TYPES } from './pack';
@@ -43,22 +42,6 @@ export class PaymentService {
   private billingInfo: BillingInfoResponse;
 
   constructor(private http: HttpClient) {}
-
-  errorGroups = {
-    [PAYMENT_ERROR_TYPE.CARD_NUMBER]: [
-      STRIPE_ERROR.incorrect_number,
-      STRIPE_ERROR.invalid_number,
-    ],
-    [PAYMENT_ERROR_TYPE.CVC_CODE]: [
-      STRIPE_ERROR.incorrect_cvc,
-      STRIPE_ERROR.invalid_cvc,
-    ],
-    [PAYMENT_ERROR_TYPE.DATE_INVALID]: [
-      STRIPE_ERROR.invalid_expiry_month,
-      STRIPE_ERROR.invalid_expiry_year,
-      STRIPE_ERROR.invalid_number,
-    ],
-  };
 
   public getBillingInfo(
     cache: boolean = true
@@ -330,13 +313,5 @@ export class PaymentService {
           return this.products;
         })
       );
-  }
-
-  public getErrorType(error: STRIPE_ERROR): PAYMENT_ERROR_TYPE {
-    for (var i in this.errorGroups) {
-      if (this.errorGroups[i].includes(error)) {
-        return i as PAYMENT_ERROR_TYPE;
-      }
-    }
   }
 }
