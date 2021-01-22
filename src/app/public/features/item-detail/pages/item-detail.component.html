@@ -10,10 +10,16 @@
                 <div class="ItemDetail__carousel position-relative">
                     <tsl-item-images-carousel [images]="images" [itemFlags]="itemFlags"></tsl-item-images-carousel>
                 </div>
+
+                <tsl-social-share [title]="socialShare?.title" [facebook]="socialShare?.facebook" [twitter]="socialShare?.twitter" [email]="socialShare?.email"></tsl-social-share>
+
             </div>
             <div *ngIf="device === deviceType.DESKTOP">
                 <tsl-side-sky class="position-sticky d-none d-xl-block"></tsl-side-sky>
             </div>
         </div>
     </div>
+
 </div>
+
+
