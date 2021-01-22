@@ -11,6 +11,8 @@ import { RecommenderApiService } from '@public/core/services/api/recommender/rec
 import { MapItemService } from '../public-profile/pages/user-published/services/map-item/map-item.service';
 import { ItemImagesCarouselModule } from '@public/shared/components/item-images-carousel/item-images-carousel.module';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
+import { SocialShareModule } from '@shared/social-share/social-share.module';
+import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
 
 @NgModule({
   declarations: [itemDetailRoutedComponents],
@@ -19,6 +21,7 @@ import { PublicUserApiService } from '@public/core/services/api/public-user/publ
     ItemDetailRoutingModule,
     AdsModule,
     ItemImagesCarouselModule,
+    SocialShareModule,
   ],
   providers: [
     ItemDetailService,
@@ -26,6 +29,7 @@ import { PublicUserApiService } from '@public/core/services/api/public-user/publ
     PublicUserApiService,
     RecommenderApiService,
     MapItemService,
+    SocialMetaTagService,
   ],
 })
 export class ItemDetailModule {}
