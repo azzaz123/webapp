@@ -1,0 +1,32 @@
+@import '~style/common';
+// CAMBIAR: 160 + sizePhoto
+$basicInfoWidth: 200px;
+
+.UserBasicInfo {
+  min-width: $basicInfoWidth;
+
+  &__container {
+    // CAMBIAR: basicInfoWidth - (sizePhoto + 10)
+    &--small {
+      min-width: $basicInfoWidth - 50;
+    }
+    &--big {
+      min-width: $basicInfoWidth - 90;
+    }
+  }
+
+  &--icon {
+    height: fit-content;
+  }
+
+  &--name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &--reviews {
+    font-size: $font-size-s;
+    color: $blue-grey-3;
+  }
+}
