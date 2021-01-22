@@ -1,3 +1,5 @@
+import { countBy, find, map } from 'lodash-es';
+
 import {
   animate,
   keyframes,
@@ -14,9 +16,10 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+import { AdsService } from '@core/ads/services';
 import {
-  AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
+  AnalyticsPageView,
   SCREEN_IDS,
   ViewChatScreen,
 } from '@core/analytics/analytics-constants';
@@ -24,11 +27,9 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { EventService } from '@core/event/event.service';
 import { RemoteConsoleService } from '@core/remote-console';
 import { UserService } from '@core/user/user.service';
-import { AdsService } from '@core/ads/services';
 import { InboxConversationService } from '@features/chat/core/inbox/inbox-conversation.service';
 import { InboxService } from '@features/chat/core/inbox/inbox.service';
 import { InboxConversation, InboxMessage } from '@features/chat/core/model';
-import { countBy, find, map } from 'lodash-es';
 
 export enum InboxState {
   Inbox,
@@ -259,7 +260,7 @@ export class InboxComponent implements OnInit, OnDestroy {
         );
     }
     this.inboxConversationService.openConversation(newCurrentConversation);
-    this.adService.adsRefresh();
+    this.adService.refresh();
   }
 
   public loadMore() {

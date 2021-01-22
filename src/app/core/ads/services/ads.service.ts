@@ -67,7 +67,7 @@ export class AdsService {
     return true;
   }
 
-  public adsRefresh(): void {
+  public refresh(): void {
     this.googlePublisherTagService.setTargetingByAdsKeywords(
       this.allowSegmentation
     );
