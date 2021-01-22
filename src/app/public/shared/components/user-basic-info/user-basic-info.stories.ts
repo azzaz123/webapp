@@ -1,11 +1,14 @@
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import {
   MOCK_FULL_USER_FEATURED,
   MOCK_USER_STATS,
 } from '@fixtures/user.fixtures.spec';
 import { SIZE } from '@public/shared/constants/user-basic-info-constants';
+import { StarsModule } from '@shared/stars/stars.module';
+import { UserAvatarModule } from '@shared/user-avatar/user-avatar.module';
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { UserBasicInfoComponent } from './user-basic-info.component';
-import { UserBasicInfoModule } from './user-basic-info.module';
 
 export default {
   title: 'Webapp/Public/Shared/UserBasicInfo',
@@ -16,7 +19,7 @@ export default {
 
       return {
         ...story,
-        template: `<div style="width:500px;">${story.template}</div>`,
+        template: `<div style="max-width:500px;">${story.template}</div>`,
       };
     },
   ],
@@ -28,7 +31,8 @@ const Template: Story<UserBasicInfoComponent> = (
   component: UserBasicInfoComponent,
   props: args,
   moduleMetadata: {
-    imports: [UserBasicInfoModule],
+    declarations: [UserBasicInfoComponent],
+    imports: [CommonModule, StarsModule, UserAvatarModule, HttpClientModule],
   },
   template:
     '<tsl-user-basic-info [userStats]="userStats" [userInfo]="userInfo" [styleSize]="styleSize"></tsl-user-basic-info>',
