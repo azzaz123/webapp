@@ -1,0 +1,10 @@
+<div>
+    <tsl-user-avatar [user]="userInfo"></tsl-user-avatar>
+    <div>
+        <h3>{{userInfo.microName}}</h3>
+        <div *ngIf="userStats.ratings?.reviews">
+            <tsl-stars [stars]="userStats.ratings.reviews" [normalized]="false"></tsl-stars>
+            <span>({{userStats.counters?.reviews}})</span>
+        </div>
+    </div>
+</div>
