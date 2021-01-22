@@ -1,11 +1,20 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
+import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
+import { ItemApiService } from '@public/core/services/api/item/item-api.service';
+import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
+import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
+import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
 import { CookieService } from 'ngx-cookie';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { of } from 'rxjs';
+import { ItemDetailService } from '../core/services/item-detail.service';
 
 import { ItemDetailComponent } from './item-detail.component';
 
@@ -20,12 +29,29 @@ describe('ItemDetailComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ItemDetailComponent],
+      imports: [HttpClientTestingModule],
       providers: [
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         {
           provide: CookieService,
           useValue: {},
         },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              paramMap: {
+                get: () => '123',
+              },
+            },
+          },
+        },
+        ItemDetailService,
+        ItemApiService,
+        PublicUserApiService,
+        RecommenderApiService,
+        MapItemService,
+        SocialMetaTagService,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
