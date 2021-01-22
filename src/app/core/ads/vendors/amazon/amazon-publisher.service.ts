@@ -1,7 +1,9 @@
-import { Injectable } from '@angular/core';
 import { Observable, Subscriber } from 'rxjs';
-import { AdSlot } from '../interfaces';
-import { AmazonPublisherServiceAdSlot } from '../interfaces/amazon-publisher-service.interface';
+
+import { Injectable } from '@angular/core';
+
+import { AmazonPublisherServiceAdSlot } from './amazon-publisher-service.interface';
+import { AdSlot } from '../../models';
 
 @Injectable({
   providedIn: 'root',

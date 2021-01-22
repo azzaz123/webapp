@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 
-import { AdKeyWords } from '../interfaces';
+import { AdKeyWords } from '../models';
 
 @Injectable({
   providedIn: 'root',

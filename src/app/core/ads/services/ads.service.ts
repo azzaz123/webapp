@@ -6,10 +6,12 @@ import { Injectable } from '@angular/core';
 import { LoadExternalLibsService } from '@core/load-external-libs/load-external-libs.service';
 
 import { ADS_SOURCES, AD_SLOTS } from './../constants';
-import { AdKeyWords, AdSlotId } from './../interfaces';
-import { AmazonPublisherService } from './../services/amazon-publisher.service';
-import { CriteoService } from './../services/criteo.service';
-import { GooglePublisherTagService } from './../services/google-publisher-tag.service';
+import {
+  AmazonPublisherService,
+  CriteoService,
+  GooglePublisherTagService,
+} from './../vendors';
+import { AdKeyWords, AdSlotId } from '../models';
 
 @Injectable({
   providedIn: 'root',

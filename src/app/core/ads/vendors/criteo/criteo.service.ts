@@ -1,6 +1,8 @@
-import { Injectable } from '@angular/core';
 import { Observable, Subscriber } from 'rxjs';
-import { AD_SLOT_NETWORK_ID } from '../constants';
+
+import { Injectable } from '@angular/core';
+
+import { AD_SLOT_NETWORK_ID } from '../../constants';
 
 @Injectable({
   providedIn: 'root',

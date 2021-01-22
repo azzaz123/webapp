@@ -1,4 +1,4 @@
 export * from './ads.service';
-export * from './amazon-publisher.service';
-export * from './criteo.service';
-export * from './google-publisher-tag.service';
+export * from '../vendors/amazon/amazon-publisher.service';
+export * from '../vendors/criteo/criteo.service';
+export * from '../vendors/google/google-publisher-tag.service';

@@ -21,11 +21,13 @@ import {
 import { LOAD_EXTERNAL_LIBS_SERVICE_MOCK } from '@fixtures/load-external-libs.fixtures.spec';
 import { MOCK_USER, MockedUserService } from '@fixtures/user.fixtures.spec';
 
+import {
+  AmazonPublisherService,
+  CriteoService,
+  GooglePublisherTagService,
+} from './../vendors';
 import { ADS_SOURCES } from '../constants';
 import { AdsService } from './ads.service';
-import { AmazonPublisherService } from './amazon-publisher.service';
-import { CriteoService } from './criteo.service';
-import { GooglePublisherTagService } from './google-publisher-tag.service';
 
 const cookiesAdKeyWord = {
   brand: 'bmv',

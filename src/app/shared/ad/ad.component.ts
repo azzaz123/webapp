@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, Input } from '@angular/core';
+import { AdSlot } from '@core/ads/models';
 import { AdsService } from '@core/ads/services';
-import { AdSlot } from '@core/ads/interfaces';
 
 @Component({
   selector: 'tsl-ad',

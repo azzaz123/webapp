@@ -1,4 +1,4 @@
-import { AdSlot } from '../interfaces/ad-slot.interface';
+import { AdSlot } from '../models/ad-slot.interface';
 
 export const AD_SLOT_NETWORK_ID = 6866;
 
