@@ -1,12 +1,18 @@
-import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie';
+
+import { Injectable } from '@angular/core';
+
 import { AdKeyWords, AdSlot, AdSlotId } from '../interfaces';
+import { AdsKeywordsService } from './ads-keywords.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GooglePublisherTagService {
-  constructor(private cookieService: CookieService) {}
+  constructor(
+    private cookieService: CookieService,
+    private adsKeywordsService: AdsKeywordsService
+  ) {}
 
   public init(adSlots: AdSlot[]): void {
     googletag.cmd.push(() => {
@@ -37,13 +43,16 @@ export class GooglePublisherTagService {
     });
   }
 
-  public setTargetingByAdsKeywords(
-    adKeywords: AdKeyWords,
-    allowSegmentation = false
-  ): void {
-    Object.keys(adKeywords).forEach((key) => {
-      googletag.pubads().setTargeting(key, adKeywords[key]);
-    });
+  public setTargetingByAdsKeywords(allowSegmentation = false): void {
+    this.adsKeywordsService.updateAdKewords();
+
+    const adKeywords: AdKeyWords = this.adsKeywordsService.adKeywords;
+    for (const key in adKeywords) {
+      if (adKeywords.hasOwnProperty(key)) {
+        googletag.pubads().setTargeting(key, adKeywords[key]);
+      }
+    }
+
     googletag
       .pubads()
       .setTargeting('allowSegmentation', allowSegmentation ? 'true' : 'false');

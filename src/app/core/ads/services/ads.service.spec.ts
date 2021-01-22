@@ -1,9 +1,12 @@
+import { CookieService } from 'ngx-cookie';
+import { of } from 'rxjs';
+
 import {
+  TestBed,
   discardPeriodicTasks,
   fakeAsync,
   getTestBed,
   inject,
-  TestBed,
   tick,
 } from '@angular/core/testing';
 import { MockDidomiService } from '@core/didomi/didomi.mock';
@@ -16,9 +19,8 @@ import {
   MockGooglePublisherTagService,
 } from '@fixtures/ads.fixtures.spec';
 import { LOAD_EXTERNAL_LIBS_SERVICE_MOCK } from '@fixtures/load-external-libs.fixtures.spec';
-import { MockedUserService, MOCK_USER } from '@fixtures/user.fixtures.spec';
-import { CookieService } from 'ngx-cookie';
-import { of } from 'rxjs';
+import { MOCK_USER, MockedUserService } from '@fixtures/user.fixtures.spec';
+
 import { ADS_SOURCES } from '../constants';
 import { AdsService } from './ads.service';
 import { AmazonPublisherService } from './amazon-publisher.service';
@@ -295,7 +297,7 @@ xdescribe('AdService', () => {
 });
 */
 
-xdescribe('AdsService', () => {
+describe('AdsService', () => {
   let injector: TestBed;
   let service: AdsService;
   let userService: UserService;
