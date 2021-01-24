@@ -1,4 +1,5 @@
 import { DecimalPipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
@@ -20,6 +21,7 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
+import { STRIPE_ERROR } from '@core/stripe/stripe.interface';
 import { StripeService } from '@core/stripe/stripe.service';
 import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
@@ -246,16 +248,24 @@ describe('AddNewSubscriptionModalComponent', () => {
 
     it('should requestNewPayment if card is not attached', fakeAsync(() => {
       spyOn(stripeService, 'addNewCard').and.returnValue(
-        throwError('bad credit card')
+        throwError(
+          new HttpErrorResponse({
+            error: [{ error_code: STRIPE_ERROR.card_declined, message: '' }],
+          })
+        )
       );
       spyOn(errorsService, 'i18nError');
 
       component.addSubscription(PAYMENT_METHOD_DATA);
+      tick();
 
       expect(component.loading).toBe(false);
-      expect(component.isPaymentError).toBe(true);
-      expect(component.action).toBe('clear');
-      expect(errorsService.i18nError).toHaveBeenCalledWith('paymentFailed');
+      expect(component.paymentError).toBe(STRIPE_ERROR.card_declined);
+      expect(errorsService.i18nError).toHaveBeenCalledWith(
+        'paymentFailed',
+        '',
+        'paymentFailedToastTitle'
+      );
     }));
 
     it('should call addSubscriptionFromSavedCard if card is attached and it is no retry', fakeAsync(() => {
@@ -365,9 +375,11 @@ describe('AddNewSubscriptionModalComponent', () => {
       tick();
 
       expect(component.loading).toBe(false);
-      expect(component.isPaymentError).toBe(true);
-      expect(component.action).toBe('clear');
-      expect(errorsService.i18nError).toHaveBeenCalledWith('paymentFailed');
+      expect(errorsService.i18nError).toHaveBeenCalledWith(
+        'paymentFailedUnknow',
+        '',
+        'paymentFailedToastTitle'
+      );
     }));
   });
 

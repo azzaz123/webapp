@@ -16,6 +16,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { of } from 'rxjs';
 import { ToastService } from '@layout/toast/core/services/toast.service';
+import { STRIPE_ERROR } from '@core/stripe/stripe.interface';
 
 describe('StripeCardElementComponent', () => {
   let component: StripeCardElementComponent;
@@ -146,14 +147,73 @@ describe('StripeCardElementComponent', () => {
   });
 
   describe('when there is a payment error', () => {
-    it('should show an error message', () => {
-      component.isPaymentError = true;
+    it('should show decline card error message', () => {
+      component.paymentError = STRIPE_ERROR.card_declined;
       fixture.detectChanges();
 
-      const stripeCardInput: HTMLElement = fixture.elementRef.nativeElement.querySelector(
+      const stripeCardError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
         '.StripeCard__error'
       );
-      expect(stripeCardInput).toBeTruthy();
+      const stripeCardInputError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
+        '.StripeElement--invalid'
+      );
+      expect(stripeCardError).toBeTruthy();
+      expect(stripeCardError.textContent).toBe("Card number isn't valid.");
+      expect(stripeCardInputError).toBeTruthy();
+    });
+    it('should show expired card error message', () => {
+      component.paymentError = STRIPE_ERROR.expired_card;
+      fixture.detectChanges();
+
+      const stripeCardError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
+        '.StripeCard__error'
+      );
+      const stripeCardInputError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
+        '.StripeElement--invalid'
+      );
+      expect(stripeCardError).toBeTruthy();
+      expect(stripeCardError.textContent).toBe("Card date isn't valid.");
+      expect(stripeCardInputError).toBeTruthy();
+    });
+    it('should show decline card error message', () => {
+      component.paymentError = STRIPE_ERROR.incorrect_cvc;
+      fixture.detectChanges();
+
+      const stripeCardError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
+        '.StripeCard__error'
+      );
+      const stripeCardInputError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
+        '.StripeElement--invalid'
+      );
+      expect(stripeCardError).toBeTruthy();
+      expect(stripeCardError.textContent).toBe("CVC number isn't valid.");
+      expect(stripeCardInputError).toBeTruthy();
+    });
+    it('should not show custom error message', () => {
+      component.paymentError = 'test' as STRIPE_ERROR;
+      fixture.detectChanges();
+
+      const stripeCardError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
+        '.StripeCard__error'
+      );
+      const stripeCardInputError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
+        '.StripeElement--invalid'
+      );
+      expect(stripeCardError).toBeFalsy();
+      expect(stripeCardInputError).toBeTruthy();
+    });
+    it('should not show error', () => {
+      component.paymentError = null;
+      fixture.detectChanges();
+
+      const stripeCardError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
+        '.StripeCard__error'
+      );
+      const stripeCardInputError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
+        '.StripeElement--invalid'
+      );
+      expect(stripeCardError).toBeFalsy();
+      expect(stripeCardInputError).toBeFalsy();
     });
   });
 });

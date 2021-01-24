@@ -34,7 +34,7 @@ import {
   PaymentService,
   PAYMENT_RESPONSE_STATUS,
 } from '@core/payments/payment.service';
-import { STRIPE_ERROR } from '@core/stripe/stripe.interface';
+import { PaymentError, STRIPE_ERROR } from '@core/stripe/stripe.interface';
 import {
   StripeService,
   STRIPE_PAYMENT_RESPONSE_EVENT_KEY,
@@ -177,14 +177,7 @@ export class AddNewSubscriptionModalComponent
                     case PAYMENT_RESPONSE_STATUS.REQUIRES_PAYMENT_METHOD: {
                       this.isRetryInvoice = true;
                       this._invoiceId = response.latest_invoice_id;
-                      this.requestNewPayment(
-                        new HttpErrorResponse({
-                          error: {
-                            message:
-                              PAYMENT_RESPONSE_STATUS.REQUIRES_PAYMENT_METHOD,
-                          },
-                        })
-                      );
+                      this.requestNewPayment();
                       break;
                     }
                     case PAYMENT_RESPONSE_STATUS.REQUIRES_ACTION: {
@@ -230,14 +223,7 @@ export class AddNewSubscriptionModalComponent
                 switch (response.status.toUpperCase()) {
                   case PAYMENT_RESPONSE_STATUS.REQUIRES_PAYMENT_METHOD: {
                     this.isRetryInvoice = true;
-                    this.requestNewPayment(
-                      new HttpErrorResponse({
-                        error: {
-                          message:
-                            PAYMENT_RESPONSE_STATUS.REQUIRES_PAYMENT_METHOD,
-                        },
-                      })
-                    );
+                    this.requestNewPayment();
                     break;
                   }
                   case PAYMENT_RESPONSE_STATUS.REQUIRES_ACTION: {
@@ -319,7 +305,8 @@ export class AddNewSubscriptionModalComponent
   }
 
   private requestNewPayment(error?: HttpErrorResponse): void {
-    if (error?.error[0]?.error_code in STRIPE_ERROR) {
+    const errorResponse: PaymentError[] = error?.error;
+    if (errorResponse?.length && errorResponse[0].error_code in STRIPE_ERROR) {
       this.paymentError = error.error[0].error_code;
     }
     this.errorService.i18nError(
