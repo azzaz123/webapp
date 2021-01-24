@@ -169,7 +169,7 @@ export class I18nService {
       continueSubscriptionErrorTitle: 'Error:',
       continueSubscriptionErrorBody: 'We could not proceed with your request.',
       paymentFailed: 'Check your card details.',
-      paymentFailedUnknow:
+      paymentFailedUnknown:
         "For some reason, the payment couldn't be processed. Please try again.",
       paymentFailedToastTitle: 'Something went wrong',
       consumerGoodsGeneralCategoryTitle: 'Everything else',
@@ -387,7 +387,7 @@ export class I18nService {
       continueSubscriptionErrorBody:
         'Tu suscripción no ha podido ser restablecida.',
       paymentFailed: 'Revisa los datos de tu tarjeta.',
-      paymentFailedUnknow:
+      paymentFailedUnknown:
         'Por alguna razón, el pago no se ha podido realizar. Por favor vuelve a intentarlo.',
       paymentFailedToastTitle: 'Algo ha fallado',
       consumerGoodsGeneralCategoryTitle: 'Todo lo demás',

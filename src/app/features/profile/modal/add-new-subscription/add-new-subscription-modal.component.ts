@@ -308,12 +308,19 @@ export class AddNewSubscriptionModalComponent
     const errorResponse: PaymentError[] = error?.error;
     if (errorResponse?.length && errorResponse[0].error_code in STRIPE_ERROR) {
       this.paymentError = error.error[0].error_code;
+      this.errorService.i18nError(
+        'paymentFailed',
+        '',
+        'paymentFailedToastTitle'
+      );
+    } else {
+      this.paymentError = STRIPE_ERROR.unknown;
+      this.errorService.i18nError(
+        'paymentFailedUnknown',
+        '',
+        'paymentFailedToastTitle'
+      );
     }
-    this.errorService.i18nError(
-      this.paymentError ? 'paymentFailed' : 'paymentFailedUnknow',
-      '',
-      'paymentFailedToastTitle'
-    );
     this.loading = false;
   }
 

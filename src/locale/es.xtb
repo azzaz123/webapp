@@ -1242,4 +1242,5 @@
   <translation id="CardNumberIsNotValid">El número de la tarjeta no es válido</translation>
   <translation id="CvcNumberIsNotValid">El CVC de la tarjeta no es válido</translation>
   <translation id="CardDateIsNotValid">La fecha de la tarjeta no es válida.</translation>
+  <translation id="UseSavedCard">Utilizar una tarjeta guardada</translation>
 </translationbundle>

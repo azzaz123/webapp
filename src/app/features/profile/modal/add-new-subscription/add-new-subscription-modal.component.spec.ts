@@ -376,7 +376,7 @@ describe('AddNewSubscriptionModalComponent', () => {
 
       expect(component.loading).toBe(false);
       expect(errorsService.i18nError).toHaveBeenCalledWith(
-        'paymentFailedUnknow',
+        'paymentFailedUnknown',
         '',
         'paymentFailedToastTitle'
       );
