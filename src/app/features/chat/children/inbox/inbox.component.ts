@@ -109,9 +109,7 @@ export class InboxComponent implements OnInit, OnDestroy {
     private adService: AdsService,
     private remoteConsoleService: RemoteConsoleService,
     private analyticsService: AnalyticsService
-  ) {
-    this.adService.init();
-  }
+  ) {}
 
   set loading(value: boolean) {
     this._loading = value;
