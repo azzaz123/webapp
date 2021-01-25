@@ -18,6 +18,6 @@ export const STYLE_SIZES: StyleProperties[] = [
   {
     size: SIZE.BIG,
     imageSize: 80,
-    fontSize: '26px',
+    fontSize: '19px',
   },
 ];
