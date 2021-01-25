@@ -23,16 +23,15 @@
         </ng-container>
         <ng-template #noCarDealerDescription>
           <ng-container *ngIf="isFreeTrial; else noFreeTrial">
-            <span i18n="@@TooManyItemsModalTryTrial">To list more {{categorySubscription?.category_name}}, <b>try wallapop PRO with a {{categorySubscription?.trial_days}}-day free trial.</b> You'll enjoy the benefits of being an online sales professional. Prepare to sell more!
-              <br><br>If you think Wallapop PRO isn't for you, your new listings will be inactive, i.e. no one can see them nor buy them.
-            </span>
+            <span i18n="@@TooManyItemsModalTryTrial">To list more {{categorySubscription?.category_name}}, <b>try wallapop PRO with a {{categorySubscription?.trial_days}}-day free trial.</b> Professionalise your online sales, and sell more!
+              <br><br>
+              If you decide wallapop PRO isn't for you, this item will become inactive – nobody will be able to buy it.</span>
           </ng-container>
           <ng-template #noFreeTrial>
             <span i18n="@@TooManyItemsModalDescriptionInApp" *ngIf="type === inAppType">You must upgrade your subscription <b>through the wallapop app</b> if you want to publish more {{categorySubscription?.category_name}}</span>
-            <span i18n="@@TooManyItemsModalDescription" *ngIf="type === stripeType">Do you want to list more {{categorySubscription?.category_name}}? You might be interested in subscribing to wallapop PRO.
-              You'll enjoy the benefits of being an online sales professional. Prepare to sell more!
+            <span i18n="@@TooManyItemsModalDescription" *ngIf="type !== inAppType">Want to list more {{categorySubscription?.category_name}}? You might be interested in signing up for wallapop PRO. Professionalise your online sales, and sell more!
               <br><br>
-              If you think Wallapop PRO isn't for you, your new listings will be inactive, i.e. no one can see them nor buy them.</span>
+              If you decide wallapop PRO isn't for you, this item will become inactive – nobody will be able to buy it.</span>
           </ng-template>
         </ng-template>
       </div>
@@ -49,7 +48,7 @@
     <div class="TooManyItemsModal__actions-optional"
       *ngIf="type === notSubscribedType || type === stripeType"
       (click)="activeModal.close()" i18n="@@TooManyItemsModalButtonCancel"
-    >Not now, thanks</div>
+    >Leave as inactive
+    </div>
   </div>
-
 </div>
