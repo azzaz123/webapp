@@ -7,7 +7,7 @@
                 </div>
             </div>
         </fieldset>
-        <div class="d-flex flex-column justify-content-flex-start">
+        <div class="d-flex flex-column align-items-start">
             <div [ngClass]="{'card-feedback--flexible': showUseSavedCard}">
                 <ng-container [ngSwitch]="paymentError">
                     <div i18n="@@CardNumberIsNotValid" *ngSwitchCase="errorType.card_declined" class="StripeCard__error">Card number isn't valid.</div>
