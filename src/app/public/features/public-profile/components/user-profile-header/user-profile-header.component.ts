@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { UserStats } from '@core/user/user-stats.interface';
 import { User } from '@core/user/user';
+import { SIZE } from '@public/shared/constants/user-basic-info-constants';
 
 @Component({
   selector: 'tsl-user-profile-header',
@@ -8,6 +9,7 @@ import { User } from '@core/user/user';
   styleUrls: ['./user-profile-header.component.scss'],
 })
 export class UserProfileHeaderComponent {
+  public readonly SIZE = SIZE;
   @Input() userStats: UserStats;
   @Input() userInfo: User;
 

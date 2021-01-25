@@ -10,19 +10,18 @@ $reviews-width: 20px;
 
   &__container {
     min-width: calc(#{$star-width + $reviews-width});
-
     &--name {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
+  }
 
-    &__reviews {
-      &--stars {
-        width: fit-content;
-        font-size: $font-size-s;
-        color: $blue-grey-3;
-      }
+  &__reviews {
+    &--stars {
+      width: fit-content;
+      font-size: $font-size-s;
+      color: $blue-grey-3;
     }
   }
 }
