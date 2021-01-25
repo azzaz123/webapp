@@ -41,4 +41,8 @@ export class DeviceDetectorServiceMock {
   isMobile(): boolean {
     return false;
   }
+
+  isTablet(): boolean {
+    return false;
+  }
 }

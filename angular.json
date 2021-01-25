@@ -68,7 +68,8 @@
               "retry",
               "visibilityjs",
               "libphonenumber-js",
-              "moment"
+              "moment",
+              "hammerjs/hammer"
            ]
           },
           "configurations": {

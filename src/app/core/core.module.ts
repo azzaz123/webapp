@@ -25,12 +25,15 @@ import { UserService } from './user/user.service';
 import { TrackingService } from './tracking/tracking.service';
 import { NavigatorService } from './tracking/navigator.service';
 import { ItemService } from './item/item.service';
+import { HAMMER_PROVIDER } from './hammerjs/hammerjs-provider';
+import { HammerModule } from '@angular/platform-browser';
 
 @NgModule({
   imports: [
     CookieModule.forRoot(),
     NgxPermissionsModule.forRoot(),
     DeviceDetectorModule.forRoot(),
+    HammerModule,
     CoreStoreModule,
   ],
   providers: [
@@ -56,6 +59,7 @@ import { ItemService } from './item/item.service';
     NavigatorService,
     UserService,
     ItemService,
+    HAMMER_PROVIDER,
   ],
 })
 export class CoreModule {
