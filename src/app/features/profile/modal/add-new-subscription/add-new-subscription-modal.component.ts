@@ -306,22 +306,26 @@ export class AddNewSubscriptionModalComponent
 
   private requestNewPayment(error?: HttpErrorResponse): void {
     const errorResponse: PaymentError[] = error?.error;
-    if (errorResponse?.length && errorResponse[0].error_code in STRIPE_ERROR) {
-      this.paymentError = error.error[0].error_code;
+    this.showError(errorResponse);
+    this.loading = false;
+  }
+
+  private showError(errors: PaymentError[]): void {
+    if (errors?.length && errors[0].error_code in STRIPE_ERROR) {
+      this.paymentError = errors[0].error_code as STRIPE_ERROR;
       this.errorService.i18nError(
         'paymentFailed',
         '',
         'paymentFailedToastTitle'
       );
-    } else {
-      this.paymentError = STRIPE_ERROR.unknown;
-      this.errorService.i18nError(
-        'paymentFailedUnknown',
-        '',
-        'paymentFailedToastTitle'
-      );
+      return;
     }
-    this.loading = false;
+    this.paymentError = STRIPE_ERROR.unknown;
+    this.errorService.i18nError(
+      'paymentFailedUnknown',
+      '',
+      'paymentFailedToastTitle'
+    );
   }
 
   private paymentSucceeded() {
