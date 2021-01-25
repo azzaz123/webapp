@@ -19,7 +19,7 @@ export default {
 
       return {
         ...story,
-        template: `<div style="max-width:500px;">${story.template}</div>`,
+        template: `<div style="max-width:250px;">${story.template}</div>`,
       };
     },
   ],
