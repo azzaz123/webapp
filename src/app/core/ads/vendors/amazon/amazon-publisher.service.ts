@@ -22,12 +22,10 @@ export class AmazonPublisherService {
   }
 
   public isLibraryRefDefined(): boolean {
-    if (!!apstag) {
-      return false;
+    if (apstag) {
+      this.init();
     }
-    this.init();
-
-    return true;
+    return !!apstag;
   }
 
   private mapAdSlots(adSlots: AdSlot[]): AmazonPublisherServiceAdSlot[] {
