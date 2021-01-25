@@ -51,3 +51,15 @@ Big.args = {
   userInfo: MOCK_FULL_USER_FEATURED,
   styleSize: SIZE.BIG,
 };
+
+export const SmallNoRating = Template.bind({});
+SmallNoRating.args = {
+  userInfo: MOCK_FULL_USER_FEATURED,
+  styleSize: SIZE.SMALL,
+};
+
+export const BigNoRating = Template.bind({});
+BigNoRating.args = {
+  userInfo: MOCK_FULL_USER_FEATURED,
+  styleSize: SIZE.BIG,
+};

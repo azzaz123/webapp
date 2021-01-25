@@ -1,8 +1,8 @@
 <div class="UserBasicInfo d-flex align-items-center">
     <tsl-user-avatar class="UserBasicInfo--icon" [user]="userInfo" [size]="sizeProperties.imageSize"></tsl-user-avatar>
     <div class="flex-column ml-3 d-flex UserBasicInfo__container">
-        <span class="font-weight-bold mb-1 UserBasicInfo__container--name"
-            [style.font-size]="sizeProperties.fontSize">{{userInfo?.microName}}</span>
+        <h3 class="UserBasicInfo__container--name mb-1">
+            {{userInfo?.microName}}</h3>
         <div *ngIf="userStats" class="UserBasicInfo__container__reviews">
             <tsl-stars class="d-inline-block" [stars]="userStats.ratings.reviews" [normalized]="false">
             </tsl-stars>
