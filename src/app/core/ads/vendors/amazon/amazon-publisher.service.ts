@@ -2,24 +2,14 @@ import { Observable, Subscriber } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 
-import { AmazonPublisherServiceAdSlot } from './amazon-publisher-service.interface';
 import { AdSlot } from '../../models';
+import { AmazonPublisherServiceAdSlot } from './amazon-publisher-service.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AmazonPublisherService {
   private bidTimeout = 2000;
-
-  public init(): void {
-    apstag.init({
-      pubID: '3703',
-      adServer: 'googletag',
-      gdpr: {
-        cmpTimeout: 1000,
-      },
-    });
-  }
 
   public requestBid(adSlots: AdSlot[]): Observable<void> {
     return new Observable((observer: Subscriber<void>) => {
@@ -32,7 +22,12 @@ export class AmazonPublisherService {
   }
 
   public isLibraryRefDefined(): boolean {
-    return !!apstag;
+    if (!!apstag) {
+      return false;
+    }
+    this.init();
+
+    return true;
   }
 
   private mapAdSlots(adSlots: AdSlot[]): AmazonPublisherServiceAdSlot[] {
@@ -41,5 +36,15 @@ export class AmazonPublisherService {
       sizes: slot.sizes,
       slotName: slot.name,
     }));
+  }
+
+  private init(): void {
+    apstag.init({
+      pubID: '3703',
+      adServer: 'googletag',
+      gdpr: {
+        cmpTimeout: 1000,
+      },
+    });
   }
 }

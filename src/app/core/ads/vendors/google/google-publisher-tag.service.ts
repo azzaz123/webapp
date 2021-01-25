@@ -1,9 +1,9 @@
 import { CookieService } from 'ngx-cookie';
 
 import { Injectable } from '@angular/core';
+import { AdsKeywordsService } from '@core/ads/services/ads-keywords/ads-keywords.service';
 
 import { AdKeyWords, AdSlot, AdSlotId } from '../../models';
-import { AdsKeywordsService } from '../../services/ads-keywords.service';
 
 @Injectable({
   providedIn: 'root',
