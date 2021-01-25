@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
+
+import { AdsService } from './services';
 import {
-  AdsService,
   AmazonPublisherService,
   CriteoService,
   GooglePublisherTagService,
-} from './services';
+} from './vendors';
 
 @NgModule({
   providers: [
