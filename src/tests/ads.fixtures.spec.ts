@@ -3,7 +3,7 @@ import { Observable, Subscriber } from 'rxjs';
 export class MockAdsService {
   public init(): void {}
 
-  public adsRefresh(): void {}
+  public refresh(): void {}
 
   public displayAdBySlotId(AdSlotId): void {}
 }
