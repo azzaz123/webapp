@@ -22,6 +22,8 @@ describe('StripeCardElementComponent', () => {
   let component: StripeCardElementComponent;
   let fixture: ComponentFixture<StripeCardElementComponent>;
   let stripeService: StripeService;
+  const stripeCardErrorSelector = '.StripeCard__error';
+  const stripeCardInputErrorSelector = '.StripeElement--invalid';
 
   beforeEach(
     waitForAsync(() => {
@@ -152,10 +154,10 @@ describe('StripeCardElementComponent', () => {
       fixture.detectChanges();
 
       const stripeCardError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
-        '.StripeCard__error'
+        stripeCardErrorSelector
       );
       const stripeCardInputError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
-        '.StripeElement--invalid'
+        stripeCardInputErrorSelector
       );
       expect(stripeCardError).toBeTruthy();
       expect(stripeCardError.textContent).toBe("Card number isn't valid.");
@@ -166,10 +168,10 @@ describe('StripeCardElementComponent', () => {
       fixture.detectChanges();
 
       const stripeCardError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
-        '.StripeCard__error'
+        stripeCardErrorSelector
       );
       const stripeCardInputError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
-        '.StripeElement--invalid'
+        stripeCardInputErrorSelector
       );
       expect(stripeCardError).toBeTruthy();
       expect(stripeCardError.textContent).toBe("Card date isn't valid.");
@@ -180,10 +182,10 @@ describe('StripeCardElementComponent', () => {
       fixture.detectChanges();
 
       const stripeCardError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
-        '.StripeCard__error'
+        stripeCardErrorSelector
       );
       const stripeCardInputError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
-        '.StripeElement--invalid'
+        stripeCardInputErrorSelector
       );
       expect(stripeCardError).toBeTruthy();
       expect(stripeCardError.textContent).toBe("CVC number isn't valid.");
@@ -194,10 +196,10 @@ describe('StripeCardElementComponent', () => {
       fixture.detectChanges();
 
       const stripeCardError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
-        '.StripeCard__error'
+        stripeCardErrorSelector
       );
       const stripeCardInputError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
-        '.StripeElement--invalid'
+        stripeCardInputErrorSelector
       );
       expect(stripeCardError).toBeFalsy();
       expect(stripeCardInputError).toBeTruthy();
@@ -207,10 +209,10 @@ describe('StripeCardElementComponent', () => {
       fixture.detectChanges();
 
       const stripeCardError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
-        '.StripeCard__error'
+        stripeCardErrorSelector
       );
       const stripeCardInputError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
-        '.StripeElement--invalid'
+        stripeCardInputErrorSelector
       );
       expect(stripeCardError).toBeFalsy();
       expect(stripeCardInputError).toBeFalsy();

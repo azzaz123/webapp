@@ -180,7 +180,7 @@
               </div>
               <div class="AddNewSubscription__payment-add-card" (click)="addNewCard()" *ngIf="savedCard" i18n>+ Add
                 another credit card</div>
-              <tsl-stripe-card-element *ngIf="showCard" [newLoading]="loading" [disabled]="paymentError"
+              <tsl-stripe-card-element *ngIf="showCard" [newLoading]="loading" [disabled]="!!paymentError"
                 [type]="'subscription'" [listingLimit]="selectedTier" [spaceBetween]="true" [action]="action"
                 [showUseSavedCard]="hasSavedCard" [paymentError]="paymentError"
                 (onClickUseSavedCard)="removeNewCard()" (onFocusCard)="paymentError = null"

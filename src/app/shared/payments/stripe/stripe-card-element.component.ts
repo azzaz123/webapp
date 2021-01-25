@@ -218,4 +218,8 @@ export class StripeCardElementComponent
   public clickUseSavedCard() {
     this.onClickUseSavedCard.emit(true);
   }
+
+  public showSavedCardOption(): boolean {
+    return this.type === 'subscription' && this.showUseSavedCard;
+  }
 }
