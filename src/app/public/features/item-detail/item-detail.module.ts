@@ -7,6 +7,7 @@ import {
 } from './item-detail-routing.module';
 import { AdsModule } from '@public/shared/components/ads/ads.module';
 import { ItemImagesCarouselModule } from '@public/shared/components/item-images-carousel/item-images-carousel.module';
+import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 
 @NgModule({
   declarations: [itemDetailRoutedComponents],
@@ -15,6 +16,7 @@ import { ItemImagesCarouselModule } from '@public/shared/components/item-images-
     ItemDetailRoutingModule,
     AdsModule,
     ItemImagesCarouselModule,
+    CustomCurrencyModule,
   ],
   providers: [ItemDetailService],
 })
