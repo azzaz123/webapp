@@ -44,6 +44,23 @@ $item-detail-carousel-height: 477px;
   &__carousel {
     height: $item-detail-carousel-height;
   }
+
+  &__stats {
+    font-size: $font-size-m;
+    color: $blue-grey-3;
+    line-height: 22px;
+    border-bottom: 1px solid $blue-grey-5;
+
+    span {
+      line-height: 26px;
+    }
+
+    tsl-svg-icon ::ng-deep {
+      svg path {
+        fill: $blue-grey-3;
+      }
+    }
+  }
 }
 
 tsl-side-sky {

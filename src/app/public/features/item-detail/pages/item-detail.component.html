@@ -1,4 +1,4 @@
-<div class="container ItemDetail__container">
+<div class="container ItemDetail__container px-0">
     <div class="d-block pt-4">
         <tsl-top-sky class="mt-4 mx-0 mx-xl-auto pr-xl-0"
             *ngIf="device === deviceType.DESKTOP || device === deviceType.TABLET"></tsl-top-sky>
@@ -16,9 +16,23 @@
                             <h1 class="ItemDetail__content--title mt-0 mb-0 pb-3">{{item.title}}
                             </h1>
                         </div>
-                        <p class="ItemDetail__content--description py-3 text-break">
+                        <p class="ItemDetail__content--description py-3 mb-0 text-break">
                             {{item.description}}
                         </p>
+                        <div class="ItemDetail__stats py-3">
+                            <div class="d-inline-block">
+                                {{ item.publishedDate | date:'longDate' }}
+                            </div>
+                            <div class="float-right d-flex align-items-center ml-3">
+                                <tsl-svg-icon src="/assets/icons/heart.svg" width=14 height=14></tsl-svg-icon>
+                                <span class="float-right ml-1">{{ item.favorited || 0}}</span>
+                            </div>
+                            <div class="float-right d-flex align-items-center">
+                                <tsl-svg-icon src="/assets/icons/cm-eye.svg" width=20 height=20>
+                                </tsl-svg-icon>
+                                <span class="float-right ml-1">{{ item.views || 0}}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
