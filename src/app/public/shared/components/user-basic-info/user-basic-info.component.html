@@ -1,12 +1,12 @@
-<div class="UserBasicInfo d-flex align-items-center">
+<div class="UserBasicInfo UserBasicInfo d-flex align-items-center">
     <tsl-user-avatar class="UserBasicInfo--icon" [user]="userInfo" [size]="sizeProperties.imageSize"></tsl-user-avatar>
-    <div class="flex-column ml-2 d-flex" class="UserBasicInfo__container--{{styleSize}}">
-        <span class="font-weight-bold UserBasicInfo--name"
+    <div class="flex-column ml-2 d-flex UserBasicInfo__container">
+        <span class="font-weight-bold UserBasicInfo__container--name"
             [style.font-size]="sizeProperties.fontSize">{{userInfo?.microName}}</span>
-        <div *ngIf="userStats">
+        <div *ngIf="userStats" class="UserBasicInfo__container__reviews">
             <tsl-stars class="d-inline-block" [stars]="userStats.ratings.reviews" [normalized]="false">
             </tsl-stars>
-            <span class="UserBasicInfo--reviews mb-0">({{userStats.counters?.reviews}})</span>
+            <span class="UserBasicInfo__reviews--stars mb-0">({{userStats.counters?.reviews}})</span>
         </div>
     </div>
 </div>

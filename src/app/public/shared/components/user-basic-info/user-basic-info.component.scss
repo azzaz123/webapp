@@ -1,32 +1,28 @@
 @import '~style/common';
-// CAMBIAR: 160 + sizePhoto
-$basicInfoWidth: 200px;
+
+$star-width: 116px;
+$reviews-width: 20px;
 
 .UserBasicInfo {
-  min-width: $basicInfoWidth;
-
-  &__container {
-    // CAMBIAR: basicInfoWidth - (sizePhoto + 10)
-    &--small {
-      min-width: $basicInfoWidth - 50;
-    }
-    &--big {
-      min-width: $basicInfoWidth - 90;
-    }
-  }
-
   &--icon {
     height: fit-content;
   }
 
-  &--name {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+  &__container {
+    min-width: calc(#{$star-width + $reviews-width});
 
-  &--reviews {
-    font-size: $font-size-s;
-    color: $blue-grey-3;
+    &--name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &__reviews {
+      &--stars {
+        width: fit-content;
+        font-size: $font-size-s;
+        color: $blue-grey-3;
+      }
+    }
   }
 }
