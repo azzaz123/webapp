@@ -32,6 +32,15 @@
       ],
       "@storybook-config/*": [
         "../.storybook/*"
+      ],
+      "@stories/*": [
+        "stories/*"
+      ],
+      "@data/user": [
+        "app/data/user/index.ts"
+      ],
+      "@tests/shared": [
+        "tests/shared/index.ts"
       ]
     },
     "outDir": "./dist/out-tsc",

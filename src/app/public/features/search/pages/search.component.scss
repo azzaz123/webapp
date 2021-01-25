@@ -1,0 +1,9 @@
+.SearchPage {
+  // TODO: Temporal styles for showcase while we don't add the ads
+  &__ad {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+}

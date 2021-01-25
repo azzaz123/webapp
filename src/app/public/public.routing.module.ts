@@ -29,9 +29,16 @@ const routes: Route[] = [
           ),
       },
       {
-        path: PUBLIC_PATHS.WALL,
+        path: PUBLIC_PATHS.SEARCH,
         loadChildren: () =>
-          import('./features/wall/wall.module').then((m) => m.WallModule),
+          import('./features/search/search.module').then((m) => m.SearchModule),
+      },
+      {
+        path: `${PUBLIC_PATHS.ITEM_DETAIL}/:${PUBLIC_PATH_PARAMS.ID}`,
+        loadChildren: () =>
+          import('./features/item-detail/item-detail.module').then(
+            (m) => m.ItemDetailModule
+          ),
       },
       {
         path: '**',
