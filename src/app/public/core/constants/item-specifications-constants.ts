@@ -5,11 +5,11 @@ import { REAL_STATE_TYPE } from './item-specifications/realestate-constants';
 
 export interface ItemSpecification {
   type: REAL_STATE_TYPE | CAR_SPECIFICATION_TYPE;
-  label?: Label;
+  label?: ItemSpecificationLabel;
   icon?: REAL_ESTATE_ICON | CAR_ICON;
 }
 
-export interface Label {
+export interface ItemSpecificationLabel {
   singular: string;
   plural?: string;
 }

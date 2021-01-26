@@ -1,6 +1,7 @@
 <div class="CounterSpec d-flex text-center flex-column">
     <div class="CounterSpec__container d-flex align-items-center align-self-center">
-        <tsl-svg-icon *ngIf="isCounterText" class="CounterSpec__container--icon" [src]="counterInfo?.icon || counter">
+        <tsl-svg-icon *ngIf="isCounterText" class="CounterSpec__container--icon"
+            [src]="specificationCounter?.icon || counter">
         </tsl-svg-icon>
         <span *ngIf="!isCounterText" class="CounterSpec__container--counter">{{counter}}</span>
     </div>

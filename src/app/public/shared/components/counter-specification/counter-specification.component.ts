@@ -15,19 +15,21 @@ export class CounterSpecificationComponent {
   @Input() counter: string | number;
   @Input() label: string;
 
-  get counterInfo(): ItemSpecification {
+  get specificationCounter(): ItemSpecification {
     return COUNTER_TYPE.find((counter) => counter.type === this.type) || null;
   }
 
   get isCounterText(): boolean {
-    return !!this.counterInfo?.icon || typeof this.counter === 'string';
+    return (
+      !!this.specificationCounter?.icon || typeof this.counter === 'string'
+    );
   }
 
   get translation(): string {
-    if (!this.type || !this.counterInfo?.label) return this.label;
+    if (!this.type || !this.specificationCounter?.label) return this.label;
 
     return this.counter === 1 || !this.counter
-      ? this.counterInfo?.label?.singular
-      : this.counterInfo?.label?.plural;
+      ? this.specificationCounter?.label?.singular
+      : this.specificationCounter?.label?.plural;
   }
 }
