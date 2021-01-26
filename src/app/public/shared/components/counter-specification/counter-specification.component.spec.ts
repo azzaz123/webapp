@@ -56,7 +56,7 @@ describe('CounterSpecificationComponent', () => {
 
         expect(icon).toBeTruthy();
         expect(`${icon.getAttribute('ng-reflect-src')}svg`).toEqual(
-          component.counterInfo.icon
+          component.specificationCounter.icon
         );
         expect(numberCounter).toBeFalsy();
         expect(label.innerHTML).toEqual(component.translation);
@@ -77,7 +77,7 @@ describe('CounterSpecificationComponent', () => {
 
         expect(icon).toBeTruthy();
         expect(`${icon.getAttribute('ng-reflect-src')}svg`).toEqual(
-          component.counterInfo.icon
+          component.specificationCounter.icon
         );
         expect(numberCounter).toBeFalsy();
         expect(label.innerHTML).toEqual('');
