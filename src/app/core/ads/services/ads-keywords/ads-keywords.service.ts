@@ -54,7 +54,7 @@ export class AdsKeywordsService {
   }
 
   private setAdKeywordsFromUser(): void {
-    if (!this.userService.user) {
+    if (!this.userService.user?.id) {
       return;
     }
 

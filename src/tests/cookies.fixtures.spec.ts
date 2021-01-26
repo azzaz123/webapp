@@ -1,9 +1,7 @@
-export class MockCookieService {
-  get(_key: string): string {
-    return '';
-  }
-
-  put(_key: string): void {}
-
-  delete(_key: string): void {}
-}
+export const MockCookieService = {
+  get: (_key: string) => {
+    return undefined;
+  },
+  put: (_key: string) => {},
+  delete: (_key: string) => {},
+};
