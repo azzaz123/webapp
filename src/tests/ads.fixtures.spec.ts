@@ -1,42 +1,32 @@
-import { Observable, Subscriber } from 'rxjs';
+import { of } from 'rxjs';
 
-export class MockAdsService {
-  public init(): void {}
+import { AdSlot, AdSlotId } from '@core/ads/models';
 
-  public refresh(): void {}
+export const MockAdsService = {
+  init: () => {},
+  refresh: () => {},
+  displayAdBySlotId: (adSlotId) => {},
+};
 
-  public displayAdBySlotId(AdSlotId): void {}
-}
-export class MockAmazonPublisherService {
-  public isLibraryRefDefined() {
-    return true;
-  }
+export const MockAmazonPublisherService = {
+  isLibraryRefDefined: () => true,
+  requestBid: () => of(null),
+};
 
-  public init() {}
+export const MockCriteoService = {
+  isLibraryRefDefined: () => true,
+  requestBid: () => of(null),
+};
 
-  public requestBid() {
-    return new Observable((observer: Subscriber<void>) => {
-      observer.complete();
-    });
-  }
-}
+export const MockGooglePublisherTagService = {
+  isLibraryRefDefined: () => true,
+  init: () => {},
+  setTargetingByAdsKeywords: () => {},
+  setAdsSegmentation: () => {},
+  displayAdBySlotId: (id: AdSlotId) => {},
+};
 
-export class MockCriteoService {
-  public isLibraryRefDefined() {
-    return true;
-  }
-
-  public requestBid() {
-    return new Observable((observer: Subscriber<void>) => {
-      observer.complete();
-    });
-  }
-}
-
-export class MockGooglePublisherTagService {
-  public isLibraryRefDefined() {
-    return true;
-  }
-
-  public init() {}
-}
+export const MockLoadAdsService = {
+  loadAds: () => of(true),
+  setSlots(slots: AdSlot[]): void {},
+};
