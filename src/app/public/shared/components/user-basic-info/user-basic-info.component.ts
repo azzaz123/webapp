@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { User } from '@core/user/user';
 import { UserStats } from '@core/user/user-stats.interface';
 import {
-  SIZE,
+  USER_INFO_SIZE,
   StyleProperties,
   STYLE_SIZES,
 } from '@public/shared/constants/user-basic-info-constants';
@@ -15,7 +15,7 @@ import {
 export class UserBasicInfoComponent implements OnInit {
   @Input() userStats: UserStats;
   @Input() userInfo: User;
-  @Input() styleSize: SIZE = SIZE.SMALL;
+  @Input() styleSize: USER_INFO_SIZE = USER_INFO_SIZE.SMALL;
 
   ngOnInit(): void {}
 

@@ -4,7 +4,7 @@ import {
   MOCK_FULL_USER_FEATURED,
   MOCK_USER_STATS,
 } from '@fixtures/user.fixtures.spec';
-import { SIZE } from '@public/shared/constants/user-basic-info-constants';
+import { USER_INFO_SIZE } from '@public/shared/constants/user-basic-info-constants';
 import { StarsModule } from '@shared/stars/stars.module';
 import { UserAvatarModule } from '@shared/user-avatar/user-avatar.module';
 import { Story, Meta } from '@storybook/angular/types-6-0';
@@ -42,24 +42,24 @@ export const Small = Template.bind({});
 Small.args = {
   userStats: MOCK_USER_STATS,
   userInfo: MOCK_FULL_USER_FEATURED,
-  styleSize: SIZE.SMALL,
+  styleSize: USER_INFO_SIZE.SMALL,
 };
 
 export const Big = Template.bind({});
 Big.args = {
   userStats: MOCK_USER_STATS,
   userInfo: MOCK_FULL_USER_FEATURED,
-  styleSize: SIZE.BIG,
+  styleSize: USER_INFO_SIZE.BIG,
 };
 
 export const SmallNoRating = Template.bind({});
 SmallNoRating.args = {
   userInfo: MOCK_FULL_USER_FEATURED,
-  styleSize: SIZE.SMALL,
+  styleSize: USER_INFO_SIZE.SMALL,
 };
 
 export const BigNoRating = Template.bind({});
 BigNoRating.args = {
   userInfo: MOCK_FULL_USER_FEATURED,
-  styleSize: SIZE.BIG,
+  styleSize: USER_INFO_SIZE.BIG,
 };
