@@ -8,7 +8,7 @@ import { CUSTOM_VIEWPORT_NAME } from '@storybook-config/viewports/custom-viewpor
 import { ViewportService } from '@core/viewport/viewport.service';
 
 export default {
-  title: 'Webapp/Layouts/Search Layout',
+  title: 'Webapp/Public/Features/Search/Components/Search Layout',
   component: SearchLayoutComponent,
   decorators: [
     moduleMetadata({
