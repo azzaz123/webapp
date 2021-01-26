@@ -11,27 +11,23 @@
                     <tsl-item-images-carousel [images]="images" [itemFlags]="itemFlags"></tsl-item-images-carousel>
                     <div class="mt-3">
                         <div class="ItemDetail__content__header py-3">
-                            <span class="ItemDetail__price d-block"> {{item.salePrice |
+                            <span class="ItemDetail__price d-block">{{item.salePrice |
                                 customCurrency:item.currencyCode}}</span>
-                            <h1 class="ItemDetail__title mt-0 mb-0">
-                                {{item.title}}
-                            </h1>
+                            <h1 class="ItemDetail__title mt-0 mb-0">{{item.title}}</h1>
                         </div>
-                        <p class="ItemDetail__description py-3 mb-0 text-break">
-                            {{item.description}}
-                        </p>
+                        <p class="ItemDetail__description py-3 mb-0 text-break">{{item.description}}</p>
                         <div class="ItemDetail__stats py-3">
                             <div class="d-inline-block">
                                 {{ item.publishedDate | date:'longDate' }}
                             </div>
                             <div class="float-right d-flex align-items-center ml-3">
                                 <tsl-svg-icon src="/assets/icons/heart.svg" width=14 height=14></tsl-svg-icon>
-                                <span class="float-right ml-1">{{ item.favorited || 0}}</span>
+                                <span class="float-right ml-1" id="favorites">{{ item.favorites || 0}}</span>
                             </div>
                             <div class="float-right d-flex align-items-center">
                                 <tsl-svg-icon src="/assets/icons/cm-eye.svg" width=20 height=20>
                                 </tsl-svg-icon>
-                                <span class="float-right ml-1">{{ item.views || 0}}</span>
+                                <span class="float-right ml-1" id="views">{{ item.views || 0}}</span>
                             </div>
                         </div>
                     </div>
