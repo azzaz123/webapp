@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { UserStats } from '@core/user/user-stats.interface';
 import { User } from '@core/user/user';
-import { USER_INFO_SIZE } from '@public/shared/constants/user-basic-info-constants';
+import { USER_INFO_SIZE } from '@public/shared/components/user-basic-info/constants/user-basic-info-constants';
 
 @Component({
   selector: 'tsl-user-profile-header',
