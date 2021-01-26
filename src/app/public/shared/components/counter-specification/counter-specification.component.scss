@@ -4,10 +4,6 @@
   &__container {
     @include square(48px);
 
-    * {
-      margin: 0 auto;
-    }
-
     &--counter {
       font-size: $font-size-xl;
     }
