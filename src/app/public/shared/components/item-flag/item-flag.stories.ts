@@ -5,7 +5,7 @@ import { ITEM_FLAG_TYPES } from './item-flag-constants';
 import { ItemFlagComponent } from './item-flag.component';
 
 export default {
-  title: 'Webapp/ItemFlag',
+  title: 'Webapp/Public/Shared/Components/ItemFlag',
 } as Meta;
 
 const Template: Story<ItemFlagComponent> = (args: ItemFlagComponent) => ({
