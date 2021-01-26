@@ -17,7 +17,7 @@ import { I18nService } from '@core/i18n/i18n.service';
 import { ViewportService } from '@core/viewport/viewport.service';
 
 export default {
-  title: 'Webapp/Pages/Search',
+  title: 'Webapp/Public/Features/Search/Pages/Search',
   component: SearchComponent,
   decorators: [
     moduleMetadata({

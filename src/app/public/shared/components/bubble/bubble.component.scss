@@ -1,0 +1,85 @@
+@import '~style/common';
+
+.Bubble {
+  min-width: 150px;
+  height: 36px;
+
+  border-radius: 21px;
+
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: rgba($black, 0);
+  outline: none;
+
+  transition: all 0.15s ease;
+
+  &.active {
+    box-shadow: 0 1px 4px rgba($walla-main, 0.1);
+    background-color: $white;
+
+    &:hover {
+      background-color: $blue-grey-5;
+
+      @media (hover: none) {
+        background-color: $white;
+      }
+    }
+
+    &:active {
+      background-color: $blue-grey-4;
+      box-shadow: none;
+    }
+
+    .Bubble__icon,
+    .Bubble__dropdown_arrow {
+      fill: $blue-grey-1 !important;
+    }
+
+    .Bubble__counter {
+      color: white;
+      background-color: $walla-main;
+    }
+  }
+
+  &.selected {
+    color: $white;
+    background-color: $walla-main;
+
+    &:hover {
+      background-color: transparentize($walla-main, 0.3);
+
+      @media (hover: none) {
+        background-color: $walla-main;
+      }
+    }
+
+    &:active {
+      background-color: $walla-dark;
+    }
+
+    .Bubble__icon,
+    .Bubble__dropdown_arrow {
+      ::ng-deep svg path {
+        fill: $white;
+      }
+    }
+
+    .Bubble__counter {
+      color: $walla-main;
+      background-color: $white;
+    }
+  }
+
+  &__content {
+    flex-basis: 100%;
+  }
+
+  &__counter {
+    height: 21px;
+    width: 21px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    font-size: $font-size-xs;
+    line-height: 14px;
+  }
+}
