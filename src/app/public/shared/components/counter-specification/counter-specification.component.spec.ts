@@ -10,8 +10,8 @@ import { CounterSpecificationComponent } from './counter-specification.component
 
 describe('CounterSpecificationComponent', () => {
   const svgTag = 'tsl-svg-icon';
-  const labelClass = '.CounterSpec--measure';
-  const containerCounterClass = '.CounterSpec__container--counter';
+  const labelClass = '.CounterSpec__measure';
+  const containerCounterClass = '.CounterSpec__container__counter';
   const random = 'Random';
   let component: CounterSpecificationComponent;
   let fixture: ComponentFixture<CounterSpecificationComponent>;

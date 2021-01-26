@@ -7,7 +7,7 @@ import { Story, Meta } from '@storybook/angular/types-6-0';
 import { CounterSpecificationComponent } from './counter-specification.component';
 
 export default {
-  title: 'Webapp/Public/Shared/CounterSpecification',
+  title: 'Webapp/Public/Shared/Components/CounterSpecification',
   component: CounterSpecificationComponent,
   decorators: [
     (storyFunc) => {

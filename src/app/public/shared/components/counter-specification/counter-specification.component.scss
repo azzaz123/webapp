@@ -3,14 +3,14 @@
 .CounterSpec {
   &__container {
     @include square(48px);
+  }
 
-    &--counter {
-      font-size: $font-size-xl;
-    }
+  &__counter {
+    font-size: $font-size-xl;
+  }
 
-    &--icon {
-      width: fit-content;
-    }
+  &__icon {
+    width: fit-content;
   }
 
   &--measure {
