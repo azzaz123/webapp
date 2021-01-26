@@ -17,6 +17,14 @@ export class BubbleComponent {
   @Input() counter: number;
   @Output() onClick: EventEmitter<void> = new EventEmitter();
 
+  public get counterText(): string {
+    if (this.counter) {
+      return this.counter <= 9 ? this.counter.toString() : '+9';
+    }
+
+    return '';
+  }
+
   public emitClick(): void {
     this.onClick.emit();
   }

@@ -1,7 +1,7 @@
 <div class="Bubble px-3 d-flex justify-content-center align-items-center"
      [ngClass]="variant" (click)="emitClick()">
   <span *ngIf="counter" class="Bubble__counter d-flex justify-content-center align-items-center rounded-circle">
-    {{counter}}
+    {{counterText}}
   </span>
   <tsl-svg-icon *ngIf="!counter && icon" class="Bubble__icon d-flex justify-content-center align-items-center"
                 [src]="icon" [width]="26" [height]="26">

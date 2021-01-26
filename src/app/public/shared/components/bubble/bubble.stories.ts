@@ -76,6 +76,11 @@ WithCounter.args = {
   counter: 8,
 };
 
+export const WithCounterPlus9 = Template.bind({});
+WithCounterPlus9.args = {
+  counter: 13,
+};
+
 export const ActiveVariant = VariantTemplate.bind({});
 ActiveVariant.args = {
   variant: 'active',

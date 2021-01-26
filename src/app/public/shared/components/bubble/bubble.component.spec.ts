@@ -91,6 +91,21 @@ describe('BubbleComponent', () => {
       it('should render', () => {
         expectRender(counterSelector, true);
       });
+
+      describe('and counter is <= 9', () => {
+        it('should render value', () => {
+          expectTextContent(counterSelector, '1');
+        });
+      });
+
+      describe('and counter is > 9', () => {
+        beforeEach(async () => {
+          await setInputs({ counter: 13, icon: undefined });
+        });
+        it('should render +9', () => {
+          expectTextContent(counterSelector, '+9');
+        });
+      });
     });
   });
 
@@ -126,11 +141,20 @@ describe('BubbleComponent', () => {
   });
 
   function setInputs(props: Partial<BubbleComponent>): Promise<void> {
-    for (let key of Object.keys(props)) {
+    for (const key of Object.keys(props)) {
       component[key] = props[key];
     }
     fixture.detectChanges();
     return fixture.whenStable();
+  }
+
+  function expectTextContent(
+    selector: Predicate<DebugElement>,
+    expectedText: string
+  ) {
+    expect(
+      debugElement.query(selector).nativeElement.textContent.trim()
+    ).toEqual(expectedText);
   }
 
   function expectRender(
