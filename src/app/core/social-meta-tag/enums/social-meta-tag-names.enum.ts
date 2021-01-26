@@ -1,15 +1,15 @@
 export enum TWITTER_META_TAG_NAMES {
-  card = 'card',
-  site = 'site',
-  title = 'title',
-  description = 'description',
-  image = 'image',
+  card,
+  site,
+  title,
+  description,
+  image,
 }
 
 export enum FACEBOOK_META_TAG_NAMES {
-  title = 'title',
-  type = 'type',
-  description = 'description',
-  image = 'image',
-  url = 'url',
+  title,
+  type,
+  description,
+  image,
+  url,
 }

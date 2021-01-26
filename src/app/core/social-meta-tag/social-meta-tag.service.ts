@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Meta, MetaDefinition } from '@angular/platform-browser';
 import { FacebookMetaTagsData } from './enums/interfaces/facebook-meta-tags-data.interface';
-import { GenericMetaTagsData } from './enums/interfaces/generic-meta-tags-data.interface';
+import {
+  GenericMetaTagsData,
+  MetaTagsData,
+} from './enums/interfaces/generic-meta-tags-data.interface';
 import { TwitterMetaTagsData } from './enums/interfaces/twitter-meta-tags-data.interface';
 import {
   FACEBOOK_META_TAG_NAMES,
@@ -49,31 +52,27 @@ export class SocialMetaTagService {
   }
 
   private getFacebookMetaTags(content: FacebookMetaTagsData): MetaDefinition[] {
-    return this.buildMetaTags(
-      FACEBOOK_META_TAG_NAMES,
-      this.FACEBOOK_META_TAG_DEFAULT,
-      content
-    );
+    return this.buildMetaTags({
+      names: FACEBOOK_META_TAG_NAMES,
+      defaults: this.FACEBOOK_META_TAG_DEFAULT,
+      content,
+    });
   }
 
   private getTwitterMetaTags(content: TwitterMetaTagsData): MetaDefinition[] {
-    return this.buildMetaTags(
-      TWITTER_META_TAG_NAMES,
-      this.TWITTER_META_TAG_DEFAULT,
-      content
-    );
+    return this.buildMetaTags({
+      names: TWITTER_META_TAG_NAMES,
+      defaults: this.TWITTER_META_TAG_DEFAULT,
+      content,
+    });
   }
 
-  private buildMetaTags(
-    names: GenericMetaTagsData,
-    defaults: GenericMetaTagsData,
-    content: FacebookMetaTagsData | TwitterMetaTagsData
-  ): any {
+  private buildMetaTags(data: MetaTagsData<any>): any {
     const metaTags: MetaDefinition[] = [];
-    Object.keys(names).forEach((metaTagName: string) => {
+    Object.keys(data.names).forEach((metaTagName: string) => {
       metaTags.push({
-        name: `${defaults.prefix}${metaTagName}`,
-        content: defaults[metaTagName] || content[metaTagName],
+        name: `${data.defaults.prefix}${metaTagName}`,
+        content: data.defaults[metaTagName] || data.content[metaTagName],
       });
     });
 
