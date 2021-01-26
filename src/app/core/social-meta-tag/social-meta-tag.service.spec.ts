@@ -9,18 +9,6 @@ import { SocialMetaTagService } from './social-meta-tag.service';
 describe('SocialMetaTagService', () => {
   let socialMetaTagService: SocialMetaTagService;
   let metaService: Meta;
-
-  const TWITTER_META_TAG_DEFAULT = {
-    prefix: 'twitter:',
-    card: 'summary',
-    site: '@wallapop',
-  };
-
-  const FACEBOOK_META_TAG_DEFAULT = {
-    prefix: 'og:',
-    type: 'product',
-  };
-
   const title = 'title';
   const description = 'description';
   const url = 'url';
@@ -52,9 +40,10 @@ describe('SocialMetaTagService', () => {
 
       Object.keys(TWITTER_META_TAG_NAMES).forEach((metaTagName: string) => {
         expect(metaService.addTag).toHaveBeenCalledWith({
-          name: `${TWITTER_META_TAG_DEFAULT.prefix}${metaTagName}`,
+          name: `${socialMetaTagService['TWITTER_META_TAG_DEFAULT'].prefix}${metaTagName}`,
           content:
-            TWITTER_META_TAG_DEFAULT[metaTagName] || content[metaTagName],
+            socialMetaTagService['TWITTER_META_TAG_DEFAULT'][metaTagName] ||
+            content[metaTagName],
         });
       });
     });
@@ -88,9 +77,10 @@ describe('SocialMetaTagService', () => {
 
       Object.keys(FACEBOOK_META_TAG_NAMES).forEach((metaTagName: string) => {
         expect(metaService.addTag).toHaveBeenCalledWith({
-          name: `${FACEBOOK_META_TAG_DEFAULT.prefix}${metaTagName}`,
+          name: `${socialMetaTagService['FACEBOOK_META_TAG_DEFAULT'].prefix}${metaTagName}`,
           content:
-            FACEBOOK_META_TAG_DEFAULT[metaTagName] || content[metaTagName],
+            socialMetaTagService['FACEBOOK_META_TAG_DEFAULT'][metaTagName] ||
+            content[metaTagName],
         });
       });
     });
