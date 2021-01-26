@@ -1,12 +1,13 @@
+import { DecimalPipe } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
+import { CustomCurrencyPipe } from '@shared/pipes';
 import { CookieService } from 'ngx-cookie';
 import { DeviceDetectorService } from 'ngx-device-detector';
-
 import { ItemDetailComponent } from './item-detail.component';
 
 describe('ItemDetailComponent', () => {
@@ -19,13 +20,14 @@ describe('ItemDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ItemDetailComponent],
+      declarations: [ItemDetailComponent, CustomCurrencyPipe],
       providers: [
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         {
           provide: CookieService,
           useValue: {},
         },
+        DecimalPipe,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
