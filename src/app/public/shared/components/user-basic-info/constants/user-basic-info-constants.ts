@@ -1,6 +1,6 @@
 export enum USER_INFO_SIZE {
-  SMALL = 'small',
-  BIG = 'big',
+  SMALL,
+  BIG,
 }
 
 export interface StyleProperties {
