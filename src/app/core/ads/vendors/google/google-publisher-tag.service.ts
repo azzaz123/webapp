@@ -35,7 +35,6 @@ export class GooglePublisherTagService {
 
   public setAdsSegmentation(allowSegmentation = false): void {
     googletag.cmd.push(() => {
-      apstag.setDisplayBids();
       googletag
         .pubads()
         .setRequestNonPersonalizedAds(allowSegmentation ? 0 : 1);

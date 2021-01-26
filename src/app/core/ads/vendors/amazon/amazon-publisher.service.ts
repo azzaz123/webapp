@@ -17,7 +17,10 @@ export class AmazonPublisherService {
         slots: this.mapAdSlots(adSlots),
         timeout: this.bidTimeout,
       };
-      apstag.fetchBids(config, () => observer.complete());
+      apstag.fetchBids(config, () => {
+        apstag.setDisplayBids();
+        observer.complete();
+      });
     });
   }
 
