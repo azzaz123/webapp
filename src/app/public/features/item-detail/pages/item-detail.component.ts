@@ -22,7 +22,7 @@ export class ItemDetailComponent implements OnInit {
   public device: DeviceType;
   public itemFlags: ItemFlags;
   public images: string[];
-  private itemDetail: ItemDetail;
+  public itemDetail: ItemDetail;
 
   public socialShare: {
     title: string;
