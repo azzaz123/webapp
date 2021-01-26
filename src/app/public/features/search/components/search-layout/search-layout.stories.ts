@@ -3,7 +3,7 @@ import { Meta, Story } from '@storybook/angular/types-6-0';
 import { styledWrapperDecorator } from '@stories/decorators/styled-wrapper/styled-wrapper.decorator';
 import { moduleMetadata } from '@storybook/angular';
 import { LoremIpsumComponent } from '@stories/components/lorem-ipsum/lorem-ipsum.component';
-import { StyledBoxComponent } from '@stories/components/colored-box/styled-box.component';
+import { StyledBoxComponent } from '@stories/components/styled-box/styled-box.component';
 import { CUSTOM_VIEWPORT_NAME } from '@storybook-config/viewports/custom-viewports';
 import { ViewportService } from '@core/viewport/viewport.service';
 
@@ -33,11 +33,12 @@ const Template: Story<SearchLayoutComponent> = (args) => ({
   moduleMetadata: {
     declarations: [SearchLayoutComponent],
   },
-  template: `<tsl-search-layout>
+  template: `
+    <tsl-search-layout>
       <stories-lorem-ipsum main></stories-lorem-ipsum>
-      <stories-styled-box top [style]="${boxStyle}"></stories-styled-box>
-      <stories-styled-box right [style]="${boxStyle}"></stories-styled-box>
-      <stories-styled-box bottom [style]="${boxStyle}"></stories-styled-box>
+      <stories-styled-box top [style]="${boxStyle}" text="Top box"></stories-styled-box>
+      <stories-styled-box right [style]="${boxStyle}" text="Right box"></stories-styled-box>
+      <stories-styled-box bottom [style]="${boxStyle}" text="Bottom box"></stories-styled-box>
     </tsl-search-layout>`,
 });
 

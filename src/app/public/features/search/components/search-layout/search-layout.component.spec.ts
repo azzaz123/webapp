@@ -6,7 +6,6 @@ import { DebugElement, Predicate } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { ViewportType } from '@core/viewport/viewport.enum';
 import { By } from '@angular/platform-browser';
-import { Subscription } from 'rxjs/internal/Subscription';
 
 describe('SearchLayoutComponent', () => {
   let component: SearchLayoutComponent;
@@ -111,19 +110,6 @@ describe('SearchLayoutComponent', () => {
       it('should NOT show bottom row', () => {
         expectBlockToRender(bottomRowSelector, false);
       });
-    });
-  });
-
-  describe('When destroyed', () => {
-    it('should unsubscribe from viewportSubject', () => {
-      const subscription = new Subscription();
-      spyOn(subscription, 'unsubscribe');
-      component['subscription'] = subscription;
-
-      component.ngOnDestroy();
-      fixture.detectChanges();
-
-      expect(subscription.unsubscribe).toHaveBeenCalledTimes(1);
     });
   });
 
