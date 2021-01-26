@@ -11,13 +11,13 @@
                     <tsl-item-images-carousel [images]="images" [itemFlags]="itemFlags"></tsl-item-images-carousel>
                     <div class="mt-3">
                         <div class="ItemDetail__content__header py-3">
-                            <span class="ItemDetail__content--price d-block"> {{item.salePrice |
+                            <span class="ItemDetail__price d-block"> {{item.salePrice |
                                 customCurrency:item.currencyCode}}</span>
-                            <h1 class="ItemDetail__content--title mt-0 mb-0">
+                            <h1 class="ItemDetail__title mt-0 mb-0">
                                 {{item.title}}
                             </h1>
                         </div>
-                        <p class="ItemDetail__content--description py-3 mb-0 text-break">
+                        <p class="ItemDetail__description py-3 mb-0 text-break">
                             {{item.description}}
                         </p>
                         <div class="ItemDetail__stats py-3">
