@@ -62,10 +62,6 @@ describe('PublicUserApiService', () => {
     });
   });
 
-  describe('when getting favourite...', () => {
-    it('should get user favourite', () => {});
-  });
-
   describe('when getting reviews...', () => {
     it('should get user reviews', () => {
       const expectedUrl = `${environment.baseUrl}${REVIEWS_ENDPOINT(userId)}`;
@@ -122,18 +118,6 @@ describe('PublicUserApiService', () => {
       expect(req.request.url).toEqual(expectedUrl);
       expect(req.request.method).toBe('GET');
     });
-  });
-
-  describe('when getting sold items...', () => {
-    it('should get user sold items', () => {});
-  });
-
-  describe('when getting buy transactions...', () => {
-    it('should get user buy transactions', () => {});
-  });
-
-  describe('when getting solds transactions...', () => {
-    it('should get user solds transactions', () => {});
   });
 
   describe('when getting user...', () => {
