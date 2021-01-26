@@ -7,7 +7,7 @@ import { Story, Meta } from '@storybook/angular/types-6-0';
 import { ImagesCarouselComponent } from './images-carousel.component';
 
 export default {
-  title: 'Webapp/Public/Shared/ImagesCarousel',
+  title: 'Webapp/Public/Shared/Components/ImagesCarousel',
   component: ImagesCarouselComponent,
   decorators: [
     (storyFunc) => {
