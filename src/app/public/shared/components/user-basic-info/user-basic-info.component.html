@@ -1,12 +1,12 @@
 <div class="UserBasicInfo d-flex align-items-center">
-    <tsl-user-avatar class="UserBasicInfo--icon" [user]="userInfo" [size]="sizeProperties.imageSize"></tsl-user-avatar>
+    <tsl-user-avatar class="UserBasicInfo__icon" [user]="userInfo" [size]="sizeProperties.imageSize"></tsl-user-avatar>
     <div class="flex-column ml-3 d-flex UserBasicInfo__container">
-        <h3 class="UserBasicInfo__container--name mb-1">
+        <h3 class="UserBasicInfo__name mb-1">
             {{userInfo?.microName}}</h3>
         <div *ngIf="userStats" class="UserBasicInfo__container__reviews">
             <tsl-stars class="d-inline-block" [stars]="userStats.ratings.reviews" [normalized]="false">
             </tsl-stars>
-            <span class="UserBasicInfo__reviews--stars mb-0">({{userStats.counters?.reviews}})</span>
+            <span class="UserBasicInfo__stars mb-0">({{userStats.counters?.reviews}})</span>
         </div>
     </div>
 </div>

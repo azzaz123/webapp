@@ -4,24 +4,23 @@ $star-width: 116px;
 $reviews-width: 20px;
 
 .UserBasicInfo {
-  &--icon {
+  &__icon {
     height: fit-content;
   }
 
   &__container {
     min-width: calc(#{$star-width + $reviews-width});
-    &--name {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
   }
 
-  &__reviews {
-    &--stars {
-      width: fit-content;
-      font-size: $font-size-s;
-      color: $blue-grey-3;
-    }
+  &__name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__stars {
+    width: fit-content;
+    font-size: $font-size-s;
+    color: $blue-grey-3;
   }
 }
