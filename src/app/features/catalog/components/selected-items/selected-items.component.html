@@ -48,6 +48,10 @@
             [disabled]="!itemService.selectedItems.length" tslTrackEvent="MYCATALOG_PRO_DEACTIVATE"
             i18n>Deactivate</button>
 
+          <!-- Activate responsive -->
+          <button *ngIf="showActiveButton" class="btn-activate"
+            [disabled]="!itemService.selectedItems.length" (click)="onClickAction('activate')" i18n>Activate</button>
+
           <div class="SelectedItems__feature d-none d-md-flex flex-column ml-4" *ngIf="!hideFeaturedButton || showActiveButton">
             <!-- Feature -->
             <ng-container *ngIf="!hideFeaturedButton">
