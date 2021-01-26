@@ -5,7 +5,7 @@ import {
   USER_INFO_SIZE,
   StyleProperties,
   STYLE_SIZES,
-} from '@public/shared/constants/user-basic-info-constants';
+} from './constants/user-basic-info-constants';
 
 @Component({
   selector: 'tsl-user-basic-info',

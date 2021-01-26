@@ -4,7 +4,7 @@
         <h3 class="UserBasicInfo__name mb-1">
             {{userInfo?.microName}}</h3>
         <div *ngIf="userStats" class="UserBasicInfo__container__reviews">
-            <tsl-stars class="d-inline-block" [stars]="userStats.ratings.reviews" [normalized]="false">
+            <tsl-stars class="d-inline-block" [stars]="userStats.ratings?.reviews" [normalized]="false">
             </tsl-stars>
             <span class="UserBasicInfo__stars mb-0">({{userStats.counters?.reviews}})</span>
         </div>

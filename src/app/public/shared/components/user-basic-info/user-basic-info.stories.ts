@@ -4,14 +4,14 @@ import {
   MOCK_FULL_USER_FEATURED,
   MOCK_USER_STATS,
 } from '@fixtures/user.fixtures.spec';
-import { USER_INFO_SIZE } from '@public/shared/constants/user-basic-info-constants';
+import { USER_INFO_SIZE } from './constants/user-basic-info-constants';
 import { StarsModule } from '@shared/stars/stars.module';
 import { UserAvatarModule } from '@shared/user-avatar/user-avatar.module';
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { UserBasicInfoComponent } from './user-basic-info.component';
 
 export default {
-  title: 'Webapp/Public/Shared/UserBasicInfo',
+  title: 'Webapp/Public/Shared/Components/UserBasicInfo',
   component: UserBasicInfoComponent,
   decorators: [
     (storyFunc) => {
