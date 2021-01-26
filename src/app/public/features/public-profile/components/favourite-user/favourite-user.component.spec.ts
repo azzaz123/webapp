@@ -7,6 +7,7 @@ import { PublicProfileService } from '@public/features/public-profile/core/servi
 
 import { FavouriteUserComponent } from './favourite-user.component';
 import { FavouriteIconModule } from '@public/shared/components/favourite-icon/favourite-icon.module';
+import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 
 describe('FavouriteUserComponent', () => {
   let component: FavouriteUserComponent;
@@ -22,6 +23,7 @@ describe('FavouriteUserComponent', () => {
       ],
       declarations: [FavouriteUserComponent],
       providers: [
+        PublicUserApiService,
         PublicProfileService,
         {
           provide: AccessTokenService,

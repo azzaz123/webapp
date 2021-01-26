@@ -15,15 +15,19 @@ export class MapItemService {
   constructor(private uuidService: UuidService) {}
 
   public mapItems(items: ItemResponse[]): Item[] {
-    return items.map((reviewResponse: ItemResponse) => {
-      const content: ItemContent = reviewResponse.content;
-      if (reviewResponse.type === 'cars') {
-        return this.mapCar(content);
-      } else if (reviewResponse.type === 'real_estate') {
-        return this.mapRealEstate(content);
-      }
-      return this.mapItem(content);
+    return items.map((itemResponse: ItemResponse) => {
+      return this.mapItem(itemResponse);
     });
+  }
+
+  public mapItem(item: ItemResponse): Item {
+    const content: ItemContent = item.content;
+    if (item.type === 'cars') {
+      return this.mapCar(content);
+    } else if (item.type === 'real_estate') {
+      return this.mapRealEstate(content);
+    }
+    return this.mapConsumerGoods(content);
   }
 
   private mapCar(content: CarContent): Car {
@@ -91,7 +95,7 @@ export class MapItemService {
     );
   }
 
-  private mapItem(content: ItemContent): Item {
+  private mapConsumerGoods(content: ItemContent): Item {
     return new Item(
       content.id,
       null,
