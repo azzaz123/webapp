@@ -1,32 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import {
-  CUSTOM_ELEMENTS_SCHEMA,
-  DebugElement,
-  Pipe,
-  PipeTransform,
-} from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { UserService } from '@core/user/user.service';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
+import { IsCurrentUserStub } from '@fixtures/public/core';
 import { ItemApiModule } from '@public/core/services/api/item/item-api.module';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 import { ItemCardModule } from '@public/shared/components/item-card/item-card.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { Observable, of } from 'rxjs';
 import { ItemCardListComponent } from './item-card-list.component';
-
-@Pipe({
-  name: 'isCurrentUser',
-})
-class IsCurrentUserStub implements PipeTransform {
-  isCurrentUser = false;
-  transform(userId: string): Observable<boolean> {
-    return of(this.isCurrentUser);
-  }
-}
 
 describe('ItemCardListComponent', () => {
   let component: ItemCardListComponent;

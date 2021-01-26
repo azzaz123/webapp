@@ -1,28 +1,19 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '@core/user/user.service';
+import { IsCurrentUserStub } from '@fixtures/public/core';
 import {
   IMAGE,
   MOCK_FULL_USER_FEATURED,
   MOCK_USER_STATS,
 } from '@fixtures/user.fixtures.spec';
 import { APP_PATHS } from 'app/app-routing-constants';
-import { Observable, of, throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { PublicProfileService } from '../core/services/public-profile.service';
 import { PublicProfileComponent } from './public-profile.component';
-
-@Pipe({
-  name: 'isCurrentUser',
-})
-class IsCurrentUserStub implements PipeTransform {
-  isCurrentUser = false;
-  transform(userId: string): Observable<boolean> {
-    return of(this.isCurrentUser);
-  }
-}
 
 describe('PublicProfileComponent', () => {
   const containerSelector = '.PublicProfile';
