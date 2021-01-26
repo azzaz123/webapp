@@ -9,7 +9,7 @@ describe('ProfileResolver', () => {
   beforeEach(() => {
     storeMock = {
       dispatch: () => {}
-    }
+    };
 
     TestBed.configureTestingModule({
       providers: [ProfileResolver,
@@ -24,11 +24,11 @@ describe('ProfileResolver', () => {
 
   describe('resolve', () => {
     it('should emit event to load user profile', () => {
-      spyOn(storeMock, 'dispatch').and.callThrough()
+      spyOn(storeMock, 'dispatch').and.callThrough();
 
       resolver.resolve();
 
-      expect(storeMock.dispatch).toBeCalledWith(LoadUserProfile())
+      expect(storeMock.dispatch).toBeCalledWith(LoadUserProfile());
     });
   });
 });

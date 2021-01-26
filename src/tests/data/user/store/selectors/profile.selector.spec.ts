@@ -1,12 +1,12 @@
-import { selectUserProfileDetailId } from './../../../../../app/data/user/store/selectors/profile.selector';
 import { BooleanMother } from '@fixtures/shared';
 import { Profile } from 'app/data/user/domain';
 import { UserProfileState } from 'app/data/user/store/reducer/profile.reducer';
 import {
   selectUserProfileDetail,
+  selectUserProfileDetailId,
   selectUserProfileIsAuthenticated,
   selectUserProfileLoading,
-} from 'app/data/user/store/selectors';
+} from '@data/user';
 import { UserProfileStateMother } from '../reducer/user.state.mother';
 import { ProfileMother } from '../../domain/profile/profile.mother';
 
