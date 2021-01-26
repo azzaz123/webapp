@@ -11,9 +11,8 @@ import {
 } from '@angular/core';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
-import { RemoteConsoleService } from '@core/remote-console';
+import { RealTimeService } from '@core/message/real-time.service';
 import { TrackingService } from '@core/tracking/tracking.service';
-import { MessageService } from '@features/chat/core/message/message.service';
 import { InboxConversation } from '@features/chat/core/model';
 import { LinkTransformPipe } from '@shared/pipes';
 import { find, includes, isEmpty } from 'lodash-es';
@@ -35,10 +34,9 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
   public isFocus: boolean;
 
   constructor(
-    private messageService: MessageService,
+    private realTimeService: RealTimeService,
     private eventService: EventService,
     private trackingService: TrackingService,
-    private remoteConsoleService: RemoteConsoleService,
     private i18n: I18nService,
     private deviceService: DeviceDetectorService
   ) {}
@@ -65,7 +63,7 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
         this.trackingService.track(TrackingService.SEND_BUTTON, {
           thread_id: this.currentConversation.id,
         });
-        const messageId = this.messageService.send(
+        const messageId = this.realTimeService.sendMessage(
           this.currentConversation,
           this.message
         );

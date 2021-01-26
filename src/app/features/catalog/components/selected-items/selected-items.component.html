@@ -35,8 +35,9 @@
         <div class="SelectedItems__actions d-flex align-items-center">
 
           <!-- Delete -->
-          <button class="btn-delete dark" (click)="onClickAction('delete')"
-            [hidden]="itemService.selectedAction === 'feature'" [disabled]="!itemService.selectedItems.length">
+          <button class="btn-delete dark d-flex align-items-center justify-content-center"
+            (click)="onClickAction('delete')" [hidden]="itemService.selectedAction === 'feature'"
+            [disabled]="!itemService.selectedItems.length">
             <tsl-svg-icon src="/assets/icons/delete.svg"></tsl-svg-icon>
             <span i18n>Delete</span>
           </button>

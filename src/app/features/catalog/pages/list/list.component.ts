@@ -5,6 +5,7 @@ import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { Item } from '@core/item/item';
 import {
+  CheapestProducts,
   ItemBulkResponse,
   ItemsData,
 } from '@core/item/item-response.interface';
@@ -25,6 +26,7 @@ import { ActivateItemsModalComponent } from '@shared/catalog/catalog-item-action
 import { DeactivateItemsModalComponent } from '@shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
 import { TooManyItemsModalComponent } from '@shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
+import { BumpSuggestionModalComponent } from '@shared/modals/bump-suggestion-modal/bump-suggestion-modal.component';
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
 import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
 import { NavLink } from '@shared/nav-links/nav-link.interface';
@@ -63,7 +65,7 @@ export class ListComponent implements OnInit, OnDestroy {
   private init = 0;
   public end: boolean;
   public scrollTop: number;
-  private uploadModalRef: NgbModalRef;
+  private bumpSuggestionModalRef: NgbModalRef;
   private active = true;
   private firstItemLoad = true;
   public numberOfProducts: number;
@@ -228,7 +230,9 @@ export class ListComponent implements OnInit, OnDestroy {
             }
           );
         }
-        if (params && params.updated) {
+        if (params && params.created) {
+          this.showBumpSuggestionModal(params.itemId);
+        } else if (params && params.updated) {
           this.errorService.i18nSuccess('itemUpdated');
         } else if (params && params.createdOnHold) {
           this.tooManyItemsModalRef = this.modalService.open(
@@ -278,6 +282,36 @@ export class ListComponent implements OnInit, OnDestroy {
     });
   }
 
+  private showBumpSuggestionModal(itemId: string): void {
+    this.bumpSuggestionModalRef = this.modalService.open(
+      BumpSuggestionModalComponent,
+      {
+        windowClass: 'modal-standard',
+      }
+    );
+    this.bumpSuggestionModalRef.result.then(
+      (result: { redirect: boolean; hasPrice?: boolean }) => {
+        this.bumpSuggestionModalRef = null;
+        if (result?.redirect) {
+          this.router.navigate(['catalog/checkout', { itemId }]);
+        }
+      }
+    );
+  }
+
+  private getCheapestProductPrice(
+    modalRef: NgbModalRef,
+    itemId: string,
+    creditInfo: CreditInfo
+  ): void {
+    this.itemService
+      .getCheapestProductPrice([itemId])
+      .subscribe((value: CheapestProducts) => {
+        modalRef.componentInstance.productPrice =
+          +value[itemId] * creditInfo.factor;
+      });
+  }
+
   private getCreditInfo() {
     this.paymentService
       .getCreditInfo(false)
@@ -287,6 +321,15 @@ export class ListComponent implements OnInit, OnDestroy {
           creditInfo.factor = 1;
         }
         this.creditInfo = creditInfo;
+        if (this.bumpSuggestionModalRef) {
+          this.getCheapestProductPrice(
+            this.bumpSuggestionModalRef,
+            this.route.snapshot.params['itemId'],
+            creditInfo
+          );
+          this.bumpSuggestionModalRef.componentInstance.productCurrency =
+            creditInfo.currencyName;
+        }
       });
   }
 
@@ -379,10 +422,8 @@ export class ListComponent implements OnInit, OnDestroy {
           this.init = itemsData.init;
           this.items = append ? this.items.concat(items) : items;
           this.end = !this.init;
-          if (this.uploadModalRef) {
-            this.uploadModalRef.componentInstance.item = this.items[0];
-            this.uploadModalRef.componentInstance.trackUploaded();
-            this.uploadModalRef.componentInstance.urgentPrice();
+          if (this.bumpSuggestionModalRef) {
+            this.bumpSuggestionModalRef.componentInstance.item = this.items[0];
           }
           if (this.firstItemLoad) {
             setTimeout(() => {

@@ -6,7 +6,6 @@ import { ConfirmationModalComponent } from './confirmation-modal/confirmation-mo
 import { CardModule } from './card/card.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GeolocationModule } from './geolocation/geolocation.module';
-import { ExitConfirmGuard } from './guards/exit-confirm.guard';
 import { RestrictInputDirective } from './restrict-input/restrict-input.directive';
 import { HeaderComponent } from './header/header.component';
 import { ButtonComponent } from './button/button.component';
@@ -39,16 +38,12 @@ import { CatalogCardComponent } from './catalog/catalog-card/catalog-card.compon
 import { CatalogItemActionsComponent } from './catalog/catalog-item-actions/catalog-item-actions.component';
 import { CatalogStatusNavbarComponent } from './catalog/catalog-status-navbar/catalog-status-navbar.component';
 import { CartComponent } from './catalog/cart/cart.component';
-import { CartService } from './catalog/cart/cart.service';
-import { TrackingModule } from '../core/tracking/tracking.module';
 import { RouterModule } from '@angular/router';
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
 import { CountdownComponent } from './countdown/countdown.component';
-import { ThousandSuffixesPipe } from './number-conversion/thousand-suffixes.pipe';
 import { ActivateItemsModalComponent } from './catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component';
 import { DeactivateItemsModalComponent } from './catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
 import { UploaderModule } from './uploader/uploader.module';
-import { UserCoverComponent } from './user-cover/user-cover.component';
 import { CoverUploadComponent } from './profile/cover-upload/cover-upload.component';
 import { KeywordSuggesterComponent } from './keyword-suggester/keyword-suggester.component';
 import { StripeCardElementComponent } from './payments/stripe/stripe-card-element.component';
@@ -59,9 +54,7 @@ import { StripeCardSelectionComponent } from './payments/stripe-card-selection/s
 import { DropdownModule } from '@shared/dropdown/dropdown.module';
 import { LinkTransformPipe } from './pipes';
 import { NavLinksComponent } from './nav-links/nav-links.component';
-import { SubscriptionsService } from '../core/subscriptions/subscriptions.service';
 import { PreventDoubleClickDirective } from './prevent-double-click/prevent-double-click.directive';
-import { DeviceDetectorModule } from 'ngx-device-detector';
 import { ProBadgeModule } from './pro-badge/pro-badge.module';
 import { StatusIconComponent } from './status-icon';
 import { ChangeCardModalComponent } from './modals/change-card-modal/change-card-modal.component';
@@ -80,6 +73,8 @@ import { SanitizedBackgroundModule } from './sanitized-background/sanitized-back
 import { UserCoverModule } from './user-cover/user-cover.module';
 import { WallacoinsDisabledModalComponent } from './modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
 import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.module';
+import { BumpSuggestionModalComponent } from './modals/bump-suggestion-modal/bump-suggestion-modal.component';
+import { TrackEventDirective } from '@core/tracking/track-event.directive';
 
 @NgModule({
   imports: [
@@ -90,10 +85,8 @@ import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.mo
     FormsModule,
     GeolocationModule,
     NgxPermissionsModule.forChild(),
-    TrackingModule,
     RouterModule,
     UploaderModule,
-    DeviceDetectorModule.forRoot(),
     ProBadgeModule,
     SvgIconModule,
     DropdownModule,
@@ -146,7 +139,6 @@ import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.mo
     CartComponent,
     ExitConfirmationModalComponent,
     CountdownComponent,
-    ThousandSuffixesPipe,
     CoverUploadComponent,
     KeywordSuggesterComponent,
     StripeCardElementComponent,
@@ -169,6 +161,7 @@ import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.mo
     DateCountDownComponent,
     DropdownModule,
     WallacoinsDisabledModalComponent,
+    TrackEventDirective,
   ],
   declarations: [
     AdComponent,
@@ -207,7 +200,6 @@ import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.mo
     CartComponent,
     ExitConfirmationModalComponent,
     CountdownComponent,
-    ThousandSuffixesPipe,
     ActivateItemsModalComponent,
     DeactivateItemsModalComponent,
     CoverUploadComponent,
@@ -229,16 +221,11 @@ import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.mo
     DisableControlDirective,
     RouterLinkDirectiveStub,
     DateCountDownComponent,
+    BumpSuggestionModalComponent,
     WallacoinsDisabledModalComponent,
+    TrackEventDirective,
   ],
-  providers: [
-    DecimalPipe,
-    ExitConfirmGuard,
-    CartService,
-    ThousandSuffixesPipe,
-    LinkTransformPipe,
-    SubscriptionsService,
-  ],
+  providers: [DecimalPipe, LinkTransformPipe],
   entryComponents: [
     ConfirmationModalComponent,
     SoldModalComponent,

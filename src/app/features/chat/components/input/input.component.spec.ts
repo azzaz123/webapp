@@ -9,12 +9,11 @@ import {
 } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { Conversation } from '@core/conversation/conversation';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
+import { RealTimeService } from '@core/message/real-time.service';
 import { RemoteConsoleService } from '@core/remote-console';
 import { TrackingService } from '@core/tracking/tracking.service';
-import { MessageService } from '@features/chat/core/message/message.service';
 import { InboxConversation } from '@features/chat/core/model';
 
 import { MOCK_CONVERSATION } from '@fixtures/conversation.fixtures.spec';
@@ -22,6 +21,7 @@ import {
   CREATE_MOCK_INBOX_CONVERSATION,
   SECOND_MOCK_INBOX_CONVERSATION,
 } from '@fixtures/inbox.fixtures.spec';
+import { RealTimeServiceMock } from '@fixtures/real-time.fixtures.spec';
 import {
   DeviceDetectorServiceMock,
   MockRemoteConsoleService,
@@ -31,15 +31,11 @@ import { AutosizeModule } from 'ngx-autosize';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { InputComponent } from './input.component';
 
-class MessageServiceMock {
-  send(c: Conversation, t: string): void {}
-}
-
 describe('Component: Input', () => {
   const MESSAGE_ID = 'MESSAGE_ID';
 
   let component: InputComponent;
-  let messageService: MessageService;
+  let realTimeService: RealTimeService;
   let fixture: ComponentFixture<InputComponent>;
   let eventService: EventService;
   let trackingService: TrackingService;
@@ -52,7 +48,7 @@ describe('Component: Input', () => {
       declarations: [InputComponent],
       providers: [
         I18nService,
-        { provide: MessageService, useClass: MessageServiceMock },
+        { provide: RealTimeService, useClass: RealTimeServiceMock },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         EventService,
@@ -68,7 +64,7 @@ describe('Component: Input', () => {
     });
     fixture = TestBed.createComponent(InputComponent);
     component = TestBed.createComponent(InputComponent).componentInstance;
-    messageService = TestBed.inject(MessageService);
+    realTimeService = TestBed.inject(RealTimeService);
     eventService = TestBed.inject(EventService);
     trackingService = TestBed.inject(TrackingService);
     remoteConsoleService = TestBed.inject(RemoteConsoleService);
@@ -76,7 +72,7 @@ describe('Component: Input', () => {
   });
 
   beforeEach(() => {
-    spyOn(messageService, 'send').and.returnValue(MESSAGE_ID);
+    spyOn(realTimeService, 'sendMessage').and.returnValue(MESSAGE_ID);
   });
 
   describe('ngOnInit', () => {
@@ -119,7 +115,10 @@ describe('Component: Input', () => {
       component.sendMessage(EVENT);
 
       expect(EVENT.preventDefault).toHaveBeenCalled();
-      expect(messageService.send).toHaveBeenCalledWith(conversation, TEXT);
+      expect(realTimeService.sendMessage).toHaveBeenCalledWith(
+        conversation,
+        TEXT
+      );
       expect(component.message).toBe('');
       expect(trackingService.track).toHaveBeenCalledWith(
         TrackingService.SEND_BUTTON,
@@ -137,7 +136,7 @@ describe('Component: Input', () => {
       component.sendMessage(EVENT);
 
       expect(EVENT.preventDefault).toHaveBeenCalled();
-      expect(messageService.send).toHaveBeenCalledWith(
+      expect(realTimeService.sendMessage).toHaveBeenCalledWith(
         component.currentConversation,
         TEXT
       );
@@ -158,7 +157,7 @@ describe('Component: Input', () => {
       component.sendMessage(EVENT);
 
       expect(EVENT.preventDefault).toHaveBeenCalled();
-      expect(messageService.send).not.toHaveBeenCalled();
+      expect(realTimeService.sendMessage).not.toHaveBeenCalled();
       expect(component.message).toBe('');
       expect(trackingService.track).not.toHaveBeenCalled();
       expect(remoteConsoleService.sendMessageTimeout).not.toHaveBeenCalled();
@@ -170,7 +169,7 @@ describe('Component: Input', () => {
       component.sendMessage(EVENT);
 
       expect(EVENT.preventDefault).toHaveBeenCalled();
-      expect(messageService.send).not.toHaveBeenCalled();
+      expect(realTimeService.sendMessage).not.toHaveBeenCalled();
       expect(component.message).toBe('');
       expect(trackingService.track).not.toHaveBeenCalled();
       expect(remoteConsoleService.sendMessageTimeout).not.toHaveBeenCalled();
@@ -183,7 +182,7 @@ describe('Component: Input', () => {
       component.sendMessage(EVENT);
 
       expect(EVENT.preventDefault).toHaveBeenCalled();
-      expect(messageService.send).not.toHaveBeenCalled();
+      expect(realTimeService.sendMessage).not.toHaveBeenCalled();
       expect(trackingService.track).not.toHaveBeenCalled();
       expect(remoteConsoleService.sendMessageTimeout).not.toHaveBeenCalled();
     });
@@ -194,7 +193,7 @@ describe('Component: Input', () => {
 
       component.sendMessage(EVENT);
       expect(EVENT.preventDefault).toHaveBeenCalled();
-      expect(messageService.send).toHaveBeenCalled();
+      expect(realTimeService.sendMessage).toHaveBeenCalled();
       expect(trackingService.track).toHaveBeenCalled();
       expect(component.clickSentMessage.emit).toHaveBeenCalledWith(MESSAGE_ID);
     });
@@ -206,7 +205,7 @@ describe('Component: Input', () => {
 
       component.sendMessage(EVENT);
       expect(EVENT.preventDefault).toHaveBeenCalled();
-      expect(messageService.send).toHaveBeenCalled();
+      expect(realTimeService.sendMessage).toHaveBeenCalled();
       expect(trackingService.track).toHaveBeenCalled();
       expect(component.clickSentMessage.emit).toHaveBeenCalledWith(MESSAGE_ID);
     });

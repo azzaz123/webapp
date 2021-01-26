@@ -1,4 +1,5 @@
 export enum CUSTOM_VIEWPORT_NAME {
+  XL = 'XL',
   LG = 'LG',
   MD = 'MD',
   SM = 'SM',
@@ -7,6 +8,13 @@ export enum CUSTOM_VIEWPORT_NAME {
 
 export const CUSTOM_VIEWPORTS = {
   // Based on chrome responsive tool
+  [CUSTOM_VIEWPORT_NAME.XL]: {
+    name: CUSTOM_VIEWPORT_NAME.XL,
+    styles: {
+      width: '1920px',
+      height: '1080px',
+    },
+  },
   [CUSTOM_VIEWPORT_NAME.LG]: {
     name: CUSTOM_VIEWPORT_NAME.LG,
     styles: {

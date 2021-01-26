@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
-import { ExitConfirmGuard } from '@shared/guards/exit-confirm.guard';
-import { NgxPermissionsGuard } from 'ngx-permissions';
+import { ExitConfirmGuard } from '@core/guards/exit-confirm.guard';
 import { EditComponent } from './components/edit/edit.component';
 import { ItemResolverService } from './core/resolvers/item-resolver.service';
 import { UploadComponent } from './pages/upload.component';
@@ -14,7 +13,6 @@ const routes: Route[] = [
   {
     path: ':id',
     component: EditComponent,
-    canActivate: [NgxPermissionsGuard],
     canDeactivate: [ExitConfirmGuard],
     resolve: {
       item: ItemResolverService,

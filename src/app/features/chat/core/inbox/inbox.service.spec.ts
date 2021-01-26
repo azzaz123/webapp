@@ -6,7 +6,7 @@ import {
 import { TestBed } from '@angular/core/testing';
 import { EventService } from '@core/event/event.service';
 import { AccessTokenService } from '@core/http/access-token.service';
-import { HttpModuleNew } from '@core/http/http.module.new';
+import { HttpModule } from '@core/http/http.module';
 import { RealTimeService } from '@core/message/real-time.service';
 import { RemoteConsoleService } from '@core/remote-console';
 import { FeatureflagService } from '@core/user/featureflag.service';
@@ -14,7 +14,7 @@ import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { MOCK_INBOX_API_RESPONSE } from '@fixtures/inbox.fixtures.spec';
-import { MockMessageService } from '@fixtures/message.fixtures.spec';
+import { MockUnreadChatMessagesService } from '@fixtures/message.fixtures.spec';
 import {
   DeviceDetectorServiceMock,
   MockRemoteConsoleService,
@@ -25,18 +25,19 @@ import { MockDesktopNotifications } from 'app/core/desktop-notifications/desktop
 import { I18nService } from 'app/core/i18n/i18n.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { of, throwError } from 'rxjs';
-import { MessageService } from '../message/message.service';
+import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 import { InboxConversation } from '../model/inbox-conversation';
 import { InboxItemPlaceholder, InboxItemStatus } from '../model/inbox-item';
 import { InboxUserPlaceholder } from '../model/inbox-user';
 import { InboxConversationService } from './inbox-conversation.service';
 import { InboxService } from './inbox.service';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 
 describe('InboxService', () => {
   let inboxService: InboxService;
   let http: HttpClient;
   let realTime: RealTimeService;
-  let messageService: MessageService;
+  let unreadChatMessagesService: UnreadChatMessagesService;
   let inboxConversationService: InboxConversationService;
   let featureflagService: FeatureflagService;
   let eventService: EventService;
@@ -46,11 +47,15 @@ describe('InboxService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpModuleNew, HttpClientTestingModule],
+      imports: [HttpModule, HttpClientTestingModule],
       providers: [
         InboxService,
         EventService,
-        { provide: MessageService, useClass: MockMessageService },
+        ToastService,
+        {
+          provide: UnreadChatMessagesService,
+          useClass: MockUnreadChatMessagesService,
+        },
         { provide: UserService, useClass: MockedUserService },
         { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
@@ -78,7 +83,7 @@ describe('InboxService', () => {
     inboxService = TestBed.inject(InboxService);
     http = TestBed.inject(HttpClient);
     realTime = TestBed.inject(RealTimeService);
-    messageService = TestBed.inject(MessageService);
+    unreadChatMessagesService = TestBed.inject(UnreadChatMessagesService);
     inboxConversationService = TestBed.inject(InboxConversationService);
     featureflagService = TestBed.inject(FeatureflagService);
     eventService = TestBed.inject(EventService);

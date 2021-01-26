@@ -16,7 +16,7 @@
         tslTrackEvent="MYCATALOG_PRO_PURCHASE_EXTRAS" i18n>Purchase extras</tsl-button>
     </div>
     <div class="row">
-      <tsl-plan-data [counters]="counters" (subscriptionPlan)="getSubscriptionPlan($event)">
+      <tsl-plan-data [counters]="counters" (subscriptionPlan)="onSetSubscriptionPlan($event)">
       </tsl-plan-data>
     </div>
     <div class="row">

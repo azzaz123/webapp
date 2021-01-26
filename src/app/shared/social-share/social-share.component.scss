@@ -1,0 +1,23 @@
+@import '~style/common';
+
+.SocialShare {
+  color: $blue-grey-3;
+  font-size: $font-size-s;
+  &__icon {
+    @include square(34px);
+    background-color: $blue-grey-5;
+    border-radius: 50%;
+    cursor: pointer;
+
+    tsl-svg-icon {
+      fill: $blue-grey-3;
+
+      ::ng-deep {
+        //TODO remove when tsl-svg-icon improvement
+        svg * {
+          fill: inherit;
+        }
+      }
+    }
+  }
+}

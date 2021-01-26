@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TrackingModule } from '@core/tracking/tracking.module';
 import {
   NgbButtonsModule,
   NgbCarouselModule,
@@ -12,7 +11,6 @@ import { GeolocationModule } from '@shared/geolocation/geolocation.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { SharedModule } from '@shared/shared.module';
 import { DndModule } from 'ng2-dnd';
-import { NgxPermissionsModule } from 'ngx-permissions';
 import { CategorySelectorComponent } from './components/category-selector/category-selector.component';
 import { DropAreaComponent } from './components/drop-area/drop-area.component';
 import { EditComponent } from './components/edit/edit.component';
@@ -37,9 +35,7 @@ import { uploadRoutedComponents, UploadRoutingModule } from './upload.routes';
     FormsModule,
     ReactiveFormsModule,
     UploadRoutingModule,
-    NgxPermissionsModule.forChild(),
     NgbPopoverModule,
-    TrackingModule,
     DndModule.forRoot(),
     NgbCarouselModule,
     GeolocationModule,

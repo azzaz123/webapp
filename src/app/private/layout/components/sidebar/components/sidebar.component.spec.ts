@@ -10,7 +10,7 @@ import {
 import { By } from '@angular/platform-browser';
 import { Route, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MessageService } from '@features/chat/core/message/message.service';
+import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 import { RouterLinkDirectiveStub } from 'app/shared/router-link-directive-stub';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { Observable, of } from 'rxjs';
@@ -69,7 +69,7 @@ describe('SidebarComponent', () => {
             },
           },
           {
-            provide: MessageService,
+            provide: UnreadChatMessagesService,
             useValue: {
               totalUnreadMessages$: of(1),
             },

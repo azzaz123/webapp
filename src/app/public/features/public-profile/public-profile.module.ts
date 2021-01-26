@@ -11,6 +11,7 @@ import { PublicProfileService } from './core/services/public-profile.service';
 import { SpinnerModule } from '@shared/spinner/spinner.module';
 import { UserProfileHeaderModule } from './components/user-profile-header/user-profile-header.module';
 import { PublicPipesModule } from '@public/core/pipes/public-pipes.module';
+import { PublicUserApiModule } from '@public/core/services/api/public-user/public-user-api.module';
 
 @NgModule({
   declarations: [publicProfileRoutedComponents, ProfileTabsComponent],
@@ -22,6 +23,7 @@ import { PublicPipesModule } from '@public/core/pipes/public-pipes.module';
     FavouriteUserModule,
     UserProfileHeaderModule,
     PublicPipesModule,
+    PublicUserApiModule,
   ],
   providers: [PublicProfileService],
 })

@@ -12,9 +12,11 @@ const analyticsFolderPath = 'src/app/core/analytics/resources/';
 const eventInterfacesFolderPath = `${analyticsFolderPath}events-interfaces/`
 
 const createInterfaceFileFromJSONsSchemaPath = jsonPath => {
+    let interfaceFileName = 'undefined';
+
     try {
         // Generate interface file name from json path
-        const interfaceFileName = jsonPath.replace(/^.*[\\\/]/, '').replace('.json', '.interface.ts').replace(/_/g, '-');
+        interfaceFileName = jsonPath.replace(/^.*[\\\/]/, '').replace('.json', '.interface.ts').replace(/_/g, '-');
 
         // Parse content as a Javascript object and store event title for later use
         const rawFile = fs.readFileSync(jsonPath);
@@ -27,7 +29,7 @@ const createInterfaceFileFromJSONsSchemaPath = jsonPath => {
         // Save interface to file
         compileFromFile(jsonPath).then(ts => fs.writeFileSync(`${eventInterfacesFolderPath}${interfaceFileName}`, ts));
     } catch (error) {
-        console.warn(`The file ${schema} could not be parsed to a valid interface`, error);
+        console.warn(`The file ${interfaceFileName} could not be parsed to a valid interface`, error);
     }
 };
 
