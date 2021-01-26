@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Meta, MetaDefinition } from '@angular/platform-browser';
 import { FacebookMetaTagsData } from './enums/interfaces/facebook-meta-tags-data.interface';
+import { GenericMetaTagsData } from './enums/interfaces/generic-meta-tags-data.interface';
 import { TwitterMetaTagsData } from './enums/interfaces/twitter-meta-tags-data.interface';
 import {
   FACEBOOK_META_TAG_NAMES,
@@ -63,7 +64,11 @@ export class SocialMetaTagService {
     );
   }
 
-  private buildMetaTags(names: any, defaults: any, content: any): any {
+  private buildMetaTags(
+    names: GenericMetaTagsData,
+    defaults: GenericMetaTagsData,
+    content: FacebookMetaTagsData | TwitterMetaTagsData
+  ): any {
     const metaTags: MetaDefinition[] = [];
     Object.keys(names).forEach((metaTagName: string) => {
       metaTags.push({
