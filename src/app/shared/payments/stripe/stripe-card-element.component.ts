@@ -47,7 +47,6 @@ export class StripeCardElementComponent
   public card: stripe.elements.Element;
   public termsAndConditionsURL = TERMS_AND_CONDITIONS_URL;
   public policyPrivacyURL = PRIVACY_POLICY_URL;
-  public errorType = STRIPE_ERROR;
   @Input() type: string;
   @Input() cart: CartBase;
   @Input() loading: boolean;
@@ -82,6 +81,18 @@ export class StripeCardElementComponent
     private stripeService: StripeService,
     private toastService: ToastService
   ) {}
+
+  public errorTextConfig = {
+    [STRIPE_ERROR.card_declined]: this.i18n.getTranslations(
+      'cardNumberIsNotValid'
+    ),
+    [STRIPE_ERROR.expired_card]: this.i18n.getTranslations(
+      'cardDateIsNotValid'
+    ),
+    [STRIPE_ERROR.incorrect_cvc]: this.i18n.getTranslations(
+      'cvcNumberIsNotValid'
+    ),
+  };
 
   ngAfterViewInit() {
     this.initStripe();

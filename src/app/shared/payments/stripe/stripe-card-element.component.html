@@ -9,12 +9,8 @@
         </fieldset>
         <div class="d-flex flex-column align-items-start">
             <div [ngClass]="{'card-feedback--flexible': showUseSavedCard}">
-                <ng-container [ngSwitch]="paymentError">
-                    <div i18n="@@CardNumberIsNotValid" *ngSwitchCase="errorType.card_declined" class="StripeCard__error">Card number isn't valid.</div>
-                    <div i18n="@@CvcNumberIsNotValid" *ngSwitchCase="errorType.incorrect_cvc" class="StripeCard__error">CVC number isn't valid.</div>
-                    <div i18n="@@CardDateIsNotValid" *ngSwitchCase="errorType.expired_card" class="StripeCard__error">Card date isn't valid.</div>
-                </ng-container>
-                <div id="card-errors" role="alert" *ngIf="error">
+                <div class="mb-3 StripeCard__error" *ngIf="!!errorTextConfig[paymentError]" >{{errorTextConfig[paymentError]}}</div>
+                <div class="mb-3 StripeCard__error" id="card-errors" role="alert" *ngIf="error">
                     {{ error }}
                 </div>
             </div>
