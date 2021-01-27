@@ -64,7 +64,7 @@ describe('AdsKeywordsService', () => {
           'getCurrentPosition'
         ).and.callFake((callback) => callback(MOCK_POSITION));
 
-        service.updateAdKewords();
+        service.updateAdKeywords();
 
         expect(service.adKeywords).toEqual(EXPECTED_ADKEYWORDS);
       });
@@ -80,7 +80,7 @@ describe('AdsKeywordsService', () => {
         };
         spyOn(MockCookieService, 'get').and.callFake((key) => key);
 
-        service.updateAdKewords();
+        service.updateAdKeywords();
 
         expect(service.adKeywords).toEqual(EXPECTED_ADKEYWORDS);
       });
@@ -99,7 +99,7 @@ describe('AdsKeywordsService', () => {
           longitude: MockUser.location.approximated_longitude.toString(),
         };
 
-        service.updateAdKewords();
+        service.updateAdKeywords();
 
         expect(service.adKeywords).toEqual(EXPECTED_ADKEYWORDS);
       });

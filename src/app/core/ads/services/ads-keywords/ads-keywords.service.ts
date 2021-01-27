@@ -22,7 +22,7 @@ export class AdsKeywordsService {
     return this._adKeywords;
   }
 
-  public updateAdKewords(): void {
+  public updateAdKeywords(): void {
     this.setAdKeywordsFromCookies();
     this.setAdkeywordsLocation();
     this.setAdKeywordsFromUser();

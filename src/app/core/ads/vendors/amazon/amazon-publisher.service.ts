@@ -1,46 +1,46 @@
+import { Inject, Injectable } from '@angular/core';
+import { WINDOW_TOKEN } from '@core/window/window.token';
 import { Observable, Subscriber } from 'rxjs';
-
-import { Injectable } from '@angular/core';
-
 import { AdSlot } from '../../models';
-import { AmazonPublisherServiceAdSlot } from './amazon-publisher-service.interface';
+import {
+  AmazonPublisherServiceLibrary,
+  AmazonPublisherServiceMapper,
+} from './amazon-publisher-service.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AmazonPublisherService {
-  private bidTimeout = 2000;
+  static bidTimeout = 2000;
+
+  get apstag(): AmazonPublisherServiceLibrary {
+    return this.window['apstag'];
+  }
+
+  constructor(@Inject(WINDOW_TOKEN) private window: Window) {}
 
   public requestBid(adSlots: AdSlot[]): Observable<void> {
     return new Observable((observer: Subscriber<void>) => {
       const config = {
-        slots: this.mapAdSlots(adSlots),
-        timeout: this.bidTimeout,
+        slots: AmazonPublisherServiceMapper(adSlots),
+        timeout: AmazonPublisherService.bidTimeout,
       };
-      apstag.fetchBids(config, () => {
-        apstag.setDisplayBids();
+      this.apstag.fetchBids(config, () => {
+        this.apstag.setDisplayBids();
         observer.complete();
       });
     });
   }
 
   public isLibraryRefDefined(): boolean {
-    if (apstag) {
+    if (this.apstag) {
       this.init();
     }
-    return !!apstag;
-  }
-
-  private mapAdSlots(adSlots: AdSlot[]): AmazonPublisherServiceAdSlot[] {
-    return adSlots.map((slot) => ({
-      slotID: slot.id,
-      sizes: slot.sizes,
-      slotName: slot.name,
-    }));
+    return !!this.apstag;
   }
 
   private init(): void {
-    apstag.init({
+    this.apstag.init({
       pubID: '3703',
       adServer: 'googletag',
       gdpr: {

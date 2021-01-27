@@ -1,3 +1,4 @@
+import { AdSlot } from './../../models/ad-slot.interface';
 export interface AmazonPublisherServiceLibrary {
   bids: Function;
   debug: Function;
@@ -14,4 +15,14 @@ export interface AmazonPublisherServiceAdSlot {
   slotID: string;
   sizes: [number, number][];
   slotName: string;
+}
+
+export function AmazonPublisherServiceMapper(
+  adSlots: AdSlot[]
+): AmazonPublisherServiceAdSlot[] {
+  return adSlots.map((slot) => ({
+    slotID: slot.id,
+    sizes: slot.sizes,
+    slotName: slot.name,
+  }));
 }

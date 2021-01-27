@@ -2,7 +2,7 @@ export const GOOGLE_PUBLISHER_TAG_URL =
   'https://securepubads.g.doubleclick.net/tag/js/gpt.js';
 
 export const RICH_AUDIENCE_URL =
-  'https://bridge.richmediastudio.com/ab083674fb8200b877a6983126e4477d/wallapop/pb_wrapper/dev/lib.js';
+  'https://cdn3.richaudience.com/ab083674fb8200b877a6983126e4477d/wallapop/pb_wrapper/v1/lib_1.5.js';
 
 export const CRITEO_URL = 'https://static.criteo.net/js/ld/publishertag.js';
 

@@ -1,69 +1,87 @@
 import { CookieService } from 'ngx-cookie';
 
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { AdsKeywordsService } from '@core/ads/services/ads-keywords/ads-keywords.service';
 
 import { AdKeyWords, AdSlot, AdSlotId } from '../../models';
+import { WINDOW_TOKEN } from '@core/window/window.token';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GooglePublisherTagService {
+  get googletag(): googletag.Googletag {
+    return this.window['googletag'];
+  }
+
   constructor(
+    @Inject(WINDOW_TOKEN) private window: Window,
     private cookieService: CookieService,
     private adsKeywordsService: AdsKeywordsService
   ) {}
 
+  public isLibraryRefDefined(): boolean {
+    return !!this.googletag;
+  }
+
   public init(adSlots: AdSlot[]): void {
-    googletag.cmd.push(() => {
-      adSlots.forEach((slot) => {
-        googletag
-          .defineSlot(slot.name, slot.sizes, slot.id)
-          .setTargeting('ad_group', 'ad_opt')
-          .setTargeting('ad_h', new Date().getUTCHours().toString())
-          .addService(googletag.pubads());
-      });
-      let publisherId = this.cookieService.get('publisherId');
-      publisherId = publisherId ? publisherId : '-1' + Array(31).join('0');
-      googletag.pubads().enableSingleRequest();
-      googletag.pubads().collapseEmptyDivs();
-      googletag.pubads().disableInitialLoad();
-      googletag.pubads().setPublisherProvidedId(publisherId);
-      googletag.enableServices();
+    this.googletag.cmd.push(() => {
+      this.definedSlots(adSlots);
+      this.setPubads();
+      this.googletag.enableServices();
     });
   }
 
   public setAdsSegmentation(allowSegmentation = false): void {
-    googletag.cmd.push(() => {
-      googletag
+    this.googletag.cmd.push(() => {
+      this.googletag
         .pubads()
         .setRequestNonPersonalizedAds(allowSegmentation ? 0 : 1);
-      googletag.pubads().refresh();
+      this.googletag.pubads().refresh();
     });
   }
 
   public setTargetingByAdsKeywords(allowSegmentation = false): void {
-    this.adsKeywordsService.updateAdKewords();
+    this.adsKeywordsService.updateAdKeywords();
 
     const adKeywords: AdKeyWords = this.adsKeywordsService.adKeywords;
     for (const key in adKeywords) {
       if (adKeywords.hasOwnProperty(key)) {
-        googletag.pubads().setTargeting(key, adKeywords[key]);
+        this.googletag.pubads().setTargeting(key, adKeywords[key]);
       }
     }
 
-    googletag
+    this.googletag
       .pubads()
-      .setTargeting('allowSegmentation', allowSegmentation ? 'true' : 'false');
+      .setTargeting('allowSegmentation', allowSegmentation.toString());
   }
 
   public displayAdBySlotId(slotId: AdSlotId): void {
-    googletag.cmd.push(() => {
-      googletag.display(slotId);
+    this.googletag.cmd.push(() => {
+      this.googletag.display(slotId);
     });
   }
 
-  public isLibraryRefDefined(): boolean {
-    return !!googletag;
+  private setPubads(): void {
+    this.googletag.pubads().enableSingleRequest();
+    this.googletag.pubads().collapseEmptyDivs();
+    this.googletag.pubads().disableInitialLoad();
+
+    const publisherId: string = this.getPublisherId();
+    this.googletag.pubads().setPublisherProvidedId(publisherId);
+  }
+
+  private getPublisherId(): string {
+    return this.cookieService.get('publisherId') ?? '-1' + Array(31).join('0');
+  }
+
+  private definedSlots(slots: AdSlot[]): void {
+    slots.forEach((slot) => {
+      this.googletag
+        .defineSlot(slot.name, slot.sizes, slot.id)
+        .setTargeting('ad_group', 'ad_opt')
+        .setTargeting('ad_h', new Date().getUTCHours().toString())
+        .addService(this.googletag.pubads());
+    });
   }
 }

@@ -8,6 +8,7 @@ import {
 } from '@core/ads/vendors';
 import { LoadExternalLibsService } from '@core/load-external-libs/load-external-libs.service';
 import {
+  MockAdSlots,
   MockAmazonPublisherService,
   MockCriteoService,
   MockGooglePublisherTagService,
@@ -104,25 +105,13 @@ describe('LoadAdsService', () => {
 
   describe('when we want to set slots', () => {
     it('should set in google library', () => {
-      const slots: AdSlot[] = [
-        {
-          id: 'div-gpt-ad-1508490196308-0',
-          name: '/130868815/chat_right',
-          sizes: [
-            [120, 600],
-            [160, 600],
-            [300, 250],
-            [300, 600],
-            [336, 280],
-          ],
-          networkId: 235235,
-        },
-      ];
       spyOn(MockGooglePublisherTagService, 'init').and.callThrough();
 
-      service.setSlots(slots);
+      service.setSlots(MockAdSlots);
 
-      expect(MockGooglePublisherTagService.init).toHaveBeenCalledWith(slots);
+      expect(MockGooglePublisherTagService.init).toHaveBeenCalledWith(
+        MockAdSlots
+      );
     });
   });
 });
