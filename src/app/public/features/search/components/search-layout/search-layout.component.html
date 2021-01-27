@@ -8,11 +8,11 @@
     <div class="col">
       <ng-content select="[main]"></ng-content>
     </div>
-    <div *ngIf="shouldRenderRightColumn" class="col d-none d-xl-block SearchLayout__fixed-width-column">
+    <div *ngIf="shouldRenderRightColumn | async" class="col d-none d-xl-block SearchLayout__fixed-width-column">
       <ng-content select="[right]"></ng-content>
     </div>
   </div>
-  <div *ngIf="shouldRenderBottomRow" class="row m-3 d-md-none">
+  <div *ngIf="shouldRenderBottomRow | async" class="row m-3 d-md-none">
     <div class="col">
       <ng-content select="[bottom]"></ng-content>
     </div>
