@@ -1,5 +1,12 @@
 import { DidomiService } from 'app/core/didomi/didomi.service';
-import { Observable, Subject, Subscription, combineLatest, merge } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  Subject,
+  Subscription,
+  combineLatest,
+  merge,
+} from 'rxjs';
 import { finalize, switchMap, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
@@ -21,6 +28,12 @@ export class AdsService {
   public adsRefreshSubscription: Subscription;
 
   private refreshEventSubject: Subject<void> = new Subject<void>();
+  private readonly _adsReady$: BehaviorSubject<boolean> = new BehaviorSubject<
+    boolean
+  >(false);
+  get adsReady$(): Observable<boolean> {
+    return this._adsReady$.asObservable();
+  }
 
   constructor(
     private didomiService: DidomiService,
@@ -33,10 +46,15 @@ export class AdsService {
   }
 
   public init(): void {
-    this.loadAdsService
-      .loadAds()
-      .pipe(tap(() => this.loadAdsService.setSlots(AD_SLOTS)))
-      .subscribe();
+    if (!this._adsReady$.getValue()) {
+      this.loadAdsService
+        .loadAds()
+        .pipe(
+          tap(() => this.loadAdsService.setSlots(AD_SLOTS)),
+          finalize(() => this._adsReady$.next(true))
+        )
+        .subscribe();
+    }
   }
 
   public refresh(): void {

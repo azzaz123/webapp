@@ -1,5 +1,6 @@
-import { Subscription } from 'rxjs';
 import { countBy, find, map } from 'lodash-es';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 import {
   animate,
@@ -198,6 +199,10 @@ export class InboxComponent implements OnInit, OnDestroy {
         }
       )
     );
+
+    this.adService.adsReady$
+      .pipe(filter(Boolean))
+      .subscribe(() => this.adService.refresh());
   }
 
   private setStatusesAfterLoadConversations() {
@@ -268,7 +273,6 @@ export class InboxComponent implements OnInit, OnDestroy {
         );
     }
     this.inboxConversationService.openConversation(newCurrentConversation);
-    this.adService.refresh();
   }
 
   public loadMore() {

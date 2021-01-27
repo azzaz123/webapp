@@ -3,6 +3,7 @@ import { of } from 'rxjs';
 import { AdKeyWords, AdSlot, AdSlotId } from '@core/ads/models';
 
 export const MockAdsService = {
+  adsReady$: of(true),
   init: () => {},
   refresh: () => {},
   displayAdBySlotId: (adSlotId) => {},

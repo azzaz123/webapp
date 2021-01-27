@@ -2,7 +2,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { Observable, of } from 'rxjs';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AdsService } from '@core/ads/services';
 import {
   ANALYTICS_EVENT_NAMES,
@@ -43,7 +43,7 @@ describe('Component: InboxComponent', () => {
   let eventService: EventService;
   let userService: UserService;
   let conversationService: InboxConversationService;
-  let addService: AdsService;
+  let adService: AdsService;
   let remoteConsoleService: RemoteConsoleService;
   let analyticsService: AnalyticsService;
 
@@ -100,7 +100,7 @@ describe('Component: InboxComponent', () => {
     inboxService = TestBed.inject(InboxService);
     eventService = TestBed.inject(EventService);
     userService = TestBed.inject(UserService);
-    addService = TestBed.inject(AdsService);
+    adService = TestBed.inject(AdsService);
     remoteConsoleService = TestBed.inject(RemoteConsoleService);
     conversationService = TestBed.inject(InboxConversationService);
     analyticsService = TestBed.inject(AnalyticsService);
@@ -133,6 +133,14 @@ describe('Component: InboxComponent', () => {
       eventService.emit(EventService.INBOX_LOADED, mockedInboxConversations);
 
       expect(component.conversations).toEqual(mockedInboxConversations);
+    });
+
+    it('should refresh ads', () => {
+      spyOn(adService, 'refresh');
+
+      component.ngOnInit();
+
+      expect(adService.refresh).toHaveBeenCalled();
     });
 
     describe('when inboxService.conversations exists', () => {
@@ -353,14 +361,12 @@ describe('Component: InboxComponent', () => {
 
     it('should should call conversationService.openConversation with the new conversation', () => {
       spyOn(conversationService, 'openConversation').and.callThrough();
-      spyOn(addService, 'refresh');
 
       component.setCurrentConversation(newlySelectedConversation);
 
       expect(conversationService.openConversation).toHaveBeenCalledWith(
         newlySelectedConversation
       );
-      expect(addService.refresh).toHaveBeenCalled();
     });
   });
 
