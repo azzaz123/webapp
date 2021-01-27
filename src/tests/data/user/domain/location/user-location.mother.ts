@@ -17,6 +17,7 @@ export class UserLocationMother {
       latitude: LatitudeMother.random(),
       longitude: LongitudeMother.random(),
       address: faker.address.secondaryAddress(),
+      country_code: faker.address.countryCode(),
       ...partial,
     };
   }

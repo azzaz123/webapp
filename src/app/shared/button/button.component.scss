@@ -123,4 +123,19 @@ $vertical-padding: $spacing-ms;
       color: $white;
     }
   }
+
+  &.btn-activation {
+    width: 170px;
+    height: 40px;
+    padding: 0 $spacing-ml;
+    padding-left: $spacing-ms;
+    font-size: $font-size-s;
+    @include media-breakpoint-down(md) {
+      width: 85px;
+      padding: 0;
+      span {
+        display: none;
+      }
+    }
+  }
 }

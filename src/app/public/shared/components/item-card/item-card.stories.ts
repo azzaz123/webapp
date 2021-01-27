@@ -18,7 +18,7 @@ import {
 import { styledWrapperDecorator } from '@stories/decorators/styled-wrapper/styled-wrapper.decorator';
 
 export default {
-  title: 'Webapp/ItemCard',
+  title: 'Webapp/Public/Shared/Components/ItemCard',
   component: ItemCardComponent,
   decorators: [styledWrapperDecorator('max-width: 220px;')],
   argTypes: { toggleFavourite: { action: 'toggleFavourite' } },
