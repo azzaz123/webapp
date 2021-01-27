@@ -210,6 +210,8 @@ export class I18nService {
       invoiceCannotGenerate:
         'Your invoice could not be generated. Please try again',
       errorSavingData: 'Error while saving data. Please try again',
+      becomePro: 'Become a PRO',
+      wallapopPro: 'Wallapop PRO',
     },
     es: {
       yes: 'Sí',
@@ -424,6 +426,8 @@ export class I18nService {
       invoiceCannotGenerate:
         'Tu factura no se ha podido generar. Intenta de nuevo',
       errorSavingData: 'Error al guardar los datos. Intenta de nuevo',
+      becomePro: 'Conviértete en PRO',
+      wallapopPro: 'Wallapop PRO',
     },
   };
 
