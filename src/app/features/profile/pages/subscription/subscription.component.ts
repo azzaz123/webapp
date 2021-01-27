@@ -31,6 +31,7 @@ import { User } from 'app/core/user/user';
 import { UserService } from 'app/core/user/user.service';
 import { isEqual } from 'lodash-es';
 import { delay, finalize, repeatWhen, take, takeWhile } from 'rxjs/operators';
+import { I18nService } from '@core/i18n/i18n.service';
 
 export type SubscriptionModal =
   | typeof CheckSubscriptionInAppModalComponent
@@ -55,7 +56,8 @@ export class SubscriptionsComponent implements OnInit {
     private subscriptionsService: SubscriptionsService,
     private router: Router,
     private analyticsService: AnalyticsService,
-    private userService: UserService
+    private userService: UserService,
+    private i18n: I18nService
   ) {}
 
   ngOnInit() {
@@ -303,5 +305,13 @@ export class SubscriptionsComponent implements OnInit {
 
   public hasOneFreeSubscription() {
     return this.subscriptionsService.hasOneFreeSubscription(this.subscriptions);
+  }
+
+  public getSubscriptionTextButton(
+    subscription: SubscriptionsResponse
+  ): string {
+    return this.subscriptionsService.hasTrial(subscription)
+      ? this.i18n.getTranslations('startFreeTrial')
+      : this.i18n.getTranslations('seePlans');
   }
 }
