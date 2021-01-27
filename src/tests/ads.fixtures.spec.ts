@@ -1,6 +1,6 @@
 import { of } from 'rxjs';
 
-import { AdSlot, AdSlotId } from '@core/ads/models';
+import { AdKeyWords, AdSlot, AdSlotId } from '@core/ads/models';
 
 export const MockAdsService = {
   init: () => {},
@@ -29,4 +29,11 @@ export const MockGooglePublisherTagService = {
 export const MockLoadAdsService = {
   loadAds: () => of(true),
   setSlots(slots: AdSlot[]): void {},
+};
+
+export const MockAdsKeywords: AdKeyWords = {};
+
+export const MockAdsKeywordsService = {
+  adKeywords: () => MockAdsKeywords,
+  updateAdKewords: () => {},
 };

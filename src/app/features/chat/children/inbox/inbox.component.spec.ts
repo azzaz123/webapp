@@ -2,7 +2,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { Observable, of } from 'rxjs';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { AdsService } from '@core/ads/services';
 import {
   ANALYTICS_EVENT_NAMES,
@@ -38,6 +38,7 @@ import { InboxComponent, InboxState } from './inbox.component';
 
 describe('Component: InboxComponent', () => {
   let component: InboxComponent;
+  let componentFixture: ComponentFixture<InboxComponent>;
   let inboxService: InboxService;
   let eventService: EventService;
   let userService: UserService;
@@ -56,7 +57,7 @@ describe('Component: InboxComponent', () => {
       ],
       providers: [
         EventService,
-        { provide: AdsService, useClass: MockAdsService },
+        { provide: AdsService, useValue: MockAdsService },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         { provide: AnalyticsService, useClass: MockAnalyticsService },
         {
@@ -94,7 +95,8 @@ describe('Component: InboxComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     });
-    component = TestBed.createComponent(InboxComponent).componentInstance;
+    componentFixture = TestBed.createComponent(InboxComponent);
+    component = componentFixture.componentInstance;
     inboxService = TestBed.inject(InboxService);
     eventService = TestBed.inject(EventService);
     userService = TestBed.inject(UserService);
@@ -351,7 +353,7 @@ describe('Component: InboxComponent', () => {
 
     it('should should call conversationService.openConversation with the new conversation', () => {
       spyOn(conversationService, 'openConversation').and.callThrough();
-      spyOn(addService, 'adsRefresh');
+      spyOn(addService, 'refresh');
 
       component.setCurrentConversation(newlySelectedConversation);
 

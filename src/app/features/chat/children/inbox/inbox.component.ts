@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs';
 import { countBy, find, map } from 'lodash-es';
 
 import {
@@ -101,6 +102,8 @@ export class InboxComponent implements OnInit, OnDestroy {
   private conversation: InboxConversation;
   public isProfessional: boolean;
 
+  subscriptions: Subscription = new Subscription();
+
   constructor(
     private inboxService: InboxService,
     private eventService: EventService,
@@ -154,40 +157,46 @@ export class InboxComponent implements OnInit, OnDestroy {
       this.loading = true;
     }
 
-    this.eventService.subscribe(
-      EventService.INBOX_LOADED,
-      (conversations: InboxConversation[], callMethodClient: string) => {
-        this.conversations = this.inboxConversationService.conversations;
-        this.onInboxReady(conversations, callMethodClient);
-      }
+    this.subscriptions.add(
+      this.eventService.subscribe(
+        EventService.INBOX_LOADED,
+        (conversations: InboxConversation[], callMethodClient: string) => {
+          this.conversations = this.inboxConversationService.conversations;
+          this.onInboxReady(conversations, callMethodClient);
+        }
+      )
+    );
+    this.subscriptions.add(
+      this.eventService.subscribe(
+        EventService.ARCHIVED_INBOX_LOADED,
+        (conversations: InboxConversation[]) => {
+          this.archivedConversations = this.inboxConversationService.archivedConversations;
+          this.setStatusesAfterLoadConversations();
+        }
+      )
+    );
+    this.subscriptions.add(
+      this.userService.isProfessional().subscribe((value: boolean) => {
+        this.isProfessional = value;
+      })
     );
 
-    this.eventService.subscribe(
-      EventService.ARCHIVED_INBOX_LOADED,
-      (conversations: InboxConversation[]) => {
-        this.archivedConversations = this.inboxConversationService.archivedConversations;
-        this.setStatusesAfterLoadConversations();
-      }
-    );
-
-    this.userService.isProfessional().subscribe((value: boolean) => {
-      this.isProfessional = value;
-    });
-
-    this.eventService.subscribe(
-      EventService.CURRENT_CONVERSATION_SET,
-      (conversation) => {
-        if (this.conversation !== conversation) {
-          this.conversation = conversation;
-          this.trackViewConversation(conversation);
+    this.subscriptions.add(
+      this.eventService.subscribe(
+        EventService.CURRENT_CONVERSATION_SET,
+        (conversation) => {
+          if (this.conversation !== conversation) {
+            this.conversation = conversation;
+            this.trackViewConversation(conversation);
+          }
+          if (
+            this.archivedConversations.find((c) => c === conversation) &&
+            this.componentState === InboxState.Inbox
+          ) {
+            this.componentState = InboxState.Archived;
+          }
         }
-        if (
-          this.archivedConversations.find((c) => c === conversation) &&
-          this.componentState === InboxState.Inbox
-        ) {
-          this.componentState = InboxState.Archived;
-        }
-      }
+      )
     );
   }
 
@@ -200,6 +209,7 @@ export class InboxComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.unselectCurrentConversation();
+    this.subscriptions.unsubscribe();
   }
 
   private onInboxReady(

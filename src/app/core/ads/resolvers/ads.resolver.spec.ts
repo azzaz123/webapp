@@ -13,7 +13,7 @@ describe('AdsResolver', () => {
       providers: [
         {
           provide: AdsService,
-          useClass: MockAdsService,
+          useValue: MockAdsService,
         },
       ],
     });

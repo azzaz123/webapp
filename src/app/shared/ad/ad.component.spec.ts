@@ -15,7 +15,7 @@ describe('AdComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [AdComponent],
-        providers: [{ provide: AdsService, useClass: MockAdsService }],
+        providers: [{ provide: AdsService, useValue: MockAdsService }],
       }).compileComponents();
     })
   );

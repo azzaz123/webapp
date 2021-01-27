@@ -1,4 +1,6 @@
 import { TestBed } from '@angular/core/testing';
+import { AdsKeywordsService } from '@core/ads/services/ads-keywords/ads-keywords.service';
+import { MockAdsKeywordsService } from '@fixtures/ads.fixtures.spec';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { CookieService } from 'ngx-cookie';
 
@@ -12,7 +14,11 @@ describe('GooglePublisherTagService', () => {
       providers: [
         {
           provide: CookieService,
-          useClass: MockCookieService,
+          useValue: MockCookieService,
+        },
+        {
+          provide: AdsKeywordsService,
+          useValue: MockAdsKeywordsService,
         },
       ],
     });
