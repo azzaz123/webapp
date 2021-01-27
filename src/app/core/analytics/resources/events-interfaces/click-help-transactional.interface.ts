@@ -6,9 +6,9 @@
  */
 
 /**
- * User clicks the help button on top of the transaction pay screen
+ * User clicks a help or information button on a transactional screen
  */
-export interface ClickHelpTopTransactionPay {
+export interface ClickHelpTransactional {
   /**
    * The unique identifier for an item
    */
@@ -36,5 +36,9 @@ export interface ClickHelpTopTransactionPay {
   /**
    * Identifier of the screen where the click is done
    */
-  screenId: 209;
+  screenId: 209 | 210;
+  /**
+   * Name of the tutorial/help that the user is clicking on
+   */
+  helpName: 'Help Top Pay Screen' | 'Help Top Accept Screen';
 }
