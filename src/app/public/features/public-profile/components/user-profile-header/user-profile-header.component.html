@@ -12,9 +12,9 @@
             <tsl-stars class="d-inline-block" [stars]="userStats.ratings?.reviews" [normalized]="false"></tsl-stars>
             <span class="user-number-reviews mb-0">({{userStats.counters?.reviews}})</span>
             <div class="ProBadge" [hidden]="!userInfo.featured">
-              <div class="ProBadge-icon mt-1">
+              <div class="ProBadge-icon mt-1 d-flex align-items-center">
                 <tsl-svg-icon src="/assets/icons/pro-seal.svg"></tsl-svg-icon>
-                <div class="ml-2 d-inline ProfileUser__container__title--bold">PRO</div>
+                <span class="ml-1 d-inline ProfileUser__container__title--bold">PRO</span>
               </div>
             </div>
           </div>
