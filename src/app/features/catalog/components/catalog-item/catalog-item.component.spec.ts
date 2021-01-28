@@ -500,4 +500,18 @@ describe('CatalogItemComponent', () => {
       expect(window.open).toHaveBeenCalledWith(component.link);
     });
   });
+
+  describe('activateItem', () => {
+    it('should emit the item to activate', () => {
+      spyOn(component.itemChange, 'emit');
+      const item: Item = MOCK_ITEM;
+
+      component.activateItem(item);
+
+      expect(component.itemChange.emit).toHaveBeenCalledWith({
+        item,
+        action: 'activate',
+      });
+    });
+  });
 });
