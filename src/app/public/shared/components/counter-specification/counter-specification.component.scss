@@ -1,0 +1,19 @@
+@import '~style/common';
+
+.CounterSpec {
+  &__container {
+    @include square(48px);
+  }
+
+  &__counter {
+    font-size: $font-size-xl;
+  }
+
+  &__icon {
+    width: fit-content;
+  }
+
+  &__measure {
+    font-size: $font-size-s;
+  }
+}
