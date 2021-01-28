@@ -148,7 +148,6 @@ describe('ItemDetailComponent', () => {
       beforeEach(() => {
         component.item = MOCK_ITEM_WITHOUT_LOCATION;
 
-        component.ngOnInit();
         fixture.detectChanges();
       });
 
@@ -165,17 +164,17 @@ describe('ItemDetailComponent', () => {
     });
   });
 
-  xdescribe('when the location is NOT defined', () => {
+  describe('when the location is NOT defined', () => {
     beforeEach(() => {
-      component.item = null;
+      component.itemLocation = null;
+      component.item = MOCK_ITEM_WITHOUT_LOCATION;
       spyOn(userService, 'me').and.returnValue(throwError('error'));
 
-      component.ngOnInit();
       fixture.detectChanges();
     });
 
     it('should have an undefined location', () => {
-      expect(component.itemLocation).toBe(undefined);
+      expect(component.itemLocation).toBe(null);
       expect(component.locationHaveCoordinates).toBe(false);
       expect(el.querySelector(locationClass).innerHTML).toContain(
         component.locationSpecifications
@@ -188,7 +187,6 @@ describe('ItemDetailComponent', () => {
 
       expect(map).toBeFalsy();
       expect(component.locationHaveCoordinates).toBe(false);
-
       expect(fallbackMap).toBeTruthy();
     });
   });
