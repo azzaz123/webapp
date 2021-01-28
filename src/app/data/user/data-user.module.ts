@@ -6,6 +6,7 @@ import {
   USER_REPOSITORY_TOKEN,
 } from './domain';
 import { USER_STATS_REPOSITORY_TOKEN } from './domain/stats/user-stats.repository';
+import { ProfileResolver } from './infrastructure';
 import { ApiUserRepository } from './infrastructure/repository/api-user.repository';
 import { ApiUserLocationRepository } from './infrastructure/repository/location/api-user-location.repository';
 import { ApiUserStatsRepository } from './infrastructure/repository/stats/api-user-stats.repository';
@@ -31,6 +32,7 @@ import { KEY_FEATURE_STATE, userState } from './store/reducer';
       provide: USER_STATS_REPOSITORY_TOKEN,
       useClass: ApiUserStatsRepository,
     },
+    ProfileResolver,
   ],
 })
 export class DataUserModule {}

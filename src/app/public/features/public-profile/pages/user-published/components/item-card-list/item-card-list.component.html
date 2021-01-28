@@ -1,6 +1,6 @@
 <div class="ItemCardList w-100 m-auto">
-    <tsl-public-item-card *ngFor="let item of items" [item]="item" 
-        [showDescription]="showDescription" 
-        [showFavourite]="!(item.owner | isCurrentUser)" 
+    <tsl-public-item-card *ngFor="let item of items" [item]="item"
+        [showDescription]="showDescription"
+        [showFavourite]="!(item.owner | isCurrentUser | async)"
         (toggleFavourite)="toggleFavourite(item)"></tsl-public-item-card>
 </div>

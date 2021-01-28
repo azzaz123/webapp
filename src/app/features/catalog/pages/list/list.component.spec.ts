@@ -18,10 +18,14 @@ import { Item } from '@core/item/item';
 import { ItemService } from '@core/item/item.service';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
-import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import {
+  SubscriptionsService,
+  SUBSCRIPTION_TYPES,
+} from '@core/subscriptions/subscriptions.service';
 import { TrackingService } from '@core/tracking/tracking.service';
 import { FeatureflagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
+import { STATUS } from '@features/catalog/components/selected-items/selected-product.interface';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { CATEGORY_DATA_WEB } from '@fixtures/category.fixtures.spec';
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
@@ -29,6 +33,7 @@ import {
   createItemsArray,
   ITEMS_BULK_RESPONSE,
   ITEMS_BULK_RESPONSE_FAILED,
+  ITEM_CATEGORY_ID,
   MOCK_ITEM,
   MOCK_ITEM_V3,
   MOCK_LISTING_FEE_ORDER,
@@ -38,17 +43,19 @@ import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spe
 import {
   MockSubscriptionService,
   MOCK_SUBSCRIPTION_SLOTS,
+  MOCK_SUBSCRIPTION_SLOT_CARS,
 } from '@fixtures/subscriptions.fixtures.spec';
 import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { MOCK_USER, USER_INFO_RESPONSE } from '@fixtures/user.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ActivateItemsModalComponent } from '@shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component';
 import { TooManyItemsModalComponent } from '@shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { BumpSuggestionModalComponent } from '@shared/modals/bump-suggestion-modal/bump-suggestion-modal.component';
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
 import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
-import { find } from 'lodash-es';
+import { find, cloneDeep } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { of, ReplaySubject, Subject } from 'rxjs';
 import { SubscriptionsSlotItemComponent } from '../../components/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component';
@@ -135,6 +142,7 @@ describe('ListComponent', () => {
               bulkSetActivate() {},
               bulkSetDeactivate() {},
               activate() {},
+              activateSingleItem() {},
               deactivate() {},
               selectedItems$: new ReplaySubject(1),
               selectedItems: [],
@@ -982,40 +990,166 @@ describe('ListComponent', () => {
     });
   });
 
-  describe('activate', () => {
+  describe('activate multiple items', () => {
     const TOTAL: number = 5;
     beforeEach(() => {
-      component.selectedStatus = 'active';
+      spyOn(itemService, 'activate').and.returnValue(of('200'));
       component.items = createItemsArray(TOTAL);
+      component.selectedStatus = STATUS.INACTIVE;
       itemService.selectedItems = ['1'];
       component.items[0].flags['onhold'] = true;
       component.items[0].selected = true;
     });
 
-    describe('success', () => {
-      beforeEach(fakeAsync(() => {
-        spyOn(itemService, 'activate').and.returnValue(of('200'));
+    it('should call modal and activate', fakeAsync(() => {
+      component.activate();
+      tick();
+
+      expect(modalService.open).toHaveBeenCalledTimes(1);
+      expect(modalService.open).toHaveBeenCalledWith(
+        ActivateItemsModalComponent
+      );
+      expect(itemService.activate).toHaveBeenCalledTimes(1);
+    }));
+
+    describe('success when status is inactive', () => {
+      it('should reset item selection', fakeAsync(() => {
+        component.activate();
+        tick();
+
+        expect(component.items.find((item) => item.id === '1')).toBeFalsy();
+      }));
+    });
+
+    describe('success when status is not inactive', () => {
+      it('should reset item selection', fakeAsync(() => {
+        component.selectedStatus = STATUS.PUBLISHED;
+
+        fixture.detectChanges();
+        component.activate();
+        tick();
+
+        expect(component.items[0].flags['onhold']).toBe(false);
+        expect(component.items[0].selected).toBe(false);
+      }));
+    });
+
+    describe('update counters', () => {
+      beforeEach(() => {
+        component.subscriptionSlots = [cloneDeep(MOCK_SUBSCRIPTION_SLOT_CARS)];
+        component.subscriptionSlots[0].category.category_id = ITEM_CATEGORY_ID;
+      });
+
+      it('should update if there is not selected a subscription slot', fakeAsync(() => {
+        component.activate();
+        tick();
+
+        expect(component.subscriptionSlots[0].available).toBe(2);
+      }));
+
+      it('should update if there is selected a subscription slot', fakeAsync(() => {
+        component.selectedSubscriptionSlot = cloneDeep(
+          MOCK_SUBSCRIPTION_SLOT_CARS
+        );
+        component.navLinks = [
+          {
+            id: STATUS.INACTIVE,
+            display: 'navLink',
+            counter: { currentVal: 0 },
+          },
+          { id: STATUS.ACTIVE, display: 'navLink', counter: { currentVal: 0 } },
+        ];
 
         component.activate();
         tick();
+
+        expect(component.selectedSubscriptionSlot.available).toBe(2);
       }));
+    });
+  });
 
-      it('should call modal and activate', () => {
-        expect(modalService.open).toHaveBeenCalled();
-        expect(itemService.activate).toHaveBeenCalled();
-      });
+  describe('activate single items', () => {
+    const TOTAL: number = 5;
+    beforeEach(() => {
+      spyOn(itemService, 'activateSingleItem').and.returnValue(of('200'));
+      component.items = createItemsArray(TOTAL);
+      component.selectedStatus = STATUS.INACTIVE;
+      component.items[0].flags['onhold'] = true;
+      component.items[0].selected = true;
+    });
 
-      it('should reset item selection', () => {
+    it('should call modal and activate', fakeAsync(() => {
+      component.activate(SUBSCRIPTION_TYPES.stripe, '1');
+      tick();
+
+      expect(modalService.open).toHaveBeenCalledTimes(1);
+      expect(modalService.open).toHaveBeenCalledWith(
+        ActivateItemsModalComponent
+      );
+      expect(itemService.activateSingleItem).toHaveBeenCalledTimes(1);
+      expect(itemService.activateSingleItem).toHaveBeenCalledWith('1');
+    }));
+
+    describe('success when status is inactive', () => {
+      it('should reset item selection', fakeAsync(() => {
+        component.activate(SUBSCRIPTION_TYPES.stripe, '1');
+        tick();
+
+        expect(component.items.find((item) => item.id === '1')).toBeFalsy();
+      }));
+    });
+
+    describe('success when status is not inactive', () => {
+      it('should reset item selection', fakeAsync(() => {
+        component.selectedStatus = STATUS.PUBLISHED;
+
+        fixture.detectChanges();
+        component.activate(SUBSCRIPTION_TYPES.stripe, '1');
+        tick();
+
         expect(component.items[0].flags['onhold']).toBe(false);
         expect(component.items[0].selected).toBe(false);
+      }));
+    });
+
+    describe('update counters', () => {
+      beforeEach(() => {
+        component.subscriptionSlots = [cloneDeep(MOCK_SUBSCRIPTION_SLOT_CARS)];
+        component.subscriptionSlots[0].category.category_id = ITEM_CATEGORY_ID;
       });
+
+      it('should update if there is not selected a subscription slot', fakeAsync(() => {
+        component.activate(SUBSCRIPTION_TYPES.stripe, '1');
+        tick();
+
+        expect(component.subscriptionSlots[0].available).toBe(2);
+      }));
+
+      it('should update if there is selected a subscription slot', fakeAsync(() => {
+        component.selectedSubscriptionSlot = cloneDeep(
+          MOCK_SUBSCRIPTION_SLOT_CARS
+        );
+        component.navLinks = [
+          {
+            id: STATUS.INACTIVE,
+            display: 'navLink',
+            counter: { currentVal: 0 },
+          },
+          { id: STATUS.ACTIVE, display: 'navLink', counter: { currentVal: 0 } },
+        ];
+
+        component.activate(SUBSCRIPTION_TYPES.stripe, '1');
+        tick();
+
+        expect(component.selectedSubscriptionSlot.available).toBe(2);
+      }));
     });
   });
 
   describe('deactivate', () => {
     const TOTAL: number = 5;
     beforeEach(() => {
-      component.selectedStatus = 'active';
+      component.selectedStatus = STATUS.ACTIVE;
       component.items = createItemsArray(TOTAL);
       itemService.selectedItems = ['1'];
       component.items[0].flags['onhold'] = false;
