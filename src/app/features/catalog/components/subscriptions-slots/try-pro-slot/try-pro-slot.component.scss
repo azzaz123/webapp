@@ -1,0 +1,35 @@
+@import '~style/common';
+
+.Try-pro-slot {
+  position: relative;
+  transition: all 0.25s ease;
+  background-color: transparentize($white, 0.5);
+  border: solid 1px $blue-grey-5;
+  border-radius: $spacing-ms;
+
+  &:hover {
+    border: solid 1px $walla-main;
+  }
+
+  &__description {
+    font-weight: bold;
+    color: $blue-grey-1;
+  }
+
+  &__close {
+    cursor: pointer;
+    @include square($spacing-ms);
+    margin: $spacing-m;
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    tsl-svg-icon {
+      @include square($spacing-ms);
+
+      ::ng-deep svg path {
+        fill: $blue-grey-3;
+      }
+    }
+  }
+}

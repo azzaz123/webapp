@@ -87,6 +87,7 @@ export class ListComponent implements OnInit, OnDestroy {
   public subscriptionSelectedNavLinks: NavLink[] = [];
   public user: User;
   public userScore: number;
+  public showTryProSlot: boolean;
 
   @ViewChild(ItemSoldDirective, { static: true }) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent, { static: true })
@@ -109,6 +110,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getUserInfo();
+    this.showTryProSlot = true;
 
     this.normalNavLinks = [
       { id: STATUS.PUBLISHED, display: this.i18n.getTranslations('selling') },
@@ -794,5 +796,9 @@ export class ListComponent implements OnInit, OnDestroy {
         this.userScore = info.scoring_stars;
       });
     });
+  }
+
+  public onCloseTryProSlot(): void {
+    this.showTryProSlot = false;
   }
 }

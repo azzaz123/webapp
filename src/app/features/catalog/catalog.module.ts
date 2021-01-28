@@ -22,6 +22,7 @@ import { ReactivateConfirmationModalComponent } from './modals/reactivate-confir
 import { ReactivateModalComponent } from './modals/reactivate-modal/reactivate-modal.component';
 import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
+import { TryProSlotComponent } from './components/subscriptions-slots/try-pro-slot/try-pro-slot.component';
 
 @NgModule({
   imports: [
@@ -50,6 +51,7 @@ import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-curre
     BuyProductModalComponent,
     ReactivateConfirmationModalComponent,
     ListingfeeConfirmationModalComponent,
+    TryProSlotComponent,
   ],
   entryComponents: [
     BumpConfirmationModalComponent,

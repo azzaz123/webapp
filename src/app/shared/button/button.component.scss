@@ -124,6 +124,14 @@ $vertical-padding: $spacing-ms;
     }
   }
 
+  &.btn-black {
+    background-color: $blue-grey-1;
+    color: $white;
+    border: 0;
+    font-weight: bold;
+    font-size: $font-size-s;
+  }
+
   &.btn-activation {
     width: 170px;
     height: 40px;
