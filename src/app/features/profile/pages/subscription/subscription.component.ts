@@ -31,7 +31,6 @@ import { User } from 'app/core/user/user';
 import { UserService } from 'app/core/user/user.service';
 import { isEqual } from 'lodash-es';
 import { delay, finalize, repeatWhen, take, takeWhile } from 'rxjs/operators';
-import { I18nService } from '@core/i18n/i18n.service';
 
 export type SubscriptionModal =
   | typeof CheckSubscriptionInAppModalComponent
