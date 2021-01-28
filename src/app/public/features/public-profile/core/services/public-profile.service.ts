@@ -3,7 +3,11 @@ import { Observable, of } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators';
 import { Counters, Ratings, UserStats } from '@core/user/user-stats.interface';
 import { User } from '@core/user/user';
-import { Image, UserResponse } from '@core/user/user-response.interface';
+import {
+  Image,
+  UserExtrainfo,
+  UserResponse,
+} from '@core/user/user-response.interface';
 import { MarkAsFavouriteBodyResponse } from '../interfaces/public-profile-request.interface';
 import { ReviewResponse } from '@features/reviews/core/review-response.interface';
 import { ItemResponse } from '@core/item/item-response.interface';
@@ -82,6 +86,10 @@ export class PublicProfileService {
     return this.publicUserApiService.getCoverImage(userId);
   }
 
+  public getExtraInfo(userId: string): Observable<UserExtrainfo> {
+    return this.publicUserApiService.getExtraInfo(userId);
+  }
+
   public markAsFavourite(
     userId: string
   ): Observable<MarkAsFavouriteBodyResponse> {
@@ -111,6 +119,8 @@ export class PublicProfileService {
     if (!data || !data.id) {
       return null;
     }
+
+    console.log(data);
 
     return new User(
       data.id,

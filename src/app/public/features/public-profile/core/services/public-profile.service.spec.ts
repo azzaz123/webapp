@@ -60,6 +60,9 @@ describe('PublicProfileService', () => {
             isFavourite() {
               return of();
             },
+            getExtraInfo() {
+              return of();
+            },
             markAsFavourite() {
               return of();
             },
@@ -235,6 +238,16 @@ describe('PublicProfileService', () => {
         });
 
       expect(expectedResponse).toEqual(IMAGE);
+    });
+  });
+
+  describe('when getting extra info...', () => {
+    it('should return user extra info', () => {
+      spyOn(publicUserApiService, 'getExtraInfo');
+
+      publicProfileService.getExtraInfo(userId);
+
+      expect(publicUserApiService.getExtraInfo).toHaveBeenCalledWith(userId);
     });
   });
 
