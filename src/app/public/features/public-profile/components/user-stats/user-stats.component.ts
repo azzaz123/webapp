@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { ScrollIntoViewService } from '@core/scroll-into-view/scroll-into-view';
 import { User } from '@core/user/user';
 import { UserStats } from '@core/user/user-stats.interface';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -20,7 +21,8 @@ export class UserStatsComponent {
 
   constructor(
     private deviceService: DeviceDetectorService,
-    private router: Router
+    private router: Router,
+    private scrollIntoViewService: ScrollIntoViewService
   ) {}
 
   togglePhone(): void {
@@ -29,8 +31,12 @@ export class UserStatsComponent {
 
   public showLocation(): void {
     const URL = `${this.cleanCurrentURL()}${PUBLIC_PROFILE_PATHS.INFO}`;
+
     if (this.deviceService.isMobile()) {
       this.router.navigate([URL], { fragment: MAP_REDIRECTION });
+      setTimeout(() => {
+        this.scrollIntoViewService.scrollToSelector('#map');
+      });
     } else {
       this.router.navigate([URL]);
     }

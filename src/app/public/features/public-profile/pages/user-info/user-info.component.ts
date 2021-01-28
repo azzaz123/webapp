@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Coordinate } from '@core/geolocation/address-response.interface';
+import { ScrollIntoViewService } from '@core/scroll-into-view/scroll-into-view';
 import { User } from '@core/user/user';
 import {
   UserExtrainfo,
@@ -31,7 +32,8 @@ export class UserInfoComponent implements OnInit, OnDestroy {
   constructor(
     private deviceService: DeviceDetectorService,
     private publicProfileService: PublicProfileService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private scrollIntoViewService: ScrollIntoViewService
   ) {}
 
   ngOnInit(): void {
@@ -79,6 +81,6 @@ export class UserInfoComponent implements OnInit, OnDestroy {
   }
 
   private scrollIntoMap(): void {
-    this.mapView.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    this.scrollIntoViewService.scrollToElement(this.mapView.nativeElement);
   }
 }
