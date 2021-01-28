@@ -1,5 +1,7 @@
 @import '~style/common';
 
+$profile-image-size: 80px;
+
 .HeaderPro {
   height: 160px;
 }
@@ -19,19 +21,9 @@
   }
 }
 
-.ProfileUser__info {
-  .ProfileUser__info__image {
-    position: relative;
-    @include square(80px);
-    background: $color-grey-light;
-    border-radius: 50%;
-  }
-}
-
 .ProBadge {
-  .ProBadge-icon {
-    tsl-svg-icon {
-      @include square(14px);
-    }
+  margin-left: $profile-image-size;
+  tsl-svg-icon {
+    @include square(14px);
   }
 }
