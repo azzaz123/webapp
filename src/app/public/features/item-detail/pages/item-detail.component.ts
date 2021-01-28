@@ -60,7 +60,7 @@ export class ItemDetailComponent implements OnInit {
       ? this.itemDetail.item.location
       : this.itemDetail.user.location;
 
-    this.location = {
+    this.itemLocation = {
       zip: detailLocation.zip,
       city: detailLocation.city,
       latitude: detailLocation.approximated_latitude,
@@ -108,10 +108,6 @@ export class ItemDetailComponent implements OnInit {
       item.mainImage.urls_by_size.medium,
       item.webLink
     );
-  }
-
-  set location(itemLocation: ItemDetailLocation) {
-    this.itemLocation = itemLocation;
   }
 
   set approximatedLocation(isApproximated: boolean) {
