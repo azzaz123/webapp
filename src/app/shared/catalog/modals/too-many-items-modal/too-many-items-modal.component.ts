@@ -77,10 +77,15 @@ export class TooManyItemsModalComponent implements OnInit {
           (subscription) => item.categoryId === subscription.category_id
         );
 
-        if (this.categorySubscription) {
-          return this.subscriptionsService.hasTrial(this.categorySubscription);
+        if (!this.categorySubscription) {
+          return false;
         }
-        return false;
+
+        if (!!this.categorySubscription.subscribed_from) {
+          return false;
+        }
+
+        return this.subscriptionsService.hasTrial(this.categorySubscription);
       })
     );
   }

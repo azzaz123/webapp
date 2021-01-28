@@ -1057,7 +1057,7 @@ export const MAPPED_SUBSCRIPTIONS_ADDED: SubscriptionsResponse[] = [
     id: 'abcd-1234-5678-efgh',
     category_id: 14000,
     current_limit: 3,
-    subscribed_from: 1567675697,
+    subscribed_from: null,
     selected_tier_id: 'plan_FWuGNucr7WgWUc',
     default_tier_id: 'plan_FWuFVeTHEDyECa',
     trial_available: true,

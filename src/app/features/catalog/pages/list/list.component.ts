@@ -685,6 +685,7 @@ export class ListComponent implements OnInit, OnDestroy {
           windowClass: 'modal-standard',
         });
         modalRef.componentInstance.type = subscriptionType;
+        modalRef.componentInstance.itemId = itemId;
       }
     );
   }
@@ -699,7 +700,20 @@ export class ListComponent implements OnInit, OnDestroy {
         const modalRef = this.modalService.open(TooManyItemsModalComponent, {
           windowClass: 'modal-standard',
         });
+        const itemsData: Item[] = [];
+        let itemId: string;
+        items.forEach((id: string) => {
+          let item: Item = find(this.items, { id: id });
+          itemsData.push(item);
+        });
+
+        if (
+          itemsData.every((item) => item.categoryId === itemsData[0].categoryId)
+        ) {
+          itemId = itemsData[0].id;
+        }
         modalRef.componentInstance.type = subscriptionType;
+        modalRef.componentInstance.itemId = itemId;
       }
     );
   }
