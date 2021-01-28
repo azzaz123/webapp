@@ -1,5 +1,5 @@
 import { LatitudeMother, LongitudeMother } from '@fixtures/core';
-import { ColourMother } from '@fixtures/shared';
+import { ColourMother, BooleanMother } from '@fixtures/shared';
 import { ApiUserExtrainfo, ApiUserResponse, ApiUserStatsOld, ApiUserValidations } from 'app/data/user/infrastructure/repository/api-user.response';
 import * as faker from 'faker';
 import { UserGenderMother, UserLocationMother } from './../../domain';
@@ -42,6 +42,8 @@ export class ApiUserResponseMother {
       email: faker.internet.email(),
       featured: faker.random.boolean(),
       extra_info: ApiUserExtrainfoMother.random(partial.extra_info),
+      url_share: faker.internet.url(),
+      register_date: faker.date.past().getSeconds(),
       ...partial,
     };
   }
@@ -59,7 +61,7 @@ export class ApiUserStatsOldMother {
         notification_read_pending: faker.random.number(),
         purchased: faker.random.number(),
       ...partial
-    }
+    };
   }
 }
 
@@ -77,7 +79,7 @@ export class ApiUserValidationsMother {
       level: faker.random.number(),
       birthday: faker.random.boolean(),
       ...partial
-    }
+    };
   }
 }
 
@@ -90,7 +92,25 @@ export class ApiUserExtrainfoMother {
       link: faker.internet.url(),
       latitude: LatitudeMother.random(),
       longitude: LongitudeMother.random(),
+      updatedLatitude: BooleanMother.random(),
+      updatedLongitude: BooleanMother.random(),
+      updatedAddress: BooleanMother.random(),
+      updatedLink: BooleanMother.random(),
+      updatedDescription: BooleanMother.random(),
+      updatedPhoneNumber: BooleanMother.random(),
+      updatedModifiedDate: BooleanMother.random(),
+      updatedOpeningHours: BooleanMother.random(),
+      updatedNewChatNotification: BooleanMother.random(),
+      updatedOnlyChatPhoneNotification: BooleanMother.random(),
+      updatedConsentThirdPartiesUseData: BooleanMother.random(),
+      updatedNewsNotification: BooleanMother.random(),
+      opening_hours: faker.random.number().toString(),
+      new_chat_notification: BooleanMother.random(),
+      only_chat_phone_notification: BooleanMother.random(),
+      consent_third_parties_use_data: BooleanMother.random(),
+      news_notification: BooleanMother.random(),
+      modified_date: faker.date.past().getSeconds(),
       ...partial
-    }
+    };
   }
 }

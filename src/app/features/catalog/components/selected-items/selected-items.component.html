@@ -43,25 +43,29 @@
           </button>
 
           <!-- Deactivate -->
-          <button class="btn-deactivate dark" *ngIf="selectedSubscriptionSlot && selectedStatus === 'active'"
+          <button class="btn-deactivate dark" *ngIf="selectedSubscriptionSlot && selectedStatus === STATUS.ACTIVE"
             (click)="onClickAction('deactivate')"
-            [hidden]="itemService.selectedAction === 'feature' || (selectedStatus !== 'published' && selectedStatus !== 'active')"
+            [hidden]="itemService.selectedAction === 'feature' || (selectedStatus !== STATUS.PUBLISHED && selectedStatus !== STATUS.ACTIVE)"
             [disabled]="!itemService.selectedItems.length" tslTrackEvent="MYCATALOG_PRO_DEACTIVATE"
             i18n>Deactivate</button>
 
-          <!-- Activate -->
-          <button class="btn-activate" *ngIf="selectedSubscriptionSlot && selectedStatus === 'inactive'"
-            [hidden]="itemService.selectedAction === 'feature' || selectedStatus !== 'inactive'"
+          <!-- Activate responsive -->
+          <button *ngIf="showActiveButton" class="btn-activate"
             [disabled]="!itemService.selectedItems.length" (click)="onClickAction('activate')" i18n>Activate</button>
 
-          <!-- Feature -->
-          <div class="SelectedItems__feature d-none d-md-flex flex-column mt-3 ml-4" *ngIf="!hideFeaturedButton">
-            <tsl-button className="btn-primary btn-big" [disabled]="itemService.selectedItems.length === 0"
+          <div class="SelectedItems__feature d-none d-md-flex flex-column ml-4" *ngIf="!hideFeaturedButton || showActiveButton">
+            <!-- Feature -->
+            <ng-container *ngIf="!hideFeaturedButton">
+              <tsl-button className="btn-primary btn-big" [disabled]="itemService.selectedItems.length === 0"
               [routerLink]="['/catalog/checkout']" [params]="{ payment_method: 'STRIPE' }"
               tslTrackEvent="MYCATALOG_PURCHASE_CONTINUE" i18n>Feature</tsl-button>
-            <span class="address mt-1">
-              Avenida Meridiana 89, 08026 Barcelona, España
-            </span>
+            </ng-container>
+            <ng-container  *ngIf="showActiveButton">
+            <!-- Activate -->
+              <tsl-button className="btn-primary btn-big" [disabled]="!itemService.selectedItems.length"
+              (click)="onClickAction('activate')" 
+              i18n>Activate</tsl-button>
+            </ng-container>
           </div>
 
         </div>
