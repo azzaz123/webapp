@@ -21,6 +21,8 @@ export interface ApiUserResponse extends ApiResponse {
   email?: string;
   featured?: boolean;
   extra_info?: ApiUserExtrainfo;
+  url_share: string;
+  register_date: number;
 }
 
 export interface ApiImage {
@@ -50,6 +52,7 @@ export interface ApiUserLocation {
   latitude?: number;
   longitude?: number;
   address?: string;
+  country_code: string;
 }
 
 export interface ApiUserStatsOld {
@@ -82,4 +85,22 @@ export interface ApiUserExtrainfo {
   link: string;
   latitude?: number;
   longitude?: number;
+  updatedLatitude: boolean;
+  updatedLongitude: boolean;
+  updatedAddress: boolean;
+  updatedLink: boolean;
+  updatedDescription: boolean;
+  updatedPhoneNumber: boolean;
+  updatedModifiedDate: boolean;
+  updatedOpeningHours: boolean;
+  updatedNewChatNotification: boolean;
+  updatedOnlyChatPhoneNotification: boolean;
+  updatedConsentThirdPartiesUseData: boolean;
+  updatedNewsNotification: boolean;
+  opening_hours: string;
+  new_chat_notification: boolean;
+  only_chat_phone_notification: boolean;
+  consent_third_parties_use_data: boolean;
+  news_notification: boolean;
+  modified_date: number;
 }
