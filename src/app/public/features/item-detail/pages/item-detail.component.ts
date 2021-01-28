@@ -60,18 +60,14 @@ export class ItemDetailComponent implements OnInit {
       ? this.itemDetail.item.location
       : this.itemDetail.user.location;
 
-    this.setLocation({
+    this.location = {
       zip: detailLocation.zip,
       city: detailLocation.city,
       latitude: detailLocation.approximated_latitude,
       longitude: detailLocation.approximated_longitude,
-    });
+    };
 
     this.approximatedLocation = detailLocation.approximated_location;
-  }
-
-  private setLocation(itemLocation: ItemDetailLocation): void {
-    this.itemLocation = itemLocation;
   }
 
   private initPage(itemId: string): void {
@@ -112,6 +108,10 @@ export class ItemDetailComponent implements OnInit {
       item.mainImage.urls_by_size.medium,
       item.webLink
     );
+  }
+
+  set location(itemLocation: ItemDetailLocation) {
+    this.itemLocation = itemLocation;
   }
 
   set approximatedLocation(isApproximated: boolean) {
