@@ -27,6 +27,7 @@ import { NavigatorService } from './tracking/navigator.service';
 import { ItemService } from './item/item.service';
 import { HAMMER_PROVIDER } from './hammerjs/hammerjs-provider';
 import { HammerModule } from '@angular/platform-browser';
+import { CategoryService } from './category/category.service';
 
 @NgModule({
   imports: [
@@ -60,6 +61,7 @@ import { HammerModule } from '@angular/platform-browser';
     UserService,
     ItemService,
     HAMMER_PROVIDER,
+    CategoryService,
   ],
 })
 export class CoreModule {
