@@ -3,6 +3,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { ScrollIntoViewService } from '@core/scroll-into-view/scroll-into-view';
+import { UserValidations } from '@core/user/user-response.interface';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { of } from 'rxjs';
@@ -13,6 +15,7 @@ import { UserInfoComponent } from './user-info.component';
 
 describe('UserInfoComponent', () => {
   let deviceDetectorService: DeviceDetectorService;
+  let scrollIntoViewService: ScrollIntoViewService;
 
   const mapTag = 'tsl-here-maps';
   const containerClass = '.UserInfo';
@@ -29,9 +32,18 @@ describe('UserInfoComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         {
+          provide: ScrollIntoViewService,
+          useValue: {
+            scrollToElement: () => {},
+          },
+        },
+        {
           provide: PublicProfileService,
           useValue: {
             user: MOCK_USER,
+            getExtraInfo() {
+              return of(MOCK_USER.extraInfo);
+            },
           },
         },
         {
@@ -57,6 +69,7 @@ describe('UserInfoComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     deviceDetectorService = TestBed.inject(DeviceDetectorService);
+    scrollIntoViewService = TestBed.inject(ScrollIntoViewService);
   });
 
   it('should create', () => {
@@ -111,9 +124,11 @@ describe('UserInfoComponent', () => {
 
     describe('when the information is verified...', () => {
       beforeEach(() => {
-        component.user.validations.email = true;
-        component.user.validations.facebook = true;
-        component.user.validations.mobile = true;
+        component.userValidations = {
+          email: true,
+          facebook: true,
+          mobile: true,
+        } as any;
       });
 
       it('should NOT apply the disabled style', () => {
@@ -129,9 +144,11 @@ describe('UserInfoComponent', () => {
 
     describe('when the information is NOT verified...', () => {
       beforeEach(() => {
-        component.user.validations.email = false;
-        component.user.validations.facebook = false;
-        component.user.validations.mobile = false;
+        component.userValidations = {
+          email: false,
+          facebook: false,
+          mobile: false,
+        } as any;
       });
 
       it('should apply the disabled style', () => {
@@ -148,22 +165,20 @@ describe('UserInfoComponent', () => {
     describe('when we access from the header', () => {
       it('should scroll if the device is a mobile', () => {
         spyOn(deviceDetectorService, 'isMobile').and.returnValue(true);
-        spyOn(component.mapView.nativeElement, 'scrollIntoView');
+        spyOn(scrollIntoViewService, 'scrollToElement');
 
         fixture.detectChanges();
         component.ngAfterViewInit();
 
-        expect(
-          component.mapView.nativeElement.scrollIntoView
-        ).toHaveBeenCalledWith({ behavior: 'smooth' });
+        expect(scrollIntoViewService.scrollToElement).toHaveBeenCalledWith(
+          component.mapView.nativeElement
+        );
       });
 
       it('should NOT scroll if the device is NOT a mobile', () => {
-        spyOn(component.mapView.nativeElement, 'scrollIntoView');
+        spyOn(scrollIntoViewService, 'scrollToElement');
 
-        expect(
-          component.mapView.nativeElement.scrollIntoView
-        ).not.toHaveBeenCalled();
+        expect(scrollIntoViewService.scrollToElement).not.toHaveBeenCalled();
       });
     });
   });
