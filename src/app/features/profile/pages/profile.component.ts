@@ -1,4 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { I18nService } from '@core/i18n/i18n.service';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { UserStats } from '@core/user/user-stats.interface';
 import { UserService } from '@core/user/user.service';
@@ -26,6 +27,7 @@ export class ProfileComponent implements OnInit {
     private userService: UserService,
     private analyticsService: AnalyticsService,
     private subscriptionService: SubscriptionsService,
+    private i18n: I18nService,
     @Inject('SUBDOMAIN') private subdomain: string
   ) {}
 
@@ -62,5 +64,11 @@ export class ProfileComponent implements OnInit {
     };
 
     this.analyticsService.trackEvent(event);
+  }
+
+  public getSubscriptionTabName(): string {
+    return this.isPro
+      ? this.i18n.getTranslations('wallapopPro')
+      : this.i18n.getTranslations('becomePro');
   }
 }

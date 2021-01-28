@@ -144,6 +144,10 @@
       }
     }
     &.btn-activate {
+      display: none;
+      @include media-breakpoint-down(sm) {
+        display: inline;
+      }
       &:hover {
         background: $walla-main;
         border-color: transparent;

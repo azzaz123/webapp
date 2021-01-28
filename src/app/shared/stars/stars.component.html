@@ -1,1 +1,2 @@
-<tsl-svg-icon *ngFor="let star of starsArray" src="/assets/icons/{{star.active ? (star.half ? 'half_star' : 'star') : 'star_empty'}}.svg"></tsl-svg-icon>
+<tsl-svg-icon class="mr-1" *ngFor="let star of starsArray"
+    src="/assets/icons/{{star.active ? (star.half ? 'half_star' : 'star') : 'star_empty'}}.svg"></tsl-svg-icon>

@@ -1244,4 +1244,26 @@
   <translation id="Reserved">Reservado</translation>
   <translation id="Expired">Expirado</translation>
   <translation id="Inactive">Inactivo</translation>
+  <translation id="Bathroom">Baño</translation>
+  <translation id="Bathrooms">Baños</translation>
+  <translation id="Room">Habitación</translation>
+  <translation id="Rooms">Habitaciones</translation>
+  <translation id="Garage">Garaje</translation>
+  <translation id="Elevator">Ascensor</translation>
+  <translation id="Garden">Jardín</translation>
+  <translation id="Pool">Piscina</translation>
+  <translation id="Terrace">Terraza</translation>
+  <translation id="House">Casa</translation>
+  <translation id="Office">Local / Oficina</translation>
+  <translation id="Flat">Piso</translation>
+  <translation id="Land">Terreno</translation>
+  <translation id="BoxRoom">Trastero</translation>
+  <translation id="NewBuild">Obra nueva</translation>
+  <translation id="GoodCondition">Buen estado</translation>
+  <translation id="ForRefurbishment">A reformar</translation>
+  <translation id="New">Nuevo</translation>
+  <translation id="Crappy">Destrozado</translation>
+  <translation id="CarMint">Km. 0</translation>
+  <translation id="CarUsed">Ocasión</translation>
+  <translation id="wallapopPro">Wallapop PRO</translation>
 </translationbundle>
