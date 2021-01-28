@@ -9,6 +9,7 @@ import {
 } from '@fixtures/user.fixtures.spec';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
+import { PublicPipesModule } from '@public/core/pipes/public-pipes.module';
 
 describe('UserStatsComponent', () => {
   const profileUserClass = '.ProfileUser';
@@ -19,7 +20,7 @@ describe('UserStatsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule, PublicPipesModule],
       declarations: [UserStatsComponent],
       providers: [
         {
