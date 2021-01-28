@@ -1,7 +1,7 @@
 <div class="UserBasicInfo d-flex align-items-center">
     <tsl-user-avatar class="UserBasicInfo__icon" [user]="userInfo" [size]="sizeProperties.imageSize"></tsl-user-avatar>
     <div class="flex-column ml-3 d-flex UserBasicInfo__container">
-        <h3 class="UserBasicInfo__name mb-1">
+        <h3 class="UserBasicInfo__name" [ngClass]="userStats ? 'mb-1': 'mb-0'">
             {{userInfo?.microName}}</h3>
         <div *ngIf="userStats" class="UserBasicInfo__container__reviews">
             <tsl-stars class="d-inline-block" [stars]="userStats.ratings?.reviews" [normalized]="false">
