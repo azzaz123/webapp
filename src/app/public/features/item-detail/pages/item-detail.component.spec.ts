@@ -3,21 +3,29 @@ import {
   CUSTOM_ELEMENTS_SCHEMA,
   DebugElement,
 } from '@angular/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
-import { UserService } from '@core/user/user.service';
 import {
   MOCK_ITEM,
   MOCK_ITEM_WITHOUT_LOCATION,
 } from '@fixtures/item.fixtures.spec';
-import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { of } from 'rxjs';
+import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
+import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
+import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
+import { MOCK_FULL_USER_FEATURED } from '@fixtures/user.fixtures.spec';
+import { ItemApiService } from '@public/core/services/api/item/item-api.service';
+import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
+import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
+import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
 import { CookieService } from 'ngx-cookie';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { of, throwError } from 'rxjs';
-
+import { ItemDetailService } from '../core/services/item-detail.service';
 import { ItemDetailComponent } from './item-detail.component';
 
 describe('ItemDetailComponent', () => {
@@ -26,6 +34,11 @@ describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
   const fallbackMapClass = '.ItemDetail__fakeMap';
   const locationClass = '.ItemDetail__location';
+  const itemId = '123';
+  const itemDetail = {
+    item: MOCK_CAR,
+    user: MOCK_FULL_USER_FEATURED,
+  };
 
   let component: ItemDetailComponent;
   let fixture: ComponentFixture<ItemDetailComponent>;
@@ -33,11 +46,11 @@ describe('ItemDetailComponent', () => {
   let el: HTMLElement;
 
   let deviceService: DeviceService;
-  let userService: UserService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ItemDetailComponent],
+      imports: [HttpClientTestingModule],
       providers: [
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         {
@@ -45,13 +58,29 @@ describe('ItemDetailComponent', () => {
           useValue: {},
         },
         {
-          provide: UserService,
+          provide: ActivatedRoute,
           useValue: {
-            me() {
-              return of(MOCK_USER);
+            snapshot: {
+              paramMap: {
+                get: () => itemId,
+              },
             },
           },
         },
+        ItemDetailService,
+        ItemApiService,
+        PublicUserApiService,
+        RecommenderApiService,
+        {
+          provide: ItemDetailService,
+          useValue: {
+            getItem: () => {
+              return of(itemDetail);
+            },
+          },
+        },
+        MapItemService,
+        SocialMetaTagService,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
@@ -65,8 +94,6 @@ describe('ItemDetailComponent', () => {
     fixture = TestBed.createComponent(ItemDetailComponent);
     component = fixture.componentInstance;
     deviceService = TestBed.inject(DeviceService);
-    userService = TestBed.inject(UserService);
-    component.item = MOCK_ITEM;
     de = fixture.debugElement;
     el = de.nativeElement;
     fixture.detectChanges();
@@ -132,12 +159,16 @@ describe('ItemDetailComponent', () => {
     });
 
     describe('when the item have location...', () => {
+      beforeEach(() => {
+        component.itemDetail.item = MOCK_ITEM;
+        fixture.detectChanges();
+      });
       it('the location showed should be the item one', () => {
         const itemLocation = {
-          zip: component.item.location.zip,
-          city: component.item.location.city,
-          latitude: component.item.location.approximated_latitude,
-          longitude: component.item.location.approximated_longitude,
+          zip: component.itemDetail.item.location.zip,
+          city: component.itemDetail.item.location.city,
+          latitude: component.itemDetail.item.location.approximated_latitude,
+          longitude: component.itemDetail.item.location.approximated_longitude,
         };
 
         expect(component.itemLocation).toStrictEqual(itemLocation);
@@ -146,7 +177,8 @@ describe('ItemDetailComponent', () => {
 
     describe('when the item NOT have location...', () => {
       beforeEach(() => {
-        component.item = MOCK_ITEM_WITHOUT_LOCATION;
+        component.itemDetail.item = MOCK_ITEM_WITHOUT_LOCATION;
+        component.itemDetail.user = MOCK_USER;
 
         fixture.detectChanges();
       });
@@ -167,8 +199,7 @@ describe('ItemDetailComponent', () => {
   describe('when the location is NOT defined', () => {
     beforeEach(() => {
       component.itemLocation = null;
-      component.item = MOCK_ITEM_WITHOUT_LOCATION;
-      spyOn(userService, 'me').and.returnValue(throwError('error'));
+      component.itemDetail.item = MOCK_ITEM_WITHOUT_LOCATION;
 
       fixture.detectChanges();
     });
@@ -188,6 +219,28 @@ describe('ItemDetailComponent', () => {
       expect(map).toBeFalsy();
       expect(component.locationHaveCoordinates).toBe(false);
       expect(fallbackMap).toBeTruthy();
+    });
+  });
+  describe('when component inits', () => {
+    it('should ask for item data', () => {
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      expect(component.itemDetail).toBe(itemDetail);
+    });
+
+    it('should set social share data correctly', () => {
+      const socialShareSelector = 'tsl-social-share';
+
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      const socialShareElement = el.querySelector(socialShareSelector);
+      Object.keys(component.socialShare).forEach((socialShareKey: string) => {
+        expect(socialShareElement[socialShareKey]).toEqual(
+          component.socialShare[socialShareKey]
+        );
+      });
     });
   });
 });
