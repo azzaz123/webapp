@@ -1244,4 +1244,5 @@
   <translation id="Reserved">Reservado</translation>
   <translation id="Expired">Expirado</translation>
   <translation id="Inactive">Inactivo</translation>
+  <translation id="Undefined">Sin especificar</translation>
 </translationbundle>

@@ -11,12 +11,12 @@
                     <tsl-item-images-carousel [images]="images" [itemFlags]="itemFlags"></tsl-item-images-carousel>
                     <div class="py-3 d-flex ItemDetail__location align-items-center">
                         <tsl-svg-icon src="/assets/icons/location.svg" class="mr-2"></tsl-svg-icon>
-                        {{item.location?.zip}}, {{item.location.city}}
+                        {{locationSpecifications}}
                     </div>
-                    <tsl-here-maps *ngIf="coordinates" zoom="15" size="small" [coordinates]="coordinates"
+                    <tsl-here-maps *ngIf="locationHaveCoordinates" zoom="15" size="small" [coordinates]="coordinates"
                         [isApproximateLocation]="isApproximateLocation" class="w-100 mb-3">
                     </tsl-here-maps>
-                    <div class="ItemDetail__fakeMap" *ngIf="!coordinates"></div>
+                    <div class="ItemDetail__fakeMap" *ngIf="!locationHaveCoordinates"></div>
                 </div>
             </div>
             <div *ngIf="device === deviceType.DESKTOP">
