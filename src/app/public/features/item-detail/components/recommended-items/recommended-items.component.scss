@@ -1,0 +1,8 @@
+@import '~web-styleguide/scss/colors';
+
+.RecommendedItems {
+  &__title {
+    font-size: 1rem;
+    color: $blue-grey-3;
+  }
+}
