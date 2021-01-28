@@ -1,5 +1,14 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import {
+  AnalyticsPageView,
+  ANALYTICS_EVENT_NAMES,
+  ClickActivateProItem,
+  ConfirmActivateProItem,
+  SCREEN_IDS,
+  ViewOwnSaleItems,
+} from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
@@ -104,7 +113,8 @@ export class ListComponent implements OnInit, OnDestroy {
     private eventService: EventService,
     protected i18n: I18nService,
     private subscriptionsService: SubscriptionsService,
-    private deviceService: DeviceDetectorService
+    private deviceService: DeviceDetectorService,
+    private analyticsService: AnalyticsService
   ) {}
 
   ngOnInit() {
@@ -606,11 +616,60 @@ export class ListComponent implements OnInit, OnDestroy {
     subscriptionType = SUBSCRIPTION_TYPES.stripe,
     itemId?: string
   ) {
-    this.modalService.open(ActivateItemsModalComponent).result.then(() => {
+    this.modalService.open(ActivateItemsModalComponent).result.then(
+      () => {
+        this.trackConfirmActivateProItem(itemId);
+        itemId
+          ? this.activateSingleItem(itemId, subscriptionType)
+          : this.activateMultiItems(subscriptionType);
+      },
+      () => null
+    );
+
+    this.trackActivateProItem(itemId);
+  }
+
+  private trackActivateProItem(itemId: string): void {
+    const attributes: ConfirmActivateProItem = this.getTrackingAtributes(
       itemId
-        ? this.activateSingleItem(itemId, subscriptionType)
-        : this.activateMultiItems(subscriptionType);
-    });
+    );
+
+    const event: AnalyticsPageView<ClickActivateProItem> = {
+      name: ANALYTICS_EVENT_NAMES.ClickActivateProItem,
+      attributes,
+    };
+
+    this.analyticsService.trackPageView(event);
+  }
+
+  private getTrackingAtributes(itemId: string): any {
+    let categoryId: number;
+
+    if (itemId) {
+      categoryId = find(this.items, { id: itemId }).categoryId;
+    }
+
+    return {
+      screenId:
+        this.selectedStatus === STATUS.INACTIVE
+          ? SCREEN_IDS.MyCatalogInactiveSection
+          : SCREEN_IDS.MyCatalog,
+      numberOfItems: itemId ? 1 : this.itemService.selectedItems.length,
+      categoryId,
+    };
+  }
+
+  private trackConfirmActivateProItem(itemId: string): void {
+    const attributes: ConfirmActivateProItem = this.getTrackingAtributes(
+      itemId
+    );
+
+    const event: AnalyticsPageView<ConfirmActivateProItem> = {
+      name: ANALYTICS_EVENT_NAMES.ConfirmActivateProItem,
+      attributes,
+    };
+
+    this.analyticsService.trackPageView(event);
   }
 
   private activateSingleItem(
@@ -729,12 +788,24 @@ export class ListComponent implements OnInit, OnDestroy {
       this.selectedStatus = STATUS.PUBLISHED;
       this.searchTerm = null;
       this.sortBy = SORTS[0];
+      this.trackCloseSelectedSlot();
     } else {
       this.selectedStatus = STATUS.ACTIVE;
     }
 
     this.updateNavLinks();
     this.getItems();
+  }
+
+  private trackCloseSelectedSlot(): void {
+    const event: AnalyticsPageView<ViewOwnSaleItems> = {
+      name: ANALYTICS_EVENT_NAMES.ViewOwnSaleItems,
+      attributes: {
+        screenId: SCREEN_IDS.MyCatalog,
+        numberOfItems: this.counters.publish,
+      },
+    };
+    this.analyticsService.trackPageView(event);
   }
 
   public updateNavLinks() {

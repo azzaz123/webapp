@@ -2,7 +2,6 @@ export * from './cancel-search.interface';
 export * from './click-accept-offer.interface';
 export * from './click-add-edit-address.interface';
 export * from './click-add-edit-bank-account.interface';
-export * from './click-add-edit-card.interface';
 export * from './click-back-edit-card.interface';
 export * from './click-back-transaction-pay.interface';
 export * from './click-banned-user-chat-pop-up-close.interface';
