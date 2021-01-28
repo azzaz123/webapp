@@ -1,21 +1,39 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  CUSTOM_ELEMENTS_SCHEMA,
+  DebugElement,
+} from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
+import { UserService } from '@core/user/user.service';
+import {
+  MOCK_ITEM,
+  MOCK_ITEM_WITHOUT_LOCATION,
+} from '@fixtures/item.fixtures.spec';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
+import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { CookieService } from 'ngx-cookie';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { of, throwError } from 'rxjs';
 
 import { ItemDetailComponent } from './item-detail.component';
 
 describe('ItemDetailComponent', () => {
   const topSkyTag = 'tsl-top-sky';
   const sideSkyTag = 'tsl-side-sky';
+  const mapTag = 'tsl-here-maps';
+  const fallbackMapClass = '.ItemDetail__fakeMap';
+  const locationClass = '.ItemDetail__location';
 
   let component: ItemDetailComponent;
   let fixture: ComponentFixture<ItemDetailComponent>;
+  let de: DebugElement;
+  let el: HTMLElement;
+
   let deviceService: DeviceService;
+  let userService: UserService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -26,16 +44,31 @@ describe('ItemDetailComponent', () => {
           provide: CookieService,
           useValue: {},
         },
+        {
+          provide: UserService,
+          useValue: {
+            me() {
+              return of(MOCK_USER);
+            },
+          },
+        },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
+    })
+      .overrideComponent(ItemDetailComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ItemDetailComponent);
     component = fixture.componentInstance;
     deviceService = TestBed.inject(DeviceService);
-
+    userService = TestBed.inject(UserService);
+    component.item = MOCK_ITEM;
+    de = fixture.debugElement;
+    el = de.nativeElement;
     fixture.detectChanges();
   });
 
@@ -71,7 +104,7 @@ describe('ItemDetailComponent', () => {
     });
   });
 
-  describe('when er are on DESKTOP...', () => {
+  describe('when we are on DESKTOP...', () => {
     it('should show the three ADS', () => {
       spyOn(deviceService, 'getDeviceType').and.returnValue(DeviceType.DESKTOP);
 
@@ -82,6 +115,81 @@ describe('ItemDetailComponent', () => {
 
       expect(topAd).toBeTruthy();
       expect(sideAds.length).toBe(2);
+    });
+  });
+
+  describe('when the location is defined', () => {
+    it('should show the specified location', () => {
+      const map = fixture.debugElement.query(By.css(mapTag));
+      const fallbackMap = fixture.debugElement.query(By.css(fallbackMapClass));
+
+      expect(el.querySelector(locationClass).innerHTML).toContain(
+        component.locationSpecifications
+      );
+      expect(component.locationHaveCoordinates).toBe(true);
+      expect(map).toBeTruthy();
+      expect(fallbackMap).toBeFalsy();
+    });
+
+    describe('when the item have location...', () => {
+      it('the location showed should be the item one', () => {
+        const itemLocation = {
+          zip: component.item.location.zip,
+          city: component.item.location.city,
+          latitude: component.item.location.approximated_latitude,
+          longitude: component.item.location.approximated_longitude,
+        };
+
+        expect(component.itemLocation).toStrictEqual(itemLocation);
+      });
+    });
+
+    describe('when the item NOT have location...', () => {
+      beforeEach(() => {
+        component.item = MOCK_ITEM_WITHOUT_LOCATION;
+
+        component.ngOnInit();
+        fixture.detectChanges();
+      });
+
+      it('the location showed should be the user one', () => {
+        const userLocation = {
+          zip: MOCK_USER.location.zip,
+          city: MOCK_USER.location.city,
+          latitude: MOCK_USER.location.approximated_latitude,
+          longitude: MOCK_USER.location.approximated_longitude,
+        };
+
+        expect(component.itemLocation).toStrictEqual(userLocation);
+      });
+    });
+  });
+
+  xdescribe('when the location is NOT defined', () => {
+    beforeEach(() => {
+      component.item = null;
+      spyOn(userService, 'me').and.returnValue(throwError('error'));
+
+      component.ngOnInit();
+      fixture.detectChanges();
+    });
+
+    it('should have an undefined location', () => {
+      expect(component.itemLocation).toBe(undefined);
+      expect(component.locationHaveCoordinates).toBe(false);
+      expect(el.querySelector(locationClass).innerHTML).toContain(
+        component.locationSpecifications
+      );
+    });
+
+    it('should show the fallback map', () => {
+      const map = fixture.debugElement.query(By.css(mapTag));
+      const fallbackMap = fixture.debugElement.query(By.css(fallbackMapClass));
+
+      expect(map).toBeFalsy();
+      expect(component.locationHaveCoordinates).toBe(false);
+
+      expect(fallbackMap).toBeTruthy();
     });
   });
 });

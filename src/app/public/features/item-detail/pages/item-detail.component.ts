@@ -7,7 +7,6 @@ import { Item } from '@core/item/item';
 import { ItemFlags } from '@core/item/item-response.interface';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
-import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { finalize } from 'rxjs/operators';
 
 @Component({
@@ -23,7 +22,7 @@ export class ItemDetailComponent implements OnInit {
   public device: DeviceType;
   public itemFlags: ItemFlags;
   public images: string[];
-  public item: Item = MOCK_ITEM;
+  public item: Item;
   public itemLocation: ItemDetailLocation;
 
   constructor(
@@ -37,7 +36,7 @@ export class ItemDetailComponent implements OnInit {
   }
 
   private handleCoordinates(): void {
-    if (this.item.location) {
+    if (this.item?.location) {
       this.setLocation({
         zip: this.item.location.zip,
         city: this.item.location.city,
