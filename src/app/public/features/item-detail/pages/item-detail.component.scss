@@ -59,14 +59,16 @@ $item-detail-carousel-height: 477px;
     line-height: 22px;
     border-bottom: 1px solid $blue-grey-5;
 
+    tsl-svg-icon {
+      fill: $blue-grey-3;
+      ::ng-deep {
+        svg * {
+          fill: inherit;
+        }
+      }
+    }
     span {
       line-height: 26px;
-    }
-
-    tsl-svg-icon ::ng-deep {
-      svg path {
-        fill: $blue-grey-3;
-      }
     }
   }
 }
