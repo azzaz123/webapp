@@ -10,10 +10,10 @@ import { ApiUserResponse } from './api-user.response';
 @Injectable()
 export class ApiUserRepository implements UserRepository {
 
-  static USER_PROFILE_URL = `${USER_BASE_ENDPOINT}/me`;
-  static UPDATE_EMAIL_URL = `${USER_BASE_ENDPOINT}/email`;
-  static UPDATE_PASSWORD_URL = `${USER_BASE_ENDPOINT}/password`;
-  static PRESENCE_ONLINE_URL = `${USER_BASE_ENDPOINT}/online`;
+  static USER_PROFILE_URL = `${USER_BASE_ENDPOINT}me`;
+  static UPDATE_EMAIL_URL = `${USER_BASE_ENDPOINT}email`;
+  static UPDATE_PASSWORD_URL = `${USER_BASE_ENDPOINT}password`;
+  static PRESENCE_ONLINE_URL = `${USER_BASE_ENDPOINT}online`;
 
   constructor(private http: HttpClient) { }
 
