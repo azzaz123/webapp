@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
 import { FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH } from '@core/item/item';
-import { CarouselImage } from '@public/shared/constants/images-carousel.interface';
+import { CarouselImage } from './images-carousel.interface';
 
 @Component({
   selector: 'tsl-images-carousel',

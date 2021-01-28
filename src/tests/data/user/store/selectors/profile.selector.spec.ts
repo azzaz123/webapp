@@ -3,9 +3,10 @@ import { Profile } from 'app/data/user/domain';
 import { UserProfileState } from 'app/data/user/store/reducer/profile.reducer';
 import {
   selectUserProfileDetail,
+  selectUserProfileDetailId,
   selectUserProfileIsAuthenticated,
   selectUserProfileLoading,
-} from 'app/data/user/store/selectors';
+} from '@data/user';
 import { UserProfileStateMother } from '../reducer/user.state.mother';
 import { ProfileMother } from '../../domain/profile/profile.mother';
 
@@ -20,6 +21,16 @@ describe('ProfileSelector', () => {
       const select = selectUserProfileDetail.projector(state);
 
       expect(select).toEqual(user);
+    });
+  });
+
+  describe('selectUserProfileDetailId', () => {
+    it('should receive the user id profile', () => {
+      const user: Profile = ProfileMother.random();
+
+      const select = selectUserProfileDetailId.projector(user);
+
+      expect(select).toEqual(user.id);
     });
   });
 

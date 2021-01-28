@@ -83,11 +83,6 @@ $feature-button-width: 170px;
   &--selected {
     background-color: rgba($walla-main, 0.2);
     border: solid 1px $walla-main;
-    .subscribe {
-      &.onHold {
-        opacity: 0.4;
-      }
-    }
   }
 
   button,
@@ -102,22 +97,13 @@ $feature-button-width: 170px;
     color: $blue-grey-3;
     max-width: 250px;
     @include text-truncate();
+    &--onHold {
+      color: $negative-main;
+    }
   }
 
   .published {
     font-size: $font-size-s;
-  }
-
-  .subscribe {
-    font-size: $font-size-s;
-    color: $negative-main;
-    font-weight: $font-weight-chunky;
-    &.onHold {
-      align-self: stretch;
-      display: flex;
-      align-items: center;
-      opacity: 1;
-    }
   }
 
   .actions {
@@ -357,6 +343,9 @@ $feature-button-width: 170px;
 
 .clickable {
   cursor: pointer;
+  &--onHold {
+    color: $blue-grey-3;
+  }
 }
 
 .item-image {
@@ -369,6 +358,9 @@ $feature-button-width: 170px;
         @include square(100px);
       }
     }
+  }
+  &--onHold {
+    opacity: 0.4;
   }
 }
 
