@@ -8,6 +8,10 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { Coordinate } from '@core/geolocation/address-response.interface';
 import { User } from '@core/user/user';
+import {
+  UserExtrainfo,
+  UserValidations,
+} from '@core/user/user-response.interface';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Subscription } from 'rxjs';
 import { PublicProfileService } from '../../core/services/public-profile.service';
@@ -22,6 +26,7 @@ export class UserInfoComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   public coordinates: Coordinate;
   public user: User;
+  public userValidations: UserValidations;
 
   constructor(
     private deviceService: DeviceDetectorService,
@@ -51,6 +56,13 @@ export class UserInfoComponent implements OnInit, OnDestroy {
 
   private getUser(): void {
     this.user = this.publicProfileService.user;
+
+    this.publicProfileService
+      .getExtraInfo(this.user.id)
+      .subscribe((userExtraInfo: UserExtrainfo) => {
+        this.userValidations = userExtraInfo.validations;
+      });
+
     if (this.userHaveLocation()) {
       this.coordinates = {
         latitude: this.user.location.approximated_latitude,

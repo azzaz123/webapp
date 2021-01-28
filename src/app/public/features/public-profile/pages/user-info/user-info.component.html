@@ -8,29 +8,29 @@
                     <div class="d-flex UserInfo__containerMedia mb-1">
                         <tsl-svg-icon src="/assets/icons/share_mail.svg" class="mr-2"></tsl-svg-icon>
                         <span class="mr-2 UserInfo__containerMedia__media"
-                            [ngClass]="{disabled: !user.validations?.email}">Email
+                            [ngClass]="{disabled: !userValidations?.email}">Email
                         </span>
                         <tsl-svg-icon class="UserInfo__containerMedia__check" src="/assets/icons/check.svg"
-                            *ngIf="user.validations?.email">
+                            *ngIf="userValidations?.email">
                         </tsl-svg-icon>
                     </div>
                     <div class="d-flex UserInfo__containerMedia mb-1">
                         <tsl-svg-icon src="/assets/icons/share_facebook.svg" class="mr-2"></tsl-svg-icon>
                         <span class="mr-2 UserInfo__containerMedia__media"
-                            [ngClass]="{disabled: !user.validations?.facebook}">
+                            [ngClass]="{disabled: !userValidations?.facebook}">
                             Facebook
                         </span>
                         <tsl-svg-icon class="UserInfo__containerMedia__check" src="/assets/icons/check.svg"
-                            *ngIf="user.validations?.facebook">
+                            *ngIf="userValidations?.facebook">
                         </tsl-svg-icon>
                     </div>
                     <div class="d-flex UserInfo__containerMedia">
                         <tsl-svg-icon src="/assets/icons/share_whatsapp.svg" class="mr-2"></tsl-svg-icon>
                         <span class="mr-2 UserInfo__containerMedia__media"
-                            [ngClass]="{disabled: !user.validations?.mobile}" i18n="@@ProfileInfoNumber">Phone
+                            [ngClass]="{disabled: !userValidations?.mobile}" i18n="@@ProfileInfoNumber">Phone
                             number</span>
                         <tsl-svg-icon class="UserInfo__containerMedia__check" src="/assets/icons/check.svg"
-                            *ngIf="user.validations?.mobile">
+                            *ngIf="userValidations?.mobile">
                         </tsl-svg-icon>
                     </div>
                 </div>
