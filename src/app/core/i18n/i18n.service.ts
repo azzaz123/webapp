@@ -212,8 +212,6 @@ export class I18nService {
       errorSavingData: 'Error while saving data. Please try again',
       becomePro: 'Become a PRO',
       wallapopPro: 'Wallapop PRO',
-      seePlans: 'See plans',
-      startFreeTrial: 'Start free trial',
     },
     es: {
       yes: 'Sí',
@@ -430,8 +428,6 @@ export class I18nService {
       errorSavingData: 'Error al guardar los datos. Intenta de nuevo',
       becomePro: 'Conviértete en PRO',
       wallapopPro: 'Wallapop PRO',
-      seePlans: 'Ver planes',
-      startFreeTrial: 'Probar gratis',
     },
   };
 

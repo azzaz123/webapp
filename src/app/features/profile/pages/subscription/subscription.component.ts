@@ -56,8 +56,7 @@ export class SubscriptionsComponent implements OnInit {
     private subscriptionsService: SubscriptionsService,
     private router: Router,
     private analyticsService: AnalyticsService,
-    private userService: UserService,
-    private i18n: I18nService
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -311,7 +310,7 @@ export class SubscriptionsComponent implements OnInit {
     subscription: SubscriptionsResponse
   ): string {
     return this.subscriptionsService.hasTrial(subscription)
-      ? this.i18n.getTranslations('startFreeTrial')
-      : this.i18n.getTranslations('seePlans');
+      ? $localize`:@@startFreeTrial:Start free trial`
+      : $localize`:@@seePlans:See plans`;
   }
 }
