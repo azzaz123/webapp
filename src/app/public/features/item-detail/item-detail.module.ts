@@ -13,6 +13,8 @@ import { ItemImagesCarouselModule } from '@public/shared/components/item-images-
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
+import { SocialShareModule } from '@shared/social-share/social-share.module';
+import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
 
 @NgModule({
   declarations: [itemDetailRoutedComponents],
@@ -23,6 +25,7 @@ import { PublicUserApiService } from '@public/core/services/api/public-user/publ
     ItemImagesCarouselModule,
     CustomCurrencyModule,
     SvgIconModule,
+    SocialShareModule,
   ],
   providers: [
     ItemDetailService,
@@ -30,6 +33,7 @@ import { PublicUserApiService } from '@public/core/services/api/public-user/publ
     PublicUserApiService,
     RecommenderApiService,
     MapItemService,
+    SocialMetaTagService,
   ],
 })
 export class ItemDetailModule {}

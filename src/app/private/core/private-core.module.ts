@@ -15,7 +15,6 @@ import { ConnectionService } from '@core/connection/connection.service';
 import { StripeService } from '@core/stripe/stripe.service';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { TrustAndSafetyService } from '@core/trust-and-safety/trust-and-safety.service';
-import { CategoryService } from '@core/category/category.service';
 import { CartService } from '@shared/catalog/cart/cart.service';
 import { ExitConfirmGuard } from '@core/guards/exit-confirm.guard';
 import { InvoiceService } from '@core/invoice/invoice.service';
@@ -41,7 +40,6 @@ import { UploaderService } from '@shared/uploader/uploader.service';
     SubscriptionsService,
     TrustAndSafetyService,
     InvoiceService,
-    CategoryService,
     CartService,
     ExitConfirmGuard,
     InboxConversationService,
