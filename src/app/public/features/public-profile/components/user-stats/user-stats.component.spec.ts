@@ -113,7 +113,7 @@ describe('UserStatsComponent', () => {
           phoneAnchor.click();
 
           expect(component.togglePhone).toHaveBeenCalledTimes(1);
-          expect(component.isPhone).toBe(true);
+          expect(component.showPhone).toBe(true);
         });
       });
       describe('when NOT have the extra info', () => {

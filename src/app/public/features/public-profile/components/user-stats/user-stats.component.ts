@@ -17,7 +17,7 @@ import {
 export class UserStatsComponent {
   @Input() userStats: UserStats;
   @Input() userInfo: User;
-  public isPhone = false;
+  public showPhone = false;
 
   constructor(
     private deviceService: DeviceDetectorService,
@@ -26,7 +26,7 @@ export class UserStatsComponent {
   ) {}
 
   togglePhone(): void {
-    this.isPhone = !this.isPhone;
+    this.showPhone = !this.showPhone;
   }
 
   public showLocation(): void {
