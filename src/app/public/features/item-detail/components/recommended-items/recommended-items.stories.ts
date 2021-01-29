@@ -1,6 +1,6 @@
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { RecommendedItemsComponent } from './recommended-items.component';
-import { recommendedItems } from './constants/recommended-items.fixtures.spec';
+import { RECOMMENDED_ITEMS_MOCK } from './constants/recommended-items.fixtures.spec';
 import { ItemCardListModule } from '@public/features/public-profile/pages/user-published/components/item-card-list/item-card-list.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { CheckSessionModule } from '@public/core/directives/check-session/check-session.module';
@@ -37,7 +37,7 @@ const Template: Story<RecommendedItemsComponent> = (
 
 export const Large = Template.bind({});
 Large.args = {
-  recommendedItems: recommendedItems,
+  recommendedItems: RECOMMENDED_ITEMS_MOCK,
 };
 Large.parameters = {
   viewport: {
@@ -46,7 +46,7 @@ Large.parameters = {
 };
 export const Medium = Template.bind({});
 Medium.args = {
-  recommendedItems: recommendedItems,
+  recommendedItems: RECOMMENDED_ITEMS_MOCK,
 };
 Medium.parameters = {
   viewport: {
@@ -55,7 +55,7 @@ Medium.parameters = {
 };
 export const Small = Template.bind({});
 Small.args = {
-  recommendedItems: recommendedItems,
+  recommendedItems: RECOMMENDED_ITEMS_MOCK,
 };
 Small.parameters = {
   viewport: {
@@ -65,7 +65,7 @@ Small.parameters = {
 
 export const ExtraSmall = Template.bind({});
 ExtraSmall.args = {
-  recommendedItems: recommendedItems,
+  recommendedItems: RECOMMENDED_ITEMS_MOCK,
 };
 ExtraSmall.parameters = {
   viewport: {

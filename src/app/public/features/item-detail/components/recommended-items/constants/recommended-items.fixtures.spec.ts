@@ -3,7 +3,7 @@ import { RecommenderItem } from '@public/core/services/api/recommender/interface
 import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
 
 const urlImage = 'http://localhost:6006/images/item-camera.jpg';
-const recommendedItem: RecommenderItem = {
+const RECOMMENDED_ITEM_MOCK: RecommenderItem = {
   category_id: 100,
   currency: 'EUR',
   favorited: true,
@@ -27,14 +27,14 @@ const recommendedItem: RecommenderItem = {
   web_slug: 'slug',
 };
 
-export const recommendedItems: RecommendedItemsBodyResponse = {
+export const RECOMMENDED_ITEMS_MOCK: RecommendedItemsBodyResponse = {
   recommended_type: RECOMMENDER_TYPE.DEFAULT,
   recommended_items: [
-    recommendedItem,
-    recommendedItem,
-    recommendedItem,
-    recommendedItem,
-    recommendedItem,
-    recommendedItem,
+    RECOMMENDED_ITEM_MOCK,
+    RECOMMENDED_ITEM_MOCK,
+    RECOMMENDED_ITEM_MOCK,
+    RECOMMENDED_ITEM_MOCK,
+    RECOMMENDED_ITEM_MOCK,
+    RECOMMENDED_ITEM_MOCK,
   ],
 };

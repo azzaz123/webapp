@@ -1,7 +1,7 @@
 <div class="RecommendedItems container py-4">
     <span i18n="@@recommendedItemsTitle" class="RecommendedItems__title">Other users have also seen</span>
-    <div class="mt-1">
-        <tsl-public-item-card-list *ngIf="items" [items]="items" [showDescription]="showDescription">
+    <div class="mt-1" *ngIf="items">
+        <tsl-public-item-card-list [items]="items" [showDescription]="showDescription">
         </tsl-public-item-card-list>
     </div>
 </div>
