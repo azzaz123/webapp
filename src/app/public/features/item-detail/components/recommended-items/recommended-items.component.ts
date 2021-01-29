@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
+import { Item } from '@core/item/item';
 import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
+import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
 
 @Component({
   selector: 'tsl-recommended-items',
@@ -8,6 +10,11 @@ import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommen
 })
 export class RecommendedItemsComponent {
   @Input() recommendedItems: RecommendedItemsBodyResponse;
+  public items: Item[];
 
-  constructor() {}
+  constructor(private mapItemService: MapItemService) {}
+
+  ngOnInit() {
+    this.items = this.mapItemService.mapRecommendedItem(this.recommendedItems);
+  }
 }

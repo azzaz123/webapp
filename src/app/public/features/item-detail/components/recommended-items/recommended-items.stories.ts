@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { RecommendedItemsComponent } from './recommended-items.component';
 import { recommendedItems } from './constants/recommended-items.fixtures.spec';
@@ -7,6 +6,8 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { CheckSessionModule } from '@public/core/directives/check-session/check-session.module';
 import { HttpModule } from '@core/http/http.module';
 import { CoreModule } from '@core/core.module';
+import { CommonModule } from '@angular/common';
+import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
 
 export default {
   title: 'Webapp/Public/Features/ItemDetail/Components/RecommendedItems',
@@ -30,8 +31,14 @@ const Template: Story<RecommendedItemsComponent> = (
   props: args,
   moduleMetadata: {
     declarations: [RecommendedItemsComponent],
-    imports: [CoreModule, HttpModule, ItemCardListModule, CheckSessionModule],
-    providers: [DeviceDetectorService],
+    imports: [
+      CoreModule,
+      HttpModule,
+      ItemCardListModule,
+      CheckSessionModule,
+      CommonModule,
+    ],
+    providers: [DeviceDetectorService, MapItemService],
   },
   template:
     '<tsl-recommended-items [recommendedItems]="recommendedItems" showDescription="false"></tsl-recommended-items>',

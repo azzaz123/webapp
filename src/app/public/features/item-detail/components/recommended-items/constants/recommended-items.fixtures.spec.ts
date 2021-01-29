@@ -7,7 +7,7 @@ const recommendedItem: RecommenderItem = {
   currency: 'EUR',
   favorited: true,
   id: '34342',
-  images: null,
+  images: [],
   price: 96000,
   seller_id: '12323',
   shipping_allowed: false,

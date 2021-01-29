@@ -7,6 +7,9 @@ import {
   CarContent,
   RealestateContent,
 } from '@core/item/item-response.interface';
+import { RecommenderItemImage } from '@public/core/services/api/recommender/interfaces/recommender-item.interface';
+import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
+import { Image } from '@core/user/user-response.interface';
 import { Realestate } from '@core/item/realestate';
 import { UuidService } from '@core/uuid/uuid.service';
 
@@ -154,5 +157,71 @@ export class MapItemService {
           }
         : undefined
     );
+  }
+
+  public mapRecommendedItem(
+    recommendedItemBodyResponse: RecommendedItemsBodyResponse
+  ): Item[] {
+    return recommendedItemBodyResponse.recommended_items.map(
+      (recommendedItem) => {
+        return new Item(
+          recommendedItem.id,
+          null,
+          recommendedItem.seller_id,
+          recommendedItem.title,
+          null,
+          recommendedItem.category_id,
+          null,
+          recommendedItem.price,
+          recommendedItem.currency,
+          null,
+          null,
+          {
+            pending: null,
+            sold: null,
+            favorite: recommendedItem.favorited,
+            reserved: null,
+            banned: null,
+            expired: null,
+          },
+          null,
+          {
+            fix_price: null,
+            exchange_allowed: null,
+            shipping_allowed: recommendedItem.shipping_allowed,
+          },
+          recommendedItem.images.length > 0
+            ? this.mapRecommendedItemImages(recommendedItem.images)[0]
+            : null,
+          this.mapRecommendedItemImages(recommendedItem.images),
+          recommendedItem.web_slug,
+          null,
+          null,
+          recommendedItemBodyResponse.recommended_type
+        );
+      }
+    );
+  }
+
+  private mapRecommendedItemImages(
+    recommendedItemImages: RecommenderItemImage[]
+  ): Image[] {
+    if (recommendedItemImages?.length > 0) {
+      return recommendedItemImages.map((image: RecommenderItemImage) => {
+        return {
+          id: this.uuidService.getUUID(),
+          original_width: image.original_width,
+          original_height: image.original_height,
+          average_hex_color: '',
+          urls_by_size: {
+            original: image.original,
+            small: image.small,
+            large: image.large,
+            medium: image.medium,
+            xlarge: image.xlarge,
+          },
+        };
+      });
+    }
   }
 }
