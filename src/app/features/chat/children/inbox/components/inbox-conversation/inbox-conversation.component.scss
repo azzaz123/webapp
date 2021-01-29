@@ -122,6 +122,7 @@ $menu-width-and-spacing: 10px;
   color: $blue-grey-1;
 
   p {
+    display: flex;
     font-size: $font-size-s;
     margin-bottom: 0;
     @include text-truncate();
