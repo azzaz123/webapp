@@ -1,6 +1,3 @@
-export const GOOGLE_PUBLISHER_TAG_URL =
-  'https://securepubads.g.doubleclick.net/tag/js/gpt.js';
-
 export const RICH_AUDIENCE_URL =
   'https://cdn3.richaudience.com/ab083674fb8200b877a6983126e4477d/wallapop/pb_wrapper/v1/lib_1.5.js';
 
@@ -13,7 +10,6 @@ export const AMAZON_PUBLISHER_SERVICE_URL =
   './assets/js/amazon-publisher-service-wrapper.js';
 
 export const ADS_SOURCES: string[] = [
-  GOOGLE_PUBLISHER_TAG_URL,
   RICH_AUDIENCE_URL,
   CRITEO_URL,
   GOOGLE_AD_SENSE_URL,
