@@ -1,0 +1,16 @@
+export enum REAL_ESTATE_ICON {
+  GARAGE = '/assets/icons/real-estate/garage_door.svg',
+  ELEVATOR = '/assets/icons/real-estate/elevator.svg',
+  GARDEN = '/assets/icons/real-estate/flower_pot.svg',
+  POOL = '/assets/icons/real-estate/pool.svg',
+  TERRACE = '/assets/icons/real-estate/umbrella.svg',
+  FLAT = '/assets/icons/real-estate/apartment.svg',
+  HOUSE = '/assets/icons/real-estate/house.svg',
+  ROOM = '/assets/icons/real-estate/bed.svg',
+  OFFICE = '/assets/icons/real-estate/desk.svg',
+  LAND = '/assets/icons/real-estate/land.svg',
+  BOX_ROOM = '/assets/icons/real-estate/box.svg',
+  NEW_BUILD = '/assets/icons/real-estate/sparkle.svg',
+  GOOD_CONDITION = '/assets/icons/real-estate/thumbs_up.svg',
+  TO_REFORM = '/assets/icons/real-estate/roller.svg',
+}

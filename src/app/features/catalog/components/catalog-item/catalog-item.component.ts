@@ -78,6 +78,10 @@ export class CatalogItemComponent implements OnInit {
     this.select(item);
   }
 
+  public activateItem(item: Item): void {
+    this.itemChange.emit({ item, action: 'activate' });
+  }
+
   public reactivate(item: Item) {
     this.itemService.getAvailableReactivationProducts(item.id).subscribe(
       (product: Product) => {

@@ -50,6 +50,9 @@ $vertical-padding: $spacing-ms;
   &.loading {
     padding-top: $spacing-s;
     padding-bottom: $spacing-xs;
+    tsl-svg-icon ::ng-deep svg {
+      margin: 0 auto;
+    }
   }
   &.btn-big {
     padding-left: $spacing-xxxl;
@@ -121,6 +124,21 @@ $vertical-padding: $spacing-ms;
     &--selected {
       background-color: $blue-grey-1;
       color: $white;
+    }
+  }
+
+  &.btn-activation {
+    width: 170px;
+    height: 40px;
+    padding: 0 $spacing-ml;
+    padding-left: $spacing-ms;
+    font-size: $font-size-s;
+    @include media-breakpoint-down(md) {
+      width: 85px;
+      padding: 0;
+      span {
+        display: none;
+      }
     }
   }
 }
