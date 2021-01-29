@@ -119,9 +119,6 @@ export class PublicProfileService {
     if (!data || !data.id) {
       return null;
     }
-
-    console.log(data);
-
     return new User(
       data.id,
       data.micro_name,
