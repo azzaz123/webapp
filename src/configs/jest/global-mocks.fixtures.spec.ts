@@ -49,6 +49,7 @@ export const MOCK_GOOGLE_TAG = {
     return MOCK_GOOGLE_PUBABDS;
   },
   display: (_slotid: string) => {},
+  apiReady: true,
 };
 
 export const MOCK_APSTAG = {

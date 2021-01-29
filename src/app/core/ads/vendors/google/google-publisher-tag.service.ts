@@ -21,7 +21,7 @@ export class GooglePublisherTagService {
   ) {}
 
   public isLibraryRefDefined(): boolean {
-    return !!this.googletag;
+    return !!this.googletag && this.googletag.apiReady;
   }
 
   public init(adSlots: AdSlot[]): void {
