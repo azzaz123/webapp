@@ -190,9 +190,9 @@ export class MapItemService {
             exchange_allowed: null,
             shipping_allowed: recommendedItem.shipping_allowed,
           },
-          recommendedItem.images.length > 0
-            ? this.mapRecommendedItemImages(recommendedItem.images)[0]
-            : null,
+          !this.mapRecommendedItemImages(recommendedItem.images)
+            ? null
+            : this.mapRecommendedItemImages(recommendedItem.images)[0],
           this.mapRecommendedItemImages(recommendedItem.images),
           recommendedItem.web_slug,
           null,
@@ -206,22 +206,30 @@ export class MapItemService {
   private mapRecommendedItemImages(
     recommendedItemImages: RecommenderItemImage[]
   ): Image[] {
-    if (recommendedItemImages?.length > 0) {
+    if (recommendedItemImages?.length === 0 || !recommendedItemImages?.length) {
+      return null;
+    } else if (recommendedItemImages?.length === 1) {
+      return [this.mapRecommendedImage(recommendedItemImages[0])];
+    } else {
       return recommendedItemImages.map((image: RecommenderItemImage) => {
-        return {
-          id: this.uuidService.getUUID(),
-          original_width: image.original_width,
-          original_height: image.original_height,
-          average_hex_color: '',
-          urls_by_size: {
-            original: image.original,
-            small: image.small,
-            large: image.large,
-            medium: image.medium,
-            xlarge: image.xlarge,
-          },
-        };
+        return this.mapRecommendedImage(image);
       });
     }
+  }
+
+  private mapRecommendedImage(image: RecommenderItemImage): Image {
+    return {
+      id: this.uuidService.getUUID(),
+      original_width: image.original_width,
+      original_height: image.original_height,
+      average_hex_color: '',
+      urls_by_size: {
+        original: image.original,
+        small: image.small,
+        large: image.large,
+        medium: image.medium,
+        xlarge: image.xlarge,
+      },
+    };
   }
 }
