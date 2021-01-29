@@ -8,6 +8,7 @@ import { HttpModule } from '@core/http/http.module';
 import { CoreModule } from '@core/core.module';
 import { CommonModule } from '@angular/common';
 import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
+import { CUSTOM_VIEWPORT_NAME } from '@storybook-config/viewports/custom-viewports';
 
 export default {
   title: 'Webapp/Public/Features/ItemDetail/Components/RecommendedItems',
@@ -34,7 +35,40 @@ const Template: Story<RecommendedItemsComponent> = (
     '<tsl-recommended-items [recommendedItems]="recommendedItems" showDescription="false"></tsl-recommended-items>',
 });
 
-export const Default = Template.bind({});
-Default.args = {
+export const Large = Template.bind({});
+Large.args = {
   recommendedItems: recommendedItems,
+};
+Large.parameters = {
+  viewport: {
+    defaultViewport: CUSTOM_VIEWPORT_NAME.LG,
+  },
+};
+export const Medium = Template.bind({});
+Medium.args = {
+  recommendedItems: recommendedItems,
+};
+Medium.parameters = {
+  viewport: {
+    defaultViewport: CUSTOM_VIEWPORT_NAME.MD,
+  },
+};
+export const Small = Template.bind({});
+Small.args = {
+  recommendedItems: recommendedItems,
+};
+Small.parameters = {
+  viewport: {
+    defaultViewport: CUSTOM_VIEWPORT_NAME.SM,
+  },
+};
+
+export const ExtraSmall = Template.bind({});
+ExtraSmall.args = {
+  recommendedItems: recommendedItems,
+};
+ExtraSmall.parameters = {
+  viewport: {
+    defaultViewport: CUSTOM_VIEWPORT_NAME.XS,
+  },
 };
