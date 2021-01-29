@@ -13,6 +13,7 @@ export enum SVG_ATTRIBUTES {
   WIDTH = 'width',
   HEIGHT = 'height',
   FILL = 'fill',
+  DISPLAY = 'display',
 }
 @Component({
   selector: 'tsl-svg-icon',
@@ -46,9 +47,14 @@ export class SvgIconComponent implements OnInit {
             svgElement
           );
 
+          this.handleGenericAttributes();
           this.handleCustomAttributes();
         });
     }
+  }
+
+  private handleGenericAttributes(): void {
+    this.setAttribute(SVG_ATTRIBUTES.DISPLAY, 'flex');
   }
 
   private handleCustomAttributes(): void {

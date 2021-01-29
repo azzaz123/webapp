@@ -6,6 +6,7 @@ import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { UserStatsComponent } from '../user-stats/user-stats.component';
 import { UserCoverModule } from '@shared/user-cover/user-cover.module';
 import { UserAvatarModule } from '@shared/user-avatar/user-avatar.module';
+import { UserBasicInfoModule } from '@public/shared/components/user-basic-info/user-basic-info.module';
 
 @NgModule({
   declarations: [UserProfileHeaderComponent, UserStatsComponent],
@@ -15,6 +16,7 @@ import { UserAvatarModule } from '@shared/user-avatar/user-avatar.module';
     UserAvatarModule,
     StarsModule,
     SvgIconModule,
+    UserBasicInfoModule,
   ],
   exports: [UserProfileHeaderComponent],
 })

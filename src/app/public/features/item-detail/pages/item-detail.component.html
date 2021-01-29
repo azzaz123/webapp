@@ -1,0 +1,25 @@
+<div class="container ItemDetail__container">
+    <div class="d-block pt-4">
+        <tsl-top-sky class="mt-4 mx-0 mx-xl-auto pr-xl-0"
+            *ngIf="device === deviceType.DESKTOP || device === deviceType.TABLET"></tsl-top-sky>
+        <div class="d-flex justify-content-around py-4">
+            <div *ngIf="device === deviceType.DESKTOP">
+                <tsl-side-sky class="position-sticky d-none d-xl-block"></tsl-side-sky>
+            </div>
+            <div class="ItemDetail__content px-4 pb-5">
+                <div class="ItemDetail__carousel position-relative">
+                    <tsl-item-images-carousel [images]="images" [itemFlags]="itemFlags"></tsl-item-images-carousel>
+                </div>
+
+                <tsl-social-share [title]="socialShare?.title" [facebook]="socialShare?.facebook" [twitter]="socialShare?.twitter" [email]="socialShare?.email"></tsl-social-share>
+
+            </div>
+            <div *ngIf="device === deviceType.DESKTOP">
+                <tsl-side-sky class="position-sticky d-none d-xl-block"></tsl-side-sky>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+

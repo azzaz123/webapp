@@ -45,6 +45,7 @@ describe('ProfileComponent', () => {
   let httpMock: HttpTestingController;
   let analyticsService: AnalyticsService;
   let subscriptionsService: SubscriptionsService;
+  let i18n: I18nService;
   let hasOneTrialSubscription = false;
 
   beforeEach(
@@ -54,7 +55,12 @@ describe('ProfileComponent', () => {
         declarations: [ProfileComponent, StarsComponent, ProBadgeComponent],
         providers: [
           EventService,
-          I18nService,
+          {
+            provide: I18nService,
+            useValue: {
+              getTranslations() {},
+            },
+          },
           AccessTokenService,
           {
             provide: CookieService,
@@ -90,6 +96,7 @@ describe('ProfileComponent', () => {
       httpMock = TestBed.inject(HttpTestingController);
       analyticsService = TestBed.inject(AnalyticsService);
       subscriptionsService = TestBed.inject(SubscriptionsService);
+      i18n = TestBed.inject(I18nService);
       fixture.detectChanges();
     })
   );
@@ -192,16 +199,57 @@ describe('ProfileComponent', () => {
   });
 
   describe('when user is not a cardealer', () => {
+    describe('and the user is not a PRO', () => {
+      let subscriptionTabElement;
+      it('should should show tab title Become a PRO', () => {
+        const expectedText = 'Become a PRO';
+        spyOn(i18n, 'getTranslations').and.returnValue(expectedText);
+
+        fixture.detectChanges();
+
+        subscriptionTabElement = fixture.debugElement
+          .queryAll(By.css('a'))
+          .find((anchors) => anchors.nativeElement.innerHTML === expectedText)
+          .nativeElement;
+
+        expect(i18n.getTranslations).toHaveBeenCalledWith('becomePro');
+        expect(subscriptionTabElement).toBeTruthy();
+      });
+    });
+
+    describe('and the user is PRO', () => {
+      let subscriptionTabElement;
+      it('should should show tab title Wallapop PRO', () => {
+        const expectedText = 'Wallapop PRO';
+        spyOn(i18n, 'getTranslations').and.returnValue(expectedText);
+        jest.spyOn(userService, 'isPro', 'get').mockReturnValue(true);
+
+        fixture.detectChanges();
+
+        subscriptionTabElement = fixture.debugElement
+          .queryAll(By.css('a'))
+          .find((anchors) => anchors.nativeElement.innerHTML === expectedText)
+          .nativeElement;
+
+        expect(i18n.getTranslations).toHaveBeenCalledWith('wallapopPro');
+        expect(subscriptionTabElement).toBeTruthy();
+      });
+    });
+
     describe("and when user clicks in 'Subscriptions' tab", () => {
       let subscriptionTabElement;
 
       beforeEach(() => {
+        const expectedText = 'Become a PRO';
         spyOn(analyticsService, 'trackEvent');
+        spyOn(i18n, 'getTranslations').and.returnValue(expectedText);
+
+        fixture.detectChanges();
+
         subscriptionTabElement = fixture.debugElement
           .queryAll(By.css('a'))
-          .find(
-            (anchors) => anchors.nativeElement.innerHTML === 'Subscriptions'
-          ).nativeElement;
+          .find((anchors) => anchors.nativeElement.innerHTML === expectedText)
+          .nativeElement;
       });
 
       describe('and there is no free trial', () => {

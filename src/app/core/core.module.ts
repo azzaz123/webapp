@@ -8,6 +8,7 @@ import { GeolocationService } from './geolocation/geolocation.service';
 import { AccessTokenService } from './http/access-token.service';
 import { I18nService } from './i18n/i18n.service';
 import { PaymentService } from './payments/payment.service';
+import { CoreStoreModule } from './store/core-store.module';
 import { DevelopmentGuard } from './user/development.guard';
 import { LoggedGuard } from './user/logged.guard';
 import { SocialShareService } from './social-share/social-share.service';
@@ -24,6 +25,9 @@ import { TrackingService } from './tracking/tracking.service';
 import { NavigatorService } from './tracking/navigator.service';
 import { ItemService } from './item/item.service';
 import { AdsModule } from './ads/ads.module';
+import { HAMMER_PROVIDER } from './hammerjs/hammerjs-provider';
+import { HammerModule } from '@angular/platform-browser';
+import { CategoryService } from './category/category.service';
 
 @NgModule({
   imports: [
@@ -31,6 +35,8 @@ import { AdsModule } from './ads/ads.module';
     NgxPermissionsModule.forRoot(),
     DeviceDetectorModule.forRoot(),
     AdsModule,
+    HammerModule,
+    CoreStoreModule,
   ],
   providers: [
     LoggedGuard,
@@ -54,6 +60,8 @@ import { AdsModule } from './ads/ads.module';
     NavigatorService,
     UserService,
     ItemService,
+    HAMMER_PROVIDER,
+    CategoryService,
   ],
 })
 export class CoreModule {

@@ -34,6 +34,13 @@ const routes: Route[] = [
           import('./features/search/search.module').then((m) => m.SearchModule),
       },
       {
+        path: `${PUBLIC_PATHS.ITEM_DETAIL}/:${PUBLIC_PATH_PARAMS.ID}`,
+        loadChildren: () =>
+          import('./features/item-detail/item-detail.module').then(
+            (m) => m.ItemDetailModule
+          ),
+      },
+      {
         path: '**',
         redirectTo: PUBLIC_PATHS.LOGIN,
       },
