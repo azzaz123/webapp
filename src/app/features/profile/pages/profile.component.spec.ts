@@ -219,10 +219,10 @@ describe('ProfileComponent', () => {
 
     describe('and the user is PRO', () => {
       let subscriptionTabElement;
-      it('should should show tab title Become a PRO', () => {
+      it('should should show tab title Wallapop PRO', () => {
         const expectedText = 'Wallapop PRO';
         spyOn(i18n, 'getTranslations').and.returnValue(expectedText);
-        component.isPro = true;
+        jest.spyOn(userService, 'isPro', 'get').mockReturnValue(true);
 
         fixture.detectChanges();
 

@@ -1244,6 +1244,9 @@
   <translation id="Reserved">Reservado</translation>
   <translation id="Expired">Expirado</translation>
   <translation id="Inactive">Inactivo</translation>
+  <translation id="ItemDetailShareTitle">Comparte este producto con tus amigos</translation>
+  <translation id="ItemDetailShareTwitterText">Mira que acabo de encontrar en @wallapop: </translation>
+  <translation id="ItemDetailShareEmailText">Esto te podría interesar - </translation>
   <translation id="Bathroom">Baño</translation>
   <translation id="Bathrooms">Baños</translation>
   <translation id="Room">Habitación</translation>

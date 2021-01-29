@@ -67,7 +67,7 @@ export class ProfileComponent implements OnInit {
   }
 
   public getSubscriptionTabName(): string {
-    return this.isPro
+    return this.userService.isPro
       ? this.i18n.getTranslations('wallapopPro')
       : this.i18n.getTranslations('becomePro');
   }
