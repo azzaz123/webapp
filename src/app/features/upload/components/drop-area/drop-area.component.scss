@@ -106,10 +106,6 @@
     border-radius: 50%;
     text-align: center;
     line-height: $line-height-ml;
-    tsl-svg-icon {
-      width: 7px;
-      height: 9px;
-    }
   }
   &:hover {
     &:not(.placeholder):not(.dnd-sortable-drag):not(.one-image) {
@@ -118,7 +114,9 @@
       box-shadow: 0 4px 6px 0 rgba(37, 50, 56, 0.15);
       transform: scale(1.15);
       a {
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     }
   }

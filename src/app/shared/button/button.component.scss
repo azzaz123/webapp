@@ -50,6 +50,9 @@ $vertical-padding: $spacing-ms;
   &.loading {
     padding-top: $spacing-s;
     padding-bottom: $spacing-xs;
+    tsl-svg-icon ::ng-deep svg {
+      margin: 0 auto;
+    }
   }
   &.btn-big {
     padding-left: $spacing-xxxl;

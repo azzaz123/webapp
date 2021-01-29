@@ -49,6 +49,9 @@ a {
   tsl-svg-icon {
     width: 60px;
     height: 40px;
+    ::ng-deep svg {
+      margin: 0 auto;
+    }
   }
   .col {
     display: flex;
