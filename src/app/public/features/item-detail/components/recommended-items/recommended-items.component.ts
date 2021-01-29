@@ -11,6 +11,7 @@ import { MapItemService } from '@public/features/public-profile/pages/user-publi
 export class RecommendedItemsComponent {
   @Input() recommendedItems: RecommendedItemsBodyResponse;
   public items: Item[];
+  public showDescription = false;
 
   constructor(private mapItemService: MapItemService) {}
 

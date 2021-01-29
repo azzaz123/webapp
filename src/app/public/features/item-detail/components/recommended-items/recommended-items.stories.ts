@@ -12,16 +12,6 @@ import { MapItemService } from '@public/features/public-profile/pages/user-publi
 export default {
   title: 'Webapp/Public/Features/ItemDetail/Components/RecommendedItems',
   component: RecommendedItemsComponent,
-  decorators: [
-    (storyFunc) => {
-      const story = storyFunc();
-
-      return {
-        ...story,
-        template: `<div style="max-width: 600px;">${story.template}</div>`,
-      };
-    },
-  ],
 } as Meta;
 
 const Template: Story<RecommendedItemsComponent> = (
