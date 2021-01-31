@@ -18,7 +18,7 @@ import { SubscriptionsService } from '@core/subscriptions/subscriptions.service'
 import { Subscription } from 'rxjs';
 import { UserService } from '@core/user/user.service';
 
-export const LOCAL_STORAGE_TRY_PRO_SLOT = '-try-pro-slot';
+export const LOCAL_STORAGE_TRY_PRO_SLOT = 'try-pro-slot';
 
 @Component({
   selector: 'tsl-try-pro-slot',
@@ -76,7 +76,7 @@ export class TryProSlotComponent implements OnInit, OnDestroy {
   private setClosed(): void {
     if (this.userService.user) {
       localStorage.setItem(
-        this.userService.user.id + LOCAL_STORAGE_TRY_PRO_SLOT,
+        `${this.userService.user.id}-${LOCAL_STORAGE_TRY_PRO_SLOT}`,
         'true'
       );
     }

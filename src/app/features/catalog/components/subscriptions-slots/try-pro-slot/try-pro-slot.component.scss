@@ -15,7 +15,6 @@
   &__close {
     cursor: pointer;
     @include square($spacing-ms);
-    margin: $spacing-m;
     position: absolute;
     top: 0;
     right: 0;

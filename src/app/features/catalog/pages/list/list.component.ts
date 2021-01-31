@@ -802,7 +802,7 @@ export class ListComponent implements OnInit, OnDestroy {
   private initTryProSlot(): void {
     this.showTryProSlot =
       !this.userService.isPro &&
-      !localStorage.getItem(this.user.id + LOCAL_STORAGE_TRY_PRO_SLOT);
+      !localStorage.getItem(`${this.user.id}-${LOCAL_STORAGE_TRY_PRO_SLOT}`);
   }
 
   public onCloseTryProSlot(): void {
