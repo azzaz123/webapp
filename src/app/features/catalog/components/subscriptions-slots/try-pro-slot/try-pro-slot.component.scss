@@ -4,12 +4,8 @@
   position: relative;
   transition: all 0.25s ease;
   background-color: transparentize($white, 0.5);
-  border: solid 1px $blue-grey-5;
+  border: solid 1px $walla-main;
   border-radius: $spacing-ms;
-
-  &:hover {
-    border: solid 1px $walla-main;
-  }
 
   &__description {
     font-weight: bold;
