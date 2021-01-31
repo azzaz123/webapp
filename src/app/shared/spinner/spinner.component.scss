@@ -7,8 +7,10 @@ $spinner-size: 24px;
   display: flex;
   justify-content: center;
   #loader {
-    text-align: center;
-    align-self: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
     .spinner {
       @include square($spinner-size);
       margin-bottom: $spacing-ml;
