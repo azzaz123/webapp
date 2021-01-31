@@ -21,6 +21,7 @@ import { TrackingService } from '@core/tracking/tracking.service';
 import { User } from '@core/user/user';
 import { Counters, UserStats } from '@core/user/user-stats.interface';
 import { UserService } from '@core/user/user.service';
+import { LOCAL_STORAGE_TRY_PRO_SLOT } from '@features/catalog/components/subscriptions-slots/try-pro-slot/try-pro-slot.component';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ActivateItemsModalComponent } from '@shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component';
 import { DeactivateItemsModalComponent } from '@shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
@@ -110,7 +111,6 @@ export class ListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getUserInfo();
-    this.showTryProSlot = true;
 
     this.normalNavLinks = [
       { id: STATUS.PUBLISHED, display: this.i18n.getTranslations('selling') },
@@ -792,10 +792,17 @@ export class ListComponent implements OnInit, OnDestroy {
   private getUserInfo() {
     this.userService.me().subscribe((user) => {
       this.user = user;
+      this.initTryProSlot();
       this.userService.getInfo(user.id).subscribe((info) => {
         this.userScore = info.scoring_stars;
       });
     });
+  }
+
+  private initTryProSlot(): void {
+    this.showTryProSlot =
+      !this.userService.isPro &&
+      !localStorage.getItem(this.user.id + LOCAL_STORAGE_TRY_PRO_SLOT);
   }
 
   public onCloseTryProSlot(): void {

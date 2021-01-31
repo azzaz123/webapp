@@ -11,8 +11,13 @@ import {
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
 import { TryProSlotComponent } from './try-pro-slot.component';
+import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { MockSubscriptionService } from '@fixtures/subscriptions.fixtures.spec';
+import { UserService } from '@core/user/user.service';
+import { MockedUserService } from '@fixtures/user.fixtures.spec';
+import { Router } from '@angular/router';
 
-describe('SubscriptionsSlotItemComponent', () => {
+describe('TryProSlotItemComponent', () => {
   let component: TryProSlotComponent;
   let analyticsService: AnalyticsService;
   let fixture: ComponentFixture<TryProSlotComponent>;
@@ -24,6 +29,14 @@ describe('SubscriptionsSlotItemComponent', () => {
         declarations: [TryProSlotComponent],
         providers: [
           { provide: AnalyticsService, useClass: MockAnalyticsService },
+          { provide: SubscriptionsService, useClass: MockSubscriptionService },
+          { provide: UserService, useClass: MockedUserService },
+          {
+            provide: Router,
+            useValue: {
+              navigate() {},
+            },
+          },
         ],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();

@@ -16,6 +16,9 @@ import {
 import { Router } from '@angular/router';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { Subscription } from 'rxjs';
+import { UserService } from '@core/user/user.service';
+
+export const LOCAL_STORAGE_TRY_PRO_SLOT = '-try-pro-slot';
 
 @Component({
   selector: 'tsl-try-pro-slot',
@@ -26,12 +29,12 @@ export class TryProSlotComponent implements OnInit, OnDestroy {
   @Output() close: EventEmitter<void> = new EventEmitter();
   private hasTrial: boolean;
   private subscriptionSubscription: Subscription;
-  buttonText;
 
   constructor(
     private router: Router,
     private analyticsService: AnalyticsService,
-    private subscriptionService: SubscriptionsService
+    private subscriptionService: SubscriptionsService,
+    private userService: UserService
   ) {}
 
   get CTAtext(): string {
@@ -55,6 +58,7 @@ export class TryProSlotComponent implements OnInit, OnDestroy {
   }
 
   public onClose(): void {
+    this.setClosed();
     this.close.emit();
   }
 
@@ -67,6 +71,15 @@ export class TryProSlotComponent implements OnInit, OnDestroy {
       },
     };
     this.router.navigate(['profile/subscriptions']);
+  }
+
+  private setClosed(): void {
+    if (this.userService.user) {
+      localStorage.setItem(
+        this.userService.user.id + LOCAL_STORAGE_TRY_PRO_SLOT,
+        'true'
+      );
+    }
   }
 
   ngOnDestroy(): void {
