@@ -34,8 +34,8 @@
                     </div>
                 </div>
 
-                <tsl-social-share [title]="socialShare?.title" [facebook]="socialShare?.facebook"
-                    [twitter]="socialShare?.twitter" [email]="socialShare?.email"></tsl-social-share>
+                <tsl-social-share *ngIf="socialShare" [title]="socialShare.title" [facebook]="socialShare.facebook"
+                    [twitter]="socialShare.twitter" [email]="socialShare.email"></tsl-social-share>
 
             </div>
             <div *ngIf="device === deviceType.DESKTOP">
