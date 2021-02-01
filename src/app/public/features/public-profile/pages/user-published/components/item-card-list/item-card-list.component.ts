@@ -1,7 +1,10 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { Item } from '@core/item/item';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
+import { PUBLIC_PATHS } from '@public/public-routing-constants';
+import { APP_PATHS } from 'app/app-routing-constants';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
@@ -16,7 +19,8 @@ export class ItemCardListComponent {
   constructor(
     private deviceDetectionService: DeviceDetectorService,
     private itemCardService: ItemCardService,
-    private checkSessionService: CheckSessionService
+    private checkSessionService: CheckSessionService,
+    private router: Router
   ) {
     this.showDescription = !this.deviceDetectionService.isMobile();
   }
@@ -25,5 +29,12 @@ export class ItemCardListComponent {
     this.checkSessionService.hasSession()
       ? this.itemCardService.toggleFavourite(item)
       : this.checkSessionService.checkSessionAction();
+  }
+
+  public openItem(item: Item): void {
+    const URL = `${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.ITEM_DETAIL}/${item.id}`;
+    this.router.navigate([]).then(() => {
+      window.open(URL, '_blank');
+    });
   }
 }
