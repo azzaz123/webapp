@@ -308,6 +308,17 @@ export const MOCK_USER_PRO: User = new User(
 
 export const USER_ITEM_DISTANCE = 10;
 
+export const MockUser: Partial<User> = {
+  id: 'abcd-1234',
+  birthDate: USER_BIRTH_DATE,
+  gender: USER_GENDER,
+  location: USER_LOCATION,
+};
+
+export const MockUserService = {
+  user: MockUser,
+};
+
 export class MockedUserService {
   public get(url: string): Observable<User> {
     const data: any = USER_DATA;
