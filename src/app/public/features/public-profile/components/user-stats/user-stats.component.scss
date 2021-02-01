@@ -5,6 +5,7 @@
     color: $walla-main;
     display: inline-block;
     cursor: pointer;
+    text-decoration: none;
   }
   &__counter--bold {
     font-weight: $font-weight-chunky;

@@ -9,6 +9,8 @@ import {
 } from '@fixtures/user.fixtures.spec';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
+import { PublicPipesModule } from '@public/core/pipes/public-pipes.module';
+import { ScrollIntoViewService } from '@core/scroll-into-view/scroll-into-view';
 
 describe('UserStatsComponent', () => {
   const profileUserClass = '.ProfileUser';
@@ -16,10 +18,11 @@ describe('UserStatsComponent', () => {
   let fixture: ComponentFixture<UserStatsComponent>;
   let deviceDetectorService: DeviceDetectorService;
   let router: Router;
+  let scrollIntoViewService: ScrollIntoViewService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule, PublicPipesModule],
       declarations: [UserStatsComponent],
       providers: [
         {
@@ -48,6 +51,7 @@ describe('UserStatsComponent', () => {
     component.userInfo = MOCK_FULL_USER_FEATURED;
     component.userStats = MOCK_USER_STATS;
     deviceDetectorService = TestBed.inject(DeviceDetectorService);
+    scrollIntoViewService = TestBed.inject(ScrollIntoViewService);
     router = TestBed.inject(Router);
     fixture.detectChanges();
   });
@@ -78,14 +82,20 @@ describe('UserStatsComponent', () => {
         });
 
         describe('and when our device is a phone', () => {
-          it('should redirect to info path with fragment...', () => {
+          it('should redirect to info path', () => {
+            const mapSelector = '#map';
             spyOn(deviceDetectorService, 'isMobile').and.returnValue(true);
+            spyOn(scrollIntoViewService, 'scrollToSelector');
             locationSpyAndClick();
 
             expect(component.showLocation).toHaveBeenCalledTimes(1);
             expect(router.navigate).toHaveBeenCalledTimes(1);
-            expect(router.navigate).toHaveBeenCalledWith([expectedURL], {
-              fragment: 'map',
+            expect(router.navigate).toHaveBeenCalledWith([expectedURL]);
+
+            setTimeout(() => {
+              expect(
+                scrollIntoViewService.scrollToSelector
+              ).toHaveBeenCalledWith(mapSelector);
             });
           });
         });
@@ -112,7 +122,7 @@ describe('UserStatsComponent', () => {
           phoneAnchor.click();
 
           expect(component.togglePhone).toHaveBeenCalledTimes(1);
-          expect(component.isPhone).toBe(true);
+          expect(component.showPhone).toBe(true);
         });
       });
       describe('when NOT have the extra info', () => {

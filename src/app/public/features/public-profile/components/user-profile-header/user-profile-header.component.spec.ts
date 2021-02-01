@@ -86,15 +86,14 @@ describe('UserProfileHeaderComponent', () => {
 
         fixture.detectChanges();
         const headerPro = fixture.debugElement.query(By.css(userCoverTag));
-        const proBadge = fixture.debugElement.query(By.css(proBadgeClass))
-          .nativeNode;
+        const proBadge = fixture.debugElement.query(By.css(proBadgeClass));
         const aboutSection = fixture.debugElement.queryAll(
           By.css(boldTitleClass)
         );
 
         expect(headerPro).toBeFalsy();
-        expect(proBadge.hasAttribute('hidden')).toBe(true);
-        expect(aboutSection.length).toBe(1);
+        expect(proBadge).toBeFalsy();
+        expect(aboutSection.length).toBe(0);
       });
     });
   });
