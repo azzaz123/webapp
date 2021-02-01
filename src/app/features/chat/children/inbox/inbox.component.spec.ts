@@ -1,10 +1,12 @@
-/* tslint:disable:no-unused-variable */
+import { NgxPermissionsModule } from 'ngx-permissions';
+import { Observable, of } from 'rxjs';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AdsService } from '@core/ads/services';
 import {
-  AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
+  AnalyticsPageView,
   SCREEN_IDS,
   ViewChatScreen,
 } from '@core/analytics/analytics-constants';
@@ -14,7 +16,6 @@ import { Item } from '@core/item/item';
 import { RemoteConsoleService } from '@core/remote-console';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
-import { AdsService } from '@features/chat/core/ads/ads.service';
 import { InboxConversationService } from '@features/chat/core/inbox/inbox-conversation.service';
 import { InboxService } from '@features/chat/core/inbox/inbox.service';
 import {
@@ -22,31 +23,27 @@ import {
   InboxItem,
   InboxUser,
 } from '@features/chat/core/model';
+import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import {
-  createInboxConversationsArray,
   CREATE_MOCK_INBOX_CONVERSATION,
+  createInboxConversationsArray,
 } from '@fixtures/inbox.fixtures.spec';
 import { MockRemoteConsoleService } from '@fixtures/remote-console.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { DateCalendarPipe } from '@shared/pipes';
-import { NgxPermissionsModule } from 'ngx-permissions';
-import { Observable, of } from 'rxjs';
+
 import { InboxConversationComponent } from './components/inbox-conversation';
 import { InboxComponent, InboxState } from './inbox.component';
 
-class AdServiceMock {
-  adsRefresh() {}
-  loadAddsLibs() {}
-}
-
 describe('Component: InboxComponent', () => {
   let component: InboxComponent;
+  let componentFixture: ComponentFixture<InboxComponent>;
   let inboxService: InboxService;
   let eventService: EventService;
   let userService: UserService;
   let conversationService: InboxConversationService;
-  let addService: AdsService;
+  let adService: AdsService;
   let remoteConsoleService: RemoteConsoleService;
   let analyticsService: AnalyticsService;
 
@@ -60,7 +57,7 @@ describe('Component: InboxComponent', () => {
       ],
       providers: [
         EventService,
-        { provide: AdsService, useClass: AdServiceMock },
+        { provide: AdsService, useValue: MockAdsService },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         { provide: AnalyticsService, useClass: MockAnalyticsService },
         {
@@ -98,11 +95,12 @@ describe('Component: InboxComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     });
-    component = TestBed.createComponent(InboxComponent).componentInstance;
+    componentFixture = TestBed.createComponent(InboxComponent);
+    component = componentFixture.componentInstance;
     inboxService = TestBed.inject(InboxService);
     eventService = TestBed.inject(EventService);
     userService = TestBed.inject(UserService);
-    addService = TestBed.inject(AdsService);
+    adService = TestBed.inject(AdsService);
     remoteConsoleService = TestBed.inject(RemoteConsoleService);
     conversationService = TestBed.inject(InboxConversationService);
     analyticsService = TestBed.inject(AnalyticsService);
@@ -135,6 +133,14 @@ describe('Component: InboxComponent', () => {
       eventService.emit(EventService.INBOX_LOADED, mockedInboxConversations);
 
       expect(component.conversations).toEqual(mockedInboxConversations);
+    });
+
+    it('should refresh ads', () => {
+      spyOn(adService, 'refresh');
+
+      component.ngOnInit();
+
+      expect(adService.refresh).toHaveBeenCalled();
     });
 
     describe('when inboxService.conversations exists', () => {
@@ -355,14 +361,12 @@ describe('Component: InboxComponent', () => {
 
     it('should should call conversationService.openConversation with the new conversation', () => {
       spyOn(conversationService, 'openConversation').and.callThrough();
-      spyOn(addService, 'adsRefresh');
 
       component.setCurrentConversation(newlySelectedConversation);
 
       expect(conversationService.openConversation).toHaveBeenCalledWith(
         newlySelectedConversation
       );
-      expect(addService.adsRefresh).toHaveBeenCalled();
     });
   });
 
