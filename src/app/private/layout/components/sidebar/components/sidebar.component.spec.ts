@@ -193,7 +193,7 @@ describe('SidebarComponent', () => {
       });
     }));
 
-    describe('close subscription slot', () => {
+    describe('when close subscription slot', () => {
       it('should track event if not cardealer', () => {
         component.isProfessional = false;
         const element: HTMLElement = fixture.nativeElement.querySelector(

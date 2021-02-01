@@ -77,11 +77,10 @@ export class TooManyItemsModalComponent implements OnInit {
           (subscription) => item.categoryId === subscription.category_id
         );
 
-        if (!this.categorySubscription) {
-          return false;
-        }
-
-        if (!!this.categorySubscription.subscribed_from) {
+        if (
+          !this.categorySubscription ||
+          !!this.categorySubscription.subscribed_from
+        ) {
           return false;
         }
 

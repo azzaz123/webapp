@@ -1023,83 +1023,91 @@ describe('ListComponent', () => {
       expect(itemService.activate).toHaveBeenCalledTimes(1);
     }));
 
-    describe('should track trackActivateProItem event', () => {
-      it('when status is inactive', () => {
-        const expectedEvent: AnalyticsPageView<ClickActivateProItem> = {
-          name: ANALYTICS_EVENT_NAMES.ClickActivateProItem,
-          attributes: {
-            screenId: SCREEN_IDS.MyCatalogInactiveSection,
-            numberOfItems: 2,
-          },
-        };
+    describe('ClickActivateProItem event', () => {
+      describe('when status is inactive', () => {
+        it('should track event', () => {
+          const expectedEvent: AnalyticsPageView<ClickActivateProItem> = {
+            name: ANALYTICS_EVENT_NAMES.ClickActivateProItem,
+            attributes: {
+              screenId: SCREEN_IDS.MyCatalogInactiveSection,
+              numberOfItems: 2,
+            },
+          };
 
-        fixture.detectChanges();
-        component.activate();
+          fixture.detectChanges();
+          component.activate();
 
-        expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
-        expect(analyticsService.trackPageView).toHaveBeenCalledWith(
-          expectedEvent
-        );
+          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith(
+            expectedEvent
+          );
+        });
       });
 
-      it('when status is not inactive', () => {
-        component.selectedStatus = STATUS.PUBLISHED;
-        const expectedEvent: AnalyticsPageView<ClickActivateProItem> = {
-          name: ANALYTICS_EVENT_NAMES.ClickActivateProItem,
-          attributes: {
-            screenId: SCREEN_IDS.MyCatalog,
-            numberOfItems: 2,
-          },
-        };
+      describe('when status is not inactive', () => {
+        it('should track event', () => {
+          component.selectedStatus = STATUS.PUBLISHED;
+          const expectedEvent: AnalyticsPageView<ClickActivateProItem> = {
+            name: ANALYTICS_EVENT_NAMES.ClickActivateProItem,
+            attributes: {
+              screenId: SCREEN_IDS.MyCatalog,
+              numberOfItems: 2,
+            },
+          };
 
-        component.activate();
+          component.activate();
 
-        expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
-        expect(analyticsService.trackPageView).toHaveBeenCalledWith(
-          expectedEvent
-        );
+          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith(
+            expectedEvent
+          );
+        });
       });
     });
 
-    describe('should track trackConfirmActivateProItem event', () => {
-      it('when view is inactive', fakeAsync(() => {
-        const expectedEvent: AnalyticsPageView<ConfirmActivateProItem> = {
-          name: ANALYTICS_EVENT_NAMES.ConfirmActivateProItem,
-          attributes: {
-            screenId: SCREEN_IDS.MyCatalogInactiveSection,
-            numberOfItems: 2,
-          },
-        };
+    describe('ConfirmActivateProItem event', () => {
+      describe('when view is inactive', () => {
+        it('should track event', fakeAsync(() => {
+          const expectedEvent: AnalyticsPageView<ConfirmActivateProItem> = {
+            name: ANALYTICS_EVENT_NAMES.ConfirmActivateProItem,
+            attributes: {
+              screenId: SCREEN_IDS.MyCatalogInactiveSection,
+              numberOfItems: 2,
+            },
+          };
 
-        fixture.detectChanges();
-        component.activate();
-        tick();
+          fixture.detectChanges();
+          component.activate();
+          tick();
 
-        expect(analyticsService.trackPageView).toHaveBeenCalledTimes(2);
-        expect(analyticsService.trackPageView).toHaveBeenCalledWith(
-          expectedEvent
-        );
-      }));
+          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(2);
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith(
+            expectedEvent
+          );
+        }));
+      });
 
-      it('when view is not inactive', fakeAsync(() => {
-        component.selectedStatus = STATUS.PUBLISHED;
-        const expectedEvent: AnalyticsPageView<ConfirmActivateProItem> = {
-          name: ANALYTICS_EVENT_NAMES.ConfirmActivateProItem,
-          attributes: {
-            screenId: SCREEN_IDS.MyCatalog,
-            numberOfItems: 2,
-          },
-        };
+      describe('when view is not inactive', () => {
+        it('should track event', fakeAsync(() => {
+          component.selectedStatus = STATUS.PUBLISHED;
+          const expectedEvent: AnalyticsPageView<ConfirmActivateProItem> = {
+            name: ANALYTICS_EVENT_NAMES.ConfirmActivateProItem,
+            attributes: {
+              screenId: SCREEN_IDS.MyCatalog,
+              numberOfItems: 2,
+            },
+          };
 
-        fixture.detectChanges();
-        component.activate();
-        tick();
+          fixture.detectChanges();
+          component.activate();
+          tick();
 
-        expect(analyticsService.trackPageView).toHaveBeenCalledTimes(2);
-        expect(analyticsService.trackPageView).toHaveBeenCalledWith(
-          expectedEvent
-        );
-      }));
+          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(2);
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith(
+            expectedEvent
+          );
+        }));
+      });
     });
 
     describe('success when status is inactive', () => {
@@ -1180,87 +1188,95 @@ describe('ListComponent', () => {
       expect(itemService.activateSingleItem).toHaveBeenCalledWith('1');
     }));
 
-    describe('should track trackActivateProItem event', () => {
-      it('when status is inactive', () => {
-        const expectedEvent: AnalyticsPageView<ClickActivateProItem> = {
-          name: ANALYTICS_EVENT_NAMES.ClickActivateProItem,
-          attributes: {
-            screenId: SCREEN_IDS.MyCatalogInactiveSection,
-            numberOfItems: 1,
-            categoryId: component.items[0].categoryId,
-          },
-        };
+    describe('ClickActivateProItem event', () => {
+      describe('when status is inactive', () => {
+        it('should track event', () => {
+          const expectedEvent: AnalyticsPageView<ClickActivateProItem> = {
+            name: ANALYTICS_EVENT_NAMES.ClickActivateProItem,
+            attributes: {
+              screenId: SCREEN_IDS.MyCatalogInactiveSection,
+              numberOfItems: 1,
+              categoryId: component.items[0].categoryId,
+            },
+          };
 
-        fixture.detectChanges();
-        component.activate(SUBSCRIPTION_TYPES.stripe, '1');
+          fixture.detectChanges();
+          component.activate(SUBSCRIPTION_TYPES.stripe, '1');
 
-        expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
-        expect(analyticsService.trackPageView).toHaveBeenCalledWith(
-          expectedEvent
-        );
+          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith(
+            expectedEvent
+          );
+        });
       });
 
-      it('when status is not inactive', () => {
-        component.selectedStatus = STATUS.PUBLISHED;
-        const expectedEvent: AnalyticsPageView<ClickActivateProItem> = {
-          name: ANALYTICS_EVENT_NAMES.ClickActivateProItem,
-          attributes: {
-            screenId: SCREEN_IDS.MyCatalog,
-            numberOfItems: 1,
-            categoryId: component.items[0].categoryId,
-          },
-        };
+      describe('when status is not inactive', () => {
+        it('should track event', () => {
+          component.selectedStatus = STATUS.PUBLISHED;
+          const expectedEvent: AnalyticsPageView<ClickActivateProItem> = {
+            name: ANALYTICS_EVENT_NAMES.ClickActivateProItem,
+            attributes: {
+              screenId: SCREEN_IDS.MyCatalog,
+              numberOfItems: 1,
+              categoryId: component.items[0].categoryId,
+            },
+          };
 
-        component.activate(SUBSCRIPTION_TYPES.stripe, '1');
+          component.activate(SUBSCRIPTION_TYPES.stripe, '1');
 
-        expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
-        expect(analyticsService.trackPageView).toHaveBeenCalledWith(
-          expectedEvent
-        );
+          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith(
+            expectedEvent
+          );
+        });
       });
     });
 
-    describe('should track trackConfirmActivateProItem event', () => {
-      it('when view is inactive', fakeAsync(() => {
-        const expectedEvent: AnalyticsPageView<ConfirmActivateProItem> = {
-          name: ANALYTICS_EVENT_NAMES.ConfirmActivateProItem,
-          attributes: {
-            screenId: SCREEN_IDS.MyCatalogInactiveSection,
-            numberOfItems: 1,
-            categoryId: component.items[0].categoryId,
-          },
-        };
+    describe('ConfirmActivateProItem event', () => {
+      describe('when view is inactive', () => {
+        it('should track event', fakeAsync(() => {
+          const expectedEvent: AnalyticsPageView<ConfirmActivateProItem> = {
+            name: ANALYTICS_EVENT_NAMES.ConfirmActivateProItem,
+            attributes: {
+              screenId: SCREEN_IDS.MyCatalogInactiveSection,
+              numberOfItems: 1,
+              categoryId: component.items[0].categoryId,
+            },
+          };
 
-        fixture.detectChanges();
-        component.activate(SUBSCRIPTION_TYPES.stripe, '1');
-        tick();
+          fixture.detectChanges();
+          component.activate(SUBSCRIPTION_TYPES.stripe, '1');
+          tick();
 
-        expect(analyticsService.trackPageView).toHaveBeenCalledTimes(2);
-        expect(analyticsService.trackPageView).toHaveBeenCalledWith(
-          expectedEvent
-        );
-      }));
+          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(2);
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith(
+            expectedEvent
+          );
+        }));
+      });
 
-      it('when view is not inactive', fakeAsync(() => {
-        component.selectedStatus = STATUS.PUBLISHED;
-        const expectedEvent: AnalyticsPageView<ConfirmActivateProItem> = {
-          name: ANALYTICS_EVENT_NAMES.ConfirmActivateProItem,
-          attributes: {
-            screenId: SCREEN_IDS.MyCatalog,
-            numberOfItems: 1,
-            categoryId: component.items[0].categoryId,
-          },
-        };
+      describe('when view is not inactive', () => {
+        it('should track event', fakeAsync(() => {
+          component.selectedStatus = STATUS.PUBLISHED;
+          const expectedEvent: AnalyticsPageView<ConfirmActivateProItem> = {
+            name: ANALYTICS_EVENT_NAMES.ConfirmActivateProItem,
+            attributes: {
+              screenId: SCREEN_IDS.MyCatalog,
+              numberOfItems: 1,
+              categoryId: component.items[0].categoryId,
+            },
+          };
 
-        fixture.detectChanges();
-        component.activate(SUBSCRIPTION_TYPES.stripe, '1');
-        tick();
+          fixture.detectChanges();
+          component.activate(SUBSCRIPTION_TYPES.stripe, '1');
+          tick();
 
-        expect(analyticsService.trackPageView).toHaveBeenCalledTimes(2);
-        expect(analyticsService.trackPageView).toHaveBeenCalledWith(
-          expectedEvent
-        );
-      }));
+          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(2);
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith(
+            expectedEvent
+          );
+        }));
+      });
     });
 
     describe('success when status is inactive', () => {
@@ -1359,7 +1375,7 @@ describe('ListComponent', () => {
     });
   });
 
-  describe('close subscription slot', () => {
+  describe('when close subscription slot', () => {
     it('should track event', () => {
       const expectedEvent: AnalyticsPageView<ViewOwnSaleItems> = {
         name: ANALYTICS_EVENT_NAMES.ViewOwnSaleItems,
