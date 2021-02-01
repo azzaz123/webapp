@@ -38,7 +38,7 @@ export class MapItemService {
       content.id,
       content.user.id,
       content.title,
-      content.storytelling,
+      content.storytelling || content.description,
       content.sale_price === undefined ? content.price : content.sale_price,
       content.currency_code || content.currency,
       content.modified_date,
