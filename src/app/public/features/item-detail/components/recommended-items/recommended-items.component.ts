@@ -17,9 +17,9 @@ export class RecommendedItemsComponent implements OnInit {
 
   ngOnInit() {
     if (this.recommendedItems) {
-      this.items = this.mapItemService.mapRecommendedItem(
-        this.recommendedItems
-      );
+      this.items = this.mapItemService
+        .mapRecommendedItem(this.recommendedItems)
+        .slice(0, 6);
     }
   }
 }
