@@ -1,4 +1,4 @@
-<div *ngIf="userInfo && userStats" class="mb-4">
+<div *ngIf="userInfo && userStats" class="mb-3">
   <div class="HeaderPro" *ngIf="userInfo.featured">
     <tsl-user-cover [user]="userInfo"></tsl-user-cover>
   </div>
@@ -9,7 +9,7 @@
           <div class="w-100">
             <tsl-user-basic-info [userStats]="userStats" [userInfo]="userInfo" [styleSize]="USER_INFO_SIZE.BIG">
             </tsl-user-basic-info>
-            <div class="ProBadge d-flex align-items-center" [hidden]="!userInfo.featured">
+            <div class="ProBadge d-flex align-items-center" *ngIf="userInfo.featured">
               <tsl-svg-icon class="ml-3" src="/assets/icons/pro-seal.svg"></tsl-svg-icon>
               <div class="ml-2 d-inline ProfileUser__container__title--bold">PRO</div>
             </div>
