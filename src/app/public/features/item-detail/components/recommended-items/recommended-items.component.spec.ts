@@ -56,7 +56,10 @@ describe('RecommendedItemsComponent', () => {
           RECOMMENDED_ITEM_MOCK,
           RECOMMENDED_ITEM_MOCK,
           RECOMMENDED_ITEM_MOCK,
+          RECOMMENDED_ITEM_MOCK,
+          RECOMMENDED_ITEM_MOCK,
         ];
+        fixture.detectChanges();
       });
 
       it('should only load the first six', () => {
