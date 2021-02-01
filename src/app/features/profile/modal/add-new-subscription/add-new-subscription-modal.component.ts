@@ -298,7 +298,7 @@ export class AddNewSubscriptionModalComponent
         break;
       }
       default: {
-        console.warn('error on action payment');
+        this.showError([paymentResponse]);
         break;
       }
     }
