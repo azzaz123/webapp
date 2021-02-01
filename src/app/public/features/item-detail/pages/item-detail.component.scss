@@ -14,8 +14,6 @@ $item-detail-carousel-height: 477px;
     }
   }
   &__content {
-    // The height will be removed
-    height: 800px;
     max-width: $item-detail-card-width;
     background-color: $white;
     border-radius: $border-radius;
