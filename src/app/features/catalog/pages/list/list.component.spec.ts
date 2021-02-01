@@ -26,6 +26,10 @@ import { TrackingService } from '@core/tracking/tracking.service';
 import { FeatureflagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
 import { STATUS } from '@features/catalog/components/selected-items/selected-product.interface';
+import {
+  LOCAL_STORAGE_TRY_PRO_SLOT,
+  TryProSlotComponent,
+} from '@features/catalog/components/subscriptions-slots/try-pro-slot/try-pro-slot.component';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { CATEGORY_DATA_WEB } from '@fixtures/category.fixtures.spec';
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
@@ -46,7 +50,11 @@ import {
   MOCK_SUBSCRIPTION_SLOT_CARS,
 } from '@fixtures/subscriptions.fixtures.spec';
 import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
-import { MOCK_USER, USER_INFO_RESPONSE } from '@fixtures/user.fixtures.spec';
+import {
+  MOCK_USER,
+  USER_ID,
+  USER_INFO_RESPONSE,
+} from '@fixtures/user.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivateItemsModalComponent } from '@shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component';
@@ -104,6 +112,7 @@ describe('ListComponent', () => {
           ItemSoldDirective,
           SubscriptionsSlotsListComponent,
           SubscriptionsSlotItemComponent,
+          TryProSlotComponent,
         ],
         providers: [
           I18nService,
@@ -204,6 +213,9 @@ describe('ListComponent', () => {
           {
             provide: UserService,
             useValue: {
+              get isPro(): boolean {
+                return false;
+              },
               getStats() {
                 return of({
                   counters: mockCounters,
@@ -1183,6 +1195,68 @@ describe('ListComponent', () => {
       expect(modalService.open).toHaveBeenCalledWith(BuyProductModalComponent, {
         windowClass: 'modal-standard',
       });
+    });
+  });
+
+  describe('Try Pro banner', () => {
+    describe('should show banner', () => {
+      it('when is not Pro and was not previously closed', () => {
+        spyOn(localStorage, 'getItem').and.returnValue(null);
+
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        const tryProBanner = fixture.debugElement.query(
+          By.directive(TryProSlotComponent)
+        );
+
+        expect(localStorage.getItem).toHaveBeenCalledTimes(1);
+        expect(localStorage.getItem).toHaveBeenCalledWith(
+          `${USER_ID}-${LOCAL_STORAGE_TRY_PRO_SLOT}`
+        );
+        expect(tryProBanner).toBeTruthy();
+      });
+    });
+
+    describe('should not show banner', () => {
+      it('when is pro', () => {
+        spyOn(localStorage, 'getItem').and.returnValue(null);
+        jest.spyOn(userService, 'isPro', 'get').mockReturnValue(true);
+
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        const tryProBanner = fixture.debugElement.query(
+          By.directive(TryProSlotComponent)
+        );
+
+        expect(tryProBanner).toBeFalsy();
+      });
+
+      it('when was previously closed', () => {
+        spyOn(localStorage, 'getItem').and.returnValue('true');
+
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        const tryProBanner = fixture.debugElement.query(
+          By.directive(TryProSlotComponent)
+        );
+
+        expect(localStorage.getItem).toHaveBeenCalledTimes(1);
+        expect(localStorage.getItem).toHaveBeenCalledWith(
+          `${USER_ID}-${LOCAL_STORAGE_TRY_PRO_SLOT}`
+        );
+        expect(tryProBanner).toBeFalsy();
+      });
+    });
+
+    it('should close banner', () => {
+      component.showTryProSlot = true;
+
+      component.onCloseTryProSlot();
+
+      expect(component.showTryProSlot).toBeFalsy();
     });
   });
 });
