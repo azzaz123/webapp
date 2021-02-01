@@ -27,7 +27,7 @@ import { TrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safet
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { EMPTY, from, Observable, of } from 'rxjs';
 import { ChatComponent } from './chat.component';
-import { AdsService } from './core/ads/ads.service';
+import { AdsService } from '@core/ads/services';
 import { InboxConversationService } from './core/inbox/inbox-conversation.service';
 import { InboxService } from './core/inbox/inbox.service';
 import { InboxConversation, MessageStatus, PhoneMethod } from './core/model';

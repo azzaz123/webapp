@@ -3,7 +3,7 @@ export interface RecommenderItem {
   currency: string;
   favorited: boolean;
   id: string;
-  images: RecommenderItemImage;
+  images: RecommenderItemImage[];
   price: number;
   seller_id: string;
   shipping_allowed: boolean;

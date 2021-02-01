@@ -16,6 +16,25 @@ export const MOCK_GA = () => {};
 export const MOCK_FBQ = () => {};
 export const MOCK_PINTRK = () => {};
 
+export const MOCK_GOOGLE_DEFINE_SLOT = {
+  setTargeting(arg1, arg2) {
+    return this;
+  },
+  addService(fn) {},
+};
+
+export const MOCK_GOOGLE_PUBABDS = {
+  defineSlot() {},
+  enableSingleRequest() {},
+  enableServices() {},
+  disableInitialLoad() {},
+  collapseEmptyDivs() {},
+  setPublisherProvidedId() {},
+  setTargeting() {},
+  refresh() {},
+  setRequestNonPersonalizedAds(num: number) {},
+};
+
 export const MOCK_GOOGLE_TAG = {
   cmd: {
     push(callback) {
@@ -24,23 +43,13 @@ export const MOCK_GOOGLE_TAG = {
   },
   enableServices() {},
   defineSlot() {
-    return {
-      addService() {},
-    };
+    return MOCK_GOOGLE_DEFINE_SLOT;
   },
   pubads() {
-    return {
-      defineSlot() {},
-      enableSingleRequest() {},
-      enableServices() {},
-      disableInitialLoad() {},
-      collapseEmptyDivs() {},
-      setPublisherProvidedId() {},
-      setTargeting() {},
-      refresh() {},
-    };
+    return MOCK_GOOGLE_PUBABDS;
   },
   display: (_slotid: string) => {},
+  apiReady: true,
 };
 
 export const MOCK_APSTAG = {
@@ -56,6 +65,9 @@ export const MOCK_CRITEO = {
     push(callback) {
       callback();
     },
+  },
+  RequestBidsOnGoogleTagSlots(slotId, fn, time) {
+    fn();
   },
   SetLineItemRanges() {},
   RequestBids(adunit, callback, timeout) {
