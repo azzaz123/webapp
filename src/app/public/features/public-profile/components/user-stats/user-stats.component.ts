@@ -4,10 +4,7 @@ import { ScrollIntoViewService } from '@core/scroll-into-view/scroll-into-view';
 import { User } from '@core/user/user';
 import { UserStats } from '@core/user/user-stats.interface';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import {
-  MAP_REDIRECTION,
-  PUBLIC_PROFILE_PATHS,
-} from '../../public-profile-routing-constants';
+import { PUBLIC_PROFILE_PATHS } from '../../public-profile-routing-constants';
 
 @Component({
   selector: 'tsl-user-stats',
@@ -32,13 +29,12 @@ export class UserStatsComponent {
   public showLocation(): void {
     const URL = `${this.cleanCurrentURL()}${PUBLIC_PROFILE_PATHS.INFO}`;
 
+    this.router.navigate([URL]);
+
     if (this.deviceService.isMobile()) {
-      this.router.navigate([URL], { fragment: MAP_REDIRECTION });
       setTimeout(() => {
         this.scrollIntoViewService.scrollToSelector('#map');
       });
-    } else {
-      this.router.navigate([URL]);
     }
   }
 
