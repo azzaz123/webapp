@@ -8,12 +8,24 @@
             </div>
             <div class="ItemDetail__content px-4 pb-5">
                 <div class="ItemDetail__carousel position-relative">
-                    <tsl-item-images-carousel [images]="images" [itemFlags]="itemFlags"></tsl-item-images-carousel>
+                    <tsl-item-images-carousel [images]="images" [itemFlags]="itemFlags">
+                    </tsl-item-images-carousel>
                 </div>
+                <div class="py-3 d-flex ItemDetail__location align-items-center">
+                    <tsl-svg-icon src="/assets/icons/location.svg" class="mr-2"></tsl-svg-icon>
+                    {{locationSpecifications}}
+                </div>
+                <tsl-here-maps *ngIf="locationHaveCoordinates" zoom="15" size="small" [coordinates]="coordinates"
+                    [isApproximateLocation]="isApproximateLocation" class="w-100 mb-3">
+                </tsl-here-maps>
+                <div class="ItemDetail__fakeMap" *ngIf="!locationHaveCoordinates"></div>
+                <tsl-social-share [title]="socialShare?.title" [facebook]="socialShare?.facebook"
+                    [twitter]="socialShare?.twitter" [email]="socialShare?.email"></tsl-social-share>
             </div>
             <div *ngIf="device === deviceType.DESKTOP">
                 <tsl-side-sky class="position-sticky d-none d-xl-block"></tsl-side-sky>
             </div>
         </div>
     </div>
+
 </div>

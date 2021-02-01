@@ -72,6 +72,7 @@ import {
   Product,
 } from './item-response.interface';
 import {
+  ACTIVATE_ENDPOINT,
   ItemService,
   ITEMS_API_URL,
   ITEM_STATUSES,
@@ -899,6 +900,21 @@ describe('ItemService', () => {
       expect(response).toEqual('1234');
       expect(req.request.body).toEqual(CART_ORDER_PRO);
       expect(req.request.method).toBe('POST');
+    });
+  });
+
+  describe('activateSingleItem', () => {
+    it('should active an item', () => {
+      const id = '1';
+      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${id}/${ACTIVATE_ENDPOINT}`;
+
+      service.activateSingleItem(id).subscribe();
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush({});
+
+      expect(req.request.url).toBe(expectedUrl);
+      expect(req.request.body).toEqual({});
+      expect(req.request.method).toBe('PUT');
     });
   });
 

@@ -213,6 +213,8 @@ export class I18nService {
       invoiceCannotGenerate:
         'Your invoice could not be generated. Please try again',
       errorSavingData: 'Error while saving data. Please try again',
+      becomePro: 'Become a PRO',
+      wallapopPro: 'Wallapop PRO',
       cardNumberIsNotValid: "Card number isn't valid.",
       cvcNumberIsNotValid: "CVC number isn't valid.",
       cardDateIsNotValid: "Card date isn't valid.",
@@ -433,6 +435,8 @@ export class I18nService {
       invoiceCannotGenerate:
         'Tu factura no se ha podido generar. Intenta de nuevo',
       errorSavingData: 'Error al guardar los datos. Intenta de nuevo',
+      becomePro: 'Conviértete en PRO',
+      wallapopPro: 'Wallapop PRO',
       cardNumberIsNotValid: 'El número de la tarjeta no es válido.',
       cvcNumberIsNotValid: 'El CVC de la tarjeta no es válido.',
       cardDateIsNotValid: 'La fecha de la tarjeta no es válida.',

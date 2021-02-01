@@ -6,9 +6,9 @@ import { ApiImage, ApiUserResponse } from './api-user.response';
 export class ApiUserMapper {
   static toDomain(apiUser: ApiUserResponse): Profile {
     return {
-      id: '',
+      id: apiUser.id,
       microName: apiUser.micro_name,
-      image: ApiUserImageMapper.toDomain(apiUser.image),
+      image: apiUser.image ? ApiUserImageMapper.toDomain(apiUser.image) : null,
       firstName: apiUser.first_name,
       lastName: apiUser.last_name,
       birthDate: apiUser.birth_date,

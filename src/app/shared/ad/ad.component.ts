@@ -1,4 +1,6 @@
 import { AfterViewInit, Component, Input } from '@angular/core';
+import { AdSlot } from '@core/ads/models';
+import { AdsService } from '@core/ads/services';
 
 @Component({
   selector: 'tsl-ad',
@@ -6,13 +8,11 @@ import { AfterViewInit, Component, Input } from '@angular/core';
   styleUrls: ['./ad.component.scss'],
 })
 export class AdComponent implements AfterViewInit {
-  @Input() slotid: string;
-  @Input() height: number;
-  @Input() width: number;
+  @Input() adSlot: AdSlot;
+
+  constructor(private adsService: AdsService) {}
 
   ngAfterViewInit() {
-    googletag.cmd.push(() => {
-      googletag.display(this.slotid);
-    });
+    this.adsService.displayAdBySlotId(this.adSlot.id);
   }
 }

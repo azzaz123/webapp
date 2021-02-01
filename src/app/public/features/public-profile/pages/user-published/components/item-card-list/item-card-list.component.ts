@@ -11,7 +11,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 })
 export class ItemCardListComponent {
   @Input() items: Item[];
-  public showDescription = true;
+  @Input() showDescription = true;
 
   constructor(
     private deviceDetectionService: DeviceDetectorService,

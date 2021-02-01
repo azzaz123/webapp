@@ -225,6 +225,7 @@ export const CAR_CONTENT_DATA = {
   num_doors: 3,
   extras: [],
   storytelling: '',
+  description: '',
   sale_conditions: {
     fix_price: false,
     exchange_allowed: false,

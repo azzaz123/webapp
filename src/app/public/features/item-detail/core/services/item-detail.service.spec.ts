@@ -7,7 +7,7 @@ import { PublicUserApiService } from '@public/core/services/api/public-user/publ
 import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
 import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
 import { of } from 'rxjs';
-import { ItemDetail } from '../item-detail.interface';
+import { ItemDetail } from '../../interfaces/item-detail.interface';
 
 import { ItemDetailService } from './item-detail.service';
 
