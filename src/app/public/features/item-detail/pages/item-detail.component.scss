@@ -70,6 +70,22 @@ $item-detail-carousel-height: 477px;
       line-height: 26px;
     }
   }
+  &__location {
+    color: $blue-grey-1;
+    line-height: normal;
+    tsl-svg-icon {
+      ::ng-deep path {
+        fill: $blue-grey-1;
+      }
+    }
+  }
+
+  &__fakeMap {
+    height: 130px;
+    border-radius: $border-radius;
+    border: solid 1px $blue-grey-5;
+    background: url(/assets/icons/user-marker-sad.svg) no-repeat center;
+  }
 }
 
 tsl-side-sky {
