@@ -1,7 +1,11 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ItemResponse } from '@core/item/item-response.interface';
-import { Image, UserResponse } from '@core/user/user-response.interface';
+import {
+  Image,
+  UserExtrainfo,
+  UserResponse,
+} from '@core/user/user-response.interface';
 import { UserStatsResponse } from '@core/user/user-stats.interface';
 import { environment } from '@environments/environment';
 import {
@@ -28,6 +32,8 @@ export const TRANSACTIONS_BUYS_ENDPOINT = (userId: string) =>
   `${PROFILE_API_URL(userId)}/transactions/buys`;
 export const TRANSACTIONS_SOLDS_ENDPOINT = (userId: string) =>
   `${PROFILE_API_URL(userId)}/transactions/solds`;
+export const GET_EXTRA_INFO_ENDPOINT = (userId: string) =>
+  `${PROFILE_API_URL(userId)}/extra-info`;
 
 export const FAVOURITE_API_PATH = 'favorite';
 export const IS_FAVOURITE_ENDPOINT = (userId: string) =>
@@ -105,6 +111,12 @@ export class PublicUserApiService {
   public getCoverImage(userId: string): Observable<Image> {
     return this.http.get<Image>(
       `${environment.baseUrl}${USER_COVER_IMAGE_ENDPOINT(userId)}`
+    );
+  }
+
+  public getExtraInfo(userId: string): Observable<UserExtrainfo> {
+    return this.http.get<UserExtrainfo>(
+      `${environment.baseUrl}${GET_EXTRA_INFO_ENDPOINT(userId)}`
     );
   }
 
