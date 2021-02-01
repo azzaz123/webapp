@@ -44,7 +44,6 @@ describe('DashboardComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [
-          ChatModule,
           RouterTestingModule.withRoutes([
             {
               path: 'chat',

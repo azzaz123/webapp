@@ -304,4 +304,12 @@ export class SubscriptionsComponent implements OnInit {
   public hasOneFreeSubscription() {
     return this.subscriptionsService.hasOneFreeSubscription(this.subscriptions);
   }
+
+  public getSubscriptionTextButton(
+    subscription: SubscriptionsResponse
+  ): string {
+    return this.subscriptionsService.hasTrial(subscription)
+      ? $localize`:@@startFreeTrial:Start free trial`
+      : $localize`:@@seePlans:See plans`;
+  }
 }

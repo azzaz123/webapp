@@ -10,6 +10,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
+import { CHAT_AD_SLOTS } from '@core/ads/constants';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { RealTimeService } from '@core/message/real-time.service';
@@ -72,6 +73,7 @@ export class CurrentConversationComponent
   public noMessages = 0;
   public isConversationChanged: boolean;
   public isTopBarExpanded = false;
+  public chatRightAdSlot = CHAT_AD_SLOTS[0];
 
   constructor(
     private eventService: EventService,

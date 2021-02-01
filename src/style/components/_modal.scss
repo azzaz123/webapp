@@ -456,7 +456,6 @@ $modal-border-radius: 0.3rem;
           margin: 6px;
           cursor: pointer;
           tsl-svg-icon {
-            @include square(18px);
             ::ng-deep path {
               fill: $blue-grey-3;
             }
