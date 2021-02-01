@@ -43,6 +43,7 @@ $item-detail-carousel-height: 477px;
   }
 
   &__description {
+    white-space: pre-wrap;
     font-size: $font-size-m;
     line-height: normal;
     color: $blue-grey-1;
