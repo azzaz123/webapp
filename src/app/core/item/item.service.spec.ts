@@ -42,7 +42,6 @@ import {
   REALESTATE_DATA,
   UPLOAD_FORM_REALESTATE_VALUES,
 } from '../../../tests/realestate.fixtures.spec';
-import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { CAR_ID, UPLOAD_FILE_ID } from '../../../tests/upload.fixtures.spec';
 import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
 import { EventService } from '../event/event.service';

@@ -1,5 +1,4 @@
 import { MOCK_CALL } from '@fixtures/call.fixtures';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { createMessagesArray } from '@fixtures/message.fixtures.spec';
 import { of } from 'rxjs';
 

@@ -6,7 +6,6 @@ import { ActivatedRoute } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Call } from '@core/conversation/calls';
 import { CallsService } from '@core/conversation/calls.service';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { createCallsArray } from '@fixtures/call.fixtures';
 
 describe('CallsComponent', () => {

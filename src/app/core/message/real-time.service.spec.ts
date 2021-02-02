@@ -10,7 +10,6 @@ import {
   CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE,
   MOCK_INBOX_CONVERSATION,
 } from '../../../tests/inbox.fixtures.spec';
-import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { ACCESS_TOKEN, MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
 import {
   AnalyticsEvent,

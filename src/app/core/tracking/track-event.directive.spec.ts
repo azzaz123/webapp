@@ -5,7 +5,6 @@ import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { TrackingService } from './tracking.service';
 import { TrackEventDirective } from './track-event.directive';
-import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 
 @Component({
   template: `<a [tslTrackEvent]="event" [params]="params"></a>`,
@@ -23,13 +22,10 @@ describe('Directive: TrackEvent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TrackEventDirective, TestComponent],
-      providers: [{ provide: TrackingService, useClass: MockTrackingService }],
     });
     fixture = TestBed.createComponent(TestComponent);
     trackingService = TestBed.inject(TrackingService);
-    element = fixture.debugElement.queryAll(
-      By.directive(TrackEventDirective)
-    )[0];
+    element = fixture.debugElement.queryAll(By.directive(TrackEventDirective))[0];
     spyOn(trackingService, 'track');
   });
 
@@ -40,9 +36,6 @@ describe('Directive: TrackEvent', () => {
     fixture.componentInstance.params = TRACKING_PARAMS;
     fixture.detectChanges();
     element.triggerEventHandler('click', {});
-    expect(trackingService.track).toHaveBeenCalledWith(
-      TrackingService[TRACKING_EVENT],
-      TRACKING_PARAMS
-    );
+    expect(trackingService.track).toHaveBeenCalledWith(TrackingService[TRACKING_EVENT], TRACKING_PARAMS);
   });
 });
