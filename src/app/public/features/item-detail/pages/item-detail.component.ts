@@ -11,9 +11,11 @@ import { TwitterShare } from '@shared/social-share/interfaces/twitter-share.inte
 import { EmailShare } from '@shared/social-share/interfaces/email-share.interface';
 import { ItemDetailService } from '../core/services/item-detail.service';
 import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
-import { UserLocation } from '@core/user/user-response.interface';
+import { Image, UserLocation } from '@core/user/user-response.interface';
+import { finalize } from 'rxjs/operators';
+import { APP_PATHS } from 'app/app-routing-constants';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -21,15 +23,16 @@ import { UserLocation } from '@core/user/user-response.interface';
   styleUrls: ['./item-detail.component.scss'],
 })
 export class ItemDetailComponent implements OnInit {
+  public readonly deviceType = DeviceType;
+  public loading = false;
   public isApproximateLocation = false;
-  public deviceType = DeviceType;
-  public device: DeviceType;
-  public itemFlags: ItemFlags;
-  public images: string[];
-  public itemDetail: ItemDetail;
-  public itemLocation: ItemDetailLocation;
-  public coordinates: Coordinate;
   public locationSpecifications: string;
+  public coordinates: Coordinate;
+  public device: DeviceType;
+  public images: string[];
+  public itemLocation: ItemDetailLocation;
+  public itemFlags: ItemFlags;
+  public itemDetail: ItemDetail;
 
   public socialShare: {
     title: string;
@@ -47,11 +50,13 @@ export class ItemDetailComponent implements OnInit {
     private deviceService: DeviceService,
     private itemDetailService: ItemDetailService,
     private socialMetaTagsService: SocialMetaTagService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.device = this.deviceService.getDeviceType();
+    this.loading = true;
     this.initPage(this.route.snapshot.paramMap.get(PUBLIC_PATH_PARAMS.ID)); // TBD the url may change to match one more similar to production one
   }
 
@@ -62,17 +67,31 @@ export class ItemDetailComponent implements OnInit {
   private initPage(itemId: string): void {
     this.itemDetailService
       .getItem(itemId)
-      .subscribe((itemDetail: ItemDetail) => {
-        this.itemDetail = itemDetail;
-        this.handleCoordinates();
-        this.socialShareSetup(this.itemDetail.item);
-      });
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+        })
+      )
+      .subscribe(
+        (itemDetail: ItemDetail) => {
+          this.itemDetail = itemDetail;
+          this.handleItemSpecifications();
+        },
+        () => {
+          this.router.navigate([`/${APP_PATHS.NOT_FOUND}`]);
+        }
+      );
+  }
+
+  private handleItemSpecifications(): void {
+    this.handleCoordinates();
+    this.handleFlags();
+    this.handleImages();
+    this.socialShareSetup(this.itemDetail.item);
   }
 
   private handleCoordinates(): void {
-    const detailLocation: UserLocation = this.itemDetail.item?.location
-      ? this.itemDetail.item.location
-      : this.itemDetail.user.location;
+    const detailLocation: UserLocation = this.itemDetail.item?.location ? this.itemDetail.item.location : this.itemDetail.user.location;
 
     this.itemLocation = {
       zip: detailLocation.zip,
@@ -89,6 +108,17 @@ export class ItemDetailComponent implements OnInit {
     this.handleLocationSpecifications();
   }
 
+  private handleFlags(): void {
+    this.itemFlags = this.itemDetail.item?.flags;
+  }
+
+  private handleImages(): void {
+    this.images = [];
+    this.itemDetail.item?.images?.forEach((image: Image) => {
+      this.images.push(image.urls_by_size.large);
+    });
+  }
+
   private socialShareSetup(item: Item): void {
     this.socialShare.facebook = {
       url: item.webLink,
@@ -102,22 +132,11 @@ export class ItemDetailComponent implements OnInit {
     this.socialShare.email = {
       url: item.webLink,
       subject: item.title,
-      message:
-        $localize`:@@ItemDetailShareEmailText:This may interest you - ` +
-        item.description,
+      message: $localize`:@@ItemDetailShareEmailText:This may interest you - ` + item.description,
     };
 
-    this.socialMetaTagsService.insertTwitterMetaTags(
-      item.title,
-      item.description,
-      item.mainImage.urls_by_size.medium
-    );
-    this.socialMetaTagsService.insertFacebookMetaTags(
-      item.title,
-      item.description,
-      item.mainImage.urls_by_size.medium,
-      item.webLink
-    );
+    this.socialMetaTagsService.insertTwitterMetaTags(item.title, item.description, item.mainImage.urls_by_size.medium);
+    this.socialMetaTagsService.insertFacebookMetaTags(item.title, item.description, item.mainImage.urls_by_size.medium, item.webLink);
   }
 
   private handleLocationSpecifications(): void {
