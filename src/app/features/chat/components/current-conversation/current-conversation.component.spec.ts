@@ -1,23 +1,12 @@
 import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { RealTimeService } from '@core/message/real-time.service';
 import { RemoteConsoleService } from '@core/remote-console';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { InboxConversationService } from '@features/chat/core/inbox/inbox-conversation.service';
-import {
-  InboxMessage,
-  MessageStatus,
-  MessageType,
-} from '@features/chat/core/model';
+import { InboxMessage, MessageStatus, MessageType } from '@features/chat/core/model';
 import { MaliciousConversationModalComponent } from '@features/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MOCK_CONVERSATION } from '@fixtures/conversation.fixtures.spec';
@@ -30,7 +19,6 @@ import {
 } from '@fixtures/inbox.fixtures.spec';
 import { RealTimeServiceMock } from '@fixtures/real-time.fixtures.spec';
 import { MockRemoteConsoleService } from '@fixtures/remote-console.fixtures.spec';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { MOCK_USER, USER_ID } from '@fixtures/user.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
@@ -69,7 +57,6 @@ describe('CurrentConversationComponent', () => {
           EventService,
           NgbModal,
           { provide: RealTimeService, useClass: RealTimeServiceMock },
-          { provide: TrackingService, useClass: MockTrackingService },
           {
             provide: InboxConversationService,
             useClass: InboxConversationServiceMock,
@@ -131,9 +118,7 @@ describe('CurrentConversationComponent', () => {
 
     describe('when the browser window is visible', () => {
       beforeEach(() => {
-        spyOn(Visibility, 'onVisible').and.callFake((callback: Function) =>
-          callback()
-        );
+        spyOn(Visibility, 'onVisible').and.callFake((callback: Function) => callback());
       });
 
       it(`should call realTime.sendRead when a MESSAGE_ADDED event is triggered with a message belonging
@@ -153,10 +138,7 @@ describe('CurrentConversationComponent', () => {
         eventService.emit(EventService.MESSAGE_ADDED, newMessage);
         tick(1000);
 
-        expect(realTime.sendRead).toHaveBeenCalledWith(
-          newMessage.from,
-          component.currentConversation.id
-        );
+        expect(realTime.sendRead).toHaveBeenCalledWith(newMessage.from, component.currentConversation.id);
       }));
 
       it(`should NOT call realTime.sendRead when a MESSAGE_ADDED event is triggered with a message NOT belonging
@@ -249,10 +231,7 @@ describe('CurrentConversationComponent', () => {
     });
 
     it('should return TRUE if it is called without a nextMessage parameter', () => {
-      const value = component.showDate(
-        component.currentConversation.messages[0],
-        null
-      );
+      const value = component.showDate(component.currentConversation.messages[0], null);
 
       expect(value).toBe(true);
     });
@@ -331,9 +310,7 @@ describe('CurrentConversationComponent', () => {
 
     it('should show message third voice', () => {
       expect(component.isThirdVoiceReview(MessageType.REVIEW)).toBeTruthy();
-      expect(
-        component.isThirdVoiceDropPrice(MessageType.PRICE_DROP)
-      ).toBeTruthy();
+      expect(component.isThirdVoiceDropPrice(MessageType.PRICE_DROP)).toBeTruthy();
     });
 
     it('should not show message third voice', () => {
@@ -379,9 +356,7 @@ describe('CurrentConversationComponent', () => {
     });
 
     it('should scroll to last message', fakeAsync(() => {
-      spyOn(Visibility, 'onVisible').and.callFake((callback: Function) =>
-        callback()
-      );
+      spyOn(Visibility, 'onVisible').and.callFake((callback: Function) => callback());
 
       const inboxMessage = new InboxMessage(
         '123',
@@ -399,10 +374,7 @@ describe('CurrentConversationComponent', () => {
       component.sendReadForLastInboxMessage();
       tick(1000);
 
-      expect(realTime.sendRead).toHaveBeenCalledWith(
-        inboxMessage.from,
-        inboxMessage.thread
-      );
+      expect(realTime.sendRead).toHaveBeenCalledWith(inboxMessage.from, inboxMessage.thread);
     }));
   });
 
@@ -414,10 +386,7 @@ describe('CurrentConversationComponent', () => {
 
       component.navigationBack();
 
-      expect(eventService.emit).toHaveBeenCalledWith(
-        EventService.CURRENT_CONVERSATION_SET,
-        null
-      );
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CURRENT_CONVERSATION_SET, null);
     });
   });
 
@@ -443,10 +412,7 @@ describe('CurrentConversationComponent', () => {
 
       tick(component.MESSAGE_METRIC_DELAY);
 
-      expect(remoteConsoleService.sendMessageAckFailed).toHaveBeenCalledWith(
-        MESSAGE_ID,
-        'message is not send after 5000ms'
-      );
+      expect(remoteConsoleService.sendMessageAckFailed).toHaveBeenCalledWith(MESSAGE_ID, 'message is not send after 5000ms');
     }));
   });
 
@@ -472,10 +438,7 @@ describe('CurrentConversationComponent', () => {
 
       eventService.emit(EventService.CONNECTION_RESTORED);
 
-      expect(remoteConsoleService.sendMessageAckFailed).toHaveBeenCalledWith(
-        MESSAGE_ID,
-        'pending messages after restored connection'
-      );
+      expect(remoteConsoleService.sendMessageAckFailed).toHaveBeenCalledWith(MESSAGE_ID, 'pending messages after restored connection');
     });
   });
 
@@ -490,29 +453,20 @@ describe('CurrentConversationComponent', () => {
       beforeEach(() => {
         component.currentConversation = MOCK_INBOX_CONVERSATION_WITH_MALICIOUS_USER;
         component.ngOnChanges({
-          currentConversation: new SimpleChange(
-            null,
-            MOCK_INBOX_CONVERSATION_WITH_MALICIOUS_USER,
-            false
-          ),
+          currentConversation: new SimpleChange(null, MOCK_INBOX_CONVERSATION_WITH_MALICIOUS_USER, false),
         });
 
         fixture.detectChanges();
       });
       it('should show malicious modal', () => {
         // TODO: Investigate more why fixture.detectChanges is not triggering component.ngOnChanges automatically
-        expect(modalService.open).toHaveBeenCalledWith(
-          MaliciousConversationModalComponent,
-          {
-            windowClass: 'warning',
-          }
-        );
+        expect(modalService.open).toHaveBeenCalledWith(MaliciousConversationModalComponent, {
+          windowClass: 'warning',
+        });
       });
 
       it('should show red chat bubble with text indicates user is banned', () => {
-        const bannedChatBubbleElement: HTMLElement = fixture.elementRef.nativeElement.querySelector(
-          '#userIsBlocked'
-        );
+        const bannedChatBubbleElement: HTMLElement = fixture.elementRef.nativeElement.querySelector('#userIsBlocked');
 
         expect(bannedChatBubbleElement).toBeTruthy();
       });
@@ -522,11 +476,7 @@ describe('CurrentConversationComponent', () => {
       beforeEach(() => {
         component.currentConversation = MOCK_INBOX_CONVERSATION_WITH_UNSUBSCRIBED_USER;
         component.ngOnChanges({
-          currentConversation: new SimpleChange(
-            null,
-            MOCK_INBOX_CONVERSATION_WITH_UNSUBSCRIBED_USER,
-            false
-          ),
+          currentConversation: new SimpleChange(null, MOCK_INBOX_CONVERSATION_WITH_UNSUBSCRIBED_USER, false),
         });
         fixture.detectChanges();
       });
@@ -536,9 +486,7 @@ describe('CurrentConversationComponent', () => {
       });
 
       it('should show blue chat bubble with text indicates user is unsubscribed', () => {
-        const bannedChatBubbleElement: HTMLElement = fixture.elementRef.nativeElement.querySelector(
-          '#userIsNotAvailableWarning'
-        );
+        const bannedChatBubbleElement: HTMLElement = fixture.elementRef.nativeElement.querySelector('#userIsNotAvailableWarning');
 
         expect(bannedChatBubbleElement).toBeTruthy();
       });
@@ -549,11 +497,7 @@ describe('CurrentConversationComponent', () => {
         // TODO: Investigate more why fixture.detectChanges is not triggering component.ngOnChanges automatically
         component.currentConversation = MOCK_INBOX_CONVERSATION_BASIC;
         component.ngOnChanges({
-          currentConversation: new SimpleChange(
-            null,
-            MOCK_INBOX_CONVERSATION_BASIC,
-            false
-          ),
+          currentConversation: new SimpleChange(null, MOCK_INBOX_CONVERSATION_BASIC, false),
         });
         fixture.detectChanges();
 
@@ -588,17 +532,11 @@ describe('CurrentConversationComponent', () => {
 
           fixture.detectChanges();
           component.ngOnChanges({
-            currentConversation: new SimpleChange(
-              null,
-              MOCK_INBOX_CONVERSATION_BASIC,
-              false
-            ),
+            currentConversation: new SimpleChange(null, MOCK_INBOX_CONVERSATION_BASIC, false),
           });
           tick();
 
-          expect(analyticsService.trackEvent).toHaveBeenCalledWith(
-            expectedEvent
-          );
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
         }));
       });
 
@@ -614,17 +552,11 @@ describe('CurrentConversationComponent', () => {
 
           fixture.detectChanges();
           component.ngOnChanges({
-            currentConversation: new SimpleChange(
-              null,
-              MOCK_INBOX_CONVERSATION_BASIC,
-              false
-            ),
+            currentConversation: new SimpleChange(null, MOCK_INBOX_CONVERSATION_BASIC, false),
           });
           tick();
 
-          expect(analyticsService.trackEvent).toHaveBeenCalledWith(
-            expectedEvent
-          );
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
         }));
       });
     });
