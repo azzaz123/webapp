@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ItemDetailLocation } from './constants/item-detail.interface';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
@@ -18,7 +18,6 @@ import { UserLocation } from '@core/user/user-response.interface';
 @Component({
   selector: 'tsl-item-detail',
   templateUrl: './item-detail.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./item-detail.component.scss'],
 })
 export class ItemDetailComponent implements OnInit {
@@ -29,6 +28,8 @@ export class ItemDetailComponent implements OnInit {
   public images: string[];
   public itemDetail: ItemDetail;
   public itemLocation: ItemDetailLocation;
+  public coordinates: Coordinate;
+  public locationSpecifications: string;
 
   public socialShare: {
     title: string;
@@ -52,7 +53,20 @@ export class ItemDetailComponent implements OnInit {
   ngOnInit(): void {
     this.device = this.deviceService.getDeviceType();
     this.initPage(this.route.snapshot.paramMap.get(PUBLIC_PATH_PARAMS.ID)); // TBD the url may change to match one more similar to production one
-    this.handleCoordinates();
+  }
+
+  public locationHaveCoordinates(): boolean {
+    return !!this.itemLocation?.latitude && !!this.itemLocation?.longitude;
+  }
+
+  private initPage(itemId: string): void {
+    this.itemDetailService
+      .getItem(itemId)
+      .subscribe((itemDetail: ItemDetail) => {
+        this.itemDetail = itemDetail;
+        this.handleCoordinates();
+        this.socialShareSetup(this.itemDetail.item);
+      });
   }
 
   private handleCoordinates(): void {
@@ -68,15 +82,11 @@ export class ItemDetailComponent implements OnInit {
     };
 
     this.approximatedLocation = detailLocation.approximated_location;
-  }
-
-  private initPage(itemId: string): void {
-    this.itemDetailService
-      .getItem(itemId)
-      .subscribe((itemDetail: ItemDetail) => {
-        this.itemDetail = itemDetail;
-        this.socialShareSetup(this.itemDetail.item);
-      });
+    this.coordinates = {
+      latitude: this.itemLocation.latitude,
+      longitude: this.itemLocation.longitude,
+    };
+    this.handleLocationSpecifications();
   }
 
   private socialShareSetup(item: Item): void {
@@ -110,26 +120,14 @@ export class ItemDetailComponent implements OnInit {
     );
   }
 
+  private handleLocationSpecifications(): void {
+    this.locationSpecifications =
+      !!this.itemLocation?.zip && !!this.itemLocation?.city
+        ? `${this.itemLocation.zip}, ${this.itemLocation.city}`
+        : $localize`:@@Undefined:Undefined`;
+  }
+
   set approximatedLocation(isApproximated: boolean) {
     this.isApproximateLocation = isApproximated;
-  }
-
-  get locationHaveCoordinates(): boolean {
-    return !!this.itemLocation?.latitude && !!this.itemLocation?.longitude;
-  }
-
-  get coordinates(): Coordinate {
-    return {
-      latitude: this.itemLocation.latitude,
-      longitude: this.itemLocation.longitude,
-    };
-  }
-
-  get locationSpecifications(): string {
-    if (!!this.itemLocation?.zip && !!this.itemLocation?.city) {
-      return `${this.itemLocation.zip}, ${this.itemLocation.city}`;
-    } else {
-      return $localize`:@@Undefined:Undefined`;
-    }
   }
 }

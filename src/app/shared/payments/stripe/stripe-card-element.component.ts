@@ -17,7 +17,6 @@ import { StripeService } from '../../../core/stripe/stripe.service';
 import { FinancialCard } from '../../profile/credit-card-info/financial-card';
 import {
   PaymentMethodResponse,
-  SetupIntentResponse,
   SetupIntent,
 } from '../../../core/payments/payment.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
@@ -26,6 +25,7 @@ import {
   TERMS_AND_CONDITIONS_URL,
   PRIVACY_POLICY_URL,
 } from '../../../core/constants';
+import { STRIPE_ERROR } from '@core/stripe/stripe.interface';
 
 @Component({
   selector: 'tsl-stripe-card-element',
@@ -56,7 +56,7 @@ export class StripeCardElementComponent
   @Input() disabled: number;
   @Input() spaceBetween = false;
   @Input() showUseSavedCard = false;
-  @Input() isPaymentError: boolean;
+  @Input() paymentError: STRIPE_ERROR;
   @Output() hasCard: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() stripeCard: EventEmitter<any> = new EventEmitter<any>();
   @Output() stripeCardToken: EventEmitter<string> = new EventEmitter<string>();
@@ -81,6 +81,18 @@ export class StripeCardElementComponent
     private stripeService: StripeService,
     private toastService: ToastService
   ) {}
+
+  public errorTextConfig = {
+    [STRIPE_ERROR.card_declined]: this.i18n.getTranslations(
+      'cardNumberIsNotValid'
+    ),
+    [STRIPE_ERROR.expired_card]: this.i18n.getTranslations(
+      'cardDateIsNotValid'
+    ),
+    [STRIPE_ERROR.incorrect_cvc]: this.i18n.getTranslations(
+      'cvcNumberIsNotValid'
+    ),
+  };
 
   ngAfterViewInit() {
     this.initStripe();
@@ -216,5 +228,9 @@ export class StripeCardElementComponent
 
   public clickUseSavedCard() {
     this.onClickUseSavedCard.emit(true);
+  }
+
+  public showSavedCardOption(): boolean {
+    return this.type === 'subscription' && this.showUseSavedCard;
   }
 }
