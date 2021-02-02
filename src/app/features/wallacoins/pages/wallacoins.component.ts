@@ -7,7 +7,6 @@ import { PerksModel } from '../../../core/payments/payment.model';
 import { WallacoinsConfirmModalComponent } from '../components/wallacoins-confirm-modal/wallacoins-confirm-modal.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from '../../../core/event/event.service';
-import { TrackingService } from '../../../core/tracking/tracking.service';
 import { UserService } from '../../../core/user/user.service';
 import { WallacoinsTutorialComponent } from '../components/wallacoins-tutorial/wallacoins-tutorial.component';
 import { Observable } from 'rxjs';
@@ -34,7 +33,6 @@ export class WallacoinsComponent implements OnInit {
     private modalService: NgbModal,
     private eventService: EventService,
     private route: ActivatedRoute,
-    private trackingService: TrackingService,
     private router: Router,
     private userService: UserService,
     private cd: ChangeDetectorRef
@@ -51,19 +49,10 @@ export class WallacoinsComponent implements OnInit {
     this.route.params.subscribe((params: any) => {
       if (params && params.code) {
         const packJson = JSON.parse(localStorage.getItem('pack'));
-        const pack = new Pack(
-          packJson._id,
-          +packJson._quantity,
-          +packJson._price,
-          packJson._currency,
-          packJson._name
-        );
+        const pack = new Pack(packJson._id, +packJson._quantity, +packJson._price, packJson._currency, packJson._name);
         localStorage.removeItem('transactionType');
         localStorage.removeItem('pack');
         this.openConfirmModal(pack, params.code);
-        if (params.code === '-1') {
-          this.trackingService.track(TrackingService.BUY_MORE_CREDITS_ERROR);
-        }
       }
     });
   }
@@ -79,10 +68,7 @@ export class WallacoinsComponent implements OnInit {
   private updatePerks(cache?: boolean) {
     this.paymentService.getPerks(cache).subscribe((perks: PerksModel) => {
       this.wallacoins = perks[this.currencyName].quantity;
-      this.eventService.emit(
-        EventService.TOTAL_CREDITS_UPDATED,
-        this.wallacoins
-      );
+      this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED, this.wallacoins);
       this.loading = false;
     });
   }
@@ -93,20 +79,13 @@ export class WallacoinsComponent implements OnInit {
   }
 
   public openBuyModal(pack: Pack, packIndex: number) {
-    const modal: NgbModalRef = this.modalService.open(
-      BuyWallacoinsModalComponent,
-      { windowClass: 'modal-standard' }
-    );
+    const modal: NgbModalRef = this.modalService.open(BuyWallacoinsModalComponent, { windowClass: 'modal-standard' });
     let code = '-1';
     modal.componentInstance.pack = pack;
     modal.componentInstance.packIndex = packIndex;
     modal.result.then(
       (response) => {
-        if (
-          response === 'success' ||
-          response.status === '201' ||
-          response.status === 201
-        ) {
+        if (response === 'success' || response.status === '201' || response.status === 201) {
           code = '200';
           this.updateRemainingCredit(pack);
         }
@@ -117,10 +96,7 @@ export class WallacoinsComponent implements OnInit {
   }
 
   private openConfirmModal(pack: Pack, code = '200') {
-    const modal: NgbModalRef = this.modalService.open(
-      WallacoinsConfirmModalComponent,
-      { windowClass: 'confirm-wallacoins' }
-    );
+    const modal: NgbModalRef = this.modalService.open(WallacoinsConfirmModalComponent, { windowClass: 'confirm-wallacoins' });
     modal.componentInstance.pack = pack;
     modal.componentInstance.code = code;
     modal.componentInstance.total = this.wallacoins;
@@ -145,21 +121,11 @@ export class WallacoinsComponent implements OnInit {
 
   private setDisplayed(): void {
     if (this.userService.user) {
-      localStorage.setItem(
-        this.userService.user.id + this.localStorageName,
-        'true'
-      );
+      localStorage.setItem(this.userService.user.id + this.localStorageName, 'true');
     }
   }
 
   private isAlreadyDisplayed(): Observable<boolean> {
-    return this.userService
-      .me()
-      .pipe(
-        map(
-          (user: User) =>
-            !!localStorage.getItem(user.id + this.localStorageName)
-        )
-      );
+    return this.userService.me().pipe(map((user: User) => !!localStorage.getItem(user.id + this.localStorageName)));
   }
 }
