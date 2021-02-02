@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { UserService } from '@core/user/user.service';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
@@ -23,12 +24,7 @@ describe('ItemCardListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ItemCardListComponent, IsCurrentUserStub],
-      imports: [
-        CommonModule,
-        ItemCardModule,
-        ItemApiModule,
-        HttpClientTestingModule,
-      ],
+      imports: [CommonModule, ItemCardModule, ItemApiModule, HttpClientTestingModule],
       providers: [
         ItemCardService,
         CheckSessionService,
@@ -52,6 +48,10 @@ describe('ItemCardListComponent', () => {
             },
           },
         },
+        {
+          provide: Router,
+          useValue: {},
+        },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -72,17 +72,12 @@ describe('ItemCardListComponent', () => {
     const cardShowDescriptionAttr = 'ng-reflect-show-description';
 
     it('should show as many cards as given', () => {
-      expect(el.querySelectorAll(cardSelector).length).toEqual(
-        component.items.length
-      );
+      expect(el.querySelectorAll(cardSelector).length).toEqual(component.items.length);
     });
 
     describe('when device is mobile', () => {
       it('should NOT show card descriptions if device is mobile', () => {
-        const randomCardWithoutDescription =
-          el
-            .querySelectorAll(cardSelector)[0]
-            .getAttribute(cardShowDescriptionAttr) === 'false';
+        const randomCardWithoutDescription = el.querySelectorAll(cardSelector)[0].getAttribute(cardShowDescriptionAttr) === 'false';
         expect(randomCardWithoutDescription).toBeTruthy();
       });
     });
@@ -99,10 +94,7 @@ describe('ItemCardListComponent', () => {
       });
 
       it('should show card descriptions', () => {
-        const randomCardWithDescription =
-          el
-            .querySelectorAll(cardSelector)[0]
-            .getAttribute(cardShowDescriptionAttr) === 'true';
+        const randomCardWithDescription = el.querySelectorAll(cardSelector)[0].getAttribute(cardShowDescriptionAttr) === 'true';
 
         expect(randomCardWithDescription).toBeTruthy();
       });
