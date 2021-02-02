@@ -6,7 +6,8 @@ export enum ITEM_FLAG_TYPES {
   RESERVED = 'reserved',
   EXPIRED = 'expired',
   INACTIVE = 'inactive',
-  FEATURED = 'featured',
+  BUMPED = 'bumped',
+  COUNTRY_BUMP = 'country_bumped',
 }
 
 export enum ITEM_FLAG_ICONS {
@@ -15,7 +16,8 @@ export enum ITEM_FLAG_ICONS {
   RESERVED = '/assets/icons/item-flags/reserved.svg',
   EXPIRED = '/assets/icons/item-flags/expired.svg',
   INACTIVE = '/assets/icons/item-flags/clock.svg',
-  FEATURED = '/assets/icons/item-flags/featured.svg',
+  BUMPED = '/assets/icons/item-flags/featured.svg',
+  COUNTRY_BUMP = '/assets/icons/wing-zone.svg',
 }
 
 export interface FlagProperties {
@@ -57,12 +59,21 @@ export const LEFT_FLAGS: FlagProperties[] = [
   },
 ];
 
-export const BUMP_FLAG: FlagProperties = {
-  id: 'featured',
-  label: $localize`:@@Featured:Featured`,
-  itemType: ITEM_FLAG_TYPES.FEATURED,
-  icon: ITEM_FLAG_ICONS.FEATURED,
-};
+export const BUMP_FLAGS: FlagProperties[] = [
+  {
+    id: 'bumped',
+    label: $localize`:@@Featured:Featured`,
+    itemType: ITEM_FLAG_TYPES.BUMPED,
+    icon: ITEM_FLAG_ICONS.BUMPED,
+  },
+  {
+    id: 'country_bumped',
+    label: $localize`:@@Featured:Featured`,
+    itemType: ITEM_FLAG_TYPES.COUNTRY_BUMP,
+    icon: ITEM_FLAG_ICONS.COUNTRY_BUMP,
+    fill: COLORS.WALLA_MAIN,
+  },
+];
 
 export const DEFAULT_FLAG: FlagProperties = {
   id: 'default',
@@ -70,4 +81,4 @@ export const DEFAULT_FLAG: FlagProperties = {
   icon: ITEM_FLAG_ICONS.DEFAULT,
 };
 
-export const FLAGS: FlagProperties[] = [...LEFT_FLAGS, BUMP_FLAG, DEFAULT_FLAG];
+export const FLAGS: FlagProperties[] = [...LEFT_FLAGS, ...BUMP_FLAGS, DEFAULT_FLAG];

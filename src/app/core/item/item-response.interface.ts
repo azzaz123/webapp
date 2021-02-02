@@ -119,6 +119,14 @@ export interface ItemVisibilityFlags {
   boosted: boolean;
 }
 
+export interface ItemVisibilityFlagsOptional {
+  bumped?: boolean;
+  highlighted?: boolean;
+  urgent?: boolean;
+  country_bumped?: boolean;
+  boosted?: boolean;
+}
+
 export interface ItemProContent extends ItemContent {
   conversations: number;
   publish_date: number;
@@ -320,6 +328,8 @@ export interface AllowedActionResponse {
   allowed: boolean;
   cause?: string;
 }
+
+export interface ItemExtendedFlags extends ItemFlags, ItemVisibilityFlagsOptional {}
 
 export interface ItemFlags {
   pending: boolean;

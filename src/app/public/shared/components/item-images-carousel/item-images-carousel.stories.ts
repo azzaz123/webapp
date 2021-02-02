@@ -23,35 +23,29 @@ export default {
   ],
 } as Meta;
 
-const Template: Story<ItemImagesCarouselComponent> = (
-  args: ItemImagesCarouselComponent
-) => ({
+const Template: Story<ItemImagesCarouselComponent> = (args: ItemImagesCarouselComponent) => ({
   component: ItemImagesCarouselComponent,
   props: args,
   moduleMetadata: {
     declarations: [ItemImagesCarouselComponent],
-    imports: [
-      CommonModule,
-      HammerModule,
-      ItemFlagModule,
-      ImagesCarouselModule,
-      HttpClientModule,
-    ],
+    imports: [CommonModule, HammerModule, ItemFlagModule, ImagesCarouselModule, HttpClientModule],
     providers: [HAMMER_PROVIDER],
   },
-  template:
-    '<tsl-item-images-carousel [itemFlags]="itemFlags" [images]="images"></tsl-item-images-carousel>',
+  template: '<tsl-item-images-carousel [itemFlags]="itemFlags" [images]="images"></tsl-item-images-carousel>',
 });
 
-const imagesURL = [
-  'http://localhost:6006/images/item-camera.jpg',
-  'http://localhost:6006/images/item-pc.jpg',
-];
+const imagesURL = ['http://localhost:6006/images/item-camera.jpg', 'http://localhost:6006/images/item-pc.jpg'];
 
 export const Bumped = Template.bind({});
 Bumped.args = {
   images: imagesURL,
   itemFlags: { ...ITEM_FLAGS, bumped: true },
+};
+
+export const CountryBumped = Template.bind({});
+CountryBumped.args = {
+  images: imagesURL,
+  itemFlags: { ...ITEM_FLAGS, country_bumped: true },
 };
 
 export const Sold = Template.bind({});

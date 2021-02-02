@@ -1,7 +1,8 @@
 <div class="position-absolute ItemFlag d-flex w-100">
-    <tsl-item-flag *ngIf="leftFlagType" [type]="leftFlagType" class="position-absolute ItemFlag--left">
+    <tsl-item-flag *ngIf="flagType(FLAG_POSITION.LEFT)" [type]="flagType(FLAG_POSITION.LEFT)"
+        class="position-absolute ItemFlag--left">
     </tsl-item-flag>
-    <tsl-item-flag *ngIf="itemFlags?.bumped" [type]="ITEM_FLAG_TYPES.FEATURED" class="position-absolute ItemFlag--right"
-        i18n="@@Featured">Featured</tsl-item-flag>
+    <tsl-item-flag *ngIf="flagType(FLAG_POSITION.RIGHT)" [type]="flagType(FLAG_POSITION.RIGHT)"
+        class="position-absolute ItemFlag--right" i18n="@@Featured">Featured</tsl-item-flag>
 </div>
 <tsl-images-carousel [images]="images"></tsl-images-carousel>

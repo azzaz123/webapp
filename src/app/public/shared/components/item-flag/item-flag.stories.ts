@@ -41,5 +41,9 @@ Inactive.args = {
 };
 export const Featured = Template.bind({});
 Featured.args = {
-  type: ITEM_FLAG_TYPES.FEATURED,
+  type: ITEM_FLAG_TYPES.BUMPED,
+};
+export const CountryBumped = Template.bind({});
+CountryBumped.args = {
+  type: ITEM_FLAG_TYPES.COUNTRY_BUMP,
 };
