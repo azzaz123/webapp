@@ -1244,6 +1244,7 @@
   <translation id="Reserved">Reservado</translation>
   <translation id="Expired">Expirado</translation>
   <translation id="Inactive">Inactivo</translation>
+  <translation id="Undefined">Sin especificar</translation>
   <translation id="ItemDetailShareTitle">Comparte este producto con tus amigos</translation>
   <translation id="ItemDetailShareTwitterText">Mira que acabo de encontrar en @wallapop: </translation>
   <translation id="ItemDetailShareEmailText">Esto te podría interesar - </translation>
@@ -1269,6 +1270,8 @@
   <translation id="CarMint">Km. 0</translation>
   <translation id="CarUsed">Ocasión</translation>
   <translation id="wallapopPro">Wallapop PRO</translation>
+  <translation id="recommendedItemsTitle">Otros usuarios también han visto</translation>
   <translation id="seePlans">Ver planes</translation>
   <translation id="startFreeTrial">Probar gratis</translation>
+  <translation id="UseSavedCard">Utilizar una tarjeta guardada</translation>
 </translationbundle>

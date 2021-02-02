@@ -168,7 +168,10 @@ export class I18nService {
       continueSubscriptionSuccessBody: 'Your subscription is active again',
       continueSubscriptionErrorTitle: 'Error:',
       continueSubscriptionErrorBody: 'We could not proceed with your request.',
-      paymentFailed: 'The payment could not be done',
+      paymentFailed: 'Check your card details.',
+      paymentFailedUnknown:
+        "For some reason, the payment couldn't be processed. Please try again.",
+      paymentFailedToastTitle: 'Something went wrong',
       consumerGoodsGeneralCategoryTitle: 'Everything else',
       nodata: 'No data available',
       SubscriptionCardNotSet: 'Your card could not be saved',
@@ -212,6 +215,9 @@ export class I18nService {
       errorSavingData: 'Error while saving data. Please try again',
       becomePro: 'Become a PRO',
       wallapopPro: 'Wallapop PRO',
+      cardNumberIsNotValid: "Card number isn't valid.",
+      cvcNumberIsNotValid: "CVC number isn't valid.",
+      cardDateIsNotValid: "Card date isn't valid.",
     },
     es: {
       yes: 'Sí',
@@ -385,7 +391,10 @@ export class I18nService {
       continueSubscriptionErrorTitle: 'Ha habido un error',
       continueSubscriptionErrorBody:
         'Tu suscripción no ha podido ser restablecida.',
-      paymentFailed: 'No ha podido realizarse el pago',
+      paymentFailed: 'Revisa los datos de tu tarjeta.',
+      paymentFailedUnknown:
+        'Por alguna razón, el pago no se ha podido realizar. Por favor vuelve a intentarlo.',
+      paymentFailedToastTitle: 'Algo ha fallado',
       consumerGoodsGeneralCategoryTitle: 'Todo lo demás',
       nodata: 'No hay datos disponibles',
       SubscriptionCardNotSet: 'Tu tarjeta no ha podido ser guardada',
@@ -428,6 +437,9 @@ export class I18nService {
       errorSavingData: 'Error al guardar los datos. Intenta de nuevo',
       becomePro: 'Conviértete en PRO',
       wallapopPro: 'Wallapop PRO',
+      cardNumberIsNotValid: 'El número de la tarjeta no es válido.',
+      cvcNumberIsNotValid: 'El CVC de la tarjeta no es válido.',
+      cardDateIsNotValid: 'La fecha de la tarjeta no es válida.',
     },
   };
 

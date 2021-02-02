@@ -7,6 +7,7 @@ import { ReviewResponse } from '@features/reviews/core/review-response.interface
 import { environment } from 'environments/environment';
 
 import {
+  GET_EXTRA_INFO_ENDPOINT,
   IS_FAVOURITE_ENDPOINT,
   MARK_AS_FAVOURITE_ENDPOINT,
   PROFILE_API_URL,
@@ -152,6 +153,20 @@ describe('PublicUserApiService', () => {
 
     it('should ask server for response', () => {
       publicUserApiService.isFavourite(userId).subscribe();
+
+      const req = httpMock.expectOne(expectedUrl);
+      expect(req.request.method).toEqual('GET');
+      expect(req.request.body).toBeNull();
+    });
+  });
+
+  describe('when requesting extra info', () => {
+    const expectedUrl = `${environment.baseUrl}${GET_EXTRA_INFO_ENDPOINT(
+      userId
+    )}`;
+
+    it('should ask server for response', () => {
+      publicUserApiService.getExtraInfo(userId).subscribe();
 
       const req = httpMock.expectOne(expectedUrl);
       expect(req.request.method).toEqual('GET');

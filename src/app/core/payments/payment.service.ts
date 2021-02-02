@@ -18,6 +18,7 @@ import { PerksModel } from './payment.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { map, catchError, flatMap } from 'rxjs/operators';
+import { STRIPE_ERROR } from '@core/stripe/stripe.interface';
 
 export enum PAYMENT_METHOD {
   STRIPE = 'STRIPE',
