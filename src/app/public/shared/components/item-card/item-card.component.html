@@ -1,4 +1,5 @@
-<div class="ItemCard position-relative" [class.ItemCard--with-description]="showDescription" *ngIf="item">
+<div class="ItemCard position-relative" [class.ItemCard--with-description]="showDescription" *ngIf="item"
+    (click)="itemClick.emit()">
     <tsl-svg-icon *ngIf="item.flags?.sold"
         class="ItemCard__icon ItemCard__icon--left ItemCard__icon--big position-absolute d-flex justify-content-center align-items-center"
         src="/assets/icons/item-card/sold.svg"></tsl-svg-icon>
@@ -9,7 +10,7 @@
         class="ItemCard__icon ItemCard__icon--right ItemCard__icon--medium position-absolute ItemCard__icon--wallapop d-flex justify-content-center align-items-center"
         src="/assets/icons/item-card/bumped.svg"></tsl-svg-icon>
 
-    <div class="ItemCard__image" (click)="itemClick.emit()">
+    <div class="ItemCard__image">
         <img class="w-100 h-100" [src]="item.mainImage?.urls_by_size?.small" [fallback]="IMAGE_FALLBACK"
             [alt]="item.title" loading="lazy" />
     </div>
@@ -18,9 +19,9 @@
         <div class="d-flex justify-content-between">
             <span class="ItemCard__price ItemCard__price--bold">{{item.salePrice | customCurrency }}</span>
             <tsl-favourite-icon *ngIf="showFavourite" class="ItemCard__favourite" [active]="item.flags?.favorite"
-                (click)="toggleFavourite.emit()"></tsl-favourite-icon>
+                (click)="handleFavouriteItem($event)"></tsl-favourite-icon>
         </div>
-        <div class="ItemCard__info" (click)="itemClick.emit()">
+        <div class="ItemCard__info">
             <p class="ItemCard__info__title mb-1">{{item.title}}</p>
             <p class="ItemCard__info__description ItemCard__info__description--light mb-0" *ngIf="showDescription">
                 {{item.description}}</p>

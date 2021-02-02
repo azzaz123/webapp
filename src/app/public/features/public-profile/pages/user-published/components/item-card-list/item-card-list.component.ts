@@ -26,15 +26,10 @@ export class ItemCardListComponent {
   }
 
   public toggleFavourite(item: Item): void {
-    this.checkSessionService.hasSession()
-      ? this.itemCardService.toggleFavourite(item)
-      : this.checkSessionService.checkSessionAction();
+    this.checkSessionService.hasSession() ? this.itemCardService.toggleFavourite(item) : this.checkSessionService.checkSessionAction();
   }
 
   public openItem(item: Item): void {
-    const URL = `${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.ITEM_DETAIL}/${item.id}`;
-    this.router.navigate([]).then(() => {
-      window.open(URL, '_blank');
-    });
+    this.router.navigate([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.ITEM_DETAIL}/${item.id}`]);
   }
 }

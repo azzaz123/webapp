@@ -16,4 +16,9 @@ export class ItemCardComponent {
   public readonly IMAGE_FALLBACK = FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH;
 
   constructor() {}
+
+  public handleFavouriteItem(event: Event): void {
+    event.stopPropagation();
+    this.toggleFavourite.emit();
+  }
 }
