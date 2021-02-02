@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ItemResponse } from '@core/item/item-response.interface';
+import { Item } from '@core/item/item';
+import { ItemCounters, ItemResponse } from '@core/item/item-response.interface';
 import { User } from '@core/user/user';
 import { UserResponse } from '@core/user/user-response.interface';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
@@ -7,7 +8,7 @@ import { PublicUserApiService } from '@public/core/services/api/public-user/publ
 import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
 import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
 import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
-import { Observable, of } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 import { concatMap, mergeMap } from 'rxjs/operators';
 import { ItemDetail } from '../../interfaces/item-detail.interface';
 
@@ -22,12 +23,12 @@ export class ItemDetailService {
 
   public getItem(itemId: string): Observable<ItemDetail> {
     return this.itemApiService.getItem(itemId).pipe(
-      concatMap((item: ItemResponse) => {
-        return this.publicUserApiService.getUser(item.content.seller_id).pipe(
-          mergeMap((user: UserResponse) => {
+      concatMap((item) => {
+        return forkJoin([this.publicUserApiService.getUser(item.content.seller_id), this.itemApiService.getItemCounters(itemId)]).pipe(
+          mergeMap(([user, itemCounters]) => {
             item.content.user = this.mapUser(user);
             return of({
-              item: this.mapItemService.mapItem(item),
+              item: this.mapItem(item, itemCounters),
               user: this.mapUser(user),
             });
           })
@@ -36,10 +37,16 @@ export class ItemDetailService {
     );
   }
 
-  public getRecommendedItems(
-    itemId: string
-  ): Observable<RecommendedItemsBodyResponse> {
+  public getRecommendedItems(itemId: string): Observable<RecommendedItemsBodyResponse> {
     return this.recommenderApiService.getRecommendedItemsByItemId(itemId);
+  }
+
+  private mapItem(itemResponse: ItemResponse, itemCounters: ItemCounters): Item {
+    const item = this.mapItemService.mapItem(itemResponse);
+    item.views = itemCounters.views;
+    item.favorites = itemCounters.favorites;
+
+    return item;
   }
 
   private mapUser(userData: UserResponse): User {

@@ -1,8 +1,8 @@
-<div class="container ItemDetail__container" *ngIf="itemDetail && !loading && images">
+<div class="container ItemDetail__container">
     <div class="d-block pt-4">
         <tsl-top-sky class="mt-4 mx-0 mx-xl-auto pr-xl-0"
             *ngIf="device === deviceType.DESKTOP || device === deviceType.TABLET"></tsl-top-sky>
-        <div class="d-flex justify-content-around py-4">
+        <div class="d-flex justify-content-around py-4" *ngIf="itemDetail && !loading">
             <div *ngIf="device === deviceType.DESKTOP">
                 <tsl-side-sky class="position-sticky d-none d-xl-block"></tsl-side-sky>
             </div>
