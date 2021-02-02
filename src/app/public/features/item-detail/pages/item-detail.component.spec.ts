@@ -1,21 +1,14 @@
 import { DecimalPipe } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  CUSTOM_ELEMENTS_SCHEMA,
-  DebugElement,
-} from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
 import { CustomCurrencyPipe } from '@shared/pipes';
-import {
-  MOCK_ITEM,
-  MOCK_ITEM_WITHOUT_LOCATION,
-} from '@fixtures/item.fixtures.spec';
+import { MOCK_ITEM, MOCK_ITEM_WITHOUT_LOCATION } from '@fixtures/item.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
 import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
@@ -25,11 +18,12 @@ import { ItemApiService } from '@public/core/services/api/item/item-api.service'
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
 import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ItemDetailService } from '../core/services/item-detail.service';
 import { ItemDetailComponent } from './item-detail.component';
+import { APP_PATHS } from 'app/app-routing-constants';
 
 describe('ItemDetailComponent', () => {
   const topSkyTag = 'tsl-top-sky';
@@ -42,6 +36,7 @@ describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
   const fallbackMapClass = '.ItemDetail__fakeMap';
   const locationClass = '.ItemDetail__location';
+  const itemContentClass = '.ItemDetail__content';
   const itemId = '123';
   const itemDetail = {
     item: MOCK_CAR,
@@ -50,8 +45,10 @@ describe('ItemDetailComponent', () => {
 
   let component: ItemDetailComponent;
   let fixture: ComponentFixture<ItemDetailComponent>;
+  let itemDetailService: ItemDetailService;
   let deviceService: DeviceService;
   let decimalPipe: DecimalPipe;
+  let router: Router;
   let de: DebugElement;
   let el: HTMLElement;
 
@@ -74,6 +71,12 @@ describe('ItemDetailComponent', () => {
                 get: () => itemId,
               },
             },
+          },
+        },
+        {
+          provide: Router,
+          useValue: {
+            navigate() {},
           },
         },
         ItemDetailService,
@@ -102,6 +105,8 @@ describe('ItemDetailComponent', () => {
     decimalPipe = TestBed.inject(DecimalPipe);
     de = fixture.debugElement;
     el = de.nativeElement;
+    router = TestBed.inject(Router);
+    itemDetailService = TestBed.inject(ItemDetailService);
     fixture.detectChanges();
   });
 
@@ -156,9 +161,7 @@ describe('ItemDetailComponent', () => {
       const map = fixture.debugElement.query(By.css(mapTag));
       const fallbackMap = fixture.debugElement.query(By.css(fallbackMapClass));
 
-      expect(el.querySelector(locationClass).innerHTML).toContain(
-        component.locationSpecifications
-      );
+      expect(el.querySelector(locationClass).innerHTML).toContain(component.locationSpecifications);
       expect(component.locationHaveCoordinates()).toBe(true);
       expect(map).toBeTruthy();
       expect(fallbackMap).toBeFalsy();
@@ -213,9 +216,7 @@ describe('ItemDetailComponent', () => {
     it('should have an undefined location', () => {
       expect(component.itemLocation).toBe(null);
       expect(component.locationHaveCoordinates()).toBe(false);
-      expect(el.querySelector(locationClass).innerHTML).toContain(
-        component.locationSpecifications
-      );
+      expect(el.querySelector(locationClass).innerHTML).toContain(component.locationSpecifications);
     });
 
     it('should show the fallback map', () => {
@@ -227,25 +228,43 @@ describe('ItemDetailComponent', () => {
       expect(fallbackMap).toBeTruthy();
     });
   });
-  describe('when component inits', () => {
-    it('should ask for item data', () => {
-      component.ngOnInit();
-      fixture.detectChanges();
 
-      expect(component.itemDetail).toBe(itemDetail);
+  describe('when component inits', () => {
+    describe('and we get the item...', () => {
+      it('should ask for item data', () => {
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        expect(component.itemDetail).toBe(itemDetail);
+      });
+
+      it('should set social share data correctly', () => {
+        const socialShareSelector = 'tsl-social-share';
+
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        const socialShareElement = el.querySelector(socialShareSelector);
+        Object.keys(component.socialShare).forEach((socialShareKey: string) => {
+          expect(socialShareElement[socialShareKey]).toEqual(component.socialShare[socialShareKey]);
+        });
+      });
     });
 
-    it('should set social share data correctly', () => {
-      const socialShareSelector = 'tsl-social-share';
+    describe('and we NOT get the item...', () => {
+      beforeEach(() => {
+        component.itemDetail = null;
+      });
+      it('should redirect to the not found page', () => {
+        spyOn(itemDetailService, 'getItem').and.returnValue(throwError(''));
+        spyOn(router, 'navigate');
 
-      component.ngOnInit();
-      fixture.detectChanges();
+        component.ngOnInit();
+        fixture.detectChanges();
+        const containerPage = fixture.debugElement.query(By.css(itemContentClass));
 
-      const socialShareElement = el.querySelector(socialShareSelector);
-      Object.keys(component.socialShare).forEach((socialShareKey: string) => {
-        expect(socialShareElement[socialShareKey]).toEqual(
-          component.socialShare[socialShareKey]
-        );
+        expect(containerPage).toBeFalsy();
+        expect(router.navigate).toHaveBeenCalledWith([`/${APP_PATHS.NOT_FOUND}`]);
       });
     });
   });
@@ -256,15 +275,11 @@ describe('ItemDetailComponent', () => {
     });
 
     it('should print their title', () => {
-      expect(el.querySelector('.ItemDetail__title').innerHTML).toEqual(
-        component.itemDetail.item.title
-      );
+      expect(el.querySelector('.ItemDetail__title').innerHTML).toEqual(component.itemDetail.item.title);
     });
 
     it('should print their description', () => {
-      expect(el.querySelector('.ItemDetail__description').innerHTML).toEqual(
-        component.itemDetail.item.description
-      );
+      expect(el.querySelector('.ItemDetail__description').innerHTML).toEqual(component.itemDetail.item.description);
     });
 
     describe('when the favorites and views are NOT defined...', () => {
@@ -282,23 +297,17 @@ describe('ItemDetailComponent', () => {
       });
 
       it('should print their favorites stat', () => {
-        expect(el.querySelector('#favorites').innerHTML).toEqual(
-          component.itemDetail.item.favorites.toString()
-        );
+        expect(el.querySelector('#favorites').innerHTML).toEqual(component.itemDetail.item.favorites.toString());
       });
       it('should print their views stat', () => {
-        expect(el.querySelector('#views').innerHTML).toEqual(
-          component.itemDetail.item.views.toString()
-        );
+        expect(el.querySelector('#views').innerHTML).toEqual(component.itemDetail.item.views.toString());
       });
     });
 
     describe('when the item currency code is in euros...', () => {
       it('should show the price and the euros symbol', () => {
         expect(el.querySelector(itemPriceClass).innerHTML).toEqual(
-          `${decimalPipe.transform(component.itemDetail.item.salePrice)}${
-            currencies.EUR
-          }`
+          `${decimalPipe.transform(component.itemDetail.item.salePrice)}${currencies.EUR}`
         );
       });
     });
@@ -310,9 +319,7 @@ describe('ItemDetailComponent', () => {
       });
       it('should show the price and the dollar symbol', () => {
         expect(el.querySelector(itemPriceClass).innerHTML).toEqual(
-          `${currencies.GBP}${decimalPipe.transform(
-            component.itemDetail.item.salePrice
-          )}`
+          `${currencies.GBP}${decimalPipe.transform(component.itemDetail.item.salePrice)}`
         );
       });
     });
