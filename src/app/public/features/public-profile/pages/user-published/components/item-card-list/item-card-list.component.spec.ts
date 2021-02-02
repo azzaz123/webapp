@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { UserService } from '@core/user/user.service';
@@ -11,6 +12,7 @@ import { ItemApiModule } from '@public/core/services/api/item/item-api.module';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
+import { ItemCardComponent } from '@public/shared/components/item-card/item-card.component';
 import { ItemCardModule } from '@public/shared/components/item-card/item-card.module';
 import { APP_PATHS } from 'app/app-routing-constants';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -110,8 +112,10 @@ describe('ItemCardListComponent', () => {
   describe('when we click on a item card...', () => {
     it('should redirect to the item view ', () => {
       spyOn(router, 'navigate');
+      const itemCard: ItemCardComponent = de.query(By.directive(ItemCardComponent)).componentInstance;
 
-      component.openItem(MOCK_ITEM);
+      itemCard.itemClick.emit();
+      fixture.detectChanges();
 
       expect(router.navigate).toHaveBeenCalledWith([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM.id}`]);
     });
