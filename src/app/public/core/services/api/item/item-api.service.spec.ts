@@ -1,13 +1,6 @@
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import {
-  GET_ITEM_ENDPOINT,
-  ItemApiService,
-  MARK_AS_FAVORITE_ENDPOINT,
-} from './item-api.service';
+import { GET_ITEM_COUNTERS_ENDPOINT, GET_ITEM_ENDPOINT, ItemApiService, MARK_AS_FAVORITE_ENDPOINT } from './item-api.service';
 
 describe('ItemApiService', () => {
   let httpMock: HttpTestingController;
@@ -33,6 +26,19 @@ describe('ItemApiService', () => {
       const expectedUrl = GET_ITEM_ENDPOINT(ITEM_ID);
 
       itemApiService.getItem(ITEM_ID).subscribe();
+      const req = httpMock.expectOne(expectedUrl);
+      req.flush({});
+
+      expect(req.request.url).toBe(expectedUrl);
+      expect(req.request.method).toBe('GET');
+    });
+  });
+
+  describe('getItemCounters', () => {
+    it('should ask for the item counters', () => {
+      const expectedUrl = GET_ITEM_COUNTERS_ENDPOINT(ITEM_ID);
+
+      itemApiService.getItemCounters(ITEM_ID).subscribe();
       const req = httpMock.expectOne(expectedUrl);
       req.flush({});
 

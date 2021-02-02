@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { UserService } from '@core/user/user.service';
@@ -10,7 +10,9 @@ import { IsCurrentUserStub } from '@fixtures/public/core';
 import { ItemApiModule } from '@public/core/services/api/item/item-api.module';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
+import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { ItemCardModule } from '@public/shared/components/item-card/item-card.module';
+import { APP_PATHS } from 'app/app-routing-constants';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ItemCardListComponent } from './item-card-list.component';
 
@@ -20,6 +22,7 @@ describe('ItemCardListComponent', () => {
   let de: DebugElement;
   let el: HTMLElement;
   let deviceDetectorService: DeviceDetectorService;
+  let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -50,7 +53,9 @@ describe('ItemCardListComponent', () => {
         },
         {
           provide: Router,
-          useValue: {},
+          useValue: {
+            navigate() {},
+          },
         },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -64,6 +69,7 @@ describe('ItemCardListComponent', () => {
     el = de.nativeElement;
     component.items = [MOCK_ITEM, MOCK_ITEM, MOCK_ITEM, MOCK_ITEM];
     deviceDetectorService = TestBed.inject(DeviceDetectorService);
+    router = TestBed.inject(Router);
     fixture.detectChanges();
   });
 
@@ -98,6 +104,16 @@ describe('ItemCardListComponent', () => {
 
         expect(randomCardWithDescription).toBeTruthy();
       });
+    });
+  });
+
+  describe('when we click on a item card...', () => {
+    it('should redirect to the item view ', () => {
+      spyOn(router, 'navigate');
+
+      component.openItem(MOCK_ITEM);
+
+      expect(router.navigate).toHaveBeenCalledWith([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM.id}`]);
     });
   });
 });
