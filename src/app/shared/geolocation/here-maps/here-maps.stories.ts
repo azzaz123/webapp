@@ -3,7 +3,7 @@ import { Story } from '@storybook/angular/types-6-0';
 import { moduleMetadata } from '@storybook/angular';
 
 export default {
-  title: 'Webapp/Geolocation/HereMaps',
+  title: 'Webapp/Shared/Geolocation/HereMaps',
   decorators: [
     moduleMetadata({
       declarations: [HereMapsComponent],
