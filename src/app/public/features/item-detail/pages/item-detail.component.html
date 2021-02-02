@@ -6,7 +6,7 @@
             <div *ngIf="device === deviceType.DESKTOP">
                 <tsl-side-sky class="position-sticky d-none d-xl-block"></tsl-side-sky>
             </div>
-            <div class="ItemDetail__content px-4 pb-5 w-100">
+            <div class="ItemDetail__content px-4 pb-4 w-100">
                 <div class="ItemDetail__carousel position-relative w-100">
                     <tsl-item-images-carousel [images]="images" [itemFlags]="itemFlags"></tsl-item-images-carousel>
                 </div>
@@ -18,7 +18,7 @@
                 <p class="ItemDetail__description py-3 mb-0 text-break">{{itemDetail.item?.description}}</p>
                 <div class="ItemDetail__stats py-3">
                     <div class="d-inline-block">
-                        {{ (itemDetail.item?.modifiedDate || itemDetail.item?.publishedDate) | date:'longDate' }}
+                        {{ itemDetail.item?.modifiedDate | date:'longDate' }}
                     </div>
                     <div class="float-right d-flex align-items-center ml-3">
                         <tsl-svg-icon src="/assets/icons/heart.svg" width=14 height=14></tsl-svg-icon>
