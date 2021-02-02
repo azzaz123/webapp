@@ -1,28 +1,16 @@
 import { DecimalPipe } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { ItemChangeEvent } from '@features/catalog/core/item-change.interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import {
-  getMockItemWithPurchases,
-  ITEM_ID,
-  MOCK_ITEM,
-} from '../../../../tests/item.fixtures.spec';
-import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
+import { getMockItemWithPurchases, ITEM_ID, MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { EventService } from '../../../core/event/event.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { Item } from '../../../core/item/item';
 import { ItemService } from '../../../core/item/item.service';
-import { TrackingService } from '../../../core/tracking/tracking.service';
 import { CustomCurrencyPipe } from '../../pipes';
 import { CatalogCardComponent } from './catalog-card.component';
 
@@ -31,7 +19,6 @@ describe('CatalogCardComponent', () => {
   let fixture: ComponentFixture<CatalogCardComponent>;
   let itemService: ItemService;
   let modalService: NgbModal;
-  let trackingService: TrackingService;
   let errorsService: ErrorsService;
   let i18nService: I18nService;
   let eventService: EventService;
@@ -48,7 +35,6 @@ describe('CatalogCardComponent', () => {
         providers: [
           DecimalPipe,
           I18nService,
-          { provide: TrackingService, useClass: MockTrackingService },
           {
             provide: ItemService,
             useValue: {
@@ -98,7 +84,6 @@ describe('CatalogCardComponent', () => {
     fixture.detectChanges();
     itemService = TestBed.inject(ItemService);
     modalService = TestBed.inject(NgbModal);
-    trackingService = TestBed.inject(TrackingService);
     errorsService = TestBed.inject(ErrorsService);
     i18nService = TestBed.inject(I18nService);
     appboy.initialize(environment.appboy);
@@ -136,7 +121,6 @@ describe('CatalogCardComponent', () => {
     describe('can mark as sold', () => {
       beforeEach(fakeAsync(() => {
         item = MOCK_ITEM;
-        spyOn(trackingService, 'track');
         spyOn(eventService, 'emit');
         spyOn(appboy, 'logCustomEvent');
         spyOn(window as any, 'fbq');
@@ -156,28 +140,12 @@ describe('CatalogCardComponent', () => {
         expect(event.action).toBe('sold');
       });
 
-      it('should track the DeleteItem event', () => {
-        expect(trackingService.track).toHaveBeenCalledWith(
-          TrackingService.PRODUCT_SOLD,
-          {
-            product_id: item.id,
-          }
-        );
-      });
-
       it('should emit ITEM_SOLD event', () => {
-        expect(eventService.emit).toHaveBeenCalledWith(
-          EventService.ITEM_SOLD,
-          item
-        );
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_SOLD, item);
       });
 
       it('should send facebook CompleteRegistrations tracking', () => {
-        expect(window['fbq']).toHaveBeenCalledWith(
-          'track',
-          'CompleteRegistration',
-          { value: item.salePrice, currency: item.currencyCode }
-        );
+        expect(window['fbq']).toHaveBeenCalledWith('track', 'CompleteRegistration', { value: item.salePrice, currency: item.currencyCode });
       });
 
       it('should send appboy Sold event', () => {
@@ -207,17 +175,13 @@ describe('CatalogCardComponent', () => {
       });
 
       it('should emit ITEM_RESERVED event', () => {
-        expect(eventService.emit).toHaveBeenCalledWith(
-          EventService.ITEM_RESERVED,
-          item
-        );
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_RESERVED, item);
       });
     });
 
     describe('already reserved', () => {
       beforeEach(() => {
         spyOn(itemService, 'reserveItem').and.callThrough();
-        spyOn(trackingService, 'track');
         spyOn(eventService, 'emit');
         item = MOCK_ITEM;
         item.reserved = true;
@@ -230,19 +194,14 @@ describe('CatalogCardComponent', () => {
       });
 
       it('should emit ITEM_RESERVED event', () => {
-        expect(eventService.emit).toHaveBeenCalledWith(
-          EventService.ITEM_RESERVED,
-          item
-        );
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_RESERVED, item);
       });
     });
   });
 
   describe('cancel Autorenew', () => {
     beforeEach(fakeAsync(() => {
-      spyOn(itemService, 'cancelAutorenew').and.returnValue(
-        of({ status: 200 })
-      );
+      spyOn(itemService, 'cancelAutorenew').and.returnValue(of({ status: 200 }));
       spyOn(modalService, 'open').and.callThrough();
       component.cancelAutorenew(MOCK_ITEM, modal);
       tick();
@@ -261,9 +220,7 @@ describe('CatalogCardComponent', () => {
 
       component.ngOnInit();
 
-      expect(i18nService.getTranslations).toHaveBeenCalledWith(
-        component.item.purchases.bump_type
-      );
+      expect(i18nService.getTranslations).toHaveBeenCalledWith(component.item.purchases.bump_type);
       expect(component.bumpName).toBe('City Bump');
     });
   });

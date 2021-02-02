@@ -1,37 +1,19 @@
-import {
-  Component,
-  DebugElement,
-  EventEmitter,
-  NO_ERRORS_SCHEMA,
-} from '@angular/core';
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { Component, DebugElement, EventEmitter, NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { ItemService } from '../../../core/item/item.service';
-import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ItemSoldDirective } from './item-sold.directive';
-
 import createSpy = jasmine.createSpy;
 import { Item } from '../../../core/item/item';
-import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
 import { SoldModalComponent } from './sold-modal.component';
 
 @Component({
-  template: `<button
-    tslItemSold
-    (callback)="setSold(item)"
-    [item]="item"
-  ></button>`,
+  template: `<button tslItemSold (callback)="setSold(item)" [item]="item"></button>`,
 })
 class TestComponent {
   item: Item;
@@ -43,7 +25,6 @@ describe('ItemSoldDirective', () => {
   let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
   let element: DebugElement;
-  let trackingService: TrackingService;
   let itemService: ItemService;
   let modalService: NgbModal;
   let errorsService: ErrorsService;
@@ -57,7 +38,6 @@ describe('ItemSoldDirective', () => {
       TestBed.configureTestingModule({
         declarations: [ItemSoldDirective, TestComponent],
         providers: [
-          { provide: TrackingService, useClass: MockTrackingService },
           {
             provide: ItemService,
             useValue: {
@@ -108,10 +88,8 @@ describe('ItemSoldDirective', () => {
     component = fixture.componentInstance;
     itemService = TestBed.inject(ItemService);
     modalService = TestBed.inject(NgbModal);
-    trackingService = TestBed.inject(TrackingService);
     errorsService = TestBed.inject(ErrorsService);
     element = fixture.debugElement.queryAll(By.directive(ItemSoldDirective))[0];
-    spyOn(trackingService, 'track');
   });
 
   it('should create an instance', () => {
@@ -138,10 +116,7 @@ describe('ItemSoldDirective', () => {
     });
 
     it('should set the item inside the modal to the component item', () => {
-      expect(itemService.canDoAction).toHaveBeenCalledWith(
-        'mark_sold',
-        item.id
-      );
+      expect(itemService.canDoAction).toHaveBeenCalledWith('mark_sold', item.id);
     });
 
     it('should open modal', fakeAsync(() => {
@@ -169,10 +144,7 @@ describe('ItemSoldDirective', () => {
     }));
 
     it('should call canDoAction', () => {
-      expect(itemService.canDoAction).toHaveBeenCalledWith(
-        'mark_sold',
-        MOCK_ITEM.id
-      );
+      expect(itemService.canDoAction).toHaveBeenCalledWith('mark_sold', MOCK_ITEM.id);
     });
 
     it('should throw error', () => {

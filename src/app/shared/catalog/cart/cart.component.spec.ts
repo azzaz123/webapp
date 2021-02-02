@@ -1,11 +1,5 @@
 import { throwError, of } from 'rxjs';
-import {
-  ComponentFixture,
-  TestBed,
-  fakeAsync,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 
 import { CartComponent } from './cart.component';
 import { CustomCurrencyPipe } from '../../pipes';
@@ -14,19 +8,11 @@ import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CartService } from './cart.service';
 import { Cart } from './cart';
 import { CartChange } from './cart-item.interface';
-import {
-  CART_ITEM_CITYBUMP,
-  CART_ORDER,
-  CART_ORDER_TRACK,
-  ITEM_ID,
-  MOCK_ITEM_V3,
-} from '../../../../tests/item.fixtures.spec';
+import { CART_ITEM_CITYBUMP, CART_ORDER, CART_ORDER_TRACK, ITEM_ID, MOCK_ITEM_V3 } from '../../../../tests/item.fixtures.spec';
 import { ItemService } from '../../../core/item/item.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
-import { TrackingService } from '../../../core/tracking/tracking.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { EventService } from '../../../core/event/event.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
@@ -39,7 +25,6 @@ describe('CartComponent', () => {
   let itemService: ItemService;
   let errorService: ErrorsService;
   let router: Router;
-  let trackingService: TrackingService;
   let eventService: EventService;
   let stripeService: StripeService;
 
@@ -59,10 +44,6 @@ describe('CartComponent', () => {
         providers: [
           DecimalPipe,
           EventService,
-          {
-            provide: TrackingService,
-            useClass: MockTrackingService,
-          },
           {
             provide: CartService,
             useValue: {
@@ -118,7 +99,6 @@ describe('CartComponent', () => {
     itemService = TestBed.inject(ItemService);
     errorService = TestBed.inject(ErrorsService);
     router = TestBed.inject(Router);
-    trackingService = TestBed.inject(TrackingService);
     eventService = TestBed.inject(EventService);
     stripeService = TestBed.inject(StripeService);
     component.creditInfo = {
@@ -240,7 +220,6 @@ describe('CartComponent', () => {
       beforeEach(() => {
         spyOn(component.cart, 'prepareOrder').and.returnValue(CART_ORDER);
         spyOn(component.cart, 'getOrderId').and.returnValue('UUID');
-        spyOn(trackingService, 'track');
         spyOn(localStorage, 'setItem');
         spyOn(eventService, 'emit');
 
@@ -255,44 +234,15 @@ describe('CartComponent', () => {
         component.checkout();
         tick(2000);
 
-        expect(localStorage.setItem).toHaveBeenCalledWith(
-          'transactionType',
-          'bump'
-        );
+        expect(localStorage.setItem).toHaveBeenCalledWith('transactionType', 'bump');
       }));
 
       it('should emit TOTAL_CREDITS_UPDATED event', fakeAsync(() => {
         component.checkout();
         tick(2000);
 
-        expect(eventService.emit).toHaveBeenCalledWith(
-          EventService.TOTAL_CREDITS_UPDATED
-        );
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.TOTAL_CREDITS_UPDATED);
       }));
-
-      describe('with payment_needed true', () => {
-        describe('track', () => {
-          beforeEach(() => {
-            component.creditInfo.credit = 0;
-            component.cart = CART;
-            component.cart.total = 1;
-          });
-
-          describe('Stripe', () => {
-            it('should call track of trackingService with valid attributes', () => {
-              component.checkout();
-
-              expect(trackingService.track).toHaveBeenCalledWith(
-                TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART,
-                {
-                  selected_products: CART_ORDER_TRACK,
-                  payment_method: 'STRIPE',
-                }
-              );
-            });
-          });
-        });
-      });
 
       describe('with payment_needed false', () => {
         beforeEach(() => {
@@ -311,10 +261,7 @@ describe('CartComponent', () => {
           component.checkout();
           tick(2000);
 
-          expect(router.navigate).toHaveBeenCalledWith([
-            'catalog/list',
-            { code: 200 },
-          ]);
+          expect(router.navigate).toHaveBeenCalledWith(['catalog/list', { code: 200 }]);
         }));
 
         it('should call deselectItems', fakeAsync(() => {
@@ -323,18 +270,6 @@ describe('CartComponent', () => {
 
           expect(itemService.deselectItems).toHaveBeenCalled();
           expect(itemService.selectedAction).toBeNull();
-        }));
-
-        it('should call track of trackingService without any payment_method attribute', fakeAsync(() => {
-          component.checkout();
-          tick(2000);
-
-          expect(trackingService.track).toHaveBeenCalledWith(
-            TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART,
-            {
-              selected_products: CART_ORDER_TRACK,
-            }
-          );
         }));
       });
     });
