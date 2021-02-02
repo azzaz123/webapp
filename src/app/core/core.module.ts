@@ -21,7 +21,6 @@ import { SessionService } from './session/session.service';
 import { UuidService } from './uuid/uuid.service';
 import { HereMapsService } from '@shared/geolocation/here-maps/here-maps.service';
 import { UserService } from './user/user.service';
-import { TrackingService } from './tracking/tracking.service';
 import { NavigatorService } from './tracking/navigator.service';
 import { ItemService } from './item/item.service';
 import { AdsModule } from './ads/ads.module';
@@ -56,7 +55,6 @@ import { CategoryService } from './category/category.service';
     FeatureflagService,
     SessionService,
     UuidService,
-    TrackingService,
     NavigatorService,
     UserService,
     ItemService,
@@ -67,9 +65,7 @@ import { CategoryService } from './category/category.service';
 export class CoreModule {
   constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
     if (parentModule) {
-      throw new Error(
-        'CoreModule is already loaded. Import it in the AppModule only'
-      );
+      throw new Error('CoreModule is already loaded. Import it in the AppModule only');
     }
   }
 }
