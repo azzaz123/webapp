@@ -2,7 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { CAR_DATA, MOCK_CAR } from '@fixtures/car.fixtures.spec';
 import { MOCK_FULL_USER, USER_DATA } from '@fixtures/user.fixtures.spec';
-import { ITEM_COUNTERS_DATA } from '@fixtures/item.fixtures.spec';
+import { ITEM_COUNTERS_DATA, ITEM_BUMP_FLAGS } from '@fixtures/item.fixtures.spec';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
@@ -32,6 +32,9 @@ describe('ItemDetailService', () => {
             },
             getItemCounters() {
               return of(ITEM_COUNTERS_DATA);
+            },
+            getBumpFlags() {
+              return of(ITEM_BUMP_FLAGS);
             },
           },
         },
@@ -64,6 +67,7 @@ describe('ItemDetailService', () => {
     beforeEach(() => {
       item.views = ITEM_COUNTERS_DATA.views;
       item.favorites = ITEM_COUNTERS_DATA.favorites;
+      item.bumpFlags = ITEM_BUMP_FLAGS;
     });
 
     it('should ask for the item and return it with correct format', () => {
@@ -75,6 +79,7 @@ describe('ItemDetailService', () => {
       });
 
       expect(expectedResponse.item).toEqual(item);
+      expect(expectedResponse.item.bumpFlags).toEqual(ITEM_BUMP_FLAGS);
       expect(expectedResponse.user).toEqual(MOCK_FULL_USER);
     });
   });

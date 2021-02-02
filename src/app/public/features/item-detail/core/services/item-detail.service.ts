@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Item } from '@core/item/item';
-import { ItemCounters, ItemResponse } from '@core/item/item-response.interface';
+import { ItemCounters, ItemResponse, ItemVisibilityFlags } from '@core/item/item-response.interface';
 import { User } from '@core/user/user';
 import { UserResponse } from '@core/user/user-response.interface';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
@@ -24,11 +24,16 @@ export class ItemDetailService {
   public getItem(itemId: string): Observable<ItemDetail> {
     return this.itemApiService.getItem(itemId).pipe(
       concatMap((item) => {
-        return forkJoin([this.publicUserApiService.getUser(item.content.seller_id), this.itemApiService.getItemCounters(itemId)]).pipe(
-          mergeMap(([user, itemCounters]) => {
+        return forkJoin([
+          this.publicUserApiService.getUser(item.content.seller_id),
+          this.itemApiService.getItemCounters(itemId),
+          this.itemApiService.getBumpFlags(itemId),
+        ]).pipe(
+          mergeMap(([user, itemCounters, bumpFlags]) => {
             item.content.user = this.mapUser(user);
+
             return of({
-              item: this.mapItem(item, itemCounters),
+              item: this.mapItem(item, itemCounters, bumpFlags),
               user: this.mapUser(user),
             });
           })
@@ -41,10 +46,11 @@ export class ItemDetailService {
     return this.recommenderApiService.getRecommendedItemsByItemId(itemId);
   }
 
-  private mapItem(itemResponse: ItemResponse, itemCounters: ItemCounters): Item {
+  private mapItem(itemResponse: ItemResponse, itemCounters: ItemCounters, bumpFlags: ItemVisibilityFlags): Item {
     const item = this.mapItemService.mapItem(itemResponse);
     item.views = itemCounters.views;
     item.favorites = itemCounters.favorites;
+    item.bumpFlags = bumpFlags;
 
     return item;
   }

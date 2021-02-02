@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ItemCounters, ItemResponse } from '@core/item/item-response.interface';
+import { ItemCounters, ItemResponse, ItemVisibilityFlags } from '@core/item/item-response.interface';
 import { environment } from '@environments/environment';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -10,6 +10,8 @@ export const ITEMS_API_URL = (userId: string) => `${environment.baseUrl}api/v3/i
 export const MARK_AS_FAVORITE_ENDPOINT = (id: string) => `${ITEMS_API_URL(id)}/favorite`;
 export const GET_ITEM_ENDPOINT = (id: string) => `${ITEMS_API_URL(id)}`;
 export const GET_ITEM_COUNTERS_ENDPOINT = (id: string) => `${ITEMS_API_URL(id)}/counters`;
+export const GET_ITEM_BUMP_FLAGS = (id: string) => `${ITEMS_API_URL(id)}/bump-flags`;
+
 @Injectable()
 export class ItemApiService {
   constructor(private http: HttpClient) {}
@@ -20,6 +22,20 @@ export class ItemApiService {
 
   public getItemCounters(id: string): Observable<ItemCounters> {
     return this.http.get<ItemCounters>(GET_ITEM_COUNTERS_ENDPOINT(id)).pipe(catchError(() => of({ views: 0, favorites: 0 })));
+  }
+
+  public getBumpFlags(id: string): Observable<ItemVisibilityFlags> {
+    return this.http.get<ItemVisibilityFlags>(GET_ITEM_BUMP_FLAGS(id)).pipe(
+      catchError(() =>
+        of({
+          bumped: false,
+          highlighted: false,
+          urgent: false,
+          country_bumped: false,
+          boosted: false,
+        })
+      )
+    );
   }
 
   public markAsFavourite(id: string): Observable<MarkAsFavouriteBodyResponse> {

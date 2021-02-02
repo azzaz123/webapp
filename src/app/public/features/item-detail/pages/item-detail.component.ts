@@ -109,7 +109,7 @@ export class ItemDetailComponent implements OnInit {
   }
 
   private handleFlags(): void {
-    this.itemFlags = this.itemDetail.item?.flags;
+    this.itemFlags = { ...this.itemDetail.item?.flags, ...this.itemDetail.item?.bumpFlags };
   }
 
   private handleImages(): void {

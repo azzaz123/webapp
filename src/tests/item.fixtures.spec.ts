@@ -4,10 +4,7 @@ import * as moment from 'moment';
 import { Observable, of } from 'rxjs';
 import { CATEGORY_IDS } from '../app/core/category/category-ids';
 import { Item, ITEM_TYPES } from '../app/core/item/item';
-import {
-  CARS_CATEGORY,
-  REALESTATE_CATEGORY,
-} from '../app/core/item/item-categories';
+import { CARS_CATEGORY, REALESTATE_CATEGORY } from '../app/core/item/item-categories';
 import {
   AllowedActionResponse,
   AvailableProductsResponse,
@@ -27,6 +24,7 @@ import {
   ItemSaleConditions,
   ItemsWithAvailableProductsResponse,
   ItemUploadForm,
+  ItemVisibilityFlags,
   ItemWithProducts,
   LatestItemResponse,
   ListingFeeProductInfo,
@@ -64,8 +62,7 @@ export const ITEM_SALE_PRICE = 123.45;
 export const ITEM_SALE_PRICE2 = 1230;
 export const ITEM_CURRENCY_CODE = 'EUR';
 export const ITEM_MODIFIED_DATE = 1474554861894;
-export const ITEM_URL =
-  'http://dock9.wallapop.com/i/500002512?_pid=wi&_uid=500002512';
+export const ITEM_URL = 'http://dock9.wallapop.com/i/500002512?_pid=wi&_uid=500002512';
 export const ITEM_WEB_SLUG = 'webslug-9jd7ryx5odjk';
 export const ITEM_PUBLISHED_DATE = 1473784861894;
 export const ITEM_PUBLISHED_DATE2 = 1473784861898;
@@ -112,16 +109,11 @@ export const ITEM_MAIN_IMAGE: Image = {
   original_height: 62,
   average_hex_color: '6a707b',
   urls_by_size: {
-    original:
-      'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002514&pictureSize=ORIGINAL',
-    small:
-      'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002514&pictureSize=W320',
-    large:
-      'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002514&pictureSize=W320',
-    medium:
-      'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002514&pictureSize=W320',
-    xlarge:
-      'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002514&pictureSize=W320',
+    original: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002514&pictureSize=ORIGINAL',
+    small: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002514&pictureSize=W320',
+    large: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002514&pictureSize=W320',
+    medium: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002514&pictureSize=W320',
+    xlarge: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002514&pictureSize=W320',
   },
 };
 
@@ -133,16 +125,11 @@ export const ITEM_IMAGES: Image[] = [
     original_height: 62,
     average_hex_color: '6a707b',
     urls_by_size: {
-      original:
-        'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002514&pictureSize=ORIGINAL',
-      small:
-        'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002514&pictureSize=W320',
-      large:
-        'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002514&pictureSize=W320',
-      medium:
-        'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002514&pictureSize=W320',
-      xlarge:
-        'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002514&pictureSize=W320',
+      original: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002514&pictureSize=ORIGINAL',
+      small: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002514&pictureSize=W320',
+      large: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002514&pictureSize=W320',
+      medium: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002514&pictureSize=W320',
+      xlarge: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002514&pictureSize=W320',
     },
   },
 ];
@@ -208,16 +195,11 @@ export const ITEM_DATA3: ItemProResponse = {
         original_height: 62,
         average_hex_color: '6a707b',
         urls_by_size: {
-          original:
-            'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
-          small:
-            'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
-          large:
-            'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
-          medium:
-            'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
-          xlarge:
-            'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+          original: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+          small: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+          large: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+          medium: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+          xlarge: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
         },
       },
     ],
@@ -245,6 +227,14 @@ export const ITEM_COUNTERS_DATA: ItemCounters = {
   views: ITEM_VIEWS,
   favorites: ITEM_FAVORITES,
   conversations: ITEM_CONVERSATIONS,
+};
+
+export const ITEM_BUMP_FLAGS: ItemVisibilityFlags = {
+  bumped: false,
+  highlighted: false,
+  urgent: false,
+  country_bumped: false,
+  boosted: false,
 };
 
 export const ITEM_FASHION_EXTRA_INFO: ItemExtraInfo = {
@@ -524,16 +514,11 @@ export const ITEM_DATA_V3: ItemResponse = {
         original_height: 62,
         average_hex_color: '6a707b',
         urls_by_size: {
-          original:
-            'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
-          small:
-            'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
-          large:
-            'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
-          medium:
-            'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
-          xlarge:
-            'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+          original: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+          small: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+          large: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+          medium: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+          xlarge: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
         },
       },
     ],
@@ -575,30 +560,20 @@ export const ITEM_DATA_V4: ItemProResponse = {
         original_height: 62,
         average_hex_color: '6a707b',
         urls_by_size: {
-          original:
-            'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
-          small:
-            'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
-          large:
-            'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
-          medium:
-            'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
-          xlarge:
-            'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+          original: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+          small: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+          large: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+          medium: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+          xlarge: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
         },
       },
     ],
     image: {
-      original:
-        'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
-      small:
-        'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
-      large:
-        'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
-      medium:
-        'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
-      xlarge:
-        'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      original: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      small: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      large: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      medium: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      xlarge: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
       original_height: 100,
       original_width: 62,
     },
@@ -649,30 +624,20 @@ export const ITEM_DATA_V5: ItemProResponse = {
         original_height: 62,
         average_hex_color: '6a707b',
         urls_by_size: {
-          original:
-            'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
-          small:
-            'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
-          large:
-            'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
-          medium:
-            'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
-          xlarge:
-            'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+          original: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+          small: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+          large: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+          medium: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+          xlarge: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
         },
       },
     ],
     image: {
-      original:
-        'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
-      small:
-        'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
-      large:
-        'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
-      medium:
-        'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
-      xlarge:
-        'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      original: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      small: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      large: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      medium: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      xlarge: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
       original_height: 100,
       original_width: 62,
     },
@@ -694,14 +659,7 @@ export const ITEM_DATA_V5: ItemProResponse = {
   },
 };
 
-export const generateMockItemProResponse = (
-  id: number,
-  type,
-  title,
-  imageUrl,
-  categoryId,
-  status
-): ItemProResponse => {
+export const generateMockItemProResponse = (id: number, type, title, imageUrl, categoryId, status): ItemProResponse => {
   const flags = Object.assign({}, ITEM_FLAGS);
 
   switch (status) {
@@ -761,25 +719,12 @@ export const generateMockItemProResponses = (
 ): ItemProResponse[] => {
   const result: ItemProResponse[] = [];
   for (let i = 0; i < ammount; i++) {
-    result.push(
-      generateMockItemProResponse(
-        i,
-        type,
-        'Taitel-' + i,
-        imageUrl,
-        categoryId,
-        status
-      )
-    );
+    result.push(generateMockItemProResponse(i, type, 'Taitel-' + i, imageUrl, categoryId, status));
   }
   return result;
 };
 
-export const getMockedItemProResponses = (
-  init,
-  categoryId,
-  status
-): ItemProResponse[] => {
+export const getMockedItemProResponses = (init, categoryId, status): ItemProResponse[] => {
   let mockResponse: ItemProResponse[] = [];
 
   MOCK_SUBSCRIPTION_SLOTS_RESPONSE.forEach((subscriptionSlot) => {
@@ -790,18 +735,15 @@ export const getMockedItemProResponses = (
       switch (categoryId) {
         case 100:
           type = 'cars';
-          image =
-            'http://cdn-dock146.wallapop.com/images/10420/22/__/c10420p96001/i112001.jpg';
+          image = 'http://cdn-dock146.wallapop.com/images/10420/22/__/c10420p96001/i112001.jpg';
           break;
         case 14000:
           type = 'motorbikes';
-          image =
-            'http://cdn-dock146.wallapop.com/images/10420/2b/__/c10420p108001/i134001.jpg';
+          image = 'http://cdn-dock146.wallapop.com/images/10420/2b/__/c10420p108001/i134001.jpg';
           break;
         case 12800:
           type = 'motor&parts';
-          image =
-            'http://cdn-dock146.wallapop.com/images/10420/06/__/c10420p8017/i8022.jpg';
+          image = 'http://cdn-dock146.wallapop.com/images/10420/06/__/c10420p8017/i8022.jpg';
           break;
       }
 
@@ -821,13 +763,7 @@ export const getMockedItemProResponses = (
             numMockItems = 50;
             break;
         }
-        mockResponse = generateMockItemProResponses(
-          numMockItems,
-          type,
-          image,
-          categoryId,
-          status
-        );
+        mockResponse = generateMockItemProResponses(numMockItems, type, image, categoryId, status);
       }
     }
   });
@@ -844,16 +780,11 @@ export const ITEMS_DATA_V3 = [
       title: 'Toyota Yaris 1.3 99CV',
       description: 'Marca: Toyota',
       image: {
-        original:
-          'http://localhost:8080/shnm-portlet/images?pictureId=500009672&pictureSize=W640',
-        small:
-          'http://localhost:8080/shnm-portlet/images?pictureId=500009672&pictureSize=W320',
-        large:
-          'http://localhost:8080/shnm-portlet/images?pictureId=500009672&pictureSize=W640',
-        medium:
-          'http://localhost:8080/shnm-portlet/images?pictureId=500009672&pictureSize=W640',
-        xlarge:
-          'http://localhost:8080/shnm-portlet/images?pictureId=500009672&pictureSize=W640',
+        original: 'http://localhost:8080/shnm-portlet/images?pictureId=500009672&pictureSize=W640',
+        small: 'http://localhost:8080/shnm-portlet/images?pictureId=500009672&pictureSize=W320',
+        large: 'http://localhost:8080/shnm-portlet/images?pictureId=500009672&pictureSize=W640',
+        medium: 'http://localhost:8080/shnm-portlet/images?pictureId=500009672&pictureSize=W640',
+        xlarge: 'http://localhost:8080/shnm-portlet/images?pictureId=500009672&pictureSize=W640',
         original_width: 688,
         original_height: 392,
       },
@@ -885,16 +816,11 @@ export const ITEMS_DATA_V3 = [
       title: 'Volvo V70 XC AWD Cross Country',
       description: 'Marca: Volvo',
       image: {
-        original:
-          'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
-        small:
-          'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W320',
-        large:
-          'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
-        medium:
-          'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
-        xlarge:
-          'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
+        original: 'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
+        small: 'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W320',
+        large: 'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
+        medium: 'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
+        xlarge: 'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
         original_width: 688,
         original_height: 392,
       },
@@ -926,16 +852,11 @@ export const ITEMS_DATA_V3 = [
       title: 'Volvo V70 XC AWD Cross Country',
       description: 'Marca: Volvo',
       image: {
-        original:
-          'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
-        small:
-          'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W320',
-        large:
-          'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
-        medium:
-          'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
-        xlarge:
-          'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
+        original: 'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
+        small: 'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W320',
+        large: 'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
+        medium: 'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
+        xlarge: 'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
         original_width: 688,
         original_height: 392,
       },
@@ -967,16 +888,11 @@ export const ITEMS_DATA_V3 = [
       title: 'Volvo V70 XC AWD Cross Country',
       description: 'Marca: Volvo',
       image: {
-        original:
-          'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
-        small:
-          'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W320',
-        large:
-          'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
-        medium:
-          'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
-        xlarge:
-          'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
+        original: 'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
+        small: 'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W320',
+        large: 'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
+        medium: 'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
+        xlarge: 'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
         original_width: 688,
         original_height: 392,
       },
@@ -1105,21 +1021,14 @@ export const ITEMS_DATA_v3_FAVORITES = [
     content: {
       id: 'lqzmrdgogy6v',
       title: 'Ducati diavel',
-      description:
-        'Hola vendo mi preciosa Ducati diavel \nCon 13.000km\nAño 2011\nExtras como',
+      description: 'Hola vendo mi preciosa Ducati diavel \nCon 13.000km\nAño 2011\nExtras como',
       image: {
-        original:
-          'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=386147626&pictureSize=W1024',
-        xsmall:
-          'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=386147626&pictureSize=W320',
-        small:
-          'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=386147626&pictureSize=W320',
-        large:
-          'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=386147626&pictureSize=W800',
-        medium:
-          'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=386147626&pictureSize=W640',
-        xlarge:
-          'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=386147626&pictureSize=W1024',
+        original: 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=386147626&pictureSize=W1024',
+        xsmall: 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=386147626&pictureSize=W320',
+        small: 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=386147626&pictureSize=W320',
+        large: 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=386147626&pictureSize=W800',
+        medium: 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=386147626&pictureSize=W640',
+        xlarge: 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=386147626&pictureSize=W1024',
         original_width: 1024,
         original_height: 768,
       },
@@ -1127,18 +1036,12 @@ export const ITEMS_DATA_v3_FAVORITES = [
         id: '9nz0g7kgrjok',
         micro_name: 'Sergio M.',
         image: {
-          original:
-            'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=44934557&pictureSize=W640',
-          xsmall:
-            'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=44934557&pictureSize=W320',
-          small:
-            'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=44934557&pictureSize=W320',
-          large:
-            'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=44934557&pictureSize=W640',
-          medium:
-            'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=44934557&pictureSize=W640',
-          xlarge:
-            'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=44934557&pictureSize=W640',
+          original: 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=44934557&pictureSize=W640',
+          xsmall: 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=44934557&pictureSize=W320',
+          small: 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=44934557&pictureSize=W320',
+          large: 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=44934557&pictureSize=W640',
+          medium: 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=44934557&pictureSize=W640',
+          xlarge: 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=44934557&pictureSize=W640',
           original_width: 720,
           original_height: 1280,
         },
@@ -1171,18 +1074,12 @@ export const ITEMS_DATA_v3_FAVORITES = [
       title: 'Ducati 175 TS-SPORT',
       description: 'Se vende ducati 175 TS-SPORT del año 1965 restaurada',
       image: {
-        original:
-          'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=355418054&pictureSize=W640',
-        xsmall:
-          'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=355418054&pictureSize=W320',
-        small:
-          'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=355418054&pictureSize=W320',
-        large:
-          'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=355418054&pictureSize=W640',
-        medium:
-          'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=355418054&pictureSize=W640',
-        xlarge:
-          'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=355418054&pictureSize=W640',
+        original: 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=355418054&pictureSize=W640',
+        xsmall: 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=355418054&pictureSize=W320',
+        small: 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=355418054&pictureSize=W320',
+        large: 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=355418054&pictureSize=W640',
+        medium: 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=355418054&pictureSize=W640',
+        xlarge: 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=355418054&pictureSize=W640',
         original_width: 447,
         original_height: 640,
       },
