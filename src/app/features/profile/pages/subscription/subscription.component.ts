@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   AnalyticsEvent,
   AnalyticsPageView,
@@ -7,16 +7,14 @@ import {
   ANALYTIC_EVENT_TYPES,
   ClickKeepCurrentSubscription,
   ClickProfileEditCurrentSubscription,
+  ClickProSubscription,
   ClickSubscriptionManagementPlus,
   SCREEN_IDS,
   ViewSubscription,
   ViewSubscriptionManagement,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import {
-  SubscriptionsResponse,
-  SUBSCRIPTION_CATEGORIES,
-} from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { AddNewSubscriptionModalComponent } from '@features/profile/modal/add-new-subscription/add-new-subscription-modal.component';
 import { CancelSubscriptionModalComponent } from '@features/profile/modal/cancel-subscription/cancel-subscription-modal.component';
@@ -55,7 +53,8 @@ export class SubscriptionsComponent implements OnInit {
     private subscriptionsService: SubscriptionsService,
     private router: Router,
     private analyticsService: AnalyticsService,
-    private userService: UserService
+    private userService: UserService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -72,6 +71,17 @@ export class SubscriptionsComponent implements OnInit {
         this.subscriptions = subscriptions;
       });
     this.userService.me(true).subscribe((user) => (this.user = user));
+    this.trackParamEvents();
+  }
+
+  private trackParamEvents(): void {
+    const isSendClickProSubscription = this.route.snapshot.paramMap.get('sendClickProSubscription') === 'true';
+
+    if (isSendClickProSubscription) {
+      this.analyticsService.mParticleReady$.pipe(take(1)).subscribe(() => {
+        this.trackClickProSubscription();
+      });
+    }
   }
 
   public openSubscriptionModal(subscription: SubscriptionsResponse): void {
@@ -80,9 +90,7 @@ export class SubscriptionsComponent implements OnInit {
       windowClass: 'review',
     });
     modalRef.componentInstance.subscription = subscription;
-    modalRef.componentInstance.isNewSubscriber = !this.subscriptionsService.hasOneStripeSubscription(
-      this.subscriptions
-    );
+    modalRef.componentInstance.isNewSubscriber = !this.subscriptionsService.hasOneStripeSubscription(this.subscriptions);
     modalRef.result.then(
       (action: ModalStatuses) => {
         if (action) {
@@ -138,8 +146,7 @@ export class SubscriptionsComponent implements OnInit {
         ),
         take(30),
         finalize(() => {
-          this.router.navigate(['profile/subscriptions']),
-            (this.loading = false);
+          this.router.navigate(['profile/subscriptions']), (this.loading = false);
         })
       )
       .subscribe((updatedSubscriptions) => {
@@ -151,9 +158,7 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   private trackPageView() {
-    let pageView: AnalyticsPageView<
-      ViewSubscriptionManagement | ViewSubscription
-    >;
+    let pageView: AnalyticsPageView<ViewSubscriptionManagement | ViewSubscription>;
     if (
       this.subscriptionsService.hasOneStripeSubscription(this.subscriptions) ||
       this.subscriptionsService.isOneSubscriptionInApp(this.subscriptions)
@@ -176,10 +181,7 @@ export class SubscriptionsComponent implements OnInit {
     this.analyticsService.trackPageView(pageView);
   }
 
-  private trackOpenModalEvent(
-    subscription: SubscriptionsResponse,
-    modalType: SubscriptionModal
-  ) {
+  private trackOpenModalEvent(subscription: SubscriptionsResponse, modalType: SubscriptionModal) {
     if (modalType === AddNewSubscriptionModalComponent) {
       const event: AnalyticsEvent<ClickSubscriptionManagementPlus> = {
         name: ANALYTICS_EVENT_NAMES.ClickSubscriptionManagementPlus,
@@ -187,9 +189,7 @@ export class SubscriptionsComponent implements OnInit {
         attributes: {
           screenId: SCREEN_IDS.SubscriptionManagement,
           subscription: subscription.category_id as SUBSCRIPTION_CATEGORIES,
-          isNewSubscriber: !this.subscriptionsService.hasOneStripeSubscription(
-            this.subscriptions
-          ),
+          isNewSubscriber: !this.subscriptionsService.hasOneStripeSubscription(this.subscriptions),
         },
       };
 
@@ -225,14 +225,9 @@ export class SubscriptionsComponent implements OnInit {
     }
   }
 
-  private getModalTypeDependingOnSubscription(
-    subscription: SubscriptionsResponse
-  ): SubscriptionModal {
+  private getModalTypeDependingOnSubscription(subscription: SubscriptionsResponse): SubscriptionModal {
     // User is trying to edit subscription that is from inapp and has discount
-    if (
-      this.subscriptionsService.isSubscriptionInApp(subscription) &&
-      this.subscriptionsService.hasOneTierDiscount(subscription)
-    ) {
+    if (this.subscriptionsService.isSubscriptionInApp(subscription) && this.subscriptionsService.hasOneTierDiscount(subscription)) {
       return DiscountAvailableUnsubscribeInAppModalComponent;
     }
 
@@ -252,10 +247,7 @@ export class SubscriptionsComponent implements OnInit {
     }
 
     // Subscription was previously canceled
-    if (
-      this.subscriptionsService.isStripeSubscription(subscription) &&
-      subscription.subscribed_until
-    ) {
+    if (this.subscriptionsService.isStripeSubscription(subscription) && subscription.subscribed_until) {
       return ContinueSubscriptionModalComponent;
     }
 
@@ -274,42 +266,39 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   public showEdit(subscription: SubscriptionsResponse): boolean {
-    return (
-      !this.subscriptionsService.isSubscriptionInApp(subscription) &&
-      subscription.tiers.length !== 1
-    );
+    return !this.subscriptionsService.isSubscriptionInApp(subscription) && subscription.tiers.length !== 1;
   }
 
   public showCancel(subscription: SubscriptionsResponse): boolean {
-    return (
-      !this.subscriptionsService.isSubscriptionInApp(subscription) &&
-      subscription.tiers.length === 1
-    );
+    return !this.subscriptionsService.isSubscriptionInApp(subscription) && subscription.tiers.length === 1;
   }
 
   public showManageInApp(subscription: SubscriptionsResponse): boolean {
-    return (
-      this.subscriptionsService.isSubscriptionInApp(subscription) &&
-      !this.subscriptionsService.hasOneFreeTier(subscription)
-    );
+    return this.subscriptionsService.isSubscriptionInApp(subscription) && !this.subscriptionsService.hasOneFreeTier(subscription);
   }
 
   public showUnsubscribeFirst(subscription: SubscriptionsResponse): boolean {
-    return (
-      this.subscriptionsService.isSubscriptionInApp(subscription) &&
-      this.subscriptionsService.hasOneFreeTier(subscription)
-    );
+    return this.subscriptionsService.isSubscriptionInApp(subscription) && this.subscriptionsService.hasOneFreeTier(subscription);
   }
 
   public hasOneFreeSubscription() {
     return this.subscriptionsService.hasOneFreeSubscription(this.subscriptions);
   }
 
-  public getSubscriptionTextButton(
-    subscription: SubscriptionsResponse
-  ): string {
+  public getSubscriptionTextButton(subscription: SubscriptionsResponse): string {
     return this.subscriptionsService.hasTrial(subscription)
       ? $localize`:@@startFreeTrial:Start free trial`
       : $localize`:@@seePlans:See plans`;
+  }
+
+  private trackClickProSubscription(): void {
+    const event: AnalyticsPageView<ClickProSubscription> = {
+      name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
+      attributes: {
+        screenId: SCREEN_IDS.WebHome,
+        isLoggedIn: true,
+      },
+    };
+    return this.analyticsService.trackPageView(event);
   }
 }

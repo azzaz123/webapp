@@ -20,7 +20,7 @@ export interface ViewMessages {
   /**
    * Number of unread messages the user has in the my messages section
    */
-  numberOfUnreadMessages: number;
+  numberOfUnreadMessages?: number;
   /**
    * Name of the experiment or A/B testing applied to the user who has viewed the section. The default value would be 'baseline'
    */

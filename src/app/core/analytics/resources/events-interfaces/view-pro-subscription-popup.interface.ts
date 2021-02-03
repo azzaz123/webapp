@@ -21,4 +21,8 @@ export interface ViewProSubscriptionPopup {
    * Subscription category type that reached the limit
    */
   subscription: 0 | 100 | 14000 | 12800;
+  /**
+   * If the user is a cardealer
+   */
+  isCarDealer: boolean;
 }

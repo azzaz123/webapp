@@ -6,9 +6,9 @@
  */
 
 /**
- * User clicks accept offer button in accept offer screen
+ * User clicks to schedule Home Pick Up hour
  */
-export interface ClickAcceptOffer {
+export interface ClickScheduleHPU {
   /**
    * The unique identifier for an item
    */
@@ -48,13 +48,17 @@ export interface ClickAcceptOffer {
   /**
    * Version of the accept screen
    */
-  acceptScreenVersion?: 'v1-original' | 'v2-green-redesign';
+  acceptScreenVersion: 'v1-original' | 'v2-green-redesign';
   /**
    * Identifier of the accept offer screen
    */
   screenId: 210;
   /**
-   * Drop off method
+   * True if the sender's address for pick up or returns is informed
    */
-  method: 'correos' | 'HPU';
+  hasAddress: boolean;
+  /**
+   * True if the sender's bank account is informed
+   */
+  hasBankAccount: boolean;
 }
