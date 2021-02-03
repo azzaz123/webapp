@@ -17,7 +17,7 @@ export enum ITEM_FLAG_ICONS {
   EXPIRED = '/assets/icons/item-flags/expired.svg',
   INACTIVE = '/assets/icons/item-flags/clock.svg',
   BUMPED = '/assets/icons/item-flags/featured.svg',
-  COUNTRY_BUMP = '/assets/icons/wing-zone.svg',
+  COUNTRY_BUMP = '/assets/icons/item-flags/featured.svg',
 }
 
 export interface FlagProperties {
@@ -71,7 +71,6 @@ export const BUMP_FLAGS: FlagProperties[] = [
     label: $localize`:@@Featured:Featured`,
     itemType: ITEM_FLAG_TYPES.COUNTRY_BUMP,
     icon: ITEM_FLAG_ICONS.COUNTRY_BUMP,
-    fill: COLORS.WALLA_MAIN,
   },
 ];
 

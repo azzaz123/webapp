@@ -3,5 +3,4 @@ export enum COLORS {
   MAGENTA_MAIN = '#F75883',
   NEGATIVE_MAIN = '#FD6C67',
   SKYBLUE_DARK = '#4368CC',
-  WALLA_MAIN = '#13C1AC',
 }
