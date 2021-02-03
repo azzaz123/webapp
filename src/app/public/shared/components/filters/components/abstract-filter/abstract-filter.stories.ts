@@ -18,6 +18,11 @@ export default {
 const Template: Story<AbstractFilterComponent> = (args) => ({
   props: args,
   component: AbstractFilterComponent,
+});
+
+const VariantTemplate: Story<AbstractFilterComponent> = (args) => ({
+  props: args,
+  component: AbstractFilterComponent,
   template: `
     <div>
       <h1>Dropdown variant</h1>
@@ -45,6 +50,16 @@ const ExtendedContentTemplate: Story<AbstractFilterComponent> = (args) => ({
   `,
 });
 
-export const Default = Template.bind({});
+export const Default = VariantTemplate.bind({});
+
+export const DropdownWithValue = Template.bind({});
+DropdownWithValue.args = {
+  value: [{ key: 'value' }],
+};
+
+export const DropdownWithCounter = Template.bind({});
+DropdownWithCounter.args = {
+  value: [{ key1: 'value' }, { key2: 'value' }],
+};
 
 export const ExtendedContent = ExtendedContentTemplate.bind({});

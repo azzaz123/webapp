@@ -1,4 +1,9 @@
-<tsl-bubble *ngIf="isDropdown; else template" (onClick)="handleBubbleClick(template)">{{label}}</tsl-bubble>
+<tsl-bubble *ngIf="isDropdown; else template"
+            (click)="handleBubbleClick(template)"
+            [variant]="hasValue ? BUBBLE_VARIANT.SELECTED : BUBBLE_VARIANT.ACTIVE"
+            [counter]="filterCounter">
+  {{label}}
+</tsl-bubble>
 <ng-template #template>
   <div class="modal-body">
     <div #content>

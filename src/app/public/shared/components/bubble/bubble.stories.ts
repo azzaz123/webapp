@@ -1,7 +1,4 @@
-import {
-  BubbleComponent,
-  BubbleVariants,
-} from '@public/shared/components/bubble/bubble.component';
+import { BubbleComponent, BUBBLE_VARIANT } from '@public/shared/components/bubble/bubble.component';
 import { Story } from '@storybook/angular/types-6-0';
 import { CoreModule } from '@core/core.module';
 import { SvgIconComponent } from '@core/svg-icon/svg-icon/svg-icon.component';
@@ -9,12 +6,12 @@ import { HttpModule } from '@core/http/http.module';
 import { moduleMetadata } from '@storybook/angular';
 
 export default {
-  title: 'Webapp/Abstract components/Bubble',
+  title: 'Webapp/Public/Shared/Components/Bubble',
   component: BubbleComponent,
   argTypes: {
     icon: { control: { type: 'text' } },
     variant: {
-      control: { type: 'select', options: BubbleVariants },
+      control: { type: 'select', options: BUBBLE_VARIANT },
     },
     isDropdown: { control: { type: 'boolean' } },
     counter: {
@@ -33,16 +30,16 @@ const Template: Story<BubbleComponent> = (args) => ({
   props: args,
   template: `
       <div style="display: flex; margin-bottom: 15px;">
-        <tsl-bubble [icon]="icon" [isDropdown]="isDropdown" variant="active" [counter]="counter">Bubble!</tsl-bubble>
+        <tsl-bubble [icon]="icon" [isDropdown]="isDropdown" [variant]="${BUBBLE_VARIANT.ACTIVE}" [counter]="counter">Bubble!</tsl-bubble>
       </div>
       <div style="display: flex; margin-bottom: 15px;">
-        <tsl-bubble [icon]="icon" [isDropdown]="isDropdown" variant="selected" [counter]="counter">Bubble!</tsl-bubble>
+        <tsl-bubble [icon]="icon" [isDropdown]="isDropdown" [variant]="${BUBBLE_VARIANT.SELECTED}" [counter]="counter">Bubble!</tsl-bubble>
       </div>
       <div style="margin-bottom: 15px;">
-        <tsl-bubble [icon]="icon" [isDropdown]="isDropdown" variant="active" [counter]="counter">Bubble!</tsl-bubble>
+        <tsl-bubble [icon]="icon" [isDropdown]="isDropdown" [variant]="${BUBBLE_VARIANT.ACTIVE}" [counter]="counter">Bubble!</tsl-bubble>
       </div>
       <div style="margin-bottom: 15px;">
-        <tsl-bubble [icon]="icon" [isDropdown]="isDropdown" variant="selected" [counter]="counter">Bubble!</tsl-bubble>
+        <tsl-bubble [icon]="icon" [isDropdown]="isDropdown" [variant]="${BUBBLE_VARIANT.SELECTED}" [counter]="counter">Bubble!</tsl-bubble>
       </div>
     `,
 });
@@ -83,14 +80,14 @@ WithCounterPlus9.args = {
 
 export const ActiveVariant = VariantTemplate.bind({});
 ActiveVariant.args = {
-  variant: 'active',
+  variant: BUBBLE_VARIANT.ACTIVE,
   icon: '/assets/icons/category_All.svg',
   isDropdown: true,
 };
 
 export const SelectedVariant = VariantTemplate.bind({});
 SelectedVariant.args = {
-  variant: 'selected',
+  variant: BUBBLE_VARIANT.SELECTED,
   icon: '/assets/icons/category_All.svg',
   isDropdown: true,
 };

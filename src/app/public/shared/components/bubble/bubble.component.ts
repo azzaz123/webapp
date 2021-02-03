@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-export enum BubbleVariants {
+export enum BUBBLE_VARIANT {
   ACTIVE = 'active',
   SELECTED = 'selected',
 }
@@ -12,10 +12,10 @@ export enum BubbleVariants {
 })
 export class BubbleComponent {
   @Input() icon: string;
-  @Input() variant: BubbleVariants = BubbleVariants.ACTIVE;
+  @Input() variant: BUBBLE_VARIANT = BUBBLE_VARIANT.ACTIVE;
   @Input() isDropdown: boolean;
   @Input() counter: number;
-  @Output() onClick: EventEmitter<void> = new EventEmitter();
+  @Output() click: EventEmitter<void> = new EventEmitter();
 
   public get counterText(): string {
     if (this.counter) {
@@ -26,6 +26,6 @@ export class BubbleComponent {
   }
 
   public emitClick(): void {
-    this.onClick.emit();
+    this.click.emit();
   }
 }
