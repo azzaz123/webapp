@@ -3,6 +3,8 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import {
   AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
+  ClickProSubscription,
+  RemoveProSubscriptionBanner,
   SCREEN_IDS,
   ViewOwnSaleItems,
 } from '@core/analytics/analytics-constants';
@@ -28,7 +30,6 @@ import { TrackingService } from '@core/tracking/tracking.service';
 import { User } from '@core/user/user';
 import { Counters, UserStats } from '@core/user/user-stats.interface';
 import { UserService } from '@core/user/user.service';
-import { LOCAL_STORAGE_TRY_PRO_SLOT } from '@features/catalog/components/subscriptions-slots/try-pro-slot/try-pro-slot.component';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ActivateItemsModalComponent } from '@shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component';
 import { DeactivateItemsModalComponent } from '@shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
@@ -40,7 +41,7 @@ import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disa
 import { NavLink } from '@shared/nav-links/nav-link.interface';
 import { find, findIndex } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { takeWhile } from 'rxjs/operators';
+import { take, takeWhile } from 'rxjs/operators';
 import { BumpTutorialComponent } from '../../components/bump-tutorial/bump-tutorial.component';
 import {
   OrderEvent,
@@ -53,6 +54,8 @@ import { ListingfeeConfirmationModalComponent } from '../../modals/listingfee-co
 import { ReactivateConfirmationModalComponent } from '../../modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component';
 
 export const SORTS = ['date_desc', 'date_asc', 'price_desc', 'price_asc'];
+
+export const LOCAL_STORAGE_TRY_PRO_SLOT = 'try-pro-slot';
 
 const TRANSACTIONS_WITH_CREDITS = [
   'bumpWithCredits',
@@ -96,6 +99,7 @@ export class ListComponent implements OnInit, OnDestroy {
   public user: User;
   public userScore: number;
   public showTryProSlot: boolean;
+  public hasTrialAvailable: boolean;
 
   @ViewChild(ItemSoldDirective, { static: true }) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent, { static: true })
@@ -150,6 +154,15 @@ export class ListComponent implements OnInit, OnDestroy {
     this.subscriptionsService.getSlots().subscribe((subscriptionSlots) => {
       this.setSubscriptionSlots(subscriptionSlots);
     });
+
+    this.subscriptionsService
+      .getSubscriptions()
+      .pipe(take(1))
+      .subscribe((subscriptions) => {
+        this.hasTrialAvailable = this.subscriptionsService.hasOneTrialSubscription(
+          subscriptions
+        );
+      });
 
     this.itemService.selectedItems$
       .pipe(
@@ -827,6 +840,33 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public onCloseTryProSlot(): void {
+    const event: AnalyticsPageView<RemoveProSubscriptionBanner> = {
+      name: ANALYTICS_EVENT_NAMES.RemoveProSubscriptionBanner,
+      attributes: {
+        screenId: SCREEN_IDS.MyCatalog,
+        freeTrial: this.hasTrialAvailable,
+      },
+    };
+    this.analyticsService.trackPageView(event);
+    this.saveLocalStorage(LOCAL_STORAGE_TRY_PRO_SLOT, 'true');
     this.showTryProSlot = false;
+  }
+
+  private saveLocalStorage(key: string, value: string): void {
+    if (this.user) {
+      localStorage.setItem(`${this.user.id}-${key}`, value);
+    }
+  }
+
+  public onClickTryProSlot(): void {
+    const event: AnalyticsPageView<ClickProSubscription> = {
+      name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
+      attributes: {
+        screenId: SCREEN_IDS.MyCatalog,
+        freeTrial: this.hasTrialAvailable,
+      },
+    };
+    this.analyticsService.trackPageView(event);
+    this.router.navigate(['profile/subscriptions']);
   }
 }

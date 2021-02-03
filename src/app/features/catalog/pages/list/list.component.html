@@ -51,6 +51,8 @@
     </tsl-header>
     <tsl-try-pro-slot *ngIf="showTryProSlot"
       class="d-md-block"
+      [hasTrialAvailable]="hasTrialAvailable"
+      (clickCTA)="onClickTryProSlot()"
       (close)="onCloseTryProSlot()"
     >
     </tsl-try-pro-slot>

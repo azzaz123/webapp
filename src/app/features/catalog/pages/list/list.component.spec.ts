@@ -8,6 +8,12 @@ import {
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import {
+  AnalyticsPageView,
+  ANALYTICS_EVENT_NAMES,
+  ClickProSubscription,
+  SCREEN_IDS,
+} from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { CategoryService } from '@core/category/category.service';
 import { ErrorsService } from '@core/errors/errors.service';
@@ -26,10 +32,7 @@ import { TrackingService } from '@core/tracking/tracking.service';
 import { FeatureflagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
 import { STATUS } from '@features/catalog/components/selected-items/selected-product.interface';
-import {
-  LOCAL_STORAGE_TRY_PRO_SLOT,
-  TryProSlotComponent,
-} from '@features/catalog/components/subscriptions-slots/try-pro-slot/try-pro-slot.component';
+import { TryProSlotComponent } from '@features/catalog/components/subscriptions-slots/try-pro-slot/try-pro-slot.component';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { CATEGORY_DATA_WEB } from '@fixtures/category.fixtures.spec';
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
@@ -71,7 +74,7 @@ import { SubscriptionsSlotsListComponent } from '../../components/subscriptions-
 import { BumpConfirmationModalComponent } from '../../modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { BuyProductModalComponent } from '../../modals/buy-product-modal/buy-product-modal.component';
 import { ListingfeeConfirmationModalComponent } from '../../modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
-import { ListComponent } from './list.component';
+import { ListComponent, LOCAL_STORAGE_TRY_PRO_SLOT } from './list.component';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -95,6 +98,7 @@ describe('ListComponent', () => {
   let userService: UserService;
   let eventService: EventService;
   let deviceService: DeviceDetectorService;
+  let analyticService: AnalyticsService;
   const routerEvents: Subject<any> = new Subject();
   const CURRENCY = 'wallacoins';
   const CREDITS = 1000;
@@ -255,6 +259,7 @@ describe('ListComponent', () => {
     userService = TestBed.inject(UserService);
     eventService = TestBed.inject(EventService);
     deviceService = TestBed.inject(DeviceDetectorService);
+    analyticService = TestBed.inject(AnalyticsService);
     trackingServiceSpy = spyOn(trackingService, 'track');
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
@@ -1199,27 +1204,47 @@ describe('ListComponent', () => {
   });
 
   describe('Try Pro banner', () => {
-    describe('should show banner', () => {
-      it('when is not Pro and was not previously closed', () => {
-        spyOn(localStorage, 'getItem').and.returnValue(null);
+    describe('when is not Pro ', () => {
+      describe('and was not previously closed', () => {
+        it('should show banner', () => {
+          spyOn(localStorage, 'getItem').and.returnValue(null);
 
-        component.ngOnInit();
-        fixture.detectChanges();
+          component.ngOnInit();
+          fixture.detectChanges();
 
-        const tryProBanner = fixture.debugElement.query(
-          By.directive(TryProSlotComponent)
-        );
+          const tryProBanner = fixture.debugElement.query(
+            By.directive(TryProSlotComponent)
+          );
 
-        expect(localStorage.getItem).toHaveBeenCalledTimes(1);
-        expect(localStorage.getItem).toHaveBeenCalledWith(
-          `${USER_ID}-${LOCAL_STORAGE_TRY_PRO_SLOT}`
-        );
-        expect(tryProBanner).toBeTruthy();
+          expect(localStorage.getItem).toHaveBeenCalledTimes(1);
+          expect(localStorage.getItem).toHaveBeenCalledWith(
+            `${USER_ID}-${LOCAL_STORAGE_TRY_PRO_SLOT}`
+          );
+          expect(tryProBanner).toBeTruthy();
+        });
+      });
+      describe('and was previously closed', () => {
+        it('should not show banner', () => {
+          spyOn(localStorage, 'getItem').and.returnValue('true');
+
+          component.ngOnInit();
+          fixture.detectChanges();
+
+          const tryProBanner = fixture.debugElement.query(
+            By.directive(TryProSlotComponent)
+          );
+
+          expect(localStorage.getItem).toHaveBeenCalledTimes(1);
+          expect(localStorage.getItem).toHaveBeenCalledWith(
+            `${USER_ID}-${LOCAL_STORAGE_TRY_PRO_SLOT}`
+          );
+          expect(tryProBanner).toBeFalsy();
+        });
       });
     });
 
-    describe('should not show banner', () => {
-      it('when is pro', () => {
+    describe('when is pro', () => {
+      it('should not show banner', () => {
         spyOn(localStorage, 'getItem').and.returnValue(null);
         jest.spyOn(userService, 'isPro', 'get').mockReturnValue(true);
 
@@ -1232,31 +1257,62 @@ describe('ListComponent', () => {
 
         expect(tryProBanner).toBeFalsy();
       });
+    });
 
-      it('when was previously closed', () => {
-        spyOn(localStorage, 'getItem').and.returnValue('true');
+    describe('when click close banner', () => {
+      it('should set local storage', () => {
+        spyOn(localStorage, 'setItem');
 
-        component.ngOnInit();
+        component.onCloseTryProSlot();
+        fixture.detectChanges();
+
+        expect(localStorage.setItem).toBeCalledTimes(1);
+        expect(localStorage.setItem).toHaveBeenCalledWith(
+          `${USER_ID}-${LOCAL_STORAGE_TRY_PRO_SLOT}`,
+          'true'
+        );
+      });
+
+      it('should desapear banner', () => {
+        component.showTryProSlot = true;
+
+        component.onCloseTryProSlot();
         fixture.detectChanges();
 
         const tryProBanner = fixture.debugElement.query(
           By.directive(TryProSlotComponent)
         );
 
-        expect(localStorage.getItem).toHaveBeenCalledTimes(1);
-        expect(localStorage.getItem).toHaveBeenCalledWith(
-          `${USER_ID}-${LOCAL_STORAGE_TRY_PRO_SLOT}`
-        );
         expect(tryProBanner).toBeFalsy();
       });
     });
 
-    it('should close banner', () => {
-      component.showTryProSlot = true;
+    describe('when click CTA button', () => {
+      it('should redirect to subscriptions', () => {
+        spyOn(router, 'navigate');
 
-      component.onCloseTryProSlot();
+        component.onClickTryProSlot();
 
-      expect(component.showTryProSlot).toBeFalsy();
+        expect(router.navigate).toBeCalledTimes(1);
+        expect(router.navigate).toHaveBeenCalledWith(['profile/subscriptions']);
+      });
+
+      it('should track event', () => {
+        spyOn(analyticService, 'trackPageView');
+        component.hasTrialAvailable = true;
+        const event: AnalyticsPageView<ClickProSubscription> = {
+          name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
+          attributes: {
+            screenId: SCREEN_IDS.MyCatalog,
+            freeTrial: component.hasTrialAvailable,
+          },
+        };
+
+        component.onClickTryProSlot();
+        fixture.detectChanges();
+
+        expect(analyticService.trackPageView).toHaveBeenCalledWith(event);
+      });
     });
   });
 });

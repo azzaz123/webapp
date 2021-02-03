@@ -98,6 +98,7 @@ describe('TooManyItemsModalComponent', () => {
             screenId: SCREEN_IDS.ProSubscriptionLimitPopup,
             subscription: MOCK_ITEM_V3_3.categoryId as SUBSCRIPTION_CATEGORIES,
             freeTrial: true,
+            isCarDealer: false,
           },
         };
 
@@ -128,6 +129,7 @@ describe('TooManyItemsModalComponent', () => {
             screenId: SCREEN_IDS.ProSubscriptionLimitPopup,
             subscription: MOCK_CAR.categoryId as SUBSCRIPTION_CATEGORIES,
             freeTrial: false,
+            isCarDealer: false,
           },
         };
 
