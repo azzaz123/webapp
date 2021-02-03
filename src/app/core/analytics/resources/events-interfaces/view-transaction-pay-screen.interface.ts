@@ -37,4 +37,20 @@ export interface ViewTransactionPayScreen {
    * Identifier of the screen where the click is done
    */
   screenId: 209;
+  /**
+   * Delivery method
+   */
+  deliveryMethod?: 'correos' | 'home';
+  /**
+   * True if the sender's address for delivery is informed
+   */
+  hasAddress?: boolean;
+  /**
+   * True if the sender's credit card is informed
+   */
+  hasCard?: boolean;
+  /**
+   * Promocode used (empty if none was used)
+   */
+  promocode?: string;
 }

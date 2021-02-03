@@ -18,10 +18,6 @@ export interface ViewAcceptOffer {
    */
   buyerUserId: string;
   /**
-   * Identifier of the user that the item belongs to
-   */
-  sellerUserId: string;
-  /**
    * Identifier of the transaction request
    */
   requestId: string;
@@ -52,9 +48,13 @@ export interface ViewAcceptOffer {
   /**
    * Version of the accept screen
    */
-  acceptScreenVersion: 'v1-original' | 'v2-green-redesign';
+  acceptScreenVersion?: 'v1-original' | 'v2-green-redesign';
   /**
    * Identifier of the accept offer screen
    */
   screenId: 210;
+  /**
+   * Drop off method
+   */
+  method?: 'correos' | 'HPU';
 }

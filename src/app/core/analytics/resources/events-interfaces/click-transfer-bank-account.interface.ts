@@ -6,11 +6,15 @@
  */
 
 /**
- * User navigates the subscription page on the web
+ * User clicks on 'Transfer to bank account' button in wallet
  */
-export interface ViewProfileSubscription {
+export interface ClickTransferBankAccount {
   /**
-   * Identifier of the profile subscription screen
+   * Identifier of the main wallet screen
    */
-  screenId: 206;
+  screenId: 235;
+  /**
+   * Balance amount in the wallet
+   */
+  balanceAmount: number;
 }

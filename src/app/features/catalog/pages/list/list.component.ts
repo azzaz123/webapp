@@ -1,5 +1,12 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import {
+  AnalyticsPageView,
+  ANALYTICS_EVENT_NAMES,
+  SCREEN_IDS,
+  ViewOwnSaleItems,
+} from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
@@ -106,7 +113,8 @@ export class ListComponent implements OnInit, OnDestroy {
     private eventService: EventService,
     protected i18n: I18nService,
     private subscriptionsService: SubscriptionsService,
-    private deviceService: DeviceDetectorService
+    private deviceService: DeviceDetectorService,
+    private analyticsService: AnalyticsService
   ) {}
 
   ngOnInit() {
@@ -551,6 +559,7 @@ export class ListComponent implements OnInit, OnDestroy {
     this.userService.getStats().subscribe((userStats: UserStats) => {
       this.counters = userStats.counters;
       this.setNumberOfProducts();
+      this.trackViewOwnSaleItems();
     });
   }
 
@@ -803,6 +812,18 @@ export class ListComponent implements OnInit, OnDestroy {
     this.showTryProSlot =
       !this.userService.isPro &&
       !localStorage.getItem(`${this.user.id}-${LOCAL_STORAGE_TRY_PRO_SLOT}`);
+  }
+
+  private trackViewOwnSaleItems(): void {
+    const event: AnalyticsPageView<ViewOwnSaleItems> = {
+      name: ANALYTICS_EVENT_NAMES.ViewOwnSaleItems,
+      attributes: {
+        screenId: SCREEN_IDS.MyCatalog,
+        numberOfItems: this.counters.sells,
+        proSubscriptionBanner: this.showTryProSlot,
+      },
+    };
+    this.analyticsService.trackPageView(event);
   }
 
   public onCloseTryProSlot(): void {

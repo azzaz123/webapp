@@ -58,6 +58,7 @@ export class TooManyItemsModalComponent implements OnInit {
         subscription: this.categorySubscription
           .category_id as SUBSCRIPTION_CATEGORIES,
         freeTrial: this.isFreeTrial,
+        isCarDealer: this.type === this.carDealerType,
       },
     };
 
