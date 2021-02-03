@@ -32,11 +32,11 @@ export class AbstractFilterComponent implements Filter {
     return this.value.length > 1 ? this.value.length : undefined;
   }
 
-  public get label(): string {
-    return 'I am a label';
+  public get label(): string | undefined {
+    return 'Hello world';
   }
 
-  public handleBubbleClick(template: TemplateRef<unknown>): void {
-    console.log('Bubble Click!!');
-  }
+  public get icon(): string | undefined;
+
+  public handleBubbleClick(template: TemplateRef<unknown>): void;
 }

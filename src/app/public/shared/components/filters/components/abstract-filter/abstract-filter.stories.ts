@@ -3,49 +3,75 @@ import { Story } from '@storybook/angular/types-6-0';
 import { moduleMetadata } from '@storybook/angular';
 import { BubbleModule } from '@public/shared/components/bubble/bubble.module';
 import { FILTER_VARIANT } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.enum';
+import { Component, Input } from '@angular/core';
+
+@Component({
+  // tslint:disable-next-line:component-selector
+  selector: 'stories-abstract-filter',
+  template: `
+    <tsl-abstract-filter>
+      <p>I am the new content</p>
+    </tsl-abstract-filter>
+  `,
+})
+class StoryAbstractFilterComponent extends AbstractFilterComponent {
+  @Input() storyIcon: string;
+
+  public get label(): string {
+    return 'I am an extended label!';
+  }
+
+  get filterCounter(): number {
+    return 9;
+  }
+
+  public get icon(): string {
+    return;
+  }
+}
 
 export default {
   title: 'Webapp/Public/Shared/Components/Filters/AbstractFilter',
-  component: AbstractFilterComponent,
+  component: StoryAbstractFilterComponent,
   decorators: [
     moduleMetadata({
       imports: [BubbleModule],
-      declarations: [AbstractFilterComponent],
+      declarations: [StoryAbstractFilterComponent, AbstractFilterComponent],
     }),
   ],
 };
 
 const Template: Story<AbstractFilterComponent> = (args) => ({
   props: args,
-  component: AbstractFilterComponent,
+  component: StoryAbstractFilterComponent,
 });
 
 const VariantTemplate: Story<AbstractFilterComponent> = (args) => ({
   props: args,
-  component: AbstractFilterComponent,
+  component: StoryAbstractFilterComponent,
   template: `
     <div>
       <h1>Dropdown variant</h1>
-      <tsl-abstract-filter [variant]="${FILTER_VARIANT.DROPDOWN}"></tsl-abstract-filter>
+      <stories-abstract-filter [variant]="${FILTER_VARIANT.DROPDOWN}"></stories-abstract-filter>
       <h1>Content variant</h1>
-      <tsl-abstract-filter [variant]="${FILTER_VARIANT.CONTENT}"></tsl-abstract-filter>
+      <stories-abstract-filter [variant]="${FILTER_VARIANT.CONTENT}"></stories-abstract-filter>
     </div>
   `,
 });
 
 const ExtendedContentTemplate: Story<AbstractFilterComponent> = (args) => ({
   props: args,
-  component: AbstractFilterComponent,
+  component: StoryAbstractFilterComponent,
   template: `
     <div>
       <h1>Dropdown variant</h1>
-      <tsl-abstract-filter [variant]="${FILTER_VARIANT.DROPDOWN}">
+      <stories-abstract-filter [variant]="${FILTER_VARIANT.DROPDOWN}">
         <p>I'm extended content</p>
-      </tsl-abstract-filter>
+      </stories-abstract-filter>
       <h1>Content variant</h1>
-      <tsl-abstract-filter [variant]="${FILTER_VARIANT.CONTENT}">
+      <stories-abstract-filter [variant]="${FILTER_VARIANT.CONTENT}">
         <p>I'm extended content</p>
-      </tsl-abstract-filter>
+      </stories-abstract-filter>
     </div>
   `,
 });
