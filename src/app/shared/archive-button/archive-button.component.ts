@@ -22,6 +22,5 @@ export class ArchiveButtonComponent {
     if (this.lead instanceof Call) {
       observable = this.callService.archive(this.lead.id);
     }
-    observable.subscribe(() => {});
   }
 }
