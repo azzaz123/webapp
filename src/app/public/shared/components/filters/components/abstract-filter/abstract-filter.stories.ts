@@ -10,6 +10,7 @@ export default {
   decorators: [
     moduleMetadata({
       imports: [BubbleModule],
+      declarations: [AbstractFilterComponent],
     }),
   ],
 };
@@ -27,4 +28,23 @@ const Template: Story<AbstractFilterComponent> = (args) => ({
   `,
 });
 
+const ExtendedContentTemplate: Story<AbstractFilterComponent> = (args) => ({
+  props: args,
+  component: AbstractFilterComponent,
+  template: `
+    <div>
+      <h1>Dropdown variant</h1>
+      <tsl-abstract-filter [variant]="${FILTER_VARIANT.DROPDOWN}">
+        <p>I'm extended content</p>
+      </tsl-abstract-filter>
+      <h1>Content variant</h1>
+      <tsl-abstract-filter [variant]="${FILTER_VARIANT.CONTENT}">
+        <p>I'm extended content</p>
+      </tsl-abstract-filter>
+    </div>
+  `,
+});
+
 export const Default = Template.bind({});
+
+export const ExtendedContent = ExtendedContentTemplate.bind({});
