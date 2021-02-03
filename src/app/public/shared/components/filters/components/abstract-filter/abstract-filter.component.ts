@@ -3,13 +3,14 @@ import { FILTER_VARIANT } from '@public/shared/components/filters/components/abs
 import { FilterConfig } from '@public/shared/components/filters/interfaces/filter-config.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { BUBBLE_VARIANT } from '@public/shared/components/bubble/bubble.component';
+import { Filter } from '@public/shared/components/filters/interfaces/filter.interface';
 
 @Component({
   selector: 'tsl-abstract-filter',
   templateUrl: './abstract-filter.component.html',
   styleUrls: ['./abstract-filter.component.scss'],
 })
-export class AbstractFilterComponent {
+export class AbstractFilterComponent implements Filter {
   @Input() variant: FILTER_VARIANT = FILTER_VARIANT.DROPDOWN;
   @Input() config: FilterConfig;
   @Input() value: FilterParameter[] = [];
