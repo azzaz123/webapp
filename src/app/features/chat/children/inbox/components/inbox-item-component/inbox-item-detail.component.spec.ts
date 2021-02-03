@@ -169,6 +169,15 @@ describe('Component: Item', () => {
 
       expect(component.item.reserved).toBe(false);
     });
+
+    it('should invert the boolean value of item.reserved when called', () => {
+      component.item = MOCKED_INBOX_CONVERSATIONS[0].item;
+      component.item.reserved = false;
+
+      component.toggleReserve();
+
+      expect(component.item.reserved).toBe(true);
+    });
   });
 
   describe('trackSoldEvent', () => {
