@@ -17,7 +17,7 @@ export class ItemCardComponent {
 
   constructor() {}
 
-  public handleFavouriteItem(event: Event): void {
+  public toggleItemFavorite(event: Event): void {
     event.stopPropagation();
     this.toggleFavourite.emit();
   }

@@ -29,7 +29,7 @@ export class ItemCardListComponent {
     this.checkSessionService.hasSession() ? this.itemCardService.toggleFavourite(item) : this.checkSessionService.checkSessionAction();
   }
 
-  public openItem(item: Item): void {
+  public openItemDetailPage(item: Item): void {
     this.router.navigate([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.ITEM_DETAIL}/${item.id}`]);
   }
 }

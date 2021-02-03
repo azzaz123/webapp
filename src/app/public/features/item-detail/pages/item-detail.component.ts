@@ -84,15 +84,14 @@ export class ItemDetailComponent implements OnInit {
   }
 
   private handleItemSpecifications(): void {
-    this.handleCoordinates();
-    this.handleFlags();
-    this.handleImages();
+    this.calculateItemCoordinates();
+    this.loadItemFlags();
+    this.showItemImages();
     this.socialShareSetup(this.itemDetail.item);
   }
 
-  private handleCoordinates(): void {
-    const detailLocation: UserLocation = this.itemDetail.item?.location ? this.itemDetail.item.location : this.itemDetail.user.location;
-
+  private calculateItemCoordinates(): void {
+    const detailLocation: UserLocation = this.itemDetail.item?.location || this.itemDetail.user?.location;
     this.itemLocation = {
       zip: detailLocation.zip,
       city: detailLocation.city,
@@ -105,14 +104,14 @@ export class ItemDetailComponent implements OnInit {
       latitude: this.itemLocation.latitude,
       longitude: this.itemLocation.longitude,
     };
-    this.handleLocationSpecifications();
+    this.calculateItemLocationSpecifications();
   }
 
-  private handleFlags(): void {
+  private loadItemFlags(): void {
     this.itemFlags = { ...this.itemDetail.item?.flags, ...this.itemDetail.item?.bumpFlags };
   }
 
-  private handleImages(): void {
+  private showItemImages(): void {
     this.images = [];
     this.itemDetail.item?.images?.forEach((image: Image) => {
       this.images.push(image.urls_by_size.large);
@@ -139,7 +138,7 @@ export class ItemDetailComponent implements OnInit {
     this.socialMetaTagsService.insertFacebookMetaTags(item.title, item.description, item.mainImage.urls_by_size.medium, item.webLink);
   }
 
-  private handleLocationSpecifications(): void {
+  private calculateItemLocationSpecifications(): void {
     this.locationSpecifications =
       !!this.itemLocation?.zip && !!this.itemLocation?.city
         ? `${this.itemLocation.zip}, ${this.itemLocation.city}`

@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
@@ -20,7 +20,7 @@ describe('UserPublishedComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, ItemCardListModule, DeviceDetectorModule],
+      imports: [HttpClientTestingModule, ItemCardListModule, DeviceDetectorModule, RouterTestingModule],
       declarations: [UserPublishedComponent],
       providers: [
         PublicProfileService,
@@ -33,10 +33,6 @@ describe('UserPublishedComponent', () => {
           useValue: {
             accessToken: 'ACCESS_TOKEN',
           },
-        },
-        {
-          provide: Router,
-          useValue: {},
         },
       ],
     }).compileComponents();
