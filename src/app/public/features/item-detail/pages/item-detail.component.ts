@@ -14,6 +14,8 @@ import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.serv
 import { ActivatedRoute } from '@angular/router';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { UserLocation } from '@core/user/user-response.interface';
+import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -22,6 +24,7 @@ import { UserLocation } from '@core/user/user-response.interface';
 })
 export class ItemDetailComponent implements OnInit {
   public isApproximateLocation = false;
+  public loading = false;
   public deviceType = DeviceType;
   public device: DeviceType;
   public itemFlags: ItemFlags;
@@ -30,6 +33,7 @@ export class ItemDetailComponent implements OnInit {
   public itemLocation: ItemDetailLocation;
   public coordinates: Coordinate;
   public locationSpecifications: string;
+  public recommendedItems: RecommendedItemsBodyResponse;
 
   public socialShare: {
     title: string;
@@ -44,8 +48,8 @@ export class ItemDetailComponent implements OnInit {
   };
 
   constructor(
+    public itemDetailService: ItemDetailService,
     private deviceService: DeviceService,
-    private itemDetailService: ItemDetailService,
     private socialMetaTagsService: SocialMetaTagService,
     private route: ActivatedRoute
   ) {}
@@ -60,19 +64,20 @@ export class ItemDetailComponent implements OnInit {
   }
 
   private initPage(itemId: string): void {
+    this.loading = true;
     this.itemDetailService
       .getItem(itemId)
+      .pipe(finalize(() => (this.loading = false)))
       .subscribe((itemDetail: ItemDetail) => {
         this.itemDetail = itemDetail;
         this.handleCoordinates();
         this.socialShareSetup(this.itemDetail.item);
+        this.loadRecommendedItems(itemId);
       });
   }
 
   private handleCoordinates(): void {
-    const detailLocation: UserLocation = this.itemDetail.item?.location
-      ? this.itemDetail.item.location
-      : this.itemDetail.user.location;
+    const detailLocation: UserLocation = this.itemDetail.item?.location ? this.itemDetail.item.location : this.itemDetail.user.location;
 
     this.itemLocation = {
       zip: detailLocation.zip,
@@ -102,22 +107,11 @@ export class ItemDetailComponent implements OnInit {
     this.socialShare.email = {
       url: item.webLink,
       subject: item.title,
-      message:
-        $localize`:@@ItemDetailShareEmailText:This may interest you - ` +
-        item.description,
+      message: $localize`:@@ItemDetailShareEmailText:This may interest you - ` + item.description,
     };
 
-    this.socialMetaTagsService.insertTwitterMetaTags(
-      item.title,
-      item.description,
-      item.mainImage.urls_by_size.medium
-    );
-    this.socialMetaTagsService.insertFacebookMetaTags(
-      item.title,
-      item.description,
-      item.mainImage.urls_by_size.medium,
-      item.webLink
-    );
+    this.socialMetaTagsService.insertTwitterMetaTags(item.title, item.description, item.mainImage.urls_by_size.medium);
+    this.socialMetaTagsService.insertFacebookMetaTags(item.title, item.description, item.mainImage.urls_by_size.medium, item.webLink);
   }
 
   private handleLocationSpecifications(): void {
@@ -125,6 +119,16 @@ export class ItemDetailComponent implements OnInit {
       !!this.itemLocation?.zip && !!this.itemLocation?.city
         ? `${this.itemLocation.zip}, ${this.itemLocation.city}`
         : $localize`:@@Undefined:Undefined`;
+  }
+
+  private loadRecommendedItems(id: string): void {
+    this.loading = true;
+    this.itemDetailService
+      .getRecommendedItems(id)
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe((recommendedItems: RecommendedItemsBodyResponse) => {
+        this.recommendedItems = recommendedItems;
+      });
   }
 
   set approximatedLocation(isApproximated: boolean) {
