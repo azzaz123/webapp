@@ -6,7 +6,7 @@
             <div *ngIf="device === deviceType.DESKTOP">
                 <tsl-side-sky class="position-sticky d-none d-xl-block"></tsl-side-sky>
             </div>
-            <div class="ItemDetail__container__middle d-flex flex-column w-100" *ngIf="itemDetail && !loading">
+            <div class="ItemDetail__container__middleSection d-flex flex-column w-100" *ngIf="itemDetail && !loading">
                 <div class="ItemDetail__content px-4 pb-5 ">
                     <div class="ItemDetail__carousel position-relative w-100">
                         <tsl-item-images-carousel [images]="images" [itemFlags]="itemFlags"></tsl-item-images-carousel>
