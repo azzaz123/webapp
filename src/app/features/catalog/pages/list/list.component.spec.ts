@@ -12,6 +12,7 @@ import {
   AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
   ClickProSubscription,
+  RemoveProSubscriptionBanner,
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
@@ -1259,8 +1260,8 @@ describe('ListComponent', () => {
       });
     });
 
-    describe('when click close banner', () => {
-      it('should set local storage', () => {
+    describe('when close banner', () => {
+      it('should save data in local storage', () => {
         spyOn(localStorage, 'setItem');
 
         component.onCloseTryProSlot();
@@ -1273,7 +1274,7 @@ describe('ListComponent', () => {
         );
       });
 
-      it('should desapear banner', () => {
+      it('should disappear banner', () => {
         component.showTryProSlot = true;
 
         component.onCloseTryProSlot();
@@ -1284,6 +1285,21 @@ describe('ListComponent', () => {
         );
 
         expect(tryProBanner).toBeFalsy();
+      });
+
+      it('should track ClickProSubscription event', () => {
+        const event: AnalyticsPageView<RemoveProSubscriptionBanner> = {
+          name: ANALYTICS_EVENT_NAMES.RemoveProSubscriptionBanner,
+          attributes: {
+            screenId: SCREEN_IDS.MyCatalog,
+            freeTrial: component.hasTrialAvailable,
+          },
+        };
+
+        component.onCloseTryProSlot();
+        fixture.detectChanges();
+
+        expect(analyticService.trackPageView).toHaveBeenCalledWith(event);
       });
     });
 
@@ -1297,7 +1313,7 @@ describe('ListComponent', () => {
         expect(router.navigate).toHaveBeenCalledWith(['profile/subscriptions']);
       });
 
-      it('should track event', () => {
+      it('should track ClickProSubscription event', () => {
         spyOn(analyticService, 'trackPageView');
         component.hasTrialAvailable = true;
         const event: AnalyticsPageView<ClickProSubscription> = {
