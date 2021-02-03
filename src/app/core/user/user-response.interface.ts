@@ -85,4 +85,5 @@ export interface UserExtrainfo {
   latitude?: number;
   longitude?: number;
   opening_hours?: string;
+  validations?: UserValidations;
 }

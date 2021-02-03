@@ -19,12 +19,12 @@ import { LoadExternalLibsService } from './load-external-libs/load-external-libs
 import { FeatureflagService } from './user/featureflag.service';
 import { SessionService } from './session/session.service';
 import { UuidService } from './uuid/uuid.service';
-import { AdsService } from '@features/chat/core/ads/ads.service';
 import { HereMapsService } from '@shared/geolocation/here-maps/here-maps.service';
 import { UserService } from './user/user.service';
 import { TrackingService } from './tracking/tracking.service';
 import { NavigatorService } from './tracking/navigator.service';
 import { ItemService } from './item/item.service';
+import { AdsModule } from './ads/ads.module';
 import { HAMMER_PROVIDER } from './hammerjs/hammerjs-provider';
 import { HammerModule } from '@angular/platform-browser';
 import { CategoryService } from './category/category.service';
@@ -34,6 +34,7 @@ import { CategoryService } from './category/category.service';
     CookieModule.forRoot(),
     NgxPermissionsModule.forRoot(),
     DeviceDetectorModule.forRoot(),
+    AdsModule,
     HammerModule,
     CoreStoreModule,
   ],
@@ -55,7 +56,6 @@ import { CategoryService } from './category/category.service';
     FeatureflagService,
     SessionService,
     UuidService,
-    AdsService,
     TrackingService,
     NavigatorService,
     UserService,
@@ -67,9 +67,7 @@ import { CategoryService } from './category/category.service';
 export class CoreModule {
   constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
     if (parentModule) {
-      throw new Error(
-        'CoreModule is already loaded. Import it in the AppModule only'
-      );
+      throw new Error('CoreModule is already loaded. Import it in the AppModule only');
     }
   }
 }

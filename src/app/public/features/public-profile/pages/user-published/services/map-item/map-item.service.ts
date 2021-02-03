@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Car } from '@core/item/car';
 import { Item, ITEM_TYPES } from '@core/item/item';
-import {
-  ItemResponse,
-  ItemContent,
-  CarContent,
-  RealestateContent,
-} from '@core/item/item-response.interface';
+import { ItemResponse, ItemContent, CarContent, RealestateContent } from '@core/item/item-response.interface';
+import { RecommenderItemImage } from '@public/core/services/api/recommender/interfaces/recommender-item.interface';
+import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
+import { Image } from '@core/user/user-response.interface';
 import { Realestate } from '@core/item/realestate';
 import { UuidService } from '@core/uuid/uuid.service';
 
@@ -35,7 +33,7 @@ export class MapItemService {
       content.id,
       content.user.id,
       content.title,
-      content.storytelling,
+      content.storytelling || content.description,
       content.sale_price === undefined ? content.price : content.sale_price,
       content.currency_code || content.currency,
       content.modified_date,
@@ -116,9 +114,7 @@ export class MapItemService {
         : {
             id: this.uuidService.getUUID(),
             original_width: content.image ? content.image.original_width : null,
-            original_height: content.image
-              ? content.image.original_height
-              : null,
+            original_height: content.image ? content.image.original_height : null,
             average_hex_color: '',
             urls_by_size: content.image,
           },
@@ -130,29 +126,84 @@ export class MapItemService {
       content.extra_info
         ? {
             object_type: {
-              id:
-                content.extra_info.object_type &&
-                content.extra_info.object_type.id
-                  ? content.extra_info.object_type.id.toString()
-                  : null,
-              name:
-                content.extra_info.object_type &&
-                content.extra_info.object_type.name
-                  ? content.extra_info.object_type.name
-                  : null,
+              id: content.extra_info.object_type && content.extra_info.object_type.id ? content.extra_info.object_type.id.toString() : null,
+              name: content.extra_info.object_type && content.extra_info.object_type.name ? content.extra_info.object_type.name : null,
             },
             brand: content.extra_info.brand,
             model: content.extra_info.model,
             gender: content.extra_info.gender,
             size: {
-              id:
-                content.extra_info.size && content.extra_info.size.id
-                  ? content.extra_info.size.id.toString()
-                  : null,
+              id: content.extra_info.size && content.extra_info.size.id ? content.extra_info.size.id.toString() : null,
             },
             condition: content.extra_info.condition || null,
           }
         : undefined
     );
+  }
+
+  public mapRecommendedItem(recommendedItemBodyResponse: RecommendedItemsBodyResponse): Item[] {
+    return recommendedItemBodyResponse.recommended_items.map((recommendedItem) => {
+      return new Item(
+        recommendedItem.id,
+        null,
+        recommendedItem.seller_id,
+        recommendedItem.title,
+        null,
+        recommendedItem.category_id,
+        null,
+        recommendedItem.price,
+        recommendedItem.currency,
+        null,
+        null,
+        {
+          pending: null,
+          sold: null,
+          favorite: recommendedItem.favorited,
+          reserved: null,
+          banned: null,
+          expired: null,
+        },
+        null,
+        {
+          fix_price: null,
+          exchange_allowed: null,
+          shipping_allowed: recommendedItem.shipping_allowed,
+        },
+        !this.mapRecommendedItemImages(recommendedItem.images) ? null : this.mapRecommendedItemImages(recommendedItem.images)[0],
+        this.mapRecommendedItemImages(recommendedItem.images),
+        recommendedItem.web_slug,
+        null,
+        null,
+        recommendedItemBodyResponse.recommended_type
+      );
+    });
+  }
+
+  private mapRecommendedItemImages(recommendedItemImages: RecommenderItemImage[]): Image[] {
+    if (recommendedItemImages?.length === 0 || !recommendedItemImages?.length) {
+      return null;
+    } else if (recommendedItemImages?.length === 1) {
+      return [this.mapRecommendedImage(recommendedItemImages[0])];
+    } else {
+      return recommendedItemImages.map((image: RecommenderItemImage) => {
+        return this.mapRecommendedImage(image);
+      });
+    }
+  }
+
+  private mapRecommendedImage(image: RecommenderItemImage): Image {
+    return {
+      id: this.uuidService.getUUID(),
+      original_width: image.original_width,
+      original_height: image.original_height,
+      average_hex_color: '',
+      urls_by_size: {
+        original: image.original,
+        small: image.small,
+        large: image.large,
+        medium: image.medium,
+        xlarge: image.xlarge,
+      },
+    };
   }
 }

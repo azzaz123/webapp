@@ -1,16 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ItemDetailLocation } from './constants/item-detail.interface';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
+import { Coordinate } from '@core/geolocation/address-response.interface';
 import { Item } from '@core/item/item';
 import { ItemFlags } from '@core/item/item-response.interface';
-import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
-import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
-import { EmailShare } from '@shared/social-share/interfaces/email-share.interface';
+import { ItemDetail } from '../interfaces/item-detail.interface';
 import { FacebookShare } from '@shared/social-share/interfaces/facebook-share.interface';
 import { TwitterShare } from '@shared/social-share/interfaces/twitter-share.interface';
+import { EmailShare } from '@shared/social-share/interfaces/email-share.interface';
 import { ItemDetailService } from '../core/services/item-detail.service';
-import { ItemDetail } from '../interfaces/item-detail.interface';
+import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
+import { ActivatedRoute } from '@angular/router';
+import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
+import { UserLocation } from '@core/user/user-response.interface';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -18,11 +21,15 @@ import { ItemDetail } from '../interfaces/item-detail.interface';
   styleUrls: ['./item-detail.component.scss'],
 })
 export class ItemDetailComponent implements OnInit {
+  public isApproximateLocation = false;
   public deviceType = DeviceType;
   public device: DeviceType;
   public itemFlags: ItemFlags;
   public images: string[];
   public itemDetail: ItemDetail;
+  public itemLocation: ItemDetailLocation;
+  public coordinates: Coordinate;
+  public locationSpecifications: string;
 
   public socialShare: {
     title: string;
@@ -45,17 +52,37 @@ export class ItemDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.device = this.deviceService.getDeviceType();
-
     this.initPage(this.route.snapshot.paramMap.get(PUBLIC_PATH_PARAMS.ID)); // TBD the url may change to match one more similar to production one
   }
 
+  public locationHaveCoordinates(): boolean {
+    return !!this.itemLocation?.latitude && !!this.itemLocation?.longitude;
+  }
+
   private initPage(itemId: string): void {
-    this.itemDetailService
-      .getItem(itemId)
-      .subscribe((itemDetail: ItemDetail) => {
-        this.itemDetail = itemDetail;
-        this.socialShareSetup(this.itemDetail.item);
-      });
+    this.itemDetailService.getItem(itemId).subscribe((itemDetail: ItemDetail) => {
+      this.itemDetail = itemDetail;
+      this.handleCoordinates();
+      this.socialShareSetup(this.itemDetail.item);
+    });
+  }
+
+  private handleCoordinates(): void {
+    const detailLocation: UserLocation = this.itemDetail.item?.location ? this.itemDetail.item.location : this.itemDetail.user.location;
+
+    this.itemLocation = {
+      zip: detailLocation.zip,
+      city: detailLocation.city,
+      latitude: detailLocation.approximated_latitude,
+      longitude: detailLocation.approximated_longitude,
+    };
+
+    this.approximatedLocation = detailLocation.approximated_location;
+    this.coordinates = {
+      latitude: this.itemLocation.latitude,
+      longitude: this.itemLocation.longitude,
+    };
+    this.handleLocationSpecifications();
   }
 
   private socialShareSetup(item: Item): void {
@@ -71,21 +98,21 @@ export class ItemDetailComponent implements OnInit {
     this.socialShare.email = {
       url: item.webLink,
       subject: item.title,
-      message:
-        $localize`:@@ItemDetailShareEmailText:This may interest you - ` +
-        item.description,
+      message: $localize`:@@ItemDetailShareEmailText:This may interest you - ` + item.description,
     };
 
-    this.socialMetaTagsService.insertTwitterMetaTags(
-      item.title,
-      item.description,
-      item.mainImage.urls_by_size.medium
-    );
-    this.socialMetaTagsService.insertFacebookMetaTags(
-      item.title,
-      item.description,
-      item.mainImage.urls_by_size.medium,
-      item.webLink
-    );
+    this.socialMetaTagsService.insertTwitterMetaTags(item.title, item.description, item.mainImage.urls_by_size.medium);
+    this.socialMetaTagsService.insertFacebookMetaTags(item.title, item.description, item.mainImage.urls_by_size.medium, item.webLink);
+  }
+
+  private handleLocationSpecifications(): void {
+    this.locationSpecifications =
+      !!this.itemLocation?.zip && !!this.itemLocation?.city
+        ? `${this.itemLocation.zip}, ${this.itemLocation.city}`
+        : $localize`:@@Undefined:Undefined`;
+  }
+
+  set approximatedLocation(isApproximated: boolean) {
+    this.isApproximateLocation = isApproximated;
   }
 }

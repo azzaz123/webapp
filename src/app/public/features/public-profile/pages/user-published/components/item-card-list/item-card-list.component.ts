@@ -11,7 +11,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 })
 export class ItemCardListComponent {
   @Input() items: Item[];
-  public showDescription = true;
+  @Input() showDescription = true;
 
   constructor(
     private deviceDetectionService: DeviceDetectorService,
@@ -22,8 +22,6 @@ export class ItemCardListComponent {
   }
 
   public toggleFavourite(item: Item): void {
-    this.checkSessionService.hasSession()
-      ? this.itemCardService.toggleFavourite(item)
-      : this.checkSessionService.checkSessionAction();
+    this.checkSessionService.hasSession() ? this.itemCardService.toggleFavourite(item) : this.checkSessionService.checkSessionAction();
   }
 }

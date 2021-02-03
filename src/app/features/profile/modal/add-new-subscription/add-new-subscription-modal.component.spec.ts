@@ -1,12 +1,7 @@
 import { DecimalPipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
@@ -20,16 +15,14 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
+import { STRIPE_ERROR } from '@core/stripe/stripe.interface';
 import { StripeService } from '@core/stripe/stripe.service';
 import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { ModalStatuses } from '@features/profile/core/modal.statuses.enum';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { PAYMENT_METHOD_DATA } from '@fixtures/payments.fixtures.spec';
-import {
-  FINANCIAL_CARD_OPTION,
-  STRIPE_CARD,
-} from '@fixtures/stripe.fixtures.spec';
+import { FINANCIAL_CARD_OPTION, STRIPE_CARD } from '@fixtures/stripe.fixtures.spec';
 import {
   MAPPED_SUBSCRIPTIONS,
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED,
@@ -38,11 +31,7 @@ import {
   SUBSCRIPTION_SUCCESS,
   TIER,
 } from '@fixtures/subscriptions.fixtures.spec';
-import {
-  NgbActiveModal,
-  NgbCarouselModule,
-  NgbModal,
-} from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbCarouselModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustomCurrencyPipe, DateUntilDayPipe } from '@shared/pipes';
 import { I18nService } from 'app/core/i18n/i18n.service';
 import { PaymentService } from 'app/core/payments/payment.service';
@@ -70,11 +59,7 @@ describe('AddNewSubscriptionModalComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [NgbCarouselModule],
-        declarations: [
-          AddNewSubscriptionModalComponent,
-          CustomCurrencyPipe,
-          DateUntilDayPipe,
-        ],
+        declarations: [AddNewSubscriptionModalComponent, CustomCurrencyPipe, DateUntilDayPipe],
         providers: [
           DecimalPipe,
           EventService,
@@ -246,16 +231,20 @@ describe('AddNewSubscriptionModalComponent', () => {
 
     it('should requestNewPayment if card is not attached', fakeAsync(() => {
       spyOn(stripeService, 'addNewCard').and.returnValue(
-        throwError('bad credit card')
+        throwError(
+          new HttpErrorResponse({
+            error: [{ error_code: STRIPE_ERROR.card_declined, message: '' }],
+          })
+        )
       );
       spyOn(errorsService, 'i18nError');
 
       component.addSubscription(PAYMENT_METHOD_DATA);
+      tick();
 
       expect(component.loading).toBe(false);
-      expect(component.isPaymentError).toBe(true);
-      expect(component.action).toBe('clear');
-      expect(errorsService.i18nError).toHaveBeenCalledWith('paymentFailed');
+      expect(component.paymentError).toBe(STRIPE_ERROR.card_declined);
+      expect(errorsService.i18nError).toHaveBeenCalledWith('paymentFailed', '', 'paymentFailedToastTitle');
     }));
 
     it('should call addSubscriptionFromSavedCard if card is attached and it is no retry', fakeAsync(() => {
@@ -272,17 +261,13 @@ describe('AddNewSubscriptionModalComponent', () => {
 
   describe('addSubscriptionFromSavedCard', () => {
     beforeEach(fakeAsync(() => {
-      spyOn(subscriptionsService, 'newSubscription').and.returnValue(
-        of({ status: 202 })
-      );
+      spyOn(subscriptionsService, 'newSubscription').and.returnValue(of({ status: 202 }));
 
       component.isRetryInvoice = false;
     }));
 
     it('should update loading to false', fakeAsync(() => {
-      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(
-        of(SUBSCRIPTION_SUCCESS)
-      );
+      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(of(SUBSCRIPTION_SUCCESS));
 
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
       tick();
@@ -298,23 +283,17 @@ describe('AddNewSubscriptionModalComponent', () => {
     }));
 
     it('should call checkNewSubscriptionStatus if response is 202', fakeAsync(() => {
-      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(
-        of(SUBSCRIPTION_SUCCESS)
-      );
+      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(of(SUBSCRIPTION_SUCCESS));
 
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
       tick();
 
-      expect(
-        subscriptionsService.checkNewSubscriptionStatus
-      ).toHaveBeenCalled();
+      expect(subscriptionsService.checkNewSubscriptionStatus).toHaveBeenCalled();
     }));
 
     it('should close the actual modal if response status is succeeded', fakeAsync(() => {
       spyOn(component, 'close');
-      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(
-        of(SUBSCRIPTION_SUCCESS)
-      );
+      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(of(SUBSCRIPTION_SUCCESS));
 
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
       tick();
@@ -325,49 +304,36 @@ describe('AddNewSubscriptionModalComponent', () => {
 
     it('should show success modal if response status is succeeded', fakeAsync(() => {
       spyOn(modalService, 'open').and.callThrough();
-      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(
-        of(SUBSCRIPTION_SUCCESS)
-      );
+      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(of(SUBSCRIPTION_SUCCESS));
 
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
       tick();
 
       expect(component.isRetryInvoice).toBe(false);
-      expect(modalService.open).toHaveBeenCalledWith(
-        PaymentSuccessModalComponent,
-        {
-          windowClass: 'success',
-        }
-      );
+      expect(modalService.open).toHaveBeenCalledWith(PaymentSuccessModalComponent, {
+        windowClass: 'success',
+      });
     }));
 
     it('should call actionPayment if response status is requires_action', fakeAsync(() => {
       spyOn(stripeService, 'actionPayment').and.callThrough();
-      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(
-        of(SUBSCRIPTION_REQUIRES_ACTION)
-      );
+      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(of(SUBSCRIPTION_REQUIRES_ACTION));
 
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
       tick();
 
-      expect(stripeService.actionPayment).toHaveBeenCalledWith(
-        SUBSCRIPTION_REQUIRES_ACTION.payment_secret_key
-      );
+      expect(stripeService.actionPayment).toHaveBeenCalledWith(SUBSCRIPTION_REQUIRES_ACTION.payment_secret_key);
     }));
 
     it('should call requestNewPayment if response status is requires_payment_method', fakeAsync(() => {
       spyOn(errorsService, 'i18nError');
-      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(
-        of(SUBSCRIPTION_REQUIRES_PAYMENT)
-      );
+      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(of(SUBSCRIPTION_REQUIRES_PAYMENT));
 
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
       tick();
 
       expect(component.loading).toBe(false);
-      expect(component.isPaymentError).toBe(true);
-      expect(component.action).toBe('clear');
-      expect(errorsService.i18nError).toHaveBeenCalledWith('paymentFailed');
+      expect(errorsService.i18nError).toHaveBeenCalledWith('paymentFailedUnknown', '', 'paymentFailedToastTitle');
     }));
   });
 
@@ -421,9 +387,7 @@ describe('AddNewSubscriptionModalComponent', () => {
       expect(component.showCard).toBe(false);
       expect(component.savedCard).toBe(true);
       expect(component.selectedCard).toBe(true);
-      expect(component.setCardInfo).toHaveBeenCalledWith(
-        FINANCIAL_CARD_OPTION[0]
-      );
+      expect(component.setCardInfo).toHaveBeenCalledWith(FINANCIAL_CARD_OPTION[0]);
     });
   });
 
@@ -442,8 +406,7 @@ describe('AddNewSubscriptionModalComponent', () => {
         name: ANALYTICS_EVENT_NAMES.ClickSubscriptionSubscribe,
         eventType: ANALYTIC_EVENT_TYPES.Navigation,
         attributes: {
-          subscription: component.subscription
-            .category_id as SUBSCRIPTION_CATEGORIES,
+          subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
           screenId: SCREEN_IDS.Subscription,
           tier: component.selectedTier.id,
           price: component.selectedTier.price,
@@ -469,8 +432,7 @@ describe('AddNewSubscriptionModalComponent', () => {
             name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
             eventType: ANALYTIC_EVENT_TYPES.Transaction,
             attributes: {
-              subscription: component.subscription
-                .category_id as SUBSCRIPTION_CATEGORIES,
+              subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
               tier: component.selectedTier.id,
               screenId: SCREEN_IDS.ProfileSubscription,
               isNewCard: true,
@@ -483,9 +445,7 @@ describe('AddNewSubscriptionModalComponent', () => {
           component.trackClickPay(true);
 
           expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
-          expect(analyticsService.trackEvent).toHaveBeenCalledWith(
-            expectedEvent
-          );
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
         });
       });
 
@@ -497,8 +457,7 @@ describe('AddNewSubscriptionModalComponent', () => {
             name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
             eventType: ANALYTIC_EVENT_TYPES.Transaction,
             attributes: {
-              subscription: component.subscription
-                .category_id as SUBSCRIPTION_CATEGORIES,
+              subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
               tier: component.selectedTier.id,
               screenId: SCREEN_IDS.ProfileSubscription,
               isNewCard: true,
@@ -511,9 +470,7 @@ describe('AddNewSubscriptionModalComponent', () => {
           component.trackClickPay(true);
 
           expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
-          expect(analyticsService.trackEvent).toHaveBeenCalledWith(
-            expectedEvent
-          );
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
         });
       });
     });
@@ -527,8 +484,7 @@ describe('AddNewSubscriptionModalComponent', () => {
             name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
             eventType: ANALYTIC_EVENT_TYPES.Transaction,
             attributes: {
-              subscription: component.subscription
-                .category_id as SUBSCRIPTION_CATEGORIES,
+              subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
               tier: component.selectedTier.id,
               screenId: SCREEN_IDS.ProfileSubscription,
               isNewCard: true,
@@ -542,9 +498,7 @@ describe('AddNewSubscriptionModalComponent', () => {
           component.trackClickPay(false);
 
           expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
-          expect(analyticsService.trackEvent).toHaveBeenCalledWith(
-            expectedEvent
-          );
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
         });
       });
 
@@ -556,8 +510,7 @@ describe('AddNewSubscriptionModalComponent', () => {
             name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
             eventType: ANALYTIC_EVENT_TYPES.Transaction,
             attributes: {
-              subscription: component.subscription
-                .category_id as SUBSCRIPTION_CATEGORIES,
+              subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
               tier: component.selectedTier.id,
               screenId: SCREEN_IDS.ProfileSubscription,
               isNewCard: true,
@@ -571,9 +524,7 @@ describe('AddNewSubscriptionModalComponent', () => {
           component.trackClickPay(false);
 
           expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
-          expect(analyticsService.trackEvent).toHaveBeenCalledWith(
-            expectedEvent
-          );
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
         });
       });
     });
@@ -584,9 +535,7 @@ describe('AddNewSubscriptionModalComponent', () => {
       component.subscription = MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED;
       fixture.detectChanges();
 
-      const carousel: HTMLElement = fixture.elementRef.nativeElement.querySelector(
-        'ngb-carousel'
-      );
+      const carousel: HTMLElement = fixture.elementRef.nativeElement.querySelector('ngb-carousel');
 
       expect(carousel.className.includes('single')).toBe(true);
     });
@@ -595,18 +544,10 @@ describe('AddNewSubscriptionModalComponent', () => {
       component.subscription = MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED;
       fixture.detectChanges();
 
-      const firstStepElement: HTMLElement = fixture.elementRef.nativeElement.querySelector(
-        '.step-1'
-      );
-      const carouselIndicatorsElement: HTMLElement = fixture.elementRef.nativeElement.querySelector(
-        '.carousel-indicators'
-      );
-      const carouselIndicatorsElementStyle = getComputedStyle(
-        carouselIndicatorsElement
-      );
-      const changeButton: HTMLElement = fixture.elementRef.nativeElement.querySelector(
-        '.AddNewSubscription__listing-limit-payment-edit'
-      );
+      const firstStepElement: HTMLElement = fixture.elementRef.nativeElement.querySelector('.step-1');
+      const carouselIndicatorsElement: HTMLElement = fixture.elementRef.nativeElement.querySelector('.carousel-indicators');
+      const carouselIndicatorsElementStyle = getComputedStyle(carouselIndicatorsElement);
+      const changeButton: HTMLElement = fixture.elementRef.nativeElement.querySelector('.AddNewSubscription__listing-limit-payment-edit');
 
       expect(firstStepElement).toBeNull();
       expect(carouselIndicatorsElementStyle.display).toBe('none');
@@ -640,9 +581,7 @@ describe('AddNewSubscriptionModalComponent', () => {
 
   describe('User selects invoice option', () => {
     it('should set the selected invoice option', () => {
-      const removeFavoriteButton = fixture.debugElement.nativeElement.querySelector(
-        'tsl-dropdown'
-      );
+      const removeFavoriteButton = fixture.debugElement.nativeElement.querySelector('tsl-dropdown');
 
       removeFavoriteButton.click();
 
@@ -652,9 +591,7 @@ describe('AddNewSubscriptionModalComponent', () => {
 
   describe('User saves the invoice form', () => {
     it('should set the carousel in step 3', () => {
-      const stepThreeElement: HTMLElement = fixture.elementRef.nativeElement.querySelector(
-        '.step-3'
-      );
+      const stepThreeElement: HTMLElement = fixture.elementRef.nativeElement.querySelector('.step-3');
 
       expect(stepThreeElement).toBeTruthy();
     });
@@ -674,9 +611,7 @@ describe('AddNewSubscriptionModalComponent', () => {
     it('should emit the formSubmited event', () => {
       spyOn(eventService, 'emit').and.callThrough();
 
-      const continueToPaymentButton = fixture.debugElement.nativeElement.querySelector(
-        '#AddNewSubscription__ButtonActions-payment'
-      );
+      const continueToPaymentButton = fixture.debugElement.nativeElement.querySelector('#AddNewSubscription__ButtonActions-payment');
       continueToPaymentButton.click();
 
       expect(eventService.emit).toHaveBeenCalledWith('formSubmited');
@@ -685,9 +620,7 @@ describe('AddNewSubscriptionModalComponent', () => {
 
   describe('User selects continue to Invoice', () => {
     it('should go to the invoice slider', () => {
-      const invoiceStepElement: HTMLElement = fixture.elementRef.nativeElement.querySelector(
-        '.step-2b'
-      );
+      const invoiceStepElement: HTMLElement = fixture.elementRef.nativeElement.querySelector('.step-2b');
 
       component.continueToInvoice();
 

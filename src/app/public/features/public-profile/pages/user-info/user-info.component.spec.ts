@@ -2,18 +2,13 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
-import { DeviceDetectorService } from 'ngx-device-detector';
 import { of } from 'rxjs';
 import { PublicProfileService } from '../../core/services/public-profile.service';
-import { MAP_REDIRECTION } from '../../public-profile-routing-constants';
 
 import { UserInfoComponent } from './user-info.component';
 
 describe('UserInfoComponent', () => {
-  let deviceDetectorService: DeviceDetectorService;
-
   const mapTag = 'tsl-here-maps';
   const containerClass = '.UserInfo';
   const fakeMapClass = '.UserInfo__fake-map';
@@ -32,20 +27,9 @@ describe('UserInfoComponent', () => {
           provide: PublicProfileService,
           useValue: {
             user: MOCK_USER,
-          },
-        },
-        {
-          provide: DeviceDetectorService,
-          useValue: {
-            isMobile() {
-              return false;
+            getExtraInfo() {
+              return of(MOCK_USER.extraInfo);
             },
-          },
-        },
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            fragment: of(MAP_REDIRECTION),
           },
         },
       ],
@@ -56,7 +40,6 @@ describe('UserInfoComponent', () => {
     fixture = TestBed.createComponent(UserInfoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    deviceDetectorService = TestBed.inject(DeviceDetectorService);
   });
 
   it('should create', () => {
@@ -87,9 +70,7 @@ describe('UserInfoComponent', () => {
 
         fixture.detectChanges();
         const mapComponent = fixture.debugElement.query(By.css(mapTag));
-        const fakeMapComponent = fixture.debugElement.query(
-          By.css(fakeMapClass)
-        );
+        const fakeMapComponent = fixture.debugElement.query(By.css(fakeMapClass));
 
         expect(mapComponent).toBeFalsy();
         expect(fakeMapComponent).toBeTruthy();
@@ -98,11 +79,8 @@ describe('UserInfoComponent', () => {
 
     describe('when the user have coordinates', () => {
       it('should show the map', () => {
-        const mapComponent = fixture.debugElement.query(By.css(mapTag))
-          .nativeElement;
-        const fakeMapComponent = fixture.debugElement.query(
-          By.css(fakeMapClass)
-        );
+        const mapComponent = fixture.debugElement.query(By.css(mapTag)).nativeElement;
+        const fakeMapComponent = fixture.debugElement.query(By.css(fakeMapClass));
 
         expect(mapComponent).toBeTruthy();
         expect(fakeMapComponent).toBeFalsy();
@@ -111,9 +89,11 @@ describe('UserInfoComponent', () => {
 
     describe('when the information is verified...', () => {
       beforeEach(() => {
-        component.user.validations.email = true;
-        component.user.validations.facebook = true;
-        component.user.validations.mobile = true;
+        component.userValidations = {
+          email: true,
+          facebook: true,
+          mobile: true,
+        } as any;
       });
 
       it('should NOT apply the disabled style', () => {
@@ -129,9 +109,11 @@ describe('UserInfoComponent', () => {
 
     describe('when the information is NOT verified...', () => {
       beforeEach(() => {
-        component.user.validations.email = false;
-        component.user.validations.facebook = false;
-        component.user.validations.mobile = false;
+        component.userValidations = {
+          email: false,
+          facebook: false,
+          mobile: false,
+        } as any;
       });
 
       it('should apply the disabled style', () => {
@@ -142,28 +124,6 @@ describe('UserInfoComponent', () => {
         mediaDivs.forEach((x) => {
           expect(x.nativeElement.classList).toContain('disabled');
         });
-      });
-    });
-
-    describe('when we access from the header', () => {
-      it('should scroll if the device is a mobile', () => {
-        spyOn(deviceDetectorService, 'isMobile').and.returnValue(true);
-        spyOn(component.mapView.nativeElement, 'scrollIntoView');
-
-        fixture.detectChanges();
-        component.ngAfterViewInit();
-
-        expect(
-          component.mapView.nativeElement.scrollIntoView
-        ).toHaveBeenCalledWith({ behavior: 'smooth' });
-      });
-
-      it('should NOT scroll if the device is NOT a mobile', () => {
-        spyOn(component.mapView.nativeElement, 'scrollIntoView');
-
-        expect(
-          component.mapView.nativeElement.scrollIntoView
-        ).not.toHaveBeenCalled();
       });
     });
   });
