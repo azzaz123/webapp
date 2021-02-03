@@ -16,6 +16,7 @@ import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { UserLocation } from '@core/user/user-response.interface';
 import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
 import { finalize } from 'rxjs/operators';
+import { CATEGORY_IDS } from '@core/category/category-ids';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -122,13 +123,21 @@ export class ItemDetailComponent implements OnInit {
   }
 
   private loadRecommendedItems(id: string): void {
-    this.loading = true;
-    this.itemDetailService
-      .getRecommendedItems(id)
-      .pipe(finalize(() => (this.loading = false)))
-      .subscribe((recommendedItems: RecommendedItemsBodyResponse) => {
-        this.recommendedItems = recommendedItems;
-      });
+    if (this.showItemRecommendations()) {
+      this.loading = true;
+      this.itemDetailService
+        .getRecommendedItems(id)
+        .pipe(finalize(() => (this.loading = false)))
+        .subscribe((recommendedItems: RecommendedItemsBodyResponse) => {
+          this.recommendedItems = recommendedItems;
+        });
+    }
+  }
+
+  private showItemRecommendations(): boolean {
+    const CATEGORIES_WITH_RECOMMENDATIONS = [CATEGORY_IDS.CAR, CATEGORY_IDS.FASHION_ACCESSORIES];
+
+    return CATEGORIES_WITH_RECOMMENDATIONS.includes(this.itemDetail?.item?.categoryId);
   }
 
   set approximatedLocation(isApproximated: boolean) {

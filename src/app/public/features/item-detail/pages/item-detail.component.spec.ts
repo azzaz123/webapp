@@ -1,20 +1,19 @@
 import { DecimalPipe } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  CUSTOM_ELEMENTS_SCHEMA,
-  DebugElement,
-} from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
-import { MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
 import { CustomCurrencyPipe } from '@shared/pipes';
 import {
   MOCK_ITEM,
   MOCK_ITEM_WITHOUT_LOCATION,
+  MOCK_ITEM_GBP,
+  MOCK_ITEM_FASHION,
+  MOCK_ITEM_CELLPHONES,
+  MOCK_ITEM_CAR,
 } from '@fixtures/item.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
@@ -30,16 +29,21 @@ import { CookieService } from 'ngx-cookie';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ItemDetailService } from '../core/services/item-detail.service';
 import { ItemDetailComponent } from './item-detail.component';
+import {
+  RECOMMENDED_ITEMS_MOCK,
+  EMPTY_RECOMMENDED_ITEMS_MOCK,
+} from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
 
 describe('ItemDetailComponent', () => {
   const topSkyTag = 'tsl-top-sky';
   const sideSkyTag = 'tsl-side-sky';
-  const itemPriceClass = '.ItemDetail__price';
+  const mapTag = 'tsl-here-maps';
+  const recommendedItemsTag = 'tsl-recommended-items';
   const currencies = {
     EUR: '€',
     GBP: '£',
   };
-  const mapTag = 'tsl-here-maps';
+  const itemPriceClass = '.ItemDetail__price';
   const fallbackMapClass = '.ItemDetail__fakeMap';
   const locationClass = '.ItemDetail__location';
   const itemId = '123';
@@ -51,6 +55,7 @@ describe('ItemDetailComponent', () => {
   let component: ItemDetailComponent;
   let fixture: ComponentFixture<ItemDetailComponent>;
   let deviceService: DeviceService;
+  let itemDetailService: ItemDetailService;
   let decimalPipe: DecimalPipe;
   let de: DebugElement;
   let el: HTMLElement;
@@ -76,7 +81,6 @@ describe('ItemDetailComponent', () => {
             },
           },
         },
-        ItemDetailService,
         ItemApiService,
         PublicUserApiService,
         RecommenderApiService,
@@ -85,6 +89,9 @@ describe('ItemDetailComponent', () => {
           useValue: {
             getItem: () => {
               return of(itemDetail);
+            },
+            getRecommendedItems: () => {
+              return of(RECOMMENDED_ITEMS_MOCK);
             },
           },
         },
@@ -100,6 +107,7 @@ describe('ItemDetailComponent', () => {
     component = fixture.componentInstance;
     deviceService = TestBed.inject(DeviceService);
     decimalPipe = TestBed.inject(DecimalPipe);
+    itemDetailService = TestBed.inject(ItemDetailService);
     de = fixture.debugElement;
     el = de.nativeElement;
     fixture.detectChanges();
@@ -156,9 +164,7 @@ describe('ItemDetailComponent', () => {
       const map = fixture.debugElement.query(By.css(mapTag));
       const fallbackMap = fixture.debugElement.query(By.css(fallbackMapClass));
 
-      expect(el.querySelector(locationClass).innerHTML).toContain(
-        component.locationSpecifications
-      );
+      expect(el.querySelector(locationClass).innerHTML).toContain(component.locationSpecifications);
       expect(component.locationHaveCoordinates()).toBe(true);
       expect(map).toBeTruthy();
       expect(fallbackMap).toBeFalsy();
@@ -213,9 +219,7 @@ describe('ItemDetailComponent', () => {
     it('should have an undefined location', () => {
       expect(component.itemLocation).toBe(null);
       expect(component.locationHaveCoordinates()).toBe(false);
-      expect(el.querySelector(locationClass).innerHTML).toContain(
-        component.locationSpecifications
-      );
+      expect(el.querySelector(locationClass).innerHTML).toContain(component.locationSpecifications);
     });
 
     it('should show the fallback map', () => {
@@ -227,6 +231,7 @@ describe('ItemDetailComponent', () => {
       expect(fallbackMap).toBeTruthy();
     });
   });
+
   describe('when component inits', () => {
     it('should ask for item data', () => {
       component.ngOnInit();
@@ -243,9 +248,7 @@ describe('ItemDetailComponent', () => {
 
       const socialShareElement = el.querySelector(socialShareSelector);
       Object.keys(component.socialShare).forEach((socialShareKey: string) => {
-        expect(socialShareElement[socialShareKey]).toEqual(
-          component.socialShare[socialShareKey]
-        );
+        expect(socialShareElement[socialShareKey]).toEqual(component.socialShare[socialShareKey]);
       });
     });
   });
@@ -256,15 +259,11 @@ describe('ItemDetailComponent', () => {
     });
 
     it('should print their title', () => {
-      expect(el.querySelector('.ItemDetail__title').innerHTML).toEqual(
-        component.itemDetail.item.title
-      );
+      expect(el.querySelector('.ItemDetail__title').innerHTML).toEqual(component.itemDetail.item.title);
     });
 
     it('should print their description', () => {
-      expect(el.querySelector('.ItemDetail__description').innerHTML).toEqual(
-        component.itemDetail.item.description
-      );
+      expect(el.querySelector('.ItemDetail__description').innerHTML).toEqual(component.itemDetail.item.description);
     });
 
     describe('when the favorites and views are NOT defined...', () => {
@@ -282,23 +281,17 @@ describe('ItemDetailComponent', () => {
       });
 
       it('should print their favorites stat', () => {
-        expect(el.querySelector('#favorites').innerHTML).toEqual(
-          component.itemDetail.item.favorites.toString()
-        );
+        expect(el.querySelector('#favorites').innerHTML).toEqual(component.itemDetail.item.favorites.toString());
       });
       it('should print their views stat', () => {
-        expect(el.querySelector('#views').innerHTML).toEqual(
-          component.itemDetail.item.views.toString()
-        );
+        expect(el.querySelector('#views').innerHTML).toEqual(component.itemDetail.item.views.toString());
       });
     });
 
     describe('when the item currency code is in euros...', () => {
       it('should show the price and the euros symbol', () => {
         expect(el.querySelector(itemPriceClass).innerHTML).toEqual(
-          `${decimalPipe.transform(component.itemDetail.item.salePrice)}${
-            currencies.EUR
-          }`
+          `${decimalPipe.transform(component.itemDetail.item.salePrice)}${currencies.EUR}`
         );
       });
     });
@@ -310,11 +303,73 @@ describe('ItemDetailComponent', () => {
       });
       it('should show the price and the dollar symbol', () => {
         expect(el.querySelector(itemPriceClass).innerHTML).toEqual(
-          `${currencies.GBP}${decimalPipe.transform(
-            component.itemDetail.item.salePrice
-          )}`
+          `${currencies.GBP}${decimalPipe.transform(component.itemDetail.item.salePrice)}`
         );
       });
     });
+
+    describe('and the item is a category with recommendation...', () => {
+      beforeEach(() => {
+        resetVariables();
+      });
+      describe('when is a fashion accesory...', () => {
+        beforeEach(() => {
+          component.itemDetail.item = MOCK_ITEM_FASHION;
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+        it('should ask for their recommended items', () => {
+          expect(component.recommendedItems).toBe(RECOMMENDED_ITEMS_MOCK);
+        });
+        it('should show the recommended items', () => {
+          expect(fixture.debugElement.query(By.css(recommendedItemsTag))).toBeTruthy();
+        });
+      });
+
+      describe('when is a car...', () => {
+        beforeEach(() => {
+          component.itemDetail.item = MOCK_ITEM_CAR;
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+        it('should ask for their recommended items', () => {
+          expect(component.recommendedItems).toBe(RECOMMENDED_ITEMS_MOCK);
+        });
+        it('should show the recommended items', () => {
+          expect(fixture.debugElement.query(By.css(recommendedItemsTag))).toBeTruthy();
+        });
+      });
+
+      describe('but NOT have recommended items...', () => {
+        beforeEach(() => {
+          spyOn(itemDetailService, 'getRecommendedItems').and.returnValue(EMPTY_RECOMMENDED_ITEMS_MOCK);
+          component.itemDetail.item = MOCK_ITEM_CAR;
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+        it('should NOT show the recommended items', () => {
+          expect(fixture.debugElement.query(By.css(recommendedItemsTag))).toBeFalsy();
+        });
+      });
+    });
+
+    describe('and the item is NOT a fashion accesories or a car', () => {
+      beforeEach(() => {
+        resetVariables();
+        component.itemDetail.item = MOCK_ITEM_CELLPHONES;
+        component.ngOnInit();
+        fixture.detectChanges();
+      });
+      it('should NOT ask for their recommended items', () => {
+        expect(component.recommendedItems).toBe(null);
+      });
+      it('should NOT show the recommended items', () => {
+        expect(fixture.debugElement.query(By.css(recommendedItemsTag))).toBeFalsy();
+      });
+    });
   });
+
+  function resetVariables(): void {
+    component.recommendedItems = null;
+  }
 });
