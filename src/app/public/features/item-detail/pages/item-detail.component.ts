@@ -49,8 +49,8 @@ export class ItemDetailComponent implements OnInit {
   };
 
   constructor(
-    public itemDetailService: ItemDetailService,
     private deviceService: DeviceService,
+    private itemDetailService: ItemDetailService,
     private socialMetaTagsService: SocialMetaTagService,
     private route: ActivatedRoute
   ) {}
@@ -78,7 +78,7 @@ export class ItemDetailComponent implements OnInit {
   }
 
   private handleCoordinates(): void {
-    const detailLocation: UserLocation = this.itemDetail.item?.location ? this.itemDetail.item.location : this.itemDetail.user.location;
+    const detailLocation: UserLocation = this.itemDetail.item?.location || this.itemDetail.user?.location;
 
     this.itemLocation = {
       zip: detailLocation.zip,
