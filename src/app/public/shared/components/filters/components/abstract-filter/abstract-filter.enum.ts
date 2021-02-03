@@ -1,0 +1,4 @@
+export enum FILTER_VARIANT {
+  DROPDOWN,
+  CONTENT,
+}

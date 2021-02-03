@@ -1,0 +1,9 @@
+<tsl-bubble *ngIf="isDropdown; else template" (onClick)="handleBubbleClick(template)">{{label}}</tsl-bubble>
+<ng-template #template>
+  <div class="modal-body">
+    <div #content>
+      <ng-content></ng-content>
+    </div>
+    <span *ngIf="content.children.length === 0">Please, avoid using abstract filter directly, use one of the extensions or create your own</span>
+  </div>
+</ng-template>

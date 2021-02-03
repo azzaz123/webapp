@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AbstractFilterComponent } from './abstract-filter/abstract-filter.component';
+import { AbstractFilterComponent } from './components/abstract-filter/abstract-filter.component';
+import { BubbleModule } from '@public/shared/components/bubble/bubble.module';
 
 @NgModule({
   declarations: [AbstractFilterComponent],
-  imports: [CommonModule],
+  imports: [CommonModule, BubbleModule],
 })
 export class FiltersModule {}
