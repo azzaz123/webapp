@@ -37,8 +37,6 @@
                 (click)="checkout()"
                 [loading]="loading"
                 [disabled]="!selectedCard"
-                [tslTrackEvent]="hasSavedCard ? 'PURCHASE_CONFIRM_PACK_CREDITS' : 'PURCHASE_CONFIRM_PACK_CREDITS_NO_CARD'"
-                [params]="getTrackingAttributes()"
     >
       <div class="secure-payment-button">
         <span i18n>Buy now</span>

@@ -1,9 +1,8 @@
-<a class="card" href="{{itemUrl}}" (click)="prevent($event)" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}"
-   [params]="{id: item.id, title: item.title, category_id: item.categoryId, sale_price: item.salePrice}">
+<a class="card" href="{{itemUrl}}" (click)="prevent($event)" target="_blank">
   <div class="image-overlay">
     <img class="card-img-top" src="{{item.mainImage?.urls_by_size.large.replace('http://', 'https://')}}"
          onError="this.src='/assets/images/fake-item.png'"/>
-    <a class="btn btn-edit" target='_blank' (click)='$event.stopPropagation()' [routerLink]="['/catalog/edit/', item.id]" tslTrackEvent="CHAT_EDITITEM" [params]="{item_id: item.id}"
+    <a class="btn btn-edit" target='_blank' (click)='$event.stopPropagation()' [routerLink]="['/catalog/edit/', item.id]"
       *ngIf='canEdit()'>
       <tsl-svg-icon src="/assets/icons/btn-edit.svg"></tsl-svg-icon>
     </a>
