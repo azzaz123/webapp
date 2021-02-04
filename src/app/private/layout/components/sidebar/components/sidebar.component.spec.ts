@@ -1,12 +1,6 @@
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 /* tslint:disable:no-unused-variable */
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Route, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -20,12 +14,7 @@ import { UserService } from '@core/user/user.service';
 import { SidebarComponent } from './sidebar.component';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import {
-  AnalyticsPageView,
-  ANALYTICS_EVENT_NAMES,
-  SCREEN_IDS,
-  ViewOwnSaleItems,
-} from '@core/analytics/analytics-constants';
+import { AnalyticsPageView, ANALYTICS_EVENT_NAMES, SCREEN_IDS, ViewOwnSaleItems } from '@core/analytics/analytics-constants';
 
 @Component({
   template: '',
@@ -60,15 +49,8 @@ describe('SidebarComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [
-          SidebarComponent,
-          RouterLinkDirectiveStub,
-          MockComponent,
-        ],
-        imports: [
-          NgxPermissionsModule.forRoot(),
-          RouterTestingModule.withRoutes(routes),
-        ],
+        declarations: [SidebarComponent, RouterLinkDirectiveStub, MockComponent],
+        imports: [NgxPermissionsModule.forRoot(), RouterTestingModule.withRoutes(routes)],
         providers: [
           {
             provide: UserService,
@@ -132,9 +114,7 @@ describe('SidebarComponent', () => {
   describe('Sidebar icons', () => {
     it('should be shown profile icon as "active" when is in a profile section', () => {
       component.isProfile = true;
-      const element: HTMLElement = fixture.nativeElement.querySelector(
-        '#qa-sidebar-profile'
-      );
+      const element: HTMLElement = fixture.nativeElement.querySelector('#qa-sidebar-profile');
 
       component.ngOnInit();
       fixture.detectChanges();
@@ -150,12 +130,7 @@ describe('SidebarComponent', () => {
         tick();
         var activeLinks = fixture.debugElement
           .queryAll(By.css('.active'))
-          .map(
-            (element) =>
-              element.injector.get(
-                RouterLinkDirectiveStub
-              ) as RouterLinkDirectiveStub
-          );
+          .map((element) => element.injector.get(RouterLinkDirectiveStub) as RouterLinkDirectiveStub);
 
         expect(activeLinks.length).toBe(1);
         expect(activeLinks[0].linkParams).toEqual(['/profile']);
@@ -164,9 +139,7 @@ describe('SidebarComponent', () => {
 
     it('should be shown catalog icon as "active" when it is in a product section', () => {
       component.isProducts = true;
-      const element: HTMLElement = fixture.nativeElement.querySelector(
-        '#qa-sidebar-catalog'
-      );
+      const element: HTMLElement = fixture.nativeElement.querySelector('#qa-sidebar-catalog');
 
       component.ngOnInit();
       fixture.detectChanges();
@@ -181,12 +154,7 @@ describe('SidebarComponent', () => {
         tick();
         var activeLinks = fixture.debugElement
           .queryAll(By.css('.active'))
-          .map(
-            (element) =>
-              element.injector.get(
-                RouterLinkDirectiveStub
-              ) as RouterLinkDirectiveStub
-          );
+          .map((element) => element.injector.get(RouterLinkDirectiveStub) as RouterLinkDirectiveStub);
 
         expect(activeLinks.length).toBe(1);
         expect(activeLinks[0].linkParams).toEqual(['/chat']);
@@ -196,9 +164,7 @@ describe('SidebarComponent', () => {
     describe('when close subscription slot', () => {
       it('should track event if not cardealer', () => {
         component.isProfessional = false;
-        const element: HTMLElement = fixture.nativeElement.querySelector(
-          '#qa-sidebar-catalog'
-        );
+        const element: HTMLElement = fixture.nativeElement.querySelector('#qa-sidebar-catalog');
         const expectedEvent: AnalyticsPageView<ViewOwnSaleItems> = {
           name: ANALYTICS_EVENT_NAMES.ViewOwnSaleItems,
           attributes: {
@@ -210,15 +176,11 @@ describe('SidebarComponent', () => {
         element.click();
 
         expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
-        expect(analyticsService.trackPageView).toHaveBeenCalledWith(
-          expectedEvent
-        );
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
       });
       it('should not track event if cardealer', () => {
         component.isProfessional = true;
-        const element: HTMLElement = fixture.nativeElement.querySelector(
-          '#qa-sidebar-catalog'
-        );
+        const element: HTMLElement = fixture.nativeElement.querySelector('#qa-sidebar-catalog');
 
         element.click();
 

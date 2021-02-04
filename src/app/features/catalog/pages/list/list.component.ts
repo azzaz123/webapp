@@ -13,19 +13,12 @@ import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { Item } from '@core/item/item';
-import {
-  CheapestProducts,
-  ItemBulkResponse,
-  ItemsData,
-} from '@core/item/item-response.interface';
+import { CheapestProducts, ItemBulkResponse, ItemsData } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
 import { SubscriptionSlot } from '@core/subscriptions/subscriptions.interface';
-import {
-  SubscriptionsService,
-  SUBSCRIPTION_TYPES,
-} from '@core/subscriptions/subscriptions.service';
+import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
 import { TrackingService } from '@core/tracking/tracking.service';
 import { User } from '@core/user/user';
 import { Counters, UserStats } from '@core/user/user-stats.interface';
@@ -43,10 +36,7 @@ import { find, findIndex } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { takeWhile } from 'rxjs/operators';
 import { BumpTutorialComponent } from '../../components/bump-tutorial/bump-tutorial.component';
-import {
-  OrderEvent,
-  STATUS,
-} from '../../components/selected-items/selected-product.interface';
+import { OrderEvent, STATUS } from '../../components/selected-items/selected-product.interface';
 import { ItemChangeEvent } from '../../core/item-change.interface';
 import { BumpConfirmationModalComponent } from '../../modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { BuyProductModalComponent } from '../../modals/buy-product-modal/buy-product-modal.component';
@@ -55,12 +45,7 @@ import { ReactivateConfirmationModalComponent } from '../../modals/reactivate-co
 
 export const SORTS = ['date_desc', 'date_asc', 'price_desc', 'price_asc'];
 
-const TRANSACTIONS_WITH_CREDITS = [
-  'bumpWithCredits',
-  'urgentWithCredits',
-  'reactivateWithCredits',
-  'purchaseListingFeeWithCredits',
-];
+const TRANSACTIONS_WITH_CREDITS = ['bumpWithCredits', 'urgentWithCredits', 'reactivateWithCredits', 'purchaseListingFeeWithCredits'];
 
 @Component({
   selector: 'tsl-list',
@@ -158,11 +143,9 @@ export class ListComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe(() => {
-        this.selectedItems = this.itemService.selectedItems.map(
-          (id: string) => {
-            return <Item>find(this.items, { id: id });
-          }
-        );
+        this.selectedItems = this.itemService.selectedItems.map((id: string) => {
+          return <Item>find(this.items, { id: id });
+        });
       });
 
     setTimeout(() => {
@@ -219,12 +202,8 @@ export class ListComponent implements OnInit, OnDestroy {
             backdrop: 'static',
           });
           modalRef.componentInstance.code = params.code;
-          modalRef.componentInstance.creditUsed = TRANSACTIONS_WITH_CREDITS.includes(
-            transactionType
-          );
-          modalRef.componentInstance.spent = localStorage.getItem(
-            'transactionSpent'
-          );
+          modalRef.componentInstance.creditUsed = TRANSACTIONS_WITH_CREDITS.includes(transactionType);
+          modalRef.componentInstance.spent = localStorage.getItem('transactionSpent');
           modalRef.result.then(
             () => {
               modalRef = null;
@@ -245,12 +224,9 @@ export class ListComponent implements OnInit, OnDestroy {
         } else if (params && params.updated) {
           this.errorService.i18nSuccess('itemUpdated');
         } else if (params && params.createdOnHold) {
-          this.tooManyItemsModalRef = this.modalService.open(
-            TooManyItemsModalComponent,
-            {
-              windowClass: 'modal-standard',
-            }
-          );
+          this.tooManyItemsModalRef = this.modalService.open(TooManyItemsModalComponent, {
+            windowClass: 'modal-standard',
+          });
           this.tooManyItemsModalRef.componentInstance.itemId = params.itemId;
           this.tooManyItemsModalRef.componentInstance.type = params.onHoldType
             ? parseInt(params.onHoldType, 10)
@@ -293,54 +269,35 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   private showBumpSuggestionModal(itemId: string): void {
-    this.bumpSuggestionModalRef = this.modalService.open(
-      BumpSuggestionModalComponent,
-      {
-        windowClass: 'modal-standard',
+    this.bumpSuggestionModalRef = this.modalService.open(BumpSuggestionModalComponent, {
+      windowClass: 'modal-standard',
+    });
+    this.bumpSuggestionModalRef.result.then((result: { redirect: boolean; hasPrice?: boolean }) => {
+      this.bumpSuggestionModalRef = null;
+      if (result?.redirect) {
+        this.router.navigate(['catalog/checkout', { itemId }]);
       }
-    );
-    this.bumpSuggestionModalRef.result.then(
-      (result: { redirect: boolean; hasPrice?: boolean }) => {
-        this.bumpSuggestionModalRef = null;
-        if (result?.redirect) {
-          this.router.navigate(['catalog/checkout', { itemId }]);
-        }
-      }
-    );
+    });
   }
 
-  private getCheapestProductPrice(
-    modalRef: NgbModalRef,
-    itemId: string,
-    creditInfo: CreditInfo
-  ): void {
-    this.itemService
-      .getCheapestProductPrice([itemId])
-      .subscribe((value: CheapestProducts) => {
-        modalRef.componentInstance.productPrice =
-          +value[itemId] * creditInfo.factor;
-      });
+  private getCheapestProductPrice(modalRef: NgbModalRef, itemId: string, creditInfo: CreditInfo): void {
+    this.itemService.getCheapestProductPrice([itemId]).subscribe((value: CheapestProducts) => {
+      modalRef.componentInstance.productPrice = +value[itemId] * creditInfo.factor;
+    });
   }
 
   private getCreditInfo() {
-    this.paymentService
-      .getCreditInfo(false)
-      .subscribe((creditInfo: CreditInfo) => {
-        if (creditInfo.credit === 0) {
-          creditInfo.currencyName = 'wallacredits';
-          creditInfo.factor = 1;
-        }
-        this.creditInfo = creditInfo;
-        if (this.bumpSuggestionModalRef) {
-          this.getCheapestProductPrice(
-            this.bumpSuggestionModalRef,
-            this.route.snapshot.params['itemId'],
-            creditInfo
-          );
-          this.bumpSuggestionModalRef.componentInstance.productCurrency =
-            creditInfo.currencyName;
-        }
-      });
+    this.paymentService.getCreditInfo(false).subscribe((creditInfo: CreditInfo) => {
+      if (creditInfo.credit === 0) {
+        creditInfo.currencyName = 'wallacredits';
+        creditInfo.factor = 1;
+      }
+      this.creditInfo = creditInfo;
+      if (this.bumpSuggestionModalRef) {
+        this.getCheapestProductPrice(this.bumpSuggestionModalRef, this.route.snapshot.params['itemId'], creditInfo);
+        this.bumpSuggestionModalRef.componentInstance.productCurrency = creditInfo.currencyName;
+      }
+    });
   }
 
   private restoreSelectedItems() {
@@ -401,9 +358,7 @@ export class ListComponent implements OnInit, OnDestroy {
         )
         .subscribe((itemsByCategory) => {
           if (itemsByCategory) {
-            this.items = append
-              ? this.items.concat(itemsByCategory)
-              : itemsByCategory;
+            this.items = append ? this.items.concat(itemsByCategory) : itemsByCategory;
             this.updateNavLinksCounters();
             this.setNumberOfProducts();
           }
@@ -411,39 +366,31 @@ export class ListComponent implements OnInit, OnDestroy {
           this.end = true;
         });
     } else {
-      this.itemService
-        .mine(this.init, status)
-        .subscribe((itemsData: ItemsData) => {
-          const items = itemsData.data;
-          if (this.selectedStatus === STATUS.SOLD) {
-            this.trackingService.track(
-              TrackingService.PRODUCT_LIST_SOLD_VIEWED,
-              { total_products: items.length }
-            );
-          } else if (this.selectedStatus === STATUS.PUBLISHED) {
-            this.trackingService.track(
-              TrackingService.PRODUCT_LIST_ACTIVE_VIEWED,
-              { total_products: items.length }
-            );
-          }
-          this.trackingService.track(TrackingService.PRODUCT_LIST_LOADED, {
-            init: this.init,
-          });
-          this.init = itemsData.init;
-          this.items = append ? this.items.concat(items) : items;
-          this.end = !this.init;
-          if (this.bumpSuggestionModalRef) {
-            this.bumpSuggestionModalRef.componentInstance.item = this.items[0];
-          }
-          if (this.firstItemLoad) {
-            setTimeout(() => {
-              this.restoreSelectedItems();
-            });
-          }
-          this.firstItemLoad = false;
-          this.getNumberOfProducts();
-          this.loading = false;
+      this.itemService.mine(this.init, status).subscribe((itemsData: ItemsData) => {
+        const items = itemsData.data;
+        if (this.selectedStatus === STATUS.SOLD) {
+          this.trackingService.track(TrackingService.PRODUCT_LIST_SOLD_VIEWED, { total_products: items.length });
+        } else if (this.selectedStatus === STATUS.PUBLISHED) {
+          this.trackingService.track(TrackingService.PRODUCT_LIST_ACTIVE_VIEWED, { total_products: items.length });
+        }
+        this.trackingService.track(TrackingService.PRODUCT_LIST_LOADED, {
+          init: this.init,
         });
+        this.init = itemsData.init;
+        this.items = append ? this.items.concat(items) : items;
+        this.end = !this.init;
+        if (this.bumpSuggestionModalRef) {
+          this.bumpSuggestionModalRef.componentInstance.item = this.items[0];
+        }
+        if (this.firstItemLoad) {
+          setTimeout(() => {
+            this.restoreSelectedItems();
+          });
+        }
+        this.firstItemLoad = false;
+        this.getNumberOfProducts();
+        this.loading = false;
+      });
     }
   }
 
@@ -488,32 +435,24 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public delete() {
-    const modalRef: NgbModalRef = this.modalService.open(
-      ConfirmationModalComponent,
-      {
-        windowClass: 'modal-prompt',
-      }
-    );
+    const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent, {
+      windowClass: 'modal-prompt',
+    });
     modalRef.componentInstance.type = 1;
     modalRef.result.then(
       () => {
-        this.itemService
-          .bulkDelete('active')
-          .subscribe((response: ItemBulkResponse) => {
-            this.trackingService.track(
-              TrackingService.PRODUCT_LIST_BULK_DELETED,
-              { product_ids: response.updatedIds.join(', ') }
-            );
-            response.updatedIds.forEach((id: string) => {
-              const index: number = findIndex(this.items, { id: id });
-              this.items.splice(index, 1);
-            });
-            if (response.failedIds.length) {
-              this.errorService.i18nError('bulkDeleteError');
-            } else {
-              this.getNumberOfProducts();
-            }
+        this.itemService.bulkDelete('active').subscribe((response: ItemBulkResponse) => {
+          this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_DELETED, { product_ids: response.updatedIds.join(', ') });
+          response.updatedIds.forEach((id: string) => {
+            const index: number = findIndex(this.items, { id: id });
+            this.items.splice(index, 1);
           });
+          if (response.failedIds.length) {
+            this.errorService.i18nError('bulkDeleteError');
+          } else {
+            this.getNumberOfProducts();
+          }
+        });
       },
       () => {}
     );
@@ -539,10 +478,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public feature(orderEvent: OrderEvent, type?: string) {
-    const modalRef: NgbModalRef = this.modalService.open(
-      BuyProductModalComponent,
-      { windowClass: 'modal-standard' }
-    );
+    const modalRef: NgbModalRef = this.modalService.open(BuyProductModalComponent, { windowClass: 'modal-standard' });
     modalRef.componentInstance.type = type;
     modalRef.componentInstance.orderEvent = orderEvent;
     modalRef.componentInstance.creditInfo = this.creditInfo;
@@ -563,10 +499,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public purchaseListingFee(orderEvent: OrderEvent) {
-    const modalRef: NgbModalRef = this.modalService.open(
-      BuyProductModalComponent,
-      { windowClass: 'modal-standard' }
-    );
+    const modalRef: NgbModalRef = this.modalService.open(BuyProductModalComponent, { windowClass: 'modal-standard' });
     modalRef.componentInstance.type = 'listing-fee';
     modalRef.componentInstance.orderEvent = orderEvent;
     modalRef.componentInstance.creditInfo = this.creditInfo;
@@ -612,16 +545,11 @@ export class ListComponent implements OnInit, OnDestroy {
     });
   }
 
-  public activate(
-    subscriptionType = SUBSCRIPTION_TYPES.stripe,
-    itemId?: string
-  ) {
+  public activate(subscriptionType = SUBSCRIPTION_TYPES.stripe, itemId?: string) {
     this.modalService.open(ActivateItemsModalComponent).result.then(
       () => {
         this.trackConfirmActivateProItem(itemId);
-        itemId
-          ? this.activateSingleItem(itemId, subscriptionType)
-          : this.activateMultiItems(subscriptionType);
+        itemId ? this.activateSingleItem(itemId, subscriptionType) : this.activateMultiItems(subscriptionType);
       },
       () => null
     );
@@ -630,9 +558,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   private trackActivateProItem(itemId: string): void {
-    const attributes: ConfirmActivateProItem = this.getTrackingAtributes(
-      itemId
-    );
+    const attributes: ConfirmActivateProItem = this.getTrackingAtributes(itemId);
 
     const event: AnalyticsPageView<ClickActivateProItem> = {
       name: ANALYTICS_EVENT_NAMES.ClickActivateProItem,
@@ -650,19 +576,14 @@ export class ListComponent implements OnInit, OnDestroy {
     }
 
     return {
-      screenId:
-        this.selectedStatus === STATUS.INACTIVE
-          ? SCREEN_IDS.MyCatalogInactiveSection
-          : SCREEN_IDS.MyCatalog,
+      screenId: this.selectedStatus === STATUS.INACTIVE ? SCREEN_IDS.MyCatalogInactiveSection : SCREEN_IDS.MyCatalog,
       numberOfItems: itemId ? 1 : this.itemService.selectedItems.length,
       categoryId,
     };
   }
 
   private trackConfirmActivateProItem(itemId: string): void {
-    const attributes: ConfirmActivateProItem = this.getTrackingAtributes(
-      itemId
-    );
+    const attributes: ConfirmActivateProItem = this.getTrackingAtributes(itemId);
 
     const event: AnalyticsPageView<ConfirmActivateProItem> = {
       name: ANALYTICS_EVENT_NAMES.ConfirmActivateProItem,
@@ -672,10 +593,7 @@ export class ListComponent implements OnInit, OnDestroy {
     this.analyticsService.trackPageView(event);
   }
 
-  private activateSingleItem(
-    itemId: string,
-    subscriptionType: SUBSCRIPTION_TYPES
-  ): void {
+  private activateSingleItem(itemId: string, subscriptionType: SUBSCRIPTION_TYPES): void {
     this.itemService.activateSingleItem(itemId).subscribe(
       () => {
         this.parseActivation([itemId]);
@@ -707,9 +625,7 @@ export class ListComponent implements OnInit, OnDestroy {
           itemsData.push(item);
         });
 
-        if (
-          itemsData.every((item) => item.categoryId === itemsData[0].categoryId)
-        ) {
+        if (itemsData.every((item) => item.categoryId === itemsData[0].categoryId)) {
           itemId = itemsData[0].id;
         }
         modalRef.componentInstance.type = subscriptionType;
@@ -743,9 +659,7 @@ export class ListComponent implements OnInit, OnDestroy {
   private updateCountersWhenActivate(items: Item[]): void {
     let selectedSlot: SubscriptionSlot;
     if (!this.selectedSubscriptionSlot) {
-      selectedSlot = this.subscriptionSlots.find(
-        (slot) => slot.category.category_id === items[0].categoryId
-      );
+      selectedSlot = this.subscriptionSlots.find((slot) => slot.category.category_id === items[0].categoryId);
     } else {
       selectedSlot = this.selectedSubscriptionSlot;
       const inactiveNavLink = this.getNavLinkById(STATUS.INACTIVE);
@@ -759,8 +673,7 @@ export class ListComponent implements OnInit, OnDestroy {
     }
 
     const updatedAvailableSlotVal = (selectedSlot.available -= items.length);
-    selectedSlot.available =
-      updatedAvailableSlotVal < 0 ? 0 : updatedAvailableSlotVal;
+    selectedSlot.available = updatedAvailableSlotVal < 0 ? 0 : updatedAvailableSlotVal;
   }
 
   private updateCountersWhenDeactivate(numDeactivatedItems: number) {
@@ -787,10 +700,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public onSelectSubscriptionSlot(subscription: SubscriptionSlot) {
     if (this.selectedSubscriptionSlot && subscription) {
-      if (
-        this.selectedSubscriptionSlot.category.category_id ===
-        subscription.category.category_id
-      ) {
+      if (this.selectedSubscriptionSlot.category.category_id === subscription.category.category_id) {
         return;
       }
     }
@@ -861,9 +771,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public setSortItems() {
     this.sortItems = [];
-    SORTS.forEach((value) =>
-      this.sortItems.push({ value, label: this.i18n.getTranslations(value) })
-    );
+    SORTS.forEach((value) => this.sortItems.push({ value, label: this.i18n.getTranslations(value) }));
     this.sortBy = SORTS[0];
   }
 
