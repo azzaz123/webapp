@@ -6,7 +6,6 @@ import { CartChange, CartItem } from './cart-item.interface';
 import { Order, PurchaseProductsWithCreditsResponse } from '../../../core/item/item-response.interface';
 import { ItemService } from '../../../core/item/item.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
-import { TrackingService } from '../../../core/tracking/tracking.service';
 import { Router } from '@angular/router';
 import { CreditInfo, FinancialCardOption } from '../../../core/payments/payment.interface';
 import { PAYMENT_METHOD, PAYMENT_RESPONSE_STATUS } from '../../../core/payments/payment.service';
@@ -39,7 +38,6 @@ export class CartComponent implements OnInit, OnDestroy {
     private cartService: CartService,
     private itemService: ItemService,
     private errorService: ErrorsService,
-    private trackingService: TrackingService,
     private eventService: EventService,
     private router: Router,
     private uuidService: UuidService,
@@ -149,7 +147,6 @@ export class CartComponent implements OnInit, OnDestroy {
 
     const payment_method = PAYMENT_METHOD.STRIPE;
     const attributes = this.totalToPay === 0 ? { selected_products: result } : { selected_products: result, payment_method };
-    this.trackingService.track(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, attributes);
 
     ga('send', 'event', 'Item', 'bump-cart');
     fbq('track', 'Purchase', {

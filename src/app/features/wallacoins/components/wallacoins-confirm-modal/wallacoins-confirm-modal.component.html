@@ -6,8 +6,8 @@
   <h1 i18n>Let's go!</h1>
   <p [hidden]="withCredits" i18n>It's all sorted. We added <b>{{pack.quantity | number}} Wallacoins</b> in your wallet. You can feature your items. Remember that for now you can only get these from the website and they are not interchangeable for Euros.</p>
   <p [hidden]="!withCredits" i18n>It's all sorted. We added <b>{{pack.quantity | customCurrency}}</b> in your credit to feature your listings. Now get featuring!</p>
-  <tsl-button (click)="activeModal.close()" tslTrackEvent="BUMP_FROM_MODAL_CREDITS_SUCCESS" i18n>Feature listings</tsl-button><br />
-  <a class="link" (click)="activeModal.dismiss()" tslTrackEvent="BUY_MORE_CREDITS_SUCCESS">
+  <tsl-button (click)="activeModal.close()" i18n>Feature listings</tsl-button><br />
+  <a class="link" (click)="activeModal.dismiss()">
     <span [hidden]="withCredits" i18n>Buy more Wallacoins</span>
     <span [hidden]="!withCredits" i18n>Buy more credit</span>
   </a>

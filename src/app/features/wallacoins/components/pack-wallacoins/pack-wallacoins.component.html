@@ -16,6 +16,6 @@
 </div>
 <tsl-button (click)="onBuy.emit()"
             [className]="'btn-block ' + (packIndex === 2 ? 'btn-primary' : 'btn-grey')"
-            tslTrackEvent="PURCHASE_PACK_CREDITS" [params]="{packType: pack.name}">
+>
   <span i18n>Buy for</span> <b>{{pack.price | customCurrency}}</b>
 </tsl-button>

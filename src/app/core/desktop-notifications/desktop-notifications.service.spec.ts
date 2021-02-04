@@ -1,9 +1,7 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '@features/chat/core/model';
 import { createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
-import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { I18nService } from '../i18n/i18n.service';
-import { TrackingService } from '../tracking/tracking.service';
 import { ASK_PERMISSIONS_TIMEOUT_MS, DesktopNotificationsService } from './desktop-notifications.service';
 
 export class MockDesktopNotifications {
@@ -23,15 +21,13 @@ export class MockDesktopNotifications {
 describe('Service: DesktopNotifications', () => {
   let service: DesktopNotificationsService;
   let i18nService: I18nService;
-  let trackingService: TrackingService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [DesktopNotificationsService, I18nService, { provide: TrackingService, useClass: MockTrackingService }],
+      providers: [DesktopNotificationsService, I18nService],
     });
     service = TestBed.inject(DesktopNotificationsService);
     i18nService = TestBed.inject(I18nService);
-    trackingService = TestBed.inject(TrackingService);
   });
 
   describe('when setting up the notifications', () => {
@@ -192,24 +188,6 @@ describe('Service: DesktopNotifications', () => {
         service.sendFromInboxMessage(message, conversation);
 
         expect(Notification).toHaveBeenCalledWith(expectedTitle, expectedNotificationOptions);
-      });
-
-      describe('and when user closes notification', () => {
-        it('should track the event', () => {
-          service.sendFromInboxMessage(message, conversation);
-          spyOn(trackingService, 'track');
-          const expectedEvent = [
-            TrackingService.NOTIFICATION_RECEIVED,
-            {
-              thread_id: message.thread,
-              message_id: message.id,
-            },
-          ];
-
-          mockNotification._mockEventListeners['close']();
-
-          expect(trackingService.track).toHaveBeenCalledWith(...expectedEvent);
-        });
       });
     });
   });

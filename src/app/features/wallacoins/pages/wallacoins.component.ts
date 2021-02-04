@@ -7,7 +7,6 @@ import { PerksModel } from '../../../core/payments/payment.model';
 import { WallacoinsConfirmModalComponent } from '../components/wallacoins-confirm-modal/wallacoins-confirm-modal.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from '../../../core/event/event.service';
-import { TrackingService } from '../../../core/tracking/tracking.service';
 import { UserService } from '../../../core/user/user.service';
 import { WallacoinsTutorialComponent } from '../components/wallacoins-tutorial/wallacoins-tutorial.component';
 import { Observable } from 'rxjs';
@@ -34,7 +33,6 @@ export class WallacoinsComponent implements OnInit {
     private modalService: NgbModal,
     private eventService: EventService,
     private route: ActivatedRoute,
-    private trackingService: TrackingService,
     private router: Router,
     private userService: UserService,
     private cd: ChangeDetectorRef
@@ -55,9 +53,6 @@ export class WallacoinsComponent implements OnInit {
         localStorage.removeItem('transactionType');
         localStorage.removeItem('pack');
         this.openConfirmModal(pack, params.code);
-        if (params.code === '-1') {
-          this.trackingService.track(TrackingService.BUY_MORE_CREDITS_ERROR);
-        }
       }
     });
   }

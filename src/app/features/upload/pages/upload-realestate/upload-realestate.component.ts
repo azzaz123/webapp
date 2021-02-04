@@ -19,7 +19,6 @@ import { REALESTATE_CATEGORY } from '@core/item/item-categories';
 import { RealestateContent, RealEstateResponse } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
 import { Realestate } from '@core/item/realestate';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { IOption } from '@shared/dropdown/utils/option.interface';
@@ -67,7 +66,6 @@ export class UploadRealestateComponent implements OnInit {
     private errorsService: ErrorsService,
     private modalService: NgbModal,
     private itemService: ItemService,
-    private trackingService: TrackingService,
     private analyticsService: AnalyticsService,
     private userService: UserService,
     private uploadService: UploadService,
@@ -252,12 +250,6 @@ export class UploadRealestateComponent implements OnInit {
 
   onUploaded(response: RealestateContent, action: UPLOAD_ACTION) {
     this.onFormChanged.emit(false);
-
-    if (this.item) {
-      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, { category: this.uploadForm.value.category_id });
-    } else {
-      this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
-    }
     const params: any = {
       [action]: true,
       itemId: response.id,
@@ -272,13 +264,6 @@ export class UploadRealestateComponent implements OnInit {
   onError(error: HttpErrorResponse | any): void {
     this.loading = false;
     this.errorsService.i18nError('serverError', error.message ? error.message : '');
-    if (this.item) {
-      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_ERROR, {
-        category: this.uploadForm.value.category_id,
-      });
-    } else {
-      this.trackingService.track(TrackingService.UPLOADFORM_ERROR);
-    }
   }
 
   hasErrorToShow(controlName: string): boolean {

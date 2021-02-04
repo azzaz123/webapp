@@ -4,14 +4,12 @@ import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angul
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ErrorsService } from '@core/errors/errors.service';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { environment } from '@environments/environment';
 import { InboxConversationService } from '@features/chat/core/inbox/inbox-conversation.service';
 import { MOCK_CONVERSATION } from '@fixtures/conversation.fixtures.spec';
 import { InboxConversationServiceMock } from '@fixtures/inbox-coversation-service.fixtures.spec';
 import { CREATE_MOCK_INBOX_CONVERSATION, MOCK_INBOX_CONVERSATION } from '@fixtures/inbox.fixtures.spec';
 import { RealTimeServiceMock } from '@fixtures/real-time.fixtures.spec';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '@shared/shared.module';
 import { RealTimeService } from 'app/core/message/real-time.service';
@@ -25,7 +23,6 @@ describe('SendPhoneComponent', () => {
   let fixture: ComponentFixture<SendPhoneComponent>;
   let realTimeService: RealTimeService;
   let inboxConversationService: InboxConversationService;
-  let trackingService: TrackingService;
   let errorsService: ErrorsService;
   let httpMock: HttpTestingController;
   let element: DebugElement;
@@ -45,7 +42,6 @@ describe('SendPhoneComponent', () => {
             useClass: InboxConversationServiceMock,
           },
           { provide: RealTimeService, useClass: RealTimeServiceMock },
-          { provide: TrackingService, useClass: MockTrackingService },
           {
             provide: ErrorsService,
             useValue: {
@@ -66,7 +62,6 @@ describe('SendPhoneComponent', () => {
     component.conversation = CREATE_MOCK_INBOX_CONVERSATION();
     realTimeService = TestBed.inject(RealTimeService);
     inboxConversationService = TestBed.inject(InboxConversationService);
-    trackingService = TestBed.inject(TrackingService);
     errorsService = TestBed.inject(ErrorsService);
     httpMock = TestBed.inject(HttpTestingController);
     window.location.href = environment.siteUrl;
@@ -98,16 +93,6 @@ describe('SendPhoneComponent', () => {
     });
 
     describe('and when the form is valid', () => {
-      it('should track event to analytics', () => {
-        spyOn(trackingService, 'track');
-
-        submitButtonRef.click();
-
-        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.ITEM_SHAREPHONE_SENDPHONE, {
-          item_id: component.conversation.item.id,
-        });
-      });
-
       it('should save phone number to server', () => {
         spyOn(inboxConversationService, 'addPhoneNumberToConversation$').and.returnValue(EMPTY);
         component.conversation = MOCK_CONVERSATION();
@@ -143,17 +128,6 @@ describe('SendPhoneComponent', () => {
       beforeEach(() => {
         component.sendPhoneForm.get('phone').patchValue('');
         component.conversation = MOCK_CONVERSATION();
-      });
-
-      it('should call trackingService.track with ITEM_SHAREPHONE_WRONGPHONE', () => {
-        spyOn(trackingService, 'track');
-
-        component.handleSubmit();
-
-        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.ITEM_SHAREPHONE_WRONGPHONE, {
-          item_id: component.conversation.item.id,
-          phone_number: component.sendPhoneForm.controls.phone.value,
-        });
       });
 
       it('should call markAsDirty', () => {
@@ -247,19 +221,10 @@ describe('SendPhoneComponent', () => {
     let closeButtonRef;
 
     beforeEach(() => {
-      spyOn(trackingService, 'track');
       component.conversation = MOCK_INBOX_CONVERSATION;
       component.conversation.item.itemUrl = `${environment.siteUrl}item/aa-186156806`;
       fixture.detectChanges();
       closeButtonRef = fixture.debugElement.query(By.css('.modal-close')).nativeElement;
-    });
-
-    it('should track event to analytics', () => {
-      closeButtonRef.click();
-
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.ITEM_SHAREPHONE_HIDEFORM, {
-        item_id: component.conversation.item.id,
-      });
     });
 
     it('should redirect to the item detail page', () => {

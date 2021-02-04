@@ -8,9 +8,7 @@ import { ItemService } from '@core/item/item.service';
 import { environment } from '@environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { USER_ID } from '@fixtures/user.fixtures.spec';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 
 describe('ItemCartFavoriteComponent', () => {
@@ -54,7 +52,6 @@ describe('ItemCartFavoriteComponent', () => {
               },
             },
           },
-          { provide: TrackingService, useClass: MockTrackingService },
           { provide: 'SUBDOMAIN', useValue: 'www' },
         ],
         schemas: [NO_ERRORS_SCHEMA],

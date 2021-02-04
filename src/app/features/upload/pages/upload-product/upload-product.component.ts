@@ -30,7 +30,6 @@ import { I18nService } from '@core/i18n/i18n.service';
 import { Item, ITEM_TYPES } from '@core/item/item';
 import { DeliveryInfo, ItemContent, ItemResponse } from '@core/item/item-response.interface';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { IOption } from '@shared/dropdown/utils/option.interface';
@@ -121,7 +120,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     private errorsService: ErrorsService,
     private categoryService: CategoryService,
     private modalService: NgbModal,
-    private trackingService: TrackingService,
     private generalSuggestionsService: GeneralSuggestionsService,
     private analyticsService: AnalyticsService,
     private userService: UserService,
@@ -420,10 +418,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   onUploaded(response: ItemContent, action: UPLOAD_ACTION) {
     this.onFormChanged.emit(false);
     if (this.item) {
-      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, { category: this.uploadForm.value.category_id });
       appboy.logCustomEvent('Edit', { platform: 'web' });
     } else {
-      this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
       appboy.logCustomEvent('List', { platform: 'web' });
       ga('send', 'event', 'Upload', 'done', 'Web mobile analysis');
     }
@@ -480,13 +476,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public onError(error: HttpErrorResponse | any): void {
     this.loading = false;
     this.errorsService.i18nError('serverError', error.message ? error.message : '');
-    if (this.item) {
-      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_ERROR, {
-        category: this.uploadForm.value.category_id,
-      });
-    } else {
-      this.trackingService.track(TrackingService.UPLOADFORM_ERROR);
-    }
   }
 
   preview() {

@@ -10,7 +10,6 @@ import {
   CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE,
   MOCK_INBOX_CONVERSATION,
 } from '../../../tests/inbox.fixtures.spec';
-import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { ACCESS_TOKEN, MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
 import {
   AnalyticsEvent,
@@ -24,7 +23,6 @@ import { ConnectionService } from '../connection/connection.service';
 import { EventService } from '../event/event.service';
 import { I18nService } from '../i18n/i18n.service';
 import { RemoteConsoleService } from '../remote-console';
-import { TrackingService } from '../tracking/tracking.service';
 import { XmppService } from '../xmpp/xmpp.service';
 import { Message } from './message';
 import { RealTimeService } from './real-time.service';
@@ -32,7 +30,6 @@ import { RealTimeService } from './real-time.service';
 let service: RealTimeService;
 let eventService: EventService;
 let xmppService: XmppService;
-let trackingService: TrackingService;
 let remoteConsoleService: RemoteConsoleService;
 let analyticsService: AnalyticsService;
 let connectionService: ConnectionService;
@@ -45,7 +42,6 @@ describe('RealTimeService', () => {
         RealTimeService,
         XmppService,
         EventService,
-        { provide: TrackingService, useClass: MockTrackingService },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         { provide: AnalyticsService, useClass: MockAnalyticsService },
         { provide: ConnectionService, useClass: MockConnectionService },
@@ -56,7 +52,6 @@ describe('RealTimeService', () => {
     service = TestBed.inject(RealTimeService);
     eventService = TestBed.inject(EventService);
     xmppService = TestBed.inject(XmppService);
-    trackingService = TestBed.inject(TrackingService);
     remoteConsoleService = TestBed.inject(RemoteConsoleService);
     analyticsService = TestBed.inject(AnalyticsService);
     connectionService = TestBed.inject(ConnectionService);
@@ -275,30 +270,6 @@ describe('RealTimeService', () => {
   });
 
   describe('subscribeEventChatMessageSent', () => {
-    it('should call track with the conversationCreateNew event when the MESSAGE_SENT event is triggered', () => {
-      spyOn(trackingService, 'track');
-      const newConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE('newId');
-      const inboxMessage = new InboxMessage(
-        'someId',
-        newConversation.id,
-        'some text',
-        USER_ID,
-        true,
-        new Date(),
-        MessageStatus.SENT,
-        MessageType.TEXT
-      );
-      newConversation.messages.push(inboxMessage);
-
-      eventService.emit(EventService.MESSAGE_SENT, newConversation, inboxMessage.id);
-
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CONVERSATION_CREATE_NEW, {
-        thread_id: newConversation.id,
-        message_id: inboxMessage.id,
-        item_id: newConversation.item.id,
-      });
-    });
-
     it('should call track with the facebook InitiateCheckout event when the MESSAGE_SENT event is triggered', () => {
       spyOn(window as any, 'fbq');
       const newConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE('newId');
@@ -352,18 +323,6 @@ describe('RealTimeService', () => {
       eventService.emit(EventService.MESSAGE_SENT, newConversation, newConversation.id);
 
       expect(window['pintrk']).toHaveBeenCalledWith('track', 'checkout', event);
-    });
-
-    it('should add MessageSent event in the pendingTrackingEvents queue when the MESSAGE_SENT event is triggered', () => {
-      spyOn(trackingService, 'track');
-      const conv = CREATE_MOCK_INBOX_CONVERSATION('newId');
-
-      eventService.emit(EventService.MESSAGE_SENT, conv, MOCK_INBOX_CONVERSATION.id);
-
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MESSAGE_SENT, {
-        thread_id: conv.id,
-        message_id: MOCK_INBOX_CONVERSATION.id,
-      });
     });
 
     it('should call appboy.logCustomEvent if this is the first message message sent', () => {

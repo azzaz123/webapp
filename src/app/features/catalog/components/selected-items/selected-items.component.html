@@ -46,7 +46,7 @@
           <button class="btn-deactivate dark" *ngIf="selectedSubscriptionSlot && selectedStatus === STATUS.ACTIVE"
             (click)="onClickAction('deactivate')"
             [hidden]="itemService.selectedAction === 'feature' || (selectedStatus !== STATUS.PUBLISHED && selectedStatus !== STATUS.ACTIVE)"
-            [disabled]="!itemService.selectedItems.length" tslTrackEvent="MYCATALOG_PRO_DEACTIVATE"
+            [disabled]="!itemService.selectedItems.length"
             i18n>Deactivate</button>
 
           <!-- Activate responsive -->
@@ -57,8 +57,8 @@
             <!-- Feature -->
             <ng-container *ngIf="!hideFeaturedButton">
               <tsl-button className="btn-primary btn-big" [disabled]="itemService.selectedItems.length === 0"
-              [routerLink]="['/catalog/checkout']" [params]="{ payment_method: 'STRIPE' }"
-              tslTrackEvent="MYCATALOG_PURCHASE_CONTINUE" i18n>Feature</tsl-button>
+              [routerLink]="['/catalog/checkout']" 
+              i18n>Feature</tsl-button>
             </ng-container>
             <ng-container  *ngIf="showActiveButton">
             <!-- Activate -->

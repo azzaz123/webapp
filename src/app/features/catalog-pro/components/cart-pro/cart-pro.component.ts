@@ -7,7 +7,6 @@ import { ScheduledStatus } from '@core/payments/payment.interface';
 import { CartService } from '@shared/catalog/cart/cart.service';
 import { ItemService } from '@core/item/item.service';
 import { ErrorsService } from '@core/errors/errors.service';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { PaymentService } from '@core/payments/payment.service';
 import { CartChange, CartProItem } from '@shared/catalog/cart/cart-item.interface';
 import { OrderPro } from '@core/item/item-response.interface';
@@ -36,7 +35,6 @@ export class CartProComponent implements OnInit {
     private itemService: ItemService,
     private errorService: ErrorsService,
     private router: Router,
-    private trackingService: TrackingService,
     private paymentsService: PaymentService
   ) {}
 
@@ -108,9 +106,6 @@ export class CartProComponent implements OnInit {
           this.errorService.i18nError('bumpError');
         } else {
           this.itemService.deselectItems();
-          this.trackingService.track(TrackingService.BUMP_PRO_APPLY, {
-            selected_products: order,
-          });
           let code = 201;
           if (this.isFutureOrderWithNoBalance()) {
             code = startsToday ? 203 : 202;
