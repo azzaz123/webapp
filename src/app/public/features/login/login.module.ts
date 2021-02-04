@@ -1,9 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {
-  loginRoutedComponents,
-  LoginRoutingModule,
-} from './login.routing.module';
+import { loginRoutedComponents, LoginRoutingModule } from './login.routing.module';
 import { LoginService } from './core/services/login.service';
 import { SharedModule } from '@shared/shared.module';
 

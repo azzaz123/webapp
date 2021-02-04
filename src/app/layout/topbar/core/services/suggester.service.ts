@@ -11,9 +11,6 @@ export class SuggesterService {
   constructor(private http: HttpClient) {}
 
   public getSuggestions(keyword: string): Observable<SuggesterResponse[]> {
-    return this.http.get<SuggesterResponse[]>(
-      `${environment.baseUrl}${SUGGESTER_ENDPOINT}`,
-      { params: { keyword } }
-    );
+    return this.http.get<SuggesterResponse[]>(`${environment.baseUrl}${SUGGESTER_ENDPOINT}`, { params: { keyword } });
   }
 }

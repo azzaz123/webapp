@@ -60,19 +60,15 @@ export class ItemDetailComponent implements OnInit {
   }
 
   private initPage(itemId: string): void {
-    this.itemDetailService
-      .getItem(itemId)
-      .subscribe((itemDetail: ItemDetail) => {
-        this.itemDetail = itemDetail;
-        this.handleCoordinates();
-        this.socialShareSetup(this.itemDetail.item);
-      });
+    this.itemDetailService.getItem(itemId).subscribe((itemDetail: ItemDetail) => {
+      this.itemDetail = itemDetail;
+      this.handleCoordinates();
+      this.socialShareSetup(this.itemDetail.item);
+    });
   }
 
   private handleCoordinates(): void {
-    const detailLocation: UserLocation = this.itemDetail.item?.location
-      ? this.itemDetail.item.location
-      : this.itemDetail.user.location;
+    const detailLocation: UserLocation = this.itemDetail.item?.location ? this.itemDetail.item.location : this.itemDetail.user.location;
 
     this.itemLocation = {
       zip: detailLocation.zip,
@@ -102,22 +98,11 @@ export class ItemDetailComponent implements OnInit {
     this.socialShare.email = {
       url: item.webLink,
       subject: item.title,
-      message:
-        $localize`:@@ItemDetailShareEmailText:This may interest you - ` +
-        item.description,
+      message: $localize`:@@ItemDetailShareEmailText:This may interest you - ` + item.description,
     };
 
-    this.socialMetaTagsService.insertTwitterMetaTags(
-      item.title,
-      item.description,
-      item.mainImage.urls_by_size.medium
-    );
-    this.socialMetaTagsService.insertFacebookMetaTags(
-      item.title,
-      item.description,
-      item.mainImage.urls_by_size.medium,
-      item.webLink
-    );
+    this.socialMetaTagsService.insertTwitterMetaTags(item.title, item.description, item.mainImage.urls_by_size.medium);
+    this.socialMetaTagsService.insertFacebookMetaTags(item.title, item.description, item.mainImage.urls_by_size.medium, item.webLink);
   }
 
   private handleLocationSpecifications(): void {

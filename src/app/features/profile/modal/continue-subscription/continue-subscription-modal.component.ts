@@ -8,10 +8,7 @@ import {
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { I18nService } from '@core/i18n/i18n.service';
-import {
-  SubscriptionsResponse,
-  SUBSCRIPTION_CATEGORIES,
-} from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -41,32 +38,28 @@ export class ContinueSubscriptionModalComponent {
   public continueSubscription() {
     this.loading = true;
     this.trackContinueSubscription();
-    this.subscriptionsService
-      .continueSubscription(this.subscription.selected_tier_id)
-      .subscribe(
-        () => {
-          this.loading = false;
-          this.close();
-          this.toastService.show({
-            text:
-              this.i18n.getTranslations('continueSubscriptionSuccessTitle') +
-              ' ' +
-              this.i18n.getTranslations('continueSubscriptionSuccessBody'),
-            type: 'success',
-          });
-        },
-        () => {
-          this.loading = false;
-          this.close();
-          this.toastService.show({
-            text:
-              this.i18n.getTranslations('continueSubscriptionErrorTitle') +
-              ' ' +
-              this.i18n.getTranslations('continueSubscriptionErrorBody'),
-            type: 'error',
-          });
-        }
-      );
+    this.subscriptionsService.continueSubscription(this.subscription.selected_tier_id).subscribe(
+      () => {
+        this.loading = false;
+        this.close();
+        this.toastService.show({
+          text:
+            this.i18n.getTranslations('continueSubscriptionSuccessTitle') +
+            ' ' +
+            this.i18n.getTranslations('continueSubscriptionSuccessBody'),
+          type: 'success',
+        });
+      },
+      () => {
+        this.loading = false;
+        this.close();
+        this.toastService.show({
+          text:
+            this.i18n.getTranslations('continueSubscriptionErrorTitle') + ' ' + this.i18n.getTranslations('continueSubscriptionErrorBody'),
+          type: 'error',
+        });
+      }
+    );
   }
 
   private trackContinueSubscription() {

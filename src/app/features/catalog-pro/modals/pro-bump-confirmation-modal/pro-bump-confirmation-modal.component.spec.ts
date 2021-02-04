@@ -50,9 +50,7 @@ describe('BumpConfirmationModalComponent', () => {
 
       component.ngOnInit();
 
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.PRO_FEATURED_PURCHASE_SUCCESS
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRO_FEATURED_PURCHASE_SUCCESS);
     });
 
     it('should send event featured_purchase_success if code == 201', () => {
@@ -60,9 +58,7 @@ describe('BumpConfirmationModalComponent', () => {
 
       component.ngOnInit();
 
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.PRO_FEATURED_PURCHASE_SUCCESS
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRO_FEATURED_PURCHASE_SUCCESS);
     });
 
     it('should send event featured_purchase_error if code != 200', () => {
@@ -70,9 +66,7 @@ describe('BumpConfirmationModalComponent', () => {
 
       component.ngOnInit();
 
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.PRO_FEATURED_PURCHASE_ERROR
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRO_FEATURED_PURCHASE_ERROR);
     });
 
     it('should send appboy VisibilityPurchaseSuccess event if code == 200 or 201', () => {
@@ -81,9 +75,7 @@ describe('BumpConfirmationModalComponent', () => {
 
       component.ngOnInit();
 
-      expect(
-        appboy.logCustomEvent
-      ).toHaveBeenCalledWith('VisibilityPurchaseSuccess', { platform: 'web' });
+      expect(appboy.logCustomEvent).toHaveBeenCalledWith('VisibilityPurchaseSuccess', { platform: 'web' });
     });
   });
 });

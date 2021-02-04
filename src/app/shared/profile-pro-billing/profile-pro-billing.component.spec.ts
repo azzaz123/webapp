@@ -1,11 +1,5 @@
 import { throwError, of } from 'rxjs';
-import {
-  ComponentFixture,
-  TestBed,
-  fakeAsync,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 
 import { ProfileProBillingComponent } from './profile-pro-billing.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -14,10 +8,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeleteInfoConfirmationModalComponent } from './delete-info-confirmation-modal/delete-info-confirmation-modal.component';
 import { PaymentService } from '../../core/payments/payment.service';
 import { ErrorsService } from '../../core/errors/errors.service';
-import {
-  BILLING_INFO_RESPONSE,
-  BILLING_INFO_RESPONSE_LEGAL,
-} from '../../../tests/payments.fixtures.spec';
+import { BILLING_INFO_RESPONSE, BILLING_INFO_RESPONSE_LEGAL } from '../../../tests/payments.fixtures.spec';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
 import { EventService } from 'app/core/event/event.service';
 import { By } from '@angular/platform-browser';
@@ -120,26 +111,18 @@ describe('ProfileProBillingComponent', () => {
       it('should update billing info and should put false isnewBillingInfoForm boolean', () => {
         spyOn(paymentService, 'updateBillingInfo').and.callThrough();
         spyOn(component.billingInfoFormSaved, 'emit').and.callThrough();
-        spyOn(paymentService, 'getBillingInfo').and.returnValue(
-          of(BILLING_INFO_RESPONSE_LEGAL)
-        );
+        spyOn(paymentService, 'getBillingInfo').and.returnValue(of(BILLING_INFO_RESPONSE_LEGAL));
 
         component.onSubmit();
 
-        expect(paymentService.updateBillingInfo).toHaveBeenCalledWith(
-          component.billingForm.getRawValue()
-        );
+        expect(paymentService.updateBillingInfo).toHaveBeenCalledWith(component.billingForm.getRawValue());
         expect(component.isNewBillingInfoForm).toBe(false);
-        expect(component.billingInfoFormSaved.emit).toHaveBeenCalledWith(
-          component.billingForm
-        );
+        expect(component.billingInfoFormSaved.emit).toHaveBeenCalledWith(component.billingForm);
       });
 
       it('should show error if call fails', () => {
         spyOn(errorsService, 'show');
-        spyOn(paymentService, 'updateBillingInfo').and.returnValue(
-          throwError('error')
-        );
+        spyOn(paymentService, 'updateBillingInfo').and.returnValue(throwError('error'));
 
         component.onSubmit();
 
@@ -196,9 +179,7 @@ describe('ProfileProBillingComponent', () => {
 
         component.deleteBillingInfo();
 
-        expect(modalService.open).toHaveBeenCalledWith(
-          DeleteInfoConfirmationModalComponent
-        );
+        expect(modalService.open).toHaveBeenCalledWith(DeleteInfoConfirmationModalComponent);
       });
 
       describe('if user confirm modal', () => {
@@ -224,16 +205,12 @@ describe('ProfileProBillingComponent', () => {
           component.deleteBillingInfo();
           tick();
 
-          expect(errorsService.i18nSuccess).toHaveBeenCalledWith(
-            'deleteBillingInfoSuccess'
-          );
+          expect(errorsService.i18nSuccess).toHaveBeenCalledWith('deleteBillingInfoSuccess');
         }));
 
         it('all reset form and set true isnewbillinginfo boolean', fakeAsync(() => {
           spyOn(component, 'initForm').and.callThrough();
-          spyOn(paymentService, 'getBillingInfo').and.returnValue(
-            throwError('404')
-          );
+          spyOn(paymentService, 'getBillingInfo').and.returnValue(throwError('404'));
 
           component.deleteBillingInfo();
           tick();
@@ -243,17 +220,13 @@ describe('ProfileProBillingComponent', () => {
         }));
 
         it('should show an 18n error message if the action has an error', fakeAsync(() => {
-          spyOn(paymentService, 'deleteBillingInfo').and.returnValue(
-            throwError('')
-          );
+          spyOn(paymentService, 'deleteBillingInfo').and.returnValue(throwError(''));
           spyOn(errorsService, 'i18nError');
 
           component.deleteBillingInfo();
           tick();
 
-          expect(errorsService.i18nError).toHaveBeenCalledWith(
-            'deleteBillingInfoError'
-          );
+          expect(errorsService.i18nError).toHaveBeenCalledWith('deleteBillingInfoError');
         }));
       });
 

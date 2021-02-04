@@ -11,11 +11,7 @@ import { ErrorsService } from '@core/errors/errors.service';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { UPLOAD_FILE, UPLOAD_FILE_NAME } from '@fixtures/upload.fixtures.spec';
 import { environment } from '@environments/environment';
-import {
-  IMAGE_TYPE,
-  OUTPUT_TYPE,
-  UploadFile,
-} from '../../uploader/upload.interface';
+import { IMAGE_TYPE, OUTPUT_TYPE, UploadFile } from '../../uploader/upload.interface';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { of, throwError } from 'rxjs';
 import { UploaderService } from '@shared/uploader/uploader.service';
@@ -121,9 +117,7 @@ describe('CoverUploadComponent', () => {
       file.response = {
         message: ERROR,
       };
-      spyOn(uploaderService, 'uploadFile').and.returnValue(
-        throwError(file.response)
-      );
+      spyOn(uploaderService, 'uploadFile').and.returnValue(throwError(file.response));
       uploaderService.serviceEvents$ = of({
         type: OUTPUT_TYPE.addedToQueue,
         file: file,
@@ -132,10 +126,7 @@ describe('CoverUploadComponent', () => {
 
       fixture.detectChanges();
 
-      expect(errorsService.i18nError).toHaveBeenCalledWith(
-        'serverError',
-        ERROR
-      );
+      expect(errorsService.i18nError).toHaveBeenCalledWith('serverError', ERROR);
     });
 
     it('should throw error if event is rejected', () => {
@@ -150,10 +141,7 @@ describe('CoverUploadComponent', () => {
 
       fixture.detectChanges();
 
-      expect(errorsService.i18nError).toHaveBeenCalledWith(
-        ERROR,
-        UPLOAD_FILE_NAME
-      );
+      expect(errorsService.i18nError).toHaveBeenCalledWith(ERROR, UPLOAD_FILE_NAME);
     });
   });
 });

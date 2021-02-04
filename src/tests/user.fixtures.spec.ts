@@ -1,28 +1,10 @@
-import {
-  UserInfoResponse,
-  UserProInfo,
-} from '../app/core/user/user-info.interface';
+import { UserInfoResponse, UserProInfo } from '../app/core/user/user-info.interface';
 import { Coordinate } from '../app/core/geolocation/address-response.interface';
-import {
-  Counters,
-  Ratings,
-  UserStats,
-} from '../app/core/user/user-stats.interface';
-import {
-  UserData,
-  UserProData,
-  UserProDataNotifications,
-} from '../app/core/user/user-data.interface';
+import { Counters, Ratings, UserStats } from '../app/core/user/user-stats.interface';
+import { UserData, UserProData, UserProDataNotifications } from '../app/core/user/user-data.interface';
 import { UnsubscribeReason } from '../app/core/user/unsubscribe-reason.interface';
 
-import {
-  Image,
-  UserExtrainfo,
-  UserLocation,
-  UserResponse,
-  UserStatsOld,
-  UserValidations,
-} from '../app/core/user/user-response.interface';
+import { Image, UserExtrainfo, UserLocation, UserResponse, UserStatsOld, UserValidations } from '../app/core/user/user-response.interface';
 import { Observable, of } from 'rxjs';
 import { Item } from '../app/core/item/item';
 import { User } from '../app/core/user/user';
@@ -30,8 +12,7 @@ import { User } from '../app/core/user/user';
 export const USER_ID = 'l1kmzn82zn3p';
 export const OTHER_USER_ID = 'qxkmav12tp8f';
 export const MICRO_NAME = 'String S.';
-export const ACCESS_TOKEN =
-  'bS7D7d26UordM5M0uy5o4IisuyrPz35mfxfpw7PLRqQfzouQGXGpQtyZWFRRDdRFFT5fJZ';
+export const ACCESS_TOKEN = 'bS7D7d26UordM5M0uy5o4IisuyrPz35mfxfpw7PLRqQfzouQGXGpQtyZWFRRDdRFFT5fJZ';
 export const USER_EMAIL = 'test@test.it';
 
 export const IMAGE: Image = {
@@ -41,16 +22,11 @@ export const IMAGE: Image = {
   original_height: 62,
   average_hex_color: '6a707b',
   urls_by_size: {
-    original:
-      'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=ORIGINAL',
-    small:
-      'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
-    large:
-      'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
-    medium:
-      'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
-    xlarge:
-      'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
+    original: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=ORIGINAL',
+    small: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
+    large: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
+    medium: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
+    xlarge: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
   },
 };
 
@@ -61,16 +37,11 @@ export const IMAGE_2: Image = {
   original_height: 62,
   average_hex_color: '6a707b',
   urls_by_size: {
-    original:
-      'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=ORIGINAL',
-    small:
-      'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
-    large:
-      'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
-    medium:
-      'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
-    xlarge:
-      'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
+    original: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=ORIGINAL',
+    small: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
+    large: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
+    medium: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
+    xlarge: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
   },
 };
 
@@ -179,8 +150,7 @@ export const MOCK_NON_FEATURED_USER_RESPONSE: UserResponse = {
 
 export const MOCK_USER_RESPONSE_BODY = {
   token: ACCESS_TOKEN,
-  resetToken:
-    'eZXAqOYOyGK9tI4YbwI8Lsd65hs7rIN2mvQVekZ5euFDBBUMDcgJ7jbhTQ325FUA49W1j4',
+  resetToken: 'eZXAqOYOyGK9tI4YbwI8Lsd65hs7rIN2mvQVekZ5euFDBBUMDcgJ7jbhTQ325FUA49W1j4',
   registerInfo: { userId: 500002515, userUUID: USER_ID, idUser: 500002515 },
 };
 

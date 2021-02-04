@@ -1,12 +1,6 @@
 import { of, Subscription } from 'rxjs';
 /* tslint:disable:no-unused-variable */
-import {
-  ComponentFixture,
-  TestBed,
-  fakeAsync,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { CallsComponent } from './calls.component';
 import { ActivatedRoute } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -131,9 +125,7 @@ describe('CallsComponent', () => {
         });
 
         it('should track the PoneLeadListActiveLoaded', () => {
-          expect(trackingService.track).toHaveBeenCalledWith(
-            TrackingService.PHONE_LEAD_LIST_ACTIVE_LOADED
-          );
+          expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PHONE_LEAD_LIST_ACTIVE_LOADED);
         });
       });
 
@@ -158,9 +150,7 @@ describe('CallsComponent', () => {
         });
 
         it('should track the PoneLeadListProcessedLoaded', () => {
-          expect(trackingService.track).toHaveBeenCalledWith(
-            TrackingService.PHONE_LEAD_LIST_PROCESSED_LOADED
-          );
+          expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PHONE_LEAD_LIST_PROCESSED_LOADED);
         });
       });
     });

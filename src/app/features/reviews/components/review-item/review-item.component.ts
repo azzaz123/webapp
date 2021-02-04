@@ -16,24 +16,15 @@ export class ReviewItemComponent implements OnInit {
   public userWebSlug: string;
   public category: CategoryResponse;
 
-  constructor(
-    @Inject('SUBDOMAIN') private subdomain: string,
-    private categoryService: CategoryService
-  ) {}
+  constructor(@Inject('SUBDOMAIN') private subdomain: string, private categoryService: CategoryService) {}
 
   ngOnInit() {
     this.fallback = FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH;
-    this.itemWebLink = this.review.item
-      ? this.review.item.getUrl(this.subdomain)
-      : null;
-    this.userWebSlug = this.review.user
-      ? this.review.user.getUrl(this.subdomain)
-      : null;
+    this.itemWebLink = this.review.item ? this.review.item.getUrl(this.subdomain) : null;
+    this.userWebSlug = this.review.user ? this.review.user.getUrl(this.subdomain) : null;
 
-    this.categoryService
-      .getCategoryById(this.review.item.categoryId)
-      .subscribe((category: CategoryResponse) => {
-        this.category = category;
-      });
+    this.categoryService.getCategoryById(this.review.item.categoryId).subscribe((category: CategoryResponse) => {
+      this.category = category;
+    });
   }
 }

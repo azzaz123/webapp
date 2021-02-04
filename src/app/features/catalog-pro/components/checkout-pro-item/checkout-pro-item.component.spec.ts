@@ -90,15 +90,9 @@ describe('CheckoutProItemComponent', () => {
 
       component.ngOnInit();
 
-      expect(component.cartProItem.selectedDates instanceof CalendarDates).toBe(
-        true
-      );
-      expect(component.cartProItem.selectedDates.fromDate).toBe(
-        component.todayDate
-      );
-      expect(component.cartProItem.selectedDates.toDate).toBe(
-        component.tomorrowDate
-      );
+      expect(component.cartProItem.selectedDates instanceof CalendarDates).toBe(true);
+      expect(component.cartProItem.selectedDates.fromDate).toBe(component.todayDate);
+      expect(component.cartProItem.selectedDates.toDate).toBe(component.tomorrowDate);
     });
   });
 
@@ -128,10 +122,7 @@ describe('CheckoutProItemComponent', () => {
     });
 
     it('should add the item to the cart', () => {
-      expect(cartService.add).toHaveBeenCalledWith(
-        component.cartProItem,
-        component.cartProItem.bumpType
-      );
+      expect(cartService.add).toHaveBeenCalledWith(component.cartProItem, component.cartProItem.bumpType);
     });
 
     it('should toggle the calendar view', () => {
@@ -139,12 +130,8 @@ describe('CheckoutProItemComponent', () => {
     });
 
     it("should update the form's values", () => {
-      expect(component.datesForm.value.fromDate).toEqual(
-        newDates.formattedFromDate
-      );
-      expect(component.datesForm.value.toDate).toEqual(
-        newDates.formattedToDate
-      );
+      expect(component.datesForm.value.fromDate).toEqual(newDates.formattedFromDate);
+      expect(component.datesForm.value.toDate).toEqual(newDates.formattedToDate);
     });
   });
 
@@ -158,10 +145,7 @@ describe('CheckoutProItemComponent', () => {
       component.cartProItem.bumpType = TYPE2;
       component.selectBump(TYPE);
 
-      expect(cartService.add).toHaveBeenCalledWith(
-        component.cartProItem,
-        component.cartProItem.bumpType
-      );
+      expect(cartService.add).toHaveBeenCalledWith(component.cartProItem, component.cartProItem.bumpType);
     });
 
     it('should remove item from cart if item is already added ', () => {
@@ -174,10 +158,7 @@ describe('CheckoutProItemComponent', () => {
     it('should change type of selected bump if selections are different', () => {
       component.selectBump(TYPE2);
 
-      expect(cartService.add).toHaveBeenCalledWith(
-        component.cartProItem,
-        component.cartProItem.bumpType
-      );
+      expect(cartService.add).toHaveBeenCalledWith(component.cartProItem, component.cartProItem.bumpType);
     });
   });
 
@@ -217,10 +198,7 @@ describe('CheckoutProItemComponent', () => {
 
       component.removeItem();
 
-      expect(cartService.remove).toHaveBeenCalledWith(
-        component.cartProItem.item.id,
-        component.cartProItem.bumpType
-      );
+      expect(cartService.remove).toHaveBeenCalledWith(component.cartProItem.item.id, component.cartProItem.bumpType);
     });
   });
 });

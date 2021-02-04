@@ -62,9 +62,7 @@ describe('ItemImagesCarouselComponent', () => {
         component.itemFlags.reserved = true;
         fixture.detectChanges();
 
-        const reservedFlag = fixture.debugElement.queryAll(
-          By.css(flagLeftClass)
-        );
+        const reservedFlag = fixture.debugElement.queryAll(By.css(flagLeftClass));
 
         expect(reservedFlag).toBeTruthy();
       });
@@ -73,9 +71,7 @@ describe('ItemImagesCarouselComponent', () => {
         component.itemFlags.expired = true;
         fixture.detectChanges();
 
-        const expiredFlag = fixture.debugElement.queryAll(
-          By.css(flagLeftClass)
-        );
+        const expiredFlag = fixture.debugElement.queryAll(By.css(flagLeftClass));
 
         expect(expiredFlag).toBeTruthy();
       });
@@ -84,9 +80,7 @@ describe('ItemImagesCarouselComponent', () => {
         component.itemFlags.onhold = true;
         fixture.detectChanges();
 
-        const inactiveFlag = fixture.debugElement.queryAll(
-          By.css(flagLeftClass)
-        );
+        const inactiveFlag = fixture.debugElement.queryAll(By.css(flagLeftClass));
 
         expect(inactiveFlag).toBeTruthy();
       });

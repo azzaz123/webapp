@@ -1,15 +1,7 @@
-import {
-  PurchasingItem,
-  Purchase,
-  AutorenewItem,
-} from '../app/core/payments/purchase.interface';
+import { PurchasingItem, Purchase, AutorenewItem } from '../app/core/payments/purchase.interface';
 import { PerksModel } from '../app/core/payments/payment.model';
 import { getMockItem } from './item.fixtures.spec';
-import {
-  COINS_PACK_ID,
-  CREDITS_PACK_ID,
-  Pack,
-} from '../app/core/payments/pack';
+import { COINS_PACK_ID, CREDITS_PACK_ID, Pack } from '../app/core/payments/pack';
 import {
   BillingInfoResponse,
   Packs,
@@ -297,10 +289,7 @@ export function createWallacoinsPacksFixture(): Packs {
     'EUR',
     'wallacoins'
   );
-  packWallacoins.calculateDiscountWithOriginalPrice(
-    +WALLACOINS_PACKS_RESPONSE[4].price,
-    +WALLACOINS_PACKS_RESPONSE[4].original_price
-  );
+  packWallacoins.calculateDiscountWithOriginalPrice(+WALLACOINS_PACKS_RESPONSE[4].price, +WALLACOINS_PACKS_RESPONSE[4].original_price);
   const packWallacoins2 = new Pack(
     WALLACOINS_PACKS_RESPONSE[0].id,
     WALLACOINS_PACKS_RESPONSE[0].benefits[COINS_PACK_ID],
@@ -308,10 +297,7 @@ export function createWallacoinsPacksFixture(): Packs {
     'EUR',
     'wallacoins'
   );
-  packWallacoins2.calculateDiscountWithOriginalPrice(
-    +WALLACOINS_PACKS_RESPONSE[0].price,
-    +WALLACOINS_PACKS_RESPONSE[0].original_price
-  );
+  packWallacoins2.calculateDiscountWithOriginalPrice(+WALLACOINS_PACKS_RESPONSE[0].price, +WALLACOINS_PACKS_RESPONSE[0].original_price);
   const packWallacoins3 = new Pack(
     WALLACOINS_PACKS_RESPONSE[3].id,
     WALLACOINS_PACKS_RESPONSE[3].benefits[COINS_PACK_ID],
@@ -319,10 +305,7 @@ export function createWallacoinsPacksFixture(): Packs {
     'EUR',
     'wallacoins'
   );
-  packWallacoins3.calculateDiscountWithOriginalPrice(
-    +WALLACOINS_PACKS_RESPONSE[3].price,
-    +WALLACOINS_PACKS_RESPONSE[3].original_price
-  );
+  packWallacoins3.calculateDiscountWithOriginalPrice(+WALLACOINS_PACKS_RESPONSE[3].price, +WALLACOINS_PACKS_RESPONSE[3].original_price);
   const packWallacoins4 = new Pack(
     WALLACOINS_PACKS_RESPONSE[1].id,
     WALLACOINS_PACKS_RESPONSE[1].benefits[COINS_PACK_ID],
@@ -330,10 +313,7 @@ export function createWallacoinsPacksFixture(): Packs {
     'EUR',
     'wallacoins'
   );
-  packWallacoins4.calculateDiscountWithOriginalPrice(
-    +WALLACOINS_PACKS_RESPONSE[1].price,
-    +WALLACOINS_PACKS_RESPONSE[1].original_price
-  );
+  packWallacoins4.calculateDiscountWithOriginalPrice(+WALLACOINS_PACKS_RESPONSE[1].price, +WALLACOINS_PACKS_RESPONSE[1].original_price);
   const packWallacoins5 = new Pack(
     WALLACOINS_PACKS_RESPONSE[5].id,
     WALLACOINS_PACKS_RESPONSE[5].benefits[COINS_PACK_ID],
@@ -341,10 +321,7 @@ export function createWallacoinsPacksFixture(): Packs {
     'EUR',
     'wallacoins'
   );
-  packWallacoins5.calculateDiscountWithOriginalPrice(
-    +WALLACOINS_PACKS_RESPONSE[5].price,
-    +WALLACOINS_PACKS_RESPONSE[5].original_price
-  );
+  packWallacoins5.calculateDiscountWithOriginalPrice(+WALLACOINS_PACKS_RESPONSE[5].price, +WALLACOINS_PACKS_RESPONSE[5].original_price);
   const packWallacoins6 = new Pack(
     WALLACOINS_PACKS_RESPONSE[2].id,
     WALLACOINS_PACKS_RESPONSE[2].benefits[COINS_PACK_ID],
@@ -352,10 +329,7 @@ export function createWallacoinsPacksFixture(): Packs {
     'EUR',
     'wallacoins'
   );
-  packWallacoins6.calculateDiscountWithOriginalPrice(
-    +WALLACOINS_PACKS_RESPONSE[2].price,
-    +WALLACOINS_PACKS_RESPONSE[2].original_price
-  );
+  packWallacoins6.calculateDiscountWithOriginalPrice(+WALLACOINS_PACKS_RESPONSE[2].price, +WALLACOINS_PACKS_RESPONSE[2].original_price);
   PACKS.wallacoins.push(packWallacoins);
   PACKS.wallacoins.push(packWallacoins2);
   PACKS.wallacoins.push(packWallacoins3);
@@ -382,10 +356,7 @@ export function createWallacreditsPacksFixture(): Packs {
     'EUR',
     'wallacredits'
   );
-  pack1.calculateDiscountWithOriginalPrice(
-    +WALLACREDITS_PACKS_RESPONSE[0].price,
-    +WALLACREDITS_PACKS_RESPONSE[0].original_price
-  );
+  pack1.calculateDiscountWithOriginalPrice(+WALLACREDITS_PACKS_RESPONSE[0].price, +WALLACREDITS_PACKS_RESPONSE[0].original_price);
 
   const pack2 = new Pack(
     WALLACREDITS_PACKS_RESPONSE[1].id,
@@ -394,10 +365,7 @@ export function createWallacreditsPacksFixture(): Packs {
     'EUR',
     'wallacredits'
   );
-  pack2.calculateDiscountWithOriginalPrice(
-    +WALLACREDITS_PACKS_RESPONSE[1].price,
-    +WALLACREDITS_PACKS_RESPONSE[1].original_price
-  );
+  pack2.calculateDiscountWithOriginalPrice(+WALLACREDITS_PACKS_RESPONSE[1].price, +WALLACREDITS_PACKS_RESPONSE[1].original_price);
 
   const pack3 = new Pack(
     WALLACREDITS_PACKS_RESPONSE[2].id,
@@ -406,10 +374,7 @@ export function createWallacreditsPacksFixture(): Packs {
     'EUR',
     'wallacredits'
   );
-  pack3.calculateDiscountWithOriginalPrice(
-    +WALLACREDITS_PACKS_RESPONSE[2].price,
-    +WALLACREDITS_PACKS_RESPONSE[2].original_price
-  );
+  pack3.calculateDiscountWithOriginalPrice(+WALLACREDITS_PACKS_RESPONSE[2].price, +WALLACREDITS_PACKS_RESPONSE[2].original_price);
 
   const pack4 = new Pack(
     WALLACREDITS_PACKS_RESPONSE[3].id,
@@ -418,10 +383,7 @@ export function createWallacreditsPacksFixture(): Packs {
     'EUR',
     'wallacredits'
   );
-  pack4.calculateDiscountWithOriginalPrice(
-    +WALLACREDITS_PACKS_RESPONSE[3].price,
-    +WALLACREDITS_PACKS_RESPONSE[3].original_price
-  );
+  pack4.calculateDiscountWithOriginalPrice(+WALLACREDITS_PACKS_RESPONSE[3].price, +WALLACREDITS_PACKS_RESPONSE[3].original_price);
 
   const pack5 = new Pack(
     WALLACREDITS_PACKS_RESPONSE[4].id,
@@ -430,10 +392,7 @@ export function createWallacreditsPacksFixture(): Packs {
     'EUR',
     'wallacredits'
   );
-  pack5.calculateDiscountWithOriginalPrice(
-    +WALLACREDITS_PACKS_RESPONSE[4].price,
-    +WALLACREDITS_PACKS_RESPONSE[4].original_price
-  );
+  pack5.calculateDiscountWithOriginalPrice(+WALLACREDITS_PACKS_RESPONSE[4].price, +WALLACREDITS_PACKS_RESPONSE[4].original_price);
 
   const pack6 = new Pack(
     WALLACREDITS_PACKS_RESPONSE[5].id,
@@ -442,10 +401,7 @@ export function createWallacreditsPacksFixture(): Packs {
     'EUR',
     'wallacredits'
   );
-  pack6.calculateDiscountWithOriginalPrice(
-    +WALLACREDITS_PACKS_RESPONSE[5].price,
-    +WALLACREDITS_PACKS_RESPONSE[5].original_price
-  );
+  pack6.calculateDiscountWithOriginalPrice(+WALLACREDITS_PACKS_RESPONSE[5].price, +WALLACREDITS_PACKS_RESPONSE[5].original_price);
 
   PACKS.wallacredits.push(pack1, pack2, pack3, pack4, pack5, pack6);
 
@@ -505,24 +461,15 @@ export const PRODUCTS_RESPONSE_PACKS: ProductResponse[] = [
 export const PREPARED_PACKS: Array<any> = [
   {
     quantity: 1,
-    packs: [
-      createPacksFixture().cityBump[0],
-      createPacksFixture().countryBump[0],
-    ],
+    packs: [createPacksFixture().cityBump[0], createPacksFixture().countryBump[0]],
   },
   {
     quantity: 5,
-    packs: [
-      createPacksFixture().cityBump[1],
-      createPacksFixture().countryBump[1],
-    ],
+    packs: [createPacksFixture().cityBump[1], createPacksFixture().countryBump[1]],
   },
   {
     quantity: 15,
-    packs: [
-      createPacksFixture().cityBump[2],
-      createPacksFixture().countryBump[2],
-    ],
+    packs: [createPacksFixture().cityBump[2], createPacksFixture().countryBump[2]],
   },
 ];
 
@@ -656,8 +603,7 @@ export const PAYMENT_METHOD_DATA: PaymentMethodResponse = {
 export const SETUP_INTENT_DATA: SetupIntentResponse = {
   setupIntent: {
     cancellation_reason: null,
-    client_secret:
-      'seti_1GuJFAKhcEtiGcVWSHkYzyrN_secret_HTFknLSUTusQScMoXWqbx2X7IHuPSMa',
+    client_secret: 'seti_1GuJFAKhcEtiGcVWSHkYzyrN_secret_HTFknLSUTusQScMoXWqbx2X7IHuPSMa',
     created: 1592231100,
     description: null,
     id: 'seti_1GuJFAKhcEtiGcVWSHkYzyrN',

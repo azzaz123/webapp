@@ -1,10 +1,7 @@
 import { Component } from '@angular/core';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { I18nService } from '@core/i18n/i18n.service';
-import {
-  SubscriptionsResponse,
-  SUBSCRIPTION_CATEGORIES,
-} from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -37,31 +34,24 @@ export class CancelSubscriptionModalComponent {
   public cancelSubscription() {
     this.loading = true;
     this.trackCancelSubscription();
-    this.subscriptionsService
-      .cancelSubscription(this.subscription.selected_tier_id)
-      .subscribe((response) => {
-        if (response.status === 202) {
-          this.toastService.show({
-            text:
-              this.i18n.getTranslations('cancelSubscriptionSuccessTitle') +
-              ' ' +
-              this.i18n.getTranslations('cancelSubscriptionSuccessBody'),
-            type: 'success',
-          });
-          this.loading = false;
-          this.activeModal.close(ModalStatuses.SUCCESS);
-        } else {
-          this.loading = false;
-          this.toastService.show({
-            text:
-              this.i18n.getTranslations('cancelSubscriptionErrorTitle') +
-              ' ' +
-              this.i18n.getTranslations('cancelSubscriptionErrorBody'),
-            type: 'error',
-          });
-          this.activeModal.close(ModalStatuses.FAIL);
-        }
-      });
+    this.subscriptionsService.cancelSubscription(this.subscription.selected_tier_id).subscribe((response) => {
+      if (response.status === 202) {
+        this.toastService.show({
+          text:
+            this.i18n.getTranslations('cancelSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('cancelSubscriptionSuccessBody'),
+          type: 'success',
+        });
+        this.loading = false;
+        this.activeModal.close(ModalStatuses.SUCCESS);
+      } else {
+        this.loading = false;
+        this.toastService.show({
+          text: this.i18n.getTranslations('cancelSubscriptionErrorTitle') + ' ' + this.i18n.getTranslations('cancelSubscriptionErrorBody'),
+          type: 'error',
+        });
+        this.activeModal.close(ModalStatuses.FAIL);
+      }
+    });
   }
 
   private trackCancelSubscription() {

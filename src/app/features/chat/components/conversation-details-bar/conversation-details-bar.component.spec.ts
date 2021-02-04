@@ -1,11 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { ItemService } from '@core/item/item.service';
@@ -99,12 +94,7 @@ describe('ConversationDetailsBarComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        SharedModule,
-        NgbModule,
-        NgxPermissionsModule.forRoot(),
-      ],
+      imports: [HttpClientTestingModule, SharedModule, NgbModule, NgxPermissionsModule.forRoot()],
       declarations: [ConversationDetailsBarComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
@@ -197,13 +187,10 @@ describe('ConversationDetailsBarComponent', () => {
       component.reportUserAction();
       tick();
 
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.USER_PROFILE_REPPORTED,
-        {
-          user_id: 'l1kmzn82zn3p',
-          reason_id: 1,
-        }
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.USER_PROFILE_REPPORTED, {
+        user_id: 'l1kmzn82zn3p',
+        reason_id: 1,
+      });
     }));
   });
 
@@ -226,11 +213,7 @@ describe('ConversationDetailsBarComponent', () => {
         component.reportListingAction();
         tick();
 
-        expect(itemService.reportListing).toHaveBeenCalledWith(
-          ITEM_ID,
-          'Report Listing Reason',
-          1
-        );
+        expect(itemService.reportListing).toHaveBeenCalledWith(ITEM_ID, 'Report Listing Reason', 1);
         expect(toastService.show).toHaveBeenCalledWith({
           text: 'The listing has been reported correctly',
           type: 'success',
@@ -246,13 +229,10 @@ describe('ConversationDetailsBarComponent', () => {
         component.reportListingAction();
         tick();
 
-        expect(trackingService.track).toHaveBeenCalledWith(
-          TrackingService.PRODUCT_REPPORTED,
-          {
-            product_id: ITEM_ID,
-            reason_id: 1,
-          }
-        );
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_REPPORTED, {
+          product_id: ITEM_ID,
+          reason_id: 1,
+        });
       }));
     });
 
@@ -290,12 +270,8 @@ describe('ConversationDetailsBarComponent', () => {
       component.blockUserAction();
       tick();
 
-      expect(blockUserService.blockUser).toHaveBeenCalledWith(
-        component.currentConversation.user.id
-      );
-      expect(blockUserXmppService.blockUser).toHaveBeenCalledWith(
-        component.currentConversation.user
-      );
+      expect(blockUserService.blockUser).toHaveBeenCalledWith(component.currentConversation.user.id);
+      expect(blockUserXmppService.blockUser).toHaveBeenCalledWith(component.currentConversation.user);
       expect(toastService.show).toHaveBeenCalledWith({
         text: 'The user has been blocked',
         type: 'success',
@@ -319,9 +295,7 @@ describe('ConversationDetailsBarComponent', () => {
       component.blockUserAction();
       tick();
 
-      expect(blockUserService.blockUser).toHaveBeenCalledWith(
-        component.currentConversation.user.id
-      );
+      expect(blockUserService.blockUser).toHaveBeenCalledWith(component.currentConversation.user.id);
       expect(blockUserXmppService.blockUser).not.toHaveBeenCalled();
       expect(toastService.show).not.toHaveBeenCalled();
     }));
@@ -343,12 +317,8 @@ describe('ConversationDetailsBarComponent', () => {
       component.unblockUserAction();
       tick();
 
-      expect(blockUserService.unblockUser).toHaveBeenCalledWith(
-        component.currentConversation.user.id
-      );
-      expect(blockUserXmppService.unblockUser).toHaveBeenCalledWith(
-        component.currentConversation.user
-      );
+      expect(blockUserService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user.id);
+      expect(blockUserXmppService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user);
       expect(toastService.show).toHaveBeenCalledWith({
         text: 'The user has been unblocked',
         type: 'success',
@@ -372,9 +342,7 @@ describe('ConversationDetailsBarComponent', () => {
       component.unblockUserAction();
       tick();
 
-      expect(blockUserService.unblockUser).toHaveBeenCalledWith(
-        component.currentConversation.user.id
-      );
+      expect(blockUserService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user.id);
       expect(blockUserXmppService.unblockUser).not.toHaveBeenCalled();
       expect(toastService.show).not.toHaveBeenCalled();
     }));

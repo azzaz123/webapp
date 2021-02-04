@@ -21,10 +21,7 @@ export class ReviewsComponent implements OnInit {
   public userScore: number;
   public numberOfReviews: number;
 
-  constructor(
-    private myReviewsService: UserReviewService,
-    private userService: UserService
-  ) {}
+  constructor(private myReviewsService: UserReviewService, private userService: UserService) {}
 
   ngOnInit() {
     this.getUserScore();
@@ -42,15 +39,13 @@ export class ReviewsComponent implements OnInit {
 
   public getReviews(append?: boolean) {
     this.loading = true;
-    this.myReviewsService
-      .getPaginationReviews(this.reviews.length)
-      .subscribe((reviewsData: ReviewsData) => {
-        const reviews = reviewsData.data;
-        this.init = reviewsData.init;
-        this.reviews = append ? this.reviews.concat(reviews) : reviews;
-        this.loading = false;
-        this.end = !this.init;
-      });
+    this.myReviewsService.getPaginationReviews(this.reviews.length).subscribe((reviewsData: ReviewsData) => {
+      const reviews = reviewsData.data;
+      this.init = reviewsData.init;
+      this.reviews = append ? this.reviews.concat(reviews) : reviews;
+      this.loading = false;
+      this.end = !this.init;
+    });
   }
 
   public getNumberOfReviews() {

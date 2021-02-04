@@ -1,10 +1,6 @@
 import { Component } from '@angular/core';
 import { I18nService } from '@core/i18n/i18n.service';
-import {
-  FOOTER_APPS,
-  FOOTER_LINKS,
-  FOOTER_SOCIAL,
-} from './constants/footer-constants';
+import { FOOTER_APPS, FOOTER_LINKS, FOOTER_SOCIAL } from './constants/footer-constants';
 import { FooterIcon, FooterLinkSection } from './interfaces/footer.interface';
 
 @Component({
@@ -19,12 +15,8 @@ export class FooterComponent {
   public readonly FOOTER_SOCIAL: FooterIcon[] = FOOTER_SOCIAL;
 
   constructor(private i18nService: I18nService) {
-    this.FOOTER_LINKS = FOOTER_LINKS.filter(
-      (footerLinkSection: FooterLinkSection) => {
-        return !(footerLinkSection.excludedLanguages || []).includes(
-          this.i18nService.locale
-        );
-      }
-    );
+    this.FOOTER_LINKS = FOOTER_LINKS.filter((footerLinkSection: FooterLinkSection) => {
+      return !(footerLinkSection.excludedLanguages || []).includes(this.i18nService.locale);
+    });
   }
 }

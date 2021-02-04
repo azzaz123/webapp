@@ -1,12 +1,7 @@
 /* tslint:disable:no-unused-variable */
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { EventService } from '@core/event/event.service';
@@ -17,15 +12,9 @@ import { TrackingService } from '@core/tracking/tracking.service';
 import { InboxConversation } from '@features/chat/core/model';
 
 import { MOCK_CONVERSATION } from '@fixtures/conversation.fixtures.spec';
-import {
-  CREATE_MOCK_INBOX_CONVERSATION,
-  SECOND_MOCK_INBOX_CONVERSATION,
-} from '@fixtures/inbox.fixtures.spec';
+import { CREATE_MOCK_INBOX_CONVERSATION, SECOND_MOCK_INBOX_CONVERSATION } from '@fixtures/inbox.fixtures.spec';
 import { RealTimeServiceMock } from '@fixtures/real-time.fixtures.spec';
-import {
-  DeviceDetectorServiceMock,
-  MockRemoteConsoleService,
-} from '@fixtures/remote-console.fixtures.spec';
+import { DeviceDetectorServiceMock, MockRemoteConsoleService } from '@fixtures/remote-console.fixtures.spec';
 import { USER_ID } from '@fixtures/user.fixtures.spec';
 import { AutosizeModule } from 'ngx-autosize';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -115,17 +104,11 @@ describe('Component: Input', () => {
       component.sendMessage(EVENT);
 
       expect(EVENT.preventDefault).toHaveBeenCalled();
-      expect(realTimeService.sendMessage).toHaveBeenCalledWith(
-        conversation,
-        TEXT
-      );
+      expect(realTimeService.sendMessage).toHaveBeenCalledWith(conversation, TEXT);
       expect(component.message).toBe('');
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.SEND_BUTTON,
-        {
-          thread_id: conversation.id,
-        }
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.SEND_BUTTON, {
+        thread_id: conversation.id,
+      });
       expect(trackingService.track).toHaveBeenCalledTimes(1);
       expect(component.clickSentMessage.emit).toHaveBeenCalledWith(MESSAGE_ID);
     });
@@ -136,17 +119,11 @@ describe('Component: Input', () => {
       component.sendMessage(EVENT);
 
       expect(EVENT.preventDefault).toHaveBeenCalled();
-      expect(realTimeService.sendMessage).toHaveBeenCalledWith(
-        component.currentConversation,
-        TEXT
-      );
+      expect(realTimeService.sendMessage).toHaveBeenCalledWith(component.currentConversation, TEXT);
       expect(component.message).toBe('');
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.SEND_BUTTON,
-        {
-          thread_id: conversation.id,
-        }
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.SEND_BUTTON, {
+        thread_id: conversation.id,
+      });
       expect(trackingService.track).toHaveBeenCalledTimes(1);
       expect(component.clickSentMessage.emit).toHaveBeenCalledWith(MESSAGE_ID);
     });
@@ -200,8 +177,7 @@ describe('Component: Input', () => {
 
     it('should NOT call the send method and NOT track the SEND_BUTTON event if message contains correct and wrong link at the same time', () => {
       component.isUserBlocked = false;
-      component.message =
-        'Can U access to my webpage outside https://wallapop.com that is www.notAllowedURL.com';
+      component.message = 'Can U access to my webpage outside https://wallapop.com that is www.notAllowedURL.com';
 
       component.sendMessage(EVENT);
       expect(EVENT.preventDefault).toHaveBeenCalled();
@@ -248,18 +224,14 @@ describe('Component: Input', () => {
         component.ngOnChanges();
         tick(500);
 
-        expect(
-          component.messageArea.nativeElement.focus
-        ).not.toHaveBeenCalled();
+        expect(component.messageArea.nativeElement.focus).not.toHaveBeenCalled();
       }));
 
       it('should not focus the message area', fakeAsync(() => {
         component.ngAfterViewInit();
         tick(500);
 
-        expect(
-          component.messageArea.nativeElement.focus
-        ).not.toHaveBeenCalled();
+        expect(component.messageArea.nativeElement.focus).not.toHaveBeenCalled();
       }));
     });
 

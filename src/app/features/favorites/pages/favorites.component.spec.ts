@@ -1,10 +1,5 @@
 import { of } from 'rxjs';
-import {
-  ComponentFixture,
-  TestBed,
-  fakeAsync,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, waitForAsync } from '@angular/core/testing';
 import { ItemService } from '@core/item/item.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FavoritesComponent } from './favorites.component';
@@ -76,10 +71,7 @@ describe('FavoritesComponent', () => {
       spyOn(component, 'getItems').and.callThrough();
       spyOn(component, 'getProfiles').and.callThrough();
       itemServiceSpy = spyOn(itemService, 'myFavorites').and.callThrough();
-      profileServiceSpy = spyOn(
-        profileService,
-        'myFavorites'
-      ).and.callThrough();
+      profileServiceSpy = spyOn(profileService, 'myFavorites').and.callThrough();
     }));
 
     it('should call myFavorites when component init', () => {
@@ -124,9 +116,7 @@ describe('FavoritesComponent', () => {
     });
 
     it('should set end true if no init', () => {
-      itemServiceSpy.and.returnValue(
-        of({ data: [MOCK_ITEM, MOCK_ITEM], init: null })
-      );
+      itemServiceSpy.and.returnValue(of({ data: [MOCK_ITEM, MOCK_ITEM], init: null }));
       component.getItems();
 
       expect(component['end']).toBeTruthy();
@@ -135,10 +125,7 @@ describe('FavoritesComponent', () => {
 
   describe('filterByStatus', () => {
     beforeEach(() => {
-      profileServiceSpy = spyOn(
-        profileService,
-        'myFavorites'
-      ).and.callThrough();
+      profileServiceSpy = spyOn(profileService, 'myFavorites').and.callThrough();
       itemServiceSpy = spyOn(itemService, 'myFavorites').and.callThrough();
     });
 
@@ -167,10 +154,7 @@ describe('FavoritesComponent', () => {
 
   describe('getProfiles', () => {
     beforeEach(() => {
-      profileServiceSpy = spyOn(
-        profileService,
-        'myFavorites'
-      ).and.callThrough();
+      profileServiceSpy = spyOn(profileService, 'myFavorites').and.callThrough();
       itemServiceSpy = spyOn(itemService, 'myFavorites').and.callThrough();
     });
 
@@ -199,11 +183,7 @@ describe('FavoritesComponent', () => {
       component.profiles = [MOCK_PROFILE];
       component.getProfiles(true);
 
-      expect(component.profiles).toEqual([
-        MOCK_PROFILE,
-        MOCK_PROFILE,
-        MOCK_PROFILE,
-      ]);
+      expect(component.profiles).toEqual([MOCK_PROFILE, MOCK_PROFILE, MOCK_PROFILE]);
     });
 
     it('should set loading to false', () => {
@@ -214,9 +194,7 @@ describe('FavoritesComponent', () => {
     });
 
     it('should set end true if no init', () => {
-      profileServiceSpy.and.returnValue(
-        of({ data: [MOCK_PROFILE, MOCK_PROFILE], init: null })
-      );
+      profileServiceSpy.and.returnValue(of({ data: [MOCK_PROFILE, MOCK_PROFILE], init: null }));
       component.getProfiles();
 
       expect(component['end']).toBeTruthy();
@@ -283,10 +261,7 @@ describe('FavoritesComponent', () => {
 
   describe('removeProfile', () => {
     it('should remove the profile', () => {
-      const [profile1, profile2] = (component.profiles = [
-        MOCK_PROFILE,
-        MOCK_PROFILE,
-      ]);
+      const [profile1, profile2] = (component.profiles = [MOCK_PROFILE, MOCK_PROFILE]);
       const NUMBEROFFAVORITES = 1;
 
       component.numberOfFavorites = NUMBEROFFAVORITES;
@@ -313,9 +288,7 @@ describe('FavoritesComponent', () => {
       component.getNumberOfFavorites();
 
       expect(userService.getStats).toHaveBeenCalled();
-      expect(component.numberOfFavorites).toEqual(
-        MOCK_USER_STATS.counters.favorites
-      );
+      expect(component.numberOfFavorites).toEqual(MOCK_USER_STATS.counters.favorites);
     });
   });
 });

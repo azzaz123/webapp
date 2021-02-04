@@ -3,26 +3,12 @@ import {
   TOKEN_SIGNATURE_HEADER_NAME,
   TOKEN_TIMESTAMP_HEADER_NAME,
 } from '@core/http/interceptors/token.interceptor';
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { User } from '@core/user/user';
 import { ErrorsService } from '@core/errors/errors.service';
 import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
-import {
-  IMAGE_TYPE,
-  NgUploaderOptions,
-  OUTPUT_TYPE,
-  UploadFile,
-  UploadInput,
-  UploadOutput,
-} from '../../uploader/upload.interface';
+import { IMAGE_TYPE, NgUploaderOptions, OUTPUT_TYPE, UploadFile, UploadInput, UploadOutput } from '../../uploader/upload.interface';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { UploaderService } from '@shared/uploader/uploader.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -63,13 +49,11 @@ export class CoverUploadComponent implements OnInit, OnDestroy {
   }
 
   private subscribeUploadEvents(): void {
-    this.eventsSubscription = this.uploaderService.serviceEvents$.subscribe(
-      (event: UploadOutput) => {
-        if (event.imageType === this.imageType) {
-          this.onUploadOutput(event);
-        }
+    this.eventsSubscription = this.uploaderService.serviceEvents$.subscribe((event: UploadOutput) => {
+      if (event.imageType === this.imageType) {
+        this.onUploadOutput(event);
       }
-    );
+    });
   }
 
   public onUploadOutput(output: UploadOutput): void {
@@ -92,11 +76,7 @@ export class CoverUploadComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const url = 'api/v3/users/me/cover-image';
     const timestamp = new Date().getTime();
-    const signature = this.accesTokenService.getTokenSignature(
-      url,
-      'POST',
-      timestamp
-    );
+    const signature = this.accesTokenService.getTokenSignature(url, 'POST', timestamp);
     const headers = {
       [TOKEN_AUTHORIZATION_HEADER_NAME]: `Bearer ${this.accesTokenService.accessToken}`,
       [TOKEN_SIGNATURE_HEADER_NAME]: signature,

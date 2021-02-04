@@ -25,9 +25,7 @@ export class FeatureflagService {
   constructor(private http: HttpClient) {}
 
   public getFlag(name: FEATURE_FLAGS_ENUM, cache = true): Observable<boolean> {
-    const storedFeatureFlag = this.storedFeatureFlags.find(
-      (sff) => sff.name === name
-    );
+    const storedFeatureFlag = this.storedFeatureFlags.find((sff) => sff.name === name);
 
     if (storedFeatureFlag && cache) {
       return of(storedFeatureFlag).pipe(map((sff) => sff.isActive));
@@ -41,12 +39,8 @@ export class FeatureflagService {
         })
         .pipe(
           map((response) => {
-            const featureFlag = response[0]
-              ? { name, isActive: response[0].active }
-              : { name, isActive: false };
-            const alreadyStored = this.storedFeatureFlags.find(
-              (sff) => sff.name === name
-            );
+            const featureFlag = response[0] ? { name, isActive: response[0].active } : { name, isActive: false };
+            const alreadyStored = this.storedFeatureFlags.find((sff) => sff.name === name);
             if (!alreadyStored) {
               this.storedFeatureFlags.push(featureFlag);
             }

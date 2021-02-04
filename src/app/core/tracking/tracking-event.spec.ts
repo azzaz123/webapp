@@ -18,13 +18,7 @@ describe('TrackingEvent', () => {
   });
   describe('setDeviceInfo', () => {
     it('should set the deviceInfo with the given parameters', () => {
-      TRACKING_EVENT.setDeviceInfo(
-        os,
-        platform,
-        deviceAccessTokenId,
-        manufacturer,
-        model
-      );
+      TRACKING_EVENT.setDeviceInfo(os, platform, deviceAccessTokenId, manufacturer, model);
       expect(TRACKING_EVENT.sessions[0].device).toEqual({
         type: type,
         manufacturer: manufacturer,
@@ -44,9 +38,7 @@ describe('TrackingEvent', () => {
 
       TRACKING_EVENT.setAttributes(attributes);
 
-      expect(TRACKING_EVENT.sessions[0].events[0].attributes).toEqual(
-        attributes
-      );
+      expect(TRACKING_EVENT.sessions[0].events[0].attributes).toEqual(attributes);
     });
   });
   describe('setSessionId', () => {

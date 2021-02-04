@@ -20,10 +20,7 @@ import {
   SCREEN_NAME,
 } from '../../../tests/profile.fixtures.spec';
 import { environment } from '../../../environments/environment';
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 describe('Service: Profile', () => {
   let service: ProfileService;
@@ -99,9 +96,7 @@ describe('Service: Profile', () => {
           expect(data).toEqual(MOCK_PROFILE);
         });
 
-        const req = httpTestingController.expectOne(
-          `${environment.baseUrl}${service['API_URL']}/${PROFILE_ID}`
-        );
+        const req = httpTestingController.expectOne(`${environment.baseUrl}${service['API_URL']}/${PROFILE_ID}`);
         req.flush(PROFILE_DATA);
         expect(req.request.method).toEqual('GET');
       }));
@@ -115,9 +110,7 @@ describe('Service: Profile', () => {
 
       service.favoriteItem(USER_ID, FAVOURITE).subscribe();
 
-      const req = httpTestingController.expectOne(
-        `${environment.baseUrl}${service['API_URL']}/${USER_ID}/favorite`
-      );
+      const req = httpTestingController.expectOne(`${environment.baseUrl}${service['API_URL']}/${USER_ID}/favorite`);
 
       expect(req.request.method).toEqual('PUT');
       expect(req.request.body).toEqual({ favorited: FAVOURITE });
@@ -130,9 +123,7 @@ describe('Service: Profile', () => {
 
       service.myFavorites(INIT).subscribe();
 
-      const req = httpTestingController.expectOne(
-        `${environment.baseUrl}${service['API_URL']}/me/users/favorites?init=${INIT}`
-      );
+      const req = httpTestingController.expectOne(`${environment.baseUrl}${service['API_URL']}/me/users/favorites?init=${INIT}`);
       req.flush(MOCK_PROFILE);
       expect(req.request.method).toEqual('GET');
       expect(req.request.params.get('init')).toEqual(INIT.toString());

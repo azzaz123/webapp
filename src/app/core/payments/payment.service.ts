@@ -43,56 +43,34 @@ export class PaymentService {
 
   constructor(private http: HttpClient) {}
 
-  public getBillingInfo(
-    cache: boolean = true
-  ): Observable<BillingInfoResponse> {
+  public getBillingInfo(cache: boolean = true): Observable<BillingInfoResponse> {
     if (cache && this.billingInfo) {
       return of(this.billingInfo);
     }
 
-    return this.http
-      .get<BillingInfoResponse>(
-        `${environment.baseUrl}${PAYMENTS_API_URL}/billing-info/me`
-      )
-      .pipe(
-        map((billingInfo: BillingInfoResponse) => {
-          this.billingInfo = billingInfo;
-          return this.billingInfo;
-        })
-      );
+    return this.http.get<BillingInfoResponse>(`${environment.baseUrl}${PAYMENTS_API_URL}/billing-info/me`).pipe(
+      map((billingInfo: BillingInfoResponse) => {
+        this.billingInfo = billingInfo;
+        return this.billingInfo;
+      })
+    );
   }
 
   public updateBillingInfo(data: any): Observable<any> {
-    return this.http.put(
-      `${environment.baseUrl}${PAYMENTS_API_URL}/billing-info`,
-      data
-    );
+    return this.http.put(`${environment.baseUrl}${PAYMENTS_API_URL}/billing-info`, data);
   }
 
-  public paymentIntents(
-    orderId: string,
-    paymentId: string
-  ): Observable<PaymentIntents> {
-    return this.http.post<PaymentIntents>(
-      `${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_intents/${paymentId}`,
-      {
-        order_id: orderId,
-      }
-    );
+  public paymentIntents(orderId: string, paymentId: string): Observable<PaymentIntents> {
+    return this.http.post<PaymentIntents>(`${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_intents/${paymentId}`, {
+      order_id: orderId,
+    });
   }
 
-  public paymentIntentsConfirm(
-    orderId: string,
-    paymentId: string,
-    paymentMethodId: string
-  ): Observable<PaymentIntents> {
-    return this.http.post<PaymentIntents>(
-      `${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_intents/${paymentId}/confirm`,
-      {
-        order_id: orderId,
-        payment_method_id: paymentMethodId,
-      }
-    );
+  public paymentIntentsConfirm(orderId: string, paymentId: string, paymentMethodId: string): Observable<PaymentIntents> {
+    return this.http.post<PaymentIntents>(`${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_intents/${paymentId}/confirm`, {
+      order_id: orderId,
+      payment_method_id: paymentMethodId,
+    });
   }
 
   public getPacks(product?: Products): Observable<Packs> {
@@ -102,14 +80,12 @@ export class PaymentService {
         products: Object.keys(product)[0],
       };
     }
-    return this.http
-      .get(`${environment.baseUrl}${PAYMENTS_API_URL}/packs`, { params })
-      .pipe(
-        flatMap((packs: PackResponse[]) => {
-          const sortedPacks = this.sortPacksByQuantity(packs);
-          return this.preparePacks(sortedPacks, product);
-        })
-      );
+    return this.http.get(`${environment.baseUrl}${PAYMENTS_API_URL}/packs`, { params }).pipe(
+      flatMap((packs: PackResponse[]) => {
+        const sortedPacks = this.sortPacksByQuantity(packs);
+        return this.preparePacks(sortedPacks, product);
+      })
+    );
   }
 
   public getCreditInfo(cache: boolean = true): Observable<CreditInfo> {
@@ -141,21 +117,16 @@ export class PaymentService {
   }
 
   public getSubscriptionPacks(): Observable<Packs> {
-    return this.http
-      .get(`${environment.baseUrl}${PAYMENTS_API_URL}/subscription/packs`)
-      .pipe(
-        flatMap((packs: PackResponse[]) => {
-          const sortedPacks = this.sortPacksByQuantity(packs);
-          return this.preparePacks(sortedPacks);
-        })
-      );
+    return this.http.get(`${environment.baseUrl}${PAYMENTS_API_URL}/subscription/packs`).pipe(
+      flatMap((packs: PackResponse[]) => {
+        const sortedPacks = this.sortPacksByQuantity(packs);
+        return this.preparePacks(sortedPacks);
+      })
+    );
   }
 
   public orderExtrasProPack(order: OrderProExtras): Observable<any> {
-    return this.http.post(
-      `${environment.baseUrl}${PAYMENTS_API_URL}/c2b/pack-order/create`,
-      order
-    );
+    return this.http.post(`${environment.baseUrl}${PAYMENTS_API_URL}/c2b/pack-order/create`, order);
   }
 
   public getPerks(cache: boolean = true): Observable<PerksModel> {
@@ -164,57 +135,51 @@ export class PaymentService {
     }
     const response = new PerksModel();
 
-    return this.http
-      .get(`${environment.baseUrl}${PAYMENTS_API_URL}/perks/me`)
-      .pipe(
-        flatMap((perks: PerkResponse[]) => {
-          return this.getProducts().pipe(
-            map((products: Products) => {
-              perks.forEach((perk: PerkResponse) => {
-                if (products[perk.product_id] != null) {
-                  const name: string = products[perk.product_id].name;
-                  if (name === 'NATIONAL_BUMP') {
-                    if (perk.subscription_id !== null) {
-                      response.setNationalSubscription(perk);
-                    } else {
-                      response.setNationalExtra(perk);
-                    }
-                  } else if (name === 'BUMP') {
-                    if (perk.subscription_id !== null) {
-                      response.setBumpSubscription(perk);
-                    } else {
-                      response.setBumpExtra(perk);
-                    }
-                  } else if (name === 'LISTINGS') {
-                    if (perk.subscription_id !== null) {
-                      response.setListingSubscription(perk);
-                    }
-                  } else if (name === 'WALLACOINS') {
-                    response.setWallacoins(perk);
-                  } else if (name === 'WALLACREDITS') {
-                    response.setWallacredits(perk);
+    return this.http.get(`${environment.baseUrl}${PAYMENTS_API_URL}/perks/me`).pipe(
+      flatMap((perks: PerkResponse[]) => {
+        return this.getProducts().pipe(
+          map((products: Products) => {
+            perks.forEach((perk: PerkResponse) => {
+              if (products[perk.product_id] != null) {
+                const name: string = products[perk.product_id].name;
+                if (name === 'NATIONAL_BUMP') {
+                  if (perk.subscription_id !== null) {
+                    response.setNationalSubscription(perk);
+                  } else {
+                    response.setNationalExtra(perk);
                   }
+                } else if (name === 'BUMP') {
+                  if (perk.subscription_id !== null) {
+                    response.setBumpSubscription(perk);
+                  } else {
+                    response.setBumpExtra(perk);
+                  }
+                } else if (name === 'LISTINGS') {
+                  if (perk.subscription_id !== null) {
+                    response.setListingSubscription(perk);
+                  }
+                } else if (name === 'WALLACOINS') {
+                  response.setWallacoins(perk);
+                } else if (name === 'WALLACREDITS') {
+                  response.setWallacredits(perk);
                 }
-              });
-              this.perksModel = response;
-              return response;
-            }),
-            catchError(() => of(response))
-          );
-        })
-      );
+              }
+            });
+            this.perksModel = response;
+            return response;
+          }),
+          catchError(() => of(response))
+        );
+      })
+    );
   }
 
   public getStatus(): Observable<ScheduledStatus> {
-    return this.http.get<ScheduledStatus>(
-      `${environment.baseUrl}${PROTOOL_API_URL}/status`
-    );
+    return this.http.get<ScheduledStatus>(`${environment.baseUrl}${PROTOOL_API_URL}/status`);
   }
 
   public deleteBillingInfo(billingInfoId: string): Observable<any> {
-    return this.http.delete(
-      `${environment.baseUrl}${PAYMENTS_API_URL}/billing-info/${billingInfoId}`
-    );
+    return this.http.delete(`${environment.baseUrl}${PAYMENTS_API_URL}/billing-info/${billingInfoId}`);
   }
 
   public deleteCache() {
@@ -243,36 +208,15 @@ export class PaymentService {
         });
         sortedPacks.forEach((pack: PackResponse) => {
           const benefitsId: string = Object.keys(pack.benefits)[0];
-          const name: string = PACKS_TYPES[products[benefitsId].name]
-            ? PACKS_TYPES[products[benefitsId].name]
-            : '';
+          const name: string = PACKS_TYPES[products[benefitsId].name] ? PACKS_TYPES[products[benefitsId].name] : '';
           const baseQuantity = mins[benefitsId];
-          const responsePrice: number =
-            packsResponse[name][0] == null
-              ? +pack.price
-              : packsResponse[name][0].price;
-          const basePrice: number =
-            (pack.benefits[benefitsId] === baseQuantity
-              ? +pack.price
-              : responsePrice) / baseQuantity;
-          const formattedPack: Pack = new Pack(
-            pack.id,
-            pack.benefits[benefitsId],
-            +pack.price,
-            pack.currency,
-            name
-          );
+          const responsePrice: number = packsResponse[name][0] == null ? +pack.price : packsResponse[name][0].price;
+          const basePrice: number = (pack.benefits[benefitsId] === baseQuantity ? +pack.price : responsePrice) / baseQuantity;
+          const formattedPack: Pack = new Pack(pack.id, pack.benefits[benefitsId], +pack.price, pack.currency, name);
           if (pack.original_price) {
-            formattedPack.calculateDiscountWithOriginalPrice(
-              +pack.price,
-              +pack.original_price
-            );
+            formattedPack.calculateDiscountWithOriginalPrice(+pack.price, +pack.original_price);
           } else {
-            formattedPack.calculateDiscount(
-              pack.price,
-              pack.benefits[benefitsId],
-              basePrice
-            );
+            formattedPack.calculateDiscount(pack.price, pack.benefits[benefitsId], basePrice);
           }
 
           if (products[benefitsId].name === 'NATIONAL_BUMP') {
@@ -305,13 +249,11 @@ export class PaymentService {
     if (this.products) {
       return of(this.products);
     }
-    return this.http
-      .get(`${environment.baseUrl}${PAYMENTS_API_URL}/products`)
-      .pipe(
-        map((products: ProductResponse[]) => {
-          this.products = keyBy(products, 'id');
-          return this.products;
-        })
-      );
+    return this.http.get(`${environment.baseUrl}${PAYMENTS_API_URL}/products`).pipe(
+      map((products: ProductResponse[]) => {
+        this.products = keyBy(products, 'id');
+        return this.products;
+      })
+    );
   }
 }

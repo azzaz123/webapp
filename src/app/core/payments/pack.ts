@@ -19,13 +19,7 @@ export class Pack implements Model {
   private _forFree: number;
   private _factor: number;
 
-  constructor(
-    private _id: string,
-    private _quantity: number,
-    private _price: number,
-    private _currency: string,
-    private _name: string
-  ) {}
+  constructor(private _id: string, private _quantity: number, private _price: number, private _currency: string, private _name: string) {}
   get id(): string {
     return this._id;
   }
@@ -86,21 +80,14 @@ export class Pack implements Model {
     return this._factor;
   }
 
-  public calculateDiscount(
-    packPrice: string,
-    quantity: number,
-    basePrice: number
-  ): void {
+  public calculateDiscount(packPrice: string, quantity: number, basePrice: number): void {
     const price: number = basePrice * quantity;
     const save: number = price - +packPrice;
 
     this.discount = Math.floor((save * 100) / price);
   }
 
-  public calculateDiscountWithOriginalPrice(
-    price: number,
-    originalPrice: number
-  ): void {
+  public calculateDiscountWithOriginalPrice(price: number, originalPrice: number): void {
     const save: number = originalPrice - price;
     this._factor = this.name === 'wallacoins' ? COINS_FACTOR : CREDITS_FACTOR;
 

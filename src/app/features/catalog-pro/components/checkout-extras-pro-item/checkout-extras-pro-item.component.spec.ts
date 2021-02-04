@@ -47,9 +47,7 @@ describe('CheckoutExtrasProItemComponent', () => {
 
       component.ngOnInit();
 
-      expect(cartService.createInstance).toHaveBeenCalledWith(
-        new CartProExtras()
-      );
+      expect(cartService.createInstance).toHaveBeenCalledWith(new CartProExtras());
     });
   });
 
@@ -62,10 +60,7 @@ describe('CheckoutExtrasProItemComponent', () => {
 
       component.select(PREPARED_PACKS[0].packs[0]);
 
-      expect(cartService.addProExtras).toHaveBeenCalledWith(
-        cartProExtrasPack,
-        PREPARED_PACKS[0].packs[0].name.toLowerCase()
-      );
+      expect(cartService.addProExtras).toHaveBeenCalledWith(cartProExtrasPack, PREPARED_PACKS[0].packs[0].name.toLowerCase());
     });
   });
 });

@@ -1,19 +1,9 @@
 import { Item } from './../../../../core/item/item';
-import {
-  AfterViewInit,
-  Component,
-  Inject,
-  Input,
-  LOCALE_ID,
-  OnInit,
-} from '@angular/core';
+import { AfterViewInit, Component, Inject, Input, LOCALE_ID, OnInit } from '@angular/core';
 import { I18nService } from '@core/i18n/i18n.service';
 import { EChartOption } from 'echarts';
 import * as moment from 'moment';
-import {
-  ItemStatisticFullResponse,
-  ItemStatisticEntriesResponse,
-} from '../../core/item-stats-response.interface';
+import { ItemStatisticFullResponse, ItemStatisticEntriesResponse } from '../../core/item-stats-response.interface';
 import { UuidService } from '@core/uuid/uuid.service';
 
 const GRAPH_COLORS = {
@@ -37,11 +27,7 @@ export class ItemStatsGraphComponent implements OnInit {
   public id: string = 'chart-' + this.uuidService.getUUID();
   public chartOption: EChartOption;
 
-  constructor(
-    private i18n: I18nService,
-    private uuidService: UuidService,
-    @Inject(LOCALE_ID) private locale: string
-  ) {}
+  constructor(private i18n: I18nService, private uuidService: UuidService, @Inject(LOCALE_ID) private locale: string) {}
 
   ngOnInit() {
     this.loadStats();
@@ -67,9 +53,7 @@ export class ItemStatsGraphComponent implements OnInit {
       }
       colorFavs = entry.bumped ? GRAPH_COLORS.FAVS_BUMPED : GRAPH_COLORS.FAVS;
       colorChats = entry.bumped ? GRAPH_COLORS.CHAT_BUMPED : GRAPH_COLORS.CHAT;
-      colorViews = entry.bumped
-        ? GRAPH_COLORS.VIEWS_BUMPED
-        : GRAPH_COLORS.VIEWS;
+      colorViews = entry.bumped ? GRAPH_COLORS.VIEWS_BUMPED : GRAPH_COLORS.VIEWS;
     });
     this.chartOption = {
       tooltip: {

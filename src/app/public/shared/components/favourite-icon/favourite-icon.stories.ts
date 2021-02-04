@@ -14,9 +14,7 @@ export default {
   ],
 } as Meta;
 
-const Template: Story<FavouriteIconComponent> = (
-  args: FavouriteIconComponent
-) => ({
+const Template: Story<FavouriteIconComponent> = (args: FavouriteIconComponent) => ({
   component: FavouriteIconComponent,
   props: args,
 });

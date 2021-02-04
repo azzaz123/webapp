@@ -20,9 +20,7 @@ describe('SocialShareService', () => {
 
       expect(window.open).toHaveBeenCalledTimes(1);
       expect(window.open).toHaveBeenCalledWith(
-        `https://www.facebook.com/dialog/share?app_id=258778180928082&display=popup&href=${encodeURIComponent(
-          itemLink
-        )}`,
+        `https://www.facebook.com/dialog/share?app_id=258778180928082&display=popup&href=${encodeURIComponent(itemLink)}`,
         'fbShareWindow',
         'height=450, width=550, toolbar=0, location=0, menubar=0, directories=0, scrollbars=0'
       );
@@ -55,9 +53,7 @@ describe('SocialShareService', () => {
 
       expect(window.open).toHaveBeenCalledTimes(1);
       expect(window.open).toHaveBeenCalledWith(
-        `https://twitter.com/intent/tweet?url=${encodeURIComponent(
-          itemLink
-        )}&text=${encodeURIComponent(text)}`,
+        `https://twitter.com/intent/tweet?url=${encodeURIComponent(itemLink)}&text=${encodeURIComponent(text)}`,
         'twShareWindow',
         'height=269, width=550, toolbar=0, location=0, menubar=0, directories=0, scrollbars=0'
       );
@@ -74,9 +70,7 @@ describe('SocialShareService', () => {
       service.emailShare(itemLink, subject, message);
 
       expect(window.open).toHaveBeenCalledTimes(1);
-      expect(window.open).toHaveBeenCalledWith(
-        `mailto:?body=${message} - ${itemLink}&subject=${subject}`
-      );
+      expect(window.open).toHaveBeenCalledWith(`mailto:?body=${message} - ${itemLink}&subject=${subject}`);
     });
   });
 });
