@@ -13,10 +13,7 @@ export class BumpSuggestionModalComponent {
   public productPrice: number;
   public productCurrency: string;
 
-  constructor(
-    public activeModal: NgbActiveModal,
-    private socialShareService: SocialShareService
-  ) {}
+  constructor(public activeModal: NgbActiveModal, private socialShareService: SocialShareService) {}
 
   public onFacebookShare(): void {
     this.socialShareService.facebookShare(this.item.webLink);

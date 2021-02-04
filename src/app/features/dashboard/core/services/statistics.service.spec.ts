@@ -1,9 +1,5 @@
 import { STATISTICS_RESPONSE } from '@fixtures/statistics.fixtures.spec';
-import {
-  HttpTestingController,
-  TestRequest,
-  HttpClientTestingModule,
-} from '@angular/common/http/testing';
+import { HttpTestingController, TestRequest, HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
 import { StatisticsService, STATISTICS_ENDPOINT } from './statistics.service';
@@ -35,9 +31,7 @@ describe('StatisticsService', () => {
       const expectedUrl = `${environment.baseUrl}${STATISTICS_ENDPOINT}?${expectedUrlParams}`;
       let response: StatisticFullResponse;
 
-      service
-        .getStatistics(durationInDays.toString())
-        .subscribe((r) => (response = r));
+      service.getStatistics(durationInDays.toString()).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(STATISTICS_RESPONSE);
 

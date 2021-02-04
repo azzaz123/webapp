@@ -1,9 +1,4 @@
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { WallacoinsComponent } from './wallacoins.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -115,9 +110,7 @@ describe('WallacoinsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(WallacoinsComponent);
     component = fixture.componentInstance;
-    localStorageSpy = spyOn(localStorage, 'getItem').and.returnValue(
-      JSON.stringify(PACK)
-    );
+    localStorageSpy = spyOn(localStorage, 'getItem').and.returnValue(JSON.stringify(PACK));
     fixture.detectChanges();
     paymentService = TestBed.inject(PaymentService);
     modalService = TestBed.inject(NgbModal);
@@ -143,10 +136,7 @@ describe('WallacoinsComponent', () => {
       component.ngOnInit();
 
       expect(component.wallacoins).toEqual(PERKS.wallacoins.quantity);
-      expect(eventService.emit).toHaveBeenCalledWith(
-        EventService.TOTAL_CREDITS_UPDATED,
-        PERKS.wallacoins.quantity
-      );
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.TOTAL_CREDITS_UPDATED, PERKS.wallacoins.quantity);
     });
 
     it('should open modal if there is param.code', () => {
@@ -181,21 +171,15 @@ describe('WallacoinsComponent', () => {
     }));
 
     it('should open modal', () => {
-      expect(modalService.open).toHaveBeenCalledWith(
-        BuyWallacoinsModalComponent,
-        {
-          windowClass: 'modal-standard',
-        }
-      );
+      expect(modalService.open).toHaveBeenCalledWith(BuyWallacoinsModalComponent, {
+        windowClass: 'modal-standard',
+      });
     });
 
     it('should open second modal', () => {
-      expect(modalService.open).toHaveBeenCalledWith(
-        WallacoinsConfirmModalComponent,
-        {
-          windowClass: 'confirm-wallacoins',
-        }
-      );
+      expect(modalService.open).toHaveBeenCalledWith(WallacoinsConfirmModalComponent, {
+        windowClass: 'confirm-wallacoins',
+      });
     });
 
     it('should redirect to catalog', () => {
@@ -203,10 +187,7 @@ describe('WallacoinsComponent', () => {
     });
 
     it('should emit TOTAL_CREDITS_UPDATED if response is success', () => {
-      expect(eventService.emit).toHaveBeenCalledWith(
-        EventService.TOTAL_CREDITS_UPDATED,
-        component.wallacoins
-      );
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.TOTAL_CREDITS_UPDATED, component.wallacoins);
     });
   });
 
@@ -218,16 +199,10 @@ describe('WallacoinsComponent', () => {
 
       component['openTutorialModal']();
 
-      expect(modalService.open).toHaveBeenCalledWith(
-        WallacoinsTutorialComponent,
-        {
-          windowClass: 'tutorial-wallacoins',
-        }
-      );
-      expect(localStorage.setItem).toHaveBeenCalledWith(
-        USER_ID + '-wallacoins-tutorial',
-        'true'
-      );
+      expect(modalService.open).toHaveBeenCalledWith(WallacoinsTutorialComponent, {
+        windowClass: 'tutorial-wallacoins',
+      });
+      expect(localStorage.setItem).toHaveBeenCalledWith(USER_ID + '-wallacoins-tutorial', 'true');
     });
   });
 });

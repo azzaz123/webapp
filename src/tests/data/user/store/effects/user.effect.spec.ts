@@ -2,11 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { Profile, USER_REPOSITORY_TOKEN } from '@data/user';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
-import {
-  LoadUserProfile,
-  LoadUserProfileFailed,
-  LoadUserProfileSuccess,
-} from 'app/data/user/actions/user.action';
+import { LoadUserProfile, LoadUserProfileFailed, LoadUserProfileSuccess } from 'app/data/user/actions/user.action';
 import { UserEffects } from 'app/data/user/store/effects/user.effect';
 import { Observable, of, throwError } from 'rxjs';
 import { ProfileMother } from './../../domain';

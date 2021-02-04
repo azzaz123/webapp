@@ -1,21 +1,9 @@
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { LocationBoxComponent } from './location-box.component';
 import { UserService } from '../../../core/user/user.service';
 import { of } from 'rxjs';
 import { USER_LOCATION } from '../../../features/upload/pages/upload-product/upload-product.component.spec';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MOCK_USER } from '../../../../tests/user.fixtures.spec';
 
@@ -74,12 +62,8 @@ describe('LocationBoxComponent', () => {
       });
 
       it('should set coordinates from provided location', () => {
-        expect(component.coordinates.latitude).toEqual(
-          MOCK_USER.location.approximated_latitude
-        );
-        expect(component.coordinates.longitude).toEqual(
-          MOCK_USER.location.approximated_longitude
-        );
+        expect(component.coordinates.latitude).toEqual(MOCK_USER.location.approximated_latitude);
+        expect(component.coordinates.longitude).toEqual(MOCK_USER.location.approximated_longitude);
       });
     });
 
@@ -98,15 +82,9 @@ describe('LocationBoxComponent', () => {
 
         tick();
 
-        expect(component.form.get('location.address').value).toBe(
-          USER_LOCATION.title
-        );
-        expect(component.form.get('location.latitude').value).toBe(
-          USER_LOCATION.approximated_latitude
-        );
-        expect(component.form.get('location.longitude').value).toBe(
-          USER_LOCATION.approximated_longitude
-        );
+        expect(component.form.get('location.address').value).toBe(USER_LOCATION.title);
+        expect(component.form.get('location.latitude').value).toBe(USER_LOCATION.approximated_latitude);
+        expect(component.form.get('location.longitude').value).toBe(USER_LOCATION.approximated_longitude);
       }));
     });
   });

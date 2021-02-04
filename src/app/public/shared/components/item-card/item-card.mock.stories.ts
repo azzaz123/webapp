@@ -4,16 +4,11 @@ import { ITEM_DATA, MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 export const MOCK_ITEM_1 = MOCK_ITEM;
 
 MOCK_ITEM_1.mainImage.urls_by_size = {
-  original:
-    'http://cdn-dock149.wallapop.com/images/10420/2q/__/c10420p128002/i144005.jpg?pictureSize=ORIGINAL',
-  small:
-    'http://cdn-dock149.wallapop.com/images/10420/2q/__/c10420p128002/i144005.jpg?pictureSize=W320',
-  large:
-    'http://cdn-dock149.wallapop.com/images/10420/2q/__/c10420p128002/i144005.jpg?pictureSize=W800',
-  medium:
-    'http://cdn-dock149.wallapop.com/images/10420/2q/__/c10420p128002/i144005.jpg?pictureSize=W640',
-  xlarge:
-    'http://cdn-dock149.wallapop.com/images/10420/2q/__/c10420p128002/i144005.jpg?pictureSize=W1024',
+  original: 'http://cdn-dock149.wallapop.com/images/10420/2q/__/c10420p128002/i144005.jpg?pictureSize=ORIGINAL',
+  small: 'http://cdn-dock149.wallapop.com/images/10420/2q/__/c10420p128002/i144005.jpg?pictureSize=W320',
+  large: 'http://cdn-dock149.wallapop.com/images/10420/2q/__/c10420p128002/i144005.jpg?pictureSize=W800',
+  medium: 'http://cdn-dock149.wallapop.com/images/10420/2q/__/c10420p128002/i144005.jpg?pictureSize=W640',
+  xlarge: 'http://cdn-dock149.wallapop.com/images/10420/2q/__/c10420p128002/i144005.jpg?pictureSize=W1024',
 };
 
 export const MOCK_ITEM_2 = new Item(

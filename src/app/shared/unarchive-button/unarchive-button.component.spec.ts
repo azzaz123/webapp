@@ -57,9 +57,7 @@ describe('UnarchiveButtonComponent', () => {
       component.unarchive(new Event('click'));
 
       expect(callsService.unarchive).toHaveBeenCalledWith(CALL_ID);
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.CALLS_MARK_PENDING
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CALLS_MARK_PENDING);
     });
   });
 });

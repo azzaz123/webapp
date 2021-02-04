@@ -1,20 +1,10 @@
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { User } from '@core/user/user';
 import { Image } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
 import { EMPTY_STATS } from './constants/stats-constants';
-import {
-  MOCK_FULL_USER,
-  MOCK_FULL_USER_FEATURED,
-  MOCK_USER_STATS,
-  USERS_STATS,
-  USER_DATA,
-  IMAGE,
-} from '@fixtures/user.fixtures.spec';
+import { MOCK_FULL_USER, MOCK_FULL_USER_FEATURED, MOCK_USER_STATS, USERS_STATS, USER_DATA, IMAGE } from '@fixtures/user.fixtures.spec';
 
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { PublicProfileService } from './public-profile.service';
@@ -58,6 +48,9 @@ describe('PublicProfileService', () => {
               return of();
             },
             isFavourite() {
+              return of();
+            },
+            getExtraInfo() {
               return of();
             },
             markAsFavourite() {
@@ -131,10 +124,7 @@ describe('PublicProfileService', () => {
 
       publicProfileService.getReviews(userId, itemsFrom);
 
-      expect(publicUserApiService.getReviews).toHaveBeenCalledWith(
-        userId,
-        itemsFrom
-      );
+      expect(publicUserApiService.getReviews).toHaveBeenCalledWith(userId, itemsFrom);
     });
   });
 
@@ -144,10 +134,7 @@ describe('PublicProfileService', () => {
 
       publicProfileService.getPublishedItems(userId);
 
-      expect(publicUserApiService.getPublishedItems).toHaveBeenCalledWith(
-        userId,
-        0
-      );
+      expect(publicUserApiService.getPublishedItems).toHaveBeenCalledWith(userId, 0);
     });
 
     it('should get user published items with correct pagination', () => {
@@ -156,10 +143,7 @@ describe('PublicProfileService', () => {
 
       publicProfileService.getPublishedItems(userId, itemsFrom);
 
-      expect(publicUserApiService.getPublishedItems).toHaveBeenCalledWith(
-        userId,
-        itemsFrom
-      );
+      expect(publicUserApiService.getPublishedItems).toHaveBeenCalledWith(userId, itemsFrom);
     });
   });
 
@@ -179,9 +163,7 @@ describe('PublicProfileService', () => {
 
       publicProfileService.getBuyTransactions(userId);
 
-      expect(publicUserApiService.getBuyTransactions).toHaveBeenCalledWith(
-        userId
-      );
+      expect(publicUserApiService.getBuyTransactions).toHaveBeenCalledWith(userId);
     });
   });
 
@@ -191,9 +173,7 @@ describe('PublicProfileService', () => {
 
       publicProfileService.getSoldsTransactions(userId);
 
-      expect(publicUserApiService.getSoldsTransactions).toHaveBeenCalledWith(
-        userId
-      );
+      expect(publicUserApiService.getSoldsTransactions).toHaveBeenCalledWith(userId);
     });
   });
 
@@ -228,13 +208,21 @@ describe('PublicProfileService', () => {
     it('should return cover image', () => {
       let expectedResponse = {};
 
-      publicProfileService
-        .getCoverImage(userId)
-        .subscribe((response: Image) => {
-          expectedResponse = response;
-        });
+      publicProfileService.getCoverImage(userId).subscribe((response: Image) => {
+        expectedResponse = response;
+      });
 
       expect(expectedResponse).toEqual(IMAGE);
+    });
+  });
+
+  describe('when getting extra info...', () => {
+    it('should return user extra info', () => {
+      spyOn(publicUserApiService, 'getExtraInfo');
+
+      publicProfileService.getExtraInfo(userId);
+
+      expect(publicUserApiService.getExtraInfo).toHaveBeenCalledWith(userId);
     });
   });
 
@@ -264,9 +252,7 @@ describe('PublicProfileService', () => {
 
       publicProfileService.unmarkAsFavourite(userId);
 
-      expect(publicUserApiService.unmarkAsFavourite).toHaveBeenCalledWith(
-        userId
-      );
+      expect(publicUserApiService.unmarkAsFavourite).toHaveBeenCalledWith(userId);
     });
   });
 });

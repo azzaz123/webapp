@@ -2,11 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { interval, ReplaySubject } from 'rxjs';
-import {
-  SessionProfileData,
-  SessionProfileDataLocation,
-  SessionProfileDataPlatform,
-} from './trust-and-safety.interface';
+import { SessionProfileData, SessionProfileDataLocation, SessionProfileDataPlatform } from './trust-and-safety.interface';
 import { THREAT_METRIX_EMBED } from './threat-metrix-embed-script';
 import { ThreatMetrixLibrary } from './threat-metrix.interface';
 import { take } from 'rxjs/operators';
@@ -18,9 +14,7 @@ export const USER_STARTER_ENDPOINT = `${environment.baseUrl}api/v3/users/me/star
 export class TrustAndSafetyService {
   private _threatMetrixRef: ThreatMetrixLibrary;
   private _sessionId: string;
-  private _profileSentToThreatMetrix: ReplaySubject<
-    boolean
-  > = new ReplaySubject();
+  private _profileSentToThreatMetrix: ReplaySubject<boolean> = new ReplaySubject();
 
   constructor(private http: HttpClient, private uuidService: UuidService) {}
 
@@ -58,21 +52,14 @@ export class TrustAndSafetyService {
   }
 
   private _isThreatMetrixProfilingStarted() {
-    return (
-      typeof window['tmx_profiling_started'] !== 'undefined' &&
-      window['tmx_profiling_started']
-    );
+    return typeof window['tmx_profiling_started'] !== 'undefined' && window['tmx_profiling_started'];
   }
 
   private _startThreatMetrixProfiling() {
     if (!this._sessionId || !this._threatMetrixRef) {
       throw new Error('Session profiling error');
     }
-    this._threatMetrixRef.nfl(
-      environment.threatMetrixProfilingDomain,
-      environment.threatMetrixOrgId,
-      this._sessionId
-    );
+    this._threatMetrixRef.nfl(environment.threatMetrixProfilingDomain, environment.threatMetrixOrgId, this._sessionId);
     this._checkProfileSentToThreatMetrix();
   }
 
@@ -86,11 +73,7 @@ export class TrustAndSafetyService {
   }
 
   private _canSubmitProfile(): boolean {
-    return (
-      this._sessionId &&
-      this._threatMetrixRef &&
-      this._isThreatMetrixProfilingStarted()
-    );
+    return this._sessionId && this._threatMetrixRef && this._isThreatMetrixProfilingStarted();
   }
 
   public submitProfile(location: SessionProfileDataLocation): void {

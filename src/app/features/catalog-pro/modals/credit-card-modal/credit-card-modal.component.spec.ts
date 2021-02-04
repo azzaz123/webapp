@@ -135,13 +135,7 @@ describe('CreditCardModalComponent', () => {
 
       component.checkout(orderId);
 
-      expect(stripeService.buy).toHaveBeenCalledWith(
-        orderId,
-        paymentId,
-        component.hasSavedCard,
-        component.savedCard,
-        component.card
-      );
+      expect(stripeService.buy).toHaveBeenCalledWith(orderId, paymentId, component.hasSavedCard, component.savedCard, component.card);
     });
   });
 });

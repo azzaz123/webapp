@@ -1,12 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
   AnalyticsEvent,
@@ -22,27 +16,14 @@ import { whitespaceValidator } from '@core/form-validators/formValidators.func';
 import { ItemLocation } from '@core/geolocation/address-response.interface';
 import { ITEM_TYPES } from '@core/item/item';
 import { REALESTATE_CATEGORY } from '@core/item/item-categories';
-import {
-  RealestateContent,
-  RealEstateResponse,
-} from '@core/item/item-response.interface';
+import { RealestateContent, RealEstateResponse } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
 import { Realestate } from '@core/item/realestate';
 import { TrackingService } from '@core/tracking/tracking.service';
 import { UserService } from '@core/user/user.service';
-import {
-  NgbModal,
-  NgbModalRef,
-  NgbPopoverConfig,
-} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { IOption } from '@shared/dropdown/utils/option.interface';
-import {
-  OUTPUT_TYPE,
-  PendingFiles,
-  UploadFile,
-  UploadOutput,
-  UPLOAD_ACTION,
-} from '@shared/uploader/upload.interface';
+import { OUTPUT_TYPE, PendingFiles, UploadFile, UploadOutput, UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 import { isEqual, omit } from 'lodash-es';
 import { tap } from 'rxjs/operators';
 import { Key } from '../../core/models/key.interface';
@@ -97,10 +78,7 @@ export class UploadRealestateComponent implements OnInit {
       category_id: REALESTATE_CATEGORY,
       images: [[], [Validators.required]],
       title: ['', [Validators.required]],
-      sale_price: [
-        '',
-        [Validators.required, Validators.min(0), Validators.max(999999999)],
-      ],
+      sale_price: ['', [Validators.required, Validators.min(0), Validators.max(999999999)]],
       currency_code: ['EUR', [Validators.required]],
       storytelling: ['', [Validators.required, whitespaceValidator]],
       operation: ['', [Validators.required]],
@@ -161,23 +139,15 @@ export class UploadRealestateComponent implements OnInit {
   }
 
   private getOptions() {
-    this.realestateKeysService
-      .getOperations()
-      .subscribe((operations: Key[]) => {
-        this.operations = operations;
-      });
-    this.realestateKeysService
-      .getConditions()
-      .subscribe((conditions: IOption[]) => {
-        this.conditions = conditions;
-      });
+    this.realestateKeysService.getOperations().subscribe((operations: Key[]) => {
+      this.operations = operations;
+    });
+    this.realestateKeysService.getConditions().subscribe((conditions: IOption[]) => {
+      this.conditions = conditions;
+    });
     this.getTypes('rent');
-    this.uploadForm
-      .get('operation')
-      .valueChanges.subscribe((operation: string) => this.getTypes(operation));
-    this.uploadForm
-      .get('type')
-      .valueChanges.subscribe((type: string) => this.getExtras(type));
+    this.uploadForm.get('operation').valueChanges.subscribe((operation: string) => this.getTypes(operation));
+    this.uploadForm.get('type').valueChanges.subscribe((type: string) => this.getExtras(type));
   }
 
   public emitLocation(): void {
@@ -189,9 +159,7 @@ export class UploadRealestateComponent implements OnInit {
   }
 
   private updateLocation() {
-    this.itemService
-      .updateRealEstateLocation(this.item.id, this.coordinates)
-      .subscribe();
+    this.itemService.updateRealEstateLocation(this.item.id, this.coordinates).subscribe();
   }
 
   private getTypes(operation: string) {
@@ -255,45 +223,38 @@ export class UploadRealestateComponent implements OnInit {
   }
 
   private createItem(): void {
-    this.uploadService
-      .createItem(this.uploadForm.value, ITEM_TYPES.REAL_ESTATE)
-      .subscribe(
-        (response: UploadOutput) => {
-          this.updateUploadPercentage(response.percentage);
-          if (response.pendingFiles) {
-            this.pendingFiles = response.pendingFiles;
-          }
-          if (response.type === OUTPUT_TYPE.done) {
-            this.onUploaded(response.file.response, UPLOAD_ACTION.created);
-          }
-        },
-        (error: HttpErrorResponse) => {
-          this.onError(error);
+    this.uploadService.createItem(this.uploadForm.value, ITEM_TYPES.REAL_ESTATE).subscribe(
+      (response: UploadOutput) => {
+        this.updateUploadPercentage(response.percentage);
+        if (response.pendingFiles) {
+          this.pendingFiles = response.pendingFiles;
         }
-      );
+        if (response.type === OUTPUT_TYPE.done) {
+          this.onUploaded(response.file.response, UPLOAD_ACTION.created);
+        }
+      },
+      (error: HttpErrorResponse) => {
+        this.onError(error);
+      }
+    );
   }
 
   private updateItem(): void {
-    this.uploadService
-      .updateItem(this.uploadForm.value, ITEM_TYPES.REAL_ESTATE)
-      .subscribe(
-        (response: RealEstateResponse) => {
-          this.onUploaded(response.content, UPLOAD_ACTION.updated);
-        },
-        (error: HttpErrorResponse) => {
-          this.onError(error);
-        }
-      );
+    this.uploadService.updateItem(this.uploadForm.value, ITEM_TYPES.REAL_ESTATE).subscribe(
+      (response: RealEstateResponse) => {
+        this.onUploaded(response.content, UPLOAD_ACTION.updated);
+      },
+      (error: HttpErrorResponse) => {
+        this.onError(error);
+      }
+    );
   }
 
   onUploaded(response: RealestateContent, action: UPLOAD_ACTION) {
     this.onFormChanged.emit(false);
 
     if (this.item) {
-      this.trackingService.track(
-        TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS,
-        { category: this.uploadForm.value.category_id }
-      );
+      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, { category: this.uploadForm.value.category_id });
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
     }
@@ -305,17 +266,12 @@ export class UploadRealestateComponent implements OnInit {
       params.onHold = true;
     }
 
-    this.trackEditOrUpload(!!this.item, response).subscribe(() =>
-      this.router.navigate(['/catalog/list', params])
-    );
+    this.trackEditOrUpload(!!this.item, response).subscribe(() => this.router.navigate(['/catalog/list', params]));
   }
 
   onError(error: HttpErrorResponse | any): void {
     this.loading = false;
-    this.errorsService.i18nError(
-      'serverError',
-      error.message ? error.message : ''
-    );
+    this.errorsService.i18nError('serverError', error.message ? error.message : '');
     if (this.item) {
       this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_ERROR, {
         category: this.uploadForm.value.category_id,
@@ -331,12 +287,9 @@ export class UploadRealestateComponent implements OnInit {
   }
 
   preview() {
-    const modalRef: NgbModalRef = this.modalService.open(
-      PreviewModalComponent,
-      {
-        windowClass: 'preview',
-      }
-    );
+    const modalRef: NgbModalRef = this.modalService.open(PreviewModalComponent, {
+      windowClass: 'preview',
+    });
     modalRef.componentInstance.itemPreview = this.uploadForm.value;
     modalRef.result.then(
       () => {
@@ -399,9 +352,7 @@ export class UploadRealestateComponent implements OnInit {
   }
 
   private removeFileFromForm(imageId: string): void {
-    const imagesControl: FormControl = this.uploadForm.get(
-      'images'
-    ) as FormControl;
+    const imagesControl: FormControl = this.uploadForm.get('images') as FormControl;
     const images: UploadFile[] = imagesControl.value;
     imagesControl.patchValue(images.filter((image) => image.id !== imageId));
   }
@@ -416,20 +367,18 @@ export class UploadRealestateComponent implements OnInit {
 
   public onAddImage(file: UploadFile): void {
     if (this.item) {
-      this.uploadService
-        .uploadSingleImage(file, this.item.id, ITEM_TYPES.REAL_ESTATE)
-        .subscribe(
-          (value: UploadOutput) => {
-            if (value.type === OUTPUT_TYPE.done) {
-              this.errorsService.i18nSuccess('imageUploaded');
-              file.id = value.file.response;
-            }
-          },
-          (error: HttpErrorResponse) => {
-            this.removeFileFromForm(file.id);
-            this.onError(error);
+      this.uploadService.uploadSingleImage(file, this.item.id, ITEM_TYPES.REAL_ESTATE).subscribe(
+        (value: UploadOutput) => {
+          if (value.type === OUTPUT_TYPE.done) {
+            this.errorsService.i18nSuccess('imageUploaded');
+            file.id = value.file.response;
           }
-        );
+        },
+        (error: HttpErrorResponse) => {
+          this.removeFileFromForm(file.id);
+          this.onError(error);
+        }
+      );
     }
   }
 }

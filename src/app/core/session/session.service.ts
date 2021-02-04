@@ -16,8 +16,7 @@ export class SessionService {
   }
 
   constructor(private cookieService: CookieService) {
-    const isNewSession =
-      this.cookieService.get(SessionService.SESSION_COOKIE_NAME) !== 'true';
+    const isNewSession = this.cookieService.get(SessionService.SESSION_COOKIE_NAME) !== 'true';
     this.initSessionTracking();
     if (isNewSession) {
       this._newSession$.next();

@@ -1,12 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  Input,
-  OnChanges,
-  ViewChild,
-  AfterViewInit,
-  OnDestroy,
-} from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { Coordinate } from '../../../core/geolocation/address-response.interface';

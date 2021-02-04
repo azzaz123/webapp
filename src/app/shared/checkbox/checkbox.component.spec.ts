@@ -1,10 +1,4 @@
-import {
-  fakeAsync,
-  tick,
-  ComponentFixture,
-  TestBed,
-  waitForAsync,
-} from '@angular/core/testing';
+import { fakeAsync, tick, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 
 import { CheckboxComponent } from './checkbox.component';

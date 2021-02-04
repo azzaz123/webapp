@@ -17,10 +17,10 @@ import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { UserService } from '@core/user/user.service';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
+import { CoreStoreModule } from '@core/store/core-store.module';
 
 export default {
-  title:
-    'Webapp/Public/Features/PublicProfile/Pages/UserPublished/ItemCardList',
+  title: 'Webapp/Public/Features/PublicProfile/Pages/UserPublished/ItemCardList',
   component: ItemCardListComponent,
   decorators: [
     moduleMetadata({
@@ -32,6 +32,7 @@ export default {
         CookieModule.forRoot(),
         PublicPipesModule,
         NgxPermissionsModule.forRoot(),
+        CoreStoreModule,
       ],
       providers: [
         DeviceDetectorService,
@@ -49,22 +50,12 @@ export default {
   ],
 } as Meta;
 
-const Template: Story<ItemCardListComponent> = (
-  args: ItemCardListComponent
-) => ({
+const Template: Story<ItemCardListComponent> = (args: ItemCardListComponent) => ({
   component: ItemCardListComponent,
   props: args,
 });
 
-const ITEMS = [
-  MOCK_ITEM_1,
-  MOCK_ITEM_1,
-  MOCK_ITEM_1,
-  MOCK_ITEM_1,
-  MOCK_ITEM_1,
-  MOCK_ITEM_1,
-  MOCK_ITEM_1,
-];
+const ITEMS = [MOCK_ITEM_1, MOCK_ITEM_1, MOCK_ITEM_1, MOCK_ITEM_1, MOCK_ITEM_1, MOCK_ITEM_1, MOCK_ITEM_1];
 
 export const Large = Template.bind({});
 Large.args = {

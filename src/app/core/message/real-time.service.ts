@@ -15,12 +15,7 @@ import {
 import { ConnectionService } from '../connection/connection.service';
 import { ConnectionType } from '../remote-console/connection-type';
 import { I18nService } from '../i18n/i18n.service';
-import {
-  InboxConversation,
-  InboxMessage,
-  ChatSignal,
-  ChatSignalType,
-} from '@features/chat/core/model';
+import { InboxConversation, InboxMessage, ChatSignal, ChatSignalType } from '@features/chat/core/model';
 
 export const SEARCHID_STORAGE_NAME = 'searchId';
 
@@ -46,21 +41,12 @@ export class RealTimeService {
       let startTimestamp = Date.now();
       this.xmpp.connect$(userId, accessToken).subscribe(
         () => {
-          this.remoteConsoleService.sendChatConnectionTime(
-            ConnectionType.XMPP,
-            true
-          );
-          this.remoteConsoleService.sendConnectionTimeout(
-            userId,
-            Date.now() - startTimestamp
-          );
+          this.remoteConsoleService.sendChatConnectionTime(ConnectionType.XMPP, true);
+          this.remoteConsoleService.sendConnectionTimeout(userId, Date.now() - startTimestamp);
           startTimestamp = null;
         },
         () => {
-          this.remoteConsoleService.sendChatConnectionTime(
-            ConnectionType.XMPP,
-            false
-          );
+          this.remoteConsoleService.sendChatConnectionTime(ConnectionType.XMPP, false);
         }
       );
     }
@@ -112,38 +98,23 @@ export class RealTimeService {
 
   public sendRead(to: string, thread: string) {
     this.xmpp.sendConversationStatus(to, thread);
-    this.eventService.emit(
-      EventService.CHAT_SIGNAL,
-      new ChatSignal(
-        ChatSignalType.READ,
-        thread,
-        new Date().getTime(),
-        null,
-        true
-      )
-    );
+    this.eventService.emit(EventService.CHAT_SIGNAL, new ChatSignal(ChatSignalType.READ, thread, new Date().getTime(), null, true));
   }
 
-  public addPhoneNumberMessageToConversation(
-    conversation: InboxConversation,
-    phone: string
-  ) {
+  public addPhoneNumberMessageToConversation(conversation: InboxConversation, phone: string) {
     const message = `${this.i18n.getTranslations('phoneMessage')}${phone}`;
     this.sendMessage(conversation, message);
   }
 
   private subscribeEventMessageSent() {
-    this.eventService.subscribe(
-      EventService.MESSAGE_SENT,
-      (conversation: InboxConversation, messageId: string) => {
-        if (this.isFirstMessage(conversation)) {
-          this.trackConversationCreated(conversation, messageId);
-          this.trackSendFirstMessage(conversation);
-          appboy.logCustomEvent('FirstMessage', { platform: 'web' });
-        }
-        this.trackMessageSent(conversation.id, messageId);
+    this.eventService.subscribe(EventService.MESSAGE_SENT, (conversation: InboxConversation, messageId: string) => {
+      if (this.isFirstMessage(conversation)) {
+        this.trackConversationCreated(conversation, messageId);
+        this.trackSendFirstMessage(conversation);
+        appboy.logCustomEvent('FirstMessage', { platform: 'web' });
       }
-    );
+      this.trackMessageSent(conversation.id, messageId);
+    });
   }
 
   private subscribeConnectionRestored() {
@@ -163,10 +134,7 @@ export class RealTimeService {
     });
   }
 
-  private trackConversationCreated(
-    conversation: InboxConversation,
-    messageId: string
-  ) {
+  private trackConversationCreated(conversation: InboxConversation, messageId: string) {
     this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW, {
       item_id: conversation.item.id,
       thread_id: conversation.id,

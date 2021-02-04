@@ -1,12 +1,10 @@
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { ReviewResponse } from '@features/reviews/core/review-response.interface';
 import { environment } from 'environments/environment';
 
 import {
+  GET_EXTRA_INFO_ENDPOINT,
   IS_FAVOURITE_ENDPOINT,
   MARK_AS_FAVOURITE_ENDPOINT,
   PROFILE_API_URL,
@@ -81,9 +79,7 @@ describe('PublicUserApiService', () => {
       let urlParams = '?init=' + itemsFrom;
       let response: PaginationResponse<ReviewResponse>;
 
-      publicUserApiService
-        .getReviews(userId, itemsFrom)
-        .subscribe((r) => (response = r));
+      publicUserApiService.getReviews(userId, itemsFrom).subscribe((r) => (response = r));
       const req = httpMock.expectOne(expectedUrl + urlParams);
 
       expect(req.request.url).toEqual(expectedUrl);
@@ -93,9 +89,7 @@ describe('PublicUserApiService', () => {
 
   describe('when getting published items...', () => {
     it('should get user published items', () => {
-      const expectedUrl = `${environment.baseUrl}${PUBLISHED_ITEMS_ENDPOINT(
-        userId
-      )}`;
+      const expectedUrl = `${environment.baseUrl}${PUBLISHED_ITEMS_ENDPOINT(userId)}`;
       let urlParams = '?init=0';
 
       publicUserApiService.getPublishedItems(userId).subscribe();
@@ -106,9 +100,7 @@ describe('PublicUserApiService', () => {
     });
 
     it('should get user published items with correct pagination', () => {
-      const expectedUrl = `${environment.baseUrl}${PUBLISHED_ITEMS_ENDPOINT(
-        userId
-      )}`;
+      const expectedUrl = `${environment.baseUrl}${PUBLISHED_ITEMS_ENDPOINT(userId)}`;
       const itemsFrom = 40;
       let urlParams = '?init=' + itemsFrom;
 
@@ -134,9 +126,7 @@ describe('PublicUserApiService', () => {
 
   describe('when getting cover image...', () => {
     it('should return cover image', () => {
-      const expectedUrl = `${environment.baseUrl}${USER_COVER_IMAGE_ENDPOINT(
-        userId
-      )}`;
+      const expectedUrl = `${environment.baseUrl}${USER_COVER_IMAGE_ENDPOINT(userId)}`;
       publicUserApiService.getCoverImage(userId).subscribe();
       const req = httpMock.expectOne(expectedUrl);
 
@@ -146,9 +136,7 @@ describe('PublicUserApiService', () => {
   });
 
   describe('when requesting isFavourite', () => {
-    const expectedUrl = `${environment.baseUrl}${IS_FAVOURITE_ENDPOINT(
-      userId
-    )}`;
+    const expectedUrl = `${environment.baseUrl}${IS_FAVOURITE_ENDPOINT(userId)}`;
 
     it('should ask server for response', () => {
       publicUserApiService.isFavourite(userId).subscribe();
@@ -159,12 +147,22 @@ describe('PublicUserApiService', () => {
     });
   });
 
+  describe('when requesting extra info', () => {
+    const expectedUrl = `${environment.baseUrl}${GET_EXTRA_INFO_ENDPOINT(userId)}`;
+
+    it('should ask server for response', () => {
+      publicUserApiService.getExtraInfo(userId).subscribe();
+
+      const req = httpMock.expectOne(expectedUrl);
+      expect(req.request.method).toEqual('GET');
+      expect(req.request.body).toBeNull();
+    });
+  });
+
   describe('when requesting markAsFavourite', () => {
     it('should ask server for response', () => {
       const bodyRequest: MarkAsFavouriteBodyRequest = { favorited: true };
-      const expectedUrl = `${environment.baseUrl}${MARK_AS_FAVOURITE_ENDPOINT(
-        userId
-      )}`;
+      const expectedUrl = `${environment.baseUrl}${MARK_AS_FAVOURITE_ENDPOINT(userId)}`;
 
       publicUserApiService.markAsFavourite(userId).subscribe();
 
@@ -177,9 +175,7 @@ describe('PublicUserApiService', () => {
   describe('when requesting unmarkAsFavourite', () => {
     it('should ask server for response', () => {
       const bodyRequest: MarkAsFavouriteBodyRequest = { favorited: false };
-      const expectedUrl = `${environment.baseUrl}${MARK_AS_FAVOURITE_ENDPOINT(
-        userId
-      )}`;
+      const expectedUrl = `${environment.baseUrl}${MARK_AS_FAVOURITE_ENDPOINT(userId)}`;
 
       publicUserApiService.unmarkAsFavourite(userId).subscribe();
 

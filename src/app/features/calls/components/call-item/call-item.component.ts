@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnChanges,
-  Input,
-  HostBinding,
-  HostListener,
-} from '@angular/core';
+import { Component, OnChanges, Input, HostBinding, HostListener } from '@angular/core';
 import { Call } from '@core/conversation/calls';
 import { CallsService } from '@core/conversation/calls.service';
 import { I18nService } from '@core/i18n/i18n.service';

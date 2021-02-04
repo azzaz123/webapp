@@ -18,8 +18,7 @@ describe('Component: UserCover', () => {
   });
 
   describe('with user image', () => {
-    const IMAGE_URL =
-      'https://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320';
+    const IMAGE_URL = 'https://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320';
 
     beforeEach(() => {
       component.user = new User(USER_ID, MICRO_NAME, IMAGE);

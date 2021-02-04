@@ -21,28 +21,18 @@ export default {
   ],
 } as Meta;
 
-const Template: Story<ImagesCarouselComponent> = (
-  args: ImagesCarouselComponent
-) => ({
+const Template: Story<ImagesCarouselComponent> = (args: ImagesCarouselComponent) => ({
   component: ImagesCarouselComponent,
   props: args,
   moduleMetadata: {
     declarations: [ImagesCarouselComponent],
-    imports: [
-      CommonModule,
-      NgbCarouselModule,
-      ImageFallbackModule,
-      HammerModule,
-    ],
+    imports: [CommonModule, NgbCarouselModule, ImageFallbackModule, HammerModule],
     providers: [HAMMER_PROVIDER],
   },
   template: '<tsl-images-carousel [images]="images"></tsl-images-carousel>',
 });
 
-const imagesURL = [
-  'http://localhost:6006/images/item-camera.jpg',
-  'http://localhost:6006/images/item-pc.jpg',
-];
+const imagesURL = ['http://localhost:6006/images/item-camera.jpg', 'http://localhost:6006/images/item-pc.jpg'];
 export const Default = Template.bind({});
 Default.args = {
   images: imagesURL,

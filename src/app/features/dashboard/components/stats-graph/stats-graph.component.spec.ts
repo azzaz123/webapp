@@ -52,9 +52,7 @@ describe('StatsGraphComponent', () => {
       component.ngOnInit();
 
       expect(statisticsService.getStatistics).toHaveBeenCalledWith('30');
-      expect(component.chartOption.series[1].data[0]).toBe(
-        STATISTICS_RESPONSE.entries[0].values.country_bump
-      );
+      expect(component.chartOption.series[1].data[0]).toBe(STATISTICS_RESPONSE.entries[0].values.country_bump);
     });
   });
 

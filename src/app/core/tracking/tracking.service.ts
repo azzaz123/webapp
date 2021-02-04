@@ -922,9 +922,7 @@ export class TrackingService {
     const newEvent = this.createNewEvent(event, attributes);
     delete newEvent.sessions[0].window;
     const stringifiedEvent: string = JSON.stringify(newEvent);
-    const sha1Body: string = CryptoJSha1(
-      stringifiedEvent + this.TRACKING_KEY
-    ).toString();
+    const sha1Body: string = CryptoJSha1(stringifiedEvent + this.TRACKING_KEY).toString();
     return this.http
       .post(`${environment.clickStreamURL}`, stringifiedEvent, {
         headers: { Authorization: sha1Body },
@@ -936,15 +934,8 @@ export class TrackingService {
     this.sessionStartTime = getTimestamp();
   }
 
-  private createNewEvent(
-    event: TrackingEventBase,
-    attributes?: any
-  ): TrackingEvent {
-    const newEvent: TrackingEvent = new TrackingEvent(
-      this.userService.user.id,
-      this.sessionStartTime,
-      event
-    );
+  private createNewEvent(event: TrackingEventBase, attributes?: any): TrackingEvent {
+    const newEvent: TrackingEvent = new TrackingEvent(this.userService.user.id, this.sessionStartTime, event);
     newEvent.setDeviceInfo(
       this.navigatorService.operativeSystemVersion,
       this.navigatorService.OSName,

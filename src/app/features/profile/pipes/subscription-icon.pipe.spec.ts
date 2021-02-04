@@ -15,20 +15,14 @@ describe('SubscriptionIconPipe', () => {
   });
 
   it('should return icon path with _selected', () => {
-    expect(pipe.transform(PACK, true)).toBe(
-      '/assets/icons/plans/plan100_selected.svg'
-    );
+    expect(pipe.transform(PACK, true)).toBe('/assets/icons/plans/plan100_selected.svg');
   });
 
   it('should return icon path with personal pack', () => {
-    expect(pipe.transform(PERSONAL_PACK)).toBe(
-      '/assets/icons/plans/planpersonal.svg'
-    );
+    expect(pipe.transform(PERSONAL_PACK)).toBe('/assets/icons/plans/planpersonal.svg');
   });
 
   it('should return icon path with personal pack with _selected', () => {
-    expect(pipe.transform(PERSONAL_PACK, true)).toBe(
-      '/assets/icons/plans/planpersonal_selected.svg'
-    );
+    expect(pipe.transform(PERSONAL_PACK, true)).toBe('/assets/icons/plans/planpersonal_selected.svg');
   });
 });

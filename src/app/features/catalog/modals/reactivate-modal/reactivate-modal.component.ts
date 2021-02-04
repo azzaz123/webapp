@@ -14,10 +14,7 @@ export class ReactivateModalComponent {
   public item: Item;
   public creditInfo: CreditInfo;
 
-  constructor(
-    public activeModal: NgbActiveModal,
-    private paymentService: PaymentService
-  ) {}
+  constructor(public activeModal: NgbActiveModal, private paymentService: PaymentService) {}
 
   ngOnInit() {
     this.paymentService.getCreditInfo().subscribe((creditInfo: CreditInfo) => {

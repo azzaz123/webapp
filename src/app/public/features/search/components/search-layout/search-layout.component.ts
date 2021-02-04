@@ -21,17 +21,11 @@ export class SearchLayoutComponent {
 
   private setUpObservables(): void {
     this.shouldRenderBottomRow = this.viewportService.onViewportChange.pipe(
-      map(
-        (viewport) =>
-          viewport === ViewportType.XS || viewport === ViewportType.SM
-      )
+      map((viewport) => viewport === ViewportType.XS || viewport === ViewportType.SM)
     );
 
     this.shouldRenderRightColumn = this.viewportService.onViewportChange.pipe(
-      map(
-        (viewport) =>
-          viewport === ViewportType.XL || viewport === ViewportType.XXL
-      )
+      map((viewport) => viewport === ViewportType.XL || viewport === ViewportType.XXL)
     );
   }
 }

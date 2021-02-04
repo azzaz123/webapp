@@ -171,31 +171,13 @@ export const CAR_BRANDS_RESPONSE: string[] = [
 ];
 export const CAR_BRANDS: IOption[] = toSelectOptions(CAR_BRANDS_RESPONSE);
 
-export const CAR_YEARS_RESPONSE: number[] = [
-  2017,
-  2016,
-  2015,
-  2014,
-  2013,
-  2012,
-  2011,
-  2010,
-  2009,
-  2008,
-];
+export const CAR_YEARS_RESPONSE: number[] = [2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008];
 export const CAR_YEARS: IOption[] = toSelectOptions(CAR_YEARS_RESPONSE);
 
-export const CAR_MODELS_RESPONSE: string[] = [
-  '124 Spider',
-  '500',
-  '695 Biposto',
-];
+export const CAR_MODELS_RESPONSE: string[] = ['124 Spider', '500', '695 Biposto'];
 export const CAR_MODELS: IOption[] = toSelectOptions(CAR_MODELS_RESPONSE);
 
-export const CAR_VERSIONS_RESPONSE: string[] = [
-  '1.4 MultiAir 170 2p',
-  '1.4 MultiAir 170 2p Aut.',
-];
+export const CAR_VERSIONS_RESPONSE: string[] = ['1.4 MultiAir 170 2p', '1.4 MultiAir 170 2p Aut.'];
 export const CAR_VERSIONS: IOption[] = toSelectOptions(CAR_VERSIONS_RESPONSE);
 
 function toSelectOptions(values: any[]): IOption[] {
@@ -225,6 +207,7 @@ export const CAR_CONTENT_DATA = {
   num_doors: 3,
   extras: [],
   storytelling: '',
+  description: '',
   sale_conditions: {
     fix_price: false,
     exchange_allowed: false,

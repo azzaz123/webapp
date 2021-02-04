@@ -1,9 +1,4 @@
-import {
-  ComponentFixture,
-  TestBed,
-  getTestBed,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, getTestBed, waitForAsync } from '@angular/core/testing';
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MobileBlockerComponent } from './mobile-blocker.component';
@@ -64,9 +59,7 @@ describe('MobileBlockerComponent', () => {
         component.ngOnInit();
         fixture.detectChanges();
 
-        const componentHTML = fixture.debugElement.query(
-          By.css('.MobileBlocker')
-        );
+        const componentHTML = fixture.debugElement.query(By.css('.MobileBlocker'));
         expect(componentHTML).toBeTruthy();
       });
 
@@ -91,9 +84,7 @@ describe('MobileBlockerComponent', () => {
         component.ngOnInit();
         fixture.detectChanges();
 
-        const componentHTML = fixture.debugElement.query(
-          By.css('.MobileBlocker')
-        );
+        const componentHTML = fixture.debugElement.query(By.css('.MobileBlocker'));
         expect(componentHTML).toBeFalsy();
       });
 
@@ -116,9 +107,7 @@ describe('MobileBlockerComponent', () => {
       component.ngOnInit();
       fixture.detectChanges();
 
-      const componentHTML = fixture.debugElement.query(
-        By.css('.MobileBlocker')
-      );
+      const componentHTML = fixture.debugElement.query(By.css('.MobileBlocker'));
       expect(componentHTML).toBeFalsy();
     });
   });

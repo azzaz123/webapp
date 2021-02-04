@@ -1,7 +1,4 @@
-import {
-  ProfileImage,
-  ProfileResponse,
-} from '../app/core/profile/profile-response.interface';
+import { ProfileImage, ProfileResponse } from '../app/core/profile/profile-response.interface';
 import { Profile } from '../app/core/profile/profile';
 
 export const PROFILE_ID = 'l1kmzn82zn3p';
@@ -16,18 +13,12 @@ export const SCREEN_NAME = 'fake-user-24234';
 export const PROFILE_IMAGE: ProfileImage = {
   original_height: 100,
   original_width: 62,
-  original:
-    'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=ORIGINAL',
-  small:
-    'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
-  large:
-    'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
-  medium:
-    'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
-  xlarge:
-    'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
-  xsmall:
-    'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
+  original: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=ORIGINAL',
+  small: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
+  large: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
+  medium: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
+  xlarge: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
+  xsmall: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320',
 };
 
 export const PROFILE_DATA: ProfileResponse = {

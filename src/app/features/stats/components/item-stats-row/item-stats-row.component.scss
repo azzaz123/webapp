@@ -150,8 +150,7 @@
   .graph-info {
     width: 327px;
     flex-direction: column;
-    background: rgba(236, 239, 241, 0.5) url(/assets/images/destacado.svg)
-      no-repeat center 40px;
+    background: rgba(236, 239, 241, 0.5) url(/assets/images/destacado.svg) no-repeat center 40px;
     padding-top: 190px;
     &.reactivate {
       background-image: url(/assets/images/reactivate-image.svg);

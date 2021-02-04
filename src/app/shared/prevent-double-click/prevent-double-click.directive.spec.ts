@@ -30,11 +30,7 @@ describe('PreventDoubleClickDirective', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [
-          PreventDoubleClickDirective,
-          ButtonComponent,
-          TestComponent,
-        ],
+        declarations: [PreventDoubleClickDirective, ButtonComponent, TestComponent],
         providers: [],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();

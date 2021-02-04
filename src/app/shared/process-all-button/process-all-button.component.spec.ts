@@ -1,11 +1,5 @@
 /* tslint:disable:no-unused-variable */
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { ProcessAllButtonComponent } from './process-all-button.component';
 import { of } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -81,9 +75,7 @@ describe('ProcessAllButtonComponent', () => {
       tick();
 
       expect(callsService.archiveAll).toHaveBeenCalled();
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.PHONE_LEAD_LIST_ALL_PROCESSED
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PHONE_LEAD_LIST_ALL_PROCESSED);
     }));
   });
 });

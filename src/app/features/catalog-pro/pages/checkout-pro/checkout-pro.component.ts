@@ -93,10 +93,7 @@ export class CheckoutProComponent implements OnInit {
     if (!this.newSelectedDates) {
       this.todayDate = this.calendar.getToday();
       this.tomorrowDate = this.calendar.getNext(this.todayDate);
-      this.newSelectedDates = new CalendarDates(
-        this.todayDate,
-        this.tomorrowDate
-      );
+      this.newSelectedDates = new CalendarDates(this.todayDate, this.tomorrowDate);
     }
   }
 
@@ -109,25 +106,18 @@ export class CheckoutProComponent implements OnInit {
       this.router.navigate([CATALOG_PRO_LIST_URL]);
       return;
     }
-    this.itemService
-      .getItemsWithAvailableProducts(this.itemService.selectedItems)
-      .subscribe((itemsWithProducts: ItemWithProducts[]) => {
-        this.itemsWithProducts = itemsWithProducts;
-      });
+    this.itemService.getItemsWithAvailableProducts(this.itemService.selectedItems).subscribe((itemsWithProducts: ItemWithProducts[]) => {
+      this.itemsWithProducts = itemsWithProducts;
+    });
   }
 
   private getProductsFromParamsItem(itemId: string) {
-    this.itemService
-      .getItemsWithAvailableProducts([itemId])
-      .subscribe((itemsWithProducts: ItemWithProducts[]) => {
-        if (itemsWithProducts.length) {
-          this.itemsWithProducts = itemsWithProducts;
-        } else {
-          this.router.navigate([
-            CATALOG_PRO_LIST_URL,
-            { alreadyFeatured: true },
-          ]);
-        }
-      });
+    this.itemService.getItemsWithAvailableProducts([itemId]).subscribe((itemsWithProducts: ItemWithProducts[]) => {
+      if (itemsWithProducts.length) {
+        this.itemsWithProducts = itemsWithProducts;
+      } else {
+        this.router.navigate([CATALOG_PRO_LIST_URL, { alreadyFeatured: true }]);
+      }
+    });
   }
 }
