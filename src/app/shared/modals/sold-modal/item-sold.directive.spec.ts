@@ -6,12 +6,9 @@ import { of } from 'rxjs';
 
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { ItemService } from '../../../core/item/item.service';
-import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ItemSoldDirective } from './item-sold.directive';
-
 import createSpy = jasmine.createSpy;
 import { Item } from '../../../core/item/item';
-import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
 import { SoldModalComponent } from './sold-modal.component';
 
@@ -28,7 +25,6 @@ describe('ItemSoldDirective', () => {
   let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
   let element: DebugElement;
-  let trackingService: TrackingService;
   let itemService: ItemService;
   let modalService: NgbModal;
   let errorsService: ErrorsService;
@@ -42,7 +38,6 @@ describe('ItemSoldDirective', () => {
       TestBed.configureTestingModule({
         declarations: [ItemSoldDirective, TestComponent],
         providers: [
-          { provide: TrackingService, useClass: MockTrackingService },
           {
             provide: ItemService,
             useValue: {
@@ -93,10 +88,8 @@ describe('ItemSoldDirective', () => {
     component = fixture.componentInstance;
     itemService = TestBed.inject(ItemService);
     modalService = TestBed.inject(NgbModal);
-    trackingService = TestBed.inject(TrackingService);
     errorsService = TestBed.inject(ErrorsService);
     element = fixture.debugElement.queryAll(By.directive(ItemSoldDirective))[0];
-    spyOn(trackingService, 'track');
   });
 
   it('should create an instance', () => {

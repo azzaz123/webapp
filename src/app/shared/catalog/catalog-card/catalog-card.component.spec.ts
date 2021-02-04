@@ -6,13 +6,11 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { getMockItemWithPurchases, ITEM_ID, MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
-import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { EventService } from '../../../core/event/event.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { Item } from '../../../core/item/item';
 import { ItemService } from '../../../core/item/item.service';
-import { TrackingService } from '../../../core/tracking/tracking.service';
 import { CustomCurrencyPipe } from '../../pipes';
 import { CatalogCardComponent } from './catalog-card.component';
 
@@ -21,7 +19,6 @@ describe('CatalogCardComponent', () => {
   let fixture: ComponentFixture<CatalogCardComponent>;
   let itemService: ItemService;
   let modalService: NgbModal;
-  let trackingService: TrackingService;
   let errorsService: ErrorsService;
   let i18nService: I18nService;
   let eventService: EventService;
@@ -38,7 +35,6 @@ describe('CatalogCardComponent', () => {
         providers: [
           DecimalPipe,
           I18nService,
-          { provide: TrackingService, useClass: MockTrackingService },
           {
             provide: ItemService,
             useValue: {
@@ -88,7 +84,6 @@ describe('CatalogCardComponent', () => {
     fixture.detectChanges();
     itemService = TestBed.inject(ItemService);
     modalService = TestBed.inject(NgbModal);
-    trackingService = TestBed.inject(TrackingService);
     errorsService = TestBed.inject(ErrorsService);
     i18nService = TestBed.inject(I18nService);
     appboy.initialize(environment.appboy);
@@ -126,7 +121,6 @@ describe('CatalogCardComponent', () => {
     describe('can mark as sold', () => {
       beforeEach(fakeAsync(() => {
         item = MOCK_ITEM;
-        spyOn(trackingService, 'track');
         spyOn(eventService, 'emit');
         spyOn(appboy, 'logCustomEvent');
         spyOn(window as any, 'fbq');
@@ -144,12 +138,6 @@ describe('CatalogCardComponent', () => {
       it('should emit the updated item', () => {
         expect(event.item).toEqual(item);
         expect(event.action).toBe('sold');
-      });
-
-      it('should track the DeleteItem event', () => {
-        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_SOLD, {
-          product_id: item.id,
-        });
       });
 
       it('should emit ITEM_SOLD event', () => {
@@ -194,7 +182,6 @@ describe('CatalogCardComponent', () => {
     describe('already reserved', () => {
       beforeEach(() => {
         spyOn(itemService, 'reserveItem').and.callThrough();
-        spyOn(trackingService, 'track');
         spyOn(eventService, 'emit');
         item = MOCK_ITEM;
         item.reserved = true;

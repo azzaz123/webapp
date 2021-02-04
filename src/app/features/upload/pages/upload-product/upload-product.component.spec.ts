@@ -27,11 +27,9 @@ import {
   SUGGESTED_CATEGORY_COMPUTERS_ELECTRONICS,
 } from '@fixtures/category.fixtures.spec';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { User } from '@core/user/user';
 import { MOCK_USER, USER_ID } from '@fixtures/user.fixtures.spec';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { ITEM_CATEGORY_ID, ITEM_DELIVERY_INFO, MOCK_ITEM, MOCK_ITEM_FASHION } from '@fixtures/item.fixtures.spec';
 import { UserLocation } from '@core/user/user-response.interface';
 import { environment } from '@environments/environment';
@@ -91,7 +89,6 @@ describe('UploadProductComponent', () => {
   let generalSuggestionsService: GeneralSuggestionsService;
   let router: Router;
   let modalService: NgbModal;
-  let trackingService: TrackingService;
   let analyticsService: AnalyticsService;
   let deviceService: DeviceDetectorService;
   let userService: UserService;
@@ -106,7 +103,6 @@ describe('UploadProductComponent', () => {
         providers: [
           FormBuilder,
           NgbPopoverConfig,
-          { provide: TrackingService, useClass: MockTrackingService },
           { provide: AnalyticsService, useClass: MockAnalyticsService },
           { provide: UploadService, useClass: MockUploadService },
           {
@@ -205,7 +201,6 @@ describe('UploadProductComponent', () => {
     generalSuggestionsService = TestBed.inject(GeneralSuggestionsService);
     router = TestBed.inject(Router);
     modalService = TestBed.inject(NgbModal);
-    trackingService = TestBed.inject(TrackingService);
     analyticsService = TestBed.inject(AnalyticsService);
     deviceService = TestBed.inject(DeviceDetectorService);
     userService = TestBed.inject(UserService);
@@ -1082,13 +1077,11 @@ describe('UploadProductComponent', () => {
 
   describe('onError', () => {
     it('should set loading to false', () => {
-      spyOn(trackingService, 'track');
       component.loading = true;
 
       component.onError('response');
 
       expect(component.loading).toBeFalsy();
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.UPLOADFORM_ERROR);
     });
     it('should show toast with default message', () => {
       spyOn(errorService, 'i18nError').and.callThrough();

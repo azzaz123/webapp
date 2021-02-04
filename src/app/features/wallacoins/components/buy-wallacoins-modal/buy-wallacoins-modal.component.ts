@@ -110,9 +110,4 @@ export class BuyWallacoinsModalComponent implements OnInit {
     this.selectedCard = true;
     this.setCardInfo(selectedCard);
   }
-
-  public getTrackingAttributes(): Object {
-    const payment_method = PAYMENT_METHOD.STRIPE;
-    return { payment_method };
-  }
 }
