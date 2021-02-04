@@ -1,7 +1,4 @@
-import {
-  MOCK_REVIEWS,
-  REVIEWS_RESPONSE,
-} from './../../../../../tests/review.fixtures.spec';
+import { MOCK_REVIEWS, REVIEWS_RESPONSE } from './../../../../../tests/review.fixtures.spec';
 import { CATEGORY_DATA_WEB } from './../../../../../tests/category.fixtures.spec';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReviewItemComponent } from './review-item.component';
@@ -46,19 +43,11 @@ describe('ReviewItemComponent', () => {
 
   describe('ngOnInit', () => {
     it('should set itemWebLink', () => {
-      expect(component.itemWebLink).toBe(
-        environment.siteUrl.replace('es', 'www') +
-          'item/' +
-          MOCK_REVIEWS[0].item.webSlug
-      );
+      expect(component.itemWebLink).toBe(environment.siteUrl.replace('es', 'www') + 'item/' + MOCK_REVIEWS[0].item.webSlug);
     });
 
     it('should set userWebSlug', () => {
-      expect(component.userWebSlug).toBe(
-        environment.siteUrl.replace('es', 'www') +
-          'user/' +
-          REVIEWS_RESPONSE[0].user.web_slug
-      );
+      expect(component.userWebSlug).toBe(environment.siteUrl.replace('es', 'www') + 'user/' + REVIEWS_RESPONSE[0].user.web_slug);
     });
 
     it('should set category', () => {

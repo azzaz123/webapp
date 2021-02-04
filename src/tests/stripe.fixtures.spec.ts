@@ -1,8 +1,5 @@
 import { FinancialCard } from '../app/shared/profile/credit-card-info/financial-card';
-import {
-  FinancialCardOption,
-  StripeCard,
-} from '../app/core/payments/payment.interface';
+import { FinancialCardOption, StripeCard } from '../app/core/payments/payment.interface';
 
 export const STRIPE_CARD: StripeCard = {
   brand: null,
@@ -57,22 +54,8 @@ export const STRIPE_CARD_OPTION_SUBSCRIPTION: any = {
 };
 
 export function createFinancialCardFixture(): FinancialCard {
-  return new FinancialCard(
-    '2/2020',
-    'pm_a0b1c2',
-    '4242',
-    null,
-    null,
-    STRIPE_CARD
-  );
+  return new FinancialCard('2/2020', 'pm_a0b1c2', '4242', null, null, STRIPE_CARD);
 }
 export function createFavoriteFinancialCardFixture(): FinancialCard {
-  return new FinancialCard(
-    '01/2021',
-    'pm_2f2f2f',
-    '4242',
-    null,
-    true,
-    STRIPE_CARD
-  );
+  return new FinancialCard('01/2021', 'pm_2f2f2f', '4242', null, true, STRIPE_CARD);
 }

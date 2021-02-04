@@ -4,10 +4,7 @@ import { ConnectionType } from 'app/core/remote-console/connection-type';
 export class MockRemoteConsoleService {
   sendConnectionTimeout(userId: string, timeout: number): void {}
 
-  sendDuplicateConversations(
-    userId: string,
-    conversationsGroupById: Map<string, number>
-  ): void {}
+  sendDuplicateConversations(userId: string, conversationsGroupById: Map<string, number>): void {}
 
   sendMessageTimeout(userId: string, messageId: string): void {}
 
@@ -17,10 +14,7 @@ export class MockRemoteConsoleService {
 
   sendXmppConnectionClosedWithError(message: string): void {}
 
-  sendChatConnectionTime(
-    connectionType: ConnectionType,
-    success: boolean
-  ): void {}
+  sendChatConnectionTime(connectionType: ConnectionType, success: boolean): void {}
 
   sendMessageAckFailed(messageId: string, description: string): void {}
 

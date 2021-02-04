@@ -1,10 +1,4 @@
-import {
-  fakeAsync,
-  tick,
-  ComponentFixture,
-  TestBed,
-  waitForAsync,
-} from '@angular/core/testing';
+import { fakeAsync, tick, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CatalogItemActionsComponent } from './catalog-item-actions.component';
 import { ItemService } from '../../../core/item/item.service';
 import { of } from 'rxjs';
@@ -127,9 +121,7 @@ describe('CatalogItemActionsComponent', () => {
 
     describe('success', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(itemService, 'bulkDelete').and.returnValue(
-          of(ITEMS_BULK_RESPONSE)
-        );
+        spyOn(itemService, 'bulkDelete').and.returnValue(of(ITEMS_BULK_RESPONSE));
 
         component.delete(modal);
         tick();
@@ -150,9 +142,7 @@ describe('CatalogItemActionsComponent', () => {
 
     describe('failed', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(itemService, 'bulkDelete').and.returnValue(
-          of(ITEMS_BULK_RESPONSE_FAILED)
-        );
+        spyOn(itemService, 'bulkDelete').and.returnValue(of(ITEMS_BULK_RESPONSE_FAILED));
 
         component.delete(modal);
         tick();
@@ -226,9 +216,7 @@ describe('CatalogItemActionsComponent', () => {
       });
 
       it('should send a tracking event', () => {
-        expect(trackingService.track).toHaveBeenCalledWith(
-          TrackingService.MYCATALOG_PRO_MODAL_DEACTIVATE
-        );
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MYCATALOG_PRO_MODAL_DEACTIVATE);
       });
     });
   });

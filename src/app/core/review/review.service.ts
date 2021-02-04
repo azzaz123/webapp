@@ -13,29 +13,21 @@ export class ReviewService {
   constructor(private http: HttpClient) {}
 
   public check(itemId: string): Observable<boolean> {
-    return this.http
-      .head(`${environment.baseUrl}${REVIEWS_API_URL}/${itemId}`)
-      .pipe(
-        map(() => {
-          return true;
-        }),
-        catchError(() => {
-          return of(false);
-        })
-      );
+    return this.http.head(`${environment.baseUrl}${REVIEWS_API_URL}/${itemId}`).pipe(
+      map(() => {
+        return true;
+      }),
+      catchError(() => {
+        return of(false);
+      })
+    );
   }
 
   public createAsBuyer(reviewData: ReviewDataBuyer): Observable<any> {
-    return this.http.post(
-      `${environment.baseUrl}${REVIEWS_API_URL}/buyer`,
-      reviewData
-    );
+    return this.http.post(`${environment.baseUrl}${REVIEWS_API_URL}/buyer`, reviewData);
   }
 
   public createAsSeller(reviewData: ReviewDataSeller): Observable<any> {
-    return this.http.post(
-      `${environment.baseUrl}${REVIEWS_API_URL}/seller`,
-      reviewData
-    );
+    return this.http.post(`${environment.baseUrl}${REVIEWS_API_URL}/seller`, reviewData);
   }
 }

@@ -37,10 +37,7 @@ export class CarKeysService {
 
     const params = { language: this.i18n.locale };
 
-    return this.http.get<any[]>(
-      `${environment.baseUrl}${CARS_KEYS_ENDPOINT}/bodytype`,
-      { params }
-    );
+    return this.http.get<any[]>(`${environment.baseUrl}${CARS_KEYS_ENDPOINT}/bodytype`, { params });
   }
 
   private toSelectOptions(values: any[]): IOption[] {

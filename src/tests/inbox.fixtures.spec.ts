@@ -150,8 +150,7 @@ export const MOCK_INBOX_API_RESPONSE = `{
         }
     ]
   }`;
-export const MOCK_INBOX_CONVERSATION = JSON.parse(MOCK_INBOX_API_RESPONSE)
-  .conversations[0];
+export const MOCK_INBOX_CONVERSATION = JSON.parse(MOCK_INBOX_API_RESPONSE).conversations[0];
 export const INBOX_CONVERSATION_DATE: Date = new Date();
 
 const apiConvUser = MOCK_INBOX_CONVERSATION.with_user;
@@ -188,11 +187,7 @@ const mockInboxMessages = MOCK_INBOX_CONVERSATION.messages.messages
         m.id,
         MOCK_INBOX_CONVERSATION.hash,
         m.text,
-        m.from_self
-          ? USER_ID
-          : MOCK_INBOX_CONVERSATION.with_user
-          ? MOCK_INBOX_CONVERSATION.with_user.hash
-          : null,
+        m.from_self ? USER_ID : MOCK_INBOX_CONVERSATION.with_user ? MOCK_INBOX_CONVERSATION.with_user.hash : null,
         m.from_self,
         new Date(m.timestamp),
         m.status,
@@ -212,11 +207,7 @@ export const CREATE_MOCK_INBOX_CONVERSATION: Function = (
           m.id,
           MOCK_INBOX_CONVERSATION.hash,
           m.text,
-          m.from_self
-            ? USER_ID
-            : MOCK_INBOX_CONVERSATION.with_user
-            ? MOCK_INBOX_CONVERSATION.with_user.hash
-            : null,
+          m.from_self ? USER_ID : MOCK_INBOX_CONVERSATION.with_user ? MOCK_INBOX_CONVERSATION.with_user.hash : null,
           m.from_self,
           new Date(m.timestamp),
           m.status,
@@ -249,9 +240,7 @@ export const CREATE_MOCK_INBOX_CONVERSATION: Function = (
     undefined,
     false
   );
-  const next_from = MOCK_INBOX_CONVERSATION.messages.next_from
-    ? MOCK_INBOX_CONVERSATION.messages.next_from
-    : null;
+  const next_from = MOCK_INBOX_CONVERSATION.messages.next_from ? MOCK_INBOX_CONVERSATION.messages.next_from : null;
 
   return new InboxConversation(
     id,
@@ -288,10 +277,7 @@ export const SECOND_MOCK_INBOX_CONVERSATION: InboxConversation = new InboxConver
   0,
   mockInboxMessages[0]
 );
-export const MOCKED_INBOX_CONVERSATIONS: InboxConversation[] = [
-  CREATE_MOCK_INBOX_CONVERSATION(),
-  SECOND_MOCK_INBOX_CONVERSATION,
-];
+export const MOCKED_INBOX_CONVERSATIONS: InboxConversation[] = [CREATE_MOCK_INBOX_CONVERSATION(), SECOND_MOCK_INBOX_CONVERSATION];
 export const NOT_FOUND_INBOX_CONVERSATION_ID = 'notFound';
 export const MOCK_NOT_FOUND_INBOX_CONVERSATION: InboxConversation = new InboxConversation(
   NOT_FOUND_INBOX_CONVERSATION_ID,
@@ -304,18 +290,10 @@ export const MOCK_NOT_FOUND_INBOX_CONVERSATION: InboxConversation = new InboxCon
   null
 );
 
-export function createInboxConversationsArray(
-  total: number,
-  conversationsId?: string
-): InboxConversation[] {
+export function createInboxConversationsArray(total: number, conversationsId?: string): InboxConversation[] {
   const conversations: InboxConversation[] = [];
   for (let i = 1; i <= total; i++) {
-    conversations.push(
-      CREATE_MOCK_INBOX_CONVERSATION(
-        conversationsId ? i + conversationsId : i.toString(),
-        OTHER_USER_ID
-      )
-    );
+    conversations.push(CREATE_MOCK_INBOX_CONVERSATION(conversationsId ? i + conversationsId : i.toString(), OTHER_USER_ID));
   }
   return conversations;
 }
@@ -401,10 +379,7 @@ export const MOCK_INBOX_MESSAGE_2: InboxMessage = new InboxMessage(
   MessageType.TEXT
 );
 
-export const MOCK_INBOX_MESSAGES: InboxMessage[] = [
-  MOCK_INBOX_MESSAGE,
-  MOCK_INBOX_MESSAGE_2,
-];
+export const MOCK_INBOX_MESSAGES: InboxMessage[] = [MOCK_INBOX_MESSAGE, MOCK_INBOX_MESSAGE_2];
 
 export const MOCK_INBOX_CONVERSATION_BASIC: InboxConversation = new InboxConversation(
   'abcd',

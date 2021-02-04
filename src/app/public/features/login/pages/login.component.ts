@@ -16,12 +16,7 @@ export class LoginComponent implements OnInit {
   public loginForm: FormGroup;
   public loading: boolean;
 
-  constructor(
-    fb: FormBuilder,
-    private accessTokenService: AccessTokenService,
-    private loginService: LoginService,
-    private router: Router
-  ) {
+  constructor(fb: FormBuilder, private accessTokenService: AccessTokenService, private loginService: LoginService, private router: Router) {
     this.loginForm = fb.group({
       emailAddress: ['', [Validators.required]],
       installationType: [TEST_INSTALLATION_TYPE],

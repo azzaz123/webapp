@@ -50,9 +50,7 @@ describe('LoadExternalLibService', () => {
   });
 
   it('should create an script with a observable complete', (doneCallback) => {
-    const observable: Observable<void> = service.loadScriptBySource(
-      'http://external-lib.com/js'
-    );
+    const observable: Observable<void> = service.loadScriptBySource('http://external-lib.com/js');
 
     observable.subscribe(() => {
       doneCallback();
@@ -73,9 +71,7 @@ describe('LoadExternalLibService', () => {
 
   it('should cache observable of the libs', () => {
     const source = 'http://external-lib.com/js';
-    spyOn(documentStub, 'createElement').and.returnValue(
-      new ScriptElementStub()
-    );
+    spyOn(documentStub, 'createElement').and.returnValue(new ScriptElementStub());
 
     service.loadScriptBySource(source).subscribe();
     service.loadScriptBySource(source).subscribe();
@@ -84,9 +80,7 @@ describe('LoadExternalLibService', () => {
   });
 
   it('should create a script with text script', () => {
-    spyOn(documentStub, 'createElement').and.returnValue(
-      new ScriptElementStub()
-    );
+    spyOn(documentStub, 'createElement').and.returnValue(new ScriptElementStub());
 
     service.loadScriptByText('textScript', TextScriptMock).subscribe();
 
@@ -94,9 +88,7 @@ describe('LoadExternalLibService', () => {
   });
 
   it('should cache script with text script if we called twice', () => {
-    spyOn(documentStub, 'createElement').and.returnValue(
-      new ScriptElementStub()
-    );
+    spyOn(documentStub, 'createElement').and.returnValue(new ScriptElementStub());
 
     service.loadScriptByText('textScript', TextScriptMock).subscribe();
     service.loadScriptByText('textScript', TextScriptMock).subscribe();

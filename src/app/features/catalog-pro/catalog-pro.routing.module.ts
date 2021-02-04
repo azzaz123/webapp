@@ -7,10 +7,7 @@ import { CatalogProListComponent } from './pages/catalog-pro-list/catalog-pro-li
 import { CheckoutExtrasProComponent } from './pages/checkout-extras-pro/checkout-extras-pro.component';
 import { CheckoutProComponent } from './pages/checkout-pro/checkout-pro.component';
 
-export function getRedirectToCatalogList(
-  rejectedPermissionName: string,
-  route: ActivatedRouteSnapshot
-) {
+export function getRedirectToCatalogList(rejectedPermissionName: string, route: ActivatedRouteSnapshot) {
   if (isEmpty(route.params)) {
     return '/catalog/list';
   } else {
@@ -76,8 +73,4 @@ export const routes: Route[] = [
 })
 export class CatalogProRoutingModule {}
 
-export const catalogProRoutedComponents = [
-  CatalogProListComponent,
-  CheckoutProComponent,
-  CheckoutExtrasProComponent,
-];
+export const catalogProRoutedComponents = [CatalogProListComponent, CheckoutProComponent, CheckoutExtrasProComponent];

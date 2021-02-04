@@ -6,11 +6,7 @@ import { SEARCHID_STORAGE_NAME } from '@core/message/real-time.service';
 import { SessionProfileDataLocation } from '@core/trust-and-safety/trust-and-safety.interface';
 import { TrustAndSafetyService } from '@core/trust-and-safety/trust-and-safety.service';
 import { UserService } from '@core/user/user.service';
-import {
-  NgbModal,
-  NgbModalOptions,
-  NgbModalRef,
-} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { isNil } from 'lodash-es';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -63,19 +59,15 @@ export class ChatComponent implements OnInit {
     });
 
     this.eventService.subscribe(EventService.CHAT_RT_CONNECTED, () =>
-      this.inboxConversationService.conversations.forEach(
-        (conversation: InboxConversation) =>
-          this.inboxConversationService.resendPendingMessages(conversation)
+      this.inboxConversationService.conversations.forEach((conversation: InboxConversation) =>
+        this.inboxConversationService.resendPendingMessages(conversation)
       )
     );
 
-    this.eventService.subscribe(
-      EventService.CURRENT_CONVERSATION_SET,
-      (conversation: InboxConversation) => {
-        this.inboxConversationService.currentConversation = conversation;
-        this.conversationsLoading = false;
-      }
-    );
+    this.eventService.subscribe(EventService.CURRENT_CONVERSATION_SET, (conversation: InboxConversation) => {
+      this.inboxConversationService.currentConversation = conversation;
+      this.conversationsLoading = false;
+    });
     this.eventService.subscribe(EventService.INBOX_READY, (ready) => {
       this.openConversationIfNeeded();
     });
@@ -94,10 +86,7 @@ export class ChatComponent implements OnInit {
   }
 
   private openConversationIfNeeded() {
-    if (
-      this.inboxConversationService.currentConversation ||
-      !this.inboxService.isInboxReady()
-    ) {
+    if (this.inboxConversationService.currentConversation || !this.inboxService.isInboxReady()) {
       return;
     }
 
@@ -113,9 +102,7 @@ export class ChatComponent implements OnInit {
       }
 
       if (conversationId || itemId) {
-        this.trustAndSafetyService.submitProfile(
-          SessionProfileDataLocation.OPEN_CHAT
-        );
+        this.trustAndSafetyService.submitProfile(SessionProfileDataLocation.OPEN_CHAT);
       }
 
       if (searchId) {
@@ -130,15 +117,13 @@ export class ChatComponent implements OnInit {
     }
 
     this.conversationsLoading = true;
-    this.inboxConversationService
-      .openConversationByConversationId$(conversationId)
-      .subscribe((inboxConversation: InboxConversation) => {
-        if (inboxConversation) {
-          this.inboxConversationService.currentConversation = inboxConversation;
-          return;
-        }
-        this.conversationsLoading = false;
-      });
+    this.inboxConversationService.openConversationByConversationId$(conversationId).subscribe((inboxConversation: InboxConversation) => {
+      if (inboxConversation) {
+        this.inboxConversationService.currentConversation = inboxConversation;
+        return;
+      }
+      this.conversationsLoading = false;
+    });
   }
 
   private openConversationByItmId(itemId: string) {
@@ -165,16 +150,11 @@ export class ChatComponent implements OnInit {
   }
 
   private openSendPhoneModalIfNeeded(conversation: InboxConversation): void {
-    this.userService
-      .getPhoneInfo(conversation.user.id)
-      .subscribe((phoneInfo) => {
-        if (
-          !isNil(phoneInfo) &&
-          phoneInfo.phone_method === PhoneMethod.POP_UP
-        ) {
-          this.openSendPhoneModal(conversation);
-        }
-      });
+    this.userService.getPhoneInfo(conversation.user.id).subscribe((phoneInfo) => {
+      if (!isNil(phoneInfo) && phoneInfo.phone_method === PhoneMethod.POP_UP) {
+        this.openSendPhoneModal(conversation);
+      }
+    });
   }
 
   private openSendPhoneModal(conversation: InboxConversation) {
@@ -183,16 +163,11 @@ export class ChatComponent implements OnInit {
       backdrop: 'static',
       keyboard: false,
     };
-    const modalRef: NgbModalRef = this.modalService.open(
-      SendPhoneComponent,
-      modalOptions
-    );
+    const modalRef: NgbModalRef = this.modalService.open(SendPhoneComponent, modalOptions);
     modalRef.componentInstance.conversation = conversation;
   }
 
-  private openPersonalDataWarningModalIfNeeded(
-    conversation: InboxConversation
-  ): void {
+  private openPersonalDataWarningModalIfNeeded(conversation: InboxConversation): void {
     const stringId = conversation.user.id as any;
     if (this.USERS_SHOW_INFORMATIONAL_MODAL.includes(stringId)) {
       this.openPersonalDataWarningModal(conversation);

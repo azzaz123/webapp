@@ -4,10 +4,7 @@ import { ItemWithProducts } from '@core/item/item-response.interface';
 import { keys } from 'lodash-es';
 import { CartService } from '@shared/catalog/cart/cart.service';
 import { CartChange, CartItem } from '@shared/catalog/cart/cart-item.interface';
-import {
-  BUMP_PROVINCIAL_TYPES,
-  BUMP_TYPES,
-} from '@shared/catalog/cart/cart-base';
+import { BUMP_PROVINCIAL_TYPES, BUMP_TYPES } from '@shared/catalog/cart/cart-base';
 import { Cart } from '@shared/catalog/cart/cart';
 import { CreditInfo } from '@core/payments/payment.interface';
 
@@ -45,11 +42,9 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges {
     this.cartService.createInstance(new Cart());
     this.durations = keys(this.itemWithProducts.products);
     this.duration = this.durations[1];
-    this.cartService.cart$
-      .pipe(takeWhile(() => this.active))
-      .subscribe((cartChange: CartChange) => {
-        this.onRemoveOrClean(cartChange);
-      });
+    this.cartService.cart$.pipe(takeWhile(() => this.active)).subscribe((cartChange: CartChange) => {
+      this.onRemoveOrClean(cartChange);
+    });
     this.provincialBump = !this.itemWithProducts.products['168'].citybump;
     if (this.provincialBump) {
       this.types = BUMP_PROVINCIAL_TYPES;
@@ -84,11 +79,7 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private onRemoveOrClean(cartChange: CartChange) {
-    if (
-      (cartChange.action === 'remove' &&
-        cartChange.itemId === this.itemWithProducts.item.id) ||
-      cartChange.action === 'clean'
-    ) {
+    if ((cartChange.action === 'remove' && cartChange.itemId === this.itemWithProducts.item.id) || cartChange.action === 'clean') {
       this.selectedType = undefined;
       this.selectedDuration = undefined;
       this.itemWithProducts.item.flags.bump_type = undefined;

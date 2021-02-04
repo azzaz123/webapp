@@ -1,11 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AnalyticsService } from '@core/analytics/analytics.service';
@@ -18,10 +12,7 @@ import { Item } from '@core/item/item';
 import { ItemService } from '@core/item/item.service';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
-import {
-  SubscriptionsService,
-  SUBSCRIPTION_TYPES,
-} from '@core/subscriptions/subscriptions.service';
+import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
 import { TrackingService } from '@core/tracking/tracking.service';
 import { FeatureflagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
@@ -40,11 +31,7 @@ import {
   ORDER_EVENT,
 } from '@fixtures/item.fixtures.spec';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
-import {
-  MockSubscriptionService,
-  MOCK_SUBSCRIPTION_SLOTS,
-  MOCK_SUBSCRIPTION_SLOT_CARS,
-} from '@fixtures/subscriptions.fixtures.spec';
+import { MockSubscriptionService, MOCK_SUBSCRIPTION_SLOTS, MOCK_SUBSCRIPTION_SLOT_CARS } from '@fixtures/subscriptions.fixtures.spec';
 import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { MOCK_USER, USER_INFO_RESPONSE } from '@fixtures/user.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
@@ -99,12 +86,7 @@ describe('ListComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [HttpModule],
-        declarations: [
-          ListComponent,
-          ItemSoldDirective,
-          SubscriptionsSlotsListComponent,
-          SubscriptionsSlotItemComponent,
-        ],
+        declarations: [ListComponent, ItemSoldDirective, SubscriptionsSlotsListComponent, SubscriptionsSlotItemComponent],
         providers: [
           I18nService,
           EventService,
@@ -281,16 +263,10 @@ describe('ListComponent', () => {
         component.ngOnInit();
         tick();
 
-        expect(
-          component['bumpSuggestionModalRef'].componentInstance.productCurrency
-        ).toEqual('EUR');
+        expect(component['bumpSuggestionModalRef'].componentInstance.productCurrency).toEqual('EUR');
         expect(itemService.getCheapestProductPrice).toHaveBeenCalledTimes(1);
-        expect(itemService.getCheapestProductPrice).toHaveBeenLastCalledWith([
-          1,
-        ]);
-        expect(
-          component['bumpSuggestionModalRef'].componentInstance.productPrice
-        ).toEqual(creditInfo.factor * 10);
+        expect(itemService.getCheapestProductPrice).toHaveBeenLastCalledWith([1]);
+        expect(component['bumpSuggestionModalRef'].componentInstance.productPrice).toEqual(creditInfo.factor * 10);
       }));
 
       it('should set the creditInfo', () => {
@@ -313,13 +289,10 @@ describe('ListComponent', () => {
       spyOn(localStorage, 'removeItem');
       component.ngOnInit();
       tick();
-      expect(modalService.open).toHaveBeenCalledWith(
-        BumpConfirmationModalComponent,
-        {
-          windowClass: 'modal-standard',
-          backdrop: 'static',
-        }
-      );
+      expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {
+        windowClass: 'modal-standard',
+        backdrop: 'static',
+      });
       expect(router.navigate).toHaveBeenCalledWith(['catalog/list']);
       expect(localStorage.removeItem).toHaveBeenCalled();
     }));
@@ -369,12 +342,9 @@ describe('ListComponent', () => {
         component.ngOnInit();
         tick();
 
-        expect(modalService.open).toHaveBeenCalledWith(
-          BumpSuggestionModalComponent,
-          {
-            windowClass: 'modal-standard',
-          }
-        );
+        expect(modalService.open).toHaveBeenCalledWith(BumpSuggestionModalComponent, {
+          windowClass: 'modal-standard',
+        });
       }));
 
       it('should redirect when modal CTA button modal is clicked', fakeAsync(() => {
@@ -387,10 +357,7 @@ describe('ListComponent', () => {
         tick();
 
         expect(router.navigate).toHaveBeenCalledTimes(1);
-        expect(router.navigate).toHaveBeenCalledWith([
-          'catalog/checkout',
-          { itemId: '1' },
-        ]);
+        expect(router.navigate).toHaveBeenCalledWith(['catalog/checkout', { itemId: '1' }]);
       }));
 
       it('should not redirect when modal is closed', fakeAsync(() => {
@@ -417,20 +384,15 @@ describe('ListComponent', () => {
       tick();
 
       expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
-      expect(modalService.open).toHaveBeenCalledWith(
-        ListingfeeConfirmationModalComponent,
-        {
-          windowClass: 'modal-standard',
-          backdrop: 'static',
-        }
-      );
+      expect(modalService.open).toHaveBeenCalledWith(ListingfeeConfirmationModalComponent, {
+        windowClass: 'modal-standard',
+        backdrop: 'static',
+      });
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
     }));
 
     it('should open the listing fee modal if transaction is set as purchaseListingFeeWithCredits', fakeAsync(() => {
-      spyOn(localStorage, 'getItem').and.returnValue(
-        'purchaseListingFeeWithCredits'
-      );
+      spyOn(localStorage, 'getItem').and.returnValue('purchaseListingFeeWithCredits');
       spyOn(localStorage, 'removeItem');
       route.params = of({
         code: 200,
@@ -440,13 +402,10 @@ describe('ListComponent', () => {
       tick();
 
       expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
-      expect(modalService.open).toHaveBeenCalledWith(
-        ListingfeeConfirmationModalComponent,
-        {
-          windowClass: 'modal-standard',
-          backdrop: 'static',
-        }
-      );
+      expect(modalService.open).toHaveBeenCalledWith(ListingfeeConfirmationModalComponent, {
+        windowClass: 'modal-standard',
+        backdrop: 'static',
+      });
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
     }));
 
@@ -458,12 +417,9 @@ describe('ListComponent', () => {
       component.ngOnInit();
       tick();
 
-      expect(modalService.open).toHaveBeenCalledWith(
-        TooManyItemsModalComponent,
-        {
-          windowClass: 'modal-standard',
-        }
-      );
+      expect(modalService.open).toHaveBeenCalledWith(TooManyItemsModalComponent, {
+        windowClass: 'modal-standard',
+      });
     }));
 
     it('should open disable wallacoins modal if has param disableWallacoinsModal', fakeAsync(() => {
@@ -475,13 +431,10 @@ describe('ListComponent', () => {
       tick();
 
       expect(modalService.open).toHaveBeenCalledTimes(1);
-      expect(modalService.open).toHaveBeenCalledWith(
-        WallacoinsDisabledModalComponent,
-        {
-          backdrop: 'static',
-          windowClass: 'modal-standard',
-        }
-      );
+      expect(modalService.open).toHaveBeenCalledWith(WallacoinsDisabledModalComponent, {
+        backdrop: 'static',
+        windowClass: 'modal-standard',
+      });
     }));
 
     it('should open the bump modal if transaction is set as bump', fakeAsync(() => {
@@ -495,13 +448,10 @@ describe('ListComponent', () => {
       tick();
 
       expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
-      expect(modalService.open).toHaveBeenCalledWith(
-        BumpConfirmationModalComponent,
-        {
-          windowClass: 'modal-standard',
-          backdrop: 'static',
-        }
-      );
+      expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {
+        windowClass: 'modal-standard',
+        backdrop: 'static',
+      });
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
     }));
 
@@ -516,10 +466,7 @@ describe('ListComponent', () => {
       tick();
 
       expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
-      expect(router.navigate).toHaveBeenCalledWith([
-        'wallacoins',
-        { code: 200 },
-      ]);
+      expect(router.navigate).toHaveBeenCalledWith(['wallacoins', { code: 200 }]);
     }));
 
     it('should open the bump modal if transaction is set as bumpWithCredits', fakeAsync(() => {
@@ -533,13 +480,10 @@ describe('ListComponent', () => {
       tick();
 
       expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
-      expect(modalService.open).toHaveBeenCalledWith(
-        BumpConfirmationModalComponent,
-        {
-          windowClass: 'modal-standard',
-          backdrop: 'static',
-        }
-      );
+      expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {
+        windowClass: 'modal-standard',
+        backdrop: 'static',
+      });
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionSpent');
     }));
@@ -574,17 +518,13 @@ describe('ListComponent', () => {
     });
 
     it('should show one catalog management card for each subscription slot from backend', fakeAsync(() => {
-      spyOn(subscriptionsService, 'getSlots').and.returnValue(
-        of(MOCK_SUBSCRIPTION_SLOTS)
-      );
+      spyOn(subscriptionsService, 'getSlots').and.returnValue(of(MOCK_SUBSCRIPTION_SLOTS));
 
       component.ngOnInit();
       tick();
       fixture.detectChanges();
 
-      const slotsCards = fixture.debugElement.queryAll(
-        By.directive(SubscriptionsSlotItemComponent)
-      );
+      const slotsCards = fixture.debugElement.queryAll(By.directive(SubscriptionsSlotItemComponent));
       expect(slotsCards).toBeTruthy();
       expect(slotsCards.length).toEqual(MOCK_SUBSCRIPTION_SLOTS.length);
     }));
@@ -597,39 +537,29 @@ describe('ListComponent', () => {
     });
 
     it('should track the ProductListLoaded event', () => {
-      expect(
-        trackingService.track
-      ).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_LOADED, { init: 0 });
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_LOADED, { init: 0 });
     });
     it('should track the ProductListSoldViewed if the selectedStatus is sold', () => {
       component['selectedStatus'] = 'sold';
       trackingServiceSpy.calls.reset();
       component.ngOnInit();
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.PRODUCT_LIST_SOLD_VIEWED,
-        {
-          total_products: 2,
-        }
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_SOLD_VIEWED, {
+        total_products: 2,
+      });
     });
     it('should track the ProductListActiveViewed if the selectedStatus is published', () => {
       component['selectedStatus'] = 'published';
       trackingServiceSpy.calls.reset();
       component.ngOnInit();
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.PRODUCT_LIST_ACTIVE_VIEWED,
-        {
-          total_products: 2,
-        }
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_ACTIVE_VIEWED, {
+        total_products: 2,
+      });
     });
     it('should set init', () => {
       expect(component['init']).toBe(20);
     });
     it('should set end true if no init', () => {
-      itemerviceSpy.and.returnValue(
-        of({ data: [MOCK_ITEM, MOCK_ITEM], init: null })
-      );
+      itemerviceSpy.and.returnValue(of({ data: [MOCK_ITEM, MOCK_ITEM], init: null }));
       component.ngOnInit();
       expect(component['end']).toBeTruthy();
     });
@@ -641,9 +571,7 @@ describe('ListComponent', () => {
       component.ngOnInit();
       tick();
 
-      expect(
-        component['bumpSuggestionModalRef'].componentInstance.item
-      ).toEqual(component.items[0]);
+      expect(component['bumpSuggestionModalRef'].componentInstance.item).toEqual(component.items[0]);
     }));
   });
 
@@ -755,20 +683,15 @@ describe('ListComponent', () => {
     });
     describe('success', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(itemService, 'bulkDelete').and.returnValue(
-          of(ITEMS_BULK_RESPONSE)
-        );
+        spyOn(itemService, 'bulkDelete').and.returnValue(of(ITEMS_BULK_RESPONSE));
         spyOn(component, 'getNumberOfProducts');
         component.delete();
         tick();
       }));
       it('should call modal and bulkDelete', () => {
-        expect(modalService.open).toHaveBeenCalledWith(
-          ConfirmationModalComponent,
-          {
-            windowClass: 'modal-prompt',
-          }
-        );
+        expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, {
+          windowClass: 'modal-prompt',
+        });
         expect(itemService.bulkDelete).toHaveBeenCalledWith('active');
       });
       it('should remove deleted items', () => {
@@ -778,12 +701,9 @@ describe('ListComponent', () => {
         expect(find(component.items, { id: '5' })).toBeFalsy();
       });
       it('should track the ProductListbulkDeleted event', () => {
-        expect(trackingService.track).toHaveBeenCalledWith(
-          TrackingService.PRODUCT_LIST_BULK_DELETED,
-          {
-            product_ids: '1, 3, 5',
-          }
-        );
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_BULK_DELETED, {
+          product_ids: '1, 3, 5',
+        });
       });
       it('should call getNumberOfProducts', () => {
         expect(component.getNumberOfProducts).toHaveBeenCalled();
@@ -791,9 +711,7 @@ describe('ListComponent', () => {
     });
     describe('failed', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(itemService, 'bulkDelete').and.returnValue(
-          of(ITEMS_BULK_RESPONSE_FAILED)
-        );
+        spyOn(itemService, 'bulkDelete').and.returnValue(of(ITEMS_BULK_RESPONSE_FAILED));
         component.delete();
         tick();
       }));
@@ -807,38 +725,23 @@ describe('ListComponent', () => {
     const TOTAL = 5;
     describe('success', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(itemService, 'bulkReserve').and.returnValue(
-          of(ITEMS_BULK_RESPONSE)
-        );
+        spyOn(itemService, 'bulkReserve').and.returnValue(of(ITEMS_BULK_RESPONSE));
         spyOn(eventService, 'emit');
         component.items = [];
         for (let i = 1; i <= TOTAL; i++) {
           component.items.push(
-            new Item(
-              i.toString(),
-              i,
-              i.toString(),
-              null,
-              null,
-              null,
-              null,
-              null,
-              null,
-              null,
-              null,
-              {
-                pending: false,
-                sold: false,
-                favorite: false,
-                reserved: false,
-                removed: false,
-                banned: false,
-                expired: false,
-                review_done: false,
-                bumped: false,
-                highlighted: false,
-              }
-            )
+            new Item(i.toString(), i, i.toString(), null, null, null, null, null, null, null, null, {
+              pending: false,
+              sold: false,
+              favorite: false,
+              reserved: false,
+              removed: false,
+              banned: false,
+              expired: false,
+              review_done: false,
+              bumped: false,
+              highlighted: false,
+            })
           );
         }
         component.reserve();
@@ -846,12 +749,9 @@ describe('ListComponent', () => {
       }));
 
       it('should call the ProductListBulkReserved tracking event', () => {
-        expect(trackingService.track).toHaveBeenCalledWith(
-          TrackingService.PRODUCT_LIST_BULK_RESERVED,
-          {
-            product_ids: '1, 3, 5',
-          }
-        );
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_BULK_RESERVED, {
+          product_ids: '1, 3, 5',
+        });
       });
 
       it('should set items as reserved', () => {
@@ -867,26 +767,15 @@ describe('ListComponent', () => {
       });
 
       it('should emit ITEM_RESERVED event', () => {
-        expect(eventService.emit).toHaveBeenCalledWith(
-          EventService.ITEM_RESERVED,
-          component.items[0]
-        );
-        expect(eventService.emit).toHaveBeenCalledWith(
-          EventService.ITEM_RESERVED,
-          component.items[2]
-        );
-        expect(eventService.emit).toHaveBeenCalledWith(
-          EventService.ITEM_RESERVED,
-          component.items[4]
-        );
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_RESERVED, component.items[0]);
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_RESERVED, component.items[2]);
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_RESERVED, component.items[4]);
       });
     });
 
     describe('failed', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(itemService, 'bulkReserve').and.returnValue(
-          of(ITEMS_BULK_RESPONSE_FAILED)
-        );
+        spyOn(itemService, 'bulkReserve').and.returnValue(of(ITEMS_BULK_RESPONSE_FAILED));
         component.reserve();
         tick();
       }));
@@ -922,10 +811,7 @@ describe('ListComponent', () => {
         component.feature(ORDER_EVENT, 'urgent');
         tick();
 
-        expect(router.navigate).toHaveBeenCalledWith([
-          'catalog/list',
-          { code: 200 },
-        ]);
+        expect(router.navigate).toHaveBeenCalledWith(['catalog/list', { code: 200 }]);
       }));
     });
 
@@ -940,10 +826,7 @@ describe('ListComponent', () => {
         component.feature(ORDER_EVENT, 'urgent');
         tick();
 
-        expect(router.navigate).toHaveBeenCalledWith([
-          'catalog/list',
-          { code: -1 },
-        ]);
+        expect(router.navigate).toHaveBeenCalledWith(['catalog/list', { code: -1 }]);
       }));
     });
   });
@@ -1006,9 +889,7 @@ describe('ListComponent', () => {
       tick();
 
       expect(modalService.open).toHaveBeenCalledTimes(1);
-      expect(modalService.open).toHaveBeenCalledWith(
-        ActivateItemsModalComponent
-      );
+      expect(modalService.open).toHaveBeenCalledWith(ActivateItemsModalComponent);
       expect(itemService.activate).toHaveBeenCalledTimes(1);
     }));
 
@@ -1048,9 +929,7 @@ describe('ListComponent', () => {
       }));
 
       it('should update if there is selected a subscription slot', fakeAsync(() => {
-        component.selectedSubscriptionSlot = cloneDeep(
-          MOCK_SUBSCRIPTION_SLOT_CARS
-        );
+        component.selectedSubscriptionSlot = cloneDeep(MOCK_SUBSCRIPTION_SLOT_CARS);
         component.navLinks = [
           {
             id: STATUS.INACTIVE,
@@ -1083,9 +962,7 @@ describe('ListComponent', () => {
       tick();
 
       expect(modalService.open).toHaveBeenCalledTimes(1);
-      expect(modalService.open).toHaveBeenCalledWith(
-        ActivateItemsModalComponent
-      );
+      expect(modalService.open).toHaveBeenCalledWith(ActivateItemsModalComponent);
       expect(itemService.activateSingleItem).toHaveBeenCalledTimes(1);
       expect(itemService.activateSingleItem).toHaveBeenCalledWith('1');
     }));
@@ -1126,9 +1003,7 @@ describe('ListComponent', () => {
       }));
 
       it('should update if there is selected a subscription slot', fakeAsync(() => {
-        component.selectedSubscriptionSlot = cloneDeep(
-          MOCK_SUBSCRIPTION_SLOT_CARS
-        );
+        component.selectedSubscriptionSlot = cloneDeep(MOCK_SUBSCRIPTION_SLOT_CARS);
         component.navLinks = [
           {
             id: STATUS.INACTIVE,

@@ -1,10 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { isPresent } from 'ngx-cookie';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../../../../core/user/user.service';
@@ -43,10 +38,7 @@ export class EmailModalComponent {
       );
     } else {
       for (const control in this.emailForm.controls) {
-        if (
-          this.emailForm.controls.hasOwnProperty(control) &&
-          !this.emailForm.controls[control].valid
-        ) {
+        if (this.emailForm.controls.hasOwnProperty(control) && !this.emailForm.controls[control].valid) {
           this.emailForm.controls[control].markAsDirty();
         }
       }

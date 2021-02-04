@@ -33,11 +33,7 @@ export class CarSuggestionsService {
       .pipe(map((values: string[]) => this.toSelectOptions(values)));
   }
 
-  getVersions(
-    brand: string,
-    model: string,
-    year: string
-  ): Observable<IOption[]> {
+  getVersions(brand: string, model: string, year: string): Observable<IOption[]> {
     return this.http
       .get(`${environment.baseUrl}${CARS_SUGGESTER_API_URL}/versions`, {
         params: { brand, model, year },

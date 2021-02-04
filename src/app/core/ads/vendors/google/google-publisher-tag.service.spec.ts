@@ -2,18 +2,10 @@ import { TestBed } from '@angular/core/testing';
 import { AdSlot } from '@core/ads/models';
 import { AdsKeywordsService } from '@core/ads/services/ads-keywords/ads-keywords.service';
 import { WINDOW_TOKEN } from '@core/window/window.token';
-import {
-  MockAdsKeywords,
-  MockAdsKeywordsService,
-  MockAdSlots,
-} from '@fixtures/ads.fixtures.spec';
+import { MockAdsKeywords, MockAdsKeywordsService, MockAdSlots } from '@fixtures/ads.fixtures.spec';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { CookieService } from 'ngx-cookie';
-import {
-  MOCK_GOOGLE_DEFINE_SLOT,
-  MOCK_GOOGLE_PUBABDS,
-  MOCK_GOOGLE_TAG,
-} from './../../../../../configs/jest/global-mocks.fixtures.spec';
+import { MOCK_GOOGLE_DEFINE_SLOT, MOCK_GOOGLE_PUBABDS, MOCK_GOOGLE_TAG } from './../../../../../configs/jest/global-mocks.fixtures.spec';
 import { GooglePublisherTagService } from './google-publisher-tag.service';
 
 describe('GooglePublisherTagService', () => {
@@ -55,9 +47,7 @@ describe('GooglePublisherTagService', () => {
 
       service.init(MockAdSlots);
 
-      expect(windowMock.googletag.cmd.push).toHaveBeenCalledWith(
-        jasmine.any(Function)
-      );
+      expect(windowMock.googletag.cmd.push).toHaveBeenCalledWith(jasmine.any(Function));
     });
 
     it('should define ad slots', () => {
@@ -67,19 +57,9 @@ describe('GooglePublisherTagService', () => {
       service.init(MockAdSlots);
 
       MockAdSlots.forEach((slot: AdSlot) => {
-        expect(windowMock.googletag.defineSlot).toHaveBeenCalledWith(
-          slot.name,
-          slot.sizes,
-          slot.id
-        );
-        expect(MOCK_GOOGLE_DEFINE_SLOT.setTargeting).toHaveBeenCalledWith(
-          'ad_group',
-          'ad_opt'
-        );
-        expect(MOCK_GOOGLE_DEFINE_SLOT.setTargeting).toHaveBeenCalledWith(
-          'ad_h',
-          jasmine.any(String)
-        );
+        expect(windowMock.googletag.defineSlot).toHaveBeenCalledWith(slot.name, slot.sizes, slot.id);
+        expect(MOCK_GOOGLE_DEFINE_SLOT.setTargeting).toHaveBeenCalledWith('ad_group', 'ad_opt');
+        expect(MOCK_GOOGLE_DEFINE_SLOT.setTargeting).toHaveBeenCalledWith('ad_h', jasmine.any(String));
         expect(MOCK_GOOGLE_DEFINE_SLOT.addService).toHaveBeenCalled();
       });
     });
@@ -97,9 +77,7 @@ describe('GooglePublisherTagService', () => {
       expect(MOCK_GOOGLE_PUBABDS.enableSingleRequest).toHaveBeenCalledTimes(1);
       expect(MOCK_GOOGLE_PUBABDS.collapseEmptyDivs).toHaveBeenCalledTimes(1);
       expect(MOCK_GOOGLE_PUBABDS.disableInitialLoad).toHaveBeenCalledTimes(1);
-      expect(MOCK_GOOGLE_PUBABDS.setPublisherProvidedId).toHaveBeenCalledWith(
-        publisherId
-      );
+      expect(MOCK_GOOGLE_PUBABDS.setPublisherProvidedId).toHaveBeenCalledWith(publisherId);
     });
 
     it('should enable services', () => {
@@ -133,38 +111,26 @@ describe('GooglePublisherTagService', () => {
 
       service.setAdsSegmentation();
 
-      expect(windowMock.googletag.cmd.push).toHaveBeenCalledWith(
-        jasmine.any(Function)
-      );
+      expect(windowMock.googletag.cmd.push).toHaveBeenCalledWith(jasmine.any(Function));
     });
 
     it('should update the pubabs', () => {
-      spyOn(
-        MOCK_GOOGLE_PUBABDS,
-        'setRequestNonPersonalizedAds'
-      ).and.callThrough();
+      spyOn(MOCK_GOOGLE_PUBABDS, 'setRequestNonPersonalizedAds').and.callThrough();
       spyOn(MOCK_GOOGLE_PUBABDS, 'refresh').and.callThrough();
 
       service.setAdsSegmentation();
 
-      expect(
-        MOCK_GOOGLE_PUBABDS.setRequestNonPersonalizedAds
-      ).toHaveBeenCalledWith(1);
+      expect(MOCK_GOOGLE_PUBABDS.setRequestNonPersonalizedAds).toHaveBeenCalledWith(1);
       expect(MOCK_GOOGLE_PUBABDS.refresh).toHaveBeenCalledTimes(1);
     });
 
     it('should update the pubabs with segmentation', () => {
-      spyOn(
-        MOCK_GOOGLE_PUBABDS,
-        'setRequestNonPersonalizedAds'
-      ).and.callThrough();
+      spyOn(MOCK_GOOGLE_PUBABDS, 'setRequestNonPersonalizedAds').and.callThrough();
       spyOn(MOCK_GOOGLE_PUBABDS, 'refresh').and.callThrough();
 
       service.setAdsSegmentation(true);
 
-      expect(
-        MOCK_GOOGLE_PUBABDS.setRequestNonPersonalizedAds
-      ).toHaveBeenCalledWith(0);
+      expect(MOCK_GOOGLE_PUBABDS.setRequestNonPersonalizedAds).toHaveBeenCalledWith(0);
       expect(MOCK_GOOGLE_PUBABDS.refresh).toHaveBeenCalledTimes(1);
     });
 
@@ -174,9 +140,7 @@ describe('GooglePublisherTagService', () => {
 
         service.setTargetingByAdsKeywords();
 
-        expect(MockAdsKeywordsService.updateAdKeywords).toHaveBeenCalledTimes(
-          1
-        );
+        expect(MockAdsKeywordsService.updateAdKeywords).toHaveBeenCalledTimes(1);
       });
 
       it('should set targeting by ad keywords', () => {
@@ -186,10 +150,7 @@ describe('GooglePublisherTagService', () => {
 
         for (const key in MockAdsKeywords) {
           if (MockAdsKeywords.hasOwnProperty(key)) {
-            expect(MOCK_GOOGLE_PUBABDS.setTargeting).toHaveBeenCalledWith(
-              key,
-              MockAdsKeywords[key]
-            );
+            expect(MOCK_GOOGLE_PUBABDS.setTargeting).toHaveBeenCalledWith(key, MockAdsKeywords[key]);
           }
         }
       });
@@ -199,10 +160,7 @@ describe('GooglePublisherTagService', () => {
 
         service.setTargetingByAdsKeywords();
 
-        expect(MOCK_GOOGLE_PUBABDS.setTargeting).toHaveBeenCalledWith(
-          'allowSegmentation',
-          'false'
-        );
+        expect(MOCK_GOOGLE_PUBABDS.setTargeting).toHaveBeenCalledWith('allowSegmentation', 'false');
       });
 
       it('should set targeting by segmentation to true', () => {
@@ -210,10 +168,7 @@ describe('GooglePublisherTagService', () => {
 
         service.setTargetingByAdsKeywords(true);
 
-        expect(MOCK_GOOGLE_PUBABDS.setTargeting).toHaveBeenCalledWith(
-          'allowSegmentation',
-          'true'
-        );
+        expect(MOCK_GOOGLE_PUBABDS.setTargeting).toHaveBeenCalledWith('allowSegmentation', 'true');
       });
     });
   });
@@ -224,9 +179,7 @@ describe('GooglePublisherTagService', () => {
 
       service.displayAdBySlotId(MockAdSlots[0].id);
 
-      expect(windowMock.googletag.cmd.push).toHaveBeenCalledWith(
-        jasmine.any(Function)
-      );
+      expect(windowMock.googletag.cmd.push).toHaveBeenCalledWith(jasmine.any(Function));
     });
 
     it('should display by slot id', () => {

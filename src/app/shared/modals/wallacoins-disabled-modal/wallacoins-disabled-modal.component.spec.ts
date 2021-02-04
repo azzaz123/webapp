@@ -42,8 +42,7 @@ describe('WallacoinsDisabledModalComponent', () => {
     });
 
     it('should be closed pressing close button', () => {
-      const closeButton = fixture.debugElement.query(By.css('.modal-close'))
-        .nativeElement;
+      const closeButton = fixture.debugElement.query(By.css('.modal-close')).nativeElement;
 
       closeButton.click();
 
@@ -51,9 +50,7 @@ describe('WallacoinsDisabledModalComponent', () => {
     });
 
     it('should be closed pressing main button', () => {
-      const submitButton = fixture.debugElement.query(
-        By.directive(ButtonComponent)
-      ).nativeElement;
+      const submitButton = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
 
       submitButton.click();
 

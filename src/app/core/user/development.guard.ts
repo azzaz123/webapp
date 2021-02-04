@@ -9,9 +9,7 @@ export class DevelopmentGuard implements CanLoad {
   constructor(private router: Router) {}
 
   canLoad(): Observable<boolean> | Promise<boolean> | boolean {
-    const experimentalFeaturesEnabled = !!localStorage.getItem(
-      'experimentalFeatures'
-    );
+    const experimentalFeaturesEnabled = !!localStorage.getItem('experimentalFeatures');
     const devEnv = isDevMode() || experimentalFeaturesEnabled;
 
     if (!devEnv) {

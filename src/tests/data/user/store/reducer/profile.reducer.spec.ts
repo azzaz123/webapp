@@ -1,8 +1,4 @@
-import {
-  LoadUserProfile,
-  LoadUserProfileFailed,
-  LoadUserProfileSuccess,
-} from 'app/data/user/actions/user.action';
+import { LoadUserProfile, LoadUserProfileFailed, LoadUserProfileSuccess } from 'app/data/user/actions/user.action';
 import { Profile } from 'app/data/user/domain';
 import * as fromReducer from 'app/data/user/store/reducer/profile.reducer';
 import { ProfileMother } from '../../domain/profile/profile.mother';
@@ -16,10 +12,7 @@ describe('Profile Reducer', () => {
         type: 'Unkown',
       };
 
-      const state = fromReducer.userProfileReducer(
-        INITIAL_USER_PROFILE_STATE,
-        action
-      );
+      const state = fromReducer.userProfileReducer(INITIAL_USER_PROFILE_STATE, action);
 
       expect(state).toEqual(INITIAL_USER_PROFILE_STATE);
     });
@@ -29,10 +22,7 @@ describe('Profile Reducer', () => {
     it('should set loading true when load user profile', () => {
       const { INITIAL_USER_PROFILE_STATE } = fromReducer;
 
-      const state = fromReducer.userProfileReducer(
-        INITIAL_USER_PROFILE_STATE,
-        LoadUserProfile()
-      );
+      const state = fromReducer.userProfileReducer(INITIAL_USER_PROFILE_STATE, LoadUserProfile());
 
       expect(state).toEqual({ ...INITIAL_USER_PROFILE_STATE, loading: true });
     });
@@ -41,14 +31,8 @@ describe('Profile Reducer', () => {
       const { INITIAL_USER_PROFILE_STATE } = fromReducer;
       const userDetail: Profile = ProfileMother.random();
 
-      let state = fromReducer.userProfileReducer(
-        INITIAL_USER_PROFILE_STATE,
-        LoadUserProfile()
-      );
-      state = fromReducer.userProfileReducer(
-        state,
-        LoadUserProfileSuccess({ user: userDetail })
-      );
+      let state = fromReducer.userProfileReducer(INITIAL_USER_PROFILE_STATE, LoadUserProfile());
+      state = fromReducer.userProfileReducer(state, LoadUserProfileSuccess({ user: userDetail }));
 
       expect(state).toEqual({
         userDetail,
@@ -59,10 +43,7 @@ describe('Profile Reducer', () => {
     it('should set initial state when user load fails', () => {
       const { INITIAL_USER_PROFILE_STATE } = fromReducer;
 
-      let state = fromReducer.userProfileReducer(
-        INITIAL_USER_PROFILE_STATE,
-        LoadUserProfile()
-      );
+      let state = fromReducer.userProfileReducer(INITIAL_USER_PROFILE_STATE, LoadUserProfile());
       state = fromReducer.userProfileReducer(state, LoadUserProfileFailed());
 
       expect(state).toEqual(INITIAL_USER_PROFILE_STATE);

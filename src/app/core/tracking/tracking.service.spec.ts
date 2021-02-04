@@ -8,10 +8,7 @@ import { EventService } from '../event/event.service';
 
 import { TrackingService } from './tracking.service';
 import { NavigatorService } from './navigator.service';
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 class MockedNavigatorService {
   get browserName() {
@@ -87,9 +84,7 @@ describe('Service: Tracking', () => {
         conversation_id: 'conversation',
         professional: true,
       });
-      jest
-        .spyOn(userService, 'user', 'get')
-        .mockReturnValue({ type: 'professional' } as any);
+      jest.spyOn(userService, 'user', 'get').mockReturnValue({ type: 'professional' } as any);
 
       service.track(TrackingService.NOTIFICATION_RECEIVED, {
         conversation_id: 'conversation',
@@ -105,9 +100,7 @@ describe('Service: Tracking', () => {
       const expectedAttributes = JSON.stringify({
         conversation_id: 'conversation',
       });
-      jest
-        .spyOn(userService, 'user', 'get')
-        .mockReturnValue({ type: 'normal' } as any);
+      jest.spyOn(userService, 'user', 'get').mockReturnValue({ type: 'normal' } as any);
 
       service.track(TrackingService.NOTIFICATION_RECEIVED, {
         conversation_id: 'conversation',

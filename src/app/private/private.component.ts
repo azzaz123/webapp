@@ -1,26 +1,11 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import {
-  ActivatedRoute,
-  NavigationEnd,
-  NavigationStart,
-  RouteConfigLoadEnd,
-  RouteConfigLoadStart,
-  Router,
-} from '@angular/router';
+import { ActivatedRoute, NavigationEnd, NavigationStart, RouteConfigLoadEnd, RouteConfigLoadStart, Router } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 import { InboxService } from '@features/chat/core/inbox/inbox.service';
 import * as moment from 'moment';
 import { CookieOptions, CookieService } from 'ngx-cookie';
-import {
-  concatMap,
-  distinctUntilChanged,
-  filter,
-  finalize,
-  map,
-  mergeMap,
-  take,
-} from 'rxjs/operators';
+import { concatMap, distinctUntilChanged, filter, finalize, map, mergeMap, take } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ConnectionService } from '@core/connection/connection.service';
@@ -245,17 +230,13 @@ export class PrivateComponent implements OnInit {
   private initCalls(): void {
     this.userService.isProfessional().subscribe((isProfessional: boolean) => {
       if (isProfessional) {
-        this.callService
-          .init()
-          .subscribe(() => this.callService.init(true).subscribe());
+        this.callService.init().subscribe(() => this.callService.init(true).subscribe());
       }
     });
   }
 
   private subscribeEventUserLogout(): void {
-    this.event.subscribe(EventService.USER_LOGOUT, (redirectUrl: string) =>
-      this.handleUserLoggedOut(redirectUrl)
-    );
+    this.event.subscribe(EventService.USER_LOGOUT, (redirectUrl: string) => this.handleUserLoggedOut(redirectUrl));
   }
 
   private subscribeChatEvents(): void {
@@ -325,8 +306,6 @@ export class PrivateComponent implements OnInit {
   }
 
   private setLoading(loading: boolean): void {
-    loading
-      ? this.renderer.addClass(document.body, 'route-loading')
-      : this.renderer.removeClass(document.body, 'route-loading');
+    loading ? this.renderer.addClass(document.body, 'route-loading') : this.renderer.removeClass(document.body, 'route-loading');
   }
 }

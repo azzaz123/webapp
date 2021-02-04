@@ -111,13 +111,4 @@ export class InboxItem {
   }
 }
 
-export const InboxItemPlaceholder = new InboxItem(
-  null,
-  null,
-  'unknown',
-  null,
-  null,
-  InboxItemStatus.NOT_AVAILABLE,
-  false,
-  null
-);
+export const InboxItemPlaceholder = new InboxItem(null, null, 'unknown', null, null, InboxItemStatus.NOT_AVAILABLE, false, null);

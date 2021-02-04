@@ -4,10 +4,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ProfileImagesComponent } from './profile-images.component';
 import { SanitizedBackgroundDirective } from '../sanitized-background/sanitized-background.directive';
 import { PROFILE_IMAGE } from '../../../tests/profile.fixtures.spec';
-import {
-  FAKE_ITEM_IMAGE_SMALL_BASE_PATH,
-  FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH,
-} from '../../core/item/item';
+import { FAKE_ITEM_IMAGE_SMALL_BASE_PATH, FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH } from '../../core/item/item';
 
 jest.mock('environments/environment', () => ({
   environment: { production: true, name: 'prod' },
@@ -36,9 +33,7 @@ describe('ItemAvatarComponent', () => {
     component.profileImage = PROFILE_IMAGE;
     component.ngOnChanges();
 
-    expect(component.avatar).toBe(
-      'https://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320'
-    );
+    expect(component.avatar).toBe('https://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320');
     expect(component.fallback).toBe(FAKE_ITEM_IMAGE_SMALL_BASE_PATH);
   });
 

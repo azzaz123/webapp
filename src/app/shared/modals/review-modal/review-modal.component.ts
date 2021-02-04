@@ -1,18 +1,8 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  EventEmitter,
-  Output,
-} from '@angular/core';
+import { Component, Input, OnChanges, OnInit, EventEmitter, Output } from '@angular/core';
 import { User } from '../../../core/user/user';
 import { ConversationUser } from '../../../core/item/item-response.interface';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import {
-  ReviewDataSeller,
-  ReviewDataBuyer,
-} from '../../../core/review/review.interface';
+import { ReviewDataSeller, ReviewDataBuyer } from '../../../core/review/review.interface';
 import { Item } from '../../../core/item/item';
 import { ReviewService } from '../../../core/review/review.service';
 
@@ -37,10 +27,7 @@ export class ReviewModalComponent implements OnInit, OnChanges {
   public price: number;
   public reviewCommentLength = 0;
 
-  constructor(
-    public activeModal: NgbActiveModal,
-    private reviewService: ReviewService
-  ) {}
+  constructor(public activeModal: NgbActiveModal, private reviewService: ReviewService) {}
 
   ngOnInit() {
     this.setUsername();
@@ -81,9 +68,7 @@ export class ReviewModalComponent implements OnInit, OnChanges {
         score: this.score * 20,
         conversation_id: this.thread,
       };
-      this.reviewService
-        .createAsBuyer(data)
-        .subscribe((r) => this.activeModal.close(r));
+      this.reviewService.createAsBuyer(data).subscribe((r) => this.activeModal.close(r));
     }
   }
 

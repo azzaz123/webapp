@@ -82,9 +82,7 @@ describe('SocialShareComponent', () => {
 
         facebookIconElement.click();
 
-        expect(socialShareService.facebookShare).toBeCalledWith(
-          component.facebook.url
-        );
+        expect(socialShareService.facebookShare).toBeCalledWith(component.facebook.url);
       });
     });
 
@@ -110,10 +108,7 @@ describe('SocialShareComponent', () => {
 
         twitterIconElement.click();
 
-        expect(socialShareService.twitterShare).toBeCalledWith(
-          component.twitter.url,
-          component.twitter.text
-        );
+        expect(socialShareService.twitterShare).toBeCalledWith(component.twitter.url, component.twitter.text);
       });
     });
 
@@ -140,11 +135,7 @@ describe('SocialShareComponent', () => {
 
         emailIconElement.click();
 
-        expect(socialShareService.emailShare).toBeCalledWith(
-          component.email.url,
-          component.email.subject,
-          component.email.message
-        );
+        expect(socialShareService.emailShare).toBeCalledWith(component.email.url, component.email.subject, component.email.message);
       });
     });
   });

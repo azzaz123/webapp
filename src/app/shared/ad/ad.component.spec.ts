@@ -32,8 +32,7 @@ describe('AdComponent', () => {
   });
 
   it('should set div element id', () => {
-    elementRef = fixture.debugElement.query(By.css(`#${FIRST_AD_SLOT.id}`))
-      .nativeElement;
+    elementRef = fixture.debugElement.query(By.css(`#${FIRST_AD_SLOT.id}`)).nativeElement;
 
     expect(elementRef).toBeTruthy();
   });

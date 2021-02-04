@@ -7,10 +7,7 @@ import { UserService } from '@core/user/user.service';
   template: ` <router-outlet></router-outlet> `,
 })
 export class CatalogComponent implements OnInit {
-  constructor(
-    private trackingService: TrackingService,
-    private userService: UserService
-  ) {}
+  constructor(private trackingService: TrackingService, private userService: UserService) {}
 
   ngOnInit() {
     this.userService.me().subscribe(() => {

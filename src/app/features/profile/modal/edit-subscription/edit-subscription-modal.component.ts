@@ -10,18 +10,10 @@ import {
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { I18nService } from '@core/i18n/i18n.service';
-import {
-  SubscriptionsResponse,
-  SUBSCRIPTION_CATEGORIES,
-  Tier,
-} from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES, Tier } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
-import {
-  NgbActiveModal,
-  NgbModal,
-  NgbModalRef,
-} from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { CancelSubscriptionModalComponent } from '../cancel-subscription/cancel-subscription-modal.component';
 import { ModalStatuses } from '../../core/modal.statuses.enum';
 
@@ -74,30 +66,22 @@ export class EditSubscriptionModalComponent implements OnInit {
   public editSubscription() {
     this.trackClickConfirmEdit();
     this.loading = true;
-    this.subscriptionsService
-      .editSubscription(this.subscription, this.selectedTier.id)
-      .subscribe((response) => {
-        if (response.status === 202) {
-          this.toastService.show({
-            text:
-              this.i18n.getTranslations('editSubscriptionSuccessTitle') +
-              ' ' +
-              this.i18n.getTranslations('editSubscriptionSuccessBody'),
-            type: 'success',
-          });
-          this.loading = false;
-        } else {
-          this.loading = false;
-          this.toastService.show({
-            text:
-              this.i18n.getTranslations('editSubscriptionErrorTitle') +
-              ' ' +
-              this.i18n.getTranslations('editSubscriptionErrorBody'),
-            type: 'error',
-          });
-        }
-        this.close(ModalStatuses.UPDATE);
-      });
+    this.subscriptionsService.editSubscription(this.subscription, this.selectedTier.id).subscribe((response) => {
+      if (response.status === 202) {
+        this.toastService.show({
+          text: this.i18n.getTranslations('editSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('editSubscriptionSuccessBody'),
+          type: 'success',
+        });
+        this.loading = false;
+      } else {
+        this.loading = false;
+        this.toastService.show({
+          text: this.i18n.getTranslations('editSubscriptionErrorTitle') + ' ' + this.i18n.getTranslations('editSubscriptionErrorBody'),
+          type: 'error',
+        });
+      }
+      this.close(ModalStatuses.UPDATE);
+    });
   }
 
   public selectListingLimit(tier: Tier): void {
@@ -105,9 +89,7 @@ export class EditSubscriptionModalComponent implements OnInit {
   }
 
   public isCurrentTier(): boolean {
-    return this.selectedTier && this.currentTier
-      ? this.currentTier === this.selectedTier
-      : false;
+    return this.selectedTier && this.currentTier ? this.currentTier === this.selectedTier : false;
   }
 
   public cancelSubscription() {

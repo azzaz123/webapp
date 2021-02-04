@@ -1,10 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import {
-  MOCK_FULL_USER_FEATURED,
-  MOCK_USER_STATS,
-} from '@fixtures/user.fixtures.spec';
+import { MOCK_FULL_USER_FEATURED, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 
 import { UserBasicInfoComponent } from './user-basic-info.component';
 

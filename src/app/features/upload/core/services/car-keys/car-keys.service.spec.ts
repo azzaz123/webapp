@@ -1,15 +1,8 @@
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-  TestRequest,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { I18nService } from '@core/i18n/i18n.service';
 import { environment } from '@environments/environment';
-import {
-  CAR_BODY_TYPES,
-  CAR_BODY_TYPES_RESPONSE,
-} from '@fixtures/car.fixtures.spec';
+import { CAR_BODY_TYPES, CAR_BODY_TYPES_RESPONSE } from '@fixtures/car.fixtures.spec';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { CarKeysService, CARS_KEYS_ENDPOINT } from './car-keys.service';
 

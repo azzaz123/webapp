@@ -17,22 +17,17 @@ export class UserReviewService {
 
   public getPaginationReviews(init: number): Observable<ReviewsData> {
     return this.http
-      .get<HttpResponse<ReviewResponse[]>>(
-        `${environment.baseUrl}${USER_REVIEWS_API_URL}`,
-        {
-          params: {
-            init,
-          } as any,
-          observe: 'response' as 'body',
-        }
-      )
+      .get<HttpResponse<ReviewResponse[]>>(`${environment.baseUrl}${USER_REVIEWS_API_URL}`, {
+        params: {
+          init,
+        } as any,
+        observe: 'response' as 'body',
+      })
       .pipe(
         map((r) => {
           const res: ReviewResponse[] = r.body;
           const nextPage: string = r.headers.get('x-nextpage');
-          const nextInit: number = nextPage
-            ? +nextPage.replace('init=', '')
-            : null;
+          const nextInit: number = nextPage ? +nextPage.replace('init=', '') : null;
           const data: Review[] = this.mapResponse(res);
 
           return {
@@ -81,9 +76,7 @@ export class UserReviewService {
     return new User(
       reviewResponse.user.id,
       reviewResponse.user.micro_name,
-      reviewResponse.user.image
-        ? { urls_by_size: reviewResponse.user.image }
-        : null,
+      reviewResponse.user.image ? { urls_by_size: reviewResponse.user.image } : null,
       null,
       null,
       null,

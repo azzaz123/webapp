@@ -1,10 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import {
-  MOCK_FULL_USER_FEATURED,
-  MOCK_USER_STATS,
-} from '@fixtures/user.fixtures.spec';
+import { MOCK_FULL_USER_FEATURED, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 
 import { UserProfileHeaderComponent } from './user-profile-header.component';
 
@@ -37,9 +34,7 @@ describe('UserProfileHeaderComponent', () => {
 
   describe('when we have the user info and the stats', () => {
     it('should load the content', () => {
-      const containerPage = fixture.debugElement.query(
-        By.css(profileContainerClass)
-      );
+      const containerPage = fixture.debugElement.query(By.css(profileContainerClass));
 
       expect(containerPage).toBeTruthy();
     });
@@ -48,12 +43,10 @@ describe('UserProfileHeaderComponent', () => {
       describe('when have the extra info..', () => {
         it('should show the pro elements', () => {
           const headerPro = fixture.debugElement.query(By.css(userCoverTag));
-          const proBadge = fixture.debugElement.query(By.css(proBadgeClass))
-            .nativeNode;
+          const proBadge = fixture.debugElement.query(By.css(proBadgeClass)).nativeNode;
           const aboutSection = fixture.debugElement
             .queryAll(By.css(boldTitleClass))
-            .find((anchors) => anchors.nativeElement.innerHTML === 'About')
-            .nativeElement;
+            .find((anchors) => anchors.nativeElement.innerHTML === 'About').nativeElement;
 
           expect(headerPro).toBeTruthy();
           expect(proBadge.hasAttribute('hidden')).toBe(false);
@@ -67,11 +60,8 @@ describe('UserProfileHeaderComponent', () => {
 
           fixture.detectChanges();
           const headerPro = fixture.debugElement.query(By.css(userCoverTag));
-          const proBadge = fixture.debugElement.query(By.css(proBadgeClass))
-            .nativeNode;
-          const aboutSection = fixture.debugElement.queryAll(
-            By.css(boldTitleClass)
-          );
+          const proBadge = fixture.debugElement.query(By.css(proBadgeClass)).nativeNode;
+          const aboutSection = fixture.debugElement.queryAll(By.css(boldTitleClass));
 
           expect(headerPro).toBeTruthy();
           expect(proBadge.hasAttribute('hidden')).toBe(false);
@@ -87,9 +77,7 @@ describe('UserProfileHeaderComponent', () => {
         fixture.detectChanges();
         const headerPro = fixture.debugElement.query(By.css(userCoverTag));
         const proBadge = fixture.debugElement.query(By.css(proBadgeClass));
-        const aboutSection = fixture.debugElement.queryAll(
-          By.css(boldTitleClass)
-        );
+        const aboutSection = fixture.debugElement.queryAll(By.css(boldTitleClass));
 
         expect(headerPro).toBeFalsy();
         expect(proBadge).toBeFalsy();
@@ -103,9 +91,7 @@ describe('UserProfileHeaderComponent', () => {
       component.userInfo = null;
 
       fixture.detectChanges();
-      const containerPage = fixture.debugElement.query(
-        By.css(profileContainerClass)
-      );
+      const containerPage = fixture.debugElement.query(By.css(profileContainerClass));
 
       expect(containerPage).toBeFalsy();
     });

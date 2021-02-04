@@ -58,8 +58,7 @@ describe('Component: Item', () => {
       schemas: [NO_ERRORS_SCHEMA],
     });
     fixture = TestBed.createComponent(InboxItemDetailComponent);
-    component = TestBed.createComponent(InboxItemDetailComponent)
-      .componentInstance;
+    component = TestBed.createComponent(InboxItemDetailComponent).componentInstance;
     itemService = TestBed.inject(ItemService);
     trackingService = TestBed.inject(TrackingService);
     cookieService = TestBed.inject(CookieService);
@@ -163,10 +162,7 @@ describe('Component: Item', () => {
 
       component.toggleReserve();
 
-      expect(itemService.reserveItem).toHaveBeenCalledWith(
-        component.item.id,
-        component.item.reserved
-      );
+      expect(itemService.reserveItem).toHaveBeenCalledWith(component.item.id, component.item.reserved);
     });
 
     it('should invert the boolean value of item.reserved when called', () => {
@@ -187,12 +183,9 @@ describe('Component: Item', () => {
       component.toggleReserve();
 
       expect(component.item.reserved).toBe(true);
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.CHAT_PRODUCT_RESERVED,
-        {
-          item_id: MOCKED_INBOX_CONVERSATIONS[0].item.id,
-        }
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CHAT_PRODUCT_RESERVED, {
+        item_id: MOCKED_INBOX_CONVERSATIONS[0].item.id,
+      });
     });
   });
 
@@ -206,12 +199,9 @@ describe('Component: Item', () => {
 
       component.trackSoldEvent(component.item);
 
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.CHAT_PRODUCT_SOLD,
-        {
-          item_id: component.item.id,
-        }
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CHAT_PRODUCT_SOLD, {
+        item_id: component.item.id,
+      });
     });
 
     it('should send appboy Sold event', () => {
@@ -229,14 +219,10 @@ describe('Component: Item', () => {
 
       component.trackSoldEvent(MOCKED_INBOX_CONVERSATIONS[0].item);
 
-      expect(window['fbq']).toHaveBeenCalledWith(
-        'track',
-        'CompleteRegistration',
-        {
-          value: MOCKED_INBOX_CONVERSATIONS[0].item.price.amount,
-          currency: MOCKED_INBOX_CONVERSATIONS[0].item.price.currency,
-        }
-      );
+      expect(window['fbq']).toHaveBeenCalledWith('track', 'CompleteRegistration', {
+        value: MOCKED_INBOX_CONVERSATIONS[0].item.price.amount,
+        currency: MOCKED_INBOX_CONVERSATIONS[0].item.price.currency,
+      });
     });
   });
 });

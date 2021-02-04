@@ -97,9 +97,7 @@ describe('TabbarComponent', () => {
       });
 
       it('should show logged content', () => {
-        expect(el.querySelector(accessBtnTextSelector).innerHTML).toEqual(
-          'My Zone'
-        );
+        expect(el.querySelector(accessBtnTextSelector).innerHTML).toEqual('My Zone');
       });
     });
 
@@ -110,9 +108,7 @@ describe('TabbarComponent', () => {
       });
 
       it('should show no logged content', () => {
-        expect(el.querySelector(accessBtnTextSelector).innerHTML).toEqual(
-          'Log in'
-        );
+        expect(el.querySelector(accessBtnTextSelector).innerHTML).toEqual('Log in');
       });
     });
   });

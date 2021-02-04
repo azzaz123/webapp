@@ -82,10 +82,7 @@ describe('ProfileProSubscriptionComponent', () => {
 
       component.openFaqs();
 
-      expect(router.navigate).toHaveBeenCalledWith([
-        'pro/help',
-        { section: 'Perfil-6' },
-      ]);
+      expect(router.navigate).toHaveBeenCalledWith(['pro/help', { section: 'Perfil-6' }]);
     });
   });
 });

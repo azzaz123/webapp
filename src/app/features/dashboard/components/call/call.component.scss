@@ -8,8 +8,7 @@ $check-width-and-spacing: 50px;
   padding: $spacing-ml $spacing-ms $spacing-ml $spacing-ml;
   box-sizing: border-box;
   border-left: 2px solid transparent;
-  transition: $transition-time ease background-color,
-    $transition-time ease border;
+  transition: $transition-time ease background-color, $transition-time ease border;
   border-top: 1px solid $blue-grey-5;
   overflow: hidden;
   cursor: pointer;
