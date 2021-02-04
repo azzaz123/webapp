@@ -34,7 +34,7 @@ export interface ViewOwnItemDetail {
    */
   screenId: number;
   /**
-   * Identifier of the state of the view
+   * Indicates whether the listing is active (items can be inactive in categories with listing limits)
    */
-  state?: string;
+  isActive: boolean;
 }

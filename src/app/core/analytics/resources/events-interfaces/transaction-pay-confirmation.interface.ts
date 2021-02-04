@@ -49,4 +49,12 @@ export interface TransactionPayConfirmation {
    * If the item is from a professional user
    */
   isPro?: boolean;
+  /**
+   * Balance amount in the wallet
+   */
+  balanceAmount?: number;
+  /**
+   * Whether the buyer uses the balance in the wallet to pay
+   */
+  useBalance?: boolean;
 }
