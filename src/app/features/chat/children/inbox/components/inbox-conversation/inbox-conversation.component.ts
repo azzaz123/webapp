@@ -17,11 +17,16 @@ export class InboxConversationComponent {
   @Input() archiveConversation = false;
 
   public unreadCounterDisplayLimit = 99;
-  public momentConfig: CalendarSpec;
+  public momentConfig: CalendarSpec = {
+    lastDay: this.i18n.getTranslations('defaultDaysMomentConfig').lastDay,
+    sameDay: 'HH:mm',
+    nextDay: 'ddd',
+    lastWeek: 'D MMM.',
+    nextWeek: 'ddd',
+    sameElse: 'D MMM.',
+  };
 
-  constructor(private inboxConversationService: InboxConversationService, private i18n: I18nService) {
-    this.momentConfig = i18n.getTranslations('defaultDaysMomentConfig');
-  }
+  constructor(private inboxConversationService: InboxConversationService, private i18n: I18nService) {}
 
   public dateIsThisYear(): boolean {
     return this.conversation && this.conversation.modifiedDate
