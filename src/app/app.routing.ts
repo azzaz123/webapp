@@ -7,22 +7,19 @@ import { APP_PATHS } from './app-routing-constants';
 const publicRoute: Route = {
   path: APP_PATHS.PUBLIC,
   canLoad: [DevelopmentGuard],
-  loadChildren: () =>
-    import('@public/public.module').then((m) => m.PublicModule),
+  loadChildren: () => import('@public/public.module').then((m) => m.PublicModule),
 };
 
 const privateRoute = {
   path: APP_PATHS.PRIVATE,
   canLoad: [LoggedGuard],
-  loadChildren: () =>
-    import('@private/private.module').then((m) => m.PrivateModule),
+  loadChildren: () => import('@private/private.module').then((m) => m.PrivateModule),
 };
 
 const notFoundRoute: Route = {
   path: APP_PATHS.NOT_FOUND,
   canLoad: [DevelopmentGuard],
-  loadChildren: () =>
-    import('@features/error/error.module').then((m) => m.ErrorModule),
+  loadChildren: () => import('@features/error/error.module').then((m) => m.ErrorModule),
 };
 
 const routes: Route[] = [notFoundRoute, publicRoute, privateRoute];

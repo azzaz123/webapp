@@ -11,10 +11,7 @@ export class ItemCardService {
   public toggleFavourite(item: Item): void {
     item.flags.favorite = !item.flags.favorite;
 
-    (item.flags.favorite
-      ? this.markAsFavourite(item.id)
-      : this.unmarkAsFavourite(item.id)
-    ).subscribe({
+    (item.flags.favorite ? this.markAsFavourite(item.id) : this.unmarkAsFavourite(item.id)).subscribe({
       error: () => {
         item.flags.favorite = !item.flags.favorite;
       },
@@ -25,9 +22,7 @@ export class ItemCardService {
     return this.itemApiService.markAsFavourite(id);
   }
 
-  private unmarkAsFavourite(
-    id: string
-  ): Observable<MarkAsFavouriteBodyResponse> {
+  private unmarkAsFavourite(id: string): Observable<MarkAsFavouriteBodyResponse> {
     return this.itemApiService.unmarkAsFavourite(id);
   }
 }

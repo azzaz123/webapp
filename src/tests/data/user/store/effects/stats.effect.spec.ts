@@ -105,8 +105,7 @@ describe('Stats Effect', () => {
       actions$ = of(LoadUserStatsByUserId({ userId }));
 
       statsEffects.loadUserStats$.subscribe({
-        error: (action) =>
-          expect(action).toEqual(LoadUserStatsByUserIdFailed()),
+        error: (action) => expect(action).toEqual(LoadUserStatsByUserIdFailed()),
       });
     });
   });

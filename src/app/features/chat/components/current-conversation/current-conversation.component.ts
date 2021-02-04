@@ -19,12 +19,7 @@ import { TextMessageComponent } from '@features/chat/children/message/components
 import { ThirdVoiceDropPriceComponent } from '@features/chat/children/message/components/third-voice-drop-price';
 import { ThirdVoiceReviewComponent } from '@features/chat/children/message/components/third-voice-review';
 import { InboxConversationService } from '@features/chat/core/inbox/inbox-conversation.service';
-import {
-  InboxConversation,
-  InboxMessage,
-  MessageStatus,
-  MessageType,
-} from '@features/chat/core/model';
+import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '@features/chat/core/model';
 import { MaliciousConversationModalComponent } from '@features/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import {
@@ -48,8 +43,7 @@ import { onVisible } from 'visibilityjs';
   templateUrl: './current-conversation.component.html',
   styleUrls: ['./current-conversation.component.scss'],
 })
-export class CurrentConversationComponent
-  implements OnInit, OnChanges, AfterViewChecked, OnDestroy {
+export class CurrentConversationComponent implements OnInit, OnChanges, AfterViewChecked, OnDestroy {
   public readonly BOTTOM_BUFFER_ZONE = 100;
   private MESSAGE_HEIGHT = 14;
   public readonly MESSAGE_METRIC_DELAY = 5 * 1000;
@@ -94,35 +88,26 @@ export class CurrentConversationComponent
 
   ngOnInit() {
     this.isEndOfConversation = true;
-    this.newMessageSubscription = this.eventService.subscribe(
-      EventService.MESSAGE_ADDED,
-      (message: InboxMessage) => {
-        this.isConversationChanged = true;
-        this.lastInboxMessage = message;
-        if (this.isEndOfConversation) {
-          this.sendReadForLastInboxMessage();
-          this.scrollHeight = this.scrollLocalPosition;
-        } else {
-          this.noMessages += 1;
-          this.scrollHeight =
-            this.scrollLocalPosition + this.noMessages * this.MESSAGE_HEIGHT;
-        }
+    this.newMessageSubscription = this.eventService.subscribe(EventService.MESSAGE_ADDED, (message: InboxMessage) => {
+      this.isConversationChanged = true;
+      this.lastInboxMessage = message;
+      if (this.isEndOfConversation) {
+        this.sendReadForLastInboxMessage();
+        this.scrollHeight = this.scrollLocalPosition;
+      } else {
+        this.noMessages += 1;
+        this.scrollHeight = this.scrollLocalPosition + this.noMessages * this.MESSAGE_HEIGHT;
       }
-    );
+    });
 
-    this.eventService.subscribe(
-      EventService.MORE_MESSAGES_LOADED,
-      (conversation: InboxConversation) => {
-        this.isLoadingMoreMessages = false;
-        this.isConversationChanged = false;
-        this.currentConversation = conversation;
-      }
-    );
+    this.eventService.subscribe(EventService.MORE_MESSAGES_LOADED, (conversation: InboxConversation) => {
+      this.isLoadingMoreMessages = false;
+      this.isConversationChanged = false;
+      this.currentConversation = conversation;
+    });
 
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () =>
-      this.sendMetricMessageSendFailed(
-        'pending messages after restored connection'
-      )
+      this.sendMetricMessageSendFailed('pending messages after restored connection')
     );
   }
 
@@ -133,15 +118,13 @@ export class CurrentConversationComponent
     if (currentConversation) {
       this.openMaliciousConversationModal();
       this.isConversationChanged = true;
-      this.isTopBarExpanded =
-        this.currentConversation && isEmpty(this.currentConversation.messages);
+      this.isTopBarExpanded = this.currentConversation && isEmpty(this.currentConversation.messages);
     }
   }
 
   ngAfterViewChecked(): void {
     if (this.isConversationChanged && this.scrollElement) {
-      this.scrollElement.nativeElement.scrollTop =
-        this.scrollElement.nativeElement.scrollHeight - this.scrollHeight;
+      this.scrollElement.nativeElement.scrollTop = this.scrollElement.nativeElement.scrollHeight - this.scrollHeight;
     }
   }
 
@@ -157,12 +140,8 @@ export class CurrentConversationComponent
   onScrollMessages(event: any) {
     this.noMessages = 0;
     this.isConversationChanged = false;
-    this.scrollLocalPosition =
-      event.target.scrollHeight - event.target.scrollTop;
-    if (
-      event.target.offsetHeight + event.target.scrollTop >=
-      event.target.scrollHeight - this.BOTTOM_BUFFER_ZONE
-    ) {
+    this.scrollLocalPosition = event.target.scrollHeight - event.target.scrollTop;
+    if (event.target.offsetHeight + event.target.scrollTop >= event.target.scrollHeight - this.BOTTOM_BUFFER_ZONE) {
       this.sendReadForLastInboxMessage();
       this.isEndOfConversation = true;
     } else {
@@ -170,14 +149,8 @@ export class CurrentConversationComponent
     }
   }
 
-  public showDate(
-    currentMessage: InboxMessage,
-    nextMessage: InboxMessage
-  ): boolean {
-    return nextMessage
-      ? new Date(currentMessage.date).toDateString() !==
-          new Date(nextMessage.date).toDateString()
-      : true;
+  public showDate(currentMessage: InboxMessage, nextMessage: InboxMessage): boolean {
+    return nextMessage ? new Date(currentMessage.date).toDateString() !== new Date(nextMessage.date).toDateString() : true;
   }
 
   public dateIsThisYear(date: Date) {
@@ -192,11 +165,7 @@ export class CurrentConversationComponent
   }
 
   private sendRead(message: InboxMessage) {
-    if (
-      this.currentConversation !== null &&
-      eq(this.currentConversation.id, message.thread) &&
-      !message.fromSelf
-    ) {
+    if (this.currentConversation !== null && eq(this.currentConversation.id, message.thread) && !message.fromSelf) {
       onVisible(() => {
         setTimeout(() => {
           this.realTime.sendRead(message.from, message.thread);
@@ -206,10 +175,7 @@ export class CurrentConversationComponent
   }
 
   public hasMoreMessages(): boolean {
-    return (
-      this.currentConversation.nextPageToken !== null &&
-      this.currentConversation.nextPageToken !== undefined
-    );
+    return this.currentConversation.nextPageToken !== null && this.currentConversation.nextPageToken !== undefined;
   }
 
   public loadMoreMessages(scrollHeight: number = 0) {
@@ -227,17 +193,11 @@ export class CurrentConversationComponent
   }
 
   public isThirdVoiceDropPrice(messageType: MessageType): boolean {
-    return includes(
-      ThirdVoiceDropPriceComponent.ALLOW_MESSAGES_TYPES,
-      messageType
-    );
+    return includes(ThirdVoiceDropPriceComponent.ALLOW_MESSAGES_TYPES, messageType);
   }
 
   public isThirdVoiceReview(messageType: MessageType): boolean {
-    return includes(
-      ThirdVoiceReviewComponent.ALLOW_MESSAGES_TYPES,
-      messageType
-    );
+    return includes(ThirdVoiceReviewComponent.ALLOW_MESSAGES_TYPES, messageType);
   }
 
   public scrollToLastMessage(): void {
@@ -270,26 +230,13 @@ export class CurrentConversationComponent
   public clickSendMessage(messageId: string): void {
     of(messageId)
       .pipe(delay(this.MESSAGE_METRIC_DELAY))
-      .subscribe((id) =>
-        this.sendMetricMessageSendFailedByMessageId(
-          id,
-          `message is not send after ${this.MESSAGE_METRIC_DELAY}ms`
-        )
-      );
+      .subscribe((id) => this.sendMetricMessageSendFailedByMessageId(id, `message is not send after ${this.MESSAGE_METRIC_DELAY}ms`));
   }
 
-  private sendMetricMessageSendFailedByMessageId(
-    messageId: string,
-    description: string
-  ): void {
+  private sendMetricMessageSendFailedByMessageId(messageId: string, description: string): void {
     this.currentConversation.messages
-      .filter(
-        (message) =>
-          message.id === messageId && message.status === MessageStatus.PENDING
-      )
-      .forEach((message) =>
-        this.remoteConsoleService.sendMessageAckFailed(message.id, description)
-      );
+      .filter((message) => message.id === messageId && message.status === MessageStatus.PENDING)
+      .forEach((message) => this.remoteConsoleService.sendMessageAckFailed(message.id, description));
   }
 
   private sendMetricMessageSendFailed(description: string): void {
@@ -299,9 +246,7 @@ export class CurrentConversationComponent
 
     this.currentConversation.messages
       .filter((message) => message.status === MessageStatus.PENDING)
-      .forEach((message) =>
-        this.remoteConsoleService.sendMessageAckFailed(message.id, description)
-      );
+      .forEach((message) => this.remoteConsoleService.sendMessageAckFailed(message.id, description));
   }
 
   private fillChatContext(): void {
@@ -318,15 +263,10 @@ export class CurrentConversationComponent
       return;
     }
     this.fillChatContext();
-    const modalRef: NgbModalRef = this.modalService.open(
-      MaliciousConversationModalComponent,
-      { windowClass: 'warning' }
-    );
+    const modalRef: NgbModalRef = this.modalService.open(MaliciousConversationModalComponent, { windowClass: 'warning' });
     modalRef.componentInstance.chatContext = this.chatContext;
 
-    modalRef.result
-      .then(() => this.handleUserConfirmsMaliciousModal())
-      .catch(() => this.trackDismissMaliciousModal());
+    modalRef.result.then(() => this.handleUserConfirmsMaliciousModal()).catch(() => this.trackDismissMaliciousModal());
   }
 
   private handleUserConfirmsMaliciousModal(): void {

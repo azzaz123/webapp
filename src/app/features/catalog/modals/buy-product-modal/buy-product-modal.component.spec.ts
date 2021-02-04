@@ -261,18 +261,13 @@ describe('BuyProductModalComponent', () => {
       it('should set localStorage with transaction amount', () => {
         component.checkout();
 
-        expect(localStorage.setItem).toHaveBeenCalledWith(
-          'transactionSpent',
-          '200'
-        );
+        expect(localStorage.setItem).toHaveBeenCalledWith('transactionSpent', '200');
       });
 
       it('should emit TOTAL_CREDITS_UPDATED event', () => {
         component.checkout();
 
-        expect(eventService.emit).toHaveBeenCalledWith(
-          EventService.TOTAL_CREDITS_UPDATED
-        );
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.TOTAL_CREDITS_UPDATED);
       });
 
       describe('with payment_needed true', () => {
@@ -300,9 +295,7 @@ describe('BuyProductModalComponent', () => {
 
       describe('error', () => {
         beforeEach(() => {
-          spyOn(itemService, 'purchaseProductsWithCredits').and.returnValue(
-            throwError('')
-          );
+          spyOn(itemService, 'purchaseProductsWithCredits').and.returnValue(throwError(''));
 
           component.checkout();
         });

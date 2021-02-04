@@ -35,14 +35,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getData();
     this.getTotals();
-    this.eventService.subscribe(
-      EventService.LEAD_ARCHIVED,
-      (lead: Lead) => (this.archivedLead = lead)
-    );
+    this.eventService.subscribe(EventService.LEAD_ARCHIVED, (lead: Lead) => (this.archivedLead = lead));
     this.eventService.subscribe(
       EventService.INBOX_LOADED,
-      (conversations: InboxConversation[]) =>
-        (this.conversations = this.inboxConversationService.conversations)
+      (conversations: InboxConversation[]) => (this.conversations = this.inboxConversationService.conversations)
     );
   }
 
@@ -55,15 +51,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .getPage(1, false, null, 5)
       .pipe(takeWhile(() => this.active))
       .subscribe((calls: Lead[]) => {
-        this.trackingService.track(
-          TrackingService.PHONE_LEAD_LIST_ACTIVE_LOADED
-        );
+        this.trackingService.track(TrackingService.PHONE_LEAD_LIST_ACTIVE_LOADED);
         this.calls = calls;
 
         this.conversations = this.inboxConversationService.conversations;
-        this.trackingService.track(
-          TrackingService.CONVERSATION_LIST_ACTIVE_LOADED
-        );
+        this.trackingService.track(TrackingService.CONVERSATION_LIST_ACTIVE_LOADED);
         this.loading = false;
       });
   }
@@ -93,11 +85,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       ? 0
       : this.conversations
           .filter((conversation, index) => conversation != null && index < 5)
-          .reduce(
-            (sum, current) =>
-              sum + (current.unreadCounter < 1 ? 1 : current.unreadCounter),
-            0
-          );
+          .reduce((sum, current) => sum + (current.unreadCounter < 1 ? 1 : current.unreadCounter), 0);
   }
 
   public hasConversations(): boolean {

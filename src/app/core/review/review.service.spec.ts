@@ -1,14 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { ReviewService, REVIEWS_API_URL } from './review.service';
-import {
-  REVIEW_DATA_BUYER,
-  REVIEW_DATA_SELLER,
-} from '../../../tests/review.fixtures.spec';
-import {
-  HttpTestingController,
-  HttpClientTestingModule,
-  TestRequest,
-} from '@angular/common/http/testing';
+import { REVIEW_DATA_BUYER, REVIEW_DATA_SELLER } from '../../../tests/review.fixtures.spec';
+import { HttpTestingController, HttpClientTestingModule, TestRequest } from '@angular/common/http/testing';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { environment } from '../../../environments/environment';
 

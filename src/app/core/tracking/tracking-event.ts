@@ -29,12 +29,7 @@ export class TrackingEvent {
     },
   ];
 
-  constructor(
-    userId: string,
-    sessionStartTime: string,
-    event?: TrackingEventBase,
-    events?: Array<any>
-  ) {
+  constructor(userId: string, sessionStartTime: string, event?: TrackingEventBase, events?: Array<any>) {
     if (events) {
       this.sessions[0].events = events;
     } else {

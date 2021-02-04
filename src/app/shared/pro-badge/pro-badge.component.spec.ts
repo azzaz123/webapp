@@ -1,9 +1,4 @@
-import {
-  ComponentFixture,
-  TestBed,
-  getTestBed,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, getTestBed, waitForAsync } from '@angular/core/testing';
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ProBadgeComponent } from './pro-badge.component';
@@ -49,8 +44,7 @@ describe('ProBadgeComponent', () => {
 
   describe('when user is not PRO', () => {
     it('should hide the PRO badge', () => {
-      const proBadgeHTML = fixture.debugElement.query(By.css('.ProBadge'))
-        .nativeNode;
+      const proBadgeHTML = fixture.debugElement.query(By.css('.ProBadge')).nativeNode;
       expect(proBadgeHTML.hasAttribute('hidden')).toBe(true);
     });
   });
@@ -60,8 +54,7 @@ describe('ProBadgeComponent', () => {
       spyOn(userService, 'isPro').and.returnValue(true);
       fixture.detectChanges();
 
-      const proBadgeHTML = fixture.debugElement.query(By.css('.ProBadge'))
-        .nativeNode;
+      const proBadgeHTML = fixture.debugElement.query(By.css('.ProBadge')).nativeNode;
       expect(proBadgeHTML.hasAttribute('hidden')).toBe(false);
     });
   });

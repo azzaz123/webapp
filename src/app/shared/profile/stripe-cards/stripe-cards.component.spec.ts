@@ -1,11 +1,5 @@
 import { throwError, of } from 'rxjs';
-import {
-  fakeAsync,
-  tick,
-  ComponentFixture,
-  TestBed,
-  waitForAsync,
-} from '@angular/core/testing';
+import { fakeAsync, tick, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FINANCIAL_STRIPE_CARD } from '../../../../tests/payments.fixtures.spec';
 import { I18nService } from '../../../core/i18n/i18n.service';
@@ -102,9 +96,7 @@ describe('StripeCardsComponent', () => {
 
   describe('ngOnInit', () => {
     it('should get and set financial card', () => {
-      spyOn(stripeService, 'getCards').and.returnValue(
-        of([FINANCIAL_STRIPE_CARD])
-      );
+      spyOn(stripeService, 'getCards').and.returnValue(of([FINANCIAL_STRIPE_CARD]));
 
       component.ngOnInit();
 
@@ -117,9 +109,7 @@ describe('StripeCardsComponent', () => {
 
       component.ngOnInit();
 
-      expect(errorService.i18nError).toHaveBeenCalledWith(
-        'getStripeCardsError'
-      );
+      expect(errorService.i18nError).toHaveBeenCalledWith('getStripeCardsError');
     });
 
     it('should call getSubscriptions service', () => {
@@ -195,17 +185,13 @@ describe('StripeCardsComponent', () => {
     it('should remove the loading component in the button content when backend answered', fakeAsync(() => {
       const backendResponseTimeMs = 3000;
       spyOn(component, 'addNewCard').and.callThrough();
-      spyOn(stripeService, 'addNewCard').and.returnValue(
-        of().pipe(delay(backendResponseTimeMs))
-      );
+      spyOn(stripeService, 'addNewCard').and.returnValue(of().pipe(delay(backendResponseTimeMs)));
 
       component.addNewCard();
       tick(backendResponseTimeMs + 1);
       fixture.detectChanges();
 
-      const loadingComponent: HTMLElement = fixture.nativeElement.querySelector(
-        'tsl-button > button > tsl-svg-icon'
-      );
+      const loadingComponent: HTMLElement = fixture.nativeElement.querySelector('tsl-button > button > tsl-svg-icon');
       expect(loadingComponent).toBeFalsy();
       expect(modalService.open).toHaveBeenCalledWith(NewCardModalComponent, {
         windowClass: 'review',

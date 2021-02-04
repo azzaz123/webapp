@@ -16,11 +16,7 @@ describe('FavouriteUserComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        FavouriteIconModule,
-        CheckSessionModule,
-      ],
+      imports: [HttpClientTestingModule, FavouriteIconModule, CheckSessionModule],
       declarations: [FavouriteUserComponent],
       providers: [
         PublicUserApiService,
@@ -69,9 +65,7 @@ describe('FavouriteUserComponent', () => {
 
       component.toggleFavourite();
 
-      expect(publicProfileService.markAsFavourite).toHaveBeenCalledWith(
-        component.userId
-      );
+      expect(publicProfileService.markAsFavourite).toHaveBeenCalledWith(component.userId);
     });
 
     it('should call the correct publicProfileService function if favourite', () => {
@@ -80,9 +74,7 @@ describe('FavouriteUserComponent', () => {
 
       component.toggleFavourite();
 
-      expect(publicProfileService.unmarkAsFavourite).toHaveBeenCalledWith(
-        component.userId
-      );
+      expect(publicProfileService.unmarkAsFavourite).toHaveBeenCalledWith(component.userId);
     });
   });
 });

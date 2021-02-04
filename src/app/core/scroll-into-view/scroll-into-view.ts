@@ -9,10 +9,7 @@ export class ScrollIntoViewService {
   private readonly MOBILE_HEADER_HEIGHT = 65;
   private readonly MOBILE_NAVIGATION_HEIGHT = 69;
 
-  constructor(
-    @Inject(WINDOW_TOKEN) private window: Window,
-    private deviceService: DeviceDetectorService
-  ) {}
+  constructor(@Inject(WINDOW_TOKEN) private window: Window, private deviceService: DeviceDetectorService) {}
 
   public scrollToSelector(selector: string): void {
     this.scrollToElement(this.window.document.querySelector(selector));
@@ -23,9 +20,7 @@ export class ScrollIntoViewService {
     this.window.document.scrollingElement.scrollTo({
       top: this.deviceService.isDesktop()
         ? elementTopPosition
-        : elementTopPosition -
-          this.MOBILE_HEADER_HEIGHT -
-          this.MOBILE_NAVIGATION_HEIGHT,
+        : elementTopPosition - this.MOBILE_HEADER_HEIGHT - this.MOBILE_NAVIGATION_HEIGHT,
       behavior: 'smooth',
     });
   }

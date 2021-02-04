@@ -17,10 +17,7 @@ export class AccessTokenService {
 
   public storeAccessToken(accessToken: string): void {
     const cookieName = this.getCookieName();
-    const cookieOptions =
-      environment.name === 'local'
-        ? { domain: 'localhost' }
-        : { domain: '.wallapop.com' };
+    const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
     this.cookieService.put(cookieName, accessToken, cookieOptions);
     this._accessToken = accessToken;
     this.storeAccessTokenLocalhost(accessToken);
@@ -28,31 +25,18 @@ export class AccessTokenService {
 
   public deleteAccessToken() {
     const cookieName = this.getCookieName();
-    const cookieOptions =
-      environment.name === 'local'
-        ? { domain: 'localhost' }
-        : { domain: '.wallapop.com' };
+    const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
     this.cookieService.remove(cookieName, cookieOptions);
-    this.cookieService.remove(
-      'device' + cookieName.charAt(0).toUpperCase() + cookieName.slice(1),
-      cookieOptions
-    );
+    this.cookieService.remove('device' + cookieName.charAt(0).toUpperCase() + cookieName.slice(1), cookieOptions);
     this.cookieService.remove('subdomain');
     this._accessToken = null;
     this.deleteAccessTokenLocalhost();
   }
 
-  public getTokenSignature = (
-    url: string,
-    method: string,
-    timestamp: number
-  ) => {
+  public getTokenSignature = (url: string, method: string, timestamp: number) => {
     const separator = '+#+';
-    const signature =
-      ['/' + url.split('?')[0], method, timestamp].join(separator) + separator;
-    return CryptoJSBase64.stringify(
-      CryptoJSHSha256(signature, CryptoJSBase64.parse(SECRET))
-    );
+    const signature = ['/' + url.split('?')[0], method, timestamp].join(separator) + separator;
+    return CryptoJSBase64.stringify(CryptoJSHSha256(signature, CryptoJSBase64.parse(SECRET)));
   };
 
   get accessToken(): string {
@@ -65,9 +49,7 @@ export class AccessTokenService {
 
   private getCookieName() {
     const cookieName = 'accessToken';
-    return environment.production
-      ? cookieName
-      : cookieName + environment.cookieSuffix;
+    return environment.production ? cookieName : cookieName + environment.cookieSuffix;
   }
 
   private storeAccessTokenLocalhost(accessToken: string): void {
@@ -88,10 +70,7 @@ export class AccessTokenService {
     const cookieName = this.getCookieName();
     const cookieOptions = { domain: 'localhost' };
     this.cookieService.remove(cookieName, cookieOptions);
-    this.cookieService.remove(
-      'device' + cookieName.charAt(0).toUpperCase() + cookieName.slice(1),
-      cookieOptions
-    );
+    this.cookieService.remove('device' + cookieName.charAt(0).toUpperCase() + cookieName.slice(1), cookieOptions);
   }
 
   private isLocalhostServer(): boolean {

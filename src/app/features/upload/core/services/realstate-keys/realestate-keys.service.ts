@@ -19,19 +19,13 @@ export class RealestateKeysService {
       filter: 'false',
     };
 
-    return this.http.get<Key[]>(
-      `${environment.baseUrl}${REAL_ESTATE_KEYS_ENDPOINT}/operation`,
-      { params }
-    );
+    return this.http.get<Key[]>(`${environment.baseUrl}${REAL_ESTATE_KEYS_ENDPOINT}/operation`, { params });
   }
 
   getTypes(operation: string): Observable<Key[]> {
     const params = { language: this.i18n.locale, operation };
 
-    return this.http.get<Key[]>(
-      `${environment.baseUrl}${REAL_ESTATE_KEYS_ENDPOINT}/type`,
-      { params }
-    );
+    return this.http.get<Key[]>(`${environment.baseUrl}${REAL_ESTATE_KEYS_ENDPOINT}/type`, { params });
   }
 
   getConditions(): Observable<IOption[]> {
@@ -55,11 +49,6 @@ export class RealestateKeysService {
   getExtras(type: string): Observable<Key[]> {
     const params = { language: this.i18n.locale, type };
 
-    return type
-      ? this.http.get<Key[]>(
-          `${environment.baseUrl}${REAL_ESTATE_KEYS_ENDPOINT}/extra`,
-          { params }
-        )
-      : of([]);
+    return type ? this.http.get<Key[]>(`${environment.baseUrl}${REAL_ESTATE_KEYS_ENDPOINT}/extra`, { params }) : of([]);
   }
 }

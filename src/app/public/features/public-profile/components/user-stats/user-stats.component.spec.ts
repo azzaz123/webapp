@@ -3,10 +3,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserStatsComponent } from './user-stats.component';
 import { By } from '@angular/platform-browser';
-import {
-  MOCK_FULL_USER_FEATURED,
-  MOCK_USER_STATS,
-} from '@fixtures/user.fixtures.spec';
+import { MOCK_FULL_USER_FEATURED, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
 import { PublicPipesModule } from '@public/core/pipes/public-pipes.module';
@@ -62,9 +59,7 @@ describe('UserStatsComponent', () => {
 
   describe('when we have the necessary data...', () => {
     it('should show the content', () => {
-      const containerPage = fixture.debugElement.query(
-        By.css(profileUserClass)
-      );
+      const containerPage = fixture.debugElement.query(By.css(profileUserClass));
 
       expect(containerPage).toBeTruthy();
     });
@@ -93,9 +88,7 @@ describe('UserStatsComponent', () => {
             expect(router.navigate).toHaveBeenCalledWith([expectedURL]);
 
             setTimeout(() => {
-              expect(
-                scrollIntoViewService.scrollToSelector
-              ).toHaveBeenCalledWith(mapSelector);
+              expect(scrollIntoViewService.scrollToSelector).toHaveBeenCalledWith(mapSelector);
             });
           });
         });
@@ -114,10 +107,7 @@ describe('UserStatsComponent', () => {
           spyOn(component, 'togglePhone').and.callThrough();
           const phoneAnchor = fixture.debugElement
             .queryAll(By.css('a'))
-            .find(
-              (anchors) =>
-                anchors.nativeElement.innerHTML === 'Show phone number'
-            ).nativeElement;
+            .find((anchors) => anchors.nativeElement.innerHTML === 'Show phone number').nativeElement;
 
           phoneAnchor.click();
 
@@ -155,9 +145,7 @@ describe('UserStatsComponent', () => {
       component.userStats = null;
 
       fixture.detectChanges();
-      const containerPage = fixture.debugElement.query(
-        By.css(profileUserClass)
-      );
+      const containerPage = fixture.debugElement.query(By.css(profileUserClass));
 
       expect(containerPage).toBeFalsy();
     });
@@ -166,9 +154,7 @@ describe('UserStatsComponent', () => {
   function locationSpyAndClick() {
     spyOn(router, 'navigate');
     spyOn(component, 'showLocation').and.callThrough();
-    const locationAnchor = fixture.debugElement
-      .queryAll(By.css('a'))
-      .find((anchors) => anchors.nativeElement.innerHTML === 'View location')
+    const locationAnchor = fixture.debugElement.queryAll(By.css('a')).find((anchors) => anchors.nativeElement.innerHTML === 'View location')
       .nativeElement;
 
     locationAnchor.click();

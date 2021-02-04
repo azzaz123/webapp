@@ -1,11 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
-import {
-  MAPPED_SUBSCRIPTIONS,
-  MAPPED_SUBSCRIPTIONS_ADDED,
-  MockSubscriptionService,
-} from '@fixtures/subscriptions.fixtures.spec';
+import { MAPPED_SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS_ADDED, MockSubscriptionService } from '@fixtures/subscriptions.fixtures.spec';
 import { SubscriptionPriceDiscountComponent } from './subscription-price-discount.component';
 
 describe('SubscriptionPriceDiscountComponent', () => {
@@ -18,9 +14,7 @@ describe('SubscriptionPriceDiscountComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [SubscriptionPriceDiscountComponent],
-        providers: [
-          { provide: SubscriptionsService, useClass: MockSubscriptionService },
-        ],
+        providers: [{ provide: SubscriptionsService, useClass: MockSubscriptionService }],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
     })
@@ -36,15 +30,11 @@ describe('SubscriptionPriceDiscountComponent', () => {
 
   describe('hasTrial', () => {
     it('should return if the subscription has a trial available', () => {
-      spyOn(subscriptionsService, 'hasTrial').and.returnValue(
-        MAPPED_SUBSCRIPTIONS_ADDED[2].trial_available
-      );
+      spyOn(subscriptionsService, 'hasTrial').and.returnValue(MAPPED_SUBSCRIPTIONS_ADDED[2].trial_available);
 
       component.hasTrial(MAPPED_SUBSCRIPTIONS_ADDED[2]);
 
-      expect(subscriptionsService.hasTrial).toHaveBeenCalledWith(
-        MAPPED_SUBSCRIPTIONS_ADDED[2]
-      );
+      expect(subscriptionsService.hasTrial).toHaveBeenCalledWith(MAPPED_SUBSCRIPTIONS_ADDED[2]);
     });
   });
 
@@ -54,9 +44,7 @@ describe('SubscriptionPriceDiscountComponent', () => {
 
       component.hasOneTierDiscount(MAPPED_SUBSCRIPTIONS_ADDED[2]);
 
-      expect(subscriptionsService.hasOneTierDiscount).toHaveBeenCalledWith(
-        MAPPED_SUBSCRIPTIONS_ADDED[2]
-      );
+      expect(subscriptionsService.hasOneTierDiscount).toHaveBeenCalledWith(MAPPED_SUBSCRIPTIONS_ADDED[2]);
     });
   });
 
@@ -66,9 +54,7 @@ describe('SubscriptionPriceDiscountComponent', () => {
 
       component.hasOneFreeTier(MAPPED_SUBSCRIPTIONS_ADDED[2]);
 
-      expect(subscriptionsService.hasOneFreeTier).toHaveBeenCalledWith(
-        MAPPED_SUBSCRIPTIONS_ADDED[2]
-      );
+      expect(subscriptionsService.hasOneFreeTier).toHaveBeenCalledWith(MAPPED_SUBSCRIPTIONS_ADDED[2]);
     });
   });
 

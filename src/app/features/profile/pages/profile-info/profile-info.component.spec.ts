@@ -4,24 +4,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ErrorsService } from '@core/errors/errors.service';
 import { UserService } from '@core/user/user.service';
-import {
-  IMAGE,
-  MOCK_FULL_USER,
-  USER_DATA,
-  USER_EDIT_DATA,
-  USER_LOCATION_COORDINATES,
-  USER_PRO_DATA,
-} from '@fixtures/user.fixtures.spec';
+import { IMAGE, MOCK_FULL_USER, USER_DATA, USER_EDIT_DATA, USER_LOCATION_COORDINATES, USER_PRO_DATA } from '@fixtures/user.fixtures.spec';
 import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { SwitchComponent } from '@shared/switch/switch.component';
 import { of, throwError } from 'rxjs';
 import { BecomeProModalComponent } from '../../modal/become-pro-modal/become-pro-modal.component';
-import {
-  BAD_USERNAME_ERROR_CODE,
-  competitorLinks,
-  ProfileInfoComponent,
-} from './profile-info.component';
+import { BAD_USERNAME_ERROR_CODE, competitorLinks, ProfileInfoComponent } from './profile-info.component';
 
 describe('ProfileInfoComponent', () => {
   let component: ProfileInfoComponent;
@@ -97,11 +86,7 @@ describe('ProfileInfoComponent', () => {
             },
           },
         ],
-        declarations: [
-          ProfileInfoComponent,
-          ProfileFormComponent,
-          SwitchComponent,
-        ],
+        declarations: [ProfileInfoComponent, ProfileFormComponent, SwitchComponent],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
     })
@@ -137,12 +122,8 @@ describe('ProfileInfoComponent', () => {
     it('should set profileForm with user data', () => {
       component.initForm();
 
-      expect(component.profileForm.get('first_name').value).toBe(
-        USER_DATA.first_name
-      );
-      expect(component.profileForm.get('last_name').value).toBe(
-        USER_DATA.last_name
-      );
+      expect(component.profileForm.get('first_name').value).toBe(USER_DATA.first_name);
+      expect(component.profileForm.get('last_name').value).toBe(USER_DATA.last_name);
     });
 
     it('should set profileForm with basic user data if userInfo throws error', () => {
@@ -150,12 +131,8 @@ describe('ProfileInfoComponent', () => {
 
       component.initForm();
 
-      expect(component.profileForm.get('first_name').value).toBe(
-        USER_DATA.first_name
-      );
-      expect(component.profileForm.get('last_name').value).toBe(
-        USER_DATA.last_name
-      );
+      expect(component.profileForm.get('first_name').value).toBe(USER_DATA.first_name);
+      expect(component.profileForm.get('last_name').value).toBe(USER_DATA.last_name);
     });
 
     it('should call userService.getUserCover and set cover', () => {
@@ -192,15 +169,9 @@ describe('ProfileInfoComponent', () => {
         component.initForm();
 
         component.profileForm.patchValue(DATA);
-        component.profileForm
-          .get('location.address')
-          .patchValue(USER_LOCATION_COORDINATES.name);
-        component.profileForm
-          .get('location.latitude')
-          .patchValue(USER_LOCATION_COORDINATES.latitude + 1);
-        component.profileForm
-          .get('location.longitude')
-          .patchValue(USER_LOCATION_COORDINATES.longitude + 1);
+        component.profileForm.get('location.address').patchValue(USER_LOCATION_COORDINATES.name);
+        component.profileForm.get('location.latitude').patchValue(USER_LOCATION_COORDINATES.latitude + 1);
+        component.profileForm.get('location.longitude').patchValue(USER_LOCATION_COORDINATES.longitude + 1);
       });
 
       describe('and server validates petition', () => {
@@ -264,25 +235,17 @@ describe('ProfileInfoComponent', () => {
                 message: 'Incorrect username',
               },
             };
-            spyOn(userService, 'edit').and.returnValue(
-              throwError(backendError)
-            );
+            spyOn(userService, 'edit').and.returnValue(throwError(backendError));
             spyOn(errorsService, 'show');
             let firstNameFieldElementRef;
             let lastNameFieldElementRef;
 
             component.onSubmit();
             fixture.detectChanges();
-            firstNameFieldElementRef = fixture.debugElement.query(
-              By.css('input[formControlname="first_name"]')
-            );
-            lastNameFieldElementRef = fixture.debugElement.query(
-              By.css('input[formControlname="last_name"]')
-            );
+            firstNameFieldElementRef = fixture.debugElement.query(By.css('input[formControlname="first_name"]'));
+            lastNameFieldElementRef = fixture.debugElement.query(By.css('input[formControlname="last_name"]'));
 
-            expect(
-              firstNameFieldElementRef.classes['ng-invalid']
-            ).toBeDefined();
+            expect(firstNameFieldElementRef.classes['ng-invalid']).toBeDefined();
             expect(lastNameFieldElementRef.classes['ng-invalid']).toBeDefined();
           });
         });
@@ -306,20 +269,12 @@ describe('ProfileInfoComponent', () => {
         spyOn(userService, 'updateSearchLocationCookies').and.callThrough();
         component.updateLocationWhenSearching = false;
         component.profileForm.patchValue(DATA);
-        component.profileForm
-          .get('location.address')
-          .patchValue(USER_LOCATION_COORDINATES.name);
-        component.profileForm
-          .get('location.latitude')
-          .patchValue(USER_LOCATION_COORDINATES.latitude);
-        component.profileForm
-          .get('location.longitude')
-          .patchValue(USER_LOCATION_COORDINATES.longitude);
+        component.profileForm.get('location.address').patchValue(USER_LOCATION_COORDINATES.name);
+        component.profileForm.get('location.latitude').patchValue(USER_LOCATION_COORDINATES.latitude);
+        component.profileForm.get('location.longitude').patchValue(USER_LOCATION_COORDINATES.longitude);
 
-        component.user.location.approximated_latitude =
-          USER_LOCATION_COORDINATES.latitude;
-        component.user.location.approximated_longitude =
-          USER_LOCATION_COORDINATES.longitude;
+        component.user.location.approximated_latitude = USER_LOCATION_COORDINATES.latitude;
+        component.user.location.approximated_longitude = USER_LOCATION_COORDINATES.longitude;
 
         component.onSubmit();
       });
@@ -329,9 +284,7 @@ describe('ProfileInfoComponent', () => {
       });
 
       it('should not change any cookie value', () => {
-        expect(userService.updateSearchLocationCookies).toHaveBeenCalledTimes(
-          0
-        );
+        expect(userService.updateSearchLocationCookies).toHaveBeenCalledTimes(0);
       });
     });
 
@@ -360,15 +313,9 @@ describe('ProfileInfoComponent', () => {
     describe('invalid link', () => {
       beforeEach(() => {
         spyOn(userService, 'updateProInfo').and.callThrough();
-        component.profileForm
-          .get('location.address')
-          .patchValue(USER_LOCATION_COORDINATES.name);
-        component.profileForm
-          .get('location.latitude')
-          .patchValue(USER_LOCATION_COORDINATES.latitude);
-        component.profileForm
-          .get('location.longitude')
-          .patchValue(USER_LOCATION_COORDINATES.longitude);
+        component.profileForm.get('location.address').patchValue(USER_LOCATION_COORDINATES.name);
+        component.profileForm.get('location.latitude').patchValue(USER_LOCATION_COORDINATES.latitude);
+        component.profileForm.get('location.longitude').patchValue(USER_LOCATION_COORDINATES.longitude);
       });
 
       it('should not call updateProInfo  when have competitors link', () => {
@@ -400,9 +347,7 @@ describe('ProfileInfoComponent', () => {
       it('should not call updateProInfo when phone number is not valid', () => {
         spyOn(userService, 'updateProInfo').and.callThrough();
 
-        component.profileForm
-          .get('phone_number')
-          .patchValue('invalid_number123');
+        component.profileForm.get('phone_number').patchValue('invalid_number123');
         component.onSubmit();
 
         expect(userService.updateProInfo).not.toHaveBeenCalled();
@@ -411,14 +356,10 @@ describe('ProfileInfoComponent', () => {
       it('should throw error toast when phone number is not valid', () => {
         spyOn(errorsService, 'i18nError');
 
-        component.profileForm
-          .get('phone_number')
-          .patchValue('invalid_number123');
+        component.profileForm.get('phone_number').patchValue('invalid_number123');
         component.onSubmit();
 
-        expect(errorsService.i18nError).toHaveBeenCalledWith(
-          'phoneNumberError'
-        );
+        expect(errorsService.i18nError).toHaveBeenCalledWith('phoneNumberError');
       });
     });
   });

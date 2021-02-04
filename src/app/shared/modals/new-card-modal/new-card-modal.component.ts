@@ -12,15 +12,10 @@ import { FinancialCard } from '../../profile/credit-card-info/financial-card';
 export class NewCardModalComponent {
   public loading: boolean;
 
-  constructor(
-    public activeModal: NgbActiveModal,
-    private stripeService: StripeService
-  ) {}
+  constructor(public activeModal: NgbActiveModal, private stripeService: StripeService) {}
 
   public onCreateCard(paymentMethod: PaymentMethodResponse) {
-    const financialCard: FinancialCard = this.stripeService.mapResponse(
-      paymentMethod
-    );
+    const financialCard: FinancialCard = this.stripeService.mapResponse(paymentMethod);
     this.activeModal.close(financialCard);
   }
 }

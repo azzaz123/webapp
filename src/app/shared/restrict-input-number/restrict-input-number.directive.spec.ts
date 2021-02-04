@@ -6,12 +6,7 @@ import { RestrictInputNumberDirective } from './restrict-input-number.directive'
 
 @Component({
   template: `<form>
-    <input
-      type="text"
-      [(ngModel)]="value"
-      name="field"
-      tslRestrictInputNumber
-    />
+    <input type="text" [(ngModel)]="value" name="field" tslRestrictInputNumber />
   </form>`,
 })
 class TestComponent {
@@ -28,9 +23,7 @@ describe('RestrictInputNumberDirective', () => {
       imports: [FormsModule],
     });
     fixture = TestBed.createComponent(TestComponent);
-    element = fixture.debugElement.queryAll(
-      By.directive(RestrictInputNumberDirective)
-    )[0].nativeElement;
+    element = fixture.debugElement.queryAll(By.directive(RestrictInputNumberDirective))[0].nativeElement;
     fixture.detectChanges();
   }));
 

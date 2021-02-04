@@ -1,13 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {
-  difference,
-  findIndex,
-  isEmpty,
-  map as lodashMap,
-  reverse,
-  sortBy,
-} from 'lodash-es';
+import { difference, findIndex, isEmpty, map as lodashMap, reverse, sortBy } from 'lodash-es';
 import { forkJoin, Observable, of, ReplaySubject } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
@@ -63,11 +56,7 @@ export class CallsService {
   }
 
   protected getLastDate(conversations: Lead[]): number {
-    if (
-      conversations.length > 0 &&
-      conversations[conversations.length - 1] &&
-      conversations[conversations.length - 1].modifiedDate
-    ) {
+    if (conversations.length > 0 && conversations[conversations.length - 1] && conversations[conversations.length - 1].modifiedDate) {
       return conversations[conversations.length - 1].modifiedDate - 1;
     }
   }
@@ -84,11 +73,7 @@ export class CallsService {
         mergeMap((res: LeadResponse[]) => {
           return isEmpty(res)
             ? of([])
-            : forkJoin(
-                res.map((conversation: LeadResponse) =>
-                  this.getUser(conversation)
-                )
-              ).pipe(
+            : forkJoin(res.map((conversation: LeadResponse) => this.getUser(conversation))).pipe(
                 mergeMap((response: LeadResponse[]) => {
                   return forkJoin(
                     response.map((conversation: LeadResponse) =>
@@ -124,9 +109,7 @@ export class CallsService {
 
   protected getItem(conversation: LeadResponse): Observable<Lead> {
     if (!conversation.item_id) {
-      return of(conversation).pipe(
-        map((data: CallResponse) => this.mapRecordData(data))
-      );
+      return of(conversation).pipe(map((data: CallResponse) => this.mapRecordData(data)));
     }
     return this.itemService.get(conversation.item_id).pipe(
       map((item: Item) => this.setItem(conversation, item)),
@@ -136,23 +119,18 @@ export class CallsService {
 
   protected setItem(conv: LeadResponse, item: Item): LeadResponse {
     conv.item = item;
-    conv.user.itemDistance = this.userService.calculateDistanceFromItem(
-      conv.user,
-      conv.item
-    );
+    conv.user.itemDistance = this.userService.calculateDistanceFromItem(conv.user, conv.item);
     return conv;
   }
 
   public archiveAll(until?: number): Observable<any> {
     until = until || new Date().getTime();
-    return this.httpClient
-      .put(`${environment.baseUrl}${this.ARCHIVE_URL}/hide?until=${until}`, {})
-      .pipe(
-        map(() => {
-          this.leads = this.bulkArchive(this.leads);
-          this.stream();
-        })
-      );
+    return this.httpClient.put(`${environment.baseUrl}${this.ARCHIVE_URL}/hide?until=${until}`, {}).pipe(
+      map(() => {
+        this.leads = this.bulkArchive(this.leads);
+        this.stream();
+      })
+    );
   }
 
   protected bulkArchive(leads: Lead[]): Lead[] {
@@ -185,10 +163,7 @@ export class CallsService {
       map((calls: Call[]) => {
         if (calls && calls.length > 0) {
           if (!archived) {
-            const diff: any[] = difference(
-              lodashMap(calls, 'id'),
-              lodashMap(this.leads, 'id')
-            );
+            const diff: any[] = difference(lodashMap(calls, 'id'), lodashMap(this.leads, 'id'));
             const result: Call[] = calls.filter((call: Call) => {
               return diff.indexOf(call.id) >= 0;
             });
@@ -202,12 +177,7 @@ export class CallsService {
     );
   }
 
-  public getPage(
-    page: number,
-    archive?: boolean,
-    status?: string,
-    pageSize: number = this.PAGE_SIZE
-  ): Observable<Lead[]> {
+  public getPage(page: number, archive?: boolean, status?: string, pageSize: number = this.PAGE_SIZE): Observable<Lead[]> {
     const init: number = (page - 1) * pageSize;
     const end: number = init + pageSize;
     return (archive ? this.archivedStream$ : this.stream$).asObservable().pipe(
@@ -221,9 +191,7 @@ export class CallsService {
               if (callStatus === 'SHARED') {
                 bool = bool || call instanceof Conversation;
               } else {
-                bool =
-                  bool ||
-                  (call instanceof Call && call.callStatus === callStatus);
+                bool = bool || (call instanceof Call && call.callStatus === callStatus);
               }
             });
             return bool;
@@ -268,40 +236,36 @@ export class CallsService {
   }
 
   public archive(id: string): Observable<Lead> {
-    return this.httpClient
-      .put(`${environment.baseUrl}${this.ARCHIVE_URL}/${id}/hide`, {})
-      .pipe(
-        map(() => {
-          const index: number = findIndex(this.leads, { id: id });
-          if (index > -1) {
-            const deletedLead: Lead = this.leads.splice(index, 1)[0];
-            deletedLead.archived = true;
-            this.archivedLeads.push(deletedLead);
-            this.stream(true);
-            this.stream();
-            this.event.emit(EventService.LEAD_ARCHIVED, deletedLead);
-            return deletedLead;
-          }
-        })
-      );
+    return this.httpClient.put(`${environment.baseUrl}${this.ARCHIVE_URL}/${id}/hide`, {}).pipe(
+      map(() => {
+        const index: number = findIndex(this.leads, { id: id });
+        if (index > -1) {
+          const deletedLead: Lead = this.leads.splice(index, 1)[0];
+          deletedLead.archived = true;
+          this.archivedLeads.push(deletedLead);
+          this.stream(true);
+          this.stream();
+          this.event.emit(EventService.LEAD_ARCHIVED, deletedLead);
+          return deletedLead;
+        }
+      })
+    );
   }
 
   public unarchive(id: string): Observable<Lead> {
-    return this.httpClient
-      .put(`${environment.baseUrl}${this.ARCHIVE_URL}/${id}/unhide`, {})
-      .pipe(
-        map(() => {
-          const index: number = findIndex(this.archivedLeads, { id: id });
-          if (index > -1) {
-            const lead: Lead = this.archivedLeads.splice(index, 1)[0];
-            lead.archived = false;
-            this.leads.push(lead);
-            this.stream(true);
-            this.stream();
-            this.event.emit(EventService.CONVERSATION_UNARCHIVED);
-            return lead;
-          }
-        })
-      );
+    return this.httpClient.put(`${environment.baseUrl}${this.ARCHIVE_URL}/${id}/unhide`, {}).pipe(
+      map(() => {
+        const index: number = findIndex(this.archivedLeads, { id: id });
+        if (index > -1) {
+          const lead: Lead = this.archivedLeads.splice(index, 1)[0];
+          lead.archived = false;
+          this.leads.push(lead);
+          this.stream(true);
+          this.stream();
+          this.event.emit(EventService.CONVERSATION_UNARCHIVED);
+          return lead;
+        }
+      })
+    );
   }
 }

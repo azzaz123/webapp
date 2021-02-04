@@ -71,9 +71,7 @@ describe('PlanDataComponent', () => {
   describe('ngChanges', () => {
     beforeEach(() => {
       component.loading = true;
-      spyOn(paymentService, 'getPerks').and.returnValue(
-        of(createPerksModelFixture())
-      );
+      spyOn(paymentService, 'getPerks').and.returnValue(of(createPerksModelFixture()));
       spyOn(paymentService, 'getStatus').and.returnValue(of(MOCK_STATUS));
       component.ngOnChanges();
     });

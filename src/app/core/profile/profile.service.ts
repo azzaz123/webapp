@@ -19,11 +19,7 @@ export class ProfileService {
   private store: any = {};
   private observables: any = {};
 
-  constructor(
-    private httpClient: HttpClient,
-    protected event: EventService,
-    protected i18n: I18nService
-  ) {}
+  constructor(private httpClient: HttpClient, protected event: EventService, protected i18n: I18nService) {}
 
   get profile(): Profile {
     return this._profile;
@@ -35,15 +31,11 @@ export class ProfileService {
     } else if (this.observables[id]) {
       return this.observables[id];
     } else {
-      this.observables[id] = this.httpClient
-        .get<ProfileResponse>(`${environment.baseUrl}${this.API_URL}/${id}`)
-        .pipe(
-          map((resp: ProfileResponse) =>
-            resp.id ? this.mapRecordData(resp) : null
-          ),
-          map((model: Model) => this.addToStore(model, id)),
-          share()
-        );
+      this.observables[id] = this.httpClient.get<ProfileResponse>(`${environment.baseUrl}${this.API_URL}/${id}`).pipe(
+        map((resp: ProfileResponse) => (resp.id ? this.mapRecordData(resp) : null)),
+        map((model: Model) => this.addToStore(model, id)),
+        share()
+      );
       return this.observables[id];
     }
   }
@@ -56,10 +48,7 @@ export class ProfileService {
     return model;
   }
 
-  private getPaginationItems(
-    url: string,
-    init: number
-  ): Observable<ProfilesData> {
+  private getPaginationItems(url: string, init: number): Observable<ProfilesData> {
     return this.httpClient
       .get(url, {
         observe: 'response',
@@ -94,10 +83,7 @@ export class ProfileService {
   }
 
   public myFavorites(init: number): Observable<ProfilesData> {
-    return this.getPaginationItems(
-      `${environment.baseUrl}${this.API_URL}/me/users/favorites`,
-      init
-    ).pipe(
+    return this.getPaginationItems(`${environment.baseUrl}${this.API_URL}/me/users/favorites`, init).pipe(
       map((profilesData: ProfilesData) => {
         profilesData.data = profilesData.data.map((profile: Profile) => {
           profile.favorited = true;
@@ -109,12 +95,9 @@ export class ProfileService {
   }
 
   public favoriteItem(id: string, favorited: boolean): Observable<any> {
-    return this.httpClient.put(
-      `${environment.baseUrl}${this.API_URL}/${id}/favorite`,
-      {
-        favorited: favorited,
-      }
-    );
+    return this.httpClient.put(`${environment.baseUrl}${this.API_URL}/${id}/favorite`, {
+      favorited: favorited,
+    });
   }
 
   protected mapRecordData(data: ProfileResponse): Profile {

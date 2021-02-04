@@ -1,11 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { ReviewService } from '@core/review/review.service';
 import { InboxConversation } from '@features/chat/core/model';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/inbox.fixtures.spec';
@@ -90,9 +84,7 @@ describe('ThirdVoiceReviewComponent', () => {
     it('should get item with storageKey', () => {
       spyOn(localStorage, 'getItem');
       component.ngOnInit();
-      expect(localStorage.getItem).toHaveBeenCalledWith(
-        `${mockConversation.user.id}.item.${mockConversation.item.id}.reviewed`
-      );
+      expect(localStorage.getItem).toHaveBeenCalledWith(`${mockConversation.user.id}.item.${mockConversation.item.id}.reviewed`);
     });
   });
 
@@ -116,14 +108,9 @@ describe('ThirdVoiceReviewComponent', () => {
 
       component.ngOnInit();
 
-      expect(reviewService.check).toHaveBeenCalledWith(
-        mockConversation.item.id
-      );
+      expect(reviewService.check).toHaveBeenCalledWith(mockConversation.item.id);
       expect(component.showButton).toBeFalsy();
-      expect(localStorage.setItem).toHaveBeenCalledWith(
-        `${mockConversation.user.id}.item.${mockConversation.item.id}.reviewed`,
-        'true'
-      );
+      expect(localStorage.setItem).toHaveBeenCalledWith(`${mockConversation.user.id}.item.${mockConversation.item.id}.reviewed`, 'true');
     });
 
     it('should set show button true and call check', () => {
@@ -132,9 +119,7 @@ describe('ThirdVoiceReviewComponent', () => {
 
       component.ngOnInit();
 
-      expect(reviewService.check).toHaveBeenCalledWith(
-        mockConversation.item.id
-      );
+      expect(reviewService.check).toHaveBeenCalledWith(mockConversation.item.id);
       expect(component.showButton).toBeTruthy();
     });
   });
@@ -170,9 +155,7 @@ describe('ThirdVoiceReviewComponent', () => {
       });
 
       it('should set thread in the modal component', () => {
-        expect(modalRef.componentInstance.thread).toEqual(
-          component.message.thread
-        );
+        expect(modalRef.componentInstance.thread).toEqual(component.message.thread);
       });
 
       it('should set showButton false', () => {
@@ -180,10 +163,7 @@ describe('ThirdVoiceReviewComponent', () => {
       });
 
       it('should set local storage', () => {
-        expect(localStorage.setItem).toHaveBeenCalledWith(
-          `${mockConversation.user.id}.item.${mockConversation.item.id}.reviewed`,
-          'true'
-        );
+        expect(localStorage.setItem).toHaveBeenCalledWith(`${mockConversation.user.id}.item.${mockConversation.item.id}.reviewed`, 'true');
       });
     });
 

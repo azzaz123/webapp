@@ -16,19 +16,9 @@ export enum MessageStatus {
   READ = 'read',
 }
 
-export const MESSAGES_WHITE_LIST = [
-  MessageType.TEXT,
-  MessageType.REVIEW,
-  MessageType.DROP_PRICE,
-  MessageType.PRICE_DROP,
-];
+export const MESSAGES_WHITE_LIST = [MessageType.TEXT, MessageType.REVIEW, MessageType.DROP_PRICE, MessageType.PRICE_DROP];
 
-export const statusOrder = [
-  MessageStatus.PENDING,
-  MessageStatus.SENT,
-  MessageStatus.RECEIVED,
-  MessageStatus.READ,
-];
+export const statusOrder = [MessageStatus.PENDING, MessageStatus.SENT, MessageStatus.RECEIVED, MessageStatus.READ];
 
 export enum PhoneRequestState {
   PENDING = 'pending',
@@ -116,20 +106,11 @@ export class InboxMessage {
     otherUserId: string
   ): InboxMessage[] {
     return messagesApiModel
-      .map((message: InboxMessageApi) =>
-        this.buildMessage(message, conversationId, currentUserId, otherUserId)
-      )
-      .filter((message: InboxMessage) =>
-        MESSAGES_WHITE_LIST.includes(message.type)
-      );
+      .map((message: InboxMessageApi) => this.buildMessage(message, conversationId, currentUserId, otherUserId))
+      .filter((message: InboxMessage) => MESSAGES_WHITE_LIST.includes(message.type));
   }
 
-  private static buildMessage(
-    message: InboxMessageApi,
-    conversationId: string,
-    currentUserId: string,
-    otherUserId: string
-  ) {
+  private static buildMessage(message: InboxMessageApi, conversationId: string, currentUserId: string, otherUserId: string) {
     return new InboxMessage(
       message.id,
       conversationId,

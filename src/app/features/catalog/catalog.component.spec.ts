@@ -44,9 +44,7 @@ describe('CatalogComponent', () => {
 
       component.ngOnInit();
 
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.CATALOG_VIEW_ITEMS
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CATALOG_VIEW_ITEMS);
     });
   });
 });

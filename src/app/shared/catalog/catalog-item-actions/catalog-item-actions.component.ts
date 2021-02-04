@@ -48,9 +48,7 @@ export class CatalogItemActionsComponent implements OnInit {
         .bulkSetDeactivate()
         .pipe(
           takeWhile(() => {
-            this.trackingService.track(
-              TrackingService.MYCATALOG_PRO_MODAL_DEACTIVATE
-            );
+            this.trackingService.track(TrackingService.MYCATALOG_PRO_MODAL_DEACTIVATE);
             this.eventService.emit('itemChanged');
             return this.active;
           })
@@ -72,12 +70,9 @@ export class CatalogItemActionsComponent implements OnInit {
           this.getCounters.emit();
           this.eventService.emit('itemChanged');
           if (resp.status === 406) {
-            const modalRef: NgbModalRef = this.modalService.open(
-              TooManyItemsModalComponent,
-              {
-                windowClass: 'modal-standard',
-              }
-            );
+            const modalRef: NgbModalRef = this.modalService.open(TooManyItemsModalComponent, {
+              windowClass: 'modal-standard',
+            });
             modalRef.componentInstance.type = SUBSCRIPTION_TYPES.carDealer;
             modalRef.result.then(
               () => {},
@@ -123,12 +118,9 @@ export class CatalogItemActionsComponent implements OnInit {
     if (!this.itemIsBumped()) {
       this.router.navigate(['pro/catalog/checkout']);
     } else {
-      let modalRef: NgbModalRef = this.modalService.open(
-        AlreadyFeaturedModalComponent,
-        {
-          windowClass: 'bump',
-        }
-      );
+      let modalRef: NgbModalRef = this.modalService.open(AlreadyFeaturedModalComponent, {
+        windowClass: 'bump',
+      });
       modalRef.result.then(
         () => {
           modalRef = null;

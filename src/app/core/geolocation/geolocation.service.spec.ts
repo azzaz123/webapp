@@ -1,17 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import {
-  GeolocationService,
-  MAPS_PLACES_API,
-  MAPS_PROVIDER,
-  MAPS_PLACE_API,
-} from './geolocation.service';
+import { GeolocationService, MAPS_PLACES_API, MAPS_PROVIDER, MAPS_PLACE_API } from './geolocation.service';
 import { GEOLOCATION_DATA_WEB } from '../../../tests/geolocation.fixtures.spec';
 import { GeolocationResponse } from './geolocation-response.interface';
-import {
-  HttpClientTestingModule,
-  TestRequest,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, TestRequest, HttpTestingController } from '@angular/common/http/testing';
 import { environment } from '../../../environments/environment';
 import { Coordinate } from './address-response.interface';
 import { COORDINATE_DATA_WEB } from '../../../tests/address.fixtures.spec';

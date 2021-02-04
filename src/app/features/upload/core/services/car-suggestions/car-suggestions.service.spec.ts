@@ -1,8 +1,4 @@
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-  TestRequest,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { environment } from '@environments/environment';
 import {
@@ -16,10 +12,7 @@ import {
   CAR_YEARS_RESPONSE,
 } from '@fixtures/car.fixtures.spec';
 import { IOption } from '@shared/dropdown/utils/option.interface';
-import {
-  CarSuggestionsService,
-  CARS_SUGGESTER_API_URL,
-} from './car-suggestions.service';
+import { CarSuggestionsService, CARS_SUGGESTER_API_URL } from './car-suggestions.service';
 
 let service: CarSuggestionsService;
 let httpMock: HttpTestingController;
@@ -94,9 +87,7 @@ describe('CarSuggestionsService', () => {
       const expectedUrl = `${environment.baseUrl}${CARS_SUGGESTER_API_URL}/versions?${expectedUrlParams}`;
       let response: IOption[];
 
-      service
-        .getVersions(MOCK_BRAND, MOCK_MODEL, MOCK_YEAR)
-        .subscribe((r) => (response = r));
+      service.getVersions(MOCK_BRAND, MOCK_MODEL, MOCK_YEAR).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(CAR_VERSIONS_RESPONSE);
 

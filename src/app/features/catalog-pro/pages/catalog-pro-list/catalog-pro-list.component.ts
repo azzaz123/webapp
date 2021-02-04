@@ -72,12 +72,7 @@ export class CatalogProListComponent implements OnInit {
   ngOnInit() {
     this.getCounters();
     this.getItems();
-    const sorting: string[] = [
-      'date_desc',
-      'date_asc',
-      'price_desc',
-      'price_asc',
-    ];
+    const sorting: string[] = ['date_desc', 'date_asc', 'price_desc', 'price_asc'];
     this.orderBy = [];
     sorting.forEach((sort) => {
       this.orderBy.push({
@@ -112,8 +107,7 @@ export class CatalogProListComponent implements OnInit {
             },
           };
           const modalType = localStorage.getItem('transactionType');
-          const modal =
-            modalType && modals[modalType] ? modals[modalType] : modals.bump;
+          const modal = modalType && modals[modalType] ? modals[modalType] : modals.bump;
 
           let modalRef: NgbModalRef = this.modalService.open(modal.component, {
             windowClass: modal.windowClass,
@@ -182,14 +176,7 @@ export class CatalogProListComponent implements OnInit {
       this.items = [];
     }
     this.itemService
-      .mines(
-        this.page,
-        this.pageSize,
-        this.sortBy,
-        this.selectedStatus,
-        this.term,
-        this.cache
-      )
+      .mines(this.page, this.pageSize, this.sortBy, this.selectedStatus, this.term, this.cache)
       .pipe(
         takeWhile(() => {
           this.cache = true;
@@ -202,10 +189,7 @@ export class CatalogProListComponent implements OnInit {
             total_products: items.length,
           });
         } else {
-          this.trackingService.track(
-            TrackingService.PRODUCT_LIST_ACTIVE_VIEWED,
-            { total_products: items.length }
-          );
+          this.trackingService.track(TrackingService.PRODUCT_LIST_ACTIVE_VIEWED, { total_products: items.length });
         }
         this.trackingService.track(TrackingService.PRODUCT_LIST_LOADED, {
           page_number: this.page,
@@ -294,15 +278,8 @@ export class CatalogProListComponent implements OnInit {
     );
   }
 
-  private chooseCreditCard(
-    orderId: string,
-    total: number,
-    financialCard?: FinancialCard
-  ) {
-    const modalRef: NgbModalRef = this.modalService.open(
-      CreditCardModalComponent,
-      { windowClass: 'credit-card' }
-    );
+  private chooseCreditCard(orderId: string, total: number, financialCard?: FinancialCard) {
+    const modalRef: NgbModalRef = this.modalService.open(CreditCardModalComponent, { windowClass: 'credit-card' });
     modalRef.componentInstance.financialCard = financialCard;
     modalRef.componentInstance.total = total;
     modalRef.componentInstance.orderId = orderId;
@@ -350,33 +327,25 @@ export class CatalogProListComponent implements OnInit {
   }
 
   private showBumpSuggestionModal(itemId: string): void {
-    this.bumpSuggestionModalRef = this.modalService.open(
-      BumpSuggestionModalComponent,
-      {
-        windowClass: 'modal-standard',
-      }
-    );
+    this.bumpSuggestionModalRef = this.modalService.open(BumpSuggestionModalComponent, {
+      windowClass: 'modal-standard',
+    });
     this.getBumpSuggestionModalPrice(this.bumpSuggestionModalRef);
-    this.bumpSuggestionModalRef.result.then(
-      (result: { redirect: boolean; hasPrice?: boolean }) => {
-        this.bumpSuggestionModalRef = null;
-        if (result?.redirect) {
-          if (result.hasPrice) {
-            this.router.navigate(['pro/catalog/checkout-extras']);
-          } else {
-            this.router.navigate(['pro/catalog/checkout', { itemId }]);
-          }
+    this.bumpSuggestionModalRef.result.then((result: { redirect: boolean; hasPrice?: boolean }) => {
+      this.bumpSuggestionModalRef = null;
+      if (result?.redirect) {
+        if (result.hasPrice) {
+          this.router.navigate(['pro/catalog/checkout-extras']);
+        } else {
+          this.router.navigate(['pro/catalog/checkout', { itemId }]);
         }
       }
-    );
+    });
   }
 
   private getBumpSuggestionModalPrice(modalRef: NgbModalRef): void {
     this.paymentService.getPerks(true).subscribe((perks: PerksModel) => {
-      if (
-        perks.getBumpCounter() === 0 &&
-        perks.getNationalBumpCounter() === 0
-      ) {
+      if (perks.getBumpCounter() === 0 && perks.getNationalBumpCounter() === 0) {
         this.paymentService.getPacks().subscribe((packs: Packs) => {
           let minValue: Pack = null;
           const allowed = ['cityBump', 'countryBump'];
@@ -384,18 +353,13 @@ export class CatalogProListComponent implements OnInit {
           const filtered = Object.keys(packs)
             .filter((key) => allowed.includes(key))
             .reduce((obj, key) => {
-              obj[key] = packs[key].reduce((prev, curr) =>
-                +prev.price < +curr.price ? prev : curr
-              );
+              obj[key] = packs[key].reduce((prev, curr) => (+prev.price < +curr.price ? prev : curr));
               return obj;
             }, {});
 
           for (const property in filtered) {
             if (minValue) {
-              minValue =
-                +minValue.price > +filtered[property].price
-                  ? filtered[property]
-                  : minValue;
+              minValue = +minValue.price > +filtered[property].price ? filtered[property] : minValue;
             } else {
               minValue = filtered[property];
             }

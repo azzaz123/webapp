@@ -6,12 +6,7 @@ import { PrivateLayoutModule } from './layout/private-layout.module';
 import { PrivateRoutingModule } from './private-routing.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    PrivateCoreModule,
-    PrivateLayoutModule,
-    PrivateRoutingModule,
-  ],
+  imports: [CommonModule, PrivateCoreModule, PrivateLayoutModule, PrivateRoutingModule],
   declarations: [PrivateComponent],
 })
 export class PrivateModule {}

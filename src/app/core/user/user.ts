@@ -1,11 +1,5 @@
 import { Model } from '../resource/model.interface';
-import {
-  UserExtrainfo,
-  UserLocation,
-  UserStatsOld,
-  UserValidations,
-  Image,
-} from './user-response.interface';
+import { UserExtrainfo, UserLocation, UserStatsOld, UserValidations, Image } from './user-response.interface';
 import { Item } from '../item/item';
 import { environment } from '../../../environments/environment';
 
@@ -265,8 +259,6 @@ export class User implements Model {
   }
 
   getUrl(subdomain: string) {
-    return (
-      environment.siteUrl.replace('es', subdomain) + 'user/' + this.webSlug
-    );
+    return environment.siteUrl.replace('es', subdomain) + 'user/' + this.webSlug;
   }
 }

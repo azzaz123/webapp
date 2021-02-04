@@ -1,12 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Car } from '@core/item/car';
 import { Item, ITEM_TYPES } from '@core/item/item';
-import {
-  ItemResponse,
-  ItemContent,
-  CarContent,
-  RealestateContent,
-} from '@core/item/item-response.interface';
+import { ItemResponse, ItemContent, CarContent, RealestateContent } from '@core/item/item-response.interface';
 import { RecommenderItemImage } from '@public/core/services/api/recommender/interfaces/recommender-item.interface';
 import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
 import { Image } from '@core/user/user-response.interface';
@@ -119,9 +114,7 @@ export class MapItemService {
         : {
             id: this.uuidService.getUUID(),
             original_width: content.image ? content.image.original_width : null,
-            original_height: content.image
-              ? content.image.original_height
-              : null,
+            original_height: content.image ? content.image.original_height : null,
             average_hex_color: '',
             urls_by_size: content.image,
           },
@@ -133,25 +126,14 @@ export class MapItemService {
       content.extra_info
         ? {
             object_type: {
-              id:
-                content.extra_info.object_type &&
-                content.extra_info.object_type.id
-                  ? content.extra_info.object_type.id.toString()
-                  : null,
-              name:
-                content.extra_info.object_type &&
-                content.extra_info.object_type.name
-                  ? content.extra_info.object_type.name
-                  : null,
+              id: content.extra_info.object_type && content.extra_info.object_type.id ? content.extra_info.object_type.id.toString() : null,
+              name: content.extra_info.object_type && content.extra_info.object_type.name ? content.extra_info.object_type.name : null,
             },
             brand: content.extra_info.brand,
             model: content.extra_info.model,
             gender: content.extra_info.gender,
             size: {
-              id:
-                content.extra_info.size && content.extra_info.size.id
-                  ? content.extra_info.size.id.toString()
-                  : null,
+              id: content.extra_info.size && content.extra_info.size.id ? content.extra_info.size.id.toString() : null,
             },
             condition: content.extra_info.condition || null,
           }
@@ -159,53 +141,45 @@ export class MapItemService {
     );
   }
 
-  public mapRecommendedItem(
-    recommendedItemBodyResponse: RecommendedItemsBodyResponse
-  ): Item[] {
-    return recommendedItemBodyResponse.recommended_items.map(
-      (recommendedItem) => {
-        return new Item(
-          recommendedItem.id,
-          null,
-          recommendedItem.seller_id,
-          recommendedItem.title,
-          null,
-          recommendedItem.category_id,
-          null,
-          recommendedItem.price,
-          recommendedItem.currency,
-          null,
-          null,
-          {
-            pending: null,
-            sold: null,
-            favorite: recommendedItem.favorited,
-            reserved: null,
-            banned: null,
-            expired: null,
-          },
-          null,
-          {
-            fix_price: null,
-            exchange_allowed: null,
-            shipping_allowed: recommendedItem.shipping_allowed,
-          },
-          !this.mapRecommendedItemImages(recommendedItem.images)
-            ? null
-            : this.mapRecommendedItemImages(recommendedItem.images)[0],
-          this.mapRecommendedItemImages(recommendedItem.images),
-          recommendedItem.web_slug,
-          null,
-          null,
-          recommendedItemBodyResponse.recommended_type
-        );
-      }
-    );
+  public mapRecommendedItem(recommendedItemBodyResponse: RecommendedItemsBodyResponse): Item[] {
+    return recommendedItemBodyResponse.recommended_items.map((recommendedItem) => {
+      return new Item(
+        recommendedItem.id,
+        null,
+        recommendedItem.seller_id,
+        recommendedItem.title,
+        null,
+        recommendedItem.category_id,
+        null,
+        recommendedItem.price,
+        recommendedItem.currency,
+        null,
+        null,
+        {
+          pending: null,
+          sold: null,
+          favorite: recommendedItem.favorited,
+          reserved: null,
+          banned: null,
+          expired: null,
+        },
+        null,
+        {
+          fix_price: null,
+          exchange_allowed: null,
+          shipping_allowed: recommendedItem.shipping_allowed,
+        },
+        !this.mapRecommendedItemImages(recommendedItem.images) ? null : this.mapRecommendedItemImages(recommendedItem.images)[0],
+        this.mapRecommendedItemImages(recommendedItem.images),
+        recommendedItem.web_slug,
+        null,
+        null,
+        recommendedItemBodyResponse.recommended_type
+      );
+    });
   }
 
-  private mapRecommendedItemImages(
-    recommendedItemImages: RecommenderItemImage[]
-  ): Image[] {
+  private mapRecommendedItemImages(recommendedItemImages: RecommenderItemImage[]): Image[] {
     if (recommendedItemImages?.length === 0 || !recommendedItemImages?.length) {
       return null;
     } else if (recommendedItemImages?.length === 1) {

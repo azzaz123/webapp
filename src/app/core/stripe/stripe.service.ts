@@ -2,17 +2,10 @@ import { of, Observable } from 'rxjs';
 
 import { tap, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import {
-  PaymentService,
-  PAYMENT_RESPONSE_STATUS,
-} from '../payments/payment.service';
+import { PaymentService, PAYMENT_RESPONSE_STATUS } from '../payments/payment.service';
 import { Router } from '@angular/router';
 import { EventService } from '../event/event.service';
-import {
-  PaymentIntents,
-  PaymentMethodResponse,
-  PaymentMethodCardResponse,
-} from '../payments/payment.interface';
+import { PaymentIntents, PaymentMethodResponse, PaymentMethodCardResponse } from '../payments/payment.interface';
 import { FinancialCard } from '../../shared/profile/credit-card-info/financial-card';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
@@ -41,41 +34,28 @@ export class StripeService {
     });
   }
 
-  public buy(
-    orderId: string,
-    paymentId: string,
-    hasSavedCard: boolean,
-    isSaved: boolean,
-    card: any
-  ): void {
+  public buy(orderId: string, paymentId: string, hasSavedCard: boolean, isSaved: boolean, card: any): void {
     if (!hasSavedCard || (hasSavedCard && !isSaved)) {
-      this.paymentService
-        .paymentIntents(orderId, paymentId)
-        .subscribe((response: PaymentIntents) => {
-          this.payment(response.token, card).then((response: any) => {
-            this.handlePayment(response);
-          });
+      this.paymentService.paymentIntents(orderId, paymentId).subscribe((response: PaymentIntents) => {
+        this.payment(response.token, card).then((response: any) => {
+          this.handlePayment(response);
         });
+      });
     } else {
-      this.paymentService
-        .paymentIntentsConfirm(orderId, paymentId, card.id)
-        .subscribe(
-          (response: PaymentIntents) => {
-            if (
-              response.status.toUpperCase() !==
-              PAYMENT_RESPONSE_STATUS.SUCCEEDED
-            ) {
-              this.savedPayment(response.token).then((response: any) => {
-                this.handlePayment(response);
-              });
-            } else {
+      this.paymentService.paymentIntentsConfirm(orderId, paymentId, card.id).subscribe(
+        (response: PaymentIntents) => {
+          if (response.status.toUpperCase() !== PAYMENT_RESPONSE_STATUS.SUCCEEDED) {
+            this.savedPayment(response.token).then((response: any) => {
               this.handlePayment(response);
-            }
-          },
-          () => {
-            this.router.navigate(['catalog/list', { code: -1 }]);
+            });
+          } else {
+            this.handlePayment(response);
           }
-        );
+        },
+        () => {
+          this.router.navigate(['catalog/list', { code: -1 }]);
+        }
+      );
     }
   }
 
@@ -89,71 +69,40 @@ export class StripeService {
     if (this.financialCards && cache) {
       return of(this.financialCards);
     }
-    return this.http
-      .get(
-        `${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/cards`
-      )
-      .pipe(
-        map((financialCards: PaymentMethodCardResponse[]) =>
-          this.mapPaymentMethodCard(financialCards)
-        ),
-        tap(
-          (financialCards: FinancialCard[]) =>
-            (this.financialCards = financialCards)
-        )
-      );
+    return this.http.get(`${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/cards`).pipe(
+      map((financialCards: PaymentMethodCardResponse[]) => this.mapPaymentMethodCard(financialCards)),
+      tap((financialCards: FinancialCard[]) => (this.financialCards = financialCards))
+    );
   }
 
   public deleteCard(paymentMethodId: string) {
-    return this.http.post(
-      `${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/${paymentMethodId}/detach`,
-      {}
-    );
+    return this.http.post(`${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/${paymentMethodId}/detach`, {});
   }
 
   public addNewCard(paymentMethodId: string): Observable<any> {
-    return this.http.put(
-      `${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/${paymentMethodId}/attach`,
-      {}
-    );
+    return this.http.put(`${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/${paymentMethodId}/attach`, {});
   }
 
   public setDefaultCard(paymentMethodId: string): Observable<any> {
-    return this.http.put(
-      `${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/${paymentMethodId}/default`,
-      {}
-    );
+    return this.http.put(`${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/${paymentMethodId}/default`, {});
   }
 
   public createStripeCard(cardElement: any): Promise<any> {
     return this.createStripePaymentMethod(cardElement)
       .then((response: any) => {
         if (response.error) {
-          return this.eventService.emit(
-            STRIPE_PAYMENT_RESPONSE_EVENT_KEY,
-            PAYMENT_RESPONSE_STATUS.FAILED
-          );
+          return this.eventService.emit(STRIPE_PAYMENT_RESPONSE_EVENT_KEY, PAYMENT_RESPONSE_STATUS.FAILED);
         }
         return response.paymentMethod;
       })
-      .catch(() =>
-        this.eventService.emit(
-          STRIPE_PAYMENT_RESPONSE_EVENT_KEY,
-          PAYMENT_RESPONSE_STATUS.FAILED
-        )
-      );
+      .catch(() => this.eventService.emit(STRIPE_PAYMENT_RESPONSE_EVENT_KEY, PAYMENT_RESPONSE_STATUS.FAILED));
   }
 
   public getSetupIntent(): Observable<any> {
-    return this.http.get<string>(
-      `${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/setup_intent_secret`
-    );
+    return this.http.get<string>(`${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/setup_intent_secret`);
   }
 
-  public createDefaultCard(
-    clientSecret: string,
-    cardElement: any
-  ): Promise<any> {
+  public createDefaultCard(clientSecret: string, cardElement: any): Promise<any> {
     return this.stripeSetupIntent(clientSecret, cardElement)
       .then((result) => {
         return result;
@@ -163,8 +112,7 @@ export class StripeService {
       });
   }
 
-  createStripePaymentMethod = async (cardElement: any) =>
-    await this.lib.createPaymentMethod('card', cardElement);
+  createStripePaymentMethod = async (cardElement: any) => await this.lib.createPaymentMethod('card', cardElement);
 
   stripeSetupIntent = async (clientSecret: string, paymentMethod: any) =>
     await this.lib.confirmCardSetup(clientSecret, {
@@ -173,9 +121,7 @@ export class StripeService {
 
   handlePayment = (paymentResponse, type = 'paymentResponse') => {
     const { paymentIntent, error } = paymentResponse;
-    const response = paymentIntent
-      ? paymentIntent.status
-      : paymentResponse.status;
+    const response = paymentIntent ? paymentIntent.status : paymentResponse.status;
     const responseError = error ? error.code : paymentResponse.error;
     if (responseError) {
       this.eventService.emit(type, responseError);
@@ -199,19 +145,10 @@ export class StripeService {
   }
 
   public mapResponse(res: PaymentMethodResponse): FinancialCard {
-    return new FinancialCard(
-      `${res.card.exp_month}/${res.card.exp_year}`,
-      res.id,
-      res.card.last4,
-      null,
-      null,
-      res.card
-    );
+    return new FinancialCard(`${res.card.exp_month}/${res.card.exp_year}`, res.id, res.card.last4, null, null, res.card);
   }
 
-  private mapPaymentMethodCard(
-    stripeCard: PaymentMethodCardResponse[]
-  ): FinancialCard[] {
+  private mapPaymentMethodCard(stripeCard: PaymentMethodCardResponse[]): FinancialCard[] {
     return stripeCard.map((stripeCard: PaymentMethodCardResponse) => {
       return new FinancialCard(
         `${stripeCard.expiration_month}/${stripeCard.expiration_year}`,
@@ -248,11 +185,7 @@ export class StripeService {
     return false;
   }
 
-  private async handleCardPayment(
-    clientSecret: string,
-    card?: stripe.elements.Element,
-    options?: stripe.HandleCardPaymentOptions
-  ) {
+  private async handleCardPayment(clientSecret: string, card?: stripe.elements.Element, options?: stripe.HandleCardPaymentOptions) {
     if (this.isBadToken(clientSecret)) {
       return;
     }

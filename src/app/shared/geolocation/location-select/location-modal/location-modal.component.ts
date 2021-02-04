@@ -1,11 +1,7 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Coordinate } from '../../../../core/geolocation/address-response.interface';
-import {
-  DEFAULT_COORDINATES,
-  MAP_ZOOM_GENERAL,
-  MAP_ZOOM_MARKER,
-} from '../../here-maps/here-maps.component';
+import { DEFAULT_COORDINATES, MAP_ZOOM_GENERAL, MAP_ZOOM_MARKER } from '../../here-maps/here-maps.component';
 
 @Component({
   selector: 'tsl-location-modal',
