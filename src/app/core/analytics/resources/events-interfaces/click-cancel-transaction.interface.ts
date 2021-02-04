@@ -53,4 +53,8 @@ export interface ClickCancelTransaction {
    * Identifier of the accept offer screen
    */
   screenId: 205;
+  /**
+   * Method select by seller for drop off
+   */
+  sellerDropOffMethod: 'Correos' | 'HPU';
 }

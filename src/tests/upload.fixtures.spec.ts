@@ -172,6 +172,18 @@ export const MOCK_UPLOAD_OUTPUT_DONE: UploadOutput = {
   type: OUTPUT_TYPE.done,
 };
 
+export const MOCK_UPLOAD_ITEM_OUTPUT_DONE: UploadOutput = {
+  file: {
+    ...UPLOADED_FILE_FIRST,
+    response: {
+      content: UPLOADED_RESPONSE,
+      id: ITEM_ID,
+      type: 'consumer_goods',
+    },
+  },
+  type: OUTPUT_TYPE.done,
+};
+
 export const MOCK_UPLOAD_OUTPUT_PENDING: UploadOutput = {
   file: UPLOAD_FILE,
   type: OUTPUT_TYPE.uploading,

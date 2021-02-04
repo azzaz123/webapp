@@ -12,6 +12,9 @@ import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { SidebarComponent } from './sidebar.component';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import { AnalyticsPageView, ANALYTICS_EVENT_NAMES, SCREEN_IDS, ViewOwnSaleItems } from '@core/analytics/analytics-constants';
 
 @Component({
   template: '',
@@ -31,11 +34,17 @@ const routes: Route[] = [
   { path: 'pro/stats', component: MockComponent },
 ];
 
+const mockCounters = {
+  sold: 7,
+  publish: 12,
+};
+
 describe('SidebarComponent', () => {
   let component: SidebarComponent;
   let fixture: ComponentFixture<SidebarComponent>;
   let userService: UserService;
   let router: Router;
+  let analyticsService: AnalyticsService;
 
   beforeEach(
     waitForAsync(() => {
@@ -46,6 +55,11 @@ describe('SidebarComponent', () => {
           {
             provide: UserService,
             useValue: {
+              getStats() {
+                return of({
+                  counters: mockCounters,
+                });
+              },
               logout() {},
               me(): Observable<User> {
                 return of(MOCK_USER);
@@ -61,6 +75,7 @@ describe('SidebarComponent', () => {
               totalUnreadMessages$: of(1),
             },
           },
+          { provide: AnalyticsService, useClass: MockAnalyticsService },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -71,7 +86,9 @@ describe('SidebarComponent', () => {
     fixture = TestBed.createComponent(SidebarComponent);
     component = fixture.componentInstance;
     userService = TestBed.inject(UserService);
+    analyticsService = TestBed.inject(AnalyticsService);
     spyOn(userService, 'me').and.callThrough();
+    spyOn(analyticsService, 'trackPageView');
     router = TestBed.get(Router);
     fixture.detectChanges();
   });
@@ -143,5 +160,32 @@ describe('SidebarComponent', () => {
         expect(activeLinks[0].linkParams).toEqual(['/chat']);
       });
     }));
+
+    describe('when close subscription slot', () => {
+      it('should track event if not cardealer', () => {
+        component.isProfessional = false;
+        const element: HTMLElement = fixture.nativeElement.querySelector('#qa-sidebar-catalog');
+        const expectedEvent: AnalyticsPageView<ViewOwnSaleItems> = {
+          name: ANALYTICS_EVENT_NAMES.ViewOwnSaleItems,
+          attributes: {
+            screenId: SCREEN_IDS.MyCatalog,
+            numberOfItems: mockCounters.publish,
+          },
+        };
+
+        element.click();
+
+        expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+      });
+      it('should not track event if cardealer', () => {
+        component.isProfessional = true;
+        const element: HTMLElement = fixture.nativeElement.querySelector('#qa-sidebar-catalog');
+
+        element.click();
+
+        expect(analyticsService.trackPageView).not.toHaveBeenCalled();
+      });
+    });
   });
 });
