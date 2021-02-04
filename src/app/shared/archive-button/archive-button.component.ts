@@ -18,9 +18,8 @@ export class ArchiveButtonComponent {
   archive(event: Event) {
     event.stopPropagation();
     this.click.emit();
-    let observable: Observable<any>;
     if (this.lead instanceof Call) {
-      observable = this.callService.archive(this.lead.id);
+      this.callService.archive(this.lead.id).subscribe();
     }
   }
 }
