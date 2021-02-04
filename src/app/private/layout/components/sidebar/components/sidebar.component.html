@@ -14,8 +14,7 @@
   <h2 i18n>Dashboard</h2>
 </a>
 
-<a class="sidebar-section" id="qa-sidebar-catalog" [routerLink]="['/catalog/list']"
-  [ngClass]="{active: isProducts}">
+<a class="sidebar-section" id="qa-sidebar-catalog" [routerLink]="['/catalog/list']" (click)="trackClickToCatalog()" [ngClass]="{active: isProducts}">
   <div class="sidebar-section-circle">
     <tsl-svg-icon src="/assets/icons/navigation_catalog.svg"></tsl-svg-icon>
   </div>
