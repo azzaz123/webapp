@@ -25,7 +25,7 @@ import { PaymentService } from '@core/payments/payment.service';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
 import { TrackingService } from '@core/tracking/tracking.service';
 import { FeatureflagService } from '@core/user/featureflag.service';
-import { UserService } from '@core/user/user.service';
+import { LOCAL_STORAGE_TRY_PRO_SLOT, UserService } from '@core/user/user.service';
 import { STATUS } from '@features/catalog/components/selected-items/selected-product.interface';
 import { TryProSlotComponent } from '@features/catalog/components/subscriptions-slots/try-pro-slot/try-pro-slot.component';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
@@ -61,7 +61,7 @@ import { SubscriptionsSlotsListComponent } from '../../components/subscriptions-
 import { BumpConfirmationModalComponent } from '../../modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { BuyProductModalComponent } from '../../modals/buy-product-modal/buy-product-modal.component';
 import { ListingfeeConfirmationModalComponent } from '../../modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
-import { ListComponent, LOCAL_STORAGE_TRY_PRO_SLOT } from './list.component';
+import { ListComponent } from './list.component';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -204,7 +204,7 @@ describe('ListComponent', () => {
           {
             provide: UserService,
             useValue: {
-              get isPro(): boolean {
+              suggestPro() {
                 return false;
               },
               getStats() {
@@ -1253,6 +1253,7 @@ describe('ListComponent', () => {
         attributes: {
           screenId: SCREEN_IDS.MyCatalog,
           numberOfItems: mockCounters.publish,
+          proSubscriptionBanner: false,
         },
       };
 
@@ -1264,48 +1265,27 @@ describe('ListComponent', () => {
   });
 
   describe('Try Pro banner', () => {
-    describe('when is not Pro ', () => {
-      describe('and was not previously closed', () => {
-        it('should show banner', () => {
-          spyOn(localStorage, 'getItem').and.returnValue(null);
-
-          component.ngOnInit();
-          fixture.detectChanges();
-
-          const tryProBanner = fixture.debugElement.query(By.directive(TryProSlotComponent));
-
-          expect(localStorage.getItem).toHaveBeenCalledTimes(1);
-          expect(localStorage.getItem).toHaveBeenCalledWith(`${USER_ID}-${LOCAL_STORAGE_TRY_PRO_SLOT}`);
-          expect(tryProBanner).toBeTruthy();
-        });
-      });
-      describe('and was previously closed', () => {
-        it('should not show banner', () => {
-          spyOn(localStorage, 'getItem').and.returnValue('true');
-
-          component.ngOnInit();
-          fixture.detectChanges();
-
-          const tryProBanner = fixture.debugElement.query(By.directive(TryProSlotComponent));
-
-          expect(localStorage.getItem).toHaveBeenCalledTimes(1);
-          expect(localStorage.getItem).toHaveBeenCalledWith(`${USER_ID}-${LOCAL_STORAGE_TRY_PRO_SLOT}`);
-          expect(tryProBanner).toBeFalsy();
-        });
-      });
-    });
-
-    describe('when is pro', () => {
-      it('should not show banner', () => {
-        spyOn(localStorage, 'getItem').and.returnValue(null);
-        jest.spyOn(userService, 'isPro', 'get').mockReturnValue(true);
+    describe('when has not to show banner', () => {
+      it('should banner not visible', () => {
+        spyOn(userService, 'suggestPro').and.returnValue(false);
 
         component.ngOnInit();
         fixture.detectChanges();
 
         const tryProBanner = fixture.debugElement.query(By.directive(TryProSlotComponent));
-
         expect(tryProBanner).toBeFalsy();
+      });
+    });
+
+    describe('when has to show banner', () => {
+      it('should banner be visible', () => {
+        spyOn(userService, 'suggestPro').and.returnValue(true);
+
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        const tryProBanner = fixture.debugElement.query(By.directive(TryProSlotComponent));
+        expect(tryProBanner).toBeTruthy();
       });
     });
 

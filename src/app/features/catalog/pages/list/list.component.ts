@@ -24,7 +24,7 @@ import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/su
 import { TrackingService } from '@core/tracking/tracking.service';
 import { User } from '@core/user/user';
 import { Counters, UserStats } from '@core/user/user-stats.interface';
-import { UserService } from '@core/user/user.service';
+import { LOCAL_STORAGE_TRY_PRO_SLOT, UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ActivateItemsModalComponent } from '@shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component';
 import { DeactivateItemsModalComponent } from '@shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
@@ -46,8 +46,6 @@ import { ListingfeeConfirmationModalComponent } from '../../modals/listingfee-co
 import { ReactivateConfirmationModalComponent } from '../../modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component';
 
 export const SORTS = ['date_desc', 'date_asc', 'price_desc', 'price_asc'];
-
-export const LOCAL_STORAGE_TRY_PRO_SLOT = 'try-pro-slot';
 
 const TRANSACTIONS_WITH_CREDITS = ['bumpWithCredits', 'urgentWithCredits', 'reactivateWithCredits', 'purchaseListingFeeWithCredits'];
 
@@ -741,6 +739,7 @@ export class ListComponent implements OnInit, OnDestroy {
       attributes: {
         screenId: SCREEN_IDS.MyCatalog,
         numberOfItems: this.counters.publish,
+        proSubscriptionBanner: this.showTryProSlot,
       },
     };
     this.analyticsService.trackPageView(event);
@@ -804,7 +803,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   private initTryProSlot(): void {
-    this.showTryProSlot = !this.userService.isPro && !localStorage.getItem(`${this.user.id}-${LOCAL_STORAGE_TRY_PRO_SLOT}`);
+    this.showTryProSlot = this.userService.suggestPro();
   }
 
   public onCloseTryProSlot(): void {
