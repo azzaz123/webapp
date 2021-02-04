@@ -3,7 +3,10 @@ import { AbstractFilter } from '@public/shared/components/filters/components/abs
 import { Component, DebugElement, Input, Predicate } from '@angular/core';
 import { FILTER_VARIANT } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.enum';
 import { By } from '@angular/platform-browser';
-import { AbstractFilterModule } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.module';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CommonModule } from '@angular/common';
+import { FilterTemplateComponent } from '@public/shared/components/filters/components/abstract-filter/filter-template/filter-template.component';
+import { BubbleModule } from '@public/shared/components/bubble/bubble.module';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -62,8 +65,8 @@ describe('AbstractFilter', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AbstractFilterModule],
-      declarations: [TestAbstractFilterComponent],
+      imports: [HttpClientTestingModule, CommonModule, BubbleModule],
+      declarations: [TestAbstractFilterComponent, FilterTemplateComponent],
     }).compileComponents();
   });
 
@@ -79,8 +82,8 @@ describe('AbstractFilter', () => {
   });
 
   describe('When is bubble variant', () => {
-    beforeEach(() => {
-      setInputs({
+    beforeEach(async () => {
+      await setInputs({
         variant: FILTER_VARIANT.BUBBLE,
       });
     });
@@ -102,8 +105,8 @@ describe('AbstractFilter', () => {
       });
 
       describe('and has at least one value', () => {
-        beforeEach(() => {
-          setInputs({
+        beforeEach(async () => {
+          await setInputs({
             value: [
               {
                 key: 'key1',
@@ -123,8 +126,8 @@ describe('AbstractFilter', () => {
       });
 
       describe('and has more than one value', () => {
-        beforeEach(() => {
-          setInputs({
+        beforeEach(async () => {
+          await setInputs({
             value: [
               {
                 key: 'key1',
@@ -146,8 +149,8 @@ describe('AbstractFilter', () => {
     });
 
     describe('and has extended behaviour', () => {
-      it('should set variant to the bubble by extension', () => {
-        setInputs({
+      it('should set variant to the bubble by extension', async () => {
+        await setInputs({
           value: [{ key: 'key', value: 'value' }],
           testHasValue: false,
         });
@@ -155,7 +158,7 @@ describe('AbstractFilter', () => {
         expectRender(By.css('.Bubble.active'), true);
         expectRender(By.css('.Bubble.selected'), false);
 
-        setInputs({
+        await setInputs({
           value: [],
           testHasValue: true,
         });
@@ -164,32 +167,32 @@ describe('AbstractFilter', () => {
         expectRender(By.css('.Bubble.selected'), true);
       });
 
-      it('should render dropdown arrow by extension', () => {
-        setInputs({
+      it('should render dropdown arrow by extension', async () => {
+        await setInputs({
           testIsDropdown: false,
         });
 
         expectRender(By.css('.Bubble__dropdown_arrow'), false);
       });
 
-      it('should render icon by extension', () => {
-        setInputs({
+      it('should render icon by extension', async () => {
+        await setInputs({
           testIcon: 'icon.svg',
         });
 
         expectRender(By.css('.Bubble__icon'), true);
       });
 
-      it('should render label by extension', () => {
-        setInputs({
+      it('should render label by extension', async () => {
+        await setInputs({
           testLabel: 'Test label',
         });
 
         expectTextContent(By.css('.Bubble__content'), 'Test label');
       });
 
-      it('should render counter by extension', () => {
-        setInputs({
+      it('should render counter by extension', async () => {
+        await setInputs({
           testFilterCounter: 8,
         });
 
@@ -199,8 +202,8 @@ describe('AbstractFilter', () => {
   });
 
   describe('When is content variant', () => {
-    beforeEach(() => {
-      setInputs({
+    beforeEach(async () => {
+      await setInputs({
         variant: FILTER_VARIANT.CONTENT,
       });
     });
@@ -209,20 +212,20 @@ describe('AbstractFilter', () => {
     });
     describe('with no extension', () => {
       it('should render developer warning content', () => {
-        expectRender(By.css('.Bubble__dev_warn'), true);
+        expectRender(By.css('.Bubble__dev-warn'), true);
       });
     });
 
     describe('with extension', () => {
-      beforeEach(() => {
-        setInputs({
+      beforeEach(async () => {
+        await setInputs({
           testContent: 'I am test content',
         });
       });
 
       it('should render child content', () => {
         expectRender(By.css('.TestExtendedContent'), true);
-        expectRender(By.css('.Bubble__dev_warn'), false);
+        expectRender(By.css('.Bubble__dev-warn'), false);
       });
     });
   });

@@ -15,7 +15,9 @@ export class BubbleComponent {
   @Input() variant: BUBBLE_VARIANT = BUBBLE_VARIANT.ACTIVE;
   @Input() isDropdown: boolean;
   @Input() counter: number;
+  @Input() isClearable: boolean;
   @Output() click: EventEmitter<void> = new EventEmitter();
+  @Output() clear: EventEmitter<void> = new EventEmitter();
 
   public get counterText(): string {
     if (this.counter) {
@@ -25,7 +27,15 @@ export class BubbleComponent {
     return '';
   }
 
+  public get hasClearButton(): boolean {
+    return this.isClearable && this.variant === BUBBLE_VARIANT.SELECTED;
+  }
+
   public emitClick(): void {
     this.click.emit();
+  }
+
+  public emitClear(): void {
+    this.clear.emit();
   }
 }

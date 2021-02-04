@@ -30,16 +30,16 @@ const Template: Story<BubbleComponent> = (args) => ({
   props: args,
   template: `
       <div style="display: flex; margin-bottom: 15px;">
-        <tsl-bubble [icon]="icon" [isDropdown]="isDropdown" [variant]="${BUBBLE_VARIANT.ACTIVE}" [counter]="counter">Bubble!</tsl-bubble>
+        <tsl-bubble [icon]="icon" [isDropdown]="isDropdown" variant="${BUBBLE_VARIANT.ACTIVE}" [counter]="counter">Bubble!</tsl-bubble>
       </div>
       <div style="display: flex; margin-bottom: 15px;">
-        <tsl-bubble [icon]="icon" [isDropdown]="isDropdown" [variant]="${BUBBLE_VARIANT.SELECTED}" [counter]="counter">Bubble!</tsl-bubble>
+        <tsl-bubble [icon]="icon" [isDropdown]="isDropdown" variant="${BUBBLE_VARIANT.SELECTED}" [counter]="counter">Bubble!</tsl-bubble>
       </div>
       <div style="margin-bottom: 15px;">
-        <tsl-bubble [icon]="icon" [isDropdown]="isDropdown" [variant]="${BUBBLE_VARIANT.ACTIVE}" [counter]="counter">Bubble!</tsl-bubble>
+        <tsl-bubble [icon]="icon" [isDropdown]="isDropdown" variant="${BUBBLE_VARIANT.ACTIVE}" [counter]="counter">Bubble!</tsl-bubble>
       </div>
       <div style="margin-bottom: 15px;">
-        <tsl-bubble [icon]="icon" [isDropdown]="isDropdown" [variant]="${BUBBLE_VARIANT.SELECTED}" [counter]="counter">Bubble!</tsl-bubble>
+        <tsl-bubble [icon]="icon" [isDropdown]="isDropdown" variant="${BUBBLE_VARIANT.SELECTED}" [counter]="counter">Bubble!</tsl-bubble>
       </div>
     `,
 });
@@ -48,10 +48,16 @@ const VariantTemplate: Story<BubbleComponent> = (args) => ({
   props: args,
   template: `
       <div style="display: flex; margin-bottom: 15px;">
-        <tsl-bubble [icon]="icon" [isDropdown]="isDropdown" [variant]="variant" [counter]="counter">Bubble!</tsl-bubble>
+        <tsl-bubble [icon]="icon" [isDropdown]="isDropdown" [variant]="variant"
+                    [counter]="counter" [isClearable]="isClearable">
+          Bubble!
+        </tsl-bubble>
       </div>
       <div style="margin-bottom: 15px;">
-        <tsl-bubble [icon]="icon" [isDropdown]="isDropdown" [variant]="variant" [counter]="counter">Bubble!</tsl-bubble>
+        <tsl-bubble [icon]="icon" [isDropdown]="isDropdown" [variant]="variant"
+                    [counter]="counter" [isClearable]="isClearable">
+          Bubble!
+        </tsl-bubble>
       </div>
   `,
 });
@@ -85,9 +91,15 @@ ActiveVariant.args = {
   isDropdown: true,
 };
 
-export const SelectedVariant = VariantTemplate.bind({});
-SelectedVariant.args = {
+export const NotClearableSelectedVariant = VariantTemplate.bind({});
+NotClearableSelectedVariant.args = {
   variant: BUBBLE_VARIANT.SELECTED,
   icon: '/assets/icons/category_All.svg',
   isDropdown: true,
+};
+
+export const ClearableSelectedVariant = VariantTemplate.bind({});
+ClearableSelectedVariant.args = {
+  variant: BUBBLE_VARIANT.SELECTED,
+  isClearable: true,
 };

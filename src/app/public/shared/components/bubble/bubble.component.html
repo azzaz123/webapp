@@ -9,7 +9,10 @@
   <div class="Bubble__content px-3 d-flex justify-content-center align-items-center">
     <ng-content></ng-content>
   </div>
-  <tsl-svg-icon *ngIf="isDropdown" class="Bubble__dropdown_arrow d-flex justify-content-center align-items-center"
+  <tsl-svg-icon *ngIf="isDropdown && !hasClearButton" class="Bubble__dropdown_arrow d-flex justify-content-center align-items-center"
                 src="/assets/icons/dropdown-arrow.svg" [width]="10" [height]="6">
   </tsl-svg-icon>
+  <div *ngIf="hasClearButton" (click)="emitClear()" class="Bubble__clear d-flex justify-content-center align-items-center rounded-circle">
+    <tsl-svg-icon src="/assets/icons/cross.svg" [width]="9" [height]="9"></tsl-svg-icon>
+  </div>
 </div>

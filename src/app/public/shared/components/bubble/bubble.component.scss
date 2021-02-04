@@ -74,12 +74,21 @@
     flex-basis: 100%;
   }
 
-  &__counter {
+  &__counter,
+  &__clear {
     height: 21px;
     width: 21px;
     flex-grow: 0;
     flex-shrink: 0;
     font-size: $font-size-xs;
     line-height: 14px;
+  }
+
+  &__clear {
+    background-color: $white;
+
+    ::ng-deep svg path {
+      fill: $walla-main;
+    }
   }
 }

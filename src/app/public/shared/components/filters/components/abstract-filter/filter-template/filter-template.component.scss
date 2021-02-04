@@ -1,7 +1,7 @@
 @import '~style/variables/variables';
 
 .Bubble {
-  &__dev_warn {
+  &__dev-warn {
     color: $brand-danger;
   }
 }

@@ -3,7 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement, Predicate } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BubbleComponent } from '@public/shared/components/bubble/bubble.component';
+import { BUBBLE_VARIANT, BubbleComponent } from '@public/shared/components/bubble/bubble.component';
 import { By } from '@angular/platform-browser';
 import { SvgIconComponent } from '@core/svg-icon/svg-icon/svg-icon.component';
 
@@ -122,21 +122,108 @@ describe('BubbleComponent', () => {
     });
 
     describe('truthy', () => {
-      beforeEach(async () => {
-        await setInputs({ isDropdown: true });
+      describe('and bubble is not clearable', () => {
+        beforeEach(async () => {
+          await setInputs({
+            isDropdown: true,
+            isClearable: false,
+          });
+        });
+        it('should render', () => {
+          expectRender(dropdownSelector, true);
+        });
       });
-      it('should render', () => {
-        expectRender(dropdownSelector, true);
+
+      describe('and bubble is clearable', () => {
+        describe('and bubble is variant active', () => {
+          beforeEach(async () => {
+            await setInputs({
+              isDropdown: true,
+              isClearable: true,
+              variant: BUBBLE_VARIANT.ACTIVE,
+            });
+          });
+          it('should render', () => {
+            expectRender(dropdownSelector, true);
+          });
+        });
+        describe('and bubble is variant selected', () => {
+          beforeEach(async () => {
+            await setInputs({
+              isDropdown: true,
+              isClearable: true,
+              variant: BUBBLE_VARIANT.SELECTED,
+            });
+          });
+          it('should not render', () => {
+            expectRender(dropdownSelector, false);
+          });
+        });
+      });
+    });
+  });
+
+  describe('When clearable is...', () => {
+    const clearSelector = By.css('.Bubble__clear');
+    describe('falsy', () => {
+      beforeEach(async () => {
+        await setInputs({
+          isClearable: false,
+        });
+      });
+      it('should not render clear button', () => {
+        expectRender(clearSelector, false);
+      });
+    });
+
+    describe('truthy', () => {
+      describe('and is variant active', () => {
+        beforeEach(async () => {
+          await setInputs({
+            isClearable: true,
+            variant: BUBBLE_VARIANT.ACTIVE,
+          });
+        });
+        it('should not render clear button', () => {
+          expectRender(clearSelector, false);
+        });
+      });
+      describe('and is variant selected', () => {
+        beforeEach(async () => {
+          await setInputs({
+            isClearable: true,
+            variant: BUBBLE_VARIANT.SELECTED,
+          });
+        });
+        it('should render clear button', () => {
+          expectRender(clearSelector, true);
+        });
       });
     });
   });
 
   describe('When clicked', () => {
-    it('should execute callback', () => {
-      spyOn(component.click, 'emit');
-      debugElement.query(By.css('.Bubble')).triggerEventHandler('click', null);
+    describe('on bubble', () => {
+      it('should execute callback', () => {
+        spyOn(component.click, 'emit');
+        debugElement.query(By.css('.Bubble')).triggerEventHandler('click', null);
 
-      expect(component.click.emit).toHaveBeenCalledTimes(1);
+        expect(component.click.emit).toHaveBeenCalledTimes(1);
+      });
+    });
+    describe('on clear', () => {
+      beforeEach(async () => {
+        await setInputs({
+          isClearable: true,
+          variant: BUBBLE_VARIANT.SELECTED,
+        });
+      });
+      it('should execute callback', () => {
+        spyOn(component.clear, 'emit');
+        debugElement.query(By.css('.Bubble__clear')).triggerEventHandler('click', null);
+
+        expect(component.clear.emit).toHaveBeenCalledTimes(1);
+      });
     });
   });
 
