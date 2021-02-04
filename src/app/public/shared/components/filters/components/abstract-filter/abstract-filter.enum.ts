@@ -1,4 +1,4 @@
 export enum FILTER_VARIANT {
-  DROPDOWN,
+  BUBBLE,
   CONTENT,
 }

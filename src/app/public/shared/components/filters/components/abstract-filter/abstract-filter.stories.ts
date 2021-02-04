@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
   selector: 'stories-abstract-filter',
   template: `
     <tsl-filter-template
+      [isBubble]="isBubble()"
       [isDropdown]="isDropdown()"
       [icon]="icon"
       [counter]="filterCounter()"
@@ -31,8 +32,13 @@ class StoryAbstractFilterComponent extends AbstractFilter {
   @Input() storyHasCustomValue?: boolean;
   @Input() storyHasCustomCounter?: boolean;
   @Input() storyFilterCounter?: boolean;
+  @Input() storyHasNoArrow?: boolean;
   @Input() storyContent?: string;
   @Output() storyBubbleClick: EventEmitter<void> = new EventEmitter();
+
+  isDropdown(): boolean {
+    return this.storyHasNoArrow ? false : super.isDropdown();
+  }
 
   public hasValue(): boolean {
     return this.storyHasCustomValue ? true : super.hasValue();
@@ -81,8 +87,8 @@ const VariantTemplate: Story<StoryAbstractFilterComponent> = (args) => ({
   component: StoryAbstractFilterComponent,
   template: `
     <div>
-      <h1>Dropdown variant</h1>
-      <stories-abstract-filter [variant]="${FILTER_VARIANT.DROPDOWN}" [value]="value" [config]="config" [storyContent]="storyContent">
+      <h1>Bubble variant</h1>
+      <stories-abstract-filter [variant]="${FILTER_VARIANT.BUBBLE}" [value]="value" [config]="config" [storyContent]="storyContent">
       </stories-abstract-filter>
       <h1>Content variant</h1>
       <stories-abstract-filter [variant]="${FILTER_VARIANT.CONTENT}" [value]="value" [config]="config" [storyContent]="storyContent">
@@ -103,40 +109,46 @@ ExtendedContent.args = {
   storyContent: 'I am extended content!',
 };
 
-export const DefaultDropdownWithIcon = Template.bind({});
-DefaultDropdownWithIcon.args = {
-  variant: FILTER_VARIANT.DROPDOWN,
+export const DefaultBubbleWithIcon = Template.bind({});
+DefaultBubbleWithIcon.args = {
+  variant: FILTER_VARIANT.BUBBLE,
   value: [],
   config: {},
   storyLabel: 'I have an icon!',
   storyIcon: '/assets/icons/category_All.svg',
 };
 
-export const DefaultDropdownWithValue = Template.bind({});
-DefaultDropdownWithValue.args = {
-  variant: FILTER_VARIANT.DROPDOWN,
+export const DefaultBubbleWithValue = Template.bind({});
+DefaultBubbleWithValue.args = {
+  variant: FILTER_VARIANT.BUBBLE,
   value: [{ key: 'value' }],
   config: {},
   storyLabel: 'I have value!',
 };
 
-export const DefaultDropdownWithCounter = Template.bind({});
-DefaultDropdownWithCounter.args = {
+export const DefaultBubbleWithCounter = Template.bind({});
+DefaultBubbleWithCounter.args = {
   value: [{ key1: 'value' }, { key2: 'value' }],
 };
 
-export const CustomDropdownWithValue = Template.bind({});
-CustomDropdownWithValue.args = {
-  variant: FILTER_VARIANT.DROPDOWN,
+export const CustomBubbleWithValue = Template.bind({});
+CustomBubbleWithValue.args = {
+  variant: FILTER_VARIANT.BUBBLE,
   value: [],
   config: {},
   storyHasCustomValue: true,
   storyLabel: 'I have no value but bubble behaviour is extended',
 };
 
-export const CustomDropdownWithCounter = Template.bind({});
-CustomDropdownWithCounter.args = {
+export const CustomBubbleWithCounter = Template.bind({});
+CustomBubbleWithCounter.args = {
   value: [],
   storyHasCustomCounter: true,
   storyLabel: 'I have no counter but bubble behaviour is extended',
+};
+
+export const CustomBubbleWithoutArrow = Template.bind({});
+CustomBubbleWithoutArrow.args = {
+  storyLabel: 'I have no dropdown arrow! Now I am a toggle',
+  storyHasNoArrow: true,
 };

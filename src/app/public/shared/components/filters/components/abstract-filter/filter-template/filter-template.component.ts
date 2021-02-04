@@ -7,6 +7,7 @@ import { BUBBLE_VARIANT } from '@public/shared/components/bubble/bubble.componen
   styleUrls: ['./filter-template.component.scss'],
 })
 export class FilterTemplateComponent {
+  @Input() isBubble: boolean;
   @Input() isDropdown: boolean;
   @Input() hasValue: boolean;
   @Input() label: string;

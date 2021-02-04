@@ -10,6 +10,7 @@ import { AbstractFilterModule } from '@public/shared/components/filters/componen
   selector: 'abstract-filter',
   template: `
     <tsl-filter-template
+      [isBubble]="isBubble()"
       [isDropdown]="isDropdown()"
       [icon]="icon"
       [counter]="filterCounter()"
@@ -77,10 +78,10 @@ describe('AbstractFilter', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('When is dropdown variant', () => {
+  describe('When is bubble variant', () => {
     beforeEach(() => {
       setInputs({
-        variant: FILTER_VARIANT.DROPDOWN,
+        variant: FILTER_VARIANT.BUBBLE,
       });
     });
 
