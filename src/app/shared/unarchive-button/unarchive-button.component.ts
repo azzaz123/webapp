@@ -16,9 +16,8 @@ export class UnarchiveButtonComponent {
 
   unarchive(event: Event) {
     event.stopPropagation();
-    let observable: Observable<any>;
     if (this.lead instanceof Call) {
-      observable = this.callService.unarchive(this.lead.id);
+      this.callService.unarchive(this.lead.id).subscribe();
     }
   }
 }
