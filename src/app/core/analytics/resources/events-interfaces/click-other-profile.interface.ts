@@ -12,7 +12,7 @@ export interface ClickOtherProfile {
   /**
    * Identifier of the screen that the user profile was clicked from
    */
-  screenId: 115 | 27 | 188 | 214 | 215;
+  screenId: 115 | 27 | 188 | 210 | 214 | 215;
   /**
    * If the user clicked is from a professional user
    */

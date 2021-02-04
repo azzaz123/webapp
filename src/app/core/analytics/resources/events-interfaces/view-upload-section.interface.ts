@@ -6,17 +6,13 @@
  */
 
 /**
- * User views the section of favorite items
+ * User views the section of Upload
  */
-export interface ViewFavoriteItems {
+export interface ViewUploadSection {
   /**
-   * Identifier of my favorite items section screen
+   * Identifier of the upload section screen
    */
-  screenId: 194;
-  /**
-   * Number of different items the user has in the my favorite items section
-   */
-  numberOfItems?: number;
+  screenId: 41;
   /**
    * Flag true or false is the view shows an empty state
    */

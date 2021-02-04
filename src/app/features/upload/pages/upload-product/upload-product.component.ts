@@ -29,6 +29,7 @@ import { ErrorsService } from '@core/errors/errors.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { Item, ITEM_TYPES } from '@core/item/item';
 import { DeliveryInfo, ItemContent, ItemResponse } from '@core/item/item-response.interface';
+import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
 import { TrackingService } from '@core/tracking/tracking.service';
 import { UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -127,7 +128,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     config: NgbPopoverConfig,
     private deviceService: DeviceDetectorService,
     private i18n: I18nService,
-    private uploadService: UploadService
+    private uploadService: UploadService,
+    private subscriptionService: SubscriptionsService
   ) {
     this.genders = [
       { value: 'male', label: this.i18n.getTranslations('male') },
@@ -386,7 +388,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           this.pendingFiles = response.pendingFiles;
         }
         if (response.type === OUTPUT_TYPE.done) {
-          this.onUploaded(response.file.response, UPLOAD_ACTION.created);
+          this.onUploaded(response.file.response.content, UPLOAD_ACTION.created);
         }
       },
       (error: HttpErrorResponse) => {
@@ -426,15 +428,36 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       ga('send', 'event', 'Upload', 'done', 'Web mobile analysis');
     }
 
-    this.trackEditOrUpload(!!this.item, response).subscribe(() =>
-      this.router.navigate([
-        '/catalog/list',
-        {
-          [action]: true,
-          itemId: response.id,
-        },
-      ])
-    );
+    if (response.flags.onhold) {
+      this.subscriptionService.getUserSubscriptionType().subscribe((type: SUBSCRIPTION_TYPES) => {
+        this.redirectToList(UPLOAD_ACTION.createdOnHold, response, type);
+      });
+    } else {
+      this.redirectToList(action, response);
+    }
+  }
+
+  private redirectToList(action: UPLOAD_ACTION, response: ItemContent, type: SUBSCRIPTION_TYPES = SUBSCRIPTION_TYPES.notSubscribed): void {
+    const params = this.getRedirectParams(action, response, type);
+
+    this.trackEditOrUpload(!!this.item, response).subscribe(() => this.router.navigate(['/catalog/list', params]));
+  }
+
+  private getRedirectParams(action: UPLOAD_ACTION, response: ItemContent, userType: SUBSCRIPTION_TYPES): void {
+    const params: any = {
+      [action]: true,
+      itemId: response.id,
+    };
+
+    if (this.item && this.item.flags.onhold) {
+      params.onHold = true;
+    }
+
+    if (action === UPLOAD_ACTION.createdOnHold) {
+      params.onHoldType = userType;
+    }
+
+    return params;
   }
 
   public onAddImage(file: UploadFile): void {
