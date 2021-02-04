@@ -14,6 +14,9 @@ import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.serv
 import { ActivatedRoute } from '@angular/router';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { UserLocation } from '@core/user/user-response.interface';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ItemDetailImagesCarouselComponent } from '../components/item-detail-images-carousel/item-detail-images-carousel.component';
+import { CarouselImage } from '@public/shared/components/images-carousel/images-carousel.interface';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -47,7 +50,8 @@ export class ItemDetailComponent implements OnInit {
     private deviceService: DeviceService,
     private itemDetailService: ItemDetailService,
     private socialMetaTagsService: SocialMetaTagService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -57,6 +61,14 @@ export class ItemDetailComponent implements OnInit {
 
   public locationHaveCoordinates(): boolean {
     return !!this.itemLocation?.latitude && !!this.itemLocation?.longitude;
+  }
+
+  public openItemDetailImage($event: CarouselImage): void {
+    const modalRef: NgbModalRef = this.modalService.open(ItemDetailImagesCarouselComponent, { windowClass: ' ' });
+
+    modalRef.componentInstance.currentImage = $event;
+    modalRef.componentInstance.images = this.images;
+    modalRef.result.then(() => {});
   }
 
   private initPage(itemId: string): void {
