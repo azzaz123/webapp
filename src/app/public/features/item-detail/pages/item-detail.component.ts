@@ -14,9 +14,10 @@ import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.serv
 import { ActivatedRoute } from '@angular/router';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { UserLocation } from '@core/user/user-response.interface';
-import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
 import { finalize } from 'rxjs/operators';
 import { CATEGORY_IDS } from '@core/category/category-ids';
+import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -26,6 +27,7 @@ import { CATEGORY_IDS } from '@core/category/category-ids';
 export class ItemDetailComponent implements OnInit {
   public isApproximateLocation = false;
   public loading = false;
+  public showItemRecommendations = false;
   public deviceType = DeviceType;
   public device: DeviceType;
   public itemFlags: ItemFlags;
@@ -34,7 +36,7 @@ export class ItemDetailComponent implements OnInit {
   public itemLocation: ItemDetailLocation;
   public coordinates: Coordinate;
   public locationSpecifications: string;
-  public recommendedItems: RecommendedItemsBodyResponse;
+  public recommendedItems$: Observable<RecommendedItemsBodyResponse>;
 
   public socialShare: {
     title: string;
@@ -66,6 +68,7 @@ export class ItemDetailComponent implements OnInit {
 
   private initPage(itemId: string): void {
     this.loading = true;
+    this.recommendedItems$ = this.itemDetailService.getRecommendedItems(itemId);
     this.itemDetailService
       .getItem(itemId)
       .pipe(finalize(() => (this.loading = false)))
@@ -73,7 +76,7 @@ export class ItemDetailComponent implements OnInit {
         this.itemDetail = itemDetail;
         this.handleCoordinates();
         this.socialShareSetup(this.itemDetail.item);
-        this.loadRecommendedItems(itemId);
+        this.setItemRecommendations();
       });
   }
 
@@ -122,22 +125,10 @@ export class ItemDetailComponent implements OnInit {
         : $localize`:@@Undefined:Undefined`;
   }
 
-  private loadRecommendedItems(id: string): void {
-    if (this.showItemRecommendations()) {
-      this.loading = true;
-      this.itemDetailService
-        .getRecommendedItems(id)
-        .pipe(finalize(() => (this.loading = false)))
-        .subscribe((recommendedItems: RecommendedItemsBodyResponse) => {
-          this.recommendedItems = recommendedItems;
-        });
-    }
-  }
-
-  private showItemRecommendations(): boolean {
+  private setItemRecommendations(): void {
     const CATEGORIES_WITH_RECOMMENDATIONS = [CATEGORY_IDS.CAR, CATEGORY_IDS.FASHION_ACCESSORIES];
 
-    return CATEGORIES_WITH_RECOMMENDATIONS.includes(this.itemDetail?.item?.categoryId);
+    this.showItemRecommendations = CATEGORIES_WITH_RECOMMENDATIONS.includes(this.itemDetail?.item?.categoryId);
   }
 
   set approximatedLocation(isApproximated: boolean) {

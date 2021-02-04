@@ -309,17 +309,11 @@ describe('ItemDetailComponent', () => {
     });
 
     describe('and the item is a category with recommendation...', () => {
-      beforeEach(() => {
-        resetVariables();
-      });
       describe('when is a fashion accesory...', () => {
         beforeEach(() => {
           component.itemDetail.item = MOCK_ITEM_FASHION;
           component.ngOnInit();
           fixture.detectChanges();
-        });
-        it('should ask for their recommended items', () => {
-          expect(component.recommendedItems).toBe(RECOMMENDED_ITEMS_MOCK);
         });
         it('should show the recommended items', () => {
           expect(fixture.debugElement.query(By.css(recommendedItemsTag))).toBeTruthy();
@@ -332,9 +326,6 @@ describe('ItemDetailComponent', () => {
           component.ngOnInit();
           fixture.detectChanges();
         });
-        it('should ask for their recommended items', () => {
-          expect(component.recommendedItems).toBe(RECOMMENDED_ITEMS_MOCK);
-        });
         it('should show the recommended items', () => {
           expect(fixture.debugElement.query(By.css(recommendedItemsTag))).toBeTruthy();
         });
@@ -342,7 +333,7 @@ describe('ItemDetailComponent', () => {
 
       describe('but NOT have recommended items...', () => {
         beforeEach(() => {
-          spyOn(itemDetailService, 'getRecommendedItems').and.returnValue(EMPTY_RECOMMENDED_ITEMS_MOCK);
+          spyOn(itemDetailService, 'getRecommendedItems').and.returnValue(of(EMPTY_RECOMMENDED_ITEMS_MOCK));
           component.itemDetail.item = MOCK_ITEM_CAR;
           component.ngOnInit();
           fixture.detectChanges();
@@ -355,21 +346,13 @@ describe('ItemDetailComponent', () => {
 
     describe('and the item is NOT a fashion accesories or a car', () => {
       beforeEach(() => {
-        resetVariables();
         component.itemDetail.item = MOCK_ITEM_CELLPHONES;
         component.ngOnInit();
         fixture.detectChanges();
-      });
-      it('should NOT ask for their recommended items', () => {
-        expect(component.recommendedItems).toBe(null);
       });
       it('should NOT show the recommended items', () => {
         expect(fixture.debugElement.query(By.css(recommendedItemsTag))).toBeFalsy();
       });
     });
   });
-
-  function resetVariables(): void {
-    component.recommendedItems = null;
-  }
 });

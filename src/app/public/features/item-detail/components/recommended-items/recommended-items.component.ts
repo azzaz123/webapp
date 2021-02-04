@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { Item } from '@core/item/item';
 import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
 import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
@@ -8,18 +8,16 @@ import { MapItemService } from '@public/features/public-profile/pages/user-publi
   templateUrl: './recommended-items.component.html',
   styleUrls: ['./recommended-items.component.scss'],
 })
-export class RecommendedItemsComponent implements OnInit {
+export class RecommendedItemsComponent implements OnChanges {
   @Input() recommendedItems: RecommendedItemsBodyResponse;
   public items: Item[];
   public showDescription = false;
 
   constructor(private mapItemService: MapItemService) {}
 
-  ngOnInit() {
+  ngOnChanges() {
     if (this.recommendedItems) {
-      this.items = this.mapItemService
-        .mapRecommendedItem(this.recommendedItems)
-        .slice(0, 6);
+      this.items = this.mapItemService.mapRecommendedItem(this.recommendedItems).slice(0, 6);
     }
   }
 }
