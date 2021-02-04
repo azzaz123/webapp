@@ -15,9 +15,7 @@ describe('TryProSlotItemComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [TryProSlotComponent, ButtonComponent],
-        providers: [
-          { provide: AnalyticsService, useClass: MockAnalyticsService },
-        ],
+        providers: [{ provide: AnalyticsService, useClass: MockAnalyticsService }],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
     })
@@ -35,29 +33,23 @@ describe('TryProSlotItemComponent', () => {
 
       fixture.detectChanges();
 
-      const submitButton: HTMLElement = fixture.debugElement.query(
-        By.directive(ButtonComponent)
-      ).nativeElement;
+      const submitButton: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
 
-      expect(submitButton.textContent).toEqual('Become a PRO for free');
+      expect(submitButton.textContent).toEqual('Free trial');
     });
 
     it('should show default text', () => {
       fixture.detectChanges();
 
-      const submitButton: HTMLElement = fixture.debugElement.query(
-        By.directive(ButtonComponent)
-      ).nativeElement;
+      const submitButton: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
 
-      expect(submitButton.textContent).toEqual('More information');
+      expect(submitButton.textContent).toEqual('Know more');
     });
 
     describe('when click CTA button', () => {
       it('should emit clickCTA event', () => {
         spyOn(component.clickCTA, 'emit');
-        const submitButton: HTMLElement = fixture.debugElement.query(
-          By.directive(ButtonComponent)
-        ).nativeElement;
+        const submitButton: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
 
         submitButton.click();
 
