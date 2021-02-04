@@ -21,17 +21,14 @@ export default {
   ],
 } as Meta;
 
-const Template: Story<CounterSpecificationComponent> = (
-  args: CounterSpecificationComponent
-) => ({
+const Template: Story<CounterSpecificationComponent> = (args: CounterSpecificationComponent) => ({
   component: CounterSpecificationComponent,
   props: args,
   moduleMetadata: {
     declarations: [CounterSpecificationComponent],
     imports: [CommonModule, SvgIconModule, HttpClientModule],
   },
-  template:
-    '<tsl-counter-specification [type]="type" [counter]="counter" [label]="label"></tsl-counter-specification>',
+  template: '<tsl-counter-specification [type]="type" [counter]="counter" [label]="label"></tsl-counter-specification>',
 });
 
 export const RealEstateType = Template.bind({});

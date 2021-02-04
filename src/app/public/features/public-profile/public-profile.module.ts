@@ -1,10 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  PublicProfileRoutingModule,
-  publicProfileRoutedComponents,
-  publicProfileRoutedModules,
-} from './public-profile-routing.module';
+import { PublicProfileRoutingModule, publicProfileRoutedComponents, publicProfileRoutedModules } from './public-profile-routing.module';
 import { ProfileTabsComponent } from './components/profile-tabs/profile-tabs.component';
 import { FavouriteUserModule } from './components/favourite-user/favourite-user.module';
 import { PublicProfileService } from './core/services/public-profile.service';

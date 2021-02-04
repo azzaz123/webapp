@@ -1,8 +1,5 @@
 import { getTestBed, TestBed } from '@angular/core/testing';
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { EventService } from '@core/event/event.service';
 import { environment } from '@environments/environment';
@@ -65,9 +62,7 @@ describe('LoginService', () => {
           .toString();
 
         service.login(MOCK_LOGIN_INPUT).subscribe();
-        const req = httpMock.expectOne(
-          `${environment.baseUrl}${LOGIN_ENDPOINT}`
-        );
+        const req = httpMock.expectOne(`${environment.baseUrl}${LOGIN_ENDPOINT}`);
         req.flush(MOCK_USER_RESPONSE_BODY);
 
         expect(req.request.method).toBe('POST');
@@ -78,29 +73,20 @@ describe('LoginService', () => {
         spyOn(eventService, 'emit').and.callThrough();
 
         service.login(MOCK_LOGIN_INPUT).subscribe();
-        const req = httpMock.expectOne(
-          `${environment.baseUrl}${LOGIN_ENDPOINT}`
-        );
+        const req = httpMock.expectOne(`${environment.baseUrl}${LOGIN_ENDPOINT}`);
         req.flush(MOCK_USER_RESPONSE_BODY);
 
-        expect(eventService.emit).toHaveBeenCalledWith(
-          EventService.USER_LOGIN,
-          MOCK_USER_RESPONSE_BODY.token
-        );
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.USER_LOGIN, MOCK_USER_RESPONSE_BODY.token);
       });
 
       it('should store access token', () => {
         spyOn(accessTokenService, 'storeAccessToken');
 
         service.login(MOCK_LOGIN_INPUT).subscribe();
-        const req = httpMock.expectOne(
-          `${environment.baseUrl}${LOGIN_ENDPOINT}`
-        );
+        const req = httpMock.expectOne(`${environment.baseUrl}${LOGIN_ENDPOINT}`);
         req.flush(MOCK_USER_RESPONSE_BODY);
 
-        expect(accessTokenService.storeAccessToken).toHaveBeenCalledWith(
-          MOCK_USER_RESPONSE_BODY.token
-        );
+        expect(accessTokenService.storeAccessToken).toHaveBeenCalledWith(MOCK_USER_RESPONSE_BODY.token);
       });
     });
   });

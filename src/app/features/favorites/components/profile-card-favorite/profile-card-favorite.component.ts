@@ -14,17 +14,10 @@ export class ProfileCardFavoriteComponent {
   @Input() profile: Profile;
   @Output() onFavoriteProfileChange: EventEmitter<Profile> = new EventEmitter();
 
-  constructor(
-    private modalService: NgbModal,
-    private profileService: ProfileService,
-    @Inject('SUBDOMAIN') private subdomain: string
-  ) {}
+  constructor(private modalService: NgbModal, private profileService: ProfileService, @Inject('SUBDOMAIN') private subdomain: string) {}
 
   goToProfileDetail() {
-    const url =
-      environment.siteUrl.replace('es', this.subdomain) +
-      'user/' +
-      this.profile.screen_name;
+    const url = environment.siteUrl.replace('es', this.subdomain) + 'user/' + this.profile.screen_name;
     window.open(url);
   }
 

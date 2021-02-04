@@ -1,10 +1,7 @@
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import {
-  USER_LOCATION_REPOSITORY_TOKEN,
-  USER_REPOSITORY_TOKEN,
-} from './domain';
+import { USER_LOCATION_REPOSITORY_TOKEN, USER_REPOSITORY_TOKEN } from './domain';
 import { USER_STATS_REPOSITORY_TOKEN } from './domain/stats/user-stats.repository';
 import { ProfileResolver } from './infrastructure';
 import { ApiUserRepository } from './infrastructure/repository/api-user.repository';
@@ -15,10 +12,7 @@ import { UserEffects } from './store/effects/user.effect';
 import { KEY_FEATURE_STATE, userState } from './store/reducer';
 
 @NgModule({
-  imports: [
-    StoreModule.forFeature(KEY_FEATURE_STATE, userState),
-    EffectsModule.forFeature([UserEffects, UserLocationEffect]),
-  ],
+  imports: [StoreModule.forFeature(KEY_FEATURE_STATE, userState), EffectsModule.forFeature([UserEffects, UserLocationEffect])],
   providers: [
     {
       provide: USER_REPOSITORY_TOKEN,

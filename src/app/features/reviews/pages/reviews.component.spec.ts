@@ -1,18 +1,8 @@
-import {
-  fakeAsync,
-  ComponentFixture,
-  TestBed,
-  waitForAsync,
-} from '@angular/core/testing';
+import { fakeAsync, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReviewsComponent } from './reviews.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { of } from 'rxjs';
-import {
-  MOCK_USER,
-  USER_INFO_RESPONSE,
-  USERS_STATS,
-  MOCK_USER_STATS,
-} from '../../../../tests/user.fixtures.spec';
+import { MOCK_USER, USER_INFO_RESPONSE, USERS_STATS, MOCK_USER_STATS } from '../../../../tests/user.fixtures.spec';
 import { UserService } from 'app/core/user/user.service';
 import { MOCK_REVIEWS } from '../../../../tests/review.fixtures.spec';
 import { UserReviewService } from '../core/user-review.service';
@@ -68,10 +58,7 @@ describe('ReviewsComponent', () => {
   describe('getReviews', () => {
     beforeEach(fakeAsync(() => {
       spyOn(component, 'getReviews').and.callThrough();
-      myReviewsServiceSpy = spyOn(
-        reviewService,
-        'getPaginationReviews'
-      ).and.callThrough();
+      myReviewsServiceSpy = spyOn(reviewService, 'getPaginationReviews').and.callThrough();
     }));
 
     it('should call getReviews OnInit', () => {
@@ -85,9 +72,7 @@ describe('ReviewsComponent', () => {
 
       component.getReviews(true);
 
-      expect(reviewService.getPaginationReviews).toHaveBeenCalledWith(
-        itemLength
-      );
+      expect(reviewService.getPaginationReviews).toHaveBeenCalledWith(itemLength);
     });
 
     it('if append argument is true, current component.item should add ', () => {
@@ -106,9 +91,7 @@ describe('ReviewsComponent', () => {
     });
 
     it('should set end true if no init', () => {
-      myReviewsServiceSpy.and.returnValue(
-        of({ data: MOCK_REVIEWS, init: null })
-      );
+      myReviewsServiceSpy.and.returnValue(of({ data: MOCK_REVIEWS, init: null }));
 
       component.getReviews();
 
@@ -154,9 +137,7 @@ describe('ReviewsComponent', () => {
       component.getNumberOfReviews();
 
       expect(userService.getStats).toHaveBeenCalled();
-      expect(component.numberOfReviews).toEqual(
-        MOCK_USER_STATS.counters.reviews
-      );
+      expect(component.numberOfReviews).toEqual(MOCK_USER_STATS.counters.reviews);
     });
   });
 });

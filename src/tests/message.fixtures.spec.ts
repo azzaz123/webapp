@@ -1,9 +1,4 @@
-import {
-  InboxMessage,
-  MessagePayload,
-  MessageStatus,
-  MessageType,
-} from '@features/chat/core/model';
+import { InboxMessage, MessagePayload, MessageStatus, MessageType } from '@features/chat/core/model';
 import { Subject } from 'rxjs';
 import { Message } from '../app/core/message/message';
 import { OTHER_USER_ID, USER_ID } from './user.fixtures.spec';
@@ -31,15 +26,7 @@ export const MESSAGE_MAIN_UPDATED: any = {
 export function createMessagesArray(total: number) {
   const messages: Message[] = [];
   for (let i = 1; i <= total; i++) {
-    messages.push(
-      new Message(
-        `${MESSAGE_MAIN.id}${i}`,
-        MESSAGE_MAIN.thread,
-        MESSAGE_MAIN.body,
-        MESSAGE_MAIN.from,
-        new Date()
-      )
-    );
+    messages.push(new Message(`${MESSAGE_MAIN.id}${i}`, MESSAGE_MAIN.thread, MESSAGE_MAIN.body, MESSAGE_MAIN.from, new Date()));
   }
   return messages;
 }

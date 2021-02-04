@@ -36,9 +36,7 @@ export class ItemDetailService {
     );
   }
 
-  public getRecommendedItems(
-    itemId: string
-  ): Observable<RecommendedItemsBodyResponse> {
+  public getRecommendedItems(itemId: string): Observable<RecommendedItemsBodyResponse> {
     return this.recommenderApiService.getRecommendedItemsByItemId(itemId);
   }
 

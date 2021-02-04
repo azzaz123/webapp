@@ -9,13 +9,7 @@ import { CheckSessionModule } from '@public/core/directives/check-session/check-
 import { ViewportService } from '@core/viewport/viewport.service';
 
 @NgModule({
-  imports: [
-    SharedModule,
-    SearchRoutingModule,
-    PublicLayoutModule,
-    ItemCardListModule,
-    CheckSessionModule,
-  ],
+  imports: [SharedModule, SearchRoutingModule, PublicLayoutModule, ItemCardListModule, CheckSessionModule],
   providers: [ViewportService],
   declarations: [SearchComponent, SearchLayoutComponent],
 })

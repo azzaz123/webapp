@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
-import {
-  catalogRoutedComponents,
-  CatalogRoutingModule,
-} from './catalog.routing.module';
+import { catalogRoutedComponents, CatalogRoutingModule } from './catalog.routing.module';
 import { SharedModule } from '@shared/shared.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';

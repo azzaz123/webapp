@@ -48,13 +48,9 @@ describe('FooterComponent', () => {
   });
 
   it('should not have excluded links on template', () => {
-    const excluded = FOOTER_LINKS.filter(
-      (footerLinkSection: FooterLinkSection) => {
-        return (footerLinkSection.excludedLanguages || []).includes(
-          i18nService.locale
-        );
-      }
-    );
+    const excluded = FOOTER_LINKS.filter((footerLinkSection: FooterLinkSection) => {
+      return (footerLinkSection.excludedLanguages || []).includes(i18nService.locale);
+    });
 
     excluded.forEach((footerLinkSection: FooterLinkSection) => {
       footerLinkSection.links.forEach((sectionLink: FooterLink) => {
@@ -64,13 +60,9 @@ describe('FooterComponent', () => {
   });
 
   it('should have all links except the excluded ones on template', () => {
-    const excluded = FOOTER_LINKS.filter(
-      (footerLinkSection: FooterLinkSection) => {
-        return !(footerLinkSection.excludedLanguages || []).includes(
-          i18nService.locale
-        );
-      }
-    );
+    const excluded = FOOTER_LINKS.filter((footerLinkSection: FooterLinkSection) => {
+      return !(footerLinkSection.excludedLanguages || []).includes(i18nService.locale);
+    });
 
     excluded.forEach((footerLinkSection: FooterLinkSection) => {
       footerLinkSection.links.forEach((sectionLink: FooterLink) => {

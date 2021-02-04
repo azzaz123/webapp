@@ -54,11 +54,7 @@ export interface XmppError {
 }
 
 export class JID {
-  constructor(
-    private _userId: string,
-    private _domain: string,
-    private _resource: string
-  ) {
+  constructor(private _userId: string, private _domain: string, private _resource: string) {
     return new XMPP.JID(this._userId, this._domain, this._resource);
   }
 

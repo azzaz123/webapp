@@ -14,11 +14,7 @@ describe('Component: UserAvatar', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      declarations: [
-        UserAvatarComponent,
-        SanitizedBackgroundDirective,
-        StatusIconComponent,
-      ],
+      declarations: [UserAvatarComponent, SanitizedBackgroundDirective, StatusIconComponent],
       providers: [UserAvatarComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     });
@@ -26,8 +22,7 @@ describe('Component: UserAvatar', () => {
   });
 
   describe('with user image', () => {
-    const IMAGE_URL =
-      'https://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320';
+    const IMAGE_URL = 'https://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320';
 
     beforeEach(() => {
       IMAGE.urls_by_size.medium = IMAGE_URL;

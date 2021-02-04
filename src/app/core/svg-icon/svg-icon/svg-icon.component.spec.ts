@@ -1,9 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import {
-  CUSTOM_ELEMENTS_SCHEMA,
-  ElementRef,
-  SecurityContext,
-} from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, ElementRef, SecurityContext } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { of } from 'rxjs';
@@ -63,28 +59,17 @@ describe('SvgIconComponent', () => {
       });
 
       it('should display the icon in the HTML', () => {
-        const secureSvg: SafeHtml = domSanitizer.bypassSecurityTrustHtml(
-          svgTag
-        );
-        const sanitizedSvg: string = domSanitizer.sanitize(
-          SecurityContext.HTML,
-          secureSvg
-        );
-        const innerHTML: HTMLElement =
-          fixture.elementRef.nativeElement.innerHTML;
+        const secureSvg: SafeHtml = domSanitizer.bypassSecurityTrustHtml(svgTag);
+        const sanitizedSvg: string = domSanitizer.sanitize(SecurityContext.HTML, secureSvg);
+        const innerHTML: HTMLElement = fixture.elementRef.nativeElement.innerHTML;
         spyOn(domSanitizer, 'bypassSecurityTrustHtml').and.callThrough();
         spyOn(domSanitizer, 'sanitize');
 
         component.ngOnInit();
 
         expect(svgService.getIconByPath).toHaveBeenCalledWith(component.src);
-        expect(domSanitizer.bypassSecurityTrustHtml).toHaveBeenCalledWith(
-          svgTag
-        );
-        expect(domSanitizer.sanitize).toHaveBeenCalledWith(
-          SecurityContext.HTML,
-          secureSvg
-        );
+        expect(domSanitizer.bypassSecurityTrustHtml).toHaveBeenCalledWith(svgTag);
+        expect(domSanitizer.sanitize).toHaveBeenCalledWith(SecurityContext.HTML, secureSvg);
         expect(innerHTML).toBe(sanitizedSvg);
       });
 
@@ -95,16 +80,10 @@ describe('SvgIconComponent', () => {
           component.fill = fill;
 
           component.ngOnInit();
-          const innerHTML: HTMLElement = fixture.debugElement.nativeElement.querySelector(
-            svgSelector
-          );
+          const innerHTML: HTMLElement = fixture.debugElement.nativeElement.querySelector(svgSelector);
 
-          expect(innerHTML.getAttribute(SVG_ATTRIBUTES.WIDTH)).toBe(
-            `${width}px`
-          );
-          expect(innerHTML.getAttribute(SVG_ATTRIBUTES.HEIGHT)).toBe(
-            `${height}px`
-          );
+          expect(innerHTML.getAttribute(SVG_ATTRIBUTES.WIDTH)).toBe(`${width}px`);
+          expect(innerHTML.getAttribute(SVG_ATTRIBUTES.HEIGHT)).toBe(`${height}px`);
           expect(innerHTML.getAttribute(SVG_ATTRIBUTES.FILL)).toBe(fill);
         });
 
@@ -112,9 +91,7 @@ describe('SvgIconComponent', () => {
           component.width = 50;
 
           component.ngOnInit();
-          const innerHTML: HTMLElement = fixture.debugElement.nativeElement.querySelector(
-            svgSelector
-          );
+          const innerHTML: HTMLElement = fixture.debugElement.nativeElement.querySelector(svgSelector);
 
           expect(innerHTML.getAttribute(SVG_ATTRIBUTES.WIDTH)).toBe('50px');
         });
@@ -123,9 +100,7 @@ describe('SvgIconComponent', () => {
           component.height = 350;
 
           component.ngOnInit();
-          const innerHTML: HTMLElement = fixture.debugElement.nativeElement.querySelector(
-            svgSelector
-          );
+          const innerHTML: HTMLElement = fixture.debugElement.nativeElement.querySelector(svgSelector);
 
           expect(innerHTML.getAttribute(SVG_ATTRIBUTES.HEIGHT)).toBe('350px');
         });
@@ -135,21 +110,16 @@ describe('SvgIconComponent', () => {
           component.fill = customFillColor;
 
           component.ngOnInit();
-          const innerHTML: HTMLElement = fixture.debugElement.nativeElement.querySelector(
-            svgSelector
-          );
+          const innerHTML: HTMLElement = fixture.debugElement.nativeElement.querySelector(svgSelector);
 
-          expect(innerHTML.getAttribute(SVG_ATTRIBUTES.FILL)).toEqual(
-            customFillColor
-          );
+          expect(innerHTML.getAttribute(SVG_ATTRIBUTES.FILL)).toEqual(customFillColor);
         });
       });
     });
 
     describe('if the src is not a svg', () => {
       it('should not display the icon in the HTML', () => {
-        const innerHTML: HTMLElement =
-          fixture.elementRef.nativeElement.innerHTML;
+        const innerHTML: HTMLElement = fixture.elementRef.nativeElement.innerHTML;
         component.src = 'myPhoto.png';
         spyOn(svgService, 'getIconByPath');
 

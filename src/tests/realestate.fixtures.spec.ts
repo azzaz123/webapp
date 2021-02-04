@@ -1,8 +1,5 @@
 import { USER_LOCATION } from './user.fixtures.spec';
-import {
-  RealestateContent,
-  RealEstateUploadForm,
-} from '../app/core/item/item-response.interface';
+import { RealestateContent, RealEstateUploadForm } from '../app/core/item/item-response.interface';
 import { Realestate } from '../app/core/item/realestate';
 import { ITEM_ID } from './item.fixtures.spec';
 
@@ -19,18 +16,12 @@ export const REALESTATE_CONTENT_DATA = {
       original_height: 734,
       average_hex_color: '818d9e',
       urls_by_size: {
-        original:
-          'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2013.jpg?pictureSize=W1024',
-        xmall:
-          'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2013.jpg?pictureSize=W320',
-        small:
-          'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2013.jpg?pictureSize=W320',
-        large:
-          'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2013.jpg?pictureSize=W800',
-        medium:
-          'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2013.jpg?pictureSize=W640',
-        xlarge:
-          'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2013.jpg?pictureSize=W1024',
+        original: 'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2013.jpg?pictureSize=W1024',
+        xmall: 'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2013.jpg?pictureSize=W320',
+        small: 'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2013.jpg?pictureSize=W320',
+        large: 'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2013.jpg?pictureSize=W800',
+        medium: 'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2013.jpg?pictureSize=W640',
+        xlarge: 'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2013.jpg?pictureSize=W1024',
       },
     },
     {
@@ -39,18 +30,12 @@ export const REALESTATE_CONTENT_DATA = {
       original_height: 1500,
       average_hex_color: '7d9284',
       urls_by_size: {
-        original:
-          'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2015.jpg?pictureSize=W1024',
-        xmall:
-          'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2015.jpg?pictureSize=W320',
-        small:
-          'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2015.jpg?pictureSize=W320',
-        large:
-          'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2015.jpg?pictureSize=W800',
-        medium:
-          'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2015.jpg?pictureSize=W640',
-        xlarge:
-          'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2015.jpg?pictureSize=W1024',
+        original: 'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2015.jpg?pictureSize=W1024',
+        xmall: 'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2015.jpg?pictureSize=W320',
+        small: 'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2015.jpg?pictureSize=W320',
+        large: 'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2015.jpg?pictureSize=W800',
+        medium: 'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2015.jpg?pictureSize=W640',
+        xlarge: 'http://cdn-dock133.wallapop.com/images/10420/01/__/c10420p2011/i2015.jpg?pictureSize=W1024',
       },
     },
   ],

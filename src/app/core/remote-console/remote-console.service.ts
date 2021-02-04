@@ -32,9 +32,7 @@ export class RemoteConsoleService implements OnDestroy {
     cookiesService: CookieService
   ) {
     const deviceId = cookiesService.get(DEVICE_ID_COOKIE_NAME);
-    this.deviceId = deviceId
-      ? deviceId.replace(/-/g, '')
-      : this.uuidService.getUUID().replace(/-/g, '');
+    this.deviceId = deviceId ? deviceId.replace(/-/g, '') : this.uuidService.getUUID().replace(/-/g, '');
     this.sessionId = this.uuidService.getUUID();
   }
 
@@ -54,10 +52,7 @@ export class RemoteConsoleService implements OnDestroy {
     });
   }
 
-  public sendChatConnectionTime(
-    connectionType: ConnectionType,
-    success: boolean
-  ): void {
+  public sendChatConnectionTime(connectionType: ConnectionType, success: boolean): void {
     if (this.chatConnectionMetric?.alreadySent) {
       return;
     }
@@ -79,9 +74,7 @@ export class RemoteConsoleService implements OnDestroy {
             inbox_retry_count: this.chatConnectionMetric.inboxRetryCount,
             metric_type: MetricTypeEnum.CHAT_CONNECTION_TIME,
           })
-          .pipe(
-            finalize(() => (this.chatConnectionMetric.sendingToBackend = false))
-          )
+          .pipe(finalize(() => (this.chatConnectionMetric.sendingToBackend = false)))
           .subscribe(() => (this.chatConnectionMetric.alreadySent = true));
       });
     }
@@ -94,8 +87,7 @@ export class RemoteConsoleService implements OnDestroy {
       this.remoteConsoleClientService.info({
         ...this.getCommonLog(this.userService.user.id),
         message_id: messageId,
-        send_message_time:
-          new Date().getTime() - this.sendMessageTime.get(messageId),
+        send_message_time: new Date().getTime() - this.sendMessageTime.get(messageId),
         metric_type: MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME,
       });
       this.sendMessageTime.delete(messageId);
@@ -116,9 +108,7 @@ export class RemoteConsoleService implements OnDestroy {
     this.remoteConsoleClientService.info({
       ...this.getCommonLog(this.userService.user.id),
       metric_type: MetricTypeEnum.CHAT_FAILED_CONNECTION,
-      xmpp_connected: this.chatConnectionMetric
-        ? this.chatConnectionMetric.xmppConnectionSuccess
-        : false,
+      xmpp_connected: this.chatConnectionMetric ? this.chatConnectionMetric.xmppConnectionSuccess : false,
     });
   }
 
@@ -129,8 +119,7 @@ export class RemoteConsoleService implements OnDestroy {
       this.remoteConsoleClientService.info({
         ...this.getCommonLog(this.userService.user.id),
         message_id: messageId,
-        send_message_time:
-          new Date().getTime() - this.sendMessageActTime.get(messageId),
+        send_message_time: new Date().getTime() - this.sendMessageActTime.get(messageId),
         metric_type: MetricTypeEnum.MESSAGE_SENT_ACK_TIME,
       });
       this.sendMessageTime.delete(messageId);
@@ -144,19 +133,14 @@ export class RemoteConsoleService implements OnDestroy {
       this.remoteConsoleClientService.info({
         ...this.getCommonLog(this.userService.user.id),
         message_id: messageId,
-        send_message_time:
-          new Date().getTime() - this.presentationMessageTimeout.get(messageId),
+        send_message_time: new Date().getTime() - this.presentationMessageTimeout.get(messageId),
         metric_type: MetricTypeEnum.CLIENT_PRESENTATION_MESSAGE_TIME,
       });
       this.presentationMessageTimeout.delete(messageId);
     }
   }
 
-  public sendDuplicateConversations(
-    userId: string,
-    callMethodClient: string,
-    conversationsGroupById: Map<string, number>
-  ): void {
+  public sendDuplicateConversations(userId: string, callMethodClient: string, conversationsGroupById: Map<string, number>): void {
     this.remoteConsoleClientService.info({
       ...this.getCommonLog(userId),
       metric_type: MetricTypeEnum.DUPLICATE_CONVERSATION,
@@ -195,12 +179,8 @@ export class RemoteConsoleService implements OnDestroy {
       feature_flag: true,
       app_version: this.getReleaseVersion(APP_VERSION),
       session_id: this.sessionId,
-      connection_type: navigator['connection']
-        ? toUpper(navigator['connection']['type'])
-        : '',
-      ping_time_ms: navigator['connection']
-        ? navigator['connection']['rtt']
-        : -1,
+      connection_type: navigator['connection'] ? toUpper(navigator['connection']['type']) : '',
+      ping_time_ms: navigator['connection'] ? navigator['connection']['rtt'] : -1,
     };
   }
 }

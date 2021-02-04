@@ -167,10 +167,7 @@ describe('CartProComponent', () => {
 
       component.remove(MOCK_PROITEM);
 
-      expect(cartService.remove).toHaveBeenCalledWith(
-        MOCK_PROITEM.item.id,
-        MOCK_PROITEM.bumpType
-      );
+      expect(cartService.remove).toHaveBeenCalledWith(MOCK_PROITEM.item.id, MOCK_PROITEM.bumpType);
     });
   });
 
@@ -214,19 +211,13 @@ describe('CartProComponent', () => {
       it('should track', () => {
         const order: OrderPro[] = component.cart.prepareOrder();
 
-        expect(trackingService.track).toHaveBeenCalledWith(
-          TrackingService.BUMP_PRO_APPLY,
-          {
-            selected_products: order,
-          }
-        );
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.BUMP_PRO_APPLY, {
+          selected_products: order,
+        });
       });
 
       it('should navigate to pro list', () => {
-        expect(router.navigate).toHaveBeenCalledWith([
-          '/pro/catalog/list',
-          { code: 201 },
-        ]);
+        expect(router.navigate).toHaveBeenCalledWith(['/pro/catalog/list', { code: 201 }]);
         expect(errorService.i18nError).not.toHaveBeenCalled();
       });
     });
@@ -243,10 +234,7 @@ describe('CartProComponent', () => {
 
         component.applyBumps();
 
-        expect(router.navigate).toHaveBeenCalledWith([
-          '/pro/catalog/list',
-          { code: 202 },
-        ]);
+        expect(router.navigate).toHaveBeenCalledWith(['/pro/catalog/list', { code: 202 }]);
         expect(errorService.i18nError).not.toHaveBeenCalled();
       });
 
@@ -256,10 +244,7 @@ describe('CartProComponent', () => {
 
         component.applyBumps();
 
-        expect(router.navigate).toHaveBeenCalledWith([
-          '/pro/catalog/list',
-          { code: 202 },
-        ]);
+        expect(router.navigate).toHaveBeenCalledWith(['/pro/catalog/list', { code: 202 }]);
         expect(errorService.i18nError).not.toHaveBeenCalled();
       });
     });

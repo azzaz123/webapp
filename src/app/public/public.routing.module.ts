@@ -11,34 +11,23 @@ const routes: Route[] = [
       { path: '', pathMatch: 'full', redirectTo: PUBLIC_PATHS.LOGIN },
       {
         path: PUBLIC_PATHS.LOGIN,
-        loadChildren: () =>
-          import('./features/login/login.module').then((m) => m.LoginModule),
+        loadChildren: () => import('./features/login/login.module').then((m) => m.LoginModule),
       },
       {
         path: PUBLIC_PATHS.REGISTER,
-        loadChildren: () =>
-          import('./features/register/register.module').then(
-            (m) => m.RegisterModule
-          ),
+        loadChildren: () => import('./features/register/register.module').then((m) => m.RegisterModule),
       },
       {
         path: `${PUBLIC_PATHS.USER_DETAIL}/:${PUBLIC_PATH_PARAMS.ID}`,
-        loadChildren: () =>
-          import('./features/public-profile/public-profile.module').then(
-            (m) => m.PublicProfileModule
-          ),
+        loadChildren: () => import('./features/public-profile/public-profile.module').then((m) => m.PublicProfileModule),
       },
       {
         path: PUBLIC_PATHS.SEARCH,
-        loadChildren: () =>
-          import('./features/search/search.module').then((m) => m.SearchModule),
+        loadChildren: () => import('./features/search/search.module').then((m) => m.SearchModule),
       },
       {
         path: `${PUBLIC_PATHS.ITEM_DETAIL}/:${PUBLIC_PATH_PARAMS.ID}`,
-        loadChildren: () =>
-          import('./features/item-detail/item-detail.module').then(
-            (m) => m.ItemDetailModule
-          ),
+        loadChildren: () => import('./features/item-detail/item-detail.module').then((m) => m.ItemDetailModule),
       },
       {
         path: '**',

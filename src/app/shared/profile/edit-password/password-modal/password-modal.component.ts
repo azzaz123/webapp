@@ -47,17 +47,11 @@ export class PasswordModalComponent {
       );
     } else {
       for (const control in this.passwordForm.controls) {
-        if (
-          this.passwordForm.controls.hasOwnProperty(control) &&
-          !this.passwordForm.controls[control].valid
-        ) {
+        if (this.passwordForm.controls.hasOwnProperty(control) && !this.passwordForm.controls[control].valid) {
           this.passwordForm.controls[control].markAsDirty();
         }
       }
-      if (
-        this.passwordForm.get('new_password').errors &&
-        this.passwordForm.get('new_password').errors.minlength
-      ) {
+      if (this.passwordForm.get('new_password').errors && this.passwordForm.get('new_password').errors.minlength) {
         this.errorsService.i18nError('passwordMinLength');
       } else if (this.passwordForm.errors && this.passwordForm.errors.match) {
         this.errorsService.i18nError('passwordMatch');
@@ -70,10 +64,7 @@ export class PasswordModalComponent {
   private match(field: string, confirmField: string): Function {
     return (group: FormGroup): { [key: string]: any } => {
       if (group.controls[field] && group.controls[confirmField]) {
-        return group.controls[field].value !==
-          group.controls[confirmField].value
-          ? { match: true }
-          : null;
+        return group.controls[field].value !== group.controls[confirmField].value ? { match: true } : null;
       }
     };
   }

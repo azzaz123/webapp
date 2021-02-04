@@ -94,9 +94,7 @@ describe('AccountComponent', () => {
     it('should set profileForm with user data', () => {
       component.initForm();
 
-      expect(component.profileForm.get('birth_date').value).toBe(
-        USER_BIRTH_DATE
-      );
+      expect(component.profileForm.get('birth_date').value).toBe(USER_BIRTH_DATE);
       expect(component.profileForm.get('gender').value).toBe(USER_GENDER);
     });
   });
@@ -166,10 +164,7 @@ describe('AccountComponent', () => {
 
       component.openUnsubscribeModal();
 
-      expect(modalService.open).toHaveBeenCalledWith(
-        UnsubscribeModalComponent,
-        { windowClass: 'unsubscribe' }
-      );
+      expect(modalService.open).toHaveBeenCalledWith(UnsubscribeModalComponent, { windowClass: 'unsubscribe' });
     });
   });
 

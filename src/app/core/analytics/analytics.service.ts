@@ -16,14 +16,9 @@ export const DEVICE_ID_COOKIE_NAME = 'device_id';
   providedIn: 'root',
 })
 export class AnalyticsService {
-  constructor(
-    private userService: UserService,
-    private deviceService: DeviceService
-  ) {}
+  constructor(private userService: UserService, private deviceService: DeviceService) {}
 
-  private readonly _mParticleReady$: ReplaySubject<void> = new ReplaySubject<
-    void
-  >();
+  private readonly _mParticleReady$: ReplaySubject<void> = new ReplaySubject<void>();
 
   public get mParticleReady$(): Observable<void> {
     return this._mParticleReady$.asObservable();
@@ -47,10 +42,7 @@ export class AnalyticsService {
           identityCallback: (result) => {
             const mParticleUser = result.getUser();
             if (mParticleUser) {
-              mParticleUser.setUserAttribute(
-                'deviceId',
-                this.deviceService.getDeviceId()
-              );
+              mParticleUser.setUserAttribute('deviceId', this.deviceService.getDeviceId());
             }
           },
         };

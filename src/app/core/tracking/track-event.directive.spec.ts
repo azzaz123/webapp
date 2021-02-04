@@ -27,9 +27,7 @@ describe('Directive: TrackEvent', () => {
     });
     fixture = TestBed.createComponent(TestComponent);
     trackingService = TestBed.inject(TrackingService);
-    element = fixture.debugElement.queryAll(
-      By.directive(TrackEventDirective)
-    )[0];
+    element = fixture.debugElement.queryAll(By.directive(TrackEventDirective))[0];
     spyOn(trackingService, 'track');
   });
 
@@ -40,9 +38,6 @@ describe('Directive: TrackEvent', () => {
     fixture.componentInstance.params = TRACKING_PARAMS;
     fixture.detectChanges();
     element.triggerEventHandler('click', {});
-    expect(trackingService.track).toHaveBeenCalledWith(
-      TrackingService[TRACKING_EVENT],
-      TRACKING_PARAMS
-    );
+    expect(trackingService.track).toHaveBeenCalledWith(TrackingService[TRACKING_EVENT], TRACKING_PARAMS);
   });
 });

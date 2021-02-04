@@ -124,8 +124,7 @@ tsl-user-avatar {
     overflow: auto;
   }
   .messages-container {
-    max-height: $expanded-height - $expanded-vertical-padding -
-      $view-more-height;
+    max-height: $expanded-height - $expanded-vertical-padding - $view-more-height;
     overflow: auto;
   }
   .call-expanded-user-info {

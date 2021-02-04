@@ -7,10 +7,7 @@ import { find } from 'lodash-es';
 import { I18nService } from '@core/i18n/i18n.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import { StatisticsService } from '../../core/services/statistics.service';
-import {
-  StatisticFullResponse,
-  StatisticEntriesResponse,
-} from '../../core/statistic-response.interface';
+import { StatisticFullResponse, StatisticEntriesResponse } from '../../core/statistic-response.interface';
 
 @Component({
   selector: 'tsl-stats-graph',
@@ -232,37 +229,35 @@ export class StatsGraphComponent implements OnInit {
   }
 
   private loadStats() {
-    this.statisticsService
-      .getStatistics(this.duration)
-      .subscribe((response: StatisticFullResponse) => {
-        if (this.yearly) {
-          this.yearData = [];
-          response.entries.forEach((entry: StatisticEntriesResponse) => {
-            const unixDate = moment.unix(+entry.date / 1000).utcOffset(0, true);
-            const validDate = moment(unixDate).format('YYYY-MM-01');
-            const yearlyEntries = find(this.yearData, { date: validDate });
-            if (yearlyEntries) {
-              yearlyEntries.phone_numbers += entry.values.phone_numbers || 0;
-              yearlyEntries.views += entry.values.views || 0;
-              yearlyEntries.chats += entry.values.chats || 0;
-              yearlyEntries.city_bump += entry.values.city_bump || 0;
-              yearlyEntries.country_bump += entry.values.country_bump || 0;
-            } else {
-              this.yearData.push({
-                date: validDate,
-                phone_numbers: entry.values.phone_numbers || 0,
-                views: entry.values.views || 0,
-                chats: entry.values.chats || 0,
-                city_bump: entry.values.city_bump || 0,
-                country_bump: entry.values.country_bump || 0,
-              });
-            }
-          });
-          this.setUpChart(this.yearData);
-        } else {
-          this.setUpChart(response.entries);
-        }
-      });
+    this.statisticsService.getStatistics(this.duration).subscribe((response: StatisticFullResponse) => {
+      if (this.yearly) {
+        this.yearData = [];
+        response.entries.forEach((entry: StatisticEntriesResponse) => {
+          const unixDate = moment.unix(+entry.date / 1000).utcOffset(0, true);
+          const validDate = moment(unixDate).format('YYYY-MM-01');
+          const yearlyEntries = find(this.yearData, { date: validDate });
+          if (yearlyEntries) {
+            yearlyEntries.phone_numbers += entry.values.phone_numbers || 0;
+            yearlyEntries.views += entry.values.views || 0;
+            yearlyEntries.chats += entry.values.chats || 0;
+            yearlyEntries.city_bump += entry.values.city_bump || 0;
+            yearlyEntries.country_bump += entry.values.country_bump || 0;
+          } else {
+            this.yearData.push({
+              date: validDate,
+              phone_numbers: entry.values.phone_numbers || 0,
+              views: entry.values.views || 0,
+              chats: entry.values.chats || 0,
+              city_bump: entry.values.city_bump || 0,
+              country_bump: entry.values.country_bump || 0,
+            });
+          }
+        });
+        this.setUpChart(this.yearData);
+      } else {
+        this.setUpChart(response.entries);
+      }
+    });
   }
 
   onStatsPeriodChange() {

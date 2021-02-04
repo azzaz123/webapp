@@ -1,11 +1,6 @@
 import { IMAGE, IMAGE_2 } from './user.fixtures.spec';
 import { ITEM_ID } from './item.fixtures.spec';
-import {
-  OUTPUT_TYPE,
-  UploadFile,
-  UploadOutput,
-  UPLOAD_STATUS,
-} from '../app/shared/uploader/upload.interface';
+import { OUTPUT_TYPE, UploadFile, UploadOutput, UPLOAD_STATUS } from '../app/shared/uploader/upload.interface';
 import { ITEM_TYPES } from 'app/core/item/item';
 import { of } from 'rxjs';
 
@@ -109,16 +104,11 @@ export const UPLOADED_RESPONSE = {
       original_height: 0,
       average_hex_color: 'FFFFFF',
       urls_by_size: {
-        original:
-          'http://dock7.wallapop.com:8080/shnm-portlet/images?pictureId=500083989&pictureSize=ORIGINAL',
-        small:
-          'http://dock7.wallapop.com:8080/shnm-portlet/images?pictureId=500083989&pictureSize=ORIGINAL',
-        large:
-          'http://dock7.wallapop.com:8080/shnm-portlet/images?pictureId=500083989&pictureSize=ORIGINAL',
-        medium:
-          'http://dock7.wallapop.com:8080/shnm-portlet/images?pictureId=500083989&pictureSize=ORIGINAL',
-        xlarge:
-          'http://dock7.wallapop.com:8080/shnm-portlet/images?pictureId=500083989&pictureSize=ORIGINAL',
+        original: 'http://dock7.wallapop.com:8080/shnm-portlet/images?pictureId=500083989&pictureSize=ORIGINAL',
+        small: 'http://dock7.wallapop.com:8080/shnm-portlet/images?pictureId=500083989&pictureSize=ORIGINAL',
+        large: 'http://dock7.wallapop.com:8080/shnm-portlet/images?pictureId=500083989&pictureSize=ORIGINAL',
+        medium: 'http://dock7.wallapop.com:8080/shnm-portlet/images?pictureId=500083989&pictureSize=ORIGINAL',
+        xlarge: 'http://dock7.wallapop.com:8080/shnm-portlet/images?pictureId=500083989&pictureSize=ORIGINAL',
       },
     },
   ],
@@ -179,6 +169,18 @@ export const UPLOADED_FILE_OTHER: UploadFile = <UploadFile>{
 
 export const MOCK_UPLOAD_OUTPUT_DONE: UploadOutput = {
   file: UPLOAD_FILE_DONE,
+  type: OUTPUT_TYPE.done,
+};
+
+export const MOCK_UPLOAD_ITEM_OUTPUT_DONE: UploadOutput = {
+  file: {
+    ...UPLOADED_FILE_FIRST,
+    response: {
+      content: UPLOADED_RESPONSE,
+      id: ITEM_ID,
+      type: 'consumer_goods',
+    },
+  },
   type: OUTPUT_TYPE.done,
 };
 

@@ -1,14 +1,7 @@
 import { Observable, of } from 'rxjs';
 
 import { distinctUntilChanged, catchError, switchMap } from 'rxjs/operators';
-import {
-  Component,
-  OnInit,
-  Output,
-  EventEmitter,
-  ViewChild,
-  ElementRef,
-} from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { SuggesterResponse } from '../../core/interfaces/suggester-response.interface';
 import { SuggesterService } from '@layout/topbar/core/services/suggester.service';
 

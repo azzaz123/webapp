@@ -1,8 +1,5 @@
 import { CartProExtras } from './cart-pro-extras';
-import {
-  PREPARED_PACKS,
-  ORDER_CART_EXTRAS_PRO,
-} from '../../../../tests/payments.fixtures.spec';
+import { PREPARED_PACKS, ORDER_CART_EXTRAS_PRO } from '../../../../tests/payments.fixtures.spec';
 import { OrderProExtras } from '../../../core/payments/payment.interface';
 import { CartProExtrasPack } from './cart-item.interface';
 
@@ -42,12 +39,8 @@ describe('CartProExtras', () => {
     });
 
     it('should calculate totals', () => {
-      expect(cart.citybump.total).toBe(
-        +PREPARED_PACKS[0].packs[0].price + +PREPARED_PACKS[1].packs[0].price
-      );
-      expect(cart.countrybump.total).toBe(
-        +PREPARED_PACKS[0].packs[1].price + +PREPARED_PACKS[1].packs[1].price
-      );
+      expect(cart.citybump.total).toBe(+PREPARED_PACKS[0].packs[0].price + +PREPARED_PACKS[1].packs[0].price);
+      expect(cart.countrybump.total).toBe(+PREPARED_PACKS[0].packs[1].price + +PREPARED_PACKS[1].packs[1].price);
       expect(cart.total).toBe(cart.citybump.total + cart.countrybump.total);
     });
   });

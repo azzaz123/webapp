@@ -5,18 +5,10 @@ import { Observable, forkJoin } from 'rxjs';
 import { SUBSCRIPTION_TYPES } from '../../../../core/subscriptions/subscriptions.service';
 import { ItemService } from '../../../../core/item/item.service';
 import { SubscriptionsService } from '../../../../core/subscriptions/subscriptions.service';
-import {
-  SubscriptionsResponse,
-  SUBSCRIPTION_CATEGORIES,
-} from '../../../../core/subscriptions/subscriptions.interface';
+import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES } from '../../../../core/subscriptions/subscriptions.interface';
 import { map } from 'rxjs/operators';
 import { AnalyticsService } from 'app/core/analytics/analytics.service';
-import {
-  AnalyticsPageView,
-  ViewProSubscriptionPopup,
-  ANALYTICS_EVENT_NAMES,
-  SCREEN_IDS,
-} from 'app/core/analytics/analytics-constants';
+import { AnalyticsPageView, ViewProSubscriptionPopup, ANALYTICS_EVENT_NAMES, SCREEN_IDS } from 'app/core/analytics/analytics-constants';
 
 @Component({
   selector: 'tsl-too-many-items-modal',
@@ -55,8 +47,7 @@ export class TooManyItemsModalComponent implements OnInit {
       name: ANALYTICS_EVENT_NAMES.ViewProSubscriptionPopup,
       attributes: {
         screenId: SCREEN_IDS.ProSubscriptionLimitPopup,
-        subscription: this.categorySubscription
-          .category_id as SUBSCRIPTION_CATEGORIES,
+        subscription: this.categorySubscription.category_id as SUBSCRIPTION_CATEGORIES,
         freeTrial: this.isFreeTrial,
         isCarDealer: this.type === this.carDealerType,
       },
@@ -66,21 +57,17 @@ export class TooManyItemsModalComponent implements OnInit {
   }
 
   private hasFreeOption(itemId: string): Observable<boolean> {
-    return forkJoin([
-      this.itemService.get(itemId),
-      this.subscriptionsService.getSubscriptions(false),
-    ]).pipe(
+    return forkJoin([this.itemService.get(itemId), this.subscriptionsService.getSubscriptions(false)]).pipe(
       map((values) => {
         const item = values[0];
         const subscriptions = values[1];
-        this.categorySubscription = subscriptions.find(
-          (subscription) => item.categoryId === subscription.category_id
-        );
+        this.categorySubscription = subscriptions.find((subscription) => item.categoryId === subscription.category_id);
 
-        if (this.categorySubscription) {
-          return this.subscriptionsService.hasTrial(this.categorySubscription);
+        if (!this.categorySubscription || !!this.categorySubscription.subscribed_from) {
+          return false;
         }
-        return false;
+
+        return this.subscriptionsService.hasTrial(this.categorySubscription);
       })
     );
   }

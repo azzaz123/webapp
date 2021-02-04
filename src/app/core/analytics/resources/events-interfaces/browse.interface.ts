@@ -57,12 +57,7 @@ export interface Browse {
   /**
    * Order criteria in which the results of the browsing are shown
    */
-  orderBy:
-    | 'distance'
-    | 'price_low_to_high'
-    | 'price_high_to_low'
-    | 'newest'
-    | 'most_relevant';
+  orderBy: 'distance' | 'price_low_to_high' | 'price_high_to_low' | 'newest' | 'most_relevant';
   /**
    * Other properties sent by JSON format, ONLY FOR A/B TESTING PURPOSE
    */

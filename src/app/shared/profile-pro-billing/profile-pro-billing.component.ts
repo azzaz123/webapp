@@ -1,19 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import {
-  Component,
-  ViewChild,
-  Output,
-  EventEmitter,
-  Input,
-  OnDestroy,
-} from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  FormControl,
-  AbstractControl,
-} from '@angular/forms';
+import { Component, ViewChild, Output, EventEmitter, Input, OnDestroy } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeleteInfoConfirmationModalComponent } from './delete-info-confirmation-modal/delete-info-confirmation-modal.component';
 import { PaymentService } from '../../core/payments/payment.service';
@@ -37,8 +24,7 @@ export enum BILLING_TYPE {
   templateUrl: './profile-pro-billing.component.html',
   styleUrls: ['./profile-pro-billing.component.scss'],
 })
-export class ProfileProBillingComponent
-  implements CanComponentDeactivate, OnDestroy {
+export class ProfileProBillingComponent implements CanComponentDeactivate, OnDestroy {
   public billingForm: FormGroup;
   public isNewBillingInfoForm = true;
   public loading = true;
@@ -88,16 +74,10 @@ export class ProfileProBillingComponent
       company_name: ['', [Validators.required, whitespaceValidator]],
       country: ['', [Validators.required, whitespaceValidator]],
       email: ['', [Validators.required, this.emailValidator]],
-      name: [
-        '',
-        [Validators.required, Validators.maxLength(32), whitespaceValidator],
-      ],
+      name: ['', [Validators.required, Validators.maxLength(32), whitespaceValidator]],
       postal_code: ['', [Validators.required, this.cpValidator]],
       street: ['', [Validators.required, whitespaceValidator]],
-      surname: [
-        '',
-        [Validators.required, Validators.maxLength(32), whitespaceValidator],
-      ],
+      surname: ['', [Validators.required, Validators.maxLength(32), whitespaceValidator]],
       id: this.uuidService.getUUID(),
     });
   }
@@ -177,10 +157,7 @@ export class ProfileProBillingComponent
     } else {
       this.errorsService.i18nError('formErrors');
       for (const control in this.billingForm.controls) {
-        if (
-          this.billingForm.controls.hasOwnProperty(control) &&
-          !this.billingForm.controls[control].valid
-        ) {
+        if (this.billingForm.controls.hasOwnProperty(control) && !this.billingForm.controls[control].valid) {
           this.billingForm.controls[control].markAsDirty();
         }
       }
@@ -192,29 +169,23 @@ export class ProfileProBillingComponent
   }
 
   public deleteBillingInfo() {
-    this.modalService
-      .open(DeleteInfoConfirmationModalComponent)
-      .result.then((result: boolean) => {
-        if (result) {
-          this.paymentService
-            .deleteBillingInfo(this.billingForm.value.id)
-            .subscribe(
-              () => {
-                this.errorsService.i18nSuccess('deleteBillingInfoSuccess');
-                this.initForm(false);
-              },
-              () => {
-                this.errorsService.i18nError('deleteBillingInfoError');
-              }
-            );
-        }
-      });
+    this.modalService.open(DeleteInfoConfirmationModalComponent).result.then((result: boolean) => {
+      if (result) {
+        this.paymentService.deleteBillingInfo(this.billingForm.value.id).subscribe(
+          () => {
+            this.errorsService.i18nSuccess('deleteBillingInfoSuccess');
+            this.initForm(false);
+          },
+          () => {
+            this.errorsService.i18nError('deleteBillingInfoError');
+          }
+        );
+      }
+    });
   }
 
   public isIncorrectFormcontrol(formControlAtr: AbstractControl): boolean {
-    return (
-      formControlAtr.invalid && (formControlAtr.dirty || formControlAtr.touched)
-    );
+    return formControlAtr.invalid && (formControlAtr.dirty || formControlAtr.touched);
   }
 
   private patchFormValues() {
@@ -226,35 +197,17 @@ export class ProfileProBillingComponent
   }
 
   private setNaturalRequiredFields() {
-    this.billingForm
-      .get('name')
-      .setValidators([
-        Validators.required,
-        Validators.maxLength(32),
-        whitespaceValidator,
-      ]);
-    this.billingForm
-      .get('surname')
-      .setValidators([
-        Validators.required,
-        Validators.maxLength(32),
-        whitespaceValidator,
-      ]);
+    this.billingForm.get('name').setValidators([Validators.required, Validators.maxLength(32), whitespaceValidator]);
+    this.billingForm.get('surname').setValidators([Validators.required, Validators.maxLength(32), whitespaceValidator]);
     this.billingForm.get('company_name').setValidators(null);
-    this.billingForm
-      .get('cif')
-      .setValidators([Validators.required, this.nifValidator]);
+    this.billingForm.get('cif').setValidators([Validators.required, this.nifValidator]);
   }
 
   private setLegalRequiredFields() {
-    this.billingForm
-      .get('company_name')
-      .setValidators([Validators.required, Validators.maxLength(32)]);
+    this.billingForm.get('company_name').setValidators([Validators.required, Validators.maxLength(32)]);
     this.billingForm.get('name').setValidators(null);
     this.billingForm.get('surname').setValidators(null);
-    this.billingForm
-      .get('cif')
-      .setValidators([Validators.required, this.cifValidator]);
+    this.billingForm.get('cif').setValidators([Validators.required, this.cifValidator]);
   }
 
   private updateFieldsValidity() {
@@ -300,9 +253,7 @@ export class ProfileProBillingComponent
   }
 
   get containerTypeIsModalOrProfileInfo(): boolean {
-    return (
-      this.containerType === 'modal' || this.containerType === 'profile-info'
-    );
+    return this.containerType === 'modal' || this.containerType === 'profile-info';
   }
 
   private cpValidator(control: AbstractControl): { [key: string]: boolean } {

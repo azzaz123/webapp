@@ -18,12 +18,8 @@ export class UserLocationEffect {
   updateLocation$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UpdateUserLocation),
-      exhaustMap(({ coordinate }) =>
-        this.repository.updateByCoordinates(coordinate)
-      ),
-      map((location: UserLocation) =>
-        fromActions.UpdateUserLocationSuccess({ location })
-      ),
+      exhaustMap(({ coordinate }) => this.repository.updateByCoordinates(coordinate)),
+      map((location: UserLocation) => fromActions.UpdateUserLocationSuccess({ location })),
       catchError(() => of(fromActions.UpdateUserLocationFailed()))
     )
   );

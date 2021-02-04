@@ -1,12 +1,4 @@
-import {
-  animate,
-  AnimationTriggerMetadata,
-  keyframes,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
+import { animate, AnimationTriggerMetadata, keyframes, state, style, transition, trigger } from '@angular/animations';
 
 export function Remove(duration: string): AnimationTriggerMetadata {
   return trigger('remove', [

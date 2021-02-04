@@ -1,18 +1,8 @@
-import {
-  Component,
-  EventEmitter,
-  Inject,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { Item } from '@core/item/item';
 import { ItemCounters } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
-import {
-  ItemStatisticEntriesResponse,
-  ItemStatisticFullResponse,
-} from '@features/stats/core/item-stats-response.interface';
+import { ItemStatisticEntriesResponse, ItemStatisticFullResponse } from '@features/stats/core/item-stats-response.interface';
 import { ItemStatsService } from '@features/stats/core/services/item-stats.service';
 import { every, isEmpty } from 'lodash-es';
 import { ITEM_STATS_ROW_ANIMATION } from './item-stats-row.animation';
@@ -43,24 +33,17 @@ export class ItemStatsRowComponent implements OnInit {
 
   ngOnInit() {
     this.link = this.item.getUrl(this.subdomain);
-    this.itemStatsService
-      .getStatistics(this.item.id)
-      .subscribe((response: ItemStatisticFullResponse) => {
-        this.statsData = { entries: [] };
-        this.statsData.entries = this.removeCurrentDay(response);
-        this.noData = every(
-          response.entries,
-          (entry) => !entry.values || isEmpty(entry.values)
-        );
-      });
+    this.itemStatsService.getStatistics(this.item.id).subscribe((response: ItemStatisticFullResponse) => {
+      this.statsData = { entries: [] };
+      this.statsData.entries = this.removeCurrentDay(response);
+      this.noData = every(response.entries, (entry) => !entry.values || isEmpty(entry.values));
+    });
     if (this.item.views === 0 || this.item.favorites === 0) {
-      this.itemService
-        .getCounters(this.item.id)
-        .subscribe((counters: ItemCounters) => {
-          this.item.views = counters.views;
-          this.item.favorites = counters.favorites;
-          this.item.conversations = counters.conversations;
-        });
+      this.itemService.getCounters(this.item.id).subscribe((counters: ItemCounters) => {
+        this.item.views = counters.views;
+        this.item.favorites = counters.favorites;
+        this.item.conversations = counters.conversations;
+      });
     }
   }
 
@@ -71,13 +54,9 @@ export class ItemStatsRowComponent implements OnInit {
     }
   }
 
-  private removeCurrentDay(
-    stats: ItemStatisticFullResponse
-  ): ItemStatisticEntriesResponse[] {
+  private removeCurrentDay(stats: ItemStatisticFullResponse): ItemStatisticEntriesResponse[] {
     const today = new Date();
     today.setUTCHours(0, 0, 0, 0);
-    return stats.entries.filter(
-      (stat) => stat.date !== today.getTime().toString()
-    );
+    return stats.entries.filter((stat) => stat.date !== today.getTime().toString());
   }
 }

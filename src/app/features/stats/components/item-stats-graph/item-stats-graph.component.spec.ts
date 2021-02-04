@@ -36,9 +36,7 @@ describe('ItemStatsGraphComponent', () => {
 
       component.ngOnInit();
 
-      expect(component.chartOption.series[1].data[0]).toBe(
-        ITEM_STATISTIC_RESPONSE.entries[0].values.views
-      );
+      expect(component.chartOption.series[1].data[0]).toBe(ITEM_STATISTIC_RESPONSE.entries[0].values.views);
     });
   });
 });
