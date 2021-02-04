@@ -5,11 +5,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { Item } from '@core/item/item';
 import { ItemService } from '@core/item/item.service';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
 import { ITEM_COUNTERS_DATA, ITEM_WEB_SLUG, MOCK_ITEM, MOCK_ITEM_CAR } from '@fixtures/item.fixtures.spec';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { CustomCurrencyPipe } from '@shared/pipes';
 import { CookieService } from 'ngx-cookie';
@@ -21,7 +19,6 @@ describe('Component: Item', () => {
   let fixture: ComponentFixture<ItemComponent>;
   let userService: UserService;
   let itemService: ItemService;
-  let trackingService: TrackingService;
   let cookieService: CookieService;
 
   const MOCK_CLICK_EVENT = {
@@ -64,7 +61,6 @@ describe('Component: Item', () => {
             },
           },
         },
-        { provide: TrackingService, useClass: MockTrackingService },
         { provide: 'SUBDOMAIN', useValue: 'es' },
       ],
       schemas: [NO_ERRORS_SCHEMA],
@@ -73,7 +69,6 @@ describe('Component: Item', () => {
     component = TestBed.createComponent(ItemComponent).componentInstance;
     userService = TestBed.inject(UserService);
     itemService = TestBed.inject(ItemService);
-    trackingService = TestBed.inject(TrackingService);
     cookieService = TestBed.inject(CookieService);
     appboy.initialize(environment.appboy);
   });
@@ -107,47 +102,6 @@ describe('Component: Item', () => {
       component.ngOnChanges();
 
       expect(component.isCarItem).toBe(false);
-    });
-  });
-
-  it('should not track Willis Display when categoriId is 10000', () => {
-    spyOn(trackingService, 'track');
-    component.item = { ...MOCK_ITEM, categoryId: 10000 } as Item;
-
-    component.ngOnChanges();
-
-    expect(trackingService.track).not.toHaveBeenCalled();
-  });
-
-  it('should track Willis Display when showWillisLink ', () => {
-    spyOn(trackingService, 'track');
-
-    showWillisCategories.forEach((categoryId) => {
-      component.item = { ...MOCK_ITEM, categoryId } as Item;
-      component.ngOnChanges();
-
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.WILLIS_LINK_DISPLAY, {
-        category_id: component.item.categoryId,
-        item_id: component.item.id,
-      });
-    });
-  });
-
-  it('should track Solcredito Display when showSolcreditoLink is true', () => {
-    spyOn(trackingService, 'track');
-    const showSolcreditoCategories = Object.values(CATEGORY_IDS).filter((key) => {
-      if (![CATEGORY_IDS.REAL_ESTATE_OLD, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.CAR].includes(CATEGORY_IDS[key])) {
-        return CATEGORY_IDS[key];
-      }
-    });
-    showSolcreditoCategories.forEach((categoryId) => {
-      component.item = { ...MOCK_ITEM, categoryId } as Item;
-      component.ngOnChanges();
-
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.WILLIS_LINK_DISPLAY, {
-        category_id: component.item.categoryId,
-        item_id: component.item.id,
-      });
     });
   });
 
@@ -283,32 +237,17 @@ describe('Component: Item', () => {
       expect(component.item.reserved).toBe(false);
     });
 
-    it('should call the track method on trackingService when item.reserved is true', () => {
+    it('should invert the boolean value of item.reserved when called', () => {
       component.item = MOCK_ITEM;
       component.item.reserved = false;
-      spyOn(trackingService, 'track').and.callThrough();
 
       component.toggleReserve();
 
       expect(component.item.reserved).toBe(true);
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CHAT_PRODUCT_RESERVED, {
-        item_id: MOCK_ITEM.id,
-      });
     });
   });
 
   describe('trackSoldEvent', () => {
-    it('should the track method on trackingService when invoked', () => {
-      component.item = MOCK_ITEM;
-      spyOn(trackingService, 'track').and.callThrough();
-
-      component.trackSoldEvent(component.item);
-
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CHAT_PRODUCT_SOLD, {
-        item_id: component.item.id,
-      });
-    });
-
     it('should send appboy Sold event', () => {
       spyOn(appboy, 'logCustomEvent');
 
@@ -370,37 +309,6 @@ describe('Component: Item', () => {
         expect(component.getMapfreOrVertiLink()).toEqual(mapfreLinks[categoryId]);
       });
     });
-
-    it('should call track with mapfre display parameters', () => {
-      component.item = {
-        ...MOCK_ITEM,
-        categoryId: CATEGORY_IDS.REAL_ESTATE,
-      } as Item;
-      spyOn(trackingService, 'track').and.callThrough();
-
-      component.ngOnChanges();
-
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MAPFRE_LINK_DISPLAY, {
-        item_id: component.item.id,
-        category_id: component.item.categoryId,
-      });
-    });
-
-    it('should send MAPFRE_LINK_TAP tracking event when clicked', () => {
-      component.item = {
-        ...MOCK_ITEM,
-        categoryId: CATEGORY_IDS.REAL_ESTATE,
-      } as Item;
-      spyOn(trackingService, 'track').and.callThrough();
-
-      component.ngOnChanges();
-      component.clickMapfreOrVerti(MOCK_CLICK_EVENT);
-
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MAPFRE_LINK_TAP, {
-        category_id: component.item.categoryId,
-        item_id: component.item.id,
-      });
-    });
   });
 
   describe('verti link', () => {
@@ -440,37 +348,6 @@ describe('Component: Item', () => {
         component.ngOnChanges();
 
         expect(component.getMapfreOrVertiLink()).toEqual(vertiLinks[categoryId]);
-      });
-    });
-
-    it('should call track with verti display parameters', () => {
-      component.item = {
-        ...MOCK_ITEM,
-        categoryId: CATEGORY_IDS.REAL_ESTATE,
-      } as Item;
-      spyOn(trackingService, 'track').and.callThrough();
-
-      component.ngOnChanges();
-
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.VERTI_LINK_DISPLAY, {
-        item_id: component.item.id,
-        category_id: component.item.categoryId,
-      });
-    });
-
-    it('should send VERTI_LINK_TAP tracking event when clicked', () => {
-      component.item = {
-        ...MOCK_ITEM,
-        categoryId: CATEGORY_IDS.REAL_ESTATE,
-      } as Item;
-      spyOn(trackingService, 'track').and.callThrough();
-
-      component.ngOnChanges();
-      component.clickMapfreOrVerti(MOCK_CLICK_EVENT);
-
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.VERTI_LINK_TAP, {
-        category_id: component.item.categoryId,
-        item_id: component.item.id,
       });
     });
   });
@@ -523,34 +400,6 @@ describe('Component: Item', () => {
         component.ngOnChanges();
 
         expect(component.showSolcreditoLink).toEqual(false);
-      });
-    });
-  });
-
-  describe('clickWillis', () => {
-    it('should track willis tap ', () => {
-      spyOn(trackingService, 'track');
-      component.item = MOCK_ITEM;
-
-      component.clickWillis(MOCK_CLICK_EVENT);
-
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.WILLIS_LINK_TAP, {
-        category_id: component.item.categoryId,
-        item_id: component.item.id,
-      });
-    });
-  });
-
-  describe('clickSolcredito', () => {
-    it('should track solcredito tap ', () => {
-      spyOn(trackingService, 'track');
-      component.item = MOCK_ITEM;
-
-      component.clickSolcredito(MOCK_CLICK_EVENT);
-
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.SOLCREDITO_LINK_TAP, {
-        category_id: component.item.categoryId,
-        item_id: component.item.id,
       });
     });
   });

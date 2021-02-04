@@ -6,8 +6,6 @@ import { ActivatedRoute } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Call } from '@core/conversation/calls';
 import { CallsService } from '@core/conversation/calls.service';
-import { TrackingService } from '@core/tracking/tracking.service';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { createCallsArray } from '@fixtures/call.fixtures';
 
 describe('CallsComponent', () => {
@@ -15,14 +13,12 @@ describe('CallsComponent', () => {
   let fixture: ComponentFixture<CallsComponent>;
   let callService: CallsService;
   let route: ActivatedRoute;
-  let trackingService: TrackingService;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [CallsComponent],
         providers: [
-          { provide: TrackingService, useClass: MockTrackingService },
           {
             provide: CallsService,
             useValue: {
@@ -49,7 +45,6 @@ describe('CallsComponent', () => {
     fixture.detectChanges();
     callService = TestBed.inject(CallsService);
     route = TestBed.inject(ActivatedRoute);
-    trackingService = TestBed.inject(TrackingService);
   });
 
   describe('ngOnInit', () => {
@@ -107,7 +102,6 @@ describe('CallsComponent', () => {
       describe('no archive', () => {
         beforeEach(() => {
           component.status = 'SHARED';
-          spyOn(trackingService, 'track');
 
           component['getCalls']();
         });
@@ -123,16 +117,11 @@ describe('CallsComponent', () => {
         it('should set loading to false', () => {
           expect(component.loading).toBeFalsy();
         });
-
-        it('should track the PoneLeadListActiveLoaded', () => {
-          expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PHONE_LEAD_LIST_ACTIVE_LOADED);
-        });
       });
 
       describe('archive', () => {
         beforeEach(() => {
           component.archive = true;
-          spyOn(trackingService, 'track');
 
           component['getCalls']();
         });
@@ -147,10 +136,6 @@ describe('CallsComponent', () => {
 
         it('should set loading to false', () => {
           expect(component.loading).toBeFalsy();
-        });
-
-        it('should track the PoneLeadListProcessedLoaded', () => {
-          expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PHONE_LEAD_LIST_PROCESSED_LOADED);
         });
       });
     });
@@ -175,7 +160,6 @@ describe('CallsComponent', () => {
   describe('filterByArchived', () => {
     beforeEach(() => {
       spyOn(component, 'getCalls');
-      spyOn(trackingService, 'track');
       component['page'] = 10;
     });
 

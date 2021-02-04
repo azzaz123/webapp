@@ -93,7 +93,7 @@
                 <tsl-svg-icon src="/assets/icons/btn-reserved.svg"></tsl-svg-icon>
               </button>
               <button class="btn-edit" [hidden]="item.flags.onhold" [routerLink]="['/catalog/edit/' + item.id]"
-                tslTrackEvent="MYCATALOG_EDITITEM" [params]="{category: item.categoryId}" *ngIf="!item.sold"
+                *ngIf="!item.sold"
                 ngbTooltip="Edit" i18n-ngbTooltip placement="top">
                 <tsl-svg-icon src="/assets/icons/btn-edit.svg"></tsl-svg-icon>
               </button>
@@ -101,8 +101,7 @@
           </div>
 
           <div class="col ml-auto d-flex align-items-center justify-content-center" *ngIf="item.flags.expired">
-            <button class="btn-reactivate" (click)="reactivate(item)" tslTrackEvent="MYCATALOG_REACTIVATE_FROMCATALOG"
-              [params]="{category: item.categoryId}" [hidden]="selectMode">
+            <button class="btn-reactivate" (click)="reactivate(item)" [hidden]="selectMode">
               <tsl-svg-icon src="/assets/icons/clock.svg"></tsl-svg-icon>
               <span i18n>Reactivate</span>
             </button>

@@ -13,11 +13,9 @@ import { createInboxConversationsArray, CREATE_MOCK_INBOX_CONVERSATION } from '@
 import { MockedItemService } from '@fixtures/item.fixtures.spec';
 import { createInboxMessagesArray } from '@fixtures/message.fixtures.spec';
 import { RealTimeServiceMock } from '@fixtures/real-time.fixtures.spec';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { MockedUserService, MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { DesktopNotificationsService } from 'app/core/desktop-notifications/desktop-notifications.service';
 import { I18nService } from 'app/core/i18n/i18n.service';
-import { TrackingService } from 'app/core/tracking/tracking.service';
 import { Toast } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { uniq } from 'lodash-es';
@@ -70,7 +68,6 @@ describe('InboxConversationService', () => {
         ToastService,
         I18nService,
         DesktopNotificationsService,
-        { provide: TrackingService, useClass: MockTrackingService },
       ],
     });
     service = TestBed.inject(InboxConversationService);

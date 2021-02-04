@@ -18,8 +18,6 @@ import { CREDITS_PACK_ID, Pack } from '../../../core/payments/pack';
 import { BuyWallacoinsModalComponent } from '../components/buy-wallacoins-modal/buy-wallacoins-modal.component';
 import { WallacoinsConfirmModalComponent } from '../components/wallacoins-confirm-modal/wallacoins-confirm-modal.component';
 import { EventService } from '../../../core/event/event.service';
-import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
-import { TrackingService } from '../../../core/tracking/tracking.service';
 import { UserService } from '../../../core/user/user.service';
 import { MOCK_USER, USER_ID } from '../../../../tests/user.fixtures.spec';
 import { WallacoinsTutorialComponent } from '../components/wallacoins-tutorial/wallacoins-tutorial.component';
@@ -52,7 +50,6 @@ describe('WallacoinsComponent', () => {
           DecimalPipe,
           EventService,
           UserService,
-          { provide: TrackingService, useClass: MockTrackingService },
           {
             provide: PaymentService,
             useValue: {

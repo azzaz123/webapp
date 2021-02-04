@@ -3,7 +3,6 @@ import { InboxConversation, InboxMessage } from '@features/chat/core/model';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { I18nService } from '../i18n/i18n.service';
-import { TrackingService } from '../tracking/tracking.service';
 import { PLACEHOLDER_AVATAR } from '../user/user';
 
 export const ASK_PERMISSIONS_TIMEOUT_MS = 5000;
@@ -12,7 +11,7 @@ export const ASK_PERMISSIONS_TIMEOUT_MS = 5000;
 export class DesktopNotificationsService {
   private showNotifications = false;
 
-  constructor(private trackingService: TrackingService, private i18n: I18nService) {}
+  constructor(private i18n: I18nService) {}
 
   public init(): void {
     if (!this.browserSupportsNotifications() || this.showNotifications) {
@@ -25,8 +24,7 @@ export class DesktopNotificationsService {
     if (!this.canShowNotifications()) {
       return;
     }
-    const notification = this.createFromInboxMessage(message, conversation);
-    notification.addEventListener('close', () => this.trackNotificationReceived(message));
+    this.createFromInboxMessage(message, conversation);
   }
 
   public browserSupportsNotifications(): boolean {
@@ -70,12 +68,5 @@ export class DesktopNotificationsService {
       badge: image,
       timestamp: message.date.getTime(),
     };
-  }
-
-  private trackNotificationReceived(message: InboxMessage): void {
-    this.trackingService.track(TrackingService.NOTIFICATION_RECEIVED, {
-      thread_id: message.thread,
-      message_id: message.id,
-    });
   }
 }

@@ -9,12 +9,10 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { CartService } from '@shared/catalog/cart/cart.service';
 import { PaymentService } from '@core/payments/payment.service';
 import { ErrorsService } from '@core/errors/errors.service';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { CartProExtras } from '@shared/catalog/cart/cart-pro-extras';
 import { CartChange } from '@shared/catalog/cart/cart-item.interface';
 import { CustomCurrencyPipe } from '@shared/pipes';
 import { BILLING_INFO_RESPONSE, ORDER_CART_EXTRAS_PRO, PACK_ID, PREPARED_PACKS } from '@fixtures/payments.fixtures.spec';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { StripeService } from '@core/stripe/stripe.service';
 import { EventService } from '@core/event/event.service';
 import { STRIPE_CARD_OPTION } from '@fixtures/stripe.fixtures.spec';
@@ -26,7 +24,6 @@ describe('CartExtrasProComponent', () => {
   let paymentService: PaymentService;
   let errorsService: ErrorsService;
   let router: Router;
-  let trackingService: TrackingService;
   let stripeService: StripeService;
   let eventService: EventService;
 
@@ -67,10 +64,6 @@ describe('CartExtrasProComponent', () => {
                 return of({});
               },
             },
-          },
-          {
-            provide: TrackingService,
-            useClass: MockTrackingService,
           },
           {
             provide: ErrorsService,
@@ -120,7 +113,6 @@ describe('CartExtrasProComponent', () => {
     paymentService = TestBed.inject(PaymentService);
     errorsService = TestBed.inject(ErrorsService);
     router = TestBed.inject(Router);
-    trackingService = TestBed.inject(TrackingService);
     stripeService = TestBed.inject(StripeService);
     eventService = TestBed.inject(EventService);
     fixture.detectChanges();

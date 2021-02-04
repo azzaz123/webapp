@@ -4,7 +4,6 @@ import { CallsService } from '@core/conversation/calls.service';
 import { Lead } from '@core/conversation/lead';
 import { CallTotals } from '@core/conversation/totals.interface';
 import { EventService } from '@core/event/event.service';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { InboxConversationService } from '@features/chat/core/inbox/inbox-conversation.service';
 import { InboxConversation } from '@features/chat/core/model';
 import { takeWhile } from 'rxjs/operators';
@@ -26,7 +25,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(
     private callService: CallsService,
-    private trackingService: TrackingService,
     private router: Router,
     private inboxConversationService: InboxConversationService,
     private eventService: EventService
@@ -51,11 +49,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .getPage(1, false, null, 5)
       .pipe(takeWhile(() => this.active))
       .subscribe((calls: Lead[]) => {
-        this.trackingService.track(TrackingService.PHONE_LEAD_LIST_ACTIVE_LOADED);
         this.calls = calls;
-
         this.conversations = this.inboxConversationService.conversations;
-        this.trackingService.track(TrackingService.CONVERSATION_LIST_ACTIVE_LOADED);
         this.loading = false;
       });
   }
@@ -69,10 +64,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.messagesTotal = this.countTotalMessages();
         this.hasMessagesOrCalls = this.phonesTotal + this.messagesTotal > 0;
       });
-  }
-
-  public trackPhoneLeadOpened() {
-    this.trackingService.track(TrackingService.PHONE_LEAD_OPENED);
   }
 
   public openConversation(inboxConversation: InboxConversation): void {

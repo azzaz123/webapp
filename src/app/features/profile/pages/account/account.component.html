@@ -33,7 +33,7 @@
         <div class="row">
           <div class="col-12 text-center">
             <tsl-button [type]="'submit'" [loading]="loading" className="btn-primary btn-big"
-              tslTrackEvent="MYPROFILE_SAVEBUTTON" [disabled]="!formComponent.hasNotSavedChanges" i18n>Save</tsl-button>
+              [disabled]="!formComponent.hasNotSavedChanges" i18n>Save</tsl-button>
           </div>
         </div>
       </div>
@@ -62,7 +62,7 @@
         </div>
         <div class="row d-none d-md-block">
           <div class="col-12 col-md-11 unsubscribe-section">
-            <a (click)="openUnsubscribeModal()" tslTrackEvent="MYPROFILE_UNSUBSCRIBE" i18n>Close account</a>
+            <a (click)="openUnsubscribeModal()" i18n>Close account</a>
           </div>
         </div>
       </div>

@@ -5,7 +5,6 @@ import { By } from '@angular/platform-browser';
 import { EventService } from '@core/event/event.service';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { I18nService } from '@core/i18n/i18n.service';
-import { SplitTestService } from '@core/tracking/split-test.service';
 import { FeatureflagService } from '@core/user/featureflag.service';
 import { UserService, USER_ENDPOINT, USER_STATS_ENDPOINT } from '@core/user/user.service';
 import { environment } from '@environments/environment';
@@ -62,7 +61,6 @@ describe('ProfileComponent', () => {
             },
           },
           FeatureflagService,
-          SplitTestService,
           UserService,
           {
             provide: 'SUBDOMAIN',

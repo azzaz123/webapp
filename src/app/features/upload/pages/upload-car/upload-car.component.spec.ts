@@ -19,7 +19,6 @@ import { CARS_CATEGORY } from '@core/item/item-categories';
 import { CarContent } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
@@ -35,7 +34,6 @@ import {
 } from '@fixtures/car.fixtures.spec';
 import { MOCK_ITEM_V3, UPLOAD_FORM_CAR_VALUES } from '@fixtures/item.fixtures.spec';
 import { MockSubscriptionService } from '@fixtures/subscriptions.fixtures.spec';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import {
   MockUploadService,
   MOCK_UPLOAD_OUTPUT_DONE,
@@ -63,7 +61,6 @@ describe('UploadCarComponent', () => {
   let errorService: ErrorsService;
   let router: Router;
   let modalService: NgbModal;
-  let trackingService: TrackingService;
   let analyticsService: AnalyticsService;
   let itemService: ItemService;
   let uploadService: UploadService;
@@ -79,7 +76,6 @@ describe('UploadCarComponent', () => {
         providers: [
           FormBuilder,
           NgbPopoverConfig,
-          { provide: TrackingService, useClass: MockTrackingService },
           { provide: AnalyticsService, useClass: MockAnalyticsService },
           { provide: UploadService, useClass: MockUploadService },
           {
@@ -169,7 +165,6 @@ describe('UploadCarComponent', () => {
     errorService = TestBed.inject(ErrorsService);
     router = TestBed.inject(Router);
     modalService = TestBed.inject(NgbModal);
-    trackingService = TestBed.inject(TrackingService);
     analyticsService = TestBed.inject(AnalyticsService);
     itemService = TestBed.inject(ItemService);
     uploadService = TestBed.inject(UploadService);
@@ -792,13 +787,11 @@ describe('UploadCarComponent', () => {
 
   describe('onError', () => {
     it('should set loading to false', () => {
-      spyOn(trackingService, 'track');
       component.loading = true;
 
       component.onError('response');
 
       expect(component.loading).toBeFalsy();
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.UPLOADFORM_ERROR);
     });
 
     it('should show toast with default message', () => {

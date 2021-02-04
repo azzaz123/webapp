@@ -19,7 +19,6 @@ import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
 import { SubscriptionSlot } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { User } from '@core/user/user';
 import { Counters, UserStats } from '@core/user/user-stats.interface';
 import { UserService } from '@core/user/user.service';
@@ -88,7 +87,6 @@ export class ListComponent implements OnInit, OnDestroy {
 
   constructor(
     public itemService: ItemService,
-    private trackingService: TrackingService,
     private modalService: NgbModal,
     private route: ActivatedRoute,
     private paymentService: PaymentService,
@@ -368,14 +366,6 @@ export class ListComponent implements OnInit, OnDestroy {
     } else {
       this.itemService.mine(this.init, status).subscribe((itemsData: ItemsData) => {
         const items = itemsData.data;
-        if (this.selectedStatus === STATUS.SOLD) {
-          this.trackingService.track(TrackingService.PRODUCT_LIST_SOLD_VIEWED, { total_products: items.length });
-        } else if (this.selectedStatus === STATUS.PUBLISHED) {
-          this.trackingService.track(TrackingService.PRODUCT_LIST_ACTIVE_VIEWED, { total_products: items.length });
-        }
-        this.trackingService.track(TrackingService.PRODUCT_LIST_LOADED, {
-          init: this.init,
-        });
         this.init = itemsData.init;
         this.items = append ? this.items.concat(items) : items;
         this.end = !this.init;
@@ -442,7 +432,6 @@ export class ListComponent implements OnInit, OnDestroy {
     modalRef.result.then(
       () => {
         this.itemService.bulkDelete('active').subscribe((response: ItemBulkResponse) => {
-          this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_DELETED, { product_ids: response.updatedIds.join(', ') });
           response.updatedIds.forEach((id: string) => {
             const index: number = findIndex(this.items, { id: id });
             this.items.splice(index, 1);
@@ -461,9 +450,6 @@ export class ListComponent implements OnInit, OnDestroy {
   public reserve() {
     this.itemService.bulkReserve().subscribe((response: ItemBulkResponse) => {
       this.deselect();
-      this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_RESERVED, {
-        product_ids: response.updatedIds.join(', '),
-      });
       response.updatedIds.forEach((id: string) => {
         const index: number = findIndex(this.items, { id: id });
         if (this.items[index]) {
