@@ -47,25 +47,15 @@ export class InboxService {
       .pipe(
         catchError(() => {
           this.errorRetrievingInbox = true;
-          this.remoteConsoleService.sendChatConnectionTime(
-            ConnectionType.INBOX,
-            false
-          );
+          this.remoteConsoleService.sendChatConnectionTime(ConnectionType.INBOX, false);
           return of([]);
         })
       )
       .subscribe((conversations: InboxConversation[]) => {
-        this.remoteConsoleService.sendChatConnectionTime(
-          ConnectionType.INBOX,
-          true
-        );
+        this.remoteConsoleService.sendChatConnectionTime(ConnectionType.INBOX, true);
         this.inboxConversationService.conversations = conversations;
         this.inboxReady = true;
-        this.eventService.emit(
-          EventService.INBOX_LOADED,
-          conversations,
-          'LOAD_INBOX'
-        );
+        this.eventService.emit(EventService.INBOX_LOADED, conversations, 'LOAD_INBOX');
         this.eventService.emit(EventService.INBOX_READY, true);
         this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
       });
@@ -78,40 +68,28 @@ export class InboxService {
         })
       )
       .subscribe((conversations: InboxConversation[]) => {
-        this.eventService.emit(
-          EventService.ARCHIVED_INBOX_LOADED,
-          conversations
-        );
+        this.eventService.emit(EventService.ARCHIVED_INBOX_LOADED, conversations);
         this.archivedInboxReady = true;
         this.eventService.emit(EventService.ARCHIVED_INBOX_READY, true);
         this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
       });
 
-    this.eventService.subscribe(
-      EventService.PRIVACY_LIST_UPDATED,
-      (blockedUsers: string[]) => {
-        blockedUsers.map((id) => {
-          this.inboxConversationService.conversations
-            .filter((conv) => conv.user.id === id && !conv.user.blocked)
-            .map((conv) => (conv.user.blocked = true));
-          this.inboxConversationService.archivedConversations
-            .filter((conv) => conv.user.id === id && !conv.user.blocked)
-            .map((conv) => (conv.user.blocked = true));
-        });
+    this.eventService.subscribe(EventService.PRIVACY_LIST_UPDATED, (blockedUsers: string[]) => {
+      blockedUsers.map((id) => {
         this.inboxConversationService.conversations
-          .filter(
-            (conv) =>
-              conv.user.blocked && blockedUsers.indexOf(conv.user.id) === -1
-          )
-          .map((conv) => (conv.user.blocked = false));
+          .filter((conv) => conv.user.id === id && !conv.user.blocked)
+          .map((conv) => (conv.user.blocked = true));
         this.inboxConversationService.archivedConversations
-          .filter(
-            (conv) =>
-              conv.user.blocked && blockedUsers.indexOf(conv.user.id) === -1
-          )
-          .map((conv) => (conv.user.blocked = false));
-      }
-    );
+          .filter((conv) => conv.user.id === id && !conv.user.blocked)
+          .map((conv) => (conv.user.blocked = true));
+      });
+      this.inboxConversationService.conversations
+        .filter((conv) => conv.user.blocked && blockedUsers.indexOf(conv.user.id) === -1)
+        .map((conv) => (conv.user.blocked = false));
+      this.inboxConversationService.archivedConversations
+        .filter((conv) => conv.user.blocked && blockedUsers.indexOf(conv.user.id) === -1)
+        .map((conv) => (conv.user.blocked = false));
+    });
   }
 
   public loadMorePages() {
@@ -124,11 +102,7 @@ export class InboxService {
         })
       )
       .subscribe((conversations: InboxConversation[]) => {
-        this.eventService.emit(
-          EventService.INBOX_LOADED,
-          conversations,
-          'LOAD_MORE_PAGES'
-        );
+        this.eventService.emit(EventService.INBOX_LOADED, conversations, 'LOAD_MORE_PAGES');
         this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
       });
   }
@@ -147,10 +121,7 @@ export class InboxService {
         })
       )
       .subscribe((conversations: InboxConversation[]) => {
-        this.eventService.emit(
-          EventService.ARCHIVED_INBOX_LOADED,
-          conversations
-        );
+        this.eventService.emit(EventService.ARCHIVED_INBOX_LOADED, conversations);
         this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
       });
   }
@@ -169,15 +140,8 @@ export class InboxService {
         },
       })
       .pipe(
-        tap(
-          (inbox: InboxApi) => (this.nextPageToken = inbox.next_from || null)
-        ),
-        map(
-          (inbox: InboxApi) =>
-            (this.inboxConversationService.conversations = this.processInboxResponse(
-              inbox
-            ))
-        )
+        tap((inbox: InboxApi) => (this.nextPageToken = inbox.next_from || null)),
+        map((inbox: InboxApi) => (this.inboxConversationService.conversations = this.processInboxResponse(inbox)))
       );
   }
 
@@ -190,15 +154,8 @@ export class InboxService {
         },
       })
       .pipe(
-        tap(
-          (inbox: InboxApi) => (this.nextPageToken = inbox.next_from || null)
-        ),
-        map(
-          (inbox: InboxApi) =>
-            (this.inboxConversationService.conversations = this.processInboxResponse(
-              inbox
-            ))
-        )
+        tap((inbox: InboxApi) => (this.nextPageToken = inbox.next_from || null)),
+        map((inbox: InboxApi) => (this.inboxConversationService.conversations = this.processInboxResponse(inbox)))
       );
   }
 
@@ -211,16 +168,8 @@ export class InboxService {
         },
       })
       .pipe(
-        tap(
-          (inbox: InboxApi) =>
-            (this.nextArchivedPageToken = inbox.next_from || null)
-        ),
-        map(
-          (inbox: InboxApi) =>
-            (this.inboxConversationService.archivedConversations = this.processArchivedInboxResponse(
-              inbox
-            ))
-        )
+        tap((inbox: InboxApi) => (this.nextArchivedPageToken = inbox.next_from || null)),
+        map((inbox: InboxApi) => (this.inboxConversationService.archivedConversations = this.processArchivedInboxResponse(inbox)))
       );
   }
 
@@ -233,16 +182,8 @@ export class InboxService {
         },
       })
       .pipe(
-        tap(
-          (inbox: InboxApi) =>
-            (this.nextArchivedPageToken = inbox.next_from || null)
-        ),
-        map(
-          (inbox: InboxApi) =>
-            (this.inboxConversationService.archivedConversations = this.processArchivedInboxResponse(
-              inbox
-            ))
-        )
+        tap((inbox: InboxApi) => (this.nextArchivedPageToken = inbox.next_from || null)),
+        map((inbox: InboxApi) => (this.inboxConversationService.archivedConversations = this.processArchivedInboxResponse(inbox)))
       );
   }
 
@@ -255,83 +196,49 @@ export class InboxService {
   }
 
   private processInboxResponse(inbox: InboxApi): InboxConversation[] {
-    const conversations: InboxConversation[] = this.buildConversations(
-      inbox.conversations
-    );
-    this.inboxConversationService.sendReceiveSignalByConversations(
-      conversations
-    );
-    return uniqBy(
-      [...this.inboxConversationService.conversations, ...conversations],
-      'id'
-    );
+    const conversations: InboxConversation[] = this.buildConversations(inbox.conversations);
+    this.inboxConversationService.sendReceiveSignalByConversations(conversations);
+    return uniqBy([...this.inboxConversationService.conversations, ...conversations], 'id');
   }
 
-  private processArchivedInboxResponse(
-    response: InboxApi
-  ): InboxConversation[] {
+  private processArchivedInboxResponse(response: InboxApi): InboxConversation[] {
     return uniqBy(
-      [
-        ...this.inboxConversationService.archivedConversations,
-        ...this.buildArchivedConversations(response.conversations),
-      ],
+      [...this.inboxConversationService.archivedConversations, ...this.buildArchivedConversations(response.conversations)],
       'id'
     );
   }
 
   private buildArchivedConversations(conversations: InboxConversationApi[]) {
-    return conversations.map((conversationResponse: InboxConversationApi) =>
-      InboxConversation.fromJSON(conversationResponse, this.selfId)
-    );
+    return conversations.map((conversationResponse: InboxConversationApi) => InboxConversation.fromJSON(conversationResponse, this.selfId));
   }
 
-  private buildConversations(
-    conversations: InboxConversationApi[]
-  ): InboxConversation[] {
+  private buildConversations(conversations: InboxConversationApi[]): InboxConversation[] {
     return conversations.map((conversationResponse: InboxConversationApi) => {
-      const conversation = InboxConversation.fromJSON(
-        conversationResponse,
-        this.selfId
-      );
-      this.unreadChatMessagesService.totalUnreadMessages +=
-        conversation.unreadCounter;
+      const conversation = InboxConversation.fromJSON(conversationResponse, this.selfId);
+      this.unreadChatMessagesService.totalUnreadMessages += conversation.unreadCounter;
       return conversation;
     });
   }
 
   private subscribeArchiveEvents() {
-    this.eventService.subscribe(
-      EventService.CONVERSATION_ARCHIVED,
-      (conversation) => {
-        const index = this.inboxConversationService.conversations.indexOf(
-          conversation
-        );
-        this.inboxConversationService.conversations.splice(index, 1);
-        this.inboxConversationService.archivedConversations.unshift(
-          conversation
-        );
-        this.inboxConversationService.archivedConversations.sort(
-          (first, second) =>
-            second.lastMessage.date.getTime() - first.lastMessage.date.getTime()
-        );
-      }
-    );
+    this.eventService.subscribe(EventService.CONVERSATION_ARCHIVED, (conversation) => {
+      const index = this.inboxConversationService.conversations.indexOf(conversation);
+      this.inboxConversationService.conversations.splice(index, 1);
+      this.inboxConversationService.archivedConversations.unshift(conversation);
+      this.inboxConversationService.archivedConversations.sort(
+        (first, second) => second.lastMessage.date.getTime() - first.lastMessage.date.getTime()
+      );
+    });
   }
 
   private subscribeUnarchiveEvents() {
-    this.eventService.subscribe(
-      EventService.CONVERSATION_UNARCHIVED,
-      (conversation) => {
-        const index = this.inboxConversationService.archivedConversations.indexOf(
-          conversation
-        );
-        this.inboxConversationService.archivedConversations.splice(index, 1);
-        this.inboxConversationService.conversations.unshift(conversation);
-        this.inboxConversationService.conversations.sort(
-          (first, second) =>
-            second.lastMessage.date.getTime() - first.lastMessage.date.getTime()
-        );
-      }
-    );
+    this.eventService.subscribe(EventService.CONVERSATION_UNARCHIVED, (conversation) => {
+      const index = this.inboxConversationService.archivedConversations.indexOf(conversation);
+      this.inboxConversationService.archivedConversations.splice(index, 1);
+      this.inboxConversationService.conversations.unshift(conversation);
+      this.inboxConversationService.conversations.sort(
+        (first, second) => second.lastMessage.date.getTime() - first.lastMessage.date.getTime()
+      );
+    });
   }
 }

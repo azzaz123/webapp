@@ -1,10 +1,4 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { User } from '@core/user/user';
 import { UserInfoResponse } from '@core/user/user-info.interface';
 import { UserService } from '@core/user/user.service';
@@ -23,16 +17,11 @@ export class UserDetailComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes?: SimpleChanges) {
     if (changes.user) {
-      if (
-        this.user.scoringStars === undefined ||
-        this.user.responseRate === undefined
-      ) {
-        this.userService
-          .getInfo(this.user.id)
-          .subscribe((info: UserInfoResponse) => {
-            this.user.scoringStars = info.scoring_stars;
-            this.user.responseRate = info.response_rate;
-          });
+      if (this.user.scoringStars === undefined || this.user.responseRate === undefined) {
+        this.userService.getInfo(this.user.id).subscribe((info: UserInfoResponse) => {
+          this.user.scoringStars = info.scoring_stars;
+          this.user.responseRate = info.response_rate;
+        });
       }
     }
   }

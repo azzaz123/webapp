@@ -1,10 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
@@ -33,10 +28,7 @@ import { UserService } from '@core/user/user.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import { SessionService } from '@core/session/session.service';
 import { DeviceService } from '@core/device/device.service';
-import {
-  ANALYTIC_EVENT_TYPES,
-  ANALYTICS_EVENT_NAMES,
-} from '@core/analytics/analytics-constants';
+import { ANALYTIC_EVENT_TYPES, ANALYTICS_EVENT_NAMES } from '@core/analytics/analytics-constants';
 
 import * as moment from 'moment';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -242,20 +234,14 @@ describe('PrivateComponent', () => {
 
       component.updateSessionCookie();
 
-      expect(cookieService.put).toHaveBeenCalledWith(
-        'app_session_id',
-        uuidService.getUUID(),
-        cookieOptions
-      );
+      expect(cookieService.put).toHaveBeenCalledWith('app_session_id', uuidService.getUUID(), cookieOptions);
     });
   });
 
   describe('subscribeEvents', () => {
     function getEventServiceSubscribeArgs() {
       const eventServiceSubscribeArgs = [];
-      eventService.subscribe['calls']
-        .allArgs()
-        .map((call) => eventServiceSubscribeArgs.push(call[0]));
+      eventService.subscribe['calls'].allArgs().map((call) => eventServiceSubscribeArgs.push(call[0]));
       return eventServiceSubscribeArgs;
     }
 
@@ -328,13 +314,10 @@ describe('PrivateComponent', () => {
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
 
         expect(cookieService.get).toHaveBeenCalledWith('app_session_id');
-        expect(trackingService.track).toHaveBeenCalledWith(
-          TrackingService.APP_OPEN,
-          {
-            referer_url: component.previousUrl,
-            current_url: component.currentUrl,
-          }
-        );
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.APP_OPEN, {
+          referer_url: component.previousUrl,
+          current_url: component.currentUrl,
+        });
       });
 
       it('should call update session cookie if cookie does not exist', () => {
@@ -445,9 +428,7 @@ describe('PrivateComponent', () => {
       component.ngOnInit();
       eventService.emit(EventService.USER_LOGOUT);
 
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.MY_PROFILE_LOGGED_OUT
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MY_PROFILE_LOGGED_OUT);
     });
   });
 

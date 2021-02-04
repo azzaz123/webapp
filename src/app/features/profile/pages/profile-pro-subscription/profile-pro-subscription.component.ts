@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  CARDEALER_COMMERCIAL_CONTACT_MAIL,
-  SELLBYTEL_PHONE,
-} from '@core/constants';
+import { CARDEALER_COMMERCIAL_CONTACT_MAIL, SELLBYTEL_PHONE } from '@core/constants';
 import { Pack } from '@core/payments/pack';
 import { Packs } from '@core/payments/payment.interface';
 import { PerksModel } from '@core/payments/payment.model';
@@ -21,29 +18,16 @@ export class ProfileProSubscriptionComponent implements OnInit {
   public sellbytelPhone = SELLBYTEL_PHONE;
   public loading = true;
 
-  constructor(
-    private paymentsService: PaymentService,
-    private router: Router
-  ) {}
+  constructor(private paymentsService: PaymentService, private router: Router) {}
 
   ngOnInit() {
     this.paymentsService.getSubscriptionPacks().subscribe((packs: Packs) => {
       this.packs = packs;
       this.paymentsService.getPerks().subscribe((perks: PerksModel) => {
         this.perks = perks;
-        const isCustomPack: boolean = !this.packs.listings.find(
-          (pack: Pack) => pack.quantity === perks.subscription.listing.quantity
-        );
+        const isCustomPack: boolean = !this.packs.listings.find((pack: Pack) => pack.quantity === perks.subscription.listing.quantity);
         if (isCustomPack) {
-          this.packs.listings.unshift(
-            new Pack(
-              '1',
-              perks.subscription.listing.quantity,
-              1,
-              'EUR',
-              'listings'
-            )
-          );
+          this.packs.listings.unshift(new Pack('1', perks.subscription.listing.quantity, 1, 'EUR', 'listings'));
         }
         this.loading = false;
       });

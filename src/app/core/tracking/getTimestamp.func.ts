@@ -4,7 +4,5 @@ export function getTimestamp() {
   var MM = (now.getMonth() + 1 < 10 ? '0' : '') + (now.getMonth() + 1);
   var yyyy = now.getFullYear();
 
-  return `${yyyy}-${MM}-${dd} ${now.toLocaleTimeString(
-    'es-ES'
-  )}.${now.getMilliseconds()}`;
+  return `${yyyy}-${MM}-${dd} ${now.toLocaleTimeString('es-ES')}.${now.getMilliseconds()}`;
 }

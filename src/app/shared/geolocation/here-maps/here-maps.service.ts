@@ -7,16 +7,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import {
-  BehaviorSubject,
-  combineLatest,
-  concat,
-  interval,
-  Observable,
-  of,
-  Subject,
-  throwError,
-} from 'rxjs';
+import { BehaviorSubject, combineLatest, concat, interval, Observable, of, Subject, throwError } from 'rxjs';
 import { finalize, mergeMap, retry, takeUntil } from 'rxjs/operators';
 
 export const HERE_MAPS_VERSION = '3.0';
@@ -121,9 +112,7 @@ export class HereMapsService {
     const isReady$ = new Subject<boolean>();
     return interval(CHECK_INTERVAL_MS).pipe(
       mergeMap(() => {
-        const serviceScriptRef = document.getElementById(
-          HERE_MAPS_SERVICE_REF_ID
-        );
+        const serviceScriptRef = document.getElementById(HERE_MAPS_SERVICE_REF_ID);
         if (serviceScriptRef && H.service) {
           isReady$.next(true);
           return of(true);

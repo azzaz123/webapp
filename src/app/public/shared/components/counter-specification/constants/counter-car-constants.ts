@@ -150,7 +150,4 @@ export const CAR_ICON_SPEC: ItemSpecification[] = [
     type: CAR_SPECIFICATION_TYPE.HORSEPOWER,
   },
 ];
-export const CAR_TYPE_SPECIFICATION: ItemSpecification[] = [
-  ...CAR_ICON_SPEC_TRANSLATION,
-  ...CAR_ICON_SPEC,
-];
+export const CAR_TYPE_SPECIFICATION: ItemSpecification[] = [...CAR_ICON_SPEC_TRANSLATION, ...CAR_ICON_SPEC];

@@ -1,11 +1,4 @@
-import {
-  Component,
-  Inject,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { Component, Inject, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { Item } from '@core/item/item';
 import { ItemCounters } from '@core/item/item-response.interface';
@@ -16,18 +9,9 @@ import { UserService } from '@core/user/user.service';
 import { CookieService } from 'ngx-cookie';
 import { takeWhile } from 'rxjs/operators';
 
-export const showWillisCategories = [
-  CATEGORY_IDS.GAMES_CONSOLES,
-  CATEGORY_IDS.TV_AUDIO_CAMERAS,
-  CATEGORY_IDS.APPLIANCES,
-];
+export const showWillisCategories = [CATEGORY_IDS.GAMES_CONSOLES, CATEGORY_IDS.TV_AUDIO_CAMERAS, CATEGORY_IDS.APPLIANCES];
 
-export const showVertiCategories = [
-  CATEGORY_IDS.REAL_ESTATE_OLD,
-  CATEGORY_IDS.REAL_ESTATE,
-  CATEGORY_IDS.MOTORBIKE,
-  CATEGORY_IDS.CAR,
-];
+export const showVertiCategories = [CATEGORY_IDS.REAL_ESTATE_OLD, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.MOTORBIKE, CATEGORY_IDS.CAR];
 
 export const showMapfreCategories = [
   CATEGORY_IDS.REAL_ESTATE_OLD,
@@ -96,10 +80,7 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes?: any) {
-    if (
-      this.item.salePrice !== undefined &&
-      (this.item.views === undefined || this.item.favorites === undefined)
-    ) {
+    if (this.item.salePrice !== undefined && (this.item.views === undefined || this.item.favorites === undefined)) {
       this.itemService
         .getCounters(this.item.id)
         .pipe(
@@ -167,11 +148,7 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
     this.showSolcreditoLink =
       salePrice >= 50 &&
       salePrice < 500 &&
-      ![
-        CATEGORY_IDS.REAL_ESTATE_OLD,
-        CATEGORY_IDS.REAL_ESTATE,
-        CATEGORY_IDS.CAR,
-      ].includes(categoryId);
+      ![CATEGORY_IDS.REAL_ESTATE_OLD, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.CAR].includes(categoryId);
     if (this.showSolcreditoLink) {
       this.trackingService.track(TrackingService.SOLCREDITO_LINK_DISPLAY, {
         category_id: this.item.categoryId,
@@ -200,16 +177,14 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public toggleReserve() {
-    this.itemService
-      .reserveItem(this.item.id, !this.item.reserved)
-      .subscribe(() => {
-        this.item.reserved = !this.item.reserved;
-        if (this.item.reserved) {
-          this.trackingService.track(TrackingService.CHAT_PRODUCT_RESERVED, {
-            item_id: this.item.id,
-          });
-        }
-      });
+    this.itemService.reserveItem(this.item.id, !this.item.reserved).subscribe(() => {
+      this.item.reserved = !this.item.reserved;
+      if (this.item.reserved) {
+        this.trackingService.track(TrackingService.CHAT_PRODUCT_RESERVED, {
+          item_id: this.item.id,
+        });
+      }
+    });
   }
 
   public trackSoldEvent(item: Item) {

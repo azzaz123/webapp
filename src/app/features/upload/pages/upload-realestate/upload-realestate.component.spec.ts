@@ -1,11 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
@@ -25,11 +19,7 @@ import { ItemService } from '@core/item/item.service';
 import { TrackingService } from '@core/tracking/tracking.service';
 import { UserService } from '@core/user/user.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import {
-  MOCK_REALESTATE,
-  MOCK_REALESTATE_RESPONSE_CONTENT,
-  UPLOAD_FORM_REALESTATE_VALUES,
-} from '@fixtures/realestate.fixtures.spec';
+import { MOCK_REALESTATE, MOCK_REALESTATE_RESPONSE_CONTENT, UPLOAD_FORM_REALESTATE_VALUES } from '@fixtures/realestate.fixtures.spec';
 import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import {
   MockUploadService,
@@ -40,11 +30,7 @@ import {
   UPLOAD_FILE_DONE_2,
 } from '@fixtures/upload.fixtures.spec';
 import { IMAGE, USER_LOCATION } from '@fixtures/user.fixtures.spec';
-import {
-  NgbModal,
-  NgbPopoverConfig,
-  NgbPopoverModule,
-} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 import { of, throwError } from 'rxjs';
@@ -249,9 +235,7 @@ describe('UploadRealestateComponent', () => {
 
   describe('onSubmit', () => {
     it('should has category set by default', () => {
-      expect(component.uploadForm.get('category_id').value).toBe(
-        REALESTATE_CATEGORY
-      );
+      expect(component.uploadForm.get('category_id').value).toBe(REALESTATE_CATEGORY);
     });
 
     it('should emit uploadEvent if form is valid', () => {
@@ -261,10 +245,7 @@ describe('UploadRealestateComponent', () => {
 
       component.onSubmit();
 
-      expect(uploadService.createItem).toHaveBeenCalledWith(
-        component.uploadForm.value,
-        ITEM_TYPES.REAL_ESTATE
-      );
+      expect(uploadService.createItem).toHaveBeenCalledWith(component.uploadForm.value, ITEM_TYPES.REAL_ESTATE);
       expect(component.loading).toBe(true);
     });
 
@@ -295,30 +276,20 @@ describe('UploadRealestateComponent', () => {
       });
 
       it('should upload the item if the service return done', () => {
-        spyOn(uploadService, 'createItem').and.returnValue(
-          of(MOCK_UPLOAD_OUTPUT_DONE)
-        );
+        spyOn(uploadService, 'createItem').and.returnValue(of(MOCK_UPLOAD_OUTPUT_DONE));
         spyOn(component, 'onUploaded');
 
         fixture.detectChanges();
         component.onSubmit();
 
         expect(uploadService.createItem).toHaveBeenCalledTimes(1);
-        expect(uploadService.createItem).toHaveBeenCalledWith(
-          component.uploadForm.value,
-          ITEM_TYPES.REAL_ESTATE
-        );
+        expect(uploadService.createItem).toHaveBeenCalledWith(component.uploadForm.value, ITEM_TYPES.REAL_ESTATE);
         expect(component.onUploaded).toHaveBeenCalledTimes(1);
-        expect(component.onUploaded).toHaveBeenCalledWith(
-          MOCK_UPLOAD_OUTPUT_DONE.file.response,
-          UPLOAD_ACTION.created
-        );
+        expect(component.onUploaded).toHaveBeenCalledWith(MOCK_UPLOAD_OUTPUT_DONE.file.response, UPLOAD_ACTION.created);
       });
 
       it('should do nothing if the service not return done', () => {
-        spyOn(uploadService, 'createItem').and.returnValue(
-          of(MOCK_UPLOAD_OUTPUT_PENDING)
-        );
+        spyOn(uploadService, 'createItem').and.returnValue(of(MOCK_UPLOAD_OUTPUT_PENDING));
         spyOn(component, 'onUploaded');
 
         fixture.detectChanges();
@@ -329,9 +300,7 @@ describe('UploadRealestateComponent', () => {
       });
 
       it('should show error if the service fails', () => {
-        spyOn(uploadService, 'createItem').and.returnValue(
-          throwError({ message: 'error' })
-        );
+        spyOn(uploadService, 'createItem').and.returnValue(throwError({ message: 'error' }));
         spyOn(component, 'onUploaded');
         spyOn(errorService, 'i18nError');
 
@@ -341,10 +310,7 @@ describe('UploadRealestateComponent', () => {
         expect(uploadService.createItem).toHaveBeenCalledTimes(1);
         expect(component.onUploaded).not.toHaveBeenCalled();
         expect(errorService.i18nError).toHaveBeenCalledTimes(1);
-        expect(errorService.i18nError).toHaveBeenCalledWith(
-          'serverError',
-          'error'
-        );
+        expect(errorService.i18nError).toHaveBeenCalledWith('serverError', 'error');
       });
     });
 
@@ -355,29 +321,19 @@ describe('UploadRealestateComponent', () => {
       });
 
       it('should upload the item if the service success', () => {
-        spyOn(uploadService, 'updateItem').and.returnValue(
-          of({ content: MOCK_REALESTATE_RESPONSE_CONTENT })
-        );
+        spyOn(uploadService, 'updateItem').and.returnValue(of({ content: MOCK_REALESTATE_RESPONSE_CONTENT }));
         spyOn(component, 'onUploaded');
         fixture.detectChanges();
         component.onSubmit();
 
         expect(uploadService.updateItem).toHaveBeenCalledTimes(1);
-        expect(uploadService.updateItem).toHaveBeenCalledWith(
-          component.uploadForm.value,
-          ITEM_TYPES.REAL_ESTATE
-        );
+        expect(uploadService.updateItem).toHaveBeenCalledWith(component.uploadForm.value, ITEM_TYPES.REAL_ESTATE);
         expect(component.onUploaded).toHaveBeenCalledTimes(1);
-        expect(component.onUploaded).toHaveBeenCalledWith(
-          MOCK_REALESTATE_RESPONSE_CONTENT,
-          UPLOAD_ACTION.updated
-        );
+        expect(component.onUploaded).toHaveBeenCalledWith(MOCK_REALESTATE_RESPONSE_CONTENT, UPLOAD_ACTION.updated);
       });
 
       it('should show error if the service fails', () => {
-        spyOn(uploadService, 'updateItem').and.returnValue(
-          throwError({ message: 'error' })
-        );
+        spyOn(uploadService, 'updateItem').and.returnValue(throwError({ message: 'error' }));
         spyOn(component, 'onUploaded');
         spyOn(errorService, 'i18nError');
 
@@ -387,10 +343,7 @@ describe('UploadRealestateComponent', () => {
         expect(uploadService.updateItem).toHaveBeenCalledTimes(1);
         expect(component.onUploaded).not.toHaveBeenCalled();
         expect(errorService.i18nError).toHaveBeenCalledTimes(1);
-        expect(errorService.i18nError).toHaveBeenCalledWith(
-          'serverError',
-          'error'
-        );
+        expect(errorService.i18nError).toHaveBeenCalledWith('serverError', 'error');
       });
     });
   });
@@ -406,10 +359,7 @@ describe('UploadRealestateComponent', () => {
 
       component.onUploaded(response, action);
 
-      expect(router.navigate).toHaveBeenCalledWith([
-        '/catalog/list',
-        { [action]: true, itemId: response.id },
-      ]);
+      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', { [action]: true, itemId: response.id }]);
     });
 
     it('should redirect with onHold true', () => {
@@ -499,9 +449,7 @@ describe('UploadRealestateComponent', () => {
       component.onError('response');
 
       expect(component.loading).toBe(false);
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.UPLOADFORM_ERROR
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.UPLOADFORM_ERROR);
     });
     it('should show toast with default message', () => {
       spyOn(errorService, 'i18nError').and.callThrough();
@@ -518,10 +466,7 @@ describe('UploadRealestateComponent', () => {
       component.onError({ message: 'error' });
 
       expect(errorService.i18nError).toHaveBeenCalledTimes(1);
-      expect(errorService.i18nError).toHaveBeenCalledWith(
-        'serverError',
-        'error'
-      );
+      expect(errorService.i18nError).toHaveBeenCalledWith('serverError', 'error');
     });
   });
 
@@ -550,10 +495,7 @@ describe('UploadRealestateComponent', () => {
 
       component.emitLocation();
 
-      expect(itemService.updateRealEstateLocation).toHaveBeenCalledWith(
-        MOCK_REALESTATE.id,
-        USER_LOCATION_COORDINATES
-      );
+      expect(itemService.updateRealEstateLocation).toHaveBeenCalledWith(MOCK_REALESTATE.id, USER_LOCATION_COORDINATES);
     });
 
     it('should emit location updated event', () => {
@@ -583,9 +525,7 @@ describe('UploadRealestateComponent', () => {
     });
 
     it('should set itemPreview', () => {
-      expect(componentInstance.itemPreview).toEqual(
-        UPLOAD_FORM_REALESTATE_VALUES
-      );
+      expect(componentInstance.itemPreview).toEqual(UPLOAD_FORM_REALESTATE_VALUES);
     });
 
     it('should submit form', fakeAsync(() => {
@@ -639,14 +579,8 @@ describe('UploadRealestateComponent', () => {
       component.onDeleteImage(UPLOAD_FILE_DONE.id);
 
       expect(uploadService.onDeleteImage).toHaveBeenCalledTimes(1);
-      expect(uploadService.onDeleteImage).toHaveBeenCalledWith(
-        component.item.id,
-        UPLOAD_FILE_DONE.id
-      );
-      expect(component.uploadForm.get('images').value).toEqual([
-        UPLOAD_FILE_DONE,
-        UPLOAD_FILE_DONE_2,
-      ]);
+      expect(uploadService.onDeleteImage).toHaveBeenCalledWith(component.item.id, UPLOAD_FILE_DONE.id);
+      expect(component.uploadForm.get('images').value).toEqual([UPLOAD_FILE_DONE, UPLOAD_FILE_DONE_2]);
     });
     it('should remove imagen from form is service is successful', () => {
       component.item = MOCK_REALESTATE;
@@ -658,16 +592,9 @@ describe('UploadRealestateComponent', () => {
       component.onDeleteImage(UPLOAD_FILE_DONE.id);
 
       expect(uploadService.onDeleteImage).toHaveBeenCalledTimes(1);
-      expect(uploadService.onDeleteImage).toHaveBeenCalledWith(
-        component.item.id,
-        UPLOAD_FILE_DONE.id
-      );
-      expect(component.uploadForm.get('images').value).not.toContain(
-        UPLOAD_FILE_DONE
-      );
-      expect(component.uploadForm.get('images').value).toContain(
-        UPLOAD_FILE_DONE_2
-      );
+      expect(uploadService.onDeleteImage).toHaveBeenCalledWith(component.item.id, UPLOAD_FILE_DONE.id);
+      expect(component.uploadForm.get('images').value).not.toContain(UPLOAD_FILE_DONE);
+      expect(component.uploadForm.get('images').value).toContain(UPLOAD_FILE_DONE_2);
     });
   });
 
@@ -681,29 +608,20 @@ describe('UploadRealestateComponent', () => {
       component.onOrderImages();
 
       expect(uploadService.updateOrder).toHaveBeenCalledTimes(1);
-      expect(uploadService.updateOrder).toHaveBeenCalledWith(
-        images,
-        MOCK_REALESTATE.id
-      );
+      expect(uploadService.updateOrder).toHaveBeenCalledWith(images, MOCK_REALESTATE.id);
     });
   });
   describe('add single imagen', () => {
     it('should show success toast', () => {
       component.item = MOCK_REALESTATE;
       const images = [UPLOAD_FILE_DONE, UPLOAD_FILE_2];
-      spyOn(uploadService, 'uploadSingleImage').and.returnValue(
-        of(MOCK_UPLOAD_OUTPUT_DONE)
-      );
+      spyOn(uploadService, 'uploadSingleImage').and.returnValue(of(MOCK_UPLOAD_OUTPUT_DONE));
       spyOn(errorService, 'i18nSuccess').and.callThrough();
 
       component.onAddImage(images[1]);
 
       expect(uploadService.uploadSingleImage).toHaveBeenCalledTimes(1);
-      expect(uploadService.uploadSingleImage).toHaveBeenCalledWith(
-        images[1],
-        MOCK_REALESTATE.id,
-        ITEM_TYPES.REAL_ESTATE
-      );
+      expect(uploadService.uploadSingleImage).toHaveBeenCalledWith(images[1], MOCK_REALESTATE.id, ITEM_TYPES.REAL_ESTATE);
       expect(errorService.i18nSuccess).toHaveBeenCalledTimes(1);
       expect(errorService.i18nSuccess).toHaveBeenCalledWith('imageUploaded');
     });
@@ -713,26 +631,16 @@ describe('UploadRealestateComponent', () => {
       component.uploadForm.patchValue({
         images,
       });
-      spyOn(uploadService, 'uploadSingleImage').and.returnValue(
-        throwError('error')
-      );
+      spyOn(uploadService, 'uploadSingleImage').and.returnValue(throwError('error'));
       spyOn(errorService, 'i18nError').and.callThrough();
 
       component.onAddImage(images[1]);
 
       expect(uploadService.uploadSingleImage).toHaveBeenCalledTimes(1);
-      expect(uploadService.uploadSingleImage).toHaveBeenCalledWith(
-        images[1],
-        MOCK_REALESTATE.id,
-        ITEM_TYPES.REAL_ESTATE
-      );
+      expect(uploadService.uploadSingleImage).toHaveBeenCalledWith(images[1], MOCK_REALESTATE.id, ITEM_TYPES.REAL_ESTATE);
       expect(errorService.i18nError).toHaveBeenCalledTimes(1);
-      expect(component.uploadForm.get('images').value).not.toContain(
-        UPLOAD_FILE_2
-      );
-      expect(component.uploadForm.get('images').value).toContain(
-        UPLOAD_FILE_DONE
-      );
+      expect(component.uploadForm.get('images').value).not.toContain(UPLOAD_FILE_2);
+      expect(component.uploadForm.get('images').value).toContain(UPLOAD_FILE_DONE);
     });
   });
 });

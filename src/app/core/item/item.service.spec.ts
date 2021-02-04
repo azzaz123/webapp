@@ -1,17 +1,8 @@
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-  TestRequest,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { find } from 'lodash-es';
 import { environment } from '../../../environments/environment';
-import {
-  CAR_DATA,
-  CAR_DATA_FORM,
-  CAR_INFO,
-  MOCK_CAR,
-} from '../../../tests/car.fixtures.spec';
+import { CAR_DATA, CAR_DATA_FORM, CAR_INFO, MOCK_CAR } from '../../../tests/car.fixtures.spec';
 import {
   ACTIONS_ALLOWED_CANNOT_MARK_SOLD_RESPONSE,
   ACTIONS_ALLOWED_CAN_MARK_SOLD_RESPONSE,
@@ -251,9 +242,7 @@ describe('ItemService', () => {
     });
 
     it('should map real estate data', () => {
-      const car: Realestate = <Realestate>(
-        service['mapRecordData'](REALESTATE_DATA)
-      );
+      const car: Realestate = <Realestate>service['mapRecordData'](REALESTATE_DATA);
 
       expect(car).toEqual(MOCK_REALESTATE);
     });
@@ -307,9 +296,7 @@ describe('ItemService', () => {
           average_hex_color: '',
           urls_by_size: ITEMS_DATA_V3[0].content.image,
         });
-        expect(item.webLink).toEqual(
-          ITEM_BASE_PATH + ITEMS_DATA_V3[0].content.web_slug
-        );
+        expect(item.webLink).toEqual(ITEM_BASE_PATH + ITEMS_DATA_V3[0].content.web_slug);
         expect(item.bumpExpiringDate).toBeUndefined();
         expect(response.init).toBe(INIT + 10);
       });
@@ -366,19 +353,14 @@ describe('ItemService', () => {
       expect(item.id).toBe(ITEMS_DATA_v3_FAVORITES[0].id);
       expect(item.favorited).toBe(true);
       expect(item.title).toBe(ITEMS_DATA_v3_FAVORITES[0].content.title);
-      expect(item.description).toBe(
-        ITEMS_DATA_v3_FAVORITES[0].content.description
-      );
+      expect(item.description).toBe(ITEMS_DATA_v3_FAVORITES[0].content.description);
       expect(item.salePrice).toBe(ITEMS_DATA_v3_FAVORITES[0].content.price);
-      expect(item.currencyCode).toBe(
-        ITEMS_DATA_v3_FAVORITES[0].content.currency
-      );
+      expect(item.currencyCode).toBe(ITEMS_DATA_v3_FAVORITES[0].content.currency);
       expect(item.flags).toEqual(ITEMS_DATA_v3_FAVORITES[0].content.flags);
       expect(item.mainImage).toEqual({
         id: '1',
         original_width: ITEMS_DATA_v3_FAVORITES[0].content.image.original_width,
-        original_height:
-          ITEMS_DATA_v3_FAVORITES[0].content.image.original_height,
+        original_height: ITEMS_DATA_v3_FAVORITES[0].content.image.original_height,
         average_hex_color: '',
         urls_by_size: ITEMS_DATA_v3_FAVORITES[0].content.image,
       });
@@ -500,9 +482,7 @@ describe('ItemService', () => {
       const expectedUrl = `${environment.baseUrl}${WEB_ITEMS_API_URL}/${ITEM_ID}/available-reactivation-products`;
       let response: Product;
 
-      service
-        .getAvailableReactivationProducts(ITEM_ID)
-        .subscribe((r) => (response = r));
+      service.getAvailableReactivationProducts(ITEM_ID).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(PRODUCTS_RESPONSE);
 
@@ -524,9 +504,7 @@ describe('ItemService', () => {
       expect(req.request.url).toBe(expectedUrl);
       expect(req.request.method).toBe('POST');
       expect(req.request.body).toEqual([ORDER]);
-      expect(req.request.headers.get('X-PaymentProvider')).toEqual(
-        PAYMENT_PROVIDER
-      );
+      expect(req.request.headers.get('X-PaymentProvider')).toEqual(PAYMENT_PROVIDER);
     });
   });
 
@@ -542,9 +520,7 @@ describe('ItemService', () => {
       expect(req.request.url).toBe(expectedUrl);
       expect(req.request.method).toBe('POST');
       expect(req.request.body).toEqual([ORDER]);
-      expect(req.request.headers.get('X-PaymentProvider')).toEqual(
-        PAYMENT_PROVIDER
-      );
+      expect(req.request.headers.get('X-PaymentProvider')).toEqual(PAYMENT_PROVIDER);
     });
   });
 
@@ -554,9 +530,7 @@ describe('ItemService', () => {
         const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}`;
         let response: any;
 
-        service
-          .update(ITEM_DATA, ITEM_TYPES.CONSUMER_GOODS)
-          .subscribe((r) => (response = r));
+        service.update(ITEM_DATA, ITEM_TYPES.CONSUMER_GOODS).subscribe((r) => (response = r));
         const req: TestRequest = httpMock.expectOne(expectedUrl);
         req.flush(ITEM_DATA_V3);
 
@@ -574,10 +548,7 @@ describe('ItemService', () => {
         const req: TestRequest = httpMock.expectOne(expectedUrl);
         req.flush(ITEM_DATA_V3);
 
-        expect(eventService.emit).toHaveBeenCalledWith(
-          EventService.ITEM_UPDATED,
-          ITEM_DATA
-        );
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_UPDATED, ITEM_DATA);
       });
     });
 
@@ -596,12 +567,8 @@ describe('ItemService', () => {
         expect(response).toEqual(CAR_DATA);
         expect(req.request.method).toBe('PUT');
         expect(req.request.headers.get('X-DeviceOS')).toBe('0');
-        expect(req.request.headers.get('X-PaymentProvider')).toBe(
-          PAYMENT_PROVIDER
-        );
-        expect(req.request.headers.get('Accept')).toBe(
-          'application/vnd.edit-car-v2+json'
-        );
+        expect(req.request.headers.get('X-PaymentProvider')).toBe(PAYMENT_PROVIDER);
+        expect(req.request.headers.get('Accept')).toBe('application/vnd.edit-car-v2+json');
       });
 
       it('should emit ITEM_UPDATED event', () => {
@@ -612,10 +579,7 @@ describe('ItemService', () => {
         const req: TestRequest = httpMock.expectOne(expectedUrl);
         req.flush({});
 
-        expect(eventService.emit).toHaveBeenCalledWith(
-          EventService.ITEM_UPDATED,
-          CAR_DATA_FORM
-        );
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_UPDATED, CAR_DATA_FORM);
       });
     });
 
@@ -624,11 +588,9 @@ describe('ItemService', () => {
         const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/real_estate/${ITEM_ID}`;
         let response: any;
 
-        service
-          .update(UPLOAD_FORM_REALESTATE_VALUES, ITEM_TYPES.REAL_ESTATE)
-          .subscribe((r: any) => {
-            response = r;
-          });
+        service.update(UPLOAD_FORM_REALESTATE_VALUES, ITEM_TYPES.REAL_ESTATE).subscribe((r: any) => {
+          response = r;
+        });
         const req: TestRequest = httpMock.expectOne(expectedUrl);
         req.flush(REALESTATE_DATA);
 
@@ -642,16 +604,11 @@ describe('ItemService', () => {
         const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/real_estate/${ITEM_ID}`;
         spyOn(eventService, 'emit');
 
-        service
-          .update(UPLOAD_FORM_REALESTATE_VALUES, ITEM_TYPES.REAL_ESTATE)
-          .subscribe();
+        service.update(UPLOAD_FORM_REALESTATE_VALUES, ITEM_TYPES.REAL_ESTATE).subscribe();
         const req: TestRequest = httpMock.expectOne(expectedUrl);
         req.flush({});
 
-        expect(eventService.emit).toHaveBeenCalledWith(
-          EventService.ITEM_UPDATED,
-          UPLOAD_FORM_REALESTATE_VALUES
-        );
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_UPDATED, UPLOAD_FORM_REALESTATE_VALUES);
       });
     });
   });
@@ -660,9 +617,7 @@ describe('ItemService', () => {
     it('should update the real estate item location', () => {
       const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/real_estate/${ITEM_ID}/location`;
       const expectedBody = REALESTATE_CONTENT_DATA.location;
-      service
-        .updateRealEstateLocation(ITEM_ID, REALESTATE_CONTENT_DATA.location)
-        .subscribe();
+      service.updateRealEstateLocation(ITEM_ID, REALESTATE_CONTENT_DATA.location).subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush({});
 
@@ -739,9 +694,7 @@ describe('ItemService', () => {
       const expectedUrl = `${environment.baseUrl}${WEB_ITEMS_API_URL}/available-visibility-products?${expectedUrlParams}`;
       let response: ItemWithProducts[];
 
-      service
-        .getItemsWithAvailableProducts(ITEM_IDS)
-        .subscribe((r) => (response = r));
+      service.getItemsWithAvailableProducts(ITEM_IDS).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE);
 
@@ -758,9 +711,7 @@ describe('ItemService', () => {
       const expectedUrl = `${environment.baseUrl}${WEB_ITEMS_API_URL}/available-visibility-products?${expectedUrlParams}`;
       let response: CheapestProducts;
 
-      service
-        .getCheapestProductPrice(ITEM_IDS)
-        .subscribe((r) => (response = r));
+      service.getCheapestProductPrice(ITEM_IDS).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE);
 
@@ -775,9 +726,7 @@ describe('ItemService', () => {
       const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}/actions-allowed`;
       let response: boolean;
 
-      service
-        .canDoAction('mark_sold', ITEM_ID)
-        .subscribe((r) => (response = r));
+      service.canDoAction('mark_sold', ITEM_ID).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(ACTIONS_ALLOWED_CAN_MARK_SOLD_RESPONSE);
 
@@ -790,9 +739,7 @@ describe('ItemService', () => {
       const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}/actions-allowed`;
       let response: boolean;
 
-      service
-        .canDoAction('mark_sold', ITEM_ID)
-        .subscribe((r) => (response = r));
+      service.canDoAction('mark_sold', ITEM_ID).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(ACTIONS_ALLOWED_CANNOT_MARK_SOLD_RESPONSE);
 
@@ -823,9 +770,7 @@ describe('ItemService', () => {
       const expectedUrl = `${environment.baseUrl}${WEB_ITEMS_API_URL}/available-urgent-products?${expectedUrlParams}`;
       let response: Product;
 
-      service
-        .getUrgentProductByCategoryId(ITEM_CATEGORY_ID.toString())
-        .subscribe((r) => (response = r));
+      service.getUrgentProductByCategoryId(ITEM_CATEGORY_ID.toString()).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(PRODUCTS_RESPONSE);
 
@@ -964,10 +909,7 @@ describe('ItemService', () => {
       let expectedUrlParams = `status=${ITEM_STATUSES[STATUS]}&init=${INIT}&end=${END}&newVersion=true`;
       let expectedUrl = `${environment.baseUrl}${PROTOOL_API_URL}/mines?${expectedUrlParams}`;
 
-      service['items'][STATUS] = [
-        ITEM_DATA_V4.content,
-        ITEM_DATA_V5.content,
-      ] as any;
+      service['items'][STATUS] = [ITEM_DATA_V4.content, ITEM_DATA_V5.content] as any;
       service.mines(1, 10, 'date_desc').subscribe();
 
       httpMock.expectNone(expectedUrl);
@@ -976,36 +918,26 @@ describe('ItemService', () => {
     it('should filter items by term', () => {
       let observableResponse: Item[];
 
-      service
-        .mines(1, 10, 'date_desc', undefined, 'title')
-        .subscribe((r) => (observableResponse = r));
+      service.mines(1, 10, 'date_desc', undefined, 'title').subscribe((r) => (observableResponse = r));
       testPaginationAndGetMines();
 
       observableResponse = undefined;
-      service
-        .mines(1, 10, 'date_desc', undefined, 'title2')
-        .subscribe((r) => (observableResponse = r));
+      service.mines(1, 10, 'date_desc', undefined, 'title2').subscribe((r) => (observableResponse = r));
 
       expect(observableResponse.length).toBe(0);
 
       observableResponse = undefined;
-      service
-        .mines(1, 10, 'date_desc', undefined, 'test')
-        .subscribe((r) => (observableResponse = r));
+      service.mines(1, 10, 'date_desc', undefined, 'test').subscribe((r) => (observableResponse = r));
 
       expect(observableResponse.length).toBe(0);
 
       observableResponse = undefined;
-      service
-        .mines(1, 10, 'date_desc', undefined, 'description')
-        .subscribe((r) => (observableResponse = r));
+      service.mines(1, 10, 'date_desc', undefined, 'description').subscribe((r) => (observableResponse = r));
 
       expect(observableResponse.length).toBe(4);
 
       observableResponse = undefined;
-      service
-        .mines(1, 10, 'date_desc', undefined, 'description2')
-        .subscribe((r) => (observableResponse = r));
+      service.mines(1, 10, 'date_desc', undefined, 'description2').subscribe((r) => (observableResponse = r));
 
       expect(observableResponse.length).toBe(0);
     });
@@ -1013,9 +945,7 @@ describe('ItemService', () => {
     it('should sort items by date', () => {
       let observableResponse: Item[];
 
-      service
-        .mines(1, 10, 'date_desc')
-        .subscribe((r) => (observableResponse = r));
+      service.mines(1, 10, 'date_desc').subscribe((r) => (observableResponse = r));
       testPaginationAndGetMines();
 
       expect(observableResponse[0].publishedDate).toBe(ITEM_PUBLISHED_DATE);
@@ -1024,18 +954,14 @@ describe('ItemService', () => {
       expect(observableResponse[3].publishedDate).toBe(ITEM_PUBLISHED_DATE);
 
       observableResponse = undefined;
-      service
-        .mines(1, 10, 'date_asc')
-        .subscribe((r) => (observableResponse = r));
+      service.mines(1, 10, 'date_asc').subscribe((r) => (observableResponse = r));
       expect(observableResponse[0].publishedDate).toBe(ITEM_PUBLISHED_DATE);
       expect(observableResponse[1].publishedDate).toBe(ITEM_PUBLISHED_DATE);
       expect(observableResponse[2].publishedDate).toBe(ITEM_PUBLISHED_DATE);
       expect(observableResponse[3].publishedDate).toBe(ITEM_PUBLISHED_DATE);
 
       observableResponse = undefined;
-      service
-        .mines(1, 10, 'price_asc')
-        .subscribe((r) => (observableResponse = r));
+      service.mines(1, 10, 'price_asc').subscribe((r) => (observableResponse = r));
 
       expect(observableResponse[0].salePrice).toBe(ITEM_SALE_PRICE);
       expect(observableResponse[1].salePrice).toBe(ITEM_SALE_PRICE);
@@ -1044,9 +970,7 @@ describe('ItemService', () => {
 
       observableResponse = undefined;
 
-      service
-        .mines(1, 10, 'price_desc')
-        .subscribe((r) => (observableResponse = r));
+      service.mines(1, 10, 'price_desc').subscribe((r) => (observableResponse = r));
 
       expect(observableResponse[0].salePrice).toBe(ITEM_SALE_PRICE);
       expect(observableResponse[1].salePrice).toBe(ITEM_SALE_PRICE);
@@ -1137,28 +1061,16 @@ describe('ItemService', () => {
 
     it('should remove item from pending array', () => {
       expect(service['items']['pending'].length).toBe(TOTAL - 3);
-      expect(
-        find(service['items']['pending'], { id: ITEMS_BULK_UPDATED_IDS[0] })
-      ).toBeFalsy();
-      expect(
-        find(service['items']['pending'], { id: ITEMS_BULK_UPDATED_IDS[1] })
-      ).toBeFalsy();
-      expect(
-        find(service['items']['pending'], { id: ITEMS_BULK_UPDATED_IDS[2] })
-      ).toBeFalsy();
+      expect(find(service['items']['pending'], { id: ITEMS_BULK_UPDATED_IDS[0] })).toBeFalsy();
+      expect(find(service['items']['pending'], { id: ITEMS_BULK_UPDATED_IDS[1] })).toBeFalsy();
+      expect(find(service['items']['pending'], { id: ITEMS_BULK_UPDATED_IDS[2] })).toBeFalsy();
     });
 
     it('should add item to active array', () => {
       expect(service['items']['active'].length).toBe(TOTAL + 3);
-      expect(
-        find(service['items']['active'], { id: ITEMS_BULK_UPDATED_IDS[0] })
-      ).toBeTruthy();
-      expect(
-        find(service['items']['active'], { id: ITEMS_BULK_UPDATED_IDS[1] })
-      ).toBeTruthy();
-      expect(
-        find(service['items']['active'], { id: ITEMS_BULK_UPDATED_IDS[2] })
-      ).toBeTruthy();
+      expect(find(service['items']['active'], { id: ITEMS_BULK_UPDATED_IDS[0] })).toBeTruthy();
+      expect(find(service['items']['active'], { id: ITEMS_BULK_UPDATED_IDS[1] })).toBeTruthy();
+      expect(find(service['items']['active'], { id: ITEMS_BULK_UPDATED_IDS[2] })).toBeTruthy();
     });
 
     it('should call deselectItems', () => {
@@ -1202,28 +1114,16 @@ describe('ItemService', () => {
 
     it('should remove item from active array', () => {
       expect(service['items']['active'].length).toBe(TOTAL - 3);
-      expect(
-        find(service['items']['active'], { id: ITEMS_BULK_UPDATED_IDS[0] })
-      ).toBeFalsy();
-      expect(
-        find(service['items']['active'], { id: ITEMS_BULK_UPDATED_IDS[1] })
-      ).toBeFalsy();
-      expect(
-        find(service['items']['active'], { id: ITEMS_BULK_UPDATED_IDS[2] })
-      ).toBeFalsy();
+      expect(find(service['items']['active'], { id: ITEMS_BULK_UPDATED_IDS[0] })).toBeFalsy();
+      expect(find(service['items']['active'], { id: ITEMS_BULK_UPDATED_IDS[1] })).toBeFalsy();
+      expect(find(service['items']['active'], { id: ITEMS_BULK_UPDATED_IDS[2] })).toBeFalsy();
     });
 
     it('should add item to pending array', () => {
       expect(service['items']['pending'].length).toBe(TOTAL + 3);
-      expect(
-        find(service['items']['pending'], { id: ITEMS_BULK_UPDATED_IDS[0] })
-      ).toBeTruthy();
-      expect(
-        find(service['items']['pending'], { id: ITEMS_BULK_UPDATED_IDS[1] })
-      ).toBeTruthy();
-      expect(
-        find(service['items']['pending'], { id: ITEMS_BULK_UPDATED_IDS[2] })
-      ).toBeTruthy();
+      expect(find(service['items']['pending'], { id: ITEMS_BULK_UPDATED_IDS[0] })).toBeTruthy();
+      expect(find(service['items']['pending'], { id: ITEMS_BULK_UPDATED_IDS[1] })).toBeTruthy();
+      expect(find(service['items']['pending'], { id: ITEMS_BULK_UPDATED_IDS[2] })).toBeTruthy();
     });
 
     it('should call deselectItems', () => {
@@ -1238,18 +1138,12 @@ describe('ItemService', () => {
   describe('getItemAndSetPurchaseInfo', () => {
     it('should return item by id', () => {
       service['items']['active'] = createItemsArray(8);
-      expect(service.getItemAndSetPurchaseInfo('1', PURCHASES[0])).toEqual(
-        service['items']['active'][0]
-      );
-      expect(service['items']['active'][0].bumpExpiringDate).toBe(
-        1510221655715
-      );
+      expect(service.getItemAndSetPurchaseInfo('1', PURCHASES[0])).toEqual(service['items']['active'][0]);
+      expect(service['items']['active'][0].bumpExpiringDate).toBe(1510221655715);
     });
     it('should return undefined item if not found', () => {
       service['items']['active'] = createItemsArray(8);
-      expect(
-        service.getItemAndSetPurchaseInfo('20', PURCHASES[0])
-      ).toBeUndefined();
+      expect(service.getItemAndSetPurchaseInfo('20', PURCHASES[0])).toBeUndefined();
     });
   });
 
@@ -1271,9 +1165,7 @@ describe('ItemService', () => {
       const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/cars/info?${expectedUrlParams}`;
       let response: CarInfo;
 
-      service
-        .getCarInfo(BRAND, MODEL, VERSION)
-        .subscribe((r) => (response = r));
+      service.getCarInfo(BRAND, MODEL, VERSION).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(CAR_INFO);
 
@@ -1331,9 +1223,7 @@ describe('ItemService', () => {
       req.flush(MOCK_LISTING_FEE_PRODUCT);
 
       expect(req.request.url).toEqual(expectedUrl);
-      expect(response).toEqual(
-        MOCK_LISTING_FEE_PRODUCT.product_group.products[0]
-      );
+      expect(response).toEqual(MOCK_LISTING_FEE_PRODUCT.product_group.products[0]);
       expect(req.request.method).toBe('GET');
     });
   });

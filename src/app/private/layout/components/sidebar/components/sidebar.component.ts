@@ -14,10 +14,7 @@ export class SidebarComponent implements OnInit {
   @Input() isProfile: boolean;
   public isProfessional: boolean;
 
-  constructor(
-    private userService: UserService,
-    public unreadChatMessagesService: UnreadChatMessagesService
-  ) {}
+  constructor(private userService: UserService, public unreadChatMessagesService: UnreadChatMessagesService) {}
 
   ngOnInit() {
     this.userService.me().subscribe((user) => {

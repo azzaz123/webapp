@@ -19,14 +19,7 @@ describe('ItemCardComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ItemCardComponent],
-      imports: [
-        CommonModule,
-        FavouriteIconModule,
-        CustomCurrencyModule,
-        SvgIconModule,
-        ImageFallbackModule,
-        HttpClientTestingModule,
-      ],
+      imports: [CommonModule, FavouriteIconModule, CustomCurrencyModule, SvgIconModule, ImageFallbackModule, HttpClientTestingModule],
     }).compileComponents();
   });
 
@@ -53,9 +46,7 @@ describe('ItemCardComponent', () => {
         });
 
         it('should show item as favourite', () => {
-          expect(
-            favouriteIconElement.getAttribute(favouriteIconAttr) === 'true'
-          ).toBeTruthy();
+          expect(favouriteIconElement.getAttribute(favouriteIconAttr) === 'true').toBeTruthy();
         });
 
         it('should change favourite state on favourite icon click', () => {
@@ -75,9 +66,7 @@ describe('ItemCardComponent', () => {
         });
 
         it('should show item as NOT favourite', () => {
-          expect(
-            favouriteIconElement.getAttribute(favouriteIconAttr) === 'false'
-          ).toBeTruthy();
+          expect(favouriteIconElement.getAttribute(favouriteIconAttr) === 'false').toBeTruthy();
         });
 
         it('should change favourite state on favourite icon click', () => {

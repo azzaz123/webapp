@@ -1,10 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
 import { FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH } from '@core/item/item';
 import { CarouselImage } from './images-carousel.interface';
@@ -20,9 +14,7 @@ export class ImagesCarouselComponent {
 
   @ViewChild(NgbCarousel) public carousel: NgbCarousel;
   @Input() images: string[];
-  @Output() imageClick: EventEmitter<CarouselImage> = new EventEmitter<
-    CarouselImage
-  >();
+  @Output() imageClick: EventEmitter<CarouselImage> = new EventEmitter<CarouselImage>();
 
   constructor() {}
 

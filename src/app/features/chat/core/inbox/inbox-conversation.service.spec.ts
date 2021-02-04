@@ -1,7 +1,4 @@
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { EventService } from '@core/event/event.service';
 import { AccessTokenService } from '@core/http/access-token.service';
@@ -12,10 +9,7 @@ import { RemoteConsoleService } from '@core/remote-console';
 import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
 import { MOCK_API_CONVERSATION } from '@fixtures/conversation.fixtures.spec';
-import {
-  createInboxConversationsArray,
-  CREATE_MOCK_INBOX_CONVERSATION,
-} from '@fixtures/inbox.fixtures.spec';
+import { createInboxConversationsArray, CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/inbox.fixtures.spec';
 import { MockedItemService } from '@fixtures/item.fixtures.spec';
 import { createInboxMessagesArray } from '@fixtures/message.fixtures.spec';
 import { RealTimeServiceMock } from '@fixtures/real-time.fixtures.spec';
@@ -30,17 +24,9 @@ import { uniq } from 'lodash-es';
 import * as moment from 'moment';
 import { of } from 'rxjs';
 import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
-import {
-  InboxMessage,
-  MessageStatus,
-  MessageType,
-  InboxConversation,
-} from '../model';
+import { InboxMessage, MessageStatus, MessageType, InboxConversation } from '../model';
 import { ChatSignal, ChatSignalType } from '../model/chat-signal';
-import {
-  ERROR_CODE_TOO_MANY_NEW_CONVERSATIONS,
-  InboxConversationService,
-} from './inbox-conversation.service';
+import { ERROR_CODE_TOO_MANY_NEW_CONVERSATIONS, InboxConversationService } from './inbox-conversation.service';
 
 describe('InboxConversationService', () => {
   let service: InboxConversationService;
@@ -125,12 +111,7 @@ describe('InboxConversationService', () => {
 
     it('should call procesNewChatSignal when a CHAT_SIGNAL event is emitted', () => {
       spyOn(service, 'processNewChatSignal');
-      const signal = new ChatSignal(
-        ChatSignalType.SENT,
-        'thread id',
-        null,
-        'message-id'
-      );
+      const signal = new ChatSignal(ChatSignalType.SENT, 'thread id', null, 'message-id');
 
       eventService.emit(EventService.CHAT_SIGNAL, signal);
 
@@ -151,10 +132,7 @@ describe('InboxConversationService', () => {
       service.openConversation(conversation);
 
       expect(service.resendPendingMessages).toHaveBeenCalled();
-      expect(eventService.emit).toHaveBeenCalledWith(
-        EventService.CURRENT_CONVERSATION_SET,
-        conversation
-      );
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CURRENT_CONVERSATION_SET, conversation);
     });
 
     it('should call realTime.sendRead if the conversation has unread messages', () => {
@@ -163,10 +141,7 @@ describe('InboxConversationService', () => {
       service.openConversation(conversation);
 
       expect(service.resendPendingMessages).toHaveBeenCalled();
-      expect(realTime.sendRead).toHaveBeenCalledWith(
-        conversation.user.id,
-        conversation.id
-      );
+      expect(realTime.sendRead).toHaveBeenCalledWith(conversation.user.id, conversation.id);
     });
 
     it('should NOT call realTime.sendRead if the conversation does NOT have unread messages', () => {
@@ -182,30 +157,22 @@ describe('InboxConversationService', () => {
   describe('openConversationByConversationId$', () => {
     it('should return undefined if id is NULL', () => {
       service.conversations = null;
-      service
-        .openConversationByConversationId$(null)
-        .subscribe((conversation) => expect(conversation).toBeNull());
+      service.openConversationByConversationId$(null).subscribe((conversation) => expect(conversation).toBeNull());
     });
 
     it('should return undefined if list of conversations is empty', () => {
       service.conversations = [];
-      service
-        .openConversationByConversationId$(null)
-        .subscribe((conversation) => expect(conversation).toBeUndefined());
+      service.openConversationByConversationId$(null).subscribe((conversation) => expect(conversation).toBeUndefined());
     });
 
     it('should return undefined if conversations list does not contains conversation with id', () => {
       service.conversations = createInboxConversationsArray(1);
-      service
-        .openConversationByConversationId$('ID_DOES_NOT_EXIST')
-        .subscribe((conversation) => expect(conversation).toBeUndefined());
+      service.openConversationByConversationId$('ID_DOES_NOT_EXIST').subscribe((conversation) => expect(conversation).toBeUndefined());
     });
 
     it('should return undefined if conversations list does not contains conversation with id', () => {
       service.conversations = createInboxConversationsArray(5);
-      service
-        .openConversationByConversationId$('4')
-        .subscribe((conversation) => expect(conversation.id).toEqual('4'));
+      service.openConversationByConversationId$('4').subscribe((conversation) => expect(conversation.id).toEqual('4'));
     });
   });
 
@@ -245,9 +212,7 @@ describe('InboxConversationService', () => {
       it('should update the conversaiton modifiedDate with the new message date', () => {
         service.processNewMessage(newInboxMessage);
 
-        expect(service.conversations[0].modifiedDate).toEqual(
-          newInboxMessage.date
-        );
+        expect(service.conversations[0].modifiedDate).toEqual(newInboxMessage.date);
       });
 
       it('should bump the conversation to 1st position', () => {
@@ -273,10 +238,7 @@ describe('InboxConversationService', () => {
 
         service.processNewMessage(newInboxMessage);
 
-        expect(eventService.emit).toHaveBeenCalledWith(
-          EventService.MESSAGE_ADDED,
-          newInboxMessage
-        );
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.MESSAGE_ADDED, newInboxMessage);
       });
 
       it('should increment the unread counters by one for each new message not fromSelf', () => {
@@ -296,12 +258,8 @@ describe('InboxConversationService', () => {
           service.processNewMessage(msg);
         }
 
-        expect(service.conversations[0].unreadCounter).toEqual(
-          unreadCounterBefore + count
-        );
-        expect(unreadChatMessagesService.totalUnreadMessages).toEqual(
-          unreadCounterBefore + count
-        );
+        expect(service.conversations[0].unreadCounter).toEqual(unreadCounterBefore + count);
+        expect(unreadChatMessagesService.totalUnreadMessages).toEqual(unreadCounterBefore + count);
       });
 
       it('should only increment the unread counters for new messages NOT fromSelf AND with unique IDs', () => {
@@ -321,12 +279,8 @@ describe('InboxConversationService', () => {
         service.processNewMessage(message);
         service.processNewMessage(message);
 
-        expect(service.conversations[0].unreadCounter).toEqual(
-          unreadCounterBefore + 1
-        );
-        expect(unreadChatMessagesService.totalUnreadMessages).toEqual(
-          unreadCounterBefore + 1
-        );
+        expect(service.conversations[0].unreadCounter).toEqual(unreadCounterBefore + 1);
+        expect(unreadChatMessagesService.totalUnreadMessages).toEqual(unreadCounterBefore + 1);
       });
 
       it('should not increment the conversation.unreadCount nor the unreadChatMessagesService.totalUnreadMessages for new messages fromSelf', () => {
@@ -344,12 +298,8 @@ describe('InboxConversationService', () => {
 
         service.processNewMessage(message);
 
-        expect(service.conversations[0].unreadCounter).toEqual(
-          unreadCounterBefore
-        );
-        expect(unreadChatMessagesService.totalUnreadMessages).toEqual(
-          unreadCounterBefore
-        );
+        expect(service.conversations[0].unreadCounter).toEqual(unreadCounterBefore);
+        expect(unreadChatMessagesService.totalUnreadMessages).toEqual(unreadCounterBefore);
       });
 
       describe('and when the message is not from self', () => {
@@ -372,12 +322,8 @@ describe('InboxConversationService', () => {
         it('should delegate the desktop notification to be opened or not', () => {
           service.processNewMessage(messageFromUser);
 
-          expect(
-            desktopNotificationsService.sendFromInboxMessage
-          ).toHaveBeenCalledTimes(1);
-          expect(
-            desktopNotificationsService.sendFromInboxMessage
-          ).toHaveBeenCalledWith(messageFromUser, conversations[0]);
+          expect(desktopNotificationsService.sendFromInboxMessage).toHaveBeenCalledTimes(1);
+          expect(desktopNotificationsService.sendFromInboxMessage).toHaveBeenCalledWith(messageFromUser, conversations[0]);
         });
       });
     });
@@ -388,20 +334,14 @@ describe('InboxConversationService', () => {
       });
 
       it('should return true if conversation exist', () => {
-        expect(service.containsConversation(service.conversations[1])).toEqual(
-          true
-        );
-        expect(
-          service.containsConversation({ id: '1' } as InboxConversation)
-        ).toEqual(true);
+        expect(service.containsConversation(service.conversations[1])).toEqual(true);
+        expect(service.containsConversation({ id: '1' } as InboxConversation)).toEqual(true);
       });
 
       it('should return false if conversation exist', () => {
         expect(service.containsConversation(null)).toEqual(false);
         expect(service.containsConversation(undefined)).toEqual(false);
-        expect(service.containsConversation({} as InboxConversation)).toEqual(
-          false
-        );
+        expect(service.containsConversation({} as InboxConversation)).toEqual(false);
         expect(
           service.containsConversation({
             id: 'notExistedConversationID',
@@ -416,20 +356,14 @@ describe('InboxConversationService', () => {
       });
 
       it('should return true if conversation exist', () => {
-        expect(
-          service.containsArchivedConversation(service.conversations[1])
-        ).toEqual(true);
-        expect(
-          service.containsArchivedConversation({ id: '1' } as InboxConversation)
-        ).toEqual(true);
+        expect(service.containsArchivedConversation(service.conversations[1])).toEqual(true);
+        expect(service.containsArchivedConversation({ id: '1' } as InboxConversation)).toEqual(true);
       });
 
       it('should return false if conversation exist', () => {
         expect(service.containsArchivedConversation(null)).toEqual(false);
         expect(service.containsArchivedConversation(undefined)).toEqual(false);
-        expect(
-          service.containsArchivedConversation({} as InboxConversation)
-        ).toEqual(false);
+        expect(service.containsArchivedConversation({} as InboxConversation)).toEqual(false);
         expect(
           service.containsArchivedConversation({
             id: 'notExistedConversationID',
@@ -455,9 +389,7 @@ describe('InboxConversationService', () => {
       });
 
       it('should not add the duplicated message to the conversation', () => {
-        const messagesFound = conversations[0].messages.filter(
-          (m) => m.id === newInboxMessage.id
-        );
+        const messagesFound = conversations[0].messages.filter((m) => m.id === newInboxMessage.id);
 
         expect(messagesFound.length).toBe(1);
       });
@@ -481,9 +413,7 @@ describe('InboxConversationService', () => {
 
         tick();
 
-        expect(service.conversations).toEqual(
-          uniq(service.conversations, 'id')
-        );
+        expect(service.conversations).toEqual(uniq(service.conversations, 'id'));
       }));
 
       it('should not update the lastMessage of the conversation', () => {
@@ -527,12 +457,8 @@ describe('InboxConversationService', () => {
 
         service.processNewMessage(message);
 
-        expect(service.conversations[0].unreadCounter).toEqual(
-          unreadCounterBefore
-        );
-        expect(unreadChatMessagesService.totalUnreadMessages).toEqual(
-          unreadCounterBefore
-        );
+        expect(service.conversations[0].unreadCounter).toEqual(unreadCounterBefore);
+        expect(unreadChatMessagesService.totalUnreadMessages).toEqual(unreadCounterBefore);
       });
     });
 
@@ -554,17 +480,13 @@ describe('InboxConversationService', () => {
       it('should call fetch new conversation', () => {
         service.processNewMessage(newInboxMessage);
 
-        const req = httpTestingController.expectOne(
-          `${environment.baseUrl}bff/messaging/conversation/${newInboxMessage.thread}`
-        );
+        const req = httpTestingController.expectOne(`${environment.baseUrl}bff/messaging/conversation/${newInboxMessage.thread}`);
         expect(req.request.method).toEqual('GET');
       });
 
       it('should send RECEIVE signal for new  with message', () => {
         const NEW_INBOX_CONVERSATION_ID = 'new-conversation-id';
-        const newConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION(
-          NEW_INBOX_CONVERSATION_ID
-        );
+        const newConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION(NEW_INBOX_CONVERSATION_ID);
         const newMessage = new InboxMessage(
           'new-message-id',
           NEW_INBOX_CONVERSATION_ID,
@@ -577,26 +499,18 @@ describe('InboxConversationService', () => {
         );
         newConversation.messages = [newMessage];
 
-        spyOn<any>(service, 'getConversation').and.returnValue(
-          of(newConversation)
-        );
+        spyOn<any>(service, 'getConversation').and.returnValue(of(newConversation));
         spyOn(realTime, 'sendDeliveryReceipt').and.callThrough();
 
         service.processNewMessage(newMessage);
 
-        expect(realTime.sendDeliveryReceipt).toHaveBeenCalledWith(
-          newConversation.user.id,
-          newMessage.id,
-          NEW_INBOX_CONVERSATION_ID
-        );
+        expect(realTime.sendDeliveryReceipt).toHaveBeenCalledWith(newConversation.user.id, newMessage.id, NEW_INBOX_CONVERSATION_ID);
       });
 
       it('should add new conversation to the top of the list if fetch succeed', () => {
         service.processNewMessage(newInboxMessage);
 
-        const req = httpTestingController.expectOne(
-          `${environment.baseUrl}bff/messaging/conversation/${newInboxMessage.thread}`
-        );
+        const req = httpTestingController.expectOne(`${environment.baseUrl}bff/messaging/conversation/${newInboxMessage.thread}`);
         req.flush(MOCK_API_CONVERSATION);
 
         expect(req.request.method).toEqual('GET');
@@ -606,25 +520,19 @@ describe('InboxConversationService', () => {
       it('should add new conversation with received message to the top of the list if fetch failed', () => {
         service.processNewMessage(newInboxMessage);
 
-        const req = httpTestingController.expectOne(
-          `${environment.baseUrl}bff/messaging/conversation/${newInboxMessage.thread}`
-        );
+        const req = httpTestingController.expectOne(`${environment.baseUrl}bff/messaging/conversation/${newInboxMessage.thread}`);
         req.error(new ErrorEvent('connection failed'));
 
         expect(req.request.method).toEqual('GET');
         expect(service.conversations[0].id).toEqual(newInboxMessage.thread);
-        expect(service.conversations[0].lastMessage.id).toEqual(
-          newInboxMessage.id
-        );
+        expect(service.conversations[0].lastMessage.id).toEqual(newInboxMessage.id);
       });
     });
   });
 
   describe('processNewChatSignal', () => {
     let mockedConversation: InboxConversation;
-    const timestamp = new Date(
-      CREATE_MOCK_INBOX_CONVERSATION().messages[0].date
-    ).getTime();
+    const timestamp = new Date(CREATE_MOCK_INBOX_CONVERSATION().messages[0].date).getTime();
     beforeEach(() => {
       service.conversations = createInboxConversationsArray(12);
     });
@@ -641,31 +549,17 @@ describe('InboxConversationService', () => {
 
       describe('when processing a READ chat signal NOT fromSelf', () => {
         it('should NOT decrase the unreadMessages counter of the conversation', () => {
-          const signal = new ChatSignal(
-            ChatSignalType.READ,
-            mockedConversation.id,
-            Date.now(),
-            null,
-            false
-          );
+          const signal = new ChatSignal(ChatSignalType.READ, mockedConversation.id, Date.now(), null, false);
           service.processNewChatSignal(signal);
 
           expect(mockedConversation.unreadCounter).toBe(unreadCount);
         });
 
         it('should NOT decrease unreadChatMessagesService.totalUnreadMessages counter', () => {
-          const signal = new ChatSignal(
-            ChatSignalType.READ,
-            mockedConversation.id,
-            Date.now(),
-            null,
-            false
-          );
+          const signal = new ChatSignal(ChatSignalType.READ, mockedConversation.id, Date.now(), null, false);
           service.processNewChatSignal(signal);
 
-          expect(unreadChatMessagesService.totalUnreadMessages).toBe(
-            unreadCount
-          );
+          expect(unreadChatMessagesService.totalUnreadMessages).toBe(unreadCount);
         });
       });
 
@@ -675,24 +569,14 @@ describe('InboxConversationService', () => {
             m.fromSelf = index < unreadCount ? false : true;
             m.status = MessageStatus.RECEIVED;
           });
-          expectedMarkedAsRead = mockedConversation.messages.filter(
-            (m) => !m.fromSelf
-          );
-          expectedNotMarkedAsRead = mockedConversation.messages.filter(
-            (m) => m.fromSelf
-          );
+          expectedMarkedAsRead = mockedConversation.messages.filter((m) => !m.fromSelf);
+          expectedNotMarkedAsRead = mockedConversation.messages.filter((m) => m.fromSelf);
         });
 
         it('should decrase the unreadMessages counter of the conversation by the number of messages that are being marked as READ', () => {
           expect(mockedConversation.unreadCounter).toBe(unreadCount);
 
-          const signal = new ChatSignal(
-            ChatSignalType.READ,
-            mockedConversation.id,
-            Date.now(),
-            null,
-            true
-          );
+          const signal = new ChatSignal(ChatSignalType.READ, mockedConversation.id, Date.now(), null, true);
           service.processNewChatSignal(signal);
 
           expect(mockedConversation.unreadCounter).toBe(0);
@@ -702,13 +586,7 @@ describe('InboxConversationService', () => {
         than the existing counter (disallow negative values in counter)`, () => {
           mockedConversation.unreadCounter = 1;
 
-          const signal = new ChatSignal(
-            ChatSignalType.READ,
-            mockedConversation.id,
-            Date.now(),
-            null,
-            true
-          );
+          const signal = new ChatSignal(ChatSignalType.READ, mockedConversation.id, Date.now(), null, true);
           service.processNewChatSignal(signal);
 
           expect(mockedConversation.unreadCounter).toBe(0);
@@ -717,13 +595,7 @@ describe('InboxConversationService', () => {
         it('should decrase unreadChatMessagesService.totalUnreadMessages counter by the number of messages that are being marked as READ', () => {
           expect(mockedConversation.unreadCounter).toBe(unreadCount);
 
-          const signal = new ChatSignal(
-            ChatSignalType.READ,
-            mockedConversation.id,
-            Date.now(),
-            null,
-            true
-          );
+          const signal = new ChatSignal(ChatSignalType.READ, mockedConversation.id, Date.now(), null, true);
           service.processNewChatSignal(signal);
 
           expect(unreadChatMessagesService.totalUnreadMessages).toBe(0);
@@ -733,13 +605,7 @@ describe('InboxConversationService', () => {
         than the existing counter (disallow negative values in counter)`, () => {
           mockedConversation.unreadCounter = 5;
 
-          const signal = new ChatSignal(
-            ChatSignalType.READ,
-            mockedConversation.id,
-            Date.now(),
-            null,
-            true
-          );
+          const signal = new ChatSignal(ChatSignalType.READ, mockedConversation.id, Date.now(), null, true);
           service.processNewChatSignal(signal);
 
           expect(unreadChatMessagesService.totalUnreadMessages).toBe(0);
@@ -765,15 +631,10 @@ describe('InboxConversationService', () => {
       service
         .archive$(service.conversations[0])
         .subscribe((conversation: InboxConversation) =>
-          expect(eventService.emit).toHaveBeenCalledWith(
-            EventService.CONVERSATION_ARCHIVED,
-            service.conversations[0]
-          )
+          expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_ARCHIVED, service.conversations[0])
         );
 
-      const req = httpTestingController.expectOne(
-        `${environment.baseUrl}api/v3/instant-messaging/conversations/archive`
-      );
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/instant-messaging/conversations/archive`);
       expect(req.request.method).toEqual('PUT');
       expect(req.request.body).toEqual({
         conversation_ids: [service.conversations[0].id],
@@ -784,15 +645,10 @@ describe('InboxConversationService', () => {
       service
         .archive$(service.conversations[0])
         .subscribe((conversation: InboxConversation) =>
-          expect(eventService.emit).toHaveBeenCalledWith(
-            EventService.CONVERSATION_ARCHIVED,
-            service.conversations[0]
-          )
+          expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_ARCHIVED, service.conversations[0])
         );
 
-      const req = httpTestingController.expectOne(
-        `${environment.baseUrl}api/v3/instant-messaging/conversations/archive`
-      );
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/instant-messaging/conversations/archive`);
       expect(req.request.method).toEqual('PUT');
       req.flush('conflict', { status: 409, statusText: 'Conflict' });
     });
@@ -808,15 +664,10 @@ describe('InboxConversationService', () => {
       service
         .unarchive(service.archivedConversations[0])
         .subscribe((conversation: InboxConversation) =>
-          expect(eventService.emit).toHaveBeenCalledWith(
-            EventService.CONVERSATION_UNARCHIVED,
-            service.archivedConversations[0]
-          )
+          expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_UNARCHIVED, service.archivedConversations[0])
         );
 
-      const req = httpTestingController.expectOne(
-        `${environment.baseUrl}api/v3/instant-messaging/conversations/unarchive`
-      );
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/instant-messaging/conversations/unarchive`);
       expect(req.request.method).toEqual('PUT');
       expect(req.request.body).toEqual({
         conversation_ids: [service.archivedConversations[0].id],
@@ -827,15 +678,10 @@ describe('InboxConversationService', () => {
       service
         .unarchive(service.archivedConversations[0])
         .subscribe((conversation: InboxConversation) =>
-          expect(eventService.emit).toHaveBeenCalledWith(
-            EventService.CONVERSATION_UNARCHIVED,
-            service.archivedConversations[0]
-          )
+          expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_UNARCHIVED, service.archivedConversations[0])
         );
 
-      const req = httpTestingController.expectOne(
-        `${environment.baseUrl}api/v3/instant-messaging/conversations/unarchive`
-      );
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/instant-messaging/conversations/unarchive`);
       expect(req.request.method).toEqual('PUT');
       req.flush('conflict', { status: 409, statusText: 'Conflict' });
     });
@@ -855,19 +701,13 @@ describe('InboxConversationService', () => {
       expect(service.containsArchivedConversation(null)).toBeFalsy();
 
       service.archivedConversations = null;
-      expect(
-        service.containsArchivedConversation(mockConversation)
-      ).toBeFalsy();
+      expect(service.containsArchivedConversation(mockConversation)).toBeFalsy();
 
       service.archivedConversations = [];
-      expect(
-        service.containsArchivedConversation(mockConversation)
-      ).toBeFalsy();
+      expect(service.containsArchivedConversation(mockConversation)).toBeFalsy();
 
       service.archivedConversations = [mockConversation];
-      expect(
-        service.containsArchivedConversation(mockConversation)
-      ).toBeTruthy();
+      expect(service.containsArchivedConversation(mockConversation)).toBeTruthy();
     });
   });
 
@@ -880,9 +720,7 @@ describe('InboxConversationService', () => {
 
       service.openConversationByItemId$(ITEM_ID).subscribe();
 
-      const req = httpTestingController.expectOne(
-        `${environment.baseUrl}api/v3/conversations`
-      );
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/conversations`);
       expect(req.request.method).toEqual('POST');
       expect(req.request.body).toEqual({ item_id: ITEM_ID });
     });
@@ -899,10 +737,7 @@ describe('InboxConversationService', () => {
         service.openConversationByItemId$('1337').subscribe();
         httpTestingController
           .expectOne(`${environment.baseUrl}api/v3/conversations`)
-          .flush(
-            { code: ERROR_CODE_TOO_MANY_NEW_CONVERSATIONS },
-            { status: 500, statusText: 'error' }
-          );
+          .flush({ code: ERROR_CODE_TOO_MANY_NEW_CONVERSATIONS }, { status: 500, statusText: 'error' });
 
         expect(toastService.show).toHaveBeenCalledWith(expectedToast);
       });
@@ -912,8 +747,7 @@ describe('InboxConversationService', () => {
   describe('resendPendingMessages', () => {
     it('should NOT sent SENT SIGNAL if pending message NOT exist', () => {
       const conversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION();
-      conversation.messages[conversation.messages.length - 1].status =
-        MessageStatus.RECEIVED;
+      conversation.messages[conversation.messages.length - 1].status = MessageStatus.RECEIVED;
       spyOn(realTime, 'resendMessage');
 
       service.resendPendingMessages(conversation);
@@ -937,11 +771,7 @@ describe('InboxConversationService', () => {
       const conversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION();
       const lastMessageIndex = conversation.messages.length - 1;
       conversation.messages[lastMessageIndex].status = MessageStatus.PENDING;
-      conversation.messages[lastMessageIndex].date = moment(
-        conversation.messages[lastMessageIndex].date
-      )
-        .subtract(6, 'days')
-        .toDate();
+      conversation.messages[lastMessageIndex].date = moment(conversation.messages[lastMessageIndex].date).subtract(6, 'days').toDate();
       spyOn(realTime, 'resendMessage');
 
       service.resendPendingMessages(conversation);
@@ -955,13 +785,9 @@ describe('InboxConversationService', () => {
       const PHONE_NUMBER = '+34547896321';
       const conversation = CREATE_MOCK_INBOX_CONVERSATION();
 
-      service
-        .addPhoneNumberToConversation$(conversation, PHONE_NUMBER)
-        .subscribe();
+      service.addPhoneNumberToConversation$(conversation, PHONE_NUMBER).subscribe();
 
-      const req = httpTestingController.expectOne(
-        `${environment.baseUrl}api/v3/conversations/${conversation.id}/buyer-phone-number`
-      );
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/conversations/${conversation.id}/buyer-phone-number`);
       expect(req.request.method).toEqual('PUT');
       expect(req.request.body).toEqual({ phone_number: PHONE_NUMBER });
     });

@@ -5,10 +5,7 @@ import { catchError, exhaustMap, map } from 'rxjs/operators';
 import { UserStats } from '../../domain';
 import * as fromActions from './../../actions';
 
-import {
-  UserStatsRepository,
-  USER_STATS_REPOSITORY_TOKEN,
-} from './../../domain/stats/user-stats.repository';
+import { UserStatsRepository, USER_STATS_REPOSITORY_TOKEN } from './../../domain/stats/user-stats.repository';
 
 @Injectable()
 export class UserStatsEffect {
@@ -31,9 +28,7 @@ export class UserStatsEffect {
     this.actions$.pipe(
       ofType(fromActions.LoadUserStatsByUserId),
       exhaustMap(({ userId }) => this.repository.getByUserId(userId)),
-      map((stats: UserStats) =>
-        fromActions.LoadUserStatsByUserIdSuccess({ stats })
-      ),
+      map((stats: UserStats) => fromActions.LoadUserStatsByUserIdSuccess({ stats })),
       catchError(() => of(fromActions.LoadUserStatsByUserIdFailed()))
     )
   );

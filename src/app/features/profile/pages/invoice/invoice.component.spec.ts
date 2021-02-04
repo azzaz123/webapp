@@ -49,9 +49,7 @@ describe('InvoiceComponent', () => {
   describe('when getting our billing info...', () => {
     describe('when request succeeds... ', () => {
       it('should let download invoices if you have billing info ', () => {
-        spyOn(paymentService, 'getBillingInfo').and.returnValue(
-          of(BILLING_INFO_RESPONSE)
-        );
+        spyOn(paymentService, 'getBillingInfo').and.returnValue(of(BILLING_INFO_RESPONSE));
 
         component.handleModalAndInvoicePermission();
 

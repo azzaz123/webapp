@@ -1,13 +1,6 @@
 import { ReactivateModalComponent } from '../../modals/reactivate-modal/reactivate-modal.component';
 
-import {
-  Component,
-  EventEmitter,
-  Inject,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 
@@ -30,12 +23,8 @@ import { PAYMENT_METHOD } from '@core/payments/payment.service';
 export class CatalogItemComponent implements OnInit {
   @Input() item: Item;
   @Input() showPublishCTA = false;
-  @Output() itemChange: EventEmitter<ItemChangeEvent> = new EventEmitter<
-    ItemChangeEvent
-  >();
-  @Output() purchaseListingFee: EventEmitter<OrderEvent> = new EventEmitter<
-    OrderEvent
-  >();
+  @Output() itemChange: EventEmitter<ItemChangeEvent> = new EventEmitter<ItemChangeEvent>();
+  @Output() purchaseListingFee: EventEmitter<OrderEvent> = new EventEmitter<OrderEvent>();
   public link: string;
   public selectMode = false;
 
@@ -99,8 +88,7 @@ export class CatalogItemComponent implements OnInit {
           });
         }
       },
-      () =>
-        this.toastService.show({ text: DEFAULT_ERROR_MESSAGE, type: 'error' })
+      () => this.toastService.show({ text: DEFAULT_ERROR_MESSAGE, type: 'error' })
     );
   }
 
@@ -118,12 +106,9 @@ export class CatalogItemComponent implements OnInit {
   }
 
   private openReactivateDialog(item: Item, orderEvent: OrderEvent) {
-    const modalRef: NgbModalRef = this.modalService.open(
-      ReactivateModalComponent,
-      {
-        windowClass: 'modal-standard',
-      }
-    );
+    const modalRef: NgbModalRef = this.modalService.open(ReactivateModalComponent, {
+      windowClass: 'modal-standard',
+    });
     modalRef.componentInstance.price = orderEvent.total;
     modalRef.componentInstance.item = item;
     modalRef.result.then(
@@ -153,8 +138,7 @@ export class CatalogItemComponent implements OnInit {
 
   public select(item: Item) {
     item.selected = !item.selected;
-    this.itemService.selectedAction =
-      this.itemService.selectedAction === 'feature' ? 'feature' : '';
+    this.itemService.selectedAction = this.itemService.selectedAction === 'feature' ? 'feature' : '';
     if (item.selected) {
       this.itemService.selectItem(item.id);
       this.trackingService.track(TrackingService.PRODUCT_SELECTED, {
@@ -190,35 +174,28 @@ export class CatalogItemComponent implements OnInit {
 
   public listingFeeFewDays(): boolean {
     const threeDaysTime = 3 * 24 * 60 * 60 * 1000;
-    return (
-      this.item.listingFeeExpiringDate - new Date().getTime() < threeDaysTime
-    );
+    return this.item.listingFeeExpiringDate - new Date().getTime() < threeDaysTime;
   }
 
   public publishItem(): void {
-    this.itemService
-      .getListingFeeInfo(this.item.id)
-      .subscribe((response: Product) => {
-        const order: Order[] = [
-          {
-            item_id: this.item.id,
-            product_id: response.durations[0].id,
-          },
-        ];
-        const orderEvent: OrderEvent = {
-          order,
-          total: +response.durations[0].market_code,
-        };
-        localStorage.setItem('transactionType', 'purchaseListingFee');
-        this.trackingService.track(
-          TrackingService.PURCHASE_LISTING_FEE_CATALOG,
-          {
-            item_id: this.item.id,
-            payment_method: PAYMENT_METHOD.STRIPE,
-          }
-        );
-        this.purchaseListingFee.next(orderEvent);
+    this.itemService.getListingFeeInfo(this.item.id).subscribe((response: Product) => {
+      const order: Order[] = [
+        {
+          item_id: this.item.id,
+          product_id: response.durations[0].id,
+        },
+      ];
+      const orderEvent: OrderEvent = {
+        order,
+        total: +response.durations[0].market_code,
+      };
+      localStorage.setItem('transactionType', 'purchaseListingFee');
+      this.trackingService.track(TrackingService.PURCHASE_LISTING_FEE_CATALOG, {
+        item_id: this.item.id,
+        payment_method: PAYMENT_METHOD.STRIPE,
       });
+      this.purchaseListingFee.next(orderEvent);
+    });
   }
 
   public openItem() {

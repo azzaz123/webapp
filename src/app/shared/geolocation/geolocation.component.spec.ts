@@ -108,12 +108,8 @@ describe('GeolocationComponent', () => {
 
       component.selectItem(GEOLOCATION_DATA_WEB[0]);
 
-      expect(component.newCoordinate.emit).toHaveBeenCalledWith(
-        COORDINATE_DATA_WEB
-      );
-      expect(userService.updateSearchLocationCookies).toHaveBeenCalledWith(
-        newLocation
-      );
+      expect(component.newCoordinate.emit).toHaveBeenCalledWith(COORDINATE_DATA_WEB);
+      expect(userService.updateSearchLocationCookies).toHaveBeenCalledWith(newLocation);
     });
 
     it('should not save cookies if updateLocation false', () => {

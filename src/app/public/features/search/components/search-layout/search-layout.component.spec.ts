@@ -113,10 +113,7 @@ describe('SearchLayoutComponent', () => {
     });
   });
 
-  function expectBlockToRender(
-    selector: Predicate<DebugElement>,
-    shouldRender: boolean
-  ): void {
+  function expectBlockToRender(selector: Predicate<DebugElement>, shouldRender: boolean): void {
     const element = fixture.debugElement.query(selector);
 
     if (shouldRender) {

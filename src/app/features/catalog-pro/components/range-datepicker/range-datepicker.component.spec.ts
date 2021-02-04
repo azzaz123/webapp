@@ -3,12 +3,7 @@ import { NgbCalendar, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { RangeDatepickerComponent } from './range-datepicker.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {
-  MOCK_DATE,
-  MOCK_DATE2,
-  MOCK_DATE3,
-  MOCK_SELECTED_DATES,
-} from '@fixtures/calendar.fixtures.spec';
+import { MOCK_DATE, MOCK_DATE2, MOCK_DATE3, MOCK_SELECTED_DATES } from '@fixtures/calendar.fixtures.spec';
 
 describe('RangeDatepickerComponent', () => {
   let component: RangeDatepickerComponent;
@@ -87,9 +82,7 @@ describe('RangeDatepickerComponent', () => {
       component.onDateSelection(MOCK_DATE);
       component.onDateSelection(MOCK_DATE2);
 
-      expect(component.selectedDates.numberOfDays).toBe(
-        MOCK_SELECTED_DATES.numberOfDays
-      );
+      expect(component.selectedDates.numberOfDays).toBe(MOCK_SELECTED_DATES.numberOfDays);
     });
   });
 
@@ -119,9 +112,7 @@ describe('RangeDatepickerComponent', () => {
       expect(component.endDate).toBe(MOCK_DATE2);
       expect(component.selectedDates.fromDate).toBe(MOCK_DATE);
       expect(component.selectedDates.toDate).toBe(MOCK_DATE2);
-      expect(component.applyCalendar.emit).toHaveBeenCalledWith(
-        component.selectedDates
-      );
+      expect(component.applyCalendar.emit).toHaveBeenCalledWith(component.selectedDates);
     });
   });
 });

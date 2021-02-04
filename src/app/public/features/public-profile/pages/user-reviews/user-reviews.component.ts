@@ -16,10 +16,7 @@ export class UserReviewsComponent implements OnInit {
   public nextPaginationItem = 0;
   public loading = true;
 
-  constructor(
-    private publicProfileService: PublicProfileService,
-    private mapReviewService: MapReviewService
-  ) {}
+  constructor(private publicProfileService: PublicProfileService, private mapReviewService: MapReviewService) {}
 
   public ngOnInit(): void {
     this.loadItems();
@@ -36,9 +33,7 @@ export class UserReviewsComponent implements OnInit {
           take(1)
         )
         .subscribe((response: PaginationResponse<ReviewResponse>) => {
-          this.reviews = this.reviews.concat(
-            this.mapReviewService.mapItems(response.results)
-          );
+          this.reviews = this.reviews.concat(this.mapReviewService.mapItems(response.results));
           this.nextPaginationItem = response.init;
         }, this.onError);
     } catch (err: any) {

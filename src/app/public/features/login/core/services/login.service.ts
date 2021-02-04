@@ -11,11 +11,7 @@ export const LOGIN_ENDPOINT = 'shnm-portlet/api/v1/access.json/login3';
 
 @Injectable()
 export class LoginService {
-  constructor(
-    private httpClient: HttpClient,
-    private eventService: EventService,
-    private accessTokenService: AccessTokenService
-  ) {}
+  constructor(private httpClient: HttpClient, private eventService: EventService, private accessTokenService: AccessTokenService) {}
 
   public login(data: any): Observable<LoginResponse> {
     const headers = new HttpHeaders({

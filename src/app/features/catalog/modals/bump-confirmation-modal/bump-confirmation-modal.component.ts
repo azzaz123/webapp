@@ -40,20 +40,15 @@ export class BumpConfirmationModalComponent implements OnInit {
       }
     });
     setTimeout(() => {
-      this.paymentService
-        .getCreditInfo(false)
-        .subscribe((creditInfo: CreditInfo) => {
-          if (creditInfo.credit === 0 && !this.creditUsed) {
-            creditInfo.currencyName = 'wallacredits';
-            creditInfo.factor = 1;
-          }
-          this.creditInfo = creditInfo;
-          this.withCoins = creditInfo.currencyName === 'wallacoins';
-          this.eventService.emit(
-            EventService.TOTAL_CREDITS_UPDATED,
-            creditInfo.credit
-          );
-        });
+      this.paymentService.getCreditInfo(false).subscribe((creditInfo: CreditInfo) => {
+        if (creditInfo.credit === 0 && !this.creditUsed) {
+          creditInfo.currencyName = 'wallacredits';
+          creditInfo.factor = 1;
+        }
+        this.creditInfo = creditInfo;
+        this.withCoins = creditInfo.currencyName === 'wallacoins';
+        this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED, creditInfo.credit);
+      });
     }, 1000);
   }
 }

@@ -1,10 +1,5 @@
 import { of } from 'rxjs';
-import {
-  fakeAsync,
-  ComponentFixture,
-  TestBed,
-  tick,
-} from '@angular/core/testing';
+import { fakeAsync, ComponentFixture, TestBed, tick } from '@angular/core/testing';
 import { BumpConfirmationModalComponent } from './bump-confirmation-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -85,9 +80,7 @@ describe('BumpConfirmationModalComponent', () => {
 
       component.ngOnInit();
 
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.FEATURED_PURCHASE_SUCCESS
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.FEATURED_PURCHASE_SUCCESS);
     });
 
     it('should send event featured_purchase_error if code != 200', () => {
@@ -95,12 +88,9 @@ describe('BumpConfirmationModalComponent', () => {
 
       component.ngOnInit();
 
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.FEATURED_PURCHASE_ERROR,
-        {
-          error_code: component.code,
-        }
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.FEATURED_PURCHASE_ERROR, {
+        error_code: component.code,
+      });
     });
 
     it('should call getCreditInfo and set currency and coins total', fakeAsync(() => {
@@ -113,10 +103,7 @@ describe('BumpConfirmationModalComponent', () => {
       expect(paymentService.getCreditInfo).toHaveBeenCalled();
       expect(component.withCoins).toBe(true);
       expect(component.creditInfo).toBe(CREDIT_INFO);
-      expect(eventService.emit).toHaveBeenCalledWith(
-        EventService.TOTAL_CREDITS_UPDATED,
-        CREDITS
-      );
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.TOTAL_CREDITS_UPDATED, CREDITS);
     }));
 
     it('should send appboy VisibilityPurchaseSuccess event', () => {
@@ -125,9 +112,7 @@ describe('BumpConfirmationModalComponent', () => {
 
       component.ngOnInit();
 
-      expect(
-        appboy.logCustomEvent
-      ).toHaveBeenCalledWith('VisibilityPurchaseSuccess', { platform: 'web' });
+      expect(appboy.logCustomEvent).toHaveBeenCalledWith('VisibilityPurchaseSuccess', { platform: 'web' });
     });
   });
 });

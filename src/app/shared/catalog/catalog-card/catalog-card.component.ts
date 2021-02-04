@@ -17,9 +17,7 @@ import { ItemChangeEvent } from '@features/catalog/core/item-change.interface';
 })
 export class CatalogCardComponent implements OnInit {
   @Input() item: Item;
-  @Output() itemChange: EventEmitter<ItemChangeEvent> = new EventEmitter<
-    ItemChangeEvent
-  >();
+  @Output() itemChange: EventEmitter<ItemChangeEvent> = new EventEmitter<ItemChangeEvent>();
   @Output() bumpCancel: EventEmitter<any> = new EventEmitter<any>();
   public link: string;
   public bumpName: string;
@@ -96,8 +94,7 @@ export class CatalogCardComponent implements OnInit {
   }
 
   private setBumpName(): string {
-    const bumpType =
-      this.item.purchases.bump_type || this.item.purchases.scheduled_bump_type;
+    const bumpType = this.item.purchases.bump_type || this.item.purchases.scheduled_bump_type;
     return this.i18n.getTranslations(bumpType);
   }
 }

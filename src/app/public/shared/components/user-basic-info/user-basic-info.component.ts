@@ -1,11 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { User } from '@core/user/user';
 import { UserStats } from '@core/user/user-stats.interface';
-import {
-  USER_INFO_SIZE,
-  StyleProperties,
-  STYLE_SIZES,
-} from './constants/user-basic-info-constants';
+import { USER_INFO_SIZE, StyleProperties, STYLE_SIZES } from './constants/user-basic-info-constants';
 
 @Component({
   selector: 'tsl-user-basic-info',

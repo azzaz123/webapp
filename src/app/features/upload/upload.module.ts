@@ -1,11 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {
-  NgbButtonsModule,
-  NgbCarouselModule,
-  NgbPopoverModule,
-} from '@ng-bootstrap/ng-bootstrap';
+import { NgbButtonsModule, NgbCarouselModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { DropdownModule } from '@shared/dropdown/dropdown.module';
 import { GeolocationModule } from '@shared/geolocation/geolocation.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
@@ -55,14 +51,7 @@ import { uploadRoutedComponents, UploadRoutingModule } from './upload.routes';
     UploadRealestateComponent,
     UploadComponent,
   ],
-  providers: [
-    UploadService,
-    CarKeysService,
-    CarSuggestionsService,
-    RealestateKeysService,
-    ItemResolverService,
-    GeneralSuggestionsService,
-  ],
+  providers: [UploadService, CarKeysService, CarSuggestionsService, RealestateKeysService, ItemResolverService, GeneralSuggestionsService],
   entryComponents: [RemoveConfirmModalComponent, PreviewModalComponent],
 })
 export class UploadModule {}

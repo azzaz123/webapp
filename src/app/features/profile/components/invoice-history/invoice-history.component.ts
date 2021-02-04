@@ -39,22 +39,15 @@ export class InvoiceHistoryComponent implements OnInit {
 
   filterConfig = {
     [this.filterInvoices.ALL]: {
-      filterInvoices: () =>
-        (this.filteredTransactions = this.invoiceTransactions),
+      filterInvoices: () => (this.filteredTransactions = this.invoiceTransactions),
       limit: this.START_LIMIT,
     },
     [this.filterInvoices.INVOICES]: {
-      filterInvoices: () =>
-        (this.filteredTransactions = this.invoiceTransactions.filter(
-          (invoice) => invoice.price >= 0
-        )),
+      filterInvoices: () => (this.filteredTransactions = this.invoiceTransactions.filter((invoice) => invoice.price >= 0)),
       limit: this.START_LIMIT,
     },
     [this.filterInvoices.CREDIT]: {
-      filterInvoices: () =>
-        (this.filteredTransactions = this.invoiceTransactions.filter(
-          (invoice) => invoice.price < 0
-        )),
+      filterInvoices: () => (this.filteredTransactions = this.invoiceTransactions.filter((invoice) => invoice.price < 0)),
       limit: this.START_LIMIT,
     },
   };
@@ -74,12 +67,7 @@ export class InvoiceHistoryComponent implements OnInit {
       )
       .subscribe(
         (invoiceTransactions: InvoiceTransaction[]) => {
-          invoiceTransactions.forEach(
-            (transaction) =>
-              (transaction.currencySymbol = this.currencies[
-                transaction.currency
-              ])
-          );
+          invoiceTransactions.forEach((transaction) => (transaction.currencySymbol = this.currencies[transaction.currency]));
           this.invoiceTransactions =
             invoiceTransactions &&
             invoiceTransactions.sort((a, b) => {
@@ -101,8 +89,7 @@ export class InvoiceHistoryComponent implements OnInit {
     return (
       this.filteredTransactions &&
       this.filteredTransactions.length > this.LOAD_MORE_QUANTITY &&
-      this.filterConfig[this.selectedFilter].limit <
-        this.filteredTransactions.length
+      this.filterConfig[this.selectedFilter].limit < this.filteredTransactions.length
     );
   }
 
@@ -123,10 +110,7 @@ export class InvoiceHistoryComponent implements OnInit {
 
   protected isShown(keyMessage: InvoiceRequestStatus): boolean {
     const conditions =
-      (!Array.isArray(this.filteredTransactions) ||
-        !this.filteredTransactions.length) &&
-      !this.isErrorLoading &&
-      !this.loading;
+      (!Array.isArray(this.filteredTransactions) || !this.filteredTransactions.length) && !this.isErrorLoading && !this.loading;
 
     switch (keyMessage) {
       case InvoiceRequestStatus.EMPTY_HISTORY:

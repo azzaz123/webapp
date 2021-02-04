@@ -1,30 +1,15 @@
 import { takeWhile } from 'rxjs/operators';
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit } from '@angular/core';
 import { CartService } from './cart.service';
 import { Cart } from './cart';
 import { CartChange, CartItem } from './cart-item.interface';
-import {
-  Order,
-  PurchaseProductsWithCreditsResponse,
-} from '../../../core/item/item-response.interface';
+import { Order, PurchaseProductsWithCreditsResponse } from '../../../core/item/item-response.interface';
 import { ItemService } from '../../../core/item/item.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { Router } from '@angular/router';
-import {
-  CreditInfo,
-  FinancialCardOption,
-} from '../../../core/payments/payment.interface';
-import {
-  PAYMENT_METHOD,
-  PAYMENT_RESPONSE_STATUS,
-} from '../../../core/payments/payment.service';
+import { CreditInfo, FinancialCardOption } from '../../../core/payments/payment.interface';
+import { PAYMENT_METHOD, PAYMENT_RESPONSE_STATUS } from '../../../core/payments/payment.service';
 import { BUMP_TYPES, CartBase } from './cart-base';
 import { EventService } from '../../../core/event/event.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
@@ -60,11 +45,9 @@ export class CartComponent implements OnInit, OnDestroy {
     private uuidService: UuidService,
     private stripeService: StripeService
   ) {
-    this.cartService.cart$
-      .pipe(takeWhile(() => this.active))
-      .subscribe((cartChange: CartChange) => {
-        this.cart = cartChange.cart;
-      });
+    this.cartService.cart$.pipe(takeWhile(() => this.active)).subscribe((cartChange: CartChange) => {
+      this.cart = cartChange.cart;
+    });
   }
 
   ngOnInit() {
@@ -100,10 +83,7 @@ export class CartComponent implements OnInit, OnDestroy {
         (response: PurchaseProductsWithCreditsResponse) => {
           if (-this.usedCredits > 0) {
             localStorage.setItem('transactionType', 'bumpWithCredits');
-            localStorage.setItem(
-              'transactionSpent',
-              (-this.usedCredits).toString()
-            );
+            localStorage.setItem('transactionSpent', (-this.usedCredits).toString());
           } else {
             localStorage.setItem('transactionType', 'bump');
           }
@@ -147,13 +127,7 @@ export class CartComponent implements OnInit, OnDestroy {
     const paymentId: string = this.uuidService.getUUID();
 
     if (this.selectedCard || !this.savedCard) {
-      this.stripeService.buy(
-        orderId,
-        paymentId,
-        this.hasSavedCard,
-        this.savedCard,
-        this.card
-      );
+      this.stripeService.buy(orderId, paymentId, this.hasSavedCard, this.savedCard, this.card);
     } else {
       this.loading = false;
       this.errorService.i18nError('noCardSelectedError');
@@ -174,14 +148,8 @@ export class CartComponent implements OnInit, OnDestroy {
     const itemsIds = Object.keys(order).map((key) => order[key].item_id);
 
     const payment_method = PAYMENT_METHOD.STRIPE;
-    const attributes =
-      this.totalToPay === 0
-        ? { selected_products: result }
-        : { selected_products: result, payment_method };
-    this.trackingService.track(
-      TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART,
-      attributes
-    );
+    const attributes = this.totalToPay === 0 ? { selected_products: result } : { selected_products: result, payment_method };
+    this.trackingService.track(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, attributes);
 
     ga('send', 'event', 'Item', 'bump-cart');
     fbq('track', 'Purchase', {

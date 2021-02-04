@@ -8,13 +8,7 @@ import { UserAvatarModule } from '@shared/user-avatar/user-avatar.module';
 import { ReviewItemComponent } from './review-item.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SvgIconModule,
-    StarsModule,
-    UserAvatarModule,
-    SanitizedBackgroundModule,
-  ],
+  imports: [CommonModule, SvgIconModule, StarsModule, UserAvatarModule, SanitizedBackgroundModule],
   declarations: [ReviewItemComponent],
   providers: [UserReviewService],
   exports: [ReviewItemComponent],

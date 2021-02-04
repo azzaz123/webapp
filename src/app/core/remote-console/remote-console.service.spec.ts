@@ -1,17 +1,9 @@
 import { fakeAsync, TestBed } from '@angular/core/testing';
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { RemoteConsoleService } from './remote-console.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import {
-  BROWSER,
-  BROWSER_VERSION,
-  DeviceDetectorServiceMock,
-  FeatureFlagServiceMock,
-} from '../../../tests';
+import { BROWSER, BROWSER_VERSION, DeviceDetectorServiceMock, FeatureFlagServiceMock } from '../../../tests';
 import { FeatureflagService } from '../user/featureflag.service';
 import { MetricTypeEnum } from './metric-type.enum';
 import { APP_VERSION } from '../../../environments/version';
@@ -185,9 +177,7 @@ describe('RemoteConsoleService', () => {
     });
 
     describe('when the webapp could not connect to the real time chat', () => {
-      beforeEach(() =>
-        service.sendChatConnectionTime(ConnectionType.XMPP, false)
-      );
+      beforeEach(() => service.sendChatConnectionTime(ConnectionType.XMPP, false));
 
       it('should not track the metric', () => {
         expect(remoteConsoleClientService.info$).not.toHaveBeenCalled();
@@ -258,11 +248,7 @@ describe('RemoteConsoleService', () => {
 
       spyOn(Date, 'now').and.returnValues(4000);
 
-      service.sendDuplicateConversations(
-        USER_ID,
-        LOAD_MORE_CONVERSATIONS,
-        CONVERSATIONS_BY_ID
-      );
+      service.sendDuplicateConversations(USER_ID, LOAD_MORE_CONVERSATIONS, CONVERSATIONS_BY_ID);
 
       expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
         ...commonLog,

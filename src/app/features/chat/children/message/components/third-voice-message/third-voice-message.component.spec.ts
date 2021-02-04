@@ -13,11 +13,7 @@ describe('ThirdVoiceMessageComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [
-          ThirdVoiceMessageComponent,
-          ThirdVoiceReviewButtonComponent,
-          LinkTransformPipe,
-        ],
+        declarations: [ThirdVoiceMessageComponent, ThirdVoiceReviewButtonComponent, LinkTransformPipe],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
     })

@@ -70,9 +70,7 @@ describe('UserInfoComponent', () => {
 
         fixture.detectChanges();
         const mapComponent = fixture.debugElement.query(By.css(mapTag));
-        const fakeMapComponent = fixture.debugElement.query(
-          By.css(fakeMapClass)
-        );
+        const fakeMapComponent = fixture.debugElement.query(By.css(fakeMapClass));
 
         expect(mapComponent).toBeFalsy();
         expect(fakeMapComponent).toBeTruthy();
@@ -81,11 +79,8 @@ describe('UserInfoComponent', () => {
 
     describe('when the user have coordinates', () => {
       it('should show the map', () => {
-        const mapComponent = fixture.debugElement.query(By.css(mapTag))
-          .nativeElement;
-        const fakeMapComponent = fixture.debugElement.query(
-          By.css(fakeMapClass)
-        );
+        const mapComponent = fixture.debugElement.query(By.css(mapTag)).nativeElement;
+        const fakeMapComponent = fixture.debugElement.query(By.css(fakeMapClass));
 
         expect(mapComponent).toBeTruthy();
         expect(fakeMapComponent).toBeFalsy();

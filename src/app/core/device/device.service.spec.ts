@@ -79,15 +79,11 @@ describe('DeviceService', () => {
         const deviceId = deviceService.getDeviceId();
 
         expect(deviceId).toEqual('newDeviceId');
-        expect(cookieService.put).toHaveBeenCalledWith(
-          'device_id',
-          'newDeviceId',
-          {
-            domain: 'localhost',
-            path: '/',
-            expires: expect.any(Date),
-          }
-        );
+        expect(cookieService.put).toHaveBeenCalledWith('device_id', 'newDeviceId', {
+          domain: 'localhost',
+          path: '/',
+          expires: expect.any(Date),
+        });
       });
     });
 

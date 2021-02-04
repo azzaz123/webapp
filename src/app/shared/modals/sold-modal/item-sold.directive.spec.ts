@@ -1,16 +1,5 @@
-import {
-  Component,
-  DebugElement,
-  EventEmitter,
-  NO_ERRORS_SCHEMA,
-} from '@angular/core';
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { Component, DebugElement, EventEmitter, NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
@@ -27,11 +16,7 @@ import { MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
 import { SoldModalComponent } from './sold-modal.component';
 
 @Component({
-  template: `<button
-    tslItemSold
-    (callback)="setSold(item)"
-    [item]="item"
-  ></button>`,
+  template: `<button tslItemSold (callback)="setSold(item)" [item]="item"></button>`,
 })
 class TestComponent {
   item: Item;
@@ -138,10 +123,7 @@ describe('ItemSoldDirective', () => {
     });
 
     it('should set the item inside the modal to the component item', () => {
-      expect(itemService.canDoAction).toHaveBeenCalledWith(
-        'mark_sold',
-        item.id
-      );
+      expect(itemService.canDoAction).toHaveBeenCalledWith('mark_sold', item.id);
     });
 
     it('should open modal', fakeAsync(() => {
@@ -169,10 +151,7 @@ describe('ItemSoldDirective', () => {
     }));
 
     it('should call canDoAction', () => {
-      expect(itemService.canDoAction).toHaveBeenCalledWith(
-        'mark_sold',
-        MOCK_ITEM.id
-      );
+      expect(itemService.canDoAction).toHaveBeenCalledWith('mark_sold', MOCK_ITEM.id);
     });
 
     it('should throw error', () => {

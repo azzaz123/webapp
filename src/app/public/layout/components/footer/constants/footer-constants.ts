@@ -75,8 +75,7 @@ export const FOOTER_LINKS: FooterLinkSection[] = [
 export const FOOTER_APPS: FooterIcon[] = [
   {
     label: 'Apple store',
-    href:
-      'https://app.adjust.com/rh6uzq?&_pid=web&_me=www&campaign=desktop_footer',
+    href: 'https://app.adjust.com/rh6uzq?&_pid=web&_me=www&campaign=desktop_footer',
     iconSrc: '/assets/icons/footer/ios.svg',
   },
   {
@@ -87,8 +86,7 @@ export const FOOTER_APPS: FooterIcon[] = [
   },
   {
     label: 'Google Play',
-    href:
-      'https://app.adjust.com/dst7wh?&_pid=web&_me=www&campaign=desktop_footer',
+    href: 'https://app.adjust.com/dst7wh?&_pid=web&_me=www&campaign=desktop_footer',
     iconSrc: '/assets/icons/footer/android.svg',
   },
 ];

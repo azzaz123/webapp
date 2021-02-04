@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import {
-  FinancialCard,
-  FinancialCardOption,
-} from '@core/payments/payment.interface';
+import { FinancialCard, FinancialCardOption } from '@core/payments/payment.interface';
 import { StripeService } from '@core/stripe/stripe.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
@@ -45,13 +42,7 @@ export class CreditCardModalComponent implements OnInit {
     const paymentId: string = this.uuidService.getUUID();
 
     if (this.selectedCard || !this.savedCard) {
-      this.stripeService.buy(
-        orderId,
-        paymentId,
-        this.hasSavedCard,
-        this.savedCard,
-        this.card
-      );
+      this.stripeService.buy(orderId, paymentId, this.hasSavedCard, this.savedCard, this.card);
     } else {
       this.loading = false;
       this.errorService.i18nError('noCardSelectedError');
