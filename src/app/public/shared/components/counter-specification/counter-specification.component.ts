@@ -20,16 +20,12 @@ export class CounterSpecificationComponent {
   }
 
   get isCounterText(): boolean {
-    return (
-      !!this.specificationCounter?.icon || typeof this.counter === 'string'
-    );
+    return !!this.specificationCounter?.icon || typeof this.counter === 'string';
   }
 
   get translation(): string {
     if (!this.type || !this.specificationCounter?.label) return this.label;
 
-    return this.counter === 1 || !this.counter
-      ? this.specificationCounter?.label?.singular
-      : this.specificationCounter?.label?.plural;
+    return this.counter === 1 || !this.counter ? this.specificationCounter?.label?.singular : this.specificationCounter?.label?.plural;
   }
 }

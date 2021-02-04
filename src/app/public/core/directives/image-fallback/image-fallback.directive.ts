@@ -9,9 +9,7 @@ export class ImageFallbackDirective {
   constructor(private elementRef: ElementRef) {}
 
   @HostListener('error') onError() {
-    const element: HTMLImageElement = <HTMLImageElement>(
-      this.elementRef.nativeElement
-    );
+    const element: HTMLImageElement = <HTMLImageElement>this.elementRef.nativeElement;
     element.src = this.fallback;
   }
 }

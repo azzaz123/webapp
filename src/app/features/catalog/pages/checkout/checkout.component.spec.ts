@@ -8,11 +8,7 @@ import { ItemService } from '@core/item/item.service';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
 import { environment } from '@environments/environment.beta';
-import {
-  ITEMS_WITH_PRODUCTS,
-  ITEMS_WITH_PRODUCTS_PROVINCE,
-  ITEM_ID,
-} from '@fixtures/item.fixtures.spec';
+import { ITEMS_WITH_PRODUCTS, ITEMS_WITH_PRODUCTS_PROVINCE, ITEM_ID } from '@fixtures/item.fixtures.spec';
 
 describe('CheckoutComponent', () => {
   let component: CheckoutComponent;
@@ -72,10 +68,7 @@ describe('CheckoutComponent', () => {
     router = TestBed.inject(Router);
     paymentService = TestBed.inject(PaymentService);
     route = TestBed.inject(ActivatedRoute);
-    spyCall = spyOn(
-      itemService,
-      'getItemsWithAvailableProducts'
-    ).and.callThrough();
+    spyCall = spyOn(itemService, 'getItemsWithAvailableProducts').and.callThrough();
     appboy.initialize(environment.appboy);
     fixture.detectChanges();
   });
@@ -93,9 +86,7 @@ describe('CheckoutComponent', () => {
 
     describe('no params', () => {
       it('should call getItemsWithAvailableProducts and set it', () => {
-        expect(itemService.getItemsWithAvailableProducts).toHaveBeenCalledWith(
-          SELECTED_ITEMS
-        );
+        expect(itemService.getItemsWithAvailableProducts).toHaveBeenCalledWith(SELECTED_ITEMS);
         expect(component.itemsWithProducts).toEqual(ITEMS_WITH_PRODUCTS);
       });
 
@@ -127,9 +118,7 @@ describe('CheckoutComponent', () => {
       it('should call getItemsWithAvailableProducts and set it', () => {
         component.ngOnInit();
 
-        expect(itemService.getItemsWithAvailableProducts).toHaveBeenCalledWith([
-          ITEM_ID,
-        ]);
+        expect(itemService.getItemsWithAvailableProducts).toHaveBeenCalledWith([ITEM_ID]);
         expect(component.itemsWithProducts).toEqual(ITEMS_WITH_PRODUCTS);
       });
 
@@ -147,13 +136,8 @@ describe('CheckoutComponent', () => {
 
         component.ngOnInit();
 
-        expect(itemService.getItemsWithAvailableProducts).toHaveBeenCalledWith([
-          ITEM_ID,
-        ]);
-        expect(router.navigate).toHaveBeenCalledWith([
-          'pro/catalog/list',
-          { alreadyFeatured: true },
-        ]);
+        expect(itemService.getItemsWithAvailableProducts).toHaveBeenCalledWith([ITEM_ID]);
+        expect(router.navigate).toHaveBeenCalledWith(['pro/catalog/list', { alreadyFeatured: true }]);
       });
     });
 

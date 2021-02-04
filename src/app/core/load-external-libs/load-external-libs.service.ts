@@ -5,17 +5,12 @@ import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class LoadExternalLibsService {
-  private externalLibsMap: Map<string, ReplaySubject<void>> = new Map<
-    string,
-    ReplaySubject<void>
-  >();
+  private externalLibsMap: Map<string, ReplaySubject<void>> = new Map<string, ReplaySubject<void>>();
 
   constructor(@Inject(DOCUMENT) private document: Document) {}
 
   public loadScriptBySource(src: string | string[]): Observable<void> {
-    const observable: Observable<any> = Array.isArray(src)
-      ? this.buildArrayLoaderObservable(src)
-      : this.getSubjectBySrc(src);
+    const observable: Observable<any> = Array.isArray(src) ? this.buildArrayLoaderObservable(src) : this.getSubjectBySrc(src);
     return observable;
   }
 
@@ -29,9 +24,7 @@ export class LoadExternalLibsService {
   }
 
   private buildArrayLoaderObservable(sources: string[]): Observable<void> {
-    const observables: Observable<void>[] = sources.map((source: string) =>
-      this.getSubjectBySrc(source)
-    );
+    const observables: Observable<void>[] = sources.map((source: string) => this.getSubjectBySrc(source));
     return forkJoin(observables).pipe(map(() => null));
   }
 

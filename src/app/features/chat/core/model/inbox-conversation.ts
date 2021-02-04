@@ -1,11 +1,6 @@
 import { environment } from '@environments/environment';
 import { InboxConversationApi, InboxItemApi, InboxUserApi } from './api';
-import {
-  InboxImage,
-  InboxItem,
-  InboxItemPlaceholder,
-  InboxItemStatus,
-} from './inbox-item';
+import { InboxImage, InboxItem, InboxItemPlaceholder, InboxItemStatus } from './inbox-item';
 import { InboxMessage } from './inbox-message';
 import { InboxUser, InboxUserPlaceholder } from './inbox-user';
 
@@ -26,11 +21,7 @@ export class InboxConversation {
   public active = false;
 
   get cannotChat(): boolean {
-    return (
-      this.user.blocked ||
-      !this.user.available ||
-      this.item.status === InboxItemStatus.NOT_AVAILABLE
-    );
+    return this.user.blocked || !this.user.available || this.item.status === InboxItemStatus.NOT_AVAILABLE;
   }
 
   get id(): string {
@@ -120,24 +111,10 @@ export class InboxConversation {
     const lastMessage = message;
     const dateModified = lastMessage.date;
     const hash = message.thread;
-    return new InboxConversation(
-      hash,
-      dateModified,
-      user,
-      item,
-      null,
-      messages,
-      false,
-      null,
-      messages.length,
-      lastMessage
-    );
+    return new InboxConversation(hash, dateModified, user, item, null, messages, false, null, messages.length, lastMessage);
   }
 
-  static fromJSON(
-    conversation: InboxConversationApi,
-    withSelfId: string
-  ): InboxConversation {
+  static fromJSON(conversation: InboxConversationApi, withSelfId: string): InboxConversation {
     const user = this.buildInboxUser(conversation.with_user);
     const item = this.buildInboxItem(conversation.item);
     const messages = this.buildInboxMessages(conversation, withSelfId);
@@ -191,16 +168,7 @@ export class InboxConversation {
       return InboxItemPlaceholder;
     }
     const itemUrl = `${environment.siteUrl}item/${item.slug}`;
-    return new InboxItem(
-      item.hash,
-      item.price,
-      item.title,
-      image,
-      itemUrl,
-      item.status as InboxItemStatus,
-      item.is_mine,
-      item.category_id
-    );
+    return new InboxItem(item.hash, item.price, item.title, image, itemUrl, item.status as InboxItemStatus, item.is_mine, item.category_id);
   }
 
   private static buildInboxMessages(conversation, id) {

@@ -49,17 +49,13 @@ describe('User Location Effect', () => {
       actions$ = of(UpdateUserLocation({ coordinate }));
       userLocationEffect.updateLocation$.subscribe();
 
-      expect(repositoryMock.updateByCoordinates).toHaveBeenCalledWith(
-        coordinate
-      );
+      expect(repositoryMock.updateByCoordinates).toHaveBeenCalledWith(coordinate);
     });
 
     it('should emit update user location success if the repository was good', () => {
       const coordinate: Coordinate = CoordinateMother.random();
       const location: UserLocation = UserLocationMother.random();
-      spyOn(repositoryMock, 'updateByCoordinates').and.returnValue(
-        of(location)
-      );
+      spyOn(repositoryMock, 'updateByCoordinates').and.returnValue(of(location));
 
       actions$ = of(UpdateUserLocation({ coordinate }));
 
@@ -70,9 +66,7 @@ describe('User Location Effect', () => {
 
     it('should emit update user location failed if the repository was bad', () => {
       const coordinate: Coordinate = CoordinateMother.random();
-      spyOn(repositoryMock, 'updateByCoordinates').and.returnValue(
-        throwError('')
-      );
+      spyOn(repositoryMock, 'updateByCoordinates').and.returnValue(throwError(''));
 
       actions$ = of(UpdateUserLocation({ coordinate }));
 

@@ -1,6 +1,4 @@
-export const styledWrapperDecorator = (style: string) => (
-  storyFunc: Function
-) => {
+export const styledWrapperDecorator = (style: string) => (storyFunc: Function) => {
   const story = storyFunc();
   return {
     ...story,

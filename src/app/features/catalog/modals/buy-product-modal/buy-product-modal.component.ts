@@ -4,14 +4,8 @@ import { EventService } from '@core/event/event.service';
 import { Item } from '@core/item/item';
 import { PurchaseProductsWithCreditsResponse } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
-import {
-  CreditInfo,
-  FinancialCardOption,
-} from '@core/payments/payment.interface';
-import {
-  PaymentService,
-  PAYMENT_RESPONSE_STATUS,
-} from '@core/payments/payment.service';
+import { CreditInfo, FinancialCardOption } from '@core/payments/payment.interface';
+import { PaymentService, PAYMENT_RESPONSE_STATUS } from '@core/payments/payment.service';
 import { StripeService } from '@core/stripe/stripe.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -49,11 +43,9 @@ export class BuyProductModalComponent implements OnInit {
     this.eventService.subscribe('paymentResponse', (response) => {
       this.managePaymentResponse(response);
     });
-    this.itemService
-      .get(this.orderEvent.order[0].item_id)
-      .subscribe((item: Item) => {
-        this.item = item;
-      });
+    this.itemService.get(this.orderEvent.order[0].item_id).subscribe((item: Item) => {
+      this.item = item;
+    });
 
     this.paymentService.getCreditInfo().subscribe((creditInfo: CreditInfo) => {
       if (creditInfo.credit === 0) {
@@ -71,25 +63,17 @@ export class BuyProductModalComponent implements OnInit {
   }
 
   get totalToPay(): number {
-    const totalCreditsToPay: number =
-      this.orderEvent.total * this.creditInfo.factor;
+    const totalCreditsToPay: number = this.orderEvent.total * this.creditInfo.factor;
     if (totalCreditsToPay < this.creditInfo.credit) {
       this.mainLoading = false;
       return 0;
     } else {
-      return (
-        this.orderEvent.total - this.creditInfo.credit / this.creditInfo.factor
-      );
+      return this.orderEvent.total - this.creditInfo.credit / this.creditInfo.factor;
     }
   }
 
   get creditSpent(): number {
-    return (
-      Math.min(
-        this.creditInfo.credit,
-        this.orderEvent.total * this.creditInfo.factor
-      ) * -1
-    );
+    return Math.min(this.creditInfo.credit, this.orderEvent.total * this.creditInfo.factor) * -1;
   }
 
   public hasCard(hasCard: boolean) {
@@ -104,52 +88,38 @@ export class BuyProductModalComponent implements OnInit {
     this.loading = true;
     const orderId: string = this.uuidService.getUUID();
     const creditsToPay = this.usedCredits(this.orderEvent.total);
-    this.itemService
-      .purchaseProductsWithCredits(this.orderEvent.order, orderId)
-      .subscribe(
-        (response: PurchaseProductsWithCreditsResponse) => {
-          if (response.items_failed && response.items_failed.length) {
-            this.activeModal.close('error');
-          } else {
-            localStorage.setItem('transactionSpent', creditsToPay.toString());
-            if (this.creditInfo.credit > 0) {
-              if (this.type === 'reactivate') {
-                localStorage.setItem(
-                  'transactionType',
-                  'reactivateWithCredits'
-                );
-              } else if (this.type === 'listing-fee') {
-                localStorage.setItem(
-                  'transactionType',
-                  'purchaseListingFeeWithCredits'
-                );
-              }
-            }
-            this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
-            if (response.payment_needed) {
-              this.buyStripe(orderId);
-            } else {
-              this.activeModal.close('success');
+    this.itemService.purchaseProductsWithCredits(this.orderEvent.order, orderId).subscribe(
+      (response: PurchaseProductsWithCreditsResponse) => {
+        if (response.items_failed && response.items_failed.length) {
+          this.activeModal.close('error');
+        } else {
+          localStorage.setItem('transactionSpent', creditsToPay.toString());
+          if (this.creditInfo.credit > 0) {
+            if (this.type === 'reactivate') {
+              localStorage.setItem('transactionType', 'reactivateWithCredits');
+            } else if (this.type === 'listing-fee') {
+              localStorage.setItem('transactionType', 'purchaseListingFeeWithCredits');
             }
           }
-        },
-        () => {
-          this.activeModal.close('error');
+          this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
+          if (response.payment_needed) {
+            this.buyStripe(orderId);
+          } else {
+            this.activeModal.close('success');
+          }
         }
-      );
+      },
+      () => {
+        this.activeModal.close('error');
+      }
+    );
   }
 
   private buyStripe(orderId: string) {
     const paymentId: string = this.uuidService.getUUID();
 
     if (this.selectedCard || !this.savedCard) {
-      this.stripeService.buy(
-        orderId,
-        paymentId,
-        this.hasSavedCard,
-        this.savedCard,
-        this.card
-      );
+      this.stripeService.buy(orderId, paymentId, this.hasSavedCard, this.savedCard, this.card);
     } else {
       this.loading = false;
       this.errorService.i18nError('noCardSelectedError');

@@ -14,7 +14,7 @@
   <h2 i18n>Dashboard</h2>
 </a>
 
-<a class="sidebar-section" id="qa-sidebar-catalog" [routerLink]="['/catalog/list']" tslTrackEvent="MYZONE_MENU_CATALOG"
+<a class="sidebar-section" id="qa-sidebar-catalog" [routerLink]="['/catalog/list']" (click)="trackClickToCatalog()" tslTrackEvent="MYZONE_MENU_CATALOG"
   [ngClass]="{active: isProducts}">
   <div class="sidebar-section-circle">
     <tsl-svg-icon src="/assets/icons/navigation_catalog.svg"></tsl-svg-icon>

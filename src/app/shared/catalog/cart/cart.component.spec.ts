@@ -1,11 +1,5 @@
 import { throwError, of } from 'rxjs';
-import {
-  ComponentFixture,
-  TestBed,
-  fakeAsync,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 
 import { CartComponent } from './cart.component';
 import { CustomCurrencyPipe } from '../../pipes';
@@ -14,13 +8,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CartService } from './cart.service';
 import { Cart } from './cart';
 import { CartChange } from './cart-item.interface';
-import {
-  CART_ITEM_CITYBUMP,
-  CART_ORDER,
-  CART_ORDER_TRACK,
-  ITEM_ID,
-  MOCK_ITEM_V3,
-} from '../../../../tests/item.fixtures.spec';
+import { CART_ITEM_CITYBUMP, CART_ORDER, CART_ORDER_TRACK, ITEM_ID, MOCK_ITEM_V3 } from '../../../../tests/item.fixtures.spec';
 import { ItemService } from '../../../core/item/item.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
@@ -255,19 +243,14 @@ describe('CartComponent', () => {
         component.checkout();
         tick(2000);
 
-        expect(localStorage.setItem).toHaveBeenCalledWith(
-          'transactionType',
-          'bump'
-        );
+        expect(localStorage.setItem).toHaveBeenCalledWith('transactionType', 'bump');
       }));
 
       it('should emit TOTAL_CREDITS_UPDATED event', fakeAsync(() => {
         component.checkout();
         tick(2000);
 
-        expect(eventService.emit).toHaveBeenCalledWith(
-          EventService.TOTAL_CREDITS_UPDATED
-        );
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.TOTAL_CREDITS_UPDATED);
       }));
 
       describe('with payment_needed true', () => {
@@ -282,13 +265,10 @@ describe('CartComponent', () => {
             it('should call track of trackingService with valid attributes', () => {
               component.checkout();
 
-              expect(trackingService.track).toHaveBeenCalledWith(
-                TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART,
-                {
-                  selected_products: CART_ORDER_TRACK,
-                  payment_method: 'STRIPE',
-                }
-              );
+              expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, {
+                selected_products: CART_ORDER_TRACK,
+                payment_method: 'STRIPE',
+              });
             });
           });
         });
@@ -311,10 +291,7 @@ describe('CartComponent', () => {
           component.checkout();
           tick(2000);
 
-          expect(router.navigate).toHaveBeenCalledWith([
-            'catalog/list',
-            { code: 200 },
-          ]);
+          expect(router.navigate).toHaveBeenCalledWith(['catalog/list', { code: 200 }]);
         }));
 
         it('should call deselectItems', fakeAsync(() => {
@@ -329,12 +306,9 @@ describe('CartComponent', () => {
           component.checkout();
           tick(2000);
 
-          expect(trackingService.track).toHaveBeenCalledWith(
-            TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART,
-            {
-              selected_products: CART_ORDER_TRACK,
-            }
-          );
+          expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, {
+            selected_products: CART_ORDER_TRACK,
+          });
         }));
       });
     });

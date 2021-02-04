@@ -17,9 +17,7 @@ export interface AmazonPublisherServiceAdSlot {
   slotName: string;
 }
 
-export function AmazonPublisherServiceMapper(
-  adSlots: AdSlot[]
-): AmazonPublisherServiceAdSlot[] {
+export function AmazonPublisherServiceMapper(adSlots: AdSlot[]): AmazonPublisherServiceAdSlot[] {
   return adSlots.map((slot) => ({
     slotID: slot.id,
     sizes: slot.sizes,

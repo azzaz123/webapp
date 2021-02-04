@@ -1,10 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  AnalyticsPageView,
-  ANALYTICS_EVENT_NAMES,
-  SCREEN_IDS,
-  ViewSuccessSubscriptionPayment,
-} from '@core/analytics/analytics-constants';
+import { AnalyticsPageView, ANALYTICS_EVENT_NAMES, SCREEN_IDS, ViewSuccessSubscriptionPayment } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -21,10 +16,7 @@ export class PaymentSuccessModalComponent implements OnInit {
   public isInvoice = 'false';
   public subscriptionCategoryId: SUBSCRIPTION_CATEGORIES;
 
-  constructor(
-    public activeModal: NgbActiveModal,
-    private analyticsService: AnalyticsService
-  ) {}
+  constructor(public activeModal: NgbActiveModal, private analyticsService: AnalyticsService) {}
 
   ngOnInit() {
     this.trackPageView();

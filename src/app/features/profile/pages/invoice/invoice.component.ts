@@ -14,10 +14,7 @@ export class InvoiceComponent implements OnInit {
   private isCardealer: boolean;
   public activeIds: string[] = ['custom-panel-1'];
 
-  constructor(
-    private paymentService: PaymentService,
-    private userService: UserService
-  ) {}
+  constructor(private paymentService: PaymentService, private userService: UserService) {}
 
   ngOnInit() {
     this.handleIsCardealerUser();

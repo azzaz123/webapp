@@ -12,16 +12,11 @@ export class PublicWebUrlService {
   constructor() {}
 
   private getEncryptedAndEncodedRedirect(): string {
-    const encryptedCurrentUrl = CryptoJSAES.encrypt(
-      window.location.href,
-      this.REDIRECT_SECRET
-    ).toString();
+    const encryptedCurrentUrl = CryptoJSAES.encrypt(window.location.href, this.REDIRECT_SECRET).toString();
     return encodeURIComponent(encryptedCurrentUrl);
   }
 
   public getLoginUrl(): string {
-    return `${
-      environment.siteUrl
-    }login?redirectUrl=${this.getEncryptedAndEncodedRedirect()}`;
+    return `${environment.siteUrl}login?redirectUrl=${this.getEncryptedAndEncodedRedirect()}`;
   }
 }

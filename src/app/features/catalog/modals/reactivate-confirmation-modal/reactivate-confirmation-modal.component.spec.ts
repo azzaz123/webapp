@@ -1,11 +1,5 @@
 import { of } from 'rxjs';
-import {
-  ComponentFixture,
-  TestBed,
-  tick,
-  fakeAsync,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, tick, fakeAsync, waitForAsync } from '@angular/core/testing';
 
 import { ReactivateConfirmationModalComponent } from './reactivate-confirmation-modal.component';
 import { DecimalPipe } from '@angular/common';
@@ -24,10 +18,7 @@ describe('ReactivateConfirmationModalComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [
-          ReactivateConfirmationModalComponent,
-          CustomCurrencyPipe,
-        ],
+        declarations: [ReactivateConfirmationModalComponent, CustomCurrencyPipe],
         providers: [
           NgbActiveModal,
           DecimalPipe,

@@ -22,9 +22,7 @@ describe('Directive: SanitizedBackground', () => {
       declarations: [SanitizedBackgroundDirective, TestComponent],
     });
     fixture = TestBed.createComponent(TestComponent);
-    element = fixture.debugElement.queryAll(
-      By.directive(SanitizedBackgroundDirective)
-    )[0];
+    element = fixture.debugElement.queryAll(By.directive(SanitizedBackgroundDirective))[0];
   });
 
   it('should create an instance', () => {
@@ -35,8 +33,6 @@ describe('Directive: SanitizedBackground', () => {
     fixture.componentInstance.image = IMAGE.urls_by_size.medium;
     fixture.detectChanges();
 
-    expect(element.styles.backgroundImage).toBe(
-      `url(${IMAGE.urls_by_size.medium})`
-    );
+    expect(element.styles.backgroundImage).toBe(`url(${IMAGE.urls_by_size.medium})`);
   });
 });

@@ -13,10 +13,7 @@ import { CallsService } from '../../core/conversation/calls.service';
 export class UnarchiveButtonComponent {
   @Input() lead: Lead;
 
-  constructor(
-    private trackingService: TrackingService,
-    private callService: CallsService
-  ) {}
+  constructor(private trackingService: TrackingService, private callService: CallsService) {}
 
   unarchive(event: Event) {
     event.stopPropagation();

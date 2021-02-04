@@ -43,17 +43,13 @@ export class CheckoutComponent implements OnInit {
     }
     this.itemService
       .getItemsWithAvailableProducts(this.itemService.selectedItems)
-      .subscribe((itemsWithProducts: ItemWithProducts[]) =>
-        this.setItems(itemsWithProducts)
-      );
+      .subscribe((itemsWithProducts: ItemWithProducts[]) => this.setItems(itemsWithProducts));
   }
 
   private getProductsFromParamsItem(itemId: string) {
     this.itemService
       .getItemsWithAvailableProducts([itemId])
-      .subscribe((itemsWithProducts: ItemWithProducts[]) =>
-        this.setItems(itemsWithProducts)
-      );
+      .subscribe((itemsWithProducts: ItemWithProducts[]) => this.setItems(itemsWithProducts));
   }
 
   private setItems(itemsWithProducts: ItemWithProducts[]) {
@@ -63,14 +59,12 @@ export class CheckoutComponent implements OnInit {
     } else {
       this.router.navigate(['pro/catalog/list', { alreadyFeatured: true }]);
     }
-    this.paymentService
-      .getCreditInfo(false)
-      .subscribe((creditInfo: CreditInfo) => {
-        if (creditInfo.credit === 0) {
-          creditInfo.currencyName = 'wallacredits';
-          creditInfo.factor = 1;
-        }
-        this.creditInfo = creditInfo;
-      });
+    this.paymentService.getCreditInfo(false).subscribe((creditInfo: CreditInfo) => {
+      if (creditInfo.credit === 0) {
+        creditInfo.currencyName = 'wallacredits';
+        creditInfo.factor = 1;
+      }
+      this.creditInfo = creditInfo;
+    });
   }
 }

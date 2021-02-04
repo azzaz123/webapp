@@ -161,9 +161,7 @@ export class OptionList {
   }
 
   highlight() {
-    const option: Option = this.hasShownSelected()
-      ? this.getFirstShownSelected()
-      : this.getFirstShown();
+    const option: Option = this.hasShownSelected() ? this.getFirstShownSelected() : this.getFirstShown();
     this.highlightOption(option);
   }
 

@@ -101,9 +101,7 @@ describe('ContinueSubscriptionModalComponent', () => {
     it('should call the cancelsubscription service', () => {
       component.continueSubscription();
 
-      expect(
-        component.subscriptionsService.continueSubscription
-      ).toHaveBeenCalledWith(tier.id);
+      expect(component.subscriptionsService.continueSubscription).toHaveBeenCalledWith(tier.id);
       expect(component.loading).toBe(false);
     });
 
@@ -112,8 +110,7 @@ describe('ContinueSubscriptionModalComponent', () => {
         name: ANALYTICS_EVENT_NAMES.ClickCancelCloseSubscription,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
-          subscription: component.subscription
-            .category_id as SUBSCRIPTION_CATEGORIES,
+          subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
           tier: component.subscription.selected_tier_id,
           screenId: SCREEN_IDS.ProfileSubscription,
         },

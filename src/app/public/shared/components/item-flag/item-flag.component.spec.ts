@@ -35,20 +35,14 @@ describe('ItemFlagComponent', () => {
     });
 
     it('should load the icon', () => {
-      const svgComponent: HTMLElement = fixture.nativeElement.querySelector(
-        `.ItemFlag > ${svgTag}`
-      );
+      const svgComponent: HTMLElement = fixture.nativeElement.querySelector(`.ItemFlag > ${svgTag}`);
 
       expect(svgComponent).toBeTruthy();
-      expect(svgComponent.getAttribute('ng-reflect-src')).toContain(
-        component.type.toLocaleLowerCase()
-      );
+      expect(svgComponent.getAttribute('ng-reflect-src')).toContain(component.type.toLocaleLowerCase());
     });
 
     it('should load the ng-content container', () => {
-      const ngContent: HTMLElement = fixture.nativeElement.querySelector(
-        `.ItemFlag > .ItemFlag__content`
-      );
+      const ngContent: HTMLElement = fixture.nativeElement.querySelector(`.ItemFlag > .ItemFlag__content`);
 
       expect(ngContent).toBeTruthy();
     });

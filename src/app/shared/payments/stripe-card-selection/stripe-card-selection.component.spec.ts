@@ -3,10 +3,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  FINANCIAL_CARD,
-  FINANCIAL_STRIPE_CARD,
-} from '../../../../tests/payments.fixtures.spec';
+import { FINANCIAL_CARD, FINANCIAL_STRIPE_CARD } from '../../../../tests/payments.fixtures.spec';
 import { StripeCardSelectionComponent } from './stripe-card-selection.component';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { FINANCIAL_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
@@ -55,9 +52,7 @@ describe('StripeCardSelectionComponent', () => {
 
   describe('ngOnInit', () => {
     it('should get and set financial card and emit true if present', () => {
-      spyOn(stripeService, 'getCards').and.returnValue(
-        of([FINANCIAL_STRIPE_CARD])
-      );
+      spyOn(stripeService, 'getCards').and.returnValue(of([FINANCIAL_STRIPE_CARD]));
       spyOn(component.hasCard, 'emit');
 
       component.ngOnInit();
@@ -83,9 +78,7 @@ describe('StripeCardSelectionComponent', () => {
       component.ngOnInit();
 
       expect(i18nService.getTranslations).toHaveBeenCalledTimes(1);
-      expect(i18nService.getTranslations).toHaveBeenCalledWith(
-        'noResultsFound'
-      );
+      expect(i18nService.getTranslations).toHaveBeenCalledWith('noResultsFound');
     });
   });
 });

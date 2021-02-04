@@ -23,11 +23,7 @@ describe('CallItemComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [NoopAnimationsModule],
-        declarations: [
-          CallItemComponent,
-          CallStatusLabelPipe,
-          DateCalendarPipe,
-        ],
+        declarations: [CallItemComponent, CallStatusLabelPipe, DateCalendarPipe],
         providers: [
           I18nService,
           { provide: TrackingService, useClass: MockTrackingService },

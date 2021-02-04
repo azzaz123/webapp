@@ -18,9 +18,7 @@ describe('DiscountAvailableUnsubscribeInAppModalComponent', () => {
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(
-      DiscountAvailableUnsubscribeInAppModalComponent
-    );
+    fixture = TestBed.createComponent(DiscountAvailableUnsubscribeInAppModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

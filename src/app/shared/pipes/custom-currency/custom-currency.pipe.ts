@@ -21,10 +21,7 @@ export class CustomCurrencyPipe implements PipeTransform {
     } else if (currencyCode === 'wallacoins') {
       return this.decimalPipe.transform(value, digits);
     } else {
-      return (
-        this.currencies[currencyCode] +
-        this.decimalPipe.transform(value, digits)
-      );
+      return this.currencies[currencyCode] + this.decimalPipe.transform(value, digits);
     }
   }
 }

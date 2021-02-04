@@ -16,10 +16,7 @@ export class UserPublishedComponent implements OnInit {
   public nextPaginationItem = 0;
   public loading = true;
 
-  constructor(
-    private publicProfileService: PublicProfileService,
-    private mapItemService: MapItemService
-  ) {}
+  constructor(private publicProfileService: PublicProfileService, private mapItemService: MapItemService) {}
 
   ngOnInit(): void {
     this.loadItems();
@@ -30,18 +27,13 @@ export class UserPublishedComponent implements OnInit {
 
     try {
       this.publicProfileService
-        .getPublishedItems(
-          this.publicProfileService.user.id,
-          this.nextPaginationItem
-        )
+        .getPublishedItems(this.publicProfileService.user.id, this.nextPaginationItem)
         .pipe(
           finalize(() => (this.loading = false)),
           take(1)
         )
         .subscribe((response: PaginationResponse<ItemResponse>) => {
-          this.items = this.items.concat(
-            this.mapItemService.mapItems(response.results)
-          );
+          this.items = this.items.concat(this.mapItemService.mapItems(response.results));
           this.nextPaginationItem = response.init;
         }, this.onError);
     } catch (err: any) {

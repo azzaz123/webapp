@@ -32,9 +32,7 @@ describe('Service: Event', () => {
       };
       spyOn(service['subjects'][EVENT_NAME].subject, 'next');
       service.emit(EVENT_NAME, EVENT_DATA);
-      expect(
-        service['subjects'][EVENT_NAME].subject.next
-      ).toHaveBeenCalledWith([EVENT_DATA]);
+      expect(service['subjects'][EVENT_NAME].subject.next).toHaveBeenCalledWith([EVENT_DATA]);
     });
   });
 
@@ -47,10 +45,7 @@ describe('Service: Event', () => {
       expect(EVENT_CALLBACK).toHaveBeenCalledTimes(1);
     });
     it('should return a subscription', () => {
-      const subscription: Subscription = service.subscribe(
-        EVENT_NAME,
-        EVENT_CALLBACK
-      );
+      const subscription: Subscription = service.subscribe(EVENT_NAME, EVENT_CALLBACK);
       expect(subscription instanceof Subscription).toBeTruthy();
     });
   });

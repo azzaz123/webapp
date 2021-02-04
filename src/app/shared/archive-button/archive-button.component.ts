@@ -14,10 +14,7 @@ export class ArchiveButtonComponent {
   @Input() lead: Lead;
   @Output() click: EventEmitter<any> = new EventEmitter();
 
-  constructor(
-    private trackingService: TrackingService,
-    private callService: CallsService
-  ) {}
+  constructor(private trackingService: TrackingService, private callService: CallsService) {}
 
   archive(event: Event) {
     event.stopPropagation();

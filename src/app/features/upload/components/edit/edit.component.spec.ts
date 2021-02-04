@@ -1,19 +1,9 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ItemService } from '@core/item/item.service';
 import { UserService } from '@core/user/user.service';
-import {
-  ITEM_ID,
-  MOCK_ITEM,
-  PRODUCT_RESPONSE,
-} from '@fixtures/item.fixtures.spec';
+import { ITEM_ID, MOCK_ITEM, PRODUCT_RESPONSE } from '@fixtures/item.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ExitConfirmationModalComponent } from '@shared/exit-confirmation-modal/exit-confirmation-modal.component';
 import { of } from 'rxjs';
@@ -139,12 +129,9 @@ describe('EditComponent', () => {
       });
       tick();
 
-      expect(modalService.open).toHaveBeenCalledWith(
-        ExitConfirmationModalComponent,
-        {
-          backdrop: 'static',
-        }
-      );
+      expect(modalService.open).toHaveBeenCalledWith(ExitConfirmationModalComponent, {
+        backdrop: 'static',
+      });
       expect(componentInstance.item).toEqual(MOCK_ITEM);
       expect(notSavedChanges).toBeTruthy();
     }));
@@ -160,9 +147,7 @@ describe('EditComponent', () => {
 
   describe('get urgent price', () => {
     it('should set the urgent price', () => {
-      spyOn(itemService, 'getUrgentProducts').and.returnValue(
-        of(PRODUCT_RESPONSE)
-      );
+      spyOn(itemService, 'getUrgentProducts').and.returnValue(of(PRODUCT_RESPONSE));
 
       component.getUrgentPrice();
 

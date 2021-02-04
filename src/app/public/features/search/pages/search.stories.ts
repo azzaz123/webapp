@@ -21,23 +21,9 @@ export default {
   component: SearchComponent,
   decorators: [
     moduleMetadata({
-      providers: [
-        ViewportService,
-        ItemService,
-        EventService,
-        I18nService,
-        ItemCardService,
-        { provide: 'SUBDOMAIN', useValue: 'www' },
-      ],
+      providers: [ViewportService, ItemService, EventService, I18nService, ItemCardService, { provide: 'SUBDOMAIN', useValue: 'www' }],
       declarations: [SearchComponent, SearchLayoutComponent],
-      imports: [
-        CoreModule,
-        SharedModule,
-        HttpModule,
-        ItemApiModule,
-        CheckSessionModule,
-        ItemCardListModule,
-      ],
+      imports: [CoreModule, SharedModule, HttpModule, ItemApiModule, CheckSessionModule, ItemCardListModule],
     }),
     styledWrapperDecorator('margin: -1rem;'),
   ],

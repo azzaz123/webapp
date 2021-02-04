@@ -2,10 +2,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import {
-  PaginationRequestOptions,
-  PaginationResponse,
-} from './pagination.interface';
+import { PaginationRequestOptions, PaginationResponse } from './pagination.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -13,9 +10,7 @@ import {
 export class PaginationService {
   constructor() {}
 
-  public getItems(
-    endpointSubscribable: Observable<HttpResponse<any>>
-  ): Observable<PaginationResponse<any>> {
+  public getItems(endpointSubscribable: Observable<HttpResponse<any>>): Observable<PaginationResponse<any>> {
     return endpointSubscribable.pipe(
       map((r: HttpResponse<any>) => {
         const nextPage: string = r.headers.get('x-nextpage');

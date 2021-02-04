@@ -1,7 +1,4 @@
-import {
-  BubbleComponent,
-  BubbleVariants,
-} from '@public/shared/components/bubble/bubble.component';
+import { BubbleComponent, BubbleVariants } from '@public/shared/components/bubble/bubble.component';
 import { Story } from '@storybook/angular/types-6-0';
 import { CoreModule } from '@core/core.module';
 import { SvgIconComponent } from '@core/svg-icon/svg-icon/svg-icon.component';

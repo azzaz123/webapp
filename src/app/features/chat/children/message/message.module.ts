@@ -16,10 +16,6 @@ import { ThirdVoiceReviewButtonComponent } from './components/third-voice-review
     ThirdVoiceReviewButtonComponent,
     ThirdVoiceDropPriceComponent,
   ],
-  exports: [
-    TextMessageComponent,
-    ThirdVoiceReviewComponent,
-    ThirdVoiceDropPriceComponent,
-  ],
+  exports: [TextMessageComponent, ThirdVoiceReviewComponent, ThirdVoiceDropPriceComponent],
 })
 export class MessageModule {}

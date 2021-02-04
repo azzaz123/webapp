@@ -148,19 +148,11 @@ describe('BubbleComponent', () => {
     return fixture.whenStable();
   }
 
-  function expectTextContent(
-    selector: Predicate<DebugElement>,
-    expectedText: string
-  ) {
-    expect(
-      debugElement.query(selector).nativeElement.textContent.trim()
-    ).toEqual(expectedText);
+  function expectTextContent(selector: Predicate<DebugElement>, expectedText: string) {
+    expect(debugElement.query(selector).nativeElement.textContent.trim()).toEqual(expectedText);
   }
 
-  function expectRender(
-    selector: Predicate<DebugElement>,
-    isExpectedToRender: boolean
-  ): void {
+  function expectRender(selector: Predicate<DebugElement>, isExpectedToRender: boolean): void {
     const element = debugElement.query(selector);
 
     if (isExpectedToRender) {

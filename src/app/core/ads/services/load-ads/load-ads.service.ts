@@ -4,11 +4,7 @@ import { filter, map, switchMap, take } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { ADS_SOURCES } from '@core/ads/constants';
 import { AdSlot } from '@core/ads/models';
-import {
-  AmazonPublisherService,
-  CriteoService,
-  GooglePublisherTagService,
-} from '@core/ads/vendors';
+import { AmazonPublisherService, CriteoService, GooglePublisherTagService } from '@core/ads/vendors';
 import { LoadExternalLibsService } from '@core/load-external-libs/load-external-libs.service';
 
 @Injectable({
@@ -24,13 +20,7 @@ export class LoadAdsService {
 
   public loadAds(): Observable<boolean> {
     return this.loadExternalLibsService.loadScriptBySource(ADS_SOURCES).pipe(
-      switchMap(() =>
-        zip(
-          this.checkLibraryGoogle(),
-          this.checkLibraryAmazon(),
-          this.checkLibraryCriteo()
-        )
-      ),
+      switchMap(() => zip(this.checkLibraryGoogle(), this.checkLibraryAmazon(), this.checkLibraryCriteo())),
       map((libs: boolean[]) => libs.every((lib) => lib))
     );
   }

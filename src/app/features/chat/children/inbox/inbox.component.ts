@@ -2,29 +2,10 @@ import { countBy, find, map } from 'lodash-es';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import {
-  animate,
-  keyframes,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  OnDestroy,
-  OnInit,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { animate, keyframes, style, transition, trigger } from '@angular/animations';
+import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { AdsService } from '@core/ads/services';
-import {
-  ANALYTICS_EVENT_NAMES,
-  AnalyticsPageView,
-  SCREEN_IDS,
-  ViewChatScreen,
-} from '@core/analytics/analytics-constants';
+import { ANALYTICS_EVENT_NAMES, AnalyticsPageView, SCREEN_IDS, ViewChatScreen } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { EventService } from '@core/event/event.service';
 import { RemoteConsoleService } from '@core/remote-console';
@@ -147,10 +128,7 @@ export class InboxComponent implements OnInit, OnDestroy {
     this.componentState = InboxState.Inbox;
     this.bindNewMessageToast();
     if (this.inboxConversationService.conversations) {
-      this.onInboxReady(
-        this.inboxConversationService.conversations,
-        'INIT_INBOX'
-      );
+      this.onInboxReady(this.inboxConversationService.conversations, 'INIT_INBOX');
       this.conversations = this.inboxConversationService.conversations;
       this.archivedConversations = this.inboxConversationService.archivedConversations;
       this.loading = false;
@@ -159,22 +137,16 @@ export class InboxComponent implements OnInit, OnDestroy {
     }
 
     this.subscriptions.add(
-      this.eventService.subscribe(
-        EventService.INBOX_LOADED,
-        (conversations: InboxConversation[], callMethodClient: string) => {
-          this.conversations = this.inboxConversationService.conversations;
-          this.onInboxReady(conversations, callMethodClient);
-        }
-      )
+      this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[], callMethodClient: string) => {
+        this.conversations = this.inboxConversationService.conversations;
+        this.onInboxReady(conversations, callMethodClient);
+      })
     );
     this.subscriptions.add(
-      this.eventService.subscribe(
-        EventService.ARCHIVED_INBOX_LOADED,
-        (conversations: InboxConversation[]) => {
-          this.archivedConversations = this.inboxConversationService.archivedConversations;
-          this.setStatusesAfterLoadConversations();
-        }
-      )
+      this.eventService.subscribe(EventService.ARCHIVED_INBOX_LOADED, (conversations: InboxConversation[]) => {
+        this.archivedConversations = this.inboxConversationService.archivedConversations;
+        this.setStatusesAfterLoadConversations();
+      })
     );
     this.subscriptions.add(
       this.userService.isProfessional().subscribe((value: boolean) => {
@@ -183,26 +155,18 @@ export class InboxComponent implements OnInit, OnDestroy {
     );
 
     this.subscriptions.add(
-      this.eventService.subscribe(
-        EventService.CURRENT_CONVERSATION_SET,
-        (conversation) => {
-          if (this.conversation !== conversation) {
-            this.conversation = conversation;
-            this.trackViewConversation(conversation);
-          }
-          if (
-            this.archivedConversations.find((c) => c === conversation) &&
-            this.componentState === InboxState.Inbox
-          ) {
-            this.componentState = InboxState.Archived;
-          }
+      this.eventService.subscribe(EventService.CURRENT_CONVERSATION_SET, (conversation) => {
+        if (this.conversation !== conversation) {
+          this.conversation = conversation;
+          this.trackViewConversation(conversation);
         }
-      )
+        if (this.archivedConversations.find((c) => c === conversation) && this.componentState === InboxState.Inbox) {
+          this.componentState = InboxState.Archived;
+        }
+      })
     );
 
-    this.adService.adsReady$
-      .pipe(filter(Boolean))
-      .subscribe(() => this.adService.refresh());
+    this.adService.adsReady$.pipe(filter(Boolean)).subscribe(() => this.adService.refresh());
   }
 
   private setStatusesAfterLoadConversations() {
@@ -217,31 +181,20 @@ export class InboxComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  private onInboxReady(
-    conversations: InboxConversation[],
-    callMethodClient: string
-  ) {
+  private onInboxReady(conversations: InboxConversation[], callMethodClient: string) {
     this.setStatusesAfterLoadConversations();
     this.showInbox();
-    this.sendLogWithNumberOfConversationsByConversationId(
-      conversations,
-      callMethodClient
-    );
+    this.sendLogWithNumberOfConversationsByConversationId(conversations, callMethodClient);
   }
 
   private bindNewMessageToast() {
-    this.eventService.subscribe(
-      EventService.NEW_MESSAGE,
-      (message: InboxMessage) => {
-        if (message.fromSelf && this.conversation.id === message.thread) {
-          this.scrollToTop();
-        } else {
-          this.showNewMessagesToast =
-            this.scrollPanel.nativeElement.scrollTop >
-            this.conversationElementHeight * 0.75;
-        }
+    this.eventService.subscribe(EventService.NEW_MESSAGE, (message: InboxMessage) => {
+      if (message.fromSelf && this.conversation.id === message.thread) {
+        this.scrollToTop();
+      } else {
+        this.showNewMessagesToast = this.scrollPanel.nativeElement.scrollTop > this.conversationElementHeight * 0.75;
       }
-    );
+    });
   }
 
   public showInbox() {
@@ -255,9 +208,7 @@ export class InboxComponent implements OnInit, OnDestroy {
   }
 
   public handleScroll() {
-    this.showNewMessagesToast =
-      this.scrollPanel.nativeElement.scrollTop >
-      this.conversationElementHeight * 0.25;
+    this.showNewMessagesToast = this.scrollPanel.nativeElement.scrollTop > this.conversationElementHeight * 0.25;
   }
 
   public scrollToTop() {
@@ -266,11 +217,7 @@ export class InboxComponent implements OnInit, OnDestroy {
 
   public setCurrentConversation(newCurrentConversation: InboxConversation) {
     if (!newCurrentConversation.user.location) {
-      this.userService
-        .get(newCurrentConversation.user.id)
-        .subscribe(
-          (user) => (newCurrentConversation.user.location = user.location)
-        );
+      this.userService.get(newCurrentConversation.user.id).subscribe((user) => (newCurrentConversation.user.location = user.location));
     }
     this.inboxConversationService.openConversation(newCurrentConversation);
   }
@@ -311,28 +258,14 @@ export class InboxComponent implements OnInit, OnDestroy {
     }
   }
 
-  private sendLogWithNumberOfConversationsByConversationId(
-    conversations: InboxConversation[],
-    callMethodClient: string
-  ) {
-    const conversationsIds = countBy(
-      map(conversations, (conversation) => conversation.id)
-    );
-    const hasDuplicated = find(
-      conversationsIds,
-      (numberOfConversation) => numberOfConversation > 1
-    );
+  private sendLogWithNumberOfConversationsByConversationId(conversations: InboxConversation[], callMethodClient: string) {
+    const conversationsIds = countBy(map(conversations, (conversation) => conversation.id));
+    const hasDuplicated = find(conversationsIds, (numberOfConversation) => numberOfConversation > 1);
 
     if (hasDuplicated) {
       this.userService
         .me()
-        .subscribe((user) =>
-          this.remoteConsoleService.sendDuplicateConversations(
-            user.id,
-            callMethodClient,
-            conversationsIds
-          )
-        );
+        .subscribe((user) => this.remoteConsoleService.sendDuplicateConversations(user.id, callMethodClient, conversationsIds));
     }
   }
 

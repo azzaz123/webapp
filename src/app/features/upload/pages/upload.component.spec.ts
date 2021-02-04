@@ -83,9 +83,7 @@ describe('UploadComponent', () => {
       component.ngOnInit();
 
       expect(trustAndSafetyService.submitProfile).toHaveBeenCalledTimes(1);
-      expect(trustAndSafetyService.submitProfile).toHaveBeenCalledWith(
-        SessionProfileDataLocation.OPEN_CREATE_LISTING
-      );
+      expect(trustAndSafetyService.submitProfile).toHaveBeenCalledWith(SessionProfileDataLocation.OPEN_CREATE_LISTING);
     });
   });
 
@@ -113,9 +111,7 @@ describe('UploadComponent', () => {
 
       component.setCategory(CATEGORY_ID.toString());
 
-      expect(component.getUrgentPrice).toHaveBeenCalledWith(
-        CATEGORY_ID.toString()
-      );
+      expect(component.getUrgentPrice).toHaveBeenCalledWith(CATEGORY_ID.toString());
     });
   });
 
@@ -133,20 +129,14 @@ describe('UploadComponent', () => {
 
   describe('get urgent price', () => {
     it('should set the urgent price', () => {
-      spyOn(itemService, 'getUrgentProductByCategoryId').and.returnValue(
-        of(PRODUCT_RESPONSE)
-      );
+      spyOn(itemService, 'getUrgentProductByCategoryId').and.returnValue(of(PRODUCT_RESPONSE));
 
       const categoryId = ITEM_DATA_V3.content.category_id;
 
       component.getUrgentPrice(categoryId.toString());
 
-      expect(itemService.getUrgentProductByCategoryId).toHaveBeenCalledWith(
-        categoryId.toString()
-      );
-      expect(component.urgentPrice).toEqual(
-        PRODUCT_RESPONSE.durations[0].market_code
-      );
+      expect(itemService.getUrgentProductByCategoryId).toHaveBeenCalledWith(categoryId.toString());
+      expect(component.urgentPrice).toEqual(PRODUCT_RESPONSE.durations[0].market_code);
     });
   });
 });

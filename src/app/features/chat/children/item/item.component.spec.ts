@@ -8,25 +8,13 @@ import { ItemService } from '@core/item/item.service';
 import { TrackingService } from '@core/tracking/tracking.service';
 import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
-import {
-  ITEM_COUNTERS_DATA,
-  ITEM_WEB_SLUG,
-  MOCK_ITEM,
-  MOCK_ITEM_CAR,
-} from '@fixtures/item.fixtures.spec';
+import { ITEM_COUNTERS_DATA, ITEM_WEB_SLUG, MOCK_ITEM, MOCK_ITEM_CAR } from '@fixtures/item.fixtures.spec';
 import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { CustomCurrencyPipe } from '@shared/pipes';
 import { CookieService } from 'ngx-cookie';
 import { of } from 'rxjs';
-import {
-  ItemComponent,
-  mapfreLinks,
-  showMapfreCategories,
-  showVertiCategories,
-  showWillisCategories,
-  vertiLinks,
-} from './item.component';
+import { ItemComponent, mapfreLinks, showMapfreCategories, showVertiCategories, showWillisCategories, vertiLinks } from './item.component';
 
 describe('Component: Item', () => {
   let component: ItemComponent;
@@ -138,42 +126,28 @@ describe('Component: Item', () => {
       component.item = { ...MOCK_ITEM, categoryId } as Item;
       component.ngOnChanges();
 
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.WILLIS_LINK_DISPLAY,
-        {
-          category_id: component.item.categoryId,
-          item_id: component.item.id,
-        }
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.WILLIS_LINK_DISPLAY, {
+        category_id: component.item.categoryId,
+        item_id: component.item.id,
+      });
     });
   });
 
   it('should track Solcredito Display when showSolcreditoLink is true', () => {
     spyOn(trackingService, 'track');
-    const showSolcreditoCategories = Object.values(CATEGORY_IDS).filter(
-      (key) => {
-        if (
-          ![
-            CATEGORY_IDS.REAL_ESTATE_OLD,
-            CATEGORY_IDS.REAL_ESTATE,
-            CATEGORY_IDS.CAR,
-          ].includes(CATEGORY_IDS[key])
-        ) {
-          return CATEGORY_IDS[key];
-        }
+    const showSolcreditoCategories = Object.values(CATEGORY_IDS).filter((key) => {
+      if (![CATEGORY_IDS.REAL_ESTATE_OLD, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.CAR].includes(CATEGORY_IDS[key])) {
+        return CATEGORY_IDS[key];
       }
-    );
+    });
     showSolcreditoCategories.forEach((categoryId) => {
       component.item = { ...MOCK_ITEM, categoryId } as Item;
       component.ngOnChanges();
 
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.WILLIS_LINK_DISPLAY,
-        {
-          category_id: component.item.categoryId,
-          item_id: component.item.id,
-        }
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.WILLIS_LINK_DISPLAY, {
+        category_id: component.item.categoryId,
+        item_id: component.item.id,
+      });
     });
   });
 
@@ -193,9 +167,7 @@ describe('Component: Item', () => {
 
     component.ngOnChanges();
 
-    expect(component.itemUrl).toBe(
-      environment.siteUrl + 'item/' + ITEM_WEB_SLUG
-    );
+    expect(component.itemUrl).toBe(environment.siteUrl + 'item/' + ITEM_WEB_SLUG);
   });
 
   describe('prevent', () => {
@@ -298,10 +270,7 @@ describe('Component: Item', () => {
 
       component.toggleReserve();
 
-      expect(itemService.reserveItem).toHaveBeenCalledWith(
-        component.item.id,
-        component.item.reserved
-      );
+      expect(itemService.reserveItem).toHaveBeenCalledWith(component.item.id, component.item.reserved);
     });
 
     it('should invert the boolean value of item.reserved when called', () => {
@@ -322,12 +291,9 @@ describe('Component: Item', () => {
       component.toggleReserve();
 
       expect(component.item.reserved).toBe(true);
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.CHAT_PRODUCT_RESERVED,
-        {
-          item_id: MOCK_ITEM.id,
-        }
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CHAT_PRODUCT_RESERVED, {
+        item_id: MOCK_ITEM.id,
+      });
     });
   });
 
@@ -338,12 +304,9 @@ describe('Component: Item', () => {
 
       component.trackSoldEvent(component.item);
 
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.CHAT_PRODUCT_SOLD,
-        {
-          item_id: component.item.id,
-        }
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CHAT_PRODUCT_SOLD, {
+        item_id: component.item.id,
+      });
     });
 
     it('should send appboy Sold event', () => {
@@ -361,11 +324,10 @@ describe('Component: Item', () => {
 
       component.trackSoldEvent(MOCK_ITEM);
 
-      expect(window['fbq']).toHaveBeenCalledWith(
-        'track',
-        'CompleteRegistration',
-        { value: MOCK_ITEM.salePrice, currency: MOCK_ITEM.currencyCode }
-      );
+      expect(window['fbq']).toHaveBeenCalledWith('track', 'CompleteRegistration', {
+        value: MOCK_ITEM.salePrice,
+        currency: MOCK_ITEM.currencyCode,
+      });
     });
   });
 
@@ -383,9 +345,7 @@ describe('Component: Item', () => {
 
       component.ngOnChanges();
 
-      expect(component.getMapfreOrVertiLink()).toEqual(
-        mapfreLinks[CATEGORY_IDS.REAL_ESTATE]
-      );
+      expect(component.getMapfreOrVertiLink()).toEqual(mapfreLinks[CATEGORY_IDS.REAL_ESTATE]);
     });
 
     it('should not return mapfre link if device-access-token last num is even number', () => {
@@ -398,9 +358,7 @@ describe('Component: Item', () => {
       component.ngOnInit();
       component.ngOnChanges();
 
-      expect(component.getMapfreOrVertiLink()).not.toEqual(
-        mapfreLinks[CATEGORY_IDS.REAL_ESTATE]
-      );
+      expect(component.getMapfreOrVertiLink()).not.toEqual(mapfreLinks[CATEGORY_IDS.REAL_ESTATE]);
     });
 
     it('should show when category car, real estate, motobike or bike', () => {
@@ -409,9 +367,7 @@ describe('Component: Item', () => {
 
         component.ngOnChanges();
 
-        expect(component.getMapfreOrVertiLink()).toEqual(
-          mapfreLinks[categoryId]
-        );
+        expect(component.getMapfreOrVertiLink()).toEqual(mapfreLinks[categoryId]);
       });
     });
 
@@ -424,13 +380,10 @@ describe('Component: Item', () => {
 
       component.ngOnChanges();
 
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.MAPFRE_LINK_DISPLAY,
-        {
-          item_id: component.item.id,
-          category_id: component.item.categoryId,
-        }
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MAPFRE_LINK_DISPLAY, {
+        item_id: component.item.id,
+        category_id: component.item.categoryId,
+      });
     });
 
     it('should send MAPFRE_LINK_TAP tracking event when clicked', () => {
@@ -443,13 +396,10 @@ describe('Component: Item', () => {
       component.ngOnChanges();
       component.clickMapfreOrVerti(MOCK_CLICK_EVENT);
 
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.MAPFRE_LINK_TAP,
-        {
-          category_id: component.item.categoryId,
-          item_id: component.item.id,
-        }
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MAPFRE_LINK_TAP, {
+        category_id: component.item.categoryId,
+        item_id: component.item.id,
+      });
     });
   });
 
@@ -467,9 +417,7 @@ describe('Component: Item', () => {
 
       component.ngOnChanges();
 
-      expect(component.getMapfreOrVertiLink()).toEqual(
-        vertiLinks[CATEGORY_IDS.REAL_ESTATE]
-      );
+      expect(component.getMapfreOrVertiLink()).toEqual(vertiLinks[CATEGORY_IDS.REAL_ESTATE]);
     });
 
     it('should not return verti link if device-access-token las num is odd number', () => {
@@ -482,9 +430,7 @@ describe('Component: Item', () => {
       component.ngOnInit();
       component.ngOnChanges();
 
-      expect(component.getMapfreOrVertiLink()).not.toEqual(
-        vertiLinks[CATEGORY_IDS.REAL_ESTATE]
-      );
+      expect(component.getMapfreOrVertiLink()).not.toEqual(vertiLinks[CATEGORY_IDS.REAL_ESTATE]);
     });
 
     it('should show when category car, real estate or motobike', () => {
@@ -493,9 +439,7 @@ describe('Component: Item', () => {
 
         component.ngOnChanges();
 
-        expect(component.getMapfreOrVertiLink()).toEqual(
-          vertiLinks[categoryId]
-        );
+        expect(component.getMapfreOrVertiLink()).toEqual(vertiLinks[categoryId]);
       });
     });
 
@@ -508,13 +452,10 @@ describe('Component: Item', () => {
 
       component.ngOnChanges();
 
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.VERTI_LINK_DISPLAY,
-        {
-          item_id: component.item.id,
-          category_id: component.item.categoryId,
-        }
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.VERTI_LINK_DISPLAY, {
+        item_id: component.item.id,
+        category_id: component.item.categoryId,
+      });
     });
 
     it('should send VERTI_LINK_TAP tracking event when clicked', () => {
@@ -527,13 +468,10 @@ describe('Component: Item', () => {
       component.ngOnChanges();
       component.clickMapfreOrVerti(MOCK_CLICK_EVENT);
 
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.VERTI_LINK_TAP,
-        {
-          category_id: component.item.categoryId,
-          item_id: component.item.id,
-        }
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.VERTI_LINK_TAP, {
+        category_id: component.item.categoryId,
+        item_id: component.item.id,
+      });
     });
   });
 
@@ -560,19 +498,11 @@ describe('Component: Item', () => {
 
   describe('showSolcreditLink', () => {
     it('should show item between 50€ - 499€', () => {
-      const showSolcreditoCategories = Object.values(CATEGORY_IDS).filter(
-        (key) => {
-          if (
-            ![
-              CATEGORY_IDS.REAL_ESTATE_OLD,
-              CATEGORY_IDS.REAL_ESTATE,
-              CATEGORY_IDS.CAR,
-            ].includes(CATEGORY_IDS[key])
-          ) {
-            return CATEGORY_IDS[key];
-          }
+      const showSolcreditoCategories = Object.values(CATEGORY_IDS).filter((key) => {
+        if (![CATEGORY_IDS.REAL_ESTATE_OLD, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.CAR].includes(CATEGORY_IDS[key])) {
+          return CATEGORY_IDS[key];
         }
-      );
+      });
 
       showSolcreditoCategories.forEach((categoryId) => {
         component.item = { ...MOCK_ITEM, categoryId, salePrice: 499 } as Item;
@@ -586,11 +516,7 @@ describe('Component: Item', () => {
     });
 
     it('should hide with car and real state category', () => {
-      const hideSolcreditoCategories = [
-        CATEGORY_IDS.CAR,
-        CATEGORY_IDS.REAL_ESTATE,
-        CATEGORY_IDS.REAL_ESTATE_OLD,
-      ];
+      const hideSolcreditoCategories = [CATEGORY_IDS.CAR, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.REAL_ESTATE_OLD];
 
       hideSolcreditoCategories.forEach((categoryId) => {
         component.item = { ...MOCK_ITEM, categoryId } as Item;
@@ -608,13 +534,10 @@ describe('Component: Item', () => {
 
       component.clickWillis(MOCK_CLICK_EVENT);
 
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.WILLIS_LINK_TAP,
-        {
-          category_id: component.item.categoryId,
-          item_id: component.item.id,
-        }
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.WILLIS_LINK_TAP, {
+        category_id: component.item.categoryId,
+        item_id: component.item.id,
+      });
     });
   });
 
@@ -625,13 +548,10 @@ describe('Component: Item', () => {
 
       component.clickSolcredito(MOCK_CLICK_EVENT);
 
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.SOLCREDITO_LINK_TAP,
-        {
-          category_id: component.item.categoryId,
-          item_id: component.item.id,
-        }
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.SOLCREDITO_LINK_TAP, {
+        category_id: component.item.categoryId,
+        item_id: component.item.id,
+      });
     });
   });
 });

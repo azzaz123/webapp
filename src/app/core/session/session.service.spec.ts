@@ -94,11 +94,7 @@ describe('SessionService', () => {
     });
 
     let expiryDate: Date = cookies['wallapop_keep_session'].options.expires;
-    expect(expiryDate.getTime()).toBeGreaterThanOrEqual(
-      new Date(new Date().getTime() + 15 * 60000 - 1000).getTime()
-    );
-    expect(expiryDate.getTime()).toBeLessThanOrEqual(
-      new Date(new Date().getTime() + 15 * 60000 + 1000).getTime()
-    );
+    expect(expiryDate.getTime()).toBeGreaterThanOrEqual(new Date(new Date().getTime() + 15 * 60000 - 1000).getTime());
+    expect(expiryDate.getTime()).toBeLessThanOrEqual(new Date(new Date().getTime() + 15 * 60000 + 1000).getTime());
   }
 });

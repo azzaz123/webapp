@@ -11,8 +11,6 @@ export class IsCurrentUserPipe implements PipeTransform {
   constructor(private store: Store) {}
 
   transform(userId: string): Observable<boolean> {
-    return this.store
-      .select(selectUserProfileDetailId)
-      .pipe(map((userIdStore: UserId | null) => userIdStore === userId));
+    return this.store.select(selectUserProfileDetailId).pipe(map((userIdStore: UserId | null) => userIdStore === userId));
   }
 }

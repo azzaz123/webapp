@@ -13,8 +13,7 @@ describe('Component: ConnectionAlert', () => {
       providers: [EventService],
     });
     fixture = TestBed.createComponent(ConnectionAlertComponent);
-    component = TestBed.createComponent(ConnectionAlertComponent)
-      .componentInstance;
+    component = TestBed.createComponent(ConnectionAlertComponent).componentInstance;
     eventService = TestBed.inject(EventService);
   });
 

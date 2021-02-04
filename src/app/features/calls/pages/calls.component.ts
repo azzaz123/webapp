@@ -20,11 +20,7 @@ export class CallsComponent implements OnInit, OnDestroy {
   private callsSubscription: Subscription;
   private active = true;
 
-  constructor(
-    private callService: CallsService,
-    private trackingService: TrackingService,
-    private route: ActivatedRoute
-  ) {}
+  constructor(private callService: CallsService, private trackingService: TrackingService, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.loading = true;
@@ -64,13 +60,9 @@ export class CallsComponent implements OnInit, OnDestroy {
         this.calls = calls;
         this.loading = false;
         if (this.archive) {
-          this.trackingService.track(
-            TrackingService.PHONE_LEAD_LIST_PROCESSED_LOADED
-          );
+          this.trackingService.track(TrackingService.PHONE_LEAD_LIST_PROCESSED_LOADED);
         } else {
-          this.trackingService.track(
-            TrackingService.PHONE_LEAD_LIST_ACTIVE_LOADED
-          );
+          this.trackingService.track(TrackingService.PHONE_LEAD_LIST_ACTIVE_LOADED);
         }
       });
   }

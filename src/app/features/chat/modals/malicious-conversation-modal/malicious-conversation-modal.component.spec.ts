@@ -3,12 +3,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import {
-  AnalyticsPageView,
-  ANALYTICS_EVENT_NAMES,
-  SCREEN_IDS,
-  ViewBannedUserChatPopUp,
-} from 'app/core/analytics/analytics-constants';
+import { AnalyticsPageView, ANALYTICS_EVENT_NAMES, SCREEN_IDS, ViewBannedUserChatPopUp } from 'app/core/analytics/analytics-constants';
 import { AnalyticsService } from 'app/core/analytics/analytics.service';
 import { ButtonComponent } from 'app/shared/button/button.component';
 import { MaliciousConversationModalComponent } from './malicious-conversation-modal.component';
@@ -29,10 +24,7 @@ describe('MaliciousConversationModalComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [ButtonComponent, MaliciousConversationModalComponent],
-        providers: [
-          NgbActiveModal,
-          { provide: AnalyticsService, useClass: MockAnalyticsService },
-        ],
+        providers: [NgbActiveModal, { provide: AnalyticsService, useClass: MockAnalyticsService }],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
     })
@@ -55,9 +47,7 @@ describe('MaliciousConversationModalComponent', () => {
   describe('when clicking on main button', () => {
     it('should close the modal', () => {
       spyOn(activeModal, 'close');
-      const CTAButtonElement = fixture.debugElement.query(
-        By.directive(ButtonComponent)
-      ).nativeElement;
+      const CTAButtonElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
 
       CTAButtonElement.click();
 
@@ -68,9 +58,7 @@ describe('MaliciousConversationModalComponent', () => {
   describe('when clicking on cross button', () => {
     it('should dismiss the modal', () => {
       spyOn(activeModal, 'dismiss');
-      const closeButtonElement = fixture.debugElement.query(
-        By.css('.MaliciousConversationModal__close')
-      ).nativeElement;
+      const closeButtonElement = fixture.debugElement.query(By.css('.MaliciousConversationModal__close')).nativeElement;
 
       closeButtonElement.click();
 
@@ -89,9 +77,7 @@ describe('MaliciousConversationModalComponent', () => {
         spyOn(analyticsService, 'trackPageView');
         component.ngOnInit();
 
-        expect(analyticsService.trackPageView).toHaveBeenCalledWith(
-          expectedEvent
-        );
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
       });
     });
   });

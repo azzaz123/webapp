@@ -60,10 +60,7 @@ export class CountdownComponent implements OnInit, OnDestroy {
   }
 
   private getDuration(lastValue: moment.MomentInput): moment.Duration {
-    return moment.duration(
-      moment(lastValue).valueOf() - new Date().getTime(),
-      'milliseconds'
-    );
+    return moment.duration(moment(lastValue).valueOf() - new Date().getTime(), 'milliseconds');
   }
 
   private getListingFeeCountDownText(diffTime: number) {
@@ -79,20 +76,12 @@ export class CountdownComponent implements OnInit, OnDestroy {
     const durationMinutes = Math.floor(duration.asMinutes());
     if (durationDays >= 1) {
       const durationDaysRound = Math.ceil(duration.asDays());
-      timeText = `${durationDaysRound} ${this.i18n.getTranslations('day')}${
-        durationDaysRound === 1 ? '' : 's'
-      }`;
+      timeText = `${durationDaysRound} ${this.i18n.getTranslations('day')}${durationDaysRound === 1 ? '' : 's'}`;
     } else if (durationHours >= 1) {
-      timeText = `${durationHours} ${this.i18n.getTranslations('hour')}${
-        durationHours === 1 ? '' : 's'
-      }`;
+      timeText = `${durationHours} ${this.i18n.getTranslations('hour')}${durationHours === 1 ? '' : 's'}`;
     } else {
-      timeText = `${durationMinutes} ${this.i18n.getTranslations('minute')}${
-        durationMinutes === 1 ? '' : 's'
-      }`;
+      timeText = `${durationMinutes} ${this.i18n.getTranslations('minute')}${durationMinutes === 1 ? '' : 's'}`;
     }
-    return locale === 'en'
-      ? `${timeText} ${this.i18n.getTranslations('left')}`
-      : `${this.i18n.getTranslations('left')} ${timeText}`;
+    return locale === 'en' ? `${timeText} ${this.i18n.getTranslations('left')}` : `${this.i18n.getTranslations('left')} ${timeText}`;
   }
 }

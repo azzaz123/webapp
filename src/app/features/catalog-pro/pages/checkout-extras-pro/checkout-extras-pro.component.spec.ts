@@ -4,10 +4,7 @@ import { CheckoutExtrasProComponent } from './checkout-extras-pro.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { PaymentService } from '@core/payments/payment.service';
-import {
-  createPacksFixture,
-  PREPARED_PACKS,
-} from '@fixtures/payments.fixtures.spec';
+import { createPacksFixture, PREPARED_PACKS } from '@fixtures/payments.fixtures.spec';
 
 describe('CheckoutExtrasProComponent', () => {
   let component: CheckoutExtrasProComponent;
@@ -42,9 +39,7 @@ describe('CheckoutExtrasProComponent', () => {
 
   describe('ngOnInit', () => {
     beforeEach(() => {
-      spyOn(paymentService, 'getPacks').and.returnValue(
-        of(createPacksFixture())
-      );
+      spyOn(paymentService, 'getPacks').and.returnValue(of(createPacksFixture()));
 
       component.ngOnInit();
     });

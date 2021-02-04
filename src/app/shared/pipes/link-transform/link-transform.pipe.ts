@@ -15,17 +15,12 @@ export class LinkTransformPipe implements PipeTransform {
   }
 
   private static getFormattedLink(link: string): string {
-    return this.hasProtocol(link)
-      ? `<a href="${link}" target="_blank">${link}</a>`
-      : `<a href="//${link}" target="_blank">${link}</a>`;
+    return this.hasProtocol(link) ? `<a href="${link}" target="_blank">${link}</a>` : `<a href="//${link}" target="_blank">${link}</a>`;
   }
 
   transform(message: string, args?: any): string {
     new Set(message.match(LinkTransformPipe.LINK_REG_EXP)).forEach(
-      (link) =>
-        (message = message
-          .split(link)
-          .join(LinkTransformPipe.getFormattedLink(link)))
+      (link) => (message = message.split(link).join(LinkTransformPipe.getFormattedLink(link)))
     );
 
     return message;
