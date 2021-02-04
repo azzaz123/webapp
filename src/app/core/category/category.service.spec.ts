@@ -1,25 +1,11 @@
 import { TestBed, getTestBed } from '@angular/core/testing';
-import {
-  CategoryService,
-  SUGGESTED_CATEGORIES_ENDPOINT,
-} from './category.service';
-import {
-  CATEGORY_DATA_WEB,
-  SUGGESTED_CATEGORIES,
-  SUGGESTED_CATEGORY_TV_AUDIO_CAMERAS,
-} from '../../../tests/category.fixtures.spec';
-import {
-  CategoryResponse,
-  SuggestedCategory,
-} from './category-response.interface';
+import { CategoryService, SUGGESTED_CATEGORIES_ENDPOINT } from './category.service';
+import { CATEGORY_DATA_WEB, SUGGESTED_CATEGORIES, SUGGESTED_CATEGORY_TV_AUDIO_CAMERAS } from '../../../tests/category.fixtures.spec';
+import { CategoryResponse, SuggestedCategory } from './category-response.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { HttpParams } from '@angular/common/http';
 import { LOCALE_ID } from '@angular/core';
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-  TestRequest,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { environment } from 'environments/environment';
 
 describe('CategoryService', () => {
@@ -54,19 +40,14 @@ describe('CategoryService', () => {
     it('should return the json from the categories', () => {
       const languageParamKey = 'language';
       const languageParamValue = 'es_ES';
-      const expectedParams = new HttpParams().set(
-        languageParamKey,
-        languageParamValue
-      );
+      const expectedParams = new HttpParams().set(languageParamKey, languageParamValue);
       const expectedUrl = `${environment.baseUrl}api/v3/categories/keys/`;
       let response: CategoryResponse[];
 
       service.getCategories().subscribe((data: CategoryResponse[]) => {
         response = data;
       });
-      const req: TestRequest = httpMock.expectOne(
-        `${expectedUrl}?${expectedParams.toString()}`
-      );
+      const req: TestRequest = httpMock.expectOne(`${expectedUrl}?${expectedParams.toString()}`);
       req.flush(CATEGORY_DATA_WEB);
 
       const languageParam = req.request.params.get(languageParamKey);
@@ -74,27 +55,20 @@ describe('CategoryService', () => {
       expect(req.request.url).toEqual(expectedUrl);
       expect(req.request.method).toBe('GET');
       expect(languageParam).toEqual(languageParamValue);
-      expect(req.request.headers.get('Accept')).toBe(
-        'application/vnd.categories-v2+json'
-      );
+      expect(req.request.headers.get('Accept')).toBe('application/vnd.categories-v2+json');
     });
 
     it('should return categories fetched previously', () => {
       const languageParamKey = 'language';
       const languageParamValue = 'es_ES';
-      const expectedParams = new HttpParams().set(
-        languageParamKey,
-        languageParamValue
-      );
+      const expectedParams = new HttpParams().set(languageParamKey, languageParamValue);
       const expectedUrl = `${environment.baseUrl}api/v3/categories/keys/`;
       let response: CategoryResponse[];
 
       service.getCategories().subscribe((data: CategoryResponse[]) => {
         response = data;
       });
-      const req: TestRequest = httpMock.expectOne(
-        `${expectedUrl}?${expectedParams.toString()}`
-      );
+      const req: TestRequest = httpMock.expectOne(`${expectedUrl}?${expectedParams.toString()}`);
       req.flush(CATEGORY_DATA_WEB);
       service.getCategories().subscribe((data: CategoryResponse[]) => {
         response = data;
@@ -110,9 +84,7 @@ describe('CategoryService', () => {
       const consumerGoodsCategory = service.getConsumerGoodsCategory();
 
       expect(consumerGoodsCategory.category_id).toBe(0);
-      expect(consumerGoodsCategory.name).toBe(
-        i18nService.getTranslations('consumerGoodsGeneralCategoryTitle')
-      );
+      expect(consumerGoodsCategory.name).toBe(i18nService.getTranslations('consumerGoodsGeneralCategoryTitle'));
       expect(consumerGoodsCategory.icon_id).toBe('All');
     });
   });
@@ -125,14 +97,10 @@ describe('CategoryService', () => {
       const expectedUrl = `${environment.baseUrl}${SUGGESTED_CATEGORIES_ENDPOINT}`;
       let response: SuggestedCategory;
 
-      service
-        .getSuggestedCategory(paramValue)
-        .subscribe((data: SuggestedCategory) => {
-          response = data;
-        });
-      const req: TestRequest = httpMock.expectOne(
-        `${expectedUrl}?${expectedParams.toString()}`
-      );
+      service.getSuggestedCategory(paramValue).subscribe((data: SuggestedCategory) => {
+        response = data;
+      });
+      const req: TestRequest = httpMock.expectOne(`${expectedUrl}?${expectedParams.toString()}`);
       req.flush(SUGGESTED_CATEGORIES);
 
       const languageParam = req.request.params.get(paramKey);
@@ -149,14 +117,10 @@ describe('CategoryService', () => {
       const expectedUrl = `${environment.baseUrl}${SUGGESTED_CATEGORIES_ENDPOINT}`;
       let response: SuggestedCategory;
 
-      service
-        .getSuggestedCategory(paramValue)
-        .subscribe((data: SuggestedCategory) => {
-          response = data;
-        });
-      const req: TestRequest = httpMock.expectOne(
-        `${expectedUrl}?${expectedParams.toString()}`
-      );
+      service.getSuggestedCategory(paramValue).subscribe((data: SuggestedCategory) => {
+        response = data;
+      });
+      const req: TestRequest = httpMock.expectOne(`${expectedUrl}?${expectedParams.toString()}`);
       req.flush([]);
 
       const languageParam = req.request.params.get(paramKey);

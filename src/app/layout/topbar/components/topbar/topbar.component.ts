@@ -1,12 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  Inject,
-  Input,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { EventService } from '@core/event/event.service';
 import { Coordinate } from '@core/geolocation/address-response.interface';
 import { CreditInfo } from '@core/payments/payment.interface';
@@ -73,16 +65,13 @@ export class TopbarComponent implements OnInit, OnDestroy {
     );
     this.updateCreditInfo();
     this.componentSubscriptions.push(
-      this.eventService.subscribe(
-        EventService.TOTAL_CREDITS_UPDATED,
-        (totalCredits: number) => {
-          if (totalCredits) {
-            this.wallacoins = totalCredits;
-          } else {
-            this.updateCreditInfo(false);
-          }
+      this.eventService.subscribe(EventService.TOTAL_CREDITS_UPDATED, (totalCredits: number) => {
+        if (totalCredits) {
+          this.wallacoins = totalCredits;
+        } else {
+          this.updateCreditInfo(false);
         }
-      )
+      })
     );
     this.componentSubscriptions.push(
       this.eventService.subscribe(EventService.USER_LOGIN, () => {
@@ -98,26 +87,17 @@ export class TopbarComponent implements OnInit, OnDestroy {
   }
 
   private updateCreditInfo(cache?: boolean) {
-    this.paymentService
-      .getCreditInfo(cache)
-      .subscribe((creditInfo: CreditInfo) => {
-        this.currencyName = creditInfo.currencyName;
-        this.wallacoins = creditInfo.credit;
-        this.setCreditCookie();
-      });
+    this.paymentService.getCreditInfo(cache).subscribe((creditInfo: CreditInfo) => {
+      this.currencyName = creditInfo.currencyName;
+      this.wallacoins = creditInfo.credit;
+      this.setCreditCookie();
+    });
   }
 
   private setCreditCookie() {
-    const cookieOptions =
-      environment.name === 'local'
-        ? { domain: 'localhost' }
-        : { domain: '.wallapop.com' };
+    const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
     this.cookieService.put('creditName', this.currencyName, cookieOptions);
-    this.cookieService.put(
-      'creditQuantity',
-      this.wallacoins.toString(),
-      cookieOptions
-    );
+    this.cookieService.put('creditQuantity', this.wallacoins.toString(), cookieOptions);
   }
 
   public submitForm() {

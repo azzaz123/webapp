@@ -1,20 +1,8 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { ErrorsService } from '@core/errors/errors.service';
 import { PICTURE_ID } from '@fixtures/item.fixtures.spec';
-import {
-  UPLOADED_FILE_OTHER,
-  UPLOAD_FILE,
-  UPLOAD_FILE_2,
-  UPLOAD_FILE_DONE,
-  UPLOAD_FILE_NAME,
-} from '@fixtures/upload.fixtures.spec';
+import { UPLOADED_FILE_OTHER, UPLOAD_FILE, UPLOAD_FILE_2, UPLOAD_FILE_DONE, UPLOAD_FILE_NAME } from '@fixtures/upload.fixtures.spec';
 import { MockUploaderService } from '@fixtures/uploader.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FileDropActions } from '@shared/uploader/file-drop.directive';
@@ -169,10 +157,7 @@ describe('DropAreaComponent', () => {
         reason: 'reason',
       });
 
-      expect(errorsService.i18nError).toHaveBeenCalledWith(
-        'reason',
-        UPLOAD_FILE_NAME
-      );
+      expect(errorsService.i18nError).toHaveBeenCalledWith('reason', UPLOAD_FILE_NAME);
     });
   });
 
@@ -196,9 +181,7 @@ describe('DropAreaComponent', () => {
       component.remove(UPLOAD_FILE_DONE, new Event(''));
       tick();
 
-      expect(modalService.open).toHaveBeenCalledWith(
-        RemoveConfirmModalComponent
-      );
+      expect(modalService.open).toHaveBeenCalledWith(RemoveConfirmModalComponent);
       expect(component.onDeleteImage.emit).toHaveBeenCalledWith(PICTURE_ID);
     }));
   });

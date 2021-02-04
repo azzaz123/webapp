@@ -3,10 +3,7 @@ import { Meta, MetaDefinition } from '@angular/platform-browser';
 import { FacebookMetaTagsData } from './enums/interfaces/facebook-meta-tags-data.interface';
 import { MetaTagsBuilderData } from './enums/interfaces/meta-tags-builder-data.interface';
 import { TwitterMetaTagsData } from './enums/interfaces/twitter-meta-tags-data.interface';
-import {
-  FACEBOOK_META_TAG_NAMES,
-  TWITTER_META_TAG_NAMES,
-} from './enums/social-meta-tag-names.enum';
+import { FACEBOOK_META_TAG_NAMES, TWITTER_META_TAG_NAMES } from './enums/social-meta-tag-names.enum';
 
 @Injectable()
 export class SocialMetaTagService {
@@ -23,29 +20,16 @@ export class SocialMetaTagService {
 
   constructor(private metaService: Meta) {}
 
-  public insertTwitterMetaTags(
-    title: string,
-    description: string,
-    image: string
-  ): void {
-    this.getTwitterMetaTags({ title, description, image }).forEach(
-      (metaTag: MetaDefinition) => {
-        this.metaService.addTag(metaTag);
-      }
-    );
+  public insertTwitterMetaTags(title: string, description: string, image: string): void {
+    this.getTwitterMetaTags({ title, description, image }).forEach((metaTag: MetaDefinition) => {
+      this.metaService.addTag(metaTag);
+    });
   }
 
-  public insertFacebookMetaTags(
-    title: string,
-    description: string,
-    image: string,
-    url: string
-  ): void {
-    this.getFacebookMetaTags({ title, description, image, url }).forEach(
-      (metaTag: MetaDefinition) => {
-        this.metaService.addTag(metaTag);
-      }
-    );
+  public insertFacebookMetaTags(title: string, description: string, image: string, url: string): void {
+    this.getFacebookMetaTags({ title, description, image, url }).forEach((metaTag: MetaDefinition) => {
+      this.metaService.addTag(metaTag);
+    });
   }
 
   private getFacebookMetaTags(content: FacebookMetaTagsData): MetaDefinition[] {

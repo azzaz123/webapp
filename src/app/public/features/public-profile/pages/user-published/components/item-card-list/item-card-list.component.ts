@@ -22,8 +22,6 @@ export class ItemCardListComponent {
   }
 
   public toggleFavourite(item: Item): void {
-    this.checkSessionService.hasSession()
-      ? this.itemCardService.toggleFavourite(item)
-      : this.checkSessionService.checkSessionAction();
+    this.checkSessionService.hasSession() ? this.itemCardService.toggleFavourite(item) : this.checkSessionService.checkSessionAction();
   }
 }

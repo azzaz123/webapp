@@ -8,14 +8,7 @@ import { User } from '@core/user/user';
 import { ErrorsService } from '@core/errors/errors.service';
 import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
-import {
-  IMAGE_TYPE,
-  NgUploaderOptions,
-  OUTPUT_TYPE,
-  UploadFile,
-  UploadInput,
-  UploadOutput,
-} from '../../uploader/upload.interface';
+import { IMAGE_TYPE, NgUploaderOptions, OUTPUT_TYPE, UploadFile, UploadInput, UploadOutput } from '../../uploader/upload.interface';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { UploaderService } from '@shared/uploader/uploader.service';
 import { filter, finalize, take } from 'rxjs/operators';
@@ -52,13 +45,11 @@ export class PictureUploadComponent implements OnInit {
   }
 
   private subscribeUploadEvents(): void {
-    this.eventsSubscription = this.uploaderService.serviceEvents$.subscribe(
-      (event: UploadOutput) => {
-        if (event.imageType === this.imageType) {
-          this.onUploadOutput(event);
-        }
+    this.eventsSubscription = this.uploaderService.serviceEvents$.subscribe((event: UploadOutput) => {
+      if (event.imageType === this.imageType) {
+        this.onUploadOutput(event);
       }
-    );
+    });
   }
 
   private onUploadOutput(output: UploadOutput): void {
@@ -81,11 +72,7 @@ export class PictureUploadComponent implements OnInit {
     this.isLoading = true;
     const url = 'api/v3/users/me/image';
     const timestamp = new Date().getTime();
-    const signature = this.accesTokenService.getTokenSignature(
-      url,
-      'POST',
-      timestamp
-    );
+    const signature = this.accesTokenService.getTokenSignature(url, 'POST', timestamp);
     const headers = {
       [TOKEN_AUTHORIZATION_HEADER_NAME]: `Bearer ${this.accesTokenService.accessToken}`,
       [TOKEN_SIGNATURE_HEADER_NAME]: signature,

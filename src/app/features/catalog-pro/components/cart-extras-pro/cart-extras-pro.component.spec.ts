@@ -13,12 +13,7 @@ import { TrackingService } from '@core/tracking/tracking.service';
 import { CartProExtras } from '@shared/catalog/cart/cart-pro-extras';
 import { CartChange } from '@shared/catalog/cart/cart-item.interface';
 import { CustomCurrencyPipe } from '@shared/pipes';
-import {
-  BILLING_INFO_RESPONSE,
-  ORDER_CART_EXTRAS_PRO,
-  PACK_ID,
-  PREPARED_PACKS,
-} from '@fixtures/payments.fixtures.spec';
+import { BILLING_INFO_RESPONSE, ORDER_CART_EXTRAS_PRO, PACK_ID, PREPARED_PACKS } from '@fixtures/payments.fixtures.spec';
 import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { StripeService } from '@core/stripe/stripe.service';
 import { EventService } from '@core/event/event.service';
@@ -139,9 +134,7 @@ describe('CartExtrasProComponent', () => {
     });
 
     it('should call createInstance cartService method', () => {
-      expect(cartService.createInstance).toHaveBeenCalledWith(
-        new CartProExtras()
-      );
+      expect(cartService.createInstance).toHaveBeenCalledWith(new CartProExtras());
     });
 
     it('should set cart pro extras', () => {
@@ -245,9 +238,7 @@ describe('CartExtrasProComponent', () => {
 
     describe('already has billing info', () => {
       beforeEach(() => {
-        spyOn(component.cart, 'prepareOrder').and.returnValue(
-          ORDER_CART_EXTRAS_PRO
-        );
+        spyOn(component.cart, 'prepareOrder').and.returnValue(ORDER_CART_EXTRAS_PRO);
         eventId = null;
       });
 
@@ -256,16 +247,12 @@ describe('CartExtrasProComponent', () => {
 
         component.checkout();
 
-        expect(paymentService.orderExtrasProPack).toHaveBeenCalledWith(
-          ORDER_CART_EXTRAS_PRO
-        );
+        expect(paymentService.orderExtrasProPack).toHaveBeenCalledWith(ORDER_CART_EXTRAS_PRO);
       });
 
       describe('when unkown error', () => {
         it('should call toastr with bump error', () => {
-          spyOn(paymentService, 'orderExtrasProPack').and.returnValue(
-            throwError('Unknown')
-          );
+          spyOn(paymentService, 'orderExtrasProPack').and.returnValue(throwError('Unknown'));
           spyOn(errorsService, 'i18nError');
 
           component.checkout();
@@ -296,16 +283,12 @@ describe('CartExtrasProComponent', () => {
 
             component.saveAndCheckout();
 
-            expect(paymentService.updateBillingInfo).toHaveBeenCalledWith(
-              component.billingInfoForm.value
-            );
+            expect(paymentService.updateBillingInfo).toHaveBeenCalledWith(component.billingInfoForm.value);
           });
 
           it('should show error if call fails', () => {
             spyOn(errorsService, 'show');
-            spyOn(paymentService, 'updateBillingInfo').and.returnValue(
-              throwError('error')
-            );
+            spyOn(paymentService, 'updateBillingInfo').and.returnValue(throwError('error'));
 
             component.saveAndCheckout();
 

@@ -10,12 +10,7 @@ export class ChatConnectionMetric {
   public sendingToBackend: boolean;
 
   get canBeSent(): boolean {
-    return (
-      this.inboxConnectionSuccess &&
-      this.xmppConnectionSuccess &&
-      !this.sendingToBackend &&
-      !this.alreadySent
-    );
+    return this.inboxConnectionSuccess && this.xmppConnectionSuccess && !this.sendingToBackend && !this.alreadySent;
   }
 
   constructor() {

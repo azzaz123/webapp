@@ -1,9 +1,5 @@
 import { CATEGORY_IDS } from 'app/core/category/category-ids';
-import {
-  CategoryResponse,
-  CategoryOption,
-  SuggestedCategory,
-} from '../app/core/category/category-response.interface';
+import { CategoryResponse, CategoryOption, SuggestedCategory } from '../app/core/category/category-response.interface';
 
 export const CATEGORY_DATA_WEB: Array<CategoryResponse> = [
   {

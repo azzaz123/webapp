@@ -12,10 +12,7 @@ export const ASK_PERMISSIONS_TIMEOUT_MS = 5000;
 export class DesktopNotificationsService {
   private showNotifications = false;
 
-  constructor(
-    private trackingService: TrackingService,
-    private i18n: I18nService
-  ) {}
+  constructor(private trackingService: TrackingService, private i18n: I18nService) {}
 
   public init(): void {
     if (!this.browserSupportsNotifications() || this.showNotifications) {
@@ -24,33 +21,20 @@ export class DesktopNotificationsService {
     this.askForPermissions();
   }
 
-  public sendFromInboxMessage(
-    message: InboxMessage,
-    conversation: InboxConversation
-  ): void {
+  public sendFromInboxMessage(message: InboxMessage, conversation: InboxConversation): void {
     if (!this.canShowNotifications()) {
       return;
     }
     const notification = this.createFromInboxMessage(message, conversation);
-    notification.addEventListener('close', () =>
-      this.trackNotificationReceived(message)
-    );
+    notification.addEventListener('close', () => this.trackNotificationReceived(message));
   }
 
   public browserSupportsNotifications(): boolean {
-    return (
-      'Notification' in window &&
-      !!Notification &&
-      !!Notification.requestPermission
-    );
+    return 'Notification' in window && !!Notification && !!Notification.requestPermission;
   }
 
   public canShowNotifications(): boolean {
-    return (
-      this.showNotifications &&
-      this.browserSupportsNotifications() &&
-      this.documentIsHidden()
-    );
+    return this.showNotifications && this.browserSupportsNotifications() && this.documentIsHidden();
   }
 
   private documentIsHidden(): boolean {
@@ -68,26 +52,15 @@ export class DesktopNotificationsService {
       });
   }
 
-  private createFromInboxMessage(
-    message: InboxMessage,
-    conversation: InboxConversation
-  ): Notification {
-    return new Notification(
-      this.buildTitleFromConversation(conversation),
-      this.buildOptionsFromConversation(message, conversation)
-    );
+  private createFromInboxMessage(message: InboxMessage, conversation: InboxConversation): Notification {
+    return new Notification(this.buildTitleFromConversation(conversation), this.buildOptionsFromConversation(message, conversation));
   }
 
   private buildTitleFromConversation(conversation: InboxConversation): string {
-    return `${this.i18n.getTranslations('newMessageNotification')}${
-      conversation.user.microName
-    }`;
+    return `${this.i18n.getTranslations('newMessageNotification')}${conversation.user.microName}`;
   }
 
-  private buildOptionsFromConversation(
-    message: InboxMessage,
-    conversation: InboxConversation
-  ): NotificationOptions {
+  private buildOptionsFromConversation(message: InboxMessage, conversation: InboxConversation): NotificationOptions {
     const image = conversation.user.avatarUrl || PLACEHOLDER_AVATAR;
 
     return {

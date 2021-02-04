@@ -10,14 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SharedModule,
-    FormsModule,
-    RouterModule,
-    NgbTypeaheadModule,
-    CustomCurrencyModule,
-  ],
+  imports: [CommonModule, SharedModule, FormsModule, RouterModule, NgbTypeaheadModule, CustomCurrencyModule],
   exports: [TopbarComponent, SuggesterComponent],
   declarations: [TopbarComponent, SuggesterComponent],
   providers: [SuggesterService],

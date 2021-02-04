@@ -9,9 +9,7 @@ import { SubscriptionSlot } from '@core/subscriptions/subscriptions.interface';
 export class SubscriptionsSlotsListComponent implements OnInit {
   @Input() subscriptionsSlots: SubscriptionSlot[] = [];
   @Input() selectedSubscriptionSlot: SubscriptionSlot = null;
-  @Output() subscriptionSlotSelected: EventEmitter<
-    SubscriptionSlot
-  > = new EventEmitter();
+  @Output() subscriptionSlotSelected: EventEmitter<SubscriptionSlot> = new EventEmitter();
 
   constructor() {}
 

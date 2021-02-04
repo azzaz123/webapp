@@ -1,11 +1,7 @@
 import { UserStats } from '@data/user';
 import { BooleanMother } from '@fixtures/shared';
 import { UserStatsState } from 'app/data/user/store/reducer/stats.reducer';
-import {
-  selectUserStats,
-  selectUserStatsByUserId,
-  selectUserStatsLoading,
-} from 'app/data/user/store/selectors/stats.selector';
+import { selectUserStats, selectUserStatsByUserId, selectUserStatsLoading } from 'app/data/user/store/selectors/stats.selector';
 import { UserStatsMother } from './../../domain/stats/user-stats.mother';
 import { UserStatsStateMother } from './../reducer/user-stats.state.mother';
 

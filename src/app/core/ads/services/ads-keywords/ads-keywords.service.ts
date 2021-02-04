@@ -13,10 +13,7 @@ import { AdKeyWords } from '../../models';
 export class AdsKeywordsService {
   private _adKeywords: AdKeyWords;
 
-  constructor(
-    private cookieService: CookieService,
-    private userService: UserService
-  ) {}
+  constructor(private cookieService: CookieService, private userService: UserService) {}
 
   get adKeywords(): AdKeyWords {
     return this._adKeywords;

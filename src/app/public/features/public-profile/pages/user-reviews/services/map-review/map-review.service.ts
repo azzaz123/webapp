@@ -46,9 +46,7 @@ export class MapReviewService {
     return new User(
       reviewResponse.user.id,
       reviewResponse.user.micro_name,
-      reviewResponse.user.image
-        ? { urls_by_size: reviewResponse.user.image }
-        : null,
+      reviewResponse.user.image ? { urls_by_size: reviewResponse.user.image } : null,
       null,
       null,
       null,

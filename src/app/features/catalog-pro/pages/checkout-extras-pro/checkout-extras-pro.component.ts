@@ -35,9 +35,7 @@ export class CheckoutExtrasProComponent implements OnInit {
     let packObj = null;
     map(packs, (PacksList: Pack[]) => {
       PacksList.map((pack: Pack) => {
-        const quantityExists = this.packs.find(
-          (packFinder: Pack) => pack.quantity === packFinder.quantity
-        );
+        const quantityExists = this.packs.find((packFinder: Pack) => pack.quantity === packFinder.quantity);
         if (quantityExists) {
           packObj = quantityExists;
         } else {

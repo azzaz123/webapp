@@ -6,15 +6,7 @@ import { FavouriteIconModule } from '@public/shared/components/favourite-icon/fa
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { ItemCardComponent } from './item-card.component';
-import {
-  MOCK_ITEM_1,
-  MOCK_ITEM_2,
-  MOCK_ITEM_3,
-  MOCK_ITEM_4,
-  MOCK_ITEM_5,
-  MOCK_ITEM_6,
-  MOCK_ITEM_7,
-} from './item-card.mock.stories';
+import { MOCK_ITEM_1, MOCK_ITEM_2, MOCK_ITEM_3, MOCK_ITEM_4, MOCK_ITEM_5, MOCK_ITEM_6, MOCK_ITEM_7 } from './item-card.mock.stories';
 import { styledWrapperDecorator } from '@stories/decorators/styled-wrapper/styled-wrapper.decorator';
 
 export default {
@@ -29,14 +21,7 @@ const Template: Story<ItemCardComponent> = (args: ItemCardComponent) => ({
   props: args,
   moduleMetadata: {
     declarations: [ItemCardComponent],
-    imports: [
-      CommonModule,
-      FavouriteIconModule,
-      CustomCurrencyModule,
-      SvgIconModule,
-      HttpClientModule,
-      ImageFallbackModule,
-    ],
+    imports: [CommonModule, FavouriteIconModule, CustomCurrencyModule, SvgIconModule, HttpClientModule, ImageFallbackModule],
   },
   template:
     '<tsl-public-item-card [item]="item" [showDescription]="showDescription" [showFavourite]="showFavourite" (toggleFavourite)="toggleFavourite()"></tsl-public-item-card>',

@@ -1,10 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ItemDetailService } from './core/services/item-detail.service';
-import {
-  itemDetailRoutedComponents,
-  ItemDetailRoutingModule,
-} from './item-detail-routing.module';
+import { itemDetailRoutedComponents, ItemDetailRoutingModule } from './item-detail-routing.module';
 import { AdsModule } from '@public/shared/components/ads/ads.module';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
 import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
@@ -29,13 +26,6 @@ import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.serv
     SvgIconModule,
     SocialShareModule,
   ],
-  providers: [
-    ItemDetailService,
-    ItemApiService,
-    PublicUserApiService,
-    RecommenderApiService,
-    MapItemService,
-    SocialMetaTagService,
-  ],
+  providers: [ItemDetailService, ItemApiService, PublicUserApiService, RecommenderApiService, MapItemService, SocialMetaTagService],
 })
 export class ItemDetailModule {}

@@ -136,15 +136,11 @@ describe('DashboardComponent', () => {
     });
 
     it('should track the ConversationListActiveLoaded event', () => {
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.CONVERSATION_LIST_ACTIVE_LOADED
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CONVERSATION_LIST_ACTIVE_LOADED);
     });
 
     it('should track the PhoneLeadListActiveLoaded event', () => {
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.PHONE_LEAD_LIST_ACTIVE_LOADED
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PHONE_LEAD_LIST_ACTIVE_LOADED);
     });
   });
 
@@ -180,9 +176,7 @@ describe('DashboardComponent', () => {
 
       component.trackPhoneLeadOpened();
 
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.PHONE_LEAD_OPENED
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PHONE_LEAD_OPENED);
     });
   });
 
@@ -190,19 +184,12 @@ describe('DashboardComponent', () => {
     it('should navigate to chat and open conversation', () => {
       const spy = spyOn(router, 'navigateByUrl');
       spyOn(inboxConversationService, 'openConversation');
-      const conversation = createInboxConversationsArray(
-        1,
-        'conversationId'
-      )[0];
+      const conversation = createInboxConversationsArray(1, 'conversationId')[0];
 
       component.openConversation(conversation);
 
-      expect(inboxConversationService.openConversation).toHaveBeenCalledTimes(
-        1
-      );
-      expect(spy.calls.first().args[0]).toEqual(
-        `/chat?conversationId=${conversation.id}`
-      );
+      expect(inboxConversationService.openConversation).toHaveBeenCalledTimes(1);
+      expect(spy.calls.first().args[0]).toEqual(`/chat?conversationId=${conversation.id}`);
     });
   });
 

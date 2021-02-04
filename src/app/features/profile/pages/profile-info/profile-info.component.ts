@@ -15,14 +15,7 @@ import { forkJoin } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { BecomeProModalComponent } from '../../modal/become-pro-modal/become-pro-modal.component';
 
-export const competitorLinks = [
-  'coches.net',
-  'autoscout24.es',
-  'autocasion.com',
-  'vibbo.com',
-  'milanuncios.com',
-  'motor.es',
-];
+export const competitorLinks = ['coches.net', 'autoscout24.es', 'autocasion.com', 'vibbo.com', 'milanuncios.com', 'motor.es'];
 
 export const BAD_USERNAME_ERROR_CODE = 112;
 
@@ -66,11 +59,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
   }
 
   initForm() {
-    forkJoin([
-      this.userService.me(),
-      this.userService.isProUser(),
-      this.userService.getUserCover(),
-    ])
+    forkJoin([this.userService.me(), this.userService.isProUser(), this.userService.getUserCover()])
       .pipe(
         finalize(() => {
           this.getProUserData();
@@ -146,16 +135,8 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     const linkControl = this.profileForm.get('link');
     if (linkControl.value) {
       competitorLinks.forEach((competitor) => {
-        let linkSubstring = linkControl.value
-          .replace('http://', '')
-          .replace('https://', '')
-          .replace('www.', '')
-          .split(/[/?#]/)[0];
-        let competitorSubstring = competitor
-          .replace('http://', '')
-          .replace('https://', '')
-          .replace('www.', '')
-          .split(/[/?#]/)[0];
+        let linkSubstring = linkControl.value.replace('http://', '').replace('https://', '').replace('www.', '').split(/[/?#]/)[0];
+        let competitorSubstring = competitor.replace('http://', '').replace('https://', '').replace('www.', '').split(/[/?#]/)[0];
         if (linkSubstring === competitorSubstring) {
           linkControl.setErrors({ incorrect: true });
         }
@@ -180,12 +161,8 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
           .edit({
             first_name: profileFormValue.first_name,
             last_name: profileFormValue.last_name,
-            birth_date: this.user.birthDate
-              ? moment(this.user.birthDate).format('YYYY-MM-DD')
-              : null,
-            gender: this.user.gender
-              ? this.user.gender.toUpperCase().substr(0, 1)
-              : null,
+            birth_date: this.user.birthDate ? moment(this.user.birthDate).format('YYYY-MM-DD') : null,
+            gender: this.user.gender ? this.user.gender.toUpperCase().substr(0, 1) : null,
           })
           .pipe(
             finalize(() => {
@@ -197,22 +174,18 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
             () => {
               if (
                 !this.user.location ||
-                this.user.location.approximated_latitude !==
-                  profileFormLocation.latitude ||
-                this.user.location.approximated_longitude !==
-                  profileFormLocation.longitude
+                this.user.location.approximated_latitude !== profileFormLocation.latitude ||
+                this.user.location.approximated_longitude !== profileFormLocation.longitude
               ) {
                 const newLocation: Coordinate = {
                   latitude: profileFormLocation.latitude,
                   longitude: profileFormLocation.longitude,
                   name: profileFormLocation.address,
                 };
-                this.userService
-                  .updateLocation(newLocation)
-                  .subscribe((newUserLocation) => {
-                    this.userService.user.location = newUserLocation;
-                    this.userService.updateSearchLocationCookies(newLocation);
-                  });
+                this.userService.updateLocation(newLocation).subscribe((newUserLocation) => {
+                  this.userService.user.location = newUserLocation;
+                  this.userService.updateSearchLocationCookies(newLocation);
+                });
               }
 
               this.errorsService.i18nSuccess('userEdited');

@@ -46,10 +46,7 @@ export class NavigatorService {
     } else if ((this.verOffset = this.nAgt.indexOf('Firefox')) != -1) {
       this._browserName = 'Firefox';
       this._fullVersion = this.nAgt.substring(this.verOffset + 8);
-    } else if (
-      (this.nameOffset = this.nAgt.lastIndexOf(' ') + 1) <
-      (this.verOffset = this.nAgt.lastIndexOf('/'))
-    ) {
+    } else if ((this.nameOffset = this.nAgt.lastIndexOf(' ') + 1) < (this.verOffset = this.nAgt.lastIndexOf('/'))) {
       this._browserName = this.nAgt.substring(this.nameOffset, this.verOffset);
       this._fullVersion = this.nAgt.substring(this.verOffset + 1);
       if (this._browserName.toLowerCase() == this._browserName.toUpperCase()) {

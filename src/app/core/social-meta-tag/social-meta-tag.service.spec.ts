@@ -1,9 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { Meta } from '@angular/platform-browser';
-import {
-  FACEBOOK_META_TAG_NAMES,
-  TWITTER_META_TAG_NAMES,
-} from './enums/social-meta-tag-names.enum';
+import { FACEBOOK_META_TAG_NAMES, TWITTER_META_TAG_NAMES } from './enums/social-meta-tag-names.enum';
 import { SocialMetaTagService } from './social-meta-tag.service';
 
 describe('SocialMetaTagService', () => {
@@ -41,9 +38,7 @@ describe('SocialMetaTagService', () => {
       Object.keys(TWITTER_META_TAG_NAMES).forEach((metaTagName: string) => {
         expect(metaService.addTag).toHaveBeenCalledWith({
           name: `${socialMetaTagService['TWITTER_META_TAG_DEFAULT'].prefix}${metaTagName}`,
-          content:
-            socialMetaTagService['TWITTER_META_TAG_DEFAULT'][metaTagName] ||
-            content[metaTagName],
+          content: socialMetaTagService['TWITTER_META_TAG_DEFAULT'][metaTagName] || content[metaTagName],
         });
       });
     });
@@ -54,12 +49,7 @@ describe('SocialMetaTagService', () => {
       spyOn(metaService, 'addTag');
       const metaTagsCount = Object.keys(FACEBOOK_META_TAG_NAMES).length;
 
-      socialMetaTagService.insertFacebookMetaTags(
-        title,
-        description,
-        image,
-        url
-      );
+      socialMetaTagService.insertFacebookMetaTags(title, description, image, url);
 
       expect(metaService.addTag).toHaveBeenCalledTimes(metaTagsCount);
     });
@@ -68,19 +58,12 @@ describe('SocialMetaTagService', () => {
       spyOn(metaService, 'addTag');
       const content = { title, description, image, url };
 
-      socialMetaTagService.insertFacebookMetaTags(
-        title,
-        description,
-        image,
-        url
-      );
+      socialMetaTagService.insertFacebookMetaTags(title, description, image, url);
 
       Object.keys(FACEBOOK_META_TAG_NAMES).forEach((metaTagName: string) => {
         expect(metaService.addTag).toHaveBeenCalledWith({
           name: `${socialMetaTagService['FACEBOOK_META_TAG_DEFAULT'].prefix}${metaTagName}`,
-          content:
-            socialMetaTagService['FACEBOOK_META_TAG_DEFAULT'][metaTagName] ||
-            content[metaTagName],
+          content: socialMetaTagService['FACEBOOK_META_TAG_DEFAULT'][metaTagName] || content[metaTagName],
         });
       });
     });

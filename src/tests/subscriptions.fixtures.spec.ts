@@ -38,18 +38,11 @@ export class MockSubscriptionService {
     if (!subscription.market) {
       return false;
     }
-    return (
-      subscription.market === SUBSCRIPTION_MARKETS.GOOGLE_PLAY ||
-      subscription.market === SUBSCRIPTION_MARKETS.APPLE_STORE
-    );
+    return subscription.market === SUBSCRIPTION_MARKETS.GOOGLE_PLAY || subscription.market === SUBSCRIPTION_MARKETS.APPLE_STORE;
   }
 
-  public isOneSubscriptionInApp(
-    subscriptions: SubscriptionsResponse[]
-  ): boolean {
-    return subscriptions.some((subscription) =>
-      this.isSubscriptionInApp(subscription)
-    );
+  public isOneSubscriptionInApp(subscriptions: SubscriptionsResponse[]): boolean {
+    return subscriptions.some((subscription) => this.isSubscriptionInApp(subscription));
   }
 
   public isStripeSubscription(subscription: SubscriptionsResponse): boolean {
@@ -59,28 +52,16 @@ export class MockSubscriptionService {
     return subscription.market === SUBSCRIPTION_MARKETS.STRIPE;
   }
 
-  public hasOneStripeSubscription(
-    subscriptions: SubscriptionsResponse[]
-  ): boolean {
-    return subscriptions.some((subscription) =>
-      this.isStripeSubscription(subscription)
-    );
+  public hasOneStripeSubscription(subscriptions: SubscriptionsResponse[]): boolean {
+    return subscriptions.some((subscription) => this.isStripeSubscription(subscription));
   }
 
-  public hasOneFreeSubscription(
-    subscriptions: SubscriptionsResponse[]
-  ): boolean {
-    return subscriptions.some((subscription) =>
-      this.hasOneFreeTier(subscription)
-    );
+  public hasOneFreeSubscription(subscriptions: SubscriptionsResponse[]): boolean {
+    return subscriptions.some((subscription) => this.hasOneFreeTier(subscription));
   }
 
-  public hasOneDiscountedSubscription(
-    subscriptions: SubscriptionsResponse[]
-  ): boolean {
-    return subscriptions.some((subscription) =>
-      this.hasOneTierDiscount(subscription)
-    );
+  public hasOneDiscountedSubscription(subscriptions: SubscriptionsResponse[]): boolean {
+    return subscriptions.some((subscription) => this.hasOneTierDiscount(subscription));
   }
 
   public hasOneTierDiscount(subscription: SubscriptionsResponse): boolean {
@@ -107,9 +88,7 @@ export class MockSubscriptionService {
     return subscription.trial_available;
   }
 
-  public hasOneTrialSubscription(
-    _subscriptions: SubscriptionsResponse[]
-  ): boolean {
+  public hasOneTrialSubscription(_subscriptions: SubscriptionsResponse[]): boolean {
     return false;
   }
 }
@@ -118,26 +97,22 @@ export const MOCK_SUBSCRIPTION_BENEFITS: SubscriptionBenefit[] = [
   {
     iconId: 'paintbrush',
     title: 'Professionalize your profile',
-    description:
-      'Stand out above the rest with a cover photo and a description of what you offer',
+    description: 'Stand out above the rest with a cover photo and a description of what you offer',
   },
   {
     iconId: 'magnet',
     title: 'Connect with more clients',
-    description:
-      'Share with millions of potential buyers your phone and website',
+    description: 'Share with millions of potential buyers your phone and website',
   },
   {
     iconId: 'watch',
     title: 'Without time limit',
-    description:
-      'Your items will never expire, they will be always ready for a quick sell',
+    description: 'Your items will never expire, they will be always ready for a quick sell',
   },
   {
     iconId: 'unlocked',
     title: 'Without compromise',
-    description:
-      'You can cancel your subscription whenever you want, without penalties',
+    description: 'You can cancel your subscription whenever you want, without penalties',
   },
 ];
 
@@ -1193,8 +1168,7 @@ export const TIER: Tier = {
 export const SUBSCRIPTION_SUCCESS: SubscriptionResponse = {
   id: 'c040cfbe-0c2e-1a28-1224-4df193f0082c',
   latest_invoice_id: 'in_1FCTUQKhcEtiGcVWUQ5zweMx',
-  payment_secret_key:
-    'pi_1FCTUQKhcEtiGcVWGhSD8nTh_secret_cbZYEqX2QjIOSJWNZgTFXvoCC',
+  payment_secret_key: 'pi_1FCTUQKhcEtiGcVWGhSD8nTh_secret_cbZYEqX2QjIOSJWNZgTFXvoCC',
   payment_status: 'succeeded',
   status: 'active',
   subscription_plan_id: 'plan_FSWGMZq6tDdiKc',
@@ -1203,8 +1177,7 @@ export const SUBSCRIPTION_SUCCESS: SubscriptionResponse = {
 export const SUBSCRIPTION_REQUIRES_ACTION: SubscriptionResponse = {
   id: 'c040cfbe-0c2e-1a28-1224-4df193f0082c',
   latest_invoice_id: 'in_1FCTUQKhcEtiGcVWUQ5zweMx',
-  payment_secret_key:
-    'pi_1FCTUQKhcEtiGcVWGhSD8nTh_secret_cbZYEqX2QjIOSJWNZgTFXvoCC',
+  payment_secret_key: 'pi_1FCTUQKhcEtiGcVWGhSD8nTh_secret_cbZYEqX2QjIOSJWNZgTFXvoCC',
   payment_status: 'requires_action',
   status: 'active',
   subscription_plan_id: 'plan_FSWGMZq6tDdiKc',
@@ -1213,8 +1186,7 @@ export const SUBSCRIPTION_REQUIRES_ACTION: SubscriptionResponse = {
 export const SUBSCRIPTION_REQUIRES_PAYMENT: SubscriptionResponse = {
   id: 'c040cfbe-0c2e-1a28-1224-4df193f0082c',
   latest_invoice_id: 'in_1FCTUQKhcEtiGcVWUQ5zweMx',
-  payment_secret_key:
-    'pi_1FCTUQKhcEtiGcVWGhSD8nTh_secret_cbZYEqX2QjIOSJWNZgTFXvoCC',
+  payment_secret_key: 'pi_1FCTUQKhcEtiGcVWGhSD8nTh_secret_cbZYEqX2QjIOSJWNZgTFXvoCC',
   payment_status: 'requires_payment_method',
   status: 'active',
   subscription_plan_id: 'plan_FSWGMZq6tDdiKc',

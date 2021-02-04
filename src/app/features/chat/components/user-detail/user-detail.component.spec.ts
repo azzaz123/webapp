@@ -1,12 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { UserService } from '@core/user/user.service';
-import {
-  MOCK_USER,
-  RESPONSE_RATE,
-  SCORING_STARS,
-  USER_INFO_RESPONSE,
-} from '@fixtures/user.fixtures.spec';
+import { MOCK_USER, RESPONSE_RATE, SCORING_STARS, USER_INFO_RESPONSE } from '@fixtures/user.fixtures.spec';
 import { of } from 'rxjs';
 import { UserDetailComponent } from './user-detail.component';
 

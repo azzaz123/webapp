@@ -29,11 +29,7 @@ describe('MessageComponent', () => {
     expect(component.containsHTMLTag('Sample text')).toBeFalsy();
     expect(component.containsHTMLTag('<p> Sample text')).toBeTruthy();
     expect(component.containsHTMLTag('<p> Sample text </p>')).toBeTruthy();
-    expect(
-      component.containsHTMLTag('Sample text www.wallapop.com')
-    ).toBeFalsy();
-    expect(
-      component.containsHTMLTag('Sample text <a>www.wallapop.com</a>')
-    ).toBeTruthy();
+    expect(component.containsHTMLTag('Sample text www.wallapop.com')).toBeFalsy();
+    expect(component.containsHTMLTag('Sample text <a>www.wallapop.com</a>')).toBeTruthy();
   });
 });

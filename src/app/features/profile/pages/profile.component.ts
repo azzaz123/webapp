@@ -38,14 +38,10 @@ export class ProfileComponent implements OnInit {
     });
 
     this.subscriptionService.getSubscriptions().subscribe((subscriptions) => {
-      this.hasOneTrialSubscription = this.subscriptionService.hasOneTrialSubscription(
-        subscriptions
-      );
+      this.hasOneTrialSubscription = this.subscriptionService.hasOneTrialSubscription(subscriptions);
     });
 
-    this.userService
-      .getStats()
-      .subscribe((userStats) => (this.userStats = userStats));
+    this.userService.getStats().subscribe((userStats) => (this.userStats = userStats));
   }
 
   public logout($event: any) {
@@ -67,8 +63,6 @@ export class ProfileComponent implements OnInit {
   }
 
   public getSubscriptionTabName(): string {
-    return this.userService.isPro
-      ? this.i18n.getTranslations('wallapopPro')
-      : this.i18n.getTranslations('becomePro');
+    return this.userService.isPro ? this.i18n.getTranslations('wallapopPro') : this.i18n.getTranslations('becomePro');
   }
 }

@@ -16,14 +16,9 @@ export class CreditCardInfoComponent {
 
   @Input() financialCard: FinancialCard;
   @Output() onSetChangeCard: EventEmitter<Event> = new EventEmitter();
-  @Output() onDeleteStripeCard: EventEmitter<
-    FinancialCard
-  > = new EventEmitter();
+  @Output() onDeleteStripeCard: EventEmitter<FinancialCard> = new EventEmitter();
 
-  constructor(
-    private modalService: NgbModal,
-    private stripeService: StripeService
-  ) {}
+  constructor(private modalService: NgbModal, private stripeService: StripeService) {}
 
   public checkDelete(e: Event) {
     e.stopPropagation();

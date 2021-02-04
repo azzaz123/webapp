@@ -5,9 +5,7 @@ import { Profile } from './profile/profile';
 import { UserId } from './profile/user-id';
 import { UserUpdate } from './profile/user-update';
 
-export const USER_REPOSITORY_TOKEN: InjectionToken<UserRepository> = new InjectionToken<
-  UserRepository
->('USER_REPOSITORY');
+export const USER_REPOSITORY_TOKEN: InjectionToken<UserRepository> = new InjectionToken<UserRepository>('USER_REPOSITORY');
 
 export interface UserRepository {
   getById(userId: UserId): Observable<[Profile, UserLocation]>;
