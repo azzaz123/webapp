@@ -29,7 +29,8 @@
           </ng-container>
           <ng-template #noFreeTrial>
             <span i18n="@@TooManyItemsModalDescriptionInApp" *ngIf="type === inAppType">You must upgrade your subscription <b>through the wallapop app</b> if you want to publish more {{categorySubscription?.category_name}}</span>
-            <span i18n="@@TooManyItemsModalDescription" *ngIf="type !== inAppType">Want to list more {{categorySubscription?.category_name}}? You might be interested in signing up for wallapop PRO. Professionalise your online sales, and sell more!
+            <span i18n="@@TooManyItemsModalDescription" *ngIf="type !== inAppType">Want to list more<ng-container *ngIf="categorySubscription"> {{categorySubscription.category_name}}</ng-container>?
+              You might be interested in signing up for wallapop PRO. Professionalise your online sales, and sell more!
               <br><br>
               If you decide wallapop PRO isn't for you, this item will become inactive – nobody will be able to buy it.</span>
           </ng-template>
