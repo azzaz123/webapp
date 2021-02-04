@@ -1,0 +1,16 @@
+@import '~style/common';
+
+.ItemHeader {
+  height: 63px;
+  background-color: $white;
+  &__price {
+    font-weight: $font-weight-chunky;
+  }
+  &__buttons {
+    right: 0px;
+  }
+}
+
+.ItemContainer {
+  background-color: black;
+}

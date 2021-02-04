@@ -1,1 +1,23 @@
-<p>item-detail-images-carousel works!</p>
+<div class="modal-fullscreen">
+    <div class="ItemHeader d-flex pl-5  align-items-center w-100">
+        <tsl-svg-icon src="/assets/icons/arrow-back.svg"></tsl-svg-icon>
+        <div class="ml-4 d-flex flex-column">
+            <span> Fifa 20 PS4 </span>
+            <span class="ItemHeader__price">10€</span>
+        </div>
+        <div class="p-3 position-absolute ItemHeader__buttons">
+            <tsl-button className="btn btn-upload mr-2">
+                <tsl-favourite-icon [active]="true">
+                </tsl-favourite-icon>
+            </tsl-button>
+            <tsl-button className="btn btn-primary">Chat</tsl-button>
+        </div>
+    </div>
+    <div class="ItemContainer d-flex align-items-center">
+        <div class="container">
+            <div class="p-5 row" class=" w-100">
+                <tsl-images-carousel [images]="images"></tsl-images-carousel>
+            </div>
+        </div>
+    </div>
+</div>
