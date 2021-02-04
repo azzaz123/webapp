@@ -899,6 +899,7 @@
   <translation id="3546316122339217988">Plan <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph> ilimitados</translation>
   <translation id="thirdVoiceReviewFirstMessage">Has encontrado lo que buscabas. ¡Genial!</translation>
   <translation id="thirdVoiceReviewSecondMessage">¿Cómo ha ido? Valora tu experiencia con este usuario, será útil para nuestra comunidad.</translation>
+  <translation id="thirdVoiceRateMessage">¿Cómo ha ido? Valora tu experiencia, tu opinión es muy importante para nuestra comunidad.</translation>
   <translation id="thirdVoiceDoReview">Valorar</translation>
   <translation id="thirdVoiceThanksForRating">¡Gracias! Otras personas apreciarán tu valoración.</translation>
   <translation id="thirdVoiceDropPrice">El producto ha bajado de precio. ¿Quieres cerrar un trato?</translation>
