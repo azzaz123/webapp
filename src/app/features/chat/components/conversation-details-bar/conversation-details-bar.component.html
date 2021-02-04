@@ -67,8 +67,7 @@
               i18n="@@deleteConversation" [hidden]="currentConversationIsArchived()">Delete conversation
       </button>
       <button *ngxPermissionsOnly="['isProfessional']" class="dropdown-item" (click)="archiveConversation()"
-              i18n="@@archiveConversation" [hidden]="currentConversationIsArchived()">Archive conversation
-      </button>
+              i18n="@@archiveConversation" [hidden]="currentConversationIsArchived()">Archive conversation</button>
       <button *ngxPermissionsOnly="['isProfessional']" class="dropdown-item" (click)="unarchiveConversation()"
               i18n="@@unarchiveConversation" [hidden]="!currentConversationIsArchived()">Unarchive conversation
       </button>
