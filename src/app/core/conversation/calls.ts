@@ -18,16 +18,7 @@ export class Call extends Lead {
     archived?: boolean,
     surveyResponses: SurveyResponse[] = []
   ) {
-    super(
-      id,
-      legacyId,
-      modifiedDate,
-      user,
-      item,
-      messages,
-      phone,
-      surveyResponses
-    );
+    super(id, legacyId, modifiedDate, user, item, messages, phone, surveyResponses);
     this.archived = archived;
   }
 

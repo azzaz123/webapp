@@ -26,10 +26,6 @@ export class SocialShareComponent {
   }
 
   public emailShare(): void {
-    this.socialShareService.emailShare(
-      this.email.url,
-      this.email.subject,
-      this.email.message
-    );
+    this.socialShareService.emailShare(this.email.url, this.email.subject, this.email.message);
   }
 }

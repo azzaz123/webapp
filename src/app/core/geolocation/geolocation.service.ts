@@ -22,10 +22,7 @@ export class GeolocationService {
       provider: MAPS_PROVIDER,
     };
 
-    return this.http.get<GeolocationResponse[]>(
-      `${environment.siteUrl}${MAPS_PLACES_API}`,
-      { params }
-    );
+    return this.http.get<GeolocationResponse[]>(`${environment.siteUrl}${MAPS_PLACES_API}`, { params });
   }
 
   public geocode(placeId: string): Observable<Coordinate> {

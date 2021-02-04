@@ -1,9 +1,4 @@
-import {
-  fakeAsync,
-  ComponentFixture,
-  TestBed,
-  waitForAsync,
-} from '@angular/core/testing';
+import { fakeAsync, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CatalogStatusNavbarComponent } from './catalog-status-navbar.component';
 import { PaymentService } from '../../../core/payments/payment.service';

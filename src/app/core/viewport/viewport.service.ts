@@ -1,10 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
-import {
-  Viewport,
-  viewports,
-  ViewportType,
-} from '@core/viewport/viewport.enum';
+import { Viewport, viewports, ViewportType } from '@core/viewport/viewport.enum';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 
 @Injectable()
@@ -40,9 +36,7 @@ export class ViewportService {
   private calculateViewport(width: number): Viewport {
     return viewports.reduce(
       (currentViewport, nextViewport) => {
-        return this.canBeViewport(width, nextViewport)
-          ? this.getBiggestViewport(currentViewport, nextViewport)
-          : currentViewport;
+        return this.canBeViewport(width, nextViewport) ? this.getBiggestViewport(currentViewport, nextViewport) : currentViewport;
       },
       viewports.find((viewport) => viewport.type === ViewportType.XS)
     );
@@ -60,9 +54,7 @@ export class ViewportService {
   private getBiggestViewport(...viewports: Viewport[]): Viewport {
     return viewports.reduce((currentViewport, nextViewport) => {
       if (currentViewport) {
-        return currentViewport.minWidth >= nextViewport.minWidth
-          ? currentViewport
-          : nextViewport;
+        return currentViewport.minWidth >= nextViewport.minWidth ? currentViewport : nextViewport;
       } else {
         return nextViewport;
       }

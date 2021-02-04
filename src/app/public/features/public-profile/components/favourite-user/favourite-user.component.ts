@@ -20,10 +20,7 @@ export class FavouriteUserComponent implements OnDestroy {
     this.isFavourite = !this.isFavourite;
 
     this.subscriptions.push(
-      (this.isFavourite
-        ? this.publicProfileService.markAsFavourite(this.userId)
-        : this.publicProfileService.unmarkAsFavourite(this.userId)
-      )
+      (this.isFavourite ? this.publicProfileService.markAsFavourite(this.userId) : this.publicProfileService.unmarkAsFavourite(this.userId))
         .pipe(take(1))
         .subscribe(
           () => {},
@@ -35,8 +32,6 @@ export class FavouriteUserComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription: Subscription) =>
-      subscription.unsubscribe()
-    );
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 }

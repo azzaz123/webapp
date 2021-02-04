@@ -80,10 +80,7 @@ describe('AnalyticsService', () => {
         service.initialize();
 
         expect(mParticle.init).toHaveBeenCalledTimes(1);
-        expect(user.setUserAttribute).toHaveBeenCalledWith(
-          'deviceId',
-          'newUUID'
-        );
+        expect(user.setUserAttribute).toHaveBeenCalledWith('deviceId', 'newUUID');
         expect(appboyKit.register).toHaveBeenCalled();
       });
     });
@@ -99,9 +96,7 @@ describe('AnalyticsService', () => {
         service.initialize();
 
         expect(mParticle.init).toHaveBeenCalled();
-        expect(
-          mParticle.Identity.getCurrentUser().setUserAttribute
-        ).toHaveBeenCalledWith('deviceId', 'newDeviceId');
+        expect(mParticle.Identity.getCurrentUser().setUserAttribute).toHaveBeenCalledWith('deviceId', 'newDeviceId');
         expect(appboyKit.register).toHaveBeenCalled();
       });
     });
@@ -123,11 +118,7 @@ describe('AnalyticsService', () => {
 
       service.trackEvent(MOCK_EVENT);
 
-      expect(mParticle.logEvent).toHaveBeenCalledWith(
-        MOCK_EVENT.name,
-        MOCK_EVENT.eventType,
-        MOCK_EVENT.attributes
-      );
+      expect(mParticle.logEvent).toHaveBeenCalledWith(MOCK_EVENT.name, MOCK_EVENT.eventType, MOCK_EVENT.attributes);
     });
   });
 
@@ -145,11 +136,7 @@ describe('AnalyticsService', () => {
 
       service.trackPageView(MOCK_PAGE_VIEW);
 
-      expect(mParticle.logPageView).toHaveBeenCalledWith(
-        MOCK_PAGE_VIEW.name,
-        MOCK_PAGE_VIEW.attributes,
-        MOCK_PAGE_VIEW.flags
-      );
+      expect(mParticle.logPageView).toHaveBeenCalledWith(MOCK_PAGE_VIEW.name, MOCK_PAGE_VIEW.attributes, MOCK_PAGE_VIEW.flags);
     });
   });
 });

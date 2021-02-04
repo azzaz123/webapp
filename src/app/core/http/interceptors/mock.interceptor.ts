@@ -1,11 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpInterceptor,
-  HttpResponse,
-} from '@angular/common/http';
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 
 export interface MockUrl {
@@ -19,10 +13,7 @@ export class MockInterceptor implements HttpInterceptor {
 
   constructor() {}
 
-  intercept(
-    request: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     for (const mockUrl of this.mockUrls) {
       if (mockUrl.url === request.url) {
         return of(new HttpResponse({ status: 200, body: mockUrl.data }));

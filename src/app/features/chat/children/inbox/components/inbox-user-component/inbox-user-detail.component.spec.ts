@@ -5,11 +5,7 @@ import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { InboxItem, InboxUser } from '@features/chat/core/model';
 import { MOCKED_INBOX_CONVERSATIONS } from '@fixtures/inbox.fixtures.spec';
-import {
-  RESPONSE_RATE,
-  SCORING_STARS,
-  USER_INFO_RESPONSE,
-} from '@fixtures/user.fixtures.spec';
+import { RESPONSE_RATE, SCORING_STARS, USER_INFO_RESPONSE } from '@fixtures/user.fixtures.spec';
 import { of } from 'rxjs';
 import { InboxUserDetailComponent } from './inbox-user-detail.component';
 
@@ -18,10 +14,7 @@ class MockUserService {
     return of(USER_INFO_RESPONSE);
   }
 
-  calculateDistanceFromItem(
-    user: User | InboxUser,
-    item: Item | InboxItem
-  ): number {
+  calculateDistanceFromItem(user: User | InboxUser, item: Item | InboxItem): number {
     return 5.5;
   }
 }
@@ -38,8 +31,7 @@ describe('InboxUserDetailComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
     });
     fixture = TestBed.createComponent(InboxUserDetailComponent);
-    component = TestBed.createComponent(InboxUserDetailComponent)
-      .componentInstance;
+    component = TestBed.createComponent(InboxUserDetailComponent).componentInstance;
     userService = TestBed.inject(UserService);
     component.user = MOCKED_INBOX_CONVERSATIONS[0].user;
   });
@@ -54,16 +46,10 @@ describe('InboxUserDetailComponent', () => {
       component.user.responseRate = undefined;
 
       component.ngOnChanges({
-        user: new SimpleChange(
-          null,
-          MOCKED_INBOX_CONVERSATIONS[0].user.id,
-          false
-        ),
+        user: new SimpleChange(null, MOCKED_INBOX_CONVERSATIONS[0].user.id, false),
       });
 
-      expect(userService.getInfo).toHaveBeenCalledWith(
-        MOCKED_INBOX_CONVERSATIONS[0].user.id
-      );
+      expect(userService.getInfo).toHaveBeenCalledWith(MOCKED_INBOX_CONVERSATIONS[0].user.id);
       expect(component.user.score).toBe(SCORING_STARS);
       expect(component.user.responseRate).toBe(RESPONSE_RATE);
     });
@@ -74,11 +60,7 @@ describe('InboxUserDetailComponent', () => {
       component.user.distanceInKm = 5.5;
 
       component.ngOnChanges({
-        user: new SimpleChange(
-          null,
-          MOCKED_INBOX_CONVERSATIONS[0].user.id,
-          false
-        ),
+        user: new SimpleChange(null, MOCKED_INBOX_CONVERSATIONS[0].user.id, false),
       });
 
       expect(userService.getInfo).not.toHaveBeenCalled();

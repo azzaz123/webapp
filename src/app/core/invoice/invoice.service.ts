@@ -14,31 +14,19 @@ export class InvoiceService {
 
   constructor(private http: HttpClient) {}
 
-  public getInvoiceTransactions(
-    cache: boolean = true
-  ): Observable<InvoiceTransaction[]> {
+  public getInvoiceTransactions(cache: boolean = true): Observable<InvoiceTransaction[]> {
     if (this.invoiceTransactions && cache) {
       return of(this.invoiceTransactions);
     }
 
-    return this.http.get<InvoiceTransaction[]>(
-      `${environment.baseUrl}${INVOICE_HISTORY_ENDPOINT}`
-    );
+    return this.http.get<InvoiceTransaction[]>(`${environment.baseUrl}${INVOICE_HISTORY_ENDPOINT}`);
   }
 
-  public generateInvoice(
-    invoiceTransaction: InvoiceTransaction
-  ): Observable<string> {
-    return this.http.post<string>(
-      `${environment.baseUrl}${INVOICE_DOWNLOAD_ENDPOINT}/${invoiceTransaction.id}`,
-      {}
-    );
+  public generateInvoice(invoiceTransaction: InvoiceTransaction): Observable<string> {
+    return this.http.post<string>(`${environment.baseUrl}${INVOICE_DOWNLOAD_ENDPOINT}/${invoiceTransaction.id}`, {});
   }
 
   public downloadInvoice(invoice: InvoiceTransaction): Observable<Blob> {
-    return this.http.get(
-      `${environment.baseUrl}${INVOICE_DOWNLOAD_ENDPOINT}/${invoice.id}`,
-      { responseType: 'blob' }
-    );
+    return this.http.get(`${environment.baseUrl}${INVOICE_DOWNLOAD_ENDPOINT}/${invoice.id}`, { responseType: 'blob' });
   }
 }

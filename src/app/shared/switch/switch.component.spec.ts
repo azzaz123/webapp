@@ -1,10 +1,4 @@
-import {
-  fakeAsync,
-  tick,
-  ComponentFixture,
-  TestBed,
-  waitForAsync,
-} from '@angular/core/testing';
+import { fakeAsync, tick, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -43,9 +37,7 @@ describe('SwitchComponent', () => {
       fixture.detectChanges();
       tick();
 
-      const element = el.querySelector(
-        'input[type=checkbox]'
-      ) as HTMLInputElement;
+      const element = el.querySelector('input[type=checkbox]') as HTMLInputElement;
       expect(element.checked).toBeFalsy();
     }));
 
@@ -55,9 +47,7 @@ describe('SwitchComponent', () => {
       fixture.detectChanges();
       tick();
 
-      const element = el.querySelector(
-        'input[type=checkbox]'
-      ) as HTMLInputElement;
+      const element = el.querySelector('input[type=checkbox]') as HTMLInputElement;
       expect(element.checked).toBeTruthy();
     }));
 
@@ -67,9 +57,7 @@ describe('SwitchComponent', () => {
       fixture.detectChanges();
       tick();
 
-      const element = el.querySelector(
-        'input[type=checkbox]'
-      ) as HTMLInputElement;
+      const element = el.querySelector('input[type=checkbox]') as HTMLInputElement;
       expect(element.disabled).toBeFalsy();
     }));
 
@@ -79,9 +67,7 @@ describe('SwitchComponent', () => {
       fixture.detectChanges();
       tick();
 
-      const element = el.querySelector(
-        'input[type=checkbox]'
-      ) as HTMLInputElement;
+      const element = el.querySelector('input[type=checkbox]') as HTMLInputElement;
       expect(element.disabled).toBeTruthy();
     }));
   });
@@ -90,9 +76,7 @@ describe('SwitchComponent', () => {
     let inputValue: boolean;
     component.onChange.subscribe((value) => (inputValue = value));
 
-    const element = el.querySelector(
-      'input[type=checkbox]'
-    ) as HTMLInputElement;
+    const element = el.querySelector('input[type=checkbox]') as HTMLInputElement;
     element.click();
 
     expect(inputValue).toBeTruthy();

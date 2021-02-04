@@ -5,12 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ItemService } from '../../../core/item/item.service';
 import { of } from 'rxjs';
-import {
-  CONVERSATION_USERS,
-  ITEM_ID,
-  ITEM_SALE_PRICE,
-  MOCK_ITEM,
-} from '../../../../tests/item.fixtures.spec';
+import { CONVERSATION_USERS, ITEM_ID, ITEM_SALE_PRICE, MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
 
 describe('SoldModalComponent', () => {
   let component: SoldModalComponent;

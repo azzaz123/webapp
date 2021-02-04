@@ -1,10 +1,4 @@
-import {
-  Component,
-  Output,
-  EventEmitter,
-  Input,
-  OnChanges,
-} from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnChanges } from '@angular/core';
 import { Counters } from '@core/user/user-stats.interface';
 import { PurchasesModel } from '@core/payments/purchase.model';
 import { PerksModel } from '@core/payments/payment.model';
@@ -33,9 +27,7 @@ export class PlanDataComponent implements OnChanges {
   private getPerks(cache: boolean = true): void {
     this.paymentService.getPerks(cache).subscribe((perks: PerksModel) => {
       this.perks = perks;
-      this.subscriptionPlan.emit(
-        perks.subscription ? perks.subscription.listing.quantity : 0
-      );
+      this.subscriptionPlan.emit(perks.subscription ? perks.subscription.listing.quantity : 0);
       this.paymentService.getStatus().subscribe((status: ScheduledStatus) => {
         this.status = status;
         this.loading = false;

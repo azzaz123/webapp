@@ -1,11 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {
-  AnalyticsPageView,
-  ANALYTICS_EVENT_NAMES,
-  SCREEN_IDS,
-  ViewSuccessSubscriptionPayment,
-} from '@core/analytics/analytics-constants';
+import { AnalyticsPageView, ANALYTICS_EVENT_NAMES, SCREEN_IDS, ViewSuccessSubscriptionPayment } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
@@ -74,9 +69,7 @@ describe('PaymentSuccessModalComponent', () => {
       component.ngOnInit();
 
       expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
-      expect(analyticsService.trackPageView).toHaveBeenCalledWith(
-        expectedPageView
-      );
+      expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageView);
     });
   });
 

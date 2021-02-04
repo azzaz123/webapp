@@ -10,11 +10,7 @@ import {
   MockLoadAdsService,
 } from '@fixtures/ads.fixtures.spec';
 
-import {
-  AmazonPublisherService,
-  CriteoService,
-  GooglePublisherTagService,
-} from './../../vendors';
+import { AmazonPublisherService, CriteoService, GooglePublisherTagService } from './../../vendors';
 import { AD_SLOTS, CHAT_AD_SLOTS } from '../../constants';
 import { LoadAdsService } from '../load-ads/load-ads.service';
 import { AdsService } from './ads.service';
@@ -72,16 +68,11 @@ describe('AdsService', () => {
 
   describe('when refreshing ads', () => {
     it('should set targeting to Google library', () => {
-      spyOn(
-        MockGooglePublisherTagService,
-        'setTargetingByAdsKeywords'
-      ).and.callThrough();
+      spyOn(MockGooglePublisherTagService, 'setTargetingByAdsKeywords').and.callThrough();
 
       service.refresh();
 
-      expect(
-        MockGooglePublisherTagService.setTargetingByAdsKeywords
-      ).toHaveBeenCalledTimes(1);
+      expect(MockGooglePublisherTagService.setTargetingByAdsKeywords).toHaveBeenCalledTimes(1);
     });
 
     it('should ask for ads bidders to Amazon and Criteo', () => {
@@ -96,19 +87,12 @@ describe('AdsService', () => {
 
     it('should set segmentation to Google', () => {
       const ALLOW_SEGMENTATION = true;
-      spyOn(
-        MockGooglePublisherTagService,
-        'setAdsSegmentation'
-      ).and.callThrough();
-      spyOn(MockDidomiService, 'userAllowedSegmentationInAds$').and.returnValue(
-        of(ALLOW_SEGMENTATION)
-      );
+      spyOn(MockGooglePublisherTagService, 'setAdsSegmentation').and.callThrough();
+      spyOn(MockDidomiService, 'userAllowedSegmentationInAds$').and.returnValue(of(ALLOW_SEGMENTATION));
 
       service.refresh();
 
-      expect(
-        MockGooglePublisherTagService.setAdsSegmentation
-      ).toHaveBeenCalledWith(ALLOW_SEGMENTATION);
+      expect(MockGooglePublisherTagService.setAdsSegmentation).toHaveBeenCalledWith(ALLOW_SEGMENTATION);
     });
   });
 
@@ -119,9 +103,7 @@ describe('AdsService', () => {
 
       service.displayAdBySlotId(CHAT_SLOT_ID);
 
-      expect(
-        MockGooglePublisherTagService.displayAdBySlotId
-      ).toHaveBeenLastCalledWith(CHAT_SLOT_ID);
+      expect(MockGooglePublisherTagService.displayAdBySlotId).toHaveBeenLastCalledWith(CHAT_SLOT_ID);
     });
   });
 });

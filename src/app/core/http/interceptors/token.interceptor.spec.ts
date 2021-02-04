@@ -1,18 +1,11 @@
 import { TestBed, getTestBed } from '@angular/core/testing';
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-  TestRequest,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 
 import { environment } from '../../../../environments/environment';
 import { HttpModule } from '../http.module';
 import { AccessTokenService } from '../access-token.service';
 import { TOKEN_AUTHORIZATION_HEADER_NAME } from './index';
-import {
-  TOKEN_TIMESTAMP_HEADER_NAME,
-  TOKEN_SIGNATURE_HEADER_NAME,
-} from './token.interceptor';
+import { TOKEN_TIMESTAMP_HEADER_NAME, TOKEN_SIGNATURE_HEADER_NAME } from './token.interceptor';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { LOGIN_ENDPOINT } from '@public/features/login/core/services/login.service';
 import { CookieModule } from 'ngx-cookie';
@@ -61,12 +54,8 @@ describe(`TokenInterceptor`, () => {
       req.flush(iconContent);
 
       expect(result).toEqual(iconContent);
-      expect(req.request.headers.has(TOKEN_TIMESTAMP_HEADER_NAME)).toEqual(
-        false
-      );
-      expect(req.request.headers.has(TOKEN_SIGNATURE_HEADER_NAME)).toEqual(
-        false
-      );
+      expect(req.request.headers.has(TOKEN_TIMESTAMP_HEADER_NAME)).toEqual(false);
+      expect(req.request.headers.has(TOKEN_SIGNATURE_HEADER_NAME)).toEqual(false);
       expect(response.status).toEqual(200);
       expect(response.statusText).toEqual('OK');
     });
@@ -80,9 +69,7 @@ describe(`TokenInterceptor`, () => {
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush({});
 
-      const authHeaderValue = req.request.headers.get(
-        TOKEN_AUTHORIZATION_HEADER_NAME
-      );
+      const authHeaderValue = req.request.headers.get(TOKEN_AUTHORIZATION_HEADER_NAME);
       expect(authHeaderValue).toBeFalsy();
     });
   });
@@ -95,9 +82,7 @@ describe(`TokenInterceptor`, () => {
       const req: TestRequest = httpMock.expectOne(environment.baseUrl);
       req.flush({});
 
-      const authHeaderValue = req.request.headers.get(
-        TOKEN_AUTHORIZATION_HEADER_NAME
-      );
+      const authHeaderValue = req.request.headers.get(TOKEN_AUTHORIZATION_HEADER_NAME);
       expect(authHeaderValue).toBeTruthy();
       expect(authHeaderValue).toBe(`Bearer ${MOCK_TOKEN}`);
     });
@@ -106,17 +91,11 @@ describe(`TokenInterceptor`, () => {
       accessTokenService.storeAccessToken(MOCK_TOKEN);
 
       http.get(`${environment.baseUrl}${MOCK_V3_ENDPOINT}`).subscribe();
-      const req: TestRequest = httpMock.expectOne(
-        `${environment.baseUrl}${MOCK_V3_ENDPOINT}`
-      );
+      const req: TestRequest = httpMock.expectOne(`${environment.baseUrl}${MOCK_V3_ENDPOINT}`);
       req.flush({});
 
-      expect(req.request.headers.has(TOKEN_TIMESTAMP_HEADER_NAME)).toEqual(
-        true
-      );
-      expect(req.request.headers.has(TOKEN_SIGNATURE_HEADER_NAME)).toEqual(
-        true
-      );
+      expect(req.request.headers.has(TOKEN_TIMESTAMP_HEADER_NAME)).toEqual(true);
+      expect(req.request.headers.has(TOKEN_SIGNATURE_HEADER_NAME)).toEqual(true);
     });
   });
 });

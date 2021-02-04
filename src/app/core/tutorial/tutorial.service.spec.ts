@@ -63,10 +63,7 @@ describe('TutorialService', () => {
 
       service.setDisplayed();
 
-      expect(localStorage.setItem).toHaveBeenCalledWith(
-        USER_ID + '-tutorial',
-        'true'
-      );
+      expect(localStorage.setItem).toHaveBeenCalledWith(USER_ID + '-tutorial', 'true');
     });
   });
 

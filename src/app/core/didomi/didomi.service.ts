@@ -21,16 +21,11 @@ export class DidomiService {
     return this.window[DidomiService.NAME_LIB];
   }
 
-  constructor(
-    @Inject(WINDOW_TOKEN) private window: Window,
-    private loadExternalLibsService: LoadExternalLibsService
-  ) {
+  constructor(@Inject(WINDOW_TOKEN) private window: Window, private loadExternalLibsService: LoadExternalLibsService) {
     this.addOnReadyListener();
   }
 
-  private allowedSubject: BehaviorSubject<boolean> = new BehaviorSubject<
-    boolean
-  >(false);
+  private allowedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   public userAllowedSegmentationInAds$(): Observable<boolean> {
     this.loadDidomiLib();
@@ -38,15 +33,11 @@ export class DidomiService {
   }
 
   private loadDidomiLib(): void {
-    this.loadExternalLibsService.loadScriptByText(
-      DidomiService.NAME_LIB,
-      DIDOMI_EMBED
-    );
+    this.loadExternalLibsService.loadScriptByText(DidomiService.NAME_LIB, DIDOMI_EMBED);
   }
 
   private addOnReadyListener(): void {
-    this.window[DidomiService.DIDOMI_ON_READY] =
-      this.window[DidomiService.DIDOMI_ON_READY] || [];
+    this.window[DidomiService.DIDOMI_ON_READY] = this.window[DidomiService.DIDOMI_ON_READY] || [];
     this.window[DidomiService.DIDOMI_ON_READY].push(() => {
       this.allowedSubject.next(this.userAllowedSegmentationInAds());
       this.addEventListen('consent.changed');
@@ -54,15 +45,12 @@ export class DidomiService {
   }
 
   private userAllowedSegmentationInAds(): boolean {
-    const userConsentedGoogle: boolean = !!this.library.getUserConsentStatusForVendor(
-      'google'
-    );
+    const userConsentedGoogle: boolean = !!this.library.getUserConsentStatusForVendor('google');
     const allConsents: DidomiUserConsents = this.library.getUserConsentStatusForAll();
     const { purposes } = allConsents;
     const { disabled: userDisabledPurpouses } = purposes;
 
-    const allowingSegmentation: boolean =
-      userDisabledPurpouses.length === 0 && userConsentedGoogle;
+    const allowingSegmentation: boolean = userDisabledPurpouses.length === 0 && userConsentedGoogle;
     return allowingSegmentation;
   }
 

@@ -1,7 +1,1 @@
-export type UserStat =
-  | 'buys'
-  | 'publish'
-  | 'reports_received'
-  | 'reviews'
-  | 'sells'
-  | 'sold';
+export type UserStat = 'buys' | 'publish' | 'reports_received' | 'reviews' | 'sells' | 'sold';

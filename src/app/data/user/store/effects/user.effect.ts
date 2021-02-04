@@ -7,19 +7,13 @@ import { UserRepository, USER_REPOSITORY_TOKEN } from '../../domain';
 
 @Injectable()
 export class UserEffects {
-  constructor(
-    @Inject(USER_REPOSITORY_TOKEN) private repository: UserRepository,
-    private actions$: Actions
-  ) {}
+  constructor(@Inject(USER_REPOSITORY_TOKEN) private repository: UserRepository, private actions$: Actions) {}
 
   loadUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fromActions.LoadUserProfile),
       exhaustMap(() => this.repository.getMyProfile()),
-      mergeMap(([user, location]) => [
-        fromActions.LoadUserProfileSuccess({ user }),
-        fromActions.SetUserLocation({ location }),
-      ]),
+      mergeMap(([user, location]) => [fromActions.LoadUserProfileSuccess({ user }), fromActions.SetUserLocation({ location })]),
       catchError(() => of(fromActions.LoadUserProfileFailed()))
     )
   );
@@ -27,9 +21,7 @@ export class UserEffects {
   updateEmail$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fromActions.SendUpdateEmail),
-      exhaustMap(({ emailAddress }) =>
-        this.repository.updateEmail(emailAddress)
-      ),
+      exhaustMap(({ emailAddress }) => this.repository.updateEmail(emailAddress)),
       map(() => fromActions.SendUpdateEmailSuccess()),
       catchError(() => of(fromActions.SendUpdateEmailFailed()))
     )
@@ -38,9 +30,7 @@ export class UserEffects {
   updatePassword$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fromActions.SendUpdatePassword),
-      exhaustMap(({ old_password, new_password }) =>
-        this.repository.updatePassword(old_password, new_password)
-      ),
+      exhaustMap(({ old_password, new_password }) => this.repository.updatePassword(old_password, new_password)),
       map(() => fromActions.SendUpdatePasswordSuccess()),
       catchError(() => of(fromActions.SendUpdatePasswordFailed()))
     )

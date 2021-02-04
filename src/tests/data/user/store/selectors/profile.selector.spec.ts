@@ -1,12 +1,7 @@
 import { BooleanMother } from '@fixtures/shared';
 import { Profile } from 'app/data/user/domain';
 import { UserProfileState } from 'app/data/user/store/reducer/profile.reducer';
-import {
-  selectUserProfileDetail,
-  selectUserProfileDetailId,
-  selectUserProfileIsAuthenticated,
-  selectUserProfileLoading,
-} from '@data/user';
+import { selectUserProfileDetail, selectUserProfileDetailId, selectUserProfileIsAuthenticated, selectUserProfileLoading } from '@data/user';
 import { UserProfileStateMother } from '../reducer/user.state.mother';
 import { ProfileMother } from '../../domain/profile/profile.mother';
 

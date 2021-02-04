@@ -35,9 +35,7 @@ describe('CriteoService', () => {
 
       service.requestBid().subscribe();
 
-      expect(
-        windowMock.Criteo.RequestBidsOnGoogleTagSlots
-      ).toHaveBeenCalledWith(AD_SLOT_NETWORK_ID, jasmine.any(Function), 1000);
+      expect(windowMock.Criteo.RequestBidsOnGoogleTagSlots).toHaveBeenCalledWith(AD_SLOT_NETWORK_ID, jasmine.any(Function), 1000);
     });
 
     it('should set DFPKeyValues targeting', () => {

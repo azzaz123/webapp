@@ -1,22 +1,9 @@
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 
-import {
-  LOCATION_MODAL_TIMEOUT,
-  LocationSelectComponent,
-} from './location-select.component';
+import { LOCATION_MODAL_TIMEOUT, LocationSelectComponent } from './location-select.component';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {
-  MOCK_USER,
-  USER_LOCATION,
-  USER_LOCATION_COORDINATES,
-} from '../../../../tests/user.fixtures.spec';
+import { MOCK_USER, USER_LOCATION, USER_LOCATION_COORDINATES } from '../../../../tests/user.fixtures.spec';
 import { UserService } from '../../../core/user/user.service';
 import { of } from 'rxjs';
 
@@ -151,15 +138,9 @@ describe('LocationSelectComponent', () => {
         });
 
         it('should set location', () => {
-          expect(component.form.get('location.address').value).toEqual(
-            USER_LOCATION_COORDINATES.name
-          );
-          expect(component.form.get('location.latitude').value).toEqual(
-            USER_LOCATION_COORDINATES.latitude
-          );
-          expect(component.form.get('location.longitude').value).toEqual(
-            USER_LOCATION_COORDINATES.longitude
-          );
+          expect(component.form.get('location.address').value).toEqual(USER_LOCATION_COORDINATES.name);
+          expect(component.form.get('location.latitude').value).toEqual(USER_LOCATION_COORDINATES.latitude);
+          expect(component.form.get('location.longitude').value).toEqual(USER_LOCATION_COORDINATES.longitude);
         });
 
         it('should call init with no params', () => {
@@ -167,9 +148,7 @@ describe('LocationSelectComponent', () => {
         });
 
         it('should call updateLocation', () => {
-          expect(userService.updateLocation).toHaveBeenCalledWith(
-            USER_LOCATION_COORDINATES
-          );
+          expect(userService.updateLocation).toHaveBeenCalledWith(USER_LOCATION_COORDINATES);
         });
 
         it('should set user location', () => {
@@ -201,15 +180,9 @@ describe('LocationSelectComponent', () => {
         });
 
         it('should set location', () => {
-          expect(component.form.get('location.address').value).toEqual(
-            USER_LOCATION_COORDINATES.name
-          );
-          expect(component.form.get('location.latitude').value).toEqual(
-            USER_LOCATION_COORDINATES.latitude
-          );
-          expect(component.form.get('location.longitude').value).toEqual(
-            USER_LOCATION_COORDINATES.longitude
-          );
+          expect(component.form.get('location.address').value).toEqual(USER_LOCATION_COORDINATES.name);
+          expect(component.form.get('location.latitude').value).toEqual(USER_LOCATION_COORDINATES.latitude);
+          expect(component.form.get('location.longitude').value).toEqual(USER_LOCATION_COORDINATES.longitude);
         });
 
         it('should call init with no params', () => {
@@ -228,15 +201,9 @@ describe('LocationSelectComponent', () => {
 
     describe('with form values', () => {
       it('should set location on modal instance', fakeAsync(() => {
-        component.form
-          .get('location.address')
-          .setValue(USER_LOCATION_COORDINATES.name);
-        component.form
-          .get('location.latitude')
-          .setValue(USER_LOCATION_COORDINATES.latitude);
-        component.form
-          .get('location.longitude')
-          .setValue(USER_LOCATION_COORDINATES.longitude);
+        component.form.get('location.address').setValue(USER_LOCATION_COORDINATES.name);
+        component.form.get('location.latitude').setValue(USER_LOCATION_COORDINATES.latitude);
+        component.form.get('location.longitude').setValue(USER_LOCATION_COORDINATES.longitude);
         component.form.get('location.approximated_location').setValue(true);
 
         component.open(element);

@@ -29,9 +29,7 @@ describe('CheckSessionService', () => {
 
   describe('hasSession', () => {
     it('should return boolean with access token definition', () => {
-      expect(checkSessionService.hasSession()).toEqual(
-        accessTokenService.accessToken !== undefined
-      );
+      expect(checkSessionService.hasSession()).toEqual(accessTokenService.accessToken !== undefined);
     });
   });
 

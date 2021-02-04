@@ -1,11 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {
-  NgbAccordionModule,
-  NgbButtonsModule,
-  NgbCarouselModule,
-  NgbModalModule,
-} from '@ng-bootstrap/ng-bootstrap';
+import { NgbAccordionModule, NgbButtonsModule, NgbCarouselModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { GeolocationModule } from '@shared/geolocation/geolocation.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { DeleteInfoConfirmationModalComponent } from '@shared/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component';
@@ -26,10 +21,7 @@ import { UnsubscribeInAppFirstModal } from './modal/unsubscribe-in-app-first-mod
 import { UnsubscribeModalComponent } from './modal/unsubscribe-modal/unsubscribe-modal.component';
 import { VisibilityProductsModalComponent } from './modal/visibility-products-modal/visibility-products-modal.component';
 import { SubscriptionIconPipe } from './pipes/subscription-icon.pipe';
-import {
-  profileRoutedComponents,
-  ProfileRoutingModule,
-} from './profile.routes';
+import { profileRoutedComponents, ProfileRoutingModule } from './profile.routes';
 
 @NgModule({
   imports: [

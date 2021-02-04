@@ -16,11 +16,7 @@ export class UploadComponent implements OnInit {
   public urgentPrice: string = null;
   @ViewChild('scrollPanel', { static: true }) scrollPanel: ElementRef;
 
-  constructor(
-    private itemService: ItemService,
-    private userService: UserService,
-    private trustAndSafetyService: TrustAndSafetyService
-  ) {}
+  constructor(private itemService: ItemService, private userService: UserService, private trustAndSafetyService: TrustAndSafetyService) {}
 
   ngOnInit() {
     this.userService.isProfessional().subscribe((isProfessional: boolean) => {
@@ -29,9 +25,7 @@ export class UploadComponent implements OnInit {
       }
     });
 
-    this.trustAndSafetyService.submitProfile(
-      SessionProfileDataLocation.OPEN_CREATE_LISTING
-    );
+    this.trustAndSafetyService.submitProfile(SessionProfileDataLocation.OPEN_CREATE_LISTING);
   }
 
   public setCategory(categoryId: string) {
@@ -49,11 +43,9 @@ export class UploadComponent implements OnInit {
 
   public getUrgentPrice(categoryId: string): void {
     if (categoryId !== '-1') {
-      this.itemService
-        .getUrgentProductByCategoryId(categoryId)
-        .subscribe((product: Product) => {
-          this.urgentPrice = product.durations[0].market_code;
-        });
+      this.itemService.getUrgentProductByCategoryId(categoryId).subscribe((product: Product) => {
+        this.urgentPrice = product.durations[0].market_code;
+      });
     } else {
       this.urgentPrice = null;
     }

@@ -13,12 +13,7 @@ export class PreviewModalComponent {
   public bodyType: string;
 
   get hasCarExtras() {
-    return (
-      this.itemPreview.gearbox ||
-      this.itemPreview.body_type ||
-      this.itemPreview.num_seats ||
-      this.itemPreview.engine
-    );
+    return this.itemPreview.gearbox || this.itemPreview.body_type || this.itemPreview.num_seats || this.itemPreview.engine;
   }
 
   get hasExtras() {
@@ -32,18 +27,13 @@ export class PreviewModalComponent {
     );
   }
 
-  constructor(
-    public activeModal: NgbActiveModal,
-    private carKeysService: CarKeysService
-  ) {}
+  constructor(public activeModal: NgbActiveModal, private carKeysService: CarKeysService) {}
 
   public getBodyType() {
     if (this.itemPreview.body_type) {
-      this.carKeysService
-        .getTypeName(this.itemPreview.body_type)
-        .subscribe((bodyType: string) => {
-          this.bodyType = bodyType;
-        });
+      this.carKeysService.getTypeName(this.itemPreview.body_type).subscribe((bodyType: string) => {
+        this.bodyType = bodyType;
+      });
     }
   }
 }

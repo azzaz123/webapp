@@ -1,10 +1,4 @@
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 
 import { ProfileFormComponent } from './profile-form.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -130,12 +124,9 @@ describe('ProfileFormComponent', () => {
       });
       tick();
 
-      expect(modalService.open).toHaveBeenCalledWith(
-        ExitConfirmationModalComponent,
-        {
-          backdrop: 'static',
-        }
-      );
+      expect(modalService.open).toHaveBeenCalledWith(ExitConfirmationModalComponent, {
+        backdrop: 'static',
+      });
       expect(notSavedChanges).toBeTruthy();
     }));
   });

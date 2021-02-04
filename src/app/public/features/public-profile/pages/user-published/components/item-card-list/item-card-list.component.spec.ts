@@ -23,12 +23,7 @@ describe('ItemCardListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ItemCardListComponent, IsCurrentUserStub],
-      imports: [
-        CommonModule,
-        ItemCardModule,
-        ItemApiModule,
-        HttpClientTestingModule,
-      ],
+      imports: [CommonModule, ItemCardModule, ItemApiModule, HttpClientTestingModule],
       providers: [
         ItemCardService,
         CheckSessionService,
@@ -72,17 +67,12 @@ describe('ItemCardListComponent', () => {
     const cardShowDescriptionAttr = 'ng-reflect-show-description';
 
     it('should show as many cards as given', () => {
-      expect(el.querySelectorAll(cardSelector).length).toEqual(
-        component.items.length
-      );
+      expect(el.querySelectorAll(cardSelector).length).toEqual(component.items.length);
     });
 
     describe('when device is mobile', () => {
       it('should NOT show card descriptions if device is mobile', () => {
-        const randomCardWithoutDescription =
-          el
-            .querySelectorAll(cardSelector)[0]
-            .getAttribute(cardShowDescriptionAttr) === 'false';
+        const randomCardWithoutDescription = el.querySelectorAll(cardSelector)[0].getAttribute(cardShowDescriptionAttr) === 'false';
         expect(randomCardWithoutDescription).toBeTruthy();
       });
     });
@@ -99,10 +89,7 @@ describe('ItemCardListComponent', () => {
       });
 
       it('should show card descriptions', () => {
-        const randomCardWithDescription =
-          el
-            .querySelectorAll(cardSelector)[0]
-            .getAttribute(cardShowDescriptionAttr) === 'true';
+        const randomCardWithDescription = el.querySelectorAll(cardSelector)[0].getAttribute(cardShowDescriptionAttr) === 'true';
 
         expect(randomCardWithDescription).toBeTruthy();
       });

@@ -15,12 +15,10 @@ export class InboxItemForSellComponent implements OnChanges {
 
   ngOnChanges(changes?: SimpleChanges) {
     if (this.user && !this.user.sellingItem) {
-      this.itemService
-        .getLatest(this.user.id)
-        .subscribe((response: ItemDataResponse) => {
-          this.user.sellingItem = response.data;
-          this.user.sellingItemCount = response.count;
-        });
+      this.itemService.getLatest(this.user.id).subscribe((response: ItemDataResponse) => {
+        this.user.sellingItem = response.data;
+        this.user.sellingItemCount = response.count;
+      });
     }
   }
 }

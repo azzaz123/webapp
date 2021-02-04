@@ -4,10 +4,7 @@ import { PublicWebUrlService } from '../public-web-url/public-web-url.service';
 
 @Injectable()
 export class CheckSessionService {
-  constructor(
-    private accessTokenService: AccessTokenService,
-    private publicWebUrlService: PublicWebUrlService
-  ) {}
+  constructor(private accessTokenService: AccessTokenService, private publicWebUrlService: PublicWebUrlService) {}
 
   public hasSession(): boolean {
     return this.accessTokenService.accessToken !== undefined;
