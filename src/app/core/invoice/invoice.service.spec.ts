@@ -1,13 +1,5 @@
-import {
-  InvoiceService,
-  INVOICE_DOWNLOAD_ENDPOINT,
-  INVOICE_HISTORY_ENDPOINT,
-} from './invoice.service';
-import {
-  HttpTestingController,
-  HttpClientTestingModule,
-  TestRequest,
-} from '@angular/common/http/testing';
+import { InvoiceService, INVOICE_DOWNLOAD_ENDPOINT, INVOICE_HISTORY_ENDPOINT } from './invoice.service';
+import { HttpTestingController, HttpClientTestingModule, TestRequest } from '@angular/common/http/testing';
 import { TestBed, fakeAsync } from '@angular/core/testing';
 import { environment } from 'environments/environment';
 import { MOCK_INVOICE_HISTORY } from '../../../tests/invoice.fixtures.spec';

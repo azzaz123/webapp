@@ -12,10 +12,7 @@ export class ReportUserComponent implements OnInit {
   public selectedReportUserReason: number = null;
   public reportUserReasonMessage: string;
 
-  constructor(
-    private userService: UserService,
-    public activeModal: NgbActiveModal
-  ) {}
+  constructor(private userService: UserService, public activeModal: NgbActiveModal) {}
 
   ngOnInit() {
     this.userService.getBanReasons().subscribe((data: BanReason[]) => {

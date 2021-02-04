@@ -1,9 +1,4 @@
-import {
-  ComponentFixture,
-  TestBed,
-  getTestBed,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, getTestBed, waitForAsync } from '@angular/core/testing';
 import { ToastComponent } from './toast.component';
 import { ToastService } from '../core/services/toast.service';
 import { By } from '@angular/platform-browser';
@@ -65,15 +60,13 @@ describe('ToastComponent', () => {
       });
 
       it('should show the toast component', () => {
-        toastHTML = fixture.debugElement.query(By.css('.toast-text'))
-          .nativeNode;
+        toastHTML = fixture.debugElement.query(By.css('.toast-text')).nativeNode;
 
         expect(toastHTML).toBeTruthy();
       });
 
       it('should show the toast text', () => {
-        toastHTML = fixture.debugElement.query(By.css('.toast-text'))
-          .nativeNode;
+        toastHTML = fixture.debugElement.query(By.css('.toast-text')).nativeNode;
 
         expect(toastHTML.innerHTML).toBe(MOCKED_TOAST.text);
       });
@@ -112,15 +105,13 @@ describe('ToastComponent', () => {
       });
 
       it('should show the toast component', () => {
-        toastHTML = fixture.debugElement.query(By.css('.toast-text'))
-          .nativeNode;
+        toastHTML = fixture.debugElement.query(By.css('.toast-text')).nativeNode;
 
         expect(toastHTML).toBeTruthy();
       });
 
       it('should show the toast text', () => {
-        toastHTML = fixture.debugElement.query(By.css('.toast-text'))
-          .nativeNode;
+        toastHTML = fixture.debugElement.query(By.css('.toast-text')).nativeNode;
 
         expect(toastHTML.innerHTML).toBe(MOCKED_TOAST.text);
       });

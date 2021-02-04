@@ -1,10 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ErrorsService } from '@core/errors/errors.service';
 import { InvoiceService } from '@core/invoice/invoice.service';
@@ -61,9 +56,7 @@ describe('InvoiceItemComponent', () => {
     it('should handle the invoice', fakeAsync(() => {
       spyOn(component, 'handleInvoice');
 
-      const button = fixture.debugElement.nativeElement.querySelector(
-        'tsl-button'
-      );
+      const button = fixture.debugElement.nativeElement.querySelector('tsl-button');
       button.click();
       tick();
 
@@ -81,9 +74,7 @@ describe('InvoiceItemComponent', () => {
     describe('when the transaction is active... ', () => {
       describe('when the invoice service succeed.. ', () => {
         it('should have been enabled', () => {
-          const invoiceActionButton = fixture.debugElement.query(
-            By.css('tsl-button')
-          ).nativeElement;
+          const invoiceActionButton = fixture.debugElement.query(By.css('tsl-button')).nativeElement;
 
           fixture.detectChanges();
 
@@ -95,61 +86,39 @@ describe('InvoiceItemComponent', () => {
 
           component.handleInvoice(new Event('click'), invoiceNotGenerated);
 
-          expect(invoiceService.generateInvoice).toHaveBeenCalledWith(
-            invoiceNotGenerated
-          );
+          expect(invoiceService.generateInvoice).toHaveBeenCalledWith(invoiceNotGenerated);
           expect(invoiceNotGenerated.invoice_generated).toEqual(true);
-          expect(errorService.i18nSuccess).toHaveBeenCalledWith(
-            'invoiceGenerated'
-          );
+          expect(errorService.i18nSuccess).toHaveBeenCalledWith('invoiceGenerated');
         });
 
         it('should download the invoice and show success message', () => {
-          spyOn(invoiceService, 'downloadInvoice').and.returnValue(
-            of(new Blob())
-          );
+          spyOn(invoiceService, 'downloadInvoice').and.returnValue(of(new Blob()));
 
           component.handleInvoice(new Event('click'), component.invoice);
 
-          expect(invoiceService.downloadInvoice).toHaveBeenCalledWith(
-            component.invoice
-          );
-          expect(errorService.i18nSuccess).toHaveBeenCalledWith(
-            'invoiceCorrectlyDownloaded'
-          );
+          expect(invoiceService.downloadInvoice).toHaveBeenCalledWith(component.invoice);
+          expect(errorService.i18nSuccess).toHaveBeenCalledWith('invoiceCorrectlyDownloaded');
         });
       });
 
       describe('when the invoice service fails.. ', () => {
         it('shouldnt generate the invoice and should show an error', () => {
-          spyOn(invoiceService, 'generateInvoice').and.returnValue(
-            throwError(null)
-          );
+          spyOn(invoiceService, 'generateInvoice').and.returnValue(throwError(null));
 
           component.handleInvoice(new Event('click'), invoiceNotGenerated);
 
-          expect(invoiceService.generateInvoice).toHaveBeenCalledWith(
-            invoiceNotGenerated
-          );
+          expect(invoiceService.generateInvoice).toHaveBeenCalledWith(invoiceNotGenerated);
           expect(invoiceNotGenerated.invoice_generated).toEqual(false);
-          expect(errorService.i18nError).toHaveBeenCalledWith(
-            'invoiceCannotGenerate'
-          );
+          expect(errorService.i18nError).toHaveBeenCalledWith('invoiceCannotGenerate');
         });
 
         it('shouldnt download the invoice and should show an error', () => {
-          spyOn(invoiceService, 'downloadInvoice').and.returnValue(
-            throwError(null)
-          );
+          spyOn(invoiceService, 'downloadInvoice').and.returnValue(throwError(null));
 
           component.handleInvoice(new Event('click'), component.invoice);
 
-          expect(invoiceService.downloadInvoice).toHaveBeenCalledWith(
-            component.invoice
-          );
-          expect(errorService.i18nError).toHaveBeenCalledWith(
-            'invoiceCannotDownload'
-          );
+          expect(invoiceService.downloadInvoice).toHaveBeenCalledWith(component.invoice);
+          expect(errorService.i18nError).toHaveBeenCalledWith('invoiceCannotDownload');
         });
       });
     });
@@ -160,9 +129,7 @@ describe('InvoiceItemComponent', () => {
       });
 
       it('should have been disabled', () => {
-        const invoiceActionButton = fixture.debugElement.query(
-          By.css('tsl-button')
-        ).nativeElement;
+        const invoiceActionButton = fixture.debugElement.query(By.css('tsl-button')).nativeElement;
 
         fixture.detectChanges();
 

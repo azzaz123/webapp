@@ -1,14 +1,6 @@
 import { Observable, Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
-import {
-  IMAGE_TYPE,
-  NgUploaderOptions,
-  OUTPUT_TYPE,
-  UploadFile,
-  UploadInput,
-  UploadOutput,
-  UPLOAD_STATUS,
-} from './upload.interface';
+import { IMAGE_TYPE, NgUploaderOptions, OUTPUT_TYPE, UploadFile, UploadInput, UploadOutput, UPLOAD_STATUS } from './upload.interface';
 import { DomSanitizer } from '@angular/platform-browser';
 import { cloneDeep } from 'lodash-es';
 
@@ -19,18 +11,11 @@ export class UploaderService {
 
   constructor(private sanitizer: DomSanitizer) {}
 
-  handleFiles(
-    files: FileList,
-    options: NgUploaderOptions,
-    imageType?: IMAGE_TYPE,
-    previousFiles: UploadFile[] = []
-  ): void {
+  handleFiles(files: FileList, options: NgUploaderOptions, imageType?: IMAGE_TYPE, previousFiles: UploadFile[] = []): void {
     const _previousFiles: UploadFile[] = cloneDeep(previousFiles);
     [].forEach.call(files, (file: File, i: number) => {
       const uploadFile: UploadFile = {
-        fileIndex: _previousFiles[_previousFiles.length - 1]
-          ? _previousFiles[_previousFiles.length - 1].fileIndex + 1
-          : 0,
+        fileIndex: _previousFiles[_previousFiles.length - 1] ? _previousFiles[_previousFiles.length - 1].fileIndex + 1 : 0,
         file: file,
         id: this.generateId(),
         name: file.name,
@@ -54,9 +39,7 @@ export class UploaderService {
         let reader: FileReader = new FileReader();
         reader.readAsDataURL(<Blob>file);
         reader.addEventListener('load', (event: any) => {
-          uploadFile.preview = this.sanitizer.bypassSecurityTrustResourceUrl(
-            event.target.result
-          );
+          uploadFile.preview = this.sanitizer.bypassSecurityTrustResourceUrl(event.target.result);
           this.serviceEvents.next({
             type: OUTPUT_TYPE.addedToQueue,
             file: uploadFile,
@@ -68,11 +51,7 @@ export class UploaderService {
     });
   }
 
-  private checkExtension(
-    file: UploadFile,
-    options: NgUploaderOptions,
-    imageType: IMAGE_TYPE
-  ): boolean {
+  private checkExtension(file: UploadFile, options: NgUploaderOptions, imageType: IMAGE_TYPE): boolean {
     let allowedExtensions = options.allowedExtensions || [];
     if (allowedExtensions.indexOf(file.type.toLowerCase()) !== -1) {
       return true;
@@ -93,12 +72,7 @@ export class UploaderService {
     return false;
   }
 
-  private checkMaxUploads(
-    file: UploadFile,
-    options: NgUploaderOptions,
-    files: UploadFile[],
-    imageType: IMAGE_TYPE
-  ): boolean {
+  private checkMaxUploads(file: UploadFile, options: NgUploaderOptions, files: UploadFile[], imageType: IMAGE_TYPE): boolean {
     if (files.length < options.maxUploads) {
       return true;
     }
@@ -111,11 +85,7 @@ export class UploaderService {
     return false;
   }
 
-  private checkMaxSize(
-    file: UploadFile,
-    options: NgUploaderOptions,
-    imageType: IMAGE_TYPE
-  ): boolean {
+  private checkMaxSize(file: UploadFile, options: NgUploaderOptions, imageType: IMAGE_TYPE): boolean {
     if (!options.maxSize || file.size < options.maxSize) {
       return true;
     }
@@ -151,8 +121,7 @@ export class UploaderService {
             const speed = parseInt(((load / diff) * 1000) as any, 10);
 
             let uploadedPercentage = (e.loaded / file.size) * 100;
-            uploadedPercentage =
-              uploadedPercentage < 100 ? uploadedPercentage : 100;
+            uploadedPercentage = uploadedPercentage < 100 ? uploadedPercentage : 100;
 
             file.progress = {
               status: UPLOAD_STATUS.Uploading,
@@ -216,9 +185,7 @@ export class UploaderService {
           let value = key === 'order' ? file.fileIndex.toString() : data[key];
           form.append(key, value);
         });
-        Object.keys(headers).forEach((key) =>
-          xhr.setRequestHeader(key, headers[key])
-        );
+        Object.keys(headers).forEach((key) => xhr.setRequestHeader(key, headers[key]));
         xhr.send(form);
       } catch (e) {
         console.error(e);

@@ -1,10 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Coordinate } from '@core/geolocation/address-response.interface';
 import { User } from '@core/user/user';
-import {
-  UserExtrainfo,
-  UserValidations,
-} from '@core/user/user-response.interface';
+import { UserExtrainfo, UserValidations } from '@core/user/user-response.interface';
 import { Subscription } from 'rxjs';
 import { PublicProfileService } from '../../core/services/public-profile.service';
 @Component({
@@ -31,11 +28,9 @@ export class UserInfoComponent implements OnInit, OnDestroy {
   private getUser(): void {
     this.user = this.publicProfileService.user;
 
-    this.publicProfileService
-      .getExtraInfo(this.user.id)
-      .subscribe((userExtraInfo: UserExtrainfo) => {
-        this.userValidations = userExtraInfo.validations;
-      });
+    this.publicProfileService.getExtraInfo(this.user.id).subscribe((userExtraInfo: UserExtrainfo) => {
+      this.userValidations = userExtraInfo.validations;
+    });
 
     if (this.userHaveLocation()) {
       this.coordinates = {
@@ -46,9 +41,6 @@ export class UserInfoComponent implements OnInit, OnDestroy {
   }
 
   private userHaveLocation(): boolean {
-    return !!(
-      this.user?.location?.approximated_latitude &&
-      this.user?.location?.approximated_longitude
-    );
+    return !!(this.user?.location?.approximated_latitude && this.user?.location?.approximated_longitude);
   }
 }

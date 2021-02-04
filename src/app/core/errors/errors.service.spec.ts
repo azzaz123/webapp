@@ -25,11 +25,7 @@ const ERROR_MESSAGE = 'Usuario o contraseña incorrectos';
 describe('Service: Errors', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([
-          { path: 'login', component: LoginComponent },
-        ]),
-      ],
+      imports: [RouterTestingModule.withRoutes([{ path: 'login', component: LoginComponent }])],
       declarations: [LoginComponent, RoutingComponent],
       providers: [
         ErrorsService,

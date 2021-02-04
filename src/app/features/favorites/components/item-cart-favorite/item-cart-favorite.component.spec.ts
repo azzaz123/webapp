@@ -1,11 +1,5 @@
 import { of } from 'rxjs';
-import {
-  ComponentFixture,
-  TestBed,
-  fakeAsync,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '@shared/pipes';
 import { DecimalPipe } from '@angular/common';
@@ -83,10 +77,7 @@ describe('ItemCartFavoriteComponent', () => {
   describe('goToItemDetail', () => {
     it('should change window url', () => {
       spyOn(window, 'open');
-      const MOCK_ITEM_URL: string =
-        environment.siteUrl.replace('es', subdomain) +
-        'item/' +
-        MOCK_ITEM.webSlug;
+      const MOCK_ITEM_URL: string = environment.siteUrl.replace('es', subdomain) + 'item/' + MOCK_ITEM.webSlug;
       component.goToItemDetail();
       expect(window.open).toHaveBeenCalledWith(MOCK_ITEM_URL);
     });
@@ -113,9 +104,7 @@ describe('ItemCartFavoriteComponent', () => {
       spyOn(component, 'removeFavoriteModal').and.callThrough();
       spyOn(modalService, 'open').and.callThrough();
       spyOn(component, 'removeFavorite').and.callThrough();
-      removeFavoriteButton = fixture.debugElement.nativeElement.querySelector(
-        'tsl-card-footer'
-      );
+      removeFavoriteButton = fixture.debugElement.nativeElement.querySelector('tsl-card-footer');
       removeFavoriteButton.click();
     }));
 
@@ -124,10 +113,7 @@ describe('ItemCartFavoriteComponent', () => {
     });
 
     it('should open accept modal', () => {
-      expect(modalService.open).toHaveBeenCalledWith(
-        ConfirmationModalComponent,
-        { windowClass: 'modal-prompt' }
-      );
+      expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, { windowClass: 'modal-prompt' });
     });
 
     it('should set modal type "3" ', () => {

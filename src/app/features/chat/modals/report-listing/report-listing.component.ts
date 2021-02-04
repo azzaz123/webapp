@@ -12,10 +12,7 @@ export class ReportListingComponent implements OnInit {
   public selectedReportListingReason: number = null;
   public reportListingReasonMessage: string;
 
-  constructor(
-    private itemService: ItemService,
-    public activeModal: NgbActiveModal
-  ) {}
+  constructor(private itemService: ItemService, public activeModal: NgbActiveModal) {}
 
   ngOnInit() {
     this.itemService.getBanReasons().subscribe((data: BanReason[]) => {

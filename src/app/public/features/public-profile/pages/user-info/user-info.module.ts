@@ -7,12 +7,7 @@ import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [UserInfoComponent],
-  imports: [
-    CommonModule,
-    SvgIconModule,
-    GeolocationModule,
-    UserResponseRateModule,
-  ],
+  imports: [CommonModule, SvgIconModule, GeolocationModule, UserResponseRateModule],
   exports: [UserInfoComponent],
 })
 export class UserInfoModule {}

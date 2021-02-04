@@ -2,10 +2,7 @@ import { CONVERSATION_ID } from './conversation.fixtures.spec';
 import { MICRO_NAME, USER_ID, USER_WEB_SLUG } from './user.fixtures.spec';
 import { ITEM_ID } from './item.fixtures.spec';
 import { User } from '../app/core/user/user';
-import {
-  ReviewDataBuyer,
-  ReviewDataSeller,
-} from '../app/core/review/review.interface';
+import { ReviewDataBuyer, ReviewDataSeller } from '../app/core/review/review.interface';
 import { Review } from 'app/features/reviews/core/review';
 import { ReviewItem } from 'app/features/reviews/core/review-item';
 import { ReviewResponse } from 'app/features/reviews/core/review-response.interface';
@@ -27,37 +24,25 @@ export const REVIEW_DATA_SELLER: ReviewDataSeller = {
 };
 
 const REVIEW_ITEM_IMAGE = {
-  large:
-    'http://dock133.wallapop.com:8080/shnm-portlet/images?pictureId=168&pictureSize=W800',
-  medium:
-    'http://dock133.wallapop.com:8080/shnm-portlet/images?pictureId=168&pictureSize=W640',
-  original:
-    'http://dock133.wallapop.com:8080/shnm-portlet/images?pictureId=168&pictureSize=W800',
+  large: 'http://dock133.wallapop.com:8080/shnm-portlet/images?pictureId=168&pictureSize=W800',
+  medium: 'http://dock133.wallapop.com:8080/shnm-portlet/images?pictureId=168&pictureSize=W640',
+  original: 'http://dock133.wallapop.com:8080/shnm-portlet/images?pictureId=168&pictureSize=W800',
   original_height: 200,
   original_width: 200,
-  small:
-    'http://dock133.wallapop.com:8080/shnm-portlet/images?pictureId=168&pictureSize=W320',
-  xlarge:
-    'http://dock133.wallapop.com:8080/shnm-portlet/images?pictureId=168&pictureSize=W800',
-  xsmall:
-    'http://dock133.wallapop.com:8080/shnm-portlet/images?pictureId=168&pictureSize=W320',
+  small: 'http://dock133.wallapop.com:8080/shnm-portlet/images?pictureId=168&pictureSize=W320',
+  xlarge: 'http://dock133.wallapop.com:8080/shnm-portlet/images?pictureId=168&pictureSize=W800',
+  xsmall: 'http://dock133.wallapop.com:8080/shnm-portlet/images?pictureId=168&pictureSize=W320',
 };
 
 const REVIEW_USER_IMAGE = {
-  large:
-    'http://dock133.wallapop.com:8080/shnm-portlet/images?pictureId=120&pictureSize=W800',
-  medium:
-    'http://dock133.wallapop.com:8080/shnm-portlet/images?pictureId=120&pictureSize=W640',
-  original:
-    'http://dock133.wallapop.com:8080/shnm-portlet/images?pictureId=120&pictureSize=W800',
+  large: 'http://dock133.wallapop.com:8080/shnm-portlet/images?pictureId=120&pictureSize=W800',
+  medium: 'http://dock133.wallapop.com:8080/shnm-portlet/images?pictureId=120&pictureSize=W640',
+  original: 'http://dock133.wallapop.com:8080/shnm-portlet/images?pictureId=120&pictureSize=W800',
   original_height: 200,
   original_width: 200,
-  small:
-    'http://dock133.wallapop.com:8080/shnm-portlet/images?pictureId=120&pictureSize=W320',
-  xlarge:
-    'http://dock133.wallapop.com:8080/shnm-portlet/images?pictureId=120&pictureSize=W800',
-  xsmall:
-    'http://dock133.wallapop.com:8080/shnm-portlet/images?pictureId=120&pictureSize=W320',
+  small: 'http://dock133.wallapop.com:8080/shnm-portlet/images?pictureId=120&pictureSize=W320',
+  xlarge: 'http://dock133.wallapop.com:8080/shnm-portlet/images?pictureId=120&pictureSize=W800',
+  xsmall: 'http://dock133.wallapop.com:8080/shnm-portlet/images?pictureId=120&pictureSize=W320',
 };
 
 export const REVIEWS_RESPONSE = [

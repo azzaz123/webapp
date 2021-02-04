@@ -1,9 +1,5 @@
 import { DecimalPipe } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  CUSTOM_ELEMENTS_SCHEMA,
-  DebugElement,
-} from '@angular/core';
+import { ChangeDetectionStrategy, CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -12,10 +8,7 @@ import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
 import { CustomCurrencyPipe } from '@shared/pipes';
-import {
-  MOCK_ITEM,
-  MOCK_ITEM_WITHOUT_LOCATION,
-} from '@fixtures/item.fixtures.spec';
+import { MOCK_ITEM, MOCK_ITEM_WITHOUT_LOCATION } from '@fixtures/item.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
 import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
@@ -156,9 +149,7 @@ describe('ItemDetailComponent', () => {
       const map = fixture.debugElement.query(By.css(mapTag));
       const fallbackMap = fixture.debugElement.query(By.css(fallbackMapClass));
 
-      expect(el.querySelector(locationClass).innerHTML).toContain(
-        component.locationSpecifications
-      );
+      expect(el.querySelector(locationClass).innerHTML).toContain(component.locationSpecifications);
       expect(component.locationHaveCoordinates()).toBe(true);
       expect(map).toBeTruthy();
       expect(fallbackMap).toBeFalsy();
@@ -213,9 +204,7 @@ describe('ItemDetailComponent', () => {
     it('should have an undefined location', () => {
       expect(component.itemLocation).toBe(null);
       expect(component.locationHaveCoordinates()).toBe(false);
-      expect(el.querySelector(locationClass).innerHTML).toContain(
-        component.locationSpecifications
-      );
+      expect(el.querySelector(locationClass).innerHTML).toContain(component.locationSpecifications);
     });
 
     it('should show the fallback map', () => {
@@ -243,9 +232,7 @@ describe('ItemDetailComponent', () => {
 
       const socialShareElement = el.querySelector(socialShareSelector);
       Object.keys(component.socialShare).forEach((socialShareKey: string) => {
-        expect(socialShareElement[socialShareKey]).toEqual(
-          component.socialShare[socialShareKey]
-        );
+        expect(socialShareElement[socialShareKey]).toEqual(component.socialShare[socialShareKey]);
       });
     });
   });
@@ -256,15 +243,11 @@ describe('ItemDetailComponent', () => {
     });
 
     it('should print their title', () => {
-      expect(el.querySelector('.ItemDetail__title').innerHTML).toEqual(
-        component.itemDetail.item.title
-      );
+      expect(el.querySelector('.ItemDetail__title').innerHTML).toEqual(component.itemDetail.item.title);
     });
 
     it('should print their description', () => {
-      expect(el.querySelector('.ItemDetail__description').innerHTML).toEqual(
-        component.itemDetail.item.description
-      );
+      expect(el.querySelector('.ItemDetail__description').innerHTML).toEqual(component.itemDetail.item.description);
     });
 
     describe('when the favorites and views are NOT defined...', () => {
@@ -282,23 +265,17 @@ describe('ItemDetailComponent', () => {
       });
 
       it('should print their favorites stat', () => {
-        expect(el.querySelector('#favorites').innerHTML).toEqual(
-          component.itemDetail.item.favorites.toString()
-        );
+        expect(el.querySelector('#favorites').innerHTML).toEqual(component.itemDetail.item.favorites.toString());
       });
       it('should print their views stat', () => {
-        expect(el.querySelector('#views').innerHTML).toEqual(
-          component.itemDetail.item.views.toString()
-        );
+        expect(el.querySelector('#views').innerHTML).toEqual(component.itemDetail.item.views.toString());
       });
     });
 
     describe('when the item currency code is in euros...', () => {
       it('should show the price and the euros symbol', () => {
         expect(el.querySelector(itemPriceClass).innerHTML).toEqual(
-          `${decimalPipe.transform(component.itemDetail.item.salePrice)}${
-            currencies.EUR
-          }`
+          `${decimalPipe.transform(component.itemDetail.item.salePrice)}${currencies.EUR}`
         );
       });
     });
@@ -310,9 +287,7 @@ describe('ItemDetailComponent', () => {
       });
       it('should show the price and the dollar symbol', () => {
         expect(el.querySelector(itemPriceClass).innerHTML).toEqual(
-          `${currencies.GBP}${decimalPipe.transform(
-            component.itemDetail.item.salePrice
-          )}`
+          `${currencies.GBP}${decimalPipe.transform(component.itemDetail.item.salePrice)}`
         );
       });
     });

@@ -1,10 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ErrorsService } from '@core/errors/errors.service';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
@@ -44,9 +39,7 @@ export class AccountComponent implements CanComponentDeactivate {
       this.user = user;
       this.profileForm.patchValue({
         birth_date: moment(this.user.birthDate).format('YYYY-MM-DD'),
-        gender: this.user.gender
-          ? this.user.gender.toUpperCase().substr(0, 1)
-          : null,
+        gender: this.user.gender ? this.user.gender.toUpperCase().substr(0, 1) : null,
       });
     });
   }
@@ -56,9 +49,7 @@ export class AccountComponent implements CanComponentDeactivate {
       this.loading = true;
       this.userService
         .edit({
-          birth_date: moment(this.profileForm.get('birth_date').value).format(
-            'YYYY-MM-DD'
-          ),
+          birth_date: moment(this.profileForm.get('birth_date').value).format('YYYY-MM-DD'),
           gender: this.profileForm.get('gender').value,
         })
         .pipe(finalize(() => (this.loading = false)))
@@ -68,10 +59,7 @@ export class AccountComponent implements CanComponentDeactivate {
         });
     } else {
       for (const control in this.profileForm.controls) {
-        if (
-          this.profileForm.controls.hasOwnProperty(control) &&
-          !this.profileForm.controls[control].valid
-        ) {
+        if (this.profileForm.controls.hasOwnProperty(control) && !this.profileForm.controls[control].valid) {
           this.profileForm.controls[control].markAsDirty();
         }
       }
@@ -84,9 +72,7 @@ export class AccountComponent implements CanComponentDeactivate {
   }
 
   private dateValidator(c: FormControl) {
-    const dateRegEx = new RegExp(
-      /^(\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/
-    );
+    const dateRegEx = new RegExp(/^(\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/);
     return dateRegEx.test(c.value) ? null : { date: true };
   }
 

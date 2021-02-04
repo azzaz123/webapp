@@ -1,20 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
 import { CartService } from './cart.service';
-import {
-  CART_ITEM_CITYBUMP,
-  ITEM_ID,
-  MOCK_ITEM_V3,
-} from '../../../../tests/item.fixtures.spec';
+import { CART_ITEM_CITYBUMP, ITEM_ID, MOCK_ITEM_V3 } from '../../../../tests/item.fixtures.spec';
 import { Cart } from './cart';
 import { CartChange, CartProExtrasPack } from './cart-item.interface';
 import { CartBase } from './cart-base';
 import { CartPro } from './cart-pro';
 import { CartProExtras } from './cart-pro-extras';
-import {
-  PREPARED_PACKS,
-  PACK_ID,
-} from '../../../../tests/payments.fixtures.spec';
+import { PREPARED_PACKS, PACK_ID } from '../../../../tests/payments.fixtures.spec';
 
 let service: CartService;
 let cartChange: CartChange;
@@ -54,10 +47,7 @@ describe('CartService', () => {
       expect(cartChange.itemId).toBe(MOCK_ITEM_V3.id);
       expect(cartChange.type).toBe(TYPE);
       expect(cartChange.action).toBe('add');
-      expect(service['cart'].add).toHaveBeenCalledWith(
-        CART_ITEM_CITYBUMP,
-        TYPE
-      );
+      expect(service['cart'].add).toHaveBeenCalledWith(CART_ITEM_CITYBUMP, TYPE);
     });
   });
 
@@ -84,10 +74,7 @@ describe('CartService', () => {
       expect(cartChange.itemId).toBe(ITEM_ID);
       expect(cartChange.type).toBe(TYPE);
       expect(cartChange.action).toBe('remove');
-      expect(service['cart'].removeCartItem).toHaveBeenCalledWith(
-        ITEM_ID,
-        TYPE
-      );
+      expect(service['cart'].removeCartItem).toHaveBeenCalledWith(ITEM_ID, TYPE);
     });
   });
 
@@ -134,20 +121,12 @@ describe('CartService', () => {
           pack: PREPARED_PACKS[0].packs[0],
         };
 
-        service.addProExtras(
-          cartProExtrasPack,
-          PREPARED_PACKS[0].packs[0].name.toLowerCase()
-        );
+        service.addProExtras(cartProExtrasPack, PREPARED_PACKS[0].packs[0].name.toLowerCase());
 
-        expect(service['cart'].add).toHaveBeenCalledWith(
-          cartProExtrasPack,
-          PREPARED_PACKS[0].packs[0].name.toLowerCase()
-        );
+        expect(service['cart'].add).toHaveBeenCalledWith(cartProExtrasPack, PREPARED_PACKS[0].packs[0].name.toLowerCase());
         expect(cartChange.cart instanceof CartProExtras).toBe(true);
         expect(cartChange.packId).toBe(PREPARED_PACKS[0].packs[0].id);
-        expect(cartChange.type).toBe(
-          PREPARED_PACKS[0].packs[0].name.toLowerCase()
-        );
+        expect(cartChange.type).toBe(PREPARED_PACKS[0].packs[0].name.toLowerCase());
         expect(cartChange.action).toBe('add');
         expect(cartChange.itemId).toBeFalsy();
       });
@@ -159,11 +138,7 @@ describe('CartService', () => {
 
         service.removeProExtras(PACK_ID, TYPE, 0);
 
-        expect(service['cart'].removeCartItem).toHaveBeenCalledWith(
-          TYPE,
-          PACK_ID,
-          0
-        );
+        expect(service['cart'].removeCartItem).toHaveBeenCalledWith(TYPE, PACK_ID, 0);
         expect(cartChange.cart instanceof CartProExtras).toBe(true);
         expect(cartChange.packId).toBe(PACK_ID);
         expect(cartChange.type).toBe(TYPE);

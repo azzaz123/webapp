@@ -24,10 +24,7 @@ export class ArchivedInboxConversationComponent {
 
   public dateIsThisYear(): boolean {
     if (this.conversation && this.conversation.modifiedDate) {
-      return (
-        this.conversation.modifiedDate.getFullYear() ===
-        new Date().getFullYear()
-      );
+      return this.conversation.modifiedDate.getFullYear() === new Date().getFullYear();
     }
     return false;
   }

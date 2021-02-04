@@ -16,8 +16,7 @@ const Template: Story<SocialShareComponent> = (args: SocialShareComponent) => ({
     declarations: [SocialShareComponent],
     imports: [CommonModule, SvgIconModule, HttpClientModule],
   },
-  template:
-    '<tsl-social-share [title]="title" [facebook]="facebook" [twitter]="twitter" [email]="email"></tsl-social-share>',
+  template: '<tsl-social-share [title]="title" [facebook]="facebook" [twitter]="twitter" [email]="email"></tsl-social-share>',
 });
 
 export const Default = Template.bind({});

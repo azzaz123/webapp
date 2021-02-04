@@ -1,10 +1,4 @@
-import {
-  ComponentFixture,
-  TestBed,
-  fakeAsync,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 
 import { NavLinksComponent } from './nav-links.component';
 import { SearchInputComponent } from '../search-input/search-input.component';
@@ -29,11 +23,7 @@ describe('NavLinksComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [],
-        declarations: [
-          NavLinksComponent,
-          SearchInputComponent,
-          SelectComponent,
-        ],
+        declarations: [NavLinksComponent, SearchInputComponent, SelectComponent],
         providers: [
           { provide: DeviceDetectorService, useClass: DeviceDetectorService },
           {

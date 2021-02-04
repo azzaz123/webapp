@@ -59,26 +59,20 @@ describe('HereMapsService', () => {
         isReady = value;
       });
 
-      const loadingSubscription = service
-        .isLibraryLoading$()
-        .subscribe((value) => {
-          isLoading = value;
-        });
+      const loadingSubscription = service.isLibraryLoading$().subscribe((value) => {
+        isLoading = value;
+      });
 
       expect(isLoading).toBeTruthy();
       expect(isReady).toBe(false);
 
       tick(CHECK_INTERVAL_MS);
       expect(document.head.appendChild).toHaveBeenCalledTimes(1);
-      expect(document.head.appendChild).toHaveBeenCalledWith(
-        expectedCoreScript
-      );
+      expect(document.head.appendChild).toHaveBeenCalledWith(expectedCoreScript);
 
       tick(CHECK_INTERVAL_MS * 2);
       expect(document.head.appendChild).toHaveBeenCalledTimes(2);
-      expect(document.head.appendChild).toHaveBeenCalledWith(
-        expectedServiceScript
-      );
+      expect(document.head.appendChild).toHaveBeenCalledWith(expectedServiceScript);
 
       tick(CHECK_INTERVAL_MS);
       expect(window['H'].service.Platform).toHaveBeenCalledTimes(1);
@@ -103,11 +97,9 @@ describe('HereMapsService', () => {
         isReady = value;
       });
 
-      const loadingSubscription = service
-        .isLibraryLoading$()
-        .subscribe((value) => {
-          isLoading = value;
-        });
+      const loadingSubscription = service.isLibraryLoading$().subscribe((value) => {
+        isLoading = value;
+      });
 
       expect(isLoading).toBeTruthy();
       expect(isReady).toBe(false);
@@ -145,11 +137,9 @@ describe('HereMapsService', () => {
         isReady = value;
       });
 
-      const loadingSubscription = service
-        .isLibraryLoading$()
-        .subscribe((value) => {
-          isLoading = value;
-        });
+      const loadingSubscription = service.isLibraryLoading$().subscribe((value) => {
+        isLoading = value;
+      });
 
       expect(isLoading).toBeTruthy();
       expect(isReady).toBe(false);
@@ -174,25 +164,17 @@ describe('HereMapsService', () => {
         isReady = value;
       });
 
-      const loadingSubscription = service
-        .isLibraryLoading$()
-        .subscribe((value) => {
-          isLoading = value;
-        });
+      const loadingSubscription = service.isLibraryLoading$().subscribe((value) => {
+        isLoading = value;
+      });
 
       expect(isLoading).toBeTruthy();
       expect(isReady).toBe(false);
 
-      tick(
-        CHECK_INTERVAL_MS * 2 +
-          CHECK_INTERVAL_MS +
-          CHECK_INTERVAL_MS * RETRY_AMOUNT
-      );
+      tick(CHECK_INTERVAL_MS * 2 + CHECK_INTERVAL_MS + CHECK_INTERVAL_MS * RETRY_AMOUNT);
       expect(isReady).toBe(false);
       expect(isLoading).toBe(false);
-      expect(document.head.appendChild).toHaveBeenCalledTimes(
-        1 + 1 + RETRY_AMOUNT
-      );
+      expect(document.head.appendChild).toHaveBeenCalledTimes(1 + 1 + RETRY_AMOUNT);
 
       scriptSubscription.unsubscribe();
       loadingSubscription.unsubscribe();

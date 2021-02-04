@@ -28,17 +28,11 @@ export class SubscriptionsSlotItemComponent implements OnInit {
     if (!this.selectedSubscriptionSlot) {
       return false;
     }
-    return (
-      this.subscriptionSlot.category.category_id ===
-      this.selectedSubscriptionSlot.category.category_id
-    );
+    return this.subscriptionSlot.category.category_id === this.selectedSubscriptionSlot.category.category_id;
   }
 
   onClick(subscriptionSlot: SubscriptionSlot, e: any) {
-    if (
-      !subscriptionSlot ||
-      subscriptionSlot === this.selectedSubscriptionSlot
-    ) {
+    if (!subscriptionSlot || subscriptionSlot === this.selectedSubscriptionSlot) {
       e.stopPropagation();
       this.selected.emit(null);
     } else {

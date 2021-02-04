@@ -14,11 +14,7 @@ describe('ThirdVoiceDropPriceComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [CommonModule],
-        declarations: [
-          ThirdVoiceDropPriceComponent,
-          ThirdVoiceMessageComponent,
-          ThirdVoiceReviewButtonComponent,
-        ],
+        declarations: [ThirdVoiceDropPriceComponent, ThirdVoiceMessageComponent, ThirdVoiceReviewButtonComponent],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
     })

@@ -48,12 +48,7 @@ describe('ProfileTabsComponent', () => {
       fixture.detectChanges();
 
       PROFILE_TABS.forEach((tab: ProfileTab) => {
-        expect(
-          parseInt(
-            el.querySelector(`[href="/${tab.href}"] ${tabCounterSelector}`)
-              .innerHTML
-          )
-        ).toEqual(component.userStats[tab.id]);
+        expect(parseInt(el.querySelector(`[href="/${tab.href}"] ${tabCounterSelector}`).innerHTML)).toEqual(component.userStats[tab.id]);
       });
     });
 
@@ -64,12 +59,7 @@ describe('ProfileTabsComponent', () => {
       fixture.detectChanges();
 
       PROFILE_TABS.forEach((tab: ProfileTab) => {
-        expect(
-          parseInt(
-            el.querySelector(`[href="/${tab.href}"] ${tabCounterSelector}`)
-              .innerHTML
-          )
-        ).toEqual(0);
+        expect(parseInt(el.querySelector(`[href="/${tab.href}"] ${tabCounterSelector}`).innerHTML)).toEqual(0);
       });
     });
 
@@ -80,12 +70,7 @@ describe('ProfileTabsComponent', () => {
       fixture.detectChanges();
 
       PROFILE_TABS.forEach((tab: ProfileTab) => {
-        expect(
-          parseInt(
-            el.querySelector(`[href="/${tab.href}"] ${tabCounterSelector}`)
-              .innerHTML
-          )
-        ).toEqual(0);
+        expect(parseInt(el.querySelector(`[href="/${tab.href}"] ${tabCounterSelector}`).innerHTML)).toEqual(0);
       });
     });
   });

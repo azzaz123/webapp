@@ -1,13 +1,5 @@
 import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
-import {
-  Component,
-  EventEmitter,
-  Output,
-  Input,
-  OnChanges,
-  ViewChild,
-  ElementRef,
-} from '@angular/core';
+import { Component, EventEmitter, Output, Input, OnChanges, ViewChild, ElementRef } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { I18nService } from '../../core/i18n/i18n.service';
@@ -20,9 +12,7 @@ import { I18nService } from '../../core/i18n/i18n.service';
 export class SearchInputComponent implements OnChanges {
   @Input() placeholder;
   @Input() onCloseSearch: boolean;
-  @Output('term') public term$: EventEmitter<string> = new EventEmitter<
-    string
-  >();
+  @Output('term') public term$: EventEmitter<string> = new EventEmitter<string>();
   @Output() deleteSearch: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('input') input: ElementRef;
   private term: Subject<string> = new Subject<string>();
@@ -31,9 +21,7 @@ export class SearchInputComponent implements OnChanges {
     if (!this.placeholder) {
       this.placeholder = i18nService.getTranslations('searchDefault');
     }
-    this.term$ = <any>(
-      this.term.asObservable().pipe(debounceTime(400), distinctUntilChanged())
-    );
+    this.term$ = <any>this.term.asObservable().pipe(debounceTime(400), distinctUntilChanged());
   }
 
   ngOnChanges() {

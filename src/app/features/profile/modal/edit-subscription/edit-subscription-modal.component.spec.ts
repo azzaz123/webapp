@@ -16,10 +16,7 @@ import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.inter
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { ModalStatuses } from '@features/profile/core/modal.statuses.enum';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import {
-  MAPPED_SUBSCRIPTIONS,
-  TIER,
-} from '@fixtures/subscriptions.fixtures.spec';
+import { MAPPED_SUBSCRIPTIONS, TIER } from '@fixtures/subscriptions.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DateUntilDayPipe } from '@shared/pipes';
@@ -97,9 +94,7 @@ describe('EditSubscriptionModalComponent', () => {
     it('should set the selected tier and plan', () => {
       component.ngOnInit();
 
-      expect(component.selectedTier).toEqual(
-        MAPPED_SUBSCRIPTIONS[2].selected_tier
-      );
+      expect(component.selectedTier).toEqual(MAPPED_SUBSCRIPTIONS[2].selected_tier);
     });
 
     it('should send the page view event to analytics', () => {
@@ -113,9 +108,7 @@ describe('EditSubscriptionModalComponent', () => {
       component.ngOnInit();
 
       expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
-      expect(analyticsService.trackPageView).toHaveBeenCalledWith(
-        expectedPageView
-      );
+      expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageView);
     });
 
     afterEach(() => {
@@ -166,9 +159,7 @@ describe('EditSubscriptionModalComponent', () => {
     it('should call the editSubscription service', () => {
       component.editSubscription();
 
-      expect(
-        component.subscriptionsService.editSubscription
-      ).toHaveBeenCalledWith(MAPPED_SUBSCRIPTIONS[2], tier.id);
+      expect(component.subscriptionsService.editSubscription).toHaveBeenCalledWith(MAPPED_SUBSCRIPTIONS[2], tier.id);
       expect(component.loading).toBe(false);
     });
 
@@ -177,8 +168,7 @@ describe('EditSubscriptionModalComponent', () => {
         name: ANALYTICS_EVENT_NAMES.ClickSubscriptionPlanDone,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
-          subscription: component.subscription
-            .category_id as SUBSCRIPTION_CATEGORIES,
+          subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
           previousTier: component.currentTier.id,
           newTier: component.selectedTier.id,
           screenId: SCREEN_IDS.SubscriptionManagement,
@@ -198,12 +188,9 @@ describe('EditSubscriptionModalComponent', () => {
 
       component.cancelSubscription();
 
-      expect(modalService.open).toHaveBeenCalledWith(
-        CancelSubscriptionModalComponent,
-        {
-          windowClass: 'review',
-        }
-      );
+      expect(modalService.open).toHaveBeenCalledWith(CancelSubscriptionModalComponent, {
+        windowClass: 'review',
+      });
     });
   });
 });

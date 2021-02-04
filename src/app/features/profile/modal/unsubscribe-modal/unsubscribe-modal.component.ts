@@ -26,23 +26,17 @@ export class UnsubscribeModalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.userService
-      .getUnsubscribeReasons()
-      .subscribe((reasons: UnsubscribeReason[]) => {
-        this.reasons = reasons;
-      });
-    this.userService
-      .isProUser()
-      .subscribe((isPro) => (this.hasSubscription = isPro));
+    this.userService.getUnsubscribeReasons().subscribe((reasons: UnsubscribeReason[]) => {
+      this.reasons = reasons;
+    });
+    this.userService.isProUser().subscribe((isPro) => (this.hasSubscription = isPro));
   }
 
   public send() {
-    this.userService
-      .unsubscribe(this.selectedReason, this.customReason)
-      .subscribe(() => {
-        this.activeModal.close();
-        this.accessTokenService.deleteAccessToken();
-        this.event.emit(EventService.USER_LOGOUT, environment.siteUrl);
-      });
+    this.userService.unsubscribe(this.selectedReason, this.customReason).subscribe(() => {
+      this.activeModal.close();
+      this.accessTokenService.deleteAccessToken();
+      this.event.emit(EventService.USER_LOGOUT, environment.siteUrl);
+    });
   }
 }

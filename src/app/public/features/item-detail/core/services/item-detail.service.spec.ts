@@ -75,9 +75,7 @@ describe('ItemDetailService', () => {
 
       itemDetailService.getRecommendedItems(itemId);
 
-      expect(
-        recommenderApiService.getRecommendedItemsByItemId
-      ).toHaveBeenCalledWith(itemId);
+      expect(recommenderApiService.getRecommendedItemsByItemId).toHaveBeenCalledWith(itemId);
     });
   });
 });

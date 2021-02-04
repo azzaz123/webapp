@@ -1,10 +1,5 @@
 import { UuidService } from 'app/core/uuid/uuid.service';
-import {
-  BumpGroup,
-  CartItem,
-  CartProItem,
-  CartProExtrasPack,
-} from './cart-item.interface';
+import { BumpGroup, CartItem, CartProItem, CartProExtrasPack } from './cart-item.interface';
 
 export const BUMP_TYPES = ['zonebump', 'citybump', 'countrybump'];
 export const BUMP_PROVINCIAL_TYPES = ['zonebump', 'countrybump'];
@@ -35,10 +30,7 @@ export abstract class CartBase {
     collapsed: false,
   };
 
-  abstract add(
-    cartItem: CartItem | CartProItem | CartProExtrasPack,
-    type: string
-  );
+  abstract add(cartItem: CartItem | CartProItem | CartProExtrasPack, type: string);
 
   abstract removeCartItem(type: string, itemId?: string, index?: number);
 

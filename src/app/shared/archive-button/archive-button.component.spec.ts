@@ -59,9 +59,7 @@ describe('ArchiveButtonComponent', () => {
       component.archive(new Event(''));
 
       expect(callsService.archive).toHaveBeenCalledWith(CALL_ID);
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.CALLS_PROCESSED
-      );
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CALLS_PROCESSED);
     });
 
     it('should emit click event', () => {

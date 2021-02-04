@@ -1,13 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
   AnalyticsEvent,
@@ -28,19 +21,9 @@ import { ItemService } from '@core/item/item.service';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { TrackingService } from '@core/tracking/tracking.service';
 import { UserService } from '@core/user/user.service';
-import {
-  NgbModal,
-  NgbModalRef,
-  NgbPopoverConfig,
-} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { IOption } from '@shared/dropdown/utils/option.interface';
-import {
-  OUTPUT_TYPE,
-  PendingFiles,
-  UploadFile,
-  UploadOutput,
-  UPLOAD_ACTION,
-} from '@shared/uploader/upload.interface';
+import { OUTPUT_TYPE, PendingFiles, UploadFile, UploadOutput, UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 import { isEqual, omit } from 'lodash-es';
 import { forkJoin, Observable } from 'rxjs';
 import { finalize, tap } from 'rxjs/operators';
@@ -103,10 +86,7 @@ export class UploadCarComponent implements OnInit {
       model: ['', [Validators.required, whitespaceValidator]],
       brand: ['', [Validators.required, whitespaceValidator]],
       title: ['', [Validators.required, whitespaceValidator]],
-      year: [
-        '',
-        [Validators.required, this.min(1900), this.max(this.currentYear)],
-      ],
+      year: ['', [Validators.required, this.min(1900), this.max(this.currentYear)]],
       sale_price: ['', [Validators.required, this.min(0), this.max(999999999)]],
       financed_price: ['', [this.min(0), this.max(999999999)]],
       currency_code: ['EUR', [Validators.required]],
@@ -180,19 +160,11 @@ export class UploadCarComponent implements OnInit {
       { emitEvent: false }
     );
 
-    forkJoin([
-      this.getBrands(),
-      this.getVersions(`${this.item.year}`),
-      this.getCarTypes(),
-    ])
+    forkJoin([this.getBrands(), this.getVersions(`${this.item.year}`), this.getCarTypes()])
       .pipe(
         finalize(() => {
-          this.customVersion = !this.versions.find(
-            (version) => this.item.version === version.value
-          );
-          this.customMake = !this.brands.find(
-            (brand) => this.item.brand === brand.value
-          );
+          this.customVersion = !this.versions.find((version) => this.item.version === version.value);
+          this.customMake = !this.brands.find((brand) => this.item.brand === brand.value);
           this.subscribeToFieldsChanges();
         })
       )
@@ -238,34 +210,14 @@ export class UploadCarComponent implements OnInit {
 
   private subscribeToModelChanges(): void {
     this.uploadForm.get('model').valueChanges.subscribe((model: string) => {
-      this.resetFormFields([
-        'title',
-        'year',
-        'version',
-        'num_seats',
-        'num_doors',
-        'body_type',
-        'km',
-        'engine',
-        'gearbox',
-        'horsepower',
-      ]);
+      this.resetFormFields(['title', 'year', 'version', 'num_seats', 'num_doors', 'body_type', 'km', 'engine', 'gearbox', 'horsepower']);
       this.getYears();
     });
   }
 
   private subscribeToYearChanges(): void {
     this.uploadForm.get('year').valueChanges.subscribe((year: string) => {
-      this.resetFormFields([
-        'version',
-        'num_seats',
-        'num_doors',
-        'body_type',
-        'km',
-        'engine',
-        'gearbox',
-        'horsepower',
-      ]);
+      this.resetFormFields(['version', 'num_seats', 'num_doors', 'body_type', 'km', 'engine', 'gearbox', 'horsepower']);
       this.autocompleteTitle();
       this.getVersions(year).subscribe((versions: IOption[]) => {
         this.versions = versions;
@@ -275,15 +227,7 @@ export class UploadCarComponent implements OnInit {
 
   private subscribeToVersionChanges(): void {
     this.uploadForm.get('version').valueChanges.subscribe((version: string) => {
-      this.resetFormFields([
-        'num_seats',
-        'num_doors',
-        'body_type',
-        'km',
-        'engine',
-        'gearbox',
-        'horsepower',
-      ]);
+      this.resetFormFields(['num_seats', 'num_doors', 'body_type', 'km', 'engine', 'gearbox', 'horsepower']);
       this.getAutocompleteFields(version).subscribe((fields: CarInfo) => {
         this.uploadForm.patchValue(fields, { emitEvent: false });
       });
@@ -292,13 +236,7 @@ export class UploadCarComponent implements OnInit {
 
   private detectFormChanges() {
     this.uploadForm.valueChanges.subscribe((value) => {
-      if (
-        this.brands &&
-        this.carTypes &&
-        this.models &&
-        this.years &&
-        this.versions
-      ) {
+      if (this.brands && this.carTypes && this.models && this.years && this.versions) {
         const oldItemData = omit(this.oldFormValue, ['images', 'location']);
         const newItemData = omit(value, ['images', 'location']);
         if (!this.oldFormValue) {
@@ -334,10 +272,7 @@ export class UploadCarComponent implements OnInit {
   private getYears(): void {
     this.isLoadingYears = true;
     this.carSuggestionsService
-      .getYears(
-        this.uploadForm.get('brand').value,
-        this.uploadForm.get('model').value
-      )
+      .getYears(this.uploadForm.get('brand').value, this.uploadForm.get('model').value)
       .pipe(finalize(() => (this.isLoadingYears = false)))
       .subscribe((years: IOption[]) => {
         this.years = years;
@@ -345,19 +280,11 @@ export class UploadCarComponent implements OnInit {
   }
 
   private getVersions(year: string): Observable<IOption[]> {
-    return this.carSuggestionsService.getVersions(
-      this.uploadForm.get('brand').value,
-      this.uploadForm.get('model').value,
-      year
-    );
+    return this.carSuggestionsService.getVersions(this.uploadForm.get('brand').value, this.uploadForm.get('model').value, year);
   }
 
   private getAutocompleteFields(version: string) {
-    return this.itemService.getCarInfo(
-      this.uploadForm.get('brand').value,
-      this.uploadForm.get('model').value,
-      version
-    );
+    return this.itemService.getCarInfo(this.uploadForm.get('brand').value, this.uploadForm.get('model').value, version);
   }
 
   private autocompleteTitle() {
@@ -401,44 +328,37 @@ export class UploadCarComponent implements OnInit {
   }
 
   private createItem(): void {
-    this.uploadService
-      .createItem(this.uploadForm.value, ITEM_TYPES.CARS)
-      .subscribe(
-        (response: UploadOutput) => {
-          this.updateUploadPercentage(response.percentage);
-          if (response.pendingFiles) {
-            this.pendingFiles = response.pendingFiles;
-          }
-          if (response.type === OUTPUT_TYPE.done) {
-            this.onUploaded(response.file.response, UPLOAD_ACTION.created);
-          }
-        },
-        (error: HttpErrorResponse) => {
-          this.onError(error);
+    this.uploadService.createItem(this.uploadForm.value, ITEM_TYPES.CARS).subscribe(
+      (response: UploadOutput) => {
+        this.updateUploadPercentage(response.percentage);
+        if (response.pendingFiles) {
+          this.pendingFiles = response.pendingFiles;
         }
-      );
+        if (response.type === OUTPUT_TYPE.done) {
+          this.onUploaded(response.file.response, UPLOAD_ACTION.created);
+        }
+      },
+      (error: HttpErrorResponse) => {
+        this.onError(error);
+      }
+    );
   }
 
   private updateItem(): void {
-    this.uploadService
-      .updateItem(this.uploadForm.value, ITEM_TYPES.CARS)
-      .subscribe(
-        (response: CarContent) => {
-          this.onUploaded(response, UPLOAD_ACTION.updated);
-        },
-        (error: HttpErrorResponse) => {
-          this.onError(error);
-        }
-      );
+    this.uploadService.updateItem(this.uploadForm.value, ITEM_TYPES.CARS).subscribe(
+      (response: CarContent) => {
+        this.onUploaded(response, UPLOAD_ACTION.updated);
+      },
+      (error: HttpErrorResponse) => {
+        this.onError(error);
+      }
+    );
   }
 
   onUploaded(response: CarContent, action: UPLOAD_ACTION) {
     this.onFormChanged.emit(false);
     if (this.item) {
-      this.trackingService.track(
-        TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS,
-        { category: this.uploadForm.value.category_id }
-      );
+      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, { category: this.uploadForm.value.category_id });
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
     }
@@ -455,16 +375,10 @@ export class UploadCarComponent implements OnInit {
   public redirectToList(action: UPLOAD_ACTION, response: CarContent, type = 1) {
     const params = this.getRedirectParams(action, response, type);
 
-    this.trackEditOrUpload(!!this.item, response).subscribe(() =>
-      this.router.navigate(['/catalog/list', params])
-    );
+    this.trackEditOrUpload(!!this.item, response).subscribe(() => this.router.navigate(['/catalog/list', params]));
   }
 
-  private getRedirectParams(
-    action: UPLOAD_ACTION,
-    response: CarContent,
-    userType: number
-  ) {
+  private getRedirectParams(action: UPLOAD_ACTION, response: CarContent, userType: number) {
     const params: any = {
       [action]: true,
       itemId: response.id,
@@ -483,10 +397,7 @@ export class UploadCarComponent implements OnInit {
 
   public onError(error: HttpErrorResponse | any): void {
     this.loading = false;
-    this.errorsService.i18nError(
-      'serverError',
-      error.message ? error.message : ''
-    );
+    this.errorsService.i18nError('serverError', error.message ? error.message : '');
     if (this.item) {
       this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_ERROR, {
         category: this.uploadForm.value.category_id,
@@ -497,12 +408,9 @@ export class UploadCarComponent implements OnInit {
   }
 
   preview() {
-    const modalRef: NgbModalRef = this.modalService.open(
-      PreviewModalComponent,
-      {
-        windowClass: 'preview',
-      }
-    );
+    const modalRef: NgbModalRef = this.modalService.open(PreviewModalComponent, {
+      windowClass: 'preview',
+    });
     modalRef.componentInstance.itemPreview = this.uploadForm.value;
     modalRef.componentInstance.getBodyType();
     modalRef.result.then(
@@ -564,18 +472,11 @@ export class UploadCarComponent implements OnInit {
   get versionFieldDisabled(): boolean {
     const yearField = this.uploadForm.get('year');
 
-    return (
-      (yearField.disabled || yearField.invalid) &&
-      !this.customMake &&
-      !this.customVersion
-    );
+    return (yearField.disabled || yearField.invalid) && !this.customMake && !this.customVersion;
   }
 
   private trackEditOrUpload(isEdit: boolean, item: CarContent) {
-    return forkJoin([
-      this.userService.isProfessional(),
-      this.userService.isProUser(),
-    ]).pipe(
+    return forkJoin([this.userService.isProfessional(), this.userService.isProUser()]).pipe(
       tap((values: any[]) => {
         const baseEventAttrs: any = {
           itemId: item.id,
@@ -639,9 +540,7 @@ export class UploadCarComponent implements OnInit {
   }
 
   private removeFileFromForm(imageId: string): void {
-    const imagesControl: FormControl = this.uploadForm.get(
-      'images'
-    ) as FormControl;
+    const imagesControl: FormControl = this.uploadForm.get('images') as FormControl;
     const images: UploadFile[] = imagesControl.value;
     imagesControl.patchValue(images.filter((image) => image.id !== imageId));
   }
@@ -656,20 +555,18 @@ export class UploadCarComponent implements OnInit {
 
   public onAddImage(file: UploadFile): void {
     if (this.item) {
-      this.uploadService
-        .uploadSingleImage(file, this.item.id, ITEM_TYPES.CARS)
-        .subscribe(
-          (value: UploadOutput) => {
-            if (value.type === OUTPUT_TYPE.done) {
-              this.errorsService.i18nSuccess('imageUploaded');
-              file.id = value.file.response;
-            }
-          },
-          (error: HttpErrorResponse) => {
-            this.removeFileFromForm(file.id);
-            this.onError(error);
+      this.uploadService.uploadSingleImage(file, this.item.id, ITEM_TYPES.CARS).subscribe(
+        (value: UploadOutput) => {
+          if (value.type === OUTPUT_TYPE.done) {
+            this.errorsService.i18nSuccess('imageUploaded');
+            file.id = value.file.response;
           }
-        );
+        },
+        (error: HttpErrorResponse) => {
+          this.removeFileFromForm(file.id);
+          this.onError(error);
+        }
+      );
     }
   }
 }

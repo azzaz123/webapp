@@ -104,16 +104,12 @@ describe('Component: Conversation', () => {
     });
 
     it('should archive$ conversation and set conversation to NULL', () => {
-      spyOn(inboxConversationService, 'archive$').and.returnValue(
-        of(inboxConversation)
-      );
+      spyOn(inboxConversationService, 'archive$').and.returnValue(of(inboxConversation));
       component.conversation = inboxConversation;
 
       component.onClickArchiveConversation();
 
-      expect(inboxConversationService.archive$).toHaveBeenCalledWith(
-        inboxConversation
-      );
+      expect(inboxConversationService.archive$).toHaveBeenCalledWith(inboxConversation);
       expect(component.conversation).toEqual(null);
     });
   });

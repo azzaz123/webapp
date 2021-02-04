@@ -51,13 +51,10 @@ describe('CounterSpecificationComponent', () => {
       it('should show the svg type and the label type', () => {
         const icon: HTMLElement = el.querySelector(svgTag);
         const numberCounter = de.query(By.css(containerCounterClass));
-        const label = fixture.debugElement.query(By.css(labelClass))
-          .nativeElement;
+        const label = fixture.debugElement.query(By.css(labelClass)).nativeElement;
 
         expect(icon).toBeTruthy();
-        expect(`${icon.getAttribute('ng-reflect-src')}svg`).toEqual(
-          component.specificationCounter.icon
-        );
+        expect(`${icon.getAttribute('ng-reflect-src')}svg`).toEqual(component.specificationCounter.icon);
         expect(numberCounter).toBeFalsy();
         expect(label.innerHTML).toEqual(component.translation);
       });
@@ -71,14 +68,11 @@ describe('CounterSpecificationComponent', () => {
 
       it('ONLY should show the svg type', () => {
         const icon: HTMLElement = el.querySelector(svgTag);
-        const label = fixture.debugElement.query(By.css(labelClass))
-          .nativeElement;
+        const label = fixture.debugElement.query(By.css(labelClass)).nativeElement;
         const numberCounter = de.query(By.css(containerCounterClass));
 
         expect(icon).toBeTruthy();
-        expect(`${icon.getAttribute('ng-reflect-src')}svg`).toEqual(
-          component.specificationCounter.icon
-        );
+        expect(`${icon.getAttribute('ng-reflect-src')}svg`).toEqual(component.specificationCounter.icon);
         expect(numberCounter).toBeFalsy();
         expect(label.innerHTML).toEqual('');
       });
@@ -108,8 +102,7 @@ describe('CounterSpecificationComponent', () => {
       });
 
       it('should show the custom label', () => {
-        const label = fixture.debugElement.query(By.css(labelClass))
-          .nativeElement;
+        const label = fixture.debugElement.query(By.css(labelClass)).nativeElement;
 
         expect(label.innerHTML).toEqual(random);
       });
@@ -120,8 +113,7 @@ describe('CounterSpecificationComponent', () => {
           fixture.detectChanges();
 
           const icon: HTMLElement = el.querySelector(svgTag);
-          const numberCounter = de.query(By.css(containerCounterClass))
-            .nativeElement;
+          const numberCounter = de.query(By.css(containerCounterClass)).nativeElement;
 
           expect(icon).toBeFalsy();
           expect(numberCounter.innerHTML).toBe('4');
@@ -149,8 +141,7 @@ describe('CounterSpecificationComponent', () => {
       fixture.detectChanges();
 
       const icon: HTMLElement = el.querySelector(svgTag);
-      const numberCounter = de.query(By.css(containerCounterClass))
-        .nativeElement;
+      const numberCounter = de.query(By.css(containerCounterClass)).nativeElement;
 
       expect(icon).toBeFalsy();
       expect(numberCounter.innerHTML).toBe('');

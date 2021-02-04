@@ -78,30 +78,10 @@ export const MOCK_CONVERSATION: Function = (
   phone?: string,
   date: number = CONVERSATION_DATE
 ): Conversation => {
-  return new Conversation(
-    id,
-    1,
-    date,
-    false,
-    new User(userId),
-    new Item(ITEM_ID, ITEM_LEGACY_ID, USER_ID),
-    [],
-    phone,
-    SURVEY_RESPONSES
-  );
+  return new Conversation(id, 1, date, false, new User(userId), new Item(ITEM_ID, ITEM_LEGACY_ID, USER_ID), [], phone, SURVEY_RESPONSES);
 };
-export const SECOND_MOCK_CONVERSATION: Conversation = new Conversation(
-  'secondId',
-  2,
-  CONVERSATION_DATE,
-  false,
-  MOCK_USER,
-  MOCK_ITEM
-);
-export const MOCKED_CONVERSATIONS: Conversation[] = [
-  MOCK_CONVERSATION(),
-  SECOND_MOCK_CONVERSATION,
-];
+export const SECOND_MOCK_CONVERSATION: Conversation = new Conversation('secondId', 2, CONVERSATION_DATE, false, MOCK_USER, MOCK_ITEM);
+export const MOCKED_CONVERSATIONS: Conversation[] = [MOCK_CONVERSATION(), SECOND_MOCK_CONVERSATION];
 export const NOT_FOUND_CONVERSATION_ID = 'notFound';
 export const MOCK_NOT_FOUND_CONVERSATION: Conversation = new Conversation(
   NOT_FOUND_CONVERSATION_ID,
@@ -112,11 +92,7 @@ export const MOCK_NOT_FOUND_CONVERSATION: Conversation = new Conversation(
   MOCK_ITEM
 );
 
-export function createConversationsArray(
-  total: number,
-  phone?: boolean,
-  conversationsId?: string
-) {
+export function createConversationsArray(total: number, phone?: boolean, conversationsId?: string) {
   const conversations: Conversation[] = [];
   for (let i = 1; i <= total; i++) {
     conversations.push(

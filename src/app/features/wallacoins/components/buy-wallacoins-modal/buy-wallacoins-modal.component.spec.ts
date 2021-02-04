@@ -133,15 +133,13 @@ describe('BuyWallacoinsModalComponent', () => {
 
       describe('error', () => {
         it('should call toastr', () => {
-          paymentService.orderExtrasProPack = jasmine
-            .createSpy()
-            .and.returnValue(
-              throwError({
-                text() {
-                  return '';
-                },
-              })
-            );
+          paymentService.orderExtrasProPack = jasmine.createSpy().and.returnValue(
+            throwError({
+              text() {
+                return '';
+              },
+            })
+          );
           spyOn(errorService, 'i18nError');
 
           component.checkout();

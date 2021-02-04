@@ -2,16 +2,9 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { InvoiceService } from '@core/invoice/invoice.service';
-import {
-  MOCK_INVOICE_HISTORY,
-  MOCK_INVOICE_HISTORY_MAPPED,
-  MOCK_INVOICE_HISTORY_SORTED,
-} from '@fixtures/invoice.fixtures.spec';
+import { MOCK_INVOICE_HISTORY, MOCK_INVOICE_HISTORY_MAPPED, MOCK_INVOICE_HISTORY_SORTED } from '@fixtures/invoice.fixtures.spec';
 import { of, throwError } from 'rxjs';
-import {
-  InvoiceHistoryComponent,
-  TRANSACTIONS_FILTERS,
-} from './invoice-history.component';
+import { InvoiceHistoryComponent, TRANSACTIONS_FILTERS } from './invoice-history.component';
 
 describe('InvoiceComponent', () => {
   let component: InvoiceHistoryComponent;
@@ -46,9 +39,7 @@ describe('InvoiceComponent', () => {
       component.invoiceTransactions = MOCK_INVOICE_HISTORY;
 
       fixture.detectChanges();
-      const loadMoreDiv = fixture.debugElement.query(
-        By.css('.InvoiceHistory__load-more-container')
-      );
+      const loadMoreDiv = fixture.debugElement.query(By.css('.InvoiceHistory__load-more-container'));
 
       expect(loadMoreDiv).toBeTruthy();
     });
@@ -56,14 +47,10 @@ describe('InvoiceComponent', () => {
 
   describe('when we dont need load more data...', () => {
     it('should NOT show load more because we dont have more than 5 invoices', () => {
-      spyOn(invoiceService, 'getInvoiceTransactions').and.returnValue(
-        of(MOCK_INVOICE_HISTORY_MAPPED)
-      );
+      spyOn(invoiceService, 'getInvoiceTransactions').and.returnValue(of(MOCK_INVOICE_HISTORY_MAPPED));
 
       fixture.detectChanges();
-      const loadMoreDiv = fixture.debugElement.query(
-        By.css('.InvoiceHistory__load-more-container')
-      );
+      const loadMoreDiv = fixture.debugElement.query(By.css('.InvoiceHistory__load-more-container'));
 
       expect(loadMoreDiv).toBeNull();
     });
@@ -71,18 +58,14 @@ describe('InvoiceComponent', () => {
 
   describe('when there is a error', () => {
     it('should show a error message', () => {
-      spyOn(invoiceService, 'getInvoiceTransactions').and.returnValue(
-        throwError('error')
-      );
+      spyOn(invoiceService, 'getInvoiceTransactions').and.returnValue(throwError('error'));
       fixture.detectChanges();
 
       const content = fixture.debugElement.query(By.css('.content'));
       const element = content.queryAll(By.css('span'));
 
       expect(element).toHaveLength(1);
-      expect(element[0].nativeElement.textContent).toBe(
-        'Sorry, we cannot load your invoices at this time. Please try again later.'
-      );
+      expect(element[0].nativeElement.textContent).toBe('Sorry, we cannot load your invoices at this time. Please try again later.');
     });
   });
 
@@ -97,9 +80,7 @@ describe('InvoiceComponent', () => {
       const element = content.queryAll(By.css('span'));
 
       expect(element).toHaveLength(1);
-      expect(element[0].nativeElement.textContent).toBe(
-        'Your history is empty.'
-      );
+      expect(element[0].nativeElement.textContent).toBe('Your history is empty.');
     });
     it('should show empty invoice date message if has not invoice data', () => {
       spyOn(invoiceService, 'getInvoiceTransactions').and.returnValue(of([]));
@@ -123,15 +104,9 @@ describe('InvoiceComponent', () => {
 
       component.loadMore();
 
-      expect(component.filterConfig[TRANSACTIONS_FILTERS.ALL].limit).toEqual(
-        10
-      );
-      expect(
-        component.filterConfig[TRANSACTIONS_FILTERS.INVOICES].limit
-      ).toEqual(5);
-      expect(component.filterConfig[TRANSACTIONS_FILTERS.CREDIT].limit).toEqual(
-        5
-      );
+      expect(component.filterConfig[TRANSACTIONS_FILTERS.ALL].limit).toEqual(10);
+      expect(component.filterConfig[TRANSACTIONS_FILTERS.INVOICES].limit).toEqual(5);
+      expect(component.filterConfig[TRANSACTIONS_FILTERS.CREDIT].limit).toEqual(5);
     });
   });
 
@@ -144,20 +119,14 @@ describe('InvoiceComponent', () => {
         component.onChangeFilter(TRANSACTIONS_FILTERS.ALL);
         fixture.detectChanges();
 
-        expect(component.filteredTransactions).toEqual(
-          MOCK_INVOICE_HISTORY_SORTED
-        );
-        expect(component.invoiceTransactions).toEqual(
-          MOCK_INVOICE_HISTORY_SORTED
-        );
+        expect(component.filteredTransactions).toEqual(MOCK_INVOICE_HISTORY_SORTED);
+        expect(component.invoiceTransactions).toEqual(MOCK_INVOICE_HISTORY_SORTED);
       });
       it('should button all has to be selected', () => {
         component.onChangeFilter(TRANSACTIONS_FILTERS.ALL);
         fixture.detectChanges();
 
-        const selectedButton = fixture.debugElement.queryAll(
-          By.css('.invoice--selected')
-        );
+        const selectedButton = fixture.debugElement.queryAll(By.css('.invoice--selected'));
 
         expect(selectedButton).toHaveLength(1);
         expect(selectedButton[0].nativeElement.textContent).toBe('All');
@@ -165,25 +134,19 @@ describe('InvoiceComponent', () => {
     });
     describe('... an select invoices', () => {
       it('should show only invoices', () => {
-        const expected = MOCK_INVOICE_HISTORY_SORTED.filter(
-          (invoice) => invoice.price >= 0
-        );
+        const expected = MOCK_INVOICE_HISTORY_SORTED.filter((invoice) => invoice.price >= 0);
 
         component.onChangeFilter(TRANSACTIONS_FILTERS.INVOICES);
         fixture.detectChanges();
 
         expect(component.filteredTransactions).toEqual(expected);
-        expect(component.invoiceTransactions).toEqual(
-          MOCK_INVOICE_HISTORY_SORTED
-        );
+        expect(component.invoiceTransactions).toEqual(MOCK_INVOICE_HISTORY_SORTED);
       });
       it('should button invoices has to be selected', () => {
         component.onChangeFilter(TRANSACTIONS_FILTERS.INVOICES);
         fixture.detectChanges();
 
-        const selectedButton = fixture.debugElement.queryAll(
-          By.css('.invoice--selected')
-        );
+        const selectedButton = fixture.debugElement.queryAll(By.css('.invoice--selected'));
 
         expect(selectedButton).toHaveLength(1);
         expect(selectedButton[0].nativeElement.textContent).toBe('Invoices');
@@ -191,30 +154,22 @@ describe('InvoiceComponent', () => {
     });
     describe('... an select credit memos', () => {
       it('should show only credit memos', () => {
-        const expected = MOCK_INVOICE_HISTORY_SORTED.filter(
-          (invoice) => invoice.price < 0
-        );
+        const expected = MOCK_INVOICE_HISTORY_SORTED.filter((invoice) => invoice.price < 0);
 
         component.onChangeFilter(TRANSACTIONS_FILTERS.CREDIT);
         fixture.detectChanges();
 
         expect(component.filteredTransactions).toEqual(expected);
-        expect(component.invoiceTransactions).toEqual(
-          MOCK_INVOICE_HISTORY_SORTED
-        );
+        expect(component.invoiceTransactions).toEqual(MOCK_INVOICE_HISTORY_SORTED);
       });
       it('should button credit memos has to be selected', () => {
         component.onChangeFilter(TRANSACTIONS_FILTERS.CREDIT);
         fixture.detectChanges();
 
-        const selectedButton = fixture.debugElement.queryAll(
-          By.css('.invoice--selected')
-        );
+        const selectedButton = fixture.debugElement.queryAll(By.css('.invoice--selected'));
 
         expect(selectedButton).toHaveLength(1);
-        expect(selectedButton[0].nativeElement.textContent).toBe(
-          'Credit memos'
-        );
+        expect(selectedButton[0].nativeElement.textContent).toBe('Credit memos');
       });
     });
   });

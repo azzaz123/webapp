@@ -1,7 +1,4 @@
-import {
-  AnalyticsEvent,
-  AnalyticsPageView,
-} from '@core/analytics/analytics-constants';
+import { AnalyticsEvent, AnalyticsPageView } from '@core/analytics/analytics-constants';
 import { Observable, ReplaySubject } from 'rxjs';
 
 export class MockAnalyticsService {

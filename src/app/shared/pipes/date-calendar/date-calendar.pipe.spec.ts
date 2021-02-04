@@ -106,8 +106,7 @@ describe('DateCalendarPipe', () => {
 
   it('should display "month name day number, year" when date is from same year', () => {
     let shownText: string;
-    const pastTwelvethOfApril =
-      ELEVENTH_OF_JUNE_OF_2020_IN_MS - ONE_DAY_IN_MS * 60;
+    const pastTwelvethOfApril = ELEVENTH_OF_JUNE_OF_2020_IN_MS - ONE_DAY_IN_MS * 60;
 
     component.timestamp = pastTwelvethOfApril;
     fixture.detectChanges();

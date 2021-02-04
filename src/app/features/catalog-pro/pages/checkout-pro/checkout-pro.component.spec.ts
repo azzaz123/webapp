@@ -5,11 +5,7 @@ import { CheckoutProComponent, BUMPS } from './checkout-pro.component';
 import { ItemService } from '@core/item/item.service';
 import { ITEMS_WITH_PRODUCTS, ITEM_ID } from '@fixtures/item.fixtures.spec';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  MOCK_SELECTED_DATES,
-  MOCK_DATE,
-  MOCK_DATE2,
-} from '@fixtures/calendar.fixtures.spec';
+import { MOCK_SELECTED_DATES, MOCK_DATE, MOCK_DATE2 } from '@fixtures/calendar.fixtures.spec';
 import { CartService } from '@shared/catalog/cart/cart.service';
 import { CartPro } from '@shared/catalog/cart/cart-pro';
 import { NgbDatepickerConfig, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
@@ -91,10 +87,7 @@ describe('CheckoutProComponent', () => {
     itemService = TestBed.inject(ItemService);
     router = TestBed.inject(Router);
     route = TestBed.inject(ActivatedRoute);
-    spyCall = spyOn(
-      itemService,
-      'getItemsWithAvailableProducts'
-    ).and.callThrough();
+    spyCall = spyOn(itemService, 'getItemsWithAvailableProducts').and.callThrough();
     fixture.detectChanges();
   });
 
@@ -109,9 +102,7 @@ describe('CheckoutProComponent', () => {
 
     describe('no params', () => {
       it('should call getItemsWithAvailableProducts and set it', () => {
-        expect(itemService.getItemsWithAvailableProducts).toHaveBeenCalledWith(
-          SELECTED_ITEMS
-        );
+        expect(itemService.getItemsWithAvailableProducts).toHaveBeenCalledWith(SELECTED_ITEMS);
         expect(component.itemsWithProducts).toEqual(ITEMS_WITH_PRODUCTS);
       });
 
@@ -135,9 +126,7 @@ describe('CheckoutProComponent', () => {
       it('should call getItemsWithAvailableProducts and set it', () => {
         component.ngOnInit();
 
-        expect(itemService.getItemsWithAvailableProducts).toHaveBeenCalledWith([
-          ITEM_ID,
-        ]);
+        expect(itemService.getItemsWithAvailableProducts).toHaveBeenCalledWith([ITEM_ID]);
         expect(component.itemsWithProducts).toEqual(ITEMS_WITH_PRODUCTS);
       });
 
@@ -147,13 +136,8 @@ describe('CheckoutProComponent', () => {
 
         component.ngOnInit();
 
-        expect(itemService.getItemsWithAvailableProducts).toHaveBeenCalledWith([
-          ITEM_ID,
-        ]);
-        expect(router.navigate).toHaveBeenCalledWith([
-          'pro/catalog/list',
-          { alreadyFeatured: true },
-        ]);
+        expect(itemService.getItemsWithAvailableProducts).toHaveBeenCalledWith([ITEM_ID]);
+        expect(router.navigate).toHaveBeenCalledWith(['pro/catalog/list', { alreadyFeatured: true }]);
       });
     });
   });
@@ -228,9 +212,7 @@ describe('CheckoutProComponent', () => {
       it('should set the default dates', () => {
         component.todayDate = calendar.getToday();
         component.tomorrowDate = calendar.getNext(component.todayDate);
-        expect(component.newSelectedDates).toEqual(
-          new CalendarDates(component.todayDate, component.tomorrowDate)
-        );
+        expect(component.newSelectedDates).toEqual(new CalendarDates(component.todayDate, component.tomorrowDate));
       });
 
       it('should hide the calendar', () => {

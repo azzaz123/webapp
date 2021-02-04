@@ -9,9 +9,7 @@ export class InboxConversationServiceMock {
     return EMPTY;
   }
 
-  openConversationByConversationId$(
-    conversation: string
-  ): Observable<InboxConversation> {
+  openConversationByConversationId$(conversation: string): Observable<InboxConversation> {
     return EMPTY;
   }
 
@@ -25,10 +23,7 @@ export class InboxConversationServiceMock {
 
   resendPendingMessages(conversation: InboxConversation): void {}
 
-  addPhoneNumberToConversation$(
-    inboxConversation: InboxConversation,
-    phoneNumber: string
-  ): Observable<any> {
+  addPhoneNumberToConversation$(inboxConversation: InboxConversation, phoneNumber: string): Observable<any> {
     return EMPTY;
   }
 
