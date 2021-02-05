@@ -14,6 +14,7 @@ import { ButtonModule } from '@shared/button/button.module';
   selector: 'stories-abstract-filter',
   template: `
     <tsl-filter-template
+      #filterTemplate
       [isBubble]="isBubble()"
       [isDropdown]="isDropdown()"
       [icon]="icon"
@@ -40,9 +41,7 @@ class StoryAbstractFilterComponent extends AbstractFilter {
   @Input() storyFilterCounter?: boolean;
   @Input() storyHasNoArrow?: boolean;
   @Input() storyContent?: string;
-  @Output() storyBubbleClick: EventEmitter<void> = new EventEmitter();
   @Output() storyBubbleApply: EventEmitter<void> = new EventEmitter();
-  @Output() storyBubbleCancel: EventEmitter<void> = new EventEmitter();
 
   public isDropdown(): boolean {
     return this.storyHasNoArrow ? false : super.isDropdown();
@@ -74,6 +73,8 @@ export default {
   component: StoryAbstractFilterComponent,
   argTypes: {
     storyBubbleApply: { action: 'We can now handle bubble apply!' },
+    openStateChange: { action: 'We can handle open state from the parent' },
+    clear: { action: 'I need to be cleared!' },
   },
   decorators: [
     moduleMetadata({
@@ -136,6 +137,7 @@ DefaultBubbleWithValue.args = {
 export const DefaultBubbleWithCounter = Template.bind({});
 DefaultBubbleWithCounter.args = {
   value: [{ key1: 'value' }, { key2: 'value' }],
+  config: {},
 };
 
 export const CustomBubbleWithValue = Template.bind({});
@@ -159,6 +161,7 @@ export const CustomBubbleWithoutArrow = Template.bind({});
 CustomBubbleWithoutArrow.args = {
   storyLabel: 'I have no dropdown arrow! Now I am a toggle',
   storyHasNoArrow: true,
+  config: {},
 };
 
 export const AllActionsBubble = Template.bind({});

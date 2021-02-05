@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { BUBBLE_VARIANT } from '@public/shared/components/bubble/bubble.component';
 import { NgbDropdown, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
+import { Subject, Observable } from 'rxjs';
 
 @Component({
   selector: 'tsl-filter-template',
@@ -21,7 +22,13 @@ export class FilterTemplateComponent {
 
   @ViewChild('dropdown', { read: NgbDropdown }) dropdown: NgbDropdown;
 
+  private onDropdownStateChangeSubject = new Subject();
+
   public BUBBLE_VARIANT = BUBBLE_VARIANT;
+
+  public get onDropdownStateChange(): Observable<boolean> {
+    return this.onDropdownStateChangeSubject.asObservable();
+  }
 
   constructor(dropdownConfig: NgbDropdownConfig) {
     dropdownConfig.autoClose = false;
@@ -29,6 +36,7 @@ export class FilterTemplateComponent {
 
   public toggleDropdown(): void {
     this.dropdown.toggle();
+    this.onDropdownStateChangeSubject.next(this.dropdown.isOpen());
   }
 
   public get hasActions(): boolean {
