@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ItemExtendedFlags } from '@core/item/item-response.interface';
-import { BUMP_FLAGS, ITEM_FLAG_TYPES, LEFT_FLAGS } from '../item-flag/item-flag-constants';
+import { ItemFlags, ItemVisibilityFlags } from '@core/item/item-response.interface';
+import {
+  EMPTY_ITEM_FLAGS,
+  EMPTY_ITEM_VISIBILITY_FLAGS,
+  STATUS_FLAGS,
+  STATUS_ITEM_FLAG_TYPES,
+  BUMPED_ITEM_FLAG_TYPES,
+} from '../item-flag/item-flag-constants';
 
-export enum FLAG_POSITION {
-  LEFT,
-  RIGHT,
-}
 @Component({
   selector: 'tsl-item-images-carousel',
   templateUrl: './item-images-carousel.component.html',
@@ -13,30 +15,25 @@ export enum FLAG_POSITION {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemImagesCarouselComponent {
-  public readonly FLAG_POSITION = FLAG_POSITION;
-  public readonly ITEM_FLAG_TYPES = ITEM_FLAG_TYPES;
   @Input() images: string[];
-  @Input() itemFlags: ItemExtendedFlags;
+  @Input() itemFlags: ItemFlags = EMPTY_ITEM_FLAGS;
+  @Input() itemVisibilityFlags: ItemVisibilityFlags = EMPTY_ITEM_VISIBILITY_FLAGS;
 
-  public flagType(flagPosition: FLAG_POSITION): ITEM_FLAG_TYPES {
-    const FLAGS = flagPosition === FLAG_POSITION.LEFT ? LEFT_FLAGS : BUMP_FLAGS;
-
+  get statusFlag(): STATUS_ITEM_FLAG_TYPES {
     if (this.itemFlags) {
       const flagStatus = Object.keys(this.itemFlags).find((itemStatus: string) => {
-        if (FLAGS.some((flag) => flag.id === itemStatus) && this.itemFlags[itemStatus]) {
+        if (STATUS_FLAGS.some((flag) => flag.id === itemStatus) && this.itemFlags[itemStatus]) {
           return itemStatus;
         }
       });
 
-      return this.isCountryBumped(flagPosition)
-        ? this.isCountryBumped(flagPosition)
-        : FLAGS.find((flag) => flag.id === flagStatus)?.itemType;
+      return STATUS_FLAGS.find((flag) => flag.id === flagStatus)?.itemType as STATUS_ITEM_FLAG_TYPES;
     }
   }
 
-  private isCountryBumped(flagPosition: FLAG_POSITION): ITEM_FLAG_TYPES {
-    if (this.itemFlags.country_bumped && this.itemFlags.bumped && flagPosition === FLAG_POSITION.RIGHT) {
-      return ITEM_FLAG_TYPES.COUNTRY_BUMP;
+  get bumpedFlag(): BUMPED_ITEM_FLAG_TYPES {
+    if (this.itemVisibilityFlags && this.itemVisibilityFlags?.bumped) {
+      return this.itemVisibilityFlags.country_bumped ? BUMPED_ITEM_FLAG_TYPES.COUNTRY_BUMP : BUMPED_ITEM_FLAG_TYPES.BUMPED;
     }
   }
 }

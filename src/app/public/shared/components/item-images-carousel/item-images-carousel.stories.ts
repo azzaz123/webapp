@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { HammerModule } from '@angular/platform-browser';
 import { HAMMER_PROVIDER } from '@core/hammerjs/hammerjs-provider';
-import { ITEM_FLAGS } from '@fixtures/item.fixtures.spec';
+import { ITEM_BUMP_FLAGS, ITEM_FLAGS } from '@fixtures/item.fixtures.spec';
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { ImagesCarouselModule } from '../images-carousel/images-carousel.module';
 import { ItemFlagModule } from '../item-flag/item-flag.module';
@@ -31,7 +31,8 @@ const Template: Story<ItemImagesCarouselComponent> = (args: ItemImagesCarouselCo
     imports: [CommonModule, HammerModule, ItemFlagModule, ImagesCarouselModule, HttpClientModule],
     providers: [HAMMER_PROVIDER],
   },
-  template: '<tsl-item-images-carousel [itemFlags]="itemFlags" [images]="images"></tsl-item-images-carousel>',
+  template:
+    '<tsl-item-images-carousel [itemFlags]="itemFlags" [itemVisibilityFlags]="itemVisibilityFlags" [images]="images"></tsl-item-images-carousel>',
 });
 
 const imagesURL = ['http://localhost:6006/images/item-camera.jpg', 'http://localhost:6006/images/item-pc.jpg'];
@@ -39,13 +40,13 @@ const imagesURL = ['http://localhost:6006/images/item-camera.jpg', 'http://local
 export const Bumped = Template.bind({});
 Bumped.args = {
   images: imagesURL,
-  itemFlags: { ...ITEM_FLAGS, bumped: true },
+  itemVisibilityFlags: { ...ITEM_BUMP_FLAGS, bumped: true },
 };
 
 export const CountryBumped = Template.bind({});
 CountryBumped.args = {
   images: imagesURL,
-  itemFlags: { ...ITEM_FLAGS, country_bumped: true },
+  itemVisibilityFlags: { ...ITEM_BUMP_FLAGS, bumped: true, country_bumped: true },
 };
 
 export const Sold = Template.bind({});
@@ -75,5 +76,6 @@ Inactive.args = {
 export const TwoFlags = Template.bind({});
 TwoFlags.args = {
   images: imagesURL,
-  itemFlags: { ...ITEM_FLAGS, reserved: true, bumped: true },
+  itemFlags: { ...ITEM_FLAGS, reserved: true },
+  itemVisibilityFlags: { ...ITEM_BUMP_FLAGS, bumped: true },
 };

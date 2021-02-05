@@ -16,7 +16,6 @@ import {
   ItemBulkResponse,
   ItemContent,
   ItemCounters,
-  ItemExtendedFlags,
   ItemExtraInfo,
   ItemFlags,
   ItemProResponse,
@@ -70,21 +69,6 @@ export const ITEM_PUBLISHED_DATE2 = 1473784861898;
 export const ITEM_DELIVERY_INFO: DeliveryInfo = {
   min_weight_kg: 5,
   max_weight_kg: 10,
-};
-
-export const ITEM_EXTENDED_FLAGS: ItemExtendedFlags = {
-  pending: false,
-  sold: false,
-  favorite: false,
-  reserved: false,
-  removed: false,
-  banned: false,
-  expired: false,
-  review_done: false,
-  bumped: false,
-  highlighted: false,
-  country_bumped: false,
-  boosted: false,
 };
 
 export const ITEM_FLAGS: ItemFlags = {

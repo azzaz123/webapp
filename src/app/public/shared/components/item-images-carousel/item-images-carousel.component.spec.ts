@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ITEM_EXTENDED_FLAGS, ITEM_FLAGS } from '@fixtures/item.fixtures.spec';
+import { ITEM_FLAGS, ITEM_BUMP_FLAGS } from '@fixtures/item.fixtures.spec';
 import { ItemImagesCarouselComponent } from './item-images-carousel.component';
 
 describe('ItemImagesCarouselComponent', () => {
@@ -33,13 +33,14 @@ describe('ItemImagesCarouselComponent', () => {
 
   describe('when is an item...', () => {
     beforeEach(() => {
-      component.itemFlags = ITEM_EXTENDED_FLAGS;
+      component.itemFlags = ITEM_FLAGS;
+      component.itemVisibilityFlags = ITEM_BUMP_FLAGS;
       fixture.detectChanges();
     });
 
     describe('and is bumped or country bumped...', () => {
       it('should show one flag on the right when is bumped', () => {
-        component.itemFlags.bumped = true;
+        component.itemVisibilityFlags.bumped = true;
         fixture.detectChanges();
 
         const bumpedFlag = fixture.debugElement.query(By.css(flagRightClass));
@@ -48,7 +49,7 @@ describe('ItemImagesCarouselComponent', () => {
       });
 
       it('should show one flag on the right when is country bumped', () => {
-        component.itemFlags.country_bumped = true;
+        component.itemVisibilityFlags.country_bumped = true;
         fixture.detectChanges();
 
         const bumpedFlag = fixture.debugElement.query(By.css(flagRightClass));
