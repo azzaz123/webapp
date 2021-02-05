@@ -21,21 +21,11 @@ export class ItemApiService {
   }
 
   public getItemCounters(id: string): Observable<ItemCounters> {
-    return this.http.get<ItemCounters>(GET_ITEM_COUNTERS_ENDPOINT(id)).pipe(catchError(() => of({ views: 0, favorites: 0 })));
+    return this.http.get<ItemCounters>(GET_ITEM_COUNTERS_ENDPOINT(id)).pipe(catchError(() => this.fallbackItemCounters()));
   }
 
   public getBumpFlags(id: string): Observable<ItemVisibilityFlags> {
-    return this.http.get<ItemVisibilityFlags>(GET_ITEM_BUMP_FLAGS(id)).pipe(
-      catchError(() =>
-        of({
-          bumped: false,
-          highlighted: false,
-          urgent: false,
-          country_bumped: false,
-          boosted: false,
-        })
-      )
-    );
+    return this.http.get<ItemVisibilityFlags>(GET_ITEM_BUMP_FLAGS(id)).pipe(catchError(() => this.fallbackItemVisibilityFlags()));
   }
 
   public markAsFavourite(id: string): Observable<MarkAsFavouriteBodyResponse> {
@@ -47,6 +37,20 @@ export class ItemApiService {
   public unmarkAsFavourite(id: string): Observable<MarkAsFavouriteBodyResponse> {
     return this.http.put(MARK_AS_FAVORITE_ENDPOINT(id), {
       favorited: false,
+    });
+  }
+
+  private fallbackItemCounters(): Observable<ItemCounters> {
+    return of({ views: 0, favorites: 0 });
+  }
+
+  private fallbackItemVisibilityFlags(): Observable<ItemVisibilityFlags> {
+    return of({
+      bumped: false,
+      highlighted: false,
+      urgent: false,
+      country_bumped: false,
+      boosted: false,
     });
   }
 }
