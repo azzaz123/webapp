@@ -1,9 +1,9 @@
 import { DecimalPipe } from '@angular/common';
-import { ChangeDetectionStrategy, CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { CustomCurrencyPipe } from '@shared/pipes';
@@ -24,7 +24,7 @@ import { ItemApiService } from '@public/core/services/api/item/item-api.service'
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
 import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ItemDetailService } from '../core/services/item-detail.service';
@@ -33,6 +33,7 @@ import {
   RECOMMENDED_ITEMS_MOCK,
   EMPTY_RECOMMENDED_ITEMS_MOCK,
 } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
+import { APP_PATHS } from 'app/app-routing-constants';
 
 describe('ItemDetailComponent', () => {
   const topSkyTag = 'tsl-top-sky';
@@ -46,6 +47,7 @@ describe('ItemDetailComponent', () => {
   const itemPriceClass = '.ItemDetail__price';
   const fallbackMapClass = '.ItemDetail__fakeMap';
   const locationClass = '.ItemDetail__location';
+  const itemContentClass = '.ItemDetail__content';
   const itemId = '123';
   const itemDetail = {
     item: MOCK_CAR,
@@ -54,9 +56,10 @@ describe('ItemDetailComponent', () => {
 
   let component: ItemDetailComponent;
   let fixture: ComponentFixture<ItemDetailComponent>;
-  let deviceService: DeviceService;
   let itemDetailService: ItemDetailService;
+  let deviceService: DeviceService;
   let decimalPipe: DecimalPipe;
+  let router: Router;
   let de: DebugElement;
   let el: HTMLElement;
 
@@ -81,6 +84,13 @@ describe('ItemDetailComponent', () => {
             },
           },
         },
+        {
+          provide: Router,
+          useValue: {
+            navigate() {},
+          },
+        },
+        ItemDetailService,
         ItemApiService,
         PublicUserApiService,
         RecommenderApiService,
@@ -110,6 +120,8 @@ describe('ItemDetailComponent', () => {
     itemDetailService = TestBed.inject(ItemDetailService);
     de = fixture.debugElement;
     el = de.nativeElement;
+    router = TestBed.inject(Router);
+    itemDetailService = TestBed.inject(ItemDetailService);
     fixture.detectChanges();
   });
 
@@ -233,22 +245,41 @@ describe('ItemDetailComponent', () => {
   });
 
   describe('when component inits', () => {
-    it('should ask for item data', () => {
-      component.ngOnInit();
-      fixture.detectChanges();
+    describe('and we get the item...', () => {
+      it('should ask for item data', () => {
+        component.ngOnInit();
+        fixture.detectChanges();
 
-      expect(component.itemDetail).toBe(itemDetail);
+        expect(component.itemDetail).toBe(itemDetail);
+      });
+
+      it('should set social share data correctly', () => {
+        const socialShareSelector = 'tsl-social-share';
+
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        const socialShareElement = el.querySelector(socialShareSelector);
+        Object.keys(component.socialShare).forEach((socialShareKey: string) => {
+          expect(socialShareElement[socialShareKey]).toEqual(component.socialShare[socialShareKey]);
+        });
+      });
     });
 
-    it('should set social share data correctly', () => {
-      const socialShareSelector = 'tsl-social-share';
+    describe('and we NOT get the item...', () => {
+      beforeEach(() => {
+        component.itemDetail = null;
+      });
+      it('should redirect to the not found page', () => {
+        spyOn(itemDetailService, 'getItem').and.returnValue(throwError(''));
+        spyOn(router, 'navigate');
 
-      component.ngOnInit();
-      fixture.detectChanges();
+        component.ngOnInit();
+        fixture.detectChanges();
+        const containerPage = fixture.debugElement.query(By.css(itemContentClass));
 
-      const socialShareElement = el.querySelector(socialShareSelector);
-      Object.keys(component.socialShare).forEach((socialShareKey: string) => {
-        expect(socialShareElement[socialShareKey]).toEqual(component.socialShare[socialShareKey]);
+        expect(containerPage).toBeFalsy();
+        expect(router.navigate).toHaveBeenCalledWith([`/${APP_PATHS.NOT_FOUND}`]);
       });
     });
   });

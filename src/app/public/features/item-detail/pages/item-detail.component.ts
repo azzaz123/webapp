@@ -4,20 +4,20 @@ import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { Coordinate } from '@core/geolocation/address-response.interface';
 import { Item } from '@core/item/item';
-import { ItemFlags } from '@core/item/item-response.interface';
 import { ItemDetail } from '../interfaces/item-detail.interface';
 import { FacebookShare } from '@shared/social-share/interfaces/facebook-share.interface';
 import { TwitterShare } from '@shared/social-share/interfaces/twitter-share.interface';
 import { EmailShare } from '@shared/social-share/interfaces/email-share.interface';
 import { ItemDetailService } from '../core/services/item-detail.service';
 import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
-import { UserLocation } from '@core/user/user-response.interface';
-import { finalize } from 'rxjs/operators';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
 import { Observable } from 'rxjs';
+import { Image, UserLocation } from '@core/user/user-response.interface';
+import { finalize } from 'rxjs/operators';
+import { APP_PATHS } from 'app/app-routing-constants';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -25,18 +25,17 @@ import { Observable } from 'rxjs';
   styleUrls: ['./item-detail.component.scss'],
 })
 export class ItemDetailComponent implements OnInit {
-  public isApproximateLocation = false;
+  public readonly deviceType = DeviceType;
   public loading = false;
+  public isApproximateLocation = false;
   public showItemRecommendations = false;
-  public deviceType = DeviceType;
-  public device: DeviceType;
-  public itemFlags: ItemFlags;
-  public images: string[];
-  public itemDetail: ItemDetail;
-  public itemLocation: ItemDetailLocation;
-  public coordinates: Coordinate;
   public locationSpecifications: string;
+  public coordinates: Coordinate;
+  public device: DeviceType;
+  public images: string[];
+  public itemLocation: ItemDetailLocation;
   public recommendedItems$: Observable<RecommendedItemsBodyResponse>;
+  public itemDetail: ItemDetail;
 
   public socialShare: {
     title: string;
@@ -54,11 +53,13 @@ export class ItemDetailComponent implements OnInit {
     private deviceService: DeviceService,
     private itemDetailService: ItemDetailService,
     private socialMetaTagsService: SocialMetaTagService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.device = this.deviceService.getDeviceType();
+    this.loading = true;
     this.initPage(this.route.snapshot.paramMap.get(PUBLIC_PATH_PARAMS.ID)); // TBD the url may change to match one more similar to production one
   }
 
@@ -67,22 +68,34 @@ export class ItemDetailComponent implements OnInit {
   }
 
   private initPage(itemId: string): void {
-    this.loading = true;
     this.recommendedItems$ = this.itemDetailService.getRecommendedItems(itemId);
     this.itemDetailService
       .getItem(itemId)
-      .pipe(finalize(() => (this.loading = false)))
-      .subscribe((itemDetail: ItemDetail) => {
-        this.itemDetail = itemDetail;
-        this.handleCoordinates();
-        this.socialShareSetup(this.itemDetail.item);
-        this.setItemRecommendations();
-      });
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+        })
+      )
+      .subscribe(
+        (itemDetail: ItemDetail) => {
+          this.itemDetail = itemDetail;
+          this.handleItemSpecifications();
+        },
+        () => {
+          this.router.navigate([`/${APP_PATHS.NOT_FOUND}`]);
+        }
+      );
   }
 
-  private handleCoordinates(): void {
-    const detailLocation: UserLocation = this.itemDetail.item?.location || this.itemDetail.user?.location;
+  private handleItemSpecifications(): void {
+    this.calculateItemCoordinates();
+    this.showItemImages();
+    this.socialShareSetup(this.itemDetail.item);
+    this.setItemRecommendations();
+  }
 
+  private calculateItemCoordinates(): void {
+    const detailLocation: UserLocation = this.itemDetail.item?.location || this.itemDetail.user?.location;
     this.itemLocation = {
       zip: detailLocation.zip,
       city: detailLocation.city,
@@ -95,7 +108,14 @@ export class ItemDetailComponent implements OnInit {
       latitude: this.itemLocation.latitude,
       longitude: this.itemLocation.longitude,
     };
-    this.handleLocationSpecifications();
+    this.calculateItemLocationSpecifications();
+  }
+
+  private showItemImages(): void {
+    this.images = [];
+    this.itemDetail.item?.images?.forEach((image: Image) => {
+      this.images.push(image.urls_by_size.large);
+    });
   }
 
   private socialShareSetup(item: Item): void {
@@ -118,7 +138,7 @@ export class ItemDetailComponent implements OnInit {
     this.socialMetaTagsService.insertFacebookMetaTags(item.title, item.description, item.mainImage.urls_by_size.medium, item.webLink);
   }
 
-  private handleLocationSpecifications(): void {
+  private calculateItemLocationSpecifications(): void {
     this.locationSpecifications =
       !!this.itemLocation?.zip && !!this.itemLocation?.city
         ? `${this.itemLocation.zip}, ${this.itemLocation.city}`
