@@ -8,7 +8,8 @@
             </div>
             <div class="ItemDetail__content px-4 pb-4 w-100">
                 <div class="ItemDetail__carousel position-relative w-100">
-                    <tsl-item-images-carousel [images]="images" [itemFlags]="itemFlags"></tsl-item-images-carousel>
+                    <tsl-item-images-carousel [images]="images" [itemFlags]="itemDetail.item?.flags"
+                        [itemVisibilityFlags]="itemDetail.item?.bumpFlags"></tsl-item-images-carousel>
                 </div>
                 <div class="ItemDetail__content__header mt-3 py-3">
                     <span class="ItemDetail__price d-block">{{itemDetail.item?.salePrice |

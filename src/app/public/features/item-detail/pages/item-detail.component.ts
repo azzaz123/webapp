@@ -4,7 +4,6 @@ import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { Coordinate } from '@core/geolocation/address-response.interface';
 import { Item } from '@core/item/item';
-import { ItemFlags } from '@core/item/item-response.interface';
 import { ItemDetail } from '../interfaces/item-detail.interface';
 import { FacebookShare } from '@shared/social-share/interfaces/facebook-share.interface';
 import { TwitterShare } from '@shared/social-share/interfaces/twitter-share.interface';
@@ -31,7 +30,6 @@ export class ItemDetailComponent implements OnInit {
   public device: DeviceType;
   public images: string[];
   public itemLocation: ItemDetailLocation;
-  public itemFlags: ItemFlags;
   public itemDetail: ItemDetail;
 
   public socialShare: {
@@ -85,7 +83,6 @@ export class ItemDetailComponent implements OnInit {
 
   private handleItemSpecifications(): void {
     this.calculateItemCoordinates();
-    this.loadItemFlags();
     this.showItemImages();
     this.socialShareSetup(this.itemDetail.item);
   }
@@ -105,10 +102,6 @@ export class ItemDetailComponent implements OnInit {
       longitude: this.itemLocation.longitude,
     };
     this.calculateItemLocationSpecifications();
-  }
-
-  private loadItemFlags(): void {
-    this.itemFlags = { ...this.itemDetail.item?.flags, ...this.itemDetail.item?.bumpFlags };
   }
 
   private showItemImages(): void {
