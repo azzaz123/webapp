@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { ItemService } from '@core/item/item.service';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { UserService } from '@core/user/user.service';
 import { BlockUserXmppService } from '@features/chat/core/block-user/block-user-xmpp.service';
 import { BlockUserService } from '@features/chat/core/block-user/block-user.service';
@@ -34,7 +33,6 @@ export class ConversationDetailsBarComponent {
     private eventService: EventService,
     private modalService: NgbModal,
     private toastService: ToastService,
-    private trackingService: TrackingService,
     private userService: UserService,
     private itemService: ItemService,
     private blockUserService: BlockUserService,
@@ -95,10 +93,6 @@ export class ConversationDetailsBarComponent {
           result.message
         )
         .subscribe(() => {
-          this.trackingService.track(TrackingService.USER_PROFILE_REPPORTED, {
-            user_id: this.currentConversation.user.id,
-            reason_id: result.reason,
-          });
           this.toastService.show({
             text: this.i18n.getTranslations('reportUserSuccess'),
             type: 'success',
@@ -111,10 +105,6 @@ export class ConversationDetailsBarComponent {
     this.modalService.open(ReportListingComponent, { windowClass: 'report' }).result.then((result: any) => {
       this.itemService.reportListing(this.currentConversation.item.id, result.message, result.reason).subscribe(
         () => {
-          this.trackingService.track(TrackingService.PRODUCT_REPPORTED, {
-            product_id: this.currentConversation.item.id,
-            reason_id: result.reason,
-          });
           this.toastService.show({
             text: this.i18n.getTranslations('reportListingSuccess'),
             type: 'success',

@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { EventService } from '@core/event/event.service';
 import { RemoteConsoleService } from '@core/remote-console';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { XmppService } from '@core/xmpp/xmpp.service';
 import { MockRemoteConsoleService } from '@fixtures/remote-console.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
@@ -14,13 +13,7 @@ let xmppService: XmppService;
 describe('BlockUserXmppService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        BlockUserXmppService,
-        XmppService,
-        EventService,
-        { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
-        { provide: TrackingService, useValue: {} },
-      ],
+      providers: [BlockUserXmppService, XmppService, EventService, { provide: RemoteConsoleService, useClass: MockRemoteConsoleService }],
     });
     service = TestBed.inject(BlockUserXmppService);
     xmppService = TestBed.inject(XmppService);

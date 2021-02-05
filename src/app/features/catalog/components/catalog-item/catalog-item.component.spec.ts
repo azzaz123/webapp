@@ -6,7 +6,6 @@ import { EventService } from '@core/event/event.service';
 import { Item } from '@core/item/item';
 import { SelectedItemsAction } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { environment } from '@environments/environment';
 import {
   ITEM_ID,
@@ -16,7 +15,6 @@ import {
   PRODUCT_DURATION_MARKET_CODE,
   PRODUCT_RESPONSE,
 } from '@fixtures/item.fixtures.spec';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustomCurrencyPipe } from '@shared/pipes';
@@ -32,7 +30,6 @@ describe('CatalogItemComponent', () => {
   let fixture: ComponentFixture<CatalogItemComponent>;
   let itemService: ItemService;
   let modalService: NgbModal;
-  let trackingService: TrackingService;
   let errorsService: ErrorsService;
   let eventService: EventService;
   let deviceService: DeviceDetectorService;
@@ -49,7 +46,6 @@ describe('CatalogItemComponent', () => {
           DecimalPipe,
           EventService,
           ToastService,
-          { provide: TrackingService, useClass: MockTrackingService },
           { provide: DeviceDetectorService, useClass: DeviceDetectorService },
           {
             provide: ItemService,
@@ -107,7 +103,6 @@ describe('CatalogItemComponent', () => {
     fixture.detectChanges();
     itemService = TestBed.inject(ItemService);
     modalService = TestBed.inject(NgbModal);
-    trackingService = TestBed.inject(TrackingService);
     errorsService = TestBed.inject(ErrorsService);
     eventService = TestBed.inject(EventService);
     deviceService = TestBed.inject(DeviceDetectorService);
@@ -179,7 +174,6 @@ describe('CatalogItemComponent', () => {
     describe('already reserved', () => {
       beforeEach(() => {
         spyOn(itemService, 'reserveItem').and.callThrough();
-        spyOn(trackingService, 'track');
         spyOn(eventService, 'emit');
         item = MOCK_ITEM;
         item.reserved = true;
@@ -190,12 +184,6 @@ describe('CatalogItemComponent', () => {
       it('should call reserve with false', () => {
         expect(itemService.reserveItem).toHaveBeenCalledWith(ITEM_ID, false);
         expect(item.reserved).toBeFalsy();
-      });
-
-      it('should track the ProductUnReserved event', () => {
-        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_UNRESERVED, {
-          product_id: item.id,
-        });
       });
 
       it('should emit ITEM_RESERVED event', () => {
@@ -352,7 +340,6 @@ describe('CatalogItemComponent', () => {
     describe('can mark as sold', () => {
       beforeEach(fakeAsync(() => {
         item = MOCK_ITEM;
-        spyOn(trackingService, 'track');
         spyOn(eventService, 'emit');
         spyOn(window as any, 'fbq');
         component.itemChange.subscribe(($event: ItemChangeEvent) => {
@@ -369,12 +356,6 @@ describe('CatalogItemComponent', () => {
       it('should emit the updated item', () => {
         expect(event.item).toEqual(item);
         expect(event.action).toBe('sold');
-      });
-
-      it('should track the DeleteItem event', () => {
-        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_SOLD, {
-          product_id: item.id,
-        });
       });
 
       it('should emit ITEM_SOLD event', () => {
@@ -430,29 +411,14 @@ describe('CatalogItemComponent', () => {
 
       expect(itemService.getListingFeeInfo).toHaveBeenCalledWith(item.id);
     });
-
-    it('should send PURCHASE_LISTING_FEE_CATALOG tracking event for Stripe', () => {
-      spyOn(trackingService, 'track');
-
-      component.publishItem();
-
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PURCHASE_LISTING_FEE_CATALOG, {
-        item_id: item.id,
-        payment_method: 'STRIPE',
-      });
-    });
   });
 
   describe('onClickInfoElement', () => {
-    it('should send PRODUCT_VIEWED to tracking service', () => {
-      spyOn(trackingService, 'track');
+    it('should open the link', () => {
       spyOn(window, 'open');
 
       component.openItem();
 
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_VIEWED, {
-        product_id: component.item.id,
-      });
       expect(window.open).toHaveBeenCalledTimes(1);
       expect(window.open).toHaveBeenCalledWith(component.link);
     });

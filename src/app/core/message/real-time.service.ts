@@ -2,7 +2,6 @@ import * as retry from 'retry';
 import { Injectable } from '@angular/core';
 import { XmppService } from '../xmpp/xmpp.service';
 import { EventService } from '../event/event.service';
-import { TrackingService } from '../tracking/tracking.service';
 import { RemoteConsoleService } from '../remote-console';
 import { AnalyticsService } from '../analytics/analytics.service';
 import {
@@ -24,7 +23,6 @@ export class RealTimeService {
   constructor(
     private xmpp: XmppService,
     private eventService: EventService,
-    private trackingService: TrackingService,
     private remoteConsoleService: RemoteConsoleService,
     private analyticsService: AnalyticsService,
     private i18n: I18nService,
@@ -109,11 +107,10 @@ export class RealTimeService {
   private subscribeEventMessageSent() {
     this.eventService.subscribe(EventService.MESSAGE_SENT, (conversation: InboxConversation, messageId: string) => {
       if (this.isFirstMessage(conversation)) {
-        this.trackConversationCreated(conversation, messageId);
+        this.trackConversationCreated(conversation);
         this.trackSendFirstMessage(conversation);
         appboy.logCustomEvent('FirstMessage', { platform: 'web' });
       }
-      this.trackMessageSent(conversation.id, messageId);
     });
   }
 
@@ -127,20 +124,7 @@ export class RealTimeService {
     return conversation.messages.length === 1;
   }
 
-  private trackMessageSent(thread_id: string, message_id: string) {
-    this.trackingService.track(TrackingService.MESSAGE_SENT, {
-      thread_id,
-      message_id,
-    });
-  }
-
-  private trackConversationCreated(conversation: InboxConversation, messageId: string) {
-    this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW, {
-      item_id: conversation.item.id,
-      thread_id: conversation.id,
-      message_id: messageId,
-    });
-
+  private trackConversationCreated(conversation: InboxConversation) {
     fbq('track', 'InitiateCheckout', {
       value: conversation.item.price.amount,
       currency: conversation.item.price.currency,

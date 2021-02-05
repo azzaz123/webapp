@@ -27,11 +27,9 @@ import {
   SUGGESTED_CATEGORY_COMPUTERS_ELECTRONICS,
 } from '@fixtures/category.fixtures.spec';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { User } from '@core/user/user';
 import { MOCK_USER, USER_ID } from '@fixtures/user.fixtures.spec';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { ITEM_CATEGORY_ID, ITEM_DELIVERY_INFO, MOCK_ITEM, MOCK_ITEM_FASHION } from '@fixtures/item.fixtures.spec';
 import { UserLocation } from '@core/user/user-response.interface';
 import { environment } from '@environments/environment';
@@ -58,6 +56,7 @@ import { I18nService } from '@core/i18n/i18n.service';
 import { UploadService } from '../../core/services/upload/upload.service';
 import {
   MockUploadService,
+  MOCK_UPLOAD_ITEM_OUTPUT_DONE,
   MOCK_UPLOAD_OUTPUT_DONE,
   MOCK_UPLOAD_OUTPUT_PENDING,
   UPLOAD_FILE_2,
@@ -66,6 +65,8 @@ import {
 } from '@fixtures/upload.fixtures.spec';
 import { ITEM_TYPES } from '@core/item/item';
 import { UPLOAD_ACTION } from '@shared/uploader/upload.interface';
+import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { MockSubscriptionService } from '@fixtures/subscriptions.fixtures.spec';
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
 export const USER_LOCATION: UserLocation = {
@@ -88,7 +89,6 @@ describe('UploadProductComponent', () => {
   let generalSuggestionsService: GeneralSuggestionsService;
   let router: Router;
   let modalService: NgbModal;
-  let trackingService: TrackingService;
   let analyticsService: AnalyticsService;
   let deviceService: DeviceDetectorService;
   let userService: UserService;
@@ -103,7 +103,6 @@ describe('UploadProductComponent', () => {
         providers: [
           FormBuilder,
           NgbPopoverConfig,
-          { provide: TrackingService, useClass: MockTrackingService },
           { provide: AnalyticsService, useClass: MockAnalyticsService },
           { provide: UploadService, useClass: MockUploadService },
           {
@@ -183,6 +182,10 @@ describe('UploadProductComponent', () => {
               },
             },
           },
+          {
+            provide: SubscriptionsService,
+            useClass: MockSubscriptionService,
+          },
           I18nService,
         ],
         declarations: [UploadProductComponent],
@@ -198,7 +201,6 @@ describe('UploadProductComponent', () => {
     generalSuggestionsService = TestBed.inject(GeneralSuggestionsService);
     router = TestBed.inject(Router);
     modalService = TestBed.inject(NgbModal);
-    trackingService = TestBed.inject(TrackingService);
     analyticsService = TestBed.inject(AnalyticsService);
     deviceService = TestBed.inject(DeviceDetectorService);
     userService = TestBed.inject(UserService);
@@ -764,7 +766,7 @@ describe('UploadProductComponent', () => {
       });
 
       it('should upload the item if the service return done', () => {
-        spyOn(uploadService, 'createItem').and.returnValue(of(MOCK_UPLOAD_OUTPUT_DONE));
+        spyOn(uploadService, 'createItem').and.returnValue(of(MOCK_UPLOAD_ITEM_OUTPUT_DONE));
         spyOn(component, 'onUploaded');
 
         fixture.detectChanges();
@@ -773,7 +775,7 @@ describe('UploadProductComponent', () => {
         expect(uploadService.createItem).toHaveBeenCalledTimes(1);
         expect(uploadService.createItem).toHaveBeenCalledWith(component.uploadForm.value, ITEM_TYPES.CONSUMER_GOODS);
         expect(component.onUploaded).toHaveBeenCalledTimes(1);
-        expect(component.onUploaded).toHaveBeenCalledWith(MOCK_UPLOAD_OUTPUT_DONE.file.response, UPLOAD_ACTION.created);
+        expect(component.onUploaded).toHaveBeenCalledWith(MOCK_UPLOAD_ITEM_OUTPUT_DONE.file.response.content, UPLOAD_ACTION.created);
       });
 
       it('should do nothing if the service not return done', () => {
@@ -1075,13 +1077,11 @@ describe('UploadProductComponent', () => {
 
   describe('onError', () => {
     it('should set loading to false', () => {
-      spyOn(trackingService, 'track');
       component.loading = true;
 
       component.onError('response');
 
       expect(component.loading).toBeFalsy();
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.UPLOADFORM_ERROR);
     });
     it('should show toast with default message', () => {
       spyOn(errorService, 'i18nError').and.callThrough();

@@ -2,7 +2,6 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, O
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { RealTimeService } from '@core/message/real-time.service';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { InboxConversation } from '@features/chat/core/model';
 import { LinkTransformPipe } from '@shared/pipes';
 import { find, includes, isEmpty } from 'lodash-es';
@@ -26,7 +25,6 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
   constructor(
     private realTimeService: RealTimeService,
     private eventService: EventService,
-    private trackingService: TrackingService,
     private i18n: I18nService,
     private deviceService: DeviceDetectorService
   ) {}
@@ -44,9 +42,6 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
     this.message = this.message.trim();
     if (!this.isUserBlocked) {
       if (!this.isEmpty()) {
-        this.trackingService.track(TrackingService.SEND_BUTTON, {
-          thread_id: this.currentConversation.id,
-        });
         const messageId = this.realTimeService.sendMessage(this.currentConversation, this.message);
         this.clickSentMessage.emit(messageId);
       }

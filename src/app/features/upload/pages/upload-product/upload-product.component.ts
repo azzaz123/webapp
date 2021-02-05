@@ -29,7 +29,7 @@ import { ErrorsService } from '@core/errors/errors.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { Item, ITEM_TYPES } from '@core/item/item';
 import { DeliveryInfo, ItemContent, ItemResponse } from '@core/item/item-response.interface';
-import { TrackingService } from '@core/tracking/tracking.service';
+import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
 import { UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { IOption } from '@shared/dropdown/utils/option.interface';
@@ -120,14 +120,14 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     private errorsService: ErrorsService,
     private categoryService: CategoryService,
     private modalService: NgbModal,
-    private trackingService: TrackingService,
     private generalSuggestionsService: GeneralSuggestionsService,
     private analyticsService: AnalyticsService,
     private userService: UserService,
     config: NgbPopoverConfig,
     private deviceService: DeviceDetectorService,
     private i18n: I18nService,
-    private uploadService: UploadService
+    private uploadService: UploadService,
+    private subscriptionService: SubscriptionsService
   ) {
     this.genders = [
       { value: 'male', label: this.i18n.getTranslations('male') },
@@ -386,7 +386,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           this.pendingFiles = response.pendingFiles;
         }
         if (response.type === OUTPUT_TYPE.done) {
-          this.onUploaded(response.file.response, UPLOAD_ACTION.created);
+          this.onUploaded(response.file.response.content, UPLOAD_ACTION.created);
         }
       },
       (error: HttpErrorResponse) => {
@@ -418,23 +418,42 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   onUploaded(response: ItemContent, action: UPLOAD_ACTION) {
     this.onFormChanged.emit(false);
     if (this.item) {
-      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, { category: this.uploadForm.value.category_id });
       appboy.logCustomEvent('Edit', { platform: 'web' });
     } else {
-      this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
       appboy.logCustomEvent('List', { platform: 'web' });
       ga('send', 'event', 'Upload', 'done', 'Web mobile analysis');
     }
 
-    this.trackEditOrUpload(!!this.item, response).subscribe(() =>
-      this.router.navigate([
-        '/catalog/list',
-        {
-          [action]: true,
-          itemId: response.id,
-        },
-      ])
-    );
+    if (response.flags.onhold) {
+      this.subscriptionService.getUserSubscriptionType().subscribe((type: SUBSCRIPTION_TYPES) => {
+        this.redirectToList(UPLOAD_ACTION.createdOnHold, response, type);
+      });
+    } else {
+      this.redirectToList(action, response);
+    }
+  }
+
+  private redirectToList(action: UPLOAD_ACTION, response: ItemContent, type: SUBSCRIPTION_TYPES = SUBSCRIPTION_TYPES.notSubscribed): void {
+    const params = this.getRedirectParams(action, response, type);
+
+    this.trackEditOrUpload(!!this.item, response).subscribe(() => this.router.navigate(['/catalog/list', params]));
+  }
+
+  private getRedirectParams(action: UPLOAD_ACTION, response: ItemContent, userType: SUBSCRIPTION_TYPES): void {
+    const params: any = {
+      [action]: true,
+      itemId: response.id,
+    };
+
+    if (this.item && this.item.flags.onhold) {
+      params.onHold = true;
+    }
+
+    if (action === UPLOAD_ACTION.createdOnHold) {
+      params.onHoldType = userType;
+    }
+
+    return params;
   }
 
   public onAddImage(file: UploadFile): void {
@@ -457,13 +476,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public onError(error: HttpErrorResponse | any): void {
     this.loading = false;
     this.errorsService.i18nError('serverError', error.message ? error.message : '');
-    if (this.item) {
-      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_ERROR, {
-        category: this.uploadForm.value.category_id,
-      });
-    } else {
-      this.trackingService.track(TrackingService.UPLOADFORM_ERROR);
-    }
   }
 
   preview() {

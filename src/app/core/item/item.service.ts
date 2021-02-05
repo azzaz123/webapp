@@ -35,7 +35,6 @@ import {
 import { find, findIndex, reverse, without, map as lodashMap, filter, sortBy } from 'lodash-es';
 import { I18nService } from '../i18n/i18n.service';
 import { BanReason } from './ban-reason.interface';
-import { TrackingService } from '../tracking/tracking.service';
 import { EventService } from '../event/event.service';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { Car } from './car';
@@ -88,13 +87,7 @@ export class ItemService {
   private bumpTypes = ['countrybump', 'citybump', 'zonebump', 'urgent'];
   private lastCategoryIdSearched: number;
 
-  constructor(
-    private http: HttpClient,
-    private i18n: I18nService,
-    private trackingService: TrackingService,
-    private uuidService: UuidService,
-    private eventService: EventService
-  ) {}
+  constructor(private http: HttpClient, private i18n: I18nService, private uuidService: UuidService, private eventService: EventService) {}
 
   public getFakeItem(id: string): Item {
     const fakeItem: Item = new Item(id, 1, '1', 'No disponible');
@@ -133,9 +126,6 @@ export class ItemService {
   }
 
   public deselectItems() {
-    this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_UNSELECTED, {
-      product_ids: this.selectedItems.join(', '),
-    });
     this.selectedItems = [];
     this.selectedItems$.next();
     this.items.active.map((item: Item) => {

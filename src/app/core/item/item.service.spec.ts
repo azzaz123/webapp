@@ -42,12 +42,10 @@ import {
   REALESTATE_DATA,
   UPLOAD_FORM_REALESTATE_VALUES,
 } from '../../../tests/realestate.fixtures.spec';
-import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { CAR_ID, UPLOAD_FILE_ID } from '../../../tests/upload.fixtures.spec';
 import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
 import { EventService } from '../event/event.service';
 import { I18nService } from '../i18n/i18n.service';
-import { TrackingService } from '../tracking/tracking.service';
 import { UserService } from '../user/user.service';
 import { UuidService } from '../uuid/uuid.service';
 import { Car } from './car';
@@ -89,7 +87,6 @@ describe('ItemService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         EventService,
-        { provide: TrackingService, useClass: MockTrackingService },
         {
           provide: UserService,
           useValue: {

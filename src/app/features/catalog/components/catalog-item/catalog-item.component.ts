@@ -1,12 +1,9 @@
 import { ReactivateModalComponent } from '../../modals/reactivate-modal/reactivate-modal.component';
-
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from '@layout/toast/core/services/toast.service';
-
 import { ItemService } from '@core/item/item.service';
 import { ItemChangeEvent } from '../../core/item-change.interface';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { Order, Product } from '@core/item/item-response.interface';
 import { OrderEvent } from '../selected-items/selected-product.interface';
 import { DEFAULT_ERROR_MESSAGE } from '@core/errors/errors.service';
@@ -31,7 +28,6 @@ export class CatalogItemComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     public itemService: ItemService,
-    private trackingService: TrackingService,
     private toastService: ToastService,
     private eventService: EventService,
     private deviceService: DeviceDetectorService,
@@ -54,9 +50,6 @@ export class CatalogItemComponent implements OnInit {
     } else {
       this.itemService.reserveItem(item.id, false).subscribe(() => {
         item.reserved = false;
-        this.trackingService.track(TrackingService.PRODUCT_UNRESERVED, {
-          product_id: item.id,
-        });
         this.eventService.emit(EventService.ITEM_RESERVED, item);
       });
     }
@@ -141,21 +134,12 @@ export class CatalogItemComponent implements OnInit {
     this.itemService.selectedAction = this.itemService.selectedAction === 'feature' ? 'feature' : '';
     if (item.selected) {
       this.itemService.selectItem(item.id);
-      this.trackingService.track(TrackingService.PRODUCT_SELECTED, {
-        product_id: item.id,
-      });
     } else {
       this.itemService.deselectItem(item.id);
-      this.trackingService.track(TrackingService.PRODUCT_UN_SELECTED, {
-        product_id: item.id,
-      });
     }
   }
 
   public setSold(item: Item) {
-    this.trackingService.track(TrackingService.PRODUCT_SOLD, {
-      product_id: item.id,
-    });
     appboy.logCustomEvent('Sold', { platform: 'web' });
     fbq('track', 'CompleteRegistration', {
       value: item.salePrice,
@@ -190,21 +174,11 @@ export class CatalogItemComponent implements OnInit {
         total: +response.durations[0].market_code,
       };
       localStorage.setItem('transactionType', 'purchaseListingFee');
-      this.trackingService.track(TrackingService.PURCHASE_LISTING_FEE_CATALOG, {
-        item_id: this.item.id,
-        payment_method: PAYMENT_METHOD.STRIPE,
-      });
       this.purchaseListingFee.next(orderEvent);
     });
   }
 
   public openItem() {
-    const event = TrackingService.PRODUCT_VIEWED;
-    const params = {
-      product_id: this.item.id,
-    };
-
-    this.trackingService.track(event, params);
     window.open(this.link);
   }
 }

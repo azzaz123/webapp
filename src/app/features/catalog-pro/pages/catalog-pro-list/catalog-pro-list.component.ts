@@ -9,7 +9,6 @@ import { Pack } from '@core/payments/pack';
 import { FinancialCard, Packs } from '@core/payments/payment.interface';
 import { PerksModel } from '@core/payments/payment.model';
 import { PaymentService } from '@core/payments/payment.service';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { Counters, UserStats } from '@core/user/user-stats.interface';
 import { UserService } from '@core/user/user.service';
 import { UuidService } from '@core/uuid/uuid.service';
@@ -49,7 +48,6 @@ export class CatalogProListComponent implements OnInit {
 
   constructor(
     public itemService: ItemService,
-    private trackingService: TrackingService,
     private modalService: NgbModal,
     private eventService: EventService,
     private i18n: I18nService,
@@ -134,13 +132,6 @@ export class CatalogProListComponent implements OnInit {
           this.showBumpSuggestionModal(params.itemId);
           this.cache = false;
           this.getItems();
-          if (params.itemId) {
-            this.itemService.get(params.itemId).subscribe((item: Item) => {
-              this.trackingService.track(TrackingService.UPLOADFORM_SUCCESS, {
-                categoryId: item.categoryId,
-              });
-            });
-          }
         } else if (params && params.updated) {
           this.cache = false;
           if (params.onHold) {
@@ -184,16 +175,6 @@ export class CatalogProListComponent implements OnInit {
         })
       )
       .subscribe((items: Item[]) => {
-        if (this.selectedStatus === ITEM_STATUS.SOLD) {
-          this.trackingService.track(TrackingService.PRODUCT_LIST_SOLD_VIEWED, {
-            total_products: items.length,
-          });
-        } else {
-          this.trackingService.track(TrackingService.PRODUCT_LIST_ACTIVE_VIEWED, { total_products: items.length });
-        }
-        this.trackingService.track(TrackingService.PRODUCT_LIST_LOADED, {
-          page_number: this.page,
-        });
         this.items = append ? this.items.concat(items) : items;
         this.loading = false;
         if (this.bumpSuggestionModalRef) {
@@ -209,20 +190,12 @@ export class CatalogProListComponent implements OnInit {
   public search(term: string) {
     this.term = term;
     this.page = 1;
-    this.trackingService.track(TrackingService.PRODUCT_LIST_FILTERED_BY_TEXT, {
-      filter: term,
-      order_by: this.sortBy,
-    });
     this.getItems();
   }
 
   public sort(sortBy: string) {
     this.sortBy = sortBy;
     this.page = 1;
-    this.trackingService.track(TrackingService.PRODUCT_LIST_ORDERED_BY, {
-      filter: this.term,
-      order_by: sortBy,
-    });
     this.getItems();
   }
 

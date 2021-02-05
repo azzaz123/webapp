@@ -2,6 +2,14 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import {
+  AnalyticsPageView,
+  ANALYTICS_EVENT_NAMES,
+  ClickActivateProItem,
+  ConfirmActivateProItem,
+  SCREEN_IDS,
+  ViewOwnSaleItems,
+} from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { CategoryService } from '@core/category/category.service';
 import { ErrorsService } from '@core/errors/errors.service';
@@ -13,7 +21,6 @@ import { ItemService } from '@core/item/item.service';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { FeatureflagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
 import { STATUS } from '@features/catalog/components/selected-items/selected-product.interface';
@@ -32,7 +39,6 @@ import {
 } from '@fixtures/item.fixtures.spec';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 import { MockSubscriptionService, MOCK_SUBSCRIPTION_SLOTS, MOCK_SUBSCRIPTION_SLOT_CARS } from '@fixtures/subscriptions.fixtures.spec';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { MOCK_USER, USER_INFO_RESPONSE } from '@fixtures/user.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -56,11 +62,9 @@ describe('ListComponent', () => {
   let component: ListComponent;
   let fixture: ComponentFixture<ListComponent>;
   let itemService: ItemService;
-  let trackingService: TrackingService;
   let subscriptionsService: SubscriptionsService;
   let modalService: NgbModal;
   let toastService: ToastService;
-  let trackingServiceSpy: jasmine.Spy;
   let itemerviceSpy: jasmine.Spy;
   let paymentService: PaymentService;
   let route: ActivatedRoute;
@@ -74,6 +78,7 @@ describe('ListComponent', () => {
   let userService: UserService;
   let eventService: EventService;
   let deviceService: DeviceDetectorService;
+  let analyticsService: AnalyticsService;
   const routerEvents: Subject<any> = new Subject();
   const CURRENCY = 'wallacoins';
   const CREDITS = 1000;
@@ -105,7 +110,6 @@ describe('ListComponent', () => {
               },
             },
           },
-          { provide: TrackingService, useClass: MockTrackingService },
           {
             provide: ItemService,
             useValue: {
@@ -214,7 +218,6 @@ describe('ListComponent', () => {
     fixture = TestBed.createComponent(ListComponent);
     component = fixture.componentInstance;
     itemService = TestBed.inject(ItemService);
-    trackingService = TestBed.inject(TrackingService);
     subscriptionsService = TestBed.inject(SubscriptionsService);
     modalService = TestBed.inject(NgbModal);
     toastService = TestBed.inject(ToastService);
@@ -225,10 +228,11 @@ describe('ListComponent', () => {
     userService = TestBed.inject(UserService);
     eventService = TestBed.inject(EventService);
     deviceService = TestBed.inject(DeviceDetectorService);
-    trackingServiceSpy = spyOn(trackingService, 'track');
+    analyticsService = TestBed.inject(AnalyticsService);
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
     spyOn(errorService, 'i18nError');
+    spyOn(analyticsService, 'trackPageView');
     fixture.detectChanges();
   });
 
@@ -536,25 +540,6 @@ describe('ListComponent', () => {
       expect(component.items.length).toBe(2);
     });
 
-    it('should track the ProductListLoaded event', () => {
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_LOADED, { init: 0 });
-    });
-    it('should track the ProductListSoldViewed if the selectedStatus is sold', () => {
-      component['selectedStatus'] = 'sold';
-      trackingServiceSpy.calls.reset();
-      component.ngOnInit();
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_SOLD_VIEWED, {
-        total_products: 2,
-      });
-    });
-    it('should track the ProductListActiveViewed if the selectedStatus is published', () => {
-      component['selectedStatus'] = 'published';
-      trackingServiceSpy.calls.reset();
-      component.ngOnInit();
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_ACTIVE_VIEWED, {
-        total_products: 2,
-      });
-    });
     it('should set init', () => {
       expect(component['init']).toBe(20);
     });
@@ -700,11 +685,6 @@ describe('ListComponent', () => {
         expect(find(component.items, { id: '3' })).toBeFalsy();
         expect(find(component.items, { id: '5' })).toBeFalsy();
       });
-      it('should track the ProductListbulkDeleted event', () => {
-        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_BULK_DELETED, {
-          product_ids: '1, 3, 5',
-        });
-      });
       it('should call getNumberOfProducts', () => {
         expect(component.getNumberOfProducts).toHaveBeenCalled();
       });
@@ -747,12 +727,6 @@ describe('ListComponent', () => {
         component.reserve();
         tick();
       }));
-
-      it('should call the ProductListBulkReserved tracking event', () => {
-        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_BULK_RESERVED, {
-          product_ids: '1, 3, 5',
-        });
-      });
 
       it('should set items as reserved', () => {
         expect(component.items[0].reserved).toBeTruthy();
@@ -879,7 +853,7 @@ describe('ListComponent', () => {
       spyOn(itemService, 'activate').and.returnValue(of('200'));
       component.items = createItemsArray(TOTAL);
       component.selectedStatus = STATUS.INACTIVE;
-      itemService.selectedItems = ['1'];
+      itemService.selectedItems = ['1', '2'];
       component.items[0].flags['onhold'] = true;
       component.items[0].selected = true;
     });
@@ -892,6 +866,85 @@ describe('ListComponent', () => {
       expect(modalService.open).toHaveBeenCalledWith(ActivateItemsModalComponent);
       expect(itemService.activate).toHaveBeenCalledTimes(1);
     }));
+
+    describe('ClickActivateProItem event', () => {
+      describe('when status is inactive', () => {
+        it('should track event', () => {
+          const expectedEvent: AnalyticsPageView<ClickActivateProItem> = {
+            name: ANALYTICS_EVENT_NAMES.ClickActivateProItem,
+            attributes: {
+              screenId: SCREEN_IDS.MyCatalogInactiveSection,
+              numberOfItems: 2,
+            },
+          };
+
+          fixture.detectChanges();
+          component.activate();
+
+          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+        });
+      });
+
+      describe('when status is not inactive', () => {
+        it('should track event', () => {
+          component.selectedStatus = STATUS.PUBLISHED;
+          const expectedEvent: AnalyticsPageView<ClickActivateProItem> = {
+            name: ANALYTICS_EVENT_NAMES.ClickActivateProItem,
+            attributes: {
+              screenId: SCREEN_IDS.MyCatalog,
+              numberOfItems: 2,
+            },
+          };
+
+          component.activate();
+
+          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+        });
+      });
+    });
+
+    describe('ConfirmActivateProItem event', () => {
+      describe('when view is inactive', () => {
+        it('should track event', fakeAsync(() => {
+          const expectedEvent: AnalyticsPageView<ConfirmActivateProItem> = {
+            name: ANALYTICS_EVENT_NAMES.ConfirmActivateProItem,
+            attributes: {
+              screenId: SCREEN_IDS.MyCatalogInactiveSection,
+              numberOfItems: 2,
+            },
+          };
+
+          fixture.detectChanges();
+          component.activate();
+          tick();
+
+          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(2);
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+        }));
+      });
+
+      describe('when view is not inactive', () => {
+        it('should track event', fakeAsync(() => {
+          component.selectedStatus = STATUS.PUBLISHED;
+          const expectedEvent: AnalyticsPageView<ConfirmActivateProItem> = {
+            name: ANALYTICS_EVENT_NAMES.ConfirmActivateProItem,
+            attributes: {
+              screenId: SCREEN_IDS.MyCatalog,
+              numberOfItems: 2,
+            },
+          };
+
+          fixture.detectChanges();
+          component.activate();
+          tick();
+
+          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(2);
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+        }));
+      });
+    });
 
     describe('success when status is inactive', () => {
       it('should reset item selection', fakeAsync(() => {
@@ -925,7 +978,7 @@ describe('ListComponent', () => {
         component.activate();
         tick();
 
-        expect(component.subscriptionSlots[0].available).toBe(2);
+        expect(component.subscriptionSlots[0].available).toBe(1);
       }));
 
       it('should update if there is selected a subscription slot', fakeAsync(() => {
@@ -942,7 +995,7 @@ describe('ListComponent', () => {
         component.activate();
         tick();
 
-        expect(component.selectedSubscriptionSlot.available).toBe(2);
+        expect(component.selectedSubscriptionSlot.available).toBe(1);
       }));
     });
   });
@@ -966,6 +1019,89 @@ describe('ListComponent', () => {
       expect(itemService.activateSingleItem).toHaveBeenCalledTimes(1);
       expect(itemService.activateSingleItem).toHaveBeenCalledWith('1');
     }));
+
+    describe('ClickActivateProItem event', () => {
+      describe('when status is inactive', () => {
+        it('should track event', () => {
+          const expectedEvent: AnalyticsPageView<ClickActivateProItem> = {
+            name: ANALYTICS_EVENT_NAMES.ClickActivateProItem,
+            attributes: {
+              screenId: SCREEN_IDS.MyCatalogInactiveSection,
+              numberOfItems: 1,
+              categoryId: component.items[0].categoryId,
+            },
+          };
+
+          fixture.detectChanges();
+          component.activate(SUBSCRIPTION_TYPES.stripe, '1');
+
+          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+        });
+      });
+
+      describe('when status is not inactive', () => {
+        it('should track event', () => {
+          component.selectedStatus = STATUS.PUBLISHED;
+          const expectedEvent: AnalyticsPageView<ClickActivateProItem> = {
+            name: ANALYTICS_EVENT_NAMES.ClickActivateProItem,
+            attributes: {
+              screenId: SCREEN_IDS.MyCatalog,
+              numberOfItems: 1,
+              categoryId: component.items[0].categoryId,
+            },
+          };
+
+          component.activate(SUBSCRIPTION_TYPES.stripe, '1');
+
+          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+        });
+      });
+    });
+
+    describe('ConfirmActivateProItem event', () => {
+      describe('when view is inactive', () => {
+        it('should track event', fakeAsync(() => {
+          const expectedEvent: AnalyticsPageView<ConfirmActivateProItem> = {
+            name: ANALYTICS_EVENT_NAMES.ConfirmActivateProItem,
+            attributes: {
+              screenId: SCREEN_IDS.MyCatalogInactiveSection,
+              numberOfItems: 1,
+              categoryId: component.items[0].categoryId,
+            },
+          };
+
+          fixture.detectChanges();
+          component.activate(SUBSCRIPTION_TYPES.stripe, '1');
+          tick();
+
+          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(2);
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+        }));
+      });
+
+      describe('when view is not inactive', () => {
+        it('should track event', fakeAsync(() => {
+          component.selectedStatus = STATUS.PUBLISHED;
+          const expectedEvent: AnalyticsPageView<ConfirmActivateProItem> = {
+            name: ANALYTICS_EVENT_NAMES.ConfirmActivateProItem,
+            attributes: {
+              screenId: SCREEN_IDS.MyCatalog,
+              numberOfItems: 1,
+              categoryId: component.items[0].categoryId,
+            },
+          };
+
+          fixture.detectChanges();
+          component.activate(SUBSCRIPTION_TYPES.stripe, '1');
+          tick();
+
+          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(2);
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+        }));
+      });
+    });
 
     describe('success when status is inactive', () => {
       it('should reset item selection', fakeAsync(() => {
@@ -1058,6 +1194,23 @@ describe('ListComponent', () => {
       expect(modalService.open).toHaveBeenCalledWith(BuyProductModalComponent, {
         windowClass: 'modal-standard',
       });
+    });
+  });
+
+  describe('when close subscription slot', () => {
+    it('should track event', () => {
+      const expectedEvent: AnalyticsPageView<ViewOwnSaleItems> = {
+        name: ANALYTICS_EVENT_NAMES.ViewOwnSaleItems,
+        attributes: {
+          screenId: SCREEN_IDS.MyCatalog,
+          numberOfItems: mockCounters.publish,
+        },
+      };
+
+      component.onSelectSubscriptionSlot(null);
+
+      expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+      expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
     });
   });
 });

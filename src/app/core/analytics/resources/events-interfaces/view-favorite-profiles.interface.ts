@@ -16,7 +16,7 @@ export interface ViewFavoriteProfiles {
   /**
    * Number of different profiles the user has in the my favorite profiles section
    */
-  numberOfProfiles: number;
+  numberOfProfiles?: number;
   /**
    * Flag true or false is the view shows an empty state
    */

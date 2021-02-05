@@ -5,9 +5,7 @@ import { CustomCurrencyPipe } from '@shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import { ProfileCardFavoriteComponent } from './profile-card-favorite.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { USER_ID } from '@fixtures/user.fixtures.spec';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { ProfileService } from '@core/profile/profile.service';
 import { MOCK_PROFILE } from '@fixtures/profile.fixtures.spec';
@@ -53,7 +51,6 @@ describe('ProfileCardFavoriteComponent', () => {
               },
             },
           },
-          { provide: TrackingService, useClass: MockTrackingService },
           { provide: 'SUBDOMAIN', useValue: 'www' },
         ],
         schemas: [NO_ERRORS_SCHEMA],
