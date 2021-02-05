@@ -1,17 +1,32 @@
-<tsl-bubble *ngIf="isBubble; else template"
-            (click)="handleBubbleClick()"
-            [variant]="hasValue ? BUBBLE_VARIANT.SELECTED : BUBBLE_VARIANT.ACTIVE"
-            [counter]="counter"
-            [icon]="icon"
-            [isDropdown]="isDropdown"
->
-  {{label}}
-</tsl-bubble>
-<ng-template #template>
-  <div>
-    <div #content>
-      <ng-content></ng-content>
-    </div>
-    <span *ngIf="content.children.length === 0" class="Bubble__dev-warn">Please, avoid using abstract filter directly, use one of the extensions or create your own</span>
+<div *ngIf="isBubble" ngbDropdown>
+  <div ngbDropdownToggle>
+    <tsl-bubble
+                (click)="handleBubbleClick()"
+                [variant]="hasValue ? BUBBLE_VARIANT.SELECTED : BUBBLE_VARIANT.ACTIVE"
+                [counter]="counter"
+                [icon]="icon"
+                [isDropdown]="isDropdown"
+    >
+      {{label}}
+    </tsl-bubble>
   </div>
+  <div ngbDropdownMenu>
+    <ng-template [ngTemplateOutlet]="contentWrapper"></ng-template>
+  </div>
+</div>
+
+<div *ngIf="!isBubble">
+  <ng-template [ngTemplateOutlet]="contentWrapper"></ng-template>
+</div>
+
+<ng-template #contentWrapper>
+  <div #content>
+    <ng-content></ng-content>
+  </div>
+  <span *ngIf="content.children.length === 0" class="Bubble__dev-warn">Please, avoid using abstract filter directly, use one of the extensions or create your own</span>
 </ng-template>
+
+
+
+
+
