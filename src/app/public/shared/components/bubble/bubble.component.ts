@@ -17,7 +17,7 @@ export class BubbleComponent {
   @Input() counter: number;
   @Input() isClearable: boolean;
   @Output() click: EventEmitter<MouseEvent> = new EventEmitter();
-  @Output() clear: EventEmitter<void> = new EventEmitter();
+  @Output() clear: EventEmitter<MouseEvent> = new EventEmitter();
 
   public get counterText(): string {
     if (this.counter) {
@@ -36,7 +36,6 @@ export class BubbleComponent {
   }
 
   public emitClear(event: MouseEvent): void {
-    event.stopPropagation();
-    this.clear.emit();
+    this.clear.emit(event);
   }
 }

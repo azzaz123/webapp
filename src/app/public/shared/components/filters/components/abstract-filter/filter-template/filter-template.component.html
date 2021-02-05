@@ -6,6 +6,8 @@
                 [counter]="counter"
                 [icon]="icon"
                 [isDropdown]="isDropdown"
+                [isClearable]="true"
+                (clear)="handleClear($event)"
     >
       {{label}}
     </tsl-bubble>

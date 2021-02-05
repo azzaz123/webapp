@@ -24,6 +24,7 @@ import { ButtonModule } from '@shared/button/button.module';
       [hasApply]="hasApply()"
       [hasCancel]="hasCancel()"
       (apply)="handleApply()"
+      (clear)="handleClear()"
     >
       <!--   Extended content   -->
       <div class="px-3 py-1" *ngIf="storyContent">
@@ -65,6 +66,10 @@ class StoryAbstractFilterComponent extends AbstractFilter {
 
   public handleApply(): void {
     this.storyBubbleApply.emit();
+  }
+
+  public handleClear(): void {
+    this.clear.emit();
   }
 }
 
@@ -138,6 +143,13 @@ export const DefaultBubbleWithCounter = Template.bind({});
 DefaultBubbleWithCounter.args = {
   value: [{ key1: 'value' }, { key2: 'value' }],
   config: {},
+};
+
+export const DefaultBubbleWithClear = Template.bind({});
+DefaultBubbleWithClear.args = {
+  value: [{ key1: 'value' }, { key2: 'value' }],
+  config: {},
+  isClearable: true,
 };
 
 export const CustomBubbleWithValue = Template.bind({});

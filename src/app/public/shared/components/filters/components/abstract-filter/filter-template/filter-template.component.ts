@@ -19,6 +19,7 @@ export class FilterTemplateComponent {
   @Input() hasCancel?: boolean;
   @Input() hasApply?: boolean;
   @Output() apply: EventEmitter<void> = new EventEmitter();
+  @Output() clear: EventEmitter<void> = new EventEmitter();
 
   @ViewChild('dropdown', { read: NgbDropdown }) dropdown: NgbDropdown;
 
@@ -59,8 +60,13 @@ export class FilterTemplateComponent {
     this.apply.emit();
   }
 
+  public handleClear(event: MouseEvent): void {
+    this.handleCloseDropdown(event);
+    this.clear.emit();
+  }
+
   private handleCloseDropdown(event: MouseEvent): void {
     event.stopPropagation();
-    this.toggleDropdown();
+    this.dropdown.close();
   }
 }
