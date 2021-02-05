@@ -32,8 +32,12 @@ export class ItemImagesCarouselComponent {
   }
 
   get bumpedFlag(): BUMPED_ITEM_FLAG_TYPES {
-    if (this.itemVisibilityFlags && this.itemVisibilityFlags?.bumped) {
-      return this.itemVisibilityFlags.country_bumped ? BUMPED_ITEM_FLAG_TYPES.COUNTRY_BUMP : BUMPED_ITEM_FLAG_TYPES.BUMPED;
+    if (this.itemVisibilityFlags?.country_bumped) {
+      return BUMPED_ITEM_FLAG_TYPES.COUNTRY_BUMP;
+    }
+
+    if (this.itemVisibilityFlags?.bumped) {
+      return BUMPED_ITEM_FLAG_TYPES.BUMPED;
     }
   }
 }
