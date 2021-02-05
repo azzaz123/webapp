@@ -24,6 +24,7 @@ import {
   ItemSaleConditions,
   ItemsWithAvailableProductsResponse,
   ItemUploadForm,
+  ItemVisibilityFlags,
   ItemWithProducts,
   LatestItemResponse,
   ListingFeeProductInfo,
@@ -226,6 +227,14 @@ export const ITEM_COUNTERS_DATA: ItemCounters = {
   views: ITEM_VIEWS,
   favorites: ITEM_FAVORITES,
   conversations: ITEM_CONVERSATIONS,
+};
+
+export const ITEM_BUMP_FLAGS: ItemVisibilityFlags = {
+  bumped: false,
+  highlighted: false,
+  urgent: false,
+  country_bumped: false,
+  boosted: false,
 };
 
 export const ITEM_FASHION_EXTRA_INFO: ItemExtraInfo = {

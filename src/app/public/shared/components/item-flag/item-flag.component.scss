@@ -13,6 +13,11 @@ $item-flag-width: 133px;
     color: $white;
   }
 
+  &--featuredCountry {
+    background-color: $payblue-main;
+    color: $white;
+  }
+
   &__content {
     margin: 0 auto;
     width: fit-content;
