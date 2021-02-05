@@ -43,7 +43,7 @@
             <a [routerLink]="['/pro/calls']" [hidden]="!phonesTotal"><span i18n>View all</span></a>
           </h3>
           <tsl-call [call]="call" *ngFor="let call of calls" [routerLink]="['/pro/calls']" [queryParams]="{c: call.id}"
-            (click)="trackPhoneLeadOpened()" [hidden]="!calls.length"></tsl-call>
+            [hidden]="!calls.length"></tsl-call>
         </div>
       </div>
       <div class="scroll-panel" [hidden]="!loading">

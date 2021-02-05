@@ -5,7 +5,6 @@ import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { RealTimeService } from '@core/message/real-time.service';
 import { RemoteConsoleService } from '@core/remote-console';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { InboxConversationService } from '@features/chat/core/inbox/inbox-conversation.service';
 import { InboxMessage, MessageStatus, MessageType } from '@features/chat/core/model';
 import { MaliciousConversationModalComponent } from '@features/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component';
@@ -20,7 +19,6 @@ import {
 } from '@fixtures/inbox.fixtures.spec';
 import { RealTimeServiceMock } from '@fixtures/real-time.fixtures.spec';
 import { MockRemoteConsoleService } from '@fixtures/remote-console.fixtures.spec';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { MOCK_USER, USER_ID } from '@fixtures/user.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
@@ -59,7 +57,6 @@ describe('CurrentConversationComponent', () => {
           EventService,
           NgbModal,
           { provide: RealTimeService, useClass: RealTimeServiceMock },
-          { provide: TrackingService, useClass: MockTrackingService },
           {
             provide: InboxConversationService,
             useClass: InboxConversationServiceMock,

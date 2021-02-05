@@ -11,7 +11,6 @@ import { CookieService } from 'ngx-cookie';
 import { of, Subject, throwError } from 'rxjs';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MOCK_ITEM_V3 } from '@fixtures/item.fixtures.spec';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { MOCK_USER, USER_ID } from '@fixtures/user.fixtures.spec';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ConnectionService } from '@core/connection/connection.service';
@@ -23,7 +22,6 @@ import { I18nService } from '@core/i18n/i18n.service';
 import { RealTimeService } from '@core/message/real-time.service';
 import { PaymentService } from '@core/payments/payment.service';
 import { StripeService } from '@core/stripe/stripe.service';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { UserService } from '@core/user/user.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import { SessionService } from '@core/session/session.service';
@@ -48,7 +46,6 @@ let realTime: RealTimeService;
 let inboxService: InboxService;
 let desktopNotificationsService: DesktopNotificationsService;
 let titleService: Title;
-let trackingService: TrackingService;
 let callsService: CallsService;
 let cookieService: CookieService;
 let connectionService: ConnectionService;
@@ -125,7 +122,6 @@ describe('PrivateComponent', () => {
           },
         },
         I18nService,
-        { provide: TrackingService, useClass: MockTrackingService },
         DesktopNotificationsService,
         {
           provide: CallsService,
@@ -193,7 +189,6 @@ describe('PrivateComponent', () => {
     inboxService = TestBed.inject(InboxService);
     desktopNotificationsService = TestBed.inject(DesktopNotificationsService);
     titleService = TestBed.inject(Title);
-    trackingService = TestBed.inject(TrackingService);
     callsService = TestBed.inject(CallsService);
     cookieService = TestBed.inject(CookieService);
     connectionService = TestBed.inject(ConnectionService);
@@ -307,17 +302,12 @@ describe('PrivateComponent', () => {
       });
 
       it('should send open_app event if cookie does not exist', () => {
-        spyOn(trackingService, 'track');
         spyOn(cookieService, 'get').and.returnValue(null);
 
         component.ngOnInit();
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
 
         expect(cookieService.get).toHaveBeenCalledWith('app_session_id');
-        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.APP_OPEN, {
-          referer_url: component.previousUrl,
-          current_url: component.currentUrl,
-        });
       });
 
       it('should call update session cookie if cookie does not exist', () => {
@@ -418,17 +408,6 @@ describe('PrivateComponent', () => {
       eventService.emit(EventService.ITEM_RESERVED, MOCK_ITEM_V3);
 
       expect(callsService.syncItem).toHaveBeenCalledWith(MOCK_ITEM_V3);
-    });
-  });
-
-  describe('config event tracking', () => {
-    beforeEach(() => {
-      spyOn(trackingService, 'track');
-
-      component.ngOnInit();
-      eventService.emit(EventService.USER_LOGOUT);
-
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MY_PROFILE_LOGGED_OUT);
     });
   });
 

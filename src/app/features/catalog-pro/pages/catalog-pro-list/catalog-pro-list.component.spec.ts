@@ -6,14 +6,12 @@ import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { ItemService, ITEM_STATUS } from '@core/item/item.service';
 import { PaymentService } from '@core/payments/payment.service';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { UserService } from '@core/user/user.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import { CreditCardModalComponent } from '@features/catalog-pro/modals/credit-card-modal/credit-card-modal.component';
 import { ProBumpConfirmationModalComponent } from '@features/catalog-pro/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component';
 import { MOCK_ITEM, MOCK_ITEM_V3, ITEM_ID, ORDER } from '@fixtures/item.fixtures.spec';
 import { createPacksFixture, createPerksModelFixture } from '@fixtures/payments.fixtures.spec';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BumpSuggestionModalComponent } from '@shared/modals/bump-suggestion-modal/bump-suggestion-modal.component';
@@ -25,12 +23,10 @@ describe('CatalogProListComponent', () => {
   let component: CatalogProListComponent;
   let fixture: ComponentFixture<CatalogProListComponent>;
   let itemService: ItemService;
-  let trackingService: TrackingService;
   let modalService: NgbModal;
   const componentInstance: any = {
     urgentPrice: jasmine.createSpy('urgentPrice'),
   };
-  let trackingServiceSpy: jasmine.Spy;
   let itemServiceSpy: jasmine.Spy;
   let userService: UserService;
   let router: Router;
@@ -55,7 +51,6 @@ describe('CatalogProListComponent', () => {
         providers: [
           I18nService,
           EventService,
-          { provide: TrackingService, useClass: MockTrackingService },
           {
             provide: ItemService,
             useValue: {
@@ -142,13 +137,11 @@ describe('CatalogProListComponent', () => {
     fixture = TestBed.createComponent(CatalogProListComponent);
     component = fixture.componentInstance;
     itemService = TestBed.inject(ItemService);
-    trackingService = TestBed.inject(TrackingService);
     modalService = TestBed.inject(NgbModal);
     userService = TestBed.inject(UserService);
     router = TestBed.inject(Router);
     route = TestBed.inject(ActivatedRoute);
     errorService = TestBed.inject(ErrorsService);
-    trackingServiceSpy = spyOn(trackingService, 'track');
     itemServiceSpy = spyOn(itemService, 'mines').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
     eventService = TestBed.inject(EventService);
@@ -360,23 +353,6 @@ describe('CatalogProListComponent', () => {
       expect(component.items.length).toBe(2);
     });
 
-    it('should track the ProductListLoaded event', () => {
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_LOADED, {
-        page_number: 1,
-      });
-    });
-
-    it('should track the ProductListSoldViewed if the selectedStatus is sold', () => {
-      component['selectedStatus'] = ITEM_STATUS.SOLD;
-      trackingServiceSpy.calls.reset();
-
-      component.ngOnInit();
-
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_SOLD_VIEWED, {
-        total_products: 2,
-      });
-    });
-
     it('should set item to bumb suggestion modal', fakeAsync(() => {
       component['bumpSuggestionModalRef'] = <any>{
         componentInstance: componentInstance,
@@ -387,17 +363,6 @@ describe('CatalogProListComponent', () => {
 
       expect(component['bumpSuggestionModalRef'].componentInstance.item).toEqual(component.items[0]);
     }));
-
-    it('should track the ProductListActiveViewed if the selectedStatus is published', () => {
-      component['selectedStatus'] = ITEM_STATUS.PUBLISHED;
-      trackingServiceSpy.calls.reset();
-
-      component.ngOnInit();
-
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_ACTIVE_VIEWED, {
-        total_products: 2,
-      });
-    });
   });
 
   describe('loadMore', () => {
@@ -416,14 +381,6 @@ describe('CatalogProListComponent', () => {
 
       expect(itemService.mines).toHaveBeenCalledWith(1, 20, 'date_desc', 'active', 'term', true);
     });
-    it('should track the ProductListBulkUnselected event', () => {
-      component.search('term');
-
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_FILTERED_BY_TEXT, {
-        filter: 'term',
-        order_by: 'date_desc',
-      });
-    });
   });
 
   describe('sort', () => {
@@ -432,15 +389,6 @@ describe('CatalogProListComponent', () => {
       component.sort('date_asc');
 
       expect(itemService.mines).toHaveBeenCalledWith(1, 20, 'date_asc', 'active', undefined, true);
-    });
-    it('should track the ProductListOrderedBy event', () => {
-      component['term'] = 'term';
-      component.sort('date_asc');
-
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_ORDERED_BY, {
-        filter: component['term'],
-        order_by: 'date_asc',
-      });
     });
   });
 

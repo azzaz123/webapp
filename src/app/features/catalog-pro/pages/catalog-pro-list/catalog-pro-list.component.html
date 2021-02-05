@@ -8,12 +8,12 @@
           </span></h2>
         <div class="intro"><span i18n>Big packages with all your items and stuff</span>
           <div class="border"></div>
-          <span><a href="" tslTrackEvent="MYCATALOG_PRO_MANAGE_SUBSCRIPTION"
+          <span><a href="" 
               [routerLink]="['/profile/subscription-pro']" class="corporate" i18n>Manage my subscription</a></span>
         </div>
       </div>
       <tsl-button className="btn btn-logout" [routerLink]="['/pro/catalog/checkout-extras']"
-        tslTrackEvent="MYCATALOG_PRO_PURCHASE_EXTRAS" i18n>Purchase extras</tsl-button>
+        i18n>Purchase extras</tsl-button>
     </div>
     <div class="row">
       <tsl-plan-data [counters]="counters" (subscriptionPlan)="onSetSubscriptionPlan($event)">
@@ -28,7 +28,7 @@
     <div class="row mt-2">
       <tsl-catalog-item-actions (getCounters)="getCounters()" [active]="active" [items]="items"
         [selectedStatus]="selectedStatus"></tsl-catalog-item-actions>
-      <tsl-button className="btn-primary" class="ml-auto" [routerLink]="['/catalog/upload']" tslTrackEvent="MYCATALOG_PRO_UPLOAD" i18n>
+      <tsl-button className="btn-primary" class="ml-auto" [routerLink]="['/catalog/upload']" i18n>
         List a car</tsl-button>
     </div>
     <div class="row items">

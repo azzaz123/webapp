@@ -7,7 +7,6 @@ import { BUMP_TYPES, CartBase } from '@shared/catalog/cart/cart-base';
 import { CartService } from '@shared/catalog/cart/cart.service';
 import { CartProExtras } from '@shared/catalog/cart/cart-pro-extras';
 import { ErrorsService } from '@core/errors/errors.service';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { PaymentService, PAYMENT_METHOD, PAYMENT_RESPONSE_STATUS } from '@core/payments/payment.service';
 import { CartChange } from '@shared/catalog/cart/cart-item.interface';
 import { Pack } from '@core/payments/pack';
@@ -40,7 +39,6 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
     private cartService: CartService,
     private paymentService: PaymentService,
     private errorService: ErrorsService,
-    private trackingService: TrackingService,
     private router: Router,
     private errorsService: ErrorsService,
     private stripeService: StripeService,
@@ -106,7 +104,6 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
     order.provider = PAYMENT_METHOD.STRIPE;
     this.paymentService.orderExtrasProPack(order).subscribe(
       () => {
-        this.track(order);
         this.stripeService.buy(order.id, paymentId, this.hasSavedCard, this.savedCard, this.card);
       },
       (e: HttpErrorResponse) => {
@@ -118,14 +115,6 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
         }
       }
     );
-  }
-
-  private track(order: OrderProExtras) {
-    const payment_method = PAYMENT_METHOD.STRIPE;
-    this.trackingService.track(TrackingService.PRO_PURCHASE_CHECKOUTPROEXTRACART, {
-      selected_packs: order.packs,
-      payment_method,
-    });
   }
 
   public hasCard(hasCard: boolean) {

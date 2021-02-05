@@ -16,7 +16,6 @@ import { Item } from '../item/item';
 import { ItemService } from '../item/item.service';
 import { RealTimeService } from '../message/real-time.service';
 import { RemoteConsoleService } from '../remote-console';
-import { TrackingService } from '../tracking/tracking.service';
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
 import { XmppService } from '../xmpp/xmpp.service';
@@ -46,7 +45,6 @@ describe('CallsService', () => {
         { provide: UserService, useClass: MockedUserService },
         { provide: ItemService, useClass: MockedItemService },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
-        { provide: TrackingService, useValue: {} },
         {
           provide: ConnectionService,
           useValue: {},

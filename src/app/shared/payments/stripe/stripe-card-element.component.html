@@ -28,8 +28,6 @@
                     [disabled]="type === 'cart' && !cart?.total || loading"
                     [loading]="loading"
                     (click)="onSubmit()"
-                    [tslTrackEvent]="'PURCHASE_CONFIRM_PACK_CREDITS_NO_CARD'"
-                    [params]="{ payment_method: 'STRIPE' }"
         >
             <div class="secure-payment">
                 <span i18n>Continue to Checkout</span>

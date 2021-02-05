@@ -1,7 +1,6 @@
 import { Component, Inject, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { ItemCounters } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { InboxItem } from '@features/chat/core/model';
 
 @Component({
@@ -12,7 +11,7 @@ import { InboxItem } from '@features/chat/core/model';
 export class InboxItemDetailComponent implements OnInit, OnChanges, OnDestroy {
   @Input() item: InboxItem;
 
-  constructor(private itemService: ItemService, private trackingService: TrackingService, @Inject('SUBDOMAIN') private subdomain: string) {}
+  constructor(private itemService: ItemService, @Inject('SUBDOMAIN') private subdomain: string) {}
 
   ngOnInit() {
     if (this.item.price !== undefined && (this.item.views === undefined || this.item.favorites === undefined)) {
@@ -49,18 +48,10 @@ export class InboxItemDetailComponent implements OnInit, OnChanges, OnDestroy {
   public toggleReserve() {
     this.itemService.reserveItem(this.item.id, !this.item.reserved).subscribe(() => {
       this.item.reserved = !this.item.reserved;
-      if (this.item.reserved) {
-        this.trackingService.track(TrackingService.CHAT_PRODUCT_RESERVED, {
-          item_id: this.item.id,
-        });
-      }
     });
   }
 
   public trackSoldEvent(item: InboxItem) {
-    this.trackingService.track(TrackingService.CHAT_PRODUCT_SOLD, {
-      item_id: item.id,
-    });
     fbq('track', 'CompleteRegistration', {
       value: item.price.amount,
       currency: item.price.currency,

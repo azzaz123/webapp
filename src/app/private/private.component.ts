@@ -17,7 +17,6 @@ import { Item } from '@core/item/item';
 import { RealTimeService } from '@core/message/real-time.service';
 import { PaymentService } from '@core/payments/payment.service';
 import { StripeService } from '@core/stripe/stripe.service';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { UuidService } from '@core/uuid/uuid.service';
@@ -47,7 +46,6 @@ export class PrivateComponent implements OnInit {
     public userService: UserService,
     private desktopNotificationsService: DesktopNotificationsService,
     private titleService: Title,
-    private trackingService: TrackingService,
     private i18n: I18nService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -133,13 +131,11 @@ export class PrivateComponent implements OnInit {
     appboy.changeUser(user.id);
     appboy.openSession();
     if (!this.cookieService.get('app_session_id')) {
-      this.trackAppOpen();
       this.updateSessionCookie();
     }
   }
 
   private handleUserLoggedOut(redirectUrl: string): string | void {
-    this.trackingService.track(TrackingService.MY_PROFILE_LOGGED_OUT);
     this.paymentService.deleteCache();
 
     try {
@@ -187,13 +183,6 @@ export class PrivateComponent implements OnInit {
       expires: expirationDate,
     };
     this.cookieService.put(name, token, options);
-  }
-
-  private trackAppOpen(): void {
-    this.trackingService.track(TrackingService.APP_OPEN, {
-      referer_url: this.previousUrl,
-      current_url: this.currentUrl,
-    });
   }
 
   private trackOpenWallapop(): void {
