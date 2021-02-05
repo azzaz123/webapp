@@ -1,7 +1,7 @@
-<div *ngIf="isBubble" ngbDropdown>
+<div *ngIf="isBubble" ngbDropdown #dropdown="ngbDropdown">
   <div ngbDropdownToggle>
     <tsl-bubble
-                (click)="handleBubbleClick()"
+                (click)="handleBubbleClick($event)"
                 [variant]="hasValue ? BUBBLE_VARIANT.SELECTED : BUBBLE_VARIANT.ACTIVE"
                 [counter]="counter"
                 [icon]="icon"
@@ -11,7 +11,20 @@
     </tsl-bubble>
   </div>
   <div ngbDropdownMenu>
+
     <ng-template [ngTemplateOutlet]="contentWrapper"></ng-template>
+
+    <div *ngIf="hasActions" class="px-2 pt-2 d-flex justify-content-end">
+      <tsl-button *ngIf="hasCancel" className="basic dark btn-filter" class="mx-1" i18n="@@cancelButton"
+                  (click)="handleCancel($event)">
+        Cancel
+      </tsl-button>
+      <tsl-button *ngIf="hasApply" i18n="@@Apply" className="btn-primary btn-filter" class="mx-1"
+                  (click)="handleAccept($event)">
+        Apply
+      </tsl-button>
+    </div>
+
   </div>
 </div>
 
@@ -23,7 +36,7 @@
   <div #content>
     <ng-content></ng-content>
   </div>
-  <span *ngIf="content.children.length === 0" class="Bubble__dev-warn">Please, avoid using abstract filter directly, use one of the extensions or create your own</span>
+  <span *ngIf="content.children.length === 0" class="FilterTemplate__dev-warn">Please, avoid using abstract filter directly, use one of the extensions or create your own</span>
 </ng-template>
 
 

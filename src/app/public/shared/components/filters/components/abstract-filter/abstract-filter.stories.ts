@@ -7,6 +7,7 @@ import { FILTER_VARIANT } from '@public/shared/components/filters/components/abs
 import { FilterTemplateComponent } from '@public/shared/components/filters/components/abstract-filter/filter-template/filter-template.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { ButtonModule } from '@shared/button/button.module';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -19,10 +20,14 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
       [counter]="filterCounter()"
       [label]="label"
       [hasValue]="hasValue()"
-      (bubbleClick)="handleBubbleClick()"
+      [hasApply]="hasApply()"
+      [hasCancel]="hasCancel()"
+      (apply)="handleApply()"
     >
       <!--   Extended content   -->
-      <span class="px-3 py-0" *ngIf="storyContent">{{ storyContent }}</span>
+      <div class="px-3 py-1" *ngIf="storyContent">
+        <span>{{ storyContent }}</span>
+      </div>
       <!--   End extended content   -->
     </tsl-filter-template>
   `,
@@ -36,8 +41,10 @@ class StoryAbstractFilterComponent extends AbstractFilter {
   @Input() storyHasNoArrow?: boolean;
   @Input() storyContent?: string;
   @Output() storyBubbleClick: EventEmitter<void> = new EventEmitter();
+  @Output() storyBubbleApply: EventEmitter<void> = new EventEmitter();
+  @Output() storyBubbleCancel: EventEmitter<void> = new EventEmitter();
 
-  isDropdown(): boolean {
+  public isDropdown(): boolean {
     return this.storyHasNoArrow ? false : super.isDropdown();
   }
 
@@ -57,9 +64,8 @@ class StoryAbstractFilterComponent extends AbstractFilter {
     return this.storyIcon;
   }
 
-  // BEFOREMERGE: Seems to do it twice?
-  public handleBubbleClick(): void {
-    this.storyBubbleClick.emit();
+  public handleApply(): void {
+    this.storyBubbleApply.emit();
   }
 }
 
@@ -67,12 +73,12 @@ export default {
   title: 'Webapp/Public/Shared/Components/Filters/AbstractFilter',
   component: StoryAbstractFilterComponent,
   argTypes: {
-    storyBubbleClick: { action: 'We can now handle bubble click!' },
+    storyBubbleApply: { action: 'We can now handle bubble apply!' },
   },
   decorators: [
     moduleMetadata({
       providers: [],
-      imports: [BubbleModule, HttpClientModule, NgbDropdownModule],
+      imports: [BubbleModule, HttpClientModule, NgbDropdownModule, ButtonModule],
       declarations: [StoryAbstractFilterComponent, FilterTemplateComponent],
     }),
   ],
@@ -143,6 +149,7 @@ CustomBubbleWithValue.args = {
 
 export const CustomBubbleWithCounter = Template.bind({});
 CustomBubbleWithCounter.args = {
+  config: {},
   value: [],
   storyHasCustomCounter: true,
   storyLabel: 'I have no counter but bubble behaviour is extended',
@@ -152,4 +159,41 @@ export const CustomBubbleWithoutArrow = Template.bind({});
 CustomBubbleWithoutArrow.args = {
   storyLabel: 'I have no dropdown arrow! Now I am a toggle',
   storyHasNoArrow: true,
+};
+
+export const AllActionsBubble = Template.bind({});
+AllActionsBubble.args = {
+  storyLabel: 'I have all actions',
+  storyContent:
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quare conare, quaeso. Primum quid tu dicis breve? Primum Theophrasti, Strato, physicum se voluit; Duo Reges: constructio interrete. Venit ad extremum; Quid enim de amicitia statueris utilitatis causa expetenda vides. Fortitudinis quaedam praecepta sunt ac paene leges, quae effeminari virum vetant in dolore. An dolor longissimus quisque miserrimus, voluptatem non optabiliorem diuturnitas facit?',
+  config: {
+    actions: {
+      apply: true,
+      cancel: true,
+    },
+  },
+};
+
+export const CancelActionBubble = Template.bind({});
+CancelActionBubble.args = {
+  storyLabel: 'I have cancel action',
+  storyContent:
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quare conare, quaeso. Primum quid tu dicis breve? Primum Theophrasti, Strato, physicum se voluit; Duo Reges: constructio interrete. Venit ad extremum; Quid enim de amicitia statueris utilitatis causa expetenda vides. Fortitudinis quaedam praecepta sunt ac paene leges, quae effeminari virum vetant in dolore. An dolor longissimus quisque miserrimus, voluptatem non optabiliorem diuturnitas facit?',
+  config: {
+    actions: {
+      cancel: true,
+    },
+  },
+};
+
+export const ApplyActionBubble = Template.bind({});
+ApplyActionBubble.args = {
+  storyLabel: 'I have apply action',
+  storyContent:
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quare conare, quaeso. Primum quid tu dicis breve? Primum Theophrasti, Strato, physicum se voluit; Duo Reges: constructio interrete. Venit ad extremum; Quid enim de amicitia statueris utilitatis causa expetenda vides. Fortitudinis quaedam praecepta sunt ac paene leges, quae effeminari virum vetant in dolore. An dolor longissimus quisque miserrimus, voluptatem non optabiliorem diuturnitas facit?',
+  config: {
+    actions: {
+      apply: true,
+    },
+  },
 };

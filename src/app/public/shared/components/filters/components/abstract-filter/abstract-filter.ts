@@ -24,6 +24,14 @@ export abstract class AbstractFilter implements Filter {
     return this.value.length > 0;
   }
 
+  public hasApply(): boolean {
+    return this.config.actions?.apply;
+  }
+
+  public hasCancel(): boolean {
+    return this.config.actions?.cancel;
+  }
+
   public filterCounter(): number {
     return this.value.length > 1 ? this.value.length : undefined;
   }
@@ -31,6 +39,4 @@ export abstract class AbstractFilter implements Filter {
   public abstract get label(): string | undefined;
 
   public abstract get icon(): string | undefined;
-
-  public abstract handleBubbleClick(): void;
 }
