@@ -19,7 +19,6 @@ import { CARS_CATEGORY } from '@core/item/item-categories';
 import { CarContent, CarInfo } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { IOption } from '@shared/dropdown/utils/option.interface';
@@ -72,7 +71,6 @@ export class UploadCarComponent implements OnInit {
     private errorsService: ErrorsService,
     private modalService: NgbModal,
     private itemService: ItemService,
-    private trackingService: TrackingService,
     private analyticsService: AnalyticsService,
     private userService: UserService,
     private subscriptionService: SubscriptionsService,
@@ -357,12 +355,6 @@ export class UploadCarComponent implements OnInit {
 
   onUploaded(response: CarContent, action: UPLOAD_ACTION) {
     this.onFormChanged.emit(false);
-    if (this.item) {
-      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, { category: this.uploadForm.value.category_id });
-    } else {
-      this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
-    }
-
     if (response.flags.onhold) {
       this.subscriptionService.getUserSubscriptionType().subscribe((type) => {
         this.redirectToList(UPLOAD_ACTION.createdOnHold, response, type);
@@ -398,13 +390,6 @@ export class UploadCarComponent implements OnInit {
   public onError(error: HttpErrorResponse | any): void {
     this.loading = false;
     this.errorsService.i18nError('serverError', error.message ? error.message : '');
-    if (this.item) {
-      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_ERROR, {
-        category: this.uploadForm.value.category_id,
-      });
-    } else {
-      this.trackingService.track(TrackingService.UPLOADFORM_ERROR);
-    }
   }
 
   preview() {

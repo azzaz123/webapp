@@ -149,12 +149,4 @@ describe('BuyWallacoinsModalComponent', () => {
       });
     });
   });
-
-  describe('getTrackingAttributes', () => {
-    it('should return valid object when Stripe', () => {
-      expect(component.getTrackingAttributes()).toEqual({
-        payment_method: 'STRIPE',
-      });
-    });
-  });
 });

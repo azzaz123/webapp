@@ -8,14 +8,12 @@ import { Router } from '@angular/router';
 import { CartService } from '@shared/catalog/cart/cart.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { ItemService } from '@core/item/item.service';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { PaymentService } from '@core/payments/payment.service';
 import { PerksModel } from '@core/payments/payment.model';
 import { CartPro } from '@shared/catalog/cart/cart-pro';
 import { CartChange } from '@shared/catalog/cart/cart-item.interface';
 import { ITEM_ID } from '@fixtures/item.fixtures.spec';
 import { ScheduledStatus } from '@core/payments/payment.interface';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { MOCK_PROITEM } from '@fixtures/pro-item.fixtures.spec';
 import { OrderPro } from '@core/item/item-response.interface';
 
@@ -26,7 +24,6 @@ describe('CartProComponent', () => {
   let errorService: ErrorsService;
   let itemService: ItemService;
   let router: Router;
-  let trackingService: TrackingService;
   let paymentsService: PaymentService;
   const perksModel: PerksModel = new PerksModel();
   perksModel.subscription.bump.quantity = 10;
@@ -65,10 +62,6 @@ describe('CartProComponent', () => {
                 return of(MOCK_STATUS);
               },
             },
-          },
-          {
-            provide: TrackingService,
-            useClass: MockTrackingService,
           },
           {
             provide: CartService,
@@ -114,7 +107,6 @@ describe('CartProComponent', () => {
     itemService = TestBed.inject(ItemService);
     errorService = TestBed.inject(ErrorsService);
     router = TestBed.inject(Router);
-    trackingService = TestBed.inject(TrackingService);
     paymentsService = TestBed.inject(PaymentService);
     fixture.detectChanges();
   });
@@ -197,7 +189,6 @@ describe('CartProComponent', () => {
         spyOn(itemService, 'deselectItems').and.callThrough();
         spyOn(errorService, 'i18nError');
         spyOn(router, 'navigate');
-        spyOn(trackingService, 'track');
         component.cart.countrybump.total = 0;
         component.cart.citybump.total = 0;
 
@@ -206,14 +197,6 @@ describe('CartProComponent', () => {
 
       it('should deselect items', () => {
         expect(itemService.deselectItems).toHaveBeenCalled();
-      });
-
-      it('should track', () => {
-        const order: OrderPro[] = component.cart.prepareOrder();
-
-        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.BUMP_PRO_APPLY, {
-          selected_products: order,
-        });
       });
 
       it('should navigate to pro list', () => {

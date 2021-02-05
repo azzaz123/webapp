@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { UserService } from '@core/user/user.service';
 import { PaymentService } from '@core/payments/payment.service';
 import { CreditInfo } from '@core/payments/payment.interface';
@@ -20,7 +19,6 @@ export class BumpConfirmationModalComponent implements OnInit {
 
   constructor(
     public activeModal: NgbActiveModal,
-    private trackingService: TrackingService,
     private userService: UserService,
     private paymentService: PaymentService,
     private eventService: EventService
@@ -29,13 +27,9 @@ export class BumpConfirmationModalComponent implements OnInit {
   ngOnInit() {
     this.userService.me().subscribe(() => {
       if (this.code === '200') {
-        this.trackingService.track(TrackingService.FEATURED_PURCHASE_SUCCESS);
         ga('send', 'event', 'Item', 'bump-ok');
         appboy.logCustomEvent('VisibilityPurchaseSuccess', { platform: 'web' });
       } else {
-        this.trackingService.track(TrackingService.FEATURED_PURCHASE_ERROR, {
-          error_code: this.code,
-        });
         ga('send', 'event', 'Item', 'bump-ko');
       }
     });

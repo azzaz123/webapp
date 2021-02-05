@@ -3,11 +3,9 @@ import { DecimalPipe } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ItemService } from '@core/item/item.service';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { environment } from '@environments/environment.prod';
 import { MOCKED_INBOX_CONVERSATIONS } from '@fixtures/inbox.fixtures.spec';
 import { ITEM_COUNTERS_DATA } from '@fixtures/item.fixtures.spec';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { CustomCurrencyPipe } from '@shared/pipes';
 import { CookieService } from 'ngx-cookie';
 import { of } from 'rxjs';
@@ -17,7 +15,6 @@ describe('Component: Item', () => {
   let component: InboxItemDetailComponent;
   let fixture: ComponentFixture<InboxItemDetailComponent>;
   let itemService: ItemService;
-  let trackingService: TrackingService;
   let cookieService: CookieService;
 
   const MOCK_CLICK_EVENT = {
@@ -52,7 +49,6 @@ describe('Component: Item', () => {
             },
           },
         },
-        { provide: TrackingService, useClass: MockTrackingService },
         { provide: 'SUBDOMAIN', useValue: 'es' },
       ],
       schemas: [NO_ERRORS_SCHEMA],
@@ -60,7 +56,6 @@ describe('Component: Item', () => {
     fixture = TestBed.createComponent(InboxItemDetailComponent);
     component = TestBed.createComponent(InboxItemDetailComponent).componentInstance;
     itemService = TestBed.inject(ItemService);
-    trackingService = TestBed.inject(TrackingService);
     cookieService = TestBed.inject(CookieService);
     appboy.initialize(environment.appboy);
   });
@@ -175,33 +170,19 @@ describe('Component: Item', () => {
       expect(component.item.reserved).toBe(false);
     });
 
-    it('should call the track method on trackingService when item.reserved is true', () => {
+    it('should invert the boolean value of item.reserved when called', () => {
       component.item = MOCKED_INBOX_CONVERSATIONS[0].item;
       component.item.reserved = false;
-      spyOn(trackingService, 'track').and.callThrough();
 
       component.toggleReserve();
 
       expect(component.item.reserved).toBe(true);
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CHAT_PRODUCT_RESERVED, {
-        item_id: MOCKED_INBOX_CONVERSATIONS[0].item.id,
-      });
     });
   });
 
   describe('trackSoldEvent', () => {
     beforeEach(() => {
       component.item = MOCKED_INBOX_CONVERSATIONS[0].item;
-    });
-
-    it('should the track method on trackingService when invoked', () => {
-      spyOn(trackingService, 'track').and.callThrough();
-
-      component.trackSoldEvent(component.item);
-
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CHAT_PRODUCT_SOLD, {
-        item_id: component.item.id,
-      });
     });
 
     it('should send appboy Sold event', () => {

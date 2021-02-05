@@ -1,11 +1,10 @@
-<a class="card" href="{{item.itemUrl}}" (click)="prevent($event)" target="_blank" tslTrackEvent="PRODUCT_VIEWED"
-   [params]="{id: item.id, title: item.title, sale_price: item.price.amount}" [ngClass]="{'faded': item.notAvailable || item.unpublished }">
+<a class="card" href="{{item.itemUrl}}" (click)="prevent($event)" target="_blank" [ngClass]="{'faded': item.notAvailable || item.unpublished }">
 
   <div class="image-overlay">
     <tsl-status-icon [unavailable]="item.notAvailable || item.unpublished"></tsl-status-icon>
     <img class="card-img-top" src="{{itemImageUrl}}" onError="this.src='/assets/images/fake-item.png'"/>
     <a class="btn btn-edit" target='_blank' (click)='$event.stopPropagation()'
-       [routerLink]="['/catalog/edit/', item.id]" tslTrackEvent="CHAT_EDITITEM" [params]="{item_id: item.id}"
+       [routerLink]="['/catalog/edit/', item.id]"
        *ngIf='canEdit()'>
       <tsl-svg-icon src="/assets/icons/btn-edit.svg"></tsl-svg-icon>
     </a>
