@@ -48,12 +48,7 @@ export interface UnsaveSearch {
   /**
    * Order criteria in which the results of the saved search are shown
    */
-  orderBy:
-    | 'distance'
-    | 'price_low_to_high'
-    | 'price_high_to_low'
-    | 'newest'
-    | 'most_relevant';
+  orderBy: 'distance' | 'price_low_to_high' | 'price_high_to_low' | 'newest' | 'most_relevant';
   professional?: boolean;
   shipping?: boolean;
   exchange?: boolean;
@@ -76,14 +71,7 @@ export interface UnsaveSearch {
   carBrand?: string;
   carModel?: string;
   operation?: 'buy' | 'rent';
-  propertyType?:
-    | 'box_room'
-    | 'apartment'
-    | 'room'
-    | 'garage'
-    | 'office'
-    | 'house'
-    | 'land';
+  propertyType?: 'box_room' | 'apartment' | 'room' | 'garage' | 'office' | 'house' | 'land';
   minSurface?: number;
   maxSurface?: number;
   rooms?: number;

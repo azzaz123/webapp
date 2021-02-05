@@ -1,18 +1,11 @@
 import { DecimalPipe } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
 import { Item } from '@core/item/item';
 import { SelectedItemsAction } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { environment } from '@environments/environment';
 import {
   ITEM_ID,
@@ -22,7 +15,6 @@ import {
   PRODUCT_DURATION_MARKET_CODE,
   PRODUCT_RESPONSE,
 } from '@fixtures/item.fixtures.spec';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustomCurrencyPipe } from '@shared/pipes';
@@ -38,7 +30,6 @@ describe('CatalogItemComponent', () => {
   let fixture: ComponentFixture<CatalogItemComponent>;
   let itemService: ItemService;
   let modalService: NgbModal;
-  let trackingService: TrackingService;
   let errorsService: ErrorsService;
   let eventService: EventService;
   let deviceService: DeviceDetectorService;
@@ -55,7 +46,6 @@ describe('CatalogItemComponent', () => {
           DecimalPipe,
           EventService,
           ToastService,
-          { provide: TrackingService, useClass: MockTrackingService },
           { provide: DeviceDetectorService, useClass: DeviceDetectorService },
           {
             provide: ItemService,
@@ -113,7 +103,6 @@ describe('CatalogItemComponent', () => {
     fixture.detectChanges();
     itemService = TestBed.inject(ItemService);
     modalService = TestBed.inject(NgbModal);
-    trackingService = TestBed.inject(TrackingService);
     errorsService = TestBed.inject(ErrorsService);
     eventService = TestBed.inject(EventService);
     deviceService = TestBed.inject(DeviceDetectorService);
@@ -126,9 +115,7 @@ describe('CatalogItemComponent', () => {
 
   describe('ngOnInit', () => {
     it('should set link', () => {
-      expect(component.link).toBe(
-        environment.siteUrl + 'item/' + ITEM_WEB_SLUG
-      );
+      expect(component.link).toBe(environment.siteUrl + 'item/' + ITEM_WEB_SLUG);
     });
 
     describe('selectMode', () => {
@@ -179,10 +166,7 @@ describe('CatalogItemComponent', () => {
       });
 
       it('should call reserveItem from itemService', () => {
-        expect(itemService.reserveItem).toHaveBeenCalledWith(
-          MOCK_ITEM.id,
-          true
-        );
+        expect(itemService.reserveItem).toHaveBeenCalledWith(MOCK_ITEM.id, true);
         expect(item.reserved).toBeTruthy();
       });
     });
@@ -190,7 +174,6 @@ describe('CatalogItemComponent', () => {
     describe('already reserved', () => {
       beforeEach(() => {
         spyOn(itemService, 'reserveItem').and.callThrough();
-        spyOn(trackingService, 'track');
         spyOn(eventService, 'emit');
         item = MOCK_ITEM;
         item.reserved = true;
@@ -203,37 +186,21 @@ describe('CatalogItemComponent', () => {
         expect(item.reserved).toBeFalsy();
       });
 
-      it('should track the ProductUnReserved event', () => {
-        expect(trackingService.track).toHaveBeenCalledWith(
-          TrackingService.PRODUCT_UNRESERVED,
-          {
-            product_id: item.id,
-          }
-        );
-      });
-
       it('should emit ITEM_RESERVED event', () => {
-        expect(eventService.emit).toHaveBeenCalledWith(
-          EventService.ITEM_RESERVED,
-          item
-        );
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_RESERVED, item);
       });
     });
   });
 
   describe('reactivate', () => {
     beforeEach(() => {
-      spyOn(itemService, 'getAvailableReactivationProducts').and.returnValue(
-        of(PRODUCT_RESPONSE)
-      );
+      spyOn(itemService, 'getAvailableReactivationProducts').and.returnValue(of(PRODUCT_RESPONSE));
     });
 
     it('should call getAvailableReactivationProducts', () => {
       component.reactivate(MOCK_ITEM);
 
-      expect(itemService.getAvailableReactivationProducts).toHaveBeenCalledWith(
-        ITEM_ID
-      );
+      expect(itemService.getAvailableReactivationProducts).toHaveBeenCalledWith(ITEM_ID);
     });
 
     it('should open dialog and set price', () => {
@@ -373,7 +340,6 @@ describe('CatalogItemComponent', () => {
     describe('can mark as sold', () => {
       beforeEach(fakeAsync(() => {
         item = MOCK_ITEM;
-        spyOn(trackingService, 'track');
         spyOn(eventService, 'emit');
         spyOn(window as any, 'fbq');
         component.itemChange.subscribe(($event: ItemChangeEvent) => {
@@ -392,20 +358,8 @@ describe('CatalogItemComponent', () => {
         expect(event.action).toBe('sold');
       });
 
-      it('should track the DeleteItem event', () => {
-        expect(trackingService.track).toHaveBeenCalledWith(
-          TrackingService.PRODUCT_SOLD,
-          {
-            product_id: item.id,
-          }
-        );
-      });
-
       it('should emit ITEM_SOLD event', () => {
-        expect(eventService.emit).toHaveBeenCalledWith(
-          EventService.ITEM_SOLD,
-          item
-        );
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_SOLD, item);
       });
 
       it('should emit facebook ITEM_SOLD event', () => {
@@ -414,28 +368,20 @@ describe('CatalogItemComponent', () => {
           currency: MOCK_ITEM.currencyCode,
         };
 
-        expect(window['fbq']).toHaveBeenCalledWith(
-          'track',
-          'CompleteRegistration',
-          facebookEvent
-        );
+        expect(window['fbq']).toHaveBeenCalledWith('track', 'CompleteRegistration', facebookEvent);
       });
     });
   });
 
   describe('showListingFee', () => {
     it('should return true when listing fee expiration is more than current time', () => {
-      component.item.listingFeeExpiringDate = moment()
-        .add(2, 'seconds')
-        .valueOf();
+      component.item.listingFeeExpiringDate = moment().add(2, 'seconds').valueOf();
 
       expect(component.showListingFee()).toEqual(true);
     });
 
     it('should return false when listing fee expiration is less than current time', () => {
-      component.item.listingFeeExpiringDate = moment()
-        .subtract(2, 'seconds')
-        .valueOf();
+      component.item.listingFeeExpiringDate = moment().subtract(2, 'seconds').valueOf();
 
       expect(component.showListingFee()).toEqual(false);
     });
@@ -459,43 +405,20 @@ describe('CatalogItemComponent', () => {
     const item: Item = MOCK_ITEM;
 
     it('should get the listing fee information related to the item', () => {
-      spyOn(itemService, 'getListingFeeInfo').and.returnValue(
-        of(PRODUCT_RESPONSE)
-      );
+      spyOn(itemService, 'getListingFeeInfo').and.returnValue(of(PRODUCT_RESPONSE));
 
       component.publishItem();
 
       expect(itemService.getListingFeeInfo).toHaveBeenCalledWith(item.id);
     });
-
-    it('should send PURCHASE_LISTING_FEE_CATALOG tracking event for Stripe', () => {
-      spyOn(trackingService, 'track');
-
-      component.publishItem();
-
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.PURCHASE_LISTING_FEE_CATALOG,
-        {
-          item_id: item.id,
-          payment_method: 'STRIPE',
-        }
-      );
-    });
   });
 
   describe('onClickInfoElement', () => {
-    it('should send PRODUCT_VIEWED to tracking service', () => {
-      spyOn(trackingService, 'track');
+    it('should open the link', () => {
       spyOn(window, 'open');
 
       component.openItem();
 
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.PRODUCT_VIEWED,
-        {
-          product_id: component.item.id,
-        }
-      );
       expect(window.open).toHaveBeenCalledTimes(1);
       expect(window.open).toHaveBeenCalledWith(component.link);
     });

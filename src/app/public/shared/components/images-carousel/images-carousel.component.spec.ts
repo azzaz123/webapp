@@ -39,12 +39,8 @@ describe('ImagesCarouselComponent', () => {
     });
 
     it('should show the normal image slider', () => {
-      const normalSlider = fixture.debugElement.query(
-        By.css(defaultIdTemplate)
-      );
-      const fallbackSlider = fixture.debugElement.query(
-        By.css(fallbackImageClass)
-      );
+      const normalSlider = fixture.debugElement.query(By.css(defaultIdTemplate));
+      const fallbackSlider = fixture.debugElement.query(By.css(fallbackImageClass));
 
       expect(normalSlider).toBeTruthy();
       expect(fallbackSlider).toBeFalsy();
@@ -54,9 +50,7 @@ describe('ImagesCarouselComponent', () => {
       it('should show the previous image if we swipe right', () => {
         spyOn(component.carousel, 'prev');
 
-        fixture.debugElement
-          .query(By.css(carouselTag))
-          .triggerEventHandler('swiperight', {});
+        fixture.debugElement.query(By.css(carouselTag)).triggerEventHandler('swiperight', {});
 
         expect(component.carousel.prev).toHaveBeenCalled();
       });
@@ -64,9 +58,7 @@ describe('ImagesCarouselComponent', () => {
       it('should show the next image if we swipe left', () => {
         spyOn(component.carousel, 'next');
 
-        fixture.debugElement
-          .query(By.css(carouselTag))
-          .triggerEventHandler('swipeleft', {});
+        fixture.debugElement.query(By.css(carouselTag)).triggerEventHandler('swipeleft', {});
 
         expect(component.carousel.next).toHaveBeenCalled();
       });
@@ -76,9 +68,7 @@ describe('ImagesCarouselComponent', () => {
       it('should open the image slider...', () => {
         spyOn(component.imageClick, 'emit');
 
-        fixture.debugElement
-          .query(By.css(carouselImageClass))
-          .triggerEventHandler('click', {});
+        fixture.debugElement.query(By.css(carouselImageClass)).triggerEventHandler('click', {});
 
         expect(component.imageClick.emit).toHaveBeenCalled();
       });
@@ -92,12 +82,8 @@ describe('ImagesCarouselComponent', () => {
     });
 
     it('should show the fallback image slider', () => {
-      const normalSlider = fixture.debugElement.query(
-        By.css(defaultIdTemplate)
-      );
-      const fallbackSlider = fixture.debugElement.query(
-        By.css(fallbackImageClass)
-      );
+      const normalSlider = fixture.debugElement.query(By.css(defaultIdTemplate));
+      const fallbackSlider = fixture.debugElement.query(By.css(fallbackImageClass));
 
       expect(normalSlider).toBeFalsy();
       expect(fallbackSlider).toBeTruthy();

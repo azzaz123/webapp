@@ -1,18 +1,7 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { RealTimeService } from '@core/message/real-time.service';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { InboxConversation } from '@features/chat/core/model';
 import { LinkTransformPipe } from '@shared/pipes';
 import { find, includes, isEmpty } from 'lodash-es';
@@ -36,7 +25,6 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
   constructor(
     private realTimeService: RealTimeService,
     private eventService: EventService,
-    private trackingService: TrackingService,
     private i18n: I18nService,
     private deviceService: DeviceDetectorService
   ) {}
@@ -44,15 +32,9 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
   ngOnInit() {
     this.isFocus = true;
     this.isUserBlocked = false;
-    this.eventService.subscribe(
-      EventService.PRIVACY_LIST_UPDATED,
-      (userIds: string[]) => {
-        this.isUserBlocked = includes(
-          userIds,
-          this.currentConversation.user.id
-        );
-      }
-    );
+    this.eventService.subscribe(EventService.PRIVACY_LIST_UPDATED, (userIds: string[]) => {
+      this.isUserBlocked = includes(userIds, this.currentConversation.user.id);
+    });
   }
 
   sendMessage($event: Event) {
@@ -60,13 +42,7 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
     this.message = this.message.trim();
     if (!this.isUserBlocked) {
       if (!this.isEmpty()) {
-        this.trackingService.track(TrackingService.SEND_BUTTON, {
-          thread_id: this.currentConversation.id,
-        });
-        const messageId = this.realTimeService.sendMessage(
-          this.currentConversation,
-          this.message
-        );
+        const messageId = this.realTimeService.sendMessage(this.currentConversation, this.message);
         this.clickSentMessage.emit(messageId);
       }
       this.message = '';
@@ -82,11 +58,7 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
         }, 500);
       }
 
-      if (
-        changes &&
-        changes.currentConversation &&
-        this.messageArea.nativeElement.value.length
-      ) {
+      if (changes && changes.currentConversation && this.messageArea.nativeElement.value.length) {
         this.message = '';
       }
     }
@@ -114,11 +86,7 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   public isEmpty(): boolean {
-    return (
-      this.message === null ||
-      this.message === undefined ||
-      isEmpty(this.message.trim())
-    );
+    return this.message === null || this.message === undefined || isEmpty(this.message.trim());
   }
 
   public onFocusElement() {
@@ -134,8 +102,6 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   private findLinksWhereLinkIsNotWallapop(message: string): string[] {
-    return find(message.match(LinkTransformPipe.LINK_REG_EXP), (link) =>
-      isEmpty(link.match(LinkTransformPipe.WALLAPOP_REG_EXP))
-    );
+    return find(message.match(LinkTransformPipe.LINK_REG_EXP), (link) => isEmpty(link.match(LinkTransformPipe.WALLAPOP_REG_EXP)));
   }
 }

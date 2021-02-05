@@ -60,16 +60,10 @@ export const MOCK_CALL: Function = (
   );
 };
 
-export function createCallsArray(
-  total: number,
-  status?: string,
-  offset: number = 0
-) {
+export function createCallsArray(total: number, status?: string, offset: number = 0) {
   const calls: Call[] = [];
   for (let i = 1; i <= total; i++) {
-    calls.push(
-      MOCK_CALL((i + offset).toString(), undefined, undefined, status)
-    );
+    calls.push(MOCK_CALL((i + offset).toString(), undefined, undefined, status));
   }
   return calls;
 }

@@ -16,16 +16,7 @@ export class Conversation extends Lead {
     phone?: string,
     surveyResponses: SurveyResponse[] = []
   ) {
-    super(
-      id,
-      legacyId,
-      modifiedDate,
-      user,
-      item,
-      messages,
-      phone,
-      surveyResponses
-    );
+    super(id, legacyId, modifiedDate, user, item, messages, phone, surveyResponses);
   }
 
   get expectedVisit(): boolean {

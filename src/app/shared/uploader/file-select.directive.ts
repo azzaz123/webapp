@@ -1,13 +1,4 @@
-import {
-  Directive,
-  ElementRef,
-  EventEmitter,
-  Inject,
-  OnDestroy,
-  OnInit,
-  Output,
-  PLATFORM_ID,
-} from '@angular/core';
+import { Directive, ElementRef, EventEmitter, Inject, OnDestroy, OnInit, Output, PLATFORM_ID } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 import { UploaderService } from './uploader.service';
 
@@ -20,10 +11,7 @@ export class FileSelectDirective implements OnInit, OnDestroy {
   isServer: boolean = isPlatformServer(this.platform_id);
   el: HTMLInputElement;
 
-  constructor(
-    @Inject(PLATFORM_ID) private platform_id,
-    private elementRef: ElementRef
-  ) {}
+  constructor(@Inject(PLATFORM_ID) private platform_id, private elementRef: ElementRef) {}
 
   ngOnInit() {
     if (this.isServer) {

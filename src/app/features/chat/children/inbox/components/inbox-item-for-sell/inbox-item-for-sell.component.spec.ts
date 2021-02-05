@@ -4,12 +4,7 @@ import { ItemService } from '@core/item/item.service';
 import { UserService } from '@core/user/user.service';
 import { InboxUser } from '@features/chat/core/model';
 import { LATEST_ITEM_COUNT, MOCK_ITEM } from '@fixtures/item.fixtures.spec';
-import {
-  MOCK_USER,
-  MOCK_USER_STATS,
-  USER_ID,
-  USER_INFO_RESPONSE,
-} from '@fixtures/user.fixtures.spec';
+import { MOCK_USER, MOCK_USER_STATS, USER_ID, USER_INFO_RESPONSE } from '@fixtures/user.fixtures.spec';
 import { of } from 'rxjs';
 import { InboxItemForSellComponent } from './inbox-item-for-sell.component';
 

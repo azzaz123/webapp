@@ -1,11 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Item } from '@core/item/item';
 import { ItemService } from '@core/item/item.service';
 import { SubscriptionSlot } from '@core/subscriptions/subscriptions.interface';
@@ -32,18 +25,11 @@ export class SelectedItemsComponent implements OnInit, OnDestroy {
   constructor(public itemService: ItemService) {}
 
   ngOnInit() {
-    this.selectedItemsSubscription = this.itemService.selectedItems$.subscribe(
-      () => {
-        this.selectedItems = this.itemService.selectedItems.map((id) =>
-          this.items.find((item) => item.id === id)
-        );
-        this.disableFeatureOption = !!this.isItemDisabled(this.selectedItems)
-          .length;
-        this.showActiveOption =
-          this.selectedItems.length &&
-          this.selectedItems.every((item) => item.flags.onhold);
-      }
-    );
+    this.selectedItemsSubscription = this.itemService.selectedItems$.subscribe(() => {
+      this.selectedItems = this.itemService.selectedItems.map((id) => this.items.find((item) => item.id === id));
+      this.disableFeatureOption = !!this.isItemDisabled(this.selectedItems).length;
+      this.showActiveOption = this.selectedItems.length && this.selectedItems.every((item) => item.flags.onhold);
+    });
   }
 
   public deselect() {
@@ -62,21 +48,14 @@ export class SelectedItemsComponent implements OnInit, OnDestroy {
   }
 
   get hideFeaturedButton(): boolean {
-    return (
-      this.selectedStatus === STATUS.INACTIVE ||
-      this.selectedStatus === STATUS.SOLD ||
-      this.disableFeatureOption
-    );
+    return this.selectedStatus === STATUS.INACTIVE || this.selectedStatus === STATUS.SOLD || this.disableFeatureOption;
   }
 
   get showActiveButton(): boolean {
-    return (
-      this.selectedStatus === STATUS.INACTIVE ||
-      (this.selectedStatus === STATUS.PUBLISHED && this.showActiveOption)
-    );
+    return this.selectedStatus === STATUS.INACTIVE || (this.selectedStatus === STATUS.PUBLISHED && this.showActiveOption);
   }
 
   ngOnDestroy() {
-    this.selectedItemsSubscription.unsubscribe();
+    if (this.selectedItemsSubscription) this.selectedItemsSubscription.unsubscribe();
   }
 }

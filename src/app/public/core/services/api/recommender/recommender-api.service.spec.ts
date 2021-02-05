@@ -1,12 +1,6 @@
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import {
-  RecommenderApiService,
-  GET_RECOMMENDATIONS_ENDPOINT,
-} from './recommender-api.service';
+import { RecommenderApiService, GET_RECOMMENDATIONS_ENDPOINT } from './recommender-api.service';
 
 describe('RecommenderApiService', () => {
   let httpMock: HttpTestingController;

@@ -1,8 +1,4 @@
-import {
-  HttpClientTestingModule,
-  TestRequest,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, TestRequest, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
 import { environment } from '../../../../../environments/environment';

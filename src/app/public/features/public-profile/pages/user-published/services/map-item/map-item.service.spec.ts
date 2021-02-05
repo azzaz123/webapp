@@ -3,10 +3,7 @@ import { Item } from '@core/item/item';
 import { UuidService } from '@core/uuid/uuid.service';
 import { CAR_DATA, MOCK_CAR } from '@fixtures/car.fixtures.spec';
 import { ITEM_DATA_V3 } from '@fixtures/item.fixtures.spec';
-import {
-  MOCK_REALESTATE,
-  REALESTATE_DATA,
-} from '@fixtures/realestate.fixtures.spec';
+import { MOCK_REALESTATE, REALESTATE_DATA } from '@fixtures/realestate.fixtures.spec';
 import {
   MAPPED_RECOMMENDED_ITEM_MOCK,
   RECOMMENDED_ITEMS_MOCK,
@@ -115,9 +112,7 @@ describe('MapItemService', () => {
 
   describe('when asking for map recommended items', () => {
     it('should return correctly mapped items', () => {
-      const items: Item[] = mapItemService.mapRecommendedItem(
-        RECOMMENDED_ITEMS_MOCK
-      );
+      const items: Item[] = mapItemService.mapRecommendedItem(RECOMMENDED_ITEMS_MOCK);
 
       items.forEach((item) => {
         expect(item instanceof Item).toBeTruthy();

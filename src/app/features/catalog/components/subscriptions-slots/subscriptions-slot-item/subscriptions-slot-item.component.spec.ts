@@ -24,9 +24,7 @@ describe('SubscriptionsSlotItemComponent', () => {
       TestBed.configureTestingModule({
         imports: [],
         declarations: [SubscriptionsSlotItemComponent],
-        providers: [
-          { provide: AnalyticsService, useClass: MockAnalyticsService },
-        ],
+        providers: [{ provide: AnalyticsService, useClass: MockAnalyticsService }],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
     })
@@ -75,9 +73,7 @@ describe('SubscriptionsSlotItemComponent', () => {
       component.onClick(MOCK_SUBSCRIPTION_SLOT_CARS, event);
 
       expect(component.selected.emit).toHaveBeenCalledTimes(1);
-      expect(component.selected.emit).toHaveBeenCalledWith(
-        MOCK_SUBSCRIPTION_SLOT_CARS
-      );
+      expect(component.selected.emit).toHaveBeenCalledWith(MOCK_SUBSCRIPTION_SLOT_CARS);
       expect(event.stopPropagation).toHaveBeenCalledTimes(0);
     });
 

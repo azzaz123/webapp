@@ -50,9 +50,7 @@ describe('urlProtocolPipe', () => {
 
       fixture.detectChanges();
 
-      expect(fixture.debugElement.nativeElement.textContent).toEqual(
-        `//${url}`
-      );
+      expect(fixture.debugElement.nativeElement.textContent).toEqual(`//${url}`);
     });
   });
 });

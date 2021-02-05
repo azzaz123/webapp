@@ -1,11 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  discardPeriodicTasks,
-  tick,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, discardPeriodicTasks, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DateCountDownComponent } from './date-countdown.component';
 
@@ -38,21 +32,18 @@ describe('DateCountDownComponent', () => {
     tick(5000);
 
     fixture.detectChanges();
-    shownText = fixture.debugElement.query(By.css('span')).nativeElement
-      .textContent;
+    shownText = fixture.debugElement.query(By.css('span')).nativeElement.textContent;
     expect(shownText).toBe('01d 23h 59m 55s');
 
     tick(ONE_DAY_IN_MS + 10000);
     fixture.detectChanges();
-    shownText = fixture.debugElement.query(By.css('span')).nativeElement
-      .textContent;
+    shownText = fixture.debugElement.query(By.css('span')).nativeElement.textContent;
     expect(shownText).toBe('23h 59m 45s');
 
     tick(ONE_HOUR_IN_MS * 23);
     fixture.detectChanges();
 
-    shownText = fixture.debugElement.query(By.css('span')).nativeElement
-      .textContent;
+    shownText = fixture.debugElement.query(By.css('span')).nativeElement.textContent;
     expect(shownText).toBe('00h 59m 45s');
     discardPeriodicTasks();
   }));
@@ -65,8 +56,7 @@ describe('DateCountDownComponent', () => {
     tick(ONE_HOUR_IN_MS);
     fixture.detectChanges();
 
-    shownText = fixture.debugElement.query(By.css('span')).nativeElement
-      .textContent;
+    shownText = fixture.debugElement.query(By.css('span')).nativeElement.textContent;
     expect(shownText).toBe('00h 00m 00s');
     discardPeriodicTasks();
   }));

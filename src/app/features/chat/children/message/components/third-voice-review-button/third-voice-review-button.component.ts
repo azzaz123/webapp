@@ -18,22 +18,17 @@ export class ThirdVoiceReviewButtonComponent implements OnInit {
 
   public showButton = true;
 
-  constructor(
-    private reviewService: ReviewService,
-    private modalService: NgbModal
-  ) {}
+  constructor(private reviewService: ReviewService, private modalService: NgbModal) {}
 
   ngOnInit() {
     this.showButton = true;
     const localReview: string = localStorage.getItem(this.getStorageKey());
     if (!localReview) {
-      this.reviewService
-        .check(this.item.id)
-        .subscribe((globalReview: boolean) => {
-          if (globalReview) {
-            this.setItemAsReviewed();
-          }
-        });
+      this.reviewService.check(this.item.id).subscribe((globalReview: boolean) => {
+        if (globalReview) {
+          this.setItemAsReviewed();
+        }
+      });
     } else {
       this.showButton = false;
     }

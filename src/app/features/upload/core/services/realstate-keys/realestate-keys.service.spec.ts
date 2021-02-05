@@ -1,24 +1,15 @@
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-  TestRequest,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { I18nService } from '@core/i18n/i18n.service';
 import { environment } from '@environments/environment';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Key } from '../../models/key.interface';
-import {
-  RealestateKeysService,
-  REAL_ESTATE_KEYS_ENDPOINT,
-} from './realestate-keys.service';
+import { RealestateKeysService, REAL_ESTATE_KEYS_ENDPOINT } from './realestate-keys.service';
 
 describe('RealestateKeysService', () => {
   let service: RealestateKeysService;
   let httpMock: HttpTestingController;
-  const MOCK_REAL_ESTATE_OPTIONS = [
-    { id: 'test', icon_id: 'test', text: 'test' },
-  ];
+  const MOCK_REAL_ESTATE_OPTIONS = [{ id: 'test', icon_id: 'test', text: 'test' }];
 
   beforeEach(() => {
     TestBed.configureTestingModule({

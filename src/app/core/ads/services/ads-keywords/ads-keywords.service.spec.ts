@@ -59,10 +59,7 @@ describe('AdsKeywordsService', () => {
           latitude: MOCK_POSITION.coords.latitude.toString(),
           longitude: MOCK_POSITION.coords.longitude.toString(),
         };
-        spyOn(
-          navigator.geolocation,
-          'getCurrentPosition'
-        ).and.callFake((callback) => callback(MOCK_POSITION));
+        spyOn(navigator.geolocation, 'getCurrentPosition').and.callFake((callback) => callback(MOCK_POSITION));
 
         service.updateAdKeywords();
 

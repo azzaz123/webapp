@@ -1,11 +1,4 @@
-import {
-  Component,
-  HostListener,
-  Input,
-  OnInit,
-  Output,
-  EventEmitter,
-} from '@angular/core';
+import { Component, HostListener, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { isEqual } from 'lodash-es';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';

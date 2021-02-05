@@ -7,8 +7,7 @@ $menu-width-and-spacing: 10px;
   display: flex;
   padding: $spacing-ml $spacing-ms $spacing-ml $spacing-ml;
   box-sizing: border-box;
-  transition: $transition-time ease background-color,
-    $transition-time ease border;
+  transition: $transition-time ease background-color, $transition-time ease border;
   border-top: 1px solid $blue-grey-5;
   overflow: hidden;
   cursor: pointer;

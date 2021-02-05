@@ -15,10 +15,7 @@ export class MobileBlockerComponent implements OnInit {
   public adjustAndroidUrl = ADJUST_ANDROID_URL;
   @Output() viewIsBlocked: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(
-    private deviceDetector: DeviceDetectorService,
-    private userService: UserService
-  ) {}
+  constructor(private deviceDetector: DeviceDetectorService, private userService: UserService) {}
 
   ngOnInit() {
     this.userService.isProfessional().subscribe((val) => {

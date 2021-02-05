@@ -1,7 +1,4 @@
-import {
-  MOCK_SELECTED_DATES,
-  MOCK_SELECTED_DATES_TIMEZONE,
-} from '@fixtures/calendar.fixtures.spec';
+import { MOCK_SELECTED_DATES, MOCK_SELECTED_DATES_TIMEZONE } from '@fixtures/calendar.fixtures.spec';
 import { CalendarDates } from './calendar-dates';
 
 describe('CalendarDates', () => {

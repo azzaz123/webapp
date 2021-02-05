@@ -2,10 +2,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
-import {
-  MockSubscriptionService,
-  MOCK_SUBSCRIPTION_BENEFITS,
-} from '@fixtures/subscriptions.fixtures.spec';
+import { MockSubscriptionService, MOCK_SUBSCRIPTION_BENEFITS } from '@fixtures/subscriptions.fixtures.spec';
 import { SubscriptionBenefitsComponent } from './subscription-benefits.component';
 
 describe('SubscriptionBenefitsComponent', () => {
@@ -17,9 +14,7 @@ describe('SubscriptionBenefitsComponent', () => {
       TestBed.configureTestingModule({
         imports: [],
         declarations: [SubscriptionBenefitsComponent],
-        providers: [
-          { provide: SubscriptionsService, useClass: MockSubscriptionService },
-        ],
+        providers: [{ provide: SubscriptionsService, useClass: MockSubscriptionService }],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
     })
@@ -45,9 +40,7 @@ describe('SubscriptionBenefitsComponent', () => {
     component.ngOnInit();
     fixture.detectChanges();
 
-    const benefitsHTML = fixture.debugElement.queryAll(
-      By.css('.SubscriptionBenefitCard')
-    );
+    const benefitsHTML = fixture.debugElement.queryAll(By.css('.SubscriptionBenefitCard'));
     expect(benefitsHTML.length).toEqual(MOCK_SUBSCRIPTION_BENEFITS.length);
   });
 });

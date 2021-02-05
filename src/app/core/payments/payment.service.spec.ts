@@ -1,16 +1,7 @@
 import { of } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
-import {
-  PaymentService,
-  PAYMENTS_API_URL,
-  PROTOOL_API_URL,
-} from './payment.service';
-import {
-  BillingInfoResponse,
-  CreditInfo,
-  Packs,
-  Products,
-} from './payment.interface';
+import { PaymentService, PAYMENTS_API_URL, PROTOOL_API_URL } from './payment.service';
+import { BillingInfoResponse, CreditInfo, Packs, Products } from './payment.interface';
 import {
   BILLING_INFO_RESPONSE,
   BUMPS_PRODUCT_RESPONSE,
@@ -26,11 +17,7 @@ import { PerksModel } from './payment.model';
 import { PRODUCT_RESPONSE } from '@fixtures/item.fixtures.spec';
 import { CREDITS_FACTOR, CREDITS_PACK_ID, Pack } from './pack';
 import { environment } from '@environments/environment';
-import {
-  TestRequest,
-  HttpTestingController,
-  HttpClientTestingModule,
-} from '@angular/common/http/testing';
+import { TestRequest, HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('PaymentService', () => {
   let service: PaymentService;
@@ -102,9 +89,7 @@ describe('PaymentService', () => {
       const paymentMethodId = 'pm_a1b2c3d4';
       const expectedUrl = `${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_intents/${paymentId}/confirm`;
 
-      service
-        .paymentIntentsConfirm(orderId, paymentId, paymentMethodId)
-        .subscribe();
+      service.paymentIntentsConfirm(orderId, paymentId, paymentMethodId).subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush({});
 
@@ -129,9 +114,7 @@ describe('PaymentService', () => {
         });
         const reqPacks: TestRequest = httpMock.expectOne(expectedUrl);
         reqPacks.flush(PACK_RESPONSE);
-        const reqProducts: TestRequest = httpMock.expectOne(
-          expectedProductsUrl
-        );
+        const reqProducts: TestRequest = httpMock.expectOne(expectedProductsUrl);
         reqProducts.flush(PRODUCTS_RESPONSE_PACKS);
 
         expect(reqPacks.request.url).toEqual(expectedUrl);
@@ -191,9 +174,7 @@ describe('PaymentService', () => {
     let resp: Pack[];
 
     beforeEach(() => {
-      spyOn(service, 'getPacks').and.returnValue(
-        of(createWallacreditsPacksFixture())
-      );
+      spyOn(service, 'getPacks').and.returnValue(of(createWallacreditsPacksFixture()));
 
       service.getCreditsPacks().subscribe((r: Pack[]) => {
         resp = r;

@@ -83,29 +83,22 @@ describe('CancelSubscriptionModalComponent', () => {
     const tier = MAPPED_SUBSCRIPTIONS[2].selected_tier;
 
     it('should call the cancelsubscription service', () => {
-      spyOn(subscriptionsService, 'cancelSubscription').and.returnValue(
-        of({ status: 202 })
-      );
+      spyOn(subscriptionsService, 'cancelSubscription').and.returnValue(of({ status: 202 }));
 
       component.cancelSubscription();
 
-      expect(
-        component.subscriptionsService.cancelSubscription
-      ).toHaveBeenCalledWith(tier.id);
+      expect(component.subscriptionsService.cancelSubscription).toHaveBeenCalledWith(tier.id);
       expect(component.loading).toBe(false);
     });
 
     it('should send the event', () => {
-      spyOn(subscriptionsService, 'cancelSubscription').and.returnValue(
-        of({ status: 202 })
-      );
+      spyOn(subscriptionsService, 'cancelSubscription').and.returnValue(of({ status: 202 }));
       spyOn(analyticsService, 'trackEvent');
       const expectedEvent: AnalyticsEvent<ClickConfirmCloseSubscription> = {
         name: ANALYTICS_EVENT_NAMES.ClickConfirmCloseSubscription,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
-          subscription: component.subscription
-            .category_id as SUBSCRIPTION_CATEGORIES,
+          subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
           tier: component.subscription.selected_tier_id,
           screenId: SCREEN_IDS.ProfileSubscription,
         },

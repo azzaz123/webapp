@@ -4,13 +4,7 @@ import { CheckoutItemComponent } from './checkout-item.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '@shared/pipes';
 import { DecimalPipe } from '@angular/common';
-import {
-  CITYBUMP_DURATIONS,
-  ITEM_ID,
-  ITEMS_WITH_PRODUCTS,
-  ITEMS_WITH_PRODUCTS_PROVINCE,
-  MOCK_ITEM_V3,
-} from '@fixtures/item.fixtures.spec';
+import { CITYBUMP_DURATIONS, ITEM_ID, ITEMS_WITH_PRODUCTS, ITEMS_WITH_PRODUCTS_PROVINCE, MOCK_ITEM_V3 } from '@fixtures/item.fixtures.spec';
 import { CartService } from '@shared/catalog/cart/cart.service';
 import { Cart } from '@shared/catalog/cart/cart';
 import { CartChange } from '@shared/catalog/cart/cart-item.interface';

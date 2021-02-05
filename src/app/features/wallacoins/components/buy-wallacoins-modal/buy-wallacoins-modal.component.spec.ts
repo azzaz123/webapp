@@ -133,29 +133,19 @@ describe('BuyWallacoinsModalComponent', () => {
 
       describe('error', () => {
         it('should call toastr', () => {
-          paymentService.orderExtrasProPack = jasmine
-            .createSpy()
-            .and.returnValue(
-              throwError({
-                text() {
-                  return '';
-                },
-              })
-            );
+          paymentService.orderExtrasProPack = jasmine.createSpy().and.returnValue(
+            throwError({
+              text() {
+                return '';
+              },
+            })
+          );
           spyOn(errorService, 'i18nError');
 
           component.checkout();
 
           expect(errorService.i18nError).toHaveBeenCalledWith('packError');
         });
-      });
-    });
-  });
-
-  describe('getTrackingAttributes', () => {
-    it('should return valid object when Stripe', () => {
-      expect(component.getTrackingAttributes()).toEqual({
-        payment_method: 'STRIPE',
       });
     });
   });

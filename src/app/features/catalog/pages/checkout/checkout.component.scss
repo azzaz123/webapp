@@ -73,14 +73,7 @@ $offset: 7px;
       flex: 0 0 $duration-table-col-width;
     }
     &.zone {
-      background-image: linear-gradient(
-        206deg,
-        #2be2d6,
-        #2be2d6,
-        #2ae1d5,
-        #2ae0d4 1%,
-        $zone-bump
-      );
+      background-image: linear-gradient(206deg, #2be2d6, #2be2d6, #2ae1d5, #2ae0d4 1%, $zone-bump);
       z-index: 3;
       height: 80px + $offset;
       tsl-svg-icon {

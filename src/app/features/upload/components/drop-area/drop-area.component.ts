@@ -1,25 +1,9 @@
-import {
-  Component,
-  EventEmitter,
-  forwardRef,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ErrorsService } from '@core/errors/errors.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {
-  FileDropActions,
-  IFileDropAction,
-} from '@shared/uploader/file-drop.directive';
-import {
-  NgUploaderOptions,
-  OUTPUT_TYPE,
-  UploadFile,
-  UploadOutput,
-} from '@shared/uploader/upload.interface';
+import { FileDropActions, IFileDropAction } from '@shared/uploader/file-drop.directive';
+import { NgUploaderOptions, OUTPUT_TYPE, UploadFile, UploadOutput } from '@shared/uploader/upload.interface';
 import { UploaderService } from '@shared/uploader/uploader.service';
 import { range, throttle } from 'lodash-es';
 import { Subscription } from 'rxjs';
@@ -37,8 +21,7 @@ import { RemoveConfirmModalComponent } from '../../modals/remove-confirm-modal/r
     },
   ],
 })
-export class DropAreaComponent
-  implements OnInit, ControlValueAccessor, OnDestroy {
+export class DropAreaComponent implements OnInit, ControlValueAccessor, OnDestroy {
   @Output() onDeleteImage: EventEmitter<string> = new EventEmitter();
   @Output() onOrderImages: EventEmitter<void> = new EventEmitter();
   @Output() onAddImage: EventEmitter<UploadFile> = new EventEmitter();
@@ -58,11 +41,7 @@ export class DropAreaComponent
 
   propagateChange = (_: any) => {};
 
-  constructor(
-    private errorsService: ErrorsService,
-    private modalService: NgbModal,
-    private uploaderService: UploaderService
-  ) {}
+  constructor(private errorsService: ErrorsService, private modalService: NgbModal, private uploaderService: UploaderService) {}
 
   ngOnInit() {
     this.options = {
@@ -75,11 +54,9 @@ export class DropAreaComponent
   }
 
   private subscribeEvents(): void {
-    this.eventsSubscription = this.uploaderService.serviceEvents$.subscribe(
-      (event: UploadOutput) => {
-        this.onUploadOutput(event);
-      }
-    );
+    this.eventsSubscription = this.uploaderService.serviceEvents$.subscribe((event: UploadOutput) => {
+      this.onUploadOutput(event);
+    });
   }
 
   public writeValue(value: UploadFile[]) {

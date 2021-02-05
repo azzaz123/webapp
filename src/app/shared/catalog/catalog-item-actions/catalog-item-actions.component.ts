@@ -1,7 +1,6 @@
 import { takeWhile } from 'rxjs/operators';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
-import { TrackingService } from '../../../core/tracking/tracking.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { ItemBulkResponse } from '../../../core/item/item-response.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
@@ -30,7 +29,6 @@ export class CatalogItemActionsComponent implements OnInit {
 
   constructor(
     public itemService: ItemService,
-    private trackingService: TrackingService,
     private modalService: NgbModal,
     private toastService: ToastService,
     private i18n: I18nService,
@@ -48,9 +46,6 @@ export class CatalogItemActionsComponent implements OnInit {
         .bulkSetDeactivate()
         .pipe(
           takeWhile(() => {
-            this.trackingService.track(
-              TrackingService.MYCATALOG_PRO_MODAL_DEACTIVATE
-            );
             this.eventService.emit('itemChanged');
             return this.active;
           })
@@ -72,12 +67,9 @@ export class CatalogItemActionsComponent implements OnInit {
           this.getCounters.emit();
           this.eventService.emit('itemChanged');
           if (resp.status === 406) {
-            const modalRef: NgbModalRef = this.modalService.open(
-              TooManyItemsModalComponent,
-              {
-                windowClass: 'modal-standard',
-              }
-            );
+            const modalRef: NgbModalRef = this.modalService.open(TooManyItemsModalComponent, {
+              windowClass: 'modal-standard',
+            });
             modalRef.componentInstance.type = SUBSCRIPTION_TYPES.carDealer;
             modalRef.result.then(
               () => {},
@@ -123,12 +115,9 @@ export class CatalogItemActionsComponent implements OnInit {
     if (!this.itemIsBumped()) {
       this.router.navigate(['pro/catalog/checkout']);
     } else {
-      let modalRef: NgbModalRef = this.modalService.open(
-        AlreadyFeaturedModalComponent,
-        {
-          windowClass: 'bump',
-        }
-      );
+      let modalRef: NgbModalRef = this.modalService.open(AlreadyFeaturedModalComponent, {
+        windowClass: 'bump',
+      });
       modalRef.result.then(
         () => {
           modalRef = null;

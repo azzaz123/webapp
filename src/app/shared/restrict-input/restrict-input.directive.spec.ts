@@ -23,9 +23,7 @@ describe('RestrictInputDirective', () => {
       imports: [FormsModule],
     });
     fixture = TestBed.createComponent(TestComponent);
-    element = fixture.debugElement.queryAll(
-      By.directive(RestrictInputDirective)
-    )[0];
+    element = fixture.debugElement.queryAll(By.directive(RestrictInputDirective))[0];
     fixture.detectChanges();
   }));
 

@@ -8,11 +8,7 @@ import {
 } from '@core/http/interceptors/token.interceptor';
 import { ITEM_TYPES } from '@core/item/item';
 import { REALESTATE_CATEGORY } from '@core/item/item-categories';
-import {
-  CarContent,
-  ItemResponse,
-  RealEstateResponse,
-} from '@core/item/item-response.interface';
+import { CarContent, ItemResponse, RealEstateResponse } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
 import { Image } from '@core/user/user-response.interface';
 import { environment } from '@environments/environment';
@@ -35,45 +31,26 @@ import { combineLatest, Observable } from 'rxjs';
 export class UploadService {
   private API_URL = 'api/v3/items';
 
-  constructor(
-    private accesTokenService: AccessTokenService,
-    private itemService: ItemService,
-    private uploaderService: UploaderService
-  ) {}
-  public createItem(
-    values: IProductUploadForm | IRealEstateUploadForm | ICarUploadForm,
-    itemType: ITEM_TYPES
-  ): Observable<UploadOutput> {
+  constructor(private accesTokenService: AccessTokenService, private itemService: ItemService, private uploaderService: UploaderService) {}
+  public createItem(values: IProductUploadForm | IRealEstateUploadForm | ICarUploadForm, itemType: ITEM_TYPES): Observable<UploadOutput> {
     const parsedValues = cloneDeep(values);
     delete parsedValues.images;
 
     // TODO THIS WILL BE REFACTORED WITH THE PARALIZATION OF UPLOAD FILES.
     return new Observable((observer) => {
-      this.createItemWithFirstImage(
-        parsedValues,
-        values.images[0],
-        itemType
-      ).subscribe(
+      this.createItemWithFirstImage(parsedValues, values.images[0], itemType).subscribe(
         (response: UploadOutput) => {
           if (values.images.length > 1) {
             if (response.type === OUTPUT_TYPE.done) {
               const remainigFiles = values.images.slice(1);
-              this.uploadRemainingImages(
-                response.file.response.id,
-                remainigFiles,
-                itemType
-              ).subscribe(
+              this.uploadRemainingImages(response.file.response.id, remainigFiles, itemType).subscribe(
                 (fileResonses: UploadOutput[]) => {
-                  if (
-                    fileResonses.every((file) => file.type === OUTPUT_TYPE.done)
-                  ) {
+                  if (fileResonses.every((file) => file.type === OUTPUT_TYPE.done)) {
                     observer.next(response);
                     observer.complete();
                   } else {
                     const partialResponse: UploadOutput = cloneDeep(response);
-                    partialResponse.pendingFiles = this.calculatePendingFiles(
-                      fileResonses
-                    );
+                    partialResponse.pendingFiles = this.calculatePendingFiles(fileResonses);
                     partialResponse.type = OUTPUT_TYPE.uploading;
                     observer.next(partialResponse);
                   }
@@ -102,8 +79,7 @@ export class UploadService {
 
   private calculatePendingFiles(files: UploadOutput[]): PendingFiles {
     const totalFiles = files.length + 1;
-    const currentUploading =
-      files.filter((file) => file.type === OUTPUT_TYPE.done).length + 2;
+    const currentUploading = files.filter((file) => file.type === OUTPUT_TYPE.done).length + 2;
     return { totalFiles, currentUploading };
   }
 
@@ -114,17 +90,9 @@ export class UploadService {
   ): Observable<UploadOutput> {
     let inputEvent: UploadInput;
     if (itemType === ITEM_TYPES.CARS) {
-      inputEvent = this.buildUploadEvent(
-        values,
-        this.API_URL + '/cars',
-        'item_car'
-      );
+      inputEvent = this.buildUploadEvent(values, this.API_URL + '/cars', 'item_car');
     } else if (itemType === ITEM_TYPES.REAL_ESTATE) {
-      inputEvent = this.buildUploadEvent(
-        values,
-        this.API_URL + '/real_estate',
-        'item_real_estate'
-      );
+      inputEvent = this.buildUploadEvent(values, this.API_URL + '/real_estate', 'item_real_estate');
     } else {
       inputEvent = this.buildUploadEvent(values, this.API_URL, 'item');
     }
@@ -165,11 +133,7 @@ export class UploadService {
     };
   }
 
-  private uploadRemainingImages(
-    itemId: string,
-    files: UploadFile[],
-    itemType: ITEM_TYPES
-  ): Observable<UploadOutput[]> {
+  private uploadRemainingImages(itemId: string, files: UploadFile[], itemType: ITEM_TYPES): Observable<UploadOutput[]> {
     const imagesRequest: Observable<UploadOutput>[] = [];
     files.forEach((file: UploadFile) => {
       imagesRequest.push(this.uploadSingleImage(file, itemId, itemType));
@@ -177,11 +141,7 @@ export class UploadService {
     return combineLatest(imagesRequest);
   }
 
-  public uploadSingleImage(
-    file: UploadFile,
-    itemId: string,
-    type: ITEM_TYPES
-  ): Observable<UploadOutput> {
+  public uploadSingleImage(file: UploadFile, itemId: string, type: ITEM_TYPES): Observable<UploadOutput> {
     const url =
       this.API_URL +
       '/' +
@@ -203,11 +163,7 @@ export class UploadService {
 
   private getUploadHeaders(url: string, additionalHeaders?: any): any {
     const timestamp = Date.now();
-    const signature = this.accesTokenService.getTokenSignature(
-      url,
-      'POST',
-      timestamp
-    );
+    const signature = this.accesTokenService.getTokenSignature(url, 'POST', timestamp);
 
     return {
       ...additionalHeaders,

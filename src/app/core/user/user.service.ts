@@ -12,12 +12,7 @@ import { AccessTokenService } from '../http/access-token.service';
 import { environment } from '../../../environments/environment';
 import { UserInfoResponse, UserProInfo } from './user-info.interface';
 import { Coordinate } from '../geolocation/address-response.interface';
-import {
-  Counters,
-  Ratings,
-  UserStats,
-  UserStatsResponse,
-} from './user-stats.interface';
+import { Counters, Ratings, UserStats, UserStatsResponse } from './user-stats.interface';
 import { UserData, UserProData } from './user-data.interface';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { CookieService } from 'ngx-cookie';
@@ -32,26 +27,21 @@ import { InboxUser, InboxItem } from '@features/chat/core/model';
 export const LOGOUT_ENDPOINT = 'rest/logout';
 
 export const USER_BASE_ENDPOINT = 'api/v3/users/';
-export const USER_BY_ID_ENDPOINT = (userId: string) =>
-  `${USER_BASE_ENDPOINT}${userId}`;
+export const USER_BY_ID_ENDPOINT = (userId: string) => `${USER_BASE_ENDPOINT}${userId}`;
 export const USER_ENDPOINT = `${USER_BASE_ENDPOINT}me/`;
 export const USER_ONLINE_ENDPOINT = `${USER_ENDPOINT}online`;
 export const USER_LOCATION_ENDPOINT = `${USER_ENDPOINT}location`;
 export const USER_COVER_IMAGE_ENDPOINT = `${USER_ENDPOINT}cover-image`;
-export const USER_PHONE_INFO_ENDPOINT = (userId: string) =>
-  `${USER_BASE_ENDPOINT}${userId}/phone-method`;
+export const USER_PHONE_INFO_ENDPOINT = (userId: string) => `${USER_BASE_ENDPOINT}${userId}/phone-method`;
 export const USER_STORE_LOCATION_ENDPOINT = `${USER_ENDPOINT}bumped-profile/store-location'`;
 export const USER_STATS_ENDPOINT = `${USER_ENDPOINT}stats`;
-export const USER_EXTRA_INFO_ENDPOINT = (userId: string) =>
-  `${USER_BASE_ENDPOINT}${userId}/extra-info`;
+export const USER_EXTRA_INFO_ENDPOINT = (userId: string) => `${USER_BASE_ENDPOINT}${userId}/extra-info`;
 export const USER_EMAIL_ENDPOINT = `${USER_ENDPOINT}email`;
 export const USER_PASSWORD_ENDPOINT = `${USER_ENDPOINT}password`;
 export const USER_UNSUBSCRIBE_ENDPOINT = `${USER_ENDPOINT}unsubscribe/`;
 export const USER_UNSUBSCRIBE_REASONS_ENDPOINT = `${USER_UNSUBSCRIBE_ENDPOINT}reason`;
-export const USER_REPORT_ENDPOINT = (userId: string) =>
-  `${USER_ENDPOINT}report/user/${userId}`;
-export const USER_STATS_BY_ID_ENDPOINT = (userId: string) =>
-  `${USER_BASE_ENDPOINT}${userId}/stats`;
+export const USER_REPORT_ENDPOINT = (userId: string) => `${USER_ENDPOINT}report/user/${userId}`;
+export const USER_STATS_BY_ID_ENDPOINT = (userId: string) => `${USER_BASE_ENDPOINT}${userId}/stats`;
 export const USER_PROFILE_SUBSCRIPTION_INFO_ENDPOINT = `${USER_ENDPOINT}profile-subscription-info/`;
 export const USER_PROFILE_SUBSCRIPTION_INFO_TYPE_ENDPOINT = `${USER_ENDPOINT}type`;
 
@@ -91,13 +81,8 @@ export class UserService {
   }
 
   public logout(redirect?: string) {
-    const redirectUrl = redirect
-      ? redirect
-      : environment.siteUrl.replace('es', this.subdomain);
-    const cookieOptions =
-      environment.name === 'local'
-        ? { domain: 'localhost' }
-        : { domain: '.wallapop.com' };
+    const redirectUrl = redirect ? redirect : environment.siteUrl.replace('es', this.subdomain);
+    const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
     this.cookieService.remove('publisherId', cookieOptions);
     this.cookieService.remove('creditName', cookieOptions);
     this.cookieService.remove('creditQuantity', cookieOptions);
@@ -111,9 +96,7 @@ export class UserService {
   }
 
   private sendUserPresence() {
-    return this.http
-      .post(`${environment.baseUrl}${USER_ONLINE_ENDPOINT}`, null)
-      .subscribe();
+    return this.http.post(`${environment.baseUrl}${USER_ONLINE_ENDPOINT}`, null).subscribe();
   }
 
   public sendUserPresenceInterval(interval: number) {
@@ -134,13 +117,11 @@ export class UserService {
       return of(user);
     }
 
-    return this.http
-      .get<UserResponse>(`${environment.baseUrl}${USER_BY_ID_ENDPOINT(id)}`)
-      .pipe(
-        map((user) => this.mapRecordData(user)),
-        tap((user) => this._users.push(user)),
-        catchError(() => of(this.getFakeUser(id)))
-      );
+    return this.http.get<UserResponse>(`${environment.baseUrl}${USER_BY_ID_ENDPOINT(id)}`).pipe(
+      map((user) => this.mapRecordData(user)),
+      tap((user) => this._users.push(user)),
+      catchError(() => of(this.getFakeUser(id)))
+    );
   }
 
   public getFakeUser(id: string): User {
@@ -152,32 +133,24 @@ export class UserService {
       return of(this._user);
     }
 
-    return this.http
-      .get<UserResponse>(`${environment.baseUrl}${USER_ENDPOINT}`)
-      .pipe(
-        map((r) => this.mapRecordData(r)),
-        tap((user) => (this._user = user)),
-        // TODO: This will need to be parsed when devops team adds CORS headers on API gateway error
-        catchError((error) => {
-          this.logout(null);
-          return of(error);
-        })
-      );
+    return this.http.get<UserResponse>(`${environment.baseUrl}${USER_ENDPOINT}`).pipe(
+      map((r) => this.mapRecordData(r)),
+      tap((user) => (this._user = user)),
+      // TODO: This will need to be parsed when devops team adds CORS headers on API gateway error
+      catchError((error) => {
+        this.logout(null);
+        return of(error);
+      })
+    );
   }
 
   public checkUserStatus() {
     if (this.isLogged) {
-      this.event.emit(
-        EventService.USER_LOGIN,
-        this.accessTokenService.accessToken
-      );
+      this.event.emit(EventService.USER_LOGIN, this.accessTokenService.accessToken);
     }
   }
 
-  public calculateDistanceFromItem(
-    user: User | InboxUser,
-    item: Item | InboxItem
-  ): number {
+  public calculateDistanceFromItem(user: User | InboxUser, item: Item | InboxItem): number {
     if (!user.location || !this.user.location) {
       return null;
     }
@@ -187,8 +160,7 @@ export class UserService {
     };
     const userCoord: Coordinate = {
       latitude: user.location.approximated_latitude || user.location.latitude,
-      longitude:
-        user.location.approximated_longitude || user.location.longitude,
+      longitude: user.location.approximated_longitude || user.location.longitude,
     };
     return this.getDistanceInKilometers(currentUserCoord, userCoord);
   }
@@ -223,38 +195,26 @@ export class UserService {
   }
 
   public getInfo(userId: string): Observable<UserInfoResponse> {
-    return this.http.get<UserInfoResponse>(
-      `${environment.baseUrl}${USER_EXTRA_INFO_ENDPOINT(userId)}`
-    );
+    return this.http.get<UserInfoResponse>(`${environment.baseUrl}${USER_EXTRA_INFO_ENDPOINT(userId)}`);
   }
 
   public getProInfo(): Observable<UserProInfo> {
-    return this.http.get<UserProInfo>(
-      `${environment.baseUrl}${PROTOOL_EXTRA_INFO_ENDPOINT}`
-    );
+    return this.http.get<UserProInfo>(`${environment.baseUrl}${PROTOOL_EXTRA_INFO_ENDPOINT}`);
   }
 
   public getUserCover(): Observable<Image> {
-    return this.http
-      .get<Image>(`${environment.baseUrl}${USER_COVER_IMAGE_ENDPOINT}`)
-      .pipe(catchError((error) => of({} as Image)));
+    return this.http.get<Image>(`${environment.baseUrl}${USER_COVER_IMAGE_ENDPOINT}`).pipe(catchError((error) => of({} as Image)));
   }
 
   public updateProInfo(data: UserProData): Observable<any> {
-    return this.http.post(
-      `${environment.baseUrl}${PROTOOL_EXTRA_INFO_ENDPOINT}`,
-      data
-    );
+    return this.http.post(`${environment.baseUrl}${PROTOOL_EXTRA_INFO_ENDPOINT}`, data);
   }
 
   public updateLocation(coordinates: Coordinate): Observable<UserLocation> {
-    return this.http.put<UserLocation>(
-      `${environment.baseUrl}${USER_LOCATION_ENDPOINT}`,
-      {
-        latitude: coordinates.latitude,
-        longitude: coordinates.longitude,
-      }
-    );
+    return this.http.put<UserLocation>(`${environment.baseUrl}${USER_LOCATION_ENDPOINT}`, {
+      latitude: coordinates.latitude,
+      longitude: coordinates.longitude,
+    });
   }
 
   public updateSearchLocationCookies(location: Coordinate) {
@@ -262,64 +222,45 @@ export class UserService {
     expirationDate.setTime(expirationDate.getTime() + 15 * 60 * 1000);
     const cookieOptions = { expires: expirationDate, domain: '.wallapop.com' };
 
-    this.cookieService.put(
-      'searchLat',
-      location.latitude.toString(),
-      cookieOptions
-    );
-    this.cookieService.put(
-      'searchLng',
-      location.longitude.toString(),
-      cookieOptions
-    );
+    this.cookieService.put('searchLat', location.latitude.toString(), cookieOptions);
+    this.cookieService.put('searchLng', location.longitude.toString(), cookieOptions);
     this.cookieService.put('searchPosName', location.name, cookieOptions);
   }
 
   // TODO: This is in the apps but currently not now in web. Not being used but in the future is going to be implemented
   public updateStoreLocation(coordinates: Coordinate): Observable<any> {
-    return this.http.post(
-      `${environment.baseUrl}${USER_STORE_LOCATION_ENDPOINT}`,
-      {
-        latitude: coordinates.latitude,
-        longitude: coordinates.longitude,
-        address: coordinates.name,
-      }
-    );
+    return this.http.post(`${environment.baseUrl}${USER_STORE_LOCATION_ENDPOINT}`, {
+      latitude: coordinates.latitude,
+      longitude: coordinates.longitude,
+      address: coordinates.name,
+    });
   }
 
   public getStats(): Observable<UserStats> {
-    return this.http
-      .get<UserStatsResponse>(`${environment.baseUrl}${USER_STATS_ENDPOINT}`)
-      .pipe(
-        map((response) => {
-          return {
-            ratings: this.toRatingsStats(response.ratings),
-            counters: this.toCountersStats(response.counters),
-          };
-        })
-      );
+    return this.http.get<UserStatsResponse>(`${environment.baseUrl}${USER_STATS_ENDPOINT}`).pipe(
+      map((response) => {
+        return {
+          ratings: this.toRatingsStats(response.ratings),
+          counters: this.toCountersStats(response.counters),
+        };
+      })
+    );
   }
 
   // TODO: Remove if not used when public web is in webapp
   public getUserStats(userId: string): Observable<UserStats> {
-    return this.http
-      .get<any>(`${environment.baseUrl}${USER_STATS_BY_ID_ENDPOINT(userId)}`)
-      .pipe(
-        map((response) => {
-          return {
-            ratings: this.toRatingsStats(response.ratings),
-            counters: this.toCountersStats(response.counters),
-          };
-        })
-      );
+    return this.http.get<any>(`${environment.baseUrl}${USER_STATS_BY_ID_ENDPOINT(userId)}`).pipe(
+      map((response) => {
+        return {
+          ratings: this.toRatingsStats(response.ratings),
+          counters: this.toCountersStats(response.counters),
+        };
+      })
+    );
   }
 
   public getPhoneInfo(userId: string): Observable<PhoneMethodResponse> {
-    return this.http
-      .get<PhoneMethodResponse>(
-        `${environment.baseUrl}${USER_PHONE_INFO_ENDPOINT(userId)}`
-      )
-      .pipe(catchError(() => of(null)));
+    return this.http.get<PhoneMethodResponse>(`${environment.baseUrl}${USER_PHONE_INFO_ENDPOINT(userId)}`).pipe(catchError(() => of(null)));
   }
 
   public toRatingsStats(ratings): Ratings {
@@ -336,12 +277,10 @@ export class UserService {
   }
 
   public edit(data: UserData): Observable<User> {
-    return this.http
-      .post<UserResponse>(`${environment.baseUrl}${USER_ENDPOINT}`, data)
-      .pipe(
-        map((response) => this.mapRecordData(response)),
-        tap((user) => (this._user = user))
-      );
+    return this.http.post<UserResponse>(`${environment.baseUrl}${USER_ENDPOINT}`, data).pipe(
+      map((response) => this.mapRecordData(response)),
+      tap((user) => (this._user = user))
+    );
   }
 
   public updateEmail(email_address: string): Observable<any> {
@@ -350,10 +289,7 @@ export class UserService {
     });
   }
 
-  public updatePassword(
-    old_password: string,
-    new_password: string
-  ): Observable<any> {
+  public updatePassword(old_password: string, new_password: string): Observable<any> {
     return this.http.post(`${environment.baseUrl}${USER_PASSWORD_ENDPOINT}`, {
       old_password,
       new_password,
@@ -362,17 +298,11 @@ export class UserService {
 
   public getUnsubscribeReasons(): Observable<UnsubscribeReason[]> {
     const params = { language: this.i18n.locale };
-    return this.http.get<UnsubscribeReason[]>(
-      `${environment.baseUrl}${USER_UNSUBSCRIBE_REASONS_ENDPOINT}`,
-      { params }
-    );
+    return this.http.get<UnsubscribeReason[]>(`${environment.baseUrl}${USER_UNSUBSCRIBE_REASONS_ENDPOINT}`, { params });
   }
 
   public unsubscribe(reason_id: number, other_reason: string): Observable<any> {
-    return this.http.post(
-      `${environment.baseUrl}${USER_UNSUBSCRIBE_ENDPOINT}`,
-      { reason_id, other_reason }
-    );
+    return this.http.post(`${environment.baseUrl}${USER_UNSUBSCRIBE_ENDPOINT}`, { reason_id, other_reason });
   }
 
   private mapRecordData(data: UserResponse): User {
@@ -426,9 +356,7 @@ export class UserService {
   public hasPerm(permission: string): Observable<boolean> {
     return this.me().pipe(
       mergeMap(() => {
-        return from(
-          this.permissionService.hasPermission(PERMISSIONS[permission])
-        );
+        return from(this.permissionService.hasPermission(PERMISSIONS[permission]));
       })
     );
   }
@@ -443,10 +371,7 @@ export class UserService {
     return this.me().pipe(map((user) => user.featured));
   }
 
-  private getDistanceInKilometers(
-    coord1: Coordinate,
-    coord2: Coordinate
-  ): number {
+  private getDistanceInKilometers(coord1: Coordinate, coord2: Coordinate): number {
     const distance = this.getDistance(coord1, coord2);
     return 6371 * distance;
   }
@@ -456,9 +381,7 @@ export class UserService {
     const v2 = this.toRadians(coord2.latitude);
     const s1 = this.toRadians(coord2.latitude - coord1.latitude);
     const s2 = this.toRadians(coord2.longitude - coord1.longitude);
-    const a =
-      Math.pow(Math.sin(s1 / 2), 2) +
-      Math.cos(v1) * Math.cos(v2) * Math.pow(Math.sin(s2 / 2), 2);
+    const a = Math.pow(Math.sin(s1 / 2), 2) + Math.cos(v1) * Math.cos(v2) * Math.pow(Math.sin(s2 / 2), 2);
     return 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   }
 
