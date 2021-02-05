@@ -34,7 +34,6 @@ describe('TryProSlotItemComponent', () => {
       fixture.detectChanges();
 
       const submitButton: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
-
       expect(submitButton.textContent).toEqual('Free trial');
     });
 
@@ -42,7 +41,6 @@ describe('TryProSlotItemComponent', () => {
       fixture.detectChanges();
 
       const submitButton: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
-
       expect(submitButton.textContent).toEqual('Know more');
     });
 
@@ -62,6 +60,7 @@ describe('TryProSlotItemComponent', () => {
         spyOn(component.close, 'emit');
 
         component.onClose();
+
         expect(component.close.emit).toBeCalledTimes(1);
       });
     });
