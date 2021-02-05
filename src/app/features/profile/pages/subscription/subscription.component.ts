@@ -78,9 +78,7 @@ export class SubscriptionsComponent implements OnInit {
     const isSendClickProSubscription = this.route.snapshot.paramMap.get('sendClickProSubscription') === 'true';
 
     if (isSendClickProSubscription) {
-      this.analyticsService.mParticleReady$.pipe(take(1)).subscribe(() => {
-        this.trackClickProSubscription();
-      });
+      this.trackClickProSubscription();
     }
   }
 

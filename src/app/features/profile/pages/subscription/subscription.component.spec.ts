@@ -146,7 +146,6 @@ describe('SubscriptionComponent', () => {
     describe('Track param events', () => {
       describe('when has param events', () => {
         it('should track event', () => {
-          jest.spyOn(analyticsService, 'mParticleReady$', 'get').mockReturnValue(of(null));
           spyOn(analyticsService, 'trackPageView');
           spyOn(route.snapshot.paramMap, 'get').and.returnValue('true');
           const expectedPageViewEvent: AnalyticsPageView<ClickProSubscription> = {
