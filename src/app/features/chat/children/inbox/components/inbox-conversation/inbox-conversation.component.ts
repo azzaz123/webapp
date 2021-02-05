@@ -18,7 +18,7 @@ export class InboxConversationComponent {
 
   public unreadCounterDisplayLimit = 99;
   public momentConfig: CalendarSpec = {
-    lastDay: '[Yesterday]',
+    lastDay: this.i18n.getTranslations('defaultDaysMomentConfig').lastDay,
     sameDay: 'HH:mm',
     nextDay: 'ddd',
     lastWeek: 'D MMM.',
