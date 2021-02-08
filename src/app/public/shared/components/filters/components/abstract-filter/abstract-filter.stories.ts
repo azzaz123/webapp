@@ -9,6 +9,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { ButtonModule } from '@shared/button/button.module';
 
+// TODO: Investigate how to implement filter template though a directive
+
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'stories-abstract-filter',
@@ -25,11 +27,11 @@ import { ButtonModule } from '@shared/button/button.module';
       [hasValue]="hasValue()"
       (openStateChange)="openStateChange.emit($event)"
       (apply)="handleApply()"
-      (clear)="handleClear()"
+      (clear)="clear.emit()"
     >
       <!--   Extended content   -->
       <div style="border: 1px dashed black; padding: 5px;" *ngIf="storyContent">
-        <span>{{ storyContent }}</span>
+        <span (click)="change.emit([])">{{ storyContent }}</span>
       </div>
       <!--   End extended content   -->
     </tsl-filter-template>
@@ -44,7 +46,6 @@ class StoryAbstractFilterComponent extends AbstractFilter {
   @Input() storyHasNoArrow?: boolean;
   @Input() storyContent?: string;
   @Output() storyBubbleApply: EventEmitter<void> = new EventEmitter();
-  @Output() storyBubbleClear: EventEmitter<void> = new EventEmitter();
 
   public isDropdown(): boolean {
     return this.storyHasNoArrow ? false : super.isDropdown();
@@ -69,10 +70,6 @@ class StoryAbstractFilterComponent extends AbstractFilter {
   public handleApply(): void {
     this.storyBubbleApply.emit();
   }
-
-  public handleClear(): void {
-    this.storyBubbleClear.emit();
-  }
 }
 
 export default {
@@ -80,8 +77,9 @@ export default {
   component: StoryAbstractFilterComponent,
   argTypes: {
     openStateChange: { action: 'We can handle open state from the parent' },
+    clear: { action: 'I need to be cleared!' },
+    change: { action: 'Content clicked, we need to change something!' },
     storyBubbleApply: { action: 'We can now handle bubble apply!' },
-    storyBubbleClear: { action: 'I need to be cleared!' },
   },
   decorators: [
     moduleMetadata({

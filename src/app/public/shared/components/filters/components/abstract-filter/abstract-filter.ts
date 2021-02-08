@@ -7,16 +7,17 @@ import { FilterTemplateComponent } from '@public/shared/components/filters/compo
 
 export abstract class AbstractFilter implements Filter {
   @Input() variant: FILTER_VARIANT = FILTER_VARIANT.BUBBLE;
-  @Input() config: FilterConfig;
+  @Input() config: FilterConfig = { title: '' };
   @Input() value: FilterParameter[] = [];
   @Output() change = new EventEmitter<FilterParameter[]>();
+  @Output() clear = new EventEmitter<void>();
   @Output() openStateChange: EventEmitter<boolean> = new EventEmitter();
 
   @ViewChild(FilterTemplateComponent) filterTemplate: FilterTemplateComponent;
 
   public abstract get label(): string | undefined;
 
-  public abstract get icon(): string | undefined;
+  public get icon(): string | undefined {}
 
   public get hasApply(): boolean {
     return this.config.actions?.apply;
@@ -51,6 +52,4 @@ export abstract class AbstractFilter implements Filter {
   }
 
   public handleApply(): void {}
-
-  public handleClear(): void {}
 }

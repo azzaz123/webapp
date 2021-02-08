@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { BUBBLE_VARIANT } from '@public/shared/components/bubble/bubble.component';
 import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 
@@ -7,7 +7,7 @@ import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './filter-template.component.html',
   styleUrls: ['./filter-template.component.scss'],
 })
-export class FilterTemplateComponent implements AfterViewInit {
+export class FilterTemplateComponent {
   @Input() isBubble?: boolean;
   @Input() isDropdown?: boolean;
   @Input() hasValue?: boolean;
@@ -30,6 +30,10 @@ export class FilterTemplateComponent implements AfterViewInit {
       this.toggleDropdown();
     }
     event.stopPropagation();
+  }
+
+  public handleOpenChange(isOpen: boolean): void {
+    this.openStateChange.emit(isOpen);
   }
 
   public handleCancel(event: MouseEvent): void {

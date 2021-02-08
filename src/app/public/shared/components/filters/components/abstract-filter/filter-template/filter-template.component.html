@@ -1,6 +1,6 @@
 <div *ngIf="isBubble"
      ngbDropdown #dropdown="ngbDropdown"
-     (openChange)="openStateChange.emit($event)">
+     (openChange)="handleOpenChange($event)">
   <div ngbDropdownToggle>
     <tsl-bubble
                 (click)="handleBubbleClick($event)"
@@ -42,7 +42,7 @@
     <div #extendedContent>
       <ng-content></ng-content>
     </div>
-    <span *ngIf="extendedContent.children.length === 0" class="FilterTemplate__dev-warn">Please, avoid using abstract filter directly, use one of the extensions or create your own</span>
+    <span *ngIf="extendedContent.children.length === 0" class="FilterTemplate__dev_warn">Please, avoid using abstract filter directly, use one of the extensions or create your own</span>
   </div>
 </ng-template>
 
