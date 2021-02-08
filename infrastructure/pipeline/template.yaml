@@ -317,7 +317,8 @@ Resources:
     Properties:
       Name: !Sub "webapp-invalidate-caches-${EnvName}"
       Description: !Sub "Invalidate caches for webapp ${EnvName} distributions"
-      ServiceRole: !Ref CodeBuildServiceRole
+      ServiceRole:
+        Fn::ImportValue: execute-predeploy-role
       Artifacts:
         Type: NO_ARTIFACTS
       Source:
