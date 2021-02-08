@@ -192,6 +192,7 @@
   <msg id="ChangeSelectSubscriptionCardTitle"><source>src/app/shared/modals/change-card-modal/change-card-modal.component.html:5</source>Select a credit card</msg>
   <msg id="ChangeAddSubscriptionCardTitle"><source>src/app/shared/modals/change-card-modal/change-card-modal.component.html:6</source>Add a credit card</msg>
   <msg id="AddCard"><source>src/app/shared/modals/change-card-modal/change-card-modal.component.html:13</source>Add card</msg>
+  <msg id="UseASavedCard"><source>src/app/shared/modals/change-card-modal/change-card-modal.component.html:14</source>Use a saved card</msg>
   <msg id="Cancel"><source>src/app/shared/nav-links/nav-links.component.html:7</source>Cancel</msg>
   <msg id="OrderBy"><source>src/app/shared/nav-links/nav-links.component.html:40</source>Order by</msg>
   <msg id="MissingPaymentMethodTitle"><source>src/app/shared/modals/no-card-modal/no-card-modal.component.html:4</source>Delete payment method</msg>
@@ -398,11 +399,11 @@
   <msg id="3938280541945338173"><source>src/app/features/catalog/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component.html:17</source>and you have <ph name="INTERPOLATION"/> credit</msg>
   <msg id="5378722151309930038"><source>src/app/features/catalog/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component.html:20</source>Buy more Wallacoins</msg>
   <msg id="5880798667461104338"><source>src/app/features/catalog/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component.html:21</source>Buy more credit</msg>
+  <msg id="7588966777090643410"><source>src/app/features/catalog/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component.html:5</source>Your car is published for 60 days. You can find it in your catalog.</msg>
+  <msg id="8720977247725652816"><source>src/app/features/catalog/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component.html:6</source>Ok</msg>
   <msg id="8894377483833272091"><source>src/app/features/catalog/modals/buy-product-modal/buy-product-modal.component.html:21</source>Price</msg>
   <msg id="2652477817167335614"><source>src/app/features/catalog/modals/buy-product-modal/buy-product-modal.component.html:16</source>Publish your car</msg>
   <msg id="708817521397622777"><source>src/app/features/catalog/modals/buy-product-modal/buy-product-modal.component.html:18</source>Pay with your credit and credit card:</msg>
-  <msg id="7588966777090643410"><source>src/app/features/catalog/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component.html:5</source>Your car is published for 60 days. You can find it in your catalog.</msg>
-  <msg id="8720977247725652816"><source>src/app/features/catalog/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component.html:6</source>Ok</msg>
   <msg id="855735721940425245"><source>src/app/features/catalog/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:13</source>Congratulations</msg>
   <msg id="9213119646873056135"><source>src/app/features/catalog/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:14</source>Your item(s) have been featured and you can see them in the top position.</msg>
   <msg id="8982629098121976758"><source>src/app/features/catalog/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:15</source>Start selling</msg>
@@ -479,13 +480,6 @@
   <msg id="ProfileInfoLocation"><source>src/app/public/features/public-profile/pages/user-info/user-info.component.html:57</source>Location</msg>
   <msg id="Unknown"><source>src/app/public/features/public-profile/pages/user-info/user-info.component.html:42</source>Unknown</msg>
   <msg id="ProfileInfoSchedule"><source>src/app/public/features/public-profile/pages/user-info/user-info.component.html:51</source>Opening hours</msg>
-  <msg id="792930787826735850"><source>src/app/features/profile/pages/profile.component.html:6</source>Your profile</msg>
-  <msg id="4532380494593950343"><source>src/app/features/profile/pages/profile.component.html:11</source>From here you can view and edit your profile</msg>
-  <msg id="7022993325750262876"><source>src/app/features/profile/pages/profile.component.html:13</source>View my public profile</msg>
-  <msg id="4086606389696938932"><source>src/app/features/profile/pages/profile.component.html:27</source>Account</msg>
-  <msg id="1399407446828778050"><source>src/app/features/profile/pages/profile.component.html:28,30</source>Billing information</msg>
-  <msg id="5875130684997376720"><source>src/app/features/profile/pages/profile.component.html:31</source>Billing</msg>
-  <msg id="wallapopPro"><source>src/app/features/profile/pages/profile.component.html:35</source>Wallapop PRO</msg>
   <msg id="682982254050004818"><source>src/app/features/chat/components/current-conversation/current-conversation.component.html:8,10</source>Choose a conversation<ph name="LINE_BREAK"/> from the list on the left</msg>
   <msg id="3325766019344626759"><source>src/app/features/chat/components/current-conversation/current-conversation.component.html:10</source>There are no messages</msg>
   <msg id="177886998911393770"><source>src/app/features/chat/components/current-conversation/current-conversation.component.html:11,13</source>Service not available at the moment.<ph name="LINE_BREAK"/> Try again later.</msg>
@@ -496,6 +490,13 @@
   <msg id="itemIsNotAvailableWarning"><source>src/app/features/chat/components/current-conversation/current-conversation.component.html:51</source>This product has expired or has been removed</msg>
   <msg id="itemIsUnpublishedWarning"><source>src/app/features/chat/components/current-conversation/current-conversation.component.html:58</source>The product violates wallapop coexistence regulations</msg>
   <msg id="loadMoreButton"><source>src/app/features/chat/components/current-conversation/current-conversation.component.html:86</source>Load more</msg>
+  <msg id="792930787826735850"><source>src/app/features/profile/pages/profile.component.html:6</source>Your profile</msg>
+  <msg id="4532380494593950343"><source>src/app/features/profile/pages/profile.component.html:11</source>From here you can view and edit your profile</msg>
+  <msg id="7022993325750262876"><source>src/app/features/profile/pages/profile.component.html:13</source>View my public profile</msg>
+  <msg id="4086606389696938932"><source>src/app/features/profile/pages/profile.component.html:27</source>Account</msg>
+  <msg id="1399407446828778050"><source>src/app/features/profile/pages/profile.component.html:28,30</source>Billing information</msg>
+  <msg id="5875130684997376720"><source>src/app/features/profile/pages/profile.component.html:31</source>Billing</msg>
+  <msg id="wallapopPro"><source>src/app/features/profile/pages/profile.component.html:35</source>Wallapop PRO</msg>
   <msg id="yourMessages"><source>src/app/features/chat/children/inbox/inbox.component.html:2</source>Your Messages</msg>
   <msg id="inboxBox"><source>src/app/features/chat/children/inbox/inbox.component.html:18</source>Inbox</msg>
   <msg id="inboxArchivedBox"><source>src/app/features/chat/children/inbox/inbox.component.html:23</source>Archived Messages</msg>
@@ -763,6 +764,10 @@
   <msg id="8721026914522212662"><source>src/app/features/chat/components/archived-inbox-conversation/archived-inbox-conversation.component.html:41</source>Archived </msg>
   <msg id="2020278898288143668"><source>src/app/features/chat/children/inbox/components/inbox-item-for-sell/inbox-item-for-sell.component.html:7</source>Selling</msg>
   <msg id="3893097575013115653"><source>src/app/features/chat/children/inbox/components/inbox-item-for-sell/inbox-item-for-sell.component.html:8</source>+<ph name="INTERPOLATION"/> More</msg>
+  <msg id="7962273932004201523"><source>src/app/features/chat/children/inbox/components/inbox-item-component/inbox-item-detail.component.html:23,25</source>Sold </msg>
+  <msg id="8016649850785953911"><source>src/app/features/chat/children/inbox/components/inbox-item-component/inbox-item-detail.component.html:20</source>Unreserve</msg>
+  <msg id="6969584346860248976" desc="The distance between the user and the item"><source>src/app/features/chat/children/inbox/components/inbox-user-component/inbox-user-detail.component.html:13,16</source> <ph name="DISTANCE"/>km from you </msg>
+  <msg id="9119757647796405986"><source>src/app/features/chat/children/inbox/components/inbox-user-component/inbox-user-detail.component.html:16</source>No location</msg>
   <msg id="5784720522096888528"><source>src/app/features/profile/modal/become-pro-modal/become-pro-modal.component.html:4</source>These fields are for Pro users</msg>
   <msg id="976362268569732073"><source>src/app/features/profile/modal/become-pro-modal/become-pro-modal.component.html:9</source>Your products will be seen more: they will be in the first position of the searches</msg>
   <msg id="2615367215367851425"><source>src/app/features/profile/modal/become-pro-modal/become-pro-modal.component.html:10</source>Buyers can save your shop/profile as a favorite</msg>
@@ -771,10 +776,11 @@
   <msg id="4670889551195648197"><source>src/app/features/profile/modal/become-pro-modal/become-pro-modal.component.html:13</source>Your profile will have a different design and will stand out!</msg>
   <msg id="7373818560498277711"><source>src/app/features/profile/modal/become-pro-modal/become-pro-modal.component.html:14</source>Your items won&apos;t expire</msg>
   <msg id="5553776930806289663"><source>src/app/features/profile/modal/become-pro-modal/become-pro-modal.component.html:19</source>Ok, got it!</msg>
-  <msg id="7962273932004201523"><source>src/app/features/chat/children/inbox/components/inbox-item-component/inbox-item-detail.component.html:23,25</source>Sold </msg>
-  <msg id="8016649850785953911"><source>src/app/features/chat/children/inbox/components/inbox-item-component/inbox-item-detail.component.html:20</source>Unreserve</msg>
-  <msg id="6969584346860248976" desc="The distance between the user and the item"><source>src/app/features/chat/children/inbox/components/inbox-user-component/inbox-user-detail.component.html:13,16</source> <ph name="DISTANCE"/>km from you </msg>
-  <msg id="9119757647796405986"><source>src/app/features/chat/children/inbox/components/inbox-user-component/inbox-user-detail.component.html:16</source>No location</msg>
+  <msg id="blockUser"><source>src/app/features/chat/components/conversation-details-bar/conversation-details-bar.component.html:82,84</source>Block this User </msg>
+  <msg id="unblockUser"><source>src/app/features/chat/components/conversation-details-bar/conversation-details-bar.component.html:86,88</source>Unblock this User </msg>
+  <msg id="unarchiveConversation"><source>src/app/features/chat/components/conversation-details-bar/conversation-details-bar.component.html:70,72</source>Unarchive conversation </msg>
+  <msg id="reportListing"><source>src/app/features/chat/components/conversation-details-bar/conversation-details-bar.component.html:74,76</source>Report this Listing </msg>
+  <msg id="reportUser"><source>src/app/features/chat/components/conversation-details-bar/conversation-details-bar.component.html:78,80</source>Report this User </msg>
   <msg id="ProfileTabsPublishedLabel"><source>src/app/public/features/public-profile/components/profile-tabs/constants/profile-tab-constants.ts:13</source>Published</msg>
   <msg id="ProfileTabsReviewsLabel"><source>src/app/public/features/public-profile/components/profile-tabs/constants/profile-tab-constants.ts:18</source>Reviews</msg>
   <msg id="Sale"><source>src/app/public/features/public-profile/components/user-stats/user-stats.component.html:7</source>Sale</msg>
@@ -791,11 +797,8 @@
   <msg id="7026441111090698984"><source>src/app/features/upload/modals/preview-modal/preview-modal.component.html:51</source>Firm Price</msg>
   <msg id="8260444303636416171"><source>src/app/features/upload/modals/preview-modal/preview-modal.component.html:55</source>Shipping available</msg>
   <msg id="1292901362619782619"><source>src/app/features/upload/modals/preview-modal/preview-modal.component.html:59</source>Accept trades</msg>
-  <msg id="blockUser"><source>src/app/features/chat/components/conversation-details-bar/conversation-details-bar.component.html:82,84</source>Block this User </msg>
-  <msg id="unblockUser"><source>src/app/features/chat/components/conversation-details-bar/conversation-details-bar.component.html:86,88</source>Unblock this User </msg>
-  <msg id="unarchiveConversation"><source>src/app/features/chat/components/conversation-details-bar/conversation-details-bar.component.html:70,72</source>Unarchive conversation </msg>
-  <msg id="reportListing"><source>src/app/features/chat/components/conversation-details-bar/conversation-details-bar.component.html:74,76</source>Report this Listing </msg>
-  <msg id="reportUser"><source>src/app/features/chat/components/conversation-details-bar/conversation-details-bar.component.html:78,80</source>Report this User </msg>
+  <msg id="thirdVoiceDoReview"><source>src/app/features/chat/children/message/components/third-voice-review-button/third-voice-review-button.component.html:0</source>Do review</msg>
+  <msg id="thirdVoiceThanksForRating"><source>src/app/features/chat/children/message/components/third-voice-review-button/third-voice-review-button.component.html:3</source>Thanks! Others will appreciate your opinion</msg>
   <msg id="InvoiceHistory"><source>src/app/features/profile/components/invoice-history/invoice-history.component.html:2</source>Invoice history</msg>
   <msg id="InvoiceHistoryDescription"><source>src/app/features/profile/components/invoice-history/invoice-history.component.html:5,7</source> For now, you can only view or download invoices or credit memos from your subscriptions. </msg>
   <msg id="InvoiceHistoryAll"><source>src/app/features/profile/components/invoice-history/invoice-history.component.html:9</source>All</msg>
@@ -811,8 +814,6 @@
   <msg id="SubscriptionPriceDiscountDaysTrialFree"><source>src/app/features/profile/components/subscription-price-discount/subscription-price-discount.component.html:12</source><ph name="INTERPOLATION"/>-day trial for free!</msg>
   <msg id="8945513634555081527"><source>src/app/features/profile/components/subscription-benefits/subscription-benefits.component.html:3</source>Why subscribe to wallapop PRO?</msg>
   <msg id="6468756919468494280"><source>src/app/features/profile/components/subscription-benefits/subscription-benefits.component.html:4</source>Advantages for those who want to sell more and better</msg>
-  <msg id="thirdVoiceDoReview"><source>src/app/features/chat/children/message/components/third-voice-review-button/third-voice-review-button.component.html:0</source>Do review</msg>
-  <msg id="thirdVoiceThanksForRating"><source>src/app/features/chat/children/message/components/third-voice-review-button/third-voice-review-button.component.html:3</source>Thanks! Others will appreciate your opinion</msg>
   <msg id="3749157863216929849"><source>src/app/features/upload/components/edit/edit.component.html:3</source>Back to catalog</msg>
   <msg id="5112037422043971210"><source>src/app/features/upload/components/drop-area/drop-area.component.html:5</source>Drop here your files to upload as a product photo</msg>
   <msg id="7528717071298145350"><source>src/app/features/upload/components/drop-area/drop-area.component.html:11,13</source>You have reached the limit of <ph name="INTERPOLATION"/> photos per product.<ph name="LINE_BREAK"/>Remove one first if you want to add more.</msg>
