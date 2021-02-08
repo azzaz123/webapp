@@ -10,12 +10,6 @@ Parameters:
   ProjectName:
     Description: 'Name of the project'
     Type: String
-  BucketES:
-    Description: 'ARN of the S3 bucket where the app in ES is hosted'
-    Type: String
-  BucketEN:
-    Description: 'ARN of the S3 bucket where the app in EN is hosted'
-    Type: String
   BucketESName:
     Description: 'Name of the S3 bucket where the app in ES is hosted'
     Type: String
