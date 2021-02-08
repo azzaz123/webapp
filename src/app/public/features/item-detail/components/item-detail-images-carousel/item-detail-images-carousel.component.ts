@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Renderer2 } from '@angular/core';
 import { Item } from '@core/item/item';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
@@ -14,7 +14,10 @@ export class ItemDetailImagesCarouselComponent {
   @Input() images: string[];
   @Input() imageIndex: number;
 
-  constructor(private checkSessionService: CheckSessionService, private itemCardService: ItemCardService) {}
+  constructor(private checkSessionService: CheckSessionService, private itemCardService: ItemCardService, private renderer: Renderer2) {
+    this.renderer.addClass(document.body, 'blocked-page');
+  }
+
   public show(): void {
     this.hidden = false;
   }
