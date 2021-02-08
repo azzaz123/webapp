@@ -167,7 +167,6 @@ Resources:
             Action:
               - codepipeline:*
           - Resource:
-              - !Ref ArtifactBucket
               - !Ref BucketES
               - !Ref BucketEN
             Effect: Allow
