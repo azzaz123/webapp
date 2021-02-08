@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Item } from '@core/item/item';
+import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
+import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 
 @Component({
   selector: 'tsl-item-detail-images-carousel',
@@ -12,7 +14,12 @@ export class ItemDetailImagesCarouselComponent {
   @Input() images: string[];
   @Input() imageIndex: number;
 
+  constructor(private checkSessionService: CheckSessionService, private itemCardService: ItemCardService) {}
   public show(): void {
     this.hidden = false;
+  }
+
+  public toggleItemFavorite(): void {
+    this.checkSessionService.hasSession() ? this.itemCardService.toggleFavourite(this.item) : this.checkSessionService.checkSessionAction();
   }
 }
