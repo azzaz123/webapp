@@ -33,6 +33,7 @@ export class ItemDetailComponent implements OnInit {
   public coordinates: Coordinate;
   public device: DeviceType;
   public images: string[];
+  public bigImages: string[];
   public itemLocation: ItemDetailLocation;
   public itemDetail: ItemDetail;
 
@@ -67,7 +68,7 @@ export class ItemDetailComponent implements OnInit {
   }
 
   public openItemDetailImage($event: CarouselImage): void {
-    this.itemDetailImagesModal.images = this.images;
+    this.itemDetailImagesModal.images = this.bigImages;
     this.itemDetailImagesModal.item = this.itemDetail?.item;
     this.itemDetailImagesModal.imageIndex = $event?.index;
     this.itemDetailImagesModal.show();
@@ -117,8 +118,10 @@ export class ItemDetailComponent implements OnInit {
 
   private showItemImages(): void {
     this.images = [];
+    this.bigImages = [];
     this.itemDetail.item?.images?.forEach((image: Image) => {
       this.images.push(image.urls_by_size.large);
+      this.bigImages.push(image.urls_by_size.xlarge);
     });
   }
 
