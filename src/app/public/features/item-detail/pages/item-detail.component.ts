@@ -68,6 +68,7 @@ export class ItemDetailComponent implements OnInit {
 
   public openItemDetailImage($event: CarouselImage): void {
     this.itemDetailImagesModal.images = this.images;
+    this.itemDetailImagesModal.item = this.itemDetail?.item;
     this.itemDetailImagesModal.imageIndex = $event?.index;
     this.itemDetailImagesModal.show();
   }

@@ -3,8 +3,9 @@
         <tsl-svg-icon class="ItemHeader__backButton" src="/assets/icons/arrow-back.svg" (click)="hidden = true">
         </tsl-svg-icon>
         <div class="ml-4 d-flex flex-column">
-            <span> Fifa 20 PS4 </span>
-            <span class="ItemHeader__price">10€</span>
+            <span>{{item?.title}}</span>
+            <span class="ItemHeader__price">{{item?.salePrice |
+                customCurrency:item?.currencyCode}}</span>
         </div>
         <div class="p-3 position-absolute ItemHeader__buttons">
             <tsl-button className="btn btn-upload mr-2">
@@ -15,8 +16,10 @@
         </div>
     </div>
     <div class="ItemContainer position-absolute d-flex align-items-center w-100">
-        <div class="container w-100 h-100 p-5">
-            <tsl-images-carousel *ngIf="images" [images]="images" imageClass="contain"></tsl-images-carousel>
+        <div class="container w-100 h-100 p-0 p-md-5">
+            <tsl-images-carousel *ngIf="images" [images]="images" class="ImagesCarousel__noBackgroundIndicators"
+                imageClass="contain">
+            </tsl-images-carousel>
         </div>
     </div>
 </div>
