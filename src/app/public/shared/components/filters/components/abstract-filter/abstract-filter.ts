@@ -15,9 +15,11 @@ export abstract class AbstractFilter implements Filter {
 
   @ViewChild(FilterTemplateComponent) filterTemplate: FilterTemplateComponent;
 
-  public abstract get label(): string | undefined;
+  public abstract getLabel(): string | undefined;
 
-  public get icon(): string | undefined {}
+  public getIcon(): string | undefined {
+    return this.config.icon;
+  }
 
   public get hasApply(): boolean {
     return this.config.actions?.apply;

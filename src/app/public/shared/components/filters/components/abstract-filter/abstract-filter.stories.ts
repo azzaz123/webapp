@@ -19,9 +19,9 @@ import { ButtonModule } from '@shared/button/button.module';
       [isBubble]="isBubble()"
       [isDropdown]="isDropdown()"
       [isClearable]="isClearable()"
-      [icon]="icon"
+      [icon]="getIcon()"
       [counter]="filterCounter()"
-      [label]="label"
+      [label]="getLabel()"
       [title]="title"
       [hasApply]="hasApply"
       [hasValue]="hasValue()"
@@ -61,11 +61,11 @@ class StoryAbstractFilterComponent extends AbstractFilter {
     return this.storyHasCustomCounter ? 9 : super.filterCounter();
   }
 
-  public get label(): string {
+  public getLabel(): string {
     return this.storyLabel || 'I am an extended label!';
   }
 
-  public get icon(): string | undefined {
+  public getIcon(): string | undefined {
     return this.storyIcon;
   }
 

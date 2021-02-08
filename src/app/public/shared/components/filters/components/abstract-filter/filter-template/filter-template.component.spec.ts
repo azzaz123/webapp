@@ -157,27 +157,41 @@ describe('FilterTemplateComponent', () => {
         await setInputs({
           isClearable: true,
         });
+      });
 
-        describe('and bubble clear is emitted', () => {
-          it('should emit clear', () => {
-            spyOn(component.clear, 'emit');
-            const bubbleInstance: BubbleComponent = debugElement.query(By.directive(BubbleComponent)).componentInstance;
-            bubbleInstance.clear.emit(new MouseEvent(''));
+      describe('and bubble clear is emitted', () => {
+        it('should emit clear', () => {
+          spyOn(component.clear, 'emit');
+          const bubbleInstance: BubbleComponent = debugElement.query(By.directive(BubbleComponent)).componentInstance;
+          bubbleInstance.clear.emit(new MouseEvent(''));
 
-            expect(component.clear.emit).toHaveBeenCalledTimes(1);
-          });
-
-          it('should close dropdown', () => {
-            const bubbleInstance: BubbleComponent = debugElement.query(By.directive(BubbleComponent)).componentInstance;
-            const templateInstance: FilterTemplateComponent = debugElement.query(By.directive(FilterTemplateComponent)).componentInstance;
-            const dropdownInstance: NgbDropdown = templateInstance.dropdown;
-            spyOn(dropdownInstance, 'close');
-
-            bubbleInstance.clear.emit(new MouseEvent(''));
-
-            expect(dropdownInstance.close).toHaveBeenCalledTimes(1);
-          });
+          expect(component.clear.emit).toHaveBeenCalledTimes(1);
         });
+
+        it('should close dropdown', () => {
+          const bubbleInstance: BubbleComponent = debugElement.query(By.directive(BubbleComponent)).componentInstance;
+          const dropdownInstance: NgbDropdown = component.dropdown;
+          spyOn(dropdownInstance, 'close');
+
+          bubbleInstance.clear.emit(new MouseEvent(''));
+
+          expect(dropdownInstance.close).toHaveBeenCalledTimes(1);
+        });
+      });
+    });
+
+    describe('and has icon configured', () => {
+      beforeEach(async () => {
+        await setInputs({
+          icon: 'icon.svg',
+        });
+      });
+
+      it('should render icon', () => {
+        const bubbleInstance: BubbleComponent = debugElement.query(By.directive(BubbleComponent)).componentInstance;
+
+        expectRender(By.css('.Bubble__icon'), true);
+        expect(bubbleInstance.icon).toEqual('icon.svg');
       });
     });
   });
