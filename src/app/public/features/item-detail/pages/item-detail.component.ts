@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ItemDetailLocation } from './constants/item-detail.interface';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
@@ -12,7 +12,6 @@ import { ItemDetailService } from '../core/services/item-detail.service';
 import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ItemDetailImagesCarouselComponent } from '../components/item-detail-images-carousel/item-detail-images-carousel.component';
 import { CarouselImage } from '@public/shared/components/images-carousel/images-carousel.interface';
 import { Image, UserLocation } from '@core/user/user-response.interface';
@@ -25,6 +24,8 @@ import { APP_PATHS } from 'app/app-routing-constants';
   styleUrls: ['./item-detail.component.scss'],
 })
 export class ItemDetailComponent implements OnInit {
+  @ViewChild(ItemDetailImagesCarouselComponent, { static: true })
+  itemDetailImagesModal: ItemDetailImagesCarouselComponent;
   public readonly deviceType = DeviceType;
   public loading = false;
   public isApproximateLocation = false;
@@ -52,7 +53,6 @@ export class ItemDetailComponent implements OnInit {
     private itemDetailService: ItemDetailService,
     private socialMetaTagsService: SocialMetaTagService,
     private route: ActivatedRoute,
-    private modalService: NgbModal,
     private router: Router
   ) {}
 
@@ -67,11 +67,9 @@ export class ItemDetailComponent implements OnInit {
   }
 
   public openItemDetailImage($event: CarouselImage): void {
-    const modalRef: NgbModalRef = this.modalService.open(ItemDetailImagesCarouselComponent, { windowClass: ' ' });
-
-    modalRef.componentInstance.currentImage = $event;
-    modalRef.componentInstance.images = this.images;
-    modalRef.result.then(() => {});
+    this.itemDetailImagesModal.images = this.images;
+    this.itemDetailImagesModal.imageIndex = $event?.index;
+    this.itemDetailImagesModal.show();
   }
 
   private initPage(itemId: string): void {

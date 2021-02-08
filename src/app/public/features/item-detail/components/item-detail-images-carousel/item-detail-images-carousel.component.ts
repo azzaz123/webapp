@@ -6,10 +6,15 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./item-detail-images-carousel.component.scss'],
 })
 export class ItemDetailImagesCarouselComponent implements OnInit {
+  public hidden = true;
   @Input() images: string[];
   @Input() imageIndex: number;
 
   constructor() {}
 
   ngOnInit(): void {}
+
+  public show(): void {
+    this.hidden = false;
+  }
 }

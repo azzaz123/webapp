@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { FavouriteIconModule } from '@public/shared/components/favourite-icon/favourite-icon.module';
@@ -7,7 +8,7 @@ import { ItemDetailImagesCarouselComponent } from './item-detail-images-carousel
 
 @NgModule({
   declarations: [ItemDetailImagesCarouselComponent],
-  imports: [FavouriteIconModule, ImagesCarouselModule, ButtonModule, SvgIconModule],
+  imports: [CommonModule, FavouriteIconModule, ImagesCarouselModule, ButtonModule, SvgIconModule],
   exports: [ItemDetailImagesCarouselComponent],
 })
 export class ItemDetailImagesCarouselModule {}
