@@ -28,6 +28,7 @@ import { ButtonModule } from '@shared/button/button.module';
       (openStateChange)="openStateChange.emit($event)"
       (apply)="handleApply()"
       (clear)="clear.emit()"
+      (click)="storyClick.emit()"
     >
       <!--   Extended content   -->
       <div style="border: 1px dashed black; padding: 5px;" *ngIf="storyContent">
@@ -46,6 +47,7 @@ class StoryAbstractFilterComponent extends AbstractFilter {
   @Input() storyHasNoArrow?: boolean;
   @Input() storyContent?: string;
   @Output() storyBubbleApply: EventEmitter<void> = new EventEmitter();
+  @Output() storyClick: EventEmitter<void> = new EventEmitter();
 
   public isDropdown(): boolean {
     return this.storyHasNoArrow ? false : super.isDropdown();
@@ -80,6 +82,7 @@ export default {
     clear: { action: 'I need to be cleared!' },
     change: { action: 'Content clicked, we need to change something!' },
     storyBubbleApply: { action: 'We can now handle bubble apply!' },
+    storyClick: { action: 'I have been clicked!' },
   },
   decorators: [
     moduleMetadata({

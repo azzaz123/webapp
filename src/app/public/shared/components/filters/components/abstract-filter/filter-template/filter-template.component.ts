@@ -19,7 +19,8 @@ export class FilterTemplateComponent {
   @Input() isClearable?: boolean;
   @Output() apply: EventEmitter<void> = new EventEmitter();
   @Output() clear: EventEmitter<void> = new EventEmitter();
-  @Output() openStateChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() click: EventEmitter<void> = new EventEmitter();
+  @Output() openStateChange: EventEmitter<boolean> = new EventEmitter();
 
   @ViewChild('dropdown', { read: NgbDropdown }) dropdown: NgbDropdown;
 
@@ -29,6 +30,9 @@ export class FilterTemplateComponent {
     if (this.isDropdown) {
       this.toggleDropdown();
     }
+
+    this.click.emit();
+
     event.stopPropagation();
   }
 

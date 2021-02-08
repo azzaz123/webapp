@@ -45,6 +45,15 @@ describe('FilterTemplateComponent', () => {
       expectRender(By.css('.TestExtendedContent'), false);
     });
 
+    describe('when clicked on the bubble', () => {
+      it('should emit click', () => {
+        spyOn(component.click, 'emit');
+        debugElement.query(By.css('.Bubble')).nativeElement.click();
+
+        expect(component.click.emit).toHaveBeenCalledTimes(1);
+      });
+    });
+
     describe('and has no value', () => {
       it('should set active variant to the bubble', () => {
         expectRender(By.css('.Bubble.active'), true);
