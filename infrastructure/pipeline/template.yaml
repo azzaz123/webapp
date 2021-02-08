@@ -22,6 +22,14 @@ Parameters:
   BucketENName:
     Description: 'Name of the S3 bucket where the app in EN is hosted'
     Type: String
+  ArtifactBucket:
+    Description: Bucket where pipeline store its artifacts
+    Type: String
+    Default: "codebuild-cache-wallapop"
+  S3SourceBucket:
+    Description: Bucket where the .zip file is pushed to trigger this pipeline
+    Type: String
+    Default: "wallapop-trigger-link-cicd"
 
 # TODO: clean this up and leave a single config for the beta environment when everything is migrated to the new account
 # We need this for now to be able to have a bucket in the  new account with a different name than the current one in beta
@@ -60,15 +68,6 @@ Resources:
             Action:
               - s3:Get*
               - s3:List*
-          - Resource:
-              - !GetAtt ArtifactBucket.Arn
-              - !Join [ '', [!GetAtt ArtifactBucket.Arn, '/*' ] ]
-              - !Sub "arn:aws:s3:::wallapop-trigger-link-cicd/webapp/webapp-${ImageTag}.zip"
-              - !Ref BucketES
-              - !Ref BucketEN
-            Effect: Allow
-            Action:
-              - s3:*
           - Resource:
               - !GetAtt CodePipelineServiceRole.Arn
               - !GetAtt CloudFormationExecutionRole.Arn
@@ -168,7 +167,6 @@ Resources:
             Action:
               - codepipeline:*
           - Resource:
-              - !GetAtt ArtifactBucket.Arn
               - !Ref BucketES
               - !Ref BucketEN
             Effect: Allow
@@ -215,22 +213,6 @@ Resources:
       Roles:
         - Ref: "CloudFormationExecutionRole"
 
-  ArtifactBucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      LifecycleConfiguration:
-        Rules:
-          - Id: MoreThan90DaysOldItemsToGlacier
-            Status: Enabled
-            Transitions:
-              - TransitionInDays: 90
-                StorageClass: GLACIER
-      Tags:
-        - Key: Env
-          Value: !Ref EnvName
-        - Key: Project
-          Value: !Ref ProjectName
-
   CodeBuildDeployServiceRole:
     Type: AWS::IAM::Role
     Properties:
@@ -270,26 +252,16 @@ Resources:
             Effect: Allow
             Action:
               - logs:*
-          - Resource:
-              - !GetAtt ArtifactBucket.Arn
-              - !Join [ '', [!GetAtt ArtifactBucket.Arn, '/*' ] ]
-              - !Ref BucketES
-              - !Sub "${BucketES}/*"
-              - !Ref BucketEN
-              - !Sub "${BucketEN}/*"
-            Effect: Allow
-            Action:
-              - s3:*
       Roles:
         - Ref: "CodeBuildDeployServiceRole"
 
   CodeBuildDeployScripts:
     Type: AWS::CodeBuild::Project
-    DependsOn: CodeBuildDeployServicePolicy
     Properties:
       Name: !Sub "webapp-deploy-service-${EnvName}"
       Description: !Sub "Uploads webapp project to ${EnvName} hosting buckets"
-      ServiceRole: !Ref CodeBuildDeployServiceRole
+      ServiceRole:
+        Fn::ImportValue: execute-predeploy-role
       Artifacts:
         Type: CODEPIPELINE
       Source:
@@ -345,7 +317,8 @@ Resources:
     Properties:
       Name: !Sub "webapp-invalidate-caches-${EnvName}"
       Description: !Sub "Invalidate caches for webapp ${EnvName} distributions"
-      ServiceRole: !Ref CodeBuildServiceRole
+      ServiceRole:
+        Fn::ImportValue: execute-predeploy-role
       Artifacts:
         Type: NO_ARTIFACTS
       Source:
@@ -433,12 +406,6 @@ Resources:
                 Effect: Allow
                 Action:
                   - logs:*
-              - Resource:
-                  - !GetAtt ArtifactBucket.Arn
-                  - !Join [ '', [!GetAtt ArtifactBucket.Arn, '/*' ] ]
-                Effect: Allow
-                Action:
-                  - s3:*
 
   InvalidateCachesCodebuildLogGroup:
     Type: AWS::Logs::LogGroup
@@ -450,7 +417,8 @@ Resources:
     Type: AWS::CodePipeline::Pipeline
     Properties:
       Name: !Sub webapp-${EnvName}
-      RoleArn: !GetAtt CodePipelineServiceRole.Arn
+      RoleArn:
+        Fn::ImportValue: execute-pipeline-role
       ArtifactStore:
         Type: S3
         Location: !Ref ArtifactBucket
@@ -464,7 +432,7 @@ Resources:
                 Owner: AWS
                 Version: "1"
               Configuration:
-                S3Bucket: wallapop-trigger-link-cicd
+                S3Bucket: !Ref S3SourceBucket
                 S3ObjectKey: !Sub webapp/webapp-${ImageTag}.zip
               OutputArtifacts:
                 - Name: App
@@ -486,7 +454,8 @@ Resources:
                     - 'App::infrastructure/pipeline/${ConfigFile}.json'
                     - ConfigFile: !FindInMap [ConfigFileName, !Ref "AWS::AccountId", !Ref EnvName]
                 TemplatePath: App::infrastructure/pipeline/template.yaml
-                RoleArn: !GetAtt CloudFormationExecutionRole.Arn
+                RoleArn:
+                  Fn::ImportValue: manage-pipeline-stack-role
               InputArtifacts:
                 - Name: App
               RunOrder: 1
@@ -505,7 +474,8 @@ Resources:
                   - 'App::infrastructure/s3/${ConfigFile}.json'
                   - ConfigFile: !FindInMap [ ConfigFileName, !Ref "AWS::AccountId", !Ref EnvName ]
                 TemplatePath: App::infrastructure/s3/template.yml
-                RoleArn: !GetAtt CloudFormationExecutionRole.Arn
+                RoleArn:
+                  Fn::ImportValue: manage-serverless-stack-role
               InputArtifacts:
                 - Name: App
               RunOrder: 2
@@ -524,7 +494,8 @@ Resources:
                   - 'App::infrastructure/cloudfront/${ConfigFile}.json'
                   - ConfigFile: !FindInMap [ ConfigFileName, !Ref "AWS::AccountId", !Ref EnvName ]
                 TemplatePath: App::infrastructure/cloudfront/template.yaml
-                RoleArn: !GetAtt CloudFormationExecutionRole.Arn
+                RoleArn:
+                  Fn::ImportValue: manage-serverless-stack-role
               InputArtifacts:
                 - Name: App
               RunOrder: 3
