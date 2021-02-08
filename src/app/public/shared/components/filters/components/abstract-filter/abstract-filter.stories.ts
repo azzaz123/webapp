@@ -20,14 +20,15 @@ import { ButtonModule } from '@shared/button/button.module';
       [icon]="icon"
       [counter]="filterCounter()"
       [label]="label"
+      [title]="title"
+      [hasCancel]="hasCancel"
+      [hasApply]="hasApply"
       [hasValue]="hasValue()"
-      [hasApply]="hasApply()"
-      [hasCancel]="hasCancel()"
       (apply)="handleApply()"
       (clear)="handleClear()"
     >
       <!--   Extended content   -->
-      <div class="px-3 py-1" *ngIf="storyContent">
+      <div style="border: 1px dashed black; padding: 5px;" *ngIf="storyContent">
         <span>{{ storyContent }}</span>
       </div>
       <!--   End extended content   -->
@@ -91,12 +92,24 @@ export default {
 };
 
 const Template: Story<StoryAbstractFilterComponent> = (args) => ({
-  props: args,
+  props: {
+    ...args,
+    config: {
+      ...args.config,
+      title: 'I am the title',
+    },
+  },
   component: StoryAbstractFilterComponent,
 });
 
 const VariantTemplate: Story<StoryAbstractFilterComponent> = (args) => ({
-  props: args,
+  props: {
+    ...args,
+    config: {
+      ...args.config,
+      title: 'I am the title',
+    },
+  },
   component: StoryAbstractFilterComponent,
   template: `
     <div>
@@ -104,8 +117,10 @@ const VariantTemplate: Story<StoryAbstractFilterComponent> = (args) => ({
       <stories-abstract-filter [variant]="${FILTER_VARIANT.BUBBLE}" [value]="value" [config]="config" [storyContent]="storyContent">
       </stories-abstract-filter>
       <h1>Content variant</h1>
-      <stories-abstract-filter [variant]="${FILTER_VARIANT.CONTENT}" [value]="value" [config]="config" [storyContent]="storyContent">
-      </stories-abstract-filter>
+      <div style="border: 1px dashed black; background-color: white">
+        <stories-abstract-filter [variant]="${FILTER_VARIANT.CONTENT}" [value]="value" [config]="config" [storyContent]="storyContent">
+        </stories-abstract-filter>
+      </div>
     </div>
   `,
 });

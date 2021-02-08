@@ -1,6 +1,15 @@
-@import '~style/variables/variables';
+@import '~style/styles';
 
 .FilterTemplate {
+  &__dropdown_menu {
+    padding: 0 !important;
+  }
+
+  &__title {
+    font-weight: $font-weight-bold;
+    color: $black;
+  }
+
   &__dev-warn {
     color: $brand-danger;
   }

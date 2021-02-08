@@ -15,6 +15,22 @@ export abstract class AbstractFilter implements Filter, AfterViewInit {
 
   @ViewChild(FilterTemplateComponent) filterTemplate: FilterTemplateComponent;
 
+  public abstract get label(): string | undefined;
+
+  public abstract get icon(): string | undefined;
+
+  public get hasApply(): boolean {
+    return this.config.actions?.apply;
+  }
+
+  public get hasCancel(): boolean {
+    return this.config.actions?.cancel;
+  }
+
+  public get title(): string {
+    return this.config.title;
+  }
+
   public ngAfterViewInit(): void {
     this.openStateChange = this.filterTemplate.openStateChange;
   }
@@ -35,19 +51,7 @@ export abstract class AbstractFilter implements Filter, AfterViewInit {
     return this.config.isClearable;
   }
 
-  public hasApply(): boolean {
-    return this.config.actions?.apply;
-  }
-
-  public hasCancel(): boolean {
-    return this.config.actions?.cancel;
-  }
-
   public filterCounter(): number {
     return this.value.length > 1 ? this.value.length : undefined;
   }
-
-  public abstract get label(): string | undefined;
-
-  public abstract get icon(): string | undefined;
 }

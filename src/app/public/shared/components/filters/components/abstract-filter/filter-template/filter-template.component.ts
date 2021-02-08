@@ -11,9 +11,10 @@ export class FilterTemplateComponent implements AfterViewInit {
   @Input() isBubble?: boolean;
   @Input() isDropdown?: boolean;
   @Input() hasValue?: boolean;
-  @Input() label: string;
   @Input() counter?: number;
   @Input() icon?: string;
+  @Input() label: string;
+  @Input() title: string;
   @Input() hasCancel?: boolean;
   @Input() hasApply?: boolean;
   @Input() isClearable?: boolean;

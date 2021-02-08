@@ -12,7 +12,7 @@
       {{label}}
     </tsl-bubble>
   </div>
-  <div ngbDropdownMenu>
+  <div ngbDropdownMenu class="FilterTemplate__dropdown_menu">
 
     <ng-template [ngTemplateOutlet]="contentWrapper"></ng-template>
 
@@ -35,10 +35,13 @@
 </div>
 
 <ng-template #contentWrapper>
-  <div #content>
-    <ng-content></ng-content>
+  <div class="p-4">
+    <p class="FilterTemplate__title">{{title}}</p>
+    <div #extendedContent>
+      <ng-content></ng-content>
+    </div>
+    <span *ngIf="extendedContent.children.length === 0" class="FilterTemplate__dev-warn">Please, avoid using abstract filter directly, use one of the extensions or create your own</span>
   </div>
-  <span *ngIf="content.children.length === 0" class="FilterTemplate__dev-warn">Please, avoid using abstract filter directly, use one of the extensions or create your own</span>
 </ng-template>
 
 
