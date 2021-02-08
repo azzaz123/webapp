@@ -1,15 +1,13 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { BUBBLE_VARIANT } from '@public/shared/components/bubble/bubble.component';
-import { NgbDropdown, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
-import { Subject, Observable } from 'rxjs';
+import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'tsl-filter-template',
   templateUrl: './filter-template.component.html',
   styleUrls: ['./filter-template.component.scss'],
-  providers: [NgbDropdownConfig],
 })
-export class FilterTemplateComponent {
+export class FilterTemplateComponent implements AfterViewInit {
   @Input() isBubble?: boolean;
   @Input() isDropdown?: boolean;
   @Input() hasValue?: boolean;
@@ -18,26 +16,17 @@ export class FilterTemplateComponent {
   @Input() icon?: string;
   @Input() hasCancel?: boolean;
   @Input() hasApply?: boolean;
+  @Input() isClearable?: boolean;
   @Output() apply: EventEmitter<void> = new EventEmitter();
   @Output() clear: EventEmitter<void> = new EventEmitter();
+  @Output() dropdownStateChange: EventEmitter<boolean>;
 
   @ViewChild('dropdown', { read: NgbDropdown }) dropdown: NgbDropdown;
 
-  private onDropdownStateChangeSubject = new Subject();
-
   public BUBBLE_VARIANT = BUBBLE_VARIANT;
 
-  public get onDropdownStateChange(): Observable<boolean> {
-    return this.onDropdownStateChangeSubject.asObservable();
-  }
-
-  constructor(dropdownConfig: NgbDropdownConfig) {
-    dropdownConfig.autoClose = false;
-  }
-
-  public toggleDropdown(): void {
-    this.dropdown.toggle();
-    this.onDropdownStateChangeSubject.next(this.dropdown.isOpen());
+  public ngAfterViewInit(): void {
+    this.dropdownStateChange = this.dropdown.openChange;
   }
 
   public get hasActions(): boolean {
@@ -63,6 +52,10 @@ export class FilterTemplateComponent {
   public handleClear(event: MouseEvent): void {
     this.handleCloseDropdown(event);
     this.clear.emit();
+  }
+
+  private toggleDropdown(): void {
+    this.dropdown.toggle();
   }
 
   private handleCloseDropdown(event: MouseEvent): void {

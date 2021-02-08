@@ -17,6 +17,7 @@ import { ButtonModule } from '@shared/button/button.module';
       #filterTemplate
       [isBubble]="isBubble()"
       [isDropdown]="isDropdown()"
+      [isClearable]="isClearable()"
       [icon]="icon"
       [counter]="filterCounter()"
       [label]="label"
@@ -148,8 +149,10 @@ DefaultBubbleWithCounter.args = {
 export const DefaultBubbleWithClear = Template.bind({});
 DefaultBubbleWithClear.args = {
   value: [{ key1: 'value' }, { key2: 'value' }],
-  config: {},
-  isClearable: true,
+  config: {
+    isClearable: true,
+  },
+  storyLabel: 'I can be cleared from the bubble!',
 };
 
 export const CustomBubbleWithValue = Template.bind({});

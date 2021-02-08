@@ -16,7 +16,7 @@ export abstract class AbstractFilter implements Filter, AfterViewInit {
   @ViewChild('filterTemplate', { read: FilterTemplateComponent }) filterTemplate: FilterTemplateComponent;
 
   ngAfterViewInit() {
-    this.filterTemplate.onDropdownStateChange.subscribe((isOpen) => this.openStateChange.emit(isOpen));
+    this.filterTemplate.dropdownStateChange.subscribe((isOpen) => this.openStateChange.emit(isOpen));
   }
 
   public isBubble(): boolean {
@@ -29,6 +29,10 @@ export abstract class AbstractFilter implements Filter, AfterViewInit {
 
   public hasValue(): boolean {
     return this.value.length > 0;
+  }
+
+  public isClearable(): boolean {
+    return this.config.isClearable;
   }
 
   public hasApply(): boolean {
