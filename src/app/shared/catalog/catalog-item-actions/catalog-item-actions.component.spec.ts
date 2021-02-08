@@ -1,10 +1,4 @@
-import {
-  fakeAsync,
-  tick,
-  ComponentFixture,
-  TestBed,
-  waitForAsync,
-} from '@angular/core/testing';
+import { fakeAsync, tick, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CatalogItemActionsComponent } from './catalog-item-actions.component';
 import { ItemService } from '../../../core/item/item.service';
 import { of } from 'rxjs';
@@ -18,8 +12,6 @@ import {
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { find } from 'lodash-es';
-import { TrackingService } from '../../../core/tracking/tracking.service';
-import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { Router } from '@angular/router';
@@ -32,7 +24,6 @@ describe('CatalogItemActionsComponent', () => {
   let errorsService: ErrorsService;
   let modalService: NgbModal;
   let toastService: ToastService;
-  let trackingService: TrackingService;
   let router: Router;
   let eventService: EventService;
   const modal: any = { modal: true };
@@ -44,7 +35,6 @@ describe('CatalogItemActionsComponent', () => {
         providers: [
           I18nService,
           ToastService,
-          { provide: TrackingService, useClass: MockTrackingService },
           {
             provide: ItemService,
             useValue: {
@@ -90,7 +80,6 @@ describe('CatalogItemActionsComponent', () => {
     component = fixture.componentInstance;
     itemService = TestBed.inject(ItemService);
     toastService = TestBed.inject(ToastService);
-    trackingService = TestBed.inject(TrackingService);
     errorsService = TestBed.inject(ErrorsService);
     modalService = TestBed.inject(NgbModal);
     router = TestBed.inject(Router);
@@ -127,9 +116,7 @@ describe('CatalogItemActionsComponent', () => {
 
     describe('success', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(itemService, 'bulkDelete').and.returnValue(
-          of(ITEMS_BULK_RESPONSE)
-        );
+        spyOn(itemService, 'bulkDelete').and.returnValue(of(ITEMS_BULK_RESPONSE));
 
         component.delete(modal);
         tick();
@@ -150,9 +137,7 @@ describe('CatalogItemActionsComponent', () => {
 
     describe('failed', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(itemService, 'bulkDelete').and.returnValue(
-          of(ITEMS_BULK_RESPONSE_FAILED)
-        );
+        spyOn(itemService, 'bulkDelete').and.returnValue(of(ITEMS_BULK_RESPONSE_FAILED));
 
         component.delete(modal);
         tick();
@@ -213,7 +198,6 @@ describe('CatalogItemActionsComponent', () => {
 
     describe('success', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(trackingService, 'track').and.callThrough();
         spyOn(itemService, 'bulkSetDeactivate').and.returnValue(of('200'));
 
         component.deactivate();
@@ -223,12 +207,6 @@ describe('CatalogItemActionsComponent', () => {
       it('should call modal and deactivate', () => {
         expect(modalService.open).toHaveBeenCalled();
         expect(itemService.bulkSetDeactivate).toHaveBeenCalled();
-      });
-
-      it('should send a tracking event', () => {
-        expect(trackingService.track).toHaveBeenCalledWith(
-          TrackingService.MYCATALOG_PRO_MODAL_DEACTIVATE
-        );
       });
     });
   });

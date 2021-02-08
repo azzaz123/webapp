@@ -16,7 +16,7 @@ export interface ViewFavoriteItems {
   /**
    * Number of different items the user has in the my favorite items section
    */
-  numberOfItems: number;
+  numberOfItems?: number;
   /**
    * Flag true or false is the view shows an empty state
    */

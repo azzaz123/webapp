@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ITEM_FLAGS } from '@fixtures/item.fixtures.spec';
+import { ITEM_FLAGS, ITEM_BUMP_FLAGS } from '@fixtures/item.fixtures.spec';
 import { ItemImagesCarouselComponent } from './item-images-carousel.component';
 
 describe('ItemImagesCarouselComponent', () => {
@@ -34,12 +34,22 @@ describe('ItemImagesCarouselComponent', () => {
   describe('when is an item...', () => {
     beforeEach(() => {
       component.itemFlags = ITEM_FLAGS;
+      component.itemVisibilityFlags = ITEM_BUMP_FLAGS;
       fixture.detectChanges();
     });
 
-    describe('and is bumped...', () => {
-      it('should show one flag on the right', () => {
-        component.itemFlags.bumped = true;
+    describe('and is bumped or country bumped...', () => {
+      it('should show one flag on the right when is bumped', () => {
+        component.itemVisibilityFlags.bumped = true;
+        fixture.detectChanges();
+
+        const bumpedFlag = fixture.debugElement.query(By.css(flagRightClass));
+
+        expect(bumpedFlag).toBeTruthy();
+      });
+
+      it('should show one flag on the right when is country bumped', () => {
+        component.itemVisibilityFlags.country_bumped = true;
         fixture.detectChanges();
 
         const bumpedFlag = fixture.debugElement.query(By.css(flagRightClass));
@@ -62,9 +72,7 @@ describe('ItemImagesCarouselComponent', () => {
         component.itemFlags.reserved = true;
         fixture.detectChanges();
 
-        const reservedFlag = fixture.debugElement.queryAll(
-          By.css(flagLeftClass)
-        );
+        const reservedFlag = fixture.debugElement.queryAll(By.css(flagLeftClass));
 
         expect(reservedFlag).toBeTruthy();
       });
@@ -73,9 +81,7 @@ describe('ItemImagesCarouselComponent', () => {
         component.itemFlags.expired = true;
         fixture.detectChanges();
 
-        const expiredFlag = fixture.debugElement.queryAll(
-          By.css(flagLeftClass)
-        );
+        const expiredFlag = fixture.debugElement.queryAll(By.css(flagLeftClass));
 
         expect(expiredFlag).toBeTruthy();
       });
@@ -84,9 +90,7 @@ describe('ItemImagesCarouselComponent', () => {
         component.itemFlags.onhold = true;
         fixture.detectChanges();
 
-        const inactiveFlag = fixture.debugElement.queryAll(
-          By.css(flagLeftClass)
-        );
+        const inactiveFlag = fixture.debugElement.queryAll(By.css(flagLeftClass));
 
         expect(inactiveFlag).toBeTruthy();
       });

@@ -21,20 +21,14 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
   public loading = false;
   private subscriptions: Subscription[] = [];
 
-  constructor(
-    private route: ActivatedRoute,
-    private publicProfileService: PublicProfileService,
-    private router: Router
-  ) {}
+  constructor(private route: ActivatedRoute, private publicProfileService: PublicProfileService, private router: Router) {}
 
   ngOnInit(): void {
     this.getUser();
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription: Subscription) =>
-      subscription.unsubscribe()
-    );
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 
   private getUser(): void {
@@ -48,10 +42,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     this.loading = true;
 
     this.subscriptions.push(
-      forkJoin([
-        this.publicProfileService.getUser(this.userId),
-        this.publicProfileService.getStats(this.userId),
-      ])
+      forkJoin([this.publicProfileService.getUser(this.userId), this.publicProfileService.getStats(this.userId)])
         .pipe(
           finalize(() => {
             this.handleCoverImage();

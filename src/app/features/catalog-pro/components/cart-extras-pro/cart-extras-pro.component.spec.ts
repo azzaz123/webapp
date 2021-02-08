@@ -9,17 +9,10 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { CartService } from '@shared/catalog/cart/cart.service';
 import { PaymentService } from '@core/payments/payment.service';
 import { ErrorsService } from '@core/errors/errors.service';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { CartProExtras } from '@shared/catalog/cart/cart-pro-extras';
 import { CartChange } from '@shared/catalog/cart/cart-item.interface';
 import { CustomCurrencyPipe } from '@shared/pipes';
-import {
-  BILLING_INFO_RESPONSE,
-  ORDER_CART_EXTRAS_PRO,
-  PACK_ID,
-  PREPARED_PACKS,
-} from '@fixtures/payments.fixtures.spec';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
+import { BILLING_INFO_RESPONSE, ORDER_CART_EXTRAS_PRO, PACK_ID, PREPARED_PACKS } from '@fixtures/payments.fixtures.spec';
 import { StripeService } from '@core/stripe/stripe.service';
 import { EventService } from '@core/event/event.service';
 import { STRIPE_CARD_OPTION } from '@fixtures/stripe.fixtures.spec';
@@ -31,7 +24,6 @@ describe('CartExtrasProComponent', () => {
   let paymentService: PaymentService;
   let errorsService: ErrorsService;
   let router: Router;
-  let trackingService: TrackingService;
   let stripeService: StripeService;
   let eventService: EventService;
 
@@ -72,10 +64,6 @@ describe('CartExtrasProComponent', () => {
                 return of({});
               },
             },
-          },
-          {
-            provide: TrackingService,
-            useClass: MockTrackingService,
           },
           {
             provide: ErrorsService,
@@ -125,7 +113,6 @@ describe('CartExtrasProComponent', () => {
     paymentService = TestBed.inject(PaymentService);
     errorsService = TestBed.inject(ErrorsService);
     router = TestBed.inject(Router);
-    trackingService = TestBed.inject(TrackingService);
     stripeService = TestBed.inject(StripeService);
     eventService = TestBed.inject(EventService);
     fixture.detectChanges();
@@ -139,9 +126,7 @@ describe('CartExtrasProComponent', () => {
     });
 
     it('should call createInstance cartService method', () => {
-      expect(cartService.createInstance).toHaveBeenCalledWith(
-        new CartProExtras()
-      );
+      expect(cartService.createInstance).toHaveBeenCalledWith(new CartProExtras());
     });
 
     it('should set cart pro extras', () => {
@@ -245,9 +230,7 @@ describe('CartExtrasProComponent', () => {
 
     describe('already has billing info', () => {
       beforeEach(() => {
-        spyOn(component.cart, 'prepareOrder').and.returnValue(
-          ORDER_CART_EXTRAS_PRO
-        );
+        spyOn(component.cart, 'prepareOrder').and.returnValue(ORDER_CART_EXTRAS_PRO);
         eventId = null;
       });
 
@@ -256,16 +239,12 @@ describe('CartExtrasProComponent', () => {
 
         component.checkout();
 
-        expect(paymentService.orderExtrasProPack).toHaveBeenCalledWith(
-          ORDER_CART_EXTRAS_PRO
-        );
+        expect(paymentService.orderExtrasProPack).toHaveBeenCalledWith(ORDER_CART_EXTRAS_PRO);
       });
 
       describe('when unkown error', () => {
         it('should call toastr with bump error', () => {
-          spyOn(paymentService, 'orderExtrasProPack').and.returnValue(
-            throwError('Unknown')
-          );
+          spyOn(paymentService, 'orderExtrasProPack').and.returnValue(throwError('Unknown'));
           spyOn(errorsService, 'i18nError');
 
           component.checkout();
@@ -296,16 +275,12 @@ describe('CartExtrasProComponent', () => {
 
             component.saveAndCheckout();
 
-            expect(paymentService.updateBillingInfo).toHaveBeenCalledWith(
-              component.billingInfoForm.value
-            );
+            expect(paymentService.updateBillingInfo).toHaveBeenCalledWith(component.billingInfoForm.value);
           });
 
           it('should show error if call fails', () => {
             spyOn(errorsService, 'show');
-            spyOn(paymentService, 'updateBillingInfo').and.returnValue(
-              throwError('error')
-            );
+            spyOn(paymentService, 'updateBillingInfo').and.returnValue(throwError('error'));
 
             component.saveAndCheckout();
 

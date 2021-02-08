@@ -1,9 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-  TestRequest,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 
 import { HelpService } from './help.service';
 import { FAQS, FAQ_FEATURES } from '../faq.fixtures.spec';
@@ -31,9 +27,7 @@ describe('HelpService', () => {
       const localId = 'es';
 
       service.getFaqs(localId).subscribe((res) => (response = res));
-      const req: TestRequest = httpMock.expectOne(
-        `assets/json/faq.${localId}.json`
-      );
+      const req: TestRequest = httpMock.expectOne(`assets/json/faq.${localId}.json`);
       req.flush(FAQS);
 
       expect(req.request.method).toBe('GET');
@@ -47,9 +41,7 @@ describe('HelpService', () => {
       const localId = 'es';
 
       service.getFeatures(localId).subscribe((res) => (response = res));
-      const req: TestRequest = httpMock.expectOne(
-        `assets/json/faq-features.${localId}.json`
-      );
+      const req: TestRequest = httpMock.expectOne(`assets/json/faq-features.${localId}.json`);
       req.flush(FAQ_FEATURES);
 
       expect(req.request.method).toBe('GET');

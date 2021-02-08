@@ -1,8 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Item } from '../../../core/item/item';
-
-import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ItemService } from '../../../core/item/item.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorsService } from '../../../core/errors/errors.service';
@@ -17,16 +15,13 @@ import { ItemChangeEvent } from '@features/catalog/core/item-change.interface';
 })
 export class CatalogCardComponent implements OnInit {
   @Input() item: Item;
-  @Output() itemChange: EventEmitter<ItemChangeEvent> = new EventEmitter<
-    ItemChangeEvent
-  >();
+  @Output() itemChange: EventEmitter<ItemChangeEvent> = new EventEmitter<ItemChangeEvent>();
   @Output() bumpCancel: EventEmitter<any> = new EventEmitter<any>();
   public link: string;
   public bumpName: string;
 
   constructor(
     public itemService: ItemService,
-    private trackingService: TrackingService,
     private modalService: NgbModal,
     private errorService: ErrorsService,
     private i18n: I18nService,
@@ -43,21 +38,12 @@ export class CatalogCardComponent implements OnInit {
     item.selected = !item.selected;
     if (item.selected) {
       this.itemService.selectItem(item.id);
-      this.trackingService.track(TrackingService.PRODUCT_SELECTED, {
-        product_id: item.id,
-      });
     } else {
       this.itemService.deselectItem(item.id);
-      this.trackingService.track(TrackingService.PRODUCT_UN_SELECTED, {
-        product_id: item.id,
-      });
     }
   }
 
   public setSold(item: Item) {
-    this.trackingService.track(TrackingService.PRODUCT_SOLD, {
-      product_id: item.id,
-    });
     fbq('track', 'CompleteRegistration', {
       value: item.salePrice,
       currency: item.currencyCode,
@@ -96,8 +82,7 @@ export class CatalogCardComponent implements OnInit {
   }
 
   private setBumpName(): string {
-    const bumpType =
-      this.item.purchases.bump_type || this.item.purchases.scheduled_bump_type;
+    const bumpType = this.item.purchases.bump_type || this.item.purchases.scheduled_bump_type;
     return this.i18n.getTranslations(bumpType);
   }
 }

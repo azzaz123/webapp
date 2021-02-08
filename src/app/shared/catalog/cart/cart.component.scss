@@ -6,8 +6,7 @@ $main-total-height: 46px;
 $credit-total-height: 21px;
 $missing-total-height: 43px;
 $totals-margins: 0px;
-$total-height: $main-total-height + $totals-margins + $credit-total-height +
-  $missing-total-height;
+$total-height: $main-total-height + $totals-margins + $credit-total-height + $missing-total-height;
 $discounted-total-height: 30px;
 $stripe-card-element-height: 100px;
 $button-height: 42px;

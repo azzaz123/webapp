@@ -73,7 +73,6 @@ import { UserCoverModule } from './user-cover/user-cover.module';
 import { WallacoinsDisabledModalComponent } from './modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
 import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.module';
 import { BumpSuggestionModalComponent } from './modals/bump-suggestion-modal/bump-suggestion-modal.component';
-import { TrackEventDirective } from '@core/tracking/track-event.directive';
 import { ButtonModule } from './button/button.module';
 
 @NgModule({
@@ -161,7 +160,6 @@ import { ButtonModule } from './button/button.module';
     DateCountDownComponent,
     DropdownModule,
     WallacoinsDisabledModalComponent,
-    TrackEventDirective,
     ButtonModule,
   ],
   declarations: [
@@ -223,7 +221,6 @@ import { ButtonModule } from './button/button.module';
     DateCountDownComponent,
     BumpSuggestionModalComponent,
     WallacoinsDisabledModalComponent,
-    TrackEventDirective,
   ],
   providers: [DecimalPipe, LinkTransformPipe],
   entryComponents: [

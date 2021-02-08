@@ -4,7 +4,6 @@ import { CallsService } from '@core/conversation/calls.service';
 import { Lead } from '@core/conversation/lead';
 import { CallTotals } from '@core/conversation/totals.interface';
 import { EventService } from '@core/event/event.service';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { InboxConversationService } from '@features/chat/core/inbox/inbox-conversation.service';
 import { InboxConversation } from '@features/chat/core/model';
 import { takeWhile } from 'rxjs/operators';
@@ -26,7 +25,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(
     private callService: CallsService,
-    private trackingService: TrackingService,
     private router: Router,
     private inboxConversationService: InboxConversationService,
     private eventService: EventService
@@ -35,14 +33,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getData();
     this.getTotals();
-    this.eventService.subscribe(
-      EventService.LEAD_ARCHIVED,
-      (lead: Lead) => (this.archivedLead = lead)
-    );
+    this.eventService.subscribe(EventService.LEAD_ARCHIVED, (lead: Lead) => (this.archivedLead = lead));
     this.eventService.subscribe(
       EventService.INBOX_LOADED,
-      (conversations: InboxConversation[]) =>
-        (this.conversations = this.inboxConversationService.conversations)
+      (conversations: InboxConversation[]) => (this.conversations = this.inboxConversationService.conversations)
     );
   }
 
@@ -55,15 +49,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .getPage(1, false, null, 5)
       .pipe(takeWhile(() => this.active))
       .subscribe((calls: Lead[]) => {
-        this.trackingService.track(
-          TrackingService.PHONE_LEAD_LIST_ACTIVE_LOADED
-        );
         this.calls = calls;
-
         this.conversations = this.inboxConversationService.conversations;
-        this.trackingService.track(
-          TrackingService.CONVERSATION_LIST_ACTIVE_LOADED
-        );
         this.loading = false;
       });
   }
@@ -79,10 +66,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       });
   }
 
-  public trackPhoneLeadOpened() {
-    this.trackingService.track(TrackingService.PHONE_LEAD_OPENED);
-  }
-
   public openConversation(inboxConversation: InboxConversation): void {
     this.inboxConversationService.openConversation(inboxConversation);
     this.router.navigateByUrl(`/chat?conversationId=${inboxConversation.id}`);
@@ -93,11 +76,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       ? 0
       : this.conversations
           .filter((conversation, index) => conversation != null && index < 5)
-          .reduce(
-            (sum, current) =>
-              sum + (current.unreadCounter < 1 ? 1 : current.unreadCounter),
-            0
-          );
+          .reduce((sum, current) => sum + (current.unreadCounter < 1 ? 1 : current.unreadCounter), 0);
   }
 
   public hasConversations(): boolean {

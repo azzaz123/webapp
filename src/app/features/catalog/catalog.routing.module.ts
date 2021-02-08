@@ -9,10 +9,7 @@ import { PERMISSIONS } from '@core/user/user';
 import { CheckoutComponent } from './pages/checkout/checkout.component';
 import { ListComponent } from './pages/list/list.component';
 
-export function isNormalCatalogPermissions(
-  rejectedPermissionName: string,
-  route: ActivatedRouteSnapshot
-) {
+export function isNormalCatalogPermissions(rejectedPermissionName: string, route: ActivatedRouteSnapshot) {
   if (isEmpty(route.params)) {
     return '/pro/catalog/list';
   } else {
@@ -22,18 +19,12 @@ export function isNormalCatalogPermissions(
   }
 }
 
-export function isNormalCheckoutPermissions(
-  rejectedPermissionName: string,
-  route: ActivatedRouteSnapshot
-) {
+export function isNormalCheckoutPermissions(rejectedPermissionName: string, route: ActivatedRouteSnapshot) {
   if (!route.params.itemId) {
     return '/pro/catalog/checkout';
   }
   return {
-    navigationCommands: [
-      '/pro/catalog/checkout/',
-      { itemId: route.params.itemId },
-    ],
+    navigationCommands: ['/pro/catalog/checkout/', { itemId: route.params.itemId }],
   };
 }
 
@@ -86,8 +77,4 @@ export const routes: Route[] = [
 })
 export class CatalogRoutingModule {}
 
-export const catalogRoutedComponents = [
-  CatalogComponent,
-  ListComponent,
-  CheckoutComponent,
-];
+export const catalogRoutedComponents = [CatalogComponent, ListComponent, CheckoutComponent];

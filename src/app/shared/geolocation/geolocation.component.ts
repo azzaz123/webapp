@@ -1,21 +1,7 @@
 import { Observable, of } from 'rxjs';
 
-import {
-  debounceTime,
-  switchMap,
-  distinctUntilChanged,
-  catchError,
-} from 'rxjs/operators';
-import {
-  Component,
-  OnInit,
-  Output,
-  EventEmitter,
-  Input,
-  OnChanges,
-  ViewChild,
-  ElementRef,
-} from '@angular/core';
+import { debounceTime, switchMap, distinctUntilChanged, catchError } from 'rxjs/operators';
+import { Component, OnInit, Output, EventEmitter, Input, OnChanges, ViewChild, ElementRef } from '@angular/core';
 import { Coordinate } from '../../core/geolocation/address-response.interface';
 import { GeolocationService } from '../../core/geolocation/geolocation.service';
 import { GeolocationResponse } from '../../core/geolocation/geolocation-response.interface';
@@ -37,11 +23,7 @@ export class GeolocationComponent implements OnInit, OnChanges {
   public model: any = { description: '' };
   @ViewChild('pacInputHeader', { static: true }) searchInputEl: ElementRef;
 
-  constructor(
-    private geolocationService: GeolocationService,
-    private cookieService: CookieService,
-    private userService: UserService
-  ) {}
+  constructor(private geolocationService: GeolocationService, private cookieService: CookieService, private userService: UserService) {}
 
   ngOnInit() {
     const searchPosName = this.cookieService.get('searchPosName');
@@ -75,19 +57,17 @@ export class GeolocationComponent implements OnInit, OnChanges {
   public formatter = (x: any) => x.description;
 
   public selectItem(address: GeolocationResponse) {
-    this.geolocationService
-      .geocode(address.item.description)
-      .subscribe((data: Coordinate) => {
-        this.newCoordinate.emit(data);
+    this.geolocationService.geocode(address.item.description).subscribe((data: Coordinate) => {
+      this.newCoordinate.emit(data);
 
-        if (this.updateLocation) {
-          const newLocation: Coordinate = {
-            latitude: data.latitude,
-            longitude: data.longitude,
-            name: address.item.description,
-          };
-          this.userService.updateSearchLocationCookies(newLocation);
-        }
-      });
+      if (this.updateLocation) {
+        const newLocation: Coordinate = {
+          latitude: data.latitude,
+          longitude: data.longitude,
+          name: address.item.description,
+        };
+        this.userService.updateSearchLocationCookies(newLocation);
+      }
+    });
   }
 }

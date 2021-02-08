@@ -1,15 +1,6 @@
-import {
-  ComponentFixture,
-  TestBed,
-  fakeAsync,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import {
-  PAYMENT_METHOD_CARD_RESPONSE,
-  SETUP_INTENT_DATA,
-} from '../../../../tests/payments.fixtures.spec';
+import { PAYMENT_METHOD_CARD_RESPONSE, SETUP_INTENT_DATA } from '../../../../tests/payments.fixtures.spec';
 import { StripeCardElementComponent } from './stripe-card-element.component';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -52,10 +43,7 @@ describe('StripeCardElementComponent', () => {
                       return {
                         mount: () => {},
                         addEventListener: () => {},
-                        removeEventListener: (
-                          type: string,
-                          listener: any
-                        ) => {},
+                        removeEventListener: (type: string, listener: any) => {},
                         destroy: () => {},
                       };
                     },
@@ -98,9 +86,7 @@ describe('StripeCardElementComponent', () => {
       component.createNewCard();
       tick();
 
-      expect(component.onStripeCardCreate.emit).toHaveBeenCalledWith(
-        PAYMENT_METHOD_CARD_RESPONSE[0]
-      );
+      expect(component.onStripeCardCreate.emit).toHaveBeenCalledWith(PAYMENT_METHOD_CARD_RESPONSE[0]);
     }));
   });
 
@@ -126,9 +112,7 @@ describe('StripeCardElementComponent', () => {
       component.setDefaultCard();
       tick();
 
-      expect(component.onStripeSetDefaultCard.emit).toHaveBeenCalledWith(
-        SETUP_INTENT_DATA.setupIntent
-      );
+      expect(component.onStripeSetDefaultCard.emit).toHaveBeenCalledWith(SETUP_INTENT_DATA.setupIntent);
     }));
   });
 
@@ -138,9 +122,7 @@ describe('StripeCardElementComponent', () => {
       component.showUseSavedCard = true;
       component.type = 'subscription';
       fixture.detectChanges();
-      const useSavedCardButton = fixture.debugElement.nativeElement.querySelector(
-        '.card-feedback__action'
-      );
+      const useSavedCardButton = fixture.debugElement.nativeElement.querySelector('.card-feedback__action');
 
       useSavedCardButton.click();
 
@@ -153,12 +135,8 @@ describe('StripeCardElementComponent', () => {
       component.paymentError = STRIPE_ERROR.card_declined;
       fixture.detectChanges();
 
-      const stripeCardError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
-        stripeCardErrorSelector
-      );
-      const stripeCardInputError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
-        stripeCardInputErrorSelector
-      );
+      const stripeCardError: HTMLElement = fixture.elementRef.nativeElement.querySelector(stripeCardErrorSelector);
+      const stripeCardInputError: HTMLElement = fixture.elementRef.nativeElement.querySelector(stripeCardInputErrorSelector);
       expect(stripeCardError).toBeTruthy();
       expect(stripeCardError.textContent).toBe("Card number isn't valid.");
       expect(stripeCardInputError).toBeTruthy();
@@ -167,12 +145,8 @@ describe('StripeCardElementComponent', () => {
       component.paymentError = STRIPE_ERROR.expired_card;
       fixture.detectChanges();
 
-      const stripeCardError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
-        stripeCardErrorSelector
-      );
-      const stripeCardInputError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
-        stripeCardInputErrorSelector
-      );
+      const stripeCardError: HTMLElement = fixture.elementRef.nativeElement.querySelector(stripeCardErrorSelector);
+      const stripeCardInputError: HTMLElement = fixture.elementRef.nativeElement.querySelector(stripeCardInputErrorSelector);
       expect(stripeCardError).toBeTruthy();
       expect(stripeCardError.textContent).toBe("Card date isn't valid.");
       expect(stripeCardInputError).toBeTruthy();
@@ -181,12 +155,8 @@ describe('StripeCardElementComponent', () => {
       component.paymentError = STRIPE_ERROR.incorrect_cvc;
       fixture.detectChanges();
 
-      const stripeCardError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
-        stripeCardErrorSelector
-      );
-      const stripeCardInputError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
-        stripeCardInputErrorSelector
-      );
+      const stripeCardError: HTMLElement = fixture.elementRef.nativeElement.querySelector(stripeCardErrorSelector);
+      const stripeCardInputError: HTMLElement = fixture.elementRef.nativeElement.querySelector(stripeCardInputErrorSelector);
       expect(stripeCardError).toBeTruthy();
       expect(stripeCardError.textContent).toBe("CVC number isn't valid.");
       expect(stripeCardInputError).toBeTruthy();
@@ -195,12 +165,8 @@ describe('StripeCardElementComponent', () => {
       component.paymentError = 'test' as STRIPE_ERROR;
       fixture.detectChanges();
 
-      const stripeCardError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
-        stripeCardErrorSelector
-      );
-      const stripeCardInputError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
-        stripeCardInputErrorSelector
-      );
+      const stripeCardError: HTMLElement = fixture.elementRef.nativeElement.querySelector(stripeCardErrorSelector);
+      const stripeCardInputError: HTMLElement = fixture.elementRef.nativeElement.querySelector(stripeCardInputErrorSelector);
       expect(stripeCardError).toBeFalsy();
       expect(stripeCardInputError).toBeTruthy();
     });
@@ -208,12 +174,8 @@ describe('StripeCardElementComponent', () => {
       component.paymentError = null;
       fixture.detectChanges();
 
-      const stripeCardError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
-        stripeCardErrorSelector
-      );
-      const stripeCardInputError: HTMLElement = fixture.elementRef.nativeElement.querySelector(
-        stripeCardInputErrorSelector
-      );
+      const stripeCardError: HTMLElement = fixture.elementRef.nativeElement.querySelector(stripeCardErrorSelector);
+      const stripeCardInputError: HTMLElement = fixture.elementRef.nativeElement.querySelector(stripeCardInputErrorSelector);
       expect(stripeCardError).toBeFalsy();
       expect(stripeCardInputError).toBeFalsy();
     });

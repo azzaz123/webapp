@@ -1,11 +1,5 @@
 /* tslint:disable:no-unused-variable */
-import {
-  ComponentFixture,
-  TestBed,
-  fakeAsync,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { SearchInputComponent } from './search-input.component';
 import { I18nService } from '../../core/i18n/i18n.service';

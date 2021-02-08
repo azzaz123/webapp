@@ -2,11 +2,7 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {
-  HereMapsComponent,
-  MAP_ZOOM_GENERAL,
-  MAP_ZOOM_MARKER,
-} from './here-maps.component';
+import { HereMapsComponent, MAP_ZOOM_GENERAL, MAP_ZOOM_MARKER } from './here-maps.component';
 import { USER_LOCATION_COORDINATES } from '../../../../tests/user.fixtures.spec';
 import { HereMapsService } from './here-maps.service';
 import { HereMapServiceMock } from '../../../../tests/here-maps-service.fixtures.spec';
@@ -150,9 +146,7 @@ describe('HereMapsComponent', () => {
         spyOn(hereMapsService, 'isLibraryLoading$').and.returnValue(of(true));
         component.ngAfterViewInit();
         fixture.detectChanges();
-        const spinner: DebugElement = fixture.debugElement.query(
-          By.css('.loading')
-        );
+        const spinner: DebugElement = fixture.debugElement.query(By.css('.loading'));
         expect(spinner).toBeTruthy();
       });
     });
@@ -162,9 +156,7 @@ describe('HereMapsComponent', () => {
         spyOn(hereMapsService, 'isLibraryLoading$').and.returnValue(of(false));
         component.ngAfterViewInit();
         fixture.detectChanges();
-        const spinner: DebugElement = fixture.debugElement.query(
-          By.css('.loading')
-        );
+        const spinner: DebugElement = fixture.debugElement.query(By.css('.loading'));
         expect(spinner).toBeFalsy();
       });
     });

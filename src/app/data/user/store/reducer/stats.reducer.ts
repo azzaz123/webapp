@@ -32,18 +32,12 @@ const reducer = createReducer(
     ...state,
     statsByUserId: stats,
   })),
-  on(
-    LoadUserStatsSuccess,
-    LoadUserStatsByUserIdSuccess,
-    LoadUserStatsFailed,
-    LoadUserStatsByUserIdFailed,
-    (state) => ({ ...state, loading: false })
-  )
+  on(LoadUserStatsSuccess, LoadUserStatsByUserIdSuccess, LoadUserStatsFailed, LoadUserStatsByUserIdFailed, (state) => ({
+    ...state,
+    loading: false,
+  }))
 );
 
-export function userStatsReducer(
-  state: UserStatsState,
-  action: Action
-): UserStatsState {
+export function userStatsReducer(state: UserStatsState, action: Action): UserStatsState {
   return reducer(state, action);
 }

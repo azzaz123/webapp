@@ -1,15 +1,4 @@
-import {
-  Directive,
-  ElementRef,
-  EventEmitter,
-  HostListener,
-  Inject,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  PLATFORM_ID,
-} from '@angular/core';
+import { Directive, ElementRef, EventEmitter, HostListener, Inject, Input, OnDestroy, OnInit, Output, PLATFORM_ID } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 import { NgUploaderOptions } from './upload.interface';
 import { Subscription } from 'rxjs';
@@ -40,10 +29,7 @@ export class FileDropDirective implements OnInit, OnDestroy {
   isChrome: boolean;
   subscription: Subscription;
 
-  constructor(
-    @Inject(PLATFORM_ID) private platform_id,
-    private elementRef: ElementRef
-  ) {
+  constructor(@Inject(PLATFORM_ID) private platform_id, private elementRef: ElementRef) {
     this.isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
     this.isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
     this.isChrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
@@ -86,11 +72,7 @@ export class FileDropDirective implements OnInit, OnDestroy {
     if (!e) {
       return;
     }
-    if (
-      (e.dataTransfer.effectAllowed === 'all' ||
-        e.dataTransfer.effectAllowed === 'uninitialized') &&
-      !this.isSafari
-    ) {
+    if ((e.dataTransfer.effectAllowed === 'all' || e.dataTransfer.effectAllowed === 'uninitialized') && !this.isSafari) {
       this.fileDropAction.emit({ action: FileDropActions.DRAGOVER });
     }
   }

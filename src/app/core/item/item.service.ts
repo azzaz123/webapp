@@ -32,18 +32,9 @@ import {
   ListingFeeProductInfo,
   ItemByCategoryResponse,
 } from './item-response.interface';
-import {
-  find,
-  findIndex,
-  reverse,
-  without,
-  map as lodashMap,
-  filter,
-  sortBy,
-} from 'lodash-es';
+import { find, findIndex, reverse, without, map as lodashMap, filter, sortBy } from 'lodash-es';
 import { I18nService } from '../i18n/i18n.service';
 import { BanReason } from './ban-reason.interface';
-import { TrackingService } from '../tracking/tracking.service';
 import { EventService } from '../event/event.service';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { Car } from './car';
@@ -84,9 +75,7 @@ export const V1_API_URL = 'shnm-portlet/api/v1';
 @Injectable()
 export class ItemService {
   public selectedAction: string;
-  public selectedItems$: ReplaySubject<SelectedItemsAction> = new ReplaySubject(
-    1
-  );
+  public selectedItems$: ReplaySubject<SelectedItemsAction> = new ReplaySubject(1);
   private banReasons: BanReason[] = null;
   protected items: ItemsStore = {
     active: [],
@@ -98,13 +87,7 @@ export class ItemService {
   private bumpTypes = ['countrybump', 'citybump', 'zonebump', 'urgent'];
   private lastCategoryIdSearched: number;
 
-  constructor(
-    private http: HttpClient,
-    private i18n: I18nService,
-    private trackingService: TrackingService,
-    private uuidService: UuidService,
-    private eventService: EventService
-  ) {}
+  constructor(private http: HttpClient, private i18n: I18nService, private uuidService: UuidService, private eventService: EventService) {}
 
   public getFakeItem(id: string): Item {
     const fakeItem: Item = new Item(id, 1, '1', 'No disponible');
@@ -114,9 +97,7 @@ export class ItemService {
 
   public getCounters(id: string): Observable<ItemCounters> {
     return this.http
-      .get<ItemCounters>(
-        `${environment.baseUrl}${ITEMS_API_URL}/${id}/counters`
-      )
+      .get<ItemCounters>(`${environment.baseUrl}${ITEMS_API_URL}/${id}/counters`)
       .pipe(catchError(() => of({ views: 0, favorites: 0 })));
   }
 
@@ -145,9 +126,6 @@ export class ItemService {
   }
 
   public deselectItems() {
-    this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_UNSELECTED, {
-      product_ids: this.selectedItems.join(', '),
-    });
     this.selectedItems = [];
     this.selectedItems$.next();
     this.items.active.map((item: Item) => {
@@ -287,9 +265,7 @@ export class ItemService {
         : {
             id: this.uuidService.getUUID(),
             original_width: content.image ? content.image.original_width : null,
-            original_height: content.image
-              ? content.image.original_height
-              : null,
+            original_height: content.image ? content.image.original_height : null,
             average_hex_color: '',
             urls_by_size: content.image,
           },
@@ -301,25 +277,14 @@ export class ItemService {
       content.extra_info
         ? {
             object_type: {
-              id:
-                content.extra_info.object_type &&
-                content.extra_info.object_type.id
-                  ? content.extra_info.object_type.id.toString()
-                  : null,
-              name:
-                content.extra_info.object_type &&
-                content.extra_info.object_type.name
-                  ? content.extra_info.object_type.name
-                  : null,
+              id: content.extra_info.object_type && content.extra_info.object_type.id ? content.extra_info.object_type.id.toString() : null,
+              name: content.extra_info.object_type && content.extra_info.object_type.name ? content.extra_info.object_type.name : null,
             },
             brand: content.extra_info.brand,
             model: content.extra_info.model,
             gender: content.extra_info.gender,
             size: {
-              id:
-                content.extra_info.size && content.extra_info.size.id
-                  ? content.extra_info.size.id.toString()
-                  : null,
+              id: content.extra_info.size && content.extra_info.size.id ? content.extra_info.size.id.toString() : null,
             },
             condition: content.extra_info.condition || null,
           }
@@ -363,10 +328,7 @@ export class ItemService {
     );
   }
 
-  private mapItemByCategory(
-    response: ItemByCategoryResponse,
-    categoryId: number
-  ) {
+  private mapItemByCategory(response: ItemByCategoryResponse, categoryId: number) {
     const item = new Item(
       response.id,
       null,
@@ -394,9 +356,7 @@ export class ItemService {
 
     if (response.active_item_purchase) {
       if (response.active_item_purchase.listing_fee) {
-        item.listingFeeExpiringDate =
-          new Date().getTime() +
-          response.active_item_purchase.listing_fee.remaining_time_ms;
+        item.listingFeeExpiringDate = new Date().getTime() + response.active_item_purchase.listing_fee.remaining_time_ms;
       }
 
       if (response.active_item_purchase.bump) {
@@ -405,27 +365,18 @@ export class ItemService {
           expiration_date: response.active_item_purchase.bump.remaining_time_ms,
         };
 
-        item.bumpExpiringDate =
-          new Date().getTime() +
-          response.active_item_purchase.bump.remaining_time_ms;
+        item.bumpExpiringDate = new Date().getTime() + response.active_item_purchase.bump.remaining_time_ms;
       }
     }
 
     return item;
   }
 
-  public reportListing(
-    itemId: number | string,
-    comments: string,
-    reason: number
-  ): Observable<any> {
-    return this.http.post(
-      `${environment.baseUrl}${ITEMS_API_URL}/${itemId}/report`,
-      {
-        comments: comments,
-        reason: ITEM_BAN_REASONS[reason],
-      }
-    );
+  public reportListing(itemId: number | string, comments: string, reason: number): Observable<any> {
+    return this.http.post(`${environment.baseUrl}${ITEMS_API_URL}/${itemId}/report`, {
+      comments: comments,
+      reason: ITEM_BAN_REASONS[reason],
+    });
   }
 
   public getPaginationItems(url: string, init, status?): Observable<ItemsData> {
@@ -474,20 +425,15 @@ export class ItemService {
                 });
                 if (index !== -1) {
                   if (purchase.purchase_name === 'listingfee') {
-                    itemsData.data[index].listingFeeExpiringDate =
-                      purchase.expiration_date;
+                    itemsData.data[index].listingFeeExpiringDate = purchase.expiration_date;
                   }
                   if (this.bumpTypes.includes(purchase.purchase_name)) {
-                    itemsData.data[index].bumpExpiringDate =
-                      purchase.expiration_date;
+                    itemsData.data[index].bumpExpiringDate = purchase.expiration_date;
                   }
                   if (purchase.visibility_flags) {
-                    itemsData.data[index].flags.bumped =
-                      purchase.visibility_flags.bumped;
-                    itemsData.data[index].flags.highlighted =
-                      purchase.visibility_flags.highlighted;
-                    itemsData.data[index].flags.urgent =
-                      purchase.visibility_flags.urgent;
+                    itemsData.data[index].flags.bumped = purchase.visibility_flags.bumped;
+                    itemsData.data[index].flags.highlighted = purchase.visibility_flags.highlighted;
+                    itemsData.data[index].flags.urgent = purchase.visibility_flags.urgent;
                   }
                 }
               });
@@ -511,18 +457,11 @@ export class ItemService {
 
   public mine(init: number, status?: string): Observable<ItemsData> {
     this.lastCategoryIdSearched = null;
-    return this.getPaginationItems(
-      WEB_ITEMS_API_URL + '/mine/' + status,
-      init,
-      true
-    );
+    return this.getPaginationItems(WEB_ITEMS_API_URL + '/mine/' + status, init, true);
   }
 
   public myFavorites(init: number): Observable<ItemsData> {
-    return this.getPaginationItems(
-      USERS_API_URL + '/me/items/favorites',
-      init
-    ).pipe(
+    return this.getPaginationItems(USERS_API_URL + '/me/items/favorites', init).pipe(
       map((itemsData: ItemsData) => {
         itemsData.data = itemsData.data.map((item: Item) => {
           item.favorited = true;
@@ -538,89 +477,56 @@ export class ItemService {
   }
 
   public reserveItem(id: string, reserved: boolean): Observable<any> {
-    return this.http.put(
-      `${environment.baseUrl}${ITEMS_API_URL}/${id}/reserve`,
-      {
-        reserved,
-      }
-    );
+    return this.http.put(`${environment.baseUrl}${ITEMS_API_URL}/${id}/reserve`, {
+      reserved,
+    });
   }
 
   public reactivateItem(id: string): Observable<any> {
-    return this.http.put(
-      `${environment.baseUrl}${ITEMS_API_URL}/${id}/reactivate`,
-      {}
-    );
+    return this.http.put(`${environment.baseUrl}${ITEMS_API_URL}/${id}/reactivate`, {});
   }
 
   public favoriteItem(id: string, favorited: boolean): Observable<any> {
-    return this.http.put(
-      `${environment.baseUrl}${ITEMS_API_URL}/${id}/favorite`,
-      {
-        favorited,
-      }
-    );
+    return this.http.put(`${environment.baseUrl}${ITEMS_API_URL}/${id}/favorite`, {
+      favorited,
+    });
   }
 
   public bulkReserve(): Observable<ItemBulkResponse> {
-    return this.http.put<ItemBulkResponse>(
-      `${environment.baseUrl}${ITEMS_API_URL}/reserve`,
-      {
-        ids: this.selectedItems,
-      }
-    );
+    return this.http.put<ItemBulkResponse>(`${environment.baseUrl}${ITEMS_API_URL}/reserve`, {
+      ids: this.selectedItems,
+    });
   }
 
   public soldOutside(id: string): Observable<any> {
-    return this.http.put(
-      `${environment.baseUrl}${ITEMS_API_URL}/${id}/sold`,
-      {}
-    );
+    return this.http.put(`${environment.baseUrl}${ITEMS_API_URL}/${id}/sold`, {});
   }
 
   public getConversationUsers(id: string): Observable<ConversationUser[]> {
-    return this.http.get<ConversationUser[]>(
-      `${environment.baseUrl}${ITEMS_API_URL}/${id}/conversation-users`
-    );
+    return this.http.get<ConversationUser[]>(`${environment.baseUrl}${ITEMS_API_URL}/${id}/conversation-users`);
   }
 
   public getAvailableReactivationProducts(id: string): Observable<Product> {
     return this.http
-      .get(
-        `${environment.baseUrl}${WEB_ITEMS_API_URL}/${id}/available-reactivation-products`
-      )
-      .pipe(
-        mapRx.map((response: AvailableProductsResponse) => response.products[0])
-      );
+      .get(`${environment.baseUrl}${WEB_ITEMS_API_URL}/${id}/available-reactivation-products`)
+      .pipe(mapRx.map((response: AvailableProductsResponse) => response.products[0]));
   }
 
   private getPurchases(): Observable<Purchase[]> {
-    return this.http.get<Purchase[]>(
-      `${environment.baseUrl}${WEB_ITEMS_API_URL}/mine/purchases`
-    );
+    return this.http.get<Purchase[]>(`${environment.baseUrl}${WEB_ITEMS_API_URL}/mine/purchases`);
   }
 
-  public purchaseProducts(
-    orderParams: Order[],
-    orderId: string
-  ): Observable<string[]> {
+  public purchaseProducts(orderParams: Order[], orderId: string): Observable<string[]> {
     const headers: HttpHeaders = new HttpHeaders({
       'X-PaymentProvider': PAYMENT_PROVIDER,
     });
 
-    return this.http.post<string[]>(
-      `${environment.baseUrl}${WEB_ITEMS_API_URL}/purchase/products/${orderId}`,
-      orderParams,
-      {
-        headers,
-      }
-    );
+    return this.http.post<string[]>(`${environment.baseUrl}${WEB_ITEMS_API_URL}/purchase/products/${orderId}`, orderParams, {
+      headers,
+    });
   }
 
-  public purchaseProductsWithCredits(
-    orderParams: Order[],
-    orderId: string
-  ): Observable<PurchaseProductsWithCreditsResponse> {
+  public purchaseProductsWithCredits(orderParams: Order[], orderId: string): Observable<PurchaseProductsWithCreditsResponse> {
     const headers = new HttpHeaders({ 'X-PaymentProvider': PAYMENT_PROVIDER });
 
     return this.http.post<PurchaseProductsWithCreditsResponse>(
@@ -648,55 +554,34 @@ export class ItemService {
       .pipe(tap(() => this.eventService.emit(EventService.ITEM_UPDATED, item)));
   }
 
-  public updateRealEstateLocation(
-    itemId: string,
-    location: ItemLocation
-  ): Observable<any> {
-    return this.http.put(
-      `${environment.baseUrl}${ITEMS_API_URL}/real_estate/${itemId}/location`,
-      location
-    );
+  public updateRealEstateLocation(itemId: string, location: ItemLocation): Observable<any> {
+    return this.http.put(`${environment.baseUrl}${ITEMS_API_URL}/real_estate/${itemId}/location`, location);
   }
 
   public deletePicture(itemId: string, pictureId: string): Observable<any> {
-    return this.http.delete(
-      `${environment.baseUrl}${ITEMS_API_URL}/${itemId}/picture/${pictureId}`
-    );
+    return this.http.delete(`${environment.baseUrl}${ITEMS_API_URL}/${itemId}/picture/${pictureId}`);
   }
 
   public get(id: string): Observable<Item> {
-    return this.http
-      .get<Item>(`${environment.baseUrl}${ITEMS_API_URL}/${id}`)
-      .pipe(
-        mapRx.map((r) => this.mapRecordData(r)),
-        catchError(() => of(this.getFakeItem(id)))
-      );
-  }
-
-  public updatePicturesOrder(
-    itemId: string,
-    pictures_order: { [fileId: string]: number }
-  ): Observable<any> {
-    return this.http.put(
-      `${environment.baseUrl}${ITEMS_API_URL}/${itemId}/change-picture-order`,
-      {
-        pictures_order,
-      }
+    return this.http.get<Item>(`${environment.baseUrl}${ITEMS_API_URL}/${id}`).pipe(
+      mapRx.map((r) => this.mapRecordData(r)),
+      catchError(() => of(this.getFakeItem(id)))
     );
   }
 
-  public getItemsWithAvailableProducts(
-    ids: string[]
-  ): Observable<ItemWithProducts[]> {
+  public updatePicturesOrder(itemId: string, pictures_order: { [fileId: string]: number }): Observable<any> {
+    return this.http.put(`${environment.baseUrl}${ITEMS_API_URL}/${itemId}/change-picture-order`, {
+      pictures_order,
+    });
+  }
+
+  public getItemsWithAvailableProducts(ids: string[]): Observable<ItemWithProducts[]> {
     return this.http
-      .get(
-        `${environment.baseUrl}${WEB_ITEMS_API_URL}/available-visibility-products`,
-        {
-          params: {
-            itemsIds: ids.join(','),
-          },
-        }
-      )
+      .get(`${environment.baseUrl}${WEB_ITEMS_API_URL}/available-visibility-products`, {
+        params: {
+          itemsIds: ids.join(','),
+        },
+      })
       .pipe(
         mapRx.map((res: ItemsWithAvailableProductsResponse[]) => {
           return res.map((i: ItemsWithAvailableProductsResponse) => {
@@ -711,14 +596,11 @@ export class ItemService {
 
   public getCheapestProductPrice(ids: string[]): Observable<CheapestProducts> {
     return this.http
-      .get(
-        `${environment.baseUrl}${WEB_ITEMS_API_URL}/available-visibility-products`,
-        {
-          params: {
-            itemsIds: ids.join(','),
-          },
-        }
-      )
+      .get(`${environment.baseUrl}${WEB_ITEMS_API_URL}/available-visibility-products`, {
+        params: {
+          itemsIds: ids.join(','),
+        },
+      })
       .pipe(
         mapRx.map((res: ItemsWithAvailableProductsResponse[]) => {
           let returnObj = {};
@@ -731,9 +613,7 @@ export class ItemService {
   }
 
   private getActionsAllowed(id: string): Observable<AllowedActionResponse[]> {
-    return this.http.get<AllowedActionResponse[]>(
-      `${environment.baseUrl}${ITEMS_API_URL}/${id}/actions-allowed`
-    );
+    return this.http.get<AllowedActionResponse[]>(`${environment.baseUrl}${ITEMS_API_URL}/${id}/actions-allowed`);
   }
 
   public canDoAction(action: string, id: string): Observable<boolean> {
@@ -755,48 +635,31 @@ export class ItemService {
     durations.forEach((duration: number) => {
       productDurations[duration] = {};
       types.forEach((type: string) => {
-        productDurations[duration][type] = this.findDuration(
-          productList,
-          duration,
-          type
-        );
+        productDurations[duration][type] = this.findDuration(productList, duration, type);
       });
     });
     return productDurations;
   }
 
-  private findDuration(
-    productList: Product[],
-    duration: number,
-    type: string
-  ): Duration {
+  private findDuration(productList: Product[], duration: number, type: string): Duration {
     const product: Product = find(productList, { name: type });
     return find(product.durations, { duration: duration });
   }
 
   public getUrgentProducts(itemId: string): Observable<Product> {
     return this.http
-      .get(
-        `${environment.baseUrl}${WEB_ITEMS_API_URL}/${itemId}/available-urgent-products`
-      )
-      .pipe(
-        mapRx.map((response: AvailableProductsResponse) => response.products[0])
-      );
+      .get(`${environment.baseUrl}${WEB_ITEMS_API_URL}/${itemId}/available-urgent-products`)
+      .pipe(mapRx.map((response: AvailableProductsResponse) => response.products[0]));
   }
 
   public getUrgentProductByCategoryId(categoryId: string): Observable<Product> {
     return this.http
-      .get(
-        `${environment.baseUrl}${WEB_ITEMS_API_URL}/available-urgent-products`,
-        {
-          params: {
-            categoryId,
-          },
-        }
-      )
-      .pipe(
-        mapRx.map((response: AvailableProductsResponse) => response.products[0])
-      );
+      .get(`${environment.baseUrl}${WEB_ITEMS_API_URL}/available-urgent-products`, {
+        params: {
+          categoryId,
+        },
+      })
+      .pipe(mapRx.map((response: AvailableProductsResponse) => response.products[0]));
   }
 
   public mines(
@@ -819,19 +682,13 @@ export class ItemService {
         map((res: ItemProResponse[]) => {
           if (res.length > 0) {
             let items: Item[] = res
-              .filter(
-                (res) =>
-                  (res.content.purchases && status === 'featured') ||
-                  status !== 'featured'
-              )
+              .filter((res) => (res.content.purchases && status === 'featured') || status !== 'featured')
               .map((i: ItemProResponse) => {
                 const item: Item = this.mapRecordDataPro(i);
                 item.views = i.content.views;
                 item.favorites = i.content.favorites;
                 item.conversations = i.content.conversations;
-                item.purchases = i.content.purchases
-                  ? i.content.purchases
-                  : null;
+                item.purchases = i.content.purchases ? i.content.purchases : null;
                 item.km = i.content.km ? i.content.km : null;
                 return item;
               });
@@ -848,10 +705,7 @@ export class ItemService {
         term = term ? term.trim().toLowerCase() : '';
         if (term !== '') {
           return filter(res, (item: Item) => {
-            return (
-              item.title.toLowerCase().indexOf(term) !== -1 ||
-              item.description.toLowerCase().indexOf(term) !== -1
-            );
+            return item.title.toLowerCase().indexOf(term) !== -1 || item.description.toLowerCase().indexOf(term) !== -1;
           });
         }
         return res;
@@ -871,11 +725,7 @@ export class ItemService {
     );
   }
 
-  private recursiveMines(
-    init: number,
-    offset: number,
-    status?: string
-  ): Observable<ItemProResponse[]> {
+  private recursiveMines(init: number, offset: number, status?: string): Observable<ItemProResponse[]> {
     return this.http
       .get<any>(`${environment.baseUrl}${PROTOOL_API_URL}/mines`, {
         params: {
@@ -913,21 +763,13 @@ export class ItemService {
     const end: number = init + pageSize;
 
     // TODO: Propper condition with last category id searched and so
-    if (
-      status === 'TODO' &&
-      this.lastCategoryIdSearched &&
-      this.lastCategoryIdSearched === categoryId &&
-      this.items[status] &&
-      cache
-    ) {
+    if (status === 'TODO' && this.lastCategoryIdSearched && this.lastCategoryIdSearched === categoryId && this.items[status] && cache) {
       return of(this.items[status]);
     } else {
       return this.recursiveMinesByCategory(0, 20, categoryId, status).pipe(
         map((responseArray) => {
           if (responseArray.length > 0) {
-            const items = responseArray.map((i) =>
-              this.mapItemByCategory(i, categoryId)
-            );
+            const items = responseArray.map((i) => this.mapItemByCategory(i, categoryId));
             this.items[status] = items;
             this.lastCategoryIdSearched = categoryId;
             return items;
@@ -945,8 +787,7 @@ export class ItemService {
         }),
         map((res) => {
           const sort = sortByParam.split('_');
-          const field: string =
-            sort[0] === 'price' ? 'salePrice' : 'modifiedDate';
+          const field: string = sort[0] === 'price' ? 'salePrice' : 'modifiedDate';
           const sorted: Item[] = sortBy(res, [field]);
           if (sort[1] === 'desc') {
             return reverse(sorted);
@@ -958,12 +799,7 @@ export class ItemService {
     }
   }
 
-  public recursiveMinesByCategory(
-    init: number,
-    offset: number,
-    categoryId: number,
-    status: string
-  ): Observable<ItemByCategoryResponse[]> {
+  public recursiveMinesByCategory(init: number, offset: number, categoryId: number, status: string): Observable<ItemByCategoryResponse[]> {
     return this.http
       .get<any>(`${environment.baseUrl}${MINES_BY_CATEGORY_ENDPOINT}`, {
         params: {
@@ -976,12 +812,9 @@ export class ItemService {
       .pipe(
         mergeMap((res) => {
           if (res.length > 0) {
-            return this.recursiveMinesByCategory(
-              init + offset,
-              offset,
-              categoryId,
-              status
-            ).pipe(map((recursiveResult) => res.concat(recursiveResult)));
+            return this.recursiveMinesByCategory(init + offset, offset, categoryId, status).pipe(
+              map((recursiveResult) => res.concat(recursiveResult))
+            );
           } else {
             return of([]);
           }
@@ -1041,10 +874,7 @@ export class ItemService {
   }
 
   public activateSingleItem(id: string): Observable<void> {
-    return this.http.put<void>(
-      `${environment.baseUrl}${ITEMS_API_URL}/${id}/${ACTIVATE_ENDPOINT}`,
-      {}
-    );
+    return this.http.put<void>(`${environment.baseUrl}${ITEMS_API_URL}/${id}/${ACTIVATE_ENDPOINT}`, {});
   }
 
   public deactivate(): Observable<any> {
@@ -1079,30 +909,25 @@ export class ItemService {
   }
 
   public setSold(id: number): Observable<any> {
-    return this.http
-      .post(`${environment.baseUrl}${V1_API_URL}/item.json/${id}/sold`, {})
-      .pipe(
-        tap(() => {
-          let index: number = findIndex(this.items.active, { legacyId: id });
-          let deletedItem: Item = this.items.active.splice(index, 1)[0];
-          if (this.items.sold.length) {
-            this.items.sold.push(deletedItem);
-          }
-          this.eventService.emit(EventService.ITEM_SOLD, deletedItem);
-        })
-      );
+    return this.http.post(`${environment.baseUrl}${V1_API_URL}/item.json/${id}/sold`, {}).pipe(
+      tap(() => {
+        let index: number = findIndex(this.items.active, { legacyId: id });
+        let deletedItem: Item = this.items.active.splice(index, 1)[0];
+        if (this.items.sold.length) {
+          this.items.sold.push(deletedItem);
+        }
+        this.eventService.emit(EventService.ITEM_SOLD, deletedItem);
+      })
+    );
   }
 
   public cancelAutorenew(itemId: string): Observable<any> {
-    return this.http.put(
-      `${environment.baseUrl}${PROTOOL_API_URL}/autorenew/update`,
-      [
-        {
-          item_id: itemId,
-          autorenew: false,
-        },
-      ]
-    );
+    return this.http.put(`${environment.baseUrl}${PROTOOL_API_URL}/autorenew/update`, [
+      {
+        item_id: itemId,
+        autorenew: false,
+      },
+    ]);
   }
 
   public getLatest(userId: string): Observable<ItemDataResponse> {
@@ -1121,39 +946,22 @@ export class ItemService {
   }
 
   public bumpProItems(orderParams: OrderPro[]): Observable<string[]> {
-    return this.http.post<string[]>(
-      `${environment.baseUrl}${PROTOOL_API_URL}/purchaseItems`,
-      orderParams
-    );
+    return this.http.post<string[]>(`${environment.baseUrl}${PROTOOL_API_URL}/purchaseItems`, orderParams);
   }
 
-  public getCarInfo(
-    brand: string,
-    model: string,
-    version: string
-  ): Observable<CarInfo> {
-    return this.http.get<CarInfo>(
-      `${environment.baseUrl}${ITEMS_API_URL}/cars/info`,
-      {
-        params: {
-          brand,
-          model,
-          version,
-        },
-      }
-    );
+  public getCarInfo(brand: string, model: string, version: string): Observable<CarInfo> {
+    return this.http.get<CarInfo>(`${environment.baseUrl}${ITEMS_API_URL}/cars/info`, {
+      params: {
+        brand,
+        model,
+        version,
+      },
+    });
   }
 
   public getListingFeeInfo(itemId: string): Observable<Product> {
     return this.http
-      .get(
-        `${environment.baseUrl}${WEB_ITEMS_API_URL}/${itemId}/listing-fee-info`
-      )
-      .pipe(
-        mapRx.map(
-          (response: ListingFeeProductInfo) =>
-            response.product_group.products[0]
-        )
-      );
+      .get(`${environment.baseUrl}${WEB_ITEMS_API_URL}/${itemId}/listing-fee-info`)
+      .pipe(mapRx.map((response: ListingFeeProductInfo) => response.product_group.products[0]));
   }
 }

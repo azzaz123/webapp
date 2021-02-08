@@ -50,12 +50,9 @@ export class EditComponent implements OnInit, CanComponentDeactivate {
     if (!this.hasNotSavedChanges) {
       return true;
     }
-    const modalRef: NgbModalRef = this.modalService.open(
-      ExitConfirmationModalComponent,
-      {
-        backdrop: 'static',
-      }
-    );
+    const modalRef: NgbModalRef = this.modalService.open(ExitConfirmationModalComponent, {
+      backdrop: 'static',
+    });
     modalRef.componentInstance.item = this.item;
     return modalRef.result;
   }
@@ -65,10 +62,8 @@ export class EditComponent implements OnInit, CanComponentDeactivate {
   }
 
   public getUrgentPrice(): void {
-    this.itemService
-      .getUrgentProducts(this.item.id)
-      .subscribe((product: Product) => {
-        this.urgentPrice = product.durations[0].market_code;
-      });
+    this.itemService.getUrgentProducts(this.item.id).subscribe((product: Product) => {
+      this.urgentPrice = product.durations[0].market_code;
+    });
   }
 }

@@ -15,16 +15,10 @@ import { CartBase } from '../../catalog/cart/cart-base';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { FinancialCard } from '../../profile/credit-card-info/financial-card';
-import {
-  PaymentMethodResponse,
-  SetupIntent,
-} from '../../../core/payments/payment.interface';
+import { PaymentMethodResponse, SetupIntent } from '../../../core/payments/payment.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { Tier } from '../../../core/subscriptions/subscriptions.interface';
-import {
-  TERMS_AND_CONDITIONS_URL,
-  PRIVACY_POLICY_URL,
-} from '../../../core/constants';
+import { TERMS_AND_CONDITIONS_URL, PRIVACY_POLICY_URL } from '../../../core/constants';
 import { STRIPE_ERROR } from '@core/stripe/stripe.interface';
 
 @Component({
@@ -39,8 +33,7 @@ import { STRIPE_ERROR } from '@core/stripe/stripe.interface';
     },
   ],
 })
-export class StripeCardElementComponent
-  implements ControlValueAccessor, AfterViewInit, OnChanges, OnDestroy {
+export class StripeCardElementComponent implements ControlValueAccessor, AfterViewInit, OnChanges, OnDestroy {
   private _model = false;
   public financialCard: FinancialCard;
   public hasFinancialCard: boolean;
@@ -60,12 +53,8 @@ export class StripeCardElementComponent
   @Output() hasCard: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() stripeCard: EventEmitter<any> = new EventEmitter<any>();
   @Output() stripeCardToken: EventEmitter<string> = new EventEmitter<string>();
-  @Output() onStripeCardCreate: EventEmitter<
-    PaymentMethodResponse
-  > = new EventEmitter();
-  @Output() onStripeSetDefaultCard: EventEmitter<
-    SetupIntent
-  > = new EventEmitter();
+  @Output() onStripeCardCreate: EventEmitter<PaymentMethodResponse> = new EventEmitter();
+  @Output() onStripeSetDefaultCard: EventEmitter<SetupIntent> = new EventEmitter();
   @Output() onClickUseSavedCard = new EventEmitter();
   @Output() onFocusCard = new EventEmitter<boolean>();
 
@@ -83,15 +72,9 @@ export class StripeCardElementComponent
   ) {}
 
   public errorTextConfig = {
-    [STRIPE_ERROR.card_declined]: this.i18n.getTranslations(
-      'cardNumberIsNotValid'
-    ),
-    [STRIPE_ERROR.expired_card]: this.i18n.getTranslations(
-      'cardDateIsNotValid'
-    ),
-    [STRIPE_ERROR.incorrect_cvc]: this.i18n.getTranslations(
-      'cvcNumberIsNotValid'
-    ),
+    [STRIPE_ERROR.card_declined]: this.i18n.getTranslations('cardNumberIsNotValid'),
+    [STRIPE_ERROR.expired_card]: this.i18n.getTranslations('cardDateIsNotValid'),
+    [STRIPE_ERROR.incorrect_cvc]: this.i18n.getTranslations('cvcNumberIsNotValid'),
   };
 
   ngAfterViewInit() {
@@ -143,8 +126,7 @@ export class StripeCardElementComponent
         iconColor: '#666ee8',
         color: '#292b2c',
         fontWeight: 400,
-        fontFamily:
-          '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif',
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif',
         fontSmoothing: 'antialiased',
         fontSize: '15px',
         '::placeholder': {

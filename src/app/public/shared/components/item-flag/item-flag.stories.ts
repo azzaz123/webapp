@@ -1,7 +1,7 @@
 import { HttpClientModule } from '@angular/common/http';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { Story, Meta } from '@storybook/angular/types-6-0';
-import { ITEM_FLAG_TYPES } from './item-flag-constants';
+import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from './item-flag-constants';
 import { ItemFlagComponent } from './item-flag.component';
 
 export default {
@@ -20,26 +20,30 @@ const Template: Story<ItemFlagComponent> = (args: ItemFlagComponent) => ({
 
 export const Default = Template.bind({});
 Default.args = {
-  type: ITEM_FLAG_TYPES.DEFAULT,
+  type: STATUS_ITEM_FLAG_TYPES.DEFAULT,
   content: 'Text',
 };
 export const Sold = Template.bind({});
 Sold.args = {
-  type: ITEM_FLAG_TYPES.SOLD,
+  type: STATUS_ITEM_FLAG_TYPES.SOLD,
 };
 export const Reserved = Template.bind({});
 Reserved.args = {
-  type: ITEM_FLAG_TYPES.RESERVED,
+  type: STATUS_ITEM_FLAG_TYPES.RESERVED,
 };
 export const Expired = Template.bind({});
 Expired.args = {
-  type: ITEM_FLAG_TYPES.EXPIRED,
+  type: STATUS_ITEM_FLAG_TYPES.EXPIRED,
 };
 export const Inactive = Template.bind({});
 Inactive.args = {
-  type: ITEM_FLAG_TYPES.INACTIVE,
+  type: STATUS_ITEM_FLAG_TYPES.INACTIVE,
 };
 export const Featured = Template.bind({});
 Featured.args = {
-  type: ITEM_FLAG_TYPES.FEATURED,
+  type: BUMPED_ITEM_FLAG_TYPES.BUMPED,
+};
+export const CountryBumped = Template.bind({});
+CountryBumped.args = {
+  type: BUMPED_ITEM_FLAG_TYPES.COUNTRY_BUMP,
 };

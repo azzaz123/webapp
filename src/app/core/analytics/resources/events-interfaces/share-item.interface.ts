@@ -20,13 +20,7 @@ export interface ShareItem {
   /**
    * Channel through which the item has been shared
    */
-  channel:
-    | 'facebook'
-    | 'messenger'
-    | 'email'
-    | 'whatsapp'
-    | 'twitter'
-    | 'others';
+  channel: 'facebook' | 'messenger' | 'email' | 'whatsapp' | 'twitter' | 'others';
   /**
    * Identifier of the screen that the item was shared from
    */

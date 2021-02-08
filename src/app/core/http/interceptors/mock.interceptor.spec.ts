@@ -1,8 +1,5 @@
 import { TestBed, getTestBed } from '@angular/core/testing';
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { environment } from '../../../../environments/environment';
 import { HttpModule } from '../http.module';
@@ -35,9 +32,7 @@ describe(`MockInterceptor`, () => {
 
     http = injector.get(HttpClient);
     httpMock = injector.get(HttpTestingController);
-    interceptor = injector
-      .get(HTTP_INTERCEPTORS)
-      .filter((inter) => inter instanceof MockInterceptor)[0];
+    interceptor = injector.get(HTTP_INTERCEPTORS).filter((inter) => inter instanceof MockInterceptor)[0];
   });
 
   afterEach((): void => {
@@ -67,9 +62,7 @@ describe(`MockInterceptor`, () => {
       },
     ];
 
-    http
-      .get(environment.baseUrl)
-      .subscribe((response) => (dataResponse = response));
+    http.get(environment.baseUrl).subscribe((response) => (dataResponse = response));
 
     expect(dataResponse).toEqual(mockData);
   });

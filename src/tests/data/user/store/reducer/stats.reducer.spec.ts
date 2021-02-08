@@ -1,18 +1,9 @@
-import {
-  LoadUserStatsByUserIdSuccess,
-  LoadUserStatsByUserIdFailed,
-} from './../../../../../app/data/user/actions/stats.action';
+import { LoadUserStatsByUserIdSuccess, LoadUserStatsByUserIdFailed } from './../../../../../app/data/user/actions/stats.action';
 import { UserIdMother } from './../../domain/profile/user-id.mother';
 import { UserId } from './../../../../../app/data/user/domain/profile/user-id';
 
 import { UserStatsMother } from './../../domain/stats/user-stats.mother';
-import {
-  LoadUserStats,
-  LoadUserStatsFailed,
-  UserStats,
-  LoadUserStatsSuccess,
-  LoadUserStatsByUserId,
-} from '@data/user';
+import { LoadUserStats, LoadUserStatsFailed, UserStats, LoadUserStatsSuccess, LoadUserStatsByUserId } from '@data/user';
 import * as fromReducer from 'app/data/user/store/reducer/stats.reducer';
 
 describe('Stats Reducer', () => {
@@ -22,10 +13,7 @@ describe('Stats Reducer', () => {
 
       const action = { type: 'Unkown' };
 
-      const state = fromReducer.userStatsReducer(
-        INITIAL_USER_STATS_STATE,
-        action
-      );
+      const state = fromReducer.userStatsReducer(INITIAL_USER_STATS_STATE, action);
 
       expect(state).toEqual(INITIAL_USER_STATS_STATE);
     });
@@ -35,10 +23,7 @@ describe('Stats Reducer', () => {
     it('[LoadUserStats] should set loading to true', () => {
       const { INITIAL_USER_STATS_STATE } = fromReducer;
 
-      const state = fromReducer.userStatsReducer(
-        INITIAL_USER_STATS_STATE,
-        LoadUserStats()
-      );
+      const state = fromReducer.userStatsReducer(INITIAL_USER_STATS_STATE, LoadUserStats());
 
       expect(state.loading).toBeTruthy();
     });
@@ -47,14 +32,8 @@ describe('Stats Reducer', () => {
       const { INITIAL_USER_STATS_STATE } = fromReducer;
       const stats: UserStats = UserStatsMother.random();
 
-      let state = fromReducer.userStatsReducer(
-        INITIAL_USER_STATS_STATE,
-        LoadUserStats()
-      );
-      state = fromReducer.userStatsReducer(
-        state,
-        LoadUserStatsSuccess({ stats })
-      );
+      let state = fromReducer.userStatsReducer(INITIAL_USER_STATS_STATE, LoadUserStats());
+      state = fromReducer.userStatsReducer(state, LoadUserStatsSuccess({ stats }));
 
       expect(state.stats).toEqual(stats);
       expect(state.loading).toBeFalsy();
@@ -63,10 +42,7 @@ describe('Stats Reducer', () => {
     it('[LoadUserStatsFailed] should set loading to false without stats', () => {
       const { INITIAL_USER_STATS_STATE } = fromReducer;
 
-      let state = fromReducer.userStatsReducer(
-        INITIAL_USER_STATS_STATE,
-        LoadUserStats()
-      );
+      let state = fromReducer.userStatsReducer(INITIAL_USER_STATS_STATE, LoadUserStats());
       state = fromReducer.userStatsReducer(state, LoadUserStatsFailed());
 
       expect(state.loading).toBeFalsy();
@@ -79,10 +55,7 @@ describe('Stats Reducer', () => {
       const { INITIAL_USER_STATS_STATE } = fromReducer;
       const userId: UserId = UserIdMother.random();
 
-      const state = fromReducer.userStatsReducer(
-        INITIAL_USER_STATS_STATE,
-        LoadUserStatsByUserId({ userId })
-      );
+      const state = fromReducer.userStatsReducer(INITIAL_USER_STATS_STATE, LoadUserStatsByUserId({ userId }));
 
       expect(state.loading).toBeTruthy();
     });
@@ -92,14 +65,8 @@ describe('Stats Reducer', () => {
       const userId: UserId = UserIdMother.random();
       const stats: UserStats = UserStatsMother.random();
 
-      let state = fromReducer.userStatsReducer(
-        INITIAL_USER_STATS_STATE,
-        LoadUserStatsByUserId({ userId })
-      );
-      state = fromReducer.userStatsReducer(
-        state,
-        LoadUserStatsByUserIdSuccess({ stats })
-      );
+      let state = fromReducer.userStatsReducer(INITIAL_USER_STATS_STATE, LoadUserStatsByUserId({ userId }));
+      state = fromReducer.userStatsReducer(state, LoadUserStatsByUserIdSuccess({ stats }));
 
       expect(state.statsByUserId).toEqual(stats);
       expect(state.loading).toBeFalsy();
@@ -110,14 +77,8 @@ describe('Stats Reducer', () => {
       const userId: UserId = UserIdMother.random();
       const stats: UserStats = UserStatsMother.random();
 
-      let state = fromReducer.userStatsReducer(
-        INITIAL_USER_STATS_STATE,
-        LoadUserStatsByUserId({ userId })
-      );
-      state = fromReducer.userStatsReducer(
-        state,
-        LoadUserStatsByUserIdFailed()
-      );
+      let state = fromReducer.userStatsReducer(INITIAL_USER_STATS_STATE, LoadUserStatsByUserId({ userId }));
+      state = fromReducer.userStatsReducer(state, LoadUserStatsByUserIdFailed());
 
       expect(state.loading).toBeFalsy();
       expect(state.statsByUserId).toBeNull();

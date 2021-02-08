@@ -10,15 +10,7 @@ import { UserBasicInfoModule } from '@public/shared/components/user-basic-info/u
 
 @NgModule({
   declarations: [UserProfileHeaderComponent],
-  imports: [
-    CommonModule,
-    UserCoverModule,
-    UserAvatarModule,
-    StarsModule,
-    SvgIconModule,
-    UserStatsModule,
-    UserBasicInfoModule,
-  ],
+  imports: [CommonModule, UserCoverModule, UserAvatarModule, StarsModule, SvgIconModule, UserStatsModule, UserBasicInfoModule],
   exports: [UserProfileHeaderComponent],
 })
 export class UserProfileHeaderModule {}

@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Call } from '@core/conversation/calls';
 import { CallsService } from '@core/conversation/calls.service';
-import { TrackingService } from '@core/tracking/tracking.service';
 
 @Component({
   selector: 'tsl-calls',
@@ -20,11 +19,7 @@ export class CallsComponent implements OnInit, OnDestroy {
   private callsSubscription: Subscription;
   private active = true;
 
-  constructor(
-    private callService: CallsService,
-    private trackingService: TrackingService,
-    private route: ActivatedRoute
-  ) {}
+  constructor(private callService: CallsService, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.loading = true;
@@ -63,15 +58,6 @@ export class CallsComponent implements OnInit, OnDestroy {
       .subscribe((calls: Call[]) => {
         this.calls = calls;
         this.loading = false;
-        if (this.archive) {
-          this.trackingService.track(
-            TrackingService.PHONE_LEAD_LIST_PROCESSED_LOADED
-          );
-        } else {
-          this.trackingService.track(
-            TrackingService.PHONE_LEAD_LIST_ACTIVE_LOADED
-          );
-        }
       });
   }
 

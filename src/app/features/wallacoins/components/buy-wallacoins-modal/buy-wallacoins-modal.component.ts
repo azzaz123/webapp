@@ -1,15 +1,8 @@
 import { Component, EventEmitter, OnInit } from '@angular/core';
 import { Pack } from '../../../../core/payments/pack';
-import {
-  PaymentService,
-  PAYMENT_RESPONSE_STATUS,
-  PAYMENT_METHOD,
-} from '../../../../core/payments/payment.service';
+import { PaymentService, PAYMENT_RESPONSE_STATUS, PAYMENT_METHOD } from '../../../../core/payments/payment.service';
 import { ErrorsService } from '../../../../core/errors/errors.service';
-import {
-  OrderProExtras,
-  FinancialCardOption,
-} from '../../../../core/payments/payment.interface';
+import { OrderProExtras, FinancialCardOption } from '../../../../core/payments/payment.interface';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { StripeService } from '../../../../core/stripe/stripe.service';
 import { EventService } from '../../../../core/event/event.service';
@@ -71,13 +64,7 @@ export class BuyWallacoinsModalComponent implements OnInit {
     this.loading = true;
     this.paymentService.orderExtrasProPack(order).subscribe(
       () => {
-        this.stripeService.buy(
-          order.id,
-          paymentId,
-          this.hasSavedCard,
-          this.savedCard,
-          this.card
-        );
+        this.stripeService.buy(order.id, paymentId, this.hasSavedCard, this.savedCard, this.card);
       },
       (e: HttpErrorResponse) => {
         this.loading = false;
@@ -122,10 +109,5 @@ export class BuyWallacoinsModalComponent implements OnInit {
     this.savedCard = true;
     this.selectedCard = true;
     this.setCardInfo(selectedCard);
-  }
-
-  public getTrackingAttributes(): Object {
-    const payment_method = PAYMENT_METHOD.STRIPE;
-    return { payment_method };
   }
 }

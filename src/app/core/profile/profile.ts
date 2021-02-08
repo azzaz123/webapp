@@ -2,10 +2,8 @@ import { Model } from '../resource/model.interface';
 import { ProfileImage } from './profile-response.interface';
 
 export const PROFILE_BASE_PATH = 'http://es.wallapop.com/user/';
-export const FAKE_ITEM_IMAGE_SMALL_BASE_PATH =
-  '../../../assets/images/fake-item-s.png';
-export const FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH =
-  '../../../assets/images/fake-item-s-l.png';
+export const FAKE_ITEM_IMAGE_SMALL_BASE_PATH = '../../../assets/images/fake-item-s.png';
+export const FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH = '../../../assets/images/fake-item-s-l.png';
 
 export class Profile implements Model {
   private _webLink: string;

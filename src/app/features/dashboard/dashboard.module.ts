@@ -9,10 +9,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { CallComponent } from './components/call/call.component';
 import { StatsGraphComponent } from './components/stats-graph/stats-graph.component';
 import { StatisticsService } from './core/services/statistics.service';
-import {
-  dashboardRoutedComponents,
-  DashboardRoutingModule,
-} from './dashboard.routing.module';
+import { dashboardRoutedComponents, DashboardRoutingModule } from './dashboard.routing.module';
 
 @NgModule({
   imports: [

@@ -15,24 +15,15 @@ export default {
   component: RecommendedItemsComponent,
 } as Meta;
 
-const Template: Story<RecommendedItemsComponent> = (
-  args: RecommendedItemsComponent
-) => ({
+const Template: Story<RecommendedItemsComponent> = (args: RecommendedItemsComponent) => ({
   component: RecommendedItemsComponent,
   props: args,
   moduleMetadata: {
     declarations: [RecommendedItemsComponent],
-    imports: [
-      CoreModule,
-      HttpModule,
-      ItemCardListModule,
-      CheckSessionModule,
-      CommonModule,
-    ],
+    imports: [CoreModule, HttpModule, ItemCardListModule, CheckSessionModule, CommonModule],
     providers: [DeviceDetectorService, MapItemService],
   },
-  template:
-    '<tsl-recommended-items [recommendedItems]="recommendedItems" showDescription="false"></tsl-recommended-items>',
+  template: '<tsl-recommended-items [recommendedItems]="recommendedItems" showDescription="false"></tsl-recommended-items>',
 });
 
 export const Large = Template.bind({});

@@ -22,11 +22,7 @@ describe('BumpSuggestionModalComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        BumpSuggestionModalComponent,
-        ButtonComponent,
-        CustomCurrencyPipe,
-      ],
+      declarations: [BumpSuggestionModalComponent, ButtonComponent, CustomCurrencyPipe],
       providers: [
         DecimalPipe,
         {
@@ -80,9 +76,7 @@ describe('BumpSuggestionModalComponent', () => {
       component.onFacebookShare();
 
       expect(socialShareService.facebookShare).toHaveBeenCalledTimes(1);
-      expect(socialShareService.facebookShare).toHaveBeenCalledWith(
-        MOCK_ITEM.webLink
-      );
+      expect(socialShareService.facebookShare).toHaveBeenCalledWith(MOCK_ITEM.webLink);
     });
 
     it('should open twiter link', () => {
@@ -92,9 +86,7 @@ describe('BumpSuggestionModalComponent', () => {
       component.onTwitterShare();
 
       expect(socialShareService.twitterShare).toHaveBeenCalledTimes(1);
-      expect(socialShareService.twitterShare).toHaveBeenCalledWith(
-        MOCK_ITEM.webLink
-      );
+      expect(socialShareService.twitterShare).toHaveBeenCalledWith(MOCK_ITEM.webLink);
     });
 
     it('should not disable shere icons if item data is available', () => {
@@ -102,18 +94,14 @@ describe('BumpSuggestionModalComponent', () => {
 
       fixture.detectChanges();
 
-      const shareIcons = fixture.debugElement.query(
-        By.css('.social-icons--disabled')
-      );
+      const shareIcons = fixture.debugElement.query(By.css('.social-icons--disabled'));
       expect(shareIcons).toBeFalsy();
     });
 
     it('should disable shere icons if item data is not available', () => {
       fixture.detectChanges();
 
-      const shareIcons = fixture.debugElement.query(
-        By.css('.social-icons--disabled')
-      );
+      const shareIcons = fixture.debugElement.query(By.css('.social-icons--disabled'));
 
       expect(shareIcons).toBeTruthy();
     });
@@ -125,8 +113,7 @@ describe('BumpSuggestionModalComponent', () => {
     });
 
     it('should be closed pressing close button', () => {
-      const closeButton = fixture.debugElement.query(By.css('.modal-close'))
-        .nativeElement;
+      const closeButton = fixture.debugElement.query(By.css('.modal-close')).nativeElement;
 
       closeButton.click();
 
@@ -136,9 +123,7 @@ describe('BumpSuggestionModalComponent', () => {
 
     it('should be closed pressing CTA button', () => {
       fixture.detectChanges();
-      const submitButton = fixture.debugElement.query(
-        By.directive(ButtonComponent)
-      ).nativeElement;
+      const submitButton = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
 
       submitButton.click();
 
@@ -153,9 +138,7 @@ describe('BumpSuggestionModalComponent', () => {
       component.productCurrency = 'EUR';
 
       fixture.detectChanges();
-      const submitButton = fixture.debugElement.query(
-        By.directive(ButtonComponent)
-      ).nativeElement;
+      const submitButton = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
 
       expect(submitButton.textContent).toEqual('Feature it from 10€');
     });
@@ -164,9 +147,7 @@ describe('BumpSuggestionModalComponent', () => {
       component.productCurrency = 'EUR';
 
       fixture.detectChanges();
-      const submitButton = fixture.debugElement.query(
-        By.directive(ButtonComponent)
-      ).nativeElement;
+      const submitButton = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
 
       expect(submitButton.textContent).toEqual('Feature it');
     });
@@ -175,9 +156,7 @@ describe('BumpSuggestionModalComponent', () => {
       component.productPrice = 10;
 
       fixture.detectChanges();
-      const submitButton = fixture.debugElement.query(
-        By.directive(ButtonComponent)
-      ).nativeElement;
+      const submitButton = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
 
       expect(submitButton.textContent).toEqual('Feature it');
     });

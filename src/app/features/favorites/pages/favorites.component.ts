@@ -22,11 +22,7 @@ export class FavoritesComponent implements OnInit {
   public numberOfFavorites: number;
   private counters: Counters;
 
-  constructor(
-    public itemService: ItemService,
-    private userService: UserService,
-    private profileService: ProfileService
-  ) {}
+  constructor(public itemService: ItemService, private userService: UserService, private profileService: ProfileService) {}
 
   ngOnInit() {
     this.getItems();
@@ -46,14 +42,12 @@ export class FavoritesComponent implements OnInit {
     if (!append) {
       this.items = [];
     }
-    this.itemService
-      .myFavorites(this.items.length)
-      .subscribe((itemsData: ItemsData) => {
-        const items = itemsData.data;
-        this.items = this.items.concat(items);
-        this.loading = false;
-        this.end = !itemsData.init;
-      });
+    this.itemService.myFavorites(this.items.length).subscribe((itemsData: ItemsData) => {
+      const items = itemsData.data;
+      this.items = this.items.concat(items);
+      this.loading = false;
+      this.end = !itemsData.init;
+    });
   }
 
   public getProfiles(append?: boolean) {
@@ -61,14 +55,12 @@ export class FavoritesComponent implements OnInit {
     if (!append) {
       this.profiles = [];
     }
-    this.profileService
-      .myFavorites(this.profiles.length)
-      .subscribe((profilesData: ProfilesData) => {
-        const profiles = profilesData.data;
-        this.profiles = this.profiles.concat(profiles);
-        this.loading = false;
-        this.end = !profilesData.init;
-      });
+    this.profileService.myFavorites(this.profiles.length).subscribe((profilesData: ProfilesData) => {
+      const profiles = profilesData.data;
+      this.profiles = this.profiles.concat(profiles);
+      this.loading = false;
+      this.end = !profilesData.init;
+    });
   }
 
   public onFavoriteChange(item: Item) {
@@ -96,9 +88,7 @@ export class FavoritesComponent implements OnInit {
   }
 
   public loadMore() {
-    this.selectedStatus === 'products'
-      ? this.getItems(true)
-      : this.getProfiles(true);
+    this.selectedStatus === 'products' ? this.getItems(true) : this.getProfiles(true);
   }
 
   public getNumberOfFavorites() {
@@ -109,9 +99,6 @@ export class FavoritesComponent implements OnInit {
   }
 
   private setNumberOfFavorites() {
-    this.numberOfFavorites =
-      this.selectedStatus === 'products'
-        ? this.counters.favorites
-        : this.counters.profile_favorited;
+    this.numberOfFavorites = this.selectedStatus === 'products' ? this.counters.favorites : this.counters.profile_favorited;
   }
 }

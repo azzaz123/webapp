@@ -2,10 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { Observable, Subscriber } from 'rxjs';
 import { AdSlot } from '../../models';
-import {
-  AmazonPublisherServiceLibrary,
-  AmazonPublisherServiceMapper,
-} from './amazon-publisher-service.model';
+import { AmazonPublisherServiceLibrary, AmazonPublisherServiceMapper } from './amazon-publisher-service.model';
 
 @Injectable({
   providedIn: 'root',
