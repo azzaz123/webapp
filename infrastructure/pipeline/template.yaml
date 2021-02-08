@@ -9,7 +9,7 @@ Parameters:
     Type: String
   ProjectName:
     Description: 'Name of the project'
-    Type: Stringg
+    Type: String
   BucketESName:
     Description: 'Name of the S3 bucket where the app in ES is hosted'
     Type: String
