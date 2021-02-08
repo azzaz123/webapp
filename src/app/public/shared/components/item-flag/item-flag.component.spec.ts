@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
-import { ITEM_FLAG_TYPES } from './item-flag-constants';
+import { STATUS_ITEM_FLAG_TYPES } from './item-flag-constants';
 
 import { ItemFlagComponent } from './item-flag.component';
 
@@ -29,7 +29,7 @@ describe('ItemFlagComponent', () => {
 
   describe('when we pass an item type...', () => {
     beforeEach(() => {
-      component.type = ITEM_FLAG_TYPES.SOLD;
+      component.type = STATUS_ITEM_FLAG_TYPES.SOLD;
 
       fixture.detectChanges();
     });
