@@ -69,7 +69,7 @@ Resources:
               - s3:Get*
               - s3:List*
           - Resource:
-              - !GetAtt ArtifactBucket.Arn
+              - !Ref ArtifactBucket.Arn
               - !Join [ '', [!GetAtt ArtifactBucket.Arn, '/*' ] ]
               - !Sub "arn:aws:s3:::wallapop-trigger-link-cicd/webapp/webapp-${ImageTag}.zip"
               - !Ref BucketES
