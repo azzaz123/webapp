@@ -14,6 +14,7 @@ export class ImagesCarouselComponent {
 
   @ViewChild(NgbCarousel) public carousel: NgbCarousel;
   @Input() images: string[];
+  @Input() imageClass = 'cover';
   @Output() imageClick: EventEmitter<CarouselImage> = new EventEmitter<CarouselImage>();
 
   constructor() {}

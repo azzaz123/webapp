@@ -4,11 +4,11 @@
         'hideControllers': images?.length <=1}">
         <ng-template *ngFor="let image of images; let i = index" ngbSlide [id]="NGB_SLIDE + i">
             <img *ngIf="currentSlide === NGB_SLIDE+i" [src]="image" alt="" [fallback]="IMAGE_FALLBACK"
-                class="ImagesCarousel__image" (click)="emitCurrentImage(i)">
+                class="ImagesCarousel__image__{{imageClass}}" (click)="emitCurrentImage(i)">
         </ng-template>
     </ngb-carousel>
     <ng-template #fallbackImage>
-        <img class="ImagesCarousel__image ImagesCarousel__image--fallback h-100 w-100" [src]="IMAGE_FALLBACK"
-            alt="fallback" loading="lazy">
+        <img class="ImagesCarousel__image__{{imageClass}} ImagesCarousel__image--fallback h-100 w-100"
+            [src]="IMAGE_FALLBACK" alt="fallback" loading="lazy">
     </ng-template>
 </div>

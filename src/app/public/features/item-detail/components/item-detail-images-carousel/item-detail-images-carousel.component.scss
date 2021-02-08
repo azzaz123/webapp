@@ -1,8 +1,21 @@
 @import '~style/common';
 
+$header-height: 63px;
+
+.ItemDetailImages {
+  z-index: 100;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 .ItemHeader {
-  height: 63px;
+  height: $header-height;
   background-color: $white;
+
+  &__backButton {
+    cursor: pointer;
+  }
   &__price {
     font-weight: $font-weight-chunky;
   }
@@ -12,5 +25,13 @@
 }
 
 .ItemContainer {
-  background-color: black;
+  top: $header-height;
+  height: auto;
+  background-color: $black;
+  bottom: 0;
+
+  &__carousel {
+    max-height: 95%;
+    max-width: 100%;
+  }
 }

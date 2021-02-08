@@ -30,7 +30,12 @@ $item-flag-height: 38px;
   }
 
   &__image {
-    object-fit: cover;
+    &__cover {
+      object-fit: cover !important;
+    }
+    &__contain {
+      object-fit: contain;
+    }
     &--fallback {
       border-radius: $border-radius;
     }
