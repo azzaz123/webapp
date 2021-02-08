@@ -17,18 +17,18 @@ import { ButtonModule } from '@shared/button/button.module';
   template: `
     <tsl-filter-template
       [isBubble]="isBubble()"
+      [title]="getTitle()"
+      [icon]="getIcon()"
+      [hasApply]="hasApply()"
       [isDropdown]="isDropdown()"
       [isClearable]="isClearable()"
-      [icon]="getIcon()"
-      [counter]="filterCounter()"
+      [counter]="getFilterCounter()"
       [label]="getLabel()"
-      [title]="title"
-      [hasApply]="hasApply"
       [hasValue]="hasValue()"
-      (openStateChange)="openStateChange.emit($event)"
+      (openStateChange)="handleOpenStateChange($event)"
       (apply)="handleApply()"
-      (clear)="clear.emit()"
-      (click)="storyClick.emit()"
+      (clear)="handleClear()"
+      (click)="handleClick()"
     >
       <!--   Extended content   -->
       <div style="border: 1px dashed black; padding: 5px;" *ngIf="storyContent">
@@ -57,8 +57,8 @@ class StoryAbstractFilterComponent extends AbstractFilter {
     return this.storyHasCustomValue ? true : super.hasValue();
   }
 
-  public filterCounter(): number {
-    return this.storyHasCustomCounter ? 9 : super.filterCounter();
+  public getFilterCounter(): number {
+    return this.storyHasCustomCounter ? 9 : super.getFilterCounter();
   }
 
   public getLabel(): string {
@@ -71,6 +71,10 @@ class StoryAbstractFilterComponent extends AbstractFilter {
 
   public handleApply(): void {
     this.storyBubbleApply.emit();
+  }
+
+  public handleClick(): void {
+    this.storyClick.emit();
   }
 }
 

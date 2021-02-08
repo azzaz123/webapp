@@ -15,24 +15,6 @@ export abstract class AbstractFilter implements Filter {
 
   @ViewChild(FilterTemplateComponent) filterTemplate: FilterTemplateComponent;
 
-  public abstract getLabel(): string | undefined;
-
-  public getIcon(): string | undefined {
-    return this.config.icon;
-  }
-
-  public get hasApply(): boolean {
-    return this.config.actions?.apply;
-  }
-
-  public get hasCancel(): boolean {
-    return this.config.actions?.cancel;
-  }
-
-  public get title(): string {
-    return this.config.title;
-  }
-
   public isBubble(): boolean {
     return this.variant === FILTER_VARIANT.BUBBLE;
   }
@@ -45,13 +27,39 @@ export abstract class AbstractFilter implements Filter {
     return this.value.length > 0;
   }
 
+  public hasApply(): boolean {
+    return this.config.actions?.apply;
+  }
+
+  public get hasCancel(): boolean {
+    return this.config.actions?.cancel;
+  }
+
   public isClearable(): boolean {
     return this.config.isClearable;
   }
 
-  public filterCounter(): number {
+  public abstract getLabel(): string | undefined;
+
+  public getIcon(): string | undefined {
+    return this.config.icon;
+  }
+
+  public getTitle(): string {
+    return this.config.title;
+  }
+
+  public getFilterCounter(): number {
     return this.value.length > 1 ? this.value.length : undefined;
   }
 
   public handleApply(): void {}
+
+  public handleClear(): void {
+    this.clear.emit();
+  }
+
+  public handleOpenStateChange(isOpen: boolean): void {
+    this.openStateChange.emit(isOpen);
+  }
 }
