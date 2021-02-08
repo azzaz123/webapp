@@ -10585,6 +10585,13 @@ ngx-permissions@^7.0.3:
   dependencies:
     tslib "^1.9.0"
 
+ngx-pinch-zoom@^2.5.5:
+  version "2.5.5"
+  resolved "https://registry.yarnpkg.com/ngx-pinch-zoom/-/ngx-pinch-zoom-2.5.5.tgz#f27ca93db12b20d62c9cb0f3b650f851841d285a"
+  integrity sha512-uwkpxEhEnXf44LKrRe5Ed7KEuRaCEDcOy3DqscIwVjP1wHPavt63gxgxIgWtrYsNi+gbPVPhSzJuSj1IbLbQ1g==
+  dependencies:
+    tslib "^2.0.0"
+
 nice-try@^1.0.4:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
