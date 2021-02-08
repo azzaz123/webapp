@@ -11,12 +11,12 @@ export abstract class AbstractFilter implements Filter, AfterViewInit {
   @Input() value: FilterParameter[] = [];
   @Output() change = new EventEmitter<FilterParameter[]>();
   @Output() clear = new EventEmitter<void>();
-  @Output() openStateChange = new EventEmitter<boolean>();
+  @Output() openStateChange;
 
   @ViewChild('filterTemplate', { read: FilterTemplateComponent }) filterTemplate: FilterTemplateComponent;
 
-  ngAfterViewInit() {
-    this.filterTemplate.dropdownStateChange.subscribe((isOpen) => this.openStateChange.emit(isOpen));
+  public ngAfterViewInit(): void {
+    this.openStateChange = this.filterTemplate.openStateChange;
   }
 
   public isBubble(): boolean {

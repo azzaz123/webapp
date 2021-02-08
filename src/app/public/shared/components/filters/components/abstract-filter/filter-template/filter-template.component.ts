@@ -19,14 +19,16 @@ export class FilterTemplateComponent implements AfterViewInit {
   @Input() isClearable?: boolean;
   @Output() apply: EventEmitter<void> = new EventEmitter();
   @Output() clear: EventEmitter<void> = new EventEmitter();
-  @Output() dropdownStateChange: EventEmitter<boolean>;
+  @Output() openStateChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @ViewChild('dropdown', { read: NgbDropdown }) dropdown: NgbDropdown;
 
   public BUBBLE_VARIANT = BUBBLE_VARIANT;
 
   public ngAfterViewInit(): void {
-    this.dropdownStateChange = this.dropdown.openChange;
+    if (this.isBubble) {
+      this.openStateChange = this.dropdown.openChange;
+    }
   }
 
   public get hasActions(): boolean {
