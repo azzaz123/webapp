@@ -1,4 +1,6 @@
-<div *ngIf="isBubble" ngbDropdown #dropdown="ngbDropdown">
+<div *ngIf="isBubble"
+     ngbDropdown #dropdown="ngbDropdown"
+     (openChange)="openStateChange.emit($event)">
   <div ngbDropdownToggle>
     <tsl-bubble
                 (click)="handleBubbleClick($event)"

@@ -25,12 +25,6 @@ export class FilterTemplateComponent implements AfterViewInit {
 
   public BUBBLE_VARIANT = BUBBLE_VARIANT;
 
-  public ngAfterViewInit(): void {
-    if (this.isBubble) {
-      this.openStateChange = this.dropdown.openChange;
-    }
-  }
-
   public handleBubbleClick(event: MouseEvent): void {
     if (this.isDropdown) {
       this.toggleDropdown();

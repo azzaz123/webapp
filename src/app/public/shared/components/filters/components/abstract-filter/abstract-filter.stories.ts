@@ -23,6 +23,7 @@ import { ButtonModule } from '@shared/button/button.module';
       [title]="title"
       [hasApply]="hasApply"
       [hasValue]="hasValue()"
+      (openStateChange)="openStateChange.emit($event)"
       (apply)="handleApply()"
       (clear)="handleClear()"
     >
@@ -43,6 +44,7 @@ class StoryAbstractFilterComponent extends AbstractFilter {
   @Input() storyHasNoArrow?: boolean;
   @Input() storyContent?: string;
   @Output() storyBubbleApply: EventEmitter<void> = new EventEmitter();
+  @Output() storyBubbleClear: EventEmitter<void> = new EventEmitter();
 
   public isDropdown(): boolean {
     return this.storyHasNoArrow ? false : super.isDropdown();
@@ -69,7 +71,7 @@ class StoryAbstractFilterComponent extends AbstractFilter {
   }
 
   public handleClear(): void {
-    this.clear.emit();
+    this.storyBubbleClear.emit();
   }
 }
 
@@ -77,9 +79,9 @@ export default {
   title: 'Webapp/Public/Shared/Components/Filters/AbstractFilter',
   component: StoryAbstractFilterComponent,
   argTypes: {
-    storyBubbleApply: { action: 'We can now handle bubble apply!' },
     openStateChange: { action: 'We can handle open state from the parent' },
-    clear: { action: 'I need to be cleared!' },
+    storyBubbleApply: { action: 'We can now handle bubble apply!' },
+    storyBubbleClear: { action: 'I need to be cleared!' },
   },
   decorators: [
     moduleMetadata({
@@ -92,6 +94,7 @@ export default {
 
 const Template: Story<StoryAbstractFilterComponent> = (args) => ({
   props: {
+    variant: FILTER_VARIANT.BUBBLE,
     ...args,
     config: {
       ...args.config,
@@ -103,10 +106,11 @@ const Template: Story<StoryAbstractFilterComponent> = (args) => ({
 
 const VariantTemplate: Story<StoryAbstractFilterComponent> = (args) => ({
   props: {
+    variant: FILTER_VARIANT.BUBBLE,
     ...args,
     config: {
-      ...args.config,
       title: 'I am the title',
+      ...args.config,
     },
   },
   component: StoryAbstractFilterComponent,
@@ -147,7 +151,6 @@ DefaultBubbleWithIcon.args = {
 
 export const DefaultBubbleWithValue = Template.bind({});
 DefaultBubbleWithValue.args = {
-  variant: FILTER_VARIANT.BUBBLE,
   value: [{ key: 'value' }],
   config: {},
   storyLabel: 'I have value!',
@@ -170,7 +173,6 @@ DefaultBubbleWithClear.args = {
 
 export const CustomBubbleWithValue = Template.bind({});
 CustomBubbleWithValue.args = {
-  variant: FILTER_VARIANT.BUBBLE,
   value: [],
   config: {},
   storyHasCustomValue: true,
