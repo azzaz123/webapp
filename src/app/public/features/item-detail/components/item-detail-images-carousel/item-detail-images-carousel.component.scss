@@ -1,12 +1,23 @@
 @import '~style/common';
 
 $header-height: 63px;
+$button-height: 47px;
 
 .ItemDetailImages {
   z-index: 100;
   position: absolute;
   top: 0;
   left: 0;
+}
+
+.ItemInfo {
+  width: calc(100% - 220px);
+  min-width: 100px;
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 
 .ItemHeader {
@@ -22,6 +33,10 @@ $header-height: 63px;
   &__buttons {
     right: 0px;
   }
+}
+
+.ChatButton {
+  height: $button-height !important;
 }
 
 .ItemContainer {

@@ -2,7 +2,7 @@
     <div class="ItemHeader d-flex pl-4  align-items-center w-100">
         <tsl-svg-icon class="ItemHeader__backButton" src="/assets/icons/arrow-back.svg" (click)="hidden = true">
         </tsl-svg-icon>
-        <div class="ml-4 d-flex flex-column">
+        <div class="ItemInfo ml-4 d-flex flex-column">
             <span>{{item?.title}}</span>
             <span class="ItemHeader__price">{{item?.salePrice |
                 customCurrency:item?.currencyCode}}</span>
@@ -12,7 +12,7 @@
                 <tsl-favourite-icon [active]="item?.flags?.favorite" (click)="toggleItemFavorite()">
                 </tsl-favourite-icon>
             </tsl-button>
-            <tsl-button className="btn btn-primary">Chat</tsl-button>
+            <tsl-button class="ChatButton d-inline-flex" className="btn btn-primary">Chat</tsl-button>
         </div>
     </div>
     <div class="ItemContainer position-absolute d-flex align-items-center w-100">
