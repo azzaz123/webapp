@@ -29,12 +29,23 @@ $item-flag-height: 38px;
     }
   }
 
+  &__noBackgroundIndicators {
+    ngb-carousel {
+      ::ng-deep {
+        .carousel-indicators {
+          background: transparent;
+          border-radius: 0;
+        }
+      }
+    }
+  }
+
   &__image {
     &__cover {
       object-fit: cover !important;
     }
     &__contain {
-      object-fit: contain;
+      object-fit: contain !important;
     }
     &--fallback {
       border-radius: $border-radius;

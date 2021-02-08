@@ -1,4 +1,4 @@
-<div class="ImagesCarousel position-relative h-100 w-100">
+<div class="ImagesCarousel {{class}} position-relative h-100 w-100">
     <ngb-carousel *ngIf="images?.length; else fallbackImage" interval="0" id="defaultCarousel"
         (swipeleft)="carousel.next()" (swiperight)="carousel.prev()" [ngClass]="{
         'hideControllers': images?.length <=1}">
