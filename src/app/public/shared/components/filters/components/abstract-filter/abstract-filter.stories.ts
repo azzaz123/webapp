@@ -21,7 +21,6 @@ import { ButtonModule } from '@shared/button/button.module';
       [counter]="filterCounter()"
       [label]="label"
       [title]="title"
-      [hasCancel]="hasCancel"
       [hasApply]="hasApply"
       [hasValue]="hasValue()"
       (apply)="handleApply()"

@@ -15,7 +15,6 @@ export class FilterTemplateComponent implements AfterViewInit {
   @Input() icon?: string;
   @Input() label: string;
   @Input() title: string;
-  @Input() hasCancel?: boolean;
   @Input() hasApply?: boolean;
   @Input() isClearable?: boolean;
   @Output() apply: EventEmitter<void> = new EventEmitter();
@@ -30,10 +29,6 @@ export class FilterTemplateComponent implements AfterViewInit {
     if (this.isBubble) {
       this.openStateChange = this.dropdown.openChange;
     }
-  }
-
-  public get hasActions(): boolean {
-    return this.hasCancel || this.hasApply;
   }
 
   public handleBubbleClick(event: MouseEvent): void {

@@ -13,20 +13,20 @@
     </tsl-bubble>
   </div>
   <div ngbDropdownMenu class="FilterTemplate__dropdown_menu">
+    <div class="d-flex flex-column h-100">
+      <ng-template [ngTemplateOutlet]="contentWrapper"></ng-template>
 
-    <ng-template [ngTemplateOutlet]="contentWrapper"></ng-template>
-
-    <div *ngIf="hasActions" class="px-2 pt-2 d-flex justify-content-end">
-      <tsl-button *ngIf="hasCancel" className="basic dark btn-filter" class="mx-1" i18n="@@cancelButton"
-                  (click)="handleCancel($event)">
-        Cancel
-      </tsl-button>
-      <tsl-button *ngIf="hasApply" i18n="@@Apply" className="btn-primary btn-filter" class="mx-1"
-                  (click)="handleAccept($event)">
-        Apply
-      </tsl-button>
+      <div class="FilterTemplate__actions p-2 d-flex justify-content-end mt-auto">
+        <tsl-button className="basic dark btn-filter" class="mx-1" i18n="@@cancelButton"
+                    (click)="handleCancel($event)">
+          Cancel
+        </tsl-button>
+        <tsl-button *ngIf="hasApply" i18n="@@Apply" className="btn-primary btn-filter" class="mx-1"
+                    (click)="handleAccept($event)">
+          Apply
+        </tsl-button>
+      </div>
     </div>
-
   </div>
 </div>
 
@@ -35,7 +35,7 @@
 </div>
 
 <ng-template #contentWrapper>
-  <div class="p-4">
+  <div [ngClass]="{'pb-md-0': isBubble}" class="p-4">
     <p class="FilterTemplate__title">{{title}}</p>
     <div #extendedContent>
       <ng-content></ng-content>
