@@ -13,7 +13,7 @@ export abstract class AbstractFilter implements Filter, AfterViewInit {
   @Output() clear = new EventEmitter<void>();
   @Output() openStateChange;
 
-  @ViewChild('filterTemplate', { read: FilterTemplateComponent }) filterTemplate: FilterTemplateComponent;
+  @ViewChild(FilterTemplateComponent) filterTemplate: FilterTemplateComponent;
 
   public ngAfterViewInit(): void {
     this.openStateChange = this.filterTemplate.openStateChange;

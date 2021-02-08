@@ -14,7 +14,6 @@ import { ButtonModule } from '@shared/button/button.module';
   selector: 'stories-abstract-filter',
   template: `
     <tsl-filter-template
-      #filterTemplate
       [isBubble]="isBubble()"
       [isDropdown]="isDropdown()"
       [isClearable]="isClearable()"
