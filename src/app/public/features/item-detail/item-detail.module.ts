@@ -14,6 +14,7 @@ import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { SocialShareModule } from '@shared/social-share/social-share.module';
 import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
 import { ItemDetailImagesCarouselModule } from './components/item-detail-images-carousel/item-detail-images-carousel.module';
+import { RecommendedItemsModule } from './components/recommended-items/recommended-items.module';
 
 @NgModule({
   declarations: [itemDetailRoutedComponents],
@@ -27,6 +28,7 @@ import { ItemDetailImagesCarouselModule } from './components/item-detail-images-
     SvgIconModule,
     SocialShareModule,
     ItemDetailImagesCarouselModule,
+    RecommendedItemsModule,
   ],
   providers: [ItemDetailService, ItemApiService, PublicUserApiService, RecommenderApiService, MapItemService, SocialMetaTagService],
 })

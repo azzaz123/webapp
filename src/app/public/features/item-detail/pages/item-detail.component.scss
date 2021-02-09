@@ -12,9 +12,12 @@ $item-detail-carousel-height: 477px;
     @include media-breakpoint-up(xl) {
       max-width: 1440px;
     }
+    &__middleSection {
+      max-width: $item-detail-card-width;
+    }
   }
+
   &__content {
-    max-width: $item-detail-card-width;
     background-color: $white;
     border-radius: $border-radius;
     border: solid 1px $blue-grey-5;
