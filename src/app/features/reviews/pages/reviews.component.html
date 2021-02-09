@@ -27,7 +27,7 @@
     </tsl-header>
     <div class="row">
       <div class="reviews-empty-state d-none d-md-block" *ngIf="!reviews.length && !loading">
-        <tsl-svg-icon src="/assets/icons/reviews-empty-state.svg" class="image"></tsl-svg-icon>
+        <img src="/assets/images/placeholders/reviews-empty-state.svg" width="592" height="655">
         <div class="message" i18n>Nobody has written a review about you because you didn't buy or sell anything yet. Wake up!</div>
       </div>
       <tsl-review-item *ngFor="let review of reviews" [review]="review" class="review-container col-md-12"></tsl-review-item>
