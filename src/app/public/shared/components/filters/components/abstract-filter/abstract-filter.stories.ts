@@ -65,7 +65,7 @@ class StoryAbstractFilterComponent extends AbstractFilter {
     return this.storyLabel || 'I am an extended label!';
   }
 
-  public getIcon(): string | undefined {
+  public getIcon(): string {
     return this.storyIcon;
   }
 

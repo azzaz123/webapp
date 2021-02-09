@@ -31,10 +31,6 @@ export abstract class AbstractFilter implements Filter {
     return this.config.actions?.apply;
   }
 
-  public get hasCancel(): boolean {
-    return this.config.actions?.cancel;
-  }
-
   public isClearable(): boolean {
     return this.config.isClearable;
   }

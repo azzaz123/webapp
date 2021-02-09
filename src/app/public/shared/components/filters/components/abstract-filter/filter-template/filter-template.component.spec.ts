@@ -10,6 +10,8 @@ import { ButtonModule } from '@shared/button/button.module';
 import { BubbleComponent } from '@public/shared/components/bubble/bubble.component';
 
 describe('FilterTemplateComponent', () => {
+  const bubbleSelector = By.css('.Bubble');
+
   let component: FilterTemplateComponent;
   let fixture: ComponentFixture<FilterTemplateComponent>;
   let debugElement: DebugElement;
@@ -41,14 +43,14 @@ describe('FilterTemplateComponent', () => {
     });
 
     it('should render bubble component', () => {
-      expectRender(By.css('.Bubble'), true);
+      expectRender(bubbleSelector, true);
       expectRender(By.css('.TestExtendedContent'), false);
     });
 
     describe('when clicked on the bubble', () => {
       it('should emit click', () => {
         spyOn(component.click, 'emit');
-        debugElement.query(By.css('.Bubble')).nativeElement.click();
+        debugElement.query(bubbleSelector).nativeElement.click();
 
         expect(component.click.emit).toHaveBeenCalledTimes(1);
       });
@@ -94,7 +96,7 @@ describe('FilterTemplateComponent', () => {
       describe('when clicked on bubble', () => {
         it('should toggle dropdown', () => {
           spyOn(dropdown, 'toggle');
-          debugElement.query(By.css('.Bubble')).nativeElement.click();
+          debugElement.query(bubbleSelector).nativeElement.click();
 
           expect(dropdown.toggle).toHaveBeenCalledTimes(1);
         });
@@ -203,7 +205,7 @@ describe('FilterTemplateComponent', () => {
       });
     });
     it('should not render bubble', () => {
-      expectRender(By.css('.Bubble'), false);
+      expectRender(bubbleSelector, false);
     });
 
     it('should render title', () => {
