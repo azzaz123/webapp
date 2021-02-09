@@ -26,7 +26,7 @@ import { APP_PATHS } from 'app/app-routing-constants';
 })
 export class ItemDetailComponent implements OnInit {
   public readonly deviceType = DeviceType;
-  public loading = false;
+  public loading = true;
   public isApproximateLocation = false;
   public showItemRecommendations = false;
   public locationSpecifications: string;
@@ -59,7 +59,6 @@ export class ItemDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.device = this.deviceService.getDeviceType();
-    this.loading = true;
     this.initPage(this.route.snapshot.paramMap.get(PUBLIC_PATH_PARAMS.ID)); // TBD the url may change to match one more similar to production one
   }
 
