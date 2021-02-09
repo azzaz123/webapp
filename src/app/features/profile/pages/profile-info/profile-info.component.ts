@@ -16,6 +16,14 @@ import { finalize, take } from 'rxjs/operators';
 import { BecomeProModalComponent } from '../../modal/become-pro-modal/become-pro-modal.component';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { Router } from '@angular/router';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import {
+  AnalyticsPageView,
+  ANALYTICS_EVENT_NAMES,
+  ClickEditProField,
+  SCREEN_IDS,
+  ViewProBenefitsPopup,
+} from '@core/analytics/analytics-constants';
 
 export const competitorLinks = ['coches.net', 'autoscout24.es', 'autocasion.com', 'vibbo.com', 'milanuncios.com', 'motor.es'];
 
@@ -46,7 +54,8 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     private errorsService: ErrorsService,
     private modalService: NgbModal,
     private subscriptionsService: SubscriptionsService,
-    private router: Router
+    private router: Router,
+    private analyticsService: AnalyticsService
   ) {
     this.profileForm = fb.group({
       first_name: ['', [Validators.required]],
@@ -217,8 +226,9 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     }
   }
 
-  public openBecomeProModal(): void {
+  public openBecomeProModal(field: string): void {
     if (!this.isPro) {
+      this.trackClickEditProField(field);
       if (this.hasTrialAvailable == null) {
         this.getTrialAvailable(() => this.manageModal());
         return;
@@ -236,6 +246,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
       () => this.router.navigate(['profile/subscriptions']),
       () => {}
     );
+    this.trackViewProBenefitsPopup();
   }
 
   private getTrialAvailable(callback?: () => void): void {
@@ -264,5 +275,27 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     lastNameFormControl.setErrors(null);
     firstNameFormControl.updateValueAndValidity();
     lastNameFormControl.updateValueAndValidity();
+  }
+
+  private trackClickEditProField(field: any): void {
+    const event: AnalyticsPageView<ClickEditProField> = {
+      name: ANALYTICS_EVENT_NAMES.ClickEditProField,
+      attributes: {
+        field,
+        screenId: SCREEN_IDS.MyProfile,
+      },
+    };
+    this.analyticsService.trackPageView(event);
+  }
+
+  private trackViewProBenefitsPopup(): void {
+    const event: AnalyticsPageView<ViewProBenefitsPopup> = {
+      name: ANALYTICS_EVENT_NAMES.ViewProBenefitsPopup,
+      attributes: {
+        freeTrial: this.hasTrialAvailable,
+        screenId: SCREEN_IDS.ProAdvantagesPopup,
+      },
+    };
+    this.analyticsService.trackPageView(event);
   }
 }
