@@ -41,25 +41,22 @@ export class FilterTemplateComponent {
   }
 
   public handleCancel(event: MouseEvent): void {
-    this.handleCloseDropdown(event);
+    event.stopPropagation();
+    this.dropdown.close();
   }
 
   public handleAccept(event: MouseEvent): void {
-    this.handleCloseDropdown(event);
+    event.stopPropagation();
+    this.dropdown.close();
     this.apply.emit();
   }
 
-  public handleClear(event: MouseEvent): void {
-    this.handleCloseDropdown(event);
+  public handleClear(): void {
+    this.dropdown.close();
     this.clear.emit();
   }
 
   private toggleDropdown(): void {
     this.dropdown.toggle();
-  }
-
-  private handleCloseDropdown(event: MouseEvent): void {
-    event.stopPropagation();
-    this.dropdown.close();
   }
 }

@@ -22,12 +22,6 @@
     color: $black;
   }
 
-  &__actions {
-    margin-top: -200px;
-    @include media-breakpoint-up(sm) {
-    }
-  }
-
   &__dev_warn {
     color: $brand-danger;
   }

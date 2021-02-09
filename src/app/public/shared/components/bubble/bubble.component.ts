@@ -36,6 +36,7 @@ export class BubbleComponent {
   }
 
   public emitClear(event: MouseEvent): void {
+    event.stopPropagation();
     this.clear.emit(event);
   }
 }

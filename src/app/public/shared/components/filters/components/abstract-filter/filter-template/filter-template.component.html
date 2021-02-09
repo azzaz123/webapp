@@ -9,7 +9,7 @@
                 [icon]="icon"
                 [isDropdown]="isDropdown"
                 [isClearable]="isClearable"
-                (clear)="handleClear($event)"
+                (clear)="handleClear()"
     >
       {{label}}
     </tsl-bubble>
@@ -18,7 +18,7 @@
     <div class="d-flex flex-column h-100">
       <ng-template [ngTemplateOutlet]="contentWrapper"></ng-template>
 
-      <div class="FilterTemplate__actions p-2 d-flex justify-content-end mt-auto">
+      <div class="p-2 d-flex justify-content-end mt-auto">
         <tsl-button className="basic dark btn-filter" class="mx-1" i18n="@@cancelButton"
                     (click)="handleCancel($event)">
           Cancel
