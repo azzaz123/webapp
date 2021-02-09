@@ -220,7 +220,7 @@ describe('BubbleComponent', () => {
       });
       it('should execute callback', () => {
         spyOn(component.clear, 'emit');
-        debugElement.query(By.css('.Bubble__clear')).triggerEventHandler('click', null);
+        debugElement.query(By.css('.Bubble__clear')).nativeElement.click();
 
         expect(component.clear.emit).toHaveBeenCalledTimes(1);
       });

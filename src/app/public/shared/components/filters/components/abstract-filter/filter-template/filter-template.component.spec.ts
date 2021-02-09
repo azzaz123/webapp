@@ -116,14 +116,14 @@ describe('FilterTemplateComponent', () => {
         describe('on cancel click', () => {
           it('should close dropdown', () => {
             spyOn(dropdown, 'close');
-            debugElement.query(By.css('.FilterTemplate__actions .dark')).nativeElement.click();
+            debugElement.query(By.css('tsl-button .dark')).nativeElement.click();
 
             expect(dropdown.close).toHaveBeenCalledTimes(1);
           });
         });
 
         describe('and has apply action', () => {
-          const applySelector = By.css('.FilterTemplate__actions .btn-primary');
+          const applySelector = By.css('tsl-button .btn-primary');
           beforeEach(async () => {
             await setInputs({
               hasApply: true,
