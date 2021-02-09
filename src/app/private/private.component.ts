@@ -22,6 +22,7 @@ import { UserService } from '@core/user/user.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import { SessionService } from '@core/session/session.service';
 import { DeviceService } from '@core/device/device.service';
+import { ExternalCommsService } from '@core/external-comms.service';
 import { OpenWallapop } from '@core/analytics/resources/events-interfaces';
 import { ANALYTICS_EVENT_NAMES } from '@core/analytics/resources/analytics-event-names';
 import { ANALYTIC_EVENT_TYPES } from '@core/analytics/analytics-constants';
@@ -59,7 +60,8 @@ export class PrivateComponent implements OnInit {
     private sessionService: SessionService,
     private uuidService: UuidService,
     private serviceWorker: SwUpdate,
-    private deviceService: DeviceService
+    private deviceService: DeviceService,
+    private externalCommsService: ExternalCommsService
   ) {}
 
   ngOnInit() {
@@ -91,11 +93,18 @@ export class PrivateComponent implements OnInit {
 
   private initializeServices(): void {
     this.stripeService.init();
-    this.analyticsService.initialize();
-    this.initializeBraze();
     this.userService.checkUserStatus();
     this.desktopNotificationsService.init();
     this.connectionService.checkConnection();
+    this.externalCommsService.initializeBrazeCommunications();
+    this.externalCommsService.brazeReady$
+      .pipe(
+        take(1),
+        finalize(() => {
+          this.analyticsService.initialize();
+        })
+      )
+      .subscribe();
     this.analyticsService.mParticleReady$
       .pipe(
         concatMap(() => this.sessionService.newSession$),
