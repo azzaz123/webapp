@@ -12,6 +12,9 @@ import { ItemDetailService } from '../core/services/item-detail.service';
 import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
+import { CATEGORY_IDS } from '@core/category/category-ids';
+import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
+import { Observable } from 'rxjs';
 import { Image, UserLocation } from '@core/user/user-response.interface';
 import { finalize } from 'rxjs/operators';
 import { APP_PATHS } from 'app/app-routing-constants';
@@ -23,13 +26,15 @@ import { APP_PATHS } from 'app/app-routing-constants';
 })
 export class ItemDetailComponent implements OnInit {
   public readonly deviceType = DeviceType;
-  public loading = false;
+  public loading = true;
   public isApproximateLocation = false;
+  public showItemRecommendations = false;
   public locationSpecifications: string;
   public coordinates: Coordinate;
   public device: DeviceType;
   public images: string[];
   public itemLocation: ItemDetailLocation;
+  public recommendedItems$: Observable<RecommendedItemsBodyResponse>;
   public itemDetail: ItemDetail;
 
   public socialShare: {
@@ -54,7 +59,6 @@ export class ItemDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.device = this.deviceService.getDeviceType();
-    this.loading = true;
     this.initPage(this.route.snapshot.paramMap.get(PUBLIC_PATH_PARAMS.ID)); // TBD the url may change to match one more similar to production one
   }
 
@@ -63,6 +67,7 @@ export class ItemDetailComponent implements OnInit {
   }
 
   private initPage(itemId: string): void {
+    this.recommendedItems$ = this.itemDetailService.getRecommendedItems(itemId);
     this.itemDetailService
       .getItem(itemId)
       .pipe(
@@ -85,6 +90,7 @@ export class ItemDetailComponent implements OnInit {
     this.calculateItemCoordinates();
     this.showItemImages();
     this.socialShareSetup(this.itemDetail.item);
+    this.setItemRecommendations();
   }
 
   private calculateItemCoordinates(): void {
@@ -136,6 +142,12 @@ export class ItemDetailComponent implements OnInit {
       !!this.itemLocation?.zip && !!this.itemLocation?.city
         ? `${this.itemLocation.zip}, ${this.itemLocation.city}`
         : $localize`:@@Undefined:Undefined`;
+  }
+
+  private setItemRecommendations(): void {
+    const CATEGORIES_WITH_RECOMMENDATIONS = [CATEGORY_IDS.CAR, CATEGORY_IDS.FASHION_ACCESSORIES];
+
+    this.showItemRecommendations = CATEGORIES_WITH_RECOMMENDATIONS.includes(this.itemDetail?.item?.categoryId);
   }
 
   set approximatedLocation(isApproximated: boolean) {
