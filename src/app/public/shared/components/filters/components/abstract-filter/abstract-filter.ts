@@ -35,7 +35,7 @@ export abstract class AbstractFilter implements Filter {
     return this.config.isClearable;
   }
 
-  public abstract getLabel(): string | undefined;
+  public abstract getLabel(): string;
 
   public getIcon(): string | undefined {
     return this.config.icon;
@@ -45,7 +45,7 @@ export abstract class AbstractFilter implements Filter {
     return this.config.title;
   }
 
-  public getFilterCounter(): number {
+  public getFilterCounter(): number | undefined {
     return this.value.length > 1 ? this.value.length : undefined;
   }
 
