@@ -5,15 +5,17 @@ import { Coordinate } from '@core/geolocation/address-response.interface';
 import { User } from '@core/user/user';
 import { UserProInfo } from '@core/user/user-info.interface';
 import { UserService } from '@core/user/user.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { CanComponentDeactivate } from '@core/guards/can-component-deactivate.interface';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { metadata } from 'assets/js/metadata-phonenumber';
 import { isValidNumber } from 'libphonenumber-js/custom';
 import * as moment from 'moment';
 import { forkJoin } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { finalize, take } from 'rxjs/operators';
 import { BecomeProModalComponent } from '../../modal/become-pro-modal/become-pro-modal.component';
+import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { Router } from '@angular/router';
 
 export const competitorLinks = ['coches.net', 'autoscout24.es', 'autocasion.com', 'vibbo.com', 'milanuncios.com', 'motor.es'];
 
@@ -33,6 +35,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
   public updateLocationWhenSearching = false;
   public loading = false;
   public isIncorrectAddress = false;
+  private hasTrialAvailable: boolean;
 
   @ViewChild(ProfileFormComponent, { static: true })
   formComponent: ProfileFormComponent;
@@ -41,7 +44,9 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     private userService: UserService,
     private fb: FormBuilder,
     private errorsService: ErrorsService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private subscriptionsService: SubscriptionsService,
+    private router: Router
   ) {
     this.profileForm = fb.group({
       first_name: ['', [Validators.required]],
@@ -212,12 +217,37 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     }
   }
 
-  public openBecomeProModal() {
+  public openBecomeProModal(): void {
     if (!this.isPro) {
-      this.modalService.open(BecomeProModalComponent, {
-        windowClass: 'become-pro',
-      });
+      if (this.hasTrialAvailable == null) {
+        this.getTrialAvailable(() => this.manageModal());
+        return;
+      }
+      this.manageModal();
     }
+  }
+
+  private manageModal(): void {
+    const modalRef: NgbModalRef = this.modalService.open(BecomeProModalComponent, {
+      windowClass: 'become-pro',
+    });
+    modalRef.componentInstance.hasTrialAvailable = this.hasTrialAvailable;
+    modalRef.result.then(
+      () => this.router.navigate(['profile/subscriptions']),
+      () => {}
+    );
+  }
+
+  private getTrialAvailable(callback?: () => void): void {
+    this.subscriptionsService
+      .getSubscriptions()
+      .pipe(take(1))
+      .subscribe((subscriptions) => {
+        this.hasTrialAvailable = this.subscriptionsService.hasOneTrialSubscription(subscriptions);
+        if (!!callback) {
+          callback();
+        }
+      });
   }
 
   private setUsernameFormControlsErrors(incorrect: boolean) {

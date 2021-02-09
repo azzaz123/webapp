@@ -20,6 +20,12 @@
     font-size: $font-size-m;
     color: $blue-grey-2;
   }
+  .modal-close {
+    width: auto;
+    height: auto;
+    right: 20px;
+    top: 20px;
+  }
 }
 
 .modal-body {
