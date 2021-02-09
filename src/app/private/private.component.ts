@@ -104,14 +104,6 @@ export class PrivateComponent implements OnInit {
       .subscribe(() => this.trackOpenWallapop());
   }
 
-  // TODO: This should be encapsualted in a service (e.g.: BrazeService)
-  private initializeBraze(): void {
-    appboy.initialize(environment.appboy, { enableHtmlInAppMessages: true });
-    // In app messages have been disabled until CLM fixes a problem with web communications
-    // appboy.display.automaticallyShowNewInAppMessages();
-    // appboy.registerAppboyPushMessages();
-  }
-
   private initializeEventListeners(): void {
     this.subscribeEventUserLogin();
     this.subscribeEventUserLogout();
