@@ -1,5 +1,5 @@
 <div class="Bubble px-3 d-flex justify-content-center align-items-center"
-     [ngClass]="variant" (click)="emitClick($event)">
+     [ngClass]="'Bubble--' + variant" (click)="emitClick($event)">
   <span *ngIf="counter" class="Bubble__counter d-flex justify-content-center align-items-center rounded-circle">
     {{counterText}}
   </span>

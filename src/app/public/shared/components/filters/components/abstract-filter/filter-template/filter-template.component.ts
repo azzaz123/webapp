@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { BUBBLE_VARIANT } from '@public/shared/components/bubble/bubble.component';
 import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
+import { BUBBLE_VARIANT } from '@public/shared/components/bubble/bubble.enum';
 
 @Component({
   selector: 'tsl-filter-template',

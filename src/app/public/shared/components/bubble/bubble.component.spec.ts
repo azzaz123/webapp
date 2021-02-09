@@ -3,9 +3,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement, Predicate } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BUBBLE_VARIANT, BubbleComponent } from '@public/shared/components/bubble/bubble.component';
+import { BubbleComponent } from '@public/shared/components/bubble/bubble.component';
 import { By } from '@angular/platform-browser';
 import { SvgIconComponent } from '@core/svg-icon/svg-icon/svg-icon.component';
+import { BUBBLE_VARIANT } from '@public/shared/components/bubble/bubble.enum';
 
 describe('BubbleComponent', () => {
   let component: BubbleComponent;

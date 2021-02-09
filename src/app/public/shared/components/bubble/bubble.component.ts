@@ -1,9 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-
-export enum BUBBLE_VARIANT {
-  ACTIVE = 'active',
-  SELECTED = 'selected',
-}
+import { BUBBLE_VARIANT } from '@public/shared/components/bubble/bubble.enum';
 
 @Component({
   selector: 'tsl-bubble',
