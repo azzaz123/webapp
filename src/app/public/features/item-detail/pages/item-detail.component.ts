@@ -13,7 +13,6 @@ import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.serv
 import { ActivatedRoute, Router } from '@angular/router';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { ItemDetailImagesCarouselComponent } from '../components/item-detail-images-carousel/item-detail-images-carousel.component';
-import { CarouselImage } from '@public/shared/components/images-carousel/images-carousel.interface';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
 import { Observable } from 'rxjs';
@@ -71,10 +70,10 @@ export class ItemDetailComponent implements OnInit {
     return !!this.itemLocation?.latitude && !!this.itemLocation?.longitude;
   }
 
-  public openItemDetailImage($event: CarouselImage): void {
+  public openItemDetailImage($event: number): void {
     this.itemDetailImagesModal.images = this.bigImages;
     this.itemDetailImagesModal.item = this.itemDetail?.item;
-    this.itemDetailImagesModal.imageIndex = $event?.index;
+    this.itemDetailImagesModal.imageIndex = $event;
     this.itemDetailImagesModal.show();
   }
 

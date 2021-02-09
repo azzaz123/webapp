@@ -1,6 +1,6 @@
 <div class="ItemDetailImages w-100 h-100" *ngIf="hidden === false">
     <div class="ItemHeader d-flex pl-4  align-items-center w-100">
-        <tsl-svg-icon class="ItemHeader__backButton" src="/assets/icons/arrow-back.svg" (click)="hidden = true">
+        <tsl-svg-icon class="ItemHeader__backButton" src="/assets/icons/arrow-back.svg" (click)="hidde()">
         </tsl-svg-icon>
         <div class="ItemInfo ml-4 d-flex flex-column">
             <span>{{item?.title}}</span>
@@ -17,8 +17,13 @@
     </div>
     <div class="ItemContainer position-absolute d-flex align-items-center w-100">
         <div class="container w-100 h-100 p-0 p-lg-5">
-            <tsl-images-carousel *ngIf="images" [images]="images" class="ImagesCarousel__noBackgroundIndicators"
-                imageClass="contain">
+            <tsl-images-carousel *ngIf="images" [slides]="images" class="ImagesCarousel__noBackgroundIndicators"
+                imageClass="contain" (nextIndexSlide)="imageIndex = $event">
+                <ng-template #slider>
+                    <pinch-zoom class="w-100 h-100" backgroundColor="none">
+                        <img [src]="images[imageIndex]" class="CarouselImage" />
+                    </pinch-zoom>
+                </ng-template>
             </tsl-images-carousel>
         </div>
     </div>

@@ -4,4 +4,8 @@
     <tsl-item-flag *ngIf="bumpedFlag" [type]="bumpedFlag" class="position-absolute ItemFlag--right" i18n="@@Featured">
         Featured</tsl-item-flag>
 </div>
-<tsl-images-carousel [images]="images" (imageClick)="imageClick.emit($event)"></tsl-images-carousel>
+<tsl-images-carousel [slides]="images" (slideClick)="imageClick.emit($event)" (nextIndexSlide)="currentIndex = $event">
+    <ng-template #slider>
+        <img [src]="images[currentIndex]" />
+    </ng-template>
+</tsl-images-carousel>

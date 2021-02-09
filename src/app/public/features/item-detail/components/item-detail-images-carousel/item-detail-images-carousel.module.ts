@@ -7,11 +7,12 @@ import { FavouriteIconModule } from '@public/shared/components/favourite-icon/fa
 import { ImagesCarouselModule } from '@public/shared/components/images-carousel/images-carousel.module';
 import { ButtonModule } from '@shared/button/button.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
+import { PinchZoomModule } from 'ngx-pinch-zoom';
 import { ItemDetailImagesCarouselComponent } from './item-detail-images-carousel.component';
 
 @NgModule({
   declarations: [ItemDetailImagesCarouselComponent],
-  imports: [CommonModule, FavouriteIconModule, ImagesCarouselModule, ButtonModule, SvgIconModule, CustomCurrencyModule],
+  imports: [CommonModule, FavouriteIconModule, ImagesCarouselModule, ButtonModule, SvgIconModule, CustomCurrencyModule, PinchZoomModule],
   exports: [ItemDetailImagesCarouselComponent],
   providers: [CheckSessionService, ItemCardService],
 })

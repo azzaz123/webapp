@@ -40,16 +40,8 @@ $item-flag-height: 38px;
     }
   }
 
-  &__image {
-    &__cover {
-      object-fit: cover !important;
-    }
-    &__contain {
-      object-fit: contain !important;
-    }
-    &--fallback {
-      border-radius: $border-radius;
-    }
+  &__FallbackImage {
+    border-radius: $border-radius;
   }
 }
 

@@ -50,3 +50,7 @@ $button-height: 47px;
     max-width: 100%;
   }
 }
+
+.CarouselImage {
+  object-fit: contain !important;
+}

@@ -16,6 +16,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemImagesCarouselComponent {
+  public currentIndex = 0;
   @Input() images: string[];
   @Output() imageClick: EventEmitter<CarouselImage> = new EventEmitter<CarouselImage>();
   @Input() itemFlags: ItemFlags = EMPTY_ITEM_FLAGS;
