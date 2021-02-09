@@ -41,6 +41,11 @@ export const RECOMMENDED_ITEMS_MOCK: RecommendedItemsBodyResponse = {
   ],
 };
 
+export const EMPTY_RECOMMENDED_ITEMS_MOCK: RecommendedItemsBodyResponse = {
+  recommended_type: RECOMMENDER_TYPE.DEFAULT,
+  recommended_items: [],
+};
+
 const RECOMMENDED_ITEM_IMAGE: Image = {
   id: '2',
   original_width: null,

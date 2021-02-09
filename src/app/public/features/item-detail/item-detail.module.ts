@@ -13,6 +13,7 @@ import { GeolocationModule } from '@shared/geolocation/geolocation.module';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { SocialShareModule } from '@shared/social-share/social-share.module';
 import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
+import { RecommendedItemsModule } from './components/recommended-items/recommended-items.module';
 
 @NgModule({
   declarations: [itemDetailRoutedComponents],
@@ -25,6 +26,7 @@ import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.serv
     GeolocationModule,
     SvgIconModule,
     SocialShareModule,
+    RecommendedItemsModule,
   ],
   providers: [ItemDetailService, ItemApiService, PublicUserApiService, RecommenderApiService, MapItemService, SocialMetaTagService],
 })
