@@ -43,7 +43,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
   public updateLocationWhenSearching = false;
   public loading = false;
   public isIncorrectAddress = false;
-  private hasTrialAvailable: boolean;
+  public hasTrialAvailable: boolean;
 
   @ViewChild(ProfileFormComponent, { static: true })
   formComponent: ProfileFormComponent;
@@ -244,7 +244,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     modalRef.componentInstance.hasTrialAvailable = this.hasTrialAvailable;
     modalRef.result.then(
       () => this.router.navigate(['profile/subscriptions']),
-      () => {}
+      () => null
     );
     this.trackViewProBenefitsPopup();
   }

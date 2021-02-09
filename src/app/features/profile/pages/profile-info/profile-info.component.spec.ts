@@ -1,9 +1,21 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { Router } from '@angular/router';
+import {
+  AnalyticsPageView,
+  ANALYTICS_EVENT_NAMES,
+  ClickEditProField,
+  SCREEN_IDS,
+  ViewProBenefitsPopup,
+} from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ErrorsService } from '@core/errors/errors.service';
+import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { UserService } from '@core/user/user.service';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import { MockSubscriptionService } from '@fixtures/subscriptions.fixtures.spec';
 import { IMAGE, MOCK_FULL_USER, USER_DATA, USER_EDIT_DATA, USER_LOCATION_COORDINATES, USER_PRO_DATA } from '@fixtures/user.fixtures.spec';
 import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
@@ -18,19 +30,15 @@ describe('ProfileInfoComponent', () => {
   let userService: UserService;
   let errorsService: ErrorsService;
   let modalService: NgbModal;
-  const modalInstance: any = null;
+  let router: Router;
+  let subscriptionsService: SubscriptionsService;
+  let analyticsService: AnalyticsService;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [ReactiveFormsModule, FormsModule, NgbButtonsModule],
         providers: [
-          {
-            provide: NgbModal,
-            useValue: {
-              open() {},
-            },
-          },
           {
             provide: UserService,
             useValue: {
@@ -72,8 +80,8 @@ describe('ProfileInfoComponent', () => {
             useValue: {
               open() {
                 return {
-                  componentInstance: modalInstance,
-                  result: Promise.resolve(true),
+                  componentInstance: {},
+                  result: Promise.resolve(),
                 };
               },
             },
@@ -85,6 +93,14 @@ describe('ProfileInfoComponent', () => {
               canExit() {},
             },
           },
+          {
+            provide: Router,
+            useValue: {
+              navigate() {},
+            },
+          },
+          { provide: SubscriptionsService, useClass: MockSubscriptionService },
+          { provide: AnalyticsService, useClass: MockAnalyticsService },
         ],
         declarations: [ProfileInfoComponent, ProfileFormComponent, SwitchComponent],
         schemas: [NO_ERRORS_SCHEMA],
@@ -97,10 +113,13 @@ describe('ProfileInfoComponent', () => {
     userService = TestBed.inject(UserService);
     errorsService = TestBed.inject(ErrorsService);
     modalService = TestBed.inject(NgbModal);
+    analyticsService = TestBed.inject(AnalyticsService);
+    router = TestBed.inject(Router);
+    subscriptionsService = TestBed.inject(SubscriptionsService);
+    component.formComponent = TestBed.inject(ProfileFormComponent);
     spyOn(userService, 'me').and.callThrough();
     spyOn(userService, 'isProUser').and.returnValue(of(true));
     spyOn(userService, 'getUserCover').and.returnValue(of(IMAGE));
-    component.formComponent = TestBed.inject(ProfileFormComponent);
     fixture.detectChanges();
   });
 
@@ -365,14 +384,100 @@ describe('ProfileInfoComponent', () => {
   });
 
   describe('openBecomeProModal', () => {
-    it('should open modal if user is not featured', () => {
-      component.isPro = false;
-      spyOn(modalService, 'open');
+    describe('when user is not featured', () => {
+      beforeEach(() => {
+        component.isPro = false;
+        spyOn(modalService, 'open').and.callThrough();
+        spyOn(analyticsService, 'trackPageView');
+      });
 
-      component.openBecomeProModal();
+      it('should track trackViewProBenefitsPopup', () => {
+        component.hasTrialAvailable = true;
+        const expectedEvent: AnalyticsPageView<ViewProBenefitsPopup> = {
+          name: ANALYTICS_EVENT_NAMES.ViewProBenefitsPopup,
+          attributes: {
+            freeTrial: true,
+            screenId: SCREEN_IDS.ProAdvantagesPopup,
+          },
+        };
 
-      expect(modalService.open).toHaveBeenCalledWith(BecomeProModalComponent, {
-        windowClass: 'become-pro',
+        component.openBecomeProModal('test');
+
+        expect(analyticsService.trackPageView).toBeCalledTimes(2);
+        expect(analyticsService.trackPageView).toHaveBeenNthCalledWith(2, expectedEvent);
+      });
+
+      it('should track ClickEditProField', () => {
+        const expectedField = 'description';
+        const expectedEvent: AnalyticsPageView<ClickEditProField> = {
+          name: ANALYTICS_EVENT_NAMES.ClickEditProField,
+          attributes: {
+            field: expectedField,
+            screenId: SCREEN_IDS.MyProfile,
+          },
+        };
+
+        component.openBecomeProModal(expectedField);
+
+        expect(analyticsService.trackPageView).toBeCalledTimes(2);
+        expect(analyticsService.trackPageView).toHaveBeenNthCalledWith(1, expectedEvent);
+      });
+
+      it('should open modal with trial data available', () => {
+        spyOn(subscriptionsService, 'getSubscriptions');
+        component.hasTrialAvailable = true;
+
+        component.openBecomeProModal('test');
+
+        expect(modalService.open).toHaveBeenCalledWith(BecomeProModalComponent, {
+          windowClass: 'become-pro',
+        });
+        expect(subscriptionsService.getSubscriptions).not.toHaveBeenCalled();
+      });
+
+      it('should open modal without trial data available', () => {
+        spyOn(subscriptionsService, 'getSubscriptions').and.callThrough();
+        component.openBecomeProModal('test');
+
+        expect(modalService.open).toHaveBeenCalledWith(BecomeProModalComponent, {
+          windowClass: 'become-pro',
+        });
+        expect(subscriptionsService.getSubscriptions).toHaveBeenCalledTimes(1);
+      });
+
+      describe('and click CTA', () => {
+        it('should redirect to subscriptions', fakeAsync(() => {
+          spyOn(router, 'navigate');
+
+          component.openBecomeProModal('test');
+          tick();
+          fixture.detectChanges();
+
+          expect(router.navigate).toHaveBeenCalledTimes(1);
+          expect(router.navigate).toHaveBeenCalledWith(['profile/subscriptions']);
+        }));
+      });
+    });
+
+    describe('when user is featured', () => {
+      beforeEach(() => {
+        component.isPro = true;
+        spyOn(modalService, 'open').and.callThrough();
+        spyOn(analyticsService, 'trackPageView');
+      });
+
+      it('should not track events', () => {
+        component.openBecomeProModal('test');
+
+        expect(analyticsService.trackPageView).not.toHaveBeenCalled();
+      });
+
+      it('should not open modal', () => {
+        component.openBecomeProModal('test');
+
+        expect(modalService.open).not.toHaveBeenCalledWith(BecomeProModalComponent, {
+          windowClass: 'become-pro',
+        });
       });
     });
   });

@@ -12,6 +12,6 @@ export class BecomeProModalComponent {
   constructor(public activeModal: NgbActiveModal) {}
 
   get CTAtext(): string {
-    return this.hasTrialAvailable ? $localize`:@@TryProSlotCTAtrial:Free trial` : $localize`:@@TryProSlotCTAPlans:Know more`;
+    return this.hasTrialAvailable ? $localize`:@@FreeTrial:Free trial` : $localize`:@@KnowMore:Know more`;
   }
 }
