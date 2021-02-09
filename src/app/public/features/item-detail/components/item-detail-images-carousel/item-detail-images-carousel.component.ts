@@ -12,14 +12,18 @@ export class ItemDetailImagesCarouselComponent {
   public hidden = true;
   @Input() item: Item;
   @Input() images: string[];
-  @Input() imageIndex: number;
+  @Input() imageIndex: number = 0;
 
-  constructor(private checkSessionService: CheckSessionService, private itemCardService: ItemCardService, private renderer: Renderer2) {
-    this.renderer.addClass(document.body, 'blocked-page');
-  }
+  constructor(private checkSessionService: CheckSessionService, private itemCardService: ItemCardService, private renderer: Renderer2) {}
 
   public show(): void {
     this.hidden = false;
+    this.renderer.addClass(document.body, 'blocked-page');
+  }
+
+  public hidde(): void {
+    this.hidden = true;
+    this.renderer.removeClass(document.body, 'blocked-page');
   }
 
   public toggleItemFavorite(): void {
