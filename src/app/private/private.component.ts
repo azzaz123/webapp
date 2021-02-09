@@ -128,8 +128,6 @@ export class PrivateComponent implements OnInit {
   private handleUserLoggedIn(user: User, accessToken: string): void {
     this.userService.sendUserPresenceInterval(this.sendPresenceInterval);
     this.initRealTimeChat(user, accessToken);
-    appboy.changeUser(user.id);
-    appboy.openSession();
     if (!this.cookieService.get('app_session_id')) {
       this.updateSessionCookie();
     }
