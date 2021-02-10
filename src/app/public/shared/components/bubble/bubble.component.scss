@@ -70,8 +70,15 @@
     }
   }
 
-  &__content {
+  &__content_wrapper {
     flex-basis: 100%;
+    overflow: hidden;
+  }
+
+  &__content {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   &__rounded_icon {
