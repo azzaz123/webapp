@@ -12,7 +12,8 @@
                 <tsl-favourite-icon [active]="item?.flags?.favorite" (click)="toggleItemFavorite()">
                 </tsl-favourite-icon>
             </tsl-button>
-            <tsl-button class="ChatButton d-inline-flex" className="btn btn-primary">Chat</tsl-button>
+            <tsl-button class="ChatButton d-inline-flex" className="btn btn-primary" [routerLink]="['/chat']">Chat
+            </tsl-button>
         </div>
     </div>
     <div class="ItemContainer position-absolute d-flex align-items-center w-100">
