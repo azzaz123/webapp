@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from '@angular/core';
-import { CarouselImage } from '../images-carousel/images-carousel.interface';
+import { SlideCarousel } from '../slides-carousel/slides-carousel.interface';
 import { ItemFlags, ItemVisibilityFlags } from '@core/item/item-response.interface';
 import {
   EMPTY_ITEM_FLAGS,
@@ -16,9 +16,8 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemImagesCarouselComponent {
-  public currentIndex = 0;
   @Input() images: string[];
-  @Output() imageClick: EventEmitter<CarouselImage> = new EventEmitter<CarouselImage>();
+  @Output() imageClick: EventEmitter<SlideCarousel> = new EventEmitter<SlideCarousel>();
   @Input() itemFlags: ItemFlags = EMPTY_ITEM_FLAGS;
   @Input() itemVisibilityFlags: ItemVisibilityFlags = EMPTY_ITEM_VISIBILITY_FLAGS;
 

@@ -2,7 +2,7 @@ import { Story, Meta } from '@storybook/angular/types-6-0';
 import { FavouriteIconModule } from '@public/shared/components/favourite-icon/favourite-icon.module';
 import { ItemDetailImagesCarouselComponent } from './item-detail-images-carousel.component';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
-import { ImagesCarouselModule } from '@public/shared/components/images-carousel/images-carousel.module';
+import { SlidesCarouselModule } from '@public/shared/components/slides-carousel/slides-carousel.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ButtonModule } from '@shared/button/button.module';
 import { CommonModule } from '@angular/common';
@@ -17,7 +17,7 @@ const Template: Story<ItemDetailImagesCarouselComponent> = (args: ItemDetailImag
   props: args,
   moduleMetadata: {
     declarations: [ItemDetailImagesCarouselComponent],
-    imports: [SvgIconModule, ImagesCarouselModule, HttpClientModule, FavouriteIconModule, ButtonModule, CommonModule],
+    imports: [SvgIconModule, SlidesCarouselModule, HttpClientModule, FavouriteIconModule, ButtonModule, CommonModule],
     providers: [],
   },
   template: '<tsl-item-detail-images-carousel [images]="images"></tsl-item-detail-images-carousel>',

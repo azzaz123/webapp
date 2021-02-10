@@ -19,6 +19,7 @@ import { Observable } from 'rxjs';
 import { Image, UserLocation } from '@core/user/user-response.interface';
 import { finalize } from 'rxjs/operators';
 import { APP_PATHS } from 'app/app-routing-constants';
+import { SlideCarousel } from '@public/shared/components/slides-carousel/slides-carousel.interface';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -70,10 +71,10 @@ export class ItemDetailComponent implements OnInit {
     return !!this.itemLocation?.latitude && !!this.itemLocation?.longitude;
   }
 
-  public openItemDetailImage($event: number): void {
+  public openItemDetailImage($event: SlideCarousel): void {
     this.itemDetailImagesModal.images = this.bigImages;
     this.itemDetailImagesModal.item = this.itemDetail?.item;
-    this.itemDetailImagesModal.imageIndex = $event;
+    this.itemDetailImagesModal.imageIndex = $event?.index;
     this.itemDetailImagesModal.show();
   }
 
