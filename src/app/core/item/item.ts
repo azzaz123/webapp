@@ -8,6 +8,7 @@ import {
   AutorenewPurchase,
   ItemExtraInfo,
   KmInfo,
+  ItemVisibilityFlags,
 } from './item-response.interface';
 import { environment } from '../../../environments/environment';
 
@@ -62,7 +63,8 @@ export class Item implements Model {
     private _itemType: string = ITEM_TYPES.CONSUMER_GOODS,
     private _extraInfo?: ItemExtraInfo,
     private _car_info?: KmInfo,
-    private _km?: number
+    private _km?: number,
+    private _bumpFlags?: ItemVisibilityFlags
   ) {
     this._webLink = ITEM_BASE_PATH + _webSlug;
   }
@@ -305,5 +307,13 @@ export class Item implements Model {
 
   set km(value: number) {
     this._km = value;
+  }
+
+  get bumpFlags(): ItemVisibilityFlags {
+    return this._bumpFlags;
+  }
+
+  set bumpFlags(value: ItemVisibilityFlags) {
+    this._bumpFlags = value;
   }
 }

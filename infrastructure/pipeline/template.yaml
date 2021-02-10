@@ -10,18 +10,20 @@ Parameters:
   ProjectName:
     Description: 'Name of the project'
     Type: String
-  BucketES:
-    Description: 'ARN of the S3 bucket where the app in ES is hosted'
-    Type: String
-  BucketEN:
-    Description: 'ARN of the S3 bucket where the app in EN is hosted'
-    Type: String
   BucketESName:
     Description: 'Name of the S3 bucket where the app in ES is hosted'
     Type: String
   BucketENName:
     Description: 'Name of the S3 bucket where the app in EN is hosted'
     Type: String
+  ArtifactBucket:
+    Description: Bucket where pipeline store its artifacts
+    Type: String
+    Default: "codebuild-cache-wallapop"
+  S3SourceBucket:
+    Description: Bucket where the .zip file is pushed to trigger this pipeline
+    Type: String
+    Default: "wallapop-trigger-link-cicd"
 
 # TODO: clean this up and leave a single config for the beta environment when everything is migrated to the new account
 # We need this for now to be able to have a bucket in the  new account with a different name than the current one in beta
@@ -34,262 +36,13 @@ Mappings:
       beta: 'beta_account'
 
 Resources:
-  CodePipelineServiceRole:
-    Type: AWS::IAM::Role
-    Properties:
-      Path: /
-      AssumeRolePolicyDocument:
-        Version: 2012-10-17
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: codepipeline.amazonaws.com
-            Action: sts:AssumeRole
-
-  CodePipelinePolicy:
-    Type: "AWS::IAM::Policy"
-    Properties:
-      PolicyName: !Sub "webapp-pipeline-policy-${EnvName}"
-      PolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Resource:
-              - "arn:aws:s3:::wallapop-trigger-link-cicd"
-              - "arn:aws:s3:::wallapop-trigger-link-cicd/webapp/*"
-            Effect: Allow
-            Action:
-              - s3:Get*
-              - s3:List*
-          - Resource:
-              - !GetAtt ArtifactBucket.Arn
-              - !Join [ '', [!GetAtt ArtifactBucket.Arn, '/*' ] ]
-              - !Sub "arn:aws:s3:::wallapop-trigger-link-cicd/webapp/webapp-${ImageTag}.zip"
-              - !Ref BucketES
-              - !Ref BucketEN
-            Effect: Allow
-            Action:
-              - s3:*
-          - Resource:
-              - !GetAtt CodePipelineServiceRole.Arn
-              - !GetAtt CloudFormationExecutionRole.Arn
-              - !GetAtt CodeBuildServiceRole.Arn
-              - !GetAtt CodeBuildDeployServiceRole.Arn
-            Effect: Allow
-            Action:
-              - iam:*
-          - Resource:
-              - !Sub "arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/webapp-pipeline-${EnvName}*"
-              - !Sub "arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/Webapp-${EnvName}*"
-              - !Sub "arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/webapp-s3-${EnvName}*"
-            Effect: Allow
-            Action:
-              - cloudformation:*
-          - Resource:
-              - !Sub "arn:aws:codepipeline:${AWS::Region}:${AWS::AccountId}:webapp-${EnvName}*"
-            Effect: Allow
-            Action:
-              - codepipeline:*
-          - Resource:
-              - !Sub "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/webapp-invalidate-caches-${EnvName}*"
-              - !Sub "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/webapp-deploy-service-${EnvName}*"
-            Effect: Allow
-            Action:
-              - codebuild:*
-          - Resource: "*"
-            Effect: Allow
-            Action:
-              - iam:PassRole
-              - iam:ListUserTags
-              - iam:ListRoleTags
-              - iam:TagUser
-              - iam:TagRole
-              - iam:UntagUser
-              - iam:UntagRole
-              - iam:CreateRole
-              - iam:DeleteRole
-              - iam:DeleteRolePolicy
-              - iam:PutRolePolicy
-              - iam:GetRole
-      Roles:
-        - Ref: "CodePipelineServiceRole"
-
-  CloudFormationExecutionRole:
-    Type: AWS::IAM::Role
-    Properties:
-      Path: /
-      AssumeRolePolicyDocument:
-        Version: 2012-10-17
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: cloudformation.amazonaws.com
-            Action: sts:AssumeRole
-
-  CloudFormationPolicy:
-    Type: "AWS::IAM::Policy"
-    Properties:
-      PolicyName: !Sub "webapp-cloudformation-policy-${EnvName}"
-      PolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Resource: "*"
-            Effect: Allow
-            Action:
-              - codebuild:CreateProject
-              - codepipeline:List*
-              - codepipeline:Get*
-              - codepipeline:Create*
-              - codepipeline:Tag*
-              - s3:Get*
-              - s3:List*
-              - route53:Create*
-              - route53:Get*
-              - route53:List*
-              - cloudfront:List*
-              - cloudfront:Get*
-              - cloudfront:CreateCloudFrontOriginAccessIdentity
-              - iam:ListUserTags
-              - iam:ListRoleTags
-              - iam:TagUser
-              - iam:TagRole
-              - iam:UntagUser
-              - iam:UntagRole
-              - iam:UpdateAssumeRolePolicy
-              - iam:DeleteRole
-              - iam:CreateRole
-              - iam:DeleteRolePolicy
-              - iam:PutRolePolicy
-              - iam:GetRole
-              - iam:PassRole
-              - logs:*
-          - Resource:
-              - !Sub "arn:aws:codepipeline:${AWS::Region}:${AWS::AccountId}:webapp-${EnvName}*"
-            Effect: Allow
-            Action:
-              - codepipeline:*
-          - Resource:
-              - !GetAtt ArtifactBucket.Arn
-              - !Ref BucketES
-              - !Ref BucketEN
-            Effect: Allow
-            Action:
-              - s3:*
-          - Resource: !Join
-              - ''
-              - - 'arn:aws:route53:::hostedzone/'
-                - Fn::ImportValue: !Sub 'Core-${EnvName}-HostedZone'
-            Effect: Allow
-            Action:
-              - route53:Get*
-              - route53:List*
-              - route53:Change*
-              - route53:Update*
-          - Resource:
-              - !GetAtt CodePipelineServiceRole.Arn
-              - !GetAtt CloudFormationExecutionRole.Arn
-              - !GetAtt CodeBuildServiceRole.Arn
-              - !GetAtt CodeBuildDeployServiceRole.Arn
-            Effect: Allow
-            Action:
-              - iam:*
-          - Resource: !Join
-              - ''
-              - - !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/'
-                - Fn::ImportValue: !Sub webapp-es-cloudfront-distribution-id-${EnvName}
-            Effect: Allow
-            Action:
-              - cloudfront:*
-          - Resource: !Join
-              - ''
-              - - !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/'
-                - Fn::ImportValue: !Sub webapp-en-cloudfront-distribution-id-${EnvName}
-            Effect: Allow
-            Action:
-              - cloudfront:*
-          - Resource:
-              - !Sub "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/webapp-invalidate-caches-${EnvName}*"
-              - !Sub "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/webapp-deploy-service-${EnvName}*"
-            Effect: Allow
-            Action:
-              - codebuild:*
-      Roles:
-        - Ref: "CloudFormationExecutionRole"
-
-  ArtifactBucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      LifecycleConfiguration:
-        Rules:
-          - Id: MoreThan90DaysOldItemsToGlacier
-            Status: Enabled
-            Transitions:
-              - TransitionInDays: 90
-                StorageClass: GLACIER
-      Tags:
-        - Key: Env
-          Value: !Ref EnvName
-        - Key: Project
-          Value: !Ref ProjectName
-
-  CodeBuildDeployServiceRole:
-    Type: AWS::IAM::Role
-    Properties:
-      Path: /
-      AssumeRolePolicyDocument:
-        Version: 2012-10-17
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: codebuild.amazonaws.com
-            Action: sts:AssumeRole
-
-  CodeBuildDeployServicePolicy:
-    Type: "AWS::IAM::Policy"
-    Properties:
-      PolicyName: !Sub "webapp-codebuild-deploy-service-${EnvName}"
-      PolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Resource: "*"
-            Effect: Allow
-            Action:
-              - ec2:CreateNetworkInterface
-              - ec2:DescribeDhcpOptions
-              - ec2:DescribeNetworkInterfaces
-              - ec2:DeleteNetworkInterface
-              - ec2:DescribeSubnets
-              - ec2:DescribeSecurityGroups
-              - ec2:DescribeVpcs
-          - Resource:
-              - !Sub "arn:aws:ec2:${AWS::Region}:${AWS::AccountId}:network-interface/*"
-            Effect: Allow
-            Action:
-              - ec2:CreateNetworkInterfacePermission
-          - Resource:
-              - !GetAtt DeployServiceCodebuildLogGroup.Arn
-            Effect: Allow
-            Action:
-              - logs:*
-          - Resource:
-              - !GetAtt ArtifactBucket.Arn
-              - !Join [ '', [!GetAtt ArtifactBucket.Arn, '/*' ] ]
-              - !Ref BucketES
-              - !Sub "${BucketES}/*"
-              - !Ref BucketEN
-              - !Sub "${BucketEN}/*"
-            Effect: Allow
-            Action:
-              - s3:*
-      Roles:
-        - Ref: "CodeBuildDeployServiceRole"
-
   CodeBuildDeployScripts:
     Type: AWS::CodeBuild::Project
-    DependsOn: CodeBuildDeployServicePolicy
     Properties:
       Name: !Sub "webapp-deploy-service-${EnvName}"
       Description: !Sub "Uploads webapp project to ${EnvName} hosting buckets"
-      ServiceRole: !Ref CodeBuildDeployServiceRole
+      ServiceRole:
+        Fn::ImportValue: execute-predeploy-role
       Artifacts:
         Type: CODEPIPELINE
       Source:
@@ -345,7 +98,8 @@ Resources:
     Properties:
       Name: !Sub "webapp-invalidate-caches-${EnvName}"
       Description: !Sub "Invalidate caches for webapp ${EnvName} distributions"
-      ServiceRole: !Ref CodeBuildServiceRole
+      ServiceRole:
+        Fn::ImportValue: execute-predeploy-role
       Artifacts:
         Type: NO_ARTIFACTS
       Source:
@@ -384,62 +138,6 @@ Resources:
         - Key: Project
           Value: !Ref ProjectName
 
-  CodeBuildServiceRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          Effect: Allow
-          Principal:
-            Service: codebuild.amazonaws.com
-          Action: sts:AssumeRole
-      Policies:
-        - PolicyName: !Sub "webapp-codebuild-role-${EnvName}"
-          PolicyDocument:
-            Version: 2012-10-17
-            Statement:
-              - Resource: !Join
-                  - ''
-                  - - !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/'
-                    - Fn::ImportValue: !Sub webapp-es-cloudfront-distribution-id-${EnvName}
-                Effect: Allow
-                Action:
-                  - cloudfront:*
-              - Resource: !Join
-                  - ''
-                  - - !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/'
-                    - Fn::ImportValue: !Sub webapp-en-cloudfront-distribution-id-${EnvName}
-                Effect: Allow
-                Action:
-                  - cloudfront:*
-              - Resource: "*"
-                Effect: Allow
-                Action:
-                  - ec2:CreateNetworkInterface
-                  - ec2:DescribeDhcpOptions
-                  - ec2:DescribeNetworkInterfaces
-                  - ec2:DeleteNetworkInterface
-                  - ec2:DescribeSubnets
-                  - ec2:DescribeSecurityGroups
-                  - ec2:DescribeVpcs
-              - Resource:
-                  - !Sub "arn:aws:ec2:${AWS::Region}:${AWS::AccountId}:network-interface/*"
-                Effect: Allow
-                Action:
-                  - ec2:CreateNetworkInterfacePermission
-              - Resource:
-                  - !GetAtt InvalidateCachesCodebuildLogGroup.Arn
-                Effect: Allow
-                Action:
-                  - logs:*
-              - Resource:
-                  - !GetAtt ArtifactBucket.Arn
-                  - !Join [ '', [!GetAtt ArtifactBucket.Arn, '/*' ] ]
-                Effect: Allow
-                Action:
-                  - s3:*
-
   InvalidateCachesCodebuildLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
@@ -450,7 +148,8 @@ Resources:
     Type: AWS::CodePipeline::Pipeline
     Properties:
       Name: !Sub webapp-${EnvName}
-      RoleArn: !GetAtt CodePipelineServiceRole.Arn
+      RoleArn:
+        Fn::ImportValue: execute-pipeline-role
       ArtifactStore:
         Type: S3
         Location: !Ref ArtifactBucket
@@ -464,7 +163,7 @@ Resources:
                 Owner: AWS
                 Version: "1"
               Configuration:
-                S3Bucket: wallapop-trigger-link-cicd
+                S3Bucket: !Ref S3SourceBucket
                 S3ObjectKey: !Sub webapp/webapp-${ImageTag}.zip
               OutputArtifacts:
                 - Name: App
@@ -486,7 +185,8 @@ Resources:
                     - 'App::infrastructure/pipeline/${ConfigFile}.json'
                     - ConfigFile: !FindInMap [ConfigFileName, !Ref "AWS::AccountId", !Ref EnvName]
                 TemplatePath: App::infrastructure/pipeline/template.yaml
-                RoleArn: !GetAtt CloudFormationExecutionRole.Arn
+                RoleArn:
+                  Fn::ImportValue: manage-pipeline-stack-role
               InputArtifacts:
                 - Name: App
               RunOrder: 1
@@ -505,7 +205,8 @@ Resources:
                   - 'App::infrastructure/s3/${ConfigFile}.json'
                   - ConfigFile: !FindInMap [ ConfigFileName, !Ref "AWS::AccountId", !Ref EnvName ]
                 TemplatePath: App::infrastructure/s3/template.yml
-                RoleArn: !GetAtt CloudFormationExecutionRole.Arn
+                RoleArn:
+                  Fn::ImportValue: manage-serverless-stack-role
               InputArtifacts:
                 - Name: App
               RunOrder: 2
@@ -524,7 +225,8 @@ Resources:
                   - 'App::infrastructure/cloudfront/${ConfigFile}.json'
                   - ConfigFile: !FindInMap [ ConfigFileName, !Ref "AWS::AccountId", !Ref EnvName ]
                 TemplatePath: App::infrastructure/cloudfront/template.yaml
-                RoleArn: !GetAtt CloudFormationExecutionRole.Arn
+                RoleArn:
+                  Fn::ImportValue: manage-serverless-stack-role
               InputArtifacts:
                 - Name: App
               RunOrder: 3
