@@ -2,9 +2,7 @@ import { Story } from '@storybook/angular/types-6-0';
 import { moduleMetadata } from '@storybook/angular';
 import { Component } from '@angular/core';
 import { SliderModule } from './slider.module';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HookCallbacks } from 'async_hooks';
-import { CommonModule } from '@angular/common';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'tsl-story-slider',
@@ -26,7 +24,7 @@ class StorySliderComponent {
 }
 
 export default {
-  title: 'Webapp/Shared/Form/Slider',
+  title: 'Webapp/Shared/Form/Components/Slider',
   component: StorySliderComponent,
   argTypes: {},
   decorators: [
