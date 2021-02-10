@@ -33,4 +33,8 @@ describe('BumpConfirmationModalComponent', () => {
     userService = TestBed.inject(UserService);
     fixture.detectChanges();
   });
+
+  it('should create an instance', () => {
+    expect(component).toBeTruthy();
+  });
 });

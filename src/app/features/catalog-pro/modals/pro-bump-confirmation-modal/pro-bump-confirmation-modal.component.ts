@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { UserService } from '@core/user/user.service';
 
 @Component({
   selector: 'tsl-pro-bump-confirmation-modal',
