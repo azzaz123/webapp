@@ -5,7 +5,6 @@ import { UserService } from '../user/user.service';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
 import mParticle from '@mparticle/web-sdk';
-import appboyKit from '@mparticle/web-appboy-kit';
 import { DeviceService } from '@core/device/device.service';
 
 const user = {
