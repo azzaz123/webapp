@@ -2,6 +2,8 @@
 
 $header-height: 63px;
 $button-height: 47px;
+$info-min-width: 100px;
+$buttons-width: 220px;
 
 .ItemDetailImages {
   z-index: 100;
@@ -11,8 +13,8 @@ $button-height: 47px;
 }
 
 .ItemInfo {
-  width: calc(100% - 220px);
-  min-width: 100px;
+  width: calc(100% - #{$buttons-width});
+  min-width: $info-min-width;
   span {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -31,7 +33,7 @@ $button-height: 47px;
     font-weight: $font-weight-chunky;
   }
   &__buttons {
-    right: 0px;
+    right: 0;
   }
 }
 
