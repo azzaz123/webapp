@@ -4,7 +4,7 @@
         'hideControllers': hideControllers}" [activeId]="activeId">
         <ng-template *ngFor="let slide of slides; let i = index" ngbSlide [id]="NGB_SLIDE + i">
             <div *ngIf="(currentSlide) === NGB_SLIDE+i || activeId === NGB_SLIDE + i" (click)="emitCurrentIndex(i)"
-                class="w-100 h-100">
+                class="w-100 h-100" id="slideContainer">
                 <ng-template [ngTemplateOutlet]="slide.templateRef"></ng-template>
             </div>
         </ng-template>

@@ -2,27 +2,57 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
-
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { SlidesCarouselComponent } from './slides-carousel.component';
+import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
+
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { CarouselSliderDirective } from './directives/carousel-slider.directive';
+
+@Component({
+  selector: 'tsl-slides-carousel-test',
+  template: `<tsl-slides-carousel>
+    <ng-template *ngFor="let img of images" carousel-slider>
+      <img />
+    </ng-template>
+  </tsl-slides-carousel>`,
+})
+class TestWrapperComponent {
+  public images = new Array(7);
+}
 
 describe('SlidesCarouselComponent', () => {
   const defaultIdTemplate = '#defaultCarousel';
+  const slideIdContainer = '#slideContainer';
   const carouselTag = 'ngb-carousel';
-  const carouselSlideClass = '.SlidesCarousel__slide';
+  const fallbackImageClass = '.SlidesCarousel__FallbackImage';
+  const hideControllerClass = '.hideControllers';
 
   let component: SlidesCarouselComponent;
-  let fixture: ComponentFixture<SlidesCarouselComponent>;
+  let fixture: ComponentFixture<TestWrapperComponent>;
+  let deviceDetectorService: DeviceDetectorService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [NgbCarouselModule, ImageFallbackModule],
-      declarations: [SlidesCarouselComponent],
-    }).compileComponents();
+      declarations: [SlidesCarouselComponent, TestWrapperComponent, CarouselSliderDirective],
+      providers: [
+        {
+          provide: DeviceDetectorService,
+          useClass: DeviceDetectorServiceMock,
+        },
+      ],
+    })
+      .overrideComponent(SlidesCarouselComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SlidesCarouselComponent);
-    component = fixture.componentInstance;
+    fixture = TestBed.createComponent(TestWrapperComponent);
+    component = fixture.debugElement.children[0].componentInstance;
+    deviceDetectorService = TestBed.inject(DeviceDetectorService);
     fixture.detectChanges();
   });
 
@@ -33,11 +63,14 @@ describe('SlidesCarouselComponent', () => {
 
   describe('when we have slides...', () => {
     beforeEach(() => {
-      // component.slides = [''];
       fixture.detectChanges();
     });
 
-    it('should show the normal slide', () => {
+    it('should detect the inner child elements', () => {
+      expect(component.slides.length).toBe(7);
+    });
+
+    it('should show the normal slide style', () => {
       const normalSlider = fixture.debugElement.query(By.css(defaultIdTemplate));
 
       expect(normalSlider).toBeTruthy();
@@ -65,25 +98,47 @@ describe('SlidesCarouselComponent', () => {
       it('should open the slide slider...', () => {
         spyOn(component.slideClick, 'emit');
 
-        fixture.debugElement.query(By.css(carouselSlideClass)).triggerEventHandler('click', {});
+        fixture.debugElement.query(By.css(slideIdContainer)).triggerEventHandler('click', {});
 
         expect(component.slideClick.emit).toHaveBeenCalled();
       });
     });
+
+    describe('when is the carousel is full screen and our device...', () => {
+      describe('is a mobile...', () => {
+        it('should hide the controllers', () => {
+          component.isFullScreen = true;
+          spyOn(deviceDetectorService, 'isMobile').and.returnValue(true);
+
+          component.ngAfterContentInit();
+          fixture.detectChanges();
+
+          expect(fixture.debugElement.query(By.css(hideControllerClass))).toBeTruthy();
+        });
+      });
+
+      describe('is a NOT mobile...', () => {
+        it('should NOT hide the controllers', () => {
+          component.isFullScreen = true;
+
+          component.ngAfterContentInit();
+          fixture.detectChanges();
+
+          expect(fixture.debugElement.query(By.css(hideControllerClass))).toBeFalsy();
+        });
+      });
+    });
   });
 
-  describe(`when we don't have images...`, () => {
-    beforeEach(() => {
-      component.slides = null;
-      fixture.detectChanges();
-    });
-
+  describe(`when we don't have slides...`, () => {
     it('should show the fallback image slider', () => {
-      const normalSlider = fixture.debugElement.query(By.css(defaultIdTemplate));
-      // const fallbackSlider = fixture.debugElement.query(By.css(fallbackImageClass));
+      fixture.componentInstance.images = [];
 
-      expect(normalSlider).toBeFalsy();
-      // expect(fallbackSlider).toBeTruthy();
+      fixture.detectChanges();
+      component.ngAfterContentInit();
+
+      expect(fixture.debugElement.query(By.css(defaultIdTemplate))).toBeFalsy();
+      expect(fixture.debugElement.query(By.css(fallbackImageClass))).toBeTruthy();
     });
   });
 });

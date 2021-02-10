@@ -1,6 +1,7 @@
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChildren,
   EventEmitter,
@@ -35,11 +36,12 @@ export class SlidesCarouselComponent implements AfterContentInit {
   public hideControllers: boolean;
   public activeId: string;
 
-  constructor(private deviceDetectorService: DeviceDetectorService) {}
+  constructor(private deviceDetectorService: DeviceDetectorService, private cdr: ChangeDetectorRef) {}
 
   ngAfterContentInit() {
     this.slides = this.sections.toArray();
     this.activeId = this.NGB_SLIDE + this.initialIndex;
+    this.cdr.detectChanges();
     this.checkHideControllers();
   }
 
