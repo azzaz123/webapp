@@ -61,13 +61,19 @@ export class SubscriptionsComponent implements OnInit {
       .pipe(
         finalize(() => {
           this.loading = false;
-          this.trackPageView();
         })
       )
       .subscribe((subscriptions) => {
         this.subscriptions = subscriptions;
       });
-    this.userService.me(true).subscribe((user) => (this.user = user));
+    this.userService
+      .me(true)
+      .pipe(
+        finalize(() => {
+          this.trackPageView();
+        })
+      )
+      .subscribe((user) => (this.user = user));
   }
 
   public openSubscriptionModal(subscription: SubscriptionsResponse): void {
@@ -144,7 +150,6 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   private trackPageView() {
-    console.log('teest', this.user);
     const pageView: AnalyticsPageView<ViewSubscription> = {
       name: ANALYTICS_EVENT_NAMES.ViewSubscription,
       attributes: {

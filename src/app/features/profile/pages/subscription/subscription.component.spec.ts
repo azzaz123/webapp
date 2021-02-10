@@ -151,9 +151,8 @@ describe('SubscriptionComponent', () => {
       expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageViewEvent);
     });
 
-    it('when has not subscriptions', fakeAsync(() => {
+    it('when has not subscriptions', () => {
       spyOn(analyticsService, 'trackPageView');
-      component.user.featured = false;
       spyOn(userService, 'me').and.returnValue(of(MOCK_NON_FEATURED_USER_RESPONSE));
       const expectedPageViewEvent: AnalyticsPageView<ViewSubscription> = {
         name: ANALYTICS_EVENT_NAMES.ViewSubscription,
@@ -162,12 +161,12 @@ describe('SubscriptionComponent', () => {
           isPro: false,
         },
       };
-      // fixture.detectChanges();
+
       component.ngOnInit();
 
       expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
       expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageViewEvent);
-    }));
+    });
 
     afterEach(() => {
       TestBed.resetTestingModule();
