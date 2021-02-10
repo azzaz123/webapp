@@ -1,6 +1,6 @@
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { FavouriteIconModule } from '@public/shared/components/favourite-icon/favourite-icon.module';
-import { ItemDetailImagesCarouselComponent } from './item-detail-images-carousel.component';
+import { ItemFullSizeCarouselComponent } from './item-fullsize-carousel.component';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { SlidesCarouselModule } from '@public/shared/components/slides-carousel/slides-carousel.module';
 import { HttpClientModule } from '@angular/common/http';
@@ -9,14 +9,14 @@ import { CommonModule } from '@angular/common';
 
 export default {
   title: 'Webapp/Public/Features/ItemDetail/Components/ItemDetailImagesCarousel',
-  component: ItemDetailImagesCarouselComponent,
+  component: ItemFullSizeCarouselComponent,
 } as Meta;
 
-const Template: Story<ItemDetailImagesCarouselComponent> = (args: ItemDetailImagesCarouselComponent) => ({
-  component: ItemDetailImagesCarouselComponent,
+const Template: Story<ItemFullSizeCarouselComponent> = (args: ItemFullSizeCarouselComponent) => ({
+  component: ItemFullSizeCarouselComponent,
   props: args,
   moduleMetadata: {
-    declarations: [ItemDetailImagesCarouselComponent],
+    declarations: [ItemFullSizeCarouselComponent],
     imports: [SvgIconModule, SlidesCarouselModule, HttpClientModule, FavouriteIconModule, ButtonModule, CommonModule],
     providers: [],
   },

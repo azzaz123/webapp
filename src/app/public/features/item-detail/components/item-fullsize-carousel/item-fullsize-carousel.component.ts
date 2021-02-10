@@ -4,11 +4,11 @@ import { CheckSessionService } from '@public/core/services/check-session/check-s
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 
 @Component({
-  selector: 'tsl-item-detail-images-carousel',
-  templateUrl: './item-detail-images-carousel.component.html',
-  styleUrls: ['./item-detail-images-carousel.component.scss'],
+  selector: 'tsl-item-fullsize-carousel',
+  templateUrl: './item-fullsize-carousel.component.html',
+  styleUrls: ['./item-fullsize-carousel.component.scss'],
 })
-export class ItemDetailImagesCarouselComponent {
+export class ItemFullSizeCarouselComponent {
   public hidden = true;
   @Input() item: Item;
   @Input() images: string[];

@@ -12,7 +12,6 @@ import { ItemDetailService } from '../core/services/item-detail.service';
 import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
-import { ItemDetailImagesCarouselComponent } from '../components/item-detail-images-carousel/item-detail-images-carousel.component';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
 import { Observable } from 'rxjs';
@@ -20,6 +19,7 @@ import { Image, UserLocation } from '@core/user/user-response.interface';
 import { finalize } from 'rxjs/operators';
 import { APP_PATHS } from 'app/app-routing-constants';
 import { SlideCarousel } from '@public/shared/components/slides-carousel/slides-carousel.interface';
+import { ItemFullSizeCarouselComponent } from '../components/item-fullsize-carousel/item-fullsize-carousel.component';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -27,8 +27,8 @@ import { SlideCarousel } from '@public/shared/components/slides-carousel/slides-
   styleUrls: ['./item-detail.component.scss'],
 })
 export class ItemDetailComponent implements OnInit {
-  @ViewChild(ItemDetailImagesCarouselComponent, { static: true })
-  itemDetailImagesModal: ItemDetailImagesCarouselComponent;
+  @ViewChild(ItemFullSizeCarouselComponent, { static: true })
+  itemDetailImagesModal: ItemFullSizeCarouselComponent;
   public readonly deviceType = DeviceType;
   public loading = true;
   public isApproximateLocation = false;
