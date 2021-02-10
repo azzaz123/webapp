@@ -135,37 +135,41 @@ describe('SubscriptionComponent', () => {
   });
 
   describe('Send page view event to analytics', () => {
-    it('when has subscriptions', () => {
-      spyOn(analyticsService, 'trackPageView');
-      const expectedPageViewEvent: AnalyticsPageView<ViewSubscription> = {
-        name: ANALYTICS_EVENT_NAMES.ViewSubscription,
-        attributes: {
-          screenId: SCREEN_IDS.SubscriptionManagement,
-          isPro: true,
-        },
-      };
+    describe('when is PRO', () => {
+      it('should send event', () => {
+        spyOn(analyticsService, 'trackPageView');
+        const expectedPageViewEvent: AnalyticsPageView<ViewSubscription> = {
+          name: ANALYTICS_EVENT_NAMES.ViewSubscription,
+          attributes: {
+            screenId: SCREEN_IDS.SubscriptionManagement,
+            isPro: true,
+          },
+        };
 
-      component.ngOnInit();
+        component.ngOnInit();
 
-      expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
-      expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageViewEvent);
+        expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageViewEvent);
+      });
     });
 
-    it('when has not subscriptions', () => {
-      spyOn(analyticsService, 'trackPageView');
-      spyOn(userService, 'me').and.returnValue(of(MOCK_NON_FEATURED_USER_RESPONSE));
-      const expectedPageViewEvent: AnalyticsPageView<ViewSubscription> = {
-        name: ANALYTICS_EVENT_NAMES.ViewSubscription,
-        attributes: {
-          screenId: SCREEN_IDS.SubscriptionManagement,
-          isPro: false,
-        },
-      };
+    describe('when is not PRO', () => {
+      it('should send event', () => {
+        spyOn(analyticsService, 'trackPageView');
+        spyOn(userService, 'me').and.returnValue(of(MOCK_NON_FEATURED_USER_RESPONSE));
+        const expectedPageViewEvent: AnalyticsPageView<ViewSubscription> = {
+          name: ANALYTICS_EVENT_NAMES.ViewSubscription,
+          attributes: {
+            screenId: SCREEN_IDS.SubscriptionManagement,
+            isPro: false,
+          },
+        };
 
-      component.ngOnInit();
+        component.ngOnInit();
 
-      expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
-      expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageViewEvent);
+        expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageViewEvent);
+      });
     });
 
     afterEach(() => {
