@@ -7,9 +7,15 @@
   border: solid 1px $walla-main;
   border-radius: $spacing-ms;
 
-  &__description {
+  &__title {
     font-weight: bold;
     color: $blue-grey-1;
+    font-size: $font-size-s;
+  }
+
+  &__description {
+    color: $blue-grey-1;
+    font-size: $font-size-s;
   }
 
   &__close {
@@ -20,8 +26,6 @@
     right: 0;
 
     tsl-svg-icon {
-      @include square($spacing-ms);
-
       ::ng-deep svg path {
         fill: $blue-grey-3;
       }

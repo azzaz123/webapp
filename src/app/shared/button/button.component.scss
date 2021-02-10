@@ -129,6 +129,7 @@ $vertical-padding: $spacing-ms;
 
   &.btn-dark {
     background-color: $blue-grey-1;
+    padding: $vertical-padding $spacing-l;
     color: $white;
     border: 0;
     font-weight: bold;
