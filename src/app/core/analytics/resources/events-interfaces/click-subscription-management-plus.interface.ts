@@ -6,11 +6,11 @@
  */
 
 /**
- * User clicks on the Subscription Management Plus button
+ * User clicks to choose a subscription from the subscription list
  */
 export interface ClickSubscriptionManagementPlus {
   /**
-   * Identifier of the Subscription Management screen
+   * Identifier of the Subscription screen
    */
   screenId: 191;
   /**

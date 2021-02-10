@@ -164,7 +164,6 @@ export enum ANALYTICS_EVENT_NAMES {
   ViewSeeAllBumpSlider = 'View See All Bump Slider',
   ViewShippingInfoItem = 'View Shipping Info Item',
   ViewShippingMenu = 'View Shipping Menu',
-  ViewSubscriptionManagement = 'View Subscription Management',
   ViewSubscriptionPaymentSuccess = 'View Subscription Payment Success',
   ViewSubscriptionTier = 'View Subscription Tier',
   ViewSubscription = 'View Subscription',
