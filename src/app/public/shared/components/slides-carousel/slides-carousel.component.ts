@@ -40,11 +40,15 @@ export class SlidesCarouselComponent implements AfterContentInit {
   ngAfterContentInit() {
     this.slides = this.sections.toArray();
     this.activeId = this.NGB_SLIDE + this.initialIndex;
-    this.hideControllers = this.slides?.length <= 1 || (this.deviceDetectorService.isMobile() && this.isFullScreen);
+    this.checkHideControllers();
   }
 
   public emitCurrentIndex(slideIndex: number): void {
     this.slideClick.emit({ index: slideIndex });
+  }
+
+  private checkHideControllers(): void {
+    this.hideControllers = this.slides?.length <= 1 || (this.deviceDetectorService.isMobile() && this.isFullScreen);
   }
 
   get currentSlide(): string {
