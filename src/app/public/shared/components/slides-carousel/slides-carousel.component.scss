@@ -2,12 +2,12 @@
 
 $item-flag-height: 38px;
 
-.ImagesCarousel {
+.SlidesCarousel {
   ngb-carousel {
     width: 100%;
     height: 100%;
     ::ng-deep {
-      .ImagesCarousel__image,
+      .SlidesCarousel__slide,
       .carousel-inner,
       .carousel-item {
         width: 100%;

@@ -4,11 +4,11 @@ import { HAMMER_PROVIDER } from '@core/hammerjs/hammerjs-provider';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
 import { Story, Meta } from '@storybook/angular/types-6-0';
-import { ImagesCarouselComponent } from './images-carousel.component';
+import { SlidesCarouselComponent } from './slides-carousel.component';
 
 export default {
-  title: 'Webapp/Public/Shared/Components/ImagesCarousel',
-  component: ImagesCarouselComponent,
+  title: 'Webapp/Public/Shared/Components/SlidesCarousel',
+  component: SlidesCarouselComponent,
   decorators: [
     (storyFunc) => {
       const story = storyFunc();
@@ -21,29 +21,29 @@ export default {
   ],
 } as Meta;
 
-const Template: Story<ImagesCarouselComponent> = (args: ImagesCarouselComponent) => ({
-  component: ImagesCarouselComponent,
+const Template: Story<SlidesCarouselComponent> = (args: SlidesCarouselComponent) => ({
+  component: SlidesCarouselComponent,
   props: args,
   moduleMetadata: {
-    declarations: [ImagesCarouselComponent],
+    declarations: [SlidesCarouselComponent],
     imports: [CommonModule, NgbCarouselModule, ImageFallbackModule, HammerModule],
     providers: [HAMMER_PROVIDER],
   },
-  template: '<tsl-images-carousel [images]="images"></tsl-images-carousel>',
+  template: '<tsl-slides-carousel></tsl-slides-carousel>',
 });
 
 const imagesURL = ['http://localhost:6006/images/item-camera.jpg', 'http://localhost:6006/images/item-pc.jpg'];
 export const Default = Template.bind({});
 Default.args = {
-  images: imagesURL,
+  // images: imagesURL,
 };
 
 export const OneImage = Template.bind({});
 OneImage.args = {
-  images: [imagesURL[0]],
+  // images: [imagesURL[0]],
 };
 
 export const WithoutImages = Template.bind({});
 WithoutImages.args = {
-  images: null,
+  // images: null,
 };
