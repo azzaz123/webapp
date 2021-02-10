@@ -18,6 +18,7 @@ export class ItemDetailImagesCarouselComponent {
 
   public show(): void {
     this.hidden = false;
+    window.scrollTo(0, 0);
     this.renderer.addClass(document.body, 'blocked-page');
   }
 
