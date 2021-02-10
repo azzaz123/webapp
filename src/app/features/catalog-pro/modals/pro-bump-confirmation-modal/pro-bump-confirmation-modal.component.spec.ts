@@ -31,18 +31,6 @@ describe('BumpConfirmationModalComponent', () => {
     fixture = TestBed.createComponent(ProBumpConfirmationModalComponent);
     component = fixture.componentInstance;
     userService = TestBed.inject(UserService);
-    appboy.initialize(environment.appboy);
     fixture.detectChanges();
-  });
-
-  describe('ngOnInit', () => {
-    it('should send appboy VisibilityPurchaseSuccess event if code == 200 or 201', () => {
-      spyOn(appboy, 'logCustomEvent');
-      component.code = '200';
-
-      component.ngOnInit();
-
-      expect(appboy.logCustomEvent).toHaveBeenCalledWith('VisibilityPurchaseSuccess', { platform: 'web' });
-    });
   });
 });
