@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { APP_BASE_HREF, CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
@@ -18,6 +18,7 @@ import { I18nService } from '@core/i18n/i18n.service';
 import { UserService } from '@core/user/user.service';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { CoreStoreModule } from '@core/store/core-store.module';
+import { RouterTestingModule } from '@angular/router/testing';
 
 export default {
   title: 'Webapp/Public/Features/PublicProfile/Pages/UserPublished/ItemCardList',
@@ -33,6 +34,7 @@ export default {
         PublicPipesModule,
         NgxPermissionsModule.forRoot(),
         CoreStoreModule,
+        RouterTestingModule,
       ],
       providers: [
         DeviceDetectorService,
@@ -45,6 +47,7 @@ export default {
         I18nService,
         NgxPermissionsService,
         { provide: 'SUBDOMAIN', useValue: 'es' },
+        { provide: APP_BASE_HREF, useValue: '/' },
       ],
     }),
   ],

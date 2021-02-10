@@ -9,6 +9,7 @@ import { CoreModule } from '@core/core.module';
 import { CommonModule } from '@angular/common';
 import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
 import { CUSTOM_VIEWPORT_NAME } from '@storybook-config/viewports/custom-viewports';
+import { RouterTestingModule } from '@angular/router/testing';
 
 export default {
   title: 'Webapp/Public/Features/ItemDetail/Components/RecommendedItems',
@@ -20,7 +21,7 @@ const Template: Story<RecommendedItemsComponent> = (args: RecommendedItemsCompon
   props: args,
   moduleMetadata: {
     declarations: [RecommendedItemsComponent],
-    imports: [CoreModule, HttpModule, ItemCardListModule, CheckSessionModule, CommonModule],
+    imports: [CoreModule, HttpModule, ItemCardListModule, CheckSessionModule, CommonModule, RouterTestingModule],
     providers: [DeviceDetectorService, MapItemService],
   },
   template: '<tsl-recommended-items [recommendedItems]="recommendedItems" showDescription="false"></tsl-recommended-items>',

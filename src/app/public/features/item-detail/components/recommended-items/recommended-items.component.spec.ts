@@ -32,7 +32,7 @@ describe('RecommendedItemsComponent', () => {
     beforeEach(() => {
       component.recommendedItems = RECOMMENDED_ITEMS_MOCK;
 
-      component.ngOnInit();
+      component.ngOnChanges();
       fixture.detectChanges();
     });
 
