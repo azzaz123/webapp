@@ -3,6 +3,7 @@ export enum ANALYTICS_EVENT_NAMES {
   ClickAcceptOffer = 'Click Accept Offer',
   ClickAddEditAddress = 'Click Add Edit Address',
   ClickAddEditBankAccount = 'Click Add Edit Bank Account',
+  ClickAddEditCard = 'Click Add Edit Card',
   ClickBackEditCard = 'Click Back Edit Card',
   ClickBackTransactionPay = 'Click Back Transaction Pay',
   ClickBannedUserChatPopUpCloseButton = 'Click Banned User Chat Pop Up Close Button',

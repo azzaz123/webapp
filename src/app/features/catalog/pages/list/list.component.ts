@@ -142,8 +142,10 @@ export class ListComponent implements OnInit, OnDestroy {
       .getSubscriptions()
       .pipe(take(1))
       .subscribe((subscriptions) => {
-        this.hasTrialAvailable = this.subscriptionsService.hasOneTrialSubscription(subscriptions);
-        this.initTryProSlot();
+        if (!!subscriptions) {
+          this.hasTrialAvailable = this.subscriptionsService.hasOneTrialSubscription(subscriptions);
+          this.initTryProSlot();
+        }
       });
 
     this.itemService.selectedItems$
