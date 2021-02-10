@@ -29,14 +29,6 @@ jest.mock('@mparticle/web-sdk', () => ({
   namedExport: 'mParticle',
 }));
 
-jest.mock('@mparticle/web-appboy-kit', () => ({
-  __esModule: true,
-  default: {
-    register: (_config) => {},
-  },
-  namedExport: 'appboyKit',
-}));
-
 describe('AnalyticsService', () => {
   let service: AnalyticsService;
   let deviceService: DeviceService;
@@ -74,14 +66,12 @@ describe('AnalyticsService', () => {
         let user = mParticle.Identity.getCurrentUser();
         spyOn(mParticle, 'init').and.callThrough();
         spyOn(user, 'setUserAttribute');
-        spyOn(appboyKit, 'register');
         spyOn(deviceService, 'getDeviceId').and.returnValue('newUUID');
 
         service.initialize();
 
         expect(mParticle.init).toHaveBeenCalledTimes(1);
         expect(user.setUserAttribute).toHaveBeenCalledWith('deviceId', 'newUUID');
-        expect(appboyKit.register).toHaveBeenCalled();
       });
     });
 
@@ -90,14 +80,12 @@ describe('AnalyticsService', () => {
         deviceIdValue = undefined;
         spyOn(mParticle, 'init').and.callThrough();
         spyOn(mParticle.Identity.getCurrentUser(), 'setUserAttribute');
-        spyOn(appboyKit, 'register');
         spyOn(deviceService, 'getDeviceId').and.returnValue('newDeviceId');
 
         service.initialize();
 
         expect(mParticle.init).toHaveBeenCalled();
         expect(mParticle.Identity.getCurrentUser().setUserAttribute).toHaveBeenCalledWith('deviceId', 'newDeviceId');
-        expect(appboyKit.register).toHaveBeenCalled();
       });
     });
   });
