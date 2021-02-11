@@ -35,6 +35,14 @@
     }
   }
 
+  &[disabled] {
+    ::ng-deep {
+      .ngx-slider-pointer {
+        background-color: white !important;
+      }
+    }
+  }
+
   &-range {
     ::ng-deep {
       .ngx-slider-pointer {
