@@ -1,0 +1,4 @@
+<div class="d-flex justify-content-around">
+    <tsl-counter-specification *ngFor="let specification of typeSpecifications" [type]="specification.type"
+        [counter]="specification.counter" [label]="specification.label"></tsl-counter-specification>
+</div>
