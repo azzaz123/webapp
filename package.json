@@ -40,7 +40,7 @@
     "@angular/router": "^11.0.1",
     "@angular/service-worker": "^11.0.1",
     "@mparticle/web-appboy-kit": "^2.0.4",
-    "@mparticle/web-sdk": "^2.9.9-rc.1",
+    "@mparticle/web-sdk": "^2.12.3",
     "@ng-bootstrap/ng-bootstrap": "6.0.3",
     "@ngrx/effects": "^10.1.2",
     "@ngrx/store": "^10.1.2",
