@@ -3,49 +3,84 @@ import { moduleMetadata } from '@storybook/angular';
 import { Meta, Story } from '@storybook/angular/types-6-0';
 import { styledWrapperDecorator } from '@stories/decorators/styled-wrapper/styled-wrapper.decorator';
 import { StyledBoxComponent } from '@stories/components/styled-box/styled-box.component';
+import { LoremIpsumComponent } from '@stories/components/lorem-ipsum/lorem-ipsum.component';
+import { stringifyStyleObj } from '@stories/helpers/stringify-style';
+import { ScrollLockService } from '@public/shared/services/scroll-lock.service';
 
 export default {
-  title: 'Webapp/Drawer',
+  title: 'Webapp/Public/Shared/Components/Drawer',
   component: DrawerComponent,
   decorators: [
     moduleMetadata({
-      declarations: [StyledBoxComponent, DrawerComponent],
+      declarations: [StyledBoxComponent, DrawerComponent, LoremIpsumComponent],
+      providers: [ScrollLockService],
     }),
     styledWrapperDecorator('margin: -16px'),
   ],
 } as Meta;
 
-const boxStyle = `
-  {
-    backgroundColor: '#b0bec5',
-    height: '100%',
-    minHeight: '100px'
-  }
-`;
-
-const OnRootTemplate: Story<DrawerComponent> = (args) => ({
-  props: args,
-  component: DrawerComponent,
-  template: `<tsl-drawer>Content!</tsl-drawer>`,
+const pageStyle = stringifyStyleObj({
+  minHeight: '100vh',
+  paddingTop: '100px',
+  paddingBottom: '100px',
+  position: 'relative',
 });
 
-const WithParentTemplate: Story<DrawerComponent> = (args) => ({
+const headerStyle = stringifyStyleObj({
+  backgroundColor: '#b0bec5',
+  height: '100px',
+  width: '100%',
+  position: 'fixed',
+  zIndex: '1000',
+  top: '0',
+});
+
+const footerStyle = stringifyStyleObj({
+  backgroundColor: '#b0bec5',
+  height: '100px',
+  width: '100%',
+  position: 'absolute',
+  bottom: '0',
+});
+
+const Template: Story<DrawerComponent> = (args) => ({
   props: args,
   component: DrawerComponent,
   template: `
-    <div>
-      <stories-styled-box [style]="${boxStyle}"></stories-styled-box>
-      <tsl-drawer>Content!</tsl-drawer>
+    <div [ngStyle]="${pageStyle}">
+      <tsl-drawer [isOpen]="isOpen" [offsetTop]="offsetTop">
+        <p>Drawer Content!</p>
+        <stories-lorem-ipsum></stories-lorem-ipsum>
+      </tsl-drawer>
+      <stories-styled-box [style]="${headerStyle}"></stories-styled-box>
+      <div style="padding: 50px;">
+        <stories-lorem-ipsum></stories-lorem-ipsum>
+        <stories-lorem-ipsum></stories-lorem-ipsum>
+        <stories-lorem-ipsum></stories-lorem-ipsum>
+        <stories-lorem-ipsum></stories-lorem-ipsum>
+      </div>
+      <stories-styled-box [style]="${footerStyle}"></stories-styled-box>
     </div>
   `,
 });
 
-export const Default = OnRootTemplate.bind({});
+const defaultArgs = {
+  offsetTop: 0,
+  isOpen: false,
+};
 
-export const WithParent = WithParentTemplate.bind({});
+export const Closed = Template.bind({});
+Closed.args = defaultArgs;
 
-export const WithForcedPositioning = OnRootTemplate.bind({});
+export const Opened = Template.bind({});
+Opened.args = {
+  ...defaultArgs,
+  isOpen: true,
+};
+
+export const WithForcedPositioning = Template.bind({});
 WithForcedPositioning.args = {
-  top: 100,
-  bottom: 100,
+  ...defaultArgs,
+  isOpen: true,
+  offsetTop: 100,
 };

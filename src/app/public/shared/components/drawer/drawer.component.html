@@ -1,3 +1,8 @@
-<div>
-  <ng-content></ng-content>
+<div *ngIf="isOpen" class="Drawer">
+  <div class="Drawer__backdrop position-fixed"
+       [style.top.px]="offsetTop"></div>
+  <div class="Drawer__content p-4 position-fixed"
+       [style.top.px]="offsetTop">
+    <ng-content></ng-content>
+  </div>
 </div>
