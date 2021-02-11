@@ -21,10 +21,10 @@
     color: $blue-grey-2;
   }
   .modal-close {
-    width: auto;
-    height: auto;
-    right: 20px;
+    @include square($spacing-ms);
+    position: absolute;
     top: 20px;
+    right: 20px;
   }
 }
 
