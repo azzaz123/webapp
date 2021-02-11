@@ -13,7 +13,7 @@
 
   transition: all 0.15s ease;
 
-  &.active {
+  &--active {
     box-shadow: 0 1px 4px rgba($walla-main, 0.1);
     background-color: $white;
 
@@ -41,7 +41,7 @@
     }
   }
 
-  &.selected {
+  &--selected {
     color: $white;
     background-color: $walla-main;
 
@@ -70,16 +70,39 @@
     }
   }
 
-  &__content {
-    flex-basis: 100%;
+  &__dropdown_arrow {
+    transform: rotate(0);
+    transition: transform 250ms ease-in-out;
+    &-open {
+      transform: rotate(-180deg);
+    }
   }
 
-  &__counter {
+  &__content_wrapper {
+    flex-basis: 100%;
+    overflow: hidden;
+  }
+
+  &__content {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &__rounded_icon {
     height: 21px;
     width: 21px;
     flex-grow: 0;
     flex-shrink: 0;
     font-size: $font-size-xs;
     line-height: 14px;
+  }
+
+  &__clear {
+    background-color: $white;
+
+    ::ng-deep svg path {
+      fill: $walla-main;
+    }
   }
 }

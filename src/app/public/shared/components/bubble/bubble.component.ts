@@ -1,9 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-
-export enum BubbleVariants {
-  ACTIVE = 'active',
-  SELECTED = 'selected',
-}
+import { BUBBLE_VARIANT } from '@public/shared/components/bubble/bubble.enum';
 
 @Component({
   selector: 'tsl-bubble',
@@ -12,10 +8,13 @@ export enum BubbleVariants {
 })
 export class BubbleComponent {
   @Input() icon: string;
-  @Input() variant: BubbleVariants = BubbleVariants.ACTIVE;
+  @Input() variant: BUBBLE_VARIANT = BUBBLE_VARIANT.ACTIVE;
   @Input() isDropdown: boolean;
+  @Input() isDropdownOpen: boolean;
   @Input() counter: number;
-  @Output() onClick: EventEmitter<void> = new EventEmitter();
+  @Input() isClearable: boolean;
+  @Output() click: EventEmitter<MouseEvent> = new EventEmitter();
+  @Output() clear: EventEmitter<MouseEvent> = new EventEmitter();
 
   public get counterText(): string {
     if (this.counter) {
@@ -25,7 +24,16 @@ export class BubbleComponent {
     return '';
   }
 
-  public emitClick(): void {
-    this.onClick.emit();
+  public get hasClearButton(): boolean {
+    return this.isClearable && this.variant === BUBBLE_VARIANT.SELECTED;
+  }
+
+  public emitClick(event: MouseEvent): void {
+    this.click.emit(event);
+  }
+
+  public emitClear(event: MouseEvent): void {
+    event.stopPropagation();
+    this.clear.emit(event);
   }
 }
