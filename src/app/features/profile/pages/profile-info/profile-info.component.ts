@@ -254,7 +254,9 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
       .getSubscriptions()
       .pipe(take(1))
       .subscribe((subscriptions) => {
-        this.hasTrialAvailable = this.subscriptionsService.hasOneTrialSubscription(subscriptions);
+        if (!!subscriptions) {
+          this.hasTrialAvailable = this.subscriptionsService.hasOneTrialSubscription(subscriptions);
+        }
         if (!!callback) {
           callback();
         }
