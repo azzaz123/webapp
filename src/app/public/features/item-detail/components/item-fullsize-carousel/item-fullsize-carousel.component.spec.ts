@@ -95,10 +95,11 @@ describe('ItemFullSizeCarouselComponent', () => {
 
     describe('when we clic on the chat button...', () => {
       it('should redirect to the item chat page', () => {
-        const itemURL = `/chat?itemId=${component.item.id}`;
+        const itemURL = `/chat`;
         const chatButton = fixture.debugElement.nativeElement.querySelector('.ChatButton');
 
         expect(chatButton.routerLink).toEqual([itemURL]);
+        expect(chatButton.queryParams).toEqual({ itemId: component.item.id });
       });
     });
 

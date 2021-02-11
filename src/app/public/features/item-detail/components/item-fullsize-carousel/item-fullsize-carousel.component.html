@@ -12,8 +12,8 @@
                 <tsl-favourite-icon [active]="item?.flags?.favorite">
                 </tsl-favourite-icon>
             </tsl-button>
-            <tsl-button class="ChatButton d-inline-flex" className="btn btn-primary"
-                [routerLink]="['/chat?itemId='+ item.id]">Chat
+            <tsl-button class="ChatButton d-inline-flex" className="btn btn-primary" [routerLink]="['/chat']"
+                [queryParams]="{itemId: item.id}">Chat
             </tsl-button>
         </div>
     </div>
