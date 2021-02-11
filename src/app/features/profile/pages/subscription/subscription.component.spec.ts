@@ -1,6 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   AnalyticsEvent,
   AnalyticsPageView,
@@ -8,6 +8,7 @@ import {
   ANALYTIC_EVENT_TYPES,
   ClickKeepCurrentSubscription,
   ClickProfileEditCurrentSubscription,
+  ClickProSubscription,
   ClickSubscriptionManagementPlus,
   SCREEN_IDS,
   ViewSubscription,
@@ -49,6 +50,7 @@ describe('SubscriptionComponent', () => {
   let router: Router;
   let analyticsService: AnalyticsService;
   let userService: UserService;
+  let route: ActivatedRoute;
   const componentInstance = { subscription: MAPPED_SUBSCRIPTIONS[0] };
 
   beforeEach(
@@ -84,6 +86,16 @@ describe('SubscriptionComponent', () => {
             },
           },
           {
+            provide: ActivatedRoute,
+            useValue: {
+              snapshot: {
+                paramMap: {
+                  get: () => null,
+                },
+              },
+            },
+          },
+          {
             provide: UserService,
             useValue: {
               me() {
@@ -107,6 +119,7 @@ describe('SubscriptionComponent', () => {
     router = TestBed.inject(Router);
     analyticsService = TestBed.inject(AnalyticsService);
     userService = TestBed.inject(UserService);
+    route = TestBed.inject(ActivatedRoute);
     fixture.detectChanges();
   });
 
@@ -127,6 +140,45 @@ describe('SubscriptionComponent', () => {
 
       expect(userService.me).toHaveBeenCalledTimes(1);
       expect(component.user).toEqual(USER_DATA);
+    });
+
+    describe('Track param events', () => {
+      describe('when has param events', () => {
+        it('should track event', () => {
+          spyOn(analyticsService, 'trackPageView');
+          spyOn(route.snapshot.paramMap, 'get').and.returnValue('true');
+          const expectedPageViewEvent: AnalyticsPageView<ClickProSubscription> = {
+            name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
+            attributes: {
+              screenId: SCREEN_IDS.WebHome,
+              isLoggedIn: true,
+            },
+          };
+
+          component.ngOnInit();
+
+          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(2);
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageViewEvent);
+        });
+      });
+
+      describe('when has not param events', () => {
+        it('should not track event', () => {
+          spyOn(analyticsService, 'trackPageView');
+          const expectedPageViewEvent: AnalyticsPageView<ClickProSubscription> = {
+            name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
+            attributes: {
+              screenId: SCREEN_IDS.WebHome,
+              isLoggedIn: true,
+            },
+          };
+
+          component.ngOnInit();
+
+          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+          expect(analyticsService.trackPageView).not.toHaveBeenCalledWith(expectedPageViewEvent);
+        });
+      });
     });
 
     afterEach(() => {
