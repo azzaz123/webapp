@@ -41,8 +41,8 @@ export class SlidesCarouselComponent implements AfterContentInit {
   ngAfterContentInit() {
     this.slides = this.sections.toArray();
     this.activeId = this.NGB_SLIDE + this.initialIndex;
-    this.cdr.detectChanges();
     this.checkHideControllers();
+    this.cdr.detectChanges();
   }
 
   public emitCurrentIndex(slideIndex: number): void {
