@@ -48,7 +48,6 @@ export class CatalogCardComponent implements OnInit {
       value: item.salePrice,
       currency: item.currencyCode,
     });
-    appboy.logCustomEvent('Sold', { platform: 'web' });
     this.eventService.emit('itemChanged');
     this.itemChange.emit({
       item: item,
