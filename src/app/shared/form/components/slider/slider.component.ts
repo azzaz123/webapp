@@ -1,4 +1,4 @@
-import { Component, forwardRef, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, forwardRef, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
 import { CustomStepDefinition, Options } from '@angular-slider/ngx-slider';
@@ -16,7 +16,7 @@ import { SLIDER_VARIANT } from './enums/slider-variant.enum';
     },
   ],
 })
-export class SliderComponent extends AbstractFormComponent implements OnInit, OnChanges {
+export class SliderComponent extends AbstractFormComponent implements OnChanges {
   @Input() min: number;
   @Input() max: number;
   @Input() stepsConfig: { range: number[]; step: number }[];
@@ -64,7 +64,7 @@ export class SliderComponent extends AbstractFormComponent implements OnInit, On
       disabled: this.isDisabled,
       translate: (value: number): string => {
         if (value === this.max && this.limitless) {
-          return $localize`:@@limitless:No limit`;
+          return $localize`:@@Limitless:No limit`;
         }
         return value + (this.units ? this.units : '');
       },
