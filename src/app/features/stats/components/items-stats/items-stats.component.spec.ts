@@ -60,10 +60,7 @@ describe('ItemsStatsComponent', () => {
 
       fixture.detectChanges();
 
-      expect(itemService.getCheapestProductPrice).toHaveBeenCalledWith([
-        '9jd7ryx5odjk',
-        '9jd7ryx5odjk',
-      ]);
+      expect(itemService.getCheapestProductPrice).toHaveBeenCalledWith(['9jd7ryx5odjk', '9jd7ryx5odjk']);
       expect(component.prices).toEqual(PRICES);
     });
   });

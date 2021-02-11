@@ -1,0 +1,25 @@
+@import '~style/common';
+$item-flag-height: 38px;
+$item-flag-width: 133px;
+
+.ItemFlag {
+  min-width: $item-flag-width;
+  height: $item-flag-height;
+  border-radius: $border-radius * 2;
+  background: $white;
+  box-shadow: 0 1px 4px 0 rgba($black, 0.5);
+  &--featured {
+    background-color: $walla-main;
+    color: $white;
+  }
+
+  &--featuredCountry {
+    background-color: $payblue-main;
+    color: $white;
+  }
+
+  &__content {
+    margin: 0 auto;
+    width: fit-content;
+  }
+}

@@ -3,10 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 import { finalize, take } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
-import {
-  SELLBYTEL_PHONE,
-  CARDEALER_COMMERCIAL_CONTACT_MAIL,
-} from '@core/constants';
+import { SELLBYTEL_PHONE, CARDEALER_COMMERCIAL_CONTACT_MAIL } from '@core/constants';
 import { I18nService } from '@core/i18n/i18n.service';
 import { HelpService } from '../core/services/help.service';
 
@@ -76,10 +73,8 @@ export class HelpComponent implements OnInit, OnDestroy {
   }
 
   private subscribeToRouteAnchors(): void {
-    this.routeFragmentsSubscription = this.route.fragment.subscribe(
-      (fragment: string) => {
-        this.scrollToElement(fragment);
-      }
-    );
+    this.routeFragmentsSubscription = this.route.fragment.subscribe((fragment: string) => {
+      this.scrollToElement(fragment);
+    });
   }
 }

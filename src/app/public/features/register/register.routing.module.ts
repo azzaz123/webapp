@@ -21,11 +21,7 @@ const routes: Route[] = [
 
 export const registerRoutedComponents = [RegisterComponent, VerifyComponent];
 
-export const registerNonroutedComponents = [
-  SendVerifyEmailComponent,
-  VerifySuccessComponent,
-  VerifyErrorComponent,
-];
+export const registerNonroutedComponents = [SendVerifyEmailComponent, VerifySuccessComponent, VerifyErrorComponent];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

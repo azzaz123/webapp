@@ -1,0 +1,46 @@
+@import '~style/common';
+
+$item-flag-height: 38px;
+
+.ImagesCarousel {
+  ngb-carousel {
+    width: 100%;
+    height: 100%;
+    ::ng-deep {
+      .ImagesCarousel__image,
+      .carousel-inner,
+      .carousel-item {
+        width: 100%;
+        height: 100%;
+      }
+      .carousel-control-prev,
+      .carousel-control-next {
+        cursor: pointer;
+      }
+      .carousel-indicators {
+        background: linear-gradient(to top, rgba($black, 0.25), rgba($black, 0));
+        border-radius: $border-radius;
+        height: 54px;
+        bottom: 0;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: auto;
+      }
+    }
+  }
+
+  &__image {
+    object-fit: cover;
+    &--fallback {
+      border-radius: $border-radius;
+    }
+  }
+}
+
+.hideControllers {
+  ::ng-deep .carousel-control-prev,
+  ::ng-deep .carousel-control-next,
+  ::ng-deep .carousel-indicators li {
+    display: none;
+  }
+}

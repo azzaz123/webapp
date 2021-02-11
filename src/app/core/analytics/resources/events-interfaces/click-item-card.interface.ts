@@ -32,7 +32,7 @@ export interface ClickItemCard {
   /**
    * Identifier of the screen that the item was clicked from
    */
-  screenId: 110 | 111 | 29 | 187 | 188 | 140 | 190 | 194 | 214 | 217 | 219;
+  screenId: 110 | 111 | 29 | 187 | 188 | 140 | 190 | 194 | 210 | 214 | 217 | 219;
   /**
    * If the item clicked is from a professional user
    */
@@ -73,4 +73,8 @@ export interface ClickItemCard {
    * Used in the case of having more than one section in the landings to specify what type of landing it is
    */
   seoSection?: string;
+  /**
+   * If the item clicked is inside the bump slider
+   */
+  isBumpSlider?: boolean;
 }

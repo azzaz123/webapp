@@ -1,10 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { SvgService } from './svg.service';
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-  TestRequest,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 
 describe('SvgService', () => {
   let service: SvgService;

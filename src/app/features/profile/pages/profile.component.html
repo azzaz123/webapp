@@ -16,7 +16,7 @@
       </div>
       <div class="col-3 d-none d-md-block">
         <div class="btn-wrapper">
-          <button class="btn btn-logout" (click)="logout($event)" tslTrackEvent="MYZONE_MENU_LOGOUT"
+          <button class="btn btn-logout" (click)="logout($event)"
             i18n>Logout</button>
         </div>
       </div>
@@ -31,9 +31,9 @@
           <a class="nav-link d-inline-block d-md-none" [routerLink]="['billing']" routerLinkActive="active"
             i18n>Billing</a>
           <a class="nav-link" [routerLink]="['subscriptions']" routerLinkActive="active"
-            *ngxPermissionsExcept="['isProfessional']" i18n (click)="trackClickSubscriptionTab()">Subscriptions</a>
+            *ngxPermissionsExcept="['isProfessional']" (click)="trackClickSubscriptionTab()">{{getSubscriptionTabName()}}</a>
           <a class="nav-link" [routerLink]="['subscription-pro']" routerLinkActive="active"
-            *ngxPermissionsOnly="['isProfessional']" i18n>Subscription</a>
+            *ngxPermissionsOnly="['isProfessional']" i18n="@@wallapopPro">Wallapop PRO</a>
         </nav>
       </div>
       <div class="d-none col-md-3 d-md-block">

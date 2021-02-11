@@ -1,0 +1,28 @@
+@import '~style/common';
+
+$margin: $spacer * 0.5;
+
+@mixin grid-setup($numCols) {
+  grid-template-columns: repeat($numCols, 1fr);
+}
+
+.RecommendedItems {
+  background-color: $white;
+  border-radius: $border-radius;
+
+  &__title {
+    color: $blue-grey-3;
+  }
+
+  tsl-public-item-card-list ::ng-deep .ItemCardList {
+    @include grid-setup(2);
+
+    @include media-breakpoint-up(md) {
+      @include grid-setup(3);
+    }
+
+    tsl-public-item-card {
+      margin: $margin $margin 0;
+    }
+  }
+}

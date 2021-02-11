@@ -14,10 +14,7 @@ export class InvoiceItemComponent {
   @Input() active: boolean;
   public loading = false;
 
-  constructor(
-    private invoiceService: InvoiceService,
-    private errorsService: ErrorsService
-  ) {}
+  constructor(private invoiceService: InvoiceService, private errorsService: ErrorsService) {}
 
   public handleInvoice(e: Event, invoiceTransaction: InvoiceTransaction): void {
     e.stopPropagation();
@@ -65,12 +62,8 @@ export class InvoiceItemComponent {
       .subscribe(
         (blob: Blob) => {
           this.errorsService.i18nSuccess('invoiceCorrectlyDownloaded');
-          const invoiceDate = this.invoiceDateFormatted(
-            new Date(invoiceTransaction.date)
-          );
-          const invoiceDescription = this.invoiceDescriptionformatted(
-            invoiceTransaction.description
-          );
+          const invoiceDate = this.invoiceDateFormatted(new Date(invoiceTransaction.date));
+          const invoiceDescription = this.invoiceDescriptionformatted(invoiceTransaction.description);
           const fileURL = URL.createObjectURL(blob);
           const fileLink = document.createElement('a');
 

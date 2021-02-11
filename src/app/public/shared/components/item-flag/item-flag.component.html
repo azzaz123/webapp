@@ -1,0 +1,11 @@
+<div class="ItemFlag d-flex px-3 py-2" [style.color]="flag?.fill"
+    [ngClass]="{'ItemFlag--featured': type === BUMPED_ITEM_FLAG_TYPES.BUMPED, 'ItemFlag--featuredCountry': type === BUMPED_ITEM_FLAG_TYPES.COUNTRY_BUMP}">
+    <tsl-svg-icon *ngIf="flag?.icon" [src]="flag?.icon" class="mr-2 d-flex" [fill]="flag?.fill">
+    </tsl-svg-icon>
+    <div class="ItemFlag__content">
+        <div *ngIf="type !== STATUS_ITEM_FLAG_TYPES.DEFAULT; else ownTranslation">{{flag?.label}}</div>
+        <ng-template #ownTranslation>
+            <ng-content></ng-content>
+        </ng-template>
+    </div>
+</div>

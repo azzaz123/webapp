@@ -1,6 +1,6 @@
 <div class="page-content">
   <div class="container">
-    <a class="back" [routerLink]="['/catalog/list']"><tsl-svg-icon src="/assets/icons/back-arrow.svg"></tsl-svg-icon> <span i18n>Back</span></a>
+    <a class="back d-flex align-items-center justify-content-center" [routerLink]="['/catalog/list']"><tsl-svg-icon src="/assets/icons/back-arrow.svg"></tsl-svg-icon> <span i18n>Back</span></a>
     <div class="row" [hidden]="!itemsWithProducts">
       <div class="col-xl col-lg-8">
         <div class="table-header">
@@ -9,14 +9,14 @@
             <a (click)="bumpTutorial.show()" i18n>What can features do for you?</a>
           </div>
           <div class="type zone">
-            <div>
+            <div class="d-flex flex-column align-items-center justify-content-center">
               <tsl-svg-icon src="/assets/icons/bump-zone.svg"></tsl-svg-icon>
               <div [hidden]="provincialBump" i18n>Feature it locally</div>
               <div [hidden]="!provincialBump" i18n>Feature it provincially</div>
             </div>
           </div>
           <div class="type city" [hidden]="provincialBump">
-            <div>
+            <div class="d-flex flex-column align-items-center justify-content-center">
               <div>
                 <tsl-svg-icon src="/assets/icons/bump-city.svg"></tsl-svg-icon>
               </div>
@@ -24,7 +24,7 @@
             </div>
           </div>
           <div class="type country">
-            <div>
+            <div class="d-flex flex-column align-items-center justify-content-center">
               <div>
                 <tsl-svg-icon src="/assets/icons/bump-country.svg"></tsl-svg-icon>
               </div>

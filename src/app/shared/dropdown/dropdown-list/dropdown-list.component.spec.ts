@@ -74,9 +74,7 @@ describe('SelectDropdownComponent', () => {
       fixture.detectChanges();
 
       expect(component.optionsList).toBeTruthy();
-      expect(component.optionsList.nativeElement.textContent).toEqual(
-        expectedMsg
-      );
+      expect(component.optionsList.nativeElement.textContent).toEqual(expectedMsg);
     });
 
     it('should show all options', () => {
@@ -85,9 +83,7 @@ describe('SelectDropdownComponent', () => {
       fixture.detectChanges();
 
       OPTIONS.forEach((option) => {
-        expect(component.optionsList.nativeElement.textContent).toContain(
-          option.label
-        );
+        expect(component.optionsList.nativeElement.textContent).toContain(option.label);
       });
     });
 

@@ -5,7 +5,7 @@ import { Story, Meta } from '@storybook/angular/types-6-0';
 import { FavouriteIconComponent } from './favourite-icon.component';
 
 export default {
-  title: 'Webapp/FavouriteIcon',
+  title: 'Webapp/Public/Shared/Components/FavouriteIcon',
   decorators: [
     moduleMetadata({
       declarations: [FavouriteIconComponent],
@@ -14,9 +14,7 @@ export default {
   ],
 } as Meta;
 
-const Template: Story<FavouriteIconComponent> = (
-  args: FavouriteIconComponent
-) => ({
+const Template: Story<FavouriteIconComponent> = (args: FavouriteIconComponent) => ({
   component: FavouriteIconComponent,
   props: args,
 });

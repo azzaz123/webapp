@@ -113,11 +113,7 @@ export class DropdownComponent implements OnInit {
 
   @HostListener('window:click')
   onWindowClick() {
-    if (
-      !this.selectContainerClicked &&
-      (!this.optionListClicked ||
-        (this.optionListClicked && this.optionClicked))
-    ) {
+    if (!this.selectContainerClicked && (!this.optionListClicked || (this.optionListClicked && this.optionClicked))) {
       this.closeDropdown(this.optionClicked);
       if (!this.optionClicked) {
         this._blur();
@@ -457,11 +453,7 @@ export class DropdownComponent implements OnInit {
       }
     } else {
       // DEPRICATED --> SPACE
-      if (
-        key === this.KEYS.ENTER ||
-        key === this.KEYS.SPACE ||
-        (key === this.KEYS.DOWN && event.altKey)
-      ) {
+      if (key === this.KEYS.ENTER || key === this.KEYS.SPACE || (key === this.KEYS.DOWN && event.altKey)) {
         /* FIREFOX HACK:
          *
          * The setTimeout is added to prevent the enter keydown event
@@ -481,11 +473,7 @@ export class DropdownComponent implements OnInit {
     let key = event.which;
 
     if (key === this.KEYS.BACKSPACE) {
-      if (
-        this.optionList.hasSelected &&
-        this.filterEnabled &&
-        this.filterInput.nativeElement.value === ''
-      ) {
+      if (this.optionList.hasSelected && this.filterEnabled && this.filterInput.nativeElement.value === '') {
         this.deselectLast();
       }
     }
@@ -494,13 +482,7 @@ export class DropdownComponent implements OnInit {
   private handleSingleFilterKeydown(event: any) {
     let key = event.which;
 
-    if (
-      key === this.KEYS.ESC ||
-      key === this.KEYS.TAB ||
-      key === this.KEYS.UP ||
-      key === this.KEYS.DOWN ||
-      key === this.KEYS.ENTER
-    ) {
+    if (key === this.KEYS.ESC || key === this.KEYS.TAB || key === this.KEYS.UP || key === this.KEYS.DOWN || key === this.KEYS.ENTER) {
       this.handleSelectContainerKeydown(event);
     }
   }
@@ -548,10 +530,7 @@ export class DropdownComponent implements OnInit {
   private updateFilterWidth() {
     if (!!this.filterInput) {
       let value: string = this.filterInput.nativeElement.value;
-      this.filterInputWidth =
-        value.length === 0
-          ? 1 + this.placeholderView.length * 10
-          : 1 + value.length * 10;
+      this.filterInputWidth = value.length === 0 ? 1 + this.placeholderView.length * 10 : 1 + value.length * 10;
     }
   }
 }

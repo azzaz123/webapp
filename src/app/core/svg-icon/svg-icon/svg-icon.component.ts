@@ -1,10 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  Input,
-  OnInit,
-  SecurityContext,
-} from '@angular/core';
+import { Component, ElementRef, Input, OnInit, SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { take } from 'rxjs/operators';
 import { SvgService } from '../svg.service';
@@ -13,6 +7,7 @@ export enum SVG_ATTRIBUTES {
   WIDTH = 'width',
   HEIGHT = 'height',
   FILL = 'fill',
+  DISPLAY = 'display',
 }
 @Component({
   selector: 'tsl-svg-icon',
@@ -24,11 +19,7 @@ export class SvgIconComponent implements OnInit {
   @Input() width: number;
   @Input() height: number;
 
-  constructor(
-    private svgService: SvgService,
-    private sanitizer: DomSanitizer,
-    private element: ElementRef
-  ) {}
+  constructor(private svgService: SvgService, private sanitizer: DomSanitizer, private element: ElementRef) {}
 
   ngOnInit(): void {
     this.getIcon();
@@ -41,14 +32,16 @@ export class SvgIconComponent implements OnInit {
         .pipe(take(1))
         .subscribe((svg: string) => {
           const svgElement = this.sanitizer.bypassSecurityTrustHtml(svg);
-          this.element.nativeElement.innerHTML = this.sanitizer.sanitize(
-            SecurityContext.HTML,
-            svgElement
-          );
+          this.element.nativeElement.innerHTML = this.sanitizer.sanitize(SecurityContext.HTML, svgElement);
 
+          this.handleGenericAttributes();
           this.handleCustomAttributes();
         });
     }
+  }
+
+  private handleGenericAttributes(): void {
+    this.setAttribute(SVG_ATTRIBUTES.DISPLAY, 'flex');
   }
 
   private handleCustomAttributes(): void {
@@ -66,10 +59,7 @@ export class SvgIconComponent implements OnInit {
   }
 
   private setAttribute(attribute: SVG_ATTRIBUTES, value: string): void {
-    this.element.nativeElement?.firstElementChild?.setAttribute(
-      attribute,
-      value
-    );
+    this.element.nativeElement?.firstElementChild?.setAttribute(attribute, value);
   }
 
   get hasSvgExtension(): boolean {

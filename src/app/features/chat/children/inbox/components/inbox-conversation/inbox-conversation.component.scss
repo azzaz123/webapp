@@ -6,8 +6,7 @@ $menu-width-and-spacing: 10px;
 :host {
   display: flex;
   box-sizing: border-box;
-  transition: $transition-time ease background-color,
-    $transition-time ease border;
+  transition: $transition-time ease background-color, $transition-time ease border;
   border-top: 1px solid $blue-grey-5;
   overflow: hidden;
   cursor: pointer;
@@ -122,6 +121,7 @@ $menu-width-and-spacing: 10px;
   color: $blue-grey-1;
 
   p {
+    display: flex;
     font-size: $font-size-s;
     margin-bottom: 0;
     @include text-truncate();

@@ -1,8 +1,4 @@
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-  TestRequest,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { I18nService } from '@core/i18n/i18n.service';
@@ -22,18 +18,8 @@ import {
   MOCK_SIZES_RESPONSE,
 } from '@fixtures/extra-info.fixtures.spec';
 import { IOption } from '@shared/dropdown/utils/option.interface';
-import {
-  Brand,
-  BrandModel,
-  Model,
-  ObjectType,
-} from '../../models/brand-model.interface';
-import {
-  CONDITION_KEYS_API_URL,
-  FASHION_KEYS_API_URL,
-  GeneralSuggestionsService,
-  SUGGESTERS_API_URL,
-} from './general-suggestions.service';
+import { Brand, BrandModel, Model, ObjectType } from '../../models/brand-model.interface';
+import { CONDITION_KEYS_API_URL, FASHION_KEYS_API_URL, GeneralSuggestionsService, SUGGESTERS_API_URL } from './general-suggestions.service';
 
 describe('GeneralSuggestionsService', () => {
   let service: GeneralSuggestionsService;
@@ -58,18 +44,14 @@ describe('GeneralSuggestionsService', () => {
       const expectedUrl = `${environment.baseUrl}${SUGGESTERS_API_URL}/object-type?${expectedUrlParams}`;
       let response: ObjectType[];
 
-      service
-        .getObjectTypes(CATEGORY_IDS.CELL_PHONES_ACCESSORIES)
-        .subscribe((r) => (response = r));
+      service.getObjectTypes(CATEGORY_IDS.CELL_PHONES_ACCESSORIES).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(MOCK_OBJECT_TYPES);
 
       expect(req.request.urlWithParams).toEqual(expectedUrl);
       expect(response).toEqual(MOCK_OBJECT_TYPES);
       expect(req.request.method).toBe('GET');
-      expect(req.request.headers.get('Accept')).toBe(
-        'application/vnd.api.v3.suggesters.object-type.v2+json'
-      );
+      expect(req.request.headers.get('Accept')).toBe('application/vnd.api.v3.suggesters.object-type.v2+json');
       expect(req.request.headers.get('Accept-Language')).toBe('en');
     });
   });
@@ -80,13 +62,7 @@ describe('GeneralSuggestionsService', () => {
       const expectedUrl = `${environment.baseUrl}${SUGGESTERS_API_URL}/brand-model?${expectedUrlParams}`;
       let response: BrandModel[];
 
-      service
-        .getBrandsAndModels(
-          MOCK_BRAND,
-          CATEGORY_IDS.CELL_PHONES_ACCESSORIES,
-          MOCK_OBJECT_TYPE_ID
-        )
-        .subscribe((r) => (response = r));
+      service.getBrandsAndModels(MOCK_BRAND, CATEGORY_IDS.CELL_PHONES_ACCESSORIES, MOCK_OBJECT_TYPE_ID).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(MOCK_BRAND_MODEL_RESPONSE);
 
@@ -102,14 +78,7 @@ describe('GeneralSuggestionsService', () => {
       const expectedUrl = `${environment.baseUrl}${SUGGESTERS_API_URL}/model?${expectedUrlParams}`;
       let response: Model[];
 
-      service
-        .getModels(
-          MOCK_MODEL,
-          CATEGORY_IDS.CELL_PHONES_ACCESSORIES,
-          MOCK_BRAND,
-          MOCK_OBJECT_TYPE_ID
-        )
-        .subscribe((r) => (response = r));
+      service.getModels(MOCK_MODEL, CATEGORY_IDS.CELL_PHONES_ACCESSORIES, MOCK_BRAND, MOCK_OBJECT_TYPE_ID).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(MOCK_MODELS_RESPONSE);
 
@@ -125,13 +94,7 @@ describe('GeneralSuggestionsService', () => {
       const expectedUrl = `${environment.baseUrl}${SUGGESTERS_API_URL}/brand?${expectedUrlParams}`;
       let response: Brand[];
 
-      service
-        .getBrands(
-          MOCK_MODEL,
-          CATEGORY_IDS.CELL_PHONES_ACCESSORIES,
-          MOCK_OBJECT_TYPE_ID
-        )
-        .subscribe((r) => (response = r));
+      service.getBrands(MOCK_MODEL, CATEGORY_IDS.CELL_PHONES_ACCESSORIES, MOCK_OBJECT_TYPE_ID).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(MOCK_BRANDS_RESPONSE);
 
@@ -147,9 +110,7 @@ describe('GeneralSuggestionsService', () => {
       const expectedUrl = `${environment.baseUrl}${FASHION_KEYS_API_URL}/size?${expectedUrlParams}`;
       let response: IOption[];
 
-      service
-        .getSizes(MOCK_OBJECT_TYPE_ID, MOCK_GENDER)
-        .subscribe((r) => (response = r));
+      service.getSizes(MOCK_OBJECT_TYPE_ID, MOCK_GENDER).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(MOCK_SIZES);
 
@@ -165,9 +126,7 @@ describe('GeneralSuggestionsService', () => {
       const expectedUrl = `${environment.baseUrl}${CONDITION_KEYS_API_URL}?${expectedUrlParams}`;
       let response: IOption[];
 
-      service
-        .getConditions(CATEGORY_IDS.CELL_PHONES_ACCESSORIES)
-        .subscribe((r) => (response = r));
+      service.getConditions(CATEGORY_IDS.CELL_PHONES_ACCESSORIES).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(MOCK_CONDITIONS);
 

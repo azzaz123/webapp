@@ -53,9 +53,7 @@ export class StripeCardsComponent implements OnInit {
       .then(
         (financialCard: FinancialCard) => {
           this.loading = true;
-          const existingCard = this.stripeCards.filter(
-            (stripeCard) => stripeCard.id === financialCard.id
-          );
+          const existingCard = this.stripeCards.filter((stripeCard) => stripeCard.id === financialCard.id);
 
           if (!existingCard.length) {
             this.stripeService
@@ -74,10 +72,7 @@ export class StripeCardsComponent implements OnInit {
   }
 
   public addNewSubscriptionCard(): void {
-    let modalRef: NgbModalRef = this.modalService.open(
-      ChangeCardModalComponent,
-      { windowClass: 'review' }
-    );
+    let modalRef: NgbModalRef = this.modalService.open(ChangeCardModalComponent, { windowClass: 'review' });
     modalRef.result
       .then(
         () => {
@@ -85,9 +80,7 @@ export class StripeCardsComponent implements OnInit {
           modalRef = null;
           this.getAllCards();
           this.toastService.show({
-            title: this.i18n.getTranslations(
-              'continueSubscriptionSuccessTitle'
-            ),
+            title: this.i18n.getTranslations('continueSubscriptionSuccessTitle'),
             text: this.i18n.getTranslations('SubscriptionCardSet'),
             type: 'success',
           });
@@ -107,11 +100,7 @@ export class StripeCardsComponent implements OnInit {
   private getSubscriptions(): void {
     this.subscriptionsService
       .getSubscriptions(false)
-      .subscribe((subscriptions) =>
-        subscriptions.map((subscription: SubscriptionsResponse) =>
-          this.isSubscriptionSelected(subscription)
-        )
-      );
+      .subscribe((subscriptions) => subscriptions.map((subscription: SubscriptionsResponse) => this.isSubscriptionSelected(subscription)));
   }
 
   private isSubscriptionSelected(subscription: SubscriptionsResponse): void {
@@ -123,9 +112,7 @@ export class StripeCardsComponent implements OnInit {
   private getAllCards(): void {
     this.stripeService.getCards(false).subscribe(
       (stripeCards: FinancialCard[]) => {
-        this.subscriptionStripeCards = stripeCards.filter(
-          (card) => card.invoices_default
-        );
+        this.subscriptionStripeCards = stripeCards.filter((card) => card.invoices_default);
         this.stripeCards = stripeCards.filter((card) => !card.invoices_default);
       },
       () => {

@@ -6,7 +6,6 @@ import { DebugElement, Predicate } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { ViewportType } from '@core/viewport/viewport.enum';
 import { By } from '@angular/platform-browser';
-import { Subscription } from 'rxjs/internal/Subscription';
 
 describe('SearchLayoutComponent', () => {
   let component: SearchLayoutComponent;
@@ -114,23 +113,7 @@ describe('SearchLayoutComponent', () => {
     });
   });
 
-  describe('When destroyed', () => {
-    it('should unsubscribe from viewportSubject', () => {
-      const subscription = new Subscription();
-      spyOn(subscription, 'unsubscribe');
-      component['subscription'] = subscription;
-
-      component.ngOnDestroy();
-      fixture.detectChanges();
-
-      expect(subscription.unsubscribe).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  function expectBlockToRender(
-    selector: Predicate<DebugElement>,
-    shouldRender: boolean
-  ): void {
+  function expectBlockToRender(selector: Predicate<DebugElement>, shouldRender: boolean): void {
     const element = fixture.debugElement.query(selector);
 
     if (shouldRender) {

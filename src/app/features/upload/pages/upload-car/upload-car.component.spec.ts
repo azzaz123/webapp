@@ -1,11 +1,5 @@
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -25,7 +19,6 @@ import { CARS_CATEGORY } from '@core/item/item-categories';
 import { CarContent } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
@@ -39,12 +32,8 @@ import {
   MOCK_CAR,
   MOCK_CAR_RESPONSE_CONTENT,
 } from '@fixtures/car.fixtures.spec';
-import {
-  MOCK_ITEM_V3,
-  UPLOAD_FORM_CAR_VALUES,
-} from '@fixtures/item.fixtures.spec';
+import { MOCK_ITEM_V3, UPLOAD_FORM_CAR_VALUES } from '@fixtures/item.fixtures.spec';
 import { MockSubscriptionService } from '@fixtures/subscriptions.fixtures.spec';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import {
   MockUploadService,
   MOCK_UPLOAD_OUTPUT_DONE,
@@ -54,11 +43,7 @@ import {
   UPLOAD_FILE_DONE_2,
 } from '@fixtures/upload.fixtures.spec';
 import { USER_ID } from '@fixtures/user.fixtures.spec';
-import {
-  NgbModal,
-  NgbPopoverConfig,
-  NgbPopoverModule,
-} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 import { of, throwError } from 'rxjs';
 import { CarKeysService } from '../../core/services/car-keys/car-keys.service';
@@ -76,7 +61,6 @@ describe('UploadCarComponent', () => {
   let errorService: ErrorsService;
   let router: Router;
   let modalService: NgbModal;
-  let trackingService: TrackingService;
   let analyticsService: AnalyticsService;
   let itemService: ItemService;
   let uploadService: UploadService;
@@ -92,7 +76,6 @@ describe('UploadCarComponent', () => {
         providers: [
           FormBuilder,
           NgbPopoverConfig,
-          { provide: TrackingService, useClass: MockTrackingService },
           { provide: AnalyticsService, useClass: MockAnalyticsService },
           { provide: UploadService, useClass: MockUploadService },
           {
@@ -182,7 +165,6 @@ describe('UploadCarComponent', () => {
     errorService = TestBed.inject(ErrorsService);
     router = TestBed.inject(Router);
     modalService = TestBed.inject(NgbModal);
-    trackingService = TestBed.inject(TrackingService);
     analyticsService = TestBed.inject(AnalyticsService);
     itemService = TestBed.inject(ItemService);
     uploadService = TestBed.inject(UploadService);
@@ -280,28 +262,19 @@ describe('UploadCarComponent', () => {
       it('should get models belonging to the saved car brand', () => {
         component.onIsModelsNeeded();
 
-        expect(carSuggestionsService.getModels).toHaveBeenCalledWith(
-          MOCK_CAR.brand
-        );
+        expect(carSuggestionsService.getModels).toHaveBeenCalledWith(MOCK_CAR.brand);
         expect(component.models).toEqual(CAR_MODELS);
       });
 
       it('should get years belonging to the saved car model', () => {
         component.onIsYearsNeeded();
 
-        expect(carSuggestionsService.getYears).toHaveBeenCalledWith(
-          MOCK_CAR.brand,
-          MOCK_CAR.model
-        );
+        expect(carSuggestionsService.getYears).toHaveBeenCalledWith(MOCK_CAR.brand, MOCK_CAR.model);
         expect(component.years).toEqual(CAR_YEARS);
       });
 
       it('should get versions belonging to the saved car year', () => {
-        expect(carSuggestionsService.getVersions).toHaveBeenCalledWith(
-          MOCK_CAR.brand,
-          MOCK_CAR.model,
-          `${MOCK_CAR.year}`
-        );
+        expect(carSuggestionsService.getVersions).toHaveBeenCalledWith(MOCK_CAR.brand, MOCK_CAR.model, `${MOCK_CAR.year}`);
         expect(component.versions).toEqual(CAR_VERSIONS);
       });
     });
@@ -314,9 +287,7 @@ describe('UploadCarComponent', () => {
       component.ngOnInit();
       component.uploadForm.get('brand').patchValue(MOCK_CAR.brand);
 
-      expect(carSuggestionsService.getModels).toHaveBeenCalledWith(
-        MOCK_CAR.brand
-      );
+      expect(carSuggestionsService.getModels).toHaveBeenCalledWith(MOCK_CAR.brand);
       expect(component.models).toEqual(CAR_MODELS);
     });
 
@@ -368,10 +339,7 @@ describe('UploadCarComponent', () => {
       component.uploadForm.get('brand').patchValue(MOCK_CAR.brand);
       component.uploadForm.get('model').patchValue(MOCK_CAR.model);
 
-      expect(carSuggestionsService.getYears).toHaveBeenCalledWith(
-        MOCK_CAR.brand,
-        MOCK_CAR.model
-      );
+      expect(carSuggestionsService.getYears).toHaveBeenCalledWith(MOCK_CAR.brand, MOCK_CAR.model);
       expect(component.years).toEqual(CAR_YEARS);
     });
 
@@ -426,11 +394,7 @@ describe('UploadCarComponent', () => {
     });
 
     it('should get the versions belonging to that year', () => {
-      expect(carSuggestionsService.getVersions).toHaveBeenCalledWith(
-        MOCK_CAR.brand,
-        MOCK_CAR.model,
-        MOCK_CAR.year
-      );
+      expect(carSuggestionsService.getVersions).toHaveBeenCalledWith(MOCK_CAR.brand, MOCK_CAR.model, MOCK_CAR.year);
       expect(component.versions).toEqual(CAR_VERSIONS);
     });
 
@@ -491,26 +455,16 @@ describe('UploadCarComponent', () => {
       component.uploadForm.get('year').patchValue(MOCK_CAR.year);
       component.uploadForm.get('version').patchValue(MOCK_CAR.version);
 
-      expect(itemService.getCarInfo).toHaveBeenCalledWith(
-        MOCK_CAR.brand,
-        MOCK_CAR.model,
-        MOCK_CAR.version
-      );
+      expect(itemService.getCarInfo).toHaveBeenCalledWith(MOCK_CAR.brand, MOCK_CAR.model, MOCK_CAR.version);
       expect(component.uploadForm.patchValue).toHaveBeenCalledWith(CAR_INFO, {
         emitEvent: false,
       });
       expect(component.uploadForm.get('brand').value).toEqual(CAR_INFO.brand);
       expect(component.uploadForm.get('model').value).toEqual(CAR_INFO.model);
       expect(component.uploadForm.get('engine').value).toEqual(CAR_INFO.engine);
-      expect(component.uploadForm.get('gearbox').value).toEqual(
-        CAR_INFO.gearbox
-      );
-      expect(component.uploadForm.get('num_doors').value).toEqual(
-        CAR_INFO.num_doors
-      );
-      expect(component.uploadForm.get('num_seats').value).toEqual(
-        CAR_INFO.num_seats
-      );
+      expect(component.uploadForm.get('gearbox').value).toEqual(CAR_INFO.gearbox);
+      expect(component.uploadForm.get('num_doors').value).toEqual(CAR_INFO.num_doors);
+      expect(component.uploadForm.get('num_seats').value).toEqual(CAR_INFO.num_seats);
     });
   });
 
@@ -526,10 +480,7 @@ describe('UploadCarComponent', () => {
 
       component.onSubmit();
 
-      expect(uploadService.createItem).toHaveBeenCalledWith(
-        component.uploadForm.value,
-        ITEM_TYPES.CARS
-      );
+      expect(uploadService.createItem).toHaveBeenCalledWith(component.uploadForm.value, ITEM_TYPES.CARS);
       expect(component.loading).toBeTruthy();
     });
 
@@ -657,47 +608,32 @@ describe('UploadCarComponent', () => {
       });
 
       it('should upload the item if the service return done', () => {
-        spyOn(uploadService, 'createItem').and.returnValue(
-          of(MOCK_UPLOAD_OUTPUT_DONE)
-        );
+        spyOn(uploadService, 'createItem').and.returnValue(of(MOCK_UPLOAD_OUTPUT_DONE));
         spyOn(component, 'onUploaded');
 
         fixture.detectChanges();
         component.onSubmit();
 
         expect(uploadService.createItem).toHaveBeenCalledTimes(1);
-        expect(uploadService.createItem).toHaveBeenCalledWith(
-          component.uploadForm.value,
-          ITEM_TYPES.CARS
-        );
+        expect(uploadService.createItem).toHaveBeenCalledWith(component.uploadForm.value, ITEM_TYPES.CARS);
         expect(component.onUploaded).toHaveBeenCalledTimes(1);
-        expect(component.onUploaded).toHaveBeenCalledWith(
-          MOCK_UPLOAD_OUTPUT_DONE.file.response,
-          UPLOAD_ACTION.created
-        );
+        expect(component.onUploaded).toHaveBeenCalledWith(MOCK_UPLOAD_OUTPUT_DONE.file.response, UPLOAD_ACTION.created);
       });
 
       it('should do nothing if the service not return done', () => {
-        spyOn(uploadService, 'createItem').and.returnValue(
-          of(MOCK_UPLOAD_OUTPUT_PENDING)
-        );
+        spyOn(uploadService, 'createItem').and.returnValue(of(MOCK_UPLOAD_OUTPUT_PENDING));
         spyOn(component, 'onUploaded');
 
         fixture.detectChanges();
         component.onSubmit();
 
         expect(uploadService.createItem).toHaveBeenCalledTimes(1);
-        expect(uploadService.createItem).toHaveBeenCalledWith(
-          component.uploadForm.value,
-          ITEM_TYPES.CARS
-        );
+        expect(uploadService.createItem).toHaveBeenCalledWith(component.uploadForm.value, ITEM_TYPES.CARS);
         expect(component.onUploaded).toHaveBeenCalledTimes(0);
       });
 
       it('should show error if the service fails', () => {
-        spyOn(uploadService, 'createItem').and.returnValue(
-          throwError({ message: 'error' })
-        );
+        spyOn(uploadService, 'createItem').and.returnValue(throwError({ message: 'error' }));
         spyOn(component, 'onUploaded');
         spyOn(errorService, 'i18nError');
 
@@ -705,16 +641,10 @@ describe('UploadCarComponent', () => {
         component.onSubmit();
 
         expect(uploadService.createItem).toHaveBeenCalledTimes(1);
-        expect(uploadService.createItem).toHaveBeenCalledWith(
-          component.uploadForm.value,
-          ITEM_TYPES.CARS
-        );
+        expect(uploadService.createItem).toHaveBeenCalledWith(component.uploadForm.value, ITEM_TYPES.CARS);
         expect(component.onUploaded).not.toHaveBeenCalled();
         expect(errorService.i18nError).toHaveBeenCalledTimes(1);
-        expect(errorService.i18nError).toHaveBeenCalledWith(
-          'serverError',
-          'error'
-        );
+        expect(errorService.i18nError).toHaveBeenCalledWith('serverError', 'error');
       });
     });
 
@@ -725,29 +655,19 @@ describe('UploadCarComponent', () => {
       });
 
       it('should upload the item if the service success', () => {
-        spyOn(uploadService, 'updateItem').and.returnValue(
-          of(MOCK_CAR_RESPONSE_CONTENT)
-        );
+        spyOn(uploadService, 'updateItem').and.returnValue(of(MOCK_CAR_RESPONSE_CONTENT));
         spyOn(component, 'onUploaded');
         fixture.detectChanges();
         component.onSubmit();
 
         expect(uploadService.updateItem).toHaveBeenCalledTimes(1);
-        expect(uploadService.updateItem).toHaveBeenCalledWith(
-          component.uploadForm.value,
-          ITEM_TYPES.CARS
-        );
+        expect(uploadService.updateItem).toHaveBeenCalledWith(component.uploadForm.value, ITEM_TYPES.CARS);
         expect(component.onUploaded).toHaveBeenCalledTimes(1);
-        expect(component.onUploaded).toHaveBeenCalledWith(
-          MOCK_CAR_RESPONSE_CONTENT,
-          UPLOAD_ACTION.updated
-        );
+        expect(component.onUploaded).toHaveBeenCalledWith(MOCK_CAR_RESPONSE_CONTENT, UPLOAD_ACTION.updated);
       });
 
       it('should show error if the service fails', () => {
-        spyOn(uploadService, 'updateItem').and.returnValue(
-          throwError({ message: 'error' })
-        );
+        spyOn(uploadService, 'updateItem').and.returnValue(throwError({ message: 'error' }));
         spyOn(component, 'onUploaded');
         spyOn(errorService, 'i18nError');
 
@@ -755,16 +675,10 @@ describe('UploadCarComponent', () => {
         component.onSubmit();
 
         expect(uploadService.updateItem).toHaveBeenCalledTimes(1);
-        expect(uploadService.updateItem).toHaveBeenCalledWith(
-          component.uploadForm.value,
-          ITEM_TYPES.CARS
-        );
+        expect(uploadService.updateItem).toHaveBeenCalledWith(component.uploadForm.value, ITEM_TYPES.CARS);
         expect(component.onUploaded).not.toHaveBeenCalled();
         expect(errorService.i18nError).toHaveBeenCalledTimes(1);
-        expect(errorService.i18nError).toHaveBeenCalledWith(
-          'serverError',
-          'error'
-        );
+        expect(errorService.i18nError).toHaveBeenCalledWith('serverError', 'error');
       });
     });
   });
@@ -779,10 +693,7 @@ describe('UploadCarComponent', () => {
 
       component.onUploaded(response, action);
 
-      expect(router.navigate).toHaveBeenCalledWith([
-        '/catalog/list',
-        { [action]: true, itemId: response.id },
-      ]);
+      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', { [action]: true, itemId: response.id }]);
     });
 
     it('should redirect with onHold true', () => {
@@ -876,15 +787,11 @@ describe('UploadCarComponent', () => {
 
   describe('onError', () => {
     it('should set loading to false', () => {
-      spyOn(trackingService, 'track');
       component.loading = true;
 
       component.onError('response');
 
       expect(component.loading).toBeFalsy();
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.UPLOADFORM_ERROR
-      );
     });
 
     it('should show toast with default message', () => {
@@ -902,10 +809,7 @@ describe('UploadCarComponent', () => {
       component.onError({ message: 'error' });
 
       expect(errorService.i18nError).toHaveBeenCalledTimes(1);
-      expect(errorService.i18nError).toHaveBeenCalledWith(
-        'serverError',
-        'error'
-      );
+      expect(errorService.i18nError).toHaveBeenCalledWith('serverError', 'error');
     });
   });
 
@@ -1053,14 +957,8 @@ describe('UploadCarComponent', () => {
       component.onDeleteImage(UPLOAD_FILE_DONE.id);
 
       expect(uploadService.onDeleteImage).toHaveBeenCalledTimes(1);
-      expect(uploadService.onDeleteImage).toHaveBeenCalledWith(
-        component.item.id,
-        UPLOAD_FILE_DONE.id
-      );
-      expect(component.uploadForm.get('images').value).toEqual([
-        UPLOAD_FILE_DONE,
-        UPLOAD_FILE_DONE_2,
-      ]);
+      expect(uploadService.onDeleteImage).toHaveBeenCalledWith(component.item.id, UPLOAD_FILE_DONE.id);
+      expect(component.uploadForm.get('images').value).toEqual([UPLOAD_FILE_DONE, UPLOAD_FILE_DONE_2]);
     });
     it('should remove imagen from form is service is successful', () => {
       component.item = MOCK_CAR;
@@ -1072,16 +970,9 @@ describe('UploadCarComponent', () => {
       component.onDeleteImage(UPLOAD_FILE_DONE.id);
 
       expect(uploadService.onDeleteImage).toHaveBeenCalledTimes(1);
-      expect(uploadService.onDeleteImage).toHaveBeenCalledWith(
-        component.item.id,
-        UPLOAD_FILE_DONE.id
-      );
-      expect(component.uploadForm.get('images').value).not.toContain(
-        UPLOAD_FILE_DONE
-      );
-      expect(component.uploadForm.get('images').value).toContain(
-        UPLOAD_FILE_DONE_2
-      );
+      expect(uploadService.onDeleteImage).toHaveBeenCalledWith(component.item.id, UPLOAD_FILE_DONE.id);
+      expect(component.uploadForm.get('images').value).not.toContain(UPLOAD_FILE_DONE);
+      expect(component.uploadForm.get('images').value).toContain(UPLOAD_FILE_DONE_2);
     });
   });
 
@@ -1095,29 +986,20 @@ describe('UploadCarComponent', () => {
       component.onOrderImages();
 
       expect(uploadService.updateOrder).toHaveBeenCalledTimes(1);
-      expect(uploadService.updateOrder).toHaveBeenCalledWith(
-        images,
-        MOCK_CAR.id
-      );
+      expect(uploadService.updateOrder).toHaveBeenCalledWith(images, MOCK_CAR.id);
     });
   });
   describe('add single imagen', () => {
     it('should show success toast', () => {
       component.item = MOCK_CAR;
       const images = [UPLOAD_FILE_DONE, UPLOAD_FILE_2];
-      spyOn(uploadService, 'uploadSingleImage').and.returnValue(
-        of(MOCK_UPLOAD_OUTPUT_DONE)
-      );
+      spyOn(uploadService, 'uploadSingleImage').and.returnValue(of(MOCK_UPLOAD_OUTPUT_DONE));
       spyOn(errorService, 'i18nSuccess').and.callThrough();
 
       component.onAddImage(images[1]);
 
       expect(uploadService.uploadSingleImage).toHaveBeenCalledTimes(1);
-      expect(uploadService.uploadSingleImage).toHaveBeenCalledWith(
-        images[1],
-        MOCK_CAR.id,
-        ITEM_TYPES.CARS
-      );
+      expect(uploadService.uploadSingleImage).toHaveBeenCalledWith(images[1], MOCK_CAR.id, ITEM_TYPES.CARS);
       expect(errorService.i18nSuccess).toHaveBeenCalledTimes(1);
       expect(errorService.i18nSuccess).toHaveBeenCalledWith('imageUploaded');
     });
@@ -1127,26 +1009,16 @@ describe('UploadCarComponent', () => {
       component.uploadForm.patchValue({
         images,
       });
-      spyOn(uploadService, 'uploadSingleImage').and.returnValue(
-        throwError('error')
-      );
+      spyOn(uploadService, 'uploadSingleImage').and.returnValue(throwError('error'));
       spyOn(errorService, 'i18nError').and.callThrough();
 
       component.onAddImage(images[1]);
 
       expect(uploadService.uploadSingleImage).toHaveBeenCalledTimes(1);
-      expect(uploadService.uploadSingleImage).toHaveBeenCalledWith(
-        images[1],
-        MOCK_CAR.id,
-        ITEM_TYPES.CARS
-      );
+      expect(uploadService.uploadSingleImage).toHaveBeenCalledWith(images[1], MOCK_CAR.id, ITEM_TYPES.CARS);
       expect(errorService.i18nError).toHaveBeenCalledTimes(1);
-      expect(component.uploadForm.get('images').value).not.toContain(
-        UPLOAD_FILE_2
-      );
-      expect(component.uploadForm.get('images').value).toContain(
-        UPLOAD_FILE_DONE
-      );
+      expect(component.uploadForm.get('images').value).not.toContain(UPLOAD_FILE_2);
+      expect(component.uploadForm.get('images').value).toContain(UPLOAD_FILE_DONE);
     });
   });
 });

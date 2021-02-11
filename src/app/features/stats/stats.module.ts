@@ -1,10 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import {
-  statsRoutedComponents,
-  StatsRoutingModule,
-} from './stats.routing.module';
+import { statsRoutedComponents, StatsRoutingModule } from './stats.routing.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { ItemStatsGraphComponent } from './components/item-stats-graph/item-stats-graph.component';
@@ -17,21 +14,8 @@ import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    StatsRoutingModule,
-    SharedModule,
-    InfiniteScrollModule,
-    NgxEchartsModule,
-    ItemAvatarModule,
-    CustomCurrencyModule,
-  ],
+  imports: [CommonModule, StatsRoutingModule, SharedModule, InfiniteScrollModule, NgxEchartsModule, ItemAvatarModule, CustomCurrencyModule],
   providers: [ItemStatsService],
-  declarations: [
-    statsRoutedComponents,
-    ItemsStatsComponent,
-    ItemStatsRowComponent,
-    ItemStatsGraphComponent,
-  ],
+  declarations: [statsRoutedComponents, ItemsStatsComponent, ItemStatsRowComponent, ItemStatsGraphComponent],
 })
 export class StatsModule {}

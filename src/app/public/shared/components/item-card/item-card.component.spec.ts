@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
 import { FavouriteIconModule } from '@public/shared/components/favourite-icon/favourite-icon.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
+import { FavouriteIconComponent } from '../favourite-icon/favourite-icon.component';
 
 import { ItemCardComponent } from './item-card.component';
 
@@ -19,14 +21,7 @@ describe('ItemCardComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ItemCardComponent],
-      imports: [
-        CommonModule,
-        FavouriteIconModule,
-        CustomCurrencyModule,
-        SvgIconModule,
-        ImageFallbackModule,
-        HttpClientTestingModule,
-      ],
+      imports: [CommonModule, FavouriteIconModule, CustomCurrencyModule, SvgIconModule, ImageFallbackModule, HttpClientTestingModule],
     }).compileComponents();
   });
 
@@ -53,9 +48,7 @@ describe('ItemCardComponent', () => {
         });
 
         it('should show item as favourite', () => {
-          expect(
-            favouriteIconElement.getAttribute(favouriteIconAttr) === 'true'
-          ).toBeTruthy();
+          expect(favouriteIconElement.getAttribute(favouriteIconAttr) === 'true').toBeTruthy();
         });
 
         it('should change favourite state on favourite icon click', () => {
@@ -75,9 +68,7 @@ describe('ItemCardComponent', () => {
         });
 
         it('should show item as NOT favourite', () => {
-          expect(
-            favouriteIconElement.getAttribute(favouriteIconAttr) === 'false'
-          ).toBeTruthy();
+          expect(favouriteIconElement.getAttribute(favouriteIconAttr) === 'false').toBeTruthy();
         });
 
         it('should change favourite state on favourite icon click', () => {
@@ -192,6 +183,33 @@ describe('ItemCardComponent', () => {
       it('should NOT show item as reserved', () => {
         expect(el.querySelector(`[src*="${iconPartialSrc}"]`)).toBeFalsy();
       });
+    });
+  });
+
+  describe('when we click on the item...', () => {
+    it('should emit the item click event', fakeAsync(() => {
+      spyOn(component.itemClick, 'emit');
+      spyOn(component.toggleFavourite, 'emit');
+      const itemCard = fixture.debugElement.nativeElement.querySelector('.ItemCard');
+
+      itemCard.click();
+      tick();
+
+      expect(component.itemClick.emit).toHaveBeenCalled();
+      expect(component.toggleFavourite.emit).not.toHaveBeenCalled();
+    }));
+  });
+
+  describe(`when we click on the item's favourite icon`, () => {
+    it('should emit the toggle favourite click event', () => {
+      spyOn(component.itemClick, 'emit');
+      spyOn(component.toggleFavourite, 'emit');
+      const favouriteIcon = fixture.debugElement.query(By.directive(FavouriteIconComponent)).nativeElement;
+
+      favouriteIcon.click();
+
+      expect(component.itemClick.emit).not.toHaveBeenCalled();
+      expect(component.toggleFavourite.emit).toHaveBeenCalled();
     });
   });
 });

@@ -1,13 +1,17 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import {
+  AnalyticsPageView,
+  ANALYTICS_EVENT_NAMES,
+  ClickActivateProItem,
+  ClickProSubscription,
+  ConfirmActivateProItem,
+  RemoveProSubscriptionBanner,
+  SCREEN_IDS,
+  ViewOwnSaleItems,
+} from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { CategoryService } from '@core/category/category.service';
 import { ErrorsService } from '@core/errors/errors.service';
@@ -18,10 +22,11 @@ import { Item } from '@core/item/item';
 import { ItemService } from '@core/item/item.service';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
-import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
-import { TrackingService } from '@core/tracking/tracking.service';
+import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
 import { FeatureflagService } from '@core/user/featureflag.service';
-import { UserService } from '@core/user/user.service';
+import { LOCAL_STORAGE_TRY_PRO_SLOT, UserService } from '@core/user/user.service';
+import { STATUS } from '@features/catalog/components/selected-items/selected-product.interface';
+import { TryProSlotComponent } from '@features/catalog/components/subscriptions-slots/try-pro-slot/try-pro-slot.component';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { CATEGORY_DATA_WEB } from '@fixtures/category.fixtures.spec';
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
@@ -29,26 +34,24 @@ import {
   createItemsArray,
   ITEMS_BULK_RESPONSE,
   ITEMS_BULK_RESPONSE_FAILED,
+  ITEM_CATEGORY_ID,
   MOCK_ITEM,
   MOCK_ITEM_V3,
   MOCK_LISTING_FEE_ORDER,
   ORDER_EVENT,
 } from '@fixtures/item.fixtures.spec';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
-import {
-  MockSubscriptionService,
-  MOCK_SUBSCRIPTION_SLOTS,
-} from '@fixtures/subscriptions.fixtures.spec';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
-import { MOCK_USER, USER_INFO_RESPONSE } from '@fixtures/user.fixtures.spec';
+import { MockSubscriptionService, MOCK_SUBSCRIPTION_SLOTS, MOCK_SUBSCRIPTION_SLOT_CARS } from '@fixtures/subscriptions.fixtures.spec';
+import { MOCK_USER, USER_ID, USER_INFO_RESPONSE } from '@fixtures/user.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ActivateItemsModalComponent } from '@shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component';
 import { TooManyItemsModalComponent } from '@shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { BumpSuggestionModalComponent } from '@shared/modals/bump-suggestion-modal/bump-suggestion-modal.component';
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
 import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
-import { find } from 'lodash-es';
+import { find, cloneDeep } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { of, ReplaySubject, Subject } from 'rxjs';
 import { SubscriptionsSlotItemComponent } from '../../components/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component';
@@ -62,11 +65,9 @@ describe('ListComponent', () => {
   let component: ListComponent;
   let fixture: ComponentFixture<ListComponent>;
   let itemService: ItemService;
-  let trackingService: TrackingService;
   let subscriptionsService: SubscriptionsService;
   let modalService: NgbModal;
   let toastService: ToastService;
-  let trackingServiceSpy: jasmine.Spy;
   let itemerviceSpy: jasmine.Spy;
   let paymentService: PaymentService;
   let route: ActivatedRoute;
@@ -80,6 +81,7 @@ describe('ListComponent', () => {
   let userService: UserService;
   let eventService: EventService;
   let deviceService: DeviceDetectorService;
+  let analyticsService: AnalyticsService;
   const routerEvents: Subject<any> = new Subject();
   const CURRENCY = 'wallacoins';
   const CREDITS = 1000;
@@ -97,6 +99,7 @@ describe('ListComponent', () => {
           ItemSoldDirective,
           SubscriptionsSlotsListComponent,
           SubscriptionsSlotItemComponent,
+          TryProSlotComponent,
         ],
         providers: [
           I18nService,
@@ -116,7 +119,6 @@ describe('ListComponent', () => {
               },
             },
           },
-          { provide: TrackingService, useClass: MockTrackingService },
           {
             provide: ItemService,
             useValue: {
@@ -135,6 +137,7 @@ describe('ListComponent', () => {
               bulkSetActivate() {},
               bulkSetDeactivate() {},
               activate() {},
+              activateSingleItem() {},
               deactivate() {},
               selectedItems$: new ReplaySubject(1),
               selectedItems: [],
@@ -196,6 +199,9 @@ describe('ListComponent', () => {
           {
             provide: UserService,
             useValue: {
+              suggestPro() {
+                return false;
+              },
               getStats() {
                 return of({
                   counters: mockCounters,
@@ -224,7 +230,6 @@ describe('ListComponent', () => {
     fixture = TestBed.createComponent(ListComponent);
     component = fixture.componentInstance;
     itemService = TestBed.inject(ItemService);
-    trackingService = TestBed.inject(TrackingService);
     subscriptionsService = TestBed.inject(SubscriptionsService);
     modalService = TestBed.inject(NgbModal);
     toastService = TestBed.inject(ToastService);
@@ -235,10 +240,11 @@ describe('ListComponent', () => {
     userService = TestBed.inject(UserService);
     eventService = TestBed.inject(EventService);
     deviceService = TestBed.inject(DeviceDetectorService);
-    trackingServiceSpy = spyOn(trackingService, 'track');
+    analyticsService = TestBed.inject(AnalyticsService);
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
     spyOn(errorService, 'i18nError');
+    spyOn(analyticsService, 'trackPageView');
     fixture.detectChanges();
   });
 
@@ -273,16 +279,10 @@ describe('ListComponent', () => {
         component.ngOnInit();
         tick();
 
-        expect(
-          component['bumpSuggestionModalRef'].componentInstance.productCurrency
-        ).toEqual('EUR');
+        expect(component['bumpSuggestionModalRef'].componentInstance.productCurrency).toEqual('EUR');
         expect(itemService.getCheapestProductPrice).toHaveBeenCalledTimes(1);
-        expect(itemService.getCheapestProductPrice).toHaveBeenLastCalledWith([
-          1,
-        ]);
-        expect(
-          component['bumpSuggestionModalRef'].componentInstance.productPrice
-        ).toEqual(creditInfo.factor * 10);
+        expect(itemService.getCheapestProductPrice).toHaveBeenLastCalledWith([1]);
+        expect(component['bumpSuggestionModalRef'].componentInstance.productPrice).toEqual(creditInfo.factor * 10);
       }));
 
       it('should set the creditInfo', () => {
@@ -305,13 +305,10 @@ describe('ListComponent', () => {
       spyOn(localStorage, 'removeItem');
       component.ngOnInit();
       tick();
-      expect(modalService.open).toHaveBeenCalledWith(
-        BumpConfirmationModalComponent,
-        {
-          windowClass: 'modal-standard',
-          backdrop: 'static',
-        }
-      );
+      expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {
+        windowClass: 'modal-standard',
+        backdrop: 'static',
+      });
       expect(router.navigate).toHaveBeenCalledWith(['catalog/list']);
       expect(localStorage.removeItem).toHaveBeenCalled();
     }));
@@ -361,12 +358,9 @@ describe('ListComponent', () => {
         component.ngOnInit();
         tick();
 
-        expect(modalService.open).toHaveBeenCalledWith(
-          BumpSuggestionModalComponent,
-          {
-            windowClass: 'modal-standard',
-          }
-        );
+        expect(modalService.open).toHaveBeenCalledWith(BumpSuggestionModalComponent, {
+          windowClass: 'modal-standard',
+        });
       }));
 
       it('should redirect when modal CTA button modal is clicked', fakeAsync(() => {
@@ -379,10 +373,7 @@ describe('ListComponent', () => {
         tick();
 
         expect(router.navigate).toHaveBeenCalledTimes(1);
-        expect(router.navigate).toHaveBeenCalledWith([
-          'catalog/checkout',
-          { itemId: '1' },
-        ]);
+        expect(router.navigate).toHaveBeenCalledWith(['catalog/checkout', { itemId: '1' }]);
       }));
 
       it('should not redirect when modal is closed', fakeAsync(() => {
@@ -409,20 +400,15 @@ describe('ListComponent', () => {
       tick();
 
       expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
-      expect(modalService.open).toHaveBeenCalledWith(
-        ListingfeeConfirmationModalComponent,
-        {
-          windowClass: 'modal-standard',
-          backdrop: 'static',
-        }
-      );
+      expect(modalService.open).toHaveBeenCalledWith(ListingfeeConfirmationModalComponent, {
+        windowClass: 'modal-standard',
+        backdrop: 'static',
+      });
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
     }));
 
     it('should open the listing fee modal if transaction is set as purchaseListingFeeWithCredits', fakeAsync(() => {
-      spyOn(localStorage, 'getItem').and.returnValue(
-        'purchaseListingFeeWithCredits'
-      );
+      spyOn(localStorage, 'getItem').and.returnValue('purchaseListingFeeWithCredits');
       spyOn(localStorage, 'removeItem');
       route.params = of({
         code: 200,
@@ -432,13 +418,10 @@ describe('ListComponent', () => {
       tick();
 
       expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
-      expect(modalService.open).toHaveBeenCalledWith(
-        ListingfeeConfirmationModalComponent,
-        {
-          windowClass: 'modal-standard',
-          backdrop: 'static',
-        }
-      );
+      expect(modalService.open).toHaveBeenCalledWith(ListingfeeConfirmationModalComponent, {
+        windowClass: 'modal-standard',
+        backdrop: 'static',
+      });
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
     }));
 
@@ -450,12 +433,9 @@ describe('ListComponent', () => {
       component.ngOnInit();
       tick();
 
-      expect(modalService.open).toHaveBeenCalledWith(
-        TooManyItemsModalComponent,
-        {
-          windowClass: 'modal-standard',
-        }
-      );
+      expect(modalService.open).toHaveBeenCalledWith(TooManyItemsModalComponent, {
+        windowClass: 'modal-standard',
+      });
     }));
 
     it('should open disable wallacoins modal if has param disableWallacoinsModal', fakeAsync(() => {
@@ -467,13 +447,10 @@ describe('ListComponent', () => {
       tick();
 
       expect(modalService.open).toHaveBeenCalledTimes(1);
-      expect(modalService.open).toHaveBeenCalledWith(
-        WallacoinsDisabledModalComponent,
-        {
-          backdrop: 'static',
-          windowClass: 'modal-standard',
-        }
-      );
+      expect(modalService.open).toHaveBeenCalledWith(WallacoinsDisabledModalComponent, {
+        backdrop: 'static',
+        windowClass: 'modal-standard',
+      });
     }));
 
     it('should open the bump modal if transaction is set as bump', fakeAsync(() => {
@@ -487,13 +464,10 @@ describe('ListComponent', () => {
       tick();
 
       expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
-      expect(modalService.open).toHaveBeenCalledWith(
-        BumpConfirmationModalComponent,
-        {
-          windowClass: 'modal-standard',
-          backdrop: 'static',
-        }
-      );
+      expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {
+        windowClass: 'modal-standard',
+        backdrop: 'static',
+      });
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
     }));
 
@@ -508,10 +482,7 @@ describe('ListComponent', () => {
       tick();
 
       expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
-      expect(router.navigate).toHaveBeenCalledWith([
-        'wallacoins',
-        { code: 200 },
-      ]);
+      expect(router.navigate).toHaveBeenCalledWith(['wallacoins', { code: 200 }]);
     }));
 
     it('should open the bump modal if transaction is set as bumpWithCredits', fakeAsync(() => {
@@ -525,13 +496,10 @@ describe('ListComponent', () => {
       tick();
 
       expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
-      expect(modalService.open).toHaveBeenCalledWith(
-        BumpConfirmationModalComponent,
-        {
-          windowClass: 'modal-standard',
-          backdrop: 'static',
-        }
-      );
+      expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {
+        windowClass: 'modal-standard',
+        backdrop: 'static',
+      });
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionSpent');
     }));
@@ -566,17 +534,13 @@ describe('ListComponent', () => {
     });
 
     it('should show one catalog management card for each subscription slot from backend', fakeAsync(() => {
-      spyOn(subscriptionsService, 'getSlots').and.returnValue(
-        of(MOCK_SUBSCRIPTION_SLOTS)
-      );
+      spyOn(subscriptionsService, 'getSlots').and.returnValue(of(MOCK_SUBSCRIPTION_SLOTS));
 
       component.ngOnInit();
       tick();
       fixture.detectChanges();
 
-      const slotsCards = fixture.debugElement.queryAll(
-        By.directive(SubscriptionsSlotItemComponent)
-      );
+      const slotsCards = fixture.debugElement.queryAll(By.directive(SubscriptionsSlotItemComponent));
       expect(slotsCards).toBeTruthy();
       expect(slotsCards.length).toEqual(MOCK_SUBSCRIPTION_SLOTS.length);
     }));
@@ -588,40 +552,11 @@ describe('ListComponent', () => {
       expect(component.items.length).toBe(2);
     });
 
-    it('should track the ProductListLoaded event', () => {
-      expect(
-        trackingService.track
-      ).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_LOADED, { init: 0 });
-    });
-    it('should track the ProductListSoldViewed if the selectedStatus is sold', () => {
-      component['selectedStatus'] = 'sold';
-      trackingServiceSpy.calls.reset();
-      component.ngOnInit();
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.PRODUCT_LIST_SOLD_VIEWED,
-        {
-          total_products: 2,
-        }
-      );
-    });
-    it('should track the ProductListActiveViewed if the selectedStatus is published', () => {
-      component['selectedStatus'] = 'published';
-      trackingServiceSpy.calls.reset();
-      component.ngOnInit();
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.PRODUCT_LIST_ACTIVE_VIEWED,
-        {
-          total_products: 2,
-        }
-      );
-    });
     it('should set init', () => {
       expect(component['init']).toBe(20);
     });
     it('should set end true if no init', () => {
-      itemerviceSpy.and.returnValue(
-        of({ data: [MOCK_ITEM, MOCK_ITEM], init: null })
-      );
+      itemerviceSpy.and.returnValue(of({ data: [MOCK_ITEM, MOCK_ITEM], init: null }));
       component.ngOnInit();
       expect(component['end']).toBeTruthy();
     });
@@ -633,9 +568,7 @@ describe('ListComponent', () => {
       component.ngOnInit();
       tick();
 
-      expect(
-        component['bumpSuggestionModalRef'].componentInstance.item
-      ).toEqual(component.items[0]);
+      expect(component['bumpSuggestionModalRef'].componentInstance.item).toEqual(component.items[0]);
     }));
   });
 
@@ -747,20 +680,15 @@ describe('ListComponent', () => {
     });
     describe('success', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(itemService, 'bulkDelete').and.returnValue(
-          of(ITEMS_BULK_RESPONSE)
-        );
+        spyOn(itemService, 'bulkDelete').and.returnValue(of(ITEMS_BULK_RESPONSE));
         spyOn(component, 'getNumberOfProducts');
         component.delete();
         tick();
       }));
       it('should call modal and bulkDelete', () => {
-        expect(modalService.open).toHaveBeenCalledWith(
-          ConfirmationModalComponent,
-          {
-            windowClass: 'modal-prompt',
-          }
-        );
+        expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, {
+          windowClass: 'modal-prompt',
+        });
         expect(itemService.bulkDelete).toHaveBeenCalledWith('active');
       });
       it('should remove deleted items', () => {
@@ -769,23 +697,13 @@ describe('ListComponent', () => {
         expect(find(component.items, { id: '3' })).toBeFalsy();
         expect(find(component.items, { id: '5' })).toBeFalsy();
       });
-      it('should track the ProductListbulkDeleted event', () => {
-        expect(trackingService.track).toHaveBeenCalledWith(
-          TrackingService.PRODUCT_LIST_BULK_DELETED,
-          {
-            product_ids: '1, 3, 5',
-          }
-        );
-      });
       it('should call getNumberOfProducts', () => {
         expect(component.getNumberOfProducts).toHaveBeenCalled();
       });
     });
     describe('failed', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(itemService, 'bulkDelete').and.returnValue(
-          of(ITEMS_BULK_RESPONSE_FAILED)
-        );
+        spyOn(itemService, 'bulkDelete').and.returnValue(of(ITEMS_BULK_RESPONSE_FAILED));
         component.delete();
         tick();
       }));
@@ -799,52 +717,28 @@ describe('ListComponent', () => {
     const TOTAL = 5;
     describe('success', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(itemService, 'bulkReserve').and.returnValue(
-          of(ITEMS_BULK_RESPONSE)
-        );
+        spyOn(itemService, 'bulkReserve').and.returnValue(of(ITEMS_BULK_RESPONSE));
         spyOn(eventService, 'emit');
         component.items = [];
         for (let i = 1; i <= TOTAL; i++) {
           component.items.push(
-            new Item(
-              i.toString(),
-              i,
-              i.toString(),
-              null,
-              null,
-              null,
-              null,
-              null,
-              null,
-              null,
-              null,
-              {
-                pending: false,
-                sold: false,
-                favorite: false,
-                reserved: false,
-                removed: false,
-                banned: false,
-                expired: false,
-                review_done: false,
-                bumped: false,
-                highlighted: false,
-              }
-            )
+            new Item(i.toString(), i, i.toString(), null, null, null, null, null, null, null, null, {
+              pending: false,
+              sold: false,
+              favorite: false,
+              reserved: false,
+              removed: false,
+              banned: false,
+              expired: false,
+              review_done: false,
+              bumped: false,
+              highlighted: false,
+            })
           );
         }
         component.reserve();
         tick();
       }));
-
-      it('should call the ProductListBulkReserved tracking event', () => {
-        expect(trackingService.track).toHaveBeenCalledWith(
-          TrackingService.PRODUCT_LIST_BULK_RESERVED,
-          {
-            product_ids: '1, 3, 5',
-          }
-        );
-      });
 
       it('should set items as reserved', () => {
         expect(component.items[0].reserved).toBeTruthy();
@@ -859,26 +753,15 @@ describe('ListComponent', () => {
       });
 
       it('should emit ITEM_RESERVED event', () => {
-        expect(eventService.emit).toHaveBeenCalledWith(
-          EventService.ITEM_RESERVED,
-          component.items[0]
-        );
-        expect(eventService.emit).toHaveBeenCalledWith(
-          EventService.ITEM_RESERVED,
-          component.items[2]
-        );
-        expect(eventService.emit).toHaveBeenCalledWith(
-          EventService.ITEM_RESERVED,
-          component.items[4]
-        );
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_RESERVED, component.items[0]);
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_RESERVED, component.items[2]);
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_RESERVED, component.items[4]);
       });
     });
 
     describe('failed', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(itemService, 'bulkReserve').and.returnValue(
-          of(ITEMS_BULK_RESPONSE_FAILED)
-        );
+        spyOn(itemService, 'bulkReserve').and.returnValue(of(ITEMS_BULK_RESPONSE_FAILED));
         component.reserve();
         tick();
       }));
@@ -914,10 +797,7 @@ describe('ListComponent', () => {
         component.feature(ORDER_EVENT, 'urgent');
         tick();
 
-        expect(router.navigate).toHaveBeenCalledWith([
-          'catalog/list',
-          { code: 200 },
-        ]);
+        expect(router.navigate).toHaveBeenCalledWith(['catalog/list', { code: 200 }]);
       }));
     });
 
@@ -932,10 +812,7 @@ describe('ListComponent', () => {
         component.feature(ORDER_EVENT, 'urgent');
         tick();
 
-        expect(router.navigate).toHaveBeenCalledWith([
-          'catalog/list',
-          { code: -1 },
-        ]);
+        expect(router.navigate).toHaveBeenCalledWith(['catalog/list', { code: -1 }]);
       }));
     });
   });
@@ -982,40 +859,320 @@ describe('ListComponent', () => {
     });
   });
 
-  describe('activate', () => {
+  describe('activate multiple items', () => {
     const TOTAL: number = 5;
     beforeEach(() => {
-      component.selectedStatus = 'active';
+      spyOn(itemService, 'activate').and.returnValue(of('200'));
       component.items = createItemsArray(TOTAL);
-      itemService.selectedItems = ['1'];
+      component.selectedStatus = STATUS.INACTIVE;
+      itemService.selectedItems = ['1', '2'];
       component.items[0].flags['onhold'] = true;
       component.items[0].selected = true;
     });
 
-    describe('success', () => {
-      beforeEach(fakeAsync(() => {
-        spyOn(itemService, 'activate').and.returnValue(of('200'));
+    it('should call modal and activate', fakeAsync(() => {
+      component.activate();
+      tick();
+
+      expect(modalService.open).toHaveBeenCalledTimes(1);
+      expect(modalService.open).toHaveBeenCalledWith(ActivateItemsModalComponent);
+      expect(itemService.activate).toHaveBeenCalledTimes(1);
+    }));
+
+    describe('ClickActivateProItem event', () => {
+      describe('when status is inactive', () => {
+        it('should track event', () => {
+          const expectedEvent: AnalyticsPageView<ClickActivateProItem> = {
+            name: ANALYTICS_EVENT_NAMES.ClickActivateProItem,
+            attributes: {
+              screenId: SCREEN_IDS.MyCatalogInactiveSection,
+              numberOfItems: 2,
+            },
+          };
+
+          fixture.detectChanges();
+          component.activate();
+
+          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+        });
+      });
+
+      describe('when status is not inactive', () => {
+        it('should track event', () => {
+          component.selectedStatus = STATUS.PUBLISHED;
+          const expectedEvent: AnalyticsPageView<ClickActivateProItem> = {
+            name: ANALYTICS_EVENT_NAMES.ClickActivateProItem,
+            attributes: {
+              screenId: SCREEN_IDS.MyCatalog,
+              numberOfItems: 2,
+            },
+          };
+
+          component.activate();
+
+          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+        });
+      });
+    });
+
+    describe('ConfirmActivateProItem event', () => {
+      describe('when view is inactive', () => {
+        it('should track event', fakeAsync(() => {
+          const expectedEvent: AnalyticsPageView<ConfirmActivateProItem> = {
+            name: ANALYTICS_EVENT_NAMES.ConfirmActivateProItem,
+            attributes: {
+              screenId: SCREEN_IDS.MyCatalogInactiveSection,
+              numberOfItems: 2,
+            },
+          };
+
+          fixture.detectChanges();
+          component.activate();
+          tick();
+
+          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(2);
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+        }));
+      });
+
+      describe('when view is not inactive', () => {
+        it('should track event', fakeAsync(() => {
+          component.selectedStatus = STATUS.PUBLISHED;
+          const expectedEvent: AnalyticsPageView<ConfirmActivateProItem> = {
+            name: ANALYTICS_EVENT_NAMES.ConfirmActivateProItem,
+            attributes: {
+              screenId: SCREEN_IDS.MyCatalog,
+              numberOfItems: 2,
+            },
+          };
+
+          fixture.detectChanges();
+          component.activate();
+          tick();
+
+          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(2);
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+        }));
+      });
+    });
+
+    describe('success when status is inactive', () => {
+      it('should reset item selection', fakeAsync(() => {
+        component.activate();
+        tick();
+
+        expect(component.items.find((item) => item.id === '1')).toBeFalsy();
+      }));
+    });
+
+    describe('success when status is not inactive', () => {
+      it('should reset item selection', fakeAsync(() => {
+        component.selectedStatus = STATUS.PUBLISHED;
+
+        fixture.detectChanges();
+        component.activate();
+        tick();
+
+        expect(component.items[0].flags['onhold']).toBe(false);
+        expect(component.items[0].selected).toBe(false);
+      }));
+    });
+
+    describe('update counters', () => {
+      beforeEach(() => {
+        component.subscriptionSlots = [cloneDeep(MOCK_SUBSCRIPTION_SLOT_CARS)];
+        component.subscriptionSlots[0].category.category_id = ITEM_CATEGORY_ID;
+      });
+
+      it('should update if there is not selected a subscription slot', fakeAsync(() => {
+        component.activate();
+        tick();
+
+        expect(component.subscriptionSlots[0].available).toBe(1);
+      }));
+
+      it('should update if there is selected a subscription slot', fakeAsync(() => {
+        component.selectedSubscriptionSlot = cloneDeep(MOCK_SUBSCRIPTION_SLOT_CARS);
+        component.navLinks = [
+          {
+            id: STATUS.INACTIVE,
+            display: 'navLink',
+            counter: { currentVal: 0 },
+          },
+          { id: STATUS.ACTIVE, display: 'navLink', counter: { currentVal: 0 } },
+        ];
 
         component.activate();
         tick();
-      }));
 
-      it('should call modal and activate', () => {
-        expect(modalService.open).toHaveBeenCalled();
-        expect(itemService.activate).toHaveBeenCalled();
+        expect(component.selectedSubscriptionSlot.available).toBe(1);
+      }));
+    });
+  });
+
+  describe('activate single items', () => {
+    const TOTAL: number = 5;
+    beforeEach(() => {
+      spyOn(itemService, 'activateSingleItem').and.returnValue(of('200'));
+      component.items = createItemsArray(TOTAL);
+      component.selectedStatus = STATUS.INACTIVE;
+      component.items[0].flags['onhold'] = true;
+      component.items[0].selected = true;
+    });
+
+    it('should call modal and activate', fakeAsync(() => {
+      component.activate(SUBSCRIPTION_TYPES.stripe, '1');
+      tick();
+
+      expect(modalService.open).toHaveBeenCalledTimes(1);
+      expect(modalService.open).toHaveBeenCalledWith(ActivateItemsModalComponent);
+      expect(itemService.activateSingleItem).toHaveBeenCalledTimes(1);
+      expect(itemService.activateSingleItem).toHaveBeenCalledWith('1');
+    }));
+
+    describe('ClickActivateProItem event', () => {
+      describe('when status is inactive', () => {
+        it('should track event', () => {
+          const expectedEvent: AnalyticsPageView<ClickActivateProItem> = {
+            name: ANALYTICS_EVENT_NAMES.ClickActivateProItem,
+            attributes: {
+              screenId: SCREEN_IDS.MyCatalogInactiveSection,
+              numberOfItems: 1,
+              categoryId: component.items[0].categoryId,
+            },
+          };
+
+          fixture.detectChanges();
+          component.activate(SUBSCRIPTION_TYPES.stripe, '1');
+
+          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+        });
       });
 
-      it('should reset item selection', () => {
+      describe('when status is not inactive', () => {
+        it('should track event', () => {
+          component.selectedStatus = STATUS.PUBLISHED;
+          const expectedEvent: AnalyticsPageView<ClickActivateProItem> = {
+            name: ANALYTICS_EVENT_NAMES.ClickActivateProItem,
+            attributes: {
+              screenId: SCREEN_IDS.MyCatalog,
+              numberOfItems: 1,
+              categoryId: component.items[0].categoryId,
+            },
+          };
+
+          component.activate(SUBSCRIPTION_TYPES.stripe, '1');
+
+          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+        });
+      });
+    });
+
+    describe('ConfirmActivateProItem event', () => {
+      describe('when view is inactive', () => {
+        it('should track event', fakeAsync(() => {
+          const expectedEvent: AnalyticsPageView<ConfirmActivateProItem> = {
+            name: ANALYTICS_EVENT_NAMES.ConfirmActivateProItem,
+            attributes: {
+              screenId: SCREEN_IDS.MyCatalogInactiveSection,
+              numberOfItems: 1,
+              categoryId: component.items[0].categoryId,
+            },
+          };
+
+          fixture.detectChanges();
+          component.activate(SUBSCRIPTION_TYPES.stripe, '1');
+          tick();
+
+          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(2);
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+        }));
+      });
+
+      describe('when view is not inactive', () => {
+        it('should track event', fakeAsync(() => {
+          component.selectedStatus = STATUS.PUBLISHED;
+          const expectedEvent: AnalyticsPageView<ConfirmActivateProItem> = {
+            name: ANALYTICS_EVENT_NAMES.ConfirmActivateProItem,
+            attributes: {
+              screenId: SCREEN_IDS.MyCatalog,
+              numberOfItems: 1,
+              categoryId: component.items[0].categoryId,
+            },
+          };
+
+          fixture.detectChanges();
+          component.activate(SUBSCRIPTION_TYPES.stripe, '1');
+          tick();
+
+          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(2);
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+        }));
+      });
+    });
+
+    describe('success when status is inactive', () => {
+      it('should reset item selection', fakeAsync(() => {
+        component.activate(SUBSCRIPTION_TYPES.stripe, '1');
+        tick();
+
+        expect(component.items.find((item) => item.id === '1')).toBeFalsy();
+      }));
+    });
+
+    describe('success when status is not inactive', () => {
+      it('should reset item selection', fakeAsync(() => {
+        component.selectedStatus = STATUS.PUBLISHED;
+
+        fixture.detectChanges();
+        component.activate(SUBSCRIPTION_TYPES.stripe, '1');
+        tick();
+
         expect(component.items[0].flags['onhold']).toBe(false);
         expect(component.items[0].selected).toBe(false);
+      }));
+    });
+
+    describe('update counters', () => {
+      beforeEach(() => {
+        component.subscriptionSlots = [cloneDeep(MOCK_SUBSCRIPTION_SLOT_CARS)];
+        component.subscriptionSlots[0].category.category_id = ITEM_CATEGORY_ID;
       });
+
+      it('should update if there is not selected a subscription slot', fakeAsync(() => {
+        component.activate(SUBSCRIPTION_TYPES.stripe, '1');
+        tick();
+
+        expect(component.subscriptionSlots[0].available).toBe(2);
+      }));
+
+      it('should update if there is selected a subscription slot', fakeAsync(() => {
+        component.selectedSubscriptionSlot = cloneDeep(MOCK_SUBSCRIPTION_SLOT_CARS);
+        component.navLinks = [
+          {
+            id: STATUS.INACTIVE,
+            display: 'navLink',
+            counter: { currentVal: 0 },
+          },
+          { id: STATUS.ACTIVE, display: 'navLink', counter: { currentVal: 0 } },
+        ];
+
+        component.activate(SUBSCRIPTION_TYPES.stripe, '1');
+        tick();
+
+        expect(component.selectedSubscriptionSlot.available).toBe(2);
+      }));
     });
   });
 
   describe('deactivate', () => {
     const TOTAL: number = 5;
     beforeEach(() => {
-      component.selectedStatus = 'active';
+      component.selectedStatus = STATUS.ACTIVE;
       component.items = createItemsArray(TOTAL);
       itemService.selectedItems = ['1'];
       component.items[0].flags['onhold'] = false;
@@ -1048,6 +1205,115 @@ describe('ListComponent', () => {
 
       expect(modalService.open).toHaveBeenCalledWith(BuyProductModalComponent, {
         windowClass: 'modal-standard',
+      });
+    });
+  });
+
+  describe('when close subscription slot', () => {
+    it('should track event', () => {
+      const expectedEvent: AnalyticsPageView<ViewOwnSaleItems> = {
+        name: ANALYTICS_EVENT_NAMES.ViewOwnSaleItems,
+        attributes: {
+          screenId: SCREEN_IDS.MyCatalog,
+          numberOfItems: mockCounters.publish,
+          proSubscriptionBanner: false,
+        },
+      };
+
+      component.onSelectSubscriptionSlot(null);
+
+      expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+      expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+    });
+  });
+
+  describe('Try Pro banner', () => {
+    describe('when has not to show banner', () => {
+      it('should banner not visible', () => {
+        spyOn(userService, 'suggestPro').and.returnValue(false);
+
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        const tryProBanner = fixture.debugElement.query(By.directive(TryProSlotComponent));
+        expect(tryProBanner).toBeFalsy();
+      });
+    });
+
+    describe('when has to show banner', () => {
+      it('should banner be visible', () => {
+        spyOn(userService, 'suggestPro').and.returnValue(true);
+
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        const tryProBanner = fixture.debugElement.query(By.directive(TryProSlotComponent));
+        expect(tryProBanner).toBeTruthy();
+      });
+    });
+
+    describe('when close banner', () => {
+      it('should save data in local storage', () => {
+        spyOn(localStorage, 'setItem');
+
+        component.onCloseTryProSlot();
+        fixture.detectChanges();
+
+        expect(localStorage.setItem).toBeCalledTimes(1);
+        expect(localStorage.setItem).toHaveBeenCalledWith(`${USER_ID}-${LOCAL_STORAGE_TRY_PRO_SLOT}`, 'true');
+      });
+
+      it('should disappear banner', () => {
+        component.showTryProSlot = true;
+
+        component.onCloseTryProSlot();
+        fixture.detectChanges();
+
+        const tryProBanner = fixture.debugElement.query(By.directive(TryProSlotComponent));
+
+        expect(tryProBanner).toBeFalsy();
+      });
+
+      it('should track ClickProSubscription event', () => {
+        const event: AnalyticsPageView<RemoveProSubscriptionBanner> = {
+          name: ANALYTICS_EVENT_NAMES.RemoveProSubscriptionBanner,
+          attributes: {
+            screenId: SCREEN_IDS.MyCatalog,
+            freeTrial: component.hasTrialAvailable,
+          },
+        };
+
+        component.onCloseTryProSlot();
+        fixture.detectChanges();
+
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(event);
+      });
+    });
+
+    describe('when click CTA button', () => {
+      it('should redirect to subscriptions', () => {
+        spyOn(router, 'navigate');
+
+        component.onClickTryProSlot();
+
+        expect(router.navigate).toBeCalledTimes(1);
+        expect(router.navigate).toHaveBeenCalledWith(['profile/subscriptions']);
+      });
+
+      it('should track ClickProSubscription event', () => {
+        component.hasTrialAvailable = true;
+        const event: AnalyticsPageView<ClickProSubscription> = {
+          name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
+          attributes: {
+            screenId: SCREEN_IDS.MyCatalog,
+            freeTrial: component.hasTrialAvailable,
+          },
+        };
+
+        component.onClickTryProSlot();
+        fixture.detectChanges();
+
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(event);
       });
     });
   });

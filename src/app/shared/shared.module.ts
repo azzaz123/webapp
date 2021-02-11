@@ -8,7 +8,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GeolocationModule } from './geolocation/geolocation.module';
 import { RestrictInputDirective } from './restrict-input/restrict-input.directive';
 import { HeaderComponent } from './header/header.component';
-import { ButtonComponent } from './button/button.component';
 import { SoldModalComponent } from './modals/sold-modal/sold-modal.component';
 import { ReviewModalComponent } from './modals/review-modal/review-modal.component';
 import { ItemSoldDirective } from './modals/sold-modal/item-sold.directive';
@@ -74,7 +73,7 @@ import { UserCoverModule } from './user-cover/user-cover.module';
 import { WallacoinsDisabledModalComponent } from './modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
 import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.module';
 import { BumpSuggestionModalComponent } from './modals/bump-suggestion-modal/bump-suggestion-modal.component';
-import { TrackEventDirective } from '@core/tracking/track-event.directive';
+import { ButtonModule } from './button/button.module';
 
 @NgModule({
   imports: [
@@ -98,6 +97,7 @@ import { TrackEventDirective } from '@core/tracking/track-event.directive';
     SanitizedBackgroundModule,
     SpinnerModule,
     UserCoverModule,
+    ButtonModule,
   ],
   exports: [
     SpinnerModule,
@@ -110,7 +110,6 @@ import { TrackEventDirective } from '@core/tracking/track-event.directive';
     AdComponent,
     RestrictInputDirective,
     HeaderComponent,
-    ButtonComponent,
     SoldModalComponent,
     ItemSoldDirective,
     StarsRateComponent,
@@ -161,14 +160,13 @@ import { TrackEventDirective } from '@core/tracking/track-event.directive';
     DateCountDownComponent,
     DropdownModule,
     WallacoinsDisabledModalComponent,
-    TrackEventDirective,
+    ButtonModule,
   ],
   declarations: [
     AdComponent,
     ConfirmationModalComponent,
     RestrictInputDirective,
     HeaderComponent,
-    ButtonComponent,
     SoldModalComponent,
     ItemSoldDirective,
     StarsRateComponent,
@@ -223,7 +221,6 @@ import { TrackEventDirective } from '@core/tracking/track-event.directive';
     DateCountDownComponent,
     BumpSuggestionModalComponent,
     WallacoinsDisabledModalComponent,
-    TrackEventDirective,
   ],
   providers: [DecimalPipe, LinkTransformPipe],
   entryComponents: [

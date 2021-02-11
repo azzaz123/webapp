@@ -8,15 +8,14 @@ import {
   AutorenewPurchase,
   ItemExtraInfo,
   KmInfo,
+  ItemVisibilityFlags,
 } from './item-response.interface';
 import { environment } from '../../../environments/environment';
 
 export const ITEM_BASE_PATH = 'http://es.wallapop.com/item/';
 export const FAKE_ITEM_IMAGE_BASE_PATH = '../../../assets/images/fake-item.png';
-export const FAKE_ITEM_IMAGE_SMALL_BASE_PATH =
-  '../../../assets/images/fake-item-s.png';
-export const FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH =
-  '../../../assets/images/fake-item-s-l.png';
+export const FAKE_ITEM_IMAGE_SMALL_BASE_PATH = '../../../assets/images/fake-item-s.png';
+export const FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH = '../../../assets/images/fake-item-s-l.png';
 export const ITEM_STATUSES: any = {
   active: 'PUBLISHED',
   sold: ['SOLD_OUTSIDE', 'BOUGHT'],
@@ -64,7 +63,8 @@ export class Item implements Model {
     private _itemType: string = ITEM_TYPES.CONSUMER_GOODS,
     private _extraInfo?: ItemExtraInfo,
     private _car_info?: KmInfo,
-    private _km?: number
+    private _km?: number,
+    private _bumpFlags?: ItemVisibilityFlags
   ) {
     this._webLink = ITEM_BASE_PATH + _webSlug;
   }
@@ -262,10 +262,7 @@ export class Item implements Model {
   }
 
   get plannedStartsToday() {
-    return (
-      this._purchases &&
-      this._purchases.scheduled_start_date - Date.now() < 86400
-    );
+    return this._purchases && this._purchases.scheduled_start_date - Date.now() < 86400;
   }
 
   get webSlug(): string {
@@ -273,9 +270,7 @@ export class Item implements Model {
   }
 
   get featured() {
-    return this.flags
-      ? this.flags.bumped || this.flags.highlighted || this.flags.urgent
-      : false;
+    return this.flags ? this.flags.bumped || this.flags.highlighted || this.flags.urgent : false;
   }
 
   get deliveryInfo(): DeliveryInfo {
@@ -283,9 +278,7 @@ export class Item implements Model {
   }
 
   getUrl(subdomain: string) {
-    return (
-      environment.siteUrl.replace('es', subdomain) + 'item/' + this.webSlug
-    );
+    return environment.siteUrl.replace('es', subdomain) + 'item/' + this.webSlug;
   }
 
   get urgent(): boolean {
@@ -314,5 +307,13 @@ export class Item implements Model {
 
   set km(value: number) {
     this._km = value;
+  }
+
+  get bumpFlags(): ItemVisibilityFlags {
+    return this._bumpFlags;
+  }
+
+  set bumpFlags(value: ItemVisibilityFlags) {
+    this._bumpFlags = value;
   }
 }

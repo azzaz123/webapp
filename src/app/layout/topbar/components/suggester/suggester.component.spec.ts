@@ -66,9 +66,7 @@ describe('SuggesterComponent', () => {
 
       component.selectSuggestion(SUGGESTER_DATA_WEB[0]);
 
-      expect(component.newSearch.emit).toHaveBeenCalledWith(
-        SUGGESTER_DATA_WEB[0]
-      );
+      expect(component.newSearch.emit).toHaveBeenCalledWith(SUGGESTER_DATA_WEB[0]);
     });
   });
 

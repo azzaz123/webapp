@@ -3,16 +3,18 @@
         <fieldset class="field-row">
             <div class="form-row">
                 <div class="field">
-                    <div id="checkout-card" class="input empty"></div>
+                    <div id="checkout-card" class="input empty" [ngClass]="{'StripeElement--invalid': paymentError}"></div>
                 </div>
             </div>
         </fieldset>
-        <div class="card-feedback" [ngClass]="{'card-feedback--flexible': showUseSavedCard}">
-            <div *ngIf="type === 'subscription' && showUseSavedCard" class="card-feedback__action"(click)="clickUseSavedCard()" i18n>Use saved card</div>
-            <div id="card-errors" role="alert" *ngIf="error">
-                {{ error }}
+        <div class="d-flex flex-column align-items-start">
+            <div [ngClass]="{'card-feedback--flexible': showUseSavedCard}">
+                <div class="mb-3 StripeCard__error" *ngIf="!!errorTextConfig[paymentError]" >{{errorTextConfig[paymentError]}}</div>
+                <div class="mb-3 StripeCard__error" id="card-errors" role="alert" *ngIf="error">
+                    {{ error }}
+                </div>
             </div>
-            <div class="StripeCard__error" *ngIf="isPaymentError" i18n>The payment failed. Please enter another credit card.</div>
+            <div *ngIf="showSavedCardOption()" class="card-feedback__action"(click)="clickUseSavedCard()" i18n="@@UseSavedCard">Use saved card</div>
         </div>
 
         <div [hidden]="type !== 'subscription'" class="StripeCardElement__legal-info" i18n>
@@ -26,8 +28,6 @@
                     [disabled]="type === 'cart' && !cart?.total || loading"
                     [loading]="loading"
                     (click)="onSubmit()"
-                    [tslTrackEvent]="'PURCHASE_CONFIRM_PACK_CREDITS_NO_CARD'"
-                    [params]="{ payment_method: 'STRIPE' }"
         >
             <div class="secure-payment">
                 <span i18n>Continue to Checkout</span>

@@ -68,9 +68,7 @@ describe('ItemStatsRowComponent', () => {
 
   describe('ngOnInit', () => {
     it('should set link', () => {
-      expect(component.link).toBe(
-        environment.siteUrl + 'item/toyota-yaris-1-3-99cv-500008657'
-      );
+      expect(component.link).toBe(environment.siteUrl + 'item/toyota-yaris-1-3-99cv-500008657');
     });
 
     it('should call getStatistics and set it', () => {
@@ -78,9 +76,7 @@ describe('ItemStatsRowComponent', () => {
 
       component.ngOnInit();
 
-      expect(itemStatsService.getStatistics).toHaveBeenCalledWith(
-        MOCK_ITEM_V3.id
-      );
+      expect(itemStatsService.getStatistics).toHaveBeenCalledWith(MOCK_ITEM_V3.id);
     });
 
     it('should call getCounters and set it', () => {
@@ -104,9 +100,7 @@ describe('ItemStatsRowComponent', () => {
         date: today.toString(),
         values: { favs: 95, views: 37, chats: 63 },
       });
-      spyOn(itemStatsService, 'getStatistics').and.returnValue(
-        of(ITEM_STATISTIC_RESPONSE_V2)
-      );
+      spyOn(itemStatsService, 'getStatistics').and.returnValue(of(ITEM_STATISTIC_RESPONSE_V2));
 
       component.ngOnInit();
 

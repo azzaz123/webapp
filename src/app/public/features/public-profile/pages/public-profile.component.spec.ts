@@ -2,14 +2,9 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { UserService } from '@core/user/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  IMAGE,
-  MOCK_FULL_USER_FEATURED,
-  MOCK_USER_STATS,
-} from '@fixtures/user.fixtures.spec';
-import { PublicPipesModule } from '@public/core/pipes/public-pipes.module';
+import { IsCurrentUserStub } from '@fixtures/public/core';
+import { IMAGE, MOCK_FULL_USER_FEATURED, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { APP_PATHS } from 'app/app-routing-constants';
 import { of, throwError } from 'rxjs';
 import { PublicProfileService } from '../core/services/public-profile.service';
@@ -25,8 +20,8 @@ describe('PublicProfileComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, PublicPipesModule],
-      declarations: [PublicProfileComponent],
+      imports: [HttpClientTestingModule],
+      declarations: [PublicProfileComponent, IsCurrentUserStub],
       providers: [
         {
           provide: ActivatedRoute,
@@ -50,12 +45,6 @@ describe('PublicProfileComponent', () => {
             getCoverImage() {
               return of(IMAGE);
             },
-          },
-        },
-        {
-          provide: UserService,
-          useValue: {
-            user: {},
           },
         },
         {
@@ -86,9 +75,7 @@ describe('PublicProfileComponent', () => {
     describe('when we have the user id...', () => {
       describe('and we get the user...', () => {
         it('should show the page if we have the user id', () => {
-          const containerPage = fixture.debugElement.query(
-            By.css(containerSelector)
-          );
+          const containerPage = fixture.debugElement.query(By.css(containerSelector));
 
           expect(containerPage).toBeTruthy();
           expect(component.userId).toBe('123');
@@ -132,21 +119,15 @@ describe('PublicProfileComponent', () => {
         });
 
         it('should redirect to the 404 page', () => {
-          spyOn(publicProfileService, 'getUser').and.returnValue(
-            throwError('')
-          );
+          spyOn(publicProfileService, 'getUser').and.returnValue(throwError(''));
           spyOn(router, 'navigate');
 
           component.ngOnInit();
           fixture.detectChanges();
-          const containerPage = fixture.debugElement.query(
-            By.css(containerSelector)
-          );
+          const containerPage = fixture.debugElement.query(By.css(containerSelector));
 
           expect(containerPage).toBeFalsy();
-          expect(router.navigate).toHaveBeenCalledWith([
-            `/${APP_PATHS.NOT_FOUND}`,
-          ]);
+          expect(router.navigate).toHaveBeenCalledWith([`/${APP_PATHS.NOT_FOUND}`]);
         });
       });
     });
@@ -159,9 +140,7 @@ describe('PublicProfileComponent', () => {
       it('should NOT show the page', () => {
         component.ngOnInit();
         fixture.detectChanges();
-        const containerPage = fixture.debugElement.query(
-          By.css(containerSelector)
-        );
+        const containerPage = fixture.debugElement.query(By.css(containerSelector));
 
         expect(containerPage).toBeFalsy();
         expect(component.userId).toBe(undefined);

@@ -38,22 +38,13 @@ export class TutorialService {
 
   public setDisplayed(): void {
     if (this.userService.user) {
-      localStorage.setItem(
-        this.userService.user.id + this.localStorageName,
-        'true'
-      );
+      localStorage.setItem(this.userService.user.id + this.localStorageName, 'true');
     }
   }
 
   public isAlreadyDisplayed(): Observable<boolean> {
     return this.userService
       .me()
-      .pipe(
-        map((user: User) =>
-          user.type === 'professional'
-            ? true
-            : !!localStorage.getItem(user.id + this.localStorageName)
-        )
-      );
+      .pipe(map((user: User) => (user.type === 'professional' ? true : !!localStorage.getItem(user.id + this.localStorageName))));
   }
 }

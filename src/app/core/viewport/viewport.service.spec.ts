@@ -103,10 +103,7 @@ describe('ViewportService', () => {
     expect(widthChangeHandler).toHaveBeenCalledWith(innerWidth);
   }
 
-  function expectViewportToBeEmitted(
-    width: number,
-    viewport: ViewportType
-  ): void {
+  function expectViewportToBeEmitted(width: number, viewport: ViewportType): void {
     const viewportChangeHandler = jest.fn();
     viewportService.onViewportChange.subscribe(viewportChangeHandler);
 

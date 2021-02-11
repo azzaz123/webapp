@@ -8,13 +8,7 @@ import { ImageFallbackModule } from '@public/core/directives/image-fallback/imag
 
 @NgModule({
   declarations: [ItemCardComponent],
-  imports: [
-    CommonModule,
-    FavouriteIconModule,
-    CustomCurrencyModule,
-    SvgIconModule,
-    ImageFallbackModule,
-  ],
+  imports: [CommonModule, FavouriteIconModule, CustomCurrencyModule, SvgIconModule, ImageFallbackModule],
   exports: [ItemCardComponent],
 })
 export class ItemCardModule {}

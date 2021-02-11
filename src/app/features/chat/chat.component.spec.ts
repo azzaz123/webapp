@@ -1,10 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { USER_STRING_ID } from '@core/constants/string-ids.enum';
@@ -16,18 +11,14 @@ import { UserService } from '@core/user/user.service';
 import { InboxConversationServiceMock } from '@fixtures/inbox-coversation-service.fixtures.spec';
 import { InboxServiceMock } from '@fixtures/inbox-service.fixtures.spec';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/inbox.fixtures.spec';
-import {
-  NgbModal,
-  NgbModalOptions,
-  NgbModule,
-} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalOptions, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MockTrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safety.fixtures.spec';
 import { SessionProfileDataLocation } from 'app/core/trust-and-safety/trust-and-safety.interface';
 import { TrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safety.service';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { EMPTY, from, Observable, of } from 'rxjs';
 import { ChatComponent } from './chat.component';
-import { AdsService } from './core/ads/ads.service';
+import { AdsService } from '@core/ads/services';
 import { InboxConversationService } from './core/inbox/inbox-conversation.service';
 import { InboxService } from './core/inbox/inbox.service';
 import { InboxConversation, MessageStatus, PhoneMethod } from './core/model';
@@ -138,9 +129,7 @@ describe('Component: ChatComponent with ItemId', () => {
 
       expect(component.connectionError).toBe(true);
       expect(component.conversationsLoading).toBe(false);
-      expect(
-        inboxConversationService.openConversationByItemId$
-      ).not.toHaveBeenCalled();
+      expect(inboxConversationService.openConversationByItemId$).not.toHaveBeenCalled();
       expect(component.conversationsLoading).toEqual(false);
     });
 
@@ -152,9 +141,7 @@ describe('Component: ChatComponent with ItemId', () => {
       eventService.emit(EventService.CONNECTION_RESTORED);
 
       expect(component.connectionError).toBe(false);
-      expect(
-        inboxConversationService.openConversationByItemId$
-      ).not.toHaveBeenCalled();
+      expect(inboxConversationService.openConversationByItemId$).not.toHaveBeenCalled();
       expect(component.conversationsLoading).toEqual(false);
     });
 
@@ -163,50 +150,30 @@ describe('Component: ChatComponent with ItemId', () => {
       spyOn(inboxConversationService, 'openConversationByItemId$');
 
       component.ngOnInit();
-      eventService.emit(
-        EventService.CURRENT_CONVERSATION_SET,
-        mockConversation
-      );
+      eventService.emit(EventService.CURRENT_CONVERSATION_SET, mockConversation);
 
-      expect(inboxConversationService.currentConversation).toEqual(
-        mockConversation
-      );
-      expect(
-        inboxConversationService.openConversationByItemId$
-      ).not.toHaveBeenCalled();
+      expect(inboxConversationService.currentConversation).toEqual(mockConversation);
+      expect(inboxConversationService.openConversationByItemId$).not.toHaveBeenCalled();
       expect(component.conversationsLoading).toEqual(false);
     });
 
     it('should set current conversation if link contains itemId', () => {
       const inboxConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION();
       spyOn(inboxService, 'isInboxReady').and.returnValue(true);
-      spyOn(
-        inboxConversationService,
-        'openConversationByItemId$'
-      ).and.returnValue(of(inboxConversation));
-      spyOn(
-        inboxConversationService,
-        'openConversationByConversationId$'
-      ).and.returnValue(of(null));
-      spyOn(userService, 'getPhoneInfo').and.returnValue(
-        of(convertToParamMap({}))
-      );
+      spyOn(inboxConversationService, 'openConversationByItemId$').and.returnValue(of(inboxConversation));
+      spyOn(inboxConversationService, 'openConversationByConversationId$').and.returnValue(of(null));
+      spyOn(userService, 'getPhoneInfo').and.returnValue(of(convertToParamMap({})));
 
       component.ngOnInit();
 
-      expect(
-        inboxConversationService.openConversationByItemId$
-      ).toHaveBeenCalledWith('itemId');
-      expect(
-        inboxConversationService.openConversationByConversationId$
-      ).not.toHaveBeenCalled();
+      expect(inboxConversationService.openConversationByItemId$).toHaveBeenCalledWith('itemId');
+      expect(inboxConversationService.openConversationByConversationId$).not.toHaveBeenCalled();
       expect(component.conversationsLoading).toEqual(true);
     });
 
     it('should set connectionError to FALSE when a EventService.CHAT_RT_CONNECTED event is emitted', () => {
       const inboxConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION();
-      inboxConversation.messages[inboxConversation.messages.length - 1].status =
-        MessageStatus.PENDING;
+      inboxConversation.messages[inboxConversation.messages.length - 1].status = MessageStatus.PENDING;
 
       spyOn(inboxConversationService, 'openConversationByItemId$');
       spyOn(inboxConversationService, 'resendPendingMessages');
@@ -217,9 +184,7 @@ describe('Component: ChatComponent with ItemId', () => {
 
       expect(component.connectionError).toBe(false);
       expect(inboxConversationService.resendPendingMessages).toHaveBeenCalled();
-      expect(
-        inboxConversationService.openConversationByItemId$
-      ).not.toHaveBeenCalled();
+      expect(inboxConversationService.openConversationByItemId$).not.toHaveBeenCalled();
     });
 
     it('should delegate profiling to trust and safety team', () => {
@@ -229,29 +194,21 @@ describe('Component: ChatComponent with ItemId', () => {
       component.ngOnInit();
 
       expect(trustAndSafetyService.submitProfile).toHaveBeenCalledTimes(1);
-      expect(trustAndSafetyService.submitProfile).toHaveBeenCalledWith(
-        SessionProfileDataLocation.OPEN_CHAT
-      );
+      expect(trustAndSafetyService.submitProfile).toHaveBeenCalledWith(SessionProfileDataLocation.OPEN_CHAT);
     });
 
     it('should save searchId if link contains searchId', () => {
       const inboxConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION();
       const searchId = '123456789';
       spyOn(inboxService, 'isInboxReady').and.returnValue(true);
-      spyOn(
-        inboxConversationService,
-        'openConversationByItemId$'
-      ).and.returnValue(of(inboxConversation));
+      spyOn(inboxConversationService, 'openConversationByItemId$').and.returnValue(of(inboxConversation));
       spyOn(sessionStorage, 'setItem');
 
       activatedRoute.queryParams = from([{ itemId: 'itemId', searchId }]);
 
       component.ngOnInit();
 
-      expect(sessionStorage.setItem).toHaveBeenCalledWith(
-        SEARCHID_STORAGE_NAME,
-        searchId
-      );
+      expect(sessionStorage.setItem).toHaveBeenCalledWith(SEARCHID_STORAGE_NAME, searchId);
     });
   });
 
@@ -262,9 +219,7 @@ describe('Component: ChatComponent with ItemId', () => {
       component.onChangeInboxOrArchivedDropdown(false);
 
       expect(component.loadingError).toBeFalsy();
-      expect(inboxConversationService.currentConversation).toEqual(
-        mockConversation
-      );
+      expect(inboxConversationService.currentConversation).toEqual(mockConversation);
     });
 
     it('should update model when conversations are available', () => {
@@ -285,10 +240,7 @@ describe('Component: ChatComponent with ItemId', () => {
       beforeEach(() => {
         const inboxConversationWithoutMessages = CREATE_MOCK_INBOX_CONVERSATION();
         inboxConversationWithoutMessages.messages = [];
-        spyOn(
-          inboxConversationService,
-          'openConversationByItemId$'
-        ).and.returnValue(of(inboxConversationWithoutMessages));
+        spyOn(inboxConversationService, 'openConversationByItemId$').and.returnValue(of(inboxConversationWithoutMessages));
         const MOCK_PHONE_INFO = { phone_method: PhoneMethod.POP_UP };
         spyOn(userService, 'getPhoneInfo').and.returnValue(of(MOCK_PHONE_INFO));
       });
@@ -303,47 +255,29 @@ describe('Component: ChatComponent with ItemId', () => {
 
         component.ngOnInit();
 
-        expect(modalService.open).toHaveBeenCalledWith(
-          SendPhoneComponent,
-          expectedModalOptions
-        );
+        expect(modalService.open).toHaveBeenCalledWith(SendPhoneComponent, expectedModalOptions);
       });
     });
 
     describe('and the seller could request you the mail or cellphone', () => {
       it('should open a modal to notify the request information if the seller is YaEncontre', () => {
-        const inboxConversationWithoutMessages = CREATE_MOCK_INBOX_CONVERSATION(
-          '123',
-          USER_STRING_ID.YA_ENCONTRE
-        );
+        const inboxConversationWithoutMessages = CREATE_MOCK_INBOX_CONVERSATION('123', USER_STRING_ID.YA_ENCONTRE);
         inboxConversationWithoutMessages.messages = [];
         const expectedModalOptions: NgbModalOptions = {
           windowClass: 'warning',
         };
-        spyOn(
-          inboxConversationService,
-          'openConversationByItemId$'
-        ).and.returnValue(of(inboxConversationWithoutMessages));
+        spyOn(inboxConversationService, 'openConversationByItemId$').and.returnValue(of(inboxConversationWithoutMessages));
         spyOn(modalService, 'open');
 
         component.ngOnInit();
 
-        expect(modalService.open).toHaveBeenCalledWith(
-          PersonalDataInformationModal,
-          expectedModalOptions
-        );
+        expect(modalService.open).toHaveBeenCalledWith(PersonalDataInformationModal, expectedModalOptions);
       });
 
       it('should not open a modal if the seller is not YaEncontre', () => {
-        const inboxConversationWithoutMessages = CREATE_MOCK_INBOX_CONVERSATION(
-          '123',
-          'AAAAAAA'
-        );
+        const inboxConversationWithoutMessages = CREATE_MOCK_INBOX_CONVERSATION('123', 'AAAAAAA');
         inboxConversationWithoutMessages.messages = [];
-        spyOn(
-          inboxConversationService,
-          'openConversationByItemId$'
-        ).and.returnValue(of(inboxConversationWithoutMessages));
+        spyOn(inboxConversationService, 'openConversationByItemId$').and.returnValue(of(inboxConversationWithoutMessages));
         spyOn(modalService, 'open');
 
         component.ngOnInit();
@@ -353,16 +287,10 @@ describe('Component: ChatComponent with ItemId', () => {
 
       it('should redirect to the item if the modal is closed', fakeAsync(() => {
         const expectedUrl = 'item-123';
-        const inboxConversationWithoutMessages = CREATE_MOCK_INBOX_CONVERSATION(
-          '123',
-          USER_STRING_ID.YA_ENCONTRE
-        );
+        const inboxConversationWithoutMessages = CREATE_MOCK_INBOX_CONVERSATION('123', USER_STRING_ID.YA_ENCONTRE);
         inboxConversationWithoutMessages.messages = [];
         inboxConversationWithoutMessages.item.itemUrl = expectedUrl;
-        spyOn(
-          inboxConversationService,
-          'openConversationByItemId$'
-        ).and.returnValue(of(inboxConversationWithoutMessages));
+        spyOn(inboxConversationService, 'openConversationByItemId$').and.returnValue(of(inboxConversationWithoutMessages));
         spyOn(modalService, 'open').and.returnValue({
           result: Promise.resolve(),
         });
@@ -436,24 +364,14 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
       const inboxConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION();
 
       spyOn(inboxService, 'isInboxReady').and.returnValue(true);
-      spyOn(
-        inboxConversationService,
-        'openConversationByItemId$'
-      ).and.returnValue(of(inboxConversation));
-      spyOn(
-        inboxConversationService,
-        'openConversationByConversationId$'
-      ).and.returnValue(of(inboxConversation));
+      spyOn(inboxConversationService, 'openConversationByItemId$').and.returnValue(of(inboxConversation));
+      spyOn(inboxConversationService, 'openConversationByConversationId$').and.returnValue(of(inboxConversation));
       spyOn(userService, 'getPhoneInfo').and.returnValue(of({}));
 
       component.ngOnInit();
 
-      expect(
-        inboxConversationService.openConversationByItemId$
-      ).not.toHaveBeenCalled();
-      expect(
-        inboxConversationService.openConversationByConversationId$
-      ).toHaveBeenCalled();
+      expect(inboxConversationService.openConversationByItemId$).not.toHaveBeenCalled();
+      expect(inboxConversationService.openConversationByConversationId$).toHaveBeenCalled();
     });
 
     it('should delegate profiling to trust and safety team', () => {
@@ -463,9 +381,7 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
       component.ngOnInit();
 
       expect(trustAndSafetyService.submitProfile).toHaveBeenCalledTimes(1);
-      expect(trustAndSafetyService.submitProfile).toHaveBeenCalledWith(
-        SessionProfileDataLocation.OPEN_CHAT
-      );
+      expect(trustAndSafetyService.submitProfile).toHaveBeenCalledWith(SessionProfileDataLocation.OPEN_CHAT);
     });
   });
 });

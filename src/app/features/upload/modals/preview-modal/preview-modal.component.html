@@ -2,7 +2,7 @@
   <div class="modal-close" (click)="activeModal.dismiss()">
     <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
   </div>
-  <button class="btn btn-primary" (click)="activeModal.close()" tslTrackEvent="UPLOADFORM_UPLOADFROMPREVIEW">
+  <button class="btn btn-primary" (click)="activeModal.close()">
     <span *ngIf="!itemPreview.id" i18n>Post Ad</span>
     <span *ngIf="itemPreview.id" i18n>Update</span>
   </button>

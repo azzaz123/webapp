@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { APP_BASE_HREF, CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
@@ -17,9 +17,11 @@ import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { UserService } from '@core/user/user.service';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
+import { CoreStoreModule } from '@core/store/core-store.module';
+import { RouterTestingModule } from '@angular/router/testing';
 
 export default {
-  title: 'Webapp/ItemCardList',
+  title: 'Webapp/Public/Features/PublicProfile/Pages/UserPublished/ItemCardList',
   component: ItemCardListComponent,
   decorators: [
     moduleMetadata({
@@ -31,6 +33,8 @@ export default {
         CookieModule.forRoot(),
         PublicPipesModule,
         NgxPermissionsModule.forRoot(),
+        CoreStoreModule,
+        RouterTestingModule,
       ],
       providers: [
         DeviceDetectorService,
@@ -43,27 +47,18 @@ export default {
         I18nService,
         NgxPermissionsService,
         { provide: 'SUBDOMAIN', useValue: 'es' },
+        { provide: APP_BASE_HREF, useValue: '/' },
       ],
     }),
   ],
 } as Meta;
 
-const Template: Story<ItemCardListComponent> = (
-  args: ItemCardListComponent
-) => ({
+const Template: Story<ItemCardListComponent> = (args: ItemCardListComponent) => ({
   component: ItemCardListComponent,
   props: args,
 });
 
-const ITEMS = [
-  MOCK_ITEM_1,
-  MOCK_ITEM_1,
-  MOCK_ITEM_1,
-  MOCK_ITEM_1,
-  MOCK_ITEM_1,
-  MOCK_ITEM_1,
-  MOCK_ITEM_1,
-];
+const ITEMS = [MOCK_ITEM_1, MOCK_ITEM_1, MOCK_ITEM_1, MOCK_ITEM_1, MOCK_ITEM_1, MOCK_ITEM_1, MOCK_ITEM_1];
 
 export const Large = Template.bind({});
 Large.args = {

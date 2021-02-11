@@ -1,10 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { SelectOption } from './select.interface';
 import { find } from 'lodash-es';
 
@@ -15,9 +9,7 @@ import { find } from 'lodash-es';
 })
 export class SelectComponent implements OnChanges {
   @Input() public items: SelectOption[];
-  @Output('valueChanges') public value$: EventEmitter<
-    SelectOption
-  > = new EventEmitter<SelectOption>();
+  @Output('valueChanges') public value$: EventEmitter<SelectOption> = new EventEmitter<SelectOption>();
   @Input() value: any;
   public selected: SelectOption;
 

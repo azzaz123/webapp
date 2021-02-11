@@ -35,7 +35,7 @@
               <span *ngIf="showUnsubscribeFirst(subscription)" i18n>Unsubscribe first from app for your free month</span>
             </p>
         </div>
-        <tsl-button className="btn-primary" [hidden]="subscription.subscribed_from" i18n>Subscribe</tsl-button>
+        <tsl-button className="btn-primary" *ngIf="!subscription.subscribed_from">{{getSubscriptionTextButton(subscription)}}</tsl-button>
         <span *ngIf="subscription.subscribed_from" [hidden]="subscription.subscribed_until" class="Subscriptions__subscribed-from" i18n>
           Subscribed from {{subscription.subscribed_from | date:'dd/MM/yy' }}
         </span>

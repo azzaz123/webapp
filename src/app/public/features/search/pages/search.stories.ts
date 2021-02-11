@@ -15,29 +15,16 @@ import { ItemService } from '@core/item/item.service';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { ViewportService } from '@core/viewport/viewport.service';
+import { RouterTestingModule } from '@angular/router/testing';
 
 export default {
-  title: 'Webapp/Pages/Search',
+  title: 'Webapp/Public/Features/Search/Pages/Search',
   component: SearchComponent,
   decorators: [
     moduleMetadata({
-      providers: [
-        ViewportService,
-        ItemService,
-        EventService,
-        I18nService,
-        ItemCardService,
-        { provide: 'SUBDOMAIN', useValue: 'www' },
-      ],
+      providers: [ViewportService, ItemService, EventService, I18nService, ItemCardService, { provide: 'SUBDOMAIN', useValue: 'www' }],
       declarations: [SearchComponent, SearchLayoutComponent],
-      imports: [
-        CoreModule,
-        SharedModule,
-        HttpModule,
-        ItemApiModule,
-        CheckSessionModule,
-        ItemCardListModule,
-      ],
+      imports: [CoreModule, SharedModule, HttpModule, ItemApiModule, CheckSessionModule, ItemCardListModule, RouterTestingModule],
     }),
     styledWrapperDecorator('margin: -1rem;'),
   ],

@@ -7,6 +7,7 @@ import { PublicProfileService } from '@public/features/public-profile/core/servi
 
 import { FavouriteUserComponent } from './favourite-user.component';
 import { FavouriteIconModule } from '@public/shared/components/favourite-icon/favourite-icon.module';
+import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 
 describe('FavouriteUserComponent', () => {
   let component: FavouriteUserComponent;
@@ -15,13 +16,10 @@ describe('FavouriteUserComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        FavouriteIconModule,
-        CheckSessionModule,
-      ],
+      imports: [HttpClientTestingModule, FavouriteIconModule, CheckSessionModule],
       declarations: [FavouriteUserComponent],
       providers: [
+        PublicUserApiService,
         PublicProfileService,
         {
           provide: AccessTokenService,
@@ -67,9 +65,7 @@ describe('FavouriteUserComponent', () => {
 
       component.toggleFavourite();
 
-      expect(publicProfileService.markAsFavourite).toHaveBeenCalledWith(
-        component.userId
-      );
+      expect(publicProfileService.markAsFavourite).toHaveBeenCalledWith(component.userId);
     });
 
     it('should call the correct publicProfileService function if favourite', () => {
@@ -78,9 +74,7 @@ describe('FavouriteUserComponent', () => {
 
       component.toggleFavourite();
 
-      expect(publicProfileService.unmarkAsFavourite).toHaveBeenCalledWith(
-        component.userId
-      );
+      expect(publicProfileService.unmarkAsFavourite).toHaveBeenCalledWith(component.userId);
     });
   });
 });

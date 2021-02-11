@@ -66,4 +66,8 @@ export enum SCREEN_IDS {
   BankTransferConfirm = 237,
   Checkout = 238,
   MySoldItems = 239,
+  MyCatalogInactiveSection = 240,
+  SubscriptionTier = 241,
+  MyBankDetails = 242,
+  ProAdvantagesPopup = 243,
 }

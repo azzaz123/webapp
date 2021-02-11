@@ -8,7 +8,6 @@ import { CallsService } from '@core/conversation/calls.service';
 import { Lead } from '@core/conversation/lead';
 import { EventService } from '@core/event/event.service';
 import { RealTimeService } from '@core/message/real-time.service';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { FeatureflagService } from '@core/user/featureflag.service';
 import { LoggedGuard } from '@core/user/logged.guard';
 import { ChatComponent } from '@features/chat/chat.component';
@@ -25,7 +24,6 @@ import { InboxServiceMock } from '@fixtures/inbox-service.fixtures.spec';
 import { createInboxConversationsArray } from '@fixtures/inbox.fixtures.spec';
 import { LoggedGuardServiceMock } from '@fixtures/logged-guard-service.fixtures.spec';
 import { RealTimeServiceMock } from '@fixtures/real-time.fixtures.spec';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { of } from 'rxjs';
 import { DashboardComponent } from './dashboard.component';
 
@@ -33,7 +31,6 @@ describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
   let callService: CallsService;
-  let trackingService: TrackingService;
   let eventService: EventService;
   let inboxService: InboxService;
   let inboxConversationService: InboxConversationService;
@@ -44,7 +41,6 @@ describe('DashboardComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [
-          ChatModule,
           RouterTestingModule.withRoutes([
             {
               path: 'chat',
@@ -55,7 +51,6 @@ describe('DashboardComponent', () => {
         declarations: [DashboardComponent],
         providers: [
           EventService,
-          { provide: TrackingService, useClass: MockTrackingService },
           { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
           { provide: InboxService, useClass: InboxServiceMock },
           {
@@ -75,7 +70,6 @@ describe('DashboardComponent', () => {
     fixture = TestBed.createComponent(DashboardComponent);
     component = fixture.componentInstance;
     callService = TestBed.inject(CallsService);
-    trackingService = TestBed.inject(TrackingService);
     eventService = TestBed.inject(EventService);
     inboxService = TestBed.inject(InboxService);
     inboxConversationService = TestBed.inject(InboxConversationService);
@@ -121,7 +115,6 @@ describe('DashboardComponent', () => {
 
     beforeEach(() => {
       spyOn(callService, 'getPage').and.returnValue(of(CALLS));
-      spyOn(trackingService, 'track');
       inboxConversationService.conversations = CONVERSATIONS;
 
       component['getData']();
@@ -134,18 +127,6 @@ describe('DashboardComponent', () => {
 
     it('should set conversations', () => {
       expect(component.conversations).toEqual(CONVERSATIONS);
-    });
-
-    it('should track the ConversationListActiveLoaded event', () => {
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.CONVERSATION_LIST_ACTIVE_LOADED
-      );
-    });
-
-    it('should track the PhoneLeadListActiveLoaded event', () => {
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.PHONE_LEAD_LIST_ACTIVE_LOADED
-      );
     });
   });
 
@@ -175,35 +156,16 @@ describe('DashboardComponent', () => {
     });
   });
 
-  describe('trackPhoneLeadOpened', () => {
-    it('should track the PHONE_LEAD_OPENED event', () => {
-      spyOn(trackingService, 'track');
-
-      component.trackPhoneLeadOpened();
-
-      expect(trackingService.track).toHaveBeenCalledWith(
-        TrackingService.PHONE_LEAD_OPENED
-      );
-    });
-  });
-
   describe('router', () => {
     it('should navigate to chat and open conversation', () => {
       const spy = spyOn(router, 'navigateByUrl');
       spyOn(inboxConversationService, 'openConversation');
-      const conversation = createInboxConversationsArray(
-        1,
-        'conversationId'
-      )[0];
+      const conversation = createInboxConversationsArray(1, 'conversationId')[0];
 
       component.openConversation(conversation);
 
-      expect(inboxConversationService.openConversation).toHaveBeenCalledTimes(
-        1
-      );
-      expect(spy.calls.first().args[0]).toEqual(
-        `/chat?conversationId=${conversation.id}`
-      );
+      expect(inboxConversationService.openConversation).toHaveBeenCalledTimes(1);
+      expect(spy.calls.first().args[0]).toEqual(`/chat?conversationId=${conversation.id}`);
     });
   });
 

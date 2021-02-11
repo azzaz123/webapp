@@ -11,10 +11,8 @@
     <p class="modal-text green" i18n><b>Get more visibility and sell it faster.</b></p>
     <tsl-button
       (click)="activeModal.close('bump')"
-      tslTrackEvent="MYCATALOG_REACTIVATE_FROMMODAL" [params]="{category: item.categoryId}"
       i18n>Reactivate + visibility</tsl-button>
     <p><a class="modal-text link"
           (click)="activeModal.close('reactivate')"
-          tslTrackEvent="MYCATALOG_JUSTREACTIVATE" [params]="{category: item.categoryId}"
           i18n>Only reactivate it, I don't want to sell it faster</a></p>
   </div>

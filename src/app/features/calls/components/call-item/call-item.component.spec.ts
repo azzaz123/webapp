@@ -1,5 +1,4 @@
 import { MOCK_CALL } from '@fixtures/call.fixtures';
-import { MockTrackingService } from '@fixtures/tracking.fixtures.spec';
 import { createMessagesArray } from '@fixtures/message.fixtures.spec';
 import { of } from 'rxjs';
 
@@ -10,27 +9,20 @@ import { ActivatedRoute } from '@angular/router';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CallsService } from '@core/conversation/calls.service';
 import { I18nService } from '@core/i18n/i18n.service';
-import { TrackingService } from '@core/tracking/tracking.service';
 import { CallStatusLabelPipe, DateCalendarPipe } from '@shared/pipes';
 
 describe('CallItemComponent', () => {
   let component: CallItemComponent;
   let fixture: ComponentFixture<CallItemComponent>;
-  let trackingService: TrackingService;
   let callService: CallsService;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [NoopAnimationsModule],
-        declarations: [
-          CallItemComponent,
-          CallStatusLabelPipe,
-          DateCalendarPipe,
-        ],
+        declarations: [CallItemComponent, CallStatusLabelPipe, DateCalendarPipe],
         providers: [
           I18nService,
-          { provide: TrackingService, useClass: MockTrackingService },
           {
             provide: ActivatedRoute,
             useValue: {
@@ -53,7 +45,6 @@ describe('CallItemComponent', () => {
     fixture = TestBed.createComponent(CallItemComponent);
     component = fixture.componentInstance;
     component.call = MOCK_CALL();
-    trackingService = TestBed.inject(TrackingService);
     callService = TestBed.inject(CallsService);
     fixture.detectChanges();
   });

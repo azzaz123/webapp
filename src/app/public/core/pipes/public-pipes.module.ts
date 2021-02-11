@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
-import { isCurrentUserPipe } from './is-current-user/is-current-user.pipe';
+import { IsCurrentUserPipe } from './is-current-user/is-current-user.pipe';
+import { UrlProtocolPipe } from './url-protocol/url-protocol.pipe';
 
 @NgModule({
-  declarations: [isCurrentUserPipe],
-  exports: [isCurrentUserPipe],
+  declarations: [IsCurrentUserPipe, UrlProtocolPipe],
+  exports: [IsCurrentUserPipe, UrlProtocolPipe],
 })
 export class PublicPipesModule {}
