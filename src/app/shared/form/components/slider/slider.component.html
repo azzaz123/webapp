@@ -1,3 +1,6 @@
-SLIDER!
-
-{{value}}
+<form [formGroup]="form">
+    <ngx-slider 
+        class="Slider"
+        [class.Slider-range]="variant === SLIDER_VARIANT.RANGE"
+        formControlName="control" [options]="options"></ngx-slider>
+</form>
