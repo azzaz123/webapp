@@ -8,8 +8,8 @@
                 customCurrency:item?.currencyCode}}</span>
         </div>
         <div class="p-3 position-absolute ItemHeader__buttons">
-            <tsl-button className="btn btn-upload mr-2">
-                <tsl-favourite-icon [active]="item?.flags?.favorite" (click)="toggleItemFavorite()">
+            <tsl-button className="btn btn-upload mr-2" (click)="toggleItemFavorite()" id="favouriteButton">
+                <tsl-favourite-icon [active]="item?.flags?.favorite">
                 </tsl-favourite-icon>
             </tsl-button>
             <tsl-button class="ChatButton d-inline-flex" className="btn btn-primary"
