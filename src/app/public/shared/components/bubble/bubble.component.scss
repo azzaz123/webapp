@@ -70,6 +70,11 @@
     }
   }
 
+  &__dropdown_arrow-open {
+    transition: transform 250ms ease-in-out;
+    transform: rotate(-180deg);
+  }
+
   &__content_wrapper {
     flex-basis: 100%;
     overflow: hidden;

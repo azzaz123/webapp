@@ -10,6 +10,7 @@ export class BubbleComponent {
   @Input() icon: string;
   @Input() variant: BUBBLE_VARIANT = BUBBLE_VARIANT.ACTIVE;
   @Input() isDropdown: boolean;
+  @Input() isDropdownOpen: boolean;
   @Input() counter: number;
   @Input() isClearable: boolean;
   @Output() click: EventEmitter<MouseEvent> = new EventEmitter();

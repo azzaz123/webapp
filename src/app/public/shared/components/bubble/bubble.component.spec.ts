@@ -133,6 +133,18 @@ describe('BubbleComponent', () => {
         it('should render', () => {
           expectRender(dropdownSelector, true);
         });
+
+        describe('and dropdown is open', () => {
+          beforeEach(async () => {
+            await setInputs({
+              isDropdownOpen: true,
+            });
+          });
+
+          it('should render dropdown icon open', () => {
+            expectRender(By.css('.Bubble__dropdown_arrow-open'), true);
+          });
+        });
       });
 
       describe('and bubble is clearable', () => {

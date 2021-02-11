@@ -31,16 +31,16 @@ const Template: Story<BubbleComponent> = (args) => ({
   props: args,
   template: `
       <div style="display: flex; margin-bottom: 15px;">
-        <tsl-bubble [icon]="icon" [isDropdown]="isDropdown" variant="${BUBBLE_VARIANT.ACTIVE}" [counter]="counter">Bubble!</tsl-bubble>
+        <tsl-bubble [icon]="icon" [isDropdown]="isDropdown" [isDropdownOpen]="isDropdownOpen" variant="${BUBBLE_VARIANT.ACTIVE}" [counter]="counter">Bubble!</tsl-bubble>
       </div>
       <div style="display: flex; margin-bottom: 15px;">
-        <tsl-bubble [icon]="icon" [isDropdown]="isDropdown" variant="${BUBBLE_VARIANT.SELECTED}" [counter]="counter">Bubble!</tsl-bubble>
+        <tsl-bubble [icon]="icon" [isDropdown]="isDropdown" [isDropdownOpen]="isDropdownOpen" variant="${BUBBLE_VARIANT.SELECTED}" [counter]="counter">Bubble!</tsl-bubble>
       </div>
       <div style="margin-bottom: 15px;">
-        <tsl-bubble [icon]="icon" [isDropdown]="isDropdown" variant="${BUBBLE_VARIANT.ACTIVE}" [counter]="counter">Bubble!</tsl-bubble>
+        <tsl-bubble [icon]="icon" [isDropdown]="isDropdown" [isDropdownOpen]="isDropdownOpen" variant="${BUBBLE_VARIANT.ACTIVE}" [counter]="counter">Bubble!</tsl-bubble>
       </div>
       <div style="margin-bottom: 15px;">
-        <tsl-bubble [icon]="icon" [isDropdown]="isDropdown" variant="${BUBBLE_VARIANT.SELECTED}" [counter]="counter">Bubble!</tsl-bubble>
+        <tsl-bubble [icon]="icon" [isDropdown]="isDropdown" [isDropdownOpen]="isDropdownOpen" variant="${BUBBLE_VARIANT.SELECTED}" [counter]="counter">Bubble!</tsl-bubble>
       </div>
     `,
 });
@@ -73,6 +73,12 @@ WithIcon.args = {
 export const WithDropdown = Template.bind({});
 WithDropdown.args = {
   isDropdown: true,
+};
+
+export const WithDropdownOpen = Template.bind({});
+WithDropdownOpen.args = {
+  isDropdown: true,
+  isDropdownOpen: true,
 };
 
 export const WithCounter = Template.bind({});
