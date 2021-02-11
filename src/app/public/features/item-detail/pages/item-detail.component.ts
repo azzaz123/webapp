@@ -28,6 +28,7 @@ export class ItemDetailComponent implements OnInit {
   public readonly deviceType = DeviceType;
   public loading = true;
   public isApproximateLocation = false;
+  public showItemSpecifications = false;
   public showItemRecommendations = false;
   public locationSpecifications: string;
   public coordinates: Coordinate;
@@ -90,6 +91,7 @@ export class ItemDetailComponent implements OnInit {
     this.calculateItemCoordinates();
     this.showItemImages();
     this.socialShareSetup(this.itemDetail.item);
+    this.setItemSpecifications();
     this.setItemRecommendations();
   }
 
@@ -115,6 +117,12 @@ export class ItemDetailComponent implements OnInit {
     this.itemDetail.item?.images?.forEach((image: Image) => {
       this.images.push(image.urls_by_size.large);
     });
+  }
+
+  private setItemSpecifications(): void {
+    const CATEGORIES_WITH_SPECIFICATIONS = [CATEGORY_IDS.CAR, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.REAL_ESTATE_OLD];
+
+    this.showItemSpecifications = CATEGORIES_WITH_SPECIFICATIONS.includes(this.itemDetail?.item?.categoryId);
   }
 
   private socialShareSetup(item: Item): void {
