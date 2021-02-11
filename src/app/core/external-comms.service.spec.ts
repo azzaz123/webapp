@@ -11,7 +11,7 @@ describe('ExternalCommsService', () => {
   });
 
   describe('when initializing Braze communications', () => {
-    it('should initialize Barze configuration', fakeAsync(() => {
+    it('should initialize Braze configuration', fakeAsync(() => {
       const MOCK_BRAZE_CONFIG = { enableHtmlInAppMessages: true };
       spyOn(appboy, 'initialize');
 
