@@ -22,7 +22,7 @@ import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.
 import { SwitchComponent } from '@shared/switch/switch.component';
 import { of, throwError } from 'rxjs';
 import { BecomeProModalComponent } from '../../modal/become-pro-modal/become-pro-modal.component';
-import { BAD_USERNAME_ERROR_CODE, competitorLinks, ProfileInfoComponent } from './profile-info.component';
+import { ANALYTICS_FIELDS, BAD_USERNAME_ERROR_CODE, competitorLinks, ProfileInfoComponent } from './profile-info.component';
 
 describe('ProfileInfoComponent', () => {
   let component: ProfileInfoComponent;
@@ -401,14 +401,14 @@ describe('ProfileInfoComponent', () => {
           },
         };
 
-        component.openBecomeProModal('test');
+        component.openBecomeProModal(ANALYTICS_FIELDS.DESCRIPTION);
 
         expect(analyticsService.trackPageView).toBeCalledTimes(2);
         expect(analyticsService.trackPageView).toHaveBeenNthCalledWith(2, expectedEvent);
       });
 
       it('should track ClickEditProField', () => {
-        const expectedField = 'description';
+        const expectedField = ANALYTICS_FIELDS.DESCRIPTION;
         const expectedEvent: AnalyticsPageView<ClickEditProField> = {
           name: ANALYTICS_EVENT_NAMES.ClickEditProField,
           attributes: {
@@ -427,7 +427,7 @@ describe('ProfileInfoComponent', () => {
         spyOn(subscriptionsService, 'getSubscriptions');
         component.hasTrialAvailable = true;
 
-        component.openBecomeProModal('test');
+        component.openBecomeProModal(ANALYTICS_FIELDS.DESCRIPTION);
 
         expect(modalService.open).toHaveBeenCalledWith(BecomeProModalComponent, {
           windowClass: 'become-pro',
@@ -437,7 +437,7 @@ describe('ProfileInfoComponent', () => {
 
       it('should open modal without trial data available', () => {
         spyOn(subscriptionsService, 'getSubscriptions').and.callThrough();
-        component.openBecomeProModal('test');
+        component.openBecomeProModal(ANALYTICS_FIELDS.DESCRIPTION);
 
         expect(modalService.open).toHaveBeenCalledWith(BecomeProModalComponent, {
           windowClass: 'become-pro',
@@ -449,7 +449,7 @@ describe('ProfileInfoComponent', () => {
         it('should redirect to subscriptions', fakeAsync(() => {
           spyOn(router, 'navigate');
 
-          component.openBecomeProModal('test');
+          component.openBecomeProModal(ANALYTICS_FIELDS.DESCRIPTION);
           tick();
           fixture.detectChanges();
 
@@ -467,13 +467,13 @@ describe('ProfileInfoComponent', () => {
       });
 
       it('should not track events', () => {
-        component.openBecomeProModal('test');
+        component.openBecomeProModal(ANALYTICS_FIELDS.DESCRIPTION);
 
         expect(analyticsService.trackPageView).not.toHaveBeenCalled();
       });
 
       it('should not open modal', () => {
-        component.openBecomeProModal('test');
+        component.openBecomeProModal(ANALYTICS_FIELDS.DESCRIPTION);
 
         expect(modalService.open).not.toHaveBeenCalledWith(BecomeProModalComponent, {
           windowClass: 'become-pro',

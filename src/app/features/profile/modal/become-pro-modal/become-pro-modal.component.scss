@@ -22,7 +22,6 @@
   }
   .modal-close {
     @include square($spacing-ms);
-    position: absolute;
     top: 20px;
     right: 20px;
   }

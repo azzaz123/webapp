@@ -29,6 +29,14 @@ export const competitorLinks = ['coches.net', 'autoscout24.es', 'autocasion.com'
 
 export const BAD_USERNAME_ERROR_CODE = 112;
 
+export enum ANALYTICS_FIELDS {
+  HEADER_PHOTO = 'header photo',
+  DESCRIPTION = 'description',
+  OPENING_HOURS = 'opening hours',
+  PHONE = 'phone',
+  WEB = 'web',
+}
+
 @Component({
   selector: 'tsl-profile-info',
   templateUrl: './profile-info.component.html',
@@ -44,6 +52,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
   public loading = false;
   public isIncorrectAddress = false;
   public hasTrialAvailable: boolean;
+  public ANALYTICS_FIELDS = ANALYTICS_FIELDS;
 
   @ViewChild(ProfileFormComponent, { static: true })
   formComponent: ProfileFormComponent;
@@ -226,7 +235,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     }
   }
 
-  public openBecomeProModal(field: string): void {
+  public openBecomeProModal(field: ANALYTICS_FIELDS): void {
     if (!this.isPro) {
       this.trackClickEditProField(field);
       if (this.hasTrialAvailable == null) {
@@ -279,7 +288,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     lastNameFormControl.updateValueAndValidity();
   }
 
-  private trackClickEditProField(field: any): void {
+  private trackClickEditProField(field: ANALYTICS_FIELDS): void {
     const event: AnalyticsPageView<ClickEditProField> = {
       name: ANALYTICS_EVENT_NAMES.ClickEditProField,
       attributes: {
