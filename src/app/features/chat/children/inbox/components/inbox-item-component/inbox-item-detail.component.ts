@@ -56,6 +56,5 @@ export class InboxItemDetailComponent implements OnInit, OnChanges, OnDestroy {
       value: item.price.amount,
       currency: item.price.currency,
     });
-    appboy.logCustomEvent('Sold', { platform: 'web' });
   }
 }

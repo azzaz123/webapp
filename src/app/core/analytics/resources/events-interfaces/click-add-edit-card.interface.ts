@@ -6,9 +6,9 @@
  */
 
 /**
- * User clicks on add or edit a bank account
+ * User clicks on add or edit a credit card
  */
-export interface ClickAddEditBankAccount {
+export interface ClickAddEditCard {
   /**
    * Whether the click is on add or edit
    */
@@ -28,5 +28,5 @@ export interface ClickAddEditBankAccount {
   /**
    * Identifier of the screen where the click is done
    */
-  screenId: 210;
+  screenId: 209;
 }

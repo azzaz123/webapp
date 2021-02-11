@@ -86,7 +86,6 @@ describe('CatalogCardComponent', () => {
     modalService = TestBed.inject(NgbModal);
     errorsService = TestBed.inject(ErrorsService);
     i18nService = TestBed.inject(I18nService);
-    appboy.initialize(environment.appboy);
     eventService = TestBed.inject(EventService);
   });
 
@@ -122,7 +121,6 @@ describe('CatalogCardComponent', () => {
       beforeEach(fakeAsync(() => {
         item = MOCK_ITEM;
         spyOn(eventService, 'emit');
-        spyOn(appboy, 'logCustomEvent');
         spyOn(window as any, 'fbq');
         component.itemChange.subscribe(($event: ItemChangeEvent) => {
           event = $event;
@@ -146,12 +144,6 @@ describe('CatalogCardComponent', () => {
 
       it('should send facebook CompleteRegistrations tracking', () => {
         expect(window['fbq']).toHaveBeenCalledWith('track', 'CompleteRegistration', { value: item.salePrice, currency: item.currencyCode });
-      });
-
-      it('should send appboy Sold event', () => {
-        expect(appboy.logCustomEvent).toHaveBeenCalledWith('Sold', {
-          platform: 'web',
-        });
       });
     });
   });

@@ -57,7 +57,6 @@ describe('Component: Item', () => {
     component = TestBed.createComponent(InboxItemDetailComponent).componentInstance;
     itemService = TestBed.inject(ItemService);
     cookieService = TestBed.inject(CookieService);
-    appboy.initialize(environment.appboy);
   });
 
   it('should create an instance', () => {
@@ -183,16 +182,6 @@ describe('Component: Item', () => {
   describe('trackSoldEvent', () => {
     beforeEach(() => {
       component.item = MOCKED_INBOX_CONVERSATIONS[0].item;
-    });
-
-    it('should send appboy Sold event', () => {
-      spyOn(appboy, 'logCustomEvent');
-
-      component.trackSoldEvent(MOCKED_INBOX_CONVERSATIONS[0].item);
-
-      expect(appboy.logCustomEvent).toHaveBeenCalledWith('Sold', {
-        platform: 'web',
-      });
     });
 
     it('should emit ITEM_SOLD event', () => {

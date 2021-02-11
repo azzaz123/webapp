@@ -109,7 +109,6 @@ export class RealTimeService {
       if (this.isFirstMessage(conversation)) {
         this.trackConversationCreated(conversation);
         this.trackSendFirstMessage(conversation);
-        appboy.logCustomEvent('FirstMessage', { platform: 'web' });
       }
     });
   }
