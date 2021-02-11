@@ -28,11 +28,7 @@ export class SliderComponent extends AbstractFormComponent implements OnInit {
   public readonly SLIDER_VARIANT = SLIDER_VARIANT;
   public variant = this.SLIDER_VARIANT.SINGLE;
 
-  public options: Options = {
-    floor: 0,
-    ceil: 100,
-    step: 1,
-  };
+  public options: Options;
 
   public form: FormGroup = new FormGroup({
     control: new FormControl(),
@@ -64,7 +60,7 @@ export class SliderComponent extends AbstractFormComponent implements OnInit {
         if (value === this.max && this.limitless) {
           return $localize`:@@limitless:No limit`;
         }
-        return value + this.units;
+        return value + (this.units ? this.units : '');
       },
       hideLimitLabels: !this.limitTooltip,
       hidePointerLabels: !this.valueTooltip,
@@ -79,7 +75,7 @@ export class SliderComponent extends AbstractFormComponent implements OnInit {
   }
 
   private setStepsConfig(): void {
-    if (this.stepsConfig) {
+    if (this.stepsConfig && this.stepsConfig.length) {
       const stepsArray: CustomStepDefinition[] = [];
       try {
         this.stepsConfig.forEach((stepConfig: { range: number[]; step: number }) => {
@@ -87,6 +83,7 @@ export class SliderComponent extends AbstractFormComponent implements OnInit {
             stepsArray.push({ value: i });
           }
         });
+
         this.options.stepsArray = stepsArray;
       } catch (e: any) {}
     }
