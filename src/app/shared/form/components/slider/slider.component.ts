@@ -16,7 +16,7 @@ import { SLIDER_VARIANT } from './enums/slider-variant.enum';
     },
   ],
 })
-export class SliderComponent extends AbstractFormComponent implements OnInit {
+export class SliderComponent extends AbstractFormComponent implements OnInit, OnChanges {
   @Input() min: number;
   @Input() max: number;
   @Input() stepsConfig: { range: number[]; step: number }[];
@@ -34,10 +34,10 @@ export class SliderComponent extends AbstractFormComponent implements OnInit {
     control: new FormControl(),
   });
 
-  ngOnInit(): void {
-    this.initOptions();
-    this.setStepsConfig();
-    this.bindChangesListener();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes) {
+      this.init();
+    }
   }
 
   public writeValue(value: any): void {
@@ -48,6 +48,12 @@ export class SliderComponent extends AbstractFormComponent implements OnInit {
 
   public setDisabledState(isDisabled: boolean): void {
     this.options.disabled = isDisabled;
+  }
+
+  private init(): void {
+    this.initOptions();
+    this.setStepsConfig();
+    this.bindChangesListener();
   }
 
   private initOptions(): void {
