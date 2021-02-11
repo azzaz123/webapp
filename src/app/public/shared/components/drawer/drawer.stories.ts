@@ -6,12 +6,14 @@ import { StyledBoxComponent } from '@stories/components/styled-box/styled-box.co
 import { LoremIpsumComponent } from '@stories/components/lorem-ipsum/lorem-ipsum.component';
 import { stringifyStyleObj } from '@stories/helpers/stringify-style';
 import { ScrollLockService } from '@public/shared/services/scroll-lock.service';
+import { ButtonModule } from '@shared/button/button.module';
 
 export default {
   title: 'Webapp/Public/Shared/Components/Drawer',
   component: DrawerComponent,
   decorators: [
     moduleMetadata({
+      imports: [ButtonModule],
       declarations: [StyledBoxComponent, DrawerComponent, LoremIpsumComponent],
       providers: [ScrollLockService],
     }),
