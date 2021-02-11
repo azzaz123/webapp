@@ -1,0 +1,38 @@
+@import '~style/styles';
+
+.FilterTemplate {
+  &__dropdown_menu {
+    padding: 0 !important;
+
+    @include media-breakpoint-down(sm) {
+      position: fixed !important;
+      transform: none !important;
+      margin: 0 !important;
+      border-radius: 0 !important;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      animation: slideUp 0.45s ease-in-out;
+    }
+  }
+
+  &__title {
+    font-weight: $font-weight-bold;
+    color: $black;
+  }
+
+  &__dev_warn {
+    color: $brand-danger;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100vh);
+  }
+
+  to {
+    transform: translate(0);
+  }
+}
