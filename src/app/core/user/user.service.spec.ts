@@ -37,6 +37,7 @@ import { PERMISSIONS, User } from './user';
 import { Image, UserLocation } from './user-response.interface';
 import { UserStats } from './user-stats.interface';
 import {
+  LOCAL_STORAGE_TRY_PRO_SLOT,
   PROTOOL_EXTRA_INFO_ENDPOINT,
   UserService,
   USER_BY_ID_ENDPOINT,
@@ -676,6 +677,49 @@ describe('Service: User', () => {
         targetCrm: 'zendesk',
       });
       expect(req.request.headers.get('AppBuild')).toEqual(APP_VERSION);
+    });
+  });
+
+  describe('suggest Pro', () => {
+    describe('when is pro', () => {
+      it('should not suggest pro', () => {
+        jest.spyOn(service, 'isPro', 'get').mockReturnValue(true);
+
+        const result = service.suggestPro();
+
+        expect(result).toEqual(false);
+      });
+    });
+
+    describe('when is not pro', () => {
+      beforeEach(() => {
+        jest.spyOn(service, 'isPro', 'get').mockReturnValue(false);
+        jest.spyOn(service, 'user', 'get').mockReturnValue(MOCK_USER);
+      });
+
+      describe('and suggest was not cancel previously', () => {
+        it('should suggest pro', () => {
+          spyOn(localStorage, 'getItem').and.returnValue(null);
+
+          const result = service.suggestPro();
+
+          expect(localStorage.getItem).toHaveBeenCalledTimes(1);
+          expect(localStorage.getItem).toHaveBeenCalledWith(`${MOCK_USER.id}-${LOCAL_STORAGE_TRY_PRO_SLOT}`);
+          expect(result).toEqual(true);
+        });
+      });
+
+      describe('and suggest was cancel previously', () => {
+        it('should not suggest pro', () => {
+          spyOn(localStorage, 'getItem').and.returnValue('true');
+
+          const result = service.suggestPro();
+
+          expect(localStorage.getItem).toHaveBeenCalledTimes(1);
+          expect(localStorage.getItem).toHaveBeenCalledWith(`${MOCK_USER.id}-${LOCAL_STORAGE_TRY_PRO_SLOT}`);
+          expect(result).toEqual(false);
+        });
+      });
     });
   });
 });

@@ -9,7 +9,6 @@ export default {
   title: 'Webapp/Shared/Button',
   component: ButtonComponent,
   decorators: [styledWrapperDecorator('max-width: 220px;')],
-  argTypes: { toggleFavourite: { action: 'toggleFavourite' } },
 } as Meta;
 
 const Template: Story<ButtonComponent> = (args: ButtonComponent) => ({
@@ -167,6 +166,16 @@ export const Invoice = Template.bind({});
 Invoice.args = {
   label: 'Invoice',
   className: 'invoice',
+  classLoading: '',
+  type: '',
+  disabled: false,
+  loading: false,
+};
+
+export const Dark = Template.bind({});
+Dark.args = {
+  label: 'Dark',
+  className: 'btn-dark',
   classLoading: '',
   type: '',
   disabled: false,
