@@ -28,7 +28,6 @@ export class BumpConfirmationModalComponent implements OnInit {
     this.userService.me().subscribe(() => {
       if (this.code === '200') {
         ga('send', 'event', 'Item', 'bump-ok');
-        appboy.logCustomEvent('VisibilityPurchaseSuccess', { platform: 'web' });
       } else {
         ga('send', 'event', 'Item', 'bump-ko');
       }

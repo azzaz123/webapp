@@ -69,21 +69,10 @@ describe('CheckoutComponent', () => {
     paymentService = TestBed.inject(PaymentService);
     route = TestBed.inject(ActivatedRoute);
     spyCall = spyOn(itemService, 'getItemsWithAvailableProducts').and.callThrough();
-    appboy.initialize(environment.appboy);
     fixture.detectChanges();
   });
 
   describe('ngOnInit', () => {
-    it('should send appboy FeatureItems event', () => {
-      spyOn(appboy, 'logCustomEvent');
-
-      component.ngOnInit();
-
-      expect(appboy.logCustomEvent).toHaveBeenCalledWith('FeatureItems', {
-        platform: 'web',
-      });
-    });
-
     describe('no params', () => {
       it('should call getItemsWithAvailableProducts and set it', () => {
         expect(itemService.getItemsWithAvailableProducts).toHaveBeenCalledWith(SELECTED_ITEMS);
