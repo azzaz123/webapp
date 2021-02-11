@@ -13,7 +13,7 @@ import { GeolocationModule } from '@shared/geolocation/geolocation.module';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { SocialShareModule } from '@shared/social-share/social-share.module';
 import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
-import { ItemFullSizeCarouselModule } from './components/item-fullsize-carousel/item-fullsize-carousel.module';
+import { ItemFullScreenCarouselModule } from './components/item-fullscreen-carousel/item-fullscreen-carousel.module';
 import { RecommendedItemsModule } from './components/recommended-items/recommended-items.module';
 
 @NgModule({
@@ -27,7 +27,7 @@ import { RecommendedItemsModule } from './components/recommended-items/recommend
     GeolocationModule,
     SvgIconModule,
     SocialShareModule,
-    ItemFullSizeCarouselModule,
+    ItemFullScreenCarouselModule,
     RecommendedItemsModule,
   ],
   providers: [ItemDetailService, ItemApiService, PublicUserApiService, RecommenderApiService, MapItemService, SocialMetaTagService],

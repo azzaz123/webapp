@@ -9,10 +9,10 @@ import { SlidesCarouselModule } from '@public/shared/components/slides-carousel/
 import { ButtonModule } from '@shared/button/button.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { PinchZoomModule } from 'ngx-pinch-zoom';
-import { ItemFullSizeCarouselComponent } from './item-fullsize-carousel.component';
+import { ItemFullScreenCarouselComponent } from './item-fullscreen-carousel.component';
 
 @NgModule({
-  declarations: [ItemFullSizeCarouselComponent],
+  declarations: [ItemFullScreenCarouselComponent],
   imports: [
     CommonModule,
     FavouriteIconModule,
@@ -23,7 +23,7 @@ import { ItemFullSizeCarouselComponent } from './item-fullsize-carousel.componen
     PinchZoomModule,
     RouterModule,
   ],
-  exports: [ItemFullSizeCarouselComponent],
+  exports: [ItemFullScreenCarouselComponent],
   providers: [CheckSessionService, ItemCardService],
 })
-export class ItemFullSizeCarouselModule {}
+export class ItemFullScreenCarouselModule {}

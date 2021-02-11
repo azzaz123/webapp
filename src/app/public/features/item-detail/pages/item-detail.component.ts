@@ -19,7 +19,7 @@ import { Image, UserLocation } from '@core/user/user-response.interface';
 import { finalize } from 'rxjs/operators';
 import { APP_PATHS } from 'app/app-routing-constants';
 import { SlideCarousel } from '@public/shared/components/slides-carousel/slides-carousel.interface';
-import { ItemFullSizeCarouselComponent } from '../components/item-fullsize-carousel/item-fullsize-carousel.component';
+import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -27,8 +27,8 @@ import { ItemFullSizeCarouselComponent } from '../components/item-fullsize-carou
   styleUrls: ['./item-detail.component.scss'],
 })
 export class ItemDetailComponent implements OnInit {
-  @ViewChild(ItemFullSizeCarouselComponent, { static: true })
-  itemDetailImagesModal: ItemFullSizeCarouselComponent;
+  @ViewChild(ItemFullScreenCarouselComponent, { static: true })
+  itemDetailImagesModal: ItemFullScreenCarouselComponent;
   public readonly deviceType = DeviceType;
   public loading = true;
   public isApproximateLocation = false;

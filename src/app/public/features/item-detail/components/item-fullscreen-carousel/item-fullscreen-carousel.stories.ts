@@ -1,6 +1,6 @@
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { FavouriteIconModule } from '@public/shared/components/favourite-icon/favourite-icon.module';
-import { ItemFullSizeCarouselComponent } from './item-fullsize-carousel.component';
+import { ItemFullScreenCarouselComponent } from './item-fullscreen-carousel.component';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { SlidesCarouselModule } from '@public/shared/components/slides-carousel/slides-carousel.module';
 import { HttpClientModule } from '@angular/common/http';
@@ -21,15 +21,15 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HAMMER_PROVIDER } from '@core/hammerjs/hammerjs-provider';
 
 export default {
-  title: 'Webapp/Public/Features/ItemDetail/Components/ItemFullSizeCarousel',
-  component: ItemFullSizeCarouselComponent,
+  title: 'Webapp/Public/Features/ItemDetail/Components/ItemFullScreenCarousel',
+  component: ItemFullScreenCarouselComponent,
 } as Meta;
 
-const Template: Story<ItemFullSizeCarouselComponent> = (args: ItemFullSizeCarouselComponent) => ({
-  component: ItemFullSizeCarouselComponent,
+const Template: Story<ItemFullScreenCarouselComponent> = (args: ItemFullScreenCarouselComponent) => ({
+  component: ItemFullScreenCarouselComponent,
   props: args,
   moduleMetadata: {
-    declarations: [ItemFullSizeCarouselComponent],
+    declarations: [ItemFullScreenCarouselComponent],
     imports: [
       SvgIconModule,
       SlidesCarouselModule,

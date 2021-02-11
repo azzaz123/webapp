@@ -34,7 +34,7 @@ import {
   EMPTY_RECOMMENDED_ITEMS_MOCK,
 } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
 import { APP_PATHS } from 'app/app-routing-constants';
-import { ItemFullSizeCarouselComponent } from '../components/item-fullsize-carousel/item-fullsize-carousel.component';
+import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 
@@ -62,7 +62,7 @@ describe('ItemDetailComponent', () => {
   let itemDetailService: ItemDetailService;
   let deviceService: DeviceService;
   let decimalPipe: DecimalPipe;
-  let itemDetailImagesModal: ItemFullSizeCarouselComponent;
+  let itemDetailImagesModal: ItemFullScreenCarouselComponent;
   let router: Router;
   let de: DebugElement;
   let el: HTMLElement;
@@ -111,7 +111,7 @@ describe('ItemDetailComponent', () => {
         },
         MapItemService,
         SocialMetaTagService,
-        ItemFullSizeCarouselComponent,
+        ItemFullScreenCarouselComponent,
         CheckSessionService,
         ItemCardService,
         Renderer2,
@@ -130,7 +130,7 @@ describe('ItemDetailComponent', () => {
     el = de.nativeElement;
     router = TestBed.inject(Router);
     itemDetailService = TestBed.inject(ItemDetailService);
-    itemDetailImagesModal = TestBed.inject(ItemFullSizeCarouselComponent);
+    itemDetailImagesModal = TestBed.inject(ItemFullScreenCarouselComponent);
     fixture.detectChanges();
   });
 

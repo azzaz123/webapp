@@ -8,11 +8,11 @@ import { CheckSessionService } from '@public/core/services/check-session/check-s
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 import { CustomCurrencyPipe } from '@shared/pipes';
 import { CookieService } from 'ngx-cookie';
-import { ItemFullSizeCarouselComponent } from './item-fullsize-carousel.component';
+import { ItemFullScreenCarouselComponent } from './item-fullscreen-carousel.component';
 import { MOCK_ITEM, MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-describe('ItemFullSizeCarouselComponent', () => {
+describe('ItemFullScreenCarouselComponent', () => {
   const parentContainer = '.ItemDetailImages';
   const backButtonClass = '.ItemHeader__backButton';
   const itemPriceClass = '.ItemHeader__price';
@@ -23,8 +23,8 @@ describe('ItemFullSizeCarouselComponent', () => {
     GBP: '£',
   };
 
-  let component: ItemFullSizeCarouselComponent;
-  let fixture: ComponentFixture<ItemFullSizeCarouselComponent>;
+  let component: ItemFullScreenCarouselComponent;
+  let fixture: ComponentFixture<ItemFullScreenCarouselComponent>;
   let itemCardService: ItemCardService;
   let checkSessionService: CheckSessionService;
   let decimalPipe: DecimalPipe;
@@ -32,7 +32,7 @@ describe('ItemFullSizeCarouselComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ItemFullSizeCarouselComponent, CustomCurrencyPipe],
+      declarations: [ItemFullScreenCarouselComponent, CustomCurrencyPipe],
       imports: [HttpClientModule],
       providers: [
         {
@@ -57,7 +57,7 @@ describe('ItemFullSizeCarouselComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ItemFullSizeCarouselComponent);
+    fixture = TestBed.createComponent(ItemFullScreenCarouselComponent);
     component = fixture.componentInstance;
     component.item = MOCK_ITEM;
     itemCardService = TestBed.inject(ItemCardService);
