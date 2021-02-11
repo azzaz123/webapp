@@ -1,6 +1,8 @@
 @import '~style/common';
 
 .Slider {
+  margin: 15px 0 35px;
+
   ::ng-deep {
     .ngx-slider {
       &-bar {
@@ -16,6 +18,14 @@
         .ngx-slider-bar {
           background-color: $walla-main;
         }
+      }
+
+      &-bubble {
+        bottom: -48px;
+      }
+
+      &-limit {
+        color: $blue-grey-4 !important;
       }
 
       &-pointer {
