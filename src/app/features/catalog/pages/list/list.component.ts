@@ -104,6 +104,10 @@ export class ListComponent implements OnInit, OnDestroy {
     private analyticsService: AnalyticsService
   ) {}
 
+  get itemsAmount() {
+    return this.page * this.pageSize;
+  }
+
   ngOnInit() {
     this.getUserInfo();
 
@@ -342,6 +346,11 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public loadMore() {
+    if (this.selectedSubscriptionSlot) {
+      this.page++;
+      this.end = this.items.length < this.itemsAmount;
+      return;
+    }
     this.getItems(true);
   }
 
@@ -375,7 +384,6 @@ export class ListComponent implements OnInit, OnDestroy {
             this.setNumberOfProducts();
           }
           this.loading = false;
-          this.end = true;
         });
     } else {
       this.itemService.mine(this.init, status).subscribe((itemsData: ItemsData) => {
