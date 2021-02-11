@@ -41,6 +41,7 @@ $item-flag-height: 38px;
   }
 
   &__FallbackImage {
+    object-fit: cover;
     border-radius: $border-radius;
   }
 }

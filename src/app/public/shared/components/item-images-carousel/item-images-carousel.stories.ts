@@ -7,6 +7,7 @@ import { Story, Meta } from '@storybook/angular/types-6-0';
 import { SlidesCarouselModule } from '../slides-carousel/slides-carousel.module';
 import { ItemFlagModule } from '../item-flag/item-flag.module';
 import { ItemImagesCarouselComponent } from './item-images-carousel.component';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 export default {
   title: 'Webapp/Public/Shared/Components/ItemImagesCarousel',
@@ -29,52 +30,53 @@ const Template: Story<ItemImagesCarouselComponent> = (args: ItemImagesCarouselCo
   moduleMetadata: {
     declarations: [ItemImagesCarouselComponent],
     imports: [CommonModule, HammerModule, ItemFlagModule, SlidesCarouselModule, HttpClientModule],
-    providers: [HAMMER_PROVIDER],
+    providers: [HAMMER_PROVIDER, DeviceDetectorService],
   },
-  template: '<tsl-item-images-carousel [itemFlags]="itemFlags" [itemVisibilityFlags]="itemVisibilityFlags"></tsl-item-images-carousel>',
+  template:
+    '<tsl-item-images-carousel [images]="images" [itemFlags]="itemFlags" [itemVisibilityFlags]="itemVisibilityFlags"></tsl-item-images-carousel>',
 });
 
 const imagesURL = ['http://localhost:6006/images/item-camera.jpg', 'http://localhost:6006/images/item-pc.jpg'];
 
 export const Bumped = Template.bind({});
 Bumped.args = {
-  // images: imagesURL,
+  images: imagesURL,
   itemVisibilityFlags: { ...ITEM_BUMP_FLAGS, bumped: true },
 };
 
 export const CountryBumped = Template.bind({});
 CountryBumped.args = {
-  // images: imagesURL,
+  images: imagesURL,
   itemVisibilityFlags: { ...ITEM_BUMP_FLAGS, bumped: true, country_bumped: true },
 };
 
 export const Sold = Template.bind({});
 Sold.args = {
-  // images: imagesURL,
+  images: imagesURL,
   itemFlags: { ...ITEM_FLAGS, sold: true },
 };
 
 export const Reserved = Template.bind({});
 Reserved.args = {
-  // images: imagesURL,
+  images: imagesURL,
   itemFlags: { ...ITEM_FLAGS, reserved: true },
 };
 
 export const Expired = Template.bind({});
 Expired.args = {
-  // images: imagesURL,
+  images: imagesURL,
   itemFlags: { ...ITEM_FLAGS, expired: true },
 };
 
 export const Inactive = Template.bind({});
 Inactive.args = {
-  // images: imagesURL,
+  images: imagesURL,
   itemFlags: { ...ITEM_FLAGS, onhold: true },
 };
 
 export const TwoFlags = Template.bind({});
 TwoFlags.args = {
-  // images: imagesURL,
+  images: imagesURL,
   itemFlags: { ...ITEM_FLAGS, reserved: true },
   itemVisibilityFlags: { ...ITEM_BUMP_FLAGS, bumped: true },
 };
