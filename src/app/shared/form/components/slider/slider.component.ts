@@ -1,6 +1,8 @@
-import { Component, forwardRef } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, forwardRef, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
+import { CustomStepDefinition, Options } from '@angular-slider/ngx-slider';
+import { SLIDER_VARIANT } from './enums/slider-variant.enum';
 
 @Component({
   selector: 'tsl-slider',
@@ -14,4 +16,79 @@ import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-
     },
   ],
 })
-export class SliderComponent extends AbstractFormComponent {}
+export class SliderComponent extends AbstractFormComponent implements OnInit {
+  @Input() min: number;
+  @Input() max: number;
+  @Input() stepsConfig: { range: number[]; step: number }[];
+  @Input() units: string;
+  @Input() valueTooltip: boolean = true;
+  @Input() limitTooltip: boolean = true;
+  @Input() limitless: boolean = false;
+
+  public readonly SLIDER_VARIANT = SLIDER_VARIANT;
+  public variant = this.SLIDER_VARIANT.SINGLE;
+
+  public options: Options = {
+    floor: 0,
+    ceil: 100,
+    step: 1,
+  };
+
+  public form: FormGroup = new FormGroup({
+    control: new FormControl(),
+  });
+
+  ngOnInit(): void {
+    this.initOptions();
+    this.setStepsConfig();
+    this.bindChangesListener();
+  }
+
+  public writeValue(value: any): void {
+    this.value = value;
+    this.variant = Array.isArray(this.value) ? SLIDER_VARIANT.RANGE : SLIDER_VARIANT.SINGLE;
+    this.form.controls.control.setValue(value);
+  }
+
+  public setDisabledState(isDisabled: boolean): void {
+    this.options.disabled = isDisabled;
+  }
+
+  private initOptions(): void {
+    this.options = {
+      showSelectionBar: true,
+      floor: this.min,
+      ceil: this.max,
+      disabled: this.isDisabled,
+      translate: (value: number): string => {
+        if (value === this.max && this.limitless) {
+          return $localize`:@@limitless:No limit`;
+        }
+        return value + this.units;
+      },
+      hideLimitLabels: !this.limitTooltip,
+      hidePointerLabels: !this.valueTooltip,
+    };
+  }
+
+  private bindChangesListener(): void {
+    this.form.controls.control.valueChanges.subscribe((value: any) => {
+      this.value = this.form.controls.control.value;
+      this.onChange(this.value);
+    });
+  }
+
+  private setStepsConfig(): void {
+    if (this.stepsConfig) {
+      const stepsArray: CustomStepDefinition[] = [];
+      try {
+        this.stepsConfig.forEach((stepConfig: { range: number[]; step: number }) => {
+          for (let i = stepConfig.range[0]; i < stepConfig.range[1]; i = i + stepConfig.step) {
+            stepsArray.push({ value: i });
+          }
+        });
+        this.options.stepsArray = stepsArray;
+      } catch (e: any) {}
+    }
+  }
+}
