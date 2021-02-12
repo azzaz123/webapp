@@ -8,5 +8,6 @@ import { ButtonModule } from '@shared/button/button.module';
   declarations: [DrawerComponent],
   imports: [CommonModule, ButtonModule],
   providers: [ScrollLockService],
+  exports: [DrawerComponent],
 })
 export class DrawerModule {}

@@ -50,7 +50,7 @@ const Template: Story<DrawerComponent> = (args) => ({
   component: DrawerComponent,
   template: `
     <div [ngStyle]="${pageStyle}">
-      <tsl-drawer [isOpen]="isOpen" [offsetTop]="offsetTop">
+      <tsl-drawer [isOpen]="isOpen" [offsetTop]="offsetTop" [hasApply]="hasApply">
         <p>Drawer Content!</p>
         <stories-lorem-ipsum></stories-lorem-ipsum>
       </tsl-drawer>
@@ -69,6 +69,7 @@ const Template: Story<DrawerComponent> = (args) => ({
 const defaultArgs = {
   offsetTop: 0,
   isOpen: false,
+  hasApply: false,
 };
 
 export const Closed = Template.bind({});
@@ -84,5 +85,13 @@ export const WithForcedPositioning = Template.bind({});
 WithForcedPositioning.args = {
   ...defaultArgs,
   isOpen: true,
+  offsetTop: 100,
+};
+
+export const WithApply = Template.bind({});
+WithApply.args = {
+  ...defaultArgs,
+  isOpen: true,
+  hasApply: true,
   offsetTop: 100,
 };

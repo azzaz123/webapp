@@ -1,11 +1,21 @@
 <div *ngIf="isOpen" class="Drawer">
   <div class="Drawer__backdrop position-fixed"
+       (click)="handleClickBackdrop()"
        [style.top.px]="offsetTop"></div>
   <div class="Drawer__content p-4 position-fixed d-flex flex-column justify-content-between align-items-end"
        [style.top.px]="offsetTop">
     <div>
       <ng-content></ng-content>
     </div>
-    <tsl-button className="basic dark" i18n="@@cancelButton" (click)="handleCancel()">Cancelar</tsl-button>
+    <div class="p-2 d-flex justify-content-end mt-auto">
+      <tsl-button className="basic dark btn-filter" class="mx-1" i18n="@@cancelButton"
+                  (click)="handleCancel()">
+        Cancel
+      </tsl-button>
+      <tsl-button *ngIf="hasApply" i18n="@@Apply" className="btn-primary btn-filter" class="mx-1"
+                  (click)="handleApply()">
+        Apply
+      </tsl-button>
+    </div>
   </div>
 </div>
