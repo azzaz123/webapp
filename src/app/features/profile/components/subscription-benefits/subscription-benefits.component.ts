@@ -11,8 +11,13 @@ import { finalize } from 'rxjs/operators';
 export class SubscriptionBenefitsComponent implements OnInit {
   public loading = true;
   public benefits: SubscriptionBenefit[];
+  public faqsUrl: string;
 
   constructor(private subscriptionService: SubscriptionsService) {}
+
+  get faqUrl(): string {
+    return $localize`:@@FooterLinksFaqHref:https://ayuda.wallapop.com/hc/en-us`;
+  }
 
   ngOnInit() {
     this.subscriptionService

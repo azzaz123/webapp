@@ -1,22 +1,24 @@
 @import '~style/common';
 
-.box-content {
-  color: $blue-grey-3;
-  padding: $spacing-xxl $spacing-xxxl * 1.93;
-  h4 {
-    color: $blue-grey-1;
-    text-align: center;
-    font-size: $font-size-l;
-    font-weight: bold;
-    margin: 0 0 $spacing-ms;
-  }
-  .section-subtitle {
-    text-align: center;
-  }
+.arrow-down {
+  height: 48px;
+  width: 48px;
+  background-color: #eceff1;
+  border-radius: 50%;
 }
 
-.SubscriptionBenefitCard {
-  margin: 0 0 $spacing-xxl;
+.box-content {
+  color: $blue-grey-3;
+  padding: 40px;
+  .title {
+    color: $blue-grey-1;
+    font-size: 32px;
+    font-weight: bold;
+  }
+  .subtitle {
+    color: #90a4ae;
+    font-size: 20px;
+  }
 }
 
 .SubscriptionBenefitCard-icon {
@@ -33,24 +35,8 @@
   }
 }
 
-.SubscriptionBenefitCard-title {
-  font-weight: bold;
-  color: $walla-main;
-  margin: $spacing-ml 0 $spacing-s;
-}
-
 @include media-breakpoint-down(sm) {
   .box-content {
     padding: $spacing-l $spacing-m $spacing-m;
-  }
-
-  .SubscriptionBenefitCard {
-    &:first-child {
-      margin-top: $spacing-xxl;
-    }
-
-    &:last-child {
-      margin: 0px;
-    }
   }
 }
