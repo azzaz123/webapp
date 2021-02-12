@@ -35,34 +35,51 @@ export class ItemSpecificationsComponent implements OnInit {
   }
 
   private setCarSpecifications(): void {
-    this.typeSpecifications = [
+    const carSpecifications = [
       {
-        type: this.getBodyType(this.car.bodyType),
+        type: this.getCarSpecificationType(this.car.bodyType),
       },
       {
         type: CAR_SPECIFICATION_TYPE.SEATS,
-        label: this.car.numSeats.toString(),
+        label: this.getCarLabel(this.car.numSeats),
       },
       {
         type: this.getDoorsType(this.car.numDoors),
-        label: this.car.numDoors.toString(),
+        label: this.getCarLabel(this.car.numDoors),
       },
       {
-        type: CAR_SPECIFICATION_TYPE[this.car.engine.toUpperCase()],
+        type: this.getCarSpecificationType(this.car.engine),
       },
       {
         type: CAR_SPECIFICATION_TYPE.HORSEPOWER,
-        label: `${this.car.horsepower} cv`,
+        label: this.getCarLabel(this.car.horsepower, true),
       },
       {
-        type: CAR_SPECIFICATION_TYPE[this.car.gearbox.toUpperCase()],
+        type: this.getCarSpecificationType(this.car.gearbox),
+      },
+      {
+        type: this.getCarSpecificationType(this.car.condition),
       },
     ];
+
+    if (this.car.bodyType === 'others') carSpecifications.shift();
+    this.typeSpecifications = carSpecifications.filter((val) => val.type !== null && val.type !== undefined && val.label !== 'EMPTY');
   }
 
-  private getBodyType(bodyType: string): CAR_SPECIFICATION_TYPE {
-    if (bodyType === 'coupe_cabrio') return CAR_SPECIFICATION_TYPE.COUPE;
-    return CAR_SPECIFICATION_TYPE[bodyType.toUpperCase()];
+  private getCarSpecificationType(value: string): CAR_SPECIFICATION_TYPE {
+    const keys = Object.keys(CAR_SPECIFICATION_TYPE).filter((key) => CAR_SPECIFICATION_TYPE[key] == value) as CAR_SPECIFICATION_TYPE[];
+    const key = keys.length > 0 ? keys[0] : null;
+
+    return CAR_SPECIFICATION_TYPE[key];
+  }
+
+  private getCarLabel(label: string | number, isHorsePower = false): string {
+    const EMPTY_VALUE = 'EMPTY';
+    if (isHorsePower) {
+      return label ? `${label} cv` : EMPTY_VALUE;
+    } else {
+      return label ? label.toString() : EMPTY_VALUE;
+    }
   }
 
   private getDoorsType(doors: number): CAR_SPECIFICATION_TYPE {
