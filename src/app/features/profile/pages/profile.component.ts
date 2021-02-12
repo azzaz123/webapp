@@ -46,7 +46,15 @@ export class ProfileComponent implements OnInit {
 
   public logout($event: any) {
     $event.preventDefault();
-    this.userService.logout();
+    console.log('enter log');
+    this.userService.logout().subscribe(
+      (x) => {
+        console.log('profile compo', x);
+      },
+      (x) => {
+        console.log('profile error', x);
+      }
+    );
   }
 
   public trackClickSubscriptionTab(): void {

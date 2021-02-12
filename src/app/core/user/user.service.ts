@@ -24,7 +24,7 @@ import { UserReportApi } from './user-report.interface';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { InboxUser, InboxItem } from '@features/chat/core/model';
 
-export const LOGOUT_ENDPOINT = 'rest/logout';
+export const LOGOUT_ENDPOINT = 'shnm-portlet/api/v1/access.json/logout2';
 
 export const USER_BASE_ENDPOINT = 'api/v3/users/';
 export const USER_BY_ID_ENDPOINT = (userId: string) => `${USER_BASE_ENDPOINT}${userId}`;
@@ -82,15 +82,41 @@ export class UserService {
     return this._user && this._user.featured;
   }
 
-  public logout(redirect?: string) {
-    const redirectUrl = redirect ? redirect : environment.siteUrl.replace('es', this.subdomain);
-    const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
-    this.cookieService.remove('publisherId', cookieOptions);
-    this.cookieService.remove('creditName', cookieOptions);
-    this.cookieService.remove('creditQuantity', cookieOptions);
-    this.accessTokenService.deleteAccessToken();
-    this.permissionService.flushPermissions();
-    this.event.emit(EventService.USER_LOGOUT, redirectUrl);
+  /**
+	 * 
+		public logout(redirect?: string) {
+			const redirectUrl = redirect ? redirect : environment.siteUrl.replace('es', this.subdomain);
+      const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
+      this.cookieService.remove('publisherId', cookieOptions);
+      this.cookieService.remove('creditName', cookieOptions);
+      this.cookieService.remove('creditQuantity', cookieOptions);
+      this.accessTokenService.deleteAccessToken();
+      this.permissionService.flushPermissions();
+      this.event.emit(EventService.USER_LOGOUT, redirectUrl);
+		}
+	 */
+
+  public logout(redirect?: string): Observable<any> {
+    const headers: HttpHeaders = new HttpHeaders({
+      DeviceAccessToken: 'vp3lGQvNjJ5EVdhRXPvvce1JVbkMneFy1gNXGKrzQbtb9d08CcPAD7CGKP8BrLLPSI0gWU',
+      AppBuild: APP_VERSION,
+      DeviceOS: '0',
+    });
+    return this.http.post(`${environment.baseUrl}${LOGOUT_ENDPOINT}`, null, { headers });
+    /*     return this.http.post(`${environment.baseUrl}${LOGOUT_ENDPOINT}`, null, { headers }).pipe(
+      tap((x) => {
+        const redirectUrl = redirect ? redirect : environment.siteUrl.replace('es', this.subdomain);
+        const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
+        this.cookieService.remove('publisherId', cookieOptions);
+        this.cookieService.remove('creditName', cookieOptions);
+        this.cookieService.remove('creditQuantity', cookieOptions);
+        this.accessTokenService.deleteAccessToken();
+        this.permissionService.flushPermissions();
+        this.event.emit(EventService.USER_LOGOUT, redirectUrl);
+        console.log('ob', x);
+        return x;
+      })
+    ); */
   }
 
   public get isLogged(): boolean {
