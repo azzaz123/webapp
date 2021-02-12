@@ -109,7 +109,7 @@ describe('SliderFormComponent', () => {
       fixture.detectChanges();
     });
 
-    it('shouldmax limit label with special content', () => {
+    it('should show max limit label with special content', () => {
       const maxLabel = el.querySelectorAll(limitLabelSelector)[1];
 
       expect(maxLabel.innerHTML).toEqual($localize`:@@Limitless:No limit`);
