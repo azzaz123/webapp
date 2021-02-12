@@ -5,20 +5,20 @@ import { CustomStepDefinition, Options } from '@angular-slider/ngx-slider';
 import { SLIDER_VARIANT } from './enums/slider-variant.enum';
 
 @Component({
-  selector: 'tsl-slider',
-  templateUrl: './slider.component.html',
-  styleUrls: ['./slider.component.scss'],
+  selector: 'tsl-slider-form',
+  templateUrl: './slider-form.component.html',
+  styleUrls: ['./slider-form.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => SliderComponent),
+      useExisting: forwardRef(() => SliderFormComponent),
       multi: true,
     },
   ],
 })
-export class SliderComponent extends AbstractFormComponent implements OnChanges {
-  @Input() min: number;
-  @Input() max: number;
+export class SliderFormComponent extends AbstractFormComponent implements OnChanges {
+  @Input() min: number = 0;
+  @Input() max: number = 0;
   @Input() stepsConfig: { range: number[]; step: number }[];
   @Input() units: string;
   @Input() valueTooltip: boolean = true;
@@ -33,6 +33,11 @@ export class SliderComponent extends AbstractFormComponent implements OnChanges 
   public form: FormGroup = new FormGroup({
     control: new FormControl(),
   });
+
+  constructor() {
+    super();
+    this.initOptions();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes) {

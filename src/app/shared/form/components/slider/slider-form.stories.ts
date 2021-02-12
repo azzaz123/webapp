@@ -1,14 +1,14 @@
 import { Story } from '@storybook/angular/types-6-0';
 import { moduleMetadata } from '@storybook/angular';
 import { Component, Input } from '@angular/core';
-import { SliderModule } from './slider.module';
+import { SliderFormModule } from './slider-form.module';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'tsl-story-slider',
   template: `
     <h4>NgModel: {{ slider }}</h4>
-    <tsl-slider
+    <tsl-slider-form
       [(ngModel)]="slider"
       [min]="min"
       [max]="max"
@@ -17,10 +17,10 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
       [valueTooltip]="valueTooltip"
       [limitTooltip]="limitTooltip"
       [limitless]="limitless"
-    ></tsl-slider>
+    ></tsl-slider-form>
     <h4 class="mt-4">FormGroup: {{ formGroup.value.slider[0] }} - {{ formGroup.value.slider[1] }}</h4>
     <form [formGroup]="formGroup">
-      <tsl-slider
+      <tsl-slider-form
         formControlName="slider"
         [min]="min"
         [max]="max"
@@ -29,11 +29,11 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
         [valueTooltip]="valueTooltip"
         [limitTooltip]="limitTooltip"
         [limitless]="limitless"
-      ></tsl-slider>
+      ></tsl-slider-form>
     </form>
   `,
 })
-class StorySliderComponent {
+class StorySliderFormComponent {
   formGroup = new FormGroup({
     slider: new FormControl([20, 200]),
   });
@@ -55,16 +55,16 @@ class StorySliderComponent {
 
 export default {
   title: 'Webapp/Shared/Form/Components/Slider',
-  component: StorySliderComponent,
+  component: StorySliderFormComponent,
   decorators: [
     moduleMetadata({
-      declarations: [StorySliderComponent],
-      imports: [SliderModule, ReactiveFormsModule],
+      declarations: [StorySliderFormComponent],
+      imports: [SliderFormModule, ReactiveFormsModule],
     }),
   ],
 };
 
-const Template: Story<StorySliderComponent> = (args) => ({
+const Template: Story<StorySliderFormComponent> = (args) => ({
   props: args,
   template: `
       <tsl-story-slider 
