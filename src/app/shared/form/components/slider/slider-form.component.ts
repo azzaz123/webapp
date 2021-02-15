@@ -3,6 +3,7 @@ import { FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
 import { CustomStepDefinition, Options } from '@angular-slider/ngx-slider';
 import { SLIDER_VARIANT } from './enums/slider-variant.enum';
+import { SliderFormStepsConfig } from './interfaces/slider-form-steps-config.interface';
 
 @Component({
   selector: 'tsl-slider-form',
@@ -19,7 +20,7 @@ import { SLIDER_VARIANT } from './enums/slider-variant.enum';
 export class SliderFormComponent extends AbstractFormComponent implements OnChanges {
   @Input() min: number = 0;
   @Input() max: number = 0;
-  @Input() stepsConfig: { range: number[]; step: number }[];
+  @Input() stepsConfig: SliderFormStepsConfig[];
   @Input() units: string;
   @Input() valueTooltip: boolean = true;
   @Input() limitTooltip: boolean = true;
@@ -89,7 +90,7 @@ export class SliderFormComponent extends AbstractFormComponent implements OnChan
     if (this.stepsConfig && this.stepsConfig.length) {
       const stepsArray: CustomStepDefinition[] = [];
       try {
-        this.stepsConfig.forEach((stepConfig: { range: number[]; step: number }) => {
+        this.stepsConfig.forEach((stepConfig: SliderFormStepsConfig) => {
           for (let i = stepConfig.range[0]; i < stepConfig.range[1]; i = i + stepConfig.step) {
             stepsArray.push({ value: i });
           }
