@@ -1,5 +1,8 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SliderFormModule } from '@shared/form/components/slider/slider-form.module';
 import { RangeFilterComponent } from './range-filter.component';
 
 describe('RangeFilterComponent', () => {
@@ -11,7 +14,7 @@ describe('RangeFilterComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [RangeFilterComponent],
-      imports: [],
+      imports: [CommonModule, SliderFormModule, ReactiveFormsModule],
     })
       .overrideComponent(RangeFilterComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
