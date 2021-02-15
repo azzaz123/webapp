@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { SliderFormModule } from '@shared/form/components/slider/slider-form.module';
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { RangeFilterComponent } from './range-filter.component';
 
@@ -11,7 +11,7 @@ export default {
 
       return {
         ...story,
-        template: `<div style="width:120px">${story.template}</div>`,
+        template: `<div style="width:200px">${story.template}</div>`,
       };
     },
   ],
@@ -22,7 +22,7 @@ const Template: Story<RangeFilterComponent> = (args: RangeFilterComponent) => ({
   props: args,
   moduleMetadata: {
     declarations: [RangeFilterComponent],
-    imports: [CommonModule],
+    imports: [SliderFormModule],
   },
   template: '<tsl-range-filter></tsl-range-filter>',
 });
