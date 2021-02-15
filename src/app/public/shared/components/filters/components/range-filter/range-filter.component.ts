@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AbstractFilter } from '../abstract-filter/abstract-filter';
+import { RangeFilterConfig } from './interfaces/range-filter-config.interface';
 
 @Component({
   selector: 'tsl-range-filter',
@@ -7,7 +8,7 @@ import { AbstractFilter } from '../abstract-filter/abstract-filter';
   styleUrls: ['./range-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RangeFilterComponent extends AbstractFilter {
+export class RangeFilterComponent extends AbstractFilter<RangeFilterConfig> {
   constructor() {
     super();
     this.config = { id: '', title: '' };
