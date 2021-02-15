@@ -146,7 +146,6 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
       value: item.salePrice,
       currency: item.currencyCode,
     });
-    appboy.logCustomEvent('Sold', { platform: 'web' });
   }
 
   public clickWillis(event) {
