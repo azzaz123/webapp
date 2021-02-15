@@ -1,7 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 
-// BEFOREMERGE: Need to test in different environments
+// TODO: Need to test in different environments. This is just a placeholder
+//       Will be fully implemented in https://wallapop.atlassian.net/browse/WEB-350
 @Injectable()
 export class ScrollLockService {
   constructor(@Inject(WINDOW_TOKEN) private window: Window) {}
