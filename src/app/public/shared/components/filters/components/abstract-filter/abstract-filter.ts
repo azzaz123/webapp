@@ -7,7 +7,7 @@ import { FilterTemplateComponent } from '@public/shared/components/filters/compo
 
 export abstract class AbstractFilter implements Filter {
   @Input() variant: FILTER_VARIANT = FILTER_VARIANT.BUBBLE;
-  @Input() config: FilterConfig = { title: '' };
+  @Input() config: FilterConfig = { id: '', title: '' };
   @Input() value: FilterParameter[] = [];
   @Output() change = new EventEmitter<FilterParameter[]>();
   @Output() clear = new EventEmitter<void>();
