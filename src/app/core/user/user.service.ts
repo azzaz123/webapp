@@ -53,6 +53,8 @@ export enum USER_TYPE {
   NORMAL = 'normal',
 }
 
+export const LOCAL_STORAGE_TRY_PRO_SLOT = 'try-pro-slot';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -387,5 +389,9 @@ export class UserService {
 
   private toRadians(value: number): number {
     return (value * Math.PI) / 180;
+  }
+
+  public suggestPro(): boolean {
+    return !this.isPro && !localStorage.getItem(`${this.user.id}-${LOCAL_STORAGE_TRY_PRO_SLOT}`);
   }
 }

@@ -131,8 +131,6 @@ describe('Service: Xmpp', () => {
     sendIqSpy = spyOn(MOCKED_CLIENT, 'sendIq').and.callThrough();
     service = TestBed.inject(XmppService);
     remoteConsoleService = TestBed.inject(RemoteConsoleService);
-    appboy.initialize(environment.appboy);
-
     spyOn(console, 'warn');
   });
 

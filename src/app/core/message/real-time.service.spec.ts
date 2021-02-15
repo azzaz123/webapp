@@ -56,7 +56,6 @@ describe('RealTimeService', () => {
     analyticsService = TestBed.inject(AnalyticsService);
     connectionService = TestBed.inject(ConnectionService);
     i18nService = TestBed.inject(I18nService);
-    appboy.initialize(environment.appboy);
   });
 
   describe('connect', () => {
@@ -323,37 +322,6 @@ describe('RealTimeService', () => {
       eventService.emit(EventService.MESSAGE_SENT, newConversation, newConversation.id);
 
       expect(window['pintrk']).toHaveBeenCalledWith('track', 'checkout', event);
-    });
-
-    it('should call appboy.logCustomEvent if this is the first message message sent', () => {
-      spyOn(appboy, 'logCustomEvent');
-      const inboxMessage = new InboxMessage(
-        'someId',
-        'conversationId',
-        'some text',
-        USER_ID,
-        true,
-        new Date(),
-        MessageStatus.SENT,
-        MessageType.TEXT
-      );
-      const conv = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE();
-      conv.messages.push(inboxMessage);
-
-      eventService.emit(EventService.MESSAGE_SENT, conv, 'newMsgId');
-
-      expect(appboy.logCustomEvent).toHaveBeenCalledWith('FirstMessage', {
-        platform: 'web',
-      });
-    });
-
-    it('should not call appboy.logCustomEvent if the conversation is not empty (has messages)', () => {
-      spyOn(appboy, 'logCustomEvent');
-      MOCKED_CONVERSATIONS[0].messages = [MOCK_INBOX_CONVERSATION, MOCK_INBOX_CONVERSATION];
-
-      eventService.emit(EventService.MESSAGE_SENT, MOCKED_CONVERSATIONS[0], 'newMsgId');
-
-      expect(appboy.logCustomEvent).not.toHaveBeenCalled();
     });
 
     describe('if it`s the first message', () => {
