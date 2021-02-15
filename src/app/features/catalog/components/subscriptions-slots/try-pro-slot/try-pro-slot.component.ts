@@ -13,9 +13,7 @@ export class TryProSlotComponent {
   constructor() {}
 
   get CTAtext(): string {
-    return this.hasTrialAvailable
-      ? $localize`:@@TryProSlotCTAtrial:Free trial`
-      : $localize`:@@TryProSlotCTAPlans:Know more`;
+    return this.hasTrialAvailable ? $localize`:@@TryProSlotCTAtrial:Free trial` : $localize`:@@TryProSlotCTAPlans:Know more`;
   }
 
   public onClose(): void {
