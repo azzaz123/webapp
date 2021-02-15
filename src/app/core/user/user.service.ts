@@ -100,9 +100,9 @@ export class UserService {
 
   public logout(redirect?: string): Observable<any> {
     const headers: HttpHeaders = new HttpHeaders({
-      DeviceAccessToken: '64a9e686-80ce-489f-95d9-66da454f59b2',
-      AppBuild: '',
-      //DeviceOS: '0',
+      DeviceAccessToken: this.cookieService.get('DeviceAccessToken'),
+      AppBuild: APP_VERSION,
+      DeviceOS: '0',
     });
     return this.http.post(`${environment.baseUrl}${LOGOUT_ENDPOINT}`, null, { headers });
     /*  return this.http.post(`${environment.baseUrl}${LOGOUT_ENDPOINT}`, null, { headers }).pipe(
