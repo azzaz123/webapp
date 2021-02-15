@@ -32,6 +32,8 @@ import * as moment from 'moment';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { PrivateComponent } from './private.component';
 import { ToastService } from '@layout/toast/core/services/toast.service';
+import { ExternalCommsService } from '@core/external-comms.service';
+import { MockExternalCommsService } from '@fixtures/external-comms-service.fixtures.spec';
 
 jest.mock('moment');
 
@@ -55,6 +57,7 @@ let analyticsService: AnalyticsService;
 let uuidService: UuidService;
 let activatedRoute: ActivatedRoute;
 let deviceService: DeviceService;
+let externalCommsService: ExternalCommsService;
 
 const ACCESS_TOKEN = 'accesstoken';
 
@@ -171,6 +174,7 @@ describe('PrivateComponent', () => {
           },
         },
         { provide: AnalyticsService, useClass: MockAnalyticsService },
+        { provide: ExternalCommsService, useClass: MockExternalCommsService },
         SessionService,
         DeviceDetectorService,
         DeviceService,
@@ -197,6 +201,7 @@ describe('PrivateComponent', () => {
     analyticsService = TestBed.inject(AnalyticsService);
     uuidService = TestBed.inject(UuidService);
     activatedRoute = TestBed.inject(ActivatedRoute);
+    externalCommsService = TestBed.inject(ExternalCommsService);
 
     spyOn(desktopNotificationsService, 'init');
     spyOn(window.location, 'reload');
@@ -474,6 +479,14 @@ describe('PrivateComponent', () => {
         eventType: ANALYTIC_EVENT_TYPES.Other,
         name: ANALYTICS_EVENT_NAMES.OpenWallapop,
       });
+    });
+
+    it('should initialize external Braze communications', () => {
+      spyOn(externalCommsService, 'initializeBrazeCommunications');
+
+      component.ngOnInit();
+
+      expect(externalCommsService.initializeBrazeCommunications).toHaveBeenCalledTimes(1);
     });
   });
 });

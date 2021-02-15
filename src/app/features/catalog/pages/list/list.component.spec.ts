@@ -6,6 +6,9 @@ import {
   AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
   ClickActivateProItem,
+  ClickProSubscription,
+  ConfirmActivateProItem,
+  RemoveProSubscriptionBanner,
   SCREEN_IDS,
   ViewOwnSaleItems,
 } from '@core/analytics/analytics-constants';
@@ -21,8 +24,9 @@ import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
 import { FeatureflagService } from '@core/user/featureflag.service';
-import { UserService } from '@core/user/user.service';
+import { LOCAL_STORAGE_TRY_PRO_SLOT, UserService } from '@core/user/user.service';
 import { STATUS } from '@features/catalog/components/selected-items/selected-product.interface';
+import { TryProSlotComponent } from '@features/catalog/components/subscriptions-slots/try-pro-slot/try-pro-slot.component';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { CATEGORY_DATA_WEB } from '@fixtures/category.fixtures.spec';
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
@@ -38,7 +42,7 @@ import {
 } from '@fixtures/item.fixtures.spec';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 import { MockSubscriptionService, MOCK_SUBSCRIPTION_SLOTS, MOCK_SUBSCRIPTION_SLOT_CARS } from '@fixtures/subscriptions.fixtures.spec';
-import { MOCK_USER, USER_INFO_RESPONSE } from '@fixtures/user.fixtures.spec';
+import { MOCK_USER, USER_ID, USER_INFO_RESPONSE } from '@fixtures/user.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TooManyItemsModalComponent } from '@shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
@@ -89,7 +93,13 @@ describe('ListComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [HttpModule],
-        declarations: [ListComponent, ItemSoldDirective, SubscriptionsSlotsListComponent, SubscriptionsSlotItemComponent],
+        declarations: [
+          ListComponent,
+          ItemSoldDirective,
+          SubscriptionsSlotsListComponent,
+          SubscriptionsSlotItemComponent,
+          TryProSlotComponent,
+        ],
         providers: [
           I18nService,
           EventService,
@@ -188,6 +198,9 @@ describe('ListComponent', () => {
           {
             provide: UserService,
             useValue: {
+              suggestPro() {
+                return false;
+              },
               getStats() {
                 return of({
                   counters: mockCounters,
@@ -1114,6 +1127,7 @@ describe('ListComponent', () => {
         attributes: {
           screenId: SCREEN_IDS.MyCatalog,
           numberOfItems: mockCounters.publish,
+          proSubscriptionBanner: false,
         },
       };
 
@@ -1121,6 +1135,97 @@ describe('ListComponent', () => {
 
       expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
       expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+    });
+  });
+
+  describe('Try Pro banner', () => {
+    describe('when has not to show banner', () => {
+      it('should banner not visible', () => {
+        spyOn(userService, 'suggestPro').and.returnValue(false);
+
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        const tryProBanner = fixture.debugElement.query(By.directive(TryProSlotComponent));
+        expect(tryProBanner).toBeFalsy();
+      });
+    });
+
+    describe('when has to show banner', () => {
+      it('should banner be visible', () => {
+        spyOn(userService, 'suggestPro').and.returnValue(true);
+
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        const tryProBanner = fixture.debugElement.query(By.directive(TryProSlotComponent));
+        expect(tryProBanner).toBeTruthy();
+      });
+    });
+
+    describe('when close banner', () => {
+      it('should save data in local storage', () => {
+        spyOn(localStorage, 'setItem');
+
+        component.onCloseTryProSlot();
+        fixture.detectChanges();
+
+        expect(localStorage.setItem).toBeCalledTimes(1);
+        expect(localStorage.setItem).toHaveBeenCalledWith(`${USER_ID}-${LOCAL_STORAGE_TRY_PRO_SLOT}`, 'true');
+      });
+
+      it('should disappear banner', () => {
+        component.showTryProSlot = true;
+
+        component.onCloseTryProSlot();
+        fixture.detectChanges();
+
+        const tryProBanner = fixture.debugElement.query(By.directive(TryProSlotComponent));
+
+        expect(tryProBanner).toBeFalsy();
+      });
+
+      it('should track ClickProSubscription event', () => {
+        const event: AnalyticsPageView<RemoveProSubscriptionBanner> = {
+          name: ANALYTICS_EVENT_NAMES.RemoveProSubscriptionBanner,
+          attributes: {
+            screenId: SCREEN_IDS.MyCatalog,
+            freeTrial: component.hasTrialAvailable,
+          },
+        };
+
+        component.onCloseTryProSlot();
+        fixture.detectChanges();
+
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(event);
+      });
+    });
+
+    describe('when click CTA button', () => {
+      it('should redirect to subscriptions', () => {
+        spyOn(router, 'navigate');
+
+        component.onClickTryProSlot();
+
+        expect(router.navigate).toBeCalledTimes(1);
+        expect(router.navigate).toHaveBeenCalledWith(['profile/subscriptions']);
+      });
+
+      it('should track ClickProSubscription event', () => {
+        component.hasTrialAvailable = true;
+        const event: AnalyticsPageView<ClickProSubscription> = {
+          name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
+          attributes: {
+            screenId: SCREEN_IDS.MyCatalog,
+            freeTrial: component.hasTrialAvailable,
+          },
+        };
+
+        component.onClickTryProSlot();
+        fixture.detectChanges();
+
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(event);
+      });
     });
   });
 });

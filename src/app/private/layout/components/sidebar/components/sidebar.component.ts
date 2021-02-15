@@ -42,6 +42,7 @@ export class SidebarComponent implements OnInit {
         attributes: {
           screenId: SCREEN_IDS.MyCatalog,
           numberOfItems: userStats.counters.publish,
+          proSubscriptionBanner: this.userService.suggestPro(),
         },
       };
       this.analyticsService.trackPageView(event);

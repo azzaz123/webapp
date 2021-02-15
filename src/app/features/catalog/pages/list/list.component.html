@@ -49,7 +49,13 @@
         </a>
       </div>
     </tsl-header>
-
+    <tsl-try-pro-slot *ngIf="showTryProSlot"
+      class="d-md-block"
+      [hasTrialAvailable]="hasTrialAvailable"
+      (clickCTA)="onClickTryProSlot()"
+      (close)="onCloseTryProSlot()"
+    >
+    </tsl-try-pro-slot>
     <tsl-subscriptions-slots-list
       class="d-md-block"
       [subscriptionsSlots]="subscriptionSlots"
@@ -74,11 +80,11 @@
 
     <div class="items">
       <div id="catalog-empty-state" class="d-none d-md-block" *ngIf="!items.length && !loading && selectedStatus !== 'reviews'">
-        <tsl-svg-icon src="/assets/icons/items-empty-state.svg" class="image"></tsl-svg-icon>
+        <img src="/assets/images/placeholders/items-empty-state.svg" width="1182" height="591">
       </div>
 
       <tsl-catalog-item 
-        *ngFor="let item of items"
+        *ngFor="let item of selectedSubscriptionSlot ? (items | slice:0:itemsAmount) : items"
         [item]="item"
         (itemChange)="itemChanged($event)"
         (purchaseListingFee)="purchaseListingFee($event)"

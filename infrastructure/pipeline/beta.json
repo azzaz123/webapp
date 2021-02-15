@@ -3,8 +3,6 @@
     "EnvName": "beta",
     "ImageTag": "release",
     "ProjectName": "webapp",
-    "BucketES": "arn:aws:s3:::web-es.beta.wallapop.com",
-    "BucketEN": "arn:aws:s3:::web-en.beta.wallapop.com",
     "BucketESName": "web-es.beta.wallapop.com",
     "BucketENName": "web-en.beta.wallapop.com"
   },
