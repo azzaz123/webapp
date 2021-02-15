@@ -47,10 +47,6 @@ class StorySliderFormComponent {
   @Input() valueTooltip: boolean = true;
   @Input() limitTooltip: boolean = true;
   @Input() limitless: boolean = false;
-  // ngOnInit(): void {
-  //   console.log(this.min);
-  //   this.formGroup.get('slider').disable();
-  // }
 }
 
 export default {
