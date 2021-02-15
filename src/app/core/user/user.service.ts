@@ -102,9 +102,9 @@ export class UserService {
     const headers: HttpHeaders = new HttpHeaders({
       DeviceAccessToken: '64a9e686-80ce-489f-95d9-66da454f59b2',
       AppBuild: '',
-      DeviceOS: '0',
+      //DeviceOS: '0',
     });
-    return this.http.post(`${environment.baseUrl}${LOGOUT_ENDPOINT}`, null);
+    return this.http.post(`${environment.baseUrl}${LOGOUT_ENDPOINT}`, null, { headers });
     /*  return this.http.post(`${environment.baseUrl}${LOGOUT_ENDPOINT}`, null, { headers }).pipe(
       tap((x) => {
         const redirectUrl = redirect ? redirect : environment.siteUrl.replace('es', this.subdomain);
