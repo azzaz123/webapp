@@ -18,6 +18,10 @@ import { Observable } from 'rxjs';
 import { Image, UserLocation } from '@core/user/user-response.interface';
 import { finalize } from 'rxjs/operators';
 import { APP_PATHS } from 'app/app-routing-constants';
+import { CounterSpecifications } from '../components/item-specifications/interfaces/item.specifications.interface';
+import { Car } from '@core/item/car';
+import { Realestate } from '@core/item/realestate';
+import { MapSpecificationsService } from '../core/services/map-specifications.service';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -36,6 +40,7 @@ export class ItemDetailComponent implements OnInit {
   public images: string[];
   public itemLocation: ItemDetailLocation;
   public recommendedItems$: Observable<RecommendedItemsBodyResponse>;
+  public itemSpecifications: CounterSpecifications[];
   public itemDetail: ItemDetail;
 
   public socialShare: {
@@ -55,7 +60,8 @@ export class ItemDetailComponent implements OnInit {
     private itemDetailService: ItemDetailService,
     private socialMetaTagsService: SocialMetaTagService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private mapSpecificationsService: MapSpecificationsService
   ) {}
 
   ngOnInit(): void {
@@ -123,6 +129,7 @@ export class ItemDetailComponent implements OnInit {
     const CATEGORIES_WITH_SPECIFICATIONS = [CATEGORY_IDS.CAR, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.REAL_ESTATE_OLD];
 
     this.showItemSpecifications = CATEGORIES_WITH_SPECIFICATIONS.includes(this.itemDetail?.item?.categoryId);
+    this.generateItemSpecifications();
   }
 
   private socialShareSetup(item: Item): void {
@@ -156,6 +163,26 @@ export class ItemDetailComponent implements OnInit {
     const CATEGORIES_WITH_RECOMMENDATIONS = [CATEGORY_IDS.CAR, CATEGORY_IDS.FASHION_ACCESSORIES];
 
     this.showItemRecommendations = CATEGORIES_WITH_RECOMMENDATIONS.includes(this.itemDetail?.item?.categoryId);
+  }
+
+  private generateItemSpecifications(): void {
+    if (this.showItemSpecifications) {
+      if (this.itemDetail?.item?.categoryId === CATEGORY_IDS.CAR) {
+        this.setCarSpecifications();
+      } else {
+        this.setRealEstateSpeficiations();
+      }
+    }
+  }
+
+  private setCarSpecifications(): void {
+    const car: Car = this.itemDetail?.item;
+    this.itemSpecifications = this.mapSpecificationsService.mapCarSpecifications(car);
+  }
+
+  private setRealEstateSpeficiations(): void {
+    const realestate: Realestate = this.itemDetail?.item;
+    this.itemSpecifications = this.mapSpecificationsService.mapRealestateSpecifications(realestate);
   }
 
   set approximatedLocation(isApproximated: boolean) {

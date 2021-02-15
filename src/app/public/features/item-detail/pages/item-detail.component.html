@@ -18,7 +18,7 @@
                         <h1 class="ItemDetail__title my-0">{{itemDetail?.item?.title}}</h1>
                     </div>
                     <div *ngIf="showItemSpecifications" class="py-3 borderBottom">
-                        <tsl-item-specifications [item]="itemDetail.item"></tsl-item-specifications>
+                        <tsl-item-specifications [itemSpecifications]="itemSpecifications"></tsl-item-specifications>
                     </div>
                     <p class="ItemDetail__description py-3 mb-0 text-break">{{itemDetail?.item?.description}}</p>
                     <div class="ItemDetail__stats py-3">

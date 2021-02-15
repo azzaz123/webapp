@@ -1,13 +1,66 @@
 import { Injectable } from '@angular/core';
+import { Car } from '@core/item/car';
+import { Realestate } from '@core/item/realestate';
 import { CAR_SPECIFICATION_TYPE } from '@public/core/constants/item-specifications/cars-constants';
-import { CarSpecifications, CounterSpecifications } from '../../components/item-specifications/interfaces/item.specifications.interface';
+import {
+  CarBodyType,
+  CarCondition,
+  CarEngine,
+  CarGearBox,
+  CarSpecifications,
+  CounterSpecifications,
+  RealestateCondition,
+  RealestateOperation,
+  RealestateSpecifications,
+  RealestateType,
+} from '../../components/item-specifications/interfaces/item.specifications.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MapSpecificationsService {
-  public mapCarSpecifications(carSpecifications: CarSpecifications): CounterSpecifications[] {
-    const carCounterSpecifications = [
+  public mapCarSpecifications(car: Car): CounterSpecifications[] {
+    const carSpecifications = this.getCarSpecifications(car);
+    const carCounterSpecifications = this.getCarCounterSpecifications(carSpecifications);
+    if (carSpecifications.bodyType === 'others') carCounterSpecifications.shift();
+    return carCounterSpecifications.filter((val) => val.type !== null && val.type !== undefined && val.label !== 'EMPTY');
+  }
+
+  public mapRealestateSpecifications(realestate: Realestate): CounterSpecifications[] {
+    const realestateSpecificationsProperties = this.getRealestateSpecifications(realestate);
+    return;
+  }
+
+  private getCarSpecifications(car: Car): CarSpecifications {
+    return {
+      bodyType: car.bodyType as CarBodyType,
+      seats: car.numSeats,
+      numDoors: car.numDoors,
+      carEngine: car.engine as CarEngine,
+      horsePower: car.horsepower,
+      gearbox: car.gearbox as CarGearBox,
+      condition: car.condition as CarCondition,
+    };
+  }
+
+  private getRealestateSpecifications(realestate: Realestate): RealestateSpecifications {
+    return {
+      bathrooms: realestate.bathrooms,
+      condition: realestate.condition as RealestateCondition,
+      elevator: realestate.elevator,
+      garage: realestate.garage,
+      garden: realestate.garden,
+      pool: realestate.pool,
+      rooms: realestate.rooms,
+      surface: realestate.surface,
+      terrace: realestate.terrace,
+      type: realestate.type as RealestateType,
+      operation: realestate.operation as RealestateOperation,
+    };
+  }
+
+  private getCarCounterSpecifications(carSpecifications: CarSpecifications): CounterSpecifications[] {
+    return [
       {
         type: this.getCarSpecificationType(carSpecifications.bodyType),
       },
@@ -32,10 +85,7 @@ export class MapSpecificationsService {
       {
         type: this.getCarSpecificationType(carSpecifications.condition),
       },
-    ] as CounterSpecifications[];
-
-    if (carSpecifications.bodyType === 'others') carCounterSpecifications.shift();
-    return carCounterSpecifications.filter((val) => val.type !== null && val.type !== undefined && val.label !== 'EMPTY');
+    ];
   }
 
   private getCarSpecificationType(value: string): CAR_SPECIFICATION_TYPE {
