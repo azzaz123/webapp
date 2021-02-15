@@ -25,6 +25,8 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { InboxUser, InboxItem } from '@features/chat/core/model';
 
 export const LOGOUT_ENDPOINT = 'shnm-portlet/api/v1/access.json/logout2';
+///shnm-portlet/api/{{version}}/access.json/logout2
+//shnm-portlet/api/v1/access.json/logout2
 
 export const USER_BASE_ENDPOINT = 'api/v3/users/';
 export const USER_BY_ID_ENDPOINT = (userId: string) => `${USER_BASE_ENDPOINT}${userId}`;
@@ -98,12 +100,12 @@ export class UserService {
 
   public logout(redirect?: string): Observable<any> {
     const headers: HttpHeaders = new HttpHeaders({
-      DeviceAccessToken: 'vp3lGQvNjJ5EVdhRXPvvce1JVbkMneFy1gNXGKrzQbtb9d08CcPAD7CGKP8BrLLPSI0gWU',
-      AppBuild: APP_VERSION,
+      DeviceAccessToken: '64a9e686-80ce-489f-95d9-66da454f59b2',
+      AppBuild: '',
       DeviceOS: '0',
     });
-    return this.http.post(`${environment.baseUrl}${LOGOUT_ENDPOINT}`, null, { headers });
-    /*     return this.http.post(`${environment.baseUrl}${LOGOUT_ENDPOINT}`, null, { headers }).pipe(
+    return this.http.post(`${environment.baseUrl}${LOGOUT_ENDPOINT}`, null);
+    /*  return this.http.post(`${environment.baseUrl}${LOGOUT_ENDPOINT}`, null, { headers }).pipe(
       tap((x) => {
         const redirectUrl = redirect ? redirect : environment.siteUrl.replace('es', this.subdomain);
         const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
@@ -116,7 +118,7 @@ export class UserService {
         console.log('ob', x);
         return x;
       })
-    ); */
+    );  */
   }
 
   public get isLogged(): boolean {
