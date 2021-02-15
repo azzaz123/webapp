@@ -58,7 +58,7 @@ describe('FilterTemplateComponent', () => {
 
     describe('and has no value', () => {
       it('should set active variant to the bubble', () => {
-        expectRender(By.css('.Bubble.active'), true);
+        expectRender(By.css('.Bubble--active'), true);
       });
     });
 
@@ -70,7 +70,7 @@ describe('FilterTemplateComponent', () => {
       });
 
       it('should set selected variant to the bubble', () => {
-        expectRender(By.css('.Bubble.selected'), true);
+        expectRender(By.css('.Bubble--selected'), true);
       });
     });
 

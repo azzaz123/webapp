@@ -1,9 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-
-export enum BUBBLE_VARIANT {
-  ACTIVE = 'active',
-  SELECTED = 'selected',
-}
+import { BUBBLE_VARIANT } from '@public/shared/components/bubble/bubble.enum';
 
 @Component({
   selector: 'tsl-bubble',
@@ -14,6 +10,7 @@ export class BubbleComponent {
   @Input() icon: string;
   @Input() variant: BUBBLE_VARIANT = BUBBLE_VARIANT.ACTIVE;
   @Input() isDropdown: boolean;
+  @Input() isDropdownOpen: boolean;
   @Input() counter: number;
   @Input() isClearable: boolean;
   @Output() click: EventEmitter<MouseEvent> = new EventEmitter();

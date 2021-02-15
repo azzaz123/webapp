@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { BUBBLE_VARIANT } from '@public/shared/components/bubble/bubble.component';
 import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
+import { BUBBLE_VARIANT } from '@public/shared/components/bubble/bubble.enum';
 
 @Component({
   selector: 'tsl-filter-template',
@@ -26,6 +26,8 @@ export class FilterTemplateComponent {
 
   public BUBBLE_VARIANT = BUBBLE_VARIANT;
 
+  public isDropdownOpen = false;
+
   public handleBubbleClick(event: MouseEvent): void {
     if (this.isDropdown) {
       this.toggleDropdown();
@@ -38,6 +40,7 @@ export class FilterTemplateComponent {
 
   public handleOpenChange(isOpen: boolean): void {
     this.openStateChange.emit(isOpen);
+    this.isDropdownOpen = isOpen;
   }
 
   public handleCancel(event: MouseEvent): void {
