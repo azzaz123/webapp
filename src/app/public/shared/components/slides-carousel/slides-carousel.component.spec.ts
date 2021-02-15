@@ -25,7 +25,7 @@ describe('SlidesCarouselComponent', () => {
   const defaultIdTemplate = '#defaultCarousel';
   const slideIdContainer = '#slideContainer';
   const carouselTag = 'ngb-carousel';
-  const fallbackImageClass = '.SlidesCarousel__FallbackImage';
+  const fallbackImageClass = '.SlidesCarousel__fallbackImage';
   const hideControllerClass = '.hideControllers';
 
   let component: SlidesCarouselComponent;
