@@ -126,10 +126,10 @@ export class ItemDetailComponent implements OnInit {
   }
 
   private setItemSpecifications(): void {
-    const CATEGORIES_WITH_SPECIFICATIONS = [CATEGORY_IDS.CAR, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.REAL_ESTATE_OLD];
-
-    this.showItemSpecifications = CATEGORIES_WITH_SPECIFICATIONS.includes(this.itemDetail?.item?.categoryId);
-    this.generateItemSpecifications();
+    this.showItemSpecifications = this.isCar(this.itemDetail?.item) || this.isRealEstate(this.itemDetail?.item);
+    if (this.showItemSpecifications) {
+      this.generateItemSpecifications();
+    }
   }
 
   private socialShareSetup(item: Item): void {
@@ -166,23 +166,19 @@ export class ItemDetailComponent implements OnInit {
   }
 
   private generateItemSpecifications(): void {
-    if (this.showItemSpecifications) {
-      if (this.itemDetail?.item?.categoryId === CATEGORY_IDS.CAR) {
-        this.setCarSpecifications();
-      } else {
-        this.setRealEstateSpeficiations();
-      }
+    if (this.isCar(this.itemDetail?.item)) {
+      this.itemSpecifications = this.mapSpecificationsService.mapCarSpecifications(this.itemDetail?.item);
+    } else if (this.isRealEstate(this.itemDetail?.item)) {
+      this.itemSpecifications = this.mapSpecificationsService.mapRealestateSpecifications(this.itemDetail?.item);
     }
   }
 
-  private setCarSpecifications(): void {
-    const car: Car = this.itemDetail?.item;
-    this.itemSpecifications = this.mapSpecificationsService.mapCarSpecifications(car);
+  private isCar(item: Item): item is Car {
+    return item instanceof Car;
   }
 
-  private setRealEstateSpeficiations(): void {
-    const realestate: Realestate = this.itemDetail?.item;
-    this.itemSpecifications = this.mapSpecificationsService.mapRealestateSpecifications(realestate);
+  private isRealEstate(item: Item): item is Realestate {
+    return item instanceof Realestate;
   }
 
   set approximatedLocation(isApproximated: boolean) {
