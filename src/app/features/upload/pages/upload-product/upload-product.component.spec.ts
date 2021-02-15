@@ -206,7 +206,6 @@ describe('UploadProductComponent', () => {
     userService = TestBed.inject(UserService);
     categoryService = TestBed.inject(CategoryService);
     uploadService = TestBed.inject(UploadService);
-    appboy.initialize(environment.appboy);
     fixture.detectChanges();
   });
 
@@ -1000,27 +999,6 @@ describe('UploadProductComponent', () => {
       component.onUploaded(response, action);
 
       expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', { [action]: true, itemId: response.id }]);
-    });
-
-    it('should send appboy Edit event if item is selected', () => {
-      spyOn(appboy, 'logCustomEvent');
-
-      component.item = MOCK_ITEM;
-      component.onUploaded(response, action);
-
-      expect(appboy.logCustomEvent).toHaveBeenCalledWith('Edit', {
-        platform: 'web',
-      });
-    });
-
-    it('should send appboy List event if any item is selected', () => {
-      spyOn(appboy, 'logCustomEvent');
-
-      component.onUploaded(response, action);
-
-      expect(appboy.logCustomEvent).toHaveBeenCalledWith('List', {
-        platform: 'web',
-      });
     });
 
     describe('if it`s a item modification', () => {

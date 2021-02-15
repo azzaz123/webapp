@@ -26,6 +26,7 @@ import { AdsModule } from './ads/ads.module';
 import { HAMMER_PROVIDER } from './hammerjs/hammerjs-provider';
 import { HammerModule } from '@angular/platform-browser';
 import { CategoryService } from './category/category.service';
+import { ExternalCommsService } from './external-comms.service';
 
 @NgModule({
   imports: [
@@ -58,6 +59,7 @@ import { CategoryService } from './category/category.service';
     ItemService,
     HAMMER_PROVIDER,
     CategoryService,
+    ExternalCommsService,
   ],
 })
 export class CoreModule {
