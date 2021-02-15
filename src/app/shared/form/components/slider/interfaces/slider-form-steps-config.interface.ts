@@ -1,4 +1,4 @@
 export interface SliderFormStepsConfig {
-  range: number[];
+  range: [number, number];
   step: number;
 }
