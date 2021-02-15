@@ -1,3 +1,12 @@
+import { CAR_SPECIFICATION_TYPE } from '@public/core/constants/item-specifications/cars-constants';
+import { REAL_STATE_TYPE } from '@public/core/constants/item-specifications/realestate-constants';
+
+export interface CounterSpecifications {
+  type?: REAL_STATE_TYPE | CAR_SPECIFICATION_TYPE;
+  counter?: string | number;
+  label?: string;
+}
+
 export interface CarSpecifications {
   bodyType: CarBodyType;
   seats: number;
