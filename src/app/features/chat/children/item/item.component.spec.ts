@@ -70,7 +70,6 @@ describe('Component: Item', () => {
     userService = TestBed.inject(UserService);
     itemService = TestBed.inject(ItemService);
     cookieService = TestBed.inject(CookieService);
-    appboy.initialize(environment.appboy);
   });
 
   it('should create an instance', () => {
@@ -248,16 +247,6 @@ describe('Component: Item', () => {
   });
 
   describe('trackSoldEvent', () => {
-    it('should send appboy Sold event', () => {
-      spyOn(appboy, 'logCustomEvent');
-
-      component.trackSoldEvent(MOCK_ITEM);
-
-      expect(appboy.logCustomEvent).toHaveBeenCalledWith('Sold', {
-        platform: 'web',
-      });
-    });
-
     it('should emit ITEM_SOLD event', () => {
       spyOn(window as any, 'fbq');
 

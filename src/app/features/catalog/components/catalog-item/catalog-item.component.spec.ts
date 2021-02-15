@@ -106,7 +106,6 @@ describe('CatalogItemComponent', () => {
     errorsService = TestBed.inject(ErrorsService);
     eventService = TestBed.inject(EventService);
     deviceService = TestBed.inject(DeviceDetectorService);
-    appboy.initialize(environment.appboy);
   });
 
   it('should be created', () => {
@@ -272,7 +271,6 @@ describe('CatalogItemComponent', () => {
     beforeEach(fakeAsync(() => {
       item = MOCK_ITEM;
       spyOn(itemService, 'reactivateItem').and.callThrough();
-      spyOn(appboy, 'logCustomEvent');
       component.itemChange.subscribe(($event: ItemChangeEvent) => {
         event = $event;
       });
@@ -290,12 +288,6 @@ describe('CatalogItemComponent', () => {
     it('should emit the updated item', () => {
       expect(event.item).toEqual(item);
       expect(event.action).toBe('reactivated');
-    });
-
-    it('should send appboy ReactivateItem event', () => {
-      expect(appboy.logCustomEvent).toHaveBeenCalledWith('ReactivateItem', {
-        platform: 'web',
-      });
     });
   });
 

@@ -25,4 +25,8 @@ export interface ViewOwnSaleItems {
    * Name of the experiment or A/B testing applied to the user who has viewed the items for sale section.
    */
   experiment?: string;
+  /**
+   * Whether a promotional banner for subscriptions is displayed
+   */
+  proSubscriptionBanner?: boolean;
 }

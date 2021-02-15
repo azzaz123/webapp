@@ -67,6 +67,9 @@ describe('SidebarComponent', () => {
               isProfessional() {
                 return of(true);
               },
+              suggestPro() {
+                return false;
+              },
             },
           },
           {
@@ -161,30 +164,60 @@ describe('SidebarComponent', () => {
       });
     }));
 
-    describe('when close subscription slot', () => {
-      it('should track event if not cardealer', () => {
-        component.isProfessional = false;
-        const element: HTMLElement = fixture.nativeElement.querySelector('#qa-sidebar-catalog');
-        const expectedEvent: AnalyticsPageView<ViewOwnSaleItems> = {
-          name: ANALYTICS_EVENT_NAMES.ViewOwnSaleItems,
-          attributes: {
-            screenId: SCREEN_IDS.MyCatalog,
-            numberOfItems: mockCounters.publish,
-          },
-        };
+    describe('when click on catalog', () => {
+      describe('and is not Pro', () => {
+        beforeEach(() => {
+          component.isProfessional = false;
+        });
 
-        element.click();
+        describe('and has not to show pro banner', () => {
+          it('should track event', () => {
+            const element: HTMLElement = fixture.nativeElement.querySelector('#qa-sidebar-catalog');
+            const expectedEvent: AnalyticsPageView<ViewOwnSaleItems> = {
+              name: ANALYTICS_EVENT_NAMES.ViewOwnSaleItems,
+              attributes: {
+                screenId: SCREEN_IDS.MyCatalog,
+                numberOfItems: mockCounters.publish,
+                proSubscriptionBanner: false,
+              },
+            };
 
-        expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
-        expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+            element.click();
+
+            expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+            expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+          });
+        });
+
+        describe('and has to show pro banner', () => {
+          it('should track event', () => {
+            spyOn(userService, 'suggestPro').and.returnValue(true);
+            const element: HTMLElement = fixture.nativeElement.querySelector('#qa-sidebar-catalog');
+            const expectedEvent: AnalyticsPageView<ViewOwnSaleItems> = {
+              name: ANALYTICS_EVENT_NAMES.ViewOwnSaleItems,
+              attributes: {
+                screenId: SCREEN_IDS.MyCatalog,
+                numberOfItems: mockCounters.publish,
+                proSubscriptionBanner: true,
+              },
+            };
+
+            element.click();
+
+            expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+            expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+          });
+        });
       });
-      it('should not track event if cardealer', () => {
-        component.isProfessional = true;
-        const element: HTMLElement = fixture.nativeElement.querySelector('#qa-sidebar-catalog');
+      describe('and is cardealer', () => {
+        it('should not track event', () => {
+          component.isProfessional = true;
+          const element: HTMLElement = fixture.nativeElement.querySelector('#qa-sidebar-catalog');
 
-        element.click();
+          element.click();
 
-        expect(analyticsService.trackPageView).not.toHaveBeenCalled();
+          expect(analyticsService.trackPageView).not.toHaveBeenCalled();
+        });
       });
     });
   });
