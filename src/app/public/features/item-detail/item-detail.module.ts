@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ItemDetailService } from './core/services/item-detail.service';
+import { ItemDetailService } from './core/services/item-detail/item-detail.service';
 import { itemDetailRoutedComponents, ItemDetailRoutingModule } from './item-detail-routing.module';
 import { AdsModule } from '@public/shared/components/ads/ads.module';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';

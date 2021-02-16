@@ -8,7 +8,7 @@ import { ItemDetail } from '../interfaces/item-detail.interface';
 import { FacebookShare } from '@shared/social-share/interfaces/facebook-share.interface';
 import { TwitterShare } from '@shared/social-share/interfaces/twitter-share.interface';
 import { EmailShare } from '@shared/social-share/interfaces/email-share.interface';
-import { ItemDetailService } from '../core/services/item-detail.service';
+import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
 import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
@@ -19,9 +19,8 @@ import { Image, UserLocation } from '@core/user/user-response.interface';
 import { finalize } from 'rxjs/operators';
 import { APP_PATHS } from 'app/app-routing-constants';
 import { CounterSpecifications } from '../components/item-specifications/interfaces/item.specifications.interface';
-import { Car } from '@core/item/car';
-import { Realestate } from '@core/item/realestate';
-import { MapSpecificationsService } from '../core/services/map-specifications.service';
+import { MapSpecificationsService } from '../core/services/map-specifications/map-specifications.service';
+import { TypeGuardService } from '@public/core/services/type-guard/type-guard.service';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -61,7 +60,8 @@ export class ItemDetailComponent implements OnInit {
     private socialMetaTagsService: SocialMetaTagService,
     private route: ActivatedRoute,
     private router: Router,
-    private mapSpecificationsService: MapSpecificationsService
+    private mapSpecificationsService: MapSpecificationsService,
+    private typeGuardService: TypeGuardService
   ) {}
 
   ngOnInit(): void {
@@ -126,7 +126,8 @@ export class ItemDetailComponent implements OnInit {
   }
 
   private setItemSpecifications(): void {
-    this.showItemSpecifications = this.isCar(this.itemDetail?.item) || this.isRealEstate(this.itemDetail?.item);
+    this.showItemSpecifications =
+      this.typeGuardService.isCar(this.itemDetail?.item) || this.typeGuardService.isRealEstate(this.itemDetail?.item);
     if (this.showItemSpecifications) {
       this.generateItemSpecifications();
     }
@@ -166,19 +167,11 @@ export class ItemDetailComponent implements OnInit {
   }
 
   private generateItemSpecifications(): void {
-    if (this.isCar(this.itemDetail?.item)) {
+    if (this.typeGuardService.isCar(this.itemDetail?.item)) {
       this.itemSpecifications = this.mapSpecificationsService.mapCarSpecifications(this.itemDetail?.item);
-    } else if (this.isRealEstate(this.itemDetail?.item)) {
+    } else if (this.typeGuardService.isRealEstate(this.itemDetail?.item)) {
       this.itemSpecifications = this.mapSpecificationsService.mapRealestateSpecifications(this.itemDetail?.item);
     }
-  }
-
-  private isCar(item: Item): item is Car {
-    return item instanceof Car;
-  }
-
-  private isRealEstate(item: Item): item is Realestate {
-    return item instanceof Realestate;
   }
 
   set approximatedLocation(isApproximated: boolean) {

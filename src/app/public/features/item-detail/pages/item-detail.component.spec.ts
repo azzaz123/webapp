@@ -27,7 +27,7 @@ import { MapItemService } from '@public/features/public-profile/pages/user-publi
 import { of, throwError } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { ItemDetailService } from '../core/services/item-detail.service';
+import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
 import { ItemDetailComponent } from './item-detail.component';
 import {
   RECOMMENDED_ITEMS_MOCK,
