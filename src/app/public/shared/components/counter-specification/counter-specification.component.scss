@@ -2,23 +2,18 @@
 
 .CounterSpec {
   &__container {
+    padding: 9px;
     @include square(48px);
+    tsl-svg-icon {
+      ::ng-deep svg {
+        width: 100%;
+        height: auto;
+      }
+    }
   }
 
   &__counter {
     font-size: $font-size-xl;
-  }
-
-  &__icon {
-    width: fit-content;
-    ::ng-deep svg {
-      padding: 5px;
-    }
-    &--smaller {
-      ::ng-deep svg {
-        padding: 10px;
-      }
-    }
   }
 
   &__measure {
