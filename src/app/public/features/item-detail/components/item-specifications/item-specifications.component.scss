@@ -1,0 +1,14 @@
+@import '~style/common';
+
+@mixin width-setup($numCols) {
+  width: calc(100% / #{$numCols});
+}
+
+.CounterSpecification {
+  @include width-setup(4);
+  height: 100px;
+
+  @include media-breakpoint-up(md) {
+    @include width-setup(5);
+  }
+}
