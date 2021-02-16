@@ -33,7 +33,6 @@ export class MapSpecificationsService {
 
   public mapRealestateSpecifications(realestate: Realestate): CounterSpecifications[] {
     const realestateSpecifications = this.getRealestateSpecifications(realestate);
-    console.log('realEstateSpecifications => ', realestateSpecifications);
     const realestateCounters = this.getRealestateCounters(realestateSpecifications);
     return realestateCounters.filter((counter) => this.counterSpecificationsAreNotEmpty(counter));
   }
@@ -114,12 +113,12 @@ export class MapSpecificationsService {
     ];
 
     const pickedSpecifications = (({ elevator, garage, garden, pool, terrace, condition }) => ({
-      elevator,
+      condition,
       garage,
+      elevator,
       garden,
       pool,
       terrace,
-      condition,
     }))(realestateSpecifications);
 
     Object.entries(pickedSpecifications).forEach(([key, value]) => {
