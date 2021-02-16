@@ -5,10 +5,9 @@
 }
 
 .CounterSpecification {
-  @include width-setup(4);
-  height: 100px;
+  @include width-setup(5);
 
   @include media-breakpoint-up(md) {
-    @include width-setup(5);
+    @include width-setup(6);
   }
 }
