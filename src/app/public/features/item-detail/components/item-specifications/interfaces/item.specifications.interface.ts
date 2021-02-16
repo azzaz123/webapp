@@ -1,8 +1,8 @@
 import { CAR_SPECIFICATION_TYPE } from '@public/core/constants/item-specifications/cars-constants';
-import { REAL_STATE_TYPE } from '@public/core/constants/item-specifications/realestate-constants';
+import { REAL_ESTATE_SPECIFICATION_TYPE } from '@public/core/constants/item-specifications/realestate-constants';
 
 export interface CounterSpecifications {
-  type?: REAL_STATE_TYPE | CAR_SPECIFICATION_TYPE;
+  type?: REAL_ESTATE_SPECIFICATION_TYPE | CAR_SPECIFICATION_TYPE;
   counter?: string | number;
   label?: string;
 }
@@ -33,10 +33,7 @@ export interface RealestateSpecifications {
   surface: number;
   terrace: boolean;
   type: RealestateType;
-  operation: RealestateOperation;
 }
 
 export type RealestateType = 'apartment' | 'room' | 'office' | 'garage' | 'land' | 'box_room' | 'house';
 export type RealestateCondition = 'new_construction' | 'mint' | 'to_reform';
-// check if the operation is needed
-export type RealestateOperation = 'buy' | 'rent';
