@@ -13,7 +13,7 @@ export enum REAL_ESTATE_SPECIFICATION_TYPE {
   OFFICE = 'office',
   LAND = 'land',
   BOX_ROOM = 'box_room',
-  NEW_BUILD = 'new_build',
-  GOOD_CONDITION = 'good_condition',
+  NEW_BUILD = 'new_construction',
+  GOOD_CONDITION = 'mint',
   TO_REFORM = 'to_reform',
 }

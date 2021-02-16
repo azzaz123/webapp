@@ -19,7 +19,7 @@ export const REAL_ESTATE_NUMERIC_SPECIFICATION: ItemSpecification[] = [
   },
   {
     type: REAL_ESTATE_SPECIFICATION_TYPE.SURFACE,
-    label: { singular: 'm2' },
+    label: { singular: 'm2', plural: 'm2' },
   },
 ];
 
