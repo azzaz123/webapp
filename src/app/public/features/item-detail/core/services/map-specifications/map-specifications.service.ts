@@ -28,16 +28,14 @@ export class MapSpecificationsService {
     const carSpecifications = this.getCarSpecifications(car);
     const carCounters = this.getCarCounters(carSpecifications);
     if (carSpecifications.bodyType === 'others') carCounters.shift();
-    return carCounters.filter((val) => val.type !== null && val.type !== undefined && val.label !== this.EMPTY_VALUE);
+    return carCounters.filter((counter) => this.counterSpecificationsAreNotEmpty(counter));
   }
 
   public mapRealestateSpecifications(realestate: Realestate): CounterSpecifications[] {
     const realestateSpecifications = this.getRealestateSpecifications(realestate);
     console.log('realEstateSpecifications => ', realestateSpecifications);
     const realestateCounters = this.getRealestateCounters(realestateSpecifications);
-    return realestateCounters.filter(
-      (val) => val.type !== null && val.type !== undefined && val.label !== this.EMPTY_VALUE && val.counter !== this.EMPTY_VALUE
-    );
+    return realestateCounters.filter((counter) => this.counterSpecificationsAreNotEmpty(counter));
   }
 
   private getCarSpecifications(car: Car): CarSpecifications {
@@ -178,5 +176,11 @@ export class MapSpecificationsService {
       case 5:
         return CAR_SPECIFICATION_TYPE.FIVE_DOORS;
     }
+  }
+
+  private counterSpecificationsAreNotEmpty(counter: CounterSpecifications): boolean {
+    return (
+      counter.type !== null && counter.type !== undefined && counter.label !== this.EMPTY_VALUE && counter.counter !== this.EMPTY_VALUE
+    );
   }
 }
