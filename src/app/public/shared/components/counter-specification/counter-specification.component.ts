@@ -28,4 +28,8 @@ export class CounterSpecificationComponent {
 
     return this.counter === 1 || !this.counter ? this.specificationCounter?.label?.singular : this.specificationCounter?.label?.plural;
   }
+
+  get shouldBeSmaller(): boolean {
+    return this.type === REAL_ESTATE_SPECIFICATION_TYPE.GOOD_CONDITION;
+  }
 }

@@ -11,6 +11,14 @@
 
   &__icon {
     width: fit-content;
+    ::ng-deep svg {
+      padding: 5px;
+    }
+    &--smaller {
+      ::ng-deep svg {
+        padding: 10px;
+      }
+    }
   }
 
   &__measure {
