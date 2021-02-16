@@ -325,6 +325,15 @@ export class ListComponent implements OnInit, OnDestroy {
     this.active = false;
   }
 
+  public logout() {
+    this.userService.logout().subscribe(
+      () => {},
+      (error) => {
+        // TODO: ToastService to show error message
+      }
+    );
+  }
+
   public filterByStatus(status: string) {
     this.deselect();
 
