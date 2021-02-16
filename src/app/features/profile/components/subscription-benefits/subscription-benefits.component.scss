@@ -7,36 +7,42 @@
   border-radius: 50%;
 }
 
-.box-content {
-  color: $blue-grey-3;
-  padding: 40px;
-  .title {
-    color: $blue-grey-1;
-    font-size: 32px;
-    font-weight: bold;
-  }
-  .subtitle {
-    color: #90a4ae;
-    font-size: 20px;
-  }
+.title {
+  color: $blue-grey-1;
+  font-size: 32px;
+  font-weight: bold;
+  line-height: 42px;
+  max-width: 716px;
 }
 
-.SubscriptionBenefitCard-icon {
-  border-radius: 50%;
-  width: 56px;
-  height: 56px;
-  background-color: $blue-grey-3;
-  tsl-svg-icon {
-    width: 56px;
-    height: 56px;
-    ::ng-deep svg path {
-      fill: $white;
-    }
-  }
+.subtitle {
+  color: $blue-grey-3;
+  font-size: 20px;
+  line-height: 26px;
+  max-width: 716px;
+}
+
+.box-content {
+  padding: 40px;
+}
+
+.benefits-content {
+  padding: 70px 116px;
 }
 
 @include media-breakpoint-down(sm) {
   .box-content {
     padding: $spacing-l $spacing-m $spacing-m;
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .benefits-content {
+    &__text {
+      max-width: 388px;
+    }
+    &__item:not(:last-child) {
+      margin-bottom: 180px !important;
+    }
   }
 }

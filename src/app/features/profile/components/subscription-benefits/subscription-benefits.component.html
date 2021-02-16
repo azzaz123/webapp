@@ -9,14 +9,14 @@
     </div>
   </div>
   <div class="box">
-    <div class="box-content">
+    <div class="benefits-content">
       <div *ngFor="let benefit of benefits; let i = index"
-        class="mb-5 text-md-left d-flex row"
+        class="mb-5 d-flex justify-content-center justify-content-xl-between row benefits-content__item"
         [ngClass]="{'flex-row-reverse': i % 2}">
-        <div class="col-xl-7 d-flex justify-content-center justify-content-xl-start" [ngClass]="{'justify-content-xl-end': i % 2}">
-          <tsl-svg-icon src="/assets/images/subscriptions/IMAGE.svg"></tsl-svg-icon>
+        <div class="d-flex justify-content-center justify-content-xl-start" [ngClass]="{'justify-content-xl-end': i % 2}">
+          <tsl-svg-icon src="/assets/images/subscriptions/{{benefit.iconId}}.svg"></tsl-svg-icon>
         </div>
-        <div class="col-xl-5 text-center text-xl-left px-6">
+        <div class="d-flex flex-column justify-content-center text-center text-xl-left px-6 benefits-content__text">
           <div class="title">{{benefit.title}}</div>
           <div class="subtitle"><b>{{benefit.description}}</b></div>
         </div>
@@ -28,6 +28,6 @@
   <div class="box-content d-flex flex-column align-items-center text-center">
     <tsl-svg-icon src="/assets/icons/badge-pro-dark.svg" alt="badge-pro" class="mb-4"></tsl-svg-icon>
     <h4 class="mb-4 title" i18n>Quires saber cómo podemos impulsar tus ventas digitales?</h4>
-    <p class="mb-4" i18n>Visita nuestras <a href="{{ faqUrl }}" target="_blank">FAQs</a> para más información</p>
+    <p class="mb-4 subtitle" i18n>Visita nuestras <a [href]="faqUrl" target="_blank">FAQs</a> para más información</p>
   </div>
 </div>  
