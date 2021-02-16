@@ -18,7 +18,7 @@ import { Observable } from 'rxjs';
 import { Image, UserLocation } from '@core/user/user-response.interface';
 import { finalize } from 'rxjs/operators';
 import { APP_PATHS } from 'app/app-routing-constants';
-import { SlideCarousel } from '@public/shared/components/slides-carousel/slides-carousel.interface';
+import { CarouselSlide } from '@public/shared/components/carousel-slides/carousel-slide.interface';
 import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
 
 @Component({
@@ -71,7 +71,7 @@ export class ItemDetailComponent implements OnInit {
     return !!this.itemLocation?.latitude && !!this.itemLocation?.longitude;
   }
 
-  public openItemDetailImage($event: SlideCarousel): void {
+  public openItemDetailImage($event: CarouselSlide): void {
     this.itemDetailImagesModal.images = this.bigImages;
     this.itemDetailImagesModal.item = this.itemDetail?.item;
     this.itemDetailImagesModal.imageIndex = $event?.index;

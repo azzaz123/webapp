@@ -6,7 +6,7 @@ import { ImageFallbackModule } from '@public/core/directives/image-fallback/imag
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { CarouselSliderDirective } from './directives/carousel-slider.directive';
-import { SlidesCarouselComponent } from './slides-carousel.component';
+import { SlidesCarouselComponent } from './carousel-slides.component';
 
 export default {
   title: 'Webapp/Public/Shared/Components/SlidesCarousel',
@@ -32,7 +32,7 @@ const Template: Story<SlidesCarouselComponent> = (args: SlidesCarouselComponent)
     providers: [HAMMER_PROVIDER, DeviceDetectorService],
   },
   template:
-    '<tsl-slides-carousel><ng-template carousel-slider *ngFor="let image of images"><img [src]="image" /></ng-template></tsl-slides-carousel>',
+    '<tsl-carousel-slides><ng-template carousel-slider *ngFor="let image of images"><img [src]="image" /></ng-template></tsl-carousel-slides>',
 });
 
 const imagesURL = ['http://localhost:6006/images/item-camera.jpg', 'http://localhost:6006/images/item-pc.jpg'];

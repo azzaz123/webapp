@@ -13,19 +13,19 @@ import {
 import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
 import { FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH } from '@core/item/item';
 import { CarouselSliderDirective } from './directives/carousel-slider.directive';
-import { SlideCarousel } from './slides-carousel.interface';
+import { CarouselSlide } from './carousel-slide.interface';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
-  selector: 'tsl-slides-carousel',
-  templateUrl: './slides-carousel.component.html',
+  selector: 'tsl-carousel-slides',
+  templateUrl: './carousel-slides.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrls: ['./slides-carousel.component.scss'],
+  styleUrls: ['./carousel-slides.component.scss'],
 })
 export class SlidesCarouselComponent implements AfterContentInit {
   @ContentChildren(CarouselSliderDirective) sections: QueryList<CarouselSliderDirective>;
   @ViewChild(NgbCarousel) public carousel: NgbCarousel;
-  @Output() slideClick: EventEmitter<SlideCarousel> = new EventEmitter<SlideCarousel>();
+  @Output() slideClick: EventEmitter<CarouselSlide> = new EventEmitter<CarouselSlide>();
   @Input() initialIndex: number = 0;
   @Input() isFullScreen = false;
   @Input() className: string;

@@ -4,7 +4,7 @@ import { HammerModule } from '@angular/platform-browser';
 import { HAMMER_PROVIDER } from '@core/hammerjs/hammerjs-provider';
 import { ITEM_BUMP_FLAGS, ITEM_FLAGS } from '@fixtures/item.fixtures.spec';
 import { Story, Meta } from '@storybook/angular/types-6-0';
-import { SlidesCarouselModule } from '../slides-carousel/slides-carousel.module';
+import { SlidesCarouselModule } from '../carousel-slides/carousel-slides.module';
 import { ItemFlagModule } from '../item-flag/item-flag.module';
 import { ItemImagesCarouselComponent } from './item-images-carousel.component';
 import { DeviceDetectorService } from 'ngx-device-detector';

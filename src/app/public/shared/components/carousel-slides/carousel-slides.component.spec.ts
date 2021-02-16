@@ -3,19 +3,19 @@ import { By } from '@angular/platform-browser';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { SlidesCarouselComponent } from './slides-carousel.component';
+import { SlidesCarouselComponent } from './carousel-slides.component';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { CarouselSliderDirective } from './directives/carousel-slider.directive';
 
 @Component({
-  selector: 'tsl-slides-carousel-test',
-  template: `<tsl-slides-carousel>
+  selector: 'tsl-carousel-slides-test',
+  template: `<tsl-carousel-slides>
     <ng-template *ngFor="let img of images" carousel-slider>
       <img />
     </ng-template>
-  </tsl-slides-carousel>`,
+  </tsl-carousel-slides>`,
 })
 class TestWrapperComponent {
   public images = new Array(7);
