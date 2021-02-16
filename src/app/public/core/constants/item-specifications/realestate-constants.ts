@@ -1,4 +1,4 @@
-export enum REAL_STATE_TYPE {
+export enum REAL_ESTATE_SPECIFICATION_TYPE {
   GARAGE = 'garage',
   ELEVATOR = 'elevator',
   GARDEN = 'garden',
@@ -7,7 +7,8 @@ export enum REAL_STATE_TYPE {
   BATHROOMS = 'bathrooms',
   ROOMS = 'rooms',
   SURFACE = 'surface',
-  FLAT = 'flat',
+  ROOM = 'room',
+  FLAT = 'apartment',
   HOUSE = 'house',
   OFFICE = 'office',
   LAND = 'land',
