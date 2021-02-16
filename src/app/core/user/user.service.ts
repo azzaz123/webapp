@@ -99,13 +99,13 @@ export class UserService {
 	 */
 
   public logout(redirect?: string): Observable<any> {
-    const headers: HttpHeaders = new HttpHeaders({
-      DeviceAccessToken: this.cookieService.get('DeviceAccessToken'),
-      AppBuild: APP_VERSION,
+    const headers: HttpHeaders = new HttpHeaders(<string | string[] | any>{
+      DeviceAccessToken: this.cookieService.get('deviceAccessToken' + environment.cookieSuffix),
+      AppBuild: +APP_VERSION,
       DeviceOS: '0',
     });
-    return this.http.post(`${environment.baseUrl}${LOGOUT_ENDPOINT}`, null, { headers });
-    /*  return this.http.post(`${environment.baseUrl}${LOGOUT_ENDPOINT}`, null, { headers }).pipe(
+    //return this.http.post(`${environment.baseUrl}${LOGOUT_ENDPOINT}`, null, { headers });
+    return this.http.post(`${environment.baseUrl}${LOGOUT_ENDPOINT}`, null, { headers }).pipe(
       tap((x) => {
         const redirectUrl = redirect ? redirect : environment.siteUrl.replace('es', this.subdomain);
         const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
@@ -116,9 +116,8 @@ export class UserService {
         this.permissionService.flushPermissions();
         this.event.emit(EventService.USER_LOGOUT, redirectUrl);
         console.log('ob', x);
-        return x;
       })
-    );  */
+    );
   }
 
   public get isLogged(): boolean {
