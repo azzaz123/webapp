@@ -6,15 +6,15 @@
  */
 
 /**
- * User views subscription screen (to purchase or manage subscriptions)
+ * Users views a popup explaining the advantages of a pro account
  */
-export interface ViewSubscription {
+export interface ViewProBenefitsPopup {
   /**
-   * Identifier of the Subscription screen
+   * Identifier of the pro subscription limit popup screen
    */
-  screenId: 191;
+  screenId: 243;
   /**
-   * Whether the user is a PRO
+   * If the view offers free trial or not
    */
-  isPro: boolean;
+  freeTrial?: boolean;
 }
