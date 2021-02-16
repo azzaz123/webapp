@@ -6,11 +6,15 @@
  */
 
 /**
- * User views Subscription screen
+ * User views subscription screen (to purchase or manage subscriptions)
  */
 export interface ViewSubscription {
   /**
    * Identifier of the Subscription screen
    */
-  screenId: 207;
+  screenId: 191;
+  /**
+   * Whether the user is a PRO
+   */
+  isPro: boolean;
 }
