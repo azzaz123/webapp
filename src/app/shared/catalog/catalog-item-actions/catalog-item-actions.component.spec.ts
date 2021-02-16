@@ -181,8 +181,7 @@ describe('CatalogItemActionsComponent', () => {
         tick();
       }));
 
-      it('should call modal and activate', () => {
-        expect(modalService.open).toHaveBeenCalled();
+      it('should call activate', () => {
         expect(itemService.bulkSetActivate).toHaveBeenCalled();
       });
     });
