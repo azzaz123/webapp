@@ -34,6 +34,12 @@ import {
   EMPTY_RECOMMENDED_ITEMS_MOCK,
 } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
 import { APP_PATHS } from 'app/app-routing-constants';
+import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
+import { ItemSpecificationsComponent } from '../components/item-specifications/item-specifications.component';
+import { ItemSpecificationsModule } from '../components/item-specifications/item-specifications.module';
+import { MapSpecificationsService } from '../core/services/map-specifications/map-specifications.service';
+import { MOCK_COUNTER_SPECIFICATIONS_CAR, MOCK_COUNTER_SPECIFICATIONS_REAL_ESTATE } from '@fixtures/map-specifications.fixtures.spec';
+import { TypeGuardService } from '@public/core/services/type-guard/type-guard.service';
 
 describe('ItemDetailComponent', () => {
   const topSkyTag = 'tsl-top-sky';
@@ -49,8 +55,18 @@ describe('ItemDetailComponent', () => {
   const locationClass = '.ItemDetail__location';
   const itemContentClass = '.ItemDetail__content';
   const itemId = '123';
-  const itemDetail = {
+
+  const MOCK_ITEM_DETAIL = {
     item: MOCK_CAR,
+    user: MOCK_FULL_USER_FEATURED,
+  };
+  const MOCK_ITEM_DETAIL_REAL_ESTATE = {
+    item: MOCK_REALESTATE,
+    user: MOCK_FULL_USER_FEATURED,
+  };
+
+  const MOCK_ITEM_DETAIL_FASHION = {
+    item: MOCK_ITEM_FASHION,
     user: MOCK_FULL_USER_FEATURED,
   };
 
@@ -66,7 +82,7 @@ describe('ItemDetailComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ItemDetailComponent, CustomCurrencyPipe],
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, ItemSpecificationsModule],
       providers: [
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         {
@@ -98,15 +114,27 @@ describe('ItemDetailComponent', () => {
           provide: ItemDetailService,
           useValue: {
             getItem: () => {
-              return of(itemDetail);
+              return of(MOCK_ITEM_DETAIL);
             },
             getRecommendedItems: () => {
               return of(RECOMMENDED_ITEMS_MOCK);
             },
           },
         },
+        {
+          provide: MapSpecificationsService,
+          useValue: {
+            mapCarSpecifications: () => {
+              return MOCK_COUNTER_SPECIFICATIONS_CAR;
+            },
+            mapRealestateSpecifications: () => {
+              return MOCK_COUNTER_SPECIFICATIONS_REAL_ESTATE;
+            },
+          },
+        },
         MapItemService,
         SocialMetaTagService,
+        TypeGuardService,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -250,7 +278,7 @@ describe('ItemDetailComponent', () => {
         component.ngOnInit();
         fixture.detectChanges();
 
-        expect(component.itemDetail).toBe(itemDetail);
+        expect(component.itemDetail).toBe(MOCK_ITEM_DETAIL);
       });
 
       it('should set social share data correctly', () => {
@@ -286,7 +314,7 @@ describe('ItemDetailComponent', () => {
 
   describe('when we have an item...', () => {
     beforeEach(() => {
-      component.itemDetail = itemDetail;
+      component.itemDetail = MOCK_ITEM_DETAIL;
     });
 
     it('should print their title', () => {
@@ -383,6 +411,34 @@ describe('ItemDetailComponent', () => {
       });
       it('should NOT show the recommended items', () => {
         expect(fixture.debugElement.query(By.css(recommendedItemsTag))).toBeFalsy();
+      });
+    });
+
+    describe('when the item is a real estate ...', () => {
+      beforeEach(() => {
+        spyOn(itemDetailService, 'getItem').and.returnValue(of(MOCK_ITEM_DETAIL_REAL_ESTATE));
+
+        component.itemSpecifications = null;
+        component.ngOnInit();
+        fixture.detectChanges();
+      });
+
+      it('should show the item specifications...', () => {
+        expect(fixture.debugElement.query(By.directive(ItemSpecificationsComponent))).toBeTruthy();
+      });
+    });
+
+    describe('when the item is NOT a real estate or a car...', () => {
+      beforeEach(() => {
+        spyOn(itemDetailService, 'getItem').and.returnValue(of(MOCK_ITEM_DETAIL_FASHION));
+
+        component.itemSpecifications = null;
+        component.ngOnInit();
+        fixture.detectChanges();
+      });
+
+      it('should show the item specifications...', () => {
+        expect(fixture.debugElement.query(By.directive(ItemSpecificationsComponent))).toBeFalsy();
       });
     });
   });
