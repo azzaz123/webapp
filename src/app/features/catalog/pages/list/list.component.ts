@@ -25,7 +25,6 @@ import { User } from '@core/user/user';
 import { Counters, UserStats } from '@core/user/user-stats.interface';
 import { LOCAL_STORAGE_TRY_PRO_SLOT, UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ActivateItemsModalComponent } from '@shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component';
 import { DeactivateItemsModalComponent } from '@shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
 import { TooManyItemsModalComponent } from '@shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
@@ -554,15 +553,8 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public activate(subscriptionType = SUBSCRIPTION_TYPES.stripe, itemId?: string) {
-    this.modalService.open(ActivateItemsModalComponent).result.then(
-      () => {
-        this.trackConfirmActivateProItem(itemId);
-        itemId ? this.activateSingleItem(itemId, subscriptionType) : this.activateMultiItems(subscriptionType);
-      },
-      () => null
-    );
-
     this.trackActivateProItem(itemId);
+    itemId ? this.activateSingleItem(itemId, subscriptionType) : this.activateMultiItems(subscriptionType);
   }
 
   private trackActivateProItem(itemId: string): void {
