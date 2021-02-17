@@ -4,9 +4,11 @@
 [isBubble]="true"
 [isDropdown]="true"
 [hasApply]="true"
+[isClearable]="true"
 [title]="config.title"
 [icon]="config.icon"
 [label]="getLabel()"
+[hasValue]="hasValue()"
 (apply)="handleApply()"
 (clear)="handleClear()">
 

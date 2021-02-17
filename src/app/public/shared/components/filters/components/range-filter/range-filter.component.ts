@@ -39,7 +39,16 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
     this.emitChange();
   }
 
-  public handleClear(): void {}
+  public hasValue(): boolean {
+    return this.value.length > 0;
+  }
+
+  public handleClear(): void {
+    this.formGroup.controls.range.setValue([this.range[0], this.range[1]]);
+    this.emitEmptyChange();
+    this.setLabel(null, null);
+    this.value = [];
+  }
 
   private handleStepConfig(): void {
     if (this.stepsConfig) {
@@ -70,9 +79,12 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
     });
   }
 
+  private emitEmptyChange(): void {
+    this.change.emit([]);
+  }
+
   private emitChange(): void {
     this.setValue(this.getMinValue(), this.getMaxValue());
-    console.log('emitChange', this.getMinValue(), this.getMaxValue());
     this.change.emit(this.value);
   }
 
@@ -113,6 +125,6 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
 
   private getMinValue(): number {
     const range = this.formGroup.controls.range.value;
-    return range[0] === this.range[0] ? null : range[0];
+    return range[0];
   }
 }
