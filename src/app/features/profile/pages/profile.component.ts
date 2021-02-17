@@ -38,7 +38,9 @@ export class ProfileComponent implements OnInit {
     });
 
     this.subscriptionService.getSubscriptions().subscribe((subscriptions) => {
-      this.hasOneTrialSubscription = this.subscriptionService.hasOneTrialSubscription(subscriptions);
+      if (!!subscriptions) {
+        this.hasOneTrialSubscription = this.subscriptionService.hasOneTrialSubscription(subscriptions);
+      }
     });
 
     this.userService.getStats().subscribe((userStats) => (this.userStats = userStats));
