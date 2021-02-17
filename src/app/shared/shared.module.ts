@@ -40,7 +40,6 @@ import { CartComponent } from './catalog/cart/cart.component';
 import { RouterModule } from '@angular/router';
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
 import { CountdownComponent } from './countdown/countdown.component';
-import { ActivateItemsModalComponent } from './catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component';
 import { DeactivateItemsModalComponent } from './catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
 import { UploaderModule } from './uploader/uploader.module';
 import { CoverUploadComponent } from './profile/cover-upload/cover-upload.component';
@@ -198,7 +197,6 @@ import { ButtonModule } from './button/button.module';
     CartComponent,
     ExitConfirmationModalComponent,
     CountdownComponent,
-    ActivateItemsModalComponent,
     DeactivateItemsModalComponent,
     CoverUploadComponent,
     KeywordSuggesterComponent,
@@ -232,7 +230,6 @@ import { ButtonModule } from './button/button.module';
     EmailModalComponent,
     PasswordModalComponent,
     ExitConfirmationModalComponent,
-    ActivateItemsModalComponent,
     DeactivateItemsModalComponent,
     NewCardModalComponent,
     NoCardModalComponent,
