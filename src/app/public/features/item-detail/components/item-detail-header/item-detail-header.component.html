@@ -1,1 +1,17 @@
-<p>item-detail-header works!</p>
+<div class="my-3 d-flex justify-content-between align-items-center">
+    <tsl-user-basic-info *ngIf="userStats && user" [userStats]="userStats" [userInfo]="user"
+        [styleSize]="USER_INFO_SIZE.SMALL"></tsl-user-basic-info>
+    <div *ngIf="isOwner; else basicOperations"></div>
+    <ng-template #basicOperations>
+        <div class="OptionButtons">
+            <tsl-button className="stripe" class="mr-2 OptionButtons__favourite" (click)="toggleItemFavorite()">
+                <tsl-favourite-icon [active]="item?.flags?.favorite">
+                </tsl-favourite-icon>
+            </tsl-button>
+            <tsl-button className="btn-primary stripe" class="ChatButton" [routerLink]="['/chat']"
+                [queryParams]="{itemId: item.id}">
+                Chat
+            </tsl-button>
+        </div>
+    </ng-template>
+</div>
