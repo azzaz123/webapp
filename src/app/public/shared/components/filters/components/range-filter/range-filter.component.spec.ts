@@ -18,11 +18,7 @@ describe('RangeFilterComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [RangeFilterComponent],
       imports: [CommonModule, SliderFormModule, ReactiveFormsModule, AbstractFilterModule, HttpClientTestingModule],
-    })
-      .overrideComponent(RangeFilterComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default },
-      })
-      .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {
