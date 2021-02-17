@@ -326,32 +326,18 @@ describe('Service: User', () => {
       expect(req.request.headers.get('AppBuild')).toEqual(appVersion);
     });
 
-    it('should call deleteAccessToken', () => {
+    it('should call deleteAccessToken and call event passing direct url and call flush permissions', () => {
       spyOn(service, 'logout').and.returnValue(of());
 
       service.logout('redirect_url').subscribe(() => {
         expect(accessTokenService.deleteAccessToken).toHaveBeenCalled();
-      });
-    });
-
-    it('should call event passing redirect url', () => {
-      spyOn(service, 'logout').and.returnValue(of());
-
-      service.logout('redirect_url').subscribe(() => {
         expect(redirectUrl).toBe('redirect_url');
+        expect(permissionService.flushPermissions).toHaveBeenCalled();
       });
     });
 
     it('should remove publisherId from cookie', () => {
       expect(cookieService['publisherId']).not.toBeDefined();
-    });
-
-    it('should call flush permissions', () => {
-      spyOn(service, 'logout').and.returnValue(of());
-
-      service.logout('redirect_url').subscribe(() => {
-        expect(permissionService.flushPermissions).toHaveBeenCalled();
-      });
     });
   });
 
