@@ -40,10 +40,7 @@ describe('SliderFormComponent', () => {
       component.min = DEFAULT_MIN;
       component.max = DEFAULT_MAX;
 
-      component.ngOnChanges({
-        min: new SimpleChange(null, component.min, true),
-        max: new SimpleChange(null, component.max, true),
-      });
+      component.ngOnChanges();
 
       fixture.detectChanges();
     });
@@ -69,11 +66,7 @@ describe('SliderFormComponent', () => {
       component.limitTooltip = false;
       component.valueTooltip = false;
 
-      component.ngOnChanges({
-        min: new SimpleChange(null, component.min, true),
-        limitTooltip: new SimpleChange(null, component.limitTooltip, true),
-        valueTooltip: new SimpleChange(null, component.valueTooltip, true),
-      });
+      component.ngOnChanges();
 
       fixture.detectChanges();
     });
@@ -95,11 +88,7 @@ describe('SliderFormComponent', () => {
       component.max = DEFAULT_MAX;
       component.limitless = true;
 
-      component.ngOnChanges({
-        min: new SimpleChange(null, component.min, true),
-        max: new SimpleChange(null, component.max, true),
-        limitless: new SimpleChange(null, component.limitless, true),
-      });
+      component.ngOnChanges();
 
       fixture.detectChanges();
     });
@@ -117,11 +106,7 @@ describe('SliderFormComponent', () => {
       component.max = DEFAULT_MAX;
       component.units = 'units';
 
-      component.ngOnChanges({
-        min: new SimpleChange(null, component.min, true),
-        max: new SimpleChange(null, component.max, true),
-        units: new SimpleChange(null, component.units, true),
-      });
+      component.ngOnChanges();
 
       fixture.detectChanges();
     });
