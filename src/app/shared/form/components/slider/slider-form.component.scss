@@ -29,7 +29,7 @@
       }
 
       &-pointer {
-        background-color: white;
+        background-color: $white;
         background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MyIgaGVpZ2h0PSI2MiI+PGcgZmlsbD0iI0NGRDhEQyIgZmlsbC1ydWxlPSJldmVub2RkIj48cmVjdCB3aWR0aD0iMTEiIGhlaWdodD0iNjIiIHJ4PSI1LjUiLz48cmVjdCB3aWR0aD0iMTEiIGhlaWdodD0iNjIiIHg9IjI2IiByeD0iNS41Ii8+PHJlY3Qgd2lkdGg9IjExIiBoZWlnaHQ9IjYyIiB4PSI1MiIgcng9IjUuNSIvPjwvZz48L3N2Zz4=);
         background-position: center;
         background-repeat: no-repeat;
@@ -48,7 +48,7 @@
   &[disabled] {
     ::ng-deep {
       .ngx-slider-pointer {
-        background-color: white !important;
+        background-color: $white !important;
       }
     }
   }
