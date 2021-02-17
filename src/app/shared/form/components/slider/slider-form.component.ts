@@ -62,6 +62,7 @@ export class SliderFormComponent extends AbstractFormComponent<[number, number]>
 
   private initOptions(): void {
     this.options = {
+      animate: false,
       showSelectionBar: true,
       floor: this.min,
       ceil: this.max,
