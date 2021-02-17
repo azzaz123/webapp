@@ -60,15 +60,6 @@ describe('ItemDetailComponent', () => {
     item: MOCK_CAR,
     user: MOCK_FULL_USER_FEATURED,
   };
-  const MOCK_ITEM_DETAIL_REAL_ESTATE = {
-    item: MOCK_REALESTATE,
-    user: MOCK_FULL_USER_FEATURED,
-  };
-
-  const MOCK_ITEM_DETAIL_FASHION = {
-    item: MOCK_ITEM_FASHION,
-    user: MOCK_FULL_USER_FEATURED,
-  };
 
   let component: ItemDetailComponent;
   let fixture: ComponentFixture<ItemDetailComponent>;
@@ -413,10 +404,26 @@ describe('ItemDetailComponent', () => {
         expect(fixture.debugElement.query(By.css(recommendedItemsTag))).toBeFalsy();
       });
     });
+  });
+
+  describe('when we handle the item specifications...', () => {
+    describe('when the item is a car ...', () => {
+      beforeEach(() => {
+        component.itemDetail.item = MOCK_CAR;
+
+        component.itemSpecifications = null;
+        component.ngOnInit();
+        fixture.detectChanges();
+      });
+
+      it('should show the item specifications...', () => {
+        expect(fixture.debugElement.query(By.directive(ItemSpecificationsComponent))).toBeTruthy();
+      });
+    });
 
     describe('when the item is a real estate ...', () => {
       beforeEach(() => {
-        spyOn(itemDetailService, 'getItem').and.returnValue(of(MOCK_ITEM_DETAIL_REAL_ESTATE));
+        component.itemDetail.item = MOCK_REALESTATE;
 
         component.itemSpecifications = null;
         component.ngOnInit();
@@ -430,7 +437,7 @@ describe('ItemDetailComponent', () => {
 
     describe('when the item is NOT a real estate or a car...', () => {
       beforeEach(() => {
-        spyOn(itemDetailService, 'getItem').and.returnValue(of(MOCK_ITEM_DETAIL_FASHION));
+        component.itemDetail.item = MOCK_ITEM_FASHION;
 
         component.itemSpecifications = null;
         component.ngOnInit();

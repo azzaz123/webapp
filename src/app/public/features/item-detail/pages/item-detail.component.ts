@@ -140,8 +140,8 @@ export class ItemDetailComponent implements OnInit {
       message: $localize`:@@ItemDetailShareEmailText:This may interest you - ` + item.description,
     };
 
-    this.socialMetaTagsService.insertTwitterMetaTags(item.title, item.description, item.mainImage.urls_by_size.medium);
-    this.socialMetaTagsService.insertFacebookMetaTags(item.title, item.description, item.mainImage.urls_by_size.medium, item.webLink);
+    this.socialMetaTagsService.insertTwitterMetaTags(item.title, item.description, item.mainImage?.urls_by_size?.medium);
+    this.socialMetaTagsService.insertFacebookMetaTags(item.title, item.description, item.mainImage?.urls_by_size?.medium, item.webLink);
   }
 
   private calculateItemLocationSpecifications(): void {
