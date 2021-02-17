@@ -39,11 +39,6 @@ describe('SliderFormComponent', () => {
     beforeEach(() => {
       component.min = DEFAULT_MIN;
       component.max = DEFAULT_MAX;
-      // component.units = '';
-      // component.stepsConfig = [];
-      // component.limitTooltip = true;
-      // component.valueTooltip = true;
-      // component.limitless = false;
 
       component.ngOnChanges({
         min: new SimpleChange(null, component.min, true),
