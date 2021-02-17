@@ -21,6 +21,7 @@ import {
   SUBSCRIPTIONS_NOT_SUB,
   MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY,
   MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE,
+  MAPPED_SUBSCRIPTIONS_ADDED,
 } from '../../../tests/subscriptions.fixtures.spec';
 import { CategoryService } from '../category/category.service';
 import { AccessTokenService } from '../http/access-token.service';
@@ -426,6 +427,31 @@ describe('SubscriptionsService', () => {
     });
   });
 
+  describe('get getTrialSubscriptionsIds', () => {
+    describe('when has not any free trial', () => {
+      it('should return empty', () => {
+        const result = service.getTrialSubscriptionsIds(MAPPED_SUBSCRIPTIONS);
+
+        expect(result).toEqual([]);
+      });
+    });
+
+    describe('when has some free trial', () => {
+      it('should return ids array', () => {
+        const result = service.getTrialSubscriptionsIds(MAPPED_SUBSCRIPTIONS_ADDED);
+
+        expect(result).toEqual([14000]);
+      });
+    });
+
+    describe('when subsriptions is undefined', () => {
+      it('should return ids array', () => {
+        const result = service.getTrialSubscriptionsIds(undefined);
+
+        expect(result).toEqual([]);
+      });
+    });
+  });
   afterAll(() => {
     TestBed.resetTestingModule();
   });
