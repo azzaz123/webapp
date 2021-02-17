@@ -313,7 +313,9 @@ describe('Service: User', () => {
 
     it('should call logout endpoint', () => {
       const expectedUrl = `${environment.baseUrl}${LOGOUT_ENDPOINT}`;
-      const appVersion = service.getReleaseVersion(APP_VERSION).toString();
+      const appVersion = APP_VERSION.split('.')
+        .map((subVersion: string) => ('00' + subVersion).slice(-3))
+        .reduce((a: string, b: string) => parseInt(a) + b);
 
       service.logout().subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);

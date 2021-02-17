@@ -81,19 +81,22 @@ export class UserService {
     return this._user && this._user.featured;
   }
 
-  public getReleaseVersion(appVersion: string): string {
-    return appVersion
-      .split('.')
+  get deviceAccessToken(): string {
+    return this.cookieService.get('deviceAccessToken' + environment.cookieSuffix)
+      ? this.cookieService.get('deviceAccessToken' + environment.cookieSuffix)
+      : '';
+  }
+
+  get releaseVersion(): string {
+    return APP_VERSION.split('.')
       .map((subVersion: string) => ('00' + subVersion).slice(-3))
       .reduce((a: string, b: string) => parseInt(a) + b);
   }
 
   public logout(redirect?: string): Observable<any> {
     const headers: HttpHeaders = new HttpHeaders({
-      DeviceAccessToken: this.cookieService.get('deviceAccessToken' + environment.cookieSuffix)
-        ? this.cookieService.get('deviceAccessToken' + environment.cookieSuffix)
-        : '',
-      AppBuild: this.getReleaseVersion(APP_VERSION),
+      DeviceAccessToken: this.deviceAccessToken,
+      AppBuild: this.releaseVersion,
       DeviceOS: '0',
     });
     return this.http.post(`${environment.baseUrl}${LOGOUT_ENDPOINT}`, null, { headers }).pipe(
