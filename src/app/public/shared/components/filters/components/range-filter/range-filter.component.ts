@@ -49,6 +49,7 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
     this.emitEmptyChange();
     this.setLabel(null, null);
     this.value = [];
+    this.clear.emit();
   }
 
   private handleStepConfig(): void {
