@@ -85,7 +85,7 @@ export class SliderFormComponent extends AbstractFormComponent<[number, number]>
   }
 
   private setStepsConfig(): void {
-    if (this.stepsConfig && this.stepsConfig.length) {
+    if (this.stepsConfig?.length) {
       const stepsArray: CustomStepDefinition[] = [];
       try {
         this.stepsConfig.forEach((stepConfig: SliderFormStepsConfig) => {
