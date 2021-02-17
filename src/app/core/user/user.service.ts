@@ -93,11 +93,12 @@ export class UserService {
       DeviceAccessToken: this.cookieService.get('deviceAccessToken' + environment.cookieSuffix)
         ? this.cookieService.get('deviceAccessToken' + environment.cookieSuffix)
         : '',
-      AppBuild: this.getReleaseVersion(APP_VERSION),
+      AppBuild: this.getReleaseVersion(APP_VERSION).toString(),
       DeviceOS: '0',
     });
     return this.http.post(`${environment.baseUrl}${LOGOUT_ENDPOINT}`, null, { headers }).pipe(
       tap(() => {
+        console.log('ttt');
         const redirectUrl = redirect ? redirect : environment.siteUrl.replace('es', this.subdomain);
         const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
         this.cookieService.remove('publisherId', cookieOptions);

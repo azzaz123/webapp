@@ -279,13 +279,10 @@ describe('Service: User', () => {
     }));
 
     it('should call the me/online endpoint ONCE when the client connects and stop after the user has logged out', fakeAsync(() => {
-      //spyOn(accessTokenService, 'deleteAccessToken').and.callThrough();
-      //spyOn(service, 'logout').and.returnValue(of());
-      //spyOn(service, 'logout').and.callThrough();
+      spyOn(service, 'logout').and.callThrough();
       service.sendUserPresenceInterval(intervalValue);
       tick(intervalValue * callTimes);
       service.logout();
-      //accessTokenService.deleteAccessToken();
       tick(intervalValue * 4);
       let requests = httpMock.match(onlineUrl);
       requests.forEach((request) => request.flush({}));
@@ -310,17 +307,15 @@ describe('Service: User', () => {
       spyOn(permissionService, 'flushPermissions').and.returnValue({});
       //spyOn(service, 'logout').and.returnValue(of());
       spyOn(accessTokenService, 'deleteAccessToken').and.callThrough();
-      accessTokenService.storeAccessToken('token');
 
+      accessTokenService.storeAccessToken('token');
       event.subscribe(EventService.USER_LOGOUT, (param) => (redirectUrl = param));
       cookieService.put('publisherId', 'someId');
-
-      //service.logout('redirect_url');
     });
 
     it('should call logout endpoint', () => {
       const expectedUrl = `${environment.baseUrl}${LOGOUT_ENDPOINT}`;
-      //const appVersion = service.getReleaseVersion(APP_VERSION);
+      const appVersion = service.getReleaseVersion(APP_VERSION).toString();
 
       service.logout().subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);
@@ -330,15 +325,23 @@ describe('Service: User', () => {
       expect(req.request.method).toEqual('POST');
       expect(req.request.headers.get('DeviceAccessToken')).toEqual('');
       expect(req.request.headers.get('DeviceOS')).toEqual('0');
-      //expect(req.request.headers.get('AppBuild')).toEqual(appVersion); Cannot test AppBuild because of the type number
+      expect(req.request.headers.get('AppBuild')).toEqual(appVersion);
     });
 
     it('should call deleteAccessToken', () => {
-      expect(accessTokenService.deleteAccessToken).toHaveBeenCalled();
+      spyOn(service, 'logout').and.returnValue(of());
+
+      service.logout('redirect_url').subscribe(() => {
+        expect(accessTokenService.deleteAccessToken).toHaveBeenCalled();
+      });
     });
 
     it('should call event passing redirect url', () => {
-      expect(redirectUrl).toBe('redirect_url');
+      spyOn(service, 'logout').and.returnValue(of());
+
+      service.logout('redirect_url').subscribe(() => {
+        expect(redirectUrl).toBe('redirect_url');
+      });
     });
 
     it('should remove publisherId from cookie', () => {
@@ -346,7 +349,11 @@ describe('Service: User', () => {
     });
 
     it('should call flush permissions', () => {
-      expect(permissionService.flushPermissions).toHaveBeenCalled();
+      spyOn(service, 'logout').and.returnValue(of());
+
+      service.logout('redirect_url').subscribe(() => {
+        expect(permissionService.flushPermissions).toHaveBeenCalled();
+      });
     });
   });
 
