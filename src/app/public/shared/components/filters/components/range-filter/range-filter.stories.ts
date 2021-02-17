@@ -73,7 +73,7 @@ export const WithValue = Template.bind({});
 WithValue.args = {
   ...Steps.args,
   value: {
-    min: 20,
-    max: 200,
+    min: 50,
+    max: 2000,
   },
 };

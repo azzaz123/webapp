@@ -57,10 +57,12 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
   }
 
   private createForm(): void {
+    const min = this.value[this.config.mapKey.minKey] || this.range[0];
+    const max = this.value[this.config.mapKey.maxKey] || this.range[1];
     this.formGroup = new FormGroup({
-      range: new FormControl([this.range[0], this.range[1]]),
-      min: new FormControl(this.range[0]),
-      max: new FormControl(this.limitless ? null : this.range[1]),
+      range: new FormControl([min, , max]),
+      min: new FormControl(min),
+      max: new FormControl(this.limitless ? null : max),
     });
   }
 
