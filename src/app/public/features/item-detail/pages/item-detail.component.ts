@@ -103,7 +103,7 @@ export class ItemDetailComponent implements OnInit {
   private calculateItemCoordinates(): void {
     const detailLocation: UserLocation = this.itemDetail.item?.location || this.itemDetail.user?.location;
     this.itemLocation = {
-      zip: detailLocation.zip,
+      zip: detailLocation.zip || detailLocation.postal_code,
       city: detailLocation.city,
       latitude: detailLocation.approximated_latitude,
       longitude: detailLocation.approximated_longitude,
