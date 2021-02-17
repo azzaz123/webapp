@@ -40,10 +40,8 @@ export class SliderFormComponent extends AbstractFormComponent implements OnChan
     this.initOptions();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes) {
-      this.init();
-    }
+  ngOnChanges(): void {
+    this.init();
   }
 
   public writeValue(value: any): void {
