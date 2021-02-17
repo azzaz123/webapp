@@ -11,7 +11,6 @@ import { finalize } from 'rxjs/operators';
 export class SubscriptionBenefitsComponent implements OnInit {
   public loading = true;
   public benefits: SubscriptionBenefit[];
-  public faqsUrl: string;
 
   constructor(private subscriptionService: SubscriptionsService) {}
 
