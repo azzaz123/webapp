@@ -78,8 +78,8 @@ export class SliderFormComponent extends AbstractFormComponent<[number, number]>
   }
 
   private bindChangesListener(): void {
-    this.form.controls.control.valueChanges.subscribe((value: any) => {
-      this.value = this.form.controls.control.value;
+    this.form.controls.control.valueChanges.subscribe((value: [number, number]) => {
+      this.value = value;
       this.onChange(this.value);
     });
   }
