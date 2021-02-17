@@ -1,4 +1,4 @@
-export interface FilterConfig<T> {
+export interface FilterConfig {
   id: string;
   title: string;
   icon?: string;
@@ -6,5 +6,4 @@ export interface FilterConfig<T> {
   actions?: {
     apply?: boolean;
   };
-  mapKey: T;
 }
