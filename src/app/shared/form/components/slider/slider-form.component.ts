@@ -3,7 +3,7 @@ import { FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
 import { CustomStepDefinition, Options } from '@angular-slider/ngx-slider';
 import { SLIDER_VARIANT } from './enums/slider-variant.enum';
-import { SliderFormStepsConfig } from './interfaces/slider-form-steps-config.interface';
+import { SliderFormStepConfig } from './interfaces/slider-form-step-config.interface';
 
 @Component({
   selector: 'tsl-slider-form',
@@ -17,10 +17,10 @@ import { SliderFormStepsConfig } from './interfaces/slider-form-steps-config.int
     },
   ],
 })
-export class SliderFormComponent extends AbstractFormComponent implements OnChanges {
+export class SliderFormComponent extends AbstractFormComponent<[number, number]> implements OnChanges {
   @Input() min: number = 0;
   @Input() max: number = 0;
-  @Input() stepsConfig: SliderFormStepsConfig[];
+  @Input() stepsConfig: SliderFormStepConfig[];
   @Input() units: string;
   @Input() valueTooltip: boolean = true;
   @Input() limitTooltip: boolean = true;
@@ -40,13 +40,11 @@ export class SliderFormComponent extends AbstractFormComponent implements OnChan
     this.initOptions();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes) {
-      this.init();
-    }
+  ngOnChanges(): void {
+    this.init();
   }
 
-  public writeValue(value: any): void {
+  public writeValue(value: [number, number]): void {
     this.value = value;
     this.variant = Array.isArray(this.value) ? SLIDER_VARIANT.RANGE : SLIDER_VARIANT.SINGLE;
     this.form.controls.control.setValue(value);
@@ -80,18 +78,18 @@ export class SliderFormComponent extends AbstractFormComponent implements OnChan
   }
 
   private bindChangesListener(): void {
-    this.form.controls.control.valueChanges.subscribe((value: any) => {
-      this.value = this.form.controls.control.value;
+    this.form.controls.control.valueChanges.subscribe((value: [number, number]) => {
+      this.value = value;
       this.onChange(this.value);
     });
   }
 
   private setStepsConfig(): void {
-    if (this.stepsConfig && this.stepsConfig.length) {
+    if (this.stepsConfig?.length) {
       const stepsArray: CustomStepDefinition[] = [];
       try {
-        this.stepsConfig.forEach((stepConfig: SliderFormStepsConfig) => {
-          for (let i = stepConfig.range[0]; i < stepConfig.range[1]; i = i + stepConfig.step) {
+        this.stepsConfig.forEach((stepConfig: SliderFormStepConfig) => {
+          for (let i = stepConfig.range[0]; i <= stepConfig.range[1]; i = i + stepConfig.step) {
             stepsArray.push({ value: i });
           }
         });

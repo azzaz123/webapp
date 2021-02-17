@@ -1,12 +1,12 @@
 import { ControlValueAccessor } from '@angular/forms';
 
-export abstract class AbstractFormComponent implements ControlValueAccessor {
-  value: any;
-  isDisabled: boolean;
+export abstract class AbstractFormComponent<T> implements ControlValueAccessor {
+  public value: any;
+  public isDisabled: boolean;
   public onChange = (_: any) => {};
   public onTouch = () => {};
 
-  public writeValue(value: any): void {
+  public writeValue(value: T): void {
     this.value = value;
   }
 
