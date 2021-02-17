@@ -1,0 +1,38 @@
+
+
+<tsl-filter-template
+[isBubble]="true"
+[isDropdown]="true"
+[hasApply]="true"
+[isClearable]="true"
+[title]="config.title"
+[icon]="config.icon"
+[label]="getLabel()"
+[hasValue]="hasValue()"
+(apply)="handleApply()"
+(clear)="handleClear()">
+
+    <form [formGroup]="formGroup">
+        <tsl-slider-form
+        formControlName="range"
+        [stepsConfig]="stepsConfig"
+        [min]="range[0]" 
+        [max]="range[1]" 
+        [valueTooltip]="false"
+        [limitless]="limitless"
+        [limitTooltip]="false">
+        </tsl-slider-form>
+
+        <div class="d-flex mt-3">
+            <div class="RangeFilter__input-wrapper w-100 mr-2">
+                <label i18n="@@From">From</label>
+                <input class="RangeFilter__input__field pl-2 w-100" type="number" formControlName="min" [min]="range[0]" [max]="range[1]" >
+            </div>
+            <div class="RangeFilter__input-wrapper w-100 ml-2">
+                <label i18n="@@To">To</label>
+                <input class="RangeFilter__input__field pl-2 w-100" type="number" formControlName="max" [min]="range[0]" [max]="range[1]" [placeholder]="limitlessPlaceholder" >
+            </div>
+        </div>
+
+    </form>
+</tsl-filter-template>
