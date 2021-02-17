@@ -40,7 +40,7 @@ describe('SubscriptionBenefitsComponent', () => {
     component.ngOnInit();
     fixture.detectChanges();
 
-    const benefitsHTML = fixture.debugElement.queryAll(By.css('.SubscriptionBenefitCard'));
+    const benefitsHTML = fixture.debugElement.queryAll(By.css('.benefits-content__item'));
     expect(benefitsHTML.length).toEqual(MOCK_SUBSCRIPTION_BENEFITS.length);
   });
 });
