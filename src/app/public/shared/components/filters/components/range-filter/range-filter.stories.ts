@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SliderFormModule } from '@shared/form/components/slider/slider-form.module';
 import { moduleMetadata } from '@storybook/angular';
 import { Story, Meta } from '@storybook/angular/types-6-0';
+import { min } from 'rxjs/operators';
 import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module';
 import { RangeFilterComponent } from './range-filter.component';
 
@@ -72,8 +73,14 @@ StepsAndLimitless.args = {
 export const WithValue = Template.bind({});
 WithValue.args = {
   ...Steps.args,
-  value: {
-    min: 50,
-    max: 2000,
-  },
+  value: [
+    {
+      key: 'min',
+      value: 8,
+    },
+    {
+      key: 'max',
+      value: 800,
+    },
+  ],
 };

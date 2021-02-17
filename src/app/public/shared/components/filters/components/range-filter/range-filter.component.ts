@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { FormGroup, FormControl, MaxLengthValidator } from '@angular/forms';
 import { SliderFormStepConfig } from '@shared/form/components/slider/interfaces/slider-form-steps-config.interface';
 import { debounceTime, delay } from 'rxjs/operators';
+import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { AbstractFilter } from '../abstract-filter/abstract-filter';
 import { RangeFilterConfig } from './interfaces/range-filter-config.interface';
 import { RangeFilterParams } from './interfaces/range-filter-params.interface';
@@ -57,12 +58,19 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
   }
 
   private createForm(): void {
-    const min = this.value[this.config.mapKey.minKey] || this.range[0];
-    const max = this.value[this.config.mapKey.maxKey] || this.range[1];
+    const inputMin = this.value.find((parameter: FilterParameter) => {
+      return parameter.key === this.config.mapKey.minKey;
+    })?.value;
+    const inputMax = this.value.find((parameter: FilterParameter) => {
+      return parameter.key === this.config.mapKey.maxKey;
+    })?.value;
+
+    this.setLabel(parseInt(inputMin), parseInt(inputMax));
+
     this.formGroup = new FormGroup({
-      range: new FormControl([min, , max]),
-      min: new FormControl(min),
-      max: new FormControl(this.limitless ? null : max),
+      range: new FormControl([inputMin || this.range[0], inputMax || this.range[1]]),
+      min: new FormControl(inputMin || this.range[0]),
+      max: new FormControl(this.limitless ? null : inputMax || this.range[1]),
     });
   }
 
