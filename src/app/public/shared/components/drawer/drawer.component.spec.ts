@@ -112,7 +112,7 @@ describe('DrawerComponent', () => {
     describe('and cancel button is clicked', () => {
       it('should emit cancel', () => {
         spyOn(component.cancel, 'emit');
-        debugElement.query(By.css('.Drawer .basic.dark')).nativeElement.click();
+        debugElement.query(By.css('.Drawer .basic.basic-dark')).nativeElement.click();
 
         expect(component.cancel.emit).toHaveBeenCalledTimes(1);
       });
