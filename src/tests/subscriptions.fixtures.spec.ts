@@ -1,4 +1,4 @@
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import {
   SubscriptionResponse,
@@ -90,6 +90,25 @@ export class MockSubscriptionService {
 
   public hasOneTrialSubscription(_subscriptions: SubscriptionsResponse[]): boolean {
     return false;
+  }
+
+  public getTrialSubscriptionsIds(subscriptions: SubscriptionsResponse[]): number[] {
+    if (!subscriptions) {
+      return [];
+    }
+    return subscriptions.filter((subscription) => this.hasTrial(subscription)).map((subscription) => subscription.category_id);
+  }
+
+  public getTierDiscountPercentatge(): number {
+    return 0;
+  }
+
+  public newSubscription(): Observable<any> {
+    return of({});
+  }
+
+  public checkNewSubscriptionStatus(): Observable<SubscriptionResponse> {
+    return of(SUBSCRIPTION_SUCCESS);
   }
 }
 

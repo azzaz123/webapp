@@ -25,6 +25,7 @@ import { PAYMENT_METHOD_DATA } from '@fixtures/payments.fixtures.spec';
 import { FINANCIAL_CARD_OPTION, STRIPE_CARD } from '@fixtures/stripe.fixtures.spec';
 import {
   MAPPED_SUBSCRIPTIONS,
+  MockSubscriptionService,
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED,
   SUBSCRIPTION_REQUIRES_ACTION,
   SUBSCRIPTION_REQUIRES_PAYMENT,
@@ -84,35 +85,7 @@ describe('AddNewSubscriptionModalComponent', () => {
               actionPayment() {},
             },
           },
-          {
-            provide: SubscriptionsService,
-            useValue: {
-              newSubscription() {
-                return of({});
-              },
-              checkNewSubscriptionStatus() {
-                return of(SUBSCRIPTION_SUCCESS);
-              },
-              retrySubscription() {
-                return of('');
-              },
-              checkRetrySubscriptionStatus() {
-                return of('');
-              },
-              getTierDiscountPercentatge() {
-                return 0;
-              },
-              isFreeTier() {
-                return false;
-              },
-              isDiscountedTier() {
-                return false;
-              },
-              hasTrial() {
-                return true;
-              },
-            },
-          },
+          { provide: SubscriptionsService, useClass: MockSubscriptionService },
           {
             provide: NgbModal,
             useValue: {
@@ -410,6 +383,7 @@ describe('AddNewSubscriptionModalComponent', () => {
           screenId: SCREEN_IDS.Subscription,
           tier: component.selectedTier.id,
           price: component.selectedTier.price,
+          freeTrial: component.subscription.trial_available,
         },
       };
 
@@ -439,6 +413,7 @@ describe('AddNewSubscriptionModalComponent', () => {
               isNewSubscriber: component.isNewSubscriber,
               discountPercent: 0,
               invoiceNeeded: true,
+              freeTrial: false,
             },
           };
 
@@ -464,6 +439,7 @@ describe('AddNewSubscriptionModalComponent', () => {
               isNewSubscriber: component.isNewSubscriber,
               discountPercent: 0,
               invoiceNeeded: false,
+              freeTrial: false,
             },
           };
 
@@ -491,6 +467,7 @@ describe('AddNewSubscriptionModalComponent', () => {
               isNewSubscriber: component.isNewSubscriber,
               discountPercent: 0,
               invoiceNeeded: true,
+              freeTrial: false,
             },
           };
           expectedEvent.attributes.isNewCard = false;
@@ -517,6 +494,7 @@ describe('AddNewSubscriptionModalComponent', () => {
               isNewSubscriber: component.isNewSubscriber,
               discountPercent: 0,
               invoiceNeeded: false,
+              freeTrial: false,
             },
           };
           expectedEvent.attributes.isNewCard = false;

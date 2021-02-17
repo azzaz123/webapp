@@ -309,6 +309,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, Afte
         screenId: SCREEN_IDS.Subscription,
         tier: this.selectedTier.id,
         price: this.selectedTier.price,
+        freeTrial: this.subscriptionsService.hasTrial(this.subscription),
       },
     };
 
@@ -328,6 +329,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, Afte
         isNewSubscriber: this.isNewSubscriber,
         discountPercent,
         invoiceNeeded: this._selectedInvoiceOption === 'true',
+        freeTrial: this.subscriptionsService.hasTrial(this.subscription),
       },
     };
 

@@ -13,4 +13,8 @@ export interface ViewSubscriptionTier {
    * Identifier of the Subscription tier screen
    */
   screenId: 241;
+  /**
+   * Whether the subscription clicked offers free trial
+   */
+  freeTrial: boolean;
 }

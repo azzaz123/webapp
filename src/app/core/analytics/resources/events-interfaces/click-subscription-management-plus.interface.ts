@@ -21,4 +21,8 @@ export interface ClickSubscriptionManagementPlus {
    * If the user is a new subscriber
    */
   isNewSubscriber: boolean;
+  /**
+   * Whether the subscription clicked offers free trial
+   */
+  freeTrial: boolean;
 }
