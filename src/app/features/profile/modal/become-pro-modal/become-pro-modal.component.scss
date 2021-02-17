@@ -20,6 +20,11 @@
     font-size: $font-size-m;
     color: $blue-grey-2;
   }
+  .modal-close {
+    @include square($spacing-ms);
+    top: 20px;
+    right: 20px;
+  }
 }
 
 .modal-body {
