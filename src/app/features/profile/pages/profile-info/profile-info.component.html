@@ -3,7 +3,7 @@
     <div class="row box profile-box">
       <div class="col-12 col-md-11 offset-md-1">
         <tsl-picture-upload [user]="user"></tsl-picture-upload>
-        <tsl-cover-upload (clickNotPro)="openBecomeProModal()" [user]="user" [isPro]="isPro"></tsl-cover-upload>
+        <tsl-cover-upload (clickNotPro)="openBecomeProModal(ANALYTICS_FIELDS.HEADER_PHOTO)" [user]="user" [isPro]="isPro"></tsl-cover-upload>
       </div>
     </div>
     <div class="row box profile-box">
@@ -47,7 +47,7 @@
             <label for="description" class="col-12 col-md-3 text-md-right" i18n>Description</label>
             <div class="col-12 col-md-6 offset-md-1">
               <span class="chars-counter">{{profileForm.value?.description?.length}}/250</span>
-              <textarea (click)="openBecomeProModal()" class="form-control" id="description"
+              <textarea (click)="openBecomeProModal(ANALYTICS_FIELDS.DESCRIPTION)" class="form-control" id="description"
                 formControlName="description" maxlength="250" [readonly]="!isPro"></textarea>
             </div>
           </div>
@@ -55,14 +55,14 @@
             <label for="opening_hours" class="col-12 col-md-3 text-md-right" i18n>Opening Hours</label>
             <div class="col-12 col-md-6 offset-md-1">
               <span class="chars-counter">{{profileForm.value?.opening_hours?.length}}/250</span>
-              <textarea (click)="openBecomeProModal()" class="form-control" id="opening_hours"
+              <textarea (click)="openBecomeProModal(ANALYTICS_FIELDS.OPENING_HOURS)" class="form-control" id="opening_hours"
                 formControlName="opening_hours" maxlength="250" [readonly]="!isPro"></textarea>
             </div>
           </div>
           <div class="form-group row align-items-center">
             <label for="phone_number" class="col-12 col-md-3 text-md-right" i18n>Telephone</label>
             <div class="col-12 col-md-6 offset-md-1">
-              <input (click)="openBecomeProModal()" type="text" class="form-control" id="phone_number"
+              <input (click)="openBecomeProModal(ANALYTICS_FIELDS.PHONE)" type="text" class="form-control" id="phone_number"
                 formControlName="phone_number" [readonly]="!isPro" />
               <span class="tracking-phone-info" *ngIf="isPro" i18n>This telephone number will never be public, we will
                 assign you a tracking number and it will be what customers will see.</span>
@@ -71,7 +71,7 @@
           <div class="form-group row align-items-center">
             <label for="link" class="col-12 col-md-3 text-md-right">Web</label>
             <div class="col-12 col-md-6 offset-md-1">
-              <input type="text" (click)="openBecomeProModal()" class="form-control" id="link" formControlName="link"
+              <input type="text" (click)="openBecomeProModal(ANALYTICS_FIELDS.WEB)" class="form-control" id="link" formControlName="link"
                 pattern="^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$"
                 [readonly]="!isPro" />
             </div>
