@@ -44,19 +44,27 @@ describe('ItemSpecificationsComponent', () => {
       const counterSpecification = fixture.debugElement.queryAll(By.directive(CounterSpecificationComponent));
       expect(counterSpecification.length).toBe(component.itemSpecifications.length);
     });
-  });
 
-  describe('when the item specifications are from a car...', () => {
-    it('should apply the car styling setup', () => {
-      const carSetup = fixture.debugElement.query(By.css('.Car__Setup'));
-      expect(carSetup).toBeTruthy();
+    describe('when the item specifications are from a car...', () => {
+      beforeEach(() => {
+        component.isCar = true;
+        fixture.detectChanges();
+      });
+      it('should apply the car styling setup', () => {
+        const carSetup = fixture.debugElement.query(By.css('.Car__Setup'));
+        expect(carSetup).toBeTruthy();
+      });
     });
-  });
 
-  describe('when the item specifications are NOT from a car...', () => {
-    it('should apply the real estate styling setup', () => {
-      const realestateSetup = fixture.debugElement.query(By.css('.Realestate__Setup'));
-      expect(realestateSetup).toBeTruthy();
+    describe('when the item specifications are NOT from a car...', () => {
+      beforeEach(() => {
+        component.isCar = false;
+        fixture.detectChanges();
+      });
+      it('should apply the real estate styling setup', () => {
+        const realestateSetup = fixture.debugElement.query(By.css('.Realestate__Setup'));
+        expect(realestateSetup).toBeTruthy();
+      });
     });
   });
 });
