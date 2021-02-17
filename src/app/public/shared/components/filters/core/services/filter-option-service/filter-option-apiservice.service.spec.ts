@@ -14,6 +14,16 @@ describe('FilterOptionAPIServiceService', () => {
     expect(service).toBeTruthy();
   });
 
+  describe('when retrieving options', () => {
+    describe('and backend returns pagination', () => {
+      it('should propagate pagination with the options');
+    });
+
+    describe('and backend returns no pagination', () => {
+      it('should not propagate any pagination');
+    });
+  });
+
   describe('when we need common options', () => {
     describe('for getting condition options by category id', () => {
       it('should retrieve options');
