@@ -25,9 +25,6 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { InboxUser, InboxItem } from '@features/chat/core/model';
 
 export const LOGOUT_ENDPOINT = 'shnm-portlet/api/v1/access.json/logout2';
-///shnm-portlet/api/{{version}}/access.json/logout2
-//shnm-portlet/api/v1/access.json/logout2
-
 export const USER_BASE_ENDPOINT = 'api/v3/users/';
 export const USER_BY_ID_ENDPOINT = (userId: string) => `${USER_BASE_ENDPOINT}${userId}`;
 export const USER_ENDPOINT = `${USER_BASE_ENDPOINT}me/`;
@@ -84,38 +81,24 @@ export class UserService {
     return this._user && this._user.featured;
   }
 
-  /**
-	 * 
-		public logout(redirect?: string) {
-			const redirectUrl = redirect ? redirect : environment.siteUrl.replace('es', this.subdomain);
-      const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
-      this.cookieService.remove('publisherId', cookieOptions);
-      this.cookieService.remove('creditName', cookieOptions);
-      this.cookieService.remove('creditQuantity', cookieOptions);
-      this.accessTokenService.deleteAccessToken();
-      this.permissionService.flushPermissions();
-      this.event.emit(EventService.USER_LOGOUT, redirectUrl);
-		}
-	 */
-
   public logout(redirect?: string): Observable<any> {
+    console.log('logged');
     const headers: HttpHeaders = new HttpHeaders(<string | string[] | any>{
       DeviceAccessToken: this.cookieService.get('deviceAccessToken' + environment.cookieSuffix),
       AppBuild: +APP_VERSION,
       DeviceOS: '0',
     });
-    //return this.http.post(`${environment.baseUrl}${LOGOUT_ENDPOINT}`, null, { headers });
     return this.http.post(`${environment.baseUrl}${LOGOUT_ENDPOINT}`, null, { headers }).pipe(
-      tap((x) => {
+      tap(() => {
         const redirectUrl = redirect ? redirect : environment.siteUrl.replace('es', this.subdomain);
         const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
         this.cookieService.remove('publisherId', cookieOptions);
         this.cookieService.remove('creditName', cookieOptions);
         this.cookieService.remove('creditQuantity', cookieOptions);
         this.accessTokenService.deleteAccessToken();
+        console.log('delete', this.accessTokenService.accessToken);
         this.permissionService.flushPermissions();
         this.event.emit(EventService.USER_LOGOUT, redirectUrl);
-        console.log('ob', x);
       })
     );
   }
@@ -134,6 +117,7 @@ export class UserService {
       if (this.isLogged) {
         this.sendUserPresence();
       } else {
+        console.log('not logged');
         clearInterval(this.presenceInterval);
       }
     }, interval);
