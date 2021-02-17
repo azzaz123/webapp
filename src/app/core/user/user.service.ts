@@ -98,7 +98,6 @@ export class UserService {
     });
     return this.http.post(`${environment.baseUrl}${LOGOUT_ENDPOINT}`, null, { headers }).pipe(
       tap(() => {
-        console.log('ttt');
         const redirectUrl = redirect ? redirect : environment.siteUrl.replace('es', this.subdomain);
         const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
         this.cookieService.remove('publisherId', cookieOptions);
@@ -125,7 +124,6 @@ export class UserService {
       if (this.isLogged) {
         this.sendUserPresence();
       } else {
-        console.log('not logged');
         clearInterval(this.presenceInterval);
       }
     }, interval);

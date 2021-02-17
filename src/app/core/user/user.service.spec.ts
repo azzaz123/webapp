@@ -279,10 +279,9 @@ describe('Service: User', () => {
     }));
 
     it('should call the me/online endpoint ONCE when the client connects and stop after the user has logged out', fakeAsync(() => {
-      spyOn(service, 'logout').and.callThrough();
       service.sendUserPresenceInterval(intervalValue);
       tick(intervalValue * callTimes);
-      service.logout();
+      accessTokenService.deleteAccessToken();
       tick(intervalValue * 4);
       let requests = httpMock.match(onlineUrl);
       requests.forEach((request) => request.flush({}));
@@ -305,7 +304,6 @@ describe('Service: User', () => {
 
     beforeEach(() => {
       spyOn(permissionService, 'flushPermissions').and.returnValue({});
-      //spyOn(service, 'logout').and.returnValue(of());
       spyOn(accessTokenService, 'deleteAccessToken').and.callThrough();
 
       accessTokenService.storeAccessToken('token');
