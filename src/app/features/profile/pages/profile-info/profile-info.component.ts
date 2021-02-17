@@ -5,19 +5,37 @@ import { Coordinate } from '@core/geolocation/address-response.interface';
 import { User } from '@core/user/user';
 import { UserProInfo } from '@core/user/user-info.interface';
 import { UserService } from '@core/user/user.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { CanComponentDeactivate } from '@core/guards/can-component-deactivate.interface';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { metadata } from 'assets/js/metadata-phonenumber';
 import { isValidNumber } from 'libphonenumber-js/custom';
 import * as moment from 'moment';
 import { forkJoin } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { finalize, take } from 'rxjs/operators';
 import { BecomeProModalComponent } from '../../modal/become-pro-modal/become-pro-modal.component';
+import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { Router } from '@angular/router';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import {
+  AnalyticsPageView,
+  ANALYTICS_EVENT_NAMES,
+  ClickEditProField,
+  SCREEN_IDS,
+  ViewProBenefitsPopup,
+} from '@core/analytics/analytics-constants';
 
 export const competitorLinks = ['coches.net', 'autoscout24.es', 'autocasion.com', 'vibbo.com', 'milanuncios.com', 'motor.es'];
 
 export const BAD_USERNAME_ERROR_CODE = 112;
+
+export enum ANALYTICS_FIELDS {
+  HEADER_PHOTO = 'header photo',
+  DESCRIPTION = 'description',
+  OPENING_HOURS = 'opening hours',
+  PHONE = 'phone',
+  WEB = 'web',
+}
 
 @Component({
   selector: 'tsl-profile-info',
@@ -33,6 +51,8 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
   public updateLocationWhenSearching = false;
   public loading = false;
   public isIncorrectAddress = false;
+  public hasTrialAvailable: boolean;
+  public ANALYTICS_FIELDS = ANALYTICS_FIELDS;
 
   @ViewChild(ProfileFormComponent, { static: true })
   formComponent: ProfileFormComponent;
@@ -41,7 +61,10 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     private userService: UserService,
     private fb: FormBuilder,
     private errorsService: ErrorsService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private subscriptionsService: SubscriptionsService,
+    private router: Router,
+    private analyticsService: AnalyticsService
   ) {
     this.profileForm = fb.group({
       first_name: ['', [Validators.required]],
@@ -212,12 +235,41 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     }
   }
 
-  public openBecomeProModal() {
+  public openBecomeProModal(field: ANALYTICS_FIELDS): void {
     if (!this.isPro) {
-      this.modalService.open(BecomeProModalComponent, {
-        windowClass: 'become-pro',
-      });
+      this.trackClickEditProField(field);
+      if (this.hasTrialAvailable == null) {
+        this.getTrialAvailable(() => this.manageModal());
+        return;
+      }
+      this.manageModal();
     }
+  }
+
+  private manageModal(): void {
+    const modalRef: NgbModalRef = this.modalService.open(BecomeProModalComponent, {
+      windowClass: 'become-pro',
+    });
+    modalRef.componentInstance.hasTrialAvailable = this.hasTrialAvailable;
+    modalRef.result.then(
+      () => this.router.navigate(['profile/subscriptions']),
+      () => null
+    );
+    this.trackViewProBenefitsPopup();
+  }
+
+  private getTrialAvailable(callback?: () => void): void {
+    this.subscriptionsService
+      .getSubscriptions()
+      .pipe(take(1))
+      .subscribe((subscriptions) => {
+        if (!!subscriptions) {
+          this.hasTrialAvailable = this.subscriptionsService.hasOneTrialSubscription(subscriptions);
+        }
+        if (!!callback) {
+          callback();
+        }
+      });
   }
 
   private setUsernameFormControlsErrors(incorrect: boolean) {
@@ -234,5 +286,27 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     lastNameFormControl.setErrors(null);
     firstNameFormControl.updateValueAndValidity();
     lastNameFormControl.updateValueAndValidity();
+  }
+
+  private trackClickEditProField(field: ANALYTICS_FIELDS): void {
+    const event: AnalyticsPageView<ClickEditProField> = {
+      name: ANALYTICS_EVENT_NAMES.ClickEditProField,
+      attributes: {
+        field,
+        screenId: SCREEN_IDS.MyProfile,
+      },
+    };
+    this.analyticsService.trackPageView(event);
+  }
+
+  private trackViewProBenefitsPopup(): void {
+    const event: AnalyticsPageView<ViewProBenefitsPopup> = {
+      name: ANALYTICS_EVENT_NAMES.ViewProBenefitsPopup,
+      attributes: {
+        freeTrial: this.hasTrialAvailable,
+        screenId: SCREEN_IDS.ProAdvantagesPopup,
+      },
+    };
+    this.analyticsService.trackPageView(event);
   }
 }

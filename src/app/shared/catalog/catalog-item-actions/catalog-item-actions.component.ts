@@ -12,7 +12,6 @@ import { TooManyItemsModalComponent } from '../modals/too-many-items-modal/too-m
 import { AlreadyFeaturedModalComponent } from '../modals/already-featured-modal/already-featured-modal.component';
 import { Router } from '@angular/router';
 import { EventService } from '../../../core/event/event.service';
-import { ActivateItemsModalComponent } from './activate-items-modal/activate-items-modal.component';
 import { DeactivateItemsModalComponent } from './deactivate-items-modal/deactivate-items-modal.component';
 import { SUBSCRIPTION_TYPES } from '../../../core/subscriptions/subscriptions.service';
 
@@ -55,29 +54,27 @@ export class CatalogItemActionsComponent implements OnInit {
   }
 
   public activate() {
-    this.modalService.open(ActivateItemsModalComponent).result.then(() => {
-      this.itemService
-        .bulkSetActivate()
-        .pipe(
-          takeWhile(() => {
-            return this.active;
-          })
-        )
-        .subscribe((resp: any) => {
-          this.getCounters.emit();
-          this.eventService.emit('itemChanged');
-          if (resp.status === 406) {
-            const modalRef: NgbModalRef = this.modalService.open(TooManyItemsModalComponent, {
-              windowClass: 'modal-standard',
-            });
-            modalRef.componentInstance.type = SUBSCRIPTION_TYPES.carDealer;
-            modalRef.result.then(
-              () => {},
-              () => {}
-            );
-          }
-        });
-    });
+    this.itemService
+      .bulkSetActivate()
+      .pipe(
+        takeWhile(() => {
+          return this.active;
+        })
+      )
+      .subscribe((resp: any) => {
+        this.getCounters.emit();
+        this.eventService.emit('itemChanged');
+        if (resp.status === 406) {
+          const modalRef: NgbModalRef = this.modalService.open(TooManyItemsModalComponent, {
+            windowClass: 'modal-standard',
+          });
+          modalRef.componentInstance.type = SUBSCRIPTION_TYPES.carDealer;
+          modalRef.result.then(
+            () => {},
+            () => {}
+          );
+        }
+      });
   }
 
   public delete(deleteItemsModal: any) {
