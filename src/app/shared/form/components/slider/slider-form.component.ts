@@ -88,8 +88,8 @@ export class SliderFormComponent extends AbstractFormComponent<[number, number]>
     if (this.stepsConfig?.length) {
       const stepsArray: CustomStepDefinition[] = [];
       try {
-        this.stepsConfig.forEach((stepConfig: SliderFormStepsConfig) => {
-          for (let i = stepConfig.range[0]; i < stepConfig.range[1]; i = i + stepConfig.step) {
+        this.stepsConfig.forEach((stepConfig: SliderFormStepConfig) => {
+          for (let i = stepConfig.range[0]; i <= stepConfig.range[1]; i = i + stepConfig.step) {
             stepsArray.push({ value: i });
           }
         });
