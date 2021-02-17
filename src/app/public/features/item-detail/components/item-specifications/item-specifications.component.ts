@@ -8,4 +8,5 @@ import { CounterSpecifications } from './interfaces/item.specifications.interfac
 })
 export class ItemSpecificationsComponent {
   @Input() itemSpecifications: CounterSpecifications[];
+  @Input() isCar = false;
 }

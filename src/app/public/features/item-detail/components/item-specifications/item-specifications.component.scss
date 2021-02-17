@@ -5,6 +5,18 @@
 }
 
 .CounterSpecification {
+  height: 100px;
+}
+
+.Realestate__Setup {
+  @include width-setup(4);
+
+  @include media-breakpoint-up(md) {
+    @include width-setup(5);
+  }
+}
+
+.Car__Setup {
   @include width-setup(5);
 
   @include media-breakpoint-up(md) {
