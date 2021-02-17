@@ -81,11 +81,11 @@ export class UserService {
     return this._user && this._user.featured;
   }
 
-  public getReleaseVersion(appVersion: string): number {
-    return +appVersion
+  public getReleaseVersion(appVersion: string): string {
+    return appVersion
       .split('.')
       .map((subVersion: string) => ('00' + subVersion).slice(-3))
-      .reduce((a: string, b: string) => a + b);
+      .reduce((a: string, b: string) => parseInt(a) + b);
   }
 
   public logout(redirect?: string): Observable<any> {
@@ -93,7 +93,7 @@ export class UserService {
       DeviceAccessToken: this.cookieService.get('deviceAccessToken' + environment.cookieSuffix)
         ? this.cookieService.get('deviceAccessToken' + environment.cookieSuffix)
         : '',
-      AppBuild: this.getReleaseVersion(APP_VERSION).toString(),
+      AppBuild: this.getReleaseVersion(APP_VERSION),
       DeviceOS: '0',
     });
     return this.http.post(`${environment.baseUrl}${LOGOUT_ENDPOINT}`, null, { headers }).pipe(
