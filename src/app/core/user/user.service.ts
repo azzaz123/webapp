@@ -89,7 +89,7 @@ export class UserService {
   }
 
   public logout(redirect?: string): Observable<any> {
-    const headers: HttpHeaders = new HttpHeaders(<string | string[] | any>{
+    const headers: HttpHeaders = new HttpHeaders({
       DeviceAccessToken: this.cookieService.get('deviceAccessToken' + environment.cookieSuffix)
         ? this.cookieService.get('deviceAccessToken' + environment.cookieSuffix)
         : '',
