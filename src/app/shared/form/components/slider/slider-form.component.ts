@@ -3,7 +3,7 @@ import { FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
 import { CustomStepDefinition, Options } from '@angular-slider/ngx-slider';
 import { SLIDER_VARIANT } from './enums/slider-variant.enum';
-import { SliderFormStepsConfig } from './interfaces/slider-form-steps-config.interface';
+import { SliderFormStepConfig } from './interfaces/slider-form-steps-config.interface';
 
 @Component({
   selector: 'tsl-slider-form',
@@ -20,7 +20,7 @@ import { SliderFormStepsConfig } from './interfaces/slider-form-steps-config.int
 export class SliderFormComponent extends AbstractFormComponent<[number, number]> implements OnChanges {
   @Input() min: number = 0;
   @Input() max: number = 0;
-  @Input() stepsConfig: SliderFormStepsConfig[];
+  @Input() stepsConfig: SliderFormStepConfig[];
   @Input() units: string;
   @Input() valueTooltip: boolean = true;
   @Input() limitTooltip: boolean = true;
