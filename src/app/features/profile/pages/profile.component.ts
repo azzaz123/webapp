@@ -50,6 +50,7 @@ export class ProfileComponent implements OnInit {
       () => {},
       (error) => {
         // TODO: ToastService to show error message
+        console.log('error', error);
       }
     );
   }
