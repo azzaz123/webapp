@@ -1,15 +1,20 @@
 <div class="Bubble px-3 d-flex justify-content-center align-items-center"
-     [ngClass]="variant" (click)="emitClick()">
-  <span *ngIf="counter" class="Bubble__counter d-flex justify-content-center align-items-center rounded-circle">
+     [ngClass]="'Bubble--' + variant" (click)="emitClick($event)">
+  <span *ngIf="counter" class="Bubble__counter Bubble__rounded_icon d-flex justify-content-center align-items-center rounded-circle">
     {{counterText}}
   </span>
   <tsl-svg-icon *ngIf="!counter && icon" class="Bubble__icon d-flex justify-content-center align-items-center"
                 [src]="icon" [width]="26" [height]="26">
   </tsl-svg-icon>
-  <div class="Bubble__content px-3 d-flex justify-content-center align-items-center">
-    <ng-content></ng-content>
+  <div class="Bubble__content_wrapper px-3 d-flex justify-content-center align-items-center">
+    <div class="Bubble__content">
+      <ng-content></ng-content>
+    </div>
   </div>
-  <tsl-svg-icon *ngIf="isDropdown" class="Bubble__dropdown_arrow d-flex justify-content-center align-items-center"
+  <tsl-svg-icon *ngIf="isDropdown && !hasClearButton" [class.Bubble__dropdown_arrow-open]="isDropdownOpen" class="Bubble__dropdown_arrow d-flex justify-content-center align-items-center"
                 src="/assets/icons/dropdown-arrow.svg" [width]="10" [height]="6">
   </tsl-svg-icon>
+  <div *ngIf="hasClearButton" (click)="emitClear($event)" class="Bubble__clear Bubble__rounded_icon d-flex justify-content-center align-items-center rounded-circle">
+    <tsl-svg-icon src="/assets/icons/cross.svg" [width]="9" [height]="9"></tsl-svg-icon>
+  </div>
 </div>
