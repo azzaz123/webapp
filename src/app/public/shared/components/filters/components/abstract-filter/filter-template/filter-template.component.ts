@@ -29,6 +29,7 @@ export class FilterTemplateComponent {
   public isDropdownOpen = false;
 
   public handleBubbleClick(event: MouseEvent): void {
+    console.log('handleBubbleClick', this.isDropdown);
     if (this.isDropdown) {
       this.toggleDropdown();
     }

@@ -1,8 +1,8 @@
-import { SliderFormStepsConfig } from '@shared/form/components/slider/interfaces/slider-form-steps-config.interface';
+import { SliderFormStepConfig } from '@shared/form/components/slider/interfaces/slider-form-steps-config.interface';
 
 export interface RangeFilterConfig {
   range: [number, number];
-  stepsConfig?: SliderFormStepsConfig;
+  stepsConfig?: SliderFormStepConfig[];
   units?: string;
   limitless?: boolean;
 }
