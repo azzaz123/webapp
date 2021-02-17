@@ -81,11 +81,19 @@ export class UserService {
     return this._user && this._user.featured;
   }
 
+  public getReleaseVersion(appVersion: string): number {
+    return +appVersion
+      .split('.')
+      .map((subVersion: string) => ('00' + subVersion).slice(-3))
+      .reduce((a: string, b: string) => a + b);
+  }
+
   public logout(redirect?: string): Observable<any> {
-    console.log('logged');
     const headers: HttpHeaders = new HttpHeaders(<string | string[] | any>{
-      DeviceAccessToken: this.cookieService.get('deviceAccessToken' + environment.cookieSuffix),
-      AppBuild: +APP_VERSION,
+      DeviceAccessToken: this.cookieService.get('deviceAccessToken' + environment.cookieSuffix)
+        ? this.cookieService.get('deviceAccessToken' + environment.cookieSuffix)
+        : '',
+      AppBuild: this.getReleaseVersion(APP_VERSION),
       DeviceOS: '0',
     });
     return this.http.post(`${environment.baseUrl}${LOGOUT_ENDPOINT}`, null, { headers }).pipe(
@@ -96,7 +104,6 @@ export class UserService {
         this.cookieService.remove('creditName', cookieOptions);
         this.cookieService.remove('creditQuantity', cookieOptions);
         this.accessTokenService.deleteAccessToken();
-        console.log('delete', this.accessTokenService.accessToken);
         this.permissionService.flushPermissions();
         this.event.emit(EventService.USER_LOGOUT, redirectUrl);
       })
