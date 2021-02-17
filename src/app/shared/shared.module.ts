@@ -73,6 +73,7 @@ import { WallacoinsDisabledModalComponent } from './modals/wallacoins-disabled-m
 import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.module';
 import { BumpSuggestionModalComponent } from './modals/bump-suggestion-modal/bump-suggestion-modal.component';
 import { ButtonModule } from './button/button.module';
+import { DateCountDownModule } from './date-countdown/date-countdown.module';
 
 @NgModule({
   imports: [
@@ -97,6 +98,7 @@ import { ButtonModule } from './button/button.module';
     SpinnerModule,
     UserCoverModule,
     ButtonModule,
+    DateCountDownModule,
   ],
   exports: [
     SpinnerModule,
@@ -156,7 +158,6 @@ import { ButtonModule } from './button/button.module';
     FullScreenModalComponent,
     DisableControlDirective,
     SvgIconModule,
-    DateCountDownComponent,
     DropdownModule,
     WallacoinsDisabledModalComponent,
     ButtonModule,
@@ -216,7 +217,6 @@ import { ButtonModule } from './button/button.module';
     FullScreenModalComponent,
     DisableControlDirective,
     RouterLinkDirectiveStub,
-    DateCountDownComponent,
     BumpSuggestionModalComponent,
     WallacoinsDisabledModalComponent,
   ],
