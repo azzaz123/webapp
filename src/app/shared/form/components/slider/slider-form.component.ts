@@ -3,7 +3,7 @@ import { FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
 import { CustomStepDefinition, Options } from '@angular-slider/ngx-slider';
 import { SLIDER_VARIANT } from './enums/slider-variant.enum';
-import { SliderFormStepConfig } from './interfaces/slider-form-steps-config.interface';
+import { SliderFormStepConfig } from './interfaces/slider-form-step-config.interface';
 
 @Component({
   selector: 'tsl-slider-form',
