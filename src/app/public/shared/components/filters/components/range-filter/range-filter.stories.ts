@@ -12,7 +12,7 @@ export default {
   decorators: [
     moduleMetadata({
       declarations: [RangeFilterComponent],
-      imports: [CommonModule, AbstractFilterModule, SliderFormModule, ReactiveFormsModule, HttpClientModule], // Por qué hace falta el HttpClientModule??
+      imports: [CommonModule, AbstractFilterModule, SliderFormModule, ReactiveFormsModule, HttpClientModule],
     }),
   ],
   argTypes: { change: { action: 'change' } },
@@ -31,6 +31,7 @@ Default.args = {
       minKey: 'min',
     },
     title: 'How much do you want to pay?',
+    icon: '/assets/icons/joke.svg',
   },
   range: [10, 200],
   placeholder: 'Price',
