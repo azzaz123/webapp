@@ -11,7 +11,7 @@ export const MARK_AS_FAVORITE_ENDPOINT = (id: string) => `${ITEMS_API_URL(id)}/f
 export const GET_ITEM_ENDPOINT = (id: string) => `${ITEMS_API_URL(id)}`;
 export const GET_ITEM_COUNTERS_ENDPOINT = (id: string) => `${ITEMS_API_URL(id)}/counters`;
 export const GET_ITEM_BUMP_FLAGS = (id: string) => `${ITEMS_API_URL(id)}/bump-flags`;
-
+export const SET_ITEM_RESERVED = (id: string) => `${ITEMS_API_URL(id)}/reserve`;
 @Injectable()
 export class ItemApiService {
   constructor(private http: HttpClient) {}
@@ -37,6 +37,17 @@ export class ItemApiService {
   public unmarkAsFavourite(id: string): Observable<MarkAsFavouriteBodyResponse> {
     return this.http.put(MARK_AS_FAVORITE_ENDPOINT(id), {
       favorited: false,
+    });
+  }
+
+  // TODO: Tipar respuestas
+  public deleteItem(id: string): Observable<any> {
+    return this.http.delete<ItemResponse>(GET_ITEM_ENDPOINT(id));
+  }
+
+  public reserveItem(id: string, reserved: boolean): Observable<any> {
+    return this.http.put(`${SET_ITEM_RESERVED(id)}`, {
+      reserved,
     });
   }
 

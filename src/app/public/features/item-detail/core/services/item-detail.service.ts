@@ -46,6 +46,15 @@ export class ItemDetailService {
     return this.recommenderApiService.getRecommendedItemsByItemId(itemId);
   }
 
+  // TODO: Tipar respuesta
+  public deleteItem(itemId: string): Observable<any> {
+    return this.itemApiService.deleteItem(itemId);
+  }
+
+  public reserveItem(itemId: string, reserved: boolean): Observable<any> {
+    return this.itemApiService.reserveItem(itemId, reserved);
+  }
+
   private mapItem(itemResponse: ItemResponse, itemCounters: ItemCounters, bumpFlags: ItemVisibilityFlags): Item {
     const item = this.mapItemService.mapItem(itemResponse);
     item.views = itemCounters.views;
