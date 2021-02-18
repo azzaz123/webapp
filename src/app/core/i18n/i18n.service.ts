@@ -168,23 +168,23 @@ export class I18nService {
       subscriptionBenefits: [
         {
           iconId: 'empty-image',
-          title: 'Professionalize your profile',
-          description: 'Stand out above the rest with a cover photo and a description of what you offer',
+          title: 'Empower your brand',
+          description: 'Complete your profile with a cover photo and a description.',
         },
         {
           iconId: 'empty-image',
-          title: 'Connect with more clients',
-          description: 'Share with millions of potential buyers your phone and website',
+          title: 'Connect with more customers',
+          description: 'Share your phone number and website with millions of people.',
         },
         {
           iconId: 'empty-image',
-          title: 'Without time limit',
-          description: 'Your items will never expire, they will be always ready for a quick sell',
+          title: 'Gain more visibility',
+          description: 'Appear at the top of search results and attract more customers.',
         },
         {
           iconId: 'empty-image',
-          title: 'Without compromise',
-          description: 'You can cancel your subscription whenever you want, without penalties',
+          title: 'Save management time',
+          description: 'Your products will always be active and ready for sale.',
         },
       ],
       tooManyNewConversations: "We can't keep up with you. Wait a moment so you can open up new conversations.",
@@ -364,8 +364,8 @@ export class I18nService {
       subscriptionBenefits: [
         {
           iconId: 'empty-image',
-          title: 'Profesionaliza tu perfil',
-          description: 'Destaca sobre el resto con una foto portada y una descripción de lo que ofreces',
+          title: 'Potencia tu marca',
+          description: 'Añade a tu perfil foto de portada y descripción de lo que ofreces.',
         },
         {
           iconId: 'empty-image',
@@ -374,13 +374,13 @@ export class I18nService {
         },
         {
           iconId: 'empty-image',
-          title: 'Sin límite de tiempo',
-          description: 'Tus artículos no expiran nunca, siempre están disponibles para una venta rápida',
+          title: 'Gana visibilidad en búsquedas',
+          description: 'Ocupa los primeros resultados de búsqueda. ¡Atrae más clientes!',
         },
         {
           iconId: 'empty-image',
-          title: 'Sin compromiso',
-          description: 'Puedes cancelar la suscripción cuando quieras, sin penalizaciones de ningún tipo',
+          title: 'Ahorra tiempo de gestión',
+          description: 'Tus productos siempre estarán activos y listos para la venta.',
         },
       ],
       tooManyNewConversations: 'No te podemos seguir el ritmo. Espera un momento para poder abrir nuevas conversaciones.',
