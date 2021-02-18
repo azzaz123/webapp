@@ -5,7 +5,7 @@ $button-small-width: 65px;
 $button-big-width: 100px;
 $feature-button-width: 165px;
 
-.OptionButtons {
+.OtherActionButtons {
   right: 0;
 
   tsl-button {
@@ -22,7 +22,7 @@ $feature-button-width: 165px;
   }
 }
 
-.ActionButtons {
+.OwnActionButtons {
   button {
     border: solid 1px $blue-grey-5;
     @include square(40px);

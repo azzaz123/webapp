@@ -1,10 +1,11 @@
-<div class="my-3 d-flex justify-content-between align-items-center">
-    <tsl-user-basic-info *ngIf="userStats && user" [userStats]="userStats" [userInfo]="user"
-        [styleSize]="USER_INFO_SIZE.SMALL"></tsl-user-basic-info>
+<div *ngIf="user && userStats && item" class="my-3 d-flex justify-content-between align-items-center">
+    <tsl-user-basic-info [userStats]="userStats" [userInfo]="user" [styleSize]="USER_INFO_SIZE.SMALL">
+    </tsl-user-basic-info>
     <div *ngIf="isOwner; else basicOperations" class="d-flex">
-        <div class="FeatureButton mr-4">
+        <div class="FeatureButton mr-4" *ngIf="showMineOptions">
             <!-- Feature -->
-            <tsl-button className="btn-feature" (click)="featureItem(item)" *ngIf="!item.bumpExpiringDate">
+            <tsl-button *ngIf="!item.bumpExpiringDate" className="btn-feature"
+                [routerLink]="['/catalog/checkout', {itemId: item.id}]">
                 <tsl-svg-icon src="/assets/icons/feature.svg" class="mr-2"></tsl-svg-icon>
                 <span i18n="@@Feature">Feature</span>
             </tsl-button>
@@ -13,15 +14,15 @@
                 <tsl-date-countdown [dateEndTimestamp]="item.bumpExpiringDate"></tsl-date-countdown>
             </button>
         </div>
-        <div class="ActionButtons d-flex">
-            <ng-container>
+        <div class="OwnActionButtons d-flex">
+            <ng-container *ngIf="showMineOptions">
                 <!-- Sold -->
-                <button class="btn-sold p-0" tslItemSold (callback)="setSold(item)" [item]="item"
-                    ngbTooltip="Mark as sold" i18n-ngbTooltip placement="top">
+                <button class="btn-sold p-0" tslItemSold (callback)="soldItem()" [item]="item" ngbTooltip="Mark as sold"
+                    i18n-ngbTooltip placement="top">
                     <tsl-svg-icon src="/assets/icons/btn-sold.svg"></tsl-svg-icon>
                 </button>
                 <!-- Reserve -->
-                <button class="btn-reserve p-0" [ngClass]="{active: item.reserved}" (click)="reserve(item)"
+                <button class="btn-reserve p-0" [ngClass]="{active: item.reserved}" (click)="reserveItem()"
                     ngbTooltip="Mark as reserved" i18n-ngbTooltip placement="top">
                     <tsl-svg-icon src="/assets/icons/btn-reserved.svg"></tsl-svg-icon>
                 </button>
@@ -30,15 +31,15 @@
                     i18n-ngbTooltip placement="top">
                     <tsl-svg-icon src="/assets/icons/btn-edit.svg"></tsl-svg-icon>
                 </button>
-                <!-- Delete -->
-                <button class="btn-delete p-0" (click)="delete(deleteItemsModal)">
-                    <tsl-svg-icon src="/assets/icons/delete.svg" width="17" height="20"></tsl-svg-icon>
-                </button>
             </ng-container>
+            <!-- Delete -->
+            <button class="btn-delete p-0" (click)="deleteItem()">
+                <tsl-svg-icon src="/assets/icons/delete.svg" width="17" height="20"></tsl-svg-icon>
+            </button>
         </div>
     </div>
     <ng-template #basicOperations>
-        <div class="OptionButtons">
+        <div class="OtherActionButtons">
             <tsl-button className="stripe" class="mr-2" (click)="toggleItemFavorite()">
                 <tsl-favourite-icon [active]="item?.flags?.favorite">
                 </tsl-favourite-icon>
