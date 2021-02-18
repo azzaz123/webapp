@@ -2,12 +2,12 @@
 
 $item-flag-height: 38px;
 
-.ImagesCarousel {
+.SlidesCarousel {
   ngb-carousel {
     width: 100%;
     height: 100%;
     ::ng-deep {
-      .ImagesCarousel__image,
+      .SlidesCarousel__slide,
       .carousel-inner,
       .carousel-item {
         width: 100%;
@@ -29,11 +29,20 @@ $item-flag-height: 38px;
     }
   }
 
-  &__image {
-    object-fit: cover;
-    &--fallback {
-      border-radius: $border-radius;
+  &__noBackgroundIndicators {
+    ngb-carousel {
+      ::ng-deep {
+        .carousel-indicators {
+          background: transparent;
+          border-radius: 0;
+        }
+      }
     }
+  }
+
+  &__fallbackImage {
+    object-fit: cover;
+    border-radius: $border-radius;
   }
 }
 
