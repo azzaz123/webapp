@@ -95,7 +95,7 @@ export class SliderFormComponent extends AbstractFormComponent<[number, number]>
         });
 
         this.options.stepsArray = stepsArray;
-      } catch (e: any) {}
+      } catch (e: unknown) {}
     }
   }
 }
