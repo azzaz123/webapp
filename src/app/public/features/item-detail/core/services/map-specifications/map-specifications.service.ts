@@ -16,9 +16,7 @@ import {
   RealestateType,
 } from '../../../components/item-specifications/interfaces/item.specifications.interface';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class MapSpecificationsService {
   private readonly EMPTY_VALUE = 'EMPTY';
 

@@ -15,6 +15,7 @@ import { SocialShareModule } from '@shared/social-share/social-share.module';
 import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
 import { RecommendedItemsModule } from './components/recommended-items/recommended-items.module';
 import { ItemSpecificationsModule } from './components/item-specifications/item-specifications.module';
+import { MapSpecificationsService } from './core/services/map-specifications/map-specifications.service';
 
 @NgModule({
   declarations: [itemDetailRoutedComponents],
@@ -30,6 +31,14 @@ import { ItemSpecificationsModule } from './components/item-specifications/item-
     RecommendedItemsModule,
     ItemSpecificationsModule,
   ],
-  providers: [ItemDetailService, ItemApiService, PublicUserApiService, RecommenderApiService, MapItemService, SocialMetaTagService],
+  providers: [
+    ItemDetailService,
+    ItemApiService,
+    PublicUserApiService,
+    RecommenderApiService,
+    MapItemService,
+    SocialMetaTagService,
+    MapSpecificationsService,
+  ],
 })
 export class ItemDetailModule {}
