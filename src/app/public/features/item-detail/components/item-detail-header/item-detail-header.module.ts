@@ -5,10 +5,13 @@ import { UserBasicInfoModule } from '@public/shared/components/user-basic-info/u
 import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
 import { ButtonModule } from '@shared/button/button.module';
 import { FavouriteIconModule } from '@public/shared/components/favourite-icon/favourite-icon.module';
+import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
+import { DateCountDownModule } from '@shared/date-countdown/date-countdown.module';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [ItemDetailHeaderComponent],
-  imports: [CommonModule, UserBasicInfoModule, ButtonModule, FavouriteIconModule],
+  imports: [CommonModule, UserBasicInfoModule, ButtonModule, FavouriteIconModule, SvgIconModule, DateCountDownModule, NgbTooltipModule],
   exports: [ItemDetailHeaderComponent],
   providers: [PublicProfileService],
 })

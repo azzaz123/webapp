@@ -3,6 +3,7 @@
 $button-height: 40px;
 $button-small-width: 65px;
 $button-big-width: 100px;
+$feature-button-width: 165px;
 
 .OptionButtons {
   right: 0;
@@ -18,5 +19,86 @@ $button-big-width: 100px;
         width: $button-big-width;
       }
     }
+  }
+}
+
+.ActionButtons {
+  button {
+    border: solid 1px $blue-grey-5;
+    @include square(40px);
+    margin-right: $spacing-s;
+    border-radius: $spacing-s;
+    background-color: $white;
+    text-align: -webkit-center;
+    tsl-svg-icon {
+      ::ng-deep svg g g,
+      path {
+        fill: $blue-grey-2;
+      }
+    }
+    &:hover,
+    &.active {
+      tsl-svg-icon ::ng-deep {
+        svg g g,
+        svg path {
+          fill: $white;
+        }
+      }
+    }
+
+    &.btn-sold {
+      &:hover {
+        background: $magenta-main;
+        border-color: transparent;
+      }
+    }
+    &.btn-reserve {
+      &:hover,
+      &.active {
+        background: $skyblue-dark;
+        border-color: transparent;
+      }
+    }
+    &.btn-edit {
+      &:hover {
+        background: $blue-grey-2;
+        border-color: transparent;
+      }
+    }
+    &.btn-delete {
+      &:hover {
+        background: $negative-main;
+        border-color: transparent;
+      }
+    }
+  }
+}
+
+.FeatureButton {
+  right: 0;
+
+  tsl-button {
+    ::ng-deep .btn {
+      display: flex;
+      height: $button-height;
+      padding: $spacing-s $spacing-xl;
+      width: $feature-button-width;
+    }
+  }
+
+  tsl-date-countdown {
+    width: $feature-button-width;
+  }
+
+  .btn-featured {
+    width: $feature-button-width;
+    height: $button-height;
+    border: 1px solid $walla-main;
+    color: $walla-main;
+    cursor: default;
+    font-size: $font-size-s;
+    font-weight: $font-weight-chunky;
+    border-radius: $spacing-s;
+    background-color: $white;
   }
 }
