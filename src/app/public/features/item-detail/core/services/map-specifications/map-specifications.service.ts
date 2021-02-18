@@ -27,7 +27,9 @@ export class MapSpecificationsService {
   public mapCarSpecifications(car: Car): CounterSpecifications[] {
     const carSpecifications = this.getCarSpecifications(car);
     const carCounters = this.getCarCounters(carSpecifications);
-    if (carSpecifications.bodyType === 'others') carCounters.shift();
+    if (carSpecifications.bodyType === 'others') {
+      carCounters.shift();
+    }
     return carCounters.filter((counter) => this.counterSpecificationsAreNotEmpty(counter));
   }
 
@@ -134,7 +136,7 @@ export class MapSpecificationsService {
   }
 
   private getCarSpecificationType(value: string): CAR_SPECIFICATION_TYPE {
-    const keys = Object.keys(CAR_SPECIFICATION_TYPE).filter((key) => CAR_SPECIFICATION_TYPE[key] == value) as CAR_SPECIFICATION_TYPE[];
+    const keys = Object.keys(CAR_SPECIFICATION_TYPE).filter((specificationKey) => CAR_SPECIFICATION_TYPE[specificationKey] === value);
     const key = keys.length > 0 ? keys[0] : null;
 
     return CAR_SPECIFICATION_TYPE[key];
@@ -142,8 +144,8 @@ export class MapSpecificationsService {
 
   private getRealestateSpecificationType(value: string): REAL_ESTATE_SPECIFICATION_TYPE {
     const keys = Object.keys(REAL_ESTATE_SPECIFICATION_TYPE).filter(
-      (key) => REAL_ESTATE_SPECIFICATION_TYPE[key] == value
-    ) as REAL_ESTATE_SPECIFICATION_TYPE[];
+      (specificationKey) => REAL_ESTATE_SPECIFICATION_TYPE[specificationKey] === value
+    );
     const key = keys.length > 0 ? keys[0] : null;
 
     return REAL_ESTATE_SPECIFICATION_TYPE[key];
@@ -172,7 +174,7 @@ export class MapSpecificationsService {
         return CAR_SPECIFICATION_TYPE.THREE_DOORS;
       case 4:
         return CAR_SPECIFICATION_TYPE.FOUR_DOORS;
-      case 5:
+      default:
         return CAR_SPECIFICATION_TYPE.FIVE_DOORS;
     }
   }
