@@ -20,10 +20,24 @@ describe('BecomeProModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(BecomeProModalComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  describe('CTA text', () => {
+    beforeEach(() => {
+      spyOn(window as any, '$localize');
+    });
+
+    it('should show trial text', () => {
+      component.hasTrialAvailable = true;
+      fixture.detectChanges();
+
+      expect(window['$localize']).toHaveBeenCalledWith([expect.stringMatching(':@@FreeTrial:')]);
+    });
+
+    it('should show default text', () => {
+      fixture.detectChanges();
+
+      expect(window['$localize']).toHaveBeenCalledWith([expect.stringMatching(':@@KnowMore:')]);
+    });
   });
 });
