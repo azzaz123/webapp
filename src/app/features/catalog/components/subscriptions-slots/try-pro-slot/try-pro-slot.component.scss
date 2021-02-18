@@ -1,0 +1,34 @@
+@import '~style/common';
+
+.TryProSlot {
+  position: relative;
+  transition: all 0.25s ease;
+  background-color: transparentize($white, 0.5);
+  border: solid 1px $walla-main;
+  border-radius: $spacing-ms;
+
+  &__title {
+    font-weight: bold;
+    color: $blue-grey-1;
+    font-size: $font-size-s;
+  }
+
+  &__description {
+    color: $blue-grey-1;
+    font-size: $font-size-s;
+  }
+
+  &__close {
+    cursor: pointer;
+    @include square($spacing-ms);
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    tsl-svg-icon {
+      ::ng-deep svg path {
+        fill: $blue-grey-3;
+      }
+    }
+  }
+}

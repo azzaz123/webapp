@@ -69,4 +69,5 @@ export enum SCREEN_IDS {
   MyCatalogInactiveSection = 240,
   SubscriptionTier = 241,
   MyBankDetails = 242,
+  ProAdvantagesPopup = 243,
 }

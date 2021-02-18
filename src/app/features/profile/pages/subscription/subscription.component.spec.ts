@@ -1,6 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   AnalyticsEvent,
   AnalyticsPageView,
@@ -8,10 +8,10 @@ import {
   ANALYTIC_EVENT_TYPES,
   ClickKeepCurrentSubscription,
   ClickProfileEditCurrentSubscription,
+  ClickProSubscription,
   ClickSubscriptionManagementPlus,
   SCREEN_IDS,
   ViewSubscription,
-  ViewSubscriptionManagement,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { CategoryService } from '@core/category/category.service';
@@ -35,7 +35,7 @@ import {
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED,
   SUBSCRIPTIONS_NOT_SUB,
 } from '@fixtures/subscriptions.fixtures.spec';
-import { MOCK_FULL_USER, MOCK_FULL_USER_NON_FEATURED, USER_DATA } from '@fixtures/user.fixtures.spec';
+import { MOCK_FULL_USER, MOCK_FULL_USER_NON_FEATURED, MOCK_NON_FEATURED_USER_RESPONSE, USER_DATA } from '@fixtures/user.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from 'app/core/user/user.service';
 import { of } from 'rxjs';
@@ -50,6 +50,7 @@ describe('SubscriptionComponent', () => {
   let router: Router;
   let analyticsService: AnalyticsService;
   let userService: UserService;
+  let route: ActivatedRoute;
   const componentInstance = { subscription: MAPPED_SUBSCRIPTIONS[0] };
 
   beforeEach(
@@ -85,6 +86,16 @@ describe('SubscriptionComponent', () => {
             },
           },
           {
+            provide: ActivatedRoute,
+            useValue: {
+              snapshot: {
+                paramMap: {
+                  get: () => null,
+                },
+              },
+            },
+          },
+          {
             provide: UserService,
             useValue: {
               me() {
@@ -108,6 +119,7 @@ describe('SubscriptionComponent', () => {
     router = TestBed.inject(Router);
     analyticsService = TestBed.inject(AnalyticsService);
     userService = TestBed.inject(UserService);
+    route = TestBed.inject(ActivatedRoute);
     fixture.detectChanges();
   });
 
@@ -130,41 +142,86 @@ describe('SubscriptionComponent', () => {
       expect(component.user).toEqual(USER_DATA);
     });
 
+    describe('Track param events', () => {
+      describe('when has param events', () => {
+        it('should track event', () => {
+          spyOn(analyticsService, 'trackPageView');
+          spyOn(route.snapshot.paramMap, 'get').and.returnValue('true');
+          const expectedPageViewEvent: AnalyticsPageView<ClickProSubscription> = {
+            name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
+            attributes: {
+              screenId: SCREEN_IDS.WebHome,
+              isLoggedIn: true,
+            },
+          };
+
+          component.ngOnInit();
+
+          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(2);
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageViewEvent);
+        });
+      });
+
+      describe('when has not param events', () => {
+        it('should not track event', () => {
+          spyOn(analyticsService, 'trackPageView');
+          const expectedPageViewEvent: AnalyticsPageView<ClickProSubscription> = {
+            name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
+            attributes: {
+              screenId: SCREEN_IDS.WebHome,
+              isLoggedIn: true,
+            },
+          };
+
+          component.ngOnInit();
+
+          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+          expect(analyticsService.trackPageView).not.toHaveBeenCalledWith(expectedPageViewEvent);
+        });
+      });
+    });
+
     afterEach(() => {
       TestBed.resetTestingModule();
     });
   });
 
   describe('Send page view event to analytics', () => {
-    it('when has subscriptions', () => {
-      spyOn(analyticsService, 'trackPageView');
-      const expectedPageViewEvent: AnalyticsPageView<ViewSubscriptionManagement> = {
-        name: ANALYTICS_EVENT_NAMES.ViewSubscriptionManagement,
-        attributes: {
-          screenId: SCREEN_IDS.SubscriptionManagement,
-        },
-      };
+    describe('when is PRO', () => {
+      it('should send event', () => {
+        spyOn(analyticsService, 'trackPageView');
+        const expectedPageViewEvent: AnalyticsPageView<ViewSubscription> = {
+          name: ANALYTICS_EVENT_NAMES.ViewSubscription,
+          attributes: {
+            screenId: SCREEN_IDS.SubscriptionManagement,
+            isPro: true,
+          },
+        };
 
-      component.ngOnInit();
+        component.ngOnInit();
 
-      expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
-      expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageViewEvent);
+        expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageViewEvent);
+      });
     });
 
-    it('when has not subscriptions', () => {
-      spyOn(analyticsService, 'trackPageView');
-      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(SUBSCRIPTIONS_NOT_SUB));
-      const expectedPageViewEvent: AnalyticsPageView<ViewSubscription> = {
-        name: ANALYTICS_EVENT_NAMES.ViewSubscription,
-        attributes: {
-          screenId: SCREEN_IDS.Subscription,
-        },
-      };
+    describe('when is not PRO', () => {
+      it('should send event', () => {
+        spyOn(analyticsService, 'trackPageView');
+        spyOn(userService, 'me').and.returnValue(of(MOCK_NON_FEATURED_USER_RESPONSE));
+        const expectedPageViewEvent: AnalyticsPageView<ViewSubscription> = {
+          name: ANALYTICS_EVENT_NAMES.ViewSubscription,
+          attributes: {
+            screenId: SCREEN_IDS.SubscriptionManagement,
+            isPro: false,
+          },
+        };
 
-      component.ngOnInit();
+        component.ngOnInit();
 
-      expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
-      expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageViewEvent);
+        expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageViewEvent);
+      });
     });
 
     afterEach(() => {

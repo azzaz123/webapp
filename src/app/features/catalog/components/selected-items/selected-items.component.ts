@@ -56,6 +56,8 @@ export class SelectedItemsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.selectedItemsSubscription) this.selectedItemsSubscription.unsubscribe();
+    if (this.selectedItemsSubscription) {
+      this.selectedItemsSubscription.unsubscribe();
+    }
   }
 }

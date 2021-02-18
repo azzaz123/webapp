@@ -33,7 +33,6 @@ export class CheckoutComponent implements OnInit {
         this.getProductsFromSelectedItems();
       }
     });
-    appboy.logCustomEvent('FeatureItems', { platform: 'web' });
   }
 
   private getProductsFromSelectedItems() {

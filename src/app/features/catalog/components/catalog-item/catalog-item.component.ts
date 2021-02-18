@@ -126,7 +126,6 @@ export class CatalogItemComponent implements OnInit {
         action: 'reactivated',
       });
     });
-    appboy.logCustomEvent('ReactivateItem', { platform: 'web' });
   }
 
   public select(item: Item) {
@@ -140,7 +139,6 @@ export class CatalogItemComponent implements OnInit {
   }
 
   public setSold(item: Item) {
-    appboy.logCustomEvent('Sold', { platform: 'web' });
     fbq('track', 'CompleteRegistration', {
       value: item.salePrice,
       currency: item.currencyCode,
