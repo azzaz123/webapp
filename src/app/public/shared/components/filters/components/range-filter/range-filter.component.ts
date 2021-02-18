@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, MaxLengthValidator } from '@angular/forms';
-import { SliderFormStepConfig } from '@shared/form/components/slider/interfaces/slider-form-steps-config.interface';
-import { debounceTime, delay } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
+import { SliderFormStepConfig } from '@shared/form/components/slider/interfaces/slider-form-step-config.interface';
+import { debounceTime } from 'rxjs/operators';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { AbstractFilter } from '../abstract-filter/abstract-filter';
 import { RangeFilterConfig } from './interfaces/range-filter-config.interface';
@@ -17,7 +17,7 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
   range: [number, number] = [0, 0];
   stepsConfig?: SliderFormStepConfig[];
   placeholder: string;
-  units?: string = '';
+  units? = '';
   limitless?: boolean;
   limitlessPlaceholder = $localize`:@@Limitless:No limit`;
   formGroup: FormGroup;
@@ -66,7 +66,7 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
       return parameter.key === this.config.mapKey.maxKey;
     })?.value;
 
-    this.setLabel(parseInt(inputMin), parseInt(inputMax));
+    this.setLabel(parseInt(inputMin, 10), parseInt(inputMax, 10));
 
     this.formGroup = new FormGroup({
       range: new FormControl([inputMin || this.range[0], inputMax || this.range[1]]),
