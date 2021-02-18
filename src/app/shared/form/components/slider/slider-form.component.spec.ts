@@ -1,6 +1,6 @@
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { CommonModule } from '@angular/common';
-import { DebugElement, SimpleChange } from '@angular/core';
+import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SliderFormComponent } from './slider-form.component';
@@ -19,7 +19,7 @@ describe('SliderFormComponent', () => {
   const hiddenVisibilityValue = 'hidden';
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [CommonModule, NgxSliderModule, ReactiveFormsModule],
       declarations: [SliderFormComponent],
     }).compileComponents();
@@ -39,9 +39,7 @@ describe('SliderFormComponent', () => {
     beforeEach(() => {
       component.min = DEFAULT_MIN;
       component.max = DEFAULT_MAX;
-
       component.ngOnChanges();
-
       fixture.detectChanges();
     });
 
@@ -55,6 +53,7 @@ describe('SliderFormComponent', () => {
 
     it('should show value label with min value', () => {
       const valueLabel = el.querySelector(valueLabelSelector);
+
       expect(valueLabel.innerHTML).toEqual(DEFAULT_MIN.toString());
     });
   });
@@ -73,11 +72,13 @@ describe('SliderFormComponent', () => {
 
     it('should hide limit labels', () => {
       const limitLabel = el.querySelector(limitLabelSelector);
+
       expect((limitLabel as HTMLElement).style.visibility).toEqual(hiddenVisibilityValue);
     });
 
     it('should hide value label', () => {
       const valueLabel = el.querySelector(valueLabelSelector);
+
       expect((valueLabel as HTMLElement).style.visibility).toEqual(hiddenVisibilityValue);
     });
   });
@@ -115,10 +116,10 @@ describe('SliderFormComponent', () => {
       const minLabel = el.querySelectorAll(limitLabelSelector)[0];
       const maxLabel = el.querySelectorAll(limitLabelSelector)[1];
       const valueLabel = el.querySelector(valueLabelSelector);
+
       const checkLabel = (label: Element) => {
         expect(label.innerHTML.substr(label.innerHTML.length - component.units.length)).toContain(component.units);
       };
-
       checkLabel(minLabel);
       checkLabel(maxLabel);
       checkLabel(valueLabel);
