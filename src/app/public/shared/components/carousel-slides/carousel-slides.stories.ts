@@ -4,11 +4,13 @@ import { HAMMER_PROVIDER } from '@core/hammerjs/hammerjs-provider';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
 import { Story, Meta } from '@storybook/angular/types-6-0';
-import { ImagesCarouselComponent } from './images-carousel.component';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { CarouselSliderDirective } from './directives/carousel-slider.directive';
+import { SlidesCarouselComponent } from './carousel-slides.component';
 
 export default {
-  title: 'Webapp/Public/Shared/Components/ImagesCarousel',
-  component: ImagesCarouselComponent,
+  title: 'Webapp/Public/Shared/Components/SlidesCarousel',
+  component: SlidesCarouselComponent,
   decorators: [
     (storyFunc) => {
       const story = storyFunc();
@@ -21,15 +23,16 @@ export default {
   ],
 } as Meta;
 
-const Template: Story<ImagesCarouselComponent> = (args: ImagesCarouselComponent) => ({
-  component: ImagesCarouselComponent,
+const Template: Story<SlidesCarouselComponent> = (args: SlidesCarouselComponent) => ({
+  component: SlidesCarouselComponent,
   props: args,
   moduleMetadata: {
-    declarations: [ImagesCarouselComponent],
+    declarations: [SlidesCarouselComponent, CarouselSliderDirective],
     imports: [CommonModule, NgbCarouselModule, ImageFallbackModule, HammerModule],
-    providers: [HAMMER_PROVIDER],
+    providers: [HAMMER_PROVIDER, DeviceDetectorService],
   },
-  template: '<tsl-images-carousel [images]="images"></tsl-images-carousel>',
+  template:
+    '<tsl-carousel-slides><ng-template carousel-slider *ngFor="let image of images"><img [src]="image" /></ng-template></tsl-carousel-slides>',
 });
 
 const imagesURL = ['http://localhost:6006/images/item-camera.jpg', 'http://localhost:6006/images/item-pc.jpg'];

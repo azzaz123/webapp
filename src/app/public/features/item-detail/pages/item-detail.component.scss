@@ -49,6 +49,9 @@ $item-detail-carousel-height: 477px;
 
   &__carousel {
     height: $item-detail-carousel-height;
+    &--active {
+      cursor: pointer;
+    }
   }
 
   &__stats {

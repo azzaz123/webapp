@@ -9,8 +9,11 @@
             <div class="ItemDetail__container__middleSection d-flex flex-column w-100" *ngIf="itemDetail && !loading">
                 <div class="ItemDetail__content px-4 pb-5 ">
                     <div class="ItemDetail__carousel position-relative w-100">
-                        <tsl-item-images-carousel [images]="images" [itemFlags]="itemDetail.item?.flags"
-                            [itemVisibilityFlags]="itemDetail.item?.bumpFlags"></tsl-item-images-carousel>
+                        <tsl-item-images-carousel [ngClass]="{'ItemDetail__carousel--active': images?.length > 0}"
+                            [images]="images" [itemFlags]="itemDetail.item?.flags"
+                            [itemVisibilityFlags]="itemDetail.item?.bumpFlags"
+                            (imageClick)="openItemDetailImage($event)">
+                        </tsl-item-images-carousel>
                     </div>
                     <div class="mt-3 py-3 borderBottom">
                         <span class="ItemDetail__price d-block">{{itemDetail?.item?.salePrice |
@@ -59,3 +62,4 @@
         </div>
     </div>
 </div>
+<tsl-item-fullscreen-carousel></tsl-item-fullscreen-carousel>

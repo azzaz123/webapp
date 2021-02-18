@@ -13,6 +13,7 @@ import { GeolocationModule } from '@shared/geolocation/geolocation.module';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { SocialShareModule } from '@shared/social-share/social-share.module';
 import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
+import { ItemFullScreenCarouselModule } from './components/item-fullscreen-carousel/item-fullscreen-carousel.module';
 import { RecommendedItemsModule } from './components/recommended-items/recommended-items.module';
 import { ItemSpecificationsModule } from './components/item-specifications/item-specifications.module';
 import { MapSpecificationsService } from './core/services/map-specifications/map-specifications.service';
@@ -28,6 +29,7 @@ import { MapSpecificationsService } from './core/services/map-specifications/map
     GeolocationModule,
     SvgIconModule,
     SocialShareModule,
+    ItemFullScreenCarouselModule,
     RecommendedItemsModule,
     ItemSpecificationsModule,
   ],

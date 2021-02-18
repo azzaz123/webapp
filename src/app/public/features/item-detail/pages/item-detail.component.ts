@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ItemDetailLocation } from './constants/item-detail.interface';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
@@ -21,6 +21,8 @@ import { APP_PATHS } from 'app/app-routing-constants';
 import { CounterSpecifications } from '../components/item-specifications/interfaces/item.specifications.interface';
 import { MapSpecificationsService } from '../core/services/map-specifications/map-specifications.service';
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
+import { CarouselSlide } from '@public/shared/components/carousel-slides/carousel-slide.interface';
+import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -28,6 +30,8 @@ import { TypeCheckService } from '@public/core/services/type-check/type-check.se
   styleUrls: ['./item-detail.component.scss'],
 })
 export class ItemDetailComponent implements OnInit {
+  @ViewChild(ItemFullScreenCarouselComponent, { static: true })
+  itemDetailImagesModal: ItemFullScreenCarouselComponent;
   public readonly deviceType = DeviceType;
   public loading = true;
   public isApproximateLocation = false;
@@ -36,6 +40,7 @@ export class ItemDetailComponent implements OnInit {
   public coordinates: Coordinate;
   public device: DeviceType;
   public images: string[];
+  public bigImages: string[];
   public itemLocation: ItemDetailLocation;
   public recommendedItems$: Observable<RecommendedItemsBodyResponse>;
   public itemSpecifications: CounterSpecifications[];
@@ -70,6 +75,13 @@ export class ItemDetailComponent implements OnInit {
 
   public locationHaveCoordinates(): boolean {
     return !!this.itemLocation?.latitude && !!this.itemLocation?.longitude;
+  }
+
+  public openItemDetailImage($event: CarouselSlide): void {
+    this.itemDetailImagesModal.images = this.bigImages;
+    this.itemDetailImagesModal.item = this.itemDetail?.item;
+    this.itemDetailImagesModal.imageIndex = $event?.index;
+    this.itemDetailImagesModal.show();
   }
 
   private initPage(itemId: string): void {
@@ -119,8 +131,10 @@ export class ItemDetailComponent implements OnInit {
 
   private showItemImages(): void {
     this.images = [];
+    this.bigImages = [];
     this.itemDetail.item?.images?.forEach((image: Image) => {
       this.images.push(image.urls_by_size.large);
+      this.bigImages.push(image.urls_by_size.xlarge);
     });
   }
 
