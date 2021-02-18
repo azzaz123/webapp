@@ -8,11 +8,13 @@ import { FavouriteIconModule } from '@public/shared/components/favourite-icon/fa
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { DateCountDownModule } from '@shared/date-countdown/date-countdown.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { ErrorsService } from '@core/errors/errors.service';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 
 @NgModule({
   declarations: [ItemDetailHeaderComponent],
   imports: [CommonModule, UserBasicInfoModule, ButtonModule, FavouriteIconModule, SvgIconModule, DateCountDownModule, NgbTooltipModule],
   exports: [ItemDetailHeaderComponent],
-  providers: [PublicProfileService],
+  providers: [PublicProfileService, ErrorsService, ToastService],
 })
 export class ItemDetailHeaderModule {}
