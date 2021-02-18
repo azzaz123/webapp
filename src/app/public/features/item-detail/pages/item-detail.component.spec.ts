@@ -39,7 +39,7 @@ import { ItemSpecificationsComponent } from '../components/item-specifications/i
 import { ItemSpecificationsModule } from '../components/item-specifications/item-specifications.module';
 import { MapSpecificationsService } from '../core/services/map-specifications/map-specifications.service';
 import { MOCK_COUNTER_SPECIFICATIONS_CAR, MOCK_COUNTER_SPECIFICATIONS_REAL_ESTATE } from '@fixtures/map-specifications.fixtures.spec';
-import { TypeGuardService } from '@public/core/services/type-guard/type-guard.service';
+import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 
 describe('ItemDetailComponent', () => {
   const topSkyTag = 'tsl-top-sky';
@@ -125,7 +125,7 @@ describe('ItemDetailComponent', () => {
         },
         MapItemService,
         SocialMetaTagService,
-        TypeGuardService,
+        TypeCheckService,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

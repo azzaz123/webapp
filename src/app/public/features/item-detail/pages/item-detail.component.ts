@@ -20,7 +20,7 @@ import { finalize } from 'rxjs/operators';
 import { APP_PATHS } from 'app/app-routing-constants';
 import { CounterSpecifications } from '../components/item-specifications/interfaces/item.specifications.interface';
 import { MapSpecificationsService } from '../core/services/map-specifications/map-specifications.service';
-import { TypeGuardService } from '@public/core/services/type-guard/type-guard.service';
+import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -60,7 +60,7 @@ export class ItemDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private mapSpecificationsService: MapSpecificationsService,
-    private typeGuardService: TypeGuardService
+    private typeCheckService: TypeCheckService
   ) {}
 
   ngOnInit(): void {
@@ -158,9 +158,9 @@ export class ItemDetailComponent implements OnInit {
   }
 
   private generateItemSpecifications(): void {
-    if (this.typeGuardService.isCar(this.itemDetail?.item)) {
+    if (this.typeCheckService.isCar(this.itemDetail?.item)) {
       this.itemSpecifications = this.mapSpecificationsService.mapCarSpecifications(this.itemDetail?.item);
-    } else if (this.typeGuardService.isRealEstate(this.itemDetail?.item)) {
+    } else if (this.typeCheckService.isRealEstate(this.itemDetail?.item)) {
       this.itemSpecifications = this.mapSpecificationsService.mapRealestateSpecifications(this.itemDetail?.item);
     }
   }

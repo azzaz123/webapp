@@ -5,7 +5,7 @@ import { Realestate } from '@core/item/realestate';
 @Injectable({
   providedIn: 'root',
 })
-export class TypeGuardService {
+export class TypeCheckService {
   public isNumber(label: unknown): label is number {
     return typeof label === 'number';
   }

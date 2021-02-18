@@ -3,7 +3,7 @@ import { Car } from '@core/item/car';
 import { Realestate } from '@core/item/realestate';
 import { CAR_SPECIFICATION_TYPE } from '@public/core/constants/item-specifications/cars-constants';
 import { REAL_ESTATE_SPECIFICATION_TYPE } from '@public/core/constants/item-specifications/realestate-constants';
-import { TypeGuardService } from '@public/core/services/type-guard/type-guard.service';
+import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import {
   CarBodyType,
   CarCondition,
@@ -22,7 +22,7 @@ import {
 export class MapSpecificationsService {
   private readonly EMPTY_VALUE = 'EMPTY';
 
-  constructor(private typeGuardService: TypeGuardService) {}
+  constructor(private typeCheckService: TypeCheckService) {}
 
   public mapCarSpecifications(car: Car): CounterSpecifications[] {
     const carSpecifications = this.getCarSpecifications(car);
@@ -123,7 +123,7 @@ export class MapSpecificationsService {
 
     Object.entries(pickedSpecifications).forEach(([key, value]) => {
       if (value) {
-        const specificationType = this.typeGuardService.isBoolean(value) ? key : value;
+        const specificationType = this.typeCheckService.isBoolean(value) ? key : value;
         realestateCounters.push({
           type: this.getRealestateSpecificationType(specificationType),
         });
@@ -157,7 +157,7 @@ export class MapSpecificationsService {
   }
 
   private getCounter(label: string | number): string | number {
-    if (this.typeGuardService.isNumber(label)) {
+    if (this.typeCheckService.isNumber(label)) {
       return label > 0 ? label : this.EMPTY_VALUE;
     } else {
       return label || this.EMPTY_VALUE;
