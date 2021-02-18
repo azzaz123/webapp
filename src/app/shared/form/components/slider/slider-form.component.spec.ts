@@ -1,6 +1,6 @@
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { CommonModule } from '@angular/common';
-import { DebugElement, SimpleChange } from '@angular/core';
+import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SliderFormComponent } from './slider-form.component';
@@ -19,7 +19,7 @@ describe('SliderFormComponent', () => {
   const hiddenVisibilityValue = 'hidden';
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [CommonModule, NgxSliderModule, ReactiveFormsModule],
       declarations: [SliderFormComponent],
     }).compileComponents();
