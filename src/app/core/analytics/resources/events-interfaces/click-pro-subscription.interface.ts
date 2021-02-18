@@ -6,7 +6,7 @@
  */
 
 /**
- * User clicks on the PRO subscription button in his profile page or in the top sellers slider on the Wall
+ * User clicks on the PRO subscription button or banner
  */
 export interface ClickProSubscription {
   /**
@@ -16,5 +16,9 @@ export interface ClickProSubscription {
   /**
    * Identifier of the screen in which the user has clicked
    */
-  screenId: 111 | 112;
+  screenId: 111 | 112 | 216 | 219;
+  /**
+   * Whether the user is logged in
+   */
+  isLoggedIn?: boolean;
 }

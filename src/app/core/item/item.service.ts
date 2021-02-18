@@ -793,8 +793,7 @@ export class ItemService {
             return reverse(sorted);
           }
           return sorted;
-        }),
-        map((res) => res.slice(init, end))
+        })
       );
     }
   }

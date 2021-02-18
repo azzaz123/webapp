@@ -417,10 +417,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   onUploaded(response: ItemContent, action: UPLOAD_ACTION) {
     this.onFormChanged.emit(false);
-    if (this.item) {
-      appboy.logCustomEvent('Edit', { platform: 'web' });
-    } else {
-      appboy.logCustomEvent('List', { platform: 'web' });
+    if (!this.item) {
       ga('send', 'event', 'Upload', 'done', 'Web mobile analysis');
     }
 

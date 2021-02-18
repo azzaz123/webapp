@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   AnalyticsEvent,
   AnalyticsPageView,
@@ -7,10 +7,10 @@ import {
   ANALYTIC_EVENT_TYPES,
   ClickKeepCurrentSubscription,
   ClickProfileEditCurrentSubscription,
+  ClickProSubscription,
   ClickSubscriptionManagementPlus,
   SCREEN_IDS,
   ViewSubscription,
-  ViewSubscriptionManagement,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
@@ -52,7 +52,8 @@ export class SubscriptionsComponent implements OnInit {
     private subscriptionsService: SubscriptionsService,
     private router: Router,
     private analyticsService: AnalyticsService,
-    private userService: UserService
+    private userService: UserService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -62,13 +63,28 @@ export class SubscriptionsComponent implements OnInit {
       .pipe(
         finalize(() => {
           this.loading = false;
-          this.trackPageView();
         })
       )
       .subscribe((subscriptions) => {
         this.subscriptions = subscriptions;
       });
-    this.userService.me(true).subscribe((user) => (this.user = user));
+    this.userService
+      .me(true)
+      .pipe(
+        finalize(() => {
+          this.trackPageView();
+        })
+      )
+      .subscribe((user) => (this.user = user));
+    this.trackParamEvents();
+  }
+
+  private trackParamEvents(): void {
+    const isSendClickProSubscription = this.route.snapshot.paramMap.get('sendClickProSubscription') === 'true';
+
+    if (isSendClickProSubscription) {
+      this.trackClickProSubscription();
+    }
   }
 
   public openSubscriptionModal(subscription: SubscriptionsResponse): void {
@@ -145,25 +161,13 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   private trackPageView() {
-    let pageView: AnalyticsPageView<ViewSubscriptionManagement | ViewSubscription>;
-    if (
-      this.subscriptionsService.hasOneStripeSubscription(this.subscriptions) ||
-      this.subscriptionsService.isOneSubscriptionInApp(this.subscriptions)
-    ) {
-      pageView = {
-        name: ANALYTICS_EVENT_NAMES.ViewSubscriptionManagement,
-        attributes: {
-          screenId: SCREEN_IDS.SubscriptionManagement,
-        },
-      };
-    } else {
-      pageView = {
-        name: ANALYTICS_EVENT_NAMES.ViewSubscription,
-        attributes: {
-          screenId: SCREEN_IDS.Subscription,
-        },
-      };
-    }
+    const pageView: AnalyticsPageView<ViewSubscription> = {
+      name: ANALYTICS_EVENT_NAMES.ViewSubscription,
+      attributes: {
+        screenId: SCREEN_IDS.SubscriptionManagement,
+        isPro: this.user.featured,
+      },
+    };
 
     this.analyticsService.trackPageView(pageView);
   }
@@ -276,5 +280,16 @@ export class SubscriptionsComponent implements OnInit {
     return this.subscriptionsService.hasTrial(subscription)
       ? $localize`:@@startFreeTrial:Start free trial`
       : $localize`:@@seePlans:See plans`;
+  }
+
+  private trackClickProSubscription(): void {
+    const event: AnalyticsPageView<ClickProSubscription> = {
+      name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
+      attributes: {
+        screenId: SCREEN_IDS.WebHome,
+        isLoggedIn: true,
+      },
+    };
+    return this.analyticsService.trackPageView(event);
   }
 }

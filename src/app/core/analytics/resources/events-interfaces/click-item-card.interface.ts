@@ -73,4 +73,8 @@ export interface ClickItemCard {
    * Used in the case of having more than one section in the landings to specify what type of landing it is
    */
   seoSection?: string;
+  /**
+   * If the item clicked is inside the bump slider
+   */
+  isBumpSlider?: boolean;
 }
