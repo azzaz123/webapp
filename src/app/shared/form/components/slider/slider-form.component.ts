@@ -45,7 +45,7 @@ export class SliderFormComponent extends AbstractFormComponent<[number, number]>
   }
 
   public writeValue(value: [number, number]): void {
-    this.value = value;
+    super.writeValue(value);
     this.variant = Array.isArray(this.value) ? SLIDER_VARIANT.RANGE : SLIDER_VARIANT.SINGLE;
     this.form.controls.control.setValue(value);
   }
