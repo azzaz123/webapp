@@ -20,7 +20,34 @@ $feature-button-width: 165px;
   }
 }
 
-.OwnUserBasicInfo {
+.ShowOwnButtons {
+  .FeatureButton {
+    display: none;
+  }
+  .OwnActionButtons {
+    button {
+      &.btn-sold,
+      &.btn-reserve,
+      &.btn-delete {
+        display: none;
+      }
+    }
+  }
+
+  @include media-breakpoint-up(md) {
+    .FeatureButton {
+      display: inline;
+    }
+    .OwnActionButtons {
+      button {
+        &.btn-sold,
+        &.btn-reserve,
+        &.btn-delete {
+          display: inline;
+        }
+      }
+    }
+  }
 }
 
 .OtherActionButtons {

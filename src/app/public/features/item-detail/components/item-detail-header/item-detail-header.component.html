@@ -1,5 +1,6 @@
-<div *ngIf="user && userStats && item" class="ItemDetailHeader py-2 d-flex justify-content-between align-items-center">
-    <tsl-user-basic-info [ngClass]="imOwner ? 'OwnUserBasicInfo': 'OtherUserBasicInfo'" [userStats]="userStats"
+<div *ngIf="user && userStats && item" class="ItemDetailHeader py-2 d-flex justify-content-between align-items-center"
+    [ngClass]="{'ShowOwnButtons': isOwner}">
+    <tsl-user-basic-info [ngClass]="isOwner ? 'OwnUserBasicInfo': 'OtherUserBasicInfo'" [userStats]="userStats"
         [userInfo]="user" [styleSize]="USER_INFO_SIZE.SMALL" [className]="'ItemDetailHeader'">
     </tsl-user-basic-info>
     <div *ngIf="isOwner; else basicOperations" class="d-flex">
