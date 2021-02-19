@@ -4,13 +4,14 @@ import { PublicProfileService } from '@public/features/public-profile/core/servi
 import { UserStats } from '@core/user/user-stats.interface';
 import { USER_INFO_SIZE } from '@public/shared/components/user-basic-info/constants/user-basic-info-constants';
 import { Item } from '@core/item/item';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { DeleteInfoConfirmationModalComponent } from '@shared/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component';
 import { ErrorsService } from '@core/errors/errors.service';
 import { ItemDetailService } from '../../core/services/item-detail.service';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
-import { EventService } from '@core/event/event.service';
+import { SoldModalComponent } from '@shared/modals/sold-modal/sold-modal.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'tsl-item-detail-header',
@@ -33,7 +34,8 @@ export class ItemDetailHeaderComponent implements OnInit {
     private itemDetailService: ItemDetailService,
     private errorsService: ErrorsService,
     private checkSessionService: CheckSessionService,
-    private itemCardService: ItemCardService
+    private itemCardService: ItemCardService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -59,9 +61,12 @@ export class ItemDetailHeaderComponent implements OnInit {
   }
 
   public soldItem(): void {
-    fbq('track', 'CompleteRegistration', {
-      value: this.item.salePrice,
-      currency: this.item.currencyCode,
+    const modalRef: NgbModalRef = this.modalService.open(SoldModalComponent, {
+      windowClass: 'sold',
+    });
+    modalRef.componentInstance.item = this.item;
+    modalRef.result.then(() => {
+      this.item.sold = true;
     });
   }
 
@@ -71,7 +76,7 @@ export class ItemDetailHeaderComponent implements OnInit {
         this.itemDetailService.deleteItem(this.item.id).subscribe(
           () => {
             this.errorsService.i18nSuccess('deleteItemSuccess');
-            // Redirect?
+            this.router.navigate(['catalog/list']);
           },
           () => {
             this.errorsService.i18nError('deleteItemError');

@@ -5,6 +5,24 @@ $button-small-width: 65px;
 $button-big-width: 100px;
 $feature-button-width: 165px;
 
+.ItemDetailHeader {
+  position: sticky;
+  top: 66px;
+  z-index: 95;
+  transition: top 150ms ease;
+  background-color: $white;
+}
+
+.OtherUserBasicInfo {
+  max-width: calc(100% - 150px);
+  @include media-breakpoint-up(md) {
+    max-width: calc(100% - 228px);
+  }
+}
+
+.OwnUserBasicInfo {
+}
+
 .OtherActionButtons {
   right: 0;
 

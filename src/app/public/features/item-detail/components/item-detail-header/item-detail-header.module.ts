@@ -10,10 +10,20 @@ import { DateCountDownModule } from '@shared/date-countdown/date-countdown.modul
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorsService } from '@core/errors/errors.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [ItemDetailHeaderComponent],
-  imports: [CommonModule, UserBasicInfoModule, ButtonModule, FavouriteIconModule, SvgIconModule, DateCountDownModule, NgbTooltipModule],
+  imports: [
+    CommonModule,
+    UserBasicInfoModule,
+    ButtonModule,
+    FavouriteIconModule,
+    SvgIconModule,
+    DateCountDownModule,
+    NgbTooltipModule,
+    RouterModule,
+  ],
   exports: [ItemDetailHeaderComponent],
   providers: [PublicProfileService, ErrorsService, ToastService],
 })
