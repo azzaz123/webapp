@@ -11,9 +11,9 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorsService } from '@core/errors/errors.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { RouterModule } from '@angular/router';
-
+import { ItemHeaderDropdownComponent } from './item-header-dropdown/item-header-dropdown.component';
 @NgModule({
-  declarations: [ItemDetailHeaderComponent],
+  declarations: [ItemDetailHeaderComponent, ItemHeaderDropdownComponent],
   imports: [
     CommonModule,
     UserBasicInfoModule,
@@ -24,7 +24,7 @@ import { RouterModule } from '@angular/router';
     NgbTooltipModule,
     RouterModule,
   ],
-  exports: [ItemDetailHeaderComponent],
+  exports: [ItemDetailHeaderComponent, ItemHeaderDropdownComponent],
   providers: [PublicProfileService, ErrorsService, ToastService],
 })
 export class ItemDetailHeaderModule {}
