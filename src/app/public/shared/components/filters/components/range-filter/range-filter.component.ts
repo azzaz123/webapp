@@ -21,7 +21,7 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
 
   ngOnInit(): void {
     super.ngOnInit();
-    this.handleStepConfig();
+    this.initRange();
     this.createForm();
     this.bindFormValueChangesListeners();
   }
@@ -42,9 +42,11 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
     this.clear.emit();
   }
 
-  private handleStepConfig(): void {
+  private initRange(): void {
     if (this.config.stepsConfig) {
       this.range = [this.config.stepsConfig[0].range[0], this.config.stepsConfig[this.config.stepsConfig.length - 1].range[1]];
+    } else {
+      this.range = this.config.range;
     }
   }
 
