@@ -37,6 +37,7 @@ import { APP_PATHS } from 'app/app-routing-constants';
 import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
+import { IsCurrentUserStub } from '@fixtures/public/core';
 
 describe('ItemDetailComponent', () => {
   const topSkyTag = 'tsl-top-sky';
@@ -69,8 +70,8 @@ describe('ItemDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ItemDetailComponent, CustomCurrencyPipe],
       imports: [HttpClientTestingModule],
+      declarations: [ItemDetailComponent, CustomCurrencyPipe, IsCurrentUserStub],
       providers: [
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         {
@@ -303,7 +304,7 @@ describe('ItemDetailComponent', () => {
     });
 
     it('should print their description', () => {
-      expect(el.querySelector('.ItemDetail__description').innerHTML).toEqual(component.itemDetail.item.description);
+      expect(el.querySelector('.ItemDetail__description').innerHTML.trim()).toEqual(component.itemDetail.item.description);
     });
 
     describe('when the favorites and views are NOT defined...', () => {
@@ -421,6 +422,10 @@ describe('ItemDetailComponent', () => {
       it('should set the image index property', () => {
         expect(component.itemDetailImagesModal.imageIndex).toBe(4);
       });
+    });
+
+    it('should show the item detail header', () => {
+      expect(fixture.debugElement.query(By.css('tsl-item-detail-header'))).toBeTruthy();
     });
   });
 });

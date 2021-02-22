@@ -6,10 +6,10 @@
             <div *ngIf="device === deviceType.DESKTOP">
                 <tsl-side-sky class="position-sticky d-none d-xl-block"></tsl-side-sky>
             </div>
-            <div class="ItemDetail__container__middleSection d-flex flex-column w-100" *ngIf="itemDetail && !loading">
+            <div class="ItemDetail__container__middleSection d-flex flex-column w-100">
                 <div class="ItemDetail__content px-4 pb-5 ">
                     <tsl-item-detail-header [user]="itemDetail.user" [item]="itemDetail.item"
-                        [isOwner]="(itemDetail.user | isCurrentUser | async)"></tsl-item-detail-header>
+                        [isOwner]="(itemDetail.user?.id | isCurrentUser | async)"></tsl-item-detail-header>
                     <div class="ItemDetail__carousel position-relative w-100">
                         <tsl-item-images-carousel [ngClass]="{'ItemDetail__carousel--active': images?.length > 0}"
                             [images]="images" [itemFlags]="itemDetail.item?.flags"
@@ -22,7 +22,9 @@
                             customCurrency:itemDetail?.item?.currencyCode}}</span>
                         <h1 class="ItemDetail__title my-0">{{itemDetail?.item?.title}}</h1>
                     </div>
-                    <p class="ItemDetail__description py-3 mb-0 text-break">{{itemDetail?.item?.description}}</p>
+                    <p *ngIf="itemDetail?.item?.description" class="ItemDetail__description py-3 mb-0 text-break">
+                        {{itemDetail.item.description}}
+                    </p>
                     <div class="ItemDetail__stats py-3">
                         <div class="d-inline-block">
                             {{ itemDetail?.item?.modifiedDate | date:'longDate' }}
