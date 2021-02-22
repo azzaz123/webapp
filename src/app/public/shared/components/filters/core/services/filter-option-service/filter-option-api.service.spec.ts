@@ -70,28 +70,28 @@ describe('FilterOptionsApiService', () => {
     describe('for getting brand and model options', () => {
       it('should retrieve options', () => {
         service.getCarBrandsAndModels(defaultParams).subscribe();
-        expectGetHttpQuery(FilterOptionApiEndpoints.CARS_BRAND_MODEL, defaultParams);
+        expectGetHttpQuery(FilterOptionApiEndpoints.CAR_BRAND_MODEL, defaultParams);
       });
     });
 
     describe('for getting body options', () => {
       it('should retrieve options', () => {
         service.getCarBodyTypeKeys(defaultParams).subscribe();
-        expectGetHttpQuery(FilterOptionApiEndpoints.CARS_BODY, defaultParams);
+        expectGetHttpQuery(FilterOptionApiEndpoints.CAR_BODY, defaultParams);
       });
     });
 
     describe('for getting engine options', () => {
       it('should retrieve options', () => {
         service.getCarEngineKeys(defaultParams).subscribe();
-        expectGetHttpQuery(FilterOptionApiEndpoints.CARS_ENGINE, defaultParams);
+        expectGetHttpQuery(FilterOptionApiEndpoints.CAR_ENGINE, defaultParams);
       });
     });
 
     describe('for getting gearbox options', () => {
       it('should retrieve options', () => {
         service.getCarGearboxKeys(defaultParams).subscribe();
-        expectGetHttpQuery(FilterOptionApiEndpoints.CARS_GEARBOX, defaultParams);
+        expectGetHttpQuery(FilterOptionApiEndpoints.CAR_GEARBOX, defaultParams);
       });
     });
   });

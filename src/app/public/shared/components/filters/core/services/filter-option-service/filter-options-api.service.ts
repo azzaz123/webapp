@@ -1,28 +1,40 @@
 import { Injectable } from '@angular/core';
-import { QueryParams } from '@public/shared/components/filters/core/interfaces/query-params';
-import { PaginationOptions } from '@public/shared/components/filters/core/interfaces/pagination-options';
 import { HttpClient } from '@angular/common/http';
-import { FilterOptionApiEndpoints } from '@public/shared/components/filters/core/services/filter-option-service/filter-option-api-endpoints.enum';
 import { environment } from '@environments/environment';
 import { Observable } from 'rxjs';
+
+import { QueryParams } from '../../interfaces/query-params';
+import { PaginationOptions } from '../../interfaces/pagination-options';
+import { FilterOptionApiEndpoints } from './filter-option-api-endpoints.enum';
+import { ConditionResponse } from './option-responses/condition.interface';
+import { ObjectType } from './option-responses/object-type.interface';
+import { IconOption } from './option-responses/icon-option.interface';
+import { CarBrandModel } from './option-responses/car-brand-model.interface';
+import { SizeNGenderResponse } from '@public/shared/components/filters/core/services/filter-option-service/option-responses/fashion-size-n-gender.interface';
 
 @Injectable()
 export class FilterOptionsApiService {
   constructor(private httpClient: HttpClient) {}
 
-  public getConditionsByCategoryId(categoryId: number, params: QueryParams): Observable<unknown> {
-    return this.get(FilterOptionApiEndpoints.CONDITION.replace('{category_id}', categoryId.toString()), params);
+  public getConditionsByCategoryId(categoryId: number, params: QueryParams): Observable<ConditionResponse> {
+    return this.get<ConditionResponse>(FilterOptionApiEndpoints.CONDITION.replace('{category_id}', categoryId.toString()), params);
   }
 
-  public getObjectTypesByCategoryId(categoryId: number, params: QueryParams): Observable<unknown> {
-    return this.get(FilterOptionApiEndpoints.OBJECT_TYPE, {
-      ...params,
-      category_id: categoryId.toString(),
-    });
+  public getObjectTypesByCategoryId(categoryId: number, params: QueryParams): Observable<ObjectType[]> {
+    return this.get<ObjectType[]>(
+      FilterOptionApiEndpoints.OBJECT_TYPE,
+      {
+        ...params,
+        category_id: categoryId.toString(),
+      },
+      {
+        Accept: 'application/vnd.api.v3.suggesters.object-type.v3+json',
+      }
+    );
   }
 
-  public getObjectTypesByParentId(parentId: number, params: QueryParams): Observable<unknown> {
-    return this.get(FilterOptionApiEndpoints.OBJECT_TYPE, {
+  public getObjectTypesByParentId(parentId: number, params: QueryParams): Observable<ObjectType[]> {
+    return this.get<ObjectType[]>(FilterOptionApiEndpoints.OBJECT_TYPE, {
       ...params,
       parent_id: parentId.toString(),
     });
@@ -35,42 +47,42 @@ export class FilterOptionsApiService {
     });
   }
 
-  public getCarBrandsAndModels(params: QueryParams): Observable<unknown> {
-    return this.get(FilterOptionApiEndpoints.CARS_BRAND_MODEL, params);
+  public getCarBrandsAndModels(params: QueryParams): Observable<CarBrandModel[]> {
+    return this.get<CarBrandModel[]>(FilterOptionApiEndpoints.CAR_BRAND_MODEL, params);
   }
 
-  public getCarBodyTypeKeys(params: QueryParams): Observable<unknown> {
-    return this.get(FilterOptionApiEndpoints.CARS_BODY, params);
+  public getCarBodyTypeKeys(params: QueryParams): Observable<IconOption[]> {
+    return this.get<IconOption[]>(FilterOptionApiEndpoints.CAR_BODY, params);
   }
 
-  public getCarEngineKeys(params: QueryParams): Observable<unknown> {
-    return this.get(FilterOptionApiEndpoints.CARS_ENGINE, params);
+  public getCarEngineKeys(params: QueryParams): Observable<IconOption[]> {
+    return this.get<IconOption[]>(FilterOptionApiEndpoints.CAR_ENGINE, params);
   }
 
-  public getCarGearboxKeys(params: QueryParams): Observable<unknown> {
-    return this.get(FilterOptionApiEndpoints.CARS_GEARBOX, params);
+  public getCarGearboxKeys(params: QueryParams): Observable<IconOption[]> {
+    return this.get<IconOption[]>(FilterOptionApiEndpoints.CAR_GEARBOX, params);
   }
 
-  public getRealEstateOperationKeys(params: QueryParams): Observable<unknown> {
-    return this.get(FilterOptionApiEndpoints.REAL_ESTATE_OPERATION_TYPE, params);
+  public getRealEstateOperationKeys(params: QueryParams): Observable<IconOption[]> {
+    return this.get<IconOption[]>(FilterOptionApiEndpoints.REAL_ESTATE_OPERATION_TYPE, params);
   }
 
-  public getRealEstateTypeKeysByOperationId(operationId: string, params: QueryParams): Observable<unknown> {
-    return this.get(FilterOptionApiEndpoints.REAL_ESTATE_TYPE, {
+  public getRealEstateTypeKeysByOperationId(operationId: string, params: QueryParams): Observable<IconOption[]> {
+    return this.get<IconOption[]>(FilterOptionApiEndpoints.REAL_ESTATE_TYPE, {
       ...params,
       operation: operationId,
     });
   }
 
-  public getRealEstateExtraKeysByTypeId(typeId: string, params: QueryParams): Observable<unknown> {
-    return this.get(FilterOptionApiEndpoints.REAL_ESTATE_EXTRA, {
+  public getRealEstateExtraKeysByTypeId(typeId: string, params: QueryParams): Observable<IconOption[]> {
+    return this.get<IconOption[]>(FilterOptionApiEndpoints.REAL_ESTATE_EXTRA, {
       ...params,
       type: typeId,
     });
   }
 
-  public getFashionSizeKeysByObjectId(objectTypeId: number, params: QueryParams): Observable<unknown> {
-    return this.get(FilterOptionApiEndpoints.FASHION_SIZE, {
+  public getFashionSizeKeysByObjectId(objectTypeId: number, params: QueryParams): Observable<SizeNGenderResponse> {
+    return this.get<SizeNGenderResponse>(FilterOptionApiEndpoints.FASHION_SIZE, {
       ...params,
       object_type_id: objectTypeId.toString(),
     });
@@ -88,11 +100,12 @@ export class FilterOptionsApiService {
     });
   }
 
-  private get<T>(path: string, params: QueryParams): Observable<T> {
+  private get<T>(path: string, params: QueryParams, headers?: Record<string, string>): Observable<T> {
     const url = `${environment.baseUrl}api/v3`;
 
     return this.httpClient.get<T>(`${url}${path}`, {
       params,
+      headers,
     });
   }
 }
