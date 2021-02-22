@@ -48,13 +48,7 @@ export class ProfileComponent implements OnInit {
 
   public logout($event: any) {
     $event.preventDefault();
-    this.userService.logout().subscribe(
-      () => {},
-      (error) => {
-        // TODO: ToastService to show error message
-        console.log('error', error);
-      }
-    );
+    this.userService.logout().subscribe();
   }
 
   public trackClickSubscriptionTab(): void {

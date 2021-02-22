@@ -329,12 +329,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public logout() {
-    this.userService.logout().subscribe(
-      () => {},
-      (error) => {
-        // TODO: ToastService to show error message
-      }
-    );
+    this.userService.logout().subscribe();
   }
 
   public filterByStatus(status: string) {
