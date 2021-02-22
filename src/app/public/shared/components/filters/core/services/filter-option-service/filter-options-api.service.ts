@@ -9,8 +9,9 @@ import { FilterOptionApiEndpoints } from './filter-option-api-endpoints.enum';
 import { ConditionResponse } from './option-responses/condition.interface';
 import { ObjectType } from './option-responses/object-type.interface';
 import { IconOption } from './option-responses/icon-option.interface';
-import { CarBrandModel } from './option-responses/car-brand-model.interface';
-import { SizeNGenderResponse } from '@public/shared/components/filters/core/services/filter-option-service/option-responses/fashion-size-n-gender.interface';
+import { BrandModel } from './option-responses/brand-model.interface';
+import { SizeNGenderResponse } from './option-responses/fashion-size-n-gender.interface';
+import { FashionBrand } from './option-responses/fashion-brand.interface';
 
 @Injectable()
 export class FilterOptionsApiService {
@@ -40,15 +41,15 @@ export class FilterOptionsApiService {
     });
   }
 
-  public getBrandModelByCategoryId(categoryId: number, params: QueryParams): Observable<unknown> {
+  public getBrandModelByCategoryId(categoryId: number, params: QueryParams): Observable<BrandModel[]> {
     return this.get(FilterOptionApiEndpoints.BRAND_MODEL, {
       ...params,
       category_id: categoryId.toString(),
     });
   }
 
-  public getCarBrandsAndModels(params: QueryParams): Observable<CarBrandModel[]> {
-    return this.get<CarBrandModel[]>(FilterOptionApiEndpoints.CAR_BRAND_MODEL, params);
+  public getCarBrandsAndModels(params: QueryParams): Observable<BrandModel[]> {
+    return this.get<BrandModel[]>(FilterOptionApiEndpoints.CAR_BRAND_MODEL, params);
   }
 
   public getCarBodyTypeKeys(params: QueryParams): Observable<IconOption[]> {
@@ -92,8 +93,8 @@ export class FilterOptionsApiService {
     objectTypeId: number,
     params: QueryParams,
     paginationOptions: PaginationOptions = { offset: 0 }
-  ): Observable<unknown> {
-    return this.get(FilterOptionApiEndpoints.FASHION_BRAND, {
+  ): Observable<FashionBrand[]> {
+    return this.get<FashionBrand[]>(FilterOptionApiEndpoints.FASHION_BRAND, {
       ...params,
       object_type_id: objectTypeId.toString(),
       start: paginationOptions.offset.toString(),

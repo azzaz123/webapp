@@ -1,4 +1,4 @@
-export interface CarBrandModel {
+export interface BrandModel {
   brand: string;
   model?: string;
 }
