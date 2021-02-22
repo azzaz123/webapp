@@ -1,0 +1,25 @@
+@import '~style/common';
+
+.subscription-benefit {
+  &__text {
+    max-width: 414px;
+  }
+
+  &__title {
+    font-size: $font-size-l;
+    font-weight: bold;
+  }
+
+  &__subtitle {
+    color: $blue-grey-3;
+    font-size: $font-size-m;
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .subscription-benefit {
+    &__text {
+      max-width: 388px;
+    }
+  }
+}

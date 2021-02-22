@@ -1,0 +1,10 @@
+<div class="d-flex justify-content-center justify-content-xl-between row subscription-benefit"
+  [ngClass]="{'flex-row-reverse': leftAligment}">
+  <div class="d-flex justify-content-center justify-content-xl-start" [ngClass]="{'justify-content-xl-end': leftAligment}">
+    <tsl-svg-icon [src]="img"></tsl-svg-icon>
+  </div>
+  <div class="d-flex flex-column mt-5 text-center text-xl-left px-6 subscription-benefit__text">
+    <h4 class="subscription-benefit__title">{{title}}</h4>
+    <div class="subscription-benefit__subtitle"><b>{{description}}</b></div>
+  </div>
+</div>
