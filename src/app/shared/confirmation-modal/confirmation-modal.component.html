@@ -31,7 +31,7 @@
 <div class="modal-footer">
   <button type="button" class="btn" i18n (click)="activeModal.dismiss()">Cancel</button>
   <button type="button" class="btn btn-warn" (click)="activeModal.close()">
-    <span i18n *ngIf="type === 1">Delete</span>
+    <span i18n *ngIf="!type || type === 1">Delete</span>
     <span i18n *ngIf="type === 2">Reserve</span>
     <span i18n *ngIf="type === 3 || type === 5 || type === 6">Remove</span>
     <span i18n *ngIf="type === 4">Yes, I am sure</span>

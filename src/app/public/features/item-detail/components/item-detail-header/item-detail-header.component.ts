@@ -5,13 +5,13 @@ import { UserStats } from '@core/user/user-stats.interface';
 import { USER_INFO_SIZE } from '@public/shared/components/user-basic-info/constants/user-basic-info-constants';
 import { Item } from '@core/item/item';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { DeleteInfoConfirmationModalComponent } from '@shared/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component';
 import { ErrorsService } from '@core/errors/errors.service';
 import { ItemDetailService } from '../../core/services/item-detail.service';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 import { SoldModalComponent } from '@shared/modals/sold-modal/sold-modal.component';
 import { Router } from '@angular/router';
+import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'tsl-item-detail-header',
@@ -51,7 +51,7 @@ export class ItemDetailHeaderComponent implements OnInit {
     if (!this.item.reserved) {
       this.itemDetailService.reserveItem(this.item.id, true).subscribe((item: Item) => {
         this.item.reserved = true;
-        this.emitUpdatedItem(item);
+        this.emitUpdatedItem();
       });
     } else {
       this.itemDetailService.reserveItem(this.item.id, false).subscribe(() => {
@@ -67,12 +67,17 @@ export class ItemDetailHeaderComponent implements OnInit {
     modalRef.componentInstance.item = this.item;
     modalRef.result.then(() => {
       this.item.sold = true;
+      this.checkShowMineOptions();
+      this.emitUpdatedItem();
     });
   }
 
   public deleteItem(): void {
-    this.modalService.open(DeleteInfoConfirmationModalComponent).result.then((result: boolean) => {
-      if (result) {
+    this.modalService
+      .open(ConfirmationModalComponent, {
+        windowClass: 'modal-prompt',
+      })
+      .result.then(() => {
         this.itemDetailService.deleteItem(this.item.id).subscribe(
           () => {
             this.errorsService.i18nSuccess('deleteItemSuccess');
@@ -82,12 +87,7 @@ export class ItemDetailHeaderComponent implements OnInit {
             this.errorsService.i18nError('deleteItemError');
           }
         );
-      }
-    });
-  }
-
-  private emitUpdatedItem(item: Item): void {
-    this.updatedItem.emit(item);
+      });
   }
 
   private getUserStats(): void {
@@ -98,5 +98,9 @@ export class ItemDetailHeaderComponent implements OnInit {
 
   private checkShowMineOptions(): void {
     this.showOptions = !this.item.sold && !this.item.flags.onhold && !this.item.flags.expired && !this.item.flags.notAvailable;
+  }
+
+  private emitUpdatedItem(): void {
+    this.updatedItem.emit(this.item);
   }
 }

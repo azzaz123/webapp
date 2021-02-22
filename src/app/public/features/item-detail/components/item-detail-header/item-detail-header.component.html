@@ -59,7 +59,7 @@
                 </div>
             </ng-container>
             <!-- Delete -->
-            <button class="OwnActionButtons__action btn-delete p-0" (click)="deleteItem()">
+            <button [ngClass]="{'btn-delete': showOptions}" class="OwnActionButtons__action p-0" (click)="deleteItem()">
                 <tsl-svg-icon src="/assets/icons/delete.svg" width="17" height="20"></tsl-svg-icon>
             </button>
         </div>
