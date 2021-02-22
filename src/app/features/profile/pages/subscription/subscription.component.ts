@@ -11,7 +11,6 @@ import {
   ClickSubscriptionManagementPlus,
   SCREEN_IDS,
   ViewSubscription,
-  ViewSubscriptionManagement,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
@@ -64,13 +63,19 @@ export class SubscriptionsComponent implements OnInit {
       .pipe(
         finalize(() => {
           this.loading = false;
-          this.trackPageView();
         })
       )
       .subscribe((subscriptions) => {
         this.subscriptions = subscriptions;
       });
-    this.userService.me(true).subscribe((user) => (this.user = user));
+    this.userService
+      .me(true)
+      .pipe(
+        finalize(() => {
+          this.trackPageView();
+        })
+      )
+      .subscribe((user) => (this.user = user));
     this.trackParamEvents();
   }
 
@@ -156,25 +161,13 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   private trackPageView() {
-    let pageView: AnalyticsPageView<ViewSubscriptionManagement | ViewSubscription>;
-    if (
-      this.subscriptionsService.hasOneStripeSubscription(this.subscriptions) ||
-      this.subscriptionsService.isOneSubscriptionInApp(this.subscriptions)
-    ) {
-      pageView = {
-        name: ANALYTICS_EVENT_NAMES.ViewSubscriptionManagement,
-        attributes: {
-          screenId: SCREEN_IDS.SubscriptionManagement,
-        },
-      };
-    } else {
-      pageView = {
-        name: ANALYTICS_EVENT_NAMES.ViewSubscription,
-        attributes: {
-          screenId: SCREEN_IDS.Subscription,
-        },
-      };
-    }
+    const pageView: AnalyticsPageView<ViewSubscription> = {
+      name: ANALYTICS_EVENT_NAMES.ViewSubscription,
+      attributes: {
+        screenId: SCREEN_IDS.SubscriptionManagement,
+        isPro: this.user.featured,
+      },
+    };
 
     this.analyticsService.trackPageView(pageView);
   }
@@ -183,7 +176,7 @@ export class SubscriptionsComponent implements OnInit {
     if (modalType === AddNewSubscriptionModalComponent) {
       const event: AnalyticsEvent<ClickSubscriptionManagementPlus> = {
         name: ANALYTICS_EVENT_NAMES.ClickSubscriptionManagementPlus,
-        eventType: ANALYTIC_EVENT_TYPES.Other,
+        eventType: ANALYTIC_EVENT_TYPES.Navigation,
         attributes: {
           screenId: SCREEN_IDS.SubscriptionManagement,
           subscription: subscription.category_id as SUBSCRIPTION_CATEGORIES,
@@ -290,8 +283,9 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   private trackClickProSubscription(): void {
-    const event: AnalyticsPageView<ClickProSubscription> = {
+    const event: AnalyticsEvent<ClickProSubscription> = {
       name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
       attributes: {
         screenId: SCREEN_IDS.WebHome,
         isLoggedIn: true,

@@ -12,7 +12,6 @@ import {
   ClickSubscriptionManagementPlus,
   SCREEN_IDS,
   ViewSubscription,
-  ViewSubscriptionManagement,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { CategoryService } from '@core/category/category.service';
@@ -36,7 +35,7 @@ import {
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED,
   SUBSCRIPTIONS_NOT_SUB,
 } from '@fixtures/subscriptions.fixtures.spec';
-import { MOCK_FULL_USER, MOCK_FULL_USER_NON_FEATURED, USER_DATA } from '@fixtures/user.fixtures.spec';
+import { MOCK_FULL_USER, MOCK_FULL_USER_NON_FEATURED, MOCK_NON_FEATURED_USER_RESPONSE, USER_DATA } from '@fixtures/user.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from 'app/core/user/user.service';
 import { of } from 'rxjs';
@@ -148,8 +147,9 @@ describe('SubscriptionComponent', () => {
         it('should track event', () => {
           spyOn(analyticsService, 'trackPageView');
           spyOn(route.snapshot.paramMap, 'get').and.returnValue('true');
-          const expectedPageViewEvent: AnalyticsPageView<ClickProSubscription> = {
+          const expectedPageViewEvent: AnalyticsEvent<ClickProSubscription> = {
             name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
+            eventType: ANALYTIC_EVENT_TYPES.Navigation,
             attributes: {
               screenId: SCREEN_IDS.WebHome,
               isLoggedIn: true,
@@ -166,8 +166,9 @@ describe('SubscriptionComponent', () => {
       describe('when has not param events', () => {
         it('should not track event', () => {
           spyOn(analyticsService, 'trackPageView');
-          const expectedPageViewEvent: AnalyticsPageView<ClickProSubscription> = {
+          const expectedPageViewEvent: AnalyticsEvent<ClickProSubscription> = {
             name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
+            eventType: ANALYTIC_EVENT_TYPES.Navigation,
             attributes: {
               screenId: SCREEN_IDS.WebHome,
               isLoggedIn: true,
@@ -188,35 +189,41 @@ describe('SubscriptionComponent', () => {
   });
 
   describe('Send page view event to analytics', () => {
-    it('when has subscriptions', () => {
-      spyOn(analyticsService, 'trackPageView');
-      const expectedPageViewEvent: AnalyticsPageView<ViewSubscriptionManagement> = {
-        name: ANALYTICS_EVENT_NAMES.ViewSubscriptionManagement,
-        attributes: {
-          screenId: SCREEN_IDS.SubscriptionManagement,
-        },
-      };
+    describe('when is PRO', () => {
+      it('should send event', () => {
+        spyOn(analyticsService, 'trackPageView');
+        const expectedPageViewEvent: AnalyticsPageView<ViewSubscription> = {
+          name: ANALYTICS_EVENT_NAMES.ViewSubscription,
+          attributes: {
+            screenId: SCREEN_IDS.SubscriptionManagement,
+            isPro: true,
+          },
+        };
 
-      component.ngOnInit();
+        component.ngOnInit();
 
-      expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
-      expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageViewEvent);
+        expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageViewEvent);
+      });
     });
 
-    it('when has not subscriptions', () => {
-      spyOn(analyticsService, 'trackPageView');
-      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(SUBSCRIPTIONS_NOT_SUB));
-      const expectedPageViewEvent: AnalyticsPageView<ViewSubscription> = {
-        name: ANALYTICS_EVENT_NAMES.ViewSubscription,
-        attributes: {
-          screenId: SCREEN_IDS.Subscription,
-        },
-      };
+    describe('when is not PRO', () => {
+      it('should send event', () => {
+        spyOn(analyticsService, 'trackPageView');
+        spyOn(userService, 'me').and.returnValue(of(MOCK_NON_FEATURED_USER_RESPONSE));
+        const expectedPageViewEvent: AnalyticsPageView<ViewSubscription> = {
+          name: ANALYTICS_EVENT_NAMES.ViewSubscription,
+          attributes: {
+            screenId: SCREEN_IDS.SubscriptionManagement,
+            isPro: false,
+          },
+        };
 
-      component.ngOnInit();
+        component.ngOnInit();
 
-      expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
-      expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageViewEvent);
+        expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageViewEvent);
+      });
     });
 
     afterEach(() => {
@@ -387,7 +394,7 @@ describe('SubscriptionComponent', () => {
       spyOn(analyticsService, 'trackEvent');
       const expectedEvent: AnalyticsEvent<ClickSubscriptionManagementPlus> = {
         name: ANALYTICS_EVENT_NAMES.ClickSubscriptionManagementPlus,
-        eventType: ANALYTIC_EVENT_TYPES.Other,
+        eventType: ANALYTIC_EVENT_TYPES.Navigation,
         attributes: {
           screenId: SCREEN_IDS.SubscriptionManagement,
           subscription: SUBSCRIPTIONS_NOT_SUB[0].category_id as SUBSCRIPTION_CATEGORIES,
@@ -420,7 +427,7 @@ describe('SubscriptionComponent', () => {
       spyOn(subscriptionsService, 'hasOneStripeSubscription').and.returnValue(false);
       const expectedEvent: AnalyticsEvent<ClickSubscriptionManagementPlus> = {
         name: ANALYTICS_EVENT_NAMES.ClickSubscriptionManagementPlus,
-        eventType: ANALYTIC_EVENT_TYPES.Other,
+        eventType: ANALYTIC_EVENT_TYPES.Navigation,
         attributes: {
           screenId: SCREEN_IDS.SubscriptionManagement,
           subscription: MAPPED_SUBSCRIPTIONS[0].category_id as SUBSCRIPTION_CATEGORIES,

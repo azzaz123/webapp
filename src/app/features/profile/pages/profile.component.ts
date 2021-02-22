@@ -38,7 +38,9 @@ export class ProfileComponent implements OnInit {
     });
 
     this.subscriptionService.getSubscriptions().subscribe((subscriptions) => {
-      this.hasOneTrialSubscription = this.subscriptionService.hasOneTrialSubscription(subscriptions);
+      if (!!subscriptions) {
+        this.hasOneTrialSubscription = this.subscriptionService.hasOneTrialSubscription(subscriptions);
+      }
     });
 
     this.userService.getStats().subscribe((userStats) => (this.userStats = userStats));
@@ -52,7 +54,7 @@ export class ProfileComponent implements OnInit {
   public trackClickSubscriptionTab(): void {
     const event: AnalyticsEvent<ClickProSubscription> = {
       name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
-      eventType: ANALYTIC_EVENT_TYPES.Other,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
       attributes: {
         screenId: SCREEN_IDS.MyProfile,
         freeTrial: this.hasOneTrialSubscription,
