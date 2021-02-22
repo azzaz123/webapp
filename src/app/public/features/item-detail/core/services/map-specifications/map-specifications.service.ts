@@ -12,6 +12,7 @@ import {
   CarSpecifications,
   CounterSpecifications,
   RealestateCondition,
+  RealestateOperation,
   RealestateSpecifications,
   RealestateType,
 } from '../../../components/item-specifications/interfaces/item.specifications.interface';
@@ -61,6 +62,7 @@ export class MapSpecificationsService {
       surface: realestate.surface,
       terrace: realestate.terrace,
       type: realestate.type as RealestateType,
+      operation: realestate.operation as RealestateOperation,
     };
   }
 
@@ -95,6 +97,7 @@ export class MapSpecificationsService {
 
   private getRealestateCounters(realestateSpecifications: RealestateSpecifications): CounterSpecifications[] {
     const realestateCounters = [
+      { type: this.getRealestateSpecificationType(realestateSpecifications.operation) },
       {
         type: this.getRealestateSpecificationType(realestateSpecifications.type),
       },

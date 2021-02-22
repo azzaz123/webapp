@@ -33,7 +33,9 @@ export interface RealestateSpecifications {
   surface: number;
   terrace: boolean;
   type: RealestateType;
+  operation: RealestateOperation;
 }
 
 export type RealestateType = 'apartment' | 'room' | 'office' | 'garage' | 'land' | 'box_room' | 'house';
 export type RealestateCondition = 'new_construction' | 'mint' | 'to_reform';
+export type RealestateOperation = 'buy' | 'rent';

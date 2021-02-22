@@ -94,6 +94,16 @@ export const REAL_ESTATE_ICON_SPEC_TRANSLATION: ItemSpecification[] = [
     type: REAL_ESTATE_SPECIFICATION_TYPE.TO_REFORM,
     label: { singular: $localize`:@@ForRefurbishment:For refurbishment` },
   },
+  {
+    icon: REAL_ESTATE_ICON.KEY,
+    type: REAL_ESTATE_SPECIFICATION_TYPE.RENT,
+    label: { singular: $localize`:@@Rent:Rent` },
+  },
+  {
+    icon: REAL_ESTATE_ICON.BILLS,
+    type: REAL_ESTATE_SPECIFICATION_TYPE.BUY,
+    label: { singular: $localize`:@@Buy:Buy` },
+  },
 ];
 
 export const REAL_ESTATE_TYPE_SPECIFICATION: ItemSpecification[] = [

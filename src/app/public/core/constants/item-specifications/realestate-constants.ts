@@ -16,4 +16,6 @@ export enum REAL_ESTATE_SPECIFICATION_TYPE {
   NEW_BUILD = 'new_construction',
   GOOD_CONDITION = 'mint',
   TO_REFORM = 'to_reform',
+  BUY = 'buy',
+  RENT = 'rent',
 }

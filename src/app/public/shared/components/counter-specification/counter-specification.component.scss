@@ -2,7 +2,6 @@
 
 .CounterSpec {
   &__container {
-    padding: 9px;
     @include square(48px);
     tsl-svg-icon {
       ::ng-deep svg {
