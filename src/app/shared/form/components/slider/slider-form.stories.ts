@@ -63,10 +63,10 @@ export default {
 const Template: Story<StorySliderFormComponent> = (args) => ({
   props: args,
   template: `
-      <tsl-story-slider 
-        [min]="min" 
-        [max]="max" 
-        [stepsConfig]="stepsConfig" 
+      <tsl-story-slider
+        [min]="min"
+        [max]="max"
+        [stepsConfig]="stepsConfig"
         [units]="units"
         [valueTooltip]="valueTooltip"
         [limitTooltip]="limitTooltip"

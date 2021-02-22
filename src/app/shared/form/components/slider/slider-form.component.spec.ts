@@ -1,8 +1,10 @@
-import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { CustomStepDefinition, NgxSliderModule } from '@angular-slider/ngx-slider';
 import { CommonModule } from '@angular/common';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SLIDER_VARIANT } from './enums/slider-variant.enum';
+import { SliderFormStepConfig } from './interfaces/slider-form-step-config.interface';
 import { SliderFormComponent } from './slider-form.component';
 
 describe('SliderFormComponent', () => {
@@ -123,6 +125,92 @@ describe('SliderFormComponent', () => {
       checkLabel(minLabel);
       checkLabel(maxLabel);
       checkLabel(valueLabel);
+    });
+  });
+
+  describe('when stepsConfig configuration is passed', () => {
+    beforeEach(() => {
+      component.min = DEFAULT_MIN;
+      component.max = DEFAULT_MAX;
+      component.stepsConfig = [
+        { range: [0, 40], step: 10 },
+        { range: [50, 100], step: 50 },
+      ];
+
+      component.ngOnChanges();
+
+      fixture.detectChanges();
+    });
+
+    it('should have created correct parsed steps config', () => {
+      const stepsArray: CustomStepDefinition[] = [
+        { value: 0 },
+        { value: 10 },
+        { value: 20 },
+        { value: 30 },
+        { value: 40 },
+        { value: 50 },
+        { value: 100 },
+      ];
+      console.log(stepsArray);
+
+      expect(component.options.stepsArray).toEqual(stepsArray);
+    });
+  });
+
+  describe('when disabled state changes', () => {
+    it('should set the input disabled', () => {
+      component.setDisabledState(true);
+
+      expect(component.options.disabled).toBeTruthy();
+    });
+
+    it('should set the input NOT disabled', () => {
+      component.setDisabledState(false);
+
+      expect(component.options.disabled).toBeFalsy();
+    });
+  });
+
+  describe('when value changes', () => {
+    describe('and is range', () => {
+      const value: [number, number] | number = [0, 10];
+
+      beforeEach(() => {
+        component.writeValue(value);
+      });
+
+      it('should call the input disabled', () => {
+        expect(component.value).toEqual(value);
+      });
+
+      it('should set the correct variant', () => {
+        expect(component.variant).toEqual(SLIDER_VARIANT.RANGE);
+      });
+
+      it('should set the correct value to the form', () => {
+        expect(component.form.controls.control.value).toEqual(component.value);
+      });
+    });
+
+    describe('and is single', () => {
+      const value: [number, number] | number = 22;
+
+      beforeEach(() => {
+        component.writeValue(value);
+      });
+
+      it('should call the input disabled', () => {
+        expect(component.value).toEqual(value);
+      });
+
+      it('should set the correct variant', () => {
+        expect(component.variant).toEqual(SLIDER_VARIANT.SINGLE);
+      });
+
+      it('should set the correct value to the form', () => {
+        expect(component.form.controls.control.value).toEqual(component.value);
+      });
     });
   });
 });
