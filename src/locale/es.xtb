@@ -1285,4 +1285,7 @@
   <translation id="KnowMore">Saber más</translation>
   <translation id="TryProSlotDescription">¿Quieres impulsar tu negocio online? ¡Conviértete en PRO!</translation>
   <translation id="Feature">Destácalo</translation>
+  <translation id="checkAsReservedItem">Marcar como reservado</translation>
+  <translation id="checkAsSoldItem">Marcar como vendido</translation>
+  <translation id="deleteItem">Eliminar producto</translation>
 </translationbundle>
