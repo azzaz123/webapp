@@ -19,7 +19,7 @@
         <div class="OwnActionButtons d-flex">
             <ng-container *ngIf="showOptions">
                 <!-- Sold -->
-                <button class="OwnActionButtons__action btn-sold p-0" tslItemSold (callback)="soldItem()" [item]="item"
+                <button class="OwnActionButtons__action btn-sold p-0" (click)="soldItem()" [item]="item"
                     ngbTooltip="Mark as sold" i18n-ngbTooltip placement="top">
                     <tsl-svg-icon src="/assets/icons/btn-sold.svg"></tsl-svg-icon>
                 </button>
@@ -42,12 +42,12 @@
                         <button class="dropdown-item d-flex align-items-center" (click)="reserveItem()"
                             i18n="@@checkAsReservedItem">
                             <tsl-svg-icon class="mr-1" src="/assets/icons/btn-reserved.svg"></tsl-svg-icon>
-                            Mark as sold
+                            Mark as reserved
                         </button>
                         <button class="dropdown-item d-flex align-items-center" (click)="soldItem()"
                             i18n="@@checkAsSoldItem">
                             <tsl-svg-icon class="mr-1" src="/assets/icons/btn-sold.svg"></tsl-svg-icon>
-                            Mark as reserved
+                            Mark as sold
                         </button>
                         <button class="dropdown-item d-flex align-items-center warn" (click)="deleteItem()"
                             i18n="@@deleteItem">

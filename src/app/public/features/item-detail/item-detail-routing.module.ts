@@ -1,11 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ProfileResolver } from '@data/user';
 import { ItemDetailComponent } from './pages/item-detail.component';
 
 const routes: Routes = [
   {
     path: '',
     component: ItemDetailComponent,
+    resolve: {
+      profile: ProfileResolver,
+    },
   },
 ];
 

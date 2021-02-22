@@ -6,7 +6,7 @@ import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { MarkAsFavouriteBodyResponse } from './interfaces/item-response.interface';
 
-export const ITEMS_API_URL = (userId: string) => `${environment.baseUrl}api/v3/items/${userId}`;
+export const ITEMS_API_URL = (itemId: string) => `${environment.baseUrl}api/v3/items/${itemId}`;
 export const MARK_AS_FAVORITE_ENDPOINT = (id: string) => `${ITEMS_API_URL(id)}/favorite`;
 export const GET_ITEM_ENDPOINT = (id: string) => `${ITEMS_API_URL(id)}`;
 export const GET_ITEM_COUNTERS_ENDPOINT = (id: string) => `${ITEMS_API_URL(id)}/counters`;
