@@ -1,7 +1,4 @@
-import { environment } from '@environments/environment';
-
 export enum FilterOptionApiEndpoints {
-  BASE = `${environment.baseUrl}api/v3`,
   CONDITION = '/consumer_goods/category/{category_id}/keys/condition',
   OBJECT_TYPE = '/suggesters/general/object-type',
   BRAND_MODEL = '/suggesters/general/brand-model',
