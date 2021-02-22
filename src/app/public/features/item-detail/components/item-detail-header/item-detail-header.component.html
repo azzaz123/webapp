@@ -4,7 +4,7 @@
         [userInfo]="user" [styleSize]="USER_INFO_SIZE.SMALL" [className]="'ItemDetailHeader'">
     </tsl-user-basic-info>
     <div *ngIf="isOwner; else basicOperations" class="d-flex">
-        <div class="FeatureButton mr-4" *ngIf="showMineOptions">
+        <div class="FeatureButton mr-4" *ngIf="showOptions">
             <!-- Feature -->
             <tsl-button *ngIf="!item.bumpExpiringDate" className="btn-feature"
                 [routerLink]="['/catalog/checkout', {itemId: item.id}]">
@@ -17,7 +17,7 @@
             </button>
         </div>
         <div class="OwnActionButtons d-flex">
-            <ng-container *ngIf="showMineOptions">
+            <ng-container *ngIf="showOptions">
                 <!-- Sold -->
                 <button class="OwnActionButtons__action btn-sold p-0" tslItemSold (callback)="soldItem()" [item]="item"
                     ngbTooltip="Mark as sold" i18n-ngbTooltip placement="top">
@@ -65,7 +65,7 @@
         </div>
     </div>
     <ng-template #basicOperations>
-        <div class="OtherActionButtons">
+        <div *ngIf="showOptions" class="OtherActionButtons">
             <tsl-button className="stripe" class="mr-2" (click)="toggleItemFavorite()">
                 <tsl-favourite-icon [active]="item?.flags?.favorite">
                 </tsl-favourite-icon>

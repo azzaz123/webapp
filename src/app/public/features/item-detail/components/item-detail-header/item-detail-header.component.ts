@@ -26,7 +26,7 @@ export class ItemDetailHeaderComponent implements OnInit {
 
   public readonly USER_INFO_SIZE = USER_INFO_SIZE;
   public userStats: UserStats;
-  public showMineOptions = false;
+  public showOptions = false;
 
   constructor(
     private publicProfileService: PublicProfileService,
@@ -97,7 +97,6 @@ export class ItemDetailHeaderComponent implements OnInit {
   }
 
   private checkShowMineOptions(): void {
-    this.showMineOptions =
-      this.isOwner && !this.item.sold && !this.item.flags.onhold && !this.item.flags.expired && !this.item.flags.notAvailable;
+    this.showOptions = !this.item.sold && !this.item.flags.onhold && !this.item.flags.expired && !this.item.flags.notAvailable;
   }
 }
