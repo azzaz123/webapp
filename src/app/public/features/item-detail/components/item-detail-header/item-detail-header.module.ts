@@ -7,13 +7,12 @@ import { ButtonModule } from '@shared/button/button.module';
 import { FavouriteIconModule } from '@public/shared/components/favourite-icon/favourite-icon.module';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { DateCountDownModule } from '@shared/date-countdown/date-countdown.module';
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorsService } from '@core/errors/errors.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { RouterModule } from '@angular/router';
-import { ItemHeaderDropdownComponent } from './item-header-dropdown/item-header-dropdown.component';
 @NgModule({
-  declarations: [ItemDetailHeaderComponent, ItemHeaderDropdownComponent],
+  declarations: [ItemDetailHeaderComponent],
   imports: [
     CommonModule,
     UserBasicInfoModule,
@@ -22,9 +21,10 @@ import { ItemHeaderDropdownComponent } from './item-header-dropdown/item-header-
     SvgIconModule,
     DateCountDownModule,
     NgbTooltipModule,
+    NgbDropdownModule,
     RouterModule,
   ],
-  exports: [ItemDetailHeaderComponent, ItemHeaderDropdownComponent],
+  exports: [ItemDetailHeaderComponent],
   providers: [PublicProfileService, ErrorsService, ToastService],
 })
 export class ItemDetailHeaderModule {}
