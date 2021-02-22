@@ -4,8 +4,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import {
+  AnalyticsEvent,
   AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
   ClickEditProField,
   SCREEN_IDS,
   ViewProBenefitsPopup,
@@ -409,8 +411,9 @@ describe('ProfileInfoComponent', () => {
 
       it('should track ClickEditProField', () => {
         const expectedField = ANALYTICS_FIELDS.DESCRIPTION;
-        const expectedEvent: AnalyticsPageView<ClickEditProField> = {
+        const expectedEvent: AnalyticsEvent<ClickEditProField> = {
           name: ANALYTICS_EVENT_NAMES.ClickEditProField,
+          eventType: ANALYTIC_EVENT_TYPES.Navigation,
           attributes: {
             field: expectedField,
             screenId: SCREEN_IDS.MyProfile,
