@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ChangeDetectionStrategy, DebugElement } from '@angular/core';
+import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SliderFormModule } from '@shared/form/components/slider/slider-form.module';
@@ -37,6 +37,7 @@ describe('RangeFilterComponent', () => {
       title: 'How much do you want to pay?',
       icon: '/assets/icons/joke.svg',
       id: '',
+      bubblePlaceholder: '',
     };
   });
 
@@ -50,7 +51,7 @@ describe('RangeFilterComponent', () => {
     });
 
     it('should set the label with placeholder value', () => {
-      expect(component.getLabel()).toEqual(component.placeholder);
+      expect(component.label).toEqual(component.placeholder);
     });
 
     it('should create the correct form', () => {
@@ -115,7 +116,7 @@ describe('RangeFilterComponent', () => {
         });
 
         it('should set correct values to label ', () => {
-          expect(component.getLabel()).toEqual(`${min} - ${max}`);
+          expect(component.label).toEqual(`${min} - ${max}`);
         });
       });
 
@@ -140,7 +141,7 @@ describe('RangeFilterComponent', () => {
         });
 
         it('should set correct values to label ', () => {
-          expect(component.getLabel()).toEqual(`${$localize`:@@From:From`} ${min}`);
+          expect(component.label).toEqual(`${$localize`:@@From:From`} ${min}`);
         });
       });
 
@@ -165,7 +166,7 @@ describe('RangeFilterComponent', () => {
         });
 
         it('should set correct values to label ', () => {
-          expect(component.getLabel()).toEqual(`${$localize`:@@To:To`} ${max}`);
+          expect(component.label).toEqual(`${$localize`:@@To:To`} ${max}`);
         });
       });
     });
@@ -184,7 +185,7 @@ describe('RangeFilterComponent', () => {
     });
 
     it('should restart label', () => {
-      expect(component.getLabel()).toEqual(component.placeholder);
+      expect(component.label).toEqual(component.placeholder);
     });
 
     it('should restart value', () => {

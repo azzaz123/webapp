@@ -18,13 +18,13 @@ import { SliderFormStepConfig } from './interfaces/slider-form-step-config.inter
   ],
 })
 export class SliderFormComponent extends AbstractFormComponent<[number, number]> implements OnChanges {
-  @Input() min: number = 0;
-  @Input() max: number = 0;
+  @Input() min = 0;
+  @Input() max = 0;
   @Input() stepsConfig: SliderFormStepConfig[];
   @Input() units: string;
-  @Input() valueTooltip: boolean = true;
-  @Input() limitTooltip: boolean = true;
-  @Input() limitless: boolean = false;
+  @Input() valueTooltip = true;
+  @Input() limitTooltip = true;
+  @Input() limitless = false;
 
   public readonly SLIDER_VARIANT = SLIDER_VARIANT;
   public variant = this.SLIDER_VARIANT.SINGLE;

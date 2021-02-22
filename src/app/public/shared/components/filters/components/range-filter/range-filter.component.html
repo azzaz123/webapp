@@ -7,7 +7,7 @@
 [isClearable]="true"
 [title]="config.title"
 [icon]="config.icon"
-[label]="getLabel()"
+[label]="label"
 [hasValue]="hasValue()"
 (apply)="handleApply()"
 (clear)="handleClear()">
@@ -15,11 +15,11 @@
     <form [formGroup]="formGroup">
         <tsl-slider-form
         formControlName="range"
-        [stepsConfig]="stepsConfig"
-        [min]="range[0]" 
-        [max]="range[1]" 
+        [stepsConfig]="config.stepsConfig"
+        [min]="range[0]"
+        [max]="range[1]"
         [valueTooltip]="false"
-        [limitless]="limitless"
+        [limitless]="config.limitless"
         [limitTooltip]="false">
         </tsl-slider-form>
 

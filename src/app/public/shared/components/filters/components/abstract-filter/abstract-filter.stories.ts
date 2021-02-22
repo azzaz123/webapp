@@ -38,7 +38,7 @@ import { ButtonModule } from '@shared/button/button.module';
     </tsl-filter-template>
   `,
 })
-class StoryAbstractFilterComponent extends AbstractFilter<void> {
+class StoryAbstractFilterComponent extends AbstractFilter<{}> {
   @Input() storyLabel?: string;
   @Input() storyIcon?: string;
   @Input() storyHasCustomValue?: boolean;

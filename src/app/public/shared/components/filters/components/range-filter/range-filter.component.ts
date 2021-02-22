@@ -1,8 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { SliderFormStepConfig } from '@shared/form/components/slider/interfaces/slider-form-step-config.interface';
 import { debounceTime } from 'rxjs/operators';
-import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { AbstractFilter } from '../abstract-filter/abstract-filter';
 import { RangeFilterConfig } from './interfaces/range-filter-config.interface';
 import { RangeFilterParams } from './interfaces/range-filter-params.interface';
@@ -13,27 +11,19 @@ import { RangeFilterParams } from './interfaces/range-filter-params.interface';
   styleUrls: ['./range-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> implements RangeFilterConfig, OnInit {
-  range: [number, number] = [0, 0];
-  stepsConfig?: SliderFormStepConfig[];
-  placeholder: string;
-  units? = '';
-  limitless?: boolean;
+export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> implements OnInit {
+  @Input() config: RangeFilterConfig;
   limitlessPlaceholder = $localize`:@@Limitless:No limit`;
   formGroup: FormGroup;
 
+  public range: [number, number] = [0, 0];
   private readonly DEFAULT_DEBOUNCE_TIME = 200;
-  private label: string;
 
   ngOnInit(): void {
-    this.label = this.placeholder;
+    super.ngOnInit();
     this.handleStepConfig();
     this.createForm();
     this.bindFormValueChangesListeners();
-  }
-
-  public getLabel(): string {
-    return this.label;
   }
 
   public handleApply(): void {
@@ -45,7 +35,7 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
   }
 
   public handleClear(): void {
-    this.formGroup.controls.range.setValue([this.range[0], this.range[1]]);
+    this.formGroup.controls.range.setValue([this.config.range[0], this.config.range[1]]);
     this.emitEmptyChange();
     this.setLabel(null, null);
     this.value = [];
@@ -53,25 +43,21 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
   }
 
   private handleStepConfig(): void {
-    if (this.stepsConfig) {
-      this.range = [this.stepsConfig[0].range[0], this.stepsConfig[this.stepsConfig.length - 1].range[1]];
+    if (this.config.stepsConfig) {
+      this.range = [this.config.stepsConfig[0].range[0], this.config.stepsConfig[this.config.stepsConfig.length - 1].range[1]];
     }
   }
 
   private createForm(): void {
-    const inputMin = this.value.find((parameter: FilterParameter) => {
-      return parameter.key === this.config.mapKey.minKey;
-    })?.value;
-    const inputMax = this.value.find((parameter: FilterParameter) => {
-      return parameter.key === this.config.mapKey.maxKey;
-    })?.value;
+    const inputMin = this.getValue('minKey');
+    const inputMax = this.getValue('maxKey');
 
     this.setLabel(parseInt(inputMin, 10), parseInt(inputMax, 10));
 
     this.formGroup = new FormGroup({
       range: new FormControl([inputMin || this.range[0], inputMax || this.range[1]]),
       min: new FormControl(inputMin || this.range[0]),
-      max: new FormControl(this.limitless ? null : inputMax || this.range[1]),
+      max: new FormControl(this.config.limitless ? null : inputMax || this.range[1]),
     });
   }
 
@@ -114,20 +100,20 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
 
   private setLabel(min: number, max: number): void {
     if (min && max) {
-      this.label = `${min}${this.units} - ${max}${this.units}`;
+      this.label = `${min}${this.config.units} - ${max}${this.config.units}`;
     } else if (min) {
-      this.label = `${$localize`:@@From:From`} ${min}${this.units}`;
+      this.label = `${$localize`:@@From:From`} ${min}${this.config.units}`;
     } else if (max) {
-      this.label = `${$localize`:@@To:To`} ${max}${this.units}`;
+      this.label = `${$localize`:@@To:To`} ${max}${this.config.units}`;
     } else {
-      this.label = this.placeholder;
+      this.label = this.config.bubblePlaceholder;
     }
   }
 
   private getMaxValue(): number {
     const range = this.formGroup.controls.range.value;
 
-    if (this.limitless) {
+    if (this.config.limitless) {
       return range[1] === this.range[1] ? null : range[1];
     } else {
       return range[1];
