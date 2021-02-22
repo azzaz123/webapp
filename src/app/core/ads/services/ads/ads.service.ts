@@ -73,6 +73,7 @@ export class AdsService {
         tap((allowSegmentation: boolean) => {
           this.googlePublisherTagService.setAdsSegmentation(allowSegmentation);
           this.googlePublisherTagService.setTargetingByAdsKeywords(allowSegmentation);
+          this.googlePublisherTagService.refreshAds();
         }),
         switchMap(() => this.fetchHeaderBids())
       )

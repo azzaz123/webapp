@@ -1,6 +1,4 @@
-import { of } from 'rxjs';
-
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { MockDidomiService } from '@core/ads/vendors/didomi/didomi.mock';
 import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
 import {
@@ -9,10 +7,10 @@ import {
   MockGooglePublisherTagService,
   MockLoadAdsService,
 } from '@fixtures/ads.fixtures.spec';
-
-import { AmazonPublisherService, CriteoService, GooglePublisherTagService } from './../../vendors';
+import { of } from 'rxjs';
 import { AD_SLOTS, CHAT_AD_SLOTS } from '../../constants';
 import { LoadAdsService } from '../load-ads/load-ads.service';
+import { AmazonPublisherService, CriteoService, GooglePublisherTagService } from './../../vendors';
 import { AdsService } from './ads.service';
 
 describe('AdsService', () => {
@@ -70,6 +68,14 @@ describe('AdsService', () => {
 
       expect(MockGooglePublisherTagService.setSlots).toHaveBeenCalledWith(AD_SLOTS);
     });
+
+    it('it should refresh ads', () => {
+      spyOn(MockGooglePublisherTagService, 'refreshAds').and.callThrough();
+
+      service.setSlots(AD_SLOTS);
+
+      expect(MockGooglePublisherTagService.refreshAds).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe('when refreshing ads', () => {
@@ -95,14 +101,23 @@ describe('AdsService', () => {
       expect(MockCriteoService.requestBid).toHaveBeenCalledTimes(1);
     });
 
-    it('should set segmentation to Google', () => {
+    it('should set segmentation to Google', fakeAsync(() => {
       const ALLOW_SEGMENTATION = true;
       spyOn(MockGooglePublisherTagService, 'setAdsSegmentation').and.callThrough();
       spyOn(MockDidomiService, 'allowSegmentation$').and.returnValue(of(ALLOW_SEGMENTATION));
 
       service.refresh();
+      tick(1000);
 
       expect(MockGooglePublisherTagService.setAdsSegmentation).toHaveBeenCalledWith(ALLOW_SEGMENTATION);
+    }));
+
+    it('should refresh ads on google', () => {
+      spyOn(MockGooglePublisherTagService, 'refreshAds').and.callThrough();
+
+      service.refresh();
+
+      expect(MockGooglePublisherTagService.refreshAds).toHaveBeenCalledTimes(1);
     });
   });
 

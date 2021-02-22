@@ -116,22 +116,28 @@ describe('GooglePublisherTagService', () => {
 
     it('should update the pubabs', () => {
       spyOn(MOCK_GOOGLE_PUBABDS, 'setRequestNonPersonalizedAds').and.callThrough();
-      spyOn(MOCK_GOOGLE_PUBABDS, 'refresh').and.callThrough();
 
       service.setAdsSegmentation();
 
       expect(MOCK_GOOGLE_PUBABDS.setRequestNonPersonalizedAds).toHaveBeenCalledWith(1);
-      expect(MOCK_GOOGLE_PUBABDS.refresh).toHaveBeenCalledTimes(1);
     });
 
     it('should update the pubabs with segmentation', () => {
       spyOn(MOCK_GOOGLE_PUBABDS, 'setRequestNonPersonalizedAds').and.callThrough();
-      spyOn(MOCK_GOOGLE_PUBABDS, 'refresh').and.callThrough();
 
       service.setAdsSegmentation(true);
 
       expect(MOCK_GOOGLE_PUBABDS.setRequestNonPersonalizedAds).toHaveBeenCalledWith(0);
-      expect(MOCK_GOOGLE_PUBABDS.refresh).toHaveBeenCalledTimes(1);
+    });
+
+    describe('when we want to refresh ads', () => {
+      it('show refresh on google', () => {
+        spyOn(MOCK_GOOGLE_PUBABDS, 'refresh').and.callThrough();
+
+        service.refreshAds();
+
+        expect(MOCK_GOOGLE_PUBABDS.refresh).toHaveBeenCalledTimes(1);
+      });
     });
 
     describe('when set targeting', () => {

@@ -35,7 +35,6 @@ export class GooglePublisherTagService {
   public setAdsSegmentation(allowSegmentation = false): void {
     this.googletag.cmd.push(() => {
       this.googletag.pubads().setRequestNonPersonalizedAds(allowSegmentation ? 0 : 1);
-      this.googletag.pubads().refresh();
     });
   }
 
@@ -50,6 +49,12 @@ export class GooglePublisherTagService {
         }
       }
       this.googletag.pubads().setTargeting('allowSegmentation', allowSegmentation.toString());
+    });
+  }
+
+  public refreshAds(): void {
+    this.googletag.cmd.push(() => {
+      this.googletag.pubads().refresh();
     });
   }
 

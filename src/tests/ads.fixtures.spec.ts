@@ -28,6 +28,7 @@ export const MockGooglePublisherTagService = {
   setAdsSegmentation: () => {},
   displayAdBySlotId: (id: AdSlotId) => {},
   setSlots: (slots: AdSlot) => {},
+  refreshAds: () => {},
 };
 
 export const MockLoadAdsService = {
