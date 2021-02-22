@@ -31,7 +31,7 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
   }
 
   public hasValue(): boolean {
-    return this.value.length > 0;
+    return this.value?.length > 0;
   }
 
   public handleClear(): void {
