@@ -1275,7 +1275,7 @@
   <translation id="Crappy">Destrozado</translation>
   <translation id="CarMint">Km. 0</translation>
   <translation id="CarUsed">Ocasión</translation>
-  <translation id="Coupe">Coupe</translation>
+  <translation id="Coupe">Coupé</translation>
   <translation id="Family">Familiar</translation>
   <translation id="MiniVan">Monovolumen</translation>
   <translation id="Small">Pequeño</translation>
@@ -1296,6 +1296,6 @@
   <translation id="FreeTrial">Prueba gratuita</translation>
   <translation id="KnowMore">Saber más</translation>
   <translation id="TryProSlotDescription">¿Quieres impulsar tu negocio online? ¡Conviértete en PRO!</translation>
-  <translation id="Buy">Venta<translation>
-  <translation id="Rent">Alquiler<translation>
+  <translation id="Buy">Venta</translation>
+  <translation id="Rent">Alquiler</translation>
 </translationbundle>
