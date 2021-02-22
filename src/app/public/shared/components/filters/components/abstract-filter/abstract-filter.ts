@@ -64,6 +64,6 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
   }
 
   public getValue(key: keyof T): string {
-    return this.value.find((parameter: FilterParameter) => parameter.key === this.config.mapKey[key])?.value;
+    return this.value?.find((parameter: FilterParameter) => parameter.key === this.config.mapKey[key])?.value;
   }
 }
