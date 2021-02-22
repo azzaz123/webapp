@@ -100,11 +100,11 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
 
   private setLabel(min: number, max: number): void {
     if (min && max) {
-      this.label = `${min}${this.config.units} - ${max}${this.config.units}`;
+      this.label = `${min}${this.config.units || ''} - ${max}${this.config.units || ''}`;
     } else if (min) {
-      this.label = `${$localize`:@@From:From`} ${min}${this.config.units}`;
+      this.label = `${$localize`:@@From:From`} ${min}${this.config.units || ''}`;
     } else if (max) {
-      this.label = `${$localize`:@@To:To`} ${max}${this.config.units}`;
+      this.label = `${$localize`:@@To:To`} ${max}${this.config.units || ''}`;
     } else {
       this.label = this.config.bubblePlaceholder;
     }

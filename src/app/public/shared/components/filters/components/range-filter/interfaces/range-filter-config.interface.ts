@@ -5,7 +5,6 @@ import { SliderFormStepConfig } from '@shared/form/components/slider/interfaces/
 export interface RangeFilterConfig extends FilterConfig<RangeFilterParams> {
   range: [number, number];
   stepsConfig?: SliderFormStepConfig[];
-  placeholder: string;
   units?: string;
   limitless?: boolean;
 }

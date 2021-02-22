@@ -27,8 +27,6 @@ describe('RangeFilterComponent', () => {
     de = fixture.debugElement;
     el = de.nativeElement;
 
-    component.range = [0, 500];
-    component.placeholder = 'placeholder';
     component.config = {
       mapKey: {
         maxKey: 'max',
@@ -37,7 +35,8 @@ describe('RangeFilterComponent', () => {
       title: 'How much do you want to pay?',
       icon: '/assets/icons/joke.svg',
       id: '',
-      bubblePlaceholder: '',
+      bubblePlaceholder: 'placeholder',
+      range: [0, 500],
     };
   });
 
@@ -51,7 +50,7 @@ describe('RangeFilterComponent', () => {
     });
 
     it('should set the label with placeholder value', () => {
-      expect(component.label).toEqual(component.placeholder);
+      expect(component.label).toEqual(component.config.bubblePlaceholder);
     });
 
     it('should create the correct form', () => {
@@ -68,7 +67,7 @@ describe('RangeFilterComponent', () => {
 
     describe('when stepsConfig is present', () => {
       it('should set the range values correctly', () => {
-        component.stepsConfig = [
+        component.config.stepsConfig = [
           {
             range: [0, 100],
             step: 5,
@@ -82,8 +81,8 @@ describe('RangeFilterComponent', () => {
         fixture.detectChanges();
         component.ngOnInit();
 
-        expect(component.range[0]).toEqual(component.stepsConfig[0].range[0]);
-        expect(component.range[1]).toEqual(component.stepsConfig[component.stepsConfig.length - 1].range[1]);
+        expect(component.range[0]).toEqual(component.config.stepsConfig[0].range[0]);
+        expect(component.range[1]).toEqual(component.config.stepsConfig[component.config.stepsConfig.length - 1].range[1]);
       });
     });
 
@@ -179,13 +178,13 @@ describe('RangeFilterComponent', () => {
     });
 
     it('should restart values', () => {
-      expect(component.formGroup.controls.range.value).toEqual([component.range[0], component.range[1]]);
-      expect(component.formGroup.controls.min.value).toEqual(component.range[0]);
-      expect(component.formGroup.controls.max.value).toEqual(component.range[1]);
+      expect(component.formGroup.controls.range.value).toEqual([component.config.range[0], component.config.range[1]]);
+      expect(component.formGroup.controls.min.value).toEqual(component.config.range[0]);
+      expect(component.formGroup.controls.max.value).toEqual(component.config.range[1]);
     });
 
     it('should restart label', () => {
-      expect(component.label).toEqual(component.placeholder);
+      expect(component.label).toEqual(component.config.bubblePlaceholder);
     });
 
     it('should restart value', () => {
