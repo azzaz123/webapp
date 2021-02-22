@@ -3,6 +3,7 @@ import { Item } from '@core/item/item';
 import { ItemCounters, ItemResponse, ItemVisibilityFlags } from '@core/item/item-response.interface';
 import { User } from '@core/user/user';
 import { UserResponse } from '@core/user/user-response.interface';
+import { DeleteItemBodyResponse, ReserveItemBodyResponse } from '@public/core/services/api/item/interfaces/item-response.interface';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
@@ -46,12 +47,11 @@ export class ItemDetailService {
     return this.recommenderApiService.getRecommendedItemsByItemId(itemId);
   }
 
-  // TODO: Tipar respuesta
-  public deleteItem(itemId: string): Observable<any> {
+  public deleteItem(itemId: string): Observable<DeleteItemBodyResponse> {
     return this.itemApiService.deleteItem(itemId);
   }
 
-  public reserveItem(itemId: string, reserved: boolean): Observable<any> {
+  public reserveItem(itemId: string, reserved: boolean): Observable<ReserveItemBodyResponse> {
     return this.itemApiService.reserveItem(itemId, reserved);
   }
 

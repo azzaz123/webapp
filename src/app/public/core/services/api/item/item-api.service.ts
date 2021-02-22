@@ -4,7 +4,7 @@ import { ItemCounters, ItemResponse, ItemVisibilityFlags } from '@core/item/item
 import { environment } from '@environments/environment';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { MarkAsFavouriteBodyResponse } from './interfaces/item-response.interface';
+import { DeleteItemBodyResponse, MarkAsFavouriteBodyResponse, ReserveItemBodyResponse } from './interfaces/item-response.interface';
 
 export const ITEMS_API_URL = (itemId: string) => `${environment.baseUrl}api/v3/items/${itemId}`;
 export const MARK_AS_FAVORITE_ENDPOINT = (id: string) => `${ITEMS_API_URL(id)}/favorite`;
@@ -40,12 +40,11 @@ export class ItemApiService {
     });
   }
 
-  // TODO: Tipar respuestas
-  public deleteItem(id: string): Observable<any> {
+  public deleteItem(id: string): Observable<DeleteItemBodyResponse> {
     return this.http.delete<ItemResponse>(GET_ITEM_ENDPOINT(id));
   }
 
-  public reserveItem(id: string, reserved: boolean): Observable<any> {
+  public reserveItem(id: string, reserved: boolean): Observable<ReserveItemBodyResponse> {
     return this.http.put(`${SET_ITEM_RESERVED(id)}`, {
       reserved,
     });

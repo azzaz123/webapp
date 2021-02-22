@@ -36,6 +36,12 @@ describe('ItemDetailService', () => {
             getBumpFlags() {
               return of(ITEM_BUMP_FLAGS);
             },
+            reserveItem() {
+              return of();
+            },
+            deleteItem() {
+              return of();
+            },
           },
         },
         {
@@ -85,12 +91,32 @@ describe('ItemDetailService', () => {
   });
 
   describe('getRecommendedItems', () => {
-    it('should call the itemDetailService getRecommendedItems function', () => {
+    it('should call the recommenderApiService getRecommendedItems function', () => {
       spyOn(recommenderApiService, 'getRecommendedItemsByItemId');
 
       itemDetailService.getRecommendedItems(itemId);
 
       expect(recommenderApiService.getRecommendedItemsByItemId).toHaveBeenCalledWith(itemId);
+    });
+  });
+
+  describe('deleteItem', () => {
+    it('should call the itemApiService deleteItem function', () => {
+      spyOn(itemApiService, 'deleteItem');
+
+      itemDetailService.deleteItem(itemId);
+
+      expect(itemApiService.deleteItem).toHaveBeenCalledWith(itemId);
+    });
+  });
+
+  describe('reserveItem', () => {
+    it('should call the itemApiService deleteItem function', () => {
+      spyOn(itemApiService, 'reserveItem');
+
+      itemDetailService.reserveItem(itemId, true);
+
+      expect(itemApiService.reserveItem).toHaveBeenCalledWith(itemId, true);
     });
   });
 });

@@ -6,6 +6,7 @@ import {
   GET_ITEM_ENDPOINT,
   ItemApiService,
   MARK_AS_FAVORITE_ENDPOINT,
+  SET_ITEM_RESERVED,
 } from './item-api.service';
 
 describe('ItemApiService', () => {
@@ -91,6 +92,37 @@ describe('ItemApiService', () => {
       };
 
       itemApiService.unmarkAsFavourite(ITEM_ID).subscribe();
+      const req = httpMock.expectOne(expectedUrl);
+      req.flush({});
+
+      expect(req.request.url).toBe(expectedUrl);
+      expect(req.request.body).toEqual(expectedBody);
+      expect(req.request.method).toBe('PUT');
+    });
+  });
+
+  describe('deleteItem', () => {
+    it('should delete the item', () => {
+      const expectedUrl = GET_ITEM_ENDPOINT(ITEM_ID);
+
+      itemApiService.deleteItem(ITEM_ID).subscribe();
+      const req = httpMock.expectOne(expectedUrl);
+      req.flush({});
+
+      expect(req.request.url).toBe(expectedUrl);
+      expect(req.request.method).toBe('DELETE');
+    });
+  });
+
+  describe('reserveItem', () => {
+    it('should mark the selected item as reserved', () => {
+      const expectedUrl = SET_ITEM_RESERVED(ITEM_ID);
+      const RESERVED = false;
+      const expectedBody = {
+        reserved: RESERVED,
+      };
+
+      itemApiService.reserveItem(ITEM_ID, RESERVED).subscribe();
       const req = httpMock.expectOne(expectedUrl);
       req.flush({});
 
