@@ -1,5 +1,5 @@
 import { DecimalPipe } from '@angular/common';
-import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement, Renderer2 } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -34,6 +34,9 @@ import {
   EMPTY_RECOMMENDED_ITEMS_MOCK,
 } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
 import { APP_PATHS } from 'app/app-routing-constants';
+import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
+import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
+import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 
 describe('ItemDetailComponent', () => {
   const topSkyTag = 'tsl-top-sky';
@@ -59,6 +62,7 @@ describe('ItemDetailComponent', () => {
   let itemDetailService: ItemDetailService;
   let deviceService: DeviceService;
   let decimalPipe: DecimalPipe;
+  let itemDetailImagesModal: ItemFullScreenCarouselComponent;
   let router: Router;
   let de: DebugElement;
   let el: HTMLElement;
@@ -107,6 +111,10 @@ describe('ItemDetailComponent', () => {
         },
         MapItemService,
         SocialMetaTagService,
+        ItemFullScreenCarouselComponent,
+        CheckSessionService,
+        ItemCardService,
+        Renderer2,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -122,6 +130,7 @@ describe('ItemDetailComponent', () => {
     el = de.nativeElement;
     router = TestBed.inject(Router);
     itemDetailService = TestBed.inject(ItemDetailService);
+    itemDetailImagesModal = TestBed.inject(ItemFullScreenCarouselComponent);
     fixture.detectChanges();
   });
 
@@ -383,6 +392,34 @@ describe('ItemDetailComponent', () => {
       });
       it('should NOT show the recommended items', () => {
         expect(fixture.debugElement.query(By.css(recommendedItemsTag))).toBeFalsy();
+      });
+    });
+
+    describe('when we click on the carousel image...', () => {
+      beforeEach(() => {
+        component.itemDetailImagesModal = itemDetailImagesModal;
+        spyOn(component.itemDetailImagesModal, 'show');
+
+        const itemImagesCarousel = fixture.debugElement.query(By.css('tsl-item-images-carousel'));
+        itemImagesCarousel.triggerEventHandler('imageClick', { index: 4 });
+
+        fixture.detectChanges();
+      });
+
+      it('should call to the modal show method', () => {
+        expect(component.itemDetailImagesModal.show).toHaveBeenCalled();
+      });
+
+      it('should set the images property', () => {
+        expect(component.itemDetailImagesModal.images).toBe(component.bigImages);
+      });
+
+      it('should set the item property', () => {
+        expect(component.itemDetailImagesModal.item).toBe(component.itemDetail.item);
+      });
+
+      it('should set the image index property', () => {
+        expect(component.itemDetailImagesModal.imageIndex).toBe(4);
       });
     });
   });
