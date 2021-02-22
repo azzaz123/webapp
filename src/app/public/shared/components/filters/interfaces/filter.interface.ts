@@ -3,7 +3,7 @@ import { FilterConfig } from '@public/shared/components/filters/interfaces/filte
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { EventEmitter } from '@angular/core';
 
-export interface Filter<T extends Record<string, string>> {
+export interface Filter<T extends Record<keyof T, string>> {
   // Inputs
   variant: FILTER_VARIANT;
   config: FilterConfig<T>;

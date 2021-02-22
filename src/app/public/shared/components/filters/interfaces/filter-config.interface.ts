@@ -1,4 +1,4 @@
-export interface FilterConfig<T extends Record<string, string>> {
+export interface FilterConfig<T extends Record<keyof T, string>> {
   id: string;
   title: string;
   icon?: string;
