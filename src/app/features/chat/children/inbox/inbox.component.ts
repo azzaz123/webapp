@@ -165,8 +165,6 @@ export class InboxComponent implements OnInit, OnDestroy {
         }
       })
     );
-
-    this.adService.adsReady$.pipe(filter(Boolean)).subscribe(() => this.adService.refresh());
   }
 
   private setStatusesAfterLoadConversations() {

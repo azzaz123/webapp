@@ -1,8 +1,8 @@
 import { of } from 'rxjs';
 
-import { TestBed } from '@angular/core/testing';
-import { MockDidomiService } from '@core/didomi/didomi.mock';
-import { DidomiService } from '@core/didomi/didomi.service';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { MockDidomiService } from '@core/ads/vendors/didomi/didomi.mock';
+import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
 import {
   MockAmazonPublisherService,
   MockCriteoService,
@@ -56,17 +56,27 @@ describe('AdsService', () => {
 
       expect(MockLoadAdsService.loadAds).toHaveBeenCalledTimes(1);
     });
+  });
+
+  describe('when set slots', () => {
+    beforeEach(() => {
+      service.init();
+    });
 
     it('should set ad slots', () => {
-      spyOn(MockLoadAdsService, 'setSlots').and.callThrough();
+      spyOn(MockGooglePublisherTagService, 'setSlots').and.callThrough();
 
-      service.init();
+      service.setSlots(AD_SLOTS);
 
-      expect(MockLoadAdsService.setSlots).toHaveBeenCalledWith(AD_SLOTS);
+      expect(MockGooglePublisherTagService.setSlots).toHaveBeenCalledWith(AD_SLOTS);
     });
   });
 
   describe('when refreshing ads', () => {
+    beforeEach(() => {
+      service.init();
+    });
+
     it('should set targeting to Google library', () => {
       spyOn(MockGooglePublisherTagService, 'setTargetingByAdsKeywords').and.callThrough();
 
@@ -88,7 +98,7 @@ describe('AdsService', () => {
     it('should set segmentation to Google', () => {
       const ALLOW_SEGMENTATION = true;
       spyOn(MockGooglePublisherTagService, 'setAdsSegmentation').and.callThrough();
-      spyOn(MockDidomiService, 'userAllowedSegmentationInAds$').and.returnValue(of(ALLOW_SEGMENTATION));
+      spyOn(MockDidomiService, 'allowSegmentation$').and.returnValue(of(ALLOW_SEGMENTATION));
 
       service.refresh();
 

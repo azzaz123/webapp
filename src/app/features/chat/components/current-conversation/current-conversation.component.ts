@@ -1,3 +1,4 @@
+import { AdsService } from '@core/ads/services';
 import {
   AfterViewChecked,
   Component,
@@ -10,7 +11,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { CHAT_AD_SLOTS } from '@core/ads/constants';
+import { AD_SLOTS, CHAT_AD_SLOTS } from '@core/ads/constants';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { RealTimeService } from '@core/message/real-time.service';
@@ -77,7 +78,8 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     private remoteConsoleService: RemoteConsoleService,
     private modalService: NgbModal,
     private userService: UserService,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    private adsService: AdsService
   ) {
     this.momentConfig = i18n.getTranslations('defaultDaysMomentConfig');
   }
@@ -87,6 +89,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   }
 
   ngOnInit() {
+    this.adsService.setSlots(AD_SLOTS);
     this.isEndOfConversation = true;
     this.newMessageSubscription = this.eventService.subscribe(EventService.MESSAGE_ADDED, (message: InboxMessage) => {
       this.isConversationChanged = true;

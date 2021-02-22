@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { LoadExternalLibsService } from '@core/load-external-libs/load-external-libs.service';
 import { of } from 'rxjs';
-import { WINDOW_TOKEN } from './../window/window.token';
+import { WINDOW_TOKEN } from '../../../window/window.token';
 import { DidomiUserConsents } from './didomi.interface';
 import { DidomiService } from './didomi.service';
 
@@ -77,19 +77,19 @@ describe('Service: Didomi', () => {
 
   describe('userAllowedSegmentationInAds', () => {
     it('should load didomi lib if not loaded yet', () => {
-      service.userAllowedSegmentationInAds$().subscribe(() => {
+      service.allowSegmentation$().subscribe(() => {
         expect(loadExternalLibsServiceMock.loadScriptByText).toHaveBeenCalled();
       });
     });
 
     it('should return not allowed on the init', () => {
-      service.userAllowedSegmentationInAds$().subscribe((allowed: boolean) => {
+      service.allowSegmentation$().subscribe((allowed: boolean) => {
         expect(allowed).toBeFalsy();
       });
     });
 
     it('should update value if the user change the consent', () => {
-      service.userAllowedSegmentationInAds$().subscribe((allowed: boolean) => {
+      service.allowSegmentation$().subscribe((allowed: boolean) => {
         expect(allowed).toBeTruthy();
       });
       setTimeout(() => {
@@ -100,7 +100,7 @@ describe('Service: Didomi', () => {
     it('should block when user disallowed consent', () => {
       spyOn(didomiStub, 'getUserConsentStatusForVendor').and.returnValue(false);
 
-      service.userAllowedSegmentationInAds$().subscribe((allowed: boolean) => {
+      service.allowSegmentation$().subscribe((allowed: boolean) => {
         expect(allowed).toBeFalsy();
       });
     });
@@ -110,7 +110,7 @@ describe('Service: Didomi', () => {
         purposes: { enabled: [], disabled: ['ads', 'search ads'] },
       });
 
-      service.userAllowedSegmentationInAds$().subscribe((allowed: boolean) => {
+      service.allowSegmentation$().subscribe((allowed: boolean) => {
         expect(allowed).toBeFalsy();
       });
     });
@@ -121,7 +121,7 @@ describe('Service: Didomi', () => {
         purposes: { enabled: [], disabled: [] },
       });
 
-      service.userAllowedSegmentationInAds$().subscribe((allowed: boolean) => {
+      service.allowSegmentation$().subscribe((allowed: boolean) => {
         expect(allowed).toBeTruthy();
       });
     });
