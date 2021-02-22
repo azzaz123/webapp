@@ -17,7 +17,7 @@ import { SliderFormStepConfig } from './interfaces/slider-form-step-config.inter
     },
   ],
 })
-export class SliderFormComponent extends AbstractFormComponent<[number, number]> implements OnChanges {
+export class SliderFormComponent extends AbstractFormComponent<[number, number] | number> implements OnChanges {
   @Input() min = 0;
   @Input() max = 0;
   @Input() stepsConfig: SliderFormStepConfig[];
@@ -44,8 +44,8 @@ export class SliderFormComponent extends AbstractFormComponent<[number, number]>
     this.init();
   }
 
-  public writeValue(value: [number, number]): void {
-    this.value = value;
+  public writeValue(value: [number, number] | number): void {
+    super.writeValue(value);
     this.variant = Array.isArray(this.value) ? SLIDER_VARIANT.RANGE : SLIDER_VARIANT.SINGLE;
     this.form.controls.control.setValue(value);
   }
@@ -62,7 +62,6 @@ export class SliderFormComponent extends AbstractFormComponent<[number, number]>
 
   private initOptions(): void {
     this.options = {
-      animate: false,
       showSelectionBar: true,
       floor: this.min,
       ceil: this.max,
@@ -96,7 +95,7 @@ export class SliderFormComponent extends AbstractFormComponent<[number, number]>
         });
 
         this.options.stepsArray = stepsArray;
-      } catch (e: any) {}
+      } catch (e: unknown) {}
     }
   }
 }

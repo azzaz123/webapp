@@ -38,15 +38,15 @@ class StorySliderFormComponent {
     slider: new FormControl([20, 200]),
   });
 
-  slider: number = 80;
+  slider = 80;
 
-  @Input() min: number = 0;
-  @Input() max: number = 5000;
+  @Input() min = 0;
+  @Input() max = 5000;
   @Input() units: string;
   @Input() stepsConfig: { range: number[]; step: number }[] = [];
-  @Input() valueTooltip: boolean = true;
-  @Input() limitTooltip: boolean = true;
-  @Input() limitless: boolean = false;
+  @Input() valueTooltip = true;
+  @Input() limitTooltip = true;
+  @Input() limitless = false;
 }
 
 export default {
@@ -63,10 +63,10 @@ export default {
 const Template: Story<StorySliderFormComponent> = (args) => ({
   props: args,
   template: `
-      <tsl-story-slider 
-        [min]="min" 
-        [max]="max" 
-        [stepsConfig]="stepsConfig" 
+      <tsl-story-slider
+        [min]="min"
+        [max]="max"
+        [stepsConfig]="stepsConfig"
         [units]="units"
         [valueTooltip]="valueTooltip"
         [limitTooltip]="limitTooltip"

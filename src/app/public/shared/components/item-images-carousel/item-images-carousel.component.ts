@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from '@angular/core';
+import { CarouselSlide } from '../carousel-slides/carousel-slide.interface';
 import { ItemFlags, ItemVisibilityFlags } from '@core/item/item-response.interface';
 import {
   EMPTY_ITEM_FLAGS,
@@ -16,6 +17,7 @@ import {
 })
 export class ItemImagesCarouselComponent {
   @Input() images: string[];
+  @Output() imageClick: EventEmitter<CarouselSlide> = new EventEmitter<CarouselSlide>();
   @Input() itemFlags: ItemFlags = EMPTY_ITEM_FLAGS;
   @Input() itemVisibilityFlags: ItemVisibilityFlags = EMPTY_ITEM_VISIBILITY_FLAGS;
 
