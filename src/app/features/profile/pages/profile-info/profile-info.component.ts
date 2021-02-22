@@ -18,8 +18,10 @@ import { SubscriptionsService } from '@core/subscriptions/subscriptions.service'
 import { Router } from '@angular/router';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import {
+  AnalyticsEvent,
   AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
   ClickEditProField,
   SCREEN_IDS,
   ViewProBenefitsPopup,
@@ -289,8 +291,9 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
   }
 
   private trackClickEditProField(field: ANALYTICS_FIELDS): void {
-    const event: AnalyticsPageView<ClickEditProField> = {
+    const event: AnalyticsEvent<ClickEditProField> = {
       name: ANALYTICS_EVENT_NAMES.ClickEditProField,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
       attributes: {
         field,
         screenId: SCREEN_IDS.MyProfile,

@@ -147,8 +147,9 @@ describe('SubscriptionComponent', () => {
         it('should track event', () => {
           spyOn(analyticsService, 'trackPageView');
           spyOn(route.snapshot.paramMap, 'get').and.returnValue('true');
-          const expectedPageViewEvent: AnalyticsPageView<ClickProSubscription> = {
+          const expectedPageViewEvent: AnalyticsEvent<ClickProSubscription> = {
             name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
+            eventType: ANALYTIC_EVENT_TYPES.Navigation,
             attributes: {
               screenId: SCREEN_IDS.WebHome,
               isLoggedIn: true,
@@ -165,8 +166,9 @@ describe('SubscriptionComponent', () => {
       describe('when has not param events', () => {
         it('should not track event', () => {
           spyOn(analyticsService, 'trackPageView');
-          const expectedPageViewEvent: AnalyticsPageView<ClickProSubscription> = {
+          const expectedPageViewEvent: AnalyticsEvent<ClickProSubscription> = {
             name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
+            eventType: ANALYTIC_EVENT_TYPES.Navigation,
             attributes: {
               screenId: SCREEN_IDS.WebHome,
               isLoggedIn: true,
@@ -392,7 +394,7 @@ describe('SubscriptionComponent', () => {
       spyOn(analyticsService, 'trackEvent');
       const expectedEvent: AnalyticsEvent<ClickSubscriptionManagementPlus> = {
         name: ANALYTICS_EVENT_NAMES.ClickSubscriptionManagementPlus,
-        eventType: ANALYTIC_EVENT_TYPES.Other,
+        eventType: ANALYTIC_EVENT_TYPES.Navigation,
         attributes: {
           screenId: SCREEN_IDS.SubscriptionManagement,
           subscription: SUBSCRIPTIONS_NOT_SUB[0].category_id as SUBSCRIPTION_CATEGORIES,
@@ -425,7 +427,7 @@ describe('SubscriptionComponent', () => {
       spyOn(subscriptionsService, 'hasOneStripeSubscription').and.returnValue(false);
       const expectedEvent: AnalyticsEvent<ClickSubscriptionManagementPlus> = {
         name: ANALYTICS_EVENT_NAMES.ClickSubscriptionManagementPlus,
-        eventType: ANALYTIC_EVENT_TYPES.Other,
+        eventType: ANALYTIC_EVENT_TYPES.Navigation,
         attributes: {
           screenId: SCREEN_IDS.SubscriptionManagement,
           subscription: MAPPED_SUBSCRIPTIONS[0].category_id as SUBSCRIPTION_CATEGORIES,
