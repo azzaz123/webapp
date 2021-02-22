@@ -216,7 +216,7 @@ describe('ProfileComponent', () => {
         it('should track the event', () => {
           const expectedEvent: AnalyticsEvent<ClickProSubscription> = {
             name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
-            eventType: ANALYTIC_EVENT_TYPES.Other,
+            eventType: ANALYTIC_EVENT_TYPES.Navigation,
             attributes: {
               screenId: SCREEN_IDS.MyProfile,
               freeTrial: false,
@@ -238,7 +238,7 @@ describe('ProfileComponent', () => {
         it('should track the event', () => {
           const expectedEvent: AnalyticsEvent<ClickProSubscription> = {
             name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
-            eventType: ANALYTIC_EVENT_TYPES.Other,
+            eventType: ANALYTIC_EVENT_TYPES.Navigation,
             attributes: {
               screenId: SCREEN_IDS.MyProfile,
               freeTrial: true,
