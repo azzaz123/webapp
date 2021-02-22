@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { AbstractFilter } from '../abstract-filter/abstract-filter';
+import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { RangeFilterConfig } from './interfaces/range-filter-config.interface';
 import { RangeFilterParams } from './interfaces/range-filter-params.interface';
 
@@ -11,7 +12,7 @@ import { RangeFilterParams } from './interfaces/range-filter-params.interface';
   styleUrls: ['./range-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> implements OnInit {
+export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> implements OnInit, OnChanges {
   @Input() config: RangeFilterConfig;
   limitlessPlaceholder = $localize`:@@Limitless:No limit`;
   formGroup: FormGroup;
@@ -20,10 +21,21 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
   private readonly DEFAULT_DEBOUNCE_TIME = 200;
 
   ngOnInit(): void {
-    super.ngOnInit();
     this.initRange();
+    super.ngOnInit();
     this.createForm();
     this.bindFormValueChangesListeners();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.value?.firstChange && JSON.stringify(changes.value.previousValue) !== JSON.stringify(changes.value.currentValue)) {
+      if (this.value.length > 0) {
+        this.updateForm();
+        this.emitChange();
+      } else {
+        this.handleClear();
+      }
+    }
   }
 
   public handleApply(): void {
@@ -35,7 +47,7 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
   }
 
   public handleClear(): void {
-    this.formGroup.controls.range.setValue([this.config.range[0], this.config.range[1]]);
+    this.formGroup.controls.range.setValue([this.range[0], this.range[1]]);
     this.emitEmptyChange();
     this.setLabel(null, null);
     this.value = [];
@@ -51,15 +63,25 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
   }
 
   private createForm(): void {
+    this.formGroup = new FormGroup({
+      range: new FormControl(),
+      min: new FormControl(),
+      max: new FormControl(),
+    });
+
+    this.updateForm();
+  }
+
+  private updateForm(): void {
     const inputMin = this.getValue('minKey');
     const inputMax = this.getValue('maxKey');
 
     this.setLabel(parseInt(inputMin, 10), parseInt(inputMax, 10));
 
-    this.formGroup = new FormGroup({
-      range: new FormControl([inputMin || this.range[0], inputMax || this.range[1]]),
-      min: new FormControl(inputMin || this.range[0]),
-      max: new FormControl(this.config.limitless ? null : inputMax || this.range[1]),
+    this.formGroup.controls.range.setValue([inputMin || this.range[0], inputMax || this.range[1]], { emitEvent: false });
+    this.formGroup.controls.min.setValue(inputMin || this.range[0], { emitEvent: false });
+    this.formGroup.controls.max.setValue(inputMax ? inputMax : this.config.limitless ? null : inputMax || this.range[1], {
+      emitEvent: false,
     });
   }
 
@@ -67,6 +89,10 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
     this.formGroup.controls.range.valueChanges.subscribe((range: [number, number]) => {
       this.formGroup.controls.min.setValue(range[0], { emitEvent: false });
       this.formGroup.controls.max.setValue(this.getMaxValue(), { emitEvent: false });
+
+      if (this.variant === FILTER_VARIANT.CONTENT) {
+        this.emitChange();
+      }
     });
 
     this.formGroup.controls.min.valueChanges.pipe(debounceTime(this.DEFAULT_DEBOUNCE_TIME)).subscribe((min: number) => {
