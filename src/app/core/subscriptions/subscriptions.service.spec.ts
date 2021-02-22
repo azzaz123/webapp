@@ -427,9 +427,9 @@ describe('SubscriptionsService', () => {
     });
   });
 
-  describe('get getTrialSubscriptionsIds', () => {
+  describe('getTrialSubscriptionsIds', () => {
     describe('when has not any free trial', () => {
-      it('should return empty', () => {
+      it('should return no subscriptions', () => {
         const result = service.getTrialSubscriptionsIds(MAPPED_SUBSCRIPTIONS);
 
         expect(result).toEqual([]);
@@ -437,15 +437,15 @@ describe('SubscriptionsService', () => {
     });
 
     describe('when has some free trial', () => {
-      it('should return ids array', () => {
+      it('should return free trial subscriptions', () => {
         const result = service.getTrialSubscriptionsIds(MAPPED_SUBSCRIPTIONS_ADDED);
 
         expect(result).toEqual([14000]);
       });
     });
 
-    describe('when subsriptions is undefined', () => {
-      it('should return ids array', () => {
+    describe('when subscriptions is not defined', () => {
+      it('should return no subscriptions', () => {
         const result = service.getTrialSubscriptionsIds(undefined);
 
         expect(result).toEqual([]);

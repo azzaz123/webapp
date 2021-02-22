@@ -13,7 +13,11 @@ import {
   ViewSubscription,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
+import {
+  SubscriptionsResponse,
+  SUBSCRIPTION_CATEGORIES,
+  SUBSCRIPTION_CATEGORIES_STRINGS,
+} from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { AddNewSubscriptionModalComponent } from '@features/profile/modal/add-new-subscription/add-new-subscription-modal.component';
 import { CancelSubscriptionModalComponent } from '@features/profile/modal/cancel-subscription/cancel-subscription-modal.component';
@@ -64,17 +68,23 @@ export class SubscriptionsComponent implements OnInit {
 
   private initData(): void {
     this.loading = true;
-    const subscriptions$ = this.subscriptionsService.getSubscriptions(false).pipe(
-      tap((subscriptions) => (this.subscriptions = subscriptions)),
-      finalize(() => (this.loading = false))
-    );
+    const subscriptions$ = this.subscriptionsService
+      .getSubscriptions(false)
+      .pipe(tap((subscriptions) => (this.subscriptions = subscriptions)));
 
     const user$ = this.userService.me(true).pipe(tap((user) => (this.user = user)));
 
     forkJoin({
       subscriptions$,
       user$,
-    }).subscribe(() => this.trackPageView());
+    })
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+          this.trackPageView();
+        })
+      )
+      .subscribe();
   }
 
   private trackParamEvents(): void {
@@ -171,7 +181,7 @@ export class SubscriptionsComponent implements OnInit {
       attributes: {
         screenId: SCREEN_IDS.SubscriptionManagement,
         isPro: this.user.featured,
-        freeTrialSubscriptions: stringIds as any,
+        freeTrialSubscriptions: stringIds as SUBSCRIPTION_CATEGORIES_STRINGS,
       },
     };
 
