@@ -26,6 +26,9 @@ $feature-button-width: 165px;
   }
   .OwnActionButtons {
     button {
+      &.btn-options {
+        display: inline;
+      }
       &.btn-sold,
       &.btn-reserve,
       &.btn-delete {
@@ -40,6 +43,9 @@ $feature-button-width: 165px;
     }
     .OwnActionButtons {
       button {
+        &.btn-options {
+          display: none;
+        }
         &.btn-sold,
         &.btn-reserve,
         &.btn-delete {
@@ -68,7 +74,7 @@ $feature-button-width: 165px;
 }
 
 .OwnActionButtons {
-  button {
+  &__action {
     border: solid 1px $blue-grey-5;
     @include square(40px);
     margin-right: $spacing-s;
@@ -104,6 +110,7 @@ $feature-button-width: 165px;
         border-color: transparent;
       }
     }
+    &.btn-options,
     &.btn-edit {
       &:hover {
         background: $blue-grey-2;
@@ -145,5 +152,24 @@ $feature-button-width: 165px;
     font-weight: $font-weight-chunky;
     border-radius: $spacing-s;
     background-color: $white;
+  }
+}
+
+.DropdownOptions {
+  .dropdown-item {
+    padding: ($spacing-ml / 2) $spacing-ml;
+    color: $blue-grey-2;
+    cursor: pointer;
+  }
+
+  .warn {
+    tsl-svg-icon {
+      padding: 4px 6px;
+      ::ng-deep svg g g,
+      path {
+        fill: $warn;
+      }
+    }
+    color: $warn;
   }
 }
