@@ -4,7 +4,6 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SLIDER_VARIANT } from './enums/slider-variant.enum';
-import { SliderFormStepConfig } from './interfaces/slider-form-step-config.interface';
 import { SliderFormComponent } from './slider-form.component';
 
 describe('SliderFormComponent', () => {
@@ -152,7 +151,6 @@ describe('SliderFormComponent', () => {
         { value: 50 },
         { value: 100 },
       ];
-      console.log(stepsArray);
 
       expect(component.options.stepsArray).toEqual(stepsArray);
     });
