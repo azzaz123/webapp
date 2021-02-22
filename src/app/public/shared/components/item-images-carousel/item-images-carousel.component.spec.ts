@@ -95,5 +95,17 @@ describe('ItemImagesCarouselComponent', () => {
         expect(inactiveFlag).toBeTruthy();
       });
     });
+
+    describe('when we received an image click output event...', () => {
+      it('should emit the image click event', () => {
+        spyOn(component.imageClick, 'emit');
+        const slidesCarousel = fixture.nativeElement.querySelector('tsl-carousel-slides');
+
+        slidesCarousel.dispatchEvent(new Event('slideClick'));
+        fixture.detectChanges();
+
+        expect(component.imageClick.emit).toHaveBeenCalled();
+      });
+    });
   });
 });

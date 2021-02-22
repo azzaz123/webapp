@@ -1,0 +1,57 @@
+@import '~style/common';
+
+$header-height: 63px;
+$button-height: 47px;
+$info-min-width: 100px;
+$buttons-width: 220px;
+
+.ItemDetailImages {
+  z-index: 100;
+  top: 0;
+  left: 0;
+}
+
+.ItemInfo {
+  width: calc(100% - #{$buttons-width});
+  min-width: $info-min-width;
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.ItemHeader {
+  height: $header-height;
+  background-color: $white;
+
+  &__backButton {
+    cursor: pointer;
+  }
+  &__price {
+    font-weight: $font-weight-chunky;
+  }
+  &__buttons {
+    right: 0;
+  }
+}
+
+.ChatButton {
+  height: $button-height !important;
+}
+
+.ItemContainer {
+  top: $header-height;
+  height: auto;
+  background-color: $blue-grey-5;
+  bottom: 0;
+
+  &__carousel {
+    max-height: 95%;
+    max-width: 100%;
+  }
+}
+
+.CarouselImage {
+  object-fit: contain !important;
+}
