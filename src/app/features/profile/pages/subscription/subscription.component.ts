@@ -68,23 +68,24 @@ export class SubscriptionsComponent implements OnInit {
 
   private initData(): void {
     this.loading = true;
-    const subscriptions$ = this.subscriptionsService
-      .getSubscriptions(false)
-      .pipe(tap((subscriptions) => (this.subscriptions = subscriptions)));
-
-    const user$ = this.userService.me(true).pipe(tap((user) => (this.user = user)));
+    const user$ = this.userService.me(true);
+    const subscriptions$ = this.subscriptionsService.getSubscriptions(false);
 
     forkJoin({
-      subscriptions$,
       user$,
+      subscriptions$,
     })
       .pipe(
+        take(1),
         finalize(() => {
           this.loading = false;
           this.trackPageView();
         })
       )
-      .subscribe();
+      .subscribe(({ user$, subscriptions$ }) => {
+        this.user = user$;
+        this.subscriptions = subscriptions$;
+      });
   }
 
   private trackParamEvents(): void {
