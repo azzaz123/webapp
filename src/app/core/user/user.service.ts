@@ -81,16 +81,13 @@ export class UserService {
     return this._user && this._user.featured;
   }
 
-  get deviceAccessToken(): string {
-    return this.cookieService.get('deviceAccessToken' + environment.cookieSuffix)
-      ? this.cookieService.get('deviceAccessToken' + environment.cookieSuffix)
-      : '';
-  }
-
   get releaseVersion(): string {
     return APP_VERSION.split('.')
+      .map((subVersion: string) => subVersion.padStart(3, '0'))
+      .join();
+    /* return APP_VERSION.split('.')
       .map((subVersion: string) => ('00' + subVersion).slice(-3))
-      .reduce((a: string, b: string) => parseInt(a) + b);
+      .reduce((a: string, b: string) => parseInt(a) + b); */
   }
 
   public logoutLogic(redirect?: string): void {
@@ -106,7 +103,7 @@ export class UserService {
 
   public logout(redirect?: string): Observable<any> {
     const headers: HttpHeaders = new HttpHeaders({
-      DeviceAccessToken: this.deviceAccessToken,
+      DeviceAccessToken: this.accessTokenService.deviceAccessToken,
       AppBuild: this.releaseVersion,
       DeviceOS: '0',
     });

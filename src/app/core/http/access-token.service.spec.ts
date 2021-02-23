@@ -78,6 +78,21 @@ describe('AccessTokenService', () => {
     });
   });
 
+  describe('get deviceAccessToken should get token', () => {
+    it('should return deviceToken if it is production environment', () => {
+      const deviceToken = 'deviceAccessToken';
+      spyOn(cookieService, 'get').and.returnValue(deviceToken);
+
+      expect(service.deviceAccessToken).toBe(deviceToken);
+    });
+
+    it('should return empty string if it is not production environment', () => {
+      spyOn(cookieService, 'get').and.returnValue('');
+
+      expect(service.deviceAccessToken).toBe('');
+    });
+  });
+
   describe('get accessToken should get token', () => {
     it('with suffix if is not production and cache it', () => {
       environment.production = false;
