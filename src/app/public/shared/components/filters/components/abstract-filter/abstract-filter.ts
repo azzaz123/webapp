@@ -30,7 +30,7 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
   }
 
   public hasValue(): boolean {
-    return this.value.length > 0;
+    return this.value?.length > 0;
   }
 
   public hasApply(): boolean {
@@ -67,7 +67,7 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
     return this.value?.find((parameter: FilterParameter) => parameter.key === this.config.mapKey[key])?.value;
   }
   public hasValueChanged(previous: FilterParameter[], current: FilterParameter[]): boolean {
-    if (!previous) {
+    if (!previous || !current) {
       return true;
     } else {
       const keys = Object.keys(this.config.mapKey);
