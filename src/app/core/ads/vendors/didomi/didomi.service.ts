@@ -1,11 +1,10 @@
 import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { LoadExternalLibsService } from '../load-external-libs/load-external-libs.service';
-import { WINDOW_TOKEN } from './../window/window.token';
+import { LoadExternalLibsService } from '../../../load-external-libs/load-external-libs.service';
+import { WINDOW_TOKEN } from '../../../window/window.token';
 import { DIDOMI_EMBED } from './didomi-embed-script';
 import { DidomiLibrary, DidomiUserConsents } from './didomi.interface';
 
-const EVENTS: string[] = ['consent.changed'];
 @Injectable({
   providedIn: 'root',
 })
@@ -13,40 +12,40 @@ export class DidomiService {
   private static NAME_LIB = 'Didomi';
   private static DIDOMI_ON_READY = 'didomiOnReady';
 
-  get allowed$(): Observable<boolean> {
-    return this.allowedSubject.asObservable();
-  }
-
-  get library(): DidomiLibrary {
+  private get didomi(): DidomiLibrary {
     return this.window[DidomiService.NAME_LIB];
   }
+
+  private allowedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(@Inject(WINDOW_TOKEN) private window: Window, private loadExternalLibsService: LoadExternalLibsService) {
     this.addOnReadyListener();
   }
 
-  private allowedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-
-  public userAllowedSegmentationInAds$(): Observable<boolean> {
-    this.loadDidomiLib();
-    return this.allowed$;
+  public loadDidomiLib(): Observable<void> {
+    return this.loadExternalLibsService.loadScriptByText(DidomiService.NAME_LIB, DIDOMI_EMBED);
   }
 
-  private loadDidomiLib(): void {
-    this.loadExternalLibsService.loadScriptByText(DidomiService.NAME_LIB, DIDOMI_EMBED);
+  public isLibraryRefDefined(): boolean {
+    return !!this.didomi;
+  }
+
+  public allowSegmentation$(): Observable<boolean> {
+    return this.allowedSubject.asObservable();
   }
 
   private addOnReadyListener(): void {
     this.window[DidomiService.DIDOMI_ON_READY] = this.window[DidomiService.DIDOMI_ON_READY] || [];
     this.window[DidomiService.DIDOMI_ON_READY].push(() => {
-      this.allowedSubject.next(this.userAllowedSegmentationInAds());
+      const allowed: boolean = this.userAllowedSegmentationInAds();
+      this.allowedSubject.next(allowed);
       this.addEventListen('consent.changed');
     });
   }
 
   private userAllowedSegmentationInAds(): boolean {
-    const userConsentedGoogle: boolean = !!this.library.getUserConsentStatusForVendor('google');
-    const allConsents: DidomiUserConsents = this.library.getUserConsentStatusForAll();
+    const userConsentedGoogle: boolean = !!this.didomi.getUserConsentStatusForVendor('google');
+    const allConsents: DidomiUserConsents = this.didomi.getUserConsentStatusForAll();
     const { purposes } = allConsents;
     const { disabled: userDisabledPurpouses } = purposes;
 
@@ -55,7 +54,7 @@ export class DidomiService {
   }
 
   private addEventListen(event: string): void {
-    this.library.on(event, (e) => {
+    this.didomi.on(event, (e) => {
       const allowed: boolean = this.userAllowedSegmentationInAds();
       this.allowedSubject.next(allowed);
     });

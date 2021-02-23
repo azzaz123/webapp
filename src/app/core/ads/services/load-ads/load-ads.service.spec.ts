@@ -1,12 +1,18 @@
-import { AdSlot } from './../../models/ad-slot.interface';
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ADS_SOURCES } from '@core/ads/constants';
 import { AmazonPublisherService, CriteoService, GooglePublisherTagService } from '@core/ads/vendors';
+import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
 import { LoadExternalLibsService } from '@core/load-external-libs/load-external-libs.service';
-import { MockAdSlots, MockAmazonPublisherService, MockCriteoService, MockGooglePublisherTagService } from '@fixtures/ads.fixtures.spec';
+import {
+  MockAmazonPublisherService,
+  MockCriteoService,
+  MockDidomiService,
+  MockGooglePublisherTagService,
+} from '@fixtures/ads.fixtures.spec';
 import { LoadExternalLibsServiceMock } from '@fixtures/load-external-libs.fixtures.spec';
-import { of } from 'rxjs';
+import { random } from 'faker';
 import { LoadAdsService } from './load-ads.service';
+
 describe('LoadAdsService', () => {
   let service: LoadAdsService;
 
@@ -30,6 +36,10 @@ describe('LoadAdsService', () => {
           provide: LoadExternalLibsService,
           useValue: LoadExternalLibsServiceMock,
         },
+        {
+          provide: DidomiService,
+          useValue: MockDidomiService,
+        },
       ],
     });
 
@@ -37,47 +47,52 @@ describe('LoadAdsService', () => {
   });
 
   describe('when loading ads libraries', () => {
-    it('should load all libraries', () => {
-      spyOn(LoadExternalLibsServiceMock, 'loadScriptBySource').and.returnValue(of(null));
+    it('should load scripts by sources', () => {
+      spyOn(LoadExternalLibsServiceMock, 'loadScriptBySource').and.callThrough();
 
       service.loadAds().subscribe();
 
       expect(LoadExternalLibsServiceMock.loadScriptBySource).toHaveBeenCalledWith(ADS_SOURCES);
     });
 
-    it('should check all libraries once ads are loaded', () => {
-      spyOn(LoadExternalLibsServiceMock, 'loadScriptBySource').and.returnValue(of(null));
+    it('should wait to libs is defined', fakeAsync(() => {
+      MockGooglePublisherTagService.isLibraryRefDefined = jest.fn(() => random.boolean());
+      MockCriteoService.isLibraryRefDefined = jest.fn(() => random.boolean());
+      MockAmazonPublisherService.isLibraryRefDefined = jest.fn(() => random.boolean());
 
-      spyOn(MockAmazonPublisherService, 'isLibraryRefDefined').and.returnValue(true);
-      spyOn(MockCriteoService, 'isLibraryRefDefined').and.returnValue(true);
-      spyOn(MockGooglePublisherTagService, 'isLibraryRefDefined').and.returnValue(true);
+      service.loadAds().subscribe();
 
-      service.loadAds().subscribe((allReady: boolean) => {
-        expect(allReady).toBe(true);
-      });
+      tick(10000);
+
+      expect(MockGooglePublisherTagService.isLibraryRefDefined).toHaveLastReturnedWith(true);
+      expect(MockCriteoService.isLibraryRefDefined).toHaveLastReturnedWith(true);
+      expect(MockAmazonPublisherService.isLibraryRefDefined).toHaveLastReturnedWith(true);
+    }));
+
+    it('should load didomi', () => {
+      spyOn(MockDidomiService, 'loadDidomiLib').and.callThrough();
+
+      service.loadAds().subscribe();
+
+      expect(MockDidomiService.loadDidomiLib).toHaveBeenCalledTimes(1);
     });
 
-    it('should wait to all libraries are checked to load', () => {
-      spyOn(LoadExternalLibsServiceMock, 'loadScriptBySource').and.returnValue(of(null));
+    it('should wait to didomi is defined', fakeAsync(() => {
+      MockDidomiService.isLibraryRefDefined = jest.fn(() => random.boolean());
 
-      spyOn(MockAmazonPublisherService, 'isLibraryRefDefined').and.returnValues([false, true]);
-      spyOn(MockCriteoService, 'isLibraryRefDefined').and.returnValues([false, false, true]);
+      service.loadAds().subscribe();
+      tick(10000);
 
-      spyOn(MockGooglePublisherTagService, 'isLibraryRefDefined').and.returnValue(true);
+      expect(MockDidomiService.isLibraryRefDefined).toHaveLastReturnedWith(true);
+    }));
 
-      service.loadAds().subscribe((allReady: boolean) => {
-        expect(allReady).toBe(true);
-      });
-    });
-  });
+    it('should init amazon publisher service when is defined', fakeAsync(() => {
+      spyOn(MockAmazonPublisherService, 'init').and.callThrough();
 
-  describe('when we want to set slots', () => {
-    it('should set in google library', () => {
-      spyOn(MockGooglePublisherTagService, 'init').and.callThrough();
+      service.loadAds().subscribe();
+      tick(10000);
 
-      service.setSlots(MockAdSlots);
-
-      expect(MockGooglePublisherTagService.init).toHaveBeenCalledWith(MockAdSlots);
-    });
+      expect(MockAmazonPublisherService.init).toHaveBeenCalled();
+    }));
   });
 });

@@ -24,7 +24,7 @@ export class GooglePublisherTagService {
     return !!this.googletag && this.googletag.apiReady;
   }
 
-  public init(adSlots: AdSlot[]): void {
+  public setSlots(adSlots: AdSlot[]): void {
     this.googletag.cmd.push(() => {
       this.definedSlots(adSlots);
       this.setPubads();
@@ -35,7 +35,6 @@ export class GooglePublisherTagService {
   public setAdsSegmentation(allowSegmentation = false): void {
     this.googletag.cmd.push(() => {
       this.googletag.pubads().setRequestNonPersonalizedAds(allowSegmentation ? 0 : 1);
-      this.googletag.pubads().refresh();
     });
   }
 
@@ -43,13 +42,20 @@ export class GooglePublisherTagService {
     this.adsKeywordsService.updateAdKeywords();
 
     const adKeywords: AdKeyWords = this.adsKeywordsService.adKeywords;
-    for (const key in adKeywords) {
-      if (adKeywords.hasOwnProperty(key)) {
-        this.googletag.pubads().setTargeting(key, adKeywords[key]);
+    this.googletag.cmd.push(() => {
+      for (const key in adKeywords) {
+        if (adKeywords.hasOwnProperty(key)) {
+          this.googletag.pubads().setTargeting(key, adKeywords[key]);
+        }
       }
-    }
+      this.googletag.pubads().setTargeting('allowSegmentation', allowSegmentation.toString());
+    });
+  }
 
-    this.googletag.pubads().setTargeting('allowSegmentation', allowSegmentation.toString());
+  public refreshAds(): void {
+    this.googletag.cmd.push(() => {
+      this.googletag.pubads().refresh();
+    });
   }
 
   public displayAdBySlotId(slotId: AdSlotId): void {
@@ -73,11 +79,13 @@ export class GooglePublisherTagService {
 
   private definedSlots(slots: AdSlot[]): void {
     slots.forEach((slot) => {
-      this.googletag
-        .defineSlot(slot.name, slot.sizes, slot.id)
-        .setTargeting('ad_group', 'ad_opt')
-        .setTargeting('ad_h', new Date().getUTCHours().toString())
-        .addService(this.googletag.pubads());
+      const defineSlot = this.googletag.defineSlot(slot.name, slot.sizes, slot.id);
+      if (defineSlot) {
+        defineSlot
+          .setTargeting('ad_group', 'ad_opt')
+          .setTargeting('ad_h', new Date().getUTCHours().toString())
+          .addService(this.googletag.pubads());
+      }
     });
   }
 }

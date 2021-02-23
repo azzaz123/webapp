@@ -1,5 +1,6 @@
 import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { AdsService } from '@core/ads/services';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
@@ -8,6 +9,7 @@ import { RemoteConsoleService } from '@core/remote-console';
 import { InboxConversationService } from '@features/chat/core/inbox/inbox-conversation.service';
 import { InboxMessage, MessageStatus, MessageType } from '@features/chat/core/model';
 import { MaliciousConversationModalComponent } from '@features/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component';
+import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MOCK_CONVERSATION } from '@fixtures/conversation.fixtures.spec';
 import { InboxConversationServiceMock } from '@fixtures/inbox-coversation-service.fixtures.spec';
@@ -86,6 +88,10 @@ describe('CurrentConversationComponent', () => {
                 };
               },
             },
+          },
+          {
+            provide: AdsService,
+            useValue: MockAdsService,
           },
           I18nService,
         ],
