@@ -9,7 +9,12 @@ export class ReleaseVersionService {
 
   get releaseVersion(): string {
     return APP_VERSION.split('.')
-      .map((subVersion: string) => ('00' + subVersion).slice(-3))
-      .reduce((a: string, b: string) => parseInt(a) + b);
+      .map((subVersion, index) => {
+        if (index !== 0) {
+          return subVersion.padStart(3, '0');
+        }
+        return subVersion;
+      })
+      .join('');
   }
 }
