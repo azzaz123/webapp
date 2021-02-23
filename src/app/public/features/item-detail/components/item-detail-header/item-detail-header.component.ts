@@ -80,7 +80,6 @@ export class ItemDetailHeaderComponent implements OnInit {
       .result.then(() => {
         this.itemDetailService.deleteItem(this.item.id).subscribe(
           () => {
-            this.errorsService.i18nSuccess('deleteItemSuccess');
             this.router.navigate(['catalog/list']);
           },
           () => {
