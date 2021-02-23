@@ -1,4 +1,4 @@
-export const FilterOptionApiEndpoints = {
+export const FilterOptionsApiEndpoints = {
   condition: (categoryId: string) => `/consumer_goods/category/${categoryId}/keys/condition`,
   objectType: '/suggesters/general/object-type',
   brandModel: '/suggesters/general/brand-model',
@@ -9,6 +9,7 @@ export const FilterOptionApiEndpoints = {
     gearbox: '/cars/keys/gearbox',
   },
   realEstate: {
+    conditions: '/real_estate/keys/condition',
     operation: '/real_estate/keys/operation',
     type: '/real_estate/keys/type',
     extra: '/real_estate/keys/extra',
