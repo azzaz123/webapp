@@ -49,7 +49,7 @@ export class ItemDetailHeaderComponent implements OnInit {
 
   public reserveItem(): void {
     if (!this.item.reserved) {
-      this.itemDetailService.reserveItem(this.item.id, true).subscribe((item: Item) => {
+      this.itemDetailService.reserveItem(this.item.id, true).subscribe(() => {
         this.item.reserved = true;
         this.emitUpdatedItem();
       });
