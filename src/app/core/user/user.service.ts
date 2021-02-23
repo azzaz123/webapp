@@ -1,6 +1,6 @@
 import { from, Observable, of } from 'rxjs';
 
-import { mergeMap, catchError, tap, map } from 'rxjs/operators';
+import { mergeMap, catchError, tap, map, take, finalize } from 'rxjs/operators';
 import { Inject, Injectable } from '@angular/core';
 import { PERMISSIONS, User } from './user';
 import { EventService } from '../event/event.service';
@@ -93,6 +93,17 @@ export class UserService {
       .reduce((a: string, b: string) => parseInt(a) + b);
   }
 
+  public logoutLogic(redirect?: string): void {
+    const redirectUrl = redirect ? redirect : environment.siteUrl.replace('es', this.subdomain);
+    const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
+    this.cookieService.remove('publisherId', cookieOptions);
+    this.cookieService.remove('creditName', cookieOptions);
+    this.cookieService.remove('creditQuantity', cookieOptions);
+    this.accessTokenService.deleteAccessToken();
+    this.permissionService.flushPermissions();
+    this.event.emit(EventService.USER_LOGOUT, redirectUrl);
+  }
+
   public logout(redirect?: string): Observable<any> {
     const headers: HttpHeaders = new HttpHeaders({
       DeviceAccessToken: this.deviceAccessToken,
@@ -100,15 +111,9 @@ export class UserService {
       DeviceOS: '0',
     });
     return this.http.post(`${environment.baseUrl}${LOGOUT_ENDPOINT}`, null, { headers }).pipe(
-      tap(() => {
-        const redirectUrl = redirect ? redirect : environment.siteUrl.replace('es', this.subdomain);
-        const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
-        this.cookieService.remove('publisherId', cookieOptions);
-        this.cookieService.remove('creditName', cookieOptions);
-        this.cookieService.remove('creditQuantity', cookieOptions);
-        this.accessTokenService.deleteAccessToken();
-        this.permissionService.flushPermissions();
-        this.event.emit(EventService.USER_LOGOUT, redirectUrl);
+      take(1),
+      finalize(() => {
+        this.logoutLogic(redirect);
       })
     );
   }
