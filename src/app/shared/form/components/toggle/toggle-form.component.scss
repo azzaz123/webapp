@@ -1,4 +1,55 @@
 @import '~style/common';
 
 .Toggle {
+  display: inline-block;
+  height: 34px;
+  position: relative;
+  width: 60px;
+
+  input {
+    height: 0;
+    opacity: 0;
+    width: 0;
+
+    &:checked + .Toggle-slider {
+      background-color: $walla-main;
+    }
+
+    &:checked + .Toggle-slider:before {
+      transform: translateX(26px);
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+    }
+
+    &[disabled] + .Toggle-slider {
+      background-color: $blue-grey-5;
+      cursor: default;
+    }
+  }
+
+  &-slider {
+    background-color: $blue-grey-5;
+    border-radius: 34px;
+    bottom: 0;
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: 0.2s;
+    -webkit-transition: 0.2s;
+
+    &:before {
+      background-color: $white;
+      border-radius: 50%;
+      bottom: 4px;
+      content: '';
+      height: 26px;
+      left: 4px;
+      position: absolute;
+      transition: 0.2s;
+      -webkit-transition: 0.2s;
+      width: 26px;
+    }
+  }
 }
