@@ -21,6 +21,9 @@ export const MOCK_GOOGLE_DEFINE_SLOT = {
     return this;
   },
   addService(fn) {},
+  defineSizeMapping() {
+    return this;
+  },
 };
 
 export const MOCK_GOOGLE_PUBABDS = {
