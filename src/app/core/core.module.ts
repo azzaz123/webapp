@@ -14,7 +14,7 @@ import { LoggedGuard } from './user/logged.guard';
 import { SocialShareService } from './social-share/social-share.service';
 import { AnalyticsService } from './analytics/analytics.service';
 import { DeviceService } from './device/device.service';
-import { DidomiService } from './didomi/didomi.service';
+import { DidomiService } from './ads/vendors/didomi/didomi.service';
 import { LoadExternalLibsService } from './load-external-libs/load-external-libs.service';
 import { FeatureflagService } from './user/featureflag.service';
 import { SessionService } from './session/session.service';

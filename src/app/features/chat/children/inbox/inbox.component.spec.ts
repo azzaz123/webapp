@@ -114,14 +114,6 @@ describe('Component: InboxComponent', () => {
       expect(component.conversations).toEqual(mockedInboxConversations);
     });
 
-    it('should refresh ads', () => {
-      spyOn(adService, 'refresh');
-
-      component.ngOnInit();
-
-      expect(adService.refresh).toHaveBeenCalled();
-    });
-
     describe('when inboxService.conversations exists', () => {
       beforeEach(() => {
         conversationService.conversations = mockedInboxConversations;
