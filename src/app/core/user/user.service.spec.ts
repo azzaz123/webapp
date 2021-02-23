@@ -325,6 +325,7 @@ describe('Service: User', () => {
     it('should call logout endpoint', () => {
       const expectedUrl = `${environment.baseUrl}${LOGOUT_ENDPOINT}`;
       const appVersion = releaseVersionService.releaseVersion;
+      const deviceAccessToken = accessTokenService.deviceAccessToken;
 
       service.logout().subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);
@@ -332,7 +333,7 @@ describe('Service: User', () => {
 
       expect(req.request.url).toEqual(expectedUrl);
       expect(req.request.method).toEqual('POST');
-      expect(req.request.headers.get('DeviceAccessToken')).toEqual('');
+      expect(req.request.headers.get('DeviceAccessToken')).toEqual(deviceAccessToken);
       expect(req.request.headers.get('DeviceOS')).toEqual('0');
       expect(req.request.headers.get('AppBuild')).toEqual(appVersion);
     });
