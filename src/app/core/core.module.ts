@@ -27,6 +27,7 @@ import { HAMMER_PROVIDER } from './hammerjs/hammerjs-provider';
 import { HammerModule } from '@angular/platform-browser';
 import { CategoryService } from './category/category.service';
 import { ExternalCommsService } from './external-comms.service';
+import { ReleaseVersionService } from './release-version/release-version.service';
 
 @NgModule({
   imports: [
@@ -59,6 +60,7 @@ import { ExternalCommsService } from './external-comms.service';
     ItemService,
     HAMMER_PROVIDER,
     CategoryService,
+    ReleaseVersionService,
     ExternalCommsService,
   ],
 })

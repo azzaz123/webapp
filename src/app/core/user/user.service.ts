@@ -23,6 +23,7 @@ import { APP_VERSION } from '../../../environments/version';
 import { UserReportApi } from './user-report.interface';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { InboxUser, InboxItem } from '@features/chat/core/model';
+import { ReleaseVersionService } from '@core/release-version/release-version.service';
 
 export const LOGOUT_ENDPOINT = 'shnm-portlet/api/v1/access.json/logout2';
 export const USER_BASE_ENDPOINT = 'api/v3/users/';
@@ -70,6 +71,7 @@ export class UserService {
     private accessTokenService: AccessTokenService,
     private cookieService: CookieService,
     private permissionService: NgxPermissionsService,
+    private releaseVersionService: ReleaseVersionService,
     @Inject('SUBDOMAIN') private subdomain: string
   ) {}
 
@@ -79,15 +81,6 @@ export class UserService {
 
   get isPro(): boolean {
     return this._user && this._user.featured;
-  }
-
-  get releaseVersion(): string {
-    return APP_VERSION.split('.')
-      .map((subVersion: string) => subVersion.padStart(3, '0'))
-      .join();
-    /* return APP_VERSION.split('.')
-      .map((subVersion: string) => ('00' + subVersion).slice(-3))
-      .reduce((a: string, b: string) => parseInt(a) + b); */
   }
 
   public logoutLogic(redirect?: string): void {
@@ -104,7 +97,7 @@ export class UserService {
   public logout(redirect?: string): Observable<any> {
     const headers: HttpHeaders = new HttpHeaders({
       DeviceAccessToken: this.accessTokenService.deviceAccessToken,
-      AppBuild: this.releaseVersion,
+      AppBuild: this.releaseVersionService.releaseVersion,
       DeviceOS: '0',
     });
     return this.http.post(`${environment.baseUrl}${LOGOUT_ENDPOINT}`, null, { headers }).pipe(

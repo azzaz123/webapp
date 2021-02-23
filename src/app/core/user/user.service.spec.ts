@@ -4,6 +4,7 @@ import { ComponentFixtureAutoDetect, discardPeriodicTasks, fakeAsync, TestBed, t
 import { AccessTokenService } from '@core/http/access-token.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { Item } from '@core/item/item';
+import { ReleaseVersionService } from '@core/release-version/release-version.service';
 import { environment } from '@environments/environment';
 import { APP_VERSION } from '@environments/version';
 import { PhoneMethod } from '@features/chat/core/model';
@@ -64,6 +65,7 @@ describe('Service: User', () => {
   let accessTokenService: AccessTokenService;
   let event: EventService;
   let cookieService: CookieService;
+  let releaseVersionService: ReleaseVersionService;
   let permissionService: NgxPermissionsService;
   let featureflagService: FeatureflagService;
   let httpMock: HttpTestingController;
@@ -80,6 +82,14 @@ describe('Service: User', () => {
         {
           provide: 'SUBDOMAIN',
           useValue: 'www',
+        },
+        {
+          provide: ReleaseVersionService,
+          useValue: {
+            releaseVersion: APP_VERSION.split('.')
+              .map((subVersion: string) => ('00' + subVersion).slice(-3))
+              .reduce((a: string, b: string) => parseInt(a) + b),
+          },
         },
         {
           provide: CookieService,
@@ -117,6 +127,7 @@ describe('Service: User', () => {
     service = TestBed.inject(UserService);
     accessTokenService = TestBed.inject(AccessTokenService);
     accessTokenService.storeAccessToken(null);
+    releaseVersionService = TestBed.inject(ReleaseVersionService);
     event = TestBed.inject(EventService);
     cookieService = TestBed.inject(CookieService);
     permissionService = TestBed.inject(NgxPermissionsService);
@@ -313,9 +324,7 @@ describe('Service: User', () => {
 
     it('should call logout endpoint', () => {
       const expectedUrl = `${environment.baseUrl}${LOGOUT_ENDPOINT}`;
-      const appVersion = APP_VERSION.split('.')
-        .map((subVersion: string) => ('00' + subVersion).slice(-3))
-        .reduce((a: string, b: string) => parseInt(a) + b);
+      const appVersion = releaseVersionService.releaseVersion;
 
       service.logout().subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);
