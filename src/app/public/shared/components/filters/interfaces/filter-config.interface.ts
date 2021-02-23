@@ -1,4 +1,4 @@
-export interface FilterConfig {
+export interface FilterConfig<T extends Record<keyof T, string>> {
   id: string;
   title: string;
   icon?: string;
@@ -6,4 +6,7 @@ export interface FilterConfig {
   actions?: {
     apply?: boolean;
   };
+  bubblePlaceholder: string;
+  drawerPlaceholder?: string;
+  mapKey: T;
 }
