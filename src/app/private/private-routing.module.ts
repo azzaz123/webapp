@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PERMISSIONS } from '@core/user/user';
 import { NgxPermissionsGuard } from 'ngx-permissions';
-import { CheckUserPermissionsResolver } from './core/resolvers/check-user-permissions.resolver';
 import { PrivateComponent } from './private.component';
 
 const routes: Routes = [
@@ -24,7 +23,7 @@ const routes: Routes = [
           },
           {
             path: 'calls',
-            loadChildren: () => import('app/features/calls/calls.module').then((m) => m.CallsModule),
+            loadChildren: () => import('@private/features/calls/calls.module').then((m) => m.CallsModule),
           },
           {
             path: 'catalog',
