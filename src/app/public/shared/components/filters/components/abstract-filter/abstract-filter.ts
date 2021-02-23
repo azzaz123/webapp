@@ -66,4 +66,15 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
   public getValue(key: keyof T): string {
     return this.value?.find((parameter: FilterParameter) => parameter.key === this.config.mapKey[key])?.value;
   }
+  public hasValueChanged(previous: FilterParameter[], current: FilterParameter[]): boolean {
+    const keys = Object.keys(this.config.mapKey);
+
+    for (const key of keys) {
+      if (previous[key] !== current[key]) {
+        return true;
+      }
+    }
+
+    return false;
+  }
 }
