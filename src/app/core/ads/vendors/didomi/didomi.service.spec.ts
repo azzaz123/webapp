@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { LoadExternalLibsService } from '@core/load-external-libs/load-external-libs.service';
+import { WINDOW_TOKEN } from '@core/window/window.token';
 import { of } from 'rxjs';
-import { WINDOW_TOKEN } from '../../../window/window.token';
 import { DidomiUserConsents } from './didomi.interface';
 import { DidomiService } from './didomi.service';
 

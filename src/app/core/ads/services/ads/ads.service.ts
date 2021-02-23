@@ -1,18 +1,17 @@
 import { Injectable } from '@angular/core';
 import { AdKeyWords, AdSlotId } from '@core/ads/models';
+import { AdSlot } from '@core/ads/models/ad-slot.interface';
 import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
 import { BehaviorSubject, combineLatest, merge, Observable, Subject, Subscription } from 'rxjs';
 import { filter, finalize, map, switchMap, tap } from 'rxjs/operators';
 import { AmazonPublisherService, CriteoService, GooglePublisherTagService } from '../../vendors';
 import { LoadAdsService } from '../load-ads/load-ads.service';
-import { AdSlot } from './../../models/ad-slot.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdsService {
   public adKeyWords: AdKeyWords = {} as AdKeyWords;
-  public adsRefreshSubscription: Subscription;
 
   private readonly refreshEventSubject: Subject<void> = new Subject<void>();
   private readonly setSlotsSubject: BehaviorSubject<AdSlot[]> = new BehaviorSubject<AdSlot[]>([]);
