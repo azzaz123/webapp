@@ -7,7 +7,6 @@ import { SliderFormModule } from '@shared/form/components/slider/slider-form.mod
 import { moduleMetadata } from '@storybook/angular';
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { CookieService } from 'ngx-cookie';
-import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module';
 import { RangeFilterConfig } from './interfaces/range-filter-config.interface';
