@@ -1,0 +1,10 @@
+import { COMMON_CONSUMER_GOODS_FILTERS, COMMON_FILTERS } from '@public/shared/components/filters/core/enums/filter-ids/common.enum';
+
+export enum PHONE_N_ACCESSORIES_FILTERS {
+  PRICE = COMMON_CONSUMER_GOODS_FILTERS.PRICE,
+  CONDITION = COMMON_FILTERS.CONDITION,
+  OBJECT_TYPE = 'phones-object-type',
+  BRAND_N_MODEL = 'phones-brand-model',
+  LOCATION = COMMON_FILTERS.LOCATION,
+  POSTED_BEFORE = COMMON_FILTERS.LOCATION,
+}
