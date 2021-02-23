@@ -1,11 +1,7 @@
-import { countBy, find, map } from 'lodash-es';
-import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
-
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
 import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { AdsService } from '@core/ads/services';
-import { ANALYTICS_EVENT_NAMES, AnalyticsPageView, SCREEN_IDS, ViewChatScreen } from '@core/analytics/analytics-constants';
+import { AnalyticsPageView, ANALYTICS_EVENT_NAMES, SCREEN_IDS, ViewChatScreen } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { EventService } from '@core/event/event.service';
 import { RemoteConsoleService } from '@core/remote-console';
@@ -13,6 +9,8 @@ import { UserService } from '@core/user/user.service';
 import { InboxConversationService } from '@features/chat/core/inbox/inbox-conversation.service';
 import { InboxService } from '@features/chat/core/inbox/inbox.service';
 import { InboxConversation, InboxMessage } from '@features/chat/core/model';
+import { countBy, find, map } from 'lodash-es';
+import { Subscription } from 'rxjs';
 
 export enum InboxState {
   Inbox,

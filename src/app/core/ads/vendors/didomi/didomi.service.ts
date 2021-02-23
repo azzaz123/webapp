@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
+import { LoadExternalLibsService } from '@core/load-external-libs/load-external-libs.service';
+import { WINDOW_TOKEN } from '@core/window/window.token';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { LoadExternalLibsService } from '../../../load-external-libs/load-external-libs.service';
-import { WINDOW_TOKEN } from '../../../window/window.token';
 import { DIDOMI_EMBED } from './didomi-embed-script';
 import { DidomiLibrary, DidomiUserConsents } from './didomi.interface';
 

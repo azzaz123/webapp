@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
-import { forkJoin, Observable, ReplaySubject, Subject, Subscriber } from 'rxjs';
+import { forkJoin, Observable, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })

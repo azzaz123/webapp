@@ -58,6 +58,12 @@ $vertical-padding: $spacing-ms;
     padding-left: $spacing-xxxl;
     padding-right: $spacing-xxxl;
   }
+
+  &.btn-filter {
+    padding-top: $spacing-s;
+    padding-bottom: $spacing-s;
+  }
+
   &.btn-feature {
     background: $blue-grey-2;
     border-color: transparent;
@@ -112,6 +118,10 @@ $vertical-padding: $spacing-ms;
     border: 0;
     &:disabled {
       cursor: not-allowed;
+    }
+
+    &-dark {
+      color: $blue-grey-1;
     }
   }
 
