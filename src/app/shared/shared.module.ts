@@ -161,6 +161,7 @@ import { DateCountDownModule } from './date-countdown/date-countdown.module';
     DropdownModule,
     WallacoinsDisabledModalComponent,
     ButtonModule,
+    DateCountDownModule,
   ],
   declarations: [
     AdComponent,

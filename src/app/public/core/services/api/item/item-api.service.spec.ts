@@ -4,6 +4,7 @@ import {
   GET_ITEM_BUMP_FLAGS,
   GET_ITEM_COUNTERS_ENDPOINT,
   GET_ITEM_ENDPOINT,
+  GET_ITEM_REMAINING_TIME,
   ItemApiService,
   MARK_AS_FAVORITE_ENDPOINT,
   SET_ITEM_RESERVED,
@@ -129,6 +130,19 @@ describe('ItemApiService', () => {
       expect(req.request.url).toBe(expectedUrl);
       expect(req.request.body).toEqual(expectedBody);
       expect(req.request.method).toBe('PUT');
+    });
+  });
+
+  describe('getActivePurchases', () => {
+    it('should get the active item purchases', () => {
+      const expectedUrl = GET_ITEM_REMAINING_TIME;
+
+      itemApiService.getActivePurchases().subscribe();
+      const req = httpMock.expectOne(expectedUrl);
+      req.flush([]);
+
+      expect(req.request.url).toBe(expectedUrl);
+      expect(req.request.method).toBe('GET');
     });
   });
 });

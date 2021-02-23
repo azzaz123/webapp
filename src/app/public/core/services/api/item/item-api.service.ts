@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ItemCounters, ItemResponse, ItemVisibilityFlags } from '@core/item/item-response.interface';
+import { ItemCounters, ItemResponse, ItemVisibilityFlags, Purchase } from '@core/item/item-response.interface';
 import { environment } from '@environments/environment';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -12,6 +12,8 @@ export const GET_ITEM_ENDPOINT = (id: string) => `${ITEMS_API_URL(id)}`;
 export const GET_ITEM_COUNTERS_ENDPOINT = (id: string) => `${ITEMS_API_URL(id)}/counters`;
 export const GET_ITEM_BUMP_FLAGS = (id: string) => `${ITEMS_API_URL(id)}/bump-flags`;
 export const SET_ITEM_RESERVED = (id: string) => `${ITEMS_API_URL(id)}/reserve`;
+export const GET_ITEM_REMAINING_TIME = `${environment.baseUrl}api/v3/web/items/mine/purchases`;
+
 @Injectable()
 export class ItemApiService {
   constructor(private http: HttpClient) {}
@@ -48,6 +50,10 @@ export class ItemApiService {
     return this.http.put(`${SET_ITEM_RESERVED(id)}`, {
       reserved,
     });
+  }
+
+  public getActivePurchases(): Observable<Purchase[]> {
+    return this.http.get<Purchase[]>(GET_ITEM_REMAINING_TIME);
   }
 
   private fallbackItemCounters(): Observable<ItemCounters> {

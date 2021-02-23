@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Item } from '@core/item/item';
-import { ItemCounters, ItemResponse, ItemVisibilityFlags } from '@core/item/item-response.interface';
+import { ItemCounters, ItemResponse, ItemVisibilityFlags, Purchase } from '@core/item/item-response.interface';
 import { User } from '@core/user/user';
 import { UserResponse } from '@core/user/user-response.interface';
 import { DeleteItemBodyResponse, ReserveItemBodyResponse } from '@public/core/services/api/item/interfaces/item-response.interface';
@@ -53,6 +53,10 @@ export class ItemDetailService {
 
   public reserveItem(itemId: string, reserved: boolean): Observable<ReserveItemBodyResponse> {
     return this.itemApiService.reserveItem(itemId, reserved);
+  }
+
+  public getActivePurchases(): Observable<Purchase[]> {
+    return this.itemApiService.getActivePurchases();
   }
 
   private mapItem(itemResponse: ItemResponse, itemCounters: ItemCounters, bumpFlags: ItemVisibilityFlags): Item {

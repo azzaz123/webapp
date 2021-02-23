@@ -39,6 +39,9 @@ export class ItemDetailHeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    if (this.item?.bumpFlags?.bumped) {
+      this.getItemExpiredDate();
+    }
     this.getUserStats();
     this.checkShowMineOptions();
   }
@@ -87,6 +90,12 @@ export class ItemDetailHeaderComponent implements OnInit {
           }
         );
       });
+  }
+
+  private getItemExpiredDate(): void {
+    this.itemDetailService.getActivePurchases().subscribe((purchases) => {
+      this.item.bumpExpiringDate = purchases.find((purchase) => purchase.item_id === this.item.id)?.expiration_date;
+    });
   }
 
   private getUserStats(): void {

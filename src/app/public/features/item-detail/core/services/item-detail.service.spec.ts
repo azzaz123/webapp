@@ -42,6 +42,9 @@ describe('ItemDetailService', () => {
             deleteItem() {
               return of();
             },
+            getActivePurchases() {
+              return of();
+            },
           },
         },
         {
@@ -117,6 +120,16 @@ describe('ItemDetailService', () => {
       itemDetailService.reserveItem(itemId, true);
 
       expect(itemApiService.reserveItem).toHaveBeenCalledWith(itemId, true);
+    });
+  });
+
+  describe('getActivePurchases', () => {
+    it('should call the itemApiService getActivePurchases function', () => {
+      spyOn(itemApiService, 'getActivePurchases');
+
+      itemDetailService.getActivePurchases();
+
+      expect(itemApiService.getActivePurchases).toHaveBeenCalled();
     });
   });
 });

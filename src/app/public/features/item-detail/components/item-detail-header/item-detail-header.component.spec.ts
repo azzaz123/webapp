@@ -6,7 +6,7 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ErrorsService } from '@core/errors/errors.service';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
-import { MOCK_ITEM, MOCK_ITEM_SOLD } from '@fixtures/item.fixtures.spec';
+import { MOCK_ITEM, MOCK_ITEM_SOLD, PURCHASES } from '@fixtures/item.fixtures.spec';
 import { MOCK_USER, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -79,6 +79,9 @@ describe('ItemDetailHeaderComponent', () => {
             },
             deleteItem: () => {
               return of();
+            },
+            getActivePurchases: () => {
+              return of(PURCHASES);
             },
           },
         },
