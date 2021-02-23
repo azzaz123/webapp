@@ -1,4 +1,4 @@
-<div *ngIf="user && userStats && item" class="ItemDetailHeader py-2 d-flex justify-content-between align-items-center"
+<div *ngIf="user && userStats && item" class="ItemDetailHeader py-3 d-flex justify-content-between align-items-center"
     [ngClass]="{'ShowOwnButtons': isOwner}">
     <tsl-user-basic-info [ngClass]="isOwner ? 'OwnUserBasicInfo': 'OtherUserBasicInfo'" [userStats]="userStats"
         [userInfo]="user" [styleSize]="USER_INFO_SIZE.SMALL" [className]="'ItemDetailHeader'">
@@ -7,7 +7,7 @@
         <div class="FeatureButton mr-4" *ngIf="showOptions">
             <!-- Feature -->
             <tsl-button *ngIf="!item.bumpExpiringDate" className="btn-feature"
-                [routerLink]="['/catalog/checkout', {itemId: item.id}]">
+                [routerLink]="['/catalog/checkout', {itemId: item.id}]" id="featureItemButton">
                 <tsl-svg-icon src="/assets/icons/feature.svg" class="mr-2"></tsl-svg-icon>
                 <span i18n="@@Feature">Feature</span>
             </tsl-button>
@@ -19,8 +19,8 @@
         <div class="OwnActionButtons d-flex">
             <ng-container *ngIf="showOptions">
                 <!-- Sold -->
-                <button class="OwnActionButtons__action btn-sold p-0" (click)="soldItem()" [item]="item"
-                    ngbTooltip="Mark as sold" i18n-ngbTooltip placement="top">
+                <button class="OwnActionButtons__action btn-sold p-0" (click)="soldItem()" ngbTooltip="Mark as sold"
+                    i18n-ngbTooltip placement="top">
                     <tsl-svg-icon src="/assets/icons/btn-sold.svg"></tsl-svg-icon>
                 </button>
                 <!-- Reserve -->
@@ -59,18 +59,20 @@
                 </div>
             </ng-container>
             <!-- Delete -->
-            <button [ngClass]="{'btn-delete': showOptions}" class="OwnActionButtons__action p-0" (click)="deleteItem()">
+            <button [ngClass]="{'btn-delete': showOptions}" class="OwnActionButtons__action p-0" (click)="deleteItem()"
+                id="trashButton">
                 <tsl-svg-icon src="/assets/icons/delete.svg" width="17" height="20"></tsl-svg-icon>
             </button>
         </div>
     </div>
     <ng-template #basicOperations>
         <div *ngIf="showOptions" class="OtherActionButtons">
-            <tsl-button className="stripe" class="mr-2" (click)="toggleItemFavorite()">
+            <tsl-button className="stripe" class="mr-2" (click)="toggleItemFavorite()" id="favouriteButton">
                 <tsl-favourite-icon [active]="item?.flags?.favorite">
                 </tsl-favourite-icon>
             </tsl-button>
-            <tsl-button className="btn-primary stripe" [routerLink]="['/chat']" [queryParams]="{itemId: item.id}">
+            <tsl-button className="btn-primary stripe" [routerLink]="['/chat']" [queryParams]="{itemId: item.id}"
+                id="chatButton">
                 Chat
             </tsl-button>
         </div>
