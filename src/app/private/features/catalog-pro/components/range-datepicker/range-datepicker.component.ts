@@ -1,4 +1,4 @@
-import { CalendarDates } from './../../core/calendar-dates';
+import { CalendarDates } from '../../core/calendar-dates';
 import { Component, OnInit, Input, EventEmitter, Output, Injectable } from '@angular/core';
 import { NgbDateStruct, NgbCalendar, NgbDatepickerI18n, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { style, animate, transition, trigger } from '@angular/animations';

@@ -6,7 +6,7 @@ import { CartService } from '@shared/catalog/cart/cart.service';
 import { CartPro } from '@shared/catalog/cart/cart-pro';
 import { Observable } from 'rxjs';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { CalendarDates } from '@features/catalog-pro/core/calendar-dates';
+import { CalendarDates } from '@private/features/catalog-pro/core/calendar-dates';
 
 export enum BUMPS {
   CITY = 'citybump',

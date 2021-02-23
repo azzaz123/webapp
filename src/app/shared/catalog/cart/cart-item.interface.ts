@@ -3,7 +3,7 @@ import { Item } from '../../../core/item/item';
 import { CartBase } from './cart-base';
 
 import { Pack } from '../../../core/payments/pack';
-import { CalendarDates } from '@features/catalog-pro/core/calendar-dates';
+import { CalendarDates } from '@private/features/catalog-pro/core/calendar-dates';
 
 export interface CartItem {
   item: Item;
