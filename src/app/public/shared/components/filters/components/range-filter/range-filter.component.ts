@@ -28,7 +28,7 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!changes.value?.firstChange && JSON.stringify(changes.value.previousValue) !== JSON.stringify(changes.value.currentValue)) {
+    if (!changes.value?.firstChange && this.hasValueChanged(changes.value.previousValue, changes.value.currentValue)) {
       if (this.value.length > 0) {
         this.updateForm();
         this.emitChange();
