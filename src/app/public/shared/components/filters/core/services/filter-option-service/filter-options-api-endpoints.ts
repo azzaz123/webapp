@@ -1,21 +1,21 @@
-export const FilterOptionsApiEndpoints = {
-  condition: (categoryId: string) => `/consumer_goods/category/${categoryId}/keys/condition`,
-  objectType: '/suggesters/general/object-type',
-  brandModel: '/suggesters/general/brand-model',
-  cars: {
-    brandModel: '/suggesters/cars/brands-and-models',
-    body: '/cars/keys/bodytype',
-    engine: '/cars/keys/engine',
-    gearbox: '/cars/keys/gearbox',
+export const FILTER_OPTIONS_API_ENDPOINTS = {
+  CONDITION_BY_CATEGORY_ID: (categoryId: string) => `/consumer_goods/category/${categoryId}/keys/condition`,
+  OBJECT_TYPE: '/suggesters/general/object-type',
+  BRAND_MODEL: '/suggesters/general/brand-model',
+  CARS: {
+    BRAND_MODEL: '/suggesters/cars/brands-and-models',
+    BODY: '/cars/keys/bodytype',
+    ENGINE: '/cars/keys/engine',
+    GEARBOX: '/cars/keys/gearbox',
   },
-  realEstate: {
-    conditions: '/real_estate/keys/condition',
-    operation: '/real_estate/keys/operation',
-    type: '/real_estate/keys/type',
-    extra: '/real_estate/keys/extra',
+  REAL_ESTATE: {
+    CONDITIONS: '/real_estate/keys/condition',
+    OPERATION: '/real_estate/keys/operation',
+    TYPE: '/real_estate/keys/type',
+    EXTRA: '/real_estate/keys/extra',
   },
-  fashion: {
-    size: '/fashion/keys/size',
-    brand: '/suggesters/fashion/brand',
+  FASHION: {
+    SIZE: '/fashion/keys/size',
+    BRAND: '/suggesters/fashion/brand',
   },
 };
