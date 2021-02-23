@@ -36,7 +36,7 @@ export class FilterOptionsApiService {
   }
 
   public getBrandModelByCategoryId(categoryId: string, params: QueryParams): Observable<BrandModel[]> {
-    return this.get(FilterOptionsApiEndpoints.brandModel, {
+    return this.get(FILTER_OPTIONS_API_ENDPOINTS.BRAND_MODEL, {
       ...params,
       category_id: categoryId,
     });
