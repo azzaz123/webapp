@@ -8,11 +8,13 @@ import { SpinnerModule } from '@shared/spinner/spinner.module';
 import { UserProfileHeaderModule } from './components/user-profile-header/user-profile-header.module';
 import { PublicPipesModule } from '@public/core/pipes/public-pipes.module';
 import { PublicUserApiModule } from '@public/core/services/api/public-user/public-user-api.module';
+import { SharedModule } from '@shared/shared.module';
 
 @NgModule({
   declarations: [publicProfileRoutedComponents, ProfileTabsComponent],
   imports: [
     CommonModule,
+    SharedModule,
     publicProfileRoutedModules,
     PublicProfileRoutingModule,
     SpinnerModule,

@@ -28,6 +28,18 @@ export class DeviceService {
     return DeviceType.DESKTOP;
   }
 
+  public isMobile(): boolean {
+    return this.deviceDetectorService.isMobile();
+  }
+
+  public isTablet(): boolean {
+    return this.deviceDetectorService.isTablet();
+  }
+
+  public isDesktop(): boolean {
+    return this.deviceDetectorService.isDesktop();
+  }
+
   public getDeviceId(): string {
     let deviceId = this.cookieService.get(DeviceService.DEVICE_ID_COOKIE_NAME);
     if (!deviceId) {

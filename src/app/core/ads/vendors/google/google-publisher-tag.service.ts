@@ -79,9 +79,20 @@ export class GooglePublisherTagService {
 
   private definedSlots(slots: AdSlot[]): void {
     slots.forEach((slot) => {
+      let mappingResponsive: googletag.SizeMappingArray;
+      if (slot.sizeMapping) {
+        mappingResponsive = this.googletag
+          .sizeMapping()
+          .addSize(slot.sizeMapping.desktop.screenSize, slot.sizeMapping.desktop.mapping)
+          .addSize(slot.sizeMapping.tablet.screenSize, slot.sizeMapping.tablet.mapping)
+          .addSize(slot.sizeMapping.mobile.screenSize, slot.sizeMapping.mobile.mapping)
+          .build();
+      }
       const defineSlot = this.googletag.defineSlot(slot.name, slot.sizes, slot.id);
+
       if (defineSlot) {
         defineSlot
+          .defineSizeMapping(slot.sizeMapping && mappingResponsive)
           .setTargeting('ad_group', 'ad_opt')
           .setTargeting('ad_h', new Date().getUTCHours().toString())
           .addService(this.googletag.pubads());
