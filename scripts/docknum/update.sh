@@ -7,7 +7,7 @@ docknum=$1
 
 if [ -z $1 ]
 then
-  docknum=111
+  docknum='beta'
 fi
 
 docknumPath="src/environments/"
