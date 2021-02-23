@@ -4,7 +4,7 @@ import { FilterOptionsApiService } from './filter-options-api.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { environment } from '@environments/environment';
 import { HttpParams } from '@angular/common/http';
-import { FilterOptionsApiEndpoints } from './filter-options-api-endpoints';
+import { FILTER_OPTIONS_API_ENDPOINTS } from './filter-options-api-endpoints';
 
 describe('FilterOptionsApiService', () => {
   let service: FilterOptionsApiService;
@@ -31,14 +31,14 @@ describe('FilterOptionsApiService', () => {
     describe('for getting condition options by category id', () => {
       it('should retrieve options', () => {
         service.getConditionsByCategoryId('100', defaultParams).subscribe();
-        expectGetHttpQuery(FilterOptionsApiEndpoints.condition('100'), defaultParams);
+        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.CONDITION_BY_CATEGORY_ID('100'), defaultParams);
       });
     });
 
     describe('for getting object type options by category id', () => {
       it('should retrieve options', () => {
         service.getObjectTypesByCategoryId('100', defaultParams).subscribe();
-        expectGetHttpQuery(FilterOptionsApiEndpoints.objectType, {
+        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.OBJECT_TYPE, {
           ...defaultParams,
           category_id: '100',
         });
@@ -49,7 +49,7 @@ describe('FilterOptionsApiService', () => {
             parent_id: '1200',
           })
           .subscribe();
-        expectGetHttpQuery(FilterOptionsApiEndpoints.objectType, {
+        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.OBJECT_TYPE, {
           ...defaultParams,
           parent_id: '1200',
           category_id: '100',
@@ -60,7 +60,7 @@ describe('FilterOptionsApiService', () => {
     describe('for getting brand model options by categoryId', () => {
       it('should retrieve options', () => {
         service.getBrandModelByCategoryId('100', defaultParams).subscribe();
-        expectGetHttpQuery(FilterOptionsApiEndpoints.brandModel, {
+        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.BRAND_MODEL, {
           ...defaultParams,
           category_id: '100',
         });
@@ -72,28 +72,28 @@ describe('FilterOptionsApiService', () => {
     describe('for getting brand and model options', () => {
       it('should retrieve options', () => {
         service.getCarBrandsAndModels(defaultParams).subscribe();
-        expectGetHttpQuery(FilterOptionsApiEndpoints.cars.brandModel, defaultParams);
+        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.CARS.BRAND_MODEL, defaultParams);
       });
     });
 
     describe('for getting body options', () => {
       it('should retrieve options', () => {
         service.getCarBodyTypeKeys(defaultParams).subscribe();
-        expectGetHttpQuery(FilterOptionsApiEndpoints.cars.body, defaultParams);
+        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.CARS.BODY, defaultParams);
       });
     });
 
     describe('for getting engine options', () => {
       it('should retrieve options', () => {
         service.getCarEngineKeys(defaultParams).subscribe();
-        expectGetHttpQuery(FilterOptionsApiEndpoints.cars.engine, defaultParams);
+        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.CARS.ENGINE, defaultParams);
       });
     });
 
     describe('for getting gearbox options', () => {
       it('should retrieve options', () => {
         service.getCarGearboxKeys(defaultParams).subscribe();
-        expectGetHttpQuery(FilterOptionsApiEndpoints.cars.gearbox, defaultParams);
+        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.CARS.GEARBOX, defaultParams);
       });
     });
   });
@@ -102,20 +102,20 @@ describe('FilterOptionsApiService', () => {
     describe('for getting condition options', () => {
       it('should retrieve options', () => {
         service.getRealEstateConditions(defaultParams).subscribe();
-        expectGetHttpQuery(FilterOptionsApiEndpoints.realEstate.conditions, defaultParams);
+        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.REAL_ESTATE.CONDITIONS, defaultParams);
       });
     });
     describe('for getting operation options', () => {
       it('should retrieve options', () => {
         service.getRealEstateOperationKeys(defaultParams).subscribe();
-        expectGetHttpQuery(FilterOptionsApiEndpoints.realEstate.operation, defaultParams);
+        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.REAL_ESTATE.OPERATION, defaultParams);
       });
     });
 
     describe('for getting real estate type options by option id', () => {
       it('should retrieve options', () => {
         service.getRealEstateTypeKeysByOperationId('operation_id', defaultParams).subscribe();
-        expectGetHttpQuery(FilterOptionsApiEndpoints.realEstate.type, {
+        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.REAL_ESTATE.TYPE, {
           ...defaultParams,
           operation: 'operation_id',
         });
@@ -125,7 +125,7 @@ describe('FilterOptionsApiService', () => {
     describe('for getting extra options by real state type id', () => {
       it('should retrieve options', () => {
         service.getRealEstateExtraKeysByTypeId('type_id', defaultParams).subscribe();
-        expectGetHttpQuery(FilterOptionsApiEndpoints.realEstate.extra, {
+        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.REAL_ESTATE.EXTRA, {
           ...defaultParams,
           type: 'type_id',
         });
@@ -137,7 +137,7 @@ describe('FilterOptionsApiService', () => {
     describe('for getting size options by object type id', () => {
       it('should retrieve options', () => {
         service.getFashionSizeKeysByObjectId('100', defaultParams).subscribe();
-        expectGetHttpQuery(FilterOptionsApiEndpoints.fashion.size, {
+        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.FASHION.SIZE, {
           ...defaultParams,
           object_type_id: '100',
         });
@@ -147,7 +147,7 @@ describe('FilterOptionsApiService', () => {
     describe('for getting brand options by object type id', () => {
       it('should retrieve options', () => {
         service.getFashionBrandsByObjectTypeId('100', defaultParams).subscribe();
-        expectGetHttpQuery(FilterOptionsApiEndpoints.fashion.brand, {
+        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.FASHION.BRAND, {
           ...defaultParams,
           object_type_id: '100',
           start: '0',
@@ -158,7 +158,7 @@ describe('FilterOptionsApiService', () => {
             offset: 100,
           })
           .subscribe();
-        expectGetHttpQuery(FilterOptionsApiEndpoints.fashion.brand, {
+        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.FASHION.BRAND, {
           ...defaultParams,
           object_type_id: '100',
           start: '100',
