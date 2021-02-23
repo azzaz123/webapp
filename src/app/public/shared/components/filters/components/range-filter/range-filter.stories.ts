@@ -75,8 +75,10 @@ Default.args = {
 
 export const Limitless = Template.bind({});
 Limitless.args = {
-  ...Default.args,
-  limitless: true,
+  config: {
+    ...Default.args.config,
+    limitless: true,
+  },
 };
 
 export const Steps = Template.bind({});
