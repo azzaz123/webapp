@@ -11,6 +11,7 @@ export enum CAR_FILTERS {
   GEARBOX = 'cars-gearbox',
   WARRANTY = 'cars-warranty',
   SEATS = 'cars-seats',
+  DOORS = 'cars-doors',
   HORSE_POWER = 'cars-horse-power',
   PROFESSIONAL = 'cars-professional',
   POSTED_BEFORE = COMMON_FILTERS.POSTED_BEFORE,
