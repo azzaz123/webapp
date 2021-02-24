@@ -24,7 +24,7 @@ const Template: Story<SubscriptionBenefitComponent> = (args: SubscriptionBenefit
 
 export const Default = Template.bind({});
 Default.args = {
-  img: 'http://localhost:6006/images/empty-image.svg',
+  img: '/assets/images/subscriptions/empty-image.svg',
   title: 'Title',
   description: 'Description test',
   leftAligment: true,
@@ -32,7 +32,7 @@ Default.args = {
 
 export const Inverse = Template.bind({});
 Inverse.args = {
-  img: 'http://localhost:6006/images/empty-image.svg',
+  img: '/assets/images/subscriptions/empty-image.svg',
   title: 'Title',
   description: 'Description test',
   leftAligment: false,
