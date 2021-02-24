@@ -5,6 +5,7 @@ import { AccessTokenService } from '@core/http/access-token.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { Item } from '@core/item/item';
 import { ReleaseVersionService } from '@core/release-version/release-version.service';
+import { MockReleaseVersion } from '@core/release-version/release-version.service.spec';
 import { environment } from '@environments/environment';
 import { APP_VERSION } from '@environments/version';
 import { PhoneMethod } from '@features/chat/core/model';
@@ -86,9 +87,9 @@ describe('Service: User', () => {
         {
           provide: ReleaseVersionService,
           useValue: {
-            releaseVersion: APP_VERSION.split('.')
-              .map((subVersion: string) => ('00' + subVersion).slice(-3))
-              .reduce((a: string, b: string) => parseInt(a) + b),
+            getReleaseVersion() {
+              return MockReleaseVersion;
+            },
           },
         },
         {
@@ -324,7 +325,6 @@ describe('Service: User', () => {
 
     it('should call logout endpoint', () => {
       const expectedUrl = `${environment.baseUrl}${LOGOUT_ENDPOINT}`;
-      const appVersion = releaseVersionService.releaseVersion;
       const deviceAccessToken = accessTokenService.deviceAccessToken;
 
       service.logout().subscribe();
@@ -335,7 +335,7 @@ describe('Service: User', () => {
       expect(req.request.method).toEqual('POST');
       expect(req.request.headers.get('DeviceAccessToken')).toEqual(deviceAccessToken);
       expect(req.request.headers.get('DeviceOS')).toEqual('0');
-      expect(req.request.headers.get('AppBuild')).toEqual(appVersion);
+      expect(req.request.headers.get('AppBuild')).toEqual(MockReleaseVersion);
     });
 
     it('should call deleteAccessToken and call event passing direct url and call flush permissions', () => {
