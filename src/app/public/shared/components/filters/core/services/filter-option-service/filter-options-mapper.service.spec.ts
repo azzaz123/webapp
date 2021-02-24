@@ -15,6 +15,7 @@ import {
   objectType,
   sizeNGender,
 } from './filter-option.fixtures';
+import { SIZE_GENDER } from '../../enums/size-gender.enum';
 
 describe('FilterOptionsMapperService', () => {
   let service: FilterOptionsMapperService;
@@ -75,8 +76,8 @@ describe('FilterOptionsMapperService', () => {
 
   describe('when formatting size and gender', () => {
     it('should return FilterOption format', () => {
-      const formattedMaleOptions = service.formatSizeNGender(sizeNGender, 'male');
-      const formattedFemaleOptions = service.formatSizeNGender(sizeNGender, 'female');
+      const formattedMaleOptions = service.formatSizeNGender(sizeNGender, SIZE_GENDER.MALE);
+      const formattedFemaleOptions = service.formatSizeNGender(sizeNGender, SIZE_GENDER.FEMALE);
 
       expect(formattedMaleOptions).toEqual([formattedMaleSize]);
       expect(formattedFemaleOptions).toEqual([formattedFemaleSize]);
