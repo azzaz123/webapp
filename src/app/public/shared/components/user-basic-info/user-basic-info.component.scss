@@ -29,7 +29,7 @@ $reviews-width: 20px;
   .UserBasicInfo__container {
     min-width: 10px;
 
-    @media (max-width: 415px) {
+    @media (max-width: 400px) {
       &__reviews {
         display: none;
       }

@@ -3,7 +3,8 @@
     [ngClass]="{'ShowOwnButtons': isOwner}">
     <tsl-user-basic-info
         [ngClass]="{'OtherUserBasicInfo': showOptions && !isOwner, 'w-100': !showOptions && !isOwner, 'OwnUserBasicInfo': showOptions && isOwner, 'OwnUserBasicInfoBig': !showOptions && isOwner}"
-        [userStats]="userStats" [userInfo]="user" [styleSize]="USER_INFO_SIZE.SMALL" [className]="'ItemDetailHeader'">
+        [userStats]="userStats" [userInfo]="user" [styleSize]="USER_INFO_SIZE.SMALL"
+        [className]="showOptions ? 'ItemDetailHeader' : ''">
     </tsl-user-basic-info>
     <div *ngIf="isOwner; else basicOperations" class="d-flex">
         <div class="FeatureButton mr-4" *ngIf="showOptions">
