@@ -2,7 +2,7 @@
     class="ItemDetailHeader py-3 d-flex justify-content-between align-items-center"
     [ngClass]="{'ShowOwnButtons': isOwner}">
     <tsl-user-basic-info
-        [ngClass]="{'OtherUserBasicInfo': !isOwner, 'OwnUserBasicInfo': showOptions && isOwner, 'OwnUserBasicInfoBig': !showOptions && isOwner}"
+        [ngClass]="{'OtherUserBasicInfo': showOptions && !isOwner, 'w-100': !showOptions && !isOwner, 'OwnUserBasicInfo': showOptions && isOwner, 'OwnUserBasicInfoBig': !showOptions && isOwner}"
         [userStats]="userStats" [userInfo]="user" [styleSize]="USER_INFO_SIZE.SMALL" [className]="'ItemDetailHeader'">
     </tsl-user-basic-info>
     <div *ngIf="isOwner; else basicOperations" class="d-flex">
