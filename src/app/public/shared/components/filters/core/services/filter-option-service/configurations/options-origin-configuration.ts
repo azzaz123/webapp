@@ -6,7 +6,6 @@ import { FASHION_FILTERS } from '../../../enums/filter-ids/fashion-n-accessories
 
 export const OPTIONS_ORIGIN_CONFIGURATION: Record<string, OptionsApiOrigin | 'hardcoded'> = {
   [COMMON_FILTERS.POSTED_BEFORE]: 'hardcoded',
-  [COMMON_FILTERS.LOCATION]: 'hardcoded',
   [COMMON_FILTERS.CONDITION]: {
     apiMethod: 'getConditionsByCategoryId',
     mapperMethod: 'formatConditionResponse',
