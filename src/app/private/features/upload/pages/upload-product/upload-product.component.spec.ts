@@ -32,14 +32,13 @@ import { User } from '@core/user/user';
 import { MOCK_USER, USER_ID } from '@fixtures/user.fixtures.spec';
 import { ITEM_CATEGORY_ID, ITEM_DELIVERY_INFO, MOCK_ITEM, MOCK_ITEM_FASHION } from '@fixtures/item.fixtures.spec';
 import { UserLocation } from '@core/user/user-response.interface';
-import { environment } from '@environments/environment';
 import { GeneralSuggestionsService } from '../../core/services/general-suggestions/general-suggestions.service';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { UserService } from '@core/user/user.service';
 import { ItemContent } from '@core/item/item-response.interface';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { DeviceDetectorServiceMock } from '../../../../../tests';
+import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 
 import {
   ANALYTIC_EVENT_TYPES,
