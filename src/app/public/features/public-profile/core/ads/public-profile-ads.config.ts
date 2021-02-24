@@ -1,12 +1,13 @@
 import {
-  AD_DESKTOP_SCREEN_SIZE,
   AD_DESKTOP_MAPPING,
+  AD_DESKTOP_SCREEN_SIZE,
+  AD_MOBILE_MAPPING,
+  AD_MOBILE_SCREEN_SIZE,
   AD_TABLET_SCREEN_SIZE,
   AD_TABLE_MAPPING,
-  AD_MOBILE_SCREEN_SIZE,
-  AD_MOBILE_MAPPING,
 } from '@core/ads/constants/ad-slots';
 import { AdSlot } from '@core/ads/models';
+import { DeviceType } from '@core/device/deviceType.enum';
 
 export const PUBLIC_PROFILE_AD: AdSlot = {
   name: '130868815/web/user2',
@@ -28,5 +29,5 @@ export const PUBLIC_PROFILE_AD: AdSlot = {
   },
   networkId: 6866,
   type: 'user',
-  device: 'mobile',
+  device: [DeviceType.MOBILE],
 };

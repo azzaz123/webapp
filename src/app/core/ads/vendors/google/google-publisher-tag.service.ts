@@ -1,10 +1,10 @@
-import { CookieService } from 'ngx-cookie';
-
 import { Inject, Injectable } from '@angular/core';
 import { AdsKeywordsService } from '@core/ads/services/ads-keywords/ads-keywords.service';
-
-import { AdKeyWords, AdSlot, AdSlotId } from '../../models';
+import { DeviceService } from '@core/device/device.service';
+import { DeviceType } from '@core/device/deviceType.enum';
 import { WINDOW_TOKEN } from '@core/window/window.token';
+import { CookieService } from 'ngx-cookie';
+import { AdKeyWords, AdSlot, AdSlotId } from '../../models';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +17,8 @@ export class GooglePublisherTagService {
   constructor(
     @Inject(WINDOW_TOKEN) private window: Window,
     private cookieService: CookieService,
-    private adsKeywordsService: AdsKeywordsService
+    private adsKeywordsService: AdsKeywordsService,
+    private deviceService: DeviceService
   ) {}
 
   public isLibraryRefDefined(): boolean {
@@ -78,25 +79,28 @@ export class GooglePublisherTagService {
   }
 
   private definedSlots(slots: AdSlot[]): void {
-    slots.forEach((slot) => {
-      let mappingResponsive: googletag.SizeMappingArray;
-      if (slot.sizeMapping) {
-        mappingResponsive = this.googletag
-          .sizeMapping()
-          .addSize(slot.sizeMapping.desktop.screenSize, slot.sizeMapping.desktop.mapping)
-          .addSize(slot.sizeMapping.tablet.screenSize, slot.sizeMapping.tablet.mapping)
-          .addSize(slot.sizeMapping.mobile.screenSize, slot.sizeMapping.mobile.mapping)
-          .build();
-      }
-      const defineSlot = this.googletag.defineSlot(slot.name, slot.sizes, slot.id);
+    const deviceType: DeviceType = this.deviceService.getDeviceType();
+    slots
+      .filter((slot) => slot.device.includes(deviceType))
+      .forEach((slot) => {
+        let mappingResponsive: googletag.SizeMappingArray;
+        if (slot.sizeMapping) {
+          mappingResponsive = this.googletag
+            .sizeMapping()
+            .addSize(slot.sizeMapping.desktop.screenSize, slot.sizeMapping.desktop.mapping)
+            .addSize(slot.sizeMapping.tablet.screenSize, slot.sizeMapping.tablet.mapping)
+            .addSize(slot.sizeMapping.mobile.screenSize, slot.sizeMapping.mobile.mapping)
+            .build();
+        }
+        const defineSlot = this.googletag.defineSlot(slot.name, slot.sizes, slot.id);
 
-      if (defineSlot) {
-        defineSlot
-          .defineSizeMapping(slot.sizeMapping && mappingResponsive)
-          .setTargeting('ad_group', 'ad_opt')
-          .setTargeting('ad_h', new Date().getUTCHours().toString())
-          .addService(this.googletag.pubads());
-      }
-    });
+        if (defineSlot) {
+          defineSlot
+            .defineSizeMapping(slot.sizeMapping && mappingResponsive)
+            .setTargeting('ad_group', 'ad_opt')
+            .setTargeting('ad_h', new Date().getUTCHours().toString())
+            .addService(this.googletag.pubads());
+        }
+      });
   }
 }

@@ -1,3 +1,4 @@
+import { DeviceType } from '@core/device/deviceType.enum';
 import { AdSlot } from '../models/ad-slot.interface';
 
 type MobileSize = 'small' | 'medium' | 'big';
@@ -67,6 +68,7 @@ export const CHAT_AD_SLOTS: AdSlot[] = [
       [336, 280],
     ],
     networkId: AD_SLOT_NETWORK_ID,
+    device: [DeviceType.TABLET, DeviceType.DESKTOP],
   },
 ];
 

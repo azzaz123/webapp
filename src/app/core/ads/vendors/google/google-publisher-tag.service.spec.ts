@@ -1,20 +1,33 @@
 import { TestBed } from '@angular/core/testing';
 import { AdSlot } from '@core/ads/models';
 import { AdsKeywordsService } from '@core/ads/services/ads-keywords/ads-keywords.service';
+import { DeviceService } from '@core/device/device.service';
+import { DeviceType } from '@core/device/deviceType.enum';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { MockAdsKeywords, MockAdsKeywordsService, MockAdSlots } from '@fixtures/ads.fixtures.spec';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
+import { random } from 'faker';
 import { CookieService } from 'ngx-cookie';
-import { MOCK_GOOGLE_DEFINE_SLOT, MOCK_GOOGLE_PUBABDS, MOCK_GOOGLE_TAG } from './../../../../../configs/jest/global-mocks.fixtures.spec';
+import {
+  MOCK_GOOGLE_DEFINE_SLOT,
+  MOCK_GOOGLE_PUBABDS,
+  MOCK_GOOGLE_SIZE_MAPPING,
+  MOCK_GOOGLE_TAG,
+} from './../../../../../configs/jest/global-mocks.fixtures.spec';
 import { GooglePublisherTagService } from './google-publisher-tag.service';
 
 describe('GooglePublisherTagService', () => {
   let service: GooglePublisherTagService;
   let windowMock;
+  let deviceServiceMock;
 
   beforeEach(() => {
     windowMock = {
       googletag: MOCK_GOOGLE_TAG,
+    };
+
+    deviceServiceMock = {
+      getDeviceType: () => random.arrayElement([DeviceType.DESKTOP, DeviceType.MOBILE, DeviceType.TABLET]),
     };
 
     TestBed.configureTestingModule({
@@ -32,6 +45,10 @@ describe('GooglePublisherTagService', () => {
           provide: AdsKeywordsService,
           useValue: MockAdsKeywordsService,
         },
+        {
+          provide: DeviceService,
+          useValue: deviceServiceMock,
+        },
       ],
     });
     service = TestBed.inject(GooglePublisherTagService);
@@ -41,7 +58,7 @@ describe('GooglePublisherTagService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('when init library', () => {
+  describe('when set Slots', () => {
     it('should add the configuration of google', () => {
       spyOn(windowMock.googletag.cmd, 'push').and.callThrough();
 
@@ -50,14 +67,38 @@ describe('GooglePublisherTagService', () => {
       expect(windowMock.googletag.cmd.push).toHaveBeenCalledWith(jasmine.any(Function));
     });
 
+    it('should set size mapping if the slot has', () => {
+      spyOn(deviceServiceMock, 'getDeviceType').and.returnValue(DeviceType.DESKTOP);
+      spyOn(MOCK_GOOGLE_TAG, 'sizeMapping').and.callThrough();
+      spyOn(MOCK_GOOGLE_SIZE_MAPPING, 'addSize').and.callThrough();
+      spyOn(MOCK_GOOGLE_SIZE_MAPPING, 'build');
+
+      service.setSlots(MockAdSlots);
+
+      MockAdSlots.forEach((slot) => {
+        expect(MOCK_GOOGLE_TAG.sizeMapping).toHaveBeenCalled();
+        expect(MOCK_GOOGLE_SIZE_MAPPING.addSize).toHaveBeenCalledWith(
+          slot.sizeMapping.desktop.screenSize,
+          slot.sizeMapping.desktop.mapping
+        );
+        expect(MOCK_GOOGLE_SIZE_MAPPING.addSize).toHaveBeenCalledWith(slot.sizeMapping.tablet.screenSize, slot.sizeMapping.tablet.mapping);
+        expect(MOCK_GOOGLE_SIZE_MAPPING.addSize).toHaveBeenCalledWith(slot.sizeMapping.mobile.screenSize, slot.sizeMapping.mobile.mapping);
+        expect(MOCK_GOOGLE_SIZE_MAPPING.build).toHaveBeenCalled();
+      });
+    });
+
     it('should define ad slots', () => {
       spyOn(windowMock.googletag, 'defineSlot').and.callThrough();
+      spyOn(deviceServiceMock, 'getDeviceType').and.returnValue(DeviceType.DESKTOP);
       spyOn(MOCK_GOOGLE_DEFINE_SLOT, 'setTargeting').and.callThrough();
       spyOn(MOCK_GOOGLE_DEFINE_SLOT, 'addService').and.callThrough();
+      spyOn(MOCK_GOOGLE_DEFINE_SLOT, 'defineSizeMapping').and.callThrough();
+
       service.setSlots(MockAdSlots);
 
       MockAdSlots.forEach((slot: AdSlot) => {
         expect(windowMock.googletag.defineSlot).toHaveBeenCalledWith(slot.name, slot.sizes, slot.id);
+        expect(MOCK_GOOGLE_DEFINE_SLOT.defineSizeMapping).toHaveBeenCalledTimes(1);
         expect(MOCK_GOOGLE_DEFINE_SLOT.setTargeting).toHaveBeenCalledWith('ad_group', 'ad_opt');
         expect(MOCK_GOOGLE_DEFINE_SLOT.setTargeting).toHaveBeenCalledWith('ad_h', jasmine.any(String));
         expect(MOCK_GOOGLE_DEFINE_SLOT.addService).toHaveBeenCalled();
@@ -66,6 +107,7 @@ describe('GooglePublisherTagService', () => {
 
     it('should set pubads', () => {
       const publisherId = 'publisherId';
+      spyOn(deviceServiceMock, 'getDeviceType').and.returnValue(DeviceType.DESKTOP);
       spyOn(MOCK_GOOGLE_PUBABDS, 'enableSingleRequest').and.callThrough();
       spyOn(MOCK_GOOGLE_PUBABDS, 'collapseEmptyDivs').and.callThrough();
       spyOn(MOCK_GOOGLE_PUBABDS, 'disableInitialLoad').and.callThrough();
