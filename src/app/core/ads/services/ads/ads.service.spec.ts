@@ -122,7 +122,21 @@ describe('AdsService', () => {
   });
 
   describe('when displaying an ad by id', () => {
-    it('should ask Google to display ad', () => {
+    it('should wait to library ready to display ad', () => {
+      const CHAT_SLOT_ID = CHAT_AD_SLOTS[0].id;
+      spyOn(MockGooglePublisherTagService, 'displayAdBySlotId');
+
+      service.displayAdBySlotId(CHAT_SLOT_ID);
+
+      expect(MockGooglePublisherTagService.displayAdBySlotId).toHaveBeenCalledTimes(0);
+
+      service.init();
+
+      expect(MockGooglePublisherTagService.displayAdBySlotId).toHaveBeenLastCalledWith(CHAT_SLOT_ID);
+    });
+
+    it('should ask Google to display ad if is lib ready', () => {
+      service.init();
       const CHAT_SLOT_ID = CHAT_AD_SLOTS[0].id;
       spyOn(MockGooglePublisherTagService, 'displayAdBySlotId');
 

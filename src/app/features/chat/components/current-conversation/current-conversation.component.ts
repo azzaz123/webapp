@@ -1,4 +1,3 @@
-import { AdsService } from '@core/ads/services';
 import {
   AfterViewChecked,
   Component,
@@ -11,7 +10,8 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { AD_SLOTS, CHAT_AD_SLOTS } from '@core/ads/constants';
+import { CHAT_AD_SLOTS } from '@core/ads/constants';
+import { AdsService } from '@core/ads/services';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { RealTimeService } from '@core/message/real-time.service';
@@ -89,7 +89,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   }
 
   ngOnInit() {
-    this.adsService.setSlots(AD_SLOTS);
+    this.adsService.setSlots(CHAT_AD_SLOTS);
     this.isEndOfConversation = true;
     this.newMessageSubscription = this.eventService.subscribe(EventService.MESSAGE_ADDED, (message: InboxMessage) => {
       this.isConversationChanged = true;
