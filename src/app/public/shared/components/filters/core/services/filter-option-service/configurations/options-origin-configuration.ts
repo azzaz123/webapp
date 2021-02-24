@@ -5,7 +5,7 @@ import { REAL_ESTATE_CONFIGURATION_ID } from '@public/shared/components/filters/
 import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
 
 export const OPTIONS_ORIGIN_CONFIGURATION: Record<string, OptionsApiOrigin | 'hardcoded'> = {
-  [COMMON_CONFIGURATION_ID.POSTED_BEFORE]: 'hardcoded',
+  [COMMON_CONFIGURATION_ID.POSTED_AGO]: 'hardcoded',
   [COMMON_CONFIGURATION_ID.CONDITION]: {
     apiMethod: 'getConditionsByCategoryId',
     mapperMethod: 'formatConditionResponse',
