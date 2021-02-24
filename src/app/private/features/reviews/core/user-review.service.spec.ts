@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { UserReviewService, USER_REVIEWS_API_URL } from './user-review.service';
 import { ReviewsData } from './review-response.interface';
-import { REVIEWS_RESPONSE, MOCK_REVIEWS } from '../../../../tests/review.fixtures.spec';
+import { REVIEWS_RESPONSE, MOCK_REVIEWS } from '../../../../../tests/review.fixtures.spec';
 import { TestRequest, HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { environment } from 'environments/environment';
 

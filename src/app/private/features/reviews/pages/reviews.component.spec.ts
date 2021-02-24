@@ -2,9 +2,9 @@ import { fakeAsync, ComponentFixture, TestBed, waitForAsync } from '@angular/cor
 import { ReviewsComponent } from './reviews.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { of } from 'rxjs';
-import { MOCK_USER, USER_INFO_RESPONSE, USERS_STATS, MOCK_USER_STATS } from '../../../../tests/user.fixtures.spec';
+import { MOCK_USER, USER_INFO_RESPONSE, USERS_STATS, MOCK_USER_STATS } from '../../../../../tests/user.fixtures.spec';
 import { UserService } from 'app/core/user/user.service';
-import { MOCK_REVIEWS } from '../../../../tests/review.fixtures.spec';
+import { MOCK_REVIEWS } from '../../../../../tests/review.fixtures.spec';
 import { UserReviewService } from '../core/user-review.service';
 
 describe('ReviewsComponent', () => {
