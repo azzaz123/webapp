@@ -21,7 +21,7 @@ import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmat
 import { SoldModalComponent } from '@shared/modals/sold-modal/sold-modal.component';
 import { CookieService } from 'ngx-cookie';
 import { of } from 'rxjs';
-import { ItemDetailService } from '../../core/services/item-detail.service';
+import { ItemDetailService } from '../../core/services/item-detail/item-detail.service';
 
 import { ItemDetailHeaderComponent } from './item-detail-header.component';
 
