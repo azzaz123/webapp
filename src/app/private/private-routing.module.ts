@@ -34,7 +34,7 @@ const routes: Routes = [
               },
               {
                 path: 'upload',
-                loadChildren: () => import('@features/upload/upload.module').then((m) => m.UploadModule),
+                loadChildren: () => import('@private/features/upload/upload.module').then((m) => m.UploadModule),
                 canLoad: [NgxPermissionsGuard],
                 data: {
                   isMyZone: true,
@@ -47,7 +47,7 @@ const routes: Routes = [
               },
               {
                 path: 'edit',
-                loadChildren: () => import('@features/upload/upload.module').then((m) => m.UploadModule),
+                loadChildren: () => import('@private/features/upload/upload.module').then((m) => m.UploadModule),
               },
             ],
           },
@@ -89,7 +89,7 @@ const routes: Routes = [
           },
           {
             path: 'upload',
-            loadChildren: () => import('@features/upload/upload.module').then((m) => m.UploadModule),
+            loadChildren: () => import('@private/features/upload/upload.module').then((m) => m.UploadModule),
             canLoad: [NgxPermissionsGuard],
             data: {
               isMyZone: true,
@@ -102,7 +102,7 @@ const routes: Routes = [
           },
           {
             path: 'edit',
-            loadChildren: () => import('@features/upload/upload.module').then((m) => m.UploadModule),
+            loadChildren: () => import('@private/features/upload/upload.module').then((m) => m.UploadModule),
           },
         ],
       },
