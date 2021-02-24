@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
-import { forkJoin, Observable, ReplaySubject, Subject, Subscriber } from 'rxjs';
+import { forkJoin, Observable, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
@@ -17,7 +17,9 @@ export class LoadExternalLibsService {
   public loadScriptByText(name: string, text: string): Observable<void> {
     if (!this.externalLibsMap.has(name)) {
       const script: HTMLScriptElement = this.renderText(text);
-      const subject: ReplaySubject<void> = this.buildSubject(script);
+      const subject: ReplaySubject<void> = new ReplaySubject<void>();
+      subject.next();
+      subject.complete();
       this.externalLibsMap.set(name, subject);
     }
     return this.externalLibsMap.get(name).asObservable();

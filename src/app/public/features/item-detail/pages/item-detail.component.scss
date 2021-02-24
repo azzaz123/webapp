@@ -21,10 +21,6 @@ $item-detail-carousel-height: 477px;
     background-color: $white;
     border-radius: $border-radius;
     border: solid 1px $blue-grey-5;
-
-    &__header {
-      border-bottom: 1px solid $blue-grey-5;
-    }
   }
 
   &__price {
@@ -53,6 +49,9 @@ $item-detail-carousel-height: 477px;
 
   &__carousel {
     height: $item-detail-carousel-height;
+    &--active {
+      cursor: pointer;
+    }
   }
 
   &__stats {
@@ -89,6 +88,10 @@ $item-detail-carousel-height: 477px;
     border: solid 1px $blue-grey-5;
     background: url(/assets/icons/user-marker-sad.svg) no-repeat center;
   }
+}
+
+.borderBottom {
+  border-bottom: 1px solid $blue-grey-5;
 }
 
 tsl-side-sky {

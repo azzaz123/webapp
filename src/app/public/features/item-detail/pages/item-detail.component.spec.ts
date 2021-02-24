@@ -1,5 +1,5 @@
 import { DecimalPipe } from '@angular/common';
-import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement, Renderer2 } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -27,13 +27,22 @@ import { MapItemService } from '@public/features/public-profile/pages/user-publi
 import { of, throwError } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { ItemDetailService } from '../core/services/item-detail.service';
+import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
 import { ItemDetailComponent } from './item-detail.component';
 import {
   RECOMMENDED_ITEMS_MOCK,
   EMPTY_RECOMMENDED_ITEMS_MOCK,
 } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
 import { APP_PATHS } from 'app/app-routing-constants';
+import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
+import { ItemSpecificationsComponent } from '../components/item-specifications/item-specifications.component';
+import { ItemSpecificationsModule } from '../components/item-specifications/item-specifications.module';
+import { MapSpecificationsService } from '../core/services/map-specifications/map-specifications.service';
+import { MOCK_COUNTER_SPECIFICATIONS_CAR, MOCK_COUNTER_SPECIFICATIONS_REAL_ESTATE } from '@fixtures/map-specifications.fixtures.spec';
+import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
+import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
+import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
+import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 
 describe('ItemDetailComponent', () => {
   const topSkyTag = 'tsl-top-sky';
@@ -49,7 +58,8 @@ describe('ItemDetailComponent', () => {
   const locationClass = '.ItemDetail__location';
   const itemContentClass = '.ItemDetail__content';
   const itemId = '123';
-  const itemDetail = {
+
+  const MOCK_ITEM_DETAIL = {
     item: MOCK_CAR,
     user: MOCK_FULL_USER_FEATURED,
   };
@@ -59,6 +69,7 @@ describe('ItemDetailComponent', () => {
   let itemDetailService: ItemDetailService;
   let deviceService: DeviceService;
   let decimalPipe: DecimalPipe;
+  let itemDetailImagesModal: ItemFullScreenCarouselComponent;
   let router: Router;
   let de: DebugElement;
   let el: HTMLElement;
@@ -66,7 +77,7 @@ describe('ItemDetailComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ItemDetailComponent, CustomCurrencyPipe],
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, ItemSpecificationsModule],
       providers: [
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         {
@@ -98,15 +109,31 @@ describe('ItemDetailComponent', () => {
           provide: ItemDetailService,
           useValue: {
             getItem: () => {
-              return of(itemDetail);
+              return of(MOCK_ITEM_DETAIL);
             },
             getRecommendedItems: () => {
               return of(RECOMMENDED_ITEMS_MOCK);
             },
           },
         },
+        {
+          provide: MapSpecificationsService,
+          useValue: {
+            mapCarSpecifications: () => {
+              return MOCK_COUNTER_SPECIFICATIONS_CAR;
+            },
+            mapRealestateSpecifications: () => {
+              return MOCK_COUNTER_SPECIFICATIONS_REAL_ESTATE;
+            },
+          },
+        },
         MapItemService,
         SocialMetaTagService,
+        TypeCheckService,
+        ItemFullScreenCarouselComponent,
+        CheckSessionService,
+        ItemCardService,
+        Renderer2,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -122,6 +149,7 @@ describe('ItemDetailComponent', () => {
     el = de.nativeElement;
     router = TestBed.inject(Router);
     itemDetailService = TestBed.inject(ItemDetailService);
+    itemDetailImagesModal = TestBed.inject(ItemFullScreenCarouselComponent);
     fixture.detectChanges();
   });
 
@@ -250,7 +278,7 @@ describe('ItemDetailComponent', () => {
         component.ngOnInit();
         fixture.detectChanges();
 
-        expect(component.itemDetail).toBe(itemDetail);
+        expect(component.itemDetail).toBe(MOCK_ITEM_DETAIL);
       });
 
       it('should set social share data correctly', () => {
@@ -286,7 +314,7 @@ describe('ItemDetailComponent', () => {
 
   describe('when we have an item...', () => {
     beforeEach(() => {
-      component.itemDetail = itemDetail;
+      component.itemDetail = MOCK_ITEM_DETAIL;
     });
 
     it('should print their title', () => {
@@ -383,6 +411,78 @@ describe('ItemDetailComponent', () => {
       });
       it('should NOT show the recommended items', () => {
         expect(fixture.debugElement.query(By.css(recommendedItemsTag))).toBeFalsy();
+      });
+    });
+
+    describe('when we click on the carousel image...', () => {
+      beforeEach(() => {
+        component.itemDetailImagesModal = itemDetailImagesModal;
+        spyOn(component.itemDetailImagesModal, 'show');
+
+        const itemImagesCarousel = fixture.debugElement.query(By.css('tsl-item-images-carousel'));
+        itemImagesCarousel.triggerEventHandler('imageClick', { index: 4 });
+
+        fixture.detectChanges();
+      });
+
+      it('should call to the modal show method', () => {
+        expect(component.itemDetailImagesModal.show).toHaveBeenCalled();
+      });
+
+      it('should set the images property', () => {
+        expect(component.itemDetailImagesModal.images).toBe(component.bigImages);
+      });
+
+      it('should set the item property', () => {
+        expect(component.itemDetailImagesModal.item).toBe(component.itemDetail.item);
+      });
+
+      it('should set the image index property', () => {
+        expect(component.itemDetailImagesModal.imageIndex).toBe(4);
+      });
+    });
+  });
+
+  describe('when we handle the item specifications...', () => {
+    describe('when the item is a car ...', () => {
+      beforeEach(() => {
+        component.itemDetail.item = MOCK_CAR;
+
+        component.itemSpecifications = null;
+        component.ngOnInit();
+        fixture.detectChanges();
+      });
+
+      it('should show the item specifications...', () => {
+        expect(fixture.debugElement.query(By.directive(ItemSpecificationsComponent))).toBeTruthy();
+      });
+    });
+
+    describe('when the item is a real estate ...', () => {
+      beforeEach(() => {
+        component.itemDetail.item = MOCK_REALESTATE;
+
+        component.itemSpecifications = null;
+        component.ngOnInit();
+        fixture.detectChanges();
+      });
+
+      it('should show the item specifications...', () => {
+        expect(fixture.debugElement.query(By.directive(ItemSpecificationsComponent))).toBeTruthy();
+      });
+    });
+
+    describe('when the item is NOT a real estate or a car...', () => {
+      beforeEach(() => {
+        component.itemDetail.item = MOCK_ITEM_FASHION;
+
+        component.itemSpecifications = null;
+        component.ngOnInit();
+        fixture.detectChanges();
+      });
+
+      it('should show the item specifications...', () => {
+        expect(fixture.debugElement.query(By.directive(ItemSpecificationsComponent))).toBeFalsy();
       });
     });
   });

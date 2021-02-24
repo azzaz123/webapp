@@ -7,7 +7,7 @@ export enum CAR_ICON {
   SMALL = '/assets/icons/cars/little_car.svg',
   VAN = '/assets/icons/cars/van_car.svg',
   FXF = '/assets/icons/cars/offroad_car.svg',
-  OTHERS = '/assets/icons/cars/other.svg',
+  OTHERS = '/assets/icons/cars/others.svg',
   TWO_DOORS = '/assets/icons/cars/doors2_car.svg',
   THREE_DOORS = '/assets/icons/cars/doors3_car.svg',
   FOUR_DOORS = '/assets/icons/cars/doors4_car.svg',

@@ -1,11 +1,9 @@
-import { DidomiService } from 'app/core/didomi/didomi.service';
-import { BehaviorSubject, Observable, Subject, Subscription, combineLatest, merge } from 'rxjs';
-import { finalize, switchMap, tap } from 'rxjs/operators';
-
 import { Injectable } from '@angular/core';
-import { AD_SLOTS } from '@core/ads/constants';
 import { AdKeyWords, AdSlotId } from '@core/ads/models';
-
+import { AdSlot } from '@core/ads/models/ad-slot.interface';
+import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
+import { BehaviorSubject, combineLatest, merge, Observable, Subject, Subscription } from 'rxjs';
+import { filter, finalize, map, switchMap, tap } from 'rxjs/operators';
 import { AmazonPublisherService, CriteoService, GooglePublisherTagService } from '../../vendors';
 import { LoadAdsService } from '../load-ads/load-ads.service';
 
@@ -14,11 +12,12 @@ import { LoadAdsService } from '../load-ads/load-ads.service';
 })
 export class AdsService {
   public adKeyWords: AdKeyWords = {} as AdKeyWords;
-  public adsRefreshSubscription: Subscription;
 
-  private refreshEventSubject: Subject<void> = new Subject<void>();
+  private readonly refreshEventSubject: Subject<void> = new Subject<void>();
+  private readonly setSlotsSubject: BehaviorSubject<AdSlot[]> = new BehaviorSubject<AdSlot[]>([]);
   private readonly _adsReady$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  get adsReady$(): Observable<boolean> {
+
+  private get adsReady$(): Observable<boolean> {
     return this._adsReady$.asObservable();
   }
 
@@ -29,6 +28,7 @@ export class AdsService {
     private criteoService: CriteoService,
     private amazonPublisherService: AmazonPublisherService
   ) {
+    this.listenToSlots();
     this.listenerToRefresh();
   }
 
@@ -36,12 +36,13 @@ export class AdsService {
     if (!this._adsReady$.getValue()) {
       this.loadAdsService
         .loadAds()
-        .pipe(
-          tap(() => this.loadAdsService.setSlots(AD_SLOTS)),
-          finalize(() => this._adsReady$.next(true))
-        )
+        .pipe(finalize(() => this._adsReady$.next(true)))
         .subscribe();
     }
+  }
+
+  public setSlots(adSlots: AdSlot[]): void {
+    this.setSlotsSubject.next(adSlots);
   }
 
   public refresh(): void {
@@ -52,18 +53,33 @@ export class AdsService {
     this.googlePublisherTagService.displayAdBySlotId(slotId);
   }
 
-  private listenerToRefresh(): void {
-    combineLatest([this.didomiService.userAllowedSegmentationInAds$(), this.refreshEventSubject.asObservable()])
+  private listenToSlots(): void {
+    combineLatest([this.adsReady$, this.setSlotsSubject.asObservable()])
       .pipe(
-        tap(([allowSegmentation]: [boolean, void]) => this.googlePublisherTagService.setTargetingByAdsKeywords(allowSegmentation)),
-        switchMap(([allowSegmentation]: [boolean, void]) => this.fetchHeaderBids(allowSegmentation))
+        filter(([adsReady, adSlots]: [boolean, AdSlot[]]) => adsReady && adSlots.length > 0),
+        map(([_, adSlots]: [boolean, AdSlot[]]) => adSlots),
+        tap((adSlots: AdSlot[]) => this.googlePublisherTagService.setSlots(adSlots)),
+        tap(() => this.refresh())
       )
       .subscribe();
   }
 
-  private fetchHeaderBids(allowSegmentation: boolean): Observable<void> {
-    return merge(this.amazonPublisherService.requestBid(AD_SLOTS), this.criteoService.requestBid()).pipe(
-      finalize(() => this.googlePublisherTagService.setAdsSegmentation(allowSegmentation))
-    );
+  private listenerToRefresh(): void {
+    combineLatest([this.adsReady$, this.didomiService.allowSegmentation$(), this.refreshEventSubject.asObservable()])
+      .pipe(
+        filter(([adsReady]: [boolean, boolean, void]) => adsReady),
+        map(([_, allowSegmentation]: [boolean, boolean, void]) => allowSegmentation),
+        tap((allowSegmentation: boolean) => {
+          this.googlePublisherTagService.setAdsSegmentation(allowSegmentation);
+          this.googlePublisherTagService.setTargetingByAdsKeywords(allowSegmentation);
+          this.googlePublisherTagService.refreshAds();
+        }),
+        switchMap(() => this.fetchHeaderBids())
+      )
+      .subscribe();
+  }
+
+  private fetchHeaderBids(): Observable<void> {
+    return merge(this.amazonPublisherService.requestBid(this.setSlotsSubject.getValue()), this.criteoService.requestBid());
   }
 }

@@ -1,0 +1,26 @@
+@import '~style/common';
+
+.Drawer {
+  &__content {
+    background-color: $white;
+    z-index: $zindex-modal;
+    width: 100%;
+    bottom: 0;
+    max-width: 500px;
+    overflow-y: auto;
+
+    @include media-breakpoint-down(md) {
+      top: 0 !important;
+      right: 0;
+      left: 0;
+      max-width: unset;
+    }
+  }
+
+  &__backdrop {
+    background-color: transparentize($blue-grey-1, 0.7);
+    z-index: $zindex-modal-backdrop;
+    width: 100%;
+    bottom: 0;
+  }
+}

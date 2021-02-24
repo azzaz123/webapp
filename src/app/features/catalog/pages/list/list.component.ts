@@ -9,6 +9,8 @@ import {
   ConfirmActivateProItem,
   SCREEN_IDS,
   ViewOwnSaleItems,
+  AnalyticsEvent,
+  ANALYTIC_EVENT_TYPES,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ErrorsService } from '@core/errors/errors.service';
@@ -328,6 +330,10 @@ export class ListComponent implements OnInit, OnDestroy {
     this.active = false;
   }
 
+  public logout() {
+    this.userService.logout().subscribe();
+  }
+
   public filterByStatus(status: string) {
     this.deselect();
 
@@ -558,10 +564,11 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   private trackActivateProItem(itemId: string): void {
-    const attributes: ConfirmActivateProItem = this.getTrackingAtributes(itemId);
+    const attributes: ClickActivateProItem = this.getTrackingAtributes(itemId);
 
-    const event: AnalyticsPageView<ClickActivateProItem> = {
+    const event: AnalyticsEvent<ClickActivateProItem> = {
       name: ANALYTICS_EVENT_NAMES.ClickActivateProItem,
+      eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes,
     };
 
@@ -795,8 +802,9 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public onCloseTryProSlot(): void {
-    const event: AnalyticsPageView<RemoveProSubscriptionBanner> = {
+    const event: AnalyticsEvent<RemoveProSubscriptionBanner> = {
       name: ANALYTICS_EVENT_NAMES.RemoveProSubscriptionBanner,
+      eventType: ANALYTIC_EVENT_TYPES.UserPreference,
       attributes: {
         screenId: SCREEN_IDS.MyCatalog,
         freeTrial: this.hasTrialAvailable,
@@ -814,8 +822,9 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public onClickTryProSlot(): void {
-    const event: AnalyticsPageView<ClickProSubscription> = {
+    const event: AnalyticsEvent<ClickProSubscription> = {
       name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
       attributes: {
         screenId: SCREEN_IDS.MyCatalog,
         freeTrial: this.hasTrialAvailable,

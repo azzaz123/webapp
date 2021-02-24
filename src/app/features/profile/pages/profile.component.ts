@@ -48,13 +48,13 @@ export class ProfileComponent implements OnInit {
 
   public logout($event: any) {
     $event.preventDefault();
-    this.userService.logout();
+    this.userService.logout().subscribe();
   }
 
   public trackClickSubscriptionTab(): void {
     const event: AnalyticsEvent<ClickProSubscription> = {
       name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
-      eventType: ANALYTIC_EVENT_TYPES.Other,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
       attributes: {
         screenId: SCREEN_IDS.MyProfile,
         freeTrial: this.hasOneTrialSubscription,

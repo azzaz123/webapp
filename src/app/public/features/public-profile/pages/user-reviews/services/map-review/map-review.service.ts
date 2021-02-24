@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { User } from '@core/user/user';
-import { Review } from '@features/reviews/core/review';
-import { ReviewItem } from '@features/reviews/core/review-item';
-import { ReviewResponse } from '@features/reviews/core/review-response.interface';
+import { Review } from '@private/features/reviews/core/review';
+import { ReviewItem } from '@private/features/reviews/core/review-item';
+import { ReviewResponse } from '@private/features/reviews/core/review-response.interface';
 
 @Injectable()
 export class MapReviewService {
