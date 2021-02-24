@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { QueryParams } from '../../interfaces/query-params';
-import { PaginationOptions } from '../../interfaces/pagination-options';
+import { QueryParams } from '../../interfaces/query-params.interface';
+import { PaginationOptions } from '../../interfaces/pagination-options.interface';
 import { FILTER_OPTIONS_API_ENDPOINTS } from './filter-options-api-endpoints';
 import { ConditionResponse } from './option-responses/condition.interface';
 import { ObjectType } from './option-responses/object-type.interface';
