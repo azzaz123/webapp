@@ -6,6 +6,7 @@ import { ObjectType } from './option-responses/object-type.interface';
 import { BrandModel } from './option-responses/brand-model.interface';
 import { SizeNGenderResponse } from '@public/shared/components/filters/core/services/filter-option-service/option-responses/fashion-size-n-gender.interface';
 import { FashionBrand } from '@public/shared/components/filters/core/services/filter-option-service/option-responses/fashion-brand.interface';
+import { SIZE_GENDER } from '@public/shared/components/filters/core/enums/size-gender.enum';
 
 @Injectable()
 export class FilterOptionsMapperService {
@@ -51,7 +52,7 @@ export class FilterOptionsMapperService {
     }));
   }
 
-  public formatSizeNGender(sizeNGender: SizeNGenderResponse, gender: 'male' | 'female'): FilterOption[] {
+  public formatSizeNGender(sizeNGender: SizeNGenderResponse, gender: SIZE_GENDER): FilterOption[] {
     return sizeNGender[gender].map((size) => ({
       value: size.id.toString(),
       label: size.text,
