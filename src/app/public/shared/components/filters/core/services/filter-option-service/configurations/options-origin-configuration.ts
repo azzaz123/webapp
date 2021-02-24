@@ -1,6 +1,6 @@
 import { OptionsApiOrigin } from './option-api-origin.interface';
-import { CAR_FILTERS } from '../../../enums/filter-ids/cars.enum';
-import { FASHION_FILTERS } from '../../../enums/filter-ids/fashion-n-accessories.enum';
+import { CAR_FILTER_ID } from '../../../enums/filter-ids/cars.enum';
+import { FASHION_FILTER_ID } from '../../../enums/filter-ids/fashion-n-accessories.enum';
 import { REAL_ESTATE_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/real-estate-configuration-ids.enum';
 import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
 
@@ -43,32 +43,32 @@ export const OPTIONS_ORIGIN_CONFIGURATION: Record<string, OptionsApiOrigin | 'ha
     paramsFromRelatedFilters: ['type'],
   },
 
-  [CAR_FILTERS.SEATS]: 'hardcoded',
-  [CAR_FILTERS.DOORS]: 'hardcoded',
-  [CAR_FILTERS.BRAND_N_MODEL]: {
+  [CAR_FILTER_ID.SEATS]: 'hardcoded',
+  [CAR_FILTER_ID.DOORS]: 'hardcoded',
+  [CAR_FILTER_ID.BRAND_N_MODEL]: {
     apiMethod: 'getCarBrandsAndModels',
     mapperMethod: 'formatCarsBrandModel',
   },
-  [CAR_FILTERS.BODY]: {
+  [CAR_FILTER_ID.BODY]: {
     apiMethod: 'getCarBodyTypeKeys',
     mapperMethod: 'formatIconOptions',
   },
-  [CAR_FILTERS.ENGINE]: {
+  [CAR_FILTER_ID.ENGINE]: {
     apiMethod: 'getCarEngineKeys',
     mapperMethod: 'formatIconOptions',
   },
-  [CAR_FILTERS.GEARBOX]: {
+  [CAR_FILTER_ID.GEARBOX]: {
     apiMethod: 'getCarGearboxKeys',
     mapperMethod: 'formatIconOptions',
   },
 
-  [FASHION_FILTERS.GENDER]: 'hardcoded',
-  [FASHION_FILTERS.SIZE]: {
+  [FASHION_FILTER_ID.GENDER]: 'hardcoded',
+  [FASHION_FILTER_ID.SIZE]: {
     apiMethod: 'getFashionSizeKeysByObjectId',
     mapperMethod: 'formatSizeNGender',
     paramsFromRelatedFilters: ['object_type_id'],
   },
-  [FASHION_FILTERS.BRAND]: {
+  [FASHION_FILTER_ID.BRAND]: {
     apiMethod: 'getFashionBrandsByObjectTypeId',
     mapperMethod: 'formatFashionBrand',
     paramsFromRelatedFilters: ['object_type_id'],

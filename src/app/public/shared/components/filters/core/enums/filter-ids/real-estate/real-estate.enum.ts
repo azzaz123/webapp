@@ -1,7 +1,7 @@
 import { REAL_ESTATE_CONFIGURATION_ID } from '../../configuration-ids/real-estate-configuration-ids.enum';
 import { COMMON_CONFIGURATION_ID } from '../../configuration-ids/common-configuration-ids.enum';
 
-export enum REAL_ESTATE_FILTERS {
+export enum REAL_ESTATE_FILTER_ID {
   OPERATION = REAL_ESTATE_CONFIGURATION_ID.OPERATION,
   TYPE = REAL_ESTATE_CONFIGURATION_ID.TYPE,
   PRICE = REAL_ESTATE_CONFIGURATION_ID.DEFAULT_PRICE,
