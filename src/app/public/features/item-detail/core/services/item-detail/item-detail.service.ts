@@ -10,7 +10,7 @@ import { RecommenderApiService } from '@public/core/services/api/recommender/rec
 import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
 import { forkJoin, Observable, of } from 'rxjs';
 import { concatMap, mergeMap } from 'rxjs/operators';
-import { ItemDetail } from '../../interfaces/item-detail.interface';
+import { ItemDetail } from '../../../interfaces/item-detail.interface';
 
 @Injectable()
 export class ItemDetailService {
