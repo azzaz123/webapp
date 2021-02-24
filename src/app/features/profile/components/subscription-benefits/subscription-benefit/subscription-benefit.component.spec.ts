@@ -32,7 +32,7 @@ describe('SubscriptionBenefitsComponent', () => {
     component.title = expected;
 
     fixture.detectChanges();
-    const titleHtml = fixture.debugElement.query(By.css('.subscription-benefit__title'));
+    const titleHtml = fixture.debugElement.query(By.css('.SubscriptionBenefit__title'));
 
     expect(titleHtml.nativeElement.textContent).toEqual(expected);
   });
@@ -42,7 +42,7 @@ describe('SubscriptionBenefitsComponent', () => {
     component.description = expected;
 
     fixture.detectChanges();
-    const descriptionHtml = fixture.debugElement.query(By.css('.subscription-benefit__subtitle'));
+    const descriptionHtml = fixture.debugElement.query(By.css('.SubscriptionBenefit__subtitle'));
 
     expect(descriptionHtml.nativeElement.textContent).toEqual(expected);
   });
