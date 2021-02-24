@@ -32,7 +32,7 @@ import { ButtonModule } from '@shared/button/button.module';
     >
       <!--   Extended content   -->
       <div style="border: 1px dashed black; padding: 5px;" *ngIf="storyContent">
-        <span (click)="change.emit([])">{{ storyContent }}</span>
+        <span (click)="valueChange.emit([])">{{ storyContent }}</span>
       </div>
       <!--   End extended content   -->
     </tsl-filter-template>
