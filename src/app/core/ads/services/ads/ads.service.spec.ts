@@ -1,18 +1,16 @@
-import { of } from 'rxjs';
-
-import { TestBed } from '@angular/core/testing';
-import { MockDidomiService } from '@core/didomi/didomi.mock';
-import { DidomiService } from '@core/didomi/didomi.service';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { MockDidomiService } from '@core/ads/vendors/didomi/didomi.mock';
+import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
 import {
   MockAmazonPublisherService,
   MockCriteoService,
   MockGooglePublisherTagService,
   MockLoadAdsService,
 } from '@fixtures/ads.fixtures.spec';
-
-import { AmazonPublisherService, CriteoService, GooglePublisherTagService } from './../../vendors';
+import { of } from 'rxjs';
 import { AD_SLOTS, CHAT_AD_SLOTS } from '../../constants';
 import { LoadAdsService } from '../load-ads/load-ads.service';
+import { AmazonPublisherService, CriteoService, GooglePublisherTagService } from './../../vendors';
 import { AdsService } from './ads.service';
 
 describe('AdsService', () => {
@@ -56,17 +54,35 @@ describe('AdsService', () => {
 
       expect(MockLoadAdsService.loadAds).toHaveBeenCalledTimes(1);
     });
+  });
+
+  describe('when set slots', () => {
+    beforeEach(() => {
+      service.init();
+    });
 
     it('should set ad slots', () => {
-      spyOn(MockLoadAdsService, 'setSlots').and.callThrough();
+      spyOn(MockGooglePublisherTagService, 'setSlots').and.callThrough();
 
-      service.init();
+      service.setSlots(AD_SLOTS);
 
-      expect(MockLoadAdsService.setSlots).toHaveBeenCalledWith(AD_SLOTS);
+      expect(MockGooglePublisherTagService.setSlots).toHaveBeenCalledWith(AD_SLOTS);
+    });
+
+    it('it should refresh ads', () => {
+      spyOn(MockGooglePublisherTagService, 'refreshAds').and.callThrough();
+
+      service.setSlots(AD_SLOTS);
+
+      expect(MockGooglePublisherTagService.refreshAds).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('when refreshing ads', () => {
+    beforeEach(() => {
+      service.init();
+    });
+
     it('should set targeting to Google library', () => {
       spyOn(MockGooglePublisherTagService, 'setTargetingByAdsKeywords').and.callThrough();
 
@@ -85,14 +101,23 @@ describe('AdsService', () => {
       expect(MockCriteoService.requestBid).toHaveBeenCalledTimes(1);
     });
 
-    it('should set segmentation to Google', () => {
+    it('should set segmentation to Google', fakeAsync(() => {
       const ALLOW_SEGMENTATION = true;
       spyOn(MockGooglePublisherTagService, 'setAdsSegmentation').and.callThrough();
-      spyOn(MockDidomiService, 'userAllowedSegmentationInAds$').and.returnValue(of(ALLOW_SEGMENTATION));
+      spyOn(MockDidomiService, 'allowSegmentation$').and.returnValue(of(ALLOW_SEGMENTATION));
+
+      service.refresh();
+      tick(1000);
+
+      expect(MockGooglePublisherTagService.setAdsSegmentation).toHaveBeenCalledWith(ALLOW_SEGMENTATION);
+    }));
+
+    it('should refresh ads on google', () => {
+      spyOn(MockGooglePublisherTagService, 'refreshAds').and.callThrough();
 
       service.refresh();
 
-      expect(MockGooglePublisherTagService.setAdsSegmentation).toHaveBeenCalledWith(ALLOW_SEGMENTATION);
+      expect(MockGooglePublisherTagService.refreshAds).toHaveBeenCalledTimes(1);
     });
   });
 

@@ -13,4 +13,6 @@ export enum REAL_ESTATE_ICON {
   NEW_BUILD = '/assets/icons/real-estate/sparkle.svg',
   GOOD_CONDITION = '/assets/icons/real-estate/thumbs_up.svg',
   TO_REFORM = '/assets/icons/real-estate/roller.svg',
+  KEY = '/assets/icons/real-estate/key.svg',
+  BILLS = '/assets/icons/real-estate/bills.svg',
 }

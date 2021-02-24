@@ -1,0 +1,6 @@
+<div class="d-flex flex-row flex-wrap w-100" *ngIf="itemSpecifications">
+    <tsl-counter-specification class="d-flex flex-column justify-content-center CounterSpecification"
+        [ngClass]="isCar ? 'Car__Setup':'Realestate__Setup'" *ngFor="let specification of itemSpecifications"
+        [type]="specification.type" [counter]="specification.counter" [label]="specification.label">
+    </tsl-counter-specification>
+</div>
