@@ -85,12 +85,6 @@ describe('AccessTokenService', () => {
 
       expect(service.deviceAccessToken).toBe(deviceToken);
     });
-
-    it('should return empty string if it is not production environment', () => {
-      spyOn(cookieService, 'get').and.returnValue('');
-
-      expect(service.deviceAccessToken).toBe('');
-    });
   });
 
   describe('get accessToken should get token', () => {
