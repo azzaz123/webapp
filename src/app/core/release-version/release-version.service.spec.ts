@@ -1,8 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-
 import { ReleaseVersionService } from './release-version.service';
-
-export const MockReleaseVersion = '6049000';
 
 describe('ReleaseVersionService', () => {
   let service: ReleaseVersionService;

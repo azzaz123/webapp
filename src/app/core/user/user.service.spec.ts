@@ -4,8 +4,8 @@ import { ComponentFixtureAutoDetect, discardPeriodicTasks, fakeAsync, TestBed, t
 import { AccessTokenService } from '@core/http/access-token.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { Item } from '@core/item/item';
+import { MockReleaseVersion } from '@core/release-version/release-version.fixtures.spec';
 import { ReleaseVersionService } from '@core/release-version/release-version.service';
-import { MockReleaseVersion } from '@core/release-version/release-version.service.spec';
 import { environment } from '@environments/environment';
 import { APP_VERSION } from '@environments/version';
 import { PhoneMethod } from '@features/chat/core/model';
