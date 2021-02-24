@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,8 +7,8 @@ import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { IsCurrentUserStub } from '@fixtures/public/core';
+import { AdComponentStubComponent } from '@fixtures/shared';
 import { IMAGE, MOCK_FULL_USER_FEATURED, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
-import { AdComponent } from '@shared/ad/ad.component';
 import { APP_PATHS } from 'app/app-routing-constants';
 import { of, throwError } from 'rxjs';
 import { PUBLIC_PROFILE_AD } from '../core/ads/public-profile-ads.config';
@@ -30,7 +30,7 @@ describe('PublicProfileComponent', () => {
     };
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      declarations: [PublicProfileComponent, IsCurrentUserStub],
+      declarations: [PublicProfileComponent, IsCurrentUserStub, AdComponentStubComponent],
       providers: [
         {
           provide: ActivatedRoute,
@@ -181,9 +181,10 @@ describe('PublicProfileComponent', () => {
 
         component.ngOnInit();
         fixture.detectChanges();
-        const adComponent = fixture.debugElement.query(By.css('tsl-ad'));
+        const adComponent: DebugElement = fixture.debugElement.query(By.directive(AdComponentStubComponent));
 
         expect(adComponent).toBeTruthy();
+        expect((<AdComponentStubComponent>adComponent.componentInstance).adSlot).toEqual(PUBLIC_PROFILE_AD);
       });
 
       it('should not an ad when is diferent of mobile devices', () => {
@@ -191,7 +192,7 @@ describe('PublicProfileComponent', () => {
 
         component.ngOnInit();
         fixture.detectChanges();
-        const adComponent = fixture.debugElement.query(By.css('tsl-ad'));
+        const adComponent = fixture.debugElement.query(By.directive(AdComponentStubComponent));
 
         expect(adComponent).toBeFalsy();
       });
