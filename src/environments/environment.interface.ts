@@ -6,7 +6,7 @@ export interface Environment {
   wsUrl: string;
   siteUrl: string;
   appboy: string;
-  cookieSuffix?: string;
+  cookieSuffix: string;
   clickStreamURL: string;
   stripeKey: string;
   mParticleKey: string;

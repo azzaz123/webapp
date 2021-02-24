@@ -17,7 +17,7 @@
               </div>
               <tsl-stars [stars]="userScore" [normalized]="false"></tsl-stars>
               <button [routerLink]="['/profile/info']" class="edit-profile-btn mr-1" i18n>Edit</button>
-              <button (click)="userService.logout()" class="edit-profile-btn" i18n>Logout</button>
+              <button (click)="logout()" class="logout edit-profile-btn" i18n>Logout</button>
             </div>
             <div class="d-none d-md-flex align-items-center">
               <div class="List__title" i18n>Your products</div>

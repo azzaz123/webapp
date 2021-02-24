@@ -1,6 +1,6 @@
 import { from, Observable, of } from 'rxjs';
 
-import { mergeMap, catchError, tap, map } from 'rxjs/operators';
+import { mergeMap, catchError, tap, map, take, finalize } from 'rxjs/operators';
 import { Inject, Injectable } from '@angular/core';
 import { PERMISSIONS, User } from './user';
 import { EventService } from '../event/event.service';
@@ -23,9 +23,9 @@ import { APP_VERSION } from '../../../environments/version';
 import { UserReportApi } from './user-report.interface';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { InboxUser, InboxItem } from '@features/chat/core/model';
+import { ReleaseVersionService } from '@core/release-version/release-version.service';
 
-export const LOGOUT_ENDPOINT = 'rest/logout';
-
+export const LOGOUT_ENDPOINT = 'shnm-portlet/api/v1/access.json/logout2';
 export const USER_BASE_ENDPOINT = 'api/v3/users/';
 export const USER_BY_ID_ENDPOINT = (userId: string) => `${USER_BASE_ENDPOINT}${userId}`;
 export const USER_ENDPOINT = `${USER_BASE_ENDPOINT}me/`;
@@ -71,6 +71,7 @@ export class UserService {
     private accessTokenService: AccessTokenService,
     private cookieService: CookieService,
     private permissionService: NgxPermissionsService,
+    private releaseVersionService: ReleaseVersionService,
     @Inject('SUBDOMAIN') private subdomain: string
   ) {}
 
@@ -82,7 +83,7 @@ export class UserService {
     return this._user && this._user.featured;
   }
 
-  public logout(redirect?: string) {
+  public logoutLogic(redirect?: string): void {
     const redirectUrl = redirect ? redirect : environment.siteUrl.replace('es', this.subdomain);
     const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
     this.cookieService.remove('publisherId', cookieOptions);
@@ -91,6 +92,20 @@ export class UserService {
     this.accessTokenService.deleteAccessToken();
     this.permissionService.flushPermissions();
     this.event.emit(EventService.USER_LOGOUT, redirectUrl);
+  }
+
+  public logout(redirect?: string): Observable<any> {
+    const headers: HttpHeaders = new HttpHeaders({
+      DeviceAccessToken: this.accessTokenService.deviceAccessToken,
+      AppBuild: this.releaseVersionService.getReleaseVersion(APP_VERSION),
+      DeviceOS: '0',
+    });
+    return this.http.post(`${environment.baseUrl}${LOGOUT_ENDPOINT}`, null, { headers }).pipe(
+      take(1),
+      finalize(() => {
+        this.logoutLogic(redirect);
+      })
+    );
   }
 
   public get isLogged(): boolean {
