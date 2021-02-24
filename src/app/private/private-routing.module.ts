@@ -15,7 +15,7 @@ const routes: Routes = [
           { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
           {
             path: 'help',
-            loadChildren: () => import('app/features/help/help.module').then((m) => m.HelpModule),
+            loadChildren: () => import('@private/features/help/help.module').then((m) => m.HelpModule),
           },
           {
             path: 'dashboard',
@@ -63,7 +63,7 @@ const routes: Routes = [
       },
       {
         path: 'favorites',
-        loadChildren: () => import('app/features/favorites/favorites.module').then((m) => m.FavoritesModule),
+        loadChildren: () => import('@private/features/favorites/favorites.module').then((m) => m.FavoritesModule),
       },
       {
         path: 'reviews',

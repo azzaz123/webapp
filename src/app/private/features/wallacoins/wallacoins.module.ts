@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { wallacoinsRoutedComponents, WallacoinsRoutingModule } from './wallacoins.routing.module';
-import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from '../../../shared/shared.module';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { BuyWallacoinsModalComponent } from './components/buy-wallacoins-modal/buy-wallacoins-modal.component';
 import { FormsModule } from '@angular/forms';
