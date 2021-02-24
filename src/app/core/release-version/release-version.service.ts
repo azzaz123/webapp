@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { APP_VERSION } from '@environments/version';
 
 @Injectable({
   providedIn: 'root',
@@ -7,8 +6,9 @@ import { APP_VERSION } from '@environments/version';
 export class ReleaseVersionService {
   constructor() {}
 
-  get releaseVersion(): string {
-    return APP_VERSION.split('.')
+  public getReleaseVersion(appVersion: string): string {
+    return appVersion
+      .split('.')
       .map((subVersion, index) => {
         if (index !== 0) {
           return subVersion.padStart(3, '0');
