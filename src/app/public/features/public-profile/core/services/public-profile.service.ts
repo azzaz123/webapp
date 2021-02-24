@@ -5,7 +5,7 @@ import { Counters, Ratings, UserStats } from '@core/user/user-stats.interface';
 import { User } from '@core/user/user';
 import { Image, UserExtrainfo, UserResponse } from '@core/user/user-response.interface';
 import { MarkAsFavouriteBodyResponse } from '../interfaces/public-profile-request.interface';
-import { ReviewResponse } from '@features/reviews/core/review-response.interface';
+import { ReviewResponse } from '@private/features/reviews/core/review-response.interface';
 import { ItemResponse } from '@core/item/item-response.interface';
 import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
 import { EMPTY_STATS } from './constants/stats-constants';

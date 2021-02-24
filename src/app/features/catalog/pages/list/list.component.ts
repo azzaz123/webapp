@@ -330,6 +330,10 @@ export class ListComponent implements OnInit, OnDestroy {
     this.active = false;
   }
 
+  public logout() {
+    this.userService.logout().subscribe();
+  }
+
   public filterByStatus(status: string) {
     this.deselect();
 

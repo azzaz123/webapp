@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { CAR_SPECIFICATION_TYPE } from '@public/core/constants/item-specifications/cars-constants';
-import { REAL_STATE_TYPE } from '@public/core/constants/item-specifications/realestate-constants';
+import { REAL_ESTATE_SPECIFICATION_TYPE } from '@public/core/constants/item-specifications/realestate-constants';
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { CounterSpecificationComponent } from './counter-specification.component';
 
@@ -33,7 +33,7 @@ const Template: Story<CounterSpecificationComponent> = (args: CounterSpecificati
 
 export const RealEstateType = Template.bind({});
 RealEstateType.args = {
-  type: REAL_STATE_TYPE.GARAGE,
+  type: REAL_ESTATE_SPECIFICATION_TYPE.GARAGE,
 };
 
 export const CarType = Template.bind({});
@@ -43,13 +43,13 @@ CarType.args = {
 
 export const SingularLabel = Template.bind({});
 SingularLabel.args = {
-  type: REAL_STATE_TYPE.ROOMS,
+  type: REAL_ESTATE_SPECIFICATION_TYPE.ROOMS,
   counter: 1,
 };
 
 export const PluralLabel = Template.bind({});
 PluralLabel.args = {
-  type: REAL_STATE_TYPE.ROOMS,
+  type: REAL_ESTATE_SPECIFICATION_TYPE.ROOMS,
   counter: 3,
 };
 
