@@ -1,3 +1,5 @@
+import { AdComponentStub } from '@fixtures/shared';
+import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { DecimalPipe } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement, Renderer2 } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -43,6 +45,7 @@ import { TypeCheckService } from '@public/core/services/type-check/type-check.se
 import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
+import { AdsService } from '@core/ads/services';
 
 describe('ItemDetailComponent', () => {
   const topSkyTag = 'tsl-top-sky';
@@ -76,7 +79,7 @@ describe('ItemDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ItemDetailComponent, CustomCurrencyPipe],
+      declarations: [ItemDetailComponent, CustomCurrencyPipe, AdComponentStub],
       imports: [HttpClientTestingModule, ItemSpecificationsModule],
       providers: [
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
@@ -100,6 +103,10 @@ describe('ItemDetailComponent', () => {
           useValue: {
             navigate() {},
           },
+        },
+        {
+          provide: AdsService,
+          useValue: MockAdsService,
         },
         ItemDetailService,
         ItemApiService,
@@ -177,7 +184,7 @@ describe('ItemDetailComponent', () => {
 
       component.ngOnInit();
       fixture.detectChanges();
-      const topAd = fixture.debugElement.query(By.css(topSkyTag));
+      const topAd = fixture.debugElement.query(By.directive(AdComponentStub));
       const sideAds = fixture.debugElement.queryAll(By.css(sideSkyTag));
 
       expect(topAd).toBeTruthy();
@@ -191,7 +198,7 @@ describe('ItemDetailComponent', () => {
 
       component.ngOnInit();
       fixture.detectChanges();
-      const topAd = fixture.debugElement.query(By.css(topSkyTag));
+      const topAd = fixture.debugElement.query(By.directive(AdComponentStub));
       const sideAds = fixture.debugElement.queryAll(By.css(sideSkyTag));
 
       expect(topAd).toBeTruthy();

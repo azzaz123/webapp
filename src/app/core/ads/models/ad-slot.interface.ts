@@ -14,4 +14,5 @@ export interface AdSlot {
   sizeMapping?: AdSizeMapping;
   device: DeviceType[];
   type?: string;
+  preConfig?: () => void;
 }

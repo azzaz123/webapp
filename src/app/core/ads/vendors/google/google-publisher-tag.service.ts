@@ -83,6 +83,10 @@ export class GooglePublisherTagService {
     slots
       .filter((slot) => slot.device.includes(deviceType))
       .forEach((slot) => {
+        if (slot.preConfig) {
+          slot.preConfig();
+        }
+
         let mappingResponsive: googletag.SizeMappingArray;
         if (slot.sizeMapping) {
           mappingResponsive = this.googletag

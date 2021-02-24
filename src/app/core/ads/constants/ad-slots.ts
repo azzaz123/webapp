@@ -21,7 +21,7 @@ export const AD_DESKTOP_VERTICAL_MAPPING: number[][] = [
   [160, 600],
 ];
 export const AD_TABLET_SCREEN_SIZE: number[] = [728, 250];
-export const AD_TABLE_MAPPING: number[][] = [
+export const AD_TABLET_MAPPING: number[][] = [
   [728, 90],
   [728, 250],
 ];

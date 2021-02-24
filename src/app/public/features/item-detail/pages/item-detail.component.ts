@@ -75,7 +75,8 @@ export class ItemDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.device = this.deviceService.getDeviceType();
-    this.initPage(this.route.snapshot.paramMap.get(PUBLIC_PATH_PARAMS.ID)); // TBD the url may change to match one more similar to production one
+    // TBD the url may change to match one more similar to production one
+    this.initPage(this.route.snapshot.paramMap.get(PUBLIC_PATH_PARAMS.ID));
     this.adsService.setSlots([this.adSlot]);
   }
 
