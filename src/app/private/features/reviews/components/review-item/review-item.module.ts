@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
-import { UserReviewService } from '@features/reviews/core/user-review.service';
+import { UserReviewService } from '@private/features/reviews/core/user-review.service';
 import { SanitizedBackgroundModule } from '@shared/sanitized-background/sanitized-background.module';
 import { StarsModule } from '@shared/stars/stars.module';
 import { UserAvatarModule } from '@shared/user-avatar/user-avatar.module';

@@ -3,8 +3,8 @@ import { MapReviewService } from '@public/features/public-profile/pages/user-rev
 import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
 import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
 import { finalize, take } from 'rxjs/operators';
-import { Review } from '@features/reviews/core/review';
-import { ReviewResponse } from '@features/reviews/core/review-response.interface';
+import { Review } from '@private/features/reviews/core/review';
+import { ReviewResponse } from '@private/features/reviews/core/review-response.interface';
 
 @Component({
   selector: 'tsl-user-reviews',

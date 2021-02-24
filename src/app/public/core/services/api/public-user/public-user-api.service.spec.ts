@@ -1,6 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { fakeAsync, TestBed } from '@angular/core/testing';
-import { ReviewResponse } from '@features/reviews/core/review-response.interface';
+import { ReviewResponse } from '@private/features/reviews/core/review-response.interface';
 import { environment } from 'environments/environment';
 
 import {
