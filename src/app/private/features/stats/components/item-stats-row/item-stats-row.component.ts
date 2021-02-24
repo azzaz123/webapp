@@ -2,8 +2,8 @@ import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular
 import { Item } from '@core/item/item';
 import { ItemCounters } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
-import { ItemStatisticEntriesResponse, ItemStatisticFullResponse } from '@features/stats/core/item-stats-response.interface';
-import { ItemStatsService } from '@features/stats/core/services/item-stats.service';
+import { ItemStatisticEntriesResponse, ItemStatisticFullResponse } from '@private/features/stats/core/item-stats-response.interface';
+import { ItemStatsService } from '@private/features/stats/core/services/item-stats.service';
 import { every, isEmpty } from 'lodash-es';
 import { ITEM_STATS_ROW_ANIMATION } from './item-stats-row.animation';
 

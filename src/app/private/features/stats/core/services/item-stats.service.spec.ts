@@ -1,7 +1,7 @@
 import { HttpClientTestingModule, TestRequest, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
-import { environment } from '../../../../../environments/environment';
+import { environment } from '@environments/environment';
 import { ItemStatisticFullResponse } from '../item-stats-response.interface';
 
 import { ItemStatsService, ITEM_STATS_ENDPOINT } from './item-stats.service';

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../../environments/environment';
+import { environment } from '@environments/environment';
 import { ItemStatisticFullResponse } from '../item-stats-response.interface';
 
 export const ITEM_STATS_ENDPOINT = 'api/v3/statistics/item/';
