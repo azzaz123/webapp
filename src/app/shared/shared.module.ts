@@ -98,6 +98,7 @@ import { UserCoverModule } from './user-cover/user-cover.module';
     ButtonModule,
   ],
   exports: [
+    AdModule,
     SpinnerModule,
     SanitizedBackgroundModule,
     UserAvatarModule,

@@ -3,6 +3,6 @@ import { AdComponent } from './ad.component';
 
 @NgModule({
   declarations: [AdComponent],
-  exports: [AdModule],
+  exports: [AdComponent],
 })
 export class AdModule {}
