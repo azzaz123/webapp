@@ -9,7 +9,7 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
   @Input() variant: FILTER_VARIANT = FILTER_VARIANT.BUBBLE;
   @Input() config: FilterConfig<T>;
   @Input() value: FilterParameter[] = [];
-  @Output() change = new EventEmitter<FilterParameter[]>();
+  @Output() valueChange = new EventEmitter<FilterParameter[]>();
   @Output() clear = new EventEmitter<void>();
   @Output() openStateChange: EventEmitter<boolean> = new EventEmitter();
 
