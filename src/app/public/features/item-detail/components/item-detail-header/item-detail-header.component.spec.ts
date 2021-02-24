@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ErrorsService } from '@core/errors/errors.service';
@@ -245,17 +245,18 @@ describe('ItemDetailHeaderComponent', () => {
         afterEach(() => {
           component.item.sold = false;
         });
-        it('should open the sold modal', () => {
+        it('should open the sold modal', fakeAsync(() => {
           spyOn(component, 'soldItem').and.callThrough();
           spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve(), componentInstance: {} });
 
           const soldButton = fixture.debugElement.query(By.css(soldButtonClass)).nativeElement;
           soldButton.click();
+          tick();
 
           expect(component.soldItem).toHaveBeenCalled();
           expect(modalService.open).toHaveBeenCalledWith(SoldModalComponent, { windowClass: 'sold' });
           expect(component.item.sold).toBe(true);
-        });
+        }));
       });
 
       describe('the edit item button...', () => {
@@ -268,18 +269,19 @@ describe('ItemDetailHeaderComponent', () => {
       });
 
       describe('when we clic on the trash item button...', () => {
-        it('should open the confirmation delete modal', () => {
+        it('should open the confirmation delete modal', fakeAsync(() => {
           spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve() });
           spyOn(component, 'deleteItem').and.callThrough();
           spyOn(itemDetailService, 'deleteItem').and.returnValue(of());
 
           const trashButton = fixture.debugElement.query(By.css(trashButtonId)).nativeElement;
           trashButton.click();
+          tick();
 
           expect(component.deleteItem).toHaveBeenCalled();
           expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, { windowClass: 'modal-prompt' });
           expect(itemDetailService.deleteItem).toHaveBeenCalledWith(component.item.id);
-        });
+        }));
       });
     });
   });
