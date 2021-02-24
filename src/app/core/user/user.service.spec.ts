@@ -8,7 +8,7 @@ import { MockReleaseVersion } from '@core/release-version/release-version.fixtur
 import { ReleaseVersionService } from '@core/release-version/release-version.service';
 import { environment } from '@environments/environment';
 import { APP_VERSION } from '@environments/version';
-import { PhoneMethod } from '@features/chat/core/model';
+import { PhoneMethod } from '@private/features/chat/core/model';
 import { ITEM_LOCATION, MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import {
   CUSTOM_REASON,

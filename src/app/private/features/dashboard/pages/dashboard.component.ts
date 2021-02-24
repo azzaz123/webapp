@@ -4,8 +4,8 @@ import { CallsService } from '@core/conversation/calls.service';
 import { Lead } from '@core/conversation/lead';
 import { CallTotals } from '@core/conversation/totals.interface';
 import { EventService } from '@core/event/event.service';
-import { InboxConversationService } from '@features/chat/core/inbox/inbox-conversation.service';
-import { InboxConversation } from '@features/chat/core/model';
+import { InboxConversationService } from '@private/features/chat/core/inbox/inbox-conversation.service';
+import { InboxConversation } from '@private/features/chat/core/model';
 import { takeWhile } from 'rxjs/operators';
 
 @Component({

@@ -5,7 +5,7 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 
-import { InboxService } from '@features/chat/core/inbox/inbox.service';
+import { InboxService } from '@private/features/chat/core/inbox/inbox.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie';
 import { of, Subject, throwError } from 'rxjs';
