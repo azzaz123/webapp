@@ -4,9 +4,10 @@ import { HammerModule } from '@angular/platform-browser';
 import { HAMMER_PROVIDER } from '@core/hammerjs/hammerjs-provider';
 import { ITEM_BUMP_FLAGS, ITEM_FLAGS } from '@fixtures/item.fixtures.spec';
 import { Story, Meta } from '@storybook/angular/types-6-0';
-import { ImagesCarouselModule } from '../images-carousel/images-carousel.module';
+import { SlidesCarouselModule } from '../carousel-slides/carousel-slides.module';
 import { ItemFlagModule } from '../item-flag/item-flag.module';
 import { ItemImagesCarouselComponent } from './item-images-carousel.component';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 export default {
   title: 'Webapp/Public/Shared/Components/ItemImagesCarousel',
@@ -28,11 +29,11 @@ const Template: Story<ItemImagesCarouselComponent> = (args: ItemImagesCarouselCo
   props: args,
   moduleMetadata: {
     declarations: [ItemImagesCarouselComponent],
-    imports: [CommonModule, HammerModule, ItemFlagModule, ImagesCarouselModule, HttpClientModule],
-    providers: [HAMMER_PROVIDER],
+    imports: [CommonModule, HammerModule, ItemFlagModule, SlidesCarouselModule, HttpClientModule],
+    providers: [HAMMER_PROVIDER, DeviceDetectorService],
   },
   template:
-    '<tsl-item-images-carousel [itemFlags]="itemFlags" [itemVisibilityFlags]="itemVisibilityFlags" [images]="images"></tsl-item-images-carousel>',
+    '<tsl-item-images-carousel [images]="images" [itemFlags]="itemFlags" [itemVisibilityFlags]="itemVisibilityFlags"></tsl-item-images-carousel>',
 });
 
 const imagesURL = ['http://localhost:6006/images/item-camera.jpg', 'http://localhost:6006/images/item-pc.jpg'];

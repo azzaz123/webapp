@@ -55,11 +55,13 @@ describe('AmazonPublisherService', () => {
 
       expect(isDefined).toBe(false);
     });
+  });
 
-    it('should set initialize configuration if is defined', () => {
+  describe('when we init the library', () => {
+    it('should set initialize configuration', () => {
       spyOn(windowMock.apstag, 'init').and.callThrough();
 
-      const isDefined: boolean = service.isLibraryRefDefined();
+      service.init();
 
       expect(windowMock.apstag.init).toHaveBeenCalledWith({
         pubID: '3703',

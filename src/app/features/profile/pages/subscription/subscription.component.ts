@@ -176,7 +176,7 @@ export class SubscriptionsComponent implements OnInit {
     if (modalType === AddNewSubscriptionModalComponent) {
       const event: AnalyticsEvent<ClickSubscriptionManagementPlus> = {
         name: ANALYTICS_EVENT_NAMES.ClickSubscriptionManagementPlus,
-        eventType: ANALYTIC_EVENT_TYPES.Other,
+        eventType: ANALYTIC_EVENT_TYPES.Navigation,
         attributes: {
           screenId: SCREEN_IDS.SubscriptionManagement,
           subscription: subscription.category_id as SUBSCRIPTION_CATEGORIES,
@@ -283,8 +283,9 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   private trackClickProSubscription(): void {
-    const event: AnalyticsPageView<ClickProSubscription> = {
+    const event: AnalyticsEvent<ClickProSubscription> = {
       name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
       attributes: {
         screenId: SCREEN_IDS.WebHome,
         isLoggedIn: true,

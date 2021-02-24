@@ -1,0 +1,15 @@
+@import '~style/common';
+
+.RangeFilter {
+  &__input {
+    &__wrapper {
+      flex: 1;
+    }
+    &__field {
+      border-radius: 6px;
+      font-size: $font-size-m;
+      border: thin solid $blue-grey-4;
+      height: 50px;
+    }
+  }
+}
