@@ -60,7 +60,6 @@ describe('SidebarComponent', () => {
                   counters: mockCounters,
                 });
               },
-              logout() {},
               me(): Observable<User> {
                 return of(MOCK_USER);
               },

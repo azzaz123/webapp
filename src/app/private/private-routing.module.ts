@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PERMISSIONS } from '@core/user/user';
 import { NgxPermissionsGuard } from 'ngx-permissions';
-import { CheckUserPermissionsResolver } from './core/resolvers/check-user-permissions.resolver';
 import { PrivateComponent } from './private.component';
 
 const routes: Routes = [
@@ -16,7 +15,7 @@ const routes: Routes = [
           { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
           {
             path: 'help',
-            loadChildren: () => import('app/features/help/help.module').then((m) => m.HelpModule),
+            loadChildren: () => import('@private/features/help/help.module').then((m) => m.HelpModule),
           },
           {
             path: 'dashboard',
@@ -24,14 +23,14 @@ const routes: Routes = [
           },
           {
             path: 'calls',
-            loadChildren: () => import('app/features/calls/calls.module').then((m) => m.CallsModule),
+            loadChildren: () => import('@private/features/calls/calls.module').then((m) => m.CallsModule),
           },
           {
             path: 'catalog',
             children: [
               {
                 path: '',
-                loadChildren: () => import('app/features/catalog-pro/catalog-pro.module').then((m) => m.CatalogProModule),
+                loadChildren: () => import('@private/features/catalog-pro/catalog-pro.module').then((m) => m.CatalogProModule),
               },
               {
                 path: 'upload',
@@ -64,11 +63,11 @@ const routes: Routes = [
       },
       {
         path: 'favorites',
-        loadChildren: () => import('app/features/favorites/favorites.module').then((m) => m.FavoritesModule),
+        loadChildren: () => import('@private/features/favorites/favorites.module').then((m) => m.FavoritesModule),
       },
       {
         path: 'reviews',
-        loadChildren: () => import('app/features/reviews/reviews.module').then((m) => m.ReviewsModule),
+        loadChildren: () => import('@private/features/reviews/reviews.module').then((m) => m.ReviewsModule),
       },
       {
         path: 'wallacoins',
