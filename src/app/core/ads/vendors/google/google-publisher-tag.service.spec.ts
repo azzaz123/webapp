@@ -67,6 +67,19 @@ describe('GooglePublisherTagService', () => {
       expect(windowMock.googletag.cmd.push).toHaveBeenCalledWith(jasmine.any(Function));
     });
 
+    it('should filter slots by device type', () => {
+      const adSlots: AdSlot[] = [
+        { ...MockAdSlots[0], device: [DeviceType.DESKTOP] },
+        { ...MockAdSlots[0], device: [DeviceType.MOBILE] },
+      ];
+      spyOn(deviceServiceMock, 'getDeviceType').and.returnValue(DeviceType.DESKTOP);
+      spyOn(windowMock.googletag, 'defineSlot').and.callThrough();
+
+      service.setSlots(MockAdSlots);
+
+      expect(windowMock.googletag.defineSlot).toHaveBeenCalledTimes(1);
+    });
+
     it('should set size mapping if the slot has', () => {
       spyOn(deviceServiceMock, 'getDeviceType').and.returnValue(DeviceType.DESKTOP);
       spyOn(MOCK_GOOGLE_TAG, 'sizeMapping').and.callThrough();
