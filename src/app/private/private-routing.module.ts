@@ -67,7 +67,7 @@ const routes: Routes = [
       },
       {
         path: 'reviews',
-        loadChildren: () => import('app/features/reviews/reviews.module').then((m) => m.ReviewsModule),
+        loadChildren: () => import('@private/features/reviews/reviews.module').then((m) => m.ReviewsModule),
       },
       {
         path: 'wallacoins',
