@@ -1299,4 +1299,13 @@
   <translation id="TryProSlotDescription">¿Quieres impulsar tu negocio online? ¡Conviértete en PRO!</translation>
   <translation id="Buy">Venta</translation>
   <translation id="Rent">Alquiler</translation>
+  <translation id="EditedMinutesAgo"></translation>
+  <translation id="EditedHoursAgo"></translation>
+  <translation id="EditedOneDayAgo"></translation>
+  <translation id="EditedTwoDaysAgo"></translation>
+  <translation id="EditedThreeDaysAgo"></translation>
+  <translation id="EditedOneWeekAgo"></translation>
+  <translation id="EditedMoreTwoWeeks"></translation>
+  <translation id="EditedLessMonth"></translation>
+  <translation id="EditedMoreMonth"></translation>
 </translationbundle>
