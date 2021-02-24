@@ -1,8 +1,8 @@
-import { COMMON_FILTERS } from '@public/shared/components/filters/core/enums/filter-ids/common.enum';
+import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
 
 export enum DEFAULT_FILTERS {
   PRICE = 'default-price',
-  CONDITION = COMMON_FILTERS.CONDITION,
-  LOCATION = COMMON_FILTERS.LOCATION,
-  POSTED_BEFORE = COMMON_FILTERS.POSTED_BEFORE,
+  CONDITION = COMMON_CONFIGURATION_ID.CONDITION,
+  LOCATION = COMMON_CONFIGURATION_ID.LOCATION,
+  POSTED_BEFORE = COMMON_CONFIGURATION_ID.POSTED_BEFORE,
 }

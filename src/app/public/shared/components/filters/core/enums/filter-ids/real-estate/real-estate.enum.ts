@@ -1,11 +1,11 @@
-import { REAL_ESTATE_COMMON } from '@public/shared/components/filters/core/enums/filter-ids/real-estate/real-estate-common.enum';
-import { COMMON_FILTERS } from '@public/shared/components/filters/core/enums/filter-ids/common.enum';
+import { REAL_ESTATE_CONFIGURATION_ID } from '../../configuration-ids/real-estate-configuration-ids.enum';
+import { COMMON_CONFIGURATION_ID } from '../../configuration-ids/common-configuration-ids.enum';
 
 export enum REAL_ESTATE_FILTERS {
-  OPERATION = REAL_ESTATE_COMMON.OPERATION,
-  TYPE = REAL_ESTATE_COMMON.TYPE,
-  PRICE = 'real_estate-default-price',
-  LOCATION = COMMON_FILTERS.LOCATION,
-  CONDITION = REAL_ESTATE_COMMON.CONDITION,
-  POSTED_BEFORE = COMMON_FILTERS.POSTED_BEFORE,
+  OPERATION = REAL_ESTATE_CONFIGURATION_ID.OPERATION,
+  TYPE = REAL_ESTATE_CONFIGURATION_ID.TYPE,
+  PRICE = REAL_ESTATE_CONFIGURATION_ID.DEFAULT_PRICE,
+  LOCATION = COMMON_CONFIGURATION_ID.LOCATION,
+  CONDITION = REAL_ESTATE_CONFIGURATION_ID.CONDITION,
+  POSTED_BEFORE = COMMON_CONFIGURATION_ID.POSTED_BEFORE,
 }
