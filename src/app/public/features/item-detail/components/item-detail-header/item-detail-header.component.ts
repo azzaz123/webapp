@@ -6,7 +6,7 @@ import { USER_INFO_SIZE } from '@public/shared/components/user-basic-info/consta
 import { Item } from '@core/item/item';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorsService } from '@core/errors/errors.service';
-import { ItemDetailService } from '../../core/services/item-detail.service';
+import { ItemDetailService } from '../../core/services/item-detail/item-detail.service';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 import { SoldModalComponent } from '@shared/modals/sold-modal/sold-modal.component';
