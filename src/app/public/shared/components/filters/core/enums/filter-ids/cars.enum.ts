@@ -1,18 +1,19 @@
 import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
+import { CAR_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/car-configuration-ids';
 
 export enum CAR_FILTER_ID {
-  PRICE = 'cars-price',
-  BRAND_N_MODEL = 'cars-brand-n-model',
-  YEAR = 'cars-year',
-  KM = 'cars-km',
+  PRICE = CAR_CONFIGURATION_ID.PRICE,
+  BRAND_N_MODEL = CAR_CONFIGURATION_ID.BRAND_N_MODEL,
+  YEAR = CAR_CONFIGURATION_ID.YEAR,
+  KM = CAR_CONFIGURATION_ID.KM,
   LOCATION = COMMON_CONFIGURATION_ID.LOCATION,
-  BODY = 'cars-body',
-  ENGINE = 'cars-engine',
-  GEARBOX = 'cars-gearbox',
-  WARRANTY = 'cars-warranty',
-  SEATS = 'cars-seats',
-  DOORS = 'cars-doors',
-  HORSE_POWER = 'cars-horse-power',
-  PROFESSIONAL = 'cars-professional',
+  BODY = CAR_CONFIGURATION_ID.BODY,
+  ENGINE = CAR_CONFIGURATION_ID.ENGINE,
+  GEARBOX = CAR_CONFIGURATION_ID.GEARBOX,
+  WARRANTY = CAR_CONFIGURATION_ID.WARRANTY,
+  SEATS = CAR_CONFIGURATION_ID.SEATS,
+  DOORS = CAR_CONFIGURATION_ID.DOORS,
+  HORSE_POWER = CAR_CONFIGURATION_ID.HORSE_POWER,
+  PROFESSIONAL = CAR_CONFIGURATION_ID.PROFESSIONAL,
   POSTED_BEFORE = COMMON_CONFIGURATION_ID.POSTED_BEFORE,
 }
