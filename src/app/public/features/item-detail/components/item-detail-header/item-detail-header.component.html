@@ -1,7 +1,9 @@
-<div *ngIf="user && userStats && item" class="ItemDetailHeader py-3 d-flex justify-content-between align-items-center"
+<div *ngIf="user && userStats && item" ngbDropdown placement="bottom-right"
+    class="ItemDetailHeader py-3 d-flex justify-content-between align-items-center"
     [ngClass]="{'ShowOwnButtons': isOwner}">
-    <tsl-user-basic-info [ngClass]="isOwner ? 'OwnUserBasicInfo': 'OtherUserBasicInfo'" [userStats]="userStats"
-        [userInfo]="user" [styleSize]="USER_INFO_SIZE.SMALL" [className]="'ItemDetailHeader'">
+    <tsl-user-basic-info
+        [ngClass]="{'OtherUserBasicInfo': !isOwner, 'OwnUserBasicInfo': showOptions && isOwner, 'OwnUserBasicInfoBig': !showOptions && isOwner}"
+        [userStats]="userStats" [userInfo]="user" [styleSize]="USER_INFO_SIZE.SMALL" [className]="'ItemDetailHeader'">
     </tsl-user-basic-info>
     <div *ngIf="isOwner; else basicOperations" class="d-flex">
         <div class="FeatureButton mr-4" *ngIf="showOptions">
@@ -34,7 +36,7 @@
                     <tsl-svg-icon src="/assets/icons/btn-edit.svg"></tsl-svg-icon>
                 </button>
                 <!-- Edit dropdown -->
-                <div ngbDropdown placement="bottom-right" class="DropdownOptions expanded">
+                <div class="expanded">
                     <button class="OwnActionButtons__action btn-options p-0" ngbDropdownToggle>
                         <tsl-svg-icon src="/assets/icons/others.svg" width="17" height="20"></tsl-svg-icon>
                     </button>

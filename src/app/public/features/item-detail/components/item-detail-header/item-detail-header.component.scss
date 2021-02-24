@@ -20,6 +20,17 @@ $feature-button-width: 165px;
   }
 }
 
+.OwnUserBasicInfo {
+  max-width: calc(100% - 105px);
+  @include media-breakpoint-up(md) {
+    max-width: calc(100% - 390px);
+  }
+}
+
+.OwnUserBasicInfoBig {
+  max-width: calc(100% - 60px);
+}
+
 .ShowOwnButtons {
   .FeatureButton {
     display: none;
@@ -155,7 +166,7 @@ $feature-button-width: 165px;
   }
 }
 
-.DropdownOptions {
+.dropdown-menu {
   .dropdown-item {
     padding: ($spacing-ml / 2) $spacing-ml;
     color: $blue-grey-2;
