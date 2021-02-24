@@ -19,7 +19,7 @@ const routes: Routes = [
           },
           {
             path: 'dashboard',
-            loadChildren: () => import('app/features/dashboard/dashboard.module').then((m) => m.DashboardModule),
+            loadChildren: () => import('@private/features/dashboard/dashboard.module').then((m) => m.DashboardModule),
           },
           {
             path: 'calls',
