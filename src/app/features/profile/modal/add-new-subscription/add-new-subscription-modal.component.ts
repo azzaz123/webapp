@@ -2,12 +2,14 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   AnalyticsEvent,
+  AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   ClickSubscriptionDirectContact,
   ClickSubscriptionSubscribe,
   SCREEN_IDS,
   SubscriptionPayConfirmation,
+  ViewSubscriptionTier,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { CATEGORY_IDS } from '@core/category/category-ids';
@@ -78,6 +80,9 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, Afte
     });
     this.getBillingInfo();
     this._selectedInvoiceOption = this.invoiceOptions[1].value.toString();
+    if (this.subscription.tiers.length > 1) {
+      this.trackViewSubscriptionTier();
+    }
   }
 
   ngAfterViewInit() {
@@ -360,6 +365,17 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, Afte
     };
 
     this.analyticsService.trackEvent(event);
+  }
+
+  private trackViewSubscriptionTier(): void {
+    const event: AnalyticsPageView<ViewSubscriptionTier> = {
+      name: ANALYTICS_EVENT_NAMES.ViewSubscriptionTier,
+      attributes: {
+        screenId: SCREEN_IDS.SubscriptionTier,
+        freeTrial: this.subscriptionsService.hasTrial(this.subscription),
+      },
+    };
+    this.analyticsService.trackPageView(event);
   }
 
   public onInvoiceOptionSelect(event: any) {

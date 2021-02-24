@@ -4,12 +4,14 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import {
   AnalyticsEvent,
+  AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   ClickSubscriptionDirectContact,
   ClickSubscriptionSubscribe,
   SCREEN_IDS,
   SubscriptionPayConfirmation,
+  ViewSubscriptionTier,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { CATEGORY_IDS } from '@core/category/category-ids';
@@ -27,6 +29,7 @@ import {
   MAPPED_SUBSCRIPTIONS,
   MockSubscriptionService,
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED,
+  MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED,
   SUBSCRIPTION_REQUIRES_ACTION,
   SUBSCRIPTION_REQUIRES_PAYMENT,
   SUBSCRIPTION_SUCCESS,
@@ -603,6 +606,38 @@ describe('AddNewSubscriptionModalComponent', () => {
       component.continueToInvoice();
 
       expect(invoiceStepElement).toBeTruthy();
+    });
+  });
+
+  describe('trackViewSubscriptionTier', () => {
+    describe('has more than a one tier', () => {
+      it('should send event to analytics', () => {
+        spyOn(analyticsService, 'trackPageView');
+        component.subscription = MAPPED_SUBSCRIPTIONS[1];
+        const expectedEvent: AnalyticsPageView<ViewSubscriptionTier> = {
+          name: ANALYTICS_EVENT_NAMES.ViewSubscriptionTier,
+          attributes: {
+            screenId: SCREEN_IDS.SubscriptionTier,
+            freeTrial: false,
+          },
+        };
+
+        component.ngOnInit();
+
+        expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+      });
+    });
+
+    describe('has not more than one tier', () => {
+      it('should not send event to analytics', () => {
+        spyOn(analyticsService, 'trackPageView');
+        component.subscription = MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED;
+
+        component.ngOnInit();
+
+        expect(analyticsService.trackPageView).not.toHaveBeenCalled();
+      });
     });
   });
 });
