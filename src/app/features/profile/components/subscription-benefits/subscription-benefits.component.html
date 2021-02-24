@@ -1,19 +1,26 @@
-<div class="box" [hidden]="loading">
-  <div class="box-content">
-
-    <h4 class="section-title" i18n>Why subscribe to wallapop PRO?</h4>
-    <p class="section-subtitle" i18n>Advantages for those who want to sell more and better</p>
-
-    <div class="row">
-      <div *ngFor="let benefit of benefits"
-        class="SubscriptionBenefitCard text-center text-md-left col-12 col-md-6 d-flex flex-column align-items-center align-items-md-baseline">
-        <div class="SubscriptionBenefitCard-icon">
-          <tsl-svg-icon src="/assets/icons/{{benefit.iconId}}.svg" class="image"></tsl-svg-icon>
-        </div>
-        <div class="SubscriptionBenefitCard-title">{{benefit.title}}</div>
-        <div>{{benefit.description}}</div>
+<ng-container *ngIf="!loading">
+  <div class="box">
+    <div class="box-content d-flex flex-column align-items-center text-center">
+      <tsl-svg-icon src="/assets/icons/badge-pro-dark.svg" alt="badge-pro" class="mb-4"></tsl-svg-icon>
+      <h4 class="mb-2 box-content__title" i18n>Why subscribe to wallapop PRO?</h4>
+      <p class="mb-2 box-content__subtitle" i18n>Advantages for those who want to sell more and better</p>
+      <tsl-svg-icon src="/assets/icons/arrow-waterfall.svg" alt="arrow-down"
+        class="ArrowDown d-flex align-items-center justify-content-center"></tsl-svg-icon>
+    </div>
+  </div>
+  <div class="box">
+    <div class="SubscriptionBenefits__content">
+      <div *ngFor="let benefit of benefits; let i = index">
+        <tsl-subscription-benefit img="/assets/images/subscriptions/{{benefit.iconId}}.svg" [title]="benefit.title" [description]="benefit.description" [leftAligment]="i % 2">
+        </tsl-subscription-benefit>
       </div>
     </div>
-
   </div>
-</div>
+</ng-container>
+<div class="box">
+  <div class="box-content d-flex flex-column align-items-center text-center">
+    <tsl-svg-icon src="/assets/icons/badge-pro-dark.svg" alt="badge-pro" class="mb-4"></tsl-svg-icon>
+    <h4 class="mb-2 box-content__title" i18n>Quires saber cómo podemos impulsar tus ventas digitales?</h4>
+    <p class="mb-2 box-content__subtitle" i18n>Visita nuestras <a [href]="faqUrl" target="_blank">FAQs</a> para más información</p>
+  </div>
+</div>  

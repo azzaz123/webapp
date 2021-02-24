@@ -167,22 +167,22 @@ export class I18nService {
       SubscriptionCardDeleted: 'Your card has been deleted',
       subscriptionBenefits: [
         {
-          iconId: 'paintbrush',
+          iconId: 'empty-image',
           title: 'Professionalize your profile',
           description: 'Stand out above the rest with a cover photo and a description of what you offer',
         },
         {
-          iconId: 'magnet',
+          iconId: 'empty-image',
           title: 'Connect with more clients',
           description: 'Share with millions of potential buyers your phone and website',
         },
         {
-          iconId: 'watch',
+          iconId: 'empty-image',
           title: 'Without time limit',
           description: 'Your items will never expire, they will be always ready for a quick sell',
         },
         {
-          iconId: 'unlocked',
+          iconId: 'empty-image',
           title: 'Without compromise',
           description: 'You can cancel your subscription whenever you want, without penalties',
         },
@@ -363,22 +363,22 @@ export class I18nService {
       SubscriptionCardDeleted: 'Tu tarjeta se ha borrado correctamente',
       subscriptionBenefits: [
         {
-          iconId: 'paintbrush',
+          iconId: 'empty-image',
           title: 'Profesionaliza tu perfil',
           description: 'Destaca sobre el resto con una foto portada y una descripción de lo que ofreces',
         },
         {
-          iconId: 'magnet',
+          iconId: 'empty-image',
           title: 'Conecta con más clientes',
           description: 'Comparte con millones de potenciales compradores tu teléfono y tu página web',
         },
         {
-          iconId: 'watch',
+          iconId: 'empty-image',
           title: 'Sin límite de tiempo',
           description: 'Tus artículos no expiran nunca, siempre están disponibles para una venta rápida',
         },
         {
-          iconId: 'unlocked',
+          iconId: 'empty-image',
           title: 'Sin compromiso',
           description: 'Puedes cancelar la suscripción cuando quieras, sin penalizaciones de ningún tipo',
         },
