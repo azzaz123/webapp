@@ -1,8 +1,8 @@
 import { OptionsApiOrigin } from './option-api-origin.interface';
-import { CAR_FILTER_ID } from '../../../enums/filter-ids/cars.enum';
-import { FASHION_FILTER_ID } from '../../../enums/filter-ids/fashion-n-accessories.enum';
-import { REAL_ESTATE_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/real-estate-configuration-ids.enum';
-import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
+import { REAL_ESTATE_CONFIGURATION_ID } from '../../../enums/configuration-ids/real-estate-configuration-ids.enum';
+import { COMMON_CONFIGURATION_ID } from '../../../enums/configuration-ids/common-configuration-ids.enum';
+import { CAR_CONFIGURATION_ID } from '../../../enums/configuration-ids/car-configuration-ids';
+import { FASHION_CONFIGURATION_ID } from '../../../enums/configuration-ids/fashion-configuration-ids.enum';
 
 export const OPTIONS_ORIGIN_CONFIGURATION: Record<string, OptionsApiOrigin | 'hardcoded'> = {
   [COMMON_CONFIGURATION_ID.POSTED_AGO]: 'hardcoded',
@@ -43,32 +43,32 @@ export const OPTIONS_ORIGIN_CONFIGURATION: Record<string, OptionsApiOrigin | 'ha
     paramsFromRelatedFilters: ['type'],
   },
 
-  [CAR_FILTER_ID.SEATS]: 'hardcoded',
-  [CAR_FILTER_ID.DOORS]: 'hardcoded',
-  [CAR_FILTER_ID.BRAND_N_MODEL]: {
+  [CAR_CONFIGURATION_ID.SEATS]: 'hardcoded',
+  [CAR_CONFIGURATION_ID.DOORS]: 'hardcoded',
+  [CAR_CONFIGURATION_ID.BRAND_N_MODEL]: {
     apiMethod: 'getCarBrandsAndModels',
     mapperMethod: 'formatCarsBrandModel',
   },
-  [CAR_FILTER_ID.BODY]: {
+  [CAR_CONFIGURATION_ID.BODY]: {
     apiMethod: 'getCarBodyTypeKeys',
     mapperMethod: 'formatIconOptions',
   },
-  [CAR_FILTER_ID.ENGINE]: {
+  [CAR_CONFIGURATION_ID.ENGINE]: {
     apiMethod: 'getCarEngineKeys',
     mapperMethod: 'formatIconOptions',
   },
-  [CAR_FILTER_ID.GEARBOX]: {
+  [CAR_CONFIGURATION_ID.GEARBOX]: {
     apiMethod: 'getCarGearboxKeys',
     mapperMethod: 'formatIconOptions',
   },
 
-  [FASHION_FILTER_ID.GENDER]: 'hardcoded',
-  [FASHION_FILTER_ID.SIZE]: {
+  [FASHION_CONFIGURATION_ID.GENDER]: 'hardcoded',
+  [FASHION_CONFIGURATION_ID.SIZE]: {
     apiMethod: 'getFashionSizeKeysByObjectId',
     mapperMethod: 'formatSizeNGender',
     paramsFromRelatedFilters: ['object_type_id'],
   },
-  [FASHION_FILTER_ID.BRAND]: {
+  [FASHION_CONFIGURATION_ID.BRAND]: {
     apiMethod: 'getFashionBrandsByObjectTypeId',
     mapperMethod: 'formatFashionBrand',
     paramsFromRelatedFilters: ['object_type_id'],
