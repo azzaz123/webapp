@@ -16,11 +16,11 @@ import { ToggleFilterComponent } from './toggle-filter.component';
   template: `
     <div>
       <h1>Bubble variant</h1>
-      <tsl-toggle-filter [variant]="${FILTER_VARIANT.BUBBLE}" [value]="value" [config]="config" (change)="changeBubble($event)">
+      <tsl-toggle-filter [variant]="${FILTER_VARIANT.BUBBLE}" [value]="value" [config]="config" (valueChange)="changeBubble($event)">
       </tsl-toggle-filter>
       <h1>Content variant</h1>
       <div style="border: 1px dashed black; background-color: white">
-        <tsl-toggle-filter [variant]="${FILTER_VARIANT.CONTENT}" [value]="value" [config]="config" (change)="changeContent($event)">
+        <tsl-toggle-filter [variant]="${FILTER_VARIANT.CONTENT}" [value]="value" [config]="config" (valueChange)="changeContent($event)">
         </tsl-toggle-filter>
       </div>
     </div>
@@ -59,7 +59,7 @@ export const Default = Template.bind({});
 Default.args = {
   config: {
     mapKey: {
-      key: 'toggle',
+      key: 'warranty',
     },
     title: 'Warranty',
     icon: '/assets/icons/joke.svg',

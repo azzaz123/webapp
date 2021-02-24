@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { AbstractFilter } from '../abstract-filter/abstract-filter';
 import { ToggleFilterConfig } from './interfaces/toggle-filter-config.interface';
 import { ToggleFilterParams } from './interfaces/toggle-filter-params.interface';
@@ -7,41 +7,46 @@ import { ToggleFilterParams } from './interfaces/toggle-filter-params.interface'
   selector: 'tsl-toggle-filter',
   templateUrl: './toggle-filter.component.html',
   styleUrls: ['./toggle-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToggleFilterComponent extends AbstractFilter<ToggleFilterParams> implements OnChanges {
   @Input() config: ToggleFilterConfig;
 
-  toggle: boolean;
+  public toggle: boolean;
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('changes1!', changes.value);
     if (!changes.value?.firstChange && this.hasValueChanged(changes.value.previousValue, changes.value.currentValue)) {
       if (this.value.length > 0) {
-        console.log('changes!');
+        this.toggle = this.getValue('key') === 'true' ? true : false;
       } else {
         this.handleClear();
       }
     }
   }
 
-  valueChange(): void {
-    this.setValue(this.toggle);
-    this.change.emit();
-  }
-  handleClick(): void {
-    console.log('toggleValue');
-    this.toggle = !this.toggle;
-    this.valueChange();
+  public handleChange(): void {
+    this.emitChange();
   }
 
-  handleClear(): void {
+  public handleClick(): void {
+    this.toggle = !this.toggle;
+    this.toggle ? this.handleChange() : this.handleClear();
+  }
+
+  public handleClear(): void {
     this.toggle = false;
-    this.value = [];
-    this.clear.emit();
+    this.emitChange();
+  }
+
+  public hasValue(): boolean {
+    return this.toggle;
   }
 
   private setValue(value: boolean): void {
     this.value = [{ key: this.config.mapKey.key, value: value.toString() }];
+  }
+
+  private emitChange(): void {
+    this.setValue(this.toggle);
+    this.valueChange.emit(this.value);
   }
 }
