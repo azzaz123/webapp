@@ -1,11 +1,10 @@
-import { Observable, interval, zip } from 'rxjs';
-import { filter, map, switchMap, take } from 'rxjs/operators';
-
 import { Injectable } from '@angular/core';
 import { ADS_SOURCES } from '@core/ads/constants';
-import { AdSlot } from '@core/ads/models';
 import { AmazonPublisherService, CriteoService, GooglePublisherTagService } from '@core/ads/vendors';
 import { LoadExternalLibsService } from '@core/load-external-libs/load-external-libs.service';
+import { interval, Observable, zip } from 'rxjs';
+import { concatMap, filter, map, take, tap } from 'rxjs/operators';
+import { DidomiService } from './../../vendors/didomi/didomi.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,39 +14,41 @@ export class LoadAdsService {
     private loadExternalLibsService: LoadExternalLibsService,
     private googlePublisherTagService: GooglePublisherTagService,
     private criteoService: CriteoService,
-    private amazonPublisherService: AmazonPublisherService
+    private amazonPublisherService: AmazonPublisherService,
+    private didomiService: DidomiService
   ) {}
 
-  public loadAds(): Observable<boolean> {
+  loadAds(): Observable<void> {
+    return zip(this.loadScriptsBySource(), this.loadDidomiLib()).pipe(
+      filter((libs: boolean[]) => libs.every((lib) => lib)),
+      map(() => null)
+    );
+  }
+
+  private loadDidomiLib(): Observable<boolean> {
+    return this.didomiService.loadDidomiLib().pipe(concatMap(() => this.checkLibIsDefined(() => this.didomiService.isLibraryRefDefined())));
+  }
+
+  private loadScriptsBySource(): Observable<boolean> {
     return this.loadExternalLibsService.loadScriptBySource(ADS_SOURCES).pipe(
-      switchMap(() => zip(this.checkLibraryGoogle(), this.checkLibraryAmazon(), this.checkLibraryCriteo())),
-      map((libs: boolean[]) => libs.every((lib) => lib))
+      concatMap(() => this.checkAllLibsBySource()),
+      filter((libs: boolean) => libs),
+      tap(() => this.amazonPublisherService.init())
     );
   }
 
-  public setSlots(slots: AdSlot[]): void {
-    this.googlePublisherTagService.init(slots);
+  private checkAllLibsBySource(): Observable<boolean> {
+    return zip(
+      this.checkLibIsDefined(() => this.googlePublisherTagService.isLibraryRefDefined()),
+      this.checkLibIsDefined(() => this.amazonPublisherService.isLibraryRefDefined()),
+      this.checkLibIsDefined(() => this.criteoService.isLibraryRefDefined())
+    ).pipe(map((libs: boolean[]) => libs.every((lib: boolean) => lib)));
   }
 
-  private checkLibraryGoogle(): Observable<boolean> {
+  private checkLibIsDefined(fn: () => boolean): Observable<boolean> {
     return interval(100).pipe(
-      map(() => this.googlePublisherTagService.isLibraryRefDefined()),
-      filter((isLoaded: boolean) => isLoaded),
-      take(1)
-    );
-  }
-  private checkLibraryAmazon(): Observable<boolean> {
-    return interval(100).pipe(
-      map(() => this.amazonPublisherService.isLibraryRefDefined()),
-      filter((isLoaded: boolean) => isLoaded),
-      take(1)
-    );
-  }
-
-  private checkLibraryCriteo(): Observable<boolean> {
-    return interval(100).pipe(
-      map(() => this.criteoService.isLibraryRefDefined()),
-      filter((isLoaded: boolean) => isLoaded),
+      map(() => fn()),
+      filter((defined: boolean) => defined),
       take(1)
     );
   }

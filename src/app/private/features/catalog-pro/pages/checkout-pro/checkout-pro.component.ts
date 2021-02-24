@@ -1,4 +1,4 @@
-import { CalendarDates } from './../../core/calendar-dates';
+import { CalendarDates } from '../../core/calendar-dates';
 import { Component, OnInit } from '@angular/core';
 import { ItemWithProducts } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';

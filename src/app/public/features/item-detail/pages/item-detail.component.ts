@@ -8,7 +8,7 @@ import { ItemDetail } from '../interfaces/item-detail.interface';
 import { FacebookShare } from '@shared/social-share/interfaces/facebook-share.interface';
 import { TwitterShare } from '@shared/social-share/interfaces/twitter-share.interface';
 import { EmailShare } from '@shared/social-share/interfaces/email-share.interface';
-import { ItemDetailService } from '../core/services/item-detail.service';
+import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
 import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
@@ -18,6 +18,9 @@ import { Observable } from 'rxjs';
 import { Image, UserLocation } from '@core/user/user-response.interface';
 import { finalize } from 'rxjs/operators';
 import { APP_PATHS } from 'app/app-routing-constants';
+import { CounterSpecifications } from '../components/item-specifications/interfaces/item.specifications.interface';
+import { MapSpecificationsService } from '../core/services/map-specifications/map-specifications.service';
+import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { CarouselSlide } from '@public/shared/components/carousel-slides/carousel-slide.interface';
 import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
 
@@ -40,6 +43,7 @@ export class ItemDetailComponent implements OnInit {
   public bigImages: string[];
   public itemLocation: ItemDetailLocation;
   public recommendedItems$: Observable<RecommendedItemsBodyResponse>;
+  public itemSpecifications: CounterSpecifications[];
   public itemDetail: ItemDetail;
 
   public socialShare: {
@@ -59,7 +63,9 @@ export class ItemDetailComponent implements OnInit {
     private itemDetailService: ItemDetailService,
     private socialMetaTagsService: SocialMetaTagService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private mapSpecificationsService: MapSpecificationsService,
+    private typeCheckService: TypeCheckService
   ) {}
 
   ngOnInit(): void {
@@ -106,13 +112,14 @@ export class ItemDetailComponent implements OnInit {
     this.calculateItemCoordinates();
     this.showItemImages();
     this.socialShareSetup(this.itemDetail.item);
+    this.generateItemSpecifications();
     this.setItemRecommendations();
   }
 
   private calculateItemCoordinates(): void {
     const detailLocation: UserLocation = this.itemDetail.item?.location || this.itemDetail.user?.location;
     this.itemLocation = {
-      zip: detailLocation.zip,
+      zip: detailLocation.zip || detailLocation.postal_code,
       city: detailLocation.city,
       latitude: detailLocation.approximated_latitude,
       longitude: detailLocation.approximated_longitude,
@@ -151,8 +158,8 @@ export class ItemDetailComponent implements OnInit {
       message: $localize`:@@ItemDetailShareEmailText:This may interest you - ` + item.description,
     };
 
-    this.socialMetaTagsService.insertTwitterMetaTags(item.title, item.description, item.mainImage.urls_by_size.medium);
-    this.socialMetaTagsService.insertFacebookMetaTags(item.title, item.description, item.mainImage.urls_by_size.medium, item.webLink);
+    this.socialMetaTagsService.insertTwitterMetaTags(item.title, item.description, item.mainImage?.urls_by_size?.medium);
+    this.socialMetaTagsService.insertFacebookMetaTags(item.title, item.description, item.mainImage?.urls_by_size?.medium, item.webLink);
   }
 
   private calculateItemLocationSpecifications(): void {
@@ -166,6 +173,14 @@ export class ItemDetailComponent implements OnInit {
     const CATEGORIES_WITH_RECOMMENDATIONS = [CATEGORY_IDS.CAR, CATEGORY_IDS.FASHION_ACCESSORIES];
 
     this.showItemRecommendations = CATEGORIES_WITH_RECOMMENDATIONS.includes(this.itemDetail?.item?.categoryId);
+  }
+
+  private generateItemSpecifications(): void {
+    if (this.typeCheckService.isCar(this.itemDetail?.item)) {
+      this.itemSpecifications = this.mapSpecificationsService.mapCarSpecifications(this.itemDetail?.item);
+    } else if (this.typeCheckService.isRealEstate(this.itemDetail?.item)) {
+      this.itemSpecifications = this.mapSpecificationsService.mapRealestateSpecifications(this.itemDetail?.item);
+    }
   }
 
   set approximatedLocation(isApproximated: boolean) {

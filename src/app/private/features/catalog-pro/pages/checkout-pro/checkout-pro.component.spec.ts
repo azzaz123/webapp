@@ -9,7 +9,7 @@ import { MOCK_SELECTED_DATES, MOCK_DATE, MOCK_DATE2 } from '@fixtures/calendar.f
 import { CartService } from '@shared/catalog/cart/cart.service';
 import { CartPro } from '@shared/catalog/cart/cart-pro';
 import { NgbDatepickerConfig, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
-import { CalendarDates } from '@features/catalog-pro/core/calendar-dates';
+import { CalendarDates } from '@private/features/catalog-pro/core/calendar-dates';
 
 describe('CheckoutProComponent', () => {
   let component: CheckoutProComponent;

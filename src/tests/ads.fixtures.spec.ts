@@ -7,11 +7,13 @@ export const MockAdsService = {
   init: () => {},
   refresh: () => {},
   displayAdBySlotId: (adSlotId) => {},
+  setSlots: (adSlots) => {},
 };
 
 export const MockAmazonPublisherService = {
   isLibraryRefDefined: () => true,
   requestBid: () => of(null),
+  init: () => {},
 };
 
 export const MockCriteoService = {
@@ -25,11 +27,18 @@ export const MockGooglePublisherTagService = {
   setTargetingByAdsKeywords: () => {},
   setAdsSegmentation: () => {},
   displayAdBySlotId: (id: AdSlotId) => {},
+  setSlots: (slots: AdSlot) => {},
+  refreshAds: () => {},
 };
 
 export const MockLoadAdsService = {
   loadAds: () => of(true),
-  setSlots(slots: AdSlot[]): void {},
+};
+
+export const MockDidomiService = {
+  allowSegmentation$: of(true),
+  loadDidomiLib: () => of(null),
+  isLibraryRefDefined: () => true,
 };
 
 export const MockAdsKeywords: AdKeyWords = {

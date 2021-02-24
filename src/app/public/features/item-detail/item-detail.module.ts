@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ItemDetailService } from './core/services/item-detail.service';
+import { ItemDetailService } from './core/services/item-detail/item-detail.service';
 import { itemDetailRoutedComponents, ItemDetailRoutingModule } from './item-detail-routing.module';
 import { AdsModule } from '@public/shared/components/ads/ads.module';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
@@ -17,6 +17,8 @@ import { ItemFullScreenCarouselModule } from './components/item-fullscreen-carou
 import { RecommendedItemsModule } from './components/recommended-items/recommended-items.module';
 import { ItemDetailHeaderModule } from './components/item-detail-header/item-detail-header.module';
 import { PublicPipesModule } from '@public/core/pipes/public-pipes.module';
+import { ItemSpecificationsModule } from './components/item-specifications/item-specifications.module';
+import { MapSpecificationsService } from './core/services/map-specifications/map-specifications.service';
 
 @NgModule({
   declarations: [itemDetailRoutedComponents],
@@ -33,7 +35,16 @@ import { PublicPipesModule } from '@public/core/pipes/public-pipes.module';
     RecommendedItemsModule,
     ItemDetailHeaderModule,
     PublicPipesModule,
+    ItemSpecificationsModule,
   ],
-  providers: [ItemDetailService, ItemApiService, PublicUserApiService, RecommenderApiService, MapItemService, SocialMetaTagService],
+  providers: [
+    ItemDetailService,
+    ItemApiService,
+    PublicUserApiService,
+    RecommenderApiService,
+    MapItemService,
+    SocialMetaTagService,
+    MapSpecificationsService,
+  ],
 })
 export class ItemDetailModule {}
