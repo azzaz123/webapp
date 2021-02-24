@@ -22,6 +22,7 @@ import { SoldModalComponent } from '@shared/modals/sold-modal/sold-modal.compone
 import { CookieService } from 'ngx-cookie';
 import { of } from 'rxjs';
 import { ItemDetailService } from '../../core/services/item-detail/item-detail.service';
+import { MOCK_ITEM_7 } from '@public/shared/components/item-card/item-card.mock.stories';
 
 import { ItemDetailHeaderComponent } from './item-detail-header.component';
 
@@ -131,6 +132,19 @@ describe('ItemDetailHeaderComponent', () => {
   });
 
   describe('when is our OWN item...', () => {
+    describe('and it is featured...', () => {
+      it('should ask for the active purchases', () => {
+        spyOn(itemDetailService, 'getActivePurchases').and.returnValue(of(PURCHASES));
+        component.isOwner = true;
+        component.item = MOCK_ITEM_7;
+
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        expect(itemDetailService.getActivePurchases).toHaveBeenCalled();
+      });
+    });
+
     describe('and the item is sold, onhold, expired or not available...', () => {
       beforeEach(() => {
         component.isOwner = true;
@@ -228,15 +242,19 @@ describe('ItemDetailHeaderComponent', () => {
       });
 
       describe('when we clic on the sold item button...', () => {
+        afterEach(() => {
+          component.item.sold = false;
+        });
         it('should open the sold modal', () => {
           spyOn(component, 'soldItem').and.callThrough();
-          spyOn(modalService, 'open');
+          spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve(), componentInstance: {} });
 
           const soldButton = fixture.debugElement.query(By.css(soldButtonClass)).nativeElement;
           soldButton.click();
 
           expect(component.soldItem).toHaveBeenCalled();
           expect(modalService.open).toHaveBeenCalledWith(SoldModalComponent, { windowClass: 'sold' });
+          expect(component.item.sold).toBe(true);
         });
       });
 
@@ -245,20 +263,22 @@ describe('ItemDetailHeaderComponent', () => {
           const catalogEditURL = `/catalog/edit/`;
           const editButton = fixture.debugElement.nativeElement.querySelector(editButtonClass).getAttribute('ng-reflect-router-link');
 
-          expect(editButton).toContain(catalogEditURL + component.item.id);
+          expect(editButton).toEqual(catalogEditURL + component.item.id);
         });
       });
 
       describe('when we clic on the trash item button...', () => {
         it('should open the confirmation delete modal', () => {
+          spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve() });
           spyOn(component, 'deleteItem').and.callThrough();
-          spyOn(modalService, 'open');
+          spyOn(itemDetailService, 'deleteItem').and.returnValue(of());
 
           const trashButton = fixture.debugElement.query(By.css(trashButtonId)).nativeElement;
           trashButton.click();
 
           expect(component.deleteItem).toHaveBeenCalled();
           expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, { windowClass: 'modal-prompt' });
+          expect(itemDetailService.deleteItem).toHaveBeenCalledWith(component.item.id);
         });
       });
     });
@@ -284,10 +304,6 @@ describe('ItemDetailHeaderComponent', () => {
     });
 
     describe('and the item is NOT sold, onhold, expired or not available...', () => {
-      beforeEach(() => {
-        component.isOwner = false;
-        fixture.detectChanges();
-      });
       it('should show the chat option button', () => {
         expect(fixture.debugElement.query(By.css(chatButtonId))).toBeTruthy();
       });

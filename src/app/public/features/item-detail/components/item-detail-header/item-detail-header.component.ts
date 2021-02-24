@@ -39,7 +39,7 @@ export class ItemDetailHeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (this.item?.bumpFlags?.bumped) {
+    if (this.isOwner && this.item?.bumpFlags?.bumped) {
       this.getItemExpiredDate();
     }
     this.getUserStats();
