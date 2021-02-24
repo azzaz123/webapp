@@ -12,7 +12,7 @@ import { ITEM_ID, MOCK_ITEM_V3 } from '@fixtures/item.fixtures.spec';
 import { CustomCurrencyPipe } from '@shared/pipes';
 import { MOCK_DATE2, MOCK_DATE3 } from '@fixtures/calendar.fixtures.spec';
 import { MOCK_PROITEM3 } from '@fixtures/pro-item.fixtures.spec';
-import { CalendarDates } from '@features/catalog-pro/core/calendar-dates';
+import { CalendarDates } from '@private/features/catalog-pro/core/calendar-dates';
 
 describe('CheckoutProItemComponent', () => {
   let component: CheckoutProItemComponent;
