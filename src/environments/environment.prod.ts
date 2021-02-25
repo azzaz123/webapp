@@ -8,6 +8,7 @@ export const environment: Environment = {
   wsUrl: 'wss://mongooseimprotool-prod.wallapop.com:443/ws-xmpp',
   siteUrl: 'https://es.wallapop.com/',
   appboy: '47b54d36-7a86-4c05-9bfc-2d7b8aadd1ce',
+  cookieSuffix: '',
   clickStreamURL: 'https://collector.wallapop.com/clickstream.json/sendEvents',
   stripeKey: 'pk_live_jXjzhS3WcTU1jg0QKkkUF8Dv00Ar0ATFyN',
   mParticleKey: 'us1-04eb03d316b54f4f99265340abe886e6',

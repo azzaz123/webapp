@@ -1,12 +1,14 @@
 import { HttpParams } from '@angular/common/http';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
+import { ComponentFixtureAutoDetect, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { Item } from '@core/item/item';
+import { MockReleaseVersion } from '@core/release-version/release-version.fixtures.spec';
+import { ReleaseVersionService } from '@core/release-version/release-version.service';
 import { environment } from '@environments/environment';
 import { APP_VERSION } from '@environments/version';
-import { PhoneMethod } from '@features/chat/core/model';
+import { PhoneMethod } from '@private/features/chat/core/model';
 import { ITEM_LOCATION, MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import {
   CUSTOM_REASON,
@@ -38,6 +40,7 @@ import { Image, UserLocation } from './user-response.interface';
 import { UserStats } from './user-stats.interface';
 import {
   LOCAL_STORAGE_TRY_PRO_SLOT,
+  LOGOUT_ENDPOINT,
   PROTOOL_EXTRA_INFO_ENDPOINT,
   UserService,
   USER_BY_ID_ENDPOINT,
@@ -63,6 +66,7 @@ describe('Service: User', () => {
   let accessTokenService: AccessTokenService;
   let event: EventService;
   let cookieService: CookieService;
+  let releaseVersionService: ReleaseVersionService;
   let permissionService: NgxPermissionsService;
   let featureflagService: FeatureflagService;
   let httpMock: HttpTestingController;
@@ -79,6 +83,14 @@ describe('Service: User', () => {
         {
           provide: 'SUBDOMAIN',
           useValue: 'www',
+        },
+        {
+          provide: ReleaseVersionService,
+          useValue: {
+            getReleaseVersion() {
+              return MockReleaseVersion;
+            },
+          },
         },
         {
           provide: CookieService,
@@ -116,6 +128,7 @@ describe('Service: User', () => {
     service = TestBed.inject(UserService);
     accessTokenService = TestBed.inject(AccessTokenService);
     accessTokenService.storeAccessToken(null);
+    releaseVersionService = TestBed.inject(ReleaseVersionService);
     event = TestBed.inject(EventService);
     cookieService = TestBed.inject(CookieService);
     permissionService = TestBed.inject(NgxPermissionsService);
@@ -280,7 +293,7 @@ describe('Service: User', () => {
     it('should call the me/online endpoint ONCE when the client connects and stop after the user has logged out', fakeAsync(() => {
       service.sendUserPresenceInterval(intervalValue);
       tick(intervalValue * callTimes);
-      service.logout();
+      accessTokenService.deleteAccessToken();
       tick(intervalValue * 4);
       let requests = httpMock.match(onlineUrl);
       requests.forEach((request) => request.flush({}));
@@ -304,28 +317,39 @@ describe('Service: User', () => {
     beforeEach(() => {
       spyOn(permissionService, 'flushPermissions').and.returnValue({});
       spyOn(accessTokenService, 'deleteAccessToken').and.callThrough();
-      accessTokenService.storeAccessToken('token');
 
+      accessTokenService.storeAccessToken('token');
       event.subscribe(EventService.USER_LOGOUT, (param) => (redirectUrl = param));
       cookieService.put('publisherId', 'someId');
-
-      service.logout('redirect_url');
     });
 
-    it('should call deleteAccessToken', () => {
-      expect(accessTokenService.deleteAccessToken).toHaveBeenCalled();
+    it('should call logout endpoint', () => {
+      const expectedUrl = `${environment.baseUrl}${LOGOUT_ENDPOINT}`;
+      const deviceAccessToken = accessTokenService.deviceAccessToken;
+
+      service.logout().subscribe();
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush({});
+
+      expect(req.request.url).toEqual(expectedUrl);
+      expect(req.request.method).toEqual('POST');
+      expect(req.request.headers.get('DeviceAccessToken')).toEqual(deviceAccessToken);
+      expect(req.request.headers.get('DeviceOS')).toEqual('0');
+      expect(req.request.headers.get('AppBuild')).toEqual(MockReleaseVersion);
     });
 
-    it('should call event passing redirect url', () => {
-      expect(redirectUrl).toBe('redirect_url');
+    it('should call deleteAccessToken and call event passing direct url and call flush permissions', () => {
+      spyOn(service, 'logout').and.returnValue(of());
+
+      service.logout('redirect_url').subscribe(() => {
+        expect(accessTokenService.deleteAccessToken).toHaveBeenCalled();
+        expect(redirectUrl).toBe('redirect_url');
+        expect(permissionService.flushPermissions).toHaveBeenCalled();
+      });
     });
 
     it('should remove publisherId from cookie', () => {
       expect(cookieService['publisherId']).not.toBeDefined();
-    });
-
-    it('should call flush permissions', () => {
-      expect(permissionService.flushPermissions).toHaveBeenCalled();
     });
   });
 
