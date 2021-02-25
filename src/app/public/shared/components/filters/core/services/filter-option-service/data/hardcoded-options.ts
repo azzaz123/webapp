@@ -14,11 +14,68 @@ type Configurations =
 
 type HardcodedOptions = Record<Configurations, FilterOption[]>;
 
+// TODO: This is currently in none of the modules. We need to launch i18n script when ready
+// TODO: Icons will be added when specific filters are implemented so we can see them correctly
+
 export const HARDCODED_OPTIONS: HardcodedOptions = {
-  [COMMON_CONFIGURATION_ID.POSTED_AGO]: [],
-  [REAL_ESTATE_CONFIGURATION_ID.ROOMS]: [],
-  [REAL_ESTATE_CONFIGURATION_ID.BATHROOMS]: [],
-  [CAR_CONFIGURATION_ID.SEATS]: [],
-  [CAR_CONFIGURATION_ID.DOORS]: [],
-  [FASHION_CONFIGURATION_ID.GENDER]: [],
+  [COMMON_CONFIGURATION_ID.POSTED_AGO]: [
+    {
+      value: '24h',
+      label: $localize`:@@FilterOptionPostedAgo_hours:Hours`,
+    },
+    {
+      value: '7d',
+      label: $localize`:@@FilterOptionPostedAgo_days:Days`,
+    },
+    {
+      value: '30d',
+      label: $localize`:@@FilterOptionPostedAgo_days:Days`,
+    },
+  ],
+  [REAL_ESTATE_CONFIGURATION_ID.ROOMS]: [
+    {
+      value: '1',
+      label: '',
+    },
+    {
+      value: '2',
+      label: '',
+    },
+    {
+      value: '3',
+      label: '',
+    },
+    {
+      value: '4',
+      label: '',
+    },
+  ],
+  [REAL_ESTATE_CONFIGURATION_ID.BATHROOMS]: [
+    {
+      value: '1',
+      label: '',
+    },
+    {
+      value: '2',
+      label: '',
+    },
+    {
+      value: '3',
+      label: '',
+    },
+    {
+      value: '4',
+      label: '',
+    },
+  ],
+  [FASHION_CONFIGURATION_ID.GENDER]: [
+    {
+      value: 'male',
+      label: $localize`:@@FilterOptionGender_male:Male`,
+    },
+    {
+      value: 'female',
+      label: $localize`:@@FilterOptionGender_female:Female`,
+    },
+  ],
 };
