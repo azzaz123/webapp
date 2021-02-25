@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 
 import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { ChatSignal, ChatSignalType, InboxMessage, MessageStatus, MessageType } from '@features/chat/core/model';
+import { ChatSignal, ChatSignalType, InboxMessage, MessageStatus, MessageType } from '@private/features/chat/core/model';
 import { of } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { MockRemoteConsoleService } from '../../../tests';

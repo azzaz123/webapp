@@ -25,7 +25,8 @@
     "mparticle": "yarn install && yarn upgrade mparticle_json_validation && node scripts/mparticle.js",
     "analyze-bundle": "yarn buildprod --statsJson=true && yarn webpack-bundle-analyzer dist/es/stats.json",
     "libphonenumber-metadata": "./scripts/generate-metadata/generate-metadata.sh",
-    "storybook": "start-storybook -p 6006 -s ./src/stories/assets,./src"
+    "storybook": "start-storybook -p 6006 -s ./src/stories/assets,./src",
+    "storybook-beta": "./scripts/docknum/update.sh beta && start-storybook"
   },
   "private": true,
   "dependencies": {

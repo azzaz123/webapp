@@ -22,7 +22,7 @@ import { PhoneMethodResponse } from './phone-method.interface';
 import { APP_VERSION } from '../../../environments/version';
 import { UserReportApi } from './user-report.interface';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { InboxUser, InboxItem } from '@features/chat/core/model';
+import { InboxUser, InboxItem } from '@private/features/chat/core/model';
 import { ReleaseVersionService } from '@core/release-version/release-version.service';
 
 export const LOGOUT_ENDPOINT = 'shnm-portlet/api/v1/access.json/logout2';
