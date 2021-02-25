@@ -1199,7 +1199,7 @@
   <translation id="FooterSocialFacebookLabel">wallapop, la web y app para comprar y vender, también está en Facebook</translation>
   <translation id="FooterSocialTwitterLabel">wallapop, la web y app para comprar y vender, también está en Twitter</translation>
   <translation id="FooterSocialInstagramLabel">wallapop, la web y app para comprar y vender, también está en Instagram</translation>
-  
+
   <translation id="EmptyHistory">Tu historial está vacío</translation>
   <translation id="LoadingData">Estamos cargando tu histórico de facturas...</translation>
   <translation id="NotLoadedInvoices">Lo sentimos, en estos momentos no podemos cargar tus facturas. Intenta de nuevo más tarde.</translation>
@@ -1299,4 +1299,8 @@
   <translation id="TryProSlotDescription">¿Quieres impulsar tu negocio online? ¡Conviértete en PRO!</translation>
   <translation id="Buy">Venta</translation>
   <translation id="Rent">Alquiler</translation>
+  <translation id="FilterOptionPostedAgo_hours">Horas</translation>
+  <translation id="FilterOptionPostedAgo_days">Días</translation>
+  <translation id="FilterOptionGender_male">Hombre</translation>
+  <translation id="FilterOptionGender_female">Mujer</translation>
 </translationbundle>
