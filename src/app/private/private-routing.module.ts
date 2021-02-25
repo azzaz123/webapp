@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PERMISSIONS } from '@core/user/user';
 import { NgxPermissionsGuard } from 'ngx-permissions';
-import { CheckUserPermissionsResolver } from './core/resolvers/check-user-permissions.resolver';
 import { PrivateComponent } from './private.component';
 
 const routes: Routes = [
@@ -16,26 +15,26 @@ const routes: Routes = [
           { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
           {
             path: 'help',
-            loadChildren: () => import('app/features/help/help.module').then((m) => m.HelpModule),
+            loadChildren: () => import('@private/features/help/help.module').then((m) => m.HelpModule),
           },
           {
             path: 'dashboard',
-            loadChildren: () => import('app/features/dashboard/dashboard.module').then((m) => m.DashboardModule),
+            loadChildren: () => import('@private/features/dashboard/dashboard.module').then((m) => m.DashboardModule),
           },
           {
             path: 'calls',
-            loadChildren: () => import('app/features/calls/calls.module').then((m) => m.CallsModule),
+            loadChildren: () => import('@private/features/calls/calls.module').then((m) => m.CallsModule),
           },
           {
             path: 'catalog',
             children: [
               {
                 path: '',
-                loadChildren: () => import('app/features/catalog-pro/catalog-pro.module').then((m) => m.CatalogProModule),
+                loadChildren: () => import('@private/features/catalog-pro/catalog-pro.module').then((m) => m.CatalogProModule),
               },
               {
                 path: 'upload',
-                loadChildren: () => import('@features/upload/upload.module').then((m) => m.UploadModule),
+                loadChildren: () => import('@private/features/upload/upload.module').then((m) => m.UploadModule),
                 canLoad: [NgxPermissionsGuard],
                 data: {
                   isMyZone: true,
@@ -48,7 +47,7 @@ const routes: Routes = [
               },
               {
                 path: 'edit',
-                loadChildren: () => import('@features/upload/upload.module').then((m) => m.UploadModule),
+                loadChildren: () => import('@private/features/upload/upload.module').then((m) => m.UploadModule),
               },
             ],
           },
@@ -60,15 +59,15 @@ const routes: Routes = [
       },
       {
         path: 'chat',
-        loadChildren: () => import('app/features/chat/chat.module').then((m) => m.ChatModule),
+        loadChildren: () => import('@private/features/chat/chat.module').then((m) => m.ChatModule),
       },
       {
         path: 'favorites',
-        loadChildren: () => import('app/features/favorites/favorites.module').then((m) => m.FavoritesModule),
+        loadChildren: () => import('@private/features/favorites/favorites.module').then((m) => m.FavoritesModule),
       },
       {
         path: 'reviews',
-        loadChildren: () => import('app/features/reviews/reviews.module').then((m) => m.ReviewsModule),
+        loadChildren: () => import('@private/features/reviews/reviews.module').then((m) => m.ReviewsModule),
       },
       {
         path: 'wallacoins',
@@ -90,7 +89,7 @@ const routes: Routes = [
           },
           {
             path: 'upload',
-            loadChildren: () => import('@features/upload/upload.module').then((m) => m.UploadModule),
+            loadChildren: () => import('@private/features/upload/upload.module').then((m) => m.UploadModule),
             canLoad: [NgxPermissionsGuard],
             data: {
               isMyZone: true,
@@ -103,7 +102,7 @@ const routes: Routes = [
           },
           {
             path: 'edit',
-            loadChildren: () => import('@features/upload/upload.module').then((m) => m.UploadModule),
+            loadChildren: () => import('@private/features/upload/upload.module').then((m) => m.UploadModule),
           },
         ],
       },

@@ -1,32 +1,30 @@
 @import '~style/common';
 
-.arrow-down {
+.ArrowDown {
   @include square(48px);
   background-color: $blue-grey-5;
   border-radius: 50%;
 }
 
-.title {
-  font-size: $font-size-l;
-  font-weight: bold;
-}
-
-.subtitle {
-  color: $blue-grey-3;
-  font-size: $font-size-m;
-}
-
 .box-content {
   padding: 40px;
+  &__title {
+    font-size: $font-size-l;
+    font-weight: bold;
+  }
+
+  &__subtitle {
+    color: $blue-grey-3;
+    font-size: $font-size-m;
+  }
 }
 
-.benefits-content {
-  padding: 70px 116px;
-  &__item:not(:last-child) {
-    margin-bottom: 160px;
-  }
-  &__text {
-    max-width: 414px;
+.SubscriptionBenefits {
+  &__content {
+    padding: 70px 116px;
+    > :not(:last-child) {
+      margin-bottom: 160px;
+    }
   }
 }
 
@@ -37,12 +35,11 @@
 }
 
 @include media-breakpoint-up(xl) {
-  .benefits-content {
-    &__text {
-      max-width: 388px;
-    }
-    &__item:not(:last-child) {
-      margin-bottom: 180px;
+  .SubscriptionBenefits {
+    &__content {
+      > :not(:last-child) {
+        margin-bottom: 180px;
+      }
     }
   }
 }

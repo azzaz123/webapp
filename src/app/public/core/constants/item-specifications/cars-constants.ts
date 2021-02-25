@@ -1,6 +1,6 @@
 export enum CAR_SPECIFICATION_TYPE {
   SEATS = 'seats',
-  COUPE = 'coupe',
+  COUPE = 'coupe_cabrio',
   FAMILY = 'family_car',
   MINI_VAN = 'mini_van',
   SEDAN = 'sedan',
@@ -18,8 +18,8 @@ export enum CAR_SPECIFICATION_TYPE {
   GASOLINE = 'gasoline',
   AUTOMATIC = 'automatic',
   MANUAL = 'manual',
-  CONDITION_0 = 'condition_0',
-  CONDITION_1 = 'condition_1',
-  CONDITION_2 = 'condition_2',
-  CONDITION_3 = 'condition_3',
+  CONDITION_0 = 'brand_new',
+  CONDITION_1 = 'mint',
+  CONDITION_2 = 'some_blow',
+  CONDITION_3 = 'crappy',
 }

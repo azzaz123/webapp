@@ -5,21 +5,14 @@
       <h4 class="mb-2 title" i18n="@@wallapopPro">Wallapop PRO</h4>
       <p class="mb-2 subtitle" i18n="@@SubscriptionBenefitsSubtitle">Want to boost your online business? Become a PRO!</p>
       <tsl-svg-icon src="/assets/icons/arrow-waterfall.svg" alt="arrow-down"
-        class="arrow-down d-flex align-items-center justify-content-center"></tsl-svg-icon>
+        class="ArrowDown d-flex align-items-center justify-content-center"></tsl-svg-icon>
     </div>
   </div>
   <div class="box">
-    <div class="benefits-content">
-      <div *ngFor="let benefit of benefits; let i = index"
-        class="d-flex justify-content-center justify-content-xl-between row benefits-content__item"
-        [ngClass]="{'flex-row-reverse': i % 2}">
-        <div class="d-flex justify-content-center justify-content-xl-start" [ngClass]="{'justify-content-xl-end': i % 2}">
-          <tsl-svg-icon src="/assets/images/subscriptions/{{benefit.iconId}}.svg"></tsl-svg-icon>
-        </div>
-        <div class="d-flex flex-column mt-5 text-center text-xl-left px-6 benefits-content__text">
-          <h4 class="title">{{benefit.title}}</h4>
-          <div class="subtitle"><b>{{benefit.description}}</b></div>
-        </div>
+    <div class="SubscriptionBenefits__content">
+      <div *ngFor="let benefit of benefits; let i = index">
+        <tsl-subscription-benefit img="/assets/images/subscriptions/{{benefit.iconId}}.svg" [title]="benefit.title" [description]="benefit.description" [leftAligment]="i % 2">
+        </tsl-subscription-benefit>
       </div>
     </div>
   </div>
