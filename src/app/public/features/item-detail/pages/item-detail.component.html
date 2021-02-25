@@ -27,9 +27,9 @@
                         <tsl-item-specifications [itemSpecifications]="itemSpecifications"
                             [isCar]="typeCheckService.isCar(this.itemDetail?.item)"></tsl-item-specifications>
                     </div>
-                    <p *ngIf="itemDetail?.item?.description" class="ItemDetail__description py-3 mb-0 text-break">
-                        {{itemDetail.item.description}}
-                    </p>
+                    <div *ngIf="itemDetail?.item?.description">
+                        <p class="ItemDetail__description py-3 mb-0 text-break">{{itemDetail.item.description}}</p>
+                    </div>
                     <div class="ItemDetail__stats py-3">
                         <div class="d-inline-block">
                             {{ itemDetail?.item?.modifiedDate | date:'longDate' }}

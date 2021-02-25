@@ -323,7 +323,7 @@ describe('ItemDetailComponent', () => {
     });
 
     it('should print their description', () => {
-      expect(el.querySelector('.ItemDetail__description').innerHTML.trim()).toEqual(component.itemDetail.item.description);
+      expect(el.querySelector('.ItemDetail__description').innerHTML).toEqual(component.itemDetail.item.description);
     });
 
     describe('when the favorites and views are NOT defined...', () => {
