@@ -81,7 +81,7 @@ describe('ItemDetailHeaderComponent', () => {
             deleteItem: () => {
               return of();
             },
-            getActivePurchases: () => {
+            getItemActivePurchases: () => {
               return of(PURCHASES);
             },
           },
@@ -134,14 +134,14 @@ describe('ItemDetailHeaderComponent', () => {
   describe('when is our OWN item...', () => {
     describe('and it is featured...', () => {
       it('should ask for the active purchases', () => {
-        spyOn(itemDetailService, 'getActivePurchases').and.returnValue(of(PURCHASES));
+        spyOn(itemDetailService, 'getItemActivePurchases').and.returnValue(of(PURCHASES));
         component.isOwner = true;
         component.item = MOCK_ITEM_7;
 
         component.ngOnInit();
         fixture.detectChanges();
 
-        expect(itemDetailService.getActivePurchases).toHaveBeenCalled();
+        expect(itemDetailService.getItemActivePurchases).toHaveBeenCalled();
       });
     });
 

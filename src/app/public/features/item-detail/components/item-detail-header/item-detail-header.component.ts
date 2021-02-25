@@ -93,8 +93,10 @@ export class ItemDetailHeaderComponent implements OnInit {
   }
 
   private getItemExpiredDate(): void {
-    this.itemDetailService.getActivePurchases().subscribe((purchases) => {
-      this.item.bumpExpiringDate = purchases.find((purchase) => purchase.item_id === this.item.id)?.expiration_date;
+    this.itemDetailService.getItemActivePurchases(this.item.id).subscribe((purchases) => {
+      if (purchases?.length) {
+        this.item.bumpExpiringDate = purchases[0].expiration_date;
+      }
     });
   }
 

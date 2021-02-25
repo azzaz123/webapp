@@ -55,8 +55,8 @@ export class ItemDetailService {
     return this.itemApiService.reserveItem(itemId, reserved);
   }
 
-  public getActivePurchases(): Observable<Purchase[]> {
-    return this.itemApiService.getActivePurchases();
+  public getItemActivePurchases(id: string): Observable<Purchase[]> {
+    return this.itemApiService.getItemActivePurchases(id);
   }
 
   private mapItem(itemResponse: ItemResponse, itemCounters: ItemCounters, bumpFlags: ItemVisibilityFlags): Item {

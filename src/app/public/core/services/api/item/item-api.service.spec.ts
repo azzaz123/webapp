@@ -133,11 +133,11 @@ describe('ItemApiService', () => {
     });
   });
 
-  describe('getActivePurchases', () => {
+  describe('getItemActivePurchases', () => {
     it('should get the active item purchases', () => {
-      const expectedUrl = GET_ITEM_REMAINING_TIME;
+      const expectedUrl = GET_ITEM_REMAINING_TIME(ITEM_ID);
 
-      itemApiService.getActivePurchases().subscribe();
+      itemApiService.getItemActivePurchases(ITEM_ID).subscribe();
       const req = httpMock.expectOne(expectedUrl);
       req.flush([]);
 
