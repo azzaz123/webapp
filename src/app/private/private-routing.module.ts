@@ -59,7 +59,7 @@ const routes: Routes = [
       },
       {
         path: 'chat',
-        loadChildren: () => import('app/features/chat/chat.module').then((m) => m.ChatModule),
+        loadChildren: () => import('@private/features/chat/chat.module').then((m) => m.ChatModule),
       },
       {
         path: 'favorites',
