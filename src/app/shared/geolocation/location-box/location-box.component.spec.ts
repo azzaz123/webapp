@@ -2,10 +2,10 @@ import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angul
 import { LocationBoxComponent } from './location-box.component';
 import { UserService } from '../../../core/user/user.service';
 import { of } from 'rxjs';
-import { USER_LOCATION } from '../../../features/upload/pages/upload-product/upload-product.component.spec';
+import { USER_LOCATION } from '@private/features/upload/pages/upload-product/upload-product.component.spec';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MOCK_USER } from '../../../../tests/user.fixtures.spec';
+import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 
 describe('LocationBoxComponent', () => {
   let component: LocationBoxComponent;

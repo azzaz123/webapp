@@ -1,5 +1,5 @@
-import { MOCK_REVIEWS, REVIEWS_RESPONSE } from '../../../../../../tests/review.fixtures.spec';
-import { CATEGORY_DATA_WEB } from '../../../../../../tests/category.fixtures.spec';
+import { MOCK_REVIEWS, REVIEWS_RESPONSE } from '@fixtures/review.fixtures.spec';
+import { CATEGORY_DATA_WEB } from '@fixtures/category.fixtures.spec';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReviewItemComponent } from './review-item.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
