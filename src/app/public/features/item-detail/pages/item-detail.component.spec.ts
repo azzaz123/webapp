@@ -46,6 +46,7 @@ import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-c
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 import { AdsService } from '@core/ads/services';
+import { AD_TOP_ITEM_DETAIL } from '../core/ads/item-detail-ads.config';
 
 describe('ItemDetailComponent', () => {
   const topSkyTag = 'tsl-top-sky';
@@ -298,6 +299,17 @@ describe('ItemDetailComponent', () => {
         Object.keys(component.socialShare).forEach((socialShareKey: string) => {
           expect(socialShareElement[socialShareKey]).toEqual(component.socialShare[socialShareKey]);
         });
+      });
+
+      it('should set ads configuration', () => {
+        spyOn(MockAdsService, 'setAdKeywords').and.callThrough();
+        spyOn(MockAdsService, 'setSlots').and.callThrough();
+
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        expect(MockAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_ITEM_DETAIL.item.categoryId.toString() });
+        expect(MockAdsService.setSlots).toHaveBeenCalledWith([AD_TOP_ITEM_DETAIL]);
       });
     });
 

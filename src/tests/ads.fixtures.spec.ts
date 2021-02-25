@@ -16,6 +16,7 @@ export const MockAdsService = {
   refresh: () => {},
   displayAdBySlotId: (adSlotId) => {},
   setSlots: (adSlots) => {},
+  setAdKeywords: (adKeywords: AdKeyWords) => {},
 };
 
 export const MockAmazonPublisherService = {
