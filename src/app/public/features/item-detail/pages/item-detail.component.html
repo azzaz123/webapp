@@ -27,7 +27,7 @@
                     <p class="ItemDetail__description py-3 mb-0 text-break">{{itemDetail?.item?.description}}</p>
                     <div class="ItemDetail__stats py-3">
                         <div class="d-inline-block">
-                            {{ itemDetail?.item?.modifiedDate | date:'longDate' }}
+                            {{ itemDetail?.item?.modifiedDate | ellapsedTime }}
                         </div>
                         <div class="float-right d-flex align-items-center ml-3">
                             <tsl-svg-icon src="/assets/icons/heart.svg" width=14 height=14></tsl-svg-icon>

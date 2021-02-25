@@ -1299,13 +1299,13 @@
   <translation id="TryProSlotDescription">¿Quieres impulsar tu negocio online? ¡Conviértete en PRO!</translation>
   <translation id="Buy">Venta</translation>
   <translation id="Rent">Alquiler</translation>
-  <translation id="EditedMinutesAgo"></translation>
-  <translation id="EditedHoursAgo"></translation>
-  <translation id="EditedOneDayAgo"></translation>
-  <translation id="EditedTwoDaysAgo"></translation>
-  <translation id="EditedThreeDaysAgo"></translation>
-  <translation id="EditedOneWeekAgo"></translation>
-  <translation id="EditedMoreTwoWeeks"></translation>
-  <translation id="EditedLessMonth"></translation>
-  <translation id="EditedMoreMonth"></translation>
+  <translation id="EditedMinutesAgo">Editado hace <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> minutos</translation>
+  <translation id="EditedHoursAgo">Editado hace <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> horas</translation>
+  <translation id="EditedOneDayAgo">Editado hace 1 día</translation>
+  <translation id="EditedTwoDaysAgo">Editado hace 2 días</translation>
+  <translation id="EditedThreeDaysAgo">Editado hace 3 días</translation>
+  <translation id="EditedOneWeekAgo">Editado esta semana</translation>
+  <translation id="EditedMoreTwoWeeks">Editado hace menos de 2 semanas</translation>
+  <translation id="EditedLessMonth">Editado hace menos de 1 mes</translation>
+  <translation id="EditedMoreMonth">Editado hace más de un mes</translation>
 </translationbundle>

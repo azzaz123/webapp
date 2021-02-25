@@ -17,6 +17,7 @@ import { ItemFullScreenCarouselModule } from './components/item-fullscreen-carou
 import { RecommendedItemsModule } from './components/recommended-items/recommended-items.module';
 import { ItemSpecificationsModule } from './components/item-specifications/item-specifications.module';
 import { MapSpecificationsService } from './core/services/map-specifications/map-specifications.service';
+import { EllapsedTimeModule } from './core/directives/ellapsed-time.module';
 
 @NgModule({
   declarations: [itemDetailRoutedComponents],
@@ -32,6 +33,7 @@ import { MapSpecificationsService } from './core/services/map-specifications/map
     ItemFullScreenCarouselModule,
     RecommendedItemsModule,
     ItemSpecificationsModule,
+    EllapsedTimeModule,
   ],
   providers: [
     ItemDetailService,
