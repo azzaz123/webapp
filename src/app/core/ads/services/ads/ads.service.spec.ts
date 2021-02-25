@@ -2,6 +2,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { MockDidomiService } from '@core/ads/vendors/didomi/didomi.mock';
 import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
 import {
+  MockAdsKeywords,
   MockAmazonPublisherService,
   MockCriteoService,
   MockGooglePublisherTagService,
@@ -75,6 +76,16 @@ describe('AdsService', () => {
       service.setSlots(AD_SLOTS);
 
       expect(MockGooglePublisherTagService.refreshAds).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('when set ad keywords', () => {
+    it('should set ad keywords on google', () => {
+      spyOn(MockGooglePublisherTagService, 'setAdKeywords');
+
+      service.setAdKeywords(MockAdsKeywords);
+
+      expect(MockGooglePublisherTagService.setAdKeywords).toHaveBeenCalledWith(MockAdsKeywords);
     });
   });
 
