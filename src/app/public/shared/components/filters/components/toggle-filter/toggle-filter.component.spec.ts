@@ -69,6 +69,7 @@ describe('ToggleFilterComponent', () => {
 
     it('should toggle false value on click', () => {
       component.toggle = true;
+      fixture.detectChanges();
 
       bubbleClick();
 
