@@ -45,6 +45,11 @@ export class AdsService {
     this.setSlotsSubject.next(adSlots);
   }
 
+  public setAdKeywords(adKeywords: AdKeyWords): void {
+    this.googlePublisherTagService.setAdKeywords(adKeywords);
+    this.refresh();
+  }
+
   public refresh(): void {
     this.refreshEventSubject.next();
   }

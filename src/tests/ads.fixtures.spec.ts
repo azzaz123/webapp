@@ -57,7 +57,7 @@ export const MockAdsKeywords: AdKeyWords = {
 
 export const MockAdsKeywordsService = {
   adKeywords: MockAdsKeywords,
-  updateAdKeywords: () => {},
+  loadAdKeywords: () => {},
 };
 
 export const MockAdSlots: AdSlot[] = [

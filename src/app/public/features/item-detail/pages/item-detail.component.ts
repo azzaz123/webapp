@@ -48,7 +48,7 @@ export class ItemDetailComponent implements OnInit {
   public recommendedItems$: Observable<RecommendedItemsBodyResponse>;
   public itemSpecifications: CounterSpecifications[];
   public itemDetail: ItemDetail;
-  public adSlot: AdSlot = AD_TOP_ITEM_DETAIL;
+  public adSlot: AdSlot;
 
   public socialShare: {
     title: string;
@@ -77,7 +77,6 @@ export class ItemDetailComponent implements OnInit {
     this.device = this.deviceService.getDeviceType();
     // TBD the url may change to match one more similar to production one
     this.initPage(this.route.snapshot.paramMap.get(PUBLIC_PATH_PARAMS.ID));
-    this.adsService.setSlots([this.adSlot]);
   }
 
   public locationHaveCoordinates(): boolean {
@@ -117,6 +116,7 @@ export class ItemDetailComponent implements OnInit {
     this.socialShareSetup(this.itemDetail.item);
     this.generateItemSpecifications();
     this.setItemRecommendations();
+    this.setAdSlot();
   }
 
   private calculateItemCoordinates(): void {
@@ -188,5 +188,11 @@ export class ItemDetailComponent implements OnInit {
 
   set approximatedLocation(isApproximated: boolean) {
     this.isApproximateLocation = isApproximated;
+  }
+
+  private setAdSlot(): void {
+    this.adSlot = { ...AD_TOP_ITEM_DETAIL };
+    this.adsService.setAdKeywords({ category: this.itemDetail.item.categoryId.toString() });
+    this.adsService.setSlots([this.adSlot]);
   }
 }

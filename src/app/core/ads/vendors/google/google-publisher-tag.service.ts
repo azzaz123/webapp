@@ -33,6 +33,10 @@ export class GooglePublisherTagService {
     });
   }
 
+  public setAdKeywords(adKeywords: AdKeyWords): void {
+    this.adsKeywordsService.saveCustomKeywords(adKeywords);
+  }
+
   public setAdsSegmentation(allowSegmentation = false): void {
     this.googletag.cmd.push(() => {
       this.googletag.pubads().setRequestNonPersonalizedAds(allowSegmentation ? 0 : 1);
@@ -40,7 +44,7 @@ export class GooglePublisherTagService {
   }
 
   public setTargetingByAdsKeywords(allowSegmentation = false): void {
-    this.adsKeywordsService.updateAdKeywords();
+    this.adsKeywordsService.loadAdKeywords();
 
     const adKeywords: AdKeyWords = this.adsKeywordsService.adKeywords;
     this.googletag.cmd.push(() => {
@@ -83,10 +87,6 @@ export class GooglePublisherTagService {
     slots
       .filter((slot) => slot.device.includes(deviceType))
       .forEach((slot) => {
-        if (slot.preConfig) {
-          slot.preConfig();
-        }
-
         let mappingResponsive: googletag.SizeMappingArray;
         if (slot.sizeMapping) {
           mappingResponsive = this.googletag

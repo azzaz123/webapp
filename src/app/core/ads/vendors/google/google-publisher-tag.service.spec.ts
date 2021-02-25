@@ -197,11 +197,11 @@ describe('GooglePublisherTagService', () => {
 
     describe('when set targeting', () => {
       it('should update ad keywords', () => {
-        spyOn(MockAdsKeywordsService, 'updateAdKeywords').and.callThrough();
+        spyOn(MockAdsKeywordsService, 'loadAdKeywords').and.callThrough();
 
         service.setTargetingByAdsKeywords();
 
-        expect(MockAdsKeywordsService.updateAdKeywords).toHaveBeenCalledTimes(1);
+        expect(MockAdsKeywordsService.loadAdKeywords).toHaveBeenCalledTimes(1);
       });
 
       it('should set targeting by ad keywords', () => {
