@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SendPhoneComponent } from '@features/chat/modals';
+import { SendPhoneComponent } from '@private/features/chat/modals';
 import { NgbDropdownModule, NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { CallStatusLabelPipe } from '../../shared/pipes';
 import { SharedModule } from '../../shared/shared.module';

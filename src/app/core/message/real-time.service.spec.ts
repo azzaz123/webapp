@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '@features/chat/core/model';
+import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '@private/features/chat/core/model';
 import { of, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment.docker';
 import { MockConnectionService, MockRemoteConsoleService } from '../../../tests';
