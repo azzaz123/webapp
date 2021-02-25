@@ -49,7 +49,7 @@ export class GooglePublisherTagService {
     const adKeywords: AdKeyWords = this.adsKeywordsService.adKeywords;
     this.googletag.cmd.push(() => {
       for (const key in adKeywords) {
-        if (adKeywords.hasOwnProperty(key)) {
+        if (adKeywords.hasOwnProperty(key) && adKeywords[key]) {
           this.googletag.pubads().setTargeting(key, adKeywords[key]);
         }
       }
