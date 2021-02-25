@@ -370,7 +370,7 @@ export class I18nService {
         {
           iconId: 'img-2',
           title: 'Conecta con más clientes',
-          description: 'Comparte con millones de potenciales compradores tu teléfono y tu página web',
+          description: 'Comparte con millones de potenciales compradores tu teléfono y tu página web.',
         },
         {
           iconId: 'img-3',
