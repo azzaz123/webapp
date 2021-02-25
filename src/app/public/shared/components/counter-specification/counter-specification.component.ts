@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ItemSpecification } from '@public/core/constants/item-specifications-constants';
 import { CAR_SPECIFICATION_TYPE } from '@public/core/constants/item-specifications/cars-constants';
-import { REAL_STATE_TYPE } from '@public/core/constants/item-specifications/realestate-constants';
+import { REAL_ESTATE_SPECIFICATION_TYPE } from '@public/core/constants/item-specifications/realestate-constants';
 import { COUNTER_TYPE } from './constants/counter-type-constants';
 
 @Component({
@@ -11,7 +11,7 @@ import { COUNTER_TYPE } from './constants/counter-type-constants';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CounterSpecificationComponent {
-  @Input() type: REAL_STATE_TYPE | CAR_SPECIFICATION_TYPE;
+  @Input() type: REAL_ESTATE_SPECIFICATION_TYPE | CAR_SPECIFICATION_TYPE;
   @Input() counter: string | number;
   @Input() label: string;
 

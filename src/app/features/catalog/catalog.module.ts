@@ -4,7 +4,7 @@ import { SharedModule } from '@shared/shared.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbButtonsModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { ReviewsModule } from 'app/features/reviews/reviews.module';
+import { ReviewsModule } from '@private/features/reviews/reviews.module';
 import { BumpTutorialComponent } from './components/bump-tutorial/bump-tutorial.component';
 import { CatalogItemComponent } from './components/catalog-item/catalog-item.component';
 import { CheckoutItemComponent } from './components/checkout-item/checkout-item.component';

@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { CAR_SPECIFICATION_TYPE } from '@public/core/constants/item-specifications/cars-constants';
-import { REAL_STATE_TYPE } from '@public/core/constants/item-specifications/realestate-constants';
+import { REAL_ESTATE_SPECIFICATION_TYPE } from '@public/core/constants/item-specifications/realestate-constants';
 
 import { CounterSpecificationComponent } from './counter-specification.component';
 
@@ -44,7 +44,7 @@ describe('CounterSpecificationComponent', () => {
   describe('when we handle specific type', () => {
     describe('and it has a defined counter and label', () => {
       beforeEach(() => {
-        component.type = REAL_STATE_TYPE.BOX_ROOM;
+        component.type = REAL_ESTATE_SPECIFICATION_TYPE.BOX_ROOM;
         fixture.detectChanges();
       });
 
@@ -80,7 +80,7 @@ describe('CounterSpecificationComponent', () => {
 
     describe('and it ONLY has a definded label ', () => {
       beforeEach(() => {
-        component.type = REAL_STATE_TYPE.BATHROOMS;
+        component.type = REAL_ESTATE_SPECIFICATION_TYPE.BATHROOMS;
         fixture.detectChanges();
       });
 

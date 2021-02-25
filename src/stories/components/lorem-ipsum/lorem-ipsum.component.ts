@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: '<stories-lorem-ipsum></stories-lorem-ipsum>',
+  // tslint:disable-next-line:component-selector
+  selector: 'stories-lorem-ipsum',
   templateUrl: './lorem-ipsum.component.html',
 })
 export class LoremIpsumComponent {
-  constructor() {}
+  @Input() style: string;
 }
