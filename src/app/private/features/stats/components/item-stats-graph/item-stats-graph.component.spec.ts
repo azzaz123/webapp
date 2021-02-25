@@ -2,9 +2,9 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ItemStatsGraphComponent } from './item-stats-graph.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MOCK_ITEM_V3 } from '../../../../../tests/item.fixtures.spec';
-import { I18nService } from '../../../../core/i18n/i18n.service';
-import { ITEM_STATISTIC_RESPONSE } from '../../../../../tests/statistics.fixtures.spec';
+import { MOCK_ITEM_V3 } from '@fixtures/item.fixtures.spec';
+import { I18nService } from '@core/i18n/i18n.service';
+import { ITEM_STATISTIC_RESPONSE } from '@fixtures/statistics.fixtures.spec';
 
 describe('ItemStatsGraphComponent', () => {
   let component: ItemStatsGraphComponent;
