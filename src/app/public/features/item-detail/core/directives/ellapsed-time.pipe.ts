@@ -11,7 +11,7 @@ export class EllapsedTimePipe implements PipeTransform {
     if (ellapsedTimestamp > 0) {
       const minutes = ellapsedTimestamp / 60;
       if (minutes < 60) {
-        return $localize`:@@EditedMinutesAgo:Edited ${Math.trunc(minutes)}:INTERPOLATION: minutes ago`; // Menos de 24h
+        return $localize`:@@EditedMinutesAgo:Edited ${Math.trunc(minutes)}:INTERPOLATION: minutes ago`; // Menos de 1h
       } else {
         const hours = minutes / 60;
         if (hours < 24) {
