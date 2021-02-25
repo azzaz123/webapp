@@ -167,22 +167,22 @@ export class I18nService {
       SubscriptionCardDeleted: 'Your card has been deleted',
       subscriptionBenefits: [
         {
-          iconId: 'empty-image',
+          iconId: 'img-1',
           title: 'Empower your brand',
           description: 'Complete your profile with a cover photo and a description.',
         },
         {
-          iconId: 'empty-image',
+          iconId: 'img-2',
           title: 'Connect with more customers',
           description: 'Share your phone number and website with millions of people.',
         },
         {
-          iconId: 'empty-image',
+          iconId: 'img-3',
           title: 'Gain more visibility',
           description: 'Appear at the top of search results and attract more customers.',
         },
         {
-          iconId: 'empty-image',
+          iconId: 'img-4',
           title: 'Save management time',
           description: 'Your products will always be active and ready for sale.',
         },
@@ -363,22 +363,22 @@ export class I18nService {
       SubscriptionCardDeleted: 'Tu tarjeta se ha borrado correctamente',
       subscriptionBenefits: [
         {
-          iconId: 'empty-image',
+          iconId: 'img-1',
           title: 'Potencia tu marca',
           description: 'Añade a tu perfil foto de portada y descripción de lo que ofreces.',
         },
         {
-          iconId: 'empty-image',
+          iconId: 'img-2',
           title: 'Conecta con más clientes',
           description: 'Comparte con millones de potenciales compradores tu teléfono y tu página web',
         },
         {
-          iconId: 'empty-image',
+          iconId: 'img-3',
           title: 'Gana visibilidad en búsquedas',
           description: 'Ocupa los primeros resultados de búsqueda. ¡Atrae más clientes!',
         },
         {
-          iconId: 'empty-image',
+          iconId: 'img-4',
           title: 'Ahorra tiempo de gestión',
           description: 'Tus productos siempre estarán activos y listos para la venta.',
         },

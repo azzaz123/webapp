@@ -21,9 +21,9 @@
 
 .SubscriptionBenefits {
   &__content {
-    padding: 70px 116px;
+    padding: $spacing-xxxl 2 * $spacing-xxxl;
     > :not(:last-child) {
-      margin-bottom: 160px;
+      margin-bottom: 120px;
     }
   }
 }
@@ -38,7 +38,7 @@
   .SubscriptionBenefits {
     &__content {
       > :not(:last-child) {
-        margin-bottom: 180px;
+        margin-bottom: 72px;
       }
     }
   }
