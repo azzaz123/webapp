@@ -28,6 +28,13 @@ $item-detail-carousel-height: 477px;
     font-weight: $font-weight-chunky;
   }
 
+  &__modifiedDate {
+    max-width: calc(100% - 90px);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
   &__title {
     font-size: $font-size-xl;
     font-weight: normal;
