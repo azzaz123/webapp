@@ -9,6 +9,7 @@ describe('ItemImagesCarouselComponent', () => {
   let fixture: ComponentFixture<ItemImagesCarouselComponent>;
   const flagRightClass = '.ItemFlag--right';
   const flagLeftClass = '.ItemFlag--left';
+  const disabledCarouselClass = '.DisabledCarousel';
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -65,7 +66,7 @@ describe('ItemImagesCarouselComponent', () => {
 
         const soldFlag = fixture.debugElement.queryAll(By.css(flagLeftClass));
 
-        expect(soldFlag).toBeTruthy();
+        expect(soldFlag.length).toBe(1);
       });
 
       it('should show one flag on the left when is reserved', () => {
@@ -74,7 +75,7 @@ describe('ItemImagesCarouselComponent', () => {
 
         const reservedFlag = fixture.debugElement.queryAll(By.css(flagLeftClass));
 
-        expect(reservedFlag).toBeTruthy();
+        expect(reservedFlag.length).toBe(1);
       });
 
       it('should show one flag on the left when is expired', () => {
@@ -83,7 +84,7 @@ describe('ItemImagesCarouselComponent', () => {
 
         const expiredFlag = fixture.debugElement.queryAll(By.css(flagLeftClass));
 
-        expect(expiredFlag).toBeTruthy();
+        expect(expiredFlag.length).toBe(1);
       });
 
       it('should show one flag on the left when is inactive', () => {
@@ -92,7 +93,27 @@ describe('ItemImagesCarouselComponent', () => {
 
         const inactiveFlag = fixture.debugElement.queryAll(By.css(flagLeftClass));
 
-        expect(inactiveFlag).toBeTruthy();
+        expect(inactiveFlag.length).toBe(1);
+      });
+
+      describe('componente.Función', () => {
+        it('should apply the disabled style class when is expired', () => {
+          component.itemFlags.expired = true;
+          fixture.detectChanges();
+
+          const disabledCarousel = fixture.debugElement.query(By.css(disabledCarouselClass));
+
+          expect(disabledCarousel).toBeTruthy();
+        });
+
+        it('should NOT apply the disabled style class when is NOT expired', () => {
+          component.itemFlags.expired = false;
+          fixture.detectChanges();
+
+          const disabledCarousel = fixture.debugElement.query(By.css(disabledCarouselClass));
+
+          expect(disabledCarousel).toBeFalsy();
+        });
       });
     });
 
