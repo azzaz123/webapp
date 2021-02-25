@@ -16,7 +16,7 @@ class TestComponent {
   public date: number;
 }
 
-describe('isCurrentUserPipe', () => {
+describe('EllapsedTimePipe', () => {
   let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
 
