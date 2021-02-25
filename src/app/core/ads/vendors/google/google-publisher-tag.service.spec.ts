@@ -45,7 +45,7 @@ describe('GooglePublisherTagService', () => {
     it('should add the configuration of google', () => {
       spyOn(windowMock.googletag.cmd, 'push').and.callThrough();
 
-      service.init(MockAdSlots);
+      service.setSlots(MockAdSlots);
 
       expect(windowMock.googletag.cmd.push).toHaveBeenCalledWith(jasmine.any(Function));
     });
@@ -54,7 +54,7 @@ describe('GooglePublisherTagService', () => {
       spyOn(windowMock.googletag, 'defineSlot').and.callThrough();
       spyOn(MOCK_GOOGLE_DEFINE_SLOT, 'setTargeting').and.callThrough();
       spyOn(MOCK_GOOGLE_DEFINE_SLOT, 'addService').and.callThrough();
-      service.init(MockAdSlots);
+      service.setSlots(MockAdSlots);
 
       MockAdSlots.forEach((slot: AdSlot) => {
         expect(windowMock.googletag.defineSlot).toHaveBeenCalledWith(slot.name, slot.sizes, slot.id);
@@ -72,7 +72,7 @@ describe('GooglePublisherTagService', () => {
       spyOn(MOCK_GOOGLE_PUBABDS, 'setPublisherProvidedId').and.callThrough();
       spyOn(MockCookieService, 'get').and.returnValue(publisherId);
 
-      service.init(MockAdSlots);
+      service.setSlots(MockAdSlots);
 
       expect(MOCK_GOOGLE_PUBABDS.enableSingleRequest).toHaveBeenCalledTimes(1);
       expect(MOCK_GOOGLE_PUBABDS.collapseEmptyDivs).toHaveBeenCalledTimes(1);
@@ -83,7 +83,7 @@ describe('GooglePublisherTagService', () => {
     it('should enable services', () => {
       spyOn(windowMock.googletag, 'enableServices').and.callThrough();
 
-      service.init(MockAdSlots);
+      service.setSlots(MockAdSlots);
 
       expect(windowMock.googletag.enableServices).toHaveBeenCalledTimes(1);
     });
@@ -116,22 +116,28 @@ describe('GooglePublisherTagService', () => {
 
     it('should update the pubabs', () => {
       spyOn(MOCK_GOOGLE_PUBABDS, 'setRequestNonPersonalizedAds').and.callThrough();
-      spyOn(MOCK_GOOGLE_PUBABDS, 'refresh').and.callThrough();
 
       service.setAdsSegmentation();
 
       expect(MOCK_GOOGLE_PUBABDS.setRequestNonPersonalizedAds).toHaveBeenCalledWith(1);
-      expect(MOCK_GOOGLE_PUBABDS.refresh).toHaveBeenCalledTimes(1);
     });
 
     it('should update the pubabs with segmentation', () => {
       spyOn(MOCK_GOOGLE_PUBABDS, 'setRequestNonPersonalizedAds').and.callThrough();
-      spyOn(MOCK_GOOGLE_PUBABDS, 'refresh').and.callThrough();
 
       service.setAdsSegmentation(true);
 
       expect(MOCK_GOOGLE_PUBABDS.setRequestNonPersonalizedAds).toHaveBeenCalledWith(0);
-      expect(MOCK_GOOGLE_PUBABDS.refresh).toHaveBeenCalledTimes(1);
+    });
+
+    describe('when we want to refresh ads', () => {
+      it('show refresh on google', () => {
+        spyOn(MOCK_GOOGLE_PUBABDS, 'refresh').and.callThrough();
+
+        service.refreshAds();
+
+        expect(MOCK_GOOGLE_PUBABDS.refresh).toHaveBeenCalledTimes(1);
+      });
     });
 
     describe('when set targeting', () => {

@@ -200,6 +200,9 @@ describe('ListComponent', () => {
           {
             provide: UserService,
             useValue: {
+              logout() {
+                return of();
+              },
               suggestPro() {
                 return false;
               },
@@ -545,6 +548,17 @@ describe('ListComponent', () => {
       expect(slotsCards).toBeTruthy();
       expect(slotsCards.length).toEqual(MOCK_SUBSCRIPTION_SLOTS.length);
     }));
+  });
+
+  describe('logout', () => {
+    it('should logout after clicking logout button', () => {
+      spyOn(userService, 'logout');
+      const logoutButton = fixture.debugElement.query(By.css('.logout')).nativeNode;
+
+      logoutButton.click();
+
+      expect(userService.logout).toHaveBeenCalled();
+    });
   });
 
   describe('getItems', () => {

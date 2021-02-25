@@ -4,7 +4,7 @@ import { ItemResponse } from '@core/item/item-response.interface';
 import { Image, UserExtrainfo, UserResponse } from '@core/user/user-response.interface';
 import { UserStatsResponse } from '@core/user/user-stats.interface';
 import { environment } from '@environments/environment';
-import { ReviewResponse, ReviewsData } from '@features/reviews/core/review-response.interface';
+import { ReviewResponse, ReviewsData } from '@private/features/reviews/core/review-response.interface';
 import { Observable } from 'rxjs';
 import { PaginationResponse } from '../../pagination/pagination.interface';
 import { PaginationService } from '../../pagination/pagination.service';

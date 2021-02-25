@@ -39,6 +39,12 @@ export class AccessTokenService {
     return CryptoJSBase64.stringify(CryptoJSHSha256(signature, CryptoJSBase64.parse(SECRET)));
   };
 
+  get deviceAccessToken(): string {
+    return this.cookieService.get('deviceAccessToken' + environment.cookieSuffix)
+      ? this.cookieService.get('deviceAccessToken' + environment.cookieSuffix)
+      : '';
+  }
+
   get accessToken(): string {
     if (!this._accessToken) {
       const cookieName = this.getCookieName();

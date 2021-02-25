@@ -30,13 +30,10 @@ export class AmazonPublisherService {
   }
 
   public isLibraryRefDefined(): boolean {
-    if (this.apstag) {
-      this.init();
-    }
     return !!this.apstag;
   }
 
-  private init(): void {
+  public init(): void {
     this.apstag.init({
       pubID: '3703',
       adServer: 'googletag',

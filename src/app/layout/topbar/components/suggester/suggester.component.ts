@@ -1,7 +1,7 @@
 import { Observable, of } from 'rxjs';
 
 import { distinctUntilChanged, catchError, switchMap } from 'rxjs/operators';
-import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { SuggesterResponse } from '../../core/interfaces/suggester-response.interface';
 import { SuggesterService } from '@layout/topbar/core/services/suggester.service';
 
@@ -10,7 +10,7 @@ import { SuggesterService } from '@layout/topbar/core/services/suggester.service
   templateUrl: './suggester.component.html',
   styleUrls: ['./suggester.component.scss'],
 })
-export class SuggesterComponent implements OnInit {
+export class SuggesterComponent {
   private MIN_LENGTH = 1;
   public focus: boolean;
   public model: any;
@@ -20,8 +20,6 @@ export class SuggesterComponent implements OnInit {
   @ViewChild('kwsEl', { static: true }) kwsEl: ElementRef;
 
   constructor(private suggesterService: SuggesterService) {}
-
-  ngOnInit() {}
 
   public suggest = (text$: Observable<string>) =>
     text$.pipe(
