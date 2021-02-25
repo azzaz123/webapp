@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { User } from '@core/user/user';
 import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
 import { UserStats } from '@core/user/user-stats.interface';
@@ -22,7 +22,6 @@ export class ItemDetailHeaderComponent implements OnInit {
   @Input() user: User;
   @Input() item: Item;
   @Input() isOwner = false;
-  @Output() updatedItem: EventEmitter<Item> = new EventEmitter<Item>();
 
   public readonly USER_INFO_SIZE = USER_INFO_SIZE;
   public userStats: UserStats;
@@ -54,7 +53,6 @@ export class ItemDetailHeaderComponent implements OnInit {
     if (!this.item.reserved) {
       this.itemDetailService.reserveItem(this.item.id, true).subscribe(() => {
         this.item.reserved = true;
-        this.emitUpdatedItem();
       });
     } else {
       this.itemDetailService.reserveItem(this.item.id, false).subscribe(() => {
@@ -71,7 +69,6 @@ export class ItemDetailHeaderComponent implements OnInit {
     modalRef.result.then(() => {
       this.item.sold = true;
       this.checkShowMineOptions();
-      this.emitUpdatedItem();
     });
   }
 
@@ -108,9 +105,5 @@ export class ItemDetailHeaderComponent implements OnInit {
 
   private checkShowMineOptions(): void {
     this.showOptions = !this.item.sold && !this.item.flags.onhold && !this.item.flags.expired && !this.item.flags.notAvailable;
-  }
-
-  private emitUpdatedItem(): void {
-    this.updatedItem.emit(this.item);
   }
 }

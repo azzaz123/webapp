@@ -84,10 +84,6 @@ export class ItemDetailComponent implements OnInit {
     this.itemDetailImagesModal.show();
   }
 
-  public refreshItem(item: Item): void {
-    this.itemDetail.item = item;
-  }
-
   private initPage(itemId: string): void {
     this.recommendedItems$ = this.itemDetailService.getRecommendedItems(itemId);
     this.itemDetailService

@@ -8,7 +8,7 @@ $feature-button-width: 165px;
 .ItemDetailHeader {
   position: sticky;
   top: 66px;
-  z-index: 95;
+  z-index: 16;
   transition: top 150ms ease;
   background-color: $white;
 }
