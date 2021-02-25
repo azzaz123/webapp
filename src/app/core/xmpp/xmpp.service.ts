@@ -8,7 +8,7 @@ import {
   MessageStatus,
   MESSAGES_WHITE_LIST,
   MessageType,
-} from '@features/chat/core/model';
+} from '@private/features/chat/core/model';
 import { clone, eq, includes, remove } from 'lodash-es';
 import { from, Observable, Observer, of, ReplaySubject, throwError } from 'rxjs';
 import { map, mergeMap, tap } from 'rxjs/operators';

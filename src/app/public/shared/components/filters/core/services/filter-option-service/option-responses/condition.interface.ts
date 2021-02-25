@@ -1,10 +1,6 @@
+import { IconOption } from './icon-option.interface';
+
 export interface ConditionResponse {
   category_id: string;
-  conditions: Condition[];
-}
-
-export interface Condition {
-  id: string;
-  icon_id: string;
-  text: string;
+  conditions: IconOption[];
 }
