@@ -14,4 +14,6 @@ import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-
     },
   ],
 })
-export class ToggleFormComponent extends AbstractFormComponent<boolean> {}
+export class ToggleFormComponent extends AbstractFormComponent<boolean> {
+  public id = new Date().getTime();
+}
