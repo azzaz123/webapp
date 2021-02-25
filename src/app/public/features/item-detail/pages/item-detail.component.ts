@@ -48,7 +48,7 @@ export class ItemDetailComponent implements OnInit {
   public recommendedItems$: Observable<RecommendedItemsBodyResponse>;
   public itemSpecifications: CounterSpecifications[];
   public itemDetail: ItemDetail;
-  public adSlot: AdSlot;
+  public adSlot: AdSlot = AD_TOP_ITEM_DETAIL;
 
   public socialShare: {
     title: string;
@@ -191,7 +191,6 @@ export class ItemDetailComponent implements OnInit {
   }
 
   private setAdSlot(): void {
-    this.adSlot = { ...AD_TOP_ITEM_DETAIL };
     this.adsService.setAdKeywords({ category: this.itemDetail.item.categoryId.toString() });
     this.adsService.setSlots([this.adSlot]);
   }

@@ -1,6 +1,6 @@
 <div class="container ItemDetail__container">
     <div class="d-block pt-4">
-        <tsl-ad *ngIf="(device === deviceType.DESKTOP || device === deviceType.TABLET) && adSlot" [adSlot]="adSlot"></tsl-ad>
+        <tsl-ad *ngIf="device === deviceType.DESKTOP || device === deviceType.TABLET" [adSlot]="adSlot"></tsl-ad>
         <div class="d-flex justify-content-around py-4" *ngIf="itemDetail && !loading">
             <div *ngIf="device === deviceType.DESKTOP">
                 <tsl-side-sky class="position-sticky d-none d-xl-block"></tsl-side-sky>
