@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ConversationModule } from '@core/conversation/conversation.module';
-import { ChatModule } from '@features/chat/chat.module';
+import { ChatModule } from '@private/features/chat/chat.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '@shared/shared.module';
 import { NgxEchartsModule } from 'ngx-echarts';
