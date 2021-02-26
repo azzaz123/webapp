@@ -26,6 +26,11 @@
   .box-content {
     padding: $spacing-l $spacing-m $spacing-m;
   }
+  .SubscriptionBenefits {
+    &__content {
+      padding-top: $spacing-l;
+    }
+  }
 }
 
 @include media-breakpoint-up(xl) {
