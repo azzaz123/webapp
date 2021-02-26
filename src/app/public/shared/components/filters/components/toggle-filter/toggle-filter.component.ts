@@ -16,7 +16,7 @@ export class ToggleFilterComponent extends AbstractFilter<ToggleFilterParams> im
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes.value?.firstChange && this.hasValueChanged(changes.value.previousValue, changes.value.currentValue)) {
       if (this.value.length > 0) {
-        this.toggle = this.getValue('key') === 'true' ? true : false;
+        this.toggle = this.getValue('key') === 'true';
       } else {
         this.handleClear();
       }
