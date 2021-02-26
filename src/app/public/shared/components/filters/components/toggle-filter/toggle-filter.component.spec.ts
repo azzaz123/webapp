@@ -5,6 +5,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ToggleFormModule } from '@shared/form/components/toggle/toggle-form.module';
+import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module';
 import { ToggleFilterComponent } from './toggle-filter.component';
@@ -14,6 +15,10 @@ describe('ToggleFilterComponent', () => {
   let fixture: ComponentFixture<ToggleFilterComponent>;
   let de: DebugElement;
   let el: HTMLElement;
+
+  const formatValue = (value: boolean): FilterParameter[] => {
+    return [{ key: component.config.mapKey.key, value: value.toString() }];
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -73,6 +78,12 @@ describe('ToggleFilterComponent', () => {
 
         expect(component.toggle).toBeTruthy();
       });
+
+      it('should format the value correctly on click', () => {
+        bubbleClick();
+
+        expect(component.value).toEqual(formatValue(true));
+      });
     });
 
     describe('and has value false', () => {
@@ -86,6 +97,12 @@ describe('ToggleFilterComponent', () => {
         bubbleClick();
 
         expect(component.toggle).toBeTruthy();
+      });
+
+      it('should format the value correctly on click', () => {
+        bubbleClick();
+
+        expect(component.value).toEqual(formatValue(true));
       });
     });
 
@@ -108,6 +125,12 @@ describe('ToggleFilterComponent', () => {
         clearClick();
 
         expect(component.toggle).toBeFalsy();
+      });
+
+      it('should format the value correctly on click', () => {
+        bubbleClick();
+
+        expect(component.value).toEqual(formatValue(false));
       });
     });
   });
@@ -132,6 +155,11 @@ describe('ToggleFilterComponent', () => {
         toggleClick();
         expect(component.toggle).toBeTruthy();
       });
+
+      it('should format the value correctly on click', () => {
+        toggleClick();
+        expect(component.value).toEqual(formatValue(true));
+      });
     });
 
     describe('and has value true', () => {
@@ -144,6 +172,11 @@ describe('ToggleFilterComponent', () => {
 
         expect(component.toggle).toBeFalsy();
       });
+
+      it('should format the value correctly on click', () => {
+        toggleClick();
+        expect(component.value).toEqual(formatValue(false));
+      });
     });
     describe('and has value false', () => {
       beforeEach(() => {
@@ -154,6 +187,11 @@ describe('ToggleFilterComponent', () => {
         toggleClick();
 
         expect(component.toggle).toBeTruthy();
+      });
+
+      it('should format the value correctly on click', () => {
+        toggleClick();
+        expect(component.value).toEqual(formatValue(true));
       });
     });
   });
