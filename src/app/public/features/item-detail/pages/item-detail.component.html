@@ -1,9 +1,9 @@
 <div class="container ItemDetail__container">
     <div class="d-block pt-4">
-        <tsl-ad *ngIf="device === deviceType.DESKTOP || device === deviceType.TABLET" [adSlot]="adSlot"></tsl-ad>
+        <tsl-sky *ngIf="device === deviceType.DESKTOP || device === deviceType.TABLET" [adSlot]="adsSlotsItemDetail.top"></tsl-sky>
         <div class="d-flex justify-content-around py-4" *ngIf="itemDetail && !loading">
             <div *ngIf="device === deviceType.DESKTOP">
-                <tsl-side-sky class="position-sticky d-none d-xl-block"></tsl-side-sky>
+                <tsl-sky class="position-sticky d-none d-xl-block" [adSlot]="adsSlotsItemDetail.left"></tsl-sky>
             </div>
             <div class="ItemDetail__container__middleSection d-flex flex-column w-100" *ngIf="itemDetail && !loading">
                 <div class="ItemDetail__content px-4 pb-5 ">
@@ -56,7 +56,7 @@
                 </tsl-recommended-items>
             </div>
             <div *ngIf="device === deviceType.DESKTOP">
-                <tsl-side-sky class="position-sticky d-none d-xl-block"></tsl-side-sky>
+                <tsl-sky class="position-sticky d-none d-xl-block" [adSlot]="adsSlotsItemDetail.right"></tsl-sky>
             </div>
         </div>
     </div>

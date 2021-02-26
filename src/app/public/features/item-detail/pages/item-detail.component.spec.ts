@@ -46,7 +46,7 @@ import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-c
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 import { AdsService } from '@core/ads/services';
-import { AD_TOP_ITEM_DETAIL } from '../core/ads/item-detail-ads.config';
+import { ADS_ITEM_DETAIL } from '../core/ads/item-detail-ads.config';
 
 describe('ItemDetailComponent', () => {
   const topSkyTag = 'tsl-top-sky';
@@ -199,11 +199,11 @@ describe('ItemDetailComponent', () => {
 
       component.ngOnInit();
       fixture.detectChanges();
-      const topAd = fixture.debugElement.query(By.directive(AdComponentStub));
-      const sideAds = fixture.debugElement.queryAll(By.css(sideSkyTag));
+      // const topAd = fixture.debugElement.query(By.directive(AdComponentStub));
+      const sideAds = fixture.debugElement.queryAll(By.directive(AdComponentStub));
 
-      expect(topAd).toBeTruthy();
-      expect(sideAds.length).toBe(2);
+      // expect(topAd).toBeTruthy();
+      expect(sideAds.length).toBe(3);
     });
   });
 
@@ -309,7 +309,7 @@ describe('ItemDetailComponent', () => {
         fixture.detectChanges();
 
         expect(MockAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_ITEM_DETAIL.item.categoryId.toString() });
-        expect(MockAdsService.setSlots).toHaveBeenCalledWith([AD_TOP_ITEM_DETAIL]);
+        expect(MockAdsService.setSlots).toHaveBeenCalledWith([ADS_ITEM_DETAIL.top, ADS_ITEM_DETAIL.left, ADS_ITEM_DETAIL.right]);
       });
     });
 
