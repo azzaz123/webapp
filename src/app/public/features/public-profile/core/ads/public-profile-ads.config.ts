@@ -11,7 +11,7 @@ import { DeviceType } from '@core/device/deviceType.enum';
 
 export const PUBLIC_PROFILE_AD: AdSlot = {
   name: '130868815/web/user2',
-  id: 'ad-unit-user-2',
+  id: 'sky-unit-user-2',
   sizes: AD_DESKTOP_MAPPING,
   sizeMapping: {
     desktop: {
