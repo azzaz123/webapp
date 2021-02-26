@@ -9,7 +9,7 @@
 [icon]="config.icon"
 [label]="label"
 [hasValue]="hasValue()"
-(click)="isBubble() ? handleClick() : []"
+(click)="handleClick()"
 (clear)="handleClear()">
 
     <div class="w-100 d-flex align-items-center" *ngIf="!isBubble()">

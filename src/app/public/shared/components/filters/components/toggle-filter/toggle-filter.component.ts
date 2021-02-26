@@ -28,8 +28,10 @@ export class ToggleFilterComponent extends AbstractFilter<ToggleFilterParams> im
   }
 
   public handleClick(): void {
-    this.toggle = !this.toggle;
-    this.toggle ? this.handleChange() : this.handleClear();
+    if (this.isBubble()) {
+      this.toggle = !this.toggle;
+      this.toggle ? this.handleChange() : this.handleClear();
+    }
   }
 
   public handleClear(): void {
