@@ -1,5 +1,6 @@
 import { Component, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { UuidService } from '@core/uuid/uuid.service';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
 
 @Component({
@@ -15,5 +16,8 @@ import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-
   ],
 })
 export class ToggleFormComponent extends AbstractFormComponent<boolean> {
-  public id = new Date().getTime();
+  constructor(private uuidService: UuidService) {
+    super();
+  }
+  public id = this.uuidService.getUUID();
 }
