@@ -27,6 +27,7 @@ describe('SlidesCarouselComponent', () => {
   const carouselTag = 'ngb-carousel';
   const fallbackImageClass = '.SlidesCarousel__fallbackImage';
   const hideControllerClass = '.hideControllers';
+  const noBackgroundIndicatorsClass = '.SlidesCarousel__noBackgroundIndicators';
 
   let component: SlidesCarouselComponent;
   let fixture: ComponentFixture<TestWrapperComponent>;
@@ -139,6 +140,51 @@ describe('SlidesCarouselComponent', () => {
 
       expect(fixture.debugElement.query(By.css(defaultIdTemplate))).toBeFalsy();
       expect(fixture.debugElement.query(By.css(fallbackImageClass))).toBeTruthy();
+    });
+  });
+
+  describe('when noBackgroundIndicators input is true...', () => {
+    it('should hide the bottom background indicator', () => {
+      component.noBackgroundIndicators = true;
+
+      fixture.detectChanges();
+
+      expect(fixture.debugElement.query(By.css(noBackgroundIndicatorsClass))).toBeTruthy();
+    });
+  });
+
+  describe('when showCarouselControllers input is true... ', () => {
+    describe('and hide controllers handle is false', () => {
+      it('should show the carousel controllers', () => {
+        component.showCarouselControllers = true;
+
+        fixture.detectChanges();
+
+        expect(fixture.debugElement.query(By.css(hideControllerClass))).toBeFalsy();
+      });
+    });
+
+    describe('and hide controllers handle is true', () => {
+      it('should not show the carousel controllers', () => {
+        spyOn(deviceDetectorService, 'isMobile').and.returnValue(true);
+        component.isFullScreen = true;
+        component.showCarouselControllers = true;
+
+        component.ngAfterContentInit();
+        fixture.detectChanges();
+
+        expect(fixture.debugElement.query(By.css(hideControllerClass))).toBeTruthy();
+      });
+    });
+  });
+
+  describe('when showCarouselControllers input is false... ', () => {
+    it('should hide the carousel controllers', () => {
+      component.showCarouselControllers = false;
+
+      fixture.detectChanges();
+
+      expect(fixture.debugElement.query(By.css(hideControllerClass))).toBeTruthy();
     });
   });
 });

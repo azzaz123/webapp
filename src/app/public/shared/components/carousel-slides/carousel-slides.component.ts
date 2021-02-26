@@ -26,9 +26,10 @@ export class SlidesCarouselComponent implements AfterContentInit {
   @ContentChildren(CarouselSliderDirective) sections: QueryList<CarouselSliderDirective>;
   @ViewChild(NgbCarousel) public carousel: NgbCarousel;
   @Output() slideClick: EventEmitter<CarouselSlide> = new EventEmitter<CarouselSlide>();
+  @Input() noBackgroundIndicators: boolean;
+  @Input() showCarouselControllers = true;
   @Input() initialIndex: number = 0;
   @Input() isFullScreen = false;
-  @Input() className: string;
 
   public readonly IMAGE_FALLBACK = FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH;
   public readonly NGB_SLIDE = 'ngb-slide-';
