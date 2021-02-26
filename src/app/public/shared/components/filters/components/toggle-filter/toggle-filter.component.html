@@ -13,7 +13,7 @@
 (clear)="handleClear()">
 
     <div class="w-100 d-flex align-items-center" *ngIf="!isBubble()">
-        <span class="ToggleFilter__content-label"> {{config.bubblePlaceholder}}  </span>  
+        <span class="ToggleFilter__content-label">{{config.bubblePlaceholder}}</span>  
         <tsl-toggle-form [(ngModel)]="toggle" (ngModelChange)="handleChange()"></tsl-toggle-form>
     </div>
 </tsl-filter-template>
