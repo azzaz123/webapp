@@ -1,6 +1,3 @@
-import { DeviceType } from '@core/device/deviceType.enum';
-import { AdSlot } from '../models/ad-slot.interface';
-
 type MobileSize = 'small' | 'medium' | 'big';
 
 export const AD_SLOT_NETWORK_ID = 6866;

@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { AdSlot } from '@core/ads/models';
 
 @Component({
-  selector: 'tsl-ad',
+  selector: 'tsl-sky',
   template: '{{adSlot}}',
 })
 export class AdComponentStub {
