@@ -9,7 +9,8 @@ describe('ItemImagesCarouselComponent', () => {
   let fixture: ComponentFixture<ItemImagesCarouselComponent>;
   const flagRightClass = '.ItemFlag--right';
   const flagLeftClass = '.ItemFlag--left';
-  const disabledCarouselClass = '.DisabledCarousel';
+  const disabledCarouselClass = '.ItemImagesCarousel--disabled';
+  const activeCarouselClass = '.ItemImagesCarousel--active';
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -95,26 +96,6 @@ describe('ItemImagesCarouselComponent', () => {
 
         expect(inactiveFlag.length).toBe(1);
       });
-
-      describe('componente.Función', () => {
-        it('should apply the disabled style class when is expired', () => {
-          component.itemFlags.expired = true;
-          fixture.detectChanges();
-
-          const disabledCarousel = fixture.debugElement.query(By.css(disabledCarouselClass));
-
-          expect(disabledCarousel).toBeTruthy();
-        });
-
-        it('should NOT apply the disabled style class when is NOT expired', () => {
-          component.itemFlags.expired = false;
-          fixture.detectChanges();
-
-          const disabledCarousel = fixture.debugElement.query(By.css(disabledCarouselClass));
-
-          expect(disabledCarousel).toBeFalsy();
-        });
-      });
     });
 
     describe('when we received an image click output event...', () => {
@@ -126,6 +107,28 @@ describe('ItemImagesCarouselComponent', () => {
         fixture.detectChanges();
 
         expect(component.imageClick.emit).toHaveBeenCalled();
+      });
+    });
+
+    describe('when the carousel is active...', () => {
+      it('should show the active carousel', () => {
+        component.isActive = true;
+        fixture.detectChanges();
+
+        const activeCarousel = fixture.debugElement.query(By.css(activeCarouselClass));
+
+        expect(activeCarousel).toBeTruthy();
+      });
+    });
+
+    describe('when the carousel is not active...', () => {
+      it('should show the disabled carousel', () => {
+        component.isActive = false;
+        fixture.detectChanges();
+
+        const disabledCarousel = fixture.debugElement.query(By.css(disabledCarouselClass));
+
+        expect(disabledCarousel).toBeTruthy();
       });
     });
   });
