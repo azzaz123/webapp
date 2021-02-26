@@ -270,7 +270,7 @@ describe('ItemDetailHeaderComponent', () => {
 
       describe('when we clic on the trash item button...', () => {
         it('should open the confirmation delete modal', fakeAsync(() => {
-          spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve() });
+          spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve(), componentInstance: {} });
           spyOn(component, 'deleteItem').and.callThrough();
           spyOn(itemDetailService, 'deleteItem').and.returnValue(of());
 

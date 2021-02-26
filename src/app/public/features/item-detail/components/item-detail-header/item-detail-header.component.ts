@@ -73,20 +73,22 @@ export class ItemDetailHeaderComponent implements OnInit {
   }
 
   public deleteItem(): void {
-    this.modalService
-      .open(ConfirmationModalComponent, {
-        windowClass: 'modal-prompt',
-      })
-      .result.then(() => {
-        this.itemDetailService.deleteItem(this.item.id).subscribe(
-          () => {
-            this.router.navigate(['catalog/list']);
-          },
-          () => {
-            this.errorsService.i18nError('deleteItemError');
-          }
-        );
-      });
+    const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent, {
+      windowClass: 'modal-prompt',
+    });
+
+    modalRef.componentInstance.type = 1;
+
+    modalRef.result.then(() => {
+      this.itemDetailService.deleteItem(this.item.id).subscribe(
+        () => {
+          this.router.navigate(['catalog/list']);
+        },
+        () => {
+          this.errorsService.i18nError('deleteItemError');
+        }
+      );
+    });
   }
 
   private getItemExpiredDate(): void {
