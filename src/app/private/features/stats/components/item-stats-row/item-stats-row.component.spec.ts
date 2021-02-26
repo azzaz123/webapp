@@ -1,11 +1,5 @@
-import {
-  ITEM_CONVERSATIONS,
-  ITEM_COUNTERS_DATA,
-  ITEM_FAVORITES,
-  ITEM_VIEWS,
-  MOCK_ITEM_V3,
-} from './../../../../../tests/item.fixtures.spec';
-import { ITEM_STATISTIC_RESPONSE } from './../../../../../tests/statistics.fixtures.spec';
+import { ITEM_CONVERSATIONS, ITEM_COUNTERS_DATA, ITEM_FAVORITES, ITEM_VIEWS, MOCK_ITEM_V3 } from '@fixtures/item.fixtures.spec';
+import { ITEM_STATISTIC_RESPONSE } from '@fixtures/statistics.fixtures.spec';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ItemStatsRowComponent } from './item-stats-row.component';

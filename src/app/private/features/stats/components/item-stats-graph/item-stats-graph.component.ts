@@ -1,5 +1,5 @@
-import { Item } from './../../../../core/item/item';
-import { AfterViewInit, Component, Inject, Input, LOCALE_ID, OnInit } from '@angular/core';
+import { Item } from '@core/item/item';
+import { Component, Inject, Input, LOCALE_ID, OnInit } from '@angular/core';
 import { I18nService } from '@core/i18n/i18n.service';
 import { EChartOption } from 'echarts';
 import * as moment from 'moment';
