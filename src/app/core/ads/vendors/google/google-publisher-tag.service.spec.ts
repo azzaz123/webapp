@@ -80,7 +80,7 @@ describe('GooglePublisherTagService', () => {
       expect(windowMock.googletag.defineSlot).toHaveBeenCalledTimes(1);
     });
 
-    it('should set size mapping if the slot has', () => {
+    it('should set size mapping if the slot has size mapping', () => {
       spyOn(deviceServiceMock, 'getDeviceType').and.returnValue(DeviceType.DESKTOP);
       spyOn(MOCK_GOOGLE_TAG, 'sizeMapping').and.callThrough();
       spyOn(MOCK_GOOGLE_SIZE_MAPPING, 'addSize').and.callThrough();
