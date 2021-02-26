@@ -61,28 +61,50 @@ describe('ToggleFilterComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should toggle true value on click', () => {
-      bubbleClick();
+    describe('and has no value defined', () => {
+      beforeEach(() => {
+        component.toggle = undefined;
+      });
 
-      expect(component.toggle).toBeTruthy();
+      it('should toggle true value on click', () => {
+        fixture.detectChanges();
+
+        bubbleClick();
+
+        expect(component.toggle).toBeTruthy();
+      });
     });
 
-    it('should toggle false value on click', () => {
-      component.toggle = true;
-      fixture.detectChanges();
+    describe('and has value false', () => {
+      beforeEach(() => {
+        component.toggle = false;
+      });
 
-      bubbleClick();
+      it('should toggle true value on click', () => {
+        fixture.detectChanges();
 
-      expect(component.toggle).toBeFalsy();
+        bubbleClick();
+
+        expect(component.toggle).toBeTruthy();
+      });
     });
 
     describe('and has value true', () => {
       beforeEach(() => {
         component.toggle = true;
+      });
+
+      it('should toggle false value on click', () => {
         fixture.detectChanges();
+
+        bubbleClick();
+
+        expect(component.toggle).toBeFalsy();
       });
 
       it('should toggle false value on clear', () => {
+        fixture.detectChanges();
+
         clearClick();
 
         expect(component.toggle).toBeFalsy();
@@ -101,19 +123,38 @@ describe('ToggleFilterComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should toggle true value on click', () => {
-      toggleClick();
+    describe('and has no value defined', () => {
+      beforeEach(() => {
+        component.toggle = undefined;
+      });
 
-      expect(component.toggle).toBeTruthy();
+      it('should toggle true value on click', () => {
+        toggleClick();
+        expect(component.toggle).toBeTruthy();
+      });
     });
 
-    it('should toggle false value on click', () => {
-      component.toggle = true;
-      fixture.detectChanges();
+    describe('and has value true', () => {
+      beforeEach(() => {
+        toggleClick();
+      });
 
-      toggleClick();
+      it('should toggle false value on click', () => {
+        toggleClick();
 
-      expect(component.toggle).toBeFalsy();
+        expect(component.toggle).toBeFalsy();
+      });
+    });
+    describe('and has value false', () => {
+      beforeEach(() => {
+        component.toggle = false;
+      });
+
+      it('should toggle true value on click', () => {
+        toggleClick();
+
+        expect(component.toggle).toBeTruthy();
+      });
     });
   });
 });
