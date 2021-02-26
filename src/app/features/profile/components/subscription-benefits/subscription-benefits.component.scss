@@ -1,13 +1,7 @@
 @import '~style/common';
 
-.ArrowDown {
-  @include square(48px);
-  background-color: $blue-grey-5;
-  border-radius: 50%;
-}
-
 .box-content {
-  padding: 40px;
+  padding: $spacing-xxl;
   &__title {
     font-size: $font-size-l;
     font-weight: bold;
@@ -21,7 +15,7 @@
 
 .SubscriptionBenefits {
   &__content {
-    padding: $spacing-xxxl 2 * $spacing-xxxl;
+    padding: 0 (2 * $spacing-xxxl) $spacing-xxxl (2 * $spacing-xxxl);
     > :not(:last-child) {
       margin-bottom: 120px;
     }
