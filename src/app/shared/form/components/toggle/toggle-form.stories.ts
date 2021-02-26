@@ -13,8 +13,6 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
     <form [formGroup]="formGroup">
       <tsl-toggle-form formControlName="toggle"></tsl-toggle-form>
     </form>
-
-    {{ disabled }}
   `,
 })
 class StoryToggleFormComponent {
