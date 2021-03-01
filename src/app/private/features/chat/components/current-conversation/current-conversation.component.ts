@@ -1,4 +1,3 @@
-import { AdsService } from '@core/ads/services';
 import {
   AfterViewChecked,
   Component,
@@ -11,18 +10,19 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { AD_SLOTS, CHAT_AD_SLOTS } from '@core/ads/constants';
+import { AdSlot } from '@core/ads/models';
+import { AdsService } from '@core/ads/services';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { RealTimeService } from '@core/message/real-time.service';
 import { RemoteConsoleService } from '@core/remote-console';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { TextMessageComponent } from '@private/features/chat/children/message/components/text-message';
 import { ThirdVoiceDropPriceComponent } from '@private/features/chat/children/message/components/third-voice-drop-price';
 import { ThirdVoiceReviewComponent } from '@private/features/chat/children/message/components/third-voice-review';
 import { InboxConversationService } from '@private/features/chat/core/inbox/inbox-conversation.service';
 import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '@private/features/chat/core/model';
 import { MaliciousConversationModalComponent } from '@private/features/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
@@ -38,6 +38,7 @@ import { eq, includes, isEmpty } from 'lodash-es';
 import { of, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { onVisible } from 'visibilityjs';
+import { CHAT_AD_SLOTS } from '../../core/ads/chat-ad.config';
 
 @Component({
   selector: 'tsl-current-conversation',
@@ -68,7 +69,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   public noMessages = 0;
   public isConversationChanged: boolean;
   public isTopBarExpanded = false;
-  public chatRightAdSlot = CHAT_AD_SLOTS[0];
+  public chatRightAdSlot: AdSlot = CHAT_AD_SLOTS;
 
   constructor(
     private eventService: EventService,
@@ -89,7 +90,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   }
 
   ngOnInit() {
-    this.adsService.setSlots(AD_SLOTS);
+    this.adsService.setSlots([this.chatRightAdSlot]);
     this.isEndOfConversation = true;
     this.newMessageSubscription = this.eventService.subscribe(EventService.MESSAGE_ADDED, (message: InboxMessage) => {
       this.isConversationChanged = true;
