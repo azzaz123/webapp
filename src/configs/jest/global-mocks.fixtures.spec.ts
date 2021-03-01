@@ -21,6 +21,9 @@ export const MOCK_GOOGLE_DEFINE_SLOT = {
     return this;
   },
   addService(fn) {},
+  defineSizeMapping() {
+    return this;
+  },
 };
 
 export const MOCK_GOOGLE_PUBABDS = {
@@ -33,6 +36,13 @@ export const MOCK_GOOGLE_PUBABDS = {
   setTargeting() {},
   refresh() {},
   setRequestNonPersonalizedAds(num: number) {},
+};
+
+export const MOCK_GOOGLE_SIZE_MAPPING = {
+  addSize(screenSize: number[], mapping: number[][]) {
+    return this;
+  },
+  build() {},
 };
 
 export const MOCK_GOOGLE_TAG = {
@@ -50,6 +60,9 @@ export const MOCK_GOOGLE_TAG = {
   },
   display: (_slotid: string) => {},
   apiReady: true,
+  sizeMapping() {
+    return MOCK_GOOGLE_SIZE_MAPPING;
+  },
 };
 
 export const MOCK_APSTAG = {

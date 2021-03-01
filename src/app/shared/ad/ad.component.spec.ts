@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { AdComponent } from './ad.component';
 import { By } from '@angular/platform-browser';
-import { AD_SLOTS } from '@core/ads/constants';
 import { AdsService } from '@core/ads/services';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
+import { CHAT_AD_SLOTS } from '@private/features/chat/core/ads/chat-ad.config';
+import { AdComponent } from './ad.component';
 
 describe('AdComponent', () => {
-  const FIRST_AD_SLOT = AD_SLOTS[0];
+  const FIRST_AD_SLOT = CHAT_AD_SLOTS;
   let component: AdComponent;
   let fixture: ComponentFixture<AdComponent>;
   let elementRef: any;

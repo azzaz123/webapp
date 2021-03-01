@@ -3,7 +3,7 @@ import { AdSlot } from '@core/ads/models';
 import { AdsService } from '@core/ads/services';
 
 @Component({
-  selector: 'tsl-ad',
+  selector: 'tsl-sky',
   templateUrl: './ad.component.html',
   styleUrls: ['./ad.component.scss'],
 })
