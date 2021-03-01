@@ -19,7 +19,8 @@
     </div>
     <div class="ItemContainer position-absolute d-flex align-items-center w-100">
         <div class="container w-100 h-100 py-5 px-0 px-lg-5">
-            <tsl-carousel-slides [initialIndex]="imageIndex" noBackgroundIndicators="true" isFullScreen="true">
+            <tsl-carousel-slides [initialIndex]="imageIndex" [hideControllers]="deviceDetectorService.isMobile()"
+                noBackgroundIndicators="true">
                 <ng-template carousel-slider *ngFor="let image of images">
                     <pinch-zoom class="w-100 h-100" backgroundColor="none">
                         <img [src]="image" class="CarouselImage" />

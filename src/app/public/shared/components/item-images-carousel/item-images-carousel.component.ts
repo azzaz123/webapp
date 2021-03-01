@@ -18,9 +18,9 @@ import {
 export class ItemImagesCarouselComponent {
   @Input() isActive = true;
   @Input() images: string[];
-  @Output() imageClick: EventEmitter<CarouselSlide> = new EventEmitter<CarouselSlide>();
   @Input() itemFlags: ItemFlags = EMPTY_ITEM_FLAGS;
   @Input() itemVisibilityFlags: ItemVisibilityFlags = EMPTY_ITEM_VISIBILITY_FLAGS;
+  @Output() imageClick: EventEmitter<CarouselSlide> = new EventEmitter<CarouselSlide>();
 
   get statusFlag(): STATUS_ITEM_FLAG_TYPES {
     if (this.itemFlags) {
