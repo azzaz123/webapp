@@ -15,17 +15,17 @@ export const OPTIONS_ORIGIN_CONFIGURATION: OriginConfiguration = {
   [COMMON_CONFIGURATION_ID.CONDITION]: {
     apiMethod: 'getConditionsByCategoryId',
     mapperMethod: 'formatConditionResponse',
-    paramsFromRelatedFilters: ['category_ids'],
+    apiRelatedParamKeys: ['category_ids'],
   },
   [COMMON_CONFIGURATION_ID.OBJECT_TYPE]: {
     apiMethod: 'getObjectTypesByCategoryId',
     mapperMethod: 'formatObjectType',
-    paramsFromRelatedFilters: ['category_ids'],
+    apiRelatedParamKeys: ['category_ids'],
   },
   [COMMON_CONFIGURATION_ID.BRAND_MODEL]: {
     apiMethod: 'getBrandModelByCategoryId',
     mapperMethod: 'formatBrandModel',
-    paramsFromRelatedFilters: ['category_ids'],
+    apiRelatedParamKeys: ['category_ids'],
   },
 
   [REAL_ESTATE_CONFIGURATION_ID.ROOMS]: 'hardcoded',
@@ -37,7 +37,7 @@ export const OPTIONS_ORIGIN_CONFIGURATION: OriginConfiguration = {
   [REAL_ESTATE_CONFIGURATION_ID.TYPE]: {
     apiMethod: 'getRealEstateTypeKeysByOperationId',
     mapperMethod: 'formatIconOptions',
-    paramsFromRelatedFilters: ['operation'],
+    apiRelatedParamKeys: ['operation'],
   },
   [REAL_ESTATE_CONFIGURATION_ID.CONDITION]: {
     apiMethod: 'getRealEstateConditions',
@@ -46,7 +46,7 @@ export const OPTIONS_ORIGIN_CONFIGURATION: OriginConfiguration = {
   [REAL_ESTATE_CONFIGURATION_ID.EXTRAS]: {
     apiMethod: 'getRealEstateExtraKeysByTypeId',
     mapperMethod: 'formatIconOptions',
-    paramsFromRelatedFilters: ['type'],
+    apiRelatedParamKeys: ['type'],
   },
 
   [CAR_CONFIGURATION_ID.BRAND_N_MODEL]: {
@@ -70,11 +70,12 @@ export const OPTIONS_ORIGIN_CONFIGURATION: OriginConfiguration = {
   [FASHION_CONFIGURATION_ID.SIZE]: {
     apiMethod: 'getFashionSizeKeysByObjectId',
     mapperMethod: 'formatSizeNGender',
-    paramsFromRelatedFilters: ['object_type_id'],
+    apiRelatedParamKeys: ['object_type_id'],
+    mapperRelatedParamKeys: ['gender'],
   },
   [FASHION_CONFIGURATION_ID.BRAND]: {
     apiMethod: 'getFashionBrandsByObjectTypeId',
     mapperMethod: 'formatFashionBrand',
-    paramsFromRelatedFilters: ['object_type_id'],
+    apiRelatedParamKeys: ['object_type_id'],
   },
 };
