@@ -1,6 +1,6 @@
 <div class="SlidesCarousel {{className}} position-relative h-100 w-100">
     <ngb-carousel *ngIf="slides?.length; else fallbackImage" interval="0" id="defaultCarousel"
-        (swipeleft)="carousel.next()" (swiperight)="carousel.prev()" [ngClass]="{
+        (swipeleft)="swipe(SWIPE_DIRECTION.LEFT)" (swiperight)="swipe(SWIPE_DIRECTION.RIGHT)" [ngClass]="{
         'hideControllers': hideControllers}" [activeId]="activeId">
         <ng-template *ngFor="let slide of slides; let i = index" ngbSlide [id]="NGB_SLIDE + i">
             <div *ngIf="(currentSlide) === NGB_SLIDE+i || activeId === NGB_SLIDE + i" (click)="emitCurrentIndex(i)"

@@ -16,6 +16,10 @@ import { CarouselSliderDirective } from './directives/carousel-slider.directive'
 import { CarouselSlide } from './carousel-slide.interface';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
+export enum SWIPE_DIRECTION {
+  'RIGHT',
+  'LEFT',
+}
 @Component({
   selector: 'tsl-carousel-slides',
   templateUrl: './carousel-slides.component.html',
@@ -31,6 +35,7 @@ export class SlidesCarouselComponent implements AfterContentInit {
   @Input() className: string;
 
   public readonly IMAGE_FALLBACK = FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH;
+  public readonly SWIPE_DIRECTION = SWIPE_DIRECTION;
   public readonly NGB_SLIDE = 'ngb-slide-';
   public slides: CarouselSliderDirective[];
   public hideControllers: boolean;
@@ -47,6 +52,15 @@ export class SlidesCarouselComponent implements AfterContentInit {
 
   public emitCurrentIndex(slideIndex: number): void {
     this.slideClick.emit({ index: slideIndex });
+  }
+
+  public swipe(swipeDirection: SWIPE_DIRECTION): void {
+    if (!this.deviceDetectorService.isDesktop()) {
+      if (swipeDirection === SWIPE_DIRECTION.RIGHT) {
+        return this.carousel.prev();
+      }
+      return this.carousel.next();
+    }
   }
 
   private checkHideControllers(): void {

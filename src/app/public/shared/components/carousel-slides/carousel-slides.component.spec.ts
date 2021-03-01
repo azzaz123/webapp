@@ -77,20 +77,46 @@ describe('SlidesCarouselComponent', () => {
     });
 
     describe('when we swipe in the carousel...', () => {
-      it('should show the previous slide if we swipe right', () => {
-        spyOn(component.carousel, 'prev');
+      describe('and we are not on desktop', () => {
+        beforeEach(() => {
+          spyOn(deviceDetectorService, 'isDesktop').and.returnValue(false);
+        });
+        it('should show the previous slide if we swipe right', () => {
+          spyOn(component.carousel, 'prev');
 
-        fixture.debugElement.query(By.css(carouselTag)).triggerEventHandler('swiperight', {});
+          fixture.debugElement.query(By.css(carouselTag)).triggerEventHandler('swiperight', {});
 
-        expect(component.carousel.prev).toHaveBeenCalled();
+          expect(component.carousel.prev).toHaveBeenCalled();
+        });
+
+        it('should show the next slide if we swipe left', () => {
+          spyOn(component.carousel, 'next');
+
+          fixture.debugElement.query(By.css(carouselTag)).triggerEventHandler('swipeleft', {});
+
+          expect(component.carousel.next).toHaveBeenCalled();
+        });
       });
 
-      it('should show the next slide if we swipe left', () => {
-        spyOn(component.carousel, 'next');
+      describe('and we are on desktop', () => {
+        beforeEach(() => {
+          spyOn(deviceDetectorService, 'isDesktop').and.returnValue(true);
+        });
+        it('should NOT do anything if we swipe right', () => {
+          spyOn(component.carousel, 'prev');
 
-        fixture.debugElement.query(By.css(carouselTag)).triggerEventHandler('swipeleft', {});
+          fixture.debugElement.query(By.css(carouselTag)).triggerEventHandler('swiperight', {});
 
-        expect(component.carousel.next).toHaveBeenCalled();
+          expect(component.carousel.prev).not.toHaveBeenCalled();
+        });
+
+        it('should NOT do anything if we swipe left', () => {
+          spyOn(component.carousel, 'next');
+
+          fixture.debugElement.query(By.css(carouselTag)).triggerEventHandler('swipeleft', {});
+
+          expect(component.carousel.next).not.toHaveBeenCalled();
+        });
       });
     });
 
