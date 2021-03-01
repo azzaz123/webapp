@@ -1299,4 +1299,7 @@
   <translation id="TryProSlotDescription">¿Quieres impulsar tu negocio online? ¡Conviértete en PRO!</translation>
   <translation id="Buy">Venta</translation>
   <translation id="Rent">Alquiler</translation>
+  <translation id="SubscriptionBenefitsSubtitle">¿Quieres impulsar tu negocio online? ¡Conviértete en PRO!</translation>
+  <translation id="SubscriptionBenefitsFooterTitle">¿Tienes alguna pregunta?</translation>
+  <translation id="SubscriptionBenefitsFooterSubtitle">Encuentra respuestas <ph name="START_LINK"/>aquí<ph name="CLOSE_LINK"/>.</translation>
 </translationbundle>
