@@ -19,7 +19,7 @@ import { RemoteConsoleService } from '../remote-console';
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
 import { XmppService } from '../xmpp/xmpp.service';
-import { BlockUserXmppService } from './../../features/chat/core/block-user/block-user-xmpp.service';
+import { BlockUserXmppService } from '@private/features/chat/core/block-user/block-user-xmpp.service';
 import { Call } from './calls';
 import { CallsService } from './calls.service';
 import { Conversation } from './conversation';

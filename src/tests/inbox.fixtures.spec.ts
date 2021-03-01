@@ -7,7 +7,7 @@ import {
   InboxUser,
   MessageStatus,
   MessageType,
-} from '@features/chat/core/model';
+} from '@private/features/chat/core/model';
 import { CATEGORY_IDS } from '../app/core/category/category-ids';
 import { ITEM_ID, MOCK_ITEM } from './item.fixtures.spec';
 import { MESSAGE_MAIN } from './message.fixtures.spec';

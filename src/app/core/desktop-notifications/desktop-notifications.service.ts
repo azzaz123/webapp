@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { InboxConversation, InboxMessage } from '@features/chat/core/model';
+import { InboxConversation, InboxMessage } from '@private/features/chat/core/model';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { I18nService } from '../i18n/i18n.service';

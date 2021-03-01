@@ -1,4 +1,4 @@
-import { InboxMessage, MessagePayload, MessageStatus, MessageType } from '@features/chat/core/model';
+import { InboxMessage, MessagePayload, MessageStatus, MessageType } from '@private/features/chat/core/model';
 import { Subject } from 'rxjs';
 import { Message } from '../app/core/message/message';
 import { OTHER_USER_ID, USER_ID } from './user.fixtures.spec';
