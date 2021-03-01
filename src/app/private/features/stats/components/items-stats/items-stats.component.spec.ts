@@ -1,4 +1,4 @@
-import { MOCK_ITEM } from './../../../../../tests/item.fixtures.spec';
+import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ItemsStatsComponent } from './items-stats.component';

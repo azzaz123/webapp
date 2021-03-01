@@ -9,7 +9,7 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
   @Input() variant: FILTER_VARIANT = FILTER_VARIANT.BUBBLE;
   @Input() config: FilterConfig<T>;
   @Input() value: FilterParameter[] = [];
-  @Output() change = new EventEmitter<FilterParameter[]>();
+  @Output() valueChange = new EventEmitter<FilterParameter[]>();
   @Output() clear = new EventEmitter<void>();
   @Output() openStateChange: EventEmitter<boolean> = new EventEmitter();
 
@@ -30,7 +30,7 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
   }
 
   public hasValue(): boolean {
-    return this.value.length > 0;
+    return this.value?.length > 0;
   }
 
   public hasApply(): boolean {
@@ -69,9 +69,19 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
   public hasValueChanged(previous: FilterParameter[], current: FilterParameter[]): boolean {
     const keys = Object.keys(this.config.mapKey);
 
-    for (const key of keys) {
-      if (previous[key] !== current[key]) {
-        return true;
+    if (!previous && !current) {
+      return false;
+    } else if (!previous) {
+      return true;
+    } else {
+      for (const key of keys) {
+        const paramKey = this.config.mapKey[key];
+        const previousValue = previous.find((parameter: FilterParameter) => parameter.key === paramKey)?.value;
+        const currentValue = current.find((parameter: FilterParameter) => parameter.key === paramKey)?.value;
+
+        if (previousValue !== currentValue) {
+          return true;
+        }
       }
     }
 
