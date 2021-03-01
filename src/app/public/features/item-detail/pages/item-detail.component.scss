@@ -97,3 +97,7 @@ $item-detail-carousel-height: 477px;
 tsl-side-sky {
   top: calc(#{$topbar-height} + #{$spacer * 0.5});
 }
+
+tsl-sky {
+  top: calc(#{$topbar-height} + #{$spacer * 0.5});
+}

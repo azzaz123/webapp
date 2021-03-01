@@ -19,7 +19,7 @@ export interface AdSlotsItemDetail {
 export const ADS_ITEM_DETAIL: AdSlotsItemDetail = {
   top: {
     name: '130868815/web/item1',
-    id: 'ad-unit-item-top-1',
+    id: 'sky-unit-item-top-1',
     sizes: AD_DESKTOP_MAPPING,
     sizeMapping: {
       desktop: {
@@ -41,7 +41,7 @@ export const ADS_ITEM_DETAIL: AdSlotsItemDetail = {
   },
   left: {
     name: '130868815/web/item2l',
-    id: 'ad-unit-item-left-2',
+    id: 'sky-unit-item-left-2',
     sizes: AD_DESKTOP_VERTICAL_MAPPING,
     sizeMapping: {
       desktop: {
