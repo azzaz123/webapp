@@ -12,7 +12,6 @@ export class UserBasicInfoComponent {
   @Input() userStats: UserStats;
   @Input() userInfo: User;
   @Input() styleSize: USER_INFO_SIZE = USER_INFO_SIZE.SMALL;
-  @Input() className: string;
 
   get sizeProperties(): StyleProperties {
     return STYLE_SIZES.find((style) => style.size === this.styleSize);

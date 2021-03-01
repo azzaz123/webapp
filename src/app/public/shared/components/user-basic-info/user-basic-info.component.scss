@@ -24,15 +24,3 @@ $reviews-width: 20px;
     color: $blue-grey-3;
   }
 }
-
-.ItemDetailHeader {
-  .UserBasicInfo__container {
-    min-width: 10px;
-
-    @media (max-width: 400px) {
-      &__reviews {
-        display: none;
-      }
-    }
-  }
-}
