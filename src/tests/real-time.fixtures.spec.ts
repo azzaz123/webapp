@@ -1,4 +1,4 @@
-import { InboxConversation, InboxMessage } from '@features/chat/core/model';
+import { InboxConversation, InboxMessage } from '@private/features/chat/core/model';
 import { Conversation } from '../app/core/conversation/conversation';
 import { Message } from '../app/core/message/message';
 
