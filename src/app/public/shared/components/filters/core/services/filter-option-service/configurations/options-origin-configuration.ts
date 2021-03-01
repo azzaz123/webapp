@@ -3,8 +3,14 @@ import { REAL_ESTATE_CONFIGURATION_ID } from '../../../enums/configuration-ids/r
 import { COMMON_CONFIGURATION_ID } from '../../../enums/configuration-ids/common-configuration-ids.enum';
 import { CAR_CONFIGURATION_ID } from '../../../enums/configuration-ids/car-configuration-ids';
 import { FASHION_CONFIGURATION_ID } from '../../../enums/configuration-ids/fashion-configuration-ids.enum';
+import { ConfigurationId } from '../../../types/configuration-id.type';
 
-export const OPTIONS_ORIGIN_CONFIGURATION: Record<string, OptionsApiOrigin | 'hardcoded'> = {
+export type OriginConfigurationValue = OptionsApiOrigin | 'hardcoded';
+export type OriginConfiguration = {
+  [key in ConfigurationId]?: OriginConfigurationValue;
+};
+
+export const OPTIONS_ORIGIN_CONFIGURATION: OriginConfiguration = {
   [COMMON_CONFIGURATION_ID.POSTED_AGO]: 'hardcoded',
   [COMMON_CONFIGURATION_ID.CONDITION]: {
     apiMethod: 'getConditionsByCategoryId',
