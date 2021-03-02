@@ -1,22 +1,16 @@
 import {
   AD_DESKTOP_MAPPING,
   AD_DESKTOP_SCREEN_SIZE,
+  AD_DESKTOP_VERTICAL_MAPPING,
   AD_MOBILE_MAPPING,
   AD_MOBILE_SCREEN_SIZE,
-  AD_TABLET_SCREEN_SIZE,
   AD_TABLET_MAPPING,
-  AD_DESKTOP_VERTICAL_MAPPING,
+  AD_TABLET_SCREEN_SIZE,
 } from '@core/ads/constants/ad-slots';
-import { AdSlot } from '@core/ads/models';
+import { AdSlotsPositions } from '@core/ads/models';
 import { DeviceType } from '@core/device/deviceType.enum';
 
-export interface AdSlotsItemDetail {
-  top: AdSlot;
-  left: AdSlot;
-  right: AdSlot;
-}
-
-export const ADS_ITEM_DETAIL: AdSlotsItemDetail = {
+export const ADS_ITEM_DETAIL: AdSlotsPositions = {
   top: {
     name: '130868815/web/item1',
     id: 'sky-unit-item-top-1',
