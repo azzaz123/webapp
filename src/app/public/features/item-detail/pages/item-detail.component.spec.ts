@@ -47,6 +47,7 @@ import { CheckSessionService } from '@public/core/services/check-session/check-s
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 import { AdsService } from '@core/ads/services';
 import { AD_TOP_ITEM_DETAIL } from '../core/ads/item-detail-ads.config';
+import { EllapsedTimeModule } from '../core/directives/ellapsed-time.module';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -79,7 +80,7 @@ describe('ItemDetailComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ItemDetailComponent, CustomCurrencyPipe, AdComponentStub],
-      imports: [HttpClientTestingModule, ItemSpecificationsModule],
+      imports: [HttpClientTestingModule, ItemSpecificationsModule, EllapsedTimeModule],
       providers: [
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         {
