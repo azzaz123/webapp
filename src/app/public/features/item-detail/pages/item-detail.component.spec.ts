@@ -1,7 +1,7 @@
 import { AdComponentStub } from '@fixtures/shared';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { DecimalPipe } from '@angular/common';
-import { CUSTOM_ELEMENTS_SCHEMA, DebugElement, Renderer2 } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement, Renderer2, Directive } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -49,8 +49,6 @@ import { AdsService } from '@core/ads/services';
 import { ADS_ITEM_DETAIL } from '../core/ads/item-detail-ads.config';
 
 describe('ItemDetailComponent', () => {
-  const topSkyTag = 'tsl-top-sky';
-  const sideSkyTag = 'tsl-side-sky';
   const mapTag = 'tsl-here-maps';
   const recommendedItemsTag = 'tsl-recommended-items';
   const currencies = {
@@ -171,11 +169,9 @@ describe('ItemDetailComponent', () => {
 
       component.ngOnInit();
       fixture.detectChanges();
-      const topAd = fixture.debugElement.query(By.css(topSkyTag));
-      const sideAds = fixture.debugElement.queryAll(By.css(sideSkyTag));
+      const adsComponent = fixture.debugElement.queryAll(By.directive(AdComponentStub));
 
-      expect(topAd).toBeFalsy();
-      expect(sideAds.length).toBe(0);
+      expect(adsComponent.length).toBe(0);
     });
   });
 
@@ -185,11 +181,9 @@ describe('ItemDetailComponent', () => {
 
       component.ngOnInit();
       fixture.detectChanges();
-      const topAd = fixture.debugElement.query(By.directive(AdComponentStub));
-      const sideAds = fixture.debugElement.queryAll(By.css(sideSkyTag));
+      const adsComponent = fixture.debugElement.queryAll(By.directive(AdComponentStub));
 
-      expect(topAd).toBeTruthy();
-      expect(sideAds.length).toBe(0);
+      expect(adsComponent.length).toBe(1);
     });
   });
 
@@ -199,10 +193,8 @@ describe('ItemDetailComponent', () => {
 
       component.ngOnInit();
       fixture.detectChanges();
-      // const topAd = fixture.debugElement.query(By.directive(AdComponentStub));
       const sideAds = fixture.debugElement.queryAll(By.directive(AdComponentStub));
 
-      // expect(topAd).toBeTruthy();
       expect(sideAds.length).toBe(3);
     });
   });
