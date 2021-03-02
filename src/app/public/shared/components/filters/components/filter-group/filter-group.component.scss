@@ -1,1 +1,10 @@
 @import '~style/common';
+
+.FilterGroup {
+  &__filter {
+    flex: 1;
+    &--bubble {
+      width: 100%;
+    }
+  }
+}
