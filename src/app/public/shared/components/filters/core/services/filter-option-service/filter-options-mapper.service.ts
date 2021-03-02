@@ -22,7 +22,7 @@ export class FilterOptionsMapperService {
     }));
   }
 
-  public formatPhonesBrandModel(brandModels: BrandModel[]): FilterOption[] {
+  public formatBrandModel(brandModels: BrandModel[]): FilterOption[] {
     return brandModels.map((brandModel) => {
       let value = brandModel.brand;
 

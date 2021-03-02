@@ -1,8 +1,17 @@
+import { DeviceType } from '@core/device/deviceType.enum';
+
 export type AdSlotId = string;
+
+type AdSizeMapping = {
+  [key in DeviceType]: { screenSize: number[]; mapping: number[][] };
+};
 
 export interface AdSlot {
   id: AdSlotId;
   name: string;
-  sizes: [number, number][];
+  sizes: number[][];
   networkId: number;
+  sizeMapping?: AdSizeMapping;
+  device: DeviceType[];
+  type?: string;
 }

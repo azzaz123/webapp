@@ -572,7 +572,7 @@ export class ListComponent implements OnInit, OnDestroy {
       attributes,
     };
 
-    this.analyticsService.trackPageView(event);
+    this.analyticsService.trackEvent(event);
   }
 
   private getTrackingAtributes(itemId: string): any {
@@ -810,7 +810,7 @@ export class ListComponent implements OnInit, OnDestroy {
         freeTrial: this.hasTrialAvailable,
       },
     };
-    this.analyticsService.trackPageView(event);
+    this.analyticsService.trackEvent(event);
     this.saveLocalStorage(LOCAL_STORAGE_TRY_PRO_SLOT, 'true');
     this.showTryProSlot = false;
   }
@@ -830,7 +830,7 @@ export class ListComponent implements OnInit, OnDestroy {
         freeTrial: this.hasTrialAvailable,
       },
     };
-    this.analyticsService.trackPageView(event);
+    this.analyticsService.trackEvent(event);
     this.router.navigate(['profile/subscriptions']);
   }
 }

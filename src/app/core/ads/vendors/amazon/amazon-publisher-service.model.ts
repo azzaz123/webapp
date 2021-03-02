@@ -13,7 +13,7 @@ export interface AmazonPublisherServiceLibrary {
 
 export interface AmazonPublisherServiceAdSlot {
   slotID: string;
-  sizes: [number, number][];
+  sizes: number[][];
   slotName: string;
 }
 

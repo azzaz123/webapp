@@ -1,5 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AdSlot } from '@core/ads/models';
+import { AdsService } from '@core/ads/services/ads/ads.service';
+import { DeviceService } from '@core/device/device.service';
 import { User } from '@core/user/user';
 import { Image } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
@@ -7,6 +10,7 @@ import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { APP_PATHS } from 'app/app-routing-constants';
 import { forkJoin, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+import { PUBLIC_PROFILE_AD } from '../core/ads/public-profile-ads.config';
 import { PublicProfileService } from '../core/services/public-profile.service';
 
 @Component({
@@ -21,10 +25,22 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
   public loading = false;
   private subscriptions: Subscription[] = [];
 
-  constructor(private route: ActivatedRoute, private publicProfileService: PublicProfileService, private router: Router) {}
+  isMobile: boolean;
+
+  readonly adSlot: AdSlot = PUBLIC_PROFILE_AD;
+
+  constructor(
+    private route: ActivatedRoute,
+    private publicProfileService: PublicProfileService,
+    private router: Router,
+    private deviceService: DeviceService,
+    private adsService: AdsService
+  ) {}
 
   ngOnInit(): void {
     this.getUser();
+    this.isMobile = this.deviceService.isMobile();
+    this.adsService.setSlots([this.adSlot]);
   }
 
   ngOnDestroy(): void {

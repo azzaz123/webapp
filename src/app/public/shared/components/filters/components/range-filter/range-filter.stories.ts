@@ -18,11 +18,11 @@ import { RangeFilterComponent } from './range-filter.component';
   template: `
     <div>
       <h1>Bubble variant</h1>
-      <tsl-range-filter [variant]="${FILTER_VARIANT.BUBBLE}" [value]="value" [config]="config" (change)="changeBubble($event)">
+      <tsl-range-filter [variant]="${FILTER_VARIANT.BUBBLE}" [value]="value" [config]="config" (valueChange)="changeBubble($event)">
       </tsl-range-filter>
       <h1>Content variant</h1>
       <div style="border: 1px dashed black; background-color: white">
-        <tsl-range-filter [variant]="${FILTER_VARIANT.CONTENT}" [value]="value" [config]="config" (change)="changeContent($event)">
+        <tsl-range-filter [variant]="${FILTER_VARIANT.CONTENT}" [value]="value" [config]="config" (valueChange)="changeContent($event)">
         </tsl-range-filter>
       </div>
     </div>
