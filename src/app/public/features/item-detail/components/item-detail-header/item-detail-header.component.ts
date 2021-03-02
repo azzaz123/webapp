@@ -39,10 +39,10 @@ export class ItemDetailHeaderComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.isOwner && this.item?.bumpFlags?.bumped) {
-      this.getItemExpiredDate();
+      this.initializeItemBumpExpiringDate();
     }
-    this.getUserStats();
-    this.checkShowMineOptions();
+    this.initializeUserStats();
+    this.checkShowOptions();
   }
 
   public toggleItemFavorite(): void {
@@ -68,7 +68,7 @@ export class ItemDetailHeaderComponent implements OnInit {
     modalRef.componentInstance.item = this.item;
     modalRef.result.then(() => {
       this.item.sold = true;
-      this.checkShowMineOptions();
+      this.checkShowOptions();
     });
   }
 
@@ -91,7 +91,7 @@ export class ItemDetailHeaderComponent implements OnInit {
     });
   }
 
-  private getItemExpiredDate(): void {
+  private initializeItemBumpExpiringDate(): void {
     this.itemDetailService.getItemActivePurchases(this.item.id).subscribe((purchases) => {
       if (purchases?.length) {
         this.item.bumpExpiringDate = purchases[0].expiration_date;
@@ -99,13 +99,13 @@ export class ItemDetailHeaderComponent implements OnInit {
     });
   }
 
-  private getUserStats(): void {
+  private initializeUserStats(): void {
     this.publicProfileService.getStats(this.user?.id).subscribe((userStats: UserStats) => {
       this.userStats = userStats;
     });
   }
 
-  private checkShowMineOptions(): void {
+  private checkShowOptions(): void {
     this.showOptions = !this.item.sold && !this.item.flags.onhold && !this.item.flags.expired && !this.item.flags.notAvailable;
   }
 }
