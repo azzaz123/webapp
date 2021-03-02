@@ -19,6 +19,7 @@ import { ItemDetailHeaderModule } from './components/item-detail-header/item-det
 import { PublicPipesModule } from '@public/core/pipes/public-pipes.module';
 import { ItemSpecificationsModule } from './components/item-specifications/item-specifications.module';
 import { MapSpecificationsService } from './core/services/map-specifications/map-specifications.service';
+import { EllapsedTimeModule } from './core/directives/ellapsed-time.module';
 
 @NgModule({
   declarations: [itemDetailRoutedComponents],
@@ -36,6 +37,7 @@ import { MapSpecificationsService } from './core/services/map-specifications/map
     ItemDetailHeaderModule,
     PublicPipesModule,
     ItemSpecificationsModule,
+    EllapsedTimeModule,
   ],
   providers: [
     ItemDetailService,

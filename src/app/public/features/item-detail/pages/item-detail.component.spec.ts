@@ -44,6 +44,7 @@ import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-c
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 import { IsCurrentUserStub } from '@fixtures/public/core';
+import { EllapsedTimeModule } from '../core/directives/ellapsed-time.module';
 
 describe('ItemDetailComponent', () => {
   const topSkyTag = 'tsl-top-sky';
@@ -78,7 +79,7 @@ describe('ItemDetailComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ItemDetailComponent, CustomCurrencyPipe, IsCurrentUserStub],
-      imports: [HttpClientTestingModule, ItemSpecificationsModule],
+      imports: [HttpClientTestingModule, ItemSpecificationsModule, EllapsedTimeModule],
       providers: [
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         {
