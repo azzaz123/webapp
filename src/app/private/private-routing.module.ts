@@ -108,7 +108,7 @@ const routes: Routes = [
       },
       {
         path: 'stats',
-        loadChildren: () => import('app/features/stats/stats.module').then((m) => m.StatsModule),
+        loadChildren: () => import('@private/features/stats/stats.module').then((m) => m.StatsModule),
       },
       {
         path: '**',

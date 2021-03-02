@@ -9,5 +9,6 @@
         </div>
     </div>
     <router-outlet></router-outlet>
+    <tsl-sky *ngIf="isMobile" [adSlot]="adSlot"></tsl-sky>
 </div>
 <tsl-spinner [hidden]="!loading"></tsl-spinner>

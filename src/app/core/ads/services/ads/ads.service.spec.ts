@@ -1,14 +1,14 @@
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MockDidomiService } from '@core/ads/vendors/didomi/didomi.mock';
 import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
 import {
+  MockAdSlots,
   MockAmazonPublisherService,
   MockCriteoService,
   MockGooglePublisherTagService,
   MockLoadAdsService,
 } from '@fixtures/ads.fixtures.spec';
 import { of } from 'rxjs';
-import { AD_SLOTS, CHAT_AD_SLOTS } from '../../constants';
 import { LoadAdsService } from '../load-ads/load-ads.service';
 import { AmazonPublisherService, CriteoService, GooglePublisherTagService } from './../../vendors';
 import { AdsService } from './ads.service';
@@ -64,15 +64,15 @@ describe('AdsService', () => {
     it('should set ad slots', () => {
       spyOn(MockGooglePublisherTagService, 'setSlots').and.callThrough();
 
-      service.setSlots(AD_SLOTS);
+      service.setSlots(MockAdSlots);
 
-      expect(MockGooglePublisherTagService.setSlots).toHaveBeenCalledWith(AD_SLOTS);
+      expect(MockGooglePublisherTagService.setSlots).toHaveBeenCalledWith(MockAdSlots);
     });
 
     it('it should refresh ads', () => {
       spyOn(MockGooglePublisherTagService, 'refreshAds').and.callThrough();
 
-      service.setSlots(AD_SLOTS);
+      service.setSlots(MockAdSlots);
 
       expect(MockGooglePublisherTagService.refreshAds).toHaveBeenCalledTimes(1);
     });
@@ -122,13 +122,27 @@ describe('AdsService', () => {
   });
 
   describe('when displaying an ad by id', () => {
-    it('should ask Google to display ad', () => {
-      const CHAT_SLOT_ID = CHAT_AD_SLOTS[0].id;
+    it('should wait to library ready to display ad', () => {
+      const adSotId = MockAdSlots[0].id;
       spyOn(MockGooglePublisherTagService, 'displayAdBySlotId');
 
-      service.displayAdBySlotId(CHAT_SLOT_ID);
+      service.displayAdBySlotId(adSotId);
 
-      expect(MockGooglePublisherTagService.displayAdBySlotId).toHaveBeenLastCalledWith(CHAT_SLOT_ID);
+      expect(MockGooglePublisherTagService.displayAdBySlotId).toHaveBeenCalledTimes(0);
+
+      service.init();
+
+      expect(MockGooglePublisherTagService.displayAdBySlotId).toHaveBeenLastCalledWith(adSotId);
+    });
+
+    it('should ask Google to display ad if is lib ready', () => {
+      service.init();
+      const adSlotId = MockAdSlots[0].id;
+      spyOn(MockGooglePublisherTagService, 'displayAdBySlotId');
+
+      service.displayAdBySlotId(adSlotId);
+
+      expect(MockGooglePublisherTagService.displayAdBySlotId).toHaveBeenLastCalledWith(adSlotId);
     });
   });
 });

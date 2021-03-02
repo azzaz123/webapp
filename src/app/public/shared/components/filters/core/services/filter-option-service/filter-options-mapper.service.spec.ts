@@ -52,7 +52,7 @@ describe('FilterOptionsMapperService', () => {
 
   describe('when formatting phones brand model', () => {
     it('should return FilterOption format', () => {
-      const formattedOptions = service.formatPhonesBrandModel([brandNModel]);
+      const formattedOptions = service.formatBrandModel([brandNModel]);
 
       expect(formattedOptions).toEqual([formattedPhoneBrandNModel]);
     });
