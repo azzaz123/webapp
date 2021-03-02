@@ -7,8 +7,6 @@ import { Story, Meta } from '@storybook/angular/types-6-0';
 import { CookieService } from 'ngx-cookie';
 import { FiltersModule } from '../../filters.module';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
-import { RangeFilterModule } from '../range-filter/range-filter.module';
-import { ToggleFilterModule } from '../toggle-filter/toggle-filter.module';
 import { FilterHostDirective } from './directives/filter-host.directive';
 import { FilterGroupComponent } from './filter-group.component';
 import { FilterFactoryService } from './services/filter-factory.service';

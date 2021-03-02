@@ -9,7 +9,6 @@ import { FilterFactoryService } from './services/filter-factory.service';
   selector: 'tsl-filter-group',
   templateUrl: './filter-group.component.html',
   styleUrls: ['./filter-group.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FilterGroupComponent implements AfterViewInit {
   @ViewChildren(FilterHostDirective) query: QueryList<FilterHostDirective>;
