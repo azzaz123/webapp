@@ -13,7 +13,7 @@ import {
   ViewSubscription,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES, SUBSCRIPTION_SOURCE } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { AddNewSubscriptionModalComponent } from '@features/profile/modal/add-new-subscription/add-new-subscription-modal.component';
 import { CancelSubscriptionModalComponent } from '@features/profile/modal/cancel-subscription/cancel-subscription-modal.component';
@@ -161,14 +161,15 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   private trackPageView() {
+    const source = (this.route.snapshot.queryParamMap.get('source') as SUBSCRIPTION_SOURCE) || null;
     const pageView: AnalyticsPageView<ViewSubscription> = {
       name: ANALYTICS_EVENT_NAMES.ViewSubscription,
       attributes: {
         screenId: SCREEN_IDS.SubscriptionManagement,
         isPro: this.user.featured,
+        source,
       },
     };
-
     this.analyticsService.trackPageView(pageView);
   }
 

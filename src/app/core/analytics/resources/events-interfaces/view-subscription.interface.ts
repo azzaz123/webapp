@@ -17,4 +17,8 @@ export interface ViewSubscription {
    * Whether the user is a PRO
    */
   isPro: boolean;
+  /**
+   * The source that takes the user to the subscription page
+   */
+  source?: 'landing_banner' | 'landing_details';
 }

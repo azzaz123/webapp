@@ -2243,10 +2243,10 @@
     "@babel/runtime" "^7.6.0"
     slugify "^1.3.6"
 
-"@mparticle/web-sdk@^2.12.3":
-  version "2.12.4"
-  resolved "https://registry.yarnpkg.com/@mparticle/web-sdk/-/web-sdk-2.12.4.tgz#c780734f73a44131dadc1a9d9d1cea9acb28d96b"
-  integrity sha512-OLnSTECRIy95yZLAhGDGFc7R75Tfqz59hiJTbX7C7QylkS9dKEID2rpXux7ZuCFGBUduKKzBW2XYvnzMqIlSAQ==
+"@mparticle/web-sdk@^2.12.5":
+  version "2.12.5"
+  resolved "https://registry.yarnpkg.com/@mparticle/web-sdk/-/web-sdk-2.12.5.tgz#e0af4473275717085e46d8bcacb68eb241788182"
+  integrity sha512-g1Vud+ooB1WYvwP3m1laUzQIEmHMtfnbmqMOD8OYPtitFitKbh+ac+uPNZSSxH1a7SkKJaEyt1r07KY8ejr67Q==
   dependencies:
     "@babel/runtime" "^7.6.0"
     slugify "^1.3.6"
@@ -10420,9 +10420,9 @@ move-concurrently@^1.0.1:
     rimraf "^2.5.4"
     run-queue "^1.0.3"
 
-"mparticle_json_validation@git+ssh://git@github.com:Wallapop/mparticle_json_validation#0.61.0":
+"mparticle_json_validation@git+ssh://git@github.com:Wallapop/mparticle_json_validation#feature/pro_awareness":
   version "0.0.0"
-  resolved "git+ssh://git@github.com:Wallapop/mparticle_json_validation#42735831eb372285a81c8c94c626e1353e143e6c"
+  resolved "git+ssh://git@github.com:Wallapop/mparticle_json_validation#4160ab7f5e2b1d3f7f4528c88916beefbdf4cbd9"
 
 mri@^1.1.5:
   version "1.1.6"
