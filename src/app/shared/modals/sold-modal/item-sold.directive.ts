@@ -1,5 +1,5 @@
 import { Directive, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import { InboxItem } from '@features/chat/core/model';
+import { InboxItem } from '@private/features/chat/core/model';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { Item } from '../../../core/item/item';

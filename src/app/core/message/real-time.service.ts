@@ -14,7 +14,7 @@ import {
 import { ConnectionService } from '../connection/connection.service';
 import { ConnectionType } from '../remote-console/connection-type';
 import { I18nService } from '../i18n/i18n.service';
-import { InboxConversation, InboxMessage, ChatSignal, ChatSignalType } from '@features/chat/core/model';
+import { InboxConversation, InboxMessage, ChatSignal, ChatSignalType } from '@private/features/chat/core/model';
 
 export const SEARCHID_STORAGE_NAME = 'searchId';
 

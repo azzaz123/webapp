@@ -48,7 +48,7 @@ export class ProfileComponent implements OnInit {
 
   public logout($event: any) {
     $event.preventDefault();
-    this.userService.logout();
+    this.userService.logout().subscribe();
   }
 
   public trackClickSubscriptionTab(): void {

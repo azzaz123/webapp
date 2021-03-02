@@ -19,7 +19,7 @@ const routes: Routes = [
           },
           {
             path: 'dashboard',
-            loadChildren: () => import('app/features/dashboard/dashboard.module').then((m) => m.DashboardModule),
+            loadChildren: () => import('@private/features/dashboard/dashboard.module').then((m) => m.DashboardModule),
           },
           {
             path: 'calls',
@@ -34,7 +34,7 @@ const routes: Routes = [
               },
               {
                 path: 'upload',
-                loadChildren: () => import('@features/upload/upload.module').then((m) => m.UploadModule),
+                loadChildren: () => import('@private/features/upload/upload.module').then((m) => m.UploadModule),
                 canLoad: [NgxPermissionsGuard],
                 data: {
                   isMyZone: true,
@@ -47,7 +47,7 @@ const routes: Routes = [
               },
               {
                 path: 'edit',
-                loadChildren: () => import('@features/upload/upload.module').then((m) => m.UploadModule),
+                loadChildren: () => import('@private/features/upload/upload.module').then((m) => m.UploadModule),
               },
             ],
           },
@@ -59,7 +59,7 @@ const routes: Routes = [
       },
       {
         path: 'chat',
-        loadChildren: () => import('app/features/chat/chat.module').then((m) => m.ChatModule),
+        loadChildren: () => import('@private/features/chat/chat.module').then((m) => m.ChatModule),
       },
       {
         path: 'favorites',
@@ -67,7 +67,7 @@ const routes: Routes = [
       },
       {
         path: 'reviews',
-        loadChildren: () => import('app/features/reviews/reviews.module').then((m) => m.ReviewsModule),
+        loadChildren: () => import('@private/features/reviews/reviews.module').then((m) => m.ReviewsModule),
       },
       {
         path: 'wallacoins',
@@ -89,7 +89,7 @@ const routes: Routes = [
           },
           {
             path: 'upload',
-            loadChildren: () => import('@features/upload/upload.module').then((m) => m.UploadModule),
+            loadChildren: () => import('@private/features/upload/upload.module').then((m) => m.UploadModule),
             canLoad: [NgxPermissionsGuard],
             data: {
               isMyZone: true,
@@ -102,13 +102,13 @@ const routes: Routes = [
           },
           {
             path: 'edit',
-            loadChildren: () => import('@features/upload/upload.module').then((m) => m.UploadModule),
+            loadChildren: () => import('@private/features/upload/upload.module').then((m) => m.UploadModule),
           },
         ],
       },
       {
         path: 'stats',
-        loadChildren: () => import('app/features/stats/stats.module').then((m) => m.StatsModule),
+        loadChildren: () => import('@private/features/stats/stats.module').then((m) => m.StatsModule),
       },
       {
         path: '**',

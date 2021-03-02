@@ -2,7 +2,7 @@ import { Component, OnInit, Renderer2 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, NavigationStart, RouteConfigLoadEnd, RouteConfigLoadStart, Router } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
-import { InboxService } from '@features/chat/core/inbox/inbox.service';
+import { InboxService } from '@private/features/chat/core/inbox/inbox.service';
 import * as moment from 'moment';
 import { CookieOptions, CookieService } from 'ngx-cookie';
 import { concatMap, distinctUntilChanged, filter, finalize, map, mergeMap, take } from 'rxjs/operators';
