@@ -49,8 +49,6 @@ import { AdsService } from '@core/ads/services';
 import { AD_TOP_ITEM_DETAIL } from '../core/ads/item-detail-ads.config';
 
 describe('ItemDetailComponent', () => {
-  const topSkyTag = 'tsl-top-sky';
-  const sideSkyTag = 'tsl-side-sky';
   const mapTag = 'tsl-here-maps';
   const recommendedItemsTag = 'tsl-recommended-items';
   const currencies = {
@@ -166,16 +164,15 @@ describe('ItemDetailComponent', () => {
   });
 
   describe('when we are on MOBILE...', () => {
-    it('should NOT show ADS', () => {
+    it('should only show AD on description', () => {
       spyOn(deviceService, 'getDeviceType').and.returnValue(DeviceType.MOBILE);
 
       component.ngOnInit();
       fixture.detectChanges();
-      const topAd = fixture.debugElement.query(By.css(topSkyTag));
-      const sideAds = fixture.debugElement.queryAll(By.css(sideSkyTag));
 
-      expect(topAd).toBeFalsy();
-      expect(sideAds.length).toBe(0);
+      const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
+
+      expect(ads.length).toBe(1);
     });
   });
 
@@ -185,11 +182,9 @@ describe('ItemDetailComponent', () => {
 
       component.ngOnInit();
       fixture.detectChanges();
-      const topAd = fixture.debugElement.query(By.directive(AdComponentStub));
-      const sideAds = fixture.debugElement.queryAll(By.css(sideSkyTag));
+      const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
 
-      expect(topAd).toBeTruthy();
-      expect(sideAds.length).toBe(0);
+      expect(ads.length).toBe(1);
     });
   });
 
@@ -199,11 +194,9 @@ describe('ItemDetailComponent', () => {
 
       component.ngOnInit();
       fixture.detectChanges();
-      const topAd = fixture.debugElement.query(By.directive(AdComponentStub));
-      const sideAds = fixture.debugElement.queryAll(By.css(sideSkyTag));
+      const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
 
-      expect(topAd).toBeTruthy();
-      expect(sideAds.length).toBe(2);
+      expect(ads.length).toBe(1);
     });
   });
 

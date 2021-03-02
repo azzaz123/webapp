@@ -45,6 +45,9 @@ $item-detail-carousel-height: 477px;
     line-height: normal;
     color: $blue-grey-1;
     border-bottom: 1px solid $blue-grey-5;
+    &.mobile {
+      border-bottom: none;
+    }
   }
 
   &__carousel {

@@ -29,5 +29,5 @@ export const AD_TOP_ITEM_DETAIL: AdSlot = {
   },
   networkId: 6866,
   type: 'item',
-  device: [DeviceType.DESKTOP],
+  device: [DeviceType.DESKTOP, DeviceType.TABLET, DeviceType.MOBILE],
 };
