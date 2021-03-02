@@ -55,12 +55,16 @@ export class SlidesCarouselComponent implements AfterContentInit {
   }
 
   public swipe(swipeDirection: SWIPE_DIRECTION): void {
-    if (!this.deviceDetectorService.isDesktop()) {
+    if (this.isTouchDevice()) {
       if (swipeDirection === SWIPE_DIRECTION.RIGHT) {
         return this.carousel.prev();
       }
       return this.carousel.next();
     }
+  }
+
+  private isTouchDevice(): boolean {
+    return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
   }
 
   private checkHideControllers(): void {

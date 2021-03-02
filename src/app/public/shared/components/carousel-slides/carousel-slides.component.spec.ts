@@ -77,30 +77,9 @@ describe('SlidesCarouselComponent', () => {
     });
 
     describe('when we swipe in the carousel...', () => {
-      describe('and we are not on desktop', () => {
+      describe('and we are NOT on a touch screen device', () => {
         beforeEach(() => {
-          spyOn(deviceDetectorService, 'isDesktop').and.returnValue(false);
-        });
-        it('should show the previous slide if we swipe right', () => {
-          spyOn(component.carousel, 'prev');
-
-          fixture.debugElement.query(By.css(carouselTag)).triggerEventHandler('swiperight', {});
-
-          expect(component.carousel.prev).toHaveBeenCalled();
-        });
-
-        it('should show the next slide if we swipe left', () => {
-          spyOn(component.carousel, 'next');
-
-          fixture.debugElement.query(By.css(carouselTag)).triggerEventHandler('swipeleft', {});
-
-          expect(component.carousel.next).toHaveBeenCalled();
-        });
-      });
-
-      describe('and we are on desktop', () => {
-        beforeEach(() => {
-          spyOn(deviceDetectorService, 'isDesktop').and.returnValue(true);
+          resetTouchProperties();
         });
         it('should NOT do anything if we swipe right', () => {
           spyOn(component.carousel, 'prev');
@@ -116,6 +95,27 @@ describe('SlidesCarouselComponent', () => {
           fixture.debugElement.query(By.css(carouselTag)).triggerEventHandler('swipeleft', {});
 
           expect(component.carousel.next).not.toHaveBeenCalled();
+        });
+      });
+
+      describe('and we are on a touch screen device', () => {
+        beforeEach(() => {
+          setTouchProperties();
+        });
+        it('should call to the previous slide if we swipe right', () => {
+          spyOn(component.carousel, 'prev');
+
+          fixture.debugElement.query(By.css(carouselTag)).triggerEventHandler('swiperight', {});
+
+          expect(component.carousel.prev).toHaveBeenCalled();
+        });
+
+        it('should call to the next slide if we swipe left', () => {
+          spyOn(component.carousel, 'next');
+
+          fixture.debugElement.query(By.css(carouselTag)).triggerEventHandler('swipeleft', {});
+
+          expect(component.carousel.next).toHaveBeenCalled();
         });
       });
     });
@@ -167,4 +167,19 @@ describe('SlidesCarouselComponent', () => {
       expect(fixture.debugElement.query(By.css(fallbackImageClass))).toBeTruthy();
     });
   });
+
+  function setTouchProperties(): void {
+    Object.defineProperty(window, 'ontouchstart', {
+      value: true,
+    });
+  }
+
+  function resetTouchProperties(): void {
+    Object.defineProperty(navigator, 'maxTouchPoints', {
+      value: 0,
+    });
+    Object.defineProperty(navigator, 'msMaxTouchPoints', {
+      value: 0,
+    });
+  }
 });
