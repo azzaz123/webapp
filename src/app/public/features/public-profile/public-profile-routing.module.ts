@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
+import { AdsResolver } from '@core/ads/resolvers/ads.resolver';
 import { ProfileResolver } from '@data/user';
 import { PublicProfileComponent } from './pages/public-profile.component';
 import { UserInfoComponent } from './pages/user-info/user-info.component';
@@ -16,6 +17,7 @@ const routes: Route[] = [
     component: PublicProfileComponent,
     resolve: {
       profile: ProfileResolver,
+      ads: AdsResolver,
     },
     children: [
       {

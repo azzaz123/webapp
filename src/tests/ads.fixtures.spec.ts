@@ -1,6 +1,14 @@
-import { of } from 'rxjs';
-
+import {
+  AD_DESKTOP_MAPPING,
+  AD_DESKTOP_SCREEN_SIZE,
+  AD_MOBILE_MAPPING,
+  AD_MOBILE_SCREEN_SIZE,
+  AD_TABLET_SCREEN_SIZE,
+  AD_TABLE_MAPPING,
+} from '@core/ads/constants';
 import { AdKeyWords, AdSlot, AdSlotId } from '@core/ads/models';
+import { DeviceType } from '@core/device/deviceType.enum';
+import { of } from 'rxjs';
 
 export const MockAdsService = {
   adsReady$: of(true),
@@ -64,5 +72,20 @@ export const MockAdSlots: AdSlot[] = [
       [336, 280],
     ],
     networkId: 235235,
+    sizeMapping: {
+      desktop: {
+        screenSize: AD_DESKTOP_SCREEN_SIZE,
+        mapping: AD_DESKTOP_MAPPING,
+      },
+      tablet: {
+        screenSize: AD_TABLET_SCREEN_SIZE,
+        mapping: AD_TABLE_MAPPING,
+      },
+      mobile: {
+        screenSize: AD_MOBILE_SCREEN_SIZE,
+        mapping: AD_MOBILE_MAPPING.big,
+      },
+    },
+    device: [DeviceType.DESKTOP],
   },
 ];
