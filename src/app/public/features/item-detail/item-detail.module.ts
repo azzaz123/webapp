@@ -17,6 +17,7 @@ import { ItemSpecificationsModule } from './components/item-specifications/item-
 import { RecommendedItemsModule } from './components/recommended-items/recommended-items.module';
 import { ItemDetailService } from './core/services/item-detail/item-detail.service';
 import { MapSpecificationsService } from './core/services/map-specifications/map-specifications.service';
+import { EllapsedTimeModule } from './core/directives/ellapsed-time.module';
 import { itemDetailRoutedComponents, ItemDetailRoutingModule } from './item-detail-routing.module';
 
 @NgModule({
@@ -34,6 +35,7 @@ import { itemDetailRoutedComponents, ItemDetailRoutingModule } from './item-deta
     ItemFullScreenCarouselModule,
     RecommendedItemsModule,
     ItemSpecificationsModule,
+    EllapsedTimeModule,
   ],
   providers: [
     ItemDetailService,

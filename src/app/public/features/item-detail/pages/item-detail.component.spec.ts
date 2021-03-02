@@ -1,52 +1,52 @@
-import { AdComponentStub } from '@fixtures/shared';
-import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { DecimalPipe } from '@angular/common';
-import { CUSTOM_ELEMENTS_SCHEMA, DebugElement, Renderer2, Directive } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement, Renderer2 } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AdsService } from '@core/ads/services';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
-import { CustomCurrencyPipe } from '@shared/pipes';
+import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
+import { MockAdsService } from '@fixtures/ads.fixtures.spec';
+import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
 import {
   MOCK_ITEM,
-  MOCK_ITEM_WITHOUT_LOCATION,
-  MOCK_ITEM_GBP,
-  MOCK_ITEM_FASHION,
-  MOCK_ITEM_CELLPHONES,
   MOCK_ITEM_CAR,
+  MOCK_ITEM_CELLPHONES,
+  MOCK_ITEM_FASHION,
+  MOCK_ITEM_GBP,
+  MOCK_ITEM_WITHOUT_LOCATION,
 } from '@fixtures/item.fixtures.spec';
-import { MOCK_USER } from '@fixtures/user.fixtures.spec';
-import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
-import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
+import { MOCK_COUNTER_SPECIFICATIONS_CAR, MOCK_COUNTER_SPECIFICATIONS_REAL_ESTATE } from '@fixtures/map-specifications.fixtures.spec';
+import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
-import { MOCK_FULL_USER_FEATURED } from '@fixtures/user.fixtures.spec';
+import { AdComponentStub } from '@fixtures/shared';
+import { MOCK_FULL_USER_FEATURED, MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
-import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
-import { of, throwError } from 'rxjs';
-import { CookieService } from 'ngx-cookie';
-import { DeviceDetectorService } from 'ngx-device-detector';
-import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
-import { ItemDetailComponent } from './item-detail.component';
-import {
-  RECOMMENDED_ITEMS_MOCK,
-  EMPTY_RECOMMENDED_ITEMS_MOCK,
-} from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
-import { APP_PATHS } from 'app/app-routing-constants';
-import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
-import { ItemSpecificationsComponent } from '../components/item-specifications/item-specifications.component';
-import { ItemSpecificationsModule } from '../components/item-specifications/item-specifications.module';
-import { MapSpecificationsService } from '../core/services/map-specifications/map-specifications.service';
-import { MOCK_COUNTER_SPECIFICATIONS_CAR, MOCK_COUNTER_SPECIFICATIONS_REAL_ESTATE } from '@fixtures/map-specifications.fixtures.spec';
-import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
-import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
-import { AdsService } from '@core/ads/services';
+import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
+import {
+  EMPTY_RECOMMENDED_ITEMS_MOCK,
+  RECOMMENDED_ITEMS_MOCK,
+} from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
+import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
+import { CustomCurrencyPipe } from '@shared/pipes';
+import { APP_PATHS } from 'app/app-routing-constants';
+import { CookieService } from 'ngx-cookie';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { of, throwError } from 'rxjs';
+import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
+import { ItemSpecificationsComponent } from '../components/item-specifications/item-specifications.component';
+import { ItemSpecificationsModule } from '../components/item-specifications/item-specifications.module';
 import { ADS_ITEM_DETAIL } from '../core/ads/item-detail-ads.config';
+import { EllapsedTimeModule } from '../core/directives/ellapsed-time.module';
+import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
+import { MapSpecificationsService } from '../core/services/map-specifications/map-specifications.service';
+import { ItemDetailComponent } from './item-detail.component';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -79,7 +79,7 @@ describe('ItemDetailComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ItemDetailComponent, CustomCurrencyPipe, AdComponentStub],
-      imports: [HttpClientTestingModule, ItemSpecificationsModule],
+      imports: [HttpClientTestingModule, ItemSpecificationsModule, EllapsedTimeModule],
       providers: [
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         {
@@ -164,14 +164,15 @@ describe('ItemDetailComponent', () => {
   });
 
   describe('when we are on MOBILE...', () => {
-    it('should NOT show ADS', () => {
+    it('should only show AD on description', () => {
       spyOn(deviceService, 'getDeviceType').and.returnValue(DeviceType.MOBILE);
 
       component.ngOnInit();
       fixture.detectChanges();
-      const adsComponent = fixture.debugElement.queryAll(By.directive(AdComponentStub));
 
-      expect(adsComponent.length).toBe(0);
+      const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
+
+      expect(ads.length).toBe(1);
     });
   });
 
@@ -181,9 +182,9 @@ describe('ItemDetailComponent', () => {
 
       component.ngOnInit();
       fixture.detectChanges();
-      const adsComponent = fixture.debugElement.queryAll(By.directive(AdComponentStub));
+      const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
 
-      expect(adsComponent.length).toBe(1);
+      expect(ads.length).toBe(1);
     });
   });
 
@@ -193,9 +194,9 @@ describe('ItemDetailComponent', () => {
 
       component.ngOnInit();
       fixture.detectChanges();
-      const sideAds = fixture.debugElement.queryAll(By.directive(AdComponentStub));
+      const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
 
-      expect(sideAds.length).toBe(3);
+      expect(ads.length).toBe(3);
     });
   });
 

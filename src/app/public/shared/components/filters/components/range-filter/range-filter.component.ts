@@ -105,12 +105,12 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
   }
 
   private emitEmptyChange(): void {
-    this.change.emit([]);
+    this.valueChange.emit([]);
   }
 
   private emitChange(): void {
     this.setValue(this.getMinValue(), this.getMaxValue());
-    this.change.emit(this.value);
+    this.valueChange.emit(this.value);
   }
 
   private setValue(min: number, max: number) {
