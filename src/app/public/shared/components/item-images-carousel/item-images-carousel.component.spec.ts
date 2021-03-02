@@ -10,7 +10,7 @@ describe('ItemImagesCarouselComponent', () => {
   const flagRightClass = '.ItemFlag--right';
   const flagLeftClass = '.ItemFlag--left';
   const disabledCarouselClass = '.ItemImagesCarousel--disabled';
-  const activeCarouselClass = '.ItemImagesCarousel--active';
+  const activeCarouselClass = '.ItemImagesCarousel';
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -116,8 +116,10 @@ describe('ItemImagesCarouselComponent', () => {
         fixture.detectChanges();
 
         const activeCarousel = fixture.debugElement.query(By.css(activeCarouselClass));
+        const disabledCarousel = fixture.debugElement.query(By.css(disabledCarouselClass));
 
         expect(activeCarousel).toBeTruthy();
+        expect(disabledCarousel).toBeFalsy();
       });
     });
 

@@ -4,7 +4,7 @@
     <tsl-item-flag *ngIf="bumpedFlag" [type]="bumpedFlag" class="position-absolute ItemFlag--right" i18n="@@Featured">
         Featured</tsl-item-flag>
 </div>
-<div [ngClass]="isActive ? 'ItemImagesCarousel--active' : 'ItemImagesCarousel--disabled'" class="w-100 h-100">
+<div class="ItemImagesCarousel w-100 h-100" [ngClass]="{ 'ItemImagesCarousel--disabled': !isActive }">
     <tsl-carousel-slides (slideClick)="imageClick.emit($event)" [hideControllers]="itemFlags?.expired">
         <ng-template carousel-slider *ngFor="let image of images">
             <img [src]="image" />
