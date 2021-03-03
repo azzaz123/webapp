@@ -27,7 +27,8 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { User } from 'app/core/user/user';
 import { UserService } from 'app/core/user/user.service';
 import { isEqual } from 'lodash-es';
-import { delay, finalize, repeatWhen, take, takeWhile } from 'rxjs/operators';
+import { delay, finalize, repeatWhen, take, takeWhile, tap } from 'rxjs/operators';
+import { forkJoin } from 'rxjs';
 
 export type SubscriptionModal =
   | typeof CheckSubscriptionInAppModalComponent
@@ -57,26 +58,30 @@ export class SubscriptionsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.initData();
+    this.trackParamEvents();
+  }
+
+  private initData(): void {
     this.loading = true;
-    this.subscriptionsService
-      .getSubscriptions(false)
+    const user$ = this.userService.me(true);
+    const subscriptions$ = this.subscriptionsService.getSubscriptions(false);
+
+    forkJoin({
+      user$,
+      subscriptions$,
+    })
       .pipe(
+        take(1),
         finalize(() => {
           this.loading = false;
-        })
-      )
-      .subscribe((subscriptions) => {
-        this.subscriptions = subscriptions;
-      });
-    this.userService
-      .me(true)
-      .pipe(
-        finalize(() => {
           this.trackPageView();
         })
       )
-      .subscribe((user) => (this.user = user));
-    this.trackParamEvents();
+      .subscribe(({ user$, subscriptions$ }) => {
+        this.user = user$;
+        this.subscriptions = subscriptions$;
+      });
   }
 
   private trackParamEvents(): void {
@@ -160,12 +165,20 @@ export class SubscriptionsComponent implements OnInit {
       });
   }
 
-  private trackPageView() {
+  private trackPageView(): void {
+    let stringIds: string = null;
+    const subscriptionIds = this.subscriptionsService.getTrialSubscriptionsIds(this.subscriptions);
+
+    if (subscriptionIds.length > 0) {
+      stringIds = subscriptionIds.sort((a, b) => a - b).join(', ');
+    }
+
     const pageView: AnalyticsPageView<ViewSubscription> = {
       name: ANALYTICS_EVENT_NAMES.ViewSubscription,
       attributes: {
         screenId: SCREEN_IDS.SubscriptionManagement,
         isPro: this.user.featured,
+        freeTrialSubscriptions: stringIds,
       },
     };
 
@@ -181,6 +194,7 @@ export class SubscriptionsComponent implements OnInit {
           screenId: SCREEN_IDS.SubscriptionManagement,
           subscription: subscription.category_id as SUBSCRIPTION_CATEGORIES,
           isNewSubscriber: !this.subscriptionsService.hasOneStripeSubscription(this.subscriptions),
+          freeTrial: this.subscriptionsService.hasTrial(subscription),
         },
       };
 
@@ -291,6 +305,6 @@ export class SubscriptionsComponent implements OnInit {
         isLoggedIn: true,
       },
     };
-    return this.analyticsService.trackPageView(event);
+    return this.analyticsService.trackEvent(event);
   }
 }

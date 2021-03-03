@@ -11,6 +11,8 @@ import { CookieService } from 'ngx-cookie';
 import { ItemFullScreenCarouselComponent } from './item-fullscreen-carousel.component';
 import { MOCK_ITEM, MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 
 describe('ItemFullScreenCarouselComponent', () => {
   const parentContainer = '.ItemDetailImages';
@@ -51,6 +53,10 @@ describe('ItemFullScreenCarouselComponent', () => {
           useValue: MockCookieService,
         },
         DecimalPipe,
+        {
+          provide: DeviceDetectorService,
+          useClass: DeviceDetectorServiceMock,
+        },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

@@ -4,7 +4,7 @@ import {
   AD_MOBILE_MAPPING,
   AD_MOBILE_SCREEN_SIZE,
   AD_TABLET_SCREEN_SIZE,
-  AD_TABLE_MAPPING,
+  AD_TABLET_MAPPING,
 } from '@core/ads/constants';
 import { AdKeyWords, AdSlot, AdSlotId } from '@core/ads/models';
 import { DeviceType } from '@core/device/deviceType.enum';
@@ -16,6 +16,7 @@ export const MockAdsService = {
   refresh: () => {},
   displayAdBySlotId: (adSlotId) => {},
   setSlots: (adSlots) => {},
+  setAdKeywords: (adKeywords: AdKeyWords) => {},
 };
 
 export const MockAmazonPublisherService = {
@@ -37,6 +38,7 @@ export const MockGooglePublisherTagService = {
   displayAdBySlotId: (id: AdSlotId) => {},
   setSlots: (slots: AdSlot) => {},
   refreshAds: () => {},
+  setAdKeywords: (adKeywords: AdKeyWords) => {},
 };
 
 export const MockLoadAdsService = {
@@ -57,7 +59,7 @@ export const MockAdsKeywords: AdKeyWords = {
 
 export const MockAdsKeywordsService = {
   adKeywords: MockAdsKeywords,
-  updateAdKeywords: () => {},
+  loadAdKeywords: () => {},
 };
 
 export const MockAdSlots: AdSlot[] = [
@@ -79,7 +81,7 @@ export const MockAdSlots: AdSlot[] = [
       },
       tablet: {
         screenSize: AD_TABLET_SCREEN_SIZE,
-        mapping: AD_TABLE_MAPPING,
+        mapping: AD_TABLET_MAPPING,
       },
       mobile: {
         screenSize: AD_MOBILE_SCREEN_SIZE,

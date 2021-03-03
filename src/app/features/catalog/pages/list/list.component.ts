@@ -6,7 +6,6 @@ import {
   ClickProSubscription,
   RemoveProSubscriptionBanner,
   ClickActivateProItem,
-  ConfirmActivateProItem,
   SCREEN_IDS,
   ViewOwnSaleItems,
   AnalyticsEvent,
@@ -572,7 +571,7 @@ export class ListComponent implements OnInit, OnDestroy {
       attributes,
     };
 
-    this.analyticsService.trackPageView(event);
+    this.analyticsService.trackEvent(event);
   }
 
   private getTrackingAtributes(itemId: string): any {
@@ -587,17 +586,6 @@ export class ListComponent implements OnInit, OnDestroy {
       numberOfItems: itemId ? 1 : this.itemService.selectedItems.length,
       categoryId,
     };
-  }
-
-  private trackConfirmActivateProItem(itemId: string): void {
-    const attributes: ConfirmActivateProItem = this.getTrackingAtributes(itemId);
-
-    const event: AnalyticsPageView<ConfirmActivateProItem> = {
-      name: ANALYTICS_EVENT_NAMES.ConfirmActivateProItem,
-      attributes,
-    };
-
-    this.analyticsService.trackPageView(event);
   }
 
   private activateSingleItem(itemId: string, subscriptionType: SUBSCRIPTION_TYPES): void {
@@ -810,7 +798,7 @@ export class ListComponent implements OnInit, OnDestroy {
         freeTrial: this.hasTrialAvailable,
       },
     };
-    this.analyticsService.trackPageView(event);
+    this.analyticsService.trackEvent(event);
     this.saveLocalStorage(LOCAL_STORAGE_TRY_PRO_SLOT, 'true');
     this.showTryProSlot = false;
   }
@@ -830,7 +818,7 @@ export class ListComponent implements OnInit, OnDestroy {
         freeTrial: this.hasTrialAvailable,
       },
     };
-    this.analyticsService.trackPageView(event);
+    this.analyticsService.trackEvent(event);
     this.router.navigate(['profile/subscriptions']);
   }
 }

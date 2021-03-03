@@ -106,6 +106,7 @@ import { UserCoverModule } from './user-cover/user-cover.module';
     CardModule,
     CommonModule,
     UploaderModule,
+    AdModule,
     RestrictInputDirective,
     HeaderComponent,
     SoldModalComponent,

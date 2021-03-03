@@ -33,6 +33,10 @@ export class GooglePublisherTagService {
     });
   }
 
+  public setAdKeywords(adKeywords: AdKeyWords): void {
+    this.adsKeywordsService.saveCustomKeywords(adKeywords);
+  }
+
   public setAdsSegmentation(allowSegmentation = false): void {
     this.googletag.cmd.push(() => {
       this.googletag.pubads().setRequestNonPersonalizedAds(allowSegmentation ? 0 : 1);
@@ -40,12 +44,12 @@ export class GooglePublisherTagService {
   }
 
   public setTargetingByAdsKeywords(allowSegmentation = false): void {
-    this.adsKeywordsService.updateAdKeywords();
+    this.adsKeywordsService.loadAdKeywords();
 
     const adKeywords: AdKeyWords = this.adsKeywordsService.adKeywords;
     this.googletag.cmd.push(() => {
       for (const key in adKeywords) {
-        if (adKeywords.hasOwnProperty(key)) {
+        if (adKeywords.hasOwnProperty(key) && adKeywords[key]) {
           this.googletag.pubads().setTargeting(key, adKeywords[key]);
         }
       }

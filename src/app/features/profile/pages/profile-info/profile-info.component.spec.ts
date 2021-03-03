@@ -391,6 +391,7 @@ describe('ProfileInfoComponent', () => {
         component.isPro = false;
         spyOn(modalService, 'open').and.callThrough();
         spyOn(analyticsService, 'trackPageView');
+        spyOn(analyticsService, 'trackEvent');
       });
 
       it('should track trackViewProBenefitsPopup', () => {
@@ -405,8 +406,8 @@ describe('ProfileInfoComponent', () => {
 
         component.openBecomeProModal(ANALYTICS_FIELDS.DESCRIPTION);
 
-        expect(analyticsService.trackPageView).toBeCalledTimes(2);
-        expect(analyticsService.trackPageView).toHaveBeenNthCalledWith(2, expectedEvent);
+        expect(analyticsService.trackPageView).toBeCalledTimes(1);
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
       });
 
       it('should track ClickEditProField', () => {
@@ -422,8 +423,8 @@ describe('ProfileInfoComponent', () => {
 
         component.openBecomeProModal(expectedField);
 
-        expect(analyticsService.trackPageView).toBeCalledTimes(2);
-        expect(analyticsService.trackPageView).toHaveBeenNthCalledWith(1, expectedEvent);
+        expect(analyticsService.trackEvent).toBeCalledTimes(1);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
       });
 
       it('should open modal with trial data available', () => {
