@@ -109,7 +109,7 @@ describe('ItemFullScreenCarouselComponent', () => {
       });
     });
 
-    describe('when we click on th favourite button...', () => {
+    describe('when we click on the favourite button...', () => {
       describe('and we have a current session...', () => {
         it('should toggle the favourite button', () => {
           spyOn(itemCardService, 'toggleFavourite');
