@@ -192,11 +192,11 @@ describe('RangeFilterComponent', () => {
     });
 
     it('should emit empty value changes', () => {
-      spyOn(component.change, 'emit');
+      spyOn(component.valueChange, 'emit');
 
       component.handleClear();
 
-      expect(component.change.emit).toHaveBeenCalledWith(component.value);
+      expect(component.valueChange.emit).toHaveBeenCalledWith(component.value);
     });
 
     it('should emit clear event', () => {
@@ -214,11 +214,11 @@ describe('RangeFilterComponent', () => {
     });
 
     it('should emit change event', () => {
-      spyOn(component.change, 'emit');
+      spyOn(component.valueChange, 'emit');
 
       component.handleApply();
 
-      expect(component.change.emit).toHaveBeenCalledWith(component.value);
+      expect(component.valueChange.emit).toHaveBeenCalledWith(component.value);
     });
   });
 });

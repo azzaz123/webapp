@@ -1,4 +1,4 @@
-import { MessageStatus, MessagePayload } from '@features/chat/core/model';
+import { MessageStatus, MessagePayload } from '@private/features/chat/core/model';
 import { Model } from '../resource/model.interface';
 import { User } from '../user/user';
 

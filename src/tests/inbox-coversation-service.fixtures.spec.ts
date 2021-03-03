@@ -1,4 +1,4 @@
-import { InboxConversation } from '@features/chat/core/model';
+import { InboxConversation } from '@private/features/chat/core/model';
 import { EMPTY, Observable, of } from 'rxjs';
 
 export class InboxConversationServiceMock {

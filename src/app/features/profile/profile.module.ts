@@ -7,6 +7,7 @@ import { DeleteInfoConfirmationModalComponent } from '@shared/profile-pro-billin
 import { SharedModule } from '@shared/shared.module';
 import { InvoiceHistoryComponent } from './components/invoice-history/invoice-history.component';
 import { InvoiceItemComponent } from './components/invoice-item/invoice-item.component';
+import { SubscriptionBenefitComponent } from './components/subscription-benefits/subscription-benefit/subscription-benefit.component';
 import { SubscriptionBenefitsComponent } from './components/subscription-benefits/subscription-benefits.component';
 import { SubscriptionPriceDiscountComponent } from './components/subscription-price-discount/subscription-price-discount.component';
 import { AddNewSubscriptionModalComponent } from './modal/add-new-subscription/add-new-subscription-modal.component';
@@ -55,6 +56,7 @@ import { profileRoutedComponents, ProfileRoutingModule } from './profile.routes'
     SubscriptionPriceDiscountComponent,
     InvoiceHistoryComponent,
     InvoiceItemComponent,
+    SubscriptionBenefitComponent,
   ],
   entryComponents: [
     UnsubscribeModalComponent,

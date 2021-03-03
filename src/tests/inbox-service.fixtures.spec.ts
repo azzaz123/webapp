@@ -1,4 +1,4 @@
-import { InboxConversation } from '@features/chat/core/model';
+import { InboxConversation } from '@private/features/chat/core/model';
 
 export class InboxServiceMock {
   public conversations: InboxConversation[] = [];

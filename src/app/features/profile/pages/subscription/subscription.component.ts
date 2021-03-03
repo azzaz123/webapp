@@ -305,6 +305,6 @@ export class SubscriptionsComponent implements OnInit {
         isLoggedIn: true,
       },
     };
-    return this.analyticsService.trackPageView(event);
+    return this.analyticsService.trackEvent(event);
   }
 }

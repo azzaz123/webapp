@@ -30,34 +30,36 @@ describe('FilterOptionsApiService', () => {
   describe('when we need common options', () => {
     describe('for getting condition options by category id', () => {
       it('should retrieve options', () => {
-        service.getConditionsByCategoryId(100, defaultParams).subscribe();
+        service.getConditionsByCategoryId('100', defaultParams).subscribe();
         expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.CONDITION_BY_CATEGORY_ID('100'), defaultParams);
       });
     });
 
     describe('for getting object type options by category id', () => {
       it('should retrieve options', () => {
-        service.getObjectTypesByCategoryId(100, defaultParams).subscribe();
+        service.getObjectTypesByCategoryId('100', defaultParams).subscribe();
         expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.OBJECT_TYPE, {
           ...defaultParams,
           category_id: '100',
         });
-      });
-    });
 
-    describe('for getting object type options by object type parent id', () => {
-      it('should retrieve options', () => {
-        service.getObjectTypesByParentId(1200, defaultParams).subscribe();
+        service
+          .getObjectTypesByCategoryId('100', {
+            ...defaultParams,
+            parent_id: '1200',
+          })
+          .subscribe();
         expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.OBJECT_TYPE, {
           ...defaultParams,
           parent_id: '1200',
+          category_id: '100',
         });
       });
     });
 
     describe('for getting brand model options by categoryId', () => {
       it('should retrieve options', () => {
-        service.getBrandModelByCategoryId(100, defaultParams).subscribe();
+        service.getBrandModelByCategoryId('100', defaultParams).subscribe();
         expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.BRAND_MODEL, {
           ...defaultParams,
           category_id: '100',
@@ -134,7 +136,7 @@ describe('FilterOptionsApiService', () => {
   describe('when we need fashion options', () => {
     describe('for getting size options by object type id', () => {
       it('should retrieve options', () => {
-        service.getFashionSizeKeysByObjectId(100, defaultParams).subscribe();
+        service.getFashionSizeKeysByObjectId('100', defaultParams).subscribe();
         expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.FASHION.SIZE, {
           ...defaultParams,
           object_type_id: '100',
@@ -144,7 +146,7 @@ describe('FilterOptionsApiService', () => {
 
     describe('for getting brand options by object type id', () => {
       it('should retrieve options', () => {
-        service.getFashionBrandsByObjectTypeId(100, defaultParams).subscribe();
+        service.getFashionBrandsByObjectTypeId('100', defaultParams).subscribe();
         expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.FASHION.BRAND, {
           ...defaultParams,
           object_type_id: '100',
@@ -152,7 +154,7 @@ describe('FilterOptionsApiService', () => {
         });
 
         service
-          .getFashionBrandsByObjectTypeId(100, defaultParams, {
+          .getFashionBrandsByObjectTypeId('100', defaultParams, {
             offset: 100,
           })
           .subscribe();
