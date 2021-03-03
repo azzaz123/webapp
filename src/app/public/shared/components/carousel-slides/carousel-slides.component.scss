@@ -29,7 +29,12 @@ $item-flag-height: 38px;
     }
   }
 
-  &__noBackgroundIndicators {
+  &__fallbackImage {
+    object-fit: cover;
+    border-radius: $border-radius;
+  }
+
+  &--noBackgroundIndicators {
     ngb-carousel {
       ::ng-deep {
         .carousel-indicators {
@@ -40,16 +45,11 @@ $item-flag-height: 38px;
     }
   }
 
-  &__fallbackImage {
-    object-fit: cover;
-    border-radius: $border-radius;
-  }
-}
-
-.hideControllers {
-  ::ng-deep .carousel-control-prev,
-  ::ng-deep .carousel-control-next,
-  ::ng-deep .carousel-indicators li {
-    display: none;
+  &--hideControllers {
+    ::ng-deep .carousel-control-prev,
+    ::ng-deep .carousel-control-next,
+    ::ng-deep .carousel-indicators li {
+      display: none;
+    }
   }
 }

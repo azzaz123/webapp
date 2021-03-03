@@ -19,6 +19,7 @@ import {
   MOCK_ITEM_WITHOUT_LOCATION,
 } from '@fixtures/item.fixtures.spec';
 import { MOCK_COUNTER_SPECIFICATIONS_CAR, MOCK_COUNTER_SPECIFICATIONS_REAL_ESTATE } from '@fixtures/map-specifications.fixtures.spec';
+import { IsCurrentUserStub } from '@fixtures/public/core';
 import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 import { AdComponentStub } from '@fixtures/shared';
@@ -78,7 +79,7 @@ describe('ItemDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ItemDetailComponent, CustomCurrencyPipe, AdComponentStub],
+      declarations: [ItemDetailComponent, CustomCurrencyPipe, IsCurrentUserStub, AdComponentStub],
       imports: [HttpClientTestingModule, ItemSpecificationsModule, EllapsedTimeModule],
       providers: [
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
@@ -452,6 +453,10 @@ describe('ItemDetailComponent', () => {
       it('should set the image index property', () => {
         expect(component.itemDetailImagesModal.imageIndex).toBe(4);
       });
+    });
+
+    it('should show the item detail header', () => {
+      expect(fixture.debugElement.query(By.css('tsl-item-detail-header'))).toBeTruthy();
     });
   });
 

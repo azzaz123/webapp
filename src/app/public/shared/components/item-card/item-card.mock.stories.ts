@@ -179,5 +179,16 @@ export const MOCK_ITEM_7 = new Item(
   ITEM_DATA.images,
   ITEM_DATA.web_slug,
   ITEM_DATA.published_date,
-  ITEM_DATA.delivery_info
+  ITEM_DATA.delivery_info,
+  null,
+  null,
+  null,
+  null,
+  {
+    bumped: true,
+    highlighted: false,
+    urgent: false,
+    country_bumped: false,
+    boosted: false,
+  }
 );
