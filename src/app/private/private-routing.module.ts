@@ -55,7 +55,7 @@ const routes: Routes = [
       },
       {
         path: 'profile',
-        loadChildren: () => import('app/features/profile/profile.module').then((m) => m.ProfileModule),
+        loadChildren: () => import('@private/features/profile/profile.module').then((m) => m.ProfileModule),
       },
       {
         path: 'chat',

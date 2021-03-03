@@ -18,12 +18,12 @@ import { CategoryService } from '@core/category/category.service';
 import { EventService } from '@core/event/event.service';
 import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
-import { AddNewSubscriptionModalComponent } from '@features/profile/modal/add-new-subscription/add-new-subscription-modal.component';
-import { CancelSubscriptionModalComponent } from '@features/profile/modal/cancel-subscription/cancel-subscription-modal.component';
-import { CheckSubscriptionInAppModalComponent } from '@features/profile/modal/check-subscription-in-app-modal/check-subscription-in-app-modal.component';
-import { ContinueSubscriptionModalComponent } from '@features/profile/modal/continue-subscription/continue-subscription-modal.component';
-import { EditSubscriptionModalComponent } from '@features/profile/modal/edit-subscription/edit-subscription-modal.component';
-import { UnsubscribeInAppFirstModal } from '@features/profile/modal/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
+import { AddNewSubscriptionModalComponent } from '@private/features/profile/modal/add-new-subscription/add-new-subscription-modal.component';
+import { CancelSubscriptionModalComponent } from '@private/features/profile/modal/cancel-subscription/cancel-subscription-modal.component';
+import { CheckSubscriptionInAppModalComponent } from '@private/features/profile/modal/check-subscription-in-app-modal/check-subscription-in-app-modal.component';
+import { ContinueSubscriptionModalComponent } from '@private/features/profile/modal/continue-subscription/continue-subscription-modal.component';
+import { EditSubscriptionModalComponent } from '@private/features/profile/modal/edit-subscription/edit-subscription-modal.component';
+import { UnsubscribeInAppFirstModal } from '@private/features/profile/modal/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { CATEGORY_DATA_WEB } from '@fixtures/category.fixtures.spec';
 import {
