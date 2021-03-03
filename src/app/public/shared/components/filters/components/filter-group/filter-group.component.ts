@@ -34,25 +34,6 @@ export class FilterGroupComponent implements AfterViewInit {
   }
 
   private insertFilters() {
-    this.config.forEach((filterConfig: FilterConfig<unknown>, index: number) => {
-      this.filterFactory.createFilter(
-        filterConfig,
-        this.getInitialValueByFilterConfig(filterConfig),
-        this.variant,
-        this.query.toArray()[index]
-      );
-    });
-  }
-
-  private getInitialValueByFilterConfig(filterConfig: FilterConfig<unknown>): FilterParameter[] {
-    const filterValue: FilterParameter[] = [];
-    Object.keys(filterConfig.mapKey).forEach((mapKey: string) => {
-      const value = this.initialValues.find((parameter: FilterParameter) => parameter.key === filterConfig.mapKey[mapKey])?.value;
-      if (value) {
-        filterValue.push({ key: filterConfig.mapKey[mapKey], value: value });
-      }
-    });
-
-    return filterValue;
+    this.filterFactory.intertFilters(this.config, this.initialValues, this.variant, this.query);
   }
 }
