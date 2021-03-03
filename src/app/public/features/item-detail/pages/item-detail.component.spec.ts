@@ -45,6 +45,7 @@ import { TypeCheckService } from '@public/core/services/type-check/type-check.se
 import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
+import { IsCurrentUserStub } from '@fixtures/public/core';
 import { AdsService } from '@core/ads/services';
 import { AD_TOP_ITEM_DETAIL } from '../core/ads/item-detail-ads.config';
 import { EllapsedTimeModule } from '../core/directives/ellapsed-time.module';
@@ -79,7 +80,7 @@ describe('ItemDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ItemDetailComponent, CustomCurrencyPipe, AdComponentStub],
+      declarations: [ItemDetailComponent, CustomCurrencyPipe, IsCurrentUserStub, AdComponentStub],
       imports: [HttpClientTestingModule, ItemSpecificationsModule, EllapsedTimeModule],
       providers: [
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
@@ -453,6 +454,10 @@ describe('ItemDetailComponent', () => {
       it('should set the image index property', () => {
         expect(component.itemDetailImagesModal.imageIndex).toBe(4);
       });
+    });
+
+    it('should show the item detail header', () => {
+      expect(fixture.debugElement.query(By.css('tsl-item-detail-header'))).toBeTruthy();
     });
   });
 
