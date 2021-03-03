@@ -85,7 +85,7 @@ const routes: Routes = [
         children: [
           {
             path: '',
-            loadChildren: () => import('app/features/catalog/catalog.module').then((m) => m.CatalogModule),
+            loadChildren: () => import('@private/features/catalog/catalog.module').then((m) => m.CatalogModule),
           },
           {
             path: 'upload',

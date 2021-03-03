@@ -1,4 +1,4 @@
-import { OrderEvent } from '@features/catalog/components/selected-items/selected-product.interface';
+import { OrderEvent } from '@private/features/catalog/components/selected-items/selected-product.interface';
 import { clone } from 'lodash-es';
 import * as moment from 'moment';
 import { Observable, of } from 'rxjs';
