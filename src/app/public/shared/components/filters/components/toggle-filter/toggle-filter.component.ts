@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { AbstractFilter } from '../abstract-filter/abstract-filter';
 import { ToggleFilterConfig } from './interfaces/toggle-filter-config.interface';
 import { ToggleFilterParams } from './interfaces/toggle-filter-params.interface';
