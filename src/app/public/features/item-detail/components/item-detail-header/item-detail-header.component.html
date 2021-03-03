@@ -1,43 +1,45 @@
 <div *ngIf="user && userStats && item" ngbDropdown placement="bottom-right"
-    class="ItemDetailHeader py-3 d-flex justify-content-between align-items-center"
-    [ngClass]="{'ShowOwnButtons': isOwner}">
-    <tsl-user-basic-info
-        [ngClass]="{'OtherUserBasicInfo': showOptions && !isOwner, 'w-100': !showOptions && !isOwner, 'OwnUserBasicInfo': showOptions && isOwner, 'OwnUserBasicInfoBig': !showOptions && isOwner}"
-        [userStats]="userStats" [userInfo]="user" [styleSize]="USER_INFO_SIZE.SMALL">
+    class="ItemDetailHeader ItemDetailHeader__dropdown py-3 d-flex justify-content-between align-items-center">
+    <tsl-user-basic-info [userStats]="userStats" [userInfo]="user" [styleSize]="USER_INFO_SIZE.SMALL"
+        class="ItemDetailHeader__userInfo">
     </tsl-user-basic-info>
-    <div *ngIf="isOwner; else basicOperations" class="d-flex">
-        <div class="FeatureButton mr-4" *ngIf="showOptions">
+
+    <div *ngIf="isOwner; else basicOperations" class="d-flex justify-content-end align-items-center"
+        [ngClass]="{'ItemDetailHeader--mineNotSold': showOptions }">
+        <div class="mx-2" *ngIf="showOptions">
             <!-- Feature -->
-            <tsl-button *ngIf="!item.bumpExpiringDate" className="btn-feature"
+            <tsl-button *ngIf="!item.bumpExpiringDate" class="ItemDetailHeader__featureButton" className="btn-feature"
                 [routerLink]="['/catalog/checkout', {itemId: item.id}]" id="featureItemButton">
-                <tsl-svg-icon src="/assets/icons/feature.svg" class="mr-2"></tsl-svg-icon>
+                <tsl-svg-icon src="/assets/icons/feature.svg" class="mr-3"></tsl-svg-icon>
                 <span i18n="@@Feature">Feature</span>
             </tsl-button>
             <!-- Countdown -->
-            <button class="btn-featured" *ngIf="item.bumpExpiringDate">
+            <button *ngIf="item.bumpExpiringDate" class="ItemDetailHeader__countdownButton">
                 <tsl-date-countdown [dateEndTimestamp]="item.bumpExpiringDate"></tsl-date-countdown>
             </button>
         </div>
-        <div class="OwnActionButtons d-flex">
+        <div class="d-flex">
             <ng-container *ngIf="showOptions">
                 <!-- Sold -->
-                <button class="OwnActionButtons__action btn-sold p-0" (click)="soldItem()" ngbTooltip="Mark as sold"
-                    i18n-ngbTooltip placement="top">
+                <button class="ItemDetailHeader__squareButton ItemDetailHeader__squareButton--sold mr-2 p-0"
+                    (click)="soldItem()" ngbTooltip="Mark as sold" i18n-ngbTooltip placement="top">
                     <tsl-svg-icon src="/assets/icons/btn-sold.svg"></tsl-svg-icon>
                 </button>
                 <!-- Reserve -->
-                <button class="OwnActionButtons__action btn-reserve p-0" [ngClass]="{active: item.reserved}"
-                    (click)="reserveItem()" ngbTooltip="Mark as reserved" i18n-ngbTooltip placement="top">
+                <button class="ItemDetailHeader__squareButton ItemDetailHeader__squareButton--reserve mr-2 p-0"
+                    [ngClass]="{active: item.reserved}" (click)="reserveItem()" ngbTooltip="Mark as reserved"
+                    i18n-ngbTooltip placement="top">
                     <tsl-svg-icon src="/assets/icons/btn-reserved.svg"></tsl-svg-icon>
                 </button>
                 <!-- Edit -->
-                <button class="OwnActionButtons__action btn-edit p-0" [routerLink]="['/catalog/edit/' + item.id]"
-                    ngbTooltip="Edit" i18n-ngbTooltip placement="top">
+                <button class="ItemDetailHeader__squareButton ItemDetailHeader__squareButton--edit mr-2 p-0"
+                    [routerLink]="['/catalog/edit/' + item.id]" ngbTooltip="Edit" i18n-ngbTooltip placement="top">
                     <tsl-svg-icon src="/assets/icons/btn-edit.svg"></tsl-svg-icon>
                 </button>
                 <!-- Edit dropdown -->
                 <div class="expanded">
-                    <button class="OwnActionButtons__action btn-options p-0" ngbDropdownToggle>
+                    <button class="ItemDetailHeader__squareButton ItemDetailHeader__squareButton--options p-0"
+                        ngbDropdownToggle>
                         <tsl-svg-icon src="/assets/icons/others.svg" width="17" height="20"></tsl-svg-icon>
                     </button>
                     <div ngbDropdownMenu>
@@ -61,20 +63,22 @@
                 </div>
             </ng-container>
             <!-- Delete -->
-            <button [ngClass]="{'btn-delete': showOptions}" class="btn-negative OwnActionButtons__action p-0"
-                (click)="deleteItem()" id="trashButton">
+            <button [ngClass]="{'ml-2': !showOptions}"
+                class="ItemDetailHeader__squareButton ItemDetailHeader__squareButton--delete p-0" (click)="deleteItem()"
+                id="trashButton">
                 <tsl-svg-icon src="/assets/icons/delete.svg" width="17" height="20"></tsl-svg-icon>
             </button>
         </div>
     </div>
     <ng-template #basicOperations>
-        <div *ngIf="showOptions" class="OtherActionButtons">
-            <tsl-button className="stripe" class="mr-2" (click)="toggleItemFavorite()" id="favouriteButton">
+        <div *ngIf="showOptions" class="d-flex justify-content-end align-items-center ml-3">
+            <tsl-button className="stripe" class="ItemDetailHeader__button mr-2" (click)="toggleItemFavorite()"
+                id="favouriteButton">
                 <tsl-favourite-icon [active]="item?.flags?.favorite">
                 </tsl-favourite-icon>
             </tsl-button>
-            <tsl-button className="btn-primary" [routerLink]="['/chat']" [queryParams]="{itemId: item.id}"
-                id="chatButton">
+            <tsl-button className="btn-primary" class="ItemDetailHeader__button" [routerLink]="['/chat']"
+                [queryParams]="{itemId: item.id}" id="chatButton">
                 Chat
             </tsl-button>
         </div>

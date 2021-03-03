@@ -11,66 +11,44 @@ $feature-button-width: 165px;
   z-index: 16;
   transition: top 150ms ease;
   background-color: $white;
-}
 
-.OtherUserBasicInfo {
-  max-width: calc(100% - 150px);
-  @include media-breakpoint-up(md) {
-    max-width: calc(100% - 228px);
+  &__userInfo {
+    min-width: 155px;
   }
-}
 
-.OwnUserBasicInfo {
-  max-width: calc(100% - 105px);
-  @include media-breakpoint-up(md) {
-    max-width: calc(100% - 390px);
-  }
-}
-
-.OwnUserBasicInfoBig {
-  max-width: calc(100% - 60px);
-}
-
-.ShowOwnButtons {
-  .FeatureButton {
-    display: none;
-  }
-  .OwnActionButtons {
-    button {
-      &.btn-options {
+  &--mineNotSold {
+    .ItemDetailHeader__featureButton {
+      display: none;
+    }
+    .ItemDetailHeader__squareButton {
+      &--options {
         display: inline;
       }
-      &.btn-sold,
-      &.btn-reserve,
-      &.btn-delete {
+      &--sold,
+      &--reserve,
+      &--delete {
         display: none;
       }
     }
-  }
 
-  @include media-breakpoint-up(md) {
-    .FeatureButton {
-      display: inline;
-    }
-    .OwnActionButtons {
-      button {
-        &.btn-options {
+    @include media-breakpoint-up(md) {
+      .ItemDetailHeader__featureButton {
+        display: inline;
+      }
+      .ItemDetailHeader__squareButton {
+        &--options {
           display: none;
         }
-        &.btn-sold,
-        &.btn-reserve,
-        &.btn-delete {
+        &--sold,
+        &--reserve,
+        &--delete {
           display: inline;
         }
       }
     }
   }
-}
 
-.OtherActionButtons {
-  right: 0;
-
-  tsl-button {
+  &__button {
     ::ng-deep .btn {
       text-align: -webkit-center;
       padding: 6px $spacing-s;
@@ -82,16 +60,14 @@ $feature-button-width: 165px;
       }
     }
   }
-}
 
-.OwnActionButtons {
-  &__action {
+  &__squareButton {
+    text-align: -webkit-center;
     border: solid 1px $blue-grey-5;
     @include square(40px);
-    margin-right: $spacing-s;
-    border-radius: $spacing-s;
+    border-radius: 8px;
     background-color: $white;
-    text-align: -webkit-center;
+
     tsl-svg-icon {
       ::ng-deep svg g g,
       path {
@@ -100,6 +76,7 @@ $feature-button-width: 165px;
     }
     &:hover,
     &.active {
+      border-color: transparent;
       tsl-svg-icon ::ng-deep {
         svg g g,
         svg path {
@@ -108,39 +85,31 @@ $feature-button-width: 165px;
       }
     }
 
-    &.btn-sold {
+    &--sold {
       &:hover {
         background: $magenta-main;
-        border-color: transparent;
       }
     }
-    &.btn-reserve {
+    &--reserve {
       &:hover,
       &.active {
         background: $skyblue-dark;
-        border-color: transparent;
       }
     }
-    &.btn-options,
-    &.btn-edit {
-      &:hover {
-        background: $blue-grey-2;
-        border-color: transparent;
-      }
-    }
-    &.btn-negative {
+    &--delete {
       &:hover {
         background: $negative-main;
-        border-color: transparent;
+      }
+    }
+    &--options,
+    &--edit {
+      &:hover {
+        background: $blue-grey-2;
       }
     }
   }
-}
 
-.FeatureButton {
-  right: 0;
-
-  tsl-button {
+  &__featureButton {
     ::ng-deep .btn {
       display: flex;
       height: $button-height;
@@ -149,11 +118,7 @@ $feature-button-width: 165px;
     }
   }
 
-  tsl-date-countdown {
-    width: $feature-button-width;
-  }
-
-  .btn-featured {
+  &__countdownButton {
     width: $feature-button-width;
     height: $button-height;
     border: 1px solid $walla-main;
@@ -163,24 +128,30 @@ $feature-button-width: 165px;
     font-weight: $font-weight-chunky;
     border-radius: $spacing-s;
     background-color: $white;
-  }
-}
 
-.dropdown-menu {
-  .dropdown-item {
-    padding: ($spacing-ml / 2) $spacing-ml;
-    color: $blue-grey-2;
-    cursor: pointer;
+    tsl-date-countdown {
+      width: $feature-button-width;
+    }
   }
 
-  .warn {
-    tsl-svg-icon {
-      padding: 4px 6px;
-      ::ng-deep svg g g,
-      path {
-        fill: $warn;
+  &__dropdown {
+    .dropdown-menu {
+      .dropdown-item {
+        padding: ($spacing-ml / 2) $spacing-ml;
+        color: $blue-grey-2;
+        cursor: pointer;
+      }
+
+      .warn {
+        tsl-svg-icon {
+          padding: 4px 6px;
+          ::ng-deep svg g g,
+          path {
+            fill: $warn;
+          }
+        }
+        color: $warn;
       }
     }
-    color: $warn;
   }
 }

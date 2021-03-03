@@ -38,10 +38,10 @@ describe('ItemDetailHeaderComponent', () => {
   const favouriteButtonId = '#favouriteButton';
   const featureItemButtonId = '#featureItemButton';
   const chatButtonId = '#chatButton';
-  const soldButtonClass = '.btn-sold';
-  const reserveButtonClass = '.btn-reserve';
-  const editButtonClass = '.btn-edit';
-  const optionsButtonClass = '.btn-options';
+  const soldButtonClass = '.ItemDetailHeader__squareButton--sold';
+  const reserveButtonClass = '.ItemDetailHeader__squareButton--reserve';
+  const editButtonClass = '.ItemDetailHeader__squareButton--edit';
+  const optionsButtonClass = '.ItemDetailHeader__squareButton--options';
   const dateCountDownTag = 'tsl-date-countdown';
 
   beforeEach(async () => {
@@ -200,7 +200,7 @@ describe('ItemDetailHeaderComponent', () => {
       });
 
       it('should show the five button options ', () => {
-        expect(fixture.debugElement.queryAll(By.css('.OwnActionButtons__action'))).toHaveLength(5);
+        expect(fixture.debugElement.queryAll(By.css('.ItemDetailHeader__squareButton'))).toHaveLength(5);
       });
 
       it('should show the reserve button option', () => {
