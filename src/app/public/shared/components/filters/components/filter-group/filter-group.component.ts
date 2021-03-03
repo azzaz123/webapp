@@ -4,7 +4,7 @@ import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { FilterHostDirective } from './directives/filter-host.directive';
 import { FilterFactoryService } from './services/filter-factory.service';
-import { FilterGroup } from './services/filter-group.service';
+import { FilterGroup } from './classes/filter-group';
 
 @Component({
   selector: 'tsl-filter-group',
