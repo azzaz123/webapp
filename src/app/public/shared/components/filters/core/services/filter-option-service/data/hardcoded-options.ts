@@ -35,29 +35,37 @@ export const HARDCODED_OPTIONS: HardcodedOptions = {
   [REAL_ESTATE_CONFIGURATION_ID.ROOMS]: [
     {
       value: '1',
+      label: '1',
     },
     {
       value: '2',
+      label: '2',
     },
     {
       value: '3',
+      label: '3',
     },
     {
       value: '4',
+      label: '4',
     },
   ],
   [REAL_ESTATE_CONFIGURATION_ID.BATHROOMS]: [
     {
       value: '1',
+      label: '1',
     },
     {
       value: '2',
+      label: '2',
     },
     {
       value: '3',
+      label: '3',
     },
     {
       value: '4',
+      label: '4',
     },
   ],
   [FASHION_CONFIGURATION_ID.GENDER]: [
