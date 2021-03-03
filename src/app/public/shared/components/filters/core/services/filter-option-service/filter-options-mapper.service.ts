@@ -10,10 +10,12 @@ import { SIZE_GENDER } from '@public/shared/components/filters/core/enums/size-g
 
 @Injectable()
 export class FilterOptionsMapperService {
+  public formatConditionResponse(response: unknown, ...relatedParams: string[]): FilterOption[];
   public formatConditionResponse(conditionResponse: ConditionResponse): FilterOption[] {
     return this.formatIconOptions(conditionResponse.conditions);
   }
 
+  public formatObjectType(response: unknown, ...relatedParams: string[]): FilterOption[];
   public formatObjectType(objectTypes: ObjectType[]): FilterOption[] {
     return objectTypes.map((objectType) => ({
       value: objectType.id,
@@ -22,6 +24,7 @@ export class FilterOptionsMapperService {
     }));
   }
 
+  public formatBrandModel(response: unknown, ...relatedParams: string[]): FilterOption[];
   public formatBrandModel(brandModels: BrandModel[]): FilterOption[] {
     return brandModels.map((brandModel) => {
       let value = brandModel.brand;
@@ -36,6 +39,7 @@ export class FilterOptionsMapperService {
     });
   }
 
+  public formatCarsBrandModel(response: unknown, ...relatedParams: string[]): FilterOption[];
   public formatCarsBrandModel(brandModels: BrandModel[]): FilterOption[] {
     return brandModels.map((brandModel) => ({
       value: (brandModel as unknown) as Record<string, string>,
@@ -43,6 +47,7 @@ export class FilterOptionsMapperService {
     }));
   }
 
+  public formatIconOptions(response: unknown, ...relatedParams: string[]): FilterOption[];
   public formatIconOptions(iconOptions: IconOption[]): FilterOption[] {
     return iconOptions.map((condition) => ({
       value: condition.id,
@@ -52,6 +57,7 @@ export class FilterOptionsMapperService {
     }));
   }
 
+  public formatSizeNGender(response: unknown, ...relatedParams: string[]);
   public formatSizeNGender(sizeNGender: SizeNGenderResponse, gender: SIZE_GENDER): FilterOption[] {
     return sizeNGender[gender].map((size) => ({
       value: size.id.toString(),
@@ -60,6 +66,7 @@ export class FilterOptionsMapperService {
   }
 
   // TODO: We need to set something up for isPopular cases
+  public formatFashionBrand(response: unknown, ...relatedParams: string[]);
   public formatFashionBrand(brands: FashionBrand[]): FilterOption[] {
     return brands.map((brand) => ({
       value: brand.brand,

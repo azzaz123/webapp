@@ -30,24 +30,27 @@ describe('FilterOptionsApiService', () => {
   describe('when we need common options', () => {
     describe('for getting condition options by category id', () => {
       it('should retrieve options', () => {
-        service.getConditionsByCategoryId('100', defaultParams).subscribe();
+        service.getConditionsByCategoryId(defaultParams, '100').subscribe();
         expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.CONDITION_BY_CATEGORY_ID('100'), defaultParams);
       });
     });
 
     describe('for getting object type options by category id', () => {
       it('should retrieve options', () => {
-        service.getObjectTypesByCategoryId('100', defaultParams).subscribe();
+        service.getObjectTypesByCategoryId(defaultParams, '100').subscribe();
         expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.OBJECT_TYPE, {
           ...defaultParams,
           category_id: '100',
         });
 
         service
-          .getObjectTypesByCategoryId('100', {
-            ...defaultParams,
-            parent_id: '1200',
-          })
+          .getObjectTypesByCategoryId(
+            {
+              ...defaultParams,
+              parent_id: '1200',
+            },
+            '100'
+          )
           .subscribe();
         expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.OBJECT_TYPE, {
           ...defaultParams,
@@ -59,7 +62,7 @@ describe('FilterOptionsApiService', () => {
 
     describe('for getting brand model options by categoryId', () => {
       it('should retrieve options', () => {
-        service.getBrandModelByCategoryId('100', defaultParams).subscribe();
+        service.getBrandModelByCategoryId(defaultParams, '100').subscribe();
         expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.BRAND_MODEL, {
           ...defaultParams,
           category_id: '100',
@@ -114,7 +117,7 @@ describe('FilterOptionsApiService', () => {
 
     describe('for getting real estate type options by option id', () => {
       it('should retrieve options', () => {
-        service.getRealEstateTypeKeysByOperationId('operation_id', defaultParams).subscribe();
+        service.getRealEstateTypeKeysByOperationId(defaultParams, 'operation_id').subscribe();
         expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.REAL_ESTATE.TYPE, {
           ...defaultParams,
           operation: 'operation_id',
@@ -124,7 +127,7 @@ describe('FilterOptionsApiService', () => {
 
     describe('for getting extra options by real state type id', () => {
       it('should retrieve options', () => {
-        service.getRealEstateExtraKeysByTypeId('type_id', defaultParams).subscribe();
+        service.getRealEstateExtraKeysByTypeId(defaultParams, 'type_id').subscribe();
         expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.REAL_ESTATE.EXTRA, {
           ...defaultParams,
           type: 'type_id',
@@ -136,7 +139,7 @@ describe('FilterOptionsApiService', () => {
   describe('when we need fashion options', () => {
     describe('for getting size options by object type id', () => {
       it('should retrieve options', () => {
-        service.getFashionSizeKeysByObjectId('100', defaultParams).subscribe();
+        service.getFashionSizeKeysByObjectId(defaultParams, '100').subscribe();
         expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.FASHION.SIZE, {
           ...defaultParams,
           object_type_id: '100',
@@ -146,18 +149,14 @@ describe('FilterOptionsApiService', () => {
 
     describe('for getting brand options by object type id', () => {
       it('should retrieve options', () => {
-        service.getFashionBrandsByObjectTypeId('100', defaultParams).subscribe();
+        service.getFashionBrandsByObjectTypeId(defaultParams, '100').subscribe();
         expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.FASHION.BRAND, {
           ...defaultParams,
           object_type_id: '100',
           start: '0',
         });
 
-        service
-          .getFashionBrandsByObjectTypeId('100', defaultParams, {
-            offset: 100,
-          })
-          .subscribe();
+        service.getFashionBrandsByObjectTypeId(defaultParams, '100', '100').subscribe();
         expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.FASHION.BRAND, {
           ...defaultParams,
           object_type_id: '100',
