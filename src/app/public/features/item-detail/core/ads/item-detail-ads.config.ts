@@ -59,7 +59,7 @@ export const ADS_ITEM_DETAIL: AdSlotsItemDetail = {
     },
     networkId: 6866,
     type: 'item',
-    device: [DeviceType.DESKTOP],
+    device: [DeviceType.DESKTOP, DeviceType.TABLET, DeviceType.MOBILE],
   },
   item3r: {
     name: '130868815/web/item3r',
