@@ -5,12 +5,14 @@
             <div *ngIf="device === deviceType.DESKTOP">
                 <tsl-sky class="position-sticky d-none d-xl-block" [adSlot]="adsSlotsItemDetail.item2l"></tsl-sky>
             </div>
-            <div class="ItemDetail__container__middleSection d-flex flex-column w-100" *ngIf="itemDetail && !loading">
+            <div class="ItemDetail__container__middleSection d-flex flex-column w-100">
                 <div class="ItemDetail__content px-4 pb-5 ">
+                    <tsl-item-detail-header [user]="itemDetail.user" [item]="itemDetail.item"
+                        [isOwner]="(itemDetail.user?.id | isCurrentUser | async)">
+                    </tsl-item-detail-header>
                     <div class="ItemDetail__carousel position-relative w-100">
-                        <tsl-item-images-carousel [ngClass]="{'ItemDetail__carousel--active': images?.length > 0}"
-                            [images]="images" [itemFlags]="itemDetail.item?.flags"
-                            [itemVisibilityFlags]="itemDetail.item?.bumpFlags"
+                        <tsl-item-images-carousel [isActive]="!itemDetail.item?.flags?.expired" [images]="images"
+                            [itemFlags]="itemDetail.item?.flags" [itemVisibilityFlags]="itemDetail.item?.bumpFlags"
                             (imageClick)="openItemDetailImage($event)">
                         </tsl-item-images-carousel>
                     </div>
@@ -23,11 +25,12 @@
                         <tsl-item-specifications [itemSpecifications]="itemSpecifications"
                             [isCar]="typeCheckService.isCar(this.itemDetail?.item)"></tsl-item-specifications>
                     </div>
-                    <p class="ItemDetail__description py-3 mb-0 text-break" [ngClass]="{'borderBottom': device !== deviceType.MOBILE}">{{itemDetail?.item?.description}}</p>
-                    <div *ngIf="device === deviceType.MOBILE">
-                      <tsl-sky [adSlot]="adsSlotsItemDetail.item1"></tsl-sky>
-                    </div>
-                    <div class="ItemDetail__stats py-3 d-flex align-items-center justify-content-between" [ngClass]="{'borderBottom': device !== deviceType.TABLET}">
+                        <p *ngIf="itemDetail?.item?.description" class="ItemDetail__description py-3 mb-0 text-break" [ngClass]="{'borderBottom': device === deviceType.MOBILE}">{{itemDetail?.item?.description}}</p>
+                        <div *ngIf="device === deviceType.MOBILE">
+                          <tsl-sky [adSlot]="adsSlotsItemDetail.item1"></tsl-sky>
+                        </div>
+                        <div class="ItemDetail__stats py-3 d-flex align-items-center justify-content-between" [ngClass]="{'borderBottom': device !== deviceType.TABLET}">
+
                         <div class="text-truncate">
                             {{ itemDetail?.item?.modifiedDate | ellapsedTime }}
                         </div>

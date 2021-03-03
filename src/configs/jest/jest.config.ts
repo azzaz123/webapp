@@ -81,3 +81,9 @@ Object.defineProperty(navigator, 'geolocation', {
   value: GLOBAL_MOCKS.MOCK_NAVIGATOR_GEOLOCATION,
   writable: true,
 });
+Object.defineProperty(navigator, 'maxTouchPoints', {
+  value: 3,
+});
+Object.defineProperty(navigator, 'msMaxTouchPoints', {
+  value: 2,
+});
