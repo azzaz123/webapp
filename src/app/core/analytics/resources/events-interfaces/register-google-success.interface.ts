@@ -13,4 +13,8 @@ export interface RegisterGoogleSuccess {
    * Identifier of the screen where the options to login or register appear
    */
   screenId: 177;
+  /**
+   * If the user has given consent for communications
+   */
+  communicationsConsent?: boolean;
 }

@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { AdKeyWords, AdSlotId } from '@core/ads/models';
 import { AdSlot } from '@core/ads/models/ad-slot.interface';
 import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
-import { BehaviorSubject, combineLatest, merge, Observable, Subject, Subscription } from 'rxjs';
-import { filter, finalize, map, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, merge, Observable, Subject } from 'rxjs';
+import { filter, finalize, map, switchMap, take, tap } from 'rxjs/operators';
 import { AmazonPublisherService, CriteoService, GooglePublisherTagService } from '../../vendors';
 import { LoadAdsService } from '../load-ads/load-ads.service';
 
@@ -45,12 +45,22 @@ export class AdsService {
     this.setSlotsSubject.next(adSlots);
   }
 
+  public setAdKeywords(adKeywords: AdKeyWords): void {
+    this.googlePublisherTagService.setAdKeywords(adKeywords);
+  }
+
   public refresh(): void {
     this.refreshEventSubject.next();
   }
 
   public displayAdBySlotId(slotId: AdSlotId): void {
-    this.googlePublisherTagService.displayAdBySlotId(slotId);
+    this.adsReady$
+      .pipe(
+        filter((adsReady: boolean) => adsReady),
+        tap(() => this.googlePublisherTagService.displayAdBySlotId(slotId)),
+        take(1)
+      )
+      .subscribe();
   }
 
   private listenToSlots(): void {

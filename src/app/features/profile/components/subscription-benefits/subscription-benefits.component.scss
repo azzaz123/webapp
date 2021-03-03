@@ -1,56 +1,44 @@
 @import '~style/common';
 
 .box-content {
-  color: $blue-grey-3;
-  padding: $spacing-xxl $spacing-xxxl * 1.93;
-  h4 {
-    color: $blue-grey-1;
-    text-align: center;
+  padding: $spacing-xxl;
+  &__title {
     font-size: $font-size-l;
     font-weight: bold;
-    margin: 0 0 $spacing-ms;
   }
-  .section-subtitle {
-    text-align: center;
+
+  &__subtitle {
+    color: $blue-grey-3;
+    font-size: $font-size-m;
   }
 }
 
-.SubscriptionBenefitCard {
-  margin: 0 0 $spacing-xxl;
-}
-
-.SubscriptionBenefitCard-icon {
-  border-radius: 50%;
-  width: 56px;
-  height: 56px;
-  background-color: $blue-grey-3;
-  tsl-svg-icon {
-    width: 56px;
-    height: 56px;
-    ::ng-deep svg path {
-      fill: $white;
+.SubscriptionBenefits {
+  &__content {
+    padding: 0 (2 * $spacing-xxxl) $spacing-xxxl (2 * $spacing-xxxl);
+    > :not(:last-child) {
+      margin-bottom: 120px;
     }
   }
-}
-
-.SubscriptionBenefitCard-title {
-  font-weight: bold;
-  color: $walla-main;
-  margin: $spacing-ml 0 $spacing-s;
 }
 
 @include media-breakpoint-down(sm) {
   .box-content {
     padding: $spacing-l $spacing-m $spacing-m;
   }
-
-  .SubscriptionBenefitCard {
-    &:first-child {
-      margin-top: $spacing-xxl;
+  .SubscriptionBenefits {
+    &__content {
+      padding: $spacing-l $spacing-m $spacing-m;
     }
+  }
+}
 
-    &:last-child {
-      margin: 0px;
+@include media-breakpoint-up(xl) {
+  .SubscriptionBenefits {
+    &__content {
+      > :not(:last-child) {
+        margin-bottom: 72px;
+      }
     }
   }
 }

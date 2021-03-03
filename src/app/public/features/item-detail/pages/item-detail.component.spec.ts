@@ -1,3 +1,5 @@
+import { AdComponentStub } from '@fixtures/shared';
+import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { DecimalPipe } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement, Renderer2 } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -43,10 +45,11 @@ import { TypeCheckService } from '@public/core/services/type-check/type-check.se
 import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
+import { AdsService } from '@core/ads/services';
+import { AD_TOP_ITEM_DETAIL } from '../core/ads/item-detail-ads.config';
+import { EllapsedTimeModule } from '../core/directives/ellapsed-time.module';
 
 describe('ItemDetailComponent', () => {
-  const topSkyTag = 'tsl-top-sky';
-  const sideSkyTag = 'tsl-side-sky';
   const mapTag = 'tsl-here-maps';
   const recommendedItemsTag = 'tsl-recommended-items';
   const currencies = {
@@ -76,8 +79,8 @@ describe('ItemDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ItemDetailComponent, CustomCurrencyPipe],
-      imports: [HttpClientTestingModule, ItemSpecificationsModule],
+      declarations: [ItemDetailComponent, CustomCurrencyPipe, AdComponentStub],
+      imports: [HttpClientTestingModule, ItemSpecificationsModule, EllapsedTimeModule],
       providers: [
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         {
@@ -100,6 +103,10 @@ describe('ItemDetailComponent', () => {
           useValue: {
             navigate() {},
           },
+        },
+        {
+          provide: AdsService,
+          useValue: MockAdsService,
         },
         ItemDetailService,
         ItemApiService,
@@ -158,16 +165,15 @@ describe('ItemDetailComponent', () => {
   });
 
   describe('when we are on MOBILE...', () => {
-    it('should NOT show ADS', () => {
+    it('should only show AD on description', () => {
       spyOn(deviceService, 'getDeviceType').and.returnValue(DeviceType.MOBILE);
 
       component.ngOnInit();
       fixture.detectChanges();
-      const topAd = fixture.debugElement.query(By.css(topSkyTag));
-      const sideAds = fixture.debugElement.queryAll(By.css(sideSkyTag));
 
-      expect(topAd).toBeFalsy();
-      expect(sideAds.length).toBe(0);
+      const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
+
+      expect(ads.length).toBe(1);
     });
   });
 
@@ -177,11 +183,9 @@ describe('ItemDetailComponent', () => {
 
       component.ngOnInit();
       fixture.detectChanges();
-      const topAd = fixture.debugElement.query(By.css(topSkyTag));
-      const sideAds = fixture.debugElement.queryAll(By.css(sideSkyTag));
+      const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
 
-      expect(topAd).toBeTruthy();
-      expect(sideAds.length).toBe(0);
+      expect(ads.length).toBe(1);
     });
   });
 
@@ -191,11 +195,9 @@ describe('ItemDetailComponent', () => {
 
       component.ngOnInit();
       fixture.detectChanges();
-      const topAd = fixture.debugElement.query(By.css(topSkyTag));
-      const sideAds = fixture.debugElement.queryAll(By.css(sideSkyTag));
+      const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
 
-      expect(topAd).toBeTruthy();
-      expect(sideAds.length).toBe(2);
+      expect(ads.length).toBe(1);
     });
   });
 
@@ -291,6 +293,17 @@ describe('ItemDetailComponent', () => {
         Object.keys(component.socialShare).forEach((socialShareKey: string) => {
           expect(socialShareElement[socialShareKey]).toEqual(component.socialShare[socialShareKey]);
         });
+      });
+
+      it('should set ads configuration', () => {
+        spyOn(MockAdsService, 'setAdKeywords').and.callThrough();
+        spyOn(MockAdsService, 'setSlots').and.callThrough();
+
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        expect(MockAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_ITEM_DETAIL.item.categoryId.toString() });
+        expect(MockAdsService.setSlots).toHaveBeenCalledWith([AD_TOP_ITEM_DETAIL]);
       });
     });
 
