@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AdSlotsPositions } from '@core/ads/models';
 import { AdsService } from '@core/ads/services';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { DeviceService } from '@core/device/device.service';
@@ -24,7 +23,7 @@ import { CounterSpecifications } from '../components/item-specifications/interfa
 import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
 import { MapSpecificationsService } from '../core/services/map-specifications/map-specifications.service';
 import { ItemDetail } from '../interfaces/item-detail.interface';
-import { ADS_ITEM_DETAIL } from './../core/ads/item-detail-ads.config';
+import { AdSlotsItemDetail, ADS_ITEM_DETAIL } from './../core/ads/item-detail-ads.config';
 import { ItemDetailLocation } from './constants/item-detail.interface';
 
 @Component({
@@ -48,7 +47,7 @@ export class ItemDetailComponent implements OnInit {
   public recommendedItems$: Observable<RecommendedItemsBodyResponse>;
   public itemSpecifications: CounterSpecifications[];
   public itemDetail: ItemDetail;
-  public adsSlotsItemDetail: AdSlotsPositions = ADS_ITEM_DETAIL;
+  public adsSlotsItemDetail: AdSlotsItemDetail = ADS_ITEM_DETAIL;
 
   public socialShare: {
     title: string;

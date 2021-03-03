@@ -7,7 +7,7 @@ import {
   AD_TABLET_MAPPING,
   AD_TABLET_SCREEN_SIZE,
 } from '@core/ads/constants/ad-slots';
-import { AdSlotsPositions } from '@core/ads/models';
+import { AdSlot } from '@core/ads/models';
 import { DeviceType } from '@core/device/deviceType.enum';
 
 export interface AdSlotsItemDetail {
@@ -63,7 +63,7 @@ export const ADS_ITEM_DETAIL: AdSlotsItemDetail = {
   },
   item3r: {
     name: '130868815/web/item3r',
-    id: 'ad-unit-item-right-3',
+    id: 'sky-unit-item-right-3',
     sizes: AD_DESKTOP_VERTICAL_MAPPING,
     sizeMapping: {
       desktop: {

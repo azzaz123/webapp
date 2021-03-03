@@ -12,7 +12,7 @@ import { DeviceType } from '@core/device/deviceType.enum';
 export const AD_TOP_PUBLIC_SEARCH: AdSlotsPositions = {
   top: {
     name: '130868815/web/search1',
-    id: 'ad-unit-search-top',
+    id: 'sky-unit-search-top',
     sizes: AD_DESKTOP_MAPPING,
     sizeMapping: {
       desktop: {
