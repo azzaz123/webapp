@@ -13,7 +13,7 @@ import { FilterFactoryService } from './services/filter-factory.service';
 export class FilterGroupComponent implements AfterViewInit {
   @ViewChildren(FilterHostDirective) query: QueryList<FilterHostDirective>;
   @Input() initialValues: FilterParameter[];
-  @Input() config: FilterConfig<any>[] = [];
+  @Input() config: FilterConfig<unknown>[] = [];
   @Input() variant: FILTER_VARIANT = FILTER_VARIANT.BUBBLE;
   // TODO check naming
   @Output() childOpenStateChange = new EventEmitter<any>();
@@ -28,8 +28,25 @@ export class FilterGroupComponent implements AfterViewInit {
   }
 
   private loadComponents() {
-    this.config.forEach((comp: any, index: number) => {
-      this.filterFactory.createFilter(comp, this.variant, this.query.toArray()[index]);
+    this.config.forEach((filterConfig: FilterConfig<unknown>, index: number) => {
+      this.filterFactory.createFilter(
+        filterConfig,
+        this.getInitialValueByFilterConfig(filterConfig),
+        this.variant,
+        this.query.toArray()[index]
+      );
     });
+  }
+
+  private getInitialValueByFilterConfig(filterConfig: FilterConfig<unknown>): FilterParameter[] {
+    const filterValue: FilterParameter[] = [];
+    Object.keys(filterConfig.mapKey).forEach((mapKey: string) => {
+      const value = this.initialValues.find((parameter: FilterParameter) => parameter.key === filterConfig.mapKey[mapKey])?.value;
+      if (value) {
+        filterValue.push({ key: filterConfig.mapKey[mapKey], value: value });
+      }
+    });
+
+    return filterValue;
   }
 }
