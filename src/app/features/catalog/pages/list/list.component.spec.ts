@@ -9,7 +9,6 @@ import {
   ANALYTIC_EVENT_TYPES,
   ClickActivateProItem,
   ClickProSubscription,
-  ConfirmActivateProItem,
   RemoveProSubscriptionBanner,
   SCREEN_IDS,
   ViewOwnSaleItems,
@@ -249,6 +248,7 @@ describe('ListComponent', () => {
     modalSpy = spyOn(modalService, 'open').and.callThrough();
     spyOn(errorService, 'i18nError');
     spyOn(analyticsService, 'trackPageView');
+    spyOn(analyticsService, 'trackEvent');
     fixture.detectChanges();
   });
 
@@ -907,8 +907,8 @@ describe('ListComponent', () => {
           fixture.detectChanges();
           component.activate();
 
-          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
-          expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+          expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
         });
       });
 
@@ -926,8 +926,8 @@ describe('ListComponent', () => {
 
           component.activate();
 
-          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
-          expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+          expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
         });
       });
     });
@@ -1020,8 +1020,8 @@ describe('ListComponent', () => {
           fixture.detectChanges();
           component.activate(SUBSCRIPTION_TYPES.stripe, '1');
 
-          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
-          expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+          expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
         });
       });
 
@@ -1040,8 +1040,8 @@ describe('ListComponent', () => {
 
           component.activate(SUBSCRIPTION_TYPES.stripe, '1');
 
-          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
-          expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+          expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
         });
       });
     });
@@ -1218,7 +1218,7 @@ describe('ListComponent', () => {
         component.onCloseTryProSlot();
         fixture.detectChanges();
 
-        expect(analyticsService.trackPageView).toHaveBeenCalledWith(event);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(event);
       });
     });
 
@@ -1246,7 +1246,7 @@ describe('ListComponent', () => {
         component.onClickTryProSlot();
         fixture.detectChanges();
 
-        expect(analyticsService.trackPageView).toHaveBeenCalledWith(event);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(event);
       });
     });
   });

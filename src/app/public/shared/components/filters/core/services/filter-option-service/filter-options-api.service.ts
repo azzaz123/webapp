@@ -18,16 +18,16 @@ import { API_VERSION_URL } from '@public/core/constants/api-version-url-constant
 export class FilterOptionsApiService {
   constructor(private httpClient: HttpClient) {}
 
-  public getConditionsByCategoryId(categoryId: number, params: QueryParams): Observable<ConditionResponse> {
-    return this.get<ConditionResponse>(FILTER_OPTIONS_API_ENDPOINTS.CONDITION_BY_CATEGORY_ID(categoryId.toString()), params);
+  public getConditionsByCategoryId(categoryId: string, params: QueryParams): Observable<ConditionResponse> {
+    return this.get<ConditionResponse>(FILTER_OPTIONS_API_ENDPOINTS.CONDITION_BY_CATEGORY_ID(categoryId), params);
   }
 
-  public getObjectTypesByCategoryId(categoryId: number, params: QueryParams): Observable<ObjectType[]> {
+  public getObjectTypesByCategoryId(categoryId: string, params: QueryParams): Observable<ObjectType[]> {
     return this.get<ObjectType[]>(
       FILTER_OPTIONS_API_ENDPOINTS.OBJECT_TYPE,
       {
         ...params,
-        category_id: categoryId.toString(),
+        category_id: categoryId,
       },
       {
         Accept: ACCEPT_HEADERS.SUGGESTERS_V3,
@@ -35,17 +35,10 @@ export class FilterOptionsApiService {
     );
   }
 
-  public getObjectTypesByParentId(parentId: number, params: QueryParams): Observable<ObjectType[]> {
-    return this.get<ObjectType[]>(FILTER_OPTIONS_API_ENDPOINTS.OBJECT_TYPE, {
-      ...params,
-      parent_id: parentId.toString(),
-    });
-  }
-
-  public getBrandModelByCategoryId(categoryId: number, params: QueryParams): Observable<BrandModel[]> {
+  public getBrandModelByCategoryId(categoryId: string, params: QueryParams): Observable<BrandModel[]> {
     return this.get(FILTER_OPTIONS_API_ENDPOINTS.BRAND_MODEL, {
       ...params,
-      category_id: categoryId.toString(),
+      category_id: categoryId,
     });
   }
 
@@ -87,21 +80,21 @@ export class FilterOptionsApiService {
     });
   }
 
-  public getFashionSizeKeysByObjectId(objectTypeId: number, params: QueryParams): Observable<SizeNGenderResponse> {
+  public getFashionSizeKeysByObjectId(objectTypeId: string, params: QueryParams): Observable<SizeNGenderResponse> {
     return this.get<SizeNGenderResponse>(FILTER_OPTIONS_API_ENDPOINTS.FASHION.SIZE, {
       ...params,
-      object_type_id: objectTypeId.toString(),
+      object_type_id: objectTypeId,
     });
   }
 
   public getFashionBrandsByObjectTypeId(
-    objectTypeId: number,
+    objectTypeId: string,
     params: QueryParams,
     paginationOptions: PaginationOptions = { offset: 0 }
   ): Observable<FashionBrand[]> {
     return this.get<FashionBrand[]>(FILTER_OPTIONS_API_ENDPOINTS.FASHION.BRAND, {
       ...params,
-      object_type_id: objectTypeId.toString(),
+      object_type_id: objectTypeId,
       start: paginationOptions.offset.toString(),
     });
   }

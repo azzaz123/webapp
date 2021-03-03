@@ -1,9 +1,9 @@
 <div class="container ItemDetail__container">
     <div class="d-block pt-4">
-        <tsl-sky *ngIf="device === deviceType.DESKTOP || device === deviceType.TABLET" [adSlot]="adsSlotsItemDetail.top"></tsl-sky>
+        <tsl-sky *ngIf="device === deviceType.DESKTOP || device === deviceType.TABLET" [adSlot]="adsSlotsItemDetail.item1"></tsl-sky>
         <div class="d-flex justify-content-around py-4" *ngIf="itemDetail && !loading">
             <div *ngIf="device === deviceType.DESKTOP">
-                <tsl-sky class="position-sticky d-none d-xl-block" [adSlot]="adsSlotsItemDetail.left"></tsl-sky>
+                <tsl-sky class="position-sticky d-none d-xl-block" [adSlot]="adsSlotsItemDetail.item2l"></tsl-sky>
             </div>
             <div class="ItemDetail__container__middleSection d-flex flex-column w-100" *ngIf="itemDetail && !loading">
                 <div class="ItemDetail__content px-4 pb-5 ">
@@ -23,21 +23,29 @@
                         <tsl-item-specifications [itemSpecifications]="itemSpecifications"
                             [isCar]="typeCheckService.isCar(this.itemDetail?.item)"></tsl-item-specifications>
                     </div>
-                    <p class="ItemDetail__description py-3 mb-0 text-break">{{itemDetail?.item?.description}}</p>
-                    <div class="ItemDetail__stats py-3">
-                        <div class="d-inline-block">
-                            {{ itemDetail?.item?.modifiedDate | date:'longDate' }}
+                    <p class="ItemDetail__description py-3 mb-0 text-break" [ngClass]="{'borderBottom': device !== deviceType.MOBILE}">{{itemDetail?.item?.description}}</p>
+                    <div *ngIf="device === deviceType.MOBILE">
+                      <tsl-sky [adSlot]="adsSlotsItemDetail.item1"></tsl-sky>
+                    </div>
+                    <div class="ItemDetail__stats py-3 d-flex align-items-center justify-content-between" [ngClass]="{'borderBottom': device !== deviceType.TABLET}">
+                        <div class="text-truncate">
+                            {{ itemDetail?.item?.modifiedDate | ellapsedTime }}
                         </div>
-                        <div class="float-right d-flex align-items-center ml-3">
-                            <tsl-svg-icon src="/assets/icons/heart.svg" width=14 height=14></tsl-svg-icon>
-                            <span class="float-right ml-1" id="favorites">{{ itemDetail?.item?.favorites ||
-                                0}}</span>
+                        <div class="d-flex ml-3">
+                            <div class="d-flex align-items-center mr-3">
+                                <tsl-svg-icon src="/assets/icons/cm-eye.svg" width=20 height=20>
+                                </tsl-svg-icon>
+                                <span class="float-right ml-1" id="views">{{ itemDetail?.item?.views || 0}}</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <tsl-svg-icon src="/assets/icons/heart.svg" width=14 height=14></tsl-svg-icon>
+                                <span class="float-right ml-1" id="favorites">{{ itemDetail?.item?.favorites ||
+                                    0}}</span>
+                            </div>
                         </div>
-                        <div class="float-right d-flex align-items-center">
-                            <tsl-svg-icon src="/assets/icons/cm-eye.svg" width=20 height=20>
-                            </tsl-svg-icon>
-                            <span class="float-right ml-1" id="views">{{ itemDetail?.item?.views || 0}}</span>
-                        </div>
+                    </div>
+                    <div class="pt-4" *ngIf="device === deviceType.TABLET">
+                      <tsl-sky [adSlot]="adsSlotsItemDetail.item2l"></tsl-sky>
                     </div>
                     <div class="ItemDetail__location py-3 d-flex align-items-center">
                         <tsl-svg-icon src="/assets/icons/location.svg" class="mr-2"></tsl-svg-icon>
@@ -54,9 +62,12 @@
                     *ngIf="(recommendedItems$ |async)?.recommended_items?.length && showItemRecommendations"
                     class="mt-3" [recommendedItems]="(recommendedItems$ | async)">
                 </tsl-recommended-items>
+                <div *ngIf="device === deviceType.MOBILE" class="pt-4">
+                  <tsl-sky [adSlot]="adsSlotsItemDetail.item2l"></tsl-sky>
+                </div>
             </div>
             <div *ngIf="device === deviceType.DESKTOP">
-              <tsl-sky class="position-sticky d-none d-xl-block" [adSlot]="adsSlotsItemDetail.right"></tsl-sky>
+              <tsl-sky class="position-sticky d-none d-xl-block" [adSlot]="adsSlotsItemDetail.item3r"></tsl-sky>
             </div>
         </div>
     </div>

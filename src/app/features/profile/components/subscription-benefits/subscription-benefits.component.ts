@@ -14,6 +14,10 @@ export class SubscriptionBenefitsComponent implements OnInit {
 
   constructor(private subscriptionService: SubscriptionsService) {}
 
+  get faqUrl(): string {
+    return $localize`:@@FooterLinksFaqHref:https://ayuda.wallapop.com/hc/en-us`;
+  }
+
   ngOnInit() {
     this.subscriptionService
       .getSubscriptionBenefits()

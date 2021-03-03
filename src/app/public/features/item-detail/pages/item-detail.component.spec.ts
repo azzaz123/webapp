@@ -43,6 +43,7 @@ import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-c
 import { ItemSpecificationsComponent } from '../components/item-specifications/item-specifications.component';
 import { ItemSpecificationsModule } from '../components/item-specifications/item-specifications.module';
 import { ADS_ITEM_DETAIL } from '../core/ads/item-detail-ads.config';
+import { EllapsedTimeModule } from '../core/directives/ellapsed-time.module';
 import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
 import { MapSpecificationsService } from '../core/services/map-specifications/map-specifications.service';
 import { ItemDetailComponent } from './item-detail.component';
@@ -78,7 +79,7 @@ describe('ItemDetailComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ItemDetailComponent, CustomCurrencyPipe, AdComponentStub],
-      imports: [HttpClientTestingModule, ItemSpecificationsModule],
+      imports: [HttpClientTestingModule, ItemSpecificationsModule, EllapsedTimeModule],
       providers: [
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         {
@@ -163,14 +164,15 @@ describe('ItemDetailComponent', () => {
   });
 
   describe('when we are on MOBILE...', () => {
-    it('should NOT show ADS', () => {
+    it('should only show AD on description', () => {
       spyOn(deviceService, 'getDeviceType').and.returnValue(DeviceType.MOBILE);
 
       component.ngOnInit();
       fixture.detectChanges();
-      const adsComponent = fixture.debugElement.queryAll(By.directive(AdComponentStub));
 
-      expect(adsComponent.length).toBe(0);
+      const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
+
+      expect(ads.length).toBe(2);
     });
   });
 
@@ -180,9 +182,9 @@ describe('ItemDetailComponent', () => {
 
       component.ngOnInit();
       fixture.detectChanges();
-      const adsComponent = fixture.debugElement.queryAll(By.directive(AdComponentStub));
+      const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
 
-      expect(adsComponent.length).toBe(1);
+      expect(ads.length).toBe(2);
     });
   });
 
@@ -192,9 +194,9 @@ describe('ItemDetailComponent', () => {
 
       component.ngOnInit();
       fixture.detectChanges();
-      const sideAds = fixture.debugElement.queryAll(By.directive(AdComponentStub));
+      const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
 
-      expect(sideAds.length).toBe(3);
+      expect(ads.length).toBe(3);
     });
   });
 
@@ -300,7 +302,7 @@ describe('ItemDetailComponent', () => {
         fixture.detectChanges();
 
         expect(MockAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_ITEM_DETAIL.item.categoryId.toString() });
-        expect(MockAdsService.setSlots).toHaveBeenCalledWith([ADS_ITEM_DETAIL.top, ADS_ITEM_DETAIL.left, ADS_ITEM_DETAIL.right]);
+        expect(MockAdsService.setSlots).toHaveBeenCalledWith([ADS_ITEM_DETAIL.item1, ADS_ITEM_DETAIL.item2l, ADS_ITEM_DETAIL.item3r]);
       });
     });
 

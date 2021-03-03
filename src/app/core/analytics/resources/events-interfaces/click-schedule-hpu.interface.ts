@@ -26,10 +26,6 @@ export interface ClickScheduleHPU {
    */
   categoryId: number;
   /**
-   * If the item is from a professional user
-   */
-  isPro?: boolean;
-  /**
    * Item total price
    */
   totalPrice: number;
@@ -46,19 +42,7 @@ export interface ClickScheduleHPU {
    */
   title: string;
   /**
-   * Version of the accept screen
-   */
-  acceptScreenVersion: 'v1-original' | 'v2-green-redesign';
-  /**
    * Identifier of the accept offer screen
    */
   screenId: 210;
-  /**
-   * True if the sender's address for pick up or returns is informed
-   */
-  hasAddress: boolean;
-  /**
-   * True if the sender's bank account is informed
-   */
-  hasBankAccount: boolean;
 }

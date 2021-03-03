@@ -26,7 +26,7 @@ export interface SubscriptionPayConfirmation {
    */
   isNewCard?: boolean;
   /**
-   * Discount applied to the subscritpion in percent
+   * Discount applied to the subscription in percent
    */
   discountPercent?: number;
   /**
@@ -37,4 +37,8 @@ export interface SubscriptionPayConfirmation {
    * Identifier of the screen
    */
   screenId: 206;
+  /**
+   * Whether the subscription offers free trial
+   */
+  freeTrial?: boolean;
 }

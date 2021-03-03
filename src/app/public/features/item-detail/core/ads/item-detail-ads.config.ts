@@ -10,8 +10,14 @@ import {
 import { AdSlotsPositions } from '@core/ads/models';
 import { DeviceType } from '@core/device/deviceType.enum';
 
-export const ADS_ITEM_DETAIL: AdSlotsPositions = {
-  top: {
+export interface AdSlotsItemDetail {
+  item1: AdSlot;
+  item2l: AdSlot;
+  item3r: AdSlot;
+}
+
+export const ADS_ITEM_DETAIL: AdSlotsItemDetail = {
+  item1: {
     name: '130868815/web/item1',
     id: 'sky-unit-item-top-1',
     sizes: AD_DESKTOP_MAPPING,
@@ -31,9 +37,9 @@ export const ADS_ITEM_DETAIL: AdSlotsPositions = {
     },
     networkId: 6866,
     type: 'item',
-    device: [DeviceType.DESKTOP],
+    device: [DeviceType.DESKTOP, DeviceType.TABLET, DeviceType.MOBILE],
   },
-  left: {
+  item2l: {
     name: '130868815/web/item2l',
     id: 'sky-unit-item-left-2',
     sizes: AD_DESKTOP_VERTICAL_MAPPING,
@@ -53,9 +59,9 @@ export const ADS_ITEM_DETAIL: AdSlotsPositions = {
     },
     networkId: 6866,
     type: 'item',
-    device: [DeviceType.DESKTOP],
+    device: [DeviceType.DESKTOP, DeviceType.TABLET, DeviceType.MOBILE],
   },
-  right: {
+  item3r: {
     name: '130868815/web/item3r',
     id: 'ad-unit-item-right-3',
     sizes: AD_DESKTOP_VERTICAL_MAPPING,

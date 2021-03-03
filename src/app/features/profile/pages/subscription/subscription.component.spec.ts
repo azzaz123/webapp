@@ -145,7 +145,7 @@ describe('SubscriptionComponent', () => {
     describe('Track param events', () => {
       describe('when has param events', () => {
         it('should track event', () => {
-          spyOn(analyticsService, 'trackPageView');
+          spyOn(analyticsService, 'trackEvent');
           spyOn(route.snapshot.paramMap, 'get').and.returnValue('true');
           const expectedPageViewEvent: AnalyticsEvent<ClickProSubscription> = {
             name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
@@ -158,27 +158,18 @@ describe('SubscriptionComponent', () => {
 
           component.ngOnInit();
 
-          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(2);
-          expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageViewEvent);
+          expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedPageViewEvent);
         });
       });
 
       describe('when has not param events', () => {
         it('should not track event', () => {
-          spyOn(analyticsService, 'trackPageView');
-          const expectedPageViewEvent: AnalyticsEvent<ClickProSubscription> = {
-            name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
-            eventType: ANALYTIC_EVENT_TYPES.Navigation,
-            attributes: {
-              screenId: SCREEN_IDS.WebHome,
-              isLoggedIn: true,
-            },
-          };
+          spyOn(analyticsService, 'trackEvent');
 
           component.ngOnInit();
 
-          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
-          expect(analyticsService.trackPageView).not.toHaveBeenCalledWith(expectedPageViewEvent);
+          expect(analyticsService.trackEvent).not.toHaveBeenCalled();
         });
       });
     });
@@ -197,6 +188,7 @@ describe('SubscriptionComponent', () => {
           attributes: {
             screenId: SCREEN_IDS.SubscriptionManagement,
             isPro: true,
+            freeTrialSubscriptions: null,
           },
         };
 
@@ -216,6 +208,48 @@ describe('SubscriptionComponent', () => {
           attributes: {
             screenId: SCREEN_IDS.SubscriptionManagement,
             isPro: false,
+            freeTrialSubscriptions: null,
+          },
+        };
+
+        component.ngOnInit();
+
+        expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageViewEvent);
+      });
+    });
+
+    describe('when is has not trial availables', () => {
+      it('should send event', () => {
+        spyOn(analyticsService, 'trackPageView');
+        const expectedPageViewEvent: AnalyticsPageView<ViewSubscription> = {
+          name: ANALYTICS_EVENT_NAMES.ViewSubscription,
+          attributes: {
+            screenId: SCREEN_IDS.SubscriptionManagement,
+            isPro: true,
+            freeTrialSubscriptions: null,
+          },
+        };
+
+        component.ngOnInit();
+
+        expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageViewEvent);
+      });
+    });
+
+    describe('when has trial availables', () => {
+      it('should send event', () => {
+        spyOn(analyticsService, 'trackPageView');
+        spyOn(userService, 'me').and.returnValue(of(MOCK_NON_FEATURED_USER_RESPONSE));
+        spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(MAPPED_SUBSCRIPTIONS_ADDED));
+
+        const expectedPageViewEvent: AnalyticsPageView<ViewSubscription> = {
+          name: ANALYTICS_EVENT_NAMES.ViewSubscription,
+          attributes: {
+            screenId: SCREEN_IDS.SubscriptionManagement,
+            isPro: false,
+            freeTrialSubscriptions: '14000',
           },
         };
 
@@ -399,6 +433,7 @@ describe('SubscriptionComponent', () => {
           screenId: SCREEN_IDS.SubscriptionManagement,
           subscription: SUBSCRIPTIONS_NOT_SUB[0].category_id as SUBSCRIPTION_CATEGORIES,
           isNewSubscriber: false,
+          freeTrial: SUBSCRIPTIONS_NOT_SUB[0].trial_available,
         },
       };
 
@@ -432,6 +467,29 @@ describe('SubscriptionComponent', () => {
           screenId: SCREEN_IDS.SubscriptionManagement,
           subscription: MAPPED_SUBSCRIPTIONS[0].category_id as SUBSCRIPTION_CATEGORIES,
           isNewSubscriber: true,
+          freeTrial: SUBSCRIPTIONS_NOT_SUB[0].trial_available,
+        },
+      };
+
+      component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[0]);
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+    });
+  });
+
+  describe('when the user click subscription without free trial', () => {
+    it('should send event to analytics', () => {
+      spyOn(analyticsService, 'trackEvent');
+      spyOn(subscriptionsService, 'hasOneStripeSubscription').and.returnValue(false);
+      const expectedEvent: AnalyticsEvent<ClickSubscriptionManagementPlus> = {
+        name: ANALYTICS_EVENT_NAMES.ClickSubscriptionManagementPlus,
+        eventType: ANALYTIC_EVENT_TYPES.Navigation,
+        attributes: {
+          screenId: SCREEN_IDS.SubscriptionManagement,
+          subscription: MAPPED_SUBSCRIPTIONS[0].category_id as SUBSCRIPTION_CATEGORIES,
+          isNewSubscriber: true,
+          freeTrial: MAPPED_SUBSCRIPTIONS[0].trial_available,
         },
       };
 

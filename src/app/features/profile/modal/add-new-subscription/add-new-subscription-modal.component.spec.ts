@@ -4,12 +4,14 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import {
   AnalyticsEvent,
+  AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   ClickSubscriptionDirectContact,
   ClickSubscriptionSubscribe,
   SCREEN_IDS,
   SubscriptionPayConfirmation,
+  ViewSubscriptionTier,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { CATEGORY_IDS } from '@core/category/category-ids';
@@ -25,7 +27,9 @@ import { PAYMENT_METHOD_DATA } from '@fixtures/payments.fixtures.spec';
 import { FINANCIAL_CARD_OPTION, STRIPE_CARD } from '@fixtures/stripe.fixtures.spec';
 import {
   MAPPED_SUBSCRIPTIONS,
+  MockSubscriptionService,
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED,
+  MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED,
   SUBSCRIPTION_REQUIRES_ACTION,
   SUBSCRIPTION_REQUIRES_PAYMENT,
   SUBSCRIPTION_SUCCESS,
@@ -84,35 +88,7 @@ describe('AddNewSubscriptionModalComponent', () => {
               actionPayment() {},
             },
           },
-          {
-            provide: SubscriptionsService,
-            useValue: {
-              newSubscription() {
-                return of({});
-              },
-              checkNewSubscriptionStatus() {
-                return of(SUBSCRIPTION_SUCCESS);
-              },
-              retrySubscription() {
-                return of('');
-              },
-              checkRetrySubscriptionStatus() {
-                return of('');
-              },
-              getTierDiscountPercentatge() {
-                return 0;
-              },
-              isFreeTier() {
-                return false;
-              },
-              isDiscountedTier() {
-                return false;
-              },
-              hasTrial() {
-                return true;
-              },
-            },
-          },
+          { provide: SubscriptionsService, useClass: MockSubscriptionService },
           {
             provide: NgbModal,
             useValue: {
@@ -410,6 +386,7 @@ describe('AddNewSubscriptionModalComponent', () => {
           screenId: SCREEN_IDS.Subscription,
           tier: component.selectedTier.id,
           price: component.selectedTier.price,
+          freeTrial: component.subscription.trial_available,
         },
       };
 
@@ -439,6 +416,7 @@ describe('AddNewSubscriptionModalComponent', () => {
               isNewSubscriber: component.isNewSubscriber,
               discountPercent: 0,
               invoiceNeeded: true,
+              freeTrial: false,
             },
           };
 
@@ -464,6 +442,7 @@ describe('AddNewSubscriptionModalComponent', () => {
               isNewSubscriber: component.isNewSubscriber,
               discountPercent: 0,
               invoiceNeeded: false,
+              freeTrial: false,
             },
           };
 
@@ -491,6 +470,7 @@ describe('AddNewSubscriptionModalComponent', () => {
               isNewSubscriber: component.isNewSubscriber,
               discountPercent: 0,
               invoiceNeeded: true,
+              freeTrial: false,
             },
           };
           expectedEvent.attributes.isNewCard = false;
@@ -517,6 +497,7 @@ describe('AddNewSubscriptionModalComponent', () => {
               isNewSubscriber: component.isNewSubscriber,
               discountPercent: 0,
               invoiceNeeded: false,
+              freeTrial: false,
             },
           };
           expectedEvent.attributes.isNewCard = false;
@@ -625,6 +606,38 @@ describe('AddNewSubscriptionModalComponent', () => {
       component.continueToInvoice();
 
       expect(invoiceStepElement).toBeTruthy();
+    });
+  });
+
+  describe('trackViewSubscriptionTier', () => {
+    describe('has more than a one tier', () => {
+      it('should send event to analytics', () => {
+        spyOn(analyticsService, 'trackPageView');
+        component.subscription = MAPPED_SUBSCRIPTIONS[1];
+        const expectedEvent: AnalyticsPageView<ViewSubscriptionTier> = {
+          name: ANALYTICS_EVENT_NAMES.ViewSubscriptionTier,
+          attributes: {
+            screenId: SCREEN_IDS.SubscriptionTier,
+            freeTrial: false,
+          },
+        };
+
+        component.ngOnInit();
+
+        expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+      });
+    });
+
+    describe('has not more than one tier', () => {
+      it('should not send event to analytics', () => {
+        spyOn(analyticsService, 'trackPageView');
+        component.subscription = MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED;
+
+        component.ngOnInit();
+
+        expect(analyticsService.trackPageView).not.toHaveBeenCalled();
+      });
     });
   });
 });

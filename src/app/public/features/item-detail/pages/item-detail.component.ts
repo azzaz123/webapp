@@ -192,6 +192,6 @@ export class ItemDetailComponent implements OnInit {
 
   private setAdSlot(): void {
     this.adsService.setAdKeywords({ category: this.itemDetail.item.categoryId.toString() });
-    this.adsService.setSlots([this.adsSlotsItemDetail.top, this.adsSlotsItemDetail.left, this.adsSlotsItemDetail.right]);
+    this.adsService.setSlots([this.adsSlotsItemDetail.item1, this.adsSlotsItemDetail.item2l, this.adsSlotsItemDetail.item3r]);
   }
 }
