@@ -1,5 +1,6 @@
 import { ComponentFactory, ComponentFactoryResolver, Injectable } from '@angular/core';
 import { FilterConfig } from '../../../interfaces/filter-config.interface';
+import { FilterParameter } from '../../../interfaces/filter-parameter.interface';
 import { AbstractFilter } from '../../abstract-filter/abstract-filter';
 import { FILTER_VARIANT } from '../../abstract-filter/abstract-filter.enum';
 import { RangeFilterComponent } from '../../range-filter/range-filter.component';
@@ -15,7 +16,7 @@ export const FILTERS = {
 @Injectable()
 export class FilterFactoryService {
   constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
-  createFilter(config: FilterConfig<unknown>, variant: FILTER_VARIANT, container: FilterHostDirective) {
+  createFilter(config: FilterConfig<unknown>, value: FilterParameter[], variant: FILTER_VARIANT, container: FilterHostDirective) {
     const component = FILTERS[config.id];
     const componentFactory: ComponentFactory<AbstractFilter<unknown>> = this.componentFactoryResolver.resolveComponentFactory(component);
 
@@ -26,5 +27,6 @@ export class FilterFactoryService {
 
     componentRef.instance.config = config;
     componentRef.instance.variant = variant;
+    componentRef.instance.value = value;
   }
 }
