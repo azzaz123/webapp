@@ -54,9 +54,11 @@ export class SlidesCarouselComponent implements AfterContentInit {
   public swipe(swipeDirection: SWIPE_DIRECTION): void {
     if (this.isTouchDevice()) {
       if (swipeDirection === SWIPE_DIRECTION.RIGHT) {
-        return this.carousel.prev();
+        this.carousel.prev();
       }
-      return this.carousel.next();
+      if (swipeDirection === SWIPE_DIRECTION.LEFT) {
+        this.carousel.next();
+      }
     }
   }
 
