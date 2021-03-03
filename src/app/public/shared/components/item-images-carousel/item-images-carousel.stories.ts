@@ -33,7 +33,7 @@ const Template: Story<ItemImagesCarouselComponent> = (args: ItemImagesCarouselCo
     providers: [HAMMER_PROVIDER, DeviceDetectorService],
   },
   template:
-    '<tsl-item-images-carousel [images]="images" [itemFlags]="itemFlags" [itemVisibilityFlags]="itemVisibilityFlags"></tsl-item-images-carousel>',
+    '<tsl-item-images-carousel [isActive]="isActive" [images]="images" [itemFlags]="itemFlags" [itemVisibilityFlags]="itemVisibilityFlags"></tsl-item-images-carousel>',
 });
 
 const imagesURL = ['http://localhost:6006/images/item-camera.jpg', 'http://localhost:6006/images/item-pc.jpg'];
@@ -41,42 +41,55 @@ const imagesURL = ['http://localhost:6006/images/item-camera.jpg', 'http://local
 export const Bumped = Template.bind({});
 Bumped.args = {
   images: imagesURL,
+  isActive: true,
   itemVisibilityFlags: { ...ITEM_BUMP_FLAGS, bumped: true },
 };
 
 export const CountryBumped = Template.bind({});
 CountryBumped.args = {
   images: imagesURL,
+  isActive: true,
   itemVisibilityFlags: { ...ITEM_BUMP_FLAGS, bumped: true, country_bumped: true },
 };
 
 export const Sold = Template.bind({});
 Sold.args = {
   images: imagesURL,
+  isActive: true,
   itemFlags: { ...ITEM_FLAGS, sold: true },
 };
 
 export const Reserved = Template.bind({});
 Reserved.args = {
   images: imagesURL,
+  isActive: true,
   itemFlags: { ...ITEM_FLAGS, reserved: true },
 };
 
 export const Expired = Template.bind({});
 Expired.args = {
   images: imagesURL,
+  isActive: true,
   itemFlags: { ...ITEM_FLAGS, expired: true },
 };
 
 export const Inactive = Template.bind({});
 Inactive.args = {
   images: imagesURL,
+  isActive: true,
   itemFlags: { ...ITEM_FLAGS, onhold: true },
 };
 
 export const TwoFlags = Template.bind({});
 TwoFlags.args = {
   images: imagesURL,
+  isActive: true,
   itemFlags: { ...ITEM_FLAGS, reserved: true },
   itemVisibilityFlags: { ...ITEM_BUMP_FLAGS, bumped: true },
+};
+
+export const Disabled = Template.bind({});
+Disabled.args = {
+  images: imagesURL,
+  isActive: false,
 };

@@ -4,7 +4,6 @@ import { HAMMER_PROVIDER } from '@core/hammerjs/hammerjs-provider';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
 import { Story, Meta } from '@storybook/angular/types-6-0';
-import { DeviceDetectorService } from 'ngx-device-detector';
 import { CarouselSliderDirective } from './directives/carousel-slider.directive';
 import { SlidesCarouselComponent } from './carousel-slides.component';
 
@@ -29,7 +28,7 @@ const Template: Story<SlidesCarouselComponent> = (args: SlidesCarouselComponent)
   moduleMetadata: {
     declarations: [SlidesCarouselComponent, CarouselSliderDirective],
     imports: [CommonModule, NgbCarouselModule, ImageFallbackModule, HammerModule],
-    providers: [HAMMER_PROVIDER, DeviceDetectorService],
+    providers: [HAMMER_PROVIDER],
   },
   template:
     '<tsl-carousel-slides><ng-template carousel-slider *ngFor="let image of images"><img [src]="image" /></ng-template></tsl-carousel-slides>',

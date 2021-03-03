@@ -4,9 +4,7 @@ import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { SlidesCarouselComponent } from './carousel-slides.component';
-import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 
-import { DeviceDetectorService } from 'ngx-device-detector';
 import { CarouselSliderDirective } from './directives/carousel-slider.directive';
 
 @Component({
@@ -26,22 +24,16 @@ describe('SlidesCarouselComponent', () => {
   const slideIdContainer = '#slideContainer';
   const carouselTag = 'ngb-carousel';
   const fallbackImageClass = '.SlidesCarousel__fallbackImage';
-  const hideControllerClass = '.hideControllers';
+  const hideControllerClass = '.SlidesCarousel--hideControllers';
+  const noBackgroundIndicatorsClass = '.SlidesCarousel--noBackgroundIndicators';
 
   let component: SlidesCarouselComponent;
   let fixture: ComponentFixture<TestWrapperComponent>;
-  let deviceDetectorService: DeviceDetectorService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [NgbCarouselModule, ImageFallbackModule],
       declarations: [SlidesCarouselComponent, TestWrapperComponent, CarouselSliderDirective],
-      providers: [
-        {
-          provide: DeviceDetectorService,
-          useClass: DeviceDetectorServiceMock,
-        },
-      ],
     })
       .overrideComponent(SlidesCarouselComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
@@ -52,7 +44,6 @@ describe('SlidesCarouselComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TestWrapperComponent);
     component = fixture.debugElement.children[0].componentInstance;
-    deviceDetectorService = TestBed.inject(DeviceDetectorService);
     fixture.detectChanges();
   });
 
@@ -104,27 +95,38 @@ describe('SlidesCarouselComponent', () => {
       });
     });
 
-    describe('when is the carousel is full screen and our device...', () => {
-      describe('is a mobile...', () => {
-        it('should hide the controllers', () => {
-          component.isFullScreen = true;
-          spyOn(deviceDetectorService, 'isMobile').and.returnValue(true);
+    describe('when the hidecontrollers input is true...', () => {
+      it('should hide the controllers', () => {
+        component.hideControllers = true;
 
-          component.ngAfterContentInit();
-          fixture.detectChanges();
+        fixture.detectChanges();
 
-          expect(fixture.debugElement.query(By.css(hideControllerClass))).toBeTruthy();
-        });
+        expect(fixture.debugElement.query(By.css(hideControllerClass))).toBeTruthy();
       });
+    });
 
-      describe('is a NOT mobile...', () => {
+    describe('when the hidecontrollers input is false...', () => {
+      beforeEach(() => {
+        component.hideControllers = false;
+      });
+      describe('and we have more than one slide...', () => {
         it('should NOT hide the controllers', () => {
-          component.isFullScreen = true;
+          fixture.componentInstance.images = new Array(2);
 
-          component.ngAfterContentInit();
           fixture.detectChanges();
+          component.ngAfterContentInit();
 
           expect(fixture.debugElement.query(By.css(hideControllerClass))).toBeFalsy();
+        });
+      });
+      describe('and we have ONLY one slide...', () => {
+        it('should hide the controllers', () => {
+          fixture.componentInstance.images = new Array(1);
+
+          fixture.detectChanges();
+          component.ngAfterContentInit();
+
+          expect(fixture.debugElement.query(By.css(hideControllerClass))).toBeTruthy();
         });
       });
     });
@@ -139,6 +141,16 @@ describe('SlidesCarouselComponent', () => {
 
       expect(fixture.debugElement.query(By.css(defaultIdTemplate))).toBeFalsy();
       expect(fixture.debugElement.query(By.css(fallbackImageClass))).toBeTruthy();
+    });
+  });
+
+  describe('when noBackgroundIndicators input is true...', () => {
+    it('should hide the bottom background indicator', () => {
+      component.noBackgroundIndicators = true;
+
+      fixture.detectChanges();
+
+      expect(fixture.debugElement.query(By.css(noBackgroundIndicatorsClass))).toBeTruthy();
     });
   });
 });
