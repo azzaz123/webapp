@@ -1,4 +1,4 @@
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import {
   SubscriptionResponse,
@@ -91,26 +91,45 @@ export class MockSubscriptionService {
   public hasOneTrialSubscription(_subscriptions: SubscriptionsResponse[]): boolean {
     return false;
   }
+
+  public getTrialSubscriptionsIds(subscriptions: SubscriptionsResponse[]): number[] {
+    if (!subscriptions) {
+      return [];
+    }
+    return subscriptions.filter((subscription) => this.hasTrial(subscription)).map((subscription) => subscription.category_id);
+  }
+
+  public getTierDiscountPercentatge(): number {
+    return 0;
+  }
+
+  public newSubscription(): Observable<any> {
+    return of({});
+  }
+
+  public checkNewSubscriptionStatus(): Observable<SubscriptionResponse> {
+    return of(SUBSCRIPTION_SUCCESS);
+  }
 }
 
 export const MOCK_SUBSCRIPTION_BENEFITS: SubscriptionBenefit[] = [
   {
-    iconId: 'paintbrush',
+    iconId: 'empty-image',
     title: 'Professionalize your profile',
     description: 'Stand out above the rest with a cover photo and a description of what you offer',
   },
   {
-    iconId: 'magnet',
+    iconId: 'empty-image',
     title: 'Connect with more clients',
     description: 'Share with millions of potential buyers your phone and website',
   },
   {
-    iconId: 'watch',
+    iconId: 'empty-image',
     title: 'Without time limit',
     description: 'Your items will never expire, they will be always ready for a quick sell',
   },
   {
-    iconId: 'unlocked',
+    iconId: 'empty-image',
     title: 'Without compromise',
     description: 'You can cancel your subscription whenever you want, without penalties',
   },

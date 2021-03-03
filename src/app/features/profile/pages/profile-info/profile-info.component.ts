@@ -299,7 +299,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
         screenId: SCREEN_IDS.MyProfile,
       },
     };
-    this.analyticsService.trackPageView(event);
+    this.analyticsService.trackEvent(event);
   }
 
   private trackViewProBenefitsPopup(): void {

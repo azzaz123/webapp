@@ -14,8 +14,11 @@ import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
 import { FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH } from '@core/item/item';
 import { CarouselSliderDirective } from './directives/carousel-slider.directive';
 import { CarouselSlide } from './carousel-slide.interface';
-import { DeviceDetectorService } from 'ngx-device-detector';
 
+export enum SWIPE_DIRECTION {
+  'RIGHT',
+  'LEFT',
+}
 @Component({
   selector: 'tsl-carousel-slides',
   templateUrl: './carousel-slides.component.html',
@@ -26,22 +29,21 @@ export class SlidesCarouselComponent implements AfterContentInit {
   @ContentChildren(CarouselSliderDirective) sections: QueryList<CarouselSliderDirective>;
   @ViewChild(NgbCarousel) public carousel: NgbCarousel;
   @Output() slideClick: EventEmitter<CarouselSlide> = new EventEmitter<CarouselSlide>();
-  @Input() initialIndex: number = 0;
-  @Input() isFullScreen = false;
-  @Input() className: string;
+  @Input() noBackgroundIndicators: boolean;
+  @Input() hideControllers = false;
+  @Input() initialIndex = 0;
 
   public readonly IMAGE_FALLBACK = FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH;
+  public readonly SWIPE_DIRECTION = SWIPE_DIRECTION;
   public readonly NGB_SLIDE = 'ngb-slide-';
   public slides: CarouselSliderDirective[];
-  public hideControllers: boolean;
   public activeId: string;
 
-  constructor(private deviceDetectorService: DeviceDetectorService, private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngAfterContentInit() {
     this.slides = this.sections.toArray();
     this.activeId = this.NGB_SLIDE + this.initialIndex;
-    this.checkHideControllers();
     this.cdr.detectChanges();
   }
 
@@ -49,8 +51,23 @@ export class SlidesCarouselComponent implements AfterContentInit {
     this.slideClick.emit({ index: slideIndex });
   }
 
-  private checkHideControllers(): void {
-    this.hideControllers = this.slides?.length <= 1 || (this.deviceDetectorService.isMobile() && this.isFullScreen);
+  public swipe(swipeDirection: SWIPE_DIRECTION): void {
+    if (this.isTouchDevice()) {
+      if (swipeDirection === SWIPE_DIRECTION.RIGHT) {
+        this.carousel.prev();
+      }
+      if (swipeDirection === SWIPE_DIRECTION.LEFT) {
+        this.carousel.next();
+      }
+    }
+  }
+
+  private isTouchDevice(): boolean {
+    return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+  }
+
+  get isSingleSlide(): boolean {
+    return this.slides?.length <= 1;
   }
 
   get currentSlide(): string {

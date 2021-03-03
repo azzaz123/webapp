@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Item } from '@core/item/item';
-import { ItemCounters, ItemResponse, ItemVisibilityFlags } from '@core/item/item-response.interface';
+import { ItemCounters, ItemResponse, ItemVisibilityFlags, Purchase } from '@core/item/item-response.interface';
 import { User } from '@core/user/user';
 import { UserResponse } from '@core/user/user-response.interface';
+import { DeleteItemBodyResponse, ReserveItemBodyResponse } from '@public/core/services/api/item/interfaces/item-response.interface';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
@@ -44,6 +45,18 @@ export class ItemDetailService {
 
   public getRecommendedItems(itemId: string): Observable<RecommendedItemsBodyResponse> {
     return this.recommenderApiService.getRecommendedItemsByItemId(itemId);
+  }
+
+  public deleteItem(itemId: string): Observable<DeleteItemBodyResponse> {
+    return this.itemApiService.deleteItem(itemId);
+  }
+
+  public reserveItem(itemId: string, reserved: boolean): Observable<ReserveItemBodyResponse> {
+    return this.itemApiService.reserveItem(itemId, reserved);
+  }
+
+  public getItemActivePurchases(id: string): Observable<Purchase[]> {
+    return this.itemApiService.getItemActivePurchases(id);
   }
 
   private mapItem(itemResponse: ItemResponse, itemCounters: ItemCounters, bumpFlags: ItemVisibilityFlags): Item {

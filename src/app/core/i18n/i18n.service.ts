@@ -167,24 +167,24 @@ export class I18nService {
       SubscriptionCardDeleted: 'Your card has been deleted',
       subscriptionBenefits: [
         {
-          iconId: 'paintbrush',
-          title: 'Professionalize your profile',
-          description: 'Stand out above the rest with a cover photo and a description of what you offer',
+          iconId: 'img-1',
+          title: 'Empower your brand',
+          description: 'Complete your profile with a cover photo and a description.',
         },
         {
-          iconId: 'magnet',
-          title: 'Connect with more clients',
-          description: 'Share with millions of potential buyers your phone and website',
+          iconId: 'img-2',
+          title: 'Connect with more customers',
+          description: 'Share your phone number and website with millions of people.',
         },
         {
-          iconId: 'watch',
-          title: 'Without time limit',
-          description: 'Your items will never expire, they will be always ready for a quick sell',
+          iconId: 'img-3',
+          title: 'Gain more visibility',
+          description: 'Appear at the top of search results and attract more customers.',
         },
         {
-          iconId: 'unlocked',
-          title: 'Without compromise',
-          description: 'You can cancel your subscription whenever you want, without penalties',
+          iconId: 'img-4',
+          title: 'Save management time',
+          description: 'Your products will always be active and ready for sale.',
         },
       ],
       tooManyNewConversations: "We can't keep up with you. Wait a moment so you can open up new conversations.",
@@ -198,6 +198,7 @@ export class I18nService {
       cardNumberIsNotValid: "Card number isn't valid.",
       cvcNumberIsNotValid: "CVC number isn't valid.",
       cardDateIsNotValid: "Card date isn't valid.",
+      deleteItemError: 'There was an error deleting your product',
     },
     es: {
       yes: 'Sí',
@@ -363,24 +364,24 @@ export class I18nService {
       SubscriptionCardDeleted: 'Tu tarjeta se ha borrado correctamente',
       subscriptionBenefits: [
         {
-          iconId: 'paintbrush',
-          title: 'Profesionaliza tu perfil',
-          description: 'Destaca sobre el resto con una foto portada y una descripción de lo que ofreces',
+          iconId: 'img-1',
+          title: 'Potencia tu marca',
+          description: 'Añade a tu perfil foto de portada y descripción de lo que ofreces.',
         },
         {
-          iconId: 'magnet',
+          iconId: 'img-2',
           title: 'Conecta con más clientes',
-          description: 'Comparte con millones de potenciales compradores tu teléfono y tu página web',
+          description: 'Comparte con millones de potenciales compradores tu teléfono y tu página web.',
         },
         {
-          iconId: 'watch',
-          title: 'Sin límite de tiempo',
-          description: 'Tus artículos no expiran nunca, siempre están disponibles para una venta rápida',
+          iconId: 'img-3',
+          title: 'Gana visibilidad en búsquedas',
+          description: 'Ocupa los primeros resultados de búsqueda. ¡Atrae más clientes!',
         },
         {
-          iconId: 'unlocked',
-          title: 'Sin compromiso',
-          description: 'Puedes cancelar la suscripción cuando quieras, sin penalizaciones de ningún tipo',
+          iconId: 'img-4',
+          title: 'Ahorra tiempo de gestión',
+          description: 'Tus productos siempre estarán activos y listos para la venta.',
         },
       ],
       tooManyNewConversations: 'No te podemos seguir el ritmo. Espera un momento para poder abrir nuevas conversaciones.',
@@ -394,6 +395,7 @@ export class I18nService {
       cardNumberIsNotValid: 'El número de la tarjeta no es válido.',
       cvcNumberIsNotValid: 'El CVC de la tarjeta no es válido.',
       cardDateIsNotValid: 'La fecha de la tarjeta no es válida.',
+      deleteItemError: 'Hubo un error borrando tu producto',
     },
   };
 

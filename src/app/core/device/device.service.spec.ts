@@ -4,6 +4,7 @@ import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { UuidService } from '@core/uuid/uuid.service';
 import { CookieService } from 'ngx-cookie';
+import { random } from 'faker';
 
 describe('DeviceService', () => {
   let deviceService: DeviceService;
@@ -102,6 +103,39 @@ describe('DeviceService', () => {
         expect(deviceId).toEqual('deviceId');
         expect(cookieService.put).not.toHaveBeenCalled();
         expect(uuidService.getUUID).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('isMobile', () => {
+      it('should return if is mobile or not', () => {
+        const randomIsMobile: boolean = random.boolean();
+        spyOn(deviceDetectorService, 'isMobile').and.returnValue(randomIsMobile);
+
+        const isMobile: boolean = deviceService.isMobile();
+
+        expect(isMobile).toBe(randomIsMobile);
+      });
+    });
+
+    describe('isTablet', () => {
+      it('should return if is tablet or not', () => {
+        const randomIsTablet: boolean = random.boolean();
+        spyOn(deviceDetectorService, 'isTablet').and.returnValue(randomIsTablet);
+
+        const isTablet: boolean = deviceService.isTablet();
+
+        expect(isTablet).toBe(randomIsTablet);
+      });
+    });
+
+    describe('isDesktop', () => {
+      it('should return if is desktop or not', () => {
+        const randomIsDesktop: boolean = random.boolean();
+        spyOn(deviceDetectorService, 'isDesktop').and.returnValue(randomIsDesktop);
+
+        const isDesktop: boolean = deviceService.isDesktop();
+
+        expect(isDesktop).toBe(randomIsDesktop);
       });
     });
   });
