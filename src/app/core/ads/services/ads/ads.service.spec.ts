@@ -3,6 +3,7 @@ import { MockDidomiService } from '@core/ads/vendors/didomi/didomi.mock';
 import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
 import {
   MockAdSlots,
+  MockAdsKeywords,
   MockAmazonPublisherService,
   MockCriteoService,
   MockGooglePublisherTagService,
@@ -75,6 +76,16 @@ describe('AdsService', () => {
       service.setSlots(MockAdSlots);
 
       expect(MockGooglePublisherTagService.refreshAds).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('when set ad keywords', () => {
+    it('should set ad keywords on google', () => {
+      spyOn(MockGooglePublisherTagService, 'setAdKeywords');
+
+      service.setAdKeywords(MockAdsKeywords);
+
+      expect(MockGooglePublisherTagService.setAdKeywords).toHaveBeenCalledWith(MockAdsKeywords);
     });
   });
 

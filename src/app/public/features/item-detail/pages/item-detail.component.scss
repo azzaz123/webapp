@@ -44,7 +44,10 @@ $item-detail-carousel-height: 477px;
     font-size: $font-size-m;
     line-height: normal;
     color: $blue-grey-1;
-    border-bottom: 1px solid $blue-grey-5;
+
+    &.border-bottom {
+      border-bottom: 1px solid $blue-grey-5;
+    }
   }
 
   &__carousel {

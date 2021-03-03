@@ -5,6 +5,6 @@ import { AdSlot } from '@core/ads/models';
   selector: 'tsl-sky',
   template: '{{adSlot}}',
 })
-export class AdComponentStubComponent {
+export class AdComponentStub {
   @Input() adSlot: AdSlot;
 }
