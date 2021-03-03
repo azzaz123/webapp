@@ -15,12 +15,8 @@ import { FilterFactoryService } from './services/filter-factory.service';
 @Component({
   selector: 'tsl-filters',
   template: `
-    <h1>Bubble</h1>
-    <tsl-filter-group [variant]="${FILTER_VARIANT.BUBBLE}" [config]="config" [initialValues]="initialValues || []"> </tsl-filter-group>
-    <h1>Content</h1>
-    <div style="border: 1px dashed black; background-color: white">
-      <tsl-filter-group [variant]="${FILTER_VARIANT.CONTENT}" [config]="config" [initialValues]="initialValues || []"> </tsl-filter-group>
-    </div>
+    <tsl-filter-group [variant]="variant" [config]="config" [initialValues]="initialValues || []" (valueChange)="valueChange($event)">
+    </tsl-filter-group>
   `,
 })
 class FiltersComponent {}
@@ -34,6 +30,7 @@ export default {
       providers: [{ provide: CookieService, useValue: MockCookieService }, FilterFactoryService],
     }),
   ],
+  argTypes: { valueChange: { action: 'valueChange' } },
 } as Meta;
 
 const Template: Story<FiltersComponent> = (args: FiltersComponent) => ({
@@ -65,13 +62,15 @@ const CONFIG: FilterConfig<unknown>[] = [
   },
 ];
 
-export const Default = Template.bind({});
-Default.args = {
+export const Bubble_Default = Template.bind({});
+Bubble_Default.args = {
+  variant: FILTER_VARIANT.BUBBLE,
   config: CONFIG,
 };
 
-export const WithDefaultValues = Template.bind({});
-WithDefaultValues.args = {
+export const Bubble_WithDefaultValues = Template.bind({});
+Bubble_WithDefaultValues.args = {
+  variant: FILTER_VARIANT.BUBBLE,
   config: [
     {
       ...CONFIG[0],
@@ -87,12 +86,31 @@ WithDefaultValues.args = {
   ],
 };
 
-export const WithInitialValues = Template.bind({});
-WithInitialValues.args = {
+export const Bubble_WithInitialValues = Template.bind({});
+Bubble_WithInitialValues.args = {
+  variant: FILTER_VARIANT.BUBBLE,
   config: CONFIG,
   initialValues: [
     { key: 'warranty', value: 'true' },
     { key: 'max', value: '5000' },
     { key: 'min', value: '1000' },
   ],
+};
+
+export const Content_Default = Template.bind({});
+Content_Default.args = {
+  ...Bubble_Default.args,
+  variant: FILTER_VARIANT.CONTENT,
+};
+
+export const Content_WithDefaultValues = Template.bind({});
+Content_WithDefaultValues.args = {
+  ...Bubble_WithDefaultValues.args,
+  variant: FILTER_VARIANT.CONTENT,
+};
+
+export const Content_WithInitialValues = Template.bind({});
+Content_WithInitialValues.args = {
+  ...Bubble_WithInitialValues.args,
+  variant: FILTER_VARIANT.CONTENT,
 };
