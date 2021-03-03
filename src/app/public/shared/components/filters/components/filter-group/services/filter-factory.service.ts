@@ -14,7 +14,7 @@ export class FilterFactoryService {
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
 
-  intertFilters(
+  insertFilters(
     filterConfigs: FilterConfig<unknown>[],
     values: FilterParameter[],
     variant: FILTER_VARIANT,

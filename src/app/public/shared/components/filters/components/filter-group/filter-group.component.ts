@@ -34,6 +34,6 @@ export class FilterGroupComponent implements AfterViewInit {
   }
 
   private insertFilters() {
-    this.filterFactory.intertFilters(this.config, this.initialValues, this.variant, this.query);
+    this.filterFactory.insertFilters(this.config, this.initialValues, this.variant, this.query);
   }
 }
