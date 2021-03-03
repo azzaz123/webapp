@@ -1,8 +1,19 @@
 <tsl-search-layout>
   <div top class="SearchPage__ad">
-    <tsl-sky [adSlot]="adSlots.top"></tsl-sky>
+    <tsl-sky [adSlot]="adSlots.search1"></tsl-sky>
   </div>
   <div bottom class="SearchPage__ad">This should be an ad - Bottom</div>
-  <div right class="SearchPage__ad">This should be an ad - Right</div>
+  <div right class="SearchPage__ad">
+    <ng-container *ngIf="device === DevicesType.DESKTOP">
+      <div class="ad__top">
+        <div class="test1"></div>
+        <tsl-sky [adSlot]="adSlots.search2r"></tsl-sky>
+      </div>
+      <div class="ad__bottom">
+        <div class="test2"></div>
+        <tsl-sky [adSlot]="adSlots.search3r"></tsl-sky>
+      </div>
+    </ng-container>
+  </div>
   <tsl-public-item-card-list main [items]="items"></tsl-public-item-card-list>
 </tsl-search-layout>

@@ -1,9 +1,37 @@
 .SearchPage {
-  // TODO: Temporal styles for showcase while we don't add the ads
   &__ad {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: start;
+    flex-direction: column;
     padding: 20px;
+    height: 100%;
+    position: relative;
+
+    .ad__top {
+      width: 100%;
+      flex: 1;
+    }
+
+    .ad__bottom {
+      width: 100%;
+      flex: 1;
+    }
+  }
+}
+
+.test {
+  &1 {
+    position: sticky;
+    height: 100px;
+    width: 100%;
+    background-color: yellow;
+  }
+
+  &2 {
+    position: sticky;
+    height: 100px;
+    width: 100%;
+    background-color: green;
   }
 }

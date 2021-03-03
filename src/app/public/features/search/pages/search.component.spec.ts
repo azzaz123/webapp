@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { AdComponentStub } from '@fixtures/shared/components/ad.component.stub';
-import { AD_TOP_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
+import { AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { SearchComponent } from './search.component';
 
 describe('WallComponent', () => {
@@ -34,13 +34,19 @@ describe('WallComponent', () => {
   });
 
   describe('when the component init', () => {
-    it('should configure ads', () => {
-      spyOn(MockAdsService, 'setSlots').and.callThrough();
+    describe('...when is desktop', () => {
+      it('should configure ads', () => {
+        spyOn(MockAdsService, 'setSlots').and.callThrough();
 
-      component.ngOnInit();
-      fixture.detectChanges();
+        component.ngOnInit();
+        fixture.detectChanges();
 
-      expect(MockAdsService.setSlots).toHaveBeenCalledWith([AD_TOP_PUBLIC_SEARCH.top]);
+        expect(MockAdsService.setSlots).toHaveBeenCalledWith([
+          AD_PUBLIC_SEARCH.search1,
+          AD_PUBLIC_SEARCH.search2r,
+          AD_PUBLIC_SEARCH.search3r,
+        ]);
+      });
     });
   });
 });

@@ -15,9 +15,3 @@ export interface AdSlot {
   device: DeviceType[];
   type?: string;
 }
-
-export interface AdSlotsPositions {
-  top?: AdSlot;
-  left?: AdSlot;
-  right?: AdSlot;
-}
