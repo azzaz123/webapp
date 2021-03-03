@@ -1297,6 +1297,10 @@
   <translation id="FreeTrial">Prueba gratuita</translation>
   <translation id="KnowMore">Saber más</translation>
   <translation id="TryProSlotDescription">¿Quieres impulsar tu negocio online? ¡Conviértete en PRO!</translation>
+  <translation id="Feature">Destácalo</translation>
+  <translation id="checkAsReservedItem">Marcar como reservado</translation>
+  <translation id="checkAsSoldItem">Marcar como vendido</translation>
+  <translation id="deleteItem">Eliminar producto</translation>
   <translation id="Buy">Venta</translation>
   <translation id="Rent">Alquiler</translation>
   <translation id="EditedMinutesAgo">Editado hace <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> minutos</translation>

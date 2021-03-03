@@ -289,7 +289,9 @@ export class SubscriptionsService {
     if (!subscriptions) {
       return [];
     }
-    return subscriptions.filter((subscription) => this.hasTrial(subscription)).map((subscription) => subscription.category_id);
+    return subscriptions
+      .filter((subscription) => this.hasTrial(subscription) && !subscription.subscribed_from)
+      .map((subscription) => subscription.category_id);
   }
 
   public getSubscriptionBenefits(useCache = true): Observable<SubscriptionBenefit[]> {
