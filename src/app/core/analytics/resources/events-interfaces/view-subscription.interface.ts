@@ -14,11 +14,11 @@ export interface ViewSubscription {
    */
   screenId: 191;
   /**
+   * All the subscription category ids that are shown as free trial in ascending order
+   */
+  freeTrialSubscriptions?: string;
+  /**
    * Whether the user is a PRO
    */
   isPro: boolean;
-  /**
-   * "All the subscription options that are shown as free trial"
-   */
-  freeTrialSubscriptions?: '100' | '100, 12800' | '100, 14000' | '100, 12800, 14000' | '12800' | '12800, 14000' | '14000';
 }

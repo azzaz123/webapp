@@ -14,7 +14,7 @@ export interface ViewSubscriptionTier {
    */
   screenId: 241;
   /**
-   * Whether the subscription clicked offers free trial
+   * Whether the subscription offers free trial
    */
-  freeTrial: boolean;
+  freeTrial?: boolean;
 }

@@ -30,15 +30,6 @@ export enum SUBSCRIPTION_MARKETS {
 
 export type SUBSCRIPTION_CATEGORIES = 0 | 100 | 14000 | 12800;
 
-export type SUBSCRIPTION_CATEGORIES_STRINGS =
-  | '100'
-  | '100, 12800'
-  | '100, 14000'
-  | '100, 12800, 14000'
-  | '12800'
-  | '12800, 14000'
-  | '14000';
-
 export interface SubscriptionsResponse {
   id: string;
   category_id: number;

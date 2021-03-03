@@ -13,11 +13,7 @@ import {
   ViewSubscription,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import {
-  SubscriptionsResponse,
-  SUBSCRIPTION_CATEGORIES,
-  SUBSCRIPTION_CATEGORIES_STRINGS,
-} from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { AddNewSubscriptionModalComponent } from '@features/profile/modal/add-new-subscription/add-new-subscription-modal.component';
 import { CancelSubscriptionModalComponent } from '@features/profile/modal/cancel-subscription/cancel-subscription-modal.component';
@@ -182,7 +178,7 @@ export class SubscriptionsComponent implements OnInit {
       attributes: {
         screenId: SCREEN_IDS.SubscriptionManagement,
         isPro: this.user.featured,
-        freeTrialSubscriptions: stringIds as SUBSCRIPTION_CATEGORIES_STRINGS,
+        freeTrialSubscriptions: stringIds,
       },
     };
 

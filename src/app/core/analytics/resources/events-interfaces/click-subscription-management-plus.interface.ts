@@ -24,5 +24,5 @@ export interface ClickSubscriptionManagementPlus {
   /**
    * Whether the subscription clicked offers free trial
    */
-  freeTrial: boolean;
+  freeTrial?: boolean;
 }
