@@ -282,7 +282,16 @@ export class SubscriptionsService {
   }
 
   public hasOneTrialSubscription(subscriptions: SubscriptionsResponse[]): boolean {
-    return subscriptions.some((subscription) => this.hasTrial(subscription));
+    return !!subscriptions && subscriptions.some((subscription) => this.hasTrial(subscription));
+  }
+
+  public getTrialSubscriptionsIds(subscriptions: SubscriptionsResponse[]): number[] {
+    if (!subscriptions) {
+      return [];
+    }
+    return subscriptions
+      .filter((subscription) => this.hasTrial(subscription) && !subscription.subscribed_from)
+      .map((subscription) => subscription.category_id);
   }
 
   public getSubscriptionBenefits(useCache = true): Observable<SubscriptionBenefit[]> {

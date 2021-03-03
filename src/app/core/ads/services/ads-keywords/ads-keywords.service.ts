@@ -19,13 +19,21 @@ export class AdsKeywordsService {
     return this._adKeywords;
   }
 
-  public updateAdKeywords(): void {
-    this.setAdKeywordsFromCookies();
-    this.setAdkeywordsLocation();
-    this.setAdKeywordsFromUser();
+  public saveCustomKeywords(adKeywords: AdKeyWords): void {
+    for (const key in adKeywords) {
+      if (adKeywords.hasOwnProperty(key)) {
+        this.cookieService.put(key, adKeywords[key]);
+      }
+    }
   }
 
-  private setAdKeywordsFromCookies(): void {
+  public loadAdKeywords(): void {
+    this.loadAdKeywordsFromCookies();
+    this.loadAdKeywordsLocation();
+    this.loadAdKeywordsFromUser();
+  }
+
+  private loadAdKeywordsFromCookies(): void {
     const brand = this.cookieService.get('brand');
     const content = this.cookieService.get('content');
     const category = this.cookieService.get('category');
@@ -41,7 +49,7 @@ export class AdsKeywordsService {
     };
   }
 
-  private setAdkeywordsLocation(): void {
+  private loadAdKeywordsLocation(): void {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         this._adKeywords.latitude = position.coords.latitude.toString();
@@ -50,7 +58,7 @@ export class AdsKeywordsService {
     }
   }
 
-  private setAdKeywordsFromUser(): void {
+  private loadAdKeywordsFromUser(): void {
     if (!this.userService.user?.id) {
       return;
     }

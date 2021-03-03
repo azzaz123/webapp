@@ -1,28 +1,31 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ItemDetailLocation } from './constants/item-detail.interface';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AdSlot } from '@core/ads/models';
+import { AdsService } from '@core/ads/services';
+import { CATEGORY_IDS } from '@core/category/category-ids';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { Coordinate } from '@core/geolocation/address-response.interface';
 import { Item } from '@core/item/item';
-import { ItemDetail } from '../interfaces/item-detail.interface';
+import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
+import { Image, UserLocation } from '@core/user/user-response.interface';
+import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
+import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
+import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
+import { CarouselSlide } from '@public/shared/components/carousel-slides/carousel-slide.interface';
+import { EmailShare } from '@shared/social-share/interfaces/email-share.interface';
 import { FacebookShare } from '@shared/social-share/interfaces/facebook-share.interface';
 import { TwitterShare } from '@shared/social-share/interfaces/twitter-share.interface';
-import { EmailShare } from '@shared/social-share/interfaces/email-share.interface';
-import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
-import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
-import { CATEGORY_IDS } from '@core/category/category-ids';
-import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
-import { Observable } from 'rxjs';
-import { Image, UserLocation } from '@core/user/user-response.interface';
-import { finalize } from 'rxjs/operators';
 import { APP_PATHS } from 'app/app-routing-constants';
-import { CounterSpecifications } from '../components/item-specifications/interfaces/item.specifications.interface';
-import { MapSpecificationsService } from '../core/services/map-specifications/map-specifications.service';
-import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
-import { CarouselSlide } from '@public/shared/components/carousel-slides/carousel-slide.interface';
+import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
+import { CounterSpecifications } from '../components/item-specifications/interfaces/item.specifications.interface';
+import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
+import { MapSpecificationsService } from '../core/services/map-specifications/map-specifications.service';
+import { ItemDetail } from '../interfaces/item-detail.interface';
+import { AD_TOP_ITEM_DETAIL } from './../core/ads/item-detail-ads.config';
+import { ItemDetailLocation } from './constants/item-detail.interface';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -45,6 +48,7 @@ export class ItemDetailComponent implements OnInit {
   public recommendedItems$: Observable<RecommendedItemsBodyResponse>;
   public itemSpecifications: CounterSpecifications[];
   public itemDetail: ItemDetail;
+  public adSlot: AdSlot = AD_TOP_ITEM_DETAIL;
 
   public socialShare: {
     title: string;
@@ -65,12 +69,14 @@ export class ItemDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private mapSpecificationsService: MapSpecificationsService,
-    private typeCheckService: TypeCheckService
+    private typeCheckService: TypeCheckService,
+    private adsService: AdsService
   ) {}
 
   ngOnInit(): void {
     this.device = this.deviceService.getDeviceType();
-    this.initPage(this.route.snapshot.paramMap.get(PUBLIC_PATH_PARAMS.ID)); // TBD the url may change to match one more similar to production one
+    // TBD the url may change to match one more similar to production one
+    this.initPage(this.route.snapshot.paramMap.get(PUBLIC_PATH_PARAMS.ID));
   }
 
   public locationHaveCoordinates(): boolean {
@@ -110,6 +116,7 @@ export class ItemDetailComponent implements OnInit {
     this.socialShareSetup(this.itemDetail.item);
     this.generateItemSpecifications();
     this.setItemRecommendations();
+    this.setAdSlot();
   }
 
   private calculateItemCoordinates(): void {
@@ -181,5 +188,10 @@ export class ItemDetailComponent implements OnInit {
 
   set approximatedLocation(isApproximated: boolean) {
     this.isApproximateLocation = isApproximated;
+  }
+
+  private setAdSlot(): void {
+    this.adsService.setAdKeywords({ category: this.itemDetail.item.categoryId.toString() });
+    this.adsService.setSlots([this.adSlot]);
   }
 }

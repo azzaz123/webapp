@@ -107,6 +107,7 @@ import { DateCountDownModule } from './date-countdown/date-countdown.module';
     CardModule,
     CommonModule,
     UploaderModule,
+    AdModule,
     RestrictInputDirective,
     HeaderComponent,
     SoldModalComponent,
