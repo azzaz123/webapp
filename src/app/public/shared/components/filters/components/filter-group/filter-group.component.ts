@@ -4,6 +4,7 @@ import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { FilterHostDirective } from './directives/filter-host.directive';
 import { FilterFactoryService } from './services/filter-factory.service';
+import { FilterGroup } from './services/filter-group.service';
 
 @Component({
   selector: 'tsl-filter-group',
@@ -15,19 +16,24 @@ export class FilterGroupComponent implements AfterViewInit {
   @Input() initialValues: FilterParameter[];
   @Input() config: FilterConfig<unknown>[] = [];
   @Input() variant: FILTER_VARIANT = FILTER_VARIANT.BUBBLE;
-  // TODO check naming
-  @Output() childOpenStateChange = new EventEmitter<any>();
   @Output() valueChange = new EventEmitter<any>();
 
   readonly FILTER_VARIANT = FILTER_VARIANT;
 
+  private filterGroup: FilterGroup;
+
   constructor(private filterFactory: FilterFactoryService) {}
 
   ngAfterViewInit(): void {
-    this.loadComponents();
+    this.insertFilters();
+    this.filterGroup = this.filterFactory.getFilterGroup();
+
+    this.filterGroup.valueChange.subscribe((value: FilterParameter[]) => {
+      this.valueChange.emit(value);
+    });
   }
 
-  private loadComponents() {
+  private insertFilters() {
     this.config.forEach((filterConfig: FilterConfig<unknown>, index: number) => {
       this.filterFactory.createFilter(
         filterConfig,
