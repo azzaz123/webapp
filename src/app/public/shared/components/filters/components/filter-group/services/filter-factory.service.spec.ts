@@ -1,8 +1,9 @@
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { Component, DebugElement, QueryList, ViewChildren } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FILTER_TYPES } from '../../../core/enums/filter-types/filter-types.enum';
 import { FilterConfig } from '../../../interfaces/filter-config.interface';
 import { FilterParameter } from '../../../interfaces/filter-parameter.interface';
+import { AbstractFilter } from '../../abstract-filter/abstract-filter';
 import { FILTER_VARIANT } from '../../abstract-filter/abstract-filter.enum';
 import { FILTER_TYPE_COMPONENT } from '../constants/filter-type-component.constant';
 import { FilterHostDirective } from '../directives/filter-host.directive';
@@ -12,7 +13,7 @@ import { FilterFactoryService } from './filter-factory.service';
   template: `<div tslFilterHost></div>`,
 })
 class TestComponent {
-  @ViewChild(FilterHostDirective) host: FilterHostDirective;
+  @ViewChildren(FilterHostDirective) host: QueryList<FilterHostDirective>;
 }
 
 describe('FilterFactoryService', () => {
@@ -24,16 +25,18 @@ describe('FilterFactoryService', () => {
 
   const toggleFilterSelector = 'tsl-toggle-filter';
 
-  const config: FilterConfig<any> = {
-    id: 'id',
-    type: FILTER_TYPES.TOGGLE,
-    mapKey: {
-      key: 'key',
+  const config: FilterConfig<any>[] = [
+    {
+      id: 'id',
+      type: FILTER_TYPES.TOGGLE,
+      mapKey: {
+        key: 'key',
+      },
+      title: 'How much do you want to pay?',
+      icon: '/assets/icons/joke.svg',
+      bubblePlaceholder: 'Price',
     },
-    title: 'How much do you want to pay?',
-    icon: '/assets/icons/joke.svg',
-    bubblePlaceholder: 'Price',
-  };
+  ];
 
   const value: FilterParameter[] = [{ key: 'key', value: 'true' }];
 
@@ -59,17 +62,19 @@ describe('FilterFactoryService', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('when creating filter', () => {
+  describe('when inserting filters', () => {
     it('should insert it on the template', () => {
-      service.createFilter(config, value, variant, component.host);
+      service.intertFilters(config, value, variant, component.host);
 
       expect(el.querySelector(toggleFilterSelector)).toBeTruthy();
     });
 
     it('should add it correctly to the form group', () => {
-      service.createFilter(config, value, variant, component.host);
+      service.intertFilters(config, value, variant, component.host);
 
-      expect(service.getFilterGroup()['filters'][0]).toBeInstanceOf(FILTER_TYPE_COMPONENT[config.type]);
+      service.getFilterGroup()['filters'].forEach((filter: AbstractFilter<unknown>, index: number) => {
+        expect(filter).toBeInstanceOf(FILTER_TYPE_COMPONENT[config[index].type]);
+      });
     });
   });
 });
