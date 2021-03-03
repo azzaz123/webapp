@@ -5,6 +5,7 @@ import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { moduleMetadata } from '@storybook/angular';
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { CookieService } from 'ngx-cookie';
+import { FILTER_TYPES } from '../../core/enums/filter-types/filter-types.enum';
 import { FiltersModule } from '../../filters.module';
 import { FilterConfig } from '../../interfaces/filter-config.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
@@ -40,7 +41,8 @@ const Template: Story<FiltersComponent> = (args: FiltersComponent) => ({
 
 const CONFIG: FilterConfig<unknown>[] = [
   {
-    id: 'range',
+    id: 'storybook_price',
+    type: FILTER_TYPES.RANGE,
     mapKey: {
       maxKey: 'max',
       minKey: 'min',
@@ -52,7 +54,8 @@ const CONFIG: FilterConfig<unknown>[] = [
     units: '€',
   },
   {
-    id: 'toggle',
+    id: 'storybook_warranty',
+    type: FILTER_TYPES.TOGGLE,
     mapKey: {
       key: 'warranty',
     },
