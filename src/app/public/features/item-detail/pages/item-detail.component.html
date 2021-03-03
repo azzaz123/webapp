@@ -23,7 +23,7 @@
                         <tsl-item-specifications [itemSpecifications]="itemSpecifications"
                             [isCar]="typeCheckService.isCar(this.itemDetail?.item)"></tsl-item-specifications>
                     </div>
-                    <p class="ItemDetail__description py-3 mb-0 text-break">{{itemDetail?.item?.description}}</p>
+                    <p class="ItemDetail__description py-3 mb-0 text-break" [ngClass]="{'border-bottom': device === deviceType.MOBILE}">{{itemDetail?.item?.description}}</p>
                     <tsl-sky *ngIf="device === deviceType.MOBILE" [adSlot]="adSlot"></tsl-sky>
                     <div class="ItemDetail__stats py-3 d-flex align-items-center justify-content-between">
                         <div class="text-truncate">
