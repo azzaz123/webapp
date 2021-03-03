@@ -15,6 +15,10 @@ import { FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH } from '@core/item/item';
 import { CarouselSliderDirective } from './directives/carousel-slider.directive';
 import { CarouselSlide } from './carousel-slide.interface';
 
+export enum SWIPE_DIRECTION {
+  'RIGHT',
+  'LEFT',
+}
 @Component({
   selector: 'tsl-carousel-slides',
   templateUrl: './carousel-slides.component.html',
@@ -30,6 +34,7 @@ export class SlidesCarouselComponent implements AfterContentInit {
   @Input() initialIndex = 0;
 
   public readonly IMAGE_FALLBACK = FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH;
+  public readonly SWIPE_DIRECTION = SWIPE_DIRECTION;
   public readonly NGB_SLIDE = 'ngb-slide-';
   public slides: CarouselSliderDirective[];
   public activeId: string;
@@ -44,6 +49,21 @@ export class SlidesCarouselComponent implements AfterContentInit {
 
   public emitCurrentIndex(slideIndex: number): void {
     this.slideClick.emit({ index: slideIndex });
+  }
+
+  public swipe(swipeDirection: SWIPE_DIRECTION): void {
+    if (this.isTouchDevice()) {
+      if (swipeDirection === SWIPE_DIRECTION.RIGHT) {
+        this.carousel.prev();
+      }
+      if (swipeDirection === SWIPE_DIRECTION.LEFT) {
+        this.carousel.next();
+      }
+    }
+  }
+
+  private isTouchDevice(): boolean {
+    return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
   }
 
   get isSingleSlide(): boolean {
