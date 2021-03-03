@@ -4,6 +4,18 @@ import { ObjectType } from './option-responses/object-type.interface';
 import { BrandModel } from './option-responses/brand-model.interface';
 import { SizeNGenderResponse } from './option-responses/fashion-size-n-gender.interface';
 import { FashionBrand } from './option-responses/fashion-brand.interface';
+import { of } from 'rxjs/internal/observable/of';
+import { Observable } from 'rxjs';
+
+export class MockFilterOptionApiService {
+  apiMethod(): Observable<unknown> {
+    return of({});
+  }
+}
+
+export class MockFilterOptionMapperService {
+  mapperMethod(): void {}
+}
 
 export const iconOption: IconOption = {
   icon_id: 'icon',
