@@ -1,3 +1,4 @@
+import { FILTER_TYPES } from '../core/enums/filter-types/filter-types.enum';
 import { FilterParameter } from './filter-parameter.interface';
 
 export interface FilterConfig<T extends Record<keyof T, string>> {
@@ -12,4 +13,5 @@ export interface FilterConfig<T extends Record<keyof T, string>> {
   drawerPlaceholder?: string;
   mapKey: T;
   defaultValue?: FilterParameter[];
+  type: FILTER_TYPES;
 }
