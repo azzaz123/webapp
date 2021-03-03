@@ -172,7 +172,7 @@ describe('ItemDetailComponent', () => {
 
       const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
 
-      expect(ads.length).toBe(1);
+      expect(ads.length).toBe(2);
     });
   });
 
@@ -184,7 +184,7 @@ describe('ItemDetailComponent', () => {
       fixture.detectChanges();
       const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
 
-      expect(ads.length).toBe(1);
+      expect(ads.length).toBe(2);
     });
   });
 
@@ -302,7 +302,7 @@ describe('ItemDetailComponent', () => {
         fixture.detectChanges();
 
         expect(MockAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_ITEM_DETAIL.item.categoryId.toString() });
-        expect(MockAdsService.setSlots).toHaveBeenCalledWith([ADS_ITEM_DETAIL.top, ADS_ITEM_DETAIL.left, ADS_ITEM_DETAIL.right]);
+        expect(MockAdsService.setSlots).toHaveBeenCalledWith([ADS_ITEM_DETAIL.item1, ADS_ITEM_DETAIL.item2l, ADS_ITEM_DETAIL.item3r]);
       });
     });
 
