@@ -19,7 +19,7 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
 
   public ngOnInit(): void {
     this.label = this.config.bubblePlaceholder;
-    this.value = this.config.defaultValue || [];
+    this.value = this.value.length ? this.value : this.config.defaultValue || [];
   }
 
   public isBubble(): boolean {
