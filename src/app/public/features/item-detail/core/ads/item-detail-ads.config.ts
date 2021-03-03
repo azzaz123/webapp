@@ -9,9 +9,9 @@ import {
 import { AdSlot } from '@core/ads/models';
 import { DeviceType } from '@core/device/deviceType.enum';
 
-export const PUBLIC_PROFILE_AD: AdSlot = {
-  name: '130868815/web/user2',
-  id: 'sky-unit-user-2',
+export const AD_TOP_ITEM_DETAIL: AdSlot = {
+  name: '130868815/web/item1',
+  id: 'ad-unit-item-top-1',
   sizes: AD_DESKTOP_MAPPING,
   sizeMapping: {
     desktop: {
@@ -24,10 +24,10 @@ export const PUBLIC_PROFILE_AD: AdSlot = {
     },
     mobile: {
       screenSize: AD_MOBILE_SCREEN_SIZE,
-      mapping: AD_MOBILE_MAPPING.big,
+      mapping: AD_MOBILE_MAPPING.medium,
     },
   },
   networkId: 6866,
-  type: 'user',
-  device: [DeviceType.MOBILE],
+  type: 'item',
+  device: [DeviceType.DESKTOP, DeviceType.TABLET, DeviceType.MOBILE],
 };

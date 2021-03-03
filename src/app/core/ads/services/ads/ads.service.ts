@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AdKeyWords, AdSlotId } from '@core/ads/models';
 import { AdSlot } from '@core/ads/models/ad-slot.interface';
 import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
-import { BehaviorSubject, combineLatest, merge, Observable, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, combineLatest, merge, Observable, Subject } from 'rxjs';
 import { filter, finalize, map, switchMap, take, tap } from 'rxjs/operators';
 import { AmazonPublisherService, CriteoService, GooglePublisherTagService } from '../../vendors';
 import { LoadAdsService } from '../load-ads/load-ads.service';
@@ -43,6 +43,10 @@ export class AdsService {
 
   public setSlots(adSlots: AdSlot[]): void {
     this.setSlotsSubject.next(adSlots);
+  }
+
+  public setAdKeywords(adKeywords: AdKeyWords): void {
+    this.googlePublisherTagService.setAdKeywords(adKeywords);
   }
 
   public refresh(): void {

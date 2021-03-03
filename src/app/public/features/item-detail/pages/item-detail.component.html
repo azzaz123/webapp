@@ -1,7 +1,6 @@
 <div class="container ItemDetail__container">
     <div class="d-block pt-4">
-        <tsl-top-sky class="mt-4 mx-0 mx-xl-auto pr-xl-0"
-            *ngIf="device === deviceType.DESKTOP || device === deviceType.TABLET"></tsl-top-sky>
+        <tsl-sky *ngIf="device === deviceType.DESKTOP || device === deviceType.TABLET" [adSlot]="adSlot"></tsl-sky>
         <div class="d-flex justify-content-around py-4" *ngIf="itemDetail && !loading">
             <div *ngIf="device === deviceType.DESKTOP">
                 <tsl-side-sky class="position-sticky d-none d-xl-block"></tsl-side-sky>
@@ -23,7 +22,8 @@
                         <tsl-item-specifications [itemSpecifications]="itemSpecifications"
                             [isCar]="typeCheckService.isCar(this.itemDetail?.item)"></tsl-item-specifications>
                     </div>
-                    <p class="ItemDetail__description py-3 mb-0 text-break">{{itemDetail?.item?.description}}</p>
+                    <p class="ItemDetail__description py-3 mb-0 text-break" [ngClass]="{'border-bottom': device === deviceType.MOBILE}">{{itemDetail?.item?.description}}</p>
+                    <tsl-sky *ngIf="device === deviceType.MOBILE" [adSlot]="adSlot"></tsl-sky>
                     <div class="ItemDetail__stats py-3 d-flex align-items-center justify-content-between">
                         <div class="text-truncate">
                             {{ itemDetail?.item?.modifiedDate | ellapsedTime }}

@@ -61,7 +61,7 @@ describe('AdsKeywordsService', () => {
         };
         spyOn(navigator.geolocation, 'getCurrentPosition').and.callFake((callback) => callback(MOCK_POSITION));
 
-        service.updateAdKeywords();
+        service.loadAdKeywords();
 
         expect(service.adKeywords).toEqual(EXPECTED_ADKEYWORDS);
       });
@@ -77,7 +77,7 @@ describe('AdsKeywordsService', () => {
         };
         spyOn(MockCookieService, 'get').and.callFake((key) => key);
 
-        service.updateAdKeywords();
+        service.loadAdKeywords();
 
         expect(service.adKeywords).toEqual(EXPECTED_ADKEYWORDS);
       });
@@ -96,10 +96,32 @@ describe('AdsKeywordsService', () => {
           longitude: MockUser.location.approximated_longitude.toString(),
         };
 
-        service.updateAdKeywords();
+        service.loadAdKeywords();
 
         expect(service.adKeywords).toEqual(EXPECTED_ADKEYWORDS);
       });
+    });
+  });
+
+  describe('when save custom keywords', () => {
+    it('should save keywords on cookies', () => {
+      const EXPECTED_ADKEYWORDS = {
+        ...MOCK_BASE_ADSKEYWORDS,
+        brand: 'brand',
+        content: 'content',
+        category: 'category',
+        minprice: 'minprice',
+        maxprice: 'maxprice',
+      };
+      spyOn(MockCookieService, 'put').and.callThrough();
+
+      service.saveCustomKeywords(EXPECTED_ADKEYWORDS);
+
+      expect(MockCookieService.put).toHaveBeenCalledWith('brand', 'brand');
+      expect(MockCookieService.put).toHaveBeenCalledWith('content', 'content');
+      expect(MockCookieService.put).toHaveBeenCalledWith('category', 'category');
+      expect(MockCookieService.put).toHaveBeenCalledWith('minprice', 'minprice');
+      expect(MockCookieService.put).toHaveBeenCalledWith('maxprice', 'maxprice');
     });
   });
 });
