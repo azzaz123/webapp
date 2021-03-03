@@ -63,13 +63,13 @@ export class ItemDetailComponent implements OnInit {
   };
 
   constructor(
+    public typeCheckService: TypeCheckService,
     private deviceService: DeviceService,
     private itemDetailService: ItemDetailService,
     private socialMetaTagsService: SocialMetaTagService,
     private route: ActivatedRoute,
     private router: Router,
     private mapSpecificationsService: MapSpecificationsService,
-    private typeCheckService: TypeCheckService,
     private adsService: AdsService
   ) {}
 
@@ -186,12 +186,25 @@ export class ItemDetailComponent implements OnInit {
     }
   }
 
-  set approximatedLocation(isApproximated: boolean) {
-    this.isApproximateLocation = isApproximated;
-  }
-
   private setAdSlot(): void {
     this.adsService.setAdKeywords({ category: this.itemDetail.item.categoryId.toString() });
     this.adsService.setSlots([this.adSlot]);
+  }
+
+  get itemExtraInfo(): string[] {
+    let keySpecifications: string[];
+    if (this.itemDetail.item.categoryId === CATEGORY_IDS.FASHION_ACCESSORIES) {
+      keySpecifications = ['objectType', 'gender', 'brand', 'model', 'size', 'condition'];
+    }
+    if (this.itemDetail.item.categoryId === CATEGORY_IDS.CELL_PHONES_ACCESSORIES) {
+    }
+    if (this.itemDetail.item.categoryId === CATEGORY_IDS.CAR) {
+      keySpecifications = ['brand', 'year', 'model', 'km'];
+    }
+    return null;
+  }
+
+  set approximatedLocation(isApproximated: boolean) {
+    this.isApproximateLocation = isApproximated;
   }
 }
