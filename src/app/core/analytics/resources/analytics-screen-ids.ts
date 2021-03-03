@@ -70,4 +70,6 @@ export enum SCREEN_IDS {
   SubscriptionTier = 241,
   MyBankDetails = 242,
   ProAdvantagesPopup = 243,
+  TermsCommunicationsConsent = 244,
+  EditAddress = 245,
 }

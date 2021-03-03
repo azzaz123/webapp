@@ -25,4 +25,8 @@ export interface ClickSubscriptionSubscribe {
    * Identifier of the Subscription screen
    */
   screenId: 207;
+  /**
+   * Whether the subscription offers free trial
+   */
+  freeTrial?: boolean;
 }

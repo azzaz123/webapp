@@ -9,7 +9,6 @@ import {
   ANALYTIC_EVENT_TYPES,
   ClickActivateProItem,
   ClickProSubscription,
-  ConfirmActivateProItem,
   RemoveProSubscriptionBanner,
   SCREEN_IDS,
   ViewOwnSaleItems,
