@@ -17,6 +17,7 @@ $feature-button-width: 165px;
   }
 
   &--mineNotSold {
+    .ItemDetailHeader__countdownButton,
     .ItemDetailHeader__featureButton {
       display: none;
     }
@@ -32,6 +33,7 @@ $feature-button-width: 165px;
     }
 
     @include media-breakpoint-up(md) {
+      .ItemDetailHeader__countdownButton,
       .ItemDetailHeader__featureButton {
         display: inline;
       }
@@ -115,6 +117,7 @@ $feature-button-width: 165px;
       height: $button-height;
       padding: $spacing-s $spacing-xl;
       width: $feature-button-width;
+      justify-content: center;
     }
   }
 
