@@ -92,6 +92,10 @@ export class ItemDetailComponent implements OnInit {
     this.itemDetailImagesModal.show();
   }
 
+  public isItemACar(): boolean {
+    return this.typeCheckService.isCar(this.itemDetail?.item);
+  }
+
   private initPage(itemId: string): void {
     this.recommendedItems$ = this.itemDetailService.getRecommendedItems(itemId);
     this.itemDetailService
@@ -204,7 +208,7 @@ export class ItemDetailComponent implements OnInit {
     return (
       this.typeCheckService.isFashion(this.itemDetail?.item) ||
       this.typeCheckService.isCellPhoneAccessories(this.itemDetail?.item) ||
-      this.typeCheckService.isCar(this.itemDetail?.item)
+      this.isItemACar()
     );
   }
 
