@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
+import { CATEGORY_IDS } from '@core/category/category-ids';
 import { Car } from '@core/item/car';
+import { Item } from '@core/item/item';
 import { Realestate } from '@core/item/realestate';
 
 @Injectable({
@@ -20,5 +22,13 @@ export class TypeCheckService {
 
   public isRealEstate(item: unknown): item is Realestate {
     return item instanceof Realestate;
+  }
+
+  public isFashion(item: Item): boolean {
+    return item.categoryId === CATEGORY_IDS.FASHION_ACCESSORIES;
+  }
+
+  public isCellPhoneAccessories(item: Item): boolean {
+    return item.categoryId === CATEGORY_IDS.CELL_PHONES_ACCESSORIES;
   }
 }

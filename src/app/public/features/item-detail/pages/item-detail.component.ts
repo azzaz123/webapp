@@ -22,6 +22,7 @@ import { finalize } from 'rxjs/operators';
 import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
 import { CounterSpecifications } from '../components/item-specifications/interfaces/item.specifications.interface';
 import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
+import { MapExtraInfoService } from '../core/services/map-extra-info/map-extra-info.service';
 import { MapSpecificationsService } from '../core/services/map-specifications/map-specifications.service';
 import { ItemDetail } from '../interfaces/item-detail.interface';
 import { AD_TOP_ITEM_DETAIL } from './../core/ads/item-detail-ads.config';
@@ -70,7 +71,8 @@ export class ItemDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private mapSpecificationsService: MapSpecificationsService,
-    private adsService: AdsService
+    private adsService: AdsService,
+    private mapExtraInfoService: MapExtraInfoService
   ) {}
 
   ngOnInit(): void {
@@ -192,16 +194,13 @@ export class ItemDetailComponent implements OnInit {
   }
 
   get itemExtraInfo(): string[] {
-    let keySpecifications: string[];
-    if (this.itemDetail.item.categoryId === CATEGORY_IDS.FASHION_ACCESSORIES) {
-      keySpecifications = ['objectType', 'gender', 'brand', 'model', 'size', 'condition'];
+    if (this.typeCheckService.isCar(this.itemDetail?.item)) {
+      return this.mapExtraInfoService.mapCarExtraInfo(this.itemDetail.item);
     }
-    if (this.itemDetail.item.categoryId === CATEGORY_IDS.CELL_PHONES_ACCESSORIES) {
+
+    if (this.typeCheckService.isFashion(this.itemDetail.item) || this.typeCheckService.isCellPhoneAccessories(this.itemDetail.item)) {
+      return this.mapExtraInfoService.mapConsumerGoodExtraInfo(this.itemDetail?.item);
     }
-    if (this.itemDetail.item.categoryId === CATEGORY_IDS.CAR) {
-      keySpecifications = ['brand', 'year', 'model', 'km'];
-    }
-    return null;
   }
 
   set approximatedLocation(isApproximated: boolean) {
