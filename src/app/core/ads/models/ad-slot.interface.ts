@@ -6,7 +6,7 @@ type AdSizeMapping = {
   [key in DeviceType]: { screenSize: number[]; mapping: number[][] };
 };
 
-export interface AdSlot {
+export interface AdSlotConfiguration {
   id: AdSlotId;
   name: string;
   sizes: number[][];
@@ -14,10 +14,4 @@ export interface AdSlot {
   sizeMapping?: AdSizeMapping;
   device: DeviceType[];
   type?: string;
-}
-
-export interface AdSlotsPositions {
-  top?: AdSlot;
-  left?: AdSlot;
-  right?: AdSlot;
 }

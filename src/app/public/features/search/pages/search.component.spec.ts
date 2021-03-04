@@ -40,7 +40,7 @@ describe('WallComponent', () => {
       component.ngOnInit();
       fixture.detectChanges();
 
-      expect(MockAdsService.setSlots).toHaveBeenCalledWith([AD_TOP_PUBLIC_SEARCH.top]);
+      expect(MockAdsService.setSlots).toHaveBeenCalledWith([AD_TOP_PUBLIC_SEARCH]);
     });
   });
 });
