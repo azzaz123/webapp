@@ -9,7 +9,7 @@ The private web app for Wallapop once you do login in the public one.
 - [How to deploy](#how-to-deploy)
 - [Commentaries](#commentaries)
 - [Documentation](#documentation)
-- [Srotybook](#storybook)
+- [Storybook](#storybook)
 - [Prettier](#prettier)
 
 ## Installation
@@ -94,7 +94,7 @@ npx husky add pre-push "scripts/githooks/pre-push"
 
 ## How to deploy:
 
-Currently this project uses gitflow. To start and finish a release one has to use the ReleaseBot
+Currently, this project uses gitflow. To start and finish a release one has to use the ReleaseBot
 
 ### Start release
 
