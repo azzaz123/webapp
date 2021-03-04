@@ -1,5 +1,7 @@
+import { HttpParams } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { I18nService } from '@core/i18n/i18n.service';
 import {
   GET_ITEM_BUMP_FLAGS,
   GET_ITEM_COUNTERS_ENDPOINT,
@@ -13,12 +15,13 @@ import {
 describe('ItemApiService', () => {
   let httpMock: HttpTestingController;
   let itemApiService: ItemApiService;
+
   const ITEM_ID = '123';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ItemApiService],
       imports: [HttpClientTestingModule],
+      providers: [ItemApiService, I18nService],
     });
 
     itemApiService = TestBed.inject(ItemApiService);
@@ -31,14 +34,18 @@ describe('ItemApiService', () => {
 
   describe('getItem', () => {
     it('should ask for the item', () => {
-      const expectedUrl = GET_ITEM_ENDPOINT(ITEM_ID);
+      const languageParamKey = 'language';
+      const languageParamValue = 'en';
+      const expectedParams = new HttpParams().set(languageParamKey, languageParamValue);
+      const expectedUrl = `${GET_ITEM_ENDPOINT(ITEM_ID)}?${expectedParams.toString()}`;
 
       itemApiService.getItem(ITEM_ID).subscribe();
       const req = httpMock.expectOne(expectedUrl);
       req.flush({});
 
-      expect(req.request.url).toBe(expectedUrl);
+      const languageParam = req.request.params.get(languageParamKey);
       expect(req.request.method).toBe('GET');
+      expect(languageParam).toEqual(languageParamValue);
     });
   });
 

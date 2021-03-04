@@ -20,11 +20,8 @@ export class ItemApiService {
   constructor(private http: HttpClient, private i18n: I18nService) {}
 
   public getItem(id: string): Observable<ItemResponse> {
-    return this.http.get<ItemResponse>(GET_ITEM_ENDPOINT(id), {
-      params: {
-        language: this.i18n.locale,
-      },
-    });
+    const params = { language: this.i18n.locale };
+    return this.http.get<ItemResponse>(GET_ITEM_ENDPOINT(id), { params });
   }
 
   public getItemCounters(id: string): Observable<ItemCounters> {
