@@ -387,6 +387,7 @@ export interface ItemExtraInfo {
   gender?: string;
   size?: {
     id: string;
+    text?: string;
   };
   condition?: string;
 }
