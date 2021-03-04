@@ -30,7 +30,7 @@ jest.mock('./configurations/options-origin-configuration.ts', () => ({
     },
     apiWithRelatedParams: {
       apiMethod: 'apiMethod',
-      apiRelatedParamKeys: ['apiRelatedParam1', 'apiRelatedParam2'],
+      apiRelatedFilterKeys: ['apiRelatedParam1', 'apiRelatedParam2'],
     },
     mapper: {
       apiMethod: 'apiMethod',
@@ -39,7 +39,7 @@ jest.mock('./configurations/options-origin-configuration.ts', () => ({
     mapperWithRelatedParam: {
       apiMethod: 'apiMethod',
       mapperMethod: 'mapperMethod',
-      mapperRelatedParamKeys: ['mapperRelatedParam1', 'mapperRelatedParam2'],
+      mapperRelatedFilterKeys: ['mapperRelatedParam1', 'mapperRelatedParam2'],
     },
   },
 }));

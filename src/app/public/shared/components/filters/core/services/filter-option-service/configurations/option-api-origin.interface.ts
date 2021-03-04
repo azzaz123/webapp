@@ -3,7 +3,7 @@ import { FilterOptionsApiService } from '../filter-options-api.service';
 
 export interface OptionsApiOrigin {
   apiMethod: keyof Omit<FilterOptionsApiService, 'httpClient'>;
-  apiRelatedParamKeys?: string[];
+  apiRelatedFilterKeys?: string[];
   mapperMethod?: keyof FilterOptionsMapperService;
-  mapperRelatedParamKeys?: string[];
+  mapperRelatedFilterKeys?: string[];
 }

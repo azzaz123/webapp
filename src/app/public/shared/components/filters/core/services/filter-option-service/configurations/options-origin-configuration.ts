@@ -15,17 +15,17 @@ export const OPTIONS_ORIGIN_CONFIGURATION: OriginConfiguration = {
   [COMMON_CONFIGURATION_ID.CONDITION]: {
     apiMethod: 'getConditionsByCategoryId',
     mapperMethod: 'formatConditionResponse',
-    apiRelatedParamKeys: ['category_ids'],
+    apiRelatedFilterKeys: ['category_ids'],
   },
   [COMMON_CONFIGURATION_ID.OBJECT_TYPE]: {
     apiMethod: 'getObjectTypesByCategoryId',
     mapperMethod: 'formatObjectType',
-    apiRelatedParamKeys: ['category_ids'],
+    apiRelatedFilterKeys: ['category_ids'],
   },
   [COMMON_CONFIGURATION_ID.BRAND_MODEL]: {
     apiMethod: 'getBrandModelByCategoryId',
     mapperMethod: 'formatBrandModel',
-    apiRelatedParamKeys: ['category_ids'],
+    apiRelatedFilterKeys: ['category_ids'],
   },
 
   [REAL_ESTATE_CONFIGURATION_ID.ROOMS]: 'hardcoded',
@@ -37,7 +37,7 @@ export const OPTIONS_ORIGIN_CONFIGURATION: OriginConfiguration = {
   [REAL_ESTATE_CONFIGURATION_ID.TYPE]: {
     apiMethod: 'getRealEstateTypeKeysByOperationId',
     mapperMethod: 'formatIconOptions',
-    apiRelatedParamKeys: ['operation'],
+    apiRelatedFilterKeys: ['operation'],
   },
   [REAL_ESTATE_CONFIGURATION_ID.CONDITION]: {
     apiMethod: 'getRealEstateConditions',
@@ -46,7 +46,7 @@ export const OPTIONS_ORIGIN_CONFIGURATION: OriginConfiguration = {
   [REAL_ESTATE_CONFIGURATION_ID.EXTRAS]: {
     apiMethod: 'getRealEstateExtraKeysByTypeId',
     mapperMethod: 'formatIconOptions',
-    apiRelatedParamKeys: ['type'],
+    apiRelatedFilterKeys: ['type'],
   },
 
   [CAR_CONFIGURATION_ID.BRAND_N_MODEL]: {
@@ -70,12 +70,12 @@ export const OPTIONS_ORIGIN_CONFIGURATION: OriginConfiguration = {
   [FASHION_CONFIGURATION_ID.SIZE]: {
     apiMethod: 'getFashionSizeKeysByObjectId',
     mapperMethod: 'formatSizeNGender',
-    apiRelatedParamKeys: ['object_type_id'],
-    mapperRelatedParamKeys: ['gender'],
+    apiRelatedFilterKeys: ['object_type_id'],
+    mapperRelatedFilterKeys: ['gender'],
   },
   [FASHION_CONFIGURATION_ID.BRAND]: {
     apiMethod: 'getFashionBrandsByObjectTypeId',
     mapperMethod: 'formatFashionBrand',
-    apiRelatedParamKeys: ['object_type_id'],
+    apiRelatedFilterKeys: ['object_type_id'],
   },
 };

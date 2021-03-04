@@ -17,17 +17,17 @@ import { API_VERSION_URL } from '@public/core/constants/api-version-url-constant
 export class FilterOptionsApiService {
   constructor(private httpClient: HttpClient) {}
 
-  public getConditionsByCategoryId(params: QueryParams, ...relatedParams: string[]): Observable<ConditionResponse>;
-  public getConditionsByCategoryId(params: QueryParams, categoryId: string): Observable<ConditionResponse> {
-    return this.get<ConditionResponse>(FILTER_OPTIONS_API_ENDPOINTS.CONDITION_BY_CATEGORY_ID(categoryId), params);
+  public getConditionsByCategoryId(filterParams: QueryParams, ...relatedFilterValues: string[]): Observable<ConditionResponse>;
+  public getConditionsByCategoryId(filterParams: QueryParams, categoryId: string): Observable<ConditionResponse> {
+    return this.get<ConditionResponse>(FILTER_OPTIONS_API_ENDPOINTS.CONDITION_BY_CATEGORY_ID(categoryId), filterParams);
   }
 
-  public getObjectTypesByCategoryId(params: QueryParams, ...relatedParams: string[]): Observable<ObjectType[]>;
-  public getObjectTypesByCategoryId(params: QueryParams, categoryId: string): Observable<ObjectType[]> {
+  public getObjectTypesByCategoryId(filterParams: QueryParams, ...relatedFilterValues: string[]): Observable<ObjectType[]>;
+  public getObjectTypesByCategoryId(filterParams: QueryParams, categoryId: string): Observable<ObjectType[]> {
     return this.get<ObjectType[]>(
       FILTER_OPTIONS_API_ENDPOINTS.OBJECT_TYPE,
       {
-        ...params,
+        ...filterParams,
         category_id: categoryId,
       },
       {
@@ -36,80 +36,80 @@ export class FilterOptionsApiService {
     );
   }
 
-  public getBrandModelByCategoryId(params: QueryParams, ...relatedParams: string[]): Observable<BrandModel[]>;
-  public getBrandModelByCategoryId(params: QueryParams, categoryId: string): Observable<BrandModel[]> {
+  public getBrandModelByCategoryId(filterParams: QueryParams, ...relatedFilterValues: string[]): Observable<BrandModel[]>;
+  public getBrandModelByCategoryId(filterParams: QueryParams, categoryId: string): Observable<BrandModel[]> {
     return this.get(FILTER_OPTIONS_API_ENDPOINTS.BRAND_MODEL, {
-      ...params,
+      ...filterParams,
       category_id: categoryId,
     });
   }
 
-  public getCarBrandsAndModels(params: QueryParams, ...relatedParams: string[]): Observable<BrandModel[]>;
-  public getCarBrandsAndModels(params: QueryParams): Observable<BrandModel[]> {
-    return this.get<BrandModel[]>(FILTER_OPTIONS_API_ENDPOINTS.CARS.BRAND_MODEL, params);
+  public getCarBrandsAndModels(filterParams: QueryParams, ...relatedFilterValues: string[]): Observable<BrandModel[]>;
+  public getCarBrandsAndModels(filterParams: QueryParams): Observable<BrandModel[]> {
+    return this.get<BrandModel[]>(FILTER_OPTIONS_API_ENDPOINTS.CARS.BRAND_MODEL, filterParams);
   }
 
-  public getCarBodyTypeKeys(params: QueryParams, ...relatedParams: string[]): Observable<IconOption[]>;
-  public getCarBodyTypeKeys(params: QueryParams): Observable<IconOption[]> {
-    return this.get<IconOption[]>(FILTER_OPTIONS_API_ENDPOINTS.CARS.BODY, params);
+  public getCarBodyTypeKeys(filterParams: QueryParams, ...relatedFilterValues: string[]): Observable<IconOption[]>;
+  public getCarBodyTypeKeys(filterParams: QueryParams): Observable<IconOption[]> {
+    return this.get<IconOption[]>(FILTER_OPTIONS_API_ENDPOINTS.CARS.BODY, filterParams);
   }
 
-  public getCarEngineKeys(params: QueryParams, ...relatedParams: string[]): Observable<IconOption[]>;
-  public getCarEngineKeys(params: QueryParams): Observable<IconOption[]> {
-    return this.get<IconOption[]>(FILTER_OPTIONS_API_ENDPOINTS.CARS.ENGINE, params);
+  public getCarEngineKeys(filterParams: QueryParams, ...relatedFilterValues: string[]): Observable<IconOption[]>;
+  public getCarEngineKeys(filterParams: QueryParams): Observable<IconOption[]> {
+    return this.get<IconOption[]>(FILTER_OPTIONS_API_ENDPOINTS.CARS.ENGINE, filterParams);
   }
 
-  public getCarGearboxKeys(params: QueryParams, ...relatedParams: string[]): Observable<IconOption[]>;
-  public getCarGearboxKeys(params: QueryParams): Observable<IconOption[]> {
-    return this.get<IconOption[]>(FILTER_OPTIONS_API_ENDPOINTS.CARS.GEARBOX, params);
+  public getCarGearboxKeys(filterParams: QueryParams, ...relatedFilterValues: string[]): Observable<IconOption[]>;
+  public getCarGearboxKeys(filterParams: QueryParams): Observable<IconOption[]> {
+    return this.get<IconOption[]>(FILTER_OPTIONS_API_ENDPOINTS.CARS.GEARBOX, filterParams);
   }
 
-  public getRealEstateOperationKeys(params: QueryParams, ...relatedParams: string[]): Observable<IconOption[]>;
-  public getRealEstateOperationKeys(params: QueryParams): Observable<IconOption[]> {
-    return this.get<IconOption[]>(FILTER_OPTIONS_API_ENDPOINTS.REAL_ESTATE.OPERATION, params);
+  public getRealEstateOperationKeys(filterParams: QueryParams, ...relatedFilterValues: string[]): Observable<IconOption[]>;
+  public getRealEstateOperationKeys(filterParams: QueryParams): Observable<IconOption[]> {
+    return this.get<IconOption[]>(FILTER_OPTIONS_API_ENDPOINTS.REAL_ESTATE.OPERATION, filterParams);
   }
 
-  public getRealEstateTypeKeysByOperationId(params: QueryParams, ...relatedParams: string[]): Observable<IconOption[]>;
-  public getRealEstateTypeKeysByOperationId(params: QueryParams, operationId: string): Observable<IconOption[]> {
+  public getRealEstateTypeKeysByOperationId(filterParams: QueryParams, ...relatedFilterValues: string[]): Observable<IconOption[]>;
+  public getRealEstateTypeKeysByOperationId(filterParams: QueryParams, operationId: string): Observable<IconOption[]> {
     return this.get<IconOption[]>(FILTER_OPTIONS_API_ENDPOINTS.REAL_ESTATE.TYPE, {
-      ...params,
+      ...filterParams,
       operation: operationId,
     });
   }
 
-  public getRealEstateConditions(params: QueryParams, ...relatedParams: string[]): Observable<IconOption[]>;
-  public getRealEstateConditions(params: QueryParams): Observable<IconOption[]> {
-    return this.get<IconOption[]>(FILTER_OPTIONS_API_ENDPOINTS.REAL_ESTATE.CONDITIONS, params);
+  public getRealEstateConditions(filterParams: QueryParams, ...relatedFilterValues: string[]): Observable<IconOption[]>;
+  public getRealEstateConditions(filterParams: QueryParams): Observable<IconOption[]> {
+    return this.get<IconOption[]>(FILTER_OPTIONS_API_ENDPOINTS.REAL_ESTATE.CONDITIONS, filterParams);
   }
 
-  public getRealEstateExtraKeysByTypeId(params: QueryParams, ...relatedParams: string[]): Observable<IconOption[]>;
-  public getRealEstateExtraKeysByTypeId(params: QueryParams, typeId: string): Observable<IconOption[]> {
+  public getRealEstateExtraKeysByTypeId(filterParams: QueryParams, ...relatedFilterValues: string[]): Observable<IconOption[]>;
+  public getRealEstateExtraKeysByTypeId(filterParams: QueryParams, typeId: string): Observable<IconOption[]> {
     return this.get<IconOption[]>(FILTER_OPTIONS_API_ENDPOINTS.REAL_ESTATE.EXTRA, {
-      ...params,
+      ...filterParams,
       type: typeId,
     });
   }
 
-  public getFashionSizeKeysByObjectId(params: QueryParams, ...relatedParams: string[]): Observable<SizeNGenderResponse>;
-  public getFashionSizeKeysByObjectId(params: QueryParams, objectTypeId: string): Observable<SizeNGenderResponse> {
+  public getFashionSizeKeysByObjectId(filterParams: QueryParams, ...relatedFilterValues: string[]): Observable<SizeNGenderResponse>;
+  public getFashionSizeKeysByObjectId(filterParams: QueryParams, objectTypeId: string): Observable<SizeNGenderResponse> {
     return this.get<SizeNGenderResponse>(FILTER_OPTIONS_API_ENDPOINTS.FASHION.SIZE, {
-      ...params,
+      ...filterParams,
       object_type_id: objectTypeId,
     });
   }
 
-  public getFashionBrandsByObjectTypeId(params: QueryParams, ...relatedParams: string[]): Observable<FashionBrand[]>;
-  public getFashionBrandsByObjectTypeId(params: QueryParams, objectTypeId: string, offset?: string): Observable<FashionBrand[]> {
+  public getFashionBrandsByObjectTypeId(filterParams: QueryParams, ...relatedFilterValues: string[]): Observable<FashionBrand[]>;
+  public getFashionBrandsByObjectTypeId(filterParams: QueryParams, objectTypeId: string, offset?: string): Observable<FashionBrand[]> {
     return this.get<FashionBrand[]>(FILTER_OPTIONS_API_ENDPOINTS.FASHION.BRAND, {
-      ...params,
+      ...filterParams,
       object_type_id: objectTypeId,
       start: offset,
     });
   }
 
-  private get<T>(path: string, params: QueryParams, headers?: Record<string, string>): Observable<T> {
+  private get<T>(path: string, filterParams: QueryParams, headers?: Record<string, string>): Observable<T> {
     return this.httpClient.get<T>(`${API_VERSION_URL.v3}${path}`, {
-      params,
+      params: filterParams,
       headers,
     });
   }
