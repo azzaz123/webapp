@@ -1,7 +1,7 @@
 import { DecimalPipe } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { ItemChangeEvent } from '@features/catalog/core/item-change.interface';
+import { ItemChangeEvent } from '@private/features/catalog/core/item-change.interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 import { environment } from '../../../../environments/environment';

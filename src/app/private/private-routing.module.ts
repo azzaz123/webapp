@@ -55,7 +55,7 @@ const routes: Routes = [
       },
       {
         path: 'profile',
-        loadChildren: () => import('app/features/profile/profile.module').then((m) => m.ProfileModule),
+        loadChildren: () => import('@private/features/profile/profile.module').then((m) => m.ProfileModule),
       },
       {
         path: 'chat',
@@ -85,7 +85,7 @@ const routes: Routes = [
         children: [
           {
             path: '',
-            loadChildren: () => import('app/features/catalog/catalog.module').then((m) => m.CatalogModule),
+            loadChildren: () => import('@private/features/catalog/catalog.module').then((m) => m.CatalogModule),
           },
           {
             path: 'upload',
