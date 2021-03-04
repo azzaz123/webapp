@@ -9,7 +9,7 @@ import { Item } from '@core/item/item';
 export class MapExtraInfoService {
   constructor(private typeCheckService: TypeCheckService) {}
   private phoneSpecifications = ['brand', 'model', 'condition'];
-  private fashionSpecifications = this.phoneSpecifications.concat(['size']);
+  private fashionSpecifications = ['size'].concat(this.phoneSpecifications);
   private carSpecifications = ['brand', 'model', 'year', 'km'];
 
   public mapCarExtraInfo(car: Car): string[] {
@@ -18,17 +18,18 @@ export class MapExtraInfoService {
 
   public mapConsumerGoodExtraInfo(item: Item): string[] {
     let specifications = [];
-    Object.entries(item.extraInfo).forEach(([key, value]) => {
-      const specification = this.defineSpecification(this.defineSpecificationKeys(item), key, value);
-      if (this.specificationIsNotEmpty(specification)) {
+
+    this.specificationKeys(item).forEach((key) => {
+      if (this.specificationExistsAndDefined(item, key)) {
+        const specification = this.defineSpecification(key, item.extraInfo[key]);
         specifications.push(specification);
       }
     });
 
-    return specifications;
+    return this.capitalizeLabels(specifications);
   }
 
-  private defineSpecificationKeys(item: Item): string[] {
+  private specificationKeys(item: Item): string[] {
     if (this.typeCheckService.isFashion(item)) {
       return this.fashionSpecifications;
     }
@@ -37,16 +38,22 @@ export class MapExtraInfoService {
     }
   }
 
-  private defineSpecification(keySpecifications: string[], key: string, value: any): string {
-    if (keySpecifications.includes(key)) {
-      if (key === 'size') {
-        return value?.text;
-      }
-      return value;
+  private defineSpecification(key: string, value: any): string {
+    if (key === 'size') {
+      return value?.text;
     }
+    return value;
   }
 
-  private specificationIsNotEmpty(specification): boolean {
+  private specificationExistsAndDefined(item: Item, key: string): boolean {
+    return Object.keys(item.extraInfo).find((itemKey) => itemKey === key) && this.specificationIsDefined(item.extraInfo[key]);
+  }
+
+  private specificationIsDefined(specification): boolean {
     return specification !== null && specification !== undefined && specification !== '';
+  }
+
+  private capitalizeLabels(labels: string[]): string[] {
+    return labels.map((label) => label.charAt(0).toUpperCase() + label.substr(1));
   }
 }
