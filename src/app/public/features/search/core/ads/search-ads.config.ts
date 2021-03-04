@@ -59,7 +59,7 @@ export const AD_PUBLIC_SEARCH: AdSlotSearch = {
     },
     networkId: 6866,
     type: 'search',
-    device: [DeviceType.MOBILE],
+    device: [DeviceType.MOBILE, DeviceType.TABLET, DeviceType.DESKTOP],
   },
   search3r: {
     name: '130868815/web/search3r',
@@ -81,6 +81,6 @@ export const AD_PUBLIC_SEARCH: AdSlotSearch = {
     },
     networkId: 6866,
     type: 'search',
-    device: [DeviceType.MOBILE],
+    device: [DeviceType.MOBILE, DeviceType.TABLET, DeviceType.DESKTOP],
   },
 };
