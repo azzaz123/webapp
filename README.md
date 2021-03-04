@@ -7,7 +7,6 @@ The private web app for Wallapop once you do login in the public one.
 - [Installation](#installation)
 - [Scripts](#scripts)
 - [How to deploy](#how-to-deploy)
-- [How to deploy - custom branch](#how-to-deploy---custom-branch)
 - [Commentaries](#commentaries)
 - [Documentation](#documentation)
 - [Srotybook](#storybook)
@@ -119,25 +118,6 @@ release_end repo=webapp
 |                 develop                  |                   latest                   |
 | any other branch (eg: feature/FRON-1234) | name of the branch (eg: feature-FRON-1234) |
 
-## How to deploy - custom branch
-
-If you want to deploy a custom branch into beta, it is possible by using the Deploybot as it follows:
-
-```
-deploy env=beta service=webapp tag=<BRANCH-NAME>
-```
-
-Example with branch `feature/FRON-1234`:
-
-```
-deploy env=beta service=webapp tag=feature-FRON-1234
-```
-
-How to revert beta to its previous state (without doing a release), will put what's in develop, there's no workaround yet:
-
-```
-deploy env=beta service=webapp tag=latest
-```
 
 ## Commentaries
 
