@@ -1,4 +1,5 @@
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
+import { ItemExtraInfo } from '@core/item/item-response.interface';
 import { Injectable } from '@angular/core';
 import { Car } from '@core/item/car';
 import { Item } from '@core/item/item';
@@ -11,31 +12,30 @@ export class MapExtraInfoService {
   constructor(private typeCheckService: TypeCheckService) {}
   private phoneSpecifications = ['brand', 'model', 'condition'];
   private fashionSpecifications = ['size'].concat(this.phoneSpecifications);
-  private carSpecifications = ['brand', 'model', 'year', 'km'];
+  private carSpecifications = ['_version', '_year', '_km'];
 
-  public mapCarExtraInfo(car: Car): string[] {
-    return;
-  }
-
-  public mapConsumerGoodExtraInfo(item: Item): string[] {
+  public mapExtraInfo(item: Item | Car): string[] {
+    const objectToCheck = this.typeCheckService.isCar(item) ? item : item.extraInfo;
     let specifications = [];
 
     this.specificationKeys(item).forEach((key) => {
-      if (this.specificationExistsAndDefined(item, key)) {
-        const specification = this.defineSpecification(key, item.extraInfo[key]);
-        specifications.push(specification);
+      if (this.specificationExistsAndDefined(objectToCheck, key)) {
+        specifications.push(this.defineSpecification(key, objectToCheck[key]));
       }
     });
 
     return this.capitalizeLabels(specifications);
   }
 
-  private specificationKeys(item: Item): string[] {
+  private specificationKeys(item: Item | Car): string[] {
     if (this.typeCheckService.isFashion(item)) {
       return this.fashionSpecifications;
     }
     if (this.typeCheckService.isCellPhoneAccessories(item)) {
       return this.phoneSpecifications;
+    }
+    if (this.typeCheckService.isCar(item)) {
+      return this.carSpecifications;
     }
   }
 
@@ -46,11 +46,15 @@ export class MapExtraInfoService {
     if (key === 'condition') {
       return this.translateCondition(value);
     }
-    return value;
+    if (key === '_km') {
+      return value + 'Km';
+    }
+
+    return value.toString();
   }
 
-  private specificationExistsAndDefined(item: Item, key: string): boolean {
-    return Object.keys(item.extraInfo).find((itemKey) => itemKey === key) && this.specificationIsDefined(item.extraInfo[key]);
+  private specificationExistsAndDefined(objectToSearch: ItemExtraInfo | Car, key: string): boolean {
+    return Object.keys(objectToSearch).find((itemKey) => itemKey === key) && this.specificationIsDefined(objectToSearch[key]);
   }
 
   private specificationIsDefined(specification: string): boolean {

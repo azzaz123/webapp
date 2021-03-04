@@ -44,6 +44,7 @@ export class ItemDetailComponent implements OnInit {
   public device: DeviceType;
   public images: string[];
   public bigImages: string[];
+  public itemExtraInfo: string[];
   public itemLocation: ItemDetailLocation;
   public recommendedItems$: Observable<RecommendedItemsBodyResponse>;
   public itemSpecifications: CounterSpecifications[];
@@ -118,6 +119,7 @@ export class ItemDetailComponent implements OnInit {
     this.generateItemSpecifications();
     this.setItemRecommendations();
     this.setAdSlot();
+    this.initializeItemExtraInfo();
   }
 
   private calculateItemCoordinates(): void {
@@ -192,14 +194,18 @@ export class ItemDetailComponent implements OnInit {
     this.adsService.setSlots([this.adsSlotsItemDetail.item1, this.adsSlotsItemDetail.item2l, this.adsSlotsItemDetail.item3r]);
   }
 
-  get itemExtraInfo(): string[] {
-    if (this.typeCheckService.isCar(this.itemDetail?.item)) {
-      return this.mapExtraInfoService.mapCarExtraInfo(this.itemDetail.item);
+  private initializeItemExtraInfo(): void {
+    if (this.isCarOrPhoneOrFashion()) {
+      this.itemExtraInfo = this.mapExtraInfoService.mapExtraInfo(this.itemDetail?.item);
     }
+  }
 
-    if (this.typeCheckService.isFashion(this.itemDetail.item) || this.typeCheckService.isCellPhoneAccessories(this.itemDetail.item)) {
-      return this.mapExtraInfoService.mapConsumerGoodExtraInfo(this.itemDetail?.item);
-    }
+  private isCarOrPhoneOrFashion(): boolean {
+    return (
+      this.typeCheckService.isFashion(this.itemDetail?.item) ||
+      this.typeCheckService.isCellPhoneAccessories(this.itemDetail?.item) ||
+      this.typeCheckService.isCar(this.itemDetail?.item)
+    );
   }
 
   set approximatedLocation(isApproximated: boolean) {
