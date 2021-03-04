@@ -1,3 +1,3 @@
-<div class="d-flex" *ngIf="extraInfo?.length > 0">
-    <label *ngFor="let specification of extraInfo">{{specification}}</label>
+<div *ngIf="extraInfo?.length > 0" class="ItemExtraInfo d-flex" [ngClass]="{ 'ItemExtraInfo--car': isCar }">
+    <label *ngFor="let specification of extraInfo" class="mb-0">{{specification}}</label>
 </div>

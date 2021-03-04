@@ -1,0 +1,25 @@
+@import '~style/common';
+
+.ItemExtraInfo {
+  font-size: $font-size-s;
+
+  &--car {
+    > :not(:last-child) {
+      margin-right: 5px;
+
+      &::after {
+        content: ' - ';
+      }
+    }
+  }
+
+  &:not(.ItemExtraInfo--car) {
+    > :not(:last-child) {
+      margin-right: 5px;
+
+      &::after {
+        content: ' · ';
+      }
+    }
+  }
+}
