@@ -8,13 +8,13 @@
 
       .content__ad__item {
         width: 100%;
-        height: 50px;
         position: sticky;
         top: 70px;
       }
 
       &.content__ad__top {
         height: 60%;
+        margin-bottom: 1rem;
       }
 
       &.content__ad__bottom {
