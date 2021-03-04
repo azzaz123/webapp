@@ -17,7 +17,7 @@ export class FilterOptionService {
 
   public getOptions(
     configurationId: ConfigurationId,
-    filterParams: QueryParams = {},
+    params: QueryParams = {},
     paginationOptions: PaginationOptions = { offset: 0 }
   ): Observable<FilterOption[]> {
     const configuration = this.getConfiguration(configurationId);
@@ -26,7 +26,7 @@ export class FilterOptionService {
       return this.retrieveHardcodedOptions(configurationId);
     }
 
-    return this.retrieveBackendOptions(configuration, filterParams, paginationOptions);
+    return this.retrieveBackendOptions(configuration, params, paginationOptions);
   }
 
   private isHardcoded(configuration: OriginConfigurationValue): configuration is 'hardcoded' {
@@ -45,26 +45,24 @@ export class FilterOptionService {
 
   private retrieveBackendOptions(
     configuration: OptionsApiOrigin,
-    filterParams?: QueryParams,
+    params?: QueryParams,
     paginationOptions?: PaginationOptions
   ): Observable<FilterOption[]> {
-    const { apiMethod, mapperMethod, apiRelatedFilterKeys = [], mapperRelatedFilterKeys = [] } = configuration;
+    const { apiMethod, mapperMethod, apiRelatedParamKeys = [], mapperRelatedParamKeys = [] } = configuration;
 
-    const apiRelatedFilterValues = this.getRelatedFilterValues(apiRelatedFilterKeys);
+    const apiRelatedParams = this.getRelatedFilterParams(apiRelatedParamKeys);
 
     // In relation to the "as Observable<unknown>"
     // Magic! To avoid a build failure, we need to unify all observables on one type. If not, pipe, map... signatures break
     // For more information, this issue explains quite well the reason: https://github.com/ReactiveX/rxjs/issues/3388
 
-    return (this.filterOptionsApiService[apiMethod](
-      filterParams,
-      ...apiRelatedFilterValues,
-      paginationOptions?.offset.toString()
-    ) as Observable<unknown>).pipe(
+    return (this.filterOptionsApiService[apiMethod](params, ...apiRelatedParams, paginationOptions?.offset.toString()) as Observable<
+      unknown
+    >).pipe(
       map((value) => {
         if (mapperMethod) {
-          const mapperRelatedFilterValues = this.getRelatedFilterValues(mapperRelatedFilterKeys);
-          return this.filterOptionsMapperService[mapperMethod](value, ...mapperRelatedFilterValues);
+          const mapperRelatedParams = this.getRelatedFilterParams(mapperRelatedParamKeys);
+          return this.filterOptionsMapperService[mapperMethod](value, ...mapperRelatedParams);
         }
 
         return value as FilterOption[];
@@ -73,7 +71,7 @@ export class FilterOptionService {
   }
 
   // TODO: This will be implemented on integration tasks. For now, it just returns the keys from the sibling filter params
-  private getRelatedFilterValues(paramKeys?: string[]): string[] {
+  private getRelatedFilterParams(paramKeys?: string[]): string[] {
     return paramKeys;
   }
 }
