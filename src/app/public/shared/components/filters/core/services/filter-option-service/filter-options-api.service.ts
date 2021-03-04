@@ -12,98 +12,83 @@ import { SizeNGenderResponse } from './option-responses/fashion-size-n-gender.in
 import { FashionBrand } from './option-responses/fashion-brand.interface';
 import { ACCEPT_HEADERS } from '@public/core/constants/header-constants';
 import { API_VERSION_URL } from '@public/core/constants/api-version-url-constants';
+import { PaginationOptions } from '@public/shared/components/filters/core/interfaces/pagination-options.interface';
 
 @Injectable()
 export class FilterOptionsApiService {
   constructor(private httpClient: HttpClient) {}
 
-  public getConditionsByCategoryId(params: QueryParams, ...relatedParams: string[]): Observable<ConditionResponse>;
-  public getConditionsByCategoryId(params: QueryParams, categoryId: string): Observable<ConditionResponse> {
-    return this.get<ConditionResponse>(FILTER_OPTIONS_API_ENDPOINTS.CONDITION_BY_CATEGORY_ID(categoryId), params);
+  public getConditionsByCategoryId(params: QueryParams, paginationOptions?: PaginationOptions): Observable<unknown>;
+  public getConditionsByCategoryId(params: QueryParams<'category_id'>): Observable<ConditionResponse> {
+    const { category_id, ...rest } = params;
+    return this.get<ConditionResponse>(FILTER_OPTIONS_API_ENDPOINTS.CONDITION_BY_CATEGORY_ID(params.category_id), rest);
   }
 
-  public getObjectTypesByCategoryId(params: QueryParams, ...relatedParams: string[]): Observable<ObjectType[]>;
-  public getObjectTypesByCategoryId(params: QueryParams, categoryId: string): Observable<ObjectType[]> {
-    return this.get<ObjectType[]>(
-      FILTER_OPTIONS_API_ENDPOINTS.OBJECT_TYPE,
-      {
-        ...params,
-        category_id: categoryId,
-      },
-      {
-        Accept: ACCEPT_HEADERS.SUGGESTERS_V3,
-      }
-    );
-  }
-
-  public getBrandModelByCategoryId(params: QueryParams, ...relatedParams: string[]): Observable<BrandModel[]>;
-  public getBrandModelByCategoryId(params: QueryParams, categoryId: string): Observable<BrandModel[]> {
-    return this.get(FILTER_OPTIONS_API_ENDPOINTS.BRAND_MODEL, {
-      ...params,
-      category_id: categoryId,
+  public getObjectTypesByCategoryId(params: QueryParams, paginationOptions?: PaginationOptions): Observable<unknown>;
+  public getObjectTypesByCategoryId(params: QueryParams<'category_id'>): Observable<ObjectType[]> {
+    return this.get<ObjectType[]>(FILTER_OPTIONS_API_ENDPOINTS.OBJECT_TYPE, params, {
+      Accept: ACCEPT_HEADERS.SUGGESTERS_V3,
     });
   }
 
-  public getCarBrandsAndModels(params: QueryParams, ...relatedParams: string[]): Observable<BrandModel[]>;
+  public getBrandModelByCategoryId(params: QueryParams, paginationOptions?: PaginationOptions): Observable<unknown>;
+  public getBrandModelByCategoryId(params: QueryParams<'category_id'>): Observable<BrandModel[]> {
+    return this.get<BrandModel[]>(FILTER_OPTIONS_API_ENDPOINTS.BRAND_MODEL, params);
+  }
+
+  public getCarBrandsAndModels(params: QueryParams, paginationOptions?: PaginationOptions): Observable<unknown>;
   public getCarBrandsAndModels(params: QueryParams): Observable<BrandModel[]> {
     return this.get<BrandModel[]>(FILTER_OPTIONS_API_ENDPOINTS.CARS.BRAND_MODEL, params);
   }
 
-  public getCarBodyTypeKeys(params: QueryParams, ...relatedParams: string[]): Observable<IconOption[]>;
+  public getCarBodyTypeKeys(params: QueryParams, paginationOptions?: PaginationOptions): Observable<unknown>;
   public getCarBodyTypeKeys(params: QueryParams): Observable<IconOption[]> {
     return this.get<IconOption[]>(FILTER_OPTIONS_API_ENDPOINTS.CARS.BODY, params);
   }
 
-  public getCarEngineKeys(params: QueryParams, ...relatedParams: string[]): Observable<IconOption[]>;
+  public getCarEngineKeys(params: QueryParams, paginationOptions?: PaginationOptions): Observable<unknown>;
   public getCarEngineKeys(params: QueryParams): Observable<IconOption[]> {
     return this.get<IconOption[]>(FILTER_OPTIONS_API_ENDPOINTS.CARS.ENGINE, params);
   }
 
-  public getCarGearboxKeys(params: QueryParams, ...relatedParams: string[]): Observable<IconOption[]>;
+  public getCarGearboxKeys(params: QueryParams, paginationOptions?: PaginationOptions): Observable<unknown>;
   public getCarGearboxKeys(params: QueryParams): Observable<IconOption[]> {
     return this.get<IconOption[]>(FILTER_OPTIONS_API_ENDPOINTS.CARS.GEARBOX, params);
   }
 
-  public getRealEstateOperationKeys(params: QueryParams, ...relatedParams: string[]): Observable<IconOption[]>;
+  public getRealEstateOperationKeys(params: QueryParams, paginationOptions?: PaginationOptions): Observable<unknown>;
   public getRealEstateOperationKeys(params: QueryParams): Observable<IconOption[]> {
     return this.get<IconOption[]>(FILTER_OPTIONS_API_ENDPOINTS.REAL_ESTATE.OPERATION, params);
   }
 
-  public getRealEstateTypeKeysByOperationId(params: QueryParams, ...relatedParams: string[]): Observable<IconOption[]>;
-  public getRealEstateTypeKeysByOperationId(params: QueryParams, operationId: string): Observable<IconOption[]> {
-    return this.get<IconOption[]>(FILTER_OPTIONS_API_ENDPOINTS.REAL_ESTATE.TYPE, {
-      ...params,
-      operation: operationId,
-    });
+  public getRealEstateTypeKeysByOperationId(params: QueryParams, paginationOptions?: PaginationOptions): Observable<unknown>;
+  public getRealEstateTypeKeysByOperationId(params: QueryParams<'operation'>): Observable<IconOption[]> {
+    return this.get<IconOption[]>(FILTER_OPTIONS_API_ENDPOINTS.REAL_ESTATE.TYPE, params);
   }
 
-  public getRealEstateConditions(params: QueryParams, ...relatedParams: string[]): Observable<IconOption[]>;
+  public getRealEstateConditions(params: QueryParams, paginationOptions?: PaginationOptions): Observable<unknown>;
   public getRealEstateConditions(params: QueryParams): Observable<IconOption[]> {
     return this.get<IconOption[]>(FILTER_OPTIONS_API_ENDPOINTS.REAL_ESTATE.CONDITIONS, params);
   }
 
-  public getRealEstateExtraKeysByTypeId(params: QueryParams, ...relatedParams: string[]): Observable<IconOption[]>;
-  public getRealEstateExtraKeysByTypeId(params: QueryParams, typeId: string): Observable<IconOption[]> {
-    return this.get<IconOption[]>(FILTER_OPTIONS_API_ENDPOINTS.REAL_ESTATE.EXTRA, {
-      ...params,
-      type: typeId,
-    });
+  public getRealEstateExtraKeysByTypeId(params: QueryParams, paginationOptions?: PaginationOptions): Observable<unknown>;
+  public getRealEstateExtraKeysByTypeId(params: QueryParams<'type'>): Observable<IconOption[]> {
+    return this.get<IconOption[]>(FILTER_OPTIONS_API_ENDPOINTS.REAL_ESTATE.EXTRA, params);
   }
 
-  public getFashionSizeKeysByObjectId(params: QueryParams, ...relatedParams: string[]): Observable<SizeNGenderResponse>;
-  public getFashionSizeKeysByObjectId(params: QueryParams, objectTypeId: string): Observable<SizeNGenderResponse> {
-    return this.get<SizeNGenderResponse>(FILTER_OPTIONS_API_ENDPOINTS.FASHION.SIZE, {
-      ...params,
-      object_type_id: objectTypeId,
-    });
+  public getFashionSizeKeysByObjectId(params: QueryParams, paginationOptions?: PaginationOptions): Observable<unknown>;
+  public getFashionSizeKeysByObjectId(params: QueryParams<'object_type_id'>): Observable<SizeNGenderResponse> {
+    return this.get<SizeNGenderResponse>(FILTER_OPTIONS_API_ENDPOINTS.FASHION.SIZE, params);
   }
 
-  public getFashionBrandsByObjectTypeId(params: QueryParams, ...relatedParams: string[]): Observable<FashionBrand[]>;
-  public getFashionBrandsByObjectTypeId(params: QueryParams, objectTypeId: string, offset?: string): Observable<FashionBrand[]> {
+  public getFashionBrandsByObjectTypeId(params: QueryParams, paginationOptions?: PaginationOptions): Observable<unknown>;
+  public getFashionBrandsByObjectTypeId(
+    params: QueryParams<'object_type_id'>,
+    paginationOptions: PaginationOptions = { offset: 0 }
+  ): Observable<FashionBrand[]> {
     return this.get<FashionBrand[]>(FILTER_OPTIONS_API_ENDPOINTS.FASHION.BRAND, {
       ...params,
-      object_type_id: objectTypeId,
-      start: offset,
+      start: paginationOptions.offset.toString(),
     });
   }
 

@@ -30,43 +30,46 @@ describe('FilterOptionsApiService', () => {
   describe('when we need common options', () => {
     describe('for getting condition options by category id', () => {
       it('should retrieve options', () => {
-        service.getConditionsByCategoryId(defaultParams, '100').subscribe();
+        const params = {
+          ...defaultParams,
+          category_id: '100',
+        };
+
+        service.getConditionsByCategoryId(params).subscribe();
         expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.CONDITION_BY_CATEGORY_ID('100'), defaultParams);
       });
     });
 
     describe('for getting object type options by category id', () => {
       it('should retrieve options', () => {
-        service.getObjectTypesByCategoryId(defaultParams, '100').subscribe();
-        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.OBJECT_TYPE, {
+        const params = {
           ...defaultParams,
           category_id: '100',
-        });
+        };
 
-        service
-          .getObjectTypesByCategoryId(
-            {
-              ...defaultParams,
-              parent_id: '1200',
-            },
-            '100'
-          )
-          .subscribe();
-        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.OBJECT_TYPE, {
+        service.getObjectTypesByCategoryId(params).subscribe();
+        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.OBJECT_TYPE, params);
+
+        const parentIdParams = {
           ...defaultParams,
           parent_id: '1200',
           category_id: '100',
-        });
+        };
+
+        service.getObjectTypesByCategoryId(parentIdParams).subscribe();
+        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.OBJECT_TYPE, parentIdParams);
       });
     });
 
     describe('for getting brand model options by categoryId', () => {
       it('should retrieve options', () => {
-        service.getBrandModelByCategoryId(defaultParams, '100').subscribe();
-        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.BRAND_MODEL, {
+        const params = {
           ...defaultParams,
           category_id: '100',
-        });
+        };
+
+        service.getBrandModelByCategoryId(params).subscribe();
+        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.BRAND_MODEL, params);
       });
     });
   });
@@ -117,21 +120,25 @@ describe('FilterOptionsApiService', () => {
 
     describe('for getting real estate type options by option id', () => {
       it('should retrieve options', () => {
-        service.getRealEstateTypeKeysByOperationId(defaultParams, 'operation_id').subscribe();
-        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.REAL_ESTATE.TYPE, {
+        const params = {
           ...defaultParams,
           operation: 'operation_id',
-        });
+        };
+        service.getRealEstateTypeKeysByOperationId(params).subscribe();
+
+        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.REAL_ESTATE.TYPE, params);
       });
     });
 
     describe('for getting extra options by real state type id', () => {
       it('should retrieve options', () => {
-        service.getRealEstateExtraKeysByTypeId(defaultParams, 'type_id').subscribe();
-        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.REAL_ESTATE.EXTRA, {
+        const params = {
           ...defaultParams,
           type: 'type_id',
-        });
+        };
+        service.getRealEstateExtraKeysByTypeId(params).subscribe();
+
+        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.REAL_ESTATE.EXTRA, params);
       });
     });
   });
@@ -139,27 +146,31 @@ describe('FilterOptionsApiService', () => {
   describe('when we need fashion options', () => {
     describe('for getting size options by object type id', () => {
       it('should retrieve options', () => {
-        service.getFashionSizeKeysByObjectId(defaultParams, '100').subscribe();
-        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.FASHION.SIZE, {
+        const params = {
           ...defaultParams,
           object_type_id: '100',
-        });
+        };
+
+        service.getFashionSizeKeysByObjectId(params).subscribe();
+        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.FASHION.SIZE, params);
       });
     });
 
     describe('for getting brand options by object type id', () => {
       it('should retrieve options', () => {
-        service.getFashionBrandsByObjectTypeId(defaultParams, '100').subscribe();
-        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.FASHION.BRAND, {
+        const params = {
           ...defaultParams,
           object_type_id: '100',
+        };
+        service.getFashionBrandsByObjectTypeId(params).subscribe();
+        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.FASHION.BRAND, {
+          ...params,
           start: '0',
         });
 
-        service.getFashionBrandsByObjectTypeId(defaultParams, '100', '100').subscribe();
+        service.getFashionBrandsByObjectTypeId(params, { offset: 100 }).subscribe();
         expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.FASHION.BRAND, {
-          ...defaultParams,
-          object_type_id: '100',
+          ...params,
           start: '100',
         });
       });

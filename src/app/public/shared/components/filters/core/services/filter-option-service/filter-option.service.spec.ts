@@ -26,20 +26,44 @@ jest.mock('./configurations/options-origin-configuration.ts', () => ({
   OPTIONS_ORIGIN_CONFIGURATION: {
     hardcoded: 'hardcoded',
     pureApi: {
-      apiMethod: 'apiMethod',
+      apiConfiguration: {
+        method: 'apiMethod',
+      },
     },
     apiWithRelatedParams: {
-      apiMethod: 'apiMethod',
-      apiRelatedFilterKeys: ['apiRelatedParam1', 'apiRelatedParam2'],
+      apiConfiguration: {
+        method: 'apiMethod',
+        requiredSiblingParams: ['siblingParam1', 'siblingParam2'],
+        keyMappers: [
+          {
+            sourceParamKey: 'siblingParam1',
+            destinationParamKey: 'mappedSiblingParam1',
+          },
+        ],
+      },
     },
     mapper: {
-      apiMethod: 'apiMethod',
-      mapperMethod: 'mapperMethod',
+      apiConfiguration: {
+        method: 'apiMethod',
+      },
+      mapperConfiguration: {
+        method: 'mapperMethod',
+      },
     },
     mapperWithRelatedParam: {
-      apiMethod: 'apiMethod',
-      mapperMethod: 'mapperMethod',
-      mapperRelatedFilterKeys: ['mapperRelatedParam1', 'mapperRelatedParam2'],
+      apiConfiguration: {
+        method: 'apiMethod',
+      },
+      mapperConfiguration: {
+        method: 'mapperMethod',
+        requiredSiblingParams: ['siblingParam1', 'siblingParam2'],
+        keyMappers: [
+          {
+            sourceParamKey: 'siblingParam2',
+            destinationParamKey: 'mappedSiblingParam2',
+          },
+        ],
+      },
     },
   },
 }));
@@ -97,7 +121,7 @@ describe('FilterOptionService', () => {
       service.getOptions('pureApi' as ConfigurationId).subscribe();
       tick();
 
-      expect(filterOptionsApiService.apiMethod).toHaveBeenCalledWith({}, '0');
+      expect(filterOptionsApiService.apiMethod).toHaveBeenCalledWith({}, { offset: 0 });
     }));
 
     it('with params', fakeAsync(() => {
@@ -106,7 +130,7 @@ describe('FilterOptionService', () => {
       service.getOptions('pureApi' as ConfigurationId, { myParam: 'param' }).subscribe();
       tick();
 
-      expect(filterOptionsApiService.apiMethod).toHaveBeenCalledWith({ myParam: 'param' }, '0');
+      expect(filterOptionsApiService.apiMethod).toHaveBeenCalledWith({ myParam: 'param' }, { offset: 0 });
     }));
 
     it('with pagination options', fakeAsync(() => {
@@ -115,7 +139,7 @@ describe('FilterOptionService', () => {
       service.getOptions('pureApi' as ConfigurationId, undefined, { offset: 10 }).subscribe();
       tick();
 
-      expect(filterOptionsApiService.apiMethod).toHaveBeenCalledWith({}, '10');
+      expect(filterOptionsApiService.apiMethod).toHaveBeenCalledWith({}, { offset: 10 });
     }));
 
     describe('in relation with retrieved format...', () => {
@@ -127,7 +151,7 @@ describe('FilterOptionService', () => {
           service.getOptions('pureApi' as ConfigurationId).subscribe();
           tick();
 
-          expect(filterOptionsApiService.apiMethod).toHaveBeenCalledWith({}, '0');
+          expect(filterOptionsApiService.apiMethod).toHaveBeenCalledWith({}, { offset: 0 });
           expect(filterOptionsMapperService.mapperMethod).not.toHaveBeenCalled();
         }));
       });
@@ -140,8 +164,8 @@ describe('FilterOptionService', () => {
           service.getOptions('mapper' as ConfigurationId).subscribe();
           tick();
 
-          expect(filterOptionsApiService.apiMethod).toHaveBeenCalledWith({}, '0');
-          expect(filterOptionsMapperService.mapperMethod).toHaveBeenCalledWith({});
+          expect(filterOptionsApiService.apiMethod).toHaveBeenCalledWith({}, { offset: 0 });
+          expect(filterOptionsMapperService.mapperMethod).toHaveBeenCalledWith({}, {});
         }));
       });
     });
@@ -154,7 +178,13 @@ describe('FilterOptionService', () => {
           service.getOptions('apiWithRelatedParams' as ConfigurationId).subscribe();
           tick();
 
-          expect(filterOptionsApiService.apiMethod).toHaveBeenCalledWith({}, 'apiRelatedParam1', 'apiRelatedParam2', '0');
+          expect(filterOptionsApiService.apiMethod).toHaveBeenCalledWith(
+            {
+              mappedSiblingParam1: 'siblingParam1',
+              siblingParam2: 'siblingParam2',
+            },
+            { offset: 0 }
+          );
         }));
       });
 
@@ -165,7 +195,13 @@ describe('FilterOptionService', () => {
           service.getOptions('mapperWithRelatedParam' as ConfigurationId).subscribe();
           tick();
 
-          expect(filterOptionsMapperService.mapperMethod).toHaveBeenCalledWith({}, 'mapperRelatedParam1', 'mapperRelatedParam2');
+          expect(filterOptionsMapperService.mapperMethod).toHaveBeenCalledWith(
+            {},
+            {
+              siblingParam1: 'siblingParam1',
+              mappedSiblingParam2: 'siblingParam2',
+            }
+          );
         }));
       });
     });

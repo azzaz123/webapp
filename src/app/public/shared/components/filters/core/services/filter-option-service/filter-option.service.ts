@@ -7,7 +7,7 @@ import { FilterOption } from '../../interfaces/filter-option.interface';
 import { OPTIONS_ORIGIN_CONFIGURATION, OriginConfigurationValue } from './configurations/options-origin-configuration';
 import { ConfigurationId } from '../../types/configuration-id.type';
 import { HARDCODED_OPTIONS } from './data/hardcoded-options';
-import { OptionsApiOrigin } from './configurations/option-api-origin.interface';
+import { KeyMapper, OptionsApiOrigin } from './configurations/option-api-origin.interface';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -48,21 +48,27 @@ export class FilterOptionService {
     params?: QueryParams,
     paginationOptions?: PaginationOptions
   ): Observable<FilterOption[]> {
-    const { apiMethod, mapperMethod, apiRelatedParamKeys = [], mapperRelatedParamKeys = [] } = configuration;
+    const { apiConfiguration, mapperConfiguration } = configuration;
 
-    const apiRelatedParams = this.getRelatedFilterParams(apiRelatedParamKeys);
+    const apiSiblingParams = this.getSiblingParams(apiConfiguration.requiredSiblingParams);
+
+    const unifiedApiParams = {
+      ...this.mapSiblingParams(params, apiConfiguration.keyMappers),
+      ...this.mapSiblingParams(apiSiblingParams, apiConfiguration.keyMappers),
+    };
 
     // In relation to the "as Observable<unknown>"
     // Magic! To avoid a build failure, we need to unify all observables on one type. If not, pipe, map... signatures break
     // For more information, this issue explains quite well the reason: https://github.com/ReactiveX/rxjs/issues/3388
 
-    return (this.filterOptionsApiService[apiMethod](params, ...apiRelatedParams, paginationOptions?.offset.toString()) as Observable<
-      unknown
-    >).pipe(
+    return this.filterOptionsApiService[apiConfiguration.method](unifiedApiParams, paginationOptions).pipe(
       map((value) => {
-        if (mapperMethod) {
-          const mapperRelatedParams = this.getRelatedFilterParams(mapperRelatedParamKeys);
-          return this.filterOptionsMapperService[mapperMethod](value, ...mapperRelatedParams);
+        if (mapperConfiguration) {
+          const mapperSiblingParams = this.getSiblingParams(mapperConfiguration.requiredSiblingParams);
+          return this.filterOptionsMapperService[mapperConfiguration.method](
+            value,
+            this.mapSiblingParams(mapperSiblingParams, mapperConfiguration.keyMappers)
+          );
         }
 
         return value as FilterOption[];
@@ -70,8 +76,31 @@ export class FilterOptionService {
     );
   }
 
+  private mapSiblingParams(relatedParams: Record<string, string> = {}, keyMappers: KeyMapper[] = []): Record<string, string> {
+    const mappedParams = { ...relatedParams };
+
+    keyMappers.filter(this.isKeyMapper).forEach((mapper) => {
+      const { destinationParamKey, sourceParamKey } = mapper;
+
+      if (relatedParams[sourceParamKey]) {
+        mappedParams[destinationParamKey] = relatedParams[sourceParamKey];
+        delete mappedParams[sourceParamKey];
+      }
+    });
+
+    return mappedParams;
+  }
+
   // TODO: This will be implemented on integration tasks. For now, it just returns the keys from the sibling filter params
-  private getRelatedFilterParams(paramKeys?: string[]): string[] {
-    return paramKeys;
+  private getSiblingParams(paramKeys: string[] = []): Record<string, string> {
+    const params = {};
+
+    paramKeys.forEach((key) => (params[key] = key));
+
+    return params;
+  }
+
+  private isKeyMapper(mapper: KeyMapper | string): mapper is KeyMapper {
+    return typeof mapper !== 'string';
   }
 }

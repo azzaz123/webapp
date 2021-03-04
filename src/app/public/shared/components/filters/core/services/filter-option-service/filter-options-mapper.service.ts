@@ -6,16 +6,16 @@ import { ObjectType } from './option-responses/object-type.interface';
 import { BrandModel } from './option-responses/brand-model.interface';
 import { SizeNGenderResponse } from '@public/shared/components/filters/core/services/filter-option-service/option-responses/fashion-size-n-gender.interface';
 import { FashionBrand } from '@public/shared/components/filters/core/services/filter-option-service/option-responses/fashion-brand.interface';
-import { SIZE_GENDER } from '@public/shared/components/filters/core/enums/size-gender.enum';
+import { QueryParams } from '@public/shared/components/filters/core/interfaces/query-params.interface';
 
 @Injectable()
 export class FilterOptionsMapperService {
-  public formatConditionResponse(response: unknown, ...relatedParams: string[]): FilterOption[];
+  public formatConditionResponse(response: unknown, params?: QueryParams): FilterOption[];
   public formatConditionResponse(conditionResponse: ConditionResponse): FilterOption[] {
     return this.formatIconOptions(conditionResponse.conditions);
   }
 
-  public formatObjectType(response: unknown, ...relatedParams: string[]): FilterOption[];
+  public formatObjectType(response: unknown, params?: QueryParams): FilterOption[];
   public formatObjectType(objectTypes: ObjectType[]): FilterOption[] {
     return objectTypes.map((objectType) => ({
       value: objectType.id,
@@ -24,7 +24,7 @@ export class FilterOptionsMapperService {
     }));
   }
 
-  public formatBrandModel(response: unknown, ...relatedParams: string[]): FilterOption[];
+  public formatBrandModel(response: unknown, params?: QueryParams): FilterOption[];
   public formatBrandModel(brandModels: BrandModel[]): FilterOption[] {
     return brandModels.map((brandModel) => {
       let value = brandModel.brand;
@@ -39,7 +39,7 @@ export class FilterOptionsMapperService {
     });
   }
 
-  public formatCarsBrandModel(response: unknown, ...relatedParams: string[]): FilterOption[];
+  public formatCarsBrandModel(response: unknown, params?: QueryParams): FilterOption[];
   public formatCarsBrandModel(brandModels: BrandModel[]): FilterOption[] {
     return brandModels.map((brandModel) => ({
       value: (brandModel as unknown) as Record<string, string>,
@@ -47,7 +47,7 @@ export class FilterOptionsMapperService {
     }));
   }
 
-  public formatIconOptions(response: unknown, ...relatedParams: string[]): FilterOption[];
+  public formatIconOptions(response: unknown, params?: QueryParams): FilterOption[];
   public formatIconOptions(iconOptions: IconOption[]): FilterOption[] {
     return iconOptions.map((condition) => ({
       value: condition.id,
@@ -57,16 +57,16 @@ export class FilterOptionsMapperService {
     }));
   }
 
-  public formatSizeNGender(response: unknown, ...relatedParams: string[]);
-  public formatSizeNGender(sizeNGender: SizeNGenderResponse, gender: SIZE_GENDER): FilterOption[] {
-    return sizeNGender[gender].map((size) => ({
+  public formatSizeNGender(response: unknown, params?: QueryParams): FilterOption[];
+  public formatSizeNGender(sizeNGender: SizeNGenderResponse, params: QueryParams<'gender'>): FilterOption[] {
+    return sizeNGender[params.gender].map((size) => ({
       value: size.id.toString(),
       label: size.text,
     }));
   }
 
   // TODO: We need to set something up for isPopular cases
-  public formatFashionBrand(response: unknown, ...relatedParams: string[]);
+  public formatFashionBrand(response: unknown, params?: QueryParams): FilterOption[];
   public formatFashionBrand(brands: FashionBrand[]): FilterOption[] {
     return brands.map((brand) => ({
       value: brand.brand,
