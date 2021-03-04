@@ -5,15 +5,22 @@
   <div bottom class="SearchPage__ad">This should be an ad - Bottom</div>
   <div right class="SearchPage__ad">
     <ng-container *ngIf="device === DevicesType.DESKTOP">
-      <div class="ad__top">
-        <div class="test1"></div>
-        <tsl-sky [adSlot]="adSlots.search2r"></tsl-sky>
+      <div class="content__ad content__ad__top">
+        <div class="content__ad__item">
+          <tsl-sky [adSlot]="adSlots.search2r"></tsl-sky>
+        </div>
       </div>
-      <div class="ad__bottom">
-        <div class="test2"></div>
-        <tsl-sky [adSlot]="adSlots.search3r"></tsl-sky>
+      <div class="content__ad content__ad__bottom">
+        <div class="content__ad__item">
+          <tsl-sky [adSlot]="adSlots.search3r"></tsl-sky>
+        </div>
       </div>
     </ng-container>
+
   </div>
   <tsl-public-item-card-list main [items]="items"></tsl-public-item-card-list>
 </tsl-search-layout>
+
+
+
+
