@@ -1,0 +1,160 @@
+@import '~style/common';
+
+$button-height: 40px;
+$button-small-width: 65px;
+$button-big-width: 100px;
+$feature-button-width: 165px;
+
+.ItemDetailHeader {
+  position: sticky;
+  top: 66px;
+  z-index: 16;
+  transition: top 150ms ease;
+  background-color: $white;
+
+  &__userInfo {
+    min-width: 155px;
+  }
+
+  &--mineNotSold {
+    .ItemDetailHeader__countdownButton,
+    .ItemDetailHeader__featureButton {
+      display: none;
+    }
+    .ItemDetailHeader__squareButton {
+      &--options {
+        display: inline;
+      }
+      &--sold,
+      &--reserve,
+      &--delete {
+        display: none;
+      }
+    }
+
+    @include media-breakpoint-up(md) {
+      .ItemDetailHeader__countdownButton,
+      .ItemDetailHeader__featureButton {
+        display: inline;
+      }
+      .ItemDetailHeader__squareButton {
+        &--options {
+          display: none;
+        }
+        &--sold,
+        &--reserve,
+        &--delete {
+          display: inline;
+        }
+      }
+    }
+  }
+
+  &__button {
+    ::ng-deep .btn {
+      text-align: -webkit-center;
+      padding: 6px $spacing-s;
+      height: $button-height;
+      width: $button-small-width;
+      @include media-breakpoint-up(md) {
+        padding: $spacing-s $spacing-xl;
+        width: $button-big-width;
+      }
+    }
+  }
+
+  &__squareButton {
+    text-align: -webkit-center;
+    border: solid 1px $blue-grey-5;
+    @include square(40px);
+    border-radius: 8px;
+    background-color: $white;
+
+    tsl-svg-icon {
+      ::ng-deep svg g g,
+      path {
+        fill: $blue-grey-2;
+      }
+    }
+    &:hover,
+    &.active {
+      border-color: transparent;
+      tsl-svg-icon ::ng-deep {
+        svg g g,
+        svg path {
+          fill: $white;
+        }
+      }
+    }
+
+    &--sold {
+      &:hover {
+        background: $magenta-main;
+      }
+    }
+    &--reserve {
+      &:hover,
+      &.active {
+        background: $skyblue-dark;
+      }
+    }
+    &--delete {
+      &:hover {
+        background: $negative-main;
+      }
+    }
+    &--options,
+    &--edit {
+      &:hover {
+        background: $blue-grey-2;
+      }
+    }
+  }
+
+  &__featureButton {
+    ::ng-deep .btn {
+      display: flex;
+      height: $button-height;
+      padding: $spacing-s $spacing-xl;
+      width: $feature-button-width;
+      justify-content: center;
+    }
+  }
+
+  &__countdownButton {
+    width: $feature-button-width;
+    height: $button-height;
+    border: 1px solid $walla-main;
+    color: $walla-main;
+    cursor: default;
+    font-size: $font-size-s;
+    font-weight: $font-weight-chunky;
+    border-radius: $spacing-s;
+    background-color: $white;
+
+    tsl-date-countdown {
+      width: $feature-button-width;
+    }
+  }
+
+  &__dropdown {
+    .dropdown-menu {
+      .dropdown-item {
+        padding: ($spacing-ml / 2) $spacing-ml;
+        color: $blue-grey-2;
+        cursor: pointer;
+      }
+
+      .warn {
+        tsl-svg-icon {
+          padding: 4px 6px;
+          ::ng-deep svg g g,
+          path {
+            fill: $warn;
+          }
+        }
+        color: $warn;
+      }
+    }
+  }
+}

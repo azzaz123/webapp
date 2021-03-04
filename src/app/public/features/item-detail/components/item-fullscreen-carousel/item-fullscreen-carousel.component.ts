@@ -2,6 +2,7 @@ import { Component, Input, Renderer2 } from '@angular/core';
 import { Item } from '@core/item/item';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'tsl-item-fullscreen-carousel',
@@ -14,7 +15,12 @@ export class ItemFullScreenCarouselComponent {
   @Input() images: string[];
   @Input() imageIndex: number = 0;
 
-  constructor(private checkSessionService: CheckSessionService, private itemCardService: ItemCardService, private renderer: Renderer2) {}
+  constructor(
+    public deviceDetectorService: DeviceDetectorService,
+    private checkSessionService: CheckSessionService,
+    private itemCardService: ItemCardService,
+    private renderer: Renderer2
+  ) {}
 
   public show(): void {
     this.hidden = false;

@@ -13,6 +13,8 @@ import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-curre
 import { SocialShareModule } from '@shared/social-share/social-share.module';
 import { MapItemService } from '../public-profile/pages/user-published/services/map-item/map-item.service';
 import { ItemFullScreenCarouselModule } from './components/item-fullscreen-carousel/item-fullscreen-carousel.module';
+import { ItemDetailHeaderModule } from './components/item-detail-header/item-detail-header.module';
+import { PublicPipesModule } from '@public/core/pipes/public-pipes.module';
 import { ItemSpecificationsModule } from './components/item-specifications/item-specifications.module';
 import { RecommendedItemsModule } from './components/recommended-items/recommended-items.module';
 import { ItemDetailService } from './core/services/item-detail/item-detail.service';
@@ -34,6 +36,8 @@ import { itemDetailRoutedComponents, ItemDetailRoutingModule } from './item-deta
     SocialShareModule,
     ItemFullScreenCarouselModule,
     RecommendedItemsModule,
+    ItemDetailHeaderModule,
+    PublicPipesModule,
     ItemSpecificationsModule,
     EllapsedTimeModule,
   ],
