@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
+import { MOCK_ITEM_CELLPHONES, MOCK_ITEM_FASHION } from '@fixtures/item.fixtures.spec';
 import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
 import { TypeCheckService } from './type-check.service';
 
@@ -49,6 +50,24 @@ describe('TypeCheckService', () => {
     });
     it('should return false when is NOT a real estate', () => {
       expect(typeCheckService.isRealEstate(MOCK_CAR)).toBe(false);
+    });
+  });
+
+  describe('when we check if a constant is a fashion item...', () => {
+    it('should return true when is a fashion item', () => {
+      expect(typeCheckService.isFashion(MOCK_ITEM_FASHION)).toBe(true);
+    });
+    it('should return false when is NOT a fashion item', () => {
+      expect(typeCheckService.isFashion(MOCK_CAR)).toBe(false);
+    });
+  });
+
+  describe('when we check if a constant is a cellphone accesories item...', () => {
+    it('should return true when is a cellphone accesories item', () => {
+      expect(typeCheckService.isCellPhoneAccessories(MOCK_ITEM_CELLPHONES)).toBe(true);
+    });
+    it('should return false when is NOT a cellphone accesories item', () => {
+      expect(typeCheckService.isCellPhoneAccessories(MOCK_ITEM_FASHION)).toBe(false);
     });
   });
 });
