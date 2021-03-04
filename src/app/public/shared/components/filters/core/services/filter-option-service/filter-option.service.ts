@@ -57,10 +57,6 @@ export class FilterOptionService {
       ...this.mapSiblingParams(apiSiblingParams, apiConfiguration.keyMappers),
     };
 
-    // In relation to the "as Observable<unknown>"
-    // Magic! To avoid a build failure, we need to unify all observables on one type. If not, pipe, map... signatures break
-    // For more information, this issue explains quite well the reason: https://github.com/ReactiveX/rxjs/issues/3388
-
     return this.filterOptionsApiService[apiConfiguration.method](unifiedApiParams, paginationOptions).pipe(
       map((value) => {
         if (mapperConfiguration) {
