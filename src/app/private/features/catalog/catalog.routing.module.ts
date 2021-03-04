@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { ActivatedRouteSnapshot, Route, RouterModule } from '@angular/router';
 
-import { CatalogComponent } from './catalog.component';
+import { CatalogComponent } from './pages/catalog.component';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { isEmpty } from 'lodash-es';
 import { LoggedGuard } from '@core/user/logged.guard';
