@@ -21,7 +21,7 @@ import { STRIPE_ERROR } from '@core/stripe/stripe.interface';
 import { StripeService } from '@core/stripe/stripe.service';
 import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
-import { ModalStatuses } from '@features/profile/core/modal.statuses.enum';
+import { ModalStatuses } from '@private/features/profile/core/modal.statuses.enum';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { PAYMENT_METHOD_DATA } from '@fixtures/payments.fixtures.spec';
 import { FINANCIAL_CARD_OPTION, STRIPE_CARD } from '@fixtures/stripe.fixtures.spec';
