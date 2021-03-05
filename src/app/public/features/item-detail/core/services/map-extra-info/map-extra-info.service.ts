@@ -3,6 +3,7 @@ import { ItemExtraInfo } from '@core/item/item-response.interface';
 import { Injectable } from '@angular/core';
 import { Car } from '@core/item/car';
 import { Item } from '@core/item/item';
+import { Size } from '@public/shared/components/filters/core/services/filter-option-service/option-responses/fashion-size-n-gender.interface';
 
 export type ItemCondition = 'un_opened' | 'un_worn' | 'in_box' | 'new' | 'as_good_as_new' | 'good' | 'fair' | 'has_given_it_all';
 @Injectable({
@@ -57,8 +58,9 @@ export class MapExtraInfoService {
     return Object.keys(objectToSearch).find((itemKey) => itemKey === key) && this.specificationIsDefined(objectToSearch[key]);
   }
 
-  private specificationIsDefined(specification: string): boolean {
-    return specification !== null && specification !== undefined && specification !== '';
+  private specificationIsDefined(specification: string | Size): boolean {
+    const label = this.typeCheckService.isSize(specification) ? specification.text : specification;
+    return label !== null && label !== undefined && label !== '';
   }
 
   private translateCondition(condition: ItemCondition): string {

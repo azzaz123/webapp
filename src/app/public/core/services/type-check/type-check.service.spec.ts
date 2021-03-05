@@ -70,4 +70,14 @@ describe('TypeCheckService', () => {
       expect(typeCheckService.isCellPhoneAccessories(MOCK_ITEM_FASHION)).toBe(false);
     });
   });
+
+  describe('when we check if a property is a size...', () => {
+    it('should return true when is a size', () => {
+      expect(typeCheckService.isSize({ id: '1', text: 'XL' })).toBe(true);
+    });
+    it('should return false when is NOT a size', () => {
+      expect(typeCheckService.isSize('Hello')).toBe(false);
+      expect(typeCheckService.isSize(MOCK_ITEM_FASHION)).toBe(false);
+    });
+  });
 });
