@@ -27,7 +27,7 @@ export class FilterGroupComponent implements AfterViewInit, OnDestroy {
   @Input() initialValues: FilterParameter[];
   @Input() config: FilterConfig<unknown>[] = [];
   @Input() variant: FILTER_VARIANT = FILTER_VARIANT.BUBBLE;
-  @Output() valueChange = new EventEmitter<any>();
+  @Output() valueChange = new EventEmitter<FilterParameter[]>();
 
   readonly FILTER_VARIANT = FILTER_VARIANT;
 
