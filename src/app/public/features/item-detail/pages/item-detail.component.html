@@ -20,17 +20,17 @@
                         <span class="ItemDetail__price d-block">{{itemDetail?.item?.salePrice |
                             customCurrency:itemDetail?.item?.currencyCode}}</span>
                         <h1 class="ItemDetail__title my-0">{{itemDetail?.item?.title}}</h1>
+                        <tsl-item-taxonomies class="d-block mt-2"></tsl-item-taxonomies>
                     </div>
                     <div *ngIf="itemSpecifications" class="borderBottom">
                         <tsl-item-specifications [itemSpecifications]="itemSpecifications"
                             [isCar]="typeCheckService.isCar(this.itemDetail?.item)"></tsl-item-specifications>
                     </div>
-                        <p *ngIf="itemDetail?.item?.description" class="ItemDetail__description py-3 mb-0 text-break" [ngClass]="{'borderBottom': device === deviceType.MOBILE}">{{itemDetail?.item?.description}}</p>
-                        <div *ngIf="device === deviceType.MOBILE">
-                          <tsl-sky [adSlot]="adsSlotsItemDetail.item1"></tsl-sky>
-                        </div>
-                        <div class="ItemDetail__stats py-3 d-flex align-items-center justify-content-between" [ngClass]="{'borderBottom': device !== deviceType.TABLET}">
-
+                    <p *ngIf="itemDetail?.item?.description" class="ItemDetail__description py-3 mb-0 text-break" [ngClass]="{'borderBottom': device === deviceType.MOBILE}">{{itemDetail?.item?.description}}</p>
+                    <div *ngIf="device === deviceType.MOBILE">
+                        <tsl-sky [adSlot]="adsSlotsItemDetail.item1"></tsl-sky>
+                    </div>
+                    <div class="ItemDetail__stats py-3 d-flex align-items-center justify-content-between" [ngClass]="{'borderBottom': device !== deviceType.TABLET}">
                         <div class="text-truncate">
                             {{ itemDetail?.item?.modifiedDate | ellapsedTime }}
                         </div>
