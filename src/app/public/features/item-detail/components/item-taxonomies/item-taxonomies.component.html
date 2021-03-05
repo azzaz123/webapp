@@ -1,0 +1,9 @@
+<div>
+    <label *ngIf="taxonomyIsDefined(parentTaxonomy)" class="ItemTaxonomy" [ngClass]="{'ItemTaxonomy--extendedRight': taxonomyIsDefined(childTaxonomy)}">
+        <tsl-svg-icon *ngIf="iconPath" [src]="iconPath"></tsl-svg-icon>
+        {{parentTaxonomy}}
+    </label>
+    <label *ngIf="taxonomyIsDefined(childTaxonomy)" class="ItemTaxonomy ItemTaxonomy--extendedLeft">
+        {{childTaxonomy}}
+    </label>
+</div>

@@ -6,5 +6,11 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./item-taxonomies.component.scss'],
 })
 export class ItemTaxonomiesComponent {
-  @Input() taxonomies: string[];
+  @Input() iconPath: string;
+  @Input() parentTaxonomy: string;
+  @Input() childTaxonomy: string;
+
+  public taxonomyIsDefined(taxonomy: string): boolean {
+    return taxonomy !== undefined && taxonomy !== null && taxonomy !== '';
+  }
 }
