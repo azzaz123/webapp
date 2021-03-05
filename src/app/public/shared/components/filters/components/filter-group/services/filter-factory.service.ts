@@ -14,7 +14,7 @@ export class FilterFactoryService {
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
 
-  insertFilters(
+  public insertFilters(
     filterConfigs: FilterConfig<unknown>[],
     values: FilterParameter[],
     variant: FILTER_VARIANT,
@@ -23,6 +23,10 @@ export class FilterFactoryService {
     filterConfigs.forEach((filterConfig: FilterConfig<unknown>, index: number) => {
       this.createFilter(filterConfig, this.getValueByFilterConfig(filterConfig, values), variant, queryList.toArray()[index]);
     });
+  }
+
+  public getFilterGroup(): FilterGroup {
+    return new FilterGroup(this.filters);
   }
 
   private createFilter(config: FilterConfig<unknown>, value: FilterParameter[], variant: FILTER_VARIANT, container: FilterHostDirective) {
@@ -39,10 +43,6 @@ export class FilterFactoryService {
     componentRef.instance.value = value;
 
     this.filters.push(componentRef.instance);
-  }
-
-  public getFilterGroup(): FilterGroup {
-    return new FilterGroup(this.filters);
   }
 
   private getValueByFilterConfig(filterConfig: FilterConfig<unknown>, values: FilterParameter[]): FilterParameter[] {
