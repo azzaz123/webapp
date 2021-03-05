@@ -2,16 +2,16 @@
 
 .SearchPage {
   &__ad {
-    &-top {
+    &--top {
       height: 60%;
       margin-bottom: $spacing-m;
     }
 
-    &-bottom {
+    &--bottom {
       height: 40%;
     }
 
-    &-item {
+    &--item {
       top: 70px;
     }
   }
