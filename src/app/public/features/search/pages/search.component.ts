@@ -26,6 +26,8 @@ export class SearchComponent implements OnInit {
 
   public ngOnInit() {
     this.items = Array(100).fill(MOCK_ITEM);
-    this.adsService.setSlots([this.adSlots.search1, this.adSlots.search2r, this.adSlots.search3r]);
+    if (this.device === this.DevicesType.DESKTOP) {
+      this.adsService.setSlots([this.adSlots.search1, this.adSlots.search2r, this.adSlots.search3r]);
+    }
   }
 }

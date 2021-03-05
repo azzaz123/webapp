@@ -46,6 +46,9 @@ describe('WallComponent', () => {
 
   describe('when the component init', () => {
     describe('...when is desktop', () => {
+      beforeEach(() => {
+        spyOn(deviceServiceMock, 'getDeviceType').and.returnValue(DeviceType.DESKTOP);
+      });
       it('should configure ads', () => {
         spyOn(MockAdsService, 'setSlots').and.callThrough();
 
