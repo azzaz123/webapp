@@ -57,7 +57,7 @@ export class ToggleFilterComponent extends AbstractFilter<ToggleFilterParams> im
     this.valueChange.emit(this.value);
   }
 
-  public getBooleanValue(): boolean {
+  private getBooleanValue(): boolean {
     return super.getValue('key') === 'true';
   }
 }
