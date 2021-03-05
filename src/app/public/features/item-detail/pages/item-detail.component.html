@@ -21,7 +21,7 @@
                             customCurrency:itemDetail?.item?.currencyCode}}</span>
                         <h1 class="ItemDetail__title my-0">{{itemDetail?.item?.title}}</h1>
                         <tsl-item-extra-info *ngIf="itemExtraInfo?.length > 0" class="d-block mt-2"
-                            [ngClass]="{'itemExtraInfo--car': isItemACar()}"
+                            [ngClass]="{'ItemExtraInfo--car': isItemACar()}"
                             [isCar]="typeCheckService.isCar(itemDetail?.item)" [extraInfo]="itemExtraInfo">
                         </tsl-item-extra-info>
                     </div>

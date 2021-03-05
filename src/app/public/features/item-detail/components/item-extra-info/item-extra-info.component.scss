@@ -13,7 +13,7 @@
     }
   }
 
-  &:not(.ItemExtraInfo--car) {
+  &:not(&--car) {
     > :not(:last-child) {
       margin-right: 5px;
 
