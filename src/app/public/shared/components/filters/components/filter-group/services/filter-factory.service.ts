@@ -29,7 +29,12 @@ export class FilterFactoryService {
     return new FilterGroup(this.filters);
   }
 
-  private createFilter(config: FilterConfig<unknown>, value: FilterParameter[], variant: FILTER_VARIANT, container: FilterHostDirective) {
+  private createFilter(
+    config: FilterConfig<unknown>,
+    value: FilterParameter[],
+    variant: FILTER_VARIANT,
+    container: FilterHostDirective
+  ): void {
     const component = FILTER_TYPE_COMPONENT[config.type];
     const componentFactory: ComponentFactory<AbstractFilter<unknown>> = this.componentFactoryResolver.resolveComponentFactory(component);
 
