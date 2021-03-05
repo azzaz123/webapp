@@ -7,16 +7,16 @@ import {
   AD_TABLET_MAPPING,
   AD_TABLET_SCREEN_SIZE,
 } from '@core/ads/constants/ad-slots';
-import { AdSlot } from '@core/ads/models';
+import { AdSlotConfiguration } from '@core/ads/models';
 import { DeviceType } from '@core/device/deviceType.enum';
 
-export interface AdSlotsItemDetail {
-  item1: AdSlot;
-  item2l: AdSlot;
-  item3r: AdSlot;
+export interface ItemDetailAdSlotsConfiguration {
+  item1: AdSlotConfiguration;
+  item2l: AdSlotConfiguration;
+  item3r: AdSlotConfiguration;
 }
 
-export const ADS_ITEM_DETAIL: AdSlotsItemDetail = {
+export const ADS_ITEM_DETAIL: ItemDetailAdSlotsConfiguration = {
   item1: {
     name: '130868815/web/item1',
     id: 'sky-unit-item-top-1',

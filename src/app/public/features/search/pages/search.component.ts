@@ -1,3 +1,4 @@
+import { AdSlotConfiguration } from '@core/ads/models/ad-slot.interface';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';

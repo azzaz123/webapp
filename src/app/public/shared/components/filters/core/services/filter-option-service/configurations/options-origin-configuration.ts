@@ -43,8 +43,6 @@ export const OPTIONS_ORIGIN_CONFIGURATION: Record<string, OptionsApiOrigin | 'ha
     paramsFromRelatedFilters: ['type'],
   },
 
-  [CAR_CONFIGURATION_ID.SEATS]: 'hardcoded',
-  [CAR_CONFIGURATION_ID.DOORS]: 'hardcoded',
   [CAR_CONFIGURATION_ID.BRAND_N_MODEL]: {
     apiMethod: 'getCarBrandsAndModels',
     mapperMethod: 'formatCarsBrandModel',

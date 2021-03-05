@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AdSlot } from '@core/ads/models';
+import { AdSlotConfiguration } from '@core/ads/models';
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
 import { User } from '@core/user/user';
@@ -27,7 +27,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
 
   isMobile: boolean;
 
-  readonly adSlot: AdSlot = PUBLIC_PROFILE_AD;
+  readonly adSlot: AdSlotConfiguration = PUBLIC_PROFILE_AD;
 
   constructor(
     private route: ActivatedRoute,

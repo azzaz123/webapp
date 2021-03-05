@@ -1,3 +1,4 @@
+import { AdSlotConfiguration } from '@core/ads/models/ad-slot.interface';
 import {
   AD_DESKTOP_MAPPING,
   AD_DESKTOP_SCREEN_SIZE,
@@ -35,9 +36,14 @@ export const AD_PUBLIC_SEARCH: AdSlotSearch = {
         mapping: AD_MOBILE_MAPPING.small,
       },
     },
-    networkId: 6866,
-    type: 'search',
-    device: [DeviceType.MOBILE, DeviceType.TABLET, DeviceType.DESKTOP],
+    tablet: {
+      screenSize: AD_TABLET_SCREEN_SIZE,
+      mapping: AD_TABLET_MAPPING,
+    },
+    mobile: {
+      screenSize: AD_MOBILE_SCREEN_SIZE,
+      mapping: AD_MOBILE_MAPPING.small,
+    },
   },
   search2r: {
     name: '130868815/web/search2r',
