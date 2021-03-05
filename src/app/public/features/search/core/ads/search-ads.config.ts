@@ -8,13 +8,12 @@ import {
   AD_TABLET_MAPPING,
   AD_TABLET_SCREEN_SIZE,
 } from '@core/ads/constants';
-import { AdSlot } from '@core/ads/models';
 import { DeviceType } from '@core/device/deviceType.enum';
 
 export interface AdSlotSearch {
-  search1: AdSlot;
-  search2r: AdSlot;
-  search3r: AdSlot;
+  search1: AdSlotConfiguration;
+  search2r: AdSlotConfiguration;
+  search3r: AdSlotConfiguration;
 }
 
 export const AD_PUBLIC_SEARCH: AdSlotSearch = {
@@ -36,14 +35,9 @@ export const AD_PUBLIC_SEARCH: AdSlotSearch = {
         mapping: AD_MOBILE_MAPPING.small,
       },
     },
-    tablet: {
-      screenSize: AD_TABLET_SCREEN_SIZE,
-      mapping: AD_TABLET_MAPPING,
-    },
-    mobile: {
-      screenSize: AD_MOBILE_SCREEN_SIZE,
-      mapping: AD_MOBILE_MAPPING.small,
-    },
+    networkId: 6866,
+    type: 'search',
+    device: [DeviceType.MOBILE, DeviceType.TABLET, DeviceType.DESKTOP],
   },
   search2r: {
     name: '130868815/web/search2r',
