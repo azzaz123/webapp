@@ -1,26 +1,18 @@
+@import '~style/common';
+
 .SearchPage {
   &__ad {
-    display: block;
-    height: 100%;
-    position: relative;
-    .content__ad {
-      width: 100%;
+    &-top {
+      height: 60%;
+      margin-bottom: $spacing-m;
+    }
 
-      .content__ad__item {
-        width: 100%;
-        position: sticky;
-        top: 70px;
-      }
+    &-bottom {
+      height: 40%;
+    }
 
-      &.content__ad__top {
-        height: 60%;
-        margin-bottom: 1rem;
-      }
-
-      &.content__ad__bottom {
-        width: 100%;
-        height: 40%;
-      }
+    &-item {
+      top: 70px;
     }
   }
 }

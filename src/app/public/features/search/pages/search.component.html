@@ -1,17 +1,17 @@
 <tsl-search-layout>
-  <div top class="SearchPage__ad">
+  <div top class="d-block h-100 position-relative">
     <tsl-sky [adSlot]="adSlots.search1"></tsl-sky>
   </div>
-  <div bottom class="SearchPage__ad">This should be an ad - Bottom</div>
-  <div right class="SearchPage__ad">
+  <div bottom class="d-block h-100 position-relative">This should be an ad - Bottom</div>
+  <div right class="d-block h-100 position-relative">
     <ng-container *ngIf="device === DevicesType.DESKTOP">
-      <div class="content__ad content__ad__top">
-        <div class="content__ad__item">
+      <div class="w-100 SearchPage__ad-top ">
+        <div class="position-sticky w-100 SearchPage__ad-item">
           <tsl-sky [adSlot]="adSlots.search2r"></tsl-sky>
         </div>
       </div>
-      <div class="content__ad content__ad__bottom">
-        <div class="content__ad__item">
+      <div class="w-100 content__ad-bottom">
+        <div class="position-sticky w-100 SearchPage__ad-item">
           <tsl-sky [adSlot]="adSlots.search3r"></tsl-sky>
         </div>
       </div>

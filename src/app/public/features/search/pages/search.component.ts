@@ -1,4 +1,3 @@
-import { AdSlotConfiguration } from '@core/ads/models/ad-slot.interface';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
@@ -26,8 +25,7 @@ export class SearchComponent implements OnInit {
 
   public ngOnInit() {
     this.items = Array(100).fill(MOCK_ITEM);
-    if (this.device === this.DevicesType.DESKTOP) {
-      this.adsService.setSlots([this.adSlots.search1, this.adSlots.search2r, this.adSlots.search3r]);
-    }
+
+    this.adsService.setSlots([this.adSlots.search1, this.adSlots.search2r, this.adSlots.search3r]);
   }
 }
