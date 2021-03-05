@@ -51,7 +51,7 @@ describe('ItemExtraInfoComponent', () => {
       expect(specifications.length).toBe(MOCK_EXTRA_INFO.length);
     });
 
-    describe('when the extra info is basic item...', () => {
+    describe('when the extra info is from a basic item...', () => {
       it('should NOT apply the car styles', () => {
         const carStyles = fixture.debugElement.query(By.css(carStyleClass));
 
