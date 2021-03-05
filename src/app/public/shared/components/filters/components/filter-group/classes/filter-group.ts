@@ -9,7 +9,7 @@ export class FilterGroup {
     this.bindChangesListener();
   }
 
-  bindChangesListener() {
+  private bindChangesListener(): void {
     this.filters.forEach((filter: AbstractFilter<unknown>) => {
       filter.valueChange.subscribe((value: FilterParameter) => {
         this.valueChange.next(value);
