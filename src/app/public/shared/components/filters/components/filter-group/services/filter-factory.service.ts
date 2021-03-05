@@ -6,7 +6,6 @@ import { FILTER_VARIANT } from '../../abstract-filter/abstract-filter.enum';
 import { FilterHostDirective } from '../directives/filter-host.directive';
 import { FilterGroup } from '../classes/filter-group';
 import { FILTER_TYPE_COMPONENT } from '../constants/filter-type-component.constant';
-import { __asyncValues } from 'tslib';
 
 @Injectable()
 export class FilterFactoryService {
