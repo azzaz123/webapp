@@ -1,17 +1,18 @@
+import { AdSlotConfiguration } from '@core/ads/models/ad-slot.interface';
 import {
   AD_DESKTOP_MAPPING,
   AD_DESKTOP_SCREEN_SIZE,
   AD_MOBILE_MAPPING,
   AD_MOBILE_SCREEN_SIZE,
-  AD_TABLET_SCREEN_SIZE,
   AD_TABLET_MAPPING,
-} from '@core/ads/constants/ad-slots';
-import { AdSlotConfiguration } from '@core/ads/models';
+  AD_TABLET_SCREEN_SIZE,
+} from '@core/ads/constants';
+
 import { DeviceType } from '@core/device/deviceType.enum';
 
-export const PUBLIC_PROFILE_AD: AdSlotConfiguration = {
-  name: '130868815/web/user2',
-  id: 'sky-unit-user-2',
+export const AD_TOP_PUBLIC_SEARCH: AdSlotConfiguration = {
+  name: '130868815/web/search1',
+  id: 'sky-unit-search-top',
   sizes: AD_DESKTOP_MAPPING,
   sizeMapping: {
     desktop: {
@@ -24,10 +25,10 @@ export const PUBLIC_PROFILE_AD: AdSlotConfiguration = {
     },
     mobile: {
       screenSize: AD_MOBILE_SCREEN_SIZE,
-      mapping: AD_MOBILE_MAPPING.big,
+      mapping: AD_MOBILE_MAPPING.small,
     },
   },
   networkId: 6866,
-  type: 'user',
-  device: [DeviceType.MOBILE],
+  type: 'search',
+  device: [DeviceType.MOBILE, DeviceType.TABLET, DeviceType.DESKTOP],
 };

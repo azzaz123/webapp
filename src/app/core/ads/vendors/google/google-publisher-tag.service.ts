@@ -4,7 +4,7 @@ import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { CookieService } from 'ngx-cookie';
-import { AdKeyWords, AdSlot, AdSlotId } from '../../models';
+import { AdKeyWords, AdSlotConfiguration, AdSlotId } from '../../models';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +25,7 @@ export class GooglePublisherTagService {
     return !!this.googletag && this.googletag.apiReady;
   }
 
-  public setSlots(adSlots: AdSlot[]): void {
+  public setSlots(adSlots: AdSlotConfiguration[]): void {
     this.googletag.cmd.push(() => {
       this.definedSlots(adSlots);
       this.setPubads();
@@ -82,7 +82,7 @@ export class GooglePublisherTagService {
     return this.cookieService.get('publisherId') ?? '-1' + Array(31).join('0');
   }
 
-  private definedSlots(slots: AdSlot[]): void {
+  private definedSlots(slots: AdSlotConfiguration[]): void {
     const deviceType: DeviceType = this.deviceService.getDeviceType();
     slots
       .filter((slot) => slot.device.includes(deviceType))

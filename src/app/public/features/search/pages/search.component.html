@@ -1,5 +1,7 @@
 <tsl-search-layout>
-  <div top class="SearchPage__ad">This should be an ad - Top</div>
+  <div top class="SearchPage__ad">
+    <tsl-sky [adSlot]="adSlots"></tsl-sky>
+  </div>
   <div bottom class="SearchPage__ad">This should be an ad - Bottom</div>
   <div right class="SearchPage__ad">This should be an ad - Right</div>
   <tsl-public-item-card-list main [items]="items"></tsl-public-item-card-list>
