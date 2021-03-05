@@ -1,7 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormGroup } from '@angular/forms';
 import { FILTER_TYPES } from '../../core/enums/filter-types/filter-types.enum';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { FilterGroup } from './classes/filter-group';
