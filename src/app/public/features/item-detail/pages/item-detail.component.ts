@@ -24,7 +24,7 @@ import { ItemDetailService } from '../core/services/item-detail/item-detail.serv
 import { MapExtraInfoService } from '../core/services/map-extra-info/map-extra-info.service';
 import { MapSpecificationsService } from '../core/services/map-specifications/map-specifications.service';
 import { ItemDetail } from '../interfaces/item-detail.interface';
-import { AdSlotsItemDetail, ADS_ITEM_DETAIL } from './../core/ads/item-detail-ads.config';
+import { ItemDetailAdSlotsConfiguration, ADS_ITEM_DETAIL } from './../core/ads/item-detail-ads.config';
 import { ItemDetailLocation } from './constants/item-detail.interface';
 
 @Component({
@@ -49,7 +49,7 @@ export class ItemDetailComponent implements OnInit {
   public recommendedItems$: Observable<RecommendedItemsBodyResponse>;
   public itemSpecifications: CounterSpecifications[];
   public itemDetail: ItemDetail;
-  public adsSlotsItemDetail: AdSlotsItemDetail = ADS_ITEM_DETAIL;
+  public adsSlotsItemDetail: ItemDetailAdSlotsConfiguration = ADS_ITEM_DETAIL;
 
   public socialShare: {
     title: string;

@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { Observable, Subscriber } from 'rxjs';
-import { AdSlot } from '../../models';
+import { AdSlotConfiguration } from '../../models';
 import { AmazonPublisherServiceLibrary, AmazonPublisherServiceMapper } from './amazon-publisher-service.model';
 
 @Injectable({
@@ -16,7 +16,7 @@ export class AmazonPublisherService {
 
   constructor(@Inject(WINDOW_TOKEN) private window: Window) {}
 
-  public requestBid(adSlots: AdSlot[]): Observable<void> {
+  public requestBid(adSlots: AdSlotConfiguration[]): Observable<void> {
     return new Observable((observer: Subscriber<void>) => {
       const config = {
         slots: AmazonPublisherServiceMapper(adSlots),

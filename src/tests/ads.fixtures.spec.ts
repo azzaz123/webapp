@@ -6,7 +6,7 @@ import {
   AD_TABLET_SCREEN_SIZE,
   AD_TABLET_MAPPING,
 } from '@core/ads/constants';
-import { AdKeyWords, AdSlot, AdSlotId } from '@core/ads/models';
+import { AdKeyWords, AdSlotConfiguration, AdSlotId } from '@core/ads/models';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { of } from 'rxjs';
 
@@ -36,7 +36,7 @@ export const MockGooglePublisherTagService = {
   setTargetingByAdsKeywords: () => {},
   setAdsSegmentation: () => {},
   displayAdBySlotId: (id: AdSlotId) => {},
-  setSlots: (slots: AdSlot) => {},
+  setSlots: (slots: AdSlotConfiguration) => {},
   refreshAds: () => {},
   setAdKeywords: (adKeywords: AdKeyWords) => {},
 };
@@ -62,7 +62,7 @@ export const MockAdsKeywordsService = {
   loadAdKeywords: () => {},
 };
 
-export const MockAdSlots: AdSlot[] = [
+export const MockAdSlots: AdSlotConfiguration[] = [
   {
     id: 'div-gpt-ad-1508490196308-0',
     name: '/130868815/chat_right',
