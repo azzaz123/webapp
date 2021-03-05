@@ -45,7 +45,7 @@ export class FilterGroupComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  private insertFilters() {
+  private insertFilters(): void {
     this.filterFactory.insertFilters(this.config, this.initialValues, this.variant, this.query);
   }
 
