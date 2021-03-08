@@ -8,7 +8,6 @@ $taxonomy-height: 36px;
   color: $black;
   padding: 10px 15px;
   border-radius: 25px;
-  position: relative;
 
   &:not(:first-child):before {
     content: '';

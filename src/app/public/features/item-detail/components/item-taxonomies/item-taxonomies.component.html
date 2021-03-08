@@ -3,7 +3,7 @@
         <tsl-svg-icon *ngIf="iconPath" [src]="iconPath" class="mr-1" width="24" height="24" ></tsl-svg-icon>
         {{parentTaxonomy}}
     </label>
-    <label *ngIf="taxonomyIsDefined(childTaxonomy)" class="ItemTaxonomy d-flex align-items-center mb-0 ml-1">
+    <label *ngIf="taxonomyIsDefined(childTaxonomy)" class="ItemTaxonomy d-flex align-items-center position-relative mb-0 ml-1">
         {{childTaxonomy}}
     </label>
 </div>
