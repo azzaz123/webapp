@@ -40,9 +40,11 @@ export class FilterGroupComponent implements AfterViewInit, OnDestroy {
     this.insertFilters();
     this.filterGroup = this.filterFactory.filterGroup;
 
-    this.filterGroup.valueChange().subscribe((value: FilterParameter[]) => {
-      this.valueChange.emit(value);
-    });
+    this.filterGroupSubscriptions.push(
+      this.filterGroup.valueChange().subscribe((value: FilterParameter[]) => {
+        this.valueChange.emit(value);
+      })
+    );
   }
 
   private insertFilters(): void {
