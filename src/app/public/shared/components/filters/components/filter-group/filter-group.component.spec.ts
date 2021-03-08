@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FILTER_TYPES } from '../../core/enums/filter-types/filter-types.enum';
+import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { FilterGroup } from './classes/filter-group';
 import { FilterGroupComponent } from './filter-group.component';
@@ -63,5 +64,16 @@ describe('FilterGroupComponent', () => {
       component.variant,
       component.query
     );
+  });
+
+  describe('when filter group value changes', () => {
+    it('should emit value changes', () => {
+      const value: FilterParameter[] = [];
+      spyOn(component.valueChange, 'emit');
+
+      component['filterGroup']['_valueChange'].next(value);
+
+      expect(component.valueChange.emit).toHaveBeenCalledWith(value);
+    });
   });
 });
