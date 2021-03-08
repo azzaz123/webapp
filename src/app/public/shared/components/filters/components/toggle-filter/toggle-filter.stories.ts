@@ -5,6 +5,7 @@ import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { ToggleFormModule } from '@shared/form/components/toggle/toggle-form.module';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { CookieService } from 'ngx-cookie';
+import { FILTER_TYPES } from '../../core/enums/filter-types/filter-types.enum';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module';
@@ -58,6 +59,7 @@ const Template: Story<FiltersComponent> = (args: FiltersComponent) => ({
 export const Default = Template.bind({});
 Default.args = {
   config: {
+    type: FILTER_TYPES.TOGGLE,
     mapKey: {
       key: 'warranty',
     },
