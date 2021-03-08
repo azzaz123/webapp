@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { AdSlot } from '@core/ads/models';
+import { AdSlotConfiguration } from '@core/ads/models';
 import { AdsKeywordsService } from '@core/ads/services/ads-keywords/ads-keywords.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
@@ -68,7 +68,7 @@ describe('GooglePublisherTagService', () => {
     });
 
     it('should filter slots by device type', () => {
-      const adSlots: AdSlot[] = [
+      const adSlots: AdSlotConfiguration[] = [
         { ...MockAdSlots[0], device: [DeviceType.DESKTOP] },
         { ...MockAdSlots[0], device: [DeviceType.MOBILE] },
       ];
@@ -109,7 +109,7 @@ describe('GooglePublisherTagService', () => {
 
       service.setSlots(MockAdSlots);
 
-      MockAdSlots.forEach((slot: AdSlot) => {
+      MockAdSlots.forEach((slot: AdSlotConfiguration) => {
         expect(windowMock.googletag.defineSlot).toHaveBeenCalledWith(slot.name, slot.sizes, slot.id);
         expect(MOCK_GOOGLE_DEFINE_SLOT.defineSizeMapping).toHaveBeenCalledTimes(1);
         expect(MOCK_GOOGLE_DEFINE_SLOT.setTargeting).toHaveBeenCalledWith('ad_group', 'ad_opt');
