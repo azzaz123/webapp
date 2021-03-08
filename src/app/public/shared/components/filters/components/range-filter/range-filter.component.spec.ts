@@ -4,6 +4,7 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SliderFormModule } from '@shared/form/components/slider/slider-form.module';
+import { FILTER_TYPES } from '../../core/enums/filter-types/filter-types.enum';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module';
 import { RangeFilterComponent } from './range-filter.component';
@@ -28,6 +29,7 @@ describe('RangeFilterComponent', () => {
     el = de.nativeElement;
 
     component.config = {
+      type: FILTER_TYPES.RANGE,
       mapKey: {
         maxKey: 'max',
         minKey: 'min',
