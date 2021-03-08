@@ -1,0 +1,13 @@
+@import '~style/common';
+
+.SearchFilters {
+  &__bar {
+    overflow: auto;
+
+    @include media-breakpoint-down(md) {
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+  }
+}

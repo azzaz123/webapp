@@ -1,0 +1,10 @@
+<div class="SearchFilters__bar d-flex p-2"> 
+  <tsl-bubble class="m-1" [counter]="activeFiltersCount" (click)="toggleDrawer()">Filtros</tsl-bubble>
+</div>
+
+
+<tsl-drawer [isOpen]="drawer.isOpen" [offsetTop]="drawer.offsetTop" [hasApply]="drawer.hasApply"
+(cancel)="closeDrawer()" (apply)="closeDrawer()">
+  <p>Drawer Content!</p>
+</tsl-drawer>
+
