@@ -1,9 +1,17 @@
+@import '~style/common';
+
 .SearchPage {
-  // TODO: Temporal styles for showcase while we don't add the ads
   &__ad {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
+    &--top {
+      height: 58%;
+    }
+
+    &--bottom {
+      height: 40%;
+    }
+
+    &--topSpace {
+      top: calc(#{$topbar-height} + #{$spacing-xs});
+    }
   }
 }
