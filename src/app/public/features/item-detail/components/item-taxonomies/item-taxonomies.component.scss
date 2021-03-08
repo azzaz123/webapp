@@ -1,15 +1,21 @@
 @import '~style/common';
+$taxonomy-height: 36px;
 
 .ItemTaxonomy {
   font-size: $font-size-s;
   background-color: $blue-grey-5;
-  width: fit-content;
+  height: $taxonomy-height;
+  color: $black;
   padding: 10px 15px;
   border-radius: 25px;
-  color: $black;
+  position: relative;
 
-  &--extendedRight {
-  }
-  &--extendedLeft {
+  &:not(:first-child):before {
+    content: '';
+    display: block;
+    position: absolute;
+    background-color: $blue-grey-5;
+    @include square(15px);
+    left: -10px;
   }
 }
