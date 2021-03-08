@@ -7,9 +7,10 @@ import { PublicLayoutModule } from '@public/layout/public-layout.module';
 import { ItemCardListModule } from '@public/features/public-profile/pages/user-published/components/item-card-list/item-card-list.module';
 import { CheckSessionModule } from '@public/core/directives/check-session/check-session.module';
 import { ViewportService } from '@core/viewport/viewport.service';
+import { SearchFiltersModule } from './components/search-filters/search-filters.module';
 
 @NgModule({
-  imports: [SharedModule, SearchRoutingModule, PublicLayoutModule, ItemCardListModule, CheckSessionModule],
+  imports: [SharedModule, SearchRoutingModule, PublicLayoutModule, ItemCardListModule, CheckSessionModule, SearchFiltersModule],
   providers: [ViewportService],
   declarations: [SearchComponent, SearchLayoutComponent],
 })
