@@ -1,3 +1,4 @@
+import { AdSlotConfiguration } from '@core/ads/models/ad-slot.interface';
 import {
   AD_DESKTOP_MAPPING,
   AD_DESKTOP_SCREEN_SIZE,
@@ -6,20 +7,19 @@ import {
   AD_MOBILE_SCREEN_SIZE,
   AD_TABLET_MAPPING,
   AD_TABLET_SCREEN_SIZE,
-} from '@core/ads/constants/ad-slots';
-import { AdSlotConfiguration } from '@core/ads/models';
+} from '@core/ads/constants';
 import { DeviceType } from '@core/device/deviceType.enum';
 
-export interface ItemDetailAdSlotsConfiguration {
-  item1: AdSlotConfiguration;
-  item2l: AdSlotConfiguration;
-  item3r: AdSlotConfiguration;
+export interface AdSlotSearch {
+  search1: AdSlotConfiguration;
+  search2r: AdSlotConfiguration;
+  search3r: AdSlotConfiguration;
 }
 
-export const ADS_ITEM_DETAIL: ItemDetailAdSlotsConfiguration = {
-  item1: {
-    name: '130868815/web/item1',
-    id: 'sky-unit-item-top-1',
+export const AD_PUBLIC_SEARCH: AdSlotSearch = {
+  search1: {
+    name: '130868815/web/search1',
+    id: 'sky-unit-search-top',
     sizes: AD_DESKTOP_MAPPING,
     sizeMapping: {
       desktop: {
@@ -32,16 +32,16 @@ export const ADS_ITEM_DETAIL: ItemDetailAdSlotsConfiguration = {
       },
       mobile: {
         screenSize: AD_MOBILE_SCREEN_SIZE,
-        mapping: AD_MOBILE_MAPPING.medium,
+        mapping: AD_MOBILE_MAPPING.small,
       },
     },
     networkId: 6866,
-    type: 'item',
-    device: [DeviceType.DESKTOP, DeviceType.TABLET, DeviceType.MOBILE],
+    type: 'search',
+    device: [DeviceType.MOBILE, DeviceType.TABLET, DeviceType.DESKTOP],
   },
-  item2l: {
-    name: '130868815/web/item2l',
-    id: 'sky-unit-item-left-2',
+  search2r: {
+    name: '130868815/web/search2r',
+    id: 'sky-unit-search-right-top',
     sizes: AD_DESKTOP_VERTICAL_MAPPING,
     sizeMapping: {
       desktop: {
@@ -50,20 +50,20 @@ export const ADS_ITEM_DETAIL: ItemDetailAdSlotsConfiguration = {
       },
       tablet: {
         screenSize: AD_TABLET_SCREEN_SIZE,
-        mapping: AD_MOBILE_MAPPING.medium,
+        mapping: AD_TABLET_MAPPING,
       },
       mobile: {
         screenSize: AD_MOBILE_SCREEN_SIZE,
-        mapping: AD_MOBILE_MAPPING.big,
+        mapping: AD_MOBILE_MAPPING.medium,
       },
     },
     networkId: 6866,
-    type: 'item',
-    device: [DeviceType.DESKTOP, DeviceType.TABLET, DeviceType.MOBILE],
+    type: 'search',
+    device: [DeviceType.MOBILE, DeviceType.TABLET, DeviceType.DESKTOP],
   },
-  item3r: {
-    name: '130868815/web/item3r',
-    id: 'sky-unit-item-right-3',
+  search3r: {
+    name: '130868815/web/search3r',
+    id: 'sky-unit-search-right-bottom',
     sizes: AD_DESKTOP_VERTICAL_MAPPING,
     sizeMapping: {
       desktop: {
@@ -80,7 +80,7 @@ export const ADS_ITEM_DETAIL: ItemDetailAdSlotsConfiguration = {
       },
     },
     networkId: 6866,
-    type: 'item',
-    device: [DeviceType.DESKTOP],
+    type: 'search',
+    device: [DeviceType.MOBILE, DeviceType.TABLET, DeviceType.DESKTOP],
   },
 };

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input } from '@angular/core';
-import { AdSlot } from '@core/ads/models';
+import { AdSlotConfiguration } from '@core/ads/models';
 import { AdsService } from '@core/ads/services';
 
 @Component({
@@ -8,7 +8,7 @@ import { AdsService } from '@core/ads/services';
   styleUrls: ['./ad.component.scss'],
 })
 export class AdComponent implements AfterViewInit {
-  @Input() adSlot: AdSlot;
+  @Input() adSlot: AdSlotConfiguration;
 
   constructor(private adsService: AdsService) {}
 

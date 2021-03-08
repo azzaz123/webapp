@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { AbstractFilter } from '../abstract-filter/abstract-filter';
 import { ToggleFilterConfig } from './interfaces/toggle-filter-config.interface';
 import { ToggleFilterParams } from './interfaces/toggle-filter-params.interface';
@@ -8,15 +8,20 @@ import { ToggleFilterParams } from './interfaces/toggle-filter-params.interface'
   templateUrl: './toggle-filter.component.html',
   styleUrls: ['./toggle-filter.component.scss'],
 })
-export class ToggleFilterComponent extends AbstractFilter<ToggleFilterParams> implements OnChanges {
+export class ToggleFilterComponent extends AbstractFilter<ToggleFilterParams> implements OnInit, OnChanges {
   @Input() config: ToggleFilterConfig;
 
   public toggle: boolean;
 
-  ngOnChanges(changes: SimpleChanges): void {
+  public ngOnInit(): void {
+    super.ngOnInit();
+    this.toggle = this.getBooleanValue();
+  }
+
+  public ngOnChanges(changes: SimpleChanges): void {
     if (!changes.value?.firstChange && this.hasValueChanged(changes.value.previousValue, changes.value.currentValue)) {
       if (this.value.length > 0) {
-        this.toggle = this.getValue('key') === 'true';
+        this.toggle = this.getBooleanValue();
       } else {
         this.handleClear();
       }
@@ -50,5 +55,9 @@ export class ToggleFilterComponent extends AbstractFilter<ToggleFilterParams> im
   private emitChange(): void {
     this.setValue(this.toggle);
     this.valueChange.emit(this.value);
+  }
+
+  private getBooleanValue(): boolean {
+    return super.getValue('key') === 'true';
   }
 }
