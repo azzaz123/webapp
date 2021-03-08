@@ -3,12 +3,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { moduleMetadata } from '@storybook/angular';
-import { Story, Meta } from '@storybook/angular/types-6-0';
+import { Meta, Story } from '@storybook/angular/types-6-0';
 import { CookieService } from 'ngx-cookie';
 import { FILTER_TYPES } from '../../core/enums/filter-types/filter-types.enum';
 import { FiltersModule } from '../../filters.module';
 import { FilterConfig } from '../../interfaces/filter-config.interface';
+import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
+import { RangeFilterConfig } from '../range-filter/interfaces/range-filter-config.interface';
+import { ToggleFilterConfig } from '../toggle-filter/interfaces/toggle-filter-config.interface';
 import { FilterHostDirective } from './directives/filter-host.directive';
 import { FilterGroupComponent } from './filter-group.component';
 import { FilterFactoryService } from './services/filter-factory.service';
@@ -20,7 +23,13 @@ import { FilterFactoryService } from './services/filter-factory.service';
     </tsl-filter-group>
   `,
 })
-class FiltersComponent {}
+class FiltersComponent {
+  public variant: FILTER_VARIANT;
+  public config: [RangeFilterConfig, ToggleFilterConfig];
+  public initialValues: FilterParameter[];
+
+  public valueChange(): void {}
+}
 
 export default {
   title: 'Webapp/Public/Shared/Components/Filters/FilterGroup',
@@ -39,7 +48,7 @@ const Template: Story<FiltersComponent> = (args: FiltersComponent) => ({
   props: args,
 });
 
-const CONFIG: FilterConfig<unknown>[] = [
+const CONFIG: [RangeFilterConfig, ToggleFilterConfig] = [
   {
     id: 'storybook_price',
     type: FILTER_TYPES.RANGE,
