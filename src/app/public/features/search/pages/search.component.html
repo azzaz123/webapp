@@ -5,7 +5,7 @@
   <div bottom class="d-block h-100 position-relative">This should be an ad - Bottom</div>
   <div right class="d-block h-100 position-relative">
     <ng-container *ngIf="device === DevicesType.DESKTOP">
-      <div class="w-100 SearchPage__ad--top">
+      <div class="w-100 mb-3 SearchPage__ad--top">
         <div class="position-sticky w-100 SearchPage__ad--topSpace">
           <tsl-sky [adSlot]="adSlots.search2r"></tsl-sky>
         </div>
@@ -16,7 +16,6 @@
         </div>
       </div>
     </ng-container>
-
   </div>
   <tsl-public-item-card-list main [items]="items"></tsl-public-item-card-list>
 </tsl-search-layout>

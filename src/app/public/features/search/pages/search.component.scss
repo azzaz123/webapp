@@ -3,8 +3,7 @@
 .SearchPage {
   &__ad {
     &--top {
-      height: 60%;
-      margin-bottom: $spacing-m;
+      height: 58%;
     }
 
     &--bottom {
@@ -12,7 +11,7 @@
     }
 
     &--topSpace {
-      top: 70px;
+      top: calc(#{$topbar-height} + #{$spacing-xs});
     }
   }
 }
