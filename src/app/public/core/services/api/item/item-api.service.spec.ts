@@ -2,6 +2,7 @@ import { HttpParams } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { I18nService } from '@core/i18n/i18n.service';
+import { ItemCounters, ItemVisibilityFlags } from '@core/item/item-response.interface';
 import {
   GET_ITEM_BUMP_FLAGS,
   GET_ITEM_COUNTERS_ENDPOINT,
@@ -50,9 +51,9 @@ describe('ItemApiService', () => {
   });
 
   describe('getItemCounters', () => {
-    it('should ask for the item counters', () => {
-      const expectedUrl = GET_ITEM_COUNTERS_ENDPOINT(ITEM_ID);
+    const expectedUrl = GET_ITEM_COUNTERS_ENDPOINT(ITEM_ID);
 
+    it('should ask for the item counters', () => {
       itemApiService.getItemCounters(ITEM_ID).subscribe();
       const req = httpMock.expectOne(expectedUrl);
       req.flush({});
@@ -60,18 +61,45 @@ describe('ItemApiService', () => {
       expect(req.request.url).toBe(expectedUrl);
       expect(req.request.method).toBe('GET');
     });
+
+    describe('when receiving an error from the server', () => {
+      it('should return a fake counter object', () => {
+        let response: ItemCounters;
+
+        itemApiService.getItemCounters(ITEM_ID).subscribe((r) => (response = r));
+        httpMock.expectOne(expectedUrl).error(new ErrorEvent('network error'));
+
+        expect(response.views).toEqual(0);
+        expect(response.favorites).toEqual(0);
+      });
+    });
   });
 
   describe('getBumpFlags', () => {
-    it('should ask for the item bump flags', () => {
-      const expectedUrl = GET_ITEM_BUMP_FLAGS(ITEM_ID);
+    const expectedUrl = GET_ITEM_BUMP_FLAGS(ITEM_ID);
 
+    it('should ask for the item bump flags', () => {
       itemApiService.getBumpFlags(ITEM_ID).subscribe();
       const req = httpMock.expectOne(expectedUrl);
       req.flush({});
 
       expect(req.request.url).toBe(expectedUrl);
       expect(req.request.method).toBe('GET');
+    });
+
+    describe('when receiving an error from the server', () => {
+      it('should return a fake visibility flags object', () => {
+        let response: ItemVisibilityFlags;
+
+        itemApiService.getBumpFlags(ITEM_ID).subscribe((r) => (response = r));
+        httpMock.expectOne(expectedUrl).error(new ErrorEvent('network error'));
+
+        expect(response.bumped).toEqual(false);
+        expect(response.highlighted).toEqual(false);
+        expect(response.urgent).toEqual(false);
+        expect(response.country_bumped).toEqual(false);
+        expect(response.boosted).toEqual(false);
+      });
     });
   });
 

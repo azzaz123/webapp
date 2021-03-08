@@ -25,7 +25,7 @@ describe('ItemExtraInfoComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('when we NOT have extra info...', () => {
+  describe(`when we DON'T have extra info...`, () => {
     it('should NOT show any label specification', () => {
       const specifications = fixture.debugElement.queryAll(By.css('label'));
 

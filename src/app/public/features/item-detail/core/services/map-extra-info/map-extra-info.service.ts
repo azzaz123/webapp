@@ -15,7 +15,7 @@ export class MapExtraInfoService {
 
   public mapExtraInfo(item: Item | Car): string[] {
     const objectToCheck = this.typeCheckService.isCar(item) ? item : item.extraInfo;
-    let specifications = [];
+    const specifications = [];
 
     this.specificationKeys(item).forEach((key) => {
       if (this.specificationExistsAndDefined(objectToCheck, key)) {
