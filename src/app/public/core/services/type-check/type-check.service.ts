@@ -33,7 +33,7 @@ export class TypeCheckService {
     return item.categoryId === CATEGORY_IDS.CELL_PHONES_ACCESSORIES;
   }
 
-  public isSize(property: any): property is Size {
+  public isSize(property: unknown): property is Size {
     return typeof property === 'object' && property !== null ? 'text' in property && 'id' in property : false;
   }
 }

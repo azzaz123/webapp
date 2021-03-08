@@ -186,10 +186,11 @@ export class ItemDetailComponent implements OnInit {
   }
 
   private generateItemSpecifications(): void {
-    if (this.typeCheckService.isCar(this.itemDetail?.item)) {
-      this.itemSpecifications = this.mapSpecificationsService.mapCarSpecifications(this.itemDetail?.item);
-    } else if (this.typeCheckService.isRealEstate(this.itemDetail?.item)) {
-      this.itemSpecifications = this.mapSpecificationsService.mapRealestateSpecifications(this.itemDetail?.item);
+    const item = this.itemDetail?.item;
+    if (this.typeCheckService.isCar(item)) {
+      this.itemSpecifications = this.mapSpecificationsService.mapCarSpecifications(item);
+    } else if (this.typeCheckService.isRealEstate(item)) {
+      this.itemSpecifications = this.mapSpecificationsService.mapRealestateSpecifications(item);
     }
   }
 

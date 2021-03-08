@@ -79,6 +79,8 @@ export class MapExtraInfoService {
         return $localize`:@@Condition_Fair:Fair condition`;
       case 'has_given_it_all':
         return $localize`:@@Condition_HasGivenItAll:May have to be repaired`;
+      default:
+        return $localize`:@@Undefined:Undefined`;
     }
   }
 
