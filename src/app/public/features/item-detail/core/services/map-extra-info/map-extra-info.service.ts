@@ -23,7 +23,7 @@ export class MapExtraInfoService {
       }
     });
 
-    return this.capitalizeLabels(specifications);
+    return this.getCapitalizedLabels(specifications);
   }
 
   private specificationKeys(item: Item | Car): string[] {
@@ -43,7 +43,7 @@ export class MapExtraInfoService {
       return value?.text;
     }
     if (key === 'condition') {
-      return this.translateCondition(value);
+      return this.getTranslatedCondition(value);
     }
     if (key === '_km') {
       return value + 'Km';
@@ -53,15 +53,15 @@ export class MapExtraInfoService {
   }
 
   private specificationExistsAndDefined(objectToSearch: ItemExtraInfo | Car, key: string): boolean {
-    return Object.keys(objectToSearch).find((itemKey) => itemKey === key) && this.specificationIsDefined(objectToSearch[key]);
+    return Object.keys(objectToSearch).find((itemKey) => itemKey === key) && this.isSpecificationDefined(objectToSearch[key]);
   }
 
-  private specificationIsDefined(specification: string | Size): boolean {
+  private isSpecificationDefined(specification: string | Size): boolean {
     const label = this.typeCheckService.isSize(specification) ? specification.text : specification;
     return label !== null && label !== undefined && label !== '';
   }
 
-  private translateCondition(condition: ItemCondition): string {
+  private getTranslatedCondition(condition: ItemCondition): string {
     switch (condition) {
       case 'un_opened':
         return $localize`:@@Condition_UnOpened:Unopened`;
@@ -82,7 +82,7 @@ export class MapExtraInfoService {
     }
   }
 
-  private capitalizeLabels(labels: string[]): string[] {
+  private getCapitalizedLabels(labels: string[]): string[] {
     return labels.map((label) => label.charAt(0).toUpperCase() + label.substr(1));
   }
 }

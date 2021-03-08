@@ -1,11 +1,11 @@
-@import '~web-styleguide/scss/text';
+@import '~style/common';
 
 .ItemExtraInfo {
   font-size: $font-size-s;
 
   &--car {
     > :not(:last-child) {
-      margin-right: 5px;
+      margin-right: $spacing-xs;
 
       &::after {
         content: ' - ';
@@ -15,7 +15,7 @@
 
   &:not(&--car) {
     > :not(:last-child) {
-      margin-right: 5px;
+      margin-right: $spacing-xs;
 
       &::after {
         content: ' · ';
