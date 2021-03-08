@@ -32,7 +32,7 @@ export class FilterGroupComponent implements AfterViewInit, OnDestroy {
   readonly FILTER_VARIANT = FILTER_VARIANT;
 
   private filterGroup: FilterGroup;
-  private filterGroupSubscriptions: Subscription[];
+  private filterGroupSubscriptions: Subscription[] = [];
 
   constructor(private filterFactory: FilterFactoryService) {}
 
