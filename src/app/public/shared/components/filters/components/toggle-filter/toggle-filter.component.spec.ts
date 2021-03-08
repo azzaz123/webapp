@@ -5,6 +5,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ToggleFormModule } from '@shared/form/components/toggle/toggle-form.module';
+import { FILTER_TYPES } from '../../core/enums/filter-types/filter-types.enum';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module';
@@ -35,6 +36,7 @@ describe('ToggleFilterComponent', () => {
 
     component.config = {
       id: '',
+      type: FILTER_TYPES.TOGGLE,
       mapKey: {
         key: 'warranty',
       },
