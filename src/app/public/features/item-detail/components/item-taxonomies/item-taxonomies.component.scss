@@ -1,9 +1,9 @@
 @import '~style/common';
-$bubble-color: #ebeff1;
 
 .ItemTaxonomy {
   font-size: $font-size-s;
-  background-color: $bubble-color;
+  background-color: $blue-grey-5;
+  width: fit-content;
   padding: 10px 15px;
   border-radius: 25px;
   color: $black;
