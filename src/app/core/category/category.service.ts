@@ -1,4 +1,4 @@
-import { map, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
@@ -32,6 +32,19 @@ export class CategoryService {
         },
       })
       .pipe(tap((categories) => (this.categories = categories)));
+  }
+
+  public getCategoryIconById(categoryId: number): Observable<string> {
+    const iconPath = '/assets/icons/categories/stroke/';
+    const defaultIcon = `${iconPath}cm-categories.svg`;
+
+    return this.getCategories().pipe(
+      map(() => {
+        const categoryIcon = this.categories?.find((category) => category.category_id === categoryId)?.icon_id;
+        return categoryIcon ? `${iconPath}${categoryIcon}.svg` : defaultIcon;
+      }),
+      catchError(() => of(defaultIcon))
+    );
   }
 
   public getConsumerGoodsCategory(): CategoryResponse {
