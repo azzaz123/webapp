@@ -1,5 +1,5 @@
 import { User } from '@core/user/user';
-import { SimpleObjectType } from '@private/features/upload/core/models/brand-model.interface';
+import { ItemObjectType } from '@private/features/upload/core/models/brand-model.interface';
 import { ApiResponse } from '../resource/api-response.interface';
 import { Image, UserLocation } from '../user/user-response.interface';
 import { Item } from './item';
@@ -381,7 +381,7 @@ export interface DeliveryInfo {
 }
 
 export interface ItemExtraInfo {
-  object_type?: SimpleObjectType;
+  object_type?: ItemObjectType;
   brand: string;
   model?: string;
   gender?: string;
