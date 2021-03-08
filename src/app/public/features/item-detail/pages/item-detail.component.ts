@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AdsService } from '@core/ads/services';
 import { CATEGORY_IDS } from '@core/category/category-ids';
+import { CategoryService } from '@core/category/category.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { Coordinate } from '@core/geolocation/address-response.interface';
@@ -48,6 +49,14 @@ export class ItemDetailComponent implements OnInit {
   public itemSpecifications: CounterSpecifications[];
   public itemDetail: ItemDetail;
   public adsSlotsItemDetail: ItemDetailAdSlotsConfiguration = ADS_ITEM_DETAIL;
+  public taxonomiesSpecifications: {
+    parentTaxonomy: string;
+    childTaxonomy?: string;
+    icon: string;
+  } = {
+    parentTaxonomy: null,
+    icon: null,
+  };
 
   public socialShare: {
     title: string;
@@ -69,7 +78,8 @@ export class ItemDetailComponent implements OnInit {
     private router: Router,
     private mapSpecificationsService: MapSpecificationsService,
     private typeCheckService: TypeCheckService,
-    private adsService: AdsService
+    private adsService: AdsService,
+    private categoryService: CategoryService
   ) {}
 
   ngOnInit(): void {
@@ -115,6 +125,7 @@ export class ItemDetailComponent implements OnInit {
     this.socialShareSetup(this.itemDetail.item);
     this.generateItemSpecifications();
     this.setItemRecommendations();
+    this.setTaxonomiesSpecifications();
     this.setAdSlot();
   }
 
@@ -185,12 +196,25 @@ export class ItemDetailComponent implements OnInit {
     }
   }
 
-  set approximatedLocation(isApproximated: boolean) {
-    this.isApproximateLocation = isApproximated;
+  private setTaxonomiesSpecifications(): void {
+    const parentTaxonomy = this.itemDetail?.item?.extraInfo?.object_type?.parent_object_type?.name;
+    const defaultTaxonomy = this.itemDetail?.item?.extraInfo?.object_type?.name;
+
+    if (parentTaxonomy) {
+      this.categoryService.getCategoryIconById(this.itemDetail?.item?.categoryId).subscribe((icon) => {
+        this.taxonomiesSpecifications.icon = icon;
+        this.taxonomiesSpecifications.parentTaxonomy = parentTaxonomy || defaultTaxonomy;
+        this.taxonomiesSpecifications.childTaxonomy = parentTaxonomy ? defaultTaxonomy : null;
+      });
+    }
   }
 
   private setAdSlot(): void {
     this.adsService.setAdKeywords({ category: this.itemDetail.item.categoryId.toString() });
     this.adsService.setSlots([this.adsSlotsItemDetail.item1, this.adsSlotsItemDetail.item2l, this.adsSlotsItemDetail.item3r]);
+  }
+
+  set approximatedLocation(isApproximated: boolean) {
+    this.isApproximateLocation = isApproximated;
   }
 }
