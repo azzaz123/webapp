@@ -57,11 +57,12 @@ export class FilterOptionService {
       ...this.mapSiblingParams(apiSiblingParams, apiConfiguration.keyMappers),
     };
 
-    return this.filterOptionsApiService[apiConfiguration.method](unifiedApiParams, paginationOptions).pipe(
+    return this.filterOptionsApiService.getApiOptions(apiConfiguration.method, unifiedApiParams, paginationOptions).pipe(
       map((value) => {
         if (mapperConfiguration) {
           const mapperSiblingParams = this.getSiblingParams(mapperConfiguration.requiredSiblingParams);
-          return this.filterOptionsMapperService[mapperConfiguration.method](
+          return this.filterOptionsMapperService.formatApiResponse(
+            mapperConfiguration.method,
             value,
             this.mapSiblingParams(mapperSiblingParams, mapperConfiguration.keyMappers)
           );

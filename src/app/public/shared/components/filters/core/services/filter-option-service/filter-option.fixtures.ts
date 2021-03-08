@@ -6,15 +6,25 @@ import { SizeNGenderResponse } from './option-responses/fashion-size-n-gender.in
 import { FashionBrand } from './option-responses/fashion-brand.interface';
 import { of } from 'rxjs/internal/observable/of';
 import { Observable } from 'rxjs';
+import { QueryParams } from '@public/shared/components/filters/core/interfaces/query-params.interface';
+import { PaginationOptions } from '../../interfaces/pagination-options.interface';
 
 export class MockFilterOptionApiService {
-  apiMethod(): Observable<unknown> {
+  public getApiOptions(method: string, params: QueryParams, paginationOptions: PaginationOptions): Observable<unknown> {
+    return this[method](params, paginationOptions);
+  }
+
+  public apiMethod(): Observable<unknown> {
     return of({});
   }
 }
 
 export class MockFilterOptionMapperService {
-  mapperMethod(): void {}
+  public formatApiResponse(method: string, response: unknown, params: QueryParams): FilterOption[] {
+    return this[method](response, params);
+  }
+
+  public mapperMethod(): void {}
 }
 
 export const iconOption: IconOption = {

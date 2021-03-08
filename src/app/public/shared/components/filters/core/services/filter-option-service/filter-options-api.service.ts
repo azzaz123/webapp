@@ -14,9 +14,15 @@ import { BrandModel } from './option-responses/brand-model.interface';
 import { SizeNGenderResponse } from './option-responses/fashion-size-n-gender.interface';
 import { FashionBrand } from './option-responses/fashion-brand.interface';
 
+export type FilterOptionsApiMethods = keyof Omit<FilterOptionsApiService, 'httpClient' | 'getApiOptions'>;
+
 @Injectable()
 export class FilterOptionsApiService {
   constructor(private httpClient: HttpClient) {}
+
+  public getApiOptions(method: FilterOptionsApiMethods, params: QueryParams, paginationOptions: PaginationOptions): Observable<unknown> {
+    return this[method](params, paginationOptions);
+  }
 
   public getConditionsByCategoryId(params: QueryParams<'category_id'>): Observable<ConditionResponse>;
   public getConditionsByCategoryId(params: QueryParams, paginationOptions: PaginationOptions): Observable<unknown>;

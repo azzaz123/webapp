@@ -8,8 +8,14 @@ import { SizeNGenderResponse } from '@public/shared/components/filters/core/serv
 import { FashionBrand } from '@public/shared/components/filters/core/services/filter-option-service/option-responses/fashion-brand.interface';
 import { QueryParams } from '@public/shared/components/filters/core/interfaces/query-params.interface';
 
+export type FilterOptionsMapperMethods = keyof Omit<FilterOptionsMapperService, 'formatApiResponse'>;
+
 @Injectable()
 export class FilterOptionsMapperService {
+  public formatApiResponse(method: FilterOptionsMapperMethods, response: unknown, params: QueryParams): FilterOption[] {
+    return this[method](response, params);
+  }
+
   public formatConditionResponse(conditionResponse: ConditionResponse): FilterOption[];
   public formatConditionResponse(response: unknown, params: QueryParams): FilterOption[];
   public formatConditionResponse(conditionResponse: ConditionResponse): FilterOption[] {
