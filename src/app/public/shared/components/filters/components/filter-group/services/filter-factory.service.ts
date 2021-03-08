@@ -24,7 +24,7 @@ export class FilterFactoryService {
     });
   }
 
-  public getFilterGroup(): FilterGroup {
+  public get filterGroup(): FilterGroup {
     return new FilterGroup(this.filters);
   }
 
