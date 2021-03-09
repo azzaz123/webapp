@@ -25,6 +25,12 @@
   &__dev_warn {
     color: $brand-danger;
   }
+
+  &__bubble {
+    &--open {
+      z-index: 200;
+    }
+  }
 }
 
 @keyframes slideUp {
