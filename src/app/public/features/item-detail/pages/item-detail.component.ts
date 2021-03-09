@@ -21,6 +21,7 @@ import { finalize } from 'rxjs/operators';
 import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
 import { CounterSpecifications } from '../components/item-specifications/interfaces/item.specifications.interface';
 import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
+import { ItemStoreService } from '../core/services/item-store/item-store.service';
 import { MapExtraInfoService } from '../core/services/map-extra-info/map-extra-info.service';
 import { MapSpecificationsService } from '../core/services/map-specifications/map-specifications.service';
 import { ItemDetail } from '../interfaces/item-detail.interface';
@@ -65,6 +66,7 @@ export class ItemDetailComponent implements OnInit {
 
   constructor(
     public typeCheckService: TypeCheckService,
+    public itemStoreService: ItemStoreService,
     private deviceService: DeviceService,
     private itemDetailService: ItemDetailService,
     private socialMetaTagsService: SocialMetaTagService,
@@ -108,6 +110,7 @@ export class ItemDetailComponent implements OnInit {
       .subscribe(
         (itemDetail: ItemDetail) => {
           this.itemDetail = itemDetail;
+          this.initializeItemStore();
           this.handleItemSpecifications();
         },
         () => {
@@ -124,6 +127,10 @@ export class ItemDetailComponent implements OnInit {
     this.setItemRecommendations();
     this.setAdSlot();
     this.initializeItemExtraInfo();
+  }
+
+  private initializeItemStore(): void {
+    this.itemStoreService.item = this.itemDetail.item;
   }
 
   private calculateItemCoordinates(): void {

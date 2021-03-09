@@ -46,6 +46,7 @@ import { ItemSpecificationsModule } from '../components/item-specifications/item
 import { ADS_ITEM_DETAIL } from '../core/ads/item-detail-ads.config';
 import { EllapsedTimeModule } from '../core/directives/ellapsed-time.module';
 import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
+import { ItemStoreService } from '../core/services/item-store/item-store.service';
 import { MapExtraInfoService } from '../core/services/map-extra-info/map-extra-info.service';
 import { MapSpecificationsService } from '../core/services/map-specifications/map-specifications.service';
 import { ItemDetailComponent } from './item-detail.component';
@@ -160,6 +161,7 @@ describe('ItemDetailComponent', () => {
         CheckSessionService,
         ItemCardService,
         Renderer2,
+        ItemStoreService,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CarouselSlide } from '../carousel-slides/carousel-slide.interface';
 import { ItemFlags, ItemVisibilityFlags } from '@core/item/item-response.interface';
 import {
@@ -13,7 +13,6 @@ import {
   selector: 'tsl-item-images-carousel',
   templateUrl: './item-images-carousel.component.html',
   styleUrls: ['./item-images-carousel.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemImagesCarouselComponent {
   @Input() isActive = true;
