@@ -1319,4 +1319,10 @@
   <translation id="FilterOptionPostedAgo_days">Días</translation>
   <translation id="FilterOptionGender_male">Hombre</translation>
   <translation id="FilterOptionGender_female">Mujer</translation>
+  <translation id="Condition_UnOpened">Sin abrir</translation>
+  <translation id="Condition_Unworn">Sin estrenar</translation>
+  <translation id="Condition_InBox">En su caja</translation>
+  <translation id="Condition_AsGoodAsNew">Como nuevo</translation>
+  <translation id="Condition_Fair">En condiciones aceptables</translation>
+  <translation id="Condition_HasGivenItAll">Puede que toque repararlo</translation>
 </translationbundle>

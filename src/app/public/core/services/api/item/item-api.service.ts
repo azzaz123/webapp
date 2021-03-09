@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { I18nService } from '@core/i18n/i18n.service';
 import { ItemCounters, ItemResponse, ItemVisibilityFlags, Purchase } from '@core/item/item-response.interface';
 import { environment } from '@environments/environment';
 import { Observable, of } from 'rxjs';
@@ -16,10 +17,11 @@ export const GET_ITEM_REMAINING_TIME = (itemId: string) => `${environment.baseUr
 
 @Injectable()
 export class ItemApiService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private i18n: I18nService) {}
 
   public getItem(id: string): Observable<ItemResponse> {
-    return this.http.get<ItemResponse>(GET_ITEM_ENDPOINT(id));
+    const params = { language: this.i18n.locale };
+    return this.http.get<ItemResponse>(GET_ITEM_ENDPOINT(id), { params });
   }
 
   public getItemCounters(id: string): Observable<ItemCounters> {
