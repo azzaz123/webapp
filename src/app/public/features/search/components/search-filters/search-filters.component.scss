@@ -2,9 +2,9 @@
 
 .SearchFilters {
   &__bar {
-    overflow: auto;
-
     @include media-breakpoint-down(md) {
+      overflow: auto;
+
       &::-webkit-scrollbar {
         display: none;
       }
