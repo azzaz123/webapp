@@ -1,11 +1,17 @@
 <div class="SearchFilters__bar d-flex p-2"> 
   <tsl-bubble class="m-1" [counter]="activeFiltersCount" (click)="toggleDrawer()">Filtros</tsl-bubble>
-  <tsl-filter-group [config]="bubbleFiltersConfig" [variant]="FILTER_VARIANT.BUBBLE"></tsl-filter-group>
+  <tsl-filter-group 
+    [config]="bubbleFiltersConfig" 
+    [variant]="FILTER_VARIANT.BUBBLE"
+    (valueChange)="bubbleChange($event)"></tsl-filter-group>
 </div>
 
 
 <tsl-drawer [isOpen]="drawer.isOpen" [offsetTop]="drawer.offsetTop" [hasApply]="drawer.hasApply"
 (cancel)="closeDrawer()" (apply)="closeDrawer()">
-  <tsl-filter-group [config]="drawerFiltersConfig" [variant]="FILTER_VARIANT.CONTENT"></tsl-filter-group>
+  <tsl-filter-group 
+    [config]="drawerFiltersConfig" 
+    [variant]="FILTER_VARIANT.CONTENT" 
+    (valueChange)="drawerChange($event)"></tsl-filter-group>
 </tsl-drawer>
 
