@@ -6,7 +6,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./item-taxonomies.component.scss'],
 })
 export class ItemTaxonomiesComponent {
-  @Input() iconPath: string;
+  @Input() iconPath: string = '/assets/icons/categories/stroke/All.svg';
   @Input() parentTaxonomy: string;
   @Input() childTaxonomy: string;
 

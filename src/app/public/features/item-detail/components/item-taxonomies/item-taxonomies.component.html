@@ -1,9 +1,9 @@
-<div class="d-flex align-items-center">
-    <label *ngIf="taxonomyIsDefined(parentTaxonomy)" class="ItemTaxonomy d-flex align-items-center mb-0">
+<div *ngIf="taxonomyIsDefined(parentTaxonomy)" class="d-flex align-items-center">
+    <label class="ItemTaxonomy d-flex align-items-center mb-0" id="parentTaxonomy">
         <tsl-svg-icon *ngIf="iconPath" [src]="iconPath" class="mr-1" width="24" height="24" ></tsl-svg-icon>
         {{parentTaxonomy}}
     </label>
-    <label *ngIf="taxonomyIsDefined(childTaxonomy)" class="ItemTaxonomy d-flex align-items-center position-relative mb-0 ml-1">
+    <label *ngIf="taxonomyIsDefined(childTaxonomy)" class="ItemTaxonomy d-flex align-items-center position-relative mb-0 ml-1" id="childTaxonomy">
         {{childTaxonomy}}
     </label>
 </div>

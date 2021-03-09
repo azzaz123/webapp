@@ -36,7 +36,7 @@ export class CategoryService {
 
   public getCategoryIconById(categoryId: number): Observable<string> {
     const iconPath = '/assets/icons/categories/stroke/';
-    const defaultIcon = `${iconPath}cm-categories.svg`;
+    const defaultIcon = `${iconPath}All.svg`;
 
     return this.getCategories().pipe(
       map(() => {
