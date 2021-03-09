@@ -1,5 +1,5 @@
 <div *ngIf="isBubble"
-    [class.FilterTemplate__bubble--open]="isDropdownOpen"
+    [class.FilterTemplate__bubble.--open]="isDropdownOpen"
      ngbDropdown #dropdown="ngbDropdown"
      (openChange)="handleOpenChange($event)">
   <div ngbDropdownToggle>
@@ -17,7 +17,7 @@
     </tsl-bubble>
   </div>
   <div ngbDropdownMenu class="FilterTemplate__dropdown_menu">
-    <div class="d-flex flex-column h-100 p-md-2">
+    <div class="d-flex flex-column h-100 p-4 p-md-2" >
       <ng-template [ngTemplateOutlet]="contentWrapper"></ng-template>
 
       <div class="p-2 d-flex justify-content-end mt-auto">
