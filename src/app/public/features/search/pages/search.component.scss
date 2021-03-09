@@ -1,6 +1,19 @@
 @import '~style/common';
 
-.SearchPage {
+.Search {
+  &--with-backdrop {
+    &::before {
+      background-color: hsla(0, 0%, 100%, 0.8);
+      content: '';
+      display: block;
+      height: 100%;
+      position: fixed;
+      top: $topbar-height;
+      width: 100%;
+      z-index: 200;
+    }
+  }
+
   &__ad {
     &--top {
       height: 58%;

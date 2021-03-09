@@ -19,6 +19,8 @@ export class SearchComponent implements OnInit {
   public device: DeviceType;
   public DevicesType: typeof DeviceType = DeviceType;
 
+  public showBackdrop: boolean = false;
+
   constructor(private adsService: AdsService, private deviceService: DeviceService) {
     this.device = this.deviceService.getDeviceType();
   }
@@ -27,5 +29,9 @@ export class SearchComponent implements OnInit {
     this.items = Array(100).fill(MOCK_ITEM);
 
     this.adsService.setSlots([this.adSlots.search1, this.adSlots.search2r, this.adSlots.search3r]);
+  }
+
+  public toggleBubbleFilterBackdrop(active: boolean): void {
+    this.showBackdrop = active;
   }
 }
