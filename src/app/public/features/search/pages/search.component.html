@@ -1,8 +1,10 @@
-<div class="Search" [class.Search--with-backdrop]="showBackdrop">
-  <tsl-search-filters class="Search__filters position-fixed" (bubbleFilterOpenStateChange)="toggleBubbleFilterBackdrop($event)">
+<div class="Search">
+  <tsl-search-filters class="Search__filters position-fixed" 
+    [class.Search__filters--with-backdrop]="showBackdrop"
+    (bubbleFilterOpenStateChange)="toggleBubbleFilterBackdrop($event)">
   </tsl-search-filters>
 
-  <tsl-search-layout class="Search__layout d-block">
+  <tsl-search-layout class="Search__layout d-block" >
     <div top class="d-block h-100 position-relative">
       <tsl-sky [adSlot]="adSlots.search1"></tsl-sky>
     </div>
