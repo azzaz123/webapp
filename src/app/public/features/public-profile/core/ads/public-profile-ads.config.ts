@@ -4,12 +4,12 @@ import {
   AD_MOBILE_MAPPING,
   AD_MOBILE_SCREEN_SIZE,
   AD_TABLET_SCREEN_SIZE,
-  AD_TABLE_MAPPING,
+  AD_TABLET_MAPPING,
 } from '@core/ads/constants/ad-slots';
-import { AdSlot } from '@core/ads/models';
+import { AdSlotConfiguration } from '@core/ads/models';
 import { DeviceType } from '@core/device/deviceType.enum';
 
-export const PUBLIC_PROFILE_AD: AdSlot = {
+export const PUBLIC_PROFILE_AD: AdSlotConfiguration = {
   name: '130868815/web/user2',
   id: 'sky-unit-user-2',
   sizes: AD_DESKTOP_MAPPING,
@@ -20,7 +20,7 @@ export const PUBLIC_PROFILE_AD: AdSlot = {
     },
     tablet: {
       screenSize: AD_TABLET_SCREEN_SIZE,
-      mapping: AD_TABLE_MAPPING,
+      mapping: AD_TABLET_MAPPING,
     },
     mobile: {
       screenSize: AD_MOBILE_SCREEN_SIZE,

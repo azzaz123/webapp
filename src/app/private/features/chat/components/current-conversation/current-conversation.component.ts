@@ -10,7 +10,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { AdSlot } from '@core/ads/models';
+import { AdSlotConfiguration } from '@core/ads/models';
 import { AdsService } from '@core/ads/services';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
@@ -69,7 +69,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   public noMessages = 0;
   public isConversationChanged: boolean;
   public isTopBarExpanded = false;
-  public chatRightAdSlot: AdSlot = CHAT_AD_SLOTS;
+  public chatRightAdSlot: AdSlotConfiguration = CHAT_AD_SLOTS;
 
   constructor(
     private eventService: EventService,

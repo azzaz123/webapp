@@ -6,7 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { EventService } from '../../../core/event/event.service';
-import { ItemChangeEvent } from '@features/catalog/core/item-change.interface';
+import { ItemChangeEvent } from '@private/features/catalog/core/item-change.interface';
 
 @Component({
   selector: 'tsl-catalog-card',

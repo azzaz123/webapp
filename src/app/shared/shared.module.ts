@@ -21,7 +21,6 @@ import { TooManyItemsModalComponent } from './catalog/modals/too-many-items-moda
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
 import { CountdownComponent } from './countdown/countdown.component';
-import { DateCountDownComponent } from './date-countdown/date-countdown.component';
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
 import { DisableControlDirective } from './forms/disable-control.directive';
 import { GeolocationModule } from './geolocation/geolocation.module';
@@ -72,6 +71,7 @@ import { UnarchiveButtonComponent } from './unarchive-button/unarchive-button.co
 import { UploaderModule } from './uploader/uploader.module';
 import { UserAvatarModule } from './user-avatar/user-avatar.module';
 import { UserCoverModule } from './user-cover/user-cover.module';
+import { DateCountDownModule } from './date-countdown/date-countdown.module';
 
 @NgModule({
   imports: [
@@ -96,6 +96,7 @@ import { UserCoverModule } from './user-cover/user-cover.module';
     SpinnerModule,
     UserCoverModule,
     ButtonModule,
+    DateCountDownModule,
   ],
   exports: [
     AdModule,
@@ -106,6 +107,7 @@ import { UserCoverModule } from './user-cover/user-cover.module';
     CardModule,
     CommonModule,
     UploaderModule,
+    AdModule,
     RestrictInputDirective,
     HeaderComponent,
     SoldModalComponent,
@@ -155,10 +157,10 @@ import { UserCoverModule } from './user-cover/user-cover.module';
     FullScreenModalComponent,
     DisableControlDirective,
     SvgIconModule,
-    DateCountDownComponent,
     DropdownModule,
     WallacoinsDisabledModalComponent,
     ButtonModule,
+    DateCountDownModule,
   ],
   declarations: [
     ConfirmationModalComponent,
@@ -214,7 +216,6 @@ import { UserCoverModule } from './user-cover/user-cover.module';
     FullScreenModalComponent,
     DisableControlDirective,
     RouterLinkDirectiveStub,
-    DateCountDownComponent,
     BumpSuggestionModalComponent,
     WallacoinsDisabledModalComponent,
   ],

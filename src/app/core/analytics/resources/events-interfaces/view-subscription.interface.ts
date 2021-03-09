@@ -14,6 +14,10 @@ export interface ViewSubscription {
    */
   screenId: 191;
   /**
+   * All the subscription category ids that are shown as free trial in ascending order
+   */
+  freeTrialSubscriptions?: string;
+  /**
    * Whether the user is a PRO
    */
   isPro: boolean;

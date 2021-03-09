@@ -1,4 +1,4 @@
-import { OrderEvent } from '@features/catalog/components/selected-items/selected-product.interface';
+import { OrderEvent } from '@private/features/catalog/components/selected-items/selected-product.interface';
 import { clone } from 'lodash-es';
 import * as moment from 'moment';
 import { Observable, of } from 'rxjs';
@@ -243,8 +243,11 @@ export const ITEM_FASHION_EXTRA_INFO: ItemExtraInfo = {
     name: 'Accessories',
   },
   brand: 'Zara',
+  model: 'Ring',
+  condition: 'new',
   size: {
     id: '1',
+    text: 'XXL / 48 / 58',
   },
   gender: 'male',
 };
@@ -276,6 +279,34 @@ export const MOCK_ITEM: Item = new Item(
   ITEM_DATA.modified_date,
   ITEM_DATA.url,
   ITEM_DATA.flags,
+  ITEM_DATA.actions_allowed,
+  ITEM_DATA.sale_conditions,
+  ITEM_DATA.main_image,
+  ITEM_DATA.images,
+  ITEM_DATA.web_slug,
+  ITEM_DATA.published_date,
+  ITEM_DATA.delivery_info
+);
+
+export const MOCK_ITEM_SOLD: Item = new Item(
+  ITEM_DATA.id,
+  ITEM_DATA.legacy_id,
+  ITEM_DATA.owner,
+  ITEM_DATA.title,
+  ITEM_DATA.description,
+  ITEM_DATA.category_id,
+  ITEM_DATA.location,
+  ITEM_DATA.sale_price,
+  ITEM_DATA.currency_code,
+  ITEM_DATA.modified_date,
+  ITEM_DATA.url,
+  {
+    pending: false,
+    sold: true,
+    reserved: false,
+    banned: false,
+    expired: false,
+  },
   ITEM_DATA.actions_allowed,
   ITEM_DATA.sale_conditions,
   ITEM_DATA.main_image,

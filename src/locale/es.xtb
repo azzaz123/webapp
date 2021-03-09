@@ -1199,7 +1199,7 @@
   <translation id="FooterSocialFacebookLabel">wallapop, la web y app para comprar y vender, también está en Facebook</translation>
   <translation id="FooterSocialTwitterLabel">wallapop, la web y app para comprar y vender, también está en Twitter</translation>
   <translation id="FooterSocialInstagramLabel">wallapop, la web y app para comprar y vender, también está en Instagram</translation>
-  
+
   <translation id="EmptyHistory">Tu historial está vacío</translation>
   <translation id="LoadingData">Estamos cargando tu histórico de facturas...</translation>
   <translation id="NotLoadedInvoices">Lo sentimos, en estos momentos no podemos cargar tus facturas. Intenta de nuevo más tarde.</translation>
@@ -1297,6 +1297,10 @@
   <translation id="FreeTrial">Prueba gratuita</translation>
   <translation id="KnowMore">Saber más</translation>
   <translation id="TryProSlotDescription">¿Quieres impulsar tu negocio online? ¡Conviértete en PRO!</translation>
+  <translation id="Feature">Destácalo</translation>
+  <translation id="checkAsReservedItem">Marcar como reservado</translation>
+  <translation id="checkAsSoldItem">Marcar como vendido</translation>
+  <translation id="deleteItem">Eliminar producto</translation>
   <translation id="Buy">Venta</translation>
   <translation id="Rent">Alquiler</translation>
   <translation id="EditedMinutesAgo">Editado hace <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> minutos</translation>
@@ -1311,4 +1315,14 @@
   <translation id="SubscriptionBenefitsSubtitle">¿Quieres impulsar tu negocio online? ¡Conviértete en PRO!</translation>
   <translation id="SubscriptionBenefitsFooterTitle">¿Tienes alguna pregunta?</translation>
   <translation id="SubscriptionBenefitsFooterSubtitle">Encuentra respuestas <ph name="START_LINK"/>aquí<ph name="CLOSE_LINK"/>.</translation>
+  <translation id="FilterOptionPostedAgo_hours">Horas</translation>
+  <translation id="FilterOptionPostedAgo_days">Días</translation>
+  <translation id="FilterOptionGender_male">Hombre</translation>
+  <translation id="FilterOptionGender_female">Mujer</translation>
+  <translation id="Condition_UnOpened">Sin abrir</translation>
+  <translation id="Condition_Unworn">Sin estrenar</translation>
+  <translation id="Condition_InBox">En su caja</translation>
+  <translation id="Condition_AsGoodAsNew">Como nuevo</translation>
+  <translation id="Condition_Fair">En condiciones aceptables</translation>
+  <translation id="Condition_HasGivenItAll">Puede que toque repararlo</translation>
 </translationbundle>

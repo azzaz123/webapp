@@ -17,4 +17,8 @@ export interface ViewRegisterVerificationScreen {
    * Identifier of the register verification screen
    */
   screenId: 222;
+  /**
+   * If the user has given consent for communications
+   */
+  communicationsConsent?: boolean;
 }

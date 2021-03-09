@@ -40,25 +40,20 @@ $item-detail-carousel-height: 477px;
   }
 
   &__description {
-    white-space: pre-wrap;
+    white-space: pre-line;
     font-size: $font-size-m;
     line-height: normal;
     color: $blue-grey-1;
-    border-bottom: 1px solid $blue-grey-5;
   }
 
   &__carousel {
     height: $item-detail-carousel-height;
-    &--active {
-      cursor: pointer;
-    }
   }
 
   &__stats {
     font-size: $font-size-m;
     color: $blue-grey-3;
     line-height: 22px;
-    border-bottom: 1px solid $blue-grey-5;
 
     tsl-svg-icon {
       fill: $blue-grey-3;
@@ -94,6 +89,16 @@ $item-detail-carousel-height: 477px;
   border-bottom: 1px solid $blue-grey-5;
 }
 
+.ItemExtraInfo--car {
+  padding: 10px 0px;
+  border-top: 1px solid $blue-grey-5;
+  border-bottom: 1px solid $blue-grey-5;
+}
+
 tsl-side-sky {
+  top: calc(#{$topbar-height} + #{$spacer * 0.5});
+}
+
+tsl-sky {
   top: calc(#{$topbar-height} + #{$spacer * 0.5});
 }

@@ -1,0 +1,6 @@
+<div [class.d-flex]="variant === FILTER_VARIANT.BUBBLE">
+    <div class="FilterGroup__filter m-1" 
+    [class.FilterGroup__filter--bubble]="variant === FILTER_VARIANT.BUBBLE" *ngFor="let filter of config">
+        <div tslFilterHost></div>
+    </div>
+</div>

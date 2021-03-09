@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AdKeyWords, AdSlotId } from '@core/ads/models';
-import { AdSlot } from '@core/ads/models/ad-slot.interface';
+import { AdSlotConfiguration } from '@core/ads/models/ad-slot.interface';
 import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
-import { BehaviorSubject, combineLatest, merge, Observable, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, combineLatest, merge, Observable, Subject } from 'rxjs';
 import { filter, finalize, map, switchMap, take, tap } from 'rxjs/operators';
 import { AmazonPublisherService, CriteoService, GooglePublisherTagService } from '../../vendors';
 import { LoadAdsService } from '../load-ads/load-ads.service';
@@ -14,7 +14,7 @@ export class AdsService {
   public adKeyWords: AdKeyWords = {} as AdKeyWords;
 
   private readonly refreshEventSubject: Subject<void> = new Subject<void>();
-  private readonly setSlotsSubject: BehaviorSubject<AdSlot[]> = new BehaviorSubject<AdSlot[]>([]);
+  private readonly setSlotsSubject: BehaviorSubject<AdSlotConfiguration[]> = new BehaviorSubject<AdSlotConfiguration[]>([]);
   private readonly _adsReady$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   private get adsReady$(): Observable<boolean> {
@@ -41,8 +41,12 @@ export class AdsService {
     }
   }
 
-  public setSlots(adSlots: AdSlot[]): void {
+  public setSlots(adSlots: AdSlotConfiguration[]): void {
     this.setSlotsSubject.next(adSlots);
+  }
+
+  public setAdKeywords(adKeywords: AdKeyWords): void {
+    this.googlePublisherTagService.setAdKeywords(adKeywords);
   }
 
   public refresh(): void {
@@ -62,9 +66,9 @@ export class AdsService {
   private listenToSlots(): void {
     combineLatest([this.adsReady$, this.setSlotsSubject.asObservable()])
       .pipe(
-        filter(([adsReady, adSlots]: [boolean, AdSlot[]]) => adsReady && adSlots.length > 0),
-        map(([_, adSlots]: [boolean, AdSlot[]]) => adSlots),
-        tap((adSlots: AdSlot[]) => this.googlePublisherTagService.setSlots(adSlots)),
+        filter(([adsReady, adSlots]: [boolean, AdSlotConfiguration[]]) => adsReady && adSlots.length > 0),
+        map(([_, adSlots]: [boolean, AdSlotConfiguration[]]) => adSlots),
+        tap((adSlots: AdSlotConfiguration[]) => this.googlePublisherTagService.setSlots(adSlots)),
         tap(() => this.refresh())
       )
       .subscribe();

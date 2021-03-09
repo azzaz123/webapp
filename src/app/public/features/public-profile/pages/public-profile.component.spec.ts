@@ -7,7 +7,7 @@ import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { IsCurrentUserStub } from '@fixtures/public/core';
-import { AdComponentStubComponent } from '@fixtures/shared';
+import { AdComponentStub } from '@fixtures/shared';
 import { IMAGE, MOCK_FULL_USER_FEATURED, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { APP_PATHS } from 'app/app-routing-constants';
 import { of, throwError } from 'rxjs';
@@ -30,7 +30,7 @@ describe('PublicProfileComponent', () => {
     };
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      declarations: [PublicProfileComponent, IsCurrentUserStub, AdComponentStubComponent],
+      declarations: [PublicProfileComponent, IsCurrentUserStub, AdComponentStub],
       providers: [
         {
           provide: ActivatedRoute,
@@ -181,10 +181,10 @@ describe('PublicProfileComponent', () => {
 
         component.ngOnInit();
         fixture.detectChanges();
-        const adComponent: DebugElement = fixture.debugElement.query(By.directive(AdComponentStubComponent));
+        const adComponent: DebugElement = fixture.debugElement.query(By.directive(AdComponentStub));
 
         expect(adComponent).toBeTruthy();
-        expect((<AdComponentStubComponent>adComponent.componentInstance).adSlot).toEqual(PUBLIC_PROFILE_AD);
+        expect((<AdComponentStub>adComponent.componentInstance).adSlot).toEqual(PUBLIC_PROFILE_AD);
       });
 
       it('should not an ad when is diferent of mobile devices', () => {
@@ -192,7 +192,7 @@ describe('PublicProfileComponent', () => {
 
         component.ngOnInit();
         fixture.detectChanges();
-        const adComponent = fixture.debugElement.query(By.directive(AdComponentStubComponent));
+        const adComponent = fixture.debugElement.query(By.directive(AdComponentStub));
 
         expect(adComponent).toBeFalsy();
       });

@@ -4,9 +4,9 @@ import {
   AD_MOBILE_MAPPING,
   AD_MOBILE_SCREEN_SIZE,
   AD_TABLET_SCREEN_SIZE,
-  AD_TABLE_MAPPING,
+  AD_TABLET_MAPPING,
 } from '@core/ads/constants';
-import { AdKeyWords, AdSlot, AdSlotId } from '@core/ads/models';
+import { AdKeyWords, AdSlotConfiguration, AdSlotId } from '@core/ads/models';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { of } from 'rxjs';
 
@@ -16,6 +16,7 @@ export const MockAdsService = {
   refresh: () => {},
   displayAdBySlotId: (adSlotId) => {},
   setSlots: (adSlots) => {},
+  setAdKeywords: (adKeywords: AdKeyWords) => {},
 };
 
 export const MockAmazonPublisherService = {
@@ -35,8 +36,9 @@ export const MockGooglePublisherTagService = {
   setTargetingByAdsKeywords: () => {},
   setAdsSegmentation: () => {},
   displayAdBySlotId: (id: AdSlotId) => {},
-  setSlots: (slots: AdSlot) => {},
+  setSlots: (slots: AdSlotConfiguration) => {},
   refreshAds: () => {},
+  setAdKeywords: (adKeywords: AdKeyWords) => {},
 };
 
 export const MockLoadAdsService = {
@@ -57,10 +59,10 @@ export const MockAdsKeywords: AdKeyWords = {
 
 export const MockAdsKeywordsService = {
   adKeywords: MockAdsKeywords,
-  updateAdKeywords: () => {},
+  loadAdKeywords: () => {},
 };
 
-export const MockAdSlots: AdSlot[] = [
+export const MockAdSlots: AdSlotConfiguration[] = [
   {
     id: 'div-gpt-ad-1508490196308-0',
     name: '/130868815/chat_right',
@@ -79,7 +81,7 @@ export const MockAdSlots: AdSlot[] = [
       },
       tablet: {
         screenSize: AD_TABLET_SCREEN_SIZE,
-        mapping: AD_TABLE_MAPPING,
+        mapping: AD_TABLET_MAPPING,
       },
       mobile: {
         screenSize: AD_MOBILE_SCREEN_SIZE,

@@ -198,6 +198,7 @@ export class I18nService {
       cardNumberIsNotValid: "Card number isn't valid.",
       cvcNumberIsNotValid: "CVC number isn't valid.",
       cardDateIsNotValid: "Card date isn't valid.",
+      deleteItemError: 'There was an error deleting your product',
     },
     es: {
       yes: 'Sí',
@@ -394,6 +395,7 @@ export class I18nService {
       cardNumberIsNotValid: 'El número de la tarjeta no es válido.',
       cvcNumberIsNotValid: 'El CVC de la tarjeta no es válido.',
       cardDateIsNotValid: 'La fecha de la tarjeta no es válida.',
+      deleteItemError: 'Hubo un error borrando tu producto',
     },
   };
 
