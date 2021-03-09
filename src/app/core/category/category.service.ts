@@ -39,8 +39,8 @@ export class CategoryService {
     const defaultIcon = `${iconPath}All.svg`;
 
     return this.getCategories().pipe(
-      map(() => {
-        const categoryIcon = this.categories?.find((category) => category.category_id === categoryId)?.icon_id;
+      map((categories) => {
+        const categoryIcon = categories?.find((category) => category.category_id === categoryId)?.icon_id;
         return categoryIcon ? `${iconPath}${categoryIcon}.svg` : defaultIcon;
       }),
       catchError(() => of(defaultIcon))

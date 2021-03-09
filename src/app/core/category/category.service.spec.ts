@@ -7,8 +7,10 @@ import { HttpParams } from '@angular/common/http';
 import { LOCALE_ID } from '@angular/core';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { environment } from 'environments/environment';
+import { of, throwError } from 'rxjs';
 
 describe('CategoryService', () => {
+  const defaultIcon = '/assets/icons/categories/stroke/All.svg';
   let injector: TestBed;
   let service: CategoryService;
   let httpMock: HttpTestingController;
@@ -128,6 +130,52 @@ describe('CategoryService', () => {
       expect(req.request.method).toBe('GET');
       expect(languageParam).toEqual(paramValue);
       expect(response).toEqual(null);
+    });
+  });
+
+  describe('getCategoryIconById', () => {
+    describe('when the categories petition succed...', () => {
+      beforeEach(() => {
+        spyOn(service, 'getCategories').and.returnValue(of(CATEGORY_DATA_WEB));
+      });
+
+      describe('and the id is in the categories list...', () => {
+        it('should return the category icon', () => {
+          const iconPath = '/assets/icons/categories/stroke/';
+          let response: string;
+
+          service.getCategoryIconById(CATEGORY_DATA_WEB[0].category_id).subscribe((data: string) => {
+            response = data;
+          });
+
+          expect(response).toBe(`${iconPath}${CATEGORY_DATA_WEB[0].icon_id}.svg`);
+        });
+      });
+
+      describe('and the id is NOT in the categories list...', () => {
+        it('should return the default icon', () => {
+          let response: string;
+
+          service.getCategoryIconById(23982382).subscribe((data: string) => {
+            response = data;
+          });
+
+          expect(response).toBe(defaultIcon);
+        });
+      });
+    });
+
+    describe('when the categories petition fails...', () => {
+      it('should return the default icon', () => {
+        spyOn(service, 'getCategories').and.returnValue(throwError('network error'));
+        let response: string;
+
+        service.getCategoryIconById(CATEGORY_DATA_WEB[0].category_id).subscribe((data: string) => {
+          response = data;
+        });
+
+        expect(response).toBe(defaultIcon);
+      });
     });
   });
 });
