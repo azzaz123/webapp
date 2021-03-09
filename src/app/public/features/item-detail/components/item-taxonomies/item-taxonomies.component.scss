@@ -5,6 +5,7 @@ $taxonomy-height: 36px;
   font-size: $font-size-s;
   background-color: $blue-grey-5;
   height: $taxonomy-height;
+  min-width: max-content;
   color: $black;
   padding: 10px 15px;
   border-radius: 25px;

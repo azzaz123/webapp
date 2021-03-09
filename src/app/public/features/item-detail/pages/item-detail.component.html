@@ -20,11 +20,11 @@
                         <span class="ItemDetail__price d-block">{{itemDetail?.item?.salePrice |
                             customCurrency:itemDetail?.item?.currencyCode}}</span>
                         <h1 class="ItemDetail__title my-0">{{itemDetail?.item?.title}}</h1>
-                        <tsl-item-extra-info *ngIf="itemExtraInfo?.length > 0" class="d-block mt-2"
+                        <tsl-item-extra-info *ngIf="itemExtraInfo?.length > 0" class="horizontalScroll d-block mt-2"
                             [ngClass]="{'ItemExtraInfo--car': isItemACar()}"
                             [isCar]="typeCheckService.isCar(itemDetail?.item)" [extraInfo]="itemExtraInfo">
                         </tsl-item-extra-info>
-                        <tsl-item-taxonomies class="d-block mt-2" *ngIf="taxonomiesSpecifications.parentTaxonomy"
+                        <tsl-item-taxonomies class="horizontalScroll d-block mt-3" *ngIf="taxonomiesSpecifications.parentTaxonomy"
                             [iconPath]="taxonomiesSpecifications.icon"
                             [parentTaxonomy]="taxonomiesSpecifications.parentTaxonomy"
                             [childTaxonomy]="taxonomiesSpecifications.childTaxonomy"
