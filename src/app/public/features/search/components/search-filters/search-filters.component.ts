@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FILTER_VARIANT } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.enum';
 import { CAR_CONFIGURATION_FILTERS } from '@public/shared/components/filters/core/enums/configuration/car/car-configuration-filters';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
@@ -20,6 +20,8 @@ export class SearchFiltersComponent {
   public drawerFiltersConfig = CAR_CONFIGURATION_FILTERS.CONTENT;
   public filterValues: FilterParameter[] = [];
 
+  @Output() bubbleFilterOpenStateChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   constructor() {}
 
   public toggleDrawer(): void {
@@ -36,5 +38,9 @@ export class SearchFiltersComponent {
 
   public drawerChange(value): void {
     console.log('drawerChange', value);
+  }
+
+  public bubbleOpenStateChange(isOpen: boolean): void {
+    this.bubbleFilterOpenStateChange.emit(isOpen);
   }
 }
