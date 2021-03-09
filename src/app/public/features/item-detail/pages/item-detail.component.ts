@@ -57,6 +57,7 @@ export class ItemDetailComponent implements OnInit {
     icon: string;
   } = {
     parentTaxonomy: null,
+    childTaxonomy: null,
     icon: null,
   };
 
@@ -209,7 +210,7 @@ export class ItemDetailComponent implements OnInit {
     const parentTaxonomy = this.itemDetail?.item?.extraInfo?.object_type?.parent_object_type?.name;
     const defaultTaxonomy = this.itemDetail?.item?.extraInfo?.object_type?.name;
 
-    if (parentTaxonomy) {
+    if (defaultTaxonomy) {
       this.categoryService.getCategoryIconById(this.itemDetail?.item?.categoryId).subscribe((icon) => {
         this.taxonomiesSpecifications.icon = icon;
         this.taxonomiesSpecifications.parentTaxonomy = parentTaxonomy || defaultTaxonomy;
