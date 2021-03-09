@@ -1,5 +1,7 @@
 @import '~style/common';
 
+$filters-height: 44px;
+
 .Search {
   &--with-backdrop {
     &::before {
@@ -12,6 +14,17 @@
       width: 100%;
       z-index: 200;
     }
+  }
+
+  &__layout {
+    padding-top: $filters-height;
+  }
+
+  &__filters {
+    background-color: $white;
+    left: 0;
+    right: 0;
+    z-index: 100;
   }
 
   &__ad {
