@@ -46,6 +46,7 @@ import { ItemSpecificationsModule } from '../components/item-specifications/item
 import { ADS_ITEM_DETAIL } from '../core/ads/item-detail-ads.config';
 import { EllapsedTimeModule } from '../core/directives/ellapsed-time.module';
 import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
+import { MapExtraInfoService } from '../core/services/map-extra-info/map-extra-info.service';
 import { MapSpecificationsService } from '../core/services/map-specifications/map-specifications.service';
 import { ItemDetailComponent } from './item-detail.component';
 
@@ -60,6 +61,7 @@ describe('ItemDetailComponent', () => {
   const fallbackMapClass = '.ItemDetail__fakeMap';
   const locationClass = '.ItemDetail__location';
   const itemContentClass = '.ItemDetail__content';
+  const carExtraInfoClass = '.ItemExtraInfo--car';
   const itemId = '123';
 
   const MOCK_ITEM_DETAIL = {
@@ -70,6 +72,8 @@ describe('ItemDetailComponent', () => {
   let component: ItemDetailComponent;
   let fixture: ComponentFixture<ItemDetailComponent>;
   let itemDetailService: ItemDetailService;
+  let mapExtraInfoService: MapExtraInfoService;
+  let typeCheckService: TypeCheckService;
   let deviceService: DeviceService;
   let decimalPipe: DecimalPipe;
   let itemDetailImagesModal: ItemFullScreenCarouselComponent;
@@ -134,9 +138,24 @@ describe('ItemDetailComponent', () => {
             },
           },
         },
+        {
+          provide: MapExtraInfoService,
+          useValue: {
+            mapExtraInfo: () => {
+              return ['IPhone 12'];
+            },
+          },
+        },
         MapItemService,
         SocialMetaTagService,
-        TypeCheckService,
+        {
+          TypeCheckService,
+          useValue: {
+            isCar: () => {
+              return false;
+            },
+          },
+        },
         ItemFullScreenCarouselComponent,
         CheckSessionService,
         ItemCardService,
@@ -156,6 +175,8 @@ describe('ItemDetailComponent', () => {
     el = de.nativeElement;
     router = TestBed.inject(Router);
     itemDetailService = TestBed.inject(ItemDetailService);
+    typeCheckService = TestBed.inject(TypeCheckService);
+    mapExtraInfoService = TestBed.inject(MapExtraInfoService);
     itemDetailImagesModal = TestBed.inject(ItemFullScreenCarouselComponent);
     fixture.detectChanges();
   });
@@ -473,6 +494,12 @@ describe('ItemDetailComponent', () => {
       it('should show the item specifications...', () => {
         expect(fixture.debugElement.query(By.directive(ItemSpecificationsComponent))).toBeTruthy();
       });
+
+      it('should be typed as a car...', () => {
+        spyOn(typeCheckService, 'isCar').and.returnValue(true);
+
+        expect(component.isItemACar()).toBe(true);
+      });
     });
 
     describe('when the item is a real estate ...', () => {
@@ -487,6 +514,11 @@ describe('ItemDetailComponent', () => {
       it('should show the item specifications...', () => {
         expect(fixture.debugElement.query(By.directive(ItemSpecificationsComponent))).toBeTruthy();
       });
+      it('should NOT be typed as a car...', () => {
+        spyOn(typeCheckService, 'isCar').and.returnValue(false);
+
+        expect(component.isItemACar()).toBe(false);
+      });
     });
 
     describe('when the item is NOT a real estate or a car...', () => {
@@ -500,6 +532,73 @@ describe('ItemDetailComponent', () => {
 
       it('should show the item specifications...', () => {
         expect(fixture.debugElement.query(By.directive(ItemSpecificationsComponent))).toBeFalsy();
+      });
+
+      it('should NOT be typed as a car...', () => {
+        spyOn(typeCheckService, 'isCar').and.returnValue(false);
+
+        expect(component.isItemACar()).toBe(false);
+      });
+    });
+  });
+
+  describe('when we have a car, fashion or cellphone as item', () => {
+    describe('and we have extra info...', () => {
+      beforeEach(() => {
+        component.itemDetail.item = MOCK_ITEM_FASHION;
+
+        component.ngOnInit();
+        fixture.detectChanges();
+      });
+      it('should be shown the item extra info content', () => {
+        const extraInfo = fixture.debugElement.query(By.css('tsl-item-extra-info'));
+
+        expect(extraInfo).toBeTruthy();
+      });
+
+      describe('and the item is NOT a car...', () => {
+        beforeEach(() => {
+          component.itemDetail.item = MOCK_ITEM_CELLPHONES;
+
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+        it('should NOT apply the car specificaitons style', () => {
+          const carExtraInfoStyle = fixture.debugElement.query(By.css(carExtraInfoClass));
+
+          expect(carExtraInfoStyle).toBeFalsy();
+        });
+      });
+
+      describe('and the item is a car...', () => {
+        beforeEach(() => {
+          component.itemDetail.item = MOCK_CAR;
+
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+        it('should apply the car specifications style', () => {
+          const carExtraInfoStyle = fixture.debugElement.query(By.css(carExtraInfoClass));
+
+          expect(carExtraInfoStyle).toBeTruthy();
+        });
+      });
+    });
+
+    describe('and we NOT have extra info...', () => {
+      beforeEach(() => {
+        component.itemDetail.item = MOCK_CAR;
+        spyOn(mapExtraInfoService, 'mapExtraInfo').and.returnValue(null);
+
+        component.ngOnInit();
+        fixture.detectChanges();
+      });
+      it('should NOT be shown the item extra info content', () => {
+        const extraInfo = fixture.debugElement.query(By.css('tsl-item-extra-info'));
+        const carExtraInfoStyle = fixture.debugElement.query(By.css(carExtraInfoClass));
+
+        expect(carExtraInfoStyle).toBeFalsy();
+        expect(extraInfo).toBeFalsy();
       });
     });
   });

@@ -380,6 +380,8 @@ export interface DeliveryInfo {
   min_weight_kg: number;
 }
 
+export type ItemCondition = 'un_opened' | 'un_worn' | 'in_box' | 'new' | 'as_good_as_new' | 'good' | 'fair' | 'has_given_it_all';
+
 export interface ItemExtraInfo {
   object_type?: ItemObjectType;
   brand: string;
@@ -387,8 +389,9 @@ export interface ItemExtraInfo {
   gender?: string;
   size?: {
     id: string;
+    text?: string;
   };
-  condition?: string;
+  condition?: ItemCondition;
 }
 
 export interface ItemDataResponse {

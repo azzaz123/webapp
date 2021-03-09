@@ -140,6 +140,7 @@ export class MapItemService {
             gender: content.extra_info.gender,
             size: {
               id: content.extra_info.size && content.extra_info.size.id ? content.extra_info.size.id.toString() : null,
+              text: content.extra_info?.size?.text || null,
             },
             condition: content.extra_info.condition || null,
           }
