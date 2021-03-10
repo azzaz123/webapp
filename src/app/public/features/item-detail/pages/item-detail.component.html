@@ -7,13 +7,13 @@
             </div>
             <div class="ItemDetail__container__middleSection d-flex flex-column w-100">
                 <div class="ItemDetail__content px-4 pb-5 ">
-                    <tsl-item-detail-header [user]="itemDetail.user" [item]="(itemStoreService.item$ | async)"
+                    <tsl-item-detail-header [user]="itemDetail.user" [item]="itemDetail.item"
                         [isOwner]="(itemDetail.user?.id | isCurrentUser | async)">
                     </tsl-item-detail-header>
                     <div class="ItemDetail__carousel position-relative w-100">
                         <tsl-item-images-carousel [isActive]="!itemDetail.item?.flags?.expired" [images]="images"
-                            [itemFlags]="(itemStoreService.item$ | async)?.flags" 
-                            [itemVisibilityFlags]="(itemStoreService.item$ | async)?.bumpFlags"
+                            [itemFlags]="itemDetail.item?.flags" 
+                            [itemVisibilityFlags]="itemDetail.item?.bumpFlags"
                             (imageClick)="openItemDetailImage($event)">
                         </tsl-item-images-carousel>
                     </div>
