@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
+import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 
-import { ItemStoreService } from './item-store.service';
+import { ItemStoreService } from './item-detail-store.service';
 
 describe('ItemStoreService', () => {
   let service: ItemStoreService;
@@ -23,6 +24,16 @@ describe('ItemStoreService', () => {
       expect(service.item).toEqual(MOCK_ITEM);
       service.item$.subscribe((item) => {
         expect(item).toEqual(MOCK_ITEM);
+      });
+    });
+  });
+
+  describe('when setting the user...', () => {
+    it('should update the value', () => {
+      service.user = MOCK_USER;
+      expect(service.user).toEqual(MOCK_USER);
+      service.user$.subscribe((user) => {
+        expect(user).toEqual(MOCK_USER);
       });
     });
   });
