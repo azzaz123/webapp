@@ -69,4 +69,20 @@ describe('SearchComponent', () => {
       });
     });
   });
+  describe('when bubble filter is open', () => {
+    beforeEach(() => {
+      component.toggleBubbleFilterBackdrop(true);
+    });
+    it('should show white backdrop', () => {
+      expect(component.showBackdrop).toBeTruthy();
+    });
+  });
+  describe('when bubble filter is closed', () => {
+    beforeEach(() => {
+      component.toggleBubbleFilterBackdrop(false);
+    });
+    it('should show white backdrop', () => {
+      expect(component.showBackdrop).toBeFalsy();
+    });
+  });
 });
