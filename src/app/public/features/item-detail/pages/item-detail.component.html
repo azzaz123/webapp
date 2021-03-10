@@ -75,7 +75,7 @@
                         [twitter]="socialShare.twitter" [email]="socialShare.email"></tsl-social-share>
                 </div>
                 <tsl-recommended-items
-                    *ngIf="(recommendedItems$ |async)?.recommended_items?.length && showItemRecommendations"
+                    *ngIf="(recommendedItems$ |async)?.recommended_items?.length && isItemRecommendations"
                     class="mt-3" [recommendedItems]="(recommendedItems$ | async)">
                 </tsl-recommended-items>
                 <div *ngIf="device === deviceType.MOBILE" class="pt-4">
