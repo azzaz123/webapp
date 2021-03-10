@@ -268,6 +268,26 @@ describe('SubscriptionComponent', () => {
       });
     });
 
+    describe('when has no trial available', () => {
+      it('should send event', () => {
+        spyOn(analyticsService, 'trackPageView');
+        const expectedPageViewEvent: AnalyticsPageView<ViewSubscription> = {
+          name: ANALYTICS_EVENT_NAMES.ViewSubscription,
+          attributes: {
+            screenId: SCREEN_IDS.SubscriptionManagement,
+            isPro: true,
+            freeTrialSubscriptions: null,
+            source: null,
+          },
+        };
+
+        component.ngOnInit();
+
+        expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageViewEvent);
+      });
+    });
+
     afterEach(() => {
       TestBed.resetTestingModule();
     });
