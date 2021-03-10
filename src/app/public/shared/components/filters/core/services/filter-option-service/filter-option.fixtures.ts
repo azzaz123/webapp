@@ -4,6 +4,28 @@ import { ObjectType } from './option-responses/object-type.interface';
 import { BrandModel } from './option-responses/brand-model.interface';
 import { SizeNGenderResponse } from './option-responses/fashion-size-n-gender.interface';
 import { FashionBrand } from './option-responses/fashion-brand.interface';
+import { of } from 'rxjs/internal/observable/of';
+import { Observable } from 'rxjs';
+import { QueryParams } from '@public/shared/components/filters/core/interfaces/query-params.interface';
+import { PaginationOptions } from '../../interfaces/pagination-options.interface';
+
+export class MockFilterOptionApiService {
+  public getApiOptions(method: string, params: QueryParams, paginationOptions: PaginationOptions): Observable<unknown> {
+    return this[method](params, paginationOptions);
+  }
+
+  public apiMethod(): Observable<unknown> {
+    return of({});
+  }
+}
+
+export class MockFilterOptionMapperService {
+  public formatApiResponse(method: string, response: unknown, params: QueryParams): FilterOption[] {
+    return this[method](response, params);
+  }
+
+  public mapperMethod(): void {}
+}
 
 export const iconOption: IconOption = {
   icon_id: 'icon',
