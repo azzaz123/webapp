@@ -2,16 +2,16 @@ import { TestBed } from '@angular/core/testing';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 
-import { ItemStoreService } from './item-detail-store.service';
+import { ItemDetailStoreService } from './item-detail-store.service';
 
-describe('ItemStoreService', () => {
-  let service: ItemStoreService;
+describe('ItemDetailStoreService', () => {
+  let service: ItemDetailStoreService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ItemStoreService],
+      providers: [ItemDetailStoreService],
     });
-    service = TestBed.inject(ItemStoreService);
+    service = TestBed.inject(ItemDetailStoreService);
   });
 
   it('should be created', () => {

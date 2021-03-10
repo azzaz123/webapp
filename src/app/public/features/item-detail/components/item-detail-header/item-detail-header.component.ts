@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { User } from '@core/user/user';
 import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
 import { UserStats } from '@core/user/user-stats.interface';
@@ -22,6 +22,8 @@ export class ItemDetailHeaderComponent implements OnInit {
   @Input() user: User;
   @Input() item: Item;
   @Input() isOwner = false;
+  @Output() updateReservedItem: EventEmitter<boolean> = new EventEmitter();
+  @Output() updateSoldItem: EventEmitter<void> = new EventEmitter();
 
   public readonly USER_INFO_SIZE = USER_INFO_SIZE;
   public userStats: UserStats;
@@ -50,15 +52,10 @@ export class ItemDetailHeaderComponent implements OnInit {
   }
 
   public reserveItem(): void {
-    if (!this.item.reserved) {
-      this.itemDetailService.reserveItem(this.item.id, true).subscribe(() => {
-        this.item.reserved = true;
-      });
-    } else {
-      this.itemDetailService.reserveItem(this.item.id, false).subscribe(() => {
-        this.item.reserved = false;
-      });
-    }
+    const isReserved = !this.item.reserved ? true : false;
+    this.itemDetailService.reserveItem(this.item.id, isReserved).subscribe(() => {
+      this.updateReservedItem.emit(isReserved);
+    });
   }
 
   public soldItem(): void {
@@ -67,7 +64,7 @@ export class ItemDetailHeaderComponent implements OnInit {
     });
     modalRef.componentInstance.item = this.item;
     modalRef.result.then(() => {
-      this.item.sold = true;
+      this.updateSoldItem.emit();
       this.checkShowOptions();
     });
   }

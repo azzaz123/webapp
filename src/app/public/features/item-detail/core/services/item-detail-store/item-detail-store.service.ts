@@ -2,7 +2,7 @@ import { Item } from '@core/item/item';
 import { User } from '@core/user/user';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-export class ItemStoreService {
+export class ItemDetailStoreService {
   private readonly _user = new BehaviorSubject<User>(null);
   private readonly _item = new BehaviorSubject<Item>(null);
 
