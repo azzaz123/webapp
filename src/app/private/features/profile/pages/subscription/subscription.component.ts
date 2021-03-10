@@ -165,10 +165,12 @@ export class SubscriptionsComponent implements OnInit {
       });
   }
 
-  private trackPageView() {
+  private trackPageView(): void {
     const source = (this.route.snapshot.queryParamMap.get('source') as SUBSCRIPTION_SOURCE) || null;
     const subscriptionIds = this.subscriptionsService.getTrialSubscriptionsIds(this.subscriptions);
+
     let stringIds: string = null;
+
     if (subscriptionIds.length > 0) {
       stringIds = subscriptionIds.sort((a, b) => a - b).join(', ');
     }
