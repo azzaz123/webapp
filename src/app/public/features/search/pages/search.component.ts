@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { AdsShoppingService } from '@core/ads/services/ads/ads-shopping.service';
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
@@ -19,13 +20,16 @@ export class SearchComponent implements OnInit {
   public device: DeviceType;
   public DevicesType: typeof DeviceType = DeviceType;
 
-  constructor(private adsService: AdsService, private deviceService: DeviceService) {
+  public conatinerAd = { container: 'afshcontainer', width: 500, height: 400 };
+
+  constructor(private adsService: AdsService, private deviceService: DeviceService, private adsShoppingService: AdsShoppingService) {
     this.device = this.deviceService.getDeviceType();
   }
 
   public ngOnInit() {
-    this.items = Array(100).fill(MOCK_ITEM);
+    this.items = Array(50).fill(MOCK_ITEM);
 
     this.adsService.setSlots([this.adSlots.search1, this.adSlots.search2r, this.adSlots.search3r]);
+    setTimeout(() => this.adsShoppingService.displaySlot(), 2000);
   }
 }
