@@ -1,9 +1,11 @@
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
-import { ItemCondition, ItemExtraInfo } from '@core/item/item-response.interface';
+import { ItemExtraInfo } from '@core/item/item-response.interface';
 import { Injectable } from '@angular/core';
 import { Car } from '@core/item/car';
 import { Item } from '@core/item/item';
 import { Size } from '@public/shared/components/filters/core/services/filter-option-service/option-responses/fashion-size-n-gender.interface';
+import { ItemConditions } from '@core/item/item-conditions';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -61,7 +63,7 @@ export class MapExtraInfoService {
     return label !== null && label !== undefined && label !== '';
   }
 
-  private getTranslatedCondition(condition: ItemCondition): string {
+  private getTranslatedCondition(condition: ItemConditions): string {
     switch (condition) {
       case 'un_opened':
         return $localize`:@@Condition_UnOpened:Unopened`;

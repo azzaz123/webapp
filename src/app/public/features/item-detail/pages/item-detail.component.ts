@@ -21,6 +21,7 @@ import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
 import { CounterSpecifications } from '../components/item-specifications/interfaces/item.specifications.interface';
+import { ItemTaxonomies } from '../components/item-taxonomies/interfaces/item-taxonomies.interface';
 import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
 import { MapExtraInfoService } from '../core/services/map-extra-info/map-extra-info.service';
 import { MapSpecificationsService } from '../core/services/map-specifications/map-specifications.service';
@@ -51,11 +52,7 @@ export class ItemDetailComponent implements OnInit {
   public itemSpecifications: CounterSpecifications[];
   public itemDetail: ItemDetail;
   public adsSlotsItemDetail: ItemDetailAdSlotsConfiguration = ADS_ITEM_DETAIL;
-  public taxonomiesSpecifications: {
-    parentTaxonomy: string;
-    childTaxonomy?: string;
-    icon: string;
-  } = {
+  public taxonomiesSpecifications: ItemTaxonomies = {
     parentTaxonomy: null,
     childTaxonomy: null,
     icon: null,
@@ -211,7 +208,7 @@ export class ItemDetailComponent implements OnInit {
     const defaultTaxonomy = this.itemDetail?.item?.extraInfo?.object_type?.name;
 
     if (defaultTaxonomy) {
-      this.categoryService.getCategoryIconById(this.itemDetail?.item?.categoryId).subscribe((icon) => {
+      this.categoryService.getCategoryIconById(this.itemDetail?.item?.categoryId).subscribe((icon: string) => {
         this.taxonomiesSpecifications.icon = icon;
         this.taxonomiesSpecifications.parentTaxonomy = parentTaxonomy || defaultTaxonomy;
         this.taxonomiesSpecifications.childTaxonomy = parentTaxonomy ? defaultTaxonomy : null;
