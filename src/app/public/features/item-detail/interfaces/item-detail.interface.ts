@@ -5,8 +5,8 @@ import { ItemDetailResponse } from './item-detail-response.interface';
 import { SocialShare } from './social-share.interface';
 
 export interface ItemDetail extends ItemDetailResponse {
-  itemSpecifications: CounterSpecifications[];
-  itemLocation: ItemDetailLocation;
+  specifications: CounterSpecifications[];
+  location: ItemDetailLocation;
   socialShare: SocialShare;
   coordinate: Coordinate;
   images: string[];

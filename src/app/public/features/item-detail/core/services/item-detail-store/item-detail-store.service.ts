@@ -40,6 +40,10 @@ export class ItemDetailStoreService {
     );
   }
 
+  public markItemAsSold(): void {
+    this.itemDetail.item.sold = true;
+  }
+
   public markItemAsUnreserved(itemUUID: string): Observable<ReserveItemBodyResponse> {
     return this.itemDetailService.reserveItem(itemUUID, false).pipe(
       tap(() => {
