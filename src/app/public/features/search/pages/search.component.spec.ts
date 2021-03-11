@@ -81,7 +81,7 @@ describe('SearchComponent', () => {
     beforeEach(() => {
       component.toggleBubbleFilterBackdrop(false);
     });
-    it('should show white backdrop', () => {
+    it('should hide white backdrop', () => {
       expect(component.showBackdrop).toBeFalsy();
     });
   });
