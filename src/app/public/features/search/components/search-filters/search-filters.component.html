@@ -9,7 +9,7 @@
 
 
 <tsl-drawer [isOpen]="drawerConfig.isOpen" [offsetTop]="drawerConfig.offsetTop" [hasApply]="drawerConfig.hasApply"
-(cancel)="closeDrawer()" (apply)="closeDrawer()">
+(cancel)="closeDrawer()" (apply)="closeDrawer()" (clickBackdrop)="closeDrawer()">
   <tsl-filter-group 
     [config]="drawerFiltersConfig" 
     [variant]="FILTER_VARIANT.CONTENT" 
