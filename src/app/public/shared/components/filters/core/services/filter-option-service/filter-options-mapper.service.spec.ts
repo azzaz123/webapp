@@ -76,8 +76,12 @@ describe('FilterOptionsMapperService', () => {
 
   describe('when formatting size and gender', () => {
     it('should return FilterOption format', () => {
-      const formattedMaleOptions = service.formatSizeNGender(sizeNGender, SIZE_GENDER.MALE);
-      const formattedFemaleOptions = service.formatSizeNGender(sizeNGender, SIZE_GENDER.FEMALE);
+      const formattedMaleOptions = service.formatSizeNGender(sizeNGender, {
+        gender: SIZE_GENDER.MALE,
+      });
+      const formattedFemaleOptions = service.formatSizeNGender(sizeNGender, {
+        gender: SIZE_GENDER.FEMALE,
+      });
 
       expect(formattedMaleOptions).toEqual([formattedMaleSize]);
       expect(formattedFemaleOptions).toEqual([formattedFemaleSize]);
