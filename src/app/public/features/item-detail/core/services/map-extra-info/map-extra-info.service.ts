@@ -14,16 +14,22 @@ export class MapExtraInfoService {
   private carSpecifications = ['_version', '_year', '_km'];
 
   public mapExtraInfo(item: Item | Car): string[] {
-    const objectToCheck = this.typeCheckService.isCar(item) ? item : item.extraInfo;
-    const specifications = [];
+    if (this.isCarOrPhoneOrFashion(item)) {
+      const objectToCheck = this.typeCheckService.isCar(item) ? item : item.extraInfo;
+      const specifications = [];
 
-    this.specificationKeys(item).forEach((key) => {
-      if (this.specificationExistsAndDefined(objectToCheck, key)) {
-        specifications.push(this.defineSpecification(key, objectToCheck[key]));
-      }
-    });
+      this.specificationKeys(item).forEach((key) => {
+        if (this.specificationExistsAndDefined(objectToCheck, key)) {
+          specifications.push(this.defineSpecification(key, objectToCheck[key]));
+        }
+      });
 
-    return this.getCapitalizedLabels(specifications);
+      return this.getCapitalizedLabels(specifications);
+    }
+  }
+
+  private isCarOrPhoneOrFashion(item: Item | Car): boolean {
+    return this.typeCheckService.isCar(item) || this.typeCheckService.isCellPhoneAccessories(item) || this.typeCheckService.isFashion(item);
   }
 
   private specificationKeys(item: Item | Car): string[] {

@@ -11,7 +11,7 @@ import { RecommenderApiService } from '@public/core/services/api/recommender/rec
 import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
 import { forkJoin, Observable, of } from 'rxjs';
 import { concatMap, mergeMap } from 'rxjs/operators';
-import { ItemDetail } from '../../../interfaces/item-detail.interface';
+import { ItemDetailResponse } from '@public/features/item-detail/interfaces/item-detail-response.interface';
 
 @Injectable()
 export class ItemDetailService {
@@ -22,7 +22,7 @@ export class ItemDetailService {
     private mapItemService: MapItemService
   ) {}
 
-  public getItem(itemId: string): Observable<ItemDetail> {
+  public getItem(itemId: string): Observable<ItemDetailResponse> {
     return this.itemApiService.getItem(itemId).pipe(
       concatMap((item) => {
         return forkJoin([
