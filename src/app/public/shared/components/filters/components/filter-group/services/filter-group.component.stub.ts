@@ -8,17 +8,12 @@ import { FilterHostDirective } from '../directives/filter-host.directive';
   selector: 'tsl-filter-group',
   template: '',
 })
-export class FilterGroupComponentStub implements AfterViewInit, OnDestroy {
+// tslint:disable-next-line: component-class-suffix
+export class FilterGroupComponentStub {
   @ViewChildren(FilterHostDirective) query: QueryList<FilterHostDirective>;
   @Input() initialValues: FilterParameter[];
   @Input() config: FilterConfig<unknown>[] = [];
   @Input() variant: FILTER_VARIANT = FILTER_VARIANT.BUBBLE;
   @Output() valueChange = new EventEmitter<FilterParameter[]>();
   @Output() openStateChange = new EventEmitter<boolean>();
-
-  constructor() {}
-
-  ngAfterViewInit(): void {}
-
-  ngOnDestroy(): void {}
 }
