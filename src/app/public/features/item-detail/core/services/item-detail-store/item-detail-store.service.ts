@@ -6,7 +6,9 @@ import { ItemDetailResponse } from '@public/features/item-detail/interfaces/item
 import { MapItemDetailStoreService } from '../map-item-detail-store/map-item-detail-store.service';
 import { ItemDetail } from '@public/features/item-detail/interfaces/item-detail.interface';
 import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class ItemDetailStoreService {
   constructor(
     private itemDetailService: ItemDetailService,

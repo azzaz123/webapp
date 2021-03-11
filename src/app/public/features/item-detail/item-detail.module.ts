@@ -23,6 +23,7 @@ import { EllapsedTimeModule } from './core/directives/ellapsed-time.module';
 import { itemDetailRoutedComponents, ItemDetailRoutingModule } from './item-detail-routing.module';
 import { ItemExtraInfoComponent } from './components/item-extra-info/item-extra-info.component';
 import { ItemDetailStoreService } from './core/services/item-detail-store/item-detail-store.service';
+import { MapItemDetailStoreService } from './core/services/map-item-detail-store/map-item-detail-store.service';
 
 @NgModule({
   declarations: [itemDetailRoutedComponents, ItemExtraInfoComponent],
@@ -52,6 +53,7 @@ import { ItemDetailStoreService } from './core/services/item-detail-store/item-d
     SocialMetaTagService,
     MapSpecificationsService,
     ItemDetailStoreService,
+    MapItemDetailStoreService,
   ],
 })
 export class ItemDetailModule {}

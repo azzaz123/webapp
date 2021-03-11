@@ -22,13 +22,13 @@ import {
 export class MapSpecificationsService {
   private readonly EMPTY_VALUE = 'EMPTY';
 
-  constructor(private typeCheckService: TypeCheckService, private mapSpecificationsService: MapSpecificationsService) {}
+  constructor(private typeCheckService: TypeCheckService) {}
 
   public mapSpecification(item: Item): CounterSpecifications[] {
     if (this.typeCheckService.isCar(item)) {
-      return this.mapSpecificationsService.mapCarSpecifications(item);
+      return this.mapCarSpecifications(item);
     } else if (this.typeCheckService.isRealEstate(item)) {
-      return this.mapSpecificationsService.mapRealestateSpecifications(item);
+      return this.mapRealestateSpecifications(item);
     }
   }
 
