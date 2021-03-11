@@ -2,8 +2,10 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MockDidomiService } from '@core/ads/vendors/didomi/didomi.mock';
 import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
 import {
-  MockAdSlots,
+  MockAdShoppingPageOptions,
   MockAdsKeywords,
+  MockAdSlots,
+  MockAdSlotShopping,
   MockAmazonPublisherService,
   MockCriteoService,
   MockGooglePublisherTagService,
@@ -79,9 +81,30 @@ describe('AdsService', () => {
     });
   });
 
+  describe('when display ad slot shopping', () => {
+    it('should wait to library ready to display ad shopping', () => {
+      spyOn(MockGooglePublisherTagService, 'displayShopping').and.callThrough();
+
+      service.displayAdShopping(MockAdShoppingPageOptions, MockAdSlotShopping);
+
+      expect(MockGooglePublisherTagService.displayShopping).toHaveBeenCalledTimes(0);
+
+      service.init();
+
+      expect(MockGooglePublisherTagService.displayShopping).toHaveBeenLastCalledWith(MockAdShoppingPageOptions, MockAdSlotShopping);
+    });
+    it('should set ad slot shopping', () => {
+      spyOn(MockGooglePublisherTagService, 'displayShopping').and.callThrough();
+      service.init();
+      service.displayAdShopping(MockAdShoppingPageOptions, MockAdSlotShopping);
+
+      expect(MockGooglePublisherTagService.displayShopping).toHaveBeenCalledWith(MockAdShoppingPageOptions, MockAdSlotShopping);
+    });
+  });
+
   describe('when set ad keywords', () => {
     it('should set ad keywords on google', () => {
-      spyOn(MockGooglePublisherTagService, 'setAdKeywords');
+      spyOn(MockGooglePublisherTagService, 'setAdKeywords').and.callThrough();
 
       service.setAdKeywords(MockAdsKeywords);
 

@@ -4,7 +4,7 @@ import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { CookieService } from 'ngx-cookie';
-import { AdKeyWords, AdSlotConfiguration, AdSlotId, AdSlotShoppingConfiguration } from '../../models';
+import { AdKeyWords, AdShoppingPageOptions, AdSlotConfiguration, AdSlotId, AdSlotShoppingConfiguration } from '../../models';
 
 @Injectable({
   providedIn: 'root',
@@ -73,10 +73,9 @@ export class GooglePublisherTagService {
     });
   }
 
-  displayShopping(pageOptions: any, adSlotShopping: AdSlotShoppingConfiguration): void {
-    this.adsKeywordsService.loadAdKeywords();
-    const adKeywords: AdKeyWords = this.adsKeywordsService.adKeywords;
-    this.googCsa('plas', { ...pageOptions, query: adKeywords }, adSlotShopping);
+  public displayShopping(pageOptions: AdShoppingPageOptions, adSlotShopping: AdSlotShoppingConfiguration): void {
+    const { content }: AdKeyWords = this.adsKeywordsService.adKeywords;
+    this.googCsa('plas', { ...pageOptions, query: content }, adSlotShopping);
   }
 
   private setPubads(): void {

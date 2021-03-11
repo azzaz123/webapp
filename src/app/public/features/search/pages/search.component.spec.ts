@@ -6,6 +6,8 @@ import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { AdComponentStub } from '@fixtures/shared/components/ad.component.stub';
 import { random } from 'faker';
 import { AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
+import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
+import { AdShoppingPageOptionPublicSearchFactory, AD_SHOPPING_PUBLIC_SEARCH } from '../core/ads/shopping/search-ads-shopping.config';
 import { SearchComponent } from './search.component';
 
 describe('WallComponent', () => {
@@ -49,6 +51,16 @@ describe('WallComponent', () => {
       beforeEach(() => {
         spyOn(deviceServiceMock, 'getDeviceType').and.returnValue(DeviceType.DESKTOP);
       });
+
+      it('should set ad keywords', () => {
+        spyOn(MockAdsService, 'setAdKeywords').and.callThrough();
+
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        expect(MockAdsService.setAdKeywords).toHaveBeenCalledWith({ content: 'Iphone 11' });
+      });
+
       it('should configure ads', () => {
         spyOn(MockAdsService, 'setSlots').and.callThrough();
 
@@ -60,6 +72,18 @@ describe('WallComponent', () => {
           AD_PUBLIC_SEARCH.search2r,
           AD_PUBLIC_SEARCH.search3r,
         ]);
+      });
+
+      it('should display ad shopping', () => {
+        spyOn(MockAdsService, 'displayAdShopping').and.callThrough();
+
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        expect(MockAdsService.displayAdShopping).toHaveBeenCalledWith(
+          AdShoppingPageOptionPublicSearchFactory(AdShoppingChannel.SEARCH_PAGE),
+          AD_SHOPPING_PUBLIC_SEARCH
+        );
       });
     });
   });

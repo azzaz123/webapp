@@ -7,7 +7,6 @@ import {
   AD_TABLET_MAPPING,
   AD_TABLET_SCREEN_SIZE,
 } from '@core/ads/constants';
-import { AdSlotShoppingConfiguration } from '@core/ads/models';
 import { AdSlotConfiguration } from '@core/ads/models/ad-slot-configuration';
 import { DeviceType } from '@core/device/deviceType.enum';
 
@@ -84,11 +83,4 @@ export const AD_PUBLIC_SEARCH: AdSlotSearch = {
     type: 'search',
     device: [DeviceType.MOBILE, DeviceType.TABLET, DeviceType.DESKTOP],
   },
-};
-
-export const AD_SHOPPING_PUBLIC_SEARCH: AdSlotShoppingConfiguration = {
-  slotId: 'afshcontainer',
-  container: 'afshcontainer',
-  width: 500,
-  height: 400,
 };

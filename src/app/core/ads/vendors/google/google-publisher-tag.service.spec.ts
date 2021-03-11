@@ -252,4 +252,8 @@ describe('GooglePublisherTagService', () => {
       expect(MOCK_GOOGLE_TAG.display).toHaveBeenCalledWith(id);
     });
   });
+
+  describe('when we want to display ad slot shopping', () => {
+    it('should load ad keywords', () => {});
+  });
 });
