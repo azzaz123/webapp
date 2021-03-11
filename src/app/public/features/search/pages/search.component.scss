@@ -1,6 +1,36 @@
 @import '~style/common';
 
-.SearchPage {
+$filters-height: 44px;
+
+.has-backdrop {
+  &::before {
+    background-color: hsla(0, 0%, 100%, 0.8);
+    content: '';
+    display: block;
+    height: 100%;
+    position: fixed;
+    top: $topbar-height;
+    width: 100%;
+    z-index: 200;
+  }
+}
+
+.Search {
+  &__layout {
+    padding-top: $filters-height;
+  }
+
+  &__filters {
+    background-color: $white;
+    left: 0;
+    right: 0;
+    z-index: 200;
+
+    &--with-backdrop {
+      @extend .has-backdrop;
+    }
+  }
+
   &__ad {
     &--top {
       height: 58%;

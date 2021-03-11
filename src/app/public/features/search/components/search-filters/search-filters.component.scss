@@ -1,0 +1,11 @@
+@import '~style/common';
+
+.SearchFilters {
+  &__bar {
+    @include media-breakpoint-down(md) {
+      overflow: auto;
+
+      @include hide-scroll-bars;
+    }
+  }
+}

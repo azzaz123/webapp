@@ -2,28 +2,35 @@
 
 .FilterTemplate {
   &__dropdown_menu {
+    min-width: 380px;
     padding: 0 !important;
 
     @include media-breakpoint-down(sm) {
-      position: fixed !important;
-      transform: none !important;
-      margin: 0 !important;
+      animation: slideUp 0.45s ease-in-out;
       border-radius: 0 !important;
-      top: 0;
       bottom: 0;
       left: 0;
+      margin: 0 !important;
+      position: fixed !important;
       right: 0;
-      animation: slideUp 0.45s ease-in-out;
+      top: 0;
+      transform: none !important;
     }
   }
 
   &__title {
-    font-weight: $font-weight-bold;
     color: $black;
+    font-weight: $font-weight-bold;
   }
 
   &__dev_warn {
     color: $brand-danger;
+  }
+
+  &__bubble {
+    &--open {
+      z-index: 200;
+    }
   }
 }
 
