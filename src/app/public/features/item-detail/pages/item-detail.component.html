@@ -5,57 +5,61 @@
             <div *ngIf="device === deviceType.DESKTOP">
                 <tsl-sky class="position-sticky d-none d-xl-block" [adSlot]="adsSlotsItemDetail.item2l"></tsl-sky>
             </div>
-            <div *ngIf="(item$ | async) && (user$ | async)" class="ItemDetail__container__middleSection d-flex flex-column w-100">
+            <div *ngIf="(itemDetailStoreService.itemDetail$ | async)?.user && (itemDetailStoreService.itemDetail$ | async)?.item" class="ItemDetail__container__middleSection d-flex flex-column w-100">
                 <div class="ItemDetail__content px-4 pb-5 ">
                     <tsl-item-detail-header
-                        [user]="(user$ | async)"
-                        [item]="(item$ | async)"
-                        [isOwner]="((user$ | async )?.id | isCurrentUser | async)"
-                        (updateReservedItem)="updateReservedItem($event)"
-                        (updateSoldItem)="updateSoldItem()"
-                    >
-                    </tsl-item-detail-header>
+                        [user]="(itemDetailStoreService.itemDetail$ | async).user"
+                        [item]="(itemDetailStoreService.itemDetail$ | async).item"
+                        [isOwner]="((itemDetailStoreService.itemDetail$ | async).user.id | isCurrentUser | async)"
+                        (updateReservedItem)="itemDetailStoreService.markItemAsReserved($event)"
+                        (updateSoldItem)="itemDetailStoreService.markItemAsSold()"
+                    ></tsl-item-detail-header>
                     <div class="ItemDetail__carousel position-relative w-100">
                         <tsl-item-images-carousel
-                            *ngIf="itemImages"
-                            [itemFlags]="(item$ | async)?.flags" 
-                            [isActive]="!(item$ | async)?.flags?.expired" 
-                            [itemVisibilityFlags]="(item$ | async)?.bumpFlags"
-                            [images]="itemImages"
+                            *ngIf="(itemDetailStoreService.itemDetail$ | async).images"
+                            [itemFlags]="(itemDetailStoreService.itemDetail$ | async).item.flags" 
+                            [isActive]="!(itemDetailStoreService.itemDetail$ | async).item.flags?.expired" 
+                            [itemVisibilityFlags]="(itemDetailStoreService.itemDetail$ | async).item.bumpFlags"
+                            [images]="(itemDetailStoreService.itemDetail$ | async).images"
                             (imageClick)="openItemDetailImage($event)">
                         </tsl-item-images-carousel>
                     </div>
-                    <div class="mt-3 pt-3" [ngClass]="{'borderBottom': !(itemExtraInfo?.length > 0 && isItemACar), 'pb-3': !itemSpecifications}">
-                        <span class="ItemDetail__price d-block">{{(item$ | async)?.salePrice |
-                                customCurrency:(item$ | async)?.currencyCode}}</span>
-                        <h1 class="ItemDetail__title my-0">{{(item$ | async)?.title}}</h1>
-                        <tsl-item-extra-info *ngIf="itemExtraInfo?.length > 0" class="d-block mt-2"
-                            [ngClass]="{'ItemExtraInfo--car': isItemACar}"
-                            [isCar]="typeCheckService.isCar(item$ | async)" [extraInfo]="itemExtraInfo">
+                    <div class="mt-3 pt-3" [ngClass]="{'borderBottom': !((itemDetailStoreService.itemDetail$ | async).extraInfo?.length > 0 && (itemDetailStoreService.itemDetail$ | async).isItemACar), 'pb-3': !(itemDetailStoreService.itemDetail$ | async).specifications}">
+                        <span class="ItemDetail__price d-block">{{(itemDetailStoreService.itemDetail$ | async).item.salePrice |
+                                customCurrency:(itemDetailStoreService.itemDetail$ | async).item.currencyCode}}</span>
+                        <h1 class="ItemDetail__title my-0">{{(itemDetailStoreService.itemDetail$ | async).item.title}}</h1>
+
+                        <tsl-item-extra-info 
+                            *ngIf="(itemDetailStoreService.itemDetail$ | async).extraInfo?.length > 0"
+                            class="d-block mt-2"
+                            [ngClass]="{'ItemExtraInfo--car': (itemDetailStoreService.itemDetail$ | async).isItemACar}"
+                            [isCar]="(itemDetailStoreService.itemDetail$ | async).isItemACar" 
+                            [extraInfo]="(itemDetailStoreService.itemDetail$ | async).extraInfo">
                         </tsl-item-extra-info>
                     </div>
-                    <div *ngIf="itemSpecifications" class="borderBottom">
-                        <tsl-item-specifications [itemSpecifications]="itemSpecifications"
-                            [isCar]="typeCheckService.isCar(item$ | async)"></tsl-item-specifications>
+                    <div *ngIf="(itemDetailStoreService.itemDetail$ | async).specifications" class="borderBottom">
+                        <tsl-item-specifications 
+                            [itemSpecifications]="(itemDetailStoreService.itemDetail$ | async).specifications"
+                            [isCar]="(itemDetailStoreService.itemDetail$ | async).isItemACar"></tsl-item-specifications>
                     </div>
-                        <p *ngIf="(item$ | async)?.description" class="ItemDetail__description py-3 mb-0 text-break" [ngClass]="{'borderBottom': device === deviceType.MOBILE}">{{(item$ | async )?.description}}</p>
+                        <p *ngIf="(itemDetailStoreService.itemDetail$ | async).item.description" class="ItemDetail__description py-3 mb-0 text-break" [ngClass]="{'borderBottom': device === deviceType.MOBILE}">{{(itemDetailStoreService.itemDetail$ | async).item.description}}</p>
                         <div *ngIf="device === deviceType.MOBILE">
                           <tsl-sky [adSlot]="adsSlotsItemDetail.item1"></tsl-sky>
                         </div>
                         <div class="ItemDetail__stats py-3 d-flex align-items-center justify-content-between" [ngClass]="{'borderBottom': device !== deviceType.TABLET}">
 
                         <div class="text-truncate">
-                            {{ (item$ | async)?.modifiedDate | ellapsedTime }}
+                            {{ (itemDetailStoreService.itemDetail$ | async).item.modifiedDate | ellapsedTime }}
                         </div>
                         <div class="d-flex ml-3">
                             <div class="d-flex align-items-center mr-3">
                                 <tsl-svg-icon src="/assets/icons/cm-eye.svg" width=20 height=20>
                                 </tsl-svg-icon>
-                                <span class="float-right ml-1" id="views">{{ (item$ | async )?.views || 0}}</span>
+                                <span class="float-right ml-1" id="views">{{ (itemDetailStoreService.itemDetail$ | async).item.views || 0}}</span>
                             </div>
                             <div class="d-flex align-items-center">
                                 <tsl-svg-icon src="/assets/icons/heart.svg" width=14 height=14></tsl-svg-icon>
-                                <span class="float-right ml-1" id="favorites">{{ (item$ | async )?.favorites ||
+                                <span class="float-right ml-1" id="favorites">{{ (itemDetailStoreService.itemDetail$ | async).item.favorites ||
                                     0}}</span>
                             </div>
                         </div>
@@ -65,17 +69,21 @@
                     </div>
                     <div class="ItemDetail__location py-3 d-flex align-items-center">
                         <tsl-svg-icon src="/assets/icons/location.svg" class="mr-2"></tsl-svg-icon>
-                        {{locationSpecifications}}
+                        {{(itemDetailStoreService.itemDetail$ | async).locationSpecifications}}
                     </div>
-                    <tsl-here-maps *ngIf="locationHaveCoordinates() && coordinates" zoom="15" size="small" [coordinates]="coordinates"
-                        [isApproximateLocation]="isApproximateLocation" class="w-100 mb-3">
+                    <tsl-here-maps *ngIf="(itemDetailStoreService.itemDetail$ | async).haveCoordinates && (itemDetailStoreService.itemDetail$ | async).coordinate" zoom="15" size="small" [coordinates]="(itemDetailStoreService.itemDetail$ | async).coordinate"
+                        [isApproximateLocation]="(itemDetailStoreService.itemDetail$ | async).isApproximateLocation" class="w-100 mb-3">
                     </tsl-here-maps>
-                    <div class="ItemDetail__fakeMap" *ngIf="!locationHaveCoordinates()"></div>
-                    <tsl-social-share *ngIf="socialShare" [title]="socialShare.title" [facebook]="socialShare.facebook"
-                        [twitter]="socialShare.twitter" [email]="socialShare.email"></tsl-social-share>
+                    <div class="ItemDetail__fakeMap" *ngIf="!(itemDetailStoreService.itemDetail$ | async).haveCoordinates"></div>
+                    <tsl-social-share *ngIf="(itemDetailStoreService.itemDetail$ | async).socialShare"
+                        [title]="(itemDetailStoreService.itemDetail$ | async).socialShare.title"
+                        [facebook]="(itemDetailStoreService.itemDetail$ | async).socialShare.facebook"
+                        [twitter]="(itemDetailStoreService.itemDetail$ | async).socialShare.twitter"
+                        [email]="(itemDetailStoreService.itemDetail$ | async).socialShare.email">
+                    </tsl-social-share>
                 </div>
                 <tsl-recommended-items
-                    *ngIf="(recommendedItems$ |async)?.recommended_items?.length && isItemRecommendations"
+                    *ngIf="(recommendedItems$ |async)?.recommended_items?.length"
                     class="mt-3" [recommendedItems]="(recommendedItems$ | async)">
                 </tsl-recommended-items>
                 <div *ngIf="device === deviceType.MOBILE" class="pt-4">
