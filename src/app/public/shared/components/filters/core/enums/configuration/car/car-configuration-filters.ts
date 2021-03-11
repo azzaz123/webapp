@@ -18,7 +18,7 @@ const CAR_PRICE_FILTER: RangeFilterConfig = {
   stepsConfig: [
     { range: [0, 30000], step: 1000 },
     { range: [30000, 50000], step: 5000 },
-    { range: [50000, 50000], step: 100000 },
+    { range: [50000, 100000], step: 10000 },
   ],
   limitless: true,
 };
