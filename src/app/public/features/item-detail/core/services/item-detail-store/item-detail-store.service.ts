@@ -1,32 +1,64 @@
-import { Item } from '@core/item/item';
-import { User } from '@core/user/user';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { ItemDetailService } from '../item-detail/item-detail.service';
+import { ReserveItemBodyResponse } from '@public/core/services/api/item/interfaces/item-response.interface';
+import { ItemDetailResponse } from '@public/features/item-detail/interfaces/item-detail-response.interface';
+import { MapItemDetailStoreService } from '../map-item-detail-store/map-item-detail-store.service';
+import { ItemDetail } from '@public/features/item-detail/interfaces/item-detail.interface';
+import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
 
 export class ItemDetailStoreService {
-  private readonly _user = new BehaviorSubject<User>(null);
-  private readonly _item = new BehaviorSubject<Item>(null);
+  constructor(
+    private itemDetailService: ItemDetailService,
+    private mapItemDetailStoreService: MapItemDetailStoreService,
+    private socialMetaTagsService: SocialMetaTagService
+  ) {}
 
-  get user(): User {
-    return this._user.getValue();
+  private readonly _itemDetail = new BehaviorSubject<ItemDetail>(null);
+
+  get itemDetail(): ItemDetail {
+    return this._itemDetail.getValue();
   }
 
-  get user$(): Observable<User> {
-    return this._user.asObservable();
+  get itemDetail$(): Observable<ItemDetail> {
+    return this._itemDetail.asObservable();
   }
 
-  set user(user: User) {
-    this._user.next(user);
+  set itemDetail(itemDetail: ItemDetail) {
+    this._itemDetail.next(itemDetail);
   }
 
-  get item(): Item {
-    return this._item.getValue();
+  public initializeItem(itemDetail: ItemDetailResponse): void {
+    this.itemDetail = this.mapItemDetailStoreService.mapItemDetailStore(itemDetail);
   }
 
-  get item$(): Observable<Item> {
-    return this._item.asObservable();
+  public markItemAsReserved(itemUUID: string): Observable<ReserveItemBodyResponse> {
+    return this.itemDetailService.reserveItem(itemUUID, true).pipe(
+      tap(() => {
+        this.itemDetail.item.reserved = true;
+      })
+    );
   }
 
-  set item(item: Item) {
-    this._item.next(item);
+  public markItemAsUnreserved(itemUUID: string): Observable<ReserveItemBodyResponse> {
+    return this.itemDetailService.reserveItem(itemUUID, false).pipe(
+      tap(() => {
+        this.itemDetail.item.reserved = true;
+      })
+    );
+  }
+
+  public initializeItemMetaTags(): void {
+    this.socialMetaTagsService.insertTwitterMetaTags(
+      this.itemDetail?.item.title,
+      this.itemDetail?.item.description,
+      this.itemDetail?.item.mainImage?.urls_by_size?.medium
+    );
+    this.socialMetaTagsService.insertFacebookMetaTags(
+      this.itemDetail?.item.title,
+      this.itemDetail?.item.description,
+      this.itemDetail?.item.mainImage?.urls_by_size?.medium,
+      this.itemDetail?.item.webLink
+    );
   }
 }
