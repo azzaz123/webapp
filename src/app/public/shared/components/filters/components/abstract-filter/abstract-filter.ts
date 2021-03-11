@@ -1,13 +1,12 @@
 import { Filter } from '@public/shared/components/filters/interfaces/filter.interface';
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Directive, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FilterConfig } from '@public/shared/components/filters/interfaces/filter-config.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { FILTER_VARIANT } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.enum';
 import { FilterTemplateComponent } from '@public/shared/components/filters/components/abstract-filter/filter-template/filter-template.component';
 
-@Component({
-  template: '',
-})
+@Directive()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class AbstractFilter<T extends Record<keyof T, string>> implements Filter<T>, OnInit {
   @Input() variant: FILTER_VARIANT = FILTER_VARIANT.BUBBLE;
   @Input() config: FilterConfig<T>;
