@@ -23,8 +23,6 @@ export class SearchFiltersComponent {
 
   @Output() bubbleFilterOpenStateChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor() {}
-
   public toggleDrawer(): void {
     this.drawerConfig.isOpen = !this.drawerConfig.isOpen;
   }
