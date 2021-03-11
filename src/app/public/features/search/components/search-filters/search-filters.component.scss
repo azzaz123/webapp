@@ -5,9 +5,7 @@
     @include media-breakpoint-down(md) {
       overflow: auto;
 
-      &::-webkit-scrollbar {
-        display: none;
-      }
+      @include hide-scroll-bars;
     }
   }
 }
