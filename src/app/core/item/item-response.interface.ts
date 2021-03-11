@@ -3,7 +3,7 @@ import { ItemObjectType } from '@private/features/upload/core/models/brand-model
 import { ApiResponse } from '../resource/api-response.interface';
 import { Image, UserLocation } from '../user/user-response.interface';
 import { Item } from './item';
-import { ItemConditions } from './item-conditions';
+import { ItemCondition } from './item-condition';
 
 export interface ItemResponseV2 extends ApiResponse {
   title: string;
@@ -390,7 +390,7 @@ export interface ItemExtraInfo {
     id: string;
     text?: string;
   };
-  condition?: ItemConditions;
+  condition?: ItemCondition;
 }
 
 export interface ItemDataResponse {
