@@ -25,11 +25,11 @@ export class MapItemDetailStoreService {
     return {
       item: itemDetailResponse.item,
       user: itemDetailResponse.user,
-      itemSpecifications: this.itemSpecifications,
+      specifications: this.itemSpecifications,
       images: this.itemImages,
       bigImages: this.itemBigImages,
       coordinate: this.coordinate,
-      itemLocation: this.itemLocation,
+      location: this.itemLocation,
       locationSpecifications: this.locationSpecifications,
       extraInfo: this.itemExtraInfo,
       haveCoordinates: this.locationHaveCoordinates,
