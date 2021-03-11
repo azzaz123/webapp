@@ -17,22 +17,32 @@ import { CheckSessionModule } from '@public/core/directives/check-session/check-
 import { CoreModule } from '@core/core.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AdComponentStub } from '@tests/shared';
+import { Store } from '@ngrx/store';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
   let deviceServiceMock;
+  let storeMock;
 
   beforeEach(
     waitForAsync(() => {
       deviceServiceMock = {
         getDeviceType: () => random.arrayElement([DeviceType.DESKTOP, DeviceType.MOBILE, DeviceType.TABLET]),
       };
+      storeMock = {
+        select: () => of(),
+        dispatch: () => {},
+      };
       TestBed.configureTestingModule({
         imports: [CoreModule, ItemCardListModule, HttpClientTestingModule, CheckSessionModule, RouterTestingModule],
         declarations: [SearchComponent, SearchLayoutComponent, AdComponentStub],
         providers: [
           SearchStoreService,
+          {
+            provide: Store,
+            useValue: storeMock,
+          },
           { provide: DeviceDetectorService, useValue: { isMobile: () => false } },
           { provide: ViewportService, useValue: { onViewportChange: of('') } },
           {
