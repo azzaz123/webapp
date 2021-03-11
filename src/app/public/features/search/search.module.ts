@@ -8,10 +8,11 @@ import { SharedModule } from '@shared/shared.module';
 import { SearchLayoutComponent } from './components/search-layout/search-layout.component';
 import { SearchComponent } from './pages/search.component';
 import { SearchRoutingModule } from './search.routing.module';
+import { SearchStoreService } from './core/services/search-store.service';
 
 @NgModule({
   imports: [SharedModule, SearchRoutingModule, PublicLayoutModule, ItemCardListModule, CheckSessionModule, AdModule],
-  providers: [ViewportService],
+  providers: [ViewportService, SearchStoreService],
   declarations: [SearchComponent, SearchLayoutComponent],
 })
 export class SearchModule {}
