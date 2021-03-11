@@ -15,6 +15,7 @@ import { ItemDetailResponse } from '../interfaces/item-detail-response.interface
 import { ItemDetailAdSlotsConfiguration, ADS_ITEM_DETAIL } from './../core/ads/item-detail-ads.config';
 import { catchError, tap } from 'rxjs/operators';
 import { Item } from '@core/item/item';
+import { CATEGORY_IDS } from '@core/category/category-ids';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -46,26 +47,38 @@ export class ItemDetailComponent implements OnInit {
   }
 
   public openItemDetailImage($event: CarouselSlide): void {
-    // this.itemDetailImagesModal.images = this.itemBigImages;
-    // this.itemDetailImagesModal.item = this.itemDetail?.item;
+    const itemDetail = this.itemDetailStoreService.itemDetail;
+    this.itemDetailImagesModal.images = itemDetail.bigImages;
+    this.itemDetailImagesModal.item = itemDetail.item;
     this.itemDetailImagesModal.imageIndex = $event?.index;
     this.itemDetailImagesModal.show();
   }
 
   private initPage(itemId: string): void {
-    this.recommendedItems$ = this.itemDetailService.getRecommendedItems(itemId);
     this.itemDetailService.getItem(itemId).pipe(
       tap((itemDetail: ItemDetailResponse) => {
         this.itemDetailStoreService.initializeItem(itemDetail);
         this.itemDetailStoreService.initializeItemMetaTags();
         this.setAdSlot(itemDetail?.item);
+        this.initializeItemRecommendations(itemId, itemDetail?.item.categoryId);
       }),
       catchError(() => this.router.navigate([`/${APP_PATHS.NOT_FOUND}`]))
     );
   }
 
+  private initializeItemRecommendations(itemId: string, categoryId: number): void {
+    if (this.isItemRecommendations(categoryId)) {
+      this.recommendedItems$ = this.itemDetailService.getRecommendedItems(itemId);
+    }
+  }
+
   private setAdSlot(item: Item): void {
     this.adsService.setAdKeywords({ category: item.categoryId.toString() });
     this.adsService.setSlots([this.adsSlotsItemDetail?.item1, this.adsSlotsItemDetail?.item2l, this.adsSlotsItemDetail?.item3r]);
+  }
+
+  private isItemRecommendations(itemCategoryId: number): boolean {
+    const CATEGORIES_WITH_RECOMMENDATIONS = [CATEGORY_IDS.CAR, CATEGORY_IDS.FASHION_ACCESSORIES];
+    return CATEGORIES_WITH_RECOMMENDATIONS.includes(itemCategoryId);
   }
 }
