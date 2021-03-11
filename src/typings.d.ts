@@ -15,3 +15,4 @@ declare let apstag: import('./app/core/ads/vendors/amazon/amazon-publisher-servi
 declare let mParticle: any;
 declare let Didomi: import('./app/core/ads/vendors/didomi/didomi.interface').DidomiLibrary;
 declare let wadgtlft: import('./app/core/trust-and-safety/threat-metrix.interface').ThreatMetrixLibrary;
+declare let _googCsa: import('./app/core/ads/vendors/google/google-ads-sense-shopping').GoogCsa;
