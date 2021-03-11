@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FILTER_VARIANT } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.enum';
 import { CAR_CONFIGURATION_FILTERS } from '@public/shared/components/filters/core/enums/configuration/car/car-configuration-filters';
+import { DrawerConfig } from '@public/shared/components/filters/interfaces/drawer-config.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 
 @Component({
@@ -10,7 +11,7 @@ import { FilterParameter } from '@public/shared/components/filters/interfaces/fi
 })
 export class SearchFiltersComponent {
   public readonly FILTER_VARIANT = FILTER_VARIANT;
-  public drawer = {
+  public drawerConfig: DrawerConfig = {
     isOpen: false,
     offsetTop: 66,
     hasApply: true,
@@ -25,11 +26,11 @@ export class SearchFiltersComponent {
   constructor() {}
 
   public toggleDrawer(): void {
-    this.drawer.isOpen = !this.drawer.isOpen;
+    this.drawerConfig.isOpen = !this.drawerConfig.isOpen;
   }
 
   public closeDrawer(): void {
-    this.drawer.isOpen = false;
+    this.drawerConfig.isOpen = false;
   }
 
   public bubbleChange(value): void {

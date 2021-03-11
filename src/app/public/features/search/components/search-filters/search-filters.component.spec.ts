@@ -30,30 +30,30 @@ describe('SearchFiltersComponent', () => {
     });
 
     it('should close the drawer', () => {
-      expect(component.drawer.isOpen).toBeFalsy();
+      expect(component.drawerConfig.isOpen).toBeFalsy();
     });
   });
 
   describe('when toggling the drawer', () => {
     describe('if was previously opened', () => {
       beforeEach(() => {
-        component.drawer.isOpen = true;
+        component.drawerConfig.isOpen = true;
         component.toggleDrawer();
       });
 
       it('should close the drawer', () => {
-        expect(component.drawer.isOpen).toBeFalsy();
+        expect(component.drawerConfig.isOpen).toBeFalsy();
       });
     });
 
     describe('if was previously closed', () => {
       beforeEach(() => {
-        component.drawer.isOpen = false;
+        component.drawerConfig.isOpen = false;
         component.toggleDrawer();
       });
 
       it('should open the drawer', () => {
-        expect(component.drawer.isOpen).toBeTruthy();
+        expect(component.drawerConfig.isOpen).toBeTruthy();
       });
     });
   });
@@ -63,12 +63,12 @@ describe('SearchFiltersComponent', () => {
     const filtersButtonSelector = 'tsl-bubble';
 
     beforeEach(() => {
-      initialState = component.drawer.isOpen;
+      initialState = component.drawerConfig.isOpen;
       fixture.nativeElement.querySelector(filtersButtonSelector).click();
     });
 
     it('should toggle the drawer', () => {
-      expect(!initialState).toEqual(component.drawer.isOpen);
+      expect(!initialState).toEqual(component.drawerConfig.isOpen);
     });
   });
 

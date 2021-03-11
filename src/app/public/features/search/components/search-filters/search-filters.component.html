@@ -8,7 +8,7 @@
 </div>
 
 
-<tsl-drawer [isOpen]="drawer.isOpen" [offsetTop]="drawer.offsetTop" [hasApply]="drawer.hasApply"
+<tsl-drawer [isOpen]="drawerConfig.isOpen" [offsetTop]="drawerConfig.offsetTop" [hasApply]="drawerConfig.hasApply"
 (cancel)="closeDrawer()" (apply)="closeDrawer()">
   <tsl-filter-group 
     [config]="drawerFiltersConfig" 
