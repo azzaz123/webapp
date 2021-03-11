@@ -19,7 +19,7 @@ export class SearchComponent implements OnInit {
   public device: DeviceType;
   public DevicesType: typeof DeviceType = DeviceType;
 
-  public showBackdrop: boolean = false;
+  public showBackdrop = false;
 
   constructor(private adsService: AdsService, private deviceService: DeviceService) {
     this.device = this.deviceService.getDeviceType();
