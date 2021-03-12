@@ -10,9 +10,11 @@
                     <tsl-item-detail-header
                         [user]="(itemDetailStoreService.itemDetail$ | async).user"
                         [item]="(itemDetailStoreService.itemDetail$ | async).item"
+                        [userStats]="(itemDetailStoreService.itemDetail$ | async).userStats | async"
                         [isOwner]="((itemDetailStoreService.itemDetail$ | async).user.id | isCurrentUser | async)"
-                        (updateReservedItem)="itemDetailStoreService.markItemAsReserved($event)"
-                        (updateSoldItem)="itemDetailStoreService.markItemAsSold()"
+                        (updateReserveItem)="reserveItem($event)"
+                        (updateUnreserveItem)="unreserveItem($event)"
+                        (updateSoldItem)="soldItem()"
                     ></tsl-item-detail-header>
                     <div class="ItemDetail__carousel position-relative w-100">
                         <tsl-item-images-carousel
@@ -37,9 +39,9 @@
                             [extraInfo]="(itemDetailStoreService.itemDetail$ | async).extraInfo">
                         </tsl-item-extra-info>
                     </div>
-                    <div *ngIf="(itemDetailStoreService.itemDetail$ | async).specifications" class="borderBottom">
+                    <div *ngIf="(itemDetailStoreService.itemDetail$ | async).counterSpecifications" class="borderBottom">
                         <tsl-item-specifications 
-                            [itemSpecifications]="(itemDetailStoreService.itemDetail$ | async).specifications"
+                            [itemSpecifications]="(itemDetailStoreService.itemDetail$ | async).counterSpecifications"
                             [isCar]="(itemDetailStoreService.itemDetail$ | async).isItemACar"></tsl-item-specifications>
                     </div>
                         <p *ngIf="(itemDetailStoreService.itemDetail$ | async).item.description" class="ItemDetail__description py-3 mb-0 text-break" [ngClass]="{'borderBottom': device === deviceType.MOBILE}">{{(itemDetailStoreService.itemDetail$ | async).item.description}}</p>

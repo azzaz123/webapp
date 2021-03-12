@@ -54,16 +54,31 @@ export class ItemDetailComponent implements OnInit {
     this.itemDetailImagesModal.show();
   }
 
+  public reserveItem(itemUUID: string): void {
+    this.itemDetailStoreService.markItemAsReserved(itemUUID).subscribe();
+  }
+
+  public unreserveItem(itemUUID: string): void {
+    this.itemDetailStoreService.markItemAsUnreserved(itemUUID).subscribe();
+  }
+
+  public soldItem(): void {
+    this.itemDetailStoreService.markItemAsSold();
+  }
+
   private initPage(itemId: string): void {
-    this.itemDetailService.getItem(itemId).pipe(
-      tap((itemDetail: ItemDetailResponse) => {
-        this.itemDetailStoreService.initializeItem(itemDetail);
-        this.itemDetailStoreService.initializeItemMetaTags();
-        this.setAdSlot(itemDetail?.item);
-        this.initializeItemRecommendations(itemId, itemDetail?.item.categoryId);
-      }),
-      catchError(() => this.router.navigate([`/${APP_PATHS.NOT_FOUND}`]))
-    );
+    this.itemDetailService
+      .getItem(itemId)
+      .pipe(
+        tap((itemDetail: ItemDetailResponse) => {
+          this.itemDetailStoreService.initializeItem(itemDetail);
+          this.itemDetailStoreService.initializeItemMetaTags();
+          this.setAdSlot(itemDetail?.item);
+          this.initializeItemRecommendations(itemId, itemDetail?.item.categoryId);
+        }),
+        catchError(() => this.router.navigate([`/${APP_PATHS.NOT_FOUND}`]))
+      )
+      .subscribe();
   }
 
   private initializeItemRecommendations(itemId: string, categoryId: number): void {
