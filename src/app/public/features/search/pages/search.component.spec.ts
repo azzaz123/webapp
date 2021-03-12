@@ -2,21 +2,18 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
+import { ViewportService } from '@core/viewport/viewport.service';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
+import { AdComponentStub } from '@fixtures/shared/components/ad.component.stub';
+import { ItemCardListComponentStub } from '@fixtures/shared/components/item-card-list.component.stub';
 import { random } from 'faker';
+import { SearchFiltersModule } from '../components/search-filters/search-filters.module';
+import { SearchLayoutComponent } from '../components/search-layout/search-layout.component';
 import { AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { SearchComponent } from './search.component';
 import { SearchStoreService } from '../core/services/search-store.service';
-import { ItemCardListModule } from '@public/features/public-profile/pages/user-published/components/item-card-list/item-card-list.module';
-import { SearchLayoutComponent } from '../components/search-layout/search-layout.component';
-import { ViewportService } from '@core/viewport/viewport.service';
 import { of } from 'rxjs/internal/observable/of';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CheckSessionModule } from '@public/core/directives/check-session/check-session.module';
-import { CoreModule } from '@core/core.module';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AdComponentStub } from '@tests/shared';
 import { Store } from '@ngrx/store';
 import { MOCK_SEARCH_ITEM } from '../core/services/search-store.service.fixtures';
 import { Item } from '@core/item/item';
@@ -38,8 +35,8 @@ describe('SearchComponent', () => {
         dispatch: () => {},
       };
       TestBed.configureTestingModule({
-        imports: [CoreModule, ItemCardListModule, HttpClientTestingModule, CheckSessionModule, RouterTestingModule],
-        declarations: [SearchComponent, SearchLayoutComponent, AdComponentStub],
+        declarations: [SearchComponent, SearchLayoutComponent, AdComponentStub, ItemCardListComponentStub],
+        imports: [SearchFiltersModule],
         providers: [
           SearchStoreService,
           {
@@ -56,7 +53,7 @@ describe('SearchComponent', () => {
             provide: DeviceService,
             useValue: deviceServiceMock,
           },
-          { provide: 'SUBDOMAIN', useValue: 'es' },
+          ViewportService,
         ],
       }).compileComponents();
     })
@@ -116,6 +113,22 @@ describe('SearchComponent', () => {
         expect(nextItem).toBeInstanceOf(Item);
         expect(nextItem.id).toBe(index !== 0 ? MOCK_SEARCH_ITEM.id : 'old_item');
       });
+    });
+  });
+  describe('when bubble filter is open', () => {
+    beforeEach(() => {
+      component.toggleBubbleFilterBackdrop(true);
+    });
+    it('should show white backdrop', () => {
+      expect(component.showBackdrop).toBeTruthy();
+    });
+  });
+  describe('when bubble filter is closed', () => {
+    beforeEach(() => {
+      component.toggleBubbleFilterBackdrop(false);
+    });
+    it('should hide white backdrop', () => {
+      expect(component.showBackdrop).toBeFalsy();
     });
   });
 });

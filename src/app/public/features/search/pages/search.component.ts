@@ -22,6 +22,8 @@ export class SearchComponent implements OnInit {
   public device: DeviceType;
   public DevicesType: typeof DeviceType = DeviceType;
 
+  public showBackdrop = false;
+
   constructor(private adsService: AdsService, private deviceService: DeviceService, private searchStore: SearchStoreService) {
     this.device = this.deviceService.getDeviceType();
   }
@@ -30,6 +32,10 @@ export class SearchComponent implements OnInit {
     this.items$ = this.searchStore.items$.pipe(map(this.formatSearchItems));
 
     this.adsService.setSlots([this.adSlots.search1, this.adSlots.search2r, this.adSlots.search3r]);
+  }
+
+  public toggleBubbleFilterBackdrop(active: boolean): void {
+    this.showBackdrop = active;
   }
 
   // TODO: This has to disappear. As soon as we get rid of the Item class
