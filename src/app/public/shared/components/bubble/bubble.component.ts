@@ -13,7 +13,6 @@ export class BubbleComponent {
   @Input() isDropdownOpen: boolean;
   @Input() counter: number;
   @Input() isClearable: boolean;
-  @Output() click: EventEmitter<MouseEvent> = new EventEmitter();
   @Output() clear: EventEmitter<MouseEvent> = new EventEmitter();
 
   public get counterText(): string {
@@ -26,10 +25,6 @@ export class BubbleComponent {
 
   public get hasClearButton(): boolean {
     return this.isClearable && this.variant === BUBBLE_VARIANT.SELECTED;
-  }
-
-  public emitClick(event: MouseEvent): void {
-    this.click.emit(event);
   }
 
   public emitClear(event: MouseEvent): void {

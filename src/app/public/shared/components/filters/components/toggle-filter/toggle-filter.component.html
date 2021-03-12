@@ -10,7 +10,8 @@
 [label]="label"
 [hasValue]="hasValue()"
 (click)="handleClick()"
-(clear)="handleClear()">
+(clear)="handleClear()"
+(openStateChange)="openStateChange.emit($event)">
 
     <div class="w-100 d-flex align-items-center" *ngIf="!isBubble()">
         <span class="ToggleFilter__content-label">{{config.bubblePlaceholder}}</span>  
