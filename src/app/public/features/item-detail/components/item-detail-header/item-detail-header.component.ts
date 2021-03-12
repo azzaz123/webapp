@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { User } from '@core/user/user';
-import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
 import { UserStats } from '@core/user/user-stats.interface';
 import { USER_INFO_SIZE } from '@public/shared/components/user-basic-info/constants/user-basic-info-constants';
 import { Item } from '@core/item/item';
@@ -12,6 +11,7 @@ import { ItemCardService } from '@public/core/services/item-card/item-card.servi
 import { SoldModalComponent } from '@shared/modals/sold-modal/sold-modal.component';
 import { Router } from '@angular/router';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-item-detail-header',
@@ -22,15 +22,16 @@ export class ItemDetailHeaderComponent implements OnInit {
   @Input() user: User;
   @Input() item: Item;
   @Input() isOwner = false;
-  @Output() updateReservedItem: EventEmitter<boolean> = new EventEmitter();
+  @Input() userStats: UserStats;
+  @Output() updateReserveItem: EventEmitter<string> = new EventEmitter();
+  @Output() updateUnreserveItem: EventEmitter<string> = new EventEmitter();
   @Output() updateSoldItem: EventEmitter<void> = new EventEmitter();
 
   public readonly USER_INFO_SIZE = USER_INFO_SIZE;
-  public userStats: UserStats;
   public showOptions = false;
+  public loading = true;
 
   constructor(
-    private publicProfileService: PublicProfileService,
     private modalService: NgbModal,
     private itemDetailService: ItemDetailService,
     private errorsService: ErrorsService,
@@ -42,8 +43,9 @@ export class ItemDetailHeaderComponent implements OnInit {
   ngOnInit(): void {
     if (this.isOwner && this.item?.bumpFlags?.bumped) {
       this.initializeItemBumpExpiringDate();
+    } else {
+      this.loading = false;
     }
-    this.initializeUserStats();
     this.checkShowOptions();
   }
 
@@ -52,10 +54,11 @@ export class ItemDetailHeaderComponent implements OnInit {
   }
 
   public reserveItem(): void {
-    const isReserved = !this.item.reserved ? true : false;
-    this.itemDetailService.reserveItem(this.item.id, isReserved).subscribe(() => {
-      this.updateReservedItem.emit(isReserved);
-    });
+    if (!this.item.reserved) {
+      this.updateReserveItem.emit(this.item.id);
+    } else {
+      this.updateUnreserveItem.emit(this.item.id);
+    }
   }
 
   public soldItem(): void {
@@ -89,17 +92,14 @@ export class ItemDetailHeaderComponent implements OnInit {
   }
 
   private initializeItemBumpExpiringDate(): void {
-    this.itemDetailService.getItemActivePurchases(this.item.id).subscribe((purchases) => {
-      if (purchases?.length) {
-        this.item.bumpExpiringDate = purchases[0].expiration_date;
-      }
-    });
-  }
-
-  private initializeUserStats(): void {
-    this.publicProfileService.getStats(this.user?.id).subscribe((userStats: UserStats) => {
-      this.userStats = userStats;
-    });
+    this.itemDetailService
+      .getItemActivePurchases(this.item.id)
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe((purchases) => {
+        if (purchases?.length) {
+          this.item.bumpExpiringDate = purchases[0].expiration_date;
+        }
+      });
   }
 
   private checkShowOptions(): void {
