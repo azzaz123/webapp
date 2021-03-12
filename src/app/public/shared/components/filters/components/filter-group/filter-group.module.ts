@@ -7,6 +7,7 @@ import { FilterFactoryService } from './services/filter-factory.service';
 
 @NgModule({
   declarations: [FilterGroupComponent, FilterHostDirective],
+  exports: [FilterGroupComponent],
   imports: [CommonModule, FiltersModule],
   providers: [FilterFactoryService],
 })
