@@ -24,6 +24,7 @@ import { itemDetailRoutedComponents, ItemDetailRoutingModule } from './item-deta
 import { ItemExtraInfoComponent } from './components/item-extra-info/item-extra-info.component';
 import { ItemDetailStoreService } from './core/services/item-detail-store/item-detail-store.service';
 import { MapItemDetailStoreService } from './core/services/map-item-detail-store/map-item-detail-store.service';
+import { ItemSocialShareModule } from './components/item-social-share/item-social-share.module';
 
 @NgModule({
   declarations: [itemDetailRoutedComponents, ItemExtraInfoComponent],
@@ -43,6 +44,7 @@ import { MapItemDetailStoreService } from './core/services/map-item-detail-store
     PublicPipesModule,
     ItemSpecificationsModule,
     EllapsedTimeModule,
+    ItemSocialShareModule,
   ],
   providers: [
     ItemDetailService,

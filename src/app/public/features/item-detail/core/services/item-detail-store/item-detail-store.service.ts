@@ -1,19 +1,20 @@
 import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { ItemDetailService } from '../item-detail/item-detail.service';
 import { ReserveItemBodyResponse } from '@public/core/services/api/item/interfaces/item-response.interface';
 import { ItemDetailResponse } from '@public/features/item-detail/interfaces/item-detail-response.interface';
 import { MapItemDetailStoreService } from '../map-item-detail-store/map-item-detail-store.service';
 import { ItemDetail } from '@public/features/item-detail/interfaces/item-detail.interface';
-import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { APP_PATHS } from 'app/app-routing-constants';
 
 @Injectable()
 export class ItemDetailStoreService {
   constructor(
     private itemDetailService: ItemDetailService,
     private mapItemDetailStoreService: MapItemDetailStoreService,
-    private socialMetaTagsService: SocialMetaTagService
+    private router: Router
   ) {}
 
   private readonly _itemDetail = new BehaviorSubject<ItemDetail>(null);
@@ -30,8 +31,16 @@ export class ItemDetailStoreService {
     this._itemDetail.next(itemDetail);
   }
 
-  public initializeItem(itemDetail: ItemDetailResponse): void {
-    this.itemDetail = this.mapItemDetailStoreService.mapItemDetailStore(itemDetail);
+  public initializeItem(itemId: string): void {
+    this.itemDetailService
+      .getItem(itemId)
+      .pipe(
+        tap((itemDetail: ItemDetailResponse) => {
+          this.itemDetail = this.mapItemDetailStoreService.mapItemDetailStore(itemDetail);
+        }),
+        catchError(() => this.router.navigate([`/${APP_PATHS.NOT_FOUND}`]))
+      )
+      .subscribe();
   }
 
   public markItemAsReserved(itemUUID: string): Observable<ReserveItemBodyResponse> {
@@ -52,19 +61,5 @@ export class ItemDetailStoreService {
 
   public markItemAsSold(): void {
     this.itemDetail.item.sold = true;
-  }
-
-  public initializeItemMetaTags(): void {
-    this.socialMetaTagsService.insertTwitterMetaTags(
-      this.itemDetail?.item.title,
-      this.itemDetail?.item.description,
-      this.itemDetail?.item.mainImage?.urls_by_size?.medium
-    );
-    this.socialMetaTagsService.insertFacebookMetaTags(
-      this.itemDetail?.item.title,
-      this.itemDetail?.item.description,
-      this.itemDetail?.item.mainImage?.urls_by_size?.medium,
-      this.itemDetail?.item.webLink
-    );
   }
 }

@@ -1,21 +1,19 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AdsService } from '@core/ads/services';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { CarouselSlide } from '@public/shared/components/carousel-slides/carousel-slide.interface';
-import { APP_PATHS } from 'app/app-routing-constants';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
 import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
 import { ItemDetailStoreService } from '../core/services/item-detail-store/item-detail-store.service';
-import { ItemDetailResponse } from '../interfaces/item-detail-response.interface';
 import { ItemDetailAdSlotsConfiguration, ADS_ITEM_DETAIL } from './../core/ads/item-detail-ads.config';
-import { catchError, tap } from 'rxjs/operators';
 import { Item } from '@core/item/item';
 import { CATEGORY_IDS } from '@core/category/category-ids';
+import { ItemDetail } from '../interfaces/item-detail.interface';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -26,17 +24,18 @@ import { CATEGORY_IDS } from '@core/category/category-ids';
 export class ItemDetailComponent implements OnInit {
   @ViewChild(ItemFullScreenCarouselComponent, { static: true })
   itemDetailImagesModal: ItemFullScreenCarouselComponent;
+  public adsSlotsItemDetail: ItemDetailAdSlotsConfiguration = ADS_ITEM_DETAIL;
+  public recommendedItems$: Observable<RecommendedItemsBodyResponse>;
   public readonly deviceType = DeviceType;
   public device: DeviceType;
-  public recommendedItems$: Observable<RecommendedItemsBodyResponse>;
-  public adsSlotsItemDetail: ItemDetailAdSlotsConfiguration = ADS_ITEM_DETAIL;
+  private subscriptions: Subscription[] = [];
+  private itemDetail: ItemDetail;
 
   constructor(
     public itemDetailStoreService: ItemDetailStoreService,
     private deviceService: DeviceService,
     private itemDetailService: ItemDetailService,
     private route: ActivatedRoute,
-    private router: Router,
     private adsService: AdsService
   ) {}
 
@@ -46,10 +45,13 @@ export class ItemDetailComponent implements OnInit {
     this.initPage(this.route.snapshot.paramMap.get(PUBLIC_PATH_PARAMS.ID));
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+  }
+
   public openItemDetailImage($event: CarouselSlide): void {
-    const itemDetail = this.itemDetailStoreService.itemDetail;
-    this.itemDetailImagesModal.images = itemDetail.bigImages;
-    this.itemDetailImagesModal.item = itemDetail.item;
+    this.itemDetailImagesModal.images = this.itemDetail.bigImages;
+    this.itemDetailImagesModal.item = this.itemDetail.item;
     this.itemDetailImagesModal.imageIndex = $event?.index;
     this.itemDetailImagesModal.show();
   }
@@ -67,18 +69,14 @@ export class ItemDetailComponent implements OnInit {
   }
 
   private initPage(itemId: string): void {
-    this.itemDetailService
-      .getItem(itemId)
-      .pipe(
-        tap((itemDetail: ItemDetailResponse) => {
-          this.itemDetailStoreService.initializeItem(itemDetail);
-          this.itemDetailStoreService.initializeItemMetaTags();
-          this.setAdSlot(itemDetail?.item);
-          this.initializeItemRecommendations(itemId, itemDetail?.item.categoryId);
-        }),
-        catchError(() => this.router.navigate([`/${APP_PATHS.NOT_FOUND}`]))
-      )
-      .subscribe();
+    this.itemDetailStoreService.initializeItem(itemId);
+    this.subscriptions.push(
+      this.itemDetailStoreService.itemDetail$.subscribe((itemDetail: ItemDetail) => {
+        this.itemDetail = itemDetail;
+        this.setAdSlot(itemDetail?.item);
+        this.initializeItemRecommendations(itemId, itemDetail?.item.categoryId);
+      })
+    );
   }
 
   private initializeItemRecommendations(itemId: string, categoryId: number): void {
