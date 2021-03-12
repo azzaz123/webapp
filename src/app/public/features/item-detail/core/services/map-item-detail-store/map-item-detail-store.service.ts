@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Coordinate } from '@core/geolocation/address-response.interface';
 import { Image, UserLocation } from '@core/user/user-response.interface';
+import { UserStats } from '@core/user/user-stats.interface';
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { CounterSpecifications } from '@public/features/item-detail/components/item-specifications/interfaces/item.specifications.interface';
 import { ItemDetailResponse } from '@public/features/item-detail/interfaces/item-detail-response.interface';
 import { ItemDetail } from '@public/features/item-detail/interfaces/item-detail.interface';
 import { SocialShare } from '@public/features/item-detail/interfaces/social-share.interface';
 import { ItemDetailLocation } from '@public/features/item-detail/pages/constants/item-detail.interface';
+import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
+import { Observable } from 'rxjs';
 import { MapExtraInfoService } from '../map-extra-info/map-extra-info.service';
 import { MapSpecificationsService } from '../map-specifications/map-specifications.service';
 
@@ -17,7 +20,8 @@ export class MapItemDetailStoreService {
   constructor(
     private typeCheckService: TypeCheckService,
     private mapSpecificationsService: MapSpecificationsService,
-    private mapExtraInfoService: MapExtraInfoService
+    private mapExtraInfoService: MapExtraInfoService,
+    private publicProfileService: PublicProfileService
   ) {}
 
   public mapItemDetailStore(itemDetailResponse: ItemDetailResponse): ItemDetail {
@@ -25,12 +29,13 @@ export class MapItemDetailStoreService {
     return {
       item: itemDetailResponse.item,
       user: itemDetailResponse.user,
-      specifications: this.itemSpecifications,
       images: this.itemImages,
       bigImages: this.itemBigImages,
       coordinate: this.coordinate,
       location: this.itemLocation,
       locationSpecifications: this.locationSpecifications,
+      counterSpecifications: this.counterSpecifications,
+      userStats: this.userStats,
       extraInfo: this.itemExtraInfo,
       haveCoordinates: this.locationHaveCoordinates,
       isApproximatedLocation: this.isApproximatedLocation,
@@ -66,8 +71,12 @@ export class MapItemDetailStoreService {
     return bigImages;
   }
 
-  private get itemSpecifications(): CounterSpecifications[] {
+  private get counterSpecifications(): CounterSpecifications[] {
     return this.mapSpecificationsService.mapSpecification(this.itemDetailResponse?.item);
+  }
+
+  private get userStats(): Observable<UserStats> {
+    return this.publicProfileService.getStats(this.itemDetailResponse?.user?.id);
   }
 
   private get itemExtraInfo(): string[] {
