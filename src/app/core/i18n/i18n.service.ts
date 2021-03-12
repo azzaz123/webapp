@@ -172,7 +172,7 @@ export class I18nService {
           description: 'Complete your profile with a cover photo and a description.',
         },
         {
-          iconId: 'img-2',
+          iconId: 'img-4',
           title: 'Connect with more customers',
           description: 'Share your phone number and website with millions of people.',
         },
@@ -182,7 +182,7 @@ export class I18nService {
           description: 'Appear at the top of search results and attract more customers.',
         },
         {
-          iconId: 'img-4',
+          iconId: 'img-2',
           title: 'Save management time',
           description: 'Your products will always be active and ready for sale.',
         },
@@ -369,7 +369,7 @@ export class I18nService {
           description: 'Añade a tu perfil foto de portada y descripción de lo que ofreces.',
         },
         {
-          iconId: 'img-2',
+          iconId: 'img-4',
           title: 'Conecta con más clientes',
           description: 'Comparte con millones de potenciales compradores tu teléfono y tu página web.',
         },
@@ -379,7 +379,7 @@ export class I18nService {
           description: 'Ocupa los primeros resultados de búsqueda. ¡Atrae más clientes!',
         },
         {
-          iconId: 'img-4',
+          iconId: 'img-2',
           title: 'Ahorra tiempo de gestión',
           description: 'Tus productos siempre estarán activos y listos para la venta.',
         },

@@ -216,14 +216,6 @@ describe('BubbleComponent', () => {
   });
 
   describe('When clicked', () => {
-    describe('on bubble', () => {
-      it('should execute callback', () => {
-        spyOn(component.click, 'emit');
-        debugElement.query(By.css('.Bubble')).triggerEventHandler('click', null);
-
-        expect(component.click.emit).toHaveBeenCalledTimes(1);
-      });
-    });
     describe('on clear', () => {
       beforeEach(async () => {
         await setInputs({

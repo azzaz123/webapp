@@ -1,24 +1,31 @@
-<tsl-search-layout>
-  <div top class="d-block h-100 position-relative">
-    <tsl-sky [adSlot]="adSlots.search1"></tsl-sky>
-  </div>
-  <div bottom class="d-block h-100 position-relative">This should be an ad - Bottom</div>
-  <div right class="d-block h-100 position-relative">
-    <ng-container *ngIf="device === DevicesType.DESKTOP">
-      <div class="w-100 mb-3 SearchPage__ad--top">
-        <div class="position-sticky w-100 SearchPage__ad--topSpace">
-          <tsl-sky [adSlot]="adSlots.search2r"></tsl-sky>
+<div class="Search">
+  <tsl-search-filters class="Search__filters position-fixed"
+    [class.Search__filters--with-backdrop]="showBackdrop"
+    (bubbleFilterOpenStateChange)="toggleBubbleFilterBackdrop($event)">
+  </tsl-search-filters>
+
+  <tsl-search-layout class="Search__layout d-block" >
+    <div top class="d-block h-100 position-relative">
+      <tsl-sky [adSlot]="adSlots.search1"></tsl-sky>
+    </div>
+    <div bottom class="d-block h-100 position-relative">This should be an ad - Bottom</div>
+    <div right class="d-block h-100 position-relative">
+      <ng-container *ngIf="device === DevicesType.DESKTOP">
+        <div class="w-100 mb-3 Search__ad--top">
+          <div class="position-sticky w-100 Search__ad--topSpace">
+            <tsl-sky [adSlot]="adSlots.search2r"></tsl-sky>
+          </div>
         </div>
-      </div>
-      <div class="w-100 SearchPage__ad--bottom">
-        <div class="position-sticky w-100 SearchPage__ad--topSpace">
-          <tsl-sky [adSlot]="adSlots.search3r"></tsl-sky>
+        <div class="w-100 Search__ad--bottom">
+          <div class="position-sticky w-100 Search__ad--topSpace">
+            <tsl-sky [adSlot]="adSlots.search3r"></tsl-sky>
+          </div>
         </div>
-      </div>
+      </ng-container>
+    </div>
+    <ng-container main>
+      <tsl-public-item-card-list main [items]="items"></tsl-public-item-card-list>
+      <div *ngIf="device === DevicesType.DESKTOP" class="mx-auto my-4" [id]="adSlotShopping.slotId"></div>
     </ng-container>
-  </div>
-  <ng-container main>
-    <tsl-public-item-card-list main [items]="items"></tsl-public-item-card-list>
-    <div *ngIf="device === DevicesType.DESKTOP" class="mx-auto my-4" [id]="adSlotShopping.slotId"></div>
-  </ng-container>
-</tsl-search-layout>
+  </tsl-search-layout>
+</div>

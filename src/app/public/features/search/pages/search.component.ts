@@ -22,6 +22,8 @@ export class SearchComponent implements OnInit {
   public device: DeviceType;
   public DevicesType: typeof DeviceType = DeviceType;
 
+  public showBackdrop = false;
+
   public adSlotShopping: AdSlotShoppingConfiguration = AD_SHOPPING_PUBLIC_SEARCH;
 
   constructor(private adsService: AdsService, private deviceService: DeviceService) {
@@ -36,5 +38,9 @@ export class SearchComponent implements OnInit {
     // @TODO hardcoded the query to test ad shopping "Iphone 11"
     const adSlotShopping: AdShoppingPageOptions = AdShoppingPageOptionPublicSearchFactory(AdShoppingChannel.SEARCH_PAGE);
     this.adsService.displayAdShopping(adSlotShopping, this.adSlotShopping);
+  }
+
+  public toggleBubbleFilterBackdrop(active: boolean): void {
+    this.showBackdrop = active;
   }
 }
