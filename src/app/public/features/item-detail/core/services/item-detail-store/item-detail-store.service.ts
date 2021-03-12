@@ -42,16 +42,16 @@ export class ItemDetailStoreService {
     );
   }
 
-  public markItemAsSold(): void {
-    this.itemDetail.item.sold = true;
-  }
-
   public markItemAsUnreserved(itemUUID: string): Observable<ReserveItemBodyResponse> {
     return this.itemDetailService.reserveItem(itemUUID, false).pipe(
       tap(() => {
-        this.itemDetail.item.reserved = true;
+        this.itemDetail.item.reserved = false;
       })
     );
+  }
+
+  public markItemAsSold(): void {
+    this.itemDetail.item.sold = true;
   }
 
   public initializeItemMetaTags(): void {
