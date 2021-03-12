@@ -77,12 +77,10 @@
                         [isApproximateLocation]="(itemDetailStoreService.itemDetail$ | async).isApproximateLocation" class="w-100 mb-3">
                     </tsl-here-maps>
                     <div class="ItemDetail__fakeMap" *ngIf="!(itemDetailStoreService.itemDetail$ | async).haveCoordinates"></div>
-                    <tsl-social-share *ngIf="(itemDetailStoreService.itemDetail$ | async).socialShare"
-                        [title]="(itemDetailStoreService.itemDetail$ | async).socialShare.title"
-                        [facebook]="(itemDetailStoreService.itemDetail$ | async).socialShare.facebook"
-                        [twitter]="(itemDetailStoreService.itemDetail$ | async).socialShare.twitter"
-                        [email]="(itemDetailStoreService.itemDetail$ | async).socialShare.email">
-                    </tsl-social-share>
+                    <tsl-item-social-share 
+                        [item]="(itemDetailStoreService.itemDetail$ | async).item"
+                        [socialShare]="(itemDetailStoreService.itemDetail$ | async).socialShare">
+                    </tsl-item-social-share>
                 </div>
                 <tsl-recommended-items
                     *ngIf="(recommendedItems$ |async)?.recommended_items?.length"
