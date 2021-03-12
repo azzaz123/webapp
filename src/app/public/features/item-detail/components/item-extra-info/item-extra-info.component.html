@@ -1,0 +1,3 @@
+<div *ngIf="extraInfo?.length > 0" class="ItemExtraInfo" [ngClass]="{ 'ItemExtraInfo--car': isCar }">
+    <label *ngFor="let specification of extraInfo" class="mb-0">{{specification}}</label>
+</div>

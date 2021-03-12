@@ -21,6 +21,7 @@ import { finalize } from 'rxjs/operators';
 import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
 import { CounterSpecifications } from '../components/item-specifications/interfaces/item.specifications.interface';
 import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
+import { MapExtraInfoService } from '../core/services/map-extra-info/map-extra-info.service';
 import { MapSpecificationsService } from '../core/services/map-specifications/map-specifications.service';
 import { ItemDetail } from '../interfaces/item-detail.interface';
 import { ItemDetailAdSlotsConfiguration, ADS_ITEM_DETAIL } from './../core/ads/item-detail-ads.config';
@@ -43,6 +44,7 @@ export class ItemDetailComponent implements OnInit {
   public device: DeviceType;
   public images: string[];
   public bigImages: string[];
+  public itemExtraInfo: string[];
   public itemLocation: ItemDetailLocation;
   public recommendedItems$: Observable<RecommendedItemsBodyResponse>;
   public itemSpecifications: CounterSpecifications[];
@@ -62,14 +64,15 @@ export class ItemDetailComponent implements OnInit {
   };
 
   constructor(
+    public typeCheckService: TypeCheckService,
     private deviceService: DeviceService,
     private itemDetailService: ItemDetailService,
     private socialMetaTagsService: SocialMetaTagService,
     private route: ActivatedRoute,
     private router: Router,
     private mapSpecificationsService: MapSpecificationsService,
-    private typeCheckService: TypeCheckService,
-    private adsService: AdsService
+    private adsService: AdsService,
+    private mapExtraInfoService: MapExtraInfoService
   ) {}
 
   ngOnInit(): void {
@@ -87,6 +90,10 @@ export class ItemDetailComponent implements OnInit {
     this.itemDetailImagesModal.item = this.itemDetail?.item;
     this.itemDetailImagesModal.imageIndex = $event?.index;
     this.itemDetailImagesModal.show();
+  }
+
+  public isItemACar(): boolean {
+    return this.typeCheckService.isCar(this.itemDetail?.item);
   }
 
   private initPage(itemId: string): void {
@@ -116,6 +123,7 @@ export class ItemDetailComponent implements OnInit {
     this.generateItemSpecifications();
     this.setItemRecommendations();
     this.setAdSlot();
+    this.initializeItemExtraInfo();
   }
 
   private calculateItemCoordinates(): void {
@@ -178,19 +186,34 @@ export class ItemDetailComponent implements OnInit {
   }
 
   private generateItemSpecifications(): void {
-    if (this.typeCheckService.isCar(this.itemDetail?.item)) {
-      this.itemSpecifications = this.mapSpecificationsService.mapCarSpecifications(this.itemDetail?.item);
-    } else if (this.typeCheckService.isRealEstate(this.itemDetail?.item)) {
-      this.itemSpecifications = this.mapSpecificationsService.mapRealestateSpecifications(this.itemDetail?.item);
+    const item = this.itemDetail?.item;
+    if (this.typeCheckService.isCar(item)) {
+      this.itemSpecifications = this.mapSpecificationsService.mapCarSpecifications(item);
+    } else if (this.typeCheckService.isRealEstate(item)) {
+      this.itemSpecifications = this.mapSpecificationsService.mapRealestateSpecifications(item);
     }
-  }
-
-  set approximatedLocation(isApproximated: boolean) {
-    this.isApproximateLocation = isApproximated;
   }
 
   private setAdSlot(): void {
     this.adsService.setAdKeywords({ category: this.itemDetail.item.categoryId.toString() });
     this.adsService.setSlots([this.adsSlotsItemDetail.item1, this.adsSlotsItemDetail.item2l, this.adsSlotsItemDetail.item3r]);
+  }
+
+  private initializeItemExtraInfo(): void {
+    if (this.isCarOrPhoneOrFashion()) {
+      this.itemExtraInfo = this.mapExtraInfoService.mapExtraInfo(this.itemDetail?.item);
+    }
+  }
+
+  private isCarOrPhoneOrFashion(): boolean {
+    return (
+      this.typeCheckService.isFashion(this.itemDetail?.item) ||
+      this.typeCheckService.isCellPhoneAccessories(this.itemDetail?.item) ||
+      this.isItemACar()
+    );
+  }
+
+  set approximatedLocation(isApproximated: boolean) {
+    this.isApproximateLocation = isApproximated;
   }
 }

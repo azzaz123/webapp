@@ -243,8 +243,11 @@ export const ITEM_FASHION_EXTRA_INFO: ItemExtraInfo = {
     name: 'Accessories',
   },
   brand: 'Zara',
+  model: 'Ring',
+  condition: 'new',
   size: {
     id: '1',
+    text: 'XXL / 48 / 58',
   },
   gender: 'male',
 };

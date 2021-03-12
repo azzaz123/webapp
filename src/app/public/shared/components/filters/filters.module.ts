@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
-import { AbstractFilterModule } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.module';
+import { RangeFilterModule } from './components/range-filter/range-filter.module';
+import { ToggleFilterModule } from './components/toggle-filter/toggle-filter.module';
 
 @NgModule({
-  imports: [AbstractFilterModule],
+  imports: [ToggleFilterModule, RangeFilterModule],
 })
 export class FiltersModule {}

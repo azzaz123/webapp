@@ -16,10 +16,14 @@
                             (imageClick)="openItemDetailImage($event)">
                         </tsl-item-images-carousel>
                     </div>
-                    <div class="mt-3 py-3 borderBottom">
+                    <div class="mt-3 pt-3" [ngClass]="{'borderBottom': !(itemExtraInfo?.length > 0 && isItemACar()), 'pb-3': !itemSpecifications}">
                         <span class="ItemDetail__price d-block">{{itemDetail?.item?.salePrice |
                             customCurrency:itemDetail?.item?.currencyCode}}</span>
                         <h1 class="ItemDetail__title my-0">{{itemDetail?.item?.title}}</h1>
+                        <tsl-item-extra-info *ngIf="itemExtraInfo?.length > 0" class="d-block mt-2"
+                            [ngClass]="{'ItemExtraInfo--car': isItemACar()}"
+                            [isCar]="typeCheckService.isCar(itemDetail?.item)" [extraInfo]="itemExtraInfo">
+                        </tsl-item-extra-info>
                     </div>
                     <div *ngIf="itemSpecifications" class="borderBottom">
                         <tsl-item-specifications [itemSpecifications]="itemSpecifications"
