@@ -19,7 +19,6 @@ describe('SearchStoreService', () => {
 
   describe('when value asked directly', () => {
     beforeEach(() => {
-      // BEFOREMERGE: Can we find a better way of setting the data?
       service.setItems([MOCK_SEARCH_ITEM]);
     });
     it('should return current item list', () => {
