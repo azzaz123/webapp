@@ -5,16 +5,19 @@ import { DeviceType } from '@core/device/deviceType.enum';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { CookieService } from 'ngx-cookie';
 import { AdKeyWords, AdShoppingPageOptions, AdSlotConfiguration, AdSlotId, AdSlotShoppingConfiguration } from '../../models';
+import { GoogCsa } from './google-ads-sense-shopping';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GooglePublisherTagService {
+  private static GOOGLE_ADS_SENSE_NAME = 'plas';
+
   get googletag(): googletag.Googletag {
     return this.window['googletag'];
   }
 
-  private get googCsa() {
+  private get googCsa(): GoogCsa {
     return this.window && this.window['_googCsa'];
   }
 
@@ -75,7 +78,7 @@ export class GooglePublisherTagService {
 
   public displayShopping(pageOptions: AdShoppingPageOptions, adSlotShopping: AdSlotShoppingConfiguration): void {
     const { content }: AdKeyWords = this.adsKeywordsService.adKeywords;
-    this.googCsa('plas', { ...pageOptions, query: content }, adSlotShopping);
+    this.googCsa(GooglePublisherTagService.GOOGLE_ADS_SENSE_NAME, { ...pageOptions, query: content }, adSlotShopping);
   }
 
   private setPubads(): void {

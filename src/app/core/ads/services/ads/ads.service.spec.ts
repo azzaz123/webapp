@@ -82,17 +82,14 @@ describe('AdsService', () => {
   });
 
   describe('when display ad slot shopping', () => {
-    it('should wait to library ready to display ad shopping', () => {
+    it('should wait to library', () => {
       spyOn(MockGooglePublisherTagService, 'displayShopping').and.callThrough();
 
       service.displayAdShopping(MockAdShoppingPageOptions, MockAdSlotShopping);
 
       expect(MockGooglePublisherTagService.displayShopping).toHaveBeenCalledTimes(0);
-
-      service.init();
-
-      expect(MockGooglePublisherTagService.displayShopping).toHaveBeenLastCalledWith(MockAdShoppingPageOptions, MockAdSlotShopping);
     });
+
     it('should set ad slot shopping', () => {
       spyOn(MockGooglePublisherTagService, 'displayShopping').and.callThrough();
       service.init();

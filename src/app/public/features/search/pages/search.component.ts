@@ -34,6 +34,7 @@ export class SearchComponent implements OnInit {
     this.items = Array(50).fill(MOCK_ITEM);
 
     this.adsService.setAdKeywords({ content: 'Iphone 11' });
+
     this.adsService.setSlots([this.adSlots.search1, this.adSlots.search2r, this.adSlots.search3r]);
     // @TODO hardcoded the query to test ad shopping "Iphone 11"
     const adSlotShopping: AdShoppingPageOptions = AdShoppingPageOptionPublicSearchFactory(AdShoppingChannel.SEARCH_PAGE);
