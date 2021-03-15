@@ -19,7 +19,7 @@ export class LoadAdsService {
   ) {}
 
   public loadAds(): Observable<void> {
-    return zip(this.loadScriptsBySource(), this.loadDidomiLib(), this.loadGoogleAdSenseForShoppingScript()).pipe(
+    return zip(this.loadScriptsBySource(), this.loadDidomiLib()).pipe(
       filter((libs: boolean[]) => libs.every((lib) => lib)),
       map(() => null)
     );
@@ -34,13 +34,6 @@ export class LoadAdsService {
       concatMap(() => this.checkAllLibsBySource()),
       filter((libs: boolean) => libs),
       tap(() => this.amazonPublisherService.init())
-    );
-  }
-
-  private loadGoogleAdSenseForShoppingScript(): Observable<boolean> {
-    return this.loadExternalLibsService.loadScriptBySource(GOOGLE_ADS_SENSE_SHOPPING).pipe(
-      switchMap(() => this.loadExternalLibsService.loadScriptBySource(GOOGLE_ADS_SENSE_SHOPPING_URL)),
-      map(() => true)
     );
   }
 

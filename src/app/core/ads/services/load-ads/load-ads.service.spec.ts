@@ -94,14 +94,5 @@ describe('LoadAdsService', () => {
 
       expect(MockAmazonPublisherService.init).toHaveBeenCalled();
     }));
-
-    it('should load google ad sense for shopping scripts', () => {
-      spyOn(LoadExternalLibsServiceMock, 'loadScriptBySource').and.callThrough();
-
-      service.loadAds().subscribe();
-
-      expect(LoadExternalLibsServiceMock.loadScriptBySource).toHaveBeenCalledWith(GOOGLE_ADS_SENSE_SHOPPING);
-      expect(LoadExternalLibsServiceMock.loadScriptBySource).toHaveBeenCalledWith(GOOGLE_ADS_SENSE_SHOPPING_URL);
-    });
   });
 });
