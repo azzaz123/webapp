@@ -53,6 +53,10 @@ Object.defineProperty(window, 'localStorage', {
 Object.defineProperty(window, 'location', {
   value: GLOBAL_MOCKS.MOCK_LOCATION,
 });
+Object.defineProperty(window, 'navigator', {
+  value: GLOBAL_MOCKS.MOCK_NAVIGATOR,
+  writable: true,
+});
 Object.defineProperty(window, 'Notification', {
   value: GLOBAL_MOCKS.MockNotificationClass,
   writable: true,
@@ -73,17 +77,4 @@ Object.defineProperty(window, 'wadgtlft', {
 Object.defineProperty(window, 'H', {
   value: GLOBAL_MOCKS.MOCK_HERE_MAPS,
   writable: true,
-});
-Object.defineProperty(navigator, 'connection', {
-  value: GLOBAL_MOCKS.MOCK_NAVIGATOR_CONNECTION,
-});
-Object.defineProperty(navigator, 'geolocation', {
-  value: GLOBAL_MOCKS.MOCK_NAVIGATOR_GEOLOCATION,
-  writable: true,
-});
-Object.defineProperty(navigator, 'maxTouchPoints', {
-  value: 3,
-});
-Object.defineProperty(navigator, 'msMaxTouchPoints', {
-  value: 2,
 });
