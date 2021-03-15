@@ -59,6 +59,10 @@ export class CatalogItemComponent implements OnInit {
   }
 
   public reactivate(item: Item): void {
+    this.reactivateItem(item);
+  }
+
+  private reactivateItem(item: Item): void {
     this.itemService.reactivateItem(item.id).subscribe(
       () => {
         this.itemChange.emit({
