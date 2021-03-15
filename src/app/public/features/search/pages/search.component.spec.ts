@@ -11,21 +11,40 @@ import { SearchFiltersModule } from '../components/search-filters/search-filters
 import { SearchLayoutComponent } from '../components/search-layout/search-layout.component';
 import { AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { SearchComponent } from './search.component';
+import { SearchStoreService } from '../core/services/search-store.service';
+import { of } from 'rxjs/internal/observable/of';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { Store } from '@ngrx/store';
+import { MOCK_SEARCH_ITEM } from '@fixtures/search-items.fixtures';
+import { Item } from '@core/item/item';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
+  let searchStoreService: SearchStoreService;
   let deviceServiceMock;
+  let storeMock;
 
   beforeEach(
     waitForAsync(() => {
       deviceServiceMock = {
         getDeviceType: () => random.arrayElement([DeviceType.DESKTOP, DeviceType.MOBILE, DeviceType.TABLET]),
       };
+      storeMock = {
+        select: () => of(),
+        dispatch: () => {},
+      };
       TestBed.configureTestingModule({
         declarations: [SearchComponent, SearchLayoutComponent, AdComponentStub, ItemCardListComponentStub],
         imports: [SearchFiltersModule],
         providers: [
+          SearchStoreService,
+          {
+            provide: Store,
+            useValue: storeMock,
+          },
+          { provide: DeviceDetectorService, useValue: { isMobile: () => false } },
+          { provide: ViewportService, useValue: { onViewportChange: of('') } },
           {
             provide: AdsService,
             useValue: MockAdsService,
@@ -43,6 +62,7 @@ describe('SearchComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchComponent);
     component = fixture.componentInstance;
+    searchStoreService = TestBed.inject(SearchStoreService);
     fixture.detectChanges();
   });
 
@@ -51,10 +71,7 @@ describe('SearchComponent', () => {
   });
 
   describe('when the component init', () => {
-    describe('when is desktop', () => {
-      beforeEach(() => {
-        spyOn(deviceServiceMock, 'getDeviceType').and.returnValue(DeviceType.DESKTOP);
-      });
+    describe('on init', () => {
       it('should configure ads', () => {
         spyOn(MockAdsService, 'setSlots').and.callThrough();
 
@@ -66,6 +83,33 @@ describe('SearchComponent', () => {
           AD_PUBLIC_SEARCH.search2r,
           AD_PUBLIC_SEARCH.search3r,
         ]);
+      });
+
+      it('should initialise items observable', () => {
+        component.ngOnInit();
+
+        expect(component.items$).toBeTruthy();
+      });
+    });
+  });
+
+  describe('when items change', () => {
+    const oldItems = [{ ...MOCK_SEARCH_ITEM, id: 'old_item' }];
+    beforeEach(() => {
+      component.ngOnInit();
+      searchStoreService.setItems(oldItems);
+    });
+    it('should update items', () => {
+      const newItems = [MOCK_SEARCH_ITEM, MOCK_SEARCH_ITEM];
+      let nextItems: Item[] = [];
+      component.items$.subscribe((items) => (nextItems = items));
+
+      searchStoreService.appendItems(newItems);
+
+      expect(nextItems.length).toBe(3);
+      nextItems.forEach((nextItem, index) => {
+        expect(nextItem).toBeInstanceOf(Item);
+        expect(nextItem.id).toBe(index !== 0 ? MOCK_SEARCH_ITEM.id : 'old_item');
       });
     });
   });
