@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FilterOptionsMapperService } from './filter-options-mapper.service';
+import { FilterOptionsMapperService } from '../filter-options-mapper.service';
 import {
   brandNModel,
   fashionBrand,
@@ -14,8 +14,8 @@ import {
   iconOption,
   objectType,
   sizeNGender,
-} from './filter-option.fixtures';
-import { SIZE_GENDER } from '../../enums/size-gender.enum';
+} from '@fixtures/filter-option.fixtures';
+import { SIZE_GENDER } from '../../../enums/size-gender.enum';
 
 describe('FilterOptionsMapperService', () => {
   let service: FilterOptionsMapperService;

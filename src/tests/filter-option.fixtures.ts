@@ -1,13 +1,13 @@
-import { IconOption } from './option-responses/icon-option.interface';
-import { FilterOption } from '../../interfaces/filter-option.interface';
-import { ObjectType } from './option-responses/object-type.interface';
-import { BrandModel } from './option-responses/brand-model.interface';
-import { SizeNGenderResponse } from './option-responses/fashion-size-n-gender.interface';
-import { FashionBrand } from './option-responses/fashion-brand.interface';
+import { IconOption } from '@public/shared/components/filters/core/services/filter-option-service/option-responses/icon-option.interface';
+import { FilterOption } from '@public/shared/components/filters/core/interfaces/filter-option.interface';
+import { ObjectType } from '@public/shared/components/filters/core/services/filter-option-service/option-responses/object-type.interface';
+import { BrandModel } from '@public/shared/components/filters/core/services/filter-option-service/option-responses/brand-model.interface';
+import { SizeNGenderResponse } from '@public/shared/components/filters/core/services/filter-option-service/option-responses/fashion-size-n-gender.interface';
+import { FashionBrand } from '@public/shared/components/filters/core/services/filter-option-service/option-responses/fashion-brand.interface';
 import { of } from 'rxjs/internal/observable/of';
 import { Observable } from 'rxjs';
 import { QueryParams } from '@public/shared/components/filters/core/interfaces/query-params.interface';
-import { PaginationOptions } from '../../interfaces/pagination-options.interface';
+import { PaginationOptions } from '@public/shared/components/filters/core/interfaces/pagination-options.interface';
 
 export class MockFilterOptionApiService {
   public getApiOptions(method: string, params: QueryParams, paginationOptions: PaginationOptions): Observable<unknown> {

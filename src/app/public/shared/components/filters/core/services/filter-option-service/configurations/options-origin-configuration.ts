@@ -1,4 +1,4 @@
-import { OptionsApiOrigin } from './option-api-origin.interface';
+import { OptionsApiOrigin } from '../interfaces/option-api-origin.interface';
 import { REAL_ESTATE_CONFIGURATION_ID } from '../../../enums/configuration-ids/real-estate-configuration-ids.enum';
 import { COMMON_CONFIGURATION_ID } from '../../../enums/configuration-ids/common-configuration-ids.enum';
 import { CAR_CONFIGURATION_ID } from '../../../enums/configuration-ids/car-configuration-ids';

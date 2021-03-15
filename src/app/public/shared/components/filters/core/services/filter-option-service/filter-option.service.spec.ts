@@ -2,13 +2,10 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { FilterOptionService } from './filter-option.service';
 import { FilterOption } from '../../interfaces/filter-option.interface';
-import { FilterOptionsApiService } from './filter-options-api.service';
+import { FilterOptionsApiService } from './services/filter-options-api.service';
 import { FilterOptionsMapperService } from './filter-options-mapper.service';
 import { ConfigurationId } from '../../types/configuration-id.type';
-import {
-  MockFilterOptionApiService,
-  MockFilterOptionMapperService,
-} from '@public/shared/components/filters/core/services/filter-option-service/filter-option.fixtures';
+import { MockFilterOptionApiService, MockFilterOptionMapperService } from '@fixtures/filter-option.fixtures';
 
 jest.mock('./data/hardcoded-options', () => ({
   HARDCODED_OPTIONS: {

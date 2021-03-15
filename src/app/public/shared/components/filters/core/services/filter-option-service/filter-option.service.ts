@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FilterOptionsApiService } from './filter-options-api.service';
+import { FilterOptionsApiService } from './services/filter-options-api.service';
 import { FilterOptionsMapperService } from './filter-options-mapper.service';
 import { QueryParams } from '../../interfaces/query-params.interface';
 import { PaginationOptions } from '../../interfaces/pagination-options.interface';
@@ -7,7 +7,7 @@ import { FilterOption } from '../../interfaces/filter-option.interface';
 import { OPTIONS_ORIGIN_CONFIGURATION, OriginConfigurationValue } from './configurations/options-origin-configuration';
 import { ConfigurationId } from '../../types/configuration-id.type';
 import { HARDCODED_OPTIONS } from './data/hardcoded-options';
-import { KeyMapper, OptionsApiOrigin } from './configurations/option-api-origin.interface';
+import { KeyMapper, OptionsApiOrigin } from './interfaces/option-api-origin.interface';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 

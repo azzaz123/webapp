@@ -4,15 +4,15 @@ import { Observable } from 'rxjs';
 
 import { ACCEPT_HEADERS } from '@public/core/constants/header-constants';
 import { API_VERSION_URL } from '@public/core/constants/api-version-url-constants';
-import { QueryParams } from '../../interfaces/query-params.interface';
-import { PaginationOptions } from '../../interfaces/pagination-options.interface';
-import { FILTER_OPTIONS_API_ENDPOINTS } from './filter-options-api-endpoints';
-import { ConditionResponse } from './option-responses/condition.interface';
-import { ObjectType } from './option-responses/object-type.interface';
-import { IconOption } from './option-responses/icon-option.interface';
-import { BrandModel } from './option-responses/brand-model.interface';
-import { SizeNGenderResponse } from './option-responses/fashion-size-n-gender.interface';
-import { FashionBrand } from './option-responses/fashion-brand.interface';
+import { QueryParams } from '../../../interfaces/query-params.interface';
+import { PaginationOptions } from '../../../interfaces/pagination-options.interface';
+import { FILTER_OPTIONS_API_ENDPOINTS } from '../configurations/filter-options-api-endpoints';
+import { ConditionResponse } from '../option-responses/condition.interface';
+import { ObjectType } from '../option-responses/object-type.interface';
+import { IconOption } from '../option-responses/icon-option.interface';
+import { BrandModel } from '../option-responses/brand-model.interface';
+import { SizeNGenderResponse } from '../option-responses/fashion-size-n-gender.interface';
+import { FashionBrand } from '../option-responses/fashion-brand.interface';
 
 export type FilterOptionsApiMethods = keyof Omit<FilterOptionsApiService, 'httpClient' | 'getApiOptions'>;
 
