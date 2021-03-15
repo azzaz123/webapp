@@ -1,8 +1,9 @@
 import { User } from '@core/user/user';
-import { SimpleObjectType } from '@private/features/upload/core/models/brand-model.interface';
+import { ItemObjectType } from '@private/features/upload/core/models/brand-model.interface';
 import { ApiResponse } from '../resource/api-response.interface';
 import { Image, UserLocation } from '../user/user-response.interface';
 import { Item } from './item';
+import { ItemCondition } from './item-condition';
 
 export interface ItemResponseV2 extends ApiResponse {
   title: string;
@@ -380,10 +381,8 @@ export interface DeliveryInfo {
   min_weight_kg: number;
 }
 
-export type ItemCondition = 'un_opened' | 'un_worn' | 'in_box' | 'new' | 'as_good_as_new' | 'good' | 'fair' | 'has_given_it_all';
-
 export interface ItemExtraInfo {
-  object_type?: SimpleObjectType;
+  object_type?: ItemObjectType;
   brand: string;
   model?: string;
   gender?: string;

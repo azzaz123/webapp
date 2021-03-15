@@ -4,6 +4,12 @@ export interface ObjectType extends SimpleObjectType {
   children?: SimpleObjectType[];
 }
 
+export interface ItemObjectType extends SimpleObjectType {
+  parent_object_type?: {
+    id: string;
+    name: string;
+  };
+}
 export interface SimpleObjectType {
   id: string;
   name: string;
