@@ -8,7 +8,7 @@ import { MOCK_COUNTER_SPECIFICATIONS_CAR } from './map-specifications.fixtures.s
 import { MOCK_SOCIAL_SHARE } from './social-share.fixtures.spec';
 import { MOCK_USER_STATS } from './user.fixtures.spec';
 import { Coordinate } from '@core/geolocation/address-response.interface';
-import { MOCK_ITEM_CAR } from '@fixtures/item.fixtures.spec';
+import { MOCK_ITEM_CAR, MOCK_ITEM_CAR_WITHOUT_COORDINATES } from '@fixtures/item.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { ItemDetailResponse } from '@public/features/item-detail/interfaces/item-detail-response.interface';
 
@@ -34,6 +34,11 @@ const MOCK_ITEM_DETAIL_LOCATION_SPECIFICATIONS = '08027, Barcelona';
 
 export const MOCK_ITEM_DETAIL_RESPONSE: ItemDetailResponse = {
   item: MOCK_ITEM_CAR,
+  user: MOCK_USER,
+};
+
+export const MOCK_ITEM_DETAIL_RESPONSE_WITHOUT_COORDINATES: ItemDetailResponse = {
+  item: MOCK_ITEM_CAR_WITHOUT_COORDINATES,
   user: MOCK_USER,
 };
 

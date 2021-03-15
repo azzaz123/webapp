@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
-import { SOCIAL_SHARE_MOCK } from '@fixtures/social-share.fixtures.spec';
+import { MOCK_SOCIAL_SHARE } from '@fixtures/social-share.fixtures.spec';
 
 import { ItemSocialShareComponent } from './item-social-share.component';
 
@@ -27,7 +27,7 @@ describe('ItemSocialShareComponent', () => {
     component = fixture.componentInstance;
     socialMetaTagService = TestBed.inject(SocialMetaTagService);
 
-    component.socialShare = SOCIAL_SHARE_MOCK;
+    component.socialShare = MOCK_SOCIAL_SHARE;
     component.item = MOCK_ITEM;
 
     fixture.detectChanges();

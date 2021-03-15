@@ -58,6 +58,15 @@ export const ITEM_LOCATION: UserLocation = {
   approxRadius: 0,
 };
 
+export const ITEM_LOCATION_WITHOUT_COORDINATES: UserLocation = {
+  id: 101,
+  approximated_latitude: null,
+  approximated_longitude: null,
+  city: 'Barcelona',
+  zip: '08009',
+  approxRadius: 0,
+};
+
 export const ITEM_SALE_PRICE = 123.45;
 export const ITEM_SALE_PRICE2 = 1230;
 export const ITEM_CURRENCY_CODE = 'EUR';
@@ -117,6 +126,9 @@ export const ITEM_MAIN_IMAGE: Image = {
   },
 };
 
+export const ITEM_LARGE_IMAGE = 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002514&pictureSize=W320';
+export const ITEM_XLARGE_IMAGE = 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002514&pictureSize=W320';
+
 export const ITEM_IMAGES: Image[] = [
   {
     id: '4z4vl5ygwvzy',
@@ -127,9 +139,9 @@ export const ITEM_IMAGES: Image[] = [
     urls_by_size: {
       original: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002514&pictureSize=ORIGINAL',
       small: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002514&pictureSize=W320',
-      large: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002514&pictureSize=W320',
+      large: ITEM_LARGE_IMAGE,
       medium: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002514&pictureSize=W320',
-      xlarge: 'http://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002514&pictureSize=W320',
+      xlarge: ITEM_XLARGE_IMAGE,
     },
   },
 ];
@@ -359,6 +371,28 @@ export const MOCK_ITEM_CAR: Item = new Item(
   ITEM_DATA.description,
   100,
   ITEM_DATA.location,
+  ITEM_DATA.sale_price,
+  ITEM_DATA.currency_code,
+  ITEM_DATA.modified_date,
+  ITEM_DATA.url,
+  ITEM_DATA.flags,
+  ITEM_DATA.actions_allowed,
+  ITEM_DATA.sale_conditions,
+  ITEM_DATA.main_image,
+  ITEM_DATA.images,
+  ITEM_DATA.web_slug,
+  ITEM_DATA.published_date,
+  ITEM_DATA.delivery_info
+);
+
+export const MOCK_ITEM_CAR_WITHOUT_COORDINATES: Item = new Item(
+  ITEM_DATA.id,
+  ITEM_DATA.legacy_id,
+  ITEM_DATA.owner,
+  ITEM_DATA.title,
+  ITEM_DATA.description,
+  100,
+  ITEM_LOCATION_WITHOUT_COORDINATES,
   ITEM_DATA.sale_price,
   ITEM_DATA.currency_code,
   ITEM_DATA.modified_date,
