@@ -8,9 +8,8 @@ import { PublicUserApiService } from '@public/core/services/api/public-user/publ
 import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
 import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
 import { of } from 'rxjs';
-import { ItemDetail } from '../../../interfaces/item-detail.interface';
-
 import { ItemDetailService } from './item-detail.service';
+import { ItemDetailResponse } from '@public/features/item-detail/interfaces/item-detail-response.interface';
 
 describe('ItemDetailService', () => {
   let itemDetailService: ItemDetailService;
@@ -80,10 +79,10 @@ describe('ItemDetailService', () => {
     });
 
     it('should ask for the item and return it with correct format', () => {
-      let expectedResponse: ItemDetail;
+      let expectedResponse: ItemDetailResponse;
       MOCK_FULL_USER.coverImage = null;
 
-      itemDetailService.getItem(itemId).subscribe((response: ItemDetail) => {
+      itemDetailService.getItem(itemId).subscribe((response: ItemDetailResponse) => {
         expectedResponse = response;
       });
 
