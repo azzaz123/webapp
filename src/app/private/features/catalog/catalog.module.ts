@@ -16,7 +16,6 @@ import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal
 import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product-modal.component';
 import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { ReactivateConfirmationModalComponent } from './modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component';
-import { ReactivateModalComponent } from './modals/reactivate-modal/reactivate-modal.component';
 import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { TryProSlotComponent } from './components/subscriptions-slots/try-pro-slot/try-pro-slot.component';
@@ -42,7 +41,6 @@ import { TryProSlotComponent } from './components/subscriptions-slots/try-pro-sl
     SubscriptionsSlotItemComponent,
     SubscriptionsSlotsListComponent,
     BumpConfirmationModalComponent,
-    ReactivateModalComponent,
     CheckoutItemComponent,
     BumpTutorialComponent,
     BuyProductModalComponent,
@@ -52,7 +50,6 @@ import { TryProSlotComponent } from './components/subscriptions-slots/try-pro-sl
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
-    ReactivateModalComponent,
     BuyProductModalComponent,
     ReactivateConfirmationModalComponent,
     ListingfeeConfirmationModalComponent,

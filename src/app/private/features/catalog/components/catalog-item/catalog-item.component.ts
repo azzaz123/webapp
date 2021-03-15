@@ -1,6 +1,4 @@
-import { ReactivateModalComponent } from '../../modals/reactivate-modal/reactivate-modal.component';
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { ItemService } from '@core/item/item.service';
 import { ItemChangeEvent } from '../../core/item-change.interface';
@@ -9,8 +7,6 @@ import { OrderEvent } from '../selected-items/selected-product.interface';
 import { DEFAULT_ERROR_MESSAGE } from '@core/errors/errors.service';
 import { Item } from '@core/item/item';
 import { EventService } from '@core/event/event.service';
-import { DeviceDetectorService } from 'ngx-device-detector';
-import { PAYMENT_METHOD } from '@core/payments/payment.service';
 
 @Component({
   selector: 'tsl-catalog-item',
@@ -26,11 +22,9 @@ export class CatalogItemComponent implements OnInit {
   public selectMode = false;
 
   constructor(
-    private modalService: NgbModal,
     public itemService: ItemService,
     private toastService: ToastService,
     private eventService: EventService,
-    private deviceService: DeviceDetectorService,
     @Inject('SUBDOMAIN') private subdomain: string
   ) {}
 
@@ -64,68 +58,16 @@ export class CatalogItemComponent implements OnInit {
     this.itemChange.emit({ item, action: 'activate' });
   }
 
-  public reactivate(item: Item) {
-    this.itemService.getAvailableReactivationProducts(item.id).subscribe(
-      (product: Product) => {
-        if (product.durations) {
-          const orderEvent: OrderEvent = this.buildOrderEvent(item, product);
-          if (this.deviceService.isMobile()) {
-            this.reactivateItem(item);
-          } else {
-            this.openReactivateDialog(item, orderEvent);
-          }
-        } else {
-          this.toastService.show({
-            text: DEFAULT_ERROR_MESSAGE,
-            type: 'error',
-          });
-        }
+  public reactivate(item: Item): void {
+    this.itemService.reactivateItem(item.id).subscribe(
+      () => {
+        this.itemChange.emit({
+          item,
+          action: 'reactivated',
+        });
       },
       () => this.toastService.show({ text: DEFAULT_ERROR_MESSAGE, type: 'error' })
     );
-  }
-
-  private buildOrderEvent(item: Item, product: Product): OrderEvent {
-    const order: Order[] = [
-      {
-        item_id: item.id,
-        product_id: product.durations[0].id,
-      },
-    ];
-    return {
-      order: order,
-      total: +product.durations[0].market_code,
-    };
-  }
-
-  private openReactivateDialog(item: Item, orderEvent: OrderEvent) {
-    const modalRef: NgbModalRef = this.modalService.open(ReactivateModalComponent, {
-      windowClass: 'modal-standard',
-    });
-    modalRef.componentInstance.price = orderEvent.total;
-    modalRef.componentInstance.item = item;
-    modalRef.result.then(
-      (result: string) => {
-        if (result === 'bump') {
-          this.itemChange.emit({
-            orderEvent: orderEvent,
-            action: 'reactivatedWithBump',
-          });
-        } else {
-          this.reactivateItem(item);
-        }
-      },
-      () => {}
-    );
-  }
-
-  public reactivateItem(item: Item) {
-    this.itemService.reactivateItem(item.id).subscribe(() => {
-      this.itemChange.emit({
-        item,
-        action: 'reactivated',
-      });
-    });
   }
 
   public select(item: Item) {
