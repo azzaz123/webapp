@@ -15,7 +15,7 @@ import {
   objectType,
   sizeNGender,
 } from '@fixtures/filter-option.fixtures';
-import { SIZE_GENDER } from '../../../enums/size-gender.enum';
+import { SIZE_GENDER } from '../../../components/filters/core/enums/size-gender.enum';
 
 describe('FilterOptionsMapperService', () => {
   let service: FilterOptionsMapperService;

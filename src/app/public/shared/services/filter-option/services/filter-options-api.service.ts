@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 
 import { ACCEPT_HEADERS } from '@public/core/constants/header-constants';
 import { API_VERSION_URL } from '@public/core/constants/api-version-url-constants';
-import { QueryParams } from '../../../interfaces/query-params.interface';
-import { PaginationOptions } from '../../../interfaces/pagination-options.interface';
+import { QueryParams } from '../../../components/filters/core/interfaces/query-params.interface';
+import { PaginationOptions } from '../../../components/filters/core/interfaces/pagination-options.interface';
 import { FILTER_OPTIONS_API_ENDPOINTS } from '../configurations/filter-options-api-endpoints';
 import { ConditionResponse } from '../interfaces/option-responses/condition.interface';
 import { ObjectType } from '../interfaces/option-responses/object-type.interface';

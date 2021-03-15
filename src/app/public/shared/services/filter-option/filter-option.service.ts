@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { FilterOptionsApiService } from './services/filter-options-api.service';
 import { FilterOptionsMapperService } from './services/filter-options-mapper.service';
-import { QueryParams } from '../../interfaces/query-params.interface';
-import { PaginationOptions } from '../../interfaces/pagination-options.interface';
-import { FilterOption } from '../../interfaces/filter-option.interface';
+import { QueryParams } from '../../components/filters/core/interfaces/query-params.interface';
+import { PaginationOptions } from '../../components/filters/core/interfaces/pagination-options.interface';
+import { FilterOption } from '../../components/filters/core/interfaces/filter-option.interface';
 import { OPTIONS_ORIGIN_CONFIGURATION, OriginConfigurationValue } from './configurations/options-origin-configuration';
-import { ConfigurationId } from '../../types/configuration-id.type';
+import { ConfigurationId } from '../../components/filters/core/types/configuration-id.type';
 import { HARDCODED_OPTIONS } from './data/hardcoded-options';
 import { KeyMapper, OptionsApiOrigin } from './interfaces/option-api-origin.interface';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { FilterParameterDraftService } from '@public/shared/components/filters/core/services/filter-option-service/services/filter-parameter-draft.service';
+import { FilterParameterDraftService } from '@public/shared/services/filter-parameter-draft/filter-parameter-draft.service';
 
 @Injectable()
 export class FilterOptionService {
