@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FilterOptionsApiService } from './services/filter-options-api.service';
-import { FilterOptionsMapperService } from './filter-options-mapper.service';
+import { FilterOptionsMapperService } from './services/filter-options-mapper.service';
 import { QueryParams } from '../../interfaces/query-params.interface';
 import { PaginationOptions } from '../../interfaces/pagination-options.interface';
 import { FilterOption } from '../../interfaces/filter-option.interface';

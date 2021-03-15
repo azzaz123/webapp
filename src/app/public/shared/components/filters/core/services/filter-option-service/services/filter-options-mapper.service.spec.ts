@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FilterOptionsMapperService } from '../filter-options-mapper.service';
+import { FilterOptionsMapperService } from './filter-options-mapper.service';
 import {
   brandNModel,
   fashionBrand,

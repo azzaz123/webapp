@@ -3,7 +3,7 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FilterOptionService } from './filter-option.service';
 import { FilterOption } from '../../interfaces/filter-option.interface';
 import { FilterOptionsApiService } from './services/filter-options-api.service';
-import { FilterOptionsMapperService } from './filter-options-mapper.service';
+import { FilterOptionsMapperService } from './services/filter-options-mapper.service';
 import { ConfigurationId } from '../../types/configuration-id.type';
 import { MockFilterOptionApiService, MockFilterOptionMapperService } from '@fixtures/filter-option.fixtures';
 

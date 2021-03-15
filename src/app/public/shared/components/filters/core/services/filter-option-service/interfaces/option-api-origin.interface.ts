@@ -1,4 +1,4 @@
-import { FilterOptionsMapperMethods } from '../filter-options-mapper.service';
+import { FilterOptionsMapperMethods } from '../services/filter-options-mapper.service';
 import { FilterOptionsApiMethods } from '../services/filter-options-api.service';
 
 export interface KeyMapper {
