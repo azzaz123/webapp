@@ -11,7 +11,7 @@ import { ItemDetail } from '@public/features/item-detail/interfaces/item-detail.
 import { SocialShare } from '@public/features/item-detail/interfaces/social-share.interface';
 import { ItemDetailLocation } from '@public/features/item-detail/pages/constants/item-detail.interface';
 import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MapExtraInfoService } from '../map-extra-info/map-extra-info.service';
 import { MapSpecificationsService } from '../map-specifications/map-specifications.service';
@@ -33,29 +33,31 @@ export class MapItemDetailStoreService {
     return {
       item: itemDetailResponse.item,
       user: itemDetailResponse.user,
-      images: this.itemImages,
-      bigImages: this.itemBigImages,
-      coordinate: this.coordinate,
-      location: this.itemLocation,
-      locationSpecifications: this.locationSpecifications,
-      taxonomiesSpecifications: this.taxonomiesSpecifications,
-      counterSpecifications: this.counterSpecifications,
-      userStats: this.userStats,
-      extraInfo: this.itemExtraInfo,
-      haveCoordinates: this.locationHaveCoordinates,
-      isApproximatedLocation: this.isApproximatedLocation,
+      images: this.getItemImages(),
+      bigImages: this.getItemBigImages(),
+      coordinate: this.getCoordinate(),
+      location: this.getItemLocation(),
+      locationSpecifications: this.getLocationSpecifications(),
+      taxonomiesSpecifications: this.getTaxonomiesSpecifications(),
+      counterSpecifications: this.getCounterSpecifications(),
+      userStats: this.getUserStats(),
+      extraInfo: this.getItemExtraInfo(),
+      haveCoordinates: this.getLocationHaveCoordinates(),
+      isApproximatedLocation: this.getIsApproximatedLocation(),
       isItemACar: this.typeCheckService.isCar(itemDetailResponse.item),
       isItemAPhone: this.typeCheckService.isCellPhoneAccessories(itemDetailResponse.item),
       isAFashionItem: this.typeCheckService.isFashion(itemDetailResponse.item),
-      socialShare: this.socialShare,
+      socialShare: this.getSocialShare(),
     };
   }
 
-  private get locationHaveCoordinates(): boolean {
-    return !!this.itemLocation?.latitude && !!this.itemLocation?.longitude;
+  private getLocationHaveCoordinates(): boolean {
+    const itemLocation = this.getItemLocation();
+
+    return !!itemLocation?.latitude && !!itemLocation?.longitude;
   }
 
-  private get itemImages(): string[] {
+  private getItemImages(): string[] {
     const itemImages = this.itemDetailResponse?.item?.images;
     const images: string[] = [];
 
@@ -66,7 +68,7 @@ export class MapItemDetailStoreService {
     return images;
   }
 
-  private get itemBigImages(): string[] {
+  private getItemBigImages(): string[] {
     const bigImages: string[] = [];
 
     this.itemDetailResponse?.item?.images?.forEach((image: Image) => {
@@ -76,20 +78,21 @@ export class MapItemDetailStoreService {
     return bigImages;
   }
 
-  private get counterSpecifications(): CounterSpecifications[] {
+  private getCounterSpecifications(): CounterSpecifications[] {
     return this.mapSpecificationsService.mapSpecification(this.itemDetailResponse?.item);
   }
 
-  private get userStats(): Observable<UserStats> {
+  private getUserStats(): Observable<UserStats> {
     return this.publicProfileService.getStats(this.itemDetailResponse?.user?.id);
   }
 
-  private get itemExtraInfo(): string[] {
+  private getItemExtraInfo(): string[] {
     return this.mapExtraInfoService.mapExtraInfo(this.itemDetailResponse?.item);
   }
 
-  private get itemLocation(): ItemDetailLocation {
+  private getItemLocation(): ItemDetailLocation {
     const detailLocation: UserLocation = this.itemDetailResponse?.item?.location || this.itemDetailResponse?.user?.location;
+
     return {
       zip: detailLocation?.zip || detailLocation?.postal_code,
       city: detailLocation?.city,
@@ -98,7 +101,7 @@ export class MapItemDetailStoreService {
     };
   }
 
-  private get taxonomiesSpecifications(): Observable<ItemTaxonomies> {
+  private getTaxonomiesSpecifications(): Observable<ItemTaxonomies> {
     const parentTaxonomy = this.itemDetailResponse?.item?.extraInfo?.object_type?.parent_object_type?.name;
     const defaultTaxonomy = this.itemDetailResponse?.item?.extraInfo?.object_type?.name;
     let taxonomies: ItemTaxonomies = {
@@ -107,7 +110,9 @@ export class MapItemDetailStoreService {
       icon: null,
     };
 
-    if (defaultTaxonomy) {
+    if (!defaultTaxonomy) {
+      return of(taxonomies);
+    } else {
       return this.categoryService.getCategoryIconById(this.itemDetailResponse?.item?.categoryId).pipe(
         map((icon: string) => {
           taxonomies.icon = icon;
@@ -119,25 +124,27 @@ export class MapItemDetailStoreService {
     }
   }
 
-  private get locationSpecifications(): string {
-    return !!this.itemLocation?.zip && !!this.itemLocation?.city
-      ? `${this.itemLocation.zip}, ${this.itemLocation.city}`
-      : $localize`:@@Undefined:Undefined`;
+  private getLocationSpecifications(): string {
+    const itemLocation = this.getItemLocation();
+
+    return !!itemLocation?.zip && !!itemLocation?.city ? `${itemLocation.zip}, ${itemLocation.city}` : $localize`:@@Undefined:Undefined`;
   }
 
-  private get coordinate(): Coordinate {
+  private getCoordinate(): Coordinate {
+    const itemLocation = this.getItemLocation();
+
     return {
-      latitude: this.itemLocation?.latitude,
-      longitude: this.itemLocation?.longitude,
+      latitude: itemLocation?.latitude,
+      longitude: itemLocation?.longitude,
     };
   }
 
-  private get isApproximatedLocation(): boolean {
+  private getIsApproximatedLocation(): boolean {
     const detailLocation: UserLocation = this.itemDetailResponse?.item?.location || this.itemDetailResponse?.user?.location;
     return detailLocation?.approximated_location;
   }
 
-  private get socialShare(): SocialShare {
+  private getSocialShare(): SocialShare {
     return {
       title: $localize`:@@ItemDetailShareTitle:Share this product with your friends`,
       facebook: {
