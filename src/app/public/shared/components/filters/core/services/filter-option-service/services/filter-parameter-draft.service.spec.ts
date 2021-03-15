@@ -26,14 +26,17 @@ describe('FilterParameterDraftService', () => {
 
   describe('when we have a new set of parameters', () => {
     it('should overwrite the current parameters', () => {});
+    it('should propagate parameters to listeners', () => {});
   });
 
   describe('when we need to upsert parameters', () => {
     describe('and the parameters do not exist', () => {
       it('should add them to the parameter set', () => {});
+      it('should propagate parameters to listeners', () => {});
     });
     describe('and the parameters do exist', () => {
       it('should overwrite the parameter values', () => {});
+      it('should propagate parameters to listeners', () => {});
     });
   });
 });
