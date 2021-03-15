@@ -21,6 +21,7 @@ import { ItemDetailService } from './core/services/item-detail/item-detail.servi
 import { MapSpecificationsService } from './core/services/map-specifications/map-specifications.service';
 import { EllapsedTimeModule } from './core/directives/ellapsed-time.module';
 import { itemDetailRoutedComponents, ItemDetailRoutingModule } from './item-detail-routing.module';
+import { ItemTaxonomiesModule } from './components/item-taxonomies/item-taxonomies.module';
 import { ItemExtraInfoComponent } from './components/item-extra-info/item-extra-info.component';
 import { ItemDetailStoreService } from './core/services/item-detail-store/item-detail-store.service';
 import { MapItemDetailStoreService } from './core/services/map-item-detail-store/map-item-detail-store.service';
@@ -45,6 +46,7 @@ import { ItemSocialShareModule } from './components/item-social-share/item-socia
     ItemSpecificationsModule,
     EllapsedTimeModule,
     ItemSocialShareModule,
+    ItemTaxonomiesModule,
   ],
   providers: [
     ItemDetailService,

@@ -5,7 +5,10 @@
             <div *ngIf="device === deviceType.DESKTOP">
                 <tsl-sky class="position-sticky d-none d-xl-block" [adSlot]="adsSlotsItemDetail.item2l"></tsl-sky>
             </div>
-            <div *ngIf="(itemDetailStoreService.itemDetail$ | async)?.user && (itemDetailStoreService.itemDetail$ | async)?.item" class="ItemDetail__container__middleSection d-flex flex-column w-100">
+            <div *ngIf="(itemDetailStoreService.itemDetail$ | async)?.user
+                        && (itemDetailStoreService.itemDetail$ | async)?.item
+                        && (itemDetailStoreService.itemDetail$ | async).userStats | async"
+                        class="ItemDetail__container__middleSection d-flex flex-column w-100">
                 <div class="ItemDetail__content px-4 pb-5 ">
                     <tsl-item-detail-header
                         [user]="(itemDetailStoreService.itemDetail$ | async).user"
@@ -33,11 +36,16 @@
 
                         <tsl-item-extra-info 
                             *ngIf="(itemDetailStoreService.itemDetail$ | async).extraInfo?.length > 0"
-                            class="d-block mt-2"
+                            class="horizontalScroll d-block mt-2"
                             [ngClass]="{'ItemExtraInfo--car': (itemDetailStoreService.itemDetail$ | async).isItemACar}"
                             [isCar]="(itemDetailStoreService.itemDetail$ | async).isItemACar" 
                             [extraInfo]="(itemDetailStoreService.itemDetail$ | async).extraInfo">
                         </tsl-item-extra-info>
+                        <tsl-item-taxonomies class="horizontalScroll d-block mt-3" *ngIf="((itemDetailStoreService.itemDetail$ | async).taxonomiesSpecifications | async).parentTaxonomy"
+                            [iconPath]="((itemDetailStoreService.itemDetail$ | async).taxonomiesSpecifications | async).icon"
+                            [parentTaxonomy]="((itemDetailStoreService.itemDetail$ | async).taxonomiesSpecifications | async).parentTaxonomy"
+                            [childTaxonomy]="((itemDetailStoreService.itemDetail$ | async).taxonomiesSpecifications | async).childTaxonomy"
+                        ></tsl-item-taxonomies>
                     </div>
                     <div *ngIf="(itemDetailStoreService.itemDetail$ | async).counterSpecifications" class="borderBottom">
                         <tsl-item-specifications 
