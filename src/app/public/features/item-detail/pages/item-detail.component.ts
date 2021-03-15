@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AdsService } from '@core/ads/services';
 import { CATEGORY_IDS } from '@core/category/category-ids';
+import { CategoryService } from '@core/category/category.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { Coordinate } from '@core/geolocation/address-response.interface';
@@ -20,6 +21,7 @@ import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
 import { CounterSpecifications } from '../components/item-specifications/interfaces/item.specifications.interface';
+import { ItemTaxonomies } from '../components/item-taxonomies/interfaces/item-taxonomies.interface';
 import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
 import { MapExtraInfoService } from '../core/services/map-extra-info/map-extra-info.service';
 import { MapSpecificationsService } from '../core/services/map-specifications/map-specifications.service';
@@ -50,6 +52,11 @@ export class ItemDetailComponent implements OnInit {
   public itemSpecifications: CounterSpecifications[];
   public itemDetail: ItemDetail;
   public adsSlotsItemDetail: ItemDetailAdSlotsConfiguration = ADS_ITEM_DETAIL;
+  public taxonomiesSpecifications: ItemTaxonomies = {
+    parentTaxonomy: null,
+    childTaxonomy: null,
+    icon: null,
+  };
 
   public socialShare: {
     title: string;
@@ -64,13 +71,14 @@ export class ItemDetailComponent implements OnInit {
   };
 
   constructor(
-    public typeCheckService: TypeCheckService,
     private deviceService: DeviceService,
     private itemDetailService: ItemDetailService,
     private socialMetaTagsService: SocialMetaTagService,
     private route: ActivatedRoute,
     private router: Router,
     private mapSpecificationsService: MapSpecificationsService,
+    private typeCheckService: TypeCheckService,
+    private categoryService: CategoryService,
     private adsService: AdsService,
     private mapExtraInfoService: MapExtraInfoService
   ) {}
@@ -122,6 +130,7 @@ export class ItemDetailComponent implements OnInit {
     this.socialShareSetup(this.itemDetail.item);
     this.generateItemSpecifications();
     this.setItemRecommendations();
+    this.setTaxonomiesSpecifications();
     this.setAdSlot();
     this.initializeItemExtraInfo();
   }
@@ -191,6 +200,19 @@ export class ItemDetailComponent implements OnInit {
       this.itemSpecifications = this.mapSpecificationsService.mapCarSpecifications(item);
     } else if (this.typeCheckService.isRealEstate(item)) {
       this.itemSpecifications = this.mapSpecificationsService.mapRealestateSpecifications(item);
+    }
+  }
+
+  private setTaxonomiesSpecifications(): void {
+    const parentTaxonomy = this.itemDetail?.item?.extraInfo?.object_type?.parent_object_type?.name;
+    const defaultTaxonomy = this.itemDetail?.item?.extraInfo?.object_type?.name;
+
+    if (defaultTaxonomy) {
+      this.categoryService.getCategoryIconById(this.itemDetail?.item?.categoryId).subscribe((icon: string) => {
+        this.taxonomiesSpecifications.icon = icon;
+        this.taxonomiesSpecifications.parentTaxonomy = parentTaxonomy || defaultTaxonomy;
+        this.taxonomiesSpecifications.childTaxonomy = parentTaxonomy ? defaultTaxonomy : null;
+      });
     }
   }
 
