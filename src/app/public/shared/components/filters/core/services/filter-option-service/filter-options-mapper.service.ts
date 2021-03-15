@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { FilterOption } from '../../interfaces/filter-option.interface';
-import { ConditionResponse } from './option-responses/condition.interface';
-import { IconOption } from './option-responses/icon-option.interface';
-import { ObjectType } from './option-responses/object-type.interface';
-import { BrandModel } from './option-responses/brand-model.interface';
-import { SizeNGenderResponse } from '@public/shared/components/filters/core/services/filter-option-service/option-responses/fashion-size-n-gender.interface';
-import { FashionBrand } from '@public/shared/components/filters/core/services/filter-option-service/option-responses/fashion-brand.interface';
+import { ConditionResponse } from './interfaces/option-responses/condition.interface';
+import { IconOption } from './interfaces/option-responses/icon-option.interface';
+import { ObjectType } from './interfaces/option-responses/object-type.interface';
+import { BrandModel } from './interfaces/option-responses/brand-model.interface';
+import { SizeNGenderResponse } from '@public/shared/components/filters/core/services/filter-option-service/interfaces/option-responses/fashion-size-n-gender.interface';
+import { FashionBrand } from '@public/shared/components/filters/core/services/filter-option-service/interfaces/option-responses/fashion-brand.interface';
 import { QueryParams } from '@public/shared/components/filters/core/interfaces/query-params.interface';
 
 export type FilterOptionsMapperMethods = keyof Omit<FilterOptionsMapperService, 'formatApiResponse'>;

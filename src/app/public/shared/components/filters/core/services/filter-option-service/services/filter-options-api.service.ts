@@ -7,12 +7,12 @@ import { API_VERSION_URL } from '@public/core/constants/api-version-url-constant
 import { QueryParams } from '../../../interfaces/query-params.interface';
 import { PaginationOptions } from '../../../interfaces/pagination-options.interface';
 import { FILTER_OPTIONS_API_ENDPOINTS } from '../configurations/filter-options-api-endpoints';
-import { ConditionResponse } from '../option-responses/condition.interface';
-import { ObjectType } from '../option-responses/object-type.interface';
-import { IconOption } from '../option-responses/icon-option.interface';
-import { BrandModel } from '../option-responses/brand-model.interface';
-import { SizeNGenderResponse } from '../option-responses/fashion-size-n-gender.interface';
-import { FashionBrand } from '../option-responses/fashion-brand.interface';
+import { ConditionResponse } from '../interfaces/option-responses/condition.interface';
+import { ObjectType } from '../interfaces/option-responses/object-type.interface';
+import { IconOption } from '../interfaces/option-responses/icon-option.interface';
+import { BrandModel } from '../interfaces/option-responses/brand-model.interface';
+import { SizeNGenderResponse } from '../interfaces/option-responses/fashion-size-n-gender.interface';
+import { FashionBrand } from '../interfaces/option-responses/fashion-brand.interface';
 
 export type FilterOptionsApiMethods = keyof Omit<FilterOptionsApiService, 'httpClient' | 'getApiOptions'>;
 

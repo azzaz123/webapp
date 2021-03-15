@@ -1,9 +1,9 @@
-import { IconOption } from '@public/shared/components/filters/core/services/filter-option-service/option-responses/icon-option.interface';
+import { IconOption } from '@public/shared/components/filters/core/services/filter-option-service/interfaces/option-responses/icon-option.interface';
 import { FilterOption } from '@public/shared/components/filters/core/interfaces/filter-option.interface';
-import { ObjectType } from '@public/shared/components/filters/core/services/filter-option-service/option-responses/object-type.interface';
-import { BrandModel } from '@public/shared/components/filters/core/services/filter-option-service/option-responses/brand-model.interface';
-import { SizeNGenderResponse } from '@public/shared/components/filters/core/services/filter-option-service/option-responses/fashion-size-n-gender.interface';
-import { FashionBrand } from '@public/shared/components/filters/core/services/filter-option-service/option-responses/fashion-brand.interface';
+import { ObjectType } from '@public/shared/components/filters/core/services/filter-option-service/interfaces/option-responses/object-type.interface';
+import { BrandModel } from '@public/shared/components/filters/core/services/filter-option-service/interfaces/option-responses/brand-model.interface';
+import { SizeNGenderResponse } from '@public/shared/components/filters/core/services/filter-option-service/interfaces/option-responses/fashion-size-n-gender.interface';
+import { FashionBrand } from '@public/shared/components/filters/core/services/filter-option-service/interfaces/option-responses/fashion-brand.interface';
 import { of } from 'rxjs/internal/observable/of';
 import { Observable } from 'rxjs';
 import { QueryParams } from '@public/shared/components/filters/core/interfaces/query-params.interface';
