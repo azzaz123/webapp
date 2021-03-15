@@ -24,15 +24,13 @@ describe('MapSpecificationsService', () => {
 
   describe('when we map the car specifications...', () => {
     it('should return their counter specifications', () => {
-      expect(service.mapCarSpecifications(MOCK_MAP_SPECIFICATIONS_CAR)).toStrictEqual(MOCK_COUNTER_SPECIFICATIONS_CAR);
+      expect(service.mapSpecification(MOCK_MAP_SPECIFICATIONS_CAR)).toStrictEqual(MOCK_COUNTER_SPECIFICATIONS_CAR);
     });
   });
 
   describe('when we map the realestate specifications...', () => {
     it('should return their counter specifications', () => {
-      expect(service.mapRealestateSpecifications(MOCK_MAP_SPECIFICATIONS_REAL_ESTATE)).toStrictEqual(
-        MOCK_COUNTER_SPECIFICATIONS_REAL_ESTATE
-      );
+      expect(service.mapSpecification(MOCK_MAP_SPECIFICATIONS_REAL_ESTATE)).toStrictEqual(MOCK_COUNTER_SPECIFICATIONS_REAL_ESTATE);
     });
   });
 });
