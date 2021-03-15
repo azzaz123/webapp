@@ -10,10 +10,15 @@ import { HARDCODED_OPTIONS } from './data/hardcoded-options';
 import { KeyMapper, OptionsApiOrigin } from './interfaces/option-api-origin.interface';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { FilterParameterDraftService } from '@public/shared/components/filters/core/services/filter-option-service/services/filter-parameter-draft.service';
 
 @Injectable()
 export class FilterOptionService {
-  constructor(private filterOptionsApiService: FilterOptionsApiService, private filterOptionsMapperService: FilterOptionsMapperService) {}
+  constructor(
+    private filterOptionsApiService: FilterOptionsApiService,
+    private filterOptionsMapperService: FilterOptionsMapperService,
+    private filterParameterDraftService: FilterParameterDraftService
+  ) {}
 
   public getOptions(
     configurationId: ConfigurationId,
@@ -88,13 +93,14 @@ export class FilterOptionService {
     return mappedParams;
   }
 
-  // TODO: This will be implemented on integration tasks. For now, it just returns the keys from the sibling filter params
   private getSiblingParams(paramKeys: string[] = []): Record<string, string> {
-    const params = {};
-
-    paramKeys.forEach((key) => (params[key] = key));
-
-    return params;
+    return this.filterParameterDraftService.getParametersByKey(paramKeys).reduce(
+      (accumulatedParams, filterParameter) => ({
+        ...accumulatedParams,
+        [filterParameter.key]: filterParameter.value,
+      }),
+      {}
+    );
   }
 
   private isKeyMapper(mapper: KeyMapper | string): mapper is KeyMapper {

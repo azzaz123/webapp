@@ -5,7 +5,12 @@ import { FilterOption } from '../../interfaces/filter-option.interface';
 import { FilterOptionsApiService } from './services/filter-options-api.service';
 import { FilterOptionsMapperService } from './services/filter-options-mapper.service';
 import { ConfigurationId } from '../../types/configuration-id.type';
-import { MockFilterOptionApiService, MockFilterOptionMapperService } from '@fixtures/filter-option.fixtures';
+import {
+  MockFilterOptionApiService,
+  MockFilterOptionMapperService,
+  MockFilterParameterDraftService,
+} from '@fixtures/filter-option.fixtures';
+import { FilterParameterDraftService } from '@public/shared/components/filters/core/services/filter-option-service/services/filter-parameter-draft.service';
 
 jest.mock('./data/hardcoded-options', () => ({
   HARDCODED_OPTIONS: {
@@ -74,6 +79,10 @@ describe('FilterOptionService', () => {
     TestBed.configureTestingModule({
       providers: [
         FilterOptionService,
+        {
+          provide: FilterParameterDraftService,
+          useClass: MockFilterParameterDraftService,
+        },
         {
           provide: FilterOptionsApiService,
           useClass: MockFilterOptionApiService,
