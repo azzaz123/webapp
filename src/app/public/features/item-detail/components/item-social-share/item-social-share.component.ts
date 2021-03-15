@@ -14,10 +14,12 @@ export class ItemSocialShareComponent implements OnInit {
   constructor(private socialMetaTagsService: SocialMetaTagService) {}
 
   ngOnInit(): void {
-    this.initializeItemMetaTags();
+    if (this.item) {
+      this.initializeItemMetaTags();
+    }
   }
 
-  public initializeItemMetaTags(): void {
+  private initializeItemMetaTags(): void {
     this.socialMetaTagsService.insertTwitterMetaTags(this.item.title, this.item.description, this.item.mainImage?.urls_by_size?.medium);
     this.socialMetaTagsService.insertFacebookMetaTags(
       this.item.title,
