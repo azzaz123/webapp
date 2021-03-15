@@ -7,7 +7,7 @@ import { SearchStoreService } from '../core/services/search-store.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Item } from '@core/item/item';
-import { SearchItem } from '@public/features/search/interfaces/search-item.interface';
+import { mapSearchItems } from '../utils/search-item.mapper';
 
 @Component({
   selector: 'tsl-search',
@@ -29,56 +29,12 @@ export class SearchComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.items$ = this.searchStore.items$.pipe(map(this.formatSearchItems));
+    this.items$ = this.searchStore.items$.pipe(map(mapSearchItems));
 
     this.adsService.setSlots([this.adSlots.search1, this.adSlots.search2r, this.adSlots.search3r]);
   }
 
   public toggleBubbleFilterBackdrop(active: boolean): void {
     this.showBackdrop = active;
-  }
-
-  // TODO: This has to disappear. As soon as we get rid of the Item class
-  private formatSearchItems(items: SearchItem[]): Item[] {
-    return items.map(
-      (item) =>
-        new Item(
-          item.id,
-          undefined,
-          undefined,
-          item.title,
-          item.description,
-          undefined,
-          undefined,
-          item.price,
-          item.currency,
-          undefined,
-          undefined,
-          {
-            bumped: item.flags.bumped,
-            reserved: item.flags.reserved,
-            favorite: item.flags.favourited,
-            pending: undefined,
-            banned: undefined,
-            sold: undefined,
-            expired: undefined,
-          },
-          undefined,
-          undefined,
-          {
-            id: item.images[0],
-            original_height: undefined,
-            original_width: undefined,
-            average_hex_color: undefined,
-            urls_by_size: {
-              original: undefined,
-              small: item.images[0],
-              medium: undefined,
-              large: undefined,
-              xlarge: undefined,
-            },
-          }
-        )
-    );
   }
 }
