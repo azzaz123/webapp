@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
+import { CategoryService } from '@core/category/category.service';
 import { Coordinate } from '@core/geolocation/address-response.interface';
 import { Image, UserLocation } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { CounterSpecifications } from '@public/features/item-detail/components/item-specifications/interfaces/item.specifications.interface';
+import { ItemTaxonomies } from '@public/features/item-detail/components/item-taxonomies/interfaces/item-taxonomies.interface';
 import { ItemDetailResponse } from '@public/features/item-detail/interfaces/item-detail-response.interface';
 import { ItemDetail } from '@public/features/item-detail/interfaces/item-detail.interface';
 import { SocialShare } from '@public/features/item-detail/interfaces/social-share.interface';
 import { ItemDetailLocation } from '@public/features/item-detail/pages/constants/item-detail.interface';
 import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { MapExtraInfoService } from '../map-extra-info/map-extra-info.service';
 import { MapSpecificationsService } from '../map-specifications/map-specifications.service';
 
@@ -21,7 +24,8 @@ export class MapItemDetailStoreService {
     private typeCheckService: TypeCheckService,
     private mapSpecificationsService: MapSpecificationsService,
     private mapExtraInfoService: MapExtraInfoService,
-    private publicProfileService: PublicProfileService
+    private publicProfileService: PublicProfileService,
+    private categoryService: CategoryService
   ) {}
 
   public mapItemDetailStore(itemDetailResponse: ItemDetailResponse): ItemDetail {
@@ -34,6 +38,7 @@ export class MapItemDetailStoreService {
       coordinate: this.coordinate,
       location: this.itemLocation,
       locationSpecifications: this.locationSpecifications,
+      taxonomiesSpecifications: this.taxonomiesSpecifications,
       counterSpecifications: this.counterSpecifications,
       userStats: this.userStats,
       extraInfo: this.itemExtraInfo,
@@ -91,6 +96,27 @@ export class MapItemDetailStoreService {
       latitude: detailLocation?.approximated_latitude,
       longitude: detailLocation?.approximated_longitude,
     };
+  }
+
+  private get taxonomiesSpecifications(): Observable<ItemTaxonomies> {
+    const parentTaxonomy = this.itemDetailResponse?.item?.extraInfo?.object_type?.parent_object_type?.name;
+    const defaultTaxonomy = this.itemDetailResponse?.item?.extraInfo?.object_type?.name;
+    let taxonomies: ItemTaxonomies = {
+      parentTaxonomy: null,
+      childTaxonomy: null,
+      icon: null,
+    };
+
+    if (defaultTaxonomy) {
+      return this.categoryService.getCategoryIconById(this.itemDetailResponse?.item?.categoryId).pipe(
+        map((icon: string) => {
+          taxonomies.icon = icon;
+          taxonomies.parentTaxonomy = parentTaxonomy || defaultTaxonomy;
+          taxonomies.childTaxonomy = parentTaxonomy ? defaultTaxonomy : null;
+          return taxonomies;
+        })
+      );
+    }
   }
 
   private get locationSpecifications(): string {
