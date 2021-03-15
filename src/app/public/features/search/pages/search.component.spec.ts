@@ -15,7 +15,7 @@ import { SearchStoreService } from '../core/services/search-store.service';
 import { of } from 'rxjs/internal/observable/of';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Store } from '@ngrx/store';
-import { MOCK_SEARCH_ITEM } from '../core/services/search-store.service.fixtures';
+import { MOCK_SEARCH_ITEM } from '@fixtures/search-items.fixtures';
 import { Item } from '@core/item/item';
 
 describe('SearchComponent', () => {

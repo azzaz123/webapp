@@ -1,4 +1,4 @@
-import { SearchItem } from '../../interfaces/search-item.interface';
+import { SearchItem } from '@public/features/search/interfaces/search-item.interface';
 
 export const MOCK_SEARCH_ITEM: SearchItem = {
   id: 'kmzn9k7wy0jn',

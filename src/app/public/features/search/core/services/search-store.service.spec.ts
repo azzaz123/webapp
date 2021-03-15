@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { SearchStoreService } from './search-store.service';
-import { MOCK_SEARCH_ITEM } from './search-store.service.fixtures';
+import { MOCK_SEARCH_ITEM } from '@fixtures/search-items.fixtures';
 
 describe('SearchStoreService', () => {
   let service: SearchStoreService;

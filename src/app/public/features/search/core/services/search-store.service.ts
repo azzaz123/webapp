@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { SearchItem } from '../../interfaces/search-item.interface';
-import { MOCK_SEARCH_ITEM } from './search-store.service.fixtures';
+import { MOCK_SEARCH_ITEM } from '@fixtures/search-items.fixtures';
 
 @Injectable()
 export class SearchStoreService {
