@@ -102,13 +102,11 @@ describe('SearchComponent', () => {
     it('should update items', () => {
       const newItems = [MOCK_SEARCH_ITEM, MOCK_SEARCH_ITEM];
       let nextItems: Item[] = [];
-
       component.items$.subscribe((items) => (nextItems = items));
 
       searchStoreService.appendItems(newItems);
 
       expect(nextItems.length).toBe(3);
-
       nextItems.forEach((nextItem, index) => {
         expect(nextItem).toBeInstanceOf(Item);
         expect(nextItem.id).toBe(index !== 0 ? MOCK_SEARCH_ITEM.id : 'old_item');
