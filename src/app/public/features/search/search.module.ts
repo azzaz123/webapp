@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { ViewportService } from '@core/viewport/viewport.service';
 import { CheckSessionModule } from '@public/core/directives/check-session/check-session.module';
 import { PublicLayoutModule } from '@public/layout/public-layout.module';
+import { AdSlotShoppingModule } from '@shared/ads/ad-slot-shopping/ad-slot-shopping.module';
 import { AdSlotModule } from '@shared/ads/ad-slot/ad-slot.module';
 import { SharedModule } from '@shared/shared.module';
 import { ItemCardListModule } from '../public-profile/pages/user-published/components/item-card-list/item-card-list.module';
@@ -18,6 +19,7 @@ import { SearchRoutingModule } from './search.routing.module';
     ItemCardListModule,
     CheckSessionModule,
     AdSlotModule,
+    AdSlotShoppingModule,
     SearchFiltersModule,
   ],
   providers: [ViewportService],

@@ -3,7 +3,7 @@ import { AdShoppingPageOptions, AdSlotShoppingConfiguration } from '@core/ads/mo
 import { AdsService } from '@core/ads/services';
 
 @Component({
-  selector: 'tsl-ad-sky-shopping',
+  selector: 'tsl-sky-shopping',
   templateUrl: 'ad-slot-shopping.component.html',
   styleUrls: ['./ad-slot-shopping.component.scss'],
 })
