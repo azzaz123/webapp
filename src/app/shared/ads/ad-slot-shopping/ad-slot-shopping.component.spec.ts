@@ -1,39 +1,30 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 import { AdsService } from '@core/ads/services';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { CHAT_AD_SLOTS } from '@private/features/chat/core/ads/chat-ad.config';
-import { AdSlotComponent } from './ad-slot.component';
+import { AdSlotShoppingComponent } from './ad-slot-shopping.component';
 
-describe('AdSlotComponent', () => {
+describe('AdSlotShoppingComponent', () => {
   const FIRST_AD_SLOT = CHAT_AD_SLOTS;
-  let component: AdSlotComponent;
-  let fixture: ComponentFixture<AdSlotComponent>;
-  let elementRef: any;
+  let component: AdSlotShoppingComponent;
+  let fixture: ComponentFixture<AdSlotShoppingComponent>;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [AdSlotComponent],
+        declarations: [AdSlotShoppingComponent],
         providers: [{ provide: AdsService, useValue: MockAdsService }],
       }).compileComponents();
     })
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdSlotComponent);
+    fixture = TestBed.createComponent(AdSlotShoppingComponent);
     component = fixture.componentInstance;
-    component.adSlot = FIRST_AD_SLOT;
     fixture.detectChanges();
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should set div element id', () => {
-    elementRef = fixture.debugElement.query(By.css(`#${FIRST_AD_SLOT.id}`)).nativeElement;
-
-    expect(elementRef).toBeTruthy();
   });
 });
