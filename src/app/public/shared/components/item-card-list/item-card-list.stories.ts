@@ -99,3 +99,23 @@ ExtraSmall.parameters = {
     defaultViewport: CUSTOM_VIEWPORT_NAME.XS,
   },
 };
+
+export const ColumnsConfig = Template.bind({});
+ColumnsConfig.args = {
+  items: ITEMS,
+  columnsConfig: {
+    lg: 5,
+    md: 4,
+    sm: 3,
+    xs: 2,
+  },
+};
+
+export const SlotsConfig = Template.bind({});
+SlotsConfig.args = {
+  items: ITEMS,
+  slotsConfig: {
+    start: 3,
+    offset: 3,
+  },
+};
