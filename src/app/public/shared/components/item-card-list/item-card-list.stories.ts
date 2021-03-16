@@ -21,7 +21,7 @@ import { CoreStoreModule } from '@core/store/core-store.module';
 import { RouterTestingModule } from '@angular/router/testing';
 
 export default {
-  title: 'Webapp/Public/Features/PublicProfile/Pages/UserPublished/ItemCardList',
+  title: 'Webapp/Public/Shared/Components/ItemCardList',
   component: ItemCardListComponent,
   decorators: [
     moduleMetadata({
