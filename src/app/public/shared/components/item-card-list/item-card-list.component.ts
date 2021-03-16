@@ -6,6 +6,7 @@ import { ItemCardService } from '@public/core/services/item-card/item-card.servi
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { APP_PATHS } from 'app/app-routing-constants';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { ColumnsConfig } from './interfaces/cols-config.interface';
 
 @Component({
   selector: 'tsl-public-item-card-list',
@@ -15,6 +16,12 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 export class ItemCardListComponent {
   @Input() items: Item[];
   @Input() showDescription = true;
+  @Input() columnsConfig: ColumnsConfig = {
+    lg: 5,
+    md: 4,
+    sm: 3,
+    xs: 2,
+  };
 
   constructor(
     private deviceDetectionService: DeviceDetectorService,
