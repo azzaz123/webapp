@@ -1,5 +1,5 @@
-<div class="ItemCardList w-100 m-auto">
-    <tsl-public-item-card *ngFor="let item of items" [item]="item" [showDescription]="showDescription"
-        [showFavourite]="!(item.owner | isCurrentUser | async)" (toggleFavourite)="toggleFavourite(item)"
-        (itemClick)="openItemDetailPage(item)"></tsl-public-item-card>
+<div class="ItemCardList w-100 m-auto grid-xs-{{columnsConfig.xs}} grid-sm-{{columnsConfig.sm}} grid-md-{{columnsConfig.md}} grid-lg-{{columnsConfig.lg}}">
+    <tsl-public-item-card *ngFor="let item of items" 
+        [item]="item" [showDescription]="showDescription"
+        [showFavourite]="!(item.owner | isCurrentUser | async)" (toggleFavourite)="toggleFavourite(item)" (itemClick)="openItemDetailPage(item)"></tsl-public-item-card>
 </div>
