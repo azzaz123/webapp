@@ -7,6 +7,7 @@ import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { APP_PATHS } from 'app/app-routing-constants';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ColumnsConfig } from './interfaces/cols-config.interface';
+import { SlotsConfig } from './interfaces/slots-config.interface';
 
 @Component({
   selector: 'tsl-public-item-card-list',
@@ -22,6 +23,7 @@ export class ItemCardListComponent {
     sm: 3,
     xs: 2,
   };
+  @Input() slotsConfig: SlotsConfig;
 
   constructor(
     private deviceDetectionService: DeviceDetectorService,
@@ -38,5 +40,9 @@ export class ItemCardListComponent {
 
   public openItemDetailPage(item: Item): void {
     this.router.navigate([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.ITEM_DETAIL}/${item.id}`]);
+  }
+
+  public showSlot(index: number): boolean {
+    return index >= this.slotsConfig.start && (index - this.slotsConfig.start) % this.slotsConfig.offset === 0;
   }
 }
