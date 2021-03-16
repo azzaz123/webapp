@@ -1,18 +1,18 @@
+import { Observable, Subscription } from 'rxjs';
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AdsService } from '@core/ads/services';
+import { CATEGORY_IDS } from '@core/category/category-ids';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
+import { Item } from '@core/item/item';
 import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { CarouselSlide } from '@public/shared/components/carousel-slides/carousel-slide.interface';
-import { Observable, Subscription } from 'rxjs';
+import { ADS_ITEM_DETAIL, ItemDetailAdSlotsConfiguration } from './../core/ads/item-detail-ads.config';
 import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
-import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
 import { ItemDetailStoreService } from '../core/services/item-detail-store/item-detail-store.service';
-import { ItemDetailAdSlotsConfiguration, ADS_ITEM_DETAIL } from './../core/ads/item-detail-ads.config';
-import { Item } from '@core/item/item';
-import { CATEGORY_IDS } from '@core/category/category-ids';
+import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
 import { ItemDetail } from '../interfaces/item-detail.interface';
 
 @Component({
@@ -32,7 +32,7 @@ export class ItemDetailComponent implements OnInit {
   private itemDetail: ItemDetail;
 
   constructor(
-    public itemDetailStoreService: ItemDetailStoreService,
+    private itemDetailStoreService: ItemDetailStoreService,
     private deviceService: DeviceService,
     private itemDetailService: ItemDetailService,
     private route: ActivatedRoute,
@@ -93,5 +93,9 @@ export class ItemDetailComponent implements OnInit {
   private isItemRecommendations(itemCategoryId: number): boolean {
     const CATEGORIES_WITH_RECOMMENDATIONS = [CATEGORY_IDS.CAR, CATEGORY_IDS.FASHION_ACCESSORIES];
     return CATEGORIES_WITH_RECOMMENDATIONS.includes(itemCategoryId);
+  }
+
+  get itemDetail$(): Observable<ItemDetail> {
+    return this.itemDetailStoreService.itemDetail$;
   }
 }
