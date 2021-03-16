@@ -3,6 +3,10 @@
 .ItemExtraInfo {
   font-size: $font-size-s;
 
+  label {
+    min-width: max-content;
+  }
+
   &--car {
     > :not(:last-child) {
       margin-right: $spacing-xs;
