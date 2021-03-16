@@ -29,7 +29,7 @@
                                 (imageClick)="openItemDetailImage($event)">
                             </tsl-item-images-carousel>
                         </div>
-                        <div class="mt-3 pt-3" [ngClass]="{'borderBottom': !(itemDetail.extraInfo?.length > 0 && itemDetail.isItemACar), 'pb-3': !itemDetail.specifications}">
+                        <div class="mt-3 pt-3" [ngClass]="{'borderBottom': !(itemDetail.extraInfo?.length > 0 && itemDetail.isItemACar), 'pb-3': !itemDetail.counterSpecifications}">
                             <span class="ItemDetail__price d-block">{{itemDetail.item.salePrice |
                                     customCurrency:itemDetail.item.currencyCode}}</span>
                             <h1 class="ItemDetail__title my-0">{{itemDetail.item.title}}</h1>
