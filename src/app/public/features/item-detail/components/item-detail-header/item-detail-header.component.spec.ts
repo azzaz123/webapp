@@ -229,23 +229,44 @@ describe('ItemDetailHeaderComponent', () => {
       });
 
       describe('when we clic on the reserve item button...', () => {
-        it('should ask for the reserve item function', () => {
-          spyOn(component, 'reserveItem').and.callThrough();
-          spyOn(itemDetailService, 'reserveItem');
+        describe('and the item is not reserved...', () => {
+          beforeEach(() => {
+            component.item.reserved = false;
+            fixture.detectChanges();
+          });
+          it('should ask for the reserve item function', () => {
+            spyOn(component, 'reserveItem').and.callThrough();
+            spyOn(component.updateReserveItem, 'emit');
 
-          const reserveButton = fixture.debugElement.query(By.css(reserveButtonClass)).nativeElement;
-          reserveButton.click();
+            const reserveButton = fixture.debugElement.query(By.css(reserveButtonClass)).nativeElement;
+            reserveButton.click();
 
-          expect(component.reserveItem).toHaveBeenCalled();
-          expect(itemDetailService.reserveItem).toHaveBeenCalledWith(component.item.id, !component.item.reserved);
+            expect(component.reserveItem).toHaveBeenCalled();
+            expect(component.updateReserveItem.emit).toHaveBeenCalledWith(component.item.id);
+          });
+        });
+
+        describe('and the item is reserved...', () => {
+          beforeEach(() => {
+            component.item.reserved = true;
+            fixture.detectChanges();
+          });
+          it('should ask for the reserve item function', () => {
+            spyOn(component, 'reserveItem').and.callThrough();
+            spyOn(component.updateUnreserveItem, 'emit');
+
+            const reserveButton = fixture.debugElement.query(By.css(reserveButtonClass)).nativeElement;
+            reserveButton.click();
+
+            expect(component.reserveItem).toHaveBeenCalled();
+            expect(component.updateUnreserveItem.emit).toHaveBeenCalledWith(component.item.id);
+          });
         });
       });
 
       describe('when we clic on the sold item button...', () => {
-        afterEach(() => {
-          component.item.sold = false;
-        });
         it('should open the sold modal', fakeAsync(() => {
+          spyOn(component.updateSoldItem, 'emit');
           spyOn(component, 'soldItem').and.callThrough();
           spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve(), componentInstance: {} });
 
@@ -255,7 +276,7 @@ describe('ItemDetailHeaderComponent', () => {
 
           expect(component.soldItem).toHaveBeenCalled();
           expect(modalService.open).toHaveBeenCalledWith(SoldModalComponent, { windowClass: 'sold' });
-          expect(component.item.sold).toBe(true);
+          expect(component.updateSoldItem.emit).toHaveBeenCalled();
         }));
       });
 
