@@ -7,7 +7,7 @@ import { PublicUserApiService } from '@public/core/services/api/public-user/publ
 import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
 import { AdsModule } from '@public/shared/components/ads/ads.module';
 import { ItemImagesCarouselModule } from '@public/shared/components/item-images-carousel/item-images-carousel.module';
-import { AdModule } from '@shared/ad/ad.module';
+import { AdSlotModule } from '@shared/ads/ad-slot/ad-slot.module';
 import { GeolocationModule } from '@shared/geolocation/geolocation.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { SocialShareModule } from '@shared/social-share/social-share.module';
@@ -29,7 +29,7 @@ import { ItemExtraInfoComponent } from './components/item-extra-info/item-extra-
     CommonModule,
     ItemDetailRoutingModule,
     AdsModule,
-    AdModule,
+    AdSlotModule,
     ItemImagesCarouselModule,
     CustomCurrencyModule,
     GeolocationModule,

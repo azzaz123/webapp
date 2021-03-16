@@ -6,7 +6,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DropdownModule } from '@shared/dropdown/dropdown.module';
 import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { AdModule } from './ad/ad.module';
+import { AdSlotModule } from './ads/ad-slot/ad-slot.module';
 import { ArchivableComponent } from './archivable/archivable.component';
 import { ArchiveButtonComponent } from './archive-button/archive-button.component';
 import { ButtonModule } from './button/button.module';
@@ -99,7 +99,7 @@ import { DateCountDownModule } from './date-countdown/date-countdown.module';
     DateCountDownModule,
   ],
   exports: [
-    AdModule,
+    AdSlotModule,
     SpinnerModule,
     SanitizedBackgroundModule,
     UserAvatarModule,
@@ -107,7 +107,7 @@ import { DateCountDownModule } from './date-countdown/date-countdown.module';
     CardModule,
     CommonModule,
     UploaderModule,
-    AdModule,
+    AdSlotModule,
     RestrictInputDirective,
     HeaderComponent,
     SoldModalComponent,

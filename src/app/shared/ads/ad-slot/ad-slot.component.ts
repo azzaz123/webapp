@@ -4,10 +4,10 @@ import { AdsService } from '@core/ads/services';
 
 @Component({
   selector: 'tsl-sky',
-  templateUrl: './ad.component.html',
-  styleUrls: ['./ad.component.scss'],
+  templateUrl: './ad-slot.component.html',
+  styleUrls: ['./ad-slot.component.scss'],
 })
-export class AdComponent implements AfterViewInit {
+export class AdSlotComponent implements AfterViewInit {
   @Input() adSlot: AdSlotConfiguration;
 
   constructor(private adsService: AdsService) {}
