@@ -87,3 +87,7 @@ Object.defineProperty(navigator, 'maxTouchPoints', {
 Object.defineProperty(navigator, 'msMaxTouchPoints', {
   value: 2,
 });
+Object.defineProperty(navigator, 'languages', {
+  value: GLOBAL_MOCKS.MOCK_NAVIGATOR_LANGUAGES,
+  writable: true,
+});
