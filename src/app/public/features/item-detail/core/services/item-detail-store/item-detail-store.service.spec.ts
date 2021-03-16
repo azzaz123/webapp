@@ -1,7 +1,8 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { MOCK_CAR_ITEM_DETAIL, MOCK_ITEM_DETAIL_RESPONSE } from '@fixtures/item-detail.fixtures.spec';
+import { MOCK_ITEM_DETAIL_RESPONSE } from '@fixtures/item-detail-response.fixtures.spec';
+import { MOCK_CAR_ITEM_DETAIL } from '@fixtures/item-detail.fixtures.spec';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';

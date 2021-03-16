@@ -7,19 +7,8 @@ import { MOCK_COUNTER_SPECIFICATIONS_CAR } from './map-specifications.fixtures.s
 import { MOCK_SOCIAL_SHARE } from './social-share.fixtures.spec';
 import { MOCK_USER_STATS, MOCK_USER_WITHOUT_LOCATION } from './user.fixtures.spec';
 import { Coordinate } from '@core/geolocation/address-response.interface';
-import {
-  MOCK_ITEM_APROX_LOCATION,
-  MOCK_ITEM_CAR,
-  MOCK_ITEM_CELLPHONES,
-  MOCK_ITEM_CELLPHONES_NO_SUBCATEGORY,
-  MOCK_ITEM_CELLPHONES_PARENT_SUBCATEGORY,
-  MOCK_ITEM_FASHION,
-  MOCK_ITEM_GBP,
-  MOCK_ITEM_WITHOUT_COORDINATES,
-  MOCK_ITEM_WITHOUT_LOCATION,
-} from '@fixtures/item.fixtures.spec';
+import { MOCK_ITEM_CAR, MOCK_ITEM_FASHION, MOCK_ITEM_GBP, MOCK_ITEM_WITHOUT_LOCATION } from '@fixtures/item.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
-import { ItemDetailResponse } from '@public/features/item-detail/interfaces/item-detail-response.interface';
 
 const MOCK_ITEM_DETAIL_LOCATION: ItemDetailLocation = {
   city: 'Barcelona',
@@ -40,46 +29,6 @@ const MOCK_ITEM_TAXONOMIES: ItemTaxonomies = {
 };
 
 const MOCK_ITEM_DETAIL_LOCATION_SPECIFICATIONS = '08027, Barcelona';
-
-export const MOCK_ITEM_DETAIL_RESPONSE: ItemDetailResponse = {
-  item: MOCK_ITEM_CAR,
-  user: MOCK_USER,
-};
-
-export const MOCK_ITEM_DETAIL_RESPONSE_WITH_APROX_LOCATION: ItemDetailResponse = {
-  item: MOCK_ITEM_APROX_LOCATION,
-  user: MOCK_USER,
-};
-
-export const MOCK_ITEM_DETAIL_RESPONSE_WITHOUT_LOCATION: ItemDetailResponse = {
-  item: MOCK_ITEM_WITHOUT_LOCATION,
-  user: MOCK_USER_WITHOUT_LOCATION,
-};
-
-export const MOCK_ITEM_DETAIL_RESPONSE_ITEM_WITHOUT_LOCATION: ItemDetailResponse = {
-  item: MOCK_ITEM_WITHOUT_LOCATION,
-  user: MOCK_USER,
-};
-
-export const MOCK_ITEM_DETAIL_RESPONSE_WITHOUT_COORDINATES: ItemDetailResponse = {
-  item: MOCK_ITEM_WITHOUT_COORDINATES,
-  user: MOCK_USER,
-};
-
-export const MOCK_CELLPHONE_RESPONSE: ItemDetailResponse = {
-  item: MOCK_ITEM_CELLPHONES,
-  user: MOCK_USER,
-};
-
-export const MOCK_CELLPHONE_WITHOUT_SUBCATEGORY_RESPONSE: ItemDetailResponse = {
-  item: MOCK_ITEM_CELLPHONES_NO_SUBCATEGORY,
-  user: MOCK_USER,
-};
-
-export const MOCK_CELLPHONE_PARENT_RESPONSE: ItemDetailResponse = {
-  item: MOCK_ITEM_CELLPHONES_PARENT_SUBCATEGORY,
-  user: MOCK_USER,
-};
 
 export const MOCK_CAR_ITEM_DETAIL: ItemDetail = {
   item: MOCK_ITEM_CAR,
@@ -110,6 +59,7 @@ export const MOCK_CAR_ITEM_DETAIL_WITHOUT_COUNTER: ItemDetail = {
   ...MOCK_CAR_ITEM_DETAIL,
   counterSpecifications: null,
 };
+
 export const MOCK_ITEM_DETAIL_FASHION: ItemDetail = {
   ...MOCK_CAR_ITEM_DETAIL,
   item: MOCK_ITEM_FASHION,
