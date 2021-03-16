@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
-import { TokenInterceptor, MockInterceptor, NullQueryParamsInterceptor } from './interceptors';
+import { TokenInterceptor, MockInterceptor, NullQueryParamsInterceptor, LanguageInterceptor } from './interceptors';
 
 @NgModule({
   imports: [HttpClientModule],
@@ -19,6 +19,11 @@ import { TokenInterceptor, MockInterceptor, NullQueryParamsInterceptor } from '.
     {
       provide: HTTP_INTERCEPTORS,
       useClass: NullQueryParamsInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LanguageInterceptor,
       multi: true,
     },
   ],
