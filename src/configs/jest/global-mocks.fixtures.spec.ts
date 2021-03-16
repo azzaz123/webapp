@@ -121,7 +121,12 @@ class MockStorage {
 export const MOCK_LOCALSTORAGE = new MockStorage();
 export const MOCK_SESSIONSTORAGE = new MockStorage();
 
-export const MOCK_NAVIGATOR_GEOLOCATION: Partial<Geolocation> = {
+export const MOCK_NAVIGATOR_CONNECTION = {
+  rtt: 50,
+  type: '',
+};
+
+export const MOCK_NAVIGATOR_GEOLOCATION = {
   getCurrentPosition: () => '',
 };
 
@@ -178,11 +183,4 @@ export const MOCK_HERE_MAPS: any = {
   net: null,
   service: { Platform: (e) => e },
   ui: null,
-};
-
-export const MOCK_NAVIGATOR: Partial<Navigator> = {
-  languages: ['es'],
-  geolocation: MOCK_NAVIGATOR_GEOLOCATION as Geolocation,
-  maxTouchPoints: 3,
-  msMaxTouchPoints: 2,
 };
