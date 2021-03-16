@@ -58,6 +58,11 @@ export const ITEM_LOCATION: UserLocation = {
   approxRadius: 0,
 };
 
+export const ITEM_LOCATION_WITH_APROX = {
+  ...ITEM_LOCATION,
+  approximated_location: true,
+};
+
 export const ITEM_LOCATION_WITHOUT_COORDINATES: UserLocation = {
   id: 101,
   approximated_latitude: null,
@@ -385,7 +390,7 @@ export const MOCK_ITEM_CAR: Item = new Item(
   ITEM_DATA.delivery_info
 );
 
-export const MOCK_ITEM_CAR_WITHOUT_COORDINATES: Item = new Item(
+export const MOCK_ITEM_WITHOUT_COORDINATES: Item = new Item(
   ITEM_DATA.id,
   ITEM_DATA.legacy_id,
   ITEM_DATA.owner,
@@ -393,6 +398,28 @@ export const MOCK_ITEM_CAR_WITHOUT_COORDINATES: Item = new Item(
   ITEM_DATA.description,
   100,
   ITEM_LOCATION_WITHOUT_COORDINATES,
+  ITEM_DATA.sale_price,
+  ITEM_DATA.currency_code,
+  ITEM_DATA.modified_date,
+  ITEM_DATA.url,
+  ITEM_DATA.flags,
+  ITEM_DATA.actions_allowed,
+  ITEM_DATA.sale_conditions,
+  ITEM_DATA.main_image,
+  ITEM_DATA.images,
+  ITEM_DATA.web_slug,
+  ITEM_DATA.published_date,
+  ITEM_DATA.delivery_info
+);
+
+export const MOCK_ITEM_APROX_LOCATION: Item = new Item(
+  ITEM_DATA.id,
+  ITEM_DATA.legacy_id,
+  ITEM_DATA.owner,
+  ITEM_DATA.title,
+  ITEM_DATA.description,
+  100,
+  ITEM_LOCATION_WITH_APROX,
   ITEM_DATA.sale_price,
   ITEM_DATA.currency_code,
   ITEM_DATA.modified_date,

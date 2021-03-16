@@ -1,18 +1,23 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { CategoryService } from '@core/category/category.service';
-import { MOCK_ITEM_DETAIL_RESPONSE, MOCK_ITEM_DETAIL_RESPONSE_WITHOUT_COORDINATES } from '@fixtures/item-detail.fixtures.spec';
+import {
+  MOCK_CELLPHONE_PARENT_RESPONSE,
+  MOCK_CELLPHONE_RESPONSE,
+  MOCK_CELLPHONE_WITHOUT_SUBCATEGORY_RESPONSE,
+  MOCK_ITEM_DETAIL_RESPONSE,
+  MOCK_ITEM_DETAIL_RESPONSE_WITHOUT_COORDINATES,
+  MOCK_ITEM_DETAIL_RESPONSE_WITHOUT_LOCATION,
+  MOCK_ITEM_DETAIL_RESPONSE_WITH_APROX_LOCATION,
+} from '@fixtures/item-detail.fixtures.spec';
 import {
   ITEM_CELLPHONES_EXTRA_INFO,
   ITEM_CELLPHONES_EXTRA_INFO_PARENT_OBJECT_TYPE,
   ITEM_LARGE_IMAGE,
   ITEM_XLARGE_IMAGE,
-  MOCK_ITEM_CELLPHONES,
-  MOCK_ITEM_CELLPHONES_NO_SUBCATEGORY,
-  MOCK_ITEM_CELLPHONES_PARENT_SUBCATEGORY,
 } from '@fixtures/item.fixtures.spec';
 import { MOCK_MAP_SPECIFICATIONS_CAR } from '@fixtures/map-specifications.fixtures.spec';
-import { MOCK_USER, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
+import { MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { ItemTaxonomies } from '@public/features/item-detail/components/item-taxonomies/interfaces/item-taxonomies.interface';
@@ -24,19 +29,10 @@ import { MapSpecificationsService } from '../map-specifications/map-specificatio
 import { MapItemDetailStoreService } from './map-item-detail-store.service';
 
 describe('MapItemDetailStoreService', () => {
+  const titleCopy = $localize`:@@ItemDetailShareTitle:Share this product with your friends`;
+  const twitterCopy = $localize`:@@ItemDetailShareTwitterText:Look what I found @wallapop:`;
+
   const MOCK_ICON = '/patch/icon.svg';
-  const MOCK_CELLPHONE_RESPONSE = {
-    item: MOCK_ITEM_CELLPHONES,
-    user: MOCK_USER,
-  };
-  const MOCK_CELLPHONE_WITHOUT_SUBCATEGORY_RESPONSE = {
-    item: MOCK_ITEM_CELLPHONES_NO_SUBCATEGORY,
-    user: MOCK_USER,
-  };
-  const MOCK_CELLPHONE_PARENT_RESPONSE = {
-    item: MOCK_ITEM_CELLPHONES_PARENT_SUBCATEGORY,
-    user: MOCK_USER,
-  };
 
   let service: MapItemDetailStoreService;
   let mapSpecificationsService: MapSpecificationsService;
@@ -136,7 +132,18 @@ describe('MapItemDetailStoreService', () => {
     });
 
     describe('when we handle the locationSpecifications...', () => {
-      it('¿Qué debe ocurrir?', () => {});
+      describe('when the zip and the city are defined', () => {
+        it('should return the zip and the city', () => {
+          const itemDetail = service.mapItemDetailStore(MOCK_ITEM_DETAIL_RESPONSE);
+          expect(itemDetail.locationSpecifications).toBe(`${itemDetail.item.location.zip}, ${itemDetail.item.location.city}`);
+        });
+      });
+      describe('when the zip and the city are NOT defined', () => {
+        it('should return an undefined copy', () => {
+          const itemDetailWithoutLocation = service.mapItemDetailStore(MOCK_ITEM_DETAIL_RESPONSE_WITHOUT_LOCATION);
+          expect(itemDetailWithoutLocation.locationSpecifications).toBe($localize`:@@Undefined:Undefined`);
+        });
+      });
     });
 
     describe('when we handle the taxonomiesSpecifications...', () => {
@@ -244,17 +251,29 @@ describe('MapItemDetailStoreService', () => {
     });
 
     describe('when we handle the isApproximatedLocation...', () => {
-      it('¿Qué debe ocurrir?', () => {});
+      describe('when the approximated location is defined', () => {
+        it('should return true', () => {
+          const itemDetail = service.mapItemDetailStore(MOCK_ITEM_DETAIL_RESPONSE_WITH_APROX_LOCATION);
+          expect(itemDetail.isApproximatedLocation).toBe(true);
+        });
+      });
+
+      describe('when the approximated location is NOT defined', () => {
+        it('should return false', () => {
+          const itemDetailWithoutLocation = service.mapItemDetailStore(MOCK_ITEM_DETAIL_RESPONSE_WITHOUT_LOCATION);
+          expect(itemDetailWithoutLocation.isApproximatedLocation).toBe(false);
+        });
+      });
     });
 
     describe('when we handle the isItemACar...', () => {
-      it('should be true if the type is car', () => {
+      it('should be true if the service returns that type is car', () => {
         spyOn(typeCheckService, 'isCar').and.returnValue(true);
         const itemDetail = service.mapItemDetailStore(MOCK_ITEM_DETAIL_RESPONSE);
 
         expect(itemDetail.isItemACar).toBe(true);
       });
-      it('should be false if the type is NOT a car', () => {
+      it('should be false if the service returns that type is NOT a car', () => {
         spyOn(typeCheckService, 'isCar').and.returnValue(false);
         const itemDetail = service.mapItemDetailStore(MOCK_ITEM_DETAIL_RESPONSE);
 
@@ -263,13 +282,13 @@ describe('MapItemDetailStoreService', () => {
     });
 
     describe('when we handle the isItemAPhone...', () => {
-      it('should be true if the type is phone', () => {
+      it('should be true if the service returns that type is phone', () => {
         spyOn(typeCheckService, 'isCellPhoneAccessories').and.returnValue(true);
         const itemDetail = service.mapItemDetailStore(MOCK_ITEM_DETAIL_RESPONSE);
 
         expect(itemDetail.isItemAPhone).toBe(true);
       });
-      it('should be false if the type is NOT a phone', () => {
+      it('should be false if the service returns that type is NOT a phone', () => {
         spyOn(typeCheckService, 'isCellPhoneAccessories').and.returnValue(false);
         const itemDetail = service.mapItemDetailStore(MOCK_ITEM_DETAIL_RESPONSE);
 
@@ -277,13 +296,13 @@ describe('MapItemDetailStoreService', () => {
       });
 
       describe('when we handle the isAFashionItem...', () => {
-        it('should be true if the type is fashion', () => {
+        it('should be true if the service returns that type is fashion', () => {
           spyOn(typeCheckService, 'isFashion').and.returnValue(true);
           const itemDetail = service.mapItemDetailStore(MOCK_ITEM_DETAIL_RESPONSE);
 
           expect(itemDetail.isAFashionItem).toBe(true);
         });
-        it('should be false if the type is NOT an item fashion', () => {
+        it('should be false if the service returns that type is NOT an item fashion', () => {
           spyOn(typeCheckService, 'isFashion').and.returnValue(false);
           const itemDetail = service.mapItemDetailStore(MOCK_ITEM_DETAIL_RESPONSE);
 
@@ -294,25 +313,24 @@ describe('MapItemDetailStoreService', () => {
       describe('when we handle the socialShare...', () => {
         it('should return the formated social share data', () => {
           const itemDetail = service.mapItemDetailStore(MOCK_ITEM_DETAIL_RESPONSE);
-          const itemDetailResponse = MOCK_ITEM_DETAIL_RESPONSE;
-
-          const itemWebLink = itemDetailResponse?.item.webLink;
-          const itemTitle = itemDetailResponse?.item.title;
-          const itemDescription = itemDetailResponse?.item.description;
+          const itemWebLink = MOCK_ITEM_DETAIL_RESPONSE?.item.webLink;
+          const itemTitle = MOCK_ITEM_DETAIL_RESPONSE?.item.title;
+          const itemDescription = MOCK_ITEM_DETAIL_RESPONSE?.item.description;
+          const emailcopy = $localize`:@@ItemDetailShareEmailText:This may interest you - ` + itemDescription;
 
           expect(itemDetail.socialShare).toStrictEqual({
-            title: $localize`:@@ItemDetailShareTitle:Share this product with your friends`,
+            title: titleCopy,
             facebook: {
               url: itemWebLink,
             },
             twitter: {
               url: itemWebLink,
-              text: $localize`:@@ItemDetailShareTwitterText:Look what I found @wallapop:`,
+              text: twitterCopy,
             },
             email: {
               url: itemWebLink,
               subject: itemTitle,
-              message: $localize`:@@ItemDetailShareEmailText:This may interest you - ` + itemDescription,
+              message: emailcopy,
             },
           });
         });

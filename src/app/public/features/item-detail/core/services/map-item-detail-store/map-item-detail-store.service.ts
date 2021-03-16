@@ -141,7 +141,7 @@ export class MapItemDetailStoreService {
 
   private getIsApproximatedLocation(): boolean {
     const detailLocation: UserLocation = this.itemDetailResponse?.item?.location || this.itemDetailResponse?.user?.location;
-    return detailLocation?.approximated_location;
+    return !!detailLocation?.approximated_location;
   }
 
   private getSocialShare(): SocialShare {
