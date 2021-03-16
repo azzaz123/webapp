@@ -45,6 +45,8 @@ import { ItemDetailService } from '../core/services/item-detail/item-detail.serv
 import { MapExtraInfoService } from '../core/services/map-extra-info/map-extra-info.service';
 import { ItemDetail } from '../interfaces/item-detail.interface';
 import { ItemDetailComponent } from './item-detail.component';
+import { ItemDetailHeaderComponent } from '../components/item-detail-header/item-detail-header.component';
+import { ItemDetailHeaderModule } from '../components/item-detail-header/item-detail-header.module';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -62,10 +64,11 @@ describe('ItemDetailComponent', () => {
 
   const itemDetailSubjectMock: BehaviorSubject<ItemDetail> = new BehaviorSubject<ItemDetail>(MOCK_ITEM_DETAIL_GBP);
   const itemDetailStoreServiceMock = {
-    markItemAsReserved: () => of(),
+    itemDetail$: itemDetailSubjectMock.asObservable(),
+    markItemAsReserved: (itemUUID: string) => of(),
+    markItemAsUnreserved: (itemUUID: string) => of(),
     markItemAsSold: () => {},
     initializeItem: () => {},
-    itemDetail$: itemDetailSubjectMock.asObservable(),
   };
 
   let component: ItemDetailComponent;
@@ -89,7 +92,7 @@ describe('ItemDetailComponent', () => {
         ItemSpecificationsComponent,
         ItemTaxonomiesComponent,
       ],
-      imports: [HttpClientTestingModule, ItemSpecificationsModule, EllapsedTimeModule],
+      imports: [HttpClientTestingModule, ItemSpecificationsModule, EllapsedTimeModule, ItemDetailHeaderModule],
       providers: [
         CheckSessionService,
         ItemCardService,
@@ -341,6 +344,44 @@ describe('ItemDetailComponent', () => {
 
       it('should set the image index property', () => {
         expect(component.itemDetailImagesModal.imageIndex).toBe(4);
+      });
+    });
+  });
+
+  describe('when we handle the header actions...', () => {
+    describe('when we reserve an item...', () => {
+      it('should call to the store to do the action', () => {
+        spyOn(itemDetailStoreService, 'markItemAsReserved');
+
+        const itemDetailHeader = fixture.debugElement.query(By.directive(ItemDetailHeaderComponent));
+        itemDetailHeader.triggerEventHandler('updateReserveItem', itemId);
+
+        fixture.detectChanges();
+        expect(itemDetailStoreService.markItemAsReserved).toHaveBeenCalledWith(itemId);
+      });
+    });
+
+    describe('when we unreserve an item...', () => {
+      it('should call to the store to do the action', () => {
+        spyOn(itemDetailStoreService, 'markItemAsUnreserved');
+
+        const itemDetailHeader = fixture.debugElement.query(By.directive(ItemDetailHeaderComponent));
+        itemDetailHeader.triggerEventHandler('updateUnreserveItem', itemId);
+
+        fixture.detectChanges();
+        expect(itemDetailStoreService.markItemAsUnreserved).toHaveBeenCalledWith(itemId);
+      });
+    });
+
+    describe('when we sold an item...', () => {
+      it('should call to the store to do the action', () => {
+        spyOn(itemDetailStoreService, 'markItemAsSold');
+
+        const itemDetailHeader = fixture.debugElement.query(By.directive(ItemDetailHeaderComponent));
+        itemDetailHeader.triggerEventHandler('updateSoldItem', {});
+
+        fixture.detectChanges();
+        expect(itemDetailStoreService.markItemAsSold).toHaveBeenCalled();
       });
     });
   });
