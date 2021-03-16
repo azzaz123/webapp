@@ -42,9 +42,9 @@
                                 [extraInfo]="itemDetail.extraInfo">
                             </tsl-item-extra-info>
                             <tsl-item-taxonomies class="horizontalScroll d-block mt-3" *ngIf="(itemDetail.taxonomiesSpecifications | async)?.parentTaxonomy"
-                                [iconPath]="(itemDetail.taxonomiesSpecifications | async).icon"
-                                [parentTaxonomy]="(itemDetail.taxonomiesSpecifications | async).parentTaxonomy"
-                                [childTaxonomy]="(itemDetail.taxonomiesSpecifications | async).childTaxonomy"
+                                [iconPath]="(itemDetail.taxonomiesSpecifications | async)?.icon"
+                                [parentTaxonomy]="(itemDetail.taxonomiesSpecifications | async)?.parentTaxonomy"
+                                [childTaxonomy]="(itemDetail.taxonomiesSpecifications | async)?.childTaxonomy"
                             ></tsl-item-taxonomies>
                         </div>
                         <div *ngIf="itemDetail.counterSpecifications" class="borderBottom">

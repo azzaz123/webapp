@@ -72,9 +72,11 @@ export class ItemDetailComponent implements OnInit {
     this.itemDetailStoreService.initializeItem(itemId);
     this.subscriptions.push(
       this.itemDetailStoreService.itemDetail$.subscribe((itemDetail: ItemDetail) => {
-        this.itemDetail = itemDetail;
-        this.setAdSlot(itemDetail?.item);
-        this.initializeItemRecommendations(itemId, itemDetail?.item.categoryId);
+        if (itemDetail) {
+          this.itemDetail = itemDetail;
+          this.setAdSlot(itemDetail?.item);
+          this.initializeItemRecommendations(itemId, itemDetail?.item.categoryId);
+        }
       })
     );
   }
