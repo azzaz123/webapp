@@ -13,6 +13,8 @@ import {
   MOCK_ITEM_CELLPHONES,
   MOCK_ITEM_CELLPHONES_NO_SUBCATEGORY,
   MOCK_ITEM_CELLPHONES_PARENT_SUBCATEGORY,
+  MOCK_ITEM_FASHION,
+  MOCK_ITEM_GBP,
   MOCK_ITEM_WITHOUT_COORDINATES,
   MOCK_ITEM_WITHOUT_LOCATION,
 } from '@fixtures/item.fixtures.spec';
@@ -54,6 +56,11 @@ export const MOCK_ITEM_DETAIL_RESPONSE_WITHOUT_LOCATION: ItemDetailResponse = {
   user: MOCK_USER_WITHOUT_LOCATION,
 };
 
+export const MOCK_ITEM_DETAIL_RESPONSE_ITEM_WITHOUT_LOCATION: ItemDetailResponse = {
+  item: MOCK_ITEM_WITHOUT_LOCATION,
+  user: MOCK_USER,
+};
+
 export const MOCK_ITEM_DETAIL_RESPONSE_WITHOUT_COORDINATES: ItemDetailResponse = {
   item: MOCK_ITEM_WITHOUT_COORDINATES,
   user: MOCK_USER,
@@ -92,4 +99,39 @@ export const MOCK_CAR_ITEM_DETAIL: ItemDetail = {
   isItemACar: true,
   isItemAPhone: false,
   isAFashionItem: false,
+};
+
+export const MOCK_ITEM_DETAIL_GBP: ItemDetail = {
+  ...MOCK_CAR_ITEM_DETAIL,
+  item: MOCK_ITEM_GBP,
+};
+
+export const MOCK_CAR_ITEM_DETAIL_WITHOUT_COUNTER: ItemDetail = {
+  ...MOCK_CAR_ITEM_DETAIL,
+  counterSpecifications: null,
+};
+export const MOCK_ITEM_DETAIL_FASHION: ItemDetail = {
+  ...MOCK_CAR_ITEM_DETAIL,
+  item: MOCK_ITEM_FASHION,
+};
+
+export const MOCK_ITEM_DETAIL_WITHOUT_LOCATION: ItemDetail = {
+  ...MOCK_CAR_ITEM_DETAIL,
+  item: MOCK_ITEM_WITHOUT_LOCATION,
+  user: MOCK_USER_WITHOUT_LOCATION,
+};
+
+export const MOCK_ITEM_DETAIL_WITHOUT_EXTRA_INFO: ItemDetail = {
+  ...MOCK_CAR_ITEM_DETAIL,
+  extraInfo: null,
+};
+
+export const MOCK_ITEM_DETAIL_WITHOUT_TAXONOMIES: ItemDetail = {
+  ...MOCK_CAR_ITEM_DETAIL,
+  taxonomiesSpecifications: of(),
+};
+
+export const MOCK_ITEM_DETAIL_WITHOUT_ITEM: ItemDetail = {
+  ...MOCK_CAR_ITEM_DETAIL,
+  item: null,
 };
