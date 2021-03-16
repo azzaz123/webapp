@@ -1,6 +1,9 @@
+import { CookieService } from 'ngx-cookie';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { BehaviorSubject, of } from 'rxjs';
 import { DecimalPipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ChangeDetectionStrategy, CUSTOM_ELEMENTS_SCHEMA, DebugElement, Renderer2 } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, DebugElement, Renderer2 } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,6 +14,7 @@ import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import {
   MOCK_CAR_ITEM_DETAIL,
   MOCK_CAR_ITEM_DETAIL_WITHOUT_COUNTER,
+  MOCK_CAR_ITEM_DETAIL_WITH_VIEWS,
   MOCK_ITEM_DETAIL_FASHION,
   MOCK_ITEM_DETAIL_GBP,
   MOCK_ITEM_DETAIL_WITHOUT_EXTRA_INFO,
@@ -18,7 +22,7 @@ import {
   MOCK_ITEM_DETAIL_WITHOUT_LOCATION,
   MOCK_ITEM_DETAIL_WITHOUT_TAXONOMIES,
 } from '@fixtures/item-detail.fixtures.spec';
-import { MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
+import { MOCK_ITEM, MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
 import { IsCurrentUserStub } from '@fixtures/public/core';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 import { AdComponentStub } from '@fixtures/shared';
@@ -30,9 +34,6 @@ import {
   RECOMMENDED_ITEMS_MOCK,
 } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
 import { CustomCurrencyPipe } from '@shared/pipes';
-import { CookieService } from 'ngx-cookie';
-import { DeviceDetectorService } from 'ngx-device-detector';
-import { of } from 'rxjs';
 import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
 import { ItemSpecificationsComponent } from '../components/item-specifications/item-specifications.component';
 import { ItemSpecificationsModule } from '../components/item-specifications/item-specifications.module';
@@ -42,6 +43,7 @@ import { EllapsedTimeModule } from '../core/directives/ellapsed-time.module';
 import { ItemDetailStoreService } from '../core/services/item-detail-store/item-detail-store.service';
 import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
 import { MapExtraInfoService } from '../core/services/map-extra-info/map-extra-info.service';
+import { ItemDetail } from '../interfaces/item-detail.interface';
 import { ItemDetailComponent } from './item-detail.component';
 
 describe('ItemDetailComponent', () => {
@@ -58,6 +60,14 @@ describe('ItemDetailComponent', () => {
   const carExtraInfoClass = '.ItemExtraInfo--car';
   const itemId = '123';
 
+  const itemDetailSubjectMock: BehaviorSubject<ItemDetail> = new BehaviorSubject<ItemDetail>(MOCK_ITEM_DETAIL_GBP);
+  const itemDetailStoreServiceMock = {
+    markItemAsReserved: () => of(),
+    markItemAsSold: () => {},
+    initializeItem: () => {},
+    itemDetail$: itemDetailSubjectMock.asObservable(),
+  };
+
   let component: ItemDetailComponent;
   let fixture: ComponentFixture<ItemDetailComponent>;
   let itemDetailService: ItemDetailService;
@@ -71,7 +81,14 @@ describe('ItemDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ItemDetailComponent, CustomCurrencyPipe, IsCurrentUserStub, AdComponentStub],
+      declarations: [
+        ItemDetailComponent,
+        CustomCurrencyPipe,
+        IsCurrentUserStub,
+        AdComponentStub,
+        ItemSpecificationsComponent,
+        ItemTaxonomiesComponent,
+      ],
       imports: [HttpClientTestingModule, ItemSpecificationsModule, EllapsedTimeModule],
       providers: [
         CheckSessionService,
@@ -113,10 +130,7 @@ describe('ItemDetailComponent', () => {
         },
         {
           provide: ItemDetailStoreService,
-          useValue: {
-            initializeItem: () => {},
-            itemDetail$: of(MOCK_CAR_ITEM_DETAIL),
-          },
+          useValue: itemDetailStoreServiceMock,
         },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -193,7 +207,7 @@ describe('ItemDetailComponent', () => {
       });
 
       it('should set ads configuration', () => {
-        itemDetailStoreService.itemDetail = MOCK_CAR_ITEM_DETAIL;
+        itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
         spyOn(MockAdsService, 'setAdKeywords').and.callThrough();
         spyOn(MockAdsService, 'setSlots').and.callThrough();
 
@@ -206,7 +220,7 @@ describe('ItemDetailComponent', () => {
 
     describe('and we NOT get the item...', () => {
       it('should not render the view', () => {
-        itemDetailStoreService.itemDetail = MOCK_ITEM_DETAIL_WITHOUT_ITEM;
+        itemDetailSubjectMock.next(MOCK_ITEM_DETAIL_WITHOUT_ITEM);
 
         fixture.detectChanges();
         const containerPage = fixture.debugElement.query(By.css(itemContentClass));
@@ -218,7 +232,7 @@ describe('ItemDetailComponent', () => {
 
   describe('when we have an item...', () => {
     beforeEach(() => {
-      itemDetailStoreService.itemDetail = MOCK_CAR_ITEM_DETAIL;
+      itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
 
       component.ngOnInit();
       fixture.detectChanges();
@@ -245,16 +259,16 @@ describe('ItemDetailComponent', () => {
 
     describe('when the favorites and views are defined...', () => {
       beforeEach(() => {
-        // component.itemDetail.item.favorites = 3;
-        // component.itemDetail.item.views = 5;
-        // fixture.detectChanges();
+        itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL_WITH_VIEWS);
+
+        fixture.detectChanges();
       });
 
       it('should print their favorites stat', () => {
-        // expect(el.querySelector('#favorites').innerHTML).toEqual(component.itemDetail.item.favorites.toString());
+        expect(el.querySelector('#favorites').innerHTML).toEqual(MOCK_CAR_ITEM_DETAIL_WITH_VIEWS.item.favorites.toString());
       });
       it('should print their views stat', () => {
-        // expect(el.querySelector('#views').innerHTML).toEqual(component.itemDetail.item.views.toString());
+        expect(el.querySelector('#views').innerHTML).toEqual(MOCK_CAR_ITEM_DETAIL_WITH_VIEWS.item.views.toString());
       });
     });
 
@@ -268,10 +282,11 @@ describe('ItemDetailComponent', () => {
 
     describe('when the item currency code is in dollars...', () => {
       beforeEach(() => {
-        itemDetailStoreService.itemDetail = MOCK_ITEM_DETAIL_GBP;
+        itemDetailSubjectMock.next(MOCK_ITEM_DETAIL_GBP);
 
         fixture.detectChanges();
       });
+
       it('should show the price and the dollar symbol', () => {
         expect(el.querySelector(itemPriceClass).innerHTML).toEqual(`${currencies.GBP}${decimalPipe.transform(MOCK_ITEM_GBP.salePrice)}`);
       });
@@ -344,7 +359,7 @@ describe('ItemDetailComponent', () => {
 
     describe('when the location is NOT defined', () => {
       beforeEach(() => {
-        itemDetailStoreService.itemDetail = MOCK_ITEM_DETAIL_WITHOUT_LOCATION;
+        itemDetailSubjectMock.next(MOCK_ITEM_DETAIL_WITHOUT_LOCATION);
 
         fixture.detectChanges();
       });
@@ -372,9 +387,8 @@ describe('ItemDetailComponent', () => {
 
     describe('and the counter specifications are NOT defined...', () => {
       beforeEach(() => {
-        itemDetailStoreService.itemDetail = MOCK_CAR_ITEM_DETAIL_WITHOUT_COUNTER;
+        itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL_WITHOUT_COUNTER);
 
-        component.ngOnInit();
         fixture.detectChanges();
       });
 
@@ -402,8 +416,10 @@ describe('ItemDetailComponent', () => {
 
       describe('and the item is NOT a car...', () => {
         beforeEach(() => {
-          itemDetailStoreService.itemDetail = MOCK_ITEM_DETAIL_FASHION;
+          spyOn(mapExtraInfoService, 'mapExtraInfo');
+          itemDetailSubjectMock.next(MOCK_ITEM_DETAIL_FASHION);
 
+          component.ngOnInit();
           fixture.detectChanges();
         });
         it('should NOT apply the car specifications style', () => {
@@ -417,7 +433,7 @@ describe('ItemDetailComponent', () => {
 
     describe('and we NOT have extra info...', () => {
       beforeEach(() => {
-        itemDetailStoreService.itemDetail = MOCK_ITEM_DETAIL_WITHOUT_EXTRA_INFO;
+        itemDetailSubjectMock.next(MOCK_ITEM_DETAIL_WITHOUT_EXTRA_INFO);
 
         fixture.detectChanges();
       });
@@ -440,7 +456,7 @@ describe('ItemDetailComponent', () => {
 
     describe('and the taxonomies are NOT defined...', () => {
       beforeEach(() => {
-        itemDetailStoreService.itemDetail = MOCK_ITEM_DETAIL_WITHOUT_TAXONOMIES;
+        itemDetailSubjectMock.next(MOCK_ITEM_DETAIL_WITHOUT_TAXONOMIES);
 
         component.ngOnInit();
         fixture.detectChanges();

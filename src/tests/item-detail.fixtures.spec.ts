@@ -7,8 +7,11 @@ import { MOCK_COUNTER_SPECIFICATIONS_CAR } from './map-specifications.fixtures.s
 import { MOCK_SOCIAL_SHARE } from './social-share.fixtures.spec';
 import { MOCK_USER_STATS, MOCK_USER_WITHOUT_LOCATION } from './user.fixtures.spec';
 import { Coordinate } from '@core/geolocation/address-response.interface';
-import { MOCK_ITEM_CAR, MOCK_ITEM_FASHION, MOCK_ITEM_GBP, MOCK_ITEM_WITHOUT_LOCATION } from '@fixtures/item.fixtures.spec';
+import { MOCK_ITEM, MOCK_ITEM_CAR, MOCK_ITEM_FASHION, MOCK_ITEM_GBP, MOCK_ITEM_WITHOUT_LOCATION } from '@fixtures/item.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { Item } from '@core/item/item';
+
+const UNDEFINED_COPY = $localize`:@@Undefined:Undefined`;
 
 const MOCK_ITEM_DETAIL_LOCATION: ItemDetailLocation = {
   city: 'Barcelona',
@@ -60,13 +63,23 @@ export const MOCK_CAR_ITEM_DETAIL_WITHOUT_COUNTER: ItemDetail = {
   counterSpecifications: null,
 };
 
+export const MOCK_CAR_ITEM_DETAIL_WITH_VIEWS: ItemDetail = {
+  ...MOCK_CAR_ITEM_DETAIL,
+  item: getUserWithViewsAndFavourites(),
+};
+
 export const MOCK_ITEM_DETAIL_FASHION: ItemDetail = {
   ...MOCK_CAR_ITEM_DETAIL,
   item: MOCK_ITEM_FASHION,
+  isItemACar: false,
 };
 
 export const MOCK_ITEM_DETAIL_WITHOUT_LOCATION: ItemDetail = {
   ...MOCK_CAR_ITEM_DETAIL,
+  location: null,
+  haveCoordinates: false,
+  coordinate: null,
+  locationSpecifications: UNDEFINED_COPY,
   item: MOCK_ITEM_WITHOUT_LOCATION,
   user: MOCK_USER_WITHOUT_LOCATION,
 };
@@ -85,3 +98,10 @@ export const MOCK_ITEM_DETAIL_WITHOUT_ITEM: ItemDetail = {
   ...MOCK_CAR_ITEM_DETAIL,
   item: null,
 };
+
+function getUserWithViewsAndFavourites(): Item {
+  const item = MOCK_ITEM;
+  item.favorites = 3;
+  item.views = 5;
+  return item;
+}

@@ -22,7 +22,6 @@
                         ></tsl-item-detail-header>
                         <div class="ItemDetail__carousel position-relative w-100">
                             <tsl-item-images-carousel
-                                *ngIf="itemDetail.images"
                                 [itemFlags]="itemDetail.item.flags" 
                                 [isActive]="!itemDetail.item.flags?.expired" 
                                 [itemVisibilityFlags]="itemDetail.item.bumpFlags"
@@ -42,7 +41,7 @@
                                 [isCar]="itemDetail.isItemACar" 
                                 [extraInfo]="itemDetail.extraInfo">
                             </tsl-item-extra-info>
-                            <tsl-item-taxonomies class="horizontalScroll d-block mt-3" *ngIf="(itemDetail.taxonomiesSpecifications | async).parentTaxonomy"
+                            <tsl-item-taxonomies class="horizontalScroll d-block mt-3" *ngIf="(itemDetail.taxonomiesSpecifications | async)?.parentTaxonomy"
                                 [iconPath]="(itemDetail.taxonomiesSpecifications | async).icon"
                                 [parentTaxonomy]="(itemDetail.taxonomiesSpecifications | async).parentTaxonomy"
                                 [childTaxonomy]="(itemDetail.taxonomiesSpecifications | async).childTaxonomy"
