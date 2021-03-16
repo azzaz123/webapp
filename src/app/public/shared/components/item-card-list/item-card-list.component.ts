@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Item } from '@core/item/item';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
@@ -13,6 +13,7 @@ import { SlotsConfig } from './interfaces/slots-config.interface';
   selector: 'tsl-public-item-card-list',
   templateUrl: './item-card-list.component.html',
   styleUrls: ['./item-card-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemCardListComponent {
   @Input() items: Item[];
