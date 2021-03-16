@@ -458,6 +458,28 @@ export const MOCK_ITEM_FASHION: Item = new Item(
   ITEM_FASHION_EXTRA_INFO
 );
 
+export const MOCK_ITEM_GAMES_CONSOLES: Item = new Item(
+  ITEM_DATA.id,
+  ITEM_DATA.legacy_id,
+  ITEM_DATA.owner,
+  ITEM_DATA.title,
+  ITEM_DATA.description,
+  CATEGORY_IDS.GAMES_CONSOLES,
+  ITEM_DATA.location,
+  ITEM_DATA.sale_price,
+  ITEM_DATA.currency_code,
+  ITEM_DATA.modified_date,
+  ITEM_DATA.url,
+  ITEM_DATA.flags,
+  ITEM_DATA.actions_allowed,
+  ITEM_DATA.sale_conditions,
+  ITEM_DATA.main_image,
+  ITEM_DATA.images,
+  ITEM_DATA.web_slug,
+  ITEM_DATA.published_date,
+  ITEM_DATA.delivery_info
+);
+
 export const MOCK_ITEM_CELLPHONES: Item = new Item(
   ITEM_DATA.id,
   ITEM_DATA.legacy_id,
