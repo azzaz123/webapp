@@ -4,6 +4,7 @@ import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { Item } from '@core/item/item';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
+import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 
 @Component({
@@ -20,6 +21,12 @@ export class SearchComponent implements OnInit {
   public DevicesType: typeof DeviceType = DeviceType;
 
   public showBackdrop = false;
+  public columnsConfig: ColumnsConfig = {
+    lg: 4,
+    md: 3,
+    sm: 2,
+    xs: 2,
+  };
 
   constructor(private adsService: AdsService, private deviceService: DeviceService) {
     this.device = this.deviceService.getDeviceType();
