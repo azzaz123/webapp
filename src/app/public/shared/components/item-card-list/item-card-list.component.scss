@@ -22,4 +22,9 @@ $numCols: 2, 3, 4, 5;
 .ItemCardList {
   display: grid;
   grid-gap: $margin;
+
+  &__slot {
+    background-color: $blue-grey-5;
+    border-radius: $border-radius;
+  }
 }
