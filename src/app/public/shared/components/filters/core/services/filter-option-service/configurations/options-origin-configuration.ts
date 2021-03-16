@@ -3,72 +3,155 @@ import { REAL_ESTATE_CONFIGURATION_ID } from '../../../enums/configuration-ids/r
 import { COMMON_CONFIGURATION_ID } from '../../../enums/configuration-ids/common-configuration-ids.enum';
 import { CAR_CONFIGURATION_ID } from '../../../enums/configuration-ids/car-configuration-ids';
 import { FASHION_CONFIGURATION_ID } from '../../../enums/configuration-ids/fashion-configuration-ids.enum';
+import { ConfigurationId } from '../../../types/configuration-id.type';
 
-export const OPTIONS_ORIGIN_CONFIGURATION: Record<string, OptionsApiOrigin | 'hardcoded'> = {
+export type OriginConfigurationValue = OptionsApiOrigin | 'hardcoded';
+export type OriginConfiguration = {
+  [key in ConfigurationId]?: OriginConfigurationValue;
+};
+
+export const OPTIONS_ORIGIN_CONFIGURATION: OriginConfiguration = {
   [COMMON_CONFIGURATION_ID.POSTED_AGO]: 'hardcoded',
   [COMMON_CONFIGURATION_ID.CONDITION]: {
-    apiMethod: 'getConditionsByCategoryId',
-    mapperMethod: 'formatConditionResponse',
-    paramsFromRelatedFilters: ['category_ids'],
+    apiConfiguration: {
+      method: 'getConditionsByCategoryId',
+      requiredSiblingParams: ['category_ids'],
+      keyMappers: [
+        {
+          sourceParamKey: 'category_ids',
+          destinationParamKey: 'category_id',
+        },
+      ],
+    },
+    mapperConfiguration: {
+      method: 'formatConditionResponse',
+    },
   },
   [COMMON_CONFIGURATION_ID.OBJECT_TYPE]: {
-    apiMethod: 'getObjectTypesByCategoryId',
-    mapperMethod: 'formatObjectType',
-    paramsFromRelatedFilters: ['category_ids'],
+    apiConfiguration: {
+      method: 'getObjectTypesByCategoryId',
+      requiredSiblingParams: ['category_ids'],
+      keyMappers: [
+        {
+          sourceParamKey: 'category_ids',
+          destinationParamKey: 'category_id',
+        },
+      ],
+    },
+    mapperConfiguration: {
+      method: 'formatObjectType',
+    },
   },
   [COMMON_CONFIGURATION_ID.BRAND_MODEL]: {
-    apiMethod: 'getBrandModelByCategoryId',
-    mapperMethod: 'formatBrandModel',
-    paramsFromRelatedFilters: ['category_ids'],
+    apiConfiguration: {
+      method: 'getBrandModelByCategoryId',
+      requiredSiblingParams: ['category_ids'],
+      keyMappers: [
+        {
+          sourceParamKey: 'category_ids',
+          destinationParamKey: 'category_id',
+        },
+      ],
+    },
+    mapperConfiguration: {
+      method: 'formatBrandModel',
+    },
   },
 
   [REAL_ESTATE_CONFIGURATION_ID.ROOMS]: 'hardcoded',
   [REAL_ESTATE_CONFIGURATION_ID.BATHROOMS]: 'hardcoded',
   [REAL_ESTATE_CONFIGURATION_ID.OPERATION]: {
-    apiMethod: 'getRealEstateOperationKeys',
-    mapperMethod: 'formatIconOptions',
+    apiConfiguration: {
+      method: 'getRealEstateOperationKeys',
+    },
+    mapperConfiguration: {
+      method: 'formatIconOptions',
+    },
   },
   [REAL_ESTATE_CONFIGURATION_ID.TYPE]: {
-    apiMethod: 'getRealEstateTypeKeysByOperationId',
-    mapperMethod: 'formatIconOptions',
-    paramsFromRelatedFilters: ['operation'],
+    apiConfiguration: {
+      method: 'getRealEstateTypeKeysByOperationId',
+      requiredSiblingParams: ['operation'],
+    },
+    mapperConfiguration: {
+      method: 'formatIconOptions',
+    },
   },
   [REAL_ESTATE_CONFIGURATION_ID.CONDITION]: {
-    apiMethod: 'getRealEstateConditions',
-    mapperMethod: 'formatIconOptions',
+    apiConfiguration: {
+      method: 'getRealEstateConditions',
+    },
+    mapperConfiguration: {
+      method: 'formatIconOptions',
+    },
   },
   [REAL_ESTATE_CONFIGURATION_ID.EXTRAS]: {
-    apiMethod: 'getRealEstateExtraKeysByTypeId',
-    mapperMethod: 'formatIconOptions',
-    paramsFromRelatedFilters: ['type'],
+    apiConfiguration: {
+      method: 'getRealEstateExtraKeysByTypeId',
+      requiredSiblingParams: ['operation'],
+    },
+    mapperConfiguration: {
+      method: 'formatIconOptions',
+    },
   },
 
   [CAR_CONFIGURATION_ID.BRAND_N_MODEL]: {
-    apiMethod: 'getCarBrandsAndModels',
-    mapperMethod: 'formatCarsBrandModel',
+    apiConfiguration: {
+      method: 'getCarBrandsAndModels',
+      keyMappers: [
+        {
+          sourceParamKey: 'autocomplete',
+          destinationParamKey: 'text',
+        },
+      ],
+    },
+    mapperConfiguration: {
+      method: 'formatCarsBrandModel',
+    },
   },
   [CAR_CONFIGURATION_ID.BODY]: {
-    apiMethod: 'getCarBodyTypeKeys',
-    mapperMethod: 'formatIconOptions',
+    apiConfiguration: {
+      method: 'getCarBodyTypeKeys',
+    },
+    mapperConfiguration: {
+      method: 'formatIconOptions',
+    },
   },
   [CAR_CONFIGURATION_ID.ENGINE]: {
-    apiMethod: 'getCarEngineKeys',
-    mapperMethod: 'formatIconOptions',
+    apiConfiguration: {
+      method: 'getCarEngineKeys',
+    },
+    mapperConfiguration: {
+      method: 'formatIconOptions',
+    },
   },
   [CAR_CONFIGURATION_ID.GEARBOX]: {
-    apiMethod: 'getCarGearboxKeys',
-    mapperMethod: 'formatIconOptions',
+    apiConfiguration: {
+      method: 'getCarGearboxKeys',
+    },
+    mapperConfiguration: {
+      method: 'formatIconOptions',
+    },
   },
 
   [FASHION_CONFIGURATION_ID.GENDER]: 'hardcoded',
   [FASHION_CONFIGURATION_ID.SIZE]: {
-    apiMethod: 'getFashionSizeKeysByObjectId',
-    mapperMethod: 'formatSizeNGender',
-    paramsFromRelatedFilters: ['object_type_id'],
+    apiConfiguration: {
+      method: 'getFashionSizeKeysByObjectId',
+      requiredSiblingParams: ['object_type_id'],
+    },
+    mapperConfiguration: {
+      method: 'formatSizeNGender',
+      requiredSiblingParams: ['gender'],
+    },
   },
   [FASHION_CONFIGURATION_ID.BRAND]: {
-    apiMethod: 'getFashionBrandsByObjectTypeId',
-    mapperMethod: 'formatFashionBrand',
-    paramsFromRelatedFilters: ['object_type_id'],
+    apiConfiguration: {
+      method: 'getFashionBrandsByObjectTypeId',
+      requiredSiblingParams: ['object_type_id'],
+    },
+    mapperConfiguration: {
+      method: 'formatFashionBrand',
+    },
   },
 };

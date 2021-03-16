@@ -10,7 +10,8 @@
 [label]="label"
 [hasValue]="hasValue()"
 (apply)="handleApply()"
-(clear)="handleClear()">
+(clear)="handleClear()"
+(openStateChange)="openStateChange.emit($event)">
 
     <form [formGroup]="formGroup">
         <tsl-slider-form
