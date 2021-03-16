@@ -6,19 +6,15 @@
  */
 
 /**
- * User views main wallet screen with balance
+ * User clicks to access their bank details (bank card, account etc)
  */
-export interface ViewWallet {
+export interface ClickBankDetails {
   /**
-   * Identifier of main wallet screen
+   * Identifier of the screen where the click is done
    */
   screenId: 235;
   /**
-   * Balance amount in the wallet
-   */
-  balanceAmount?: number;
-  /**
    * Status of the KYC verification
    */
-  kycStatus: 'verified' | 'pending' | 'inProgress';
+  kycStatus?: 'verified' | 'pending' | 'inProgress';
 }
