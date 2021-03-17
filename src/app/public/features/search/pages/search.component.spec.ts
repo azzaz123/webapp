@@ -113,18 +113,6 @@ describe('SearchComponent', () => {
           AD_PUBLIC_SEARCH.search3r,
         ]);
       });
-
-      it('should display ad shopping', () => {
-        spyOn(MockAdsService, 'displayAdShopping').and.callThrough();
-
-        component.ngOnInit();
-        fixture.detectChanges();
-
-        expect(MockAdsService.displayAdShopping).toHaveBeenCalledWith(
-          AdShoppingPageOptionPublicSearchFactory(AdShoppingChannel.SEARCH_PAGE),
-          AD_SHOPPING_PUBLIC_SEARCH
-        );
-      });
     });
   });
 
