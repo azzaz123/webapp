@@ -19,13 +19,14 @@ import { UserService } from '@core/user/user.service';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { CoreStoreModule } from '@core/store/core-store.module';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ShowSlotPipe } from './pipes/show-slot.pipe';
 
 export default {
   title: 'Webapp/Public/Shared/Components/ItemCardList',
   component: ItemCardListComponent,
   decorators: [
     moduleMetadata({
-      declarations: [ItemCardListComponent],
+      declarations: [ItemCardListComponent, ShowSlotPipe],
       imports: [
         CommonModule,
         ItemCardModule,
