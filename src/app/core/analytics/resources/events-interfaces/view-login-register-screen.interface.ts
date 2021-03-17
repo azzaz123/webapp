@@ -13,4 +13,8 @@ export interface ViewLoginRegisterScreen {
    * Identifier of the screen where the options to login or register appear
    */
   screenId: 177;
+  /**
+   * The source that takes the user to the login/register page
+   */
+  source?: 'landing_banner' | 'landing_details';
 }
