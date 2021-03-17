@@ -120,4 +120,38 @@ describe('ItemCardListComponent', () => {
       expect(router.navigate).toHaveBeenCalledWith([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM.id}`]);
     });
   });
+
+  describe('when has slot configuration', () => {
+    beforeEach(() => {
+      component.slotsConfig = {
+        start: 3,
+        offset: 2,
+      };
+    });
+
+    it('should not show any slots before the start ', () => {
+      const index = component.slotsConfig.start - 1;
+
+      const showSlot = component.showSlot(index);
+
+      expect(showSlot).toBeFalsy();
+    });
+
+    it('should show slot if is the start ', () => {
+      const index = component.slotsConfig.start;
+
+      const showSlot = component.showSlot(index);
+
+      expect(showSlot).toBeTruthy();
+    });
+
+    it('should show slot if matches the offset ', () => {
+      const randomMultiplier = Math.trunc(Math.random() * (100 - 1) + 1);
+      const index = component.slotsConfig.start + component.slotsConfig.offset * randomMultiplier;
+
+      const showSlot = component.showSlot(index);
+
+      expect(showSlot).toBeTruthy();
+    });
+  });
 });

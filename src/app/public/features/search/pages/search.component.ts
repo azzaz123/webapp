@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { AdShoppingPageOptions, AdSlotShoppingConfiguration } from '@core/ads/models';
+import { AdShoppingPageOptions } from '@core/ads/models/ad-shopping-page.options';
+import { AdSlotShoppingConfiguration } from '@core/ads/models/ad-slot-shopping-configuration';
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { Item } from '@core/item/item';
+import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
@@ -26,6 +28,12 @@ export class SearchComponent implements OnInit {
   public DevicesType: typeof DeviceType = DeviceType;
 
   public showBackdrop = false;
+  public columnsConfig: ColumnsConfig = {
+    lg: 4,
+    md: 3,
+    sm: 2,
+    xs: 2,
+  };
 
   public adSlotShopping: AdSlotShoppingConfiguration = AD_SHOPPING_PUBLIC_SEARCH;
   constructor(private adsService: AdsService, private deviceService: DeviceService, private searchStore: SearchStoreService) {
