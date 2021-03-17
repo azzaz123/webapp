@@ -6,7 +6,7 @@ import {
   AD_TABLET_SCREEN_SIZE,
   AD_TABLET_MAPPING,
 } from '@core/ads/constants';
-import { AdKeyWords, AdSlotConfiguration, AdSlotId } from '@core/ads/models';
+import { AdKeyWords, AdShoppingPageOptions, AdSlotConfiguration, AdSlotId, AdSlotShoppingConfiguration } from '@core/ads/models';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { of } from 'rxjs';
 
@@ -17,6 +17,7 @@ export const MockAdsService = {
   displayAdBySlotId: (adSlotId) => {},
   setSlots: (adSlots) => {},
   setAdKeywords: (adKeywords: AdKeyWords) => {},
+  displayAdShopping: (adSlotShopping: AdSlotShoppingConfiguration) => {},
 };
 
 export const MockAmazonPublisherService = {
@@ -39,6 +40,7 @@ export const MockGooglePublisherTagService = {
   setSlots: (slots: AdSlotConfiguration) => {},
   refreshAds: () => {},
   setAdKeywords: (adKeywords: AdKeyWords) => {},
+  displayShopping: (pageOption, adSlotShopping: AdSlotShoppingConfiguration) => {},
 };
 
 export const MockLoadAdsService = {
@@ -91,3 +93,20 @@ export const MockAdSlots: AdSlotConfiguration[] = [
     device: [DeviceType.DESKTOP],
   },
 ];
+
+export const MockAdSlotShopping: AdSlotShoppingConfiguration = {
+  slotId: 'afshcontainer',
+  container: 'afshcontainer',
+  width: 500,
+  height: 400,
+};
+
+export const MockAdShoppingPageOptions: AdShoppingPageOptions = {
+  pubId: 'pubId',
+  priceCurrency: '',
+  adsafe: '',
+  adtest: '',
+  channel: '',
+  hl: '',
+  adLoadedCallback: () => {},
+};

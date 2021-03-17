@@ -2,21 +2,23 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
+import { Item } from '@core/item/item';
 import { ViewportService } from '@core/viewport/viewport.service';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
+import { MOCK_SEARCH_ITEM } from '@fixtures/search-items.fixtures';
 import { AdComponentStub } from '@fixtures/shared/components/ad.component.stub';
 import { ItemCardListComponentStub } from '@fixtures/shared/components/item-card-list.component.stub';
+import { Store } from '@ngrx/store';
 import { random } from 'faker';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { of } from 'rxjs/internal/observable/of';
 import { SearchFiltersModule } from '../components/search-filters/search-filters.module';
 import { SearchLayoutComponent } from '../components/search-layout/search-layout.component';
 import { AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
-import { SearchComponent } from './search.component';
+import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
+import { AdShoppingPageOptionPublicSearchFactory, AD_SHOPPING_PUBLIC_SEARCH } from '../core/ads/shopping/search-ads-shopping.config';
 import { SearchStoreService } from '../core/services/search-store.service';
-import { of } from 'rxjs/internal/observable/of';
-import { DeviceDetectorService } from 'ngx-device-detector';
-import { Store } from '@ngrx/store';
-import { MOCK_SEARCH_ITEM } from '@fixtures/search-items.fixtures';
-import { Item } from '@core/item/item';
+import { SearchComponent } from './search.component';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -72,6 +74,33 @@ describe('SearchComponent', () => {
 
   describe('when the component init', () => {
     describe('on init', () => {
+      it('should initialise items observable', () => {
+        component.ngOnInit();
+
+        expect(component.items$).toBeTruthy();
+      });
+
+      it('should initialise items observable', () => {
+        component.ngOnInit();
+
+        expect(component.items$).toBeTruthy();
+      });
+    });
+
+    describe('when is desktop', () => {
+      beforeEach(() => {
+        spyOn(deviceServiceMock, 'getDeviceType').and.returnValue(DeviceType.DESKTOP);
+      });
+
+      it('should set ad keywords', () => {
+        spyOn(MockAdsService, 'setAdKeywords').and.callThrough();
+
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        expect(MockAdsService.setAdKeywords).toHaveBeenCalledWith({ content: 'Iphone 11' });
+      });
+
       it('should configure ads', () => {
         spyOn(MockAdsService, 'setSlots').and.callThrough();
 
@@ -85,10 +114,16 @@ describe('SearchComponent', () => {
         ]);
       });
 
-      it('should initialise items observable', () => {
-        component.ngOnInit();
+      it('should display ad shopping', () => {
+        spyOn(MockAdsService, 'displayAdShopping').and.callThrough();
 
-        expect(component.items$).toBeTruthy();
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        expect(MockAdsService.displayAdShopping).toHaveBeenCalledWith(
+          AdShoppingPageOptionPublicSearchFactory(AdShoppingChannel.SEARCH_PAGE),
+          AD_SHOPPING_PUBLIC_SEARCH
+        );
       });
     });
   });

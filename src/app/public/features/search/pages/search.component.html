@@ -23,6 +23,9 @@
         </div>
       </ng-container>
     </div>
+    <ng-container main>
     <tsl-public-item-card-list main [items]="items$ | async"></tsl-public-item-card-list>
+      <div *ngIf="device === DevicesType.DESKTOP" class="mx-auto my-4" [id]="adSlotShopping.slotId"></div>
+    </ng-container>
   </tsl-search-layout>
 </div>
