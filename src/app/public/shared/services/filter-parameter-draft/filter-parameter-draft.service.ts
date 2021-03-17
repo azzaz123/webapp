@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 
 @Injectable()
 export class FilterParameterDraftService {
   private parametersSubject = new BehaviorSubject<FilterParameter[]>([]);
+
+  protected getParameterObservable(): Observable<FilterParameter[]> {
+    return this.parametersSubject.asObservable();
+  }
 
   public getParameters(): FilterParameter[] {
     return this.parametersSubject.value;
