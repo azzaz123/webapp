@@ -1,4 +1,4 @@
-import { AdSlotConfiguration } from './../../models/ad-slot.interface';
+import { AdSlotConfiguration } from '../../models/ad-slot-configuration';
 export interface AmazonPublisherServiceLibrary {
   bids: Function;
   debug: Function;

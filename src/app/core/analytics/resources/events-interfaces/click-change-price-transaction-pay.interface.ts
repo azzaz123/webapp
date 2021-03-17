@@ -36,5 +36,5 @@ export interface ClickChangePriceTransactionPay {
   /**
    * Identifier of the screen where the click is done
    */
-  screenId: 209;
+  screenId: 209 | 238;
 }

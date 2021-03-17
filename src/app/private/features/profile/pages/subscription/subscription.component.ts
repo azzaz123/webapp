@@ -13,7 +13,7 @@ import {
   ViewSubscription,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES, SUBSCRIPTION_SOURCE } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { AddNewSubscriptionModalComponent } from '@private/features/profile/modal/add-new-subscription/add-new-subscription-modal.component';
 import { CancelSubscriptionModalComponent } from '@private/features/profile/modal/cancel-subscription/cancel-subscription-modal.component';
@@ -166,8 +166,10 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   private trackPageView(): void {
-    let stringIds: string = null;
+    const source = (this.route.snapshot.queryParamMap.get('source') as SUBSCRIPTION_SOURCE) || null;
     const subscriptionIds = this.subscriptionsService.getTrialSubscriptionsIds(this.subscriptions);
+
+    let stringIds: string = null;
 
     if (subscriptionIds.length > 0) {
       stringIds = subscriptionIds.sort((a, b) => a - b).join(', ');
@@ -179,9 +181,9 @@ export class SubscriptionsComponent implements OnInit {
         screenId: SCREEN_IDS.SubscriptionManagement,
         isPro: this.user.featured,
         freeTrialSubscriptions: stringIds,
+        source,
       },
     };
-
     this.analyticsService.trackPageView(pageView);
   }
 

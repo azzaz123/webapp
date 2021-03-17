@@ -118,7 +118,6 @@ release_end repo=webapp
 |                 develop                  |                   latest                   |
 | any other branch (eg: feature/FRON-1234) | name of the branch (eg: feature-FRON-1234) |
 
-
 ## Commentaries
 
 ### Login

@@ -16,9 +16,13 @@ export interface ClickProSubscription {
   /**
    * Identifier of the screen in which the user has clicked
    */
-  screenId: 111 | 112 | 216 | 219;
+  screenId: 111 | 112 | 216 | 219 | 233;
   /**
    * Whether the user is logged in
    */
   isLoggedIn?: boolean;
+  /**
+   * Whether the user is a PRO
+   */
+  isPro?: boolean;
 }

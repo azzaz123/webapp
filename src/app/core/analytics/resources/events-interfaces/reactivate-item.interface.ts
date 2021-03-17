@@ -53,4 +53,8 @@ export interface ReactivateItem {
    * Hashtags
    */
   hashtags?: string;
+  /**
+   * shippingAllowed
+   */
+  shippingAllowed?: boolean;
 }
