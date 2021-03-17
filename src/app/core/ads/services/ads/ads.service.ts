@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AdKeyWords, AdSlotId } from '@core/ads/models';
-import { AdSlotConfiguration } from '@core/ads/models/ad-slot.interface';
+import { AdKeyWords, AdShoppingPageOptions, AdSlotShoppingConfiguration } from '@core/ads/models';
+import { AdSlotConfiguration } from '@core/ads/models/ad-slot-configuration';
+import { AdSlotId } from '@core/ads/models/ad-slot-id';
 import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
 import { BehaviorSubject, combineLatest, merge, Observable, Subject } from 'rxjs';
 import { filter, finalize, map, switchMap, take, tap } from 'rxjs/operators';
@@ -11,8 +12,6 @@ import { LoadAdsService } from '../load-ads/load-ads.service';
   providedIn: 'root',
 })
 export class AdsService {
-  public adKeyWords: AdKeyWords = {} as AdKeyWords;
-
   private readonly refreshEventSubject: Subject<void> = new Subject<void>();
   private readonly setSlotsSubject: BehaviorSubject<AdSlotConfiguration[]> = new BehaviorSubject<AdSlotConfiguration[]>([]);
   private readonly _adsReady$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -58,6 +57,16 @@ export class AdsService {
       .pipe(
         filter((adsReady: boolean) => adsReady),
         tap(() => this.googlePublisherTagService.displayAdBySlotId(slotId)),
+        take(1)
+      )
+      .subscribe();
+  }
+
+  public displayAdShopping(adShoppingPageOptions: AdShoppingPageOptions, adSlotShopping: AdSlotShoppingConfiguration): void {
+    this.adsReady$
+      .pipe(
+        filter((adsReady: boolean) => adsReady),
+        tap(() => this.googlePublisherTagService.displayShopping(adShoppingPageOptions, adSlotShopping)),
         take(1)
       )
       .subscribe();

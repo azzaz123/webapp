@@ -41,7 +41,7 @@ $filters-height: 44px;
     }
 
     &--topSpace {
-      top: calc(#{$topbar-height} + #{$spacing-xs});
+      top: calc(2 * #{$topbar-height} + #{$spacing-xs});
     }
   }
 }
