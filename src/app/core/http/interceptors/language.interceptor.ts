@@ -12,7 +12,7 @@ export const MIN_QUALITY_VALUE = 0.1;
 export class LanguageInterceptor implements HttpInterceptor {
   constructor(private i18nService: I18nService, private deviceService: DeviceService) {}
 
-  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+  public intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const isMonolithRequest = request.url.startsWith(environment.baseUrl);
     const isLanguageHeaderPresent = request.headers.has(LANGUAGE_HEADER_NAME);
     const needsLanguageHeader = isMonolithRequest && !isLanguageHeaderPresent;
