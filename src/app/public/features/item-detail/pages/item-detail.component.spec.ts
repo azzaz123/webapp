@@ -5,15 +5,20 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AdsService } from '@core/ads/services';
+import { CategoryService } from '@core/category/category.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
 import {
+  ITEM_CELLPHONES_EXTRA_INFO,
+  ITEM_CELLPHONES_EXTRA_INFO_PARENT_OBJECT_TYPE,
   MOCK_ITEM,
   MOCK_ITEM_CAR,
   MOCK_ITEM_CELLPHONES,
+  MOCK_ITEM_CELLPHONES_NO_SUBCATEGORY,
+  MOCK_ITEM_CELLPHONES_PARENT_SUBCATEGORY,
   MOCK_ITEM_FASHION,
   MOCK_ITEM_GBP,
   MOCK_ITEM_WITHOUT_LOCATION,
@@ -43,6 +48,8 @@ import { of, throwError } from 'rxjs';
 import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
 import { ItemSpecificationsComponent } from '../components/item-specifications/item-specifications.component';
 import { ItemSpecificationsModule } from '../components/item-specifications/item-specifications.module';
+import { ItemTaxonomiesComponent } from '../components/item-taxonomies/item-taxonomies.component';
+import { ItemTaxonomiesModule } from '../components/item-taxonomies/item-taxonomies.module';
 import { ADS_ITEM_DETAIL } from '../core/ads/item-detail-ads.config';
 import { EllapsedTimeModule } from '../core/directives/ellapsed-time.module';
 import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
@@ -64,6 +71,7 @@ describe('ItemDetailComponent', () => {
   const carExtraInfoClass = '.ItemExtraInfo--car';
   const itemId = '123';
 
+  const MOCK_ICON = '/patch/icon.svg';
   const MOCK_ITEM_DETAIL = {
     item: MOCK_CAR,
     user: MOCK_FULL_USER_FEATURED,
@@ -75,6 +83,7 @@ describe('ItemDetailComponent', () => {
   let mapExtraInfoService: MapExtraInfoService;
   let typeCheckService: TypeCheckService;
   let deviceService: DeviceService;
+  let categoryService: CategoryService;
   let decimalPipe: DecimalPipe;
   let itemDetailImagesModal: ItemFullScreenCarouselComponent;
   let router: Router;
@@ -84,7 +93,7 @@ describe('ItemDetailComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ItemDetailComponent, CustomCurrencyPipe, IsCurrentUserStub, AdComponentStub],
-      imports: [HttpClientTestingModule, ItemSpecificationsModule, EllapsedTimeModule],
+      imports: [HttpClientTestingModule, ItemSpecificationsModule, EllapsedTimeModule, ItemTaxonomiesModule],
       providers: [
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         {
@@ -160,6 +169,7 @@ describe('ItemDetailComponent', () => {
         CheckSessionService,
         ItemCardService,
         Renderer2,
+        CategoryService,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -178,6 +188,7 @@ describe('ItemDetailComponent', () => {
     typeCheckService = TestBed.inject(TypeCheckService);
     mapExtraInfoService = TestBed.inject(MapExtraInfoService);
     itemDetailImagesModal = TestBed.inject(ItemFullScreenCarouselComponent);
+    categoryService = TestBed.inject(CategoryService);
     fixture.detectChanges();
   });
 
@@ -485,8 +496,8 @@ describe('ItemDetailComponent', () => {
     describe('when the item is a car ...', () => {
       beforeEach(() => {
         component.itemDetail.item = MOCK_CAR;
-
         component.itemSpecifications = null;
+
         component.ngOnInit();
         fixture.detectChanges();
       });
@@ -505,8 +516,8 @@ describe('ItemDetailComponent', () => {
     describe('when the item is a real estate ...', () => {
       beforeEach(() => {
         component.itemDetail.item = MOCK_REALESTATE;
-
         component.itemSpecifications = null;
+
         component.ngOnInit();
         fixture.detectChanges();
       });
@@ -524,8 +535,8 @@ describe('ItemDetailComponent', () => {
     describe('when the item is NOT a real estate or a car...', () => {
       beforeEach(() => {
         component.itemDetail.item = MOCK_ITEM_FASHION;
-
         component.itemSpecifications = null;
+
         component.ngOnInit();
         fixture.detectChanges();
       });
@@ -599,6 +610,87 @@ describe('ItemDetailComponent', () => {
 
         expect(carExtraInfoStyle).toBeFalsy();
         expect(extraInfo).toBeFalsy();
+      });
+    });
+  });
+
+  describe('when we handle the item taxonomies...', () => {
+    describe('when the item have default taxonomy defined', () => {
+      beforeEach(() => {
+        spyOn(categoryService, 'getCategoryIconById').and.returnValue(of(MOCK_ICON));
+        component.itemDetail.item = MOCK_ITEM_CELLPHONES;
+
+        component.ngOnInit();
+        fixture.detectChanges();
+      });
+
+      it('should show the item taxonomies...', () => {
+        const itemTaxonomies = fixture.debugElement.query(By.directive(ItemTaxonomiesComponent));
+        expect(itemTaxonomies).toBeTruthy();
+      });
+
+      it('should ask for the taxonomy category icon', () => {
+        expect(categoryService.getCategoryIconById).toHaveBeenCalled();
+        expect(component.taxonomiesSpecifications.icon).toBe(MOCK_ICON);
+      });
+
+      describe('and the parent object is NOT defined...', () => {
+        it('the parent taxonomy will be the default object type', () => {
+          expect(component.taxonomiesSpecifications.parentTaxonomy).toBe(ITEM_CELLPHONES_EXTRA_INFO.object_type.name);
+        });
+
+        it('the child taxonomy will be null', () => {
+          expect(component.taxonomiesSpecifications.childTaxonomy).toBe(null);
+        });
+      });
+
+      describe('and the parent object is defined...', () => {
+        beforeEach(() => {
+          component.itemDetail.item = MOCK_ITEM_CELLPHONES_PARENT_SUBCATEGORY;
+
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+
+        it('the parent taxonomy will be the parent object type', () => {
+          expect(component.taxonomiesSpecifications.parentTaxonomy).toBe(
+            ITEM_CELLPHONES_EXTRA_INFO_PARENT_OBJECT_TYPE.object_type.parent_object_type.name
+          );
+        });
+        it('the child taxonomy will be the default object type', () => {
+          expect(component.taxonomiesSpecifications.childTaxonomy).toBe(ITEM_CELLPHONES_EXTRA_INFO_PARENT_OBJECT_TYPE.object_type.name);
+        });
+      });
+    });
+
+    describe(`when the item don't have default taxonomy defined`, () => {
+      beforeEach(() => {
+        spyOn(categoryService, 'getCategoryIconById');
+        component.itemDetail.item = MOCK_ITEM_CELLPHONES_NO_SUBCATEGORY;
+
+        component.ngOnInit();
+        fixture.detectChanges();
+      });
+
+      it('should NOT show the item taxonomies...', () => {
+        const itemTaxonomies = fixture.debugElement.query(By.directive(ItemTaxonomiesComponent));
+        expect(itemTaxonomies).toBeFalsy();
+      });
+
+      it('the parent taxonomy will be null', () => {
+        expect(component.taxonomiesSpecifications.parentTaxonomy).toBe(null);
+      });
+
+      it('the child taxonomy will be null', () => {
+        expect(component.taxonomiesSpecifications.childTaxonomy).toBe(null);
+      });
+
+      it('should NOT ask for the taxonomy category icon', () => {
+        expect(categoryService.getCategoryIconById).not.toHaveBeenCalled();
+      });
+
+      it('the icon taxonomy will be null', () => {
+        expect(component.taxonomiesSpecifications.icon).toBe(null);
       });
     });
   });

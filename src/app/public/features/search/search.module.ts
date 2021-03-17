@@ -8,6 +8,7 @@ import { SharedModule } from '@shared/shared.module';
 import { ItemCardListModule } from '../public-profile/pages/user-published/components/item-card-list/item-card-list.module';
 import { SearchFiltersModule } from './components/search-filters/search-filters.module';
 import { SearchLayoutComponent } from './components/search-layout/search-layout.component';
+import { SearchStoreService } from './core/services/search-store.service';
 import { SearchComponent } from './pages/search.component';
 import { SearchRoutingModule } from './search.routing.module';
 
@@ -22,7 +23,7 @@ import { SearchRoutingModule } from './search.routing.module';
     AdSlotShoppingModule,
     SearchFiltersModule,
   ],
-  providers: [ViewportService],
+  providers: [ViewportService, SearchStoreService],
   declarations: [SearchComponent, SearchLayoutComponent],
 })
 export class SearchModule {}
