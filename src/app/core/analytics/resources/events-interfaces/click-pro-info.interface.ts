@@ -6,23 +6,19 @@
  */
 
 /**
- * User clicks on the PRO subscription button or banner
+ * User clicks on a CTA or banner that takes them to the PRO landing page
  */
-export interface ClickProSubscription {
-  /**
-   * If the view offers free trial or not
-   */
-  freeTrial?: boolean;
+export interface ClickProInfo {
   /**
    * Identifier of the screen in which the user has clicked
    */
-  screenId: 111 | 112 | 216 | 219 | 233;
+  screenId: 216;
   /**
-   * Whether the user is logged in
+   * Location of the CTA or the banner where the user clicks
    */
-  isLoggedIn?: boolean;
+  clickLocation: 'banner_navigation_bar' | 'awareness_module' | 'footer';
   /**
-   * Whether the user is a PRO
+   * Experiment group of the user
    */
-  isPro?: boolean;
+  experiment?: string;
 }

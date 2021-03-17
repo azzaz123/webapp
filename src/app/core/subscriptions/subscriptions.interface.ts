@@ -30,6 +30,8 @@ export enum SUBSCRIPTION_MARKETS {
 
 export type SUBSCRIPTION_CATEGORIES = 0 | 100 | 14000 | 12800;
 
+export type SUBSCRIPTION_SOURCE = 'landing_banner' | 'landing_details';
+
 export interface SubscriptionsResponse {
   id: string;
   category_id: number;

@@ -6,9 +6,9 @@
  */
 
 /**
- * User have clicked on the pay button to buy an item through shipping and once the external form (about the banck info) is validated, the event is sent. This is equivalent to a shipping request
+ * User clicks on the 'Buy' button to pay for a transaction (this sends a shipping request if there is no error)
  */
-export interface TransactionPayConfirmation {
+export interface PayTransaction {
   /**
    * The unique identifier for an item
    */
@@ -28,7 +28,7 @@ export interface TransactionPayConfirmation {
   /**
    * Identifier of the screen that the item was clicked from
    */
-  screenId: 209;
+  screenId: 209 | 238;
   /**
    * Identifier of the user that the item belongs to
    */
@@ -52,9 +52,9 @@ export interface TransactionPayConfirmation {
   /**
    * Balance amount in the wallet
    */
-  balanceAmount?: number;
+  walletBalanceAmount: number;
   /**
-   * Whether the buyer uses the balance in the wallet to pay
+   * Payment method the user has selected
    */
-  useBalance?: boolean;
+  paymentMethod?: 'bank card' | 'wallet' | 'wallet, bank card' | 'paypal' | 'wallet, paypal';
 }
