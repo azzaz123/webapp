@@ -1,8 +1,10 @@
 import { AdSlotId } from './ad-slot-id';
 
 export interface AdSlotShoppingConfiguration {
-  slotId: AdSlotId;
+  slotId?: AdSlotId;
   container: string;
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
+  styleId?: string;
+  linkTarget?: string;
 }

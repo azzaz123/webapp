@@ -8,7 +8,11 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
-import { AdShoppingPageOptionPublicSearchFactory, AD_SHOPPING_PUBLIC_SEARCH } from '../core/ads/shopping/search-ads-shopping.config';
+import {
+  AdShoppingPageOptionPublicSearchFactory,
+  AD_SHOPPING_NATIVE_PUBLIC_SEARCH,
+  AD_SHOPPING_PUBLIC_SEARCH,
+} from '../core/ads/shopping/search-ads-shopping.config';
 import { SearchStoreService } from '../core/services/search-store.service';
 import { mapSearchItems } from '../utils/search-item.mapper';
 
@@ -28,7 +32,12 @@ export class SearchComponent implements OnInit {
   public showBackdrop = false;
 
   public adSlotShopping: AdSlotShoppingConfiguration = AD_SHOPPING_PUBLIC_SEARCH;
-  public adShoppingPageOptions: AdShoppingPageOptions = AdShoppingPageOptionPublicSearchFactory(AdShoppingChannel.SEARCH_PAGE);
+  public adSlotNativeShopping: AdSlotShoppingConfiguration = AD_SHOPPING_NATIVE_PUBLIC_SEARCH;
+  public adShoppingSearchPageOptions: AdShoppingPageOptions = AdShoppingPageOptionPublicSearchFactory(AdShoppingChannel.SEARCH_PAGE);
+  public adShoppingNativeListPageOptions: AdShoppingPageOptions = AdShoppingPageOptionPublicSearchFactory(
+    AdShoppingChannel.SEARCH_LIST_SHOPPING
+  );
+
   constructor(private adsService: AdsService, private deviceService: DeviceService, private searchStore: SearchStoreService) {
     this.device = this.deviceService.getDeviceType();
   }
