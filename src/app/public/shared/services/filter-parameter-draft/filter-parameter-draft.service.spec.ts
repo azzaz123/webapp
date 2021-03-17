@@ -64,7 +64,16 @@ describe('FilterParameterDraftService', () => {
       });
     });
     describe('and the parameters do exist', () => {
-      it('should overwrite the parameter values', () => {});
+      it('should overwrite the parameter values', () => {
+        const newParameter: FilterParameter = {
+          key: 'filterParameter1',
+          value: 'newParameterValue',
+        };
+
+        service.upsertParameters([newParameter]);
+
+        expect(service.getParameters()).toEqual([newParameter, filterParameters[1]]);
+      });
     });
   });
 });
