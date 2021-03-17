@@ -1,10 +1,13 @@
-import { AdSlotId } from './ad-slot-id';
-
-export interface AdSlotShoppingConfiguration {
-  slotId?: AdSlotId;
+export interface AdSlotShoppingBaseConfiguration {
   container: string;
-  width?: number;
-  height?: number;
-  styleId?: string;
-  linkTarget?: string;
+}
+
+export interface AdSlotShoppingConfiguration extends AdSlotShoppingBaseConfiguration {
+  width: number;
+  height: number;
+}
+
+export interface AdSlotNativeShoppingConfiguration extends AdSlotShoppingBaseConfiguration {
+  styleId: string;
+  linkTarget: string;
 }

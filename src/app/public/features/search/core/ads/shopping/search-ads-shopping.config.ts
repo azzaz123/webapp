@@ -3,17 +3,12 @@ import { AdShoppingPageOptions, AdSlotShoppingConfiguration, PageOptionLoadedCal
 import { AdShoppingChannel } from './ad-shopping-channel';
 
 export const AD_SHOPPING_PUBLIC_SEARCH: AdSlotShoppingConfiguration = {
-  slotId: 'afshcontainer',
   container: 'afshcontainer',
   width: 500,
   height: 400,
 };
 
-export const AD_SHOPPING_NATIVE_PUBLIC_SEARCH: AdSlotShoppingConfiguration = {
-  container: 'div-gpt-ad-1536058445169-02',
-  styleId: '3619815655',
-  linkTarget: '_blank',
-};
+export const AD_SHOPPING_NATIVE_CONTAINER_PUBLIC_SEARCH = 'div-gpt-ad-1536058445169-';
 
 export function AdShoppingPageOptionPublicSearchFactory(
   channel: AdShoppingChannel,

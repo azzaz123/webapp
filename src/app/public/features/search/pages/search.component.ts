@@ -12,7 +12,7 @@ import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
 import {
   AdShoppingPageOptionPublicSearchFactory,
-  AD_SHOPPING_NATIVE_PUBLIC_SEARCH,
+  AD_SHOPPING_NATIVE_CONTAINER_PUBLIC_SEARCH,
   AD_SHOPPING_PUBLIC_SEARCH,
 } from '../core/ads/shopping/search-ads-shopping.config';
 import { SearchStoreService } from '../core/services/search-store.service';
@@ -40,7 +40,7 @@ export class SearchComponent implements OnInit {
   };
 
   public adSlotShopping: AdSlotShoppingConfiguration = AD_SHOPPING_PUBLIC_SEARCH;
-  public adSlotNativeShopping: AdSlotShoppingConfiguration = AD_SHOPPING_NATIVE_PUBLIC_SEARCH;
+  public adSlotNativeShoppingContainer: string = AD_SHOPPING_NATIVE_CONTAINER_PUBLIC_SEARCH;
   public adShoppingSearchPageOptions: AdShoppingPageOptions = AdShoppingPageOptionPublicSearchFactory(AdShoppingChannel.SEARCH_PAGE);
   public adShoppingNativeListPageOptions: AdShoppingPageOptions = AdShoppingPageOptionPublicSearchFactory(
     AdShoppingChannel.SEARCH_LIST_SHOPPING

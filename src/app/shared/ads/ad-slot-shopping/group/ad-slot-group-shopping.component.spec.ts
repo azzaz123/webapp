@@ -2,28 +2,26 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { AdsService } from '@core/ads/services';
 import { MockAdShoppingPageOptions, MockAdSlotShopping, MockAdsService } from '@fixtures/ads.fixtures.spec';
-import { CHAT_AD_SLOTS } from '@private/features/chat/core/ads/chat-ad.config';
-import { AdSlotShoppingComponent } from './ad-slot-shopping.component';
+import { AdSlotGroupShoppingComponent } from './ad-slot-group-shopping.component';
 
-describe('AdSlotShoppingComponent', () => {
-  const FIRST_AD_SLOT = CHAT_AD_SLOTS;
-  let component: AdSlotShoppingComponent;
-  let fixture: ComponentFixture<AdSlotShoppingComponent>;
+describe('AdSlotGroupShoppingComponent', () => {
+  let component: AdSlotGroupShoppingComponent;
+  let fixture: ComponentFixture<AdSlotGroupShoppingComponent>;
   let elementRef: any;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [AdSlotShoppingComponent],
+        declarations: [AdSlotGroupShoppingComponent],
         providers: [{ provide: AdsService, useValue: MockAdsService }],
       }).compileComponents();
     })
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdSlotShoppingComponent);
+    fixture = TestBed.createComponent(AdSlotGroupShoppingComponent);
     component = fixture.componentInstance;
-    component.adSlotShopping = MockAdSlotShopping;
+    component.adSlotShoppingConfiguration = MockAdSlotShopping;
     component.adShoppingPageOptions = MockAdShoppingPageOptions;
     fixture.detectChanges();
   });
@@ -33,7 +31,7 @@ describe('AdSlotShoppingComponent', () => {
   });
 
   it('should set div element id', () => {
-    elementRef = fixture.debugElement.query(By.css(`#${MockAdSlotShopping.slotId}`)).nativeElement;
+    elementRef = fixture.debugElement.query(By.css(`#${MockAdSlotShopping.container}`)).nativeElement;
   });
 
   describe('when the view init', () => {
