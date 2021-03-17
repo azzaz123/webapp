@@ -5,9 +5,10 @@ import { ItemCardModule } from '@public/shared/components/item-card/item-card.mo
 import { ItemApiModule } from '@public/core/services/api/item/item-api.module';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 import { PublicPipesModule } from '@public/core/pipes/public-pipes.module';
+import { ShowSlotPipe } from './pipes/show-slot.pipe';
 
 @NgModule({
-  declarations: [ItemCardListComponent],
+  declarations: [ItemCardListComponent, ShowSlotPipe],
   imports: [CommonModule, ItemCardModule, ItemApiModule, PublicPipesModule],
   exports: [ItemCardListComponent],
   providers: [ItemCardService],

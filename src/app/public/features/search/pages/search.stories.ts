@@ -3,7 +3,7 @@ import { styledWrapperDecorator } from '@stories/decorators/styled-wrapper/style
 import { Story } from '@storybook/angular/types-6-0';
 import { moduleMetadata } from '@storybook/angular';
 import { SearchLayoutComponent } from '@public/features/search/components/search-layout/search-layout.component';
-import { ItemCardListModule } from '@public/features/public-profile/pages/user-published/components/item-card-list/item-card-list.module';
+import { ItemCardListModule } from '@public/shared/components/item-card-list/item-card-list.module';
 import { CUSTOM_VIEWPORT_NAME } from '@storybook-config/viewports/custom-viewports';
 import { HttpModule } from '@core/http/http.module';
 import { CoreModule } from '@core/core.module';

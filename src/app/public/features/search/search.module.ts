@@ -5,7 +5,7 @@ import { PublicLayoutModule } from '@public/layout/public-layout.module';
 import { AdSlotShoppingModule } from '@shared/ads/ad-slot-shopping/ad-slot-shopping.module';
 import { AdSlotModule } from '@shared/ads/ad-slot/ad-slot.module';
 import { SharedModule } from '@shared/shared.module';
-import { ItemCardListModule } from '../public-profile/pages/user-published/components/item-card-list/item-card-list.module';
+import { ItemCardListModule } from '@public/shared/components/item-card-list/item-card-list.module';
 import { SearchFiltersModule } from './components/search-filters/search-filters.module';
 import { SearchLayoutComponent } from './components/search-layout/search-layout.component';
 import { SearchStoreService } from './core/services/search-store.service';
