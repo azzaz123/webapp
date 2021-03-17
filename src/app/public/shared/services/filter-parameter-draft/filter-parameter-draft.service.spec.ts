@@ -45,14 +45,6 @@ describe('FilterParameterDraftService', () => {
 
       expect(service.getParameters()).toEqual(filterParameters);
     });
-    it('should propagate parameters to listeners', () => {
-      let parameters: FilterParameter[];
-      service.parameters$.subscribe((params) => (parameters = params));
-
-      service.setParameters(filterParameters);
-
-      expect(parameters).toEqual(filterParameters);
-    });
   });
 
   describe('when we need to upsert parameters', () => {
@@ -70,34 +62,9 @@ describe('FilterParameterDraftService', () => {
 
         expect(service.getParameters()).toEqual([newParameter, ...filterParameters]);
       });
-      it('should propagate parameters to listeners', () => {
-        const newParameter: FilterParameter = {
-          key: 'newParameterKey',
-          value: 'newParameterValue',
-        };
-        let parameters: FilterParameter[];
-        service.parameters$.subscribe((params) => (parameters = params));
-
-        service.upsertParameters([newParameter]);
-
-        expect(parameters).toEqual([newParameter, ...filterParameters]);
-      });
     });
     describe('and the parameters do exist', () => {
       it('should overwrite the parameter values', () => {});
-      it('should propagate parameters to listeners', () => {
-        const updatedParameter: FilterParameter = {
-          ...filterParameters[0],
-          value: 'newParameterValue',
-        };
-        let parameters: FilterParameter[];
-        service.parameters$.subscribe((params) => (parameters = params));
-
-        service.upsertParameters([updatedParameter]);
-
-        const expectedParameters = filterParameters.map((parameter, index) => (index === 0 ? updatedParameter : parameter));
-        expect(parameters).toEqual(expectedParameters);
-      });
     });
   });
 });
