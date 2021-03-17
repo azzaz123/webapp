@@ -103,7 +103,15 @@ describe('LanguageInterceptor', () => {
   });
 
   describe('when doing a request to another server other than wallapop monolith', () => {
-    it('should not send any language to the server', () => {});
+    it('should not send any language to the server', () => {
+      const expectedUrl = environment.remoteConsoleUrl;
+
+      http.get(expectedUrl).subscribe();
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush({});
+
+      expect(req.request.headers.has(LANGUAGE_HEADER_NAME)).toBe(false);
+    });
 
     describe('and when the language was specified in the request', () => {
       it('should send the language that was specified', () => {});
