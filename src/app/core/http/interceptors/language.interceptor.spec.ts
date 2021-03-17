@@ -88,7 +88,17 @@ describe('LanguageInterceptor', () => {
     });
 
     describe('and when the language was specified in the request', () => {
-      it('should send the language that was specified', () => {});
+      it('should send the language that was specified', () => {
+        const expectedUrl = environment.baseUrl;
+        const expectedLanguageHeaderValue = 'cat, en;q=0.9, es;q=0.85';
+
+        http.get(expectedUrl, { headers: { [LANGUAGE_HEADER_NAME]: expectedLanguageHeaderValue } }).subscribe();
+        const req: TestRequest = httpMock.expectOne(expectedUrl);
+        req.flush({});
+
+        expect(req.request.headers.has(LANGUAGE_HEADER_NAME)).toBe(true);
+        expect(req.request.headers.get(LANGUAGE_HEADER_NAME)).toEqual(expectedLanguageHeaderValue);
+      });
     });
   });
 
