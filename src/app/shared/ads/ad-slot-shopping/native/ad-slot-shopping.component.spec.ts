@@ -1,7 +1,9 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { AD_SHOPPING_STYLE_ID_DESKTOP, AD_SHOPPING_STYLE_ID_MOBILE, AD_SHOPPING_STYLE_ID_WIDE } from '@core/ads/constants';
 import { AdsService } from '@core/ads/services';
-import { MockAdShoppingPageOptions, MockAdSlotShopping, MockAdsService } from '@fixtures/ads.fixtures.spec';
+import { DeviceService } from '@core/device/device.service';
+import { MockAdShoppingPageOptions, MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { AdSlotShoppingComponent } from './ad-slot-shopping.component';
 
 describe('AdSlotShoppingComponent', () => {
@@ -9,11 +11,24 @@ describe('AdSlotShoppingComponent', () => {
   let fixture: ComponentFixture<AdSlotShoppingComponent>;
   let elementRef: any;
 
+  const deviceServiceMock = {
+    isMobile: () => false,
+  };
+
+  const adSlotContainerMock = 'div-gpt-ad-1536058445169';
+  const indexMock = 10;
+
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [AdSlotShoppingComponent],
-        providers: [{ provide: AdsService, useValue: MockAdsService }],
+        providers: [
+          { provide: AdsService, useValue: MockAdsService },
+          {
+            provide: DeviceService,
+            useValue: deviceServiceMock,
+          },
+        ],
       }).compileComponents();
     })
   );
@@ -21,27 +36,70 @@ describe('AdSlotShoppingComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AdSlotShoppingComponent);
     component = fixture.componentInstance;
-    component.adSlotContainer = 'div-gpt-ad-1536058445169-';
+    component.adSlotContainer = adSlotContainerMock;
+    component.index = indexMock;
     component.adShoppingPageOptions = MockAdShoppingPageOptions;
-    fixture.detectChanges();
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
-  /*
+
   it('should set div element id', () => {
-    elementRef = fixture.debugElement.query(By.css(`#${MockAdSlotShopping.container}`)).nativeElement;
+    fixture.detectChanges();
+
+    elementRef = fixture.debugElement.query(By.css(`#${adSlotContainerMock}-${indexMock.toString()}`)).nativeElement;
   });
 
   describe('when the view init', () => {
-    it('should display ad shopping', () => {
+    it('should display ad wide shopping', () => {
+      component.isWide = true;
       spyOn(MockAdsService, 'displayAdShopping').and.callThrough();
 
+      fixture.detectChanges();
       component.ngAfterViewInit();
 
-      expect(MockAdsService.displayAdShopping).toHaveBeenCalledWith(MockAdShoppingPageOptions, MockAdSlotShopping);
+      expect(MockAdsService.displayAdShopping).toHaveBeenCalledWith(MockAdShoppingPageOptions, {
+        container: `${adSlotContainerMock}-${indexMock.toString()}`,
+        styleId: AD_SHOPPING_STYLE_ID_WIDE,
+        linkTarget: '_blank',
+      });
+    });
+
+    describe('on desktop', () => {
+      beforeEach(() => {
+        spyOn(deviceServiceMock, 'isMobile').and.returnValue(false);
+        fixture.detectChanges();
+      });
+      it('should display ad shopping', () => {
+        spyOn(MockAdsService, 'displayAdShopping').and.callThrough();
+
+        component.ngAfterViewInit();
+
+        expect(MockAdsService.displayAdShopping).toHaveBeenCalledWith(MockAdShoppingPageOptions, {
+          container: `${adSlotContainerMock}-${indexMock.toString()}`,
+          styleId: AD_SHOPPING_STYLE_ID_DESKTOP,
+          linkTarget: '_blank',
+        });
+      });
+    });
+
+    describe('on mobile', () => {
+      beforeEach(() => {
+        spyOn(deviceServiceMock, 'isMobile').and.returnValue(true);
+        fixture.detectChanges();
+      });
+      it('should display ad shopping', () => {
+        spyOn(MockAdsService, 'displayAdShopping').and.callThrough();
+
+        component.ngAfterViewInit();
+
+        expect(MockAdsService.displayAdShopping).toHaveBeenCalledWith(MockAdShoppingPageOptions, {
+          container: `${adSlotContainerMock}-${indexMock.toString()}`,
+          styleId: AD_SHOPPING_STYLE_ID_MOBILE,
+          linkTarget: '_blank',
+        });
+      });
     });
   });
-  */
 });

@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { AD_SHOPPING_STYLE_ID_DESKTOP, AD_SHOPPING_STYLE_ID_MOBILE, AD_SHOPPING_STYLE_ID_WIDE } from '@core/ads/constants';
 import { AdShoppingPageOptions, AdSlotNativeShoppingConfiguration } from '@core/ads/models';
 import { AdsService } from '@core/ads/services';
 import { DeviceService } from '@core/device/device.service';
@@ -32,13 +33,13 @@ export class AdSlotShoppingComponent implements OnInit, AfterViewInit {
 
   private factoryStyleIdSlot(): string {
     if (this.isWide) {
-      return '8537702058';
+      return AD_SHOPPING_STYLE_ID_WIDE;
     }
 
     if (this.deviceService.isMobile()) {
-      return '9644454476';
+      return AD_SHOPPING_STYLE_ID_MOBILE;
     }
 
-    return '3619815655';
+    return AD_SHOPPING_STYLE_ID_DESKTOP;
   }
 }

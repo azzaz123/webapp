@@ -3,6 +3,7 @@ export interface AdSlotShoppingBaseConfiguration {
 }
 
 export interface AdSlotShoppingConfiguration extends AdSlotShoppingBaseConfiguration {
+  slotId: string;
   width: number;
   height: number;
 }
