@@ -1,5 +1,5 @@
 <div class="Search">
-  <tsl-search-filters class="Search__filters position-fixed" 
+  <tsl-search-filters class="Search__filters position-fixed"
     [class.Search__filters--with-backdrop]="showBackdrop"
     (bubbleFilterOpenStateChange)="toggleBubbleFilterBackdrop($event)">
   </tsl-search-filters>
@@ -23,6 +23,9 @@
         </div>
       </ng-container>
     </div>
-    <tsl-public-item-card-list main [items]="items" [columnsConfig]="columnsConfig"></tsl-public-item-card-list>
+    <ng-container main>
+    <tsl-public-item-card-list main [items]="items$ | async"></tsl-public-item-card-list>
+      <div *ngIf="device === DevicesType.DESKTOP" class="mx-auto my-4" [id]="adSlotShopping.slotId"></div>
+    </ng-container>
   </tsl-search-layout>
 </div>
