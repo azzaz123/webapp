@@ -20,7 +20,7 @@ export const FAQS: any[] = [
       {
         title: 'Tu Plan de coches',
         text:
-          'El plan actual indica el tipo de suscripción que tienes asociado a tus coches. Por ejemplo, si estás suscrito al "Plan 50", significa que puedes tener hasta 50 coches activos al mismo tiempo en la app y web de wallapop. ¿No está mal verdad?',
+          'El plan actual indica el tipo de suscripción que tienes asociado a tus coches. Por ejemplo, si estás suscrito al "Plan 50", significa que puedes tener hasta 50 coches activos al mismo tiempo en la app y web de Wallapop. ¿No está mal verdad?',
       },
       {
         title: 'Tu Plan de visibilidad',

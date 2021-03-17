@@ -23,16 +23,16 @@
         </ng-container>
         <ng-template #noCarDealerDescription>
           <ng-container *ngIf="isFreeTrial; else noFreeTrial">
-            <span i18n="@@TooManyItemsModalTryTrial">To list more {{categorySubscription?.category_name}}, <b>try wallapop PRO with a {{categorySubscription?.trial_days}}-day free trial.</b> Professionalise your online sales, and sell more!
+            <span i18n="@@TooManyItemsModalTryTrial">To list more {{categorySubscription?.category_name}}, <b>try Wallapop PRO with a {{categorySubscription?.trial_days}}-day free trial.</b> Professionalise your online sales, and sell more!
               <br><br>
-              If you decide wallapop PRO isn't for you, this item will become inactive – nobody will be able to buy it.</span>
+              If you decide Wallapop PRO isn't for you, this item will become inactive – nobody will be able to buy it.</span>
           </ng-container>
           <ng-template #noFreeTrial>
-            <span i18n="@@TooManyItemsModalDescriptionInApp" *ngIf="type === inAppType">You must upgrade your subscription <b>through the wallapop app</b> if you want to publish more {{categorySubscription?.category_name}}</span>
+            <span i18n="@@TooManyItemsModalDescriptionInApp" *ngIf="type === inAppType">You must upgrade your subscription <b>through the Wallapop app</b> if you want to publish more {{categorySubscription?.category_name}}</span>
             <span i18n="@@TooManyItemsModalDescription" *ngIf="type !== inAppType">Want to list more<ng-container *ngIf="categorySubscription"> {{categorySubscription.category_name}}</ng-container>?
-              You might be interested in signing up for wallapop PRO. Professionalise your online sales, and sell more!
+              You might be interested in signing up for Wallapop PRO. Professionalise your online sales, and sell more!
               <br><br>
-              If you decide wallapop PRO isn't for you, this item will become inactive – nobody will be able to buy it.</span>
+              If you decide Wallapop PRO isn't for you, this item will become inactive – nobody will be able to buy it.</span>
           </ng-template>
         </ng-template>
       </div>

@@ -506,7 +506,7 @@ describe('ItemService', () => {
   });
 
   describe('purchaseProductsWithCredits', () => {
-    it('should purchase selected products with wallapop credits', () => {
+    it('should purchase selected products with Wallapop credits', () => {
       const orderId = '10061993';
       const expectedUrl = `${environment.baseUrl}${WEB_ITEMS_API_URL}/purchase/products/credit/${orderId}`;
 
