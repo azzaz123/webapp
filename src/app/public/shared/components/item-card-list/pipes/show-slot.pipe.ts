@@ -5,8 +5,6 @@ import { SlotsConfig } from '../interfaces/slots-config.interface';
   name: 'showSlot',
 })
 export class ShowSlotPipe implements PipeTransform {
-  constructor() {}
-
   transform(index: number, slotsConfig: SlotsConfig): boolean {
     return index >= slotsConfig.start && (index - slotsConfig.start) % slotsConfig.offset === 0;
   }
