@@ -2,9 +2,8 @@ import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { DeviceService } from '@core/device/device.service';
-import { environment } from '@environments/environment.beta';
+import { environment } from '@environments/environment';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
-import { random } from 'faker';
 import { CookieService } from 'ngx-cookie';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
