@@ -354,10 +354,10 @@ describe('ItemDetailComponent', () => {
         spyOn(itemDetailStoreService, 'markItemAsReserved');
 
         const itemDetailHeader = fixture.debugElement.query(By.directive(ItemDetailHeaderComponent));
-        itemDetailHeader.triggerEventHandler('updateReserveItem', itemId);
+        itemDetailHeader.triggerEventHandler('reservedItemChange', {});
 
         fixture.detectChanges();
-        expect(itemDetailStoreService.markItemAsReserved).toHaveBeenCalledWith(itemId);
+        expect(itemDetailStoreService.markItemAsReserved).toHaveBeenCalled();
       });
     });
 
@@ -366,10 +366,10 @@ describe('ItemDetailComponent', () => {
         spyOn(itemDetailStoreService, 'markItemAsUnreserved');
 
         const itemDetailHeader = fixture.debugElement.query(By.directive(ItemDetailHeaderComponent));
-        itemDetailHeader.triggerEventHandler('updateUnreserveItem', itemId);
+        itemDetailHeader.triggerEventHandler('unreservedItemChange', {});
 
         fixture.detectChanges();
-        expect(itemDetailStoreService.markItemAsUnreserved).toHaveBeenCalledWith(itemId);
+        expect(itemDetailStoreService.markItemAsUnreserved).toHaveBeenCalled();
       });
     });
 
@@ -378,7 +378,7 @@ describe('ItemDetailComponent', () => {
         spyOn(itemDetailStoreService, 'markItemAsSold');
 
         const itemDetailHeader = fixture.debugElement.query(By.directive(ItemDetailHeaderComponent));
-        itemDetailHeader.triggerEventHandler('updateSoldItem', {});
+        itemDetailHeader.triggerEventHandler('soldItemChange', {});
 
         fixture.detectChanges();
         expect(itemDetailStoreService.markItemAsSold).toHaveBeenCalled();

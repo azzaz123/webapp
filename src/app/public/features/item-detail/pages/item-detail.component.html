@@ -16,9 +16,9 @@
                             [item]="itemDetail.item"
                             [userStats]="itemDetail.userStats | async"
                             [isOwner]="(itemDetail.user.id | isCurrentUser | async)"
-                            (updateReserveItem)="reserveItem($event)"
-                            (updateUnreserveItem)="unreserveItem($event)"
-                            (updateSoldItem)="soldItem()"
+                            (reservedItemChange)="reserveItem()"
+                            (unreservedItemChange)="unreserveItem()"
+                            (soldItemChange)="soldItem()"
                         ></tsl-item-detail-header>
                         <div class="ItemDetail__carousel position-relative w-100">
                             <tsl-item-images-carousel

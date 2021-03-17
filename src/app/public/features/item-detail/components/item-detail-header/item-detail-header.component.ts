@@ -23,9 +23,9 @@ export class ItemDetailHeaderComponent implements OnInit {
   @Input() item: Item;
   @Input() isOwner = false;
   @Input() userStats: UserStats;
-  @Output() updateReserveItem: EventEmitter<string> = new EventEmitter();
-  @Output() updateUnreserveItem: EventEmitter<string> = new EventEmitter();
-  @Output() updateSoldItem: EventEmitter<void> = new EventEmitter();
+  @Output() reservedItemChange: EventEmitter<void> = new EventEmitter();
+  @Output() unreservedItemChange: EventEmitter<void> = new EventEmitter();
+  @Output() soldItemChange: EventEmitter<void> = new EventEmitter();
 
   public readonly USER_INFO_SIZE = USER_INFO_SIZE;
   public showOptions = false;
@@ -55,9 +55,9 @@ export class ItemDetailHeaderComponent implements OnInit {
 
   public reserveItem(): void {
     if (!this.item.reserved) {
-      this.updateReserveItem.emit(this.item.id);
+      this.reservedItemChange.emit();
     } else {
-      this.updateUnreserveItem.emit(this.item.id);
+      this.unreservedItemChange.emit();
     }
   }
 
@@ -67,7 +67,7 @@ export class ItemDetailHeaderComponent implements OnInit {
     });
     modalRef.componentInstance.item = this.item;
     modalRef.result.then(() => {
-      this.updateSoldItem.emit();
+      this.soldItemChange.emit();
       this.checkShowOptions();
     });
   }

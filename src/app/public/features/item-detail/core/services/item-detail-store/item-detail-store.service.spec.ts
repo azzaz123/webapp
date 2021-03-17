@@ -110,7 +110,7 @@ describe('ItemDetailStoreService', () => {
       it('should set the item as reserved', () => {
         spyOn(itemDetailService, 'reserveItem').and.returnValue(of());
 
-        service.markItemAsReserved('2').subscribe(() => {
+        service.markItemAsReserved().subscribe(() => {
           expect(service.itemDetail.item.reserved).toBe(true);
         });
       });
@@ -120,7 +120,7 @@ describe('ItemDetailStoreService', () => {
       it('should NOT set the item as reserved', () => {
         spyOn(itemDetailService, 'reserveItem').and.returnValue(throwError('network error'));
 
-        service.markItemAsReserved('2').subscribe(() => {
+        service.markItemAsReserved().subscribe(() => {
           expect(service.itemDetail.item.reserved).toBe(false);
         });
       });
@@ -137,7 +137,7 @@ describe('ItemDetailStoreService', () => {
       it('should set the item as unreserved', () => {
         spyOn(itemDetailService, 'reserveItem').and.returnValue(of());
 
-        service.markItemAsUnreserved('2').subscribe(() => {
+        service.markItemAsUnreserved().subscribe(() => {
           expect(service.itemDetail.item.reserved).toBe(false);
         });
       });
@@ -147,7 +147,7 @@ describe('ItemDetailStoreService', () => {
       it('should NOT set the item as unreserved', () => {
         spyOn(itemDetailService, 'reserveItem').and.returnValue(throwError('network error'));
 
-        service.markItemAsUnreserved('2').subscribe(() => {
+        service.markItemAsUnreserved().subscribe(() => {
           expect(service.itemDetail.item.reserved).toBe(true);
         });
       });

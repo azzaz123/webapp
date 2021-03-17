@@ -56,12 +56,12 @@ export class ItemDetailComponent implements OnInit {
     this.itemDetailImagesModal.show();
   }
 
-  public reserveItem(itemUUID: string): void {
-    this.itemDetailStoreService.markItemAsReserved(itemUUID).subscribe();
+  public reserveItem(): void {
+    this.itemDetailStoreService.markItemAsReserved().subscribe();
   }
 
-  public unreserveItem(itemUUID: string): void {
-    this.itemDetailStoreService.markItemAsUnreserved(itemUUID).subscribe();
+  public unreserveItem(): void {
+    this.itemDetailStoreService.markItemAsUnreserved().subscribe();
   }
 
   public soldItem(): void {
@@ -74,8 +74,8 @@ export class ItemDetailComponent implements OnInit {
       this.itemDetailStoreService.itemDetail$.subscribe((itemDetail: ItemDetail) => {
         if (itemDetail) {
           this.itemDetail = itemDetail;
-          this.setAdSlot(itemDetail?.item);
-          this.initializeItemRecommendations(itemId, itemDetail?.item.categoryId);
+          this.setAdSlot(itemDetail.item);
+          this.initializeItemRecommendations(itemId, itemDetail.item.categoryId);
         }
       })
     );

@@ -236,13 +236,13 @@ describe('ItemDetailHeaderComponent', () => {
           });
           it('should ask for the reserve item function', () => {
             spyOn(component, 'reserveItem').and.callThrough();
-            spyOn(component.updateReserveItem, 'emit');
+            spyOn(component.reservedItemChange, 'emit');
 
             const reserveButton = fixture.debugElement.query(By.css(reserveButtonClass)).nativeElement;
             reserveButton.click();
 
             expect(component.reserveItem).toHaveBeenCalled();
-            expect(component.updateReserveItem.emit).toHaveBeenCalledWith(component.item.id);
+            expect(component.reservedItemChange.emit).toHaveBeenCalled();
           });
         });
 
@@ -253,20 +253,20 @@ describe('ItemDetailHeaderComponent', () => {
           });
           it('should ask for the reserve item function', () => {
             spyOn(component, 'reserveItem').and.callThrough();
-            spyOn(component.updateUnreserveItem, 'emit');
+            spyOn(component.unreservedItemChange, 'emit');
 
             const reserveButton = fixture.debugElement.query(By.css(reserveButtonClass)).nativeElement;
             reserveButton.click();
 
             expect(component.reserveItem).toHaveBeenCalled();
-            expect(component.updateUnreserveItem.emit).toHaveBeenCalledWith(component.item.id);
+            expect(component.unreservedItemChange.emit).toHaveBeenCalled();
           });
         });
       });
 
       describe('when we clic on the sold item button...', () => {
         it('should open the sold modal', fakeAsync(() => {
-          spyOn(component.updateSoldItem, 'emit');
+          spyOn(component.soldItemChange, 'emit');
           spyOn(component, 'soldItem').and.callThrough();
           spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve(), componentInstance: {} });
 
@@ -276,7 +276,7 @@ describe('ItemDetailHeaderComponent', () => {
 
           expect(component.soldItem).toHaveBeenCalled();
           expect(modalService.open).toHaveBeenCalledWith(SoldModalComponent, { windowClass: 'sold' });
-          expect(component.updateSoldItem.emit).toHaveBeenCalled();
+          expect(component.soldItemChange.emit).toHaveBeenCalled();
         }));
       });
 

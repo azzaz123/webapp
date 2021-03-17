@@ -43,16 +43,16 @@ export class ItemDetailStoreService {
       .subscribe();
   }
 
-  public markItemAsReserved(itemUUID: string): Observable<ReserveItemBodyResponse> {
-    return this.itemDetailService.reserveItem(itemUUID, true).pipe(
+  public markItemAsReserved(): Observable<ReserveItemBodyResponse> {
+    return this.itemDetailService.reserveItem(this.itemDetail.item.id, true).pipe(
       tap(() => {
         this.itemDetail.item.reserved = true;
       })
     );
   }
 
-  public markItemAsUnreserved(itemUUID: string): Observable<ReserveItemBodyResponse> {
-    return this.itemDetailService.reserveItem(itemUUID, false).pipe(
+  public markItemAsUnreserved(): Observable<ReserveItemBodyResponse> {
+    return this.itemDetailService.reserveItem(this.itemDetail.item.id, false).pipe(
       tap(() => {
         this.itemDetail.item.reserved = false;
       })
