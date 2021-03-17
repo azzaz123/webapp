@@ -22,7 +22,7 @@ export class ItemDetailService {
     private mapItemService: MapItemService
   ) {}
 
-  public getItem(itemId: string): Observable<ItemDetailResponse> {
+  public getItemDetail(itemId: string): Observable<ItemDetailResponse> {
     return this.itemApiService.getItem(itemId).pipe(
       concatMap((item) => {
         return forkJoin([

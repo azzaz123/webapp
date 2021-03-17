@@ -76,7 +76,7 @@ describe('ItemDetailStoreService', () => {
   describe('when initialize the item...', () => {
     describe('and the petition succed...', () => {
       it('should set the itemDetail ', () => {
-        spyOn(itemDetailService, 'getItem').and.returnValue(of(MOCK_ITEM_DETAIL_RESPONSE));
+        spyOn(itemDetailService, 'getItemDetail').and.returnValue(of(MOCK_ITEM_DETAIL_RESPONSE));
         spyOn(mapItemDetailStoreService, 'mapItemDetailStore').and.returnValue(MOCK_CAR_ITEM_DETAIL);
 
         service.initializeItem('2');
@@ -89,7 +89,7 @@ describe('ItemDetailStoreService', () => {
     describe('and the petition fails...', () => {
       it('should redirect to the not found page', () => {
         const NOT_FOUND_PATH = `/${APP_PATHS.NOT_FOUND}`;
-        spyOn(itemDetailService, 'getItem').and.returnValue(throwError('network error'));
+        spyOn(itemDetailService, 'getItemDetail').and.returnValue(throwError('network error'));
         spyOn(router, 'navigate');
 
         service.initializeItem('2');

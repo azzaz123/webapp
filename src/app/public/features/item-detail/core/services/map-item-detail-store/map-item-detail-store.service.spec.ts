@@ -77,18 +77,16 @@ describe('MapItemDetailStoreService', () => {
     describe('when we handle the item...', () => {
       it('should return the item from the response', () => {
         const itemDetail = service.mapItemDetailStore(MOCK_ITEM_DETAIL_RESPONSE);
-        const itemDetailResponse = MOCK_ITEM_DETAIL_RESPONSE;
 
-        expect(itemDetail.item).toBe(itemDetailResponse.item);
+        expect(itemDetail.item).toBe(MOCK_ITEM_DETAIL_RESPONSE.item);
       });
     });
 
     describe('when we handle the user...', () => {
       it('should return the user from the response', () => {
         const itemDetail = service.mapItemDetailStore(MOCK_ITEM_DETAIL_RESPONSE);
-        const itemDetailResponse = MOCK_ITEM_DETAIL_RESPONSE;
 
-        expect(itemDetail.user).toBe(itemDetailResponse.user);
+        expect(itemDetail.user).toBe(MOCK_ITEM_DETAIL_RESPONSE.user);
       });
     });
 
@@ -327,7 +325,7 @@ describe('MapItemDetailStoreService', () => {
         });
 
         describe('when we handle the socialShare...', () => {
-          it('should return the formated social share data', () => {
+          it('should return the formatted social share data', () => {
             const itemDetail = service.mapItemDetailStore(MOCK_ITEM_DETAIL_RESPONSE);
             const itemWebLink = MOCK_ITEM_DETAIL_RESPONSE?.item.webLink;
             const itemTitle = MOCK_ITEM_DETAIL_RESPONSE?.item.title;

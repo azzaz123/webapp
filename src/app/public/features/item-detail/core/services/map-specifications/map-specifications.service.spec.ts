@@ -4,6 +4,7 @@ import {
   MOCK_COUNTER_SPECIFICATIONS_CAR,
   MOCK_COUNTER_SPECIFICATIONS_REAL_ESTATE,
   MOCK_MAP_SPECIFICATIONS_CAR,
+  MOCK_MAP_SPECIFICATIONS_CAR_BODY_OTHERS,
   MOCK_MAP_SPECIFICATIONS_REAL_ESTATE,
 } from '@fixtures/map-specifications.fixtures.spec';
 
@@ -33,6 +34,15 @@ describe('MapSpecificationsService', () => {
     describe('when we map the car specifications...', () => {
       it('should return their counter specifications', () => {
         expect(service.mapSpecification(MOCK_MAP_SPECIFICATIONS_CAR)).toStrictEqual(MOCK_COUNTER_SPECIFICATIONS_CAR);
+      });
+
+      describe('and the body type is others...', () => {
+        it('should not return the body type as specification', () => {
+          const CAR_SPECIFICATIONS = MOCK_COUNTER_SPECIFICATIONS_CAR;
+          CAR_SPECIFICATIONS.shift();
+
+          expect(service.mapSpecification(MOCK_MAP_SPECIFICATIONS_CAR_BODY_OTHERS)).toStrictEqual(CAR_SPECIFICATIONS);
+        });
       });
     });
 

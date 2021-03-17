@@ -1,5 +1,5 @@
 import { BehaviorSubject, Observable } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { ItemDetailService } from '../item-detail/item-detail.service';
 import { ReserveItemBodyResponse } from '@public/core/services/api/item/interfaces/item-response.interface';
 import { ItemDetailResponse } from '@public/features/item-detail/interfaces/item-detail-response.interface';
@@ -32,15 +32,12 @@ export class ItemDetailStoreService {
   }
 
   public initializeItem(itemId: string): void {
-    this.itemDetailService
-      .getItem(itemId)
-      .pipe(
-        tap((itemDetail: ItemDetailResponse) => {
-          this.itemDetail = this.mapItemDetailStoreService.mapItemDetailStore(itemDetail);
-        }),
-        catchError(() => this.router.navigate([`/${APP_PATHS.NOT_FOUND}`]))
-      )
-      .subscribe();
+    this.itemDetailService.getItemDetail(itemId).subscribe(
+      (itemDetail: ItemDetailResponse) => {
+        this.itemDetail = this.mapItemDetailStoreService.mapItemDetailStore(itemDetail);
+      },
+      () => this.router.navigate([`/${APP_PATHS.NOT_FOUND}`])
+    );
   }
 
   public markItemAsReserved(): Observable<ReserveItemBodyResponse> {

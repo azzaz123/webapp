@@ -104,7 +104,7 @@ export class MapItemDetailStoreService {
   private getTaxonomiesSpecifications(): Observable<ItemTaxonomies> {
     const parentTaxonomy = this.itemDetailResponse?.item?.extraInfo?.object_type?.parent_object_type?.name;
     const defaultTaxonomy = this.itemDetailResponse?.item?.extraInfo?.object_type?.name;
-    let taxonomies: ItemTaxonomies = {
+    const taxonomies: ItemTaxonomies = {
       parentTaxonomy: null,
       childTaxonomy: null,
       icon: null,

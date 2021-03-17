@@ -82,7 +82,7 @@ describe('ItemDetailService', () => {
       let expectedResponse: ItemDetailResponse;
       MOCK_FULL_USER.coverImage = null;
 
-      itemDetailService.getItem(itemId).subscribe((response: ItemDetailResponse) => {
+      itemDetailService.getItemDetail(itemId).subscribe((response: ItemDetailResponse) => {
         expectedResponse = response;
       });
 

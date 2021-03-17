@@ -1,5 +1,5 @@
 import { Observable, Subscription } from 'rxjs';
-import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AdsService } from '@core/ads/services';
 import { CATEGORY_IDS } from '@core/category/category-ids';
@@ -22,7 +22,7 @@ import { ItemSocialShareService } from '../core/services/item-social-share/item-
   styleUrls: ['./item-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ItemDetailComponent implements OnInit {
+export class ItemDetailComponent implements OnInit, OnDestroy {
   @ViewChild(ItemFullScreenCarouselComponent, { static: true })
   itemDetailImagesModal: ItemFullScreenCarouselComponent;
   public adsSlotsItemDetail: ItemDetailAdSlotsConfiguration = ADS_ITEM_DETAIL;

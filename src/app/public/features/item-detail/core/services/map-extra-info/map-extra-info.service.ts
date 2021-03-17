@@ -16,7 +16,7 @@ export class MapExtraInfoService {
   private carSpecifications = ['_version', '_year', '_km'];
 
   public mapExtraInfo(item: Item | Car): string[] {
-    if (this.isCarOrPhoneOrFashion(item)) {
+    if (this.hasExtraInfo(item)) {
       const objectToCheck = this.typeCheckService.isCar(item) ? item : item.extraInfo;
       const specifications = [];
 
@@ -30,7 +30,7 @@ export class MapExtraInfoService {
     }
   }
 
-  private isCarOrPhoneOrFashion(item: Item | Car): boolean {
+  private hasExtraInfo(item: Item | Car): boolean {
     return this.typeCheckService.isCar(item) || this.typeCheckService.isCellPhoneAccessories(item) || this.typeCheckService.isFashion(item);
   }
 
