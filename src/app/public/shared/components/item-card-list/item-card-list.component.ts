@@ -42,8 +42,4 @@ export class ItemCardListComponent {
   public openItemDetailPage(item: Item): void {
     this.router.navigate([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.ITEM_DETAIL}/${item.id}`]);
   }
-
-  public showSlot(index: number): boolean {
-    return index >= this.slotsConfig.start && (index - this.slotsConfig.start) % this.slotsConfig.offset === 0;
-  }
 }
