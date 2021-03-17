@@ -63,6 +63,11 @@ export const MOCK_CAR_ITEM_DETAIL_WITHOUT_COUNTER: ItemDetail = {
   counterSpecifications: null,
 };
 
+export const MOCK_CAR_ITEM_DETAIL_WITHOUT_SOCIAL_SHARE: ItemDetail = {
+  ...MOCK_CAR_ITEM_DETAIL,
+  socialShare: null,
+};
+
 export const MOCK_CAR_ITEM_DETAIL_WITH_VIEWS: ItemDetail = {
   ...MOCK_CAR_ITEM_DETAIL,
   item: getUserWithViewsAndFavourites(),

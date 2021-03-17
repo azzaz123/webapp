@@ -21,8 +21,9 @@ import {
   MOCK_ITEM_DETAIL_WITHOUT_ITEM,
   MOCK_ITEM_DETAIL_WITHOUT_LOCATION,
   MOCK_ITEM_DETAIL_WITHOUT_TAXONOMIES,
+  MOCK_CAR_ITEM_DETAIL_WITHOUT_SOCIAL_SHARE,
 } from '@fixtures/item-detail.fixtures.spec';
-import { MOCK_ITEM, MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
+import { MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
 import { IsCurrentUserStub } from '@fixtures/public/core';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 import { AdComponentStub } from '@fixtures/shared';
@@ -47,10 +48,13 @@ import { ItemDetail } from '../interfaces/item-detail.interface';
 import { ItemDetailComponent } from './item-detail.component';
 import { ItemDetailHeaderComponent } from '../components/item-detail-header/item-detail-header.component';
 import { ItemDetailHeaderModule } from '../components/item-detail-header/item-detail-header.module';
+import { ItemSocialShareService } from '../core/services/item-social-share/item-social-share.service';
+import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
   const recommendedItemsTag = 'tsl-recommended-items';
+  const socialShareTag = 'tsl-social-share';
   const currencies = {
     EUR: '€',
     GBP: '£',
@@ -75,6 +79,7 @@ describe('ItemDetailComponent', () => {
   let fixture: ComponentFixture<ItemDetailComponent>;
   let itemDetailService: ItemDetailService;
   let mapExtraInfoService: MapExtraInfoService;
+  let itemSocialShareService: ItemSocialShareService;
   let deviceService: DeviceService;
   let decimalPipe: DecimalPipe;
   let itemDetailImagesModal: ItemFullScreenCarouselComponent;
@@ -100,7 +105,9 @@ describe('ItemDetailComponent', () => {
         ItemApiService,
         ItemFullScreenCarouselComponent,
         Renderer2,
+        ItemSocialShareService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
+        { provide: SocialMetaTagService, useValue: {} },
         {
           provide: CookieService,
           useValue: {},
@@ -155,6 +162,7 @@ describe('ItemDetailComponent', () => {
     el = de.nativeElement;
     itemDetailStoreService = TestBed.inject(ItemDetailStoreService);
     itemDetailImagesModal = TestBed.inject(ItemFullScreenCarouselComponent);
+    itemSocialShareService = TestBed.inject(ItemSocialShareService);
     fixture.detectChanges();
   });
 
@@ -419,8 +427,69 @@ describe('ItemDetailComponent', () => {
     });
   });
 
+  describe('when we handle the social share info...', () => {
+    describe('and we recieve the social share...', () => {
+      beforeEach(() => {
+        spyOn(itemSocialShareService, 'initializeItemMetaTags');
+        itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
+
+        component.ngOnInit();
+        fixture.detectChanges();
+      });
+
+      it('should initialize the item meta tags...', () => {
+        expect(itemSocialShareService.initializeItemMetaTags).toHaveBeenCalledWith(MOCK_CAR_ITEM_DETAIL.item);
+      });
+
+      it('should show the social share component', () => {
+        const socialShareElement = fixture.debugElement.nativeElement.querySelector(socialShareTag);
+
+        Object.keys(MOCK_CAR_ITEM_DETAIL.socialShare).forEach((socialShareKey: string) => {
+          expect(socialShareElement[socialShareKey]).toEqual(MOCK_CAR_ITEM_DETAIL.socialShare[socialShareKey]);
+        });
+      });
+    });
+
+    describe(`when we DON'T recieve the social share info...`, () => {
+      beforeEach(() => {
+        itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL_WITHOUT_SOCIAL_SHARE);
+
+        fixture.detectChanges();
+      });
+
+      it('should NOT show the social share component', () => {
+        const socialShareElement = fixture.debugElement.query(By.css(socialShareTag));
+
+        expect(socialShareElement).toBeFalsy();
+      });
+    });
+
+    describe(`when we DON'T recieve the item detail...`, () => {
+      beforeEach(() => {
+        spyOn(itemSocialShareService, 'initializeItemMetaTags');
+
+        itemDetailSubjectMock.next(null);
+
+        component.ngOnInit();
+        fixture.detectChanges();
+      });
+
+      it('should NOT initialize the item meta tags...', () => {
+        const socialShareElement = fixture.debugElement.query(By.css(socialShareTag));
+
+        expect(itemSocialShareService.initializeItemMetaTags).not.toHaveBeenCalled();
+        expect(socialShareElement).toBeFalsy();
+      });
+    });
+  });
+
   describe('when we handle the item specifications...', () => {
     describe('and the counter specifications are defined...', () => {
+      beforeEach(() => {
+        itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
+
+        fixture.detectChanges();
+      });
       it('should show the item specifications...', () => {
         expect(fixture.debugElement.query(By.directive(ItemSpecificationsComponent))).toBeTruthy();
       });

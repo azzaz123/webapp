@@ -14,6 +14,7 @@ import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-c
 import { ItemDetailStoreService } from '../core/services/item-detail-store/item-detail-store.service';
 import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
 import { ItemDetail } from '../interfaces/item-detail.interface';
+import { ItemSocialShareService } from '../core/services/item-social-share/item-social-share.service';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -36,7 +37,8 @@ export class ItemDetailComponent implements OnInit {
     private deviceService: DeviceService,
     private itemDetailService: ItemDetailService,
     private route: ActivatedRoute,
-    private adsService: AdsService
+    private adsService: AdsService,
+    private itemSocialShareService: ItemSocialShareService
   ) {}
 
   ngOnInit(): void {
@@ -76,6 +78,7 @@ export class ItemDetailComponent implements OnInit {
           this.itemDetail = itemDetail;
           this.setAdSlot(itemDetail.item);
           this.initializeItemRecommendations(itemId, itemDetail.item.categoryId);
+          this.itemSocialShareService.initializeItemMetaTags(itemDetail.item);
         }
       })
     );
