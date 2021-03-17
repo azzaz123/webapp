@@ -3,11 +3,16 @@ import { AdShoppingPageOptions, AdSlotShoppingConfiguration } from '@core/ads/mo
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
+import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
+import { SearchStoreService } from '../core/services/search-store.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Item } from '@core/item/item';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
 import { AdShoppingPageOptionPublicSearchFactory, AD_SHOPPING_PUBLIC_SEARCH } from '../core/ads/shopping/search-ads-shopping.config';
+import { mapSearchItems } from '../utils/search-item.mapper';
 
 @Component({
   selector: 'tsl-search',
@@ -16,7 +21,7 @@ import { AdShoppingPageOptionPublicSearchFactory, AD_SHOPPING_PUBLIC_SEARCH } fr
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchComponent implements OnInit {
-  public items: Item[];
+  public items$: Observable<Item[]>;
 
   public adSlots: AdSlotSearch = AD_PUBLIC_SEARCH;
   public device: DeviceType;
@@ -25,13 +30,12 @@ export class SearchComponent implements OnInit {
   public showBackdrop = false;
 
   public adSlotShopping: AdSlotShoppingConfiguration = AD_SHOPPING_PUBLIC_SEARCH;
-
-  constructor(private adsService: AdsService, private deviceService: DeviceService) {
+  constructor(private adsService: AdsService, private deviceService: DeviceService, private searchStore: SearchStoreService) {
     this.device = this.deviceService.getDeviceType();
   }
 
-  public ngOnInit() {
-    this.items = Array(50).fill(MOCK_ITEM);
+  public ngOnInit(): void {
+    this.items$ = this.searchStore.items$.pipe(map(mapSearchItems));
 
     this.adsService.setAdKeywords({ content: 'Iphone 11' });
 
