@@ -9,10 +9,11 @@ import { SearchFiltersModule } from './components/search-filters/search-filters.
 import { SearchLayoutComponent } from './components/search-layout/search-layout.component';
 import { SearchComponent } from './pages/search.component';
 import { SearchRoutingModule } from './search.routing.module';
+import { SearchStoreService } from './core/services/search-store.service';
 
 @NgModule({
   imports: [SharedModule, SearchRoutingModule, PublicLayoutModule, ItemCardListModule, CheckSessionModule, AdModule, SearchFiltersModule],
-  providers: [ViewportService],
+  providers: [ViewportService, SearchStoreService],
   declarations: [SearchComponent, SearchLayoutComponent],
 })
 export class SearchModule {}
