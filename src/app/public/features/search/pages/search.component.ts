@@ -3,15 +3,13 @@ import { AdShoppingPageOptions, AdSlotShoppingConfiguration } from '@core/ads/mo
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
-import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
-import { SearchStoreService } from '../core/services/search-store.service';
+import { Item } from '@core/item/item';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Item } from '@core/item/item';
-import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
 import { AdShoppingPageOptionPublicSearchFactory, AD_SHOPPING_PUBLIC_SEARCH } from '../core/ads/shopping/search-ads-shopping.config';
+import { SearchStoreService } from '../core/services/search-store.service';
 import { mapSearchItems } from '../utils/search-item.mapper';
 
 @Component({
