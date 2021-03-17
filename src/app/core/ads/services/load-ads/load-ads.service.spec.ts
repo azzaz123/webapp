@@ -1,5 +1,5 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { ADS_SOURCES } from '@core/ads/constants';
+import { ADS_SOURCES, GOOGLE_ADS_SENSE_SHOPPING, GOOGLE_ADS_SENSE_SHOPPING_URL } from '@core/ads/constants';
 import { AmazonPublisherService, CriteoService, GooglePublisherTagService } from '@core/ads/vendors';
 import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
 import { LoadExternalLibsService } from '@core/load-external-libs/load-external-libs.service';

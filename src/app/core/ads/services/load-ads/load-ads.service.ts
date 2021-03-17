@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { ADS_SOURCES } from '@core/ads/constants';
+import { ADS_SOURCES, GOOGLE_ADS_SENSE_SHOPPING, GOOGLE_ADS_SENSE_SHOPPING_URL } from '@core/ads/constants';
 import { AmazonPublisherService, CriteoService, GooglePublisherTagService } from '@core/ads/vendors';
 import { LoadExternalLibsService } from '@core/load-external-libs/load-external-libs.service';
 import { interval, Observable, zip } from 'rxjs';
-import { concatMap, filter, map, take, tap } from 'rxjs/operators';
+import { concatMap, filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { DidomiService } from './../../vendors/didomi/didomi.service';
 
 @Injectable({
@@ -18,7 +18,7 @@ export class LoadAdsService {
     private didomiService: DidomiService
   ) {}
 
-  loadAds(): Observable<void> {
+  public loadAds(): Observable<void> {
     return zip(this.loadScriptsBySource(), this.loadDidomiLib()).pipe(
       filter((libs: boolean[]) => libs.every((lib) => lib)),
       map(() => null)

@@ -4,7 +4,13 @@ import { AdsKeywordsService } from '@core/ads/services/ads-keywords/ads-keywords
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { WINDOW_TOKEN } from '@core/window/window.token';
-import { MockAdsKeywords, MockAdsKeywordsService, MockAdSlots } from '@fixtures/ads.fixtures.spec';
+import {
+  MockAdShoppingPageOptions,
+  MockAdsKeywords,
+  MockAdsKeywordsService,
+  MockAdSlots,
+  MockAdSlotShopping,
+} from '@fixtures/ads.fixtures.spec';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { random } from 'faker';
 import { CookieService } from 'ngx-cookie';
@@ -24,6 +30,7 @@ describe('GooglePublisherTagService', () => {
   beforeEach(() => {
     windowMock = {
       googletag: MOCK_GOOGLE_TAG,
+      _googCsa: (name, pageOptions, slot) => {},
     };
 
     deviceServiceMock = {
@@ -250,6 +257,20 @@ describe('GooglePublisherTagService', () => {
       service.displayAdBySlotId(id);
 
       expect(MOCK_GOOGLE_TAG.display).toHaveBeenCalledWith(id);
+    });
+  });
+
+  describe('when we want to display ad slot shopping', () => {
+    it('should set page options and slot shopping to lib', () => {
+      spyOn(windowMock, '_googCsa').and.callThrough();
+
+      service.displayShopping(MockAdShoppingPageOptions, MockAdSlotShopping);
+
+      expect(windowMock._googCsa).toHaveBeenCalledWith(
+        'plas',
+        { ...MockAdShoppingPageOptions, query: MockAdsKeywords.content },
+        MockAdSlotShopping
+      );
     });
   });
 });
