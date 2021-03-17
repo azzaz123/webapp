@@ -7,7 +7,6 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorsService } from '@core/errors/errors.service';
 import { ItemDetailService } from '../../core/services/item-detail/item-detail.service';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
-import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 import { SoldModalComponent } from '@shared/modals/sold-modal/sold-modal.component';
 import { Router } from '@angular/router';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
@@ -24,7 +23,7 @@ export class ItemDetailHeaderComponent implements OnInit {
   @Input() isOwner = false;
   @Input() userStats: UserStats;
   @Output() reservedItemChange: EventEmitter<void> = new EventEmitter();
-  @Output() unreservedItemChange: EventEmitter<void> = new EventEmitter();
+  @Output() favouritedItemChange: EventEmitter<void> = new EventEmitter();
   @Output() soldItemChange: EventEmitter<void> = new EventEmitter();
 
   public readonly USER_INFO_SIZE = USER_INFO_SIZE;
@@ -36,7 +35,6 @@ export class ItemDetailHeaderComponent implements OnInit {
     private itemDetailService: ItemDetailService,
     private errorsService: ErrorsService,
     private checkSessionService: CheckSessionService,
-    private itemCardService: ItemCardService,
     private router: Router
   ) {}
 
@@ -49,19 +47,15 @@ export class ItemDetailHeaderComponent implements OnInit {
     this.checkShowOptions();
   }
 
-  public toggleItemFavorite(): void {
-    this.checkSessionService.hasSession() ? this.itemCardService.toggleFavourite(this.item) : this.checkSessionService.checkSessionAction();
+  public toggleFavouriteItem(): void {
+    this.checkSessionService.hasSession() ? this.favouritedItemChange.emit() : this.checkSessionService.checkSessionAction();
   }
 
-  public reserveItem(): void {
-    if (!this.item.reserved) {
-      this.reservedItemChange.emit();
-    } else {
-      this.unreservedItemChange.emit();
-    }
+  public toggleReserveItem(): void {
+    this.reservedItemChange.emit();
   }
 
-  public soldItem(): void {
+  public sellItem(): void {
     const modalRef: NgbModalRef = this.modalService.open(SoldModalComponent, {
       windowClass: 'sold',
     });

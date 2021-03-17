@@ -22,12 +22,12 @@
             <ng-container *ngIf="showOptions">
                 <!-- Sold -->
                 <button class="ItemDetailHeader__squareButton ItemDetailHeader__squareButton--sold mr-2 p-0"
-                    (click)="soldItem()" ngbTooltip="Mark as sold" i18n-ngbTooltip placement="top">
+                    (click)="sellItem()" ngbTooltip="Mark as sold" i18n-ngbTooltip placement="top">
                     <tsl-svg-icon src="/assets/icons/btn-sold.svg"></tsl-svg-icon>
                 </button>
                 <!-- Reserve -->
                 <button class="ItemDetailHeader__squareButton ItemDetailHeader__squareButton--reserve mr-2 p-0"
-                    [ngClass]="{active: item.reserved}" (click)="reserveItem()" ngbTooltip="Mark as reserved"
+                    [ngClass]="{active: item.reserved}" (click)="toggleReserveItem()" ngbTooltip="Mark as reserved"
                     i18n-ngbTooltip placement="top">
                     <tsl-svg-icon src="/assets/icons/btn-reserved.svg"></tsl-svg-icon>
                 </button>
@@ -72,7 +72,7 @@
     </div>
     <ng-template #basicOperations>
         <div *ngIf="showOptions" class="d-flex justify-content-end align-items-center ml-3">
-            <tsl-button className="stripe" class="ItemDetailHeader__button mr-2" (click)="toggleItemFavorite()"
+            <tsl-button className="stripe" class="ItemDetailHeader__button mr-2" (click)="toggleFavouriteItem()"
                 id="favouriteButton">
                 <tsl-favourite-icon [active]="item?.flags?.favorite">
                 </tsl-favourite-icon>

@@ -14,7 +14,6 @@ import { ItemApiService } from '@public/core/services/api/item/item-api.service'
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
-import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
 import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
@@ -30,7 +29,6 @@ describe('ItemDetailHeaderComponent', () => {
   let component: ItemDetailHeaderComponent;
   let fixture: ComponentFixture<ItemDetailHeaderComponent>;
   let checkSessionService: CheckSessionService;
-  let itemCardService: ItemCardService;
   let itemDetailService: ItemDetailService;
   let modalService: NgbModal;
 
@@ -50,7 +48,6 @@ describe('ItemDetailHeaderComponent', () => {
       imports: [HttpClientTestingModule, RouterTestingModule, CommonModule],
       providers: [
         PublicUserApiService,
-        ItemCardService,
         ItemApiService,
         RecommenderApiService,
         MapItemService,
@@ -117,7 +114,6 @@ describe('ItemDetailHeaderComponent', () => {
     fixture = TestBed.createComponent(ItemDetailHeaderComponent);
     component = fixture.componentInstance;
     itemDetailService = TestBed.inject(ItemDetailService);
-    itemCardService = TestBed.inject(ItemCardService);
     checkSessionService = TestBed.inject(CheckSessionService);
     modalService = TestBed.inject(NgbModal);
     component.item = MOCK_ITEM;
@@ -229,52 +225,29 @@ describe('ItemDetailHeaderComponent', () => {
       });
 
       describe('when we clic on the reserve item button...', () => {
-        describe('and the item is not reserved...', () => {
-          beforeEach(() => {
-            component.item.reserved = false;
-            fixture.detectChanges();
-          });
-          it('should ask for the reserve item function', () => {
-            spyOn(component, 'reserveItem').and.callThrough();
-            spyOn(component.reservedItemChange, 'emit');
+        it('should emit the reserve item event', () => {
+          spyOn(component, 'toggleReserveItem').and.callThrough();
+          spyOn(component.reservedItemChange, 'emit');
 
-            const reserveButton = fixture.debugElement.query(By.css(reserveButtonClass)).nativeElement;
-            reserveButton.click();
+          const reserveButton = fixture.debugElement.query(By.css(reserveButtonClass)).nativeElement;
+          reserveButton.click();
 
-            expect(component.reserveItem).toHaveBeenCalled();
-            expect(component.reservedItemChange.emit).toHaveBeenCalled();
-          });
-        });
-
-        describe('and the item is reserved...', () => {
-          beforeEach(() => {
-            component.item.reserved = true;
-            fixture.detectChanges();
-          });
-          it('should ask for the reserve item function', () => {
-            spyOn(component, 'reserveItem').and.callThrough();
-            spyOn(component.unreservedItemChange, 'emit');
-
-            const reserveButton = fixture.debugElement.query(By.css(reserveButtonClass)).nativeElement;
-            reserveButton.click();
-
-            expect(component.reserveItem).toHaveBeenCalled();
-            expect(component.unreservedItemChange.emit).toHaveBeenCalled();
-          });
+          expect(component.toggleReserveItem).toHaveBeenCalled();
+          expect(component.reservedItemChange.emit).toHaveBeenCalled();
         });
       });
 
       describe('when we clic on the sold item button...', () => {
         it('should open the sold modal', fakeAsync(() => {
           spyOn(component.soldItemChange, 'emit');
-          spyOn(component, 'soldItem').and.callThrough();
+          spyOn(component, 'sellItem').and.callThrough();
           spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve(), componentInstance: {} });
 
           const soldButton = fixture.debugElement.query(By.css(soldButtonClass)).nativeElement;
           soldButton.click();
           tick();
 
-          expect(component.soldItem).toHaveBeenCalled();
+          expect(component.sellItem).toHaveBeenCalled();
           expect(modalService.open).toHaveBeenCalledWith(SoldModalComponent, { windowClass: 'sold' });
           expect(component.soldItemChange.emit).toHaveBeenCalled();
         }));
@@ -345,13 +318,15 @@ describe('ItemDetailHeaderComponent', () => {
 
       describe('when we clic on the favourite button...', () => {
         describe('and we have a current session...', () => {
-          it('should toggle the favourite button', () => {
-            spyOn(itemCardService, 'toggleFavourite');
+          it('should emit the favourite item event', () => {
+            spyOn(component, 'toggleFavouriteItem').and.callThrough();
+            spyOn(component.favouritedItemChange, 'emit');
 
             const favouriteButton = fixture.debugElement.nativeElement.querySelector(favouriteButtonId);
             favouriteButton.click();
 
-            expect(itemCardService.toggleFavourite).toHaveBeenCalledWith(component.item);
+            expect(component.toggleFavouriteItem).toHaveBeenCalled();
+            expect(component.favouritedItemChange.emit).toHaveBeenCalled();
           });
         });
 

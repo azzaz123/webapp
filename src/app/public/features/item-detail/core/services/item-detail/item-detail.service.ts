@@ -12,6 +12,7 @@ import { MapItemService } from '@public/features/public-profile/pages/user-publi
 import { forkJoin, Observable, of } from 'rxjs';
 import { concatMap, mergeMap } from 'rxjs/operators';
 import { ItemDetailResponse } from '@public/features/item-detail/interfaces/item-detail-response.interface';
+import { MarkAsFavouriteBodyResponse } from '@public/core/services/api/public-user/interfaces/public-user-response.interface';
 
 @Injectable()
 export class ItemDetailService {
@@ -53,6 +54,14 @@ export class ItemDetailService {
 
   public reserveItem(itemId: string, reserved: boolean): Observable<ReserveItemBodyResponse> {
     return this.itemApiService.reserveItem(itemId, reserved);
+  }
+
+  public markAsFavourite(id: string): Observable<MarkAsFavouriteBodyResponse> {
+    return this.itemApiService.markAsFavourite(id);
+  }
+
+  public unmarkAsFavourite(id: string): Observable<MarkAsFavouriteBodyResponse> {
+    return this.itemApiService.unmarkAsFavourite(id);
   }
 
   public getItemActivePurchases(id: string): Observable<Purchase[]> {

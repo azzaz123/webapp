@@ -26,6 +26,8 @@ import { ItemExtraInfoComponent } from './components/item-extra-info/item-extra-
 import { ItemDetailStoreService } from './core/services/item-detail-store/item-detail-store.service';
 import { MapItemDetailStoreService } from './core/services/map-item-detail-store/map-item-detail-store.service';
 import { ItemSocialShareService } from './core/services/item-social-share/item-social-share.service';
+import { ItemDetailFlagsStoreService } from './core/services/item-detail-flags-store/item-detail-flags-store.service';
+import { MapItemDetailFlagsStoreService } from './core/services/map-item-detail-flags-store/map-item-detail-flags-store.service';
 
 @NgModule({
   declarations: [itemDetailRoutedComponents, ItemExtraInfoComponent],
@@ -58,6 +60,8 @@ import { ItemSocialShareService } from './core/services/item-social-share/item-s
     ItemDetailStoreService,
     MapItemDetailStoreService,
     ItemSocialShareService,
+    ItemDetailFlagsStoreService,
+    MapItemDetailFlagsStoreService,
   ],
 })
 export class ItemDetailModule {}

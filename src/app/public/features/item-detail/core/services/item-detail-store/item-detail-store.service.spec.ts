@@ -9,6 +9,7 @@ import { RecommenderApiService } from '@public/core/services/api/recommender/rec
 import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
 import { APP_PATHS } from 'app/app-routing-constants';
 import { of, throwError } from 'rxjs';
+import { ItemDetailFlagsStoreService } from '../item-detail-flags-store/item-detail-flags-store.service';
 import { ItemDetailService } from '../item-detail/item-detail.service';
 import { MapItemDetailStoreService } from '../map-item-detail-store/map-item-detail-store.service';
 
@@ -18,6 +19,7 @@ describe('ItemDetailStoreService', () => {
   let service: ItemDetailStoreService;
   let mapItemDetailStoreService: MapItemDetailStoreService;
   let itemDetailService: ItemDetailService;
+  let itemDetailFlagsStoreService: ItemDetailFlagsStoreService;
   let router: Router;
 
   beforeEach(() => {
@@ -39,6 +41,13 @@ describe('ItemDetailStoreService', () => {
           },
         },
         {
+          provide: ItemDetailFlagsStoreService,
+          useValue: {
+            updateStatusFlag: () => {},
+            updateBumpedFlag: () => {},
+          },
+        },
+        {
           provide: Router,
           useValue: {
             navigate() {},
@@ -50,6 +59,7 @@ describe('ItemDetailStoreService', () => {
     service = TestBed.inject(ItemDetailStoreService);
     router = TestBed.inject(Router);
     mapItemDetailStoreService = TestBed.inject(MapItemDetailStoreService);
+    itemDetailFlagsStoreService = TestBed.inject(ItemDetailFlagsStoreService);
     itemDetailService = TestBed.inject(ItemDetailService);
   });
 
@@ -75,14 +85,23 @@ describe('ItemDetailStoreService', () => {
 
   describe('when initialize the item...', () => {
     describe('and the petition succed...', () => {
-      it('should set the itemDetail ', () => {
+      beforeEach(() => {
         spyOn(itemDetailService, 'getItemDetail').and.returnValue(of(MOCK_ITEM_DETAIL_RESPONSE));
+        spyOn(itemDetailFlagsStoreService, 'updateStatusFlag');
+        spyOn(itemDetailFlagsStoreService, 'updateBumpedFlag');
         spyOn(mapItemDetailStoreService, 'mapItemDetailStore').and.returnValue(MOCK_CAR_ITEM_DETAIL);
 
-        service.initializeItem('2');
+        service.initializeItemAndFlags('2');
+      });
 
+      it('should set the itemDetail ', () => {
         expect(mapItemDetailStoreService.mapItemDetailStore).toHaveBeenCalledWith(MOCK_ITEM_DETAIL_RESPONSE);
         expect(service.itemDetail).toBe(MOCK_CAR_ITEM_DETAIL);
+      });
+
+      it('should update the status and bumped flag', () => {
+        expect(itemDetailFlagsStoreService.updateStatusFlag).toHaveBeenCalledWith(MOCK_ITEM_DETAIL_RESPONSE.item.flags);
+        expect(itemDetailFlagsStoreService.updateBumpedFlag).toHaveBeenCalledWith(MOCK_ITEM_DETAIL_RESPONSE.item.bumpFlags);
       });
     });
 
@@ -92,7 +111,7 @@ describe('ItemDetailStoreService', () => {
         spyOn(itemDetailService, 'getItemDetail').and.returnValue(throwError('network error'));
         spyOn(router, 'navigate');
 
-        service.initializeItem('2');
+        service.initializeItemAndFlags('2');
 
         expect(router.navigate).toHaveBeenCalledWith([NOT_FOUND_PATH]);
         expect(service.itemDetail).toBe(null);
@@ -110,7 +129,7 @@ describe('ItemDetailStoreService', () => {
       it('should set the item as reserved', () => {
         spyOn(itemDetailService, 'reserveItem').and.returnValue(of());
 
-        service.markItemAsReserved().subscribe(() => {
+        service.toggleReservedItem().subscribe(() => {
           expect(service.itemDetail.item.reserved).toBe(true);
         });
       });
@@ -120,7 +139,7 @@ describe('ItemDetailStoreService', () => {
       it('should NOT set the item as reserved', () => {
         spyOn(itemDetailService, 'reserveItem').and.returnValue(throwError('network error'));
 
-        service.markItemAsReserved().subscribe(() => {
+        service.toggleReservedItem().subscribe(() => {
           expect(service.itemDetail.item.reserved).toBe(false);
         });
       });
@@ -137,7 +156,7 @@ describe('ItemDetailStoreService', () => {
       it('should set the item as unreserved', () => {
         spyOn(itemDetailService, 'reserveItem').and.returnValue(of());
 
-        service.markItemAsUnreserved().subscribe(() => {
+        service.toggleReservedItem().subscribe(() => {
           expect(service.itemDetail.item.reserved).toBe(false);
         });
       });
@@ -147,8 +166,62 @@ describe('ItemDetailStoreService', () => {
       it('should NOT set the item as unreserved', () => {
         spyOn(itemDetailService, 'reserveItem').and.returnValue(throwError('network error'));
 
-        service.markItemAsUnreserved().subscribe(() => {
+        service.toggleReservedItem().subscribe(() => {
           expect(service.itemDetail.item.reserved).toBe(true);
+        });
+      });
+    });
+  });
+
+  describe('when we favourite the item...', () => {
+    beforeEach(() => {
+      service.itemDetail = MOCK_CAR_ITEM_DETAIL;
+      service.itemDetail.item.flags.favorite = false;
+    });
+
+    describe('and the request succed...', () => {
+      it('should set the item as favourite', () => {
+        spyOn(itemDetailService, 'markAsFavourite').and.returnValue(of());
+
+        service.toggleReservedItem().subscribe(() => {
+          expect(service.itemDetail.item.flags.favorite).toBe(true);
+        });
+      });
+    });
+
+    describe('and the request fails...', () => {
+      it('should NOT set the item as favourite', () => {
+        spyOn(itemDetailService, 'markAsFavourite').and.returnValue(throwError('network error'));
+
+        service.toggleReservedItem().subscribe(() => {
+          expect(service.itemDetail.item.flags.favorite).toBe(false);
+        });
+      });
+    });
+  });
+
+  describe('when we unfavourite the item...', () => {
+    beforeEach(() => {
+      service.itemDetail = MOCK_CAR_ITEM_DETAIL;
+      service.itemDetail.item.flags.favorite = true;
+    });
+
+    describe('and the request succed...', () => {
+      it('should set the item as unfavourite', () => {
+        spyOn(itemDetailService, 'unmarkAsFavourite').and.returnValue(of());
+
+        service.toggleReservedItem().subscribe(() => {
+          expect(service.itemDetail.item.flags.favorite).toBe(false);
+        });
+      });
+    });
+
+    describe('and the request fails...', () => {
+      it('should NOT set the item as unfavourite', () => {
+        spyOn(itemDetailService, 'unmarkAsFavourite').and.returnValue(throwError('network error'));
+
+        service.toggleReservedItem().subscribe(() => {
+          expect(service.itemDetail.item.flags.favorite).toBe(true);
         });
       });
     });

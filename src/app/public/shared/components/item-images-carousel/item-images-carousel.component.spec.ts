@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ITEM_FLAGS, ITEM_BUMP_FLAGS } from '@fixtures/item.fixtures.spec';
+import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from '../item-flag/item-flag-constants';
 import { ItemImagesCarouselComponent } from './item-images-carousel.component';
 
 describe('ItemImagesCarouselComponent', () => {
@@ -34,15 +34,9 @@ describe('ItemImagesCarouselComponent', () => {
   });
 
   describe('when is an item...', () => {
-    beforeEach(() => {
-      component.itemFlags = ITEM_FLAGS;
-      component.itemVisibilityFlags = ITEM_BUMP_FLAGS;
-      fixture.detectChanges();
-    });
-
     describe('and is bumped or country bumped...', () => {
       it('should show one flag on the right when is bumped', () => {
-        component.itemVisibilityFlags.bumped = true;
+        component.bumpedFlag = BUMPED_ITEM_FLAG_TYPES.BUMPED;
         fixture.detectChanges();
 
         const bumpedFlag = fixture.debugElement.query(By.css(flagRightClass));
@@ -51,7 +45,7 @@ describe('ItemImagesCarouselComponent', () => {
       });
 
       it('should show one flag on the right when is country bumped', () => {
-        component.itemVisibilityFlags.country_bumped = true;
+        component.bumpedFlag = BUMPED_ITEM_FLAG_TYPES.COUNTRY_BUMP;
         fixture.detectChanges();
 
         const bumpedFlag = fixture.debugElement.query(By.css(flagRightClass));
@@ -62,7 +56,7 @@ describe('ItemImagesCarouselComponent', () => {
 
     describe('and the item is sold, reserved, expired or inactive...', () => {
       it('should show one flag on the left when is sold', () => {
-        component.itemFlags.sold = true;
+        component.statusFlag = STATUS_ITEM_FLAG_TYPES.SOLD;
         fixture.detectChanges();
 
         const soldFlag = fixture.debugElement.queryAll(By.css(flagLeftClass));
@@ -71,7 +65,7 @@ describe('ItemImagesCarouselComponent', () => {
       });
 
       it('should show one flag on the left when is reserved', () => {
-        component.itemFlags.reserved = true;
+        component.statusFlag = STATUS_ITEM_FLAG_TYPES.RESERVED;
         fixture.detectChanges();
 
         const reservedFlag = fixture.debugElement.queryAll(By.css(flagLeftClass));
@@ -80,7 +74,7 @@ describe('ItemImagesCarouselComponent', () => {
       });
 
       it('should show one flag on the left when is expired', () => {
-        component.itemFlags.expired = true;
+        component.statusFlag = STATUS_ITEM_FLAG_TYPES.EXPIRED;
         fixture.detectChanges();
 
         const expiredFlag = fixture.debugElement.queryAll(By.css(flagLeftClass));
@@ -89,7 +83,7 @@ describe('ItemImagesCarouselComponent', () => {
       });
 
       it('should show one flag on the left when is inactive', () => {
-        component.itemFlags.onhold = true;
+        component.statusFlag = STATUS_ITEM_FLAG_TYPES.INACTIVE;
         fixture.detectChanges();
 
         const inactiveFlag = fixture.debugElement.queryAll(By.css(flagLeftClass));

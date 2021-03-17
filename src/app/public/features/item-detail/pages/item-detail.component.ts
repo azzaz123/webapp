@@ -15,6 +15,8 @@ import { ItemDetailStoreService } from '../core/services/item-detail-store/item-
 import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
 import { ItemDetail } from '../interfaces/item-detail.interface';
 import { ItemSocialShareService } from '../core/services/item-social-share/item-social-share.service';
+import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from '@public/shared/components/item-flag/item-flag-constants';
+import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -38,7 +40,8 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     private itemDetailService: ItemDetailService,
     private route: ActivatedRoute,
     private adsService: AdsService,
-    private itemSocialShareService: ItemSocialShareService
+    private itemSocialShareService: ItemSocialShareService,
+    private itemDetailFlagsStoreService: ItemDetailFlagsStoreService
   ) {}
 
   ngOnInit(): void {
@@ -58,12 +61,12 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     this.itemDetailImagesModal.show();
   }
 
-  public reserveItem(): void {
-    this.itemDetailStoreService.markItemAsReserved().subscribe();
+  public toggleReserveItem(): void {
+    this.itemDetailStoreService.toggleReservedItem().subscribe();
   }
 
-  public unreserveItem(): void {
-    this.itemDetailStoreService.markItemAsUnreserved().subscribe();
+  public toggleFavouriteItem(): void {
+    this.itemDetailStoreService.toggleFavouriteItem().subscribe();
   }
 
   public soldItem(): void {
@@ -71,7 +74,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   }
 
   private initPage(itemId: string): void {
-    this.itemDetailStoreService.initializeItem(itemId);
+    this.itemDetailStoreService.initializeItemAndFlags(itemId);
     this.subscriptions.push(
       this.itemDetailStoreService.itemDetail$.subscribe((itemDetail: ItemDetail) => {
         if (itemDetail) {
@@ -102,5 +105,13 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
 
   get itemDetail$(): Observable<ItemDetail> {
     return this.itemDetailStoreService.itemDetail$;
+  }
+
+  get statusFlag$(): Observable<STATUS_ITEM_FLAG_TYPES> {
+    return this.itemDetailFlagsStoreService.statusFlag$;
+  }
+
+  get bumpedFlag$(): Observable<BUMPED_ITEM_FLAG_TYPES> {
+    return this.itemDetailFlagsStoreService.bumpedFlag$;
   }
 }

@@ -50,6 +50,7 @@ import { ItemDetailHeaderComponent } from '../components/item-detail-header/item
 import { ItemDetailHeaderModule } from '../components/item-detail-header/item-detail-header.module';
 import { ItemSocialShareService } from '../core/services/item-social-share/item-social-share.service';
 import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
+import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -69,10 +70,10 @@ describe('ItemDetailComponent', () => {
   const itemDetailSubjectMock: BehaviorSubject<ItemDetail> = new BehaviorSubject<ItemDetail>(MOCK_ITEM_DETAIL_GBP);
   const itemDetailStoreServiceMock = {
     itemDetail$: itemDetailSubjectMock.asObservable(),
-    markItemAsReserved: (itemUUID: string) => of(),
-    markItemAsUnreserved: (itemUUID: string) => of(),
+    toggleReservedItem: () => of(),
+    toggleFavouriteItem: () => of(),
     markItemAsSold: () => {},
-    initializeItem: () => {},
+    initializeItemAndFlags: () => {},
   };
 
   let component: ItemDetailComponent;
@@ -96,6 +97,7 @@ describe('ItemDetailComponent', () => {
         AdComponentStub,
         ItemSpecificationsComponent,
         ItemTaxonomiesComponent,
+        ItemFullScreenCarouselComponent,
       ],
       imports: [HttpClientTestingModule, ItemSpecificationsModule, EllapsedTimeModule, ItemDetailHeaderModule],
       providers: [
@@ -141,6 +143,10 @@ describe('ItemDetailComponent', () => {
         {
           provide: ItemDetailStoreService,
           useValue: itemDetailStoreServiceMock,
+        },
+        {
+          provide: ItemDetailFlagsStoreService,
+          useValue: {},
         },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -210,11 +216,11 @@ describe('ItemDetailComponent', () => {
   describe('when component inits', () => {
     describe('and we get the item...', () => {
       it('should ask for item data', () => {
-        spyOn(itemDetailStoreService, 'initializeItem');
+        spyOn(itemDetailStoreService, 'initializeItemAndFlags');
 
         component.ngOnInit();
 
-        expect(itemDetailStoreService.initializeItem).toHaveBeenCalledWith(itemId);
+        expect(itemDetailStoreService.initializeItemAndFlags).toHaveBeenCalledWith(itemId);
       });
 
       it('should set ads configuration', () => {
@@ -357,27 +363,27 @@ describe('ItemDetailComponent', () => {
   });
 
   describe('when we handle the header actions...', () => {
-    describe('when we reserve an item...', () => {
+    describe('when we reserve or unreserve an item...', () => {
       it('should call to the store to do the action', () => {
-        spyOn(itemDetailStoreService, 'markItemAsReserved');
+        spyOn(itemDetailStoreService, 'toggleReservedItem');
 
         const itemDetailHeader = fixture.debugElement.query(By.directive(ItemDetailHeaderComponent));
         itemDetailHeader.triggerEventHandler('reservedItemChange', {});
 
         fixture.detectChanges();
-        expect(itemDetailStoreService.markItemAsReserved).toHaveBeenCalled();
+        expect(itemDetailStoreService.toggleReservedItem).toHaveBeenCalled();
       });
     });
 
-    describe('when we unreserve an item...', () => {
+    describe('when we favourite or unfavourite an item...', () => {
       it('should call to the store to do the action', () => {
-        spyOn(itemDetailStoreService, 'markItemAsUnreserved');
+        spyOn(itemDetailStoreService, 'toggleFavouriteItem');
 
         const itemDetailHeader = fixture.debugElement.query(By.directive(ItemDetailHeaderComponent));
-        itemDetailHeader.triggerEventHandler('unreservedItemChange', {});
+        itemDetailHeader.triggerEventHandler('favouritedItemChange', {});
 
         fixture.detectChanges();
-        expect(itemDetailStoreService.markItemAsUnreserved).toHaveBeenCalled();
+        expect(itemDetailStoreService.toggleFavouriteItem).toHaveBeenCalled();
       });
     });
 
@@ -575,6 +581,18 @@ describe('ItemDetailComponent', () => {
       it('should NOT show the item specifications...', () => {
         expect(fixture.debugElement.query(By.directive(ItemTaxonomiesComponent))).toBeFalsy();
       });
+    });
+  });
+
+  describe('when we handle the item fullscreen carousel...', () => {
+    it('and we favourite the item...', () => {
+      spyOn(itemDetailStoreService, 'toggleFavouriteItem');
+
+      const itemDetailHeader = fixture.debugElement.query(By.directive(ItemFullScreenCarouselComponent));
+      itemDetailHeader.triggerEventHandler('favouritedItemChange', {});
+
+      fixture.detectChanges();
+      expect(itemDetailStoreService.toggleFavouriteItem).toHaveBeenCalled();
     });
   });
 });

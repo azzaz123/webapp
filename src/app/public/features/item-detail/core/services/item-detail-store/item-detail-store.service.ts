@@ -8,13 +8,17 @@ import { ItemDetail } from '@public/features/item-detail/interfaces/item-detail.
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { APP_PATHS } from 'app/app-routing-constants';
+import { Item } from '@core/item/item';
+import { ItemDetailFlagsStoreService } from '../item-detail-flags-store/item-detail-flags-store.service';
+import { MarkAsFavouriteBodyResponse } from '@public/core/services/api/public-user/interfaces/public-user-response.interface';
 
 @Injectable()
 export class ItemDetailStoreService {
   constructor(
     private itemDetailService: ItemDetailService,
     private mapItemDetailStoreService: MapItemDetailStoreService,
-    private router: Router
+    private router: Router,
+    private itemDetailFlagsStoreService: ItemDetailFlagsStoreService
   ) {}
 
   private readonly _itemDetail = new BehaviorSubject<ItemDetail>(null);
@@ -31,32 +35,85 @@ export class ItemDetailStoreService {
     this._itemDetail.next(itemDetail);
   }
 
-  public initializeItem(itemId: string): void {
+  public initializeItemAndFlags(itemId: string): void {
     this.itemDetailService.getItemDetail(itemId).subscribe(
       (itemDetail: ItemDetailResponse) => {
         this.itemDetail = this.mapItemDetailStoreService.mapItemDetailStore(itemDetail);
+        this.itemDetailFlagsStoreService.updateStatusFlag(itemDetail.item.flags);
+        this.itemDetailFlagsStoreService.updateBumpedFlag(itemDetail.item.bumpFlags);
       },
       () => this.router.navigate([`/${APP_PATHS.NOT_FOUND}`])
     );
   }
 
-  public markItemAsReserved(): Observable<ReserveItemBodyResponse> {
-    return this.itemDetailService.reserveItem(this.itemDetail.item.id, true).pipe(
-      tap(() => {
-        this.itemDetail.item.reserved = true;
-      })
-    );
+  public toggleReservedItem(): Observable<ReserveItemBodyResponse> {
+    if (this.itemDetail.item.reserved) {
+      return this.unmarkAsReserved();
+    } else {
+      return this.markItemAsReserved();
+    }
   }
 
-  public markItemAsUnreserved(): Observable<ReserveItemBodyResponse> {
-    return this.itemDetailService.reserveItem(this.itemDetail.item.id, false).pipe(
-      tap(() => {
-        this.itemDetail.item.reserved = false;
-      })
-    );
+  public toggleFavouriteItem(): Observable<MarkAsFavouriteBodyResponse> {
+    if (this.itemDetail.item.flags.favorite) {
+      return this.unmarkAsFavourite();
+    } else {
+      return this.markAsFavourite();
+    }
   }
 
   public markItemAsSold(): void {
-    this.itemDetail.item.sold = true;
+    const item = this.itemDetail.item;
+    item.sold = true;
+    this.updateStatusFlags(item);
+  }
+
+  private markItemAsReserved(): Observable<ReserveItemBodyResponse> {
+    return this.itemDetailService.reserveItem(this.itemDetail.item.id, true).pipe(
+      tap(() => {
+        this.reserveItemAndUpdateStatusFlag(true);
+      })
+    );
+  }
+
+  private unmarkAsReserved(): Observable<ReserveItemBodyResponse> {
+    return this.itemDetailService.reserveItem(this.itemDetail.item.id, false).pipe(
+      tap(() => {
+        this.reserveItemAndUpdateStatusFlag(false);
+      })
+    );
+  }
+
+  private markAsFavourite(): Observable<MarkAsFavouriteBodyResponse> {
+    return this.itemDetailService.markAsFavourite(this.itemDetail.item.id).pipe(
+      tap(() => {
+        this.favouriteItem(true);
+      })
+    );
+  }
+
+  private unmarkAsFavourite(): Observable<MarkAsFavouriteBodyResponse> {
+    return this.itemDetailService.unmarkAsFavourite(this.itemDetail.item.id).pipe(
+      tap(() => {
+        this.favouriteItem(false);
+      })
+    );
+  }
+
+  private reserveItemAndUpdateStatusFlag(isReserved: boolean): void {
+    const item = this.itemDetail.item;
+    item.reserved = isReserved;
+    this.updateStatusFlags(item);
+  }
+
+  private favouriteItem(isFavourited: boolean): void {
+    const item = this.itemDetail.item;
+    item.flags.favorite = isFavourited;
+    this.itemDetail = { ...this.itemDetail, item };
+  }
+
+  private updateStatusFlags(item: Item): void {
+    this.itemDetail = { ...this.itemDetail, item };
+    this.itemDetailFlagsStoreService.updateStatusFlag(item.flags);
   }
 }

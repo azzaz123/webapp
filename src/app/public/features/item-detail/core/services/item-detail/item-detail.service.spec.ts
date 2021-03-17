@@ -44,6 +44,12 @@ describe('ItemDetailService', () => {
             getItemActivePurchases() {
               return of();
             },
+            markAsFavourite() {
+              return of();
+            },
+            unmarkAsFavourite() {
+              return of();
+            },
           },
         },
         {
@@ -119,6 +125,26 @@ describe('ItemDetailService', () => {
       itemDetailService.reserveItem(itemId, true);
 
       expect(itemApiService.reserveItem).toHaveBeenCalledWith(itemId, true);
+    });
+  });
+
+  describe('markAsFavourite', () => {
+    it('should call the itemApiService markAsFavourite function', () => {
+      spyOn(itemApiService, 'markAsFavourite');
+
+      itemDetailService.markAsFavourite(itemId);
+
+      expect(itemApiService.markAsFavourite).toHaveBeenCalledWith(itemId);
+    });
+  });
+
+  describe('unmarkAsFavourite', () => {
+    it('should call the itemApiService unmarkAsFavourite function', () => {
+      spyOn(itemApiService, 'unmarkAsFavourite');
+
+      itemDetailService.unmarkAsFavourite(itemId);
+
+      expect(itemApiService.unmarkAsFavourite).toHaveBeenCalledWith(itemId);
     });
   });
 

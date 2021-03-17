@@ -16,15 +16,15 @@
                             [item]="itemDetail.item"
                             [userStats]="itemDetail.userStats | async"
                             [isOwner]="(itemDetail.user.id | isCurrentUser | async)"
-                            (reservedItemChange)="reserveItem()"
-                            (unreservedItemChange)="unreserveItem()"
+                            (reservedItemChange)="toggleReserveItem()"
+                            (favouritedItemChange)="toggleFavouriteItem()"
                             (soldItemChange)="soldItem()"
                         ></tsl-item-detail-header>
                         <div class="ItemDetail__carousel position-relative w-100">
                             <tsl-item-images-carousel
-                                [itemFlags]="itemDetail.item.flags" 
-                                [isActive]="!itemDetail.item.flags?.expired" 
-                                [itemVisibilityFlags]="itemDetail.item.bumpFlags"
+                                [statusFlag]="statusFlag$ | async" 
+                                [bumpedFlag]="bumpedFlag$ | async"
+                                [isExpired]="!itemDetail.item.flags?.expired" 
                                 [images]="itemDetail.images"
                                 (imageClick)="openItemDetailImage($event)">
                             </tsl-item-images-carousel>
@@ -107,4 +107,4 @@
         </div>
     </div>
 </div>
-<tsl-item-fullscreen-carousel></tsl-item-fullscreen-carousel>
+<tsl-item-fullscreen-carousel (favouritedItemChange)="toggleFavouriteItem()"></tsl-item-fullscreen-carousel>
