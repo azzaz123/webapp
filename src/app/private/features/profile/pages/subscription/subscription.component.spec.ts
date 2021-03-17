@@ -92,6 +92,9 @@ describe('SubscriptionComponent', () => {
                 paramMap: {
                   get: () => null,
                 },
+                queryParamMap: {
+                  get: () => null,
+                },
               },
             },
           },
@@ -189,6 +192,7 @@ describe('SubscriptionComponent', () => {
             screenId: SCREEN_IDS.SubscriptionManagement,
             isPro: true,
             freeTrialSubscriptions: null,
+            source: null,
           },
         };
 
@@ -209,6 +213,7 @@ describe('SubscriptionComponent', () => {
             screenId: SCREEN_IDS.SubscriptionManagement,
             isPro: false,
             freeTrialSubscriptions: null,
+            source: null,
           },
         };
 
@@ -219,15 +224,17 @@ describe('SubscriptionComponent', () => {
       });
     });
 
-    describe('when is has not trial availables', () => {
+    describe('when is redirect from landing', () => {
       it('should send event', () => {
         spyOn(analyticsService, 'trackPageView');
+        spyOn(route.snapshot.queryParamMap, 'get').and.returnValue('landing_banner');
         const expectedPageViewEvent: AnalyticsPageView<ViewSubscription> = {
           name: ANALYTICS_EVENT_NAMES.ViewSubscription,
           attributes: {
             screenId: SCREEN_IDS.SubscriptionManagement,
             isPro: true,
             freeTrialSubscriptions: null,
+            source: 'landing_banner',
           },
         };
 
@@ -250,6 +257,27 @@ describe('SubscriptionComponent', () => {
             screenId: SCREEN_IDS.SubscriptionManagement,
             isPro: false,
             freeTrialSubscriptions: '14000',
+            source: null,
+          },
+        };
+
+        component.ngOnInit();
+
+        expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageViewEvent);
+      });
+    });
+
+    describe('when has no trial available', () => {
+      it('should send event', () => {
+        spyOn(analyticsService, 'trackPageView');
+        const expectedPageViewEvent: AnalyticsPageView<ViewSubscription> = {
+          name: ANALYTICS_EVENT_NAMES.ViewSubscription,
+          attributes: {
+            screenId: SCREEN_IDS.SubscriptionManagement,
+            isPro: true,
+            freeTrialSubscriptions: null,
+            source: null,
           },
         };
 

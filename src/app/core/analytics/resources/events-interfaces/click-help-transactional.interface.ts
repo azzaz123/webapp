@@ -36,7 +36,7 @@ export interface ClickHelpTransactional {
   /**
    * Identifier of the screen where the click is done
    */
-  screenId: 209 | 210;
+  screenId: 209 | 210 | 238;
   /**
    * Name of the tutorial/help that the user is clicking on
    */

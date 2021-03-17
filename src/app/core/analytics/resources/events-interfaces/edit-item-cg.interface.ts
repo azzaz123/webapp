@@ -49,4 +49,8 @@ export interface EditItemCG {
    * Hashtags
    */
   hashtags?: string;
+  /**
+   * shippingAllowed
+   */
+  shippingAllowed?: boolean;
 }

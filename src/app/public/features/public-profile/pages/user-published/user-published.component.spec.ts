@@ -7,7 +7,7 @@ import { PublicUserApiService } from '@public/core/services/api/public-user/publ
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { DeviceDetectorModule, DeviceDetectorService } from 'ngx-device-detector';
 import { PublicProfileService } from '../../core/services/public-profile.service';
-import { ItemCardListModule } from './components/item-card-list/item-card-list.module';
+import { ItemCardListModule } from '@public/shared/components/item-card-list/item-card-list.module';
 import { MapItemService } from './services/map-item/map-item.service';
 
 import { UserPublishedComponent } from './user-published.component';

@@ -53,4 +53,8 @@ export interface ListItemCG {
    * Hashtags
    */
   hashtags?: string;
+  /**
+   * shippingAllowed
+   */
+  shippingAllowed?: boolean;
 }

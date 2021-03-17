@@ -25,14 +25,14 @@
     <div class="review-title">
       <a *ngIf="review.item?.id" href="{{ itemWebLink }}" target="_blank"> {{ review.item.title }} </a>
       <span *ngIf="!review.item?.id && category?.name"> {{ category.name }} </span>
-      <span *ngIf="!review.item?.id && !category?.name" i18n>A wallapop item</span>
+      <span *ngIf="!review.item?.id && !category?.name" i18n>A Wallapop item</span>
     </div>
     <tsl-stars class="review-rating" [stars]="this.review.scoring" [normalized]="false"></tsl-stars>
     <p class="review-comment">{{ this.review.comments }}</p>
     <div class="review-credits">
       <span i18n>Posted by</span>
       <span *ngIf="this.review.user"><a href="{{ userWebSlug }}" target="_blank" class="review-microname">{{ this.review.user.microName }}</a></span>
-      <span *ngIf="!this.review.user" i18n>a wallapop user</span>
+      <span *ngIf="!this.review.user" i18n>a Wallapop user</span>
       <span i18n>on</span><span> {{ this.review.date | date:'longDate' }}</span>
     </div>
   </div>

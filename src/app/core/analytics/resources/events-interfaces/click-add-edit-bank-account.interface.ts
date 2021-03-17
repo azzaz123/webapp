@@ -32,5 +32,9 @@ export interface ClickAddEditBankAccount {
   /**
    * Identifier of the screen where the click is done
    */
-  screenId: 210;
+  screenId: 210 | 242;
+  /**
+   * Status of the KYC verification
+   */
+  kycStatus?: 'verified' | 'pending' | 'inProgress';
 }

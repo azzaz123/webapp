@@ -17,6 +17,7 @@ import { ItemCardModule } from '@public/shared/components/item-card/item-card.mo
 import { APP_PATHS } from 'app/app-routing-constants';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ItemCardListComponent } from './item-card-list.component';
+import { ShowSlotPipe } from './pipes/show-slot.pipe';
 
 describe('ItemCardListComponent', () => {
   let component: ItemCardListComponent;
@@ -28,7 +29,7 @@ describe('ItemCardListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ItemCardListComponent, IsCurrentUserStub],
+      declarations: [ItemCardListComponent, IsCurrentUserStub, ShowSlotPipe],
       imports: [CommonModule, ItemCardModule, ItemApiModule, HttpClientTestingModule],
       providers: [
         ItemCardService,

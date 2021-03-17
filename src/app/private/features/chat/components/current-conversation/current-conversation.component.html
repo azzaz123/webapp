@@ -36,13 +36,13 @@
             <div *ngIf="!currentConversation.user.available && !currentConversation.isFromMaliciousUser"
               id="userIsNotAvailableWarning" class="date-marker date-marker-warning date-marker-warning-blue">
               <span class="emoticon emoticon-dashing-away"></span>
-              <span i18n="@@userIsNotAvailableWarning">This person is no longer a wallapop member</span>
+              <span i18n="@@userIsNotAvailableWarning">This person is no longer a Wallapop member</span>
             </div>
 
             <div *ngIf="currentConversation.isFromMaliciousUser" id="userIsBlocked"
               class="date-marker date-marker-error">
               <span class="emoticon emoticon-monocle-face"></span>
-              <span i18n="@@userIsBlocked">This person has been excluded from wallapop for suspicious activity.</span>
+              <span i18n="@@userIsBlocked">This person has been excluded from Wallapop for suspicious activity.</span>
             </div>
 
             <div *ngIf="!currentConversation.user.blocked
@@ -56,7 +56,7 @@
             && currentConversation.user.available
             && currentConversation.item.notAvailable" class="date-marker date-marker-warning date-marker-warning-red">
               <span class="emoticon emoticon-police-car"></span>
-              <span i18n="@@itemIsUnpublishedWarning">The product violates wallapop coexistence regulations</span>
+              <span i18n="@@itemIsUnpublishedWarning">The product violates Wallapop coexistence regulations</span>
             </div>
           </div>
 

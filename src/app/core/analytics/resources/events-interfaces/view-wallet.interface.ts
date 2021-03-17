@@ -17,4 +17,8 @@ export interface ViewWallet {
    * Balance amount in the wallet
    */
   balanceAmount?: number;
+  /**
+   * Status of the KYC verification
+   */
+  kycStatus: 'verified' | 'pending' | 'inProgress';
 }
