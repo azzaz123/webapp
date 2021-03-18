@@ -841,13 +841,6 @@
   <translation id="LoadingData">Estamos cargando tu histórico de facturas...</translation>
   <translation id="NotLoadedInvoices">Lo sentimos, en estos momentos no podemos cargar tus facturas. Intenta de nuevo más tarde.</translation>
   <translation id="NotOldInvoices">No tienes facturas antiguas. Rellena los datos de facturación para futuras compras.</translation>
-  <translation id="FillDataInvoices">Rellena los datos de facturación para descargar tus facturas.</translation>
-  <translation id="InvoiceCorrectlyDownloaded">Tu factura se ha descargado correctamente.</translation>
-  <translation id="InvoiceGenerated">Tu factura se ha generado correctamente.</translation>
-  <translation id="InvoiceCannotDownload">Tu factura no se ha podido descargar. Intenta de nuevo.</translation>
-  <translation id="InvoiceCannotGenerate">Tu factura no se ha podido generar. Intenta de nuevo.</translation>
-  <translation id="SuccessEdit">Tus datos se han editado correctamente.</translation>
-  <translation id="ErrorSavingData">Error al guardar los datos. Intenta de nuevo.</translation>
   <translation id="Sale">Venta</translation>
   <translation id="Sales">Ventas</translation>
   <translation id="Purchase">Compra</translation>
