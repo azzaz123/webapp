@@ -24,7 +24,6 @@
       </ng-container>
     </div>
     <ng-container main>
-      <tsl-sky-shopping [adSlotContainer]="adSlotNativeShoppingContainer" [adShoppingPageOptions]="adShoppingNativeListPageOptions"></tsl-sky-shopping>
       <tsl-public-item-card-list [items]="items$ | async" [columnsConfig]="columnsConfig"></tsl-public-item-card-list>
       <div  *ngIf="device === DevicesType.DESKTOP" class="mx-auto my-4">
         <tsl-sky-slot-group-shopping [adSlotShoppingConfiguration]="adSlotShopping" [adShoppingPageOptions]="adShoppingSearchPageOptions"></tsl-sky-slot-group-shopping>

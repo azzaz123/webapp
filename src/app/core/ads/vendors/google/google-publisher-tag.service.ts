@@ -84,6 +84,8 @@ export class GooglePublisherTagService {
   }
 
   public displayShopping(pageOptions: AdShoppingPageOptions, adSlotShopping: AdSlotShoppingBaseConfiguration): void {
+    this.adsKeywordsService.loadAdKeywords();
+
     const { content }: AdKeyWords = this.adsKeywordsService.adKeywords;
     this.googCsa(GooglePublisherTagService.GOOGLE_ADS_SENSE_NAME, { ...pageOptions, query: content }, adSlotShopping);
   }

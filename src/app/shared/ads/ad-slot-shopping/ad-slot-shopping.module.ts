@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
-import { AdSlotShoppingComponent } from './native/ad-slot-shopping.component';
-import {AdSlotGroupShoppingComponent} from './group/ad-slot-group-shopping.component';
+import { AdSlotNativeShoppingComponent } from './native/ad-slot-native-shopping.component';
+import { AdSlotGroupShoppingComponent } from './group/ad-slot-group-shopping.component';
 
 @NgModule({
-  declarations: [AdSlotShoppingComponent, AdSlotGroupShoppingComponent],
-  exports: [AdSlotShoppingComponent, AdSlotGroupShoppingComponent],
+  declarations: [AdSlotNativeShoppingComponent, AdSlotGroupShoppingComponent],
+  exports: [AdSlotNativeShoppingComponent, AdSlotGroupShoppingComponent],
 })
 export class AdSlotShoppingModule {}

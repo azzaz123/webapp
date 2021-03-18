@@ -16,7 +16,7 @@ export class AdsService {
   private readonly setSlotsSubject: BehaviorSubject<AdSlotConfiguration[]> = new BehaviorSubject<AdSlotConfiguration[]>([]);
   private readonly _adsReady$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  private get adsReady$(): Observable<boolean> {
+  public get adsReady$(): Observable<boolean> {
     return this._adsReady$.asObservable();
   }
 

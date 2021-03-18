@@ -4,11 +4,11 @@ import { AD_SHOPPING_STYLE_ID_DESKTOP, AD_SHOPPING_STYLE_ID_MOBILE, AD_SHOPPING_
 import { AdsService } from '@core/ads/services';
 import { DeviceService } from '@core/device/device.service';
 import { MockAdShoppingPageOptions, MockAdsService } from '@fixtures/ads.fixtures.spec';
-import { AdSlotShoppingComponent } from './ad-slot-shopping.component';
+import { AdSlotNativeShoppingComponent } from './ad-slot-native-shopping.component';
 
-describe('AdSlotShoppingComponent', () => {
-  let component: AdSlotShoppingComponent;
-  let fixture: ComponentFixture<AdSlotShoppingComponent>;
+describe('AdSlotNativeShoppingComponent', () => {
+  let component: AdSlotNativeShoppingComponent;
+  let fixture: ComponentFixture<AdSlotNativeShoppingComponent>;
   let elementRef: any;
 
   const deviceServiceMock = {
@@ -21,7 +21,7 @@ describe('AdSlotShoppingComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [AdSlotShoppingComponent],
+        declarations: [AdSlotNativeShoppingComponent],
         providers: [
           { provide: AdsService, useValue: MockAdsService },
           {
@@ -34,7 +34,7 @@ describe('AdSlotShoppingComponent', () => {
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdSlotShoppingComponent);
+    fixture = TestBed.createComponent(AdSlotNativeShoppingComponent);
     component = fixture.componentInstance;
     component.adSlotContainer = adSlotContainerMock;
     component.index = indexMock;

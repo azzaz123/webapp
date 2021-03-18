@@ -5,11 +5,11 @@ import { AdsService } from '@core/ads/services';
 import { DeviceService } from '@core/device/device.service';
 
 @Component({
-  selector: 'tsl-sky-shopping',
-  templateUrl: 'ad-slot-shopping.component.html',
-  styleUrls: ['./ad-slot-shopping.component.scss'],
+  selector: 'tsl-sky-native-shopping',
+  templateUrl: 'ad-slot-native-shopping.component.html',
+  styleUrls: ['./ad-slot-native-shopping.component.scss'],
 })
-export class AdSlotShoppingComponent implements OnInit, AfterViewInit {
+export class AdSlotNativeShoppingComponent implements OnInit, AfterViewInit {
   @Input() adShoppingPageOptions: AdShoppingPageOptions;
   @Input() adSlotContainer: string;
   @Input() index: number;
@@ -29,6 +29,7 @@ export class AdSlotShoppingComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.adsService.displayAdShopping(this.adShoppingPageOptions, this.adSlotShoppingConfiguration);
+    console.log(this);
   }
 
   private factoryStyleIdSlot(): string {
