@@ -29,7 +29,6 @@ export class AdSlotNativeShoppingComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.adsService.displayAdShopping(this.adShoppingPageOptions, this.adSlotShoppingConfiguration);
-    console.log(this);
   }
 
   private factoryStyleIdSlot(): string {

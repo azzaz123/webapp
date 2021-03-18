@@ -14,8 +14,9 @@ import { AdSlotNativeShoppingComponent } from './ad-slot-native-shopping.compone
   template:
     '<tsl-sky-native-shopping *ngIf="isReady$ | async" [isWide]="isWide" [adSlotContainer]="adSlotContainer" [adShoppingPageOptions]="adShoppingPageOptions" [index]="index"></tsl-sky-native-shopping>',
 })
-class StoryAdSlotShoppingComponent extends AdSlotNativeShoppingComponent implements OnInit {
+class StoryAdSlotShoppingComponent extends AdSlotNativeShoppingComponent {
   isReady$: Observable<boolean>;
+
   constructor(adsService: AdsService, deviceService: DeviceService) {
     super(adsService, deviceService);
     adsService.init();
@@ -47,14 +48,14 @@ export const Default = Template.bind({});
 
 Default.args = {
   isWide: false,
-  index: 1,
+  index: 9,
   adSlotContainer: 'div-gpt-ad-1536058445169',
   adShoppingPageOptions: {
     pubId: AD_SHOPPING_PUB_ID_WALLAPOP,
     priceCurrency: 'EUR',
     adsafe: 'medium',
     adtest: 'off',
-    channel: 'searchpage',
+    channel: 'searchpgeintegWEB',
     hl: 'es',
     adLoadedCallback: () => {},
   },
@@ -71,7 +72,7 @@ Wide.args = {
     priceCurrency: 'EUR',
     adsafe: 'medium',
     adtest: 'off',
-    channel: 'searchpage',
+    channel: 'searchpgeintegWEB',
     hl: 'es',
     adLoadedCallback: () => {},
   },
