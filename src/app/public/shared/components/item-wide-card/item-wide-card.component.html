@@ -1,0 +1,37 @@
+<div *ngIf="item" (click)="itemClick.emit()" class="ItemWideCard container w-100 p-2">
+    <div class="row d-flex w-100 h-100 m-0">
+        <!-- <tsl-svg-icon *ngIf="item.flags?.sold"
+            src="/assets/icons/item-card/sold.svg"></tsl-svg-icon>
+        <tsl-svg-icon *ngIf="item.flags?.reserved"
+            src="/assets/icons/item-card/reserved.svg"></tsl-svg-icon>
+        <tsl-svg-icon *ngIf="item.flags?.bumped"
+            src="/assets/icons/item-card/bumped.svg"></tsl-svg-icon> -->
+        <div class="ItemWideCard__images col-12 col-md-5 p-0"> 
+            <tsl-carousel-slides>
+                <ng-template carousel-slider *ngFor="let image of item.images">
+                    <img [src]="image.urls_by_size?.medium" />
+                </ng-template>
+            </tsl-carousel-slides>
+        </div>
+        <div class="ItemWideCard__data col-12 col-md-7 w-100 h-100 px-3 py-2">
+            <div class="d-flex justify-content-between">
+                <span class="ItemWideCard__price ItemWideCard__price--bold">
+                    {{item.salePrice | customCurrency }}
+                </span>
+                <tsl-favourite-icon *ngIf="showFavourite" class="ItemWideCard__favourite" [active]="item.flags?.favorite"
+                    (click)="toggleItemFavorite($event)"></tsl-favourite-icon>
+            </div>
+            <div class="">
+                <span>{{item.title}}</span>
+                <!-- ISCARORREALESTATE -->
+                <tsl-item-extra-info
+                    *ngIf="itemExtraInfo?.length > 0"
+                    class="horizontalScroll d-block"
+                    [isCar]="typeCheckService.isCar(item) || typeCheckService.isRealEstate(item)"
+                    [extraInfo]="itemExtraInfo">
+                </tsl-item-extra-info>
+                <span class="ItemWideCard__description mt-2">{{item.description}}</span>
+            </div>
+        </div>
+    </div>
+</div>

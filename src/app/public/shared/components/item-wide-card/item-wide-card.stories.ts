@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { FavouriteIconModule } from '@public/shared/components/favourite-icon/favourite-icon.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
@@ -20,10 +21,17 @@ const Template: Story<ItemWideCardComponent> = (args: ItemWideCardComponent) => 
   props: args,
   moduleMetadata: {
     declarations: [ItemWideCardComponent],
-    imports: [CommonModule, FavouriteIconModule, CustomCurrencyModule, SvgIconModule, SlidesCarouselModule, ItemExtraInfoModule],
+    imports: [
+      CommonModule,
+      FavouriteIconModule,
+      CustomCurrencyModule,
+      SvgIconModule,
+      SlidesCarouselModule,
+      ItemExtraInfoModule,
+      HttpClientModule,
+    ],
   },
-  template:
-    '<tsl-item-wide-card [item]="item" [showFavourite]="showFavourite" [itemExtraInfo]="itemExtraInfo" (toggleFavourite)="toggleFavourite()"></tsl-item-wide-card>',
+  template: '<tsl-item-wide-card [item]="item" [itemExtraInfo]="itemExtraInfo" (toggleFavourite)="toggleFavourite()"></tsl-item-wide-card>',
 });
 
 const MOCK_ITEM_EXTRA_INFO = ['Cámara De Fotos', '20 cm', 'Digital'];
