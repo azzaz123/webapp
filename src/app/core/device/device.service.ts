@@ -54,4 +54,8 @@ export class DeviceService {
 
     return deviceId;
   }
+
+  public getDeviceLanguages(): readonly string[] {
+    return navigator.languages;
+  }
 }
