@@ -1,9 +1,9 @@
-import { OptionsApiOrigin } from './option-api-origin.interface';
-import { REAL_ESTATE_CONFIGURATION_ID } from '../../../enums/configuration-ids/real-estate-configuration-ids.enum';
-import { COMMON_CONFIGURATION_ID } from '../../../enums/configuration-ids/common-configuration-ids.enum';
-import { CAR_CONFIGURATION_ID } from '../../../enums/configuration-ids/car-configuration-ids';
-import { FASHION_CONFIGURATION_ID } from '../../../enums/configuration-ids/fashion-configuration-ids.enum';
-import { ConfigurationId } from '../../../types/configuration-id.type';
+import { OptionsApiOrigin } from '../interfaces/option-api-origin.interface';
+import { REAL_ESTATE_CONFIGURATION_ID } from '../../../components/filters/core/enums/configuration-ids/real-estate-configuration-ids.enum';
+import { COMMON_CONFIGURATION_ID } from '../../../components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
+import { CAR_CONFIGURATION_ID } from '../../../components/filters/core/enums/configuration-ids/car-configuration-ids';
+import { FASHION_CONFIGURATION_ID } from '../../../components/filters/core/enums/configuration-ids/fashion-configuration-ids.enum';
+import { ConfigurationId } from '../../../components/filters/core/types/configuration-id.type';
 
 export type OriginConfigurationValue = OptionsApiOrigin | 'hardcoded';
 export type OriginConfiguration = {
