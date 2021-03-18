@@ -107,7 +107,13 @@ describe('ItemDetailComponent', () => {
         ItemApiService,
         ItemFullScreenCarouselComponent,
         Renderer2,
-        ItemSocialShareService,
+
+        {
+          provide: ItemSocialShareService,
+          useValue: {
+            initializeItemMetaTags: () => {},
+          },
+        },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         { provide: SocialMetaTagService, useValue: {} },
         {
@@ -214,6 +220,9 @@ describe('ItemDetailComponent', () => {
   });
 
   describe('when component inits', () => {
+    beforeEach(() => {
+      fixture = TestBed.createComponent(ItemDetailComponent);
+    });
     describe('and we get the item...', () => {
       it('should ask for item data', () => {
         spyOn(itemDetailStoreService, 'initializeItemAndFlags');
@@ -229,6 +238,7 @@ describe('ItemDetailComponent', () => {
         spyOn(MockAdsService, 'setSlots').and.callThrough();
 
         component.ngOnInit();
+        fixture.detectChanges();
 
         expect(MockAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_CAR_ITEM_DETAIL.item.categoryId.toString() });
         expect(MockAdsService.setSlots).toHaveBeenCalledWith([ADS_ITEM_DETAIL.item1, ADS_ITEM_DETAIL.item2l, ADS_ITEM_DETAIL.item3r]);
@@ -243,6 +253,90 @@ describe('ItemDetailComponent', () => {
         const containerPage = fixture.debugElement.query(By.css(itemContentClass));
 
         expect(containerPage).toBeFalsy();
+      });
+    });
+
+    describe('should handle the recommended items...', () => {
+      describe('when the item have recommended items...', () => {
+        beforeEach(() => {
+          itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
+          spyOn(itemDetailService, 'getRecommendedItems').and.returnValue(of(RECOMMENDED_ITEMS_MOCK));
+
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+        it('should show the recommended items', () => {
+          expect(fixture.debugElement.query(By.css(recommendedItemsTag))).toBeTruthy();
+        });
+      });
+
+      describe(`when the item don't have recommended items`, () => {
+        beforeEach(() => {
+          itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
+          spyOn(itemDetailService, 'getRecommendedItems').and.returnValue(of(EMPTY_RECOMMENDED_ITEMS_MOCK));
+
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+        it('should NOT show the recommended items', () => {
+          expect(fixture.debugElement.query(By.css(recommendedItemsTag))).toBeFalsy();
+        });
+      });
+    });
+
+    describe('should handle the social share info...', () => {
+      describe('and we recieve the social share...', () => {
+        beforeEach(() => {
+          spyOn(itemSocialShareService, 'initializeItemMetaTags');
+          itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
+
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+
+        it('should initialize the item meta tags...', () => {
+          expect(itemSocialShareService.initializeItemMetaTags).toHaveBeenCalledWith(MOCK_CAR_ITEM_DETAIL.item);
+        });
+
+        it('should show the social share component', () => {
+          const socialShareElement = fixture.debugElement.nativeElement.querySelector(socialShareTag);
+
+          Object.keys(MOCK_CAR_ITEM_DETAIL.socialShare).forEach((socialShareKey: string) => {
+            expect(socialShareElement[socialShareKey]).toEqual(MOCK_CAR_ITEM_DETAIL.socialShare[socialShareKey]);
+          });
+        });
+      });
+
+      describe(`when we DON'T recieve the social share info...`, () => {
+        beforeEach(() => {
+          itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL_WITHOUT_SOCIAL_SHARE);
+
+          fixture.detectChanges();
+        });
+
+        it('should NOT show the social share component', () => {
+          const socialShareElement = fixture.debugElement.query(By.css(socialShareTag));
+
+          expect(socialShareElement).toBeFalsy();
+        });
+      });
+
+      describe(`when we DON'T recieve the item detail...`, () => {
+        beforeEach(() => {
+          spyOn(itemSocialShareService, 'initializeItemMetaTags');
+
+          itemDetailSubjectMock.next(null);
+
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+
+        it('should NOT initialize the item meta tags...', () => {
+          const socialShareElement = fixture.debugElement.query(By.css(socialShareTag));
+
+          expect(itemSocialShareService.initializeItemMetaTags).not.toHaveBeenCalled();
+          expect(socialShareElement).toBeFalsy();
+        });
       });
     });
   });
@@ -306,30 +400,6 @@ describe('ItemDetailComponent', () => {
 
       it('should show the price and the dollar symbol', () => {
         expect(el.querySelector(itemPriceClass).innerHTML).toEqual(`${currencies.GBP}${decimalPipe.transform(MOCK_ITEM_GBP.salePrice)}`);
-      });
-    });
-
-    describe('when the item have recommended items...', () => {
-      beforeEach(() => {
-        spyOn(itemDetailService, 'getRecommendedItems').and.returnValue(of(RECOMMENDED_ITEMS_MOCK));
-
-        component.ngOnInit();
-        fixture.detectChanges();
-      });
-      it('should show the recommended items', () => {
-        expect(fixture.debugElement.query(By.css(recommendedItemsTag))).toBeTruthy();
-      });
-    });
-
-    describe(`when the item don't have recommended items`, () => {
-      beforeEach(() => {
-        spyOn(itemDetailService, 'getRecommendedItems').and.returnValue(of(EMPTY_RECOMMENDED_ITEMS_MOCK));
-
-        component.ngOnInit();
-        fixture.detectChanges();
-      });
-      it('should NOT show the recommended items', () => {
-        expect(fixture.debugElement.query(By.css(recommendedItemsTag))).toBeFalsy();
       });
     });
 
@@ -429,62 +499,6 @@ describe('ItemDetailComponent', () => {
 
         expect(map).toBeFalsy();
         expect(fallbackMap).toBeTruthy();
-      });
-    });
-  });
-
-  describe('when we handle the social share info...', () => {
-    describe('and we recieve the social share...', () => {
-      beforeEach(() => {
-        spyOn(itemSocialShareService, 'initializeItemMetaTags');
-        itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
-
-        component.ngOnInit();
-        fixture.detectChanges();
-      });
-
-      it('should initialize the item meta tags...', () => {
-        expect(itemSocialShareService.initializeItemMetaTags).toHaveBeenCalledWith(MOCK_CAR_ITEM_DETAIL.item);
-      });
-
-      it('should show the social share component', () => {
-        const socialShareElement = fixture.debugElement.nativeElement.querySelector(socialShareTag);
-
-        Object.keys(MOCK_CAR_ITEM_DETAIL.socialShare).forEach((socialShareKey: string) => {
-          expect(socialShareElement[socialShareKey]).toEqual(MOCK_CAR_ITEM_DETAIL.socialShare[socialShareKey]);
-        });
-      });
-    });
-
-    describe(`when we DON'T recieve the social share info...`, () => {
-      beforeEach(() => {
-        itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL_WITHOUT_SOCIAL_SHARE);
-
-        fixture.detectChanges();
-      });
-
-      it('should NOT show the social share component', () => {
-        const socialShareElement = fixture.debugElement.query(By.css(socialShareTag));
-
-        expect(socialShareElement).toBeFalsy();
-      });
-    });
-
-    describe(`when we DON'T recieve the item detail...`, () => {
-      beforeEach(() => {
-        spyOn(itemSocialShareService, 'initializeItemMetaTags');
-
-        itemDetailSubjectMock.next(null);
-
-        component.ngOnInit();
-        fixture.detectChanges();
-      });
-
-      it('should NOT initialize the item meta tags...', () => {
-        const socialShareElement = fixture.debugElement.query(By.css(socialShareTag));
-
-        expect(itemSocialShareService.initializeItemMetaTags).not.toHaveBeenCalled();
-        expect(socialShareElement).toBeFalsy();
       });
     });
   });
