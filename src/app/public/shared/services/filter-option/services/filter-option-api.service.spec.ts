@@ -4,7 +4,7 @@ import { FilterOptionsApiService } from './filter-options-api.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { environment } from '@environments/environment';
 import { HttpParams } from '@angular/common/http';
-import { FILTER_OPTIONS_API_ENDPOINTS } from './filter-options-api-endpoints';
+import { FILTER_OPTIONS_API_ENDPOINTS } from '../configurations/filter-options-api-endpoints';
 
 describe('FilterOptionsApiService', () => {
   let service: FilterOptionsApiService;
