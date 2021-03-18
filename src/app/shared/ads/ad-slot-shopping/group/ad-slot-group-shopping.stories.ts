@@ -1,11 +1,9 @@
-import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { AD_SHOPPING_PUB_ID_WALLAPOP } from '@core/ads/constants';
 import { AdsService } from '@core/ads/services';
 import { CoreModule } from '@core/core.module';
 import { moduleMetadata, Story } from '@storybook/angular';
-import { Observable } from 'rxjs';
 import { AdSlotGroupShoppingComponent } from './ad-slot-group-shopping.component';
 
 @Component({
@@ -14,12 +12,9 @@ import { AdSlotGroupShoppingComponent } from './ad-slot-group-shopping.component
     '<tsl-sky-slot-group-shopping [adShoppingPageOptions]="adShoppingPageOptions" [adSlotShoppingConfiguration]="adSlotShoppingConfiguration"></tsl-sky-slot-group-shopping>',
 })
 class StoyAdSlotGroupShoppingComponent extends AdSlotGroupShoppingComponent {
-  isReady$: Observable<boolean>;
-
   constructor(adsService: AdsService) {
     super(adsService);
     adsService.init();
-    this.isReady$ = adsService.adsReady$;
     adsService.setAdKeywords({ content: 'Iphone 11' });
   }
 }
@@ -31,7 +26,7 @@ export default {
     moduleMetadata({
       declarations: [StoyAdSlotGroupShoppingComponent, AdSlotGroupShoppingComponent],
       providers: [{ provide: 'SUBDOMAIN', useValue: 'www' }],
-      imports: [CoreModule, CommonModule, HttpClientModule],
+      imports: [CoreModule, HttpClientModule],
     }),
   ],
 };
