@@ -77,12 +77,12 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     this.itemDetailStoreService.initializeItemAndFlags(itemId);
     this.subscriptions.push(
       this.itemDetailStoreService.itemDetail$.subscribe((itemDetail: ItemDetail) => {
-        if (itemDetail) {
-          this.itemDetail = itemDetail;
+        if (itemDetail && !this.itemDetail) {
           this.setAdSlot(itemDetail.item);
           this.initializeItemRecommendations(itemId, itemDetail.item.categoryId);
           this.itemSocialShareService.initializeItemMetaTags(itemDetail.item);
         }
+        this.itemDetail = itemDetail;
       })
     );
   }
