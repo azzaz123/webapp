@@ -4,7 +4,6 @@ import { of } from 'rxjs';
 import { UserService } from '../user/user.service';
 import { FeatureflagService } from '../user/featureflag.service';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-import { HttpModule } from '../http/http.module';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { environment } from '../../../environments/environment';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
@@ -42,7 +41,7 @@ describe('SubscriptionsService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, HttpModule],
+      imports: [HttpClientTestingModule],
       providers: [
         SubscriptionsService,
         {
