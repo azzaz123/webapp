@@ -19,13 +19,14 @@ import { UserService } from '@core/user/user.service';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { CoreStoreModule } from '@core/store/core-store.module';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ShowSlotPipe } from './pipes/show-slot.pipe';
 
 export default {
-  title: 'Webapp/Public/Features/PublicProfile/Pages/UserPublished/ItemCardList',
+  title: 'Webapp/Public/Shared/Components/ItemCardList',
   component: ItemCardListComponent,
   decorators: [
     moduleMetadata({
-      declarations: [ItemCardListComponent],
+      declarations: [ItemCardListComponent, ShowSlotPipe],
       imports: [
         CommonModule,
         ItemCardModule,
@@ -97,5 +98,25 @@ ExtraSmall.args = {
 ExtraSmall.parameters = {
   viewport: {
     defaultViewport: CUSTOM_VIEWPORT_NAME.XS,
+  },
+};
+
+export const ColumnsConfig = Template.bind({});
+ColumnsConfig.args = {
+  items: ITEMS,
+  columnsConfig: {
+    lg: 5,
+    md: 4,
+    sm: 3,
+    xs: 2,
+  },
+};
+
+export const SlotsConfig = Template.bind({});
+SlotsConfig.args = {
+  items: ITEMS,
+  slotsConfig: {
+    start: 3,
+    offset: 3,
   },
 };

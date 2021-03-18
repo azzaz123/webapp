@@ -72,4 +72,7 @@ export enum SCREEN_IDS {
   ProAdvantagesPopup = 243,
   TermsCommunicationsConsent = 244,
   EditAddress = 245,
+  EditCardSubscriptionPay = 246,
+  ShippingReactivationPopup = 247,
+  VerificationsAndSecurityScreen = 248,
 }

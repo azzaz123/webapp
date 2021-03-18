@@ -1,7 +1,7 @@
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { RecommendedItemsComponent } from './recommended-items.component';
 import { RECOMMENDED_ITEMS_MOCK } from './constants/recommended-items.fixtures.spec';
-import { ItemCardListModule } from '@public/features/public-profile/pages/user-published/components/item-card-list/item-card-list.module';
+import { ItemCardListModule } from '@public/shared/components/item-card-list/item-card-list.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { CheckSessionModule } from '@public/core/directives/check-session/check-session.module';
 import { HttpModule } from '@core/http/http.module';

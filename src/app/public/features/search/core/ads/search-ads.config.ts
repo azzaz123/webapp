@@ -1,4 +1,3 @@
-import { AdSlotConfiguration } from '@core/ads/models/ad-slot.interface';
 import {
   AD_DESKTOP_MAPPING,
   AD_DESKTOP_SCREEN_SIZE,
@@ -8,6 +7,7 @@ import {
   AD_TABLET_MAPPING,
   AD_TABLET_SCREEN_SIZE,
 } from '@core/ads/constants';
+import { AdSlotConfiguration } from '@core/ads/models/ad-slot-configuration';
 import { DeviceType } from '@core/device/deviceType.enum';
 
 export interface AdSlotSearch {
