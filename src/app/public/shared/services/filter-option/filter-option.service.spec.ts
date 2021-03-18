@@ -1,14 +1,16 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { FilterOptionService } from './filter-option.service';
-import { FilterOption } from '../../interfaces/filter-option.interface';
-import { FilterOptionsApiService } from './filter-options-api.service';
-import { FilterOptionsMapperService } from './filter-options-mapper.service';
-import { ConfigurationId } from '../../types/configuration-id.type';
+import { FilterOption } from '../../components/filters/core/interfaces/filter-option.interface';
+import { FilterOptionsApiService } from './services/filter-options-api.service';
+import { FilterOptionsMapperService } from './services/filter-options-mapper.service';
+import { ConfigurationId } from '../../components/filters/core/types/configuration-id.type';
 import {
   MockFilterOptionApiService,
   MockFilterOptionMapperService,
-} from '@public/shared/components/filters/core/services/filter-option-service/filter-option.fixtures';
+  MockFilterParameterDraftService,
+} from '@fixtures/filter-option.fixtures';
+import { FilterParameterDraftService } from '@public/shared/services/filter-parameter-draft/filter-parameter-draft.service';
 
 jest.mock('./data/hardcoded-options', () => ({
   HARDCODED_OPTIONS: {
@@ -77,6 +79,10 @@ describe('FilterOptionService', () => {
     TestBed.configureTestingModule({
       providers: [
         FilterOptionService,
+        {
+          provide: FilterParameterDraftService,
+          useClass: MockFilterParameterDraftService,
+        },
         {
           provide: FilterOptionsApiService,
           useClass: MockFilterOptionApiService,
