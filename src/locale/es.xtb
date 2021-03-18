@@ -601,10 +601,7 @@
   <translation id="ngb.timepicker.AM">AM</translation>
   <translation id="ngb.progressbar.value"><ph name="INTERPOLATION"><ex>{{getPercentValue()}}</ex>{{getPercentValue()}}</ph>%</translation>
   <translation id="3088405909522546815">Un mes gratis</translation>
-  <translation id="778538042004330732"><ph name="INTERPOLATION"><ex>{{subscription.tiers[0].discount_available.months}}</ex></ph> meses gratis</translation>
   <translation id="3502404552821595095"><ph name="INTERPOLATION"><ex>{{selectedTier.discount_available.months}}</ex></ph> meses gratis</translation>
-  <translation id="8259937392031044504">Después <ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
-  <translation id="8474946978308732893"><ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
   <translation id="2568045788105949140"><ph name="INTERPOLATION"><ex>{{selectedTier.discount_available.discounted_price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
   <translation id="2404822514067336938">Al suscribirte estás aceptando las <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>condiciones de uso<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> y la <ph name="START_LINK_1"><ex>&lt;a&gt;</ex></ph>política de privacidad<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> de Wallapop S.L. y Stripe Ltd</translation>
   <translation id="7145885217817968593">Al suscribirte estás aceptando las <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>condiciones de uso<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> y la <ph name="START_LINK_1"><ex>&lt;a&gt;</ex></ph>política de privacidad<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> de Wallapop S.L. y Stripe Ltd</translation>
@@ -612,15 +609,10 @@
   <translation id="3953884740420390564">Plan <ph name="INTERPOLATION"><ex> {{selectedTier.limit}}</ex></ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name}}</ex></ph></translation>
   <translation id="8217404428211350288">Después <ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
   <translation id="3388771596034096026"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Dispones de un mes gratuito<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
-  <translation id="1863181759969059894">El COVID-19 nos está afectando a todos. Para paliar esta situación, queremos informarte de que, como usuario de Wallapop PRO, te ofrecemos un mes de suscripción gratis. ¿Qué tienes que hacer?</translation>
   <translation id="214415473377752678">1. Cancela tu plan de suscripción actual. Para ello, accede a la aplicación de <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>Apple Store<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> o <ph name="START_LINK_1"><ex>&lt;a&gt;</ex></ph>Google Play<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> (depende del móvil que uses).</translation>
   <translation id="2347321246651029433">2. Espera a que expire la vigencia del plan al que te habías suscrito. Consulta la fecha de expiración en el correo que te enviamos cuando te das de baja.</translation>
   <translation id="7589681963132617331">3. Una vez expirado, escoge tu suscripción gratuita aquí en la web.</translation>
   <translation id="5188534013459638497">Date de baja primero desde la app para tu mes gratis</translation>
-  <translation id="7157419316905545367"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>¡Has alcanzado el límite de publicación de <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph>!<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></translation>
-  <translation id="1534537351372361307"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>Estás intentando activar más <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph> de los que te permite tu plan.<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></translation>
-  <translation id="2475529887887098318"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>Ya has llegado al límite de <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph> que puedes publicar con una cuenta gratuita.<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></translation>
-  <translation id="5156014220156743328">Siguiente paso</translation>
   <translation id="7008439939460403347">Reportar</translation>
   <translation id="568597304214607466">Estoy reportando a este usuario porque..</translation>
   <translation id="7913053333994057167">Desarchivar conversación</translation>
@@ -640,9 +632,6 @@
   <translation id="cardealerChangeCityPlan">Para cambiar tu plan de ciudad, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph><ph name="INTERPOLATION_1"><ex>{{email}}</ex>{{email}}</ph><ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
   <translation id="cardealerSubscribeCountryPlan">Para subscribirte a un plan de país, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph><ph name="INTERPOLATION_1"><ex>{{email}}</ex>{{email}}</ph><ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
   <translation id="cardealerChangeCountryPlan">Para cambiar tu plan de país, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph><ph name="INTERPOLATION_1"><ex>{{email}}</ex>{{email}}</ph><ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
-  <translation id="CheckoutProCountryApplyAll">Aplicar a todos</translation>
-  <translation id="CheckoutProCityApplyAll">Aplicar a todos</translation>
-  <translation id="CheckoutProPlanningApplyAll">Programar todos</translation>
   <translation id="SubscriptionsSlotItemPublishMore">Puedes publicar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph><ph name="INTERPOLATION"><ex>{{subscriptionSlot.available}}</ex>{{subscriptionSlot.available}}</ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph> <ph name="INTERPOLATION_1"><ex>{{subscriptionSlot.category.name}}</ex>{{subscriptionSlot.category.name}}</ph> más</translation>
   <translation id="ListComponentHeaderSubtitle">Aquí podrás subir productos, gestionar los que ya tienes y destacarlos para venderlos antes</translation>
   <translation id="TooManyItemsModalButtonGoToSubscriptions">Ver planes</translation>
@@ -664,11 +653,9 @@
   <translation id="SubscriptionPriceDiscountDaysTrialFree">Prueba gratis <ph name="INTERPOLATION"><ex>{{subscription?.trial_days}}</ex>{{subscription?.trial_days}}</ph> días</translation>
   <translation id="AddNewModalSubscribeNow">¡Prueba gratis <ph name="INTERPOLATION"><ex>{{subscription?.trial_days}}</ex>{{subscription?.trial_days}}</ph> días!</translation>
   <translation id="EditSubscriptionModalCancelSubscription">Quiero cancelar mi suscripción</translation>
-  <translation id="SubscribeToProToPublishMore">Subscríbete a la cuenta PRO para publicar más</translation>
   <translation id="EditSubscriptionModalCancelFreeTrial">Cancelar prueba gratuita</translation>
   <translation id="MissingPaymentMethodTitle">No hay un método de pago disponible</translation>
   <translation id="MissingPaymentMethodSubtitle">No hay un método de pago disponible para que podamos renovar tu suscripción cuando caduque.</translation>
-  <translation id="PleaseAddCreditCard">Por favor, añade una tarjeta de crédito para no perder los beneficios de ser PRO</translation>
   <translation id="Cancel">Cancelar</translation>
   <translation id="DeleteCard">Eliminar</translation>
   <translation id="ChangeCard">Cambiar tarjeta</translation>
@@ -676,12 +663,9 @@
   <translation id="ConfirmPaymentMethod">Confirma tu método de pago</translation>
   <translation id="ChargeThisCard">Quieres que se cobre en la tarjeta</translation>
   <translation id="Yes">Sí</translation>
-  <translation id="ChangeSubscriptionCardTitle">Cambiar tarjeta para la suscripción</translation>
-  <translation id="SetDefaultCard">Establecer tarjeta por defecto</translation>
   <translation id="SubscriptionCard">Tarjeta vinculada a suscripciones</translation>
   <translation id="AddNewSubscriptionCard">Añadir nueva tarjeta de suscripción</translation>
   <translation id="CurrentCards">Tarjetas guardadas</translation>
-  <translation id="AddNewCard">Añadir tarjeta</translation>
   <translation id="RangeDatepickerHaveSelected">Has seleccionado </translation>
   <translation id="RangeDatepickerCitybump">destacado de ciudad</translation>
   <translation id="RangeDatepickerCountrybump">destacado de país</translation>
@@ -708,7 +692,6 @@
   <translation id="CIFNumber">CIF</translation>
   <translation id="NIFNumber">NIF</translation>
   <translation id="Save">Guardar</translation>
-  <translation id="DeleteInformation">Eliminar información</translation>
   <translation id="5875130684997376720">Facturación</translation>
   <translation id="ChangeAddSubscriptionCardTitle">Añade una tarjeta de crédito</translation>
   <translation id="SelectSavedCard">Seleccionar tarjeta guardada</translation>
@@ -722,7 +705,6 @@
   <translation id="MobileBlockerSubtitle">Para visualizar este contenido, abre la app de Wallapop o continúa desde un ordenador.</translation>
   <translation id="SubscribeToPro">Suscríbete a Wallapop PRO</translation>
   <translation id="ChooseSubscription">Escoje una suscripción y lleva tus ventas al siguiente nivel.</translation>
-  <translation id="step1of3">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>1<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>3<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
   <translation id="HowManyProductsToUpload">¿Cuantos <ph name="INTERPOLATION"><ex>{{subscription.category_name.toLowerCase()}}</ex>{{subscription.category_name.toLowerCase()}}</ph> vas a subir a tu perfil?</translation>
   <translation id="Unlimited">Ilimitado</translation>
   <translation id="ContactUsDirectly">¿Tienes más de <ph name="INTERPOLATION"><ex>{{subscription.tiers[subscription.tiers.length - 1].limit}}</ex>{{subscription.tiers[subscription.tiers.length - 1].limit}}</ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name.toLowerCase()}}</ex>{{subscription.category_name.toLowerCase()}}</ph>? <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph>Contáctanos directamente<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
@@ -734,13 +716,11 @@
   <translation id="ThenPriceMonth">Después <ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex>{{selectedTier.price}}</ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex>{{selectedTier.currency}}</ph>/mes</translation>
   <translation id="PriceMonth"><ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex>{{selectedTier.price}}</ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex>{{selectedTier.currency}}</ph>/mes</translation>
   <translation id="ContinueToInvoice">Continuar a facturación</translation>
-  <translation id="step2of3">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>2<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>3<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
   <translation id="ReceiveInvoices">¿Quieres recibir facturas?</translation>
   <translation id="Invoice">Facturación</translation>
   <translation id="3086731599944442002">¿Necesitas una factura?</translation>
   <translation id="ContinueToPayment">Continuar a pago</translation>
   <translation id="BackToInvoice">Volver a facturación</translation>
-  <translation id="step3of3">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>3<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>3<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
   <translation id="Perfect">¡Perfecto!</translation>
   <translation id="SubscriptionCreated">Te has suscrito correctamente. ¡Todo está preparado para incrementar tus ventas!</translation>
   <translation id="InvoiceEmail">Pronto recibirás un e-mail con tu factura.</translation>
@@ -769,7 +749,6 @@
   <translation id="InvoiceHistoryAll">Todo</translation>
   <translation id="InvoiceHistoryInvoices">Facturas</translation>
   <translation id="InvoiceHistoryCredit">Abonos</translation>
-  <translation id="InvoiceHistorySubtitle">Rellena tus datos de facturación para descargar todas tus facturas.</translation>
   <translation id="DownloadInvoice">Descargar factura</translation>
   <translation id="RequestInvoice">Solicitar factura</translation>
   <translation id="TransactionDate">Fecha de transacción</translation>
