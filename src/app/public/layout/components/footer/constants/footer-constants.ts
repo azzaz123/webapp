@@ -74,8 +74,8 @@ export const FOOTER_LINKS: FooterLinkSection[] = [
     title: $localize`:@@FooterLinksWallapopProTitle:Wallapop Pro`,
     links: [
       {
-        label: $localize`:@@FooterLinksLandingLabel:Boost your business`,
-        href: $localize`:@@FooterLinksLandingHref:https://novedades.wallapop.com/wallapop-pro/`,
+        label: $localize`:@@FooterLinksLandingProLabel:Boost your business`,
+        href: $localize`:@@FooterLinksLandingProHref:https://novedades.wallapop.com/wallapop-pro/`,
       },
     ],
   },

@@ -833,8 +833,8 @@
   <translation id="FooterLinksProfessionalLabel">Profesional</translation>
   <translation id="FooterLinksProfessionalHref">https://about.wallapop.com/motor/</translation>
   <translation id="FooterLinksWallapopProTitle">Wallapop PRO</translation>
-  <translation id="FooterLinksLandingLabel">Impulsa tu negocio</translation>
-  <translation id="FooterLinksLandingHref">https://novedades.wallapop.com/wallapop-pro/</translation>
+  <translation id="FooterLinksLandingProLabel">Impulsa tu negocio</translation>
+  <translation id="FooterLinksLandingProHref">https://novedades.wallapop.com/wallapop-pro/</translation>
   <translation id="FooterCopyright">Copyright © <ph name="INTERPOLATION"/> Wallapop © de sus respectivos propietarios</translation>
   <translation id="FooterSocialFacebookLabel">Wallapop, la web y app para comprar y vender, también está en Facebook</translation>
   <translation id="FooterSocialTwitterLabel">Wallapop, la web y app para comprar y vender, también está en Twitter</translation>
