@@ -435,7 +435,7 @@ describe('ItemDetailComponent', () => {
   describe('when we handle the header actions...', () => {
     describe('when we reserve or unreserve an item...', () => {
       it('should call to the store to do the action', () => {
-        spyOn(itemDetailStoreService, 'toggleReservedItem');
+        spyOn(itemDetailStoreService, 'toggleReservedItem').and.returnValue(of());
 
         const itemDetailHeader = fixture.debugElement.query(By.directive(ItemDetailHeaderComponent));
         itemDetailHeader.triggerEventHandler('reservedItemChange', {});
@@ -447,7 +447,7 @@ describe('ItemDetailComponent', () => {
 
     describe('when we favourite or unfavourite an item...', () => {
       it('should call to the store to do the action', () => {
-        spyOn(itemDetailStoreService, 'toggleFavouriteItem');
+        spyOn(itemDetailStoreService, 'toggleFavouriteItem').and.returnValue(of());
 
         const itemDetailHeader = fixture.debugElement.query(By.directive(ItemDetailHeaderComponent));
         itemDetailHeader.triggerEventHandler('favouritedItemChange', {});
@@ -600,7 +600,7 @@ describe('ItemDetailComponent', () => {
 
   describe('when we handle the item fullscreen carousel...', () => {
     it('and we favourite the item...', () => {
-      spyOn(itemDetailStoreService, 'toggleFavouriteItem');
+      spyOn(itemDetailStoreService, 'toggleFavouriteItem').and.returnValue(of());
 
       const itemDetailHeader = fixture.debugElement.query(By.directive(ItemFullScreenCarouselComponent));
       itemDetailHeader.triggerEventHandler('favouritedItemChange', {});

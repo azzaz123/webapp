@@ -226,13 +226,11 @@ describe('ItemDetailHeaderComponent', () => {
 
       describe('when we click on the reserve item button...', () => {
         it('should emit the reserve item event', () => {
-          spyOn(component, 'toggleReserveItem').and.callThrough();
           spyOn(component.reservedItemChange, 'emit');
 
           const reserveButton = fixture.debugElement.query(By.css(reserveButtonClass)).nativeElement;
           reserveButton.click();
 
-          expect(component.toggleReserveItem).toHaveBeenCalled();
           expect(component.reservedItemChange.emit).toHaveBeenCalled();
         });
       });
@@ -240,14 +238,12 @@ describe('ItemDetailHeaderComponent', () => {
       describe('when we clic on the sold item button...', () => {
         it('should open the sold modal', fakeAsync(() => {
           spyOn(component.soldItemChange, 'emit');
-          spyOn(component, 'sellItem').and.callThrough();
           spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve(), componentInstance: {} });
 
           const soldButton = fixture.debugElement.query(By.css(soldButtonClass)).nativeElement;
           soldButton.click();
           tick();
 
-          expect(component.sellItem).toHaveBeenCalled();
           expect(modalService.open).toHaveBeenCalledWith(SoldModalComponent, { windowClass: 'sold' });
           expect(component.soldItemChange.emit).toHaveBeenCalled();
         }));
@@ -265,14 +261,12 @@ describe('ItemDetailHeaderComponent', () => {
       describe('when we clic on the trash item button...', () => {
         it('should open the confirmation delete modal', fakeAsync(() => {
           spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve(), componentInstance: {} });
-          spyOn(component, 'deleteItem').and.callThrough();
           spyOn(itemDetailService, 'deleteItem').and.returnValue(of());
 
           const trashButton = fixture.debugElement.query(By.css(trashButtonId)).nativeElement;
           trashButton.click();
           tick();
 
-          expect(component.deleteItem).toHaveBeenCalled();
           expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, { windowClass: 'modal-prompt' });
           expect(itemDetailService.deleteItem).toHaveBeenCalledWith(component.item.id);
         }));
@@ -319,13 +313,11 @@ describe('ItemDetailHeaderComponent', () => {
       describe('when we clic on the favourite button...', () => {
         describe('and we have a current session...', () => {
           it('should emit the favourite item event', () => {
-            spyOn(component, 'toggleFavouriteItem').and.callThrough();
             spyOn(component.favouritedItemChange, 'emit');
 
             const favouriteButton = fixture.debugElement.nativeElement.querySelector(favouriteButtonId);
             favouriteButton.click();
 
-            expect(component.toggleFavouriteItem).toHaveBeenCalled();
             expect(component.favouritedItemChange.emit).toHaveBeenCalled();
           });
         });
