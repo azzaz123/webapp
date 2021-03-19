@@ -22,9 +22,7 @@
         </div>
         <div class="col-12 col-md-7 w-100 p-2 px-md-3">
             <div class="d-flex justify-content-between">
-                <span class="ItemWideCard__price ItemWideCard__price--bold">
-                    {{item.salePrice | customCurrency }}
-                </span>
+                <span class="ItemWideCard__price ItemWideCard__price--bold">{{item.salePrice | customCurrency:item.currencyCode}}</span>
                 <tsl-favourite-icon *ngIf="showFavourite" class="ItemWideCard__favourite" [active]="item.flags?.favorite"
                     (click)="toggleItemFavorite($event)"></tsl-favourite-icon>
             </div>
@@ -35,9 +33,7 @@
                     class="horizontalScroll d-block mt-1"
                     [extraInfo]="itemExtraInfo">
                 </tsl-item-extra-info>
-                <span *ngIf="item.storytelling || item.description as description" class="ItemWideCard__description mt-2">
-                    {{description}}
-                </span>
+                <span *ngIf="item.description" class="ItemWideCard__description mt-2">{{item.description}}</span>
             </div>
         </div>
     </div>

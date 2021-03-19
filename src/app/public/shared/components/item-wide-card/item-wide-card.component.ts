@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Car } from '@core/item/car';
-import { Realestate } from '@core/item/realestate';
+import { Item } from '@core/item/item';
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
@@ -10,7 +9,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
   styleUrls: ['./item-wide-card.component.scss'],
 })
 export class ItemWideCardComponent {
-  @Input() item: Car | Realestate;
+  @Input() item: Item;
   @Input() itemExtraInfo: string[];
   @Input() showFavourite = true;
 
@@ -18,4 +17,9 @@ export class ItemWideCardComponent {
   @Output() itemClick: EventEmitter<void> = new EventEmitter<void>();
 
   constructor(public typeCheckService: TypeCheckService, public deviceDetectorService: DeviceDetectorService) {}
+
+  public toggleItemFavorite(event: Event): void {
+    event.stopPropagation();
+    this.toggleFavourite.emit();
+  }
 }
