@@ -21,14 +21,6 @@ $icon-margin: $spacer * 0.5;
 
   &__images {
     height: $image-height-small-view;
-    tsl-carousel-slides ::ng-deep {
-      ngb-carousel ::ng-deep {
-        .carousel-control-prev,
-        .carousel-control-next {
-          display: none;
-        }
-      }
-    }
 
     @include media-breakpoint-up(md) {
       height: 100%;
@@ -37,7 +29,6 @@ $icon-margin: $spacer * 0.5;
           .carousel-control-prev,
           .carousel-control-next {
             margin: 0 5px;
-            display: flex;
           }
         }
       }
@@ -82,5 +73,17 @@ $icon-margin: $spacer * 0.5;
     &--right {
       right: $icon-margin;
     }
+  }
+}
+
+.horizontalScroll {
+  overflow-x: auto;
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  &::-webkit-scrollbar {
+    display: none;
   }
 }

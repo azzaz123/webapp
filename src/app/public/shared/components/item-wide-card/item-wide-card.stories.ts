@@ -1,10 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { HammerModule } from '@angular/platform-browser';
+import { HAMMER_PROVIDER } from '@core/hammerjs/hammerjs-provider';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { FavouriteIconModule } from '@public/shared/components/favourite-icon/favourite-icon.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { CUSTOM_VIEWPORT_NAME } from '@storybook-config/viewports/custom-viewports';
 import { Story, Meta } from '@storybook/angular/types-6-0';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { SlidesCarouselModule } from '../carousel-slides/carousel-slides.module';
 import { ItemExtraInfoModule } from '../item-extra-info/item-extra-info.module';
 import { ItemWideCardComponent } from './item-wide-card.component';
@@ -36,7 +39,9 @@ const Template: Story<ItemWideCardComponent> = (args: ItemWideCardComponent) => 
       SlidesCarouselModule,
       ItemExtraInfoModule,
       HttpClientModule,
+      HammerModule,
     ],
+    providers: [DeviceDetectorService, HAMMER_PROVIDER],
   },
   template:
     '<tsl-item-wide-card [item]="item" [showFavourite]="showFavourite" [itemExtraInfo]="itemExtraInfo" (toggleFavourite)="toggleFavourite()"></tsl-item-wide-card>',

@@ -14,7 +14,7 @@
                 class="ItemWideCard__icon ItemWideCard__icon--right position-absolute ItemWideCard__icon--contryBumped d-flex justify-content-center align-items-center"
                 *ngIf="item.bumpFlags?.country_bumped" width="18"
                 src="/assets/icons/item-card/bumped.svg"></tsl-svg-icon>
-            <tsl-carousel-slides class="h-100">
+            <tsl-carousel-slides class="h-100" [hideControllers]="deviceDetectorService.isMobile()">
                 <ng-template carousel-slider *ngFor="let image of item.images">
                     <img [src]="image.urls_by_size?.medium" />
                 </ng-template>
