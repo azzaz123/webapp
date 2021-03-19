@@ -13,6 +13,8 @@ describe('DeviceService', () => {
   let deviceDetectorService: DeviceDetectorService;
   let cookies: object;
 
+  const MOCK_LANGUAGES = [random.locale(), random.locale()];
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
@@ -47,7 +49,7 @@ describe('DeviceService', () => {
     it('should return DeviceType.MOBILE when is mobile', () => {
       spyOn(deviceDetectorService, 'isMobile').and.returnValue(true);
 
-      let deviceType = deviceService.getDeviceType();
+      const deviceType = deviceService.getDeviceType();
 
       expect(deviceType).toEqual(DeviceType.MOBILE);
     });
@@ -56,7 +58,7 @@ describe('DeviceService', () => {
       spyOn(deviceDetectorService, 'isMobile').and.returnValue(false);
       spyOn(deviceDetectorService, 'isTablet').and.returnValue(true);
 
-      let deviceType = deviceService.getDeviceType();
+      const deviceType = deviceService.getDeviceType();
 
       expect(deviceType).toEqual(DeviceType.TABLET);
     });
@@ -65,7 +67,7 @@ describe('DeviceService', () => {
       spyOn(deviceDetectorService, 'isMobile').and.returnValue(false);
       spyOn(deviceDetectorService, 'isTablet').and.returnValue(false);
 
-      let deviceType = deviceService.getDeviceType();
+      const deviceType = deviceService.getDeviceType();
 
       expect(deviceType).toEqual(DeviceType.DESKTOP);
     });
@@ -136,6 +138,30 @@ describe('DeviceService', () => {
         const isDesktop: boolean = deviceService.isDesktop();
 
         expect(isDesktop).toBe(randomIsDesktop);
+      });
+    });
+
+    describe('when asking for browser languages', () => {
+      const originalLanguages = [...navigator.languages];
+
+      beforeEach(() => {
+        Object.defineProperty(navigator, 'languages', {
+          value: MOCK_LANGUAGES,
+          writable: true,
+        });
+      });
+
+      afterAll(() => {
+        Object.defineProperty(navigator, 'languages', {
+          value: originalLanguages,
+          writable: true,
+        });
+      });
+
+      it('should get browser languages', () => {
+        const languages = deviceService.getDeviceLanguages();
+
+        expect(languages).toBe(MOCK_LANGUAGES);
       });
     });
   });

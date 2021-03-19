@@ -130,6 +130,8 @@ export const MOCK_NAVIGATOR_GEOLOCATION = {
   getCurrentPosition: () => '',
 };
 
+export const MOCK_NAVIGATOR_LANGUAGES = ['es'];
+
 export const MOCK_DIDOMI: DidomiLibrary = {
   getUserConsentStatusForPurpose: (key) => true,
   getUserConsentStatusForVendor: (key) => true,

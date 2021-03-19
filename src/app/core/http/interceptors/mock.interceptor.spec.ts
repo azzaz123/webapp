@@ -2,12 +2,8 @@ import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { environment } from '../../../../environments/environment';
-import { HttpModule } from '../http.module';
 import { MockInterceptor } from './mock.interceptor';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
-import { FeatureflagService } from '../../user/featureflag.service';
-import { FeatureFlagServiceMock } from '../../../../tests';
-import { AccessTokenService } from '../access-token.service';
 
 describe(`MockInterceptor`, () => {
   let injector: TestBed;
@@ -18,21 +14,19 @@ describe(`MockInterceptor`, () => {
   beforeEach(() => {
     injector = getTestBed();
     injector.configureTestingModule({
-      imports: [HttpClientTestingModule, HttpModule],
+      imports: [HttpClientTestingModule],
       providers: [
-        { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
         {
-          provide: AccessTokenService,
-          useValue: {
-            accessToken: 'ACCESS_TOKEN',
-          },
+          provide: HTTP_INTERCEPTORS,
+          useClass: MockInterceptor,
+          multi: true,
         },
       ],
     });
 
-    http = injector.get(HttpClient);
-    httpMock = injector.get(HttpTestingController);
-    interceptor = injector.get(HTTP_INTERCEPTORS).filter((inter) => inter instanceof MockInterceptor)[0];
+    http = injector.inject(HttpClient);
+    httpMock = injector.inject(HttpTestingController);
+    interceptor = injector.inject(HTTP_INTERCEPTORS).filter((inter) => inter instanceof MockInterceptor)[0];
   });
 
   afterEach((): void => {

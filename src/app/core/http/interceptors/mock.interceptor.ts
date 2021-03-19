@@ -9,7 +9,7 @@ export interface MockUrl {
 
 @Injectable()
 export class MockInterceptor implements HttpInterceptor {
-  public mockUrls: MockUrl[] = [];
+  public mockUrls?: MockUrl[] = [];
 
   constructor() {}
 
