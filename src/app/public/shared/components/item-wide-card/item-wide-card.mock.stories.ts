@@ -1,5 +1,7 @@
+import { Car } from '@core/item/car';
 import { Item } from '@core/item/item';
 import { Image } from '@core/user/user-response.interface';
+import { CAR_DATA } from '@fixtures/car.fixtures.spec';
 import { ITEM_DATA } from '@fixtures/item.fixtures.spec';
 
 const MOCK_ITEM_IMAGES: Image[] = [
@@ -33,6 +35,37 @@ const MOCK_ITEM_IMAGES: Image[] = [
   },
 ];
 
+const MOCK_ITEM_IMAGES_CAR: Image[] = [
+  {
+    id: '4z4vl5ygwvzy',
+    legacy_id: 500002514,
+    original_width: 100,
+    original_height: 62,
+    average_hex_color: '6a707b',
+    urls_by_size: {
+      original: 'http://localhost:6006/images/item-car.jpg',
+      small: 'http://localhost:6006/images/item-car.jpg',
+      large: 'http://localhost:6006/images/item-car.jpg',
+      medium: 'http://localhost:6006/images/item-car.jpg',
+      xlarge: 'http://localhost:6006/images/item-car.jpg',
+    },
+  },
+  {
+    id: '4z4vl5ygwvzy',
+    legacy_id: 500002514,
+    original_width: 100,
+    original_height: 62,
+    average_hex_color: '6a707b',
+    urls_by_size: {
+      original: 'http://localhost:6006/images/item-car2.jpg',
+      small: 'http://localhost:6006/images/item-car2.jpg',
+      large: 'http://localhost:6006/images/item-car2.jpg',
+      medium: 'http://localhost:6006/images/item-car2.jpg',
+      xlarge: 'http://localhost:6006/images/item-car2.jpg',
+    },
+  },
+];
+
 const MOCK_DESCRIPTION =
   'se vende 407 perfecto estado recién revisado correa distribución cambiada gomas nuevas es el tope gama cuero,clima,pantalla multifunción ,sensor aparcamiento ,etc .se entrega con la ITV recién pasada .abstenerse curiosos solo gente seria .cambiaría solo por moto enduro o quad precio poco negociable está en Málaga. Peugeot 407 Sedan en Málaga';
 
@@ -56,6 +89,39 @@ export const MOCK_ITEM: Item = new Item(
   ITEM_DATA.web_slug,
   ITEM_DATA.published_date,
   ITEM_DATA.delivery_info
+);
+
+export const MOCK_CAR: Car = new Car(
+  CAR_DATA.content.id,
+  CAR_DATA.content.seller_id,
+  CAR_DATA.content.title,
+  'This is the storytelling',
+  CAR_DATA.content.sale_price,
+  CAR_DATA.content.currency_code,
+  CAR_DATA.content.modified_date,
+  CAR_DATA.content.url,
+  CAR_DATA.content.flags,
+  CAR_DATA.content.sale_conditions,
+  MOCK_ITEM_IMAGES_CAR,
+  CAR_DATA.content.web_slug,
+  CAR_DATA.content.brand,
+  CAR_DATA.content.model,
+  CAR_DATA.content.year,
+  CAR_DATA.content.gearbox,
+  CAR_DATA.content.engine,
+  CAR_DATA.content.color,
+  CAR_DATA.content.horsepower,
+  CAR_DATA.content.body_type,
+  CAR_DATA.content.num_doors,
+  CAR_DATA.content.extras,
+  CAR_DATA.content.warranty,
+  CAR_DATA.content.num_seats,
+  CAR_DATA.content.condition,
+  CAR_DATA.content.version,
+  CAR_DATA.content.sale_price,
+  undefined,
+  undefined,
+  CAR_DATA.content.km
 );
 
 export const MOCK_ITEM_RESERVED: Item = new Item(

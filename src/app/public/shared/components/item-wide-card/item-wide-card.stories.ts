@@ -3,6 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { HammerModule } from '@angular/platform-browser';
 import { HAMMER_PROVIDER } from '@core/hammerjs/hammerjs-provider';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
+import { MOCK_CAR_EXTRA_INFO } from '@public/features/item-detail/core/services/map-extra-info/map-extra-info.fixtures.spec';
 import { FavouriteIconModule } from '@public/shared/components/favourite-icon/favourite-icon.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { CUSTOM_VIEWPORT_NAME } from '@storybook-config/viewports/custom-viewports';
@@ -13,6 +14,7 @@ import { ItemExtraInfoModule } from '../item-extra-info/item-extra-info.module';
 import { ItemWideCardComponent } from './item-wide-card.component';
 import {
   MOCK_ITEM,
+  MOCK_CAR,
   MOCK_ITEM_BUMPED,
   MOCK_ITEM_COUNTRY_BUMPED,
   MOCK_ITEM_FAVOURITE,
@@ -57,6 +59,19 @@ DefaultMD.args = {
 };
 
 DefaultMD.parameters = {
+  viewport: {
+    defaultViewport: CUSTOM_VIEWPORT_NAME.MD,
+  },
+};
+
+export const DefaultCarMD = Template.bind({});
+DefaultCarMD.args = {
+  item: MOCK_CAR,
+  itemExtraInfo: MOCK_CAR_EXTRA_INFO,
+  showFavourite: true,
+};
+
+DefaultCarMD.parameters = {
   viewport: {
     defaultViewport: CUSTOM_VIEWPORT_NAME.MD,
   },
