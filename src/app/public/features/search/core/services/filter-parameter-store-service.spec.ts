@@ -33,7 +33,7 @@ describe('FilterParameterStoreServiceService', () => {
       service.setParameters(filterParametersMock);
     });
     it('should return the corresponding parameters', () => {
-      expect(service.getParametersByKey([filterKey])).toEqual([filterParametersMock[0]]);
+      expect(service.getParametersByKeys([filterKey])).toEqual([filterParametersMock[0]]);
     });
   });
 
