@@ -22,7 +22,7 @@
                         <h1 class="ItemDetail__title my-0">{{itemDetail?.item?.title}}</h1>
                         <tsl-item-extra-info *ngIf="itemExtraInfo?.length > 0" class="horizontalScroll d-block mt-2"
                             [ngClass]="{'ItemExtraInfo--car': isItemACar()}"
-                            [isCar]="typeCheckService.isCar(itemDetail?.item)" [extraInfo]="itemExtraInfo">
+                            [isDashStyle]="typeCheckService.isCar(itemDetail?.item)" [extraInfo]="itemExtraInfo">
                         </tsl-item-extra-info>
                         <tsl-item-taxonomies class="horizontalScroll d-block mt-3" *ngIf="taxonomiesSpecifications.parentTaxonomy"
                             [iconPath]="taxonomiesSpecifications.icon"

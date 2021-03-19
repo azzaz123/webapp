@@ -7,7 +7,7 @@ describe('ItemExtraInfoComponent', () => {
   let component: ItemExtraInfoComponent;
   let fixture: ComponentFixture<ItemExtraInfoComponent>;
   const MOCK_EXTRA_INFO = ['XXL / 48 / 58', 'Diesel'];
-  const carStyleClass = '.ItemExtraInfo--car';
+  const dashStyleClass = '.ItemExtraInfo--dash';
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -36,7 +36,7 @@ describe('ItemExtraInfoComponent', () => {
   describe('when we have extra info...', () => {
     beforeEach(() => {
       component.extraInfo = MOCK_EXTRA_INFO;
-      component.isCar = false;
+      component.isDashStyle = false;
       fixture.detectChanges();
     });
 
@@ -51,24 +51,24 @@ describe('ItemExtraInfoComponent', () => {
       expect(specifications.length).toBe(MOCK_EXTRA_INFO.length);
     });
 
-    describe('when the extra info is from a basic item...', () => {
-      it('should NOT apply the car styles', () => {
-        const carStyles = fixture.debugElement.query(By.css(carStyleClass));
+    describe(`when the extra info don't have the dash style...`, () => {
+      it('should NOT apply the dash style', () => {
+        const dashStyle = fixture.debugElement.query(By.css(dashStyleClass));
 
-        expect(carStyles).toBeFalsy();
+        expect(dashStyle).toBeFalsy();
       });
     });
 
-    describe('when the extra info is from a car...', () => {
+    describe('when the extra info have the dash style...', () => {
       beforeEach(() => {
-        component.isCar = true;
+        component.isDashStyle = true;
         fixture.detectChanges();
       });
 
-      it('should apply the car styles', () => {
-        const carStyles = fixture.debugElement.query(By.css(carStyleClass));
+      it('should apply the dash style', () => {
+        const dashStyle = fixture.debugElement.query(By.css(dashStyleClass));
 
-        expect(carStyles).toBeTruthy();
+        expect(dashStyle).toBeTruthy();
       });
     });
   });

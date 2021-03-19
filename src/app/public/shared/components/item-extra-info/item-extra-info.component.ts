@@ -7,5 +7,5 @@ import { Component, Input } from '@angular/core';
 })
 export class ItemExtraInfoComponent {
   @Input() extraInfo: string[];
-  @Input() isCar = false;
+  @Input() isDashStyle = false;
 }
