@@ -6,6 +6,7 @@ import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { MOCK_CAR_EXTRA_INFO } from '@public/features/item-detail/core/services/map-extra-info/map-extra-info.fixtures.spec';
 import { FavouriteIconModule } from '@public/shared/components/favourite-icon/favourite-icon.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
+import { styledWrapperDecorator } from '@stories/decorators/styled-wrapper/styled-wrapper.decorator';
 import { CUSTOM_VIEWPORT_NAME } from '@storybook-config/viewports/custom-viewports';
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -25,6 +26,7 @@ import {
 
 export default {
   title: 'Webapp/Public/Shared/Components/ItemWideCard',
+  decorators: [styledWrapperDecorator('max-width: 685px;')],
   component: ItemWideCardComponent,
 } as Meta;
 
