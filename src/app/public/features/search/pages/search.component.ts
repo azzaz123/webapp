@@ -39,9 +39,9 @@ export class SearchComponent implements OnInit {
     xs: 2,
   };
 
-  public adSlotShopping: AdSlotShoppingConfiguration = AD_SHOPPING_PUBLIC_SEARCH;
+  public adSlotGroupShoppingConfiguration: AdSlotShoppingConfiguration = AD_SHOPPING_PUBLIC_SEARCH;
   public adSlotNativeShoppingContainer: string = AD_SHOPPING_NATIVE_CONTAINER_PUBLIC_SEARCH;
-  public adShoppingSearchPageOptions: AdShoppingPageOptions = AdShoppingPageOptionPublicSearchFactory(AdShoppingChannel.SEARCH_PAGE);
+  public adShoppingGroupPageOptions: AdShoppingPageOptions = AdShoppingPageOptionPublicSearchFactory(AdShoppingChannel.SEARCH_PAGE);
   public adShoppingNativeListPageOptions: AdShoppingPageOptions = AdShoppingPageOptionPublicSearchFactory(
     AdShoppingChannel.SEARCH_LIST_SHOPPING
   );
