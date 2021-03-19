@@ -84,7 +84,7 @@ describe('ItemDetailStoreService', () => {
   });
 
   describe('when initialize the item...', () => {
-    describe('and the petition succed...', () => {
+    describe('and the petition succeed...', () => {
       beforeEach(() => {
         spyOn(itemDetailService, 'getItemDetail').and.returnValue(of(MOCK_ITEM_DETAIL_RESPONSE));
         spyOn(itemDetailFlagsStoreService, 'updateStatusFlag');

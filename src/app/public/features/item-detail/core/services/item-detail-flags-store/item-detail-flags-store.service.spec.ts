@@ -1,7 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { MOCK_ITEM_FLAGS_RESERVED, MOCK_ITEM_VISIBILITY_FLAGS_BUMPED } from '@fixtures/item-detail-flags.fixtures.spec';
-import { MOCK_CAR_ITEM_DETAIL } from '@fixtures/item-detail.fixtures.spec';
 import {
   BUMPED_ITEM_FLAG_TYPES,
   EMPTY_ITEM_FLAGS,

@@ -83,7 +83,7 @@
                             {{itemDetail.locationSpecifications}}
                         </div>
                         <tsl-here-maps *ngIf="itemDetail.haveCoordinates && itemDetail.coordinate" zoom="15" size="small" [coordinates]="itemDetail.coordinate"
-                            [isApproximateLocation]="itemDetail.isApproximateLocation" class="w-100 mb-3">
+                            [isApproximateLocation]="itemDetail.isApproximatedLocation" class="w-100 mb-3">
                         </tsl-here-maps>
                         <div class="ItemDetail__fakeMap" *ngIf="!itemDetail.haveCoordinates"></div>
                         <tsl-social-share *ngIf="itemDetail.socialShare"

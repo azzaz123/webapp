@@ -224,7 +224,7 @@ describe('ItemDetailHeaderComponent', () => {
         expect(fixture.debugElement.query(By.css(favouriteButtonId))).toBeFalsy();
       });
 
-      describe('when we clic on the reserve item button...', () => {
+      describe('when we click on the reserve item button...', () => {
         it('should emit the reserve item event', () => {
           spyOn(component, 'toggleReserveItem').and.callThrough();
           spyOn(component.reservedItemChange, 'emit');
