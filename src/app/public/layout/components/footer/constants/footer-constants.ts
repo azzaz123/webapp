@@ -70,6 +70,15 @@ export const FOOTER_LINKS: FooterLinkSection[] = [
       },
     ],
   },
+  {
+    title: $localize`:@@FooterLinksWallapopProTitle:Wallapop Pro`,
+    links: [
+      {
+        label: $localize`:@@FooterLinksLandingLabel:Boost your business`,
+        href: $localize`:@@FooterLinksLandingHref:https://novedades.wallapop.com/wallapop-pro/`,
+      },
+    ],
+  },
 ];
 
 export const FOOTER_APPS: FooterIcon[] = [
