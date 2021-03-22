@@ -1,4 +1,4 @@
-<div *ngIf="user && userStats && item" ngbDropdown placement="bottom-right"
+<div *ngIf="user && userStats && item && !loading" ngbDropdown placement="bottom-right"
     class="ItemDetailHeader ItemDetailHeader__dropdown py-3 d-flex justify-content-between align-items-center">
     <tsl-user-basic-info [userStats]="userStats" [userInfo]="user" [styleSize]="USER_INFO_SIZE.SMALL"
         class="ItemDetailHeader__userInfo">
@@ -22,12 +22,12 @@
             <ng-container *ngIf="showOptions">
                 <!-- Sold -->
                 <button class="ItemDetailHeader__squareButton ItemDetailHeader__squareButton--sold mr-2 p-0"
-                    (click)="soldItem()" ngbTooltip="Mark as sold" i18n-ngbTooltip placement="top">
+                    (click)="sellItem()" ngbTooltip="Mark as sold" i18n-ngbTooltip placement="top">
                     <tsl-svg-icon src="/assets/icons/btn-sold.svg"></tsl-svg-icon>
                 </button>
                 <!-- Reserve -->
                 <button class="ItemDetailHeader__squareButton ItemDetailHeader__squareButton--reserve mr-2 p-0"
-                    [ngClass]="{active: item.reserved}" (click)="reserveItem()" ngbTooltip="Mark as reserved"
+                    [ngClass]="{active: item.reserved}" (click)="toggleReserveItem()" ngbTooltip="Mark as reserved"
                     i18n-ngbTooltip placement="top">
                     <tsl-svg-icon src="/assets/icons/btn-reserved.svg"></tsl-svg-icon>
                 </button>
@@ -43,12 +43,12 @@
                         <tsl-svg-icon src="/assets/icons/others.svg" width="17" height="20"></tsl-svg-icon>
                     </button>
                     <div ngbDropdownMenu>
-                        <button class="dropdown-item d-flex align-items-center" (click)="reserveItem()"
+                        <button class="dropdown-item d-flex align-items-center" (click)="toggleReserveItem()"
                             i18n="@@checkAsReservedItem">
                             <tsl-svg-icon class="mr-1" src="/assets/icons/btn-reserved.svg"></tsl-svg-icon>
                             Mark as reserved
                         </button>
-                        <button class="dropdown-item d-flex align-items-center" (click)="soldItem()"
+                        <button class="dropdown-item d-flex align-items-center" (click)="sellItem()"
                             i18n="@@checkAsSoldItem">
                             <tsl-svg-icon class="mr-1" src="/assets/icons/btn-sold.svg"></tsl-svg-icon>
                             Mark as sold
@@ -72,7 +72,7 @@
     </div>
     <ng-template #basicOperations>
         <div *ngIf="showOptions" class="d-flex justify-content-end align-items-center ml-3">
-            <tsl-button className="stripe" class="ItemDetailHeader__button mr-2" (click)="toggleItemFavorite()"
+            <tsl-button className="stripe" class="ItemDetailHeader__button mr-2" (click)="toggleFavouriteItem()"
                 id="favouriteButton">
                 <tsl-favourite-icon [active]="item?.flags?.favorite">
                 </tsl-favourite-icon>

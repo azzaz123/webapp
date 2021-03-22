@@ -8,9 +8,8 @@ import { PublicUserApiService } from '@public/core/services/api/public-user/publ
 import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
 import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
 import { of } from 'rxjs';
-import { ItemDetail } from '../../../interfaces/item-detail.interface';
-
 import { ItemDetailService } from './item-detail.service';
+import { ItemDetailResponse } from '@public/features/item-detail/interfaces/item-detail-response.interface';
 
 describe('ItemDetailService', () => {
   let itemDetailService: ItemDetailService;
@@ -43,6 +42,12 @@ describe('ItemDetailService', () => {
               return of();
             },
             getItemActivePurchases() {
+              return of();
+            },
+            markAsFavourite() {
+              return of();
+            },
+            unmarkAsFavourite() {
               return of();
             },
           },
@@ -80,10 +85,10 @@ describe('ItemDetailService', () => {
     });
 
     it('should ask for the item and return it with correct format', () => {
-      let expectedResponse: ItemDetail;
+      let expectedResponse: ItemDetailResponse;
       MOCK_FULL_USER.coverImage = null;
 
-      itemDetailService.getItem(itemId).subscribe((response: ItemDetail) => {
+      itemDetailService.getItemDetail(itemId).subscribe((response: ItemDetailResponse) => {
         expectedResponse = response;
       });
 
@@ -120,6 +125,26 @@ describe('ItemDetailService', () => {
       itemDetailService.reserveItem(itemId, true);
 
       expect(itemApiService.reserveItem).toHaveBeenCalledWith(itemId, true);
+    });
+  });
+
+  describe('markAsFavourite', () => {
+    it('should call the itemApiService markAsFavourite function', () => {
+      spyOn(itemApiService, 'markAsFavourite');
+
+      itemDetailService.markAsFavourite(itemId);
+
+      expect(itemApiService.markAsFavourite).toHaveBeenCalledWith(itemId);
+    });
+  });
+
+  describe('unmarkAsFavourite', () => {
+    it('should call the itemApiService unmarkAsFavourite function', () => {
+      spyOn(itemApiService, 'unmarkAsFavourite');
+
+      itemDetailService.unmarkAsFavourite(itemId);
+
+      expect(itemApiService.unmarkAsFavourite).toHaveBeenCalledWith(itemId);
     });
   });
 
