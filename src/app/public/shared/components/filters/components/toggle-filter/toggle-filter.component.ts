@@ -54,7 +54,6 @@ export class ToggleFilterComponent extends AbstractFilter<ToggleFilterParams> im
   }
 
   protected _hasValue(): boolean {
-    console.log('_hasValue', this.toggle);
     return this.toggle;
   }
 
