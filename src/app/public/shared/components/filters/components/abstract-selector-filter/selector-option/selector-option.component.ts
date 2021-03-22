@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { SelectorOptionIcon } from './interfaces/selector-option-icon.interface';
 
 @Component({
   selector: 'tsl-selector-option',
@@ -9,5 +10,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 export class SelectorOptionComponent {
   @Input() label: string;
   @Input() sublabel?: string;
-  @Input() icon: string;
+  @Input() icon: SelectorOptionIcon;
+  @Input() isActive?: boolean;
 }

@@ -17,7 +17,8 @@ const Template: Story<SelectorOptionComponent> = (args) => ({
   component: SelectorOptionComponent,
   template: `
     <div style="border: 1px dashed black; background-color: white">
-      <tsl-selector-option [label]="label" [icon]="icon" [sublabel]="sublabel"></tsl-selector-option>
+      <tsl-selector-option [label]="label" [icon]="icon" [sublabel]="sublabel" [isActive]="isActive">
+      </tsl-selector-option>
     </div>
   `,
 });
@@ -27,10 +28,29 @@ Default.args = {
   label: 'Select me',
 };
 
+export const DefaultActive = Template.bind({});
+DefaultActive.args = {
+  label: 'Selected',
+  isActive: true,
+};
+
 export const WithIcon = Template.bind({});
 WithIcon.args = {
   label: 'I have an icon',
-  icon: '/assets/icons/joke.svg',
+  icon: {
+    stroke: '/assets/icons/categories/stroke/All.svg',
+    selected: '/assets/icons/categories/selected/All.svg',
+  },
+};
+
+export const WithIconActive = Template.bind({});
+WithIconActive.args = {
+  label: 'I have an icon',
+  icon: {
+    stroke: '/assets/icons/categories/stroke/All.svg',
+    selected: '/assets/icons/categories/selected/All.svg',
+  },
+  isActive: true,
 };
 
 export const WithSublabel = Template.bind({});
@@ -39,9 +59,30 @@ WithSublabel.args = {
   sublabel: 'Another important info',
 };
 
+export const WithSublabelActive = Template.bind({});
+WithSublabelActive.args = {
+  label: 'Some important info',
+  sublabel: 'Another important info',
+  isActive: true,
+};
+
 export const WithIconAndSublabel = Template.bind({});
 WithIconAndSublabel.args = {
   label: 'Some important info',
-  icon: '/assets/icons/joke.svg',
+  icon: {
+    stroke: '/assets/icons/categories/stroke/All.svg',
+    selected: '/assets/icons/categories/selected/All.svg',
+  },
   sublabel: 'Another important info',
+};
+
+export const WithIconAndSublabelActive = Template.bind({});
+WithIconAndSublabelActive.args = {
+  label: 'Some important info',
+  icon: {
+    stroke: '/assets/icons/categories/stroke/All.svg',
+    selected: '/assets/icons/categories/selected/All.svg',
+  },
+  sublabel: 'Another important info',
+  isActive: true,
 };
