@@ -14,6 +14,27 @@ export class FilterGroup {
     return this._valueChange.asObservable();
   }
 
+  public getValue(): void {
+    this.filters.forEach((filter: AbstractFilter<unknown>) => {
+      console.log('getValue', filter.value);
+    });
+  }
+
+  public setValue(value: FilterParameter[]): void {
+    this.filters.forEach((filter: AbstractFilter<unknown>) => {
+      const mapKeys = Object.keys(filter.config.mapKey);
+      const values: FilterParameter[] = [];
+      mapKeys.forEach((mapKey: string) => {
+        const filterParameter = value.find((parameter: FilterParameter) => parameter.key === filter.config.mapKey[mapKey]);
+        if (filterParameter) {
+          values.push(filterParameter);
+        }
+
+        filter.value = values;
+      });
+    });
+  }
+
   public openStateChange(): Observable<boolean> {
     return this._openStateChange.asObservable();
   }

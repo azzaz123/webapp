@@ -55,7 +55,6 @@ export class FilterGroupComponent implements AfterViewInit, OnDestroy {
   }
 
   private setValues(): void {
-    console.log('setValues');
     this.filterGroup.setValue(this._values);
   }
 
