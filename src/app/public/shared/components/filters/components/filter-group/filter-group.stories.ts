@@ -18,14 +18,13 @@ import { FilterFactoryService } from './services/filter-factory.service';
 @Component({
   selector: 'tsl-filters',
   template: `
-    <tsl-filter-group [variant]="variant" [config]="config" [values]="initialValues || []" (valueChange)="valueChange($event)">
-    </tsl-filter-group>
+    <tsl-filter-group [variant]="variant" [config]="config" [values]="values || []" (valueChange)="valueChange($event)"> </tsl-filter-group>
   `,
 })
 class FiltersComponent {
   public variant: FILTER_VARIANT;
   public config: [RangeFilterConfig, ToggleFilterConfig];
-  public initialValues: FilterParameter[];
+  public values: FilterParameter[];
 
   public valueChange(): void {}
 }
@@ -101,7 +100,7 @@ export const Bubble_WithInitialValues = Template.bind({});
 Bubble_WithInitialValues.args = {
   variant: FILTER_VARIANT.BUBBLE,
   config: CONFIG,
-  initialValues: [
+  values: [
     { key: 'warranty', value: 'true' },
     { key: 'max', value: '5000' },
     { key: 'min', value: '1000' },

@@ -44,7 +44,7 @@ describe('FilterGroupComponent', () => {
         bubblePlaceholder: 'bubblePlaceholder',
       },
     ];
-    component.initialValues = [{ key: 'key', value: 'true' }];
+    component.values = [{ key: 'key', value: 'true' }];
     component.variant = FILTER_VARIANT.BUBBLE;
     fixture.detectChanges();
   });
@@ -58,12 +58,7 @@ describe('FilterGroupComponent', () => {
 
     component.ngAfterViewInit();
 
-    expect(filterFactoryService.insertFilters).toHaveBeenCalledWith(
-      component.config,
-      component.initialValues,
-      component.variant,
-      component.query
-    );
+    expect(filterFactoryService.insertFilters).toHaveBeenCalledWith(component.config, component.values, component.variant, component.query);
   });
 
   describe('when filter group value changes', () => {
