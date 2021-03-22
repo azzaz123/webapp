@@ -1,0 +1,7 @@
+@import '~style/common';
+
+.SelectorFilterTemplate {
+  &__dev_warn {
+    color: $brand-danger;
+  }
+}

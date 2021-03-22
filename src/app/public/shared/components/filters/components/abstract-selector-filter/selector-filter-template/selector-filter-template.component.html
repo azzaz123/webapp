@@ -1,1 +1,17 @@
-<p>selector-filter-template works!</p>
+<div *ngIf="hasContentPlaceholder">
+  <div>
+    I am wrapped!
+<!--    <ng-template [ngTemplateOutlet]="contentWrapper"></ng-template>-->
+  </div>
+</div>
+
+<div *ngIf="!hasContentPlaceholder">
+  <ng-template [ngTemplateOutlet]="contentWrapper"></ng-template>
+</div>
+
+<ng-template #contentWrapper>
+  <div #extendedContent>
+    <ng-content></ng-content>
+  </div>
+  <span *ngIf="extendedContent.children.length === 0" class="SelectorFilterTemplate__dev_warn">Please, avoid using abstract selector filter directly, use one of the extensions or create your own</span>
+</ng-template>
