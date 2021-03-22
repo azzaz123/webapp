@@ -94,7 +94,7 @@ export class FilterOptionService {
   }
 
   private getSiblingParams(paramKeys: string[] = []): Record<string, string> {
-    return this.filterParameterDraftService.getParametersByKey(paramKeys).reduce(
+    return this.filterParameterDraftService.getParametersByKeys(paramKeys).reduce(
       (accumulatedParams, filterParameter) => ({
         ...accumulatedParams,
         [filterParameter.key]: filterParameter.value,

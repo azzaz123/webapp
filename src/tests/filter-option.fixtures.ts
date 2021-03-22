@@ -30,7 +30,7 @@ export class MockFilterOptionMapperService {
 }
 
 export class MockFilterParameterDraftService implements Partial<FilterParameterDraftService> {
-  public getParametersByKey(keys: string[]): FilterParameter[] {
+  public getParametersByKeys(keys: string[]): FilterParameter[] {
     return keys.map((key) => ({
       key,
       value: key,
