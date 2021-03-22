@@ -1,4 +1,4 @@
-<div *ngIf="item" (click)="itemClick.emit()" class="ItemWideCard container w-100 p-2">
+<div *ngIf="item" (click)="itemClick.emit()" class="ItemWideCard container w-100 p-1">
     <div class="row d-flex w-100 h-100 m-0 align-content-start">
         <div class="ItemWideCard__images col-12 col-md-5 p-0"> 
             <tsl-svg-icon *ngIf="item.flags?.sold" width="20"
@@ -20,7 +20,7 @@
                 </ng-template>
             </tsl-carousel-slides>
         </div>
-        <div class="col-12 col-md-7 w-100 p-2 px-md-3">
+        <div class="col-12 col-md-7 w-100 pt-3 p-2 pt-md-2 px-md-3">
             <div class="d-flex justify-content-between">
                 <span class="ItemWideCard__price ItemWideCard__price--bold">{{item.salePrice | customCurrency:item.currencyCode}}</span>
                 <tsl-favourite-icon *ngIf="showFavourite" class="ItemWideCard__favourite" [active]="item.flags?.favorite"
