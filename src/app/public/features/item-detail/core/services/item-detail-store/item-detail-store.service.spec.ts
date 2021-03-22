@@ -8,7 +8,7 @@ import { PublicUserApiService } from '@public/core/services/api/public-user/publ
 import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
 import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
 import { APP_PATHS } from 'app/app-routing-constants';
-import { of, throwError } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
 import { ItemDetailFlagsStoreService } from '../item-detail-flags-store/item-detail-flags-store.service';
 import { ItemDetailService } from '../item-detail/item-detail.service';
 import { MapItemDetailStoreService } from '../map-item-detail-store/map-item-detail-store.service';
@@ -127,11 +127,13 @@ describe('ItemDetailStoreService', () => {
 
     describe('and the request succed...', () => {
       it('should set the item as reserved', () => {
-        spyOn(itemDetailService, 'reserveItem').and.returnValue(of());
+        const subject = new Subject();
+        spyOn(itemDetailService, 'reserveItem').and.returnValue(subject.asObservable());
 
-        service.toggleReservedItem().subscribe(() => {
-          expect(service.itemDetail.item.reserved).toBe(true);
-        });
+        service.toggleReservedItem().subscribe(() => {});
+        subject.next();
+
+        expect(service.itemDetail.item.reserved).toBe(true);
       });
     });
 
@@ -139,9 +141,9 @@ describe('ItemDetailStoreService', () => {
       it('should NOT set the item as reserved', () => {
         spyOn(itemDetailService, 'reserveItem').and.returnValue(throwError('network error'));
 
-        service.toggleReservedItem().subscribe(() => {
-          expect(service.itemDetail.item.reserved).toBe(false);
-        });
+        service.toggleReservedItem().subscribe(() => {});
+
+        expect(service.itemDetail.item.reserved).toBe(false);
       });
     });
   });
@@ -154,11 +156,13 @@ describe('ItemDetailStoreService', () => {
 
     describe('and the request succed...', () => {
       it('should set the item as unreserved', () => {
-        spyOn(itemDetailService, 'reserveItem').and.returnValue(of());
+        const subject = new Subject();
+        spyOn(itemDetailService, 'reserveItem').and.returnValue(subject.asObservable());
 
-        service.toggleReservedItem().subscribe(() => {
-          expect(service.itemDetail.item.reserved).toBe(false);
-        });
+        service.toggleReservedItem().subscribe(() => {});
+        subject.next();
+
+        expect(service.itemDetail.item.reserved).toBe(false);
       });
     });
 
@@ -166,9 +170,9 @@ describe('ItemDetailStoreService', () => {
       it('should NOT set the item as unreserved', () => {
         spyOn(itemDetailService, 'reserveItem').and.returnValue(throwError('network error'));
 
-        service.toggleReservedItem().subscribe(() => {
-          expect(service.itemDetail.item.reserved).toBe(true);
-        });
+        service.toggleReservedItem().subscribe(() => {});
+
+        expect(service.itemDetail.item.reserved).toBe(true);
       });
     });
   });
@@ -181,11 +185,13 @@ describe('ItemDetailStoreService', () => {
 
     describe('and the request succed...', () => {
       it('should set the item as favourite', () => {
-        spyOn(itemDetailService, 'markAsFavourite').and.returnValue(of());
+        const subject = new Subject();
+        spyOn(itemDetailService, 'markAsFavourite').and.returnValue(subject.asObservable());
 
-        service.toggleReservedItem().subscribe(() => {
-          expect(service.itemDetail.item.flags.favorite).toBe(true);
-        });
+        service.toggleFavouriteItem().subscribe(() => {});
+        subject.next();
+
+        expect(service.itemDetail.item.flags.favorite).toBe(true);
       });
     });
 
@@ -193,9 +199,9 @@ describe('ItemDetailStoreService', () => {
       it('should NOT set the item as favourite', () => {
         spyOn(itemDetailService, 'markAsFavourite').and.returnValue(throwError('network error'));
 
-        service.toggleReservedItem().subscribe(() => {
-          expect(service.itemDetail.item.flags.favorite).toBe(false);
-        });
+        service.toggleFavouriteItem().subscribe(() => {});
+
+        expect(service.itemDetail.item.flags.favorite).toBe(false);
       });
     });
   });
@@ -208,11 +214,13 @@ describe('ItemDetailStoreService', () => {
 
     describe('and the request succed...', () => {
       it('should set the item as unfavourite', () => {
-        spyOn(itemDetailService, 'unmarkAsFavourite').and.returnValue(of());
+        const subject = new Subject();
+        spyOn(itemDetailService, 'unmarkAsFavourite').and.returnValue(subject.asObservable());
 
-        service.toggleReservedItem().subscribe(() => {
-          expect(service.itemDetail.item.flags.favorite).toBe(false);
-        });
+        service.toggleFavouriteItem().subscribe(() => {});
+        subject.next();
+
+        expect(service.itemDetail.item.flags.favorite).toBe(false);
       });
     });
 
@@ -220,9 +228,9 @@ describe('ItemDetailStoreService', () => {
       it('should NOT set the item as unfavourite', () => {
         spyOn(itemDetailService, 'unmarkAsFavourite').and.returnValue(throwError('network error'));
 
-        service.toggleReservedItem().subscribe(() => {
-          expect(service.itemDetail.item.flags.favorite).toBe(true);
-        });
+        service.toggleFavouriteItem().subscribe(() => {});
+
+        expect(service.itemDetail.item.flags.favorite).toBe(true);
       });
     });
   });
