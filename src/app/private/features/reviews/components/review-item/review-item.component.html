@@ -25,7 +25,7 @@
     <div class="review-title">
       <a *ngIf="review.item?.id" href="{{ itemWebLink }}" target="_blank"> {{ review.item.title }} </a>
       <span *ngIf="!review.item?.id && category?.name"> {{ category.name }} </span>
-      <span *ngIf="!review.item?.id && !category?.name" i18n>A Wallapop item</span>
+      <span *ngIf="!review.item?.id && !category?.name" i18n="@@WallapopItem">A Wallapop item</span>
     </div>
     <tsl-stars class="review-rating" [stars]="this.review.scoring" [normalized]="false"></tsl-stars>
     <p class="review-comment">{{ this.review.comments }}</p>
