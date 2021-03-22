@@ -8,6 +8,7 @@ import { of } from 'rxjs/internal/observable/of';
 import { Observable } from 'rxjs';
 import { QueryParams } from '@public/shared/components/filters/core/interfaces/query-params.interface';
 import { PaginationOptions } from '@public/shared/components/filters/core/interfaces/pagination-options.interface';
+import { FilterParameterDraftService } from '@public/shared/services/filter-parameter-draft/filter-parameter-draft.service';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 
 export class MockFilterOptionApiService {
@@ -28,7 +29,7 @@ export class MockFilterOptionMapperService {
   public mapperMethod(): void {}
 }
 
-export class MockFilterParameterDraftService {
+export class MockFilterParameterDraftService implements Partial<FilterParameterDraftService> {
   public getParametersByKey(keys: string[]): FilterParameter[] {
     return keys.map((key) => ({
       key,
