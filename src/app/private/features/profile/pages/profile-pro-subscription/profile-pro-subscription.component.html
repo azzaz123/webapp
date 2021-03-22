@@ -8,7 +8,7 @@
             <span *ngIf="perks?.subscription.listing.quantity" i18n>Current plan: Plan {{perks?.subscription.listing.quantity}}</span>
             <span *ngIf="!perks?.subscription.listing.quantity" i18n>You are not yet subscribed to any plan.</span>
           </h2>
-          <p class="description" i18n>Each plan allows you to have up to a maximum number of cars published in the Wallapop app and website.</p>
+          <p class="description" i18n="@@CarPlanDescription">Each plan allows you to have up to a maximum number of cars published in the Wallapop app and website.</p>
           <p class="contact" i18n="@@cardealerUpgradePlanContact">To upgrade your plan, call us at {{sellbytelPhone}} or send us an email at <a href="mailto:{{email}}">{{email}}</a></p>
         </div>
         <div class="packs">
