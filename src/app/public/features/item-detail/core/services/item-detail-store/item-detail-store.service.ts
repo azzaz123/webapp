@@ -109,7 +109,7 @@ export class ItemDetailStoreService {
   private favouriteItem(isFavourited: boolean): void {
     const item = this.itemDetail.item;
     item.flags.favorite = isFavourited;
-    this.itemDetail = { ...this.itemDetail, item };
+    this.updateStatusFlags(item);
   }
 
   private updateStatusFlags(item: Item): void {

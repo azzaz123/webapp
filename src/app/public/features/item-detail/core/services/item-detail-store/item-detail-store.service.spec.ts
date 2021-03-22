@@ -121,6 +121,7 @@ describe('ItemDetailStoreService', () => {
 
   describe('when reserving the item...', () => {
     beforeEach(() => {
+      spyOn(itemDetailFlagsStoreService, 'updateStatusFlag');
       service.itemDetail = MOCK_CAR_ITEM_DETAIL;
       service.itemDetail.item.reserved = false;
     });
@@ -132,6 +133,7 @@ describe('ItemDetailStoreService', () => {
         service.toggleReservedItem().subscribe(() => {});
 
         expect(service.itemDetail.item.reserved).toBe(true);
+        expect(itemDetailFlagsStoreService.updateStatusFlag).toBeCalledWith(service.itemDetail.item.flags);
       });
     });
 
@@ -142,12 +144,14 @@ describe('ItemDetailStoreService', () => {
         service.toggleReservedItem().subscribe(() => {});
 
         expect(service.itemDetail.item.reserved).toBe(false);
+        expect(itemDetailFlagsStoreService.updateStatusFlag).not.toHaveBeenCalled();
       });
     });
   });
 
   describe('when unreserving the item...', () => {
     beforeEach(() => {
+      spyOn(itemDetailFlagsStoreService, 'updateStatusFlag');
       service.itemDetail = MOCK_CAR_ITEM_DETAIL;
       service.itemDetail.item.reserved = true;
     });
@@ -159,6 +163,7 @@ describe('ItemDetailStoreService', () => {
         service.toggleReservedItem().subscribe(() => {});
 
         expect(service.itemDetail.item.reserved).toBe(false);
+        expect(itemDetailFlagsStoreService.updateStatusFlag).toBeCalledWith(service.itemDetail.item.flags);
       });
     });
 
@@ -169,12 +174,14 @@ describe('ItemDetailStoreService', () => {
         service.toggleReservedItem().subscribe(() => {});
 
         expect(service.itemDetail.item.reserved).toBe(true);
+        expect(itemDetailFlagsStoreService.updateStatusFlag).not.toHaveBeenCalled();
       });
     });
   });
 
   describe('when we favourite the item...', () => {
     beforeEach(() => {
+      spyOn(itemDetailFlagsStoreService, 'updateStatusFlag');
       service.itemDetail = MOCK_CAR_ITEM_DETAIL;
       service.itemDetail.item.flags.favorite = false;
     });
@@ -186,6 +193,7 @@ describe('ItemDetailStoreService', () => {
         service.toggleFavouriteItem().subscribe(() => {});
 
         expect(service.itemDetail.item.flags.favorite).toBe(true);
+        expect(itemDetailFlagsStoreService.updateStatusFlag).toBeCalledWith(service.itemDetail.item.flags);
       });
     });
 
@@ -196,12 +204,14 @@ describe('ItemDetailStoreService', () => {
         service.toggleFavouriteItem().subscribe(() => {});
 
         expect(service.itemDetail.item.flags.favorite).toBe(false);
+        expect(itemDetailFlagsStoreService.updateStatusFlag).not.toHaveBeenCalled();
       });
     });
   });
 
   describe('when we unfavourite the item...', () => {
     beforeEach(() => {
+      spyOn(itemDetailFlagsStoreService, 'updateStatusFlag');
       service.itemDetail = MOCK_CAR_ITEM_DETAIL;
       service.itemDetail.item.flags.favorite = true;
     });
@@ -213,6 +223,7 @@ describe('ItemDetailStoreService', () => {
         service.toggleFavouriteItem().subscribe(() => {});
 
         expect(service.itemDetail.item.flags.favorite).toBe(false);
+        expect(itemDetailFlagsStoreService.updateStatusFlag).toBeCalledWith(service.itemDetail.item.flags);
       });
     });
 
@@ -223,17 +234,20 @@ describe('ItemDetailStoreService', () => {
         service.toggleFavouriteItem().subscribe(() => {});
 
         expect(service.itemDetail.item.flags.favorite).toBe(true);
+        expect(itemDetailFlagsStoreService.updateStatusFlag).not.toHaveBeenCalled();
       });
     });
   });
 
   describe('when selling the item...', () => {
     it('should set the item as sold', () => {
+      spyOn(itemDetailFlagsStoreService, 'updateStatusFlag');
       service.itemDetail = MOCK_CAR_ITEM_DETAIL;
 
       service.markItemAsSold();
 
       expect(service.itemDetail.item.sold).toBe(true);
+      expect(itemDetailFlagsStoreService.updateStatusFlag).toBeCalledWith(service.itemDetail.item.flags);
     });
   });
 });
