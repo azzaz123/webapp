@@ -53,7 +53,7 @@ describe('TrustAndSafetyService', () => {
       expect(document.head.appendChild).toHaveBeenCalledTimes(1);
     });
 
-    it('should send valid information to wallapop server with same identifier', fakeAsync(() => {
+    it('should send valid information to Wallapop server with same identifier', fakeAsync(() => {
       const expectedBody: SessionProfileData = {
         id: mockUUID,
         location: SessionProfileDataLocation.OPEN_CHAT,

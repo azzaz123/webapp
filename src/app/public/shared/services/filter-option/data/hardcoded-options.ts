@@ -1,8 +1,8 @@
-import { COMMON_CONFIGURATION_ID } from '../../../enums/configuration-ids/common-configuration-ids.enum';
-import { FASHION_CONFIGURATION_ID } from '../../../enums/configuration-ids/fashion-configuration-ids.enum';
-import { REAL_ESTATE_CONFIGURATION_ID } from '../../../enums/configuration-ids/real-estate-configuration-ids.enum';
-import { FilterOption } from '../../../interfaces/filter-option.interface';
-import { ConfigurationId } from '../../../types/configuration-id.type';
+import { COMMON_CONFIGURATION_ID } from '../../../components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
+import { FASHION_CONFIGURATION_ID } from '../../../components/filters/core/enums/configuration-ids/fashion-configuration-ids.enum';
+import { REAL_ESTATE_CONFIGURATION_ID } from '../../../components/filters/core/enums/configuration-ids/real-estate-configuration-ids.enum';
+import { FilterOption } from '../../../components/filters/core/interfaces/filter-option.interface';
+import { ConfigurationId } from '../../../components/filters/core/types/configuration-id.type';
 
 type HardcodedOptions = {
   [key in ConfigurationId]?: FilterOption[];

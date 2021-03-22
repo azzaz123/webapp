@@ -1,19 +1,24 @@
 import { Injectable } from '@angular/core';
-import { FilterOptionsApiService } from './filter-options-api.service';
-import { FilterOptionsMapperService } from './filter-options-mapper.service';
-import { QueryParams } from '../../interfaces/query-params.interface';
-import { PaginationOptions } from '../../interfaces/pagination-options.interface';
-import { FilterOption } from '../../interfaces/filter-option.interface';
+import { FilterOptionsApiService } from './services/filter-options-api.service';
+import { FilterOptionsMapperService } from './services/filter-options-mapper.service';
+import { QueryParams } from '../../components/filters/core/interfaces/query-params.interface';
+import { PaginationOptions } from '../../components/filters/core/interfaces/pagination-options.interface';
+import { FilterOption } from '../../components/filters/core/interfaces/filter-option.interface';
 import { OPTIONS_ORIGIN_CONFIGURATION, OriginConfigurationValue } from './configurations/options-origin-configuration';
-import { ConfigurationId } from '../../types/configuration-id.type';
+import { ConfigurationId } from '../../components/filters/core/types/configuration-id.type';
 import { HARDCODED_OPTIONS } from './data/hardcoded-options';
-import { KeyMapper, OptionsApiOrigin } from './configurations/option-api-origin.interface';
+import { KeyMapper, OptionsApiOrigin } from './interfaces/option-api-origin.interface';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { FilterParameterDraftService } from '@public/shared/services/filter-parameter-draft/filter-parameter-draft.service';
 
 @Injectable()
 export class FilterOptionService {
-  constructor(private filterOptionsApiService: FilterOptionsApiService, private filterOptionsMapperService: FilterOptionsMapperService) {}
+  constructor(
+    private filterOptionsApiService: FilterOptionsApiService,
+    private filterOptionsMapperService: FilterOptionsMapperService,
+    private filterParameterDraftService: FilterParameterDraftService
+  ) {}
 
   public getOptions(
     configurationId: ConfigurationId,
@@ -88,13 +93,14 @@ export class FilterOptionService {
     return mappedParams;
   }
 
-  // TODO: This will be implemented on integration tasks. For now, it just returns the keys from the sibling filter params
   private getSiblingParams(paramKeys: string[] = []): Record<string, string> {
-    const params = {};
-
-    paramKeys.forEach((key) => (params[key] = key));
-
-    return params;
+    return this.filterParameterDraftService.getParametersByKey(paramKeys).reduce(
+      (accumulatedParams, filterParameter) => ({
+        ...accumulatedParams,
+        [filterParameter.key]: filterParameter.value,
+      }),
+      {}
+    );
   }
 
   private isKeyMapper(mapper: KeyMapper | string): mapper is KeyMapper {
