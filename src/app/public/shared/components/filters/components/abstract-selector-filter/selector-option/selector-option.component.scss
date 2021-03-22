@@ -1,0 +1,13 @@
+@import '~style/common';
+
+.SelectorOption {
+  &__label {
+    font-size: $font-size-l;
+  }
+
+  &__sublabel {
+    &-with-icon {
+      margin-left: 40px;
+    }
+  }
+}
