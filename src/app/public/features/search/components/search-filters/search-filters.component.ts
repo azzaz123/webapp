@@ -3,6 +3,7 @@ import { FILTER_VARIANT } from '@public/shared/components/filters/components/abs
 import { CAR_CONFIGURATION_FILTERS } from '@public/shared/components/filters/core/enums/configuration/car/car-configuration-filters';
 import { DrawerConfig } from '@public/shared/components/filters/interfaces/drawer-config.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
+import { FilterParameterDraftService } from '@public/shared/services/filter-parameter-draft/filter-parameter-draft.service';
 
 @Component({
   selector: 'tsl-search-filters',
@@ -19,9 +20,12 @@ export class SearchFiltersComponent {
   public activeFiltersCount = 0;
   public bubbleFiltersConfig = CAR_CONFIGURATION_FILTERS.BUBBLE;
   public drawerFiltersConfig = CAR_CONFIGURATION_FILTERS.CONTENT;
-  public filterValues: FilterParameter[] = [];
+
+  public filterValues: FilterParameter[] = []; // TODO this usage temporary until we have the filterParamStore service
 
   @Output() bubbleFilterOpenStateChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  constructor(private filterParameterDraftService: FilterParameterDraftService) {}
 
   public toggleDrawer(): void {
     this.drawerConfig.isOpen = !this.drawerConfig.isOpen;
@@ -29,17 +33,30 @@ export class SearchFiltersComponent {
 
   public closeDrawer(): void {
     this.drawerConfig.isOpen = false;
+    this.filterParameterDraftService.setParameters(this.filterValues);
+    this.filterValues = [...this.filterValues];
+  }
+  public applyDrawer(): void {
+    this._applyFilters();
+    this.closeDrawer();
   }
 
   public bubbleChange(value): void {
-    console.log('bubbleChange', value);
+    this.filterParameterDraftService.upsertParameters(value);
+    this._applyFilters();
   }
 
   public drawerChange(value): void {
-    console.log('drawerChange', value);
+    this.filterParameterDraftService.upsertParameters(value);
   }
 
   public bubbleOpenStateChange(isOpen: boolean): void {
     this.bubbleFilterOpenStateChange.emit(isOpen);
+  }
+
+  private _applyFilters(): void {
+    this.filterValues = this.filterParameterDraftService.getParameters();
+
+    console.log('APPLY FILTERS', this.filterValues);
   }
 }
