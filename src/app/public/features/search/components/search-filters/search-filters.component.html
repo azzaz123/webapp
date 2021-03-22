@@ -1,7 +1,7 @@
 <div class="SearchFilters__bar d-flex p-2"> 
   <tsl-bubble class="m-1" [counter]="activeFiltersCount" (click)="toggleDrawer()">Filtros</tsl-bubble>
   <tsl-filter-group 
-    [initialValues]="filterValues"
+    [values]="filterValues"
     [config]="bubbleFiltersConfig" 
     [variant]="FILTER_VARIANT.BUBBLE"
     (valueChange)="bubbleChange($event)"

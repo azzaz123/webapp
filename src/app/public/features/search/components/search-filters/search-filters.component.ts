@@ -4,6 +4,7 @@ import { CAR_CONFIGURATION_FILTERS } from '@public/shared/components/filters/cor
 import { DrawerConfig } from '@public/shared/components/filters/interfaces/drawer-config.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { FilterParameterDraftService } from '@public/shared/services/filter-parameter-draft/filter-parameter-draft.service';
+import { FilterParameterStoreService } from '../../core/services/filter-parameter-store.service';
 
 @Component({
   selector: 'tsl-search-filters',
@@ -25,7 +26,12 @@ export class SearchFiltersComponent {
 
   @Output() bubbleFilterOpenStateChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(private filterParameterDraftService: FilterParameterDraftService) {}
+  constructor(
+    private filterParameterDraftService: FilterParameterDraftService,
+    private filterParameterStoreService: FilterParameterStoreService
+  ) {
+    this.filterValues = this.filterParameterStoreService.getParameters();
+  }
 
   public toggleDrawer(): void {
     this.drawerConfig.isOpen = !this.drawerConfig.isOpen;
@@ -34,7 +40,7 @@ export class SearchFiltersComponent {
   public closeDrawer(): void {
     this.drawerConfig.isOpen = false;
     this.filterParameterDraftService.setParameters(this.filterValues);
-    this.filterValues = [...this.filterValues];
+    this.filterParameterStoreService.upsertParameters(this.filterValues);
   }
   public applyDrawer(): void {
     this._applyFilters();
@@ -56,6 +62,7 @@ export class SearchFiltersComponent {
 
   private _applyFilters(): void {
     this.filterValues = this.filterParameterDraftService.getParameters();
+    this.filterParameterStoreService.setParameters(this.filterValues);
 
     console.log('APPLY FILTERS', this.filterValues);
   }
