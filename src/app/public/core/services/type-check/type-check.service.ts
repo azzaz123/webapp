@@ -26,11 +26,11 @@ export class TypeCheckService {
   }
 
   public isFashion(item: Item): boolean {
-    return item.categoryId === CATEGORY_IDS.FASHION_ACCESSORIES;
+    return item?.categoryId === CATEGORY_IDS.FASHION_ACCESSORIES;
   }
 
   public isCellPhoneAccessories(item: Item): boolean {
-    return item.categoryId === CATEGORY_IDS.CELL_PHONES_ACCESSORIES;
+    return item?.categoryId === CATEGORY_IDS.CELL_PHONES_ACCESSORIES;
   }
 
   public isSize(property: unknown): property is Size {

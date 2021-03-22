@@ -1,7 +1,6 @@
-import { Component, Input, Renderer2 } from '@angular/core';
+import { Component, EventEmitter, Input, Output, Renderer2 } from '@angular/core';
 import { Item } from '@core/item/item';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
-import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
@@ -14,11 +13,11 @@ export class ItemFullScreenCarouselComponent {
   @Input() item: Item;
   @Input() images: string[];
   @Input() imageIndex: number = 0;
+  @Output() favouritedItemChange: EventEmitter<void> = new EventEmitter();
 
   constructor(
     public deviceDetectorService: DeviceDetectorService,
     private checkSessionService: CheckSessionService,
-    private itemCardService: ItemCardService,
     private renderer: Renderer2
   ) {}
 
@@ -34,6 +33,6 @@ export class ItemFullScreenCarouselComponent {
   }
 
   public toggleItemFavorite(): void {
-    this.checkSessionService.hasSession() ? this.itemCardService.toggleFavourite(this.item) : this.checkSessionService.checkSessionAction();
+    this.checkSessionService.hasSession() ? this.favouritedItemChange.emit() : this.checkSessionService.checkSessionAction();
   }
 }
