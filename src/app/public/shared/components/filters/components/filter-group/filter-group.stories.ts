@@ -7,7 +7,6 @@ import { Meta, Story } from '@storybook/angular/types-6-0';
 import { CookieService } from 'ngx-cookie';
 import { FILTER_TYPES } from '../../core/enums/filter-types/filter-types.enum';
 import { FiltersModule } from '../../filters.module';
-import { FilterConfig } from '../../interfaces/filter-config.interface';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { RangeFilterConfig } from '../range-filter/interfaces/range-filter-config.interface';
@@ -19,7 +18,7 @@ import { FilterFactoryService } from './services/filter-factory.service';
 @Component({
   selector: 'tsl-filters',
   template: `
-    <tsl-filter-group [variant]="variant" [config]="config" [initialValues]="initialValues || []" (valueChange)="valueChange($event)">
+    <tsl-filter-group [variant]="variant" [config]="config" [values]="initialValues || []" (valueChange)="valueChange($event)">
     </tsl-filter-group>
   `,
 })
