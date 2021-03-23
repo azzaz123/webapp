@@ -5,7 +5,8 @@
     [config]="bubbleFiltersConfig" 
     [variant]="FILTER_VARIANT.BUBBLE"
     (valueChange)="bubbleChange($event)"
-    (openStateChange)="bubbleOpenStateChange($event)"></tsl-filter-group>
+    (openStateChange)="bubbleOpenStateChange($event)"
+    (clear)="clearFilterValues($event)"></tsl-filter-group>
 </div>
 
 

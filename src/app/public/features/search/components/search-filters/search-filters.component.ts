@@ -31,6 +31,10 @@ export class SearchFiltersComponent {
     private filterParameterStoreService: FilterParameterStoreService
   ) {
     this.filterValues = this.filterParameterStoreService.getParameters();
+
+    this.filterParameterStoreService.parameters$.subscribe((filterValues: FilterParameter[]) => {
+      console.log('filters changed', filterValues);
+    });
   }
 
   public toggleDrawer(): void {
@@ -58,6 +62,11 @@ export class SearchFiltersComponent {
 
   public bubbleOpenStateChange(isOpen: boolean): void {
     this.bubbleFilterOpenStateChange.emit(isOpen);
+  }
+
+  public clearFilterValues(valuesToClear: FilterParameter[]): void {
+    console.log('clearFilterValues', valuesToClear);
+    this.filterParameterStoreService.removeParameters(valuesToClear);
   }
 
   private _applyFilters(): void {
