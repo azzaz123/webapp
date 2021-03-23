@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AdSlotConfiguration } from '@core/ads/models';
 import { AdsService } from '@core/ads/services';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { CategoryService } from '@core/category/category.service';
@@ -26,7 +27,7 @@ import { ItemDetailService } from '../core/services/item-detail/item-detail.serv
 import { MapExtraInfoService } from '../core/services/map-extra-info/map-extra-info.service';
 import { MapSpecificationsService } from '../core/services/map-specifications/map-specifications.service';
 import { ItemDetail } from '../interfaces/item-detail.interface';
-import { ItemDetailAdSlotsConfiguration, ADS_ITEM_DETAIL } from './../core/ads/item-detail-ads.config';
+import { ADS_ITEM_DETAIL, AD_AFFILIATION_SLOT_CONFIGURATION, ItemDetailAdSlotsConfiguration } from './../core/ads/item-detail-ads.config';
 import { ItemDetailLocation } from './constants/item-detail.interface';
 
 @Component({
@@ -52,6 +53,7 @@ export class ItemDetailComponent implements OnInit {
   public itemSpecifications: CounterSpecifications[];
   public itemDetail: ItemDetail;
   public adsSlotsItemDetail: ItemDetailAdSlotsConfiguration = ADS_ITEM_DETAIL;
+  public adsAffiliationSlotConfiguration: AdSlotConfiguration[] = AD_AFFILIATION_SLOT_CONFIGURATION;
   public taxonomiesSpecifications: ItemTaxonomies = {
     parentTaxonomy: null,
     childTaxonomy: null,
@@ -218,7 +220,12 @@ export class ItemDetailComponent implements OnInit {
 
   private setAdSlot(): void {
     this.adsService.setAdKeywords({ category: this.itemDetail.item.categoryId.toString() });
-    this.adsService.setSlots([this.adsSlotsItemDetail.item1, this.adsSlotsItemDetail.item2l, this.adsSlotsItemDetail.item3r]);
+    this.adsService.setSlots([
+      this.adsSlotsItemDetail.item1,
+      this.adsSlotsItemDetail.item2l,
+      this.adsSlotsItemDetail.item3r,
+      ...this.adsAffiliationSlotConfiguration,
+    ]);
   }
 
   private initializeItemExtraInfo(): void {

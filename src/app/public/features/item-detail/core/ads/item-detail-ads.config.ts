@@ -84,3 +84,27 @@ export const ADS_ITEM_DETAIL: ItemDetailAdSlotsConfiguration = {
     device: [DeviceType.DESKTOP],
   },
 };
+
+export const AD_AFFILIATION_SLOT_CONFIGURATION: AdSlotConfiguration[] = [
+  {
+    id: 'item-affiliation-1',
+    name: '130868815/web/item_affiliation1',
+    sizes: [['fluid']],
+    networkId: 6866,
+    device: [DeviceType.DESKTOP, DeviceType.TABLET, DeviceType.MOBILE],
+  },
+  {
+    id: 'item-affiliation-2',
+    name: '130868815/web/item_affiliation2',
+    sizes: [['fluid']],
+    networkId: 6866,
+    device: [DeviceType.DESKTOP, DeviceType.TABLET, DeviceType.MOBILE],
+  },
+  {
+    id: 'item-affiliation-3',
+    name: '130868815/web/item_affiliation3',
+    sizes: [['fluid']],
+    networkId: 6866,
+    device: [DeviceType.DESKTOP, DeviceType.TABLET, DeviceType.MOBILE],
+  },
+];

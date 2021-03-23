@@ -34,6 +34,9 @@
                         <tsl-item-specifications [itemSpecifications]="itemSpecifications"
                             [isCar]="typeCheckService.isCar(this.itemDetail?.item)"></tsl-item-specifications>
                     </div>
+                    <div *ngIf="device === deviceType.DESKTOP" class="ItemDetail__affiliation py-3 mb-0 borderBottom">
+                      <tsl-sky *ngFor="let adAffiliation of adsAffiliationSlotConfiguration" [adSlot]="adAffiliation"></tsl-sky>
+                    </div>
                     <p *ngIf="itemDetail?.item?.description" class="ItemDetail__description py-3 mb-0 text-break" [ngClass]="{'borderBottom': device !== deviceType.MOBILE}">{{itemDetail?.item?.description}}</p>
                     <div *ngIf="device === deviceType.MOBILE">
                         <tsl-sky [adSlot]="adsSlotsItemDetail.item1"></tsl-sky>

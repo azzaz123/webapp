@@ -108,6 +108,7 @@ export class GooglePublisherTagService {
             .addSize(slot.sizeMapping.mobile.screenSize, slot.sizeMapping.mobile.mapping)
             .build();
         }
+        console.log(slot);
         const defineSlot = this.googletag.defineSlot(slot.name, slot.sizes, slot.id);
 
         if (defineSlot) {
