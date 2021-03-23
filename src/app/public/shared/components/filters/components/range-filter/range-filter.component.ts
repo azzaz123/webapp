@@ -58,7 +58,6 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
     this.formGroup.controls.range.setValue([this.range[0], this.range[1]]);
     this.emitEmptyChange();
     this.setLabel(null, null);
-    this._value = [];
     this.clear.emit();
 
     this.hasValueSubject.next(false);
