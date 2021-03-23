@@ -108,7 +108,12 @@ describe('ItemDetailComponent', () => {
         ItemApiService,
         ItemFullScreenCarouselComponent,
         Renderer2,
-        AnalyticsService,
+        {
+          provide: AnalyticsService,
+          useValue: {
+            trackEvent() {},
+          },
+        },
         {
           provide: ItemSocialShareService,
           useValue: {
