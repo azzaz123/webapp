@@ -12,6 +12,13 @@ import { ItemCardService } from '@public/core/services/item-card/item-card.servi
 import { SoldModalComponent } from '@shared/modals/sold-modal/sold-modal.component';
 import { Router } from '@angular/router';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
+import {
+  AnalyticsEvent,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  ClickChatButton,
+  SCREEN_IDS,
+} from '@core/analytics/analytics-constants';
 
 @Component({
   selector: 'tsl-item-detail-header',
@@ -43,6 +50,30 @@ export class ItemDetailHeaderComponent implements OnInit {
     }
     this.initializeUserStats();
     this.checkShowOptions();
+  }
+
+  public trackChatButton(): void {
+    const event: AnalyticsEvent<ClickChatButton> = {
+      name: ANALYTICS_EVENT_NAMES.ClickChatButton,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
+      attributes: {
+        itemId: this.item.id,
+        sellerUserId: this.user.id,
+        screenId: SCREEN_IDS.ItemDetail,
+      },
+    };
+    /**
+     *  const event: AnalyticsEvent<ClickCatalogManagement> = {
+        name: ANALYTICS_EVENT_NAMES.ClickCatalogManagement,
+        eventType: ANALYTIC_EVENT_TYPES.Other,
+        attributes: {
+          screenId: SCREEN_IDS.MyCatalog,
+        },
+      };
+
+      this.analyticsService.trackEvent(event);
+    }
+    */
   }
 
   public toggleItemFavorite(): void {
