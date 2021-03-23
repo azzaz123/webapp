@@ -42,8 +42,8 @@ export class FiltersWrapperComponent {
 
   public closeDrawer(): void {
     this.drawerConfig.isOpen = false;
+    this.filterValues = [...this.filterValues];
     this.filterParameterDraftService.setParameters(this.filterValues);
-    this.filterParameterStoreService.upsertParameters(this.filterValues);
   }
   public applyDrawer(): void {
     this.applyFilters();
