@@ -63,9 +63,13 @@ export class FiltersWrapperComponent {
     this.bubbleFilterOpenStateChange.emit(isOpen);
   }
 
-  public clearFilterValues(valuesToClear: FilterParameter[]): void {
-    this.filterParameterDraftService.removeParameters(valuesToClear);
+  public bubbleClear(valuesToRemove: FilterParameter[]): void {
+    this.filterParameterDraftService.removeParameters(valuesToRemove);
     this.applyFilters();
+  }
+
+  public drawerClear(valuesToRemove: FilterParameter[]): void {
+    this.filterParameterDraftService.removeParameters(valuesToRemove);
   }
 
   private applyFilters(): void {

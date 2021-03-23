@@ -6,7 +6,7 @@
     [variant]="FILTER_VARIANT.BUBBLE"
     (valueChange)="bubbleChange($event)"
     (openStateChange)="bubbleOpenStateChange($event)"
-    (clear)="clearFilterValues($event)"></tsl-filter-group>
+    (clear)="bubbleClear($event)"></tsl-filter-group>
 </div>
 
 
@@ -16,6 +16,7 @@
     [values]="filterValues"
     [config]="drawerFiltersConfig" 
     [variant]="FILTER_VARIANT.CONTENT" 
-    (valueChange)="drawerChange($event)"></tsl-filter-group>
+    (valueChange)="drawerChange($event)"
+    (clear)="drawerClear($event)"></tsl-filter-group>
 </tsl-drawer>
 
