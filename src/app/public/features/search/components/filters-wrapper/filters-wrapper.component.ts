@@ -64,9 +64,8 @@ export class FiltersWrapperComponent {
   }
 
   public clearFilterValues(valuesToClear: FilterParameter[]): void {
-    this.filterParameterStoreService.removeParameters(valuesToClear);
     this.filterParameterDraftService.removeParameters(valuesToClear);
-    this.getFilterValues();
+    this.applyFilters();
   }
 
   private applyFilters(): void {
