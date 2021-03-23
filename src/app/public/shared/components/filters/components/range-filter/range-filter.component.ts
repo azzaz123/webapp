@@ -143,6 +143,8 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
 
     if (this.config.limitless) {
       return range[1] === this.range[1] ? null : range[1];
+    } else if (range[1] === this.range[1]) {
+      return null;
     } else {
       return range[1];
     }
@@ -150,6 +152,6 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
 
   private getMinValue(): number {
     const range = this.formGroup.controls.range.value;
-    return range[0];
+    return this.range[0] === range[0] ? 0 : range[0];
   }
 }
