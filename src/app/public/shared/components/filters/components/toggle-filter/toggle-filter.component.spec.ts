@@ -144,7 +144,7 @@ describe('ToggleFilterComponent', () => {
       it('should format the value correctly on click', () => {
         bubbleClick();
 
-        expect(component.value).toEqual(formatValue(false));
+        expect(component.value).toEqual([]);
       });
     });
   });
@@ -206,7 +206,7 @@ describe('ToggleFilterComponent', () => {
 
       it('should format the value correctly on click', () => {
         toggleClick();
-        expect(component.value).toEqual(formatValue(false));
+        expect(component.value).toEqual([]);
       });
     });
     describe('and has value false', () => {
