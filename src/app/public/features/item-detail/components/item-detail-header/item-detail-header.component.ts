@@ -65,7 +65,7 @@ export class ItemDetailHeaderComponent implements OnInit {
         sellerUserId: this.user.id,
         screenId: SCREEN_IDS.ItemDetail,
         isPro: this.user.featured,
-        isBumped: !!this.item.purchases,
+        isBumped: !!this.item.bumpFlags,
       },
     };
     this.analyticsService.trackEvent(event);
