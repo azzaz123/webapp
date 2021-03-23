@@ -87,7 +87,9 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
   private bindFormValueChangesListeners(): void {
     this.formGroup.controls.range.valueChanges.subscribe((range: [number, number]) => {
       this.formGroup.controls.min.setValue(range[0], { emitEvent: false });
-      this.formGroup.controls.max.setValue(this.getMaxValue() ? this.getMaxValue() : this.range[1], { emitEvent: false });
+      this.formGroup.controls.max.setValue(this.getMaxValue() ? this.getMaxValue() : this.config.limitless ? null : this.range[1], {
+        emitEvent: false,
+      });
 
       if (this.variant === FILTER_VARIANT.CONTENT) {
         this.emitChange();
