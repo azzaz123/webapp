@@ -30,8 +30,7 @@ export class SearchFiltersComponent {
     private filterParameterDraftService: FilterParameterDraftService,
     private filterParameterStoreService: FilterParameterStoreService
   ) {
-    this.filterValues = this.filterParameterStoreService.getParameters();
-
+    this.getFilterValues();
     this.filterParameterStoreService.parameters$.subscribe((filterValues: FilterParameter[]) => {
       console.log('filters changed', filterValues);
     });
@@ -47,13 +46,13 @@ export class SearchFiltersComponent {
     this.filterParameterStoreService.upsertParameters(this.filterValues);
   }
   public applyDrawer(): void {
-    this._applyFilters();
+    this.applyFilters();
     this.closeDrawer();
   }
 
   public bubbleChange(value): void {
     this.filterParameterDraftService.upsertParameters(value);
-    this._applyFilters();
+    this.applyFilters();
   }
 
   public drawerChange(value): void {
@@ -65,14 +64,17 @@ export class SearchFiltersComponent {
   }
 
   public clearFilterValues(valuesToClear: FilterParameter[]): void {
-    console.log('clearFilterValues', valuesToClear);
     this.filterParameterStoreService.removeParameters(valuesToClear);
+    this.filterParameterDraftService.removeParameters(valuesToClear);
+    this.getFilterValues();
   }
 
-  private _applyFilters(): void {
+  private applyFilters(): void {
     this.filterValues = this.filterParameterDraftService.getParameters();
     this.filterParameterStoreService.setParameters(this.filterValues);
+  }
 
-    console.log('APPLY FILTERS', this.filterValues);
+  private getFilterValues(): void {
+    this.filterValues = this.filterParameterStoreService.getParameters();
   }
 }
