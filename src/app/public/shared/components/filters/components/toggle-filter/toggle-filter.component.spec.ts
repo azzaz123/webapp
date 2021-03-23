@@ -4,7 +4,10 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { ToggleFormModule } from '@shared/form/components/toggle/toggle-form.module';
+import { CookieService } from 'ngx-cookie';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { FILTER_TYPES } from '../../core/enums/filter-types/filter-types.enum';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
@@ -25,6 +28,13 @@ describe('ToggleFilterComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ToggleFilterComponent],
       imports: [CommonModule, ToggleFormModule, FormsModule, AbstractFilterModule, HttpClientTestingModule],
+      providers: [
+        DeviceDetectorService,
+        {
+          provide: CookieService,
+          useValue: MockCookieService,
+        },
+      ],
     }).compileComponents();
   });
 
@@ -91,6 +101,7 @@ describe('ToggleFilterComponent', () => {
     describe('and has value false', () => {
       beforeEach(() => {
         component.toggle = false;
+        component['hasValueSubject'].next(component.toggle);
       });
 
       it('should toggle true value on click', () => {
@@ -111,6 +122,7 @@ describe('ToggleFilterComponent', () => {
     describe('and has value true', () => {
       beforeEach(() => {
         component.toggle = true;
+        component['hasValueSubject'].next(component.toggle);
       });
 
       it('should toggle false value on click', () => {
@@ -143,8 +155,25 @@ describe('ToggleFilterComponent', () => {
       fixture.debugElement.query(By.css(toggleSelector)).nativeElement.click();
     };
 
-    beforeEach(() => {
+    beforeEach(async () => {
+      fixture = TestBed.createComponent(ToggleFilterComponent);
+      component = fixture.componentInstance;
+      de = fixture.debugElement;
+      el = de.nativeElement;
+
       component.variant = FILTER_VARIANT.CONTENT;
+
+      component.config = {
+        id: '',
+        type: FILTER_TYPES.TOGGLE,
+        mapKey: {
+          key: 'warranty',
+        },
+        title: 'Warranty',
+        icon: '/assets/icons/joke.svg',
+        bubblePlaceholder: 'Has warranty',
+      };
+
       fixture.detectChanges();
     });
 
