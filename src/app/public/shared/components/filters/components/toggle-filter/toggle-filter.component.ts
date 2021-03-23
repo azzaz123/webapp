@@ -37,7 +37,7 @@ export class ToggleFilterComponent extends AbstractFilter<ToggleFilterParams> im
   }
 
   public handleChange(): void {
-    this.emitChange();
+    this.toggle ? this.emitChange() : this.handleClear();
   }
 
   public handleClick(): void {
