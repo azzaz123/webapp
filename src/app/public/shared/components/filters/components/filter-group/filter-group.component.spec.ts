@@ -72,4 +72,26 @@ describe('FilterGroupComponent', () => {
       expect(component.valueChange.emit).toHaveBeenCalledWith(value);
     });
   });
+
+  describe('when filter group open state changes', () => {
+    it('should emit open state changes', () => {
+      const value = true;
+      spyOn(component.openStateChange, 'emit');
+
+      component['filterGroup']['_openStateChange'].next(value);
+
+      expect(component.openStateChange.emit).toHaveBeenCalledWith(value);
+    });
+  });
+
+  describe('when some filter value is cleared', () => {
+    it('should emit clean', () => {
+      const value: FilterParameter[] = [];
+      spyOn(component.clear, 'emit');
+
+      component['filterGroup']['_clear'].next(value);
+
+      expect(component.clear.emit).toHaveBeenCalledWith(value);
+    });
+  });
 });

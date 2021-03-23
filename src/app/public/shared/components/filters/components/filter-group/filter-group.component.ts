@@ -25,6 +25,7 @@ export class FilterGroupComponent implements AfterViewInit, OnDestroy {
   @Input() variant: FILTER_VARIANT = FILTER_VARIANT.BUBBLE;
   @Output() valueChange = new EventEmitter<FilterParameter[]>();
   @Output() openStateChange = new EventEmitter<boolean>();
+  @Output() clear = new EventEmitter<FilterParameter[]>();
 
   readonly FILTER_VARIANT = FILTER_VARIANT;
 
@@ -46,6 +47,12 @@ export class FilterGroupComponent implements AfterViewInit, OnDestroy {
     this.filterGroupSubscriptions.push(
       this.filterGroup.openStateChange().subscribe((isOpen: boolean) => {
         this.openStateChange.emit(isOpen);
+      })
+    );
+
+    this.filterGroupSubscriptions.push(
+      this.filterGroup.clear().subscribe((value: FilterParameter[]) => {
+        this.clear.emit(value);
       })
     );
   }
