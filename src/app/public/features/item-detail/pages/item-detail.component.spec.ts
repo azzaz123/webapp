@@ -51,6 +51,7 @@ import { ItemDetailHeaderModule } from '../components/item-detail-header/item-de
 import { ItemSocialShareService } from '../core/services/item-social-share/item-social-share.service';
 import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
 import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -107,7 +108,7 @@ describe('ItemDetailComponent', () => {
         ItemApiService,
         ItemFullScreenCarouselComponent,
         Renderer2,
-
+        AnalyticsService,
         {
           provide: ItemSocialShareService,
           useValue: {
