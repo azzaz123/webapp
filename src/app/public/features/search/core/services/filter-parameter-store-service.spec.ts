@@ -1,17 +1,17 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FilterParameterDraftService } from './filter-parameter-draft.service';
+import { FilterParameterStoreService } from './filter-parameter-store.service';
 import { filterParametersMock } from '@fixtures/filter-parameter.fixtures';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 
-describe('FilterParameterDraftService', () => {
-  let service: FilterParameterDraftService;
+describe('FilterParameterStoreServiceService', () => {
+  let service: FilterParameterStoreService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [FilterParameterDraftService],
+      providers: [FilterParameterStoreService],
     });
-    service = TestBed.inject(FilterParameterDraftService);
+    service = TestBed.inject(FilterParameterStoreService);
   });
 
   it('should be created', () => {
@@ -45,6 +45,14 @@ describe('FilterParameterDraftService', () => {
 
       expect(service.getParameters()).toEqual(filterParametersMock);
     });
+    it('should propagate parameters to listeners', () => {
+      let parameters: FilterParameter[];
+      service.parameters$.subscribe((params) => (parameters = params));
+
+      service.setParameters(filterParametersMock);
+
+      expect(parameters).toEqual(filterParametersMock);
+    });
   });
 
   describe('when we need to upsert parameters', () => {
@@ -62,6 +70,18 @@ describe('FilterParameterDraftService', () => {
 
         expect(service.getParameters()).toEqual([newParameter, ...filterParametersMock]);
       });
+      it('should propagate parameters to listeners', () => {
+        const newParameter: FilterParameter = {
+          key: 'newParameterKey',
+          value: 'newParameterValue',
+        };
+        let parameters: FilterParameter[];
+        service.parameters$.subscribe((params) => (parameters = params));
+
+        service.upsertParameters([newParameter]);
+
+        expect(parameters).toEqual([newParameter, ...filterParametersMock]);
+      });
     });
     describe('and the parameters do exist', () => {
       it('should overwrite the parameter values', () => {
@@ -73,6 +93,19 @@ describe('FilterParameterDraftService', () => {
         service.upsertParameters([newParameter]);
 
         expect(service.getParameters()).toEqual([newParameter, filterParametersMock[1]]);
+      });
+      it('should propagate parameters to listeners', () => {
+        const updatedParameter: FilterParameter = {
+          ...filterParametersMock[0],
+          value: 'newParameterValue',
+        };
+        let parameters: FilterParameter[];
+        service.parameters$.subscribe((params) => (parameters = params));
+
+        service.upsertParameters([updatedParameter]);
+
+        const expectedParameters = filterParametersMock.map((parameter, index) => (index === 0 ? updatedParameter : parameter));
+        expect(parameters).toEqual(expectedParameters);
       });
     });
   });

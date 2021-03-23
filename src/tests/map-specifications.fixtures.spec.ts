@@ -32,6 +32,34 @@ export const MOCK_MAP_SPECIFICATIONS_CAR: Car = new Car(
   'brand_new'
 );
 
+export const MOCK_MAP_SPECIFICATIONS_CAR_BODY_OTHERS: Car = new Car(
+  '3',
+  '3',
+  'Car',
+  'Description',
+  90,
+  'euros',
+  343535355,
+  'url',
+  null,
+  null,
+  null,
+  'webSlug',
+  'brand',
+  'model',
+  2009,
+  'manual',
+  'gasoil',
+  'red',
+  200,
+  'others',
+  3,
+  null,
+  false,
+  4,
+  'brand_new'
+);
+
 export const MOCK_COUNTER_SPECIFICATIONS_CAR: CounterSpecifications[] = [
   {
     type: CAR_SPECIFICATION_TYPE.SMALL,
