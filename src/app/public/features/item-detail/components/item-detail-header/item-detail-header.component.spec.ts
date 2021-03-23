@@ -336,4 +336,14 @@ describe('ItemDetailHeaderComponent', () => {
       });
     });
   });
+  describe('After we click the chatButton', () => {
+    it('should send track click button event', () => {
+      spyOn(component, 'trackChatButton');
+      const chatButton = fixture.debugElement.query(By.css(chatButtonId)).nativeElement;
+
+      chatButton.click();
+
+      expect(component.trackChatButton).toHaveBeenCalled();
+    });
+  });
 });
