@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./filter-group.component.scss'],
 })
 export class FilterGroupComponent implements AfterViewInit, OnDestroy {
-  @ViewChildren(FilterHostDirective) query: QueryList<FilterHostDirective>;
+  @ViewChildren(FilterHostDirective) filterHosts: QueryList<FilterHostDirective>;
   @Input()
   set values(values: FilterParameter[]) {
     this._values = values;
@@ -51,7 +51,7 @@ export class FilterGroupComponent implements AfterViewInit, OnDestroy {
   }
 
   private insertFilters(): void {
-    this.filterFactory.insertFilters(this.config, this._values, this.variant, this.query);
+    this.filterFactory.insertFilters(this.config, this._values, this.variant, this.filterHosts);
   }
 
   private setValues(): void {

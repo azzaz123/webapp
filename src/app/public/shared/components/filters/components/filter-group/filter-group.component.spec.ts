@@ -11,6 +11,7 @@ describe('FilterGroupComponent', () => {
   let component: FilterGroupComponent;
   let fixture: ComponentFixture<FilterGroupComponent>;
   let filterFactoryService: FilterFactoryService;
+  const values = [{ key: 'key', value: 'true' }];
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -44,7 +45,7 @@ describe('FilterGroupComponent', () => {
         bubblePlaceholder: 'bubblePlaceholder',
       },
     ];
-    component.values = [{ key: 'key', value: 'true' }];
+    component.values = values;
     component.variant = FILTER_VARIANT.BUBBLE;
     fixture.detectChanges();
   });
@@ -58,7 +59,7 @@ describe('FilterGroupComponent', () => {
 
     component.ngAfterViewInit();
 
-    expect(filterFactoryService.insertFilters).toHaveBeenCalledWith(component.config, component.values, component.variant, component.query);
+    expect(filterFactoryService.insertFilters).toHaveBeenCalledWith(component.config, values, component.variant, component.filterHosts);
   });
 
   describe('when filter group value changes', () => {
