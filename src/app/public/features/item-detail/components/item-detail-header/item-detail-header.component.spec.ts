@@ -24,6 +24,7 @@ import { ItemDetailService } from '../../core/services/item-detail/item-detail.s
 import { MOCK_ITEM_7 } from '@public/shared/components/item-card/item-card.mock.stories';
 
 import { ItemDetailHeaderComponent } from './item-detail-header.component';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 
 describe('ItemDetailHeaderComponent', () => {
   let component: ItemDetailHeaderComponent;
@@ -52,6 +53,12 @@ describe('ItemDetailHeaderComponent', () => {
         RecommenderApiService,
         MapItemService,
         ToastService,
+        {
+          provide: AnalyticsService,
+          useValue: {
+            trackEvent() {},
+          },
+        },
         {
           provide: PublicProfileService,
           useValue: {
