@@ -18,6 +18,7 @@ import {
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
 import { finalize } from 'rxjs/operators';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 
 @Component({
   selector: 'tsl-item-detail-header',
@@ -40,6 +41,7 @@ export class ItemDetailHeaderComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private itemDetailService: ItemDetailService,
+    private analyticsService: AnalyticsService,
     private errorsService: ErrorsService,
     private checkSessionService: CheckSessionService,
     private router: Router
@@ -62,20 +64,11 @@ export class ItemDetailHeaderComponent implements OnInit {
         itemId: this.item.id,
         sellerUserId: this.user.id,
         screenId: SCREEN_IDS.ItemDetail,
+        isPro: this.user.featured,
+        isBumped: !!this.item.purchases,
       },
     };
-    /**
-     *  const event: AnalyticsEvent<ClickCatalogManagement> = {
-        name: ANALYTICS_EVENT_NAMES.ClickCatalogManagement,
-        eventType: ANALYTIC_EVENT_TYPES.Other,
-        attributes: {
-          screenId: SCREEN_IDS.MyCatalog,
-        },
-      };
-
-      this.analyticsService.trackEvent(event);
-    }
-    */
+    this.analyticsService.trackEvent(event);
   }
 
   public toggleFavouriteItem(): void {
