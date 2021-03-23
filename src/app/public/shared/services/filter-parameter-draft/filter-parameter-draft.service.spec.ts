@@ -76,4 +76,29 @@ describe('FilterParameterDraftService', () => {
       });
     });
   });
+
+  describe('when we need to remove parameters', () => {
+    beforeEach(() => {
+      service.setParameters(filterParametersMock);
+    });
+    describe('and the parameters do not exist', () => {
+      it('should do nothing', () => {
+        const newParameter: FilterParameter = {
+          key: 'newParameterKey',
+          value: 'newParameterValue',
+        };
+
+        service.removeParameters([newParameter]);
+
+        expect(service.getParameters()).toEqual(filterParametersMock);
+      });
+    });
+    describe('and the parameters do exist', () => {
+      it('should remove the parameter values', () => {
+        service.removeParameters([filterParametersMock[0]]);
+
+        expect(service.getParameters()).toEqual(filterParametersMock);
+      });
+    });
+  });
 });

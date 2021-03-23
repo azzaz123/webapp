@@ -27,6 +27,17 @@ export class FilterParameterDraftService {
     this.parametersSubject.next(mergedParameters);
   }
 
+  public removeParameters(parameters: FilterParameter[]): void {
+    const clearedParameters = this.getParameters();
+    parameters.forEach((parameter: FilterParameter, index: number) => {
+      if (parameter === clearedParameters[index]) {
+        clearedParameters.splice(index, 1);
+      }
+    });
+
+    this.parametersSubject.next(clearedParameters);
+  }
+
   private mergeParameters(newParameters: FilterParameter[], oldParameters: FilterParameter[]): FilterParameter[] {
     return [...newParameters, ...oldParameters].reduce((accumulatedParameters, newParameter) => {
       const accumulatedKeys = accumulatedParameters.map((parameter) => parameter.key);
