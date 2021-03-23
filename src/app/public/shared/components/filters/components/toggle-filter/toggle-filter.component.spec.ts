@@ -200,15 +200,11 @@ describe('ToggleFilterComponent', () => {
 
       it('should toggle false value on click', () => {
         toggleClick();
-
+        fixture.detectChanges();
         expect(component.toggle).toBeFalsy();
       });
-
-      it('should format the value correctly on click', () => {
-        toggleClick();
-        expect(component.value).toEqual([]);
-      });
     });
+
     describe('and has value false', () => {
       beforeEach(() => {
         component.toggle = false;
