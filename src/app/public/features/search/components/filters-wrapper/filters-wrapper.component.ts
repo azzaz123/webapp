@@ -61,7 +61,9 @@ export class FiltersWrapperComponent {
 
   public bubbleOpenStateChange(isOpen: boolean): void {
     this.bubbleFilterOpenStateChange.emit(isOpen);
-    this.filterValues = [...this.filterValues];
+    if (!isOpen) {
+      this.filterValues = [...this.filterValues];
+    }
   }
 
   public bubbleClear(valuesToRemove: FilterParameter[]): void {
