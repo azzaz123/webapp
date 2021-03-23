@@ -7,11 +7,11 @@ import { FilterParameterDraftService } from '@public/shared/services/filter-para
 import { FilterParameterStoreService } from '../../core/services/filter-parameter-store.service';
 
 @Component({
-  selector: 'tsl-search-filters',
-  templateUrl: './search-filters.component.html',
-  styleUrls: ['./search-filters.component.scss'],
+  selector: 'tsl-filters-wrapper',
+  templateUrl: './filters-wrapper.component.html',
+  styleUrls: ['./filters-wrapper.component.scss'],
 })
-export class SearchFiltersComponent {
+export class FiltersWrapperComponent {
   public readonly FILTER_VARIANT = FILTER_VARIANT;
   public drawerConfig: DrawerConfig = {
     isOpen: false,
