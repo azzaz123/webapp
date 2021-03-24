@@ -128,6 +128,7 @@ export class ItemDetailHeaderComponent implements OnInit {
           },
         };
         this.analyticsService.trackEvent(event);
+        break;
       default:
         return;
     }
