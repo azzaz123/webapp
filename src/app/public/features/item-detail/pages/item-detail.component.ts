@@ -91,9 +91,9 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
         },
       };
       if (this.itemDetail.item.flags.favorite) {
-        this.analyticsService.trackEvent(event as AnalyticsEvent<FavoriteItem>);
-      } else {
         this.analyticsService.trackEvent({ ...event, name: ANALYTICS_EVENT_NAMES.UnfavoriteItem } as AnalyticsEvent<UnfavoriteItem>);
+      } else {
+        this.analyticsService.trackEvent(event as AnalyticsEvent<FavoriteItem>);
       }
     });
   }
