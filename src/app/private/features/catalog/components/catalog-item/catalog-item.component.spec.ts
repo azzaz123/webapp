@@ -22,7 +22,6 @@ import * as moment from 'moment';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { of, ReplaySubject } from 'rxjs';
 import { ItemChangeEvent } from '../../core/item-change.interface';
-import { ReactivateModalComponent } from '../../modals/reactivate-modal/reactivate-modal.component';
 import { CatalogItemComponent } from './catalog-item.component';
 
 describe('CatalogItemComponent', () => {
@@ -191,79 +190,6 @@ describe('CatalogItemComponent', () => {
     });
   });
 
-  describe('reactivate', () => {
-    beforeEach(() => {
-      spyOn(itemService, 'getAvailableReactivationProducts').and.returnValue(of(PRODUCT_RESPONSE));
-    });
-
-    it('should call getAvailableReactivationProducts', () => {
-      component.reactivate(MOCK_ITEM);
-
-      expect(itemService.getAvailableReactivationProducts).toHaveBeenCalledWith(ITEM_ID);
-    });
-
-    it('should open dialog and set price', () => {
-      spyOn(modalService, 'open').and.callThrough();
-
-      component.reactivate(MOCK_ITEM);
-
-      expect(modalService.open).toHaveBeenCalledWith(ReactivateModalComponent, {
-        windowClass: 'modal-standard',
-      });
-      expect(componentInstance.price).toEqual(PRODUCT_DURATION_MARKET_CODE);
-      expect(componentInstance.item).toEqual(MOCK_ITEM);
-    });
-
-    it('should emit reactivatedWithBump event if result is bump', fakeAsync(() => {
-      spyOn(modalService, 'open').and.returnValue({
-        result: Promise.resolve('bump'),
-        componentInstance: componentInstance,
-      });
-      let event: ItemChangeEvent;
-      component.itemChange.subscribe((e: ItemChangeEvent) => {
-        event = e;
-      });
-
-      component.reactivate(MOCK_ITEM);
-      tick();
-
-      expect(event).toEqual({
-        orderEvent: ORDER_EVENT,
-        action: 'reactivatedWithBump',
-      });
-    }));
-
-    it('should call reactivateItem if result is NOT bump', fakeAsync(() => {
-      spyOn(modalService, 'open').and.returnValue({
-        result: Promise.resolve('reactivate'),
-        componentInstance: componentInstance,
-      });
-      spyOn(component, 'reactivateItem');
-      let event: ItemChangeEvent;
-      component.itemChange.subscribe((e: ItemChangeEvent) => {
-        event = e;
-      });
-
-      component.reactivate(MOCK_ITEM);
-      tick();
-
-      expect(component.reactivateItem).toHaveBeenCalledWith(MOCK_ITEM);
-    }));
-
-    describe('if it`s a mobile device', () => {
-      it('should reactivate the item without showing the modal', () => {
-        spyOn(deviceService, 'isMobile').and.returnValue(true);
-        spyOn(component, 'reactivateItem');
-        spyOn(modalService, 'open');
-
-        component.reactivate(MOCK_ITEM);
-
-        expect(modalService.open).not.toHaveBeenCalled();
-        expect(component.reactivateItem).toHaveBeenCalledWith(MOCK_ITEM);
-      });
-    });
-  });
-
   describe('reactivateItem', () => {
     let item: Item;
     let event: ItemChangeEvent;
@@ -274,7 +200,7 @@ describe('CatalogItemComponent', () => {
       component.itemChange.subscribe(($event: ItemChangeEvent) => {
         event = $event;
       });
-      component.reactivateItem(item);
+      component.reactivate(item);
     }));
 
     afterEach(() => {
