@@ -94,8 +94,19 @@ export class ItemDetailHeaderComponent implements OnInit {
     });
   }
 
-  public trackChatButton() {
-    this.trackEvents(ANALYTICS_EVENT_NAMES.ClickChatButton);
+  public trackChatButton(): void {
+    const event: AnalyticsEvent<ClickChatButton> = {
+      name: ANALYTICS_EVENT_NAMES.ClickChatButton,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
+      attributes: {
+        itemId: this.item.id,
+        sellerUserId: this.user.id,
+        screenId: SCREEN_IDS.ItemDetail,
+        isPro: this.user.featured,
+        isBumped: !!this.item.bumpFlags,
+      },
+    };
+    this.analyticsService.trackEvent(event);
   }
 
   private initializeItemBumpExpiringDate(): void {
@@ -111,26 +122,5 @@ export class ItemDetailHeaderComponent implements OnInit {
 
   private checkShowOptions(): void {
     this.showOptions = !this.item.sold && !this.item.flags.onhold && !this.item.flags.expired && !this.item.flags.notAvailable;
-  }
-
-  private trackEvents(eventName: ANALYTICS_EVENT_NAMES): void {
-    switch (eventName) {
-      case ANALYTICS_EVENT_NAMES.ClickChatButton:
-        const event: AnalyticsEvent<ClickChatButton> = {
-          name: eventName,
-          eventType: ANALYTIC_EVENT_TYPES.Navigation,
-          attributes: {
-            itemId: this.item.id,
-            sellerUserId: this.user.id,
-            screenId: SCREEN_IDS.ItemDetail,
-            isPro: this.user.featured,
-            isBumped: !!this.item.bumpFlags,
-          },
-        };
-        this.analyticsService.trackEvent(event);
-        break;
-      default:
-        return;
-    }
   }
 }
