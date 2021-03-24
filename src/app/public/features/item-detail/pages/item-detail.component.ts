@@ -27,7 +27,11 @@ import { ItemDetailService } from '../core/services/item-detail/item-detail.serv
 import { MapExtraInfoService } from '../core/services/map-extra-info/map-extra-info.service';
 import { MapSpecificationsService } from '../core/services/map-specifications/map-specifications.service';
 import { ItemDetail } from '../interfaces/item-detail.interface';
-import { ADS_ITEM_DETAIL, AD_AFFILIATION_SLOT_CONFIGURATION, ItemDetailAdSlotsConfiguration } from './../core/ads/item-detail-ads.config';
+import {
+  ADS_ITEM_DETAIL,
+  FactoryAdAffiliationSlotConfiguration,
+  ItemDetailAdSlotsConfiguration,
+} from './../core/ads/item-detail-ads.config';
 import { ItemDetailLocation } from './constants/item-detail.interface';
 
 @Component({
@@ -53,7 +57,7 @@ export class ItemDetailComponent implements OnInit {
   public itemSpecifications: CounterSpecifications[];
   public itemDetail: ItemDetail;
   public adsSlotsItemDetail: ItemDetailAdSlotsConfiguration = ADS_ITEM_DETAIL;
-  public adsAffiliationSlotConfiguration: AdSlotConfiguration[] = AD_AFFILIATION_SLOT_CONFIGURATION;
+  public adsAffiliationSlotConfiguration: AdSlotConfiguration[];
   public taxonomiesSpecifications: ItemTaxonomies = {
     parentTaxonomy: null,
     childTaxonomy: null,
@@ -87,6 +91,8 @@ export class ItemDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.device = this.deviceService.getDeviceType();
+    this.adsAffiliationSlotConfiguration = FactoryAdAffiliationSlotConfiguration(this.device);
+
     // TBD the url may change to match one more similar to production one
     this.initPage(this.route.snapshot.paramMap.get(PUBLIC_PATH_PARAMS.ID));
   }

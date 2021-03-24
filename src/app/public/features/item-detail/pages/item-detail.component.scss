@@ -40,13 +40,13 @@ $item-detail-carousel-height: 477px;
   }
 
   &__affiliation {
-    display: flex;
-    justify-content: start;
-    align-items: center;
-
     tsl-sky {
-      display: block;
       flex: 1;
+      &.marginBottom {
+        &:not(:last-child) {
+          margin-bottom: $spacing-m;
+        }
+      }
     }
   }
 

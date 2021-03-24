@@ -50,7 +50,7 @@ import { ItemSpecificationsComponent } from '../components/item-specifications/i
 import { ItemSpecificationsModule } from '../components/item-specifications/item-specifications.module';
 import { ItemTaxonomiesComponent } from '../components/item-taxonomies/item-taxonomies.component';
 import { ItemTaxonomiesModule } from '../components/item-taxonomies/item-taxonomies.module';
-import { ADS_ITEM_DETAIL } from '../core/ads/item-detail-ads.config';
+import { ADS_ITEM_DETAIL, FactoryAdAffiliationSlotConfiguration } from '../core/ads/item-detail-ads.config';
 import { EllapsedTimeModule } from '../core/directives/ellapsed-time.module';
 import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
 import { MapExtraInfoService } from '../core/services/map-extra-info/map-extra-info.service';
@@ -197,39 +197,88 @@ describe('ItemDetailComponent', () => {
   });
 
   describe('when we are on MOBILE...', () => {
-    it('should only show AD on description', () => {
+    beforeEach(() => {
       spyOn(deviceService, 'getDeviceType').and.returnValue(DeviceType.MOBILE);
-
+    });
+    it('should only show AD on description', () => {
       component.ngOnInit();
       fixture.detectChanges();
 
       const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
 
-      expect(ads.length).toBe(2);
+      expect(ads.length).toBe(5);
+    });
+
+    it('should set ads configuration of mobile', () => {
+      spyOn(MockAdsService, 'setAdKeywords').and.callThrough();
+      spyOn(MockAdsService, 'setSlots').and.callThrough();
+
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      expect(MockAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_ITEM_DETAIL.item.categoryId.toString() });
+      expect(MockAdsService.setSlots).toHaveBeenCalledWith([
+        ADS_ITEM_DETAIL.item1,
+        ADS_ITEM_DETAIL.item2l,
+        ADS_ITEM_DETAIL.item3r,
+        ...FactoryAdAffiliationSlotConfiguration(DeviceType.MOBILE),
+      ]);
     });
   });
 
   describe('when we are on TABLET...', () => {
-    it('should show only the top AD', () => {
+    beforeEach(() => {
       spyOn(deviceService, 'getDeviceType').and.returnValue(DeviceType.TABLET);
+    });
 
+    it('should show only the top AD', () => {
       component.ngOnInit();
       fixture.detectChanges();
       const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
 
-      expect(ads.length).toBe(2);
+      expect(ads.length).toBe(5);
+    });
+    it('should set ads configuration of tablet', () => {
+      spyOn(MockAdsService, 'setAdKeywords').and.callThrough();
+      spyOn(MockAdsService, 'setSlots').and.callThrough();
+
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      expect(MockAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_ITEM_DETAIL.item.categoryId.toString() });
+      expect(MockAdsService.setSlots).toHaveBeenCalledWith([
+        ADS_ITEM_DETAIL.item1,
+        ADS_ITEM_DETAIL.item2l,
+        ADS_ITEM_DETAIL.item3r,
+        ...FactoryAdAffiliationSlotConfiguration(DeviceType.TABLET),
+      ]);
     });
   });
 
   describe('when we are on DESKTOP...', () => {
-    it('should show the three ADS', () => {
+    it('should show six ADS', () => {
       spyOn(deviceService, 'getDeviceType').and.returnValue(DeviceType.DESKTOP);
 
       component.ngOnInit();
       fixture.detectChanges();
       const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
 
-      expect(ads.length).toBe(3);
+      expect(ads.length).toBe(6);
+    });
+    it('should set ads configuration of desktop', () => {
+      spyOn(MockAdsService, 'setAdKeywords').and.callThrough();
+      spyOn(MockAdsService, 'setSlots').and.callThrough();
+
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      expect(MockAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_ITEM_DETAIL.item.categoryId.toString() });
+      expect(MockAdsService.setSlots).toHaveBeenCalledWith([
+        ADS_ITEM_DETAIL.item1,
+        ADS_ITEM_DETAIL.item2l,
+        ADS_ITEM_DETAIL.item3r,
+        ...FactoryAdAffiliationSlotConfiguration(DeviceType.DESKTOP),
+      ]);
     });
   });
 
@@ -325,17 +374,6 @@ describe('ItemDetailComponent', () => {
         Object.keys(component.socialShare).forEach((socialShareKey: string) => {
           expect(socialShareElement[socialShareKey]).toEqual(component.socialShare[socialShareKey]);
         });
-      });
-
-      it('should set ads configuration', () => {
-        spyOn(MockAdsService, 'setAdKeywords').and.callThrough();
-        spyOn(MockAdsService, 'setSlots').and.callThrough();
-
-        component.ngOnInit();
-        fixture.detectChanges();
-
-        expect(MockAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_ITEM_DETAIL.item.categoryId.toString() });
-        expect(MockAdsService.setSlots).toHaveBeenCalledWith([ADS_ITEM_DETAIL.item1, ADS_ITEM_DETAIL.item2l, ADS_ITEM_DETAIL.item3r]);
       });
     });
 
