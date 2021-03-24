@@ -464,8 +464,6 @@ describe('ItemDetailComponent', () => {
       });
 
       it('should send favorite item event if we toggle favourite an item', () => {
-        itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
-        fixture.detectChanges();
         spyOn(itemDetailStoreService, 'toggleFavouriteItem').and.returnValue(of({}));
         spyOn(analyticsService, 'trackEvent');
         const favoriteItemEvent: AnalyticsEvent<FavoriteItem> = {
