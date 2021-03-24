@@ -15,28 +15,28 @@ import { FavouriteIconComponent } from '../favourite-icon/favourite-icon.compone
 import { FavouriteIconModule } from '../favourite-icon/favourite-icon.module';
 import { ItemExtraInfoModule } from '../item-extra-info/item-extra-info.module';
 
-import { ItemWideCardComponent } from './item-wide-card.component';
+import { ItemCardWideComponent } from './item-card-wide.component';
 
-describe('ItemWideCardComponent', () => {
+describe('ItemCardWideComponent', () => {
   const favouriteIconSelector = 'tsl-favourite-icon';
-  const componentClass = '.ItemWideCard';
-  const itemPriceClass = '.ItemWideCard__price';
-  const countryBumpedClass = '.ItemWideCard__icon--contryBumped';
-  const bumpedClass = '.ItemWideCard__icon--bumped';
+  const componentClass = '.ItemCardWide';
+  const itemPriceClass = '.ItemCardWide__price';
+  const countryBumpedClass = '.ItemCardWide__icon--contryBumped';
+  const bumpedClass = '.ItemCardWide__icon--bumped';
   const currencies = {
     EUR: '€',
     GBP: '£',
   };
 
-  let component: ItemWideCardComponent;
-  let fixture: ComponentFixture<ItemWideCardComponent>;
+  let component: ItemCardWideComponent;
+  let fixture: ComponentFixture<ItemCardWideComponent>;
   let decimalPipe: DecimalPipe;
   let de: DebugElement;
   let el: HTMLElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ItemWideCardComponent, SlidesCarouselComponent],
+      declarations: [ItemCardWideComponent, SlidesCarouselComponent],
       imports: [
         CommonModule,
         FavouriteIconModule,
@@ -51,7 +51,7 @@ describe('ItemWideCardComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ItemWideCardComponent);
+    fixture = TestBed.createComponent(ItemCardWideComponent);
     component = fixture.componentInstance;
     decimalPipe = TestBed.inject(DecimalPipe);
     de = fixture.debugElement;
@@ -92,11 +92,11 @@ describe('ItemWideCardComponent', () => {
     });
 
     it('should print their title', () => {
-      expect(el.querySelector('.ItemWideCard__title').innerHTML).toEqual(component.item.title);
+      expect(el.querySelector('.ItemCardWide__title').innerHTML).toEqual(component.item.title);
     });
 
     it('should print their description', () => {
-      expect(el.querySelector('.ItemWideCard__description').innerHTML).toEqual(component.item.description);
+      expect(el.querySelector('.ItemCardWide__description').innerHTML).toEqual(component.item.description);
     });
 
     describe('and we recieve the extra info...', () => {
@@ -311,9 +311,9 @@ describe('ItemWideCardComponent', () => {
       it('should emit the item click event', fakeAsync(() => {
         spyOn(component.itemClick, 'emit');
         spyOn(component.toggleFavourite, 'emit');
-        const ItemWideCard = fixture.debugElement.nativeElement.querySelector('.ItemWideCard');
+        const ItemCardWide = fixture.debugElement.nativeElement.querySelector('.ItemCardWide');
 
-        ItemWideCard.click();
+        ItemCardWide.click();
         tick();
 
         expect(component.itemClick.emit).toHaveBeenCalled();

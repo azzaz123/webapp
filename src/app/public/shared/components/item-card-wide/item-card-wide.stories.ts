@@ -12,7 +12,7 @@ import { Story, Meta } from '@storybook/angular/types-6-0';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { SlidesCarouselModule } from '../carousel-slides/carousel-slides.module';
 import { ItemExtraInfoModule } from '../item-extra-info/item-extra-info.module';
-import { ItemWideCardComponent } from './item-wide-card.component';
+import { ItemCardWideComponent } from './item-card-wide.component';
 import {
   MOCK_ITEM,
   MOCK_CAR,
@@ -22,19 +22,19 @@ import {
   MOCK_ITEM_RESERVED,
   MOCK_ITEM_SOLD,
   MOCK_ITEM_WITHOUT_IMAGES,
-} from './item-wide-card.mock.stories';
+} from './item-card-wide.mock.stories';
 
 export default {
-  title: 'Webapp/Public/Shared/Components/ItemWideCard',
+  title: 'Webapp/Public/Shared/Components/ItemCardWide',
   decorators: [styledWrapperDecorator('max-width: 685px;')],
-  component: ItemWideCardComponent,
+  component: ItemCardWideComponent,
 } as Meta;
 
-const Template: Story<ItemWideCardComponent> = (args: ItemWideCardComponent) => ({
-  component: ItemWideCardComponent,
+const Template: Story<ItemCardWideComponent> = (args: ItemCardWideComponent) => ({
+  component: ItemCardWideComponent,
   props: args,
   moduleMetadata: {
-    declarations: [ItemWideCardComponent],
+    declarations: [ItemCardWideComponent],
     imports: [
       CommonModule,
       FavouriteIconModule,
@@ -48,7 +48,7 @@ const Template: Story<ItemWideCardComponent> = (args: ItemWideCardComponent) => 
     providers: [DeviceDetectorService, HAMMER_PROVIDER],
   },
   template:
-    '<tsl-item-wide-card [item]="item" [showFavourite]="showFavourite" [itemExtraInfo]="itemExtraInfo" (toggleFavourite)="toggleFavourite()"></tsl-item-wide-card>',
+    '<tsl-item-card-wide [item]="item" [showFavourite]="showFavourite" [itemExtraInfo]="itemExtraInfo" (toggleFavourite)="toggleFavourite()"></tsl-item-card-wide>',
 });
 
 const MOCK_ITEM_EXTRA_INFO = ['Cámara De Fotos', '20 cm', 'Digital'];

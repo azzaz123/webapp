@@ -1,17 +1,17 @@
-<div *ngIf="item" (click)="itemClick.emit()" class="ItemWideCard container w-100 p-1">
+<div *ngIf="item" (click)="itemClick.emit()" class="ItemCardWide container w-100 p-1">
     <div class="row d-flex w-100 h-100 m-0 align-content-start">
-        <div class="ItemWideCard__images col-12 col-md-5 p-0"> 
+        <div class="ItemCardWide__images col-12 col-md-5 p-0"> 
             <tsl-svg-icon *ngIf="item.flags?.sold" width="20"
-                class="ItemWideCard__icon ItemWideCard__icon--left position-absolute d-flex justify-content-center align-items-center"
+                class="ItemCardWide__icon ItemCardWide__icon--left position-absolute d-flex justify-content-center align-items-center"
                 src="/assets/icons/item-card/sold.svg"></tsl-svg-icon>
             <tsl-svg-icon *ngIf="item.flags?.reserved" width="15"
-                class="ItemWideCard__icon ItemWideCard__icon--left position-absolute d-flex justify-content-center align-items-center"
+                class="ItemCardWide__icon ItemCardWide__icon--left position-absolute d-flex justify-content-center align-items-center"
                 src="/assets/icons/item-card/reserved.svg"></tsl-svg-icon>
             <tsl-svg-icon *ngIf="item.bumpFlags?.bumped" width="18"
-                class="ItemWideCard__icon ItemWideCard__icon--right position-absolute ItemWideCard__icon--bumped d-flex justify-content-center align-items-center"
+                class="ItemCardWide__icon ItemCardWide__icon--right position-absolute ItemCardWide__icon--bumped d-flex justify-content-center align-items-center"
                 src="/assets/icons/item-card/bumped.svg"></tsl-svg-icon>
             <tsl-svg-icon 
-                class="ItemWideCard__icon ItemWideCard__icon--right position-absolute ItemWideCard__icon--contryBumped d-flex justify-content-center align-items-center"
+                class="ItemCardWide__icon ItemCardWide__icon--right position-absolute ItemCardWide__icon--contryBumped d-flex justify-content-center align-items-center"
                 *ngIf="item.bumpFlags?.country_bumped" width="18"
                 src="/assets/icons/item-card/bumped.svg"></tsl-svg-icon>
             <tsl-carousel-slides class="h-100" [hideControllers]="deviceDetectorService.isMobile()">
@@ -22,18 +22,18 @@
         </div>
         <div class="col-12 col-md-7 w-100 pt-3 p-2 pt-md-2 px-md-3">
             <div class="d-flex justify-content-between">
-                <span class="ItemWideCard__price ItemWideCard__price--bold">{{item.salePrice | customCurrency:item.currencyCode}}</span>
-                <tsl-favourite-icon *ngIf="showFavourite" class="ItemWideCard__favourite" [active]="item.flags?.favorite"
+                <span class="ItemCardWide__price ItemCardWide__price--bold">{{item.salePrice | customCurrency:item.currencyCode}}</span>
+                <tsl-favourite-icon *ngIf="showFavourite" class="ItemCardWide__favourite" [active]="item.flags?.favorite"
                     (click)="toggleItemFavorite($event)"></tsl-favourite-icon>
             </div>
             <div class="d-flex flex-column">
-                <span class="ItemWideCard__title d-inline-block text-truncate w-100" >{{item.title}}</span>
+                <span class="ItemCardWide__title d-inline-block text-truncate w-100" >{{item.title}}</span>
                 <tsl-item-extra-info
                     *ngIf="itemExtraInfo?.length > 0"
-                    class="ItemWideCard__extraInfo d-block mt-1"
+                    class="ItemCardWide__extraInfo d-block mt-1"
                     [extraInfo]="itemExtraInfo">
                 </tsl-item-extra-info>
-                <span *ngIf="item.description" class="ItemWideCard__description mt-2">{{item.description}}</span>
+                <span *ngIf="item.description" class="ItemCardWide__description mt-2">{{item.description}}</span>
             </div>
         </div>
     </div>

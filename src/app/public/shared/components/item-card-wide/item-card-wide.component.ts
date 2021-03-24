@@ -4,11 +4,11 @@ import { TypeCheckService } from '@public/core/services/type-check/type-check.se
 import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
-  selector: 'tsl-item-wide-card',
-  templateUrl: './item-wide-card.component.html',
-  styleUrls: ['./item-wide-card.component.scss'],
+  selector: 'tsl-item-card-wide',
+  templateUrl: './item-card-wide.component.html',
+  styleUrls: ['./item-card-wide.component.scss'],
 })
-export class ItemWideCardComponent {
+export class ItemCardWideComponent {
   @Input() item: Item;
   @Input() itemExtraInfo: string[];
   @Input() showFavourite = true;
