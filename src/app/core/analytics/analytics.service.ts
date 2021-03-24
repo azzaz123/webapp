@@ -23,21 +23,14 @@ export class AnalyticsService {
     return this._mParticleReady$.asObservable();
   }
 
-  public initialize() {
-    // TODO: Passing an empty object to identify an unknown user allows to set userAttributes
-    //       This logic should be modified accordingly to prepare for the new public part of the webapp
+  public initialize(): void {
     this.userService
       .me()
       .pipe(filter((user) => !!user))
       .subscribe((user: User) => {
         const CONFIG = {
           isDevelopmentMode: !environment.production,
-          identifyRequest: {
-            userIdentities: {
-              email: user.email,
-              customerid: user.id,
-            },
-          },
+          identifyRequest: { userIdentities: this.userIdentities(user) },
           identityCallback: (result) => {
             const mParticleUser = result.getUser();
             if (mParticleUser) {
@@ -50,6 +43,16 @@ export class AnalyticsService {
           this._mParticleReady$.next();
         });
       });
+  }
+
+  private userIdentities(user: User): { email?: string; customerid?: string } {
+    if (!user.email || !user.id) {
+      return {};
+    }
+    return {
+      email: user.email,
+      customerid: user.id,
+    };
   }
 
   public trackEvent<T>(event: AnalyticsEvent<T>) {
