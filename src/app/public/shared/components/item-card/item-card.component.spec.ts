@@ -187,29 +187,13 @@ describe('ItemCardComponent', () => {
     });
   });
 
-  describe('when we click on the item...', () => {
-    it('should emit the item click event', fakeAsync(() => {
-      spyOn(component.itemClick, 'emit');
-      spyOn(component.toggleFavourite, 'emit');
-      const itemCard = fixture.debugElement.nativeElement.querySelector('.ItemCard');
-
-      itemCard.click();
-      tick();
-
-      expect(component.itemClick.emit).toHaveBeenCalled();
-      expect(component.toggleFavourite.emit).not.toHaveBeenCalled();
-    }));
-  });
-
   describe(`when we click on the item's favourite icon`, () => {
     it('should emit the toggle favourite click event', () => {
-      spyOn(component.itemClick, 'emit');
       spyOn(component.toggleFavourite, 'emit');
       const favouriteIcon = fixture.debugElement.query(By.directive(FavouriteIconComponent)).nativeElement;
 
       favouriteIcon.click();
 
-      expect(component.itemClick.emit).not.toHaveBeenCalled();
       expect(component.toggleFavourite.emit).toHaveBeenCalled();
     });
   });

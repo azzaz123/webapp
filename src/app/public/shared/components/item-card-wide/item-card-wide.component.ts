@@ -14,7 +14,6 @@ export class ItemCardWideComponent {
   @Input() showFavourite = true;
 
   @Output() toggleFavourite: EventEmitter<void> = new EventEmitter<void>();
-  @Output() itemClick: EventEmitter<void> = new EventEmitter<void>();
 
   constructor(public typeCheckService: TypeCheckService, public deviceDetectorService: DeviceDetectorService) {}
 

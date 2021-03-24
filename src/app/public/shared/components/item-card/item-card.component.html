@@ -1,5 +1,4 @@
-<div class="ItemCard position-relative" [class.ItemCard--with-description]="showDescription" *ngIf="item"
-    (click)="itemClick.emit()">
+<div class="ItemCard position-relative" [class.ItemCard--with-description]="showDescription" *ngIf="item">
     <tsl-svg-icon *ngIf="item.flags?.sold"
         class="ItemCard__icon ItemCard__icon--left ItemCard__icon--big position-absolute d-flex justify-content-center align-items-center"
         src="/assets/icons/item-card/sold.svg"></tsl-svg-icon>

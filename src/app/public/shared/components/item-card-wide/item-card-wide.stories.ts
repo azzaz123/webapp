@@ -28,6 +28,7 @@ export default {
   title: 'Webapp/Public/Shared/Components/ItemCardWide',
   decorators: [styledWrapperDecorator('max-width: 685px;')],
   component: ItemCardWideComponent,
+  argTypes: { toggleFavourite: { action: 'toggleFavourite' } },
 } as Meta;
 
 const Template: Story<ItemCardWideComponent> = (args: ItemCardWideComponent) => ({
