@@ -72,6 +72,11 @@ $icon-margin: $spacer * 0.5;
     }
   }
 
+  &__extraInfo {
+    overflow-x: auto;
+    @include hide-scroll-bars;
+  }
+
   &__icon {
     @include square(32px);
     background: $white;
@@ -94,17 +99,5 @@ $icon-margin: $spacer * 0.5;
     &--right {
       right: $icon-margin;
     }
-  }
-}
-
-.horizontalScroll {
-  overflow-x: auto;
-  /* Hide scrollbar for IE, Edge and Firefox */
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-
-  /* Hide scrollbar for Chrome, Safari and Opera */
-  &::-webkit-scrollbar {
-    display: none;
   }
 }

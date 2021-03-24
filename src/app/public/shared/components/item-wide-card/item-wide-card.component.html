@@ -30,7 +30,7 @@
                 <span class="ItemWideCard__title d-inline-block text-truncate w-100" >{{item.title}}</span>
                 <tsl-item-extra-info
                     *ngIf="itemExtraInfo?.length > 0"
-                    class="horizontalScroll d-block mt-1"
+                    class="ItemWideCard__extraInfo d-block mt-1"
                     [extraInfo]="itemExtraInfo">
                 </tsl-item-extra-info>
                 <span *ngIf="item.description" class="ItemWideCard__description mt-2">{{item.description}}</span>
