@@ -52,6 +52,7 @@ import { ItemSocialShareService } from '../core/services/item-social-share/item-
 import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
 import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -110,9 +111,7 @@ describe('ItemDetailComponent', () => {
         Renderer2,
         {
           provide: AnalyticsService,
-          useValue: {
-            trackEvent() {},
-          },
+          useClass: MockAnalyticsService,
         },
         {
           provide: ItemSocialShareService,
