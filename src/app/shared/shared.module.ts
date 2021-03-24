@@ -99,7 +99,6 @@ import { DateCountDownModule } from './date-countdown/date-countdown.module';
     DateCountDownModule,
   ],
   exports: [
-    AdSlotModule,
     SpinnerModule,
     SanitizedBackgroundModule,
     UserAvatarModule,
