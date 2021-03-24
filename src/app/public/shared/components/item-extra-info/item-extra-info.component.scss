@@ -7,23 +7,11 @@
     min-width: max-content;
   }
 
-  &--dash {
-    > :not(:last-child) {
-      margin-right: $spacing-xs;
+  > :not(:last-child) {
+    margin-right: $spacing-xs;
 
-      &::after {
-        content: ' - ';
-      }
-    }
-  }
-
-  &:not(&--dash) {
-    > :not(:last-child) {
-      margin-right: $spacing-xs;
-
-      &::after {
-        content: ' · ';
-      }
+    &::after {
+      content: ' · ';
     }
   }
 }

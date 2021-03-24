@@ -7,5 +7,4 @@ import { Component, Input } from '@angular/core';
 })
 export class ItemExtraInfoComponent {
   @Input() extraInfo: string[];
-  @Input() isDashStyle = false;
 }
