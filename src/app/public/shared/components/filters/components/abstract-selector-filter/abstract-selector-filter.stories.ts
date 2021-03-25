@@ -8,6 +8,7 @@ import { FILTER_VARIANT } from '@public/shared/components/filters/components/abs
 import { CookieService } from 'ngx-cookie';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { SelectorFilterConfig } from '@public/shared/components/filters/components/abstract-selector-filter/interfaces/selector-filter-config.interface';
+import { LoremIpsumComponent } from '@stories/components/lorem-ipsum/lorem-ipsum.component';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -29,7 +30,10 @@ import { SelectorFilterConfig } from '@public/shared/components/filters/componen
       <tsl-selector-filter-template
         [hasContentPlaceholder]="isContentWrapper()"
         [placeholderLabel]="config.drawerPlaceholder"
-      ></tsl-selector-filter-template>
+        (onPlaceholderClick)="handleOnPlaceholderClick()"
+      >
+        <stories-lorem-ipsum></stories-lorem-ipsum>
+      </tsl-selector-filter-template>
     </tsl-filter-template>
   `,
 })
@@ -40,10 +44,13 @@ export default {
   decorators: [
     moduleMetadata({
       imports: [AbstractSelectorFilterModule, AbstractFilterModule],
-      declarations: [StoryAbstractSelectorFilterComponent],
+      declarations: [StoryAbstractSelectorFilterComponent, LoremIpsumComponent],
       providers: [{ provide: CookieService, useValue: MockCookieService }],
     }),
   ],
+  argTypes: {
+    onPlaceholderClick: { action: 'Placeholder has been clicked' },
+  },
 };
 
 const Template: Story<StoryAbstractSelectorFilterComponent> = (args) => ({
@@ -51,11 +58,11 @@ const Template: Story<StoryAbstractSelectorFilterComponent> = (args) => ({
   component: StoryAbstractSelectorFilterComponent,
   template: `
     <h1>Bubble variant</h1>
-    <story-abstract-selector-filter [variant]="${FILTER_VARIANT.BUBBLE}" [config]="config">
+    <story-abstract-selector-filter [variant]="${FILTER_VARIANT.BUBBLE}" [config]="config" (onPlaceholderClick)="onPlaceholderClick()">
     </story-abstract-selector-filter>
     <h1>Content variant</h1>
-    <div style="border: 1px dashed black; background-color: white">
-      <story-abstract-selector-filter [variant]="${FILTER_VARIANT.CONTENT}" [config]="config">
+    <div style="border: 1px dashed black; background-color: white; position: relative;">
+      <story-abstract-selector-filter [variant]="${FILTER_VARIANT.CONTENT}" [config]="config" (onPlaceholderClick)="onPlaceholderClick()">
       </story-abstract-selector-filter>
     </div>
   `,

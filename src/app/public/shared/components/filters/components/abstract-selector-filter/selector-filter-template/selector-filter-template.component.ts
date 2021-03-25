@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'tsl-selector-filter-template',
@@ -10,4 +10,9 @@ export class SelectorFilterTemplateComponent {
   @Input() placeholderLabel: string;
   @Input() placeholderSublabel?: string;
   @Input() placeholderIcon?: string;
+  @Output() onPlaceholderClick = new EventEmitter<void>();
+
+  public handlePlaceholderClick(): void {
+    this.onPlaceholderClick.emit();
+  }
 }
