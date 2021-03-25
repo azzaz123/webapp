@@ -131,7 +131,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
             isPro: this.itemDetail.user.featured,
             screenId: SCREEN_IDS.ItemDetail,
             //Check the category listing limit
-            isActive: true,
+            isActive: this.itemDetail.item.flags?.expired,
           },
         };
         this.analyticsService.trackEvent(event);
