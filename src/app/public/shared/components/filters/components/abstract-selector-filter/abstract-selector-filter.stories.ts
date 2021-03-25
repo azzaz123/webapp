@@ -9,32 +9,40 @@ import { CookieService } from 'ngx-cookie';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { SelectorFilterConfig } from '@public/shared/components/filters/components/abstract-selector-filter/interfaces/selector-filter-config.interface';
 import { LoremIpsumComponent } from '@stories/components/lorem-ipsum/lorem-ipsum.component';
+import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
+import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'story-abstract-selector-filter',
   template: `
-    <tsl-filter-template
-      [isBubble]="isBubble()"
-      [isDropdown]="isDropdown()"
-      [hasApply]="true"
-      [isClearable]="true"
-      [title]="config.title"
-      [icon]="config.icon"
-      [label]="label"
-      [hasValue]="hasValue()"
-      (apply)="handleApply()"
-      (clear)="handleClear()"
-      (openStateChange)="openStateChange.emit($event)"
-    >
-      <tsl-selector-filter-template
-        [hasContentPlaceholder]="isContentWrapper()"
-        [placeholderLabel]="config.drawerPlaceholder"
-        (onPlaceholderClick)="handleOnPlaceholderClick()"
+    <div>
+      <div *ngIf="isPlaceholderOpen" class="p-2" style="cursor: pointer; position: absolute; right: 0;">
+        <tsl-svg-icon src="/assets/icons/arrow-back.svg" (click)="togglePlaceholderOpen()"> </tsl-svg-icon>
+      </div>
+      <tsl-filter-template
+        [isBubble]="isBubble()"
+        [isDropdown]="isDropdown()"
+        [hasApply]="true"
+        [isClearable]="true"
+        [title]="config.title"
+        [icon]="config.icon"
+        [label]="label"
+        [hasValue]="hasValue$() | async"
+        (apply)="handleApply()"
+        (clear)="handleClear()"
+        (openStateChange)="openStateChange.emit($event)"
       >
-        <stories-lorem-ipsum></stories-lorem-ipsum>
-      </tsl-selector-filter-template>
-    </tsl-filter-template>
+        <tsl-selector-filter-template
+          [hasContentPlaceholder]="hasContentPlaceholder()"
+          [placeholderLabel]="config.drawerPlaceholder"
+          (onPlaceholderClick)="togglePlaceholderOpen()"
+        >
+          <stories-lorem-ipsum></stories-lorem-ipsum>
+        </tsl-selector-filter-template>
+      </tsl-filter-template>
+    </div>
   `,
 })
 class StoryAbstractSelectorFilterComponent extends AbstractSelectorFilter<Record<string, string>> {}
@@ -43,13 +51,13 @@ export default {
   title: 'Webapp/Public/Shared/Components/Filters/AbstractSelectorFilter',
   decorators: [
     moduleMetadata({
-      imports: [AbstractSelectorFilterModule, AbstractFilterModule],
+      imports: [AbstractSelectorFilterModule, AbstractFilterModule, SvgIconModule, HttpClientModule, CommonModule],
       declarations: [StoryAbstractSelectorFilterComponent, LoremIpsumComponent],
       providers: [{ provide: CookieService, useValue: MockCookieService }],
     }),
   ],
   argTypes: {
-    onPlaceholderClick: { action: 'Placeholder has been clicked' },
+    placeholderOpenChange: { action: 'Placeholder open change' },
   },
 };
 
@@ -58,11 +66,11 @@ const Template: Story<StoryAbstractSelectorFilterComponent> = (args) => ({
   component: StoryAbstractSelectorFilterComponent,
   template: `
     <h1>Bubble variant</h1>
-    <story-abstract-selector-filter [variant]="${FILTER_VARIANT.BUBBLE}" [config]="config" (onPlaceholderClick)="onPlaceholderClick()">
+    <story-abstract-selector-filter [variant]="${FILTER_VARIANT.BUBBLE}" [config]="config" (placeholderOpenChange)="placeholderOpenChange($event)">
     </story-abstract-selector-filter>
     <h1>Content variant</h1>
     <div style="border: 1px dashed black; background-color: white; position: relative;">
-      <story-abstract-selector-filter [variant]="${FILTER_VARIANT.CONTENT}" [config]="config" (onPlaceholderClick)="onPlaceholderClick()">
+      <story-abstract-selector-filter [variant]="${FILTER_VARIANT.CONTENT}" [config]="config" (placeholderOpenChange)="placeholderOpenChange($event)">
       </story-abstract-selector-filter>
     </div>
   `,

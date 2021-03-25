@@ -7,13 +7,16 @@ import { FILTER_VARIANT } from '@public/shared/components/filters/components/abs
 // tslint:disable-next-line:directive-class-suffix
 export class AbstractSelectorFilter<T extends Record<string, string>> extends AbstractFilter<T> {
   @Input() config: SelectorFilterConfig<T>;
-  @Output() onPlaceholderClick = new EventEmitter<void>();
+  @Output() placeholderOpenChange = new EventEmitter<boolean>();
 
-  public isContentWrapper(): boolean {
-    return this.variant === FILTER_VARIANT.CONTENT && this.config.hasContentPlaceholder;
+  public isPlaceholderOpen = false;
+
+  public hasContentPlaceholder(): boolean {
+    return this.variant === FILTER_VARIANT.CONTENT && this.config.hasContentPlaceholder && !this.isPlaceholderOpen;
   }
 
-  public handleOnPlaceholderClick(): void {
-    this.onPlaceholderClick.emit();
+  public togglePlaceholderOpen(): void {
+    this.isPlaceholderOpen = !this.isPlaceholderOpen;
+    this.placeholderOpenChange.emit(this.isPlaceholderOpen);
   }
 }
