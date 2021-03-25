@@ -24,7 +24,7 @@ import { ButtonModule } from '@shared/button/button.module';
       [isClearable]="isClearable()"
       [counter]="getFilterCounter()"
       [label]="getLabel()"
-      [hasValue]="hasValue()"
+      [hasValue]="hasValue$() | async"
       (openStateChange)="handleOpenStateChange($event)"
       (apply)="handleApply()"
       (clear)="handleClear()"
@@ -53,8 +53,8 @@ class StoryAbstractFilterComponent extends AbstractFilter<{}> {
     return this.storyHasNoArrow ? false : super.isDropdown();
   }
 
-  public hasValue(): boolean {
-    return this.storyHasCustomValue ? true : super.hasValue();
+  protected _hasValue(): boolean {
+    return this.storyHasCustomValue ? true : super._hasValue();
   }
 
   public getFilterCounter(): number {

@@ -5,14 +5,14 @@ import { PublicLayoutModule } from '@public/layout/public-layout.module';
 import { AdModule } from '@shared/ad/ad.module';
 import { SharedModule } from '@shared/shared.module';
 import { ItemCardListModule } from '@public/shared/components/item-card-list/item-card-list.module';
-import { SearchFiltersModule } from './components/search-filters/search-filters.module';
 import { SearchLayoutComponent } from './components/search-layout/search-layout.component';
 import { SearchComponent } from './pages/search.component';
 import { SearchRoutingModule } from './search.routing.module';
 import { SearchStoreService } from './core/services/search-store.service';
+import { FiltersWrapperModule } from './components/filters-wrapper/filters-wrapper.module';
 
 @NgModule({
-  imports: [SharedModule, SearchRoutingModule, PublicLayoutModule, ItemCardListModule, CheckSessionModule, AdModule, SearchFiltersModule],
+  imports: [SharedModule, SearchRoutingModule, PublicLayoutModule, ItemCardListModule, CheckSessionModule, AdModule, FiltersWrapperModule],
   providers: [ViewportService, SearchStoreService],
   declarations: [SearchComponent, SearchLayoutComponent],
 })

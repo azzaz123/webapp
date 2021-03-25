@@ -16,7 +16,7 @@ import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { NgbDropdownModule, NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { DateCountDownModule } from '@shared/date-countdown/date-countdown.module';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
-import { MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { MOCK_USER, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { HttpClientModule } from '@angular/common/http';
 import { ItemDetailService } from '../../core/services/item-detail/item-detail.service';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
@@ -64,7 +64,7 @@ const Template: Story<ItemDetailHeaderComponent> = (args: ItemDetailHeaderCompon
       { provide: CookieService, useValue: MockCookieService },
     ],
   },
-  template: '<tsl-item-detail-header [item]="item" [user]="user" [isOwner]="isOwner" ></tsl-item-detail-header>',
+  template: '<tsl-item-detail-header [item]="item" [user]="user" [userStats]="userStats" [isOwner]="isOwner" ></tsl-item-detail-header>',
 });
 
 export const MineAvailableLG = Template.bind({});
@@ -72,6 +72,7 @@ MineAvailableLG.args = {
   isOwner: true,
   item: MOCK_ITEM,
   user: MOCK_USER,
+  userStats: MOCK_USER_STATS,
 };
 MineAvailableLG.parameters = {
   viewport: {
@@ -84,6 +85,7 @@ MineAvailableSM.args = {
   isOwner: true,
   item: MOCK_ITEM,
   user: MOCK_USER,
+  userStats: MOCK_USER_STATS,
 };
 MineAvailableSM.parameters = {
   viewport: {
@@ -96,6 +98,7 @@ MineAvailableXS.args = {
   isOwner: true,
   item: MOCK_ITEM,
   user: MOCK_USER,
+  userStats: MOCK_USER_STATS,
 };
 MineAvailableXS.parameters = {
   viewport: {
@@ -108,6 +111,7 @@ MineSoldLG.args = {
   isOwner: true,
   item: MOCK_ITEM_SOLD,
   user: MOCK_USER,
+  userStats: MOCK_USER_STATS,
 };
 MineSoldLG.parameters = {
   viewport: {
@@ -116,7 +120,7 @@ MineSoldLG.parameters = {
 };
 
 export const MineSoldXS = Template.bind({});
-MineSoldXS.args = { isOwner: true, item: MOCK_ITEM_SOLD, user: MOCK_USER };
+MineSoldXS.args = { isOwner: true, item: MOCK_ITEM_SOLD, user: MOCK_USER, userStats: MOCK_USER_STATS };
 MineSoldXS.parameters = {
   viewport: {
     defaultViewport: CUSTOM_VIEWPORT_NAME.XS,
@@ -124,7 +128,7 @@ MineSoldXS.parameters = {
 };
 
 export const OtherAvailableLG = Template.bind({});
-OtherAvailableLG.args = { isOwner: false, item: MOCK_ITEM, user: MOCK_USER };
+OtherAvailableLG.args = { isOwner: false, item: MOCK_ITEM, user: MOCK_USER, userStats: MOCK_USER_STATS };
 OtherAvailableLG.parameters = {
   viewport: {
     defaultViewport: CUSTOM_VIEWPORT_NAME.LG,
@@ -132,7 +136,7 @@ OtherAvailableLG.parameters = {
 };
 
 export const OtherAvailableSM = Template.bind({});
-OtherAvailableSM.args = { isOwner: false, item: MOCK_ITEM, user: MOCK_USER };
+OtherAvailableSM.args = { isOwner: false, item: MOCK_ITEM, user: MOCK_USER, userStats: MOCK_USER_STATS };
 OtherAvailableSM.parameters = {
   viewport: {
     defaultViewport: CUSTOM_VIEWPORT_NAME.SM,
@@ -140,7 +144,7 @@ OtherAvailableSM.parameters = {
 };
 
 export const OtherAvailableXS = Template.bind({});
-OtherAvailableXS.args = { isOwner: false, item: MOCK_ITEM, user: MOCK_USER };
+OtherAvailableXS.args = { isOwner: false, item: MOCK_ITEM, user: MOCK_USER, userStats: MOCK_USER_STATS };
 OtherAvailableXS.parameters = {
   viewport: {
     defaultViewport: CUSTOM_VIEWPORT_NAME.XS,
@@ -148,7 +152,7 @@ OtherAvailableXS.parameters = {
 };
 
 export const OtherSoldLG = Template.bind({});
-OtherSoldLG.args = { isOwner: false, item: MOCK_ITEM_SOLD, user: MOCK_USER };
+OtherSoldLG.args = { isOwner: false, item: MOCK_ITEM_SOLD, user: MOCK_USER, userStats: MOCK_USER_STATS };
 OtherSoldLG.parameters = {
   viewport: {
     defaultViewport: CUSTOM_VIEWPORT_NAME.LG,
@@ -156,7 +160,7 @@ OtherSoldLG.parameters = {
 };
 
 export const OtherSoldXS = Template.bind({});
-OtherSoldXS.args = { isOwner: false, item: MOCK_ITEM_SOLD, user: MOCK_USER };
+OtherSoldXS.args = { isOwner: false, item: MOCK_ITEM_SOLD, user: MOCK_USER, userStats: MOCK_USER_STATS };
 OtherSoldXS.parameters = {
   viewport: {
     defaultViewport: CUSTOM_VIEWPORT_NAME.XS,
