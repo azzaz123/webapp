@@ -248,42 +248,30 @@ describe('ItemDetailComponent', () => {
       fixture = TestBed.createComponent(ItemDetailComponent);
     });
     describe('and we get the item...', () => {
+      const event: AnalyticsPageView<ViewOwnItemDetail> = {
+        name: ANALYTICS_EVENT_NAMES.ViewOwnItemDetail,
+        attributes: {
+          itemId: MOCK_CAR_ITEM_DETAIL.item.id,
+          categoryId: MOCK_CAR_ITEM_DETAIL.item.categoryId,
+          salePrice: MOCK_CAR_ITEM_DETAIL.item.salePrice,
+          title: MOCK_CAR_ITEM_DETAIL.item.title,
+          isPro: MOCK_CAR_ITEM_DETAIL.user.featured,
+          screenId: SCREEN_IDS.ItemDetail,
+          isActive: MOCK_CAR_ITEM_DETAIL.item.flags?.onhold,
+        },
+      };
       it('should send view own item detail event if it is the same user', () => {
         itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
         spyOn(analyticsService, 'trackPageView');
-        const event: AnalyticsPageView<ViewOwnItemDetail> = {
-          name: ANALYTICS_EVENT_NAMES.ViewOwnItemDetail,
-          attributes: {
-            itemId: MOCK_CAR_ITEM_DETAIL.item.id,
-            categoryId: MOCK_CAR_ITEM_DETAIL.item.categoryId,
-            salePrice: MOCK_CAR_ITEM_DETAIL.item.salePrice,
-            title: MOCK_CAR_ITEM_DETAIL.item.title,
-            isPro: MOCK_CAR_ITEM_DETAIL.user.featured,
-            screenId: SCREEN_IDS.ItemDetail,
-            isActive: MOCK_CAR_ITEM_DETAIL.item.flags?.onhold,
-          },
-        };
 
         component.ngOnInit();
 
         expect(analyticsService.trackPageView).toHaveBeenCalledWith(event);
       });
 
-      it('should send view own item detail event if it is the same user', () => {
+      it('should send view own item detail event if it is not the same user', () => {
         itemDetailSubjectMock.next(MOCK_ITEM_DETAIL_WITHOUT_LOCATION);
         spyOn(analyticsService, 'trackPageView');
-        const event: AnalyticsPageView<ViewOwnItemDetail> = {
-          name: ANALYTICS_EVENT_NAMES.ViewOwnItemDetail,
-          attributes: {
-            itemId: MOCK_CAR_ITEM_DETAIL.item.id,
-            categoryId: MOCK_CAR_ITEM_DETAIL.item.categoryId,
-            salePrice: MOCK_CAR_ITEM_DETAIL.item.salePrice,
-            title: MOCK_CAR_ITEM_DETAIL.item.title,
-            isPro: MOCK_CAR_ITEM_DETAIL.user.featured,
-            screenId: SCREEN_IDS.ItemDetail,
-            isActive: MOCK_CAR_ITEM_DETAIL.item.flags?.onhold,
-          },
-        };
 
         component.ngOnInit();
 
