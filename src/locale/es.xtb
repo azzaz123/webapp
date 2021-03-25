@@ -966,4 +966,8 @@
   <translation id="Condition_AsGoodAsNew">Como nuevo</translation>
   <translation id="Condition_Fair">En condiciones aceptables</translation>
   <translation id="Condition_HasGivenItAll">Puede que toque repararlo</translation>
+  <translation id="OwnReview_Sold">Vendiste</translation>
+  <translation id="OwnReview_Bought">Compraste</translation>
+  <translation id="Review_Sold">Vendió</translation>
+  <translation id="Review_Bought">Compró</translation>
 </translationbundle>

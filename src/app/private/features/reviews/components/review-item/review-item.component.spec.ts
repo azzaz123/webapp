@@ -49,9 +49,43 @@ describe('ReviewItemComponent', () => {
     it('should set userWebSlug', () => {
       expect(component.userWebSlug).toBe(environment.siteUrl.replace('es', 'www') + 'user/' + REVIEWS_RESPONSE[0].user.web_slug);
     });
+  });
 
-    it('should set category', () => {
-      expect(component.category).toBe(CATEGORY_DATA_WEB[0]);
+  describe('when getting the soldCopy', () => {
+    describe('and the item is ours...', () => {
+      it('should return the correct copy', () => {
+        component.isOwner = true;
+        expect(component.soldCopy).toBe($localize`:@@OwnReview_Sold:Sold`);
+      });
+    });
+    describe('and the item is NOT ours...', () => {
+      it('should return the correct copy', () => {
+        component.isOwner = false;
+
+        expect(component.soldCopy).toBe($localize`:@@Review_Sold:Sold`);
+      });
+    });
+  });
+
+  describe('when getting the boughtCopy', () => {
+    beforeEach(() => {
+      spyOn(window as any, '$localize');
+    });
+    describe('and the item is ours...', () => {
+      it('should return the correct copy', () => {
+        component.isOwner = true;
+        fixture.detectChanges();
+
+        expect(component.boughtCopy).toBe($localize`:@@OwnReview_Bought:Bought`);
+      });
+    });
+    describe('and the item is NOT ours...', () => {
+      it('should return the correct copy', () => {
+        component.isOwner = false;
+        fixture.detectChanges();
+
+        expect(component.boughtCopy).toBe($localize`:@@Review_Bought:Bought`);
+      });
     });
   });
 });
