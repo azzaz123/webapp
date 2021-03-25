@@ -7,7 +7,6 @@ import { Meta, Story } from '@storybook/angular/types-6-0';
 import { CookieService } from 'ngx-cookie';
 import { FILTER_TYPES } from '../../core/enums/filter-types/filter-types.enum';
 import { FiltersModule } from '../../filters.module';
-import { FilterConfig } from '../../interfaces/filter-config.interface';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { RangeFilterConfig } from '../range-filter/interfaces/range-filter-config.interface';
@@ -19,14 +18,13 @@ import { FilterFactoryService } from './services/filter-factory.service';
 @Component({
   selector: 'tsl-filters',
   template: `
-    <tsl-filter-group [variant]="variant" [config]="config" [initialValues]="initialValues || []" (valueChange)="valueChange($event)">
-    </tsl-filter-group>
+    <tsl-filter-group [variant]="variant" [config]="config" [values]="values || []" (valueChange)="valueChange($event)"> </tsl-filter-group>
   `,
 })
 class FiltersComponent {
   public variant: FILTER_VARIANT;
   public config: [RangeFilterConfig, ToggleFilterConfig];
-  public initialValues: FilterParameter[];
+  public values: FilterParameter[];
 
   public valueChange(): void {}
 }
@@ -102,7 +100,7 @@ export const Bubble_WithInitialValues = Template.bind({});
 Bubble_WithInitialValues.args = {
   variant: FILTER_VARIANT.BUBBLE,
   config: CONFIG,
-  initialValues: [
+  values: [
     { key: 'warranty', value: 'true' },
     { key: 'max', value: '5000' },
     { key: 'min', value: '1000' },
