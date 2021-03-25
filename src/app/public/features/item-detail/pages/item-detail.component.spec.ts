@@ -269,7 +269,7 @@ describe('ItemDetailComponent', () => {
         expect(analyticsService.trackPageView).toHaveBeenCalledWith(event);
       });
 
-      it('should send view own item detail event if it is not the same user', () => {
+      it('should not send view own item detail event if it is not the same user', () => {
         itemDetailSubjectMock.next(MOCK_ITEM_DETAIL_WITHOUT_LOCATION);
         spyOn(analyticsService, 'trackPageView');
 
