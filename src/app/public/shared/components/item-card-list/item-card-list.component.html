@@ -4,7 +4,7 @@
        <div *ngIf="slotsConfig && (i | showSlot: slotsConfig)" class="ItemCardList__slot d-flex justify-content-center align-items-center" >AD SLOT</div>
        <tsl-public-item-card
         [item]="item" [showDescription]="showDescription"
-        [showFavourite]="!(item.owner | isCurrentUser | async)" (toggleFavourite)="toggleFavourite(item)" (itemClick)="openItemDetailPage(item)"></tsl-public-item-card>
+        [showFavourite]="!(item.owner | isCurrentUser | async)" (toggleFavourite)="toggleFavourite(item)" (click)="openItemDetailPage(item)"></tsl-public-item-card>
     </ng-container>
    
 </div>

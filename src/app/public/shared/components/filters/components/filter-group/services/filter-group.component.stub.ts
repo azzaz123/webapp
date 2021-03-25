@@ -11,7 +11,7 @@ import { FilterHostDirective } from '../directives/filter-host.directive';
 // tslint:disable-next-line: component-class-suffix
 export class FilterGroupComponentStub {
   @ViewChildren(FilterHostDirective) query: QueryList<FilterHostDirective>;
-  @Input() initialValues: FilterParameter[];
+  @Input() values: FilterParameter[];
   @Input() config: FilterConfig<unknown>[] = [];
   @Input() variant: FILTER_VARIANT = FILTER_VARIANT.BUBBLE;
   @Output() valueChange = new EventEmitter<FilterParameter[]>();

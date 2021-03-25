@@ -27,7 +27,6 @@ describe('ItemFullScreenCarouselComponent', () => {
 
   let component: ItemFullScreenCarouselComponent;
   let fixture: ComponentFixture<ItemFullScreenCarouselComponent>;
-  let itemCardService: ItemCardService;
   let checkSessionService: CheckSessionService;
   let decimalPipe: DecimalPipe;
   let el: HTMLElement;
@@ -66,12 +65,10 @@ describe('ItemFullScreenCarouselComponent', () => {
     fixture = TestBed.createComponent(ItemFullScreenCarouselComponent);
     component = fixture.componentInstance;
     component.item = MOCK_ITEM;
-    itemCardService = TestBed.inject(ItemCardService);
     checkSessionService = TestBed.inject(CheckSessionService);
     decimalPipe = TestBed.inject(DecimalPipe);
     el = fixture.debugElement.nativeElement;
     window.scrollTo = jest.fn();
-
     fixture.detectChanges();
   });
 
@@ -112,12 +109,12 @@ describe('ItemFullScreenCarouselComponent', () => {
     describe('when we click on the favourite button...', () => {
       describe('and we have a current session...', () => {
         it('should toggle the favourite button', () => {
-          spyOn(itemCardService, 'toggleFavourite');
+          spyOn(component.favouritedItemChange, 'emit');
           const favouriteButton = fixture.debugElement.nativeElement.querySelector(favouriteButtonId);
 
           favouriteButton.click();
 
-          expect(itemCardService.toggleFavourite).toHaveBeenCalledWith(component.item);
+          expect(component.favouritedItemChange.emit).toHaveBeenCalled();
         });
       });
       describe('and we NOT have a current session...', () => {

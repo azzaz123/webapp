@@ -1,0 +1,22 @@
+<div class="FiltersWrapper__bar d-flex p-2"> 
+  <tsl-bubble class="m-1" [counter]="activeFiltersCount" (click)="toggleDrawer()">Filtros</tsl-bubble>
+  <tsl-filter-group 
+    [values]="filterValues"
+    [config]="bubbleFiltersConfig" 
+    [variant]="FILTER_VARIANT.BUBBLE"
+    (valueChange)="bubbleChange($event)"
+    (openStateChange)="bubbleOpenStateChange($event)"
+    (clear)="bubbleClear($event)"></tsl-filter-group>
+</div>
+
+
+<tsl-drawer [isOpen]="drawerConfig.isOpen" [offsetTop]="drawerConfig.offsetTop" [hasApply]="drawerConfig.hasApply"
+(cancel)="closeDrawer()" (apply)="applyDrawer()" (clickBackdrop)="closeDrawer()">
+  <tsl-filter-group 
+    [values]="filterValues"
+    [config]="drawerFiltersConfig" 
+    [variant]="FILTER_VARIANT.CONTENT" 
+    (valueChange)="drawerChange($event)"
+    (clear)="drawerClear($event)"></tsl-filter-group>
+</tsl-drawer>
+

@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { FilterParameterDraftService } from './filter-parameter-draft.service';
-import { filterParameters } from '@fixtures/filter-parameter.fixtures';
+import { filterParametersMock } from '@fixtures/filter-parameter.fixtures';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 
 describe('FilterParameterDraftService', () => {
@@ -20,20 +20,20 @@ describe('FilterParameterDraftService', () => {
 
   describe('when asked for current parameters', () => {
     beforeEach(() => {
-      service.setParameters(filterParameters);
+      service.setParameters(filterParametersMock);
     });
     it('should return all parameters', () => {
-      expect(service.getParameters()).toEqual(filterParameters);
+      expect(service.getParameters()).toEqual(filterParametersMock);
     });
   });
 
   describe('when asked for a subset of parameters by their key', () => {
-    const filterKey = filterParameters.map((parameter) => parameter.key)[0];
+    const filterKey = filterParametersMock.map((parameter) => parameter.key)[0];
     beforeEach(() => {
-      service.setParameters(filterParameters);
+      service.setParameters(filterParametersMock);
     });
     it('should return the corresponding parameters', () => {
-      expect(service.getParametersByKey([filterKey])).toEqual([filterParameters[0]]);
+      expect(service.getParametersByKeys([filterKey])).toEqual([filterParametersMock[0]]);
     });
   });
 
@@ -41,15 +41,15 @@ describe('FilterParameterDraftService', () => {
     it('should overwrite the current parameters', () => {
       expect(service.getParameters()).toEqual([]);
 
-      service.setParameters(filterParameters);
+      service.setParameters(filterParametersMock);
 
-      expect(service.getParameters()).toEqual(filterParameters);
+      expect(service.getParameters()).toEqual(filterParametersMock);
     });
   });
 
   describe('when we need to upsert parameters', () => {
     beforeEach(() => {
-      service.setParameters(filterParameters);
+      service.setParameters(filterParametersMock);
     });
     describe('and the parameters do not exist', () => {
       it('should add them to the parameter set', () => {
@@ -60,7 +60,7 @@ describe('FilterParameterDraftService', () => {
 
         service.upsertParameters([newParameter]);
 
-        expect(service.getParameters()).toEqual([newParameter, ...filterParameters]);
+        expect(service.getParameters()).toEqual([newParameter, ...filterParametersMock]);
       });
     });
     describe('and the parameters do exist', () => {
@@ -72,7 +72,35 @@ describe('FilterParameterDraftService', () => {
 
         service.upsertParameters([newParameter]);
 
-        expect(service.getParameters()).toEqual([newParameter, filterParameters[1]]);
+        expect(service.getParameters()).toEqual([newParameter, filterParametersMock[1]]);
+      });
+    });
+  });
+
+  describe('when we need to remove parameters', () => {
+    beforeEach(() => {
+      service.setParameters(filterParametersMock);
+    });
+    describe('and the parameters do not exist', () => {
+      it('should do nothing', () => {
+        const newParameter: FilterParameter = {
+          key: 'newParameterKey',
+          value: 'newParameterValue',
+        };
+
+        service.removeParameters([newParameter]);
+
+        expect(service.getParameters()).toEqual(filterParametersMock);
+      });
+    });
+    describe('and the parameters do exist', () => {
+      it('should remove the parameter values', () => {
+        const expectedResult = [...filterParametersMock];
+
+        service.removeParameters([expectedResult[0]]);
+        expectedResult.splice(0, 1);
+
+        expect(service.getParameters()).toEqual(expectedResult);
       });
     });
   });
