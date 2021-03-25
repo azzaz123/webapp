@@ -77,12 +77,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
 
   public toggleFavouriteItem(): void {
     this.itemDetailStoreService.toggleFavouriteItem().subscribe(() => {
-      const event = this.generateFavoriteOrUnfavoriteEvent(this.itemDetail.item.flags.favorite);
-      if (this.itemDetail.item.flags.favorite) {
-        this.analyticsService.trackEvent(event as AnalyticsEvent<FavoriteItem>);
-      } else {
-        this.analyticsService.trackEvent({ ...event, name: ANALYTICS_EVENT_NAMES.UnfavoriteItem } as AnalyticsEvent<UnfavoriteItem>);
-      }
+      this.generateFavoriteOrUnfavoriteEvent();
     });
   }
 
@@ -90,9 +85,9 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     this.itemDetailStoreService.markItemAsSold();
   }
 
-  private generateFavoriteOrUnfavoriteEvent(isFlagFavorite: boolean): AnalyticsEvent<FavoriteItem | UnfavoriteItem> {
+  private generateFavoriteOrUnfavoriteEvent(): void {
     const event: AnalyticsEvent<FavoriteItem | UnfavoriteItem> = {
-      name: isFlagFavorite ? ANALYTICS_EVENT_NAMES.FavoriteItem : ANALYTICS_EVENT_NAMES.UnfavoriteItem,
+      name: this.itemDetail.item.flags.favorite ? ANALYTICS_EVENT_NAMES.FavoriteItem : ANALYTICS_EVENT_NAMES.UnfavoriteItem,
       eventType: ANALYTIC_EVENT_TYPES.UserPreference,
       attributes: {
         itemId: this.itemDetail.item.id,
@@ -104,7 +99,9 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
         isBumped: !!this.itemDetail.item.bumpFlags,
       },
     };
-    return event;
+    this.analyticsService.trackEvent(
+      this.itemDetail.item.flags.favorite ? (event as AnalyticsEvent<FavoriteItem>) : (event as AnalyticsEvent<UnfavoriteItem>)
+    );
   }
 
   private initPage(itemId: string): void {
