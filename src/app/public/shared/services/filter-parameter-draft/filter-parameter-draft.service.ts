@@ -28,17 +28,11 @@ export class FilterParameterDraftService {
   }
 
   public removeParameters(parameters: FilterParameter[]): void {
-    const currentParameters = this.getParameters();
-
-    parameters.forEach((parameter: FilterParameter) => {
-      currentParameters.forEach((_parameter: FilterParameter, index: number) => {
-        if (parameter.key === _parameter.key) {
-          currentParameters.splice(index, 1);
-        }
-      });
+    const keysToRemove = parameters.map((parameter) => parameter.key);
+    const nextParameters = this.getParameters().filter((parameter) => {
+      return !keysToRemove.includes(parameter.key);
     });
-
-    this.parametersSubject.next(currentParameters);
+    this.parametersSubject.next(nextParameters);
   }
 
   private mergeParameters(newParameters: FilterParameter[], oldParameters: FilterParameter[]): FilterParameter[] {

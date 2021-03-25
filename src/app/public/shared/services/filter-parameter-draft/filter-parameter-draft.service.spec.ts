@@ -95,9 +95,12 @@ describe('FilterParameterDraftService', () => {
     });
     describe('and the parameters do exist', () => {
       it('should remove the parameter values', () => {
-        service.removeParameters([filterParametersMock[0]]);
+        const expectedResult = [...filterParametersMock];
+        expectedResult.splice(0, 1);
 
-        expect(service.getParameters()).toEqual(filterParametersMock);
+        service.removeParameters([expectedResult[0]]);
+
+        expect(service.getParameters()).toEqual(expectedResult);
       });
     });
   });
