@@ -16,7 +16,7 @@ const Template: Story<SelectorOptionComponent> = (args) => ({
   props: args,
   component: SelectorOptionComponent,
   template: `
-    <div style="border: 1px dashed black; background-color: white">
+    <div style="border: 1px dashed black; background-color: white" class="px-3">
       <tsl-selector-option [label]="label" [icon]="icon" [sublabel]="sublabel" [isActive]="isActive">
       </tsl-selector-option>
     </div>

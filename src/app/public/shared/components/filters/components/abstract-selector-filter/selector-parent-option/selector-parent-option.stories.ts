@@ -20,7 +20,7 @@ const Template: Story<SelectorParentOptionComponent> = (args) => ({
   props: args,
   component: SelectorParentOptionComponent,
   template: `
-    <div style="border: 1px dashed black; background-color: white">
+    <div style="border: 1px dashed black; background-color: white" class="px-3">
       <tsl-selector-parent-option [label]="label" [sublabel]="sublabel" [icon]="icon" [isClearable]="isClearable" (onClick)="onClick()" (onClear)="onClear()"></tsl-selector-parent-option>
     </div>
   `,

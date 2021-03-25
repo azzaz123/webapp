@@ -26,7 +26,10 @@ import { SelectorFilterConfig } from '@public/shared/components/filters/componen
       (clear)="handleClear()"
       (openStateChange)="openStateChange.emit($event)"
     >
-      <tsl-selector-filter-template [hasContentPlaceholder]="isContentWrapper()"></tsl-selector-filter-template>
+      <tsl-selector-filter-template
+        [hasContentPlaceholder]="isContentWrapper()"
+        [placeholderLabel]="config.drawerPlaceholder"
+      ></tsl-selector-filter-template>
     </tsl-filter-template>
   `,
 })
@@ -64,7 +67,8 @@ const defaultConfig: SelectorFilterConfig<Record<string, string>> = {
   mapKey: {},
   title: 'I can be any selector',
   icon: '/assets/icons/joke.svg',
-  bubblePlaceholder: 'Placeholder',
+  bubblePlaceholder: 'Such a nice bubble',
+  drawerPlaceholder: 'I am the father of everything!',
   hasContentPlaceholder: false,
 };
 

@@ -1,8 +1,6 @@
-<div *ngIf="hasContentPlaceholder">
-  <div>
-    I am wrapped!
-<!--    <ng-template [ngTemplateOutlet]="contentWrapper"></ng-template>-->
-  </div>
+<div *ngIf="hasContentPlaceholder" class="SelectorFilterTemplate__option_placeholder">
+  <tsl-selector-parent-option [label]="placeholderLabel" [sublabel]="placeholderSublabel" [icon]="placeholderIcon">
+  </tsl-selector-parent-option>
 </div>
 
 <div *ngIf="!hasContentPlaceholder">

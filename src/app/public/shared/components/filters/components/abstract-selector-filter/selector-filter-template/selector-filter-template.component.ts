@@ -7,4 +7,7 @@ import { Component, Input } from '@angular/core';
 })
 export class SelectorFilterTemplateComponent {
   @Input() hasContentPlaceholder: boolean;
+  @Input() placeholderLabel: string;
+  @Input() placeholderSublabel?: string;
+  @Input() placeholderIcon?: string;
 }
