@@ -157,7 +157,6 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
         };
         this.analyticsService.trackPageView(event);
       } else {
-        console.log('not same user');
         //TODO: Check others items events
       }
     });
