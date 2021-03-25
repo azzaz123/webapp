@@ -53,6 +53,8 @@ import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.serv
 import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import { UserService } from '@core/user/user.service';
+import { MockUserService } from '@fixtures/user.fixtures.spec';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -109,6 +111,10 @@ describe('ItemDetailComponent', () => {
         ItemApiService,
         ItemFullScreenCarouselComponent,
         Renderer2,
+        {
+          provide: UserService,
+          useClass: MockUserService,
+        },
         {
           provide: AnalyticsService,
           useClass: MockAnalyticsService,
