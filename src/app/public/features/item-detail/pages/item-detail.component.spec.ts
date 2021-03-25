@@ -245,6 +245,12 @@ describe('ItemDetailComponent', () => {
       fixture = TestBed.createComponent(ItemDetailComponent);
     });
     describe('and we get the item...', () => {
+      it('should send view own item detail event', () => {
+        spyOn(analyticsService, 'trackPageView');
+        component.ngOnInit();
+        expect(analyticsService.trackPageView).toHaveBeenCalled();
+      });
+
       it('should ask for item data', () => {
         spyOn(itemDetailStoreService, 'initializeItemAndFlags');
 
