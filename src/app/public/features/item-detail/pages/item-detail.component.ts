@@ -139,18 +139,21 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   }
 
   private trackViewEvents(): void {
+    const item = this.itemDetail.item;
+    const itemDetailUser = this.itemDetail.user;
+    console.log('enter track event');
     this.userService.me().subscribe((user: User) => {
       if (this.itemDetail.user.id === user.id) {
         const event: AnalyticsPageView<ViewOwnItemDetail> = {
           name: ANALYTICS_EVENT_NAMES.ViewOwnItemDetail,
           attributes: {
-            itemId: this.itemDetail.item.id,
-            categoryId: this.itemDetail.item.categoryId,
-            salePrice: this.itemDetail.item.salePrice,
-            title: this.itemDetail.item.title,
-            isPro: this.itemDetail.user.featured,
+            itemId: item.id,
+            categoryId: item.categoryId,
+            salePrice: item.salePrice,
+            title: item.title,
+            isPro: itemDetailUser.featured,
             screenId: SCREEN_IDS.ItemDetail,
-            isActive: this.itemDetail.item.flags?.expired,
+            isActive: item.flags?.expired,
           },
         };
         this.analyticsService.trackPageView(event);
