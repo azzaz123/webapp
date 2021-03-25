@@ -54,7 +54,7 @@ import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { UserService } from '@core/user/user.service';
-import { MockUserService } from '@fixtures/user.fixtures.spec';
+import { MockedUserService } from '@fixtures/user.fixtures.spec';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -113,7 +113,7 @@ describe('ItemDetailComponent', () => {
         Renderer2,
         {
           provide: UserService,
-          useClass: MockUserService,
+          useClass: MockedUserService,
         },
         {
           provide: AnalyticsService,
