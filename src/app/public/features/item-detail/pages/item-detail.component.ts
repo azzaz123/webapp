@@ -141,6 +141,11 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     });
   }
 
+  private trackViewOthersItemCarDetailEvent(): void {
+    // check whether the item is car
+    //access the car brand information
+  }
+
   get itemDetail$(): Observable<ItemDetail> {
     return this.itemDetailStoreService.itemDetail$;
   }
