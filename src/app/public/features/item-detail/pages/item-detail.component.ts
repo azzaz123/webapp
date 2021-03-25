@@ -152,7 +152,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
             title: item.title,
             isPro: itemDetailUser.featured,
             screenId: SCREEN_IDS.ItemDetail,
-            isActive: item.flags?.onhold,
+            isActive: !item.flags?.onhold,
           },
         };
         this.analyticsService.trackPageView(event);

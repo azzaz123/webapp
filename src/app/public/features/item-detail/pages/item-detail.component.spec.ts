@@ -257,7 +257,7 @@ describe('ItemDetailComponent', () => {
           title: MOCK_CAR_ITEM_DETAIL.item.title,
           isPro: MOCK_CAR_ITEM_DETAIL.user.featured,
           screenId: SCREEN_IDS.ItemDetail,
-          isActive: MOCK_CAR_ITEM_DETAIL.item.flags?.onhold,
+          isActive: !MOCK_CAR_ITEM_DETAIL.item.flags?.onhold,
         },
       };
       it('should send view own item detail event if it is the same user', () => {
