@@ -30,6 +30,7 @@ const Template: Story<ItemCardComponent> = (args: ItemCardComponent) => ({
 export const Default = Template.bind({});
 Default.args = {
   item: MOCK_ITEM_1,
+  showFavourite: true,
 };
 
 export const WithoutFavourite = Template.bind({});
@@ -42,35 +43,42 @@ export const WithoutDescription = Template.bind({});
 WithoutDescription.args = {
   item: MOCK_ITEM_1,
   showDescription: false,
+  showFavourite: true,
 };
 
 export const LongInfo = Template.bind({});
 LongInfo.args = {
   showDescription: true,
   item: MOCK_ITEM_2,
+  showFavourite: true,
 };
 
 export const Favorited = Template.bind({});
 Favorited.args = {
   item: MOCK_ITEM_3,
+  showFavourite: true,
 };
 
 export const Reserved = Template.bind({});
 Reserved.args = {
   item: MOCK_ITEM_4,
+  showFavourite: true,
 };
 
 export const Sold = Template.bind({});
 Sold.args = {
   item: MOCK_ITEM_5,
+  showFavourite: true,
 };
 
 export const Bumped = Template.bind({});
 Bumped.args = {
   item: MOCK_ITEM_6,
+  showFavourite: true,
 };
 
 export const BumpedAndReserved = Template.bind({});
 BumpedAndReserved.args = {
   item: MOCK_ITEM_7,
+  showFavourite: true,
 };

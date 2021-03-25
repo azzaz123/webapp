@@ -38,7 +38,6 @@
                                 *ngIf="itemDetail.extraInfo?.length > 0"
                                 class="horizontalScroll d-block mt-2"
                                 [ngClass]="{'ItemExtraInfo--car': itemDetail.isItemACar}"
-                                [isCar]="itemDetail.isItemACar" 
                                 [extraInfo]="itemDetail.extraInfo">
                             </tsl-item-extra-info>
                             <ng-container *ngIf="(itemDetail.taxonomiesSpecifications | async) as taxonomiesSpecifications">
