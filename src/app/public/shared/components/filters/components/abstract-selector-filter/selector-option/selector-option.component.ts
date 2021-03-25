@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { SelectorOptionIcon } from './interfaces/selector-option-icon.interface';
 
 @Component({
@@ -12,4 +12,9 @@ export class SelectorOptionComponent {
   @Input() sublabel?: string;
   @Input() icon: SelectorOptionIcon;
   @Input() isActive?: boolean;
+  @Output() onClick = new EventEmitter<void>();
+
+  public handleClick(): void {
+    this.onClick.emit();
+  }
 }

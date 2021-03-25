@@ -1,0 +1,13 @@
+@import '~style/common';
+
+.SelectorParentOption {
+  position: relative;
+  cursor: pointer;
+
+  &__icon {
+    position: absolute;
+    right: $spacing-m;
+    top: 0;
+    bottom: 0;
+  }
+}

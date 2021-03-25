@@ -1,4 +1,4 @@
 export interface SelectorOptionIcon {
   stroke: string;
-  selected: string;
+  selected?: string;
 }
