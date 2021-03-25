@@ -14,7 +14,6 @@ export enum ANALYTIC_EVENT_TYPES {
   UserPreference = 6,
   Social = 7,
   Other = 8,
-  ScreenView = 9,
 }
 
 export interface AnalyticsPageView<T> {
