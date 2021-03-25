@@ -14,7 +14,6 @@ import { ItemApiService } from '@public/core/services/api/item/item-api.service'
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
-import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
 import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
@@ -25,13 +24,22 @@ import { ItemDetailService } from '../../core/services/item-detail/item-detail.s
 import { MOCK_ITEM_7 } from '@public/shared/components/item-card/item-card.mock.stories';
 
 import { ItemDetailHeaderComponent } from './item-detail-header.component';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import {
+  AnalyticsEvent,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  ClickChatButton,
+  SCREEN_IDS,
+} from '@core/analytics/analytics-constants';
 
 describe('ItemDetailHeaderComponent', () => {
   let component: ItemDetailHeaderComponent;
   let fixture: ComponentFixture<ItemDetailHeaderComponent>;
   let checkSessionService: CheckSessionService;
-  let itemCardService: ItemCardService;
   let itemDetailService: ItemDetailService;
+  let analyticsService: AnalyticsService;
   let modalService: NgbModal;
 
   const trashButtonId = '#trashButton';
@@ -50,11 +58,14 @@ describe('ItemDetailHeaderComponent', () => {
       imports: [HttpClientTestingModule, RouterTestingModule, CommonModule],
       providers: [
         PublicUserApiService,
-        ItemCardService,
         ItemApiService,
         RecommenderApiService,
         MapItemService,
         ToastService,
+        {
+          provide: AnalyticsService,
+          useClass: MockAnalyticsService,
+        },
         {
           provide: PublicProfileService,
           useValue: {
@@ -117,8 +128,8 @@ describe('ItemDetailHeaderComponent', () => {
     fixture = TestBed.createComponent(ItemDetailHeaderComponent);
     component = fixture.componentInstance;
     itemDetailService = TestBed.inject(ItemDetailService);
-    itemCardService = TestBed.inject(ItemCardService);
     checkSessionService = TestBed.inject(CheckSessionService);
+    analyticsService = TestBed.inject(AnalyticsService);
     modalService = TestBed.inject(NgbModal);
     component.item = MOCK_ITEM;
     component.user = MOCK_USER;
@@ -228,34 +239,28 @@ describe('ItemDetailHeaderComponent', () => {
         expect(fixture.debugElement.query(By.css(favouriteButtonId))).toBeFalsy();
       });
 
-      describe('when we clic on the reserve item button...', () => {
-        it('should ask for the reserve item function', () => {
-          spyOn(component, 'reserveItem').and.callThrough();
-          spyOn(itemDetailService, 'reserveItem');
+      describe('when we click on the reserve item button...', () => {
+        it('should emit the reserve item event', () => {
+          spyOn(component.reservedItemChange, 'emit');
 
           const reserveButton = fixture.debugElement.query(By.css(reserveButtonClass)).nativeElement;
           reserveButton.click();
 
-          expect(component.reserveItem).toHaveBeenCalled();
-          expect(itemDetailService.reserveItem).toHaveBeenCalledWith(component.item.id, !component.item.reserved);
+          expect(component.reservedItemChange.emit).toHaveBeenCalled();
         });
       });
 
       describe('when we clic on the sold item button...', () => {
-        afterEach(() => {
-          component.item.sold = false;
-        });
         it('should open the sold modal', fakeAsync(() => {
-          spyOn(component, 'soldItem').and.callThrough();
+          spyOn(component.soldItemChange, 'emit');
           spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve(), componentInstance: {} });
 
           const soldButton = fixture.debugElement.query(By.css(soldButtonClass)).nativeElement;
           soldButton.click();
           tick();
 
-          expect(component.soldItem).toHaveBeenCalled();
           expect(modalService.open).toHaveBeenCalledWith(SoldModalComponent, { windowClass: 'sold' });
-          expect(component.item.sold).toBe(true);
+          expect(component.soldItemChange.emit).toHaveBeenCalled();
         }));
       });
 
@@ -271,14 +276,12 @@ describe('ItemDetailHeaderComponent', () => {
       describe('when we clic on the trash item button...', () => {
         it('should open the confirmation delete modal', fakeAsync(() => {
           spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve(), componentInstance: {} });
-          spyOn(component, 'deleteItem').and.callThrough();
           spyOn(itemDetailService, 'deleteItem').and.returnValue(of());
 
           const trashButton = fixture.debugElement.query(By.css(trashButtonId)).nativeElement;
           trashButton.click();
           tick();
 
-          expect(component.deleteItem).toHaveBeenCalled();
           expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, { windowClass: 'modal-prompt' });
           expect(itemDetailService.deleteItem).toHaveBeenCalledWith(component.item.id);
         }));
@@ -324,13 +327,13 @@ describe('ItemDetailHeaderComponent', () => {
 
       describe('when we clic on the favourite button...', () => {
         describe('and we have a current session...', () => {
-          it('should toggle the favourite button', () => {
-            spyOn(itemCardService, 'toggleFavourite');
+          it('should emit the favourite item event', () => {
+            spyOn(component.favouritedItemChange, 'emit');
 
             const favouriteButton = fixture.debugElement.nativeElement.querySelector(favouriteButtonId);
             favouriteButton.click();
 
-            expect(itemCardService.toggleFavourite).toHaveBeenCalledWith(component.item);
+            expect(component.favouritedItemChange.emit).toHaveBeenCalled();
           });
         });
 
@@ -346,6 +349,27 @@ describe('ItemDetailHeaderComponent', () => {
           });
         });
       });
+    });
+  });
+  describe('After we click the chatButton', () => {
+    it('should send track click button event', () => {
+      spyOn(analyticsService, 'trackEvent');
+      const expectedEvent: AnalyticsEvent<ClickChatButton> = {
+        name: ANALYTICS_EVENT_NAMES.ClickChatButton,
+        eventType: ANALYTIC_EVENT_TYPES.Navigation,
+        attributes: {
+          itemId: component.item.id,
+          sellerUserId: component.user.id,
+          screenId: SCREEN_IDS.ItemDetail,
+          isPro: component.user.featured,
+          isBumped: !!component.item.bumpFlags,
+        },
+      };
+      const chatButton = fixture.debugElement.query(By.css(chatButtonId)).nativeElement;
+
+      chatButton.click();
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
     });
   });
 });

@@ -113,9 +113,9 @@ describe('ItemCardListComponent', () => {
   describe('when we click on a item card...', () => {
     it('should redirect to the item view ', () => {
       spyOn(router, 'navigate');
-      const itemCard: ItemCardComponent = de.query(By.directive(ItemCardComponent)).componentInstance;
+      const itemCard: HTMLElement = de.query(By.directive(ItemCardComponent)).nativeElement;
 
-      itemCard.itemClick.emit();
+      itemCard.click();
       fixture.detectChanges();
 
       expect(router.navigate).toHaveBeenCalledWith([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM.id}`]);

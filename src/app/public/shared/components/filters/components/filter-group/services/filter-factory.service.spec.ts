@@ -1,6 +1,8 @@
+import { CommonModule } from '@angular/common';
 import { Component, DebugElement, QueryList, ViewChildren } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FILTER_TYPES } from '../../../core/enums/filter-types/filter-types.enum';
+import { FiltersModule } from '../../../filters.module';
 import { FilterConfig } from '../../../interfaces/filter-config.interface';
 import { FilterParameter } from '../../../interfaces/filter-parameter.interface';
 import { AbstractFilter } from '../../abstract-filter/abstract-filter';
@@ -45,7 +47,7 @@ describe('FilterFactoryService', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TestComponent, FilterHostDirective],
-      imports: [],
+      imports: [CommonModule, FiltersModule],
       providers: [FilterFactoryService],
     }).compileComponents();
 

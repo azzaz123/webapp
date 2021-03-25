@@ -7,7 +7,6 @@ describe('ItemExtraInfoComponent', () => {
   let component: ItemExtraInfoComponent;
   let fixture: ComponentFixture<ItemExtraInfoComponent>;
   const MOCK_EXTRA_INFO = ['XXL / 48 / 58', 'Diesel'];
-  const carStyleClass = '.ItemExtraInfo--car';
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -36,7 +35,6 @@ describe('ItemExtraInfoComponent', () => {
   describe('when we have extra info...', () => {
     beforeEach(() => {
       component.extraInfo = MOCK_EXTRA_INFO;
-      component.isCar = false;
       fixture.detectChanges();
     });
 
@@ -49,27 +47,6 @@ describe('ItemExtraInfoComponent', () => {
         ).toBeTruthy();
       });
       expect(specifications.length).toBe(MOCK_EXTRA_INFO.length);
-    });
-
-    describe('when the extra info is from a basic item...', () => {
-      it('should NOT apply the car styles', () => {
-        const carStyles = fixture.debugElement.query(By.css(carStyleClass));
-
-        expect(carStyles).toBeFalsy();
-      });
-    });
-
-    describe('when the extra info is from a car...', () => {
-      beforeEach(() => {
-        component.isCar = true;
-        fixture.detectChanges();
-      });
-
-      it('should apply the car styles', () => {
-        const carStyles = fixture.debugElement.query(By.css(carStyleClass));
-
-        expect(carStyles).toBeTruthy();
-      });
     });
   });
 });

@@ -11,7 +11,8 @@ import { RecommenderApiService } from '@public/core/services/api/recommender/rec
 import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
 import { forkJoin, Observable, of } from 'rxjs';
 import { concatMap, mergeMap } from 'rxjs/operators';
-import { ItemDetail } from '../../../interfaces/item-detail.interface';
+import { ItemDetailResponse } from '@public/features/item-detail/interfaces/item-detail-response.interface';
+import { MarkAsFavouriteBodyResponse } from '@public/core/services/api/public-user/interfaces/public-user-response.interface';
 
 @Injectable()
 export class ItemDetailService {
@@ -22,7 +23,7 @@ export class ItemDetailService {
     private mapItemService: MapItemService
   ) {}
 
-  public getItem(itemId: string): Observable<ItemDetail> {
+  public getItemDetail(itemId: string): Observable<ItemDetailResponse> {
     return this.itemApiService.getItem(itemId).pipe(
       concatMap((item) => {
         return forkJoin([
@@ -53,6 +54,14 @@ export class ItemDetailService {
 
   public reserveItem(itemId: string, reserved: boolean): Observable<ReserveItemBodyResponse> {
     return this.itemApiService.reserveItem(itemId, reserved);
+  }
+
+  public markAsFavourite(id: string): Observable<MarkAsFavouriteBodyResponse> {
+    return this.itemApiService.markAsFavourite(id);
+  }
+
+  public unmarkAsFavourite(id: string): Observable<MarkAsFavouriteBodyResponse> {
+    return this.itemApiService.unmarkAsFavourite(id);
   }
 
   public getItemActivePurchases(id: string): Observable<Purchase[]> {

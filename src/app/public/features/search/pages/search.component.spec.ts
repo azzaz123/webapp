@@ -12,7 +12,7 @@ import { Store } from '@ngrx/store';
 import { random } from 'faker';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { of } from 'rxjs/internal/observable/of';
-import { SearchFiltersModule } from '../components/search-filters/search-filters.module';
+import { FiltersWrapperModule } from '../components/filters-wrapper/filters-wrapper.module';
 import { SearchLayoutComponent } from '../components/search-layout/search-layout.component';
 import { AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
@@ -38,7 +38,7 @@ describe('SearchComponent', () => {
       };
       TestBed.configureTestingModule({
         declarations: [SearchComponent, SearchLayoutComponent, AdComponentStub, ItemCardListComponentStub],
-        imports: [SearchFiltersModule],
+        imports: [FiltersWrapperModule],
         providers: [
           SearchStoreService,
           {

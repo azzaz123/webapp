@@ -8,11 +8,10 @@
 [title]="config.title"
 [icon]="config.icon"
 [label]="label"
-[hasValue]="hasValue()"
+[hasValue]="hasValue$() | async"
 (apply)="handleApply()"
 (clear)="handleClear()"
 (openStateChange)="openStateChange.emit($event)">
-
     <form [formGroup]="formGroup">
         <tsl-slider-form
         formControlName="range"
