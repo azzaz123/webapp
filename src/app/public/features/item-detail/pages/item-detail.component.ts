@@ -77,19 +77,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
 
   public toggleFavouriteItem(): void {
     this.itemDetailStoreService.toggleFavouriteItem().subscribe(() => {
-      const event: AnalyticsEvent<FavoriteItem | UnfavoriteItem> = {
-        name: ANALYTICS_EVENT_NAMES.FavoriteItem,
-        eventType: ANALYTIC_EVENT_TYPES.UserPreference,
-        attributes: {
-          itemId: this.itemDetail.item.id,
-          categoryId: this.itemDetail.item.categoryId,
-          screenId: SCREEN_IDS.ItemDetail,
-          salePrice: this.itemDetail.item.salePrice,
-          isPro: this.itemDetail.user.featured,
-          title: this.itemDetail.item.title,
-          isBumped: !!this.itemDetail.item.bumpFlags,
-        },
-      };
+      const event = this.generateFavoriteOrUnfavoriteEvent(this.itemDetail.item.flags.favorite);
       if (this.itemDetail.item.flags.favorite) {
         this.analyticsService.trackEvent(event as AnalyticsEvent<FavoriteItem>);
       } else {
@@ -100,6 +88,23 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
 
   public soldItem(): void {
     this.itemDetailStoreService.markItemAsSold();
+  }
+
+  private generateFavoriteOrUnfavoriteEvent(isFlagFavorite: boolean): AnalyticsEvent<FavoriteItem | UnfavoriteItem> {
+    const event: AnalyticsEvent<FavoriteItem | UnfavoriteItem> = {
+      name: isFlagFavorite ? ANALYTICS_EVENT_NAMES.FavoriteItem : ANALYTICS_EVENT_NAMES.UnfavoriteItem,
+      eventType: ANALYTIC_EVENT_TYPES.UserPreference,
+      attributes: {
+        itemId: this.itemDetail.item.id,
+        categoryId: this.itemDetail.item.categoryId,
+        screenId: SCREEN_IDS.ItemDetail,
+        salePrice: this.itemDetail.item.salePrice,
+        isPro: this.itemDetail.user.featured,
+        title: this.itemDetail.item.title,
+        isBumped: !!this.itemDetail.item.bumpFlags,
+      },
+    };
+    return event;
   }
 
   private initPage(itemId: string): void {
