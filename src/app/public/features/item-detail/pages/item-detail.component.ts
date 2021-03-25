@@ -17,6 +17,16 @@ import { ItemDetail } from '../interfaces/item-detail.interface';
 import { ItemSocialShareService } from '../core/services/item-social-share/item-social-share.service';
 import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from '@public/shared/components/item-flag/item-flag-constants';
 import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
+import { UserService } from '@core/user/user.service';
+import { User } from '@core/user/user';
+import {
+  AnalyticsEvent,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  SCREEN_IDS,
+  ViewOwnItemDetail,
+} from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -40,6 +50,8 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     private itemDetailService: ItemDetailService,
     private route: ActivatedRoute,
     private adsService: AdsService,
+    private userService: UserService,
+    private analyticsService: AnalyticsService,
     private itemSocialShareService: ItemSocialShareService,
     private itemDetailFlagsStoreService: ItemDetailFlagsStoreService
   ) {}
@@ -83,6 +95,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
           this.itemSocialShareService.initializeItemMetaTags(itemDetail.item);
         }
         this.itemDetail = itemDetail;
+        this.trackViewEvents();
       })
     );
   }
@@ -101,6 +114,31 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   private isItemRecommendations(itemCategoryId: number): boolean {
     const CATEGORIES_WITH_RECOMMENDATIONS = [CATEGORY_IDS.CAR, CATEGORY_IDS.FASHION_ACCESSORIES];
     return CATEGORIES_WITH_RECOMMENDATIONS.includes(itemCategoryId);
+  }
+
+  private trackViewEvents(): void {
+    // Check own item
+    this.userService.me().subscribe((user: User) => {
+      if (this.itemDetail.user.id === user.id) {
+        const event: AnalyticsEvent<ViewOwnItemDetail> = {
+          name: ANALYTICS_EVENT_NAMES.ViewOwnItemDetail,
+          eventType: ANALYTIC_EVENT_TYPES.ScreenView,
+          attributes: {
+            itemId: this.itemDetail.item.id,
+            categoryId: this.itemDetail.item.categoryId,
+            salePrice: this.itemDetail.item.salePrice,
+            title: this.itemDetail.item.title,
+            isPro: this.itemDetail.user.featured,
+            screenId: SCREEN_IDS.ItemDetail,
+            //Check the category listing limit
+            isActive: true,
+          },
+        };
+        this.analyticsService.trackEvent(event);
+      } else {
+        //TODO: Check others items events
+      }
+    });
   }
 
   get itemDetail$(): Observable<ItemDetail> {
