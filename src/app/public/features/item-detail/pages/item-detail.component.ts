@@ -17,6 +17,15 @@ import { ItemDetail } from '../interfaces/item-detail.interface';
 import { ItemSocialShareService } from '../core/services/item-social-share/item-social-share.service';
 import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from '@public/shared/components/item-flag/item-flag-constants';
 import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
+import {
+  AnalyticsEvent,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  FavoriteItem,
+  SCREEN_IDS,
+  UnfavoriteItem,
+} from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -41,7 +50,8 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private adsService: AdsService,
     private itemSocialShareService: ItemSocialShareService,
-    private itemDetailFlagsStoreService: ItemDetailFlagsStoreService
+    private itemDetailFlagsStoreService: ItemDetailFlagsStoreService,
+    private analyticsService: AnalyticsService
   ) {}
 
   ngOnInit(): void {
@@ -66,11 +76,30 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   }
 
   public toggleFavouriteItem(): void {
-    this.itemDetailStoreService.toggleFavouriteItem().subscribe();
+    this.itemDetailStoreService.toggleFavouriteItem().subscribe(() => {
+      this.trackFavoriteOrUnfavoriteEvent();
+    });
   }
 
   public soldItem(): void {
     this.itemDetailStoreService.markItemAsSold();
+  }
+
+  private trackFavoriteOrUnfavoriteEvent(): void {
+    const event: AnalyticsEvent<FavoriteItem | UnfavoriteItem> = {
+      name: this.itemDetail.item.flags.favorite ? ANALYTICS_EVENT_NAMES.FavoriteItem : ANALYTICS_EVENT_NAMES.UnfavoriteItem,
+      eventType: ANALYTIC_EVENT_TYPES.UserPreference,
+      attributes: {
+        itemId: this.itemDetail.item.id,
+        categoryId: this.itemDetail.item.categoryId,
+        screenId: SCREEN_IDS.ItemDetail,
+        salePrice: this.itemDetail.item.salePrice,
+        isPro: this.itemDetail.user.featured,
+        title: this.itemDetail.item.title,
+        isBumped: !!this.itemDetail.item.bumpFlags,
+      },
+    };
+    this.analyticsService.trackEvent(event);
   }
 
   private initPage(itemId: string): void {

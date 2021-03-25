@@ -5,7 +5,7 @@
         Featured</tsl-item-flag>
 </div>
 <div class="ItemImagesCarousel w-100 h-100" [ngClass]="{ 'ItemImagesCarousel--disabled': isExpired }">
-    <tsl-carousel-slides (slideClick)="imageClick.emit($event)" [hideControllers]="isExpired">
+    <tsl-carousel-slides (slideClick)="imageClick.emit($event)" [hideControllers]="isExpired" [hideIndicators]="isExpired">
         <ng-template carousel-slider *ngFor="let image of images">
             <img [src]="image" />
         </ng-template>

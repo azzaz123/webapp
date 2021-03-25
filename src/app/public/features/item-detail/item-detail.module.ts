@@ -7,7 +7,7 @@ import { PublicUserApiService } from '@public/core/services/api/public-user/publ
 import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
 import { AdsModule } from '@public/shared/components/ads/ads.module';
 import { ItemImagesCarouselModule } from '@public/shared/components/item-images-carousel/item-images-carousel.module';
-import { AdModule } from '@shared/ad/ad.module';
+import { AdSlotModule } from '@shared/ads/ad-slot/ad-slot.module';
 import { GeolocationModule } from '@shared/geolocation/geolocation.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { SocialShareModule } from '@shared/social-share/social-share.module';
@@ -22,7 +22,7 @@ import { MapSpecificationsService } from './core/services/map-specifications/map
 import { EllapsedTimeModule } from './core/directives/ellapsed-time.module';
 import { itemDetailRoutedComponents, ItemDetailRoutingModule } from './item-detail-routing.module';
 import { ItemTaxonomiesModule } from './components/item-taxonomies/item-taxonomies.module';
-import { ItemExtraInfoComponent } from './components/item-extra-info/item-extra-info.component';
+import { ItemExtraInfoModule } from '../../shared/components/item-extra-info/item-extra-info.module';
 import { ItemDetailStoreService } from './core/services/item-detail-store/item-detail-store.service';
 import { MapItemDetailStoreService } from './core/services/map-item-detail-store/map-item-detail-store.service';
 import { ItemSocialShareService } from './core/services/item-social-share/item-social-share.service';
@@ -30,12 +30,12 @@ import { ItemDetailFlagsStoreService } from './core/services/item-detail-flags-s
 import { MapItemDetailFlagsStoreService } from './core/services/map-item-detail-flags-store/map-item-detail-flags-store.service';
 
 @NgModule({
-  declarations: [itemDetailRoutedComponents, ItemExtraInfoComponent],
+  declarations: [itemDetailRoutedComponents],
   imports: [
     CommonModule,
     ItemDetailRoutingModule,
     AdsModule,
-    AdModule,
+    AdSlotModule,
     ItemImagesCarouselModule,
     CustomCurrencyModule,
     GeolocationModule,
@@ -48,6 +48,7 @@ import { MapItemDetailFlagsStoreService } from './core/services/map-item-detail-
     ItemSpecificationsModule,
     EllapsedTimeModule,
     ItemTaxonomiesModule,
+    ItemExtraInfoModule,
   ],
   providers: [
     ItemDetailService,
