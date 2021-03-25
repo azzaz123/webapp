@@ -4,13 +4,21 @@ import { FilterConfig } from '@public/shared/components/filters/interfaces/filte
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { FILTER_VARIANT } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.enum';
 import { FilterTemplateComponent } from '@public/shared/components/filters/components/abstract-filter/filter-template/filter-template.component';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
 export abstract class AbstractFilter<T extends Record<keyof T, string>> implements Filter<T>, OnInit {
   @Input() variant: FILTER_VARIANT = FILTER_VARIANT.BUBBLE;
   @Input() config: FilterConfig<T>;
-  @Input() value: FilterParameter[] = [];
+  @Input()
+  set value(value: FilterParameter[]) {
+    this.writeValue(value);
+  }
+  get value(): FilterParameter[] {
+    return this._value;
+  }
+
   @Output() valueChange = new EventEmitter<FilterParameter[]>();
   @Output() clear = new EventEmitter<void>();
   @Output() openStateChange: EventEmitter<boolean> = new EventEmitter();
@@ -18,10 +26,25 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
   @ViewChild(FilterTemplateComponent) filterTemplate: FilterTemplateComponent;
 
   public label: string;
+  protected _value: FilterParameter[];
 
+  protected hasValueSubject = new BehaviorSubject<boolean>(false);
+
+  public hasValue$(): Observable<boolean> {
+    return this.hasValueSubject.asObservable();
+  }
+
+  protected _hasValue(): boolean {
+    return this._value?.length > 0;
+  }
   public ngOnInit(): void {
     this.label = this.config.bubblePlaceholder;
-    this.value = this.value?.length ? this.value : this.config.defaultValue || [];
+    this._value = this._value?.length ? this._value : this.config.defaultValue || [];
+  }
+
+  public writeValue(value: FilterParameter[]): void {
+    this._value = value;
+    this.hasValueSubject.next(this._hasValue());
   }
 
   public isBubble(): boolean {
@@ -30,10 +53,6 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
 
   public isDropdown(): boolean {
     return true;
-  }
-
-  public hasValue(): boolean {
-    return this.value?.length > 0;
   }
 
   public hasApply(): boolean {
@@ -53,7 +72,7 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
   }
 
   public getFilterCounter(): number | undefined {
-    return this.value.length > 1 ? this.value.length : undefined;
+    return this._value.length > 1 ? this._value.length : undefined;
   }
 
   public handleApply(): void {}
@@ -67,7 +86,7 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
   }
 
   public getValue(key: keyof T): string {
-    return this.value?.find((parameter: FilterParameter) => parameter.key === this.config.mapKey[key])?.value;
+    return this._value?.find((parameter: FilterParameter) => parameter.key === this.config.mapKey[key])?.value;
   }
   public hasValueChanged(previous: FilterParameter[], current: FilterParameter[]): boolean {
     const keys = Object.keys(this.config.mapKey);

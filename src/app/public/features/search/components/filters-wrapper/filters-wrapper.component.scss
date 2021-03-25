@@ -1,6 +1,6 @@
 @import '~style/common';
 
-.SearchFilters {
+.FiltersWrapper {
   &__bar {
     @include media-breakpoint-down(md) {
       overflow: auto;

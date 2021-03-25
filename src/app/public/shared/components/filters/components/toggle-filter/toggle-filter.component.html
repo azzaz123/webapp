@@ -8,7 +8,7 @@
 [title]="config.title"
 [icon]="config.icon"
 [label]="label"
-[hasValue]="hasValue()"
+[hasValue]="hasValue$() | async"
 (click)="handleClick()"
 (clear)="handleClear()"
 (openStateChange)="openStateChange.emit($event)">
@@ -18,3 +18,4 @@
         <tsl-toggle-form [(ngModel)]="toggle" (ngModelChange)="handleChange()"></tsl-toggle-form>
     </div>
 </tsl-filter-template>
+
