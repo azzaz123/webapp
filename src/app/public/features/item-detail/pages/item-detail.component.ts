@@ -77,7 +77,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
 
   public toggleFavouriteItem(): void {
     this.itemDetailStoreService.toggleFavouriteItem().subscribe(() => {
-      this.generateFavoriteOrUnfavoriteEvent();
+      this.trackFavoriteOrUnfavoriteEvent();
     });
   }
 
@@ -85,7 +85,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     this.itemDetailStoreService.markItemAsSold();
   }
 
-  private generateFavoriteOrUnfavoriteEvent(): void {
+  private trackFavoriteOrUnfavoriteEvent(): void {
     const event: AnalyticsEvent<FavoriteItem | UnfavoriteItem> = {
       name: this.itemDetail.item.flags.favorite ? ANALYTICS_EVENT_NAMES.FavoriteItem : ANALYTICS_EVENT_NAMES.UnfavoriteItem,
       eventType: ANALYTIC_EVENT_TYPES.UserPreference,
@@ -99,9 +99,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
         isBumped: !!this.itemDetail.item.bumpFlags,
       },
     };
-    this.analyticsService.trackEvent(
-      this.itemDetail.item.flags.favorite ? (event as AnalyticsEvent<FavoriteItem>) : (event as AnalyticsEvent<UnfavoriteItem>)
-    );
+    this.analyticsService.trackEvent(event);
   }
 
   private initPage(itemId: string): void {
