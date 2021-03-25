@@ -21,6 +21,7 @@ import { UserService } from '@core/user/user.service';
 import { User } from '@core/user/user';
 import {
   AnalyticsEvent,
+  AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   ViewOwnItemDetail,
@@ -138,12 +139,10 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   }
 
   private trackViewEvents(): void {
-    // Check own item
     this.userService.me().subscribe((user: User) => {
       if (this.itemDetail.user.id === user.id) {
-        const event: AnalyticsEvent<ViewOwnItemDetail> = {
+        const event: AnalyticsPageView<ViewOwnItemDetail> = {
           name: ANALYTICS_EVENT_NAMES.ViewOwnItemDetail,
-          eventType: ANALYTIC_EVENT_TYPES.ScreenView,
           attributes: {
             itemId: this.itemDetail.item.id,
             categoryId: this.itemDetail.item.categoryId,
@@ -151,20 +150,14 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
             title: this.itemDetail.item.title,
             isPro: this.itemDetail.user.featured,
             screenId: SCREEN_IDS.ItemDetail,
-            //Check the category listing limit
             isActive: this.itemDetail.item.flags?.expired,
           },
         };
-        this.analyticsService.trackEvent(event);
+        this.analyticsService.trackPageView(event);
       } else {
         //TODO: Check others items events
       }
     });
-  }
-
-  private trackViewOthersItemCarDetailEvent(): void {
-    // check whether the item is car
-    //access the car brand information
   }
 
   get itemDetail$(): Observable<ItemDetail> {
