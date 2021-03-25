@@ -55,6 +55,14 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { UserService } from '@core/user/user.service';
 import { MockedUserService } from '@fixtures/user.fixtures.spec';
+import {
+  AnalyticsEvent,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  FavoriteItem,
+  SCREEN_IDS,
+  UnfavoriteItem,
+} from '@core/analytics/analytics-constants';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -75,7 +83,7 @@ describe('ItemDetailComponent', () => {
   const itemDetailStoreServiceMock = {
     itemDetail$: itemDetailSubjectMock.asObservable(),
     toggleReservedItem: () => of(),
-    toggleFavouriteItem: () => of(),
+    toggleFavouriteItem: () => of({}),
     markItemAsSold: () => {},
     initializeItemAndFlags: () => {},
   };
@@ -89,6 +97,7 @@ describe('ItemDetailComponent', () => {
   let decimalPipe: DecimalPipe;
   let itemDetailImagesModal: ItemFullScreenCarouselComponent;
   let itemDetailStoreService: ItemDetailStoreService;
+  let analyticsService: AnalyticsService;
   let de: DebugElement;
   let el: HTMLElement;
 
@@ -186,6 +195,7 @@ describe('ItemDetailComponent', () => {
     itemDetailStoreService = TestBed.inject(ItemDetailStoreService);
     itemDetailImagesModal = TestBed.inject(ItemFullScreenCarouselComponent);
     itemSocialShareService = TestBed.inject(ItemSocialShareService);
+    analyticsService = TestBed.inject(AnalyticsService);
     fixture.detectChanges();
   });
 
@@ -459,12 +469,63 @@ describe('ItemDetailComponent', () => {
     describe('when we favourite or unfavourite an item...', () => {
       it('should call to the store to do the action', () => {
         spyOn(itemDetailStoreService, 'toggleFavouriteItem').and.returnValue(of());
-
         const itemDetailHeader = fixture.debugElement.query(By.directive(ItemDetailHeaderComponent));
         itemDetailHeader.triggerEventHandler('favouritedItemChange', {});
 
         fixture.detectChanges();
         expect(itemDetailStoreService.toggleFavouriteItem).toHaveBeenCalled();
+      });
+
+      it('should send favorite item event if we toggle favourite an item', () => {
+        spyOn(analyticsService, 'trackEvent');
+        const favoriteItemEvent: AnalyticsEvent<FavoriteItem> = {
+          name: ANALYTICS_EVENT_NAMES.FavoriteItem,
+          eventType: ANALYTIC_EVENT_TYPES.UserPreference,
+          attributes: {
+            itemId: MOCK_CAR_ITEM_DETAIL.item.id,
+            categoryId: MOCK_CAR_ITEM_DETAIL.item.categoryId,
+            screenId: SCREEN_IDS.ItemDetail,
+            salePrice: MOCK_CAR_ITEM_DETAIL.item.salePrice,
+            isPro: MOCK_CAR_ITEM_DETAIL.user.featured,
+            title: MOCK_CAR_ITEM_DETAIL.item.title,
+            isBumped: !!MOCK_CAR_ITEM_DETAIL.item.bumpFlags,
+          },
+        };
+        const itemDetail = { ...MOCK_CAR_ITEM_DETAIL };
+        itemDetail.item.flags.favorite = true;
+        itemDetailSubjectMock.next(itemDetail);
+
+        const itemDetailHeader = fixture.debugElement.query(By.directive(ItemDetailHeaderComponent));
+        itemDetailHeader.triggerEventHandler('favouritedItemChange', {});
+
+        fixture.detectChanges();
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(favoriteItemEvent);
+      });
+
+      it('should send favorite item event if we toggle favourite an item', () => {
+        spyOn(analyticsService, 'trackEvent');
+        const favoriteItemEvent: AnalyticsEvent<UnfavoriteItem> = {
+          name: ANALYTICS_EVENT_NAMES.UnfavoriteItem,
+          eventType: ANALYTIC_EVENT_TYPES.UserPreference,
+          attributes: {
+            itemId: MOCK_CAR_ITEM_DETAIL.item.id,
+            categoryId: MOCK_CAR_ITEM_DETAIL.item.categoryId,
+            screenId: SCREEN_IDS.ItemDetail,
+            salePrice: MOCK_CAR_ITEM_DETAIL.item.salePrice,
+            isPro: MOCK_CAR_ITEM_DETAIL.user.featured,
+            title: MOCK_CAR_ITEM_DETAIL.item.title,
+            isBumped: !!MOCK_CAR_ITEM_DETAIL.item.bumpFlags,
+          },
+        };
+        const itemDetail = { ...MOCK_CAR_ITEM_DETAIL };
+        itemDetail.item.flags.favorite = false;
+        itemDetailSubjectMock.next(itemDetail);
+
+        const itemDetailHeader = fixture.debugElement.query(By.directive(ItemDetailHeaderComponent));
+        itemDetailHeader.triggerEventHandler('favouritedItemChange', {});
+
+        fixture.detectChanges();
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(favoriteItemEvent);
       });
     });
 
