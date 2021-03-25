@@ -1,21 +1,23 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { SearchFiltersComponent } from './search-filters.component';
+import { FiltersWrapperComponent } from './filters-wrapper.component';
 import { BubbleModule } from '@public/shared/components/bubble/bubble.module';
 import { DrawerModule } from '@public/shared/components/drawer/drawer.module';
 import { FilterGroupComponentStub } from '@public/shared/components/filters/components/filter-group/services/filter-group.component.stub';
+import { FilterParameterDraftService } from '@public/shared/services/filter-parameter-draft/filter-parameter-draft.service';
+import { FilterParameterStoreService } from '../../core/services/filter-parameter-store.service';
 
-describe('SearchFiltersComponent', () => {
-  let component: SearchFiltersComponent;
-  let fixture: ComponentFixture<SearchFiltersComponent>;
+describe('FiltersWrapperComponent', () => {
+  let component: FiltersWrapperComponent;
+  let fixture: ComponentFixture<FiltersWrapperComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SearchFiltersComponent, FilterGroupComponentStub],
+      declarations: [FiltersWrapperComponent, FilterGroupComponentStub],
       imports: [BubbleModule, DrawerModule],
-      providers: [],
+      providers: [FilterParameterStoreService, FilterParameterDraftService],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SearchFiltersComponent);
+    fixture = TestBed.createComponent(FiltersWrapperComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

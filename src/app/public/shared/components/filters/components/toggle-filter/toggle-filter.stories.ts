@@ -5,6 +5,7 @@ import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { ToggleFormModule } from '@shared/form/components/toggle/toggle-form.module';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { CookieService } from 'ngx-cookie';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { FILTER_TYPES } from '../../core/enums/filter-types/filter-types.enum';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
@@ -46,7 +47,7 @@ export default {
     moduleMetadata({
       declarations: [ToggleFilterComponent],
       imports: [CommonModule, AbstractFilterModule, ToggleFormModule, HttpClientModule],
-      providers: [{ provide: CookieService, useValue: MockCookieService }],
+      providers: [{ provide: CookieService, useValue: MockCookieService }, DeviceDetectorService],
     }),
   ],
 } as Meta;
