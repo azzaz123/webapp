@@ -260,7 +260,7 @@ describe('ItemDetailComponent', () => {
             title: MOCK_CAR_ITEM_DETAIL.item.title,
             isPro: MOCK_CAR_ITEM_DETAIL.user.featured,
             screenId: SCREEN_IDS.ItemDetail,
-            isActive: MOCK_CAR_ITEM_DETAIL.item.flags?.expired,
+            isActive: MOCK_CAR_ITEM_DETAIL.item.flags?.onhold,
           },
         };
 
@@ -281,7 +281,7 @@ describe('ItemDetailComponent', () => {
             title: MOCK_CAR_ITEM_DETAIL.item.title,
             isPro: MOCK_CAR_ITEM_DETAIL.user.featured,
             screenId: SCREEN_IDS.ItemDetail,
-            isActive: MOCK_CAR_ITEM_DETAIL.item.flags?.expired,
+            isActive: MOCK_CAR_ITEM_DETAIL.item.flags?.onhold,
           },
         };
 
