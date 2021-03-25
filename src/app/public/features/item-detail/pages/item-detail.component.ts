@@ -141,7 +141,6 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   private trackViewEvents(): void {
     const item = this.itemDetail.item;
     const itemDetailUser = this.itemDetail.user;
-    console.log('enter track event');
     this.userService.me().subscribe((user: User) => {
       if (this.itemDetail.user.id === user.id) {
         const event: AnalyticsPageView<ViewOwnItemDetail> = {
@@ -158,6 +157,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
         };
         this.analyticsService.trackPageView(event);
       } else {
+        console.log('not same user');
         //TODO: Check others items events
       }
     });
