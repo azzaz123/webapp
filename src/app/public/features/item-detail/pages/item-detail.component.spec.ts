@@ -54,7 +54,7 @@ import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { UserService } from '@core/user/user.service';
-import { MockedUserService, MOCK_USER, OTHER_USER_ID } from '@fixtures/user.fixtures.spec';
+import { MockedUserService, MOCK_OTHER_USER, MOCK_USER, OTHER_USER_ID } from '@fixtures/user.fixtures.spec';
 import {
   AnalyticsEvent,
   AnalyticsPageView,
@@ -63,9 +63,11 @@ import {
   FavoriteItem,
   SCREEN_IDS,
   UnfavoriteItem,
+  ViewOthersItemREDetail,
   ViewOwnItemDetail,
 } from '@core/analytics/analytics-constants';
 import { User } from '@core/user/user';
+import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -260,6 +262,24 @@ describe('ItemDetailComponent', () => {
           isActive: !MOCK_CAR_ITEM_DETAIL.item.flags?.onhold,
         },
       };
+
+      const viewOthersRetailEvent: AnalyticsPageView<ViewOthersItemREDetail> = {
+        name: ANALYTICS_EVENT_NAMES.ViewOthersItemREDetail,
+        attributes: {
+          itemId: MOCK_REALESTATE.id,
+          categoryId: MOCK_REALESTATE.categoryId,
+          salePrice: MOCK_REALESTATE.salePrice,
+          title: MOCK_REALESTATE.title,
+          operation: MOCK_REALESTATE.operation,
+          type: MOCK_REALESTATE.type,
+          condition: MOCK_REALESTATE.condition,
+          surface: MOCK_REALESTATE.surface,
+          rooms: MOCK_REALESTATE.rooms,
+          isPro: MOCK_OTHER_USER.featured,
+          screenId: SCREEN_IDS.ItemDetail,
+        },
+      };
+
       it('should send view own item detail event if it is the same user', () => {
         itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
         spyOn(analyticsService, 'trackPageView');
@@ -276,6 +296,18 @@ describe('ItemDetailComponent', () => {
         component.ngOnInit();
 
         expect(analyticsService.trackPageView).not.toHaveBeenCalledWith(event);
+      });
+
+      it('should send view others retail event if user is viewing others retail', () => {
+        const mockRealEstateItemDetai: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
+        mockRealEstateItemDetai.item = MOCK_REALESTATE;
+        mockRealEstateItemDetai.user = MOCK_OTHER_USER;
+        itemDetailSubjectMock.next(mockRealEstateItemDetai);
+        spyOn(analyticsService, 'trackPageView');
+
+        component.ngOnInit();
+
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(viewOthersRetailEvent);
       });
 
       it('should ask for item data', () => {
