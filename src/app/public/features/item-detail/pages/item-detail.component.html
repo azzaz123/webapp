@@ -24,7 +24,7 @@
                             <tsl-item-images-carousel
                                 [statusFlag]="statusFlag$ | async" 
                                 [bumpedFlag]="bumpedFlag$ | async"
-                                [isExpired]="!itemDetail.item.flags?.expired" 
+                                [isExpired]="itemDetail.item.flags?.expired" 
                                 [images]="itemDetail.images"
                                 (imageClick)="openItemDetailImage($event)">
                             </tsl-item-images-carousel>
@@ -38,7 +38,6 @@
                                 *ngIf="itemDetail.extraInfo?.length > 0"
                                 class="horizontalScroll d-block mt-2"
                                 [ngClass]="{'ItemExtraInfo--car': itemDetail.isItemACar}"
-                                [isCar]="itemDetail.isItemACar" 
                                 [extraInfo]="itemDetail.extraInfo">
                             </tsl-item-extra-info>
                             <ng-container *ngIf="(itemDetail.taxonomiesSpecifications | async) as taxonomiesSpecifications">
