@@ -96,6 +96,8 @@
                     </div>
                     <tsl-recommended-items
                         *ngIf="(recommendedItems$ |async)?.recommended_items?.length"
+                        [itemSource]="itemDetail.item"
+                        [itemSourceUser]="itemDetail.user"
                         class="mt-3" [recommendedItems]="(recommendedItems$ | async)">
                     </tsl-recommended-items>
                     <div *ngIf="device === deviceType.MOBILE" class="pt-4">
