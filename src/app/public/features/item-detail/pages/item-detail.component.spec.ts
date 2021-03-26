@@ -54,7 +54,8 @@ import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { UserService } from '@core/user/user.service';
-import { MockedUserService, MOCK_USER, OTHER_USER_ID } from '@fixtures/user.fixtures.spec';
+import { MockedUserService, MOCK_OTHER_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { MOCK_ITEM_V3 } from '@fixtures/item.fixtures.spec';
 import {
   AnalyticsEvent,
   AnalyticsPageView,
@@ -63,9 +64,9 @@ import {
   FavoriteItem,
   SCREEN_IDS,
   UnfavoriteItem,
+  ViewOthersItemCGDetail,
   ViewOwnItemDetail,
 } from '@core/analytics/analytics-constants';
-import { User } from '@core/user/user';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -260,6 +261,19 @@ describe('ItemDetailComponent', () => {
           isActive: !MOCK_CAR_ITEM_DETAIL.item.flags?.onhold,
         },
       };
+
+      const viewOthersCGDetailEvent: AnalyticsPageView<ViewOthersItemCGDetail> = {
+        name: ANALYTICS_EVENT_NAMES.ViewOthersItemCGDetail,
+        attributes: {
+          itemId: MOCK_ITEM_V3.id,
+          categoryId: MOCK_ITEM_V3.categoryId,
+          salePrice: MOCK_ITEM_V3.salePrice,
+          title: MOCK_ITEM_V3.title,
+          isPro: MOCK_OTHER_USER.featured,
+          screenId: SCREEN_IDS.ItemDetail,
+        },
+      };
+
       it('should send view own item detail event if it is the same user', () => {
         itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
         spyOn(analyticsService, 'trackPageView');
@@ -276,6 +290,17 @@ describe('ItemDetailComponent', () => {
         component.ngOnInit();
 
         expect(analyticsService.trackPageView).not.toHaveBeenCalledWith(event);
+      });
+
+      it('should send view others CG item detail event when user is viewing others consumer goods item detail', () => {
+        const mockCGItemDetail: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
+        mockCGItemDetail.item = MOCK_ITEM_V3;
+        mockCGItemDetail.user = MOCK_OTHER_USER;
+        spyOn(analyticsService, 'trackPageView');
+
+        component.ngOnInit();
+
+        expect(analyticsService.trackPageView).not.toHaveBeenCalledWith(viewOthersCGDetailEvent);
       });
 
       it('should ask for item data', () => {
