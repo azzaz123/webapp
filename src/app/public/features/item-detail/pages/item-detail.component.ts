@@ -168,6 +168,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   }
 
   private setAdSlot({ item }: ItemDetail): void {
+    debugger;
     this.adsService.setAdKeywords({ category: item.categoryId.toString() });
     this.adsService.setSlots([
       this.adsSlotsItemDetail.item1,

@@ -200,7 +200,6 @@ describe('ItemDetailComponent', () => {
     itemSocialShareService = TestBed.inject(ItemSocialShareService);
     analyticsService = TestBed.inject(AnalyticsService);
     testAdsService = TestBed.inject(AdsService);
-    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -268,9 +267,11 @@ describe('ItemDetailComponent', () => {
   });
 
   describe('when we are on DESKTOP...', () => {
-    it('should show six ADS', () => {
+    beforeEach(() => {
       spyOn(deviceService, 'getDeviceType').and.returnValue(DeviceType.DESKTOP);
+    });
 
+    it('should show six ADS', () => {
       component.ngOnInit();
       fixture.detectChanges();
       const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
@@ -278,6 +279,7 @@ describe('ItemDetailComponent', () => {
       expect(ads.length).toBe(6);
     });
     it('should set ads configuration of desktop', () => {
+      itemDetailSubjectMock.next(MOCK_ITEM_DETAIL_GBP);
       spyOn(MockAdsService, 'setAdKeywords').and.callThrough();
       spyOn(MockAdsService, 'setSlots').and.callThrough();
 
@@ -295,9 +297,6 @@ describe('ItemDetailComponent', () => {
   });
 
   describe('when component inits', () => {
-    beforeEach(() => {
-      fixture = TestBed.createComponent(ItemDetailComponent);
-    });
     describe('and we get the item...', () => {
       const event: AnalyticsPageView<ViewOwnItemDetail> = {
         name: ANALYTICS_EVENT_NAMES.ViewOwnItemDetail,
@@ -311,6 +310,7 @@ describe('ItemDetailComponent', () => {
           isActive: !MOCK_CAR_ITEM_DETAIL.item.flags?.onhold,
         },
       };
+
       it('should send view own item detail event if it is the same user', () => {
         itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
         spyOn(analyticsService, 'trackPageView');
@@ -351,14 +351,12 @@ describe('ItemDetailComponent', () => {
 
     describe('should handle the recommended items...', () => {
       describe('when the item have recommended items...', () => {
-        beforeEach(() => {
+        it('should show the recommended items', () => {
           itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
           spyOn(itemDetailService, 'getRecommendedItems').and.returnValue(of(RECOMMENDED_ITEMS_MOCK));
 
-          component.ngOnInit();
           fixture.detectChanges();
-        });
-        it('should show the recommended items', () => {
+
           expect(fixture.debugElement.query(By.css(recommendedItemsTag))).toBeTruthy();
         });
       });
@@ -526,6 +524,10 @@ describe('ItemDetailComponent', () => {
   });
 
   describe('when we handle the header actions...', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
     describe('when we reserve or unreserve an item...', () => {
       it('should call to the store to do the action', () => {
         spyOn(itemDetailStoreService, 'toggleReservedItem').and.returnValue(of());
@@ -615,6 +617,10 @@ describe('ItemDetailComponent', () => {
   });
 
   describe('when we handle the location...', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
     describe('when the location is defined', () => {
       it('should show the specified location', () => {
         const map = fixture.debugElement.query(By.css(mapTag));
@@ -673,6 +679,9 @@ describe('ItemDetailComponent', () => {
   });
 
   describe('when we handle the item extra info...', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
     describe('and the extra info is defined...', () => {
       it('should be shown the item extra info content', () => {
         const extraInfo = fixture.debugElement.query(By.css('tsl-item-extra-info'));
@@ -722,6 +731,10 @@ describe('ItemDetailComponent', () => {
   });
 
   describe('when we handle the item taxonomies...', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
     describe('and the taxonomies are defined...', () => {
       it('should show the item specifications...', () => {
         expect(fixture.debugElement.query(By.directive(ItemTaxonomiesComponent))).toBeTruthy();
