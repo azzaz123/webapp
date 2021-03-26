@@ -63,9 +63,11 @@ import {
   FavoriteItem,
   SCREEN_IDS,
   UnfavoriteItem,
+  ViewOthersItemCarDetail,
   ViewOwnItemDetail,
 } from '@core/analytics/analytics-constants';
 import { User } from '@core/user/user';
+import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -248,7 +250,7 @@ describe('ItemDetailComponent', () => {
       fixture = TestBed.createComponent(ItemDetailComponent);
     });
     describe('and we get the item...', () => {
-      const event: AnalyticsPageView<ViewOwnItemDetail> = {
+      const viewOwnItemDetailEvent: AnalyticsPageView<ViewOwnItemDetail> = {
         name: ANALYTICS_EVENT_NAMES.ViewOwnItemDetail,
         attributes: {
           itemId: MOCK_CAR_ITEM_DETAIL.item.id,
@@ -260,13 +262,35 @@ describe('ItemDetailComponent', () => {
           isActive: !MOCK_CAR_ITEM_DETAIL.item.flags?.onhold,
         },
       };
+
+      const viewOthersCarEvent: AnalyticsPageView<ViewOthersItemCarDetail> = {
+        name: ANALYTICS_EVENT_NAMES.ViewOthersItemCarDetail,
+        attributes: {
+          itemId: MOCK_CAR.id,
+          categoryId: MOCK_CAR.categoryId,
+          salePrice: MOCK_CAR.salePrice,
+          brand: MOCK_CAR.brand,
+          model: MOCK_CAR.model,
+          year: MOCK_CAR.km,
+          gearbox: MOCK_CAR.gearbox,
+          engine: MOCK_CAR.engine,
+          colour: MOCK_CAR.color,
+          hp: MOCK_CAR.horsepower,
+          numDoors: MOCK_CAR.numDoors,
+          bodyType: MOCK_CAR.bodyType,
+          isCarDealer: true,
+          isPro: MOCK_CAR_ITEM_DETAIL.user.featured,
+          screenId: SCREEN_IDS.ItemDetail,
+        },
+      };
+
       it('should send view own item detail event if it is the same user', () => {
         itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
         spyOn(analyticsService, 'trackPageView');
 
         component.ngOnInit();
 
-        expect(analyticsService.trackPageView).toHaveBeenCalledWith(event);
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(viewOwnItemDetailEvent);
       });
 
       it('should not send view own item detail event if it is not the same user', () => {
@@ -275,7 +299,7 @@ describe('ItemDetailComponent', () => {
 
         component.ngOnInit();
 
-        expect(analyticsService.trackPageView).not.toHaveBeenCalledWith(event);
+        expect(analyticsService.trackPageView).not.toHaveBeenCalledWith(viewOwnItemDetailEvent);
       });
 
       it('should ask for item data', () => {
