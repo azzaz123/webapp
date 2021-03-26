@@ -8,7 +8,6 @@ export enum REAL_ESTATE_CONFIGURATION_ID {
 
   HOUSE_SURFACE = 'real_estate-surface-house',
   FLAT_SURFACE = 'real_estate-surface-flat',
-  ROOM_SURFACE = 'real_estate-surface-room',
   OFFICE_SURFACE = 'real_estate-surface-office',
   LAND_SURFACE = 'real_estate-surface-land',
   BOX_ROOM_SURFACE = 'real_estate-surface-box_room',
