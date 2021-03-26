@@ -31,6 +31,7 @@ export class SlidesCarouselComponent implements AfterContentInit {
   @Output() slideClick: EventEmitter<CarouselSlide> = new EventEmitter<CarouselSlide>();
   @Input() noBackgroundIndicators: boolean;
   @Input() hideControllers = false;
+  @Input() hideIndicators = false;
   @Input() initialIndex = 0;
 
   public readonly IMAGE_FALLBACK = FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH;

@@ -103,14 +103,7 @@ $item-detail-carousel-height: 477px;
 
 .horizontalScroll {
   overflow-x: auto;
-  /* Hide scrollbar for IE, Edge and Firefox */
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-
-  /* Hide scrollbar for Chrome, Safari and Opera */
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  @include hide-scroll-bars;
 }
 
 .ItemExtraInfo--car {

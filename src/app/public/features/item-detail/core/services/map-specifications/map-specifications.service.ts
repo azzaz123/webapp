@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Car } from '@core/item/car';
+import { Item } from '@core/item/item';
 import { Realestate } from '@core/item/realestate';
 import { CAR_SPECIFICATION_TYPE } from '@public/core/constants/item-specifications/cars-constants';
 import { REAL_ESTATE_SPECIFICATION_TYPE } from '@public/core/constants/item-specifications/realestate-constants';
@@ -23,7 +24,15 @@ export class MapSpecificationsService {
 
   constructor(private typeCheckService: TypeCheckService) {}
 
-  public mapCarSpecifications(car: Car): CounterSpecifications[] {
+  public mapSpecification(item: Item): CounterSpecifications[] {
+    if (this.typeCheckService.isCar(item)) {
+      return this.mapCarSpecifications(item);
+    } else if (this.typeCheckService.isRealEstate(item)) {
+      return this.mapRealestateSpecifications(item);
+    }
+  }
+
+  private mapCarSpecifications(car: Car): CounterSpecifications[] {
     const carSpecifications = this.getCarSpecifications(car);
     const carCounters = this.getCarCounters(carSpecifications);
     if (carSpecifications.bodyType === 'others') {
@@ -32,7 +41,7 @@ export class MapSpecificationsService {
     return carCounters.filter((counter) => this.counterSpecificationsAreNotEmpty(counter));
   }
 
-  public mapRealestateSpecifications(realestate: Realestate): CounterSpecifications[] {
+  private mapRealestateSpecifications(realestate: Realestate): CounterSpecifications[] {
     const realestateSpecifications = this.getRealestateSpecifications(realestate);
     const realestateCounters = this.getRealestateCounters(realestateSpecifications);
     return realestateCounters.filter((counter) => this.counterSpecificationsAreNotEmpty(counter));
