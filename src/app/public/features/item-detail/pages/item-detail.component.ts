@@ -28,8 +28,11 @@ import {
   FavoriteItem,
   SCREEN_IDS,
   UnfavoriteItem,
+  ViewOthersItemCarDetail,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -56,6 +59,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private analyticsService: AnalyticsService,
     private itemSocialShareService: ItemSocialShareService,
+    private typeCheckService: TypeCheckService,
     private itemDetailFlagsStoreService: ItemDetailFlagsStoreService
   ) {}
 
@@ -157,9 +161,43 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
         };
         this.analyticsService.trackPageView(event);
       } else {
-        //TODO: Check others items events
+        this.trackViewOthersItemCarDetailEvent();
       }
     });
+  }
+
+  private trackViewOthersItemCarDetailEvent(item = this.itemDetail.item, itemDetailUser = this.itemDetail.user): void {
+    if (!this.typeCheckService.isCar(item)) return;
+    const event: AnalyticsPageView<ViewOthersItemCarDetail> = {
+      name: ANALYTICS_EVENT_NAMES.ViewOthersItemCarDetail,
+      attributes: {
+        itemId: item.id,
+        categoryId: item.categoryId,
+        salePrice: item.salePrice,
+        brand: item.brand,
+        model: item.model,
+        year: item.km,
+        gearbox: item.gearbox,
+        engine: item.engine,
+        colour: item.color,
+        hp: item.horsepower,
+        numDoors: item.numDoors,
+        bodyType: item.bodyType,
+        isCarDealer: false,
+        isPro: itemDetailUser.featured,
+        screenId: SCREEN_IDS.ItemDetail,
+      },
+    };
+    this.userService
+      .isProfessional()
+      .pipe(
+        finalize(() => {
+          this.analyticsService.trackPageView(event);
+        })
+      )
+      .subscribe((isCarDealer: boolean) => {
+        event.attributes.isCarDealer = isCarDealer;
+      });
   }
 
   get itemDetail$(): Observable<ItemDetail> {
