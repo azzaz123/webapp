@@ -51,41 +51,33 @@ describe('ReviewItemComponent', () => {
     });
   });
 
-  describe('when getting the soldCopy', () => {
-    describe('and the item is ours...', () => {
-      it('should return the correct copy', () => {
-        component.isOwner = true;
-        expect(component.soldCopy).toBe($localize`:@@OwnReview_Sold:Sold`);
-      });
-    });
-    describe('and the item is NOT ours...', () => {
-      it('should return the correct copy', () => {
-        component.isOwner = false;
+  describe('when the item is ours...', () => {
+    beforeEach(() => {
+      component.isOwner = true;
 
-        expect(component.soldCopy).toBe($localize`:@@Review_Sold:Sold`);
-      });
+      component.ngOnInit();
+    });
+    it('should return the correct sold copy', () => {
+      expect(component.reviewItemCopys.soldCopy).toBe($localize`:@@OwnReview_Sold:Sold`);
+    });
+
+    it('should return the correct bought copy', () => {
+      expect(component.reviewItemCopys.boughtCopy).toBe($localize`:@@OwnReview_Bought:Bought`);
     });
   });
 
-  describe('when getting the boughtCopy', () => {
+  describe('when the item is NOT ours...', () => {
     beforeEach(() => {
-      spyOn(window as any, '$localize');
-    });
-    describe('and the item is ours...', () => {
-      it('should return the correct copy', () => {
-        component.isOwner = true;
-        fixture.detectChanges();
+      component.isOwner = false;
 
-        expect(component.boughtCopy).toBe($localize`:@@OwnReview_Bought:Bought`);
-      });
+      component.ngOnInit();
     });
-    describe('and the item is NOT ours...', () => {
-      it('should return the correct copy', () => {
-        component.isOwner = false;
-        fixture.detectChanges();
+    it('should return the correct sold copy', () => {
+      expect(component.reviewItemCopys.soldCopy).toBe($localize`:@@Review_Sold:Sold`);
+    });
 
-        expect(component.boughtCopy).toBe($localize`:@@Review_Bought:Bought`);
-      });
+    it('should return the correct bought copy', () => {
+      expect(component.reviewItemCopys.boughtCopy).toBe($localize`:@@Review_Bought:Bought`);
     });
   });
 });

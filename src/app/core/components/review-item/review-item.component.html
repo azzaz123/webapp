@@ -5,7 +5,7 @@
         <a href="{{ itemWebLink }}" target="_blank" tslsanitizedBackground="{{ review.item?.image.small }}" [fallback]="fallback" class="image"></a>
       </ng-container>
       <ng-template #categoryIcon>
-        <ng-container *ngIf="(categoryService.getCategoryById(review.item.categoryId) | async)?.icon_id as categoryIcon; else defaultImage">
+        <ng-container *ngIf="category?.icon_id as categoryIcon; else defaultImage">
           <tsl-svg-icon src="/assets/icons/categories/normal/{{categoryIcon}}.svg"></tsl-svg-icon>
         </ng-container>
       </ng-template>
@@ -19,15 +19,15 @@
   </div>
   <div class="info">
     <div class="review-type">
-      <span *ngIf="review.isSold">{{soldCopy}}:</span>
-      <span *ngIf="review.isBought">{{boughtCopy}}:</span>
+      <span *ngIf="review.isSold">{{ reviewItemCopys.soldCopy }}:</span>
+      <span *ngIf="review.isBought">{{ reviewItemCopys.boughtCopy }}:</span>
     </div>
     <div class="review-title">
       <a *ngIf="review.item?.id" href="{{ itemWebLink }}" target="_blank"> {{ review.item.title }} </a>
-      <span *ngIf="!review.item?.id && (categoryService.getCategoryById(review.item.categoryId) | async)?.name as categoryName">
+      <span *ngIf="!review.item?.id && category?.name as categoryName">
          {{ categoryName }} 
       </span>
-      <span *ngIf="!review.item?.id && !(categoryService.getCategoryById(review.item.categoryId) | async)?.name" i18n="@@WallapopItem">A Wallapop item</span>
+      <span *ngIf="!review.item?.id && !category?.name" i18n="@@WallapopItem">A Wallapop item</span>
     </div>
     <tsl-stars class="review-rating" [stars]="review.scoring" [normalized]="false"></tsl-stars>
     <p class="review-comment">{{ review.comments }}</p>
