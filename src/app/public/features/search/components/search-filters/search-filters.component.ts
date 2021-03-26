@@ -3,6 +3,8 @@ import { FILTER_VARIANT } from '@public/shared/components/filters/components/abs
 import { CAR_CONFIGURATION_FILTERS } from '@public/shared/components/filters/core/enums/configuration/car/car-configuration-filters';
 import { DrawerConfig } from '@public/shared/components/filters/interfaces/drawer-config.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
+import { FilterConfigurationService } from '@public/shared/services/filter-configuration/filter-configuration.service';
+import { FilterConfigurations } from '@public/shared/services/filter-configuration/interfaces/filter-group-config.interface';
 
 @Component({
   selector: 'tsl-search-filters',
@@ -17,11 +19,15 @@ export class SearchFiltersComponent {
     hasApply: true,
   };
   public activeFiltersCount = 0;
-  public bubbleFiltersConfig = CAR_CONFIGURATION_FILTERS.BUBBLE;
-  public drawerFiltersConfig = CAR_CONFIGURATION_FILTERS.CONTENT;
   public filterValues: FilterParameter[] = [];
+  public filterConfigurations: FilterConfigurations;
 
   @Output() bubbleFilterOpenStateChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  constructor(private filterConfigurationService: FilterConfigurationService) {
+    this.filterConfigurations = this.filterConfigurationService.getConfiguration([]);
+    console.log('AQUI!', this.filterConfigurations);
+  }
 
   public toggleDrawer(): void {
     this.drawerConfig.isOpen = !this.drawerConfig.isOpen;
