@@ -17,10 +17,14 @@ import { ItemDetail } from '../interfaces/item-detail.interface';
 import { ItemSocialShareService } from '../core/services/item-social-share/item-social-share.service';
 import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from '@public/shared/components/item-flag/item-flag-constants';
 import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
+import { UserService } from '@core/user/user.service';
+import { User } from '@core/user/user';
 import {
   AnalyticsEvent,
+  AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
+  ViewOwnItemDetail,
   FavoriteItem,
   SCREEN_IDS,
   UnfavoriteItem,
@@ -49,9 +53,10 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     private itemDetailService: ItemDetailService,
     private route: ActivatedRoute,
     private adsService: AdsService,
+    private userService: UserService,
+    private analyticsService: AnalyticsService,
     private itemSocialShareService: ItemSocialShareService,
-    private itemDetailFlagsStoreService: ItemDetailFlagsStoreService,
-    private analyticsService: AnalyticsService
+    private itemDetailFlagsStoreService: ItemDetailFlagsStoreService
   ) {}
 
   ngOnInit(): void {
@@ -112,6 +117,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
           this.itemSocialShareService.initializeItemMetaTags(itemDetail.item);
         }
         this.itemDetail = itemDetail;
+        this.trackViewEvents();
       })
     );
   }
@@ -130,6 +136,30 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   private isItemRecommendations(itemCategoryId: number): boolean {
     const CATEGORIES_WITH_RECOMMENDATIONS = [CATEGORY_IDS.CAR, CATEGORY_IDS.FASHION_ACCESSORIES];
     return CATEGORIES_WITH_RECOMMENDATIONS.includes(itemCategoryId);
+  }
+
+  private trackViewEvents(): void {
+    const item = this.itemDetail.item;
+    const itemDetailUser = this.itemDetail.user;
+    this.userService.me().subscribe((user: User) => {
+      if (this.itemDetail.user.id === user.id) {
+        const event: AnalyticsPageView<ViewOwnItemDetail> = {
+          name: ANALYTICS_EVENT_NAMES.ViewOwnItemDetail,
+          attributes: {
+            itemId: item.id,
+            categoryId: item.categoryId,
+            salePrice: item.salePrice,
+            title: item.title,
+            isPro: itemDetailUser.featured,
+            screenId: SCREEN_IDS.ItemDetail,
+            isActive: !item.flags?.onhold,
+          },
+        };
+        this.analyticsService.trackPageView(event);
+      } else {
+        //TODO: Check others items events
+      }
+    });
   }
 
   get itemDetail$(): Observable<ItemDetail> {

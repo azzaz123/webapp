@@ -53,14 +53,19 @@ import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.serv
 import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import { UserService } from '@core/user/user.service';
+import { MockedUserService, MOCK_USER, OTHER_USER_ID } from '@fixtures/user.fixtures.spec';
 import {
   AnalyticsEvent,
+  AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   FavoriteItem,
   SCREEN_IDS,
   UnfavoriteItem,
+  ViewOwnItemDetail,
 } from '@core/analytics/analytics-constants';
+import { User } from '@core/user/user';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -118,6 +123,10 @@ describe('ItemDetailComponent', () => {
         ItemApiService,
         ItemFullScreenCarouselComponent,
         Renderer2,
+        {
+          provide: UserService,
+          useClass: MockedUserService,
+        },
         {
           provide: AnalyticsService,
           useClass: MockAnalyticsService,
@@ -239,6 +248,36 @@ describe('ItemDetailComponent', () => {
       fixture = TestBed.createComponent(ItemDetailComponent);
     });
     describe('and we get the item...', () => {
+      const event: AnalyticsPageView<ViewOwnItemDetail> = {
+        name: ANALYTICS_EVENT_NAMES.ViewOwnItemDetail,
+        attributes: {
+          itemId: MOCK_CAR_ITEM_DETAIL.item.id,
+          categoryId: MOCK_CAR_ITEM_DETAIL.item.categoryId,
+          salePrice: MOCK_CAR_ITEM_DETAIL.item.salePrice,
+          title: MOCK_CAR_ITEM_DETAIL.item.title,
+          isPro: MOCK_CAR_ITEM_DETAIL.user.featured,
+          screenId: SCREEN_IDS.ItemDetail,
+          isActive: !MOCK_CAR_ITEM_DETAIL.item.flags?.onhold,
+        },
+      };
+      it('should send view own item detail event if it is the same user', () => {
+        itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
+        spyOn(analyticsService, 'trackPageView');
+
+        component.ngOnInit();
+
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(event);
+      });
+
+      it('should not send view own item detail event if it is not the same user', () => {
+        itemDetailSubjectMock.next(MOCK_ITEM_DETAIL_WITHOUT_LOCATION);
+        spyOn(analyticsService, 'trackPageView');
+
+        component.ngOnInit();
+
+        expect(analyticsService.trackPageView).not.toHaveBeenCalledWith(event);
+      });
+
       it('should ask for item data', () => {
         spyOn(itemDetailStoreService, 'initializeItemAndFlags');
 
