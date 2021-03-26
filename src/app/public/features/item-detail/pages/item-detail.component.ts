@@ -28,8 +28,10 @@ import {
   FavoriteItem,
   SCREEN_IDS,
   UnfavoriteItem,
+  ViewOthersItemREDetail,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -56,6 +58,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private analyticsService: AnalyticsService,
     private itemSocialShareService: ItemSocialShareService,
+    private typeCheckService: TypeCheckService,
     private itemDetailFlagsStoreService: ItemDetailFlagsStoreService
   ) {}
 
@@ -157,9 +160,30 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
         };
         this.analyticsService.trackPageView(event);
       } else {
-        //TODO: Check others items events
+        this.trackViewOthersItemREDetailEvent();
       }
     });
+  }
+
+  private trackViewOthersItemREDetailEvent(item = this.itemDetail.item, itemDetailUser = this.itemDetail.user): void {
+    if (!this.typeCheckService.isRealEstate(item)) return;
+    const event: AnalyticsPageView<ViewOthersItemREDetail> = {
+      name: ANALYTICS_EVENT_NAMES.ViewOthersItemREDetail,
+      attributes: {
+        itemId: item.id,
+        categoryId: item.categoryId,
+        salePrice: item.salePrice,
+        title: item.title,
+        operation: item.operation,
+        type: item.type,
+        condition: item.condition,
+        surface: item.surface,
+        rooms: item.rooms,
+        isPro: itemDetailUser.featured,
+        screenId: SCREEN_IDS.ItemDetail,
+      },
+    };
+    this.analyticsService.trackPageView(event);
   }
 
   get itemDetail$(): Observable<ItemDetail> {
