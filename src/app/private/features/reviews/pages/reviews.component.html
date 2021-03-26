@@ -30,7 +30,7 @@
         <img src="/assets/images/placeholders/reviews-empty-state.svg" width="592" height="655">
         <div class="message" i18n>Nobody has written a review about you because you didn't buy or sell anything yet. Wake up!</div>
       </div>
-      <tsl-review-item *ngFor="let review of reviews" [review]="review" class="review-container col-md-12"></tsl-review-item>
+      <tsl-review-item *ngFor="let review of reviews" [review]="review" class="review-container col-md-12" [isOwner]="true"></tsl-review-item>
     </div>
   </div>
 </div>

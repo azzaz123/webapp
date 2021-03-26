@@ -106,7 +106,7 @@ describe('ItemImagesCarouselComponent', () => {
 
     describe('when the carousel is active...', () => {
       it('should show the active carousel', () => {
-        component.isActive = true;
+        component.isExpired = false;
         fixture.detectChanges();
 
         const activeCarousel = fixture.debugElement.query(By.css(activeCarouselClass));
@@ -119,7 +119,7 @@ describe('ItemImagesCarouselComponent', () => {
 
     describe('when the carousel is not active...', () => {
       it('should show the disabled carousel', () => {
-        component.isActive = false;
+        component.isExpired = true;
         fixture.detectChanges();
 
         const disabledCarousel = fixture.debugElement.query(By.css(disabledCarouselClass));
