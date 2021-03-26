@@ -4,7 +4,14 @@ import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { CookieService } from 'ngx-cookie';
-import { AdKeyWords, AdShoppingPageOptions, AdSlotConfiguration, AdSlotId, AdSlotShoppingConfiguration } from '../../models';
+import {
+  AdKeyWords,
+  AdShoppingPageOptions,
+  AdSlotConfiguration,
+  AdSlotId,
+  AdSlotShoppingBaseConfiguration,
+  AdSlotShoppingConfiguration,
+} from '../../models';
 import { GoogCsa } from './google-ads-sense-shopping';
 
 @Injectable({
@@ -76,7 +83,9 @@ export class GooglePublisherTagService {
     });
   }
 
-  public displayShopping(pageOptions: AdShoppingPageOptions, adSlotShopping: AdSlotShoppingConfiguration): void {
+  public displayShopping(pageOptions: AdShoppingPageOptions, adSlotShopping: AdSlotShoppingBaseConfiguration): void {
+    this.adsKeywordsService.loadAdKeywords();
+
     const { content }: AdKeyWords = this.adsKeywordsService.adKeywords;
     this.googCsa(GooglePublisherTagService.GOOGLE_ADS_SENSE_NAME, { ...pageOptions, query: content }, adSlotShopping);
   }
