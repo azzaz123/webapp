@@ -4,16 +4,20 @@ import { AdSlotConfiguration } from '@core/ads/models';
 import { AdsService } from '@core/ads/services';
 import {
   AnalyticsEvent,
+  AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   FavoriteItem,
   SCREEN_IDS,
   UnfavoriteItem,
+  ViewOwnItemDetail,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
+import { User } from '@core/user/user';
+import { UserService } from '@core/user/user.service';
 import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { CarouselSlide } from '@public/shared/components/carousel-slides/carousel-slide.interface';
@@ -54,9 +58,10 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     private itemDetailService: ItemDetailService,
     private route: ActivatedRoute,
     private adsService: AdsService,
+    private userService: UserService,
+    private analyticsService: AnalyticsService,
     private itemSocialShareService: ItemSocialShareService,
-    private itemDetailFlagsStoreService: ItemDetailFlagsStoreService,
-    private analyticsService: AnalyticsService
+    private itemDetailFlagsStoreService: ItemDetailFlagsStoreService
   ) {}
 
   ngOnInit(): void {
@@ -119,6 +124,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
           this.itemSocialShareService.initializeItemMetaTags(itemDetail.item);
         }
         this.itemDetail = itemDetail;
+        this.trackViewEvents();
       })
     );
   }
@@ -132,6 +138,30 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   private isItemRecommendations(itemCategoryId: number): boolean {
     const CATEGORIES_WITH_RECOMMENDATIONS = [CATEGORY_IDS.CAR, CATEGORY_IDS.FASHION_ACCESSORIES];
     return CATEGORIES_WITH_RECOMMENDATIONS.includes(itemCategoryId);
+  }
+
+  private trackViewEvents(): void {
+    const item = this.itemDetail.item;
+    const itemDetailUser = this.itemDetail.user;
+    this.userService.me().subscribe((user: User) => {
+      if (this.itemDetail.user.id === user.id) {
+        const event: AnalyticsPageView<ViewOwnItemDetail> = {
+          name: ANALYTICS_EVENT_NAMES.ViewOwnItemDetail,
+          attributes: {
+            itemId: item.id,
+            categoryId: item.categoryId,
+            salePrice: item.salePrice,
+            title: item.title,
+            isPro: itemDetailUser.featured,
+            screenId: SCREEN_IDS.ItemDetail,
+            isActive: !item.flags?.onhold,
+          },
+        };
+        this.analyticsService.trackPageView(event);
+      } else {
+        //TODO: Check others items events
+      }
+    });
   }
 
   get itemDetail$(): Observable<ItemDetail> {
