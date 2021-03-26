@@ -14,11 +14,14 @@ export class FilterConfigurationService {
       drawer: [],
     };
 
-    configurationFilters.bubble.forEach((filterConfigurationId: string) => {
+    configurationFilters.bubble.forEach((filterConfigurationId: any) => {
+      // NO QUEREMOS ANY
       filters.bubble.push(this.getFilterConfigById(filterConfigurationId));
     });
 
-    configurationFilters.drawer.forEach((filterConfigurationId: string) => {
+    configurationFilters.drawer.forEach((filterConfigurationId: any) => {
+      // NO QUEREMOS ANY
+
       filters.drawer.push(this.getFilterConfigById(filterConfigurationId));
     });
 
