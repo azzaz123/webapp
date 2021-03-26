@@ -7,16 +7,19 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AdsService } from '@core/ads/services';
 import {
   AnalyticsEvent,
+  AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   FavoriteItem,
   SCREEN_IDS,
   UnfavoriteItem,
+  ViewOwnItemDetail,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
+import { UserService } from '@core/user/user.service';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import {
@@ -35,6 +38,7 @@ import { MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
 import { IsCurrentUserStub } from '@fixtures/public/core';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 import { AdComponentStub } from '@fixtures/shared';
+import { MockedUserService } from '@fixtures/user.fixtures.spec';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
@@ -61,26 +65,6 @@ import { ItemSocialShareService } from '../core/services/item-social-share/item-
 import { MapExtraInfoService } from '../core/services/map-extra-info/map-extra-info.service';
 import { ItemDetail } from '../interfaces/item-detail.interface';
 import { ItemDetailComponent } from './item-detail.component';
-import { ItemDetailHeaderComponent } from '../components/item-detail-header/item-detail-header.component';
-import { ItemDetailHeaderModule } from '../components/item-detail-header/item-detail-header.module';
-import { ItemSocialShareService } from '../core/services/item-social-share/item-social-share.service';
-import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
-import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
-import { AnalyticsService } from '@core/analytics/analytics.service';
-import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import { UserService } from '@core/user/user.service';
-import { MockedUserService, MOCK_USER, OTHER_USER_ID } from '@fixtures/user.fixtures.spec';
-import {
-  AnalyticsEvent,
-  AnalyticsPageView,
-  ANALYTICS_EVENT_NAMES,
-  ANALYTIC_EVENT_TYPES,
-  FavoriteItem,
-  SCREEN_IDS,
-  UnfavoriteItem,
-  ViewOwnItemDetail,
-} from '@core/analytics/analytics-constants';
-import { User } from '@core/user/user';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -118,6 +102,7 @@ describe('ItemDetailComponent', () => {
   let analyticsService: AnalyticsService;
   let de: DebugElement;
   let el: HTMLElement;
+  let testAdsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -214,6 +199,7 @@ describe('ItemDetailComponent', () => {
     itemDetailImagesModal = TestBed.inject(ItemFullScreenCarouselComponent);
     itemSocialShareService = TestBed.inject(ItemSocialShareService);
     analyticsService = TestBed.inject(AnalyticsService);
+    testAdsService = TestBed.inject(AdsService);
     fixture.detectChanges();
   });
 
@@ -235,14 +221,14 @@ describe('ItemDetailComponent', () => {
     });
 
     it('should set ads configuration of mobile', () => {
-      spyOn(MockAdsService, 'setAdKeywords').and.callThrough();
-      spyOn(MockAdsService, 'setSlots').and.callThrough();
+      spyOn(testAdsService, 'setAdKeywords').and.callThrough();
+      spyOn(testAdsService, 'setSlots').and.callThrough();
 
       component.ngOnInit();
       fixture.detectChanges();
-      console.log('MOCK_ITEM_DETAIL_GBP.item.categoryId.toString()', MOCK_ITEM_DETAIL_GBP.item.categoryId.toString());
-      expect(MockAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_ITEM_DETAIL_GBP.item.categoryId.toString() });
-      expect(MockAdsService.setSlots).toHaveBeenCalledWith([
+
+      expect(testAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_ITEM_DETAIL_GBP.item.categoryId.toString() });
+      expect(testAdsService.setSlots).toHaveBeenCalledWith([
         ADS_ITEM_DETAIL.item1,
         ADS_ITEM_DETAIL.item2l,
         ADS_ITEM_DETAIL.item3r,
@@ -264,14 +250,15 @@ describe('ItemDetailComponent', () => {
       expect(ads.length).toBe(5);
     });
     it('should set ads configuration of tablet', () => {
-      spyOn(MockAdsService, 'setAdKeywords').and.callThrough();
-      spyOn(MockAdsService, 'setSlots').and.callThrough();
+      itemDetailSubjectMock.next(MOCK_ITEM_DETAIL_GBP);
+      spyOn(testAdsService, 'setAdKeywords').and.callThrough();
+      spyOn(testAdsService, 'setSlots').and.callThrough();
 
       component.ngOnInit();
       fixture.detectChanges();
 
-      expect(MockAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_ITEM_DETAIL_GBP.item.categoryId.toString() });
-      expect(MockAdsService.setSlots).toHaveBeenCalledWith([
+      expect(testAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_ITEM_DETAIL_GBP.item.categoryId.toString() });
+      expect(testAdsService.setSlots).toHaveBeenCalledWith([
         ADS_ITEM_DETAIL.item1,
         ADS_ITEM_DETAIL.item2l,
         ADS_ITEM_DETAIL.item3r,

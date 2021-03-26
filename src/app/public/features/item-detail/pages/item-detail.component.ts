@@ -23,6 +23,7 @@ import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { CarouselSlide } from '@public/shared/components/carousel-slides/carousel-slide.interface';
 import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from '@public/shared/components/item-flag/item-flag-constants';
 import { Observable, Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
 import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
 import { ItemDetailStoreService } from '../core/services/item-detail-store/item-detail-store.service';
@@ -47,7 +48,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   public recommendedItems$: Observable<RecommendedItemsBodyResponse>;
   public readonly deviceType: typeof DeviceType = DeviceType;
   public device: DeviceType;
-  private subscriptions: Subscription[] = [];
+  private subscriptions: Subscription = new Subscription();
   private itemDetail: ItemDetail;
   public adsSlotsItemDetail: ItemDetailAdSlotsConfiguration = ADS_ITEM_DETAIL;
   public adsAffiliationSlotConfiguration: AdSlotConfiguration[];
@@ -73,7 +74,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+    this.subscriptions.unsubscribe();
   }
 
   public openItemDetailImage($event: CarouselSlide): void {
@@ -116,17 +117,18 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
 
   private initPage(itemId: string): void {
     this.itemDetailStoreService.initializeItemAndFlags(itemId);
-    this.subscriptions.push(
-      this.itemDetailStoreService.itemDetail$.subscribe((itemDetail: ItemDetail) => {
-        if (itemDetail && !this.itemDetail) {
+    const subscription: Subscription = this.itemDetailStoreService.itemDetail$
+      .pipe(filter((itemDetail: ItemDetail) => !!itemDetail))
+      .subscribe((itemDetail: ItemDetail) => {
+        if (!this.itemDetail) {
           this.setAdSlot(itemDetail);
           this.initializeItemRecommendations(itemId, itemDetail.item.categoryId);
           this.itemSocialShareService.initializeItemMetaTags(itemDetail.item);
         }
         this.itemDetail = itemDetail;
         this.trackViewEvents();
-      })
-    );
+      });
+    this.subscriptions.add(subscription);
   }
 
   private initializeItemRecommendations(itemId: string, categoryId: number): void {
@@ -143,7 +145,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   private trackViewEvents(): void {
     const item = this.itemDetail.item;
     const itemDetailUser = this.itemDetail.user;
-    this.userService.me().subscribe((user: User) => {
+    const subscription: Subscription = this.userService.me().subscribe((user: User) => {
       if (this.itemDetail.user.id === user.id) {
         const event: AnalyticsPageView<ViewOwnItemDetail> = {
           name: ANALYTICS_EVENT_NAMES.ViewOwnItemDetail,
@@ -162,6 +164,17 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
         //TODO: Check others items events
       }
     });
+    this.subscriptions.add(subscription);
+  }
+
+  private setAdSlot({ item }: ItemDetail): void {
+    this.adsService.setAdKeywords({ category: item.categoryId.toString() });
+    this.adsService.setSlots([
+      this.adsSlotsItemDetail.item1,
+      this.adsSlotsItemDetail.item2l,
+      this.adsSlotsItemDetail.item3r,
+      ...this.adsAffiliationSlotConfiguration,
+    ]);
   }
 
   get itemDetail$(): Observable<ItemDetail> {
@@ -174,15 +187,5 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
 
   get bumpedFlag$(): Observable<BUMPED_ITEM_FLAG_TYPES> {
     return this.itemDetailFlagsStoreService.bumpedFlag$;
-  }
-
-  private setAdSlot({ item }: ItemDetail): void {
-    this.adsService.setAdKeywords({ category: item.categoryId.toString() });
-    this.adsService.setSlots([
-      this.adsSlotsItemDetail.item1,
-      this.adsSlotsItemDetail.item2l,
-      this.adsSlotsItemDetail.item3r,
-      ...this.adsAffiliationSlotConfiguration,
-    ]);
   }
 }
