@@ -111,11 +111,6 @@ export class ListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getUserInfo();
 
-    this.normalNavLinks = [
-      { id: STATUS.PUBLISHED, display: this.i18n.getTranslations('selling') },
-      { id: STATUS.SOLD, display: this.i18n.getTranslations(STATUS.SOLD) },
-    ];
-
     if (this.deviceService.isMobile()) {
       this.normalNavLinks.push({
         id: 'reviews',
@@ -132,7 +127,7 @@ export class ListComponent implements OnInit, OnDestroy {
       { id: STATUS.SOLD, display: this.i18n.getTranslations(STATUS.SOLD) },
     ];
 
-    this.navLinks = this.normalNavLinks;
+    this.activateNormalLinks();
     this.setSortItems();
 
     this.getItems();
@@ -275,6 +270,14 @@ export class ListComponent implements OnInit, OnDestroy {
         }
       });
     });
+  }
+
+  private setNormalLinks(): void {
+    this.normalNavLinks = [
+      { id: STATUS.PUBLISHED, display: this.i18n.getTranslations('selling') },
+      { id: STATUS.SOLD, display: this.i18n.getTranslations(STATUS.SOLD) },
+      { id: STATUS.INACTIVE, display: this.i18n.getTranslations(STATUS.INACTIVE), counter: { currentVal: this.counters?.onHold } },
+    ];
   }
 
   private onOpenWallacoinsModal(): void {
@@ -507,7 +510,16 @@ export class ListComponent implements OnInit, OnDestroy {
     this.userService.getStats().subscribe((userStats: UserStats) => {
       this.counters = userStats.counters;
       this.setNumberOfProducts();
+      if (!this.selectedSubscriptionSlot) {
+        this.activateNormalLinks();
+      }
     });
+  }
+
+  private activateNormalLinks(): void {
+    this.setNormalLinks();
+    this.resetNavLinksCounters();
+    this.navLinks = this.normalNavLinks;
   }
 
   public purchaseListingFee(orderEvent: OrderEvent) {
@@ -525,7 +537,7 @@ export class ListComponent implements OnInit, OnDestroy {
     });
   }
 
-  private setNumberOfProducts() {
+  private setNumberOfProducts(): void {
     if (this.selectedSubscriptionSlot) {
       this.numberOfProducts = this.items.length;
       return;
@@ -533,8 +545,17 @@ export class ListComponent implements OnInit, OnDestroy {
 
     if (this.selectedStatus === STATUS.SOLD) {
       this.numberOfProducts = this.counters.sold;
-    } else if (this.selectedStatus === STATUS.PUBLISHED) {
+      return;
+    }
+
+    if (this.selectedStatus === STATUS.PUBLISHED) {
       this.numberOfProducts = this.counters.publish;
+      return;
+    }
+
+    if (this.selectedStatus === STATUS.INACTIVE) {
+      this.numberOfProducts = this.counters.onHold;
+      return;
     }
   }
 
