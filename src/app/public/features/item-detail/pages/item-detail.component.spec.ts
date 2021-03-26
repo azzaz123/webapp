@@ -54,7 +54,7 @@ import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { UserService } from '@core/user/user.service';
-import { MockedUserService, MOCK_USER, OTHER_USER_ID } from '@fixtures/user.fixtures.spec';
+import { MockedUserService, MOCK_OTHER_USER, MOCK_USER, OTHER_USER_ID } from '@fixtures/user.fixtures.spec';
 import {
   AnalyticsEvent,
   AnalyticsPageView,
@@ -102,6 +102,7 @@ describe('ItemDetailComponent', () => {
   let decimalPipe: DecimalPipe;
   let itemDetailImagesModal: ItemFullScreenCarouselComponent;
   let itemDetailStoreService: ItemDetailStoreService;
+  let userService: UserService;
   let analyticsService: AnalyticsService;
   let de: DebugElement;
   let el: HTMLElement;
@@ -200,6 +201,7 @@ describe('ItemDetailComponent', () => {
     itemDetailStoreService = TestBed.inject(ItemDetailStoreService);
     itemDetailImagesModal = TestBed.inject(ItemFullScreenCarouselComponent);
     itemSocialShareService = TestBed.inject(ItemSocialShareService);
+    userService = TestBed.inject(UserService);
     analyticsService = TestBed.inject(AnalyticsService);
     fixture.detectChanges();
   });
@@ -300,6 +302,19 @@ describe('ItemDetailComponent', () => {
         component.ngOnInit();
 
         expect(analyticsService.trackPageView).not.toHaveBeenCalledWith(viewOwnItemDetailEvent);
+      });
+
+      it('should send view others car event if user is viewing others car', () => {
+        const mockOthersCarDetail: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
+        mockOthersCarDetail.item = MOCK_CAR;
+        mockOthersCarDetail.user = MOCK_OTHER_USER;
+        itemDetailSubjectMock.next(mockOthersCarDetail);
+        spyOn(userService, 'isProfessional').and.returnValue(of(true));
+        spyOn(analyticsService, 'trackPageView');
+
+        component.ngOnInit();
+
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(viewOthersCarEvent);
       });
 
       it('should ask for item data', () => {
