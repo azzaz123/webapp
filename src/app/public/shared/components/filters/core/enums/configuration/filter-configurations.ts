@@ -1,10 +1,9 @@
 import { RangeFilterConfig } from '../../../components/range-filter/interfaces/range-filter-config.interface';
 import { ToggleFilterConfig } from '../../../components/toggle-filter/interfaces/toggle-filter-config.interface';
-import { FilterConfig } from '../../../interfaces/filter-config.interface';
 import { CAR_CONFIGURATION_ID } from '../configuration-ids/car-configuration-ids';
 import { FILTER_TYPES } from '../filter-types/filter-types.enum';
 
-export type FilterConfigType = RangeFilterConfig | ToggleFilterConfig; // TODO NO LO USO, QUIERO ALGO ASÍ PARA EL ANY
+type FilterConfigType = RangeFilterConfig | ToggleFilterConfig;
 
 export const FILTER_CONFIGURATIONS: FilterConfigType[] = [
   // TODO ESE ANY NO ME GUSTA
