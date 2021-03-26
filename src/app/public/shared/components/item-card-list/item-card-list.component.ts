@@ -1,5 +1,12 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import {
+  AnalyticsEvent,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  ClickItemCard,
+  SCREEN_IDS,
+} from '@core/analytics/analytics-constants';
 import { Item } from '@core/item/item';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
@@ -41,5 +48,25 @@ export class ItemCardListComponent {
 
   public openItemDetailPage(item: Item): void {
     this.router.navigate([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.ITEM_DETAIL}/${item.id}`]);
+  }
+
+  private trackClickItemCardEvent(item: Item) {
+    const event: AnalyticsEvent<ClickItemCard> = {
+      name: ANALYTICS_EVENT_NAMES.ClickItemCard,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
+      /*  attributes: {
+        itemId: item.id,
+        categoryId: item.categoryId,
+        position: null, // Need to check about the position
+        screenId: SCREEN_IDS.ItemDetailRecommendationSlider,
+        isPro: false,
+        salePrice: item.salePrice,
+        title: item.title,
+        itemDistance: item.km,
+        shippingAllowed: item.saleConditions.shipping_allowed,
+        sellerUserId: item.
+      }, */
+    };
+    //this.analyticsService.trackEvent(event);
   }
 }
