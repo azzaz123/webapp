@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { AdModule } from '@shared/ad/ad.module';
+import { AdSlotModule } from '@shared/ads/ad-slot/ad-slot.module';
 import { TopSkyComponent } from './top-sky.component';
 
 @NgModule({
   declarations: [TopSkyComponent],
-  imports: [CommonModule, AdModule],
+  imports: [CommonModule, AdSlotModule],
   exports: [TopSkyComponent],
 })
 export class TopAdModule {}

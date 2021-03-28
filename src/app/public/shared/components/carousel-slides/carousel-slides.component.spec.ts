@@ -25,6 +25,7 @@ describe('SlidesCarouselComponent', () => {
   const carouselTag = 'ngb-carousel';
   const fallbackImageClass = '.SlidesCarousel__fallbackImage';
   const hideControllerClass = '.SlidesCarousel--hideControllers';
+  const hideIndicatorsClass = '.SlidesCarousel--hideIndicators';
   const noBackgroundIndicatorsClass = '.SlidesCarousel--noBackgroundIndicators';
 
   let component: SlidesCarouselComponent;
@@ -154,6 +155,26 @@ describe('SlidesCarouselComponent', () => {
 
           expect(fixture.debugElement.query(By.css(hideControllerClass))).toBeTruthy();
         });
+      });
+    });
+
+    describe('when the hideIndicators input is true...', () => {
+      it('should hide the indicators', () => {
+        component.hideIndicators = true;
+
+        fixture.detectChanges();
+
+        expect(fixture.debugElement.query(By.css(hideIndicatorsClass))).toBeTruthy();
+      });
+    });
+
+    describe('when the hideIndicators input is false...', () => {
+      it('should NOT hide the indicators', () => {
+        component.hideIndicators = false;
+
+        fixture.detectChanges();
+
+        expect(fixture.debugElement.query(By.css(hideIndicatorsClass))).toBeFalsy();
       });
     });
   });
