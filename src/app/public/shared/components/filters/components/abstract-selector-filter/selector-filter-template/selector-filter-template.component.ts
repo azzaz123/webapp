@@ -10,9 +10,13 @@ export class SelectorFilterTemplateComponent {
   @Input() placeholderLabel: string;
   @Input() placeholderSublabel?: string;
   @Input() placeholderIcon?: string;
-  @Output() onPlaceholderClick = new EventEmitter<void>();
+  @Input() contentTitle?: string;
+  @Output() placeholderOpenChange = new EventEmitter<boolean>();
 
-  public handlePlaceholderClick(): void {
-    this.onPlaceholderClick.emit();
+  public isPlaceholderOpen = false;
+
+  public togglePlaceholderOpen(): void {
+    this.isPlaceholderOpen = !this.isPlaceholderOpen;
+    this.placeholderOpenChange.emit(this.isPlaceholderOpen);
   }
 }
