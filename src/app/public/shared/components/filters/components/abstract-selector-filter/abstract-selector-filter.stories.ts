@@ -12,6 +12,8 @@ import { LoremIpsumComponent } from '@stories/components/lorem-ipsum/lorem-ipsum
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
+import { FilterOptionService } from '@public/shared/services/filter-option/filter-option.service';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -20,13 +22,11 @@ import { CommonModule } from '@angular/common';
     <tsl-filter-template
       [isBubble]="isBubble()"
       [isDropdown]="isDropdown()"
-      [hasApply]="true"
       [isClearable]="true"
       [title]="config.title"
       [icon]="config.icon"
       [label]="label"
       [hasValue]="hasValue$() | async"
-      (apply)="handleApply()"
       (clear)="handleClear()"
       (openStateChange)="openStateChange.emit($event)"
     >
@@ -43,7 +43,7 @@ import { CommonModule } from '@angular/common';
     </tsl-filter-template>
   `,
 })
-class StoryAbstractSelectorFilterComponent extends AbstractSelectorFilter<Record<string, string>> {}
+class StoryAbstractSelectorFilterComponent extends AbstractSelectorFilter {}
 
 export default {
   title: 'Webapp/Public/Shared/Components/Filters/AbstractSelectorFilter',
@@ -51,7 +51,10 @@ export default {
     moduleMetadata({
       imports: [AbstractSelectorFilterModule, AbstractFilterModule, SvgIconModule, HttpClientModule, CommonModule],
       declarations: [StoryAbstractSelectorFilterComponent, LoremIpsumComponent],
-      providers: [{ provide: CookieService, useValue: MockCookieService }],
+      providers: [
+        { provide: CookieService, useValue: MockCookieService },
+        { provide: FilterOptionService, useValue: {} },
+      ],
     }),
   ],
   argTypes: {
@@ -76,8 +79,8 @@ const Template: Story<StoryAbstractSelectorFilterComponent> = (args) => ({
   `,
 });
 
-const defaultConfig: SelectorFilterConfig<Record<string, string>> = {
-  id: '',
+const defaultConfig: SelectorFilterConfig = {
+  id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
   type: null,
   mapKey: {},
   title: 'Condition',

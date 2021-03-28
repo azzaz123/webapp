@@ -23,6 +23,10 @@
     font-weight: $font-weight-bold;
   }
 
+  &__content {
+    margin: -8px;
+  }
+
   &__dev_warn {
     color: $brand-danger;
   }

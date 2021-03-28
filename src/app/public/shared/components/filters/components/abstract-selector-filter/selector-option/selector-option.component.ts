@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { SelectorOptionIcon } from './interfaces/selector-option-icon.interface';
 
 @Component({
   selector: 'tsl-selector-option',
@@ -10,7 +9,7 @@ import { SelectorOptionIcon } from './interfaces/selector-option-icon.interface'
 export class SelectorOptionComponent {
   @Input() label: string;
   @Input() sublabel?: string;
-  @Input() icon: SelectorOptionIcon;
+  @Input() icon: string;
   @Input() isActive?: boolean;
   @Output() onClick = new EventEmitter<void>();
 
