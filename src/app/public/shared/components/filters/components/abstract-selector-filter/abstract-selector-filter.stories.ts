@@ -70,6 +70,8 @@ const Template: Story<StoryAbstractSelectorFilterComponent> = (args) => ({
     <div style="border: 1px dashed black; background-color: white; position: relative;">
       <story-abstract-selector-filter [variant]="${FILTER_VARIANT.CONTENT}" [config]="config">
       </story-abstract-selector-filter>
+      <story-abstract-selector-filter [variant]="${FILTER_VARIANT.CONTENT}" [config]="config">
+      </story-abstract-selector-filter>
     </div>
   `,
 });
