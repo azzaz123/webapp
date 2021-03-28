@@ -11,11 +11,7 @@ import spyOn = jest.spyOn;
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'test-selector-option',
-  template: `
-    <tsl-selector-option [label]="label" [icon]="icon" [sublabel]="sublabel" [isActive]="isActive">
-      <div class="content"></div>
-    </tsl-selector-option>
-  `,
+  template: ` <tsl-selector-option [label]="label" [icon]="icon" [sublabel]="sublabel" [isActive]="isActive"> </tsl-selector-option> `,
 })
 class TestSelectorOptionComponent {
   @Input() label: string;
