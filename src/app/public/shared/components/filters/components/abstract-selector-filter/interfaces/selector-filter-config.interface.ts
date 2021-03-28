@@ -1,5 +1,5 @@
 import { FilterConfig } from '../../../interfaces/filter-config.interface';
 
-export interface SelectorFilterConfig extends FilterConfig<Record<string, string>> {
+export interface AbstractSelectorFilterConfig<T extends Record<keyof T, string>> extends FilterConfig<T> {
   hasContentPlaceholder: boolean;
 }

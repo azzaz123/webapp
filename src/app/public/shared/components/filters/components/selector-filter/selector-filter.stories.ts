@@ -4,7 +4,6 @@ import { Story } from '@storybook/angular/ts3.4/dist/client';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { Component, Input } from '@angular/core';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
-import { SelectorFilterConfig } from '../abstract-selector-filter/interfaces/selector-filter-config.interface';
 import { HttpClientModule } from '@angular/common/http';
 import { COMMON_CONFIGURATION_ID } from '../../core/enums/configuration-ids/common-configuration-ids.enum';
 import { FILTER_TYPES } from '../../core/enums/filter-types/filter-types.enum';
@@ -14,6 +13,7 @@ import { SelectorOptionComponent } from '../abstract-selector-filter/selector-op
 import { SelectorParentOptionComponent } from '../abstract-selector-filter/selector-parent-option/selector-parent-option.component';
 import { FilterOptionService } from '../../../../services/filter-option/filter-option.service';
 import { MockFilterOptionService } from '@fixtures/filter-option-service.fixtures.spec';
+import { SelectorFilterConfig } from '@public/shared/components/filters/components/selector-filter/interfaces/selector-filter-config.interface';
 
 @Component({
   selector: 'tsl-filters',
@@ -27,6 +27,7 @@ import { MockFilterOptionService } from '@fixtures/filter-option-service.fixture
             [value]="conditionValue"
             [config]="conditionConfig"
             (valueChange)="changeCondition($event)"
+            (clear)="changeCondition([])"
           >
           </tsl-selector-filter>
         </div>
@@ -36,6 +37,7 @@ import { MockFilterOptionService } from '@fixtures/filter-option-service.fixture
             [value]="genderValue"
             [config]="genderConfig"
             (valueChange)="changeGender($event)"
+            (clear)="changeGender([])"
           >
           </tsl-selector-filter>
         </div>
@@ -48,6 +50,7 @@ import { MockFilterOptionService } from '@fixtures/filter-option-service.fixture
           [value]="conditionValue"
           [config]="conditionConfig"
           (valueChange)="changeCondition($event)"
+          (clear)="changeCondition([])"
         >
         </tsl-selector-filter>
         <tsl-selector-filter
@@ -55,6 +58,7 @@ import { MockFilterOptionService } from '@fixtures/filter-option-service.fixture
           [value]="genderValue"
           [config]="genderConfig"
           (valueChange)="changeGender($event)"
+          (clear)="changeGender([])"
         >
         </tsl-selector-filter>
       </div>
@@ -68,10 +72,12 @@ class FiltersComponent {
   @Input() public genderConfig: SelectorFilterConfig;
 
   public changeCondition(value: FilterParameter[]): void {
+    console.log('Hey');
     this.conditionValue = value;
   }
 
   public changeGender(value: FilterParameter[]): void {
+    console.log('Hey');
     this.genderValue = value;
   }
 }
@@ -104,7 +110,9 @@ const conditionConfig: SelectorFilterConfig = {
   icon: '/assets/icons/joke.svg',
   bubblePlaceholder: 'Condition',
   drawerPlaceholder: 'Select condition',
-  mapKey: {},
+  mapKey: {
+    parameterKey: 'condition',
+  },
   type: FILTER_TYPES.SIMPLE_SELECTOR,
 };
 
@@ -115,7 +123,9 @@ const genderConfig: SelectorFilterConfig = {
   icon: '/assets/icons/joke.svg',
   bubblePlaceholder: 'Gender',
   drawerPlaceholder: 'Select gender',
-  mapKey: {},
+  mapKey: {
+    parameterKey: 'gender',
+  },
   type: FILTER_TYPES.SIMPLE_SELECTOR,
 };
 

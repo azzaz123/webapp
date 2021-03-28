@@ -7,13 +7,14 @@ import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module'
 import { FILTER_VARIANT } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.enum';
 import { CookieService } from 'ngx-cookie';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
-import { SelectorFilterConfig } from '@public/shared/components/filters/components/abstract-selector-filter/interfaces/selector-filter-config.interface';
 import { LoremIpsumComponent } from '@stories/components/lorem-ipsum/lorem-ipsum.component';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
 import { FilterOptionService } from '@public/shared/services/filter-option/filter-option.service';
+import { SelectorFilterParams } from '@public/shared/components/filters/components/selector-filter/interfaces/selector-filter-params.interface';
+import { SelectorFilterConfig } from '@public/shared/components/filters/components/selector-filter/interfaces/selector-filter-config.interface';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -43,7 +44,7 @@ import { FilterOptionService } from '@public/shared/services/filter-option/filte
     </tsl-filter-template>
   `,
 })
-class StoryAbstractSelectorFilterComponent extends AbstractSelectorFilter {}
+class StoryAbstractSelectorFilterComponent extends AbstractSelectorFilter<SelectorFilterParams> {}
 
 export default {
   title: 'Webapp/Public/Shared/Components/Filters/AbstractSelectorFilter',
@@ -82,7 +83,9 @@ const Template: Story<StoryAbstractSelectorFilterComponent> = (args) => ({
 const defaultConfig: SelectorFilterConfig = {
   id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
   type: null,
-  mapKey: {},
+  mapKey: {
+    parameterKey: 'key',
+  },
   title: 'Condition',
   icon: '/assets/icons/joke.svg',
   bubblePlaceholder: 'Such a nice bubble',

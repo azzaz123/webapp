@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'tsl-selector-filter-template',
@@ -11,10 +11,16 @@ export class SelectorFilterTemplateComponent {
   @Input() placeholderSublabel?: string;
   @Input() placeholderIcon?: string;
   @Input() contentTitle?: string;
+  @Input() isClearable?: boolean;
+  @Output() onClear = new EventEmitter<void>();
 
   public isPlaceholderOpen = false;
 
   public togglePlaceholderOpen(): void {
     this.isPlaceholderOpen = !this.isPlaceholderOpen;
+  }
+
+  public handleClear(): void {
+    this.onClear.emit();
   }
 }

@@ -1,6 +1,6 @@
 import { Directive, Input } from '@angular/core';
 import { AbstractFilter } from '../abstract-filter/abstract-filter';
-import { SelectorFilterConfig } from './interfaces/selector-filter-config.interface';
+import { AbstractSelectorFilterConfig } from './interfaces/selector-filter-config.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { FilterOptionService } from '@public/shared/services/filter-option/filter-option.service';
 import { FilterOption } from '../../core/interfaces/filter-option.interface';
@@ -10,8 +10,8 @@ import { Observable } from 'rxjs';
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
-export class AbstractSelectorFilter extends AbstractFilter<Record<string, string>> {
-  @Input() config: SelectorFilterConfig;
+export class AbstractSelectorFilter<T extends Record<keyof T, string>> extends AbstractFilter<T> {
+  @Input() config: AbstractSelectorFilterConfig<T>;
 
   constructor(private optionService: FilterOptionService) {
     super();
