@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'tsl-selector-filter-template',
@@ -11,12 +11,10 @@ export class SelectorFilterTemplateComponent {
   @Input() placeholderSublabel?: string;
   @Input() placeholderIcon?: string;
   @Input() contentTitle?: string;
-  @Output() placeholderOpenChange = new EventEmitter<boolean>();
 
   public isPlaceholderOpen = false;
 
   public togglePlaceholderOpen(): void {
     this.isPlaceholderOpen = !this.isPlaceholderOpen;
-    this.placeholderOpenChange.emit(this.isPlaceholderOpen);
   }
 }

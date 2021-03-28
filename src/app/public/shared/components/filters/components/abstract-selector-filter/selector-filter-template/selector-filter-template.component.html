@@ -1,10 +1,10 @@
+<div *ngIf="!hasContentPlaceholder">
+  <ng-template [ngTemplateOutlet]="contentWrapper"></ng-template>
+</div>
+
 <div *ngIf="hasContentPlaceholder">
   <tsl-selector-parent-option [label]="placeholderLabel" [sublabel]="placeholderSublabel" [icon]="placeholderIcon" (onClick)="togglePlaceholderOpen()">
   </tsl-selector-parent-option>
-</div>
-
-<div *ngIf="!hasContentPlaceholder">
-  <ng-template [ngTemplateOutlet]="contentWrapper"></ng-template>
 </div>
 
 <div *ngIf="hasContentPlaceholder && isPlaceholderOpen" class="SelectorFilterTemplate__OpenPlaceholder">
