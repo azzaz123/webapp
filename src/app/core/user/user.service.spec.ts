@@ -59,6 +59,17 @@ import {
   USER_UNSUBSCRIBE_ENDPOINT,
   USER_UNSUBSCRIBE_REASONS_ENDPOINT,
 } from './user.service';
+import mParticle from '@mparticle/web-sdk';
+
+jest.mock('@mparticle/web-sdk', () => ({
+  __esModule: true,
+  default: {
+    Identity: {
+      logout: () => null,
+    },
+  },
+  namedExport: 'mParticle',
+}));
 
 describe('Service: User', () => {
   let service: UserService;
@@ -339,13 +350,27 @@ describe('Service: User', () => {
     });
 
     it('should call deleteAccessToken and call event passing direct url and call flush permissions', () => {
-      spyOn(service, 'logout').and.returnValue(of());
+      const expectedUrl = `${environment.baseUrl}${LOGOUT_ENDPOINT}`;
 
-      service.logout('redirect_url').subscribe(() => {
-        expect(accessTokenService.deleteAccessToken).toHaveBeenCalled();
-        expect(redirectUrl).toBe('redirect_url');
-        expect(permissionService.flushPermissions).toHaveBeenCalled();
-      });
+      service.logout('redirect_url').subscribe();
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush({});
+
+      expect(accessTokenService.deleteAccessToken).toHaveBeenCalled();
+      expect(redirectUrl).toBe('redirect_url');
+      expect(permissionService.flushPermissions).toHaveBeenCalled();
+    });
+
+    it('should call mparticle logout', () => {
+      spyOn(mParticle.Identity, 'logout');
+      const expectedUrl = `${environment.baseUrl}${LOGOUT_ENDPOINT}`;
+
+      service.logout('redirect_url').subscribe();
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush({});
+
+      expect(mParticle.Identity.logout).toHaveBeenCalledTimes(1);
+      expect(redirectUrl).toBe('redirect_url');
     });
 
     it('should remove publisherId from cookie', () => {
