@@ -63,16 +63,16 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
         .pipe(
           finalize(() => {
             this.handleCoverImage();
+            // TODO: change to when is not our own user		Date: 2021/03/29
+            if (true) {
+              this.getFavouriteUser();
+            }
           })
         )
         .subscribe(
           ([userInfo, userStats]: [User, UserStats]) => {
             this.userInfo = userInfo;
             this.userStats = userStats;
-
-            if (true) {
-              this.getFavouriteUser();
-            }
           },
           () => {
             this.router.navigate([`/${APP_PATHS.NOT_FOUND}`]);

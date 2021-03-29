@@ -54,6 +54,11 @@ describe('PublicProfileComponent', () => {
             getCoverImage() {
               return of(IMAGE);
             },
+            isFavourite() {
+              return of({
+                favorited: false,
+              });
+            },
           },
         },
         {
@@ -126,6 +131,46 @@ describe('PublicProfileComponent', () => {
             component.ngOnInit();
 
             expect(publicProfileService.getCoverImage).not.toHaveBeenCalled();
+          });
+        });
+
+        describe('when is our own user...', () => {
+          it('should NOT ask for the favourited user flag', () => {
+            spyOn(publicProfileService, 'isFavourite');
+
+            component.ngOnInit();
+
+            expect(publicProfileService.isFavourite).not.toHaveBeenCalled();
+          });
+        });
+
+        describe('when is NOT our own user...', () => {
+          it('should ask for the favourited user flag', () => {
+            spyOn(publicProfileService, 'isFavourite');
+
+            component.ngOnInit();
+
+            expect(publicProfileService.isFavourite).toHaveBeenCalled();
+          });
+
+          describe('and the user is favourited...', () => {
+            it('should update isFavourited flag to true', () => {
+              spyOn(publicProfileService, 'isFavourite').and.returnValue(of({ favorited: true }));
+
+              component.ngOnInit();
+
+              expect(component.isFavourited).toBe(true);
+            });
+          });
+
+          describe('and the user is NOT favourited...', () => {
+            it('should update isFavourited flag to false', () => {
+              spyOn(publicProfileService, 'isFavourite').and.returnValue(of({ favorited: false }));
+
+              component.ngOnInit();
+
+              expect(component.isFavourited).toBe(false);
+            });
           });
         });
       });
