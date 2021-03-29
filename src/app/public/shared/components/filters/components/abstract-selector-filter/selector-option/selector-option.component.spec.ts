@@ -95,7 +95,7 @@ describe('SelectorOptionComponent', () => {
         });
 
         it('should add with icon styles', () => {
-          const sublabelWithIcon = debugElement.query(By.css('.SelectorOption__sublabel-with-icon'));
+          const sublabelWithIcon = debugElement.query(By.css('.SelectorOption__sublabel--with-icon'));
 
           expect(sublabelWithIcon).toBeTruthy();
         });
