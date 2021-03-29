@@ -2,6 +2,7 @@ import { RangeFilterConfig } from '../../../components/range-filter/interfaces/r
 import { ToggleFilterConfig } from '../../../components/toggle-filter/interfaces/toggle-filter-config.interface';
 import { CARS_FILTER_CONFIGURATION } from './cars/cars-filter-configuration';
 import { CONSUMER_GOODS_FILTER_CONFIGURATIONS } from './consumer-goods/consumer-goods-filter-configuration';
+import { REAL_ESTATE__FILTER_CONFIGURATION } from './real-estate/real-estate-filter-configuration';
 
 export type FilterConfigType = RangeFilterConfig | ToggleFilterConfig;
 

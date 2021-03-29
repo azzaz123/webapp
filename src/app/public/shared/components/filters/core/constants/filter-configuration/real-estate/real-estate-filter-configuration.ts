@@ -286,7 +286,7 @@ const REAL_ESTATE__FILTER_CONFIGURATION_SURFACE: FilterConfigType[] = [
     id: REAL_ESTATE_CONFIGURATION_ID.FLAT_SURFACE,
     type: FILTER_TYPES.RANGE,
     title: $localize`:@@filterSurfaceTitle:Surface`,
-    icon: '/assets/icons/filters/price.svg',
+    icon: '/assets/icons/filters/surface.svg',
     bubblePlaceholder: $localize`:@@filterSurfaceBubblePlaceholder:Surface`,
     mapKey: {
       minKey: 'min_surface',
@@ -301,7 +301,7 @@ const REAL_ESTATE__FILTER_CONFIGURATION_SURFACE: FilterConfigType[] = [
     id: REAL_ESTATE_CONFIGURATION_ID.LAND_SURFACE,
     type: FILTER_TYPES.RANGE,
     title: $localize`:@@filterSurfaceTitle:Surface`,
-    icon: '/assets/icons/filters/price.svg',
+    icon: '/assets/icons/filters/surface.svg',
     bubblePlaceholder: $localize`:@@filterSurfaceBubblePlaceholder:Surface`,
     mapKey: {
       minKey: 'min_surface',
@@ -316,7 +316,7 @@ const REAL_ESTATE__FILTER_CONFIGURATION_SURFACE: FilterConfigType[] = [
     id: REAL_ESTATE_CONFIGURATION_ID.HOUSE_SURFACE,
     type: FILTER_TYPES.RANGE,
     title: $localize`:@@filterSurfaceTitle:Surface`,
-    icon: '/assets/icons/filters/price.svg',
+    icon: '/assets/icons/filters/surface.svg',
     bubblePlaceholder: $localize`:@@filterSurfaceBubblePlaceholder:Surface`,
     mapKey: {
       minKey: 'min_surface',
@@ -331,7 +331,7 @@ const REAL_ESTATE__FILTER_CONFIGURATION_SURFACE: FilterConfigType[] = [
     id: REAL_ESTATE_CONFIGURATION_ID.OFFICE_SURFACE,
     type: FILTER_TYPES.RANGE,
     title: $localize`:@@filterSurfaceTitle:Surface`,
-    icon: '/assets/icons/filters/price.svg',
+    icon: '/assets/icons/filters/surface.svg',
     bubblePlaceholder: $localize`:@@filterSurfaceBubblePlaceholder:Surface`,
     mapKey: {
       minKey: 'min_surface',
@@ -346,7 +346,7 @@ const REAL_ESTATE__FILTER_CONFIGURATION_SURFACE: FilterConfigType[] = [
     id: REAL_ESTATE_CONFIGURATION_ID.BOX_ROOM_SURFACE,
     type: FILTER_TYPES.RANGE,
     title: $localize`:@@filterSurfaceTitle:Surface`,
-    icon: '/assets/icons/filters/price.svg',
+    icon: '/assets/icons/filters/surface.svg',
     bubblePlaceholder: $localize`:@@filterSurfaceBubblePlaceholder:Surface`,
     mapKey: {
       minKey: 'min_surface',
