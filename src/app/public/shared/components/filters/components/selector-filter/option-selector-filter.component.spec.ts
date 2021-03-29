@@ -7,7 +7,7 @@ import { By } from '@angular/platform-browser';
 import { BubbleComponent } from '@public/shared/components/bubble/bubble.component';
 import { MockFilterOptionService } from '@fixtures/filter-option-service.fixtures.spec';
 import { FilterOptionService } from '@public/shared/services/filter-option/filter-option.service';
-import { SelectorFilterComponent } from './selector-filter.component';
+import { OptionSelectorFilterComponent } from './option-selector-filter.component';
 import { FILTER_TYPES } from '../../core/enums/filter-types/filter-types.enum';
 import { FASHION_CONFIGURATION_ID } from '../../core/enums/configuration-ids/fashion-configuration-ids.enum';
 import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module';
@@ -23,7 +23,7 @@ import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 
 @Component({
   selector: 'tsl-test-wrapper',
-  template: ` <tsl-selector-filter [config]="config" [variant]="variant" [value]="value"></tsl-selector-filter> `,
+  template: ` <tsl-option-selector-filter [config]="config" [variant]="variant" [value]="value"></tsl-option-selector-filter> `,
 })
 class TestWrapperComponent {
   @Input() config: SelectorFilterConfig;
@@ -33,7 +33,7 @@ class TestWrapperComponent {
 
 describe('SelectorFilterComponent', () => {
   let testComponent: TestWrapperComponent;
-  let component: SelectorFilterComponent;
+  let component: OptionSelectorFilterComponent;
   let debugElement: DebugElement;
   let fixture: ComponentFixture<TestWrapperComponent>;
 
@@ -62,7 +62,7 @@ describe('SelectorFilterComponent', () => {
           useClass: MockFilterOptionService,
         },
       ],
-      declarations: [TestWrapperComponent, SelectorFilterComponent],
+      declarations: [TestWrapperComponent, OptionSelectorFilterComponent],
       imports: [
         HttpClientTestingModule,
         NgbDropdownModule,
@@ -79,7 +79,7 @@ describe('SelectorFilterComponent', () => {
     debugElement = fixture.debugElement;
     testComponent = fixture.componentInstance;
     testComponent.config = basicConfig;
-    component = debugElement.query(By.directive(SelectorFilterComponent)).componentInstance;
+    component = debugElement.query(By.directive(OptionSelectorFilterComponent)).componentInstance;
     fixture.detectChanges();
   });
 

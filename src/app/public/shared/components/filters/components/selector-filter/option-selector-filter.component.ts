@@ -10,12 +10,12 @@ import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { SelectorFilterConfig } from './interfaces/selector-filter-config.interface';
 
 @Component({
-  selector: 'tsl-selector-filter',
-  templateUrl: './selector-filter.component.html',
-  styleUrls: ['./selector-filter.component.scss'],
+  selector: 'tsl-option-selector-filter',
+  templateUrl: './option-selector-filter.component.html',
+  styleUrls: ['./option-selector-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SelectorFilterComponent extends AbstractSelectorFilter<SelectorFilterParams> implements OnInit, OnDestroy {
+export class OptionSelectorFilterComponent extends AbstractSelectorFilter<SelectorFilterParams> implements OnInit, OnDestroy {
   @Input() config: SelectorFilterConfig;
 
   @ViewChild('selectorFilterTemplateComponent', { read: SelectorFilterTemplateComponent })

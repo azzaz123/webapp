@@ -8,7 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { COMMON_CONFIGURATION_ID } from '../../core/enums/configuration-ids/common-configuration-ids.enum';
 import { FILTER_TYPES } from '../../core/enums/filter-types/filter-types.enum';
 import { FASHION_CONFIGURATION_ID } from '../../core/enums/configuration-ids/fashion-configuration-ids.enum';
-import { SelectorFilterComponent } from './selector-filter.component';
+import { OptionSelectorFilterComponent } from './option-selector-filter.component';
 import { SelectorOptionComponent } from '../abstract-selector-filter/selector-option/selector-option.component';
 import { SelectorParentOptionComponent } from '../abstract-selector-filter/selector-parent-option/selector-parent-option.component';
 import { FilterOptionService } from '../../../../services/filter-option/filter-option.service';
@@ -22,45 +22,45 @@ import { SelectorFilterConfig } from '@public/shared/components/filters/componen
       <h1>Bubble variant</h1>
       <div style="display: flex;">
         <div class="m-2" style="width: 100%">
-          <tsl-selector-filter
+          <tsl-option-selector-filter
             [variant]="${FILTER_VARIANT.BUBBLE}"
             [value]="conditionValue"
             [config]="conditionConfig"
             (valueChange)="changeCondition($event)"
             (clear)="changeCondition([])"
           >
-          </tsl-selector-filter>
+          </tsl-option-selector-filter>
         </div>
         <div class="m-2" style="width: 100%">
-          <tsl-selector-filter
+          <tsl-option-selector-filter
             [variant]="${FILTER_VARIANT.BUBBLE}"
             [value]="genderValue"
             [config]="genderConfig"
             (valueChange)="changeGender($event)"
             (clear)="changeGender([])"
           >
-          </tsl-selector-filter>
+          </tsl-option-selector-filter>
         </div>
       </div>
 
       <h1>Content variant</h1>
       <div style="border: 1px dashed black; background-color: white; position: relative;">
-        <tsl-selector-filter
+        <tsl-option-selector-filter
           [variant]="${FILTER_VARIANT.CONTENT}"
           [value]="conditionValue"
           [config]="conditionConfig"
           (valueChange)="changeCondition($event)"
           (clear)="changeCondition([])"
         >
-        </tsl-selector-filter>
-        <tsl-selector-filter
+        </tsl-option-selector-filter>
+        <tsl-option-selector-filter
           [variant]="${FILTER_VARIANT.CONTENT}"
           [value]="genderValue"
           [config]="genderConfig"
           (valueChange)="changeGender($event)"
           (clear)="changeGender([])"
         >
-        </tsl-selector-filter>
+        </tsl-option-selector-filter>
       </div>
     </div>
   `,
@@ -81,7 +81,7 @@ class FiltersComponent {
 }
 
 export default {
-  title: 'Webapp/Public/Shared/Components/Filters/SelectorFilterComponent',
+  title: 'Webapp/Public/Shared/Components/Filters/OptionSelectorFilterComponent',
   decorators: [
     moduleMetadata({
       imports: [HttpClientModule],
@@ -91,7 +91,7 @@ export default {
           useClass: MockFilterOptionService,
         },
       ],
-      declarations: [FiltersComponent, SelectorFilterComponent, SelectorOptionComponent, SelectorParentOptionComponent],
+      declarations: [FiltersComponent, OptionSelectorFilterComponent, SelectorOptionComponent, SelectorParentOptionComponent],
     }),
   ],
 } as Meta;
