@@ -305,6 +305,16 @@ describe('ItemDetailComponent', () => {
       });
 
       it('should send view others car event if user is viewing others car', () => {
+        itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
+        spyOn(userService, 'isProfessional').and.returnValue(of(true));
+        spyOn(analyticsService, 'trackPageView');
+
+        component.ngOnInit();
+
+        expect(analyticsService.trackPageView).not.toHaveBeenCalledWith(viewOthersCarEvent);
+      });
+
+      it('should not send view others car event if user is not viewing others car', () => {
         const mockOthersCarDetail: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
         mockOthersCarDetail.item = MOCK_CAR;
         mockOthersCarDetail.user = MOCK_OTHER_USER;
