@@ -40,7 +40,10 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.getUser(this.route.snapshot.paramMap.get(PUBLIC_PATH_PARAMS.WEBSLUG));
+    const webSlug = this.route.snapshot.paramMap.get(PUBLIC_PATH_PARAMS.WEBSLUG);
+    const userUUID = this.slugsUtilService.getUUIDfromSlug(webSlug);
+
+    this.getUser(userUUID);
     this.isMobile = this.deviceService.isMobile();
     this.adsService.setSlots([this.adSlot]);
   }
@@ -49,8 +52,8 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 
-  private getUser(webSlug: string): void {
-    this.userId = this.slugsUtilService.getUUID(webSlug);
+  private getUser(userUUID: string): void {
+    this.userId = userUUID;
     if (this.userId) {
       this.getUserInfoAndStats();
     }

@@ -20,12 +20,12 @@ describe('SlugsUtilService', () => {
       it('should return the UUID', () => {
         const webSlug = userName + UUID;
 
-        expect(service.getUUID(webSlug)).toBe(UUID);
+        expect(service.getUUIDfromSlug(webSlug)).toBe(UUID);
       });
     });
     describe('if the UUID is NOT defined...', () => {
       it('should return the web slug', () => {
-        expect(service.getUUID(userName)).toBe(userName);
+        expect(service.getUUIDfromSlug(userName)).toBe(userName);
       });
     });
   });

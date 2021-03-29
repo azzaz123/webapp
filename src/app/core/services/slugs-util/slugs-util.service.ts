@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class SlugsUtilService {
-  public getUUID(webSlug: string): string {
+  public getUUIDfromSlug(webSlug: string): string {
     const UUID = webSlug?.split('-').pop();
 
     if (UUID) {
