@@ -31,6 +31,13 @@ export class SelectorFilterComponent extends AbstractSelectorFilter<SelectorFilt
     return value ? this.options.find((option) => option.value === value).label : this.getLabelPlaceholder();
   }
 
+  // TODO: This could probably be included inside the AbstractFilter directly
+  public handleClear() {
+    this.writeValue([]);
+    this.valueChange.emit(this.value);
+    super.handleClear();
+  }
+
   public handleOptionSelected(option: FilterOption): void {
     this.closeContent();
     this.writeValue([{ key: this.config.mapKey.parameterKey, value: option.value as string }]);

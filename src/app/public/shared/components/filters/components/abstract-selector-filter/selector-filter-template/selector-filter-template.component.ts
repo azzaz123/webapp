@@ -12,7 +12,7 @@ export class SelectorFilterTemplateComponent {
   @Input() placeholderIcon?: string;
   @Input() contentTitle?: string;
   @Input() isClearable?: boolean;
-  @Output() onClear = new EventEmitter<void>();
+  @Output() clear = new EventEmitter<void>();
 
   public isPlaceholderOpen = false;
 
@@ -21,6 +21,6 @@ export class SelectorFilterTemplateComponent {
   }
 
   public handleClear(): void {
-    this.onClear.emit();
+    this.clear.emit();
   }
 }
