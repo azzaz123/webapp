@@ -99,6 +99,18 @@ describe('SelectorFilterTemplateComponent', () => {
       });
     });
 
+    describe('and the placeholder is cleared', () => {
+      it('should emit clear', () => {
+        const placeholder: SelectorParentOptionComponent = debugElement.query(By.directive(SelectorParentOptionComponent))
+          .componentInstance;
+        spyOn(component.clear, 'emit');
+
+        placeholder.clear.emit();
+
+        expect(component.clear.emit).toHaveBeenCalledTimes(1);
+      });
+    });
+
     describe('and the placeholder is open', () => {
       beforeEach(() => {
         component.isPlaceholderOpen = true;

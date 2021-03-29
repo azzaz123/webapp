@@ -4,8 +4,7 @@
 
 <div *ngIf="hasContentPlaceholder">
   <tsl-selector-parent-option [label]="placeholderLabel" [sublabel]="placeholderSublabel" [icon]="placeholderIcon" [isClearable]="isClearable"
-                              (clear)="handleClear()"
-                              (click)="togglePlaceholderOpen()">
+                              (clear)="handleClear()" (click)="togglePlaceholderOpen()">
   </tsl-selector-parent-option>
 </div>
 
