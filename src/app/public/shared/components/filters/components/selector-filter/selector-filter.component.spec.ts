@@ -4,6 +4,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { By } from '@angular/platform-browser';
 
+import { BubbleComponent } from '@public/shared/components/bubble/bubble.component';
 import { MockFilterOptionService } from '@fixtures/filter-option-service.fixtures.spec';
 import { FilterOptionService } from '@public/shared/services/filter-option/filter-option.service';
 import { SelectorFilterComponent } from './selector-filter.component';
@@ -19,7 +20,6 @@ import { FilterTemplateComponent } from '../abstract-filter/filter-template/filt
 import { SelectorFilterTemplateComponent } from '../abstract-selector-filter/selector-filter-template/selector-filter-template.component';
 import { SelectorParentOptionComponent } from '../abstract-selector-filter/selector-parent-option/selector-parent-option.component';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
-import spyOn = jest.spyOn;
 
 @Component({
   selector: 'tsl-test-wrapper',
@@ -135,6 +135,101 @@ describe('SelectorFilterComponent', () => {
     });
   });
 
+  describe('when bubble', () => {
+    beforeEach(() => {
+      testComponent.variant = FILTER_VARIANT.BUBBLE;
+      fixture.detectChanges();
+    });
+    describe('... is open', () => {
+      beforeEach(() => {
+        debugElement.query(By.directive(BubbleComponent)).nativeElement.click();
+        fixture.detectChanges();
+      });
+      describe('and an option is clicked', () => {
+        it('should select option and close the bubble', () => {
+          const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
+          spyOn(filterTemplate, 'toggleDropdown');
+          const optionElement: HTMLElement = debugElement.query(optionPredicate).nativeElement;
+
+          optionElement.click();
+
+          fixture.detectChanges();
+
+          expect(component.value).toEqual([
+            {
+              key: 'key',
+              value: 'male',
+            },
+          ]);
+          expect(filterTemplate.label).toEqual($localize`:@@FilterOptionGender_male:Male`);
+          expect(filterTemplate.toggleDropdown).toHaveBeenCalledTimes(1);
+        });
+
+        it('should emit changes', () => {
+          spyOn(component.valueChange, 'emit');
+          const optionElement: HTMLElement = debugElement.query(optionPredicate).nativeElement;
+
+          optionElement.click();
+          fixture.detectChanges();
+
+          expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
+          expect(component.valueChange.emit).toHaveBeenCalledWith([
+            {
+              key: 'key',
+              value: 'male',
+            },
+          ]);
+        });
+      });
+    });
+    describe('... is closed', () => {
+      describe('and we clean the value', () => {
+        beforeEach(() => {
+          component.writeValue([{ key: 'key', value: 'male' }]);
+          fixture.detectChanges();
+        });
+
+        it('should restart values', () => {
+          const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
+          expect(component.value).toEqual([{ key: 'key', value: 'male' }]);
+
+          filterTemplate.clear.emit();
+
+          expect(component.value).toEqual([]);
+        });
+
+        it('should restart label', () => {
+          const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
+          expect(filterTemplate.label).toEqual($localize`:@@FilterOptionGender_male:Male`);
+
+          filterTemplate.clear.emit();
+          fixture.detectChanges();
+
+          expect(filterTemplate.label).toEqual(basicConfig.bubblePlaceholder);
+        });
+
+        it('should emit value changes', () => {
+          spyOn(component.valueChange, 'emit');
+          const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
+
+          filterTemplate.clear.emit();
+
+          expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
+          expect(component.valueChange.emit).toHaveBeenCalledWith([]);
+        });
+
+        it('should emit clear event', () => {
+          spyOn(component.clear, 'emit');
+          const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
+
+          filterTemplate.clear.emit();
+
+          expect(component.clear.emit).toHaveBeenCalledTimes(1);
+        });
+      });
+    });
+  });
+
   describe('when placeholder', () => {
     beforeEach(() => {
       testComponent.variant = FILTER_VARIANT.CONTENT;
@@ -198,99 +293,49 @@ describe('SelectorFilterComponent', () => {
           ]);
         });
       });
-    });
-  });
 
-  describe('when cleaning the value', () => {
-    beforeEach(() => {
-      component.writeValue([{ key: 'key', value: 'male' }]);
-      fixture.detectChanges();
-    });
-    describe('and the filter variant is bubble', () => {
-      beforeEach(() => {
-        testComponent.variant = FILTER_VARIANT.BUBBLE;
-        fixture.detectChanges();
-      });
-      it('should restart values', () => {
-        const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
-        expect(component.value).toEqual([{ key: 'key', value: 'male' }]);
+      describe('and we clean the value', () => {
+        beforeEach(() => {
+          component.writeValue([{ key: 'key', value: 'male' }]);
+          fixture.detectChanges();
+        });
+        it('should restart values', () => {
+          const selectorTemplate: SelectorFilterTemplateComponent = debugElement.query(selectorTemplatePredicate).componentInstance;
+          expect(component.value).toEqual([{ key: 'key', value: 'male' }]);
 
-        filterTemplate.clear.emit();
+          selectorTemplate.clear.emit();
 
-        expect(component.value).toEqual([]);
-      });
+          expect(component.value).toEqual([]);
+        });
 
-      it('should restart label', () => {
-        const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
-        expect(filterTemplate.label).toEqual($localize`:@@FilterOptionGender_male:Male`);
+        it('should restart label', () => {
+          const selectorTemplate: SelectorFilterTemplateComponent = debugElement.query(selectorTemplatePredicate).componentInstance;
+          expect(selectorTemplate.placeholderLabel).toEqual($localize`:@@FilterOptionGender_male:Male`);
 
-        filterTemplate.clear.emit();
-        fixture.detectChanges();
+          selectorTemplate.clear.emit();
+          fixture.detectChanges();
 
-        expect(filterTemplate.label).toEqual(basicConfig.bubblePlaceholder);
-      });
+          expect(selectorTemplate.placeholderLabel).toEqual(basicConfig.drawerPlaceholder);
+        });
 
-      it('should emit value changes', () => {
-        spyOn(component.valueChange, 'emit');
-        const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
+        it('should emit value changes', () => {
+          spyOn(component.valueChange, 'emit');
+          const selectorTemplate: SelectorFilterTemplateComponent = debugElement.query(selectorTemplatePredicate).componentInstance;
 
-        filterTemplate.clear.emit();
+          selectorTemplate.clear.emit();
 
-        expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
-        expect(component.valueChange.emit).toHaveBeenCalledWith([]);
-      });
+          expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
+          expect(component.valueChange.emit).toHaveBeenCalledWith([]);
+        });
 
-      it('should emit clear event', () => {
-        spyOn(component.clear, 'emit');
-        const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
+        it('should emit clear event', () => {
+          spyOn(component.clear, 'emit');
+          const selectorTemplate: SelectorFilterTemplateComponent = debugElement.query(selectorTemplatePredicate).componentInstance;
 
-        filterTemplate.clear.emit();
+          selectorTemplate.clear.emit();
 
-        expect(component.clear.emit).toHaveBeenCalledTimes(1);
-      });
-    });
-
-    describe('and the filter variant is content', () => {
-      beforeEach(() => {
-        testComponent.variant = FILTER_VARIANT.CONTENT;
-        fixture.detectChanges();
-      });
-      it('should restart values', () => {
-        const selectorTemplate: SelectorFilterTemplateComponent = debugElement.query(selectorTemplatePredicate).componentInstance;
-        expect(component.value).toEqual([{ key: 'key', value: 'male' }]);
-
-        selectorTemplate.clear.emit();
-
-        expect(component.value).toEqual([]);
-      });
-
-      it('should restart label', () => {
-        const selectorTemplate: SelectorFilterTemplateComponent = debugElement.query(selectorTemplatePredicate).componentInstance;
-        expect(selectorTemplate.placeholderLabel).toEqual($localize`:@@FilterOptionGender_male:Male`);
-
-        selectorTemplate.clear.emit();
-        fixture.detectChanges();
-
-        expect(selectorTemplate.placeholderLabel).toEqual(basicConfig.drawerPlaceholder);
-      });
-
-      it('should emit value changes', () => {
-        spyOn(component.valueChange, 'emit');
-        const selectorTemplate: SelectorFilterTemplateComponent = debugElement.query(selectorTemplatePredicate).componentInstance;
-
-        selectorTemplate.clear.emit();
-
-        expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
-        expect(component.valueChange.emit).toHaveBeenCalledWith([]);
-      });
-
-      it('should emit clear event', () => {
-        spyOn(component.clear, 'emit');
-        const selectorTemplate: SelectorFilterTemplateComponent = debugElement.query(selectorTemplatePredicate).componentInstance;
-
-        selectorTemplate.clear.emit();
-
-        expect(component.clear.emit).toHaveBeenCalledTimes(1);
+          expect(component.clear.emit).toHaveBeenCalledTimes(1);
+        });
       });
     });
   });
