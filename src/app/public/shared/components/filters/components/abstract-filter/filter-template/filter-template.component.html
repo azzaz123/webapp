@@ -39,7 +39,7 @@
 </div>
 
 <ng-template #contentWrapper>
-  <div [ngClass]="{'pb-md-0': isBubble}" class="p-2 p-md-4 FilterTemplate__content">
+  <div [ngClass]="{'pb-md-0 FilterTemplate__content--bubble': isBubble}" class="p-2 p-md-4">
     <p class="FilterTemplate__title">{{title}}</p>
     <div #extendedContent>
       <ng-content></ng-content>
