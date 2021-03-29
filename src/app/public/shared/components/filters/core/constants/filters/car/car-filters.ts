@@ -54,7 +54,6 @@ export const CAR_FILTERS: FilterConfigType[] = [
     ],
     limitless: true,
   },
-
   {
     id: CAR_CONFIGURATION_ID.PROFESSIONAL,
     type: FILTER_TYPES.TOGGLE,
@@ -97,6 +96,23 @@ export const CAR_FILTERS: FilterConfigType[] = [
       maxKey: 'max_num_doors',
     },
     range: [2, 6],
+    limitless: true,
+  },
+  {
+    id: CAR_CONFIGURATION_ID.HORSE_POWER,
+    type: FILTER_TYPES.RANGE,
+    title: $localize`:@@filterHorsePowerTitle:Horse power`,
+    bubblePlaceholder: $localize`:@@filterHorsePowerBubblePlaceholder:Horse power`,
+    mapKey: {
+      minKey: 'min_horse_power',
+      maxKey: 'max_horse_power',
+    },
+    units: 'cv',
+    range: [0, 500],
+    stepsConfig: [
+      { range: [0, 100], step: 10 },
+      { range: [100, 500], step: 50 },
+    ],
     limitless: true,
   },
 ];

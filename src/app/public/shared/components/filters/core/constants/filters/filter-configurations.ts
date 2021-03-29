@@ -6,4 +6,4 @@ import { CONSUMER_GOODS_FILTERS } from './consumer-goods/consumer-goods-filters'
 
 export type FilterConfigType = RangeFilterConfig | ToggleFilterConfig;
 
-export const CONSUMER_GOODS_FILTERS: FilterConfigType[] = [...CONSUMER_GOODS_FILTERS, ...CAR_FILTERS, ...REAL_ESTATE__FILTERS];
+export const FILTER_CONFIGURATIONS: FilterConfigType[] = [...CONSUMER_GOODS_FILTERS, ...CAR_FILTERS, ...REAL_ESTATE__FILTERS];
