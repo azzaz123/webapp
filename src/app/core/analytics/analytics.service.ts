@@ -30,7 +30,7 @@ export class AnalyticsService {
       .subscribe((user: User) => {
         const CONFIG = {
           isDevelopmentMode: !environment.production,
-          identifyRequest: { userIdentities: this.userIdentities(user) },
+          identifyRequest: { userIdentities: this.getUserIdentities(user) },
           identityCallback: (result) => {
             const mParticleUser = result.getUser();
             if (mParticleUser) {
@@ -45,7 +45,7 @@ export class AnalyticsService {
       });
   }
 
-  private userIdentities(user: User): { email?: string; customerid?: string } {
+  private getUserIdentities(user: User): { email?: string; customerid?: string } {
     if (!user.email || !user.id) {
       return {};
     }
