@@ -11,20 +11,38 @@ describe('WebSlugConverterPipe', () => {
   });
 });
 
-describe('when the webslug id is numeric', () => {
-  const pipe = new WebSlugConverterPipe();
-  const numericSlug = `${userName}${numericId}`;
+describe('when we receive the id on the web slug...', () => {
+  describe('when the webslug id is numeric', () => {
+    const pipe = new WebSlugConverterPipe();
+    const numericSlug = `${userName}${numericId}`;
 
-  it('should return the web slug with the hash id', () => {
-    expect(pipe.transform(numericSlug, hashId)).toBe(`${userName}${hashId}`);
+    it('should return the web slug with the hash id', () => {
+      expect(pipe.transform(numericSlug, hashId)).toBe(`${userName}${hashId}`);
+    });
+  });
+
+  describe('when the webslug id is not numeric', () => {
+    const pipe = new WebSlugConverterPipe();
+    const hashSlug = `${userName}${hashId}`;
+
+    it('should return exactly the same web slug', () => {
+      expect(pipe.transform(hashSlug, hashId)).toBe(hashSlug);
+    });
   });
 });
 
-describe('when the webslug id is not numeric', () => {
+describe(`when we don't receive the id on the web slug...`, () => {
   const pipe = new WebSlugConverterPipe();
-  const hashSlug = `${userName}${hashId}`;
 
-  it('should return exactly the same web slug', () => {
-    expect(pipe.transform(hashSlug, hashId)).toBe(hashSlug);
+  describe('and the hashId is defined...', () => {
+    it('should return the web slug with the hash id', () => {
+      expect(pipe.transform(userName, hashId)).toBe(`${userName}${hashId}`);
+    });
+  });
+
+  describe('and the hashId is NOT defined...', () => {
+    it('should return exactly the same web slug', () => {
+      expect(pipe.transform(userName, '')).toBe(`${userName}`);
+    });
   });
 });
