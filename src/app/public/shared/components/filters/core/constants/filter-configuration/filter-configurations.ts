@@ -1,9 +1,9 @@
 import { RangeFilterConfig } from '../../../components/range-filter/interfaces/range-filter-config.interface';
 import { ToggleFilterConfig } from '../../../components/toggle-filter/interfaces/toggle-filter-config.interface';
-import { CAR_CONFIGURATION_ID } from '../configuration-ids/car-configuration-ids';
-import { COMMON_CONSUMER_GOODS_CONFIGURATION_ID } from '../configuration-ids/consumer-goods-configuration-ids.enum';
-import { REAL_ESTATE_CONFIGURATION_ID } from '../configuration-ids/real-estate-configuration-ids.enum';
-import { FILTER_TYPES } from '../filter-types/filter-types.enum';
+import { CAR_CONFIGURATION_ID } from '../../enums/configuration-ids/car-configuration-ids';
+import { COMMON_CONSUMER_GOODS_CONFIGURATION_ID } from '../../enums/configuration-ids/consumer-goods-configuration-ids.enum';
+import { REAL_ESTATE_CONFIGURATION_ID } from '../../enums/configuration-ids/real-estate-configuration-ids.enum';
+import { FILTER_TYPES } from '../../enums/filter-types/filter-types.enum';
 
 type FilterConfigType = RangeFilterConfig | ToggleFilterConfig;
 
