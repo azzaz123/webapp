@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FILTER_VARIANT } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.enum';
-import { CAR_CONFIGURATION_FILTERS } from '@public/shared/components/filters/core/enums/configuration/car/car-configuration-filters';
 import { DrawerConfig } from '@public/shared/components/filters/interfaces/drawer-config.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
+import { FilterConfigurationService } from '@public/shared/services/filter-configuration/filter-configuration.service';
+import { FilterConfigurations } from '@public/shared/services/filter-configuration/interfaces/filter-group-config.interface';
 import { FilterParameterDraftService } from '@public/shared/services/filter-parameter-draft/filter-parameter-draft.service';
 import { FilterParameterStoreService } from '../../core/services/filter-parameter-store.service';
 
@@ -19,17 +20,20 @@ export class FiltersWrapperComponent {
     hasApply: true,
   };
   public activeFiltersCount = 0;
-  public bubbleFiltersConfig = CAR_CONFIGURATION_FILTERS.BUBBLE;
-  public drawerFiltersConfig = CAR_CONFIGURATION_FILTERS.CONTENT;
+  public filterConfigurations: FilterConfigurations;
 
-  public filterValues: FilterParameter[] = []; // TODO this usage temporary until we have the filterParamStore service
+  public filterValues: FilterParameter[] = [];
 
   @Output() bubbleFilterOpenStateChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(
     private filterParameterDraftService: FilterParameterDraftService,
-    private filterParameterStoreService: FilterParameterStoreService
+    private filterParameterStoreService: FilterParameterStoreService,
+    private filterConfigurationService: FilterConfigurationService
   ) {
+    this.filterConfigurations = this.filterConfigurationService.getConfiguration([]);
+    console.log('filterConfigurations!', this.filterConfigurations);
+
     this.getFilterValues();
     this.filterParameterStoreService.parameters$.subscribe((filterValues: FilterParameter[]) => {
       console.log('filters changed', filterValues);
