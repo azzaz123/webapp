@@ -1,15 +1,14 @@
 import { TestBed } from '@angular/core/testing';
+import { SlugsUtilService } from './slugs-util.service';
 
-import { MapRouteParamsService } from './map-route-params.service';
-
-describe('MapRouteParamsService', () => {
-  let service: MapRouteParamsService;
+describe('SlugsUtilService', () => {
+  let service: SlugsUtilService;
   const userName = 'user-generic-';
   const UUID = '83ghdus823';
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(MapRouteParamsService);
+    service = TestBed.inject(SlugsUtilService);
   });
 
   it('should be created', () => {

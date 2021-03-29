@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-export class MapRouteParamsService {
+export class SlugsUtilService {
   public getUUID(webSlug: string): string {
     const UUID = webSlug?.split('-').pop();
 

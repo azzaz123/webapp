@@ -5,6 +5,7 @@ import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
+import { SlugsUtilService } from '@core/services/slugs-util/slugs-util.service';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { IsCurrentUserStub } from '@fixtures/public/core';
 import { AdComponentStub } from '@fixtures/shared';
@@ -37,7 +38,7 @@ describe('PublicProfileComponent', () => {
           useValue: {
             snapshot: {
               paramMap: {
-                get: () => '123',
+                get: () => 'user-generic-123',
               },
             },
           },
@@ -70,6 +71,7 @@ describe('PublicProfileComponent', () => {
             navigate() {},
           },
         },
+        SlugsUtilService,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
