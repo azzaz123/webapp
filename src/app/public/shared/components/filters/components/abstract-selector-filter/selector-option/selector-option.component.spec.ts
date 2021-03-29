@@ -5,7 +5,6 @@ import { SvgIconComponent } from '@core/svg-icon/svg-icon/svg-icon.component';
 import { Component, DebugElement, Input } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import spyOn = jest.spyOn;
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -44,16 +43,6 @@ describe('SelectorOptionComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('when is clicked', () => {
-    it('should emit click event', () => {
-      spyOn(component.onClick, 'emit');
-
-      debugElement.query(By.css('.SelectorOption')).nativeElement.click();
-
-      expect(component.onClick.emit).toHaveBeenCalledTimes(1);
-    });
-  });
-
   describe('when option', () => {
     describe('... is active', () => {
       beforeEach(() => {
@@ -61,7 +50,7 @@ describe('SelectorOptionComponent', () => {
         fixture.detectChanges();
       });
       it('should add active styles', () => {
-        const activeOption = debugElement.query(By.css('.SelectorOption__active'));
+        const activeOption = debugElement.query(By.css('.SelectorOption--active'));
 
         expect(activeOption).toBeTruthy();
       });
@@ -101,7 +90,7 @@ describe('SelectorOptionComponent', () => {
 
       describe('and has icon', () => {
         beforeEach(() => {
-          testComponent.icon = 'icon.svg';
+          testComponent.icon = '/assets/icons/categories/selected/All.svg';
           fixture.detectChanges();
         });
 

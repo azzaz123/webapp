@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'tsl-selector-option',
@@ -11,9 +11,4 @@ export class SelectorOptionComponent {
   @Input() sublabel?: string;
   @Input() icon: string;
   @Input() isActive?: boolean;
-  @Output() onClick = new EventEmitter<void>();
-
-  public handleClick(): void {
-    this.onClick.emit();
-  }
 }

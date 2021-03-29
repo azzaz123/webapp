@@ -2,14 +2,18 @@ import { Story } from '@storybook/angular/types-6-0';
 import { moduleMetadata } from '@storybook/angular';
 import { SelectorOptionComponent } from './selector-option.component';
 import { SelectorOptionModule } from './selector-option.module';
+import { HttpClientModule } from '@angular/common/http';
 
 export default {
   title: 'Webapp/Public/Shared/Components/Filters/AbstractSelectorFilter/SelectorOption',
   decorators: [
     moduleMetadata({
-      imports: [SelectorOptionModule],
+      imports: [SelectorOptionModule, HttpClientModule],
     }),
   ],
+  argTypes: {
+    onClick: { action: 'Option clicked' },
+  },
 };
 
 const Template: Story<SelectorOptionComponent> = (args) => ({
@@ -17,7 +21,9 @@ const Template: Story<SelectorOptionComponent> = (args) => ({
   component: SelectorOptionComponent,
   template: `
     <div style="border: 1px dashed black; background-color: white" class="px-3">
-      <tsl-selector-option [label]="label" [icon]="icon" [sublabel]="sublabel" [isActive]="isActive">
+      <tsl-selector-option
+        [label]="label" [icon]="icon" [sublabel]="sublabel" [isActive]="isActive"
+        (click)="onClick()">
       </tsl-selector-option>
     </div>
   `,

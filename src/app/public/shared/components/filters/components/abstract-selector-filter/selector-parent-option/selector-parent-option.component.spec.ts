@@ -50,16 +50,6 @@ describe('SelectorParentOptionComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('when clicked', () => {
-    it('should emit onClick', () => {
-      spyOn(component.onClick, 'emit');
-
-      debugElement.query(By.css('.SelectorOption')).nativeElement.click();
-
-      expect(component.onClick.emit).toHaveBeenCalledTimes(1);
-    });
-  });
-
   describe('when parent option is not clearable', () => {
     beforeEach(() => {
       testComponent.isClearable = false;
@@ -87,11 +77,11 @@ describe('SelectorParentOptionComponent', () => {
     });
 
     describe('and clear cross is clicked', () => {
-      it('should emit onClear', () => {
-        spyOn(component.onClear, 'emit');
+      it('should emit clear', () => {
+        spyOn(component.clear, 'emit');
         debugElement.query(crossPredicate).nativeElement.click();
 
-        expect(component.onClear.emit).toHaveBeenCalledTimes(1);
+        expect(component.clear.emit).toHaveBeenCalledTimes(1);
       });
     });
   });

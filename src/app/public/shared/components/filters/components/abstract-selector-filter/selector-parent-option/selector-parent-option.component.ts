@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { SelectorOptionIcon } from '../selector-option/interfaces/selector-option-icon.interface';
 
 @Component({
   selector: 'tsl-selector-parent-option',
@@ -12,18 +11,10 @@ export class SelectorParentOptionComponent {
   @Input() sublabel?: string;
   @Input() icon: string;
   @Input() isClearable?: boolean;
-  @Output() onClick = new EventEmitter<void>();
-  @Output() onClear = new EventEmitter<void>();
+  @Output() clear = new EventEmitter<void>();
 
-  public getOptionIcon(): SelectorOptionIcon {
-    return this.icon ? { stroke: this.icon } : undefined;
-  }
-
-  public handleClick(): void {
-    this.onClick.emit();
-  }
-
-  public handleClear(): void {
-    this.onClear.emit();
+  public handleClear(event: MouseEvent): void {
+    event.stopPropagation();
+    this.clear.emit();
   }
 }

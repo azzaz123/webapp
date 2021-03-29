@@ -28,7 +28,7 @@ class TestSelectorFilterTemplateComponent {
 describe('SelectorFilterTemplateComponent', () => {
   const contentPredicate = By.css('.content');
   const placeholderPredicate = By.css('.SelectorOption');
-  const openPlaceholderPredicate = By.css('.SelectorFilterTemplate__OpenPlaceholder');
+  const openPlaceholderPredicate = By.css('.SelectorFilterTemplate--open');
 
   let component: SelectorFilterTemplateComponent;
   let testComponent: TestSelectorFilterTemplateComponent;

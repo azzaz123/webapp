@@ -3,42 +3,40 @@
 $toolbar-height: 45px;
 
 .SelectorFilterTemplate {
-  &__OpenPlaceholder {
-    &_toolbar {
-      position: absolute;
-      background: $white;
-      top: 0;
-      right: 0;
-      left: 0;
-      height: $toolbar-height;
-      z-index: 1;
-    }
-
-    &_content {
-      position: absolute;
-      background: $white;
-      top: 0;
-      right: 0;
-      left: 0;
-      bottom: 0;
-      overflow: auto;
-      margin-top: $toolbar-height;
-      z-index: 1;
-    }
-
-    &_title {
-      font-weight: bold;
-    }
-
-    &_back {
-      cursor: pointer;
-      align-self: center;
-      position: absolute;
-      left: 0;
-    }
+  &__toolbar {
+    position: absolute;
+    background: $white;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: $toolbar-height;
+    z-index: 1;
   }
 
-  &__dev_warn {
+  &__content {
+    position: absolute;
+    background: $white;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    overflow: auto;
+    margin-top: $toolbar-height;
+    z-index: 1;
+  }
+
+  &__title {
+    font-weight: bold;
+  }
+
+  &__back_icon {
+    cursor: pointer;
+    align-self: center;
+    position: absolute;
+    left: 0;
+  }
+
+  &--warning {
     color: $brand-danger;
   }
 }
