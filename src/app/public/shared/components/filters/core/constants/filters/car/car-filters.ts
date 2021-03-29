@@ -2,7 +2,7 @@ import { CAR_CONFIGURATION_ID } from '../../../enums/configuration-ids/car-confi
 import { FILTER_TYPES } from '../../../enums/filter-types/filter-types.enum';
 import { FilterConfigType } from '../filter-configurations';
 
-export const CARS_FILTER_CONFIGURATION: FilterConfigType[] = [
+export const CAR_FILTERS: FilterConfigType[] = [
   {
     id: CAR_CONFIGURATION_ID.PRICE,
     type: FILTER_TYPES.RANGE,
@@ -74,5 +74,29 @@ export const CARS_FILTER_CONFIGURATION: FilterConfigType[] = [
     mapKey: {
       key: 'warranty',
     },
+  },
+  {
+    id: CAR_CONFIGURATION_ID.SEATS,
+    type: FILTER_TYPES.RANGE,
+    title: $localize`:@@filterNumOfSeatsTitle:Number of seats`,
+    bubblePlaceholder: $localize`:@@filterNumOfSeatsBubblePlaceholder:Number of seats`,
+    mapKey: {
+      minKey: 'min_seats',
+      maxKey: 'max_seats',
+    },
+    range: [1, 9],
+    limitless: true,
+  },
+  {
+    id: CAR_CONFIGURATION_ID.DOORS,
+    type: FILTER_TYPES.RANGE,
+    title: $localize`:@@filterNumOfDoorsTitle:Number of doors`,
+    bubblePlaceholder: $localize`:@@filterNumOfDoorsBubblePlaceholder:Number of doors`,
+    mapKey: {
+      minKey: 'min_num_doors',
+      maxKey: 'max_num_doors',
+    },
+    range: [2, 6],
+    limitless: true,
   },
 ];
