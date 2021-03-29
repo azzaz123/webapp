@@ -167,7 +167,9 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  private trackViewOthersCGDetailEvent(item = this.itemDetail.item, itemDetailUser = this.itemDetail.user): void {
+  private trackViewOthersCGDetailEvent(): void {
+    const item = this.itemDetail.item;
+    const user = this.itemDetail.user;
     const event: AnalyticsPageView<ViewOthersItemCGDetail> = {
       name: ANALYTICS_EVENT_NAMES.ViewOthersItemCGDetail,
       attributes: {
@@ -175,7 +177,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
         categoryId: item.categoryId,
         salePrice: item.salePrice,
         title: item.title,
-        isPro: itemDetailUser.featured,
+        isPro: user.featured,
         screenId: SCREEN_IDS.ItemDetail,
       },
     };
