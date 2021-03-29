@@ -31,12 +31,12 @@ export class FiltersWrapperComponent {
     private filterParameterStoreService: FilterParameterStoreService,
     private filterConfigurationService: FilterConfigurationService
   ) {
-    this.filterConfigurations = this.filterConfigurationService.getConfiguration([]);
-    console.log('filterConfigurations!', this.filterConfigurations);
-
     this.getFilterValues();
+
     this.filterParameterStoreService.parameters$.subscribe((filterValues: FilterParameter[]) => {
       console.log('filters changed', filterValues);
+      this.filterConfigurations = this.filterConfigurationService.getConfiguration(filterValues);
+      console.log('filterConfigurations!', this.filterConfigurations);
     });
   }
 
@@ -87,4 +87,6 @@ export class FiltersWrapperComponent {
   private getFilterValues(): void {
     this.filterValues = this.filterParameterStoreService.getParameters();
   }
+
+  private updateFilters(): void {}
 }
