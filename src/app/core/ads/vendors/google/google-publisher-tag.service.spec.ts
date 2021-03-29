@@ -149,6 +149,33 @@ describe('GooglePublisherTagService', () => {
 
       expect(windowMock.googletag.enableServices).toHaveBeenCalledTimes(1);
     });
+
+    it('should get if ad slot is loaded in a subscribe', () => {
+      spyOn(MOCK_GOOGLE_PUBABDS, 'addEventListener').and.callFake((name, fn) => {
+        fn({ slot: { getAdUnitPath: () => MockAdSlots[0].name } });
+      });
+      let expectLoaded = false;
+
+      service.setSlots(MockAdSlots);
+
+      service.isAdSlotLoaded$(MockAdSlots[0]).subscribe((loaded: boolean) => {
+        expectLoaded = loaded;
+      });
+
+      expect(expectLoaded).toEqual(true);
+    });
+
+    it('should get if ad slot is not loaded in a subscribe', () => {
+      let expectLoaded = false;
+
+      service.setSlots(MockAdSlots);
+
+      service.isAdSlotLoaded$(MockAdSlots[0]).subscribe((loaded: boolean) => {
+        expectLoaded = loaded;
+      });
+
+      expect(expectLoaded).toEqual(false);
+    });
   });
 
   describe('when we check if library is defined or not', () => {

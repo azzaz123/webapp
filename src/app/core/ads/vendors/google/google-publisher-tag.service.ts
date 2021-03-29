@@ -4,14 +4,8 @@ import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { CookieService } from 'ngx-cookie';
-import {
-  AdKeyWords,
-  AdShoppingPageOptions,
-  AdSlotConfiguration,
-  AdSlotId,
-  AdSlotShoppingBaseConfiguration,
-  AdSlotShoppingConfiguration,
-} from '../../models';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { AdKeyWords, AdShoppingPageOptions, AdSlotConfiguration, AdSlotId, AdSlotShoppingBaseConfiguration } from '../../models';
 import { GoogCsa } from './google-ads-sense-shopping';
 
 @Injectable({
@@ -27,6 +21,8 @@ export class GooglePublisherTagService {
   private get googCsa(): GoogCsa {
     return this.window && this.window['_googCsa'];
   }
+
+  private adSlotsLoadedMap: Map<string, BehaviorSubject<boolean>> = new Map<string, BehaviorSubject<boolean>>();
 
   constructor(
     @Inject(WINDOW_TOKEN) private window: Window,
@@ -44,7 +40,15 @@ export class GooglePublisherTagService {
       this.definedSlots(adSlots);
       this.setPubads();
       this.googletag.enableServices();
+      this.googletag.pubads().addEventListener('slotOnLoad', (event) => {
+        const slotName = event.slot.getAdUnitPath();
+        this.adSlotsLoadedMap.get(slotName)?.next(true);
+      });
     });
+  }
+
+  public isAdSlotLoaded$(adSlot: AdSlotConfiguration): Observable<boolean> {
+    return this.adSlotsLoadedMap.has(adSlot.name) ? this.adSlotsLoadedMap.get(adSlot.name).asObservable() : of(false);
   }
 
   public setAdKeywords(adKeywords: AdKeyWords): void {
@@ -126,6 +130,8 @@ export class GooglePublisherTagService {
             .setTargeting('ad_h', new Date().getUTCHours().toString())
             .addService(this.googletag.pubads());
         }
+        const subject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+        this.adSlotsLoadedMap.set(slot.name, subject);
       });
   }
 }

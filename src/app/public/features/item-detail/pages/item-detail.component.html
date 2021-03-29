@@ -24,7 +24,7 @@
                             <tsl-item-images-carousel
                                 [statusFlag]="statusFlag$ | async"
                                 [bumpedFlag]="bumpedFlag$ | async"
-                                [isExpired]="itemDetail.item.flags?.expired" 
+                                [isExpired]="itemDetail.item.flags?.expired"
                                 [images]="itemDetail.images"
                                 (imageClick)="openItemDetailImage($event)">
                             </tsl-item-images-carousel>
@@ -47,7 +47,7 @@
                                 [childTaxonomy]="taxonomiesSpecifications.childTaxonomy"
                                 ></tsl-item-taxonomies>
                             </ng-container>
-                            <div *ngIf="device !== deviceType.MOBILE" class="ItemDetail__affiliation d-flex flex-row py-3 mb-0 borderBottom">
+                            <div *ngIf="device !== deviceType.MOBILE" class="ItemDetail__affiliation d-flex flex-row mb-0" [ngClass]="{'borderBottom py-3': adsAffiliationsLoaded$ | async}">
                               <tsl-sky *ngFor="let adAffiliation of adsAffiliationSlotConfiguration" class="d-block" [adSlot]="adAffiliation"></tsl-sky>
                             </div>
                         </div>
@@ -56,7 +56,7 @@
                                 [itemSpecifications]="itemDetail.counterSpecifications"
                                 [isCar]="itemDetail.isItemACar"></tsl-item-specifications>
                         </div>
-                        <div *ngIf="device === deviceType.MOBILE" class="ItemDetail__affiliation d-flex flex-column py-3 mb-0 borderBottom">
+                        <div *ngIf="device === deviceType.MOBILE" class="ItemDetail__affiliation d-flex flex-column mb-0" [ngClass]="{'borderBottom': adsAffiliationsLoaded$ | async, 'py-3':  adsAffiliationsLoaded$ | async}">
                           <tsl-sky *ngFor="let adAffiliation of adsAffiliationSlotConfiguration" class="d-block marginBottom" [adSlot]="adAffiliation"></tsl-sky>
                         </div>
                             <p *ngIf="itemDetail.item.description" class="ItemDetail__description py-3 mb-0 text-break" [ngClass]="{'borderBottom': device !== deviceType.MOBILE}">{{itemDetail.item.description}}</p>
