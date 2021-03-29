@@ -548,7 +548,7 @@ export class ListComponent implements OnInit, OnDestroy {
         this.numberOfProducts = this.counters.sold;
         break;
       case STATUS.PUBLISHED:
-        this.numberOfProducts = this.counters.sold;
+        this.numberOfProducts = this.counters.publish;
         break;
       case STATUS.INACTIVE:
         this.numberOfProducts = this.counters.onHold;
