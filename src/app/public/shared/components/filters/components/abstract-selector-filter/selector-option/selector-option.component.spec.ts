@@ -61,7 +61,7 @@ describe('SelectorOptionComponent', () => {
         fixture.detectChanges();
       });
       it('should add active styles', () => {
-        const activeOption = debugElement.query(By.css('.SelectorOption__active'));
+        const activeOption = debugElement.query(By.css('.SelectorOption--active'));
 
         expect(activeOption).toBeTruthy();
       });
