@@ -37,9 +37,9 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
   {
     id: CAR_CONFIGURATION_ID.KM,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterYearTitle:Mileage`,
+    title: $localize`:@@filterMileageTitle:Mileage`,
     icon: '/assets/icons/filters/km.svg',
-    bubblePlaceholder: $localize`:@@filterYearBubblePlaceholder:Km`,
+    bubblePlaceholder: $localize`:@@filterMileageBubblePlaceholder:Km`,
     mapKey: {
       minKey: 'min_km',
       maxKey: 'max_km',
