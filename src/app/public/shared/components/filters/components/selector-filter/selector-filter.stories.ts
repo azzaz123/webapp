@@ -72,12 +72,10 @@ class FiltersComponent {
   @Input() public genderConfig: SelectorFilterConfig;
 
   public changeCondition(value: FilterParameter[]): void {
-    console.log('Hey');
     this.conditionValue = value;
   }
 
   public changeGender(value: FilterParameter[]): void {
-    console.log('Hey');
     this.genderValue = value;
   }
 }

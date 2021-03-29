@@ -17,7 +17,7 @@
     (onClear)="handleClear()">
 
     <div *ngFor="let option of options" class="SelectorFilter__option px-4" [ngClass]="isBubble() && 'SelectorFilter__option_bubble'">
-      <tsl-selector-option [icon]="option.icon" [label]="option.label" (onClick)="handleOptionSelected(option)">
+      <tsl-selector-option [icon]="option.icon" [label]="option.label" (click)="handleOptionSelected(option)">
       </tsl-selector-option>
     </div>
 

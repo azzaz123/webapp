@@ -17,12 +17,14 @@ import { SelectorFilterConfig } from './interfaces/selector-filter-config.interf
 })
 export class SelectorFilterComponent extends AbstractSelectorFilter<SelectorFilterParams> implements OnInit, OnDestroy {
   @Input() config: SelectorFilterConfig;
+
+  @ViewChild('selectorFilterTemplateComponent', { read: SelectorFilterTemplateComponent })
+  public selectorFilterTemplate: SelectorFilterTemplateComponent;
+  @ViewChild('filterTemplateComponent', { read: FilterTemplateComponent })
+  public filterTemplate: FilterTemplateComponent;
+
   public options: FilterOption[] = [];
   private subscriptions = new Subscription();
-  @ViewChild('selectorFilterTemplateComponent', { read: SelectorFilterTemplateComponent })
-  selectorFilterTemplate: SelectorFilterTemplateComponent;
-  @ViewChild('filterTemplateComponent', { read: FilterTemplateComponent })
-  filterTemplate: FilterTemplateComponent;
 
   public getLabel(): string {
     const value = this.getValue('parameterKey');
