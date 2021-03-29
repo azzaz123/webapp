@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AdSlotConfiguration } from '@core/ads/models';
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
+import { MapRouteParamsService } from '@core/services/map-route-params.service';
 import { User } from '@core/user/user';
 import { Image } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
@@ -34,7 +35,8 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     private publicProfileService: PublicProfileService,
     private router: Router,
     private deviceService: DeviceService,
-    private adsService: AdsService
+    private adsService: AdsService,
+    private mapRouteParamsService: MapRouteParamsService
   ) {}
 
   ngOnInit(): void {
@@ -48,7 +50,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
   }
 
   private getUser(): void {
-    this.userId = this.route.snapshot.paramMap.get(PUBLIC_PATH_PARAMS.ID);
+    this.userId = this.mapRouteParamsService.getUUID(this.route.snapshot.paramMap.get(PUBLIC_PATH_PARAMS.WEBSLUG));
     if (this.userId) {
       this.getUserInfoAndStats();
     }

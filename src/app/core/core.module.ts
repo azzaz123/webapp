@@ -29,6 +29,7 @@ import { CategoryService } from './category/category.service';
 import { ExternalCommsService } from './external-comms.service';
 import { ReleaseVersionService } from './release-version/release-version.service';
 import { CorePipesModule } from './pipes/core-pipes.module';
+import { MapRouteParamsService } from './services/map-route-params.service';
 
 @NgModule({
   imports: [
@@ -64,6 +65,7 @@ import { CorePipesModule } from './pipes/core-pipes.module';
     CategoryService,
     ReleaseVersionService,
     ExternalCommsService,
+    MapRouteParamsService,
   ],
 })
 export class CoreModule {
