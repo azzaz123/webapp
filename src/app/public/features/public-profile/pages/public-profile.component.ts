@@ -4,7 +4,7 @@ import { AdSlotConfiguration } from '@core/ads/models';
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
 import { User } from '@core/user/user';
-import { Image } from '@core/user/user-response.interface';
+import { Image, UserFavourited } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { APP_PATHS } from 'app/app-routing-constants';
@@ -23,6 +23,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
   public userStats: UserStats;
   public userInfo: User;
   public loading = false;
+  public isFavourited = false;
   private subscriptions: Subscription[] = [];
 
   isMobile: boolean;
@@ -68,6 +69,10 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
           ([userInfo, userStats]: [User, UserStats]) => {
             this.userInfo = userInfo;
             this.userStats = userStats;
+
+            if (true) {
+              this.getFavouriteUser();
+            }
           },
           () => {
             this.router.navigate([`/${APP_PATHS.NOT_FOUND}`]);
@@ -90,5 +95,11 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
       .subscribe((coverImage: Image) => {
         this.userInfo.coverImage = coverImage;
       });
+  }
+
+  private getFavouriteUser(): void {
+    this.publicProfileService.isFavourite(this.userId).subscribe((isFavourited: UserFavourited) => {
+      this.isFavourited = isFavourited.favorited;
+    });
   }
 }

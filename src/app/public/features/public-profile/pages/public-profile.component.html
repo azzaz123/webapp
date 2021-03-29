@@ -5,7 +5,7 @@
             <tsl-profile-tabs [userStats]="userStats.counters"></tsl-profile-tabs>
         </div>
         <div  *ngIf="!(userId | isCurrentUser | async)" class="col-12 col-md-6 d-flex align-items-center justify-content-end">
-            <tsl-favourite-user [userId]="userId"></tsl-favourite-user>
+            <tsl-favourite-user [userId]="userId" [isFavourite]="isFavourited"></tsl-favourite-user>
         </div>
     </div>
     <router-outlet></router-outlet>
