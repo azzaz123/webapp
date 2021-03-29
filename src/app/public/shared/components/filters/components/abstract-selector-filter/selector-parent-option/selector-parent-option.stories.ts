@@ -2,12 +2,13 @@ import { Story } from '@storybook/angular/types-6-0';
 import { moduleMetadata } from '@storybook/angular';
 import { SelectorParentOptionModule } from './selector-parent-option.module';
 import { SelectorParentOptionComponent } from './selector-parent-option.component';
+import { HttpClientModule } from '@angular/common/http';
 
 export default {
   title: 'Webapp/Public/Shared/Components/Filters/AbstractSelectorFilter/SelectorParentOption',
   decorators: [
     moduleMetadata({
-      imports: [SelectorParentOptionModule],
+      imports: [SelectorParentOptionModule, HttpClientModule],
     }),
   ],
   argTypes: {
@@ -21,7 +22,7 @@ const Template: Story<SelectorParentOptionComponent> = (args) => ({
   component: SelectorParentOptionComponent,
   template: `
     <div style="border: 1px dashed black; background-color: white" class="px-3">
-      <tsl-selector-parent-option [label]="label" [sublabel]="sublabel" [icon]="icon" [isClearable]="isClearable" (onClick)="onClick()" (onClear)="onClear()"></tsl-selector-parent-option>
+      <tsl-selector-parent-option [label]="label" [sublabel]="sublabel" [icon]="icon" [isClearable]="isClearable" (click)="onClick()" (clear)="onClear()"></tsl-selector-parent-option>
     </div>
   `,
 });

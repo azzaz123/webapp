@@ -11,14 +11,10 @@ export class SelectorParentOptionComponent {
   @Input() sublabel?: string;
   @Input() icon: string;
   @Input() isClearable?: boolean;
-  @Output() onClick = new EventEmitter<void>();
-  @Output() onClear = new EventEmitter<void>();
+  @Output() clear = new EventEmitter<void>();
 
-  public handleClick(): void {
-    this.onClick.emit();
-  }
-
-  public handleClear(): void {
-    this.onClear.emit();
+  public handleClear(event: MouseEvent): void {
+    event.stopPropagation();
+    this.clear.emit();
   }
 }
