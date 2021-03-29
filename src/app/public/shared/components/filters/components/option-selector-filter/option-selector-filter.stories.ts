@@ -13,7 +13,7 @@ import { SelectorOptionComponent } from '../abstract-selector-filter/selector-op
 import { SelectorParentOptionComponent } from '../abstract-selector-filter/selector-parent-option/selector-parent-option.component';
 import { FilterOptionService } from '../../../../services/filter-option/filter-option.service';
 import { MockFilterOptionService } from '@fixtures/filter-option-service.fixtures.spec';
-import { SelectorFilterConfig } from '@public/shared/components/filters/components/selector-filter/interfaces/selector-filter-config.interface';
+import { SelectorFilterConfig } from '@public/shared/components/filters/components/option-selector-filter/interfaces/option-selector-filter-config.interface';
 
 @Component({
   selector: 'tsl-filters',

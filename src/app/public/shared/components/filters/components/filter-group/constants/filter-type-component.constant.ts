@@ -3,7 +3,7 @@ import { FILTER_TYPES } from '../../../core/enums/filter-types/filter-types.enum
 import { AbstractFilter } from '../../abstract-filter/abstract-filter';
 import { RangeFilterComponent } from '../../range-filter/range-filter.component';
 import { ToggleFilterComponent } from '../../toggle-filter/toggle-filter.component';
-import { OptionSelectorFilterComponent } from '../../selector-filter/option-selector-filter.component';
+import { OptionSelectorFilterComponent } from '../../option-selector-filter/option-selector-filter.component';
 
 export const FILTER_TYPE_COMPONENT: Record<FILTER_TYPES, Type<AbstractFilter<unknown>>> = {
   [FILTER_TYPES.RANGE]: RangeFilterComponent,

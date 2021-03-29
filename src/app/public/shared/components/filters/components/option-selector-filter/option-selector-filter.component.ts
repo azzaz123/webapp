@@ -3,11 +3,11 @@ import { AbstractSelectorFilter } from '../abstract-selector-filter/abstract-sel
 import { FilterOption } from '../../core/interfaces/filter-option.interface';
 import { take } from 'rxjs/operators';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { SelectorFilterParams } from './interfaces/selector-filter-params.interface';
+import { OptionSelectorFilterParams } from './interfaces/option-selector-filter-params.interface';
 import { SelectorFilterTemplateComponent } from '../abstract-selector-filter/selector-filter-template/selector-filter-template.component';
 import { FilterTemplateComponent } from '../abstract-filter/filter-template/filter-template.component';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
-import { SelectorFilterConfig } from './interfaces/selector-filter-config.interface';
+import { SelectorFilterConfig } from './interfaces/option-selector-filter-config.interface';
 
 @Component({
   selector: 'tsl-option-selector-filter',
@@ -15,7 +15,7 @@ import { SelectorFilterConfig } from './interfaces/selector-filter-config.interf
   styleUrls: ['./option-selector-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OptionSelectorFilterComponent extends AbstractSelectorFilter<SelectorFilterParams> implements OnInit, OnDestroy {
+export class OptionSelectorFilterComponent extends AbstractSelectorFilter<OptionSelectorFilterParams> implements OnInit, OnDestroy {
   @Input() config: SelectorFilterConfig;
 
   @ViewChild('selectorFilterTemplateComponent', { read: SelectorFilterTemplateComponent })

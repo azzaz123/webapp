@@ -13,7 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
 import { FilterOptionService } from '@public/shared/services/filter-option/filter-option.service';
-import { SelectorFilterParams } from '../selector-filter/interfaces/selector-filter-params.interface';
+import { OptionSelectorFilterParams } from '../option-selector-filter/interfaces/option-selector-filter-params.interface';
 import { AbstractSelectorFilterConfig } from './interfaces/selector-filter-config.interface';
 
 @Component({
@@ -44,7 +44,7 @@ import { AbstractSelectorFilterConfig } from './interfaces/selector-filter-confi
     </tsl-filter-template>
   `,
 })
-class StoryAbstractSelectorFilterComponent extends AbstractSelectorFilter<SelectorFilterParams> {}
+class StoryAbstractSelectorFilterComponent extends AbstractSelectorFilter<OptionSelectorFilterParams> {}
 
 export default {
   title: 'Webapp/Public/Shared/Components/Filters/AbstractSelectorFilter',

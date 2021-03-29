@@ -14,7 +14,7 @@ import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module'
 import { FilterOptionServiceModule } from '@public/shared/services/filter-option/filter-option-service.module';
 import { AbstractSelectorFilterModule } from '../abstract-selector-filter/abstract-selector-filter.module';
 import { SelectorOptionModule } from '../abstract-selector-filter/selector-option/selector-option.module';
-import { SelectorFilterConfig } from './interfaces/selector-filter-config.interface';
+import { SelectorFilterConfig } from './interfaces/option-selector-filter-config.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { FilterTemplateComponent } from '../abstract-filter/filter-template/filter-template.component';
 import { SelectorFilterTemplateComponent } from '../abstract-selector-filter/selector-filter-template/selector-filter-template.component';
