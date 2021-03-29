@@ -9,6 +9,8 @@ export const AD_SHOPPING_PUBLIC_SEARCH: AdSlotShoppingConfiguration = {
   height: 400,
 };
 
+export const AD_SHOPPING_NATIVE_CONTAINER_PUBLIC_SEARCH = 'div-gpt-ad-1536058445169';
+
 export function AdShoppingPageOptionPublicSearchFactory(
   channel: AdShoppingChannel,
   callback: PageOptionLoadedCallback = null

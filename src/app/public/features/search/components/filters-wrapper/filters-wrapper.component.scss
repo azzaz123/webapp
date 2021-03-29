@@ -1,0 +1,11 @@
+@import '~style/common';
+
+.FiltersWrapper {
+  &__bar {
+    @include media-breakpoint-down(md) {
+      overflow: auto;
+
+      @include hide-scroll-bars;
+    }
+  }
+}

@@ -10,7 +10,15 @@ import { CheckSessionService } from '@public/core/services/check-session/check-s
 import { SoldModalComponent } from '@shared/modals/sold-modal/sold-modal.component';
 import { Router } from '@angular/router';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
+import {
+  AnalyticsEvent,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  ClickChatButton,
+  SCREEN_IDS,
+} from '@core/analytics/analytics-constants';
 import { finalize } from 'rxjs/operators';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 
 @Component({
   selector: 'tsl-item-detail-header',
@@ -33,6 +41,7 @@ export class ItemDetailHeaderComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private itemDetailService: ItemDetailService,
+    private analyticsService: AnalyticsService,
     private errorsService: ErrorsService,
     private checkSessionService: CheckSessionService,
     private router: Router
@@ -83,6 +92,21 @@ export class ItemDetailHeaderComponent implements OnInit {
         }
       );
     });
+  }
+
+  public trackChatButton(): void {
+    const event: AnalyticsEvent<ClickChatButton> = {
+      name: ANALYTICS_EVENT_NAMES.ClickChatButton,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
+      attributes: {
+        itemId: this.item.id,
+        sellerUserId: this.user.id,
+        screenId: SCREEN_IDS.ItemDetail,
+        isPro: this.user.featured,
+        isBumped: !!this.item.bumpFlags,
+      },
+    };
+    this.analyticsService.trackEvent(event);
   }
 
   private initializeItemBumpExpiringDate(): void {

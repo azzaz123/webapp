@@ -17,6 +17,19 @@ import { ItemDetail } from '../interfaces/item-detail.interface';
 import { ItemSocialShareService } from '../core/services/item-social-share/item-social-share.service';
 import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from '@public/shared/components/item-flag/item-flag-constants';
 import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
+import { UserService } from '@core/user/user.service';
+import { User } from '@core/user/user';
+import {
+  AnalyticsEvent,
+  AnalyticsPageView,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  ViewOwnItemDetail,
+  FavoriteItem,
+  SCREEN_IDS,
+  UnfavoriteItem,
+} from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -40,6 +53,8 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     private itemDetailService: ItemDetailService,
     private route: ActivatedRoute,
     private adsService: AdsService,
+    private userService: UserService,
+    private analyticsService: AnalyticsService,
     private itemSocialShareService: ItemSocialShareService,
     private itemDetailFlagsStoreService: ItemDetailFlagsStoreService
   ) {}
@@ -66,11 +81,30 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   }
 
   public toggleFavouriteItem(): void {
-    this.itemDetailStoreService.toggleFavouriteItem().subscribe();
+    this.itemDetailStoreService.toggleFavouriteItem().subscribe(() => {
+      this.trackFavoriteOrUnfavoriteEvent();
+    });
   }
 
   public soldItem(): void {
     this.itemDetailStoreService.markItemAsSold();
+  }
+
+  private trackFavoriteOrUnfavoriteEvent(): void {
+    const event: AnalyticsEvent<FavoriteItem | UnfavoriteItem> = {
+      name: this.itemDetail.item.flags.favorite ? ANALYTICS_EVENT_NAMES.FavoriteItem : ANALYTICS_EVENT_NAMES.UnfavoriteItem,
+      eventType: ANALYTIC_EVENT_TYPES.UserPreference,
+      attributes: {
+        itemId: this.itemDetail.item.id,
+        categoryId: this.itemDetail.item.categoryId,
+        screenId: SCREEN_IDS.ItemDetail,
+        salePrice: this.itemDetail.item.salePrice,
+        isPro: this.itemDetail.user.featured,
+        title: this.itemDetail.item.title,
+        isBumped: !!this.itemDetail.item.bumpFlags,
+      },
+    };
+    this.analyticsService.trackEvent(event);
   }
 
   private initPage(itemId: string): void {
@@ -83,6 +117,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
           this.itemSocialShareService.initializeItemMetaTags(itemDetail.item);
         }
         this.itemDetail = itemDetail;
+        this.trackViewEvents();
       })
     );
   }
@@ -101,6 +136,30 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   private isItemRecommendations(itemCategoryId: number): boolean {
     const CATEGORIES_WITH_RECOMMENDATIONS = [CATEGORY_IDS.CAR, CATEGORY_IDS.FASHION_ACCESSORIES];
     return CATEGORIES_WITH_RECOMMENDATIONS.includes(itemCategoryId);
+  }
+
+  private trackViewEvents(): void {
+    const item = this.itemDetail.item;
+    const itemDetailUser = this.itemDetail.user;
+    this.userService.me().subscribe((user: User) => {
+      if (this.itemDetail.user.id === user.id) {
+        const event: AnalyticsPageView<ViewOwnItemDetail> = {
+          name: ANALYTICS_EVENT_NAMES.ViewOwnItemDetail,
+          attributes: {
+            itemId: item.id,
+            categoryId: item.categoryId,
+            salePrice: item.salePrice,
+            title: item.title,
+            isPro: itemDetailUser.featured,
+            screenId: SCREEN_IDS.ItemDetail,
+            isActive: !item.flags?.onhold,
+          },
+        };
+        this.analyticsService.trackPageView(event);
+      } else {
+        //TODO: Check others items events
+      }
+    });
   }
 
   get itemDetail$(): Observable<ItemDetail> {

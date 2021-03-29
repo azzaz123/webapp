@@ -24,12 +24,22 @@ import { ItemDetailService } from '../../core/services/item-detail/item-detail.s
 import { MOCK_ITEM_7 } from '@public/shared/components/item-card/item-card.mock.stories';
 
 import { ItemDetailHeaderComponent } from './item-detail-header.component';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import {
+  AnalyticsEvent,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  ClickChatButton,
+  SCREEN_IDS,
+} from '@core/analytics/analytics-constants';
 
 describe('ItemDetailHeaderComponent', () => {
   let component: ItemDetailHeaderComponent;
   let fixture: ComponentFixture<ItemDetailHeaderComponent>;
   let checkSessionService: CheckSessionService;
   let itemDetailService: ItemDetailService;
+  let analyticsService: AnalyticsService;
   let modalService: NgbModal;
 
   const trashButtonId = '#trashButton';
@@ -52,6 +62,10 @@ describe('ItemDetailHeaderComponent', () => {
         RecommenderApiService,
         MapItemService,
         ToastService,
+        {
+          provide: AnalyticsService,
+          useClass: MockAnalyticsService,
+        },
         {
           provide: PublicProfileService,
           useValue: {
@@ -115,6 +129,7 @@ describe('ItemDetailHeaderComponent', () => {
     component = fixture.componentInstance;
     itemDetailService = TestBed.inject(ItemDetailService);
     checkSessionService = TestBed.inject(CheckSessionService);
+    analyticsService = TestBed.inject(AnalyticsService);
     modalService = TestBed.inject(NgbModal);
     component.item = MOCK_ITEM;
     component.user = MOCK_USER;
@@ -334,6 +349,27 @@ describe('ItemDetailHeaderComponent', () => {
           });
         });
       });
+    });
+  });
+  describe('After we click the chatButton', () => {
+    it('should send track click button event', () => {
+      spyOn(analyticsService, 'trackEvent');
+      const expectedEvent: AnalyticsEvent<ClickChatButton> = {
+        name: ANALYTICS_EVENT_NAMES.ClickChatButton,
+        eventType: ANALYTIC_EVENT_TYPES.Navigation,
+        attributes: {
+          itemId: component.item.id,
+          sellerUserId: component.user.id,
+          screenId: SCREEN_IDS.ItemDetail,
+          isPro: component.user.featured,
+          isBumped: !!component.item.bumpFlags,
+        },
+      };
+      const chatButton = fixture.debugElement.query(By.css(chatButtonId)).nativeElement;
+
+      chatButton.click();
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
     });
   });
 });

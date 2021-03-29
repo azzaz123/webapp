@@ -1,0 +1,27 @@
+<div *ngIf="!hasContentPlaceholder">
+  <ng-template [ngTemplateOutlet]="contentWrapper"></ng-template>
+</div>
+
+<div *ngIf="hasContentPlaceholder">
+  <tsl-selector-parent-option [label]="placeholderLabel" [sublabel]="placeholderSublabel" [icon]="placeholderIcon" (click)="togglePlaceholderOpen()">
+  </tsl-selector-parent-option>
+</div>
+
+<div *ngIf="hasContentPlaceholder && isPlaceholderOpen" class="SelectorFilterTemplate--open">
+  <div class="SelectorFilterTemplate__content">
+    <ng-template [ngTemplateOutlet]="contentWrapper"></ng-template>
+  </div>
+  <div class="d-flex justify-content-center align-items-center SelectorFilterTemplate__toolbar">
+    <span *ngIf="contentTitle" class="SelectorFilterTemplate__OpenPlaceholder_title">{{contentTitle}}</span>
+    <tsl-svg-icon src="/assets/icons/arrow-back.svg" class="SelectorFilterTemplate__back_icon p-3"
+                  (click)="togglePlaceholderOpen()">
+    </tsl-svg-icon>
+  </div>
+</div>
+
+<ng-template #contentWrapper>
+  <div #extendedContent>
+    <ng-content></ng-content>
+  </div>
+  <span *ngIf="extendedContent.children.length === 0" class="SelectorFilterTemplate--warning">Please, avoid using abstract selector filter directly, use one of the extensions or create your own</span>
+</ng-template>

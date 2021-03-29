@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AdKeyWords, AdShoppingPageOptions, AdSlotShoppingConfiguration } from '@core/ads/models';
+import { AdKeyWords, AdShoppingPageOptions, AdSlotShoppingBaseConfiguration, AdSlotShoppingConfiguration } from '@core/ads/models';
 import { AdSlotConfiguration } from '@core/ads/models/ad-slot-configuration';
 import { AdSlotId } from '@core/ads/models/ad-slot-id';
 import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
@@ -16,7 +16,7 @@ export class AdsService {
   private readonly setSlotsSubject: BehaviorSubject<AdSlotConfiguration[]> = new BehaviorSubject<AdSlotConfiguration[]>([]);
   private readonly _adsReady$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  private get adsReady$(): Observable<boolean> {
+  public get adsReady$(): Observable<boolean> {
     return this._adsReady$.asObservable();
   }
 
@@ -62,7 +62,7 @@ export class AdsService {
       .subscribe();
   }
 
-  public displayAdShopping(adShoppingPageOptions: AdShoppingPageOptions, adSlotShopping: AdSlotShoppingConfiguration): void {
+  public displayAdShopping(adShoppingPageOptions: AdShoppingPageOptions, adSlotShopping: AdSlotShoppingBaseConfiguration): void {
     this.adsReady$
       .pipe(
         filter((adsReady: boolean) => adsReady),

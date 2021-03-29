@@ -1,4 +1,4 @@
-import { Component, forwardRef } from '@angular/core';
+import { ChangeDetectorRef, Component, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { UuidService } from '@core/uuid/uuid.service';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
@@ -16,8 +16,13 @@ import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-
   ],
 })
 export class ToggleFormComponent extends AbstractFormComponent<boolean> {
-  constructor(private uuidService: UuidService) {
+  constructor(private uuidService: UuidService, private cdr: ChangeDetectorRef) {
     super();
   }
   public id = this.uuidService.getUUID();
+
+  writeValue(value: any) {
+    super.writeValue(value);
+    this.cdr.detectChanges();
+  }
 }
