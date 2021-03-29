@@ -543,19 +543,15 @@ export class ListComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (this.selectedStatus === STATUS.SOLD) {
-      this.numberOfProducts = this.counters.sold;
-      return;
-    }
-
-    if (this.selectedStatus === STATUS.PUBLISHED) {
-      this.numberOfProducts = this.counters.publish;
-      return;
-    }
-
-    if (this.selectedStatus === STATUS.INACTIVE) {
-      this.numberOfProducts = this.counters.onHold;
-      return;
+    switch (this.selectedStatus) {
+      case STATUS.SOLD:
+        this.numberOfProducts = this.counters.sold;
+        break;
+      case STATUS.PUBLISHED:
+        this.numberOfProducts = this.counters.sold;
+        break;
+      case STATUS.INACTIVE:
+        this.numberOfProducts = this.counters.onHold;
     }
   }
 
