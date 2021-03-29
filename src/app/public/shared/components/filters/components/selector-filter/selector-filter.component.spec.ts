@@ -38,7 +38,7 @@ describe('SelectorFilterComponent', () => {
 
   const basicConfig: SelectorFilterConfig = {
     type: FILTER_TYPES.SIMPLE_SELECTOR,
-    hasContentPlaceholder: false,
+    hasContentPlaceholder: true,
     bubblePlaceholder: 'Bubble placeholder',
     drawerPlaceholder: 'Drawer placeholder',
     mapKey: {
@@ -109,8 +109,6 @@ describe('SelectorFilterComponent', () => {
     });
 
     describe('and is content variant', () => {
-      const selectorOptionPredicate = By.css('.SelectorFilter__option');
-      const selectorParentOptionPredicate = By.directive(SelectorParentOptionComponent);
       beforeEach(() => {
         testComponent.variant = FILTER_VARIANT.CONTENT;
         fixture.detectChanges();
@@ -123,31 +121,12 @@ describe('SelectorFilterComponent', () => {
         expect(selectorTemplate.placeholderLabel).toEqual(basicConfig.drawerPlaceholder);
       });
 
-      describe('and has no placeholder', () => {
-        it('should show options', () => {
-          const parent = debugElement.query(selectorParentOptionPredicate);
-          const options = debugElement.queryAll(selectorOptionPredicate);
+      it('should show option placeholder', () => {
+        const parent = debugElement.query(By.directive(SelectorParentOptionComponent));
+        const options = debugElement.queryAll(By.css('.SelectorFilter__option'));
 
-          expect(parent).toBeFalsy();
-          expect(options.length).toEqual(2);
-        });
-      });
-
-      describe('and has placeholder', () => {
-        beforeEach(() => {
-          testComponent.config = {
-            ...basicConfig,
-            hasContentPlaceholder: true,
-          };
-          fixture.detectChanges();
-        });
-        it('should show parent instead of the options', () => {
-          const parent = debugElement.query(selectorParentOptionPredicate);
-          const options = debugElement.queryAll(selectorOptionPredicate);
-
-          expect(parent).toBeTruthy();
-          expect(options.length).toEqual(0);
-        });
+        expect(parent).toBeTruthy();
+        expect(options.length).toEqual(0);
       });
     });
   });
