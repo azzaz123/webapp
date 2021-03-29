@@ -3,7 +3,7 @@ import { FILTER_VARIANT } from '@public/shared/components/filters/components/abs
 import { DrawerConfig } from '@public/shared/components/filters/interfaces/drawer-config.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { FilterConfigurationService } from '@public/shared/services/filter-configuration/filter-configuration.service';
-import { FilterConfigurations } from '@public/shared/services/filter-configuration/interfaces/filter-group-config.interface';
+import { FilterConfigurations } from '@public/shared/services/filter-configuration/interfaces/filter-configurations.interface';
 import { FilterParameterDraftService } from '@public/shared/services/filter-parameter-draft/filter-parameter-draft.service';
 import { FilterParameterStoreService } from '../../core/services/filter-parameter-store.service';
 

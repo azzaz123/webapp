@@ -1,8 +1,8 @@
 import { COMMON_CONSUMER_GOODS_CONFIGURATION_ID } from '../../../enums/configuration-ids/consumer-goods-configuration-ids.enum';
 import { FILTER_TYPES } from '../../../enums/filter-types/filter-types.enum';
-import { FilterConfigType } from '../filter-configurations';
+import { AvailableFilterConfig } from '../filter-configurations';
 
-export const CONSUMER_GOODS_FILTERS: FilterConfigType[] = [
+export const CONSUMER_GOODS_FILTERS: AvailableFilterConfig[] = [
   {
     id: COMMON_CONSUMER_GOODS_CONFIGURATION_ID.PRICE,
     type: FILTER_TYPES.RANGE,

@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { CAR_FILTER_CONFIGURATION } from '@public/shared/components/filters/core/constants/filter-configuration-by-category/car/car-filter-configuration';
-import { FILTER_CONFIGURATIONS } from '@public/shared/components/filters/core/constants/filters/filter-configurations';
-import { FilterConfig } from '@public/shared/components/filters/interfaces/filter-config.interface';
+import {
+  AvailableFilterConfig,
+  FILTER_CONFIGURATIONS,
+} from '@public/shared/components/filters/core/constants/filters/filter-configurations';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
-import { FilterConfigurations } from './interfaces/filter-group-config.interface';
+import { FilterConfigurations } from './interfaces/filter-configurations.interface';
 
 @Injectable()
 export class FilterConfigurationService {
@@ -28,7 +30,7 @@ export class FilterConfigurationService {
     return filters;
   }
 
-  private getFilterConfigById(filterConfigurationId: string): FilterConfig<unknown> {
+  private getFilterConfigById(filterConfigurationId: string): AvailableFilterConfig {
     return FILTER_CONFIGURATIONS.find((filterConfiguration) => filterConfiguration.id === filterConfigurationId);
   }
 }

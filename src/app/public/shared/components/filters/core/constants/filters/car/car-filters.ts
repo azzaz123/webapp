@@ -1,8 +1,8 @@
 import { CAR_CONFIGURATION_ID } from '../../../enums/configuration-ids/car-configuration-ids';
 import { FILTER_TYPES } from '../../../enums/filter-types/filter-types.enum';
-import { FilterConfigType } from '../filter-configurations';
+import { AvailableFilterConfig } from '../filter-configurations';
 
-export const CAR_FILTERS: FilterConfigType[] = [
+export const CAR_FILTERS: AvailableFilterConfig[] = [
   {
     id: CAR_CONFIGURATION_ID.PRICE,
     type: FILTER_TYPES.RANGE,

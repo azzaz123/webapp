@@ -1,8 +1,8 @@
 import { REAL_ESTATE_CONFIGURATION_ID } from '../../../enums/configuration-ids/real-estate-configuration-ids.enum';
 import { FILTER_TYPES } from '../../../enums/filter-types/filter-types.enum';
-import { FilterConfigType } from '../filter-configurations';
+import { AvailableFilterConfig } from '../filter-configurations';
 
-const REAL_ESTATE_FILTER_CONFIGURATION_DEFAULT: FilterConfigType[] = [
+const REAL_ESTATE_FILTER_CONFIGURATION_DEFAULT: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.DEFAULT_PRICE,
     type: FILTER_TYPES.RANGE,
@@ -25,7 +25,7 @@ const REAL_ESTATE_FILTER_CONFIGURATION_DEFAULT: FilterConfigType[] = [
   },
 ];
 
-const REAL_ESTATE__FILTER_CONFIGURATION_BUY_PRICE: FilterConfigType[] = [
+const REAL_ESTATE__FILTER_CONFIGURATION_BUY_PRICE: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.BUY_BOX_ROOM_PRICE,
     type: FILTER_TYPES.RANGE,
@@ -153,7 +153,7 @@ const REAL_ESTATE__FILTER_CONFIGURATION_BUY_PRICE: FilterConfigType[] = [
   },
 ];
 
-const REAL_ESTATE__FILTER_CONFIGURATION_RENT_PRICE: FilterConfigType[] = [
+const REAL_ESTATE__FILTER_CONFIGURATION_RENT_PRICE: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.RENT_BOX_ROOM_PRICE,
     type: FILTER_TYPES.RANGE,
@@ -281,7 +281,7 @@ const REAL_ESTATE__FILTER_CONFIGURATION_RENT_PRICE: FilterConfigType[] = [
   },
 ];
 
-const REAL_ESTATE__FILTER_CONFIGURATION_SURFACE: FilterConfigType[] = [
+const REAL_ESTATE__FILTER_CONFIGURATION_SURFACE: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.FLAT_SURFACE,
     type: FILTER_TYPES.RANGE,
@@ -359,7 +359,7 @@ const REAL_ESTATE__FILTER_CONFIGURATION_SURFACE: FilterConfigType[] = [
   },
 ];
 
-export const REAL_ESTATE__FILTERS: FilterConfigType[] = [
+export const REAL_ESTATE__FILTERS: AvailableFilterConfig[] = [
   ...REAL_ESTATE_FILTER_CONFIGURATION_DEFAULT,
   ...REAL_ESTATE__FILTER_CONFIGURATION_BUY_PRICE,
   ...REAL_ESTATE__FILTER_CONFIGURATION_RENT_PRICE,
