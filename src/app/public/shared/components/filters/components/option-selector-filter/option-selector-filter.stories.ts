@@ -13,7 +13,7 @@ import { SelectorOptionComponent } from '../abstract-selector-filter/selector-op
 import { SelectorParentOptionComponent } from '../abstract-selector-filter/selector-parent-option/selector-parent-option.component';
 import { FilterOptionService } from '../../../../services/filter-option/filter-option.service';
 import { MockFilterOptionService } from '@fixtures/filter-option-service.fixtures.spec';
-import { SelectorFilterConfig } from '@public/shared/components/filters/components/option-selector-filter/interfaces/option-selector-filter-config.interface';
+import { OptionSelectorFilterConfig } from '@public/shared/components/filters/components/option-selector-filter/interfaces/option-selector-filter-config.interface';
 
 @Component({
   selector: 'tsl-filters',
@@ -68,8 +68,8 @@ import { SelectorFilterConfig } from '@public/shared/components/filters/componen
 class FiltersComponent {
   public conditionValue: FilterParameter[];
   public genderValue: FilterParameter[];
-  @Input() public conditionConfig: SelectorFilterConfig;
-  @Input() public genderConfig: SelectorFilterConfig;
+  @Input() public conditionConfig: OptionSelectorFilterConfig;
+  @Input() public genderConfig: OptionSelectorFilterConfig;
 
   public changeCondition(value: FilterParameter[]): void {
     this.conditionValue = value;
@@ -101,7 +101,7 @@ const Template: Story<FiltersComponent> = (args) => ({
   component: FiltersComponent,
 });
 
-const conditionConfig: SelectorFilterConfig = {
+const conditionConfig: OptionSelectorFilterConfig = {
   id: COMMON_CONFIGURATION_ID.CONDITION,
   hasContentPlaceholder: true,
   title: 'Condition',
@@ -114,7 +114,7 @@ const conditionConfig: SelectorFilterConfig = {
   type: FILTER_TYPES.SIMPLE_SELECTOR,
 };
 
-const genderConfig: SelectorFilterConfig = {
+const genderConfig: OptionSelectorFilterConfig = {
   id: FASHION_CONFIGURATION_ID.GENDER,
   hasContentPlaceholder: true,
   title: 'Gender',

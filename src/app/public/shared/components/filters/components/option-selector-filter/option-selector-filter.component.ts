@@ -7,7 +7,7 @@ import { OptionSelectorFilterParams } from './interfaces/option-selector-filter-
 import { SelectorFilterTemplateComponent } from '../abstract-selector-filter/selector-filter-template/selector-filter-template.component';
 import { FilterTemplateComponent } from '../abstract-filter/filter-template/filter-template.component';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
-import { SelectorFilterConfig } from './interfaces/option-selector-filter-config.interface';
+import { OptionSelectorFilterConfig } from './interfaces/option-selector-filter-config.interface';
 
 @Component({
   selector: 'tsl-option-selector-filter',
@@ -16,7 +16,7 @@ import { SelectorFilterConfig } from './interfaces/option-selector-filter-config
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OptionSelectorFilterComponent extends AbstractSelectorFilter<OptionSelectorFilterParams> implements OnInit, OnDestroy {
-  @Input() config: SelectorFilterConfig;
+  @Input() config: OptionSelectorFilterConfig;
 
   @ViewChild('selectorFilterTemplateComponent', { read: SelectorFilterTemplateComponent })
   public selectorFilterTemplate: SelectorFilterTemplateComponent;

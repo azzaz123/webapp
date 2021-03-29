@@ -14,7 +14,7 @@ import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module'
 import { FilterOptionServiceModule } from '@public/shared/services/filter-option/filter-option-service.module';
 import { AbstractSelectorFilterModule } from '../abstract-selector-filter/abstract-selector-filter.module';
 import { SelectorOptionModule } from '../abstract-selector-filter/selector-option/selector-option.module';
-import { SelectorFilterConfig } from './interfaces/option-selector-filter-config.interface';
+import { OptionSelectorFilterConfig } from './interfaces/option-selector-filter-config.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { FilterTemplateComponent } from '../abstract-filter/filter-template/filter-template.component';
 import { SelectorFilterTemplateComponent } from '../abstract-selector-filter/selector-filter-template/selector-filter-template.component';
@@ -26,7 +26,7 @@ import { FilterParameter } from '../../interfaces/filter-parameter.interface';
   template: ` <tsl-option-selector-filter [config]="config" [variant]="variant" [value]="value"></tsl-option-selector-filter> `,
 })
 class TestWrapperComponent {
-  @Input() config: SelectorFilterConfig;
+  @Input() config: OptionSelectorFilterConfig;
   @Input() variant: FILTER_VARIANT;
   @Input() value: FilterParameter[];
 }
@@ -41,7 +41,7 @@ describe('SelectorFilterComponent', () => {
   const selectorTemplatePredicate = By.directive(SelectorFilterTemplateComponent);
   const placeholderPredicate = By.directive(SelectorParentOptionComponent);
   const optionPredicate = By.css('.SelectorFilter__option');
-  const basicConfig: SelectorFilterConfig = {
+  const basicConfig: OptionSelectorFilterConfig = {
     type: FILTER_TYPES.SIMPLE_SELECTOR,
     hasContentPlaceholder: true,
     bubblePlaceholder: 'Bubble placeholder',
