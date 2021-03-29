@@ -5,7 +5,6 @@ import { SvgIconComponent } from '@core/svg-icon/svg-icon/svg-icon.component';
 import { Component, DebugElement, Input } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SelectorOptionIcon } from './interfaces/selector-option-icon.interface';
 import spyOn = jest.spyOn;
 
 @Component({
@@ -15,7 +14,7 @@ import spyOn = jest.spyOn;
 })
 class TestSelectorOptionComponent {
   @Input() label: string;
-  @Input() icon: SelectorOptionIcon;
+  @Input() icon: string;
   @Input() sublabel: string;
   @Input() isActive: boolean;
 }
@@ -69,35 +68,14 @@ describe('SelectorOptionComponent', () => {
     });
 
     describe('... has icon', () => {
-      const activeIcon = '/assets/icons/categories/selected/All.svg';
-      const notActiveIcon = '/assets/icons/categories/stroke/All.svg';
       beforeEach(() => {
-        testComponent.icon = {
-          stroke: notActiveIcon,
-          selected: activeIcon,
-        };
+        testComponent.icon = '/assets/icons/categories/selected/All.svg';
         fixture.detectChanges();
       });
       it('should show icon', () => {
         const icon = debugElement.query(By.directive(SvgIconComponent));
 
         expect(icon).toBeTruthy();
-      });
-
-      describe('and is not active', () => {
-        it('should have not active icon', () => {
-          const iconSrc = debugElement.query(By.directive(SvgIconComponent)).componentInstance.src;
-
-          expect(iconSrc).toBe(notActiveIcon);
-        });
-      });
-
-      describe('and is active', () => {
-        it('should have active icon', () => {
-          const icon = debugElement.query(By.directive(SvgIconComponent)).componentInstance.src;
-
-          expect(icon).toBe(notActiveIcon);
-        });
       });
     });
 
@@ -123,7 +101,7 @@ describe('SelectorOptionComponent', () => {
 
       describe('and has icon', () => {
         beforeEach(() => {
-          testComponent.icon = { stroke: '' };
+          testComponent.icon = '/assets/icons/categories/selected/All.svg';
           fixture.detectChanges();
         });
 
