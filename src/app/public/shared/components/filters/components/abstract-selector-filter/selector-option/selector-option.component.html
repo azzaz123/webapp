@@ -1,7 +1,7 @@
-<div [ngClass]="isActive && 'SelectorOption__active'" class="SelectorOption py-3" (click)="handleClick()">
+<div [class.SelectorOption__active]="isActive" class="SelectorOption py-3" (click)="handleClick()">
   <div class="d-flex">
     <tsl-svg-icon *ngIf="icon" class="d-flex flex-grow-0 mr-3 justify-content-center align-items-center"
-                  [src]="isActive ? icon.selected : icon.stroke" [width]="24" [height]="24"></tsl-svg-icon>
+                  [src]="icon" [width]="24" [height]="24"></tsl-svg-icon>
     <span class="SelectorOption__label">{{label}}</span>
   </div>
   <span *ngIf="sublabel" [ngClass]="icon && 'SelectorOption__sublabel-with-icon'" class="SelectorOption__sublabel">{{sublabel}}</span>
