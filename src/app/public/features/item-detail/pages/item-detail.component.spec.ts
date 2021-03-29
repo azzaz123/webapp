@@ -265,10 +265,10 @@ describe('ItemDetailComponent', () => {
       const viewOthersCGDetailEvent: AnalyticsPageView<ViewOthersItemCGDetail> = {
         name: ANALYTICS_EVENT_NAMES.ViewOthersItemCGDetail,
         attributes: {
-          itemId: MOCK_ITEM_V3.id,
-          categoryId: MOCK_ITEM_V3.categoryId,
-          salePrice: MOCK_ITEM_V3.salePrice,
-          title: MOCK_ITEM_V3.title,
+          itemId: MOCK_ITEM_GBP.id,
+          categoryId: MOCK_ITEM_GBP.categoryId,
+          salePrice: MOCK_ITEM_GBP.salePrice,
+          title: MOCK_ITEM_GBP.title,
           isPro: MOCK_OTHER_USER.featured,
           screenId: SCREEN_IDS.ItemDetail,
         },
@@ -294,8 +294,18 @@ describe('ItemDetailComponent', () => {
 
       it('should send view others CG item detail event when user is viewing others consumer goods item detail', () => {
         const mockCGItemDetail: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
-        mockCGItemDetail.item = MOCK_ITEM_V3;
+        mockCGItemDetail.item = MOCK_ITEM_GBP;
         mockCGItemDetail.user = MOCK_OTHER_USER;
+        itemDetailSubjectMock.next(mockCGItemDetail);
+        spyOn(analyticsService, 'trackPageView');
+
+        component.ngOnInit();
+
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(viewOthersCGDetailEvent);
+      });
+
+      it('should not send view others CG item detail event when user is not viewing others consumer goods item detail', () => {
+        itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
         spyOn(analyticsService, 'trackPageView');
 
         component.ngOnInit();
