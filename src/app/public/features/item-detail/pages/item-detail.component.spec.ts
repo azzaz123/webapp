@@ -4,7 +4,7 @@ import { BehaviorSubject, of } from 'rxjs';
 import { DecimalPipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, DebugElement, Renderer2 } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AdsService } from '@core/ads/services';
@@ -54,7 +54,7 @@ import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { UserService } from '@core/user/user.service';
-import { MockedUserService, MOCK_USER, OTHER_USER_ID } from '@fixtures/user.fixtures.spec';
+import { MockedUserService, MOCK_USER, OTHER_USER_ID, USER_ID } from '@fixtures/user.fixtures.spec';
 import {
   AnalyticsEvent,
   AnalyticsPageView,
@@ -96,6 +96,7 @@ describe('ItemDetailComponent', () => {
   let itemDetailService: ItemDetailService;
   let mapExtraInfoService: MapExtraInfoService;
   let itemSocialShareService: ItemSocialShareService;
+  let userService: UserService;
   let deviceService: DeviceService;
   let decimalPipe: DecimalPipe;
   let itemDetailImagesModal: ItemFullScreenCarouselComponent;
@@ -193,6 +194,7 @@ describe('ItemDetailComponent', () => {
     decimalPipe = TestBed.inject(DecimalPipe);
     itemDetailService = TestBed.inject(ItemDetailService);
     mapExtraInfoService = TestBed.inject(MapExtraInfoService);
+    userService = TestBed.inject(UserService);
     de = fixture.debugElement;
     el = de.nativeElement;
     itemDetailStoreService = TestBed.inject(ItemDetailStoreService);
@@ -263,8 +265,10 @@ describe('ItemDetailComponent', () => {
       it('should send view own item detail event if it is the same user', () => {
         itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
         spyOn(analyticsService, 'trackPageView');
+        spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
 
         component.ngOnInit();
+        fixture.detectChanges();
 
         expect(analyticsService.trackPageView).toHaveBeenCalledWith(event);
       });
@@ -272,8 +276,10 @@ describe('ItemDetailComponent', () => {
       it('should not send view own item detail event if it is not the same user', () => {
         itemDetailSubjectMock.next(MOCK_ITEM_DETAIL_WITHOUT_LOCATION);
         spyOn(analyticsService, 'trackPageView');
+        spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
 
         component.ngOnInit();
+        fixture.detectChanges();
 
         expect(analyticsService.trackPageView).not.toHaveBeenCalledWith(event);
       });
