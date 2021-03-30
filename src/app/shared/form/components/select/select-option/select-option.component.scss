@@ -16,4 +16,10 @@
   &--active {
     color: $walla-main;
   }
+
+  &__icon--active {
+    ::ng-deep g g {
+      fill: $walla-main;
+    }
+  }
 }
