@@ -1,6 +1,6 @@
 import { CAR_CONFIGURATION_ID } from '../../../enums/configuration-ids/car-configuration-ids';
 import { FILTER_TYPES } from '../../../enums/filter-types/filter-types.enum';
-import { AvailableFilterConfig } from '../filter-configurations';
+import { AvailableFilterConfig } from '../../../types/available-filter-config.type';
 
 export const CAR_FILTERS: AvailableFilterConfig[] = [
   {
