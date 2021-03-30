@@ -110,10 +110,6 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.modalService.open(SuggestProModalComponent, {
-      windowClass: 'modal-standard',
-    });
-
     this.getUserInfo();
 
     this.normalNavLinks = [
@@ -414,10 +410,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public itemChanged($event: ItemChangeEvent) {
     if ($event.action === 'reactivated') {
-      const index: number = findIndex(this.items, { _id: $event.item.id });
-      this.items[index].flags.expired = false;
-      this.items[index].flags.pending = true;
-      this.openSuggestProModal(this.items[index].categoryId);
+      this.reactivationAction($event.item.id);
     } else if ($event.action === 'activate') {
       this.onAction($event.action, $event.item.id);
     } else {
@@ -427,12 +420,45 @@ export class ListComponent implements OnInit, OnDestroy {
     }
   }
 
-  private openSuggestProModal(categoryId: number): void {
+  private reactivationAction(id: string): void {
+    const index: number = findIndex(this.items, { id });
+    const reactivatedItem = this.items[index];
+    reactivatedItem.flags.expired = false;
+    reactivatedItem.flags.pending = true;
+    if (!this.user.featured) {
+      this.openSuggestProModal(reactivatedItem, index);
+      return;
+    }
+    this.reloadItem(reactivatedItem.id, index);
+  }
+
+  private openSuggestProModal(reactivatedItem: Item, index: number): void {
     const modalRef = this.modalService.open(SuggestProModalComponent, {
       windowClass: 'modal-standard',
     });
 
-    modalRef.componentInstance.isFreeTrial = this.subscriptionsService.hasFreeTrialByItemId(this.subscriptions, categoryId);
+    modalRef.componentInstance.title = $localize`:@@SuggestProModalTitle:If you were PRO your items wouldn’t become inactive. Sounds good, right?`;
+    modalRef.componentInstance.isFreeTrial = this.subscriptionsService.hasFreeTrialByItemId(this.subscriptions, reactivatedItem.categoryId);
+
+    modalRef.result.then(
+      () => {
+        this.router.navigate(['profile/subscriptions']);
+      },
+      (reloadItem: boolean) => {
+        if (reloadItem) {
+          this.reloadItem(reactivatedItem.id, index);
+        }
+      }
+    );
+  }
+
+  private reloadItem(id: string, index: number): void {
+    this.itemService
+      .get(id)
+      .pipe(take(1))
+      .subscribe((item) => {
+        this.items[index] = item;
+      });
   }
 
   public deselect() {
