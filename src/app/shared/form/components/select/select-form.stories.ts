@@ -10,11 +10,15 @@ import { HttpClientModule } from '@angular/common/http';
   selector: 'tsl-story-select',
   template: `
     <h4>NgModel: {{ select }}</h4>
-    <tsl-select-form [(ngModel)]="select" [options]="options"></tsl-select-form>
+    <div style="background: white; border: 1px dashed black;">
+      <tsl-select-form [(ngModel)]="select" [options]="options"></tsl-select-form>
+    </div>
     <h4 class="mt-4">FormGroup: {{ formGroup.value.select }}</h4>
-    <form [formGroup]="formGroup">
-      <tsl-select-form formControlName="select" [options]="options"></tsl-select-form>
-    </form>
+    <div style="background: white; border: 1px dashed black;">
+      <form [formGroup]="formGroup">
+        <tsl-select-form formControlName="select" [options]="options"></tsl-select-form>
+      </form>
+    </div>
   `,
 })
 class StorySelectFormComponent {

@@ -1,5 +1,6 @@
-<div *ngFor="let option of options" class="SelectForm__option px-4" ngDefaultControl [(ngModel)]="value">
+<div *ngFor="let option of options; let i = index" class="SelectForm__option px-4" ngDefaultControl [(ngModel)]="value">
   <tsl-select-option [icon]="option.icon" [label]="option.label" [sublabel]="option.sublabel" [isActive]="isOptionActive(option.value)"
                      (click)="writeValue(option.value)">
   </tsl-select-option>
+  <hr *ngIf="i < options.length - 1" class="m-0">
 </div>
