@@ -22,6 +22,7 @@ export class MapRecommendedItemCardService {
       salePrice: recommendedItem.price,
       mainImage: recommendedItem.images?.length ? this.getMainImage(recommendedItem.images[0]) : null,
       webSlug: recommendedItem.web_slug,
+      currencyCode: recommendedItem.currency,
     };
   }
 

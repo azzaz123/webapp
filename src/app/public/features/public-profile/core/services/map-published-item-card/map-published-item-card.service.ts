@@ -25,6 +25,7 @@ export class MapPublishedItemCardService {
       flags: publishedItemRespone.flags,
       bumpFlags: publishedItemRespone.visibility_flags,
       webSlug: publishedItemRespone.web_slug,
+      currencyCode: publishedItemRespone.currency,
     };
   }
 

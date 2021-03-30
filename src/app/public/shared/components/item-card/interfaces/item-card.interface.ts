@@ -11,4 +11,5 @@ export interface ItemCard {
   flags?: ItemFlags;
   bumpFlags?: ItemVisibilityFlags;
   webSlug: string;
+  currencyCode: string;
 }
