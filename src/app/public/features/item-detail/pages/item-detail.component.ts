@@ -17,15 +17,21 @@ import { ItemDetail } from '../interfaces/item-detail.interface';
 import { ItemSocialShareService } from '../core/services/item-social-share/item-social-share.service';
 import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from '@public/shared/components/item-flag/item-flag-constants';
 import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
+import { UserService } from '@core/user/user.service';
+import { User } from '@core/user/user';
 import {
   AnalyticsEvent,
+  AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
+  ViewOwnItemDetail,
   FavoriteItem,
   SCREEN_IDS,
   UnfavoriteItem,
+  ViewOthersItemCGDetail,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -49,9 +55,11 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     private itemDetailService: ItemDetailService,
     private route: ActivatedRoute,
     private adsService: AdsService,
+    private userService: UserService,
+    private analyticsService: AnalyticsService,
     private itemSocialShareService: ItemSocialShareService,
-    private itemDetailFlagsStoreService: ItemDetailFlagsStoreService,
-    private analyticsService: AnalyticsService
+    private typeCheckService: TypeCheckService,
+    private itemDetailFlagsStoreService: ItemDetailFlagsStoreService
   ) {}
 
   ngOnInit(): void {
@@ -110,6 +118,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
           this.setAdSlot(itemDetail.item);
           this.initializeItemRecommendations(itemId, itemDetail.item.categoryId);
           this.itemSocialShareService.initializeItemMetaTags(itemDetail.item);
+          this.trackViewEvents(itemDetail);
         }
         this.itemDetail = itemDetail;
       })
@@ -130,6 +139,49 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   private isItemRecommendations(itemCategoryId: number): boolean {
     const CATEGORIES_WITH_RECOMMENDATIONS = [CATEGORY_IDS.CAR, CATEGORY_IDS.FASHION_ACCESSORIES];
     return CATEGORIES_WITH_RECOMMENDATIONS.includes(itemCategoryId);
+  }
+
+  private trackViewEvents(itemDetail: ItemDetail): void {
+    const item = itemDetail.item;
+    const user = itemDetail.user;
+    this.userService.me().subscribe((userMe: User) => {
+      if (user.id === userMe.id) {
+        const event: AnalyticsPageView<ViewOwnItemDetail> = {
+          name: ANALYTICS_EVENT_NAMES.ViewOwnItemDetail,
+          attributes: {
+            itemId: item.id,
+            categoryId: item.categoryId,
+            salePrice: item.salePrice,
+            title: item.title,
+            isPro: user.featured,
+            screenId: SCREEN_IDS.ItemDetail,
+            isActive: !item.flags?.onhold,
+          },
+        };
+        this.analyticsService.trackPageView(event);
+      } else {
+        if (!this.typeCheckService.isRealEstate(itemDetail.item) || !this.typeCheckService.isCar(itemDetail.item)) {
+          this.trackViewOthersCGDetailEvent(itemDetail);
+        }
+      }
+    });
+  }
+
+  private trackViewOthersCGDetailEvent(itemDetail: ItemDetail): void {
+    const item = itemDetail.item;
+    const user = itemDetail.user;
+    const event: AnalyticsPageView<ViewOthersItemCGDetail> = {
+      name: ANALYTICS_EVENT_NAMES.ViewOthersItemCGDetail,
+      attributes: {
+        itemId: item.id,
+        categoryId: item.categoryId,
+        salePrice: item.salePrice,
+        title: item.title,
+        isPro: user.featured,
+        screenId: SCREEN_IDS.ItemDetail,
+      },
+    };
+    this.analyticsService.trackPageView(event);
   }
 
   get itemDetail$(): Observable<ItemDetail> {

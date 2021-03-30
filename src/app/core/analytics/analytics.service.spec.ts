@@ -2,7 +2,7 @@ import { of } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { AnalyticsService } from './analytics.service';
 import { UserService } from '../user/user.service';
-import { MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { MOCK_FULL_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
 import mParticle from '@mparticle/web-sdk';
 import { DeviceService } from '@core/device/device.service';
@@ -32,6 +32,7 @@ describe('AnalyticsService', () => {
   let service: AnalyticsService;
   let deviceService: DeviceService;
   let deviceIdValue: string;
+  let userService: UserService;
 
   beforeEach(() => {
     deviceIdValue = 'deviceId';
@@ -57,6 +58,7 @@ describe('AnalyticsService', () => {
 
     deviceService = TestBed.inject(DeviceService);
     service = TestBed.inject(AnalyticsService);
+    userService = TestBed.inject(UserService);
   });
 
   describe('initialize', () => {
@@ -85,6 +87,42 @@ describe('AnalyticsService', () => {
 
         expect(mParticle.init).toHaveBeenCalled();
         expect(mParticle.Identity.getCurrentUser().setUserAttribute).toHaveBeenCalledWith('deviceId', 'newDeviceId');
+      });
+    });
+
+    describe('when there is a user logged with email and id', () => {
+      it('should initialize the analytics library with email and id', () => {
+        spyOn(mParticle, 'init').and.callThrough();
+        spyOn(userService, 'me').and.returnValue(of(MOCK_FULL_USER));
+        const expectedIdentities = {
+          customerid: MOCK_FULL_USER.id,
+          email: MOCK_FULL_USER.email,
+        };
+
+        service.initialize();
+
+        expect(mParticle.init).toHaveBeenCalledTimes(1);
+        expect(mParticle.init).toHaveBeenCalledWith(expect.anything(), {
+          identifyRequest: { userIdentities: expectedIdentities },
+          identityCallback: expect.anything(),
+          isDevelopmentMode: expect.anything(),
+        });
+      });
+    });
+
+    describe('when there is not a user logged with email and id', () => {
+      it('should initialize the analytics library without user Identities', () => {
+        spyOn(mParticle, 'init').and.callThrough();
+        const expectedIdentities = {};
+
+        service.initialize();
+
+        expect(mParticle.init).toHaveBeenCalledTimes(1);
+        expect(mParticle.init).toHaveBeenCalledWith(expect.anything(), {
+          identifyRequest: { userIdentities: expectedIdentities },
+          identityCallback: expect.anything(),
+          isDevelopmentMode: expect.anything(),
+        });
       });
     });
   });

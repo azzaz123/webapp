@@ -25,6 +25,8 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { InboxUser, InboxItem } from '@private/features/chat/core/model';
 import { ReleaseVersionService } from '@core/release-version/release-version.service';
 
+import mParticle from '@mparticle/web-sdk';
+
 export const LOGOUT_ENDPOINT = 'shnm-portlet/api/v1/access.json/logout2';
 export const USER_BASE_ENDPOINT = 'api/v3/users/';
 export const USER_BY_ID_ENDPOINT = (userId: string) => `${USER_BASE_ENDPOINT}${userId}`;
@@ -91,7 +93,16 @@ export class UserService {
     this.cookieService.remove('creditQuantity', cookieOptions);
     this.accessTokenService.deleteAccessToken();
     this.permissionService.flushPermissions();
-    this.event.emit(EventService.USER_LOGOUT, redirectUrl);
+    this.logoutMParticle(this.event.emit(EventService.USER_LOGOUT, redirectUrl));
+  }
+
+  private logoutMParticle(callback: any): void {
+    const identityCallback = (result: any) => {
+      if (result.getUser()) {
+        return callback;
+      }
+    };
+    mParticle.Identity.logout({}, identityCallback);
   }
 
   public logout(redirect?: string): Observable<any> {
