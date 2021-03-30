@@ -29,9 +29,11 @@ import {
   SCREEN_IDS,
   UnfavoriteItem,
   ViewOthersItemCGDetail,
+  ShareItem,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
+import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -91,6 +93,24 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
 
   public soldItem(): void {
     this.itemDetailStoreService.markItemAsSold();
+  }
+
+  public trackShareItemEvent(channel: SOCIAL_SHARE_CHANNELS): void {
+    const item = this.itemDetail.item;
+    const user = this.itemDetail.user;
+    const event: AnalyticsEvent<ShareItem> = {
+      name: ANALYTICS_EVENT_NAMES.ShareItem,
+      eventType: ANALYTIC_EVENT_TYPES.Social,
+      attributes: {
+        itemId: item.id,
+        categoryId: item.categoryId,
+        channel: channel,
+        screenId: SCREEN_IDS.ItemDetail,
+        isPro: user.featured,
+        salePrice: item.salePrice,
+      },
+    };
+    this.analyticsService.trackEvent(event);
   }
 
   private trackFavoriteOrUnfavoriteEvent(): void {
