@@ -96,11 +96,11 @@ describe('ItemDetailComponent', () => {
   let itemDetailService: ItemDetailService;
   let mapExtraInfoService: MapExtraInfoService;
   let itemSocialShareService: ItemSocialShareService;
-  let userService: UserService;
   let deviceService: DeviceService;
   let decimalPipe: DecimalPipe;
   let itemDetailImagesModal: ItemFullScreenCarouselComponent;
   let itemDetailStoreService: ItemDetailStoreService;
+  let userService: UserService;
   let analyticsService: AnalyticsService;
   let de: DebugElement;
   let el: HTMLElement;
@@ -200,6 +200,7 @@ describe('ItemDetailComponent', () => {
     itemDetailStoreService = TestBed.inject(ItemDetailStoreService);
     itemDetailImagesModal = TestBed.inject(ItemFullScreenCarouselComponent);
     itemSocialShareService = TestBed.inject(ItemSocialShareService);
+    userService = TestBed.inject(UserService);
     analyticsService = TestBed.inject(AnalyticsService);
     fixture.detectChanges();
   });
@@ -274,9 +275,9 @@ describe('ItemDetailComponent', () => {
       });
 
       it('should not send view own item detail event if it is not the same user', () => {
-        itemDetailSubjectMock.next(MOCK_ITEM_DETAIL_WITHOUT_LOCATION);
+        itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
         spyOn(analyticsService, 'trackPageView');
-        spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
+        spyOn(userService, 'me').and.returnValue(of(new User(OTHER_USER_ID)));
 
         component.ngOnInit();
         fixture.detectChanges();
