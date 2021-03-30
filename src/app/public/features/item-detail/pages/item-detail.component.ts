@@ -147,30 +147,33 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   private trackViewEvents(itemDetail: ItemDetail): void {
     const item = itemDetail.item;
     const user = itemDetail.user;
-    this.userService.me().subscribe((userMe: User) => {
-      if (user.id === userMe.id) {
-        const event: AnalyticsPageView<ViewOwnItemDetail> = {
-          name: ANALYTICS_EVENT_NAMES.ViewOwnItemDetail,
-          attributes: {
-            itemId: item.id,
-            categoryId: item.categoryId,
-            salePrice: item.salePrice,
-            title: item.title,
-            isPro: user.featured,
-            screenId: SCREEN_IDS.ItemDetail,
-            isActive: !item.flags?.onhold,
-          },
-        };
-        this.analyticsService.trackPageView(event);
-      } else {
-        if (this.typeCheckService.isCar(itemDetail.item)) {
-          this.trackViewOthersItemCarDetailEvent(itemDetail);
+    this.userService
+      .me()
+      .pipe(take(1))
+      .subscribe((userMe: User) => {
+        if (user.id === userMe.id) {
+          const event: AnalyticsPageView<ViewOwnItemDetail> = {
+            name: ANALYTICS_EVENT_NAMES.ViewOwnItemDetail,
+            attributes: {
+              itemId: item.id,
+              categoryId: item.categoryId,
+              salePrice: item.salePrice,
+              title: item.title,
+              isPro: user.featured,
+              screenId: SCREEN_IDS.ItemDetail,
+              isActive: !item.flags?.onhold,
+            },
+          };
+          this.analyticsService.trackPageView(event);
+        } else {
+          if (this.typeCheckService.isCar(itemDetail.item)) {
+            this.trackViewOthersItemCarDetailEvent(itemDetail);
+          }
+          if (!this.typeCheckService.isRealEstate(itemDetail.item) || !this.typeCheckService.isCar(itemDetail.item)) {
+            this.trackViewOthersCGDetailEvent(itemDetail);
+          }
         }
-        if (!this.typeCheckService.isRealEstate(itemDetail.item) || !this.typeCheckService.isCar(itemDetail.item)) {
-          this.trackViewOthersCGDetailEvent(itemDetail);
-        }
-      }
-    });
+      });
   }
 
   private trackViewOthersCGDetailEvent(itemDetail: ItemDetail): void {
