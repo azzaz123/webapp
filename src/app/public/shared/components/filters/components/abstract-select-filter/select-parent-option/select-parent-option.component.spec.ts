@@ -5,8 +5,7 @@ import { Component, DebugElement, Input } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SvgIconComponent } from '@core/svg-icon/svg-icon/svg-icon.component';
 import { By } from '@angular/platform-browser';
-import { SelectOptionComponent } from '@public/../../../../../../../shared/form/components/select/select-option/select-option.component';
-import spyOn = jest.spyOn;
+import { SelectOptionComponent } from '@shared/form/components/select/select-option/select-option.component';
 
 @Component({
   // tslint:disable-next-line:component-selector
