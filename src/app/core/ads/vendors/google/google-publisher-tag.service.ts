@@ -46,12 +46,10 @@ export class GooglePublisherTagService {
       this.setPubads();
       this.googletag.enableServices();
       this.googletag.pubads().addEventListener('slotOnload', (event) => {
-        const slotName = event.slot.getAdUnitPath();
-        console.log('slotOnload', slotName);
         const slotsName: string[] = this.adSlotsLoadedSubject.getValue();
+        const slotName = event.slot.getAdUnitPath();
         slotsName.push(slotName);
         const newSlotsName: string[] = [...new Set(slotsName).values()];
-        console.log(newSlotsName);
         this.adSlotsLoadedSubject.next(newSlotsName);
       });
     });
