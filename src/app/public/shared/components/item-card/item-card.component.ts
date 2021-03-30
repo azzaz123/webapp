@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Item } from '@core/item/item';
 import { FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH } from '@core/profile/profile';
+import { ItemCard } from './interfaces/item-card.interface';
 
 @Component({
   selector: 'tsl-public-item-card',
@@ -8,7 +8,7 @@ import { FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH } from '@core/profile/profile';
   styleUrls: ['./item-card.component.scss'],
 })
 export class ItemCardComponent {
-  @Input() item: Item;
+  @Input() item: ItemCard;
   @Input() showDescription = true;
   @Input() showFavourite = true;
   @Output() toggleFavourite: EventEmitter<void> = new EventEmitter<void>();
