@@ -1,0 +1,53 @@
+@import '~style/common';
+
+.SuggestProModal {
+  width: 100%;
+  padding: $spacing-xxl $spacing-xxl $spacing-ml $spacing-xxxl;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+}
+
+.SuggestProModal__close {
+  @include square($spacing-ms);
+  cursor: pointer;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  tsl-svg-icon {
+    @include square($spacing-ms);
+    line-height: initial;
+    ::ng-deep svg path {
+      fill: $blue-grey-3;
+    }
+  }
+}
+
+.SuggestProModal__title {
+  font-size: 20px;
+  margin-bottom: $spacing-ms;
+}
+
+.SuggestProModal__actions {
+  .Dismiss {
+    margin-top: $spacing-m;
+    color: $blue-grey-3;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  tsl-button {
+    width: 371px;
+
+    ::ng-deep button {
+      font-weight: bold;
+      width: 100%;
+    }
+  }
+}

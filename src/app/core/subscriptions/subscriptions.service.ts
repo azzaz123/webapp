@@ -318,4 +318,14 @@ export class SubscriptionsService {
 
     return discountPercentatge;
   }
+
+  public hasFreeTrialByItemId(subscriptions: SubscriptionsResponse[], categoryId: number): boolean {
+    const selectedsubscription = subscriptions.find((subscription) => subscription.category_id === categoryId);
+
+    if (!selectedsubscription) {
+      return false;
+    }
+
+    return this.hasTrial(selectedsubscription) && !selectedsubscription.subscribed_from;
+  }
 }

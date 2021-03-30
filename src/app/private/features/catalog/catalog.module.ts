@@ -15,7 +15,6 @@ import { BumpTutorialService } from './core/services/bump-tutorial.service';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product-modal.component';
 import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
-import { ReactivateConfirmationModalComponent } from './modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component';
 import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { TryProSlotComponent } from './components/subscriptions-slots/try-pro-slot/try-pro-slot.component';
@@ -44,15 +43,9 @@ import { TryProSlotComponent } from './components/subscriptions-slots/try-pro-sl
     CheckoutItemComponent,
     BumpTutorialComponent,
     BuyProductModalComponent,
-    ReactivateConfirmationModalComponent,
     ListingfeeConfirmationModalComponent,
     TryProSlotComponent,
   ],
-  entryComponents: [
-    BumpConfirmationModalComponent,
-    BuyProductModalComponent,
-    ReactivateConfirmationModalComponent,
-    ListingfeeConfirmationModalComponent,
-  ],
+  entryComponents: [BumpConfirmationModalComponent, BuyProductModalComponent, ListingfeeConfirmationModalComponent],
 })
 export class CatalogModule {}
