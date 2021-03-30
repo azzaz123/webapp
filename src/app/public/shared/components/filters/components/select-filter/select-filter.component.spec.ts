@@ -13,13 +13,15 @@ import { FASHION_CONFIGURATION_ID } from '../../core/enums/configuration-ids/fas
 import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module';
 import { FilterOptionServiceModule } from '@public/shared/services/filter-option/filter-option-service.module';
 import { AbstractSelectFilterModule } from '../abstract-select-filter/abstract-select-filter.module';
-import { SelectOptionModule } from '@shared/form/components/select/select-option/select-option.module';
 import { SelectFilterConfig } from './interfaces/select-filter-config.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { FilterTemplateComponent } from '../abstract-filter/filter-template/filter-template.component';
 import { SelectFilterTemplateComponent } from '../abstract-select-filter/select-filter-template/select-filter-template.component';
 import { SelectParentOptionComponent } from '../abstract-select-filter/select-parent-option/select-parent-option.component';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
+import { SelectFormModule } from '@shared/form/components/select/select-form.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SelectFormComponent } from '@shared/form/components/select/select-form.component';
 
 @Component({
   selector: 'tsl-test-wrapper',
@@ -40,7 +42,7 @@ describe('SelectFilterComponent', () => {
   const filterPredicate = By.directive(FilterTemplateComponent);
   const selectFilterTemplate = By.directive(SelectFilterTemplateComponent);
   const placeholderPredicate = By.directive(SelectParentOptionComponent);
-  const optionPredicate = By.css('.SelectFilter__option');
+  const selectFormPredicate = By.directive(SelectFormComponent);
   const basicConfig: SelectFilterConfig = {
     type: FILTER_TYPES.SELECT,
     hasContentPlaceholder: true,
@@ -69,7 +71,9 @@ describe('SelectFilterComponent', () => {
         AbstractFilterModule,
         FilterOptionServiceModule,
         AbstractSelectFilterModule,
-        SelectOptionModule,
+        FormsModule,
+        ReactiveFormsModule,
+        SelectFormModule,
       ],
     }).compileComponents();
   });
@@ -127,10 +131,8 @@ describe('SelectFilterComponent', () => {
 
       it('should show option placeholder', () => {
         const parent = debugElement.query(placeholderPredicate);
-        const options = debugElement.queryAll(optionPredicate);
 
         expect(parent).toBeTruthy();
-        expect(options.length).toEqual(0);
       });
     });
   });
@@ -145,13 +147,14 @@ describe('SelectFilterComponent', () => {
         debugElement.query(By.directive(BubbleComponent)).nativeElement.click();
         fixture.detectChanges();
       });
-      describe('and an option is clicked', () => {
-        it('should select option and close the bubble', () => {
+      describe('and value changes', () => {
+        it('should close the bubble', () => {
           const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
           spyOn(filterTemplate, 'toggleDropdown');
-          const optionElement: HTMLElement = debugElement.query(optionPredicate).nativeElement;
 
-          optionElement.click();
+          const form: SelectFormComponent = debugElement.query(selectFormPredicate).componentInstance;
+
+          form.writeValue('male');
 
           fixture.detectChanges();
 
@@ -167,9 +170,9 @@ describe('SelectFilterComponent', () => {
 
         it('should emit changes', () => {
           spyOn(component.valueChange, 'emit');
-          const optionElement: HTMLElement = debugElement.query(optionPredicate).nativeElement;
+          const form: SelectFormComponent = debugElement.query(selectFormPredicate).componentInstance;
 
-          optionElement.click();
+          form.writeValue('male');
           fixture.detectChanges();
 
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
@@ -243,9 +246,9 @@ describe('SelectFilterComponent', () => {
         parentElement.click();
         fixture.detectChanges();
 
-        const options = debugElement.queryAll(optionPredicate);
+        const form = debugElement.query(selectFormPredicate);
 
-        expect(options.length).toEqual(2);
+        expect(form).toBeTruthy();
       });
     });
 
@@ -254,19 +257,19 @@ describe('SelectFilterComponent', () => {
         debugElement.query(By.directive(SelectParentOptionComponent)).nativeElement.click();
         fixture.detectChanges();
       });
-      describe('and an option is clicked', () => {
-        it('should select option and close the placeholder', () => {
-          const optionElement: HTMLElement = debugElement.query(optionPredicate).nativeElement;
+      describe('and value changes', () => {
+        it('should close the placeholder', () => {
+          const formInstance: SelectFormComponent = debugElement.query(selectFormPredicate).componentInstance;
 
-          optionElement.click();
+          formInstance.writeValue('male');
           fixture.detectChanges();
 
           const selectTemplate: SelectFilterTemplateComponent = debugElement.query(By.directive(SelectFilterTemplateComponent))
             .componentInstance;
-          const options = debugElement.queryAll(optionPredicate);
+          const formDebugElement = debugElement.query(selectFormPredicate);
           const parent = debugElement.query(placeholderPredicate);
 
-          expect(options.length).toEqual(0);
+          expect(formDebugElement).toBeFalsy();
           expect(parent).toBeTruthy();
           expect(component.value).toEqual([
             {
@@ -279,9 +282,9 @@ describe('SelectFilterComponent', () => {
 
         it('should emit changes', () => {
           spyOn(component.valueChange, 'emit');
-          const optionElement: HTMLElement = debugElement.query(optionPredicate).nativeElement;
+          const form: SelectFormComponent = debugElement.query(selectFormPredicate).componentInstance;
 
-          optionElement.click();
+          form.writeValue('male');
           fixture.detectChanges();
 
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);

@@ -1,4 +1,4 @@
-import { Component, forwardRef, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, forwardRef, Input } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractFormComponent } from '../../abstract-form/abstract-form-component';
 import { SelectFormOption } from './interfaces/select-form-option.interface';
@@ -19,13 +19,12 @@ import { ComplexSelectValue } from './types/complex-select-value';
 export class SelectFormComponent extends AbstractFormComponent<ComplexSelectValue> {
   @Input() options: SelectFormOption<ComplexSelectValue>[];
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor() {
     super();
   }
 
   writeValue(value: ComplexSelectValue) {
     super.writeValue(value);
-    this.cdr.detectChanges();
     this.onChange(value);
   }
 
