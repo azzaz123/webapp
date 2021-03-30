@@ -1,7 +1,7 @@
 import { Image } from '@core/user/user-response.interface';
 import { RECOMMENDED_ITEM_MOCK } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
 import { ItemCard } from '@public/shared/components/item-card/interfaces/item-card.interface';
-import { ITEM_BUMP_FLAGS, ITEM_DATA } from './item.fixtures.spec';
+import { ITEM_BUMP_FLAGS, ITEM_DATA, ITEM_DATA_V3 } from './item.fixtures.spec';
 import { USER_ID } from './user.fixtures.spec';
 
 export const MOCK_ITEM_CARD: ItemCard = {
@@ -14,6 +14,38 @@ export const MOCK_ITEM_CARD: ItemCard = {
   flags: ITEM_DATA.flags,
   bumpFlags: ITEM_BUMP_FLAGS,
   webSlug: ITEM_DATA.web_slug,
+};
+
+export const MOCK_PUBLISHED_ITEM_CARD_IMAGE: Image = {
+  id: '1213',
+  original_width: ITEM_DATA_V3.content.image?.original_width || null,
+  original_height: ITEM_DATA_V3.content.image?.original_height || null,
+  average_hex_color: '',
+  urls_by_size: ITEM_DATA_V3.content.image,
+};
+
+export const MOCK_PUBLISHED_ITEM_CARD: ItemCard = {
+  id: ITEM_DATA_V3.id,
+  ownerId: ITEM_DATA_V3.content.user.id,
+  title: ITEM_DATA_V3.content.title,
+  description: ITEM_DATA_V3.content.description,
+  salePrice: ITEM_DATA_V3.content.sale_price,
+  mainImage: ITEM_DATA_V3.content.images[0],
+  flags: ITEM_DATA_V3.content.flags,
+  bumpFlags: ITEM_DATA_V3.content.visibility_flags,
+  webSlug: ITEM_DATA_V3.content.web_slug,
+};
+
+export const MOCK_PUBLISHED_ITEM_CARD_WITHOUT_IMAGES: ItemCard = {
+  id: ITEM_DATA_V3.id,
+  ownerId: ITEM_DATA_V3.content.user.id,
+  title: ITEM_DATA_V3.content.title,
+  description: ITEM_DATA_V3.content.description,
+  salePrice: ITEM_DATA_V3.content.sale_price,
+  mainImage: MOCK_PUBLISHED_ITEM_CARD_IMAGE,
+  flags: ITEM_DATA_V3.content.flags,
+  bumpFlags: ITEM_DATA_V3.content.visibility_flags,
+  webSlug: ITEM_DATA_V3.content.web_slug,
 };
 
 export const MOCK_RECOMMENDED_ITEM_CARD_IMAGE: Image = {

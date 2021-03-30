@@ -37,7 +37,7 @@ import {
 import { Image, UserLocation } from '../app/core/user/user-response.interface';
 import { CartItem } from '../app/shared/catalog/cart/cart-item.interface';
 import { MOCK_SUBSCRIPTION_SLOTS_RESPONSE } from './subscriptions.fixtures.spec';
-import { USER_ID, USER_LOCATION } from './user.fixtures.spec';
+import { MOCK_USER, USER_ID, USER_LOCATION } from './user.fixtures.spec';
 
 export const PICTURE_ID = '9jd7ryx5odjk';
 export const ITEM_CATEGORY_ID = 12545;
@@ -679,6 +679,7 @@ export const ITEM_DATA_V3: ItemResponse = {
       shipping_allowed: false,
     },
     web_slug: 'raton-134690716',
+    user: MOCK_USER,
   },
 };
 

@@ -11,10 +11,10 @@ export class MapPublishedItemCardService {
   constructor(private uuidService: UuidService) {}
 
   public mapPublishedItems(publishedItemsResponse: ItemResponse[]): ItemCard[] {
-    return publishedItemsResponse.map((itemResponse) => this.mapPublishedItem(itemResponse.content));
+    return publishedItemsResponse?.map((itemResponse) => this.mapPublishedItem(itemResponse.content));
   }
 
-  public mapPublishedItem(publishedItemRespone: ItemContent): ItemCard {
+  private mapPublishedItem(publishedItemRespone: ItemContent): ItemCard {
     return {
       id: publishedItemRespone.id,
       ownerId: publishedItemRespone.user.id,
@@ -33,8 +33,8 @@ export class MapPublishedItemCardService {
       ? images[0]
       : {
           id: this.uuidService.getUUID(),
-          original_width: image ? image.original_width : null,
-          original_height: image ? image.original_height : null,
+          original_width: image?.original_width || null,
+          original_height: image?.original_height || null,
           average_hex_color: '',
           urls_by_size: image,
         };
