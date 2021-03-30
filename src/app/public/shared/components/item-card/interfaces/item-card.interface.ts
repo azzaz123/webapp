@@ -5,10 +5,10 @@ export interface ItemCard {
   id: string;
   ownerId: string;
   title: string;
-  description: string;
+  description?: string;
   salePrice: number;
   mainImage: Image;
-  flags: ItemFlags;
-  bumpFlags: ItemVisibilityFlags;
+  flags?: ItemFlags;
+  bumpFlags?: ItemVisibilityFlags;
   webSlug: string;
 }
