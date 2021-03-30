@@ -88,12 +88,11 @@
                         </tsl-here-maps>
                         <div class="ItemDetail__fakeMap" *ngIf="!itemDetail.haveCoordinates"></div>
                         <tsl-social-share *ngIf="itemDetail.socialShare"
-												    [user]="itemDetail.user"
-												    [item]="itemDetail.item"
                             [title]="itemDetail.socialShare.title"
                             [facebook]="itemDetail.socialShare.facebook"
                             [twitter]="itemDetail.socialShare.twitter"
-                            [email]="itemDetail.socialShare.email">
+                            [email]="itemDetail.socialShare.email"
+                            (socialMediaChannel)="trackShareItemEvent($event)">
                         </tsl-social-share>
                     </div>
                     <tsl-recommended-items
