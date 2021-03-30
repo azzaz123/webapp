@@ -109,15 +109,4 @@ describe('MapItemService', () => {
       expect(item).toEqual(MOCK_REALESTATE);
     });
   });
-
-  describe('when asking for map recommended items', () => {
-    it('should return correctly mapped items', () => {
-      const items: Item[] = mapItemService.mapRecommendedItem(RECOMMENDED_ITEMS_MOCK);
-
-      items.forEach((item) => {
-        expect(item instanceof Item).toBeTruthy();
-        expect(item).toEqual(MAPPED_RECOMMENDED_ITEM_MOCK);
-      });
-    });
-  });
 });
