@@ -20,7 +20,7 @@ export class MapPublishedItemCardService {
       ownerId: publishedItemRespone.user.id,
       title: publishedItemRespone.title,
       description: publishedItemRespone.description,
-      salePrice: publishedItemRespone.sale_price,
+      salePrice: publishedItemRespone.price,
       mainImage: this.getMainImage(publishedItemRespone.images, publishedItemRespone.image),
       flags: publishedItemRespone.flags,
       bumpFlags: publishedItemRespone.visibility_flags,

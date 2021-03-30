@@ -16,7 +16,7 @@
 
     <div class="ItemCard__data p-2 border-top-0" [class.ItemCard__data--with-description]="showDescription">
         <div class="d-flex justify-content-between">
-            <span class="ItemCard__price ItemCard__price--bold">{{item.salePrice | customCurrency }}</span>
+            <span class="ItemCard__price ItemCard__price--bold">{{item.salePrice | customCurrency:item.currencyCode }}</span>
             <tsl-favourite-icon *ngIf="showFavourite" class="ItemCard__favourite" [active]="item.flags?.favorite"
                 (click)="toggleItemFavorite($event)"></tsl-favourite-icon>
         </div>
