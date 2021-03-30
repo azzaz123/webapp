@@ -28,5 +28,10 @@ describe('SlugsUtilService', () => {
         expect(service.getUUIDfromSlug(userName)).toBe(userName);
       });
     });
+    describe('when the web slug is empty...', () => {
+      it('should return an empty value', () => {
+        expect(service.getUUIDfromSlug('')).toBe('');
+      });
+    });
   });
 });
