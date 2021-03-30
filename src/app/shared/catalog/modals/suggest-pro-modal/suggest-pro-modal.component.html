@@ -14,8 +14,8 @@
     <span>{{descriptionText}}</span>
   </div>
 
-  <div class="SuggestProModal__actions">
-    <tsl-button className="btn-primary" (click)="activeModal.close()" [routerLink]="'/profile/subscriptions'">{{buttonText}}
+  <div class="SuggestProModal__actions d-flex flex-column w-100">
+    <tsl-button className="btn-primary btn-modal-primary" (click)="activeModal.close()" [routerLink]="'/profile/subscriptions'">{{buttonText}}
     </tsl-button>
     <div class="Dismiss" (click)="activeModal.close()" i18n="@@SuggestProModalButtonCancel">
       Not now thanks

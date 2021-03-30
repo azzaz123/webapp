@@ -9,6 +9,7 @@
   align-items: center;
 
   text-align: center;
+  color: $blue-grey-1;
 }
 
 .SuggestProModal__close {
@@ -29,6 +30,7 @@
 .SuggestProModal__title {
   font-size: 20px;
   margin-bottom: $spacing-ms;
+  font-weight: bold;
 }
 
 .SuggestProModal__actions {
@@ -39,15 +41,6 @@
 
     &:hover {
       text-decoration: underline;
-    }
-  }
-
-  tsl-button {
-    width: 371px;
-
-    ::ng-deep button {
-      font-weight: bold;
-      width: 100%;
     }
   }
 }
