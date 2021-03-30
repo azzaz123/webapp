@@ -54,7 +54,7 @@ import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { UserService } from '@core/user/user.service';
-import { MockedUserService, OTHER_USER_ID, USER_ID } from '@fixtures/user.fixtures.spec';
+import { MockedUserService, MOCK_OTHER_USER, MOCK_USER, OTHER_USER_ID, USER_ID } from '@fixtures/user.fixtures.spec';
 import {
   AnalyticsEvent,
   AnalyticsPageView,
@@ -305,8 +305,9 @@ describe('ItemDetailComponent', () => {
         mockCGItemDetail.user = MOCK_OTHER_USER;
         itemDetailSubjectMock.next(mockCGItemDetail);
         spyOn(analyticsService, 'trackPageView');
+        spyOn(userService, 'me').and.returnValue(of(new User(OTHER_USER_ID)));
 
-        component.ngOnInit();
+        fixture.detectChanges();
 
         expect(analyticsService.trackPageView).toHaveBeenCalledWith(viewOthersCGDetailEvent);
       });
@@ -314,8 +315,22 @@ describe('ItemDetailComponent', () => {
       it('should not send view others CG item detail event when user is not viewing others consumer goods item detail', () => {
         itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
         spyOn(analyticsService, 'trackPageView');
+        spyOn(userService, 'me').and.returnValue(of(new User(OTHER_USER_ID)));
 
-        component.ngOnInit();
+        fixture.detectChanges();
+
+        expect(analyticsService.trackPageView).not.toHaveBeenCalledWith(viewOthersCGDetailEvent);
+      });
+
+      it('should not send view others CG item detail event when user is viewing their own consumer goods item detail', () => {
+        const mockCGItemDetail: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
+        mockCGItemDetail.item = MOCK_ITEM_GBP;
+        mockCGItemDetail.user = MOCK_USER;
+        itemDetailSubjectMock.next(mockCGItemDetail);
+        spyOn(analyticsService, 'trackPageView');
+        spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
+
+        fixture.detectChanges();
 
         expect(analyticsService.trackPageView).not.toHaveBeenCalledWith(viewOthersCGDetailEvent);
       });
