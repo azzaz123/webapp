@@ -33,7 +33,7 @@ import {
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
-import { finalize } from 'rxjs/operators';
+import { finalize, take } from 'rxjs/operators';
 import { Car } from '@core/item/car';
 
 @Component({
@@ -217,6 +217,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     this.userService
       .isProfessional()
       .pipe(
+        take(1),
         finalize(() => {
           this.analyticsService.trackPageView(event);
         })
