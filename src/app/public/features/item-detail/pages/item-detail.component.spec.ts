@@ -4,7 +4,7 @@ import { BehaviorSubject, of } from 'rxjs';
 import { DecimalPipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, DebugElement, Renderer2 } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AdsService } from '@core/ads/services';
@@ -63,6 +63,7 @@ import {
   FavoriteItem,
   SCREEN_IDS,
   UnfavoriteItem,
+  ViewOthersItemCarDetail,
   ViewOthersItemCGDetail,
   ViewOwnItemDetail,
 } from '@core/analytics/analytics-constants';
@@ -278,6 +279,27 @@ describe('ItemDetailComponent', () => {
         },
       };
 
+      const viewOthersCarEvent: AnalyticsPageView<ViewOthersItemCarDetail> = {
+        name: ANALYTICS_EVENT_NAMES.ViewOthersItemCarDetail,
+        attributes: {
+          itemId: MOCK_CAR.id,
+          categoryId: MOCK_CAR.categoryId,
+          salePrice: MOCK_CAR.salePrice,
+          brand: MOCK_CAR.brand,
+          model: MOCK_CAR.model,
+          year: MOCK_CAR.km,
+          gearbox: MOCK_CAR.gearbox,
+          engine: MOCK_CAR.engine,
+          colour: MOCK_CAR.color,
+          hp: MOCK_CAR.horsepower,
+          numDoors: MOCK_CAR.numDoors,
+          bodyType: MOCK_CAR.bodyType,
+          isCarDealer: true,
+          isPro: MOCK_CAR_ITEM_DETAIL.user.featured,
+          screenId: SCREEN_IDS.ItemDetail,
+        },
+      };
+
       it('should send view own item detail event if it is the same user', () => {
         itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
         spyOn(analyticsService, 'trackPageView');
@@ -320,7 +342,7 @@ describe('ItemDetailComponent', () => {
 
         component.ngOnInit();
 
-        expect(analyticsService.trackPageView).toHaveBeenCalledWith(viewOthersCarEvent);
+        expect(analyticsService.trackPageView).not.toHaveBeenCalledWith(viewOthersCarEvent);
       });
 
       it('should send view others CG item detail event when user is viewing others consumer goods item detail', () => {
