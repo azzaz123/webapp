@@ -332,6 +332,21 @@ describe('ItemDetailComponent', () => {
         expect(analyticsService.trackPageView).not.toHaveBeenCalledWith(viewOthersCarEvent);
       });
 
+      it('should send view others car event with false isCarDealer  if user is viewing others car but not a car dealer', () => {
+        const mockOthersCarDetail: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
+        mockOthersCarDetail.item = MOCK_CAR;
+        mockOthersCarDetail.user = MOCK_OTHER_USER;
+        itemDetailSubjectMock.next(mockOthersCarDetail);
+        const falseCareDEalerWithOthersCarEvent = { ...viewOthersCarEvent };
+        falseCareDEalerWithOthersCarEvent.attributes.isCarDealer = false;
+        spyOn(userService, 'isProfessional').and.returnValue(of(false));
+        spyOn(analyticsService, 'trackPageView');
+
+        component.ngOnInit();
+
+        expect(analyticsService.trackPageView).not.toHaveBeenCalledWith(falseCareDEalerWithOthersCarEvent);
+      });
+
       it('should not send view others car event if user is not viewing others car', () => {
         const mockOthersCarDetail: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
         mockOthersCarDetail.item = MOCK_CAR;
