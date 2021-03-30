@@ -11,7 +11,7 @@ export class MapRecommendedItemCardService {
   constructor(private uuidService: UuidService) {}
 
   public mapRecommendedItems(recommendedItems: RecommenderItem[]): ItemCard[] {
-    return recommendedItems.map((recommendedItem) => this.mapRecommendedItem(recommendedItem));
+    return recommendedItems?.map((recommendedItem) => this.mapRecommendedItem(recommendedItem));
   }
 
   private mapRecommendedItem(recommendedItem: RecommenderItem): ItemCard {
@@ -20,7 +20,7 @@ export class MapRecommendedItemCardService {
       ownerId: recommendedItem.seller_id,
       title: recommendedItem.title,
       salePrice: recommendedItem.price,
-      mainImage: recommendedItem.images.length ? this.getMainImage(recommendedItem.images[0]) : null,
+      mainImage: recommendedItem.images?.length ? this.getMainImage(recommendedItem.images[0]) : null,
       webSlug: recommendedItem.web_slug,
     };
   }
