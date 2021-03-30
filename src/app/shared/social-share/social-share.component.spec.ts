@@ -49,8 +49,6 @@ describe('SocialShareComponent', () => {
     component = fixture.componentInstance;
     de = fixture.debugElement;
     el = de.nativeElement;
-    component.item = MOCK_CAR;
-    component.user = MOCK_USER;
     fixture.detectChanges();
   });
 
@@ -109,14 +107,6 @@ describe('SocialShareComponent', () => {
 
         expect(socialShareService.facebookShare).toBeCalledWith(component.facebook.url);
       });
-
-      it('should send share item event after clicking facebook icon', () => {
-        spyOn(analyticsService, 'trackEvent');
-
-        facebookIconElement.click();
-
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith(shareItemEvent);
-      });
     });
 
     describe('When twitter data is passed', () => {
@@ -142,16 +132,6 @@ describe('SocialShareComponent', () => {
         twitterIconElement.click();
 
         expect(socialShareService.twitterShare).toBeCalledWith(component.twitter.url, component.twitter.text);
-      });
-
-      it('should send share item event after clicking twitter icon', () => {
-        spyOn(analyticsService, 'trackEvent');
-
-        twitterIconElement.click();
-
-        shareItemEvent.attributes.channel = 'twitter';
-
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith(shareItemEvent);
       });
     });
 
@@ -179,16 +159,6 @@ describe('SocialShareComponent', () => {
         emailIconElement.click();
 
         expect(socialShareService.emailShare).toBeCalledWith(component.email.url, component.email.subject, component.email.message);
-      });
-
-      it('should send share item event after clicking twitter icon', () => {
-        spyOn(analyticsService, 'trackEvent');
-
-        emailIconElement.click();
-
-        shareItemEvent.attributes.channel = 'email';
-
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith(shareItemEvent);
       });
     });
   });
