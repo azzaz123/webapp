@@ -57,7 +57,7 @@
                                 [isCar]="itemDetail.isItemACar"></tsl-item-specifications>
                         </div>
                         <div *ngIf="device === deviceType.MOBILE" class="ItemDetail__affiliation d-flex flex-column mb-0" [ngClass]="{'borderBottom': adsAffiliationsLoaded$ | async, 'py-3':  adsAffiliationsLoaded$ | async}">
-                          <tsl-sky *ngFor="let adAffiliation of adsAffiliationSlotConfiguration" class="d-block marginBottom" [adSlot]="adAffiliation"></tsl-sky>
+                          <tsl-sky *ngFor="let adAffiliation of adsAffiliationSlotConfiguration" class="d-block" [adSlot]="adAffiliation"></tsl-sky>
                         </div>
                             <p *ngIf="itemDetail.item.description" class="ItemDetail__description py-3 mb-0 text-break" [ngClass]="{'borderBottom': device !== deviceType.MOBILE}">{{itemDetail.item.description}}</p>
                             <div *ngIf="device === deviceType.MOBILE">

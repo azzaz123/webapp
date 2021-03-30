@@ -42,11 +42,6 @@ $item-detail-carousel-height: 477px;
   &__affiliation {
     tsl-sky {
       flex: 1;
-      &.marginBottom {
-        &:not(:last-child) {
-          margin-bottom: $spacing-m;
-        }
-      }
     }
   }
 
