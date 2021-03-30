@@ -160,16 +160,16 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
         };
         this.analyticsService.trackPageView(event);
       } else {
-        if (!this.typeCheckService.isRealEstate(item) || !this.typeCheckService.isCar(item)) {
-          this.trackViewOthersCGDetailEvent();
+        if (!this.typeCheckService.isRealEstate(itemDetail.item) || !this.typeCheckService.isCar(itemDetail.item)) {
+          this.trackViewOthersCGDetailEvent(itemDetail);
         }
       }
     });
   }
 
-  private trackViewOthersCGDetailEvent(): void {
-    const item = this.itemDetail.item;
-    const user = this.itemDetail.user;
+  private trackViewOthersCGDetailEvent(itemDetail: ItemDetail): void {
+    const item = itemDetail.item;
+    const user = itemDetail.user;
     const event: AnalyticsPageView<ViewOthersItemCGDetail> = {
       name: ANALYTICS_EVENT_NAMES.ViewOthersItemCGDetail,
       attributes: {
