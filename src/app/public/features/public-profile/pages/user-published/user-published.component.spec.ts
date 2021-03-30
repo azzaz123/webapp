@@ -10,7 +10,7 @@ import { PublicProfileService } from '../../core/services/public-profile.service
 import { ItemCardListModule } from '@public/shared/components/item-card-list/item-card-list.module';
 
 import { UserPublishedComponent } from './user-published.component';
-import { MapPublishedItemService } from './services/map-published-item.service';
+import { MapPublishedItemCardService } from '../../core/services/map-published-item-card/map-published-item-card.service';
 
 describe('UserPublishedComponent', () => {
   let component: UserPublishedComponent;
@@ -24,7 +24,7 @@ describe('UserPublishedComponent', () => {
       declarations: [UserPublishedComponent],
       providers: [
         PublicProfileService,
-        MapPublishedItemService,
+        MapPublishedItemCardService,
         CheckSessionService,
         PublicUserApiService,
         DeviceDetectorService,

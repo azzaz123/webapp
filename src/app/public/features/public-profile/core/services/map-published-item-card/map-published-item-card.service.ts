@@ -7,7 +7,7 @@ import { ItemCard } from '@public/shared/components/item-card/interfaces/item-ca
 @Injectable({
   providedIn: 'root',
 })
-export class MapPublishedItemService {
+export class MapPublishedItemCardService {
   constructor(private uuidService: UuidService) {}
 
   public mapPublishedItems(publishedItemsResponse: ItemResponse[]): ItemCard[] {
@@ -24,11 +24,12 @@ export class MapPublishedItemService {
       mainImage: this.getMainImage(publishedItemRespone.images, publishedItemRespone.image),
       flags: publishedItemRespone.flags,
       bumpFlags: publishedItemRespone.visibility_flags,
+      webSlug: publishedItemRespone.web_slug,
     };
   }
 
   private getMainImage(images: Image[], image: ItemContentImage): Image {
-    return images
+    return images?.length
       ? images[0]
       : {
           id: this.uuidService.getUUID(),

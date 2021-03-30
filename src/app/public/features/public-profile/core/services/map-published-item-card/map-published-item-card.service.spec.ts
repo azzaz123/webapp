@@ -1,13 +1,12 @@
 import { TestBed } from '@angular/core/testing';
+import { MapPublishedItemCardService } from './map-published-item-card.service';
 
-import { MapPublishedItemService } from './map-published-item.service';
-
-describe('MapPublishedItemService', () => {
-  let service: MapPublishedItemService;
+describe('MapPublishedItemCardService', () => {
+  let service: MapPublishedItemCardService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(MapPublishedItemService);
+    service = TestBed.inject(MapPublishedItemCardService);
   });
 
   it('should be created', () => {
