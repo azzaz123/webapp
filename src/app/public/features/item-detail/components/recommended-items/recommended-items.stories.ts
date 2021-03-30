@@ -7,9 +7,9 @@ import { CheckSessionModule } from '@public/core/directives/check-session/check-
 import { HttpModule } from '@core/http/http.module';
 import { CoreModule } from '@core/core.module';
 import { CommonModule } from '@angular/common';
-import { MapItemService } from '@public/core/services/map-item/map-item.service';
 import { CUSTOM_VIEWPORT_NAME } from '@storybook-config/viewports/custom-viewports';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MapRecommendedItemCardService } from '../../core/services/map-recommended-item-card/map-recommended-item-card.service';
 
 export default {
   title: 'Webapp/Public/Features/ItemDetail/Components/RecommendedItems',
@@ -22,7 +22,7 @@ const Template: Story<RecommendedItemsComponent> = (args: RecommendedItemsCompon
   moduleMetadata: {
     declarations: [RecommendedItemsComponent],
     imports: [CoreModule, HttpModule, ItemCardListModule, CheckSessionModule, CommonModule, RouterTestingModule],
-    providers: [DeviceDetectorService, MapItemService],
+    providers: [DeviceDetectorService, MapRecommendedItemCardService],
   },
   template: '<tsl-recommended-items [recommendedItems]="recommendedItems" showDescription="false"></tsl-recommended-items>',
 });

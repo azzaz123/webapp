@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { MapItemService } from '@public/core/services/map-item/map-item.service';
+import { MapRecommendedItemCardService } from '../../core/services/map-recommended-item-card/map-recommended-item-card.service';
 import { RECOMMENDED_ITEMS_MOCK, RECOMMENDED_ITEM_MOCK } from './constants/recommended-items.fixtures.spec';
 import { RecommendedItemsComponent } from './recommended-items.component';
 
@@ -13,7 +13,7 @@ describe('RecommendedItemsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [RecommendedItemsComponent],
-      providers: [MapItemService],
+      providers: [MapRecommendedItemCardService],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
