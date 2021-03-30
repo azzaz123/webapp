@@ -33,6 +33,7 @@ import {
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
+import { Realestate } from '@core/item/realestate';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -161,10 +162,12 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
         };
         this.analyticsService.trackPageView(event);
       } else {
+        if (this.typeCheckService.isRealEstate(itemDetail.item)) {
+          this.trackViewOthersItemREDetailEvent(itemDetail);
+        }
         if (!this.typeCheckService.isRealEstate(itemDetail.item) || !this.typeCheckService.isCar(itemDetail.item)) {
           this.trackViewOthersCGDetailEvent(itemDetail);
         }
-        this.trackViewOthersItemREDetailEvent();
       }
     });
   }
@@ -186,8 +189,9 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     this.analyticsService.trackPageView(event);
   }
 
-  private trackViewOthersItemREDetailEvent(item = this.itemDetail.item, itemDetailUser = this.itemDetail.user): void {
-    if (!this.typeCheckService.isRealEstate(item)) return;
+  private trackViewOthersItemREDetailEvent(itemDetail: ItemDetail): void {
+    const item = itemDetail.item as Realestate;
+    const user = itemDetail.user;
     const event: AnalyticsPageView<ViewOthersItemREDetail> = {
       name: ANALYTICS_EVENT_NAMES.ViewOthersItemREDetail,
       attributes: {
@@ -200,7 +204,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
         condition: item.condition,
         surface: item.surface,
         rooms: item.rooms,
-        isPro: itemDetailUser.featured,
+        isPro: user.featured,
         screenId: SCREEN_IDS.ItemDetail,
       },
     };
