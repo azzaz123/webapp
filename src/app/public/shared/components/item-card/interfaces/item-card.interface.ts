@@ -10,4 +10,5 @@ export interface ItemCard {
   mainImage: Image;
   flags: ItemFlags;
   bumpFlags: ItemVisibilityFlags;
+  webSlug: string;
 }

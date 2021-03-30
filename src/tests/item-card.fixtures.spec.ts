@@ -11,4 +11,5 @@ export const MOCK_ITEM_CARD: ItemCard = {
   mainImage: ITEM_DATA.main_image,
   flags: ITEM_DATA.flags,
   bumpFlags: ITEM_BUMP_FLAGS,
+  webSlug: ITEM_DATA.web_slug,
 };
