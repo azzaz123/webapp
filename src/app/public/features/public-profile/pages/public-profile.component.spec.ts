@@ -36,11 +36,9 @@ describe('PublicProfileComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            snapshot: {
-              paramMap: {
-                get: () => 'user-generic-123',
-              },
-            },
+            params: of({
+              webSlug: 'user-generic-123',
+            }),
           },
         },
         {
@@ -153,7 +151,7 @@ describe('PublicProfileComponent', () => {
 
     describe('when NOT have the user id..', () => {
       beforeEach(() => {
-        spyOn(route.snapshot.paramMap, 'get').and.returnValue(undefined);
+        route.params = of({});
       });
 
       it('should NOT show the page', () => {

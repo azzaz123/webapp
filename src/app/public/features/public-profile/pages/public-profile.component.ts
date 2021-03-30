@@ -40,10 +40,12 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    const webSlug = this.route.snapshot.paramMap.get(PUBLIC_PATH_PARAMS.WEBSLUG);
-    const userUUID = this.slugsUtilService.getUUIDfromSlug(webSlug);
+    this.route.params.subscribe((params) => {
+      const webSlug = params[PUBLIC_PATH_PARAMS.WEBSLUG];
+      const userUUID = this.slugsUtilService.getUUIDfromSlug(webSlug);
+      this.getUser(userUUID);
+    });
 
-    this.getUser(userUUID);
     this.isMobile = this.deviceService.isMobile();
     this.adsService.setSlots([this.adSlot]);
   }
