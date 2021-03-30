@@ -276,7 +276,7 @@ describe('ItemDetailComponent', () => {
       it('should not send view own item detail event if it is not the same user', () => {
         itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
         spyOn(analyticsService, 'trackPageView');
-        spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
+        spyOn(userService, 'me').and.returnValue(of(new User(OTHER_USER_ID)));
 
         component.ngOnInit();
         fixture.detectChanges();
