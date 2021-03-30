@@ -4,7 +4,7 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
-import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
+import { ITEM_BUMP_FLAGS, MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
 import { FavouriteIconModule } from '@public/shared/components/favourite-icon/favourite-icon.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
@@ -31,6 +31,7 @@ describe('ItemCardComponent', () => {
     de = fixture.debugElement;
     el = de.nativeElement;
     component.item = MOCK_ITEM;
+    component.item.bumpFlags = ITEM_BUMP_FLAGS;
     fixture.detectChanges();
   });
 
@@ -98,7 +99,7 @@ describe('ItemCardComponent', () => {
 
     describe('when is bumped', () => {
       beforeEach(() => {
-        component.item.flags.bumped = true;
+        component.item.bumpFlags.bumped = true;
         fixture.detectChanges();
       });
 
@@ -109,7 +110,7 @@ describe('ItemCardComponent', () => {
 
     describe('when is bumped and reserved', () => {
       beforeEach(() => {
-        component.item.flags.bumped = true;
+        component.item.bumpFlags.bumped = true;
         component.item.flags.reserved = true;
         fixture.detectChanges();
       });
@@ -124,7 +125,7 @@ describe('ItemCardComponent', () => {
 
     describe('when is NOT bumped', () => {
       beforeEach(() => {
-        component.item.flags.bumped = false;
+        component.item.bumpFlags.bumped = false;
         fixture.detectChanges();
       });
 
@@ -186,29 +187,13 @@ describe('ItemCardComponent', () => {
     });
   });
 
-  describe('when we click on the item...', () => {
-    it('should emit the item click event', fakeAsync(() => {
-      spyOn(component.itemClick, 'emit');
-      spyOn(component.toggleFavourite, 'emit');
-      const itemCard = fixture.debugElement.nativeElement.querySelector('.ItemCard');
-
-      itemCard.click();
-      tick();
-
-      expect(component.itemClick.emit).toHaveBeenCalled();
-      expect(component.toggleFavourite.emit).not.toHaveBeenCalled();
-    }));
-  });
-
   describe(`when we click on the item's favourite icon`, () => {
     it('should emit the toggle favourite click event', () => {
-      spyOn(component.itemClick, 'emit');
       spyOn(component.toggleFavourite, 'emit');
       const favouriteIcon = fixture.debugElement.query(By.directive(FavouriteIconComponent)).nativeElement;
 
       favouriteIcon.click();
 
-      expect(component.itemClick.emit).not.toHaveBeenCalled();
       expect(component.toggleFavourite.emit).toHaveBeenCalled();
     });
   });

@@ -1,0 +1,41 @@
+<div class="review-item row">
+  <div class="images-container">
+    <div class="review-image">
+      <ng-container *ngIf="review.item?.image; else categoryIcon">
+        <a href="{{ itemWebLink }}" target="_blank" tslsanitizedBackground="{{ review.item?.image.small }}" [fallback]="fallback" class="image"></a>
+      </ng-container>
+      <ng-template #categoryIcon>
+        <ng-container *ngIf="category?.icon_id as categoryIcon; else defaultImage">
+          <tsl-svg-icon src="/assets/icons/categories/normal/{{categoryIcon}}.svg"></tsl-svg-icon>
+        </ng-container>
+      </ng-template>
+      <ng-template #defaultImage>
+        <img src="{{ fallback }}" class="image"/>
+      </ng-template>
+    </div>
+    <a href="{{ userWebSlug }}" target="_blank" class="avatar">
+      <tsl-user-avatar  *ngIf="review.user" [user]="review.user" size="40"></tsl-user-avatar>
+    </a>
+  </div>
+  <div class="info">
+    <div class="review-type">
+      <span *ngIf="review.isSold">{{ reviewItemCopys.soldCopy }}:</span>
+      <span *ngIf="review.isBought">{{ reviewItemCopys.boughtCopy }}:</span>
+    </div>
+    <div class="review-title">
+      <a *ngIf="review.item?.id" href="{{ itemWebLink }}" target="_blank"> {{ review.item.title }} </a>
+      <span *ngIf="!review.item?.id && category?.name as categoryName">
+         {{ categoryName }} 
+      </span>
+      <span *ngIf="!review.item?.id && !category?.name" i18n="@@WallapopItem">A Wallapop item</span>
+    </div>
+    <tsl-stars class="review-rating" [stars]="review.scoring" [normalized]="false"></tsl-stars>
+    <p class="review-comment">{{ review.comments }}</p>
+    <div class="review-credits">
+      <span i18n>Posted by</span>
+      <span *ngIf="review.user"><a href="{{ userWebSlug }}" target="_blank" class="review-microname">{{ review.user.microName }}</a></span>
+      <span *ngIf="!review.user" i18n="@@WallapopUser">a Wallapop user</span>
+      <span i18n>on</span><span> {{ review.date | date:'longDate' }}</span>
+    </div>
+  </div>
+</div>

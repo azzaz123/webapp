@@ -47,7 +47,12 @@ $item-flag-height: 38px;
 
   &--hideControllers {
     ::ng-deep .carousel-control-prev,
-    ::ng-deep .carousel-control-next,
+    ::ng-deep .carousel-control-next {
+      display: none;
+    }
+  }
+
+  &--hideIndicators {
     ::ng-deep .carousel-indicators li {
       display: none;
     }

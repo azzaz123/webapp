@@ -1,0 +1,17 @@
+@import '~style/common';
+
+.ItemExtraInfo {
+  font-size: $font-size-s;
+
+  label {
+    min-width: max-content;
+  }
+
+  > :not(:last-child) {
+    margin-right: $spacing-xs;
+
+    &::after {
+      content: ' · ';
+    }
+  }
+}

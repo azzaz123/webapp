@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnDestroy, Output, QueryList, ViewChildren } from '@angular/core';
 import { FilterConfig } from '../../interfaces/filter-config.interface';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
@@ -13,17 +13,25 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./filter-group.component.scss'],
 })
 export class FilterGroupComponent implements AfterViewInit, OnDestroy {
-  @ViewChildren(FilterHostDirective) query: QueryList<FilterHostDirective>;
-  @Input() initialValues: FilterParameter[];
+  @ViewChildren(FilterHostDirective) filterHosts: QueryList<FilterHostDirective>;
+  @Input()
+  set values(values: FilterParameter[]) {
+    this._values = values;
+    if (this.filterGroup) {
+      this.setValues();
+    }
+  }
   @Input() config: FilterConfig<unknown>[] = [];
   @Input() variant: FILTER_VARIANT = FILTER_VARIANT.BUBBLE;
   @Output() valueChange = new EventEmitter<FilterParameter[]>();
   @Output() openStateChange = new EventEmitter<boolean>();
+  @Output() clear = new EventEmitter<FilterParameter[]>();
 
   readonly FILTER_VARIANT = FILTER_VARIANT;
 
   private filterGroup: FilterGroup;
   private filterGroupSubscriptions: Subscription[] = [];
+  private _values: FilterParameter[] = [];
 
   constructor(private filterFactory: FilterFactoryService) {}
 
@@ -41,10 +49,20 @@ export class FilterGroupComponent implements AfterViewInit, OnDestroy {
         this.openStateChange.emit(isOpen);
       })
     );
+
+    this.filterGroupSubscriptions.push(
+      this.filterGroup.clear().subscribe((value: FilterParameter[]) => {
+        this.clear.emit(value);
+      })
+    );
   }
 
   private insertFilters(): void {
-    this.filterFactory.insertFilters(this.config, this.initialValues, this.variant, this.query);
+    this.filterFactory.insertFilters(this.config, this._values, this.variant, this.filterHosts);
+  }
+
+  private setValues(): void {
+    this.filterGroup.setValue(this._values);
   }
 
   ngOnDestroy(): void {

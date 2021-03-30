@@ -1,3 +1,4 @@
+import { ANALYTICS_EVENT_NAMES } from '@core/analytics/analytics-constants';
 import { FooterLinkSection, FooterIcon } from '../interfaces/footer.interface';
 
 export const FOOTER_LINKS: FooterLinkSection[] = [
@@ -67,6 +68,16 @@ export const FOOTER_LINKS: FooterLinkSection[] = [
       {
         label: $localize`:@@FooterLinksProfessionalLabel:Professional`,
         href: $localize`:@@FooterLinksProfessionalHref:https://about.wallapop.com/motor/`,
+      },
+    ],
+  },
+  {
+    title: $localize`:@@FooterLinksWallapopProTitle:Wallapop Pro`,
+    links: [
+      {
+        label: $localize`:@@FooterLinksLandingProLabel:Boost your business`,
+        href: $localize`:@@FooterLinksLandingProHref:https://novedades.wallapop.com/wallapop-pro/`,
+        trackEvent: ANALYTICS_EVENT_NAMES.ClickProInfo,
       },
     ],
   },

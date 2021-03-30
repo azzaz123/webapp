@@ -627,6 +627,17 @@
   <translation id="6543433128416987560">Reservado</translation>
 
   <!--Translations using keys-->
+  <translation id="SoldOutside">Lo he vendido fuera de Wallapop</translation>
+  <translation id="WallapopProfileSpotDescription">Este es el punto donde está ubicado tu perfil de Wallapop y en él aparecerán todos tus productos.</translation>
+  <translation id="WallapopItem">Un producto de Wallapop</translation>
+  <translation id="WallapopUser">un usuario de Wallapop</translation>
+  <translation id="WallapopProductsLikeMost">Estos son los productos de Wallapop que más te gustan</translation>
+  <translation id="WallapopProfilesLikeMost">Estos son los perfiles de Wallapop que más te gustan.</translation>
+  <translation id="CarPlanDescription">Cada plan te permite tener publicados hasta un número máximo de coches en la app y web de Wallapop.</translation>
+  <translation id="ChangeSubscriptionInstruction">Para cambiar la suscripción, accede a la app store y cancela la suscripción actual. Luego, contrata la nueva suscripción desde tu perfil de Wallapop.</translation>
+  <translation id="ContinueSubscriptionTitle">¿Quieres seguir suscrito a Wallapop PRO <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph>?</translation>
+  <translation id="WallapopProDiscountInfo">El COVID-19 nos está afectando a todos. Para paliar esta situación, queremos informarte de que, como usuario de Wallapop PRO, te ofrecemos un mes de suscripción gratis. ¿Qué tienes que hacer?</translation>
+  <translation id="WallapopProSubscriptionSubTitle">Gestiona tus suscripciones a Wallapop PRO para vender más.</translation>
   <translation id="cardealerUpgradePlanContact">Para actualizar tu plan, llámanos al <ph name="INTERPOLATION"/> o envíanos un email a <ph name="START_LINK"/><ph name="INTERPOLATION_1"/><ph name="CLOSE_LINK"/></translation>
   <translation id="cardealerSubscribeCityPlan">Para subscribirte a un plan de ciudad, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph><ph name="INTERPOLATION_1"><ex>{{email}}</ex>{{email}}</ph><ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
   <translation id="cardealerChangeCityPlan">Para cambiar tu plan de ciudad, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph><ph name="INTERPOLATION_1"><ex>{{email}}</ex>{{email}}</ph><ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
@@ -832,6 +843,9 @@
   <translation id="FooterLinksParticularHref">https://about.wallapop.com/cars-buyer/</translation>
   <translation id="FooterLinksProfessionalLabel">Profesional</translation>
   <translation id="FooterLinksProfessionalHref">https://about.wallapop.com/motor/</translation>
+  <translation id="FooterLinksWallapopProTitle">Wallapop PRO</translation>
+  <translation id="FooterLinksLandingProLabel">Impulsa tu negocio</translation>
+  <translation id="FooterLinksLandingProHref">https://novedades.wallapop.com/wallapop-pro/</translation>
   <translation id="FooterCopyright">Copyright © <ph name="INTERPOLATION"/> Wallapop © de sus respectivos propietarios</translation>
   <translation id="FooterSocialFacebookLabel">Wallapop, la web y app para comprar y vender, también está en Facebook</translation>
   <translation id="FooterSocialTwitterLabel">Wallapop, la web y app para comprar y vender, también está en Twitter</translation>
@@ -955,4 +969,8 @@
   <translation id="Condition_AsGoodAsNew">Como nuevo</translation>
   <translation id="Condition_Fair">En condiciones aceptables</translation>
   <translation id="Condition_HasGivenItAll">Puede que toque repararlo</translation>
+  <translation id="OwnReviewSold">Vendiste</translation>
+  <translation id="OwnReviewBought">Compraste</translation>
+  <translation id="ReviewSold">Vendió</translation>
+  <translation id="ReviewBought">Compró</translation>
 </translationbundle>
