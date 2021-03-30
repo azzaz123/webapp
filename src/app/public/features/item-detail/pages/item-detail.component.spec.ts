@@ -326,9 +326,11 @@ describe('ItemDetailComponent', () => {
         spyOn(analyticsService, 'trackPageView');
 
         component.ngOnInit();
+        fixture.detectChanges();
 
         expect(analyticsService.trackPageView).toHaveBeenCalledWith(viewOthersRetailEvent);
       });
+
       it('should send view others CG item detail event when user is viewing others consumer goods item detail', () => {
         const mockCGItemDetail: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
         mockCGItemDetail.item = MOCK_ITEM_GBP;
@@ -363,7 +365,7 @@ describe('ItemDetailComponent', () => {
         fixture.detectChanges();
 
         expect(analyticsService.trackPageView).not.toHaveBeenCalledWith(viewOthersCGDetailEvent);
-
+      });
 
       it('should ask for item data', () => {
         spyOn(itemDetailStoreService, 'initializeItemAndFlags');
