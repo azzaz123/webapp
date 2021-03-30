@@ -973,4 +973,8 @@
   <translation id="OwnReviewBought">Compraste</translation>
   <translation id="ReviewSold">Vendió</translation>
   <translation id="ReviewBought">Compró</translation>
+  <translation id="SuggestProModalescriptionTrial">Prueba gratis Wallapop PRO y descubre todas sus ventajas.</translation>
+  <translation id="SuggestProModalescriptionPlans">Elige un plan y aprovecha los beneficios de Wallapop PRO.</translation>
+  <translation id="SuggestProModalButtonCancel">Ahora no, gracias</translation>
+  <translation id="SuggestProModalTitle">Si fueses PRO tus productos nunca quedarían inactivos. ¿Lo sabías?</translation>
 </translationbundle>
