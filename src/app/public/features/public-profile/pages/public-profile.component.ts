@@ -98,7 +98,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
 
   private initializeFavouriteUser(): void {
     this.isCurrentUserPipe.transform(this.userId).subscribe((isOurOwnUser: boolean) => {
-      if (isOurOwnUser) {
+      if (!isOurOwnUser) {
         this.getFavouriteUser();
       }
     });
