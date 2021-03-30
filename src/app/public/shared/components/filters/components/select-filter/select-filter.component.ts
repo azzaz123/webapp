@@ -10,6 +10,7 @@ import { SelectFilterConfig } from './interfaces/select-filter-config.interface'
 import { FormControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { ComplexSelectValue } from '@shared/form/components/select/types/complex-select-value';
+import { FilterOptionService } from '@public/shared/services/filter-option/filter-option.service';
 
 @Component({
   selector: 'tsl-option-select-filter',
@@ -32,10 +33,14 @@ export class SelectFilterComponent extends AbstractSelectFilter<SelectFilterPara
 
   private subscriptions = new Subscription();
 
+  public constructor(private optionService: FilterOptionService) {
+    super();
+  }
+
   public ngOnInit(): void {
     super.ngOnInit();
-    super
-      .getOptions()
+    this.optionService
+      .getOptions(this.config.id)
       .pipe(take(1))
       .subscribe((options) => (this.options = options));
     this.initForm();
