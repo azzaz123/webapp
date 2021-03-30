@@ -118,9 +118,9 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
           this.setAdSlot(itemDetail.item);
           this.initializeItemRecommendations(itemId, itemDetail.item.categoryId);
           this.itemSocialShareService.initializeItemMetaTags(itemDetail.item);
+          this.trackViewEvents(itemDetail);
         }
         this.itemDetail = itemDetail;
-        this.trackViewEvents();
       })
     );
   }
@@ -141,11 +141,11 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     return CATEGORIES_WITH_RECOMMENDATIONS.includes(itemCategoryId);
   }
 
-  private trackViewEvents(): void {
-    const item = this.itemDetail.item;
-    const itemDetailUser = this.itemDetail.user;
-    this.userService.me().subscribe((user: User) => {
-      if (this.itemDetail.user.id === user.id) {
+  private trackViewEvents(itemDetail: ItemDetail): void {
+    const item = itemDetail.item;
+    const user = itemDetail.user;
+    this.userService.me().subscribe((userMe: User) => {
+      if (user.id === userMe.id) {
         const event: AnalyticsPageView<ViewOwnItemDetail> = {
           name: ANALYTICS_EVENT_NAMES.ViewOwnItemDetail,
           attributes: {
@@ -153,7 +153,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
             categoryId: item.categoryId,
             salePrice: item.salePrice,
             title: item.title,
-            isPro: itemDetailUser.featured,
+            isPro: user.featured,
             screenId: SCREEN_IDS.ItemDetail,
             isActive: !item.flags?.onhold,
           },
