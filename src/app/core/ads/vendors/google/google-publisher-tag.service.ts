@@ -25,7 +25,7 @@ export class GooglePublisherTagService {
 
   private adSlotsLoadedSubject: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
 
-  get adSlotsLoaded$(): Observable<string[]> {
+  private get adSlotsLoaded$(): Observable<string[]> {
     return this.adSlotsLoadedSubject.asObservable();
   }
 
@@ -45,13 +45,7 @@ export class GooglePublisherTagService {
       this.definedSlots(adSlots);
       this.setPubads();
       this.googletag.enableServices();
-      this.googletag.pubads().addEventListener('slotOnload', (event) => {
-        const slotsName: string[] = this.adSlotsLoadedSubject.getValue();
-        const slotName = event.slot.getAdUnitPath();
-        slotsName.push(slotName);
-        const newSlotsName: string[] = [...new Set(slotsName).values()];
-        this.adSlotsLoadedSubject.next(newSlotsName);
-      });
+      this.googletag.pubads().addEventListener('slotOnload', (event: googletag.events.Event) => this.onSlotLoad(event));
     });
   }
 
@@ -139,5 +133,13 @@ export class GooglePublisherTagService {
             .addService(this.googletag.pubads());
         }
       });
+  }
+
+  private onSlotLoad(event: googletag.events.Event) {
+    const slotsName: string[] = this.adSlotsLoadedSubject.getValue();
+    const slotName = event.slot.getAdUnitPath();
+    slotsName.push(slotName);
+    const newSlotsName: string[] = [...new Set(slotsName).values()];
+    this.adSlotsLoadedSubject.next(newSlotsName);
   }
 }
