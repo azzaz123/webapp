@@ -6,6 +6,7 @@ import { DeviceService } from '@core/device/device.service';
 import { User } from '@core/user/user';
 import { Image, UserFavourited } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
+import { IsCurrentUserPipe } from '@public/core/pipes/is-current-user/is-current-user.pipe';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { APP_PATHS } from 'app/app-routing-constants';
 import { forkJoin, Subscription } from 'rxjs';
@@ -35,7 +36,8 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     private publicProfileService: PublicProfileService,
     private router: Router,
     private deviceService: DeviceService,
-    private adsService: AdsService
+    private adsService: AdsService,
+    private isCurrentUserPipe: IsCurrentUserPipe
   ) {}
 
   ngOnInit(): void {
@@ -52,6 +54,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     this.userId = this.route.snapshot.paramMap.get(PUBLIC_PATH_PARAMS.ID);
     if (this.userId) {
       this.getUserInfoAndStats();
+      this.initializeFavouriteUser();
     }
   }
 
@@ -63,10 +66,6 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
         .pipe(
           finalize(() => {
             this.handleCoverImage();
-            // TODO: change to when is not our own user		Date: 2021/03/29
-            if (true) {
-              this.getFavouriteUser();
-            }
           })
         )
         .subscribe(
@@ -95,6 +94,14 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
       .subscribe((coverImage: Image) => {
         this.userInfo.coverImage = coverImage;
       });
+  }
+
+  private initializeFavouriteUser(): void {
+    this.isCurrentUserPipe.transform(this.userId).subscribe((isOurOwnUser: boolean) => {
+      if (isOurOwnUser) {
+        this.getFavouriteUser();
+      }
+    });
   }
 
   private getFavouriteUser(): void {
