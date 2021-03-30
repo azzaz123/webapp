@@ -1,51 +1,37 @@
-import { Item } from '@core/item/item';
 import { ITEM_DATA, MOCK_ITEM } from '@fixtures/item.fixtures.spec';
+import { ItemCard } from './interfaces/item-card.interface';
 
 export const MOCK_ITEM_1 = MOCK_ITEM;
 
 MOCK_ITEM_1.mainImage.urls_by_size = {
-  original: 'http://cdn-dock149.wallapop.com/images/10420/2q/__/c10420p128002/i144005.jpg?pictureSize=ORIGINAL',
-  small: 'http://cdn-dock149.wallapop.com/images/10420/2q/__/c10420p128002/i144005.jpg?pictureSize=W320',
-  large: 'http://cdn-dock149.wallapop.com/images/10420/2q/__/c10420p128002/i144005.jpg?pictureSize=W800',
-  medium: 'http://cdn-dock149.wallapop.com/images/10420/2q/__/c10420p128002/i144005.jpg?pictureSize=W640',
-  xlarge: 'http://cdn-dock149.wallapop.com/images/10420/2q/__/c10420p128002/i144005.jpg?pictureSize=W1024',
+  original: 'http://localhost:6006/images/item-camera.jpg',
+  small: 'http://localhost:6006/images/item-camera.jpg',
+  large: 'http://localhost:6006/images/item-camera.jpg',
+  medium: 'http://localhost:6006/images/item-camera.jpg',
+  xlarge: 'http://localhost:6006/images/item-camera.jpg',
 };
 
-export const MOCK_ITEM_2 = new Item(
-  ITEM_DATA.id,
-  ITEM_DATA.legacy_id,
-  ITEM_DATA.owner,
-  'Title max chars, title max chars, title max chars.',
-  'Long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max ch',
-  ITEM_DATA.category_id,
-  ITEM_DATA.location,
-  ITEM_DATA.sale_price,
-  ITEM_DATA.currency_code,
-  ITEM_DATA.modified_date,
-  ITEM_DATA.url,
-  ITEM_DATA.flags,
-  ITEM_DATA.actions_allowed,
-  ITEM_DATA.sale_conditions,
-  ITEM_DATA.main_image,
-  ITEM_DATA.images,
-  ITEM_DATA.web_slug,
-  ITEM_DATA.published_date,
-  ITEM_DATA.delivery_info
-);
+export const MOCK_ITEM_2: ItemCard = {
+  id: ITEM_DATA.id,
+  ownerId: ITEM_DATA.owner,
+  title: 'Title max chars, title max chars, title max chars.',
+  description:
+    'Long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max ch',
+  salePrice: ITEM_DATA.sale_price,
+  mainImage: ITEM_DATA.main_image,
+  flags: ITEM_DATA.flags,
+  webSlug: ITEM_DATA.web_slug,
+  currencyCode: ITEM_DATA.currency_code,
+};
 
-export const MOCK_ITEM_3 = new Item(
-  ITEM_DATA.id,
-  ITEM_DATA.legacy_id,
-  ITEM_DATA.owner,
-  ITEM_DATA.title,
-  ITEM_DATA.description,
-  ITEM_DATA.category_id,
-  ITEM_DATA.location,
-  ITEM_DATA.sale_price,
-  ITEM_DATA.currency_code,
-  ITEM_DATA.modified_date,
-  ITEM_DATA.url,
-  {
+export const MOCK_ITEM_3: ItemCard = {
+  id: ITEM_DATA.id,
+  ownerId: ITEM_DATA.owner,
+  title: ITEM_DATA.title,
+  description: ITEM_DATA.description,
+  salePrice: ITEM_DATA.sale_price,
+  mainImage: ITEM_DATA.main_image,
+  flags: {
     pending: false,
     banned: false,
     expired: false,
@@ -54,28 +40,18 @@ export const MOCK_ITEM_3 = new Item(
     reserved: false,
     bumped: false,
   },
-  ITEM_DATA.actions_allowed,
-  ITEM_DATA.sale_conditions,
-  ITEM_DATA.main_image,
-  ITEM_DATA.images,
-  ITEM_DATA.web_slug,
-  ITEM_DATA.published_date,
-  ITEM_DATA.delivery_info
-);
+  webSlug: ITEM_DATA.web_slug,
+  currencyCode: ITEM_DATA.currency_code,
+};
 
-export const MOCK_ITEM_4 = new Item(
-  ITEM_DATA.id,
-  ITEM_DATA.legacy_id,
-  ITEM_DATA.owner,
-  ITEM_DATA.title,
-  ITEM_DATA.description,
-  ITEM_DATA.category_id,
-  ITEM_DATA.location,
-  ITEM_DATA.sale_price,
-  ITEM_DATA.currency_code,
-  ITEM_DATA.modified_date,
-  ITEM_DATA.url,
-  {
+export const MOCK_ITEM_4: ItemCard = {
+  id: ITEM_DATA.id,
+  ownerId: ITEM_DATA.owner,
+  title: ITEM_DATA.title,
+  description: ITEM_DATA.description,
+  salePrice: ITEM_DATA.sale_price,
+  mainImage: ITEM_DATA.main_image,
+  flags: {
     pending: false,
     banned: false,
     expired: false,
@@ -84,28 +60,18 @@ export const MOCK_ITEM_4 = new Item(
     reserved: true,
     bumped: false,
   },
-  ITEM_DATA.actions_allowed,
-  ITEM_DATA.sale_conditions,
-  ITEM_DATA.main_image,
-  ITEM_DATA.images,
-  ITEM_DATA.web_slug,
-  ITEM_DATA.published_date,
-  ITEM_DATA.delivery_info
-);
+  webSlug: ITEM_DATA.web_slug,
+  currencyCode: ITEM_DATA.currency_code,
+};
 
-export const MOCK_ITEM_5 = new Item(
-  ITEM_DATA.id,
-  ITEM_DATA.legacy_id,
-  ITEM_DATA.owner,
-  ITEM_DATA.title,
-  ITEM_DATA.description,
-  ITEM_DATA.category_id,
-  ITEM_DATA.location,
-  ITEM_DATA.sale_price,
-  ITEM_DATA.currency_code,
-  ITEM_DATA.modified_date,
-  ITEM_DATA.url,
-  {
+export const MOCK_ITEM_5: ItemCard = {
+  id: ITEM_DATA.id,
+  ownerId: ITEM_DATA.owner,
+  title: ITEM_DATA.title,
+  description: ITEM_DATA.description,
+  salePrice: ITEM_DATA.sale_price,
+  mainImage: ITEM_DATA.main_image,
+  flags: {
     pending: false,
     banned: false,
     expired: false,
@@ -114,60 +80,37 @@ export const MOCK_ITEM_5 = new Item(
     reserved: false,
     bumped: false,
   },
-  ITEM_DATA.actions_allowed,
-  ITEM_DATA.sale_conditions,
-  ITEM_DATA.main_image,
-  ITEM_DATA.images,
-  ITEM_DATA.web_slug,
-  ITEM_DATA.published_date,
-  ITEM_DATA.delivery_info
-);
+  webSlug: ITEM_DATA.web_slug,
+  currencyCode: ITEM_DATA.currency_code,
+};
 
-export const MOCK_ITEM_6 = new Item(
-  ITEM_DATA.id,
-  ITEM_DATA.legacy_id,
-  ITEM_DATA.owner,
-  ITEM_DATA.title,
-  ITEM_DATA.description,
-  ITEM_DATA.category_id,
-  ITEM_DATA.location,
-  ITEM_DATA.sale_price,
-  ITEM_DATA.currency_code,
-  ITEM_DATA.modified_date,
-  ITEM_DATA.url,
-  ITEM_DATA.flags,
-  ITEM_DATA.actions_allowed,
-  ITEM_DATA.sale_conditions,
-  ITEM_DATA.main_image,
-  ITEM_DATA.images,
-  ITEM_DATA.web_slug,
-  ITEM_DATA.published_date,
-  ITEM_DATA.delivery_info,
-  null,
-  null,
-  null,
-  null,
-  {
+export const MOCK_ITEM_6: ItemCard = {
+  id: ITEM_DATA.id,
+  ownerId: ITEM_DATA.owner,
+  title: ITEM_DATA.title,
+  description: ITEM_DATA.description,
+  salePrice: ITEM_DATA.sale_price,
+  mainImage: ITEM_DATA.main_image,
+  flags: ITEM_DATA.flags,
+  bumpFlags: {
     bumped: true,
     highlighted: false,
     urgent: false,
     country_bumped: false,
     boosted: false,
-  }
-);
-export const MOCK_ITEM_7 = new Item(
-  ITEM_DATA.id,
-  ITEM_DATA.legacy_id,
-  ITEM_DATA.owner,
-  ITEM_DATA.title,
-  ITEM_DATA.description,
-  ITEM_DATA.category_id,
-  ITEM_DATA.location,
-  ITEM_DATA.sale_price,
-  ITEM_DATA.currency_code,
-  ITEM_DATA.modified_date,
-  ITEM_DATA.url,
-  {
+  },
+  webSlug: ITEM_DATA.web_slug,
+  currencyCode: ITEM_DATA.currency_code,
+};
+
+export const MOCK_ITEM_7: ItemCard = {
+  id: ITEM_DATA.id,
+  ownerId: ITEM_DATA.owner,
+  title: ITEM_DATA.title,
+  description: ITEM_DATA.description,
+  salePrice: ITEM_DATA.sale_price,
+  mainImage: ITEM_DATA.main_image,
+  flags: {
     pending: false,
     banned: false,
     expired: false,
@@ -176,22 +119,13 @@ export const MOCK_ITEM_7 = new Item(
     reserved: true,
     bumped: false,
   },
-  ITEM_DATA.actions_allowed,
-  ITEM_DATA.sale_conditions,
-  ITEM_DATA.main_image,
-  ITEM_DATA.images,
-  ITEM_DATA.web_slug,
-  ITEM_DATA.published_date,
-  ITEM_DATA.delivery_info,
-  null,
-  null,
-  null,
-  null,
-  {
+  bumpFlags: {
     bumped: true,
     highlighted: false,
     urgent: false,
     country_bumped: false,
     boosted: false,
-  }
-);
+  },
+  webSlug: ITEM_DATA.web_slug,
+  currencyCode: ITEM_DATA.currency_code,
+};
