@@ -46,11 +46,11 @@ export class MockFilterOptionService implements Partial<FilterOptionService> {
         return of([
           {
             value: 'male',
-            label: $localize`:@@FilterOptionGender_male:Male`,
+            label: 'Male',
           },
           {
             value: 'female',
-            label: $localize`:@@FilterOptionGender_female:Female`,
+            label: 'Female',
           },
         ]);
       default:

@@ -92,11 +92,11 @@ describe('SelectorFilterComponent', () => {
       expect(component.options).toEqual([
         {
           value: 'male',
-          label: $localize`:@@FilterOptionGender_male:Male`,
+          label: 'Male',
         },
         {
           value: 'female',
-          label: $localize`:@@FilterOptionGender_female:Female`,
+          label: 'Female',
         },
       ]);
     });
@@ -161,7 +161,7 @@ describe('SelectorFilterComponent', () => {
               value: 'male',
             },
           ]);
-          expect(filterTemplate.label).toEqual($localize`:@@FilterOptionGender_male:Male`);
+          expect(filterTemplate.label).toEqual('Male');
           expect(filterTemplate.toggleDropdown).toHaveBeenCalledTimes(1);
         });
 
@@ -200,7 +200,7 @@ describe('SelectorFilterComponent', () => {
 
         it('should restart label', () => {
           const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
-          expect(filterTemplate.label).toEqual($localize`:@@FilterOptionGender_male:Male`);
+          expect(filterTemplate.label).toEqual('Male');
 
           filterTemplate.clear.emit();
           fixture.detectChanges();
@@ -274,7 +274,7 @@ describe('SelectorFilterComponent', () => {
               value: 'male',
             },
           ]);
-          expect(selectorTemplate.placeholderLabel).toEqual($localize`:@@FilterOptionGender_male:Male`);
+          expect(selectorTemplate.placeholderLabel).toEqual('Male');
         });
 
         it('should emit changes', () => {
@@ -310,7 +310,7 @@ describe('SelectorFilterComponent', () => {
 
         it('should restart label', () => {
           const selectorTemplate: SelectorFilterTemplateComponent = debugElement.query(selectorTemplatePredicate).componentInstance;
-          expect(selectorTemplate.placeholderLabel).toEqual($localize`:@@FilterOptionGender_male:Male`);
+          expect(selectorTemplate.placeholderLabel).toEqual('Male');
 
           selectorTemplate.clear.emit();
           fixture.detectChanges();
