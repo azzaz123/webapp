@@ -2,6 +2,8 @@ import { ItemFlags, ItemVisibilityFlags } from '@core/item/item-response.interfa
 import { Image } from '@core/user/user-response.interface';
 
 export interface ItemCard {
+  id: string;
+  ownerId: string;
   title: string;
   description: string;
   salePrice: number;
