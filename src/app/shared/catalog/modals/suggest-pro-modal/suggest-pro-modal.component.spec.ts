@@ -1,126 +1,118 @@
-import { TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { of } from 'rxjs';
-
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { TooManyItemsModalComponent } from './too-many-items-modal.component';
-import { ButtonComponent } from '../../../button/button.component';
-import { RouterTestingModule } from '@angular/router/testing';
-import { ItemService } from '../../../../core/item/item.service';
-import { SubscriptionsService } from '../../../../core/subscriptions/subscriptions.service';
-import { MOCK_ITEM_V3_3 } from '../../../../../tests/item.fixtures.spec';
-import { MockSubscriptionService, MAPPED_SUBSCRIPTIONS_ADDED } from '../../../../../tests/subscriptions.fixtures.spec';
-import { SUBSCRIPTION_TYPES } from '../../../../core/subscriptions/subscriptions.service';
-import { AnalyticsService } from 'app/core/analytics/analytics.service';
-import { MockAnalyticsService } from '../../../../../tests/analytics.fixtures.spec';
-import { AnalyticsPageView, ViewProSubscriptionPopup, ANALYTICS_EVENT_NAMES, SCREEN_IDS } from 'app/core/analytics/analytics-constants';
-import { SUBSCRIPTION_CATEGORIES } from 'app/core/subscriptions/subscriptions.interface';
-import { MOCK_CAR } from '../../../../../tests/car.fixtures.spec';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 
-describe('TooManyItemsModalComponent', () => {
-  let component: TooManyItemsModalComponent;
-  let fixture: ComponentFixture<TooManyItemsModalComponent>;
-  let itemService: ItemService;
-  let subscriptionsService: SubscriptionsService;
-  let analyticsService: AnalyticsService;
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ButtonComponent } from '@shared/button/button.component';
+import { SuggestProModalComponent } from './suggest-pro-modal.component';
+
+describe('SuggestProModalComponent', () => {
+  let component: SuggestProModalComponent;
+  let fixture: ComponentFixture<SuggestProModalComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [TooManyItemsModalComponent, ButtonComponent],
-      providers: [
-        NgbActiveModal,
-        { provide: SubscriptionsService, useClass: MockSubscriptionService },
-        {
-          provide: ItemService,
-          useValue: {
-            get() {
-              return of(MOCK_ITEM_V3_3);
-            },
-          },
-        },
-        {
-          provide: AnalyticsService,
-          useClass: MockAnalyticsService,
-        },
-      ],
+      declarations: [SuggestProModalComponent, ButtonComponent],
+      providers: [NgbActiveModal],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TooManyItemsModalComponent);
-    itemService = TestBed.inject(ItemService);
-    subscriptionsService = TestBed.inject(SubscriptionsService);
-    analyticsService = TestBed.inject(AnalyticsService);
+    fixture = TestBed.createComponent(SuggestProModalComponent);
     component = fixture.componentInstance;
-    component.type = SUBSCRIPTION_TYPES.stripe;
-    fixture.detectChanges();
+    spyOn(window as any, '$localize');
   });
 
-  describe('ngOnInit', () => {
-    beforeEach(() => {
-      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(MAPPED_SUBSCRIPTIONS_ADDED));
-      spyOn(analyticsService, 'trackPageView');
+  describe('Title', () => {
+    it('should show title', () => {
+      component.title = 'Test title';
+
+      fixture.detectChanges();
+
+      const titleHtml: HTMLElement = fixture.debugElement.query(By.css('.SuggestProModal__title')).nativeElement;
+      expect(titleHtml.textContent).toBe('Test title');
     });
+  });
 
-    describe('when subscription for item category has free trial', () => {
-      beforeEach(() => {
-        component.itemId = MOCK_ITEM_V3_3.id;
-        spyOn(itemService, 'get').and.returnValue(of(MOCK_ITEM_V3_3));
-      });
+  describe('Description', () => {
+    describe('when has trial available', () => {
+      it('should show trial text', () => {
+        component.isFreeTrial = true;
 
-      it('should set isFreeTrial to true', () => {
-        component.ngOnInit();
+        fixture.detectChanges();
 
-        expect(component.isFreeTrial).toBe(true);
-      });
-
-      it('should track the page view event to analytics', () => {
-        const expectedEvent: AnalyticsPageView<ViewProSubscriptionPopup> = {
-          name: ANALYTICS_EVENT_NAMES.ViewProSubscriptionPopup,
-          attributes: {
-            screenId: SCREEN_IDS.ProSubscriptionLimitPopup,
-            subscription: MOCK_ITEM_V3_3.categoryId as SUBSCRIPTION_CATEGORIES,
-            freeTrial: true,
-            isCarDealer: false,
-          },
-        };
-
-        component.ngOnInit();
-
-        expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+        expect(window['$localize']).toHaveBeenCalledWith([expect.stringMatching(':@@SuggestProModalDescriptionTrial:')]);
       });
     });
+    describe('when has not trial available', () => {
+      it('should show default text', () => {
+        component.isFreeTrial = false;
 
-    describe('when subscription for item category does not have free trial', () => {
-      beforeEach(() => {
-        component.itemId = MOCK_CAR.id;
-        spyOn(itemService, 'get').and.returnValue(of(MOCK_CAR));
+        fixture.detectChanges();
+
+        expect(window['$localize']).toHaveBeenCalledWith([expect.stringMatching(':@@SuggestProModalDescriptionPlans:')]);
       });
+    });
+  });
 
-      it('should set isFreeTrial to false', () => {
-        component.ngOnInit();
+  describe('CTA button', () => {
+    describe('when has trial available', () => {
+      it('should show trial text', () => {
+        component.isFreeTrial = true;
 
-        expect(component.isFreeTrial).toBe(false);
+        fixture.detectChanges();
+
+        expect(window['$localize']).toHaveBeenCalledWith([expect.stringMatching(':@@startFreeTrial:')]);
       });
+    });
+    describe('when has not trial available', () => {
+      it('should show default text', () => {
+        component.isFreeTrial = false;
 
-      it('should track the page view event to analytics', fakeAsync(() => {
-        const expectedEvent: AnalyticsPageView<ViewProSubscriptionPopup> = {
-          name: ANALYTICS_EVENT_NAMES.ViewProSubscriptionPopup,
-          attributes: {
-            screenId: SCREEN_IDS.ProSubscriptionLimitPopup,
-            subscription: MOCK_CAR.categoryId as SUBSCRIPTION_CATEGORIES,
-            freeTrial: false,
-            isCarDealer: false,
-          },
-        };
+        fixture.detectChanges();
 
-        component.ngOnInit();
-        tick();
+        expect(window['$localize']).toHaveBeenCalledWith([expect.stringMatching(':@@seePlans:')]);
+      });
+    });
+    describe('when click', () => {
+      it('should close modal', () => {
+        spyOn(component.activeModal, 'close');
+        const ctaButton: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
 
-        expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
-      }));
+        ctaButton.click();
+
+        expect(component.activeModal.close).toBeCalledTimes(1);
+        expect(component.activeModal.close).toHaveBeenCalledWith();
+      });
+    });
+  });
+
+  describe('Secondary button', () => {
+    describe('when click', () => {
+      it('should dismiss modal reloading item', () => {
+        spyOn(component.activeModal, 'dismiss');
+        const secondaryButton: HTMLElement = fixture.debugElement.query(By.css('.Dismiss')).nativeElement;
+
+        secondaryButton.click();
+
+        expect(component.activeModal.dismiss).toBeCalledTimes(1);
+        expect(component.activeModal.dismiss).toHaveBeenCalledWith(true);
+      });
+    });
+  });
+
+  describe('Close icon', () => {
+    describe('when click', () => {
+      it('should dismiss modal', () => {
+        spyOn(component.activeModal, 'dismiss');
+        const secondaryButton: HTMLElement = fixture.debugElement.query(By.css('.SuggestProModal__close')).nativeElement;
+
+        secondaryButton.click();
+
+        expect(component.activeModal.dismiss).toBeCalledTimes(1);
+        expect(component.activeModal.dismiss).toHaveBeenCalledWith();
+      });
     });
   });
 });

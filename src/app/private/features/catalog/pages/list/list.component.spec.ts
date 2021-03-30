@@ -629,17 +629,6 @@ describe('ListComponent', () => {
       expect(find(component.items, { id: item.id })).toBeFalsy();
     });
 
-    it('should call feature if event is reactivatedWithBump', () => {
-      spyOn(component, 'feature');
-
-      component.itemChanged({
-        orderEvent: ORDER_EVENT,
-        action: 'reactivatedWithBump',
-      });
-
-      expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT, 'reactivate');
-    });
-
     it('should change expired flag item if event is reactivated', () => {
       component.items = createItemsArray(TOTAL);
       item = component.items[3];
