@@ -16,10 +16,13 @@
     [isClearable]="hasValue$() | async"
     (clear)="handleClear()">
 
-    <div *ngFor="let option of options" class="SelectFilter__option px-4" [ngClass]="isBubble() && 'SelectFilter__option--bubble'"
-         (click)="handleOptionSelected(option)">
-      <tsl-select-option [icon]="option.icon" [label]="option.label">
-      </tsl-select-option>
+    <div [class.SelectFilter--bubble]="isBubble()">
+      <form [formGroup]="formGroup">
+        <tsl-select-form
+          formControlName="select"
+          [options]="options">
+        </tsl-select-form>
+      </form>
     </div>
 
   </tsl-select-filter-template>

@@ -1,3 +1,3 @@
 export interface SelectFilterParams {
-  parameterKey: string;
+  parameterKey?: string;
 }

@@ -9,11 +9,11 @@ import { COMMON_CONFIGURATION_ID } from '../../core/enums/configuration-ids/comm
 import { FILTER_TYPES } from '../../core/enums/filter-types/filter-types.enum';
 import { FASHION_CONFIGURATION_ID } from '../../core/enums/configuration-ids/fashion-configuration-ids.enum';
 import { SelectFilterComponent } from './select-filter.component';
-import { SelectOptionComponent } from '../abstract-select-filter/select-option/select-option.component';
 import { SelectParentOptionComponent } from '../abstract-select-filter/select-parent-option/select-parent-option.component';
 import { FilterOptionService } from '../../../../services/filter-option/filter-option.service';
 import { MockFilterOptionService } from '@fixtures/filter-option-service.fixtures.spec';
 import { SelectFilterConfig } from '@public/shared/components/filters/components/select-filter/interfaces/select-filter-config.interface';
+import { SelectFormComponent } from '@shared/form/components/select/select-form.component';
 
 @Component({
   selector: 'tsl-filters',
@@ -91,7 +91,7 @@ export default {
           useClass: MockFilterOptionService,
         },
       ],
-      declarations: [FiltersComponent, SelectFilterComponent, SelectOptionComponent, SelectParentOptionComponent],
+      declarations: [FiltersComponent, SelectFilterComponent, SelectFormComponent, SelectParentOptionComponent],
     }),
   ],
 } as Meta;

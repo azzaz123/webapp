@@ -13,7 +13,7 @@ import { FASHION_CONFIGURATION_ID } from '../../core/enums/configuration-ids/fas
 import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module';
 import { FilterOptionServiceModule } from '@public/shared/services/filter-option/filter-option-service.module';
 import { AbstractSelectFilterModule } from '../abstract-select-filter/abstract-select-filter.module';
-import { SelectOptionModule } from '../abstract-select-filter/select-option/select-option.module';
+import { SelectOptionModule } from '@shared/form/components/select/select-option/select-option.module';
 import { SelectFilterConfig } from './interfaces/select-filter-config.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { FilterTemplateComponent } from '../abstract-filter/filter-template/filter-template.component';

@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
-export class AbstractSelectFilter<T extends Record<keyof T, string>> extends AbstractFilter<T> {
+export class AbstractSelectFilter<T extends Partial<Record<keyof T, string>>> extends AbstractFilter<T> {
   @Input() config: AbstractSelectFilterConfig<T>;
 
   constructor(private optionService: FilterOptionService) {

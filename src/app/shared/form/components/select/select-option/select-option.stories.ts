@@ -5,7 +5,7 @@ import { SelectOptionModule } from './select-option.module';
 import { HttpClientModule } from '@angular/common/http';
 
 export default {
-  title: 'Webapp/Public/Shared/Components/Filters/AbstractSelectFilter/SelectOption',
+  title: 'Webapp/Shared/Form/Components/Select/SelectOption',
   decorators: [
     moduleMetadata({
       imports: [SelectOptionModule, HttpClientModule],
@@ -43,13 +43,13 @@ DefaultActive.args = {
 export const WithIcon = Template.bind({});
 WithIcon.args = {
   label: 'I have an icon',
-  icon: '/assets/icons/categories/stroke/All.svg',
+  icon: '/assets/icons/joke.svg',
 };
 
 export const WithIconActive = Template.bind({});
 WithIconActive.args = {
   label: 'I have an icon',
-  icon: '/assets/icons/categories/stroke/All.svg',
+  icon: '/assets/icons/joke.svg',
   isActive: true,
 };
 
@@ -69,14 +69,14 @@ WithSublabelActive.args = {
 export const WithIconAndSublabel = Template.bind({});
 WithIconAndSublabel.args = {
   label: 'Some important info',
-  icon: '/assets/icons/categories/stroke/All.svg',
+  icon: '/assets/icons/joke.svg',
   sublabel: 'Another important info',
 };
 
 export const WithIconAndSublabelActive = Template.bind({});
 WithIconAndSublabelActive.args = {
   label: 'Some important info',
-  icon: '/assets/icons/categories/stroke/All.svg',
+  icon: '/assets/icons/joke.svg',
   sublabel: 'Another important info',
   isActive: true,
 };

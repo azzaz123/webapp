@@ -1,0 +1,7 @@
+@import '~style/common';
+
+.SelectForm {
+  &__option:hover {
+    background: darken($white, 5);
+  }
+}

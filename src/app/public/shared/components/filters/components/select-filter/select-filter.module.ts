@@ -4,11 +4,19 @@ import { FilterOptionServiceModule } from '@public/shared/services/filter-option
 import { SelectFilterComponent } from './select-filter.component';
 import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module';
 import { AbstractSelectFilterModule } from '../abstract-select-filter/abstract-select-filter.module';
-import { SelectOptionModule } from '@public/shared/components/filters/components/abstract-select-filter/select-option/select-option.module';
+import { SelectFormModule } from '@shared/form/components/select/select-form.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [SelectFilterComponent],
   exports: [SelectFilterComponent],
-  imports: [CommonModule, FilterOptionServiceModule, AbstractFilterModule, AbstractSelectFilterModule, SelectOptionModule],
+  imports: [
+    CommonModule,
+    FilterOptionServiceModule,
+    AbstractFilterModule,
+    AbstractSelectFilterModule,
+    SelectFormModule,
+    ReactiveFormsModule,
+  ],
 })
 export class SelectFilterModule {}
