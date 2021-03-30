@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { Item } from '@core/item/item';
 import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
-import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
+import { MapItemService } from '@public/core/services/map-item/map-item.service';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 
 @Component({

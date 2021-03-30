@@ -8,7 +8,7 @@ import { CheckSessionService } from '@public/core/services/check-session/check-s
 import { DeviceDetectorModule, DeviceDetectorService } from 'ngx-device-detector';
 import { PublicProfileService } from '../../core/services/public-profile.service';
 import { ItemCardListModule } from '@public/shared/components/item-card-list/item-card-list.module';
-import { MapItemService } from './services/map-item/map-item.service';
+import { MapItemService } from '@public/core/services/map-item/map-item.service';
 
 import { UserPublishedComponent } from './user-published.component';
 

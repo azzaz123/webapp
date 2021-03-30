@@ -15,7 +15,7 @@ import { PublicUserApiService } from '@public/core/services/api/public-user/publ
 import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
-import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
+import { MapItemService } from '@public/core/services/map-item/map-item.service';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { SoldModalComponent } from '@shared/modals/sold-modal/sold-modal.component';
 import { CookieService } from 'ngx-cookie';

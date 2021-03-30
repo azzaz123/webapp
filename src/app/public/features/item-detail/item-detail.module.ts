@@ -11,7 +11,7 @@ import { AdSlotModule } from '@shared/ads/ad-slot/ad-slot.module';
 import { GeolocationModule } from '@shared/geolocation/geolocation.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { SocialShareModule } from '@shared/social-share/social-share.module';
-import { MapItemService } from '../public-profile/pages/user-published/services/map-item/map-item.service';
+import { MapItemService } from '@public/core/services/map-item/map-item.service';
 import { ItemFullScreenCarouselModule } from './components/item-fullscreen-carousel/item-fullscreen-carousel.module';
 import { ItemDetailHeaderModule } from './components/item-detail-header/item-detail-header.module';
 import { PublicPipesModule } from '@public/core/pipes/public-pipes.module';

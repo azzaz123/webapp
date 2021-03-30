@@ -7,7 +7,7 @@ import { CheckSessionModule } from '@public/core/directives/check-session/check-
 import { HttpModule } from '@core/http/http.module';
 import { CoreModule } from '@core/core.module';
 import { CommonModule } from '@angular/common';
-import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
+import { MapItemService } from '@public/core/services/map-item/map-item.service';
 import { CUSTOM_VIEWPORT_NAME } from '@storybook-config/viewports/custom-viewports';
 import { RouterTestingModule } from '@angular/router/testing';
 

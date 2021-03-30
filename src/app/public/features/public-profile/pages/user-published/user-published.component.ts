@@ -4,7 +4,7 @@ import { ItemResponse } from '@core/item/item-response.interface';
 import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
 import { finalize, take } from 'rxjs/operators';
 import { PublicProfileService } from '../../core/services/public-profile.service';
-import { MapItemService } from './services/map-item/map-item.service';
+import { MapItemService } from '@public/core/services/map-item/map-item.service';
 
 @Component({
   selector: 'tsl-user-published',
