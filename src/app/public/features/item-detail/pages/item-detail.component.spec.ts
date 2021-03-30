@@ -775,7 +775,7 @@ describe('ItemDetailComponent', () => {
   });
 
   describe('when we handle the social share...', () => {
-    const shareItemEvent: AnalyticsEvent<ShareItem> = {
+    const socialShareItemEvent: AnalyticsEvent<ShareItem> = {
       name: ANALYTICS_EVENT_NAMES.ShareItem,
       eventType: ANALYTIC_EVENT_TYPES.Social,
       attributes: {
@@ -795,19 +795,19 @@ describe('ItemDetailComponent', () => {
       socialShare.triggerEventHandler('socialMediaChannel', SOCIAL_SHARE_CHANNELS.FACEBOOK);
 
       fixture.detectChanges();
-      expect(analyticsService.trackEvent).toHaveBeenCalledWith(shareItemEvent);
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(socialShareItemEvent);
     });
 
     it('should send social share event with twitter channel if we share item with twitter', () => {
       spyOn(analyticsService, 'trackEvent');
-      const shareItemEventWithTwitter = { ...shareItemEvent };
-      shareItemEventWithTwitter.attributes.channel = SOCIAL_SHARE_CHANNELS.TWITTER;
+      const socialShareItemEventWithTwitter = { ...socialShareItemEvent };
+      socialShareItemEventWithTwitter.attributes.channel = SOCIAL_SHARE_CHANNELS.TWITTER;
 
       const socialShare = fixture.debugElement.query(By.css(socialShareTag));
       socialShare.triggerEventHandler('socialMediaChannel', SOCIAL_SHARE_CHANNELS.TWITTER);
 
       fixture.detectChanges();
-      expect(analyticsService.trackEvent).toHaveBeenCalledWith(shareItemEventWithTwitter);
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(socialShareItemEventWithTwitter);
     });
   });
 });
