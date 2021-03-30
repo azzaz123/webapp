@@ -1,0 +1,27 @@
+<tsl-filter-template #filterTemplateComponent
+  [isBubble]="isBubble()"
+  [isDropdown]="isDropdown()"
+  [isClearable]="true"
+  [title]="config.title"
+  [icon]="config.icon"
+  [label]="getLabel()"
+  [hasValue]="hasValue$() | async"
+  (clear)="handleClear()"
+  (openStateChange)="openStateChange.emit($event)">
+
+  <tsl-select-filter-template #selectFilterTemplateComponent
+    [hasContentPlaceholder]="hasContentPlaceholder()"
+    [placeholderLabel]="getLabel()"
+    [contentTitle]="contentTitle"
+    [isClearable]="hasValue$() | async"
+    (clear)="handleClear()">
+
+    <div *ngFor="let option of options" class="SelectFilter__option px-4" [ngClass]="isBubble() && 'SelectFilter__option--bubble'"
+         (click)="handleOptionSelected(option)">
+      <tsl-select-option [icon]="option.icon" [label]="option.label">
+      </tsl-select-option>
+    </div>
+
+  </tsl-select-filter-template>
+
+</tsl-filter-template>

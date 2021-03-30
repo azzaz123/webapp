@@ -1,0 +1,8 @@
+<div [class.SelectOption--active]="isActive" class="SelectOption py-3">
+  <div class="d-flex">
+    <tsl-svg-icon *ngIf="icon" class="d-flex flex-grow-0 mr-3 justify-content-center align-items-center"
+                  [src]="icon" [width]="24" [height]="24"></tsl-svg-icon>
+    <span class="SelectOption__label">{{label}}</span>
+  </div>
+  <span *ngIf="sublabel" [class.SelectOption__sublabel--with-icon]="icon" class="SelectOption__sublabel">{{sublabel}}</span>
+</div>

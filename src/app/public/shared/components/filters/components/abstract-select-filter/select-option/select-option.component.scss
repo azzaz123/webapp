@@ -1,0 +1,19 @@
+@import '~style/common';
+
+.SelectOption {
+  cursor: pointer;
+  user-select: none;
+  &__label {
+    font-size: $font-size-l;
+  }
+
+  &__sublabel {
+    &--with-icon {
+      margin-left: 40px;
+    }
+  }
+
+  &--active {
+    color: $walla-main;
+  }
+}

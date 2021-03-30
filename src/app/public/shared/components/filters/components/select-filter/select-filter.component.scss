@@ -1,0 +1,14 @@
+@import '~style/common';
+
+.SelectFilter {
+  &__option {
+    &:hover {
+      background: darken($white, 5);
+    }
+
+    &--bubble {
+      margin-left: -24px;
+      margin-right: -24px;
+    }
+  }
+}
