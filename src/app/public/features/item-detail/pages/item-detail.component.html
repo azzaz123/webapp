@@ -47,7 +47,7 @@
                                 [childTaxonomy]="taxonomiesSpecifications.childTaxonomy"
                                 ></tsl-item-taxonomies>
                             </ng-container>
-                            <div *ngIf="device !== deviceType.MOBILE" class="ItemDetail__affiliation d-flex flex-row mb-0" [ngClass]="{'borderBottom py-3': adsAffiliationsLoaded$ | async}">
+                            <div *ngIf="device !== deviceType.MOBILE" class="ItemDetail__affiliation d-flex flex-row mb-0" [ngClass]="{'borderBottom': adsAffiliationsLoaded$ | async, 'py-3': adsAffiliationsLoaded$ | async}">
                               <tsl-sky *ngFor="let adAffiliation of adsAffiliationSlotConfiguration" class="d-block" [adSlot]="adAffiliation"></tsl-sky>
                             </div>
                         </div>

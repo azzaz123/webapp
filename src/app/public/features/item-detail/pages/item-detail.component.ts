@@ -69,13 +69,13 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.device = this.deviceService.getDeviceType();
     this.adsAffiliationSlotConfiguration = FactoryAdAffiliationSlotConfiguration(this.device);
+
     const observables: Observable<boolean>[] = this.adsAffiliationSlotConfiguration.map((adSlot: AdSlotConfiguration) =>
       this.adsService.adSlotLoaded$(adSlot)
     );
     this.adsAffiliationsLoaded$ = combineLatest(observables).pipe(
       map((adsLoaded: boolean[]) => adsLoaded.some((loaded: boolean) => loaded))
     );
-
     // TBD the url may change to match one more similar to production one
     this.initPage(this.route.snapshot.paramMap.get(PUBLIC_PATH_PARAMS.ID));
   }

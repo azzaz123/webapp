@@ -1,3 +1,4 @@
+import { filter, map } from 'rxjs/operators';
 import { Inject, Injectable } from '@angular/core';
 import { AdsKeywordsService } from '@core/ads/services/ads-keywords/ads-keywords.service';
 import { DeviceService } from '@core/device/device.service';
@@ -22,7 +23,11 @@ export class GooglePublisherTagService {
     return this.window && this.window['_googCsa'];
   }
 
-  private adSlotsLoadedMap: Map<string, BehaviorSubject<boolean>> = new Map<string, BehaviorSubject<boolean>>();
+  private adSlotsLoadedSubject: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+
+  get adSlotsLoaded$(): Observable<string[]> {
+    return this.adSlotsLoadedSubject.asObservable();
+  }
 
   constructor(
     @Inject(WINDOW_TOKEN) private window: Window,
@@ -40,15 +45,20 @@ export class GooglePublisherTagService {
       this.definedSlots(adSlots);
       this.setPubads();
       this.googletag.enableServices();
-      this.googletag.pubads().addEventListener('slotOnLoad', (event) => {
+      this.googletag.pubads().addEventListener('slotOnload', (event) => {
         const slotName = event.slot.getAdUnitPath();
-        this.adSlotsLoadedMap.get(slotName)?.next(true);
+        console.log('slotOnload', slotName);
+        const slotsName: string[] = this.adSlotsLoadedSubject.getValue();
+        slotsName.push(slotName);
+        const newSlotsName: string[] = [...new Set(slotsName).values()];
+        console.log(newSlotsName);
+        this.adSlotsLoadedSubject.next(newSlotsName);
       });
     });
   }
 
   public isAdSlotLoaded$(adSlot: AdSlotConfiguration): Observable<boolean> {
-    return this.adSlotsLoadedMap.has(adSlot.name) ? this.adSlotsLoadedMap.get(adSlot.name).asObservable() : of(false);
+    return this.adSlotsLoaded$.pipe(map((slotNames: string[]) => slotNames.includes(adSlot.name)));
   }
 
   public setAdKeywords(adKeywords: AdKeyWords): void {
@@ -130,8 +140,6 @@ export class GooglePublisherTagService {
             .setTargeting('ad_h', new Date().getUTCHours().toString())
             .addService(this.googletag.pubads());
         }
-        const subject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-        this.adSlotsLoadedMap.set(slot.name, subject);
       });
   }
 }
