@@ -331,6 +331,31 @@ describe('ItemDetailComponent', () => {
         expect(analyticsService.trackPageView).toHaveBeenCalledWith(viewOthersRetailEvent);
       });
 
+      it('should not send view others retail event if user is viewing own retail', () => {
+        const mockRealEstateItemDetai: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
+        mockRealEstateItemDetai.item = MOCK_REALESTATE;
+        mockRealEstateItemDetai.user = MOCK_USER;
+        itemDetailSubjectMock.next(mockRealEstateItemDetai);
+        spyOn(analyticsService, 'trackPageView');
+
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        expect(analyticsService.trackPageView).not.toHaveBeenCalledWith(viewOthersRetailEvent);
+      });
+
+      it('should not send view others retail event if user is viewing others products that is not real estate', () => {
+        const mockRealEstateItemDetai: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
+        mockRealEstateItemDetai.user = MOCK_OTHER_USER;
+        itemDetailSubjectMock.next(mockRealEstateItemDetai);
+        spyOn(analyticsService, 'trackPageView');
+
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        expect(analyticsService.trackPageView).not.toHaveBeenCalledWith(viewOthersRetailEvent);
+      });
+
       it('should send view others CG item detail event when user is viewing others consumer goods item detail', () => {
         const mockCGItemDetail: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
         mockCGItemDetail.item = MOCK_ITEM_GBP;
