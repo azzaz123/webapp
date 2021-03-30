@@ -62,11 +62,13 @@ import {
   ANALYTIC_EVENT_TYPES,
   FavoriteItem,
   SCREEN_IDS,
+  ShareItem,
   UnfavoriteItem,
   ViewOthersItemCGDetail,
   ViewOwnItemDetail,
 } from '@core/analytics/analytics-constants';
 import { User } from '@core/user/user';
+import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -769,6 +771,43 @@ describe('ItemDetailComponent', () => {
 
       fixture.detectChanges();
       expect(itemDetailStoreService.toggleFavouriteItem).toHaveBeenCalled();
+    });
+  });
+
+  describe('when we handle the social share...', () => {
+    const shareItemEvent: AnalyticsEvent<ShareItem> = {
+      name: ANALYTICS_EVENT_NAMES.ShareItem,
+      eventType: ANALYTIC_EVENT_TYPES.Social,
+      attributes: {
+        itemId: MOCK_CAR_ITEM_DETAIL.item.id,
+        categoryId: MOCK_CAR_ITEM_DETAIL.item.categoryId,
+        channel: SOCIAL_SHARE_CHANNELS.FACEBOOK,
+        screenId: SCREEN_IDS.ItemDetail,
+        isPro: MOCK_CAR_ITEM_DETAIL.user.featured,
+        salePrice: MOCK_CAR_ITEM_DETAIL.item.salePrice,
+      },
+    };
+
+    it('should send social share event with facebook channel if we share item with facebook', () => {
+      spyOn(analyticsService, 'trackEvent');
+
+      const socialShare = fixture.debugElement.query(By.css(socialShareTag));
+      socialShare.triggerEventHandler('socialMediaChannel', SOCIAL_SHARE_CHANNELS.FACEBOOK);
+
+      fixture.detectChanges();
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(shareItemEvent);
+    });
+
+    it('should send social share event with twitter channel if we share item with twitter', () => {
+      spyOn(analyticsService, 'trackEvent');
+      const shareItemEventWithTwitter = { ...shareItemEvent };
+      shareItemEventWithTwitter.attributes.channel = SOCIAL_SHARE_CHANNELS.TWITTER;
+
+      const socialShare = fixture.debugElement.query(By.css(socialShareTag));
+      socialShare.triggerEventHandler('socialMediaChannel', SOCIAL_SHARE_CHANNELS.TWITTER);
+
+      fixture.detectChanges();
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(shareItemEventWithTwitter);
     });
   });
 });
