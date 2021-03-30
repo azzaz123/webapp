@@ -9,7 +9,6 @@ import { STATUS_ITEM_FLAG_TYPES, BUMPED_ITEM_FLAG_TYPES } from '../item-flag/ite
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemImagesCarouselComponent {
-  @Input() isActive = true;
   @Input() isExpired = false;
   @Input() images: string[];
   @Input() statusFlag: STATUS_ITEM_FLAG_TYPES;

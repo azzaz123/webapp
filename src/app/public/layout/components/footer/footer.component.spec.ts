@@ -7,6 +7,9 @@ import { FooterComponent } from './footer.component';
 import { FOOTER_LINKS } from './constants/footer-constants';
 import { FooterLink, FooterLinkSection } from './interfaces/footer.interface';
 import { DebugElement } from '@angular/core';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import { AnalyticsEvent, ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES, ClickProInfo, SCREEN_IDS } from '@core/analytics/analytics-constants';
 
 describe('FooterComponent', () => {
   let component: FooterComponent;
@@ -14,6 +17,7 @@ describe('FooterComponent', () => {
   let de: DebugElement;
   let el: HTMLElement;
   let i18nService: I18nService;
+  let analyticsService: AnalyticsService;
 
   beforeEach(
     waitForAsync(() => {
@@ -28,6 +32,7 @@ describe('FooterComponent', () => {
               locale: 'en',
             },
           },
+          { provide: AnalyticsService, useClass: MockAnalyticsService },
         ],
       }).compileComponents();
     })
@@ -39,7 +44,7 @@ describe('FooterComponent', () => {
     de = fixture.debugElement;
     el = de.nativeElement;
     i18nService = TestBed.inject(I18nService);
-
+    analyticsService = TestBed.inject(AnalyticsService);
     fixture.detectChanges();
   });
 
@@ -67,6 +72,62 @@ describe('FooterComponent', () => {
     excluded.forEach((footerLinkSection: FooterLinkSection) => {
       footerLinkSection.links.forEach((sectionLink: FooterLink) => {
         expect(el.querySelector(`[href="${sectionLink.href}"]`)).toBeTruthy();
+      });
+    });
+  });
+
+  describe('Tracking events', () => {
+    beforeEach(() => {
+      spyOn(analyticsService, 'trackEvent').and.callThrough();
+    });
+
+    describe('when link has a config tracking event', () => {
+      it('should have to track the event', () => {
+        const link: FooterLink = {
+          label: 'test',
+          href: 'test',
+          trackEvent: ANALYTICS_EVENT_NAMES.ClickProInfo,
+        };
+        const expectedEvent: AnalyticsEvent<ClickProInfo> = {
+          name: ANALYTICS_EVENT_NAMES.ClickProInfo,
+          eventType: ANALYTIC_EVENT_TYPES.Navigation,
+          attributes: {
+            screenId: SCREEN_IDS.WebHome,
+            clickLocation: 'footer',
+          },
+        };
+
+        component.trackEvent(link);
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      });
+    });
+
+    describe('when link has not a tracking event', () => {
+      it('should not have to track any event', () => {
+        const link: FooterLink = {
+          label: 'test',
+          href: 'test',
+        };
+
+        component.trackEvent(link);
+
+        expect(analyticsService.trackEvent).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('when link has not a config tracking event', () => {
+      it('should have to track the event', () => {
+        const link: FooterLink = {
+          label: 'test',
+          href: 'test',
+          trackEvent: ANALYTICS_EVENT_NAMES.CancelSearch,
+        };
+
+        component.trackEvent(link);
+
+        expect(analyticsService.trackEvent).not.toHaveBeenCalled();
       });
     });
   });
