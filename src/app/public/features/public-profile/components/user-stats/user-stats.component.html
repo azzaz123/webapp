@@ -2,8 +2,8 @@
     <div class="row align-left mb-2">
         <div class="col-6 col-sm-4 d-flex align-items-center">
             <tsl-svg-icon width="18" height="18" class="mr-2" src="/assets/icons/public-profile/stats.svg"></tsl-svg-icon>
-            <div class="mr-1 ProfileUser__counter--bold">{{userStats.counters.sells}}</div>
-            <ng-container [ngPlural]="userStats.counters.sells">
+            <div class="mr-1 ProfileUser__counter--bold">{{userStats.counters.sold}}</div>
+            <ng-container [ngPlural]="userStats.counters.sold">
                 <ng-template ngPluralCase="=1">
                     <ng-container i18n="@@Sale">Sale</ng-container>
                 </ng-template>
@@ -26,10 +26,10 @@
             </ng-container>
         </div>
     </div>
-    <div class="d-flex align-items-center mb-2" *ngIf="userStats.shippingCounter">
+    <div class="d-flex align-items-center mb-2">
         <tsl-svg-icon width="18" height="18" class="mr-2" src="/assets/icons/public-profile/box.svg"></tsl-svg-icon>
-        <div class="mr-1 ProfileUser__counter--bold">{{userStats.shippingCounter}}</div>
-        <ng-container [ngPlural]="userStats.shippingCounter">
+        <div class="mr-1 ProfileUser__counter--bold">{{userStats.counters.sells}}</div>
+        <ng-container [ngPlural]="userStats.counters.sells">
             <ng-template ngPluralCase="=1">
                 <ng-container i18n="@@Shipment">Shipment</ng-container>
             </ng-template>

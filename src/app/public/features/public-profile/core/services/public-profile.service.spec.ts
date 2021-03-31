@@ -3,15 +3,8 @@ import { fakeAsync, TestBed } from '@angular/core/testing';
 import { User } from '@core/user/user';
 import { Image } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
-import {
-  MOCK_FULL_USER,
-  MOCK_FULL_USER_FEATURED,
-  USERS_STATS,
-  USER_DATA,
-  IMAGE,
-  MOCK_SHIPPING_COUNTER,
-  MOCK_USER_STATS_WITH_SHIPPING,
-} from '@fixtures/user.fixtures.spec';
+import { EMPTY_STATS } from './constants/stats-constants';
+import { MOCK_FULL_USER, MOCK_FULL_USER_FEATURED, MOCK_USER_STATS, USERS_STATS, USER_DATA, IMAGE } from '@fixtures/user.fixtures.spec';
 
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { PublicProfileService } from './public-profile.service';
@@ -35,9 +28,6 @@ describe('PublicProfileService', () => {
             },
             getStats() {
               return of(USERS_STATS);
-            },
-            getShippingCounter() {
-              return of(MOCK_SHIPPING_COUNTER);
             },
             getCoverImage() {
               return of(IMAGE);
@@ -94,18 +84,18 @@ describe('PublicProfileService', () => {
         expectedResponse = response;
       });
 
-      expect(expectedResponse).toEqual(MOCK_USER_STATS_WITH_SHIPPING);
+      expect(expectedResponse).toEqual(MOCK_USER_STATS);
     });
 
     it('should return empty stats when we get an error', () => {
       let expectedResponse = {};
-      spyOn(publicProfileService, 'getStats').and.returnValue(of(MOCK_USER_STATS_WITH_SHIPPING));
+      spyOn(publicProfileService, 'getStats').and.returnValue(of(EMPTY_STATS));
 
       publicProfileService.getStats(userId).subscribe((response: UserStats) => {
         expectedResponse = response;
       });
 
-      expect(expectedResponse).toEqual(MOCK_USER_STATS_WITH_SHIPPING);
+      expect(expectedResponse).toEqual(EMPTY_STATS);
     });
   });
 

@@ -18,7 +18,7 @@ export class UserStatsComponent {
 
   constructor(private deviceService: DeviceDetectorService, private router: Router, private scrollIntoViewService: ScrollIntoViewService) {}
 
-  public togglePhone(): void {
+  togglePhone(): void {
     this.showPhone = !this.showPhone;
   }
 

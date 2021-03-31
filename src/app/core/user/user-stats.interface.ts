@@ -3,10 +3,6 @@ export interface UserStats {
   counters: Counters;
 }
 
-export interface UserStatsWithShipping extends UserStats {
-  shippingCounter: number;
-}
-
 export interface UserStatsResponse {
   ratings: [{ type: string; value: number }];
   counters: [{ type: string; value: number }];
@@ -14,10 +10,6 @@ export interface UserStatsResponse {
 
 export interface Ratings {
   reviews: number;
-}
-
-export interface ShippingCounterResponse {
-  succeeded_count: number;
 }
 
 export interface Counters {

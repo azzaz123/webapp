@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { forkJoin, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators';
-import { Counters, Ratings, ShippingCounterResponse, UserStatsResponse, UserStatsWithShipping } from '@core/user/user-stats.interface';
+import { Counters, Ratings, UserStats } from '@core/user/user-stats.interface';
 import { User } from '@core/user/user';
 import { Image, UserExtrainfo, UserResponse } from '@core/user/user-response.interface';
 import { MarkAsFavouriteBodyResponse } from '../interfaces/public-profile-request.interface';
@@ -21,13 +21,12 @@ export class PublicProfileService {
     return this._user;
   }
 
-  public getStats(userId: string): Observable<UserStatsWithShipping> {
-    return forkJoin([this.publicUserApiService.getStats(userId), this.publicUserApiService.getShippingCounter(userId)]).pipe(
-      map(([userStats, shippingStatus]: [UserStatsResponse, ShippingCounterResponse]) => {
+  public getStats(userId: string): Observable<UserStats> {
+    return this.publicUserApiService.getStats(userId).pipe(
+      map((response) => {
         return {
-          ratings: this.toRatingsStats(userStats.ratings),
-          counters: this.toCountersStats(userStats.counters),
-          shippingCounter: shippingStatus?.succeeded_count,
+          ratings: this.toRatingsStats(response.ratings),
+          counters: this.toCountersStats(response.counters),
         };
       }),
       catchError(() => of(EMPTY_STATS))
