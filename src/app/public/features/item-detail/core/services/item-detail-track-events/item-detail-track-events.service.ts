@@ -17,7 +17,6 @@ import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { ItemDetail } from '@public/features/item-detail/interfaces/item-detail.interface';
-import { take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
