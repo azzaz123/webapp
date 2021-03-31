@@ -1297,7 +1297,7 @@ describe('ListComponent', () => {
       describe('and click secondary button', () => {
         it('should refresh item', fakeAsync(() => {
           modalSpy.and.returnValue({
-            result: Promise.reject(true),
+            result: Promise.reject(),
             componentInstance: componentInstance,
           });
           const item = cloneDeep(component.items[3]);
@@ -1313,8 +1313,8 @@ describe('ListComponent', () => {
           expect(router.navigate).not.toHaveBeenCalled();
         }));
       });
-      describe('and click cta button', () => {
-        it('should do not refresh item', fakeAsync(() => {
+      describe('and click close button', () => {
+        it('should refresh item', fakeAsync(() => {
           modalSpy.and.returnValue({
             result: Promise.reject(),
             componentInstance: componentInstance,
@@ -1327,8 +1327,8 @@ describe('ListComponent', () => {
           });
           tick();
 
-          expect(itemService.get).not.toHaveBeenCalled();
-          expect(component.items[3]).toEqual(item);
+          expect(itemService.get).toHaveBeenCalledWith(item.id);
+          expect(component.items[3]).toEqual(MOCK_ITEM_V3);
           expect(router.navigate).not.toHaveBeenCalled();
         }));
       });

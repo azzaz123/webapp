@@ -444,14 +444,8 @@ export class ListComponent implements OnInit, OnDestroy {
     );
 
     modalRef.result.then(
-      () => {
-        this.router.navigate(['profile/subscriptions']);
-      },
-      (reloadItem: boolean) => {
-        if (reloadItem) {
-          this.reloadItem(reactivatedItem.id, index);
-        }
-      }
+      () => this.router.navigate(['profile/subscriptions']),
+      () => this.reloadItem(reactivatedItem.id, index)
     );
   }
 
