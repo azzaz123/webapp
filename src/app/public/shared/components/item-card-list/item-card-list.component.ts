@@ -1,12 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  AnalyticsEvent,
-  ANALYTICS_EVENT_NAMES,
-  ANALYTIC_EVENT_TYPES,
-  ClickItemCard,
-  SCREEN_IDS,
-} from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 import { Item } from '@core/item/item';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
@@ -32,11 +26,15 @@ export class ItemCardListComponent {
     xs: 2,
   };
   @Input() slotsConfig: SlotsConfig;
+  /*  @Output() clickedItem: EventEmitter<Item> = new EventEmitter<Item>();
+  @Output() clickedItemIndex: EventEmitter<Number> = new EventEmitter<Number>(); */
+  @Output() clickedItemAndIndex: EventEmitter<{ item: Item; index: number }> = new EventEmitter<{ item: Item; index: number }>();
 
   constructor(
     private deviceDetectionService: DeviceDetectorService,
     private itemCardService: ItemCardService,
     private checkSessionService: CheckSessionService,
+    private analyticsService: AnalyticsService,
     private router: Router
   ) {
     this.showDescription = !this.deviceDetectionService.isMobile();
@@ -46,27 +44,10 @@ export class ItemCardListComponent {
     this.checkSessionService.hasSession() ? this.itemCardService.toggleFavourite(item) : this.checkSessionService.checkSessionAction();
   }
 
-  public openItemDetailPage(item: Item): void {
+  public openItemDetailPage(item: Item, index: number): void {
+    /*  this.clickedItem.emit(item);
+    this.clickedItemIndex.emit(index); */
+    this.clickedItemAndIndex.emit({ item, index });
     this.router.navigate([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.ITEM_DETAIL}/${item.id}`]);
-  }
-
-  private trackClickItemCardEvent(item: Item) {
-    const event: AnalyticsEvent<ClickItemCard> = {
-      name: ANALYTICS_EVENT_NAMES.ClickItemCard,
-      eventType: ANALYTIC_EVENT_TYPES.Navigation,
-      /*  attributes: {
-        itemId: item.id,
-        categoryId: item.categoryId,
-        position: null, // Need to check about the position
-        screenId: SCREEN_IDS.ItemDetailRecommendationSlider,
-        isPro: false,
-        salePrice: item.salePrice,
-        title: item.title,
-        itemDistance: item.km,
-        shippingAllowed: item.saleConditions.shipping_allowed,
-        sellerUserId: item.
-      }, */
-    };
-    //this.analyticsService.trackEvent(event);
   }
 }

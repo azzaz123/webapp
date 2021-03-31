@@ -27,4 +27,6 @@ export class RecommendedItemsComponent implements OnChanges {
       this.items = this.mapItemService.mapRecommendedItem(this.recommendedItems).slice(0, 6);
     }
   }
+
+  public clickedItemAndIndex(event: { item: Item; index: Number }) {}
 }
