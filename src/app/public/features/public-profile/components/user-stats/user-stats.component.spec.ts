@@ -3,7 +3,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserStatsComponent } from './user-stats.component';
 import { By } from '@angular/platform-browser';
-import { MOCK_FULL_USER_FEATURED, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
+import { MOCK_FULL_USER_FEATURED, MOCK_USER_STATS_WITH_SHIPPING } from '@fixtures/user.fixtures.spec';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
 import { PublicPipesModule } from '@public/core/pipes/public-pipes.module';
@@ -11,6 +11,8 @@ import { ScrollIntoViewService } from '@core/scroll-into-view/scroll-into-view';
 
 describe('UserStatsComponent', () => {
   const profileUserClass = '.ProfileUser';
+  const shippingCounterId = '#shippingCounter';
+
   let component: UserStatsComponent;
   let fixture: ComponentFixture<UserStatsComponent>;
   let deviceDetectorService: DeviceDetectorService;
@@ -46,7 +48,7 @@ describe('UserStatsComponent', () => {
     fixture = TestBed.createComponent(UserStatsComponent);
     component = fixture.componentInstance;
     component.userInfo = MOCK_FULL_USER_FEATURED;
-    component.userStats = MOCK_USER_STATS;
+    component.userStats = MOCK_USER_STATS_WITH_SHIPPING;
     deviceDetectorService = TestBed.inject(DeviceDetectorService);
     scrollIntoViewService = TestBed.inject(ScrollIntoViewService);
     router = TestBed.inject(Router);
@@ -136,6 +138,40 @@ describe('UserStatsComponent', () => {
         const errorMessages = fixture.debugElement.queryAll(By.css('a'));
 
         expect(errorMessages.length).toBe(1);
+      });
+    });
+
+    describe('when loading the counters...', () => {
+      it('should show the sale counter', () => {
+        const salesCounter = fixture.debugElement.query(By.css('#sellsCounter')).nativeElement.innerHTML;
+
+        expect(salesCounter).toBe(`${component.userStats.counters.sells}`);
+      });
+
+      it('should show the purchase counter', () => {
+        const salesCounter = fixture.debugElement.query(By.css('#buysCounter')).nativeElement.innerHTML;
+
+        expect(salesCounter).toBe(`${component.userStats.counters.buys}`);
+      });
+
+      describe('and the shipping counter is bigger than zero...', () => {
+        it('should show the shipping counter', () => {
+          const shippingCounter = fixture.debugElement.query(By.css(shippingCounterId)).nativeElement.innerHTML;
+
+          expect(shippingCounter).toBe(`${component.userStats.shippingCounter}`);
+        });
+      });
+
+      describe('and the shipping counter is smaller than zero...', () => {
+        beforeEach(() => {
+          component.userStats.shippingCounter = 0;
+          fixture.detectChanges();
+        });
+        it('should NOT show the shipping counter', () => {
+          const shippingCounter = fixture.debugElement.query(By.css(shippingCounterId));
+
+          expect(shippingCounter).toBeFalsy();
+        });
       });
     });
   });
