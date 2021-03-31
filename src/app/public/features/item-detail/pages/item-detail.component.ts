@@ -19,17 +19,6 @@ import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from '@public/shared/c
 import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
 import { UserService } from '@core/user/user.service';
 import { User } from '@core/user/user';
-import {
-  AnalyticsEvent,
-  AnalyticsPageView,
-  ANALYTICS_EVENT_NAMES,
-  ANALYTIC_EVENT_TYPES,
-  ViewOwnItemDetail,
-  FavoriteItem,
-  SCREEN_IDS,
-  UnfavoriteItem,
-  ViewOthersItemCGDetail,
-} from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { ItemDetailTrackEventsService } from '../core/services/item-detail-track-events/item-detail-track-events.service';
@@ -57,7 +46,6 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     private itemDetailTrackEventsService: ItemDetailTrackEventsService,
     private route: ActivatedRoute,
     private adsService: AdsService,
-    private analyticsService: AnalyticsService,
     private itemSocialShareService: ItemSocialShareService,
     private typeCheckService: TypeCheckService,
     private userService: UserService,
