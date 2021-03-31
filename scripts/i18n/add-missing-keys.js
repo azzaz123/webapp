@@ -2,7 +2,12 @@ const fs = require('fs');
 const xmlParser = require('xml2json');
 
 const englishCopiesFileLocation = 'src/locale/messages.xmb';
+const spanishCopiesFileLocation = 'src/locale/es.xtb';
 const keyNamePrefix = 'web_';
+const translationsFilesLocations = [
+  englishCopiesFileLocation,
+  spanishCopiesFileLocation
+]
 
 const getNodeMessagesWithoutKeyname = () => {
   const nodesWithoutKeyname = [];
@@ -55,22 +60,37 @@ const setNewKeyNameInHTML = (node, newKeyName) => {
   fs.writeFileSync(filePath, formattedRawHTML);
 }
 
-const setNewKeyNameInCopies = () => {}
+const setNewKeyNameInCopies = keysToBeUpdated => {
+  translationsFilesLocations.forEach(fileLocation => {
+    let rawFile = fs.readFileSync(fileLocation, 'utf8');
+
+    keysToBeUpdated.forEach(key => {
+      const regexpFindOldKey = new RegExp(key.old, 'g');
+      rawFile = rawFile.replace(regexpFindOldKey, key.new);
+    });
+
+    fs.writeFileSync(fileLocation, rawFile)
+  });
+}
 
 const main = () => {
   // Get XML nodes that are generated automatically and don't have manual key
   const nodeMessagesWithoutKeyname = getNodeMessagesWithoutKeyname();
+  const keysToBeUpdated = [];
 
   nodeMessagesWithoutKeyname.forEach((node, i) => {
     // Get new key name
     const newKeyName = getNewKeyName(node, i);
 
     // Set key in HTML file
-    setNewKeyNameInHTML(node, newKeyName);
+    // setNewKeyNameInHTML(node, newKeyName);
 
-    // // Replace old key for new one in copies
-    // setNewKeyNameInCopies(node.id, newKeyName);
+    // Store old keys to be updated
+    keysToBeUpdated.push({ old: node.id, new: newKeyName });
   });
+
+  // Replace old key for new one in copies
+  setNewKeyNameInCopies(keysToBeUpdated);
 }
 
 main();
