@@ -1,0 +1,30 @@
+<tsl-filter-template #filterTemplateComponent
+                     [isBubble]="isBubble()"
+                     [isDropdown]="isDropdown()"
+                     [isClearable]="true"
+                     [title]="config.title"
+                     [icon]="config.icon"
+                     [label]="getLabel()"
+                     [hasValue]="hasValue$() | async"
+                     (clear)="handleClear()"
+                     (openStateChange)="openStateChange.emit($event)">
+
+  <tsl-select-filter-template #selectFilterTemplateComponent
+                              [hasContentPlaceholder]="hasContentPlaceholder()"
+                              [placeholderLabel]="getLabel()"
+                              [contentTitle]="contentTitle"
+                              [isClearable]="hasValue$() | async"
+                              (clear)="handleClear()">
+
+    <div [class.SelectFilter--bubble]="isBubble()">
+      <form [formGroup]="formGroup">
+        <tsl-select-form
+          formControlName="select"
+          [options]="options">
+        </tsl-select-form>
+      </form>
+    </div>
+
+  </tsl-select-filter-template>
+
+</tsl-filter-template>

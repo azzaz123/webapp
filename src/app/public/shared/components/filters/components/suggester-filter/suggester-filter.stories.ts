@@ -1,0 +1,146 @@
+import { moduleMetadata } from '@storybook/angular';
+import { Meta } from '@storybook/angular/types-6-0';
+import { Story } from '@storybook/angular/ts3.4/dist/client';
+import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
+import { Component, Input } from '@angular/core';
+import { FilterParameter } from '../../interfaces/filter-parameter.interface';
+import { HttpClientModule } from '@angular/common/http';
+import { COMMON_CONFIGURATION_ID } from '../../core/enums/configuration-ids/common-configuration-ids.enum';
+import { FILTER_TYPES } from '../../core/enums/filter-types/filter-types.enum';
+import { FilterOptionService } from '../../../../services/filter-option/filter-option.service';
+import { MockFilterOptionService } from '@fixtures/filter-option-service.fixtures.spec';
+import { SuggesterFilterConfig } from './interfaces/suggester-filter-config.interface';
+import { SuggesterFilterComponent } from './suggester-filter.component';
+import { CAR_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/car-configuration-ids';
+import { CommonModule } from '@angular/common';
+import { FilterOptionServiceModule } from '@public/shared/services/filter-option/filter-option-service.module';
+import { AbstractFilterModule } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.module';
+import { AbstractSelectFilterModule } from '@public/shared/components/filters/components/abstract-select-filter/abstract-select-filter.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SelectFormModule } from '@shared/form/components/select/select-form.module';
+
+@Component({
+  selector: 'tsl-filters',
+  template: `
+    <div>
+      <h1>Bubble variant</h1>
+      <div style="display: flex;">
+        <div class="m-2" style="width: 100%">
+          <tsl-suggester-filter
+            [variant]="${FILTER_VARIANT.BUBBLE}"
+            [value]="clothingTypeValue"
+            [config]="clothingTypeConfig"
+            (valueChange)="changeClothingType($event)"
+            (clear)="changeClothingType([])"
+          >
+          </tsl-suggester-filter>
+        </div>
+        <div class="m-2" style="width: 100%">
+          <tsl-suggester-filter
+            [variant]="${FILTER_VARIANT.BUBBLE}"
+            [value]="brandValue"
+            [config]="brandConfig"
+            (valueChange)="changeBrand($event)"
+            (clear)="changeBrand([])"
+          >
+          </tsl-suggester-filter>
+        </div>
+      </div>
+
+      <h1>Content variant</h1>
+      <div style="border: 1px dashed black; background-color: white; position: relative;">
+        <tsl-suggester-filter
+          [variant]="${FILTER_VARIANT.CONTENT}"
+          [value]="clothingTypeValue"
+          [config]="clothingTypeConfig"
+          (valueChange)="changeClothingType($event)"
+          (clear)="changeClothingType([])"
+        >
+        </tsl-suggester-filter>
+        <tsl-suggester-filter
+          [variant]="${FILTER_VARIANT.CONTENT}"
+          [value]="brandValue"
+          [config]="brandConfig"
+          (valueChange)="changeBrand($event)"
+          (clear)="changeBrand([])"
+        >
+        </tsl-suggester-filter>
+      </div>
+    </div>
+  `,
+})
+class FiltersComponent {
+  public clothingTypeValue: FilterParameter[];
+  public brandValue: FilterParameter[];
+  @Input() public clothingTypeConfig: SuggesterFilterConfig;
+  @Input() public brandConfig: SuggesterFilterConfig;
+
+  public changeClothingType(value: FilterParameter[]): void {
+    this.clothingTypeValue = value;
+  }
+
+  public changeBrand(value: FilterParameter[]): void {
+    this.brandValue = value;
+  }
+}
+
+export default {
+  title: 'Webapp/Public/Shared/Components/Filters/SuggesterFilter',
+  decorators: [
+    moduleMetadata({
+      imports: [
+        HttpClientModule,
+        CommonModule,
+        FilterOptionServiceModule,
+        AbstractFilterModule,
+        AbstractSelectFilterModule,
+        ReactiveFormsModule,
+        SelectFormModule,
+      ],
+      providers: [
+        {
+          provide: FilterOptionService,
+          useClass: MockFilterOptionService,
+        },
+      ],
+      declarations: [FiltersComponent, SuggesterFilterComponent],
+    }),
+  ],
+} as Meta;
+
+const Template: Story<FiltersComponent> = (args) => ({
+  props: args,
+  component: FiltersComponent,
+});
+
+const clothingTypeConfig: SuggesterFilterConfig = {
+  id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
+  title: 'Clothing type',
+  icon: '/assets/icons/joke.svg',
+  bubblePlaceholder: 'Clothing type',
+  drawerPlaceholder: 'Select clothing type',
+  mapKey: {
+    parameterKey: 'object_type_id',
+  },
+  type: FILTER_TYPES.SUGGESTER,
+  hasOptionsOnInit: true,
+  hasContentPlaceholder: true,
+};
+
+const brandConfig: SuggesterFilterConfig = {
+  id: CAR_CONFIGURATION_ID.BRAND_N_MODEL,
+  title: 'Brand',
+  icon: '/assets/icons/joke.svg',
+  bubblePlaceholder: 'Brand',
+  drawerPlaceholder: 'Select brand',
+  mapKey: {},
+  type: FILTER_TYPES.SUGGESTER,
+  hasOptionsOnInit: false,
+  hasContentPlaceholder: true,
+};
+
+export const Default = Template.bind({});
+Default.args = {
+  clothingTypeConfig: clothingTypeConfig,
+  brandConfig: brandConfig,
+};
