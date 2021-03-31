@@ -39,7 +39,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { take, takeWhile } from 'rxjs/operators';
 import { BumpTutorialComponent } from '../../components/bump-tutorial/bump-tutorial.component';
 import { OrderEvent, STATUS } from '../../components/selected-items/selected-product.interface';
-import { ItemChangeEvent } from '../../core/item-change.interface';
+import { ItemChangeEvent, ITEM_CHANGE_ACTION } from '../../core/item-change.interface';
 import { BumpConfirmationModalComponent } from '../../modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { BuyProductModalComponent } from '../../modals/buy-product-modal/buy-product-modal.component';
 import { ListingfeeConfirmationModalComponent } from '../../modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
@@ -409,7 +409,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public itemChanged($event: ItemChangeEvent) {
-    if ($event.action === 'reactivated') {
+    if ($event.action === ITEM_CHANGE_ACTION.REACTIVATED) {
       this.reactivationAction($event.item.id);
     } else if ($event.action === 'activate') {
       this.onAction($event.action, $event.item.id);
