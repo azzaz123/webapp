@@ -2,6 +2,7 @@ const fs = require('fs');
 const xmlParser = require('xml2json');
 
 const englishCopiesFileLocation = 'src/locale/messages.xmb';
+const keyNamePrefix = 'web_';
 
 const getNodeMessagesWithoutKeyname = () => {
   const nodesWithoutKeyname = [];
@@ -14,7 +15,6 @@ const getNodeMessagesWithoutKeyname = () => {
     const id = translation.id
     const isKeyIdGenerated = !isNaN(id) && !isNaN(parseFloat(id));
 
-    
     if (isKeyIdGenerated) {
       nodesWithoutKeyname.push(translation)
     }
@@ -23,7 +23,16 @@ const getNodeMessagesWithoutKeyname = () => {
   return nodesWithoutKeyname;
 }
 
-const getNewKeyName = () => {}
+const getNewKeyName = (node, i) => {
+  const pathWithoutFilelines = node.source.split(':')[0];
+  const pathWithoutExtension = pathWithoutFilelines.replace('.component.html', '');
+  const normalizedPath = pathWithoutExtension.replace(/-/g, '/');
+  const splittedBySlash = normalizedPath.split('/');
+  const newKeyName = splittedBySlash.slice(4, splittedBySlash.length + 1).join('_');
+
+  return `${keyNamePrefix}${newKeyName}_${i}`;
+}
+
 const setNewKeyNameInHTML = () => {}
 const setNewKeyNameInCopies = () => {}
 
@@ -33,7 +42,7 @@ const main = () => {
 
   nodeMessagesWithoutKeyname.forEach((node, i) => {
     // // Get new key name
-    // const newKeyName = getNewKeyName(node, i);
+    const newKeyName = getNewKeyName(node, i);
 
     // // Set key in HTML file
     // setNewKeyNameInHTML(html, line, newKeyName);
