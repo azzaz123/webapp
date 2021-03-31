@@ -11,6 +11,7 @@ import {
   PublicUserApiService,
   PUBLISHED_ITEMS_ENDPOINT,
   REVIEWS_ENDPOINT,
+  SHIPPING_COUNTER_ENDPOINT,
   STATS_ENDPOINT,
   USER_COVER_IMAGE_ENDPOINT,
 } from './public-user-api.service';
@@ -53,6 +54,18 @@ describe('PublicUserApiService', () => {
       const expectedUrl = `${environment.baseUrl}${STATS_ENDPOINT(userId)}`;
 
       publicUserApiService.getStats(userId).subscribe();
+      const req = httpMock.expectOne(expectedUrl);
+
+      expect(req.request.url).toEqual(expectedUrl);
+      expect(req.request.method).toBe('GET');
+    });
+  });
+
+  describe('when getting shipping counter...', () => {
+    it('should get user shipping counter', () => {
+      const expectedUrl = `${environment.baseUrl}${SHIPPING_COUNTER_ENDPOINT(userId)}`;
+
+      publicUserApiService.getShippingCounter(userId).subscribe();
       const req = httpMock.expectOne(expectedUrl);
 
       expect(req.request.url).toEqual(expectedUrl);
