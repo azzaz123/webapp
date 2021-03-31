@@ -78,3 +78,10 @@ export const MOCK_UNFAVORITE_ITEM_EVENT: AnalyticsEvent<UnfavoriteItem> = {
     isBumped: !!MOCK_CAR_ITEM_DETAIL.item.bumpFlags,
   },
 };
+
+export class MockItemdDetailTrackEventService {
+  trackFavoriteOrUnfavoriteEvent() {}
+  trackClickChatButton() {}
+  trackViewOwnItemDetail() {}
+  trackViewOthersCGDetailEvent() {}
+}
