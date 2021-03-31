@@ -381,14 +381,14 @@ export const MOCK_USER_STATS: UserStats = {
   counters: COUNTERS_RESPONSE,
 };
 
-export const MOCK_SHIPPING_COUNTER: ShippingCounterResponse = {
+export const MOCK_USER_SHIPPING_COUNTER: ShippingCounterResponse = {
   succeeded_count: 1,
 };
 
 export const MOCK_USER_STATS_WITH_SHIPPING: UserStatsWithShipping = {
   ratings: RATINGS_RESPONSE,
   counters: COUNTERS_RESPONSE,
-  shippingCounter: MOCK_SHIPPING_COUNTER.succeeded_count,
+  shippingCounter: MOCK_USER_SHIPPING_COUNTER.succeeded_count,
 };
 
 export const MOCK_USER_STATS_RESPONSE = {
@@ -465,10 +465,6 @@ export const COUNTERS = [
 export const USERS_STATS = {
   ratings: RATINGS,
   counters: COUNTERS,
-};
-
-export const MOCK_USER_SHIPPING_COUNTER: ShippingCounterResponse = {
-  succeeded_count: 1,
 };
 
 export const USER_EDIT_DATA: UserData = {
