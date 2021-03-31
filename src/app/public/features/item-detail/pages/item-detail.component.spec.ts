@@ -1,7 +1,7 @@
 import { DecimalPipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, DebugElement, Renderer2 } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ChangeDetectionStrategy, CUSTOM_ELEMENTS_SCHEMA, DebugElement, Renderer2 } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AdsService } from '@core/ads/services';
@@ -13,12 +13,14 @@ import {
   FavoriteItem,
   SCREEN_IDS,
   UnfavoriteItem,
+  ViewOthersItemCGDetail,
   ViewOwnItemDetail,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
+import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
@@ -38,14 +40,10 @@ import { MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
 import { IsCurrentUserStub } from '@fixtures/public/core';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 import { AdComponentStub } from '@fixtures/shared';
-import { MockedUserService } from '@fixtures/user.fixtures.spec';
+import { MockedUserService, MOCK_OTHER_USER, MOCK_USER, OTHER_USER_ID, USER_ID } from '@fixtures/user.fixtures.spec';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
-import {
-  EMPTY_RECOMMENDED_ITEMS_MOCK,
-  RECOMMENDED_ITEMS_MOCK,
-} from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
 import { CustomCurrencyPipe } from '@shared/pipes';
 import { CookieService } from 'ngx-cookie';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -56,6 +54,10 @@ import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-c
 import { ItemSpecificationsComponent } from '../components/item-specifications/item-specifications.component';
 import { ItemSpecificationsModule } from '../components/item-specifications/item-specifications.module';
 import { ItemTaxonomiesComponent } from '../components/item-taxonomies/item-taxonomies.component';
+import {
+  EMPTY_RECOMMENDED_ITEMS_MOCK,
+  RECOMMENDED_ITEMS_MOCK,
+} from '../components/recommended-items/constants/recommended-items.fixtures.spec';
 import { ADS_ITEM_DETAIL, FactoryAdAffiliationSlotConfiguration } from '../core/ads/item-detail-ads.config';
 import { EllapsedTimeModule } from '../core/directives/ellapsed-time.module';
 import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
@@ -65,27 +67,6 @@ import { ItemSocialShareService } from '../core/services/item-social-share/item-
 import { MapExtraInfoService } from '../core/services/map-extra-info/map-extra-info.service';
 import { ItemDetail } from '../interfaces/item-detail.interface';
 import { ItemDetailComponent } from './item-detail.component';
-import { ItemDetailHeaderComponent } from '../components/item-detail-header/item-detail-header.component';
-import { ItemDetailHeaderModule } from '../components/item-detail-header/item-detail-header.module';
-import { ItemSocialShareService } from '../core/services/item-social-share/item-social-share.service';
-import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
-import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
-import { AnalyticsService } from '@core/analytics/analytics.service';
-import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import { UserService } from '@core/user/user.service';
-import { MockedUserService, MOCK_OTHER_USER, MOCK_USER, OTHER_USER_ID, USER_ID } from '@fixtures/user.fixtures.spec';
-import {
-  AnalyticsEvent,
-  AnalyticsPageView,
-  ANALYTICS_EVENT_NAMES,
-  ANALYTIC_EVENT_TYPES,
-  FavoriteItem,
-  SCREEN_IDS,
-  UnfavoriteItem,
-  ViewOthersItemCGDetail,
-  ViewOwnItemDetail,
-} from '@core/analytics/analytics-constants';
-import { User } from '@core/user/user';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
