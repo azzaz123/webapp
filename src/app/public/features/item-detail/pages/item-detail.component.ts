@@ -57,10 +57,10 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     private itemDetailTrackEventsService: ItemDetailTrackEventsService,
     private route: ActivatedRoute,
     private adsService: AdsService,
-    private userService: UserService,
     private analyticsService: AnalyticsService,
     private itemSocialShareService: ItemSocialShareService,
     private typeCheckService: TypeCheckService,
+    private userService: UserService,
     private itemDetailFlagsStoreService: ItemDetailFlagsStoreService
   ) {}
 
@@ -131,42 +131,13 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     const user = itemDetail.user;
     this.userService.me().subscribe((userMe: User) => {
       if (user.id === userMe.id) {
-        const event: AnalyticsPageView<ViewOwnItemDetail> = {
-          name: ANALYTICS_EVENT_NAMES.ViewOwnItemDetail,
-          attributes: {
-            itemId: item.id,
-            categoryId: item.categoryId,
-            salePrice: item.salePrice,
-            title: item.title,
-            isPro: user.featured,
-            screenId: SCREEN_IDS.ItemDetail,
-            isActive: !item.flags?.onhold,
-          },
-        };
-        this.analyticsService.trackPageView(event);
+        this.itemDetailTrackEventsService.trackViewOwnItemDetail(item, user);
       } else {
         if (!this.typeCheckService.isRealEstate(itemDetail.item) || !this.typeCheckService.isCar(itemDetail.item)) {
-          this.trackViewOthersCGDetailEvent(itemDetail);
+          this.itemDetailTrackEventsService.trackViewOthersCGDetailEvent(itemDetail.item, itemDetail.user);
         }
       }
     });
-  }
-
-  private trackViewOthersCGDetailEvent(itemDetail: ItemDetail): void {
-    const item = itemDetail.item;
-    const user = itemDetail.user;
-    const event: AnalyticsPageView<ViewOthersItemCGDetail> = {
-      name: ANALYTICS_EVENT_NAMES.ViewOthersItemCGDetail,
-      attributes: {
-        itemId: item.id,
-        categoryId: item.categoryId,
-        salePrice: item.salePrice,
-        title: item.title,
-        isPro: user.featured,
-        screenId: SCREEN_IDS.ItemDetail,
-      },
-    };
-    this.analyticsService.trackPageView(event);
   }
 
   get itemDetail$(): Observable<ItemDetail> {
