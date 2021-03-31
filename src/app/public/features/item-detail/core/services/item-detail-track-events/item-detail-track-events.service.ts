@@ -3,11 +3,14 @@ import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
+  ClickChatButton,
   FavoriteItem,
   SCREEN_IDS,
   UnfavoriteItem,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { Item } from '@core/item/item';
+import { User } from '@core/user/user';
 import { ItemDetail } from '@public/features/item-detail/interfaces/item-detail.interface';
 
 @Injectable({
@@ -28,6 +31,21 @@ export class ItemDetailTrackEventsService {
         isPro: itemDetail.user.featured,
         title: itemDetail.item.title,
         isBumped: !!itemDetail.item.bumpFlags,
+      },
+    };
+    this.analyticsService.trackEvent(event);
+  }
+
+  public trackChatButton(item: Item, user: User): void {
+    const event: AnalyticsEvent<ClickChatButton> = {
+      name: ANALYTICS_EVENT_NAMES.ClickChatButton,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
+      attributes: {
+        itemId: item.id,
+        sellerUserId: user.id,
+        screenId: SCREEN_IDS.ItemDetail,
+        isPro: user.featured,
+        isBumped: !!item.bumpFlags,
       },
     };
     this.analyticsService.trackEvent(event);

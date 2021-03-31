@@ -78,7 +78,7 @@
                 </tsl-favourite-icon>
             </tsl-button>
             <tsl-button className="btn-primary" class="ItemDetailHeader__button" [routerLink]="['/chat']"
-                [queryParams]="{itemId: item.id}" id="chatButton" (click)="trackChatButton()">
+                [queryParams]="{itemId: item.id}" id="chatButton" (click)="trackChatButton(item, user)">
                 Chat
             </tsl-button>
         </div>
