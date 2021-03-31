@@ -33,7 +33,28 @@ const getNewKeyName = (node, i) => {
   return `${keyNamePrefix}${newKeyName}_${i}`;
 }
 
-const setNewKeyNameInHTML = () => {}
+const setNewKeyNameInHTML = (node, newKeyName) => {
+  const splittedPath = node.source.split(':');
+  const filePath = splittedPath[0];
+  const keyPosition = splittedPath[1];
+  const translationLinePositionInFile = parseInt(keyPosition.split(',')[0]);
+
+  const rawHTML = fs.readFileSync(filePath, 'UTF-8');
+  const allLines = rawHTML.split(/\r?\n/);
+  let targetLine = allLines[translationLinePositionInFile];
+
+  const isPlaceholder = targetLine.includes('i18n-placeholder');
+  if (isPlaceholder) {
+    targetLine = targetLine.replace('i18n-placeholder', `i18n-placeholder="@@${newKeyName}"`);
+  } else {
+    targetLine = targetLine.replace('i18n', `i18n="@@${newKeyName}"`);
+  }
+
+  allLines[translationLinePositionInFile] = targetLine;
+  const formattedRawHTML = allLines.join('\n');
+  fs.writeFileSync(filePath, formattedRawHTML);
+}
+
 const setNewKeyNameInCopies = () => {}
 
 const main = () => {
@@ -41,11 +62,11 @@ const main = () => {
   const nodeMessagesWithoutKeyname = getNodeMessagesWithoutKeyname();
 
   nodeMessagesWithoutKeyname.forEach((node, i) => {
-    // // Get new key name
+    // Get new key name
     const newKeyName = getNewKeyName(node, i);
 
-    // // Set key in HTML file
-    // setNewKeyNameInHTML(html, line, newKeyName);
+    // Set key in HTML file
+    setNewKeyNameInHTML(node, newKeyName);
 
     // // Replace old key for new one in copies
     // setNewKeyNameInCopies(node.id, newKeyName);
