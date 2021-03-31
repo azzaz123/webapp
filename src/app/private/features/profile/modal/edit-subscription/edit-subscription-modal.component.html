@@ -18,14 +18,12 @@
       </div>
       <div class="row EditSubscription__listing-limit-payment">
         <div class="col-12 EditSubscription__listing-limit-selection">
-            <span *ngIf="isCurrentTier(); else nonCurrent" i18n>
-              Price: 
+            <span *ngIf="isCurrentTier(); else nonCurrent" i18n>Price: 
             </span>
             <ng-template #nonCurrent>
               <span i18n>New price: </span>
             </ng-template>
-            <span class="EditSubscription__listing-limit-price" i18n>
-              {{selectedTier.price}}{{selectedTier.currency}}/month
+            <span class="EditSubscription__listing-limit-price" i18n>{{selectedTier.price}}{{selectedTier.currency}}/month
             </span>
             <span *ngIf="subscription.trial_days" i18n="@@subscriptionEditModalUntilDate">
                 Starting on {{subscription.trial_days | dateUntilDay}}
@@ -33,8 +31,7 @@
         </div>
       </div>
     </div>
-    <tsl-button *ngIf="isCurrentTier(); else nonCurrentButton" [disabled]="isCurrentTier()" i18n>
-      This is your current plan
+    <tsl-button *ngIf="isCurrentTier(); else nonCurrentButton" [disabled]="isCurrentTier()" i18n>      This is your current plan
     </tsl-button>
     <ng-template #nonCurrentButton>
       <tsl-button [loading]="loading" (click)="editSubscription()" i18n>Confirm change</tsl-button>
