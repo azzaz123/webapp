@@ -467,6 +467,10 @@ export const USERS_STATS = {
   counters: COUNTERS,
 };
 
+export const MOCK_USER_SHIPPING_COUNTER: ShippingCounterResponse = {
+  succeeded_count: 1,
+};
+
 export const USER_EDIT_DATA: UserData = {
   first_name: USER_DATA.first_name,
   last_name: USER_DATA.last_name,
