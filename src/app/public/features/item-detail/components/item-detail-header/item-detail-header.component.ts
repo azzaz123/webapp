@@ -87,8 +87,8 @@ export class ItemDetailHeaderComponent implements OnInit {
     });
   }
 
-  public trackChatButton(item: Item, user: User): void {
-    this.itemDetailTrackEventsService.trackChatButton(item, user);
+  public trackClickChatButton(item: Item, user: User): void {
+    this.itemDetailTrackEventsService.trackClickChatButton(item, user);
   }
 
   private initializeItemBumpExpiringDate(): void {
