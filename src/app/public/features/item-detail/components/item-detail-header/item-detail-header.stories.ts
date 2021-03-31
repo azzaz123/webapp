@@ -1,5 +1,5 @@
 import { Story, Meta } from '@storybook/angular/types-6-0';
-import { CommonModule } from '@angular/common';
+import { APP_BASE_HREF, CommonModule } from '@angular/common';
 import { MapItemService } from '@public/core/services/map-item/map-item.service';
 import { CUSTOM_VIEWPORT_NAME } from '@storybook-config/viewports/custom-viewports';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -22,9 +22,10 @@ import { ItemDetailService } from '../../core/services/item-detail/item-detail.s
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
 import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
-import { CookieService } from 'ngx-cookie';
-import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
+import { NgxPermissionsModule, NgxPermissionsService, USE_PERMISSIONS_STORE } from 'ngx-permissions';
+import { CookieModule } from 'ngx-cookie';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 export default {
   title: 'Webapp/Public/Features/ItemDetail/Components/ItemDetailHeader',
@@ -48,8 +49,11 @@ const Template: Story<ItemDetailHeaderComponent> = (args: ItemDetailHeaderCompon
       NgbDropdownModule,
       RouterTestingModule,
       HttpClientModule,
+      CookieModule.forRoot(),
+      NgxPermissionsModule.forRoot(),
     ],
     providers: [
+      DeviceDetectorService,
       PublicProfileService,
       ErrorsService,
       ToastService,
@@ -61,7 +65,9 @@ const Template: Story<ItemDetailHeaderComponent> = (args: ItemDetailHeaderCompon
       MapItemService,
       CheckSessionService,
       ItemCardService,
-      { provide: CookieService, useValue: MockCookieService },
+      NgxPermissionsService,
+      { provide: 'SUBDOMAIN', useValue: 'es' },
+      { provide: APP_BASE_HREF, useValue: '/' },
     ],
   },
   template: '<tsl-item-detail-header [item]="item" [user]="user" [userStats]="userStats" [isOwner]="isOwner" ></tsl-item-detail-header>',

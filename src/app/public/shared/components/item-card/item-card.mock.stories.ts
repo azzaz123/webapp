@@ -1,7 +1,18 @@
-import { ITEM_DATA, MOCK_ITEM } from '@fixtures/item.fixtures.spec';
+import { ITEM_DATA } from '@fixtures/item.fixtures.spec';
 import { ItemCard } from './interfaces/item-card.interface';
 
-export const MOCK_ITEM_1 = MOCK_ITEM;
+export const MOCK_ITEM_1: ItemCard = {
+  id: ITEM_DATA.id,
+  ownerId: ITEM_DATA.owner,
+  title: 'Title max chars, title max chars, title max chars.',
+  description:
+    'Long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max ch',
+  salePrice: ITEM_DATA.sale_price,
+  mainImage: ITEM_DATA.main_image,
+  flags: ITEM_DATA.flags,
+  webSlug: ITEM_DATA.web_slug,
+  currencyCode: ITEM_DATA.currency_code,
+};
 
 MOCK_ITEM_1.mainImage.urls_by_size = {
   original: 'http://localhost:6006/images/item-camera.jpg',
