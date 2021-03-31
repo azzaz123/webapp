@@ -1,4 +1,4 @@
-import { Counters, Ratings, UserStats } from '@core/user/user-stats.interface';
+import { Counters, Ratings, UserStatsWithShipping } from '@core/user/user-stats.interface';
 
 export const EMPTY_RATINGS: Ratings = {
   reviews: 0,
@@ -20,7 +20,8 @@ export const EMPTY_COUNTERS: Counters = {
   onHold: 0,
 };
 
-export const EMPTY_STATS: UserStats = {
+export const EMPTY_STATS: UserStatsWithShipping = {
   ratings: EMPTY_RATINGS,
   counters: EMPTY_COUNTERS,
+  shippingCounter: 0,
 };
