@@ -30,6 +30,7 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
     select: new FormControl(),
   });
   public options: FilterOption[] = [];
+  public searchQuery = '';
 
   private subscriptions = new Subscription();
 
@@ -39,10 +40,14 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
 
   public ngOnInit(): void {
     super.ngOnInit();
-    this.optionService
-      .getOptions(this.config.id)
-      .pipe(take(1))
-      .subscribe((options) => (this.options = options));
+    if (this.config.hasOptionsOnInit) {
+      this.optionService
+        .getOptions(this.config.id, {
+          text: this.searchQuery,
+        })
+        .pipe(take(1))
+        .subscribe((options) => (this.options = options));
+    }
     this.initForm();
   }
 
