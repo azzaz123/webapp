@@ -14,15 +14,13 @@ import {
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { Item } from '@core/item/item';
 import { User } from '@core/user/user';
-import { UserService } from '@core/user/user.service';
-import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { ItemDetail } from '@public/features/item-detail/interfaces/item-detail.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ItemDetailTrackEventsService {
-  constructor(private analyticsService: AnalyticsService, private userService: UserService, private typeCheckService: TypeCheckService) {}
+  constructor(private analyticsService: AnalyticsService) {}
 
   public trackFavoriteOrUnfavoriteEvent(itemDetail: ItemDetail): void {
     const event: AnalyticsEvent<FavoriteItem | UnfavoriteItem> = {
@@ -41,7 +39,7 @@ export class ItemDetailTrackEventsService {
     this.analyticsService.trackEvent(event);
   }
 
-  public trackChatButton(item: Item, user: User): void {
+  public trackClickChatButton(item: Item, user: User): void {
     const event: AnalyticsEvent<ClickChatButton> = {
       name: ANALYTICS_EVENT_NAMES.ClickChatButton,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
