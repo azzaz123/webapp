@@ -32,6 +32,7 @@ import {
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
+import { ItemDetailTrackEventsService } from '../core/services/item-detail-track-events/item-detail-track-events.service';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -53,6 +54,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     private itemDetailStoreService: ItemDetailStoreService,
     private deviceService: DeviceService,
     private itemDetailService: ItemDetailService,
+    private itemDetailTrackEventsService: ItemDetailTrackEventsService,
     private route: ActivatedRoute,
     private adsService: AdsService,
     private userService: UserService,
@@ -85,29 +87,12 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
 
   public toggleFavouriteItem(): void {
     this.itemDetailStoreService.toggleFavouriteItem().subscribe(() => {
-      this.trackFavoriteOrUnfavoriteEvent();
+      this.itemDetailTrackEventsService.trackFavoriteOrUnfavoriteEvent(this.itemDetail);
     });
   }
 
   public soldItem(): void {
     this.itemDetailStoreService.markItemAsSold();
-  }
-
-  private trackFavoriteOrUnfavoriteEvent(): void {
-    const event: AnalyticsEvent<FavoriteItem | UnfavoriteItem> = {
-      name: this.itemDetail.item.flags.favorite ? ANALYTICS_EVENT_NAMES.FavoriteItem : ANALYTICS_EVENT_NAMES.UnfavoriteItem,
-      eventType: ANALYTIC_EVENT_TYPES.UserPreference,
-      attributes: {
-        itemId: this.itemDetail.item.id,
-        categoryId: this.itemDetail.item.categoryId,
-        screenId: SCREEN_IDS.ItemDetail,
-        salePrice: this.itemDetail.item.salePrice,
-        isPro: this.itemDetail.user.featured,
-        title: this.itemDetail.item.title,
-        isBumped: !!this.itemDetail.item.bumpFlags,
-      },
-    };
-    this.analyticsService.trackEvent(event);
   }
 
   private initPage(itemId: string): void {
