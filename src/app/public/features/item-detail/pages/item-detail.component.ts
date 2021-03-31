@@ -10,6 +10,7 @@ import {
   FavoriteItem,
   SCREEN_IDS,
   UnfavoriteItem,
+  ViewOthersItemCGDetail,
   ViewOwnItemDetail,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
@@ -19,11 +20,12 @@ import { DeviceType } from '@core/device/deviceType.enum';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
+import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { CarouselSlide } from '@public/shared/components/carousel-slides/carousel-slide.interface';
 import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from '@public/shared/components/item-flag/item-flag-constants';
 import { combineLatest, Observable, Subscription } from 'rxjs';
-import { filter, map, tap } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
 import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
 import { ItemDetailStoreService } from '../core/services/item-detail-store/item-detail-store.service';
@@ -63,6 +65,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private analyticsService: AnalyticsService,
     private itemSocialShareService: ItemSocialShareService,
+    private typeCheckService: TypeCheckService,
     private itemDetailFlagsStoreService: ItemDetailFlagsStoreService
   ) {}
 
@@ -131,9 +134,9 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
           this.setAdSlot(itemDetail);
           this.initializeItemRecommendations(itemId, itemDetail.item.categoryId);
           this.itemSocialShareService.initializeItemMetaTags(itemDetail.item);
+          this.trackViewEvents(itemDetail);
         }
         this.itemDetail = itemDetail;
-        this.trackViewEvents();
       });
     this.subscriptions.add(subscription);
   }
@@ -149,11 +152,11 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     return CATEGORIES_WITH_RECOMMENDATIONS.includes(itemCategoryId);
   }
 
-  private trackViewEvents(): void {
-    const item = this.itemDetail.item;
-    const itemDetailUser = this.itemDetail.user;
-    const subscription: Subscription = this.userService.me().subscribe((user: User) => {
-      if (this.itemDetail.user.id === user.id) {
+  private trackViewEvents(itemDetail: ItemDetail): void {
+    const item = itemDetail.item;
+    const user = itemDetail.user;
+    const subscription: Subscription = this.userService.me().subscribe((userMe: User) => {
+      if (user.id === userMe.id) {
         const event: AnalyticsPageView<ViewOwnItemDetail> = {
           name: ANALYTICS_EVENT_NAMES.ViewOwnItemDetail,
           attributes: {
@@ -161,14 +164,16 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
             categoryId: item.categoryId,
             salePrice: item.salePrice,
             title: item.title,
-            isPro: itemDetailUser.featured,
+            isPro: user.featured,
             screenId: SCREEN_IDS.ItemDetail,
             isActive: !item.flags?.onhold,
           },
         };
         this.analyticsService.trackPageView(event);
       } else {
-        //TODO: Check others items events
+        if (!this.typeCheckService.isRealEstate(itemDetail.item) || !this.typeCheckService.isCar(itemDetail.item)) {
+          this.trackViewOthersCGDetailEvent(itemDetail);
+        }
       }
     });
     this.subscriptions.add(subscription);
@@ -182,6 +187,23 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
       this.adsSlotsItemDetail.item3r,
       ...this.adsAffiliationSlotConfiguration,
     ]);
+  }
+
+  private trackViewOthersCGDetailEvent(itemDetail: ItemDetail): void {
+    const item = itemDetail.item;
+    const user = itemDetail.user;
+    const event: AnalyticsPageView<ViewOthersItemCGDetail> = {
+      name: ANALYTICS_EVENT_NAMES.ViewOthersItemCGDetail,
+      attributes: {
+        itemId: item.id,
+        categoryId: item.categoryId,
+        salePrice: item.salePrice,
+        title: item.title,
+        isPro: user.featured,
+        screenId: SCREEN_IDS.ItemDetail,
+      },
+    };
+    this.analyticsService.trackPageView(event);
   }
 
   get itemDetail$(): Observable<ItemDetail> {

@@ -9,4 +9,5 @@ export enum PUBLIC_PATHS {
 
 export enum PUBLIC_PATH_PARAMS {
   ID = 'id',
+  WEBSLUG = 'webSlug',
 }
