@@ -73,7 +73,7 @@ const setNewKeyNameInCopies = keysToBeUpdated => {
   });
 }
 
-const main = () => {
+const addMissingKeys = () => {
   // Get XML nodes that are generated automatically and don't have manual key
   const nodeMessagesWithoutKeyname = getNodeMessagesWithoutKeyname();
   const keysToBeUpdated = [];
@@ -91,6 +91,11 @@ const main = () => {
 
   // Replace old key for new one in copies
   setNewKeyNameInCopies(keysToBeUpdated);
+}
+
+const main = () => {
+  // Ensure all i18n copies have manual keys and update copies
+  addMissingKeys();
 }
 
 main();
