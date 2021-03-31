@@ -3,6 +3,10 @@ import { Item } from '@core/item/item';
 
 export interface ItemChangeEvent {
   item?: Item;
-  action: string;
+  action: ITEM_CHANGE_ACTION | string;
   orderEvent?: OrderEvent;
+}
+
+export enum ITEM_CHANGE_ACTION {
+  REACTIVATED = 'reactivated',
 }
