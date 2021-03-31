@@ -6,7 +6,7 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ErrorsService } from '@core/errors/errors.service';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
-import { MOCK_ITEM, MOCK_ITEM_SOLD, PURCHASES } from '@fixtures/item.fixtures.spec';
+import { MOCK_ITEM, MOCK_ITEM_FEATURED, MOCK_ITEM_SOLD, PURCHASES } from '@fixtures/item.fixtures.spec';
 import { MOCK_USER, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -21,7 +21,6 @@ import { SoldModalComponent } from '@shared/modals/sold-modal/sold-modal.compone
 import { CookieService } from 'ngx-cookie';
 import { of } from 'rxjs';
 import { ItemDetailService } from '../../core/services/item-detail/item-detail.service';
-import { MOCK_ITEM_7 } from '@public/shared/components/item-card/item-card.mock.stories';
 
 import { ItemDetailHeaderComponent } from './item-detail-header.component';
 import { AnalyticsService } from '@core/analytics/analytics.service';
@@ -147,7 +146,7 @@ describe('ItemDetailHeaderComponent', () => {
       it('should ask for the active purchases', () => {
         spyOn(itemDetailService, 'getItemActivePurchases').and.returnValue(of(PURCHASES));
         component.isOwner = true;
-        component.item = MOCK_ITEM_7;
+        component.item = MOCK_ITEM_FEATURED;
 
         component.ngOnInit();
         fixture.detectChanges();
