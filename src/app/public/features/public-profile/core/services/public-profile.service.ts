@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators';
-import { Counters, Ratings, UserStats } from '@core/user/user-stats.interface';
+import { Counters, Ratings, ShippingCounterResponse, UserStats } from '@core/user/user-stats.interface';
 import { User } from '@core/user/user';
 import { Image, UserExtrainfo, UserResponse } from '@core/user/user-response.interface';
 import { MarkAsFavouriteBodyResponse } from '../interfaces/public-profile-request.interface';
@@ -30,6 +30,15 @@ export class PublicProfileService {
         };
       }),
       catchError(() => of(EMPTY_STATS))
+    );
+  }
+
+  public getShippingCounter(userId: string): Observable<number> {
+    return this.publicUserApiService.getShippingCounter(userId).pipe(
+      map((response: ShippingCounterResponse) => {
+        return response.succeeded_count;
+      }),
+      catchError(() => of(0))
     );
   }
 
