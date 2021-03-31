@@ -4,7 +4,7 @@ import { BehaviorSubject, of } from 'rxjs';
 import { DecimalPipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, DebugElement, Renderer2 } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AdsService } from '@core/ads/services';
@@ -54,7 +54,7 @@ import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { UserService } from '@core/user/user.service';
-import { MockedUserService, MOCK_USER, OTHER_USER_ID, USER_ID } from '@fixtures/user.fixtures.spec';
+import { MockedUserService, MOCK_OTHER_USER, MOCK_USER, OTHER_USER_ID, USER_ID } from '@fixtures/user.fixtures.spec';
 import {
   AnalyticsEvent,
   AnalyticsPageView,
@@ -63,6 +63,7 @@ import {
   FavoriteItem,
   SCREEN_IDS,
   UnfavoriteItem,
+  ViewOthersItemCGDetail,
   ViewOwnItemDetail,
 } from '@core/analytics/analytics-constants';
 import { User } from '@core/user/user';
@@ -194,6 +195,7 @@ describe('ItemDetailComponent', () => {
     decimalPipe = TestBed.inject(DecimalPipe);
     itemDetailService = TestBed.inject(ItemDetailService);
     mapExtraInfoService = TestBed.inject(MapExtraInfoService);
+    userService = TestBed.inject(UserService);
     de = fixture.debugElement;
     el = de.nativeElement;
     itemDetailStoreService = TestBed.inject(ItemDetailStoreService);
@@ -262,6 +264,19 @@ describe('ItemDetailComponent', () => {
           isActive: !MOCK_CAR_ITEM_DETAIL.item.flags?.onhold,
         },
       };
+
+      const viewOthersCGDetailEvent: AnalyticsPageView<ViewOthersItemCGDetail> = {
+        name: ANALYTICS_EVENT_NAMES.ViewOthersItemCGDetail,
+        attributes: {
+          itemId: MOCK_ITEM_GBP.id,
+          categoryId: MOCK_ITEM_GBP.categoryId,
+          salePrice: MOCK_ITEM_GBP.salePrice,
+          title: MOCK_ITEM_GBP.title,
+          isPro: MOCK_OTHER_USER.featured,
+          screenId: SCREEN_IDS.ItemDetail,
+        },
+      };
+
       it('should send view own item detail event if it is the same user', () => {
         itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
         spyOn(analyticsService, 'trackPageView');
@@ -282,6 +297,42 @@ describe('ItemDetailComponent', () => {
         fixture.detectChanges();
 
         expect(analyticsService.trackPageView).not.toHaveBeenCalledWith(event);
+      });
+
+      it('should send view others CG item detail event when user is viewing others consumer goods item detail', () => {
+        const mockCGItemDetail: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
+        mockCGItemDetail.item = MOCK_ITEM_GBP;
+        mockCGItemDetail.user = MOCK_OTHER_USER;
+        itemDetailSubjectMock.next(mockCGItemDetail);
+        spyOn(analyticsService, 'trackPageView');
+        spyOn(userService, 'me').and.returnValue(of(new User(OTHER_USER_ID)));
+
+        fixture.detectChanges();
+
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(viewOthersCGDetailEvent);
+      });
+
+      it('should not send view others CG item detail event when user is not viewing others consumer goods item detail', () => {
+        itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
+        spyOn(analyticsService, 'trackPageView');
+        spyOn(userService, 'me').and.returnValue(of(new User(OTHER_USER_ID)));
+
+        fixture.detectChanges();
+
+        expect(analyticsService.trackPageView).not.toHaveBeenCalledWith(viewOthersCGDetailEvent);
+      });
+
+      it('should not send view others CG item detail event when user is viewing their own consumer goods item detail', () => {
+        const mockCGItemDetail: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
+        mockCGItemDetail.item = MOCK_ITEM_GBP;
+        mockCGItemDetail.user = MOCK_USER;
+        itemDetailSubjectMock.next(mockCGItemDetail);
+        spyOn(analyticsService, 'trackPageView');
+        spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
+
+        fixture.detectChanges();
+
+        expect(analyticsService.trackPageView).not.toHaveBeenCalledWith(viewOthersCGDetailEvent);
       });
 
       it('should ask for item data', () => {
