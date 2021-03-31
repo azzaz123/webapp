@@ -6,7 +6,7 @@ import { DeviceService } from '@core/device/device.service';
 import { SlugsUtilService } from '@core/services/slugs-util/slugs-util.service';
 import { User } from '@core/user/user';
 import { Image } from '@core/user/user-response.interface';
-import { UserStats } from '@core/user/user-stats.interface';
+import { UserStats, UserStatsWithShipping } from '@core/user/user-stats.interface';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { APP_PATHS } from 'app/app-routing-constants';
 import { forkJoin, Subscription } from 'rxjs';
@@ -21,7 +21,7 @@ import { PublicProfileService } from '../core/services/public-profile.service';
 })
 export class PublicProfileComponent implements OnInit, OnDestroy {
   public userId: string;
-  public userStats: UserStats;
+  public userStats: UserStatsWithShipping;
   public userInfo: User;
   public loading = false;
   private subscriptions: Subscription[] = [];
@@ -65,16 +65,24 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     this.loading = true;
 
     this.subscriptions.push(
-      forkJoin([this.publicProfileService.getUser(this.userId), this.publicProfileService.getStats(this.userId)])
+      forkJoin([
+        this.publicProfileService.getUser(this.userId),
+        this.publicProfileService.getStats(this.userId),
+        this.publicProfileService.getShippingCounter(this.userId),
+      ])
         .pipe(
           finalize(() => {
             this.handleCoverImage();
           })
         )
         .subscribe(
-          ([userInfo, userStats]: [User, UserStats]) => {
+          ([userInfo, userStats, shippingCounter]: [User, UserStats, number]) => {
             this.userInfo = userInfo;
-            this.userStats = userStats;
+            this.userStats = {
+              ratings: userStats.ratings,
+              counters: userStats.counters,
+              shippingCounter: shippingCounter,
+            };
           },
           () => {
             this.router.navigate([`/${APP_PATHS.NOT_FOUND}`]);

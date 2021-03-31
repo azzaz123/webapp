@@ -50,6 +50,9 @@ describe('PublicProfileComponent', () => {
             getStats() {
               return of(MOCK_USER_STATS);
             },
+            getShippingCounter() {
+              return of(1);
+            },
             getCoverImage() {
               return of(IMAGE);
             },
@@ -101,11 +104,13 @@ describe('PublicProfileComponent', () => {
         it('should call for more data', () => {
           spyOn(publicProfileService, 'getUser');
           spyOn(publicProfileService, 'getStats');
+          spyOn(publicProfileService, 'getShippingCounter');
 
           component.ngOnInit();
 
           expect(publicProfileService.getUser).toHaveBeenCalledTimes(1);
           expect(publicProfileService.getStats).toHaveBeenCalledTimes(1);
+          expect(publicProfileService.getShippingCounter).toHaveBeenCalledTimes(1);
         });
 
         describe('when the user is featured...', () => {
@@ -166,12 +171,14 @@ describe('PublicProfileComponent', () => {
       it('should NOT call for more data', () => {
         spyOn(publicProfileService, 'getUser');
         spyOn(publicProfileService, 'getStats');
+        spyOn(publicProfileService, 'getShippingCounter');
 
         component.ngOnInit();
         fixture.detectChanges();
 
         expect(publicProfileService.getUser).not.toHaveBeenCalled();
         expect(publicProfileService.getStats).not.toHaveBeenCalled();
+        expect(publicProfileService.getShippingCounter).not.toHaveBeenCalled();
       });
     });
 
