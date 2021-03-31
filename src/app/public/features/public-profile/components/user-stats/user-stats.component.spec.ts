@@ -162,7 +162,7 @@ describe('UserStatsComponent', () => {
         });
       });
 
-      describe('and the shipping counter is smaller than zero...', () => {
+      describe('and the shipping counter is smaller than one...', () => {
         beforeEach(() => {
           component.userStats.shippingCounter = 0;
           fixture.detectChanges();
