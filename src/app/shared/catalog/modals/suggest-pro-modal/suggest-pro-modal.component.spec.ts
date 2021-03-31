@@ -97,7 +97,7 @@ describe('SuggestProModalComponent', () => {
         secondaryButton.click();
 
         expect(component.activeModal.dismiss).toBeCalledTimes(1);
-        expect(component.activeModal.dismiss).toHaveBeenCalledWith(true);
+        expect(component.activeModal.dismiss).toHaveBeenCalledWith();
       });
     });
   });
