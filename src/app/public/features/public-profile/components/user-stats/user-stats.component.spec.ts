@@ -3,7 +3,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserStatsComponent } from './user-stats.component';
 import { By } from '@angular/platform-browser';
-import { MOCK_FULL_USER_FEATURED, MOCK_USER_STATS_WITH_SHIPPING } from '@fixtures/user.fixtures.spec';
+import { MOCK_FULL_USER_FEATURED, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
 import { PublicPipesModule } from '@public/core/pipes/public-pipes.module';
@@ -48,7 +48,7 @@ describe('UserStatsComponent', () => {
     fixture = TestBed.createComponent(UserStatsComponent);
     component = fixture.componentInstance;
     component.userInfo = MOCK_FULL_USER_FEATURED;
-    component.userStats = MOCK_USER_STATS_WITH_SHIPPING;
+    component.userStats = MOCK_USER_STATS;
     deviceDetectorService = TestBed.inject(DeviceDetectorService);
     scrollIntoViewService = TestBed.inject(ScrollIntoViewService);
     router = TestBed.inject(Router);
@@ -155,16 +155,20 @@ describe('UserStatsComponent', () => {
       });
 
       describe('and the shipping counter is bigger than zero...', () => {
+        beforeEach(() => {
+          component.userStats.counters.shipping_counter = 1;
+          fixture.detectChanges();
+        });
         it('should show the shipping counter', () => {
           const shippingCounter = fixture.debugElement.query(By.css(shippingCounterId)).nativeElement.innerHTML;
 
-          expect(shippingCounter).toBe(`${component.userStats.shippingCounter}`);
+          expect(shippingCounter).toBe(`${component.userStats.counters.shipping_counter}`);
         });
       });
 
       describe('and the shipping counter is smaller than one...', () => {
         beforeEach(() => {
-          component.userStats.shippingCounter = 0;
+          component.userStats.counters.shipping_counter = 0;
           fixture.detectChanges();
         });
         it('should NOT show the shipping counter', () => {

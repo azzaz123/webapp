@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ScrollIntoViewService } from '@core/scroll-into-view/scroll-into-view';
 import { User } from '@core/user/user';
-import { UserStatsWithShipping } from '@core/user/user-stats.interface';
+import { UserStats } from '@core/user/user-stats.interface';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { PUBLIC_PROFILE_PATHS } from '../../public-profile-routing-constants';
 
@@ -12,7 +12,7 @@ import { PUBLIC_PROFILE_PATHS } from '../../public-profile-routing-constants';
   styleUrls: ['./user-stats.component.scss'],
 })
 export class UserStatsComponent {
-  @Input() userStats: UserStatsWithShipping;
+  @Input() userStats: UserStats;
   @Input() userInfo: User;
   public showPhone = false;
 
