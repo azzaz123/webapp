@@ -1,20 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { UserService } from '@core/user/user.service';
+import { environment } from '@environments/environment.beta';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { IsCurrentUserStub } from '@fixtures/public/core';
 import { ItemApiModule } from '@public/core/services/api/item/item-api.module';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
-import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { ItemCardComponent } from '@public/shared/components/item-card/item-card.component';
 import { ItemCardModule } from '@public/shared/components/item-card/item-card.module';
-import { APP_PATHS } from 'app/app-routing-constants';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ItemCardListComponent } from './item-card-list.component';
 import { ShowSlotPipe } from './pipes/show-slot.pipe';
@@ -60,6 +59,7 @@ describe('ItemCardListComponent', () => {
             navigate() {},
           },
         },
+        { provide: 'SUBDOMAIN', useValue: 'www' },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -112,13 +112,17 @@ describe('ItemCardListComponent', () => {
 
   describe('when we click on a item card...', () => {
     it('should redirect to the item view ', () => {
-      spyOn(router, 'navigate');
+      // spyOn(router, 'navigate');
+      spyOn(window, 'open');
+      const expectedURL = `${environment.siteUrl.replace('es', 'www')}item/${MOCK_ITEM.webSlug}`;
       const itemCard: HTMLElement = de.query(By.directive(ItemCardComponent)).nativeElement;
 
       itemCard.click();
       fixture.detectChanges();
 
-      expect(router.navigate).toHaveBeenCalledWith([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM.id}`]);
+      expect(window.open).toHaveBeenCalledWith(expectedURL);
+      // TODO: UNCOMMENT WHEN WE OPEN ITEM DETAIL IN PRODUCTION		Date: 2021/04/01
+      // expect(router.navigate).toHaveBeenCalledWith([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM.id}`]);
     });
   });
 });
