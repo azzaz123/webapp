@@ -22,7 +22,7 @@ describe('ItemDetailTrackEventsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [{ provide: AnalyticsService, useClass: MockAnalyticsService }],
+      providers: [ItemDetailTrackEventsService, { provide: AnalyticsService, useClass: MockAnalyticsService }],
     });
     service = TestBed.inject(ItemDetailTrackEventsService);
     analyticsService = TestBed.inject(AnalyticsService);
