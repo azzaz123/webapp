@@ -15,7 +15,9 @@
                   (click)="togglePlaceholderOpen()">
     </tsl-svg-icon>
   </div>
-  <ng-template [ngTemplateOutlet]="content"></ng-template>
+  <div class="SelectFilterTemplate__content--open">
+    <ng-template [ngTemplateOutlet]="content"></ng-template>
+  </div>
 </div>
 
 <ng-template #content>

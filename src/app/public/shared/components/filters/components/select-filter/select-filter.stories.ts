@@ -44,7 +44,7 @@ import { SelectFormComponent } from '@shared/form/components/select/select-form.
       </div>
 
       <h1>Content variant</h1>
-      <div style="border: 1px dashed black; background-color: white; position: relative;" class="p-3">
+      <div style="border: 1px dashed black; background-color: white; position: relative; min-height: 400px;" class="p-3">
         <tsl-option-select-filter
           [variant]="${FILTER_VARIANT.CONTENT}"
           [value]="conditionValue"

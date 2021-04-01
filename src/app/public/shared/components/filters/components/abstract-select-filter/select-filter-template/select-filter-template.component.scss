@@ -26,6 +26,11 @@ $toolbar-height: 70px;
     z-index: 1;
   }
 
+  &__content--open {
+    max-height: calc(100% - #{$toolbar-height});
+    overflow-y: scroll;
+  }
+
   &__title {
     font-weight: bold;
   }
