@@ -9,6 +9,7 @@ export const MOCK_ITEM_CARD_WIDE: ItemCardWide = {
   images: [ITEM_DATA.main_image, ITEM_DATA.main_image],
   webSlug: ITEM_DATA.web_slug,
   currencyCode: ITEM_DATA.currency_code,
+  ownerId: ITEM_DATA.owner,
 };
 
 export const MOCK_ITEM_CARD_WIDE_GBP: ItemCardWide = {
@@ -19,6 +20,7 @@ export const MOCK_ITEM_CARD_WIDE_GBP: ItemCardWide = {
   images: [ITEM_DATA.main_image, ITEM_DATA.main_image],
   webSlug: ITEM_DATA.web_slug,
   currencyCode: 'GBP',
+  ownerId: ITEM_DATA.owner,
 };
 
 export const MOCK_ITEM_CARD_WIDE_FAVOURITE: ItemCardWide = {
@@ -38,6 +40,7 @@ export const MOCK_ITEM_CARD_WIDE_FAVOURITE: ItemCardWide = {
   },
   webSlug: ITEM_DATA.web_slug,
   currencyCode: ITEM_DATA.currency_code,
+  ownerId: ITEM_DATA.owner,
 };
 
 export const MOCK_ITEM_CARD_WIDE_RESERVED: ItemCardWide = {
@@ -57,6 +60,7 @@ export const MOCK_ITEM_CARD_WIDE_RESERVED: ItemCardWide = {
   },
   webSlug: ITEM_DATA.web_slug,
   currencyCode: ITEM_DATA.currency_code,
+  ownerId: ITEM_DATA.owner,
 };
 
 export const MOCK_ITEM_CARD_WIDE_SOLD: ItemCardWide = {
@@ -76,6 +80,7 @@ export const MOCK_ITEM_CARD_WIDE_SOLD: ItemCardWide = {
   },
   webSlug: ITEM_DATA.web_slug,
   currencyCode: ITEM_DATA.currency_code,
+  ownerId: ITEM_DATA.owner,
 };
 
 export const MOCK_ITEM_CARD_WIDE_BUMPED: ItemCardWide = {
@@ -94,6 +99,7 @@ export const MOCK_ITEM_CARD_WIDE_BUMPED: ItemCardWide = {
   },
   webSlug: ITEM_DATA.web_slug,
   currencyCode: ITEM_DATA.currency_code,
+  ownerId: ITEM_DATA.owner,
 };
 
 export const MOCK_ITEM_CARD_WIDE_COUNTRY_BUMPED: ItemCardWide = {
@@ -112,6 +118,7 @@ export const MOCK_ITEM_CARD_WIDE_COUNTRY_BUMPED: ItemCardWide = {
   },
   webSlug: ITEM_DATA.web_slug,
   currencyCode: ITEM_DATA.currency_code,
+  ownerId: ITEM_DATA.owner,
 };
 
 export const MOCK_ITEM_CARD_WIDE_WITHOUT_IMAGES: ItemCardWide = {
@@ -123,4 +130,5 @@ export const MOCK_ITEM_CARD_WIDE_WITHOUT_IMAGES: ItemCardWide = {
   flags: ITEM_DATA.flags,
   webSlug: ITEM_DATA.web_slug,
   currencyCode: ITEM_DATA.currency_code,
+  ownerId: ITEM_DATA.owner,
 };

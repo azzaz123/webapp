@@ -1,14 +1,6 @@
-import { ItemFlags, ItemVisibilityFlags } from '@core/item/item-response.interface';
 import { Image } from '@core/user/user-response.interface';
+import { ItemCardCore } from '@public/core/interfaces/item-card-core.interface';
 
-export interface ItemCardWide {
-  id: string;
-  title: string;
-  description: string;
-  salePrice: number;
+export interface ItemCardWide extends ItemCardCore {
   images: Image[];
-  flags?: ItemFlags;
-  bumpFlags?: ItemVisibilityFlags;
-  webSlug: string;
-  currencyCode: string;
 }
