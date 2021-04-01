@@ -16,7 +16,18 @@
                               [isClearable]="hasValue$() | async"
                               (clear)="handleClear()">
 
-    <div [class.SelectFilter--bubble]="isBubble()">
+    <div fixed [class.SuggesterFilter--bubble]="isBubble()" class="SuggesterFilter__search_box">
+      <input [placeholder]="config.suggesterPlaceholder" class="SuggesterFilter__search_box_input mx-3" type="text"
+      />
+      <tsl-svg-icon src="/assets/icons/glass_icon.svg" class="SuggesterFilter__glass"
+                    width="24" height="24">
+      </tsl-svg-icon>
+      <tsl-svg-icon src="/assets/icons/cross.svg" class="SuggesterFilter__clear p-2"
+                    width="10" height="10">
+      </tsl-svg-icon>
+    </div>
+
+    <div main class="SuggesterFilter__options" [class.SuggesterFilter--bubble]="isBubble()">
       <form [formGroup]="formGroup">
         <tsl-select-form
           formControlName="select"

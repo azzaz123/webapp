@@ -1,8 +1,45 @@
 @import '~style/common';
 
-.SelectFilter {
+.SuggesterFilter {
   &--bubble {
     margin-left: -24px;
     margin-right: -24px;
+  }
+
+  &__options {
+    position: relative;
+    height: 300px;
+    overflow-y: scroll;
+  }
+
+  &__search_box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  &__search_box_input {
+    width: 100%;
+    padding-right: 44px;
+    padding-left: 44px;
+    height: 50px;
+    border: 1px solid #cfd8dc;
+    border-radius: 6px;
+
+    &:focus {
+      border: 1px solid $walla-main;
+    }
+  }
+
+  &__clear {
+    cursor: pointer;
+    position: absolute;
+    right: 26px;
+  }
+
+  &__glass {
+    position: absolute;
+    left: 26px;
   }
 }

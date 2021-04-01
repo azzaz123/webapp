@@ -6,6 +6,7 @@ import { AbstractSelectFilterModule } from '@public/shared/components/filters/co
 import { ReactiveFormsModule } from '@angular/forms';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
 import { FilterOptionServiceModule } from '@public/shared/services/filter-option/filter-option-service.module';
+import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 
 @NgModule({
   declarations: [SuggesterFilterComponent],
@@ -17,6 +18,7 @@ import { FilterOptionServiceModule } from '@public/shared/services/filter-option
     AbstractSelectFilterModule,
     ReactiveFormsModule,
     SelectFormModule,
+    SvgIconModule,
   ],
 })
 export class SuggesterFilterModule {}

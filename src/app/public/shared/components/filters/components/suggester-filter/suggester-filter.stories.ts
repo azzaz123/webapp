@@ -18,6 +18,7 @@ import { AbstractFilterModule } from '@public/shared/components/filters/componen
 import { AbstractSelectFilterModule } from '@public/shared/components/filters/components/abstract-select-filter/abstract-select-filter.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
+import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 
 @Component({
   selector: 'tsl-filters',
@@ -96,6 +97,7 @@ export default {
         AbstractSelectFilterModule,
         ReactiveFormsModule,
         SelectFormModule,
+        SvgIconModule,
       ],
       providers: [
         {
@@ -125,6 +127,7 @@ const clothingTypeConfig: SuggesterFilterConfig = {
   type: FILTER_TYPES.SUGGESTER,
   hasOptionsOnInit: true,
   hasContentPlaceholder: true,
+  suggesterPlaceholder: 'Search for clothing type',
 };
 
 const brandConfig: SuggesterFilterConfig = {
@@ -137,6 +140,7 @@ const brandConfig: SuggesterFilterConfig = {
   type: FILTER_TYPES.SUGGESTER,
   hasOptionsOnInit: false,
   hasContentPlaceholder: true,
+  suggesterPlaceholder: 'Search for brand or model',
 };
 
 export const Default = Template.bind({});

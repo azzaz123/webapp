@@ -4,4 +4,5 @@ import { SuggesterFilterParams } from './suggester-filter-params.interface';
 export interface SuggesterFilterConfig extends AbstractSelectFilterConfig<SuggesterFilterParams> {
   hasContentPlaceholder: true;
   hasOptionsOnInit: boolean;
+  suggesterPlaceholder: string;
 }

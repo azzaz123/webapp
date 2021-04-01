@@ -16,7 +16,7 @@
     [isClearable]="hasValue$() | async"
     (clear)="handleClear()">
 
-    <div [class.SelectFilter--bubble]="isBubble()">
+    <div main [class.SelectFilter--bubble]="isBubble()">
       <form [formGroup]="formGroup">
         <tsl-select-form
           formControlName="select"
