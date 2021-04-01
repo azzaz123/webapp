@@ -17,11 +17,11 @@
     </tsl-bubble>
   </div>
   <div ngbDropdownMenu class="FilterTemplate__dropdown_menu">
-    <div class="d-flex flex-column h-100 p-4 p-md-2" >
+    <div class="d-flex flex-column h-100" >
       <ng-template [ngTemplateOutlet]="contentWrapper"></ng-template>
 
-      <div class="p-2 d-flex justify-content-end mt-auto">
-        <tsl-button className="basic dark btn-filter" class="mx-1" i18n="@@cancelButton"
+      <div [class.FilterTemplate]="!hasApply" class="p-3 d-flex justify-content-end mt-auto">
+        <tsl-button className="basic basic-dark btn-filter" class="mx-1" i18n="@@cancelButton"
                     (click)="handleCancel($event)">
           Cancel
         </tsl-button>
@@ -39,7 +39,7 @@
 </div>
 
 <ng-template #contentWrapper>
-  <div [ngClass]="{'pb-md-0 FilterTemplate__content--bubble': isBubble}" class="p-2 p-md-4">
+  <div [ngClass]="{'pb-md-0 FilterTemplate__content--bubble': isBubble}" class="p-4">
     <p class="FilterTemplate__title">{{title}}</p>
     <div #extendedContent>
       <ng-content></ng-content>
