@@ -5,6 +5,7 @@ import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
+import { SlugsUtilService } from '@core/services/slugs-util/slugs-util.service';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { IsCurrentUserPipeMock } from '@fixtures/is-current-user.fixtures.spec';
 import { IsCurrentUserStub } from '@fixtures/public/core';
@@ -38,11 +39,9 @@ describe('PublicProfileComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            snapshot: {
-              paramMap: {
-                get: () => '123',
-              },
-            },
+            params: of({
+              webSlug: 'user-generic-123',
+            }),
           },
         },
         {
@@ -79,6 +78,7 @@ describe('PublicProfileComponent', () => {
           },
         },
         { provide: IsCurrentUserPipe, useClass: IsCurrentUserPipeMock },
+        SlugsUtilService,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -202,7 +202,7 @@ describe('PublicProfileComponent', () => {
 
     describe('when NOT have the user id..', () => {
       beforeEach(() => {
-        spyOn(route.snapshot.paramMap, 'get').and.returnValue(undefined);
+        route.params = of({});
       });
 
       it('should NOT show the page', () => {
