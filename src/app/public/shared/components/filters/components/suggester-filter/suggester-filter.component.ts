@@ -11,7 +11,8 @@ import { debounceTime, distinctUntilChanged, take } from 'rxjs/operators';
 import { ComplexSelectValue } from '@shared/form/components/select/types/complex-select-value';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { SuggesterFilterConfig } from './interfaces/suggester-filter-config.interface';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject, Observable } from 'rxjs';
+import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 
 // TODO: Tech debt. Need to set to onpush
 @Component({
@@ -29,12 +30,12 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
   public filterTemplate: FilterTemplateComponent;
 
   public formGroup = new FormGroup({
-    input: new FormControl(),
     select: new FormControl(),
   });
   public searchQuery: string;
   public options: FilterOption[] = [];
   private searchQuery$ = new Subject<string>();
+  private labelSubject: BehaviorSubject<string> = new BehaviorSubject('');
 
   private subscriptions = new Subscription();
 
@@ -42,11 +43,16 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
     super();
   }
 
+  public get label$(): Observable<string> {
+    return this.labelSubject.asObservable();
+  }
+
   public ngOnInit(): void {
     super.ngOnInit();
     if (this.config.hasOptionsOnInit) {
       this.getOptions();
     }
+    this.initLabel();
     this.initForm();
     this.initModel();
   }
@@ -61,14 +67,39 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
     }
   }
 
-  public getLabel(): string {
-    const value = this.getValue('parameterKey');
-    return value ? this.options.find((option) => option.value === value).label : this.getLabelPlaceholder();
+  // TODO: TechDebt(brand/model). This overwrite is needed to be able to handle the brand/model filter. In this filter, we are not
+  //       able to use the mapKey configuration because this comes from the backend dynamically, and the hasValueChanged
+  //       check depends on the mapKey configuration. There should be a new filter type for this case.
+
+  public hasValueChanged(previousParameters: FilterParameter[], currentParameters: FilterParameter[]): boolean {
+    if (!previousParameters && !currentParameters) {
+      return false;
+    } else if (!previousParameters) {
+      return true;
+    } else if (previousParameters.length !== currentParameters.length) {
+      return true;
+    }
+
+    for (const currentParameter of currentParameters) {
+      const previousParameter = previousParameters.find((parameter) => parameter.key === currentParameter.key);
+
+      if (!previousParameter || previousParameter.value !== currentParameter.value) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   public handleClear(): void {
     this.formGroup.controls.select.setValue(undefined, { emitEvent: false });
+    this.clearSearch();
     super.handleClear();
+  }
+
+  public clearSearch(): void {
+    this.searchQuery = '';
+    this.searchQuery$.next('');
   }
 
   public ngOnDestroy(): void {
@@ -76,12 +107,27 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
   }
 
   private initForm(): void {
-    const subscription = this.formGroup.controls.select.valueChanges.subscribe(this.handleValueChange.bind(this));
-    this.subscriptions.add(subscription);
+    const labelSubscription = this.formGroup.controls.select.valueChanges.subscribe(this.handleLabelChange.bind(this));
+    const valueSubscription = this.formGroup.controls.select.valueChanges.subscribe(this.handleValueChange.bind(this));
+
+    this.subscriptions.add(labelSubscription);
+    this.subscriptions.add(valueSubscription);
   }
 
   private updateForm(): void {
-    this.formGroup.controls.select.setValue(this.getValue('parameterKey'));
+    this.formGroup.controls.select.setValue(this.getComplexValue());
+  }
+
+  private getComplexValue(): string | Record<string, string> {
+    if (this.config.mapKey.parameterKey) {
+      return this.getValue('parameterKey');
+    }
+    return this.value.reduce((acc, parameter) => {
+      const value = {
+        [parameter.key]: parameter.value,
+      };
+      return { ...acc, ...value };
+    }, {});
   }
 
   private initModel(): void {
@@ -89,9 +135,13 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
     this.subscriptions.add(subscription);
   }
 
+  private initLabel(): void {
+    const label = this.variant === FILTER_VARIANT.BUBBLE ? this.config.bubblePlaceholder : this.config.drawerPlaceholder;
+    this.labelSubject.next(label);
+  }
+
   private handleValueChange(value: ComplexSelectValue): void {
     this.closeContent();
-
     if (!value) {
       this.writeValue([]);
     } else if (this.isStringValue(value)) {
@@ -104,11 +154,22 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
     this.valueChange.emit(this.value);
   }
 
-  private getLabelPlaceholder(): string {
-    if (this.variant === FILTER_VARIANT.BUBBLE) {
-      return this.config.bubblePlaceholder;
+  private handleLabelChange(value: ComplexSelectValue): void {
+    if (!value) {
+      return this.initLabel();
     }
-    return this.config.drawerPlaceholder;
+
+    if (typeof value === 'string') {
+      return this.labelSubject.next(value);
+    }
+
+    // TechDebt(brand/model) On the case of a complex value, when it enters through query, we don't have the options loaded
+    // Complex values (brand/model filter) are always concatenated strings so we can just directly grab it from its values
+    return this.labelSubject.next(
+      Object.keys(value)
+        .map((key) => value[key])
+        .join(', ')
+    );
   }
 
   private closeContent(): void {

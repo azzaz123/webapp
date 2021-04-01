@@ -4,14 +4,14 @@
                      [isClearable]="true"
                      [title]="config.title"
                      [icon]="config.icon"
-                     [label]="getLabel()"
+                     [label]="label$ | async"
                      [hasValue]="hasValue$() | async"
                      (clear)="handleClear()"
                      (openStateChange)="openStateChange.emit($event)">
 
   <tsl-select-filter-template #selectFilterTemplateComponent
                               [hasContentPlaceholder]="hasContentPlaceholder()"
-                              [placeholderLabel]="getLabel()"
+                              [placeholderLabel]="label$ | async"
                               [contentTitle]="contentTitle"
                               [isClearable]="hasValue$() | async"
                               (clear)="handleClear()">
@@ -22,8 +22,8 @@
       <tsl-svg-icon src="/assets/icons/glass_icon.svg" class="SuggesterFilter__glass"
                     width="24" height="24">
       </tsl-svg-icon>
-      <tsl-svg-icon src="/assets/icons/cross.svg" class="SuggesterFilter__clear p-2"
-                    width="10" height="10">
+      <tsl-svg-icon *ngIf="searchQuery" src="/assets/icons/cross.svg" class="SuggesterFilter__clear p-2" width="10" height="10"
+                    (click)="clearSearch()">
       </tsl-svg-icon>
     </div>
 

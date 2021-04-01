@@ -69,9 +69,9 @@ export class MockFilterOptionService implements Partial<FilterOptionService> {
       const { text = 'default' } = params;
       const arr = new Array(30).fill(undefined);
       return arr.map((a, index) => {
-        const value = isComplex ? {} : `${text}_${index}`;
+        const value = isComplex ? { brand: `${text}_brand_${index}`, model: `${text}_model_${index}` } : `${text}_${index}`;
         return {
-          label: `${text} ${index}`,
+          label: `${text}_brand_${index}, ${text}_model_${index}`,
           value,
         };
       });
