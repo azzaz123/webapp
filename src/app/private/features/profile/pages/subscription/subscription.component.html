@@ -25,7 +25,8 @@
         <div *ngIf="subscription.subscribed_from" class="Subscriptions__category-info">
             <p i18n *ngIf="subscription.selected_tier.limit">{{subscription.selected_tier.limit}} products</p>
             <p i18n *ngIf="!subscription.selected_tier.limit">No limit</p>
-            <p class="Subscriptions__category-info--price" i18n>{{subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month
+            <p class="Subscriptions__category-info--price" i18n>
+              {{subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month
             </p>
             <p class="Subscriptions__category-info--edit" *ngIf="!subscription.subscribed_until">
               <span *ngIf="showEdit(subscription)" i18n>Edit</span>
@@ -35,11 +36,14 @@
             </p>
         </div>
         <tsl-button className="btn-primary" *ngIf="!subscription.subscribed_from">{{getSubscriptionTextButton(subscription)}}</tsl-button>
-        <span *ngIf="subscription.subscribed_from" [hidden]="subscription.subscribed_until" class="Subscriptions__subscribed-from" i18n>Subscribed from {{subscription.subscribed_from | date:'dd/MM/yy' }}
+        <span *ngIf="subscription.subscribed_from" [hidden]="subscription.subscribed_until" class="Subscriptions__subscribed-from" i18n>
+          Subscribed from {{subscription.subscribed_from | date:'dd/MM/yy' }}
         </span>
-        <span *ngIf="subscription.subscribed_until" class="Subscriptions__subscribed-until" i18n>Subscription ends on {{subscription.subscribed_until | date:'dd/MM/yy' }}
+        <span *ngIf="subscription.subscribed_until" class="Subscriptions__subscribed-until" i18n>
+          Subscription ends on {{subscription.subscribed_until | date:'dd/MM/yy' }}
         </span>
-        <span *ngIf="subscription.subscribed_until" class="Subscriptions__subscribed-continue" i18n>Stay subscribed
+        <span *ngIf="subscription.subscribed_until" class="Subscriptions__subscribed-continue" i18n>
+          Stay subscribed
         </span>
       </div>
     </div>

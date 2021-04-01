@@ -28,7 +28,8 @@
     <div class="row mt-2">
       <tsl-catalog-item-actions (getCounters)="getCounters()" [active]="active" [items]="items"
         [selectedStatus]="selectedStatus"></tsl-catalog-item-actions>
-      <tsl-button className="btn-primary" class="ml-auto" [routerLink]="['/catalog/upload']" i18n>List a car</tsl-button>
+      <tsl-button className="btn-primary" class="ml-auto" [routerLink]="['/catalog/upload']" i18n>
+        List a car</tsl-button>
     </div>
     <div class="row items">
       <a class="add-item col-md-12" [routerLink]="['/catalog/upload']"
