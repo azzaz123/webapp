@@ -16,9 +16,7 @@ import { Item } from '@core/item/item';
 import { User } from '@core/user/user';
 import { ItemDetail } from '@public/features/item-detail/interfaces/item-detail.interface';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ItemDetailTrackEventsService {
   constructor(private analyticsService: AnalyticsService) {}
 
