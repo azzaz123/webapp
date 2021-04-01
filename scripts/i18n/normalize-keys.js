@@ -51,9 +51,10 @@ const getNewKeyName = (node, i) => {
   const pathWithoutExtension = pathWithoutFilelines.replace('.component.html', '');
   const normalizedPath = pathWithoutExtension.replace(/-/g, '/');
   const splittedBySlash = normalizedPath.split('/');
-  const newKeyName = splittedBySlash.slice(4, splittedBySlash.length + 1).join('_');
+  const keyName = splittedBySlash.slice(4, splittedBySlash.length + 1).join('_');
+  const normalizedKeyname = getNormalizedKey(keyName)
 
-  return `${keyNamePrefix}${newKeyName}_${i}`;
+  return `${normalizedKeyname}_${i}`;
 }
 
 const setNewKeyNameInHTML = (node, newKeyName) => {
@@ -142,22 +143,34 @@ const snakeCase = string => {
   .toLowerCase();
 }
 
+const getNormalizedKey = keyname => {
+  let newKeyname = snakeCase(keyname);
+  const needsPrefix = !newKeyname.startsWith(keyNamePrefix);
+  if (needsPrefix) {
+    newKeyname = `${keyNamePrefix}${newKeyname}`;
+  }
+
+  const onlyUniqueFilter = (value, index, self) => {
+    return self.indexOf(value) === index;
+  }
+  
+  const keyNameWithUniqueValues = newKeyname.split('_').filter(onlyUniqueFilter).join('_');
+  return keyNameWithUniqueValues;
+}
+
 const normalizeKeys = () => {
   const keysToNormalize = [];
 
   const allNodes = getNodeMessages();
 
   allNodes.forEach(node => {
-    let newKeyname = snakeCase(node.id);
-    const needsPrefix = !newKeyname.startsWith(keyNamePrefix);
-    if (needsPrefix) {
-      newKeyname = `${keyNamePrefix}${newKeyname}`;
-    }
+    const oldKey = node.id;
+    const normalizedKey = getNormalizedKey(oldKey);
 
-    const needsModification = newKeyname !== node.id;
+    const needsModification = normalizedKey !== oldKey;
     if (needsModification) {
-      keysToNormalize.push({ old: node.id, new: newKeyname })
-      setNewKeyNameInHTML(node, newKeyname);
+      keysToNormalize.push({ old: oldKey, new: normalizedKey })
+      setNewKeyNameInHTML(node, normalizedKey);
     }
   });
 
