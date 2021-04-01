@@ -49,7 +49,7 @@ import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
       </div>
 
       <h1>Content variant</h1>
-      <div style="border: 1px dashed black; background-color: white; position: relative;">
+      <div class="p-3" style="border: 1px dashed black; background-color: white; position: relative; min-height: 400px;">
         <tsl-suggester-filter
           [variant]="${FILTER_VARIANT.CONTENT}"
           [value]="clothingTypeValue"
@@ -58,6 +58,7 @@ import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
           (clear)="changeClothingType([])"
         >
         </tsl-suggester-filter>
+        <hr />
         <tsl-suggester-filter
           [variant]="${FILTER_VARIANT.CONTENT}"
           [value]="brandValue"
