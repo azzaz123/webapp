@@ -1,0 +1,13 @@
+@import '~style/common';
+
+.SelectParentOption {
+  position: relative;
+  cursor: pointer;
+
+  &__icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
+}
