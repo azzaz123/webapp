@@ -6,7 +6,7 @@ import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { UserService } from '@core/user/user.service';
-import { environment } from '@environments/environment.beta';
+import { environment } from '@environments/environment';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { IsCurrentUserStub } from '@fixtures/public/core';
 import { ItemApiModule } from '@public/core/services/api/item/item-api.module';
