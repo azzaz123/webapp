@@ -125,8 +125,8 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
         if (user.id === userMe.id) {
           this.itemDetailTrackEventsService.trackViewOwnItemDetail(item, user);
         } else {
-          if (!this.typeCheckService.isRealEstate(itemDetail.item) && !this.typeCheckService.isCar(itemDetail.item)) {
-            this.itemDetailTrackEventsService.trackViewOthersCGDetailEvent(itemDetail.item, itemDetail.user);
+          if (!this.typeCheckService.isRealEstate(item) && !this.typeCheckService.isCar(item)) {
+            this.itemDetailTrackEventsService.trackViewOthersCGDetailEvent(item, user);
           }
         }
       });
