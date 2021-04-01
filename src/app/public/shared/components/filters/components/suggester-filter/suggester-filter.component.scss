@@ -13,7 +13,7 @@ $filter-content-height: 355px;
 
   &__form {
     margin-top: $search-height + 10px;
-    max-height: $filter-content-height - $search-height - 30px;
+    max-height: $filter-content-height - $search-height - 40px;
     overflow-y: scroll;
   }
 

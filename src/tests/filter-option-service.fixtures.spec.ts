@@ -55,22 +55,27 @@ export class MockFilterOptionService implements Partial<FilterOptionService> {
           },
         ]);
       case CAR_CONFIGURATION_ID.BRAND_N_MODEL:
-        return of(this.getOptionsByText(params['text'], true));
+        return of(this.getOptionsByText(params, true));
       case COMMON_CONFIGURATION_ID.OBJECT_TYPE:
-        return of(this.getOptionsByText(params['text'] || 'default'));
+        params = params || {};
+        return of(this.getOptionsByText(params));
       default:
         return of([]);
     }
   }
 
-  private getOptionsByText(text: string, isComplex?: boolean): FilterOption[] {
-    const arr = new Array(30).fill(undefined);
-    return arr.map((a, index) => {
-      const value = isComplex ? {} : `${text}_${index}`;
-      return {
-        label: `${text} ${index}`,
-        value,
-      };
-    });
+  private getOptionsByText(params?: QueryParams, isComplex?: boolean): FilterOption[] {
+    if (params) {
+      const { text = 'default' } = params;
+      const arr = new Array(30).fill(undefined);
+      return arr.map((a, index) => {
+        const value = isComplex ? {} : `${text}_${index}`;
+        return {
+          label: `${text} ${index}`,
+          value,
+        };
+      });
+    }
+    return [];
   }
 }

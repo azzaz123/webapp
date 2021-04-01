@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { AbstractSelectFilter } from '../abstract-select-filter/abstract-select-filter';
 import { SuggesterFilterParams } from './interfaces/suggester-filter-params.interface';
 import { SelectFilterTemplateComponent } from '../abstract-select-filter/select-filter-template/select-filter-template.component';
@@ -7,16 +7,18 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { FilterOption } from '../../core/interfaces/filter-option.interface';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { FilterOptionService } from '@public/shared/services/filter-option/filter-option.service';
-import { take } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, take } from 'rxjs/operators';
 import { ComplexSelectValue } from '@shared/form/components/select/types/complex-select-value';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { SuggesterFilterConfig } from './interfaces/suggester-filter-config.interface';
+import { Subject } from 'rxjs';
 
+// TODO: Tech debt. Need to set to onpush
 @Component({
   selector: 'tsl-suggester-filter',
   templateUrl: './suggester-filter.component.html',
   styleUrls: ['./suggester-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilterParams> implements OnInit, OnDestroy, OnChanges {
   @Input() config: SuggesterFilterConfig;
@@ -30,8 +32,9 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
     input: new FormControl(),
     select: new FormControl(),
   });
+  public searchQuery: string;
   public options: FilterOption[] = [];
-  public searchQuery = '';
+  private searchQuery$ = new Subject<string>();
 
   private subscriptions = new Subscription();
 
@@ -42,17 +45,13 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
   public ngOnInit(): void {
     super.ngOnInit();
     if (this.config.hasOptionsOnInit) {
-      this.optionService
-        .getOptions(this.config.id, {
-          text: this.searchQuery,
-        })
-        .pipe(take(1))
-        .subscribe((options) => (this.options = options));
+      this.getOptions();
     }
     this.initForm();
+    this.initModel();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: SimpleChanges): void {
     if (changes.value && !changes.value.firstChange && this.hasValueChanged(changes.value.previousValue, changes.value.currentValue)) {
       if (this._value.length > 0) {
         this.updateForm();
@@ -83,6 +82,11 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
 
   private updateForm(): void {
     this.formGroup.controls.select.setValue(this.getValue('parameterKey'));
+  }
+
+  private initModel(): void {
+    const subscription = this.searchQuery$.pipe(debounceTime(500), distinctUntilChanged()).subscribe(this.getOptions.bind(this));
+    this.subscriptions.add(subscription);
   }
 
   private handleValueChange(value: ComplexSelectValue): void {
@@ -118,5 +122,16 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
 
   private isStringValue(value: ComplexSelectValue): value is string {
     return typeof value === 'string';
+  }
+
+  public modelChanged() {
+    this.searchQuery$.next(this.searchQuery);
+  }
+
+  private getOptions(query?: string): void {
+    this.optionService
+      .getOptions(this.config.id, query ? { text: query } : undefined)
+      .pipe(take(1))
+      .subscribe((options) => (this.options = options));
   }
 }
