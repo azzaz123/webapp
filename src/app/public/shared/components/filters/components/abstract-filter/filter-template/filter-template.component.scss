@@ -1,5 +1,9 @@
 @import '~style/common';
 
+$actions-height: 88px;
+$toolbar-height: 70px;
+$filter-content-height: 355px;
+
 .FilterTemplate {
   &__dropdown_menu {
     min-width: 380px;
@@ -18,12 +22,37 @@
     }
   }
 
+  &__toolbar {
+    height: $toolbar-height;
+  }
+
+  &__filter {
+    max-height: $filter-content-height;
+    overflow-x: scroll;
+
+    @include media-breakpoint-down(sm) {
+      max-height: calc(100vh - #{$actions-height + $toolbar-height});
+      margin-bottom: $actions-height;
+    }
+  }
+
+  &__actions {
+    background-color: $white;
+    height: $actions-height;
+    @include media-breakpoint-down(sm) {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      left: 0;
+    }
+  }
+
   &__title {
     color: $black;
     font-weight: $font-weight-bold;
   }
 
-  &__dev_warn {
+  &--warn {
     color: $brand-danger;
   }
 

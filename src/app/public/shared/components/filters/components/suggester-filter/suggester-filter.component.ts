@@ -27,6 +27,7 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
   public filterTemplate: FilterTemplateComponent;
 
   public formGroup = new FormGroup({
+    input: new FormControl(),
     select: new FormControl(),
   });
   public options: FilterOption[] = [];

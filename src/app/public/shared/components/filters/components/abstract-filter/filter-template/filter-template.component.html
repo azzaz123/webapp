@@ -2,6 +2,7 @@
     [class.FilterTemplate__bubble--open]="isDropdownOpen"
      ngbDropdown #dropdown="ngbDropdown"
      (openChange)="handleOpenChange($event)">
+
   <div ngbDropdownToggle>
     <tsl-bubble
                 (click)="handleBubbleClick($event)"
@@ -16,20 +17,25 @@
       {{label}}
     </tsl-bubble>
   </div>
-  <div ngbDropdownMenu class="FilterTemplate__dropdown_menu">
-    <div class="d-flex flex-column h-100" >
-      <ng-template [ngTemplateOutlet]="contentWrapper"></ng-template>
 
-      <div [class.FilterTemplate]="!hasApply" class="p-3 d-flex justify-content-end mt-auto">
-        <tsl-button className="basic basic-dark btn-filter" class="mx-1" i18n="@@cancelButton"
-                    (click)="handleCancel($event)">
-          Cancel
-        </tsl-button>
-        <tsl-button *ngIf="hasApply" i18n="@@Apply" className="btn-primary btn-filter" class="mx-1"
-                    (click)="handleAccept($event)">
-          Apply
-        </tsl-button>
-      </div>
+  <div ngbDropdownMenu class="FilterTemplate__dropdown_menu">
+    <div class="FilterTemplate__toolbar d-flex align-items-center px-4">
+      <p class="FilterTemplate__title m-0">{{title}}</p>
+    </div>
+
+    <div class="FilterTemplate__filter px-4">
+      <ng-template [ngTemplateOutlet]="contentWrapper"></ng-template>
+    </div>
+
+    <div [class.FilterTemplate]="!hasApply" class="FilterTemplate__actions px-4 d-flex align-items-center justify-content-end">
+      <tsl-button className="basic basic-dark btn-filter" class="mx-1" i18n="@@cancelButton"
+                  (click)="handleCancel($event)">
+        Cancel
+      </tsl-button>
+      <tsl-button *ngIf="hasApply" i18n="@@Apply" className="btn-primary btn-filter" class="mx-1"
+                  (click)="handleAccept($event)">
+        Apply
+      </tsl-button>
     </div>
   </div>
 </div>
@@ -39,13 +45,10 @@
 </div>
 
 <ng-template #contentWrapper>
-  <div [ngClass]="{'pb-md-0 FilterTemplate__content--bubble': isBubble}" class="p-4">
-    <p class="FilterTemplate__title">{{title}}</p>
     <div #extendedContent>
       <ng-content></ng-content>
     </div>
-    <span *ngIf="extendedContent.children.length === 0" class="FilterTemplate__dev_warn">Please, avoid using abstract filter directly, use one of the extensions or create your own</span>
-  </div>
+    <span *ngIf="extendedContent.children.length === 0" class="FilterTemplate--warn">Please, avoid using abstract filter directly, use one of the extensions or create your own</span>
 </ng-template>
 
 

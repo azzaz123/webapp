@@ -64,7 +64,7 @@ export class MockFilterOptionService implements Partial<FilterOptionService> {
   }
 
   private getOptionsByText(text: string, isComplex?: boolean): FilterOption[] {
-    const arr = new Array(10).fill(undefined);
+    const arr = new Array(30).fill(undefined);
     return arr.map((a, index) => {
       const value = isComplex ? {} : `${text}_${index}`;
       return {

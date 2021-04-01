@@ -1,6 +1,5 @@
 <div *ngIf="!hasContentPlaceholder">
-  <ng-template [ngTemplateOutlet]="fixedContent"></ng-template>
-  <ng-template [ngTemplateOutlet]="mainContent"></ng-template>
+  <ng-template [ngTemplateOutlet]="content"></ng-template>
 </div>
 
 <div *ngIf="hasContentPlaceholder && !isPlaceholderOpen">
@@ -16,17 +15,12 @@
                   (click)="togglePlaceholderOpen()">
     </tsl-svg-icon>
   </div>
-  <ng-template [ngTemplateOutlet]="fixedContent"></ng-template>
-  <ng-template [ngTemplateOutlet]="mainContent"></ng-template>
+  <ng-template [ngTemplateOutlet]="content"></ng-template>
 </div>
 
-<ng-template #fixedContent>
-  <ng-content select="[fixed]"></ng-content>
-</ng-template>
-
-<ng-template #mainContent>
+<ng-template #content>
   <div #extendedContent>
-    <ng-content select="[main]"></ng-content>
+    <ng-content></ng-content>
   </div>
   <span *ngIf="extendedContent.children.length === 0" class="SelectFilterTemplate--warning">Please, avoid using abstract select filter directly, use one of the extensions or create your own</span>
 </ng-template>

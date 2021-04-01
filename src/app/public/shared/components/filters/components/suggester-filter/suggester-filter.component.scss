@@ -1,29 +1,38 @@
 @import '~style/common';
 
+// TODO: Where do common styles from feature go?
+$search-height: 50px;
+$toolbar-height: 70px;
+$filter-content-height: 355px;
+
 .SuggesterFilter {
   &--bubble {
     margin-left: -24px;
     margin-right: -24px;
   }
 
-  &__options {
-    position: relative;
-    height: 300px;
+  &__form {
+    margin-top: $search-height + 10px;
+    max-height: $filter-content-height - $search-height - 30px;
     overflow-y: scroll;
   }
 
   &__search_box {
-    position: relative;
+    position: absolute;
+    top: $toolbar-height;
+    left: 0;
+    right: 0;
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    background-color: $white;
+    z-index: 1;
   }
 
   &__search_box_input {
     width: 100%;
     padding-right: 44px;
     padding-left: 44px;
-    height: 50px;
+    height: $search-height;
     border: 1px solid #cfd8dc;
     border-radius: 6px;
 
