@@ -22,6 +22,7 @@ import { User } from '@core/user/user';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { ItemDetailTrackEventsService } from '../core/services/item-detail-track-events/item-detail-track-events.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -117,15 +118,18 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   private trackViewEvents(itemDetail: ItemDetail): void {
     const item = itemDetail.item;
     const user = itemDetail.user;
-    this.userService.me().subscribe((userMe: User) => {
-      if (user.id === userMe.id) {
-        this.itemDetailTrackEventsService.trackViewOwnItemDetail(item, user);
-      } else {
-        if (!this.typeCheckService.isRealEstate(itemDetail.item) || !this.typeCheckService.isCar(itemDetail.item)) {
-          this.itemDetailTrackEventsService.trackViewOthersCGDetailEvent(itemDetail.item, itemDetail.user);
+    this.userService
+      .me()
+      .pipe(take(1))
+      .subscribe((userMe: User) => {
+        if (user.id === userMe.id) {
+          this.itemDetailTrackEventsService.trackViewOwnItemDetail(item, user);
+        } else {
+          if (!this.typeCheckService.isRealEstate(itemDetail.item) && !this.typeCheckService.isCar(itemDetail.item)) {
+            this.itemDetailTrackEventsService.trackViewOthersCGDetailEvent(itemDetail.item, itemDetail.user);
+          }
         }
-      }
-    });
+      });
   }
 
   get itemDetail$(): Observable<ItemDetail> {
