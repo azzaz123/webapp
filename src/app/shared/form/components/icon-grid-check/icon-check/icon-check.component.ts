@@ -8,4 +8,5 @@ import { Component, Input } from '@angular/core';
 export class IconCheckComponent {
   @Input() icon: string;
   @Input() label?: string;
+  @Input() isBig?: boolean;
 }

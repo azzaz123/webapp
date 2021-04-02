@@ -21,7 +21,7 @@ const Template: Story<IconCheckComponent> = (args) => ({
   template: `
     <div style="display: flex">
       <div style="background: white; border: 1px dashed black;">
-          <tsl-icon-check [icon]="icon" [label]="label"></tsl-icon-check>
+          <tsl-icon-check [icon]="icon" [label]="label" [isBig]="isBig"></tsl-icon-check>
       </div>
     </div>
 
@@ -32,6 +32,13 @@ export const Default = Template.bind({});
 Default.args = {
   icon: '/assets/icons/joke.svg',
   label: 'Joke!',
+};
+
+export const Big = Template.bind({});
+Big.args = {
+  icon: '/assets/icons/joke.svg',
+  label: 'Joke!',
+  isBig: true,
 };
 
 export const NoLabel = Template.bind({});
