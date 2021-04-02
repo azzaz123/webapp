@@ -284,6 +284,40 @@ describe('SuggesterFilterComponent', () => {
         expect(debugElement.query(filterPredicate).componentInstance.label).toEqual('Audi, A4');
       });
     });
+
+    describe('and is empty value', () => {
+      const initialValue = [{ key: 'key', value: 'value' }];
+      beforeEach(() => {
+        testComponent.config = basicConfig;
+        testComponent.value = initialValue;
+        fixture.detectChanges();
+      });
+
+      it('should update value', () => {
+        expect(component.value).toEqual(initialValue);
+
+        testComponent.value = [];
+        fixture.detectChanges();
+
+        expect(component.value).toEqual([]);
+      });
+
+      it('should update form', () => {
+        spyOn(component.formGroup.controls.select, 'setValue');
+
+        testComponent.value = [];
+        fixture.detectChanges();
+
+        expect(component.formGroup.controls.select.setValue).toHaveBeenCalledWith(undefined, { emitEvent: false });
+      });
+
+      it('should update label', () => {
+        testComponent.value = [];
+        fixture.detectChanges();
+
+        expect(debugElement.query(filterPredicate).componentInstance.label).toEqual(basicConfig.drawerPlaceholder);
+      });
+    });
   });
 
   describe('when options', () => {
