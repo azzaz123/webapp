@@ -130,21 +130,62 @@ describe('SuggesterFilterComponent', () => {
     });
   });
 
-  describe('when search input changes', () => {
+  describe('when search input', () => {
+    const clearPredicate = By.css('.SuggesterFilter__clear');
     beforeEach(() => {
       testComponent.config = basicConfig;
       fixture.detectChanges();
     });
-    it('should ask for new options', async () => {
-      spyOn(optionService, 'getOptions');
-      const input: HTMLInputElement = debugElement.query(By.css('.SuggesterFilter__search_box_input')).nativeElement;
+    describe('... has no value', () => {
+      it('should not show hide icon', () => {
+        const clear = debugElement.query(clearPredicate);
 
-      input.value = 'my search';
-      input.dispatchEvent(new Event('input'));
-      await fixture.whenStable();
+        expect(clear).toBeFalsy();
+      });
+    });
+    describe('... has value', () => {
+      beforeEach(async () => {
+        const input: HTMLInputElement = debugElement.query(By.css('.SuggesterFilter__search_box_input')).nativeElement;
 
-      expect(optionService.getOptions).toHaveBeenCalledTimes(1);
-      expect(optionService.getOptions).toHaveBeenCalledWith(basicConfig.id, { text: 'my search' });
+        input.value = 'my search';
+        input.dispatchEvent(new Event('input'));
+        await fixture.whenStable();
+        fixture.detectChanges();
+      });
+      it('should show clear icon', () => {
+        const clear = debugElement.query(clearPredicate);
+
+        expect(clear).toBeTruthy();
+      });
+
+      describe('and clear icon is clicked', () => {
+        it('should clear input', async () => {
+          const clear: HTMLElement = debugElement.query(clearPredicate).nativeElement;
+
+          clear.click();
+          await fixture.whenStable();
+          fixture.detectChanges();
+
+          const clearDebugElement = debugElement.query(clearPredicate);
+
+          expect(clearDebugElement).toBeFalsy();
+          expect(component.searchQuery).toEqual('');
+        });
+      });
+    });
+
+    describe('... changes', () => {
+      it('should ask for new options', async () => {
+        spyOn(optionService, 'getOptions');
+        const input: HTMLInputElement = debugElement.query(By.css('.SuggesterFilter__search_box_input')).nativeElement;
+
+        input.value = 'my search';
+        input.dispatchEvent(new Event('input'));
+        await fixture.whenStable();
+
+        expect(optionService.getOptions).toHaveBeenCalledTimes(1);
+        expect(optionService.getOptions).toHaveBeenCalledWith(basicConfig.id, { text: 'my search' });
+      });
     });
   });
 
