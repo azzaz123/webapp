@@ -1,1 +1,6 @@
-<p>icon-check-form works!</p>
+<div class="IconGridCheck">
+  <div *ngFor="let option of options" [ngStyle]="{ 'flex-basis': 100 / columns + '%' }">
+    <tsl-icon-check [icon]="option.icon" [label]="option.label" [isBig]="isBig" [isActive]="isActive(option.value)">
+    </tsl-icon-check>
+  </div>
+</div>
