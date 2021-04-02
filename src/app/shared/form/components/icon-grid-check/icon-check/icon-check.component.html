@@ -1,4 +1,4 @@
 <div class="IconCheck p-2 d-flex flex-column justify-content-center align-items-center">
-  <tsl-svg-icon [class.IconCheck__icon--active]="isActive" [height]="isBig ? 30 : 20" [width]="isBig ? 30 : 20" [src]="icon"></tsl-svg-icon>
+  <tsl-svg-icon class="IconCheck__icon" [class.IconCheck__icon--active]="isActive" [height]="isBig ? 30 : 20" [width]="isBig ? 30 : 20" [src]="icon"></tsl-svg-icon>
   <span *ngIf="label" [class.IconCheck__label--active]="isActive" class="IconCheck__label">{{label}}</span>
 </div>
