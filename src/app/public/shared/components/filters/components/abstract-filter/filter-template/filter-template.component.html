@@ -20,7 +20,7 @@
 
   <div ngbDropdownMenu class="FilterTemplate__dropdown_menu">
     <div class="FilterTemplate__toolbar d-flex align-items-center px-4">
-      <p class="FilterTemplate__title m-0">{{title}}</p>
+      <p class="FilterTemplate__title--bubble m-0">{{title}}</p>
     </div>
 
     <div class="FilterTemplate__filter px-4">
@@ -41,7 +41,7 @@
 </div>
 
 <div *ngIf="!isBubble">
-  <p>{{title}}</p>
+  <p class="FilterTemplate__title">{{title}}</p>
   <ng-template [ngTemplateOutlet]="contentWrapper"></ng-template>
 </div>
 
