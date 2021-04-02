@@ -1,0 +1,13 @@
+@import '~style/common';
+
+$min-size: 96px;
+
+.IconCheck {
+  min-height: $min-size;
+  min-width: $min-size;
+
+  &__label {
+    margin-top: 5px;
+    font-size: $font-size-s;
+  }
+}
