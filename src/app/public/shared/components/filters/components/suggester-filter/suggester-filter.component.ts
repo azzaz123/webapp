@@ -106,8 +106,13 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
     this.subscriptions.unsubscribe();
   }
 
+  public writeValue(value: FilterParameter[]): void {
+    super.writeValue(value);
+    this.valueChange.emit(this.value);
+  }
+
   private initForm(): void {
-    const labelSubscription = this.formGroup.controls.select.valueChanges.subscribe(this.handleLabelChange.bind(this));
+    const labelSubscription = this.valueChange.subscribe(this.handleLabelChange.bind(this));
     const valueSubscription = this.formGroup.controls.select.valueChanges.subscribe(this.handleValueChange.bind(this));
 
     this.subscriptions.add(labelSubscription);
@@ -150,11 +155,10 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
       const keys = Object.keys(value);
       this.writeValue(keys.map((key) => ({ key: key, value: value[key] })));
     }
-
-    this.valueChange.emit(this.value);
   }
 
-  private handleLabelChange(value: ComplexSelectValue): void {
+  private handleLabelChange(): void {
+    const value = this.getComplexValue();
     if (!value) {
       return this.initLabel();
     }
