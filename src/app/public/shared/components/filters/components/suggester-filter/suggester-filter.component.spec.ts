@@ -16,6 +16,9 @@ import { Component, DebugElement, Input } from '@angular/core';
 import { FILTER_VARIANT } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.enum';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { By } from '@angular/platform-browser';
+import { FilterOptionService } from '@public/shared/services/filter-option/filter-option.service';
+import { CAR_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/car-configuration-ids';
+import spyOn = jest.spyOn;
 
 @Component({
   selector: 'tsl-test-wrapper',
@@ -32,6 +35,7 @@ describe('SuggesterFilterComponent', () => {
   let debugElement: DebugElement;
   let component: SuggesterFilterComponent;
   let fixture: ComponentFixture<TestWrapperComponent>;
+  let optionService: FilterOptionService;
 
   const basicConfig: SuggesterFilterConfig = {
     type: FILTER_TYPES.SUGGESTER,
@@ -46,6 +50,17 @@ describe('SuggesterFilterComponent', () => {
     isClearable: true,
     hasOptionsOnInit: false,
     suggesterPlaceholder: 'Search for stuff',
+  };
+
+  const optionsOnInitConfig: SuggesterFilterConfig = {
+    ...basicConfig,
+    hasOptionsOnInit: true,
+  };
+
+  const paramsFromOption: SuggesterFilterConfig = {
+    ...basicConfig,
+    id: CAR_CONFIGURATION_ID.BRAND_N_MODEL,
+    mapKey: {},
   };
 
   beforeEach(async () => {
@@ -67,14 +82,42 @@ describe('SuggesterFilterComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestWrapperComponent);
+    optionService = TestBed.inject(FilterOptionService);
     debugElement = fixture.debugElement;
     testComponent = fixture.componentInstance;
-    testComponent.config = basicConfig;
     component = debugElement.query(By.directive(SuggesterFilterComponent)).componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('when options', () => {
+    describe('are configured to load on init', () => {
+      beforeEach(() => {
+        testComponent.config = optionsOnInitConfig;
+      });
+      it('should call for options on init', () => {
+        spyOn(optionService, 'getOptions');
+
+        fixture.detectChanges();
+
+        expect(optionService.getOptions).toHaveBeenCalledTimes(1);
+        expect(optionService.getOptions).toHaveBeenCalledWith(FASHION_CONFIGURATION_ID.BRAND, undefined);
+      });
+    });
+
+    describe('are configured to wait for input', () => {
+      beforeEach(() => {
+        testComponent.config = basicConfig;
+      });
+      it('should not call for options on init', () => {
+        spyOn(optionService, 'getOptions');
+
+        fixture.detectChanges();
+
+        expect(optionService.getOptions).not.toHaveBeenCalled();
+      });
+    });
   });
 });
