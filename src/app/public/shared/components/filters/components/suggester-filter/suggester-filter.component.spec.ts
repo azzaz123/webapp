@@ -130,6 +130,24 @@ describe('SuggesterFilterComponent', () => {
     });
   });
 
+  describe('when search input changes', () => {
+    beforeEach(() => {
+      testComponent.config = basicConfig;
+      fixture.detectChanges();
+    });
+    it('should ask for new options', async () => {
+      spyOn(optionService, 'getOptions');
+      const input: HTMLInputElement = debugElement.query(By.css('.SuggesterFilter__search_box_input')).nativeElement;
+
+      input.value = 'my search';
+      input.dispatchEvent(new Event('input'));
+      await fixture.whenStable();
+
+      expect(optionService.getOptions).toHaveBeenCalledTimes(1);
+      expect(optionService.getOptions).toHaveBeenCalledWith(basicConfig.id, { text: 'my search' });
+    });
+  });
+
   describe('when options', () => {
     describe('are configured to load on init', () => {
       beforeEach(() => {
