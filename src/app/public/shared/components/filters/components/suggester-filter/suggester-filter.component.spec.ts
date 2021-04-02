@@ -254,34 +254,108 @@ describe('SuggesterFilterComponent', () => {
         brand: 'Audi',
         model: 'A4',
       };
-      beforeEach(() => {
-        testComponent.config = complexValueConfig;
-        fixture.detectChanges();
+      describe('and component had no value', () => {
+        beforeEach(() => {
+          testComponent.config = complexValueConfig;
+          fixture.detectChanges();
+        });
+        it('should update value', () => {
+          expect(component.value).toEqual([]);
+
+          testComponent.value = complexFilterValue;
+          fixture.detectChanges();
+
+          expect(component.value).toEqual(complexFilterValue);
+        });
+
+        it('should update form', () => {
+          spyOn(component.formGroup.controls.select, 'setValue');
+
+          testComponent.value = complexFilterValue;
+          fixture.detectChanges();
+
+          expect(component.formGroup.controls.select.setValue).toHaveBeenCalledWith(complexOptionValue);
+        });
+
+        it('should update label', () => {
+          testComponent.value = complexFilterValue;
+          fixture.detectChanges();
+
+          expect(debugElement.query(filterPredicate).componentInstance.label).toEqual('Audi, A4');
+        });
       });
 
-      it('should update value', () => {
-        expect(component.value).toEqual([]);
+      describe('and component had same value', () => {
+        const previousValue = [
+          { key: 'brand', value: 'Audi' },
+          { key: 'model', value: 'A4' },
+        ];
+        beforeEach(() => {
+          testComponent.config = complexValueConfig;
+          testComponent.value = previousValue;
+          fixture.detectChanges();
+        });
 
-        testComponent.value = complexFilterValue;
-        fixture.detectChanges();
+        it('should keep value', () => {
+          expect(component.value).toEqual(previousValue);
 
-        expect(component.value).toEqual(complexFilterValue);
+          testComponent.value = complexFilterValue;
+          fixture.detectChanges();
+
+          expect(component.value).toEqual(previousValue);
+        });
+
+        it('should not update form', () => {
+          spyOn(component.formGroup.controls.select, 'setValue');
+
+          testComponent.value = complexFilterValue;
+          fixture.detectChanges();
+
+          expect(component.formGroup.controls.select.setValue).not.toHaveBeenCalled();
+        });
+
+        it('should keep label', () => {
+          testComponent.value = complexFilterValue;
+          fixture.detectChanges();
+
+          expect(debugElement.query(filterPredicate).componentInstance.label).toEqual('Audi, A4');
+        });
       });
 
-      it('should update form', () => {
-        spyOn(component.formGroup.controls.select, 'setValue');
+      describe('and component had different value', () => {
+        const previousValue = [
+          { key: 'brand', value: 'Mercedes' },
+          { key: 'model', value: 'Coupe' },
+        ];
+        beforeEach(() => {
+          testComponent.config = complexValueConfig;
+          testComponent.value = previousValue;
+          fixture.detectChanges();
+        });
+        it('should update value', () => {
+          expect(component.value).toEqual(previousValue);
 
-        testComponent.value = complexFilterValue;
-        fixture.detectChanges();
+          testComponent.value = complexFilterValue;
+          fixture.detectChanges();
 
-        expect(component.formGroup.controls.select.setValue).toHaveBeenCalledWith(complexOptionValue);
-      });
+          expect(component.value).toEqual(complexFilterValue);
+        });
 
-      it('should update label', () => {
-        testComponent.value = complexFilterValue;
-        fixture.detectChanges();
+        it('should update form', () => {
+          spyOn(component.formGroup.controls.select, 'setValue');
 
-        expect(debugElement.query(filterPredicate).componentInstance.label).toEqual('Audi, A4');
+          testComponent.value = complexFilterValue;
+          fixture.detectChanges();
+
+          expect(component.formGroup.controls.select.setValue).toHaveBeenCalledWith(complexOptionValue);
+        });
+
+        it('should update label', () => {
+          testComponent.value = complexFilterValue;
+          fixture.detectChanges();
+
+          expect(debugElement.query(filterPredicate).componentInstance.label).toEqual('Audi, A4');
+        });
       });
     });
 
