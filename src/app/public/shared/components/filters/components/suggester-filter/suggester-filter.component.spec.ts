@@ -18,12 +18,12 @@ import { FilterParameter } from '@public/shared/components/filters/interfaces/fi
 import { By } from '@angular/platform-browser';
 import { FilterOptionService } from '@public/shared/services/filter-option/filter-option.service';
 import { CAR_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/car-configuration-ids';
-import spyOn = jest.spyOn;
 import { FilterTemplateComponent } from '@public/shared/components/filters/components/abstract-filter/filter-template/filter-template.component';
 import { SelectParentOptionComponent } from '@public/shared/components/filters/components/abstract-select-filter/select-parent-option/select-parent-option.component';
 import { SelectFormComponent } from '@shared/form/components/select/select-form.component';
 import { SelectFilterTemplateComponent } from '@public/shared/components/filters/components/abstract-select-filter/select-filter-template/select-filter-template.component';
 import { BubbleComponent } from '@public/shared/components/bubble/bubble.component';
+import spyOn = jest.spyOn;
 
 @Component({
   selector: 'tsl-test-wrapper',
@@ -145,6 +145,40 @@ describe('SuggesterFilterComponent', () => {
 
       expect(optionService.getOptions).toHaveBeenCalledTimes(1);
       expect(optionService.getOptions).toHaveBeenCalledWith(basicConfig.id, { text: 'my search' });
+    });
+  });
+
+  describe('when value changes from parent', () => {
+    beforeEach(() => {
+      testComponent.config = basicConfig;
+      fixture.detectChanges();
+    });
+
+    it('should update value', () => {
+      const newValue = [{ key: 'key', value: 'value' }];
+      expect(component.value).toEqual([]);
+
+      testComponent.value = newValue;
+      fixture.detectChanges();
+
+      expect(component.value).toEqual(newValue);
+    });
+
+    it('should update form', () => {
+      const newValue = [{ key: 'key', value: 'value' }];
+      spyOn(component.formGroup.controls.select, 'setValue');
+
+      testComponent.value = newValue;
+      fixture.detectChanges();
+
+      expect(component.formGroup.controls.select.setValue).toHaveBeenCalledWith('value');
+    });
+
+    it('should update label', () => {
+      testComponent.value = [{ key: 'key', value: 'value' }];
+      fixture.detectChanges();
+
+      expect(debugElement.query(filterPredicate).componentInstance.label).toEqual('value');
     });
   });
 
