@@ -9,5 +9,15 @@ $min-size: 96px;
   &__label {
     margin-top: 5px;
     font-size: $font-size-s;
+
+    &--active {
+      color: $walla-main;
+    }
+  }
+
+  &__icon--active {
+    ::ng-deep svg g g {
+      fill: $walla-main;
+    }
   }
 }
