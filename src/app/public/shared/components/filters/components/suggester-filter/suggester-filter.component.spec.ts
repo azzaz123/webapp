@@ -128,6 +128,27 @@ describe('SuggesterFilterComponent', () => {
         expect(filterTemplate.label).toEqual(basicConfig.drawerPlaceholder);
       });
     });
+
+    describe('and has value from parent', () => {
+      const parentValue = [{ key: 'key', value: 'value' }];
+      beforeEach(() => {
+        testComponent.config = basicConfig;
+        testComponent.value = parentValue;
+        fixture.detectChanges();
+      });
+
+      it('should update value', () => {
+        expect(component.value).toEqual(parentValue);
+      });
+
+      it('should update form', () => {
+        expect(component.formGroup.getRawValue()).toEqual({ select: 'value' });
+      });
+
+      it('should update label', () => {
+        expect(debugElement.query(filterPredicate).componentInstance.label).toEqual('value');
+      });
+    });
   });
 
   describe('when search input', () => {

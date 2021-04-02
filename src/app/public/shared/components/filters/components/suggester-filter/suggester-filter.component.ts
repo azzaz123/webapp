@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterContentInit, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { AbstractSelectFilter } from '../abstract-select-filter/abstract-select-filter';
 import { SuggesterFilterParams } from './interfaces/suggester-filter-params.interface';
 import { SelectFilterTemplateComponent } from '../abstract-select-filter/select-filter-template/select-filter-template.component';
@@ -21,7 +21,9 @@ import { FilterParameter } from '@public/shared/components/filters/interfaces/fi
   styleUrls: ['./suggester-filter.component.scss'],
   // changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilterParams> implements OnInit, OnDestroy, OnChanges {
+export class SuggesterFilterComponent
+  extends AbstractSelectFilter<SuggesterFilterParams>
+  implements OnInit, OnDestroy, OnChanges, AfterContentInit {
   @Input() config: SuggesterFilterConfig;
 
   @ViewChild('selectFilterTemplateComponent', { read: SelectFilterTemplateComponent })
@@ -55,6 +57,12 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
     this.initLabel();
     this.initForm();
     this.initModel();
+  }
+
+  public ngAfterContentInit(): void {
+    if (this.value.length > 0) {
+      this.updateForm();
+    }
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
@@ -177,10 +185,10 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
   }
 
   private closeContent(): void {
-    if (this.variant === FILTER_VARIANT.BUBBLE && this.filterTemplate.isDropdownOpen) {
+    if (this.variant === FILTER_VARIANT.BUBBLE && this.filterTemplate?.isDropdownOpen) {
       this.filterTemplate.toggleDropdown();
     }
-    if (this.config.hasContentPlaceholder && this.selectFilterTemplate.isPlaceholderOpen) {
+    if (this.config.hasContentPlaceholder && this.selectFilterTemplate?.isPlaceholderOpen) {
       this.selectFilterTemplate.togglePlaceholderOpen();
     }
   }

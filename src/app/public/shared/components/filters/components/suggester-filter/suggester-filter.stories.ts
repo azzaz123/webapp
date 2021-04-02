@@ -72,8 +72,8 @@ import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
   `,
 })
 class FiltersComponent {
-  public clothingTypeValue: FilterParameter[];
-  public brandValue: FilterParameter[];
+  @Input() public clothingTypeValue: FilterParameter[];
+  @Input() public brandValue: FilterParameter[];
   @Input() public clothingTypeConfig: SuggesterFilterConfig;
   @Input() public brandConfig: SuggesterFilterConfig;
 
@@ -148,4 +148,15 @@ export const Default = Template.bind({});
 Default.args = {
   clothingTypeConfig: clothingTypeConfig,
   brandConfig: brandConfig,
+};
+
+export const WithDefaultValue = Template.bind({});
+WithDefaultValue.args = {
+  clothingTypeConfig: clothingTypeConfig,
+  brandConfig: brandConfig,
+  brandValue: [
+    { key: 'brand', value: 'Audi' },
+    { key: 'model', value: 'A4' },
+  ],
+  clothingTypeValue: [{ key: 'object_type_id', value: 'T-shirts' }],
 };
