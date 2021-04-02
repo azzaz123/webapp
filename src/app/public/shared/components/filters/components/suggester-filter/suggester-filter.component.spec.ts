@@ -67,7 +67,7 @@ describe('SuggesterFilterComponent', () => {
     hasOptionsOnInit: true,
   };
 
-  const paramsFromOption: SuggesterFilterConfig = {
+  const complexValueConfig: SuggesterFilterConfig = {
     ...basicConfig,
     id: CAR_CONFIGURATION_ID.BRAND_N_MODEL,
     mapKey: {},
@@ -211,36 +211,78 @@ describe('SuggesterFilterComponent', () => {
   });
 
   describe('when value changes from parent', () => {
-    beforeEach(() => {
-      testComponent.config = basicConfig;
-      fixture.detectChanges();
+    describe('and is simple value', () => {
+      beforeEach(() => {
+        testComponent.config = basicConfig;
+        fixture.detectChanges();
+      });
+
+      it('should update value', () => {
+        const newValue = [{ key: 'key', value: 'value' }];
+        expect(component.value).toEqual([]);
+
+        testComponent.value = newValue;
+        fixture.detectChanges();
+
+        expect(component.value).toEqual(newValue);
+      });
+
+      it('should update form', () => {
+        const newValue = [{ key: 'key', value: 'value' }];
+        spyOn(component.formGroup.controls.select, 'setValue');
+
+        testComponent.value = newValue;
+        fixture.detectChanges();
+
+        expect(component.formGroup.controls.select.setValue).toHaveBeenCalledWith('value');
+      });
+
+      it('should update label', () => {
+        testComponent.value = [{ key: 'key', value: 'value' }];
+        fixture.detectChanges();
+
+        expect(debugElement.query(filterPredicate).componentInstance.label).toEqual('value');
+      });
     });
 
-    it('should update value', () => {
-      const newValue = [{ key: 'key', value: 'value' }];
-      expect(component.value).toEqual([]);
+    describe('and is complex value', () => {
+      const complexFilterValue = [
+        { key: 'brand', value: 'Audi' },
+        { key: 'model', value: 'A4' },
+      ];
+      const complexOptionValue = {
+        brand: 'Audi',
+        model: 'A4',
+      };
+      beforeEach(() => {
+        testComponent.config = complexValueConfig;
+        fixture.detectChanges();
+      });
 
-      testComponent.value = newValue;
-      fixture.detectChanges();
+      it('should update value', () => {
+        expect(component.value).toEqual([]);
 
-      expect(component.value).toEqual(newValue);
-    });
+        testComponent.value = complexFilterValue;
+        fixture.detectChanges();
 
-    it('should update form', () => {
-      const newValue = [{ key: 'key', value: 'value' }];
-      spyOn(component.formGroup.controls.select, 'setValue');
+        expect(component.value).toEqual(complexFilterValue);
+      });
 
-      testComponent.value = newValue;
-      fixture.detectChanges();
+      it('should update form', () => {
+        spyOn(component.formGroup.controls.select, 'setValue');
 
-      expect(component.formGroup.controls.select.setValue).toHaveBeenCalledWith('value');
-    });
+        testComponent.value = complexFilterValue;
+        fixture.detectChanges();
 
-    it('should update label', () => {
-      testComponent.value = [{ key: 'key', value: 'value' }];
-      fixture.detectChanges();
+        expect(component.formGroup.controls.select.setValue).toHaveBeenCalledWith(complexOptionValue);
+      });
 
-      expect(debugElement.query(filterPredicate).componentInstance.label).toEqual('value');
+      it('should update label', () => {
+        testComponent.value = complexFilterValue;
+        fixture.detectChanges();
+
+        expect(debugElement.query(filterPredicate).componentInstance.label).toEqual('Audi, A4');
+      });
     });
   });
 
