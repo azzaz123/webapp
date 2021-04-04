@@ -1,31 +1,72 @@
 import { moduleMetadata } from '@storybook/angular';
 import { Story } from '@storybook/angular/types-6-0';
 import { HttpClientModule } from '@angular/common/http';
-import { IconGridCheckFormComponent } from './icon-grid-check-form.component';
 import { IconGridOption } from './interfaces/icon-grid-option';
-import { CommonModule } from '@angular/common';
-import { IconCheckModule } from './icon-check/icon-check.module';
+import { Component, Input } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { IconGridCheckFormModule } from '@shared/form/components/icon-grid-check/icon-grid-check-form.module';
+
+@Component({
+  selector: 'tsl-story-icon-grid-check',
+  template: `
+    <h4>NgModel: {{ select.join(', ') }}</h4>
+    <div style="width: 400px">
+      <div style="background: white; border: 1px dashed black;">
+        <tsl-icon-grid-check-form
+          [(ngModel)]="select"
+          [options]="options"
+          [columns]="columns"
+          [isBig]="isBig"
+          [isMultiselect]="isMultiselect"
+        ></tsl-icon-grid-check-form>
+      </div>
+    </div>
+    <h4 class="mt-4">FormGroup: {{ formGroup.value.select.join(', ') }}</h4>
+    <div style="width: 400px">
+      <div style="background: white; border: 1px dashed black;">
+        <form [formGroup]="formGroup">
+          <tsl-icon-grid-check-form
+            formControlName="select"
+            [options]="options"
+            [columns]="columns"
+            [isBig]="isBig"
+            [isMultiselect]="isMultiselect"
+          ></tsl-icon-grid-check-form>
+        </form>
+      </div>
+    </div>
+  `,
+})
+class StoryIconGridCheckFormComponent {
+  @Input() options: IconGridOption[];
+  @Input() columns: number;
+  @Input() isBig?: boolean;
+  @Input() isMultiselect?: boolean;
+
+  public formGroup = new FormGroup({
+    select: new FormControl([]),
+  });
+
+  public select = [];
+}
 
 export default {
   title: 'Webapp/Shared/Form/Components/IconGridCheck',
-  component: IconGridCheckFormComponent,
+  component: StoryIconGridCheckFormComponent,
   decorators: [
     moduleMetadata({
-      declarations: [IconGridCheckFormComponent],
-      imports: [HttpClientModule, CommonModule, IconCheckModule],
+      declarations: [StoryIconGridCheckFormComponent],
+      imports: [HttpClientModule, ReactiveFormsModule, IconGridCheckFormModule],
     }),
   ],
 };
 
-const Template: Story<IconGridCheckFormComponent> = (args) => ({
+const Template: Story<StoryIconGridCheckFormComponent> = (args) => ({
   props: args,
-  component: IconGridCheckFormComponent,
+  component: StoryIconGridCheckFormComponent,
   template: `
-    <div style="width: 400px">
-      <div style="background: white; border: 1px dashed black;">
-        <tsl-icon-grid-check-form [options]="options" [columns]="columns" [isBig]="isBig"></tsl-icon-grid-check-form>
-      </div>
-    </div>
+    <tsl-story-icon-grid-check [isBig]="isBig" [columns]="columns" [options]="options" [isMultiselect]="isMultiselect">
+</tsl-story-icon-grid-check>
   `,
 });
 
@@ -46,6 +87,13 @@ export const Columns3 = Template.bind({});
 Columns3.args = {
   options: getOptions(8, '/assets/icons/joke.svg', 'Joke', 'joke'),
   columns: 3,
+};
+
+export const Multiselect = Template.bind({});
+Multiselect.args = {
+  options: getOptions(8, '/assets/icons/joke.svg', 'Joke', 'joke'),
+  columns: 4,
+  isMultiselect: true,
 };
 
 function getOptions(amount: number, icon: string, label: string, value: string): IconGridOption[] {
