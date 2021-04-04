@@ -1,8 +1,6 @@
-import { Component, forwardRef, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, forwardRef, Input } from '@angular/core';
 import { IconGridOption } from '@shared/form/components/icon-grid-check/interfaces/icon-grid-option';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
-import { Subscription } from 'rxjs/internal/Subscription';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
 
 @Component({
@@ -17,29 +15,18 @@ import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-
     },
   ],
 })
-export class IconGridCheckFormComponent extends AbstractFormComponent<string[]> implements OnInit, OnDestroy {
+export class IconGridCheckFormComponent extends AbstractFormComponent<string[]> {
   @Input() options: IconGridOption[];
   @Input() columns: number;
   @Input() isBig?: boolean;
   @Input() isMultiselect?: boolean;
 
-  private subscriptions = new Subscription();
-  private optionsSubject = new BehaviorSubject<string[]>([]);
+  private selectedOptions: string[] = [];
 
   public writeValue(value: string[]) {
     super.writeValue(value);
+    this.selectedOptions = value;
     this.onChange(value);
-  }
-
-  public ngOnInit(): void {
-    const subscription = this.optionsSubject.subscribe((value) => {
-      this.writeValue(value);
-    });
-    this.subscriptions.add(subscription);
-  }
-
-  public ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
   }
 
   public handleOptionClick(value: string): void {
@@ -48,17 +35,17 @@ export class IconGridCheckFormComponent extends AbstractFormComponent<string[]> 
     }
 
     if (this.isMultiselect) {
-      this.optionsSubject.next([...this.optionsSubject.value, value]);
+      this.writeValue([...this.selectedOptions, value]);
     } else {
-      this.optionsSubject.next([value]);
+      this.writeValue([value]);
     }
   }
 
   public isValueActive(value: string): boolean {
-    return this.optionsSubject.value.includes(value);
+    return this.selectedOptions.includes(value);
   }
 
   private cleanValue(value: string) {
-    this.optionsSubject.next(this.optionsSubject.value.filter((optionValue) => optionValue !== value));
+    this.writeValue(this.selectedOptions.filter((optionValue) => optionValue !== value));
   }
 }
