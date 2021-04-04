@@ -1,1 +1,20 @@
-<p>icon-grid-filter works!</p>
+<tsl-filter-template [isBubble]="isBubble()"
+                     [isDropdown]="isDropdown()"
+                     [isClearable]="true"
+                     [title]="config.title"
+                     [icon]="config.icon"
+                     [label]="label$ | async"
+                     [hasValue]="hasValue$() | async"
+                     [hasApply]="true"
+                     (apply)="handleApply()"
+                     (clear)="handleClear()"
+                     (openStateChange)="openStateChange.emit($event)">
+  <form [formGroup]="formGroup">
+    <tsl-icon-grid-check-form formControlName="select"
+                              [options]="options"
+                              [isMultiselect]="config.isMultiselect"
+                              [isBig]="config.hasBigIcons">
+    </tsl-icon-grid-check-form>
+  </form>
+
+</tsl-filter-template>

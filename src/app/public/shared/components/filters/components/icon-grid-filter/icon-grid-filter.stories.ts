@@ -5,14 +5,14 @@ import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { Component, Input } from '@angular/core';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { HttpClientModule } from '@angular/common/http';
-import { COMMON_CONFIGURATION_ID } from '../../core/enums/configuration-ids/common-configuration-ids.enum';
 import { FILTER_TYPES } from '../../core/enums/filter-types/filter-types.enum';
-import { FASHION_CONFIGURATION_ID } from '../../core/enums/configuration-ids/fashion-configuration-ids.enum';
 import { FilterOptionService } from '../../../../services/filter-option/filter-option.service';
 import { MockFilterOptionService } from '@fixtures/filter-option-service.fixtures.spec';
 import { IconGridFilterComponent } from './icon-grid-filter.component';
 import { IconGridCheckFormModule } from '@shared/form/components/icon-grid-check/icon-grid-check-form.module';
 import { IconGridFilterConfig } from './interfaces/icon-grid-filter-config.interface';
+import { CAR_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/car-configuration-ids';
+import { REAL_ESTATE_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/real-estate-configuration-ids.enum';
 
 @Component({
   selector: 'tsl-filters',
@@ -102,7 +102,7 @@ const Template: Story<FiltersComponent> = (args) => ({
 });
 
 const monoselectConfig: IconGridFilterConfig = {
-  id: COMMON_CONFIGURATION_ID.CONDITION,
+  id: REAL_ESTATE_CONFIGURATION_ID.ROOMS,
   title: 'Big icons',
   icon: '/assets/icons/joke.svg',
   bubblePlaceholder: 'Big icons',
@@ -116,7 +116,7 @@ const monoselectConfig: IconGridFilterConfig = {
 };
 
 const multiselectConfig: IconGridFilterConfig = {
-  id: FASHION_CONFIGURATION_ID.GENDER,
+  id: CAR_CONFIGURATION_ID.ENGINE,
   title: 'Multiselect',
   icon: '/assets/icons/joke.svg',
   bubblePlaceholder: 'Multiselect',
@@ -132,5 +132,5 @@ const multiselectConfig: IconGridFilterConfig = {
 export const Default = Template.bind({});
 Default.args = {
   monoselectConfig: monoselectConfig,
-  genderConfig: multiselectConfig,
+  multiselectConfig: multiselectConfig,
 };
