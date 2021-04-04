@@ -66,8 +66,8 @@ import { REAL_ESTATE_CONFIGURATION_ID } from '@public/shared/components/filters/
   `,
 })
 class FiltersComponent {
-  public monoselectValue: FilterParameter[];
-  public multiselectValue: FilterParameter[];
+  @Input() public monoselectValue: FilterParameter[];
+  @Input() public multiselectValue: FilterParameter[];
   @Input() public monoselectConfig: IconGridFilterConfig;
   @Input() public multiselectConfig: IconGridFilterConfig;
 
@@ -133,4 +133,12 @@ export const Default = Template.bind({});
 Default.args = {
   monoselectConfig: monoselectConfig,
   multiselectConfig: multiselectConfig,
+};
+
+export const WithDefaultValues = Template.bind({});
+WithDefaultValues.args = {
+  monoselectConfig: monoselectConfig,
+  multiselectConfig: multiselectConfig,
+  monoselectValue: [{ key: 'big_icons', value: '3' }],
+  multiselectValue: [{ key: 'multiselect', value: 'gasoil,gasoline' }],
 };

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { AfterContentInit, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { AbstractFilter } from '../abstract-filter/abstract-filter';
 import { IconGridFilterParams } from './interfaces/icon-grid-filter-params.interface';
 import { IconGridFilterConfig } from './interfaces/icon-grid-filter-config.interface';
@@ -9,18 +9,21 @@ import { IconGridOption } from '@shared/form/components/icon-grid-check/interfac
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { FILTER_VARIANT } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.enum';
+import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 
 @Component({
   selector: 'tsl-icon-grid-filter',
   templateUrl: './icon-grid-filter.component.html',
   styleUrls: ['./icon-grid-filter.component.scss'],
 })
-export class IconGridFilterComponent extends AbstractFilter<IconGridFilterParams> implements OnInit, OnDestroy, OnChanges {
+export class IconGridFilterComponent
+  extends AbstractFilter<IconGridFilterParams>
+  implements OnInit, OnDestroy, OnChanges, AfterContentInit {
   @Input() config: IconGridFilterConfig;
 
   public options: IconGridOption[] = [];
   public formGroup = new FormGroup({
-    select: new FormControl(),
+    select: new FormControl([]),
   });
   public labelSubject = new BehaviorSubject<string>('');
 
@@ -50,6 +53,13 @@ export class IconGridFilterComponent extends AbstractFilter<IconGridFilterParams
     this.initLabel();
   }
 
+  public ngAfterContentInit(): void {
+    if (this.value.length > 0) {
+      this.updateForm();
+      this.updateLabel();
+    }
+  }
+
   public ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }
@@ -61,6 +71,7 @@ export class IconGridFilterComponent extends AbstractFilter<IconGridFilterParams
         this.updateLabel();
       } else {
         this.handleClear();
+        this.initLabel();
       }
     }
   }
@@ -70,9 +81,15 @@ export class IconGridFilterComponent extends AbstractFilter<IconGridFilterParams
     this.handleValueChange(this.formGroup.controls.select.value);
   }
 
+  public writeValue(value: FilterParameter[]): void {
+    super.writeValue(value);
+    this.valueChange.emit(this.value);
+  }
+
   private handleValueChange(value: string[]): void {
     if (!value || value.length === 0) {
       this.writeValue([]);
+      this.initLabel();
     } else {
       this.writeValue([{ key: this.config.mapKey.parameterKey, value: value.join(',') }]);
     }
