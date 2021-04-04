@@ -43,7 +43,7 @@ class FiltersComponent {
 }
 
 export default {
-  title: 'Webapp/Public/Shared/Components/Filters/RangeFilterComponent',
+  title: 'Webapp/Public/Shared/Components/Filters/RangeFilter',
   decorators: [
     moduleMetadata({
       declarations: [RangeFilterComponent],

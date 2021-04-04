@@ -82,7 +82,7 @@ class FiltersComponent {
 }
 
 export default {
-  title: 'Webapp/Public/Shared/Components/Filters/SelectFilterComponent',
+  title: 'Webapp/Public/Shared/Components/Filters/SelectFilter',
   decorators: [
     moduleMetadata({
       imports: [HttpClientModule],
