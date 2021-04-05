@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IconCheckComponent } from './icon-check.component';
+import { IconCheckBoxComponent } from './icon-check-box.component';
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
@@ -8,23 +8,23 @@ import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { SvgIconComponent } from '@core/svg-icon/svg-icon/svg-icon.component';
 
-describe('IconCheckComponent', () => {
-  let component: IconCheckComponent;
+describe('IconCheckBoxComponent', () => {
+  let component: IconCheckBoxComponent;
   let debugElement: DebugElement;
-  let fixture: ComponentFixture<IconCheckComponent>;
+  let fixture: ComponentFixture<IconCheckBoxComponent>;
 
   const labelPredicate = By.css('.IconCheck__label');
   const iconPredicate = By.directive(SvgIconComponent);
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [IconCheckComponent],
+      declarations: [IconCheckBoxComponent],
       imports: [CommonModule, HttpClientTestingModule, SvgIconModule],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(IconCheckComponent);
+    fixture = TestBed.createComponent(IconCheckBoxComponent);
     debugElement = fixture.debugElement;
     component = fixture.componentInstance;
     fixture.detectChanges();

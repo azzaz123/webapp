@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IconCheckComponent } from './icon-check.component';
+import { IconCheckBoxComponent } from './icon-check-box.component';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 
 @NgModule({
-  declarations: [IconCheckComponent],
-  exports: [IconCheckComponent],
+  declarations: [IconCheckBoxComponent],
+  exports: [IconCheckBoxComponent],
   imports: [CommonModule, SvgIconModule],
 })
-export class IconCheckModule {}
+export class IconCheckBoxModule {}

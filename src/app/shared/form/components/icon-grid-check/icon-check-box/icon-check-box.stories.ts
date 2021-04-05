@@ -1,27 +1,27 @@
 import { moduleMetadata } from '@storybook/angular';
 import { Story } from '@storybook/angular/types-6-0';
 import { HttpClientModule } from '@angular/common/http';
-import { IconCheckComponent } from './icon-check.component';
+import { IconCheckBoxComponent } from './icon-check-box.component';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 
 export default {
-  title: 'Webapp/Shared/Form/Components/IconGridCheck/IconCheck',
-  component: IconCheckComponent,
+  title: 'Webapp/Shared/Form/Components/IconGridCheck/IconCheckBox',
+  component: IconCheckBoxComponent,
   decorators: [
     moduleMetadata({
-      declarations: [IconCheckComponent],
+      declarations: [IconCheckBoxComponent],
       imports: [HttpClientModule, SvgIconModule],
     }),
   ],
 };
 
-const Template: Story<IconCheckComponent> = (args) => ({
+const Template: Story<IconCheckBoxComponent> = (args) => ({
   props: args,
-  component: IconCheckComponent,
+  component: IconCheckBoxComponent,
   template: `
     <div style="display: flex">
       <div style="background: white; border: 1px dashed black;">
-          <tsl-icon-check [icon]="icon" [label]="label" [isBig]="isBig" [isActive]="isActive"></tsl-icon-check>
+          <tsl-icon-check-box [icon]="icon" [label]="label" [isBig]="isBig" [isActive]="isActive"></tsl-icon-check-box>
       </div>
     </div>
 

@@ -4,9 +4,9 @@ import { IconGridCheckFormComponent } from './icon-grid-check-form.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { IconGridOption } from '@shared/form/components/icon-grid-check/interfaces/icon-grid-option';
 import { DebugElement } from '@angular/core';
-import { IconCheckComponent } from '@shared/form/components/icon-grid-check/icon-check/icon-check.component';
+import { IconCheckBoxComponent } from '@shared/form/components/icon-grid-check/icon-check-box/icon-check-box.component';
 import { By } from '@angular/platform-browser';
-import { IconCheckModule } from '@shared/form/components/icon-grid-check/icon-check/icon-check.module';
+import { IconCheckBoxModule } from '@shared/form/components/icon-grid-check/icon-check-box/icon-check-box.module';
 import { CommonModule } from '@angular/common';
 
 describe('IconGridCheckFormComponent', () => {
@@ -14,7 +14,7 @@ describe('IconGridCheckFormComponent', () => {
   let fixture: ComponentFixture<IconGridCheckFormComponent>;
   let debugElement: DebugElement;
 
-  const iconPredicate = By.directive(IconCheckComponent);
+  const iconPredicate = By.directive(IconCheckBoxComponent);
   const options: IconGridOption[] = [
     {
       label: 'Test 1',
@@ -31,7 +31,7 @@ describe('IconGridCheckFormComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [IconGridCheckFormComponent],
-      imports: [HttpClientTestingModule, IconCheckModule, CommonModule],
+      imports: [HttpClientTestingModule, IconCheckBoxModule, CommonModule],
     }).compileComponents();
   });
 
