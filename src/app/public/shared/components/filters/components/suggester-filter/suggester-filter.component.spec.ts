@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { SuggesterFilterComponent } from './suggester-filter.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -196,17 +196,18 @@ describe('SuggesterFilterComponent', () => {
     });
 
     describe('... changes', () => {
-      it('should ask for new options', async () => {
+      it('should ask for new options', fakeAsync(() => {
         spyOn(optionService, 'getOptions');
         const input: HTMLInputElement = debugElement.query(By.css('.SuggesterFilter__search_box_input')).nativeElement;
 
         input.value = 'my search';
         input.dispatchEvent(new Event('input'));
-        await fixture.whenStable();
+        tick(1000);
+        fixture.detectChanges();
 
         expect(optionService.getOptions).toHaveBeenCalledTimes(1);
         expect(optionService.getOptions).toHaveBeenCalledWith(basicConfig.id, { text: 'my search' });
-      });
+      }));
     });
   });
 
