@@ -58,6 +58,7 @@ import { MockedUserService, MOCK_OTHER_USER, MOCK_USER, OTHER_USER_ID, USER_ID }
 import { User } from '@core/user/user';
 import { ItemDetailTrackEventsService } from '../core/services/item-detail-track-events/item-detail-track-events.service';
 import { MockItemdDetailTrackEventService } from '../core/services/item-detail-track-events/track-events.fixtures.spec';
+import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -279,12 +280,14 @@ describe('ItemDetailComponent', () => {
         mockRealEstateItemDetai.item = MOCK_REALESTATE;
         mockRealEstateItemDetai.user = MOCK_OTHER_USER;
         itemDetailSubjectMock.next(mockRealEstateItemDetai);
-        spyOn(analyticsService, 'trackPageView');
+        spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
+        spyOn(itemDetailTrackEventsService, 'trackViewOthersItemREDetailEvent');
+        spyOn(itemDetailTrackEventsService, 'trackViewOwnItemDetail');
 
-        component.ngOnInit();
         fixture.detectChanges();
 
-        expect(analyticsService.trackPageView).toHaveBeenCalledWith(viewOthersRetailEvent);
+        expect(itemDetailTrackEventsService.trackViewOwnItemDetail).not.toHaveBeenCalled();
+        expect(itemDetailTrackEventsService.trackViewOthersItemREDetailEvent).toHaveBeenCalledWith(MOCK_REALESTATE, MOCK_OTHER_USER);
       });
 
       it('should not send view others retail event if user is viewing own retail', () => {
@@ -292,24 +295,29 @@ describe('ItemDetailComponent', () => {
         mockRealEstateItemDetai.item = MOCK_REALESTATE;
         mockRealEstateItemDetai.user = MOCK_USER;
         itemDetailSubjectMock.next(mockRealEstateItemDetai);
-        spyOn(analyticsService, 'trackPageView');
+        spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
+        spyOn(itemDetailTrackEventsService, 'trackViewOthersItemREDetailEvent');
+        spyOn(itemDetailTrackEventsService, 'trackViewOwnItemDetail');
 
-        component.ngOnInit();
         fixture.detectChanges();
 
-        expect(analyticsService.trackPageView).not.toHaveBeenCalledWith(viewOthersRetailEvent);
+        expect(itemDetailTrackEventsService.trackViewOwnItemDetail).toHaveBeenCalledWith(MOCK_REALESTATE, MOCK_USER);
+        expect(itemDetailTrackEventsService.trackViewOthersItemREDetailEvent).not.toHaveBeenCalled();
       });
 
       it('should not send view others retail event if user is viewing others products that is not real estate', () => {
         const mockRealEstateItemDetai: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
+        mockRealEstateItemDetai.item = MOCK_ITEM_GBP;
         mockRealEstateItemDetai.user = MOCK_OTHER_USER;
         itemDetailSubjectMock.next(mockRealEstateItemDetai);
-        spyOn(analyticsService, 'trackPageView');
+        spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
+        spyOn(itemDetailTrackEventsService, 'trackViewOthersItemREDetailEvent');
+        spyOn(itemDetailTrackEventsService, 'trackViewOthersCGDetailEvent');
 
-        component.ngOnInit();
         fixture.detectChanges();
 
-        expect(analyticsService.trackPageView).not.toHaveBeenCalledWith(viewOthersRetailEvent);
+        expect(itemDetailTrackEventsService.trackViewOthersCGDetailEvent).toHaveBeenCalledWith(MOCK_ITEM_GBP, MOCK_OTHER_USER);
+        expect(itemDetailTrackEventsService.trackViewOthersItemREDetailEvent).not.toHaveBeenCalled();
       });
 
       it('should send view others CG item detail event when user is viewing others consumer goods item detail', () => {
