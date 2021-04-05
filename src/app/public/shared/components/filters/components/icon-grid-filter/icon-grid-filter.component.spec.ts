@@ -17,6 +17,7 @@ import { By } from '@angular/platform-browser';
 import { FILTER_TYPES } from '@public/shared/components/filters/core/enums/filter-types/filter-types.enum';
 import { FilterTemplateComponent } from '../abstract-filter/filter-template/filter-template.component';
 import { CAR_CONFIGURATION_ID } from '../../core/enums/configuration-ids/car-configuration-ids';
+import spyOn = jest.spyOn;
 
 @Component({
   selector: 'tsl-test-wrapper',
@@ -133,21 +134,62 @@ describe('IconGridFilterComponent', () => {
   });
 
   describe('when value changes', () => {
+    beforeEach(() => {
+      testComponent.config = basicConfig;
+      testComponent.value = [{ key: 'key', value: 'gasoil' }];
+      fixture.detectChanges();
+    });
     describe('from the parent', () => {
       describe('and is empty', () => {
-        it('should set label to default', () => {});
+        beforeEach(() => {
+          testComponent.value = [];
+        });
+        it('should set label to default', () => {
+          fixture.detectChanges();
+          const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
 
-        it('should clean value', () => {});
+          expect(filterTemplate.label).toEqual(basicConfig.bubblePlaceholder);
+        });
 
-        it('should emit value change', () => {});
+        it('should clean value', () => {
+          fixture.detectChanges();
+          expect(component.formGroup.controls.select.value).toEqual([]);
+        });
+
+        it('should emit value change', () => {
+          spyOn(component.valueChange, 'emit');
+
+          fixture.detectChanges();
+
+          expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
+          expect(component.valueChange.emit).toHaveBeenCalledWith([]);
+        });
       });
 
       describe('and has value', () => {
-        it('should change label', () => {});
+        beforeEach(() => {
+          testComponent.value = [{ key: 'key', value: 'gasoil,gasoline' }];
+        });
+        it('should change label', () => {
+          fixture.detectChanges();
+          const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
 
-        it('should change value', () => {});
+          expect(filterTemplate.label).toEqual('Gasoil, Gasoline');
+        });
 
-        it('should emit value change', () => {});
+        it('should change value', () => {
+          fixture.detectChanges();
+          expect(component.formGroup.controls.select.value).toEqual(['gasoil', 'gasoline']);
+        });
+
+        it('should emit value change', () => {
+          spyOn(component.valueChange, 'emit');
+
+          fixture.detectChanges();
+
+          expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
+          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'key', value: 'gasoil,gasoline' }]);
+        });
       });
     });
     describe('from form component', () => {

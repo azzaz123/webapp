@@ -86,6 +86,11 @@ export class IconGridFilterComponent
     this.valueChange.emit(this.value);
   }
 
+  public handleClear(): void {
+    this.formGroup.controls.select.reset([]);
+    super.handleClear();
+  }
+
   private handleValueChange(value: string[]): void {
     if (!value || value.length === 0) {
       this.writeValue([]);
