@@ -124,6 +124,9 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
         if (user.id === userMe.id) {
           this.itemDetailTrackEventsService.trackViewOwnItemDetail(item, user);
         } else {
+          if (this.typeCheckService.isCar(item)) {
+            this.itemDetailTrackEventsService.trackViewOthersItemCarDetailEvent(item, user);
+          }
           if (!this.typeCheckService.isRealEstate(item) && !this.typeCheckService.isCar(item)) {
             this.itemDetailTrackEventsService.trackViewOthersCGDetailEvent(item, user);
           }
@@ -131,43 +134,6 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
       });
   }
 
-  /* private trackViewOthersItemCarDetailEvent(itemDetail: ItemDetail): void {
-    const item = itemDetail.item as Car;
-    const user = itemDetail.user;
-    const event: AnalyticsPageView<ViewOthersItemCarDetail> = {
-      name: ANALYTICS_EVENT_NAMES.ViewOthersItemCarDetail,
-      attributes: {
-        itemId: item.id,
-        categoryId: item.categoryId,
-        salePrice: item.salePrice,
-        brand: item.brand,
-        model: item.model,
-        year: item.year,
-        km: item.km,
-        gearbox: item.gearbox,
-        engine: item.engine,
-        colour: item.color,
-        hp: item.horsepower,
-        numDoors: item.numDoors,
-        bodyType: item.bodyType,
-        isCarDealer: false,
-        isPro: user.featured,
-        screenId: SCREEN_IDS.ItemDetail,
-      },
-    };
-    this.userService
-      .isProfessional()
-      .pipe(
-        take(1),
-        finalize(() => {
-          this.analyticsService.trackPageView(event);
-        })
-      )
-      .subscribe((isCarDealer: boolean) => {
-        event.attributes.isCarDealer = isCarDealer;
-      });
-  }
- */
   get itemDetail$(): Observable<ItemDetail> {
     return this.itemDetailStoreService.itemDetail$;
   }

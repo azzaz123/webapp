@@ -8,17 +8,21 @@ import {
   FavoriteItem,
   SCREEN_IDS,
   UnfavoriteItem,
+  ViewOthersItemCarDetail,
   ViewOthersItemCGDetail,
   ViewOwnItemDetail,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { Car } from '@core/item/car';
 import { Item } from '@core/item/item';
 import { User } from '@core/user/user';
+import { UserService } from '@core/user/user.service';
 import { ItemDetail } from '@public/features/item-detail/interfaces/item-detail.interface';
+import { finalize, take } from 'rxjs/operators';
 
 @Injectable()
 export class ItemDetailTrackEventsService {
-  constructor(private analyticsService: AnalyticsService) {}
+  constructor(private analyticsService: AnalyticsService, private userService: UserService) {}
 
   public trackFavoriteOrUnfavoriteEvent(itemDetail: ItemDetail): void {
     const event: AnalyticsEvent<FavoriteItem | UnfavoriteItem> = {
@@ -81,5 +85,40 @@ export class ItemDetailTrackEventsService {
       },
     };
     this.analyticsService.trackPageView(event);
+  }
+
+  public trackViewOthersItemCarDetailEvent(item: Car, user: User): void {
+    const event: AnalyticsPageView<ViewOthersItemCarDetail> = {
+      name: ANALYTICS_EVENT_NAMES.ViewOthersItemCarDetail,
+      attributes: {
+        itemId: item.id,
+        categoryId: item.categoryId,
+        salePrice: item.salePrice,
+        brand: item.brand,
+        model: item.model,
+        year: item.year,
+        km: item.km,
+        gearbox: item.gearbox,
+        engine: item.engine,
+        colour: item.color,
+        hp: item.horsepower,
+        numDoors: item.numDoors,
+        bodyType: item.bodyType,
+        isCarDealer: false,
+        isPro: user.featured,
+        screenId: SCREEN_IDS.ItemDetail,
+      },
+    };
+    this.userService
+      .isProfessional()
+      .pipe(
+        take(1),
+        finalize(() => {
+          this.analyticsService.trackPageView(event);
+        })
+      )
+      .subscribe((isCarDealer: boolean) => {
+        event.attributes.isCarDealer = isCarDealer;
+      });
   }
 }
