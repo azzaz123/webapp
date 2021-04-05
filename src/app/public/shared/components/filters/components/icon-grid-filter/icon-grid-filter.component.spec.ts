@@ -14,10 +14,9 @@ import { FilterOptionServiceModule } from '@public/shared/services/filter-option
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IconGridCheckFormModule } from '@shared/form/components/icon-grid-check/icon-grid-check-form.module';
 import { By } from '@angular/platform-browser';
-import { REAL_ESTATE_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/real-estate-configuration-ids.enum';
 import { FILTER_TYPES } from '@public/shared/components/filters/core/enums/filter-types/filter-types.enum';
-import { FilterTemplateComponent } from '@public/shared/components/filters/components/abstract-filter/filter-template/filter-template.component';
-import spyOn = jest.spyOn;
+import { FilterTemplateComponent } from '../abstract-filter/filter-template/filter-template.component';
+import { CAR_CONFIGURATION_ID } from '../../core/enums/configuration-ids/car-configuration-ids';
 
 @Component({
   selector: 'tsl-test-wrapper',
@@ -39,7 +38,7 @@ describe('IconGridFilterComponent', () => {
   const filterPredicate = By.directive(FilterTemplateComponent);
 
   const basicConfig: IconGridFilterConfig = {
-    id: REAL_ESTATE_CONFIGURATION_ID.ROOMS,
+    id: CAR_CONFIGURATION_ID.ENGINE,
     title: 'Title',
     icon: 'icon.svg',
     bubblePlaceholder: 'Placeholder',
@@ -117,18 +116,39 @@ describe('IconGridFilterComponent', () => {
   });
 
   describe('when provided a value from the parent', () => {
-    it('should set corresponding label', () => {});
+    beforeEach(() => {
+      testComponent.config = basicConfig;
+      testComponent.value = [{ key: 'key', value: 'gasoil' }];
+      fixture.detectChanges();
+    });
+    it('should set corresponding label', () => {
+      const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
 
-    it('should have corresponding value', () => {});
+      expect(filterTemplate.label).toEqual('Gasoil');
+    });
+
+    it('should have corresponding value', () => {
+      expect(component.formGroup.controls.select.value).toEqual(['gasoil']);
+    });
   });
 
   describe('when value changes', () => {
     describe('from the parent', () => {
-      it('should change label', () => {});
+      describe('and is empty', () => {
+        it('should set label to default', () => {});
 
-      it('should change value', () => {});
+        it('should clean value', () => {});
 
-      it('should emit value change', () => {});
+        it('should emit value change', () => {});
+      });
+
+      describe('and has value', () => {
+        it('should change label', () => {});
+
+        it('should change value', () => {});
+
+        it('should emit value change', () => {});
+      });
     });
     describe('from form component', () => {
       it('should change label', () => {});
