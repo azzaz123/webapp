@@ -103,4 +103,5 @@ export class MockItemdDetailTrackEventService {
   trackClickChatButton() {}
   trackViewOwnItemDetail() {}
   trackViewOthersCGDetailEvent() {}
+  trackViewOthersItemREDetailEvent() {}
 }
