@@ -124,6 +124,9 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
         if (user.id === userMe.id) {
           this.itemDetailTrackEventsService.trackViewOwnItemDetail(item, user);
         } else {
+          if (this.typeCheckService.isRealEstate(item)) {
+            this.itemDetailTrackEventsService.trackViewOthersItemREDetailEvent(item, user);
+          }
           if (!this.typeCheckService.isRealEstate(item) && !this.typeCheckService.isCar(item)) {
             this.itemDetailTrackEventsService.trackViewOthersCGDetailEvent(item, user);
           }
@@ -131,28 +134,6 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
       });
   }
 
-  /* private trackViewOthersItemREDetailEvent(itemDetail: ItemDetail): void {
-    const item = itemDetail.item as Realestate;
-    const user = itemDetail.user;
-    const event: AnalyticsPageView<ViewOthersItemREDetail> = {
-      name: ANALYTICS_EVENT_NAMES.ViewOthersItemREDetail,
-      attributes: {
-        itemId: item.id,
-        categoryId: item.categoryId,
-        salePrice: item.salePrice,
-        title: item.title,
-        operation: item.operation,
-        type: item.type,
-        condition: item.condition,
-        surface: item.surface,
-        rooms: item.rooms,
-        isPro: user.featured,
-        screenId: SCREEN_IDS.ItemDetail,
-      },
-    };
-    this.analyticsService.trackPageView(event);
-  }
- */
   get itemDetail$(): Observable<ItemDetail> {
     return this.itemDetailStoreService.itemDetail$;
   }
