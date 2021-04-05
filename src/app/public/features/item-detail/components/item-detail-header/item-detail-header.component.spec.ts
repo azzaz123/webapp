@@ -25,13 +25,6 @@ import { MOCK_ITEM_7 } from '@public/shared/components/item-card/item-card.mock.
 import { ItemDetailHeaderComponent } from './item-detail-header.component';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import {
-  AnalyticsEvent,
-  ANALYTICS_EVENT_NAMES,
-  ANALYTIC_EVENT_TYPES,
-  ClickChatButton,
-  SCREEN_IDS,
-} from '@core/analytics/analytics-constants';
 import { ItemDetailTrackEventsService } from '../../core/services/item-detail-track-events/item-detail-track-events.service';
 import { MockItemdDetailTrackEventService } from '../../core/services/item-detail-track-events/track-events.fixtures.spec';
 
