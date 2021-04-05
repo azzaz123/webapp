@@ -14,6 +14,10 @@ import { FilterOptionServiceModule } from '@public/shared/services/filter-option
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IconGridCheckFormModule } from '@shared/form/components/icon-grid-check/icon-grid-check-form.module';
 import { By } from '@angular/platform-browser';
+import { REAL_ESTATE_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/real-estate-configuration-ids.enum';
+import { FILTER_TYPES } from '@public/shared/components/filters/core/enums/filter-types/filter-types.enum';
+import { FilterTemplateComponent } from '@public/shared/components/filters/components/abstract-filter/filter-template/filter-template.component';
+import spyOn = jest.spyOn;
 
 @Component({
   selector: 'tsl-test-wrapper',
@@ -29,7 +33,33 @@ describe('IconGridFilterComponent', () => {
   let component: IconGridFilterComponent;
   let testComponent: TestWrapperComponent;
   let debugElement: DebugElement;
+  let optionService: FilterOptionService;
   let fixture: ComponentFixture<TestWrapperComponent>;
+
+  const filterPredicate = By.directive(FilterTemplateComponent);
+
+  const basicConfig: IconGridFilterConfig = {
+    id: REAL_ESTATE_CONFIGURATION_ID.ROOMS,
+    title: 'Title',
+    icon: 'icon.svg',
+    bubblePlaceholder: 'Placeholder',
+    mapKey: {
+      parameterKey: 'key',
+    },
+    type: FILTER_TYPES.ICON,
+    isMultiselect: false,
+    hasBigIcons: false,
+  };
+
+  const multiselectConfig: IconGridFilterConfig = {
+    ...basicConfig,
+    isMultiselect: true,
+  };
+
+  const bigIconsConfig: IconGridFilterConfig = {
+    ...basicConfig,
+    hasBigIcons: true,
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -54,6 +84,7 @@ describe('IconGridFilterComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestWrapperComponent);
+    optionService = TestBed.inject(FilterOptionService);
     testComponent = fixture.componentInstance;
     debugElement = fixture.debugElement;
     component = debugElement.query(By.directive(IconGridFilterComponent)).componentInstance;
@@ -64,9 +95,25 @@ describe('IconGridFilterComponent', () => {
   });
 
   describe('when initialized', () => {
-    it('should set label to configured placeholder', () => {});
+    beforeEach(() => {
+      testComponent.config = basicConfig;
+    });
+    it('should set label to configured placeholder', () => {
+      fixture.detectChanges();
 
-    it('should get options from backend', () => {});
+      const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
+
+      expect(filterTemplate.label).toEqual(basicConfig.bubblePlaceholder);
+    });
+
+    it('should get options from backend', () => {
+      spyOn(optionService, 'getOptions');
+
+      fixture.detectChanges();
+
+      expect(optionService.getOptions).toHaveBeenCalledTimes(1);
+      expect(optionService.getOptions).toHaveBeenCalledWith(basicConfig.id);
+    });
   });
 
   describe('when provided a value from the parent', () => {
