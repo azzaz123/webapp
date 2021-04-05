@@ -46,3 +46,10 @@ describe(`when we don't receive the id on the web slug...`, () => {
     });
   });
 });
+
+describe('when the web slug and the hash are empty...', () => {
+  it('should return an empty value', () => {
+    const pipe = new WebSlugConverterPipe();
+    expect(pipe.transform('', '')).toBe('');
+  });
+});
