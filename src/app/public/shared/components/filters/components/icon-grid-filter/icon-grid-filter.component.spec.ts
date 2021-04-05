@@ -17,7 +17,6 @@ import { By } from '@angular/platform-browser';
 import { FILTER_TYPES } from '@public/shared/components/filters/core/enums/filter-types/filter-types.enum';
 import { FilterTemplateComponent } from '../abstract-filter/filter-template/filter-template.component';
 import { CAR_CONFIGURATION_ID } from '../../core/enums/configuration-ids/car-configuration-ids';
-import spyOn = jest.spyOn;
 import { IconGridCheckFormComponent } from '@shared/form/components/icon-grid-check/icon-grid-check-form.component';
 
 @Component({
@@ -135,7 +134,7 @@ describe('IconGridFilterComponent', () => {
     });
 
     it('should get options from backend', () => {
-      spyOn(optionService, 'getOptions');
+      spyOn(optionService, 'getOptions').and.callThrough();
 
       fixture.detectChanges();
 
@@ -162,12 +161,12 @@ describe('IconGridFilterComponent', () => {
   });
 
   describe('when value changes', () => {
-    beforeEach(() => {
-      testComponent.config = basicConfig;
-      testComponent.value = [{ key: 'key', value: 'gasoil' }];
-      fixture.detectChanges();
-    });
     describe('from the parent', () => {
+      beforeEach(() => {
+        testComponent.config = basicConfig;
+        testComponent.value = [{ key: 'key', value: 'gasoil' }];
+        fixture.detectChanges();
+      });
       describe('and is empty', () => {
         beforeEach(() => {
           testComponent.value = [];
@@ -221,11 +220,80 @@ describe('IconGridFilterComponent', () => {
       });
     });
     describe('from form component', () => {
-      it('should change label', () => {});
+      beforeEach(() => {
+        testComponent.config = basicConfig;
+        testComponent.value = [{ key: 'key', value: 'gasoil' }];
+      });
 
-      it('should change value', () => {});
+      describe('and is bubble variant', () => {
+        beforeEach(() => {
+          fixture.detectChanges();
+          const form: IconGridCheckFormComponent = debugElement.query(formPredicate).componentInstance;
 
-      it('should emit value change', () => {});
+          form.handleOptionClick('gasoline');
+        });
+        it('should NOT change label until apply', () => {
+          fixture.detectChanges();
+
+          const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
+
+          expect(filterTemplate.label).toEqual('Gasoil');
+
+          component.handleApply();
+          fixture.detectChanges();
+
+          expect(filterTemplate.label).toEqual('Gasoline');
+        });
+
+        it('should NOT emit value change until apply', () => {
+          spyOn(component.valueChange, 'emit');
+
+          fixture.detectChanges();
+
+          expect(component.valueChange.emit).not.toHaveBeenCalled();
+
+          component.handleApply();
+          fixture.detectChanges();
+
+          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'key', value: 'gasoline' }]);
+        });
+      });
+
+      describe('and is content variant', () => {
+        beforeEach(() => {
+          testComponent.variant = FILTER_VARIANT.CONTENT;
+          fixture.detectChanges();
+        });
+
+        it('should change value', () => {
+          const form: IconGridCheckFormComponent = debugElement.query(formPredicate).componentInstance;
+
+          form.handleOptionClick('gasoline');
+          fixture.detectChanges();
+
+          expect(component.formGroup.controls.select.value).toEqual(['gasoline']);
+        });
+
+        it('should change label', () => {
+          const form: IconGridCheckFormComponent = debugElement.query(formPredicate).componentInstance;
+
+          form.handleOptionClick('gasoline');
+          fixture.detectChanges();
+
+          const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
+          expect(filterTemplate.label).toEqual('Gasoline');
+        });
+
+        it('should emit value change', () => {
+          spyOn(component.valueChange, 'emit');
+          const form: IconGridCheckFormComponent = debugElement.query(formPredicate).componentInstance;
+
+          form.handleOptionClick('gasoline');
+          fixture.detectChanges();
+
+          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'key', value: 'gasoline' }]);
+        });
+      });
     });
   });
 });

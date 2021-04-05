@@ -100,7 +100,6 @@ export class IconGridFilterComponent
     }
 
     this.updateLabel();
-    this.valueChange.emit(this.value);
   }
 
   private initForm(): void {
