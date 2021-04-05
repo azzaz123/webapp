@@ -18,6 +18,7 @@ import { FILTER_TYPES } from '@public/shared/components/filters/core/enums/filte
 import { FilterTemplateComponent } from '../abstract-filter/filter-template/filter-template.component';
 import { CAR_CONFIGURATION_ID } from '../../core/enums/configuration-ids/car-configuration-ids';
 import spyOn = jest.spyOn;
+import { IconGridCheckFormComponent } from '@shared/form/components/icon-grid-check/icon-grid-check-form.component';
 
 @Component({
   selector: 'tsl-test-wrapper',
@@ -37,6 +38,7 @@ describe('IconGridFilterComponent', () => {
   let fixture: ComponentFixture<TestWrapperComponent>;
 
   const filterPredicate = By.directive(FilterTemplateComponent);
+  const formPredicate = By.directive(IconGridCheckFormComponent);
 
   const basicConfig: IconGridFilterConfig = {
     id: CAR_CONFIGURATION_ID.ENGINE,
@@ -92,6 +94,32 @@ describe('IconGridFilterComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('when configured as multiselect', () => {
+    beforeEach(() => {
+      testComponent.config = multiselectConfig;
+      fixture.detectChanges();
+    });
+
+    it('should pass the property to the form', () => {
+      const form: IconGridCheckFormComponent = debugElement.query(formPredicate).componentInstance;
+
+      expect(form.isMultiselect).toBeTruthy();
+    });
+  });
+
+  describe('when configured as big icons', () => {
+    beforeEach(() => {
+      testComponent.config = bigIconsConfig;
+      fixture.detectChanges();
+    });
+
+    it('should pass the property to the form', () => {
+      const form: IconGridCheckFormComponent = debugElement.query(formPredicate).componentInstance;
+
+      expect(form.isBig).toBeTruthy();
+    });
   });
 
   describe('when initialized', () => {
