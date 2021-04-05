@@ -81,7 +81,7 @@ export const MOCK_UNFAVORITE_ITEM_EVENT: AnalyticsEvent<UnfavoriteItem> = {
   },
 };
 
-export const viewOthersRetailEvent: AnalyticsPageView<ViewOthersItemREDetail> = {
+export const MOCK_VIEW_OTHERS_ITEM_RE_DETAIL_EVENT: AnalyticsPageView<ViewOthersItemREDetail> = {
   name: ANALYTICS_EVENT_NAMES.ViewOthersItemREDetail,
   attributes: {
     itemId: MOCK_REALESTATE.id,
