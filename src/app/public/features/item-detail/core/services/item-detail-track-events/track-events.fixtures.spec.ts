@@ -7,9 +7,11 @@ import {
   FavoriteItem,
   SCREEN_IDS,
   UnfavoriteItem,
+  ViewOthersItemCarDetail,
   ViewOthersItemCGDetail,
   ViewOwnItemDetail,
 } from '@core/analytics/analytics-constants';
+import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
 import { MOCK_CAR_ITEM_DETAIL } from '@fixtures/item-detail.fixtures.spec';
 import { MOCK_ITEM, MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
 import { MOCK_OTHER_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
@@ -79,9 +81,32 @@ export const MOCK_UNFAVORITE_ITEM_EVENT: AnalyticsEvent<UnfavoriteItem> = {
   },
 };
 
+export const MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT: AnalyticsPageView<ViewOthersItemCarDetail> = {
+  name: ANALYTICS_EVENT_NAMES.ViewOthersItemCarDetail,
+  attributes: {
+    itemId: MOCK_CAR.id,
+    categoryId: MOCK_CAR.categoryId,
+    salePrice: MOCK_CAR.salePrice,
+    brand: MOCK_CAR.brand,
+    model: MOCK_CAR.model,
+    year: MOCK_CAR.year,
+    km: MOCK_CAR.km,
+    gearbox: MOCK_CAR.gearbox,
+    engine: MOCK_CAR.engine,
+    colour: MOCK_CAR.color,
+    hp: MOCK_CAR.horsepower,
+    numDoors: MOCK_CAR.numDoors,
+    bodyType: MOCK_CAR.bodyType,
+    isCarDealer: true,
+    isPro: MOCK_CAR_ITEM_DETAIL.user.featured,
+    screenId: SCREEN_IDS.ItemDetail,
+  },
+};
+
 export class MockItemdDetailTrackEventService {
   trackFavoriteOrUnfavoriteEvent() {}
   trackClickChatButton() {}
   trackViewOwnItemDetail() {}
   trackViewOthersCGDetailEvent() {}
+  trackViewOthersItemCarDetailEvent() {}
 }
