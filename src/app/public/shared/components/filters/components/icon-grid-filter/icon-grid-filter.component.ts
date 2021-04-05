@@ -5,7 +5,7 @@ import { IconGridFilterConfig } from './interfaces/icon-grid-filter-config.inter
 import { FormControl, FormGroup } from '@angular/forms';
 import { FilterOptionService } from '@public/shared/services/filter-option/filter-option.service';
 import { take } from 'rxjs/operators';
-import { IconGridOption } from '@shared/form/components/icon-grid-check/interfaces/icon-grid-option';
+import { IconGridCheckBoxOption } from '@shared/form/components/icon-grid-check-box/interfaces/icon-grid-check-box-option.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { FILTER_VARIANT } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.enum';
@@ -21,7 +21,7 @@ export class IconGridFilterComponent
   implements OnInit, OnDestroy, OnChanges, AfterContentInit {
   @Input() config: IconGridFilterConfig;
 
-  public options: IconGridOption[] = [];
+  public options: IconGridCheckBoxOption[] = [];
   public formGroup = new FormGroup({
     select: new FormControl([]),
   });

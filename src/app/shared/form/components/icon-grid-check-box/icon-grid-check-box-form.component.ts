@@ -1,22 +1,22 @@
 import { Component, forwardRef, Input } from '@angular/core';
-import { IconGridOption } from '@shared/form/components/icon-grid-check/interfaces/icon-grid-option';
+import { IconGridCheckBoxOption } from '@shared/form/components/icon-grid-check-box/interfaces/icon-grid-check-box-option.interface';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
 
 @Component({
-  selector: 'tsl-icon-grid-check-form',
-  templateUrl: './icon-grid-check-form.component.html',
-  styleUrls: ['./icon-grid-check-form.component.scss'],
+  selector: 'tsl-icon-grid-check-box-form',
+  templateUrl: './icon-grid-check-box-form.component.html',
+  styleUrls: ['./icon-grid-check-box-form.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => IconGridCheckFormComponent),
+      useExisting: forwardRef(() => IconGridCheckBoxFormComponent),
       multi: true,
     },
   ],
 })
-export class IconGridCheckFormComponent extends AbstractFormComponent<string[]> {
-  @Input() options: IconGridOption[];
+export class IconGridCheckBoxFormComponent extends AbstractFormComponent<string[]> {
+  @Input() options: IconGridCheckBoxOption[];
   @Input() columns: number;
   @Input() isBig?: boolean;
   @Input() isMultiselect?: boolean;

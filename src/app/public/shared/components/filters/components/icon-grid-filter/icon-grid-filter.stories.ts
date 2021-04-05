@@ -9,7 +9,7 @@ import { FILTER_TYPES } from '../../core/enums/filter-types/filter-types.enum';
 import { FilterOptionService } from '../../../../services/filter-option/filter-option.service';
 import { MockFilterOptionService } from '@fixtures/filter-option-service.fixtures.spec';
 import { IconGridFilterComponent } from './icon-grid-filter.component';
-import { IconGridCheckFormModule } from '@shared/form/components/icon-grid-check/icon-grid-check-form.module';
+import { IconGridCheckBoxFormModule } from '@shared/form/components/icon-grid-check-box/icon-grid-check-box-form.module';
 import { IconGridFilterConfig } from './interfaces/icon-grid-filter-config.interface';
 import { CAR_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/car-configuration-ids';
 import { REAL_ESTATE_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/real-estate-configuration-ids.enum';
@@ -84,7 +84,7 @@ export default {
   title: 'Webapp/Public/Shared/Components/Filters/IconGridFilter',
   decorators: [
     moduleMetadata({
-      imports: [HttpClientModule, IconGridCheckFormModule],
+      imports: [HttpClientModule, IconGridCheckBoxFormModule],
       providers: [
         {
           provide: FilterOptionService,

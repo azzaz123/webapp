@@ -5,7 +5,7 @@ import { IconCheckBoxComponent } from './icon-check-box.component';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 
 export default {
-  title: 'Webapp/Shared/Form/Components/IconGridCheck/IconCheckBox',
+  title: 'Webapp/Shared/Form/Components/IconGridCheckBox/IconCheckBox',
   component: IconCheckBoxComponent,
   decorators: [
     moduleMetadata({

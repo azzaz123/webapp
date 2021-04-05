@@ -1,21 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IconGridCheckFormComponent } from './icon-grid-check-form.component';
+import { IconGridCheckBoxFormComponent } from './icon-grid-check-box-form.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { IconGridOption } from '@shared/form/components/icon-grid-check/interfaces/icon-grid-option';
+import { IconGridCheckBoxOption } from '@shared/form/components/icon-grid-check-box/interfaces/icon-grid-check-box-option.interface';
 import { DebugElement } from '@angular/core';
-import { IconCheckBoxComponent } from '@shared/form/components/icon-grid-check/icon-check-box/icon-check-box.component';
+import { IconCheckBoxComponent } from '@shared/form/components/icon-grid-check-box/icon-check-box/icon-check-box.component';
 import { By } from '@angular/platform-browser';
-import { IconCheckBoxModule } from '@shared/form/components/icon-grid-check/icon-check-box/icon-check-box.module';
+import { IconCheckBoxModule } from '@shared/form/components/icon-grid-check-box/icon-check-box/icon-check-box.module';
 import { CommonModule } from '@angular/common';
 
-describe('IconGridCheckFormComponent', () => {
-  let component: IconGridCheckFormComponent;
-  let fixture: ComponentFixture<IconGridCheckFormComponent>;
+describe('IconGridCheckBoxFormComponent', () => {
+  let component: IconGridCheckBoxFormComponent;
+  let fixture: ComponentFixture<IconGridCheckBoxFormComponent>;
   let debugElement: DebugElement;
 
   const iconPredicate = By.directive(IconCheckBoxComponent);
-  const options: IconGridOption[] = [
+  const options: IconGridCheckBoxOption[] = [
     {
       label: 'Test 1',
       value: 'test_1',
@@ -30,13 +30,13 @@ describe('IconGridCheckFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [IconGridCheckFormComponent],
+      declarations: [IconGridCheckBoxFormComponent],
       imports: [HttpClientTestingModule, IconCheckBoxModule, CommonModule],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(IconGridCheckFormComponent);
+    fixture = TestBed.createComponent(IconGridCheckBoxFormComponent);
     debugElement = fixture.debugElement;
     component = fixture.componentInstance;
     component.options = options;
