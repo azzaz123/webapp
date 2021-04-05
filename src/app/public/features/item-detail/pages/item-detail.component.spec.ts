@@ -58,6 +58,7 @@ import { MockedUserService, MOCK_OTHER_USER, MOCK_USER, OTHER_USER_ID, USER_ID }
 import { User } from '@core/user/user';
 import { ItemDetailTrackEventsService } from '../core/services/item-detail-track-events/item-detail-track-events.service';
 import { MockItemdDetailTrackEventService } from '../core/services/item-detail-track-events/track-events.fixtures.spec';
+import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -308,6 +309,36 @@ describe('ItemDetailComponent', () => {
         fixture.detectChanges();
 
         expect(itemDetailTrackEventsService.trackViewOthersCGDetailEvent).not.toHaveBeenCalled();
+      });
+
+      it('should send view others car event if user is viewing others car', () => {
+        const mockOthersCarItemDetail: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
+        mockOthersCarItemDetail.item = MOCK_CAR;
+        mockOthersCarItemDetail.user = MOCK_OTHER_USER;
+        itemDetailSubjectMock.next(mockOthersCarItemDetail);
+        spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
+        spyOn(itemDetailTrackEventsService, 'trackViewOthersItemCarDetailEvent');
+        spyOn(itemDetailTrackEventsService, 'trackViewOwnItemDetail');
+
+        fixture.detectChanges();
+
+        expect(itemDetailTrackEventsService.trackViewOwnItemDetail).not.toHaveBeenCalled();
+        expect(itemDetailTrackEventsService.trackViewOthersItemCarDetailEvent).toHaveBeenCalledWith(MOCK_CAR, MOCK_OTHER_USER);
+      });
+
+      it('should not send view others car event if user is viewing their own car', () => {
+        const mockOthersCarItemDetail: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
+        mockOthersCarItemDetail.item = MOCK_CAR;
+        mockOthersCarItemDetail.user = MOCK_USER;
+        itemDetailSubjectMock.next(mockOthersCarItemDetail);
+        spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
+        spyOn(itemDetailTrackEventsService, 'trackViewOthersItemCarDetailEvent');
+        spyOn(itemDetailTrackEventsService, 'trackViewOwnItemDetail');
+
+        fixture.detectChanges();
+
+        expect(itemDetailTrackEventsService.trackViewOwnItemDetail).toHaveBeenCalledWith(MOCK_CAR, MOCK_USER);
+        expect(itemDetailTrackEventsService.trackViewOthersItemCarDetailEvent).not.toHaveBeenCalled();
       });
 
       it('should ask for item data', () => {
