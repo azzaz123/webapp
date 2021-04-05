@@ -4,7 +4,8 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MOCK_CAR_ITEM_DETAIL } from '@fixtures/item-detail.fixtures.spec';
 import { MOCK_ITEM, MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
-import { MOCK_OTHER_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
+import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 
 import { ItemDetailTrackEventsService } from './item-detail-track-events.service';
 import {
@@ -13,6 +14,7 @@ import {
   MOCK_UNFAVORITE_ITEM_EVENT,
   MOCK_VIEW_OWN_ITEM_DETAIL_EVENT,
   MOCK_VIEW_OTHERS_CG_DETAIL_EVENT,
+  MOCK_VIEW_OTHERS_ITEM_RE_DETAIL_EVENT,
 } from './track-events.fixtures.spec';
 
 describe('ItemDetailTrackEventsService', () => {
@@ -92,6 +94,19 @@ describe('ItemDetailTrackEventsService', () => {
       service.trackViewOthersCGDetailEvent(item, user);
 
       expect(analyticsService.trackPageView).toHaveBeenCalledWith(MOCK_VIEW_OTHERS_CG_DETAIL_EVENT);
+    });
+  });
+
+  describe('trackViewOthersItemREDetailEvent', () => {
+    const item = MOCK_REALESTATE;
+    const user = MOCK_USER;
+    it('should send view others RE item detail event', () => {
+      spyOn(service, 'trackViewOthersItemREDetailEvent').and.callThrough();
+      spyOn(analyticsService, 'trackPageView');
+
+      service.trackViewOthersItemREDetailEvent(item, user);
+
+      expect(analyticsService.trackPageView).toHaveBeenCalledWith(MOCK_VIEW_OTHERS_ITEM_RE_DETAIL_EVENT);
     });
   });
 });
