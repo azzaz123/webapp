@@ -6,6 +6,7 @@ import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { FilterGroup } from './classes/filter-group';
 import { FilterGroupComponent } from './filter-group.component';
 import { FilterFactoryService } from './services/filter-factory.service';
+import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
 
 describe('FilterGroupComponent', () => {
   let component: FilterGroupComponent;
@@ -36,7 +37,7 @@ describe('FilterGroupComponent', () => {
 
     component.config = [
       {
-        id: 'id',
+        id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
         type: FILTER_TYPES.TOGGLE,
         mapKey: {
           key: 'key',
