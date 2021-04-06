@@ -85,7 +85,6 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   }
 
   public trackShareItemEvent(channel: SOCIAL_SHARE_CHANNELS) {
-    console.log('chan', channel);
     this.itemDetailTrackEventsService.trackShareItemEvent(channel, this.itemDetail.item, this.itemDetail.user);
   }
 
