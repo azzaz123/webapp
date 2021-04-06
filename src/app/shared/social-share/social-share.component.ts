@@ -15,7 +15,7 @@ export class SocialShareComponent {
   @Input() facebook: FacebookShare;
   @Input() twitter: TwitterShare;
   @Input() email: EmailShare;
-  @Output() socialMediaChannel: EventEmitter<string> = new EventEmitter();
+  @Output() socialMediaChannel: EventEmitter<SOCIAL_SHARE_CHANNELS> = new EventEmitter();
 
   constructor(private socialShareService: SocialShareService) {}
 
