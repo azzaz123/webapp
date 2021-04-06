@@ -748,10 +748,9 @@ describe('ItemDetailComponent', () => {
     itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
     it('should send social share event with facebook channel if we share item with facebook', () => {
       spyOn(itemDetailTrackEventsService, 'trackShareItemEvent');
-
       const socialShare = fixture.debugElement.query(By.css(socialShareTag));
-      socialShare.triggerEventHandler('socialMediaChannel', SOCIAL_SHARE_CHANNELS.FACEBOOK);
 
+      socialShare.triggerEventHandler('socialMediaChannel', SOCIAL_SHARE_CHANNELS.FACEBOOK);
       fixture.detectChanges();
 
       expect(itemDetailTrackEventsService.trackShareItemEvent).toHaveBeenCalledWith(
@@ -763,10 +762,9 @@ describe('ItemDetailComponent', () => {
 
     it('should send social share event with twitter channel if we share item with twitter', () => {
       spyOn(itemDetailTrackEventsService, 'trackShareItemEvent');
-
       const socialShare = fixture.debugElement.query(By.css(socialShareTag));
-      socialShare.triggerEventHandler('socialMediaChannel', SOCIAL_SHARE_CHANNELS.TWITTER);
 
+      socialShare.triggerEventHandler('socialMediaChannel', SOCIAL_SHARE_CHANNELS.TWITTER);
       fixture.detectChanges();
 
       expect(itemDetailTrackEventsService.trackShareItemEvent).toHaveBeenCalledWith(
