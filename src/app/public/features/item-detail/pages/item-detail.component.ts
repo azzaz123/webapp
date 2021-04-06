@@ -83,8 +83,12 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     this.itemDetailStoreService.markItemAsSold();
   }
 
-  public clickedItemAndIndex(event) {
-    console.log('passed event', event);
+  public trackClickItemCardEvent(event: { item: Item; index: number }): void {
+    const recommendedItem: Item = event.item;
+    const sourceItem: Item = this.itemDetail.item;
+    this.userService.get(recommendedItem.owner).subscribe((recommendedUser: User) => {
+      this.itemDetailTrackEventsService.trackClickItemCardEvent(recommendedItem, sourceItem, recommendedUser, event.index);
+    });
   }
 
   private initPage(itemId: string): void {
@@ -103,7 +107,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   }
 
   private initializeItemRecommendations(itemId: string, categoryId: number): void {
-    //if (this.isItemRecommendations(categoryId)) {
+    //if (this.isItemRecommendations(categoryId)) { // For developing and testing the recommend items
     this.recommendedItems$ = this.itemDetailService.getRecommendedItems(itemId);
     //}
   }
