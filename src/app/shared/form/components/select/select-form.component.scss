@@ -1,0 +1,23 @@
+@import '~style/common';
+
+.SelectForm {
+  &__option {
+    position: relative;
+    &:before {
+      content: '';
+      position: absolute;
+      width: calc(100% - 30px);
+      height: 1px;
+      background-color: $blue-grey-5;
+      top: 0;
+      left: 15px;
+    }
+    &:hover {
+      background: darken($white, 5);
+    }
+  }
+
+  &__divider {
+    color: #eceff1;
+  }
+}

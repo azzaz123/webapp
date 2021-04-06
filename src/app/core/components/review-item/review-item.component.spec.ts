@@ -49,9 +49,35 @@ describe('ReviewItemComponent', () => {
     it('should set userWebSlug', () => {
       expect(component.userWebSlug).toBe(environment.siteUrl.replace('es', 'www') + 'user/' + REVIEWS_RESPONSE[0].user.web_slug);
     });
+  });
 
-    it('should set category', () => {
-      expect(component.category).toBe(CATEGORY_DATA_WEB[0]);
+  describe('when the item is ours...', () => {
+    beforeEach(() => {
+      component.isOwner = true;
+
+      component.ngOnInit();
+    });
+    it('should return the correct sold copy', () => {
+      expect(component.reviewItemCopys.soldCopy).toBe($localize`:@@OwnReview_Sold:Sold`);
+    });
+
+    it('should return the correct bought copy', () => {
+      expect(component.reviewItemCopys.boughtCopy).toBe($localize`:@@OwnReview_Bought:Bought`);
+    });
+  });
+
+  describe('when the item is NOT ours...', () => {
+    beforeEach(() => {
+      component.isOwner = false;
+
+      component.ngOnInit();
+    });
+    it('should return the correct sold copy', () => {
+      expect(component.reviewItemCopys.soldCopy).toBe($localize`:@@Review_Sold:Sold`);
+    });
+
+    it('should return the correct bought copy', () => {
+      expect(component.reviewItemCopys.boughtCopy).toBe($localize`:@@Review_Bought:Bought`);
     });
   });
 });

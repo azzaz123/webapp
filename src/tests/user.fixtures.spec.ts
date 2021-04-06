@@ -338,6 +338,10 @@ export class MockedUserService {
     return of(new User(USER_ID));
   }
 
+  public isProfessional(): Observable<boolean> {
+    return of(true);
+  }
+
   public getPhoneInfo(userId: string) {}
 
   public checkUserPermissions(): Observable<boolean> {

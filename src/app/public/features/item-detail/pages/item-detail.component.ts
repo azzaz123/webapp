@@ -17,15 +17,11 @@ import { ItemDetail } from '../interfaces/item-detail.interface';
 import { ItemSocialShareService } from '../core/services/item-social-share/item-social-share.service';
 import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from '@public/shared/components/item-flag/item-flag-constants';
 import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
-import {
-  AnalyticsEvent,
-  ANALYTICS_EVENT_NAMES,
-  ANALYTIC_EVENT_TYPES,
-  FavoriteItem,
-  SCREEN_IDS,
-  UnfavoriteItem,
-} from '@core/analytics/analytics-constants';
-import { AnalyticsService } from '@core/analytics/analytics.service';
+import { UserService } from '@core/user/user.service';
+import { User } from '@core/user/user';
+import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
+import { ItemDetailTrackEventsService } from '../core/services/item-detail-track-events/item-detail-track-events.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -47,11 +43,13 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     private itemDetailStoreService: ItemDetailStoreService,
     private deviceService: DeviceService,
     private itemDetailService: ItemDetailService,
+    private itemDetailTrackEventsService: ItemDetailTrackEventsService,
     private route: ActivatedRoute,
     private adsService: AdsService,
     private itemSocialShareService: ItemSocialShareService,
-    private itemDetailFlagsStoreService: ItemDetailFlagsStoreService,
-    private analyticsService: AnalyticsService
+    private typeCheckService: TypeCheckService,
+    private userService: UserService,
+    private itemDetailFlagsStoreService: ItemDetailFlagsStoreService
   ) {}
 
   ngOnInit(): void {
@@ -77,7 +75,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
 
   public toggleFavouriteItem(): void {
     this.itemDetailStoreService.toggleFavouriteItem().subscribe(() => {
-      this.trackFavoriteOrUnfavoriteEvent();
+      this.itemDetailTrackEventsService.trackFavoriteOrUnfavoriteEvent(this.itemDetail);
     });
   }
 
@@ -89,23 +87,6 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     console.log('passed event', event);
   }
 
-  private trackFavoriteOrUnfavoriteEvent(): void {
-    const event: AnalyticsEvent<FavoriteItem | UnfavoriteItem> = {
-      name: this.itemDetail.item.flags.favorite ? ANALYTICS_EVENT_NAMES.FavoriteItem : ANALYTICS_EVENT_NAMES.UnfavoriteItem,
-      eventType: ANALYTIC_EVENT_TYPES.UserPreference,
-      attributes: {
-        itemId: this.itemDetail.item.id,
-        categoryId: this.itemDetail.item.categoryId,
-        screenId: SCREEN_IDS.ItemDetail,
-        salePrice: this.itemDetail.item.salePrice,
-        isPro: this.itemDetail.user.featured,
-        title: this.itemDetail.item.title,
-        isBumped: !!this.itemDetail.item.bumpFlags,
-      },
-    };
-    this.analyticsService.trackEvent(event);
-  }
-
   private initPage(itemId: string): void {
     this.itemDetailStoreService.initializeItemAndFlags(itemId);
     this.subscriptions.push(
@@ -114,6 +95,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
           this.setAdSlot(itemDetail.item);
           this.initializeItemRecommendations(itemId, itemDetail.item.categoryId);
           this.itemSocialShareService.initializeItemMetaTags(itemDetail.item);
+          this.trackViewEvents(itemDetail);
         }
         this.itemDetail = itemDetail;
       })
@@ -134,6 +116,26 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   private isItemRecommendations(itemCategoryId: number): boolean {
     const CATEGORIES_WITH_RECOMMENDATIONS = [CATEGORY_IDS.CAR, CATEGORY_IDS.FASHION_ACCESSORIES];
     return CATEGORIES_WITH_RECOMMENDATIONS.includes(itemCategoryId);
+  }
+
+  private trackViewEvents(itemDetail: ItemDetail): void {
+    const item = itemDetail.item;
+    const user = itemDetail.user;
+    this.userService
+      .me()
+      .pipe(take(1))
+      .subscribe((userMe: User) => {
+        if (user.id === userMe.id) {
+          this.itemDetailTrackEventsService.trackViewOwnItemDetail(item, user);
+        } else {
+          if (this.typeCheckService.isCar(item)) {
+            this.itemDetailTrackEventsService.trackViewOthersItemCarDetailEvent(item, user);
+          }
+          if (!this.typeCheckService.isRealEstate(item) && !this.typeCheckService.isCar(item)) {
+            this.itemDetailTrackEventsService.trackViewOthersCGDetailEvent(item, user);
+          }
+        }
+      });
   }
 
   get itemDetail$(): Observable<ItemDetail> {

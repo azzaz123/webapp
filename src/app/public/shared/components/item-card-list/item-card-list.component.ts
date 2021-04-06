@@ -1,11 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
-import { AnalyticsService } from '@core/analytics/analytics.service';
+import { ChangeDetectionStrategy, Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { Item } from '@core/item/item';
+import { environment } from '@environments/environment';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
-import { PUBLIC_PATHS } from '@public/public-routing-constants';
-import { APP_PATHS } from 'app/app-routing-constants';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ColumnsConfig } from './interfaces/cols-config.interface';
 import { SlotsConfig } from './interfaces/slots-config.interface';
@@ -34,8 +31,7 @@ export class ItemCardListComponent {
     private deviceDetectionService: DeviceDetectorService,
     private itemCardService: ItemCardService,
     private checkSessionService: CheckSessionService,
-    private analyticsService: AnalyticsService,
-    private router: Router
+    @Inject('SUBDOMAIN') private subdomain: string
   ) {
     this.showDescription = !this.deviceDetectionService.isMobile();
   }
@@ -44,11 +40,11 @@ export class ItemCardListComponent {
     this.checkSessionService.hasSession() ? this.itemCardService.toggleFavourite(item) : this.checkSessionService.checkSessionAction();
   }
 
-  public openItemDetailPage(item: Item, index: number): void {
-    /*  this.clickedItem.emit(item);
-    this.clickedItemIndex.emit(index); */
-    console.log('test', item, index);
-    this.clickedItemAndIndex.emit({ item, index });
-    this.router.navigate([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.ITEM_DETAIL}/${item.id}`]);
+  public openItemDetailPage(item: Item): void {
+    const link = environment.siteUrl.replace('es', this.subdomain) + 'item/' + item.webSlug;
+    window.open(link);
+
+    // TODO: UNCOMMENT WHEN WE OPEN ITEM DETAIL IN PRODUCTION		Date: 2021/04/01
+    // this.router.navigate([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.ITEM_DETAIL}/${item.id}`]);
   }
 }

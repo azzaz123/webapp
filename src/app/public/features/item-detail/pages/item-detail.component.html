@@ -24,7 +24,7 @@
                             <tsl-item-images-carousel
                                 [statusFlag]="statusFlag$ | async" 
                                 [bumpedFlag]="bumpedFlag$ | async"
-                                [isExpired]="!itemDetail.item.flags?.expired" 
+                                [isExpired]="itemDetail.item.flags?.expired" 
                                 [images]="itemDetail.images"
                                 (imageClick)="openItemDetailImage($event)">
                             </tsl-item-images-carousel>

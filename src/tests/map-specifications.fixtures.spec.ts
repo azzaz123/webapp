@@ -82,9 +82,6 @@ export const MOCK_COUNTER_SPECIFICATIONS_CAR: CounterSpecifications[] = [
   {
     type: CAR_SPECIFICATION_TYPE.MANUAL,
   },
-  {
-    type: CAR_SPECIFICATION_TYPE.CONDITION_0,
-  },
 ];
 
 export const MOCK_MAP_SPECIFICATIONS_REAL_ESTATE: Realestate = new Realestate(

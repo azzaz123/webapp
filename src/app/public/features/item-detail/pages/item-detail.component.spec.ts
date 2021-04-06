@@ -53,14 +53,12 @@ import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.serv
 import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import {
-  AnalyticsEvent,
-  ANALYTICS_EVENT_NAMES,
-  ANALYTIC_EVENT_TYPES,
-  FavoriteItem,
-  SCREEN_IDS,
-  UnfavoriteItem,
-} from '@core/analytics/analytics-constants';
+import { UserService } from '@core/user/user.service';
+import { MockedUserService, MOCK_OTHER_USER, MOCK_USER, OTHER_USER_ID, USER_ID } from '@fixtures/user.fixtures.spec';
+import { User } from '@core/user/user';
+import { ItemDetailTrackEventsService } from '../core/services/item-detail-track-events/item-detail-track-events.service';
+import { MockItemdDetailTrackEventService } from '../core/services/item-detail-track-events/track-events.fixtures.spec';
+import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -95,6 +93,8 @@ describe('ItemDetailComponent', () => {
   let decimalPipe: DecimalPipe;
   let itemDetailImagesModal: ItemFullScreenCarouselComponent;
   let itemDetailStoreService: ItemDetailStoreService;
+  let itemDetailTrackEventsService: ItemDetailTrackEventsService;
+  let userService: UserService;
   let analyticsService: AnalyticsService;
   let de: DebugElement;
   let el: HTMLElement;
@@ -118,6 +118,14 @@ describe('ItemDetailComponent', () => {
         ItemApiService,
         ItemFullScreenCarouselComponent,
         Renderer2,
+        {
+          provide: ItemDetailTrackEventsService,
+          useClass: MockItemdDetailTrackEventService,
+        },
+        {
+          provide: UserService,
+          useClass: MockedUserService,
+        },
         {
           provide: AnalyticsService,
           useClass: MockAnalyticsService,
@@ -184,11 +192,14 @@ describe('ItemDetailComponent', () => {
     decimalPipe = TestBed.inject(DecimalPipe);
     itemDetailService = TestBed.inject(ItemDetailService);
     mapExtraInfoService = TestBed.inject(MapExtraInfoService);
+    userService = TestBed.inject(UserService);
     de = fixture.debugElement;
     el = de.nativeElement;
     itemDetailStoreService = TestBed.inject(ItemDetailStoreService);
+    itemDetailTrackEventsService = TestBed.inject(ItemDetailTrackEventsService);
     itemDetailImagesModal = TestBed.inject(ItemFullScreenCarouselComponent);
     itemSocialShareService = TestBed.inject(ItemSocialShareService);
+    userService = TestBed.inject(UserService);
     analyticsService = TestBed.inject(AnalyticsService);
     fixture.detectChanges();
   });
@@ -239,6 +250,112 @@ describe('ItemDetailComponent', () => {
       fixture = TestBed.createComponent(ItemDetailComponent);
     });
     describe('and we get the item...', () => {
+      it('should send view own item detail event if it is the same user', () => {
+        itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
+        spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
+        spyOn(itemDetailTrackEventsService, 'trackViewOwnItemDetail');
+
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        expect(itemDetailTrackEventsService.trackViewOwnItemDetail).toHaveBeenCalledWith(
+          MOCK_CAR_ITEM_DETAIL.item,
+          MOCK_CAR_ITEM_DETAIL.user
+        );
+      });
+
+      it('should not send view own item detail event if it is not the same user', () => {
+        itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
+        spyOn(userService, 'me').and.returnValue(of(new User(OTHER_USER_ID)));
+        spyOn(itemDetailTrackEventsService, 'trackViewOwnItemDetail');
+
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        expect(itemDetailTrackEventsService.trackViewOwnItemDetail).not.toHaveBeenCalled();
+      });
+
+      it('should send view others CG item detail event when user is viewing others consumer goods item detail', () => {
+        const mockCGItemDetail: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
+        mockCGItemDetail.item = MOCK_ITEM_GBP;
+        mockCGItemDetail.user = MOCK_OTHER_USER;
+        itemDetailSubjectMock.next(mockCGItemDetail);
+        spyOn(userService, 'me').and.returnValue(of(new User(OTHER_USER_ID)));
+        spyOn(itemDetailTrackEventsService, 'trackViewOthersCGDetailEvent');
+
+        fixture.detectChanges();
+
+        expect(itemDetailTrackEventsService.trackViewOthersCGDetailEvent).toHaveBeenCalledWith(MOCK_ITEM_GBP, MOCK_OTHER_USER);
+      });
+
+      it('should not send view others CG item detail event when user is not viewing others consumer goods item detail', () => {
+        itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
+        spyOn(userService, 'me').and.returnValue(of(new User(OTHER_USER_ID)));
+        spyOn(itemDetailTrackEventsService, 'trackViewOthersCGDetailEvent');
+
+        fixture.detectChanges();
+
+        expect(itemDetailTrackEventsService.trackViewOthersCGDetailEvent).not.toHaveBeenCalledWith();
+      });
+
+      it('should not send view others CG item detail event when user is viewing their own consumer goods item detail', () => {
+        const mockCGItemDetail: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
+        mockCGItemDetail.item = MOCK_ITEM_GBP;
+        mockCGItemDetail.user = MOCK_USER;
+        itemDetailSubjectMock.next(mockCGItemDetail);
+        spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
+        spyOn(itemDetailTrackEventsService, 'trackViewOthersCGDetailEvent');
+
+        fixture.detectChanges();
+
+        expect(itemDetailTrackEventsService.trackViewOthersCGDetailEvent).not.toHaveBeenCalled();
+      });
+
+      it('should send view others car event if user is viewing others car', () => {
+        const mockOthersCarItemDetail: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
+        mockOthersCarItemDetail.item = MOCK_CAR;
+        mockOthersCarItemDetail.user = MOCK_OTHER_USER;
+        itemDetailSubjectMock.next(mockOthersCarItemDetail);
+        spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
+        spyOn(itemDetailTrackEventsService, 'trackViewOthersItemCarDetailEvent');
+        spyOn(itemDetailTrackEventsService, 'trackViewOwnItemDetail');
+
+        fixture.detectChanges();
+
+        expect(itemDetailTrackEventsService.trackViewOwnItemDetail).not.toHaveBeenCalled();
+        expect(itemDetailTrackEventsService.trackViewOthersItemCarDetailEvent).toHaveBeenCalledWith(MOCK_CAR, MOCK_OTHER_USER);
+      });
+
+      it('should not send view others car event if user is viewing their own car', () => {
+        const mockOthersCarItemDetail: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
+        mockOthersCarItemDetail.item = MOCK_CAR;
+        mockOthersCarItemDetail.user = MOCK_USER;
+        itemDetailSubjectMock.next(mockOthersCarItemDetail);
+        spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
+        spyOn(itemDetailTrackEventsService, 'trackViewOthersItemCarDetailEvent');
+        spyOn(itemDetailTrackEventsService, 'trackViewOwnItemDetail');
+
+        fixture.detectChanges();
+
+        expect(itemDetailTrackEventsService.trackViewOwnItemDetail).toHaveBeenCalledWith(MOCK_CAR, MOCK_USER);
+        expect(itemDetailTrackEventsService.trackViewOthersItemCarDetailEvent).not.toHaveBeenCalled();
+      });
+
+      it('should not send view others car event if user is viewing others prduct that is not a car', () => {
+        const mockOthersCarItemDetail: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
+        mockOthersCarItemDetail.item = MOCK_ITEM_GBP;
+        mockOthersCarItemDetail.user = MOCK_OTHER_USER;
+        itemDetailSubjectMock.next(mockOthersCarItemDetail);
+        spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
+        spyOn(itemDetailTrackEventsService, 'trackViewOthersItemCarDetailEvent');
+        spyOn(itemDetailTrackEventsService, 'trackViewOthersCGDetailEvent');
+
+        fixture.detectChanges();
+
+        expect(itemDetailTrackEventsService.trackViewOthersItemCarDetailEvent).not.toHaveBeenCalled();
+        expect(itemDetailTrackEventsService.trackViewOthersCGDetailEvent).toHaveBeenCalledWith(MOCK_ITEM_GBP, MOCK_OTHER_USER);
+      });
+
       it('should ask for item data', () => {
         spyOn(itemDetailStoreService, 'initializeItemAndFlags');
 
@@ -461,65 +578,15 @@ describe('ItemDetailComponent', () => {
     });
 
     describe('when we favourite or unfavourite an item...', () => {
-      it('should call to the store to do the action', () => {
-        spyOn(itemDetailStoreService, 'toggleFavouriteItem').and.returnValue(of());
+      it('should call to the store to do the action and also trigger trackFavoriteOrUnfavoriteEvent in item detail track events service', () => {
+        spyOn(itemDetailStoreService, 'toggleFavouriteItem').and.returnValue(of({}));
+        spyOn(itemDetailTrackEventsService, 'trackFavoriteOrUnfavoriteEvent');
         const itemDetailHeader = fixture.debugElement.query(By.directive(ItemDetailHeaderComponent));
         itemDetailHeader.triggerEventHandler('favouritedItemChange', {});
 
         fixture.detectChanges();
         expect(itemDetailStoreService.toggleFavouriteItem).toHaveBeenCalled();
-      });
-
-      it('should send favorite item event if we toggle favourite an item', () => {
-        spyOn(analyticsService, 'trackEvent');
-        const favoriteItemEvent: AnalyticsEvent<FavoriteItem> = {
-          name: ANALYTICS_EVENT_NAMES.FavoriteItem,
-          eventType: ANALYTIC_EVENT_TYPES.UserPreference,
-          attributes: {
-            itemId: MOCK_CAR_ITEM_DETAIL.item.id,
-            categoryId: MOCK_CAR_ITEM_DETAIL.item.categoryId,
-            screenId: SCREEN_IDS.ItemDetail,
-            salePrice: MOCK_CAR_ITEM_DETAIL.item.salePrice,
-            isPro: MOCK_CAR_ITEM_DETAIL.user.featured,
-            title: MOCK_CAR_ITEM_DETAIL.item.title,
-            isBumped: !!MOCK_CAR_ITEM_DETAIL.item.bumpFlags,
-          },
-        };
-        const itemDetail = { ...MOCK_CAR_ITEM_DETAIL };
-        itemDetail.item.flags.favorite = true;
-        itemDetailSubjectMock.next(itemDetail);
-
-        const itemDetailHeader = fixture.debugElement.query(By.directive(ItemDetailHeaderComponent));
-        itemDetailHeader.triggerEventHandler('favouritedItemChange', {});
-
-        fixture.detectChanges();
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith(favoriteItemEvent);
-      });
-
-      it('should send favorite item event if we toggle favourite an item', () => {
-        spyOn(analyticsService, 'trackEvent');
-        const favoriteItemEvent: AnalyticsEvent<UnfavoriteItem> = {
-          name: ANALYTICS_EVENT_NAMES.UnfavoriteItem,
-          eventType: ANALYTIC_EVENT_TYPES.UserPreference,
-          attributes: {
-            itemId: MOCK_CAR_ITEM_DETAIL.item.id,
-            categoryId: MOCK_CAR_ITEM_DETAIL.item.categoryId,
-            screenId: SCREEN_IDS.ItemDetail,
-            salePrice: MOCK_CAR_ITEM_DETAIL.item.salePrice,
-            isPro: MOCK_CAR_ITEM_DETAIL.user.featured,
-            title: MOCK_CAR_ITEM_DETAIL.item.title,
-            isBumped: !!MOCK_CAR_ITEM_DETAIL.item.bumpFlags,
-          },
-        };
-        const itemDetail = { ...MOCK_CAR_ITEM_DETAIL };
-        itemDetail.item.flags.favorite = false;
-        itemDetailSubjectMock.next(itemDetail);
-
-        const itemDetailHeader = fixture.debugElement.query(By.directive(ItemDetailHeaderComponent));
-        itemDetailHeader.triggerEventHandler('favouritedItemChange', {});
-
-        fixture.detectChanges();
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith(favoriteItemEvent);
+        expect(itemDetailTrackEventsService.trackFavoriteOrUnfavoriteEvent).toHaveBeenCalledWith(MOCK_CAR_ITEM_DETAIL);
       });
     });
 
