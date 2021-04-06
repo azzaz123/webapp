@@ -1,5 +1,9 @@
 <div class="Error h-100 d-flex justify-content-center align-items-center">
   <tsl-error-box class="d-block"
    [title]="title"
-   [subtitle]="subtitle"></tsl-error-box>
+   [subtitle]="subtitle"
+   [img]="image"
+   [exit]="errorBoxButton"
+   (exitClick)="navigateToHomePage()"
+   ></tsl-error-box>
 </div>
