@@ -17,4 +17,13 @@ export class ErrorBoxComponent {
   readonly ERROR_BOX_EXIT_TYPE = ERROR_BOX_EXIT_TYPE;
 
   constructor() {}
+
+  public getButtonClassName(): string {
+    if (this.exit?.type === ERROR_BOX_EXIT_TYPE.BUTTON) {
+      return 'btn-primary';
+    }
+    if (this.exit?.type === ERROR_BOX_EXIT_TYPE.LINK) {
+      return 'basic';
+    }
+  }
 }
