@@ -411,7 +411,7 @@ export class ListComponent implements OnInit, OnDestroy {
   public itemChanged($event: ItemChangeEvent) {
     if ($event.action === ITEM_CHANGE_ACTION.REACTIVATED) {
       this.reactivationAction($event.item.id);
-    } else if ($event.action === 'activate') {
+    } else if ($event.action === ITEM_CHANGE_ACTION.ACTIVATE) {
       this.onAction($event.action, $event.item.id);
     } else {
       const index: number = findIndex(this.items, { _id: $event.item.id });
