@@ -178,7 +178,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           id: [{ value: null, disabled: true }, [isObjectTypeRequiredValidator]],
         }),
         object_type_2: this.fb.group({
-          id: [{ value: null, disabled: true }],
+          id: [{ value: null, disabled: true }, [isObjectTypeRequiredValidator]],
         }),
         brand: [{ value: null, disabled: true }, [Validators.required]],
         model: [{ value: null, disabled: true }, [Validators.required]],
