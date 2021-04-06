@@ -121,11 +121,11 @@
   <translation id="4908480064602665904">Cuéntanos más. ¿Usado o nuevo? ¿Rojo o amarillo? ¿Tiene algún golpecito?</translation>
   <translation id="6236574297221800719">No te dejes nada. Los detalles son clave para vender más rápido.</translation>
   <translation id="4276238968704226281">Fotos</translation>
-  <translation id="1873519297986539008">Fotos</translation>
+  <translation id="4993862641532142726">Fotos</translation>
   <translation id="258836646318650091">Puedes arrastrar las imágenes de tu producto aquí. Selecciona y mueve una imagen para cambiar el orden. Máximo 10MB. Sólo aceptamos formatos .jpg.</translation>
   <translation id="7026441111090698984">Precio no negociable</translation>
   <translation id="1292901362619782619">Acepto intercambios</translation>
-  <translation id="4770496043619864687">Subir coche</translation>
+  <translation id="3035733344139808830">Subir coche</translation>
   <translation id="4138346261331244869">¿Cómo quedará?</translation>
   <translation id="4918814479561513634">¿Estas seguro que quieres abandonar esta página?</translation>
   <translation id="6618892692857491514">Hay información que no has guardado. Si te vas sin guardar perderás los cambios que has hecho. </translation>
@@ -303,7 +303,7 @@
   <translation id="7410432243549869948">Duración</translation>
   <translation id="1101605949675282361">Todavía no tienes llamadas</translation>
   <translation id="7239750919884229270">Actualizado</translation>
-  <translation id="4210561021982898487"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> productos seleccionados</translation>
+  <translation id="5355559345452700668"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> productos seleccionados</translation>
   <translation id="5322473252816589112">Desactivar</translation>
   <translation id="4759723562137600498">Activar</translation>
   <translation id="13886945388572438">Destácalo</translation>
@@ -353,7 +353,7 @@
   <translation id="6474953774520959911">Los coches que están planeados no pueden ser destacados de nuevo. Puedes cancelar los destacados para estos productos o continuar destacando los otros.</translation>
   <translation id="4807588143683316694">Los coches que están planeados no pueden ser destacados de nuevo.</translation>
   <translation id="445243100567221931">Ok, entiendo</translation>
-  <translation id="428164738594731840">Cancelar</translation>
+  <translation id="1698504074847057809">Cancelar</translation>
   <translation id="7166295046269696440">Desde <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> a <ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph></translation>
   <translation id="7291421467944217279">Activar coches</translation>
   <translation id="1968377313585576070">Puedes subir <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> coche(s) más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
@@ -372,7 +372,7 @@
   <translation id="8778531687214591857">Has procesado todos los contactos pendientes. ¡Buen trabajo!</translation>
   <translation id="5554592740021607017">Últimos 12 meses</translation>
   <translation id="466090356732378705">Destacados <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
-  <translation id="7514254130085804538">Marcar como vendido</translation>
+  <translation id="596181013964941327">Marcar como vendido</translation>
   <translation id="853408948668135550">Marcar como reservado</translation>
   <translation id="7585826646011739428">Editar</translation>
   <translation id="7990122896525380062">Selecciona otra marca</translation>
@@ -397,7 +397,7 @@
   <translation id="4551195994779724664">Mostrar dirección apróximada de tu inmueble</translation>
   <translation id="87397333944060990">¿Tu inmueble es para alquilar o para vender?</translation>
   <translation id="4222698529756167847">¿Qué tipo de inmueble es?</translation>
-  <translation id="8792574244784521102">Añade un precio justo y la superficie en m2. Dínos también en qué estado se encuentra la propiedad.</translation>
+  <translation id="4553638214992125208">Añade un precio justo y la superficie en m2. Dínos también en qué estado se encuentra la propiedad.</translation>
   <translation id="2249392835431463782">¿Cuántas habitaciones y baños tiene?</translation>
   <translation id="6916262870833373718">Cosas que le gusta saber a nuestros usuarios...</translation>
   <translation id="1584726871995413701">Cada detalle cuenta, ¡así que cuéntanos más!</translation>
@@ -494,10 +494,10 @@
   <translation id="5635139981490841331">En pocas palabras...</translation>
   <translation id="3650030434919639531">Utilizar una tarjeta guardada</translation>
   <translation id="7548733830385801837">Este teléfono nunca será público, se te asignará un número de tracking que será el que verán los clientes.</translation>
-  <translation id="6854882443364631275">Presta atención a los errores ortográficos, así nuestros usuarios podrán encontrar tu propiedad más facilmente.</translation>
+  <translation id="8864498794607839471">Presta atención a los errores ortográficos, así nuestros usuarios podrán encontrar tu propiedad más facilmente.</translation>
   <translation id="6419236949160000852">Este es el lugar donde se encuentra tu espacio. Esta ubicación podría ser diferente de la ubicación de tu perfil.</translation>
-  <translation id="591481955696105417">Puedes arrastrar y soltar fotos aquí. También puedes arrastrar y soltar para cambiar el orden. Máximo 4MB.</translation>
-  <translation id="2852614655612881023">¿Que aspecto tiene?</translation>
+  <translation id="1653288766347942076">Puedes arrastrar y soltar fotos aquí. También puedes arrastrar y soltar para cambiar el orden. Máximo 4MB.</translation>
+  <translation id="1444668286032768595">¿Que aspecto tiene?</translation>
   <translation id="updateArchivedMessagesWarning">Hemos encontrado un problema al actualizar tus mensajes archivados. Inténtalo de nuevo en breve.</translation>
   <translation id="updateInboxWarning">Hemos encontrado un problema al actualizar tu bandeja de entrada. Inténtalo de nuevo en breve.</translation>
   <translation id="2094431645371030704">Precio financiado (opcional)</translation>
@@ -515,17 +515,17 @@
   <translation id="4467323362722952678">Desconocido</translation>
   <translation id="3893097575013115653">+<ph name="INTERPOLATION"><ex>{{user?.sellingItemCount}}</ex></ph> Más</translation>
   <translation id="656874927403996411"><ph name="INTERPOLATION"><ex>{{subscription.selected_tier.limit}}</ex></ph> productos</translation>
-  <translation id="6319315156225724559"><ph name="INTERPOLATION"><ex>{{subscription.selected_tier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{subscription.selected_tier.currency}}</ex></ph>/mes</translation>
+  <translation id="1485148052085131606"><ph name="INTERPOLATION"><ex>{{subscription.selected_tier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{subscription.selected_tier.currency}}</ex></ph>/mes</translation>
   <translation id="240806681889331244">Ilimitado</translation>
   <translation id="8107784429181471644"><ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
   <translation id="1230154438678955604">Cambiar</translation>
   <translation id="5703774512613913053">Pagar <ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph></translation>
   <translation id="3072739349487522347"><ph name="INTERPOLATION"><ex>{{subscription?.tiers[i]?.limit}}</ex></ph></translation>
-  <translation id="3744004942164134121"><ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
+  <translation id="1636151583850148910"><ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
   <translation id="6998541290982927512">Confirmar cambio de suscripción</translation>
   <translation id="5491679500050936702" desc="La distancia entre el usuario y el producto a"><ph name="INTERPOLATION"><ex>{{user.distanceInKm | number:&apos;1.0-1&apos;}}</ex></ph>km de ti</translation>
   <translation id="3553216189604488439">Modificado</translation>
-  <translation id="457741553886180613">Suscrito desde <ph name="INTERPOLATION"><ex>{{subscription.subscribed_from | date:&apos;dd/MM/yy&apos; }}</ex></ph></translation>
+  <translation id="1142622387783606285">Suscrito desde <ph name="INTERPOLATION"><ex>{{subscription.subscribed_from | date:&apos;dd/MM/yy&apos; }}</ex></ph></translation>
   <translation id="5507433950760207486">Sin límite de tiempo</translation>
   <translation id="8882282108983733420">¿Seguro que quieres cancelar tu suscripción Wallapop PRO <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph>?</translation>
   <translation id="8487121195517337235">Es triste que te vayas. Puedes volver cuando quieras, ¡te estaremos esperando!</translation>
@@ -543,17 +543,17 @@
   <translation id="1355341408067809538">No, quiero cancelarla</translation>
   <translation id="9098152328983851571">Comprar</translation>
   <translation id="8720496095668778360">Límite sin suscripción: <ph name="INTERPOLATION"><ex>{{subscription.current_limit}}</ex></ph></translation>
-  <translation id="8079107042901096560">La suscripción finaliza el <ph name="INTERPOLATION"><ex>{{subscription.subscribed_until | date:&apos;dd/MM/yy&apos; }}</ex></ph></translation>
-  <translation id="6512533568413132940">Continuar suscrito</translation>
+  <translation id="9092438978345027877">La suscripción finaliza el <ph name="INTERPOLATION"><ex>{{subscription.subscribed_until | date:&apos;dd/MM/yy&apos; }}</ex></ph></translation>
+  <translation id="374945568184789215">Continuar suscrito</translation>
   <translation id="7205093490438309267">Introduce tus datos de pago</translation>
   <translation id="4504623795614136197">¡Nunca es demasiado tarde! Puedes deshacer la cancelación y seguir disfrutando de los beneficios.</translation>
   <translation id="848453031482663640">Suscríbete ya</translation>
   <translation id="3749157863216929849">Volver al catálogo</translation>
   <translation id="708817521397622777">Paga con tu saldo o con tarjeta de crédito:</translation>
   <translation id="2477437471140226346">¿Qué límite quieres poner a tu suscripción?</translation>
-  <translation id="1583909574923079873">Precio: </translation>
+  <translation id="212719061730911831">Precio: </translation>
   <translation id="930351548904901118">Nuevo precio: </translation>
-  <translation id="7063014133288240503">Este es tu plan actual</translation>
+  <translation id="7158767367773527366">Este es tu plan actual</translation>
   <translation id="8716359834484489616">Seleccionar todos</translation>
   <translation id="931255636742351800">Sin límite</translation>
   <translation id="3546316122339217988">Plan <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph> ilimitados</translation>
@@ -603,13 +603,13 @@
   <translation id="3088405909522546815">Un mes gratis</translation>
   <translation id="3502404552821595095"><ph name="INTERPOLATION"><ex>{{selectedTier.discount_available.months}}</ex></ph> meses gratis</translation>
   <translation id="2568045788105949140"><ph name="INTERPOLATION"><ex>{{selectedTier.discount_available.discounted_price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
-  <translation id="2404822514067336938">Al suscribirte estás aceptando las <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>condiciones de uso<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> y la <ph name="START_LINK_1"><ex>&lt;a&gt;</ex></ph>política de privacidad<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> de Wallapop S.L. y Stripe Ltd</translation>
-  <translation id="7145885217817968593">Al suscribirte estás aceptando las <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>condiciones de uso<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> y la <ph name="START_LINK_1"><ex>&lt;a&gt;</ex></ph>política de privacidad<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> de Wallapop S.L. y Stripe Ltd</translation>
+  <translation id="1829332830836260897">Al suscribirte estás aceptando las <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>condiciones de uso<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> y la <ph name="START_LINK_1"><ex>&lt;a&gt;</ex></ph>política de privacidad<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> de Wallapop S.L. y Stripe Ltd</translation>
+  <translation id="7001016842960851992">Al suscribirte estás aceptando las <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>condiciones de uso<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> y la <ph name="START_LINK_1"><ex>&lt;a&gt;</ex></ph>política de privacidad<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> de Wallapop S.L. y Stripe Ltd</translation>
   <translation id="43721607585443490">Pagar <ph name="INTERPOLATION"><ex>{{selectedTier.discount_available.discounted_price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph></translation>
   <translation id="3953884740420390564">Plan <ph name="INTERPOLATION"><ex> {{selectedTier.limit}}</ex></ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name}}</ex></ph></translation>
   <translation id="8217404428211350288">Después <ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
   <translation id="3388771596034096026"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Dispones de un mes gratuito<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
-  <translation id="214415473377752678">1. Cancela tu plan de suscripción actual. Para ello, accede a la aplicación de <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>Apple Store<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> o <ph name="START_LINK_1"><ex>&lt;a&gt;</ex></ph>Google Play<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> (depende del móvil que uses).</translation>
+  <translation id="3323493799739127700">1. Cancela tu plan de suscripción actual. Para ello, accede a la aplicación de <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>Apple Store<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> o <ph name="START_LINK_1"><ex>&lt;a&gt;</ex></ph>Google Play<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> (depende del móvil que uses).</translation>
   <translation id="2347321246651029433">2. Espera a que expire la vigencia del plan al que te habías suscrito. Consulta la fecha de expiración en el correo que te enviamos cuando te das de baja.</translation>
   <translation id="7589681963132617331">3. Una vez expirado, escoge tu suscripción gratuita aquí en la web.</translation>
   <translation id="5188534013459638497">Date de baja primero desde la app para tu mes gratis</translation>
@@ -621,9 +621,9 @@
   <translation id="3093507871243266697">Esperando red...</translation>
   <translation id="3208980041287937682">Conectado</translation>
   <translation id="8016649850785953911">Anular reserva</translation>
-  <translation id="3537961834218859224">Te lo aseguramos</translation>
-  <translation id="5984580705945066559">Calcula el seguro gratis</translation>
-  <translation id="5856234352867328880">Financia esta compra</translation>
+  <translation id="4764772847429939173">Te lo aseguramos</translation>
+  <translation id="861092633857938887">Calcula el seguro gratis</translation>
+  <translation id="2875573864797280086">Financia esta compra</translation>
   <translation id="6543433128416987560">Reservado</translation>
 
   <!--Translations using keys-->
