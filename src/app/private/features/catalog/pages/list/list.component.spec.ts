@@ -624,7 +624,7 @@ describe('ListComponent', () => {
 
       component.itemChanged({
         item: item,
-        action: 'deleted',
+        action: ITEM_CHANGE_ACTION.DELETED,
       });
 
       expect(component.items.length).toBe(TOTAL - 1);

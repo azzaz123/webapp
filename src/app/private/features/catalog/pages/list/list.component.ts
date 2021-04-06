@@ -261,7 +261,7 @@ export class ListComponent implements OnInit, OnDestroy {
             this.soldButton.callback.subscribe(() => {
               this.itemChanged({
                 item: item,
-                action: STATUS.SOLD,
+                action: ITEM_CHANGE_ACTION.SOLD,
               });
               this.eventService.emit(EventService.ITEM_SOLD, item);
             });
