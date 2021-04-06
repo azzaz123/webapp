@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AdSlotConfiguration } from '@core/ads/models';
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
+import { SlugsUtilService } from '@core/services/slugs-util/slugs-util.service';
 import { User } from '@core/user/user';
 import { Image } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
@@ -34,11 +35,17 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     private publicProfileService: PublicProfileService,
     private router: Router,
     private deviceService: DeviceService,
-    private adsService: AdsService
+    private adsService: AdsService,
+    private slugsUtilService: SlugsUtilService
   ) {}
 
   ngOnInit(): void {
-    this.getUser();
+    this.route.params.subscribe((params) => {
+      const webSlug = params[PUBLIC_PATH_PARAMS.WEBSLUG];
+      const userUUID = this.slugsUtilService.getUUIDfromSlug(webSlug);
+      this.getUser(userUUID);
+    });
+
     this.isMobile = this.deviceService.isMobile();
     this.adsService.setSlots([this.adSlot]);
   }
@@ -47,8 +54,8 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 
-  private getUser(): void {
-    this.userId = this.route.snapshot.paramMap.get(PUBLIC_PATH_PARAMS.ID);
+  private getUser(userUUID: string): void {
+    this.userId = userUUID;
     if (this.userId) {
       this.getUserInfoAndStats();
     }
