@@ -341,6 +341,21 @@ describe('ItemDetailComponent', () => {
         expect(itemDetailTrackEventsService.trackViewOthersItemCarDetailEvent).not.toHaveBeenCalled();
       });
 
+      it('should not send view others car event if user is viewing others prduct that is not a car', () => {
+        const mockOthersCarItemDetail: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
+        mockOthersCarItemDetail.item = MOCK_ITEM_GBP;
+        mockOthersCarItemDetail.user = MOCK_OTHER_USER;
+        itemDetailSubjectMock.next(mockOthersCarItemDetail);
+        spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
+        spyOn(itemDetailTrackEventsService, 'trackViewOthersItemCarDetailEvent');
+        spyOn(itemDetailTrackEventsService, 'trackViewOthersCGDetailEvent');
+
+        fixture.detectChanges();
+
+        expect(itemDetailTrackEventsService.trackViewOthersItemCarDetailEvent).not.toHaveBeenCalled();
+        expect(itemDetailTrackEventsService.trackViewOthersCGDetailEvent).toHaveBeenCalledWith(MOCK_ITEM_GBP, MOCK_OTHER_USER);
+      });
+
       it('should ask for item data', () => {
         spyOn(itemDetailStoreService, 'initializeItemAndFlags');
 
