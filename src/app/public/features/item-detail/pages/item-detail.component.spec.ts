@@ -773,5 +773,19 @@ describe('ItemDetailComponent', () => {
         MOCK_CAR_ITEM_DETAIL.user
       );
     });
+
+    it('should send social share event with email channel if we share item with email', () => {
+      spyOn(itemDetailTrackEventsService, 'trackShareItemEvent');
+      const socialShare = fixture.debugElement.query(By.css(socialShareTag));
+
+      socialShare.triggerEventHandler('socialMediaChannel', SOCIAL_SHARE_CHANNELS.EMAIL);
+      fixture.detectChanges();
+
+      expect(itemDetailTrackEventsService.trackShareItemEvent).toHaveBeenCalledWith(
+        SOCIAL_SHARE_CHANNELS.EMAIL,
+        MOCK_CAR_ITEM_DETAIL.item,
+        MOCK_CAR_ITEM_DETAIL.user
+      );
+    });
   });
 });

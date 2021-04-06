@@ -20,6 +20,7 @@ import {
   MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT,
   MOCK_FB_SHARE_ITEM_EVENT,
   MOCK_TWITTER_SHARE_ITEM_EVENT,
+  MOCK_EMAIL_SHARE_ITEM_EVENT,
 } from './track-events.fixtures.spec';
 
 describe('ItemDetailTrackEventsService', () => {
@@ -129,6 +130,16 @@ describe('ItemDetailTrackEventsService', () => {
       service.trackShareItemEvent(channel, item, user);
 
       expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_TWITTER_SHARE_ITEM_EVENT);
+    });
+
+    it('should send track share item event with email channel if user click email icon', () => {
+      const channel = SOCIAL_SHARE_CHANNELS.EMAIL;
+      spyOn(service, 'trackShareItemEvent').and.callThrough();
+      spyOn(analyticsService, 'trackEvent');
+
+      service.trackShareItemEvent(channel, item, user);
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_EMAIL_SHARE_ITEM_EVENT);
     });
   });
 
