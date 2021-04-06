@@ -3,6 +3,6 @@
     <p class="ErrorBox__title">{{title}}</p>
     <p class="ErrorBox__subtitle">{{subtitle}}</p>
     <tsl-button [className]="getButtonClassName()" (click)="exitClick.emit()">
-        {{exit.label}}
+        {{exit?.label}}
     </tsl-button>
 </div>
