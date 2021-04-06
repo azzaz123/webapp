@@ -10,7 +10,7 @@ import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { IsCurrentUserStub } from '@fixtures/public/core';
 import { AdComponentStub } from '@fixtures/shared';
 import { IMAGE, MOCK_FULL_USER_FEATURED, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
-import { APP_PATHS } from 'app/app-routing-constants';
+import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { of, throwError } from 'rxjs';
 import { PUBLIC_PROFILE_AD } from '../core/ads/public-profile-ads.config';
 import { PublicProfileService } from '../core/services/public-profile.service';
@@ -144,7 +144,7 @@ describe('PublicProfileComponent', () => {
           const containerPage = fixture.debugElement.query(By.css(containerSelector));
 
           expect(containerPage).toBeFalsy();
-          expect(router.navigate).toHaveBeenCalledWith([`/${APP_PATHS.NOT_FOUND}`]);
+          expect(router.navigate).toHaveBeenCalledWith([`/${PUBLIC_PATHS.NOT_FOUND}`]);
         });
       });
     });

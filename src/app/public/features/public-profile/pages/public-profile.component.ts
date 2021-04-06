@@ -7,8 +7,7 @@ import { SlugsUtilService } from '@core/services/slugs-util/slugs-util.service';
 import { User } from '@core/user/user';
 import { Image } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
-import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
-import { APP_PATHS } from 'app/app-routing-constants';
+import { PUBLIC_PATHS, PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { forkJoin, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { PUBLIC_PROFILE_AD } from '../core/ads/public-profile-ads.config';
@@ -77,7 +76,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
             this.userStats = userStats;
           },
           () => {
-            this.router.navigate([`/${APP_PATHS.NOT_FOUND}`]);
+            this.router.navigate([`/${PUBLIC_PATHS.NOT_FOUND}`]);
           }
         )
     );
