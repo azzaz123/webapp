@@ -5,6 +5,7 @@ import {
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   ClickChatButton,
+  ClickItemCard,
   FavoriteItem,
   SCREEN_IDS,
   UnfavoriteItem,
@@ -51,6 +52,28 @@ export class ItemDetailTrackEventsService {
         screenId: SCREEN_IDS.ItemDetail,
         isPro: user.featured,
         isBumped: !!item.bumpFlags,
+      },
+    };
+    this.analyticsService.trackEvent(event);
+  }
+
+  public trackClickItemCardEvent(recommendedItem: Item, sourceItem: Item, recommenedItemOwner: User, index: number): void {
+    const event: AnalyticsEvent<ClickItemCard> = {
+      name: ANALYTICS_EVENT_NAMES.ClickItemCard,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
+      attributes: {
+        itemId: recommendedItem.id,
+        categoryId: recommendedItem.categoryId,
+        position: index + 1,
+        screenId: SCREEN_IDS.ItemDetailRecommendationSlider,
+        isPro: recommenedItemOwner.featured, //need to get it
+        salePrice: recommendedItem.salePrice,
+        title: recommendedItem.title,
+        itemSourceRecommendationId: sourceItem.id,
+        itemDistance: recommenedItemOwner.itemDistance, //need to get it
+        shippingAllowed: recommendedItem.saleConditions.shipping_allowed,
+        sellerUserId: recommendedItem.owner,
+        isBumped: !!recommendedItem.bumpFlags,
       },
     };
     this.analyticsService.trackEvent(event);
