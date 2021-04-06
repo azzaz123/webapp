@@ -100,11 +100,9 @@
               <span *ngIf="customVersion" i18n>Select a predefined version</span>
             </a>
           </div>
-          <tsl-dropdown *ngIf="!customMake && !customVersion" i18n-placeholder
-            placeholder="Is is a particular model or series?" class="form-control" formControlName="version"
+          <tsl-dropdown *ngIf="!customMake && !customVersion" i18n-placeholder            placeholder="Is is a particular model or series?" class="form-control" formControlName="version"
             for="version" [options]="versions" [disableControl]="versionFieldDisabled"></tsl-dropdown>
-          <input *ngIf="customMake || customVersion" type="text" i18n-placeholder
-            placeholder="Is is a particular model or series?" class="form-control" formControlName="version"
+          <input *ngIf="customMake || customVersion" type="text" i18n-placeholder            placeholder="Is is a particular model or series?" class="form-control" formControlName="version"
             id="version" [disableControl]="versionFieldDisabled"/>
         </div>
       </div>

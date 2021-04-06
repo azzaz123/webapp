@@ -34,20 +34,17 @@
       <a (click)="clickWillis($event)"
          *ngIf="showWillisLink"
          href="https://checkout.wallapopgarantia.com/?name={{ item.title }}&amount={{ item.salePrice }}&imageUrl={{ item.mainImage?.urls_by_size.large.replace('http://', 'https://') }}&tag={{ item.id }}"
-         target="_blank" i18n>
-        Add Insurance
+         target="_blank" i18n>        Add Insurance
       </a>
       <a (click)="clickMapfreOrVerti($event)"
          *ngIf="showMapfreOrVertiLink"
          [href]="getMapfreOrVertiLink()"
-         target="_blank" i18n>
-        Add insurance to this product
+         target="_blank" i18n>        Add insurance to this product
       </a>
       <a (click)="clickSolcredito($event)"
          *ngIf="showSolcreditoLink"
          href="https://www.solcredito.es/?xc=0ebf9b3e8fb3ddb330c0bb313690aceefd0ed01e&category={{getCategoryKeyById(item.categoryId)}}"
-         target="_blank" i18n>
-        Finance your purchase
+         target="_blank" i18n>        Finance your purchase
       </a>
     </div>
   </div>

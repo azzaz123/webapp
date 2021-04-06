@@ -17,8 +17,7 @@
             <div *ngIf="showSavedCardOption()" class="card-feedback__action"(click)="clickUseSavedCard()" i18n="@@UseSavedCard">Use saved card</div>
         </div>
 
-        <div [hidden]="type !== 'subscription'" class="StripeCardElement__legal-info" i18n>
-            By subscribing, you are accepting the <a href="{{termsAndConditionsURL}}" target="_blank">terms & conditions</a>
+        <div [hidden]="type !== 'subscription'" class="StripeCardElement__legal-info" i18n>            By subscribing, you are accepting the <a href="{{termsAndConditionsURL}}" target="_blank">terms & conditions</a>
             and the <a href="{{policyPrivacyURL}}" target="_blank">privacy policy</a> of Wallapop S.L. and Stripe Ltd
         </div>
 

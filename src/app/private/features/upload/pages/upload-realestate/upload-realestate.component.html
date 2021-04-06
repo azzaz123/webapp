@@ -92,8 +92,7 @@
         </div>
       </div>
       <ng-template #coachmarkPrice>
-        <div i18n>
-          Add a fair price and the area in m2. Tell us also the state of the
+        <div i18n>          Add a fair price and the area in m2. Tell us also the state of the
           property.
         </div>
       </ng-template>
@@ -158,8 +157,7 @@
         </div>
       </div>
       <ng-template #coachmarkTitle>
-        <div i18n>
-          Pay attention to spelling mistakes, so our users can find your
+        <div i18n>          Pay attention to spelling mistakes, so our users can find your
           property easily.
         </div>
       </ng-template>
@@ -214,15 +212,13 @@
     <h2 [ngClass]="{
         'ng-invalid':
           !uploadForm.controls.images.valid && uploadForm.controls.images.dirty
-      }" i18n>
-      Photos
+      }" i18n>      Photos
     </h2>
     <tsl-drop-area 
       (onError)="onError($event)" formControlName="images" [isUpdatingItem]="!!item" (onOrderImages)="onOrderImages()" (onDeleteImage)="onDeleteImage($event)" (onAddImage)="onAddImage($event)"
       ></tsl-drop-area>
     <ng-template #coachmarkPictures>
-      <div i18n>
-        You can drag and drop your photos here. Also drag and drop to change the
+      <div i18n>        You can drag and drop your photos here. Also drag and drop to change the
         order. Max 4MB.
       </div>
     </ng-template>
@@ -238,8 +234,7 @@
     </div>
     <div class="col-md-3 d-none d-md-block">
       <button type="button" (click)="preview()" class="btn btn-link" [disabled]="!uploadForm.valid"
-        i18n>
-        How does it look?
+        i18n>        How does it look?
       </button>
     </div>
   </div>

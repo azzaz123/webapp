@@ -40,8 +40,7 @@
         </span>
         <span class="cancel-bump {{item.purchases.bump_type || item.purchases.scheduled_bump_type}}"
               (click)="cancelAutorenew(item, cancelAutorenewModal)"
-              *ngIf="item.purchases.scheduled_end_date && !item.bumpLast24h" i18n>
-          Cancel</span>
+              *ngIf="item.purchases.scheduled_end_date && !item.bumpLast24h" i18n>          Cancel</span>
       </div>
     </div>
     <div class="visibility">

@@ -6,8 +6,7 @@
   <form [formGroup]="sendPhoneForm" (ngSubmit)="handleSubmit()">
     <div class="form-group">
       <label for="phone" i18n>Let's talk about it:</label>
-      <input type="text" class="form-control" id="phone" name="phone" tslRestrictInputNumber i18n-placeholder
-        placeholder="Enter your phone..." #phoneInput formControlName="phone" required (keyup)="formatNumber($event)"/>
+      <input type="text" class="form-control" id="phone" name="phone" tslRestrictInputNumber i18n-placeholder        placeholder="Enter your phone..." #phoneInput formControlName="phone" required (keyup)="formatNumber($event)"/>
       <button type="submit" id="send" [ngClass]="{selected: sendPhoneForm.controls.phone.valid}">
         <tsl-svg-icon src="/assets/icons/send.svg"></tsl-svg-icon>
       </button>

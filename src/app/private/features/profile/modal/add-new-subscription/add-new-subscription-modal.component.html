@@ -187,8 +187,7 @@
                 (onStripeCardCreate)="addSubscription($event); trackClickPay(true);" (stripeCard)="setCardInfo($event)">
               </tsl-stripe-card-element>
 
-              <div [hidden]="!savedCard" class="AddNewSubscription__legal-info" i18n>
-                By subscribing, you are accepting the <a href="{{termsAndConditionsURL}}" target="_blank">terms & conditions</a>
+              <div [hidden]="!savedCard" class="AddNewSubscription__legal-info" i18n>                By subscribing, you are accepting the <a href="{{termsAndConditionsURL}}" target="_blank">terms & conditions</a>
                 and the <a href="{{privacyPolicyURL}}" target="_blank">privacy policy</a> of Wallapop S.L. and Stripe Ltd
             </div>
               <tsl-button [hidden]="!savedCard" [disabled]="!selectedCard || loading" [loading]="loading"
