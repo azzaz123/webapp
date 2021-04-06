@@ -37,7 +37,7 @@ import { KeywordSuggestion } from '@shared/keyword-suggester/keyword-suggestion.
 import { OUTPUT_TYPE, PendingFiles, UploadFile, UploadOutput, UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 import { cloneDeep, isEqual, omit } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { fromEvent, Observable, Subject } from 'rxjs';
+import { fromEvent, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, map, tap } from 'rxjs/operators';
 import { DELIVERY_INFO } from '../../core/config/upload.constants';
 import { Brand, BrandModel, Model, ObjectType, SimpleObjectType } from '../../core/models/brand-model.interface';
@@ -261,6 +261,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     if (!this.objectTypes.length) {
       return null;
     }
+    console.log('findChildrenObjectTypeById', id);
     for (const item of this.objectTypes) {
       if (item.has_children) {
         const selectedChildren = item.children.find((children) => children.id === id);
@@ -295,31 +296,28 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         if (!!typeOfbOjectId) {
           this.getSecondObjectTypes(typeOfbOjectId);
           if (+this.uploadForm.get('category_id').value === CATEGORY_IDS.FASHION_ACCESSORIES) {
-            this.getSizes();
+            if (!this.objectTypesOptions2.length) {
+              this.getSizes();
+            }
           }
         } else {
           this.clearSecondObjectTypes();
         }
       });
-    this.getUploadExtraInfoControl('gender').valueChanges.subscribe((gender: string) => {
-      if (!!gender && +this.uploadForm.get('category_id').value === CATEGORY_IDS.FASHION_ACCESSORIES) {
-        this.getSizes();
-      }
-    });
-  }
 
-  private detectSecondaryObjectTypeChanges(): void {
-    this.detectSecondaryObjectTypeChangesSubscription = this.getUploadExtraInfoControl('object_type_2')
+    this.getUploadExtraInfoControl('object_type_2')
       .get('id')
       .valueChanges.subscribe((typeOfbSecondOjectId: number) => {
         if (!!typeOfbSecondOjectId) {
           this.getSizes();
         }
       });
-  }
 
-  private unsubscribeDetectSecondaryObjectTypeChanges(): void {
-    this.detectSecondaryObjectTypeChangesSubscription?.unsubscribe();
+    this.getUploadExtraInfoControl('gender').valueChanges.subscribe((gender: string) => {
+      if (!!gender && +this.uploadForm.get('category_id').value === CATEGORY_IDS.FASHION_ACCESSORIES) {
+        this.getSizes();
+      }
+    });
   }
 
   private handleUploadFormExtraFields(): void {
