@@ -308,6 +308,20 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     });
   }
 
+  private detectSecondaryObjectTypeChanges(): void {
+    this.detectSecondaryObjectTypeChangesSubscription = this.getUploadExtraInfoControl('object_type_2')
+      .get('id')
+      .valueChanges.subscribe((typeOfbSecondOjectId: number) => {
+        if (!!typeOfbSecondOjectId) {
+          this.getSizes();
+        }
+      });
+  }
+
+  private unsubscribeDetectSecondaryObjectTypeChanges(): void {
+    this.detectSecondaryObjectTypeChangesSubscription?.unsubscribe();
+  }
+
   private handleUploadFormExtraFields(): void {
     const formCategoryId = this.uploadForm.get('category_id').value;
     const rawCategory = this.rawCategories.find((category) => category.category_id === +formCategoryId);
