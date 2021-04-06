@@ -96,7 +96,9 @@
                     </div>
                     <tsl-recommended-items
                         *ngIf="(recommendedItems$ |async)?.recommended_items?.length"
-                        class="mt-3" [recommendedItems]="(recommendedItems$ | async)">
+                        class="mt-3" [recommendedItems]="(recommendedItems$ | async)"
+                        (clickedItemAndIndexEvent)="clickedItemAndIndex($event)"
+                        >
                     </tsl-recommended-items>
                     <div *ngIf="device === deviceType.MOBILE" class="pt-4">
                     <tsl-sky [adSlot]="adsSlotsItemDetail.item2l"></tsl-sky>

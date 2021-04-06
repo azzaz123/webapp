@@ -85,6 +85,10 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     this.itemDetailStoreService.markItemAsSold();
   }
 
+  public clickedItemAndIndex(event) {
+    console.log('passed event', event);
+  }
+
   private trackFavoriteOrUnfavoriteEvent(): void {
     const event: AnalyticsEvent<FavoriteItem | UnfavoriteItem> = {
       name: this.itemDetail.item.flags.favorite ? ANALYTICS_EVENT_NAMES.FavoriteItem : ANALYTICS_EVENT_NAMES.UnfavoriteItem,
@@ -117,9 +121,9 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   }
 
   private initializeItemRecommendations(itemId: string, categoryId: number): void {
-    if (this.isItemRecommendations(categoryId)) {
-      this.recommendedItems$ = this.itemDetailService.getRecommendedItems(itemId);
-    }
+    //if (this.isItemRecommendations(categoryId)) {
+    this.recommendedItems$ = this.itemDetailService.getRecommendedItems(itemId);
+    //}
   }
 
   private setAdSlot(item: Item): void {

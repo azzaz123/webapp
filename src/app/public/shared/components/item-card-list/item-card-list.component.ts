@@ -47,6 +47,7 @@ export class ItemCardListComponent {
   public openItemDetailPage(item: Item, index: number): void {
     /*  this.clickedItem.emit(item);
     this.clickedItemIndex.emit(index); */
+    console.log('test', item, index);
     this.clickedItemAndIndex.emit({ item, index });
     this.router.navigate([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.ITEM_DETAIL}/${item.id}`]);
   }
