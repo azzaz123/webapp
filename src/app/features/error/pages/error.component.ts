@@ -14,7 +14,7 @@ export class ErrorComponent {
   public subtitle = $localize`:@@NotFoundMessage:Our office unicorn might have impaled it. But, there's lots to be discovered in the land of Wallapop.`;
   public image = '/assets/images/not-found.png';
   public errorBoxButton: ErrorBoxExit = {
-    type: ERROR_BOX_EXIT_TYPE.LINK,
+    type: ERROR_BOX_EXIT_TYPE.BUTTON,
     label: 'Ver productos',
   };
 
