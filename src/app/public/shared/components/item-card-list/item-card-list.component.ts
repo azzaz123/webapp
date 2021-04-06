@@ -23,8 +23,6 @@ export class ItemCardListComponent {
     xs: 2,
   };
   @Input() slotsConfig: SlotsConfig;
-  /*  @Output() clickedItem: EventEmitter<Item> = new EventEmitter<Item>();
-  @Output() clickedItemIndex: EventEmitter<Number> = new EventEmitter<Number>(); */
   @Output() clickedItemAndIndex: EventEmitter<{ item: Item; index: number }> = new EventEmitter<{ item: Item; index: number }>();
 
   constructor(
@@ -40,7 +38,9 @@ export class ItemCardListComponent {
     this.checkSessionService.hasSession() ? this.itemCardService.toggleFavourite(item) : this.checkSessionService.checkSessionAction();
   }
 
-  public openItemDetailPage(item: Item): void {
+  public openItemDetailPage(item: Item, index: number): void {
+    this.clickedItemAndIndex.emit({ item, index });
+    console.log(this.items);
     const link = environment.siteUrl.replace('es', this.subdomain) + 'item/' + item.webSlug;
     window.open(link);
 
