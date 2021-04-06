@@ -6,8 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./error.component.scss'],
 })
 export class ErrorComponent {
-  public title = 'To be defined';
-  public subtitle = 'This is content-box component';
 
-  constructor() {}
+  constructor(private router: Router) {}
+
+  public navigateToHomePage(): void {
+    this.router.navigate([APP_PATHS.PUBLIC]);
+  }
 }
