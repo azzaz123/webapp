@@ -127,6 +127,9 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
           if (this.typeCheckService.isRealEstate(item)) {
             this.itemDetailTrackEventsService.trackViewOthersItemREDetailEvent(item, user);
           }
+          if (this.typeCheckService.isCar(item)) {
+            this.itemDetailTrackEventsService.trackViewOthersItemCarDetailEvent(item, user);
+          }
           if (!this.typeCheckService.isRealEstate(item) && !this.typeCheckService.isCar(item)) {
             this.itemDetailTrackEventsService.trackViewOthersCGDetailEvent(item, user);
           }

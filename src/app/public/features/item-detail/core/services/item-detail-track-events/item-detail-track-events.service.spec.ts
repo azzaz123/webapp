@@ -1,11 +1,14 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { UserService } from '@core/user/user.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
 import { MOCK_CAR_ITEM_DETAIL } from '@fixtures/item-detail.fixtures.spec';
 import { MOCK_ITEM, MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
 import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
-import { MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { MockedUserService, MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { of } from 'rxjs';
 
 import { ItemDetailTrackEventsService } from './item-detail-track-events.service';
 import {
@@ -15,19 +18,26 @@ import {
   MOCK_VIEW_OWN_ITEM_DETAIL_EVENT,
   MOCK_VIEW_OTHERS_CG_DETAIL_EVENT,
   MOCK_VIEW_OTHERS_ITEM_RE_DETAIL_EVENT,
+  MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT,
 } from './track-events.fixtures.spec';
 
 describe('ItemDetailTrackEventsService', () => {
   let service: ItemDetailTrackEventsService;
   let analyticsService: AnalyticsService;
+  let userService: UserService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [ItemDetailTrackEventsService, { provide: AnalyticsService, useClass: MockAnalyticsService }],
+      providers: [
+        ItemDetailTrackEventsService,
+        { provide: AnalyticsService, useClass: MockAnalyticsService },
+        { provide: UserService, useClass: MockedUserService },
+      ],
     });
     service = TestBed.inject(ItemDetailTrackEventsService);
     analyticsService = TestBed.inject(AnalyticsService);
+    userService = TestBed.inject(UserService);
   });
 
   it('should be created', () => {
@@ -107,6 +117,31 @@ describe('ItemDetailTrackEventsService', () => {
       service.trackViewOthersItemREDetailEvent(item, user);
 
       expect(analyticsService.trackPageView).toHaveBeenCalledWith(MOCK_VIEW_OTHERS_ITEM_RE_DETAIL_EVENT);
+    });
+  });
+
+  describe('trackViewOthersItemCarDetailEvent', () => {
+    const item = MOCK_CAR;
+    const user = MOCK_USER;
+    it('should send view others Car item detail event with true carDealer if user is professional', () => {
+      spyOn(service, 'trackViewOthersItemCarDetailEvent').and.callThrough();
+      spyOn(analyticsService, 'trackPageView');
+
+      service.trackViewOthersItemCarDetailEvent(item, user);
+
+      expect(analyticsService.trackPageView).toHaveBeenCalledWith(MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT);
+    });
+
+    it('should send view others Car item detail event with false carDealer if user is not professional', () => {
+      const mockVIewOthersItemCarDetailNonCarDealer = { ...MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT };
+      mockVIewOthersItemCarDetailNonCarDealer.attributes.isCarDealer = false;
+      spyOn(userService, 'isProfessional').and.returnValue(of(false));
+      spyOn(service, 'trackViewOthersItemCarDetailEvent').and.callThrough();
+      spyOn(analyticsService, 'trackPageView');
+
+      service.trackViewOthersItemCarDetailEvent(item, user);
+
+      expect(analyticsService.trackPageView).toHaveBeenCalledWith(mockVIewOthersItemCarDetailNonCarDealer);
     });
   });
 });
