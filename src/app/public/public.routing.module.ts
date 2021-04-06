@@ -31,7 +31,7 @@ const routes: Route[] = [
       },
       {
         path: PUBLIC_PATHS.NOT_FOUND,
-        loadChildren: () => import('@features/error/error.module').then((m) => m.ErrorModule),
+        loadChildren: () => import('./features/error/error.module').then((m) => m.ErrorModule),
       },
       {
         path: '**',
