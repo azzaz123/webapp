@@ -109,6 +109,19 @@ export const MOCK_TWITTER_SHARE_ITEM_EVENT: AnalyticsEvent<ShareItem> = {
   },
 };
 
+export const MOCK_EMAIL_SHARE_ITEM_EVENT: AnalyticsEvent<ShareItem> = {
+  name: ANALYTICS_EVENT_NAMES.ShareItem,
+  eventType: ANALYTIC_EVENT_TYPES.Social,
+  attributes: {
+    itemId: MOCK_CAR.id,
+    categoryId: MOCK_CAR.categoryId,
+    channel: SOCIAL_SHARE_CHANNELS.EMAIL,
+    screenId: SCREEN_IDS.ItemDetail,
+    isPro: MOCK_USER.featured,
+    salePrice: MOCK_CAR.salePrice,
+  },
+};
+
 export const MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT: AnalyticsPageView<ViewOthersItemCarDetail> = {
   name: ANALYTICS_EVENT_NAMES.ViewOthersItemCarDetail,
   attributes: {
