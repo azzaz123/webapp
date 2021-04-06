@@ -4,7 +4,7 @@
     <ng-container [ngPlural]="itemService.selectedItems.length">
       <ng-template ngPluralCase="=1"><ng-container i18n>1 item selected</ng-container></ng-template>
       <ng-template ngPluralCase="other"><ng-container i18n>
-        {{itemService.selectedItems.length // i18n(ph="TOTAL_SELECTED")}} items selected</ng-container>
+        {{itemService.selectedItems.length}} items selected</ng-container>
       </ng-template>
     </ng-container>
   </a>

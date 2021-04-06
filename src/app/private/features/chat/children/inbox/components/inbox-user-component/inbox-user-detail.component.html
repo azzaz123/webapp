@@ -12,7 +12,7 @@
     <div class="user-location-distance text-truncate">
       <tsl-svg-icon *ngIf="isDeviceSmall()" src="/assets/icons/location.svg" class="d-lg-none"></tsl-svg-icon>
       <div [hidden]="!user.distanceInKm" class="text-truncate" i18n="The distance between the user and the item">
-        {{user.distanceInKm | number:'1.0-1' // i18n(ph="DISTANCE")}}km from you
+        {{user.distanceInKm | number:'1.0-1'}}km from you
       </div>
       <span [hidden]="user.distanceInKm" i18n>No location</span>
     </div>
