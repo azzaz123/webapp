@@ -137,4 +137,5 @@ export class MockItemdDetailTrackEventService {
   trackViewOwnItemDetail() {}
   trackViewOthersCGDetailEvent() {}
   trackViewOthersItemCarDetailEvent() {}
+  trackShareItemEvent() {}
 }
