@@ -31,7 +31,7 @@
   <translation id="4859202148272511129">Desbloquear</translation>
   <translation id="3325766019344626759">No hay mensajes</translation>
   <translation id="newMessages">Nuevos mensajes</translation>
-  <translation id="4095254644079775415" desc="The distance between the user and the item">A <ph name="DISTANCE"><ex>DISTANCE</ex></ph>km de ti</translation>
+  <translation id="5149420306267429568" desc="The distance between the user and the item">A <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>km de ti</translation>
   <translation id="9119757647796405986">Sin localización</translation>
   <translation id="1166265010439249641">Responde en menos de 1 hora</translation>
   <translation id="1404539941798522798">Responde en menos de 3 horas</translation>
@@ -79,7 +79,7 @@
   <translation id="4699023020194351074">Destacar por <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> Euros</translation>
   <translation id="4058575476871566236">Publicado</translation>
   <translation id="5262427597279775777">1 producto seleccionado</translation>
-  <translation id="8061241481597934094"><ph name="TOTAL_SELECTED"><ex>TOTAL_SELECTED</ex></ph> productos seleccionados</translation>
+  <translation id="8544992668262926092"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> productos seleccionados</translation>
   <translation id="4601810369894625886">Información de tu inmueble</translation>
   <translation id="8781767917622107949">Información básica</translation>
   <translation id="1511766279515968094">Marca</translation>
@@ -303,7 +303,7 @@
   <translation id="7410432243549869948">Duración</translation>
   <translation id="1101605949675282361">Todavía no tienes llamadas</translation>
   <translation id="7239750919884229270">Actualizado</translation>
-  <translation id="708449889891136724"><ph name="TOTAL_SELECTED"><ex>TOTAL_SELECTED</ex></ph> productos seleccionados</translation>
+  <translation id="4210561021982898487"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> productos seleccionados</translation>
   <translation id="5322473252816589112">Desactivar</translation>
   <translation id="4759723562137600498">Activar</translation>
   <translation id="13886945388572438">Destácalo</translation>
@@ -523,7 +523,7 @@
   <translation id="3072739349487522347"><ph name="INTERPOLATION"><ex>{{subscription?.tiers[i]?.limit}}</ex></ph></translation>
   <translation id="3744004942164134121"><ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
   <translation id="6998541290982927512">Confirmar cambio de suscripción</translation>
-  <translation id="6969584346860248976" desc="La distancia entre el usuario y el producto a"><ph name="DISTANCE"><ex>{{user.distanceInKm | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>km de ti</translation>
+  <translation id="5491679500050936702" desc="La distancia entre el usuario y el producto a"><ph name="INTERPOLATION"><ex>{{user.distanceInKm | number:&apos;1.0-1&apos;}}</ex></ph>km de ti</translation>
   <translation id="3553216189604488439">Modificado</translation>
   <translation id="457741553886180613">Suscrito desde <ph name="INTERPOLATION"><ex>{{subscription.subscribed_from | date:&apos;dd/MM/yy&apos; }}</ex></ph></translation>
   <translation id="5507433950760207486">Sin límite de tiempo</translation>

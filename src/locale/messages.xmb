@@ -114,17 +114,17 @@
   <msg id="7697915584663780042"><source>src/app/private/features/catalog-pro/components/plan-data/plan-data.component.html:21</source>visibility</msg>
   <msg id="5439433189125089418"><source>src/app/private/features/catalog-pro/components/plan-data/plan-data.component.html:25</source>City Plan</msg>
   <msg id="7392255340123577556"><source>src/app/private/features/catalog-pro/components/plan-data/plan-data.component.html:28</source>You don&apos;t have a City Plan.</msg>
-  <msg id="1466012768716286509"><source>src/app/private/features/catalog-pro/components/plan-data/plan-data.component.html:28</source>Sign Up</msg>
-  <msg id="3955868613858648955"><source>src/app/private/features/catalog-pro/components/plan-data/plan-data.component.html:37</source>Available</msg>
-  <msg id="4862629622121675984"><source>src/app/private/features/catalog-pro/components/plan-data/plan-data.component.html:39</source><ph name="INTERPOLATION"/> plan</msg>
-  <msg id="2882470259260755892"><source>src/app/private/features/catalog-pro/components/plan-data/plan-data.component.html:40</source> <ph name="INTERPOLATION"/> extra</msg>
-  <msg id="9054202731560341408"><source>src/app/private/features/catalog-pro/components/plan-data/plan-data.component.html:46</source>In Use</msg>
-  <msg id="8871965642938314035"><source>src/app/private/features/catalog-pro/components/plan-data/plan-data.component.html:48</source>(<ph name="INTERPOLATION"/> planned)</msg>
-  <msg id="5092371717305178267"><source>src/app/private/features/catalog-pro/components/plan-data/plan-data.component.html:55</source>Country Plan</msg>
-  <msg id="4772127996106888369"><source>src/app/private/features/catalog-pro/components/plan-data/plan-data.component.html:58</source>You don&apos;t have a Country Plan</msg>
-  <msg id="3780659623990720220"><source>src/app/private/features/catalog-pro/components/plan-data/plan-data.component.html:69</source><ph name="INTERPOLATION"/> plan</msg>
-  <msg id="6463509780873643723"><source>src/app/private/features/catalog-pro/components/plan-data/plan-data.component.html:70</source> <ph name="INTERPOLATION"/> extra</msg>
-  <msg id="53603691019051493"><source>src/app/private/features/catalog-pro/components/plan-data/plan-data.component.html:78</source>(<ph name="INTERPOLATION"/> planned)</msg>
+  <msg id="1466012768716286509"><source>src/app/private/features/catalog-pro/components/plan-data/plan-data.component.html:29</source>Sign Up</msg>
+  <msg id="3955868613858648955"><source>src/app/private/features/catalog-pro/components/plan-data/plan-data.component.html:38</source>Available</msg>
+  <msg id="4862629622121675984"><source>src/app/private/features/catalog-pro/components/plan-data/plan-data.component.html:40</source><ph name="INTERPOLATION"/> plan</msg>
+  <msg id="2882470259260755892"><source>src/app/private/features/catalog-pro/components/plan-data/plan-data.component.html:41</source> <ph name="INTERPOLATION"/> extra</msg>
+  <msg id="9054202731560341408"><source>src/app/private/features/catalog-pro/components/plan-data/plan-data.component.html:47</source>In Use</msg>
+  <msg id="8871965642938314035"><source>src/app/private/features/catalog-pro/components/plan-data/plan-data.component.html:49</source>(<ph name="INTERPOLATION"/> planned)</msg>
+  <msg id="5092371717305178267"><source>src/app/private/features/catalog-pro/components/plan-data/plan-data.component.html:56</source>Country Plan</msg>
+  <msg id="4772127996106888369"><source>src/app/private/features/catalog-pro/components/plan-data/plan-data.component.html:59</source>You don&apos;t have a Country Plan</msg>
+  <msg id="3780659623990720220"><source>src/app/private/features/catalog-pro/components/plan-data/plan-data.component.html:71</source><ph name="INTERPOLATION"/> plan</msg>
+  <msg id="6463509780873643723"><source>src/app/private/features/catalog-pro/components/plan-data/plan-data.component.html:72</source> <ph name="INTERPOLATION"/> extra</msg>
+  <msg id="53603691019051493"><source>src/app/private/features/catalog-pro/components/plan-data/plan-data.component.html:80</source>(<ph name="INTERPOLATION"/> planned)</msg>
   <msg id="RangeDatepickerHaveSelected"><source>src/app/private/features/catalog-pro/components/range-datepicker/range-datepicker.component.html:12</source>You have selected </msg>
   <msg id="RangeDatepickerCitybump"><source>src/app/private/features/catalog-pro/components/range-datepicker/range-datepicker.component.html:15</source>city bump</msg>
   <msg id="RangeDatepickerCountrybump"><source>src/app/private/features/catalog-pro/components/range-datepicker/range-datepicker.component.html:16</source>country bump</msg>
@@ -188,7 +188,7 @@
   <msg id="596181013964941327"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:105</source>Reactivate</msg>
   <msg id="8423596927659875793"><source>src/app/private/features/catalog/components/checkout-item/checkout-item.component.html:25</source>Not Available</msg>
   <msg id="5262427597279775777"><source>src/app/private/features/catalog/components/selected-items/selected-items.component.html:11</source>1 item selected</msg>
-  <msg id="8061241481597934094"><source>src/app/private/features/catalog/components/selected-items/selected-items.component.html:14,16</source><ph name="TOTAL_SELECTED"/> items selected </msg>
+  <msg id="8544992668262926092"><source>src/app/private/features/catalog/components/selected-items/selected-items.component.html:14,16</source><ph name="INTERPOLATION"/> items selected </msg>
   <msg id="7022070615528435141"><source>src/app/private/features/catalog/components/selected-items/selected-items.component.html:41</source>Delete</msg>
   <msg id="5322473252816589112"><source>src/app/private/features/catalog/components/selected-items/selected-items.component.html:49</source>Deactivate</msg>
   <msg id="ManageCatalogSubscription"><source>src/app/private/features/catalog/components/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component.html:14</source>Manage <ph name="INTERPOLATION"/></msg>
@@ -244,7 +244,7 @@
   <msg id="7962273932004201523"><source>src/app/private/features/chat/children/inbox/components/inbox-item-component/inbox-item-detail.component.html:22,24</source>Sold </msg>
   <msg id="2020278898288143668"><source>src/app/private/features/chat/children/inbox/components/inbox-item-for-sell/inbox-item-for-sell.component.html:6</source>Selling</msg>
   <msg id="3893097575013115653"><source>src/app/private/features/chat/children/inbox/components/inbox-item-for-sell/inbox-item-for-sell.component.html:7</source>+<ph name="INTERPOLATION"/> More</msg>
-  <msg id="6969584346860248976" desc="The distance between the user and the item"><source>src/app/private/features/chat/children/inbox/components/inbox-user-component/inbox-user-detail.component.html:13,16</source> <ph name="DISTANCE"/>km from you </msg>
+  <msg id="5491679500050936702" desc="The distance between the user and the item"><source>src/app/private/features/chat/children/inbox/components/inbox-user-component/inbox-user-detail.component.html:13,16</source> <ph name="INTERPOLATION"/>km from you </msg>
   <msg id="9119757647796405986"><source>src/app/private/features/chat/children/inbox/components/inbox-user-component/inbox-user-detail.component.html:16</source>No location</msg>
   <msg id="yourMessages"><source>src/app/private/features/chat/children/inbox/inbox.component.html:2</source>Your Messages</msg>
   <msg id="inboxBox"><source>src/app/private/features/chat/children/inbox/inbox.component.html:11</source>Inbox</msg>
@@ -283,7 +283,7 @@
   <msg id="itemIsNotAvailableWarning"><source>src/app/private/features/chat/components/current-conversation/current-conversation.component.html:51</source>This product has expired or has been removed</msg>
   <msg id="itemIsUnpublishedWarning"><source>src/app/private/features/chat/components/current-conversation/current-conversation.component.html:58</source>The product violates Wallapop coexistence regulations</msg>
   <msg id="securityWarning"><source>src/app/private/features/chat/components/current-conversation/current-conversation.component.html:79</source>For security reasons, never share private data</msg>
-  <msg id="4095254644079775415" desc="The distance between the user and the item"><source>src/app/private/features/chat/components/user-detail/user-detail.component.html:5</source><ph name="DISTANCE"/>km from you</msg>
+  <msg id="5149420306267429568" desc="The distance between the user and the item"><source>src/app/private/features/chat/components/user-detail/user-detail.component.html:5</source><ph name="INTERPOLATION"/>km from you</msg>
   <msg id="4467323362722952678"><source>src/app/private/features/chat/components/user-response-rate/user-response-rate.component.html:1</source>Unknown</msg>
   <msg id="1166265010439249641"><source>src/app/private/features/chat/components/user-response-rate/user-response-rate.component.html:4</source>Typically responds within an hour</msg>
   <msg id="1404539941798522798"><source>src/app/private/features/chat/components/user-response-rate/user-response-rate.component.html:6</source>Typically responds within 3 hours</msg>
@@ -826,7 +826,7 @@
   <msg id="291347435854981703"><source>src/app/shared/catalog/catalog-card/catalog-card.component.html:83</source>Do you really want to cancel the autorenew for this item?</msg>
   <msg id="3542042671420335679"><source>src/app/shared/catalog/catalog-card/catalog-card.component.html:86</source>No</msg>
   <msg id="2807800733729323332"><source>src/app/shared/catalog/catalog-card/catalog-card.component.html:87</source>Yes</msg>
-  <msg id="708449889891136724"><source>src/app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:5,7</source> <ph name="TOTAL_SELECTED"/> items selected</msg>
+  <msg id="4210561021982898487"><source>src/app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:5,7</source> <ph name="INTERPOLATION"/> items selected</msg>
   <msg id="8716359834484489616"><source>src/app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:11</source>Select All</msg>
   <msg id="13886945388572438" desc="selected-items-button" meaning="Continue to cart"><source>src/app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:24</source>Feature</msg>
   <msg id="321759774936322640"><source>src/app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:29</source>Delete items</msg>
