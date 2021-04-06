@@ -3,37 +3,37 @@
 .SuggestProModal {
   padding: $spacing-xxl $spacing-xxxl $spacing-ml $spacing-xxxl;
   color: $blue-grey-1;
-}
 
-.SuggestProModal__close {
-  @include square($spacing-ms);
-  cursor: pointer;
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  tsl-svg-icon {
+  &__close {
     @include square($spacing-ms);
-    line-height: initial;
-    ::ng-deep svg path {
-      fill: $blue-grey-3;
+    cursor: pointer;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    tsl-svg-icon {
+      @include square($spacing-ms);
+      line-height: initial;
+      ::ng-deep svg path {
+        fill: $blue-grey-3;
+      }
     }
   }
-}
 
-.SuggestProModal__title {
-  font-size: $font-size-l;
-  margin-bottom: $spacing-ms;
-  font-weight: bold;
-}
+  &__title {
+    font-size: $font-size-l;
+    margin-bottom: $spacing-ms;
+    font-weight: bold;
+  }
 
-.SuggestProModal__actions {
-  .Dismiss {
-    margin-top: $spacing-m;
-    color: $blue-grey-3;
-    cursor: pointer;
+  &__actions {
+    .Dismiss {
+      margin-top: $spacing-m;
+      color: $blue-grey-3;
+      cursor: pointer;
 
-    &:hover {
-      text-decoration: underline;
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 }
