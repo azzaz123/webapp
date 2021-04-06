@@ -561,7 +561,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   public getSizes(): void {
-    const objectTypeId = this.getUploadExtraInfoControl('object_type').get('id').value;
+    const objectTypeId =
+      this.getUploadExtraInfoControl('object_type_2').get('id').value || this.getUploadExtraInfoControl('object_type').get('id').value;
     const gender = this.getUploadExtraInfoControl('gender').value;
     this.sizes = [];
 
