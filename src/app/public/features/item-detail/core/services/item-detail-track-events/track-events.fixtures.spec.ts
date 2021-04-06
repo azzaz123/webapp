@@ -6,6 +6,7 @@ import {
   ClickChatButton,
   FavoriteItem,
   SCREEN_IDS,
+  ShareItem,
   UnfavoriteItem,
   ViewOthersItemCarDetail,
   ViewOthersItemCGDetail,
@@ -15,6 +16,7 @@ import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
 import { MOCK_CAR_ITEM_DETAIL } from '@fixtures/item-detail.fixtures.spec';
 import { MOCK_ITEM, MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
 import { MOCK_OTHER_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
 
 export const MOCK_CLICK_CHAT_BUTTON_EVENT: AnalyticsEvent<ClickChatButton> = {
   name: ANALYTICS_EVENT_NAMES.ClickChatButton,
@@ -78,6 +80,32 @@ export const MOCK_UNFAVORITE_ITEM_EVENT: AnalyticsEvent<UnfavoriteItem> = {
     isPro: MOCK_CAR_ITEM_DETAIL.user.featured,
     title: MOCK_CAR_ITEM_DETAIL.item.title,
     isBumped: !!MOCK_CAR_ITEM_DETAIL.item.bumpFlags,
+  },
+};
+
+export const MOCK_FB_SHARE_ITEM_EVENT: AnalyticsEvent<ShareItem> = {
+  name: ANALYTICS_EVENT_NAMES.ShareItem,
+  eventType: ANALYTIC_EVENT_TYPES.Social,
+  attributes: {
+    itemId: MOCK_CAR.id,
+    categoryId: MOCK_CAR.categoryId,
+    channel: SOCIAL_SHARE_CHANNELS.FACEBOOK,
+    screenId: SCREEN_IDS.ItemDetail,
+    isPro: MOCK_USER.featured,
+    salePrice: MOCK_CAR.salePrice,
+  },
+};
+
+export const MOCK_TWITTER_SHARE_ITEM_EVENT: AnalyticsEvent<ShareItem> = {
+  name: ANALYTICS_EVENT_NAMES.ShareItem,
+  eventType: ANALYTIC_EVENT_TYPES.Social,
+  attributes: {
+    itemId: MOCK_CAR.id,
+    categoryId: MOCK_CAR.categoryId,
+    channel: SOCIAL_SHARE_CHANNELS.TWITTER,
+    screenId: SCREEN_IDS.ItemDetail,
+    isPro: MOCK_USER.featured,
+    salePrice: MOCK_CAR.salePrice,
   },
 };
 
