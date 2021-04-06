@@ -59,6 +59,7 @@ import { User } from '@core/user/user';
 import { ItemDetailTrackEventsService } from '../core/services/item-detail-track-events/item-detail-track-events.service';
 import { MockItemdDetailTrackEventService } from '../core/services/item-detail-track-events/track-events.fixtures.spec';
 import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
+import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -744,39 +745,35 @@ describe('ItemDetailComponent', () => {
   });
 
   describe('when we handle the social share...', () => {
-    const socialShareItemEvent: AnalyticsEvent<ShareItem> = {
-      name: ANALYTICS_EVENT_NAMES.ShareItem,
-      eventType: ANALYTIC_EVENT_TYPES.Social,
-      attributes: {
-        itemId: MOCK_CAR_ITEM_DETAIL.item.id,
-        categoryId: MOCK_CAR_ITEM_DETAIL.item.categoryId,
-        channel: SOCIAL_SHARE_CHANNELS.FACEBOOK,
-        screenId: SCREEN_IDS.ItemDetail,
-        isPro: MOCK_CAR_ITEM_DETAIL.user.featured,
-        salePrice: MOCK_CAR_ITEM_DETAIL.item.salePrice,
-      },
-    };
-
+    itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
     it('should send social share event with facebook channel if we share item with facebook', () => {
-      spyOn(analyticsService, 'trackEvent');
+      spyOn(itemDetailTrackEventsService, 'trackShareItemEvent');
 
       const socialShare = fixture.debugElement.query(By.css(socialShareTag));
       socialShare.triggerEventHandler('socialMediaChannel', SOCIAL_SHARE_CHANNELS.FACEBOOK);
 
       fixture.detectChanges();
-      expect(analyticsService.trackEvent).toHaveBeenCalledWith(socialShareItemEvent);
+
+      expect(itemDetailTrackEventsService.trackShareItemEvent).toHaveBeenCalledWith(
+        SOCIAL_SHARE_CHANNELS.FACEBOOK,
+        MOCK_CAR_ITEM_DETAIL.item,
+        MOCK_CAR_ITEM_DETAIL.user
+      );
     });
 
     it('should send social share event with twitter channel if we share item with twitter', () => {
-      spyOn(analyticsService, 'trackEvent');
-      const socialShareItemEventWithTwitter = { ...socialShareItemEvent };
-      socialShareItemEventWithTwitter.attributes.channel = SOCIAL_SHARE_CHANNELS.TWITTER;
+      spyOn(itemDetailTrackEventsService, 'trackShareItemEvent');
 
       const socialShare = fixture.debugElement.query(By.css(socialShareTag));
       socialShare.triggerEventHandler('socialMediaChannel', SOCIAL_SHARE_CHANNELS.TWITTER);
 
       fixture.detectChanges();
-      expect(analyticsService.trackEvent).toHaveBeenCalledWith(socialShareItemEventWithTwitter);
+
+      expect(itemDetailTrackEventsService.trackShareItemEvent).toHaveBeenCalledWith(
+        SOCIAL_SHARE_CHANNELS.TWITTER,
+        MOCK_CAR_ITEM_DETAIL.item,
+        MOCK_CAR_ITEM_DETAIL.user
+      );
     });
   });
 });
