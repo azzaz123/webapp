@@ -7,6 +7,7 @@ import {
   ClickChatButton,
   FavoriteItem,
   SCREEN_IDS,
+  ShareItem,
   UnfavoriteItem,
   ViewOthersItemCGDetail,
   ViewOwnItemDetail,
@@ -15,6 +16,7 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { Item } from '@core/item/item';
 import { User } from '@core/user/user';
 import { ItemDetail } from '@public/features/item-detail/interfaces/item-detail.interface';
+import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
 
 @Injectable()
 export class ItemDetailTrackEventsService {
@@ -81,5 +83,21 @@ export class ItemDetailTrackEventsService {
       },
     };
     this.analyticsService.trackPageView(event);
+  }
+
+  public trackShareItemEvent(channel: SOCIAL_SHARE_CHANNELS, item: Item, user: User): void {
+    const event: AnalyticsEvent<ShareItem> = {
+      name: ANALYTICS_EVENT_NAMES.ShareItem,
+      eventType: ANALYTIC_EVENT_TYPES.Social,
+      attributes: {
+        itemId: item.id,
+        categoryId: item.categoryId,
+        channel: channel,
+        screenId: SCREEN_IDS.ItemDetail,
+        isPro: user.featured,
+        salePrice: item.salePrice,
+      },
+    };
+    this.analyticsService.trackEvent(event);
   }
 }
