@@ -12,6 +12,7 @@ import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import { SOCIAL_SHARE_CHANNELS } from './enums/social-share-channels.enum';
 
 describe('SocialShareComponent', () => {
   let component: SocialShareComponent;
@@ -60,18 +61,6 @@ describe('SocialShareComponent', () => {
     const facebookIconSelector = '[src*="facebook"]';
     const twitterIconSelector = '[src*="twitter"]';
     const emailIconSelector = '[src*="email"]';
-    const shareItemEvent: AnalyticsEvent<ShareItem> = {
-      name: ANALYTICS_EVENT_NAMES.ShareItem,
-      eventType: ANALYTIC_EVENT_TYPES.Social,
-      attributes: {
-        itemId: MOCK_CAR.id,
-        categoryId: MOCK_CAR.categoryId,
-        channel: 'facebook',
-        screenId: SCREEN_IDS.ItemDetail,
-        isPro: MOCK_USER.featured,
-        salePrice: MOCK_CAR.salePrice,
-      },
-    };
 
     describe('When any data is passed', () => {
       it('should be created', () => {
@@ -100,12 +89,14 @@ describe('SocialShareComponent', () => {
         expect(el.querySelector(facebookIconSelector)).toBeTruthy();
       });
 
-      it('should share on facebook on click', () => {
+      it('should share on facebook on click and emit event with facebook', () => {
         spyOn(socialShareService, 'facebookShare');
+        spyOn(component.socialMediaChannel, 'emit');
 
         facebookIconElement.click();
 
         expect(socialShareService.facebookShare).toBeCalledWith(component.facebook.url);
+        expect(component.socialMediaChannel.emit).toHaveBeenCalledWith(SOCIAL_SHARE_CHANNELS.FACEBOOK);
       });
     });
 
@@ -126,12 +117,14 @@ describe('SocialShareComponent', () => {
         expect(el.querySelector(twitterIconSelector)).toBeTruthy();
       });
 
-      it('should share on twitter on click', () => {
+      it('should share on twitter on click and emit event with twitter', () => {
         spyOn(socialShareService, 'twitterShare');
+        spyOn(component.socialMediaChannel, 'emit');
 
         twitterIconElement.click();
 
         expect(socialShareService.twitterShare).toBeCalledWith(component.twitter.url, component.twitter.text);
+        expect(component.socialMediaChannel.emit).toHaveBeenCalledWith(SOCIAL_SHARE_CHANNELS.TWITTER);
       });
     });
 
@@ -153,12 +146,14 @@ describe('SocialShareComponent', () => {
         expect(el.querySelector(emailIconSelector)).toBeTruthy();
       });
 
-      it('should share on email on click', () => {
+      it('should share on email on click and emit the event with email', () => {
         spyOn(socialShareService, 'emailShare');
+        spyOn(component.socialMediaChannel, 'emit');
 
         emailIconElement.click();
 
         expect(socialShareService.emailShare).toBeCalledWith(component.email.url, component.email.subject, component.email.message);
+        expect(component.socialMediaChannel.emit).toHaveBeenCalledWith(SOCIAL_SHARE_CHANNELS.EMAIL);
       });
     });
   });
