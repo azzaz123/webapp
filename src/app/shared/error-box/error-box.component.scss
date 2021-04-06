@@ -14,13 +14,4 @@
     color: $blue-grey-2;
     font-size: $font-size-m;
   }
-
-  &__btn {
-    border-radius: $button-border-radius;
-
-    &--link {
-      background: transparent;
-      color: $walla-main;
-    }
-  }
 }
