@@ -30,6 +30,10 @@ const routes: Route[] = [
         loadChildren: () => import('./features/item-detail/item-detail.module').then((m) => m.ItemDetailModule),
       },
       {
+        path: PUBLIC_PATHS.NOT_FOUND,
+        loadChildren: () => import('./features/error/error.module').then((m) => m.ErrorModule),
+      },
+      {
         path: '**',
         redirectTo: PUBLIC_PATHS.LOGIN,
       },

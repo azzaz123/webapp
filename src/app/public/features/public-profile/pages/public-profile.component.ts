@@ -8,8 +8,7 @@ import { User } from '@core/user/user';
 import { Image, UserFavourited } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
 import { IsCurrentUserPipe } from '@public/core/pipes/is-current-user/is-current-user.pipe';
-import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
-import { APP_PATHS } from 'app/app-routing-constants';
+import { PUBLIC_PATHS, PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { forkJoin, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { PUBLIC_PROFILE_AD } from '../core/ads/public-profile-ads.config';
@@ -88,7 +87,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
             };
           },
           () => {
-            this.router.navigate([`/${APP_PATHS.NOT_FOUND}`]);
+            this.router.navigate([`/${PUBLIC_PATHS.NOT_FOUND}`]);
           }
         )
     );

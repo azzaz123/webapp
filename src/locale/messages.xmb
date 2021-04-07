@@ -970,4 +970,7 @@
   <msg id="Date"><source>src/app/private/features/profile/components/invoice-item/invoice-item.component.html:11</source>Date</msg>
   <msg id="RequestInvoice"><source>src/app/private/features/profile/components/invoice-item/invoice-item.component.html:18</source>Request invoice</msg>
   <msg id="DownloadInvoice"><source>src/app/private/features/profile/components/invoice-item/invoice-item.component.html:19</source>Download invoice</msg>
+  <msg id="NotFoundTitle"><source>src/app/features/error/pages/error.component.ts:8</source>Whoops, the page you're looking for can't be found</msg>
+  <msg id="NotFoundMessage"><source>src/app/features/error/pages/error.component.ts:9</source>Our office unicorn might have impaled it. But, there's lots to be discovered in the land of Wallapop.</msg>
+  <msg id="NotFoundButtonText"><source>src/app/public/features/error/pages/error.component.ts:17</source>See listings</msg>
 </messagebundle>
