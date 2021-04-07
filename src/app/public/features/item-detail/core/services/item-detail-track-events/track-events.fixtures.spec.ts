@@ -132,6 +132,7 @@ export const MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT: AnalyticsPageView<ViewOther
 export class MockItemdDetailTrackEventService {
   trackFavoriteOrUnfavoriteEvent() {}
   trackClickChatButton() {}
+  trackClickItemCardEvent() {}
   trackViewOwnItemDetail() {}
   trackViewOthersCGDetailEvent() {}
   trackViewOthersItemCarDetailEvent() {}
