@@ -84,7 +84,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     this.itemDetailStoreService.markItemAsSold();
   }
 
-  public trackShareItemEvent(channel: SOCIAL_SHARE_CHANNELS) {
+  public trackShareItemEvent(channel: SOCIAL_SHARE_CHANNELS): void {
     this.itemDetailTrackEventsService.trackShareItemEvent(channel, this.itemDetail.item, this.itemDetail.user);
   }
 
