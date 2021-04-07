@@ -110,7 +110,7 @@ describe('ItemDetailTrackEventsService', () => {
     });
   });
 
-  describe('trackClickItemCardEvent', () => {
+  describe('when user click on one of the recommended item card', () => {
     const recommendedItem = MAPPED_RECOMMENDED_ITEM_MOCK;
     const sourceItem = MOCK_ITEM;
     const recommenedItemOwner = MOCK_OTHER_USER;
