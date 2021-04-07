@@ -1,10 +1,25 @@
 @import '~style/common';
 
+$horizontal-margin: 10px;
+
 .FilterGroup {
   &__filter {
     flex: 1;
     &--bubble {
       width: 100%;
+    }
+  }
+
+  &--drawer {
+    > * {
+      &::after {
+        display: block;
+        content: '';
+        background-color: $blue-grey-4;
+        height: 1px;
+        width: calc(100% - #{2 * $horizontal-margin});
+        margin: 30px $horizontal-margin;
+      }
     }
   }
 }
