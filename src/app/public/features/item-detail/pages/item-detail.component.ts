@@ -22,6 +22,7 @@ import { User } from '@core/user/user';
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { ItemDetailTrackEventsService } from '../core/services/item-detail-track-events/item-detail-track-events.service';
 import { take } from 'rxjs/operators';
+import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -89,6 +90,10 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     this.userService.get(recommendedItem.owner).subscribe((recommendedUser: User) => {
       this.itemDetailTrackEventsService.trackClickItemCardEvent(recommendedItem, sourceItem, recommendedUser, event.index);
     });
+  }
+
+  public trackShareItemEvent(channel: SOCIAL_SHARE_CHANNELS): void {
+    this.itemDetailTrackEventsService.trackShareItemEvent(channel, this.itemDetail.item, this.itemDetail.user);
   }
 
   private initPage(itemId: string): void {

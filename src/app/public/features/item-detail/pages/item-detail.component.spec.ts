@@ -65,6 +65,7 @@ import { ItemDetailTrackEventsService } from '../core/services/item-detail-track
 import { MockItemdDetailTrackEventService, MOCK_ITEM_INDEX } from '../core/services/item-detail-track-events/track-events.fixtures.spec';
 import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
 import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
+import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -780,6 +781,51 @@ describe('ItemDetailComponent', () => {
       fixture.detectChanges();
 
       expect(itemDetailTrackEventsService.trackClickItemCardEvent).toHaveBeenCalled();
+    });
+  });
+
+  describe('when we handle the social share...', () => {
+    itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
+    it('should send social share event with facebook channel if we share item with facebook', () => {
+      spyOn(itemDetailTrackEventsService, 'trackShareItemEvent');
+      const socialShare = fixture.debugElement.query(By.css(socialShareTag));
+
+      socialShare.triggerEventHandler('socialMediaChannel', SOCIAL_SHARE_CHANNELS.FACEBOOK);
+      fixture.detectChanges();
+
+      expect(itemDetailTrackEventsService.trackShareItemEvent).toHaveBeenCalledWith(
+        SOCIAL_SHARE_CHANNELS.FACEBOOK,
+        MOCK_CAR_ITEM_DETAIL.item,
+        MOCK_CAR_ITEM_DETAIL.user
+      );
+    });
+
+    it('should send social share event with twitter channel if we share item with twitter', () => {
+      spyOn(itemDetailTrackEventsService, 'trackShareItemEvent');
+      const socialShare = fixture.debugElement.query(By.css(socialShareTag));
+
+      socialShare.triggerEventHandler('socialMediaChannel', SOCIAL_SHARE_CHANNELS.TWITTER);
+      fixture.detectChanges();
+
+      expect(itemDetailTrackEventsService.trackShareItemEvent).toHaveBeenCalledWith(
+        SOCIAL_SHARE_CHANNELS.TWITTER,
+        MOCK_CAR_ITEM_DETAIL.item,
+        MOCK_CAR_ITEM_DETAIL.user
+      );
+    });
+
+    it('should send social share event with email channel if we share item with email', () => {
+      spyOn(itemDetailTrackEventsService, 'trackShareItemEvent');
+      const socialShare = fixture.debugElement.query(By.css(socialShareTag));
+
+      socialShare.triggerEventHandler('socialMediaChannel', SOCIAL_SHARE_CHANNELS.EMAIL);
+      fixture.detectChanges();
+
+      expect(itemDetailTrackEventsService.trackShareItemEvent).toHaveBeenCalledWith(
+        SOCIAL_SHARE_CHANNELS.EMAIL,
+        MOCK_CAR_ITEM_DETAIL.item,
+        MOCK_CAR_ITEM_DETAIL.user
+      );
     });
   });
 });
