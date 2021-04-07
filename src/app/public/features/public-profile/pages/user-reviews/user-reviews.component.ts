@@ -16,7 +16,7 @@ export class UserReviewsComponent implements OnInit {
   public readonly emptyStateProperties: EmptyStateProperties = {
     title: $localize`:@@NoReviewsItemsTitle:No reviews yet`,
     description: $localize`:@@NoReviewsItemsDescription:This person hasn't received any reviews. Will yours be the first?`,
-    drawingPath: '/assets/images/dolls/balloon.svg',
+    illustrationSrc: '/assets/images/commons/balloon.svg',
   };
   public reviews: Review[] = [];
   public nextPaginationItem = 0;
