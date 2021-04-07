@@ -23,6 +23,7 @@ import {
   MOCK_FB_SHARE_ITEM_EVENT,
   MOCK_TWITTER_SHARE_ITEM_EVENT,
   MOCK_EMAIL_SHARE_ITEM_EVENT,
+  MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT_NON_CARDEALER,
 } from './track-events.fixtures.spec';
 
 describe('ItemDetailTrackEventsService', () => {
@@ -171,14 +172,12 @@ describe('ItemDetailTrackEventsService', () => {
     });
 
     it('should send view others Car item detail event with false carDealer if user is not professional', () => {
-      const mockVIewOthersItemCarDetailNonCarDealer = { ...MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT };
-      mockVIewOthersItemCarDetailNonCarDealer.attributes.isCarDealer = false;
       spyOn(userService, 'isProfessional').and.returnValue(of(false));
       spyOn(service, 'trackViewOthersItemCarDetailEvent').and.callThrough();
 
       service.trackViewOthersItemCarDetailEvent(item, user);
 
-      expect(analyticsService.trackPageView).toHaveBeenCalledWith(mockVIewOthersItemCarDetailNonCarDealer);
+      expect(analyticsService.trackPageView).toHaveBeenCalledWith(MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT_NON_CARDEALER);
     });
   });
 });

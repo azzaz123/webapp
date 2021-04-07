@@ -163,6 +163,14 @@ export const MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT: AnalyticsPageView<ViewOther
   },
 };
 
+export const MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT_NON_CARDEALER: AnalyticsPageView<ViewOthersItemCarDetail> = {
+  ...MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT,
+  attributes: {
+    ...MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT.attributes,
+    isCarDealer: false,
+  },
+};
+
 export class MockItemdDetailTrackEventService {
   trackFavoriteOrUnfavoriteEvent() {}
   trackClickChatButton() {}
