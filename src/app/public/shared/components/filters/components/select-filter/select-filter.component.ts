@@ -61,6 +61,11 @@ export class SelectFilterComponent extends AbstractSelectFilter<SelectFilterPara
     return value ? this.options.find((option) => option.value === value).label : this.getLabelPlaceholder();
   }
 
+  public getPlaceholderIcon(): string {
+    const value = this.getValue('parameterKey');
+    return value ? this.options.find((option) => option.value === value).icon : undefined;
+  }
+
   public handleClear(): void {
     this.formGroup.controls.select.setValue(undefined, { emitEvent: false });
     super.handleClear();

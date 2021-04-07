@@ -12,6 +12,7 @@
   <tsl-select-filter-template #selectFilterTemplateComponent
     [hasContentPlaceholder]="hasContentPlaceholder()"
     [placeholderLabel]="getLabel()"
+    [placeholderIcon]="getPlaceholderIcon()"
     [contentTitle]="contentTitle"
     [isClearable]="hasValue$() | async"
     (clear)="handleClear()">
