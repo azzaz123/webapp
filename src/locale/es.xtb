@@ -973,4 +973,6 @@
   <translation id="OwnReviewBought">Compraste</translation>
   <translation id="ReviewSold">Vendió</translation>
   <translation id="ReviewBought">Compró</translation>
+  <translation id="NoPublishedItemsTitle">Nada en venta todavía</translation>
+  <translation id="NoPublishedItemsDescription">Al parecer, alguien usa todo lo que tiene. ¡Dale tiempo para subir algo a wallapop!</translation>
 </translationbundle>

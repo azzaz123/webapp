@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Item } from '@core/item/item';
 import { ItemResponse } from '@core/item/item-response.interface';
 import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
+import { EmptyStateProperties } from '@public/shared/components/empty-state/empty-state-properties.interface';
 import { finalize, take } from 'rxjs/operators';
 import { PublicProfileService } from '../../core/services/public-profile.service';
 import { MapItemService } from './services/map-item/map-item.service';
@@ -12,6 +13,11 @@ import { MapItemService } from './services/map-item/map-item.service';
   styleUrls: ['./user-published.component.scss'],
 })
 export class UserPublishedComponent implements OnInit {
+  public readonly emptyStateProperties: EmptyStateProperties = {
+    title: $localize`:@@NoPublishedItemsTitle:Nothing for sale yet`,
+    description: $localize`:@@NoPublishedItemsDescription:Seems like someone’s using all they have. Give them time to upload something to wallapop!`,
+    drawingPath: '/assets/images/dolls/flashlight.svg',
+  };
   public items: Item[] = [];
   public nextPaginationItem = 0;
   public loading = true;
