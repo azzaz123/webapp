@@ -1,27 +1,27 @@
 import { moduleMetadata } from '@storybook/angular';
 import { Story } from '@storybook/angular/types-6-0';
 import { HttpClientModule } from '@angular/common/http';
-import { IconCheckBoxComponent } from './icon-check-box.component';
+import { GridSelectOptionComponent } from './grid-select-option.component';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 
 export default {
-  title: 'Webapp/Shared/Form/Components/IconGridCheckBox/IconCheckBox',
-  component: IconCheckBoxComponent,
+  title: 'Webapp/Shared/Form/Components/GridSelectForm/GridSelectOption',
+  component: GridSelectOptionComponent,
   decorators: [
     moduleMetadata({
-      declarations: [IconCheckBoxComponent],
+      declarations: [GridSelectOptionComponent],
       imports: [HttpClientModule, SvgIconModule],
     }),
   ],
 };
 
-const Template: Story<IconCheckBoxComponent> = (args) => ({
+const Template: Story<GridSelectOptionComponent> = (args) => ({
   props: args,
-  component: IconCheckBoxComponent,
+  component: GridSelectOptionComponent,
   template: `
     <div style="display: flex">
       <div style="background: white; border: 1px dashed black;">
-          <tsl-icon-check-box [icon]="icon" [label]="label" [isBig]="isBig" [isActive]="isActive"></tsl-icon-check-box>
+          <tsl-grid-select-option [icon]="icon" [label]="label" [isBig]="isBig" [isActive]="isActive"></tsl-grid-select-option>
       </div>
     </div>
 

@@ -1,7 +1,7 @@
 <div class="IconGridCheck">
   <div *ngFor="let option of options" [ngStyle]="{ 'flex-basis': 100 / columns + '%' }">
-    <tsl-icon-check-box [icon]="option.icon" [label]="option.label" [isBig]="isBig" [isActive]="isValueActive(option.value)"
-                        (click)="handleOptionClick(option.value)">
-    </tsl-icon-check-box>
+    <tsl-grid-select-option [icon]="option.icon" [label]="option.label" [isBig]="isBig" [isActive]="isValueActive(option.value)"
+                            (click)="handleOptionClick(option.value)">
+    </tsl-grid-select-option>
   </div>
 </div>

@@ -2,7 +2,7 @@
 
 $min-size: 96px;
 
-.IconCheck {
+.GridSelectOption {
   min-height: $min-size;
   min-width: $min-size;
   cursor: pointer;
@@ -25,11 +25,11 @@ $min-size: 96px;
   }
 
   &:hover {
-    .IconCheck__label {
+    .GridSelectOption__label {
       color: $blue-grey-4;
     }
 
-    .IconCheck__icon {
+    .GridSelectOption__icon {
       ::ng-deep svg g g {
         fill: $blue-grey-4;
       }

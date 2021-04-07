@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IconCheckBoxComponent } from './icon-check-box.component';
+import { GridSelectOptionComponent } from './grid-select-option.component';
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
@@ -8,23 +8,23 @@ import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { SvgIconComponent } from '@core/svg-icon/svg-icon/svg-icon.component';
 
-describe('IconCheckBoxComponent', () => {
-  let component: IconCheckBoxComponent;
+describe('GridSelectOptionComponent', () => {
+  let component: GridSelectOptionComponent;
   let debugElement: DebugElement;
-  let fixture: ComponentFixture<IconCheckBoxComponent>;
+  let fixture: ComponentFixture<GridSelectOptionComponent>;
 
-  const labelPredicate = By.css('.IconCheck__label');
+  const labelPredicate = By.css('.GridSelectOption__label');
   const iconPredicate = By.directive(SvgIconComponent);
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [IconCheckBoxComponent],
+      declarations: [GridSelectOptionComponent],
       imports: [CommonModule, HttpClientTestingModule, SvgIconModule],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(IconCheckBoxComponent);
+    fixture = TestBed.createComponent(GridSelectOptionComponent);
     debugElement = fixture.debugElement;
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -91,8 +91,8 @@ describe('IconCheckBoxComponent', () => {
       fixture.detectChanges();
     });
     it('should apply active classes', () => {
-      const activeIcon = debugElement.query(By.css('.IconCheck__icon--active'));
-      const activeLabel = debugElement.query(By.css('.IconCheck__label--active'));
+      const activeIcon = debugElement.query(By.css('.GridSelectOption__icon--active'));
+      const activeLabel = debugElement.query(By.css('.GridSelectOption__label--active'));
 
       expect(activeIcon).toBeTruthy();
       expect(activeLabel).toBeTruthy();
