@@ -24,6 +24,7 @@ describe('RecommendedItemsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(RecommendedItemsComponent);
     component = fixture.componentInstance;
+    de = fixture.debugElement;
     fixture.detectChanges();
   });
 
@@ -77,7 +78,7 @@ describe('RecommendedItemsComponent', () => {
   });
 
   describe('when we click one of the recommended item cards', () => {
-    it('should emit the event', () => {
+    fit('should emit the event', () => {
       const itemCard: DebugElement = de.query(By.css(itemCardListTag)).nativeElement;
       spyOn(component.clickedItemAndIndexEvent, 'emit');
 
