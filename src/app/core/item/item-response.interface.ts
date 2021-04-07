@@ -50,7 +50,7 @@ export interface ItemContent {
   flags: ItemFlags;
   id: string;
   images?: Image[];
-  image?: ItemContentImage;
+  image?: ItemImagesURLs;
   modified_date: number;
   sale_conditions?: ItemSaleConditions;
   sale_price?: number;
@@ -69,7 +69,7 @@ export interface ItemContent {
   user?: User;
 }
 
-export interface ItemContentImage {
+export interface ItemImagesURLs {
   original: string;
   small: string;
   large: string;
