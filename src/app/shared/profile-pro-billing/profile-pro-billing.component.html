@@ -77,6 +77,21 @@
               </div>
             </div>
             <div class="form-group row align-items-center">
+              <label *ngIf="type === 'legal'" for="cif" class="col-sm-12 col-md-5" i18n="@@CIFNumber">CIF of the company</label>
+              <label *ngIf="type === 'natural'" for="cif" class="col-sm-12 col-md-5" i18n="@@NIFNumber">NIF of the person</label>
+              <div [ngClass]="{'col-sm-12 col-md-7': containerTypeIsModal, 'col-sm-12 col-md-5': !containerTypeIsModal}">
+                <input type="text" class="form-control" id="cif" formControlName="cif"/>
+                <div *ngIf="isIncorrectFormcontrol(billingForm.controls.cif)" class="alert">
+                  <span *ngIf="billingForm.controls.cif.errors.required" i18n="@@CifRequired">
+                    CIF/NIF is required.
+                  </span>
+                  <span *ngIf="billingForm.controls.cif.errors.cif" i18n="@@CifFormat">
+                    CIF/NIF must be valid.
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row align-items-center">
               <label for="email" class="col-sm-12 col-md-5" i18n="@@Email">E-mail</label>
               <div [ngClass]="{'col-sm-12 col-md-7': containerTypeIsModal, 'col-sm-12 col-md-5': !containerTypeIsModal}">
                 <input type="text" class="form-control" id="email" formControlName="email" />
@@ -112,21 +127,6 @@
               <label for="country" class="col-sm-12 col-md-5" i18n="@@Country">Country</label>
               <div [ngClass]="{'col-sm-12 col-md-7': containerTypeIsModal, 'col-sm-12 col-md-5': !containerTypeIsModal}">
                 <input type="text" class="form-control" id="country" formControlName="country"/>
-              </div>
-            </div>
-            <div class="form-group row align-items-center">
-              <label *ngIf="type === 'legal'" for="cif" class="col-sm-12 col-md-5" i18n="@@CIFNumber">CIF Number</label>
-              <label *ngIf="type === 'natural'" for="cif" class="col-sm-12 col-md-5" i18n="@@NIFNumber">NIF Number</label>
-              <div [ngClass]="{'col-sm-12 col-md-7': containerTypeIsModal, 'col-sm-12 col-md-5': !containerTypeIsModal}">
-                <input type="text" class="form-control" id="cif" formControlName="cif"/>
-                <div *ngIf="isIncorrectFormcontrol(billingForm.controls.cif)" class="alert">
-                  <span *ngIf="billingForm.controls.cif.errors.required" i18n="@@CifRequired">
-                    CIF/NIF is required.
-                  </span>
-                  <span *ngIf="billingForm.controls.cif.errors.cif" i18n="@@CifFormat">
-                    CIF/NIF must be valid.
-                  </span>
-                </div>
               </div>
             </div>
             <div class="row" *ngIf="!containerTypeIsModal">
