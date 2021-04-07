@@ -1,19 +1,9 @@
+import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AdSlotConfiguration } from '@core/ads/models';
 import { AdsService } from '@core/ads/services';
-import {
-  AnalyticsEvent,
-  AnalyticsPageView,
-  ANALYTICS_EVENT_NAMES,
-  ANALYTIC_EVENT_TYPES,
-  FavoriteItem,
-  SCREEN_IDS,
-  UnfavoriteItem,
-  ViewOthersItemCGDetail,
-  ViewOwnItemDetail,
-} from '@core/analytics/analytics-constants';
-import { AnalyticsService } from '@core/analytics/analytics.service';
+import { AnalyticsPageView, ANALYTICS_EVENT_NAMES, SCREEN_IDS, ViewOthersItemCGDetail } from '@core/analytics/analytics-constants';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
@@ -25,10 +15,11 @@ import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { CarouselSlide } from '@public/shared/components/carousel-slides/carousel-slide.interface';
 import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from '@public/shared/components/item-flag/item-flag-constants';
 import { combineLatest, Observable, Subscription } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, take } from 'rxjs/operators';
 import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
 import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
 import { ItemDetailStoreService } from '../core/services/item-detail-store/item-detail-store.service';
+import { ItemDetailTrackEventsService } from '../core/services/item-detail-track-events/item-detail-track-events.service';
 import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
 import { ItemSocialShareService } from '../core/services/item-social-share/item-social-share.service';
 import { ItemDetail } from '../interfaces/item-detail.interface';
@@ -60,13 +51,14 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     private itemDetailStoreService: ItemDetailStoreService,
     private deviceService: DeviceService,
     private itemDetailService: ItemDetailService,
+    private itemDetailTrackEventsService: ItemDetailTrackEventsService,
     private route: ActivatedRoute,
     private adsService: AdsService,
-    private userService: UserService,
-    private analyticsService: AnalyticsService,
     private itemSocialShareService: ItemSocialShareService,
     private typeCheckService: TypeCheckService,
-    private itemDetailFlagsStoreService: ItemDetailFlagsStoreService
+    private userService: UserService,
+    private itemDetailFlagsStoreService: ItemDetailFlagsStoreService,
+    private analyticsService: AnalyticsService
   ) {}
 
   ngOnInit(): void {
@@ -100,29 +92,12 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
 
   public toggleFavouriteItem(): void {
     this.itemDetailStoreService.toggleFavouriteItem().subscribe(() => {
-      this.trackFavoriteOrUnfavoriteEvent();
+      this.itemDetailTrackEventsService.trackFavoriteOrUnfavoriteEvent(this.itemDetail);
     });
   }
 
   public soldItem(): void {
     this.itemDetailStoreService.markItemAsSold();
-  }
-
-  private trackFavoriteOrUnfavoriteEvent(): void {
-    const event: AnalyticsEvent<FavoriteItem | UnfavoriteItem> = {
-      name: this.itemDetail.item.flags.favorite ? ANALYTICS_EVENT_NAMES.FavoriteItem : ANALYTICS_EVENT_NAMES.UnfavoriteItem,
-      eventType: ANALYTIC_EVENT_TYPES.UserPreference,
-      attributes: {
-        itemId: this.itemDetail.item.id,
-        categoryId: this.itemDetail.item.categoryId,
-        screenId: SCREEN_IDS.ItemDetail,
-        salePrice: this.itemDetail.item.salePrice,
-        isPro: this.itemDetail.user.featured,
-        title: this.itemDetail.item.title,
-        isBumped: !!this.itemDetail.item.bumpFlags,
-      },
-    };
-    this.analyticsService.trackEvent(event);
   }
 
   private initPage(itemId: string): void {
@@ -155,27 +130,22 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   private trackViewEvents(itemDetail: ItemDetail): void {
     const item = itemDetail.item;
     const user = itemDetail.user;
-    const subscription: Subscription = this.userService.me().subscribe((userMe: User) => {
-      if (user.id === userMe.id) {
-        const event: AnalyticsPageView<ViewOwnItemDetail> = {
-          name: ANALYTICS_EVENT_NAMES.ViewOwnItemDetail,
-          attributes: {
-            itemId: item.id,
-            categoryId: item.categoryId,
-            salePrice: item.salePrice,
-            title: item.title,
-            isPro: user.featured,
-            screenId: SCREEN_IDS.ItemDetail,
-            isActive: !item.flags?.onhold,
-          },
-        };
-        this.analyticsService.trackPageView(event);
-      } else {
-        if (!this.typeCheckService.isRealEstate(itemDetail.item) || !this.typeCheckService.isCar(itemDetail.item)) {
-          this.trackViewOthersCGDetailEvent(itemDetail);
+    const subscription: Subscription = this.userService
+      .me()
+      .pipe(take(1))
+      .subscribe((userMe: User) => {
+        if (user.id === userMe.id) {
+          this.itemDetailTrackEventsService.trackViewOwnItemDetail(item, user);
+        } else {
+          if (this.typeCheckService.isCar(item)) {
+            this.itemDetailTrackEventsService.trackViewOthersItemCarDetailEvent(item, user);
+          }
+          if (!this.typeCheckService.isRealEstate(item) && !this.typeCheckService.isCar(item)) {
+            this.itemDetailTrackEventsService.trackViewOthersCGDetailEvent(item, user);
+          }
         }
-      }
-    });
+      });
+
     this.subscriptions.add(subscription);
   }
 

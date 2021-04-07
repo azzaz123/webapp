@@ -1,0 +1,42 @@
+@import '~style/common';
+
+$toolbar-height: 45px;
+
+.SelectFilterTemplate {
+  &__toolbar {
+    position: absolute;
+    background: $white;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: $toolbar-height;
+    z-index: 1;
+  }
+
+  &__content {
+    position: absolute;
+    background: $white;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    overflow: auto;
+    margin-top: $toolbar-height;
+    z-index: 1;
+  }
+
+  &__title {
+    font-weight: bold;
+  }
+
+  &__back_icon {
+    cursor: pointer;
+    align-self: center;
+    position: absolute;
+    left: 0;
+  }
+
+  &--warning {
+    color: $brand-danger;
+  }
+}
