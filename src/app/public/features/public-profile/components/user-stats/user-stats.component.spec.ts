@@ -11,7 +11,7 @@ import { ScrollIntoViewService } from '@core/scroll-into-view/scroll-into-view';
 
 describe('UserStatsComponent', () => {
   const profileUserClass = '.ProfileUser';
-  const shippingCounterId = '#shippingCounter';
+  const shippingCounterSelector = '#shippingCounter';
 
   let component: UserStatsComponent;
   let fixture: ComponentFixture<UserStatsComponent>;
@@ -160,7 +160,7 @@ describe('UserStatsComponent', () => {
           fixture.detectChanges();
         });
         it('should show the shipping counter', () => {
-          const shippingCounter = fixture.debugElement.query(By.css(shippingCounterId)).nativeElement.innerHTML;
+          const shippingCounter = fixture.debugElement.query(By.css(shippingCounterSelector)).nativeElement.innerHTML;
 
           expect(shippingCounter).toBe(`${component.userStats.counters.shipping_counter}`);
         });
@@ -172,7 +172,7 @@ describe('UserStatsComponent', () => {
           fixture.detectChanges();
         });
         it('should NOT show the shipping counter', () => {
-          const shippingCounter = fixture.debugElement.query(By.css(shippingCounterId));
+          const shippingCounter = fixture.debugElement.query(By.css(shippingCounterSelector));
 
           expect(shippingCounter).toBeFalsy();
         });
