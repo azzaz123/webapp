@@ -66,11 +66,11 @@ export class ItemDetailTrackEventsService {
         categoryId: recommendedItem.categoryId,
         position: index + 1,
         screenId: SCREEN_IDS.ItemDetailRecommendationSlider,
-        isPro: recommenedItemOwner.featured, //need to get it
+        isPro: recommenedItemOwner.featured,
         salePrice: recommendedItem.salePrice,
         title: recommendedItem.title,
         itemSourceRecommendationId: sourceItem.id,
-        itemDistance: recommenedItemOwner.itemDistance, //need to get it
+        itemDistance: recommenedItemOwner.itemDistance,
         shippingAllowed: recommendedItem.saleConditions.shipping_allowed,
         sellerUserId: recommendedItem.owner,
         isBumped: !!recommendedItem.bumpFlags,
