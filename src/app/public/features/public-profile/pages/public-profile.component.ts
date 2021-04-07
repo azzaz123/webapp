@@ -5,8 +5,9 @@ import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
 import { SlugsUtilService } from '@core/services/slugs-util/slugs-util.service';
 import { User } from '@core/user/user';
-import { Image } from '@core/user/user-response.interface';
+import { Image, UserFavourited } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
+import { IsCurrentUserPipe } from '@public/core/pipes/is-current-user/is-current-user.pipe';
 import { PUBLIC_PATHS, PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { forkJoin, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
@@ -23,6 +24,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
   public userStats: UserStats;
   public userInfo: User;
   public loading = false;
+  public isFavourited = false;
   private subscriptions: Subscription[] = [];
 
   isMobile: boolean;
@@ -35,6 +37,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     private router: Router,
     private deviceService: DeviceService,
     private adsService: AdsService,
+    private isCurrentUserPipe: IsCurrentUserPipe,
     private slugsUtilService: SlugsUtilService
   ) {}
 
@@ -57,6 +60,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     this.userId = userUUID;
     if (this.userId) {
       this.getUserInfoAndStats();
+      this.initializeFavouriteUser();
     }
   }
 
@@ -96,5 +100,19 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
       .subscribe((coverImage: Image) => {
         this.userInfo.coverImage = coverImage;
       });
+  }
+
+  private initializeFavouriteUser(): void {
+    this.isCurrentUserPipe.transform(this.userId).subscribe((isOurOwnUser: boolean) => {
+      if (!isOurOwnUser) {
+        this.getFavouriteUser();
+      }
+    });
+  }
+
+  private getFavouriteUser(): void {
+    this.publicProfileService.isFavourite(this.userId).subscribe((isFavourited: UserFavourited) => {
+      this.isFavourited = isFavourited.favorited;
+    });
   }
 }

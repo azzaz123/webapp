@@ -1,7 +1,7 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ItemResponse } from '@core/item/item-response.interface';
-import { Image, UserExtrainfo, UserResponse } from '@core/user/user-response.interface';
+import { Image, UserExtrainfo, UserFavourited, UserResponse } from '@core/user/user-response.interface';
 import { UserStatsResponse } from '@core/user/user-stats.interface';
 import { environment } from '@environments/environment';
 import { ReviewResponse, ReviewsData } from '@private/features/reviews/core/review-response.interface';
@@ -32,8 +32,8 @@ export class PublicUserApiService {
     return this.http.get<UserStatsResponse>(`${environment.baseUrl}${STATS_ENDPOINT(userId)}`);
   }
 
-  public isFavourite(userId: string): Observable<boolean> {
-    return this.http.get<boolean>(`${environment.baseUrl}${IS_FAVOURITE_ENDPOINT(userId)}`);
+  public isFavourite(userId: string): Observable<UserFavourited> {
+    return this.http.get<UserFavourited>(`${environment.baseUrl}${IS_FAVOURITE_ENDPOINT(userId)}`);
   }
 
   public getReviews(userId: string, init: number = 0): Observable<PaginationResponse<ReviewResponse>> {
