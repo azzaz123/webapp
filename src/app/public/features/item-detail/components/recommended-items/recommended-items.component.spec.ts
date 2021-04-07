@@ -11,7 +11,6 @@ describe('RecommendedItemsComponent', () => {
   const itemCardListTag = 'tsl-public-item-card-list';
   let component: RecommendedItemsComponent;
   let fixture: ComponentFixture<RecommendedItemsComponent>;
-  let de: DebugElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -24,7 +23,6 @@ describe('RecommendedItemsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(RecommendedItemsComponent);
     component = fixture.componentInstance;
-    de = fixture.debugElement;
     fixture.detectChanges();
   });
 
@@ -66,6 +64,16 @@ describe('RecommendedItemsComponent', () => {
       it('should only load the first six', () => {
         expect(component.items.length).toBe(6);
       });
+
+      it('should emit the event if we click on one of the recommended item cards', () => {
+        const itemCard: DebugElement = fixture.debugElement.query(By.css(itemCardListTag));
+        spyOn(component.clickedItemAndIndexEvent, 'emit');
+
+        itemCard.triggerEventHandler('clickedItemAndIndex', { item: MOCK_ITEM, index: MOCK_ITEM_INDEX });
+        fixture.detectChanges();
+
+        expect(component.clickedItemAndIndexEvent.emit).toHaveBeenCalledWith({ item: MOCK_ITEM, index: MOCK_ITEM_INDEX });
+      });
     });
   });
 
@@ -74,18 +82,6 @@ describe('RecommendedItemsComponent', () => {
       const cardList = fixture.debugElement.query(By.css(itemCardListTag));
 
       expect(cardList).toBeFalsy();
-    });
-  });
-
-  describe('when we click one of the recommended item cards', () => {
-    fit('should emit the event', () => {
-      const itemCard: DebugElement = de.query(By.css(itemCardListTag)).nativeElement;
-      spyOn(component.clickedItemAndIndexEvent, 'emit');
-
-      itemCard.triggerEventHandler('clickedItemAndIndex', { item: MOCK_ITEM, index: MOCK_ITEM_INDEX });
-      fixture.detectChanges();
-
-      expect(component.clickedItemAndIndexEvent.emit).toHaveBeenCalledWith({ item: MOCK_ITEM, index: MOCK_ITEM_INDEX });
     });
   });
 });
