@@ -40,7 +40,6 @@ export class ItemCardListComponent {
 
   public openItemDetailPage(item: Item, index: number): void {
     this.clickedItemAndIndex.emit({ item, index });
-    console.log(this.items);
     const link = environment.siteUrl.replace('es', this.subdomain) + 'item/' + item.webSlug;
     window.open(link);
 
