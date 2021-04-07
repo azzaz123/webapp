@@ -4,6 +4,7 @@ import {
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   ClickChatButton,
+  ClickItemCard,
   FavoriteItem,
   SCREEN_IDS,
   UnfavoriteItem,
@@ -15,6 +16,12 @@ import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
 import { MOCK_CAR_ITEM_DETAIL } from '@fixtures/item-detail.fixtures.spec';
 import { MOCK_ITEM, MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
 import { MOCK_OTHER_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
+import {
+  MAPPED_RECOMMENDED_ITEM_MOCK,
+  RECOMMENDED_ITEM_MOCK,
+} from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
+
+export const MOCK_ITEM_INDEX: number = 2;
 
 export const MOCK_CLICK_CHAT_BUTTON_EVENT: AnalyticsEvent<ClickChatButton> = {
   name: ANALYTICS_EVENT_NAMES.ClickChatButton,
@@ -78,6 +85,25 @@ export const MOCK_UNFAVORITE_ITEM_EVENT: AnalyticsEvent<UnfavoriteItem> = {
     isPro: MOCK_CAR_ITEM_DETAIL.user.featured,
     title: MOCK_CAR_ITEM_DETAIL.item.title,
     isBumped: !!MOCK_CAR_ITEM_DETAIL.item.bumpFlags,
+  },
+};
+
+export const MOCK_CLICK_ITEM_CARD_EVENT: AnalyticsEvent<ClickItemCard> = {
+  name: ANALYTICS_EVENT_NAMES.ClickItemCard,
+  eventType: ANALYTIC_EVENT_TYPES.Navigation,
+  attributes: {
+    itemId: MAPPED_RECOMMENDED_ITEM_MOCK.id,
+    categoryId: MAPPED_RECOMMENDED_ITEM_MOCK.categoryId,
+    position: MOCK_ITEM_INDEX + 1,
+    screenId: SCREEN_IDS.ItemDetailRecommendationSlider,
+    isPro: MOCK_OTHER_USER.featured,
+    salePrice: MAPPED_RECOMMENDED_ITEM_MOCK.salePrice,
+    title: MAPPED_RECOMMENDED_ITEM_MOCK.title,
+    itemSourceRecommendationId: MOCK_ITEM.id,
+    itemDistance: MOCK_OTHER_USER.itemDistance,
+    shippingAllowed: MAPPED_RECOMMENDED_ITEM_MOCK.saleConditions.shipping_allowed,
+    sellerUserId: MAPPED_RECOMMENDED_ITEM_MOCK.owner,
+    isBumped: !!MAPPED_RECOMMENDED_ITEM_MOCK.bumpFlags,
   },
 };
 
