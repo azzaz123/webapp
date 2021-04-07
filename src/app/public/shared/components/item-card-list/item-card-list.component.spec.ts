@@ -20,6 +20,7 @@ import { ItemCardListComponent } from './item-card-list.component';
 import { ShowSlotPipe } from './pipes/show-slot.pipe';
 
 describe('ItemCardListComponent', () => {
+  const cardSelector = 'tsl-public-item-card';
   let component: ItemCardListComponent;
   let fixture: ComponentFixture<ItemCardListComponent>;
   let de: DebugElement;
@@ -78,7 +79,6 @@ describe('ItemCardListComponent', () => {
   });
 
   describe('when component inits', () => {
-    const cardSelector = 'tsl-public-item-card';
     const cardShowDescriptionAttr = 'ng-reflect-show-description';
 
     it('should show as many cards as given', () => {
@@ -117,7 +117,7 @@ describe('ItemCardListComponent', () => {
       spyOn(window, 'open');
       spyOn(component.clickedItemAndIndex, 'emit');
       const expectedURL = `${environment.siteUrl.replace('es', 'www')}item/${MOCK_ITEM.webSlug}`;
-      const itemCard: HTMLElement = de.queryAll(By.css('tsl-public-item-card'))[MOCK_ITEM_INDEX].nativeElement;
+      const itemCard: HTMLElement = de.queryAll(By.css(cardSelector))[MOCK_ITEM_INDEX].nativeElement;
 
       itemCard.click();
       fixture.detectChanges();
