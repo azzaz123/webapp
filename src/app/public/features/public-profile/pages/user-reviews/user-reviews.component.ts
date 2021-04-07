@@ -5,6 +5,7 @@ import { PaginationResponse } from '@public/core/services/pagination/pagination.
 import { finalize, take } from 'rxjs/operators';
 import { Review } from '@private/features/reviews/core/review';
 import { ReviewResponse } from '@private/features/reviews/core/review-response.interface';
+import { EmptyStateProperties } from '@public/shared/components/empty-state/empty-state-properties.interface';
 
 @Component({
   selector: 'tsl-user-reviews',
@@ -12,6 +13,11 @@ import { ReviewResponse } from '@private/features/reviews/core/review-response.i
   styleUrls: ['./user-reviews.component.scss'],
 })
 export class UserReviewsComponent implements OnInit {
+  public readonly emptyStateProperties: EmptyStateProperties = {
+    title: $localize`:@@NoReviewsItemsTitle:No reviews yet`,
+    description: $localize`:@@NoReviewsItemsDescription:This person hasn't received any reviews. Will yours be the first?`,
+    drawingPath: '/assets/images/dolls/balloon.svg',
+  };
   public reviews: Review[] = [];
   public nextPaginationItem = 0;
   public loading = true;
