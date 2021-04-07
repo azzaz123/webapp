@@ -38,13 +38,11 @@ export class ItemStatsRowComponent implements OnInit {
       this.statsData.entries = this.removeCurrentDay(response);
       this.noData = every(response.entries, (entry) => !entry.values || isEmpty(entry.values));
     });
-    if (this.item.views === 0 || this.item.favorites === 0) {
-      this.itemService.getCounters(this.item.id).subscribe((counters: ItemCounters) => {
-        this.item.views = counters.views;
-        this.item.favorites = counters.favorites;
-        this.item.conversations = counters.conversations;
-      });
-    }
+    this.itemService.getCounters(this.item.id).subscribe((counters: ItemCounters) => {
+      this.item.views = counters.views;
+      this.item.favorites = counters.favorites;
+      this.item.conversations = counters.conversations;
+    });
   }
 
   changeExpandedState() {
