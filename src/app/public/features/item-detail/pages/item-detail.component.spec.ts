@@ -22,8 +22,12 @@ import {
   MOCK_ITEM_DETAIL_WITHOUT_LOCATION,
   MOCK_ITEM_DETAIL_WITHOUT_TAXONOMIES,
   MOCK_CAR_ITEM_DETAIL_WITHOUT_SOCIAL_SHARE,
+  MOCK_OTHER_USER_REAL_ESTATE_ITEM_DETAIL,
+  MOCK_OWN_REAL_ESTATE_ITEM_DETAIL,
+  MOCK_OTHER_USER_CG_ITEM_DETAIL,
+  MOCK_OTHER_USER_CAR_ITEM_DETAIL,
 } from '@fixtures/item-detail.fixtures.spec';
-import { MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
+import { MOCK_ITEM_CAR, MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
 import { IsCurrentUserStub } from '@fixtures/public/core';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 import { AdComponentStub } from '@fixtures/shared';
@@ -277,10 +281,7 @@ describe('ItemDetailComponent', () => {
       });
 
       it('should send view others real estate event if user is viewing others real estate', () => {
-        const mockRealEstateItemDetai: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
-        mockRealEstateItemDetai.item = MOCK_REALESTATE;
-        mockRealEstateItemDetai.user = MOCK_OTHER_USER;
-        itemDetailSubjectMock.next(mockRealEstateItemDetai);
+        itemDetailSubjectMock.next(MOCK_OTHER_USER_REAL_ESTATE_ITEM_DETAIL);
         spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
         spyOn(itemDetailTrackEventsService, 'trackViewOthersItemREDetailEvent');
         spyOn(itemDetailTrackEventsService, 'trackViewOwnItemDetail');
@@ -292,10 +293,7 @@ describe('ItemDetailComponent', () => {
       });
 
       it('should not send view others real estate event if user is viewing own real estate', () => {
-        const mockRealEstateItemDetai: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
-        mockRealEstateItemDetai.item = MOCK_REALESTATE;
-        mockRealEstateItemDetai.user = MOCK_USER;
-        itemDetailSubjectMock.next(mockRealEstateItemDetai);
+        itemDetailSubjectMock.next(MOCK_OWN_REAL_ESTATE_ITEM_DETAIL);
         spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
         spyOn(itemDetailTrackEventsService, 'trackViewOthersItemREDetailEvent');
         spyOn(itemDetailTrackEventsService, 'trackViewOwnItemDetail');
@@ -307,10 +305,7 @@ describe('ItemDetailComponent', () => {
       });
 
       it('should not send view others real estate event if user is viewing others products that is not real estate', () => {
-        const mockRealEstateItemDetai: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
-        mockRealEstateItemDetai.item = MOCK_ITEM_GBP;
-        mockRealEstateItemDetai.user = MOCK_OTHER_USER;
-        itemDetailSubjectMock.next(mockRealEstateItemDetai);
+        itemDetailSubjectMock.next(MOCK_OTHER_USER_CG_ITEM_DETAIL);
         spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
         spyOn(itemDetailTrackEventsService, 'trackViewOthersItemREDetailEvent');
         spyOn(itemDetailTrackEventsService, 'trackViewOthersCGDetailEvent');
@@ -322,10 +317,7 @@ describe('ItemDetailComponent', () => {
       });
 
       it('should send view others CG item detail event when user is viewing others consumer goods item detail', () => {
-        const mockCGItemDetail: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
-        mockCGItemDetail.item = MOCK_ITEM_GBP;
-        mockCGItemDetail.user = MOCK_OTHER_USER;
-        itemDetailSubjectMock.next(mockCGItemDetail);
+        itemDetailSubjectMock.next(MOCK_OTHER_USER_CG_ITEM_DETAIL);
         spyOn(userService, 'me').and.returnValue(of(new User(OTHER_USER_ID)));
         spyOn(itemDetailTrackEventsService, 'trackViewOthersCGDetailEvent');
 
@@ -345,10 +337,7 @@ describe('ItemDetailComponent', () => {
       });
 
       it('should not send view others CG item detail event when user is viewing their own consumer goods item detail', () => {
-        const mockCGItemDetail: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
-        mockCGItemDetail.item = MOCK_ITEM_GBP;
-        mockCGItemDetail.user = MOCK_USER;
-        itemDetailSubjectMock.next(mockCGItemDetail);
+        itemDetailSubjectMock.next(MOCK_ITEM_DETAIL_GBP);
         spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
         spyOn(itemDetailTrackEventsService, 'trackViewOthersCGDetailEvent');
 
@@ -358,10 +347,7 @@ describe('ItemDetailComponent', () => {
       });
 
       it('should send view others car event if user is viewing others car', () => {
-        const mockOthersCarItemDetail: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
-        mockOthersCarItemDetail.item = MOCK_CAR;
-        mockOthersCarItemDetail.user = MOCK_OTHER_USER;
-        itemDetailSubjectMock.next(mockOthersCarItemDetail);
+        itemDetailSubjectMock.next(MOCK_OTHER_USER_CAR_ITEM_DETAIL);
         spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
         spyOn(itemDetailTrackEventsService, 'trackViewOthersItemCarDetailEvent');
         spyOn(itemDetailTrackEventsService, 'trackViewOwnItemDetail');
@@ -369,29 +355,23 @@ describe('ItemDetailComponent', () => {
         fixture.detectChanges();
 
         expect(itemDetailTrackEventsService.trackViewOwnItemDetail).not.toHaveBeenCalled();
-        expect(itemDetailTrackEventsService.trackViewOthersItemCarDetailEvent).toHaveBeenCalledWith(MOCK_CAR, MOCK_OTHER_USER);
+        expect(itemDetailTrackEventsService.trackViewOthersItemCarDetailEvent).toHaveBeenCalledWith(MOCK_ITEM_CAR, MOCK_OTHER_USER);
       });
 
       it('should not send view others car event if user is viewing their own car', () => {
-        const mockOthersCarItemDetail: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
-        mockOthersCarItemDetail.item = MOCK_CAR;
-        mockOthersCarItemDetail.user = MOCK_USER;
-        itemDetailSubjectMock.next(mockOthersCarItemDetail);
+        itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
         spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
         spyOn(itemDetailTrackEventsService, 'trackViewOthersItemCarDetailEvent');
         spyOn(itemDetailTrackEventsService, 'trackViewOwnItemDetail');
 
         fixture.detectChanges();
 
-        expect(itemDetailTrackEventsService.trackViewOwnItemDetail).toHaveBeenCalledWith(MOCK_CAR, MOCK_USER);
+        expect(itemDetailTrackEventsService.trackViewOwnItemDetail).toHaveBeenCalledWith(MOCK_ITEM_CAR, MOCK_USER);
         expect(itemDetailTrackEventsService.trackViewOthersItemCarDetailEvent).not.toHaveBeenCalled();
       });
 
       it('should not send view others car event if user is viewing others prduct that is not a car', () => {
-        const mockOthersCarItemDetail: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
-        mockOthersCarItemDetail.item = MOCK_ITEM_GBP;
-        mockOthersCarItemDetail.user = MOCK_OTHER_USER;
-        itemDetailSubjectMock.next(mockOthersCarItemDetail);
+        itemDetailSubjectMock.next(MOCK_OTHER_USER_CG_ITEM_DETAIL);
         spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
         spyOn(itemDetailTrackEventsService, 'trackViewOthersItemCarDetailEvent');
         spyOn(itemDetailTrackEventsService, 'trackViewOthersCGDetailEvent');

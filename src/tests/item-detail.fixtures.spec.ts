@@ -5,11 +5,12 @@ import { ItemTaxonomies } from '@public/features/item-detail/components/item-tax
 import { of } from 'rxjs';
 import { MOCK_COUNTER_SPECIFICATIONS_CAR } from './map-specifications.fixtures.spec';
 import { MOCK_SOCIAL_SHARE } from './social-share.fixtures.spec';
-import { MOCK_USER_STATS, MOCK_USER_WITHOUT_LOCATION } from './user.fixtures.spec';
+import { MOCK_OTHER_USER, MOCK_USER_STATS, MOCK_USER_WITHOUT_LOCATION } from './user.fixtures.spec';
 import { Coordinate } from '@core/geolocation/address-response.interface';
 import { MOCK_ITEM, MOCK_ITEM_CAR, MOCK_ITEM_FASHION, MOCK_ITEM_GBP, MOCK_ITEM_WITHOUT_LOCATION } from '@fixtures/item.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { Item } from '@core/item/item';
+import { MOCK_REALESTATE } from './realestate.fixtures.spec';
 
 const UNDEFINED_COPY = $localize`:@@Undefined:Undefined`;
 
@@ -51,6 +52,11 @@ export const MOCK_CAR_ITEM_DETAIL: ItemDetail = {
   isItemACar: true,
   isItemAPhone: false,
   isAFashionItem: false,
+};
+
+export const MOCK_OTHER_USER_CAR_ITEM_DETAIL: ItemDetail = {
+  ...MOCK_CAR_ITEM_DETAIL,
+  user: MOCK_OTHER_USER,
 };
 
 export const MOCK_ITEM_DETAIL_GBP: ItemDetail = {
@@ -102,6 +108,24 @@ export const MOCK_ITEM_DETAIL_WITHOUT_TAXONOMIES: ItemDetail = {
 export const MOCK_ITEM_DETAIL_WITHOUT_ITEM: ItemDetail = {
   ...MOCK_CAR_ITEM_DETAIL,
   item: null,
+};
+
+export const MOCK_OTHER_USER_REAL_ESTATE_ITEM_DETAIL: ItemDetail = {
+  ...MOCK_CAR_ITEM_DETAIL,
+  item: MOCK_REALESTATE,
+  user: MOCK_OTHER_USER,
+};
+
+export const MOCK_OWN_REAL_ESTATE_ITEM_DETAIL: ItemDetail = {
+  ...MOCK_CAR_ITEM_DETAIL,
+  item: MOCK_REALESTATE,
+  user: MOCK_USER,
+};
+
+export const MOCK_OTHER_USER_CG_ITEM_DETAIL: ItemDetail = {
+  ...MOCK_CAR_ITEM_DETAIL,
+  item: MOCK_ITEM_GBP,
+  user: MOCK_OTHER_USER,
 };
 
 function getUserWithViewsAndFavourites(): Item {
