@@ -15,19 +15,7 @@ import { GoogCsa } from './google-ads-sense-shopping';
 export class GooglePublisherTagService {
   private static GOOGLE_ADS_SENSE_NAME = 'plas';
 
-  get googletag(): googletag.Googletag {
-    return this.window['googletag'];
-  }
-
-  private get googCsa(): GoogCsa {
-    return this.window && this.window['_googCsa'];
-  }
-
   private adSlotsLoadedSubject: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
-
-  private get adSlotsLoaded$(): Observable<string[]> {
-    return this.adSlotsLoadedSubject.asObservable();
-  }
 
   constructor(
     @Inject(WINDOW_TOKEN) private window: Window,
@@ -141,5 +129,17 @@ export class GooglePublisherTagService {
     slotsName.push(slotName);
     const newSlotsName: string[] = [...new Set(slotsName).values()];
     this.adSlotsLoadedSubject.next(newSlotsName);
+  }
+
+  get googletag(): googletag.Googletag {
+    return this.window['googletag'];
+  }
+
+  private get googCsa(): GoogCsa {
+    return this.window && this.window['_googCsa'];
+  }
+
+  private get adSlotsLoaded$(): Observable<string[]> {
+    return this.adSlotsLoadedSubject.asObservable();
   }
 }
