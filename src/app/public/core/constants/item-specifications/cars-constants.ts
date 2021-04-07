@@ -18,8 +18,4 @@ export enum CAR_SPECIFICATION_TYPE {
   GASOLINE = 'gasoline',
   AUTOMATIC = 'automatic',
   MANUAL = 'manual',
-  CONDITION_0 = 'brand_new',
-  CONDITION_1 = 'mint',
-  CONDITION_2 = 'some_blow',
-  CONDITION_3 = 'crappy',
 }
