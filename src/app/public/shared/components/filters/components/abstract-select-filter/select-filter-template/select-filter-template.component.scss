@@ -2,14 +2,6 @@
 
 $toolbar-height: 70px;
 
-@mixin alignUp() {
-  position: absolute;
-  background: $white;
-  top: 0;
-  right: 0;
-  left: 0;
-}
-
 .SelectFilterTemplate {
   &__toolbar {
     height: $toolbar-height;

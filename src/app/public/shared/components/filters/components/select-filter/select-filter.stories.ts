@@ -53,7 +53,7 @@ import { SelectFormComponent } from '@shared/form/components/select/select-form.
           (clear)="changeCondition([])"
         >
         </tsl-select-filter>
-        <hr />
+        <div style="height: 1px; width: 100%; background-color: #90A4AE;" class="my-3"></div>
         <tsl-select-filter
           [variant]="${FILTER_VARIANT.CONTENT}"
           [value]="genderValue"
