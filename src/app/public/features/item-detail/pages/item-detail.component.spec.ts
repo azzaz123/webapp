@@ -776,9 +776,9 @@ describe('ItemDetailComponent', () => {
       spyOn(userService, 'get').and.returnValue(of(MOCK_OTHER_USER));
       spyOn(itemDetailTrackEventsService, 'trackClickItemCardEvent');
 
-      recommenedItemCard.triggerEventHandler('clickedItemAndIndexEvent', { MAPPED_RECOMMENDED_ITEM_MOCK, MOCK_ITEM_INDEX });
-
+      recommenedItemCard.triggerEventHandler('clickedItemAndIndexEvent', { item: MAPPED_RECOMMENDED_ITEM_MOCK, index: MOCK_ITEM_INDEX });
       fixture.detectChanges();
+
       expect(itemDetailTrackEventsService.trackClickItemCardEvent).toHaveBeenCalled();
     });
   });
