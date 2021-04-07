@@ -681,6 +681,9 @@
   <msg id="4588618843305891254"><source>src/app/private/layout/components/sidebar/components/sidebar.component.html:21</source>Catalog</msg>
   <msg id="9029286143304711365"><source>src/app/private/layout/components/sidebar/components/sidebar.component.html:43</source>Reviews</msg>
   <msg id="7911416166208830577"><source>src/app/private/layout/components/sidebar/components/sidebar.component.html:57</source>Help</msg>
+  <msg id="NotFoundTitle"><source>src/app/public/features/error/pages/error.component.ts:12</source>Whoops, the page you&apos;re looking for can&apos;t be found</msg>
+  <msg id="NotFoundMessage"><source>src/app/public/features/error/pages/error.component.ts:13</source>Our office unicorn might have impaled it. But, there&apos;s lots to be discovered in the land of Wallapop.</msg>
+  <msg id="NotFoundButtonText"><source>src/app/public/features/error/pages/error.component.ts:17</source>See listings</msg>
   <msg id="Feature"><source>src/app/public/features/item-detail/components/item-detail-header/item-detail-header.component.html:13</source>Feature</msg>
   <msg id="checkAsReservedItem"><source>src/app/public/features/item-detail/components/item-detail-header/item-detail-header.component.html:47,50</source><ph name="START_TAG_TSL_SVG_ICON"/><ph name="CLOSE_TAG_TSL_SVG_ICON"/> Mark as reserved </msg>
   <msg id="checkAsSoldItem"><source>src/app/public/features/item-detail/components/item-detail-header/item-detail-header.component.html:52,55</source><ph name="START_TAG_TSL_SVG_ICON"/><ph name="CLOSE_TAG_TSL_SVG_ICON"/> Mark as sold </msg>
