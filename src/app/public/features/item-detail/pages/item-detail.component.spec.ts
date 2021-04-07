@@ -33,6 +33,7 @@ import { ItemCardService } from '@public/core/services/item-card/item-card.servi
 import {
   EMPTY_RECOMMENDED_ITEMS_MOCK,
   RECOMMENDED_ITEMS_MOCK,
+  MAPPED_RECOMMENDED_ITEM_MOCK,
 } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
 import { CustomCurrencyPipe } from '@shared/pipes';
 import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
@@ -57,7 +58,7 @@ import { UserService } from '@core/user/user.service';
 import { MockedUserService, MOCK_OTHER_USER, MOCK_USER, OTHER_USER_ID, USER_ID } from '@fixtures/user.fixtures.spec';
 import { User } from '@core/user/user';
 import { ItemDetailTrackEventsService } from '../core/services/item-detail-track-events/item-detail-track-events.service';
-import { MockItemdDetailTrackEventService } from '../core/services/item-detail-track-events/track-events.fixtures.spec';
+import { MockItemdDetailTrackEventService, MOCK_ITEM_INDEX } from '../core/services/item-detail-track-events/track-events.fixtures.spec';
 import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
 
 describe('ItemDetailComponent', () => {
@@ -740,6 +741,19 @@ describe('ItemDetailComponent', () => {
 
       fixture.detectChanges();
       expect(itemDetailStoreService.toggleFavouriteItem).toHaveBeenCalled();
+    });
+  });
+
+  describe('when we click one of the recommened item cards', () => {
+    it('should send track click item card event', () => {
+      const recommenedItemCard = fixture.debugElement.query(By.css(recommendedItemsTag));
+      spyOn(userService, 'get').and.returnValue(of(MOCK_OTHER_USER));
+      spyOn(itemDetailTrackEventsService, 'trackClickItemCardEvent');
+
+      recommenedItemCard.triggerEventHandler('clickedItemAndIndexEvent', { MAPPED_RECOMMENDED_ITEM_MOCK, MOCK_ITEM_INDEX });
+
+      fixture.detectChanges();
+      expect(itemDetailTrackEventsService.trackClickItemCardEvent).toHaveBeenCalled();
     });
   });
 });
