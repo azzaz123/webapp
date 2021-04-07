@@ -24,22 +24,4 @@ describe('ErrorBoxComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  describe('when the clickable element is a button', () => {
-    it('should have the appearance of a button', () => {
-      component.exit = MOCK_ERROR_BOX_EXIT_BUTTON;
-      const className = component.getExitButtonClassName();
-
-      expect(className).toEqual('btn-primary');
-    });
-  });
-
-  describe('when the clickable element is a link', () => {
-    it('should have the appearance of a link', () => {
-      component.exit = MOCK_ERROR_BOX_EXIT_LINK;
-      const className = component.getExitButtonClassName();
-
-      expect(className).toEqual('basic');
-    });
-  });
 });
