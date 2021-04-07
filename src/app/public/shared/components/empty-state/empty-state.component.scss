@@ -1,0 +1,8 @@
+@import '~style/common';
+
+span {
+  font-size: $font-size-m;
+  &.bold {
+    font-weight: $font-weight-chunky;
+  }
+}
