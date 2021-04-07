@@ -12,12 +12,12 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { AbstractFilterModule } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.module';
 import { FilterOptionServiceModule } from '@public/shared/services/filter-option/filter-option-service.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { IconGridCheckBoxFormModule } from '@shared/form/components/icon-grid-check-box/icon-grid-check-box-form.module';
+import { GridSelectFormFormModule } from '@shared/form/components/grid-select/grid-select-form-form.module';
 import { By } from '@angular/platform-browser';
 import { FILTER_TYPES } from '@public/shared/components/filters/core/enums/filter-types/filter-types.enum';
 import { FilterTemplateComponent } from '../abstract-filter/filter-template/filter-template.component';
 import { CAR_CONFIGURATION_ID } from '../../core/enums/configuration-ids/car-configuration-ids';
-import { IconGridCheckBoxFormComponent } from '@shared/form/components/icon-grid-check-box/icon-grid-check-box-form.component';
+import { GridSelectFormComponent } from '@shared/form/components/grid-select/grid-select-form.component';
 
 @Component({
   selector: 'tsl-test-wrapper',
@@ -37,7 +37,7 @@ describe('IconGridFilterComponent', () => {
   let fixture: ComponentFixture<TestWrapperComponent>;
 
   const filterPredicate = By.directive(FilterTemplateComponent);
-  const formPredicate = By.directive(IconGridCheckBoxFormComponent);
+  const formPredicate = By.directive(GridSelectFormComponent);
 
   const basicConfig: IconGridFilterConfig = {
     id: CAR_CONFIGURATION_ID.ENGINE,
@@ -78,7 +78,7 @@ describe('IconGridFilterComponent', () => {
         FilterOptionServiceModule,
         FormsModule,
         ReactiveFormsModule,
-        IconGridCheckBoxFormModule,
+        GridSelectFormFormModule,
       ],
     }).compileComponents();
   });
@@ -102,7 +102,7 @@ describe('IconGridFilterComponent', () => {
     });
 
     it('should pass the property to the form', () => {
-      const form: IconGridCheckBoxFormComponent = debugElement.query(formPredicate).componentInstance;
+      const form: GridSelectFormComponent = debugElement.query(formPredicate).componentInstance;
 
       expect(form.isMultiselect).toBeTruthy();
     });
@@ -115,7 +115,7 @@ describe('IconGridFilterComponent', () => {
     });
 
     it('should pass the property to the form', () => {
-      const form: IconGridCheckBoxFormComponent = debugElement.query(formPredicate).componentInstance;
+      const form: GridSelectFormComponent = debugElement.query(formPredicate).componentInstance;
 
       expect(form.isBig).toBeTruthy();
     });
@@ -228,7 +228,7 @@ describe('IconGridFilterComponent', () => {
       describe('and is bubble variant', () => {
         beforeEach(() => {
           fixture.detectChanges();
-          const form: IconGridCheckBoxFormComponent = debugElement.query(formPredicate).componentInstance;
+          const form: GridSelectFormComponent = debugElement.query(formPredicate).componentInstance;
 
           form.handleOptionClick('gasoline');
         });
@@ -266,7 +266,7 @@ describe('IconGridFilterComponent', () => {
         });
 
         it('should change value', () => {
-          const form: IconGridCheckBoxFormComponent = debugElement.query(formPredicate).componentInstance;
+          const form: GridSelectFormComponent = debugElement.query(formPredicate).componentInstance;
 
           form.handleOptionClick('gasoline');
           fixture.detectChanges();
@@ -275,7 +275,7 @@ describe('IconGridFilterComponent', () => {
         });
 
         it('should change label', () => {
-          const form: IconGridCheckBoxFormComponent = debugElement.query(formPredicate).componentInstance;
+          const form: GridSelectFormComponent = debugElement.query(formPredicate).componentInstance;
 
           form.handleOptionClick('gasoline');
           fixture.detectChanges();
@@ -286,7 +286,7 @@ describe('IconGridFilterComponent', () => {
 
         it('should emit value change', () => {
           spyOn(component.valueChange, 'emit');
-          const form: IconGridCheckBoxFormComponent = debugElement.query(formPredicate).componentInstance;
+          const form: GridSelectFormComponent = debugElement.query(formPredicate).componentInstance;
 
           form.handleOptionClick('gasoline');
           fixture.detectChanges();

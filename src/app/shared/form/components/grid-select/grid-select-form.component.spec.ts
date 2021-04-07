@@ -1,21 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IconGridCheckBoxFormComponent } from './icon-grid-check-box-form.component';
+import { GridSelectFormComponent } from './grid-select-form.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { IconGridCheckBoxOption } from '@shared/form/components/icon-grid-check-box/interfaces/icon-grid-check-box-option.interface';
+import { GridSelectFormOption } from '@shared/form/components/grid-select/interfaces/grid-select-form-option.interface';
 import { DebugElement } from '@angular/core';
-import { GridSelectOptionComponent } from '@shared/form/components/icon-grid-check-box/grid-select-option/grid-select-option.component';
+import { GridSelectOptionComponent } from '@shared/form/components/grid-select/grid-select-option/grid-select-option.component';
 import { By } from '@angular/platform-browser';
-import { GridSelectOptionModule } from '@shared/form/components/icon-grid-check-box/grid-select-option/grid-select-option.module';
+import { GridSelectOptionModule } from '@shared/form/components/grid-select/grid-select-option/grid-select-option.module';
 import { CommonModule } from '@angular/common';
 
-describe('IconGridCheckBoxFormComponent', () => {
-  let component: IconGridCheckBoxFormComponent;
-  let fixture: ComponentFixture<IconGridCheckBoxFormComponent>;
+describe('GridSelectFormComponent', () => {
+  let component: GridSelectFormComponent;
+  let fixture: ComponentFixture<GridSelectFormComponent>;
   let debugElement: DebugElement;
 
-  const iconPredicate = By.directive(GridSelectOptionComponent);
-  const options: IconGridCheckBoxOption[] = [
+  const optionPredicate = By.directive(GridSelectOptionComponent);
+  const options: GridSelectFormOption[] = [
     {
       label: 'Test 1',
       value: 'test_1',
@@ -30,13 +30,13 @@ describe('IconGridCheckBoxFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [IconGridCheckBoxFormComponent],
+      declarations: [GridSelectFormComponent],
       imports: [HttpClientTestingModule, GridSelectOptionModule, CommonModule],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(IconGridCheckBoxFormComponent);
+    fixture = TestBed.createComponent(GridSelectFormComponent);
     debugElement = fixture.debugElement;
     component = fixture.componentInstance;
     component.options = options;
@@ -94,16 +94,16 @@ describe('IconGridCheckBoxFormComponent', () => {
       });
       describe('and is not multiselect', () => {
         it('should overwrite the value list', () => {
-          let icon1 = findGridSelectOption('Test 1');
-          expect(icon1.componentInstance.isActive).toBeTruthy();
+          let option1 = findGridSelectOption('Test 1');
+          expect(option1.componentInstance.isActive).toBeTruthy();
 
           clickGridSelectOption('Test 2');
           fixture.detectChanges();
 
-          icon1 = findGridSelectOption('Test 1');
-          const icon2 = findGridSelectOption('Test 2');
-          expect(icon1.componentInstance.isActive).toBeFalsy();
-          expect(icon2.componentInstance.isActive).toBeTruthy();
+          option1 = findGridSelectOption('Test 1');
+          const option2 = findGridSelectOption('Test 2');
+          expect(option1.componentInstance.isActive).toBeFalsy();
+          expect(option2.componentInstance.isActive).toBeTruthy();
         });
       });
       describe('and is multiselect', () => {
@@ -112,16 +112,16 @@ describe('IconGridCheckBoxFormComponent', () => {
           fixture.detectChanges();
         });
         it('should add to the value list', () => {
-          let icon1 = findGridSelectOption('Test 1');
-          expect(icon1.componentInstance.isActive).toBeTruthy();
+          let option1 = findGridSelectOption('Test 1');
+          expect(option1.componentInstance.isActive).toBeTruthy();
 
           clickGridSelectOption('Test 2');
           fixture.detectChanges();
 
-          icon1 = findGridSelectOption('Test 1');
-          const icon2 = findGridSelectOption('Test 2');
-          expect(icon1.componentInstance.isActive).toBeTruthy();
-          expect(icon2.componentInstance.isActive).toBeTruthy();
+          option1 = findGridSelectOption('Test 1');
+          const option2 = findGridSelectOption('Test 2');
+          expect(option1.componentInstance.isActive).toBeTruthy();
+          expect(option2.componentInstance.isActive).toBeTruthy();
         });
       });
     });
@@ -133,6 +133,6 @@ describe('IconGridCheckBoxFormComponent', () => {
   }
 
   function findGridSelectOption(label: string): DebugElement {
-    return debugElement.queryAll(iconPredicate).find((debug) => debug.componentInstance.label === label);
+    return debugElement.queryAll(optionPredicate).find((debug) => debug.componentInstance.label === label);
   }
 });

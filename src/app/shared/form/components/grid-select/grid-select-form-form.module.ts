@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IconGridCheckBoxFormComponent } from './icon-grid-check-box-form.component';
+import { GridSelectFormComponent } from './grid-select-form.component';
 import { GridSelectOptionModule } from './grid-select-option/grid-select-option.module';
 
 @NgModule({
-  declarations: [IconGridCheckBoxFormComponent],
-  exports: [IconGridCheckBoxFormComponent],
+  declarations: [GridSelectFormComponent],
+  exports: [GridSelectFormComponent],
   imports: [CommonModule, GridSelectOptionModule],
 })
-export class IconGridCheckBoxFormModule {}
+export class GridSelectFormFormModule {}

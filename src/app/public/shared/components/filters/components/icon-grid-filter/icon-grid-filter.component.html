@@ -10,11 +10,11 @@
                      (clear)="handleClear()"
                      (openStateChange)="openStateChange.emit($event)">
   <form [formGroup]="formGroup">
-    <tsl-icon-grid-check-box-form formControlName="select"
-                                  [options]="options"
-                                  [isMultiselect]="config.isMultiselect"
-                                  [isBig]="config.hasBigIcons">
-    </tsl-icon-grid-check-box-form>
+    <tsl-grid-select-form formControlName="select"
+                          [options]="options"
+                          [isMultiselect]="config.isMultiselect"
+                          [isBig]="config.hasBigIcons">
+    </tsl-grid-select-form>
   </form>
 
 </tsl-filter-template>

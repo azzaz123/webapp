@@ -1,44 +1,44 @@
 import { moduleMetadata } from '@storybook/angular';
 import { Story } from '@storybook/angular/types-6-0';
 import { HttpClientModule } from '@angular/common/http';
-import { IconGridCheckBoxOption } from './interfaces/icon-grid-check-box-option.interface';
+import { GridSelectFormOption } from './interfaces/grid-select-form-option.interface';
 import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { IconGridCheckBoxFormModule } from '@shared/form/components/icon-grid-check-box/icon-grid-check-box-form.module';
+import { GridSelectFormFormModule } from '@shared/form/components/grid-select/grid-select-form-form.module';
 
 @Component({
-  selector: 'tsl-story-icon-grid-check-box',
+  selector: 'tsl-story-grid-select-form',
   template: `
     <h4>NgModel: {{ select.join(', ') }}</h4>
     <div style="width: 400px">
       <div style="background: white; border: 1px dashed black;">
-        <tsl-icon-grid-check-box-form
+        <tsl-grid-select-form
           [(ngModel)]="select"
           [options]="options"
           [columns]="columns"
           [isBig]="isBig"
           [isMultiselect]="isMultiselect"
-        ></tsl-icon-grid-check-box-form>
+        ></tsl-grid-select-form>
       </div>
     </div>
     <h4 class="mt-4">FormGroup: {{ formGroup.value.select.join(', ') }}</h4>
     <div style="width: 400px">
       <div style="background: white; border: 1px dashed black;">
         <form [formGroup]="formGroup">
-          <tsl-icon-grid-check-box-form
+          <tsl-grid-select-form
             formControlName="select"
             [options]="options"
             [columns]="columns"
             [isBig]="isBig"
             [isMultiselect]="isMultiselect"
-          ></tsl-icon-grid-check-box-form>
+          ></tsl-grid-select-form>
         </form>
       </div>
     </div>
   `,
 })
-class StoryIconGridCheckBoxFormComponent {
-  @Input() options: IconGridCheckBoxOption[];
+class StoryGridSelectFormFormComponent {
+  @Input() options: GridSelectFormOption[];
   @Input() columns: number;
   @Input() isBig?: boolean;
   @Input() isMultiselect?: boolean;
@@ -51,22 +51,22 @@ class StoryIconGridCheckBoxFormComponent {
 }
 
 export default {
-  title: 'Webapp/Shared/Form/Components/IconGridCheckBox',
-  component: StoryIconGridCheckBoxFormComponent,
+  title: 'Webapp/Shared/Form/Components/GridSelectForm',
+  component: StoryGridSelectFormFormComponent,
   decorators: [
     moduleMetadata({
-      declarations: [StoryIconGridCheckBoxFormComponent],
-      imports: [HttpClientModule, ReactiveFormsModule, IconGridCheckBoxFormModule],
+      declarations: [StoryGridSelectFormFormComponent],
+      imports: [HttpClientModule, ReactiveFormsModule, GridSelectFormFormModule],
     }),
   ],
 };
 
-const Template: Story<StoryIconGridCheckBoxFormComponent> = (args) => ({
+const Template: Story<StoryGridSelectFormFormComponent> = (args) => ({
   props: args,
-  component: StoryIconGridCheckBoxFormComponent,
+  component: StoryGridSelectFormFormComponent,
   template: `
-    <tsl-story-icon-grid-check-box [isBig]="isBig" [columns]="columns" [options]="options" [isMultiselect]="isMultiselect">
-</tsl-story-icon-grid-check-box>
+    <tsl-story-grid-select-form [isBig]="isBig" [columns]="columns" [options]="options" [isMultiselect]="isMultiselect">
+    </tsl-story-grid-select-form>
   `,
 });
 
@@ -96,7 +96,7 @@ Multiselect.args = {
   isMultiselect: true,
 };
 
-function getOptions(amount: number, icon: string, label: string, value: string): IconGridCheckBoxOption[] {
+function getOptions(amount: number, icon: string, label: string, value: string): GridSelectFormOption[] {
   const arr = new Array(amount).fill(undefined);
   return arr.map((a, index) => ({
     label: `${label} ${index}`,
