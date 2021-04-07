@@ -58,7 +58,7 @@ import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
           (clear)="changeClothingType([])"
         >
         </tsl-suggester-filter>
-        <hr />
+        <div style="height: 1px; width: 100%; background-color: #90A4AE;" class="my-3"></div>
         <tsl-suggester-filter
           [variant]="${FILTER_VARIANT.CONTENT}"
           [value]="brandValue"

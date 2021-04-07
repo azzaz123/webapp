@@ -8,6 +8,7 @@ $filter-content-height: 355px;
   &__dropdown_menu {
     min-width: 380px;
     padding: 0 !important;
+    overflow: hidden;
 
     @include media-breakpoint-down(sm) {
       animation: slideUp 0.45s ease-in-out;
