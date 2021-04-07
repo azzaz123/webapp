@@ -4,10 +4,6 @@ import { UuidService } from '@core/uuid/uuid.service';
 import { CAR_DATA, MOCK_CAR } from '@fixtures/car.fixtures.spec';
 import { ITEM_DATA_V3 } from '@fixtures/item.fixtures.spec';
 import { MOCK_REALESTATE, REALESTATE_DATA } from '@fixtures/realestate.fixtures.spec';
-import {
-  MAPPED_RECOMMENDED_ITEM_MOCK,
-  RECOMMENDED_ITEMS_MOCK,
-} from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
 import { MapItemService } from './map-item.service';
 
 describe('MapItemService', () => {

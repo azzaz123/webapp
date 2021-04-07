@@ -4,9 +4,7 @@ import { Image } from '@core/user/user-response.interface';
 import { UuidService } from '@core/uuid/uuid.service';
 import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class MapPublishedItemCardService {
   constructor(private uuidService: UuidService) {}
 
@@ -14,18 +12,18 @@ export class MapPublishedItemCardService {
     return publishedItemsResponse?.map((itemResponse) => this.mapPublishedItem(itemResponse.content));
   }
 
-  private mapPublishedItem(publishedItemRespone: ItemContent): ItemCard {
+  private mapPublishedItem(publishedItemResponse: ItemContent): ItemCard {
     return {
-      id: publishedItemRespone.id,
-      ownerId: publishedItemRespone.user.id,
-      title: publishedItemRespone.title,
-      description: publishedItemRespone.description,
-      salePrice: publishedItemRespone.price,
-      images: !!publishedItemRespone.images?.length ? publishedItemRespone.images : [this.getMainImage(publishedItemRespone.image)],
-      flags: publishedItemRespone.flags,
-      bumpFlags: publishedItemRespone.visibility_flags,
-      webSlug: publishedItemRespone.web_slug,
-      currencyCode: publishedItemRespone.currency,
+      id: publishedItemResponse.id,
+      ownerId: publishedItemResponse.user.id,
+      title: publishedItemResponse.title,
+      description: publishedItemResponse.description,
+      salePrice: publishedItemResponse.price,
+      images: !!publishedItemResponse.images?.length ? publishedItemResponse.images : [this.getMainImage(publishedItemResponse.image)],
+      flags: publishedItemResponse.flags,
+      bumpFlags: publishedItemResponse.visibility_flags,
+      webSlug: publishedItemResponse.web_slug,
+      currencyCode: publishedItemResponse.currency,
     };
   }
 

@@ -16,7 +16,7 @@ describe('ItemCardService', () => {
     itemCardService = TestBed.inject(ItemCardService);
   });
 
-  describe('toogleFavourite', () => {
+  describe('toggleFavourite', () => {
     it('should set favourite flag if not favourite', () => {
       const ITEM = MOCK_ITEM_CARD;
       ITEM.flags.favorite = false;

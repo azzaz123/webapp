@@ -4,9 +4,7 @@ import { UuidService } from '@core/uuid/uuid.service';
 import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
 import { RecommenderItem, RecommenderItemImage } from '@public/core/services/api/recommender/interfaces/recommender-item.interface';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class MapRecommendedItemCardService {
   constructor(private uuidService: UuidService) {}
 
