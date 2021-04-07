@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
+import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
 import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
-import { ItemCard } from '@public/shared/components/item-card/interfaces/item-card.interface';
 import { MapRecommendedItemCardService } from '../../core/services/map-recommended-item-card/map-recommended-item-card.service';
 
 @Component({

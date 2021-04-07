@@ -1,7 +1,7 @@
 import { ITEM_DATA } from '@fixtures/item.fixtures.spec';
-import { ItemCardWide } from './interfaces/item-card-wide.interface';
+import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
 
-export const MOCK_ITEM_CARD_WIDE: ItemCardWide = {
+export const MOCK_ITEM_CARD_WIDE: ItemCard = {
   id: ITEM_DATA.id,
   title: ITEM_DATA.title,
   description: ITEM_DATA.description,
@@ -12,7 +12,7 @@ export const MOCK_ITEM_CARD_WIDE: ItemCardWide = {
   ownerId: ITEM_DATA.owner,
 };
 
-export const MOCK_ITEM_CARD_WIDE_GBP: ItemCardWide = {
+export const MOCK_ITEM_CARD_WIDE_GBP: ItemCard = {
   id: ITEM_DATA.id,
   title: ITEM_DATA.title,
   description: ITEM_DATA.description,
@@ -23,7 +23,7 @@ export const MOCK_ITEM_CARD_WIDE_GBP: ItemCardWide = {
   ownerId: ITEM_DATA.owner,
 };
 
-export const MOCK_ITEM_CARD_WIDE_FAVOURITE: ItemCardWide = {
+export const MOCK_ITEM_CARD_WIDE_FAVOURITE: ItemCard = {
   id: ITEM_DATA.id,
   title: ITEM_DATA.title,
   description: ITEM_DATA.description,
@@ -43,7 +43,7 @@ export const MOCK_ITEM_CARD_WIDE_FAVOURITE: ItemCardWide = {
   ownerId: ITEM_DATA.owner,
 };
 
-export const MOCK_ITEM_CARD_WIDE_RESERVED: ItemCardWide = {
+export const MOCK_ITEM_CARD_WIDE_RESERVED: ItemCard = {
   id: ITEM_DATA.id,
   title: ITEM_DATA.title,
   description: ITEM_DATA.description,
@@ -63,7 +63,7 @@ export const MOCK_ITEM_CARD_WIDE_RESERVED: ItemCardWide = {
   ownerId: ITEM_DATA.owner,
 };
 
-export const MOCK_ITEM_CARD_WIDE_SOLD: ItemCardWide = {
+export const MOCK_ITEM_CARD_WIDE_SOLD: ItemCard = {
   id: ITEM_DATA.id,
   title: ITEM_DATA.title,
   description: ITEM_DATA.description,
@@ -83,7 +83,7 @@ export const MOCK_ITEM_CARD_WIDE_SOLD: ItemCardWide = {
   ownerId: ITEM_DATA.owner,
 };
 
-export const MOCK_ITEM_CARD_WIDE_BUMPED: ItemCardWide = {
+export const MOCK_ITEM_CARD_WIDE_BUMPED: ItemCard = {
   id: ITEM_DATA.id,
   title: ITEM_DATA.title,
   description: ITEM_DATA.description,
@@ -102,7 +102,7 @@ export const MOCK_ITEM_CARD_WIDE_BUMPED: ItemCardWide = {
   ownerId: ITEM_DATA.owner,
 };
 
-export const MOCK_ITEM_CARD_WIDE_COUNTRY_BUMPED: ItemCardWide = {
+export const MOCK_ITEM_CARD_WIDE_COUNTRY_BUMPED: ItemCard = {
   id: ITEM_DATA.id,
   title: ITEM_DATA.title,
   description: ITEM_DATA.description,
@@ -121,12 +121,12 @@ export const MOCK_ITEM_CARD_WIDE_COUNTRY_BUMPED: ItemCardWide = {
   ownerId: ITEM_DATA.owner,
 };
 
-export const MOCK_ITEM_CARD_WIDE_WITHOUT_IMAGES: ItemCardWide = {
+export const MOCK_ITEM_CARD_WIDE_WITHOUT_IMAGES: ItemCard = {
   id: ITEM_DATA.id,
   title: ITEM_DATA.title,
   description: ITEM_DATA.description,
   salePrice: ITEM_DATA.sale_price,
-  images: null,
+  images: [],
   flags: ITEM_DATA.flags,
   webSlug: ITEM_DATA.web_slug,
   currencyCode: ITEM_DATA.currency_code,

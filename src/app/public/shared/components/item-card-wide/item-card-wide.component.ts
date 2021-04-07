@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Item } from '@core/item/item';
+import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { ItemCardWide } from './interfaces/item-card-wide.interface';
 
 @Component({
   selector: 'tsl-item-card-wide',
@@ -10,7 +9,7 @@ import { ItemCardWide } from './interfaces/item-card-wide.interface';
   styleUrls: ['./item-card-wide.component.scss'],
 })
 export class ItemCardWideComponent {
-  @Input() item: ItemCardWide;
+  @Input() item: ItemCard;
   @Input() itemExtraInfo: string[];
   @Input() showFavourite = true;
 

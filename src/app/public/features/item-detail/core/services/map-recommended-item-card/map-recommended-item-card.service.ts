@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Image } from '@core/user/user-response.interface';
 import { UuidService } from '@core/uuid/uuid.service';
+import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
 import { RecommenderItem, RecommenderItemImage } from '@public/core/services/api/recommender/interfaces/recommender-item.interface';
-import { ItemCard } from '@public/shared/components/item-card/interfaces/item-card.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -20,13 +20,13 @@ export class MapRecommendedItemCardService {
       ownerId: recommendedItem.seller_id,
       title: recommendedItem.title,
       salePrice: recommendedItem.price,
-      mainImage: recommendedItem.images?.length ? this.getMainImage(recommendedItem.images[0]) : null,
+      images: recommendedItem.images?.map((image) => this.getImage(image)),
       webSlug: recommendedItem.web_slug,
       currencyCode: recommendedItem.currency,
     };
   }
 
-  private getMainImage(image: RecommenderItemImage): Image {
+  private getImage(image: RecommenderItemImage): Image {
     return {
       id: this.uuidService.getUUID(),
       original_width: image.original_width,

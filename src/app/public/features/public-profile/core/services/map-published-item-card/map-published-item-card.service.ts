@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ItemContent, ItemImagesURLs, ItemResponse } from '@core/item/item-response.interface';
 import { Image } from '@core/user/user-response.interface';
 import { UuidService } from '@core/uuid/uuid.service';
-import { ItemCard } from '@public/shared/components/item-card/interfaces/item-card.interface';
+import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +21,7 @@ export class MapPublishedItemCardService {
       title: publishedItemRespone.title,
       description: publishedItemRespone.description,
       salePrice: publishedItemRespone.price,
-      mainImage: this.getMainImage(publishedItemRespone.images, publishedItemRespone.image),
+      images: !!publishedItemRespone.images?.length ? publishedItemRespone.images : [this.getMainImage(publishedItemRespone.image)],
       flags: publishedItemRespone.flags,
       bumpFlags: publishedItemRespone.visibility_flags,
       webSlug: publishedItemRespone.web_slug,
@@ -29,15 +29,13 @@ export class MapPublishedItemCardService {
     };
   }
 
-  private getMainImage(images: Image[], imageURLs: ItemImagesURLs): Image {
-    return images?.length
-      ? images[0]
-      : {
-          id: this.uuidService.getUUID(),
-          original_width: imageURLs?.original_width || null,
-          original_height: imageURLs?.original_height || null,
-          average_hex_color: '',
-          urls_by_size: imageURLs,
-        };
+  private getMainImage(imageURLs: ItemImagesURLs): Image {
+    return {
+      id: this.uuidService.getUUID(),
+      original_width: imageURLs?.original_width || null,
+      original_height: imageURLs?.original_height || null,
+      average_hex_color: '',
+      urls_by_size: imageURLs,
+    };
   }
 }

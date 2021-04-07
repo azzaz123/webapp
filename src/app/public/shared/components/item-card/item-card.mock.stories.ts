@@ -1,5 +1,5 @@
 import { ITEM_DATA } from '@fixtures/item.fixtures.spec';
-import { ItemCard } from './interfaces/item-card.interface';
+import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
 
 export const MOCK_ITEM_1: ItemCard = {
   id: ITEM_DATA.id,
@@ -8,13 +8,13 @@ export const MOCK_ITEM_1: ItemCard = {
   description:
     'Long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max ch',
   salePrice: ITEM_DATA.sale_price,
-  mainImage: ITEM_DATA.main_image,
+  images: [ITEM_DATA.main_image],
   flags: ITEM_DATA.flags,
   webSlug: ITEM_DATA.web_slug,
   currencyCode: ITEM_DATA.currency_code,
 };
 
-MOCK_ITEM_1.mainImage.urls_by_size = {
+MOCK_ITEM_1.images[0].urls_by_size = {
   original: 'http://localhost:6006/images/item-camera.jpg',
   small: 'http://localhost:6006/images/item-camera.jpg',
   large: 'http://localhost:6006/images/item-camera.jpg',
@@ -29,7 +29,7 @@ export const MOCK_ITEM_2: ItemCard = {
   description:
     'Long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max chars, long description max ch',
   salePrice: ITEM_DATA.sale_price,
-  mainImage: ITEM_DATA.main_image,
+  images: [ITEM_DATA.main_image],
   flags: ITEM_DATA.flags,
   webSlug: ITEM_DATA.web_slug,
   currencyCode: ITEM_DATA.currency_code,
@@ -41,7 +41,7 @@ export const MOCK_ITEM_3: ItemCard = {
   title: ITEM_DATA.title,
   description: ITEM_DATA.description,
   salePrice: ITEM_DATA.sale_price,
-  mainImage: ITEM_DATA.main_image,
+  images: [ITEM_DATA.main_image],
   flags: {
     pending: false,
     banned: false,
@@ -61,7 +61,7 @@ export const MOCK_ITEM_4: ItemCard = {
   title: ITEM_DATA.title,
   description: ITEM_DATA.description,
   salePrice: ITEM_DATA.sale_price,
-  mainImage: ITEM_DATA.main_image,
+  images: [ITEM_DATA.main_image],
   flags: {
     pending: false,
     banned: false,
@@ -81,7 +81,7 @@ export const MOCK_ITEM_5: ItemCard = {
   title: ITEM_DATA.title,
   description: ITEM_DATA.description,
   salePrice: ITEM_DATA.sale_price,
-  mainImage: ITEM_DATA.main_image,
+  images: [ITEM_DATA.main_image],
   flags: {
     pending: false,
     banned: false,
@@ -101,7 +101,7 @@ export const MOCK_ITEM_6: ItemCard = {
   title: ITEM_DATA.title,
   description: ITEM_DATA.description,
   salePrice: ITEM_DATA.sale_price,
-  mainImage: ITEM_DATA.main_image,
+  images: [ITEM_DATA.main_image],
   flags: ITEM_DATA.flags,
   bumpFlags: {
     bumped: true,
@@ -120,7 +120,7 @@ export const MOCK_ITEM_7: ItemCard = {
   title: ITEM_DATA.title,
   description: ITEM_DATA.description,
   salePrice: ITEM_DATA.sale_price,
-  mainImage: ITEM_DATA.main_image,
+  images: [ITEM_DATA.main_image],
   flags: {
     pending: false,
     banned: false,

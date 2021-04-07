@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ItemResponse } from '@core/item/item-response.interface';
+import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
 import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
-import { ItemCard } from '@public/shared/components/item-card/interfaces/item-card.interface';
 import { finalize, take } from 'rxjs/operators';
 import { MapPublishedItemCardService } from '../../core/services/map-published-item-card/map-published-item-card.service';
 import { PublicProfileService } from '../../core/services/public-profile.service';

@@ -1,6 +1,6 @@
 import { Image } from '@core/user/user-response.interface';
+import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
 import { RECOMMENDED_ITEM_MOCK } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
-import { ItemCard } from '@public/shared/components/item-card/interfaces/item-card.interface';
 import { ITEM_BUMP_FLAGS, ITEM_DATA, MOCK_ITEM_RESPONSE } from './item.fixtures.spec';
 import { USER_ID } from './user.fixtures.spec';
 
@@ -10,7 +10,7 @@ export const MOCK_ITEM_CARD: ItemCard = {
   title: ITEM_DATA.title,
   description: ITEM_DATA.description,
   salePrice: ITEM_DATA.sale_price,
-  mainImage: ITEM_DATA.main_image,
+  images: [ITEM_DATA.main_image],
   flags: ITEM_DATA.flags,
   bumpFlags: ITEM_BUMP_FLAGS,
   webSlug: ITEM_DATA.web_slug,
@@ -31,7 +31,7 @@ export const MOCK_PUBLISHED_ITEM_CARD: ItemCard = {
   title: MOCK_ITEM_RESPONSE.content.title,
   description: MOCK_ITEM_RESPONSE.content.description,
   salePrice: MOCK_ITEM_RESPONSE.content.price,
-  mainImage: MOCK_ITEM_RESPONSE.content.images[0],
+  images: MOCK_ITEM_RESPONSE.content.images,
   flags: MOCK_ITEM_RESPONSE.content.flags,
   bumpFlags: MOCK_ITEM_RESPONSE.content.visibility_flags,
   webSlug: MOCK_ITEM_RESPONSE.content.web_slug,
@@ -44,7 +44,7 @@ export const MOCK_PUBLISHED_ITEM_CARD_WITHOUT_IMAGES: ItemCard = {
   title: MOCK_ITEM_RESPONSE.content.title,
   description: MOCK_ITEM_RESPONSE.content.description,
   salePrice: MOCK_ITEM_RESPONSE.content.price,
-  mainImage: MOCK_PUBLISHED_ITEM_CARD_IMAGE,
+  images: [MOCK_PUBLISHED_ITEM_CARD_IMAGE],
   flags: MOCK_ITEM_RESPONSE.content.flags,
   bumpFlags: MOCK_ITEM_RESPONSE.content.visibility_flags,
   webSlug: MOCK_ITEM_RESPONSE.content.web_slug,
@@ -70,7 +70,7 @@ export const MOCK_RECOMMENDED_ITEM_CARD: ItemCard = {
   ownerId: RECOMMENDED_ITEM_MOCK.seller_id,
   title: RECOMMENDED_ITEM_MOCK.title,
   salePrice: RECOMMENDED_ITEM_MOCK.price,
-  mainImage: MOCK_RECOMMENDED_ITEM_CARD_IMAGE,
+  images: [MOCK_RECOMMENDED_ITEM_CARD_IMAGE],
   webSlug: RECOMMENDED_ITEM_MOCK.web_slug,
   currencyCode: RECOMMENDED_ITEM_MOCK.currency,
 };
@@ -80,7 +80,7 @@ export const MOCK_RECOMMENDED_ITEM_CARD_WITHOUT_IMAGES: ItemCard = {
   ownerId: RECOMMENDED_ITEM_MOCK.seller_id,
   title: RECOMMENDED_ITEM_MOCK.title,
   salePrice: RECOMMENDED_ITEM_MOCK.price,
-  mainImage: null,
+  images: [],
   webSlug: RECOMMENDED_ITEM_MOCK.web_slug,
   currencyCode: RECOMMENDED_ITEM_MOCK.currency,
 };

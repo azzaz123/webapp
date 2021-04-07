@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
+import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
 import { MarkAsFavouriteBodyResponse } from '@public/core/services/api/item/interfaces/item-response.interface';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
-import { ItemCard } from '@public/shared/components/item-card/interfaces/item-card.interface';
 import { Observable } from 'rxjs';
 
 @Injectable()

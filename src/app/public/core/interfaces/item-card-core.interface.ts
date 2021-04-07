@@ -1,6 +1,7 @@
 import { ItemFlags, ItemVisibilityFlags } from '@core/item/item-response.interface';
+import { Image } from '@core/user/user-response.interface';
 
-export interface ItemCardCore {
+export interface ItemCard {
   id: string;
   title: string;
   description?: string;
@@ -8,6 +9,7 @@ export interface ItemCardCore {
   currencyCode: string;
   ownerId: string;
   webSlug: string;
+  images: Image[];
   flags?: ItemFlags;
   bumpFlags?: ItemVisibilityFlags;
 }

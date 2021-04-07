@@ -2,9 +2,6 @@ import { Injectable } from '@angular/core';
 import { Car } from '@core/item/car';
 import { Item, ITEM_TYPES } from '@core/item/item';
 import { ItemResponse, ItemContent, CarContent, RealestateContent } from '@core/item/item-response.interface';
-import { RecommenderItemImage } from '@public/core/services/api/recommender/interfaces/recommender-item.interface';
-import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
-import { Image } from '@core/user/user-response.interface';
 import { Realestate } from '@core/item/realestate';
 import { UuidService } from '@core/uuid/uuid.service';
 
