@@ -78,6 +78,10 @@ export interface UserValidations {
   birthday: boolean;
 }
 
+export interface UserFavourited {
+  favorited: boolean;
+}
+
 export interface UserExtrainfo {
   description: string;
   address?: string;
