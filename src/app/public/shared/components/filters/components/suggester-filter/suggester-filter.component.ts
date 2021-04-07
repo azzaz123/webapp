@@ -175,8 +175,8 @@ export class SuggesterFilterComponent
       return this.labelSubject.next(value);
     }
 
-    // TechDebt(brand/model) On the case of a complex value, when it enters through query, we don't have the options loaded
-    // Complex values (brand/model filter) are always concatenated strings so we can just directly grab it from its values
+    // TODO: TechDebt(brand/model) On the case of a complex value, when it enters through query, we don't have the options loaded
+    //       Complex values (brand/model filter) are always concatenated strings so we can just directly grab it from its values
     return this.labelSubject.next(
       Object.keys(value)
         .map((key) => value[key])
