@@ -23,7 +23,7 @@ export const Default = Template.bind({});
 Default.args = {
   title: 'Nadie ha opinado nada',
   description: 'Esta persona no ha recibido valoraciones. ¿Será la tuya la primera?',
-  drawingPath: '/assets/images/dolls/balloon.svg',
+  drawingPath: '/assets/images/commons/balloon.svg',
 };
 
 export const WithoutDrawing = Template.bind({});
