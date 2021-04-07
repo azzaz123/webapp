@@ -1,0 +1,9 @@
+@import '~style/common';
+
+.EmptyState {
+  width: 285px;
+
+  @include media-breakpoint-up(md) {
+    width: 485px;
+  }
+}

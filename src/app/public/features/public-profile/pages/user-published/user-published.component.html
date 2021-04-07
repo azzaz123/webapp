@@ -1,13 +1,15 @@
 <div class="d-inline-block w-100 my-4">
     <tsl-spinner *ngIf="loading"></tsl-spinner>
-    <p class="text-center m-5" *ngIf="!loading && items.length == 0" i18n="@@UserPublishedNoResults">
-        <tsl-empty-state
-            [title]="emptyStateProperties.title"
-            [description]="emptyStateProperties.description"
-            [drawingPath]="emptyStateProperties.drawingPath"
-        >
-        </tsl-empty-state>
-    </p>
+    <div class="d-flex justify-content-center" *ngIf="!loading && items.length == 0">
+        <div class="EmptyState">
+            <tsl-empty-state
+                [title]="emptyStateProperties.title"
+                [description]="emptyStateProperties.description"
+                [drawingPath]="emptyStateProperties.drawingPath"
+            >
+            </tsl-empty-state>
+        </div>
+    </div>
     <tsl-public-item-card-list [items]="items"></tsl-public-item-card-list>
     <tsl-button *ngIf="nextPaginationItem" (click)="loadMore()" [className]="'btn-primary'" class="d-block mt-4 text-center" i18n="@@UserPublishedLoadMore">Load more products</tsl-button>
 </div>
