@@ -16,14 +16,14 @@ const Template: Story<EmptyStateComponent> = (args: EmptyStateComponent) => ({
     declarations: [EmptyStateComponent],
     imports: [CommonModule, SvgIconModule, HttpClientModule],
   },
-  template: '<tsl-empty-state [title]="title" [description]="description" [drawingPath]="drawingPath"></tsl-empty-state>',
+  template: '<tsl-empty-state [title]="title" [description]="description" [illustrationSrc]="illustrationSrc"></tsl-empty-state>',
 });
 
 export const Default = Template.bind({});
 Default.args = {
   title: 'Nadie ha opinado nada',
   description: 'Esta persona no ha recibido valoraciones. ¿Será la tuya la primera?',
-  drawingPath: '/assets/images/dolls/balloon.svg',
+  illustrationSrc: '/assets/images/commons/balloon.svg',
 };
 
 export const WithoutDrawing = Template.bind({});

@@ -16,7 +16,7 @@ export class UserPublishedComponent implements OnInit {
   public readonly emptyStateProperties: EmptyStateProperties = {
     title: $localize`:@@NoPublishedItemsTitle:Nothing for sale yet`,
     description: $localize`:@@NoPublishedItemsDescription:Seems like someone’s using all they have. Give them time to upload something to wallapop!`,
-    drawingPath: '/assets/images/dolls/flashlight.svg',
+    illustrationSrc: '/assets/images/commons/flashlight.svg',
   };
   public items: Item[] = [];
   public nextPaginationItem = 0;
