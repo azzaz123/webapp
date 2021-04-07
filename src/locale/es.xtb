@@ -975,4 +975,5 @@
   <translation id="ReviewBought">Compró</translation>
   <translation id="NotFoundTitle">Nada por aquí</translation>
   <translation id="NotFoundMessage">Uish... Esta página no existe en Wallapop, lo que sí que existen son miles de oportunidades esperándote.</translation>
+  <translation id="NotFoundButtonText">Ver productos</translation>
 </translationbundle>

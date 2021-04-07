@@ -15,7 +15,7 @@ export class ErrorComponent {
   public image = '/assets/images/not-found.png';
   public errorBoxButton: ErrorBoxExit = {
     type: ERROR_BOX_EXIT_TYPE.BUTTON,
-    label: 'Ver productos',
+    label: $localize`:@@NotFoundButtonText:See listings`,
   };
 
   constructor(private router: Router) {}
