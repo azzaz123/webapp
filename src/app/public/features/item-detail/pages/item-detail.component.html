@@ -91,7 +91,8 @@
                             [title]="itemDetail.socialShare.title"
                             [facebook]="itemDetail.socialShare.facebook"
                             [twitter]="itemDetail.socialShare.twitter"
-                            [email]="itemDetail.socialShare.email">
+                            [email]="itemDetail.socialShare.email"
+                            (socialMediaChannel)="trackShareItemEvent($event)">
                         </tsl-social-share>
                     </div>
                     <tsl-recommended-items

@@ -69,16 +69,23 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     this.loading = true;
 
     this.subscriptions.push(
-      forkJoin([this.publicProfileService.getUser(this.userId), this.publicProfileService.getStats(this.userId)])
+      forkJoin([
+        this.publicProfileService.getUser(this.userId),
+        this.publicProfileService.getStats(this.userId),
+        this.publicProfileService.getShippingCounter(this.userId),
+      ])
         .pipe(
           finalize(() => {
             this.handleCoverImage();
           })
         )
         .subscribe(
-          ([userInfo, userStats]: [User, UserStats]) => {
+          ([userInfo, userStats, shippingCounter]: [User, UserStats, number]) => {
             this.userInfo = userInfo;
-            this.userStats = userStats;
+            this.userStats = {
+              ratings: userStats.ratings,
+              counters: { ...userStats.counters, shipping_counter: shippingCounter },
+            };
           },
           () => {
             this.router.navigate([`/${APP_PATHS.NOT_FOUND}`]);

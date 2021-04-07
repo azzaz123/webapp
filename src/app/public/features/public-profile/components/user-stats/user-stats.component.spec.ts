@@ -11,6 +11,8 @@ import { ScrollIntoViewService } from '@core/scroll-into-view/scroll-into-view';
 
 describe('UserStatsComponent', () => {
   const profileUserClass = '.ProfileUser';
+  const shippingCounterSelector = '#shippingCounter';
+
   let component: UserStatsComponent;
   let fixture: ComponentFixture<UserStatsComponent>;
   let deviceDetectorService: DeviceDetectorService;
@@ -136,6 +138,44 @@ describe('UserStatsComponent', () => {
         const errorMessages = fixture.debugElement.queryAll(By.css('a'));
 
         expect(errorMessages.length).toBe(1);
+      });
+    });
+
+    describe('when loading the counters...', () => {
+      it('should show the sale counter', () => {
+        const salesCounter = fixture.debugElement.query(By.css('#sellsCounter')).nativeElement.innerHTML;
+
+        expect(salesCounter).toBe(`${component.userStats.counters.sells}`);
+      });
+
+      it('should show the purchase counter', () => {
+        const salesCounter = fixture.debugElement.query(By.css('#buysCounter')).nativeElement.innerHTML;
+
+        expect(salesCounter).toBe(`${component.userStats.counters.buys}`);
+      });
+
+      describe('and the shipping counter is bigger than zero...', () => {
+        beforeEach(() => {
+          component.userStats.counters.shipping_counter = 1;
+          fixture.detectChanges();
+        });
+        it('should show the shipping counter', () => {
+          const shippingCounter = fixture.debugElement.query(By.css(shippingCounterSelector)).nativeElement.innerHTML;
+
+          expect(shippingCounter).toBe(`${component.userStats.counters.shipping_counter}`);
+        });
+      });
+
+      describe('and the shipping counter is smaller than one...', () => {
+        beforeEach(() => {
+          component.userStats.counters.shipping_counter = 0;
+          fixture.detectChanges();
+        });
+        it('should NOT show the shipping counter', () => {
+          const shippingCounter = fixture.debugElement.query(By.css(shippingCounterSelector));
+
+          expect(shippingCounter).toBeFalsy();
+        });
       });
     });
   });

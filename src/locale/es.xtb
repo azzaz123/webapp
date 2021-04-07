@@ -700,8 +700,8 @@
   <translation id="City">Ciudad</translation>
   <translation id="PostalCode">Código postal</translation>
   <translation id="Country">País</translation>
-  <translation id="CIFNumber">CIF</translation>
-  <translation id="NIFNumber">NIF</translation>
+  <translation id="CIFNumber">CIF de la empresa</translation>
+  <translation id="NIFNumber">NIF de la persona</translation>
   <translation id="Save">Guardar</translation>
   <translation id="5875130684997376720">Facturación</translation>
   <translation id="ChangeAddSubscriptionCardTitle">Añade una tarjeta de crédito</translation>
