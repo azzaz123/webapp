@@ -276,7 +276,7 @@ describe('ItemDetailComponent', () => {
         expect(itemDetailTrackEventsService.trackViewOwnItemDetail).not.toHaveBeenCalled();
       });
 
-      it('should send view others retail event if user is viewing others retail', () => {
+      it('should send view others real estate event if user is viewing others real estate', () => {
         const mockRealEstateItemDetai: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
         mockRealEstateItemDetai.item = MOCK_REALESTATE;
         mockRealEstateItemDetai.user = MOCK_OTHER_USER;
@@ -291,7 +291,7 @@ describe('ItemDetailComponent', () => {
         expect(itemDetailTrackEventsService.trackViewOthersItemREDetailEvent).toHaveBeenCalledWith(MOCK_REALESTATE, MOCK_OTHER_USER);
       });
 
-      it('should not send view others retail event if user is viewing own retail', () => {
+      it('should not send view others real estate event if user is viewing own real estate', () => {
         const mockRealEstateItemDetai: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
         mockRealEstateItemDetai.item = MOCK_REALESTATE;
         mockRealEstateItemDetai.user = MOCK_USER;
@@ -306,7 +306,7 @@ describe('ItemDetailComponent', () => {
         expect(itemDetailTrackEventsService.trackViewOthersItemREDetailEvent).not.toHaveBeenCalled();
       });
 
-      it('should not send view others retail event if user is viewing others products that is not real estate', () => {
+      it('should not send view others real estate event if user is viewing others products that is not real estate', () => {
         const mockRealEstateItemDetai: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
         mockRealEstateItemDetai.item = MOCK_ITEM_GBP;
         mockRealEstateItemDetai.user = MOCK_OTHER_USER;
