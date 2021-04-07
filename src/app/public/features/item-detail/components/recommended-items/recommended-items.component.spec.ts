@@ -1,7 +1,9 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
+import { MOCK_ITEM_INDEX } from '../../core/services/item-detail-track-events/track-events.fixtures.spec';
 import { RECOMMENDED_ITEMS_MOCK, RECOMMENDED_ITEM_MOCK } from './constants/recommended-items.fixtures.spec';
 import { RecommendedItemsComponent } from './recommended-items.component';
 
@@ -9,6 +11,7 @@ describe('RecommendedItemsComponent', () => {
   const itemCardListTag = 'tsl-public-item-card-list';
   let component: RecommendedItemsComponent;
   let fixture: ComponentFixture<RecommendedItemsComponent>;
+  let de: DebugElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -70,6 +73,18 @@ describe('RecommendedItemsComponent', () => {
       const cardList = fixture.debugElement.query(By.css(itemCardListTag));
 
       expect(cardList).toBeFalsy();
+    });
+  });
+
+  describe('when we click one of the recommended item cards', () => {
+    it('should emit the event', () => {
+      const itemCard: DebugElement = de.query(By.css(itemCardListTag)).nativeElement;
+      spyOn(component.clickedItemAndIndexEvent, 'emit');
+
+      itemCard.triggerEventHandler('clickedItemAndIndex', { item: MOCK_ITEM, index: MOCK_ITEM_INDEX });
+      fixture.detectChanges();
+
+      expect(component.clickedItemAndIndexEvent.emit).toHaveBeenCalledWith({ item: MOCK_ITEM, index: MOCK_ITEM_INDEX });
     });
   });
 });
