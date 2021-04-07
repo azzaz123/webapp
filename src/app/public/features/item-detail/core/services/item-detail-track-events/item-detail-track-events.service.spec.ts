@@ -8,6 +8,7 @@ import { MOCK_CAR_ITEM_DETAIL } from '@fixtures/item-detail.fixtures.spec';
 import { MOCK_ITEM, MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
 import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
 import { MockedUserService, MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
 import { of } from 'rxjs';
 
 import { ItemDetailTrackEventsService } from './item-detail-track-events.service';
@@ -19,6 +20,10 @@ import {
   MOCK_VIEW_OTHERS_CG_DETAIL_EVENT,
   MOCK_VIEW_OTHERS_ITEM_RE_DETAIL_EVENT,
   MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT,
+  MOCK_FB_SHARE_ITEM_EVENT,
+  MOCK_TWITTER_SHARE_ITEM_EVENT,
+  MOCK_EMAIL_SHARE_ITEM_EVENT,
+  MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT_NON_CARDEALER,
 } from './track-events.fixtures.spec';
 
 describe('ItemDetailTrackEventsService', () => {
@@ -45,11 +50,13 @@ describe('ItemDetailTrackEventsService', () => {
   });
 
   describe('when user toggles favorite icon', () => {
+    beforeEach(() => {
+      spyOn(service, 'trackFavoriteOrUnfavoriteEvent').and.callThrough();
+      spyOn(analyticsService, 'trackEvent');
+    });
     const itemDetail = MOCK_CAR_ITEM_DETAIL;
     it('should send favorite item event if we favorite item', () => {
       itemDetail.item.flags.favorite = true;
-      spyOn(service, 'trackFavoriteOrUnfavoriteEvent').and.callThrough();
-      spyOn(analyticsService, 'trackEvent');
 
       service.trackFavoriteOrUnfavoriteEvent(itemDetail);
 
@@ -58,8 +65,6 @@ describe('ItemDetailTrackEventsService', () => {
     });
     it('should send unfavorite item event if we unfavorite item', () => {
       itemDetail.item.flags.favorite = false;
-      spyOn(service, 'trackFavoriteOrUnfavoriteEvent').and.callThrough();
-      spyOn(analyticsService, 'trackEvent');
 
       service.trackFavoriteOrUnfavoriteEvent(itemDetail);
 
@@ -107,6 +112,38 @@ describe('ItemDetailTrackEventsService', () => {
     });
   });
 
+  describe('when user clicks share social media icon', () => {
+    beforeEach(() => {
+      spyOn(service, 'trackShareItemEvent').and.callThrough();
+      spyOn(analyticsService, 'trackEvent');
+    });
+    const item = MOCK_CAR;
+    const user = MOCK_USER;
+    it('should send track share item event with facebook channel if user click facebook icon', () => {
+      const channel = SOCIAL_SHARE_CHANNELS.FACEBOOK;
+
+      service.trackShareItemEvent(channel, item, user);
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_FB_SHARE_ITEM_EVENT);
+    });
+
+    it('should send track share item event with twitter channel if user click twitter icon', () => {
+      const channel = SOCIAL_SHARE_CHANNELS.TWITTER;
+
+      service.trackShareItemEvent(channel, item, user);
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_TWITTER_SHARE_ITEM_EVENT);
+    });
+
+    it('should send track share item event with email channel if user click email icon', () => {
+      const channel = SOCIAL_SHARE_CHANNELS.EMAIL;
+
+      service.trackShareItemEvent(channel, item, user);
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_EMAIL_SHARE_ITEM_EVENT);
+    });
+  });
+
   describe('when user clicks on others real estate products', () => {
     const item = MOCK_REALESTATE;
     const user = MOCK_USER;
@@ -123,9 +160,11 @@ describe('ItemDetailTrackEventsService', () => {
   describe('when user view others car item detail event', () => {
     const item = MOCK_CAR;
     const user = MOCK_USER;
+    beforeEach(() => {
+      spyOn(analyticsService, 'trackPageView');
+    });
     it('should send view others Car item detail event with true carDealer if user is professional', () => {
       spyOn(service, 'trackViewOthersItemCarDetailEvent').and.callThrough();
-      spyOn(analyticsService, 'trackPageView');
 
       service.trackViewOthersItemCarDetailEvent(item, user);
 
@@ -133,15 +172,12 @@ describe('ItemDetailTrackEventsService', () => {
     });
 
     it('should send view others Car item detail event with false carDealer if user is not professional', () => {
-      const mockVIewOthersItemCarDetailNonCarDealer = { ...MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT };
-      mockVIewOthersItemCarDetailNonCarDealer.attributes.isCarDealer = false;
       spyOn(userService, 'isProfessional').and.returnValue(of(false));
       spyOn(service, 'trackViewOthersItemCarDetailEvent').and.callThrough();
-      spyOn(analyticsService, 'trackPageView');
 
       service.trackViewOthersItemCarDetailEvent(item, user);
 
-      expect(analyticsService.trackPageView).toHaveBeenCalledWith(mockVIewOthersItemCarDetailNonCarDealer);
+      expect(analyticsService.trackPageView).toHaveBeenCalledWith(MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT_NON_CARDEALER);
     });
   });
 });
