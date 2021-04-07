@@ -261,7 +261,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     if (!this.objectTypes.length) {
       return null;
     }
-    console.log('findChildrenObjectTypeById', id);
     for (const item of this.objectTypes) {
       if (item.has_children) {
         const selectedChildren = item.children.find((children) => children.id === id);
