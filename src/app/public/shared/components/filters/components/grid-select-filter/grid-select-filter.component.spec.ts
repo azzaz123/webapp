@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IconGridFilterComponent } from './icon-grid-filter.component';
+import { GridSelectFilterComponent } from './grid-select-filter.component';
 import { Component, DebugElement, Input } from '@angular/core';
 import { FILTER_VARIANT } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.enum';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
-import { IconGridFilterConfig } from './interfaces/icon-grid-filter-config.interface';
+import { GridSelectFilterConfig } from './interfaces/grid-select-filter-config.interface';
 import { FilterOptionService } from '@public/shared/services/filter-option/filter-option.service';
 import { MockFilterOptionService } from '@fixtures/filter-option-service.fixtures.spec';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -21,16 +21,16 @@ import { GridSelectFormComponent } from '@shared/form/components/grid-select/gri
 
 @Component({
   selector: 'tsl-test-wrapper',
-  template: ` <tsl-icon-grid-filter [config]="config" [variant]="variant" [value]="value"></tsl-icon-grid-filter> `,
+  template: ` <tsl-grid-select-filter [config]="config" [variant]="variant" [value]="value"></tsl-grid-select-filter> `,
 })
 class TestWrapperComponent {
-  @Input() config: IconGridFilterConfig;
+  @Input() config: GridSelectFilterConfig;
   @Input() variant: FILTER_VARIANT;
   @Input() value: FilterParameter[];
 }
 
-describe('IconGridFilterComponent', () => {
-  let component: IconGridFilterComponent;
+describe('GridSelectFilterComponent', () => {
+  let component: GridSelectFilterComponent;
   let testComponent: TestWrapperComponent;
   let debugElement: DebugElement;
   let optionService: FilterOptionService;
@@ -39,7 +39,7 @@ describe('IconGridFilterComponent', () => {
   const filterPredicate = By.directive(FilterTemplateComponent);
   const formPredicate = By.directive(GridSelectFormComponent);
 
-  const basicConfig: IconGridFilterConfig = {
+  const basicConfig: GridSelectFilterConfig = {
     id: CAR_CONFIGURATION_ID.ENGINE,
     title: 'Title',
     icon: 'icon.svg',
@@ -52,19 +52,19 @@ describe('IconGridFilterComponent', () => {
     hasBigIcons: false,
   };
 
-  const multiselectConfig: IconGridFilterConfig = {
+  const multiselectConfig: GridSelectFilterConfig = {
     ...basicConfig,
     isMultiselect: true,
   };
 
-  const bigIconsConfig: IconGridFilterConfig = {
+  const bigIconsConfig: GridSelectFilterConfig = {
     ...basicConfig,
     hasBigIcons: true,
   };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TestWrapperComponent, IconGridFilterComponent],
+      declarations: [TestWrapperComponent, GridSelectFilterComponent],
       providers: [
         {
           provide: FilterOptionService,
@@ -88,7 +88,7 @@ describe('IconGridFilterComponent', () => {
     optionService = TestBed.inject(FilterOptionService);
     testComponent = fixture.componentInstance;
     debugElement = fixture.debugElement;
-    component = debugElement.query(By.directive(IconGridFilterComponent)).componentInstance;
+    component = debugElement.query(By.directive(GridSelectFilterComponent)).componentInstance;
   });
 
   it('should create', () => {

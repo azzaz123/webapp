@@ -1,7 +1,7 @@
 import { AfterContentInit, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { AbstractFilter } from '../abstract-filter/abstract-filter';
-import { IconGridFilterParams } from './interfaces/icon-grid-filter-params.interface';
-import { IconGridFilterConfig } from './interfaces/icon-grid-filter-config.interface';
+import { GridSelectFilterParams } from './interfaces/grid-select-filter-params.interface';
+import { GridSelectFilterConfig } from './interfaces/grid-select-filter-config.interface';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FilterOptionService } from '@public/shared/services/filter-option/filter-option.service';
 import { take } from 'rxjs/operators';
@@ -12,14 +12,14 @@ import { FILTER_VARIANT } from '@public/shared/components/filters/components/abs
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 
 @Component({
-  selector: 'tsl-icon-grid-filter',
-  templateUrl: './icon-grid-filter.component.html',
-  styleUrls: ['./icon-grid-filter.component.scss'],
+  selector: 'tsl-grid-select-filter',
+  templateUrl: './grid-select-filter.component.html',
+  styleUrls: ['./grid-select-filter.component.scss'],
 })
-export class IconGridFilterComponent
-  extends AbstractFilter<IconGridFilterParams>
+export class GridSelectFilterComponent
+  extends AbstractFilter<GridSelectFilterParams>
   implements OnInit, OnDestroy, OnChanges, AfterContentInit {
-  @Input() config: IconGridFilterConfig;
+  @Input() config: GridSelectFilterConfig;
 
   public options: GridSelectFormOption[] = [];
   public formGroup = new FormGroup({
