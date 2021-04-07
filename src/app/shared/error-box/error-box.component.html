@@ -2,7 +2,7 @@
     <img class="ErrorBox__img mb-3" *ngIf="img" [src]="img" [alt]="title">
     <p class="ErrorBox__title">{{title}}</p>
     <p class="ErrorBox__subtitle">{{subtitle}}</p>
-    <tsl-button *ngIf="exit" [className]="getExitButtonClassName()" (click)="exitClick.emit()">
+    <tsl-button *ngIf="exit" className="{{ exit.type | errorBoxBtnClassName}}" (click)="exitClick.emit()">
         {{exit?.label}}
     </tsl-button>
 </div>
