@@ -34,6 +34,7 @@ describe('UserPublishedComponent', () => {
             accessToken: 'ACCESS_TOKEN',
           },
         },
+        { provide: 'SUBDOMAIN', useValue: 'www' },
       ],
     }).compileComponents();
   });
