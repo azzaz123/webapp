@@ -1,28 +1,26 @@
 @import '~style/common';
 
-$toolbar-height: 45px;
+$toolbar-height: 70px;
 
 .SelectFilterTemplate {
   &__toolbar {
-    position: absolute;
-    background: $white;
-    top: 0;
-    right: 0;
-    left: 0;
     height: $toolbar-height;
-    z-index: 1;
   }
 
-  &__content {
+  &--open {
     position: absolute;
     background: $white;
     top: 0;
     right: 0;
     left: 0;
     bottom: 0;
-    overflow: auto;
-    margin-top: $toolbar-height;
+    overflow: hidden;
     z-index: 1;
+  }
+
+  &__content--open {
+    max-height: calc(100% - #{$toolbar-height});
+    overflow-y: scroll;
   }
 
   &__title {

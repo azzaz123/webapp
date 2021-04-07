@@ -1,0 +1,4 @@
+<div class="GridSelectOption p-2 d-flex flex-column justify-content-center align-items-center">
+  <tsl-svg-icon class="GridSelectOption__icon" [class.GridSelectOption__icon--active]="isActive" [height]="isBig ? 30 : 20" [width]="isBig ? 30 : 20" [src]="icon"></tsl-svg-icon>
+  <span *ngIf="label" [class.GridSelectOption__label--active]="isActive" class="GridSelectOption__label">{{label}}</span>
+</div>

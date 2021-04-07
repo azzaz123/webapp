@@ -22,7 +22,7 @@ import { RangeFilterComponent } from './range-filter.component';
       <tsl-range-filter [variant]="${FILTER_VARIANT.BUBBLE}" [value]="value" [config]="config" (valueChange)="changeBubble($event)">
       </tsl-range-filter>
       <h1>Content variant</h1>
-      <div style="border: 1px dashed black; background-color: white">
+      <div style="border: 1px dashed black; background-color: white" class="p-3">
         <tsl-range-filter [variant]="${FILTER_VARIANT.CONTENT}" [value]="value" [config]="config" (valueChange)="changeContent($event)">
         </tsl-range-filter>
       </div>
@@ -43,7 +43,7 @@ class FiltersComponent {
 }
 
 export default {
-  title: 'Webapp/Public/Shared/Components/Filters/RangeFilterComponent',
+  title: 'Webapp/Public/Shared/Components/Filters/RangeFilter',
   decorators: [
     moduleMetadata({
       declarations: [RangeFilterComponent],

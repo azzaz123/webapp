@@ -71,9 +71,10 @@ const Template: Story<StoryAbstractSelectFilterComponent> = (args) => ({
     <story-abstract-select-filter [variant]="${FILTER_VARIANT.BUBBLE}" [config]="config">
     </story-abstract-select-filter>
     <h1>Content variant</h1>
-    <div style="border: 1px dashed black; background-color: white; position: relative;">
+    <div style="border: 1px dashed black; background-color: white; position: relative;" class="p-3">
       <story-abstract-select-filter [variant]="${FILTER_VARIANT.CONTENT}" [config]="config">
       </story-abstract-select-filter>
+      <div style="height: 1px; width: 100%; background-color: #90A4AE;" class="my-3"></div>
       <story-abstract-select-filter [variant]="${FILTER_VARIANT.CONTENT}" [config]="config">
       </story-abstract-select-filter>
     </div>
