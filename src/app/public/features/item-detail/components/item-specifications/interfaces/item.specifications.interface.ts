@@ -14,7 +14,6 @@ export interface CarSpecifications {
   carEngine: CarEngine;
   horsePower: number;
   gearbox: CarGearBox;
-  condition: CarCondition;
 }
 
 export type CarBodyType = 'small_car' | 'coupe_cabrio' | 'sedan' | 'family_car' | 'mini_van' | '4X4' | 'van' | 'others';

@@ -1,6 +1,6 @@
 import { UserInfoResponse, UserProInfo } from '../app/core/user/user-info.interface';
 import { Coordinate } from '../app/core/geolocation/address-response.interface';
-import { Counters, Ratings, UserStats } from '../app/core/user/user-stats.interface';
+import { Counters, Ratings, ShippingCounterResponse, UserStats } from '../app/core/user/user-stats.interface';
 import { UserData, UserProData, UserProDataNotifications } from '../app/core/user/user-data.interface';
 import { UnsubscribeReason } from '../app/core/user/unsubscribe-reason.interface';
 
@@ -338,6 +338,10 @@ export class MockedUserService {
     return of(new User(USER_ID));
   }
 
+  public isProfessional(): Observable<boolean> {
+    return of(true);
+  }
+
   public getPhoneInfo(userId: string) {}
 
   public checkUserPermissions(): Observable<boolean> {
@@ -379,6 +383,10 @@ export const COUNTERS_RESPONSE: Counters = {
 export const MOCK_USER_STATS: UserStats = {
   ratings: RATINGS_RESPONSE,
   counters: COUNTERS_RESPONSE,
+};
+
+export const MOCK_USER_SHIPPING_COUNTER: ShippingCounterResponse = {
+  succeeded_count: 1,
 };
 
 export const MOCK_USER_STATS_RESPONSE = {

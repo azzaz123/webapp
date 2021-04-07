@@ -55,7 +55,6 @@ export class MapSpecificationsService {
       carEngine: car.engine as CarEngine,
       horsePower: car.horsepower,
       gearbox: car.gearbox as CarGearBox,
-      condition: car.condition as CarCondition,
     };
   }
 
@@ -97,9 +96,6 @@ export class MapSpecificationsService {
       },
       {
         type: this.getCarSpecificationType(carSpecifications.gearbox),
-      },
-      {
-        type: this.getCarSpecificationType(carSpecifications.condition),
       },
     ];
   }

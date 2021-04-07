@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { IsCurrentUserPipe } from '@public/core/pipes/is-current-user/is-current-user.pipe';
 import { PublicPipesModule } from '@public/core/pipes/public-pipes.module';
 import { PublicUserApiModule } from '@public/core/services/api/public-user/public-user-api.module';
 import { AdSlotModule } from '@shared/ads/ad-slot/ad-slot.module';
@@ -23,6 +24,6 @@ import { publicProfileRoutedComponents, publicProfileRoutedModules, PublicProfil
     PublicPipesModule,
     PublicUserApiModule,
   ],
-  providers: [PublicProfileService],
+  providers: [PublicProfileService, IsCurrentUserPipe],
 })
 export class PublicProfileModule {}

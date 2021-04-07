@@ -700,8 +700,8 @@
   <translation id="City">Ciudad</translation>
   <translation id="PostalCode">Código postal</translation>
   <translation id="Country">País</translation>
-  <translation id="CIFNumber">CIF</translation>
-  <translation id="NIFNumber">NIF</translation>
+  <translation id="CIFNumber">CIF de la empresa</translation>
+  <translation id="NIFNumber">NIF de la persona</translation>
   <translation id="Save">Guardar</translation>
   <translation id="5875130684997376720">Facturación</translation>
   <translation id="ChangeAddSubscriptionCardTitle">Añade una tarjeta de crédito</translation>
@@ -843,6 +843,9 @@
   <translation id="FooterLinksParticularHref">https://about.wallapop.com/cars-buyer/</translation>
   <translation id="FooterLinksProfessionalLabel">Profesional</translation>
   <translation id="FooterLinksProfessionalHref">https://about.wallapop.com/motor/</translation>
+  <translation id="FooterLinksWallapopProTitle">Wallapop PRO</translation>
+  <translation id="FooterLinksLandingProLabel">Impulsa tu negocio</translation>
+  <translation id="FooterLinksLandingProHref">https://novedades.wallapop.com/wallapop-pro/</translation>
   <translation id="FooterCopyright">Copyright © <ph name="INTERPOLATION"/> Wallapop © de sus respectivos propietarios</translation>
   <translation id="FooterSocialFacebookLabel">Wallapop, la web y app para comprar y vender, también está en Facebook</translation>
   <translation id="FooterSocialTwitterLabel">Wallapop, la web y app para comprar y vender, también está en Twitter</translation>
@@ -966,4 +969,8 @@
   <translation id="Condition_AsGoodAsNew">Como nuevo</translation>
   <translation id="Condition_Fair">En condiciones aceptables</translation>
   <translation id="Condition_HasGivenItAll">Puede que toque repararlo</translation>
+  <translation id="OwnReviewSold">Vendiste</translation>
+  <translation id="OwnReviewBought">Compraste</translation>
+  <translation id="ReviewSold">Vendió</translation>
+  <translation id="ReviewBought">Compró</translation>
 </translationbundle>
