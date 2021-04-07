@@ -8,5 +8,5 @@ import { Component, Input } from '@angular/core';
 export class EmptyStateComponent {
   @Input() title: string;
   @Input() description: string;
-  @Input() drawingPath: string;
+  @Input() illustrationSrc: string;
 }

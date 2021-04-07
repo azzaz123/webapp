@@ -28,7 +28,7 @@ describe('EmptyStateComponent', () => {
 
   describe('when we have the drawing path...', () => {
     it('should show the drawing', () => {
-      component.drawingPath = 'path';
+      component.illustrationSrc = 'path';
 
       fixture.detectChanges();
 
