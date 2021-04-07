@@ -8,6 +8,7 @@ import { FILTER_TYPES } from '../../core/enums/filter-types/filter-types.enum';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module';
 import { RangeFilterComponent } from './range-filter.component';
+import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
 
 describe('RangeFilterComponent', () => {
   let component: RangeFilterComponent;
@@ -36,7 +37,7 @@ describe('RangeFilterComponent', () => {
       },
       title: 'How much do you want to pay?',
       icon: '/assets/icons/joke.svg',
-      id: '',
+      id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
       bubblePlaceholder: 'placeholder',
       range: [0, 500],
     };
