@@ -1,4 +1,7 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { SvgIconComponent } from '@core/svg-icon/svg-icon/svg-icon.component';
 
 import { EmptyStateComponent } from './empty-state.component';
 
@@ -8,7 +11,8 @@ describe('EmptyStateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [EmptyStateComponent],
+      imports: [HttpClientTestingModule],
+      declarations: [EmptyStateComponent, SvgIconComponent],
     }).compileComponents();
   });
 
@@ -20,5 +24,23 @@ describe('EmptyStateComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('when we have the drawing path...', () => {
+    it('should show the drawing', () => {
+      component.drawingPath = 'path';
+
+      fixture.detectChanges();
+
+      const svgDrawing = fixture.debugElement.query(By.directive(SvgIconComponent));
+      expect(svgDrawing).toBeTruthy();
+    });
+  });
+
+  describe(`when we don't have the drawing path...`, () => {
+    it(`shouldn't show the drawing`, () => {
+      const svgDrawing = fixture.debugElement.query(By.directive(SvgIconComponent));
+      expect(svgDrawing).toBeFalsy();
+    });
   });
 });
