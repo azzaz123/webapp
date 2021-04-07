@@ -16,13 +16,7 @@ const privateRoute = {
   loadChildren: () => import('@private/private.module').then((m) => m.PrivateModule),
 };
 
-const notFoundRoute: Route = {
-  path: APP_PATHS.NOT_FOUND,
-  canLoad: [DevelopmentGuard],
-  loadChildren: () => import('@features/error/error.module').then((m) => m.ErrorModule),
-};
-
-const routes: Route[] = [notFoundRoute, publicRoute, privateRoute];
+const routes: Route[] = [publicRoute, privateRoute];
 
 @NgModule({
   imports: [
