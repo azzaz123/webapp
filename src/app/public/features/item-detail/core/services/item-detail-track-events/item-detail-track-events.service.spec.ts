@@ -6,7 +6,8 @@ import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
 import { MOCK_CAR_ITEM_DETAIL } from '@fixtures/item-detail.fixtures.spec';
 import { MOCK_ITEM, MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
-import { MockedUserService, MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { MockedUserService, MOCK_OTHER_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { MAPPED_RECOMMENDED_ITEM_MOCK } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
 import { of } from 'rxjs';
 
 import { ItemDetailTrackEventsService } from './item-detail-track-events.service';
@@ -17,6 +18,8 @@ import {
   MOCK_VIEW_OWN_ITEM_DETAIL_EVENT,
   MOCK_VIEW_OTHERS_CG_DETAIL_EVENT,
   MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT,
+  MOCK_ITEM_INDEX,
+  MOCK_CLICK_ITEM_CARD_EVENT,
 } from './track-events.fixtures.spec';
 
 describe('ItemDetailTrackEventsService', () => {
@@ -102,6 +105,21 @@ describe('ItemDetailTrackEventsService', () => {
       service.trackViewOthersCGDetailEvent(item, user);
 
       expect(analyticsService.trackPageView).toHaveBeenCalledWith(MOCK_VIEW_OTHERS_CG_DETAIL_EVENT);
+    });
+  });
+
+  describe('trackClickItemCardEvent', () => {
+    const recommendedItem = MAPPED_RECOMMENDED_ITEM_MOCK;
+    const sourceItem = MOCK_ITEM;
+    const recommenedItemOwner = MOCK_OTHER_USER;
+    const index = MOCK_ITEM_INDEX;
+    it('should send click card event', () => {
+      spyOn(service, 'trackClickItemCardEvent').and.callThrough();
+      spyOn(analyticsService, 'trackEvent');
+
+      service.trackClickItemCardEvent(recommendedItem, sourceItem, recommenedItemOwner, index);
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_CLICK_ITEM_CARD_EVENT);
     });
   });
 
