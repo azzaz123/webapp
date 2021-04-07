@@ -47,11 +47,13 @@ describe('ItemDetailTrackEventsService', () => {
   });
 
   describe('trackFavoriteOrUnfavoriteEvent', () => {
+    beforeEach(() => {
+      spyOn(service, 'trackFavoriteOrUnfavoriteEvent').and.callThrough();
+      spyOn(analyticsService, 'trackEvent');
+    });
     const itemDetail = MOCK_CAR_ITEM_DETAIL;
     it('should send favorite item event if we favorite item', () => {
       itemDetail.item.flags.favorite = true;
-      spyOn(service, 'trackFavoriteOrUnfavoriteEvent').and.callThrough();
-      spyOn(analyticsService, 'trackEvent');
 
       service.trackFavoriteOrUnfavoriteEvent(itemDetail);
 
@@ -60,8 +62,6 @@ describe('ItemDetailTrackEventsService', () => {
     });
     it('should send unfavorite item event if we unfavorite item', () => {
       itemDetail.item.flags.favorite = false;
-      spyOn(service, 'trackFavoriteOrUnfavoriteEvent').and.callThrough();
-      spyOn(analyticsService, 'trackEvent');
 
       service.trackFavoriteOrUnfavoriteEvent(itemDetail);
 
@@ -110,12 +110,14 @@ describe('ItemDetailTrackEventsService', () => {
   });
 
   describe('trackShareItemEvent', () => {
+    beforeEach(() => {
+      spyOn(service, 'trackShareItemEvent').and.callThrough();
+      spyOn(analyticsService, 'trackEvent');
+    });
     const item = MOCK_CAR;
     const user = MOCK_USER;
     it('should send track share item event with facebook channel if user click facebook icon', () => {
       const channel = SOCIAL_SHARE_CHANNELS.FACEBOOK;
-      spyOn(service, 'trackShareItemEvent').and.callThrough();
-      spyOn(analyticsService, 'trackEvent');
 
       service.trackShareItemEvent(channel, item, user);
 
@@ -124,8 +126,6 @@ describe('ItemDetailTrackEventsService', () => {
 
     it('should send track share item event with twitter channel if user click twitter icon', () => {
       const channel = SOCIAL_SHARE_CHANNELS.TWITTER;
-      spyOn(service, 'trackShareItemEvent').and.callThrough();
-      spyOn(analyticsService, 'trackEvent');
 
       service.trackShareItemEvent(channel, item, user);
 
@@ -134,8 +134,6 @@ describe('ItemDetailTrackEventsService', () => {
 
     it('should send track share item event with email channel if user click email icon', () => {
       const channel = SOCIAL_SHARE_CHANNELS.EMAIL;
-      spyOn(service, 'trackShareItemEvent').and.callThrough();
-      spyOn(analyticsService, 'trackEvent');
 
       service.trackShareItemEvent(channel, item, user);
 
@@ -146,9 +144,11 @@ describe('ItemDetailTrackEventsService', () => {
   describe('trackViewOthersItemCarDetailEvent', () => {
     const item = MOCK_CAR;
     const user = MOCK_USER;
+    beforeEach(() => {
+      spyOn(analyticsService, 'trackPageView');
+    });
     it('should send view others Car item detail event with true carDealer if user is professional', () => {
       spyOn(service, 'trackViewOthersItemCarDetailEvent').and.callThrough();
-      spyOn(analyticsService, 'trackPageView');
 
       service.trackViewOthersItemCarDetailEvent(item, user);
 
@@ -160,7 +160,6 @@ describe('ItemDetailTrackEventsService', () => {
       mockVIewOthersItemCarDetailNonCarDealer.attributes.isCarDealer = false;
       spyOn(userService, 'isProfessional').and.returnValue(of(false));
       spyOn(service, 'trackViewOthersItemCarDetailEvent').and.callThrough();
-      spyOn(analyticsService, 'trackPageView');
 
       service.trackViewOthersItemCarDetailEvent(item, user);
 
