@@ -1,16 +1,20 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { DebugElement } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
-import { DeviceDetectorModule, DeviceDetectorService } from 'ngx-device-detector';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { PublicProfileService } from '../../core/services/public-profile.service';
-import { ItemCardListModule } from '@public/shared/components/item-card-list/item-card-list.module';
 import { MapItemService } from './services/map-item/map-item.service';
+import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 
 import { UserPublishedComponent } from './user-published.component';
+import { By } from '@angular/platform-browser';
+import { EmptyStateComponent } from '@public/shared/components/empty-state/empty-state.component';
+import { ItemCardService } from '@public/core/services/item-card/item-card.service';
+import { ItemApiService } from '@public/core/services/api/item/item-api.service';
+import { ItemCardListComponentStub } from '@fixtures/shared/components/item-card-list.component.stub';
 
 describe('UserPublishedComponent', () => {
   let component: UserPublishedComponent;
@@ -20,14 +24,16 @@ describe('UserPublishedComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, ItemCardListModule, DeviceDetectorModule, RouterTestingModule],
-      declarations: [UserPublishedComponent],
+      imports: [HttpClientTestingModule],
+      declarations: [UserPublishedComponent, ItemCardListComponentStub, EmptyStateComponent],
       providers: [
         PublicProfileService,
         MapItemService,
         CheckSessionService,
         PublicUserApiService,
         DeviceDetectorService,
+        ItemCardService,
+        ItemApiService,
         {
           provide: AccessTokenService,
           useValue: {
@@ -36,6 +42,7 @@ describe('UserPublishedComponent', () => {
         },
         { provide: 'SUBDOMAIN', useValue: 'www' },
       ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 
@@ -59,6 +66,28 @@ describe('UserPublishedComponent', () => {
       const domItemsLength = el.querySelectorAll(itemCardSelector).length;
 
       expect(componentItemsLength).toEqual(domItemsLength);
+    });
+  });
+
+  describe(`when the user doesn't have items...`, () => {
+    it('should show the empty state', () => {
+      component.items = [];
+
+      fixture.detectChanges();
+
+      const emptyState = fixture.debugElement.query(By.directive(EmptyStateComponent));
+      expect(emptyState).toBeTruthy();
+    });
+  });
+
+  describe(`when the user have items...`, () => {
+    it('should not show the empty state', () => {
+      component.items = [MOCK_ITEM, MOCK_ITEM];
+
+      fixture.detectChanges();
+
+      const emptyState = fixture.debugElement.query(By.directive(EmptyStateComponent));
+      expect(emptyState).toBeFalsy();
     });
   });
 });
