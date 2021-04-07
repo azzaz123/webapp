@@ -6,6 +6,7 @@ import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
 import { MOCK_CAR_ITEM_DETAIL } from '@fixtures/item-detail.fixtures.spec';
 import { MOCK_ITEM, MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
+import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
 import { MockedUserService, MOCK_OTHER_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { MAPPED_RECOMMENDED_ITEM_MOCK } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
 import { of } from 'rxjs';
@@ -17,6 +18,7 @@ import {
   MOCK_UNFAVORITE_ITEM_EVENT,
   MOCK_VIEW_OWN_ITEM_DETAIL_EVENT,
   MOCK_VIEW_OTHERS_CG_DETAIL_EVENT,
+  MOCK_VIEW_OTHERS_ITEM_RE_DETAIL_EVENT,
   MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT,
   MOCK_ITEM_INDEX,
   MOCK_CLICK_ITEM_CARD_EVENT,
@@ -45,7 +47,7 @@ describe('ItemDetailTrackEventsService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('trackFavoriteOrUnfavoriteEvent', () => {
+  describe('when user toggles favorite icon', () => {
     const itemDetail = MOCK_CAR_ITEM_DETAIL;
     it('should send favorite item event if we favorite item', () => {
       itemDetail.item.flags.favorite = true;
@@ -69,7 +71,7 @@ describe('ItemDetailTrackEventsService', () => {
     });
   });
 
-  describe('trackChatButton', () => {
+  describe('when user clicks chat button', () => {
     const item = MOCK_ITEM;
     const user = MOCK_USER;
     it('should send track chat button event', () => {
@@ -82,7 +84,7 @@ describe('ItemDetailTrackEventsService', () => {
     });
   });
 
-  describe('trackViewOwnItemDetail', () => {
+  describe('when user views their own item', () => {
     const item = MOCK_CAR_ITEM_DETAIL.item;
     const user = MOCK_USER;
     it('should send track view own item detail event', () => {
@@ -95,7 +97,7 @@ describe('ItemDetailTrackEventsService', () => {
     });
   });
 
-  describe('trackViewOthersCGDetailEvent', () => {
+  describe('when user views others CG item detail', () => {
     const item = MOCK_ITEM_GBP;
     const user = MOCK_USER;
     it('should send view others CG item detail event', () => {
@@ -123,7 +125,20 @@ describe('ItemDetailTrackEventsService', () => {
     });
   });
 
-  describe('trackViewOthersItemCarDetailEvent', () => {
+  describe('when user clicks on others real estate products', () => {
+    const item = MOCK_REALESTATE;
+    const user = MOCK_USER;
+    it('should send view others RE item detail event', () => {
+      spyOn(service, 'trackViewOthersItemREDetailEvent').and.callThrough();
+      spyOn(analyticsService, 'trackPageView');
+
+      service.trackViewOthersItemREDetailEvent(item, user);
+
+      expect(analyticsService.trackPageView).toHaveBeenCalledWith(MOCK_VIEW_OTHERS_ITEM_RE_DETAIL_EVENT);
+    });
+  });
+
+  describe('when user view others car item detail event', () => {
     const item = MOCK_CAR;
     const user = MOCK_USER;
     it('should send view others Car item detail event with true carDealer if user is professional', () => {

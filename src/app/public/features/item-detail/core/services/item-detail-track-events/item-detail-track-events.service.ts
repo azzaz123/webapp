@@ -11,11 +11,13 @@ import {
   UnfavoriteItem,
   ViewOthersItemCarDetail,
   ViewOthersItemCGDetail,
+  ViewOthersItemREDetail,
   ViewOwnItemDetail,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { Car } from '@core/item/car';
 import { Item } from '@core/item/item';
+import { Realestate } from '@core/item/realestate';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { ItemDetail } from '@public/features/item-detail/interfaces/item-detail.interface';
@@ -103,6 +105,26 @@ export class ItemDetailTrackEventsService {
         categoryId: item.categoryId,
         salePrice: item.salePrice,
         title: item.title,
+        isPro: user.featured,
+        screenId: SCREEN_IDS.ItemDetail,
+      },
+    };
+    this.analyticsService.trackPageView(event);
+  }
+
+  public trackViewOthersItemREDetailEvent(item: Realestate, user: User): void {
+    const event: AnalyticsPageView<ViewOthersItemREDetail> = {
+      name: ANALYTICS_EVENT_NAMES.ViewOthersItemREDetail,
+      attributes: {
+        itemId: item.id,
+        categoryId: item.categoryId,
+        salePrice: item.salePrice,
+        title: item.title,
+        operation: item.operation,
+        type: item.type,
+        condition: item.condition,
+        surface: item.surface,
+        rooms: item.rooms,
         isPro: user.featured,
         screenId: SCREEN_IDS.ItemDetail,
       },

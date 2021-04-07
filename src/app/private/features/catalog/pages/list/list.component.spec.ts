@@ -60,6 +60,7 @@ import { BumpConfirmationModalComponent } from '../../modals/bump-confirmation-m
 import { BuyProductModalComponent } from '../../modals/buy-product-modal/buy-product-modal.component';
 import { ListingfeeConfirmationModalComponent } from '../../modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { ListComponent } from './list.component';
+import { Counters } from '@core/user/user-stats.interface';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -85,9 +86,10 @@ describe('ListComponent', () => {
   const routerEvents: Subject<any> = new Subject();
   const CURRENCY = 'wallacoins';
   const CREDITS = 1000;
-  const mockCounters = {
+  const mockCounters: Partial<Counters> = {
     sold: 7,
     publish: 12,
+    onHold: 5,
   };
 
   beforeEach(
@@ -851,6 +853,18 @@ describe('ListComponent', () => {
 
       expect(component.getNumberOfProducts).toHaveBeenCalled();
     });
+
+    describe('and there are not an selected subscription slot', () => {
+      it('should show normal links updated', () => {
+        const expectedNormalNavLinks = cloneDeep(component.normalNavLinks);
+        expectedNormalNavLinks[2].counter = { currentVal: mockCounters.onHold };
+
+        component.getNumberOfProducts();
+        component.filterByStatus('published');
+
+        expect(component.navLinks).toEqual(expectedNormalNavLinks);
+      });
+    });
   });
 
   describe('setNumberOfProducts', () => {
@@ -871,6 +885,13 @@ describe('ListComponent', () => {
       component.filterByStatus('sold');
 
       expect(component.numberOfProducts).toEqual(mockCounters.sold);
+    });
+
+    it('should set numberOfProducts to the numberOfInactiveProducts when inactive filter is selected', () => {
+      component.getNumberOfProducts();
+      component.filterByStatus(STATUS.INACTIVE);
+
+      expect(component.numberOfProducts).toEqual(mockCounters.onHold);
     });
   });
 

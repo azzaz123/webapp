@@ -10,11 +10,13 @@ import {
   UnfavoriteItem,
   ViewOthersItemCarDetail,
   ViewOthersItemCGDetail,
+  ViewOthersItemREDetail,
   ViewOwnItemDetail,
 } from '@core/analytics/analytics-constants';
 import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
 import { MOCK_CAR_ITEM_DETAIL } from '@fixtures/item-detail.fixtures.spec';
 import { MOCK_ITEM, MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
+import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
 import { MOCK_OTHER_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
 import {
   MAPPED_RECOMMENDED_ITEM_MOCK,
@@ -107,6 +109,23 @@ export const MOCK_CLICK_ITEM_CARD_EVENT: AnalyticsEvent<ClickItemCard> = {
   },
 };
 
+export const MOCK_VIEW_OTHERS_ITEM_RE_DETAIL_EVENT: AnalyticsPageView<ViewOthersItemREDetail> = {
+  name: ANALYTICS_EVENT_NAMES.ViewOthersItemREDetail,
+  attributes: {
+    itemId: MOCK_REALESTATE.id,
+    categoryId: MOCK_REALESTATE.categoryId,
+    salePrice: MOCK_REALESTATE.salePrice,
+    title: MOCK_REALESTATE.title,
+    operation: MOCK_REALESTATE.operation,
+    type: MOCK_REALESTATE.type,
+    condition: MOCK_REALESTATE.condition,
+    surface: MOCK_REALESTATE.surface,
+    rooms: MOCK_REALESTATE.rooms,
+    isPro: MOCK_OTHER_USER.featured,
+    screenId: SCREEN_IDS.ItemDetail,
+  },
+};
+
 export const MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT: AnalyticsPageView<ViewOthersItemCarDetail> = {
   name: ANALYTICS_EVENT_NAMES.ViewOthersItemCarDetail,
   attributes: {
@@ -135,5 +154,6 @@ export class MockItemdDetailTrackEventService {
   trackClickItemCardEvent() {}
   trackViewOwnItemDetail() {}
   trackViewOthersCGDetailEvent() {}
+  trackViewOthersItemREDetailEvent() {}
   trackViewOthersItemCarDetailEvent() {}
 }
