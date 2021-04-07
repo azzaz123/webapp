@@ -282,7 +282,7 @@ describe('ItemDetailComponent', () => {
 
       it('should send view others real estate event if user is viewing others real estate', () => {
         itemDetailSubjectMock.next(MOCK_OTHER_USER_REAL_ESTATE_ITEM_DETAIL);
-        spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
+        spyOn(userService, 'me').and.returnValue(of(new User(OTHER_USER_ID)));
         spyOn(itemDetailTrackEventsService, 'trackViewOthersItemREDetailEvent');
         spyOn(itemDetailTrackEventsService, 'trackViewOwnItemDetail');
 
@@ -306,7 +306,7 @@ describe('ItemDetailComponent', () => {
 
       it('should not send view others real estate event if user is viewing others products that is not real estate', () => {
         itemDetailSubjectMock.next(MOCK_OTHER_USER_CG_ITEM_DETAIL);
-        spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
+        spyOn(userService, 'me').and.returnValue(of(new User(OTHER_USER_ID)));
         spyOn(itemDetailTrackEventsService, 'trackViewOthersItemREDetailEvent');
         spyOn(itemDetailTrackEventsService, 'trackViewOthersCGDetailEvent');
 
@@ -328,7 +328,7 @@ describe('ItemDetailComponent', () => {
 
       it('should not send view others CG item detail event when user is not viewing others consumer goods item detail', () => {
         itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
-        spyOn(userService, 'me').and.returnValue(of(new User(OTHER_USER_ID)));
+        spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
         spyOn(itemDetailTrackEventsService, 'trackViewOthersCGDetailEvent');
 
         fixture.detectChanges();
@@ -348,7 +348,7 @@ describe('ItemDetailComponent', () => {
 
       it('should send view others car event if user is viewing others car', () => {
         itemDetailSubjectMock.next(MOCK_OTHER_USER_CAR_ITEM_DETAIL);
-        spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
+        spyOn(userService, 'me').and.returnValue(of(new User(OTHER_USER_ID)));
         spyOn(itemDetailTrackEventsService, 'trackViewOthersItemCarDetailEvent');
         spyOn(itemDetailTrackEventsService, 'trackViewOwnItemDetail');
 
@@ -372,7 +372,7 @@ describe('ItemDetailComponent', () => {
 
       it('should not send view others car event if user is viewing others prduct that is not a car', () => {
         itemDetailSubjectMock.next(MOCK_OTHER_USER_CG_ITEM_DETAIL);
-        spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
+        spyOn(userService, 'me').and.returnValue(of(new User(OTHER_USER_ID)));
         spyOn(itemDetailTrackEventsService, 'trackViewOthersItemCarDetailEvent');
         spyOn(itemDetailTrackEventsService, 'trackViewOthersCGDetailEvent');
 
