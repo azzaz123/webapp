@@ -11,6 +11,7 @@ import { MOCK_ITEM, MOCK_ITEM_CAR, MOCK_ITEM_FASHION, MOCK_ITEM_GBP, MOCK_ITEM_W
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { Item } from '@core/item/item';
 import { MOCK_REALESTATE } from './realestate.fixtures.spec';
+import { MOCK_CAR } from './car.fixtures.spec';
 
 const UNDEFINED_COPY = $localize`:@@Undefined:Undefined`;
 
@@ -56,6 +57,7 @@ export const MOCK_CAR_ITEM_DETAIL: ItemDetail = {
 
 export const MOCK_OTHER_USER_CAR_ITEM_DETAIL: ItemDetail = {
   ...MOCK_CAR_ITEM_DETAIL,
+  item: MOCK_CAR,
   user: MOCK_OTHER_USER,
 };
 

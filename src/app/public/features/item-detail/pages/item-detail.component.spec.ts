@@ -355,7 +355,7 @@ describe('ItemDetailComponent', () => {
         fixture.detectChanges();
 
         expect(itemDetailTrackEventsService.trackViewOwnItemDetail).not.toHaveBeenCalled();
-        expect(itemDetailTrackEventsService.trackViewOthersItemCarDetailEvent).toHaveBeenCalledWith(MOCK_ITEM_CAR, MOCK_OTHER_USER);
+        expect(itemDetailTrackEventsService.trackViewOthersItemCarDetailEvent).toHaveBeenCalledWith(MOCK_CAR, MOCK_OTHER_USER);
       });
 
       it('should not send view others car event if user is viewing their own car', () => {
