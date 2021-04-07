@@ -13,6 +13,7 @@ import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module';
 import { ToggleFilterComponent } from './toggle-filter.component';
+import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
 
 describe('ToggleFilterComponent', () => {
   let component: ToggleFilterComponent;
@@ -45,7 +46,7 @@ describe('ToggleFilterComponent', () => {
     el = de.nativeElement;
 
     component.config = {
-      id: '',
+      id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
       type: FILTER_TYPES.TOGGLE,
       mapKey: {
         key: 'warranty',
@@ -164,7 +165,7 @@ describe('ToggleFilterComponent', () => {
       component.variant = FILTER_VARIANT.CONTENT;
 
       component.config = {
-        id: '',
+        id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
         type: FILTER_TYPES.TOGGLE,
         mapKey: {
           key: 'warranty',

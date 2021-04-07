@@ -1,8 +1,8 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ItemResponse } from '@core/item/item-response.interface';
-import { Image, UserExtrainfo, UserResponse } from '@core/user/user-response.interface';
 import { ShippingCounterResponse, UserStatsResponse } from '@core/user/user-stats.interface';
+import { Image, UserExtrainfo, UserFavourited, UserResponse } from '@core/user/user-response.interface';
 import { environment } from '@environments/environment';
 import { ReviewResponse, ReviewsData } from '@private/features/reviews/core/review-response.interface';
 import { Observable } from 'rxjs';
@@ -38,8 +38,8 @@ export class PublicUserApiService {
     return this.http.get<ShippingCounterResponse>(`${environment.baseUrl}${SHIPPING_COUNTER_ENDPOINT(userId)}`);
   }
 
-  public isFavourite(userId: string): Observable<boolean> {
-    return this.http.get<boolean>(`${environment.baseUrl}${IS_FAVOURITE_ENDPOINT(userId)}`);
+  public isFavourite(userId: string): Observable<UserFavourited> {
+    return this.http.get<UserFavourited>(`${environment.baseUrl}${IS_FAVOURITE_ENDPOINT(userId)}`);
   }
 
   public getReviews(userId: string, init: number = 0): Observable<PaginationResponse<ReviewResponse>> {
