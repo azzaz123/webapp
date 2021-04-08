@@ -204,6 +204,7 @@
   <msg id="5579960282842930509"><source>src/app/private/features/catalog/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:28</source>You have <ph name="INTERPOLATION"/> wallacoins left</msg>
   <msg id="3834459376438494911"><source>src/app/private/features/catalog/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:29</source>You have <ph name="INTERPOLATION"/> credit</msg>
   <msg id="8191075807274604024"><source>src/app/private/features/catalog/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:32</source>Go to my catalogue</msg>
+  <msg id="8191075807274604024"><source>src/app/private/features/catalog/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:32</source>Go to my catalogue</msg>
   <msg id="3979232265698800722"><source>src/app/private/features/catalog/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:43</source>Your item(s) have not been featured because something went wrong with your credit card.<ph name="LINE_BREAK"/>Please check and try again.</msg>
   <msg id="3275068756845590930"><source>src/app/private/features/catalog/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:44</source>Let’s go</msg>
   <msg id="2502391471711660975"><source>src/app/private/features/catalog/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:48</source>Hmmm…</msg>
@@ -411,6 +412,23 @@
   <msg id="9213743536713966070"><source>src/app/private/features/profile/modal/become-pro-modal/become-pro-modal.component.html:12</source>You will have a description of your store or service and its location</msg>
   <msg id="4670889551195648197"><source>src/app/private/features/profile/modal/become-pro-modal/become-pro-modal.component.html:13</source>Your profile will have a different design and will stand out!</msg>
   <msg id="7373818560498277711"><source>src/app/private/features/profile/modal/become-pro-modal/become-pro-modal.component.html:14</source>Your items won&apos;t expire</msg>
+  <msg id="SubscriptionPriceDiscountFromPrice"><source>src/app/private/features/profile/components/subscription-price-discount/subscription-price-discount.component.html:2</source>From: </msg>
+  <msg id="SubscriptionPriceDiscountMonthFree"><source>src/app/private/features/profile/components/subscription-price-discount/subscription-price-discount.component.html:6</source>One month free</msg>
+  <msg id="SubscriptionPriceDiscountMonthsFree"><source>src/app/private/features/profile/components/subscription-price-discount/subscription-price-discount.component.html:7,10</source> <ph name="INTERPOLATION"/> months free </msg>
+  <msg id="SubscriptionPriceDiscountDaysTrialFree"><source>src/app/private/features/profile/components/subscription-price-discount/subscription-price-discount.component.html:12</source><ph name="INTERPOLATION"/>-day trial for free</msg>
+  <msg id="SubscriptionBenefitsFooterTitle"><source>src/app/private/features/profile/components/subscription-benefits/subscription-benefits.component.html:18</source>Do you have any questions?</msg>
+  <msg id="SubscriptionBenefitsFooterSubtitle"><source>src/app/private/features/profile/components/subscription-benefits/subscription-benefits.component.html:19</source>Find answers <ph name="START_LINK"/>here<ph name="CLOSE_LINK"/>.</msg>
+  <msg id="SubscriptionBenefitsSubtitle"><source>src/app/private/features/profile/components/subscription-benefits/subscription-benefits.component.html:5</source>Want to boost your online business? Become a PRO!</msg>
+  <msg id="Limitless"><source>src/app/public/shared/components/filters/components/range-filter/range-filter.component.ts:17</source>No limit</msg>
+  <msg id="From"><source>src/app/public/shared/components/filters/components/range-filter/range-filter.component.ts:134</source>From</msg>
+  <msg id="To"><source>src/app/public/shared/components/filters/components/range-filter/range-filter.component.ts:136</source>To</msg>
+  <msg id="filterPriceTitle"><source>src/app/public/shared/components/filters/core/enums/configuration/car/car-configuration-filters.ts:8</source>How much?</msg>
+  <msg id="filterPriceBubblePlaceholder"><source>src/app/public/shared/components/filters/core/enums/configuration/car/car-configuration-filters.ts:10</source>Price</msg>
+  <msg id="filterProfessionalBubblePlaceholder"><source>src/app/public/shared/components/filters/core/enums/configuration/car/car-configuration-filters.ts:30</source>Only professionals</msg>
+  <msg id="filterWarrantyTitle"><source>src/app/public/shared/components/filters/core/enums/configuration/car/car-configuration-filters.ts:39</source>Cars with warranty</msg>
+  <msg id="filterWarrantyBubblePlaceholder"><source>src/app/public/shared/components/filters/core/enums/configuration/car/car-configuration-filters.ts:41</source>Warranty</msg>
+  <msg id="filterYearTitle"><source>src/app/public/shared/components/filters/core/enums/configuration/car/car-configuration-filters.ts:50</source>Registration date</msg>
+  <msg id="filterYearBubblePlaceholder"><source>src/app/public/shared/components/filters/core/enums/configuration/car/car-configuration-filters.ts:52</source>Year</msg>
   <msg id="8882282108983733420"><source>src/app/private/features/profile/modal/cancel-subscription/cancel-subscription-modal.component.html:6</source>Would you want to cancel the PRO subscription <ph name="INTERPOLATION"/>?</msg>
   <msg id="8487121195517337235"><source>src/app/private/features/profile/modal/cancel-subscription/cancel-subscription-modal.component.html:7</source>It’s sad that you are leaving us. You can return whenever you want, we’ll be waiting for you!</msg>
   <msg id="4152309547836555655"><source>src/app/private/features/profile/modal/cancel-subscription/cancel-subscription-modal.component.html:8</source>Yes, I want to cancel my subscription.</msg>
