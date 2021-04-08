@@ -1,7 +1,7 @@
 import { ITEM_DATA_V3 } from '@fixtures/item.fixtures.spec';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { filtersWall } from './search-api-url.factory';
-import { ItemSearchResponse, SearchResponse } from './search-response.interface';
+import { ItemSearchResponse, SearchResponse } from '../search-response.interface';
 
 export function FilterParametersWallBuilder(categoryId: string): FilterParameter[] {
   return filtersWall.map((key: string) => ({key, value: key === 'category_ids' ? categoryId : `${key}-value`}));
@@ -52,3 +52,5 @@ export function SearchResponseBuilderByCategoryId(category_id): SearchResponse {
     search_objects: new Array(20).fill('').map(() => ItemSearchResponseBuilder({category_id}))
   };
 }
+
+export const X_NEXT_PAGE_HEADER = (category_id) => 'density_type=30&latitude=41.38804&start=40&step=0&num_results=40&search_id=56a6f352-f3e8-459f-8959-bb88e6568d33&longitude=2.17001&filters_source=seo_landing&language=es_ES&category_ids=' + category_id;

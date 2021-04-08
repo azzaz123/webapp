@@ -1,4 +1,5 @@
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
+
 const CategoryIdUrlMap: Record<string, string> = {
   '100': 'cars',
   '200': 'real_estate',
