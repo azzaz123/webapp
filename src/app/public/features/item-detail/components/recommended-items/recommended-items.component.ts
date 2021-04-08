@@ -31,7 +31,7 @@ export class RecommendedItemsComponent implements OnChanges {
     }
   }
 
-  public clickedItemAndIndex(event: ClickedItemCard) {
+  public clickedItemAndIndex(event: ClickedItemCard): void {
     this.clickedItemAndIndexEvent.emit(event);
   }
 }
