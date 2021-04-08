@@ -20,13 +20,14 @@ import { CheapestProducts, ItemBulkResponse, ItemsData } from '@core/item/item-r
 import { ItemService } from '@core/item/item.service';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
-import { SubscriptionSlot } from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionSlot, SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
 import { User } from '@core/user/user';
 import { Counters, UserStats } from '@core/user/user-stats.interface';
 import { LOCAL_STORAGE_TRY_PRO_SLOT, UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { DeactivateItemsModalComponent } from '@shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
+import { SuggestProModalComponent } from '@shared/catalog/modals/suggest-pro-modal/suggest-pro-modal.component';
 import { TooManyItemsModalComponent } from '@shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { BumpSuggestionModalComponent } from '@shared/modals/bump-suggestion-modal/bump-suggestion-modal.component';
@@ -38,15 +39,14 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { take, takeWhile } from 'rxjs/operators';
 import { BumpTutorialComponent } from '../../components/bump-tutorial/bump-tutorial.component';
 import { OrderEvent, STATUS } from '../../components/selected-items/selected-product.interface';
-import { ItemChangeEvent } from '../../core/item-change.interface';
+import { ItemChangeEvent, ITEM_CHANGE_ACTION } from '../../core/item-change.interface';
 import { BumpConfirmationModalComponent } from '../../modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { BuyProductModalComponent } from '../../modals/buy-product-modal/buy-product-modal.component';
 import { ListingfeeConfirmationModalComponent } from '../../modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
-import { ReactivateConfirmationModalComponent } from '../../modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component';
 
 export const SORTS = ['date_desc', 'date_asc', 'price_desc', 'price_asc'];
 
-const TRANSACTIONS_WITH_CREDITS = ['bumpWithCredits', 'urgentWithCredits', 'reactivateWithCredits', 'purchaseListingFeeWithCredits'];
+const TRANSACTIONS_WITH_CREDITS = ['bumpWithCredits', 'urgentWithCredits', 'purchaseListingFeeWithCredits'];
 
 @Component({
   selector: 'tsl-list',
@@ -84,6 +84,7 @@ export class ListComponent implements OnInit, OnDestroy {
   public userScore: number;
   public showTryProSlot: boolean;
   public hasTrialAvailable: boolean;
+  private subscriptions: SubscriptionsResponse[];
 
   @ViewChild(ItemSoldDirective, { static: true }) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent, { static: true })
@@ -141,8 +142,9 @@ export class ListComponent implements OnInit, OnDestroy {
       .getSubscriptions()
       .pipe(take(1))
       .subscribe((subscriptions) => {
-        if (!!subscriptions) {
+        if (subscriptions) {
           this.hasTrialAvailable = this.subscriptionsService.hasOneTrialSubscription(subscriptions);
+          this.subscriptions = subscriptions;
           this.initTryProSlot();
         }
       });
@@ -173,7 +175,6 @@ export class ListComponent implements OnInit, OnDestroy {
         if (params && params.code) {
           const modals = {
             bump: BumpConfirmationModalComponent,
-            reactivate: ReactivateConfirmationModalComponent,
             listingfee: ListingfeeConfirmationModalComponent,
           };
           const transactionType = localStorage.getItem('transactionType');
@@ -182,9 +183,6 @@ export class ListComponent implements OnInit, OnDestroy {
           switch (transactionType) {
             case 'urgentWithCredits':
               modalType = 'urgent';
-              break;
-            case 'reactivateWithCredits':
-              modalType = 'reactivate';
               break;
             case 'bumpWithCredits':
               modalType = 'bump';
@@ -258,7 +256,7 @@ export class ListComponent implements OnInit, OnDestroy {
             this.soldButton.callback.subscribe(() => {
               this.itemChanged({
                 item: item,
-                action: STATUS.SOLD,
+                action: ITEM_CHANGE_ACTION.SOLD,
               });
               this.eventService.emit(EventService.ITEM_SOLD, item);
             });
@@ -414,19 +412,53 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public itemChanged($event: ItemChangeEvent) {
-    if ($event.action === 'reactivatedWithBump') {
-      localStorage.setItem('transactionType', 'reactivate');
-      this.feature($event.orderEvent, 'reactivate');
-    } else if ($event.action === 'reactivated') {
-      const index: number = findIndex(this.items, { _id: $event.item.id });
-      this.items[index].flags.expired = false;
-    } else if ($event.action === 'activate') {
+    if ($event.action === ITEM_CHANGE_ACTION.REACTIVATED) {
+      this.reactivationAction($event.item.id);
+    } else if ($event.action === ITEM_CHANGE_ACTION.ACTIVATE) {
       this.onAction($event.action, $event.item.id);
     } else {
       const index: number = findIndex(this.items, { _id: $event.item.id });
       this.items.splice(index, 1);
       this.getNumberOfProducts();
     }
+  }
+
+  private reactivationAction(id: string): void {
+    const index: number = findIndex(this.items, { id });
+    const reactivatedItem = this.items[index];
+    reactivatedItem.flags.expired = false;
+    reactivatedItem.flags.pending = true;
+    if (!this.user.featured) {
+      this.openSuggestProModal(reactivatedItem, index);
+      return;
+    }
+    this.reloadItem(reactivatedItem.id, index);
+  }
+
+  private openSuggestProModal(reactivatedItem: Item, index: number): void {
+    const modalRef = this.modalService.open(SuggestProModalComponent, {
+      windowClass: 'modal-standard',
+    });
+
+    modalRef.componentInstance.title = $localize`:@@SuggestProModalTitle:If you were PRO your items wouldn’t become inactive. Sounds good, right?`;
+    modalRef.componentInstance.isFreeTrial = this.subscriptionsService.hasFreeTrialByCategoryId(
+      this.subscriptions,
+      reactivatedItem.categoryId
+    );
+
+    modalRef.result.then(
+      () => this.router.navigate(['profile/subscriptions']),
+      () => this.reloadItem(reactivatedItem.id, index)
+    );
+  }
+
+  private reloadItem(id: string, index: number): void {
+    this.itemService
+      .get(id)
+      .pipe(take(1))
+      .subscribe((item) => {
+        this.items[index] = item;
+      });
   }
 
   public deselect() {

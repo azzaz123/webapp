@@ -976,4 +976,8 @@
   <translation id="NotFoundTitle">Nada por aquí</translation>
   <translation id="NotFoundMessage">Uish... Esta página no existe en Wallapop, lo que sí que existen son miles de oportunidades esperándote.</translation>
   <translation id="NotFoundButtonText">Ver productos</translation>
+  <translation id="SuggestProModalDescriptionTrial">Prueba gratis Wallapop PRO y descubre todas sus ventajas.</translation>
+  <translation id="SuggestProModalDescriptionPlans">Elige un plan y aprovecha los beneficios de Wallapop PRO.</translation>
+  <translation id="SuggestProModalButtonCancel">Ahora no, gracias</translation>
+  <translation id="SuggestProModalTitle">Si fueses PRO tus productos nunca quedarían inactivos. ¿Lo sabías?</translation>
 </translationbundle>
