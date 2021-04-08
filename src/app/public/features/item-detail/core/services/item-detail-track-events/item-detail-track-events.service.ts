@@ -9,6 +9,7 @@ import {
   SCREEN_IDS,
   ShareItem,
   UnfavoriteItem,
+  ViewItemDetailRecommendationSlider,
   ViewOthersItemCarDetail,
   ViewOthersItemCGDetail,
   ViewOthersItemREDetail,
@@ -122,6 +123,21 @@ export class ItemDetailTrackEventsService {
         rooms: item.rooms,
         isPro: user.featured,
         screenId: SCREEN_IDS.ItemDetail,
+      },
+    };
+    this.analyticsService.trackPageView(event);
+  }
+
+  public trackViewItemDetailRecommendationSliderEvent(item: Item, user: User, recommendedItemIds: string): void {
+    const event: AnalyticsPageView<ViewItemDetailRecommendationSlider> = {
+      name: ANALYTICS_EVENT_NAMES.ViewItemDetailRecommendationSlider,
+      attributes: {
+        itemSourceId: item.id,
+        categoryId: item.categoryId,
+        engine: 'more_like_this_solr',
+        recommendedItemIds: recommendedItemIds,
+        screenId: 115,
+        isPro: user.featured,
       },
     };
     this.analyticsService.trackPageView(event);

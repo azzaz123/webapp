@@ -10,7 +10,7 @@ import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
 import { MockedUserService, MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
 import { of } from 'rxjs';
-
+import { RECOMMENDED_ITEM_IDS_MOCK } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
 import { ItemDetailTrackEventsService } from './item-detail-track-events.service';
 import {
   MOCK_CLICK_CHAT_BUTTON_EVENT,
@@ -24,6 +24,7 @@ import {
   MOCK_TWITTER_SHARE_ITEM_EVENT,
   MOCK_EMAIL_SHARE_ITEM_EVENT,
   MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT_NON_CARDEALER,
+  MOCK_VIEW_ITEM_DETAIL_RECOMMENDEATION_SLIDER_EVENT,
 } from './track-events.fixtures.spec';
 
 describe('ItemDetailTrackEventsService', () => {
@@ -178,6 +179,20 @@ describe('ItemDetailTrackEventsService', () => {
       service.trackViewOthersItemCarDetailEvent(item, user);
 
       expect(analyticsService.trackPageView).toHaveBeenCalledWith(MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT_NON_CARDEALER);
+    });
+  });
+
+  describe('when user view item detail recommendation slider', () => {
+    const item = MOCK_ITEM;
+    const user = MOCK_USER;
+    const recommendedItemIds = RECOMMENDED_ITEM_IDS_MOCK;
+    it('should send view item detail recommendation slider event', () => {
+      spyOn(service, 'trackViewItemDetailRecommendationSliderEvent').and.callThrough();
+      spyOn(analyticsService, 'trackPageView');
+
+      service.trackViewItemDetailRecommendationSliderEvent(item, user, recommendedItemIds);
+
+      expect(analyticsService.trackPageView).toHaveBeenCalledWith(MOCK_VIEW_ITEM_DETAIL_RECOMMENDEATION_SLIDER_EVENT);
     });
   });
 });
