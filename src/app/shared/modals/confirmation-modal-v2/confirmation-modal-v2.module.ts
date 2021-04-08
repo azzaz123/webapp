@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ReactivateItemModalComponent } from './components/reactivate-item-modal/reactivate-item-modal.component';
+import { ConfirmationModalV2Component } from './confirmation-modal-v2.component';
 
 @NgModule({
   imports: [SvgIconModule],
-  declarations: [ReactivateItemModalComponent],
+  declarations: [ConfirmationModalV2Component],
   providers: [NgbActiveModal],
 })
-export class ReactivateItemModule {}
+export class ConfirmationModalV2Module {}
