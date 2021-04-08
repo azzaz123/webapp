@@ -16,6 +16,8 @@ import { ItemCardService } from '@public/core/services/item-card/item-card.servi
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
 import { ItemCardListComponentStub } from '@fixtures/shared/components/item-card-list.component.stub';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
+import { UuidService } from '@core/uuid/uuid.service';
+import { FavoritesApiService } from '@public/core/services/api/favorites/favorites-api.service';
 
 describe('UserPublishedComponent', () => {
   let component: UserPublishedComponent;
@@ -30,6 +32,8 @@ describe('UserPublishedComponent', () => {
       providers: [
         PublicProfileService,
         MapPublishedItemCardService,
+        UuidService,
+        FavoritesApiService,
         CheckSessionService,
         PublicUserApiService,
         DeviceDetectorService,

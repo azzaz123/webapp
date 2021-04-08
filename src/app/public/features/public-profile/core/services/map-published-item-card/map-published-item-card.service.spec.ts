@@ -2,6 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { UuidService } from '@core/uuid/uuid.service';
 import { MOCK_PUBLISHED_ITEM_CARD, MOCK_PUBLISHED_ITEM_CARD_WITHOUT_IMAGES } from '@fixtures/item-card.fixtures.spec';
 import { MOCK_ITEM_RESPONSE } from '@fixtures/item.fixtures.spec';
+import { FavoritesApiService } from '@public/core/services/api/favorites/favorites-api.service';
+import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { MapPublishedItemCardService } from './map-published-item-card.service';
 
 describe('MapPublishedItemCardService', () => {
@@ -10,7 +12,7 @@ describe('MapPublishedItemCardService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [MapPublishedItemCardService],
+      providers: [MapPublishedItemCardService, UuidService, CheckSessionService, FavoritesApiService],
     });
     service = TestBed.inject(MapPublishedItemCardService);
     uuidService = TestBed.inject(UuidService);
