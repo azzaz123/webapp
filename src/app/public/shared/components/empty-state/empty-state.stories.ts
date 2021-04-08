@@ -1,6 +1,4 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
-import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { EmptyStateComponent } from './empty-state.component';
 
@@ -14,7 +12,7 @@ const Template: Story<EmptyStateComponent> = (args: EmptyStateComponent) => ({
   props: args,
   moduleMetadata: {
     declarations: [EmptyStateComponent],
-    imports: [CommonModule, SvgIconModule, HttpClientModule],
+    imports: [CommonModule],
   },
   template: '<tsl-empty-state [title]="title" [description]="description" [illustrationSrc]="illustrationSrc"></tsl-empty-state>',
 });
