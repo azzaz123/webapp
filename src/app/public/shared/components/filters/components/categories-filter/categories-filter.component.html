@@ -1,1 +1,32 @@
-<p>categories-filter works!</p>
+<tsl-filter-template [isBubble]="isBubble()"
+                     [isDropdown]="isDropdown()"
+                     [isClearable]="true"
+                     [title]="config.title"
+                     [icon]="config.icon"
+                     [label]="getLabel()"
+                     [hasValue]="hasValue$() | async"
+                     (clear)="handleClear()"
+                     (openStateChange)="openStateChange.emit($event)">
+
+  <form [formGroup]="formGroup">
+    <tsl-grid-select-form *ngIf="variant === VARIANT.BUBBLE"
+                          [isBig]="true"
+                          [isMultiselect]="false"
+                          [options]="getGridOptions()"
+                          [columns]="6">
+    </tsl-grid-select-form>
+
+    <tsl-select-filter-template *ngIf="variant === VARIANT.CONTENT"
+                                [contentTitle]="config.title"
+                                [hasContentPlaceholder]="true"
+                                [isClearable]="false"
+                                [placeholderLabel]="getLabel()"
+                                [placeholderIcon]="getIcon()">
+        <tsl-select-form
+          formControlName="select"
+          [options]="getSelectOptions()">
+        </tsl-select-form>
+    </tsl-select-filter-template>
+  </form>
+
+</tsl-filter-template>

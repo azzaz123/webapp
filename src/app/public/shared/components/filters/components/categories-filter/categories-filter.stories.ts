@@ -7,12 +7,14 @@ import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { HttpClientModule } from '@angular/common/http';
 import { COMMON_CONFIGURATION_ID } from '../../core/enums/configuration-ids/common-configuration-ids.enum';
 import { FILTER_TYPES } from '../../core/enums/filter-types/filter-types.enum';
-import { SelectParentOptionComponent } from '../abstract-select-filter/select-parent-option/select-parent-option.component';
 import { SelectFormComponent } from '@shared/form/components/select/select-form.component';
 import { FilterConfig } from '../../interfaces/filter-config.interface';
 import { CategoriesFilterParams } from './interfaces/categories-filter-params.interface';
 import { CategoriesFilterComponent } from './categories-filter.component';
 import { GridSelectFormComponent } from '@shared/form/components/grid-select/grid-select-form.component';
+import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module';
+import { AbstractSelectFilterModule } from '../abstract-select-filter/abstract-select-filter.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'tsl-filters',
@@ -55,14 +57,8 @@ export default {
   title: 'Webapp/Public/Shared/Components/Filters/CategoriesFilter',
   decorators: [
     moduleMetadata({
-      imports: [HttpClientModule],
-      declarations: [
-        FiltersComponent,
-        CategoriesFilterComponent,
-        SelectFormComponent,
-        GridSelectFormComponent,
-        SelectParentOptionComponent,
-      ],
+      imports: [HttpClientModule, AbstractFilterModule, AbstractSelectFilterModule, FormsModule, ReactiveFormsModule],
+      declarations: [FiltersComponent, CategoriesFilterComponent, SelectFormComponent, GridSelectFormComponent],
     }),
   ],
 } as Meta;
