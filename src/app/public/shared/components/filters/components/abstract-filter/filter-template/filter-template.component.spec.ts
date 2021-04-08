@@ -119,7 +119,7 @@ describe('FilterTemplateComponent', () => {
         });
 
         it('should render developer warning content', () => {
-          expectRender(By.css('.FilterTemplate__dev_warn'), true);
+          expectRender(By.css('.FilterTemplate--warn'), true);
         });
 
         describe('on cancel click', () => {
@@ -222,7 +222,7 @@ describe('FilterTemplateComponent', () => {
     });
 
     it('should render developer warning content', () => {
-      expectRender(By.css('.FilterTemplate__dev_warn'), true);
+      expectRender(By.css('.FilterTemplate--warn'), true);
     });
   });
 
