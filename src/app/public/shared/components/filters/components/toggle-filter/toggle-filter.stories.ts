@@ -21,7 +21,7 @@ import { ToggleFilterComponent } from './toggle-filter.component';
       <tsl-toggle-filter [variant]="${FILTER_VARIANT.BUBBLE}" [value]="value" [config]="config" (valueChange)="changeBubble($event)">
       </tsl-toggle-filter>
       <h1>Content variant</h1>
-      <div style="border: 1px dashed black; background-color: white">
+      <div style="border: 1px dashed black; background-color: white" class="p-3">
         <tsl-toggle-filter [variant]="${FILTER_VARIANT.CONTENT}" [value]="value" [config]="config" (valueChange)="changeContent($event)">
         </tsl-toggle-filter>
       </div>

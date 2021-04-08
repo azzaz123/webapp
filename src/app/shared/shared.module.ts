@@ -72,6 +72,7 @@ import { UploaderModule } from './uploader/uploader.module';
 import { UserAvatarModule } from './user-avatar/user-avatar.module';
 import { UserCoverModule } from './user-cover/user-cover.module';
 import { DateCountDownModule } from './date-countdown/date-countdown.module';
+import { SuggestProModalComponent } from './catalog/modals/suggest-pro-modal/suggest-pro-modal.component';
 
 @NgModule({
   imports: [
@@ -160,6 +161,7 @@ import { DateCountDownModule } from './date-countdown/date-countdown.module';
     WallacoinsDisabledModalComponent,
     ButtonModule,
     DateCountDownModule,
+    SuggestProModalComponent,
   ],
   declarations: [
     ConfirmationModalComponent,
@@ -217,6 +219,7 @@ import { DateCountDownModule } from './date-countdown/date-countdown.module';
     RouterLinkDirectiveStub,
     BumpSuggestionModalComponent,
     WallacoinsDisabledModalComponent,
+    SuggestProModalComponent,
   ],
   providers: [DecimalPipe, LinkTransformPipe],
   entryComponents: [

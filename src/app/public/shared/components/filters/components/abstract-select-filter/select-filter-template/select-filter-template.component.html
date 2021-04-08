@@ -1,26 +1,26 @@
 <div *ngIf="!hasContentPlaceholder">
-  <ng-template [ngTemplateOutlet]="contentWrapper"></ng-template>
+  <ng-template [ngTemplateOutlet]="content"></ng-template>
 </div>
 
-<div *ngIf="hasContentPlaceholder">
+<div *ngIf="hasContentPlaceholder && !isPlaceholderOpen">
   <tsl-select-parent-option [label]="placeholderLabel" [sublabel]="placeholderSublabel" [icon]="placeholderIcon" [isClearable]="isClearable"
                             (clear)="handleClear()" (click)="togglePlaceholderOpen()">
   </tsl-select-parent-option>
 </div>
 
 <div *ngIf="hasContentPlaceholder && isPlaceholderOpen" class="SelectFilterTemplate--open">
-  <div class="SelectFilterTemplate__content">
-    <ng-template [ngTemplateOutlet]="contentWrapper"></ng-template>
-  </div>
   <div class="d-flex justify-content-center align-items-center SelectFilterTemplate__toolbar">
     <span *ngIf="contentTitle" class="SelectFilterTemplate__OpenPlaceholder_title">{{contentTitle}}</span>
     <tsl-svg-icon src="/assets/icons/arrow-back.svg" class="SelectFilterTemplate__back_icon p-3"
                   (click)="togglePlaceholderOpen()">
     </tsl-svg-icon>
   </div>
+  <div class="SelectFilterTemplate__content--open">
+    <ng-template [ngTemplateOutlet]="content"></ng-template>
+  </div>
 </div>
 
-<ng-template #contentWrapper>
+<ng-template #content>
   <div #extendedContent>
     <ng-content></ng-content>
   </div>
