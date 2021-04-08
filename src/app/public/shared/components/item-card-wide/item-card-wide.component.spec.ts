@@ -1,10 +1,9 @@
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
-import { ITEM_BUMP_FLAGS, MOCK_ITEM, MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
@@ -16,6 +15,7 @@ import { FavouriteIconModule } from '../favourite-icon/favourite-icon.module';
 import { ItemExtraInfoModule } from '../item-extra-info/item-extra-info.module';
 
 import { ItemCardWideComponent } from './item-card-wide.component';
+import { MOCK_ITEM_CARD_WIDE_BUMPED, MOCK_ITEM_CARD_WIDE_GBP } from './item-card-wide.mock.stories';
 
 describe('ItemCardWideComponent', () => {
   const favouriteIconSelector = 'tsl-favourite-icon';
@@ -56,8 +56,7 @@ describe('ItemCardWideComponent', () => {
     decimalPipe = TestBed.inject(DecimalPipe);
     de = fixture.debugElement;
     el = de.nativeElement;
-    component.item = MOCK_ITEM;
-    component.item.bumpFlags = ITEM_BUMP_FLAGS;
+    component.item = MOCK_ITEM_CARD_WIDE_BUMPED;
     fixture.detectChanges();
   });
 
@@ -82,7 +81,7 @@ describe('ItemCardWideComponent', () => {
 
     describe('when the item currency code is in dollars...', () => {
       beforeEach(() => {
-        component.item = MOCK_ITEM_GBP;
+        component.item = MOCK_ITEM_CARD_WIDE_GBP;
 
         fixture.detectChanges();
       });

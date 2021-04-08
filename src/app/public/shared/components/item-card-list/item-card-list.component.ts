@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { Item } from '@core/item/item';
 import { environment } from '@environments/environment';
+import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -15,7 +16,7 @@ import { SlotsConfig } from './interfaces/slots-config.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemCardListComponent {
-  @Input() items: Item[];
+  @Input() items: ItemCard[];
   @Input() showDescription = true;
   @Input() columnsConfig: ColumnsConfig = {
     lg: 5,
@@ -35,7 +36,7 @@ export class ItemCardListComponent {
     this.showDescription = !this.deviceDetectionService.isMobile();
   }
 
-  public toggleFavourite(item: Item): void {
+  public toggleFavourite(item: ItemCard): void {
     this.checkSessionService.hasSession() ? this.itemCardService.toggleFavourite(item) : this.checkSessionService.checkSessionAction();
   }
 

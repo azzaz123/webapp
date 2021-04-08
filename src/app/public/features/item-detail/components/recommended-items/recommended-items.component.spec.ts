@@ -5,7 +5,9 @@ import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
 import { MOCK_ITEM_INDEX } from '../../core/services/item-detail-track-events/track-events.fixtures.spec';
 import { RECOMMENDED_ITEMS_MOCK, RECOMMENDED_ITEM_MOCK } from './constants/recommended-items.fixtures.spec';
+import { MapRecommendedItemCardService } from '../../core/services/map-recommended-item-card/map-recommended-item-card.service';
 import { RecommendedItemsComponent } from './recommended-items.component';
+import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 
 describe('RecommendedItemsComponent', () => {
   const itemCardListTag = 'tsl-public-item-card-list';
@@ -15,7 +17,7 @@ describe('RecommendedItemsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [RecommendedItemsComponent],
-      providers: [MapItemService],
+      providers: [MapRecommendedItemCardService],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
@@ -32,7 +34,13 @@ describe('RecommendedItemsComponent', () => {
 
   describe('when we have recommended items...', () => {
     beforeEach(() => {
-      component.recommendedItems = RECOMMENDED_ITEMS_MOCK;
+      component.recommendedItems = [
+        RECOMMENDED_ITEM_MOCK,
+        RECOMMENDED_ITEM_MOCK,
+        RECOMMENDED_ITEM_MOCK,
+        RECOMMENDED_ITEM_MOCK,
+        RECOMMENDED_ITEM_MOCK,
+      ];
 
       component.ngOnChanges();
       fixture.detectChanges();
@@ -47,7 +55,7 @@ describe('RecommendedItemsComponent', () => {
 
     describe('when we got more than six recommended items...', () => {
       beforeEach(() => {
-        component.recommendedItems.recommended_items = [
+        component.recommendedItems = [
           RECOMMENDED_ITEM_MOCK,
           RECOMMENDED_ITEM_MOCK,
           RECOMMENDED_ITEM_MOCK,
@@ -58,6 +66,8 @@ describe('RecommendedItemsComponent', () => {
           RECOMMENDED_ITEM_MOCK,
           RECOMMENDED_ITEM_MOCK,
         ];
+
+        component.ngOnChanges();
         fixture.detectChanges();
       });
 
@@ -69,10 +79,10 @@ describe('RecommendedItemsComponent', () => {
         const itemCard: DebugElement = fixture.debugElement.query(By.css(itemCardListTag));
         spyOn(component.clickedItemAndIndexEvent, 'emit');
 
-        itemCard.triggerEventHandler('clickedItemAndIndex', { item: MOCK_ITEM, index: MOCK_ITEM_INDEX });
+        itemCard.triggerEventHandler('clickedItemAndIndex', { item: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
         fixture.detectChanges();
 
-        expect(component.clickedItemAndIndexEvent.emit).toHaveBeenCalledWith({ item: MOCK_ITEM, index: MOCK_ITEM_INDEX });
+        expect(component.clickedItemAndIndexEvent.emit).toHaveBeenCalledWith({ item: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
       });
     });
   });
