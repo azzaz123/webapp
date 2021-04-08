@@ -23,21 +23,21 @@ describe('EmptyStateComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('when we have the drawing path...', () => {
-    it('should show the drawing', () => {
+  describe('when we have the image path...', () => {
+    it('should show the illustration', () => {
       component.illustrationSrc = 'path';
 
       fixture.detectChanges();
 
-      const svgDrawing = fixture.debugElement.query(By.css('img'));
-      expect(svgDrawing).toBeTruthy();
+      const illustration = fixture.debugElement.query(By.css('img'));
+      expect(illustration).toBeTruthy();
     });
   });
 
-  describe(`when we don't have the drawing path...`, () => {
-    it(`shouldn't show the drawing`, () => {
-      const svgDrawing = fixture.debugElement.query(By.css('img'));
-      expect(svgDrawing).toBeFalsy();
+  describe(`when we don't have the image path...`, () => {
+    it(`shouldn't show the illustration`, () => {
+      const illustration = fixture.debugElement.query(By.css('img'));
+      expect(illustration).toBeFalsy();
     });
   });
 });

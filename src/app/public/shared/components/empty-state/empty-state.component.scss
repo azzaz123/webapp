@@ -1,9 +1,11 @@
 @import '~style/common';
 
 .EmptyState {
-  span {
+  &__title,
+  &__description {
     font-size: $font-size-m;
   }
+
   &__title {
     font-weight: $font-weight-chunky;
   }

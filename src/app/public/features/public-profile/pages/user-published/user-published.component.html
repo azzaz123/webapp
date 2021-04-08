@@ -1,6 +1,6 @@
 <div class="d-inline-block w-100 my-4">
     <tsl-spinner *ngIf="loading"></tsl-spinner>
-    <div class="d-flex justify-content-center" *ngIf="!loading && items.length == 0">
+    <div class="d-flex justify-content-center" *ngIf="!loading && items.length === 0">
         <div class="UserPublished__emptyState">
             <tsl-empty-state
                 [title]="emptyStateProperties.title"
