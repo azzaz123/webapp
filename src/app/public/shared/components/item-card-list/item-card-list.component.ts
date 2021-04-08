@@ -4,6 +4,7 @@ import { environment } from '@environments/environment';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { ClickedItemCard } from '../filters/core/interfaces/clicked-item-card.interface';
 import { ColumnsConfig } from './interfaces/cols-config.interface';
 import { SlotsConfig } from './interfaces/slots-config.interface';
 
@@ -23,7 +24,7 @@ export class ItemCardListComponent {
     xs: 2,
   };
   @Input() slotsConfig: SlotsConfig;
-  @Output() clickedItemAndIndex: EventEmitter<{ item: Item; index: number }> = new EventEmitter<{ item: Item; index: number }>();
+  @Output() clickedItemAndIndex: EventEmitter<ClickedItemCard> = new EventEmitter<ClickedItemCard>();
 
   constructor(
     private deviceDetectionService: DeviceDetectorService,
@@ -38,7 +39,7 @@ export class ItemCardListComponent {
     this.checkSessionService.hasSession() ? this.itemCardService.toggleFavourite(item) : this.checkSessionService.checkSessionAction();
   }
 
-  public openItemDetailPage(item: Item, index: number): void {
+  public openItemDetailPage({ item, index }: ClickedItemCard): void {
     this.clickedItemAndIndex.emit({ item, index });
     const link = environment.siteUrl.replace('es', this.subdomain) + 'item/' + item.webSlug;
     window.open(link);

@@ -23,6 +23,7 @@ import { TypeCheckService } from '@public/core/services/type-check/type-check.se
 import { ItemDetailTrackEventsService } from '../core/services/item-detail-track-events/item-detail-track-events.service';
 import { take } from 'rxjs/operators';
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
+import { ClickedItemCard } from '@public/shared/components/filters/core/interfaces/clicked-item-card.interface';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -84,7 +85,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     this.itemDetailStoreService.markItemAsSold();
   }
 
-  public trackClickItemCardEvent(event: { item: Item; index: number }): void {
+  public trackClickItemCardEvent(event: ClickedItemCard): void {
     const recommendedItem: Item = event.item;
     const sourceItem: Item = this.itemDetail.item;
     this.userService.get(recommendedItem.owner).subscribe((recommendedUser: User) => {

@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core
 import { Item } from '@core/item/item';
 import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
 import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
+import { ClickedItemCard } from '@public/shared/components/filters/core/interfaces/clicked-item-card.interface';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 
 @Component({
@@ -11,7 +12,7 @@ import { ColumnsConfig } from '@public/shared/components/item-card-list/interfac
 })
 export class RecommendedItemsComponent implements OnChanges {
   @Input() recommendedItems: RecommendedItemsBodyResponse;
-  @Output() clickedItemAndIndexEvent: EventEmitter<{ item: Item; index: number }> = new EventEmitter<{ item: Item; index: number }>();
+  @Output() clickedItemAndIndexEvent: EventEmitter<ClickedItemCard> = new EventEmitter<ClickedItemCard>();
 
   public items: Item[];
   public showDescription = false;
@@ -30,7 +31,7 @@ export class RecommendedItemsComponent implements OnChanges {
     }
   }
 
-  public clickedItemAndIndex(event: { item: Item; index: number }) {
+  public clickedItemAndIndex(event: ClickedItemCard) {
     this.clickedItemAndIndexEvent.emit(event);
   }
 }
