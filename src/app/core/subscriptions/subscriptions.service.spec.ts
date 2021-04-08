@@ -27,13 +27,14 @@ import { AccessTokenService } from '../http/access-token.service';
 import { HttpClient } from '@angular/common/http';
 import { I18nService } from '../i18n/i18n.service';
 import { UuidService } from '../uuid/uuid.service';
+import { CATEGORY_IDS } from '@core/category/category-ids';
+import { cloneDeep } from 'lodash-es';
 
 describe('SubscriptionsService', () => {
   let service: SubscriptionsService;
   let http: HttpClient;
   let httpMock: HttpTestingController;
   let userService: UserService;
-  let featureflagService: FeatureflagService;
   let categoryService: CategoryService;
   let uuidService: UuidService;
   const API_URL = 'api/v3/payments';
@@ -83,7 +84,6 @@ describe('SubscriptionsService', () => {
     http = TestBed.inject(HttpClient);
     httpMock = TestBed.inject(HttpTestingController);
     userService = TestBed.inject(UserService);
-    featureflagService = TestBed.inject(FeatureflagService);
     categoryService = TestBed.inject(CategoryService);
     uuidService = TestBed.inject(UuidService);
     service.uuid = '1-2-3';
@@ -451,6 +451,43 @@ describe('SubscriptionsService', () => {
       });
     });
   });
+
+  describe('hasFreeTrialByCategoryId', () => {
+    describe('when category has free trial available', () => {
+      it('should return true', () => {
+        const result = service.hasFreeTrialByCategoryId(MAPPED_SUBSCRIPTIONS_ADDED, CATEGORY_IDS.MOTORBIKE);
+
+        expect(result).toBe(true);
+      });
+    });
+
+    describe('when category has not subscriptions ', () => {
+      it('should return false', () => {
+        const result = service.hasFreeTrialByCategoryId(MAPPED_SUBSCRIPTIONS_ADDED, CATEGORY_IDS.CELL_PHONES_ACCESSORIES);
+
+        expect(result).toBe(false);
+      });
+    });
+
+    describe('when category has not trial available', () => {
+      it('should return no subscriptions', () => {
+        const result = service.hasFreeTrialByCategoryId(MAPPED_SUBSCRIPTIONS_ADDED, CATEGORY_IDS.CAR);
+
+        expect(result).toEqual(false);
+      });
+    });
+
+    describe('when category has subscription activated', () => {
+      it('should return no subscriptions', () => {
+        const mockSubscriptions: SubscriptionsResponse[] = cloneDeep(MAPPED_SUBSCRIPTIONS_ADDED);
+        mockSubscriptions[0].trial_available = true;
+        const result = service.hasFreeTrialByCategoryId(mockSubscriptions, CATEGORY_IDS.MOTOR_ACCESSORIES);
+
+        expect(result).toEqual(false);
+      });
+    });
+  });
+
   afterAll(() => {
     TestBed.resetTestingModule();
   });

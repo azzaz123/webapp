@@ -6,7 +6,7 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ErrorsService } from '@core/errors/errors.service';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
-import { MOCK_ITEM, MOCK_ITEM_SOLD, PURCHASES } from '@fixtures/item.fixtures.spec';
+import { MOCK_ITEM, MOCK_ITEM_FEATURED, MOCK_ITEM_SOLD, PURCHASES } from '@fixtures/item.fixtures.spec';
 import { MOCK_USER, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -15,13 +15,12 @@ import { PublicUserApiService } from '@public/core/services/api/public-user/publ
 import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
-import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
+import { MapItemService } from '@public/core/services/map-item/map-item.service';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { SoldModalComponent } from '@shared/modals/sold-modal/sold-modal.component';
 import { CookieService } from 'ngx-cookie';
 import { of } from 'rxjs';
 import { ItemDetailService } from '../../core/services/item-detail/item-detail.service';
-import { MOCK_ITEM_7 } from '@public/shared/components/item-card/item-card.mock.stories';
 import { ItemDetailHeaderComponent } from './item-detail-header.component';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
@@ -145,7 +144,7 @@ describe('ItemDetailHeaderComponent', () => {
       it('should ask for the active purchases', () => {
         spyOn(itemDetailService, 'getItemActivePurchases').and.returnValue(of(PURCHASES));
         component.isOwner = true;
-        component.item = MOCK_ITEM_7;
+        component.item = MOCK_ITEM_FEATURED;
 
         component.ngOnInit();
         fixture.detectChanges();

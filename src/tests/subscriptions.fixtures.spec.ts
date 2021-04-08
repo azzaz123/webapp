@@ -110,6 +110,10 @@ export class MockSubscriptionService {
   public checkNewSubscriptionStatus(): Observable<SubscriptionResponse> {
     return of(SUBSCRIPTION_SUCCESS);
   }
+
+  public hasFreeTrialByCategoryId(): boolean {
+    return true;
+  }
 }
 
 export const MOCK_SUBSCRIPTION_BENEFITS: SubscriptionBenefit[] = [
