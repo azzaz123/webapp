@@ -12,7 +12,7 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { AbstractFilterModule } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.module';
 import { FilterOptionServiceModule } from '@public/shared/services/filter-option/filter-option-service.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { GridSelectFormFormModule } from '@shared/form/components/grid-select/grid-select-form-form.module';
+import { GridSelectFormModule } from '@shared/form/components/grid-select/grid-select-form.module';
 import { By } from '@angular/platform-browser';
 import { FILTER_TYPES } from '@public/shared/components/filters/core/enums/filter-types/filter-types.enum';
 import { FilterTemplateComponent } from '../abstract-filter/filter-template/filter-template.component';
@@ -78,7 +78,7 @@ describe('GridSelectFilterComponent', () => {
         FilterOptionServiceModule,
         FormsModule,
         ReactiveFormsModule,
-        GridSelectFormFormModule,
+        GridSelectFormModule,
       ],
     }).compileComponents();
   });

@@ -8,4 +8,4 @@ import { GridSelectOptionModule } from './grid-select-option/grid-select-option.
   exports: [GridSelectFormComponent],
   imports: [CommonModule, GridSelectOptionModule],
 })
-export class GridSelectFormFormModule {}
+export class GridSelectFormModule {}

@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { GridSelectFormOption } from './interfaces/grid-select-form-option.interface';
 import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { GridSelectFormFormModule } from '@shared/form/components/grid-select/grid-select-form-form.module';
+import { GridSelectFormModule } from '@shared/form/components/grid-select/grid-select-form.module';
 
 @Component({
   selector: 'tsl-story-grid-select-form',
@@ -56,7 +56,7 @@ export default {
   decorators: [
     moduleMetadata({
       declarations: [StoryGridSelectFormFormComponent],
-      imports: [HttpClientModule, ReactiveFormsModule, GridSelectFormFormModule],
+      imports: [HttpClientModule, ReactiveFormsModule, GridSelectFormModule],
     }),
   ],
 };
