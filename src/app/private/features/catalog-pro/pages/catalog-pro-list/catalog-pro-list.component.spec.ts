@@ -18,6 +18,7 @@ import { BumpSuggestionModalComponent } from '@shared/modals/bump-suggestion-mod
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
 import { of, Subject } from 'rxjs';
 import { CatalogProListComponent } from './catalog-pro-list.component';
+import { ITEM_CHANGE_ACTION } from '@private/features/catalog/core/item-change.interface';
 
 describe('CatalogProListComponent', () => {
   let component: CatalogProListComponent;
@@ -329,7 +330,7 @@ describe('CatalogProListComponent', () => {
       expect(onClickSpy).toHaveBeenCalled();
       expect(component.itemChanged).toHaveBeenCalledWith({
         item: MOCK_ITEM_V3,
-        action: 'sold',
+        action: ITEM_CHANGE_ACTION.SOLD,
       });
       expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_SOLD, MOCK_ITEM_V3);
     }));

@@ -1,6 +1,10 @@
 @import '~style/common';
 
 .RangeFilter {
+  &__form {
+    overflow: hidden;
+  }
+
   &__input {
     &__wrapper {
       flex: 1;

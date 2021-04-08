@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { ItemService } from '@core/item/item.service';
-import { ItemChangeEvent } from '../../core/item-change.interface';
+import { ItemChangeEvent, ITEM_CHANGE_ACTION } from '../../core/item-change.interface';
 import { Order, Product } from '@core/item/item-response.interface';
 import { OrderEvent } from '../selected-items/selected-product.interface';
 import { DEFAULT_ERROR_MESSAGE } from '@core/errors/errors.service';
@@ -55,7 +55,7 @@ export class CatalogItemComponent implements OnInit {
   }
 
   public activateItem(item: Item): void {
-    this.itemChange.emit({ item, action: 'activate' });
+    this.itemChange.emit({ item, action: ITEM_CHANGE_ACTION.ACTIVATE });
   }
 
   public reactivate(item: Item): void {
@@ -67,7 +67,7 @@ export class CatalogItemComponent implements OnInit {
       () => {
         this.itemChange.emit({
           item,
-          action: 'reactivated',
+          action: ITEM_CHANGE_ACTION.REACTIVATED,
         });
       },
       () => this.toastService.show({ text: DEFAULT_ERROR_MESSAGE, type: 'error' })
@@ -91,7 +91,7 @@ export class CatalogItemComponent implements OnInit {
     });
     this.itemChange.emit({
       item: item,
-      action: 'sold',
+      action: ITEM_CHANGE_ACTION.SOLD,
     });
     this.eventService.emit(EventService.ITEM_SOLD, item);
   }
