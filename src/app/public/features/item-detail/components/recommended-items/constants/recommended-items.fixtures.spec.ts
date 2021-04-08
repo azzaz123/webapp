@@ -93,3 +93,9 @@ export const MAPPED_RECOMMENDED_ITEM_MOCK: Item = new Item(
   null,
   RECOMMENDED_ITEMS_MOCK.recommended_type
 );
+
+export const RECOMMENDED_ITEM_IDS_MOCK: string = [
+  RECOMMENDED_ITEM_MOCK.id,
+  RECOMMENDED_ITEM_MOCK.id + '1',
+  RECOMMENDED_ITEM_MOCK.id + '2',
+].toString();
