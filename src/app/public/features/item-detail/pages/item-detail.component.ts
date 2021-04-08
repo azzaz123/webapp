@@ -22,6 +22,7 @@ import { User } from '@core/user/user';
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { ItemDetailTrackEventsService } from '../core/services/item-detail-track-events/item-detail-track-events.service';
 import { take } from 'rxjs/operators';
+import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -83,6 +84,10 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     this.itemDetailStoreService.markItemAsSold();
   }
 
+  public trackShareItemEvent(channel: SOCIAL_SHARE_CHANNELS): void {
+    this.itemDetailTrackEventsService.trackShareItemEvent(channel, this.itemDetail.item, this.itemDetail.user);
+  }
+
   private initPage(itemId: string): void {
     this.itemDetailStoreService.initializeItemAndFlags(itemId);
     this.subscriptions.push(
@@ -124,6 +129,9 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
         if (user.id === userMe.id) {
           this.itemDetailTrackEventsService.trackViewOwnItemDetail(item, user);
         } else {
+          if (this.typeCheckService.isRealEstate(item)) {
+            this.itemDetailTrackEventsService.trackViewOthersItemREDetailEvent(item, user);
+          }
           if (this.typeCheckService.isCar(item)) {
             this.itemDetailTrackEventsService.trackViewOthersItemCarDetailEvent(item, user);
           }
