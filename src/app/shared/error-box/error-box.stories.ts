@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { ButtonModule } from '@shared/button/button.module';
 import { moduleMetadata } from '@storybook/angular';
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { ErrorBoxComponent } from './error-box.component';
@@ -9,7 +10,7 @@ export default {
   component: ErrorBoxComponent,
   decorators: [
     moduleMetadata({
-      imports: [CommonModule],
+      imports: [CommonModule, ButtonModule],
       declarations: [ErrorBoxComponent],
     }),
   ],

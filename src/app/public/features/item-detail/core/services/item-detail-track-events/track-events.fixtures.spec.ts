@@ -6,15 +6,19 @@ import {
   ClickChatButton,
   FavoriteItem,
   SCREEN_IDS,
+  ShareItem,
   UnfavoriteItem,
   ViewOthersItemCarDetail,
   ViewOthersItemCGDetail,
+  ViewOthersItemREDetail,
   ViewOwnItemDetail,
 } from '@core/analytics/analytics-constants';
 import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
 import { MOCK_CAR_ITEM_DETAIL } from '@fixtures/item-detail.fixtures.spec';
 import { MOCK_ITEM, MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
+import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
 import { MOCK_OTHER_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
 
 export const MOCK_CLICK_CHAT_BUTTON_EVENT: AnalyticsEvent<ClickChatButton> = {
   name: ANALYTICS_EVENT_NAMES.ClickChatButton,
@@ -81,6 +85,62 @@ export const MOCK_UNFAVORITE_ITEM_EVENT: AnalyticsEvent<UnfavoriteItem> = {
   },
 };
 
+export const MOCK_FB_SHARE_ITEM_EVENT: AnalyticsEvent<ShareItem> = {
+  name: ANALYTICS_EVENT_NAMES.ShareItem,
+  eventType: ANALYTIC_EVENT_TYPES.Social,
+  attributes: {
+    itemId: MOCK_CAR.id,
+    categoryId: MOCK_CAR.categoryId,
+    channel: SOCIAL_SHARE_CHANNELS.FACEBOOK,
+    screenId: SCREEN_IDS.ItemDetail,
+    isPro: MOCK_USER.featured,
+    salePrice: MOCK_CAR.salePrice,
+  },
+};
+
+export const MOCK_TWITTER_SHARE_ITEM_EVENT: AnalyticsEvent<ShareItem> = {
+  name: ANALYTICS_EVENT_NAMES.ShareItem,
+  eventType: ANALYTIC_EVENT_TYPES.Social,
+  attributes: {
+    itemId: MOCK_CAR.id,
+    categoryId: MOCK_CAR.categoryId,
+    channel: SOCIAL_SHARE_CHANNELS.TWITTER,
+    screenId: SCREEN_IDS.ItemDetail,
+    isPro: MOCK_USER.featured,
+    salePrice: MOCK_CAR.salePrice,
+  },
+};
+
+export const MOCK_EMAIL_SHARE_ITEM_EVENT: AnalyticsEvent<ShareItem> = {
+  name: ANALYTICS_EVENT_NAMES.ShareItem,
+  eventType: ANALYTIC_EVENT_TYPES.Social,
+  attributes: {
+    itemId: MOCK_CAR.id,
+    categoryId: MOCK_CAR.categoryId,
+    channel: SOCIAL_SHARE_CHANNELS.EMAIL,
+    screenId: SCREEN_IDS.ItemDetail,
+    isPro: MOCK_USER.featured,
+    salePrice: MOCK_CAR.salePrice,
+  },
+};
+
+export const MOCK_VIEW_OTHERS_ITEM_RE_DETAIL_EVENT: AnalyticsPageView<ViewOthersItemREDetail> = {
+  name: ANALYTICS_EVENT_NAMES.ViewOthersItemREDetail,
+  attributes: {
+    itemId: MOCK_REALESTATE.id,
+    categoryId: MOCK_REALESTATE.categoryId,
+    salePrice: MOCK_REALESTATE.salePrice,
+    title: MOCK_REALESTATE.title,
+    operation: MOCK_REALESTATE.operation,
+    type: MOCK_REALESTATE.type,
+    condition: MOCK_REALESTATE.condition,
+    surface: MOCK_REALESTATE.surface,
+    rooms: MOCK_REALESTATE.rooms,
+    isPro: MOCK_OTHER_USER.featured,
+    screenId: SCREEN_IDS.ItemDetail,
+  },
+};
+
 export const MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT: AnalyticsPageView<ViewOthersItemCarDetail> = {
   name: ANALYTICS_EVENT_NAMES.ViewOthersItemCarDetail,
   attributes: {
@@ -103,10 +163,20 @@ export const MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT: AnalyticsPageView<ViewOther
   },
 };
 
+export const MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT_NON_CARDEALER: AnalyticsPageView<ViewOthersItemCarDetail> = {
+  ...MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT,
+  attributes: {
+    ...MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT.attributes,
+    isCarDealer: false,
+  },
+};
+
 export class MockItemdDetailTrackEventService {
   trackFavoriteOrUnfavoriteEvent() {}
   trackClickChatButton() {}
   trackViewOwnItemDetail() {}
   trackViewOthersCGDetailEvent() {}
+  trackViewOthersItemREDetailEvent() {}
   trackViewOthersItemCarDetailEvent() {}
+  trackShareItemEvent() {}
 }

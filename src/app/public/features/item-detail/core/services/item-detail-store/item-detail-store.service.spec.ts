@@ -7,7 +7,7 @@ import { ItemApiService } from '@public/core/services/api/item/item-api.service'
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
 import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
-import { APP_PATHS } from 'app/app-routing-constants';
+import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { of, throwError } from 'rxjs';
 import { ItemDetailFlagsStoreService } from '../item-detail-flags-store/item-detail-flags-store.service';
 import { ItemDetailService } from '../item-detail/item-detail.service';
@@ -107,7 +107,7 @@ describe('ItemDetailStoreService', () => {
 
     describe('and the petition fails...', () => {
       it('should redirect to the not found page', () => {
-        const NOT_FOUND_PATH = `/${APP_PATHS.NOT_FOUND}`;
+        const NOT_FOUND_PATH = `/${PUBLIC_PATHS.NOT_FOUND}`;
         spyOn(itemDetailService, 'getItemDetail').and.returnValue(throwError('network error'));
         spyOn(router, 'navigate');
 
