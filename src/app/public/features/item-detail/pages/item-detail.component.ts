@@ -1,9 +1,9 @@
-import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AdSlotConfiguration } from '@core/ads/models';
 import { AdsService } from '@core/ads/services';
 import { AnalyticsPageView, ANALYTICS_EVENT_NAMES, SCREEN_IDS, ViewOthersItemCGDetail } from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
@@ -14,20 +14,17 @@ import { TypeCheckService } from '@public/core/services/type-check/type-check.se
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { CarouselSlide } from '@public/shared/components/carousel-slides/carousel-slide.interface';
 import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from '@public/shared/components/item-flag/item-flag-constants';
+import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
 import { combineLatest, Observable, Subscription } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
+import { ADS_ITEM_DETAIL, FactoryAdAffiliationSlotConfiguration, ItemDetailAdSlotsConfiguration } from '../core/ads/item-detail-ads.config';
 import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
 import { ItemDetailStoreService } from '../core/services/item-detail-store/item-detail-store.service';
 import { ItemDetailTrackEventsService } from '../core/services/item-detail-track-events/item-detail-track-events.service';
 import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
 import { ItemSocialShareService } from '../core/services/item-social-share/item-social-share.service';
 import { ItemDetail } from '../interfaces/item-detail.interface';
-import {
-  ADS_ITEM_DETAIL,
-  FactoryAdAffiliationSlotConfiguration,
-  ItemDetailAdSlotsConfiguration,
-} from './../core/ads/item-detail-ads.config';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -100,6 +97,10 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     this.itemDetailStoreService.markItemAsSold();
   }
 
+  public trackShareItemEvent(channel: SOCIAL_SHARE_CHANNELS): void {
+    this.itemDetailTrackEventsService.trackShareItemEvent(channel, this.itemDetail.item, this.itemDetail.user);
+  }
+
   private initPage(itemId: string): void {
     this.itemDetailStoreService.initializeItemAndFlags(itemId);
     const subscription: Subscription = this.itemDetailStoreService.itemDetail$
@@ -137,6 +138,9 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
         if (user.id === userMe.id) {
           this.itemDetailTrackEventsService.trackViewOwnItemDetail(item, user);
         } else {
+          if (this.typeCheckService.isRealEstate(item)) {
+            this.itemDetailTrackEventsService.trackViewOthersItemREDetailEvent(item, user);
+          }
           if (this.typeCheckService.isCar(item)) {
             this.itemDetailTrackEventsService.trackViewOthersItemCarDetailEvent(item, user);
           }
