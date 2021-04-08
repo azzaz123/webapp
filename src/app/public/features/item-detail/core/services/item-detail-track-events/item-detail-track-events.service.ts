@@ -21,6 +21,7 @@ import { Item } from '@core/item/item';
 import { Realestate } from '@core/item/realestate';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
+import { SEARCH_TECHNIQUE_ENGINE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
 import { ItemDetail } from '@public/features/item-detail/interfaces/item-detail.interface';
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
 import { finalize, take } from 'rxjs/operators';
@@ -128,13 +129,19 @@ export class ItemDetailTrackEventsService {
     this.analyticsService.trackPageView(event);
   }
 
-  public trackViewItemDetailRecommendationSliderEvent(item: Item, user: User, recommendedItemIds: string): void {
+  public trackViewItemDetailRecommendationSliderEvent(
+    item: Item,
+    user: User,
+    recommendedItemIds: string,
+    engine: SEARCH_TECHNIQUE_ENGINE
+  ): void {
+    console.log('reid', recommendedItemIds, engine);
     const event: AnalyticsPageView<ViewItemDetailRecommendationSlider> = {
       name: ANALYTICS_EVENT_NAMES.ViewItemDetailRecommendationSlider,
       attributes: {
         itemSourceId: item.id,
         categoryId: item.categoryId,
-        engine: 'more_like_this_solr',
+        engine: engine,
         recommendedItemIds: recommendedItemIds,
         screenId: 115,
         isPro: user.featured,
