@@ -1,12 +1,10 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
-import { ANALYTICS_EVENT_NAMES, AnalyticsPageView, ViewItemDetailRecommendationSlider } from '@core/analytics/analytics-constants';
-import { AnalyticsService } from '@core/analytics/analytics.service';
 import { Item } from '@core/item/item';
-import { User } from '@core/user/user';
 import { SEARCH_TECHNIQUE_ENGINE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
 import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
 import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
+import { RecommendedItemsInitEventEmitter } from '../../interfaces/recommended-items-init-event-emitter.interface';
 
 @Component({
   selector: 'tsl-recommended-items',
@@ -15,7 +13,7 @@ import { ColumnsConfig } from '@public/shared/components/item-card-list/interfac
 })
 export class RecommendedItemsComponent implements OnInit {
   @Input() recommendedItems: RecommendedItemsBodyResponse;
-  @Output() initRecommendedItemsSlider: EventEmitter<{ recommendedItemIds: string; engine: SEARCH_TECHNIQUE_ENGINE }> = new EventEmitter();
+  @Output() initRecommendedItemsSlider: EventEmitter<RecommendedItemsInitEventEmitter> = new EventEmitter();
   public items: Item[];
   public showDescription = false;
   public columnsConfig: ColumnsConfig = {

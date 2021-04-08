@@ -26,6 +26,7 @@ import { ItemDetailTrackEventsService } from '../core/services/item-detail-track
 import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
 import { ItemSocialShareService } from '../core/services/item-social-share/item-social-share.service';
 import { ItemDetail } from '../interfaces/item-detail.interface';
+import { RecommendedItemsInitEventEmitter } from '../interfaces/recommended-items-init-event-emitter.interface';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -91,13 +92,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     this.itemDetailTrackEventsService.trackShareItemEvent(channel, this.itemDetail.item, this.itemDetail.user);
   }
 
-  public trackViewItemDetailRecommendationSlider({
-    recommendedItemIds,
-    engine,
-  }: {
-    recommendedItemIds: string;
-    engine: SEARCH_TECHNIQUE_ENGINE;
-  }) {
+  public trackViewItemDetailRecommendationSlider({ recommendedItemIds, engine }: RecommendedItemsInitEventEmitter) {
     if (this.itemDetail) {
       this.itemDetailTrackEventsService.trackViewItemDetailRecommendationSliderEvent(
         this.itemDetail.item,
