@@ -307,7 +307,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     this.getUploadExtraInfoControl('object_type_2')
       .get('id')
       .valueChanges.subscribe((typeOfbSecondOjectId: number) => {
-        if (!!typeOfbSecondOjectId) {
+        if (!!typeOfbSecondOjectId && +this.uploadForm.get('category_id').value === CATEGORY_IDS.FASHION_ACCESSORIES) {
           this.getSizes();
         }
       });
