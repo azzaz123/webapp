@@ -32,7 +32,7 @@ export const MOCK_CLICK_CHAT_BUTTON_EVENT: AnalyticsEvent<ClickChatButton> = {
     sellerUserId: MOCK_USER.id,
     screenId: SCREEN_IDS.ItemDetail,
     isPro: MOCK_USER.featured,
-    isBumped: !!MOCK_ITEM.bumpFlags.bumped,
+    isBumped: !!MOCK_ITEM.bumpFlags?.bumped,
   },
 };
 
@@ -71,7 +71,7 @@ export const MOCK_FAVORITE_ITEM_EVENT: AnalyticsEvent<FavoriteItem> = {
     salePrice: MOCK_CAR_ITEM_DETAIL.item.salePrice,
     isPro: MOCK_CAR_ITEM_DETAIL.user.featured,
     title: MOCK_CAR_ITEM_DETAIL.item.title,
-    isBumped: !!MOCK_CAR_ITEM_DETAIL.item.bumpFlags.bumped,
+    isBumped: !!MOCK_CAR_ITEM_DETAIL.item.bumpFlags?.bumped,
   },
 };
 
@@ -85,7 +85,7 @@ export const MOCK_UNFAVORITE_ITEM_EVENT: AnalyticsEvent<UnfavoriteItem> = {
     salePrice: MOCK_CAR_ITEM_DETAIL.item.salePrice,
     isPro: MOCK_CAR_ITEM_DETAIL.user.featured,
     title: MOCK_CAR_ITEM_DETAIL.item.title,
-    isBumped: !!MOCK_CAR_ITEM_DETAIL.item.bumpFlags.bumped,
+    isBumped: !!MOCK_CAR_ITEM_DETAIL.item.bumpFlags?.bumped,
   },
 };
 
@@ -104,7 +104,7 @@ export const MOCK_CLICK_ITEM_CARD_EVENT: AnalyticsEvent<ClickItemCard> = {
     itemDistance: MOCK_OTHER_USER.itemDistance,
     shippingAllowed: MAPPED_RECOMMENDED_ITEM_MOCK.saleConditions.shipping_allowed,
     sellerUserId: MAPPED_RECOMMENDED_ITEM_MOCK.owner,
-    isBumped: !!MAPPED_RECOMMENDED_ITEM_MOCK.bumpFlags.bumped,
+    isBumped: !!MAPPED_RECOMMENDED_ITEM_MOCK.bumpFlags?.bumped,
   },
 };
 
