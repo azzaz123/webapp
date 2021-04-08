@@ -1,4 +1,6 @@
 import { Observable, Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
+
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AdsService } from '@core/ads/services';
@@ -6,23 +8,24 @@ import { CATEGORY_IDS } from '@core/category/category-ids';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { Item } from '@core/item/item';
+import { User } from '@core/user/user';
+import { UserService } from '@core/user/user.service';
+import { SEARCH_TECHNIQUE_ENGINE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
 import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
+import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { CarouselSlide } from '@public/shared/components/carousel-slides/carousel-slide.interface';
+import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from '@public/shared/components/item-flag/item-flag-constants';
+import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
+
 import { ADS_ITEM_DETAIL, ItemDetailAdSlotsConfiguration } from './../core/ads/item-detail-ads.config';
 import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
-import { ItemDetailStoreService } from '../core/services/item-detail-store/item-detail-store.service';
-import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
-import { ItemDetail } from '../interfaces/item-detail.interface';
-import { ItemSocialShareService } from '../core/services/item-social-share/item-social-share.service';
-import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from '@public/shared/components/item-flag/item-flag-constants';
 import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
-import { UserService } from '@core/user/user.service';
-import { User } from '@core/user/user';
-import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
+import { ItemDetailStoreService } from '../core/services/item-detail-store/item-detail-store.service';
 import { ItemDetailTrackEventsService } from '../core/services/item-detail-track-events/item-detail-track-events.service';
-import { take } from 'rxjs/operators';
-import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
+import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
+import { ItemSocialShareService } from '../core/services/item-social-share/item-social-share.service';
+import { ItemDetail } from '../interfaces/item-detail.interface';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -88,6 +91,23 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     this.itemDetailTrackEventsService.trackShareItemEvent(channel, this.itemDetail.item, this.itemDetail.user);
   }
 
+  public trackViewItemDetailRecommendationSlider({
+    recommendedItemIds,
+    engine,
+  }: {
+    recommendedItemIds: string;
+    engine: SEARCH_TECHNIQUE_ENGINE;
+  }) {
+    if (this.itemDetail) {
+      this.itemDetailTrackEventsService.trackViewItemDetailRecommendationSliderEvent(
+        this.itemDetail.item,
+        this.itemDetail.user,
+        recommendedItemIds,
+        engine
+      );
+    }
+  }
+
   private initPage(itemId: string): void {
     this.itemDetailStoreService.initializeItemAndFlags(itemId);
     this.subscriptions.push(
@@ -104,9 +124,9 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   }
 
   private initializeItemRecommendations(itemId: string, categoryId: number): void {
-    if (this.isItemRecommendations(categoryId)) {
-      this.recommendedItems$ = this.itemDetailService.getRecommendedItems(itemId);
-    }
+    // if (this.isItemRecommendations(categoryId)) {
+    this.recommendedItems$ = this.itemDetailService.getRecommendedItems(itemId);
+    // }
   }
 
   private setAdSlot(item: Item): void {
