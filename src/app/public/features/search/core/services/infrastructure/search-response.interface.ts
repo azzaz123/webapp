@@ -8,6 +8,6 @@ export interface SearchResponse {
     latitude: number;
     longitude: number;
   };
-  search_objects: ItemResponse;
+  search_objects: ItemResponse[];
 }
 

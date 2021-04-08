@@ -40,9 +40,9 @@ describe('SearchApiService', () => {
 
         const request = httpController.expectOne('/api/v3/general/wall?category_ids=1&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value');
         expect(request.request.method).toBe('GET');
-        request.flush('')
+        request.flush('');
       });
-    })
+    });
 
 
     describe('cars', () => {
@@ -53,9 +53,34 @@ describe('SearchApiService', () => {
 
         const request = httpController.expectOne('/api/v3/cars/wall?category_ids=100&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value');
         expect(request.request.method).toBe('GET');
-        request.flush('')
+        request.flush('');
       });
 
     });
+
+    describe('realestate', () => {
+      it('should call to wall realestate', () => {
+        const filters: FilterParameter[] = FilterParametersWallBuilder('200');
+
+        service.search(filters).subscribe();
+
+        const request = httpController.expectOne('/api/v3/real_estate/wall?category_ids=200&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value');
+        expect(request.request.method).toBe('GET');
+        request.flush('');
+      });
+    });
+
+    describe('fashion', () => {
+      it('should call to wall fashion', () => {
+        const filters: FilterParameter[] = FilterParametersWallBuilder('12465');
+
+        service.search(filters).subscribe();
+
+        const request = httpController.expectOne('/api/v3/fashion/wall?category_ids=12465&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value');
+        expect(request.request.method).toBe('GET');
+        request.flush('');
+      });
+    });
   });
+
 });

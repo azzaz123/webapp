@@ -23,13 +23,11 @@ export class SearchApiService {
 
   public search(params: FilterParameter[]): Observable<SearchPagination> {
     const paramCategoryId: FilterParameter = params.find(({key}: FilterParameter) => key === 'category_ids');
-    let url: string = `/${SearchApiUrlFactory(paramCategoryId?.value)}/${SearchApiUrlSearchOrWall(params)}`;
-    console.log(paramCategoryId, url)
+    let url = `/${SearchApiUrlFactory(paramCategoryId?.value)}/${SearchApiUrlSearchOrWall(params)}`;
+    console.log(paramCategoryId, url);
     let httpParams: HttpParams = new HttpParams();
-    params.forEach(({key, value}: FilterParameter) => {
-      httpParams = httpParams.set(key, value)
-    })
-    url += '?' + httpParams.toString()
+    params.forEach(({key, value}: FilterParameter) => httpParams = httpParams.set(key, value));
+    url += '?' + httpParams.toString();
     return this.makeSearchApi(url);
   }
 
