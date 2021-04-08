@@ -27,6 +27,10 @@ $min-size: 96px;
   &:hover {
     .GridSelectOption__label {
       color: $blue-grey-4;
+
+      &--main-color-hover {
+        color: $walla-main;
+      }
     }
 
     .GridSelectOption__icon {

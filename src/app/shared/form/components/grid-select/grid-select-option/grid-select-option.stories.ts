@@ -21,7 +21,7 @@ const Template: Story<GridSelectOptionComponent> = (args) => ({
   template: `
     <div style="display: flex">
       <div style="background: white; border: 1px dashed black;">
-          <tsl-grid-select-option [icon]="icon" [label]="label" [isBig]="isBig" [isActive]="isActive"></tsl-grid-select-option>
+          <tsl-grid-select-option [icon]="icon" [label]="label" [isBig]="isBig" [isActive]="isActive" [isHoverMainColor]="isHoverMainColor"></tsl-grid-select-option>
       </div>
     </div>
 
@@ -51,4 +51,29 @@ Active.args = {
 export const NoLabel = Template.bind({});
 NoLabel.args = {
   icon: '/assets/icons/joke.svg',
+};
+
+export const WithComplexIcon = Template.bind({});
+WithComplexIcon.args = {
+  label: 'All categories',
+  isBig: true,
+  icon: {
+    standard: '/assets/icons/filters/categories/all.svg',
+    hover: '/assets/icons/filters/categories/all_hover.svg',
+    active: '/assets/icons/filters/categories/all_selected.svg',
+  },
+  isHoverMainColor: true,
+};
+
+export const WithComplexIconActive = Template.bind({});
+WithComplexIconActive.args = {
+  label: 'All categories',
+  isBig: true,
+  icon: {
+    standard: '/assets/icons/filters/categories/all.svg',
+    hover: '/assets/icons/filters/categories/all_hover.svg',
+    active: '/assets/icons/filters/categories/all_selected.svg',
+  },
+  isActive: true,
+  isHoverMainColor: true,
 };

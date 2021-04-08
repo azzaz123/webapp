@@ -1,7 +1,7 @@
-import { CategoryFilterIcon } from './categories-filter-icon.interface';
+import { FormComplexIcon } from '@shared/form/interfaces/form-complex-icon.interface';
 
 export interface CategoriesFilterOption {
   label: string;
   value: string;
-  icon: CategoryFilterIcon;
+  icon: FormComplexIcon;
 }
