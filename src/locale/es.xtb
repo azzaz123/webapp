@@ -1,4 +1,4 @@
- <?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE translationbundle [
 <!ELEMENT translationbundle (translation)*>
 <!ATTLIST translationbundle lang CDATA #REQUIRED>
@@ -819,7 +819,7 @@
   <translation id="FooterLinksAboutLabel">¿Quiénes somos?</translation>
   <translation id="FooterLinksAboutHref">https://about.wallapop.com/</translation>
   <translation id="FooterLinksPressLabel">Prensa</translation>
-  <translation id="FooterLinksPressHref"><https://about.wallapop.com/prensa</translation>
+  <translation id="FooterLinksPressHref">https://about.wallapop.com/prensa</translation>
   <translation id="FooterLinksJobsLabel">Empleo</translation>
   <translation id="FooterLinksJobsHref">https://apply.workable.com/wallapop/</translation>
   <translation id="FooterLinksTeamLabel">Equipo</translation>
