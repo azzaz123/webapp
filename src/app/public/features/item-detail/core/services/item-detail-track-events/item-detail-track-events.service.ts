@@ -21,6 +21,7 @@ import { Item } from '@core/item/item';
 import { Realestate } from '@core/item/realestate';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
+import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
 import { ItemDetail } from '@public/features/item-detail/interfaces/item-detail.interface';
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
 import { finalize, take } from 'rxjs/operators';
@@ -61,23 +62,23 @@ export class ItemDetailTrackEventsService {
     this.analyticsService.trackEvent(event);
   }
 
-  public trackClickItemCardEvent(recommendedItem: Item, sourceItem: Item, recommenedItemOwner: User, index: number): void {
+  public trackClickItemCardEvent(recommendedItemCard: ItemCard, sourceItem: Item, recommenedItemOwner: User, index: number): void {
     const event: AnalyticsEvent<ClickItemCard> = {
       name: ANALYTICS_EVENT_NAMES.ClickItemCard,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
       attributes: {
-        itemId: recommendedItem.id,
-        categoryId: recommendedItem.categoryId,
+        itemId: recommendedItemCard.id,
+        categoryId: recommendedItemCard.categoryId,
         position: index + 1,
         screenId: SCREEN_IDS.ItemDetailRecommendationSlider,
         isPro: recommenedItemOwner.featured,
-        salePrice: recommendedItem.salePrice,
-        title: recommendedItem.title,
+        salePrice: recommendedItemCard.salePrice,
+        title: recommendedItemCard.title,
         itemSourceRecommendationId: sourceItem.id,
         itemDistance: recommenedItemOwner.itemDistance,
-        shippingAllowed: recommendedItem.saleConditions.shipping_allowed,
-        sellerUserId: recommendedItem.owner,
-        isBumped: !!recommendedItem.bumpFlags?.bumped,
+        shippingAllowed: !!recommendedItemCard.saleConditions?.shipping_allowed,
+        sellerUserId: recommendedItemCard.ownerId,
+        isBumped: !!recommendedItemCard.bumpFlags?.bumped,
       },
     };
     this.analyticsService.trackEvent(event);

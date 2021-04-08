@@ -1,6 +1,6 @@
-import { Item } from '@core/item/item';
+import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
 
 export interface ClickedItemCard {
-  item: Item;
+  itemCard: ItemCard;
   index: number;
 }

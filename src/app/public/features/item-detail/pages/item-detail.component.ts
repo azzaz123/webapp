@@ -24,6 +24,7 @@ import { ItemDetailTrackEventsService } from '../core/services/item-detail-track
 import { take } from 'rxjs/operators';
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
 import { ClickedItemCard } from '@public/shared/components/filters/core/interfaces/clicked-item-card.interface';
+import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -86,10 +87,10 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   }
 
   public trackClickItemCardEvent(event: ClickedItemCard): void {
-    const recommendedItem: Item = event.item;
+    const recommendedItemCard: ItemCard = event.itemCard;
     const sourceItem: Item = this.itemDetail.item;
-    this.userService.get(recommendedItem.owner).subscribe((recommendedUser: User) => {
-      this.itemDetailTrackEventsService.trackClickItemCardEvent(recommendedItem, sourceItem, recommendedUser, event.index);
+    this.userService.get(recommendedItemCard.ownerId).subscribe((recommendedUser: User) => {
+      this.itemDetailTrackEventsService.trackClickItemCardEvent(recommendedItemCard, sourceItem, recommendedUser, event.index);
     });
   }
 

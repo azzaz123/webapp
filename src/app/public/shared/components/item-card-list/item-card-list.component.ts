@@ -40,9 +40,9 @@ export class ItemCardListComponent {
     this.checkSessionService.hasSession() ? this.itemCardService.toggleFavourite(item) : this.checkSessionService.checkSessionAction();
   }
 
-  public openItemDetailPage({ item, index }: ClickedItemCard): void {
-    this.clickedItemAndIndex.emit({ item, index });
-    const link = environment.siteUrl.replace('es', this.subdomain) + 'item/' + item.webSlug;
+  public openItemDetailPage({ itemCard, index }: ClickedItemCard): void {
+    this.clickedItemAndIndex.emit({ itemCard, index });
+    const link = environment.siteUrl.replace('es', this.subdomain) + 'item/' + itemCard.webSlug;
     window.open(link);
 
     // TODO: UNCOMMENT WHEN WE OPEN ITEM DETAIL IN PRODUCTION		Date: 2021/04/01
