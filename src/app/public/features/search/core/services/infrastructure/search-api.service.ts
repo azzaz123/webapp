@@ -1,11 +1,11 @@
-import {map, tap} from 'rxjs/operators';
-import { HttpClient, HttpResponse, HttpHeaders, HttpParams } from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {SearchPagination} from '@public/features/search/interfaces/search-pagination.interface';
-import {FilterParameter} from '@public/shared/components/filters/interfaces/filter-parameter.interface';
-import {Observable} from 'rxjs';
-import {SearchApiUrlFactory, SearchApiUrlSearchOrWall} from './search-api-url.factory';
-import {SearchResponse} from './search-response.interface';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { SearchPagination } from '@public/features/search/interfaces/search-pagination.interface';
+import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { SearchApiUrlFactory, SearchApiUrlSearchOrWall } from './search-api-url.factory';
+import { SearchResponse, SearchResponseMapper } from './search-response.interface';
 
 @Injectable()
 export class SearchApiService {
@@ -24,7 +24,6 @@ export class SearchApiService {
   public search(params: FilterParameter[]): Observable<SearchPagination> {
     const paramCategoryId: FilterParameter = params.find(({key}: FilterParameter) => key === 'category_ids');
     let url = `/${SearchApiUrlFactory(paramCategoryId?.value)}/${SearchApiUrlSearchOrWall(params)}`;
-    console.log(paramCategoryId, url);
     let httpParams: HttpParams = new HttpParams();
     params.forEach(({key, value}: FilterParameter) => httpParams = httpParams.set(key, value));
     url += '?' + httpParams.toString();
@@ -41,8 +40,10 @@ export class SearchApiService {
         const nextPage: string = headers.get('X-NextPage');
         this.nextPageUrl = SearchApiService.buildNextPageUrl(url, nextPage);
       }),
-      map(() => {
-        return null;
-      }));
+      map(({body}: HttpResponse<SearchResponse>) => ({
+          items: SearchResponseMapper(body),
+          hasMore: true
+        })
+      ));
   }
 }

@@ -1,17 +1,10 @@
+import { SearchResponse, SearchResponseMapper } from './search-response.interface';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
-import { filtersWall } from './search-api-url.factory';
 import { SearchApiService } from './search-api.service';
+import { FilterParametersWallBuilder, SearchResponseBuilder, SearchResponseBuilderByCategoryId } from './search-api.service.fixture';
 
-
-function FilterParametersWallBuilder(categoryId: string): FilterParameter[] {
-  return filtersWall.map((key: string) => ({key, value: key === 'category_ids' ? categoryId : `${key}-value`}));
-}
-
-function FilterParametersSearchBuilder(categoryId: string, search: string): FilterParameter[] {
-  return [...filtersWall, 'keywords'].map((key: string) => ({key, value: key === 'category_ids' ? categoryId : `${key}-value`}));
-}
 
 describe('SearchApiService', () => {
   let service: SearchApiService;
@@ -34,24 +27,32 @@ describe('SearchApiService', () => {
 
     describe('generic category', () => {
       it('should call to wall generic ', () => {
-        const filters: FilterParameter[] = FilterParametersWallBuilder('1');
+        const category_id = '1';
+        const filters: FilterParameter[] = FilterParametersWallBuilder(category_id);
+        const searchResponse: SearchResponse = SearchResponseBuilderByCategoryId(category_id);
 
-        service.search(filters).subscribe();
+        service.search(filters).subscribe((response) => {
+          expect(response).toEqual(SearchResponseMapper(searchResponse));
+        });
 
-        const request = httpController.expectOne('/api/v3/general/wall?category_ids=1&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value');
+        const request = httpController.expectOne(`/api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value`);
         expect(request.request.method).toBe('GET');
-        request.flush('');
+        request.flush(searchResponse);
       });
     });
 
 
     describe('cars', () => {
       it('should call to wall cars', () => {
-        const filters: FilterParameter[] = FilterParametersWallBuilder('100');
+        const category_id = '100';
+        const filters: FilterParameter[] = FilterParametersWallBuilder(category_id);
+        const searchResponse: SearchResponse = SearchResponseBuilderByCategoryId(category_id)
 
-        service.search(filters).subscribe();
+        service.search(filters).subscribe((response) => {
+          expect(response).toEqual(SearchResponseMapper(searchResponse));
+        });
 
-        const request = httpController.expectOne('/api/v3/cars/wall?category_ids=100&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value');
+        const request = httpController.expectOne(`/api/v3/cars/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value`);
         expect(request.request.method).toBe('GET');
         request.flush('');
       });
@@ -60,11 +61,15 @@ describe('SearchApiService', () => {
 
     describe('realestate', () => {
       it('should call to wall realestate', () => {
-        const filters: FilterParameter[] = FilterParametersWallBuilder('200');
+        const category_id = '200';
+        const filters: FilterParameter[] = FilterParametersWallBuilder(category_id);
+        const searchResponse: SearchResponse = SearchResponseBuilderByCategoryId(category_id)
 
-        service.search(filters).subscribe();
+        service.search(filters).subscribe((response) => {
+          expect(response).toEqual(SearchResponseMapper(searchResponse));
+        });
 
-        const request = httpController.expectOne('/api/v3/real_estate/wall?category_ids=200&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value');
+        const request = httpController.expectOne(`/api/v3/real_estate/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value`);
         expect(request.request.method).toBe('GET');
         request.flush('');
       });
@@ -72,11 +77,14 @@ describe('SearchApiService', () => {
 
     describe('fashion', () => {
       it('should call to wall fashion', () => {
-        const filters: FilterParameter[] = FilterParametersWallBuilder('12465');
+        const category_id = '12465';
+        const filters: FilterParameter[] = FilterParametersWallBuilder(category_id);
+        const searchResponse: SearchResponse = SearchResponseBuilderByCategoryId(category_id)
+        service.search(filters).subscribe((response) => {
+          expect(response).toEqual(SearchResponseMapper(searchResponse));
+        });
 
-        service.search(filters).subscribe();
-
-        const request = httpController.expectOne('/api/v3/fashion/wall?category_ids=12465&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value');
+        const request = httpController.expectOne(`/api/v3/fashion/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value`);
         expect(request.request.method).toBe('GET');
         request.flush('');
       });
@@ -84,3 +92,4 @@ describe('SearchApiService', () => {
   });
 
 });
+
