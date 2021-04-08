@@ -97,7 +97,7 @@
                     </div>
                     <tsl-recommended-items
                         *ngIf="(recommendedItems$ |async)?.recommended_items?.length"
-                        class="mt-3" [recommendedItems]="(recommendedItems$ | async)"
+                        class="mt-3" [recommendedItems]="recommendedItems$ | async"
                         (clickedItemAndIndexEvent)="trackClickItemCardEvent($event)"
                         >
                     </tsl-recommended-items>
