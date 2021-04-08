@@ -135,7 +135,6 @@ export class ItemDetailTrackEventsService {
     recommendedItemIds: string,
     engine: SEARCH_TECHNIQUE_ENGINE
   ): void {
-    console.log('reid', recommendedItemIds, engine);
     const event: AnalyticsPageView<ViewItemDetailRecommendationSlider> = {
       name: ANALYTICS_EVENT_NAMES.ViewItemDetailRecommendationSlider,
       attributes: {
