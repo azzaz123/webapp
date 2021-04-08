@@ -15,7 +15,7 @@ import { UuidService } from '@core/uuid/uuid.service';
 import { CreditCardModalComponent } from '@private/features/catalog-pro/modals/credit-card-modal/credit-card-modal.component';
 import { ProBumpConfirmationModalComponent } from '@private/features/catalog-pro/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component';
 import { OrderEvent } from '@private/features/catalog/components/selected-items/selected-product.interface';
-import { ItemChangeEvent } from '@private/features/catalog/core/item-change.interface';
+import { ItemChangeEvent, ITEM_CHANGE_ACTION } from '@private/features/catalog/core/item-change.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { BumpSuggestionModalComponent } from '@shared/modals/bump-suggestion-modal/bump-suggestion-modal.component';
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
@@ -149,7 +149,7 @@ export class CatalogProListComponent implements OnInit {
               this.eventService.emit('itemChanged');
               this.itemChanged({
                 item: item,
-                action: ITEM_STATUS.SOLD,
+                action: ITEM_CHANGE_ACTION.SOLD,
               });
               this.eventService.emit(EventService.ITEM_SOLD, item);
             });

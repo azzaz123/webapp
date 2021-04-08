@@ -27,7 +27,7 @@ class TestSelectFilterTemplateComponent {
 
 describe('SelectFilterTemplateComponent', () => {
   const contentPredicate = By.css('.content');
-  const placeholderPredicate = By.css('.SelectOption');
+  const placeholderPredicate = By.css('.SelectParentOption');
   const openPlaceholderPredicate = By.css('.SelectFilterTemplate--open');
 
   let component: SelectFilterTemplateComponent;
@@ -126,9 +126,9 @@ describe('SelectFilterTemplateComponent', () => {
 
       describe('and back button is clicked', () => {
         it('should close placeholder', () => {
-          const placeholder = debugElement.query(placeholderPredicate).nativeElement as HTMLElement;
+          const backIcon = debugElement.query(By.css('.SelectFilterTemplate__back_icon')).nativeElement as HTMLElement;
 
-          placeholder.click();
+          backIcon.click();
           fixture.detectChanges();
 
           expect(component.isPlaceholderOpen).toBeFalsy();
