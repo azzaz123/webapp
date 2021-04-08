@@ -1,5 +1,5 @@
 import { Image } from '@core/user/user-response.interface';
-import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { RECOMMENDED_ITEM_MOCK } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
 import { ITEM_BUMP_FLAGS, ITEM_DATA, MOCK_ITEM_RESPONSE } from './item.fixtures.spec';
 import { USER_ID } from './user.fixtures.spec';

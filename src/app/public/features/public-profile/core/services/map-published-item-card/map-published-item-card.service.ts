@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ItemContent, ItemImagesURLs, ItemResponse } from '@core/item/item-response.interface';
 import { Image } from '@core/user/user-response.interface';
 import { UuidService } from '@core/uuid/uuid.service';
-import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
 
 @Injectable()
 export class MapPublishedItemCardService {

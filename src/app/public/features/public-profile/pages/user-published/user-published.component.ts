@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ItemResponse } from '@core/item/item-response.interface';
-import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
 import { EmptyStateProperties } from '@public/shared/components/empty-state/empty-state-properties.interface';
 import { finalize, take } from 'rxjs/operators';

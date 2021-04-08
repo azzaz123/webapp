@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Image } from '@core/user/user-response.interface';
 import { UuidService } from '@core/uuid/uuid.service';
-import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { RecommenderItem, RecommenderItemImage } from '@public/core/services/api/recommender/interfaces/recommender-item.interface';
 
 @Injectable()
