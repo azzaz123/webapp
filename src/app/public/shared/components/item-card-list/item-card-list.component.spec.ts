@@ -13,7 +13,6 @@ import { ItemApiModule } from '@public/core/services/api/item/item-api.module';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 import { MOCK_ITEM_INDEX } from '@public/features/item-detail/core/services/item-detail-track-events/track-events.fixtures.spec';
-import { ItemCardComponent } from '@public/shared/components/item-card/item-card.component';
 import { ItemCardModule } from '@public/shared/components/item-card/item-card.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ItemCardListComponent } from './item-card-list.component';
@@ -143,13 +142,13 @@ describe('ItemCardListComponent', () => {
       spyOn(window, 'open');
       spyOn(component.clickedItemAndIndex, 'emit');
       const expectedURL = `${environment.siteUrl.replace('es', 'www')}item/${MOCK_ITEM_CARD.webSlug}`;
-      const itemCard: HTMLElement = de.query(By.directive(ItemCardComponent)).nativeElement;
+      const itemCard: HTMLElement = de.queryAll(By.css(cardSelector))[MOCK_ITEM_INDEX].nativeElement;
 
       itemCard.click();
       fixture.detectChanges();
 
       expect(window.open).toHaveBeenCalledWith(expectedURL);
-      expect(component.clickedItemAndIndex.emit).toHaveBeenCalledWith({ item: MOCK_ITEM, index: MOCK_ITEM_INDEX });
+      expect(component.clickedItemAndIndex.emit).toHaveBeenCalledWith({ itemCard: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
       // TODO: UNCOMMENT WHEN WE OPEN ITEM DETAIL IN PRODUCTION		Date: 2021/04/01
       // expect(router.navigate).toHaveBeenCalledWith([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM.id}`]);
     });

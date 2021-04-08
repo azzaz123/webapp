@@ -4,11 +4,11 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { UserService } from '@core/user/user.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
+import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { MOCK_CAR_ITEM_DETAIL } from '@fixtures/item-detail.fixtures.spec';
 import { MOCK_ITEM, MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
 import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
 import { MockedUserService, MOCK_OTHER_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
-import { MAPPED_RECOMMENDED_ITEM_MOCK } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
 import { of } from 'rxjs';
 
@@ -116,7 +116,7 @@ describe('ItemDetailTrackEventsService', () => {
   });
 
   describe('when user click on one of the recommended item card', () => {
-    const recommendedItem = MAPPED_RECOMMENDED_ITEM_MOCK;
+    const recommendedItem = MOCK_ITEM_CARD;
     const sourceItem = MOCK_ITEM;
     const recommenedItemOwner = MOCK_OTHER_USER;
     const index = MOCK_ITEM_INDEX;

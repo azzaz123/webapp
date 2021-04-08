@@ -37,7 +37,6 @@ import { ItemCardService } from '@public/core/services/item-card/item-card.servi
 import {
   EMPTY_RECOMMENDED_ITEMS_MOCK,
   RECOMMENDED_ITEMS_MOCK,
-  MAPPED_RECOMMENDED_ITEM_MOCK,
 } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
 import { CustomCurrencyPipe } from '@shared/pipes';
 import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
@@ -66,6 +65,7 @@ import { MockItemdDetailTrackEventService, MOCK_ITEM_INDEX } from '../core/servi
 import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
 import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
+import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -777,7 +777,7 @@ describe('ItemDetailComponent', () => {
       spyOn(userService, 'get').and.returnValue(of(MOCK_OTHER_USER));
       spyOn(itemDetailTrackEventsService, 'trackClickItemCardEvent');
 
-      recommenedItemCard.triggerEventHandler('clickedItemAndIndexEvent', { item: MAPPED_RECOMMENDED_ITEM_MOCK, index: MOCK_ITEM_INDEX });
+      recommenedItemCard.triggerEventHandler('clickedItemAndIndexEvent', { itemCard: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
       fixture.detectChanges();
 
       expect(itemDetailTrackEventsService.trackClickItemCardEvent).toHaveBeenCalled();

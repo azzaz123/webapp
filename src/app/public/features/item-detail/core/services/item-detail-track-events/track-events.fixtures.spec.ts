@@ -15,11 +15,11 @@ import {
   ViewOwnItemDetail,
 } from '@core/analytics/analytics-constants';
 import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
+import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { MOCK_CAR_ITEM_DETAIL } from '@fixtures/item-detail.fixtures.spec';
 import { MOCK_ITEM, MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
 import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
 import { MOCK_OTHER_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
-import { MAPPED_RECOMMENDED_ITEM_MOCK } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
 
 export const MOCK_ITEM_INDEX: number = 2;
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
@@ -93,18 +93,18 @@ export const MOCK_CLICK_ITEM_CARD_EVENT: AnalyticsEvent<ClickItemCard> = {
   name: ANALYTICS_EVENT_NAMES.ClickItemCard,
   eventType: ANALYTIC_EVENT_TYPES.Navigation,
   attributes: {
-    itemId: MAPPED_RECOMMENDED_ITEM_MOCK.id,
-    categoryId: MAPPED_RECOMMENDED_ITEM_MOCK.categoryId,
+    itemId: MOCK_ITEM_CARD.id,
+    categoryId: MOCK_ITEM_CARD.categoryId,
     position: MOCK_ITEM_INDEX + 1,
     screenId: SCREEN_IDS.ItemDetailRecommendationSlider,
     isPro: MOCK_OTHER_USER.featured,
-    salePrice: MAPPED_RECOMMENDED_ITEM_MOCK.salePrice,
-    title: MAPPED_RECOMMENDED_ITEM_MOCK.title,
+    salePrice: MOCK_ITEM_CARD.salePrice,
+    title: MOCK_ITEM_CARD.title,
     itemSourceRecommendationId: MOCK_ITEM.id,
     itemDistance: MOCK_OTHER_USER.itemDistance,
-    shippingAllowed: MAPPED_RECOMMENDED_ITEM_MOCK.saleConditions.shipping_allowed,
-    sellerUserId: MAPPED_RECOMMENDED_ITEM_MOCK.owner,
-    isBumped: !!MAPPED_RECOMMENDED_ITEM_MOCK.bumpFlags?.bumped,
+    shippingAllowed: MOCK_ITEM_CARD.saleConditions.shipping_allowed,
+    sellerUserId: MOCK_ITEM_CARD.ownerId,
+    isBumped: !!MOCK_ITEM_CARD.bumpFlags?.bumped,
   },
 };
 

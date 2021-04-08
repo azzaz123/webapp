@@ -1,10 +1,8 @@
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
-import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
 import { MOCK_ITEM_INDEX } from '../../core/services/item-detail-track-events/track-events.fixtures.spec';
-import { RECOMMENDED_ITEMS_MOCK, RECOMMENDED_ITEM_MOCK } from './constants/recommended-items.fixtures.spec';
+import { RECOMMENDED_ITEM_MOCK } from './constants/recommended-items.fixtures.spec';
 import { MapRecommendedItemCardService } from '../../core/services/map-recommended-item-card/map-recommended-item-card.service';
 import { RecommendedItemsComponent } from './recommended-items.component';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
@@ -79,10 +77,10 @@ describe('RecommendedItemsComponent', () => {
         const itemCard: DebugElement = fixture.debugElement.query(By.css(itemCardListTag));
         spyOn(component.clickedItemAndIndexEvent, 'emit');
 
-        itemCard.triggerEventHandler('clickedItemAndIndex', { item: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
+        itemCard.triggerEventHandler('clickedItemAndIndex', { itemCard: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
         fixture.detectChanges();
 
-        expect(component.clickedItemAndIndexEvent.emit).toHaveBeenCalledWith({ item: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
+        expect(component.clickedItemAndIndexEvent.emit).toHaveBeenCalledWith({ itemCard: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
       });
     });
   });
