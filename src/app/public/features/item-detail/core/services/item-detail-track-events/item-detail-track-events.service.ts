@@ -40,7 +40,7 @@ export class ItemDetailTrackEventsService {
         salePrice: itemDetail.item.salePrice,
         isPro: itemDetail.user.featured,
         title: itemDetail.item.title,
-        isBumped: !!itemDetail.item.bumpFlags,
+        isBumped: !!itemDetail.item.bumpFlags.bumped,
       },
     };
     this.analyticsService.trackEvent(event);
@@ -55,7 +55,7 @@ export class ItemDetailTrackEventsService {
         sellerUserId: user.id,
         screenId: SCREEN_IDS.ItemDetail,
         isPro: user.featured,
-        isBumped: !!item.bumpFlags,
+        isBumped: !!item.bumpFlags.bumped,
       },
     };
     this.analyticsService.trackEvent(event);
@@ -77,7 +77,7 @@ export class ItemDetailTrackEventsService {
         itemDistance: recommenedItemOwner.itemDistance,
         shippingAllowed: recommendedItem.saleConditions.shipping_allowed,
         sellerUserId: recommendedItem.owner,
-        isBumped: !!recommendedItem.bumpFlags,
+        isBumped: !!recommendedItem.bumpFlags.bumped,
       },
     };
     this.analyticsService.trackEvent(event);
