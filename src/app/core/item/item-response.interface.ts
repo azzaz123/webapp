@@ -361,7 +361,7 @@ export interface ItemSaleConditions {
 export interface ItemCounters {
   views: number;
   favorites: number;
-  conversations?: number;
+  conversations: number;
 }
 
 export interface ItemBulkResponse {
