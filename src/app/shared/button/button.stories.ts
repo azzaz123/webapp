@@ -181,3 +181,13 @@ Dark.args = {
   disabled: false,
   loading: false,
 };
+
+export const BasicGrey = Template.bind({});
+BasicGrey.args = {
+  label: 'Basic grey',
+  className: 'basic basic--grey',
+  classLoading: '',
+  type: '',
+  disabled: false,
+  loading: false,
+};

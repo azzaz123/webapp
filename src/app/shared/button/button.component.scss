@@ -123,6 +123,10 @@ $vertical-padding: $spacing-ms;
     &-dark {
       color: $blue-grey-1;
     }
+
+    &--grey {
+      color: $blue-grey-3;
+    }
   }
 
   &.invoice {
