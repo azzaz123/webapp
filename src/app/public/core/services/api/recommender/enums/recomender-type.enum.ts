@@ -3,3 +3,8 @@ export enum RECOMMENDER_TYPE {
   SOCIAL_MEDIA_RECOMMENDATION = 'social_media_recommendation',
   DEFAULT = 'default',
 }
+
+export enum SEARCH_TECHNIQUE_ENGINE {
+  MORE_LIKE_THIS_SOLR = 'more_like_this_solr',
+  COLLABORATIVE_FILTER = 'collaborative_filter',
+}
