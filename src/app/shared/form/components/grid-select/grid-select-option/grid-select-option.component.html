@@ -4,5 +4,6 @@
   <tsl-svg-icon *ngIf="icon | isComplexIcon" [class.d-none]="iconStatus$ | async | shouldHideIcon:ICON_STATUS.STANDARD" class="GridSelectOption__icon" [height]="isBig ? 30 : 20" [width]="isBig ? 30 : 20" [src]="icon.standard"></tsl-svg-icon>
   <tsl-svg-icon *ngIf="icon | isComplexIcon" [class.d-none]="iconStatus$ | async | shouldHideIcon:ICON_STATUS.HOVER" class="GridSelectOption__icon" [height]="isBig ? 30 : 20" [width]="isBig ? 30 : 20" [src]="icon.hover"></tsl-svg-icon>
   <tsl-svg-icon *ngIf="icon | isComplexIcon" [class.d-none]="iconStatus$ | async | shouldHideIcon:ICON_STATUS.ACTIVE" class="GridSelectOption__icon" [height]="isBig ? 30 : 20" [width]="isBig ? 30 : 20" [src]="icon.active"></tsl-svg-icon>
+
   <span *ngIf="label" [class.GridSelectOption__label--active]="isActive" [class.GridSelectOption__label--main-color-hover]="isHoverMainColor" class="GridSelectOption__label">{{label}}</span>
 </div>
