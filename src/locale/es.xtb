@@ -979,4 +979,8 @@
   <translation id="SuggestProModalDescriptionPlans">Elige un plan y aprovecha los beneficios de Wallapop PRO.</translation>
   <translation id="SuggestProModalButtonCancel">Ahora no, gracias</translation>
   <translation id="SuggestProModalTitle">Si fueses PRO tus productos nunca quedarían inactivos. ¿Lo sabías?</translation>
+  <translation id="NoPublishedItemsTitle">Nada en venta todavía</translation>
+  <translation id="NoPublishedItemsDescription">Al parecer, alguien usa todo lo que tiene. ¡Dale tiempo para subir algo a wallapop!</translation>
+  <translation id="NoReviewsItemsTitle">Nadie ha opinado todavía</translation>
+  <translation id="NoReviewsItemsDescription">Esta persona no ha recibido valoraciones. ¿Será la tuya la primera?</translation>
 </translationbundle>
