@@ -293,14 +293,15 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       .get('id')
       .valueChanges.subscribe((typeOfbOjectId: number) => {
         if (!!typeOfbOjectId) {
+          this.getUploadExtraInfoControl('object_type_2').reset();
           this.getSecondObjectTypes(typeOfbOjectId);
+
           if (+this.uploadForm.get('category_id').value === CATEGORY_IDS.FASHION_ACCESSORIES) {
-            if (!this.objectTypesOptions2.length) {
-              this.getSizes();
-            }
+            this.getSizes();
           }
         } else {
           this.clearSecondObjectTypes();
+          this.clearSizes();
         }
       });
 
@@ -576,7 +577,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       this.getUploadExtraInfoControl('object_type_2').get('id').value || this.getUploadExtraInfoControl('object_type').get('id').value;
     const gender = this.getUploadExtraInfoControl('gender').value;
     this.sizes = [];
-
     if (objectTypeId && gender) {
       this.generalSuggestionsService.getSizes(objectTypeId, gender).subscribe(
         (sizes: IOption[]) => {
@@ -584,8 +584,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           this.sizes = sizes;
         },
         () => {
-          this.getUploadExtraInfoControl('size').disable();
-          this.sizes = [];
+          this.clearSizes();
         }
       );
     }
@@ -628,6 +627,11 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   private clearSecondObjectTypes(): void {
     this.objectTypesOptions2 = [];
     this.getUploadExtraInfoControl('object_type_2').disable();
+  }
+
+  private clearSizes(): void {
+    this.sizes = [];
+    this.getUploadExtraInfoControl('size').disable();
   }
 
   public autoCompleteCellphonesModel(brandModelObj: BrandModel): void {
