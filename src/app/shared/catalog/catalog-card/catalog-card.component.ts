@@ -6,7 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { EventService } from '../../../core/event/event.service';
-import { ItemChangeEvent } from '@private/features/catalog/core/item-change.interface';
+import { ItemChangeEvent, ITEM_CHANGE_ACTION } from '@private/features/catalog/core/item-change.interface';
 
 @Component({
   selector: 'tsl-catalog-card',
@@ -51,7 +51,7 @@ export class CatalogCardComponent implements OnInit {
     this.eventService.emit('itemChanged');
     this.itemChange.emit({
       item: item,
-      action: 'sold',
+      action: ITEM_CHANGE_ACTION.SOLD,
     });
     this.eventService.emit(EventService.ITEM_SOLD, item);
   }

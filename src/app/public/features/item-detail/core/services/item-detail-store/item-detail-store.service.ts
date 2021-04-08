@@ -7,7 +7,7 @@ import { MapItemDetailStoreService } from '../map-item-detail-store/map-item-det
 import { ItemDetail } from '@public/features/item-detail/interfaces/item-detail.interface';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { APP_PATHS } from 'app/app-routing-constants';
+import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { Item } from '@core/item/item';
 import { ItemDetailFlagsStoreService } from '../item-detail-flags-store/item-detail-flags-store.service';
 import { MarkAsFavouriteBodyResponse } from '@public/core/services/api/public-user/interfaces/public-user-response.interface';
@@ -42,7 +42,7 @@ export class ItemDetailStoreService {
         this.itemDetailFlagsStoreService.updateStatusFlag(itemDetail.item.flags);
         this.itemDetailFlagsStoreService.updateBumpedFlag(itemDetail.item.bumpFlags);
       },
-      () => this.router.navigate([`/${APP_PATHS.NOT_FOUND}`])
+      () => this.router.navigate([`/${PUBLIC_PATHS.NOT_FOUND}`])
     );
   }
 
