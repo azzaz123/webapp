@@ -20,6 +20,7 @@ export class GridSelectFormComponent extends AbstractFormComponent<string[]> {
   @Input() columns: number;
   @Input() isBig?: boolean;
   @Input() isMultiselect?: boolean;
+  @Input() isHoverMainColor?: boolean;
 
   private selectedOptions: string[] = [];
 
