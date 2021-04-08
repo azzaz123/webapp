@@ -34,6 +34,28 @@ describe('SelectFormComponent', () => {
         label: 'Option 2',
         value: 'option_2',
       },
+      {
+        label: 'Complex, Value',
+        value: {
+          brand: 'Complex',
+          model: 'Value',
+        },
+      },
+      {
+        label: 'Wrong Complex, Value',
+        value: {
+          brand: 'Wrong Complex',
+          model: 'Value',
+        },
+      },
+      {
+        label: 'Other, Complex, Value',
+        value: {
+          other: 'Other',
+          brand: 'Complex',
+          model: 'Value',
+        },
+      },
     ];
     fixture.detectChanges();
   });
@@ -45,7 +67,7 @@ describe('SelectFormComponent', () => {
   it('should show all the options', () => {
     const options = debugElement.queryAll(By.directive(SelectOptionComponent));
 
-    expect(options.length).toEqual(2);
+    expect(options.length).toEqual(5);
   });
 
   describe('when no value is provided', () => {
@@ -59,27 +81,64 @@ describe('SelectFormComponent', () => {
   });
 
   describe('when value is provided', () => {
-    beforeEach(() => {
-      component.writeValue('option_2');
-      fixture.detectChanges();
+    describe('and value is a string', () => {
+      beforeEach(() => {
+        component.writeValue('option_2');
+        fixture.detectChanges();
+      });
+      it('should mark corresponding option as active', () => {
+        const options = debugElement.queryAll(By.directive(SelectOptionComponent));
+
+        const activeOption = options.find((option) => option.componentInstance.isActive);
+
+        expect(activeOption.componentInstance.label).toEqual('Option 2');
+      });
     });
-    it('should mark corresponding option as active', () => {
-      const options = debugElement.queryAll(By.directive(SelectOptionComponent));
 
-      const activeOption = options.find((option) => option.componentInstance.isActive);
+    describe('and value is a record', () => {
+      beforeEach(() => {
+        component.writeValue({
+          brand: 'Complex',
+          model: 'Value',
+        });
+        fixture.detectChanges();
+      });
+      it('should mark corresponding option as active', () => {
+        const options = debugElement.queryAll(By.directive(SelectOptionComponent));
 
-      expect(activeOption.componentInstance.label).toEqual('Option 2');
+        const activeOption = options.find((option) => option.componentInstance.isActive);
+
+        expect(activeOption.componentInstance.label).toEqual('Complex, Value');
+      });
     });
   });
 
   describe('when option is selected', () => {
-    it('should set selected option to active', () => {
-      debugElement.query(By.directive(SelectOptionComponent)).nativeElement.click();
-      fixture.detectChanges();
+    describe('and value is a string', () => {
+      it('should set selected option to active', () => {
+        debugElement.query(By.directive(SelectOptionComponent)).nativeElement.click();
+        fixture.detectChanges();
 
-      const activeOption = debugElement.queryAll(By.directive(SelectOptionComponent)).find((option) => option.componentInstance.isActive);
+        const activeOption = debugElement.queryAll(By.directive(SelectOptionComponent)).find((option) => option.componentInstance.isActive);
 
-      expect(activeOption.componentInstance.label).toEqual('Option 1');
+        expect(activeOption.componentInstance.label).toEqual('Option 1');
+      });
+    });
+
+    describe('and value is a record', () => {
+      it('should set selected option to active', () => {
+        debugElement.queryAll(By.directive(SelectOptionComponent))[2].nativeElement.click();
+        fixture.detectChanges();
+
+        const options: SelectOptionComponent[] = debugElement
+          .queryAll(By.directive(SelectOptionComponent))
+          .map((debug) => debug.componentInstance)
+          .filter((instance) => instance.isActive);
+
+        expect(options.length).toBe(1);
+
+        expect(options[0].label).toEqual('Complex, Value');
+      });
     });
 
     it('should emit onChange', () => {

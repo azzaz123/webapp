@@ -44,7 +44,7 @@ import { SelectFormComponent } from '@shared/form/components/select/select-form.
       </div>
 
       <h1>Content variant</h1>
-      <div style="border: 1px dashed black; background-color: white; position: relative;">
+      <div style="border: 1px dashed black; background-color: white; position: relative; min-height: 400px;" class="p-3">
         <tsl-option-select-filter
           [variant]="${FILTER_VARIANT.CONTENT}"
           [value]="conditionValue"
@@ -53,6 +53,7 @@ import { SelectFormComponent } from '@shared/form/components/select/select-form.
           (clear)="changeCondition([])"
         >
         </tsl-option-select-filter>
+        <div style="height: 1px; width: 100%; background-color: #90A4AE;" class="my-3"></div>
         <tsl-option-select-filter
           [variant]="${FILTER_VARIANT.CONTENT}"
           [value]="genderValue"
