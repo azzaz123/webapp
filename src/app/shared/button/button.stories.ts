@@ -18,8 +18,11 @@ const Template: Story<ButtonComponent> = (args: ButtonComponent) => ({
     declarations: [ButtonComponent],
     imports: [CommonModule, SvgIconModule, HttpClientModule],
   },
-  template:
-    '<tsl-button [className]="className" [classLoading]="classLoading" [type]="type" [disabled]="disabled" [loading]="loading">{{label}}</tsl-button>',
+  template: `<tsl-button *ngIf="!storyFlagInnerHTML" [className]="className" [classLoading]="classLoading" [type]="type" [disabled]="disabled" [loading]="loading">{{label}}</tsl-button>
+    <tsl-button *ngIf="storyFlagInnerHTML" [className]="className" [classLoading]="classLoading" [type]="type" [disabled]="disabled" [loading]="loading">
+      <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
+    </tsl-button>
+    `,
 });
 
 export const Default = Template.bind({});
@@ -190,4 +193,15 @@ BasicGrey.args = {
   type: '',
   disabled: false,
   loading: false,
+};
+
+export const Icon = Template.bind({});
+Icon.args = {
+  label: '',
+  className: 'btn-icon',
+  classLoading: '',
+  type: '',
+  disabled: false,
+  loading: false,
+  storyFlagInnerHTML: true,
 };

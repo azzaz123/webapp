@@ -166,4 +166,13 @@ $vertical-padding: $spacing-ms;
       }
     }
   }
+
+  &.btn-icon {
+    @include square(40px);
+    align-items: center;
+    background: transparent;
+    border: none;
+    display: flex;
+    justify-content: center;
+  }
 }
