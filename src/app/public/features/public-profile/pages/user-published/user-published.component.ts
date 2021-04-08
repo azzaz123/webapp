@@ -3,7 +3,7 @@ import { ItemResponse } from '@core/item/item-response.interface';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
 import { EmptyStateProperties } from '@public/shared/components/empty-state/empty-state-properties.interface';
-import { finalize, take } from 'rxjs/operators';
+import { finalize, switchMap, take } from 'rxjs/operators';
 import { MapPublishedItemCardService } from '../../core/services/map-published-item-card/map-published-item-card.service';
 import { PublicProfileService } from '../../core/services/public-profile.service';
 
@@ -35,12 +35,15 @@ export class UserPublishedComponent implements OnInit {
       this.publicProfileService
         .getPublishedItems(this.publicProfileService.user.id, this.nextPaginationItem)
         .pipe(
+          switchMap((response) => {
+            this.nextPaginationItem = response.init;
+            return this.mapPublishedItemCardService.mapPublishedItems(response.results);
+          }),
           finalize(() => (this.loading = false)),
           take(1)
         )
-        .subscribe((response: PaginationResponse<ItemResponse>) => {
-          this.items = this.items.concat(this.mapPublishedItemCardService.mapPublishedItems(response.results));
-          this.nextPaginationItem = response.init;
+        .subscribe((itemsCard: ItemCard[]) => {
+          this.items = this.items.concat(itemsCard);
         }, this.onError);
     } catch (err: any) {
       this.onError();
