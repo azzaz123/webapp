@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -12,6 +12,8 @@ export class ConfirmationModalV2Component {
   public image: string;
   public primaryBtnText: string;
   public secondaryBtnText: string;
+  @Output() primaryBtnClick: EventEmitter<void> = new EventEmitter<void>();
+  @Output() secondaryBtnClick: EventEmitter<void> = new EventEmitter<void>();
 
   constructor(public activeModal: NgbActiveModal) {}
 }

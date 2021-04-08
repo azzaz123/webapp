@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { ComponentFixture, waitForAsync, TestBed } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { By } from '@angular/platform-browser';
 
 describe('ConfirmationModalV2Component', () => {
   let component: ConfirmationModalV2Component;
@@ -27,7 +28,30 @@ describe('ConfirmationModalV2Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });
+
   it('should be created', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('when primary button is clicked', () => {
+    it('should emit primary button click event', () => {
+      spyOn(component.primaryBtnClick, 'emit');
+      const primaryBtn = fixture.debugElement.nativeElement.querySelector('[classname*="btn-primary"]');
+
+      primaryBtn.click();
+
+      expect(component.primaryBtnClick.emit).toHaveBeenCalled();
+    });
+  });
+
+  describe('when secondary button is clicked', () => {
+    it('should emit secondary button click event', () => {
+      spyOn(component.secondaryBtnClick, 'emit');
+      const secondaryBtn = fixture.debugElement.nativeElement.querySelector('[classname*="basic--grey"]');
+
+      secondaryBtn.click();
+
+      expect(component.secondaryBtnClick.emit).toHaveBeenCalled();
+    });
   });
 });

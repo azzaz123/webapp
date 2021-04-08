@@ -4,23 +4,31 @@ import { ConfirmationModalV2Component } from './confirmation-modal-v2.component'
 import { HttpClientModule } from '@angular/common/http';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { moduleMetadata } from '@storybook/angular';
+import { ButtonModule } from '@shared/button/button.module';
 
 export default {
   title: 'Webapp/Shared/Modals/ConfirmationModalV2',
-  component: ConfirmationModalV2Component,
-  decorators: [styledWrapperDecorator('max-width: 220px;')],
+  decorators: [
+    moduleMetadata({
+      declarations: [ConfirmationModalV2Component],
+      imports: [SvgIconModule, HttpClientModule, ButtonModule],
+      providers: [NgbActiveModal],
+    }),
+  ],
+  argTypes: { primaryBtnClick: { action: 'primaryBtnClick' }, secondaryBtnClick: { action: 'secondaryBtnClick' } },
 } as Meta;
 
 const Template: Story<ConfirmationModalV2Component> = (args: ConfirmationModalV2Component) => ({
   component: ConfirmationModalV2Component,
   props: args,
-  moduleMetadata: {
-    declarations: [ConfirmationModalV2Component],
-    imports: [HttpClientModule, SvgIconModule],
-    providers: [NgbActiveModal],
-  },
-  template: '<tsl-confirmation-modal-v2></tsl-confirmation-modal-v2>',
 });
 
 export const Default = Template.bind({});
-Default.args = {};
+Default.args = {
+  title: 'I am the modal title!',
+  text: 'I am just a text, probably containing a question.',
+  image: '/assets/images/reactivate-item/reactivate-item.svg',
+  primaryBtnText: 'Primary action button',
+  secondaryBtnText: 'Secondary action button',
+};
