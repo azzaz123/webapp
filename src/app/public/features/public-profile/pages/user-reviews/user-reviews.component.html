@@ -1,14 +1,13 @@
 <div class="d-inline-block w-100 my-4">
     <tsl-spinner *ngIf="loading"></tsl-spinner>
     <div class="d-flex justify-content-center" *ngIf="!loading && reviews.length == 0">
-        <div class="UserReviews__emptyState">
-            <tsl-empty-state
-                [title]="emptyStateProperties.title"
-                [description]="emptyStateProperties.description"
-                [illustrationSrc]="emptyStateProperties.illustrationSrc"
-            >
-            </tsl-empty-state>
-        </div>
+        <tsl-empty-state
+            class="UserReviews__emptyState"
+            [title]="emptyStateProperties.title"
+            [description]="emptyStateProperties.description"
+            [illustrationSrc]="emptyStateProperties.illustrationSrc"
+        >
+        </tsl-empty-state>
     </div>
     <tsl-review-item class="d-block mb-3" *ngFor="let review of reviews" [review]="review"></tsl-review-item>
     <button *ngIf="nextPaginationItem" (click)="loadMore()" class="UserReviews__btn d-block btn btn-primary mx-auto mt-4" i18n="@@UserReviewsLoadMore">Load more reviews</button>
