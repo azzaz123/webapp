@@ -12,7 +12,9 @@ describe('MapRecommendedItemCardService', () => {
   let uuidService: UuidService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [MapRecommendedItemCardService],
+    });
     service = TestBed.inject(MapRecommendedItemCardService);
     uuidService = TestBed.inject(UuidService);
     spyOn(uuidService, 'getUUID').and.returnValue('1213');

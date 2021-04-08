@@ -2,7 +2,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MapRecommendedItemCardService } from '../../core/services/map-recommended-item-card/map-recommended-item-card.service';
-import { RECOMMENDED_ITEMS_MOCK, RECOMMENDED_ITEM_MOCK } from './constants/recommended-items.fixtures.spec';
+import { RECOMMENDED_ITEM_MOCK } from './constants/recommended-items.fixtures.spec';
 import { RecommendedItemsComponent } from './recommended-items.component';
 
 describe('RecommendedItemsComponent', () => {
@@ -30,7 +30,13 @@ describe('RecommendedItemsComponent', () => {
 
   describe('when we have recommended items...', () => {
     beforeEach(() => {
-      component.recommendedItems = RECOMMENDED_ITEMS_MOCK;
+      component.recommendedItems = [
+        RECOMMENDED_ITEM_MOCK,
+        RECOMMENDED_ITEM_MOCK,
+        RECOMMENDED_ITEM_MOCK,
+        RECOMMENDED_ITEM_MOCK,
+        RECOMMENDED_ITEM_MOCK,
+      ];
 
       component.ngOnChanges();
       fixture.detectChanges();
@@ -45,7 +51,7 @@ describe('RecommendedItemsComponent', () => {
 
     describe('when we got more than six recommended items...', () => {
       beforeEach(() => {
-        component.recommendedItems.recommended_items = [
+        component.recommendedItems = [
           RECOMMENDED_ITEM_MOCK,
           RECOMMENDED_ITEM_MOCK,
           RECOMMENDED_ITEM_MOCK,
@@ -56,6 +62,8 @@ describe('RecommendedItemsComponent', () => {
           RECOMMENDED_ITEM_MOCK,
           RECOMMENDED_ITEM_MOCK,
         ];
+
+        component.ngOnChanges();
         fixture.detectChanges();
       });
 

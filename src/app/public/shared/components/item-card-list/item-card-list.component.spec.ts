@@ -25,6 +25,8 @@ describe('ItemCardListComponent', () => {
   let el: HTMLElement;
   let deviceDetectorService: DeviceDetectorService;
   let router: Router;
+  let checkSessionService: CheckSessionService;
+  let itemCardService: ItemCardService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -72,6 +74,8 @@ describe('ItemCardListComponent', () => {
     el = de.nativeElement;
     component.items = [MOCK_ITEM_CARD, MOCK_ITEM_CARD, MOCK_ITEM_CARD, MOCK_ITEM_CARD];
     deviceDetectorService = TestBed.inject(DeviceDetectorService);
+    checkSessionService = TestBed.inject(CheckSessionService);
+    itemCardService = TestBed.inject(ItemCardService);
     router = TestBed.inject(Router);
     fixture.detectChanges();
   });
@@ -110,6 +114,28 @@ describe('ItemCardListComponent', () => {
     });
   });
 
+  describe('when we favourite the item...', () => {
+    describe('and we have session...', () => {
+      it('should toggle the favourite item', () => {
+        spyOn(itemCardService, 'toggleFavourite');
+        spyOn(checkSessionService, 'hasSession').and.returnValue(true);
+
+        component.toggleFavourite(MOCK_ITEM_CARD);
+
+        expect(itemCardService.toggleFavourite).toHaveBeenCalledWith(MOCK_ITEM_CARD);
+      });
+    });
+    describe(`and we don't have session...`, () => {
+      it('should check the session action', () => {
+        spyOn(checkSessionService, 'checkSessionAction');
+        spyOn(checkSessionService, 'hasSession').and.returnValue(false);
+
+        component.toggleFavourite(MOCK_ITEM_CARD);
+
+        expect(checkSessionService.checkSessionAction).toHaveBeenCalled();
+      });
+    });
+  });
   describe('when we click on a item card...', () => {
     it('should redirect to the item view ', () => {
       // spyOn(router, 'navigate');
