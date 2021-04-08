@@ -1,9 +1,11 @@
 @import '~style/common';
 
-tsl-empty-state {
-  width: 285px;
+.UserPublished {
+  &__emptyState {
+    width: 285px;
 
-  @include media-breakpoint-up(md) {
-    width: 485px;
+    @include media-breakpoint-up(md) {
+      width: 485px;
+    }
   }
 }

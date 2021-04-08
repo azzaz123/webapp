@@ -2,6 +2,7 @@
     <tsl-spinner *ngIf="loading"></tsl-spinner>
     <div class="d-flex justify-content-center" *ngIf="!loading && items.length === 0">
         <tsl-empty-state
+            class="UserPublished__emptyState"
             [title]="emptyStateProperties.title"
             [description]="emptyStateProperties.description"
             [illustrationSrc]="emptyStateProperties.illustrationSrc"
