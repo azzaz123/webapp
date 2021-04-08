@@ -6,8 +6,8 @@ import { PublicUserApiService } from '@public/core/services/api/public-user/publ
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { PublicProfileService } from '../../core/services/public-profile.service';
-import { MapItemService } from './services/map-item/map-item.service';
-import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
+
+import { MapPublishedItemCardService } from '../../core/services/map-published-item-card/map-published-item-card.service';
 
 import { UserPublishedComponent } from './user-published.component';
 import { By } from '@angular/platform-browser';
@@ -15,6 +15,7 @@ import { EmptyStateComponent } from '@public/shared/components/empty-state/empty
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
 import { ItemCardListComponentStub } from '@fixtures/shared/components/item-card-list.component.stub';
+import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 
 describe('UserPublishedComponent', () => {
   let component: UserPublishedComponent;
@@ -28,7 +29,7 @@ describe('UserPublishedComponent', () => {
       declarations: [UserPublishedComponent, ItemCardListComponentStub, EmptyStateComponent],
       providers: [
         PublicProfileService,
-        MapItemService,
+        MapPublishedItemCardService,
         CheckSessionService,
         PublicUserApiService,
         DeviceDetectorService,
@@ -82,7 +83,7 @@ describe('UserPublishedComponent', () => {
 
   describe(`when the user have items...`, () => {
     it('should not show the empty state', () => {
-      component.items = [MOCK_ITEM, MOCK_ITEM];
+      component.items = [MOCK_ITEM_CARD, MOCK_ITEM_CARD];
 
       fixture.detectChanges();
 

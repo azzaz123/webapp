@@ -37,7 +37,8 @@ import {
 import { Image, UserLocation } from '../app/core/user/user-response.interface';
 import { CartItem } from '../app/shared/catalog/cart/cart-item.interface';
 import { MOCK_SUBSCRIPTION_SLOTS_RESPONSE } from './subscriptions.fixtures.spec';
-import { USER_ID, USER_LOCATION } from './user.fixtures.spec';
+import { MOCK_USER, USER_ID, USER_LOCATION } from './user.fixtures.spec';
+import { MOCK_ITEM_VISIBILITY_FLAGS_BUMPED } from '@fixtures/item-detail-flags.fixtures.spec';
 
 export const PICTURE_ID = '9jd7ryx5odjk';
 export const ITEM_CATEGORY_ID = 12545;
@@ -316,6 +317,33 @@ export const MOCK_ITEM: Item = new Item(
   ITEM_DATA.web_slug,
   ITEM_DATA.published_date,
   ITEM_DATA.delivery_info
+);
+
+export const MOCK_ITEM_FEATURED: Item = new Item(
+  ITEM_DATA.id,
+  ITEM_DATA.legacy_id,
+  ITEM_DATA.owner,
+  ITEM_DATA.title,
+  ITEM_DATA.description,
+  ITEM_DATA.category_id,
+  ITEM_DATA.location,
+  ITEM_DATA.sale_price,
+  ITEM_DATA.currency_code,
+  ITEM_DATA.modified_date,
+  ITEM_DATA.url,
+  ITEM_DATA.flags,
+  ITEM_DATA.actions_allowed,
+  ITEM_DATA.sale_conditions,
+  ITEM_DATA.main_image,
+  ITEM_DATA.images,
+  ITEM_DATA.web_slug,
+  ITEM_DATA.published_date,
+  ITEM_DATA.delivery_info,
+  null,
+  null,
+  null,
+  null,
+  MOCK_ITEM_VISIBILITY_FLAGS_BUMPED
 );
 
 export const MOCK_ITEM_SOLD: Item = new Item(
@@ -612,6 +640,51 @@ export const ITEMS_BULK_RESPONSE_FAILED: ItemBulkResponse = {
   failedIds: ITEMS_BULK_FAILED_IDS,
 };
 
+export const MOCK_ITEM_RESPONSE: ItemResponse = {
+  id: '0j2ylvwrpmzy',
+  type: 'consumer_goods',
+  content: {
+    id: '0j2ylvwrpmzy',
+    title: 'The title',
+    description: 'The description',
+    category_id: 12545,
+    seller_id: 'l1kmzn82zn3p',
+    flags: {
+      pending: false,
+      sold: false,
+      reserved: false,
+      banned: false,
+      expired: false,
+    },
+    price: 123.45,
+    currency: 'EUR',
+    modified_date: 1500545785245,
+    url: 'http://dock2.wallapop.com/i/500002511?_pid=wi&_uid=101',
+    images: [
+      {
+        id: '0j2ylvwrpmzy',
+        original_width: 100,
+        original_height: 62,
+        average_hex_color: '6a707b',
+        urls_by_size: {
+          original: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+          small: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+          large: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+          medium: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+          xlarge: 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+        },
+      },
+    ],
+    sale_conditions: {
+      fix_price: false,
+      exchange_allowed: false,
+      shipping_allowed: false,
+    },
+    web_slug: 'raton-134690716',
+    user: MOCK_USER,
+  },
+};
+
 export class MockedItemService {
   public get(url: string): Observable<Item> {
     const data: any = ITEM_DATA;
@@ -679,6 +752,7 @@ export const ITEM_DATA_V3: ItemResponse = {
       shipping_allowed: false,
     },
     web_slug: 'raton-134690716',
+    user: MOCK_USER,
   },
 };
 

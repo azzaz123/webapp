@@ -29,6 +29,19 @@ export const RECOMMENDED_ITEM_MOCK: RecommenderItem = {
   web_slug: 'slug',
 };
 
+export const RECOMMENDED_ITEM_MOCK_WITHOUT_IMAGES: RecommenderItem = {
+  category_id: 100,
+  currency: 'EUR',
+  favorited: true,
+  id: '34342',
+  images: [],
+  price: 96000,
+  seller_id: '12323',
+  shipping_allowed: false,
+  title: 'Title',
+  web_slug: 'slug',
+};
+
 export const RECOMMENDED_ITEMS_MOCK: RecommendedItemsBodyResponse = {
   recommended_type: RECOMMENDER_TYPE.DEFAULT,
   recommended_items: [
