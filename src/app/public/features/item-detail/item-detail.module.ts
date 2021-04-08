@@ -28,6 +28,7 @@ import { MapItemDetailStoreService } from './core/services/map-item-detail-store
 import { ItemSocialShareService } from './core/services/item-social-share/item-social-share.service';
 import { ItemDetailFlagsStoreService } from './core/services/item-detail-flags-store/item-detail-flags-store.service';
 import { MapItemDetailFlagsStoreService } from './core/services/map-item-detail-flags-store/map-item-detail-flags-store.service';
+import { ItemDetailTrackEventsService } from './core/services/item-detail-track-events/item-detail-track-events.service';
 
 @NgModule({
   declarations: [itemDetailRoutedComponents],
@@ -52,6 +53,7 @@ import { MapItemDetailFlagsStoreService } from './core/services/map-item-detail-
   ],
   providers: [
     ItemDetailService,
+    ItemDetailTrackEventsService,
     ItemApiService,
     PublicUserApiService,
     RecommenderApiService,

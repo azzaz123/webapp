@@ -10,6 +10,7 @@ import { FILTER_VARIANT } from '../../abstract-filter/abstract-filter.enum';
 import { FILTER_TYPE_COMPONENT } from '../constants/filter-type-component.constant';
 import { FilterHostDirective } from '../directives/filter-host.directive';
 import { FilterFactoryService } from './filter-factory.service';
+import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
 
 @Component({
   template: `<div tslFilterHost></div>`,
@@ -29,7 +30,7 @@ describe('FilterFactoryService', () => {
 
   const config: FilterConfig<any>[] = [
     {
-      id: 'id',
+      id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
       type: FILTER_TYPES.TOGGLE,
       mapKey: {
         key: 'key',

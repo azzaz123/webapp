@@ -60,6 +60,9 @@ import { BumpConfirmationModalComponent } from '../../modals/bump-confirmation-m
 import { BuyProductModalComponent } from '../../modals/buy-product-modal/buy-product-modal.component';
 import { ListingfeeConfirmationModalComponent } from '../../modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { ListComponent } from './list.component';
+import { SuggestProModalComponent } from '@shared/catalog/modals/suggest-pro-modal/suggest-pro-modal.component';
+import { ITEM_CHANGE_ACTION } from '../../core/item-change.interface';
+import { Counters } from '@core/user/user-stats.interface';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -85,9 +88,10 @@ describe('ListComponent', () => {
   const routerEvents: Subject<any> = new Subject();
   const CURRENCY = 'wallacoins';
   const CREDITS = 1000;
-  const mockCounters = {
+  const mockCounters: Partial<Counters> = {
     sold: 7,
     publish: 12,
+    onHold: 5,
   };
 
   beforeEach(
@@ -622,22 +626,11 @@ describe('ListComponent', () => {
 
       component.itemChanged({
         item: item,
-        action: 'deleted',
+        action: ITEM_CHANGE_ACTION.DELETED,
       });
 
       expect(component.items.length).toBe(TOTAL - 1);
       expect(find(component.items, { id: item.id })).toBeFalsy();
-    });
-
-    it('should call feature if event is reactivatedWithBump', () => {
-      spyOn(component, 'feature');
-
-      component.itemChanged({
-        orderEvent: ORDER_EVENT,
-        action: 'reactivatedWithBump',
-      });
-
-      expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT, 'reactivate');
     });
 
     it('should change expired flag item if event is reactivated', () => {
@@ -646,7 +639,7 @@ describe('ListComponent', () => {
 
       component.itemChanged({
         item: item,
-        action: 'reactivated',
+        action: ITEM_CHANGE_ACTION.REACTIVATED,
       });
 
       expect(component.items[3].flags.expired).toBe(false);
@@ -851,6 +844,18 @@ describe('ListComponent', () => {
 
       expect(component.getNumberOfProducts).toHaveBeenCalled();
     });
+
+    describe('and there are not an selected subscription slot', () => {
+      it('should show normal links updated', () => {
+        const expectedNormalNavLinks = cloneDeep(component.normalNavLinks);
+        expectedNormalNavLinks[2].counter = { currentVal: mockCounters.onHold };
+
+        component.getNumberOfProducts();
+        component.filterByStatus('published');
+
+        expect(component.navLinks).toEqual(expectedNormalNavLinks);
+      });
+    });
   });
 
   describe('setNumberOfProducts', () => {
@@ -871,6 +876,13 @@ describe('ListComponent', () => {
       component.filterByStatus('sold');
 
       expect(component.numberOfProducts).toEqual(mockCounters.sold);
+    });
+
+    it('should set numberOfProducts to the numberOfInactiveProducts when inactive filter is selected', () => {
+      component.getNumberOfProducts();
+      component.filterByStatus(STATUS.INACTIVE);
+
+      expect(component.numberOfProducts).toEqual(mockCounters.onHold);
     });
   });
 
@@ -1248,6 +1260,125 @@ describe('ListComponent', () => {
 
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(event);
       });
+    });
+  });
+  describe('reactivation', () => {
+    beforeEach(() => {
+      spyOn(itemService, 'get').and.callThrough();
+      component.items = createItemsArray(5);
+    });
+    describe('reactivation success', () => {
+      it('should set item as pending', () => {
+        const item = cloneDeep(component.items[3]);
+
+        component.itemChanged({
+          item: item,
+          action: ITEM_CHANGE_ACTION.REACTIVATED,
+        });
+
+        expect(component.items[3].flags.expired).toEqual(false);
+        expect(component.items[3].flags.pending).toEqual(true);
+      });
+    });
+    describe('and is not pro user', () => {
+      beforeEach(() => {
+        spyOn(router, 'navigate');
+      });
+      it('should show modal', () => {
+        const item = cloneDeep(component.items[3]);
+
+        component.itemChanged({
+          item: item,
+          action: ITEM_CHANGE_ACTION.REACTIVATED,
+        });
+
+        expect(modalService.open).toHaveBeenCalledTimes(1);
+        expect(modalService.open).toHaveBeenCalledWith(SuggestProModalComponent, {
+          windowClass: 'modal-standard',
+        });
+      });
+      describe('and click cta button', () => {
+        it('should redirect to subscriptions', fakeAsync(() => {
+          modalSpy.and.returnValue({
+            result: Promise.resolve(true),
+            componentInstance: componentInstance,
+          });
+          const item = cloneDeep(component.items[3]);
+
+          component.itemChanged({
+            item: item,
+            action: ITEM_CHANGE_ACTION.REACTIVATED,
+          });
+          tick();
+
+          expect(router.navigate).toHaveBeenCalledTimes(1);
+          expect(router.navigate).toHaveBeenCalledWith(['profile/subscriptions']);
+        }));
+      });
+      describe('and click secondary button', () => {
+        it('should refresh item', fakeAsync(() => {
+          modalSpy.and.returnValue({
+            result: Promise.reject(),
+            componentInstance: componentInstance,
+          });
+          const item = cloneDeep(component.items[3]);
+
+          component.itemChanged({
+            item,
+            action: ITEM_CHANGE_ACTION.REACTIVATED,
+          });
+          tick();
+
+          expect(itemService.get).toHaveBeenCalledWith(item.id);
+          expect(component.items[3]).toEqual(MOCK_ITEM_V3);
+          expect(router.navigate).not.toHaveBeenCalled();
+        }));
+      });
+      describe('and click close button', () => {
+        it('should refresh item', fakeAsync(() => {
+          modalSpy.and.returnValue({
+            result: Promise.reject(),
+            componentInstance: componentInstance,
+          });
+          const item = cloneDeep(component.items[3]);
+
+          component.itemChanged({
+            item,
+            action: ITEM_CHANGE_ACTION.REACTIVATED,
+          });
+          tick();
+
+          expect(itemService.get).toHaveBeenCalledWith(item.id);
+          expect(component.items[3]).toEqual(MOCK_ITEM_V3);
+          expect(router.navigate).not.toHaveBeenCalled();
+        }));
+      });
+    });
+    describe('is pro user', () => {
+      it('should not show modal', () => {
+        component.user.featured = true;
+
+        component.itemChanged({
+          item: component.items[3],
+          action: ITEM_CHANGE_ACTION.REACTIVATED,
+        });
+
+        expect(modalService.open).not.toHaveBeenCalled();
+      });
+
+      it('should reload item', fakeAsync(() => {
+        component.user.featured = true;
+        const item = cloneDeep(component.items[3]);
+
+        component.itemChanged({
+          item,
+          action: ITEM_CHANGE_ACTION.REACTIVATED,
+        });
+        tick();
+
+        expect(itemService.get).toHaveBeenCalledWith(item.id);
+        expect(component.items[3]).toEqual(MOCK_ITEM_V3);
+      }));
     });
   });
 });
