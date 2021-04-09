@@ -12,7 +12,7 @@
                           [isHoverMainColor]="true"
                           [isBig]="true"
                           [isMultiselect]="false"
-                          [options]="gridOptions"
+                          [options]="this.config.options"
                           [columns]="6">
     </tsl-grid-select-form>
 
@@ -24,7 +24,7 @@
                                 [placeholderIcon]="placeholderIcon$ | async">
         <tsl-select-form
           formControlName="select"
-          [options]="selectOptions">
+          [options]="this.config.options | formatSelectOptions">
         </tsl-select-form>
     </tsl-select-filter-template>
   </form>

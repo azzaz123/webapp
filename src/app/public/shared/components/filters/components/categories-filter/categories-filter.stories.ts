@@ -7,14 +7,15 @@ import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { HttpClientModule } from '@angular/common/http';
 import { COMMON_CONFIGURATION_ID } from '../../core/enums/configuration-ids/common-configuration-ids.enum';
 import { FILTER_TYPES } from '../../core/enums/filter-types/filter-types.enum';
-import { FilterConfig } from '../../interfaces/filter-config.interface';
-import { CategoriesFilterParams } from './interfaces/categories-filter-params.interface';
 import { CategoriesFilterComponent } from './categories-filter.component';
 import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module';
 import { AbstractSelectFilterModule } from '../abstract-select-filter/abstract-select-filter.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
 import { GridSelectFormModule } from '@shared/form/components/grid-select/grid-select-form.module';
+import { CategoriesFilterConfig } from './interfaces/categories-filter-config.interface';
+import { CATEGORY_OPTIONS } from './data/category_options';
+import { FormatSelectOptionsPipe } from '@public/shared/components/filters/components/categories-filter/pipes/format-select-options.pipe';
 
 @Component({
   selector: 'tsl-filters',
@@ -45,8 +46,8 @@ import { GridSelectFormModule } from '@shared/form/components/grid-select/grid-s
   `,
 })
 class FiltersComponent {
-  public categoriesValue: FilterParameter[];
-  @Input() public categoriesConfig: FilterConfig<CategoriesFilterParams>;
+  @Input() public categoriesValue: FilterParameter[];
+  @Input() public categoriesConfig: CategoriesFilterConfig;
 
   public changeCondition(value: FilterParameter[]): void {
     this.categoriesValue = value;
@@ -66,7 +67,7 @@ export default {
         GridSelectFormModule,
         SelectFormModule,
       ],
-      declarations: [FiltersComponent, CategoriesFilterComponent],
+      declarations: [FiltersComponent, CategoriesFilterComponent, FormatSelectOptionsPipe],
     }),
   ],
 } as Meta;
@@ -76,7 +77,7 @@ const Template: Story<FiltersComponent> = (args) => ({
   component: FiltersComponent,
 });
 
-const categoriesConfig: FilterConfig<CategoriesFilterParams> = {
+const categoriesConfig: CategoriesFilterConfig = {
   id: COMMON_CONFIGURATION_ID.CATEGORIES,
   title: 'Category',
   icon: '/assets/icons/joke.svg',
@@ -86,9 +87,16 @@ const categoriesConfig: FilterConfig<CategoriesFilterParams> = {
     parameterKey: 'category_ids',
   },
   type: FILTER_TYPES.CATEGORIES,
+  options: CATEGORY_OPTIONS,
 };
 
 export const Default = Template.bind({});
 Default.args = {
   categoriesConfig: categoriesConfig,
+};
+
+export const WithDefaultValue = Template.bind({});
+WithDefaultValue.args = {
+  categoriesConfig: categoriesConfig,
+  categoriesValue: [{ key: 'category_ids', value: '100' }],
 };

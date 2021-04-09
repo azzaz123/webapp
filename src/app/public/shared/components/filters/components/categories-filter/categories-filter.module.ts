@@ -6,9 +6,10 @@ import { GridSelectFormModule } from '@shared/form/components/grid-select/grid-s
 import { AbstractSelectFilterModule } from '@public/shared/components/filters/components/abstract-select-filter/abstract-select-filter.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
+import { FormatSelectOptionsPipe } from '@public/shared/components/filters/components/categories-filter/pipes/format-select-options.pipe';
 
 @NgModule({
-  declarations: [CategoriesFilterComponent],
+  declarations: [CategoriesFilterComponent, FormatSelectOptionsPipe],
   imports: [CommonModule, AbstractFilterModule, GridSelectFormModule, AbstractSelectFilterModule, ReactiveFormsModule, SelectFormModule],
 })
 export class CategoriesFilterModule {}

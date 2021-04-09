@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterContentInit, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { AbstractFilter } from '../abstract-filter/abstract-filter';
 import { CategoriesFilterParams } from './interfaces/categories-filter-params.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
@@ -13,20 +13,22 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import { FilterTemplateComponent } from '../abstract-filter/filter-template/filter-template.component';
 import { SelectFilterTemplateComponent } from '../abstract-select-filter/select-filter-template/select-filter-template.component';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
+import { CategoriesFilterConfig } from './interfaces/categories-filter-config.interface';
 
 @Component({
   selector: 'tsl-categories-filter',
   templateUrl: './categories-filter.component.html',
   styleUrls: ['./categories-filter.component.scss'],
 })
-export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterParams> implements OnInit, OnDestroy, OnChanges {
+export class CategoriesFilterComponent
+  extends AbstractFilter<CategoriesFilterParams>
+  implements OnInit, OnDestroy, OnChanges, AfterContentInit {
+  @Input() config: CategoriesFilterConfig;
+
   public VARIANT = FILTER_VARIANT;
   public formGroup = new FormGroup({
     select: new FormControl([]),
   });
-
-  public selectOptions = CategoriesFilterComponent.getSelectOptions();
-  public gridOptions = CategoriesFilterComponent.getGridOptions();
 
   @ViewChild(FilterTemplateComponent) filterTemplate: FilterTemplateComponent;
   @ViewChild(SelectFilterTemplateComponent) placeholderTemplate: SelectFilterTemplateComponent;
@@ -63,6 +65,12 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
     super.ngOnInit();
     this.updateSubjects();
     this.initializeForm();
+  }
+
+  public ngAfterContentInit(): void {
+    if (this.value.length > 0) {
+      this.updateForm();
+    }
   }
 
   public ngOnChanges(changes: SimpleChanges) {
