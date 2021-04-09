@@ -69,7 +69,7 @@ export class CategoriesFilterComponent
 
   public ngAfterContentInit(): void {
     if (this.value.length > 0) {
-      this.updateForm();
+      this.updateValueFromParent();
     }
   }
 
@@ -78,7 +78,7 @@ export class CategoriesFilterComponent
 
     if (value && !value.firstChange && this.hasValueChanged(value.previousValue, value.currentValue)) {
       if (this._value.length > 0) {
-        this.updateForm();
+        this.updateValueFromParent();
       } else {
         this.cleanForm();
       }
@@ -120,9 +120,10 @@ export class CategoriesFilterComponent
     return value === '';
   }
 
-  private updateForm(): void {
+  private updateValueFromParent(): void {
     const value = this.getValue('parameterKey');
-    this.formGroup.controls.select.setValue(this.variant === FILTER_VARIANT.BUBBLE ? [value] : value);
+    this.formGroup.controls.select.setValue(this.variant === FILTER_VARIANT.BUBBLE ? [value] : value, { emitEvent: false });
+    this.updateSubjects(value);
   }
 
   private cleanForm(): void {
