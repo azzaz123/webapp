@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ItemsCardsWithPagination } from '@public/core/interfaces/item-card.interface';
+import { ItemCardsWithPagination } from '@public/core/interfaces/item-card.interface';
 import { forkJoin, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { MapPublishedItemCardService } from '../map-published-item-card/map-published-item-card.service';
@@ -9,7 +9,7 @@ import { PublicProfileService } from '../public-profile.service';
 export class PublishedItemCardFavouriteCheckedService {
   constructor(private publicProfileService: PublicProfileService, private mapPublishedItemCardService: MapPublishedItemCardService) {}
 
-  public getItems(nextPaginationItem: number): Observable<ItemsCardsWithPagination> {
+  public getItems(nextPaginationItem: number): Observable<ItemCardsWithPagination> {
     return this.publicProfileService.getPublishedItems(this.publicProfileService.user.id, nextPaginationItem).pipe(
       switchMap((response) => {
         return forkJoin([of(response.init), this.mapPublishedItemCardService.mapPublishedItemsFavoriteCheck(response.results)]).pipe(

@@ -17,7 +17,7 @@ export interface ItemCard {
   saleConditions?: ItemSaleConditions;
 }
 
-export interface ItemsCardsWithPagination {
+export interface ItemCardsWithPagination {
   nextPaginationItem: number;
   items: ItemCard[];
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ItemCard, ItemsCardsWithPagination } from '@public/core/interfaces/item-card.interface';
+import { ItemCard, ItemCardsWithPagination } from '@public/core/interfaces/item-card.interface';
 import { EmptyStateProperties } from '@public/shared/components/empty-state/empty-state-properties.interface';
 import { finalize, take } from 'rxjs/operators';
 import { PublishedItemCardFavouriteCheckedService } from '../../core/services/published-item-card-favourite-checked/published-item-card-favourite-checked.service';
@@ -35,7 +35,7 @@ export class UserPublishedComponent implements OnInit {
           finalize(() => (this.loading = false)),
           take(1)
         )
-        .subscribe((itemsWithPagination: ItemsCardsWithPagination) => {
+        .subscribe((itemsWithPagination: ItemCardsWithPagination) => {
           this.nextPaginationItem = itemsWithPagination.nextPaginationItem;
           this.items = this.items.concat(itemsWithPagination.items);
         }, this.onError);
