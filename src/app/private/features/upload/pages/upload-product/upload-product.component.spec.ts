@@ -694,11 +694,16 @@ describe('UploadProductComponent', () => {
         },
         extra_info: {
           object_type: { id: 1 },
-          object_type_2: { id: 2 },
         },
       });
       component.uploadForm.get('extra_info').get('object_type').enable();
       component.uploadForm.get('extra_info').get('object_type_2').enable();
+      component.uploadForm.patchValue({
+        extra_info: {
+          object_type_2: { id: 2 },
+        },
+      });
+
       const expected = {
         category_id: CATEGORY_IDS.SERVICES,
         currency_code: 'EUR',
