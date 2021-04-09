@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { AbstractFilter } from '../abstract-filter/abstract-filter';
 import { CategoriesFilterParams } from './interfaces/categories-filter-params.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
@@ -19,7 +19,7 @@ import { FilterParameter } from '../../interfaces/filter-parameter.interface';
   templateUrl: './categories-filter.component.html',
   styleUrls: ['./categories-filter.component.scss'],
 })
-export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterParams> implements OnInit, OnDestroy {
+export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterParams> implements OnInit, OnDestroy, OnChanges {
   public VARIANT = FILTER_VARIANT;
   public formGroup = new FormGroup({
     select: new FormControl([]),
@@ -65,19 +65,26 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
     this.initializeForm();
   }
 
+  public ngOnChanges(changes: SimpleChanges) {
+    const { value } = changes;
+
+    if (value && !value.firstChange && this.hasValueChanged(value.previousValue, value.currentValue)) {
+      if (this._value.length > 0) {
+        this.updateForm();
+      } else {
+        this.cleanForm();
+      }
+    }
+  }
+
   public ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }
 
-  public handleClear() {
-    super.handleClear();
-    this.cleanForm();
-  }
-
   private initializeForm(): void {
     this.subscriptions.add(
-      this.formGroup.controls.select.valueChanges.subscribe((value) => {
-        const formattedValue = this.getFormValue(value);
+      this.formGroup.controls.select.valueChanges.subscribe(() => {
+        const formattedValue = this.getFormValue();
         if (this.isAllCategoriesSelected(formattedValue)) {
           this.cleanForm();
         }
@@ -88,18 +95,15 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
     );
   }
 
-  private getFormValue(value: string | string[]): string {
-    return typeof value === 'string' ? value : value[0];
-  }
-
   private handleValueChange(): void {
     this.writeValue(this.getFilterParameterValue());
+    this.valueChange.emit(this._value);
   }
 
   private getFilterParameterValue(): FilterParameter[] {
-    const value = this.formGroup.controls.select.value[0];
+    const value = this.getFormValue();
     if (value) {
-      return [{ key: this.config.mapKey.parameterKey, value: this.formGroup.controls.select.value[0] }];
+      return [{ key: this.config.mapKey.parameterKey, value: this.getFormValue() }];
     }
     return [];
   }
@@ -108,8 +112,18 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
     return value === '';
   }
 
+  private updateForm(): void {
+    const value = this.getValue('parameterKey');
+    this.formGroup.controls.select.setValue(this.variant === FILTER_VARIANT.BUBBLE ? [value] : value);
+  }
+
   private cleanForm(): void {
     this.formGroup.controls.select.reset([]);
+  }
+
+  private getFormValue(): string {
+    const value = this.formGroup.controls.select.value;
+    return typeof value === 'string' ? value : value[0];
   }
 
   private updateSubjects(value: string = ''): void {

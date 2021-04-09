@@ -96,7 +96,7 @@ export class SelectFilterComponent extends AbstractSelectFilter<SelectFilterPara
       this.writeValue(keys.map((key) => ({ key: key, value: value[key] })));
     }
 
-    this.valueChange.emit(this.value);
+    this.valueChange.emit(this._value);
   }
 
   private getLabelPlaceholder(): string {

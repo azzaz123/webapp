@@ -1,11 +1,9 @@
 <tsl-filter-template [isBubble]="isBubble()"
                      [isDropdown]="isDropdown()"
-                     [isClearable]="true"
                      [title]="config.title"
                      [icon]="icon$ | async"
                      [label]="label$ | async"
                      [hasValue]="hasValue$() | async"
-                     (clear)="handleClear()"
                      (openStateChange)="openStateChange.emit($event)">
 
   <form [formGroup]="formGroup">
