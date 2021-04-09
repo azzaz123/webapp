@@ -5,6 +5,7 @@ import { GET_FAVORITES } from './favorites-api.service';
 import { FavoritesApiService } from './favorites-api.service';
 
 describe('FavoritesApiService', () => {
+  const MOCK_IDS = ['23bu382', 'sbdsu82329sd'];
   let service: FavoritesApiService;
   let httpMock: HttpTestingController;
 
@@ -22,20 +23,41 @@ describe('FavoritesApiService', () => {
     httpMock.verify();
   });
 
-  describe('getItem', () => {
-    it('should ask for the item', () => {
-      const ids = ['i23nj2', '23hiu2hei'];
-      const paramKey = 'ids';
-      const expectedParams = new HttpParams().set(paramKey, ids.toString());
-      const expectedUrl = `${GET_FAVORITES}?${expectedParams.toString()}`;
+  describe('getFavoriteItemsId', () => {
+    describe('and the petition succeed...', () => {
+      it('should return the favorites', () => {
+        let response: string[];
 
-      service.getFavoriteItemsId(ids).subscribe();
-      const req = httpMock.expectOne(expectedUrl);
-      req.flush({});
+        service.getFavoriteItemsId(MOCK_IDS).subscribe((r) => (response = r));
+        const req = httpMock.expectOne(GET_FAVORITES);
+        req.flush({
+          favorites: MOCK_IDS,
+        });
 
-      const param = req.request.params.get(paramKey);
-      expect(req.request.method).toBe('GET');
-      expect(param).toEqual(ids);
+        expect(req.request.url).toEqual(GET_FAVORITES);
+        expect(req.request.method).toBe('POST');
+        expect(req.request.body).toEqual({
+          ids: MOCK_IDS,
+        });
+        expect(response).toEqual(MOCK_IDS);
+      });
+    });
+
+    describe('and the petition fails...', () => {
+      it('should return an empty array', () => {
+        let response: string[];
+
+        service.getFavoriteItemsId(MOCK_IDS).subscribe((r) => (response = r));
+        const req = httpMock.expectOne(GET_FAVORITES);
+        req.flush(null, { status: 400, statusText: 'Bad Request' });
+
+        expect(req.request.url).toEqual(GET_FAVORITES);
+        expect(req.request.method).toBe('POST');
+        expect(req.request.body).toEqual({
+          ids: MOCK_IDS,
+        });
+        expect(response).toEqual([]);
+      });
     });
   });
 });

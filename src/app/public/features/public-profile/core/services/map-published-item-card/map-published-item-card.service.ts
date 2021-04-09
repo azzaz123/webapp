@@ -6,7 +6,7 @@ import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { FavoritesApiService } from '@public/core/services/api/favorites/favorites-api.service';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class MapPublishedItemCardService {
@@ -35,7 +35,7 @@ export class MapPublishedItemCardService {
 
     // TODO: check if not our own user		Date: 2021/04/08
     if (this.checkSessionService.hasSession()) {
-      return this.favoritesApiService.getFavoriteItemsId(itemsId).pipe(catchError(() => of([])));
+      return this.favoritesApiService.getFavoriteItemsId(itemsId);
     }
     return of([]);
   }
