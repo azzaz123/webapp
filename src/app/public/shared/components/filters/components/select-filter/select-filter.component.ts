@@ -49,7 +49,7 @@ export class SelectFilterComponent extends AbstractSelectFilter<SelectFilterPara
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.value && !changes.value.firstChange && this.hasValueChanged(changes.value.previousValue, changes.value.currentValue)) {
       if (this._value.length > 0) {
-        this.updateForm();
+        this.updateValueFromParent();
       } else {
         this.handleClear();
       }
@@ -68,6 +68,8 @@ export class SelectFilterComponent extends AbstractSelectFilter<SelectFilterPara
 
   public handleClear(): void {
     this.formGroup.controls.select.setValue(undefined, { emitEvent: false });
+    this.writeValue([]);
+    this.valueChange.emit([]);
     super.handleClear();
   }
 
@@ -80,8 +82,8 @@ export class SelectFilterComponent extends AbstractSelectFilter<SelectFilterPara
     this.subscriptions.add(subscription);
   }
 
-  private updateForm(): void {
-    this.formGroup.controls.select.setValue(this.getValue('parameterKey'));
+  private updateValueFromParent(): void {
+    this.formGroup.controls.select.setValue(this.getValue('parameterKey'), { emitEvent: false });
   }
 
   private handleValueChange(value: ComplexSelectValue): void {
