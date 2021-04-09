@@ -27,6 +27,7 @@ export const RECOMMENDED_ITEM_MOCK: RecommenderItem = {
   shipping_allowed: false,
   title: 'Title',
   web_slug: 'slug',
+  recommended_type: RECOMMENDER_TYPE.MORE_LIKE_THIS,
 };
 
 export const RECOMMENDED_ITEM_MOCK_WITHOUT_IMAGES: RecommenderItem = {
@@ -40,6 +41,7 @@ export const RECOMMENDED_ITEM_MOCK_WITHOUT_IMAGES: RecommenderItem = {
   shipping_allowed: false,
   title: 'Title',
   web_slug: 'slug',
+  recommended_type: RECOMMENDER_TYPE.MORE_LIKE_THIS,
 };
 
 export const RECOMMENDED_ITEMS_MOCK: RecommendedItemsBodyResponse = {
