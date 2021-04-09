@@ -15,6 +15,8 @@ export class GridSelectOptionComponent implements OnInit, OnChanges {
   @Input() isBig?: boolean;
   @Input() isHoverMainColor?: boolean;
 
+  public BIG_SIZE = 30;
+  public SMALL_SIZE = 20;
   public ICON_STATUS = ICON_STATUS;
   private iconStatusSubject = new BehaviorSubject(null);
 
