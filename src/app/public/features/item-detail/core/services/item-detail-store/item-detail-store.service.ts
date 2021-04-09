@@ -39,7 +39,7 @@ export class ItemDetailStoreService {
   public initializeItemAndFlags(itemId: string): void {
     forkJoin([this.itemDetailService.getItemDetail(itemId), this.itemFavoritesService.getFavouritedItemIds([itemId])]).subscribe(
       ([itemDetail, favorites]) => {
-        itemDetail.item.favorited = !!favorites.length;
+        itemDetail.item.flags.favorite = !!favorites.length;
         this.itemDetail = this.mapItemDetailStoreService.mapItemDetailStore(itemDetail);
         this.itemDetailFlagsStoreService.updateStatusFlag(itemDetail.item.flags);
         this.itemDetailFlagsStoreService.updateBumpedFlag(itemDetail.item.bumpFlags);
