@@ -513,16 +513,14 @@ describe('UploadProductComponent', () => {
       });
       it('should enable the size field', () => {
         component.uploadForm.patchValue({
-          category_id: CATEGORY_IDS.FASHION_ACCESSORIES,
           extra_info: {
             object_type: { id: 1 },
             gender: 'M',
           },
         });
-        component.uploadForm.patchValue({
-          category_id: CATEGORY_IDS.FASHION_ACCESSORIES,
-        });
+
         fixture.detectChanges();
+
         expect(component.uploadForm.get('extra_info').get('size').disabled).toBe(false);
       });
       it('should disable the size field', () => {
