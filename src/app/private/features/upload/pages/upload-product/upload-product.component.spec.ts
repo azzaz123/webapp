@@ -570,6 +570,16 @@ describe('UploadProductComponent', () => {
       it('should disable the model field', () => {
         expect(component.uploadForm.get('extra_info').get('model').disabled).toBe(true);
       });
+
+      describe('and object_type_2 is enabled', () => {
+        beforeEach(() => {
+          component.uploadForm.get('extra_info').get('object_type_2').enable();
+        });
+
+        it('should require the object_type_2 field', () => {
+          expect(component.uploadForm.get('extra_info').get('object_type_2').get('id').errors).toBeNull();
+        });
+      });
     });
   });
 
