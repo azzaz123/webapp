@@ -45,7 +45,7 @@ export const RECOMMENDED_ITEM_MOCK_WITHOUT_IMAGES: RecommenderItem = {
 };
 
 export const RECOMMENDED_ITEMS_MOCK: RecommendedItemsBodyResponse = {
-  recommended_type: RECOMMENDER_TYPE.DEFAULT,
+  recommended_type: RECOMMENDER_TYPE.MORE_LIKE_THIS,
   recommended_items: [
     RECOMMENDED_ITEM_MOCK,
     RECOMMENDED_ITEM_MOCK,
@@ -57,7 +57,7 @@ export const RECOMMENDED_ITEMS_MOCK: RecommendedItemsBodyResponse = {
 };
 
 export const EMPTY_RECOMMENDED_ITEMS_MOCK: RecommendedItemsBodyResponse = {
-  recommended_type: RECOMMENDER_TYPE.DEFAULT,
+  recommended_type: RECOMMENDER_TYPE.MORE_LIKE_THIS,
   recommended_items: [],
 };
 
