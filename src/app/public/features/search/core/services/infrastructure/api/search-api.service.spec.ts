@@ -5,7 +5,7 @@ import { TestBed } from '@angular/core/testing';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { SearchResponse, SearchResponseMapper } from '../search-response.interface';
 import { NEXT_HEADER_PAGE, SearchApiService } from './search-api.service';
-import { FilterParametersWallBuilder, SearchResponseBuilderByCategoryId, X_NEXT_PAGE_HEADER } from './search-api.service.fixture';
+import { FilterParametersWallFactory, SearchResponseByCategoryIdFactory, X_NEXT_PAGE_HEADER } from './search-api.service.fixture';
 
 
 describe('SearchApiService', () => {
@@ -30,8 +30,8 @@ describe('SearchApiService', () => {
     describe('generic category', () => {
       it('should call to wall generic ', () => {
         const category_id = '1';
-        const filters: FilterParameter[] = FilterParametersWallBuilder(category_id);
-        const searchResponse: SearchResponse = SearchResponseBuilderByCategoryId(category_id);
+        const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
+        const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id);
 
         service.search(filters).subscribe();
 
@@ -42,8 +42,8 @@ describe('SearchApiService', () => {
 
       it('should get generic items and has more items', (done) => {
         const category_id = '1';
-        const filters: FilterParameter[] = FilterParametersWallBuilder(category_id);
-        const searchResponse: SearchResponse = SearchResponseBuilderByCategoryId(category_id);
+        const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
+        const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id);
 
         service.search(filters).subscribe((response) => {
           expect(response).toEqual({items: SearchResponseMapper(searchResponse), hasMore: true});
@@ -59,8 +59,8 @@ describe('SearchApiService', () => {
 
       it('should get generic items and has not more items', (done) => {
         const category_id = '1';
-        const filters: FilterParameter[] = FilterParametersWallBuilder(category_id);
-        const searchResponse: SearchResponse = SearchResponseBuilderByCategoryId(category_id);
+        const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
+        const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id);
 
         service.search(filters).subscribe((response) => {
           expect(response).toEqual({items: SearchResponseMapper(searchResponse), hasMore: false});
@@ -77,8 +77,8 @@ describe('SearchApiService', () => {
     describe('cars', () => {
       it('should call to wall cars', () => {
         const category_id = '100';
-        const filters: FilterParameter[] = FilterParametersWallBuilder(category_id);
-        const searchResponse: SearchResponse = SearchResponseBuilderByCategoryId(category_id);
+        const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
+        const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id);
 
         service.search(filters).subscribe();
 
@@ -89,8 +89,8 @@ describe('SearchApiService', () => {
 
       it('should get item cars and has more items', (done) => {
         const category_id = '100';
-        const filters: FilterParameter[] = FilterParametersWallBuilder(category_id);
-        const searchResponse: SearchResponse = SearchResponseBuilderByCategoryId(category_id);
+        const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
+        const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id);
 
         service.search(filters).subscribe((response) => {
           expect(response).toEqual({items: SearchResponseMapper(searchResponse), hasMore: true});
@@ -106,8 +106,8 @@ describe('SearchApiService', () => {
 
       it('should get item cars and has not more items', (done) => {
         const category_id = '100';
-        const filters: FilterParameter[] = FilterParametersWallBuilder(category_id);
-        const searchResponse: SearchResponse = SearchResponseBuilderByCategoryId(category_id);
+        const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
+        const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id);
 
         service.search(filters).subscribe((response) => {
           expect(response).toEqual({items: SearchResponseMapper(searchResponse), hasMore: false});
@@ -124,8 +124,8 @@ describe('SearchApiService', () => {
     describe('realestate', () => {
       it('should call to realestate realestate', () => {
         const category_id = '200';
-        const filters: FilterParameter[] = FilterParametersWallBuilder(category_id);
-        const searchResponse: SearchResponse = SearchResponseBuilderByCategoryId(category_id);
+        const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
+        const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id);
 
         service.search(filters).subscribe();
 
@@ -136,8 +136,8 @@ describe('SearchApiService', () => {
 
       it('should get item realestates and has more items', (done) => {
         const category_id = '200';
-        const filters: FilterParameter[] = FilterParametersWallBuilder(category_id);
-        const searchResponse: SearchResponse = SearchResponseBuilderByCategoryId(category_id);
+        const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
+        const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id);
 
         service.search(filters).subscribe((response) => {
           expect(response).toEqual({items: SearchResponseMapper(searchResponse), hasMore: true});
@@ -153,8 +153,8 @@ describe('SearchApiService', () => {
 
       it('should get item realestates and has not more items', (done) => {
         const category_id = '200';
-        const filters: FilterParameter[] = FilterParametersWallBuilder(category_id);
-        const searchResponse: SearchResponse = SearchResponseBuilderByCategoryId(category_id);
+        const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
+        const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id);
 
         service.search(filters).subscribe((response) => {
           expect(response).toEqual({items: SearchResponseMapper(searchResponse), hasMore: false});
@@ -170,8 +170,8 @@ describe('SearchApiService', () => {
     describe('fashion', () => {
       it('should call to wall fashion', () => {
         const category_id = '12465';
-        const filters: FilterParameter[] = FilterParametersWallBuilder(category_id);
-        const searchResponse: SearchResponse = SearchResponseBuilderByCategoryId(category_id);
+        const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
+        const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id);
         service.search(filters).subscribe();
 
         const request = httpController.expectOne(`/api/v3/fashion/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value`);
@@ -181,8 +181,8 @@ describe('SearchApiService', () => {
 
       it('should get item fashion and has more items', (done) => {
         const category_id = '12465';
-        const filters: FilterParameter[] = FilterParametersWallBuilder(category_id);
-        const searchResponse: SearchResponse = SearchResponseBuilderByCategoryId(category_id);
+        const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
+        const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id);
 
         service.search(filters).subscribe((response) => {
           expect(response).toEqual({items: SearchResponseMapper(searchResponse), hasMore: true});
@@ -198,8 +198,8 @@ describe('SearchApiService', () => {
 
       it('should get item fashion and has not more items', (done) => {
         const category_id = '12465';
-        const filters: FilterParameter[] = FilterParametersWallBuilder(category_id);
-        const searchResponse: SearchResponse = SearchResponseBuilderByCategoryId(category_id);
+        const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
+        const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id);
 
         service.search(filters).subscribe((response) => {
           expect(response).toEqual({items: SearchResponseMapper(searchResponse), hasMore: false});
@@ -223,8 +223,8 @@ describe('SearchApiService', () => {
 
     it('should load next page', () => {
       const category_id = '1';
-      const filters: FilterParameter[] = FilterParametersWallBuilder(category_id);
-      const searchResponse: SearchResponse = SearchResponseBuilderByCategoryId(category_id);
+      const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
+      const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id);
       service.search(filters).subscribe();
       const request = httpController.expectOne(`/api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value`);
       request.flush(searchResponse, {
@@ -242,8 +242,8 @@ describe('SearchApiService', () => {
   describe('when the list is less than 20 items', () => {
     it('show load more items', () => {
       const category_id = '1';
-      const filters: FilterParameter[] = FilterParametersWallBuilder(category_id);
-      const searchResponse: SearchResponse = SearchResponseBuilderByCategoryId(category_id, 20);
+      const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
+      const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id, 20);
 
       service.search(filters).subscribe()
 
@@ -260,8 +260,8 @@ describe('SearchApiService', () => {
 
     it('show load more items until 40 items length', (done) => {
       const category_id = '1';
-      const filters: FilterParameter[] = FilterParametersWallBuilder(category_id);
-      const searchResponse: SearchResponse = SearchResponseBuilderByCategoryId(category_id, 20);
+      const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
+      const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id, 20);
 
       service.search(filters).subscribe((response) => {
         expect(response).toEqual({
