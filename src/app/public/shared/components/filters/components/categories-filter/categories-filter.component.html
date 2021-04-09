@@ -10,6 +10,7 @@
 
   <form [formGroup]="formGroup">
     <tsl-grid-select-form *ngIf="variant === VARIANT.BUBBLE"
+                          formControlName="select"
                           [isHoverMainColor]="true"
                           [isBig]="true"
                           [isMultiselect]="false"
