@@ -4,11 +4,19 @@ import { User } from '@core/user/user';
 import { Image } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
 import { EMPTY_STATS } from './constants/stats-constants';
-import { MOCK_FULL_USER, MOCK_FULL_USER_FEATURED, MOCK_USER_STATS, USERS_STATS, USER_DATA, IMAGE } from '@fixtures/user.fixtures.spec';
+import {
+  MOCK_FULL_USER,
+  MOCK_FULL_USER_FEATURED,
+  MOCK_USER_STATS,
+  USERS_STATS,
+  USER_DATA,
+  IMAGE,
+  MOCK_USER_SHIPPING_COUNTER,
+} from '@fixtures/user.fixtures.spec';
 
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { PublicProfileService } from './public-profile.service';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 describe('PublicProfileService', () => {
   let publicProfileService: PublicProfileService;
@@ -28,6 +36,9 @@ describe('PublicProfileService', () => {
             },
             getStats() {
               return of(USERS_STATS);
+            },
+            getShippingCounter() {
+              return of(MOCK_USER_SHIPPING_COUNTER);
             },
             getCoverImage() {
               return of(IMAGE);
@@ -88,14 +99,37 @@ describe('PublicProfileService', () => {
     });
 
     it('should return empty stats when we get an error', () => {
-      let expectedResponse = {};
-      spyOn(publicProfileService, 'getStats').and.returnValue(of(EMPTY_STATS));
+      let expectedResponse: UserStats;
+      spyOn(publicUserApiService, 'getStats').and.returnValue(throwError('network error'));
 
       publicProfileService.getStats(userId).subscribe((response: UserStats) => {
         expectedResponse = response;
       });
 
       expect(expectedResponse).toEqual(EMPTY_STATS);
+    });
+  });
+
+  describe('when getting shipping counter...', () => {
+    it('should get user shipping counter', () => {
+      let expectedResponse: number;
+
+      publicProfileService.getShippingCounter(userId).subscribe((response: number) => {
+        expectedResponse = response;
+      });
+
+      expect(expectedResponse).toEqual(MOCK_USER_SHIPPING_COUNTER.succeeded_count);
+    });
+
+    it('should return zero when we get an error', () => {
+      let expectedResponse: number;
+      spyOn(publicUserApiService, 'getShippingCounter').and.returnValue(throwError('network error'));
+
+      publicProfileService.getShippingCounter(userId).subscribe((response: number) => {
+        expectedResponse = response;
+      });
+
+      expect(expectedResponse).toEqual(0);
     });
   });
 

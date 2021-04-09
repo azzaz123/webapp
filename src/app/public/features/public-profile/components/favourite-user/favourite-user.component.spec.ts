@@ -8,6 +8,7 @@ import { PublicProfileService } from '@public/features/public-profile/core/servi
 import { FavouriteUserComponent } from './favourite-user.component';
 import { FavouriteIconModule } from '@public/shared/components/favourite-icon/favourite-icon.module';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
+import { throwError } from 'rxjs';
 
 describe('FavouriteUserComponent', () => {
   let component: FavouriteUserComponent;
@@ -43,22 +44,6 @@ describe('FavouriteUserComponent', () => {
   });
 
   describe('when user clicks the button', () => {
-    it('should update the state correctly if not favourite', () => {
-      component.isFavourite = false;
-
-      component.toggleFavourite();
-
-      expect(component.isFavourite).toBeTruthy();
-    });
-
-    it('should update the state correctly if favourite', () => {
-      component.isFavourite = true;
-
-      component.toggleFavourite();
-
-      expect(component.isFavourite).toBeFalsy();
-    });
-
     it('should call the correct publicProfileService function if not favourite', () => {
       component.isFavourite = false;
       spyOn(publicProfileService, 'markAsFavourite').and.returnValue(of({}));
@@ -75,6 +60,69 @@ describe('FavouriteUserComponent', () => {
       component.toggleFavourite();
 
       expect(publicProfileService.unmarkAsFavourite).toHaveBeenCalledWith(component.userId);
+    });
+
+    describe('and the petition succeed...', () => {
+      describe('and is not favourite...', () => {
+        beforeEach(() => {
+          component.isFavourite = false;
+        });
+
+        it('should emit the updated value', () => {
+          spyOn(publicProfileService, 'markAsFavourite').and.returnValue(of({}));
+          spyOn(component.isFavouriteChange, 'emit');
+
+          component.toggleFavourite();
+
+          expect(component.isFavouriteChange.emit).toHaveBeenCalledWith(component.isFavourite);
+        });
+
+        it('should update the state correctly', () => {
+          component.toggleFavourite();
+
+          expect(component.isFavourite).toBe(true);
+        });
+      });
+
+      describe('and is favourite...', () => {
+        beforeEach(() => {
+          component.isFavourite = true;
+        });
+
+        it('should emit the updated value', () => {
+          spyOn(publicProfileService, 'unmarkAsFavourite').and.returnValue(of({}));
+          spyOn(component.isFavouriteChange, 'emit');
+
+          component.toggleFavourite();
+
+          expect(component.isFavouriteChange.emit).toHaveBeenCalledWith(component.isFavourite);
+        });
+
+        it('should update the state correctly', () => {
+          component.toggleFavourite();
+
+          expect(component.isFavourite).toBe(false);
+        });
+      });
+    });
+
+    describe('and the petition fails...', () => {
+      it('should revert the favourite state if not favourite', () => {
+        spyOn(publicProfileService, 'markAsFavourite').and.returnValue(throwError('network error'));
+        component.isFavourite = false;
+
+        component.toggleFavourite();
+
+        expect(component.isFavourite).toBe(false);
+      });
+      it('should revert the favourite state if favourite', () => {
+        spyOn(publicProfileService, 'unmarkAsFavourite').and.returnValue(throwError('network error'));
+        component.isFavourite = true;
+
+        component.toggleFavourite();
+
+        expect(component.isFavourite).toBe(true);
+      });
     });
   });
 });

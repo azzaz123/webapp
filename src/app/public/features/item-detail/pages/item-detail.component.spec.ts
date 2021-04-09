@@ -22,8 +22,12 @@ import {
   MOCK_ITEM_DETAIL_WITHOUT_LOCATION,
   MOCK_ITEM_DETAIL_WITHOUT_TAXONOMIES,
   MOCK_CAR_ITEM_DETAIL_WITHOUT_SOCIAL_SHARE,
+  MOCK_OTHER_USER_REAL_ESTATE_ITEM_DETAIL,
+  MOCK_OWN_REAL_ESTATE_ITEM_DETAIL,
+  MOCK_OTHER_USER_CG_ITEM_DETAIL,
+  MOCK_OTHER_USER_CAR_ITEM_DETAIL,
 } from '@fixtures/item-detail.fixtures.spec';
-import { MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
+import { MOCK_ITEM_CAR, MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
 import { IsCurrentUserStub } from '@fixtures/public/core';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 import { AdComponentStub } from '@fixtures/shared';
@@ -57,7 +61,11 @@ import { UserService } from '@core/user/user.service';
 import { MockedUserService, MOCK_OTHER_USER, MOCK_USER, OTHER_USER_ID, USER_ID } from '@fixtures/user.fixtures.spec';
 import { User } from '@core/user/user';
 import { ItemDetailTrackEventsService } from '../core/services/item-detail-track-events/item-detail-track-events.service';
-import { MockItemdDetailTrackEventService } from '../core/services/item-detail-track-events/track-events.fixtures.spec';
+import { MockItemdDetailTrackEventService, MOCK_ITEM_INDEX } from '../core/services/item-detail-track-events/track-events.fixtures.spec';
+import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
+import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
+import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
+import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -274,11 +282,44 @@ describe('ItemDetailComponent', () => {
         expect(itemDetailTrackEventsService.trackViewOwnItemDetail).not.toHaveBeenCalled();
       });
 
+      it('should send view others real estate event if user is viewing others real estate', () => {
+        itemDetailSubjectMock.next(MOCK_OTHER_USER_REAL_ESTATE_ITEM_DETAIL);
+        spyOn(userService, 'me').and.returnValue(of(new User(OTHER_USER_ID)));
+        spyOn(itemDetailTrackEventsService, 'trackViewOthersItemREDetailEvent');
+        spyOn(itemDetailTrackEventsService, 'trackViewOwnItemDetail');
+
+        fixture.detectChanges();
+
+        expect(itemDetailTrackEventsService.trackViewOwnItemDetail).not.toHaveBeenCalled();
+        expect(itemDetailTrackEventsService.trackViewOthersItemREDetailEvent).toHaveBeenCalledWith(MOCK_REALESTATE, MOCK_OTHER_USER);
+      });
+
+      it('should not send view others real estate event if user is viewing own real estate', () => {
+        itemDetailSubjectMock.next(MOCK_OWN_REAL_ESTATE_ITEM_DETAIL);
+        spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
+        spyOn(itemDetailTrackEventsService, 'trackViewOthersItemREDetailEvent');
+        spyOn(itemDetailTrackEventsService, 'trackViewOwnItemDetail');
+
+        fixture.detectChanges();
+
+        expect(itemDetailTrackEventsService.trackViewOwnItemDetail).toHaveBeenCalledWith(MOCK_REALESTATE, MOCK_USER);
+        expect(itemDetailTrackEventsService.trackViewOthersItemREDetailEvent).not.toHaveBeenCalled();
+      });
+
+      it('should not send view others real estate event if user is viewing others products that is not real estate', () => {
+        itemDetailSubjectMock.next(MOCK_OTHER_USER_CG_ITEM_DETAIL);
+        spyOn(userService, 'me').and.returnValue(of(new User(OTHER_USER_ID)));
+        spyOn(itemDetailTrackEventsService, 'trackViewOthersItemREDetailEvent');
+        spyOn(itemDetailTrackEventsService, 'trackViewOthersCGDetailEvent');
+
+        fixture.detectChanges();
+
+        expect(itemDetailTrackEventsService.trackViewOthersCGDetailEvent).toHaveBeenCalledWith(MOCK_ITEM_GBP, MOCK_OTHER_USER);
+        expect(itemDetailTrackEventsService.trackViewOthersItemREDetailEvent).not.toHaveBeenCalled();
+      });
+
       it('should send view others CG item detail event when user is viewing others consumer goods item detail', () => {
-        const mockCGItemDetail: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
-        mockCGItemDetail.item = MOCK_ITEM_GBP;
-        mockCGItemDetail.user = MOCK_OTHER_USER;
-        itemDetailSubjectMock.next(mockCGItemDetail);
+        itemDetailSubjectMock.next(MOCK_OTHER_USER_CG_ITEM_DETAIL);
         spyOn(userService, 'me').and.returnValue(of(new User(OTHER_USER_ID)));
         spyOn(itemDetailTrackEventsService, 'trackViewOthersCGDetailEvent');
 
@@ -289,7 +330,7 @@ describe('ItemDetailComponent', () => {
 
       it('should not send view others CG item detail event when user is not viewing others consumer goods item detail', () => {
         itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
-        spyOn(userService, 'me').and.returnValue(of(new User(OTHER_USER_ID)));
+        spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
         spyOn(itemDetailTrackEventsService, 'trackViewOthersCGDetailEvent');
 
         fixture.detectChanges();
@@ -298,16 +339,49 @@ describe('ItemDetailComponent', () => {
       });
 
       it('should not send view others CG item detail event when user is viewing their own consumer goods item detail', () => {
-        const mockCGItemDetail: ItemDetail = { ...MOCK_CAR_ITEM_DETAIL };
-        mockCGItemDetail.item = MOCK_ITEM_GBP;
-        mockCGItemDetail.user = MOCK_USER;
-        itemDetailSubjectMock.next(mockCGItemDetail);
+        itemDetailSubjectMock.next(MOCK_ITEM_DETAIL_GBP);
         spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
         spyOn(itemDetailTrackEventsService, 'trackViewOthersCGDetailEvent');
 
         fixture.detectChanges();
 
         expect(itemDetailTrackEventsService.trackViewOthersCGDetailEvent).not.toHaveBeenCalled();
+      });
+
+      it('should send view others car event if user is viewing others car', () => {
+        itemDetailSubjectMock.next(MOCK_OTHER_USER_CAR_ITEM_DETAIL);
+        spyOn(userService, 'me').and.returnValue(of(new User(OTHER_USER_ID)));
+        spyOn(itemDetailTrackEventsService, 'trackViewOthersItemCarDetailEvent');
+        spyOn(itemDetailTrackEventsService, 'trackViewOwnItemDetail');
+
+        fixture.detectChanges();
+
+        expect(itemDetailTrackEventsService.trackViewOwnItemDetail).not.toHaveBeenCalled();
+        expect(itemDetailTrackEventsService.trackViewOthersItemCarDetailEvent).toHaveBeenCalledWith(MOCK_CAR, MOCK_OTHER_USER);
+      });
+
+      it('should not send view others car event if user is viewing their own car', () => {
+        itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
+        spyOn(userService, 'me').and.returnValue(of(new User(USER_ID)));
+        spyOn(itemDetailTrackEventsService, 'trackViewOthersItemCarDetailEvent');
+        spyOn(itemDetailTrackEventsService, 'trackViewOwnItemDetail');
+
+        fixture.detectChanges();
+
+        expect(itemDetailTrackEventsService.trackViewOwnItemDetail).toHaveBeenCalledWith(MOCK_ITEM_CAR, MOCK_USER);
+        expect(itemDetailTrackEventsService.trackViewOthersItemCarDetailEvent).not.toHaveBeenCalled();
+      });
+
+      it('should not send view others car event if user is viewing others prduct that is not a car', () => {
+        itemDetailSubjectMock.next(MOCK_OTHER_USER_CG_ITEM_DETAIL);
+        spyOn(userService, 'me').and.returnValue(of(new User(OTHER_USER_ID)));
+        spyOn(itemDetailTrackEventsService, 'trackViewOthersItemCarDetailEvent');
+        spyOn(itemDetailTrackEventsService, 'trackViewOthersCGDetailEvent');
+
+        fixture.detectChanges();
+
+        expect(itemDetailTrackEventsService.trackViewOthersItemCarDetailEvent).not.toHaveBeenCalled();
+        expect(itemDetailTrackEventsService.trackViewOthersCGDetailEvent).toHaveBeenCalledWith(MOCK_ITEM_GBP, MOCK_OTHER_USER);
       });
 
       it('should ask for item data', () => {
@@ -694,6 +768,64 @@ describe('ItemDetailComponent', () => {
 
       fixture.detectChanges();
       expect(itemDetailStoreService.toggleFavouriteItem).toHaveBeenCalled();
+    });
+  });
+
+  describe('when we click one of the recommened item cards', () => {
+    it('should send track click item card event', () => {
+      const recommenedItemCard = fixture.debugElement.query(By.css(recommendedItemsTag));
+      spyOn(userService, 'get').and.returnValue(of(MOCK_OTHER_USER));
+      spyOn(itemDetailTrackEventsService, 'trackClickItemCardEvent');
+
+      recommenedItemCard.triggerEventHandler('clickedItemAndIndexEvent', { itemCard: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
+      fixture.detectChanges();
+
+      expect(itemDetailTrackEventsService.trackClickItemCardEvent).toHaveBeenCalled();
+    });
+  });
+
+  describe('when we handle the social share...', () => {
+    itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
+    it('should send social share event with facebook channel if we share item with facebook', () => {
+      spyOn(itemDetailTrackEventsService, 'trackShareItemEvent');
+      const socialShare = fixture.debugElement.query(By.css(socialShareTag));
+
+      socialShare.triggerEventHandler('socialMediaChannel', SOCIAL_SHARE_CHANNELS.FACEBOOK);
+      fixture.detectChanges();
+
+      expect(itemDetailTrackEventsService.trackShareItemEvent).toHaveBeenCalledWith(
+        SOCIAL_SHARE_CHANNELS.FACEBOOK,
+        MOCK_CAR_ITEM_DETAIL.item,
+        MOCK_CAR_ITEM_DETAIL.user
+      );
+    });
+
+    it('should send social share event with twitter channel if we share item with twitter', () => {
+      spyOn(itemDetailTrackEventsService, 'trackShareItemEvent');
+      const socialShare = fixture.debugElement.query(By.css(socialShareTag));
+
+      socialShare.triggerEventHandler('socialMediaChannel', SOCIAL_SHARE_CHANNELS.TWITTER);
+      fixture.detectChanges();
+
+      expect(itemDetailTrackEventsService.trackShareItemEvent).toHaveBeenCalledWith(
+        SOCIAL_SHARE_CHANNELS.TWITTER,
+        MOCK_CAR_ITEM_DETAIL.item,
+        MOCK_CAR_ITEM_DETAIL.user
+      );
+    });
+
+    it('should send social share event with email channel if we share item with email', () => {
+      spyOn(itemDetailTrackEventsService, 'trackShareItemEvent');
+      const socialShare = fixture.debugElement.query(By.css(socialShareTag));
+
+      socialShare.triggerEventHandler('socialMediaChannel', SOCIAL_SHARE_CHANNELS.EMAIL);
+      fixture.detectChanges();
+
+      expect(itemDetailTrackEventsService.trackShareItemEvent).toHaveBeenCalledWith(
+        SOCIAL_SHARE_CHANNELS.EMAIL,
+        MOCK_CAR_ITEM_DETAIL.item,
+        MOCK_CAR_ITEM_DETAIL.user
+      );
     });
   });
 });

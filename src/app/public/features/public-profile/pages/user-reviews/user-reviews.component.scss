@@ -4,4 +4,12 @@
   &__btn {
     border-radius: $button-border-radius;
   }
+
+  &__emptyState {
+    width: 230px;
+
+    @include media-breakpoint-up(md) {
+      width: 485px;
+    }
+  }
 }

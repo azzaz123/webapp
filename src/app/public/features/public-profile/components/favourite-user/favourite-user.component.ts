@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { take } from 'rxjs/operators';
@@ -11,6 +11,7 @@ import { take } from 'rxjs/operators';
 export class FavouriteUserComponent implements OnDestroy {
   @Input() isFavourite: boolean = false;
   @Input() userId: string;
+  @Output() isFavouriteChange: EventEmitter<boolean> = new EventEmitter();
 
   subscriptions: Subscription[] = [];
 
@@ -23,7 +24,9 @@ export class FavouriteUserComponent implements OnDestroy {
       (this.isFavourite ? this.publicProfileService.markAsFavourite(this.userId) : this.publicProfileService.unmarkAsFavourite(this.userId))
         .pipe(take(1))
         .subscribe(
-          () => {},
+          () => {
+            this.isFavouriteChange.emit(this.isFavourite);
+          },
           () => {
             this.isFavourite = !this.isFavourite;
           }

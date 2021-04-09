@@ -19,10 +19,12 @@ import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from '@public/shared/c
 import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
 import { UserService } from '@core/user/user.service';
 import { User } from '@core/user/user';
-import { AnalyticsService } from '@core/analytics/analytics.service';
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { ItemDetailTrackEventsService } from '../core/services/item-detail-track-events/item-detail-track-events.service';
 import { take } from 'rxjs/operators';
+import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
+import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
+import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -84,6 +86,18 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     this.itemDetailStoreService.markItemAsSold();
   }
 
+  public trackClickItemCardEvent(event: ClickedItemCard): void {
+    const recommendedItemCard: ItemCard = event.itemCard;
+    const sourceItem: Item = this.itemDetail.item;
+    this.userService.get(recommendedItemCard.ownerId).subscribe((recommendedUser: User) => {
+      this.itemDetailTrackEventsService.trackClickItemCardEvent(recommendedItemCard, sourceItem, recommendedUser, event.index);
+    });
+  }
+
+  public trackShareItemEvent(channel: SOCIAL_SHARE_CHANNELS): void {
+    this.itemDetailTrackEventsService.trackShareItemEvent(channel, this.itemDetail.item, this.itemDetail.user);
+  }
+
   private initPage(itemId: string): void {
     this.itemDetailStoreService.initializeItemAndFlags(itemId);
     this.subscriptions.push(
@@ -125,6 +139,12 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
         if (user.id === userMe.id) {
           this.itemDetailTrackEventsService.trackViewOwnItemDetail(item, user);
         } else {
+          if (this.typeCheckService.isRealEstate(item)) {
+            this.itemDetailTrackEventsService.trackViewOthersItemREDetailEvent(item, user);
+          }
+          if (this.typeCheckService.isCar(item)) {
+            this.itemDetailTrackEventsService.trackViewOthersItemCarDetailEvent(item, user);
+          }
           if (!this.typeCheckService.isRealEstate(item) && !this.typeCheckService.isCar(item)) {
             this.itemDetailTrackEventsService.trackViewOthersCGDetailEvent(item, user);
           }

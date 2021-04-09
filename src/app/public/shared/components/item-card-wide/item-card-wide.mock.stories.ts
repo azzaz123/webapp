@@ -1,172 +1,35 @@
-import { Car } from '@core/item/car';
-import { Item } from '@core/item/item';
-import { Image } from '@core/user/user-response.interface';
-import { CAR_DATA } from '@fixtures/car.fixtures.spec';
 import { ITEM_DATA } from '@fixtures/item.fixtures.spec';
+import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
 
-const MOCK_ITEM_IMAGES: Image[] = [
-  {
-    id: '4z4vl5ygwvzy',
-    legacy_id: 500002514,
-    original_width: 100,
-    original_height: 62,
-    average_hex_color: '6a707b',
-    urls_by_size: {
-      original: 'http://localhost:6006/images/item-camera.jpg',
-      small: 'http://localhost:6006/images/item-camera.jpg',
-      large: 'http://localhost:6006/images/item-camera.jpg',
-      medium: 'http://localhost:6006/images/item-camera.jpg',
-      xlarge: 'http://localhost:6006/images/item-camera.jpg',
-    },
-  },
-  {
-    id: '4z4vl5ygwvzy',
-    legacy_id: 500002514,
-    original_width: 100,
-    original_height: 62,
-    average_hex_color: '6a707b',
-    urls_by_size: {
-      original: 'http://localhost:6006/images/item-pc.jpg',
-      small: 'http://localhost:6006/images/item-pc.jpg',
-      large: 'http://localhost:6006/images/item-pc.jpg',
-      medium: 'http://localhost:6006/images/item-pc.jpg',
-      xlarge: 'http://localhost:6006/images/item-pc.jpg',
-    },
-  },
-];
+export const MOCK_ITEM_CARD_WIDE: ItemCard = {
+  id: ITEM_DATA.id,
+  title: ITEM_DATA.title,
+  description: ITEM_DATA.description,
+  salePrice: ITEM_DATA.sale_price,
+  images: [ITEM_DATA.main_image, ITEM_DATA.main_image],
+  webSlug: ITEM_DATA.web_slug,
+  currencyCode: ITEM_DATA.currency_code,
+  ownerId: ITEM_DATA.owner,
+};
 
-const MOCK_ITEM_IMAGES_CAR: Image[] = [
-  {
-    id: '4z4vl5ygwvzy',
-    legacy_id: 500002514,
-    original_width: 100,
-    original_height: 62,
-    average_hex_color: '6a707b',
-    urls_by_size: {
-      original: 'http://localhost:6006/images/item-car.jpg',
-      small: 'http://localhost:6006/images/item-car.jpg',
-      large: 'http://localhost:6006/images/item-car.jpg',
-      medium: 'http://localhost:6006/images/item-car.jpg',
-      xlarge: 'http://localhost:6006/images/item-car.jpg',
-    },
-  },
-  {
-    id: '4z4vl5ygwvzy',
-    legacy_id: 500002514,
-    original_width: 100,
-    original_height: 62,
-    average_hex_color: '6a707b',
-    urls_by_size: {
-      original: 'http://localhost:6006/images/item-car2.jpg',
-      small: 'http://localhost:6006/images/item-car2.jpg',
-      large: 'http://localhost:6006/images/item-car2.jpg',
-      medium: 'http://localhost:6006/images/item-car2.jpg',
-      xlarge: 'http://localhost:6006/images/item-car2.jpg',
-    },
-  },
-];
+export const MOCK_ITEM_CARD_WIDE_GBP: ItemCard = {
+  id: ITEM_DATA.id,
+  title: ITEM_DATA.title,
+  description: ITEM_DATA.description,
+  salePrice: ITEM_DATA.sale_price,
+  images: [ITEM_DATA.main_image, ITEM_DATA.main_image],
+  webSlug: ITEM_DATA.web_slug,
+  currencyCode: 'GBP',
+  ownerId: ITEM_DATA.owner,
+};
 
-const MOCK_DESCRIPTION =
-  'se vende 407 perfecto estado recién revisado correa distribución cambiada gomas nuevas es el tope gama cuero,clima,pantalla multifunción ,sensor aparcamiento ,etc .se entrega con la ITV recién pasada .abstenerse curiosos solo gente seria .cambiaría solo por moto enduro o quad precio poco negociable está en Málaga. Peugeot 407 Sedan en Málaga';
-
-export const MOCK_ITEM: Item = new Item(
-  ITEM_DATA.id,
-  ITEM_DATA.legacy_id,
-  ITEM_DATA.owner,
-  ITEM_DATA.title,
-  MOCK_DESCRIPTION,
-  ITEM_DATA.category_id,
-  ITEM_DATA.location,
-  ITEM_DATA.sale_price,
-  ITEM_DATA.currency_code,
-  ITEM_DATA.modified_date,
-  ITEM_DATA.url,
-  ITEM_DATA.flags,
-  ITEM_DATA.actions_allowed,
-  ITEM_DATA.sale_conditions,
-  ITEM_DATA.main_image,
-  MOCK_ITEM_IMAGES,
-  ITEM_DATA.web_slug,
-  ITEM_DATA.published_date,
-  ITEM_DATA.delivery_info
-);
-
-export const MOCK_CAR: Car = new Car(
-  CAR_DATA.content.id,
-  CAR_DATA.content.seller_id,
-  CAR_DATA.content.title,
-  'This is the storytelling',
-  CAR_DATA.content.sale_price,
-  CAR_DATA.content.currency_code,
-  CAR_DATA.content.modified_date,
-  CAR_DATA.content.url,
-  CAR_DATA.content.flags,
-  CAR_DATA.content.sale_conditions,
-  MOCK_ITEM_IMAGES_CAR,
-  CAR_DATA.content.web_slug,
-  CAR_DATA.content.brand,
-  CAR_DATA.content.model,
-  CAR_DATA.content.year,
-  CAR_DATA.content.gearbox,
-  CAR_DATA.content.engine,
-  CAR_DATA.content.color,
-  CAR_DATA.content.horsepower,
-  CAR_DATA.content.body_type,
-  CAR_DATA.content.num_doors,
-  CAR_DATA.content.extras,
-  CAR_DATA.content.warranty,
-  CAR_DATA.content.num_seats,
-  CAR_DATA.content.condition,
-  CAR_DATA.content.version,
-  CAR_DATA.content.sale_price,
-  undefined,
-  undefined,
-  CAR_DATA.content.km
-);
-
-export const MOCK_ITEM_RESERVED: Item = new Item(
-  ITEM_DATA.id,
-  ITEM_DATA.legacy_id,
-  ITEM_DATA.owner,
-  ITEM_DATA.title,
-  MOCK_DESCRIPTION,
-  ITEM_DATA.category_id,
-  ITEM_DATA.location,
-  ITEM_DATA.sale_price,
-  ITEM_DATA.currency_code,
-  ITEM_DATA.modified_date,
-  ITEM_DATA.url,
-  {
-    pending: false,
-    banned: false,
-    expired: false,
-    favorite: false,
-    sold: false,
-    reserved: true,
-    bumped: false,
-  },
-  ITEM_DATA.actions_allowed,
-  ITEM_DATA.sale_conditions,
-  ITEM_DATA.main_image,
-  MOCK_ITEM_IMAGES,
-  ITEM_DATA.web_slug,
-  ITEM_DATA.published_date,
-  ITEM_DATA.delivery_info
-);
-
-export const MOCK_ITEM_FAVOURITE = new Item(
-  ITEM_DATA.id,
-  ITEM_DATA.legacy_id,
-  ITEM_DATA.owner,
-  ITEM_DATA.title,
-  MOCK_DESCRIPTION,
-  ITEM_DATA.category_id,
-  ITEM_DATA.location,
-  ITEM_DATA.sale_price,
-  ITEM_DATA.currency_code,
-  ITEM_DATA.modified_date,
-  ITEM_DATA.url,
-  {
+export const MOCK_ITEM_CARD_WIDE_FAVOURITE: ItemCard = {
+  id: ITEM_DATA.id,
+  title: ITEM_DATA.title,
+  description: ITEM_DATA.description,
+  salePrice: ITEM_DATA.sale_price,
+  images: [ITEM_DATA.main_image, ITEM_DATA.main_image],
+  flags: {
     pending: false,
     banned: false,
     expired: false,
@@ -175,28 +38,38 @@ export const MOCK_ITEM_FAVOURITE = new Item(
     reserved: false,
     bumped: false,
   },
-  ITEM_DATA.actions_allowed,
-  ITEM_DATA.sale_conditions,
-  ITEM_DATA.main_image,
-  MOCK_ITEM_IMAGES,
-  ITEM_DATA.web_slug,
-  ITEM_DATA.published_date,
-  ITEM_DATA.delivery_info
-);
+  webSlug: ITEM_DATA.web_slug,
+  currencyCode: ITEM_DATA.currency_code,
+  ownerId: ITEM_DATA.owner,
+};
 
-export const MOCK_ITEM_SOLD = new Item(
-  ITEM_DATA.id,
-  ITEM_DATA.legacy_id,
-  ITEM_DATA.owner,
-  ITEM_DATA.title,
-  MOCK_DESCRIPTION,
-  ITEM_DATA.category_id,
-  ITEM_DATA.location,
-  ITEM_DATA.sale_price,
-  ITEM_DATA.currency_code,
-  ITEM_DATA.modified_date,
-  ITEM_DATA.url,
-  {
+export const MOCK_ITEM_CARD_WIDE_RESERVED: ItemCard = {
+  id: ITEM_DATA.id,
+  title: ITEM_DATA.title,
+  description: ITEM_DATA.description,
+  salePrice: ITEM_DATA.sale_price,
+  images: [ITEM_DATA.main_image, ITEM_DATA.main_image],
+  flags: {
+    pending: false,
+    banned: false,
+    expired: false,
+    favorite: false,
+    sold: false,
+    reserved: true,
+    bumped: false,
+  },
+  webSlug: ITEM_DATA.web_slug,
+  currencyCode: ITEM_DATA.currency_code,
+  ownerId: ITEM_DATA.owner,
+};
+
+export const MOCK_ITEM_CARD_WIDE_SOLD: ItemCard = {
+  id: ITEM_DATA.id,
+  title: ITEM_DATA.title,
+  description: ITEM_DATA.description,
+  salePrice: ITEM_DATA.sale_price,
+  images: [ITEM_DATA.main_image, ITEM_DATA.main_image],
+  flags: {
     pending: false,
     banned: false,
     expired: false,
@@ -205,99 +78,57 @@ export const MOCK_ITEM_SOLD = new Item(
     reserved: false,
     bumped: false,
   },
-  ITEM_DATA.actions_allowed,
-  ITEM_DATA.sale_conditions,
-  ITEM_DATA.main_image,
-  MOCK_ITEM_IMAGES,
-  ITEM_DATA.web_slug,
-  ITEM_DATA.published_date,
-  ITEM_DATA.delivery_info
-);
+  webSlug: ITEM_DATA.web_slug,
+  currencyCode: ITEM_DATA.currency_code,
+  ownerId: ITEM_DATA.owner,
+};
 
-export const MOCK_ITEM_BUMPED = new Item(
-  ITEM_DATA.id,
-  ITEM_DATA.legacy_id,
-  ITEM_DATA.owner,
-  ITEM_DATA.title,
-  ITEM_DATA.description,
-  ITEM_DATA.category_id,
-  ITEM_DATA.location,
-  ITEM_DATA.sale_price,
-  ITEM_DATA.currency_code,
-  ITEM_DATA.modified_date,
-  ITEM_DATA.url,
-  ITEM_DATA.flags,
-  ITEM_DATA.actions_allowed,
-  ITEM_DATA.sale_conditions,
-  ITEM_DATA.main_image,
-  MOCK_ITEM_IMAGES,
-  ITEM_DATA.web_slug,
-  ITEM_DATA.published_date,
-  ITEM_DATA.delivery_info,
-  null,
-  null,
-  null,
-  null,
-  {
+export const MOCK_ITEM_CARD_WIDE_BUMPED: ItemCard = {
+  id: ITEM_DATA.id,
+  title: ITEM_DATA.title,
+  description: ITEM_DATA.description,
+  salePrice: ITEM_DATA.sale_price,
+  images: [ITEM_DATA.main_image, ITEM_DATA.main_image],
+  flags: ITEM_DATA.flags,
+  bumpFlags: {
     bumped: true,
     highlighted: false,
     urgent: false,
     country_bumped: false,
     boosted: false,
-  }
-);
+  },
+  webSlug: ITEM_DATA.web_slug,
+  currencyCode: ITEM_DATA.currency_code,
+  ownerId: ITEM_DATA.owner,
+};
 
-export const MOCK_ITEM_COUNTRY_BUMPED = new Item(
-  ITEM_DATA.id,
-  ITEM_DATA.legacy_id,
-  ITEM_DATA.owner,
-  ITEM_DATA.title,
-  ITEM_DATA.description,
-  ITEM_DATA.category_id,
-  ITEM_DATA.location,
-  ITEM_DATA.sale_price,
-  ITEM_DATA.currency_code,
-  ITEM_DATA.modified_date,
-  ITEM_DATA.url,
-  ITEM_DATA.flags,
-  ITEM_DATA.actions_allowed,
-  ITEM_DATA.sale_conditions,
-  ITEM_DATA.main_image,
-  MOCK_ITEM_IMAGES,
-  ITEM_DATA.web_slug,
-  ITEM_DATA.published_date,
-  ITEM_DATA.delivery_info,
-  null,
-  null,
-  null,
-  null,
-  {
+export const MOCK_ITEM_CARD_WIDE_COUNTRY_BUMPED: ItemCard = {
+  id: ITEM_DATA.id,
+  title: ITEM_DATA.title,
+  description: ITEM_DATA.description,
+  salePrice: ITEM_DATA.sale_price,
+  images: [ITEM_DATA.main_image, ITEM_DATA.main_image],
+  flags: ITEM_DATA.flags,
+  bumpFlags: {
     bumped: false,
     highlighted: false,
     urgent: false,
     country_bumped: true,
     boosted: false,
-  }
-);
+  },
+  webSlug: ITEM_DATA.web_slug,
+  currencyCode: ITEM_DATA.currency_code,
+  ownerId: ITEM_DATA.owner,
+};
 
-export const MOCK_ITEM_WITHOUT_IMAGES = new Item(
-  ITEM_DATA.id,
-  ITEM_DATA.legacy_id,
-  ITEM_DATA.owner,
-  ITEM_DATA.title,
-  ITEM_DATA.description,
-  ITEM_DATA.category_id,
-  ITEM_DATA.location,
-  ITEM_DATA.sale_price,
-  ITEM_DATA.currency_code,
-  ITEM_DATA.modified_date,
-  ITEM_DATA.url,
-  ITEM_DATA.flags,
-  ITEM_DATA.actions_allowed,
-  ITEM_DATA.sale_conditions,
-  ITEM_DATA.main_image,
-  null,
-  ITEM_DATA.web_slug,
-  ITEM_DATA.published_date,
-  ITEM_DATA.delivery_info
-);
+export const MOCK_ITEM_CARD_WIDE_WITHOUT_IMAGES: ItemCard = {
+  id: ITEM_DATA.id,
+  title: ITEM_DATA.title,
+  description: ITEM_DATA.description,
+  salePrice: ITEM_DATA.sale_price,
+  images: [],
+  flags: ITEM_DATA.flags,
+  webSlug: ITEM_DATA.web_slug,
+  currencyCode: ITEM_DATA.currency_code,
+  ownerId: ITEM_DATA.owner,
+};
