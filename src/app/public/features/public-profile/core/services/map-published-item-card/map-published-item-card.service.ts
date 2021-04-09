@@ -3,21 +3,17 @@ import { ItemContent, ItemImagesURLs, ItemResponse } from '@core/item/item-respo
 import { Image } from '@core/user/user-response.interface';
 import { UuidService } from '@core/uuid/uuid.service';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
-import { FavoritesApiService } from '@public/core/services/api/favorites/favorites-api.service';
-import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
+import { ItemFavoritesService } from '@public/core/services/item-favorites/item-favorites.service';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable()
 export class MapPublishedItemCardService {
-  constructor(
-    private uuidService: UuidService,
-    private checkSessionService: CheckSessionService,
-    private favoritesApiService: FavoritesApiService
-  ) {}
+  constructor(private uuidService: UuidService, private itemFavoritesService: ItemFavoritesService) {}
 
-  public mapPublishedItems(publishedItemsResponse: ItemResponse[]): Observable<ItemCard[]> {
-    return this.getFavouritedItemIds(publishedItemsResponse).pipe(
+  public mapPublishedItemsFavoriteCheck(publishedItemsResponse: ItemResponse[]): Observable<ItemCard[]> {
+    const itemsId = publishedItemsResponse.map((item: ItemResponse) => item.id);
+    return this.itemFavoritesService.getFavouritedItemIds(itemsId).pipe(
       map((favoriteIds: string[]) => {
         const itemsFavouriteChecked = publishedItemsResponse?.map((item: ItemResponse) => {
           if (favoriteIds.includes(item.id)) {
@@ -25,19 +21,13 @@ export class MapPublishedItemCardService {
           }
           return item;
         });
-        return itemsFavouriteChecked?.map((itemResponse: ItemResponse) => this.mapPublishedItem(itemResponse.content));
+        return this.mapPublishedItems(itemsFavouriteChecked);
       })
     );
   }
 
-  private getFavouritedItemIds(itemsResponse: ItemResponse[]): Observable<string[]> {
-    const itemsId = itemsResponse.map((item) => item.id);
-
-    // TODO: check if not our own user		Date: 2021/04/08
-    if (this.checkSessionService.hasSession()) {
-      return this.favoritesApiService.getFavoriteItemsId(itemsId);
-    }
-    return of([]);
+  public mapPublishedItems(publishedItemsResponse: ItemResponse[]): ItemCard[] {
+    return publishedItemsResponse?.map((itemResponse) => this.mapPublishedItem(itemResponse.content));
   }
 
   private mapPublishedItem(publishedItemResponse: ItemContent): ItemCard {
