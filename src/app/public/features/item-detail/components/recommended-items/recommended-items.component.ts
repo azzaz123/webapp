@@ -1,6 +1,7 @@
-import { Component, Input, OnChanges } from '@angular/core';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { RECOMMENDER_TYPE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 
 @Component({
@@ -11,6 +12,7 @@ import { ColumnsConfig } from '@public/shared/components/item-card-list/interfac
 export class RecommendedItemsComponent implements OnChanges {
   @Input() recommendedItems: ItemCard[];
   @Input() recommendedType: RECOMMENDER_TYPE;
+  @Output() clickedItemAndIndexEvent: EventEmitter<ClickedItemCard> = new EventEmitter<ClickedItemCard>();
 
   public items: ItemCard[];
   public showDescription = false;
@@ -27,5 +29,9 @@ export class RecommendedItemsComponent implements OnChanges {
     if (this.recommendedItems) {
       this.items = this.recommendedItems.slice(0, 6);
     }
+  }
+
+  public clickedItemAndIndex(event: ClickedItemCard): void {
+    this.clickedItemAndIndexEvent.emit(event);
   }
 }

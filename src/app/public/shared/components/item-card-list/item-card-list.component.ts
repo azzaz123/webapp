@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, Inject, Input } from '@angular/core';
-import { Item } from '@core/item/item';
+import { ChangeDetectionStrategy, Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { environment } from '@environments/environment';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { ClickedItemCard } from './interfaces/clicked-item-card.interface';
 import { ColumnsConfig } from './interfaces/cols-config.interface';
 import { SlotsConfig } from './interfaces/slots-config.interface';
 
@@ -24,6 +24,7 @@ export class ItemCardListComponent {
     xs: 2,
   };
   @Input() slotsConfig: SlotsConfig;
+  @Output() clickedItemAndIndex: EventEmitter<ClickedItemCard> = new EventEmitter<ClickedItemCard>();
 
   constructor(
     private deviceDetectionService: DeviceDetectorService,
@@ -38,8 +39,9 @@ export class ItemCardListComponent {
     this.checkSessionService.hasSession() ? this.itemCardService.toggleFavourite(item) : this.checkSessionService.checkSessionAction();
   }
 
-  public openItemDetailPage(item: Item): void {
-    const link = environment.siteUrl.replace('es', this.subdomain) + 'item/' + item.webSlug;
+  public openItemDetailPage({ itemCard, index }: ClickedItemCard): void {
+    this.clickedItemAndIndex.emit({ itemCard, index });
+    const link = environment.siteUrl.replace('es', this.subdomain) + 'item/' + itemCard.webSlug;
     window.open(link);
 
     // TODO: UNCOMMENT WHEN WE OPEN ITEM DETAIL IN PRODUCTION		Date: 2021/04/01

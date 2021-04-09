@@ -1,7 +1,7 @@
 import { Image } from '@core/user/user-response.interface';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { RECOMMENDED_ITEM_MOCK } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
-import { ITEM_BUMP_FLAGS, ITEM_DATA, MOCK_ITEM_RESPONSE } from './item.fixtures.spec';
+import { ITEM_BUMP_FLAGS, ITEM_DATA, MOCK_ITEM_RESPONSE, ITEM_SALE_CONDITIONS } from './item.fixtures.spec';
 import { USER_ID } from './user.fixtures.spec';
 
 export const MOCK_ITEM_CARD: ItemCard = {
@@ -15,6 +15,8 @@ export const MOCK_ITEM_CARD: ItemCard = {
   bumpFlags: ITEM_BUMP_FLAGS,
   webSlug: ITEM_DATA.web_slug,
   currencyCode: ITEM_DATA.currency_code,
+  categoryId: ITEM_DATA.category_id,
+  saleConditions: ITEM_SALE_CONDITIONS,
 };
 
 export const MOCK_PUBLISHED_ITEM_CARD_IMAGE: Image = {
