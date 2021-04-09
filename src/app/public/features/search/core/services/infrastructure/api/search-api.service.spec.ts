@@ -213,5 +213,74 @@ describe('SearchApiService', () => {
     });
   });
 
+  describe('when we want to load more items', () => {
+
+    it('should return null if does not has more items', () => {
+      service.loadMore();
+
+      httpController.expectNone('/api/v3/general/wall');
+    });
+
+    it('should load next page', () => {
+      const category_id = '1';
+      const filters: FilterParameter[] = FilterParametersWallBuilder(category_id);
+      const searchResponse: SearchResponse = SearchResponseBuilderByCategoryId(category_id);
+      service.search(filters).subscribe();
+      const request = httpController.expectOne(`/api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value`);
+      request.flush(searchResponse, {
+        headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER(category_id))
+      });
+
+      service.loadMore().subscribe();
+
+      const requestLoadMore = httpController.expectOne(`/api/v3/general/wall?${X_NEXT_PAGE_HEADER(category_id)}`);
+      expect(requestLoadMore.request.method).toBe('GET');
+      requestLoadMore.flush(searchResponse);
+    });
+  });
+
+  describe('when the list is less than 20 items', () => {
+    it('show load more items', () => {
+      const category_id = '1';
+      const filters: FilterParameter[] = FilterParametersWallBuilder(category_id);
+      const searchResponse: SearchResponse = SearchResponseBuilderByCategoryId(category_id, 20);
+
+      service.search(filters).subscribe()
+
+      const request1 = httpController.expectOne(`/api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value`);
+      expect(request1.request.method).toBe('GET');
+      request1.flush(searchResponse, {
+        headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER(category_id))
+      });
+
+      const request2 = httpController.expectOne(`/api/v3/general/wall?${X_NEXT_PAGE_HEADER(category_id)}`);
+      expect(request2.request.method).toBe('GET');
+      request2.flush(searchResponse);
+    });
+
+    it('show load more items until 40 items length', (done) => {
+      const category_id = '1';
+      const filters: FilterParameter[] = FilterParametersWallBuilder(category_id);
+      const searchResponse: SearchResponse = SearchResponseBuilderByCategoryId(category_id, 20);
+
+      service.search(filters).subscribe((response) => {
+        expect(response).toEqual({
+          items: [...SearchResponseMapper(searchResponse), ...SearchResponseMapper(searchResponse)],
+          hasMore: false
+        });
+        done();
+      })
+
+      const request1 = httpController.expectOne(`/api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value`);
+      expect(request1.request.method).toBe('GET');
+      request1.flush(searchResponse, {
+        headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER(category_id))
+      });
+      const request2 = httpController.expectOne(`/api/v3/general/wall?${X_NEXT_PAGE_HEADER(category_id)}`);
+      expect(request2.request.method).toBe('GET');
+      request2.flush(searchResponse);
+    });
+  });
+
 });
 

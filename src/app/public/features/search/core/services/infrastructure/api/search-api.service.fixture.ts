@@ -40,7 +40,7 @@ export function SearchResponseBuilder(partial: Partial<SearchResponse> = {}): Se
 }
 
 
-export function SearchResponseBuilderByCategoryId(category_id): SearchResponse {
+export function SearchResponseBuilderByCategoryId(category_id, count: number = 40): SearchResponse {
   return {
     from: 0,
     to: 20,
@@ -49,7 +49,7 @@ export function SearchResponseBuilderByCategoryId(category_id): SearchResponse {
       latitude: 40,
       longitude: 20
     },
-    search_objects: new Array(20).fill('').map(() => ItemSearchResponseBuilder({category_id}))
+    search_objects: new Array(count).fill('').map(() => ItemSearchResponseBuilder({category_id}))
   };
 }
 
