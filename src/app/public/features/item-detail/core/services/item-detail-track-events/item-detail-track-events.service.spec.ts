@@ -116,15 +116,11 @@ describe('ItemDetailTrackEventsService', () => {
   });
 
   describe('when user click on one of the recommended item card', () => {
-    const recommendedItem = MOCK_ITEM_CARD;
-    const sourceItem = MOCK_ITEM;
-    const recommenedItemOwner = MOCK_OTHER_USER;
-    const index = MOCK_ITEM_INDEX;
     it('should send click card event', () => {
       spyOn(service, 'trackClickItemCardEvent').and.callThrough();
       spyOn(analyticsService, 'trackEvent');
 
-      service.trackClickItemCardEvent(recommendedItem, sourceItem, recommenedItemOwner, index);
+      service.trackClickItemCardEvent(MOCK_ITEM_CARD, MOCK_ITEM, MOCK_OTHER_USER, MOCK_ITEM_INDEX);
 
       expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_CLICK_ITEM_CARD_EVENT);
     });
