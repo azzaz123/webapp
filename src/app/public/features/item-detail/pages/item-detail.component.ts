@@ -23,8 +23,8 @@ import { TypeCheckService } from '@public/core/services/type-check/type-check.se
 import { ItemDetailTrackEventsService } from '../core/services/item-detail-track-events/item-detail-track-events.service';
 import { take } from 'rxjs/operators';
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
-import { ClickedItemCard } from '@public/shared/components/filters/core/interfaces/clicked-item-card.interface';
 import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
+import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
 
 @Component({
   selector: 'tsl-item-detail',

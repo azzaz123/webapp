@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
-import { ClickedItemCard } from '@public/shared/components/filters/core/interfaces/clicked-item-card.interface';
 import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
 import { RecommenderItem } from '@public/core/services/api/recommender/interfaces/recommender-item.interface';
+import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 import { MapRecommendedItemCardService } from '../../core/services/map-recommended-item-card/map-recommended-item-card.service';
 
