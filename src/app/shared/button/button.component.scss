@@ -123,6 +123,10 @@ $vertical-padding: $spacing-ms;
     &-dark {
       color: $blue-grey-1;
     }
+
+    &--grey {
+      color: $blue-grey-3;
+    }
   }
 
   &.invoice {
@@ -161,5 +165,14 @@ $vertical-padding: $spacing-ms;
         display: none;
       }
     }
+  }
+
+  &.btn-icon {
+    @include square(40px);
+    align-items: center;
+    background: transparent;
+    border: none;
+    display: flex;
+    justify-content: center;
   }
 }
