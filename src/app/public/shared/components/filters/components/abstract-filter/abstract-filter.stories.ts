@@ -125,7 +125,7 @@ const VariantTemplate: Story<StoryAbstractFilterComponent> = (args) => ({
       <stories-abstract-filter [variant]="${FILTER_VARIANT.BUBBLE}" [value]="value" [config]="config" [storyContent]="storyContent">
       </stories-abstract-filter>
       <h1>Content variant</h1>
-      <div style="border: 1px dashed black; background-color: white">
+      <div style="border: 1px dashed black; background-color: white" class="p-3">
         <stories-abstract-filter [variant]="${FILTER_VARIANT.CONTENT}" [value]="value" [config]="config" [storyContent]="storyContent">
         </stories-abstract-filter>
       </div>
