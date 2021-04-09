@@ -12,7 +12,7 @@ export class PublishedItemCardFavouriteCheckedService {
   public getItems(nextPaginationItem: number): Observable<ItemsCardsWithPagination> {
     return this.publicProfileService.getPublishedItems(this.publicProfileService.user.id, nextPaginationItem).pipe(
       switchMap((response) => {
-        return forkJoin([of(response.init), this.mapPublishedItemCardService.mapPublishedItems(response.results)]).pipe(
+        return forkJoin([of(response.init), this.mapPublishedItemCardService.mapPublishedItemsFavoriteCheck(response.results)]).pipe(
           map(([nextPaginationItem, items]) => {
             return {
               nextPaginationItem,

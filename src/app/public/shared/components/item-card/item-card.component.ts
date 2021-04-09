@@ -24,6 +24,6 @@ export class ItemCardComponent {
   }
 
   get mainImage(): Image {
-    return this.item.images[0];
+    return this.item.images.length ? this.item.images[0] : null;
   }
 }
