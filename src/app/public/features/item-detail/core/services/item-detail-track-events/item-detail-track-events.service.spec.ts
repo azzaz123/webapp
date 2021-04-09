@@ -4,10 +4,11 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { UserService } from '@core/user/user.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
+import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { MOCK_CAR_ITEM_DETAIL } from '@fixtures/item-detail.fixtures.spec';
 import { MOCK_ITEM, MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
 import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
-import { MockedUserService, MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { MockedUserService, MOCK_OTHER_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
 import { of } from 'rxjs';
 import { RECOMMENDED_ITEM_IDS_MOCK } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
@@ -20,6 +21,8 @@ import {
   MOCK_VIEW_OTHERS_CG_DETAIL_EVENT,
   MOCK_VIEW_OTHERS_ITEM_RE_DETAIL_EVENT,
   MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT,
+  MOCK_ITEM_INDEX,
+  MOCK_CLICK_ITEM_CARD_EVENT,
   MOCK_FB_SHARE_ITEM_EVENT,
   MOCK_TWITTER_SHARE_ITEM_EVENT,
   MOCK_EMAIL_SHARE_ITEM_EVENT,
@@ -111,6 +114,17 @@ describe('ItemDetailTrackEventsService', () => {
       service.trackViewOthersCGDetailEvent(item, user);
 
       expect(analyticsService.trackPageView).toHaveBeenCalledWith(MOCK_VIEW_OTHERS_CG_DETAIL_EVENT);
+    });
+  });
+
+  describe('when user click on one of the recommended item card', () => {
+    it('should send click card event', () => {
+      spyOn(service, 'trackClickItemCardEvent').and.callThrough();
+      spyOn(analyticsService, 'trackEvent');
+
+      service.trackClickItemCardEvent(MOCK_ITEM_CARD, MOCK_ITEM, MOCK_OTHER_USER, MOCK_ITEM_INDEX);
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_CLICK_ITEM_CARD_EVENT);
     });
   });
 

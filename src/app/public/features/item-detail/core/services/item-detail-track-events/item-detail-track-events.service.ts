@@ -5,6 +5,7 @@ import {
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   ClickChatButton,
+  ClickItemCard,
   FavoriteItem,
   SCREEN_IDS,
   ShareItem,
@@ -22,6 +23,7 @@ import { Realestate } from '@core/item/realestate';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { SEARCH_TECHNIQUE_ENGINE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
+import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
 import { ItemDetail } from '@public/features/item-detail/interfaces/item-detail.interface';
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
 import { finalize, take } from 'rxjs/operators';
@@ -57,6 +59,28 @@ export class ItemDetailTrackEventsService {
         screenId: SCREEN_IDS.ItemDetail,
         isPro: user.featured,
         isBumped: !!item.bumpFlags?.bumped,
+      },
+    };
+    this.analyticsService.trackEvent(event);
+  }
+
+  public trackClickItemCardEvent(recommendedItemCard: ItemCard, sourceItem: Item, recommenedItemOwner: User, index: number): void {
+    const event: AnalyticsEvent<ClickItemCard> = {
+      name: ANALYTICS_EVENT_NAMES.ClickItemCard,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
+      attributes: {
+        itemId: recommendedItemCard.id,
+        categoryId: recommendedItemCard.categoryId,
+        position: index + 1,
+        screenId: SCREEN_IDS.ItemDetailRecommendationSlider,
+        isPro: recommenedItemOwner.featured,
+        salePrice: recommendedItemCard.salePrice,
+        title: recommendedItemCard.title,
+        itemSourceRecommendationId: sourceItem.id,
+        itemDistance: recommenedItemOwner.itemDistance,
+        shippingAllowed: !!recommendedItemCard.saleConditions?.shipping_allowed,
+        sellerUserId: recommendedItemCard.ownerId,
+        isBumped: !!recommendedItemCard.bumpFlags?.bumped,
       },
     };
     this.analyticsService.trackEvent(event);

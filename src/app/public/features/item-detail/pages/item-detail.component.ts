@@ -10,14 +10,12 @@ import { DeviceType } from '@core/device/deviceType.enum';
 import { Item } from '@core/item/item';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
-import { SEARCH_TECHNIQUE_ENGINE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
 import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { CarouselSlide } from '@public/shared/components/carousel-slides/carousel-slide.interface';
 import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from '@public/shared/components/item-flag/item-flag-constants';
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
-
 import { ADS_ITEM_DETAIL, ItemDetailAdSlotsConfiguration } from './../core/ads/item-detail-ads.config';
 import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
 import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
@@ -27,6 +25,8 @@ import { ItemDetailService } from '../core/services/item-detail/item-detail.serv
 import { ItemSocialShareService } from '../core/services/item-social-share/item-social-share.service';
 import { ItemDetail } from '../interfaces/item-detail.interface';
 import { RecommendedItemsInitEventEmitter } from '../interfaces/recommended-items-init-event-emitter.interface';
+import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
+import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -86,6 +86,14 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
 
   public soldItem(): void {
     this.itemDetailStoreService.markItemAsSold();
+  }
+
+  public trackClickItemCardEvent(event: ClickedItemCard): void {
+    const recommendedItemCard: ItemCard = event.itemCard;
+    const sourceItem: Item = this.itemDetail.item;
+    this.userService.get(recommendedItemCard.ownerId).subscribe((recommendedUser: User) => {
+      this.itemDetailTrackEventsService.trackClickItemCardEvent(recommendedItemCard, sourceItem, recommendedUser, event.index);
+    });
   }
 
   public trackShareItemEvent(channel: SOCIAL_SHARE_CHANNELS): void {

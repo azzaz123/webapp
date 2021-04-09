@@ -62,11 +62,12 @@ import { UserService } from '@core/user/user.service';
 import { MockedUserService, MOCK_OTHER_USER, MOCK_USER, OTHER_USER_ID, USER_ID } from '@fixtures/user.fixtures.spec';
 import { User } from '@core/user/user';
 import { ItemDetailTrackEventsService } from '../core/services/item-detail-track-events/item-detail-track-events.service';
-import { MockItemdDetailTrackEventService } from '../core/services/item-detail-track-events/track-events.fixtures.spec';
+import { MockItemdDetailTrackEventService, MOCK_ITEM_INDEX } from '../core/services/item-detail-track-events/track-events.fixtures.spec';
 import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
 import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
 import { SEARCH_TECHNIQUE_ENGINE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
+import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -786,6 +787,19 @@ describe('ItemDetailComponent', () => {
 
       fixture.detectChanges();
       expect(itemDetailStoreService.toggleFavouriteItem).toHaveBeenCalled();
+    });
+  });
+
+  describe('when we click one of the recommened item cards', () => {
+    it('should send track click item card event', () => {
+      const recommenedItemCard = fixture.debugElement.query(By.css(recommendedItemsTag));
+      spyOn(userService, 'get').and.returnValue(of(MOCK_OTHER_USER));
+      spyOn(itemDetailTrackEventsService, 'trackClickItemCardEvent');
+
+      recommenedItemCard.triggerEventHandler('clickedItemAndIndexEvent', { itemCard: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
+      fixture.detectChanges();
+
+      expect(itemDetailTrackEventsService.trackClickItemCardEvent).toHaveBeenCalled();
     });
   });
 
