@@ -17,7 +17,6 @@ import {
   MOCK_SIZES,
   MOCK_SIZES_RESPONSE,
 } from '@fixtures/extra-info.fixtures.spec';
-import { ACCEPT_HEADERS } from '@public/core/constants/header-constants';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Brand, BrandModel, Model, ObjectType } from '../../models/brand-model.interface';
 import { CONDITION_KEYS_API_URL, FASHION_KEYS_API_URL, GeneralSuggestionsService, SUGGESTERS_API_URL } from './general-suggestions.service';
@@ -52,7 +51,7 @@ describe('GeneralSuggestionsService', () => {
       expect(req.request.urlWithParams).toEqual(expectedUrl);
       expect(response).toEqual(MOCK_OBJECT_TYPES);
       expect(req.request.method).toBe('GET');
-      expect(req.request.headers.get('Accept')).toBe(ACCEPT_HEADERS.SUGGESTERS_V3);
+      expect(req.request.headers.get('Accept')).toBe('application/vnd.api.v3.suggesters.object-type.v2+json');
       expect(req.request.headers.get('Accept-Language')).toBe('en');
     });
   });

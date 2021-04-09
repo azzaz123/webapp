@@ -2,7 +2,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { I18nService } from '@core/i18n/i18n.service';
 import { environment } from '@environments/environment';
-import { ACCEPT_HEADERS } from '@public/core/constants/header-constants';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -18,7 +17,9 @@ export class GeneralSuggestionsService {
   constructor(private http: HttpClient, private i18n: I18nService) {}
 
   getObjectTypes(category_id: number): Observable<ObjectType[]> {
-    const headers = new HttpHeaders().set('Accept', ACCEPT_HEADERS.SUGGESTERS_V3).set('Accept-Language', this.i18n.locale);
+    const headers = new HttpHeaders()
+      .set('Accept', 'application/vnd.api.v3.suggesters.object-type.v2+json')
+      .set('Accept-Language', this.i18n.locale);
 
     return this.http.get<ObjectType[]>(`${environment.baseUrl}${SUGGESTERS_API_URL}/object-type`, {
       params: {
