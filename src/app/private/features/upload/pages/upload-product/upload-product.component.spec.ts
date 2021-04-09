@@ -1340,7 +1340,6 @@ describe('UploadProductComponent', () => {
       const expected = {
         object_type: { id: null },
         brand: null,
-        size: { id: null },
         gender: null,
         condition: null,
       };
