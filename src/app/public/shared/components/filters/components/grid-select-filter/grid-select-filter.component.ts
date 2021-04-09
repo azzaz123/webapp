@@ -29,7 +29,7 @@ export class GridSelectFilterComponent
 
   private subscriptions = new Subscription();
 
-  public constructor(private optionService: FilterOptionService) {
+  constructor(private optionService: FilterOptionService) {
     super();
   }
 
