@@ -14,6 +14,7 @@ import { UserService } from '@core/user/user.service';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
+import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import {
   MOCK_CAR_ITEM_DETAIL,
   MOCK_CAR_ITEM_DETAIL_WITHOUT_COUNTER,
@@ -59,7 +60,7 @@ import { EllapsedTimeModule } from '../core/directives/ellapsed-time.module';
 import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
 import { ItemDetailStoreService } from '../core/services/item-detail-store/item-detail-store.service';
 import { ItemDetailTrackEventsService } from '../core/services/item-detail-track-events/item-detail-track-events.service';
-import { MockItemdDetailTrackEventService } from '../core/services/item-detail-track-events/track-events.fixtures.spec';
+import { MockItemdDetailTrackEventService, MOCK_ITEM_INDEX } from '../core/services/item-detail-track-events/track-events.fixtures.spec';
 import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
 import { ItemSocialShareService } from '../core/services/item-social-share/item-social-share.service';
 import { MapExtraInfoService } from '../core/services/map-extra-info/map-extra-info.service';
@@ -818,6 +819,19 @@ describe('ItemDetailComponent', () => {
 
       fixture.detectChanges();
       expect(itemDetailStoreService.toggleFavouriteItem).toHaveBeenCalled();
+    });
+  });
+
+  describe('when we click one of the recommened item cards', () => {
+    it('should send track click item card event', () => {
+      const recommenedItemCard = fixture.debugElement.query(By.css(recommendedItemsTag));
+      spyOn(userService, 'get').and.returnValue(of(MOCK_OTHER_USER));
+      spyOn(itemDetailTrackEventsService, 'trackClickItemCardEvent');
+
+      recommenedItemCard.triggerEventHandler('clickedItemAndIndexEvent', { itemCard: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
+      fixture.detectChanges();
+
+      expect(itemDetailTrackEventsService.trackClickItemCardEvent).toHaveBeenCalled();
     });
   });
 

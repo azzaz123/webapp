@@ -7,12 +7,15 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
+import { Item } from '@core/item/item';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
+import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
 import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { CarouselSlide } from '@public/shared/components/carousel-slides/carousel-slide.interface';
+import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
 import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from '@public/shared/components/item-flag/item-flag-constants';
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
 import { combineLatest, Observable, Subscription } from 'rxjs';
@@ -95,6 +98,14 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
 
   public soldItem(): void {
     this.itemDetailStoreService.markItemAsSold();
+  }
+
+  public trackClickItemCardEvent(event: ClickedItemCard): void {
+    const recommendedItemCard: ItemCard = event.itemCard;
+    const sourceItem: Item = this.itemDetail.item;
+    this.userService.get(recommendedItemCard.ownerId).subscribe((recommendedUser: User) => {
+      this.itemDetailTrackEventsService.trackClickItemCardEvent(recommendedItemCard, sourceItem, recommendedUser, event.index);
+    });
   }
 
   public trackShareItemEvent(channel: SOCIAL_SHARE_CHANNELS): void {

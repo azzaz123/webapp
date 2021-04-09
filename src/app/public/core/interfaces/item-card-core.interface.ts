@@ -1,4 +1,4 @@
-import { ItemFlags, ItemVisibilityFlags } from '@core/item/item-response.interface';
+import { ItemFlags, ItemSaleConditions, ItemVisibilityFlags } from '@core/item/item-response.interface';
 import { Image } from '@core/user/user-response.interface';
 
 export interface ItemCard {
@@ -12,4 +12,6 @@ export interface ItemCard {
   images: Image[];
   flags?: ItemFlags;
   bumpFlags?: ItemVisibilityFlags;
+  categoryId?: number;
+  saleConditions?: ItemSaleConditions;
 }
